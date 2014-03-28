@@ -1,0 +1,15 @@
+application: ocargo
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /game/static
+  static_dir: game/static
+
+- url: /.*
+  script: main.application
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: 'website.settings'

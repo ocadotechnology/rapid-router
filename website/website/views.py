@@ -1,5 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import redirect
 
 def home(request):
     '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
-    return render(request, 'website/home.html')
+    return redirect('/game')

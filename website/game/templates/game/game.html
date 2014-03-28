@@ -1,3 +1,26 @@
 {% extends 'website/base.html' %}
 
-{% block content %}Game{% endblock %}
+{% block title %}Game{% endblock %}
+
+{% block scripts %}
+  <script src="/game/static/js/raphael.js"></script>
+  <script src="/game/static/js/drawing.js"></script>
+{% endblock %}
+
+{% block stylesheets %}
+<style type="text/css">
+    #paper {
+        height: 500px;
+        width: 500px;
+        border: 0px;
+        background-color: rgb(180, 180, 180);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<p>Use the arrow keys to drive the van</p>
+<div id="paper"></div>
+<button onclick="reset();">Reset</button>
+<button onclick="randomRoad();">Random road</button>
+{% endblock %}
