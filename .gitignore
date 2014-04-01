@@ -1,5 +1,6 @@
 *.log
 *.pyc
 local_settings.py
+/static/
 
 .project
