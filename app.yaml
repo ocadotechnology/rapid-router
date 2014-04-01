@@ -5,8 +5,8 @@ api_version: 1
 threadsafe: true
 
 handlers:
-- url: /game/static
-  static_dir: game/static
+- url: /static
+  static_dir: static
 
 - url: /.*
   script: main.application

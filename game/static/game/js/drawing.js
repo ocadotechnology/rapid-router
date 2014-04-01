@@ -200,7 +200,7 @@ window.onload = function() {
     
     var roadElements = createDefaultRoad(paper);
     
-    var van = paper.image('/game/static/image/van.png', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH);
+    var van = paper.image('/static/game/image/van.png', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH);
 
     var vanMoving = false;
     function moveCompleteCallback() {
