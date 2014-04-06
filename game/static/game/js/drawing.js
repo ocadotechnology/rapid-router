@@ -193,6 +193,45 @@ function createRandomRoad(paper) {
     return createRoad(paper, roadDefinition);
 };
 
+var van;
+var vanMoving = false;
+
+function moveVan(attr, callback) {
+    van.animate(attr, 500, 'easeIn', callback);
+};
+
+function moveForward(callback) {
+    moveVan({
+        x: van.attrs.x + MOVE_DISTANCE
+    }, callback);
+};
+
+function moveLeft(callback) {
+    var centerX = van.attrs.x + ROTATION_OFFSET_X;
+    var centerY = van.attrs.y - TURN_DISTANCE + ROTATION_OFFSET_Y;
+    moveVan({
+        transform: '... r-90,' + centerX + ',' + centerY
+    }, callback);
+};
+
+function moveRight(callback) {
+    var centerX = van.attrs.x + ROTATION_OFFSET_X;
+    var centerY = van.attrs.y + TURN_DISTANCE + ROTATION_OFFSET_Y;
+    moveVan({
+        transform: '... r90,' + centerX + ',' + centerY
+    }, callback);
+};
+
+function resetVan() {
+    van.attr({
+        x: INITIAL_X,
+        y: INITIAL_Y,
+        transform: 'r0'
+    });
+    van.toFront();
+    vanMoving = false;
+};
+
 window.onload = function() {
     var paper = new Raphael('paper', 500, 500);
     
@@ -200,37 +239,10 @@ window.onload = function() {
     
     var roadElements = createDefaultRoad(paper);
     
-    var van = paper.image('/static/game/image/van.png', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH);
+    van = paper.image('/static/game/image/van.png', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH);
 
-    var vanMoving = false;
     function moveCompleteCallback() {
         vanMoving = false;
-    };
-
-    function moveVan(attr) {
-        van.animate(attr, 500, 'easeIn', moveCompleteCallback);
-    };
-
-    function moveForward() {
-        moveVan({
-            x: van.attrs.x + MOVE_DISTANCE
-        });
-    };
-
-    function moveLeft() {
-        var centerX = van.attrs.x + ROTATION_OFFSET_X;
-        var centerY = van.attrs.y - TURN_DISTANCE + ROTATION_OFFSET_Y;
-        moveVan({
-            transform: '... r-90,' + centerX + ',' + centerY
-        });
-    };
-
-    function moveRight() {
-        var centerX = van.attrs.x + ROTATION_OFFSET_X;
-        var centerY = van.attrs.y + TURN_DISTANCE + ROTATION_OFFSET_Y;
-        moveVan({
-            transform: '... r90,' + centerX + ',' + centerY
-        });
     };
 
     window.onkeyup = function(event) {
@@ -243,13 +255,13 @@ window.onload = function() {
 
         switch (keyCode) {
             case KEY_CODE_UP:
-                moveForward();
+                moveForward(moveCompleteCallback);
                 break;
             case KEY_CODE_LEFT:
-                moveLeft();
+                moveLeft(moveCompleteCallback);
                 break;
             case KEY_CODE_RIGHT:
-                moveRight();
+                moveRight(moveCompleteCallback);
                 break;
         }
     };
@@ -259,16 +271,6 @@ window.onload = function() {
             roadElements[i].remove();
         }
         roadElements = [];
-    };
-    
-    function resetVan() {
-        van.attr({
-            x: INITIAL_X,
-            y: INITIAL_Y,
-            transform: 'r0'
-        });
-        van.toFront();
-        vanMoving = false;
     };
     
     window.reset = function() {
