@@ -5,10 +5,10 @@ var KEY_CODE_LEFT = 37;
 var KEY_CODE_RIGHT = 39;
 var KEY_CODES = [KEY_CODE_UP, KEY_CODE_LEFT, KEY_CODE_RIGHT];
 
-var PAPER_WIDTH = 500;
-var PAPER_HEIGHT = 500;
-var GRID_WIDTH = 5;
-var GRID_HEIGHT = 5;
+var PAPER_WIDTH = 1000;
+var PAPER_HEIGHT = 800;
+var GRID_WIDTH = 10;
+var GRID_HEIGHT = 8;
 var GRID_SPACE_WIDTH = PAPER_WIDTH / GRID_WIDTH;
 var GRID_SPACE_HEIGHT = PAPER_HEIGHT / GRID_HEIGHT;
 
@@ -138,6 +138,23 @@ function createDefaultRoad(paper) {
         },
         4: {
             0: 'H'
+        },
+        5: {
+            0: 'DL',
+            1: 'V',
+            2: 'UR'
+        },
+        6: {
+            2: 'H'
+        },
+        7: {
+            2: 'H'
+        },
+        8: {
+            2: 'H'
+        },
+        9: {
+            2: 'H'
         }
     };
     return createRoad(paper, defaultRoad);
@@ -233,7 +250,7 @@ function resetVan() {
 };
 
 window.onload = function() {
-    var paper = new Raphael('paper', 500, 500);
+    var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
     
     createGrid(paper);
     
