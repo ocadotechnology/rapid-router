@@ -3,6 +3,7 @@
 {% block title %}Game{% endblock %}
 
 {% block scripts %}
+{{block.super}}
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script>
 
@@ -24,35 +25,67 @@
   <script src="/static/game/js/van.js"></script>
 {% endblock %}
 
-{% block stylesheets %}
+{% block css %}
+{{block.super}}
 <style type="text/css">
     #wrapper {
         overflow:hidden;
+        height: 730px;
+        width: 1020px;
     }
     #paper {
-        height: 800px;
-        width: 1000px;
         border: 0px;
         background-color: rgb(180, 180, 180);
         float: left;
+        height: 630px;
+        margin-bottom: 30px;
+        overflow:scroll;
+        width: 650px;
     }
+
     #blockly {
-        height: 500px;
-        width: 500px;
-        float: left;
+      height: 500px;
+      margin-bottom: 10px;
     }
+
+    #tools {
+      height: 130px;
+    }
+
+    #tools button {
+      float: left;
+      margin-right: 10px;
+      padding-left: 0;
+      padding-right: 0;
+      height: 90px;
+      width: 90px;
+    }
+
+    .col {
+      float: left;
+      margin-left: 20px;
+    }
+
+    #tools, #blockly {
+      width: 320px;
+    }
+
 </style>
 {% endblock %}
 
 {% block content %}
 <p>Use the arrow keys to drive the van</p>
 <div id="wrapper">
-<div id="paper"></div>
-<div id="blockly"></div>
+  <div id="paper" class="col"></div>
+  <div id="blockly" class="col"></div>
+  <div id="tools" class="col">
+    <div id="controls">
+      <button onclick="reset();">Reset</button>
+      <button onclick="randomRoad();">Random road</button>
+      <button onclick="BlocklyTest.execute();">Execute</button>
+    </div>
+  </div>
 </div>
-<button onclick="reset();">Reset</button>
-<button onclick="randomRoad();">Random road</button>
-<button onclick="BlocklyTest.execute();">Execute</button>
 <xml id="toolbox" style="display: none">
     <block type="controls_repeat_ext"></block>
     <block type="math_number"></block>
