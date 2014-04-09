@@ -22,9 +22,14 @@ class Guardian (models.Model):
 	children = models.ManyToManyField(Student)
 	user = models.OneToOneField(User)
 
+class Level (models.Model):
+	name = models.IntegerField()
+
 class Attempt (models.Model):
-	time = models.IntegerField()
+	start_time = models.IntegerField()
+	level = models.ForeignKey(Level, related_name='attempts')
 	student = models.ForeignKey(Student, related_name='attempts')
+	finish_time = models.IntegerField()
 
 class Command (models.Model):
 	STEP_CHOICES = (
@@ -36,7 +41,3 @@ class Command (models.Model):
 	step = models.IntegerField()
 	attempt = models.ForeignKey(Attempt, related_name='commands')
 	command = models.CharField(max_length = 10, choices=STEP_CHOICES, default='F')
-
-class Level (models.Model):
-	name = models.IntegerField()
-	attempts = models.ManyToManyField(Attempt)
