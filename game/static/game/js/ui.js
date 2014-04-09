@@ -2,7 +2,7 @@
 
 function SimpleUi() {
     this.update = function(nextNode) {
-        console.log('Moving to coordinate ' + JSON.stringify(nextNode.coordinate));
+        console.debug('Moving to coordinate ' + JSON.stringify(nextNode.coordinate));
     };
 }
 
