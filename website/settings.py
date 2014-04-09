@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'nuit',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -82,3 +83,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = rel('static')
+
+from django_autoconfig.autoconfig import configure_settings
+configure_settings(globals())
