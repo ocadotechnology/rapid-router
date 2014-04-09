@@ -1,0 +1,74 @@
+{% extend nuit_base|default:'nuit/base.html' topbar=True topbar_classes='show-for-small-only' %}
+{% load static %}
+
+{% block title %}Login{% endblock title %}
+
+{% block css %}
+
+<style type='text/css'>
+
+    .login-loader, .toggle-topbar {
+        display: none;
+    }
+
+</style>
+
+{% endblock css %}
+
+{% block content %}
+
+<section class='fixed-modal'>
+
+    <header class='show-for-medium-up'>
+        {% if NUIT_LARGE_LOGO %}
+            <img src='{% static NUIT_LARGE_LOGO %}' />
+        {% else %}
+            <h1>{{NUIT_GLOBAL_TITLE|default:'Nuit'}}</h1>
+        {% endif %}
+    </header>
+
+    <section>
+
+        <form class='new-login' method='post'>
+
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div data-alert class='alert-box alert full'>
+                Your login details were not recognised. Please try again.
+                <a href='#' class='close'>&times;</a>
+            </div>
+            {% endif %}
+
+            <input type='text' id='username' name='username' placeholder='Username'>
+            <input type='password' id='password' name='password' placeholder='Password'>
+
+            <div class='submit'>
+                <div class='login-loader'>{% include 'nuit/includes/loader.html' with size=48 %}</div>
+                <button class='button expand'>Login</button>
+            </div>
+
+            <input type='hidden' name='next' value='{{next}}' />
+
+        </form>
+
+    </section>
+
+</section>
+
+{% endblock content %}
+
+{% block scripts %}
+
+<script type='text/javascript'>
+
+    $(document).ready(function() {
+        $('button').click(function() {
+            $(this).hide();
+            $('.login-loader').show();
+        });
+    });
+
+</script>
+
+{% endblock scripts %}

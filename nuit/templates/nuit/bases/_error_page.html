@@ -1,0 +1,41 @@
+{% extend nuit_base|default:'nuit/base.html' topbar=True topbar_classes='show-for-small-only' %}
+{% load static %}
+
+{% block title %}{{nuit_error_code}}: {{nuit_error_title}}{% endblock title %}
+
+{% block css %}
+
+<style type='text/css'>
+
+    .toggle-topbar {
+        display: none;
+    }
+
+</style>
+
+{% endblock css %}
+
+{% block content %}
+
+<section class='fixed-modal'>
+
+    <header class='show-for-medium-up'>
+        {% if NUIT_LARGE_LOGO %}
+            <img src='{% static NUIT_LARGE_LOGO %}' />
+        {% else %}
+            <h1>{{NUIT_GLOBAL_TITLE|default:'Nuit'}}</h1>
+        {% endif %}
+    </header>
+
+    <section>
+
+        <h2 class='full errorcode'>{{nuit_error_code}}: {{nuit_error_title}}</h2>
+
+        <p class='center'>{{nuit_error_message}}</p>
+        {% if nuit_show_return %}<button class='button expand'>Go back and try again</button>{% endif %}
+
+    </section>
+
+</section>
+
+{% endblock content %}

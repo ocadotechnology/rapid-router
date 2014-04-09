@@ -1,17 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>{% block title %}O-Car-Go!{% endblock %}</title>
-	<!--[if lt IE 9]>
-	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	{% block scripts %}{% endblock %}
-	{% block stylesheets %}{% endblock %}
-</head>
-<body>
-<div>
+{% extend 'nuit/base.html' topbar=True %}
+
 {% block content %}{% endblock %}
-</div>
-</body>
-</html>

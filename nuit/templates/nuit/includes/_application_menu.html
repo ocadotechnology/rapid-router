@@ -1,0 +1,13 @@
+{% for application in applications %}
+<li{% if application.subs %} class='has-dropdown'{% endif %}><a href='{{application.link|default:'#'}}'>{{application.name}}</a>
+{% if application.subs %}
+    <ul class='dropdown'>
+        {% with application.subs as applications %}
+        {% with 'nuit/includes/_application_menu.html' as template %}
+        {% include template %}
+        {% endwith %}
+        {% endwith %}
+    </ul>
+{% endif %}
+</li>
+{% endfor %}
