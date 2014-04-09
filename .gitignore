@@ -4,5 +4,6 @@ local_settings.py
 /static/
 
 .project
+.pydevproject
 .idea
 dbfile
