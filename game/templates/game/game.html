@@ -3,6 +3,7 @@
 {% block title %}Game{% endblock %}
 
 {% block scripts %}
+{{block.super}}
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script>
 
@@ -12,37 +13,67 @@
   <script src="/static/game/js/blockly/msg/js/en.js"></script>
   <script src="/static/game/js/blockly_test.js"></script>
 
+  <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+  <script src="/static/game/js/coordinate.js"></script>
+  <script src="/static/game/js/game.js"></script>
+  <script src="/static/game/js/instruction.js"></script>
+  <script src="/static/game/js/level.js"></script>
+  <script src="/static/game/js/map.js"></script>
+  <script src="/static/game/js/node.js"></script>
+  <script src="/static/game/js/program.js"></script>
+  <script src="/static/game/js/ui.js"></script>
+  <script src="/static/game/js/van.js"></script>
 {% endblock %}
 
-{% block stylesheets %}
+{% block css %}
+{{block.super}}
 <style type="text/css">
     #wrapper {
         overflow:hidden;
+        width: 1000px;
     }
     #paper {
-        height: 800px;
-        width: 1000px;
         border: 0px;
         background-color: rgb(180, 180, 180);
         float: left;
+        overflow:scroll;
+        width: 640px;
     }
-    #blockly {
-        height: 500px;
-        width: 500px;
-        float: left;
+
+    #tools {
+      width: 150px;
     }
+
+    #tools button {
+      width: 150px;
+    }
+
+    .col {
+      float: left;
+      height: 400px;
+      margin-left: 20px;
+    }
+
+    #tools, #blockly {
+      width: 150px;
+    }
+
 </style>
 {% endblock %}
 
 {% block content %}
 <p>Use the arrow keys to drive the van</p>
 <div id="wrapper">
-<div id="paper"></div>
-<div id="blockly"></div>
+  <div id="paper" class="col"></div>
+  <div id="blockly" class="col"></div>
+  <div id="tools" class="col">
+    <div id="controls">
+      <button onclick="reset();">Reset</button>
+      <button onclick="randomRoad();">Random road</button>
+      <button onclick="BlocklyTest.execute();">Execute</button>
+    </div>
+  </div>
 </div>
-<button onclick="reset();">Reset</button>
-<button onclick="randomRoad();">Random road</button>
-<button onclick="BlocklyTest.execute();">Execute</button>
 <xml id="toolbox" style="display: none">
     <block type="controls_repeat_ext"></block>
     <block type="math_number"></block>
