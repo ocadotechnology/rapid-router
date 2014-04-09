@@ -13,6 +13,12 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 rel = lambda rel_path: os.path.join(BASE_DIR, rel_path)
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': rel('dbfile'),
+    }
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -40,6 +46,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'nuit',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -76,3 +83,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = rel('static')
+
+from django_autoconfig.autoconfig import configure_settings
+configure_settings(globals())
+
+
+# PRESENTATION LAYER
+
+NUIT_GLOBAL_TITLE = "Oh, Car. Go!"

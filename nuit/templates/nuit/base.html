@@ -1,0 +1,160 @@
+{% load static %}
+{% load compress %}
+{% load nuit %}
+<!DOCTYPE html>
+
+<html class='no-js' lang='en'>
+
+<head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>{% block title %}Home{% endblock title %}{% if nuit_app_title %} - {{page_title|default:nuit_app_title}}{% else %} - {{page_title|default:'Nuit'}}{% endif %}</title>
+
+    {% compress css %}
+    <link rel='stylesheet' type='text/x-scss' href='{% static 'nuit.scss' %}' />
+    {% endcompress %}
+
+    {% block head %}
+    {% endblock head %}
+
+    {% block css %}
+    {% endblock css %}
+
+    <script type='text/javascript' src='{% static 'js/vendor/modernizr.js' %}'></script>
+
+</head>
+<body class='{% block body_class %}{% endblock %}'>
+
+    {% if nuit_topbar %}
+    <nav class='top-bar {{nuit_topbar_classes}}' data-topbar>
+        <ul class='title-area'>
+            <li class='name'>
+                {% if NUIT_LARGE_LOGO %}
+                    <h1 class='{% if NUIT_SMALL_LOGO %}hide-for-small-only{% endif %}'><a href='{{NUIT_GLOBAL_LINK|default:'#'}}'><img src='{% static NUIT_LARGE_LOGO %}' /></a></h1>
+                    {% if NUIT_SMALL_LOGO %}
+                        <h1 class='show-for-small-only'><a href='{{NUIT_GLOBAL_LINK|default:'#'}}'><img src='{% static NUIT_SMALL_LOGO %}' /></a></h1>
+                    {% endif %}
+                {% else %}
+                    <h1><a href='{{NUIT_GLOBAL_LINK|default:'#'}}'>{{NUIT_GLOBAL_TITLE|default:'Nuit'}}</a></h1>
+                {% endif %}
+            </li>
+            <li class='toggle-topbar menu-icon'><a href='#'></a></li>
+        </ul>
+
+        <section class='top-bar-section'>
+
+            <ul id='left-menu-drop' class='left'>
+
+                {% if nuit_app_title %}
+                    <li class='hide-for-small-only divider'></li>
+                    <li class='hide-for-small-only'><a href='{% if nuit_app_url %}{% url nuit_app_url %}{% else %}/{% endif %}'>{{nuit_app_title}}</a></li>
+                {% endif %}
+
+                {% block top_bar_menu %}
+                {% endblock top_bar_menu %}
+
+                <li class='show-for-small-only divider'></li>
+
+            </ul>
+
+            <ul class='right'>
+
+                {% block top_bar_right_menu %}
+                {% endblock top_bar_right_menu %}
+
+                {% if nuit_show_user_info and NUIT_LOGIN_URL and NUIT_LOGOUT_URL %}
+                    {% if request.user.is_anonymous %}
+                        <li><a href='{{NUIT_LOGIN_URL}}?next={{request.path}}'>Login</a></li>
+                    {% else %}
+                        <li class='has-dropdown' class='nuit-user-details'>
+                            <a href='#'>
+                                {% if request.user.first_name and request.user.last_name %}
+                                    {{request.user.first_name}} {{request.user.last_name}}
+                                {% else %}
+                                    {{request.user.first_name|default:request.user.username}}
+                                {% endif %}
+                            </a>
+                            <ul class='dropdown'>
+                                {% block user_info_menu %}
+                                {% endblock user_info_menu %}
+                                <li><a href='{{NUIT_LOGOUT_URL}}'>Logout</a></li>
+                            </ul>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
+                {% if NUIT_APPLICATIONS %}
+                <li class='has-dropdown'>
+                    <a href='#'>Applications</a>
+                    <ul class='dropdown'>
+                        {% with NUIT_APPLICATIONS as applications %}
+                        {% include 'nuit/includes/_application_menu.html' %}
+                        {% endwith %}
+                    </ul>
+                </li>
+                {% endif %}
+
+            </ul>
+
+        </section>
+    </nav>
+    {% endif %}
+
+    <section role='main'>
+    <div class='clearfix container'>
+        {% if nuit_leftmenu %}
+        <div class='sidebar on-left hide-for-small-only'>
+            {% block left_menu %}{% endblock left_menu %}
+        </div>
+        {% endif %}
+        {% if nuit_rightmenu %}
+        <div class='sidebar on-right show-for-large-up'>
+        {% block right_menu %}{% endblock right_menu %}
+        </div>
+        {% endif %}
+        <div class='main'>
+            <div class='row{% if nuit_collapse_content_row %} collapse{% endif %}'>
+                <div class='small-12 columns'>
+
+                    <div class='nuit-messages'>
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div data-alert class='alert-box {{message.tags}} {{message|message_class}}'>{{message}}<a href='#' class='close'>&times;</a></div>
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+
+                    {% if nuit_rightmenu %}
+                        <a href='#' data-dropdown='right-menu-drop' class='hide-for-large-up actions small secondary radius button dropdown right'><i class='fi-widget size-24'></i></a>
+                        <ul id='right-menu-drop' data-dropdown-content class='f-dropdown'>
+                        </ul>
+                    {% endif %}
+
+                    {% if nuit_breadcrumbs %}
+                        <ul class='breadcrumbs nuit-breadcrumbs'>
+                            {% if nuit_app_title %}<li><a href='{% if nuit_app_url %}{% url nuit_app_url %}{% else %}/{% endif %}'>{{nuit_app_title}}</a></li>{% endif %}
+                            {% block breadcrumbs %}
+                            {% endblock breadcrumbs %}
+                        </ul>
+                    {% endif %}
+
+                    {% block content %}
+                    {% endblock content %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <script type='text/javascript' src='{% static 'js/vendor/jquery.js' %}'></script>
+    <script type='text/javascript' src='{% static 'js/vendor/jquery.cookie.js' %}'></script>
+    <script type='text/javascript' src='{% static 'js/foundation.min.js' %}'></script>
+    <script type='text/javascript' src='{% static 'nuit.js' %}'></script>
+
+    {% block scripts %}
+    {% endblock scripts %}
+
+</body>
+
+</html>

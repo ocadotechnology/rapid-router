@@ -1,0 +1,56 @@
+{% if csrf_enabled %}{% csrf_token %}{% endif %}
+
+{% if form.non_field_errors %}
+<div class='row{% if collapse_container %} collapse{% endif %}'>
+    <div class='small-12 columns'>
+        <div data-alert class='alert-box alert'>
+            {% for non_field_error in form.non_field_errors %}
+                {{non_field_error}}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% for field in form.hidden_fields %}
+    {{form.field}}
+{% endfor %}
+
+{% for foundation_fields in fields %}
+
+    <div class='row{% if collapse_container %} collapse{% endif %}'>
+
+    {% for foundation_field in foundation_fields %}
+        {% with foundation_field.field as field %}
+            <div class='small-{{foundation_field.small_width}} medium-{{foundation_field.medium_width}} large-{{foundation_field.large_width}} columns {% if field.errors %}error{% endif %}'>
+                {% if foundation_field.prefix or foundation_field.postfix %}<div class='row collapse'>{% endif %}
+                {% if foundation_field.show_label %}<label{% if field.errors %} class='error'{% endif %} for='{{field.auto_id}}'>
+                    {{field.label}}
+                    {% if field.help_text %}
+                    <i data-tooltip class='fi fi-info has-tip' title='{{field.help_text}}'></i>
+                    {% endif %}
+                </label>{% endif %}
+                {% if foundation_field.prefix %}
+                    <div class='small-{{foundation_field.prefix_small_width}} medium-{{foundation_field.prefix_medium_width}} large-{{foundation_field.prefix_large_width}} columns'><span class='prefix'>{{foundation_field.prefix}}</span></div>
+                {% endif %}
+                {% if foundation_field.prefix or foundation_field.postfix %}
+                    <div class='small-{{foundation_field.fix_field_small_width}} medium-{{foundation_field.fix_field_medium_width}} large-{{foundation_field.fix_field_large_width}} columns'>
+                {% endif %}
+                {{field}}
+                {% if foundation_field.prefix or foundation_field.postfix %}
+                    </div>
+                {% endif %}
+                {% if foundation_field.postfix %}
+                    <div class='small-{{foundation_field.postfix_small_width}} medium-{{foundation_field.postfix_medium_width}} large-{{foundation_field.postfix_large_width}} columns'><span class='postfix'>{{foundation_field.postfix}}</span></div>
+                {% endif %}
+                {% if foundation_field.prefix or foundation_field.postfix %}</div>{% endif %}
+                {% for error in field.errors %}
+                    <small class='error'>{{error|escape}}</small>
+                {% endfor %}
+            </div>
+        {% endwith %}
+    {% endfor %}
+
+    </div>
+
+{% endfor %}

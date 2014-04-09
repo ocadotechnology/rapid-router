@@ -1,17 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<title>{% block title %}O-Car-Go!{% endblock %}</title>
-	<!--[if lt IE 9]>
-	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	{% block scripts %}{% endblock %}
-	{% block stylesheets %}{% endblock %}
-</head>
-<body>
-<div>
+{% extend 'nuit/base.html' topbar=True leftmenu=False breadcrumbs=False show_user_info=True %}
+
+{% block top_bar_menu %}
+    {% menu_item link='/home' name='Home' %}
+    {% menu_item link='/game' name='Game' %}
+{% endblock top_bar_menu %}
+
+{% block top_bar_right_menu %}
+    {% menu_item link='/placeholder' name='Admin' %}
+{% endblock top_bar_right_menu %}
+
+{% block user_info_menu %}
+    {% menu_item link='/placeholder' name='Test User Info Link' %}
+{% endblock user_info_menu %}
+
+
 {% block content %}{% endblock %}
-</div>
-</body>
-</html>
