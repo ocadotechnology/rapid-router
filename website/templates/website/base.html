@@ -1,3 +1,17 @@
-{% extend 'nuit/base.html' topbar=True %}
+{% extend 'nuit/base.html' topbar=True leftmenu=False breadcrumbs=False show_user_info=True %}
+
+{% block top_bar_menu %}
+    {% menu_item link='/home' name='Home' %}
+    {% menu_item link='/game' name='Game' %}
+{% endblock top_bar_menu %}
+
+{% block top_bar_right_menu %}
+    {% menu_item link='/placeholder' name='Admin' %}
+{% endblock top_bar_right_menu %}
+
+{% block user_info_menu %}
+    {% menu_item link='/placeholder' name='Test User Info Link' %}
+{% endblock user_info_menu %}
+
 
 {% block content %}{% endblock %}

@@ -86,3 +86,8 @@ STATIC_ROOT = rel('static')
 
 from django_autoconfig.autoconfig import configure_settings
 configure_settings(globals())
+
+
+# PRESENTATION LAYER
+
+NUIT_GLOBAL_TITLE = "Oh, Car. Go!"
