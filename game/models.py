@@ -26,8 +26,7 @@ class Class (models.Model):
         uid_list.append(data.get('_auth_user_id', None))
 
     # Query all logged in users based on id list
-    return Student.objects.filter(user__id__in=uid_list)
-    #Student.objects.filter(class_field=self).filter(user__session__expires__lt=datetime.now())
+    return Student.objects.filter(class_field=self).filter(user__id__in=uid_list)
 
 class Student (models.Model):
   name = models.CharField(max_length = 200)
