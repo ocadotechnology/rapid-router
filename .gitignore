@@ -7,3 +7,4 @@ local_settings.py
 .pydevproject
 .idea
 dbfile
+.sass-cache
