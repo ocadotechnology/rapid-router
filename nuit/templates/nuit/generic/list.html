@@ -1,0 +1,34 @@
+{% extend nuit_base|default:'nuit/base.html' %}
+
+{% block content %}
+
+<h1>{% block title %}List of Objects{% endblock title %}</h1>
+
+{% if search and not nuit_rightmenu %}
+{% include 'nuit/includes/_search_form.html' with location="body" %}
+{% endif %}
+
+{% block search_query %}{% if search_query %}<p>{{page_obj.paginator.count|default:object_list.count}} result{{page_obj.paginator.count|default:object_list.count|pluralize}} for <cite>{{search_query}}</cite>:</p>{% endif %}{% endblock search_query %}
+
+{% block object_list %}
+<ul>
+{% for object in object_list %}
+    <li><a href='{{object.get_absolute_url}}'>{{object}}</a></li>
+{% endfor %}
+</ul>
+{% endblock object_list %}
+
+{% if is_paginated %}
+{% pagination_menu page_obj %}
+{% endif %}
+
+{% endblock content %}
+
+{% block right_menu %}
+{{block.super}}
+{% if nuit_rightmenu and search %}
+{% menu_section "Search" %}
+{% include 'nuit/includes/_search_form.html' with location="right" %}
+{% end_menu_section %}
+{% endif %}
+{% endblock right_menu %}

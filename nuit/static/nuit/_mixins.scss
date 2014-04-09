@@ -1,0 +1,142 @@
+@mixin nuit-loader($size) {
+  .container {
+    width: $size;
+    height: $size;
+  }
+  .dot {
+    font-size: $size * 0.4;
+  }
+}
+
+@mixin grouped-responsive-table {
+
+    & {
+        border: none;
+    }
+
+    &, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr {
+        border: 1px solid #ccc;
+        margin-bottom: 1em;
+    }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 45%;
+        min-height: 2.4rem;
+    }
+
+    td:before {
+        position: absolute;
+        top: 0.5625rem;
+        left: 0.625rem;
+        width: 40%;
+        padding-right: 10px;
+        white-space: nowrap;
+        content: attr(data-title);
+        font-weight: $table-head-font-weight;
+        font-size: $table-head-font-size;
+        color: $table-head-font-color;
+    }
+
+    &.headers-10 {
+        td {
+            padding-left: 15%;
+        }
+        td:before {
+            width: 10%;
+        }
+    }
+
+    &.headers-20 {
+        td {
+            padding-left: 25%;
+        }
+        td:before {
+            width: 20%;
+        }
+    }
+
+    &.headers-30 {
+        td {
+            padding-left: 35%;
+        }
+        td:before {
+            width: 30%;
+        }
+    }
+
+    &.headers-40 {
+        td {
+            padding-left: 45%;
+        }
+        td:before {
+            width: 40%;
+        }
+    }
+
+    &.headers-50 {
+        td {
+            padding-left: 55%;
+        }
+        td:before {
+            width: 50%;
+        }
+    }
+
+    &.headers-60 {
+        td {
+            padding-left: 65%;
+        }
+        td:before {
+            width: 60%;
+        }
+    }
+
+    &.headers-70 {
+        td {
+            padding-left: 75%;
+        }
+        td:before {
+            width: 70%;
+        }
+    }
+
+    &.headers-80 {
+        td {
+            padding-left: 85%;
+        }
+        td:before {
+            width: 80%;
+        }
+    }
+
+    &.headers-90 {
+        td {
+            padding-left: 95%;
+        }
+        td:before {
+            width: 90%;
+        }
+    }
+
+}
+
+@mixin scroll-responsive-table($width: 800px) {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    table {
+        min-width: $width;
+    }
+}

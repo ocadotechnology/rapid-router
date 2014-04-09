@@ -1,0 +1,7 @@
+{% if menu %}
+{% if show_ul|default:True %}<ul class='{{menu_class}}'>{% endif %}
+{% for item in menu %}
+    <li class='menu-{{item.id}} {% if current_menu == item.id %}active{% endif %}{{item.class}} {{extra_item_class}}'><a href='{{item.link}}'>{{item.name}}</a></li>
+{% endfor %}
+{% if show_ul|default:True %}</ul>{% endif %}
+{% endif %}

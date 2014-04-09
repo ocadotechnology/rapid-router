@@ -1,0 +1,10 @@
+<form method='get' action=''>
+    <div class='row collapse'>
+        <div class='{% if location == 'body' %}small-10 medium-8 large-5{% endif %} columns'>
+            <input type='text' name='q' id='query' value='{{search_query}}' />
+        </div>
+        <div class='{% if location == 'body' %}small-2 medium-pull-2 large-1 large-pull-6{% endif %} columns'>
+            <button class="button postfix">{{nuit_search_verb|default:"Search"}}</button>
+        </div>
+    </div>
+</form>
