@@ -13,6 +13,12 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 rel = lambda rel_path: os.path.join(BASE_DIR, rel_path)
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': rel('dbfile'),
+    }
+}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
