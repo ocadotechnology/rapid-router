@@ -30,8 +30,7 @@ function createDefaultLevel(){
 	      previousNode = node;
 	      nodes.push(node);
 	  }
-	
-	  var map = new Map();
+	  var map = new Map(nodes);
 	  var van = new Van(nodes[0], nodes[1]);
 	  return new Level(map, van, nodes[nodes.length - 1]);
 }
