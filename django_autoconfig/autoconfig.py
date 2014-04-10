@@ -118,6 +118,8 @@ def configure_settings(settings):
     while changes or old_changes is None:
         changes = 0
         for app_name in settings['INSTALLED_APPS']:
+            if app_name.startswith('django'):
+                continue
             module = optional_import("%s.autoconfig" % (app_name,))
             if not module:
                 continue

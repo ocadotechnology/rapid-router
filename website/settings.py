@@ -84,10 +84,31 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = rel('static')
 
-from django_autoconfig.autoconfig import configure_settings
-configure_settings(globals())
 
 
 # PRESENTATION LAYER
 
 NUIT_GLOBAL_TITLE = "Oh, Car. Go!"
+
+
+# Deployment
+
+import os
+if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.getenv('APPLICATION_ID', None):
+    # Running on production App Engine, so use a Google Cloud SQL database.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/numeric-incline-526:main',
+            'NAME': 'django_test',
+            'USER': 'root',
+        }
+    }
+    COMPRESS_OFFLINE = True
+    COMPRESS_ROOT = STATIC_ROOT
+    COMPRESS_URL = STATIC_URL
+    
+
+# Keep this at the bottom
+from django_autoconfig.autoconfig import configure_settings
+configure_settings(globals())
