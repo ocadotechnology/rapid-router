@@ -1,4 +1,8 @@
-function createDefaultLevel(){
+function createUi() {
+    return new SimpleUi();
+}
+
+function createDefaultLevel(ui){
 
 	  var points = [
 	  		[0, 4],
@@ -30,9 +34,9 @@ function createDefaultLevel(){
 	      previousNode = node;
 	      nodes.push(node);
 	  }
-	  var map = new Map(nodes);
-	  var van = new Van(nodes[0], nodes[1]);
-	  return new Level(map, van, nodes[nodes.length - 1]);
+	  var map = new Map(nodes, ui);
+	  var van = new Van(nodes[0], nodes[1], ui);
+	  return new Level(map, van, nodes[nodes.length - 1], ui);
 }
 
 function defaultProgram(level){
@@ -78,8 +82,10 @@ function trackDevelopment(level){
 
 $(function() {
     'use strict';
+
+    var ui = createUi();
     
-    var level = createDefaultLevel();
+    var level = createDefaultLevel(ui);
     
     $('#runDefaultProgram').click(function(){
     	defaultProgram(level);

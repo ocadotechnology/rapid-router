@@ -1,13 +1,38 @@
 'use strict';
 
 function SimpleUi() {
-    this.update = function(nextNode) {
+    this.queue_ = [];
+
+    // HACK to start with, just pass in the instruction and call the function in drawing.js
+    // At the end of the day we need to animate along same bezier curve as road creates
+    // see source of http://raphaeljs.com/gear.html for way of doing this
+    this.queueUpdate = function(van, nextNode, instruction) {
         console.debug('Moving to coordinate ' + JSON.stringify(nextNode.coordinate));
+        this.queue_.push(instruction);
+    };
+
+    this.animateUpdates = function() {
+        var self = this;
+
+        var animate = function() {
+            var ins = self.queue_.shift();
+            if (!ins) {
+                return;
+            }
+
+            if (ins == FORWARD) {
+                moveForward(animate);
+            } else if (ins == TURN_LEFT) {
+                moveLeft(animate);
+            } else if (ins == TURN_RIGHT) {
+                moveRight(animate);
+            }
+        }
+
+        animate();
     };
 
     this.renderMap = function(map) {
     	console.debug('Updating the map' + JSON.stringify(map.instructions));
     }
 }
-
-var ui = new SimpleUi();
