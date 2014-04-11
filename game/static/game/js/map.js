@@ -3,7 +3,7 @@
 function Map(nodes, ui) {
 	this.nodes = nodes;
 	this.instructions = getThePath(nodes);
-	ui.renderMap(this)
+	ui.renderMap(this);
 }
 
 function getThePath(nodes) {
