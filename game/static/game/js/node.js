@@ -3,13 +3,13 @@
 function Node(coordinate) {
     this.coordinate = coordinate;
     this.connectedNodes = [];
+}
 
-    this.addConnectedNode = function(node) {
-        this.connectedNodes.push(node);
-    };
+Node.prototype.addConnectedNode = function(node) {
+	this.connectedNodes.push(node);
+}
 
-    this.addConnectedNodeWithBacklink = function(node) {
-        this.addConnectedNode(node);
-        node.addConnectedNode(this);
-    };
+Node.prototype.addConnectedNodeWithBacklink = function(node) {
+	this.addConnectedNode(node);
+	node.addConnectedNode(this);
 }

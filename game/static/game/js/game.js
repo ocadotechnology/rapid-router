@@ -17,7 +17,7 @@ function createDefaultLevel(){
 		  	[7, 2],
 		  	[8, 2],
 	  ]
-	
+
 	  var previousNode = null;
 	  var nodes = [];
 	  for (var i = 0; i < points.length; i++) {

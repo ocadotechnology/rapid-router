@@ -2,18 +2,21 @@
 
 function Map(nodes) {
 	this.nodes = nodes;
-	this.instructions = getThePath(nodes);
+	this.instructions = this.getThePath();
 	ui.renderMap(this);
 }
 
-function getThePath(nodes) {
+Map.prototype.getThePath = function() {
 	var instructions = {};
 	var prevCoord = null;
 	var twoBack = null;
 	var node;
+	if(this.nodes.length == 0) {
+		return instructions;
+	}
 
-	for (var i = 0; i <= nodes.length; i++) {
-		node = i < nodes.length ? nodes[i] : node;
+	for (var i = 0; i <= this.nodes.length; i++) {
+		node = i < this.nodes.length ? this.nodes[i] : node;
 		var coord = node.coordinate;
 
 		if (prevCoord) {
@@ -53,37 +56,41 @@ function getThePath(nodes) {
 		}
 	}
 	return instructions;
-}
 
-function pushInstruction(json, coord, instruction) {
-	var x = coord.x.toString();
-	var y = coord.y.toString();
-	if (!json.hasOwnProperty(x)) {
-		json[x] = {};
+
+	// Helper methods for creating the JSON with the path.
+	function pushInstruction(json, coord, instruction) {
+		var x = coord.x.toString();
+		var y = coord.y.toString();
+		if (!json.hasOwnProperty(x)) {
+			json[x] = {};
+		}
+		json[x][y] = instruction;
 	}
-	json[x][y] = instruction;
+
+	function isHorizontal(prev, next) {
+		return prev.y == next.y && prev.x != next.x || prev === next;
+	}
+
+	function isVertical(prev, next) {
+		return prev.x == next.x && prev.y != next.y || prev === next;
+	}
+
+	function checkTurn(prev, next) {
+		return next.x + next.y - prev.x - prev.y;
+	}
+
+	function nextPointAbove(curr, next) {
+		return curr.y < next.y;
+	}
+
+	function nextPointBelow(curr, next) {
+		return curr.y > next.y;
+	}
+
+	function isProgressive(coord1, coord2) {
+		return coord1 < coord2;
+	}
 }
 
-function isHorizontal(prev, next) {
-	return prev.y == next.y && prev.x != next.x || prev === next;
-}
 
-function isVertical(prev, next) {
-	return prev.x == next.x && prev.y != next.y || prev === next;
-}
-
-function checkTurn(prev, next) {
-	return next.x + next.y - prev.x - prev.y;
-}
-
-function nextPointAbove(curr, next) {
-	return curr.y < next.y;
-}
-
-function nextPointBelow(curr, next) {
-	return curr.y > next.y;
-}
-
-function isProgressive(coord1, coord2) {
-	return coord1 < coord2;
-}
