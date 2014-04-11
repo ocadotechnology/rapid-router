@@ -14,7 +14,7 @@ function getThePath(nodes) {
 
 	for (var i = 0; i <= nodes.length; i++) {
 		node = i < nodes.length ? nodes[i] : node;
-		var coord = node.coordinate;
+		var coord = transformY(node.coordinate);
 
 		if (prevCoord) {
 
@@ -49,10 +49,14 @@ function getThePath(nodes) {
 			prevCoord = coord;
 
 		} else {
-			prevCoord = node.coordinate;
+			prevCoord = coord;
 		}
 	}
 	return instructions;
+}
+
+function transformY(coord) {
+    return new Coordinate(coord.x, 4 - coord.y);
 }
 
 function pushInstruction(json, coord, instruction) {
