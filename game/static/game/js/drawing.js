@@ -119,44 +119,7 @@ function createRoad(paper, roadDefinition) {
 }
 
 function createDefaultRoad(paper) {
-    var defaultRoad = {
-        0: {
-            4: 'H'
-        },
-        1: {
-            2: 'DR',
-            3: 'V',
-            4: 'UL'
-        },
-        2: {
-            2: 'H'
-        },
-        3: {
-            0: 'DR',
-            1: 'V',
-            2: 'UL'
-        },
-        4: {
-            0: 'H'
-        },
-        5: {
-            0: 'DL',
-            1: 'V',
-            2: 'UR'
-        },
-        6: {
-            2: 'H'
-        },
-        7: {
-            2: 'H'
-        },
-        8: {
-            2: 'H'
-        },
-        9: {
-            2: 'H'
-        }
-    };
+    var defaultRoad = {"0":{"4":"H"},"1":{"2":"DR","3":"V","4":"UL"},"2":{"2":"H"},"3":{"0":"DR","1":"V","2":"UL"},"4":{"0":"H"},"5":{"0":"DL","1":"V","2":"UR"},"6":{"2":"H"},"7":{"2":"H"},"8":{"2":"H"}}  ;
     return createRoad(paper, defaultRoad);
 }
 

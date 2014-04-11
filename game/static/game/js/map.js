@@ -2,9 +2,7 @@
 
 function Map(nodes) {
 	this.nodes = nodes;
-	console.debug('Before');
 	this.instructions = getThePath(nodes);
-	console.debug('After');
 	ui.renderMap(this)
 }
 
@@ -12,9 +10,10 @@ function getThePath(nodes) {
 	var instructions = {};
 	var prevCoord = null;
 	var twoBack = null;
+	var node;
 
-	for (var i = 0; i < nodes.length; i++) {
-		var node = nodes[i];
+	for (var i = 0; i <= nodes.length; i++) {
+		node = i < nodes.length ? nodes[i] : node;
 		var coord = node.coordinate;
 
 		if (prevCoord) {
@@ -52,7 +51,6 @@ function getThePath(nodes) {
 		} else {
 			prevCoord = node.coordinate;
 		}
-
 	}
 	return instructions;
 }
@@ -67,11 +65,11 @@ function pushInstruction(json, coord, instruction) {
 }
 
 function isHorizontal(prev, next) {
-	return prev.y == next.y && prev.x != next.x;
+	return prev.y == next.y && prev.x != next.x || prev === next;
 }
 
 function isVertical(prev, next) {
-	return prev.x == next.x && prev.y != next.y;
+	return prev.x == next.x && prev.y != next.y || prev === next;
 }
 
 function checkTurn(prev, next) {
