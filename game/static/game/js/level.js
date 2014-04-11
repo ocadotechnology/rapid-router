@@ -1,18 +1,19 @@
 'use strict';
 
-function Level(map, van, destination) {
+function Level(map, van, destination, ui) {
     this.map = map;
     this.van = van;
     this.destination = destination;
+    this.ui = ui;
 }
 
- Level.prototype.play = function(program){
-    while(program.canStep()){
+Level.prototype.play = function(program){
+    while(program.canStep()) {
         var instruction = program.step();
         console.debug('Calculating next node for instruction ' + instruction.name);
         var nextNode = instruction.getNextNode(this.van.previousNode, this.van.currentNode);
 
-        if (nextNode === destination && !program.canStep()) {
+        if (nextNode === this.destination && !program.canStep()) {
             console.debug('You win!');
             break;
         } else if (!nextNode) {
@@ -20,6 +21,8 @@ function Level(map, van, destination) {
             break;
         }
 
-        van.move(nextNode);
+        // HACK for now, pass in instruction
+        this.van.move(nextNode, instruction);
     }
+    this.ui.animateUpdates();
 }

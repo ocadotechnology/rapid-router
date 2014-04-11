@@ -1,24 +1,30 @@
-function createDefaultLevel(){
+function createUi() {
+    return new SimpleUi();
+}
 
-	  var points = [
-	  		[0, 4],
-		  	[1, 4],
-		  	[1, 3],
-		  	[1, 2],
-		  	[2, 2],
-		  	[3, 2],
-		  	[3, 1],
-		  	[3, 0],
-		  	[4, 0],
-		  	[5, 0],
-		  	[5, 1],
-		  	[5, 2],
-		  	[6, 2],
-		  	[7, 2],
-		  	[8, 2],
-	  ]
+function createDefaultLevel(ui){
 
-	  var previousNode = null;
+    var points = [
+        [0, 0],
+        [1, 0],
+        [1, 1],
+        [1, 2],
+        [2, 2],
+        [3, 2],
+        [3, 3],
+        [3, 4],
+        [4, 4],
+        [5, 4],
+        [5, 3],
+        [5, 2],
+        [6, 2],
+        [7, 2],
+        [8, 2],
+        [9, 2]
+    ];
+
+
+    var previousNode = null;
 	  var nodes = [];
 	  for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
@@ -30,9 +36,9 @@ function createDefaultLevel(){
 	      previousNode = node;
 	      nodes.push(node);
 	  }
-	  var map = new Map(nodes);
-	  var van = new Van(nodes[0], nodes[1]);
-	  return new Level(map, van, nodes[nodes.length - 1]);
+	  var map = new Map(nodes, ui);
+	  var van = new Van(nodes[0], nodes[1], ui);
+	  return new Level(map, van, nodes[nodes.length - 1], ui);
 }
 
 function defaultProgram(level){
@@ -78,8 +84,10 @@ function trackDevelopment(level){
 
 $(function() {
     'use strict';
+
+    var ui = createUi();
     
-    var level = createDefaultLevel();
+    var level = createDefaultLevel(ui);
     
     $('#runDefaultProgram').click(function(){
     	defaultProgram(level);

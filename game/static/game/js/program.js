@@ -10,8 +10,8 @@ Program.prototype.step = function(){
     this.instructionPosition++;
 
     return instruction;
-};
+}
 
 Program.prototype.canStep = function() {
     return this.instructionPosition < this.instructions.length;
-};
+}

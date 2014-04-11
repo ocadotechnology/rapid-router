@@ -1,6 +1,6 @@
 'use strict';
 
-function Map(nodes) {
+function Map(nodes, ui) {
 	this.nodes = nodes;
 	this.instructions = this.getThePath();
 	ui.renderMap(this);
@@ -11,13 +11,14 @@ Map.prototype.getThePath = function() {
 	var prevCoord = null;
 	var twoBack = null;
 	var node;
+
 	if(this.nodes.length == 0) {
 		return instructions;
 	}
 
 	for (var i = 0; i <= this.nodes.length; i++) {
 		node = i < this.nodes.length ? this.nodes[i] : node;
-		var coord = node.coordinate;
+		var coord = transformY(node.coordinate);
 
 		if (prevCoord) {
 
@@ -52,13 +53,17 @@ Map.prototype.getThePath = function() {
 			prevCoord = coord;
 
 		} else {
-			prevCoord = node.coordinate;
+			prevCoord = coord;
 		}
 	}
 	return instructions;
 
 
-	// Helper methods for creating the JSON with the path.
+	// Helper methods for generating the path.
+	function transformY(coord) {
+	    return new Coordinate(coord.x, 4 - coord.y);
+	}
+
 	function pushInstruction(json, coord, instruction) {
 		var x = coord.x.toString();
 		var y = coord.y.toString();
@@ -92,5 +97,3 @@ Map.prototype.getThePath = function() {
 		return coord1 < coord2;
 	}
 }
-
-
