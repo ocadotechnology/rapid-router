@@ -74,11 +74,11 @@ Map.prototype.getThePath = function() {
 	}
 
 	function isHorizontal(prev, next) {
-		return prev.y == next.y && prev.x != next.x || prev === next;
+		return prev.y == next.y;
 	}
 
 	function isVertical(prev, next) {
-		return prev.x == next.x && prev.y != next.y || prev === next;
+		return prev.x == next.x;
 	}
 
 	function checkTurn(prev, next) {
