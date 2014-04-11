@@ -119,7 +119,44 @@ function createRoad(paper, roadDefinition) {
 }
 
 function createDefaultRoad(paper) {
-    var defaultRoad = {"0":{"4":"H"},"1":{"2":"DR","3":"V","4":"UL"},"2":{"2":"H"},"3":{"0":"DR","1":"V","2":"UL"},"4":{"0":"H"},"5":{"0":"DL","1":"V","2":"UR"},"6":{"2":"H"},"7":{"2":"H"},"8":{"2":"H"}}  ;
+    var defaultRoad = {
+        0: {
+            4: 'H'
+        },
+        1: {
+            2: 'DR',
+            3: 'V',
+            4: 'UL'
+        },
+        2: {
+            2: 'H'
+        },
+        3: {
+            0: 'DR',
+            1: 'V',
+            2: 'UL'
+        },
+        4: {
+            0: 'H'
+        },
+        5: {
+            0: 'DL',
+            1: 'V',
+            2: 'UR'
+        },
+        6: {
+            2: 'H'
+        },
+        7: {
+            2: 'H'
+        },
+        8: {
+            2: 'H'
+        },
+        9: {
+            2: 'H'
+        }
+    };
     return createRoad(paper, defaultRoad);
 }
 
@@ -212,12 +249,13 @@ function resetVan() {
     vanMoving = false;
 }
 
-window.onload = function() {
+function renderTheMap(map) {
+
     var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
     createGrid(paper);
 
-    var roadElements = createDefaultRoad(paper);
+    var roadElements = createRoad(paper, map.instructions);
 
     van = paper.image('/static/game/image/van.png', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH);
 
@@ -264,4 +302,4 @@ window.onload = function() {
         roadElements = createRandomRoad(paper);
         resetVan();
     };
-};
+}

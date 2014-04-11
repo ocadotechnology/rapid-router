@@ -6,7 +6,8 @@ function SimpleUi() {
     };
 
     this.renderMap = function(map) {
-    	console.debug('Updating the map' + JSON.stringify(map.instructions));
+    	console.debug('Updating the map: ' + JSON.stringify(map.instructions));
+    	renderTheMap(map);
     }
 }
 
