@@ -19,26 +19,30 @@ function getThePath(nodes) {
 
 		if (prevCoord) {
 
-			if (isHorizontal(prevCoord, coord) && (twoBack == null || isHorizontal(twoBack, prevCoord))) {
-				pushInstruction(instructions, coord, 'H');
-					console.debug(prevCoord.x + " "+prevCoord.y + " next "+ coord.x + " "+ coord.y + "HORIZONTAL")
+			if (isHorizontal(prevCoord, coord) 
+				&& (twoBack == null || isHorizontal(twoBack, prevCoord))) {
+				pushInstruction(instructions, prevCoord, 'H');
 
-			} else if (isVertical(prevCoord, coord) && (twoBack == null || isVertical(twoBack, prevCoord))) {
-				pushInstruction(instructions, coord, 'V');
-					console.debug(prevCoord.x + " "+prevCoord.y + " next "+ coord.x + " "+ coord.y + "verticaal")
+			} else if (isVertical(prevCoord, coord) 
+				&& (twoBack == null || isVertical(twoBack, prevCoord))) {
+				pushInstruction(instructions, prevCoord, 'V');
 
 			// Handle turns.
 			} else if (isHorizontal(twoBack, prevCoord)) {
 				if (isProgressive(twoBack.x, prevCoord.x)) {
-					pushInstruction(instructions, coord, nextPointAbove(prevCoord, coord) ? 'DR' : 'DL');
+					pushInstruction(instructions, prevCoord, 
+						nextPointAbove(prevCoord, coord) ? 'DL' : 'UL');
 				} else {
-					pushInstruction(instructions, coord, nextPointAbove(prevCoord, coord) ? 'UL' : 'UR');
+					pushInstruction(instructions, prevCoord, 
+						nextPointAbove(prevCoord, coord) ? 'DL' : 'UR');
 				}
 			} else {
 				if (isProgressive(twoBack.y, prevCoord.y)) {
-					pushInstruction(instructions, coord, nextPointAbove(prevCoord, coord) ? 'UR' : 'UL');
+					pushInstruction(instructions, prevCoord, 
+						nextPointAbove(prevCoord, coord) ? 'DR' : 'UR');
 				} else {
-					pushInstruction(instructions, coord, nextPointAbove(prevCoord, coord) ? 'DL' : 'DR');
+					pushInstruction(instructions, prevCoord, 
+						nextPointAbove(prevCoord, coord) ? 'UL' : 'DR');
 				}
 			}
 
@@ -54,8 +58,8 @@ function getThePath(nodes) {
 }
 
 function pushInstruction(json, coord, instruction) {
-	var y = coord.x.toString();
-	var x = coord.y.toString();
+	var x = coord.x.toString();
+	var y = coord.y.toString();
 	if (!json.hasOwnProperty(x)) {
 		json[x] = {};
 	}
