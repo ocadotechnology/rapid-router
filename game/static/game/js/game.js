@@ -4,25 +4,46 @@ function createUi() {
 
 function createDefaultLevel(ui){
 
-	  var points = [
-	  		[0, 4],
-		  	[1, 4],
-		  	[1, 3],
-		  	[1, 2],
-		  	[2, 2],
-		  	[3, 2],
-		  	[3, 1],
-		  	[3, 0],
-		  	[4, 0],
-		  	[5, 0],
-		  	[5, 1],
-		  	[5, 2],
-		  	[6, 2],
-		  	[7, 2],
-		  	[8, 2],
-	  ]
-	
-	  var previousNode = null;
+//    Paulina's points, don't seem to follow ui path?
+//	  var points = [
+//	  		[0, 4],
+//		  	[1, 4],
+//		  	[1, 3],
+//		  	[1, 2],
+//		  	[2, 2],
+//		  	[3, 2],
+//		  	[3, 1],
+//		  	[3, 0],
+//		  	[4, 0],
+//		  	[5, 0],
+//		  	[5, 1],
+//		  	[5, 2],
+//		  	[6, 2],
+//		  	[7, 2],
+//		  	[8, 2],
+//	  ]
+
+    var points = [
+        [0, 0],
+        [1, 0],
+        [1, 1],
+        [1, 2],
+        [2, 2],
+        [3, 2],
+        [3, 3],
+        [3, 4],
+        [4, 4],
+        [5, 4],
+        [5, 3],
+        [5, 2],
+        [6, 2],
+        [7, 2],
+        [8, 2],
+        [9, 2]
+    ];
+
+
+    var previousNode = null;
 	  var nodes = [];
 	  for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
