@@ -40,12 +40,12 @@ Blockly.JavaScript['turn_van'] = function(block) {
     return 'BlocklyTest.' + block.getFieldValue('DIR') + '()\n';
 };
 
-var BlocklyTest = {}
+var BlocklyTest = {};
 
 BlocklyTest.init = function() {
     Blockly.inject(document.getElementById('blockly'),
         {path: '/static/game/js/blockly/', toolbox: document.getElementById('toolbox')});
-} 
+} ;
 
 window.addEventListener('load', BlocklyTest.init);
 
@@ -67,10 +67,10 @@ BlocklyTest.execute = function() {
   
     resetVan();
     window.setTimeout(BlocklyTest.animate, 100);  
-}
+};
 
 BlocklyTest.animate = function() {
-    var command = BlocklyTest.queue.shift()
+    var command = BlocklyTest.queue.shift();
     if (!command) {
         return;
     }
@@ -87,17 +87,17 @@ BlocklyTest.animate = function() {
             moveRight(BlocklyTest.animate);
             break;
     } 
-}
+};
 
 
 BlocklyTest.moveForward = function() {
     BlocklyTest.queue.push('F');
-}
+};
 
 BlocklyTest.moveLeft = function() {
     BlocklyTest.queue.push('L');
-}
+};
 
 BlocklyTest.moveRight = function() {
     BlocklyTest.queue.push('R');
-}
+};

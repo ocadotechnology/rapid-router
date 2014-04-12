@@ -11,7 +11,7 @@ function SimpleUi() {
 SimpleUi.prototype.queueUpdate = function(van, nextNode, instruction) {
     console.debug('Moving to coordinate ' + JSON.stringify(nextNode.coordinate));
     this.queue_.push(instruction);
-}
+};
 
 SimpleUi.prototype.animateUpdates = function() {
     var self = this;
@@ -29,12 +29,12 @@ SimpleUi.prototype.animateUpdates = function() {
         } else if (ins == TURN_RIGHT) {
             moveRight(animate);
         }
-    }
+    };
 
     animate();
-}
+};
 
 SimpleUi.prototype.renderMap = function(map) {
     console.debug('Updating the map: ' + JSON.stringify(map.instructions));
     renderTheMap(map);
-}
+};
