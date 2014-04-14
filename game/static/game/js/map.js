@@ -10,7 +10,7 @@ Map.prototype.getThePath = function() {
 	var instructions = {};
 	var prevCoord = null;
 	var twoBack = null;
-	var node;
+	var node = null;
 
 	if(this.nodes.length == 0) {
 		return instructions;
@@ -96,4 +96,4 @@ Map.prototype.getThePath = function() {
 	function isProgressive(coord1, coord2) {
 		return coord1 < coord2;
 	}
-}
+};

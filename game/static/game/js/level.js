@@ -25,4 +25,4 @@ Level.prototype.play = function(program){
         this.van.move(nextNode, instruction);
     }
     this.ui.animateUpdates();
-}
+};

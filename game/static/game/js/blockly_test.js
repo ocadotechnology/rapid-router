@@ -40,12 +40,12 @@ Blockly.JavaScript['turn_van'] = function(block) {
     return 'BlocklyTest.' + block.getFieldValue('DIR') + '()\n';
 };
 
-var BlocklyTest = {}
+var BlocklyTest = {};
 
 BlocklyTest.init = function() {
     Blockly.inject(document.getElementById('blockly'),
         {path: '/static/game/js/blockly/', toolbox: document.getElementById('toolbox')});
-} 
+} ;
 
 window.addEventListener('load', BlocklyTest.init);
 
@@ -67,37 +67,40 @@ BlocklyTest.execute = function() {
   
     resetVan();
     window.setTimeout(BlocklyTest.animate, 100);  
-}
+};
 
 BlocklyTest.animate = function() {
-    var command = BlocklyTest.queue.shift()
-    if (!command) {
+    var instruction = BlocklyTest.queue.shift();
+    if (!instruction) {
         return;
     }
-    switch (command) {
-        case 'F':
+    switch (instruction) {
+        case FORWARD:
             moveForward(BlocklyTest.animate);
             break;
 
-        case 'L':
+        case TURN_LEFT:
             moveLeft(BlocklyTest.animate);
             break;
 
-        case 'R':
+        case TURN_RIGHT:
             moveRight(BlocklyTest.animate);
             break;
     } 
-}
+};
 
+BlocklyTest.addInstruction = function(instruction) {
+    BlocklyTest.queue.push(instruction);
+};
 
 BlocklyTest.moveForward = function() {
-    BlocklyTest.queue.push('F');
-}
+    BlocklyTest.addInstruction(FORWARD);
+};
 
 BlocklyTest.moveLeft = function() {
-    BlocklyTest.queue.push('L');
-}
+    BlocklyTest.addInstruction(TURN_LEFT);
+};
 
 BlocklyTest.moveRight = function() {
-    BlocklyTest.queue.push('R');
-}
+    BlocklyTest.addInstruction(TURN_RIGHT);
+};

@@ -13,7 +13,6 @@
   <script src="/static/game/js/blockly/msg/js/en.js"></script>
   <script src="/static/game/js/blockly_test.js"></script>
 
-  <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
   <script src="/static/game/js/coordinate.js"></script>
   <script src="/static/game/js/game.js"></script>
   <script src="/static/game/js/instruction.js"></script>
@@ -27,50 +26,7 @@
 
 {% block css %}
 {{block.super}}
-<style type="text/css">
-    #wrapper {
-        overflow:hidden;
-        height: 730px;
-        width: 1020px;
-    }
-    #paper {
-        border: 0px;
-        background-color: rgb(180, 180, 180);
-        float: left;
-        height: 630px;
-        margin-bottom: 30px;
-        overflow:scroll;
-        width: 650px;
-    }
-
-    #blockly {
-      height: 500px;
-      margin-bottom: 10px;
-    }
-
-    #tools {
-      height: 130px;
-    }
-
-    #tools button {
-      float: left;
-      margin-right: 10px;
-      padding-left: 0;
-      padding-right: 0;
-      height: 90px;
-      width: 90px;
-    }
-
-    .col {
-      float: left;
-      margin-left: 20px;
-    }
-
-    #tools, #blockly {
-      width: 320px;
-    }
-
-</style>
+  <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}

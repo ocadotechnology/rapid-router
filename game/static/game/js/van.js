@@ -10,4 +10,4 @@ Van.prototype.move = function(nextNode, instruction) {
 	this.ui.queueUpdate(this, nextNode, instruction);
 	this.previousNode = this.currentNode;
 	this.currentNode = nextNode;
-}
+};
