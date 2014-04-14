@@ -5,7 +5,7 @@ function Program(instructions) {
     this.instructionPosition = 0;
 }
 
-Program.prototype.step = function(){
+Program.prototype.step = function() {
     var instruction = this.instructions[this.instructionPosition];
     this.instructionPosition++;
 

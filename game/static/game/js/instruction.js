@@ -46,7 +46,7 @@ FORWARD.getNextNode = function(previousNode, currentNode){
     return nextNode;
 };
 
-TURN_LEFT.getNextNode = function(previousNode, currentNode){
+TURN_LEFT.getNextNode = function(previousNode, currentNode) {
     var index = currentNode.connectedNodes.indexOf(previousNode) + 1;
     var nextNode;
     if (index === currentNode.connectedNodes.length) {
@@ -59,7 +59,7 @@ TURN_LEFT.getNextNode = function(previousNode, currentNode){
     return angle < leftCutoffAngle ? nextNode : null;
 };
 
-TURN_RIGHT.getNextNode = function(previousNode, currentNode){
+TURN_RIGHT.getNextNode = function(previousNode, currentNode) {
     var index = currentNode.connectedNodes.indexOf(previousNode) - 1;
     var nextNode;
     if (index === -1) {

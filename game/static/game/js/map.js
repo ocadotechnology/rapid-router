@@ -31,24 +31,24 @@ Map.prototype.getThePath = function() {
 				pushInstruction(instructions, prevCoord, 'V');
 
 			// Handle turns.
-			} else if (isHorizontal(twoBack, prevCoord)) {
-				if (isProgressive(twoBack.x, prevCoord.x)) {
+			} else { 
+				if(isProgressive(twoBack.x, prevCoord.x)) {
 					pushInstruction(instructions, prevCoord, 
 						nextPointAbove(prevCoord, coord) ? 'DL' : 'UL');
-				} else {
-					pushInstruction(instructions, prevCoord, 
-						nextPointAbove(prevCoord, coord) ? 'DL' : 'UR');
 				}
-			} else {
-				if (isProgressive(twoBack.y, prevCoord.y)) {
-					pushInstruction(instructions, prevCoord, 
+				if(isProgressive(prevCoord.x, twoBack.x)) {
+					pushInstruction(instructions, prevCoord,
 						nextPointAbove(prevCoord, coord) ? 'DR' : 'UR');
-				} else {
-					pushInstruction(instructions, prevCoord, 
-						nextPointAbove(prevCoord, coord) ? 'UL' : 'DR');
+				}
+				if(isProgressive(twoBack.y, prevCoord.y)) {
+					pushInstruction(instructions, prevCoord,
+						nextPointFurther(prevCoord, coord) ? 'UR' : 'UL');
+				}
+				if(isProgressive(prevCoord.y, twoBack.y)) {
+					pushInstruction(instructions, prevCoord,
+						nextPointFurther(prevCoord, coord) ? 'DR' : 'DL');
 				}
 			}
-
 			twoBack = prevCoord;
 			prevCoord = coord;
 
@@ -89,8 +89,8 @@ Map.prototype.getThePath = function() {
 		return curr.y < next.y;
 	}
 
-	function nextPointBelow(curr, next) {
-		return curr.y > next.y;
+	function nextPointFurther(curr, next) {
+		return curr.x < next.x;
 	}
 
 	function isProgressive(coord1, coord2) {
