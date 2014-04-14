@@ -23,9 +23,16 @@ function createDefaultLevel(ui) {
         [9, 2]
     ];
 
-    var previousNode = null;
-	  var nodes = [];
-	  for (var i = 0; i < points.length; i++) {
+	var nodes = generateNodes(points);  
+	var map = new Map(nodes, ui);
+	var van = new Van(nodes[0], nodes[1], ui);
+	return new Level(map, van, nodes[nodes.length - 1], ui);
+}
+
+function generateNodes(points){
+	var previousNode = null;
+	var nodes = [];
+	for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
 	      var coordinate = new Coordinate(p[0], p[1]);
 	      var node = new Node(coordinate);
@@ -34,10 +41,8 @@ function createDefaultLevel(ui) {
 	      }
 	      previousNode = node;
 	      nodes.push(node);
-	  }
-	  var map = new Map(nodes, ui);
-	  var van = new Van(nodes[0], nodes[1], ui);
-	  return new Level(map, van, nodes[nodes.length - 1], ui);
+	}
+	return nodes;
 }
 
 function generateRandomPathPoints(source, seed) {
@@ -47,7 +52,6 @@ function generateRandomPathPoints(source, seed) {
 	var decision = null;
 	var possibleNext = null;
 	while(!isOutOfBounds(current)) {
-		console.debug(current[0] + ' ' + current[1]);
 		visited[current[0]][current[1]] = true;
 		possibleNext = getPossibleNextMoves(current, visited);
 		if(possibleNext.length == 0) {
@@ -132,6 +136,15 @@ function trackDevelopment(level) {
     $('#play').click(function() {
     	level.play(program);
 	});
+
+	$('#randomRoad').click(function() {
+		var ui = createUi();
+		var points = generateRandomPathPoints([0,3]);
+		var nodes = generateNodes(points);  
+		var van = new Van(nodes[0], nodes[1], ui);
+		var map = new Map(nodes, ui);
+		return new Level(map, van, nodes[nodes.length - 1], ui);
+	})
 }
 
 $(function() {

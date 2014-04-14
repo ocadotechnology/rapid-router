@@ -30,6 +30,9 @@ var ROAD_ATTR = {
     fill: ROAD_COLOUR
 };
 
+var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
+
+
 function createGrid(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
         for (var j = 0; j < GRID_HEIGHT; j++) {
@@ -251,7 +254,7 @@ function resetVan() {
 
 function renderTheMap(map) {
 
-    var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
+    paper.clear();
 
     createGrid(paper);
 
