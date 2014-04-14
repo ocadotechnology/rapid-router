@@ -3,7 +3,7 @@ function createUi() {
 }
 
 function createDefaultLevel(ui) {
-/*
+
     var points = [
         [0, 0],
         [1, 0],
@@ -22,11 +22,6 @@ function createDefaultLevel(ui) {
         [8, 2],
         [9, 2]
     ];
-*/
-	var points = generateRandomPathPoints([0, 0]);
-	for(var i = 0 ; i < points.length; i++) {
-		console.debug(points[i]);
-	}
 
     var previousNode = null;
 	  var nodes = [];
