@@ -101,11 +101,11 @@ function generateRandomPathPoints(current, seed, length) {
 	console.debug("blah2");
 	return points;
 
-	/*						*(1, 0) 1
+	/*                      *(1, 0) 1
 	 *		
-	 *      *(-1,0) -2     	x(0, 0)      	*(1, 0) 2
+	 *      *(-1,0) -2      x(0, 0)      *(1, 0) 2
 	 *
-	 *						*(-1, 0) -1
+	 *                      *(-1, 0) -1
 	 *
 	 * Returns next point in the same orientation or -1 if it would go out of bounds. 
 	 */					
