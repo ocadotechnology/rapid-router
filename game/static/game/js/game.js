@@ -51,23 +51,60 @@ function generateRandomPathPoints(source, seed) {
 	var current = source;
 	var decision = null;
 	var possibleNext = null;
-	while(!isOutOfBounds(current)) {
+	var orientation = null;
+	while (!isOutOfBounds(current)) {
 		visited[current[0]][current[1]] = true;
-		possibleNext = getPossibleNextMoves(current, visited);
-		if(possibleNext.length == 0) {
-			current = points[points.length - 1];
-			return points;
-		} else {
-			decision = Math.floor((Math.random() * possibleNext.length));
+		if (Math.random() < seed && orientation != null) {
 			points.push(current);
-			current = possibleNext[decision];
+			current = getNextBasedOnOrientation(current, orientation);
+			console.debug(current);
+		} else {
+			possibleNext = getPossibleNextMoves(current, visited);
+			if (possibleNext.length == 0) {
+				if(isOnBorder(current)) {
+					points.push(current);
+					return points;
+				}
+				current = points.pop();
+			} else {
+				decision = Math.floor((Math.random() * possibleNext.length));
+				points.push(current);
+				next = possibleNext[decision];
+				orientation =  (2 * (next[0] - current[0]) + (next[1] - current[1]));
+				console.debug('orientation: ' + next.x)
+				current = possibleNext[decision];
+			}
 		}
 	}
 	return points;
 
 
+	function getNextBasedOnOrientation(point, orientation) {
+		var result = null;
+		switch(orientation) {
+			case 1:
+				result = [point[0], point[1] + 1];
+				break;
+			case -1:
+				result = [point[0], point[1] - 1];
+				break;
+			case 2:
+				result = [point[0] + 1, point[1]];
+				break;
+			case -2:
+				result = [point[0] - 1, point[1]];
+				break;
+		}
+		console.debug('result: ' + result + ", point: " + point + ', orientation: ' + orientation);
+		return result;
+	}
+
 	function isOutOfBounds(point) {
 		return point[0] < 0 || point[0] >= GRID_WIDTH || point[1] < 0 || point[1] >= GRID_HEIGHT;
+	}
+
+	function isOnBorder(point) {
+		return point[0] == 0 || point[0] == GRID_WIDTH || point[1] == 0 || point[1] == GRID_HEIGHT;
 	}
 
 	function isFree(point, visited) {
@@ -79,7 +116,7 @@ function generateRandomPathPoints(source, seed) {
 		var possiblePoint = null;
 		var considered = [[point[0], point[1] + 1], [point[0] + 1, point[1]], 
 			[point[0] - 1, point[1]], [point[0], point[1] - 1]];
-		for(var i= 0; i < 4; i++) {
+		for (var i= 0; i < 4; i++) {
 			possiblePoint = considered[i];
 			if(!isOutOfBounds(possiblePoint) && isFree(possiblePoint, visited)) {
 				possible.push(possiblePoint);
@@ -90,7 +127,7 @@ function generateRandomPathPoints(source, seed) {
 
 	function initialiseVisited() {
 		var visited = new Array(GRID_WIDTH);
-		for(var i = 0; i < GRID_WIDTH; i++) {
+		for (var i = 0; i < GRID_WIDTH; i++) {
 			visited[i] = new Array(GRID_HEIGHT);
 		}
 		return visited;
@@ -139,11 +176,10 @@ function trackDevelopment(level) {
 
 	$('#randomRoad').click(function() {
 		var ui = createUi();
-		var points = generateRandomPathPoints([0,3]);
+		var points = generateRandomPathPoints([0,1], 0.5);
 		var nodes = generateNodes(points);  
 		var van = new Van(nodes[0], nodes[1], ui);
 		var map = new Map(nodes, ui);
-		return new Level(map, van, nodes[nodes.length - 1], ui);
 	})
 }
 

@@ -61,7 +61,7 @@ Map.prototype.getThePath = function() {
 
 	// Helper methods for generating the path.
 	function transformY(coord) {
-	    return new Coordinate(coord.x, 4 - coord.y);
+	    return new Coordinate(coord.x, coord.y);
 	}
 
 	function pushInstruction(json, coord, instruction) {
