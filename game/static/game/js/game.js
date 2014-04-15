@@ -45,40 +45,68 @@ function generateNodes(points){
 	return nodes;
 }
 
-function generateRandomPathPoints(source, seed) {
+/**
+  * Generates a random road given a starting point and seed from the range <0, 1>, 
+  * where 1 creates a completely straight road and 0 does not influence the way 
+  * the next road element is chosen at all.
+  */
+function generateRandomPathPoints(current, seed) {
 	var points = [];
 	var visited = initialiseVisited();
-	var current = source;
-	var decision = null;
 	var possibleNext = null;
-	var orientation = null;
+	var orientation = current[1] == 0 ? -1 : 2;
+	var possibleStaight = null;
+
+	points.push(current);
+	visited[current[0]][current[1]] = true;
+	current = getNextBasedOnOrientation(current, orientation);
+
 	while (!isOutOfBounds(current)) {
+		
 		visited[current[0]][current[1]] = true;
-		if (Math.random() < seed && orientation != null) {
+		possibleNext = getPossibleNextMoves(current, visited);
+		possibleStraight = getNextBasedOnOrientation(current, orientation);
+		
+		if (Math.random() < seed && possibleStraight != -1 
+			&& isFree(possibleStraight, visited)) {
 			points.push(current);
-			current = getNextBasedOnOrientation(current, orientation);
+			current = possibleStraight;
 			console.debug(current);
+
 		} else {
-			possibleNext = getPossibleNextMoves(current, visited);
+
 			if (possibleNext.length == 0) {
 				if(isOnBorder(current)) {
 					points.push(current);
 					return points;
 				}
 				current = points.pop();
+
 			} else {
-				decision = Math.floor((Math.random() * possibleNext.length));
+
+				var decision = Math.floor((Math.random() * possibleNext.length));
 				points.push(current);
 				next = possibleNext[decision];
 				orientation =  (2 * (next[0] - current[0]) + (next[1] - current[1]));
-				console.debug('orientation: ' + next.x)
 				current = possibleNext[decision];
 			}
 		}
 	}
+	console.debug("blah");
+	for (var i = 0; i < points.length; i++) {
+		console.debug(points[i]);
+	}
+	console.debug("blah2");
 	return points;
 
-
+	/*						*(1, 0) 1
+	 *		
+	 *      *(-1,0) -2     	x(0, 0)      	*(1, 0) 2
+	 *
+	 *						*(-1, 0) -1
+	 *
+	 * Returns next point in the same orientation or -1 if it would go out of bounds. 
+	 */					
 	function getNextBasedOnOrientation(point, orientation) {
 		var result = null;
 		switch(orientation) {
@@ -95,8 +123,7 @@ function generateRandomPathPoints(source, seed) {
 				result = [point[0] - 1, point[1]];
 				break;
 		}
-		console.debug('result: ' + result + ", point: " + point + ', orientation: ' + orientation);
-		return result;
+		return isOutOfBounds(result) ? -1 : result;
 	}
 
 	function isOutOfBounds(point) {
@@ -176,7 +203,7 @@ function trackDevelopment(level) {
 
 	$('#randomRoad').click(function() {
 		var ui = createUi();
-		var points = generateRandomPathPoints([0,1], 0.5);
+		var points = generateRandomPathPoints([0,4], 0);
 		var nodes = generateNodes(points);  
 		var van = new Van(nodes[0], nodes[1], ui);
 		var map = new Map(nodes, ui);
