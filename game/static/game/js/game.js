@@ -46,22 +46,24 @@ function generateNodes(points){
 }
 
 /**
-  * Generates a random road given a starting point and seed from the range <0, 1>, 
-  * where 1 creates a completely straight road and 0 does not influence the way 
-  * the next road element is chosen at all.
+  * Generates a random road given a starting point and seed and length.
+  * Seed - a number from the range <0, 1>, where 1 creates a completely straight road
+  * and 0 does not influence the way the next road element is chosen at all.
+  * Length - optional argument limiting the length of the path.
   */
-function generateRandomPathPoints(current, seed) {
+function generateRandomPathPoints(current, seed, length) {
 	var points = [];
 	var visited = initialiseVisited();
 	var possibleNext = null;
 	var orientation = current[1] == 0 ? -1 : 2;
 	var possibleStaight = null;
+	length = length == undefined ? Number.POSITIVE_INFINITY : length;
 
 	points.push(current);
 	visited[current[0]][current[1]] = true;
 	current = getNextBasedOnOrientation(current, orientation);
 
-	while (!isOutOfBounds(current)) {
+	while (!isOutOfBounds(current) && points.length < length) {
 		
 		visited[current[0]][current[1]] = true;
 		possibleNext = getPossibleNextMoves(current, visited);
@@ -203,7 +205,7 @@ function trackDevelopment(level) {
 
 	$('#randomRoad').click(function() {
 		var ui = createUi();
-		var points = generateRandomPathPoints([0,4], 0);
+		var points = generateRandomPathPoints([0,4], 0.5, 13);
 		var nodes = generateNodes(points);  
 		var van = new Van(nodes[0], nodes[1], ui);
 		var map = new Map(nodes, ui);
