@@ -14,7 +14,7 @@ def logged_students(request):
 	message = "Choose a class you want to see."
 	students = []
 	if request.method == 'POST':
-		selected_item = get_object_or_404(Class, pk=request.POST.get('id=1'))
+		selected_item = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
 		students = selected_item.get_logged_in_students()
 	try:
 		classes = user.teacher.class_teacher.all()

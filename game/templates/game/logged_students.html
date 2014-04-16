@@ -2,14 +2,19 @@
 
 {% block title %}Game{% endblock %}
 
+{% block css %}
+{{block.super}}
+  <link href="/static/game/css/logged_students.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
 {% block content %}
-<p> {{message}}
+<p> {{message}} </p>
 {% if classes %}
-	<form name="class_selection" action="" method="post" onchange="class_selection.submit()">
+	<form name="class_selection" id="class_form" action="" method="post" onchange="class_selection.submit()">
 	{% csrf_token %}
 		<select name="classes">
 			{% for class in classes %}
-				<option value="{{class}}">{{class.name}}</option>
+				<option value="{{class.id}}">{{class.name}}</option>
 			{% endfor %}
 		</select>
 	</form>
@@ -19,7 +24,7 @@
 
 {% if students %}
 	{% for student in students %}
-		<p>{{student.name}}</p>
+		<div id="student_container">{{student.name}}</div>
 	{% endfor %}
 {% endif %}
 {% endblock %}
