@@ -1,5 +1,17 @@
 'use strict';
 
+Blockly.Blocks['start'] = {
+    // Beginning block - identifies the start of the program
+    init: function() {
+        this.setColour(50);
+        this.appendDummyInput()
+            .appendField('Start');
+        this.setNextStatement(true);
+        this.setTooltip('The beginning of the program');
+        this.setDeletable(false);
+    }
+};
+
 Blockly.Blocks['move_van'] = {
   // Block for moving forward
   init: function() {
@@ -45,6 +57,10 @@ var BlocklyTest = {};
 BlocklyTest.init = function() {
     Blockly.inject(document.getElementById('blockly'),
         {path: '/static/game/js/blockly/', toolbox: document.getElementById('toolbox')});
+
+    var startBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'start');
+    startBlock.initSvg();
+    startBlock.render();
 } ;
 
 window.addEventListener('load', BlocklyTest.init);
