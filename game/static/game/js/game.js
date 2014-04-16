@@ -186,21 +186,22 @@ function defaultProgram(level) {
 }
 
 function trackDevelopment(level) {
-	var program = new Program([]);
+	//var program = new Program([]);
 	
 	$('#moveForward').click(function() {
-		program.instructions.push(FORWARD);
+		//program.instructions.push(FORWARD);
     });
 	
     $('#turnLeft').click(function() {
-    	program.instructions.push(TURN_LEFT);
+    	//program.instructions.push(TURN_LEFT);
     });
 
     $('#turnRight').click(function() {
-		program.instructions.push(TURN_RIGHT);
+		//program.instructions.push(TURN_RIGHT);
 	});
     
     $('#play').click(function() {
+        var program = BlocklyTest.populateProgram(program);
     	level.play(program);
 	});
 
