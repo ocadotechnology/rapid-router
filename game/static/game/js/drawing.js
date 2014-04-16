@@ -12,15 +12,15 @@ var GRID_HEIGHT = 8;
 var GRID_SPACE_WIDTH = PAPER_WIDTH / GRID_WIDTH;
 var GRID_SPACE_HEIGHT = PAPER_HEIGHT / GRID_HEIGHT;
 
-var VAN_WIDTH = 37;
-var VAN_HEIGHT = 50;
+var VAN_WIDTH = 37.5;
+var VAN_HEIGHT = 17.5;
 
 var MOVE_DISTANCE = GRID_SPACE_WIDTH;
 var TURN_DISTANCE = MOVE_DISTANCE / 2;
-var INITIAL_X = 75;
-var INITIAL_Y = 410;
-var ROTATION_OFFSET_X = 0;
-var ROTATION_OFFSET_Y = 25;
+var INITIAL_X = GRID_SPACE_HEIGHT - VAN_WIDTH / 2;
+var INITIAL_Y = 430;
+var ROTATION_OFFSET_X = VAN_WIDTH / 2;
+var ROTATION_OFFSET_Y = 20;
 
 var ROAD_WIDTH = GRID_SPACE_WIDTH / 2;
 var EDGE_GAP_X = (GRID_SPACE_WIDTH - ROAD_WIDTH) / 2;
@@ -260,7 +260,7 @@ function renderTheMap(map) {
 
     var roadElements = createRoad(paper, map.instructions);
 
-    van = paper.image('/static/game/image/van.png', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH);
+    van = paper.image('/static/game/image/van.svg', INITIAL_X, INITIAL_Y, VAN_WIDTH, VAN_HEIGHT);
 
     function moveCompleteCallback() {
         vanMoving = false;

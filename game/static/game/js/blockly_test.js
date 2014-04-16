@@ -29,22 +29,28 @@ Blockly.JavaScript['move_van'] = function(block) {
     return 'BlocklyTest.moveForward();\n';
 };
 
-Blockly.Blocks['turn_van'] = {
+Blockly.Blocks['turn_left'] = {
   // Block for turning left or right.
   init: function() {
-    var DIRECTIONS =
-        [['Turn left', 'moveLeft'],
-         ['Turn right', 'moveRight']];
-    // Append arrows to direction messages.
-    DIRECTIONS[0][0] += ' \u21BB';
-    DIRECTIONS[1][0] += ' \u21BA';
     this.setColour(160);
     this.appendDummyInput()
-        .appendField(new Blockly.FieldDropdown(DIRECTIONS), 'DIR');
+        .appendField('Turn left \u21BA');
     this.setPreviousStatement(true);
     this.setNextStatement(true);
-    this.setTooltip('Turn the van');
+    this.setTooltip('Turn the van left');
   }
+};
+
+Blockly.Blocks['turn_right'] = {
+    // Block for turning left or right.
+    init: function() {
+        this.setColour(160);
+        this.appendDummyInput()
+            .appendField('Turn right \u21BB');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Turn the van right');
+    }
 };
 
 Blockly.JavaScript['turn_van'] = function(block) {
@@ -120,3 +126,42 @@ BlocklyTest.moveLeft = function() {
 BlocklyTest.moveRight = function() {
     BlocklyTest.addInstruction(TURN_RIGHT);
 };
+
+BlocklyTest.getStartBlock = function() {
+    var startBlock = null;
+    Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
+        if (block.type == 'start') {
+            startBlock = block;
+        }
+    });
+    return startBlock;
+};
+
+BlocklyTest.populateProgram = function() {
+    var program = new Program([]);
+    var startBlock = this.getStartBlock();
+
+    function populateBlock(program, block) {
+        if (!block) {
+            return;
+        }
+        if (block.type == 'move_van') {
+            program.instructions.push(FORWARD);
+        } else if (block.type == 'turn_left') {
+            program.instructions.push(TURN_LEFT);
+        } else if (block.type == 'turn_right') {
+            program.instructions.push(TURN_RIGHT);
+        }
+
+        if (block.nextConnection) {
+            populateBlock(program, block.nextConnection.targetBlock());
+        }
+    }
+
+    if (startBlock) {
+        if (startBlock.nextConnection) {
+            populateBlock(program, startBlock.nextConnection.targetBlock());
+        }
+    }
+    return program;
+}
