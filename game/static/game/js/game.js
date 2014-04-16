@@ -205,7 +205,7 @@ function trackDevelopment(level) {
 
 	$('#randomRoad').click(function() {
 		var ui = createUi();
-		var points = generateRandomPathPoints([0,4], 0.5, 13);
+		var points = generateRandomPathPoints([0,3], 0.5, 13);
 		var nodes = generateNodes(points);  
 		var van = new Van(nodes[0], nodes[1], ui);
 		var map = new Map(nodes, ui);

@@ -1,0 +1,25 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Game{% endblock %}
+
+{% block content %}
+<p> {{message}}
+{% if classes %}
+	<form name="class_selection" action="" method="post" onchange="class_selection.submit()">
+	{% csrf_token %}
+		<select name="classes">
+			{% for class in classes %}
+				<option value="{{class}}">{{class.name}}</option>
+			{% endfor %}
+		</select>
+	</form>
+{% else %}
+	<p> Seems the list passed in is empty. </p>
+{% endif %}
+
+{% if students %}
+	{% for student in students %}
+		<p>{{student.name}}</p>
+	{% endfor %}
+{% endif %}
+{% endblock %}

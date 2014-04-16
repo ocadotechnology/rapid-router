@@ -12,8 +12,8 @@ class Teacher (models.Model):
 
 class Class (models.Model):
   name = models.CharField(max_length = 200)
-  school = models.ForeignKey(School, related_name='class')
-  teacher = models.ForeignKey(Teacher, related_name='class')
+  school = models.ForeignKey(School, related_name='class_school')
+  teacher = models.ForeignKey(Teacher, related_name='class_teacher')
 
   def get_logged_in_students(self):
     """This gets all the students who are logged in."""
