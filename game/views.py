@@ -11,21 +11,20 @@ def game(request):
 
 def logged_students(request):
 	""" Renders the page with information about all the logged in students."""
-	klass = request.user.teacher.class_teacher.all()[0]
-	students = klass.get_logged_in_students()
-	context = context = RequestContext(request, {
-		'students' : students
-	})
-	return render(request, 'game/logged_students.html', context)
+	return render_student_info(request, True)
 
 def students_in_class(request):
 	""" Renders the page with information about all the students enrolled in a chosen class."""
+	return render_student_info(request, False)
+
+def render_student_info(request, logged):
+	""" Helper method for rendering the studend info for a logged-in teacher. """
 	user = request.user
 	message = "Choose a class you want to see."
 	students = []
 	if request.method == 'POST':
-		selected_item = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
-		students = selected_item.students.all()
+		cl = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
+		students = cl.get_logged_in_students() if logged else cl.students.all()
 	try:
 		classes = user.teacher.class_teacher.all()
  	except ObjectDoesNotExist:
@@ -36,5 +35,4 @@ def students_in_class(request):
 		'message' : message,
 		'students' : students
 	})
-
-	return render(request, 'game/students_in_class.html', context)
+	return render(request, 'game/logged_students.html', context)
