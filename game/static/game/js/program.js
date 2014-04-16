@@ -5,13 +5,17 @@ function Program(instructions) {
     this.instructionPosition = 0;
 }
 
-Program.prototype.step = function() {
+Program.prototype.step = function(instructionHandler) {
     var instruction = this.instructions[this.instructionPosition];
     this.instructionPosition++;
 
-    return instruction;
+    instructionHandler.handleInstruction(instruction);
 };
 
 Program.prototype.canStep = function() {
     return this.instructionPosition < this.instructions.length;
+};
+
+Program.prototype.terminate = function() {
+	this.instructionPosition = this.instructions.length;
 };
