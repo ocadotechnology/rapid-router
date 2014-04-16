@@ -8,6 +8,8 @@ function Level(map, van, destination, ui) {
 }
 
 Level.prototype.play = function(program){
+	$.post('/game/submit', JSON.stringify(program.instructions));
+	
     while(program.canStep()) {
         var instruction = program.step();
         console.debug('Calculating next node for instruction ' + instruction.name);
@@ -21,8 +23,8 @@ Level.prototype.play = function(program){
             break;
         }
 
-        // HACK for now, pass in instruction
         this.van.move(nextNode, instruction);
     }
+    
     this.ui.animateUpdates();
 };

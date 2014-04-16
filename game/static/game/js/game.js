@@ -5,7 +5,6 @@ function createUi() {
 }
 
 function createDefaultLevel(ui) {
-
     var points = [
         [0, 3],
         [1, 3],
