@@ -10,6 +10,7 @@ def game(request):
     return render(request, 'game/game.html')
 
 def logged_students(request):
+	""" Renders the page with information about all the logged in students."""
 	klass = request.user.teacher.class_teacher.all()[0]
 	students = klass.get_logged_in_students()
 	context = context = RequestContext(request, {
@@ -17,8 +18,8 @@ def logged_students(request):
 	})
 	return render(request, 'game/logged_students.html', context)
 
-
 def students_in_class(request):
+	""" Renders the page with information about all the students enrolled in a chosen class."""
 	user = request.user
 	message = "Choose a class you want to see."
 	students = []
@@ -37,11 +38,3 @@ def students_in_class(request):
 	})
 
 	return render(request, 'game/students_in_class.html', context)
-
-def submit_commands(request):
-	if request.method == 'POST':
-		return submit_reply(request)
-	return render(request, 'game/submit_commands.html')
-
-def submit_reply(request):
-	return render(request, 'game/submit_reply.html')
