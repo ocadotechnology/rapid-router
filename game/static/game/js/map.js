@@ -1,5 +1,7 @@
 'use strict';
 
+var ocargo = ocargo || {};
+
 function Map(nodes, ui) {
 	this.nodes = nodes;
 	this.instructions = this.getThePath();
@@ -61,7 +63,7 @@ Map.prototype.getThePath = function() {
 
 	// Helper methods for generating the path.
 	function transformY(coord) {
-	    return new Coordinate(coord.x, GRID_HEIGHT - 1 - coord.y);
+	    return new ocargo.Coordinate(coord.x, GRID_HEIGHT - 1 - coord.y);
 	}
 
 	function pushInstruction(json, coord, instruction) {
