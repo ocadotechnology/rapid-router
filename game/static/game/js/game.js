@@ -1,9 +1,10 @@
+var ocargo = ocargo || {};
+
 function createUi() {
     return new SimpleUi();
 }
 
 function createDefaultLevel(ui) {
-
     var points = [
         [0, 3],
         [1, 3],
@@ -34,7 +35,7 @@ function generateNodes(points){
 	var nodes = [];
 	for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
-	      var coordinate = new Coordinate(p[0], p[1]);
+	      var coordinate = new ocargo.Coordinate(p[0], p[1]);
 	      var node = new Node(coordinate);
 	      if (previousNode) {
 	          node.addConnectedNodeWithBacklink(previousNode);
