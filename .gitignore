@@ -9,3 +9,4 @@ local_settings.py
 .idea
 dbfile
 .sass-cache
+.DS_Store

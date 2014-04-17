@@ -21,10 +21,13 @@ def render_student_info(request, logged):
 	""" Helper method for rendering the studend info for a logged-in teacher. """
 	user = request.user
 	message = "Choose a class you want to see."
+	currentClass = ""
 	students = []
+	avatar = '/static/game/image/default-avatar.png'
 	if request.method == 'POST':
 		cl = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
 		students = cl.get_logged_in_students() if logged else cl.students.all()
+		currentClass = cl.name
 	try:
 		classes = user.teacher.class_teacher.all()
  	except ObjectDoesNotExist:
@@ -33,6 +36,8 @@ def render_student_info(request, logged):
 	context = RequestContext(request, {
 		'classes' : classes,
 		'message' : message,
-		'students' : students
+		'students' : students,
+		'avatar' : avatar,
+		'currentClass' : currentClass,
 	})
 	return render(request, 'game/logged_students.html', context)

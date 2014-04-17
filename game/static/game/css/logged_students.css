@@ -2,6 +2,28 @@
 	width:150px;
 }
 
-#student_container {
-	font-size: 15pt;
+#wrapper {
+	margin-top: 60px;
+	margin-left: 3%;
+	margin-right: 3%;
 }
+
+#class_form {
+	margin-left: 20px;
+	margin-bottom: 50px;
+}
+
+.student_container {
+	font-size: 12pt;
+	margin: 20px;
+	width: 650px;
+}
+
+.student_container img {
+	height: 50px;
+	width: 50px;
+	margin-right: 30px;
+	margin-left: 30px;
+}
+
+

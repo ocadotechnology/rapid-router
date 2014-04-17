@@ -8,25 +8,34 @@
 {% endblock %}
 
 {% block content %}
-<p> {{message}} </p>
-
+<div id="wrapper">
+{% if currentClass %}
+  <h4>Currently looking at class: {{currentClass}}</h4>
+{% endif %}
+<p>{{message}}</p>
 {% if classes %}
-	<form name="class_selection" id="class_form" action="" method="post" onchange="class_selection.submit()">
+  <form name="class_selection" id="class_form" action="" method="post" onchange="class_selection.submit()">
 	{% csrf_token %}
-		<select name="classes">
-			{% for class in classes %}
-				<option value="{{class.id}}">{{class.name}}</option>
-			{% endfor %}
-		</select>
-	</form>
-{% else %}
-	<p> Nobody is enrolled in this class yet. </p>
+	<select name="classes">
+	  {% for class in classes %}
+        <option value="{{class.id}}">{{class.name}}</option>
+	  {% endfor %}
+    </select>
+  </form>
 {% endif %}
-{% if students %}
-	{% for student in students %}
-		<div id="student_container">{{student.user.first_name}} {{student.user.last_name}}</div>
-	{% endfor %}
-{% else %}
-	<p> Nobody is currently logged in. </p>
-{% endif %}
+
+  {% if students %}
+    {% for student in students %}
+      <div class="student_container">
+        <img style="vertical-align:middle" src="{{avatar}}" alt="{{student.user.first_name}} {{student.user.last_name}}">
+        <span>{{student.user.first_name}} {{student.user.last_name}}</span>
+        <hr>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="student_container">
+	  <h5> Nobody to show. </h5>
+	</div>
+  {% endif %}
+</div>
 {% endblock %}
