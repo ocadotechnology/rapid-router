@@ -1,0 +1,31 @@
+#wrapper {
+	margin-top: 30px;
+	margin-left: 3%;
+	margin-right: 3%;
+}
+
+#choice {
+	float: left;
+}
+ 
+.avatar_container {
+	width : 920px;
+	margin-bottom: 2%;
+	overflow: hidden;
+}
+
+.avatar_container img {
+	width: 120px;
+	height: 120px;
+	margin: 20px;
+	margin-right: 70px;
+}
+
+.avatar_container input[type=submit] {
+	padding:5px 15px; background:#ccc; border:0 none;
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    height:40px;
+}
+

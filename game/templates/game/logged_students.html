@@ -1,6 +1,6 @@
 {% extends 'website/base.html' %}
 
-{% block title %}Game{% endblock %}
+{% block title %}Students{% endblock %}
 
 {% block css %}
 {{block.super}}
@@ -27,7 +27,8 @@
   {% if students %}
     {% for student in students %}
       <div class="student_container">
-        <img style="vertical-align:middle" src="{{avatar}}" alt="{{student.user.first_name}} {{student.user.last_name}}">
+        <img style="vertical-align:middle" src="{{avatar}}" alt="{{student.user.first_name}} 
+          {{student.user.last_name}}">
         <span>{{student.user.first_name}} {{student.user.last_name}}</span>
         <hr>
       </div>

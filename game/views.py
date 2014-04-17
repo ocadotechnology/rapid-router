@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext, loader
@@ -17,13 +18,29 @@ def students_in_class(request):
 	""" Renders the page with information about all the students enrolled in a chosen class."""
 	return render_student_info(request, False)
 
+def settings(request):
+	x = os.path.dirname(os.path.abspath(__file__))
+	path = os.path.join(x, 'static/game/image/Avatars/')
+	img_list = os.listdir(path)
+	avatar = ''
+	if request.method == 'POST':
+		avatar = request.POST.getlist('avatars')[0]
+		request.user.teacher.avatar = avatar
+		request.user.teacher.save()
+
+	context = RequestContext(request, {
+		'avatars' : img_list,
+		'message' : avatar,
+	})
+	return render(request, 'game/settings.html', context)
+
 def render_student_info(request, logged):
 	""" Helper method for rendering the studend info for a logged-in teacher. """
 	user = request.user
 	message = "Choose a class you want to see."
 	currentClass = ""
 	students = []
-	avatar = '/static/game/image/default-avatar.png'
+	avatar = '/static/game/image/avatarsdefault-avatar.png'
 	if request.method == 'POST':
 		cl = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
 		students = cl.get_logged_in_students() if logged else cl.students.all()
