@@ -6,9 +6,6 @@ from datetime import datetime
 class School (models.Model):
   name = models.CharField(max_length = 200)
 
-class Avatar (models.Model):
-  name = models.CharField(max_length = 200)
-
 class Teacher (models.Model):
   name = models.CharField(max_length = 200)
   user = models.OneToOneField(User)
