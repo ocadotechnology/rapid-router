@@ -1,14 +1,16 @@
 'use strict';
 
-function Level(map, van, destination, ui) {
+var ocargo = ocargo || {};
+
+ocargo.Level = function(map, van, destination, ui) {
     this.map = map;
     this.van = van;
     this.destination = destination;
     this.ui = ui;
 }
 
-Level.prototype.play = function(program){
-	$.post('/game/submit', JSON.stringify(program.instructions));
+ocargo.Level.prototype.play = function(program){
+    $.post('/game/submit', JSON.stringify(program.instructions));
 	
     while(program.canStep()) {
         var instruction = program.step(new InstructionHandler(this, program));

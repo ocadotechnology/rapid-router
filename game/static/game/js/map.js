@@ -2,13 +2,13 @@
 
 var ocargo = ocargo || {};
 
-function Map(nodes, ui) {
+ocargo.Map = function(nodes, ui) {
 	this.nodes = nodes;
 	this.instructions = this.getThePath();
 	ui.renderMap(this);
 }
 
-Map.prototype.getThePath = function() {
+ocargo.Map.prototype.getThePath = function() {
 	var instructions = {};
 	var prevCoord = null;
 	var twoBack = null;

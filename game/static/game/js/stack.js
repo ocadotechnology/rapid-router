@@ -1,8 +1,10 @@
-function Stack(){
+var ocargo = ocargo || {};
+
+ocargo.Stack = function(){
 	this.levels = [];
 }
 
-Stack.prototype.step = function() {
+ocargo.Stack.prototype.step = function() {
 	var level = this.levels[this.levels.length - 1];
 	
 	var commandToProcess = level.splice(0, 1)[0];
@@ -13,7 +15,7 @@ Stack.prototype.step = function() {
 	commandToProcess.execute(this);
 }
 
-Stack.prototype.addNewLevel = function(commands) {
+ocargo.Stack.prototype.addNewLevel = function(commands) {
 	this.levels.push(commands);
 }
 
@@ -55,7 +57,7 @@ FORWARD_COMMAND.execute = function(stack){
 }
 
 // Usage:
-//var stack = new Stack();
+//var stack = new ocargo.Stack();
 //stack.addNewLevel([TURN_LEFT_COMMAND, TURN_LEFT_COMMAND]);
 //stack.step();
 //stack.step();

@@ -1,6 +1,9 @@
 'use strict';
 
-function SimpleUi() {
+var ocargo = ocargo || {};
+
+
+ocargo.SimpleUi = function() {
     this.queue_ = [];
 
     // HACK to start with, just pass in the instruction and call the function in drawing.js
@@ -8,12 +11,12 @@ function SimpleUi() {
     // see source of http://raphaeljs.com/gear.html for way of doing this
 }
 
-SimpleUi.prototype.queueUpdate = function(van, nextNode, instruction) {
+ocargo.SimpleUi.prototype.queueUpdate = function(van, nextNode, instruction) {
     console.debug('Moving to coordinate ' + JSON.stringify(nextNode.coordinate));
     this.queue_.push(instruction);
 };
 
-SimpleUi.prototype.animateUpdates = function() {
+ocargo.SimpleUi.prototype.animateUpdates = function() {
     var self = this;
 
     var animate = function() {
@@ -34,7 +37,7 @@ SimpleUi.prototype.animateUpdates = function() {
     animate();
 };
 
-SimpleUi.prototype.renderMap = function(map) {
+ocargo.SimpleUi.prototype.renderMap = function(map) {
     console.debug('Updating the map: ' + JSON.stringify(map.instructions));
     renderTheMap(map);
 };

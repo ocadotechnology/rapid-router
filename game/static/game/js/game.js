@@ -1,7 +1,7 @@
 var ocargo = ocargo || {};
 
 function createUi() {
-    return new SimpleUi();
+    return new ocargo.SimpleUi();
 }
 
 function createDefaultLevel(ui) {
@@ -25,9 +25,9 @@ function createDefaultLevel(ui) {
     ];
 
 	var nodes = generateNodes(points);  
-	var map = new Map(nodes, ui);
-	var van = new Van(nodes[0], nodes[1], ui);
-	return new Level(map, van, nodes[nodes.length - 1], ui);
+	var map = new ocargo.Map(nodes, ui);
+	var van = new ocargo.Van(nodes[0], nodes[1], ui);
+	return new ocargo.Level(map, van, nodes[nodes.length - 1], ui);
 }
 
 function generateNodes(points){
@@ -36,7 +36,7 @@ function generateNodes(points){
 	for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
 	      var coordinate = new ocargo.Coordinate(p[0], p[1]);
-	      var node = new Node(coordinate);
+	      var node = new ocargo.Node(coordinate);
 	      if (previousNode) {
 	          node.addConnectedNodeWithBacklink(previousNode);
 	      }
@@ -165,7 +165,7 @@ function generateRandomPathPoints(current, seed, length) {
 }
 
 function defaultProgram(level) {
-	  var program = new Program(
+	  var program = new ocargo.Program(
 	          [TURN_LEFT,
 	              FORWARD,
 	              TURN_RIGHT,
@@ -186,7 +186,7 @@ function defaultProgram(level) {
 }
 
 function trackDevelopment(level) {
-	//var program = new Program([]);
+	//var program = new ocargo.Program([]);
 	
 	$('#moveForward').click(function() {
 		//program.instructions.push(FORWARD);
@@ -209,8 +209,8 @@ function trackDevelopment(level) {
 		var ui = createUi();
 		var points = generateRandomPathPoints([0,3], 0.5, 13);
 		var nodes = generateNodes(points);  
-		var van = new Van(nodes[0], nodes[1], ui);
-		var map = new Map(nodes, ui);
+		var van = new ocargo.Van(nodes[0], nodes[1], ui);
+		var map = new ocargo.Map(nodes, ui);
 	})
 }
 

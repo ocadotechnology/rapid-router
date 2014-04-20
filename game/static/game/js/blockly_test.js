@@ -1,5 +1,7 @@
 'use strict';
 
+var ocargo = ocargo || {};
+
 Blockly.Blocks['start'] = {
     // Beginning block - identifies the start of the program
     init: function() {
@@ -138,7 +140,7 @@ BlocklyTest.getStartBlock = function() {
 };
 
 BlocklyTest.populateProgram = function() {
-    var program = new Program([]);
+    var program = new ocargo.Program([]);
     var startBlock = this.getStartBlock();
 
     function populateBlock(program, block) {

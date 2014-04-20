@@ -1,15 +1,17 @@
 'use strict';
 
-function Node(coordinate) {
+var ocargo = ocargo || {};
+
+ocargo.Node = function (coordinate) {
     this.coordinate = coordinate;
     this.connectedNodes = [];
 }
 
-Node.prototype.addConnectedNode = function(node) {
+ocargo.Node.prototype.addConnectedNode = function(node) {
 	this.connectedNodes.push(node);
 };
 
-Node.prototype.addConnectedNodeWithBacklink = function(node) {
+ocargo.Node.prototype.addConnectedNodeWithBacklink = function(node) {
 	this.addConnectedNode(node);
 	node.addConnectedNode(this);
 };

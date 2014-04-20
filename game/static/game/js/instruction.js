@@ -1,5 +1,7 @@
 'use strict';
 
+var ocargo = ocargo || {};
+
 var forwardAngle = Math.PI;
 var leftCutoffAngle = 5 * Math.PI / 6;
 var rightCutoffAngle = 7 * Math.PI / 6;
@@ -9,22 +11,22 @@ function calculateAngle(nodeA, nodeB) {
     var coordinateB = nodeB.coordinate;
 
     return Math.atan2(coordinateB.y - coordinateA.y, coordinateB.x - coordinateA.x);
-}
+};
 
 function calculateClockwiseAngle(nodeA, nodeB, nodeC) {
     var angleAB = calculateAngle(nodeA, nodeB);
     var angleBC = calculateAngle(nodeB, nodeC);
     return Math.PI + angleAB - angleBC;
-}
+};
 
-function Instruction(name) {
+ocargo.Instruction = function(name) {
     this.name = name;
 }
 
 //TODO: actually do javascript inheritance by extending prototypes
-var FORWARD = new Instruction("FORWARD");
-var TURN_LEFT = new Instruction("TURN_LEFT");
-var TURN_RIGHT = new Instruction("TURN_RIGHT");
+var FORWARD = new ocargo.Instruction("FORWARD");
+var TURN_LEFT = new ocargo.Instruction("TURN_LEFT");
+var TURN_RIGHT = new ocargo.Instruction("TURN_RIGHT");
 
 
 FORWARD.getNextNode = function(previousNode, currentNode){
