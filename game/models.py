@@ -9,7 +9,8 @@ class School (models.Model):
 class Teacher (models.Model):
   name = models.CharField(max_length = 200)
   user = models.OneToOneField(User)
-  avatar = models.CharField(max_length = 200)
+  avatar = models.ImageField(upload_to='static/game/image/avatars/',
+    default='/game/static/game/image/avatars/default-avatar.png', null=True, blank=True)
 
 class Class (models.Model):
   name = models.CharField(max_length = 200)

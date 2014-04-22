@@ -11,21 +11,43 @@
 <div id="wrapper">
   <h4>Settings</h4>
   {{message}}
+
   <div class="avatar_container">
     <hr>
-    <h5>Choose your avatar</h5>
-    <form name="class_selection" id="class_form" action="" method="post"> 
+    <form action="" name="pre-uploaded" method="post"> 
       {% csrf_token %}
+      
       {% for image in avatars %}
       	<div id="choice">
       	<label>
   	    <input type="radio" name = "avatars" value="{{image}}">
-          <img src="/static/game/image/avatars/{{image}}" /> </div>
+          <img src="/static/game/image/avatars/{{image}}" /> 
           </label>
+        </div>
       {% endfor %}
+      
       <div>
-      <input type="submit" value="Change the avatar!"></div>
-    </form>  
+      <input type="submit" name="pre-uploaded" value="Change the avatar!"></div>
+    </form> 
+    
+   	<form method="post" action="">
+   	  {% csrf_token %}
+   	  <h5>Choose your avatar</h5>
+   	  {{avatarPreUploadedForm.avatar}}
+
   </div>
+
+  <div class="avatar_container">
+    <form method="post" action="" enctype="multipart/form-data"> 
+      {% csrf_token %}
+      <h4> Upload your own avatar </h4>
+      {{avatarUploadForm.avatar}}
+      <input type="submit" name="user-uploaded" value="Upload the file">
+    </form>
+  </div>
+   {% if teacher.avatar %}
+   <img src="/{{teacher.avatar.url}}" /> 
+   {% endif %}
+
 </div>
 {% endblock %}
