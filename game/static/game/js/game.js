@@ -190,18 +190,16 @@ function defaultProgram(level) {
 }
 
 function trackDevelopment(level) {
-	//var program = new ocargo.Program([]);
-	
 	$('#moveForward').click(function() {
-		//program.instructions.push(FORWARD);
+		//TODO: make this create Blockly blocks
     });
 	
     $('#turnLeft').click(function() {
-    	//program.instructions.push(TURN_LEFT);
+    	//TODO: make this create Blockly blocks
     });
 
     $('#turnRight').click(function() {
-		//program.instructions.push(TURN_RIGHT);
+    	//TODO: make this create Blockly blocks
 	});
     
     $('#play').click(function() {
@@ -211,6 +209,7 @@ function trackDevelopment(level) {
 	});
 
 	$('#randomRoad').click(function() {
+		//TODO: create level, make sure it works with Blockly afterwards
 		var ui = createUi();
 		var points = generateRandomPathPoints([0,3], 0.5, 13);
 		var nodes = generateNodes(points);  
