@@ -30,8 +30,33 @@ var ROAD_ATTR = {
     fill: ROAD_COLOUR
 };
 
+var ROAD_MARKER_ATTR = {
+    fill: '#FFF',
+    stroke: 'none'
+};
+
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
+
+function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
+    var transformation = '... r' + degrees;
+    if (rotationPointX !== undefined && rotationPointY !== undefined) {
+        transformation += ',' + rotationPointX;
+        transformation += ',' + rotationPointY;
+    }
+    return transformation;
+}
+
+function rotateElement(element, degrees, rotationPointX, rotationPointY) {
+    var transformation = createRotationTransformation(degrees, rotationPointX, rotationPointY);
+    element.transform(transformation);
+}
+
+function rotateElementAroundCentreOfGridSpace(element, degrees, i, j) {
+    var rotationPointX = (i + 1/2) * GRID_SPACE_WIDTH;
+    var rotationPointY = (j + 1/2) * GRID_SPACE_HEIGHT;
+    rotateElement(element, degrees, rotationPointX, rotationPointY);
+}
 
 function createGrid(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
@@ -49,16 +74,31 @@ function createGrid(paper) {
 function createHorizontalRoad(paper, i, j) {
     var x = i * GRID_SPACE_WIDTH;
     var y = j * GRID_SPACE_HEIGHT + (GRID_SPACE_HEIGHT - ROAD_WIDTH) / 2;
+
     var road = paper.rect(x, y, GRID_SPACE_WIDTH, ROAD_WIDTH);
     road.attr(ROAD_ATTR);
-    return road;
+
+    var entryMarker = paper.rect(x, j * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1, GRID_SPACE_WIDTH / 8, 2);
+    entryMarker.attr(ROAD_MARKER_ATTR);
+
+    var middleMarker = paper.rect(x + 3 * GRID_SPACE_WIDTH / 8, j * GRID_SPACE_HEIGHT + GRID_SPACE_HEIGHT / 2 - 1, GRID_SPACE_WIDTH / 8, 2);
+    middleMarker.attr(ROAD_MARKER_ATTR);
+
+    var markerSet = paper.set();
+    markerSet.push(entryMarker, middleMarker);
+
+    var rotatedMarkerSet = markerSet.clone();
+    rotateElementAroundCentreOfGridSpace(rotatedMarkerSet, 180, i, j);
+
+    var roadSet = paper.set();
+    roadSet.push(road, markerSet, rotatedMarkerSet);
+
+    return roadSet;
 }
 
 function createVerticalRoad(paper, i, j) {
     var road = createHorizontalRoad(paper, i, j);
-    road.attr({
-        transform: 'r90'
-    });
+    rotateElementAroundCentreOfGridSpace(road, 90, i, j);
     return road;
 }
 
@@ -72,27 +112,34 @@ function createTurn(paper, i, j, direction) {
         'H', baseX + EDGE_GAP_X + ROAD_WIDTH,
         'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX, baseY + EDGE_GAP_Y + ROAD_WIDTH
     ]);
-
     turn.attr(ROAD_ATTR);
 
-    var rotation = 'r0';
+    var marker = paper.path([
+        'M', baseX, baseY + GRID_SPACE_HEIGHT / 2 - 1,
+        'Q', baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + GRID_SPACE_HEIGHT / 2 - 1, baseX + GRID_SPACE_WIDTH / 2 - 1, baseY,
+        'H', baseX + GRID_SPACE_WIDTH / 2 + 1,
+        'Q', baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT / 2 + 1, baseX, baseY + GRID_SPACE_HEIGHT / 2 + 1
+    ]);
+    marker.attr(ROAD_MARKER_ATTR);
+
+    var rotation = 0;
     switch (direction) {
         case 'UR':
-            rotation = 'r90';
+            rotation = 90;
             break;
         case 'DR':
-            rotation = 'r180';
+            rotation = 180;
             break;
         case 'DL':
-            rotation = 'r270';
+            rotation = 270;
             break;
     }
 
-    var rotationPointX = baseX + ROAD_WIDTH;
-    var rotationPointY = baseY + ROAD_WIDTH;
-    return turn.attr({
-        transform: rotation + ',' + rotationPointX + ',' + rotationPointY
-    });
+    var roadSet = paper.set();
+    roadSet.push(turn, marker);
+    rotateElementAroundCentreOfGridSpace(roadSet, rotation, i, j);
+
+    return roadSet;
 }
 
 function createRoad(paper, roadDefinition) {
@@ -227,18 +274,20 @@ function moveForward(callback) {
 }
 
 function moveLeft(callback) {
-    var centerX = van.attrs.x + ROTATION_OFFSET_X;
-    var centerY = van.attrs.y - TURN_DISTANCE + ROTATION_OFFSET_Y;
+    var rotationPointX = van.attrs.x + ROTATION_OFFSET_X;
+    var rotationPointY = van.attrs.y - TURN_DISTANCE + ROTATION_OFFSET_Y;
+    var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
     moveVan({
-        transform: '... r-90,' + centerX + ',' + centerY
+        transform: transformation
     }, callback);
 }
 
 function moveRight(callback) {
-    var centerX = van.attrs.x + ROTATION_OFFSET_X;
-    var centerY = van.attrs.y + TURN_DISTANCE + ROTATION_OFFSET_Y;
+    var rotationPointX = van.attrs.x + ROTATION_OFFSET_X;
+    var rotationPointY = van.attrs.y + TURN_DISTANCE + ROTATION_OFFSET_Y;
+    var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
     moveVan({
-        transform: '... r90,' + centerX + ',' + centerY
+        transform: transformation
     }, callback);
 }
 

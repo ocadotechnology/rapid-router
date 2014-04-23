@@ -10,30 +10,30 @@ ocargo.Level = function(map, van, destination, ui) {
 }
 
 ocargo.Level.prototype.play = function(program){
-    $.post('/game/submit', JSON.stringify(program.instructions));
+    $.post('/game/submit', JSON.stringify(program.levels));
 	
     while(program.canStep()) {
-        var instruction = program.step(new InstructionHandler(this, program));
+        program.step();
     }
     
     this.ui.animateUpdates();
 };
 
-function InstructionHandler(level, program){
+function InstructionHandler(level){
 	this.level = level;
-	this.program = program;
 }
 
-InstructionHandler.prototype.handleInstruction = function(instruction){
+InstructionHandler.prototype.handleInstruction = function(instruction, program){
 	console.debug('Calculating next node for instruction ' + instruction.name);
     var nextNode = instruction.getNextNode(this.level.van.previousNode, this.level.van.currentNode);
 
-    if (nextNode === this.level.destination && !this.program.canStep()) {
+    if (nextNode === this.level.destination && !program.canStep()) {
         console.debug('You win!');
-        this.program.terminate();
+        program.terminate();
     } else if (!nextNode) {
         console.debug('Oh dear! :(');
-        this.program.terminate();
+        program.terminate();
+        return; //TODO: animate crash
     }
 
     this.level.van.move(nextNode, instruction);
