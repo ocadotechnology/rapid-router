@@ -1,23 +1,19 @@
 import os
-from django.forms import ModelForm
+from django import forms
 from models import Teacher
 from django import forms
 
-class AvatarUploadForm(ModelForm):
+class AvatarUploadForm(forms.ModelForm):
     class Meta:
         model = Teacher
         fields = ['avatar']
 
-class AvatarPreUploadedForm(ModelForm):
-	avatar = forms.ChoiceField()
-	class Meta:
-    	model = Teacher
-    	fields = ['avatar']
-
-
+class AvatarPreUploadedForm(forms.Form):
 	def __init__(self, *args, **kwargs):
+		choices = kwargs.pop('my_choices')
 		super(AvatarPreUploadedForm, self).__init__(*args, **kwargs)
-		x = os.path.dirname(os.path.abspath(__file__))
-		path = os.path.join(x, 'static/game/image/Avatars/')
-		img_list = os.listdir(path)
-		self.fields['avatar'].choices = img_list
+	 	self.fields['avatars'] = forms.ChoiceField(choices=choices)
+
+	class Meta:
+		model = Teacher
+		fields = ('avatar',)

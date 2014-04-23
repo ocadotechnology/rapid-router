@@ -19,39 +19,30 @@ def students_in_class(request):
 	""" Renders the page with information about all the students enrolled in a chosen class."""
 	return render_student_info(request, False)
 
-
-
 def settings(request):
-	x = os.path.dirname(os.path.abspath(__file__))
+	x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 	path = os.path.join(x, 'static/game/image/Avatars/')
 	img_list = os.listdir(path)
-	avatar = ''
-	avatarUploadForm = ''
+	avatar = None
 	teacher = request.user.teacher
-	avatarUploadForm = AvatarUploadForm(request.POST, request.FILES)
-	#avatarPreUploadedForm = AvatarPreUploadedForm(request, request.FILES)
+	avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
+	avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
 	if request.method == 'POST':
 		if "pre-uploaded" in request.POST:
-			avatar = request.POST.getlist('avatars')[0]
-			teacher.avatar = '/static/game/image/avatars/' + avatar
+			if avatarPreUploadedForm.is_valid:
+				avatar = avatarPreUploadedForm.data.get('pre-uploaded', False)
 		else:
 			if avatarUploadForm.is_valid() and "user-uploaded" in request.POST:
-				message = request.FILES
-				avatar = request.FILES.get('user-upload-avatar', False)
+				avatar = request.FILES.get('avatar', False)
 		teacher.avatar = avatar
 		teacher.save()
 
 	context = RequestContext(request, {
-		'avatars' : img_list,
-		'message' : avatar,
 		'avatarPreUploadedForm' : avatarPreUploadedForm,
 		'avatarUploadForm' : avatarUploadForm,
-		'teacher' : teacher,
+		'user' : request.user,
 	})
 	return render(request, 'game/settings.html', context)
-
-
-
 
 
 def render_student_info(request, logged):
@@ -78,3 +69,15 @@ def render_student_info(request, logged):
 		'currentClass' : currentClass,
 	})
 	return render(request, 'game/logged_students.html', context)
+
+
+
+"""	
+avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None)
+avatarPreUploadedFormAvatars = avatarPreUploadedForm.cleaned_data.avatarForm.choices
+if request.method == 'POST':
+if  avatarPreUploadedForm.is_valid() and "pre-uploaded" in request.POST:
+avatar = request.POST.getlist('avatars')[0]
+teacher.avatar = '/static/game/image/avatars/' + avatar
+		    """
+
