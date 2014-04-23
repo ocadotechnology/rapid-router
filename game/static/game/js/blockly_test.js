@@ -140,7 +140,8 @@ BlocklyTest.getStartBlock = function() {
 };
 
 BlocklyTest.populateProgram = function() {
-    var program = new ocargo.Program([]);
+    var program = new ocargo.Program();
+    program.stack.push([]);//TODO: take out 0 depth stack hack once we can cope with loops etc.
     var startBlock = this.getStartBlock();
 
     function populateBlock(program, block) {
@@ -148,11 +149,11 @@ BlocklyTest.populateProgram = function() {
             return;
         }
         if (block.type == 'move_van') {
-            program.instructions.push(FORWARD);
+            program.stack[0].push(FORWARD_COMMAND);
         } else if (block.type == 'turn_left') {
-            program.instructions.push(TURN_LEFT);
+            program.stack[0].push(TURN_LEFT_COMMAND);
         } else if (block.type == 'turn_right') {
-            program.instructions.push(TURN_RIGHT);
+            program.stack[0].push(TURN_RIGHT_COMMAND);
         }
 
         if (block.nextConnection) {
