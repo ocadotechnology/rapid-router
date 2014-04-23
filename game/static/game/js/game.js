@@ -95,11 +95,9 @@ function generateRandomPathPoints(current, seed, length) {
 			}
 		}
 	}
-	console.debug("blah");
 	for (var i = 0; i < points.length; i++) {
 		console.debug(points[i]);
 	}
-	console.debug("blah2");
 	return points;
 
 	/*                      *(1, 0) 1
@@ -166,8 +164,6 @@ function generateRandomPathPoints(current, seed, length) {
 
 function defaultProgram(level) {
 	var program = new ocargo.Program(new InstructionHandler(level));
-	//TODO: get rid of this once we have shown it
-//	program.addNewStackLevel([new While(counterCondition(2), [TURN_LEFT_COMMAND])]);
 	
 	program.addNewStackLevel(
 	          [TURN_LEFT_COMMAND,
