@@ -75,24 +75,6 @@ window.addEventListener('load', BlocklyTest.init);
 
 BlocklyTest.queue = [];
 
-BlocklyTest.execute = function() {
-    BlocklyTest.queue = [];
-
-    var code = Blockly.JavaScript.workspaceToCode();
-    try {
-        eval(code);
-    } catch (e) {
-        // Null is thrown for infinite loop.
-        // Otherwise, abnormal termination is a user error.
-        if (e !== Infinity) {
-            alert(e);
-        }
-    }
-  
-    resetVan();
-    window.setTimeout(BlocklyTest.animate, 100);  
-};
-
 BlocklyTest.animate = function() {
     var instruction = BlocklyTest.queue.shift();
     if (!instruction) {
@@ -148,6 +130,7 @@ BlocklyTest.populateProgram = function() {
         if (!block) {
             return;
         }
+        
         if (block.type == 'move_van') {
             program.stack[0].push(FORWARD_COMMAND);
         } else if (block.type == 'turn_left') {
