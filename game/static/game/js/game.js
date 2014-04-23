@@ -165,24 +165,28 @@ function generateRandomPathPoints(current, seed, length) {
 }
 
 function defaultProgram(level) {
-	  var program = new ocargo.Program(
-	          [TURN_LEFT,
-	              FORWARD,
-	              TURN_RIGHT,
-	              FORWARD,
-	              TURN_LEFT,
-	              FORWARD,
-	              TURN_RIGHT,
-	              FORWARD,
-	              TURN_RIGHT,
-	              FORWARD,
-	              TURN_LEFT,
-	              FORWARD,
-	              FORWARD,
-	              FORWARD
+	var program = new ocargo.Program(new InstructionHandler(level));
+	//TODO: get rid of this once we have shown it
+//	program.addNewStackLevel([new While(counterCondition(2), [TURN_LEFT_COMMAND])]);
+	
+	program.addNewStackLevel(
+	          [TURN_LEFT_COMMAND,
+	              FORWARD_COMMAND,
+	              TURN_RIGHT_COMMAND,
+	              FORWARD_COMMAND,
+	              TURN_LEFT_COMMAND,
+	              FORWARD_COMMAND,
+	              TURN_RIGHT_COMMAND,
+	              FORWARD_COMMAND,
+	              TURN_RIGHT_COMMAND,
+	              FORWARD_COMMAND,
+	              TURN_LEFT_COMMAND,
+	              FORWARD_COMMAND,
+	              FORWARD_COMMAND,
+	              FORWARD_COMMAND
 	          ]);
 	
-	  level.play(program);
+	level.play(program);
 }
 
 function trackDevelopment(level) {
@@ -201,7 +205,8 @@ function trackDevelopment(level) {
 	});
     
     $('#play').click(function() {
-        var program = BlocklyTest.populateProgram(program);
+        var program = BlocklyTest.populateProgram();
+        program.instructionHandler = new InstructionHandler(level);
     	level.play(program);
 	});
 
@@ -217,13 +222,13 @@ function trackDevelopment(level) {
 $(function() {
     'use strict';
 
-    var ui = createUi();
+    ocargo.ui = createUi();
     
-    var level = createDefaultLevel(ui);
+    ocargo.level = createDefaultLevel(ocargo.ui);
     
     $('#runDefaultProgram').click(function() {
-    	defaultProgram(level);
+    	defaultProgram(ocargo.level);
 	});
 
-    trackDevelopment(level);
+    trackDevelopment(ocargo.level);
 });
