@@ -166,4 +166,4 @@ BlocklyTest.populateProgram = function() {
         }
     }
     return program;
-}
+};
