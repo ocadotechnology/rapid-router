@@ -16,6 +16,10 @@ ocargo.Level.prototype.play = function(program){
         program.step();
     }
     
+    if (this.van.currentNode === this.destination && !program.isTerminated) {
+        console.debug('You win!');//TODO: tell user
+    }
+    
     this.ui.animateUpdates();
 };
 
@@ -27,13 +31,10 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
 	console.debug('Calculating next node for instruction ' + instruction.name);
     var nextNode = instruction.getNextNode(this.level.van.previousNode, this.level.van.currentNode);
 
-    if (nextNode === this.level.destination && !program.canStep()) {
-        console.debug('You win!');
-        program.terminate();
-    } else if (!nextNode) {
+    if (!nextNode) {
         console.debug('Oh dear! :(');
         program.terminate();
-        return; //TODO: animate crash
+        return; //TODO: animate crash, tell user
     }
 
     this.level.van.move(nextNode, instruction);

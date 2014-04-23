@@ -122,32 +122,31 @@ BlocklyTest.getStartBlock = function() {
 };
 
 BlocklyTest.populateProgram = function() {
+	function getCommandsAtThisLevel(block){
+    	var commands = [];
+    	
+    	while(block){
+    		if (block.type == 'move_van') {
+    			commands.push(FORWARD_COMMAND);
+            } else if (block.type == 'turn_left') {
+            	commands.push(TURN_LEFT_COMMAND);
+            } else if (block.type == 'turn_right') {
+            	commands.push(TURN_RIGHT_COMMAND);
+            } else if (block.type == 'controls_repeat') {
+            	commands.push(
+            			new While(
+            					counterCondition(block.inputList[0].fieldRow[1].text_), 
+            					getCommandsAtThisLevel(block.inputList[1].connection.targetBlock())));
+            }
+    		
+    		block = block.nextConnection.targetBlock();
+    	}
+    	
+    	return commands;
+    }
+	
     var program = new ocargo.Program();
-    program.stack.push([]);//TODO: take out 0 depth stack hack once we can cope with loops etc.
     var startBlock = this.getStartBlock();
-
-    function populateBlock(program, block) {
-        if (!block) {
-            return;
-        }
-        
-        if (block.type == 'move_van') {
-            program.stack[0].push(FORWARD_COMMAND);
-        } else if (block.type == 'turn_left') {
-            program.stack[0].push(TURN_LEFT_COMMAND);
-        } else if (block.type == 'turn_right') {
-            program.stack[0].push(TURN_RIGHT_COMMAND);
-        }
-
-        if (block.nextConnection) {
-            populateBlock(program, block.nextConnection.targetBlock());
-        }
-    }
-
-    if (startBlock) {
-        if (startBlock.nextConnection) {
-            populateBlock(program, startBlock.nextConnection.targetBlock());
-        }
-    }
+    program.stack.push(getCommandsAtThisLevel(startBlock));
     return program;
 };

@@ -3,6 +3,7 @@ var ocargo = ocargo || {};
 ocargo.Program = function(instructionHandler){
 	this.instructionHandler = instructionHandler;
 	this.stack = [];
+	this.isTerminated = false;
 };
 
 ocargo.Program.prototype.step = function() {
@@ -26,6 +27,7 @@ ocargo.Program.prototype.addNewStackLevel = function(commands) {
 
 ocargo.Program.prototype.terminate = function() {
 	this.stack = [];
+	this.isTerminated = true;
 };
 
 function IF(condition, ifContents, elseContents){
