@@ -3,7 +3,7 @@ var ocargo = ocargo || {};
 ocargo.Program = function(instructionHandler){
 	this.instructionHandler = instructionHandler;
 	this.stack = [];
-}
+};
 
 ocargo.Program.prototype.step = function() {
 	var level = this.stack[this.stack.length - 1];
@@ -14,19 +14,19 @@ ocargo.Program.prototype.step = function() {
 	}
 	
 	commandToProcess.execute(this);
-}
+};
 
 ocargo.Program.prototype.canStep = function() {
 	return this.stack.length !== 0;
-}
+};
 
 ocargo.Program.prototype.addNewStackLevel = function(commands) {
 	this.stack.push(commands);
-}
+};
 
 ocargo.Program.prototype.terminate = function() {
 	this.stack = [];
-}
+};
 
 function IF(condition, ifContents, elseContents){
 	this.condition = condition;
@@ -42,24 +42,47 @@ IF.prototype.execute = function(program) {
 	} else {
 		program.step();
 	}
+};
+
+function While(condition, body){
+	this.condition = condition;
+	this.body = body;
 }
 
-var WHILE = {};
+While.prototype.execute = function(program){
+	if(this.condition()){
+		program.addNewStackLevel([this]);
+		program.addNewStackLevel(this.body.slice(0));
+	}
+};
+
+function counterCondition(count){
+	var f = function(){
+		if(count > 0){
+			count--;
+			return true;
+		}
+		
+		return false;
+	}
+	
+	return f;
+}
 
 TURN_LEFT_COMMAND = {};
 TURN_LEFT_COMMAND.execute = function(program){
 	program.instructionHandler.handleInstruction(TURN_LEFT, program);
-}
+};
 
 TURN_RIGHT_COMMAND = {};
 TURN_RIGHT_COMMAND.execute = function(program){
 	program.instructionHandler.handleInstruction(TURN_RIGHT, program);
-}
+};
 
 FORWARD_COMMAND = {};
 FORWARD_COMMAND.execute = function(program){
 	program.instructionHandler.handleInstruction(FORWARD, program);
-}
+};
 
 // Usage:
 //var program = new ocargo.Stack();

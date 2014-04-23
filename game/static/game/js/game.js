@@ -166,6 +166,8 @@ function generateRandomPathPoints(current, seed, length) {
 
 function defaultProgram(level) {
 	var program = new ocargo.Program(new InstructionHandler(level));
+	//TODO: get rid of this once we have shown it
+//	program.addNewStackLevel([new While(counterCondition(2), [TURN_LEFT_COMMAND])]);
 	
 	program.addNewStackLevel(
 	          [TURN_LEFT_COMMAND,
