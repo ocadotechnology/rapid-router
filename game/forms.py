@@ -1,11 +1,11 @@
 import os
 from django import forms
-from models import Teacher
+from models import UserProfile
 from django import forms
 
 class AvatarUploadForm(forms.ModelForm):
     class Meta:
-        model = Teacher
+        model = UserProfile
         fields = ['avatar']
 
 class AvatarPreUploadedForm(forms.Form):
@@ -15,5 +15,5 @@ class AvatarPreUploadedForm(forms.Form):
 	 	self.fields['avatars'] = forms.ChoiceField(choices=choices)
 
 	class Meta:
-		model = Teacher
+		model = UserProfile
 		fields = ('avatar',)

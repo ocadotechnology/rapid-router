@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist
 from forms import AvatarUploadForm, AvatarPreUploadedForm
-from models import School, Teacher, Student, Class
+from models import School, Teacher, Student, Class, UserProfile
 
 
 def game(request):
@@ -24,7 +24,7 @@ def settings(request):
 	path = os.path.join(x, 'static/game/image/Avatars/')
 	img_list = os.listdir(path)
 	avatar = None
-	teacher = request.user.teacher
+	userProfile = request.user.userprofile
 	avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
 	avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
 	if request.method == 'POST':
@@ -34,8 +34,8 @@ def settings(request):
 		else:
 			if avatarUploadForm.is_valid() and "user-uploaded" in request.POST:
 				avatar = request.FILES.get('avatar', False)
-		teacher.avatar = avatar
-		teacher.save()
+		userProfile.avatar = avatar
+		userProfile.save()
 
 	context = RequestContext(request, {
 		'avatarPreUploadedForm' : avatarPreUploadedForm,
@@ -57,7 +57,7 @@ def render_student_info(request, logged):
 		students = cl.get_logged_in_students() if logged else cl.students.all()
 		currentClass = cl.name
 	try:
-		classes = user.teacher.class_teacher.all()
+		classes = user.userprofile.teacher.class_teacher.all()
  	except ObjectDoesNotExist:
  		message = "You don't have permissions to see this."
 
@@ -69,15 +69,3 @@ def render_student_info(request, logged):
 		'currentClass' : currentClass,
 	})
 	return render(request, 'game/logged_students.html', context)
-
-
-
-"""	
-avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None)
-avatarPreUploadedFormAvatars = avatarPreUploadedForm.cleaned_data.avatarForm.choices
-if request.method == 'POST':
-if  avatarPreUploadedForm.is_valid() and "pre-uploaded" in request.POST:
-avatar = request.POST.getlist('avatars')[0]
-teacher.avatar = '/static/game/image/avatars/' + avatar
-		    """
-

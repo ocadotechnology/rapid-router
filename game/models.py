@@ -3,14 +3,17 @@ from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from datetime import datetime
 
+class UserProfile(models.Model):
+  user = models.OneToOneField(User)
+  avatar = models.ImageField(upload_to='static/game/image/avatars/',
+    default='/static/game/image/avatars/default-avatar.png', null=True, blank=True)
+
 class School (models.Model):
   name = models.CharField(max_length = 200)
 
 class Teacher (models.Model):
   name = models.CharField(max_length = 200)
-  user = models.OneToOneField(User)
-  avatar = models.ImageField(upload_to='static/game/image/avatars/',
-    default='/static/game/image/avatars/default-avatar.png', null=True, blank=True)
+  user = models.OneToOneField(UserProfile)
 
 class Class (models.Model):
   name = models.CharField(max_length = 200)
@@ -33,12 +36,12 @@ class Class (models.Model):
 class Student (models.Model):
   name = models.CharField(max_length = 200)
   class_field = models.ForeignKey(Class, related_name='students')
-  user = models.OneToOneField(User)
+  user = models.OneToOneField(UserProfile)
 
 class Guardian (models.Model):
   name = models.CharField(max_length = 200)
   children = models.ManyToManyField(Student)
-  user = models.OneToOneField(User)
+  user = models.OneToOneField(UserProfile)
 
 class Level (models.Model):
   name = models.IntegerField()
