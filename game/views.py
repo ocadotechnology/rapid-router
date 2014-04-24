@@ -19,6 +19,9 @@ def students_in_class(request):
 	""" Renders the page with information about all the students enrolled in a chosen class."""
 	return render_student_info(request, False)
 
+def level_editor(request):
+	return render(request, 'game/level_editor.html')
+
 def settings(request):
 	""" Renders the settings page.  """
 	x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

@@ -1,0 +1,20 @@
+#wrapper {
+    height: 730px;
+    width: 1020px;
+    margin-left: 20px;
+
+}
+
+#paper {
+    border: 0;
+    background-color: rgb(180, 180, 180);
+    float: left;
+    height: 630px;
+    margin-bottom: 30px;
+    overflow: scroll;
+    width: 650px;
+}
+
+.col {
+    float: left;
+}
