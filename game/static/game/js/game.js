@@ -215,7 +215,7 @@ function trackDevelopment() {
 	
 	$('#reset').click(function() {
 		initialiseDefault();	
-	})
+	});
 }
 
 $(function() {
@@ -223,11 +223,10 @@ $(function() {
     trackDevelopment();
 });
 
-$('#createFromSelect').click(function() {
-	console.debug("MAGIG");
-	var ui = createUi();
-	var nodes = generateNodes(grid);  
-	var van = new ocargo.Van(nodes[0], nodes[1], ui);
-	var map = new ocargo.Map(nodes, ui);
-	ocargo.level = new ocargo.Level(map, van, nodes[nodes.length - 1], ui);
+$('#randomRoad').click(function() {
+	var points = generateRandomPathPoints([0,3], 0.5, 13);
+	var nodes = generateNodes(points);  
+	var van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+	var map = new ocargo.Map(nodes, ocargo.ui);
+	ocargo.level = new ocargo.Level(map, van, nodes[nodes.length - 1], ocargo.ui);
 });

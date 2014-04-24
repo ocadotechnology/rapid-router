@@ -43,8 +43,16 @@ function generateNodes(points){
 }
 
 $(function() {
-	paper.clear;
+	paper.clear();
+	ocargo.ui = new ocargo.SimpleUi();
 	createGrid(paper);
+});
+
+
+$('#clear').click(function() {
+	paper.clear();
+	grid = [];
+	createGrid(paper)
 });
 
 $('#createFromSelect').click(function() {
