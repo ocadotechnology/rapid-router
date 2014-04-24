@@ -50,8 +50,8 @@
 </dif> 
 <div id="profile">
   <div id="wrapper">
-	  {% if user.user.avatar %}
-	    <img src="/{{user.user.avatar.url}}" /> 
+	  {% if user.userprofile.avatar %}
+	    <img src="/{{user.userprofile.avatar.url}}" /> 
 	  {% endif %}
 	  <h4>{{user.username}}</h4>
 	  <h5>{{user.first_name}}</h5>

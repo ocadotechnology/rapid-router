@@ -335,23 +335,4 @@ function renderTheMap(map) {
                 break;
         }
     };
-
-    function clearRoad() {
-        for (var i = 0; i < roadElements.length; i++) {
-            roadElements[i].remove();
-        }
-        roadElements = [];
-    }
-
-    window.reset = function() {
-        clearRoad();
-        roadElements = createDefaultRoad(paper);
-        resetVan();
-    };
-
-    window.randomRoad = function() {
-        clearRoad();
-        roadElements = createRandomRoad(paper);
-        resetVan();
-    };
 }

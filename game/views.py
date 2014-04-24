@@ -20,6 +20,7 @@ def students_in_class(request):
 	return render_student_info(request, False)
 
 def settings(request):
+	""" Renders the settings page.  """
 	x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 	path = os.path.join(x, 'static/game/image/Avatars/')
 	img_list = os.listdir(path)

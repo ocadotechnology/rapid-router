@@ -185,7 +185,16 @@ function defaultProgram(level) {
 	level.play(program);
 }
 
-function trackDevelopment(level) {
+function initialiseDefault() {
+	'use strict';
+	ocargo.ui = createUi();
+	ocargo.level = createDefaultLevel(ocargo.ui);
+	$('#runDefaultProgram').click(function() {
+		defaultProgram(ocargo.level);
+	});
+}
+
+function trackDevelopment() {
 	$('#moveForward').click(function() {
 		//TODO: make this create Blockly blocks
     });
@@ -200,30 +209,24 @@ function trackDevelopment(level) {
     
     $('#play').click(function() {
         var program = BlocklyTest.populateProgram();
-        program.instructionHandler = new InstructionHandler(level);
-    	level.play(program);
+        program.instructionHandler = new InstructionHandler(ocargo.level);
+    	ocargo.level.play(program);
 	});
-
-	$('#randomRoad').click(function() {
-		//TODO: create level, make sure it works with Blockly afterwards
-		var ui = createUi();
-		var points = generateRandomPathPoints([0,3], 0.5, 13);
-		var nodes = generateNodes(points);  
-		var van = new ocargo.Van(nodes[0], nodes[1], ui);
-		var map = new ocargo.Map(nodes, ui);
+	
+	$('#reset').click(function() {
+		initialiseDefault();	
 	})
 }
 
 $(function() {
-    'use strict';
+   	initialiseDefault();
+    trackDevelopment();
+});
 
-    ocargo.ui = createUi();
-    
-    ocargo.level = createDefaultLevel(ocargo.ui);
-    
-    $('#runDefaultProgram').click(function() {
-    	defaultProgram(ocargo.level);
-	});
-
-    trackDevelopment(ocargo.level);
+$('#randomRoad').click(function() {
+		var points = generateRandomPathPoints([0,3], 0.5, 13);
+		var nodes = generateNodes(points);  
+		var van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+		var map = new ocargo.Map(nodes, ocargo.ui);
+		ocargo.level = new ocargo.Level(map, van, nodes[nodes.length - 1], ocargo.ui);
 });

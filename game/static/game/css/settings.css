@@ -7,7 +7,7 @@
 	float:right;
 	width: 300px;
 	margin-top:100px;
-	margin-right: 5%;
+	margin-left: 3%;
 	width: 16%;
 	min-width: 200px;
 }
@@ -16,6 +16,7 @@
 	width: 140px;
 	height: 140px;
 	margin-bottom: 50px;
+	margin-left: 5%;
 }
 
 #wrapper {
