@@ -2,7 +2,6 @@
 
 var ocargo = ocargo || {};
 
-
 ocargo.SimpleUi = function() {
     this.queue_ = [];
 

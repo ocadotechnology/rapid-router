@@ -14,3 +14,9 @@ handlers:
 
 env_variables:
   DJANGO_SETTINGS_MODULE: 'website.settings'
+
+libraries:
+- name: PIL
+  version: latest
+- name: MySQLdb
+  version: latest

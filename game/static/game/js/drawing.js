@@ -1,10 +1,5 @@
 'use strict';
 
-var KEY_CODE_UP = 38;
-var KEY_CODE_LEFT = 37;
-var KEY_CODE_RIGHT = 39;
-var KEY_CODES = [KEY_CODE_UP, KEY_CODE_LEFT, KEY_CODE_RIGHT];
-
 var PAPER_WIDTH = 1000;
 var PAPER_HEIGHT = 800;
 var GRID_WIDTH = 10;
@@ -302,7 +297,6 @@ function resetVan() {
 }
 
 function renderTheMap(map) {
-
     paper.clear();
 
     createGrid(paper);
@@ -314,25 +308,4 @@ function renderTheMap(map) {
     function moveCompleteCallback() {
         vanMoving = false;
     }
-
-    window.onkeyup = function(event) {
-        var keyCode = event.keyCode;
-        if (vanMoving || KEY_CODES.indexOf(keyCode) === -1) {
-            return;
-        }
-
-        vanMoving = true;
-
-        switch (keyCode) {
-            case KEY_CODE_UP:
-                moveForward(moveCompleteCallback);
-                break;
-            case KEY_CODE_LEFT:
-                moveLeft(moveCompleteCallback);
-                break;
-            case KEY_CODE_RIGHT:
-                moveRight(moveCompleteCallback);
-                break;
-        }
-    };
 }
