@@ -32,20 +32,20 @@
 {% block content %}
 <div id="wrapper">
   <div id="paper" class="col"></div>
+  
   <div id="blockly" class="col"></div>
-  <div id="tools" class="col">
-    <div id="controls">
-   	  <button id="moveForward">Move Forward</button>
-      <button id="turnLeft">Turn Left</button>
-      <button id="turnRight">Turn Right</button>
-      
-      <button id="play">Play</button>
-      
-      <button id="runDefaultProgram">Run Default Program</button>
-      
-      <button id="reset">Reset</button><!-- TODO: fix reset -->
-      <button id="randomRoad">Random road</button>
-    </div>
+  
+  <div id="instructions" class="col">
+    <button id="turnLeft">&#x21BA;</button>
+    <button id="moveForward">&uarr;</button>
+    <button id="turnRight">&#x21BB;</button>
+  </div>
+  
+  <div id="controls" class="col">
+	  <button id="play">&#x25B6;</button>
+	  <button id="runDefaultProgram">&#x25B6; Default</button>
+	  <button id="reset">Reset</button>
+	  <button id="randomRoad">Random road</button>
   </div>
 </div>
 <xml id="toolbox" style="display: none">

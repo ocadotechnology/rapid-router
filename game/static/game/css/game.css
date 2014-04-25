@@ -18,17 +18,8 @@
     margin-bottom: 10px;
 }
 
-#tools {
-    height: 130px;
-}
-
-#tools button {
-    float: left;
+button{
     margin-right: 10px;
-    padding-left: 0;
-    padding-right: 0;
-    height: 90px;
-    width: 90px;
 }
 
 .col {
@@ -36,6 +27,6 @@
     margin-left: 20px;
 }
 
-#tools, #blockly {
+#blockly {
     width: 320px;
 }
