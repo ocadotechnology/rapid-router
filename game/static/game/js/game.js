@@ -46,122 +46,6 @@ function generateNodes(points){
 	return nodes;
 }
 
-/**
-  * Generates a random road given a starting point and seed and length.
-  * Seed - a number from the range <0, 1>, where 1 creates a completely straight road
-  * and 0 does not influence the way the next road element is chosen at all.
-  * Length - optional argument limiting the length of the path.
-  */
-function generateRandomPathPoints(current, seed, length) {
-	var points = [];
-	var visited = initialiseVisited();
-	var possibleNext = null;
-	var orientation = current[1] == 0 ? -1 : 2;
-	var possibleStaight = null;
-	length = length == undefined ? Number.POSITIVE_INFINITY : length;
-
-	points.push(current);
-	visited[current[0]][current[1]] = true;
-	current = getNextBasedOnOrientation(current, orientation);
-
-	while (!isOutOfBounds(current) && points.length < length) {
-		
-		visited[current[0]][current[1]] = true;
-		possibleNext = getPossibleNextMoves(current, visited);
-		possibleStraight = getNextBasedOnOrientation(current, orientation);
-		
-		if (Math.random() < seed && possibleStraight != -1 
-			&& isFree(possibleStraight, visited)) {
-			points.push(current);
-			current = possibleStraight;
-			console.debug(current);
-
-		} else {
-
-			if (possibleNext.length == 0) {
-				if(isOnBorder(current)) {
-					points.push(current);
-					return points;
-				}
-				current = points.pop();
-
-			} else {
-
-				var decision = Math.floor((Math.random() * possibleNext.length));
-				points.push(current);
-				next = possibleNext[decision];
-				orientation =  (2 * (next[0] - current[0]) + (next[1] - current[1]));
-				current = possibleNext[decision];
-			}
-		}
-	}
-	for (var i = 0; i < points.length; i++) {
-		console.debug(points[i]);
-	}
-	return points;
-
-	/*                      *(1, 0) 1
-	 *		
-	 *      *(-1,0) -2      x(0, 0)      *(1, 0) 2
-	 *
-	 *                      *(-1, 0) -1
-	 *
-	 * Returns next point in the same orientation or -1 if it would go out of bounds. 
-	 */					
-	function getNextBasedOnOrientation(point, orientation) {
-		var result = null;
-		switch(orientation) {
-			case 1:
-				result = [point[0], point[1] + 1];
-				break;
-			case -1:
-				result = [point[0], point[1] - 1];
-				break;
-			case 2:
-				result = [point[0] + 1, point[1]];
-				break;
-			case -2:
-				result = [point[0] - 1, point[1]];
-				break;
-		}
-		return isOutOfBounds(result) ? -1 : result;
-	}
-
-	function isOutOfBounds(point) {
-		return point[0] < 0 || point[0] >= GRID_WIDTH || point[1] < 0 || point[1] >= GRID_HEIGHT;
-	}
-
-	function isOnBorder(point) {
-		return point[0] == 0 || point[0] == GRID_WIDTH || point[1] == 0 || point[1] == GRID_HEIGHT;
-	}
-
-	function isFree(point, visited) {
-		return !visited[point[0]][point[1]];
-	}
-
-	function getPossibleNextMoves(point, visited) {
-		var possible = [];
-		var possiblePoint = null;
-		var considered = [[point[0], point[1] + 1], [point[0] + 1, point[1]], 
-			[point[0] - 1, point[1]], [point[0], point[1] - 1]];
-		for (var i= 0; i < 4; i++) {
-			possiblePoint = considered[i];
-			if(!isOutOfBounds(possiblePoint) && isFree(possiblePoint, visited)) {
-				possible.push(possiblePoint);
-			}
-		}
-		return possible;
-	}
-
-	function initialiseVisited() {
-		var visited = new Array(GRID_WIDTH);
-		for (var i = 0; i < GRID_WIDTH; i++) {
-			visited[i] = new Array(GRID_HEIGHT);
-		}
-		return visited;
-	}
-}
-
 function defaultProgram(level) {
 	var program = new ocargo.Program(new InstructionHandler(level));
 	
@@ -215,7 +99,7 @@ function trackDevelopment() {
 	
 	$('#reset').click(function() {
 		initialiseDefault();	
-	})
+	});
 }
 
 $(function() {
@@ -223,11 +107,10 @@ $(function() {
     trackDevelopment();
 });
 
-$('#createFromSelect').click(function() {
-	console.debug("MAGIG");
-	var ui = createUi();
-	var nodes = generateNodes(grid);  
-	var van = new ocargo.Van(nodes[0], nodes[1], ui);
-	var map = new ocargo.Map(nodes, ui);
-	ocargo.level = new ocargo.Level(map, van, nodes[nodes.length - 1], ui);
+$('#randomRoad').click(function() {
+	var points = generateRandomPathPoints([0,3], 0.5, 13);
+	var nodes = generateNodes(points);  
+	var van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+	var map = new ocargo.Map(nodes, ocargo.ui);
+	ocargo.level = new ocargo.Level(map, van, nodes[nodes.length - 1], ocargo.ui);
 });
