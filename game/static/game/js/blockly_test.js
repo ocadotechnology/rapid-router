@@ -62,13 +62,29 @@ Blockly.JavaScript['turn_van'] = function(block) {
 
 var BlocklyTest = {};
 
+BlocklyTest.createBlock = function(blockType) {
+	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
+	block.initSvg();
+	block.render();
+    return block;
+};
+
+BlocklyTest.addBlockToEndOfProgram = function(typeOfBlockToAdd) {
+	var blockToAdd = BlocklyTest.createBlock(typeOfBlockToAdd);
+	
+	var block = this.getStartBlock();
+	while(block.nextConnection.targetBlock()){
+		block = block.nextConnection.targetBlock();
+	}
+	
+	block.nextConnection.connect(blockToAdd.previousConnection);
+};
+
 BlocklyTest.init = function() {
     Blockly.inject(document.getElementById('blockly'),
         {path: '/static/game/js/blockly/', toolbox: document.getElementById('toolbox')});
 
-    var startBlock = Blockly.Block.obtain(Blockly.mainWorkspace, 'start');
-    startBlock.initSvg();
-    startBlock.render();
+    BlocklyTest.createBlock('start');
 } ;
 
 window.addEventListener('load', BlocklyTest.init);

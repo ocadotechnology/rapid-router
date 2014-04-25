@@ -80,15 +80,15 @@ function initialiseDefault() {
 
 function trackDevelopment() {
 	$('#moveForward').click(function() {
-		//TODO: make this create Blockly blocks
+		BlocklyTest.addBlockToEndOfProgram('move_van');
     });
 	
     $('#turnLeft').click(function() {
-    	//TODO: make this create Blockly blocks
+		BlocklyTest.addBlockToEndOfProgram('turn_left');
     });
 
     $('#turnRight').click(function() {
-    	//TODO: make this create Blockly blocks
+		BlocklyTest.addBlockToEndOfProgram('turn_right');
 	});
     
     $('#play').click(function() {
