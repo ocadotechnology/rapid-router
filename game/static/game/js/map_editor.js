@@ -10,16 +10,15 @@ ocargo.MapEditor = function() {
 	this.possibleNext = [];
 }
 
-
 ocargo.MapEditor.prototype.markPossible = function(point) {
-	//console.debug(this.possibleNext);
 	for (var i = 0; i < this.possibleNext.length; i++) {
-		this.mark(this.possibleNext[i], "white", 0, false);
+		var curr = this.possibleNext[i];
+		this.mark(curr, "white", 0, false);
 	}
 	this.possibleNext = getPossibleNextMoves(point, this.map);
-	//console.debug(this.possibleNext + "\n\n");
 	for (var i = 0; i < this.possibleNext.length; i++) {
-		this.mark(this.possibleNext[i], "#a4a4a6", 1, false);
+		var curr = this.possibleNext[i];
+		this.mark(this.possibleNext[i], "#a4a4a6", 1, undefined);
 	}
 };
 
@@ -46,13 +45,10 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
                 return function () {
                 	var getBBox = this_rect.getBBox();
                 	var point = [getBBox.x / 100, getBBox.y / 100];
-                	if(isFree(point, ocargo.mapEditor.map)) {
-                    ocargo.mapEditor.markPossible(point);
-                	ocargo.mapEditor.current = point;
-                	ocargo.mapEditor.submittedPoints.push(point);
-                	ocargo.mapEditor.map[point[0]][point[1]] = true;
-                    this_rect.attr({fill:"grey", "fill-opacity": 1,});
-                }
+                	if(ocargo.mapEditor.map[point[0]][point[1]] == undefined) {
+	                    ocargo.mapEditor.markPossible(point);
+	                    ocargo.mapEditor.mark(point, "grey", 1, true);
+	                }
                 }
             }();
             this.grid[i][j] = segment;
@@ -61,6 +57,7 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
     }
     this.current = [0,4];
     this.mark(this.current, "grey", 1, true);
+    this.markPossible(this.current);
 };
 
 // #A0A0A0 for the suggestion.
@@ -69,28 +66,24 @@ ocargo.MapEditor.prototype.trackCreation = function() {
 	$('#up').click(function() {
 		var point = ocargo.mapEditor.current.slice(0);
 	 	point[1] -= 1;
-		//console.debug(ocargo.mapEditor.current + " " + point);
 		point = handle(point);
 	});
 
 	$('#down').click(function() {	
 		var point = ocargo.mapEditor.current.slice(0);
 		point[1] += 1;
-		//console.debug(ocargo.mapEditor.current + " " + point);
 		point = handle(point);
 	});
 
 	$('#left').click(function() {
 		var point = ocargo.mapEditor.current.slice(0);
 		point[0] -= 1;
-		//console.debug(ocargo.mapEditor.current + " " + point);
 		point = handle(point);
 	});
 
 	$('#right').click(function() {
 		var point = ocargo.mapEditor.current.slice(0);
 		point[0] += 1;
-		//console.debug(ocargo.mapEditor.current + " " + point);
 		point = handle(point);
 	});
 
@@ -138,16 +131,6 @@ $('#undo').click(function() {
 		ocargo.mapEditor.markPossible(ocargo.mapEditor.current, "white", 0, false);
 
 	}
-	/*
-	if(ocargo.mapEditor.submittedPoints.length > 1) {
-		var toChange = ocargo.mapEditor.submittedPoints.pop();
-		ocargo.mapEditor.map[toChange[0]][toChange[1]] = false;
-		var changed = ocargo.mapEditor.grid[toChange[0]][toChange[1]];
-		changed.attr({stroke: '#777', fill:"white", "fill-opacity": 0,});
-		ocargo.mapEditor.current = ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1];
-		//console.debug(toChange[0], toChange[1], ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1]);
-	}
-	*/
 });
 
 $('#clear').click(function() {
