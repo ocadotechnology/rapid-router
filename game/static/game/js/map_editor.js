@@ -4,18 +4,33 @@ var ocargo = ocargo || {};
 
 ocargo.MapEditor = function() {
 	this.submittedPoints = [];
+	this.map = initialiseVisited();
 	this.grid = initialiseVisited();
 	this.current = [];
+	this.possibleNext = [];
 }
 
-ocargo.MapEditor.prototype.mark = function(element) {
-	var getBBox = element.getBBox();
-	console.debug([getBBox.x / 100, (GRID_HEIGHT - 1) - getBBox.y / 100] + " " + this.current);
-	ocargo.mapEditor.current = [getBBox.x / 100, (GRID_HEIGHT -1) - getBBox.y / 100];
-	ocargo.mapEditor.submittedPoints.push(ocargo.mapEditor.current);
-	ocargo.mapEditor.grid[ocargo.mapEditor.current[0]][ocargo.mapEditor.current[1]] = true;
-	element.attr({fill:"grey", "fill-opacity": 1,});
-}
+ocargo.MapEditor.prototype.markPossible = function(point) {
+	for (var i = 0; i < this.possibleNext.length; i++) {
+		var curr = this.possibleNext[i];
+		this.mark(curr, "white", 0, false);
+	}
+	this.possibleNext = getPossibleNextMoves(point, this.map);
+	for (var i = 0; i < this.possibleNext.length; i++) {
+		var curr = this.possibleNext[i];
+		this.mark(this.possibleNext[i], "#a4a4a6", 1, undefined);
+	}
+};
+
+ocargo.MapEditor.prototype.mark = function(point, colour, opacity, occupied) {
+	var element = this.grid[point[0]][point[1]];
+	if(occupied) {
+		this.current = point;
+		this.submittedPoints.push([point[0], point[1]]);
+	}
+	this.map[point[0]][point[1]] = occupied;
+	element.attr({fill:colour, "fill-opacity": opacity,});
+};
 
 ocargo.MapEditor.prototype.createGrid = function(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
@@ -28,57 +43,59 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
             segment.node.onclick = function () {
                 var this_rect = segment;
                 return function () {
-					ocargo.mapEditor.mark(this_rect);
+                	var getBBox = this_rect.getBBox();
+                	var point = [getBBox.x / 100, getBBox.y / 100];
+                	if(ocargo.mapEditor.map[point[0]][point[1]] == undefined) {
+	                    ocargo.mapEditor.markPossible(point);
+	                    ocargo.mapEditor.mark(point, "grey", 1, true);
+	                }
                 }
             }();
+            this.grid[i][j] = segment;
+            this.map[i][j] = false;
         }
     }
     this.current = [0,4];
-    //ocargo.mapEditor.mark(this.current);
+    this.mark(this.current, "grey", 1, true);
+    this.markPossible(this.current);
 };
 
 // #A0A0A0 for the suggestion.
 ocargo.MapEditor.prototype.trackCreation = function() {
-	var point = this.current;
 
 	$('#up').click(function() {
-		point[1] += 1;
-		handle(point);
+		var point = ocargo.mapEditor.current.slice(0);
+	 	point[1] -= 1;
+		point = handle(point);
 	});
 
-	$('#down').click(function() {
-	 	point[1] -= 1;
-		handle(point);
+	$('#down').click(function() {	
+		var point = ocargo.mapEditor.current.slice(0);
+		point[1] += 1;
+		point = handle(point);
 	});
 
 	$('#left').click(function() {
+		var point = ocargo.mapEditor.current.slice(0);
 		point[0] -= 1;
-		handle(point);
+		point = handle(point);
 	});
 
 	$('#right').click(function() {
+		var point = ocargo.mapEditor.current.slice(0);
 		point[0] += 1;
-		handle(point);
+		point = handle(point);
 	});
 
 
 	function handle(point) {
-		var pointless = [];
-		pointless[0] = point[0];
-		pointless[1] = point[1] - 1;
-		if (!isOutOfBounds(point)) {
-			var element = ocargo.mapEditor.getPaperElement(point[0], point[1]);
-			ocargo.mapEditor.mark(element);
-		} else {
-			if(!isFree(point, ocargo.mapEditor.grid)) {
-				console.debug("apparently didn't fulfil");
-			}
+
+		if (!isOutOfBounds(point) && isFree(point, ocargo.mapEditor.map)) {
+			ocargo.mapEditor.markPossible(point);
+			ocargo.mapEditor.mark(point, "grey", 1, true);
+			ocargo.mapEditor.current = point;
 		}
 	}
-};
-
-ocargo.MapEditor.prototype.getPaperElement = function(x, y) {
-	return paper.getElementByPoint((x + 1) * 100, (GRID_HEIGHT - y)*100);
 };
 
 ocargo.MapEditor.prototype.generateNodes = function(points) {
@@ -86,7 +103,7 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 	var nodes = [];
 	for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
-	      var coordinate = new ocargo.Coordinate(p[0], p[1]);
+	      var coordinate = new ocargo.Coordinate(p[0], GRID_HEIGHT -1 -p[1]);
 	      var node = new ocargo.Node(coordinate);
 	      if (previousNode) {
 	          node.addConnectedNodeWithBacklink(previousNode);
@@ -106,11 +123,13 @@ $(function() {
 });
 
 $('#undo').click(function() {
-	if(ocargo.mapEditor.submittedPoints.length > 0) {
+	if(ocargo.mapEditor.submittedPoints.length > 1) {
 		var toChange = ocargo.mapEditor.submittedPoints.pop();
-		ocargo.mapEditor.grid[toChange[0]][toChange[1]] = false;
-		var changed = ocargo.mapEditor.getPaperElement(toChange[0], toChange[1]);
-		changed.attr({stroke: '#777', fill:"white", "fill-opacity": 0,});
+		ocargo.mapEditor.current 
+			= ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1];
+		ocargo.mapEditor.mark(toChange, "white", 0, false);
+		ocargo.mapEditor.markPossible(ocargo.mapEditor.current, "white", 0, false);
+
 	}
 });
 
@@ -118,10 +137,10 @@ $('#clear').click(function() {
 	paper.clear();
 	ocargo.mapEditor = new ocargo.MapEditor();
 	ocargo.mapEditor.createGrid(paper)
-	ocargo.mapEditor.current = [0,4];
 });
 
 $('#createFromSelect').click(function() {
+	//console.debug(ocargo.mapEditor.submittedPoints);
 	ocargo.ui = new ocargo.SimpleUi();
 	var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
 	var map = new ocargo.Map(nodes, ocargo.ui);

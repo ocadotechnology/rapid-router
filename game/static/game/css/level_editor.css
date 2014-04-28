@@ -2,6 +2,7 @@
     height: 730px;
     width: 1020px;
     margin-left: 20px;
+    overflow: auto;
 
 }
 
@@ -17,4 +18,9 @@
 
 .col {
     float: left;
+    margin-left: 20px;
+}
+
+#tools {
+    width: 330px;
 }

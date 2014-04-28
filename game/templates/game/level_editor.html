@@ -21,7 +21,6 @@
 {% block css %}
 {{block.super}}
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
-  <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
 
 {% endblock %}
 
@@ -29,16 +28,16 @@
 <div id="wrapper">
   <h4> Design your own map!</h4>
   <div id="paper" class="col"></div>
+
   <div id="tools" class="col">
     <button id="createFromSelect">Do the magic</button>
     <button id="undo">Undo</button>
     <button id="clear">Clear</button><hr>
 	<button id="dummy" style="visibility:hidden"></button>
-    <button id="up">Up</button>
-	<button id="dummy" style="visibility:hidden"></button>
-    <button id="left">Left</button>
-    <button id="down">Down</button>
-    <button id="right">Right</button>
+    <button id="up">&#x2191;</button><br>
+    <button id="left">&#x2190;</button>
+    <button id="down">&#x2193;</button>
+    <button id="right">&#x2192;</button>
 
 
 
