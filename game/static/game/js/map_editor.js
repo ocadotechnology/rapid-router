@@ -10,28 +10,6 @@ ocargo.MapEditor = function() {
 	this.possibleNext = [];
 }
 
-ocargo.MapEditor.prototype.markPossible = function(point) {
-	for (var i = 0; i < this.possibleNext.length; i++) {
-		var curr = this.possibleNext[i];
-		this.mark(curr, "white", 0, false);
-	}
-	this.possibleNext = getPossibleNextMoves(point, this.map);
-	for (var i = 0; i < this.possibleNext.length; i++) {
-		var curr = this.possibleNext[i];
-		this.mark(this.possibleNext[i], "#a4a4a6", 1, undefined);
-	}
-};
-
-ocargo.MapEditor.prototype.mark = function(point, colour, opacity, occupied) {
-	var element = this.grid[point[0]][point[1]];
-	if(occupied) {
-		this.current = point;
-		this.submittedPoints.push([point[0], point[1]]);
-	}
-	this.map[point[0]][point[1]] = occupied;
-	element.attr({fill:colour, "fill-opacity": opacity,});
-};
-
 ocargo.MapEditor.prototype.createGrid = function(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
         for (var j = 0; j < GRID_HEIGHT; j++) {
@@ -60,7 +38,28 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
     this.markPossible(this.current);
 };
 
-// #A0A0A0 for the suggestion.
+ocargo.MapEditor.prototype.markPossible = function(point) {
+	for (var i = 0; i < this.possibleNext.length; i++) {
+		var curr = this.possibleNext[i];
+		this.mark(curr, "white", 0, false);
+	}
+	this.possibleNext = getPossibleNextMoves(point, this.map);
+	for (var i = 0; i < this.possibleNext.length; i++) {
+		var curr = this.possibleNext[i];
+		this.mark(this.possibleNext[i], "#a4a4a6", 1, undefined);
+	}
+};
+
+ocargo.MapEditor.prototype.mark = function(point, colour, opacity, occupied) {
+	var element = this.grid[point[0]][point[1]];
+	if(occupied) {
+		this.current = point;
+		this.submittedPoints.push([point[0], point[1]]);
+	}
+	this.map[point[0]][point[1]] = occupied;
+	element.attr({fill:colour, "fill-opacity": opacity,});
+};
+
 ocargo.MapEditor.prototype.trackCreation = function() {
 
 	$('#up').click(function() {
@@ -89,7 +88,6 @@ ocargo.MapEditor.prototype.trackCreation = function() {
 
 
 	function handle(point) {
-
 		if (!isOutOfBounds(point) && isFree(point, ocargo.mapEditor.map)) {
 			ocargo.mapEditor.markPossible(point);
 			ocargo.mapEditor.mark(point, "grey", 1, true);
@@ -140,9 +138,50 @@ $('#clear').click(function() {
 });
 
 $('#createFromSelect').click(function() {
-	//console.debug(ocargo.mapEditor.submittedPoints);
 	ocargo.ui = new ocargo.SimpleUi();
 	var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
 	var map = new ocargo.Map(nodes, ocargo.ui);
 });
 
+Raphael.st.draggable = function() {
+  var me = this,
+      lx = 0,
+      ly = 0,
+      ox = 0,
+      oy = 0,
+      moveFnc = function(dx, dy) {
+          lx = dx + ox;
+          ly = dy + oy;
+          me.transform('t' + lx + ',' + ly);
+      },
+      startFnc = function() {},
+      endFnc = function() {
+          ox = lx;
+          oy = ly;
+      };
+  
+  this.drag(moveFnc, startFnc, endFnc);
+};
+
+$('#UL').click(function() {
+   	var myset = createTurn(paper, 0, 0, 'UL');
+    myset.draggable();
+});
+
+$('#DR').click(function() {
+   	var myset = createTurn(paper, 0, 0, 'DR');
+    myset.draggable();
+
+});
+
+$('#DL').click(function() {
+   	var myset = createTurn(paper, 0, 0, 'DL');
+    myset.draggable();
+
+});
+
+$('#UR').click(function() {
+   	var myset = createTurn(paper, 0, 0, 'UR');
+    myset.draggable();
+
+});
