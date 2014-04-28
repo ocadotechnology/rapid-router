@@ -13,7 +13,7 @@ ocargo.Level.prototype.play = function(program){
     $.post('/game/submit', JSON.stringify(program.levels));
 	
     while(program.canStep()) {
-        program.step();
+        program.step(this);
     }
     
     if (this.van.currentNode === this.destination && !program.isTerminated) {

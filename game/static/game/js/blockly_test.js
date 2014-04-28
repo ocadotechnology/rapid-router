@@ -60,6 +60,19 @@ Blockly.JavaScript['turn_van'] = function(block) {
     return 'BlocklyTest.' + block.getFieldValue('DIR') + '()\n';
 };
 
+Blockly.Blocks['road_exists'] = {
+  init: function() {
+    var BOOLEANS =
+        [['road exists forward', 'FORWARD'],
+         ['road exists left', 'LEFT'],
+         ['road exists right', 'RIGHT']];
+    this.setColour(210);
+    this.setOutput(true, 'Boolean');
+    this.appendDummyInput()
+    	.appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE');
+  }
+};
+
 var BlocklyTest = {};
 
 BlocklyTest.createBlock = function(blockType) {
@@ -153,6 +166,34 @@ BlocklyTest.populateProgram = function() {
             			new While(
             					counterCondition(block.inputList[0].fieldRow[1].text_), 
             					getCommandsAtThisLevel(block.inputList[1].connection.targetBlock())));
+            } else if (block.type == 'controls_if') {
+            	var conditionalCommandSets = [];
+            	
+            	var i = 0;
+            	while(i < block.inputList.length - block.elseCount_){
+            		var input = block.inputList[i];
+            		
+            		if(input.name.indexOf('IF') == 0) {
+            			var conditionBlock = input.connection.targetBlock();
+            			if(conditionBlock.type = 'road_exists'){
+            				var selection = conditionBlock.inputList[0].fieldRow[1].value_;
+            				var condition = roadCondition(selection);
+            			}
+            		} else if(input.name.indexOf('DO') == 0){
+            			var conditionalCommandSet = {};
+            			conditionalCommandSet.condition = condition;
+            			conditionalCommandSet.commands = getCommandsAtThisLevel(input.connection.targetBlock());
+            			conditionalCommandSets.push(conditionalCommandSet);
+            		}
+            		
+            		i++;
+            	}
+            	
+            	if(block.elseCount_ == 1){
+            		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
+            	}
+            	
+            	commands.push(new If(conditionalCommandSets, elseCommands));
             }
     		
     		block = block.nextConnection.targetBlock();

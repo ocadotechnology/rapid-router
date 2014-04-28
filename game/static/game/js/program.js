@@ -6,15 +6,15 @@ ocargo.Program = function(instructionHandler){
 	this.isTerminated = false;
 };
 
-ocargo.Program.prototype.step = function() {
-	var level = this.stack[this.stack.length - 1];
+ocargo.Program.prototype.step = function(level) {
+	var stackLevel = this.stack[this.stack.length - 1];
 	
-	var commandToProcess = level.splice(0, 1)[0];
-	if(level.length === 0){
+	var commandToProcess = stackLevel.splice(0, 1)[0];
+	if(stackLevel.length === 0){
 		this.stack.pop();
 	}
 	
-	commandToProcess.execute(this);
+	commandToProcess.execute(this, level);
 };
 
 ocargo.Program.prototype.canStep = function() {
@@ -30,19 +30,24 @@ ocargo.Program.prototype.terminate = function() {
 	this.isTerminated = true;
 };
 
-function IF(condition, ifContents, elseContents){
-	this.condition = condition;
-	this.ifContents = ifContents;
-	this.elseContents = elseContents;
+function If(conditionalCommandSets, elseCommands){
+	this.conditionalCommandSets = conditionalCommandSets;
+	this.elseCommands = elseCommands;
 }
 
-IF.prototype.execute = function(program) {
-	if(this.condition()) {
-		program.addNewStackLevel(this.ifCommands);
-	} else if(elseContents){
-		program.addNewStackLevel(this.elseCommands);
-	} else {
-		program.step();
+If.prototype.execute = function(program, level) {
+	var i = 0;
+	while(i < this.conditionalCommandSets.length){
+		if(this.conditionalCommandSets[i].condition(level)) {
+			program.addNewStackLevel(this.conditionalCommandSets[i].commands.slice(0));
+			return;
+		}
+		
+		i++;
+	}
+	
+	if(this.elseCommands){
+		program.addNewStackLevel(this.elseCommands.slice(0));
 	}
 };
 
@@ -71,6 +76,20 @@ function counterCondition(count){
 	return f;
 }
 
+function roadCondition(selection){
+	var f = function(level){
+		if(selection === 'FORWARD'){
+			return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);
+		}else if(selection === 'LEFT'){
+			return TURN_LEFT.getNextNode(level.van.previousNode, level.van.currentNode);
+		}else if(selection === 'RIGHT'){
+			return TURN_RIGHT.getNextNode(level.van.previousNode, level.van.currentNode);
+		}
+	};
+	
+	return f;
+}
+
 TURN_LEFT_COMMAND = {};
 TURN_LEFT_COMMAND.execute = function(program){
 	program.instructionHandler.handleInstruction(TURN_LEFT, program);
@@ -87,7 +106,7 @@ FORWARD_COMMAND.execute = function(program){
 };
 
 // Usage:
-//var program = new ocargo.Stack();
-//program.addNewLevel([TURN_LEFT_COMMAND, TURN_LEFT_COMMAND]);
+//var program = new ocargo.Program();
+//program.addNewStackLevel([TURN_LEFT_COMMAND, TURN_LEFT_COMMAND]);
 //program.step();
 //program.step();
