@@ -16,7 +16,8 @@ function calculateAngle(nodeA, nodeB) {
 function calculateClockwiseAngle(nodeA, nodeB, nodeC) {
     var angleAB = calculateAngle(nodeA, nodeB);
     var angleBC = calculateAngle(nodeB, nodeC);
-    return Math.PI + angleAB - angleBC;
+    var angle = (Math.PI + angleAB - angleBC) % (2 * Math.PI);
+    return angle < 0 ? angle + 2 * Math.PI : angle;
 }
 
 ocargo.Instruction = function(name) {
