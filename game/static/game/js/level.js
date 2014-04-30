@@ -10,7 +10,7 @@ ocargo.Level = function(map, van, destination, ui) {
 }
 
 ocargo.Level.prototype.play = function(program){
-    $.post('/game/submit', JSON.stringify(program.levels));
+    $.post('/game/submit', JSON.stringify(program.stack));
 	
     while(program.canStep()) {
         program.step(this);
