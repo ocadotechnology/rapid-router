@@ -75,6 +75,15 @@ Blockly.Blocks['road_exists'] = {
     }
 };
 
+Blockly.Blocks['dead_end'] = {
+    init: function() {
+        this.setColour(210);
+        this.setOutput(true, 'Boolean');
+        this.appendDummyInput()
+            .appendField('is dead end');
+    }
+};
+
 var BlocklyTest = {};
 
 BlocklyTest.createBlock = function(blockType) {
@@ -144,13 +153,16 @@ BlocklyTest.populateProgram = function() {
     	var i = 0;
     	while(i < block.inputList.length - block.elseCount_){
     		var input = block.inputList[i];
-    		
+    		var condition;
+
     		if(input.name.indexOf('IF') === 0) {
     			var conditionBlock = input.connection.targetBlock();
-    			if(conditionBlock.type = 'road_exists'){
+    			if(conditionBlock.type === 'road_exists'){
     				var selection = conditionBlock.inputList[0].fieldRow[1].value_;
-    				var condition = roadCondition(selection);
-    			}
+    				condition = roadCondition(selection);
+    			} else if (conditionBlock.type === 'dead_end') {
+                    condition = deadEndCondition();
+                }
     		} else if(input.name.indexOf('DO') === 0){
     			var conditionalCommandSet = {};
     			conditionalCommandSet.condition = condition;

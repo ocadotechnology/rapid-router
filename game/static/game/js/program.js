@@ -78,30 +78,40 @@ While.prototype.execute = function(program){
 };
 
 function counterCondition(count){
-	var f = function(){
-		if(count > 0){
-			count--;
-			return true;
-		}
-		
-		return false;
-	}
-	
-	return f;
+    return function() {
+        if (count > 0) {
+            count--;
+            return true;
+        }
+
+        return false;
+    };
 }
 
 function roadCondition(selection){
-	var f = function(level){
-		if(selection === 'FORWARD'){
-			return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);
-		}else if(selection === 'LEFT'){
-			return TURN_LEFT.getNextNode(level.van.previousNode, level.van.currentNode);
-		}else if(selection === 'RIGHT'){
-			return TURN_RIGHT.getNextNode(level.van.previousNode, level.van.currentNode);
-		}
-	};
-	
-	return f;
+    return function(level) {
+        if (selection === 'FORWARD') {
+            return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);
+        } else if (selection === 'LEFT') {
+            return TURN_LEFT.getNextNode(level.van.previousNode, level.van.currentNode);
+        } else if (selection === 'RIGHT') {
+            return TURN_RIGHT.getNextNode(level.van.previousNode, level.van.currentNode);
+        }
+    };
+}
+
+function deadEndCondition() {
+    return function(level) {
+        var instructions = [FORWARD, TURN_LEFT, TURN_RIGHT];
+        for (var i = 0; i < instructions.length; i++) {
+            var instruction = instructions[i];
+            var nextNode = instruction.getNextNode(level.van.previousNode, level.van.currentNode);
+            if (nextNode) {
+                return false;
+            }
+        }
+        return true;
+    };
 }
 
 function TurnLeftCommand(block){
