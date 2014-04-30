@@ -30,16 +30,20 @@ ocargo.Program.prototype.terminate = function() {
 	this.isTerminated = true;
 };
 
-function If(conditionalCommandSets, elseCommands){
+function If(conditionalCommandSets, elseCommands, block){
 	this.conditionalCommandSets = conditionalCommandSets;
 	this.elseCommands = elseCommands;
+	this.block = block;
 }
 
 If.prototype.execute = function(program, level) {
+	this.block.select();
+	
 	var i = 0;
 	while(i < this.conditionalCommandSets.length){
 		if(this.conditionalCommandSets[i].condition(level)) {
 			program.addNewStackLevel(this.conditionalCommandSets[i].commands.slice(0));
+			program.stepCallback();
 			return;
 		}
 		
@@ -49,18 +53,25 @@ If.prototype.execute = function(program, level) {
 	if(this.elseCommands){
 		program.addNewStackLevel(this.elseCommands.slice(0));
 	}
+	
+	program.stepCallback();
 };
 
-function While(condition, body){
+function While(condition, body, block){
 	this.condition = condition;
 	this.body = body;
+	this.block = block;
 }
 
 While.prototype.execute = function(program){
+	this.block.select();
+	
 	if(this.condition()){
 		program.addNewStackLevel([this]);
 		program.addNewStackLevel(this.body.slice(0));
 	}
+	
+	program.stepCallback();
 };
 
 function counterCondition(count){
@@ -90,23 +101,30 @@ function roadCondition(selection){
 	return f;
 }
 
-TURN_LEFT_COMMAND = {};
-TURN_LEFT_COMMAND.execute = function(program){
+function TurnLeftCommand(block){
+	this.block = block;
+}
+
+TurnLeftCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(TURN_LEFT, program);
 };
 
-TURN_RIGHT_COMMAND = {};
-TURN_RIGHT_COMMAND.execute = function(program){
+function TurnRightCommand(block){
+	this.block = block;
+}
+
+TurnRightCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(TURN_RIGHT, program);
 };
 
-FORWARD_COMMAND = {};
-FORWARD_COMMAND.execute = function(program){
+function ForwardCommand(block){
+	this.block = block;
+}
+
+ForwardCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(FORWARD, program);
 };
 
-// Usage:
-//var program = new ocargo.Program();
-//program.addNewStackLevel([TURN_LEFT_COMMAND, TURN_LEFT_COMMAND]);
-//program.step();
-//program.step();

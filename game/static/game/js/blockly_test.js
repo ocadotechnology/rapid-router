@@ -107,49 +107,57 @@ BlocklyTest.getStartBlock = function() {
 };
 
 BlocklyTest.populateProgram = function() {
+	function createWhile(block) {
+		return new While(
+			counterCondition(block.inputList[0].fieldRow[1].text_), 
+			getCommandsAtThisLevel(block.inputList[1].connection.targetBlock()),
+			block);
+	}
+	
+	function createIf(block) {
+		var conditionalCommandSets = [];
+    	
+    	var i = 0;
+    	while(i < block.inputList.length - block.elseCount_){
+    		var input = block.inputList[i];
+    		
+    		if(input.name.indexOf('IF') === 0) {
+    			var conditionBlock = input.connection.targetBlock();
+    			if(conditionBlock.type = 'road_exists'){
+    				var selection = conditionBlock.inputList[0].fieldRow[1].value_;
+    				var condition = roadCondition(selection);
+    			}
+    		} else if(input.name.indexOf('DO') === 0){
+    			var conditionalCommandSet = {};
+    			conditionalCommandSet.condition = condition;
+    			conditionalCommandSet.commands = getCommandsAtThisLevel(input.connection.targetBlock());
+    			conditionalCommandSets.push(conditionalCommandSet);
+    		}
+    		
+    		i++;
+    	}
+    	
+    	if(block.elseCount_ === 1){
+    		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
+    	}
+    	
+    	return new If(conditionalCommandSets, elseCommands, block);
+	}
+	
 	function getCommandsAtThisLevel(block){
     	var commands = [];
     	
     	while(block){
     		if (block.type === 'move_van') {
-    			commands.push(FORWARD_COMMAND);
+    			commands.push(new ForwardCommand(block));
             } else if (block.type === 'turn_left') {
-            	commands.push(TURN_LEFT_COMMAND);
+            	commands.push(new TurnLeftCommand(block));
             } else if (block.type === 'turn_right') {
-            	commands.push(TURN_RIGHT_COMMAND);
+            	commands.push(new TurnRightCommand(block));
             } else if (block.type === 'controls_repeat') {
-            	commands.push(
-            			new While(
-            					counterCondition(block.inputList[0].fieldRow[1].text_), 
-            					getCommandsAtThisLevel(block.inputList[1].connection.targetBlock())));
+            	commands.push(createWhile(block));
             } else if (block.type === 'controls_if') {
-            	var conditionalCommandSets = [];
-            	
-            	var i = 0;
-            	while(i < block.inputList.length - block.elseCount_){
-            		var input = block.inputList[i];
-            		
-            		if(input.name.indexOf('IF') === 0) {
-            			var conditionBlock = input.connection.targetBlock();
-            			if(conditionBlock.type = 'road_exists'){
-            				var selection = conditionBlock.inputList[0].fieldRow[1].value_;
-            				var condition = roadCondition(selection);
-            			}
-            		} else if(input.name.indexOf('DO') === 0){
-            			var conditionalCommandSet = {};
-            			conditionalCommandSet.condition = condition;
-            			conditionalCommandSet.commands = getCommandsAtThisLevel(input.connection.targetBlock());
-            			conditionalCommandSets.push(conditionalCommandSet);
-            		}
-            		
-            		i++;
-            	}
-            	
-            	if(block.elseCount_ === 1){
-            		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
-            	}
-            	
-            	commands.push(new If(conditionalCommandSets, elseCommands));
+            	commands.push(createIf(block));
             }
     		
     		block = block.nextConnection.targetBlock();
