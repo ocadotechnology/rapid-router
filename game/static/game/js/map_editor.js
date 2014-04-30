@@ -133,6 +133,31 @@ $('#undo').click(function() {
 	}
 });
 
+
+Raphael.st.draggable = function() {
+
+  	var me = this,
+      lx = 0,
+      ly = 0,
+      ox = 0,
+      oy = 0,
+      moveFnc = function(dx, dy) {
+          lx = -(dx + ox);
+          ly = -(dy + oy);
+          me.transform(rot + 't' + lx + ',' + ly);
+      },
+      startFnc = function() {
+      	rot = this.transform();
+      },
+      endFnc = function() {
+          ox = lx;
+          oy = ly;
+      };
+  
+  this.drag(moveFnc, startFnc, endFnc);
+};
+
+
 $('#clear').click(function() {
 	paper.clear();
 	ocargo.mapEditor = new ocargo.MapEditor();
@@ -140,9 +165,38 @@ $('#clear').click(function() {
 });
 
 $('#createFromSelect').click(function() {
-	//console.debug(ocargo.mapEditor.submittedPoints);
 	ocargo.ui = new ocargo.SimpleUi();
 	var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
 	var map = new ocargo.Map(nodes, ocargo.ui);
+});
+
+$('#UL').click(function() {
+	var turn = createTurn(paper, 0, 0, 'UL');
+	turn.draggable();
+});
+
+$('#DL').click(function() {
+	var turn = createTurn(paper, 0, 0, 'DL');
+	turn.draggable();
+});
+
+$('#UR').click(function() {
+	var turn = createTurn(paper, 0, 0, 'UR');
+	turn.draggable();
+});
+
+$('#DR').click(function() {
+	var turn = createTurn(paper, 0, 0, 'DR');
+	turn.draggable();
+});
+
+$('#H').click(function() {
+	var turn = createHorizontalRoad(paper, 0, 0);
+	turn.draggable();
+});
+
+$('#V').click(function() {
+	var turn = createVerticalRoad(paper, 0, 0);
+	turn.draggable();
 });
 
