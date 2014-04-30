@@ -27,6 +27,7 @@ ocargo.Instruction = function(name) {
 var FORWARD = new ocargo.Instruction("FORWARD");
 var TURN_LEFT = new ocargo.Instruction("TURN_LEFT");
 var TURN_RIGHT = new ocargo.Instruction("TURN_RIGHT");
+var TURN_AROUND = new ocargo.Instruction("TURN_AROUND");
 
 
 FORWARD.getNextNode = function(previousNode, currentNode){
@@ -72,4 +73,8 @@ TURN_RIGHT.getNextNode = function(previousNode, currentNode) {
 
     var angle = calculateClockwiseAngle(previousNode, currentNode, nextNode);
     return (angle > rightCutoffAngle && angle < 2 * Math.PI) ? nextNode : null;
+};
+
+TURN_AROUND.getNextNode = function(previousNode, currentNode) {
+    return previousNode;
 };

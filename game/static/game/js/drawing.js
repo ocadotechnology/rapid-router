@@ -12,8 +12,10 @@ var VAN_HEIGHT = 17.5;
 
 var MOVE_DISTANCE = GRID_SPACE_WIDTH;
 var TURN_DISTANCE = MOVE_DISTANCE / 2;
-var INITIAL_X = GRID_SPACE_HEIGHT - VAN_WIDTH / 2;
-var INITIAL_Y = 430;
+var INITIAL_OFFSET_X = VAN_WIDTH / 2;
+var INITIAL_OFFSET_Y = 20;
+var INITIAL_X = GRID_SPACE_HEIGHT - INITIAL_OFFSET_X;
+var INITIAL_Y = 450 - INITIAL_OFFSET_Y;
 var ROTATION_OFFSET_X = VAN_WIDTH / 2;
 var ROTATION_OFFSET_Y = 20;
 
@@ -195,6 +197,34 @@ function moveRight(callback) {
     moveVan({
         transform: transformation
     }, callback);
+}
+
+function turnAround(callback) {
+    var moveDistance = GRID_SPACE_WIDTH / 2;
+    var moveTransformation = "... t " + moveDistance + ", 0";
+
+    function moveBack() {
+        moveVan({
+            transform: moveTransformation
+        }, callback);
+    }
+
+    function rotate() {
+        var rotationPointX = van.attrs.x + INITIAL_OFFSET_X;
+        var rotationPointY = van.attrs.y + INITIAL_OFFSET_Y;
+
+        moveVan({
+            transform: createRotationTransformation(180, rotationPointX, rotationPointY)
+        }, moveBack);
+    }
+
+    function moveForward() {
+        moveVan({
+            transform: moveTransformation
+        }, rotate);
+    }
+
+    moveForward();
 }
 
 function renderTheMap(map) {

@@ -131,3 +131,12 @@ ForwardCommand.prototype.execute = function(program){
 	program.instructionHandler.handleInstruction(FORWARD, program);
 };
 
+function TurnAroundCommand(block) {
+    this.block = block;
+}
+
+TurnAroundCommand.prototype.execute = function(program) {
+    this.block.select();
+    program.instructionHandler.handleInstruction(TURN_AROUND, program);
+};
+

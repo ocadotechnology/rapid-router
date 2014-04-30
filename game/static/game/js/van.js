@@ -15,6 +15,8 @@ ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
         moveLeft(callback);
     } else if (instruction == TURN_RIGHT) {
         moveRight(callback);
+    } else if (instruction == TURN_AROUND) {
+        turnAround(callback);
     }
 	
 	this.previousNode = this.currentNode;

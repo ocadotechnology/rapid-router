@@ -27,7 +27,7 @@ Blockly.Blocks['move_van'] = {
 };
 
 Blockly.Blocks['turn_left'] = {
-    // Block for turning left or right.
+    // Block for turning left
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
@@ -39,7 +39,7 @@ Blockly.Blocks['turn_left'] = {
 };
 
 Blockly.Blocks['turn_right'] = {
-    // Block for turning left or right.
+    // Block for turning right
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
@@ -47,6 +47,18 @@ Blockly.Blocks['turn_right'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van right');
+    }
+};
+
+Blockly.Blocks['turn_around'] = {
+    // Block for turning around
+    init: function() {
+        this.setColour(160);
+        this.appendDummyInput()
+            .appendField('turn around');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Turn the van around');
     }
 };
 
@@ -165,7 +177,9 @@ BlocklyTest.populateProgram = function() {
             } else if (block.type === 'turn_left') {
             	commands.push(new TurnLeftCommand(block));
             } else if (block.type === 'turn_right') {
-            	commands.push(new TurnRightCommand(block));
+                commands.push(new TurnRightCommand(block));
+            } else if (block.type === 'turn_around') {
+                commands.push(new TurnAroundCommand(block));
             } else if (block.type === 'controls_repeat') {
             	commands.push(createWhile(block));
             } else if (block.type === 'controls_if') {
