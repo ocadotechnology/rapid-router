@@ -12,11 +12,13 @@ ocargo.Level = function(map, van, destination, ui) {
 ocargo.Level.prototype.play = function(program){
 //    $.post('/game/submit', JSON.stringify(program.stack));
 	
+	program.startBlock.select();
+	
     var stepFunction = stepper(this);
     
     program.stepCallback = stepFunction;
     this.program = program;
-    stepFunction();
+    setTimeout(stepFunction, 500);
 };
 
 ocargo.Level.prototype.step = function(){

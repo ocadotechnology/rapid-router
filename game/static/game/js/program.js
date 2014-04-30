@@ -39,11 +39,16 @@ function If(conditionalCommandSets, elseCommands, block){
 If.prototype.execute = function(program, level) {
 	this.block.select();
 	
+	this.executeIfCommand(program, level);
+	
+	setTimeout(program.stepCallback, 500);
+};
+
+If.prototype.executeIfCommand = function(program, level) {
 	var i = 0;
 	while(i < this.conditionalCommandSets.length){
 		if(this.conditionalCommandSets[i].condition(level)) {
 			program.addNewStackLevel(this.conditionalCommandSets[i].commands.slice(0));
-			program.stepCallback();
 			return;
 		}
 		
@@ -53,8 +58,6 @@ If.prototype.execute = function(program, level) {
 	if(this.elseCommands){
 		program.addNewStackLevel(this.elseCommands.slice(0));
 	}
-	
-	program.stepCallback();
 };
 
 function While(condition, body, block){
@@ -71,7 +74,7 @@ While.prototype.execute = function(program){
 		program.addNewStackLevel(this.body.slice(0));
 	}
 	
-	program.stepCallback();
+	setTimeout(program.stepCallback, 500);
 };
 
 function counterCondition(count){

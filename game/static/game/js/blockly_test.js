@@ -180,6 +180,7 @@ BlocklyTest.populateProgram = function() {
 	
     var program = new ocargo.Program();
     var startBlock = this.getStartBlock();
+    program.startBlock = startBlock;
     program.stack.push(getCommandsAtThisLevel(startBlock));
     return program;
 };
