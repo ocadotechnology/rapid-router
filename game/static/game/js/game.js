@@ -46,27 +46,23 @@ function generateNodes(points){
 	return nodes;
 }
 
-function defaultProgram(level) {
-	var program = new ocargo.Program(new InstructionHandler(level));
-	
-	program.addNewStackLevel(
-	          [TURN_LEFT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_RIGHT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_LEFT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_RIGHT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_RIGHT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_LEFT_COMMAND,
-	              FORWARD_COMMAND,
-	              FORWARD_COMMAND,
-	              FORWARD_COMMAND
-	          ]);
-	
-	level.play(program);
+function loadDefaultProgram() {
+    BlocklyTest.reset();
+
+    BlocklyTest.addBlockToEndOfProgram('turn_left');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_right');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_left');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_right');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_right');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_left');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
 }
 
 function initialiseDefault() {
@@ -94,8 +90,8 @@ function trackDevelopment() {
     	ocargo.level.play(program);
 	});
 
-    $('#runDefaultProgram').click(function() {
-        defaultProgram(ocargo.level);
+    $('#loadDefaultProgram').click(function() {
+        loadDefaultProgram();
     });
 	
 	$('#reset').click(function() {

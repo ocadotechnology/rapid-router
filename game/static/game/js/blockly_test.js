@@ -91,7 +91,19 @@ BlocklyTest.init = function() {
         toolbox: toolbox
     });
 
-    BlocklyTest.createBlock('start');
+    BlocklyTest.reset();
+};
+
+BlocklyTest.reset = function() {
+    var startBlock = BlocklyTest.getStartBlock();
+    if (startBlock) {
+        var nextBlock = startBlock.nextConnection.targetBlock();
+        if (nextBlock) {
+            nextBlock.dispose();
+        }
+    } else {
+        BlocklyTest.createBlock('start');
+    }
 };
 
 window.addEventListener('load', BlocklyTest.init);
