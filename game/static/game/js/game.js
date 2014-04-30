@@ -73,9 +73,6 @@ function initialiseDefault() {
 	'use strict';
 	ocargo.ui = createUi();
 	ocargo.level = createDefaultLevel(ocargo.ui);
-	$('#runDefaultProgram').click(function() {
-		defaultProgram(ocargo.level);
-	});
 }
 
 function trackDevelopment() {
@@ -96,6 +93,10 @@ function trackDevelopment() {
         program.instructionHandler = new InstructionHandler(ocargo.level);
     	ocargo.level.play(program);
 	});
+
+    $('#runDefaultProgram').click(function() {
+        defaultProgram(ocargo.level);
+    });
 	
 	$('#reset').click(function() {
 		initialiseDefault();	
