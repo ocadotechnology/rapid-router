@@ -53,6 +53,10 @@ function rotateElementAroundCentreOfGridSpace(element, degrees, i, j) {
     rotateElement(element, degrees, rotationPointX, rotationPointY);
 }
 
+function createVan(paper) {
+    return paper.image('/static/game/image/van.svg', INITIAL_X, INITIAL_Y, VAN_WIDTH, VAN_HEIGHT)
+}
+
 function createGrid(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
         for (var j = 0; j < GRID_HEIGHT; j++) {
@@ -163,100 +167,7 @@ function createRoad(paper, roadDefinition) {
     return roadElements;
 }
 
-function createDefaultRoad(paper) {
-    var defaultRoad = {
-        0: {
-            4: 'H'
-        },
-        1: {
-            2: 'DR',
-            3: 'V',
-            4: 'UL'
-        },
-        2: {
-            2: 'H'
-        },
-        3: {
-            0: 'DR',
-            1: 'V',
-            2: 'UL'
-        },
-        4: {
-            0: 'H'
-        },
-        5: {
-            0: 'DL',
-            1: 'V',
-            2: 'UR'
-        },
-        6: {
-            2: 'H'
-        },
-        7: {
-            2: 'H'
-        },
-        8: {
-            2: 'H'
-        },
-        9: {
-            2: 'H'
-        }
-    };
-    return createRoad(paper, defaultRoad);
-}
-
-function onGrid(i, j) {
-    return i >= 0 && i < GRID_WIDTH && j >= 0 && j < GRID_HEIGHT;
-}
-
-function gridPositionUndefined(roadDefinition, i, j) {
-    var roadSlice = roadDefinition[i];
-    return !(roadSlice && roadSlice[j]);
-}
-
-function randomElement(array) {
-    var randomIndex = Math.floor(Math.random() * array.length);
-    return array[randomIndex];
-}
-
-function createRandomRoad(paper) {
-    var roadDefinition = {};
-
-    var nextElementsAndOrientations = {
-        'U': [['DL', 'L', -1, 0], ['V', 'U', 0, -1], ['DR', 'R', 1, 0]],
-        'R': [['UL', 'U', 0, -1], ['H', 'R', 1, 0], ['DL', 'D', 0, 1]],
-        'D': [['UL', 'L', -1, 0], ['V', 'D', 0, 1], ['UR', 'R', 1, 0]],
-        'L': [['DR', 'D', 0, 1], ['H', 'L', -1, 0], ['UR', 'U', 0, -1]]
-    };
-
-    var orientation = 'R';
-    var i = 0;
-    var j = 4;
-    while (onGrid(i, j) && gridPositionUndefined(roadDefinition, i, j)) {
-        var possibleNext = nextElementsAndOrientations[orientation];
-        var next = randomElement(possibleNext);
-        var element = next[0];
-        var nextOrientation = next[1];
-        var iChange = next[2];
-        var jChange = next[3];
-
-        var roadSlice = roadDefinition[i];
-        if (!roadSlice) {
-            roadSlice = {};
-            roadDefinition[i] = roadSlice;
-        }
-        roadSlice[j] = element;
-
-        orientation = nextOrientation;
-        i += iChange;
-        j += jChange;
-    }
-
-    return createRoad(paper, roadDefinition);
-}
-
 var van;
-var vanMoving = false;
 
 function moveVan(attr, callback) {
     van.animate(attr, 500, 'easeIn', callback);
@@ -286,26 +197,9 @@ function moveRight(callback) {
     }, callback);
 }
 
-function resetVan() {
-    van.attr({
-        x: INITIAL_X,
-        y: INITIAL_Y,
-        transform: 'r0'
-    });
-    van.toFront();
-    vanMoving = false;
-}
-
 function renderTheMap(map) {
     paper.clear();
-
     createGrid(paper);
-
-    var roadElements = createRoad(paper, map.instructions);
-
-    van = paper.image('/static/game/image/van.svg', INITIAL_X, INITIAL_Y, VAN_WIDTH, VAN_HEIGHT);
-
-    function moveCompleteCallback() {
-        vanMoving = false;
-    }
+    createRoad(paper, map.instructions);
+    van = createVan(paper);
 }
