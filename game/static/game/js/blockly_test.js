@@ -141,7 +141,6 @@ BlocklyTest.removeWrong = function() {
     if (current) {
         var previous = current.previousConnection.targetBlock();
         current.dispose();
-        console.debug("disposed" + previous != null + " " + previous);
         previous.select();
     }
 };

@@ -98,9 +98,7 @@ function trackDevelopment() {
     });
 
 	$('#clear').click(function() {
-        console.debug("before");
         BlocklyTest.removeWrong();
-        console.debug("after");
         var nodes = ocargo.level.map.nodes;
     });
     

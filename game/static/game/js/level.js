@@ -7,6 +7,7 @@ ocargo.Level = function(map, van, destination, ui) {
     this.van = van;
     this.destination = destination;
     this.ui = ui;
+    this.correct = 0;
 }
 
 ocargo.Level.prototype.play = function(program){
@@ -24,9 +25,11 @@ ocargo.Level.prototype.play = function(program){
 ocargo.Level.prototype.step = function(){
 	if(this.program.canStep()) {
         this.program.step(this);
+
     } else {
     	if (this.van.currentNode === this.destination && !this.program.isTerminated) {
-            console.debug('You win!');//TODO: tell user
+            console.debug('You win!');
+            window.alert('You win!');
         }
     }
 };
@@ -34,10 +37,12 @@ ocargo.Level.prototype.step = function(){
 function stepper(level){
 	return function(){
 		if(level.program.canStep()) {
+            level.correct = level.correct + 1;
 			level.program.step(level);
 	    } else {
 	    	if (level.van.currentNode === level.destination && !level.program.isTerminated) {
-	            console.debug('You win!');//TODO: tell user
+	            console.debug('You win!');
+                window.alert('You win!');
 	        }
 	    }
 	};
@@ -52,9 +57,14 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
     var nextNode = instruction.getNextNode(this.level.van.previousNode, this.level.van.currentNode);
 
     if (!nextNode) {
+        var n = this.level.correct - 1;
+        var total = this.level.map.nodes.length - 2;
         console.debug('Oh dear! :(');
+        window.alert("Oh dear! :( Your first " + n + " out of " +  total 
+            + " instructions were right. Click clear to remove the incorrect blocks "
+            + "and try again!");
         program.terminate();
-        return; //TODO: animate crash, tell user
+        return; //TODO: animate the crash
     }
 
     this.level.van.move(nextNode, instruction, program.stepCallback);
