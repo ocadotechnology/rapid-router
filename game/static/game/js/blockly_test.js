@@ -84,6 +84,15 @@ Blockly.Blocks['dead_end'] = {
     }
 };
 
+Blockly.Blocks['is_destination'] = {
+    init: function() {
+        this.setColour(210);
+        this.setOutput(true, 'Boolean');
+        this.appendDummyInput()
+            .appendField('is destination');
+    }
+};
+
 var BlocklyTest = {};
 
 BlocklyTest.createBlock = function(blockType) {
