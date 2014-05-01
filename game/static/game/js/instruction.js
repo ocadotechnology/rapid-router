@@ -16,7 +16,8 @@ function calculateAngle(nodeA, nodeB) {
 function calculateClockwiseAngle(nodeA, nodeB, nodeC) {
     var angleAB = calculateAngle(nodeA, nodeB);
     var angleBC = calculateAngle(nodeB, nodeC);
-    return Math.PI + angleAB - angleBC;
+    var angle = (Math.PI + angleAB - angleBC) % (2 * Math.PI);
+    return angle < 0 ? angle + 2 * Math.PI : angle;
 }
 
 ocargo.Instruction = function(name) {
@@ -27,6 +28,7 @@ ocargo.Instruction = function(name) {
 var FORWARD = new ocargo.Instruction("FORWARD");
 var TURN_LEFT = new ocargo.Instruction("TURN_LEFT");
 var TURN_RIGHT = new ocargo.Instruction("TURN_RIGHT");
+var TURN_AROUND = new ocargo.Instruction("TURN_AROUND");
 
 
 FORWARD.getNextNode = function(previousNode, currentNode){
@@ -72,4 +74,8 @@ TURN_RIGHT.getNextNode = function(previousNode, currentNode) {
 
     var angle = calculateClockwiseAngle(previousNode, currentNode, nextNode);
     return (angle > rightCutoffAngle && angle < 2 * Math.PI) ? nextNode : null;
+};
+
+TURN_AROUND.getNextNode = function(previousNode, currentNode) {
+    return previousNode;
 };

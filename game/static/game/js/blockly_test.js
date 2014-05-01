@@ -27,7 +27,7 @@ Blockly.Blocks['move_van'] = {
 };
 
 Blockly.Blocks['turn_left'] = {
-    // Block for turning left or right.
+    // Block for turning left
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
@@ -39,7 +39,7 @@ Blockly.Blocks['turn_left'] = {
 };
 
 Blockly.Blocks['turn_right'] = {
-    // Block for turning left or right.
+    // Block for turning right
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
@@ -47,6 +47,18 @@ Blockly.Blocks['turn_right'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van right');
+    }
+};
+
+Blockly.Blocks['turn_around'] = {
+    // Block for turning around
+    init: function() {
+        this.setColour(160);
+        this.appendDummyInput()
+            .appendField('turn around');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Turn the van around');
     }
 };
 
@@ -60,6 +72,15 @@ Blockly.Blocks['road_exists'] = {
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE');
+    }
+};
+
+Blockly.Blocks['dead_end'] = {
+    init: function() {
+        this.setColour(210);
+        this.setOutput(true, 'Boolean');
+        this.appendDummyInput()
+            .appendField('is dead end');
     }
 };
 
@@ -132,13 +153,16 @@ BlocklyTest.populateProgram = function() {
     	var i = 0;
     	while(i < block.inputList.length - block.elseCount_){
     		var input = block.inputList[i];
-    		
+    		var condition;
+
     		if(input.name.indexOf('IF') === 0) {
     			var conditionBlock = input.connection.targetBlock();
-    			if(conditionBlock.type = 'road_exists'){
+    			if(conditionBlock.type === 'road_exists'){
     				var selection = conditionBlock.inputList[0].fieldRow[1].value_;
-    				var condition = roadCondition(selection);
-    			}
+    				condition = roadCondition(selection);
+    			} else if (conditionBlock.type === 'dead_end') {
+                    condition = deadEndCondition();
+                }
     		} else if(input.name.indexOf('DO') === 0){
     			var conditionalCommandSet = {};
     			conditionalCommandSet.condition = condition;
@@ -165,7 +189,9 @@ BlocklyTest.populateProgram = function() {
             } else if (block.type === 'turn_left') {
             	commands.push(new TurnLeftCommand(block));
             } else if (block.type === 'turn_right') {
-            	commands.push(new TurnRightCommand(block));
+                commands.push(new TurnRightCommand(block));
+            } else if (block.type === 'turn_around') {
+                commands.push(new TurnAroundCommand(block));
             } else if (block.type === 'controls_repeat') {
             	commands.push(createWhile(block));
             } else if (block.type === 'controls_if') {
