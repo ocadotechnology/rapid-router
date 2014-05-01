@@ -10,13 +10,15 @@ ocargo.Level = function(map, van, destination, ui) {
 }
 
 ocargo.Level.prototype.play = function(program){
-    $.post('/game/submit', JSON.stringify(program.stack));
+//    $.post('/game/submit', JSON.stringify(program.stack));
+	
+	program.startBlock.select();
 	
     var stepFunction = stepper(this);
     
-    program.instructionHandler.callback = stepFunction;
+    program.stepCallback = stepFunction;
     this.program = program;
-    stepFunction();
+    setTimeout(stepFunction, 500);
 };
 
 ocargo.Level.prototype.step = function(){
@@ -55,5 +57,5 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
         return; //TODO: animate crash, tell user
     }
 
-    this.level.van.move(nextNode, instruction, this.callback);
+    this.level.van.move(nextNode, instruction, program.stepCallback);
 };

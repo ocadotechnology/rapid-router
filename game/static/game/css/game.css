@@ -1,21 +1,33 @@
 #wrapper {
-    height: 730px;
-    width: 1020px;
+    max-height: 730px;
+    min-width: 1020px;
+}
+
+#programmingConsole{
+	width: 50%;
 }
 
 #paper {
     border: 0;
     background-color: rgb(180, 180, 180);
-    float: left;
-    height: 630px;
-    margin-bottom: 30px;
-    overflow: scroll;
-    width: 650px;
+    width: 50%;
+    height: 650px;
+    overflow: auto;
 }
 
 #blockly {
     height: 500px;
-    margin-bottom: 10px;
+    width: 550px;
+}
+
+#controls{
+	position: fixed;
+	bottom: 20px;
+	right: 0px;
+}
+
+#controls button{
+	margin-bottom: 0px;
 }
 
 button{
@@ -24,9 +36,5 @@ button{
 
 .col {
     float: left;
-    margin-left: 20px;
 }
 
-#blockly {
-    width: 550px;
-}

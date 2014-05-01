@@ -30,12 +30,21 @@ ocargo.Program.prototype.terminate = function() {
 	this.isTerminated = true;
 };
 
-function If(conditionalCommandSets, elseCommands){
+function If(conditionalCommandSets, elseCommands, block){
 	this.conditionalCommandSets = conditionalCommandSets;
 	this.elseCommands = elseCommands;
+	this.block = block;
 }
 
 If.prototype.execute = function(program, level) {
+	this.block.select();
+	
+	this.executeIfCommand(program, level);
+	
+	setTimeout(program.stepCallback, 500);
+};
+
+If.prototype.executeIfCommand = function(program, level) {
 	var i = 0;
 	while(i < this.conditionalCommandSets.length){
 		if(this.conditionalCommandSets[i].condition(level)) {
@@ -51,62 +60,93 @@ If.prototype.execute = function(program, level) {
 	}
 };
 
-function While(condition, body){
+function While(condition, body, block){
 	this.condition = condition;
 	this.body = body;
+	this.block = block;
 }
 
 While.prototype.execute = function(program){
+	this.block.select();
+	
 	if(this.condition()){
 		program.addNewStackLevel([this]);
 		program.addNewStackLevel(this.body.slice(0));
 	}
+	
+	setTimeout(program.stepCallback, 500);
 };
 
 function counterCondition(count){
-	var f = function(){
-		if(count > 0){
-			count--;
-			return true;
-		}
-		
-		return false;
-	}
-	
-	return f;
+    return function() {
+        if (count > 0) {
+            count--;
+            return true;
+        }
+
+        return false;
+    };
 }
 
 function roadCondition(selection){
-	var f = function(level){
-		if(selection === 'FORWARD'){
-			return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);
-		}else if(selection === 'LEFT'){
-			return TURN_LEFT.getNextNode(level.van.previousNode, level.van.currentNode);
-		}else if(selection === 'RIGHT'){
-			return TURN_RIGHT.getNextNode(level.van.previousNode, level.van.currentNode);
-		}
-	};
-	
-	return f;
+    return function(level) {
+        if (selection === 'FORWARD') {
+            return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);
+        } else if (selection === 'LEFT') {
+            return TURN_LEFT.getNextNode(level.van.previousNode, level.van.currentNode);
+        } else if (selection === 'RIGHT') {
+            return TURN_RIGHT.getNextNode(level.van.previousNode, level.van.currentNode);
+        }
+    };
 }
 
-TURN_LEFT_COMMAND = {};
-TURN_LEFT_COMMAND.execute = function(program){
+function deadEndCondition() {
+    return function(level) {
+        var instructions = [FORWARD, TURN_LEFT, TURN_RIGHT];
+        for (var i = 0; i < instructions.length; i++) {
+            var instruction = instructions[i];
+            var nextNode = instruction.getNextNode(level.van.previousNode, level.van.currentNode);
+            if (nextNode) {
+                return false;
+            }
+        }
+        return true;
+    };
+}
+
+function TurnLeftCommand(block){
+	this.block = block;
+}
+
+TurnLeftCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(TURN_LEFT, program);
 };
 
-TURN_RIGHT_COMMAND = {};
-TURN_RIGHT_COMMAND.execute = function(program){
+function TurnRightCommand(block){
+	this.block = block;
+}
+
+TurnRightCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(TURN_RIGHT, program);
 };
 
-FORWARD_COMMAND = {};
-FORWARD_COMMAND.execute = function(program){
+function ForwardCommand(block){
+	this.block = block;
+}
+
+ForwardCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(FORWARD, program);
 };
 
-// Usage:
-//var program = new ocargo.Program();
-//program.addNewStackLevel([TURN_LEFT_COMMAND, TURN_LEFT_COMMAND]);
-//program.step();
-//program.step();
+function TurnAroundCommand(block) {
+    this.block = block;
+}
+
+TurnAroundCommand.prototype.execute = function(program) {
+    this.block.select();
+    program.instructionHandler.handleInstruction(TURN_AROUND, program);
+};
+
