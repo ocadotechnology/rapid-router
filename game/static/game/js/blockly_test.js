@@ -136,6 +136,16 @@ BlocklyTest.reset = function() {
     }
 };
 
+BlocklyTest.removeWrong = function() {
+    var current = Blockly.selected;
+    if (current) {
+        var previous = current.previousConnection.targetBlock();
+        current.dispose();
+        console.debug("disposed" + previous != null + " " + previous);
+        previous.select();
+    }
+};
+
 window.addEventListener('load', BlocklyTest.init);
 
 BlocklyTest.getStartBlock = function() {

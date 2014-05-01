@@ -87,16 +87,28 @@ function trackDevelopment() {
     $('#play').click(function() {
         var program = BlocklyTest.populateProgram();
         program.instructionHandler = new InstructionHandler(ocargo.level);
+        var nodes = ocargo.level.map.nodes;
+        ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+        ocargo.ui.setVanToFront();
     	ocargo.level.play(program);
 	});
 
     $('#loadDefaultProgram').click(function() {
         loadDefaultProgram();
     });
-	
-	$('#reset').click(function() {
-		initialiseDefault();	
-	});
+
+	$('#clear').click(function() {
+        console.debug("before");
+        BlocklyTest.removeWrong();
+        console.debug("after");
+        var nodes = ocargo.level.map.nodes;
+    });
+    
+    $('#reset').click(function() {
+        initialiseDefault();
+        BlocklyTest.reset();
+    	
+    });
 }
 
 $(function() {

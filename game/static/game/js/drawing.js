@@ -199,6 +199,15 @@ function moveRight(callback) {
     }, callback);
 }
 
+function resetVan() {
+    van.attr({
+        x: INITIAL_X,
+        y: INITIAL_Y,
+        transform: 'r0'
+    });
+    van.toFront();
+}
+
 function turnAround(callback) {
     var moveDistance = GRID_SPACE_WIDTH / 2;
     var moveTransformation = "... t " + moveDistance + ", 0";
