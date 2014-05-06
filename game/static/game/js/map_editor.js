@@ -165,24 +165,24 @@ Raphael.st.draggable = function() {
 };
 
 $('#UL').click(function() {
-   	var myset = createTurn(paper, 0, 0, 'UL');
+   	var myset = createTurn(paper, 2, 2, 'UL');
     myset.draggable();
 });
 
 $('#DR').click(function() {
-   	var myset = createTurn(paper, 0, 0, 'DR');
+   	var myset = createTurn(paper, 2, 2, 'DR');
     myset.draggable();
 
 });
 
 $('#DL').click(function() {
-   	var myset = createTurn(paper, 0, 0, 'DL');
+   	var myset = createTurn(paper, 2, 2, 'DL');
     myset.draggable();
 
 });
 
 $('#UR').click(function() {
-   	var myset = createTurn(paper, 0, 0, 'UR');
+   	var myset = createTurn(paper, 2, 2, 'UR');
     myset.draggable();
 
 });

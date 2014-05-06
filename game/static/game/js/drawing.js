@@ -82,25 +82,44 @@ function createHorizontalRoad(paper, i, j) {
     var entryMarker = paper.rect(x, j * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1, GRID_SPACE_WIDTH / 8, 2);
     entryMarker.attr(ROAD_MARKER_ATTR);
 
-    var middleMarker = paper.rect(x + 3 * GRID_SPACE_WIDTH / 8, j * GRID_SPACE_HEIGHT + GRID_SPACE_HEIGHT / 2 - 1, GRID_SPACE_WIDTH / 8, 2);
+    var middleMarker = paper.rect(x + 3 * GRID_SPACE_WIDTH / 8, j * GRID_SPACE_HEIGHT + GRID_SPACE_HEIGHT / 2 - 1, GRID_SPACE_WIDTH / 4, 2);
     middleMarker.attr(ROAD_MARKER_ATTR);
 
-    var markerSet = paper.set();
-    markerSet.push(entryMarker, middleMarker);
+    var lastMarker = paper.rect(x + 7 * GRID_SPACE_WIDTH / 8, j * GRID_SPACE_HEIGHT + GRID_SPACE_HEIGHT / 2 - 1, GRID_SPACE_WIDTH / 8, 2);
+    lastMarker.attr(ROAD_MARKER_ATTR);
 
-    var rotatedMarkerSet = markerSet.clone();
-    rotateElementAroundCentreOfGridSpace(rotatedMarkerSet, 180, i, j);
+    var markerSet = paper.set();
+    markerSet.push(entryMarker, middleMarker, lastMarker);
 
     var roadSet = paper.set();
-    roadSet.push(road, markerSet, rotatedMarkerSet);
+    roadSet.push(road, markerSet);
 
     return roadSet;
 }
 
 function createVerticalRoad(paper, i, j) {
-    var road = createHorizontalRoad(paper, i, j);
-    rotateElementAroundCentreOfGridSpace(road, 90, i, j);
-    return road;
+    var x = i * GRID_SPACE_WIDTH + (GRID_SPACE_HEIGHT - ROAD_WIDTH) / 2;
+    var y = j * GRID_SPACE_HEIGHT ;
+
+    var road = paper.rect(x, y, ROAD_WIDTH, GRID_SPACE_HEIGHT);
+    road.attr(ROAD_ATTR);
+
+    var entryMarker = paper.rect(i * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1, y, 2, GRID_SPACE_WIDTH / 8);
+    entryMarker.attr(ROAD_MARKER_ATTR);
+
+    var middleMarker = paper.rect(i * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1, y + 3 * GRID_SPACE_HEIGHT / 8, 2, GRID_SPACE_WIDTH / 4);
+    middleMarker.attr(ROAD_MARKER_ATTR);
+
+    var lastMarker = paper.rect(i * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1, y + 7 * GRID_SPACE_HEIGHT / 8, 2, GRID_SPACE_WIDTH / 8);
+    lastMarker.attr(ROAD_MARKER_ATTR);
+
+    var markerSet = paper.set();
+    markerSet.push(entryMarker, middleMarker, lastMarker);
+
+    var roadSet = paper.set();
+    roadSet.push(road, markerSet);
+
+    return roadSet;
 }
 
 function createTurn(paper, i, j, direction) {
@@ -109,7 +128,6 @@ function createTurn(paper, i, j, direction) {
     var turnAndMarker = [];
 
     switch (direction) {
-
         case 'UL': 
             turnAndMarker = createTurnUL(baseX, baseY);
             break;
@@ -143,7 +161,7 @@ function createTurnUL(baseY, baseX) {
         'M', baseX, baseY + EDGE_GAP_Y,
         'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X, baseY,
         'H', baseX + EDGE_GAP_X + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX, baseY + EDGE_GAP_Y + ROAD_WIDTH
+        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX, baseY + EDGE_GAP_Y + ROAD_WIDTH       
     ]);
 
     var marker = paper.path([
