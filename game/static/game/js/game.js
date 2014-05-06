@@ -46,36 +46,29 @@ function generateNodes(points){
 	return nodes;
 }
 
-function defaultProgram(level) {
-	var program = new ocargo.Program(new InstructionHandler(level));
-	
-	program.addNewStackLevel(
-	          [TURN_LEFT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_RIGHT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_LEFT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_RIGHT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_RIGHT_COMMAND,
-	              FORWARD_COMMAND,
-	              TURN_LEFT_COMMAND,
-	              FORWARD_COMMAND,
-	              FORWARD_COMMAND,
-	              FORWARD_COMMAND
-	          ]);
-	
-	level.play(program);
+function loadDefaultProgram() {
+    BlocklyTest.reset();
+
+    BlocklyTest.addBlockToEndOfProgram('turn_left');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_right');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_left');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_right');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_right');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('turn_left');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
+    BlocklyTest.addBlockToEndOfProgram('move_van');
 }
 
 function initialiseDefault() {
 	'use strict';
 	ocargo.ui = createUi();
 	ocargo.level = createDefaultLevel(ocargo.ui);
-	$('#runDefaultProgram').click(function() {
-		defaultProgram(ocargo.level);
-	});
 }
 
 function trackDevelopment() {
@@ -94,12 +87,26 @@ function trackDevelopment() {
     $('#play').click(function() {
         var program = BlocklyTest.populateProgram();
         program.instructionHandler = new InstructionHandler(ocargo.level);
+        var nodes = ocargo.level.map.nodes;
+        ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+        ocargo.ui.setVanToFront();
     	ocargo.level.play(program);
 	});
-	
-	$('#reset').click(function() {
-		initialiseDefault();	
-	});
+
+    $('#loadDefaultProgram').click(function() {
+        loadDefaultProgram();
+    });
+
+	$('#clear').click(function() {
+        BlocklyTest.removeWrong();
+        var nodes = ocargo.level.map.nodes;
+    });
+    
+    $('#reset').click(function() {
+        initialiseDefault();
+        BlocklyTest.reset();
+    	
+    });
 }
 
 $(function() {

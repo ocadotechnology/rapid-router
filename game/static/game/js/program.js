@@ -6,15 +6,15 @@ ocargo.Program = function(instructionHandler){
 	this.isTerminated = false;
 };
 
-ocargo.Program.prototype.step = function() {
-	var level = this.stack[this.stack.length - 1];
+ocargo.Program.prototype.step = function(level) {
+	var stackLevel = this.stack[this.stack.length - 1];
 	
-	var commandToProcess = level.splice(0, 1)[0];
-	if(level.length === 0){
+	var commandToProcess = stackLevel.splice(0, 1)[0];
+	if(stackLevel.length === 0){
 		this.stack.pop();
 	}
 	
-	commandToProcess.execute(this);
+	commandToProcess.execute(this, level);
 };
 
 ocargo.Program.prototype.canStep = function() {
@@ -30,64 +30,123 @@ ocargo.Program.prototype.terminate = function() {
 	this.isTerminated = true;
 };
 
-function IF(condition, ifContents, elseContents){
-	this.condition = condition;
-	this.ifContents = ifContents;
-	this.elseContents = elseContents;
+function If(conditionalCommandSets, elseCommands, block){
+	this.conditionalCommandSets = conditionalCommandSets;
+	this.elseCommands = elseCommands;
+	this.block = block;
 }
 
-IF.prototype.execute = function(program) {
-	if(this.condition()) {
-		program.addNewStackLevel(this.ifCommands);
-	} else if(elseContents){
-		program.addNewStackLevel(this.elseCommands);
-	} else {
-		program.step();
+If.prototype.execute = function(program, level) {
+	this.block.select();
+	
+	this.executeIfCommand(program, level);
+	
+	setTimeout(program.stepCallback, 500);
+};
+
+If.prototype.executeIfCommand = function(program, level) {
+	var i = 0;
+	while(i < this.conditionalCommandSets.length){
+		if(this.conditionalCommandSets[i].condition(level)) {
+			program.addNewStackLevel(this.conditionalCommandSets[i].commands.slice(0));
+			return;
+		}
+		
+		i++;
+	}
+	
+	if(this.elseCommands){
+		program.addNewStackLevel(this.elseCommands.slice(0));
 	}
 };
 
-function While(condition, body){
+function While(condition, body, block){
 	this.condition = condition;
 	this.body = body;
+	this.block = block;
 }
 
 While.prototype.execute = function(program){
+	this.block.select();
+	
 	if(this.condition()){
 		program.addNewStackLevel([this]);
 		program.addNewStackLevel(this.body.slice(0));
 	}
+	
+	setTimeout(program.stepCallback, 500);
 };
 
 function counterCondition(count){
-	var f = function(){
-		if(count > 0){
-			count--;
-			return true;
-		}
-		
-		return false;
-	}
-	
-	return f;
+    return function() {
+        if (count > 0) {
+            count--;
+            return true;
+        }
+
+        return false;
+    };
 }
 
-TURN_LEFT_COMMAND = {};
-TURN_LEFT_COMMAND.execute = function(program){
+function roadCondition(selection){
+    return function(level) {
+        if (selection === 'FORWARD') {
+            return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);
+        } else if (selection === 'LEFT') {
+            return TURN_LEFT.getNextNode(level.van.previousNode, level.van.currentNode);
+        } else if (selection === 'RIGHT') {
+            return TURN_RIGHT.getNextNode(level.van.previousNode, level.van.currentNode);
+        }
+    };
+}
+
+function deadEndCondition() {
+    return function(level) {
+        var instructions = [FORWARD, TURN_LEFT, TURN_RIGHT];
+        for (var i = 0; i < instructions.length; i++) {
+            var instruction = instructions[i];
+            var nextNode = instruction.getNextNode(level.van.previousNode, level.van.currentNode);
+            if (nextNode) {
+                return false;
+            }
+        }
+        return true;
+    };
+}
+
+function TurnLeftCommand(block){
+	this.block = block;
+}
+
+TurnLeftCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(TURN_LEFT, program);
 };
 
-TURN_RIGHT_COMMAND = {};
-TURN_RIGHT_COMMAND.execute = function(program){
+function TurnRightCommand(block){
+	this.block = block;
+}
+
+TurnRightCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(TURN_RIGHT, program);
 };
 
-FORWARD_COMMAND = {};
-FORWARD_COMMAND.execute = function(program){
+function ForwardCommand(block){
+	this.block = block;
+}
+
+ForwardCommand.prototype.execute = function(program){
+	this.block.select();
 	program.instructionHandler.handleInstruction(FORWARD, program);
 };
 
-// Usage:
-//var program = new ocargo.Stack();
-//program.addNewLevel([TURN_LEFT_COMMAND, TURN_LEFT_COMMAND]);
-//program.step();
-//program.step();
+function TurnAroundCommand(block) {
+    this.block = block;
+}
+
+TurnAroundCommand.prototype.execute = function(program) {
+    this.block.select();
+    program.instructionHandler.handleInstruction(TURN_AROUND, program);
+};
+

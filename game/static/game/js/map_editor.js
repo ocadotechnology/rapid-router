@@ -131,6 +131,7 @@ $('#undo').click(function() {
 	}
 });
 
+
 $('#clear').click(function() {
 	paper.clear();
 	ocargo.mapEditor = new ocargo.MapEditor();
@@ -185,3 +186,14 @@ $('#UR').click(function() {
     myset.draggable();
 
 });
+
+$('#H').click(function() {
+	var turn = createHorizontalRoad(paper, 0, 0);
+	turn.draggable();
+});
+
+$('#V').click(function() {
+	var turn = createVerticalRoad(paper, 0, 0);
+	turn.draggable();
+});
+
