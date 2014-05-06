@@ -156,7 +156,8 @@ function createTurn(paper, i, j, direction) {
     return roadSet;
 }
 
-function createTurnUL(baseY, baseX) {
+function createTurnUL(baseX, baseY) {
+    
     var turn = paper.path([
         'M', baseX, baseY + EDGE_GAP_Y,
         'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X, baseY,
@@ -166,9 +167,9 @@ function createTurnUL(baseY, baseX) {
 
     var marker = paper.path([
         'M', baseX, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + GRID_SPACE_HEIGHT / 2 - 1, baseX + GRID_SPACE_WIDTH / 2 - 1, baseY,
+        'Q', baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + GRID_SPACE_HEIGHT / 2 - 1, baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + 1,
         'H', baseX + GRID_SPACE_WIDTH / 2 + 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT / 2 + 1, baseX, baseY + GRID_SPACE_HEIGHT / 2 + 1
+        'Q', baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT / 2 + 1, baseX , baseY + GRID_SPACE_HEIGHT / 2 + 1
     ]);
 
     return [turn, marker];
@@ -214,11 +215,11 @@ function createTurnDR(baseX, baseY) {
 
 
 function createTurnUR(baseX, baseY) {
-
+  
     var turn = paper.path([
         'M', baseX + EDGE_GAP_X, baseY,
         'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + GRID_SPACE_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH,
-        'V', baseX + EDGE_GAP_X,
+        'V', baseY + EDGE_GAP_Y,
         'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X + ROAD_WIDTH, baseY
     ]);
 
