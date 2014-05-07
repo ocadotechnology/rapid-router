@@ -91,6 +91,7 @@ function trackDevelopment() {
         ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
         ocargo.ui.setVanToFront();
     	ocargo.level.play(program);
+        ocargo.level.correct = 0;
 	});
 
     $('#loadDefaultProgram').click(function() {
