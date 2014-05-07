@@ -13,3 +13,11 @@ ocargo.sound.moving = function() {
 ocargo.sound.turning = function() {
     console.debug("Playing 'turning' sound.");
 };
+
+ocargo.sound.win = function() {
+    console.debug("Playing 'win' sound.");
+};
+
+ocargo.sound.failure = function() {
+    console.debug("Playing 'failure' sound.");
+};
