@@ -151,38 +151,41 @@ Raphael.st.draggable = function() {
       ox = 0,
       oy = 0,
       moveFnc = function(dx, dy) {
-          lx = dx + ox;
-          ly = dy + oy;
-          me.transform('t' + lx + ',' + ly);
+        lx = dx + ox;
+        ly = dy + oy;
+        me.transform('t' + lx + ',' + ly);
       },
       startFnc = function() {},
       endFnc = function() {
-          ox = lx;
-          oy = ly;
+      	var point = getGridSpace(lx, ly);
+      	console.debug("Moved to: " + point);
+      	me.transform('t' + point[0] * GRID_SPACE_WIDTH + ',' + point[1]* GRID_SPACE_HEIGHT);
+        ox = point[0] * GRID_SPACE_WIDTH;
+        oy = point[1] * GRID_SPACE_HEIGHT;
       };
   
   this.drag(moveFnc, startFnc, endFnc);
 };
 
 $('#UL').click(function() {
-   	var myset = createTurn(paper, 2, 2, 'UL');
+   	var myset = createTurn(paper, 0, 0, 'UL');
     myset.draggable();
 });
 
 $('#DR').click(function() {
-   	var myset = createTurn(paper, 2, 2, 'DR');
+   	var myset = createTurn(paper, 0, 0, 'DR');
     myset.draggable();
 
 });
 
 $('#DL').click(function() {
-   	var myset = createTurn(paper, 2, 2, 'DL');
+   	var myset = createTurn(paper, 0, 0, 'DL');
     myset.draggable();
 
 });
 
 $('#UR').click(function() {
-   	var myset = createTurn(paper, 2, 2, 'UR');
+   	var myset = createTurn(paper, 0, 0, 'UR');
     myset.draggable();
 
 });

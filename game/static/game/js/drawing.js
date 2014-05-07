@@ -32,6 +32,12 @@ var ROAD_MARKER_ATTR = {
     stroke: 'none'
 };
 
+var WEIGHT_POINT_ATTR = {
+    fill: '#FFF',
+    'fill-opacity': 0,
+    stroke: 'none'
+};
+
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
 
@@ -72,6 +78,11 @@ function createGrid(paper) {
     }
 }
 
+function getGridSpace(x, y) {
+    return [Math.floor((x + GRID_SPACE_WIDTH / 2) / GRID_SPACE_WIDTH),
+            Math.floor((y + GRID_SPACE_HEIGHT / 2) / GRID_SPACE_HEIGHT)];
+}
+
 function createHorizontalRoad(paper, i, j) {
     var x = i * GRID_SPACE_WIDTH;
     var y = j * GRID_SPACE_HEIGHT + (GRID_SPACE_HEIGHT - ROAD_WIDTH) / 2;
@@ -91,11 +102,14 @@ function createHorizontalRoad(paper, i, j) {
         j * GRID_SPACE_HEIGHT + GRID_SPACE_HEIGHT / 2 - 1, GRID_SPACE_WIDTH / 8, 2);
     lastMarker.attr(ROAD_MARKER_ATTR);
 
+    var weightPoint = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
+    weightPoint.attr(WEIGHT_POINT_ATTR);
+
     var markerSet = paper.set();
     markerSet.push(entryMarker, middleMarker, lastMarker);
 
     var roadSet = paper.set();
-    roadSet.push(road, markerSet);
+    roadSet.push(road, markerSet, weightPoint);
 
     return roadSet;
 }
@@ -119,11 +133,14 @@ function createVerticalRoad(paper, i, j) {
         y + 7 * GRID_SPACE_HEIGHT / 8, 2, GRID_SPACE_WIDTH / 8);
     lastMarker.attr(ROAD_MARKER_ATTR);
 
+    var weightPoint = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
+    weightPoint.attr(WEIGHT_POINT_ATTR);
+
     var markerSet = paper.set();
     markerSet.push(entryMarker, middleMarker, lastMarker);
 
     var roadSet = paper.set();
-    roadSet.push(road, markerSet);
+    roadSet.push(road, markerSet, weightPoint);
 
     return roadSet;
 }
@@ -150,14 +167,17 @@ function createTurn(paper, i, j, direction) {
             turnAndMarker = createTurnDL(baseX, baseY);
             break;
     }
+
     var turn = turnAndMarker[0];
     var marker = turnAndMarker[1];
+    var weightPoint = paper.rect(baseX, baseY, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);    
+
     turn.attr(ROAD_ATTR);
     marker.attr(ROAD_MARKER_ATTR);
-
+    weightPoint.attr(WEIGHT_POINT_ATTR);
 
     var roadSet = paper.set();
-    roadSet.push(turn, marker);
+    roadSet.push(turn, marker, weightPoint);
 
     return roadSet;
 }
@@ -228,7 +248,6 @@ function createTurnDR(baseX, baseY) {
     return [turn, marker];
 }
 
-
 function createTurnUR(baseX, baseY) {
   
     var turn = paper.path([
@@ -248,7 +267,6 @@ function createTurnUR(baseX, baseY) {
     ]);
 
     return [turn, marker];
-
 }
 
 function createRoad(paper, roadDefinition) {
