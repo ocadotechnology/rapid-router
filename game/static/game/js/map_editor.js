@@ -129,6 +129,7 @@ $(function() {
 	ocargo.mapEditor = new ocargo.MapEditor();
 	ocargo.mapEditor.createGrid(paper);
 	ocargo.mapEditor.trackCreation();
+
 });
 
 $('#undo').click(function() {

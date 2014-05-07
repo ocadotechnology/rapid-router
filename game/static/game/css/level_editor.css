@@ -2,8 +2,6 @@
     height: 730px;
     width: 1020px;
     margin-left: 20px;
-    overflow: auto;
-
 }
 
 #paper {
@@ -23,4 +21,58 @@
 
 #tools {
     width: 330px;
+}
+
+.tabs input[type=radio] {
+    top: -9999px;
+    left: -9999px;
+    position: absolute;
+}
+
+.tabs {
+    float: none;
+    list-style: none;
+    position: relative;
+    padding: 0px;
+    margin: 75px auto;
+}
+
+.tabs li {
+    float: left;
+}
+
+.tabs label {
+    display: block;
+    padding: 10px 20px;
+    color: #08C;
+    background: rgba(255,255,255,0.2);
+    position: relative;
+    top: 3px;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.tabs label:hover {
+    background: blue;
+    top: 0px;
+}
+
+[id^=tab]:checked + label; {
+    background: gray;
+    color: black;
+    top: 0;
+}
+
+[id^=tab]:checked ~ [id^=tab-content] {
+    display: block;
+}
+
+.tab-content {
+    width: 330px;
+    text-align: left;
+    z-index: 2;
+    display: none;
+    position: absolute;
 }
