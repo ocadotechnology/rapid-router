@@ -139,6 +139,7 @@ $('#clear').click(function() {
 });
 
 $('#createFromSelect').click(function() {
+	console.debug(ocargo.mapEditor.submittedPoints);
 	ocargo.ui = new ocargo.SimpleUi();
 	var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
 	var map = new ocargo.Map(nodes, ocargo.ui);
@@ -155,10 +156,17 @@ Raphael.st.draggable = function() {
         ly = dy + oy;
         me.transform('t' + lx + ',' + ly);
       },
-      startFnc = function() {},
+      startFnc = function() {
+      	var index = ocargo.mapEditor.submittedPoints.indexOf(
+      		[Math.floor(ox/GRID_SPACE_WIDTH), Math.floor(oy/GRID_SPACE_HEIGHT)]);
+      	console.debug(index + " " + ox + " " + oy);
+      	if (index != -1)
+      		ocargo.mapEditor.submittedPoints.splice(index, 1);
+      },
       endFnc = function() {
       	var point = getGridSpace(lx, ly);
-      	console.debug("Moved to: " + point);
+      	console.debug(point);
+      	ocargo.mapEditor.submittedPoints.push(point);
       	me.transform('t' + point[0] * GRID_SPACE_WIDTH + ',' + point[1]* GRID_SPACE_HEIGHT);
         ox = point[0] * GRID_SPACE_WIDTH;
         oy = point[1] * GRID_SPACE_HEIGHT;
