@@ -66,15 +66,6 @@ ocargo.Map.prototype.getThePath = function() {
 	    return new ocargo.Coordinate(coord.x, GRID_HEIGHT - 1 - coord.y);
 	}
 
-	function pushInstruction(json, coord, instruction) {
-		var x = coord.x.toString();
-		var y = coord.y.toString();
-		if (!json.hasOwnProperty(x)) {
-			json[x] = {};
-		}
-		json[x][y] = instruction;
-	}
-
 	function isHorizontal(prev, next) {
 		return prev.y == next.y;
 	}
@@ -99,3 +90,12 @@ ocargo.Map.prototype.getThePath = function() {
 		return coord1 < coord2;
 	}
 };
+
+function pushInstruction(json, coord, instruction) {
+	var x = coord.x.toString();
+	var y = coord.y.toString();
+	if (!json.hasOwnProperty(x)) {
+		json[x] = {};
+	}
+	json[x][y] = instruction;
+}
