@@ -3,21 +3,16 @@
 var ocargo = ocargo || {};
 
 ocargo.Van = function(previousNode, startNode, ui) {
-    this.firstMove = true;
     this.previousNode = previousNode;
     this.currentNode = startNode;
     this.ui = ui;
+    ocargo.sound.starting();
 }
 
 ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
     if (instruction == FORWARD) {
         moveForward(callback);
-        if (this.firstMove) {
-            this.firstMove = false;
-            ocargo.sound.starting();
-        } else {
-            ocargo.sound.moving();
-        }
+        ocargo.sound.moving();
     } else if (instruction == TURN_LEFT) {
         moveLeft(callback);
         ocargo.sound.turning();
