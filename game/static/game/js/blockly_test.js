@@ -89,7 +89,7 @@ Blockly.Blocks['at_destination'] = {
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField('is destination');
+            .appendField('at destination');
     }
 };
 
