@@ -42,6 +42,7 @@ function stepper(level){
 	    } else {
 	    	if (level.van.currentNode === level.destination && !level.program.isTerminated) {
 	            console.debug('You win!');
+                    ocargo.sound.win();
                 window.alert('You win!');
 	        }
 	    }
@@ -60,6 +61,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
         var n = this.level.correct - 1;
         var total = this.level.map.nodes.length - 2;
         console.debug('Oh dear! :(');
+        ocargo.sound.failure();
         window.alert("Oh dear! :( Your first " + n + " out of " +  total 
             + " instructions were right. Click clear to remove the incorrect blocks "
             + "and try again!");

@@ -114,6 +114,18 @@ function deadEndCondition() {
     };
 }
 
+function negateCondition(otherCondition){
+	return function(level){
+		return !otherCondition(level);
+	}
+}
+
+function atDestinationCondition() {
+    return function(level) {
+    	return level.van.currentNode === level.destination;
+    };
+}
+
 function TurnLeftCommand(block){
 	this.block = block;
 }
