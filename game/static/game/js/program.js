@@ -114,6 +114,12 @@ function deadEndCondition() {
     };
 }
 
+function atDestinationCondition() {
+    return function(level) {
+    	return level.van.currentNode === level.destination;
+    };
+}
+
 function TurnLeftCommand(block){
 	this.block = block;
 }

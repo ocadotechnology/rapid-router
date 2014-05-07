@@ -84,7 +84,7 @@ Blockly.Blocks['dead_end'] = {
     }
 };
 
-Blockly.Blocks['is_destination'] = {
+Blockly.Blocks['at_destination'] = {
     init: function() {
         this.setColour(210);
         this.setOutput(true, 'Boolean');
@@ -180,6 +180,8 @@ BlocklyTest.populateProgram = function() {
     				condition = roadCondition(selection);
     			} else if (conditionBlock.type === 'dead_end') {
                     condition = deadEndCondition();
+                } else if (conditionBlock.type === 'at_destination') {
+                    condition = atDestinationCondition();
                 }
     		} else if(input.name.indexOf('DO') === 0){
     			var conditionalCommandSet = {};
