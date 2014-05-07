@@ -165,6 +165,19 @@ BlocklyTest.populateProgram = function() {
 			block);
 	}
 	
+	function getCondition(conditionBlock){
+		if(conditionBlock.type === 'road_exists'){
+			var selection = conditionBlock.inputList[0].fieldRow[1].value_;
+			return roadCondition(selection);
+		} else if (conditionBlock.type === 'dead_end') {
+			return deadEndCondition();
+        } else if (conditionBlock.type === 'at_destination') {
+        	return atDestinationCondition();
+        } else if (conditionBlock.type === 'logic_negate') {
+        	return negateCondition(getCondition(conditionBlock.childBlocks_[0]));
+        }
+	}
+	
 	function createIf(block) {
 		var conditionalCommandSets = [];
     	
@@ -174,15 +187,7 @@ BlocklyTest.populateProgram = function() {
     		var condition;
 
     		if(input.name.indexOf('IF') === 0) {
-    			var conditionBlock = input.connection.targetBlock();
-    			if(conditionBlock.type === 'road_exists'){
-    				var selection = conditionBlock.inputList[0].fieldRow[1].value_;
-    				condition = roadCondition(selection);
-    			} else if (conditionBlock.type === 'dead_end') {
-                    condition = deadEndCondition();
-                } else if (conditionBlock.type === 'at_destination') {
-                    condition = atDestinationCondition();
-                }
+    			condition = getCondition(input.connection.targetBlock());
     		} else if(input.name.indexOf('DO') === 0){
     			var conditionalCommandSet = {};
     			conditionalCommandSet.condition = condition;
