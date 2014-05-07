@@ -83,6 +83,31 @@ function getGridSpace(x, y) {
             Math.floor((y + GRID_SPACE_HEIGHT / 2) / GRID_SPACE_HEIGHT)];
 }
 
+function identifyInstruction(roadSet) {
+    var weightPointBox = roadSet[2].getBBox();
+    var roadBox = roadSet[0].getBBox();
+    var diffX = Math.abs(weightPointBox.x - roadBox.x);
+    var diffY = Math.abs(weightPointBox.y - roadBox.y);
+    var width = roadBox.width;
+    var instruction = '';
+    console.debug(weightPointBox.x, weightPointBox.y, weightPointBox.width, weightPointBox.height, " road: ",
+        roadBox.x, roadBox.y, roadBox.width, roadBox.height);
+    if (diffX == 0 && diffY == 0)
+        instruction ='UL';
+    if (diffX == 0 && diffY == EDGE_GAP_Y)
+        instruction = 'DL';
+    if (diffX == EDGE_GAP_X && diffY == EDGE_GAP_Y)
+        instruction = 'DR';
+    if (diffX == EDGE_GAP_X && diffY == 0)
+        instruction = 'UR';
+    if (roadBox.width == 50 && roadBox.height == 100)
+        instruction = 'V';
+    if (roadBox.width == 100 && roadBox.height == 50)
+        instruction ='H';
+    console.debug(instruction);
+    return instruction;
+}
+
 function createHorizontalRoad(paper, i, j) {
     var x = i * GRID_SPACE_WIDTH;
     var y = j * GRID_SPACE_HEIGHT + (GRID_SPACE_HEIGHT - ROAD_WIDTH) / 2;

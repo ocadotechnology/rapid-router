@@ -156,16 +156,7 @@ $('#createFromSelect').click(function() {
 	var map = new ocargo.Map(nodes, ocargo.ui);
 });
 
-/*
-function pushInstruction(json, coord, instruction) {
-	var x = coord.x.toString();
-	var y = coord.y.toString();
-	if (!json.hasOwnProperty(x)) {
-		json[x] = {};
-	}
-	json[x][y] = instruction;
-}
-*/
+
 Raphael.st.draggable = function() {
 	var me = this,
 		lx = 0,
@@ -178,11 +169,6 @@ Raphael.st.draggable = function() {
         	me.transform('t' + lx + ',' + ly);
       	},
       	startFnc = function() {
-     // 	var index = ocargo.mapEditor.submittedPoints.indexOf(
-     // 		[Math.floor(ox/GRID_SPACE_WIDTH), Math.floor(oy/GRID_SPACE_HEIGHT)]);
-     // 	console.debug(index + " " + ox + " " + oy);
-     // 	if (index != -1)
-     // 		ocargo.mapEditor.submittedPoints.splice(index, 1);
      		var x = ox / GRID_SPACE_WIDTH;
 	     	var y = oy / GRID_SPACE_HEIGHT;
 	     	if (ocargo.mapEditor.json.hasOwnProperty(x))
@@ -195,7 +181,7 @@ Raphael.st.draggable = function() {
       	endFnc = function() {
 	      	var point = getGridSpace(lx, ly);
 	      	var coord = new ocargo.Coordinate(point[0], point[1]);
-	      	var instruction = '';
+	      	var instruction = identifyInstruction(me);
 	      	ox = point[0] * GRID_SPACE_WIDTH;
 	        oy = point[1] * GRID_SPACE_HEIGHT;
 	      	me.transform('t' + ox + ',' + oy);
