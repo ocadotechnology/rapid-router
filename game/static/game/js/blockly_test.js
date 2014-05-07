@@ -165,6 +165,18 @@ BlocklyTest.populateProgram = function() {
 			block);
 	}
 	
+	function createWhileUntil(block) {
+		var condition = getCondition(block.inputList[0].connection.targetBlock());
+		if(block.inputList[0].fieldRow[1].value_ == 'UNTIL'){
+			condition = negateCondition(condition);
+		}
+		
+		return new While(
+			condition, 
+			getCommandsAtThisLevel(block.inputList[1].connection.targetBlock()),
+			block);
+	}
+	
 	function getCondition(conditionBlock){
 		if(conditionBlock.type === 'road_exists'){
 			var selection = conditionBlock.inputList[0].fieldRow[1].value_;
@@ -174,7 +186,7 @@ BlocklyTest.populateProgram = function() {
         } else if (conditionBlock.type === 'at_destination') {
         	return atDestinationCondition();
         } else if (conditionBlock.type === 'logic_negate') {
-        	return negateCondition(getCondition(conditionBlock.childBlocks_[0]));
+        	return negateCondition(getCondition(conditionBlock.inputList[0].connection.targetBlock()));
         }
 	}
 	
@@ -219,6 +231,8 @@ BlocklyTest.populateProgram = function() {
                 commands.push(new TurnAroundCommand(block));
             } else if (block.type === 'controls_repeat') {
             	commands.push(createWhile(block));
+            } else if (block.type === 'controls_whileUntil') {
+            	commands.push(createWhileUntil(block));
             } else if (block.type === 'controls_if') {
             	commands.push(createIf(block));
             }
