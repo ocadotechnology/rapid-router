@@ -123,6 +123,90 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 	return nodes;
 };
 
+ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
+    var nodes = [];
+    var x = startCoord.x;
+    var y = startCoord.y;
+    var progressiveX = true;
+    var progressiveY = undefined;
+    var currDirection = this.json[x.toString()][y.toString()];
+    var coordinate = startCoord;
+    var currNode = new ocargo.Node(coordinate);
+
+    do {
+        switch (currDirection) {
+            case 'H':
+                if (progressiveX)
+                    x++;
+                else
+                    x--;
+                break;
+            case 'V':
+                if(progressiveY)
+                    y++;
+                else 
+                    y--;
+                break;
+            case 'UL':
+                if (progressiveX) {
+                    y--;
+                    progressiveX = undefined;
+                    progressiveY = false;
+                } else if (progressiveY) {
+                    x--;
+                    progressiveX = false;
+                    progressiveY = undefined;
+                }
+                break;
+            case 'DL':
+                if (progressiveX) {
+                    y++;
+                    progressiveX = undefined
+                    progressiveY = true;
+                } else if (progressiveY == false) {
+                    x--;
+                    progressiveX = false;
+                    progressiveY = undefined;
+                }
+                break;
+            case 'DR':
+                if (progressiveX == false) {
+                    y++;
+                    progressiveX = undefined;
+                    progressiveY = true;
+                } else if (progressiveY == false) {
+                    x++;
+                    progressiveX = true;
+                    progressiveY = undefined;
+                }
+                break;
+            case 'UR':
+                if (progressiveY) {
+                    x++;
+                    progressiveX = true;
+                    progressiveY = undefined;
+                } else if (progressiveX == false) {
+                    y--;
+                    progressiveX = undefined;
+                    progressiveY = false;
+                }
+                break;
+        };
+        coordinate = new ocargo.Coordinate(x, y);
+        var node = new ocargo.Node(coordinate);
+        node.addConnectedNodeWithBacklink(currNode);
+        nodes.push(node);
+        if (this.json.hasOwnProperty(x.toString())) {
+            currDirection = this.json[x.toString()][y.toString()];
+        } else {
+            break;
+        }
+        currNode = node;
+    } while (true);
+
+    return nodes;
+}
+
 ocargo.MapEditor.prototype.clear = function() {
     paper.clear();
     ocargo.mapEditor = new ocargo.MapEditor();
@@ -145,10 +229,16 @@ $('#undo').click(function() {
 			= ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1];
 		ocargo.mapEditor.mark(toChange, "white", 0, false);
 		ocargo.mapEditor.markPossible(ocargo.mapEditor.current, "white", 0, false);
-
 	}
 });
 
+$('#dragMagic').click(function() {
+    ocargo.ui = new ocargo.SimpleUi();
+    var coord = new ocargo.Coordinate(1, 4);
+    var nodes = ocargo.mapEditor.jsonToNodes(coord);
+    var map = new ocargo.Map(nodes, ocargo.ui);
+    console.debug(JSON.stringify(map.instructions));
+});
 
 $('#clear').click(function() {
 	ocargo.mapEditor.clear();
@@ -199,7 +289,7 @@ Raphael.st.draggable = function() {
 	        oy = point[1] * GRID_SPACE_HEIGHT;
 	      	me.transform('t' + ox + ',' + oy);
 	        pushInstruction(ocargo.mapEditor.json, coord, instruction);
-	        console.debug(ocargo.mapEditor.json);
+	        console.debug(JSON.stringify(ocargo.mapEditor.json));
       	};
 
 	this.drag(moveFnc, startFnc, endFnc);
