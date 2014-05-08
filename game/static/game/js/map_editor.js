@@ -123,6 +123,12 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 	return nodes;
 };
 
+ocargo.MapEditor.prototype.clear = function() {
+    paper.clear();
+    ocargo.mapEditor = new ocargo.MapEditor();
+    ocargo.mapEditor.createGrid(paper);
+};
+
 $(function() {
 	paper.clear();
 	ocargo.ui = new ocargo.SimpleUi();
@@ -145,9 +151,15 @@ $('#undo').click(function() {
 
 
 $('#clear').click(function() {
-	paper.clear();
-	ocargo.mapEditor = new ocargo.MapEditor();
-	ocargo.mapEditor.createGrid(paper)
+	ocargo.mapEditor.clear();
+});
+
+$('#tab1').click(function() {
+   ocargo.mapEditor.clear();
+});
+
+$('#tab2').click(function() {
+    ocargo.mapEditor.clear();
 });
 
 $('#createFromSelect').click(function() {

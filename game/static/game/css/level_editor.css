@@ -14,13 +14,18 @@
     width: 650px;
 }
 
+#toolbox {
+    margin-left: 10px;
+}
+
 .col {
     float: left;
     margin-left: 20px;
 }
 
 #tools {
-    width: 330px;
+    /*width: 330px; */
+    padding: 10px;
 }
 
 .tabs input[type=radio] {
@@ -29,11 +34,16 @@
     position: absolute;
 }
 
-.tabs {
+.tabs input[type="radio"] + label {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+ .tabs {
+    text-align: center;
     float: none;
     list-style: none;
     position: relative;
-    padding: 0px;
     margin: 75px auto;
 }
 
@@ -41,13 +51,20 @@
     float: left;
 }
 
-.tabs label {
+ .tabs label {
+    text-align: center;
+    margin: 0px;
     display: block;
     padding: 10px 20px;
     color: #08C;
-    background: rgba(255,255,255,0.2);
-    position: relative;
+    background: #63BEDD;
+    width: 170px;
     top: 3px;
+    border-left: solid;
+    border-right: solid;
+    border-top: solid;
+    border-width: 3px;
+    border-color: #63BEDD;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
@@ -55,24 +72,40 @@
 }
 
 .tabs label:hover {
-    background: blue;
+    background: #63BEDD;
     top: 0px;
 }
-
-[id^=tab]:checked + label; {
-    background: gray;
-    color: black;
+       
+[id^=tab]:checked + label {
+    background: white;
+    color:  #63BEDD;
     top: 0;
 }
-
+       
 [id^=tab]:checked ~ [id^=tab-content] {
     display: block;
 }
 
-.tab-content {
-    width: 330px;
-    text-align: left;
+.tab-content{
     z-index: 2;
     display: none;
+    text-align: left;
+    width: 340px;
+    font-size: 20px;
+    line-height: 140%;
+    padding-top: 10px;
+    padding: 30px;
+    color: white;
+    left: 0px;
     position: absolute;
-}
+    border-left: solid;
+    border-right: solid;
+    border-bottom: solid;
+    border-width: 3px;
+    border-color: #63BEDD;
+    box-sizing: border-box;
+    -webkit-animation-duration: 0.5s;
+    -o-animation-duration: 0.5s;
+    -moz-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+  }
