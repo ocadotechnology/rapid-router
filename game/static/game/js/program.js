@@ -66,10 +66,10 @@ function While(condition, body, block){
 	this.block = block;
 }
 
-While.prototype.execute = function(program){
+While.prototype.execute = function(program, level){
 	this.block.select();
 	
-	if(this.condition()){
+	if(this.condition(level)){
 		program.addNewStackLevel([this]);
 		program.addNewStackLevel(this.body.slice(0));
 	}
