@@ -123,6 +123,7 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 	return nodes;
 };
 
+/* Pass in the coordinate in top-down orientation - applies to JSON and paper, not nodes. */
 ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
     var nodes = [];
     var x = startCoord.x; 
@@ -131,12 +132,28 @@ ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
     var progressiveY = undefined;
     var currDirection = this.json[x.toString()][y.toString()];
     var coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 1 - y);
-    var currNode = new ocargo.Node(startCoord);
+    var currNode = new ocargo.Node(coordinate);
     nodes.push(currNode);
-    var counter = 0;
     var bool = true;
 
-    do {
+    while (bool) {
+        process();
+        coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 1 - y);
+        var node = new ocargo.Node(coordinate);
+        node.addConnectedNodeWithBacklink(currNode);
+        nodes.push(node);
+        if (this.json.hasOwnProperty(x.toString())) {
+            currDirection = this.json[x.toString()][y.toString()];
+        } else {
+            break;
+        }
+        currNode = node;
+    } 
+
+    return nodes;
+
+
+    function process() {
         switch (currDirection) {
             case 'H':
                 if (progressiveX)
@@ -194,27 +211,10 @@ ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
                     progressiveY = false;
                 }
                 break;
-            case undefined:
-                x++;
-                break;
             default:
-                console.debug('hit default;');
-                bool = false;
-                
+                bool = false;      
         }
-        coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 2 - y);
-        var node = new ocargo.Node(coordinate);
-        node.addConnectedNodeWithBacklink(currNode);
-        nodes.push(node);
-        if (this.json.hasOwnProperty(x.toString())) {
-            currDirection = this.json[x.toString()][y.toString()];
-        } else {
-            break;
-        }
-        currNode = node;
-    } while (bool);
-
-    return nodes;
+    }
 }
 
 ocargo.MapEditor.prototype.clear = function() {
@@ -244,17 +244,12 @@ $('#undo').click(function() {
 
 $('#dragMagic').click(function() {
     ocargo.ui = new ocargo.SimpleUi();
-    var coord = new ocargo.Coordinate(0, 3);
+    var coord = new ocargo.Coordinate(0, 4);
             console.debug("Tadaaaam");
 
     var nodes = ocargo.mapEditor.jsonToNodes(coord);
-    nodes.pop();
-
-//    console.debug("Tadaaaam, length of nodes" + nodes.length);
- //   for (var i = 0; i < nodes.length; i++) {
-//        console.debug(nodes[i] == null);
- //       console.debug(nodes[i].coordinate.x, nodes[i].coordinate.y);
- //   }
+    nodes = nodes.slice(0, nodes.length - 1);
+    console.debug("Creating a map from your choice.");
     var map = new ocargo.Map(nodes, ocargo.ui);
 
 });
@@ -302,13 +297,21 @@ Raphael.st.draggable = function() {
      	},
       	endFnc = function() {
 	      	var point = getGridSpace(lx, ly);
-	      	var coord = new ocargo.Coordinate(point[0], point[1]);
-	      	var instruction = identifyInstruction(me);
-	      	ox = point[0] * GRID_SPACE_WIDTH;
-	        oy = point[1] * GRID_SPACE_HEIGHT;
-	      	me.transform('t' + ox + ',' + oy);
-	        pushInstruction(ocargo.mapEditor.json, coord, instruction);
-	        console.debug(JSON.stringify(ocargo.mapEditor.json));
+
+            // Currently protecting against loops.
+            if(!isOutOfBounds(point) && (!ocargo.mapEditor.json.hasOwnProperty(point[0].toString())
+                || !ocargo.mapEditor.json[point[0].toString()][point[1].toString()])) {
+    	      	var coord = new ocargo.Coordinate(point[0], point[1]);
+    	      	var instruction = identifyInstruction(me);
+    	      	ox = point[0] * GRID_SPACE_WIDTH;
+    	        oy = point[1] * GRID_SPACE_HEIGHT;
+    	      	me.transform('t' + ox + ',' + oy);
+    	        pushInstruction(ocargo.mapEditor.json, coord, instruction);
+    	        console.debug(JSON.stringify(ocargo.mapEditor.json));
+
+            } else {
+                me.transform('t' + ox + ',' + oy);
+            }
       	};
 
 	this.drag(moveFnc, startFnc, endFnc);
@@ -355,4 +358,3 @@ $('#V').click(function() {
 	var turn = createVerticalRoad(paper, 0, 0);
 	turn.draggable();
 });
-
