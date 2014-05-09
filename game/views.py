@@ -7,8 +7,12 @@ from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import School, Teacher, Student, Class, UserProfile
 
 
-def game(request):
+def levels(request):
     '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
+    return render(request, 'game/game.html')
+
+def level(request, level):
+    #TODO: load level
     return render(request, 'game/game.html')
 
 def logged_students(request):
