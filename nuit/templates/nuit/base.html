@@ -68,6 +68,9 @@
                     {% else %}
                         <li class='has-dropdown' class='nuit-user-details'>
                             <a href='#'>
+                                {% if request.user.userprofile.avatar %}
+                                    <img style="height:40px; padding:5px;" src="/{{user.userprofile.avatar.url}}" /> 
+                                {% endif %}
                                 {% if request.user.first_name and request.user.last_name %}
                                     {{request.user.first_name}} {{request.user.last_name}}
                                 {% else %}
