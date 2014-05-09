@@ -24,46 +24,45 @@
 
 {% block content %}
 <div id="wrapper">
-  <h4> Design your own map!</h4>
-  <div id="paper" class="col"></div>
   <div id="tools" class="col">
-    <div id="buttons" class="col">
-      <button id="clear">Clear</button>
-      <button id="export">Play it</button>
+    <div id="toolbox">
+      <div id="buttons">
+        <button id="clear">Clear</button>
+        <button id="export">Play it</button>
+      </div><br>
+      <ul class="tabs">
+        <li>
+          <input type="radio" checked name="tabs" id="tab1"> 
+          <label for="tab1">Arrows</label> 
+          <div id="tab-content-arrows" class="tab-content">
+              <button id="createFromSelect">Do the magic</button>
+              <button id="undo">Undo</button><hr>
+              <button id="dummy" style="visibility:hidden">&#x2190;</button>
+              <button id="up">&#x2191;</button><br>
+              <button id="left">&#x2190;</button>
+              <button id="down">&#x2193;</button>
+              <button id="right">&#x2192;</button>
+          </div>
+        </li>
+        <li>
+          <input type="radio" name="tabs" id="tab2">
+          <label for="tab2">Drag and drop</label>
+          <div id="tab-content-dragNdrop" class="tab-content">
+            <div id="drag-elements" class="col">
+              <button id="dragMagic">Do the magic</button><hr>
+              <button id="UL">&#x2934;</button>
+              <button id="DL">&#x2935;</button><br>
+              <button id="DR">&#x2939;</button>
+              <button id="UR">&#x2937;</button><br>
+              <button id="H">&#x97;</button>
+              <button id="V">&#x7C;</button>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
-  <div id="toolbox" class="col">
-    <ul class="tabs">
-      <li>
-        <input type="radio" checked name="tabs" id="tab1"> 
-        <label for="tab1">Arrows</label> 
-        <div id="tab-content-arrows" class="tab-content">
-            <button id="createFromSelect">Do the magic</button>
-            <button id="undo">Undo</button><hr>
-            <button id="dummy" style="visibility:hidden">&#x2190;</button>
-            <button id="up">&#x2191;</button><br>
-            <button id="left">&#x2190;</button>
-            <button id="down">&#x2193;</button>
-            <button id="right">&#x2192;</button>
-        </div>
-      </li>
-      <li>
-        <input type="radio" name="tabs" id="tab2">
-        <label for="tab2">Drag and drop</label>
-        <div id="tab-content-dragNdrop" class="tab-content">
-          <div id="drag-elements" class="col">
-            <button id="dragMagic">Do the magic</button><hr>
-            <button id="UL">&#x2934;</button>
-            <button id="DL">&#x2935;</button><br>
-            <button id="DR">&#x2939;</button>
-            <button id="UR">&#x2937;</button><br>
-            <button id="H">&#x97;</button>
-            <button id="V">&#x7C;</button>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </div>
+  <div id="paper" class="col"></div>
 </div>
 
 {% endblock %}
