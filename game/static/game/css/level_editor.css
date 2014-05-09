@@ -1,26 +1,107 @@
 #wrapper {
-    height: 730px;
-    width: 1020px;
-    margin-left: 20px;
-    overflow: auto;
-
+    max-height: 730px;
+    min-width: 1020px;
 }
 
 #paper {
     border: 0;
     background-color: rgb(180, 180, 180);
-    float: left;
-    height: 630px;
-    margin-bottom: 30px;
-    overflow: scroll;
-    width: 650px;
+    width: 50%;
+    height: 650px;
+    overflow: auto;
+}
+
+#toolbox {
+    width: 340px;
+    margin-left: 10px;
 }
 
 .col {
     float: left;
-    margin-left: 20px;
 }
 
 #tools {
-    width: 330px;
+    width: 50%;
 }
+
+.tabs input[type=radio] {
+    top: -9999px;
+    left: -9999px;
+    position: absolute;
+}
+
+.tabs input[type="radio"] + label {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+ .tabs {
+    text-align: center;
+    float: none;
+    list-style: none;
+    position: relative;
+    margin: 10px auto;
+}
+
+.tabs li {
+    float: left;
+}
+
+ .tabs label {
+    text-align: center;
+    margin: 0px;
+    display: block;
+    padding: 10px 20px;
+    color: #008CBA;
+    font-weight: bold;
+    background: #63BEDD;
+    width: 170px;
+    border-left: solid;
+    border-right: solid;
+    border-top: solid;
+    border-width: 3px;
+    border-color: #63BEDD;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.tabs label:hover {
+    background: #63BEDD;
+    top: 0px;
+}
+       
+[id^=tab]:checked + label {
+    background: white;
+    top: 0;
+}
+       
+[id^=tab]:checked ~ [id^=tab-content] {
+    display: block;
+}
+
+.tab-content{
+    z-index: 2;
+    display: none;
+    text-align: left;
+    width: 340px;
+    font-size: 20px;
+    line-height: 140%;
+    padding-top: 10px;
+    padding: 30px;
+    color: white;
+    left: 0px;
+    background-color: white;
+    position: absolute;
+    border-left: solid;
+    border-right: solid;
+    border-bottom: solid;
+    border-width: 3px;
+    border-color: #63BEDD;
+    box-sizing: border-box;
+    -webkit-animation-duration: 0.5s;
+    -o-animation-duration: 0.5s;
+    -moz-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+  }

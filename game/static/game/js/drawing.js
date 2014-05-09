@@ -90,8 +90,6 @@ function identifyInstruction(roadSet) {
     var diffY = Math.abs(weightPointBox.y - roadBox.y);
     var width = roadBox.width;
     var instruction = '';
-    console.debug(weightPointBox.x, weightPointBox.y, weightPointBox.width, weightPointBox.height, " road: ",
-        roadBox.x, roadBox.y, roadBox.width, roadBox.height);
     if (diffX == 0 && diffY == 0)
         instruction ='UL';
     if (diffX == 0 && diffY == EDGE_GAP_Y)
@@ -103,8 +101,7 @@ function identifyInstruction(roadSet) {
     if (roadBox.width == 50 && roadBox.height == 100)
         instruction = 'V';
     if (roadBox.width == 100 && roadBox.height == 50)
-        instruction ='H';
-    console.debug(instruction);
+        instruction = 'H';
     return instruction;
 }
 

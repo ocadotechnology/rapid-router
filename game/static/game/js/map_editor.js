@@ -39,6 +39,7 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
     this.mark(this.current, "grey", 1, true);
     this.possibleNext = [[1,4]];
     this.mark([1,4], "#a4a4a6", 1, undefined);
+    pushInstruction(ocargo.mapEditor.json, new ocargo.Coordinate(0,4), "H");
 };
 
 ocargo.MapEditor.prototype.markPossible = function(point) {
@@ -89,7 +90,6 @@ ocargo.MapEditor.prototype.trackCreation = function() {
 		point = handle(point);
 	});
 
-
 	function handle(point) {
 		var isPossible = false;
 		for (var i = 0; i < ocargo.mapEditor.possibleNext.length; i++) {
@@ -112,7 +112,7 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 	var nodes = [];
 	for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
-	      var coordinate = new ocargo.Coordinate(p[0], GRID_HEIGHT -1 -p[1]);
+	      var coordinate = new ocargo.Coordinate(p[0], GRID_HEIGHT - 1 - p[1]);
 	      var node = new ocargo.Node(coordinate);
 	      if (previousNode) {
 	          node.addConnectedNodeWithBacklink(previousNode);
@@ -123,12 +123,113 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 	return nodes;
 };
 
+/* Pass in the coordinate in top-down orientation - applies to JSON and paper, not nodes. */
+ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
+    var nodes = [];
+    var x = startCoord.x; 
+    var y = startCoord.y;  
+    var progressiveX = true;
+    var progressiveY = undefined;
+    var currDirection = this.json[x.toString()][y.toString()];
+    var coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 1 - y);
+    var currNode = new ocargo.Node(coordinate);
+    nodes.push(currNode);
+    var bool = true;
+
+    while (bool) {
+        process();
+        coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 1 - y);
+        var node = new ocargo.Node(coordinate);
+        node.addConnectedNodeWithBacklink(currNode);
+        nodes.push(node);
+        if (this.json.hasOwnProperty(x.toString())) {
+            currDirection = this.json[x.toString()][y.toString()];
+        } else {
+            break;
+        }
+        currNode = node;
+    } 
+
+    return nodes;
+
+
+    function process() {
+        switch (currDirection) {
+            case 'H':
+                if (progressiveX)
+                    x++;
+                else
+                    x--;
+                break;
+            case 'V':
+                if(progressiveY)
+                    y++;
+                else 
+                    y--;
+                break;
+            case 'UL':
+                if (progressiveX) {
+                    y--;
+                    progressiveX = undefined;
+                    progressiveY = false;
+                } else if (progressiveY) {
+                    x--;
+                    progressiveX = false;
+                    progressiveY = undefined;
+                }
+                break;
+            case 'DL':
+                if (progressiveX) {
+                    y++;
+                    progressiveX = undefined
+                    progressiveY = true;
+                } else if (progressiveY == false) {
+                    x--;
+                    progressiveX = false;
+                    progressiveY = undefined;
+                }
+                break;
+            case 'DR':
+                if (progressiveX == false) {
+                    y++;
+                    progressiveX = undefined;
+                    progressiveY = true;
+                } else if (progressiveY == false) {
+                    x++;
+                    progressiveX = true;
+                    progressiveY = undefined;
+                }
+                break;
+            case 'UR':
+                if (progressiveY) {
+                    x++;
+                    progressiveX = true;
+                    progressiveY = undefined;
+                } else if (progressiveX == false) {
+                    y--;
+                    progressiveX = undefined;
+                    progressiveY = false;
+                }
+                break;
+            default:
+                bool = false;      
+        }
+    }
+}
+
+ocargo.MapEditor.prototype.clear = function() {
+    paper.clear();
+    ocargo.mapEditor = new ocargo.MapEditor();
+    ocargo.mapEditor.createGrid(paper);
+};
+
 $(function() {
 	paper.clear();
 	ocargo.ui = new ocargo.SimpleUi();
 	ocargo.mapEditor = new ocargo.MapEditor();
 	ocargo.mapEditor.createGrid(paper);
 	ocargo.mapEditor.trackCreation();
+
 });
 
 $('#undo').click(function() {
@@ -138,15 +239,31 @@ $('#undo').click(function() {
 			= ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1];
 		ocargo.mapEditor.mark(toChange, "white", 0, false);
 		ocargo.mapEditor.markPossible(ocargo.mapEditor.current, "white", 0, false);
-
 	}
 });
 
+$('#dragMagic').click(function() {
+    ocargo.ui = new ocargo.SimpleUi();
+    var coord = new ocargo.Coordinate(0, 4);
+            console.debug("Tadaaaam");
+
+    var nodes = ocargo.mapEditor.jsonToNodes(coord);
+    nodes = nodes.slice(0, nodes.length - 1);
+    console.debug("Creating a map from your choice.");
+    var map = new ocargo.Map(nodes, ocargo.ui);
+
+});
 
 $('#clear').click(function() {
-	paper.clear();
-	ocargo.mapEditor = new ocargo.MapEditor();
-	ocargo.mapEditor.createGrid(paper)
+	ocargo.mapEditor.clear();
+});
+
+$('#tab1').click(function() {
+   ocargo.mapEditor.clear();
+});
+
+$('#tab2').click(function() {
+    ocargo.mapEditor.clear();
 });
 
 $('#createFromSelect').click(function() {
@@ -180,13 +297,21 @@ Raphael.st.draggable = function() {
      	},
       	endFnc = function() {
 	      	var point = getGridSpace(lx, ly);
-	      	var coord = new ocargo.Coordinate(point[0], point[1]);
-	      	var instruction = identifyInstruction(me);
-	      	ox = point[0] * GRID_SPACE_WIDTH;
-	        oy = point[1] * GRID_SPACE_HEIGHT;
-	      	me.transform('t' + ox + ',' + oy);
-	        pushInstruction(ocargo.mapEditor.json, coord, instruction);
-	        console.debug(ocargo.mapEditor.json);
+
+            // Currently protecting against loops.
+            if(!isOutOfBounds(point) && (!ocargo.mapEditor.json.hasOwnProperty(point[0].toString())
+                || !ocargo.mapEditor.json[point[0].toString()][point[1].toString()])) {
+    	      	var coord = new ocargo.Coordinate(point[0], point[1]);
+    	      	var instruction = identifyInstruction(me);
+    	      	ox = point[0] * GRID_SPACE_WIDTH;
+    	        oy = point[1] * GRID_SPACE_HEIGHT;
+    	      	me.transform('t' + ox + ',' + oy);
+    	        pushInstruction(ocargo.mapEditor.json, coord, instruction);
+    	        console.debug(JSON.stringify(ocargo.mapEditor.json));
+
+            } else {
+                me.transform('t' + ox + ',' + oy);
+            }
       	};
 
 	this.drag(moveFnc, startFnc, endFnc);
@@ -233,4 +358,3 @@ $('#V').click(function() {
 	var turn = createVerticalRoad(paper, 0, 0);
 	turn.draggable();
 });
-
