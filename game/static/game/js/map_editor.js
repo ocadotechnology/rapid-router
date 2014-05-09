@@ -39,6 +39,7 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
     this.mark(this.current, "grey", 1, true);
     this.possibleNext = [[1,4]];
     this.mark([1,4], "#a4a4a6", 1, undefined);
+    pushInstruction(ocargo.mapEditor.json, new ocargo.Coordinate(0,4), "H");
 };
 
 ocargo.MapEditor.prototype.markPossible = function(point) {
@@ -89,7 +90,6 @@ ocargo.MapEditor.prototype.trackCreation = function() {
 		point = handle(point);
 	});
 
-
 	function handle(point) {
 		var isPossible = false;
 		for (var i = 0; i < ocargo.mapEditor.possibleNext.length; i++) {
@@ -112,7 +112,7 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 	var nodes = [];
 	for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
-	      var coordinate = new ocargo.Coordinate(p[0], GRID_HEIGHT -1 -p[1]);
+	      var coordinate = new ocargo.Coordinate(p[0], GRID_HEIGHT - 1 - p[1]);
 	      var node = new ocargo.Node(coordinate);
 	      if (previousNode) {
 	          node.addConnectedNodeWithBacklink(previousNode);
@@ -125,13 +125,16 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 
 ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
     var nodes = [];
-    var x = startCoord.x;
-    var y = startCoord.y;
+    var x = startCoord.x; 
+    var y = startCoord.y;  
     var progressiveX = true;
     var progressiveY = undefined;
     var currDirection = this.json[x.toString()][y.toString()];
-    var coordinate = startCoord;
-    var currNode = new ocargo.Node(coordinate);
+    var coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 1 - y);
+    var currNode = new ocargo.Node(startCoord);
+    nodes.push(currNode);
+    var counter = 0;
+    var bool = true;
 
     do {
         switch (currDirection) {
@@ -191,8 +194,15 @@ ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
                     progressiveY = false;
                 }
                 break;
-        };
-        coordinate = new ocargo.Coordinate(x, y);
+            case undefined:
+                x++;
+                break;
+            default:
+                console.debug('hit default;');
+                bool = false;
+                
+        }
+        coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 2 - y);
         var node = new ocargo.Node(coordinate);
         node.addConnectedNodeWithBacklink(currNode);
         nodes.push(node);
@@ -202,7 +212,7 @@ ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
             break;
         }
         currNode = node;
-    } while (true);
+    } while (bool);
 
     return nodes;
 }
@@ -234,10 +244,19 @@ $('#undo').click(function() {
 
 $('#dragMagic').click(function() {
     ocargo.ui = new ocargo.SimpleUi();
-    var coord = new ocargo.Coordinate(1, 4);
+    var coord = new ocargo.Coordinate(0, 3);
+            console.debug("Tadaaaam");
+
     var nodes = ocargo.mapEditor.jsonToNodes(coord);
+    nodes.pop();
+
+//    console.debug("Tadaaaam, length of nodes" + nodes.length);
+ //   for (var i = 0; i < nodes.length; i++) {
+//        console.debug(nodes[i] == null);
+ //       console.debug(nodes[i].coordinate.x, nodes[i].coordinate.y);
+ //   }
     var map = new ocargo.Map(nodes, ocargo.ui);
-    console.debug(JSON.stringify(map.instructions));
+
 });
 
 $('#clear').click(function() {

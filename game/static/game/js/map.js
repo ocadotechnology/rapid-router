@@ -10,8 +10,8 @@ ocargo.Map = function(nodes, ui) {
 
 ocargo.Map.prototype.getThePath = function() {
 	var instructions = {};
-	var prevCoord = null;
-	var twoBack = null;
+	var current = null;
+	var previous = null;
 	var node = null;
 
 	if(this.nodes.length == 0) {
@@ -20,42 +20,43 @@ ocargo.Map.prototype.getThePath = function() {
 
 	for (var i = 0; i <= this.nodes.length; i++) {
 		node = i < this.nodes.length ? this.nodes[i] : node;
-		var coord = transformY(node.coordinate);
+		var next = transformY(node.coordinate);
+		console.debug("next: ", next, ", current: " + JSON.stringify(current) + ", previous: " + JSON.stringify(previous));
 
-		if (prevCoord) {
+		if (current) {
 
-			if (isHorizontal(prevCoord, coord) 
-				&& (twoBack == null || isHorizontal(twoBack, prevCoord))) {
-				pushInstruction(instructions, prevCoord, 'H');
+			if (isHorizontal(current, next) 
+				&& (previous == null || isHorizontal(previous, current))) {
+				pushInstruction(instructions, current, 'H');
 
-			} else if (isVertical(prevCoord, coord) 
-				&& (twoBack == null || isVertical(twoBack, prevCoord))) {
-				pushInstruction(instructions, prevCoord, 'V');
+			} else if (isVertical(current, next) 
+				&& (previous == null || isVertical(previous, current))) {
+				pushInstruction(instructions, current, 'V');
 
 			// Handle turns.
 			} else { 
-				if(isProgressive(twoBack.x, prevCoord.x)) {
-					pushInstruction(instructions, prevCoord, 
-						nextPointAbove(prevCoord, coord) ? 'DL' : 'UL');
+				if (isProgressive(previous.x, current.x)) {
+					pushInstruction(instructions, current, 
+						nextPointAbove(current, next) ? 'DL' : 'UL');
 				}
-				if(isProgressive(prevCoord.x, twoBack.x)) {
-					pushInstruction(instructions, prevCoord,
-						nextPointAbove(prevCoord, coord) ? 'DR' : 'UR');
+				if (isProgressive(current.x, previous.x)) {
+					pushInstruction(instructions, current,
+						nextPointAbove(current, next) ? 'DR' : 'UR');
 				}
-				if(isProgressive(twoBack.y, prevCoord.y)) {
-					pushInstruction(instructions, prevCoord,
-						nextPointFurther(prevCoord, coord) ? 'UR' : 'UL');
+				if (isProgressive(previous.y, current.y)) {
+					pushInstruction(instructions, current,
+						nextPointFurther(current, next) ? 'UR' : 'UL');
 				}
-				if(isProgressive(prevCoord.y, twoBack.y)) {
-					pushInstruction(instructions, prevCoord,
-						nextPointFurther(prevCoord, coord) ? 'DR' : 'DL');
+				if (isProgressive(current.y, previous.y)) {
+					pushInstruction(instructions, current,
+						nextPointFurther(current, next) ? 'DR' : 'DL');
 				}
 			}
-			twoBack = prevCoord;
-			prevCoord = coord;
+			previous = current;
+			current = next;
 
 		} else {
-			prevCoord = coord;
+			current = next;
 		}
 	}
 	return instructions;
