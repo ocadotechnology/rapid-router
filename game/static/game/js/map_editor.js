@@ -234,7 +234,6 @@ $('#undo').click(function() {
 });
 
 $('#dragMagic').click(function() {
-    ocargo.ui = new ocargo.SimpleUi();
     var coord = [0, 4];
     ocargo.mapEditor.jsonToNodes(coord);
     console.debug("Creating a map from your choice.");
@@ -256,7 +255,6 @@ $('#tab2').click(function() {
 });
 
 $('#createFromSelect').click(function() {
-	ocargo.ui = new ocargo.SimpleUi();
 	var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
 	var map = new ocargo.Map(nodes, ocargo.ui);
 });

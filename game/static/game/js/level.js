@@ -62,10 +62,10 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
         var total = this.level.map.nodes.length - 2;
         console.debug('Oh dear! :(');
         ocargo.sound.failure();
-        BlocklyTest.blink();
-        
+        ocargo.blocklyTest.blink();
+
         window.alert("Oh dear! :( Your first " + n + " out of " +  total 
-            + " instructions were right. Click clear to remove the incorrect blocks "
+            + " instructions were right. Click 'Clear Incorrect' to remove the incorrect blocks "
             + "and try again!");
 
         program.terminate();

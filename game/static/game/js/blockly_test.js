@@ -93,19 +93,21 @@ Blockly.Blocks['at_destination'] = {
     }
 };
 
-var BlocklyTest = function(){
+ocargo.BlocklyTest = function(){
     this.incorrect = null;
 };
 
-BlocklyTest.createBlock = function(blockType) {
+ocargo.blocklyTest = new ocargo.BlocklyTest();
+
+ocargo.BlocklyTest.prototype.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
 	block.initSvg();
 	block.render();
     return block;
 };
 
-BlocklyTest.addBlockToEndOfProgram = function(typeOfBlockToAdd) {
-	var blockToAdd = BlocklyTest.createBlock(typeOfBlockToAdd);
+ocargo.BlocklyTest.prototype.addBlockToEndOfProgram = function(typeOfBlockToAdd) {
+	var blockToAdd = this.createBlock(typeOfBlockToAdd);
 	
 	var block = this.getStartBlock();
 	while(block.nextConnection.targetBlock()){
@@ -115,7 +117,7 @@ BlocklyTest.addBlockToEndOfProgram = function(typeOfBlockToAdd) {
 	block.nextConnection.connect(blockToAdd.previousConnection);
 };
 
-BlocklyTest.init = function() {
+ocargo.BlocklyTest.prototype.init = function() {
     var blockly = document.getElementById('blockly');
     var toolbox = document.getElementById('toolbox');
     Blockly.inject(blockly, {
@@ -123,30 +125,31 @@ BlocklyTest.init = function() {
         toolbox: toolbox
     });
 
-    BlocklyTest.reset();
+    ocargo.blocklyTest.reset();
 };
 
-BlocklyTest.reset = function() {
-    var startBlock = BlocklyTest.getStartBlock();
+ocargo.BlocklyTest.prototype.reset = function() {
+    var startBlock = this.getStartBlock();
     if (startBlock) {
         var nextBlock = startBlock.nextConnection.targetBlock();
         if (nextBlock) {
             nextBlock.dispose();
         }
     } else {
-        BlocklyTest.createBlock('start');
+        this.createBlock('start');
     }
 };
 
-BlocklyTest.removeWrong = function() {
+ocargo.BlocklyTest.prototype.removeWrong = function() {
     if (this.incorrect) {
         var previous = this.incorrect.previousConnection.targetBlock();
         this.incorrect.dispose();
+        this.incorrect = null;
         previous.select();
     }
 };
 
-BlocklyTest.blink = function() {
+ocargo.BlocklyTest.prototype.blink = function() {
     var badBlock = Blockly.selected;
     this.incorrect = badBlock;
     badBlock.setColour(0);
@@ -157,9 +160,9 @@ BlocklyTest.blink = function() {
     window.setTimeout(function() { badBlock.select(); }, 1500);
 };
 
-window.addEventListener('load', BlocklyTest.init);
+window.addEventListener('load', ocargo.blocklyTest.init);
 
-BlocklyTest.getStartBlock = function() {
+ocargo.BlocklyTest.prototype.getStartBlock = function() {
     var startBlock = null;
     Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
         if (block.type === 'start') {
@@ -169,7 +172,7 @@ BlocklyTest.getStartBlock = function() {
     return startBlock;
 };
 
-BlocklyTest.populateProgram = function() {
+ocargo.BlocklyTest.prototype.populateProgram = function() {
 	function createWhile(block) {
 		return new While(
 			counterCondition(block.inputList[0].fieldRow[1].text_), 
@@ -243,7 +246,7 @@ BlocklyTest.populateProgram = function() {
                 commands.push(new TurnAroundCommand(block));
             } else if (block.type === 'controls_repeat') {
             	commands.push(createWhile(block));
-            } else if (block.type === 'controls_whileUntil') {
+            } else if (block.type === 'cbloontrols_whileUntil') {
             	commands.push(createWhileUntil(block));
             } else if (block.type === 'controls_if') {
             	commands.push(createIf(block));
