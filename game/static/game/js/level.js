@@ -36,16 +36,20 @@ ocargo.Level.prototype.step = function(){
 
 function stepper(level){
 	return function(){
-		if(level.program.canStep()) {
-            level.correct = level.correct + 1;
-			level.program.step(level);
-	    } else {
-	    	if (level.van.currentNode === level.destination && !level.program.isTerminated) {
-	            console.debug('You win!');
-                    ocargo.sound.win();
-                window.alert('You win!');
-	        }
-	    }
+        try {
+    		if(level.program.canStep()) {
+                level.correct = level.correct + 1;
+    			level.program.step(level);
+    	    } else {
+    	    	if (level.van.currentNode === level.destination && !level.program.isTerminated) {
+    	            console.debug('You win!');
+                        ocargo.sound.win();
+                    window.alert('You win!');
+    	        }
+    	   }
+        } catch (error) {
+            level.program.terminate();
+        }
 	};
 }
 
