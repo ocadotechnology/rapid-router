@@ -65,6 +65,8 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
         window.alert("Oh dear! :( Your first " + n + " out of " +  total 
             + " instructions were right. Click clear to remove the incorrect blocks "
             + "and try again!");
+         BlocklyTest.blink();
+
         program.terminate();
         return; //TODO: animate the crash
     }
