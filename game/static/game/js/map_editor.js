@@ -125,33 +125,24 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 
 /* Pass in the coordinate in top-down orientation - applies to JSON and paper, not nodes. */
 ocargo.MapEditor.prototype.jsonToNodes = function(startCoord) {
-    var nodes = [];
-    var x = startCoord.x; 
-    var y = startCoord.y;  
+    this.submittedPoints = [];
+    var x = startCoord[0]; 
+    var y = startCoord[1];  
     var progressiveX = true;
     var progressiveY = undefined;
-    var currDirection = this.json[x.toString()][y.toString()];
-    var coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 1 - y);
-    var currNode = new ocargo.Node(coordinate);
-    nodes.push(currNode);
+    var currDirection = null;
     var bool = true;
 
     while (bool) {
-        process();
-        coordinate = new ocargo.Coordinate(x, GRID_HEIGHT - 1 - y);
-        var node = new ocargo.Node(coordinate);
-        node.addConnectedNodeWithBacklink(currNode);
-        nodes.push(node);
+        this.submittedPoints.push([x, y]);
         if (this.json.hasOwnProperty(x.toString())) {
             currDirection = this.json[x.toString()][y.toString()];
         } else {
             break;
         }
-        currNode = node;
-    } 
-
-    return nodes;
-
+        process();
+    }
+    this.submittedPoints.pop();
 
     function process() {
         switch (currDirection) {
@@ -244,12 +235,10 @@ $('#undo').click(function() {
 
 $('#dragMagic').click(function() {
     ocargo.ui = new ocargo.SimpleUi();
-    var coord = new ocargo.Coordinate(0, 4);
-            console.debug("Tadaaaam");
-
-    var nodes = ocargo.mapEditor.jsonToNodes(coord);
-    nodes = nodes.slice(0, nodes.length - 1);
+    var coord = [0, 4];
+    ocargo.mapEditor.jsonToNodes(coord);
     console.debug("Creating a map from your choice.");
+    var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);
     var map = new ocargo.Map(nodes, ocargo.ui);
 
 });
@@ -267,7 +256,6 @@ $('#tab2').click(function() {
 });
 
 $('#createFromSelect').click(function() {
-	console.debug(ocargo.mapEditor.submittedPoints);
 	ocargo.ui = new ocargo.SimpleUi();
 	var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
 	var map = new ocargo.Map(nodes, ocargo.ui);
@@ -307,7 +295,6 @@ Raphael.st.draggable = function() {
     	        oy = point[1] * GRID_SPACE_HEIGHT;
     	      	me.transform('t' + ox + ',' + oy);
     	        pushInstruction(ocargo.mapEditor.json, coord, instruction);
-    	        console.debug(JSON.stringify(ocargo.mapEditor.json));
 
             } else {
                 me.transform('t' + ox + ',' + oy);
