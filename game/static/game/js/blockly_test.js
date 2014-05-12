@@ -148,11 +148,11 @@ BlocklyTest.removeWrong = function() {
 BlocklyTest.blink = function() {
     var badBlock = Blockly.selected;
     badBlock.setColour(0);
-    for(var i = 0; i < 8; i++) {
+    for(var i = 0; i < 4; i++) {
         window.setTimeout(function() { badBlock.select(); }, i * 600 - 300);
-        window.setTimeout(function() { badBlock.unselect(); }, i*600);
+        window.setTimeout(function() { badBlock.unselect(); }, i * 600);
     }
-    window.setTimeout(function() { badBlock.select(); }, 4500);
+    window.setTimeout(function() { badBlock.select(); }, 2100);
 };
 
 window.addEventListener('load', BlocklyTest.init);

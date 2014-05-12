@@ -106,13 +106,23 @@ function trackDevelopment() {
     $('#reset').click(function() {
         initialiseDefault();
         BlocklyTest.reset();
-    	
     });
 }
 
 $(function() {
    	initialiseDefault();
     trackDevelopment();
+});
+
+$('#mute').click(function() {
+    var $this = $(this);
+    if(ocargo.sound.volume == 0) {
+        $this.text("Mute");
+        ocargo.sound.unmute();  
+    } else {
+        $this.text("Unmute");
+        ocargo.sound.mute();
+    }
 });
 
 $('#randomRoad').click(function() {

@@ -95,3 +95,20 @@ ocargo.sound.failure = function() {
     console.debug("Playing 'failure' sound.");
     ocargo.sound.failureSound.start();
 };
+
+ocargo.sound.initialiseSounds = function(volume, loop) {
+    ocargo.sound.volume = volume;
+    ocargo.sound.startingSound.init(volume, loop);
+    ocargo.sound.movingSound.init(volume,loop);
+    ocargo.sound.winSound.init(volume, loop);
+    ocargo.sound.failureSound.init(volume, loop);
+    ocargo.sound.turningSound.init(volume, loop)
+};
+ocargo.sound.mute = function() {
+    ocargo.sound.initialiseSounds(0, false);
+};
+
+ocargo.sound.unmute = function() {
+    ocargo.sound.initialiseSounds(100, false);
+};
+
