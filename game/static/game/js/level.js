@@ -68,9 +68,8 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
         ocargo.sound.failure();
         ocargo.blocklyTest.blink();
 
-        window.alert("Oh dear! :( Your first " + n + " out of " +  total 
-            + " instructions were right. Click 'Clear Incorrect' to remove the incorrect blocks "
-            + "and try again!");
+        window.alert("Oh dear! :( Your first " + n + " instructions were right." 
+            + " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
 
         program.terminate();
         return; //TODO: animate the crash
