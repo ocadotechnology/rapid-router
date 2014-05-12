@@ -93,7 +93,9 @@ Blockly.Blocks['at_destination'] = {
     }
 };
 
-var BlocklyTest = {};
+var BlocklyTest = function(){
+    this.incorrect = null;
+};
 
 BlocklyTest.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
@@ -137,22 +139,22 @@ BlocklyTest.reset = function() {
 };
 
 BlocklyTest.removeWrong = function() {
-    var current = Blockly.selected;
-    if (current) {
-        var previous = current.previousConnection.targetBlock();
-        current.dispose();
+    if (this.incorrect) {
+        var previous = this.incorrect.previousConnection.targetBlock();
+        this.incorrect.dispose();
         previous.select();
     }
 };
 
 BlocklyTest.blink = function() {
     var badBlock = Blockly.selected;
+    this.incorrect = badBlock;
     badBlock.setColour(0);
-    for(var i = 0; i < 4; i++) {
+    for(var i = 0; i < 3; i++) {
         window.setTimeout(function() { badBlock.select(); }, i * 600 - 300);
         window.setTimeout(function() { badBlock.unselect(); }, i * 600);
     }
-    window.setTimeout(function() { badBlock.select(); }, 2100);
+    window.setTimeout(function() { badBlock.select(); }, 1500);
 };
 
 window.addEventListener('load', BlocklyTest.init);
