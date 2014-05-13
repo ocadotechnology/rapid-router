@@ -5,7 +5,7 @@ var ocargo = ocargo || {};
 ocargo.MapEditor = function() {
 	this.submittedPoints = [];
 	this.map = initialiseVisited();
-	this.grid = initialiseVisited();
+    this.grid = initialiseVisited();
 	this.current = [];
 	this.possibleNext = [];
 	this.json = {};
@@ -368,4 +368,11 @@ $('#V').click(function() {
 	turn.draggable();
     ocargo.mapEditor.elements++;
 });
+
+$('#export').click(function() {
+    var map = ocargo.mapEditor.submittedPoints;
+    if(map.length > 1) {
+        $.post('/levels/new', JSON.stringify(map));
+    }
+})
 
