@@ -36,16 +36,20 @@ ocargo.Level.prototype.step = function(){
 
 function stepper(level){
 	return function(){
-		if(level.program.canStep()) {
-            level.correct = level.correct + 1;
-			level.program.step(level);
-	    } else {
-	    	if (level.van.currentNode === level.destination && !level.program.isTerminated) {
-	            console.debug('You win!');
-                    ocargo.sound.win();
-                window.alert('You win!');
-	        }
-	    }
+        try {
+    		if(level.program.canStep()) {
+                level.correct = level.correct + 1;
+    			level.program.step(level);
+    	    } else {
+    	    	if (level.van.currentNode === level.destination && !level.program.isTerminated) {
+    	            console.debug('You win!');
+                        ocargo.sound.win();
+                    window.alert('You win!');
+    	        }
+    	   }
+        } catch (error) {
+            level.program.terminate();
+        }
 	};
 }
 
@@ -62,9 +66,11 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
         var total = this.level.map.nodes.length - 2;
         console.debug('Oh dear! :(');
         ocargo.sound.failure();
-        window.alert("Oh dear! :( Your first " + n + " out of " +  total 
-            + " instructions were right. Click clear to remove the incorrect blocks "
-            + "and try again!");
+        ocargo.blocklyTest.blink();
+
+        window.alert("Oh dear! :( Your first " + n + " instructions were right." 
+            + " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
+
         program.terminate();
         return; //TODO: animate the crash
     }

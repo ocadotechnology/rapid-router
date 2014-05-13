@@ -47,22 +47,22 @@ function generateNodes(points){
 }
 
 function loadDefaultProgram() {
-    BlocklyTest.reset();
+    ocargo.blocklyTest.reset();
 
-    BlocklyTest.addBlockToEndOfProgram('turn_left');
-    BlocklyTest.addBlockToEndOfProgram('move_van');
-    BlocklyTest.addBlockToEndOfProgram('turn_right');
-    BlocklyTest.addBlockToEndOfProgram('move_van');
-    BlocklyTest.addBlockToEndOfProgram('turn_left');
-    BlocklyTest.addBlockToEndOfProgram('move_van');
-    BlocklyTest.addBlockToEndOfProgram('turn_right');
-    BlocklyTest.addBlockToEndOfProgram('move_van');
-    BlocklyTest.addBlockToEndOfProgram('turn_right');
-    BlocklyTest.addBlockToEndOfProgram('move_van');
-    BlocklyTest.addBlockToEndOfProgram('turn_left');
-    BlocklyTest.addBlockToEndOfProgram('move_van');
-    BlocklyTest.addBlockToEndOfProgram('move_van');
-    BlocklyTest.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyTest.addBlockToEndOfProgram('turn_left');
+    ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyTest.addBlockToEndOfProgram('turn_right');
+    ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyTest.addBlockToEndOfProgram('turn_left');
+    ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyTest.addBlockToEndOfProgram('turn_right');
+    ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyTest.addBlockToEndOfProgram('turn_right');
+    ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyTest.addBlockToEndOfProgram('turn_left');
+    ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
 }
 
 function initialiseDefault() {
@@ -73,19 +73,19 @@ function initialiseDefault() {
 
 function trackDevelopment() {
 	$('#moveForward').click(function() {
-		BlocklyTest.addBlockToEndOfProgram('move_van');
+		ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
     });
 	
     $('#turnLeft').click(function() {
-		BlocklyTest.addBlockToEndOfProgram('turn_left');
+		ocargo.blocklyTest.addBlockToEndOfProgram('turn_left');
     });
 
     $('#turnRight').click(function() {
-		BlocklyTest.addBlockToEndOfProgram('turn_right');
+		ocargo.blocklyTest.addBlockToEndOfProgram('turn_right');
 	});
     
     $('#play').click(function() {
-        var program = BlocklyTest.populateProgram();
+        var program = ocargo.blocklyTest.populateProgram();
         program.instructionHandler = new InstructionHandler(ocargo.level);
         var nodes = ocargo.level.map.nodes;
         ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
@@ -98,21 +98,35 @@ function trackDevelopment() {
         loadDefaultProgram();
     });
 
-	$('#clear').click(function() {
-        BlocklyTest.removeWrong();
+	$('#clearIncorrect').click(function() {
+        ocargo.blocklyTest.removeWrong();
         var nodes = ocargo.level.map.nodes;
+    });
+
+    $('#clear').click(function() {
+        ocargo.blocklyTest.reset();
     });
     
     $('#reset').click(function() {
         initialiseDefault();
-        BlocklyTest.reset();
-    	
+        ocargo.blocklyTest.reset();
     });
 }
 
 $(function() {
    	initialiseDefault();
     trackDevelopment();
+});
+
+$('#mute').click(function() {
+    var $this = $(this);
+    if(ocargo.sound.volume == 0) {
+        $this.text("Mute");
+        ocargo.sound.unmute();  
+    } else {
+        $this.text("Unmute");
+        ocargo.sound.mute();
+    }
 });
 
 $('#randomRoad').click(function() {

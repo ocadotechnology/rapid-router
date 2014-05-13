@@ -21,7 +21,6 @@ ocargo.Map.prototype.getThePath = function() {
 	for (var i = 0; i <= this.nodes.length; i++) {
 		node = i < this.nodes.length ? this.nodes[i] : node;
 		var next = transformY(node.coordinate);
-		console.debug("next: ", next, ", current: " + JSON.stringify(current) + ", previous: " + JSON.stringify(previous));
 
 		if (current) {
 

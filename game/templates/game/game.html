@@ -35,37 +35,40 @@
 {% block content %}
 <div id="wrapper">
   <div id="programmingConsole" class="col">
-	  <div id="blockly"></div>
+    <div id="blockly"></div>
 	  
-	  <div id="instructions">
-	    <button id="turnLeft">&#x21BA;</button>
-	    <button id="moveForward">&uarr;</button>
-	    <button id="turnRight">&#x21BB;</button>
+    <div id="instructions">
+      <button id="turnLeft">&#x21BA;</button>
+      <button id="moveForward">&uarr;</button>
+      <button id="turnRight">&#x21BB;</button>
+      <button id="clearIncorrect">Clear Incorrect</button>
       <button id="clear">Clear</button>
-	  </div>
+
+    </div>
   </div>
   
   <div id="paper" class="col"></div>
   
   <div id="controls" class="col">
-	  <button id="play">&#x25B6;</button>
-	  <button id="loadDefaultProgram">Load Default Program</button>
-	  <button id="reset">Reset</button>
-	  <button id="randomRoad">Random Road</button>
+    <button id="play">&#x25B6;</button>
+    <button id="loadDefaultProgram">Load Default Program</button>
+    <button id="reset">Reset</button>
+    <button id="randomRoad">Random Road</button>
+    <button id="mute">Mute</button>
   </div>
 </div>
 <xml id="toolbox" style="display: none">
-    <block type="turn_left"></block>
-    <block type="move_van"></block>
-    <block type="turn_right"></block>
-    <block type="turn_around"></block>
-    <block type="controls_repeat"></block>
-    <block type="controls_whileUntil"></block>
-    <block type="controls_if"></block>
-    <block type="logic_negate"></block>
-    <block type="road_exists"></block>
-    <block type="dead_end"></block>
-    <block type="at_destination"></block>
+  <block type="turn_left"></block>
+  <block type="move_van"></block>
+  <block type="turn_right"></block>
+  <block type="turn_around"></block>
+  <block type="controls_repeat"></block>
+  <block type="controls_whileUntil"></block>
+  <block type="controls_if"></block>
+  <block type="logic_negate"></block>
+  <block type="road_exists"></block>
+  <block type="dead_end"></block>
+  <block type="at_destination"></block>
 </xml>
 
 {% endblock %}
