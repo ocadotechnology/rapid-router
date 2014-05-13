@@ -15,6 +15,8 @@ def level(request, level):
     #TODO: load level
     return render(request, 'game/game.html')
 
+def level_
+
 def logged_students(request):
 	""" Renders the page with information about all the logged in students."""
 	return render_student_info(request, True)
