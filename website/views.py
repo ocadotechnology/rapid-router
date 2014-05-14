@@ -1,5 +1,6 @@
-from django.shortcuts import redirect
+from django.shortcuts import render, get_object_or_404
 
 def home(request):
-    '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
-    return redirect('/game')
+    return render(request, 'website/home.html')
+
+   
