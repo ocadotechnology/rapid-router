@@ -122,7 +122,7 @@ function negateCondition(otherCondition){
 
 function atDestinationCondition() {
     return function(level) {
-    	return level.van.currentNode === level.destination;
+    	return level.van.currentNode === level.map.destination;
     };
 }
 

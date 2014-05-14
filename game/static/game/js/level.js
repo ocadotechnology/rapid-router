@@ -2,10 +2,9 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Level = function(map, van, destination, ui) {
+ocargo.Level = function(map, van, ui) {
     this.map = map;
     this.van = van;
-    this.destination = destination;
     this.ui = ui;
     this.correct = 0;
 }
@@ -27,7 +26,7 @@ ocargo.Level.prototype.step = function(){
         this.program.step(this);
 
     } else {
-    	if (this.van.currentNode === this.destination && !this.program.isTerminated) {
+    	if (this.van.currentNode === this.map.destination && !this.program.isTerminated) {
             console.debug('You win!');
             window.alert('You win!');
         }
@@ -41,7 +40,7 @@ function stepper(level){
                 level.correct = level.correct + 1;
     			level.program.step(level);
     	    } else {
-    	    	if (level.van.currentNode === level.destination && !level.program.isTerminated) {
+    	    	if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
     	            console.debug('You win!');
                         ocargo.sound.win();
                     window.alert('You win!');
