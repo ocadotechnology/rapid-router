@@ -69,6 +69,10 @@ function initialiseDefault(path) {
 	'use strict';
 	ocargo.ui = createUi();
 	ocargo.level = createDefaultLevel(path, ocargo.ui);
+        if ($.cookie("muted") == "true") {
+            $('#mute').text("Unmute");
+            ocargo.sound.mute();
+        }
 }
 
 function trackDevelopment() {

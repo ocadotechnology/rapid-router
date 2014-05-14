@@ -72,10 +72,12 @@ ocargo.sound.setAllVolumes = function(volume, loop) {
 ocargo.sound.mute = function() {
     ocargo.sound.volume = 0;
     ocargo.sound.setAllVolumes(0);
+    $.cookie("muted", true);
 };
 
 ocargo.sound.unmute = function() {
     ocargo.sound.volume = 1;
     ocargo.sound.setAllVolumes(1.0);
+    $.cookie("muted", false);
 };
 
