@@ -369,10 +369,26 @@ $('#V').click(function() {
     ocargo.mapEditor.elements++;
 });
 
-$('#export').click(function() {
-    var map = ocargo.mapEditor.submittedPoints;
-    if(map.length > 1) {
-        $.post('/levels/new', JSON.stringify(map));
-    }
-})
-
+$(document).ready(function() {
+    $("#export").click(function() {
+        var input_string = JSON.stringify(ocargo.mapEditor.submittedPoints);
+        $.ajax({
+            url : "/game/levels/new",
+            type : "POST",
+            dataType: "json",
+            data : {
+              path : input_string,
+              csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val(),
+            },
+            success : function(json) {
+             // $('#result').append( 'Server Response: ' + json.server_response);
+             // window.location.href = "/game/level"
+             console.debug("Success")
+            },
+            error : function(xhr,errmsg,err) {
+              console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+        return false;
+    });
+});
