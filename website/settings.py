@@ -89,6 +89,7 @@ STATIC_ROOT = rel('static')
 # PRESENTATION LAYER
 
 NUIT_GLOBAL_TITLE = "Oh, Car. Go!"
+NUIT_GLOBAL_LINK = "/home/"
 
 
 # Deployment
