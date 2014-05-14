@@ -375,9 +375,14 @@ function drawBackground(paper){
 	paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT).attr({fill: 'url(/static/game/image/grassTile1.svg)'})
 }
 
+function createCFC(){
+	paper.image('/static/game/image/OcadoCFC.svg', INITIAL_X - 90, INITIAL_Y - 40, 100, 100).transform('r90');
+}
+
 function renderTheMap(map) {
     paper.clear();
     drawBackground(paper);
     createRoad(paper, map.instructions);
+    createCFC(paper);
     van = createVan(paper);
 }
