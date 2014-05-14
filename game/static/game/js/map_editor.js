@@ -246,7 +246,7 @@ $('#dragMagic').click(function() {
     if (unified || window.confirm(message)) {
         console.debug("Creating a map from your choice.");
         var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);
-        var map = new ocargo.Map(nodes, ocargo.ui);
+        var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
     }
     if (!unified) {
         // Clear the map to get rid of the seperate road segments.
@@ -278,7 +278,7 @@ $('#tab2').click(function() {
 
 $('#createFromSelect').click(function() {
 	var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
-	var map = new ocargo.Map(nodes, ocargo.ui);
+	var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
 });
 
 
@@ -375,7 +375,6 @@ $(document).ready(function() {
         $.ajax({
             url : "/game/levels/new",
             type : "POST",
-            dataType: "json",
             data : {
               path : input_string,
               csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val(),

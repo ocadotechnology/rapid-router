@@ -13,23 +13,25 @@ from django.core.exceptions import ObjectDoesNotExist
 from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import School, Teacher, Student, Class, UserProfile, Level
  
-def level_new(request):
-	if request.POST.has_key('path'):
-		#path from request.POST['client_response'] (btw, change it).
-		#name (int), path
-		path = request.POST['path']
-		level = Level(id=3, name=10, path=path)
-		level.save()
-		x = simplejson.dumps(request.POST['path']) 
-		return HttpResponse(x,  content_type='application/javascript')
-		
 def levels(request):
     '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
     return render(request, 'game/game.html')
 
-def level(request):
+def level(request, levelId):
     #TODO: load level
-    return render(request, 'game/game.html', context_instance=RequestContext(request))
+    level = get_object_or_404(Level, id=levelId)
+    context = RequestContext(request, {
+    	'path' : level.path,
+	})
+    return render(request, 'game/game.html', context)
+
+def level_new(request):
+	if request.POST.has_key('path'):
+		path = request.POST['path']
+		passedLevel = Level(id=3, name=10, path=path)
+		passedLevel.save()
+		return level(request, passedLevel.id)
+		#return HttpResponse(path, mimetype='application/javascript')
 	
 def logged_students(request):
 	""" Renders the page with information about all the logged in students."""
