@@ -84,6 +84,10 @@ function trackDevelopment() {
 		ocargo.blocklyTest.addBlockToEndOfProgram('turn_right');
 	});
     
+    $('#quit').click(function(){
+    	window.location.replace('/game/');
+    });
+    
     $('#play').click(function() {
         var program = ocargo.blocklyTest.populateProgram();
         program.instructionHandler = new InstructionHandler(ocargo.level);

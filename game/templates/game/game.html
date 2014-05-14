@@ -4,8 +4,6 @@
 
 {% block scripts %}
 {{block.super}}
- 
-
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script>
 
@@ -38,7 +36,6 @@
 {% endblock %}
 
 {% block content %} 
-post : {{x}}
 <div id="wrapper">
   <div id="programmingConsole" class="col">
     <div id="blockly"></div>
@@ -56,6 +53,7 @@ post : {{x}}
   <div id="paper" class="col"></div>
   
   <div id="controls" class="col">
+    <button id="quit">Quit</button>
     <button id="play">&#x25B6;</button>
     <button id="loadDefaultProgram">Load Default Program</button>
     <button id="reset">Reset</button>

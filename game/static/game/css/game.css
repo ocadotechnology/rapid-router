@@ -1,6 +1,14 @@
 #wrapper {
-    max-height: 730px;
-    min-width: 1020px;
+	position: fixed;
+	overflow: auto;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+}
+
+.top-bar{
+	display: none;
 }
 
 #programmingConsole{
