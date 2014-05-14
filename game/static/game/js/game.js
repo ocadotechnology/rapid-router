@@ -69,6 +69,10 @@ function initialiseDefault(path) {
 	'use strict';
 	ocargo.ui = createUi();
 	ocargo.level = createDefaultLevel(path, ocargo.ui);
+        if ($.cookie("muted") == "true") {
+            $('#mute').text("Unmute");
+            ocargo.sound.mute();
+        }
 }
 
 function trackDevelopment() {
@@ -83,6 +87,10 @@ function trackDevelopment() {
     $('#turnRight').click(function() {
 		ocargo.blocklyTest.addBlockToEndOfProgram('turn_right');
 	});
+    
+    $('#quit').click(function(){
+    	window.location.replace('/game/');
+    });
     
     $('#play').click(function() {
         var program = ocargo.blocklyTest.populateProgram();

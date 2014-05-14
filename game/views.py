@@ -15,7 +15,7 @@ from models import School, Teacher, Student, Class, UserProfile, Level
  
 def levels(request):
     '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
-    return render(request, 'game/game.html')
+    return render(request, 'game/level_selection.html')
 
 def level(request, levelId):
     #TODO: load level
