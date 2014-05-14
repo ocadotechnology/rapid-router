@@ -379,10 +379,18 @@ function createCFC(){
 	paper.image('/static/game/image/OcadoCFC.svg', INITIAL_X - 90, INITIAL_Y - 40, 100, 100).transform('r90');
 }
 
+function createDestination(destination){
+	console.log(destination);
+	paper.image('/static/game/image/house1_noGreen.svg',
+			destination.x * GRID_SPACE_WIDTH, PAPER_HEIGHT - (destination.y * GRID_SPACE_HEIGHT) - 25, 100, 100)
+			.transform('r90');
+}
+
 function renderTheMap(map) {
     paper.clear();
     drawBackground(paper);
     createRoad(paper, map.instructions);
     createCFC(paper);
+    createDestination(map.destination.coordinate);
     van = createVan(paper);
 }
