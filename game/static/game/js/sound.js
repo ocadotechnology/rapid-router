@@ -70,10 +70,12 @@ ocargo.sound.setAllVolumes = function(volume, loop) {
     ocargo.sound.turningSound.setVolume(volume);
 };
 ocargo.sound.mute = function() {
+    ocargo.sound.volume = 0;
     ocargo.sound.setAllVolumes(0);
 };
 
 ocargo.sound.unmute = function() {
+    ocargo.sound.volume = 1;
     ocargo.sound.setAllVolumes(1.0);
 };
 
