@@ -7,7 +7,7 @@ ocargo.Level = function(map, van, ui) {
     this.van = van;
     this.ui = ui;
     this.correct = 0;
-}
+};
 
 ocargo.Level.prototype.play = function(program){
 //    $.post('/game/submit', JSON.stringify(program.stack));
@@ -56,7 +56,7 @@ function stepper(level){
                 } else {
                     level.fail("Oh dear! :( You ran out of instructions!");
 
-                    program.terminate();
+                    level.program.terminate();
                 }
             }
         } catch (error) {
@@ -75,7 +75,6 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
 
     if (!nextNode) {
         var n = this.level.correct - 1;
-        var total = this.level.map.nodes.length - 2;
         ocargo.blocklyTest.blink();
 
         this.level.fail("Oh dear! :( Your first " + n + " instructions were right."

@@ -50,17 +50,6 @@ function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     return transformation;
 }
 
-function rotateElement(element, degrees, rotationPointX, rotationPointY) {
-    var transformation = createRotationTransformation(degrees, rotationPointX, rotationPointY);
-    element.transform(transformation);
-}
-
-function rotateElementAroundCentreOfGridSpace(element, degrees, i, j) {
-    var rotationPointX = (i + 1 / 2) * GRID_SPACE_WIDTH;
-    var rotationPointY = (j + 1 / 2) * GRID_SPACE_HEIGHT;
-    rotateElement(element, degrees, rotationPointX, rotationPointY);
-}
-
 function createVan(paper) {
     return paper.image('/static/game/image/ocadoVan_big.svg', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH)
         .transform('r90');
@@ -76,7 +65,6 @@ function identifyInstruction(roadSet) {
     var roadBox = roadSet[0].getBBox();
     var diffX = Math.abs(weightPointBox.x - roadBox.x);
     var diffY = Math.abs(weightPointBox.y - roadBox.y);
-    var width = roadBox.width;
     var instruction = '';
     if (diffX == 0 && diffY == 0)
         instruction = 'UL';

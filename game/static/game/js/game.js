@@ -108,7 +108,6 @@ function trackDevelopment() {
 
 	$('#clearIncorrect').click(function() {
         ocargo.blocklyTest.removeWrong();
-        var nodes = ocargo.level.map.nodes;
     });
 
     $('#clear').click(function() {

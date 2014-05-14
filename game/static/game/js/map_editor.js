@@ -10,7 +10,7 @@ ocargo.MapEditor = function() {
 	this.possibleNext = [];
 	this.json = {};
     this.elements = 1;
-}
+};
 
 ocargo.MapEditor.prototype.createGrid = function(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
@@ -18,7 +18,7 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
             var x = i * GRID_SPACE_WIDTH;
             var y = j * GRID_SPACE_HEIGHT;
             var segment = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
-			segment.attr({stroke: '#777', fill:"white", "fill-opacity": 0,});
+			segment.attr({stroke: '#777', fill:"white", "fill-opacity": 0});
 
             segment.node.onclick = function () {
                 var this_rect = segment;
@@ -62,7 +62,7 @@ ocargo.MapEditor.prototype.mark = function(point, colour, opacity, occupied) {
 		this.submittedPoints.push([point[0], point[1]]);
 	}
 	this.map[point[0]][point[1]] = occupied;
-	element.attr({fill:colour, "fill-opacity": opacity,});
+	element.attr({fill:colour, "fill-opacity": opacity});
 };
 
 ocargo.MapEditor.prototype.trackCreation = function() {
@@ -173,7 +173,7 @@ ocargo.MapEditor.prototype.jsonToPoints = function(startCoord) {
             case 'DL':
                 if (progressiveX) {
                     y++;
-                    progressiveX = undefined
+                    progressiveX = undefined;
                     progressiveY = true;
                 } else if (progressiveY === false) {
                     x--;
@@ -207,7 +207,7 @@ ocargo.MapEditor.prototype.jsonToPoints = function(startCoord) {
                 bool = false;      
         }
     }
-}
+};
 
 ocargo.MapEditor.prototype.clear = function() {
     paper.clear();
@@ -378,7 +378,7 @@ $(document).ready(function() {
             dataType: "json",
             data : {
               path : input_string,
-              csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val(),
+              csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val()
             },
             success : function(json) {
              // $('#result').append( 'Server Response: ' + json.server_response);
