@@ -62,20 +62,7 @@ function rotateElementAroundCentreOfGridSpace(element, degrees, i, j) {
 }
 
 function createVan(paper) {
-    return paper.image('/static/game/image/van.svg', INITIAL_X, INITIAL_Y, VAN_WIDTH, VAN_HEIGHT)
-}
-
-function createGrid(paper) {
-    for (var i = 0; i < GRID_WIDTH; i++) {
-        for (var j = 0; j < GRID_HEIGHT; j++) {
-            var x = i * GRID_SPACE_WIDTH;
-            var y = j * GRID_SPACE_HEIGHT;
-            var gridSpace = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
-            gridSpace.attr({
-                stroke: '#777'
-            });
-        }
-    }
+    return paper.image('/static/game/image/van.svg', INITIAL_X, INITIAL_Y, VAN_WIDTH, VAN_HEIGHT);
 }
 
 function getGridSpace(x, y) {
@@ -384,9 +371,13 @@ function turnAround(callback) {
     moveForward();
 }
 
+function drawBackground(paper){
+	paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT).attr({fill: 'url(/static/game/image/grassTile1.svg)'})
+}
+
 function renderTheMap(map) {
     paper.clear();
-    createGrid(paper);
+    drawBackground(paper);
     createRoad(paper, map.instructions);
     van = createVan(paper);
 }
