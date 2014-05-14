@@ -134,8 +134,8 @@ function trackDevelopment() {
 
 $(function() {
     var p = PATH;
-    var path = JSON.parse(p);
-    console.debug("skhdlksjdhfks" + path[0]);
+    var path = p ? JSON.parse(p) : null;
+    //console.debug("skhdlksjdhfks" + path[0]);
    	initialiseDefault(path);
     trackDevelopment();
 });
