@@ -25,7 +25,7 @@ def level_new(request):
 		
 def levels(request):
     '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
-    return render(request, 'game/game.html', context)
+    return render(request, 'game/game.html')
 
 def level(request):
     #TODO: load level
