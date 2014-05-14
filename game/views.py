@@ -1,7 +1,6 @@
 import os
 import json
 from django.http import HttpResponseRedirect, HttpResponse
-from django.http import Http404
 from django.shortcuts import render_to_response, redirect
 from django.utils import simplejson
 
@@ -17,21 +16,22 @@ def levels(request):
     '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
     return render(request, 'game/level_selection.html')
 
-def level(request, levelId):
+def level(request, level):
     #TODO: load level
-    level = get_object_or_404(Level, id=levelId)
+    lvl = get_object_or_404(Level, id=level)
     context = RequestContext(request, {
-    	'path' : level.path,
+    	'path' : lvl.path,
 	})
     return render(request, 'game/game.html', context)
 
 def level_new(request):
 	if request.POST.has_key('path'):
 		path = request.POST['path']
-		passedLevel = Level(id=3, name=10, path=path)
+		passedLevel = Level(name=10, path=path)
 		passedLevel.save()
-		return level(request, passedLevel.id)
-		#return HttpResponse(path, mimetype='application/javascript')
+		response_dict = {}                                         
+		response_dict.update({'server_response': passedLevel.id })                                                                  
+		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
 	
 def logged_students(request):
 	""" Renders the page with information about all the logged in students."""

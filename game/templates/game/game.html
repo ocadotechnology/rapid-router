@@ -25,7 +25,7 @@
   <script src="/static/game/js/random_road.js"></script>
   <script src="/static/game/js/sound.js"></script>
   <script>
-    var PATH = "{{level.path}}";
+    var PATH = "{{path}}";
   </script>
 
 {% endblock %}
@@ -46,6 +46,7 @@
       <button id="turnRight">&#x21BB;</button>
       <button id="clearIncorrect">Clear Incorrect</button>
       <button id="clear">Clear</button>
+      <button>{{path}}</button>
 
     </div>
   </div>
@@ -74,5 +75,7 @@
   <block type="dead_end"></block>
   <block type="at_destination"></block>
 </xml>
+
+
 
 {% endblock %}

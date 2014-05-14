@@ -375,14 +375,14 @@ $(document).ready(function() {
         $.ajax({
             url : "/game/levels/new",
             type : "POST",
+            dataType: 'json',
             data : {
               path : input_string,
               csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val(),
             },
             success : function(json) {
-             // $('#result').append( 'Server Response: ' + json.server_response);
-             // window.location.href = "/game/level"
-             console.debug("Success")
+                window.location.href = ("/game/" + json.server_response);
+
             },
             error : function(xhr,errmsg,err) {
               console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
