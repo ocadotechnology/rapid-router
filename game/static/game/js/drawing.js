@@ -66,19 +66,6 @@ function createVan(paper) {
         .transform('r90');
 }
 
-function createGrid(paper) {
-    for (var i = 0; i < GRID_WIDTH; i++) {
-        for (var j = 0; j < GRID_HEIGHT; j++) {
-            var x = i * GRID_SPACE_WIDTH;
-            var y = j * GRID_SPACE_HEIGHT;
-            var gridSpace = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
-            gridSpace.attr({
-                stroke: '#777'
-            });
-        }
-    }
-}
-
 function getGridSpace(x, y) {
     return [Math.floor((x + GRID_SPACE_WIDTH / 2) / GRID_SPACE_WIDTH),
         Math.floor((y + GRID_SPACE_HEIGHT / 2) / GRID_SPACE_HEIGHT)];
@@ -387,9 +374,26 @@ function turnAround(callback) {
     moveForward();
 }
 
+function drawBackground(paper){
+	paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT).attr({fill: 'url(/static/game/image/grassTile1.svg)'})
+}
+
+function createCFC(){
+	paper.image('/static/game/image/OcadoCFC.svg', INITIAL_X - 90, INITIAL_Y - 40, 100, 100).transform('r90');
+}
+
+function createDestination(destination){
+	console.log(destination);
+	paper.image('/static/game/image/house1_noGreen.svg',
+			destination.x * GRID_SPACE_WIDTH, PAPER_HEIGHT - (destination.y * GRID_SPACE_HEIGHT) - 25, 100, 100)
+			.transform('r90');
+}
+
 function renderTheMap(map) {
     paper.clear();
-    createGrid(paper);
+    drawBackground(paper);
     createRoad(paper, map.instructions);
+    createCFC(paper);
+    createDestination(map.destination.coordinate);
     van = createVan(paper);
 }

@@ -2,8 +2,9 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Map = function(nodes, ui) {
+ocargo.Map = function(nodes, destination, ui) {
 	this.nodes = nodes;
+	this.destination = destination;
 	this.instructions = this.getThePath();
 	ui.renderMap(this);
 }

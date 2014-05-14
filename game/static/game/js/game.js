@@ -4,8 +4,8 @@ function createUi() {
     return new ocargo.SimpleUi();
 }
 
-function createDefaultLevel(ui) {
-    var points = [
+function createDefaultLevel(path, ui) {
+    var points = path ? path : [
         [0, 3],
         [1, 3],
         [1, 4],
@@ -25,9 +25,9 @@ function createDefaultLevel(ui) {
     ];
 
 	var nodes = generateNodes(points);  
-	var map = new ocargo.Map(nodes, ui);
+	var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ui);
 	var van = new ocargo.Van(nodes[0], nodes[1], ui);
-	return new ocargo.Level(map, van, nodes[nodes.length - 1], ui);
+	return new ocargo.Level(map, van, ui);
 }
 
 function generateNodes(points){
@@ -65,10 +65,14 @@ function loadDefaultProgram() {
     ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
 }
 
-function initialiseDefault() {
+function initialiseDefault(path) {
 	'use strict';
 	ocargo.ui = createUi();
-	ocargo.level = createDefaultLevel(ocargo.ui);
+	ocargo.level = createDefaultLevel(path, ocargo.ui);
+        if ($.cookie("muted") == "true") {
+            $('#mute').text("Unmute");
+            ocargo.sound.mute();
+        }
 }
 
 function trackDevelopment() {
@@ -83,6 +87,10 @@ function trackDevelopment() {
     $('#turnRight').click(function() {
 		ocargo.blocklyTest.addBlockToEndOfProgram('turn_right');
 	});
+    
+    $('#quit').click(function(){
+    	window.location.replace('/game/');
+    });
     
     $('#play').click(function() {
         var program = ocargo.blocklyTest.populateProgram();
@@ -114,7 +122,9 @@ function trackDevelopment() {
 }
 
 $(function() {
-   	initialiseDefault();
+    var path = PATH;
+    console.debug("skhfkshf" + path);
+   	initialiseDefault(path);
     trackDevelopment();
 });
 
@@ -133,6 +143,6 @@ $('#randomRoad').click(function() {
 	var points = generateRandomPathPoints([0,3], 0.5, 13);
 	var nodes = generateNodes(points);  
 	var van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
-	var map = new ocargo.Map(nodes, ocargo.ui);
-	ocargo.level = new ocargo.Level(map, van, nodes[nodes.length - 1], ocargo.ui);
+	var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
+	ocargo.level = new ocargo.Level(map, van, ocargo.ui);
 });

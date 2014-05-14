@@ -24,6 +24,9 @@
   <script src="/static/game/js/van.js"></script>
   <script src="/static/game/js/random_road.js"></script>
   <script src="/static/game/js/sound.js"></script>
+  <script>
+    var PATH = "{{level.path}}";
+  </script>
 
 {% endblock %}
 
@@ -32,7 +35,7 @@
   <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block content %}
+{% block content %} 
 <div id="wrapper">
   <div id="programmingConsole" class="col">
     <div id="blockly"></div>
@@ -50,6 +53,7 @@
   <div id="paper" class="col"></div>
   
   <div id="controls" class="col">
+    <button id="quit">Quit</button>
     <button id="play">&#x25B6;</button>
     <button id="loadDefaultProgram">Load Default Program</button>
     <button id="reset">Reset</button>

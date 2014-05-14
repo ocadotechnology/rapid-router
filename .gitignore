@@ -3,6 +3,7 @@
 local_settings.py
 /static/
 *.iml
+*~
 
 .project
 .pydevproject

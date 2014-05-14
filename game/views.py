@@ -1,20 +1,36 @@
 import os
+import json
+from django.http import HttpResponseRedirect, HttpResponse
+from django.http import Http404
+from django.shortcuts import render_to_response, redirect
+from django.utils import simplejson
+
+
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist
 from forms import AvatarUploadForm, AvatarPreUploadedForm
-from models import School, Teacher, Student, Class, UserProfile
-
-
+from models import School, Teacher, Student, Class, UserProfile, Level
+ 
+def level_new(request):
+	if request.POST.has_key('path'):
+		#path from request.POST['client_response'] (btw, change it).
+		#name (int), path
+		path = request.POST['path']
+		level = Level(id=3, name=10, path=path)
+		level.save()
+		x = simplejson.dumps(request.POST['path']) 
+		return HttpResponse(x,  content_type='application/javascript')
+		
 def levels(request):
     '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
-    return render(request, 'game/game.html')
+    return render(request, 'game/level_selection.html')
 
 def level(request, level):
     #TODO: load level
-    return render(request, 'game/game.html')
-
+    return render(request, 'game/game.html', context_instance=RequestContext(request))
+	
 def logged_students(request):
 	""" Renders the page with information about all the logged in students."""
 	return render_student_info(request, True)
