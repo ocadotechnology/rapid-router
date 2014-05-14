@@ -45,6 +45,7 @@ class Guardian (models.Model):
 
 class Level (models.Model):
   name = models.IntegerField()
+  path = models.CharField(max_length = 300)
 
 class Attempt (models.Model):
   start_time = models.IntegerField()

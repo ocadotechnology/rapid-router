@@ -4,8 +4,8 @@ function createUi() {
     return new ocargo.SimpleUi();
 }
 
-function createDefaultLevel(ui) {
-    var points = [
+function createDefaultLevel(path, ui) {
+    var points = path ? path : [
         [0, 3],
         [1, 3],
         [1, 4],
@@ -65,10 +65,10 @@ function loadDefaultProgram() {
     ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
 }
 
-function initialiseDefault() {
+function initialiseDefault(path) {
 	'use strict';
 	ocargo.ui = createUi();
-	ocargo.level = createDefaultLevel(ocargo.ui);
+	ocargo.level = createDefaultLevel(path, ocargo.ui);
 }
 
 function trackDevelopment() {
@@ -114,7 +114,9 @@ function trackDevelopment() {
 }
 
 $(function() {
-   	initialiseDefault();
+    var path = PATH;
+    console.debug("skhfkshf" + path);
+   	initialiseDefault(path);
     trackDevelopment();
 });
 

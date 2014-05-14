@@ -4,6 +4,8 @@
 
 {% block scripts %}
 {{block.super}}
+ 
+
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script>
 
@@ -24,6 +26,9 @@
   <script src="/static/game/js/van.js"></script>
   <script src="/static/game/js/random_road.js"></script>
   <script src="/static/game/js/sound.js"></script>
+  <script>
+    var PATH = "{{level.path}}";
+  </script>
 
 {% endblock %}
 
@@ -32,7 +37,8 @@
   <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block content %}
+{% block content %} 
+post : {{x}}
 <div id="wrapper">
   <div id="programmingConsole" class="col">
     <div id="blockly"></div>
