@@ -69,13 +69,17 @@ ocargo.sound.setAllVolumes = function(volume, loop) {
     ocargo.sound.failureSound.setVolume(volume);
     ocargo.sound.turningSound.setVolume(volume);
 };
+
 ocargo.sound.mute = function() {
+    ocargo.sound.playAudioBackup = Blockly.playAudio
+    Blockly.playAudio = function(name, options) {};
     ocargo.sound.volume = 0;
     ocargo.sound.setAllVolumes(0);
     $.cookie("muted", true);
 };
 
 ocargo.sound.unmute = function() {
+    Blockly.playAudio = ocargo.sound.playAudioBackup
     ocargo.sound.volume = 1;
     ocargo.sound.setAllVolumes(1.0);
     $.cookie("muted", false);
