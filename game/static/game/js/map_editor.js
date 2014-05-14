@@ -59,7 +59,7 @@ ocargo.MapEditor.prototype.mark = function(point, colour, opacity, occupied) {
 	var element = this.grid[point[0]][point[1]];
 	if(occupied) {
 		this.current = point;
-		this.submittedPoints.push([point[0], point[1]]);
+		this.submittedPoints.push([point[0], GRID_HEIGHT - 1 - point[1]]);
 	}
 	this.map[point[0]][point[1]] = occupied;
 	element.attr({fill:colour, "fill-opacity": opacity});
@@ -113,7 +113,7 @@ ocargo.MapEditor.prototype.generateNodes = function(points) {
 	var nodes = [];
 	for (var i = 0; i < points.length; i++) {
 	      var p = points[i];
-	      var coordinate = new ocargo.Coordinate(p[0], GRID_HEIGHT - 1 - p[1]);
+	      var coordinate = new ocargo.Coordinate(p[0], p[1]);
 	      var node = new ocargo.Node(coordinate);
 	      if (previousNode) {
 	          node.addConnectedNodeWithBacklink(previousNode);
@@ -135,7 +135,7 @@ ocargo.MapEditor.prototype.jsonToPoints = function(startCoord) {
     var bool = true;
 
     while (bool) {
-        this.submittedPoints.push([x, y]);
+        this.submittedPoints.push([x, GRID_HEIGHT - 1 - y]);
         if (this.json.hasOwnProperty(x.toString())) {
             currDirection = this.json[x.toString()][y.toString()];
         } else {
