@@ -3,112 +3,77 @@ var ocargo = ocargo || {};
 ocargo.sound = {}
 
 // Stolen from: http://stackoverflow.com/questions/11330917/how-to-play-a-mp3-using-javascript
-
-function Sound(source,volume,loop)
+function Sound(source, initialVolume, loop)
 {
-    this.source=source;
-    this.volume=volume;
-    this.loop=loop;
-    var son;
-    this.son=son;
-    this.finish=false;
+    // Create the audio tag
+    this.soundFile = document.createElement("audio");
+    this.soundFile.preload = "auto";
 
-    this.stop=function()
-    {
-        if (this.son != null) {
-            document.body.removeChild(this.son);
-            this.son = null;
-        }
+    // Load the sound file (using a source element for expandability)
+    var src = document.createElement("source");
+    src.src = source;
+    this.soundFile.appendChild(src);
+    this.soundFile.volume = initialVolume;
+
+    this.play = function() {
+        var self = this;
+        setTimeout(function() {
+            self.soundFile.pause();
+            self.soundFile.currentTime = 0;
+            self.soundFile.play();
+        }, 1);
     }
-    this.create=function(autostart)
-    {
-        this.son=document.createElement("embed");
-        this.son.setAttribute("src",this.source);
-        this.son.setAttribute("hidden","true");
-        this.son.setAttribute("volume",this.volume);
-        this.son.setAttribute("autostart",autostart);
-        this.son.setAttribute("loop",this.loop);
-        document.body.appendChild(this.son);
-    }
-    this.start=function()
-    {
-        if(this.finish)return false;
-        this.create("true");
-    }
-    this.remove=function()
-    {
-        if (this.son != null) {
-            document.body.removeChild(this.son);
-            this.son = null;
-        }
-        this.finish=true;
-    }
-    this.init=function(volume,loop)
-    {
-        this.finish=false;
-        this.volume=volume;
-        this.loop=loop;
+
+    this.setVolume = function(volume) {
+        this.soundFile.volume = volume;
     }
 };
 
 // *****
 
-ocargo.sound.startingSound = new Sound("/static/game/sound/starting.mp3", 100, false);
-ocargo.sound.movingSound = new Sound("/static/game/sound/turning.mp3", 100, false);
-ocargo.sound.winSound = new Sound("/static/game/sound/win.mp3", 100, false);
-ocargo.sound.failureSound = new Sound("/static/game/sound/failure.mp3", 100, false);
-ocargo.sound.turningSound = new Sound("/static/game/sound/turning.mp3", 100, false);
-
-ocargo.sound.stopAll = function() {
-    ocargo.sound.movingSound.stop();
-    ocargo.sound.winSound.stop();
-    ocargo.sound.failureSound.stop();
-    ocargo.sound.turningSound.stop();
-};
+ocargo.sound.startingSound = new Sound("/static/game/sound/starting.mp3", 1.0, false);
+ocargo.sound.movingSound = new Sound("/static/game/sound/turning.mp3", 1.0, false);
+ocargo.sound.winSound = new Sound("/static/game/sound/win.mp3", 1.0, false);
+ocargo.sound.failureSound = new Sound("/static/game/sound/failure.mp3", 1.0, false);
+ocargo.sound.turningSound = new Sound("/static/game/sound/turning.mp3", 1.0, false);
 
 ocargo.sound.starting = function() {
-    ocargo.sound.stopAll();
     console.debug("Playing 'starting' sound.");
-    ocargo.sound.startingSound.start();
+    ocargo.sound.startingSound.play();
 };
 
 ocargo.sound.moving = function() {
-    ocargo.sound.stopAll();
     console.debug("Playing 'moving' sound.");
-    ocargo.sound.movingSound.start();
+    ocargo.sound.movingSound.play();
 };
 
 ocargo.sound.turning = function() {
-    ocargo.sound.stopAll();
     console.debug("Playing 'turning' sound.");
-    ocargo.sound.turningSound.start();
+    ocargo.sound.turningSound.play();
 };
 
 ocargo.sound.win = function() {
-    ocargo.sound.stopAll();
     console.debug("Playing 'win' sound.");
-    ocargo.sound.winSound.start();
+    ocargo.sound.winSound.play();
 };
 
 ocargo.sound.failure = function() {
-    ocargo.sound.stopAll();
     console.debug("Playing 'failure' sound.");
-    ocargo.sound.failureSound.start();
+    ocargo.sound.failureSound.play();
 };
 
-ocargo.sound.initialiseSounds = function(volume, loop) {
-    ocargo.sound.volume = volume;
-    ocargo.sound.startingSound.init(volume, loop);
-    ocargo.sound.movingSound.init(volume,loop);
-    ocargo.sound.winSound.init(volume, loop);
-    ocargo.sound.failureSound.init(volume, loop);
-    ocargo.sound.turningSound.init(volume, loop)
+ocargo.sound.setAllVolumes = function(volume, loop) {
+    ocargo.sound.startingSound.setVolume(volume);
+    ocargo.sound.movingSound.setVolume(volume);
+    ocargo.sound.winSound.setVolume(volume);
+    ocargo.sound.failureSound.setVolume(volume);
+    ocargo.sound.turningSound.setVolume(volume);
 };
 ocargo.sound.mute = function() {
-    ocargo.sound.initialiseSounds(0, false);
+    ocargo.sound.setAllVolumes(0);
 };
 
 ocargo.sound.unmute = function() {
-    ocargo.sound.initialiseSounds(100, false);
+    ocargo.sound.setAllVolumes(1.0);
 };
 
