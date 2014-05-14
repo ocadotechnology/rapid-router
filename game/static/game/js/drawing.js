@@ -7,17 +7,17 @@ var GRID_HEIGHT = 8;
 var GRID_SPACE_WIDTH = PAPER_WIDTH / GRID_WIDTH;
 var GRID_SPACE_HEIGHT = PAPER_HEIGHT / GRID_HEIGHT;
 
-var VAN_WIDTH = 37.5;
-var VAN_HEIGHT = 17.5;
+var VAN_WIDTH = 40;
+var VAN_HEIGHT = 20;
 
 var MOVE_DISTANCE = GRID_SPACE_WIDTH;
 var TURN_DISTANCE = MOVE_DISTANCE / 2;
-var INITIAL_OFFSET_X = VAN_WIDTH / 2;
-var INITIAL_OFFSET_Y = 20;
+var INITIAL_OFFSET_X = 10;
+var INITIAL_OFFSET_Y = 32;
 var INITIAL_X = GRID_SPACE_HEIGHT - INITIAL_OFFSET_X;
 var INITIAL_Y = 450 - INITIAL_OFFSET_Y;
-var ROTATION_OFFSET_X = VAN_WIDTH / 2;
-var ROTATION_OFFSET_Y = 20;
+var ROTATION_OFFSET_X = 25;
+var ROTATION_OFFSET_Y = VAN_WIDTH - 20;
 
 var ROAD_WIDTH = GRID_SPACE_WIDTH / 2;
 var EDGE_GAP_X = (GRID_SPACE_WIDTH - ROAD_WIDTH) / 2;
@@ -50,19 +50,9 @@ function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     return transformation;
 }
 
-function rotateElement(element, degrees, rotationPointX, rotationPointY) {
-    var transformation = createRotationTransformation(degrees, rotationPointX, rotationPointY);
-    element.transform(transformation);
-}
-
-function rotateElementAroundCentreOfGridSpace(element, degrees, i, j) {
-    var rotationPointX = (i + 1 / 2) * GRID_SPACE_WIDTH;
-    var rotationPointY = (j + 1 / 2) * GRID_SPACE_HEIGHT;
-    rotateElement(element, degrees, rotationPointX, rotationPointY);
-}
-
 function createVan(paper) {
-    return paper.image('/static/game/image/van.svg', INITIAL_X, INITIAL_Y, VAN_WIDTH, VAN_HEIGHT);
+    return paper.image('/static/game/image/ocadoVan_big.svg', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH)
+        .transform('r90');
 }
 
 function getGridSpace(x, y) {
@@ -75,7 +65,6 @@ function identifyInstruction(roadSet) {
     var roadBox = roadSet[0].getBBox();
     var diffX = Math.abs(weightPointBox.x - roadBox.x);
     var diffY = Math.abs(weightPointBox.y - roadBox.y);
-    var width = roadBox.width;
     var instruction = '';
     if (diffX == 0 && diffY == 0)
         instruction = 'UL';
@@ -311,14 +300,16 @@ function moveVan(attr, callback) {
 }
 
 function moveForward(callback) {
+    var moveDistance = -MOVE_DISTANCE;
+    var transformation = "... t 0, " + moveDistance;
     moveVan({
-        x: van.attrs.x + MOVE_DISTANCE
+        transform: transformation
     }, callback);
 }
 
 function moveLeft(callback) {
-    var rotationPointX = van.attrs.x + ROTATION_OFFSET_X;
-    var rotationPointY = van.attrs.y - TURN_DISTANCE + ROTATION_OFFSET_Y;
+    var rotationPointX = van.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
+    var rotationPointY = van.attrs.y + ROTATION_OFFSET_Y;
     var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
     moveVan({
         transform: transformation
@@ -326,8 +317,8 @@ function moveLeft(callback) {
 }
 
 function moveRight(callback) {
-    var rotationPointX = van.attrs.x + ROTATION_OFFSET_X;
-    var rotationPointY = van.attrs.y + TURN_DISTANCE + ROTATION_OFFSET_Y;
+    var rotationPointX = van.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
+    var rotationPointY = van.attrs.y + ROTATION_OFFSET_Y;
     var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
     moveVan({
         transform: transformation
@@ -338,14 +329,14 @@ function resetVan() {
     van.attr({
         x: INITIAL_X,
         y: INITIAL_Y,
-        transform: 'r0'
+        transform: 'r90'
     });
     van.toFront();
 }
 
 function turnAround(callback) {
-    var moveDistance = GRID_SPACE_WIDTH / 2;
-    var moveTransformation = "... t " + moveDistance + ", 0";
+    var moveDistance = -GRID_SPACE_WIDTH / 2;
+    var moveTransformation = "... t 0, " + moveDistance;
 
     function moveBack() {
         moveVan({
@@ -354,8 +345,8 @@ function turnAround(callback) {
     }
 
     function rotate() {
-        var rotationPointX = van.attrs.x + INITIAL_OFFSET_X;
-        var rotationPointY = van.attrs.y + INITIAL_OFFSET_Y;
+        var rotationPointX = van.attrs.x + 22;
+        var rotationPointY = van.attrs.y + 20;
 
         moveVan({
             transform: createRotationTransformation(180, rotationPointX, rotationPointY)

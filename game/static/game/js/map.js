@@ -7,7 +7,7 @@ ocargo.Map = function(nodes, destination, ui) {
 	this.destination = destination;
 	this.instructions = this.getThePath();
 	ui.renderMap(this);
-}
+};
 
 ocargo.Map.prototype.getThePath = function() {
 	var instructions = {};
@@ -73,10 +73,6 @@ ocargo.Map.prototype.getThePath = function() {
 
 	function isVertical(prev, next) {
 		return prev.x == next.x;
-	}
-
-	function checkTurn(prev, next) {
-		return next.x + next.y - prev.x - prev.y;
 	}
 
 	function nextPointAbove(curr, next) {

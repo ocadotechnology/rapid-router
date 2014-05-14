@@ -11,7 +11,7 @@
   <script src="/static/game/js/blockly/blocks_compressed.js"></script>
   <script src="/static/game/js/blockly/javascript_compressed.js"></script>
   <script src="/static/game/js/blockly/msg/js/en.js"></script>
-  <script src="/static/game/js/blockly_test.js"></script>
+  <script src="/static/game/js/blockly_custom.js"></script>
 
   <script src="/static/game/js/coordinate.js"></script>
   <script src="/static/game/js/game.js"></script>
@@ -25,7 +25,7 @@
   <script src="/static/game/js/random_road.js"></script>
   <script src="/static/game/js/sound.js"></script>
   <script>
-    var PATH = "{{level.path}}";
+    var PATH = "{{path}}";
   </script>
 
 {% endblock %}
@@ -46,6 +46,8 @@
       <button id="turnRight">&#x21BB;</button>
       <button id="clearIncorrect">Clear Incorrect</button>
       <button id="clear">Clear</button>
+      <button>{{path}}</button>
+
     </div>
   </div>
   
