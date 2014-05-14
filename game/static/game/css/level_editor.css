@@ -1,11 +1,15 @@
 #wrapper {
-    max-height: 730px;
-    min-width: 1020px;
+    position: fixed;
+    overflow: auto;
+    left: 0px;
+    right: 0px;
+    top:20px;
+    bottom: 0px;
 }
 
 #paper {
     border: 0;
-    background-color: rgb(180, 180, 180);
+    background-color: black;
     width: 50%;
     height: 650px;
     overflow: auto;
@@ -15,12 +19,39 @@
     width: 340px;
     margin-left: 10px;
 }
-#export 
+
+#programmingConsole{
+    width: 50%;
+    height: 100%;
+    overflow: auto;
+}
+
+#paper {
+    border: 0;
+    background-color: rgb(180, 180, 180);
+    width: 50%;
+    height: 100%;
+    overflow: auto;
+}
+
+#controls{
+    position: fixed;
+    bottom: 20px;
+    right: 0px;
+}
+
+#controls button{
+    margin-bottom: 0px;
+}
+
+button{
+    margin-right: 10px;
 }
 
 .col {
     float: left;
 }
+
 
 #tools {
     width: 50%;
