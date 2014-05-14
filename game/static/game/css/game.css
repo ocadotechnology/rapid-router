@@ -43,3 +43,9 @@ button{
     float: left;
 }
 
+#sliderControls{
+	position: absolute;
+	left: 50%;
+	z-index: 1;
+}
+
