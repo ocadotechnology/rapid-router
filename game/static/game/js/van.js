@@ -7,7 +7,7 @@ ocargo.Van = function(previousNode, startNode, ui) {
     this.currentNode = startNode;
     this.ui = ui;
     ocargo.sound.starting();
-}
+};
 
 ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
     if (instruction == FORWARD) {

@@ -9,7 +9,7 @@ function generateRandomPathPoints(current, seed, length) {
 	var visited = initialiseVisited();
 	var possibleNext = null;
 	var orientation = current[1] == 0 ? -1 : 2;
-	var possibleStaight = null;
+	var possibleStraight = null;
 	length = length == undefined ? Number.POSITIVE_INFINITY : length;
 
 	points.push(current);
@@ -41,7 +41,7 @@ function generateRandomPathPoints(current, seed, length) {
 
 				var decision = Math.floor((Math.random() * possibleNext.length));
 				points.push(current);
-				next = possibleNext[decision];
+				var next = possibleNext[decision];
 				orientation =  (2 * (next[0] - current[0]) + (next[1] - current[1]));
 				current = possibleNext[decision];
 			}

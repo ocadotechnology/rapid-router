@@ -1,6 +1,6 @@
 var ocargo = ocargo || {};
 
-ocargo.sound = {}
+ocargo.sound = {};
 
 // Stolen from: http://stackoverflow.com/questions/11330917/how-to-play-a-mp3-using-javascript
 function Sound(source, initialVolume, loop)
@@ -22,12 +22,12 @@ function Sound(source, initialVolume, loop)
             self.soundFile.currentTime = 0;
             self.soundFile.play();
         }, 1);
-    }
+    };
 
     this.setVolume = function(volume) {
         this.soundFile.volume = volume;
     }
-};
+}
 
 // *****
 
@@ -69,13 +69,17 @@ ocargo.sound.setAllVolumes = function(volume, loop) {
     ocargo.sound.failureSound.setVolume(volume);
     ocargo.sound.turningSound.setVolume(volume);
 };
+
 ocargo.sound.mute = function() {
+    ocargo.sound.playAudioBackup = Blockly.playAudio;
+    Blockly.playAudio = function(name, options) {};
     ocargo.sound.volume = 0;
     ocargo.sound.setAllVolumes(0);
     $.cookie("muted", true);
 };
 
 ocargo.sound.unmute = function() {
+    Blockly.playAudio = ocargo.sound.playAudioBackup;
     ocargo.sound.volume = 1;
     ocargo.sound.setAllVolumes(1.0);
     $.cookie("muted", false);

@@ -13,19 +13,16 @@
 
 #programmingConsole{
 	width: 50%;
+	height: 100%;
+	overflow: auto;
 }
 
 #paper {
     border: 0;
     background-color: rgb(180, 180, 180);
     width: 50%;
-    height: 650px;
+    height: 100%;
     overflow: auto;
-}
-
-#blockly {
-    height: 500px;
-    width: 550px;
 }
 
 #controls{
