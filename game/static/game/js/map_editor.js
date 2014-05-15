@@ -1,5 +1,10 @@
 'use strict';
 
+var BACKGROUND_COLOR = '#a8d44a';
+var SELECTED_COLOR = '#70961f';
+var SUGGESTED_COLOR = '#95b650';
+var BORDER = '#bce369';
+
 var ocargo = ocargo || {};
 
 ocargo.MapEditor = function() {
@@ -18,7 +23,7 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
             var x = i * GRID_SPACE_WIDTH;
             var y = j * GRID_SPACE_HEIGHT;
             var segment = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
-			segment.attr({stroke: '#777', fill:"white", "fill-opacity": 0});
+			segment.attr({stroke: BORDER, fill: BACKGROUND_COLOR, "fill-opacity": 0});
 
             segment.node.onclick = function () {
                 var this_rect = segment;
@@ -27,7 +32,7 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
                 	var point = [getBBox.x / 100, getBBox.y / 100];
                 	if(ocargo.mapEditor.map[point[0]][point[1]] === undefined) {
 	                    ocargo.mapEditor.markPossible(point);
-	                    ocargo.mapEditor.mark(point, "grey", 1, true);
+	                    ocargo.mapEditor.mark(point, SELECTED_COLOR, 1, true);
 	                }
                 }
             }();
@@ -37,21 +42,21 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
     }
     this.current = [0,4];
     createHorizontalRoad(paper, 0, 4);
-    this.mark(this.current, "grey", 1, true);
+    this.mark(this.current, SELECTED_COLOR, 1, true);
     this.possibleNext = [[1,4]];
-    this.mark([1,4], "#a4a4a6", 1, undefined);
+    this.mark([1,4], SUGGESTED_COLOR, 1, undefined);
     pushInstruction(ocargo.mapEditor.json, new ocargo.Coordinate(0,4), "H");
 };
 
 ocargo.MapEditor.prototype.markPossible = function(point) {
 	for (var i = 0; i < this.possibleNext.length; i++) {
 		var curr = this.possibleNext[i];
-		this.mark(curr, "white", 0, false);
+		this.mark(curr, BACKGROUND_COLOR, 0, false);
 	}
 	this.possibleNext = getPossibleNextMoves(point, this.map);
 	for (var i = 0; i < this.possibleNext.length; i++) {
 		var curr = this.possibleNext[i];
-		this.mark(this.possibleNext[i], "#a4a4a6", 1, undefined);
+		this.mark(this.possibleNext[i], SUGGESTED_COLOR, 1, undefined);
 	}
 };
 
@@ -102,7 +107,7 @@ ocargo.MapEditor.prototype.trackCreation = function() {
 		}
 		if (!isOutOfBounds(point) && isPossible) {
 			ocargo.mapEditor.markPossible(point);
-			ocargo.mapEditor.mark(point, "grey", 1, true);
+			ocargo.mapEditor.mark(point, SUGGESTED_COLOR, 1, true);
 			ocargo.mapEditor.current = point;
 		}
 	}
@@ -229,8 +234,8 @@ $('#undo').click(function() {
 		var toChange = ocargo.mapEditor.submittedPoints.pop();
 		ocargo.mapEditor.current 
 			= ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1];
-		ocargo.mapEditor.mark(toChange, "white", 0, false);
-		ocargo.mapEditor.markPossible(ocargo.mapEditor.current, "white", 0, false);
+		ocargo.mapEditor.mark(toChange, BACKGROUND_COLOR, 0, false);
+		ocargo.mapEditor.markPossible(ocargo.mapEditor.current, BACKGROUND_COLOR, 0, false);
 	}
 });
 

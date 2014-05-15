@@ -7,14 +7,6 @@
     bottom: 0px;
 }
 
-#paper {
-    border: 0;
-    background-color: black;
-    width: 50%;
-    height: 650px;
-    overflow: auto;
-}
-
 #toolbox {
     width: 340px;
     margin-left: 10px;
@@ -28,7 +20,7 @@
 
 #paper {
     border: 0;
-    background-color: rgb(180, 180, 180);
+    background-color: #a9d34f;
     width: 50%;
     height: 100%;
     overflow: auto;
