@@ -1,5 +1,6 @@
 import os
 import json
+from django.http import Http404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, redirect
 from django.utils import simplejson
@@ -18,9 +19,14 @@ def levels(request):
 
 def level(request, level):
     #TODO: load level
-    lvl = get_object_or_404(Level, id=level)
+    path = ''
+    try:
+    	lvl = get_object_or_404(Level, id=level)
+    	path = lvl.path
+    except Http404 :
+    	path = ''
     context = RequestContext(request, {
-    	'path' : lvl.path,
+    	'path' : path,
 	})
     return render(request, 'game/game.html', context)
 

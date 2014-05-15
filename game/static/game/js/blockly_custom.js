@@ -246,7 +246,7 @@ ocargo.BlocklyTest.prototype.populateProgram = function() {
                 commands.push(new TurnAroundCommand(block));
             } else if (block.type === 'controls_repeat') {
             	commands.push(createWhile(block));
-            } else if (block.type === 'cbloontrols_whileUntil') {
+            } else if (block.type === 'controls_whileUntil') {
             	commands.push(createWhileUntil(block));
             } else if (block.type === 'controls_if') {
             	commands.push(createIf(block));

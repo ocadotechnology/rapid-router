@@ -118,11 +118,23 @@ function trackDevelopment() {
         initialiseDefault();
         ocargo.blocklyTest.reset();
     });
+    
+    $('#slideBlockly').click(function() {
+    	var c = $('#programmingConsole');
+    	if(c.is(':visible')){
+    		$('#paper').animate({width: '100%'});
+    		$('#sliderControls').animate({left: '0%'});
+    	}else{
+    		$('#paper').animate({width: '50%'});
+    		$('#sliderControls').animate({left: '50%'});
+    	}
+    	c.animate({width: 'toggle'});
+    });
 }
 
 $(function() {
     var p = PATH;
-    var path = JSON.parse(p);
+    var path = p ? JSON.parse(p) : null;
    	initialiseDefault(path);
     trackDevelopment();
 });
