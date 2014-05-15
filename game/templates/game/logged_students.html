@@ -27,9 +27,9 @@
   {% if students %}
     {% for student in students %}
       <div class="student_container">
-        <img style="vertical-align:middle" src="{{avatar}}" alt="{{student.user.first_name}} 
-          {{student.user.last_name}}">
-        <span>{{student.user.first_name}} {{student.user.last_name}}</span>
+        <img style="vertical-align:middle" src="/{{student.user.avatar.url}}" 
+          alt="{{student.user.user.first_name}} {{student.user.user.last_name}}">
+        <span>{{student.user.user.first_name}} {{student.user.user.last_name}}</span>
         <hr>
       </div>
     {% endfor %}

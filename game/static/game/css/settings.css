@@ -41,11 +41,33 @@
 }
 
 .avatar_container input[type=submit] {
-	padding:5px 15px; background:#ccc; border:0 none;
-    cursor:pointer;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    height:40px;
+	border-style: solid;
+    cursor: pointer;
+    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    line-height: normal;
+    margin: 0 0 1.25rem;
+    position: relative;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+    padding-top: 1rem;
+    padding-right: 2rem;
+    padding-bottom: 1.0625rem;
+    padding-left: 2rem;
+    font-size: 1rem;
+    background-color: #008cba;
+    border-color: #007095;
+    color: white;
+    -webkit-transition: background-color 300ms ease-out;
+    -moz-transition: background-color 300ms ease-out;
+    transition: background-color 300ms ease-out;
+    padding-top: 1.0625rem;
+    padding-bottom: 1rem;
+    -webkit-appearance: none;
+    border: none;
+    font-weight: normal !important;
+    float: left;
+    overflow: hidden;
+    margin-right: 10px;
 }
-
-

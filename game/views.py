@@ -59,6 +59,7 @@ def settings(request):
 	userProfile = request.user.userprofile
 	avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
 	avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
+	
 	if request.method == 'POST':
 		if "pre-uploaded" in request.POST:
 			if avatarPreUploadedForm.is_valid:
@@ -83,7 +84,7 @@ def render_student_info(request, logged):
 	message = "Choose a class you want to see."
 	currentClass = ""
 	students = []
-	avatar = '/static/game/image/avatars/ufo.png'
+
 	if request.method == 'POST':
 		cl = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
 		students = cl.get_logged_in_students() if logged else cl.students.all()
@@ -97,7 +98,6 @@ def render_student_info(request, logged):
 		'classes' : classes,
 		'message' : message,
 		'students' : students,
-		'avatar' : avatar,
 		'currentClass' : currentClass,
 	})
 	return render(request, 'game/logged_students.html', context)
