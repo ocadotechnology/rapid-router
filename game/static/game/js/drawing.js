@@ -297,6 +297,16 @@ var van;
 
 function moveVan(attr, callback) {
     van.animate(attr, 500, 'easeIn', callback);
+    var point = getVanPosition();
+    var element = document.getElementById('paper');
+    if (point[0] > 2 * PAPER_WIDTH / 3 ) 
+        element.scrollLeft = PAPER_WIDTH / 2;
+    else if (point[0] < PAPER_WIDTH / 3) 
+        element.scrollLeft = 0;
+    if (point[1] > 2 * PAPER_HEIGHT / 3) 
+        element.scrollTop = PAPER_HEIGHT / 2;
+    else if (point[1] < PAPER_HEIGHT / 3) 
+        element.scrollTop = 0;
 }
 
 function moveForward(callback) {
@@ -332,6 +342,11 @@ function resetVan() {
         transform: 'r90'
     });
     van.toFront();
+}
+
+function getVanPosition() {
+    var box = van.getBBox();
+    return [box.x, box.y];
 }
 
 function turnAround(callback) {
