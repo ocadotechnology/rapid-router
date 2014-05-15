@@ -24,17 +24,15 @@
 
 {% block content %}
 <div id="wrapper">
- 
-<form method="post" name="example form" >
-  {% csrf_token %}
-  <input id="export" type="button" value="send to server"></input>
-</form>
  </div>
   <div id="tools" class="col">
     <div id="toolbox">
       <div id="buttons">
+      <form method="post" name="example form" >
+          {% csrf_token %}
+          <input id="export" type="button" value="Play it!"></input>
+        </form>
         <button id="clear">Clear</button>
-        <button id="export">Play it</button>
       </div><br>
       <ul class="tabs">
         <li>
