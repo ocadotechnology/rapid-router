@@ -13,13 +13,6 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 rel = lambda rel_path: os.path.join(BASE_DIR, rel_path)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': rel('dbfile'),
-    }
-}
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -108,7 +101,13 @@ if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.getenv
     COMPRESS_OFFLINE = True
     COMPRESS_ROOT = STATIC_ROOT
     COMPRESS_URL = STATIC_URL
-    
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': rel('dbfile'),
+        }
+    }
 
 # Keep this at the bottom
 from django_autoconfig.autoconfig import configure_settings
