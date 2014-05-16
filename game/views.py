@@ -18,7 +18,6 @@ def levels(request):
     return render(request, 'game/level_selection.html')
 
 def level(request, level):
-    #TODO: load level
     path = ''
     try:
     	lvl = get_object_or_404(Level, id=level)

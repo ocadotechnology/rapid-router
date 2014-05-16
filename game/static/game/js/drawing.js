@@ -51,7 +51,8 @@ function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
 }
 
 function createVan(paper) {
-    return paper.image('/static/game/image/ocadoVan_big.svg', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH)
+    return paper.image(
+        '/static/game/image/ocadoVan_big.svg', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH)
         .transform('r90');
 }
 
@@ -66,6 +67,7 @@ function identifyInstruction(roadSet) {
     var diffX = Math.abs(weightPointBox.x - roadBox.x);
     var diffY = Math.abs(weightPointBox.y - roadBox.y);
     var instruction = '';
+
     if (diffX == 0 && diffY == 0)
         instruction = 'UL';
     if (diffX == 0 && diffY == EDGE_GAP_Y)
@@ -78,6 +80,7 @@ function identifyInstruction(roadSet) {
         instruction = 'V';
     if (roadBox.width == 100 && roadBox.height == 50)
         instruction = 'H';
+
     return instruction;
 }
 
@@ -250,9 +253,11 @@ function createTurnUR(baseX, baseY) {
 
     var turn = paper.path([
         'M', baseX + EDGE_GAP_X, baseY,
-        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + GRID_SPACE_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH,
+        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + GRID_SPACE_WIDTH, baseY
+            + EDGE_GAP_Y + ROAD_WIDTH,
         'V', baseY + EDGE_GAP_Y,
-        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X + ROAD_WIDTH, baseY
+        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X 
+            + ROAD_WIDTH, baseY
     ]);
 
     var marker = paper.path([
@@ -299,13 +304,15 @@ function moveVan(attr, callback) {
     van.animate(attr, 500, 'easeIn', callback);
     var point = getVanPosition();
     var element = document.getElementById('paper');
-    if (point[0] > 2 * PAPER_WIDTH / 3 ) 
+    
+    // Scrolling of the paper if the van is about to go out of the view.
+    if (point[0] > Math.floor(2 * PAPER_WIDTH / 3))
         element.scrollLeft = PAPER_WIDTH / 2;
-    else if (point[0] < PAPER_WIDTH / 3) 
+    else if (point[0] < Math.floor(PAPER_WIDTH / 3))
         element.scrollLeft = 0;
-    if (point[1] > 2 * PAPER_HEIGHT / 3) 
+    if (point[1] > Math.floor(2 * PAPER_HEIGHT / 3))
         element.scrollTop = PAPER_HEIGHT / 2;
-    else if (point[1] < PAPER_HEIGHT / 3) 
+    else if (point[1] < Math.floor(PAPER_HEIGHT / 3))
         element.scrollTop = 0;
 }
 
@@ -378,18 +385,20 @@ function turnAround(callback) {
 }
 
 function drawBackground(paper){
-	paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT).attr({fill: 'url(/static/game/image/grassTile1.svg)'})
+	paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
+        .attr({fill: 'url(/static/game/image/grassTile1.svg)'})
 }
 
 function createCFC(){
-	paper.image('/static/game/image/OcadoCFC.svg', INITIAL_X - 90, INITIAL_Y - 40, 100, 100).transform('r90');
+	paper.image('/static/game/image/OcadoCFC.svg', INITIAL_X - 90, INITIAL_Y - 40, 100, 100)
+        .transform('r90');
 }
 
 function createDestination(destination){
 	console.log(destination);
 	paper.image('/static/game/image/house1_noGreen.svg',
-			destination.x * GRID_SPACE_WIDTH, PAPER_HEIGHT - (destination.y * GRID_SPACE_HEIGHT) - 25, 100, 100)
-			.transform('r90');
+		destination.x * GRID_SPACE_WIDTH, PAPER_HEIGHT - (destination.y * GRID_SPACE_HEIGHT) - 25,
+        100, 100).transform('r90');
 }
 
 function renderTheMap(map) {
