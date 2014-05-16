@@ -11,7 +11,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext, loader
 from django.core.exceptions import ObjectDoesNotExist
 from forms import AvatarUploadForm, AvatarPreUploadedForm
-from models import School, Teacher, Student, Class, UserProfile, Level
+from models import School, Teacher, Student, Class, UserProfile, Level, Attempt
  
 def levels(request):
     '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
@@ -19,14 +19,24 @@ def levels(request):
 
 def level(request, level):
     path = ''
+    message = ''
+    lvl = 1
+    context = ''
     try:
     	lvl = get_object_or_404(Level, id=level)
     	path = lvl.path
-    except Http404 :
+    except Http404:
     	path = ''
-    context = RequestContext(request, {
+	try:
+		attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
+		message = 'success'
+	except Http404:
+		message = 'failure'
+
+	context = RequestContext(request, {
     	'path' : path,
 	})
+
     return render(request, 'game/game.html', context)
 
 def level_new(request):
@@ -37,6 +47,13 @@ def level_new(request):
 		response_dict = {}                                         
 		response_dict.update({'server_response': passedLevel.id })                                                                  
 		return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+
+def submit(request):
+	if request.POST.has_key('attemptData'):
+		attemptData = request.POST['attemptData']
+		attempt = Attempt(start_time=0, level="", student="", finish_time=0, score=0)
+		# attempt.save()
+		# attempt
 	
 def logged_students(request):
 	""" Renders the page with information about all the logged in students."""

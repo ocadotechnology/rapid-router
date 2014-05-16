@@ -10,19 +10,40 @@ ocargo.Level = function(map, van, ui) {
 };
 
 ocargo.Level.prototype.play = function(program){
-//    $.post('/game/submit', JSON.stringify(program.stack));
-	
-	program.startBlock.select();
+
+    var attemptData = {};
+    // Circular references in programmStack, cannot stringify it just yet. Will probably have to 
+    // write our own serializer. 
+    var programStack =  {}; //JSON.stringify(program.stack);
+    var timeStarted = null;
+    var timeFinished = 0;
+
+    // $.post gives cross site request forgery error.
+    $("#play").click(function() {
+        $.ajax({
+            url : "/game/submit",
+            type : "POST",
+            dataType: 'json',
+            data : {
+               attemptData : attemptData,
+               csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+            },
+        });
+        return false;
+    });
+
+    program.startBlock.select();
 	
     var stepFunction = stepper(this);
     
     program.stepCallback = stepFunction;
     this.program = program;
     setTimeout(stepFunction, 500);
+    
 };
 
 ocargo.Level.prototype.step = function(){
-	if(this.program.canStep()) {
+    if(this.program.canStep()) {
         this.program.step(this);
 
     } else {

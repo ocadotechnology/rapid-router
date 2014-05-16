@@ -182,7 +182,7 @@ ocargo.BlocklyTest.prototype.populateProgram = function() {
 	
 	function createWhileUntil(block) {
 		var condition = getCondition(block.inputList[0].connection.targetBlock());
-		if(block.inputList[0].fieldRow[1].value_ == 'UNTIL'){
+		if(block.inputList[0].fieldRow[1].value_ == 'UNTIL') {
 			condition = negateCondition(condition);
 		}
 		
@@ -209,7 +209,7 @@ ocargo.BlocklyTest.prototype.populateProgram = function() {
 		var conditionalCommandSets = [];
     	
     	var i = 0;
-    	while(i < block.inputList.length - block.elseCount_){
+    	while(i < block.inputList.length - block.elseCount_) {
     		var input = block.inputList[i];
     		var condition;
 

@@ -2,6 +2,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('',
     url(r'^$', 'game.views.levels'),
+    url(r'^submit$', 'game.views.submit'),
     url(r'^(?P<level>[0-9]+)$', 'game.views.level'),
     url(r'^level_editor$', 'game.views.level_editor'),
     url(r'^levels/new$', 'game.views.level_new'),

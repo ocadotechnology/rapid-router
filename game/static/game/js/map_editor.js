@@ -374,6 +374,7 @@ $('#V').click(function() {
     ocargo.mapEditor.elements++;
 });
 
+// Submission of a path of the created level which is then processed in level_new view.
 $(document).ready(function() {
     $("#export").click(function() {
         var input_string = JSON.stringify(ocargo.mapEditor.submittedPoints);

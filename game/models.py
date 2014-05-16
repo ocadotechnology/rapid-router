@@ -52,6 +52,7 @@ class Attempt (models.Model):
   level = models.ForeignKey(Level, related_name='attempts')
   student = models.ForeignKey(Student, related_name='attempts')
   finish_time = models.IntegerField()
+  score = models.FloatField()
 
 class Command (models.Model):
   STEP_CHOICES = (
