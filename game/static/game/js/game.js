@@ -5,26 +5,7 @@ function createUi() {
 }
 
 function createDefaultLevel(path, ui) {
-    var points = path ? path : [
-        [0, 3],
-        [1, 3],
-        [1, 4],
-        [1, 5],
-        [2, 5],
-        [3, 5],
-        [3, 6],
-        [3, 7],
-        [4, 7],
-        [5, 7],
-        [5, 6],
-        [5, 5],
-        [6, 5],
-        [7, 5],
-        [8, 5],
-        [9, 5]
-    ];
-
-	var nodes = generateNodes(points);  
+	var nodes = generateNodes(path);
 	var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ui);
 	var van = new ocargo.Van(nodes[0], nodes[1], ui);
 	return new ocargo.Level(map, van, ui);
@@ -134,7 +115,7 @@ function trackDevelopment() {
 
 $(function() {
     var p = PATH;
-    var path = p ? JSON.parse(p) : null;
+    var path = JSON.parse(p);
    	initialiseDefault(path);
     trackDevelopment();
 });

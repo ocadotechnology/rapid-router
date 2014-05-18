@@ -18,17 +18,11 @@ def levels(request):
     return render(request, 'game/level_selection.html')
 
 def level(request, level):
-    path = ''
-    message = ''
-    lvl = 1
-    context = ''
+    lvl = get_object_or_404(Level, id=level)
+    path = lvl.path
+
     try:
-        lvl = get_object_or_404(Level, id=level)
-        path = lvl.path
-    except Http404:
-        path = ''
-    try:
-        attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
+        # attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
         message = 'success'
     except Http404:
         message = 'failure'
