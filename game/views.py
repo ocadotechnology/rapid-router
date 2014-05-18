@@ -14,8 +14,11 @@ from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import School, Teacher, Student, Class, UserProfile, Level, Attempt
 
 def levels(request):
-    '''Just a placeholder. If it's this simple, switch to Django's Generic Views.'''
-    return render(request, 'game/level_selection.html')
+    context = RequestContext(request, {
+        'levels': Level.objects.order_by('id'),
+    })
+
+    return render(request, 'game/level_selection.html', context)
 
 def level(request, level):
     lvl = get_object_or_404(Level, id=level)
