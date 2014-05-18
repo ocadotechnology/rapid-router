@@ -20,9 +20,9 @@ ocargo.MapEditor = function() {
 ocargo.MapEditor.prototype.createGrid = function(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
         for (var j = 0; j < GRID_HEIGHT; j++) {
-            var x = i * GRID_SPACE_WIDTH;
-            var y = j * GRID_SPACE_HEIGHT;
-            var segment = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
+            var x = i * GRID_SPACE_SIZE;
+            var y = j * GRID_SPACE_SIZE;
+            var segment = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 			segment.attr({stroke: BORDER, fill: BACKGROUND_COLOR, "fill-opacity": 0});
 
             segment.node.onclick = function () {
@@ -299,8 +299,8 @@ Raphael.st.draggable = function() {
         	me.transform('t' + lx + ',' + ly);
       	},
       	startFnc = function() {
-     		var x = ox / GRID_SPACE_WIDTH;
-	     	var y = oy / GRID_SPACE_HEIGHT;
+     		var x = ox / GRID_SPACE_SIZE;
+	     	var y = oy / GRID_SPACE_SIZE;
 	     	if (ocargo.mapEditor.json.hasOwnProperty(x))
 	     	 	if(ocargo.mapEditor.json[x].hasOwnProperty(y))
 	     			delete ocargo.mapEditor.json[x][y];
@@ -315,8 +315,8 @@ Raphael.st.draggable = function() {
             if (!isOutOfBounds(point) && !ocargo.mapEditor.map[point[0]][point[1]]) {
     	      	var coord = new ocargo.Coordinate(point[0], point[1]);
     	      	var instruction = identifyInstruction(me);
-    	      	ox = point[0] * GRID_SPACE_WIDTH;
-    	        oy = point[1] * GRID_SPACE_HEIGHT;
+    	      	ox = point[0] * GRID_SPACE_SIZE;
+    	        oy = point[1] * GRID_SPACE_SIZE;
     	      	me.transform('t' + ox + ',' + oy);
     	        pushInstruction(ocargo.mapEditor.json, coord, instruction);
                 ocargo.mapEditor.map[point[0]][point[1]] = true;

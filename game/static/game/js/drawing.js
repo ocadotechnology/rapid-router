@@ -4,24 +4,23 @@ var PAPER_WIDTH = 1000;
 var PAPER_HEIGHT = 800;
 var GRID_WIDTH = 10;
 var GRID_HEIGHT = 8;
-var GRID_SPACE_WIDTH = PAPER_WIDTH / GRID_WIDTH;
-var GRID_SPACE_HEIGHT = PAPER_HEIGHT / GRID_HEIGHT;
+var GRID_SPACE_SIZE = 100;
 
 var VAN_WIDTH = 40;
 var VAN_HEIGHT = 20;
 
-var MOVE_DISTANCE = GRID_SPACE_WIDTH;
+var MOVE_DISTANCE = GRID_SPACE_SIZE;
 var TURN_DISTANCE = MOVE_DISTANCE / 2;
 var INITIAL_OFFSET_X = 10;
 var INITIAL_OFFSET_Y = 32;
-var INITIAL_X = GRID_SPACE_HEIGHT - INITIAL_OFFSET_X;
+var INITIAL_X = GRID_SPACE_SIZE - INITIAL_OFFSET_X;
 var INITIAL_Y = 450 - INITIAL_OFFSET_Y;
 var ROTATION_OFFSET_X = 25;
 var ROTATION_OFFSET_Y = VAN_WIDTH - 20;
 
-var ROAD_WIDTH = GRID_SPACE_WIDTH / 2;
-var EDGE_GAP_X = (GRID_SPACE_WIDTH - ROAD_WIDTH) / 2;
-var EDGE_GAP_Y = (GRID_SPACE_HEIGHT - ROAD_WIDTH) / 2;
+var ROAD_WIDTH = GRID_SPACE_SIZE / 2;
+var EDGE_GAP_X = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
+var EDGE_GAP_Y = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
     fill: ROAD_COLOUR
@@ -57,8 +56,8 @@ function createVan(paper) {
 }
 
 function getGridSpace(x, y) {
-    return [Math.floor((x + GRID_SPACE_WIDTH / 2) / GRID_SPACE_WIDTH),
-        Math.floor((y + GRID_SPACE_HEIGHT / 2) / GRID_SPACE_HEIGHT)];
+    return [Math.floor((x + GRID_SPACE_SIZE / 2) / GRID_SPACE_SIZE),
+        Math.floor((y + GRID_SPACE_SIZE / 2) / GRID_SPACE_SIZE)];
 }
 
 function identifyInstruction(roadSet) {
@@ -85,25 +84,25 @@ function identifyInstruction(roadSet) {
 }
 
 function createHorizontalRoad(paper, i, j) {
-    var x = i * GRID_SPACE_WIDTH;
-    var y = j * GRID_SPACE_HEIGHT + (GRID_SPACE_HEIGHT - ROAD_WIDTH) / 2;
+    var x = i * GRID_SPACE_SIZE;
+    var y = j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 
-    var road = paper.rect(x, y, GRID_SPACE_WIDTH, ROAD_WIDTH);
+    var road = paper.rect(x, y, GRID_SPACE_SIZE, ROAD_WIDTH);
     road.attr(ROAD_ATTR);
 
-    var entryMarker = paper.rect(x, j * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1,
-            GRID_SPACE_WIDTH / 8, 2);
+    var entryMarker = paper.rect(x, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 - 1,
+            GRID_SPACE_SIZE / 8, 2);
     entryMarker.attr(ROAD_MARKER_ATTR);
 
-    var middleMarker = paper.rect(x + 3 * GRID_SPACE_WIDTH / 8,
-            j * GRID_SPACE_HEIGHT + GRID_SPACE_HEIGHT / 2 - 1, GRID_SPACE_WIDTH / 4, 2);
+    var middleMarker = paper.rect(x + 3 * GRID_SPACE_SIZE / 8,
+            j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 - 1, GRID_SPACE_SIZE / 4, 2);
     middleMarker.attr(ROAD_MARKER_ATTR);
 
-    var lastMarker = paper.rect(x + 7 * GRID_SPACE_WIDTH / 8,
-            j * GRID_SPACE_HEIGHT + GRID_SPACE_HEIGHT / 2 - 1, GRID_SPACE_WIDTH / 8, 2);
+    var lastMarker = paper.rect(x + 7 * GRID_SPACE_SIZE / 8,
+            j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 - 1, GRID_SPACE_SIZE / 8, 2);
     lastMarker.attr(ROAD_MARKER_ATTR);
 
-    var weightPoint = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
+    var weightPoint = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
     weightPoint.attr(WEIGHT_POINT_ATTR);
 
     var markerSet = paper.set();
@@ -116,25 +115,25 @@ function createHorizontalRoad(paper, i, j) {
 }
 
 function createVerticalRoad(paper, i, j) {
-    var x = i * GRID_SPACE_WIDTH + (GRID_SPACE_HEIGHT - ROAD_WIDTH) / 2;
-    var y = j * GRID_SPACE_HEIGHT;
+    var x = i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
+    var y = j * GRID_SPACE_SIZE;
 
-    var road = paper.rect(x, y, ROAD_WIDTH, GRID_SPACE_HEIGHT);
+    var road = paper.rect(x, y, ROAD_WIDTH, GRID_SPACE_SIZE);
     road.attr(ROAD_ATTR);
 
-    var entryMarker = paper.rect(i * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1, y,
-        2, GRID_SPACE_WIDTH / 8);
+    var entryMarker = paper.rect(i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 - 1, y,
+        2, GRID_SPACE_SIZE / 8);
     entryMarker.attr(ROAD_MARKER_ATTR);
 
-    var middleMarker = paper.rect(i * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1,
-            y + 3 * GRID_SPACE_HEIGHT / 8, 2, GRID_SPACE_WIDTH / 4);
+    var middleMarker = paper.rect(i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 - 1,
+            y + 3 * GRID_SPACE_SIZE / 8, 2, GRID_SPACE_SIZE / 4);
     middleMarker.attr(ROAD_MARKER_ATTR);
 
-    var lastMarker = paper.rect(i * GRID_SPACE_WIDTH + GRID_SPACE_WIDTH / 2 - 1,
-            y + 7 * GRID_SPACE_HEIGHT / 8, 2, GRID_SPACE_WIDTH / 8);
+    var lastMarker = paper.rect(i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 - 1,
+            y + 7 * GRID_SPACE_SIZE / 8, 2, GRID_SPACE_SIZE / 8);
     lastMarker.attr(ROAD_MARKER_ATTR);
 
-    var weightPoint = paper.rect(x, y, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
+    var weightPoint = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
     weightPoint.attr(WEIGHT_POINT_ATTR);
 
     var markerSet = paper.set();
@@ -147,8 +146,8 @@ function createVerticalRoad(paper, i, j) {
 }
 
 function createTurn(paper, i, j, direction) {
-    var baseX = i * GRID_SPACE_WIDTH;
-    var baseY = j * GRID_SPACE_HEIGHT;
+    var baseX = i * GRID_SPACE_SIZE;
+    var baseY = j * GRID_SPACE_SIZE;
     var turnAndMarker = [];
 
     switch (direction) {
@@ -171,7 +170,7 @@ function createTurn(paper, i, j, direction) {
 
     var turn = turnAndMarker[0];
     var marker = turnAndMarker[1];
-    var weightPoint = paper.rect(baseX, baseY, GRID_SPACE_WIDTH, GRID_SPACE_HEIGHT);
+    var weightPoint = paper.rect(baseX, baseY, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
     turn.attr(ROAD_ATTR);
     marker.attr(ROAD_MARKER_ATTR);
@@ -194,12 +193,12 @@ function createTurnUL(baseX, baseY) {
     ]);
 
     var marker = paper.path([
-        'M', baseX, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-            baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + 1,
-        'H', baseX + GRID_SPACE_WIDTH / 2 + 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT / 2 + 1, baseX ,
-            baseY + GRID_SPACE_HEIGHT / 2 + 1
+        'M', baseX, baseY + GRID_SPACE_SIZE / 2 - 1,
+        'Q', baseX + GRID_SPACE_SIZE / 2 - 1, baseY + GRID_SPACE_SIZE / 2 - 1,
+            baseX + GRID_SPACE_SIZE / 2 - 1, baseY + 1,
+        'H', baseX + GRID_SPACE_SIZE / 2 + 1,
+        'Q', baseX + GRID_SPACE_SIZE / 2 + 1, baseY + GRID_SPACE_SIZE / 2 + 1, baseX ,
+            baseY + GRID_SPACE_SIZE / 2 + 1
     ]);
 
     return [turn, marker];
@@ -210,18 +209,18 @@ function createTurnDL(baseX, baseY) {
     var turn = paper.path([
         'M', baseX, baseY + EDGE_GAP_Y + ROAD_WIDTH,
         'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + EDGE_GAP_X,
-            baseY + GRID_SPACE_HEIGHT,
+            baseY + GRID_SPACE_SIZE,
         'H', baseX + EDGE_GAP_X + ROAD_WIDTH,
         'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX, baseY + EDGE_GAP_Y
     ]);
 
     var marker = paper.path([
-        'M', baseX, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-            baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT + 1,
-        'H', baseX + GRID_SPACE_WIDTH / 2 - 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + GRID_SPACE_HEIGHT / 2 + 1,
-        baseX, baseY + GRID_SPACE_HEIGHT / 2 + 1
+        'M', baseX, baseY + GRID_SPACE_SIZE / 2 - 1,
+        'Q', baseX + GRID_SPACE_SIZE / 2 + 1, baseY + GRID_SPACE_SIZE / 2 - 1,
+            baseX + GRID_SPACE_SIZE / 2 + 1, baseY + GRID_SPACE_SIZE + 1,
+        'H', baseX + GRID_SPACE_SIZE / 2 - 1,
+        'Q', baseX + GRID_SPACE_SIZE / 2 - 1, baseY + GRID_SPACE_SIZE / 2 + 1,
+        baseX, baseY + GRID_SPACE_SIZE / 2 + 1
     ]);
 
     return [turn, marker];
@@ -230,20 +229,20 @@ function createTurnDL(baseX, baseY) {
 function createTurnDR(baseX, baseY) {
 
     var turn = paper.path([
-        'M', baseX + GRID_SPACE_WIDTH, baseY + EDGE_GAP_Y,
-        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X, baseY + GRID_SPACE_HEIGHT,
+        'M', baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP_Y,
+        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X, baseY + GRID_SPACE_SIZE,
         'H', baseX + EDGE_GAP_X + ROAD_WIDTH,
         'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH,
-            baseX + GRID_SPACE_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH
+            baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP_Y + ROAD_WIDTH
     ]);
 
     var marker = paper.path([
-        'M', baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + GRID_SPACE_HEIGHT + 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-            baseX + GRID_SPACE_WIDTH + 1, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-        'V', baseY + GRID_SPACE_HEIGHT / 2 + 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT / 2 + 1,
-            baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT + 1
+        'M', baseX + GRID_SPACE_SIZE / 2 - 1, baseY + GRID_SPACE_SIZE + 1,
+        'Q', baseX + GRID_SPACE_SIZE / 2 + 1, baseY + GRID_SPACE_SIZE / 2 - 1,
+            baseX + GRID_SPACE_SIZE + 1, baseY + GRID_SPACE_SIZE / 2 - 1,
+        'V', baseY + GRID_SPACE_SIZE / 2 + 1,
+        'Q', baseX + GRID_SPACE_SIZE / 2 + 1, baseY + GRID_SPACE_SIZE / 2 + 1,
+            baseX + GRID_SPACE_SIZE / 2 + 1, baseY + GRID_SPACE_SIZE + 1
     ]);
 
     return [turn, marker];
@@ -253,7 +252,7 @@ function createTurnUR(baseX, baseY) {
 
     var turn = paper.path([
         'M', baseX + EDGE_GAP_X, baseY,
-        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + GRID_SPACE_WIDTH, baseY
+        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY
             + EDGE_GAP_Y + ROAD_WIDTH,
         'V', baseY + EDGE_GAP_Y,
         'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X 
@@ -261,12 +260,12 @@ function createTurnUR(baseX, baseY) {
     ]);
 
     var marker = paper.path([
-        'M', baseX + GRID_SPACE_WIDTH + 1, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 + 1, baseY + GRID_SPACE_HEIGHT / 2 - 1,
-            baseX + GRID_SPACE_WIDTH / 2 + 1, baseY,
-        'H', baseX + GRID_SPACE_WIDTH / 2 - 1,
-        'Q', baseX + GRID_SPACE_WIDTH / 2 - 1, baseY + GRID_SPACE_HEIGHT / 2 + 1,
-            baseX + GRID_SPACE_WIDTH + 1, baseY + GRID_SPACE_HEIGHT / 2 + 1
+        'M', baseX + GRID_SPACE_SIZE + 1, baseY + GRID_SPACE_SIZE / 2 - 1,
+        'Q', baseX + GRID_SPACE_SIZE / 2 + 1, baseY + GRID_SPACE_SIZE / 2 - 1,
+            baseX + GRID_SPACE_SIZE / 2 + 1, baseY,
+        'H', baseX + GRID_SPACE_SIZE / 2 - 1,
+        'Q', baseX + GRID_SPACE_SIZE / 2 - 1, baseY + GRID_SPACE_SIZE / 2 + 1,
+            baseX + GRID_SPACE_SIZE + 1, baseY + GRID_SPACE_SIZE / 2 + 1
     ]);
 
     return [turn, marker];
@@ -357,7 +356,7 @@ function getVanPosition() {
 }
 
 function turnAround(callback) {
-    var moveDistance = -GRID_SPACE_WIDTH / 2;
+    var moveDistance = -GRID_SPACE_SIZE / 2;
     var moveTransformation = "... t 0, " + moveDistance;
 
     function moveBack() {
@@ -397,7 +396,7 @@ function createCFC(){
 function createDestination(destination){
 	console.log(destination);
 	paper.image('/static/game/image/house1_noGreen.svg',
-		destination.x * GRID_SPACE_WIDTH, PAPER_HEIGHT - (destination.y * GRID_SPACE_HEIGHT) - 25,
+		destination.x * GRID_SPACE_SIZE, PAPER_HEIGHT - (destination.y * GRID_SPACE_SIZE) - 25,
         100, 100).transform('r90');
 }
 
