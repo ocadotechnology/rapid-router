@@ -96,7 +96,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
 
     if (!nextNode) {
         var n = this.level.correct - 1;
-        ocargo.blocklyTest.blink();
+        ocargo.blocklyControl.blink();
 
         this.level.fail("Oh dear! :( Your first " + n + " instructions were right."
             + " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
