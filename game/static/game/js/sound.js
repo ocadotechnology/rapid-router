@@ -19,7 +19,9 @@ function Sound(source, initialVolume, loop)
         var self = this;
         setTimeout(function() {
             self.soundFile.pause();
-            self.soundFile.currentTime = 0;
+	    if (self.soundFile.duration) {
+            	self.soundFile.currentTime = 0;
+	    }
             self.soundFile.play();
         }, 1);
     };
