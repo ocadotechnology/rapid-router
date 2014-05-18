@@ -125,7 +125,21 @@ ocargo.BlocklyTest.prototype.init = function() {
         toolbox: toolbox
     });
 
-    ocargo.blocklyTest.reset();
+    try {
+        var text = localStorage.getItem('blocklyWorkspaceXml');
+        var xml = Blockly.Xml.textToDom(text);
+        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+    } catch (e) {
+        ocargo.blocklyTest.reset();
+    }
+};
+
+ocargo.BlocklyTest.prototype.teardown = function() {
+    if (localStorage) {
+        var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+        var text = Blockly.Xml.domToText(xml);
+        localStorage.setItem('blocklyWorkspaceXml', text);
+    }
 };
 
 ocargo.BlocklyTest.prototype.reset = function() {
@@ -161,6 +175,7 @@ ocargo.BlocklyTest.prototype.blink = function() {
 };
 
 window.addEventListener('load', ocargo.blocklyTest.init);
+window.addEventListener('unload', ocargo.blocklyTest.teardown);
 
 ocargo.BlocklyTest.prototype.getStartBlock = function() {
     var startBlock = null;
