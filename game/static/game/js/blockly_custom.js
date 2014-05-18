@@ -19,7 +19,7 @@ Blockly.Blocks['move_van'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u2191');
+            .appendField('\u2191 Move Forward');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Move the van forwards');
@@ -31,7 +31,7 @@ Blockly.Blocks['turn_left'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u21BA');
+            .appendField('\u21BA Turn Left');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van left');
@@ -43,7 +43,7 @@ Blockly.Blocks['turn_right'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u21BB');
+            .appendField('\u21BB Turn Right');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van right');
