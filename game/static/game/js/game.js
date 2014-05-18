@@ -46,8 +46,9 @@ function loadDefaultProgram() {
     ocargo.blocklyTest.addBlockToEndOfProgram('move_van');
 }
 
-function initialiseDefault(path) {
+function initialiseDefault() {
 	'use strict';
+    var path = JSON.parse(PATH);
 	ocargo.ui = createUi();
 	ocargo.level = createDefaultLevel(path, ocargo.ui);
         if ($.cookie("muted") == "true") {
@@ -114,9 +115,7 @@ function trackDevelopment() {
 }
 
 $(function() {
-    var p = PATH;
-    var path = JSON.parse(p);
-   	initialiseDefault(path);
+   	initialiseDefault();
     trackDevelopment();
 });
 
