@@ -31,19 +31,19 @@ function loadDefaultProgram() {
     ocargo.blocklyControl.reset();
 
     ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
     ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
     ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
     ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
     ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
     ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
+    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
+    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
+    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
 }
 
 function initialiseDefault() {
@@ -60,7 +60,7 @@ function initialiseDefault() {
 
 function trackDevelopment() {
     $('#moveForward').click(function() {
-        ocargo.blocklyControl.addBlockToEndOfProgram('move_van');
+        ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
     });
     
     $('#turnLeft').click(function() {
