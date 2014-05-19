@@ -51,10 +51,11 @@ function initialiseDefault() {
     var path = JSON.parse(PATH);
 	ocargo.ui = createUi();
 	ocargo.level = createDefaultLevel(path, ocargo.ui);
-        if ($.cookie("muted") == "true") {
-            $('#mute').text("Unmute");
-            ocargo.sound.mute();
-        }
+    ocargo.level.levelId = JSON.parse(LEVEL_ID);
+    if ($.cookie("muted") == "true") {
+        $('#mute').text("Unmute");
+        ocargo.sound.mute();
+    }
 }
 
 function trackDevelopment() {

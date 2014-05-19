@@ -3,6 +3,7 @@
 var ocargo = ocargo || {};
 
 ocargo.Level = function(map, van, ui) {
+    this.levelId = null;
     this.map = map;
     this.van = van;
     this.ui = ui;
@@ -13,20 +14,17 @@ ocargo.Level = function(map, van, ui) {
 ocargo.Level.prototype.play = function(program){
 
     this.attemptData = {};
-    // Circular references in programmStack, cannot stringify it just yet. Will probably have to 
-    // write our own serializer. 
+    // TODO: Circular references in programmStack, cannot stringify it just yet. 
     var programStack =  {}; //JSON.stringify(program.stack);
-    var timeStarted = null;
-    var timeFinished = 0;
-
+    
+    // TODO: calculate score
     program.startBlock.select();
-    
+
     var stepFunction = stepper(this);
-    
+
     program.stepCallback = stepFunction;
     this.program = program;
     setTimeout(stepFunction, 500);
-    // $.post gives cross site request forgery error.
 };
 
 ocargo.Level.prototype.step = function(){
@@ -96,15 +94,19 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
 };
 
 $("#play").click(function() {
+    ocargo.level.attemptData['level'] = ocargo.level.levelId.toString();
+    var attemptData = JSON.stringify(ocargo.level.attemptData);
+    console.debug(attemptData);
     $.ajax({
         url : "/game/submit",
         type : "POST",
         dataType: 'json',
         data : {
-           attemptData : ocargo.level.attemptData,
+           attemptData : attemptData,
            csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val()
        },
-       success : function(json) {},
+       success : function(json) {
+       },
        error : function(xhr,errmsg,err) {
             console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }

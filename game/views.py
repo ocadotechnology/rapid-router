@@ -1,5 +1,6 @@
 import os
 import json
+import datetime
 from django.http import Http404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, redirect
@@ -21,14 +22,16 @@ def levels(request):
 def level(request, level):
     lvl = get_object_or_404(Level, id=level)
     path = lvl.path
-
-    try:
-        #attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
-        message = 'success'
-    except Http404:
-        message = 'failure'
+    attempt = ''
+    if not request.user.is_anonymous():
+        try:
+            attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
+        except Http404:
+            attempt = Attempt(level=lvl, score=0, student=request.user.userprofile.student)
+            attempt.save()
 
     context = RequestContext(request, {
+        'level' : lvl.id,
         'path' : path,
     })
 
@@ -36,7 +39,7 @@ def level(request, level):
 
 def level_new(request):
     if request.POST.has_key('path'):
-        path = request.POST['path']
+        path = request.POST.get('path', False)
         passedLevel = Level(name=10, path=path)
         passedLevel.save()
         response_dict = {}
@@ -46,10 +49,12 @@ def level_new(request):
 def submit(request):
     response_dict = {}
     if request.method == 'POST':
-        attemptData = request.POST.get('attemptData', False)
-        #attempt = Attempt(start_time=0, level="", student="", finish_time=0, score=0)
-        # attempt.save()
-        # attempt
+        attemptJson = request.POST.get('attemptData', False)
+        attemptData = json.loads(attemptJson)
+        lev = attemptData.get('level', 1)
+        lvl = get_object_or_404(Level, id=lev)
+        attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
+        attempt.save()
         response_dict = {}
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
     return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
@@ -91,7 +96,6 @@ def settings(request):
         'user' : request.user,
     })
     return render(request, 'game/settings.html', context)
-
 
 def render_student_info(request, logged):
     """ Helper method for rendering the studend info for a logged-in teacher. """

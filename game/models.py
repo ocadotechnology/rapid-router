@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
@@ -48,10 +49,10 @@ class Level (models.Model):
   path = models.CharField(max_length = 300)
 
 class Attempt (models.Model):
-  start_time = models.IntegerField()
+  start_time = models.DateTimeField(auto_now_add=True)
   level = models.ForeignKey(Level, related_name='attempts')
   student = models.ForeignKey(Student, related_name='attempts')
-  finish_time = models.IntegerField()
+  finish_time = models.DateTimeField(auto_now=True)
   score = models.FloatField()
 
 class Command (models.Model):
