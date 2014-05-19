@@ -130,6 +130,7 @@ ocargo.BlocklyControl.prototype.init = function() {
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
     } catch (e) {
+        Blockly.mainWorkspace.clear();
         ocargo.blocklyControl.reset();
     }
 };
