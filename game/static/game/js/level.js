@@ -7,39 +7,26 @@ ocargo.Level = function(map, van, ui) {
     this.van = van;
     this.ui = ui;
     this.correct = 0;
+    this.attemptData = {};
 };
 
 ocargo.Level.prototype.play = function(program){
 
-    var attemptData = {};
+    this.attemptData = {};
     // Circular references in programmStack, cannot stringify it just yet. Will probably have to 
     // write our own serializer. 
     var programStack =  {}; //JSON.stringify(program.stack);
     var timeStarted = null;
     var timeFinished = 0;
 
-    // $.post gives cross site request forgery error.
-    $("#play").click(function() {
-        $.ajax({
-            url : "/game/submit",
-            type : "POST",
-            dataType: 'json',
-            data : {
-               attemptData : attemptData,
-               csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
-            },
-        });
-        return false;
-    });
-
     program.startBlock.select();
-	
+    
     var stepFunction = stepper(this);
     
     program.stepCallback = stepFunction;
     this.program = program;
     setTimeout(stepFunction, 500);
-    
+    // $.post gives cross site request forgery error.
 };
 
 ocargo.Level.prototype.step = function(){
@@ -107,3 +94,20 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
 
     this.level.van.move(nextNode, instruction, program.stepCallback);
 };
+
+$("#play").click(function() {
+    $.ajax({
+        url : "/game/submit",
+        type : "POST",
+        dataType: 'json',
+        data : {
+           attemptData : ocargo.level.attemptData,
+           csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val()
+       },
+       success : function(json) {},
+       error : function(xhr,errmsg,err) {
+            console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+    return false;
+});

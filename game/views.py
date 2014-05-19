@@ -3,8 +3,6 @@ import json
 from django.http import Http404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render_to_response, redirect
-from django.utils import simplejson
-
 
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
@@ -25,7 +23,7 @@ def level(request, level):
     path = lvl.path
 
     try:
-        # attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
+        #attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
         message = 'success'
     except Http404:
         message = 'failure'
@@ -43,14 +41,18 @@ def level_new(request):
         passedLevel.save()
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id })
-        return HttpResponse(simplejson.dumps(response_dict), mimetype='application/javascript')
+        return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 def submit(request):
-    if request.POST.has_key('attemptData'):
-        attemptData = request.POST['attemptData']
-        attempt = Attempt(start_time=0, level="", student="", finish_time=0, score=0)
+    response_dict = {}
+    if request.method == 'POST':
+        attemptData = request.POST.get('attemptData', False)
+        #attempt = Attempt(start_time=0, level="", student="", finish_time=0, score=0)
         # attempt.save()
         # attempt
+        response_dict = {}
+        return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
+    return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 def logged_students(request):
     """ Renders the page with information about all the logged in students."""
