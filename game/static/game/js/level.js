@@ -94,22 +94,24 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
 };
 
 $("#play").click(function() {
-    ocargo.level.attemptData['level'] = ocargo.level.levelId.toString();
-    var attemptData = JSON.stringify(ocargo.level.attemptData);
-    console.debug(attemptData);
-    $.ajax({
-        url : "/game/submit",
-        type : "POST",
-        dataType: 'json',
-        data : {
-           attemptData : attemptData,
-           csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val()
-       },
-       success : function(json) {
-       },
-       error : function(xhr,errmsg,err) {
-            console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-        }
-    });
+    if (ocargo.level.levelId) {
+        ocargo.level.attemptData['level'] = ocargo.level.levelId.toString();
+        var attemptData = JSON.stringify(ocargo.level.attemptData);
+        console.debug(attemptData);
+        $.ajax({
+            url : "/game/submit",
+            type : "POST",
+            dataType: 'json',
+            data : {
+               attemptData : attemptData,
+               csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val()
+           },
+           success : function(json) {
+           },
+           error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    }
     return false;
 });
