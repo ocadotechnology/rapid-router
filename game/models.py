@@ -56,12 +56,29 @@ class Attempt (models.Model):
   score = models.FloatField()
 
 class Command (models.Model):
+  # TODO: deal with storing the complex commands.
   STEP_CHOICES = (
-    ('R', 'right'),
-    ('L', 'left'),
-    ('F', 'forward'),
-    ('B', 'backwards'),
+    ('Right', 'right'),
+    ('Left', 'left'),
+    ('Forward', 'forward'),
+    ('TurnAround', 'turn around'),
+    ('While', 'while'),
+    ('Until', 'until'),
+    ('If', 'if'), 
+    ('For', 'for'),
   )
+
+  CONDITON_CHOICES = (
+    ('DeadEnd', 'dead end'),
+    ('Destination', 'destination'),
+    ('Forward', 'exists road forward'),
+    ('Left', 'exists road left'),
+    ('Right', 'exists road right'),
+  )
+
   step = models.IntegerField()
   attempt = models.ForeignKey(Attempt, related_name='commands')
-  command = models.CharField(max_length = 10, choices=STEP_CHOICES, default='F')
+  command = models.CharField(max_length=15, choices=STEP_CHOICES, default='F')
+  condition = models.CharField(max_length=15, choices=CONDITON_CHOICES, blank=True)
+  # Whether or not the 'not' block was used
+  condition_boolean = models.BooleanField(blank=True)

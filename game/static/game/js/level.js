@@ -15,8 +15,17 @@ ocargo.Level.prototype.play = function(program){
 
     this.attemptData = {};
     // TODO: Circular references in programmStack, cannot stringify it just yet. 
-    var programStack =  {}; //JSON.stringify(program.stack);
-    
+    //var programStack = JSON.stringify(program.stack);
+    var commandStack = [];
+    for (var i = 0; i < program.stack.length; i++) {
+        for(var j = 0; j < program.stack[i].length; j++) {
+            var command = ocargo.level.recogniseCommand(program.stack[i][j]);
+            commandStack.push(command);
+            console.debug(program.stack[i][j], command);
+        }
+    }
+    console.debug(commandStack, JSON.stringify(commandStack));
+    this.attemptData['commandStack'] = JSON.stringify(commandStack);
     // TODO: calculate score
     program.startBlock.select();
 
@@ -25,6 +34,23 @@ ocargo.Level.prototype.play = function(program){
     program.stepCallback = stepFunction;
     this.program = program;
     setTimeout(stepFunction, 500);
+};
+
+ocargo.Level.prototype.recogniseCommand = function(command) {
+    if (command instanceof ForwardCommand) {
+        return 'Forward';
+    } else if (command instanceof TurnLeftCommand) {
+        return 'Left';
+    } else if (command instanceof TurnRightCommand) {
+        return 'Right';
+    } else if (command instanceof TurnAroundCommand) {
+        return 'TurnAround';
+    } else if (command instanceof While) {
+        // Actually thiink about putting in all the needed data in another json.
+        return 'While'
+    } else if (command instanceof If) {
+        return 'If'; 
+    }
 };
 
 ocargo.Level.prototype.step = function(){
