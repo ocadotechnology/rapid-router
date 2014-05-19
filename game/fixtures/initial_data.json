@@ -1,10 +1,88 @@
 [
     {
+        "model": "game.Block",
+        "pk": 1,
+        "fields": {
+            "type": "move_forwards"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 2,
+        "fields": {
+            "type": "turn_left"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 3,
+        "fields": {
+            "type": "turn_right"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 4,
+        "fields": {
+            "type": "turn_around"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 5,
+        "fields": {
+            "type": "controls_repeat"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 6,
+        "fields": {
+            "type": "controls_whileUntil"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 7,
+        "fields": {
+            "type": "controls_if"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 8,
+        "fields": {
+            "type": "logic_negate"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 9,
+        "fields": {
+            "type": "road_exists"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 10,
+        "fields": {
+            "type": "dead_end"
+        }
+    },
+    {
+        "model": "game.Block",
+        "pk": 11,
+        "fields": {
+            "type": "at_destination"
+        }
+    },
+    {
         "model": "game.Level",
         "pk": 1,
         "fields": {
             "name": 1,
-            "path": "[[0,3],[1,3],[1,4],[1,5],[2,5],[3,5],[3,6],[3,7],[4,7],[5,7],[5,6],[5,5],[6,5],[7,5],[8,5],[9,5]]"
+            "path": "[[0,3],[1,3],[2,3],[3,3],[4,3],[5,3],[6,3],[7,3],[8,3],[9,3]]",
+            "blocks": [1]
         }
     },
     {
@@ -12,7 +90,8 @@
         "pk": 2,
         "fields": {
             "name": 2,
-            "path": "[[0,3],[1,3],[1,4],[1,5],[1,6],[2,6],[3,6],[3,5],[3,4],[3,3],[3,2],[3,1]]"
+            "path": "[[0,3],[1,3],[1,4],[1,5],[1,6],[2,6],[3,6],[3,5],[3,4],[3,3],[3,2],[3,1]]",
+            "blocks": [1, 2, 3]
         }
     },
     {
@@ -20,7 +99,8 @@
         "pk": 3,
         "fields": {
             "name": 3,
-            "path": "[[0,3],[1,3],[1,2],[1,1],[2,1],[3,1],[3,2],[3,3],[4,3]]"
+            "path": "[[0,3],[1,3],[1,2],[1,1],[2,1],[3,1],[3,2],[3,3],[4,3]]",
+            "blocks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         }
     },
     {
@@ -28,7 +108,8 @@
         "pk": 4,
         "fields": {
             "name": 4,
-            "path": "[[0,3],[1,3],[1,4],[1,5],[0,5]]"
+            "path": "[[0,3],[1,3],[1,4],[1,5],[2,5],[3,5],[3,6],[3,7],[4,7],[5,7],[5,6],[5,5],[6,5],[7,5],[8,5],[9,5]]",
+            "blocks": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
         }
     }
 ]
