@@ -88,7 +88,6 @@ function trackDevelopment() {
         if (ocargo.level.levelId) {
             var attemptData = JSON.stringify(ocargo.level.attemptData);
 
-            console.debug("kjsdkj" + attemptData);
             $.ajax({
                 url : "/game/submit",
                 type : "POST",

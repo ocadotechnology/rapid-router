@@ -14,9 +14,8 @@ ocargo.Level = function(map, van, ui) {
 ocargo.Level.prototype.play = function(program){
 
     this.attemptData = {};
-    // TODO: Circular references in programmStack, cannot stringify it just yet. 
-    //var programStack = JSON.stringify(program.stack);
     var commandStack = [];
+
     ocargo.level.attemptData['level'] = ocargo.level.levelId.toString(); 
 
     for (var i = 0; i < program.stack.length; i++) {
@@ -25,7 +24,6 @@ ocargo.Level.prototype.play = function(program){
             commandStack.push(command);
         }
     }
-   // console.debug(commandStack, JSON.stringify(commandStack));
     this.attemptData['commandStack'] = JSON.stringify(commandStack);
     // TODO: calculate score
     program.startBlock.select();
@@ -38,7 +36,7 @@ ocargo.Level.prototype.play = function(program){
 };
 
 ocargo.Level.prototype.recogniseCommand = function(command) {
-    console.debug(command);
+    //console.debug(command);
     if (command instanceof ForwardCommand) {
         return {'command': 'Forward'};
     } else if (command instanceof TurnLeftCommand) {
@@ -48,14 +46,12 @@ ocargo.Level.prototype.recogniseCommand = function(command) {
     } else if (command instanceof TurnAroundCommand) {
         return {'command': 'TurnAround'};
     } else if (command instanceof While) {
-        // Actually thiink about putting in all the needed data in another json.
         var condition = command['condition'];
         var block = [];
         for(var i = 0; i < command['body'].length; i++) {
             block.push(ocargo.level.recogniseCommand(command['body'][i]));
         } 
         return {'command': 'While', 'condition': condition, 'block': block};
-            //    return 'While' : {'condition' : command.condition} ;
     } else if (command instanceof If) {
         return {'command': 'If'}; 
     }
