@@ -36,7 +36,7 @@ ocargo.Level.prototype.play = function(program){
 };
 
 ocargo.Level.prototype.recogniseCommand = function(command) {
-    //console.debug(command);
+    console.debug(command);
     if (command instanceof ForwardCommand) {
         return {'command': 'Forward'};
     } else if (command instanceof TurnLeftCommand) {

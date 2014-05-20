@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from forms import AvatarUploadForm, AvatarPreUploadedForm
-from models import Class, Level, Attempt, Command
+from models import Class, Level, Attempt, Command, Block
 
 def levels(request):
     context = RequestContext(request, {
@@ -40,6 +40,10 @@ def level_new(request):
         path = request.POST.get('path', False)
         passedLevel = Level(name=10, path=path)
         passedLevel.save()
+
+        for a in range(1, 12):
+            passedLevel.blocks.add(get_object_or_404(Block, id=a))
+        passedLevel.save()
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
@@ -65,6 +69,7 @@ def parseAttempt(attemptData, request):
 
 def parseInstructions(instructions, attempt, init):
     command = None
+
     for (counter, instruction) in enumerate(instructions):
         curr = init + counter
 
@@ -80,6 +85,7 @@ def parseInstructions(instructions, attempt, init):
             parseInstructions(instruction['block'], attempt, curr+1)
             command = Command(step=curr, attempt=attempt, command='While',
                               next=len(instruction['block']))
+            #condition = 
         elif instruction['command'] == 'If':
             command = Command(step=curr, attempt=attempt, command='If', next=counter+1)
         else:
