@@ -17,14 +17,15 @@ ocargo.Level.prototype.play = function(program){
     // TODO: Circular references in programmStack, cannot stringify it just yet. 
     //var programStack = JSON.stringify(program.stack);
     var commandStack = [];
+    ocargo.level.attemptData['level'] = ocargo.level.levelId.toString(); 
+
     for (var i = 0; i < program.stack.length; i++) {
         for(var j = 0; j < program.stack[i].length; j++) {
             var command = ocargo.level.recogniseCommand(program.stack[i][j]);
             commandStack.push(command);
-            console.debug(program.stack[i][j], command);
         }
     }
-    console.debug(commandStack, JSON.stringify(commandStack));
+   // console.debug(commandStack, JSON.stringify(commandStack));
     this.attemptData['commandStack'] = JSON.stringify(commandStack);
     // TODO: calculate score
     program.startBlock.select();
@@ -47,7 +48,7 @@ ocargo.Level.prototype.recogniseCommand = function(command) {
         return 'TurnAround';
     } else if (command instanceof While) {
         // Actually thiink about putting in all the needed data in another json.
-        return 'While'
+        return 'While';
     } else if (command instanceof If) {
         return 'If'; 
     }
@@ -109,8 +110,8 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
 
-        this.level.fail("Oh dear! :( Your first " + n + " instructions were right."
-            + " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
+        this.level.fail("Oh dear! :( Your first " + n + " instructions were right." + 
+            " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
 
         program.terminate();
         return; //TODO: animate the crash
@@ -118,26 +119,3 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program){
 
     this.level.van.move(nextNode, instruction, program.stepCallback);
 };
-
-$("#play").click(function() {
-    if (ocargo.level.levelId) {
-        ocargo.level.attemptData['level'] = ocargo.level.levelId.toString();
-        var attemptData = JSON.stringify(ocargo.level.attemptData);
-        console.debug(attemptData);
-        $.ajax({
-            url : "/game/submit",
-            type : "POST",
-            dataType: 'json',
-            data : {
-               attemptData : attemptData,
-               csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val()
-           },
-           success : function(json) {
-           },
-           error : function(xhr,errmsg,err) {
-                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-            }
-        });
-    }
-    return false;
-});

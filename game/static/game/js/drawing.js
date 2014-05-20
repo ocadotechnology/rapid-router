@@ -67,13 +67,13 @@ function identifyInstruction(roadSet) {
     var diffY = Math.abs(weightPointBox.y - roadBox.y);
     var instruction = '';
 
-    if (diffX == 0 && diffY == 0)
+    if (diffX === 0 && diffY === 0)
         instruction = 'UL';
-    if (diffX == 0 && diffY == EDGE_GAP_Y)
+    if (diffX === 0 && diffY == EDGE_GAP_Y)
         instruction = 'DL';
     if (diffX == EDGE_GAP_X && diffY == EDGE_GAP_Y)
         instruction = 'DR';
-    if (diffX == EDGE_GAP_X && diffY == 0)
+    if (diffX == EDGE_GAP_X && diffY === 0)
         instruction = 'UR';
     if (roadBox.width == 50 && roadBox.height == 100)
         instruction = 'V';
@@ -252,11 +252,11 @@ function createTurnUR(baseX, baseY) {
 
     var turn = paper.path([
         'M', baseX + EDGE_GAP_X, baseY,
-        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY
-            + EDGE_GAP_Y + ROAD_WIDTH,
+        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY +
+            EDGE_GAP_Y + ROAD_WIDTH,
         'V', baseY + EDGE_GAP_Y,
-        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X 
-            + ROAD_WIDTH, baseY
+        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X + 
+            ROAD_WIDTH, baseY
     ]);
 
     var marker = paper.path([
@@ -385,7 +385,7 @@ function turnAround(callback) {
 
 function drawBackground(paper){
 	paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
-        .attr({fill: 'url(/static/game/image/grassTile1.svg)'})
+        .attr({fill: 'url(/static/game/image/grassTile1.svg)'});
 }
 
 function createCFC(){

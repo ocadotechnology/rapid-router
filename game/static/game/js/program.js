@@ -117,7 +117,7 @@ function deadEndCondition() {
 function negateCondition(otherCondition){
 	return function(level){
 		return !otherCondition(level);
-	}
+	};
 }
 
 function atDestinationCondition() {

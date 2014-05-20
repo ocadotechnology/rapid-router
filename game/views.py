@@ -1,16 +1,13 @@
 import os
 import json
-import datetime
 from django.http import Http404
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render_to_response, redirect
+from django.http import HttpResponse
 
-from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404
-from django.template import RequestContext, loader
+from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
 from forms import AvatarUploadForm, AvatarPreUploadedForm
-from models import School, Teacher, Student, Class, UserProfile, Level, Attempt
+from models import Class, Level, Attempt, Command
 
 def levels(request):
     context = RequestContext(request, {
@@ -38,12 +35,12 @@ def level(request, level):
     return render(request, 'game/game.html', context)
 
 def level_new(request):
-    if request.POST.has_key('path'):
+    if 'path' in request.POST:
         path = request.POST.get('path', False)
         passedLevel = Level(name=10, path=path)
         passedLevel.save()
         response_dict = {}
-        response_dict.update({'server_response': passedLevel.id })
+        response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 def submit(request):
@@ -51,13 +48,38 @@ def submit(request):
     if request.method == 'POST':
         attemptJson = request.POST.get('attemptData', False)
         attemptData = json.loads(attemptJson)
-        lev = attemptData.get('level', 1)
-        lvl = get_object_or_404(Level, id=lev)
-        attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
-        attempt.save()
+        parseAttempt(attemptData, request)
         response_dict = {}
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
     return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
+
+def parseAttempt(attemptData, request):
+    level = get_object_or_404(Level, id=attemptData.get('level', 1))
+    attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
+
+    # Remove all the old commands from previous attempts.
+    Command.objects.filter(attempt=attempt).delete()
+    parseInstructions(json.loads(attemptData.get('commandStack', "")), attempt)
+    attempt.save()
+
+def parseInstructions(instructions, attempt):
+    command = None
+    for (counter, instruction) in enumerate(instructions):
+        if instruction == 'Forward':
+            command = Command(step=counter, attempt=attempt, command='Forward', next=counter+1)
+        elif instruction == 'Left':
+            command = Command(step=counter, attempt=attempt, command='Left', next=counter+1)
+        elif instruction == 'Right':
+            command = Command(step=counter, attempt=attempt, command='Right', next=counter+1)
+        elif instruction == 'TurnAround':
+            command = Command(step=counter, attempt=attempt, command='TurnAround', next=counter+1)
+        elif instruction == 'While':
+            command = Command(step=counter, attempt=attempt, command='While', next=counter+1)
+        elif instruction == 'If':
+            command = Command(step=counter, attempt=attempt, command='If', next=counter+1)
+        else:
+            command = Command(step=counter, attempt=attempt, command='Forward')
+        command.save()
 
 def logged_students(request):
     """ Renders the page with information about all the logged in students."""
