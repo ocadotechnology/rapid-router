@@ -18,6 +18,7 @@ def levels(request):
 def level(request, level):
     lvl = get_object_or_404(Level, id=level)
     path = lvl.path
+    blocks = lvl.blocks.order_by('id')
     attempt = ''
     if not request.user.is_anonymous():
         try:
@@ -29,6 +30,7 @@ def level(request, level):
     context = RequestContext(request, {
         'level': lvl.id,
         'path': path,
+        'blocks': blocks,
     })
 
     return render(request, 'game/game.html', context)

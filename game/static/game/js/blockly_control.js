@@ -14,7 +14,7 @@ Blockly.Blocks['start'] = {
     }
 };
 
-Blockly.Blocks['move_van'] = {
+Blockly.Blocks['move_forwards'] = {
     // Block for moving forward
     init: function() {
         this.setColour(160);
@@ -130,6 +130,7 @@ ocargo.BlocklyControl.prototype.init = function() {
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
     } catch (e) {
+        Blockly.mainWorkspace.clear();
         ocargo.blocklyControl.reset();
     }
 };
@@ -251,7 +252,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     	var commands = [];
     	
     	while(block){
-    		if (block.type === 'move_van') {
+    		if (block.type === 'move_forwards') {
     			commands.push(new ForwardCommand(block));
             } else if (block.type === 'turn_left') {
             	commands.push(new TurnLeftCommand(block));

@@ -44,9 +44,14 @@ class Guardian (models.Model):
     children = models.ManyToManyField(Student)
     user = models.OneToOneField(UserProfile)
 
+class Block (models.Model):
+  type = models.CharField(max_length=200)
+
 class Level (models.Model):
-    name = models.IntegerField()
-    path = models.CharField(max_length=300)
+  name = models.IntegerField()
+  path = models.CharField(max_length=300)
+  blocks = models.ManyToManyField(Block, related_name='+')
+
 
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
