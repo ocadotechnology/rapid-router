@@ -13,7 +13,6 @@ def levels(request):
     context = RequestContext(request, {
         'levels': Level.objects.order_by('id'),
     })
-
     return render(request, 'game/level_selection.html', context)
 
 def level(request, level):
@@ -28,8 +27,8 @@ def level(request, level):
             attempt.save()
 
     context = RequestContext(request, {
-        'level' : lvl.id,
-        'path' : path,
+        'level': lvl.id,
+        'path': path,
     })
 
     return render(request, 'game/game.html', context)
@@ -59,26 +58,30 @@ def parseAttempt(attemptData, request):
 
     # Remove all the old commands from previous attempts.
     Command.objects.filter(attempt=attempt).delete()
-    parseInstructions(json.loads(attemptData.get('commandStack', "")), attempt)
+    parseInstructions(json.loads(attemptData.get('commandStack', "")), attempt, 0)
     attempt.save()
 
-def parseInstructions(instructions, attempt):
+def parseInstructions(instructions, attempt, init):
     command = None
     for (counter, instruction) in enumerate(instructions):
-        if instruction == 'Forward':
-            command = Command(step=counter, attempt=attempt, command='Forward', next=counter+1)
-        elif instruction == 'Left':
-            command = Command(step=counter, attempt=attempt, command='Left', next=counter+1)
-        elif instruction == 'Right':
-            command = Command(step=counter, attempt=attempt, command='Right', next=counter+1)
-        elif instruction == 'TurnAround':
-            command = Command(step=counter, attempt=attempt, command='TurnAround', next=counter+1)
-        elif instruction == 'While':
-            command = Command(step=counter, attempt=attempt, command='While', next=counter+1)
-        elif instruction == 'If':
-            command = Command(step=counter, attempt=attempt, command='If', next=counter+1)
+        curr = init + counter
+
+        if instruction['command'] == 'Forward':
+            command = Command(step=curr, attempt=attempt, command='Forward', next=curr+1)
+        elif instruction['command'] == 'Left':
+            command = Command(step=curr, attempt=attempt, command='Left', next=curr+1)
+        elif instruction['command'] == 'Right':
+            command = Command(step=curr, attempt=attempt, command='Right', next=curr+1)
+        elif instruction['command'] == 'TurnAround':
+            command = Command(step=curr, attempt=attempt, command='TurnAround', next=curr+1)
+        elif instruction['command'] == 'While':
+            parseInstructions(instruction['block'], attempt, curr+1)
+            command = Command(step=curr, attempt=attempt, command='While',
+                              next=len(instruction['block']))
+        elif instruction['command'] == 'If':
+            command = Command(step=curr, attempt=attempt, command='If', next=counter+1)
         else:
-            command = Command(step=counter, attempt=attempt, command='Forward')
+            command = Command(step=curr, attempt=attempt, command='Forward', next=curr+1)
         command.save()
 
 def logged_students(request):
@@ -113,9 +116,9 @@ def settings(request):
         userProfile.save()
 
     context = RequestContext(request, {
-        'avatarPreUploadedForm' : avatarPreUploadedForm,
-        'avatarUploadForm' : avatarUploadForm,
-        'user' : request.user,
+        'avatarPreUploadedForm': avatarPreUploadedForm,
+        'avatarUploadForm': avatarUploadForm,
+        'user': request.user,
     })
     return render(request, 'game/settings.html', context)
 
@@ -136,9 +139,9 @@ def render_student_info(request, logged):
         message = "You don't have permissions to see this."
 
     context = RequestContext(request, {
-        'classes' : classes,
-        'message' : message,
-        'students' : students,
-        'currentClass' : currentClass,
+        'classes': classes,
+        'message': message,
+        'students': students,
+        'currentClass': currentClass,
     })
     return render(request, 'game/logged_students.html', context)

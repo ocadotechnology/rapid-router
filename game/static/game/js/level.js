@@ -38,19 +38,26 @@ ocargo.Level.prototype.play = function(program){
 };
 
 ocargo.Level.prototype.recogniseCommand = function(command) {
+    console.debug(command);
     if (command instanceof ForwardCommand) {
-        return 'Forward';
+        return {'command': 'Forward'};
     } else if (command instanceof TurnLeftCommand) {
-        return 'Left';
+        return {'command': 'Left'};
     } else if (command instanceof TurnRightCommand) {
-        return 'Right';
+        return {'command': 'Right'};
     } else if (command instanceof TurnAroundCommand) {
-        return 'TurnAround';
+        return {'command': 'TurnAround'};
     } else if (command instanceof While) {
         // Actually thiink about putting in all the needed data in another json.
-        return 'While';
+        var condition = command['condition'];
+        var block = [];
+        for(var i = 0; i < command['body'].length; i++) {
+            block.push(ocargo.level.recogniseCommand(command['body'][i]));
+        } 
+        return {'command': 'While', 'condition': condition, 'block': block};
+            //    return 'While' : {'condition' : command.condition} ;
     } else if (command instanceof If) {
-        return 'If'; 
+        return {'command': 'If'}; 
     }
 };
 

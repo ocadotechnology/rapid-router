@@ -49,13 +49,14 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
 };
 
 ocargo.MapEditor.prototype.markPossible = function(point) {
+    var curr;
     for (var i = 0; i < this.possibleNext.length; i++) {
-        var curr = this.possibleNext[i];
+        curr = this.possibleNext[i];
         this.mark(curr, BACKGROUND_COLOR, 0, false);
     }
     this.possibleNext = getPossibleNextMoves(point, this.map);
     for (var i = 0; i < this.possibleNext.length; i++) {
-        var curr = this.possibleNext[i];
+        curr = this.possibleNext[i];
         this.mark(this.possibleNext[i], SUGGESTED_COLOR, 1, undefined);
     }
 };
@@ -240,8 +241,8 @@ $('#undo').click(function() {
 });
 
 $('#dragMagic').click(function() {
-    var message = "You are about to submit a road that is not completely connected. Are you sure "
-        + "you want to continue?";
+    var message = "You are about to submit a road that is not completely connected. Are you sure " +
+        "you want to continue?";
     var coord = [0, 4];
     ocargo.mapEditor.jsonToPoints(coord);
     var unified = ocargo.mapEditor.elements == ocargo.mapEditor.submittedPoints.length;
