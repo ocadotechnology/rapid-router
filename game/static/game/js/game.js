@@ -52,6 +52,7 @@ function initialiseDefault() {
     ocargo.ui = createUi();
     ocargo.level = createDefaultLevel(path, ocargo.ui);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
+    ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT) + 1;
     if ($.cookie("muted") == "true") {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
@@ -126,10 +127,10 @@ function trackDevelopment() {
     
     $('#slideBlockly').click(function() {
         var c = $('#programmingConsole');
-        if(c.is(':visible')){
+        if (c.is(':visible')) {
             $('#paper').animate({width: '100%'});
             $('#sliderControls').animate({left: '0%'});
-        }else{
+        } else {
             $('#paper').animate({width: '50%'});
             $('#sliderControls').animate({left: '50%'});
         }
@@ -144,7 +145,7 @@ $(function() {
 
 $('#mute').click(function() {
     var $this = $(this);
-    if(ocargo.sound.volume === 0) {
+    if (ocargo.sound.volume === 0) {
         $this.text("Mute");
         ocargo.sound.unmute();  
     } else {

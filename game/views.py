@@ -33,6 +33,7 @@ def level(request, level):
         'level': lvl.id,
         'path': path,
         'blocks': blocks,
+        'blockLimit': lvl.blockLimit,
     })
 
     return render(request, 'game/game.html', context)

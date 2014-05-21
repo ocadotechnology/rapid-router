@@ -50,8 +50,8 @@ class Block (models.Model):
 class Level (models.Model):
     name = models.IntegerField()
     path = models.CharField(max_length=300)
+    blockLimit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
-
 
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
