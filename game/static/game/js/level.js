@@ -24,7 +24,6 @@ ocargo.Level.prototype.play = function(program){
             commandStack.push(command);
         }
     }
-    console.debug(JSON.stringify(commandStack));
     this.attemptData.commandStack = JSON.stringify(commandStack);
     // TODO: calculate score
     program.startBlock.select();
@@ -37,7 +36,6 @@ ocargo.Level.prototype.play = function(program){
 };
 
 ocargo.Level.prototype.recogniseCommand = function(command) {
-    console.debug(command);
     var parsedCommand = {};
     
     if (command instanceof ForwardCommand) {

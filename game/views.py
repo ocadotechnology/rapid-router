@@ -19,12 +19,14 @@ def level(request, level):
     lvl = get_object_or_404(Level, id=level)
     path = lvl.path
     blocks = lvl.blocks.order_by('id')
-    attempt = ''
+    attempt = None
+    student = request.user.userprofile.student
+
     if not request.user.is_anonymous():
         try:
-            attempt = get_object_or_404(Attempt, level=lvl, student=request.user.userprofile.student)
+            attempt = get_object_or_404(Attempt, level=lvl, student=student)
         except Http404:
-            attempt = Attempt(level=lvl, score=0, student=request.user.userprofile.student)
+            attempt = Attempt(level=lvl, score=0, student=student)
             attempt.save()
 
     context = RequestContext(request, {
@@ -36,27 +38,28 @@ def level(request, level):
     return render(request, 'game/game.html', context)
 
 def level_new(request):
+    """ Processes a request on creation of the map in the level editor."""
     if 'path' in request.POST:
         path = request.POST.get('path', False)
         passedLevel = Level(name=10, path=path)
         passedLevel.save()
 
+        # Insert all the blockly blocks as available to use.
         for a in range(1, 12):
             passedLevel.blocks.add(get_object_or_404(Block, id=a))
+
         passedLevel.save()
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 def submit(request):
-    response_dict = {}
+    """ Processes a request on submission of the program solving the current level."""
     if request.method == 'POST':
         attemptJson = request.POST.get('attemptData', False)
         attemptData = json.loads(attemptJson)
         parseAttempt(attemptData, request)
-        response_dict = {}
-        return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
-    return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
+        return HttpResponse(attemptJson, content_type='application/javascript')
 
 def parseAttempt(attemptData, request):
     level = get_object_or_404(Level, id=attemptData.get('level', 1))
@@ -67,7 +70,71 @@ def parseAttempt(attemptData, request):
     parseInstructions(json.loads(attemptData.get('commandStack', "")), attempt, 1)
     attempt.save()
 
+
+def logged_students(request):
+    """ Renders the page with information about all the logged in students."""
+    return render_student_info(request, True)
+
+def students_in_class(request):
+    """ Renders the page with information about all the students enrolled in a chosen class."""
+    return render_student_info(request, False)
+
+def level_editor(request):
+    return render(request, 'game/level_editor.html')
+
+def settings(request):
+    """ Renders the settings page.  """
+    x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path = os.path.join(x, 'static/game/image/Avatars/')
+    img_list = os.listdir(path)
+    avatar = None
+    userProfile = request.user.userprofile
+    avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
+    avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
+
+    if request.method == 'POST':
+        if "pre-uploaded" in request.POST:
+            if avatarPreUploadedForm.is_valid:
+                avatar = avatarPreUploadedForm.data.get('pre-uploaded', False)
+        else:
+            if avatarUploadForm.is_valid() and "user-uploaded" in request.POST:
+                avatar = request.FILES.get('avatar', False)
+        userProfile.avatar = avatar
+        userProfile.save()
+
+    context = RequestContext(request, {
+        'avatarPreUploadedForm': avatarPreUploadedForm,
+        'avatarUploadForm': avatarUploadForm,
+        'user': request.user,
+    })
+    return render(request, 'game/settings.html', context)
+
+def render_student_info(request, logged):
+    """ Helper method for rendering the studend info for a logged-in teacher."""
+    user = request.user
+    message = "Choose a class you want to see."
+    currentClass = ""
+    students = []
+
+    if request.method == 'POST':
+        cl = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
+        students = cl.get_logged_in_students() if logged else cl.students.all()
+        currentClass = cl.name
+    try:
+        classes = user.userprofile.teacher.class_teacher.all()
+    except ObjectDoesNotExist:
+        message = "You don't have permissions to see this."
+
+    context = RequestContext(request, {
+        'classes': classes,
+        'message': message,
+        'students': students,
+        'currentClass': currentClass,
+    })
+    return render(request, 'game/logged_students.html', context)
+
 def parseInstructions(instructions, attempt, init):
+    """ Helper method for inserting user-submitted instructions to the database."""
     command = None
     index = init
 
@@ -116,67 +183,5 @@ def parseInstructions(instructions, attempt, init):
         command.save()
         index += 1
     last = Command.objects.get(step=index-1, attempt=attempt)
-    last.next = None;
+    last.next = None
     last.save()
-
-def logged_students(request):
-    """ Renders the page with information about all the logged in students."""
-    return render_student_info(request, True)
-
-def students_in_class(request):
-    """ Renders the page with information about all the students enrolled in a chosen class."""
-    return render_student_info(request, False)
-
-def level_editor(request):
-    return render(request, 'game/level_editor.html')
-
-def settings(request):
-    """ Renders the settings page.  """
-    x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path = os.path.join(x, 'static/game/image/Avatars/')
-    img_list = os.listdir(path)
-    avatar = None
-    userProfile = request.user.userprofile
-    avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
-    avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
-
-    if request.method == 'POST':
-        if "pre-uploaded" in request.POST:
-            if avatarPreUploadedForm.is_valid:
-                avatar = avatarPreUploadedForm.data.get('pre-uploaded', False)
-        else:
-            if avatarUploadForm.is_valid() and "user-uploaded" in request.POST:
-                avatar = request.FILES.get('avatar', False)
-        userProfile.avatar = avatar
-        userProfile.save()
-
-    context = RequestContext(request, {
-        'avatarPreUploadedForm': avatarPreUploadedForm,
-        'avatarUploadForm': avatarUploadForm,
-        'user': request.user,
-    })
-    return render(request, 'game/settings.html', context)
-
-def render_student_info(request, logged):
-    """ Helper method for rendering the studend info for a logged-in teacher. """
-    user = request.user
-    message = "Choose a class you want to see."
-    currentClass = ""
-    students = []
-
-    if request.method == 'POST':
-        cl = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
-        students = cl.get_logged_in_students() if logged else cl.students.all()
-        currentClass = cl.name
-    try:
-        classes = user.userprofile.teacher.class_teacher.all()
-    except ObjectDoesNotExist:
-        message = "You don't have permissions to see this."
-
-    context = RequestContext(request, {
-        'classes': classes,
-        'message': message,
-        'students': students,
-        'currentClass': currentClass,
-    })
-    return render(request, 'game/logged_students.html', context)

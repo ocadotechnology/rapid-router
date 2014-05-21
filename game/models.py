@@ -45,12 +45,12 @@ class Guardian (models.Model):
     user = models.OneToOneField(UserProfile)
 
 class Block (models.Model):
-  type = models.CharField(max_length=200)
+    type = models.CharField(max_length=200)
 
 class Level (models.Model):
-  name = models.IntegerField()
-  path = models.CharField(max_length=300)
-  blocks = models.ManyToManyField(Block, related_name='+')
+    name = models.IntegerField()
+    path = models.CharField(max_length=300)
+    blocks = models.ManyToManyField(Block, related_name='+')
 
 
 class Attempt (models.Model):
@@ -77,7 +77,7 @@ class Command (models.Model):
     next = models.IntegerField(blank=True, null=True)
 
     # Condition in While or If statements. Optional.
-    condition = models.CharField(max_length=400 , blank=True)
+    condition = models.CharField(max_length=400, blank=True)
     # 'While' or 'If' block. Optional.
     executedBlock1 = models.CommaSeparatedIntegerField(blank=True, max_length=100)
     # 'Else' block. Optional.
