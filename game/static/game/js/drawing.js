@@ -39,7 +39,6 @@ var WEIGHT_POINT_ATTR = {
 
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
-
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;
     if (rotationPointX !== undefined && rotationPointY !== undefined) {
@@ -383,9 +382,16 @@ function turnAround(callback) {
     moveForward();
 }
 
+function isMobile() {
+    var mobileDetect = new MobileDetect(window.navigator.userAgent);
+    return !!mobileDetect.mobile();
+}
+
 function drawBackground(paper){
-	paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
-        .attr({fill: 'url(/static/game/image/grassTile1.svg)'});
+    if (!isMobile()) {
+        paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
+            .attr({fill: 'url(/static/game/image/grassTile1.svg)'});
+    }
 }
 
 function createCFC(){
