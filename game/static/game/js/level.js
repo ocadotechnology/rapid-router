@@ -60,13 +60,13 @@ ocargo.Level.prototype.recogniseCommand = function(command) {
         parsedCommand.block = block;
    
     } else if (command instanceof If) {
-        var commands = command.conditionalCommandSets;
-        var condition = commands.condition;
+        var commands = command.conditionalCommandSets[0];
+        var condition = commands.condition.toString();
         var ifBlock = [];
         for(var i = 0; i < commands.commands.length; i++) {
             ifBlock.push(ocargo.level.recogniseCommand(commands.commands[i]));
         }
-        if(command.hasOwnProperty('elseCommands')) {
+        if(command.elseCommands) {
             var elseBlock = [];
             commands = command.elseCommands;
             for(var i = 0; i < commands.commands.length; i++) {

@@ -103,11 +103,14 @@ def parseInstructions(instructions, attempt, init):
                 parseInstructions(elseBlock, attempt, next)
                 elseBlock = range(next, next + len(elseBlock) + 1)
                 next += len(elseBlock)
-                command = Command(step=curr+1, attempt=attempt, command='If', condition=condition,
+                command = Command(step=index, attempt=attempt, command='If', condition=condition,
                                   executedBlock1=ifBlock, executedBlock2=elseBlock, next=next)
+                index += len(elseBlock)
             else:
-                command = Command(step=curr, attempt=attempt, command='If', condition=condition,
+                command = Command(step=index, attempt=attempt, command='If', condition=condition,
                                   executedBlock1=ifBlock, next=next)
+                index += len(ifBlock)
+
         else:
             command = Command(step=index, attempt=attempt, command='Forward', next=index+1)
         command.save()
