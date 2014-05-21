@@ -64,33 +64,57 @@ def parseAttempt(attemptData, request):
 
     # Remove all the old commands from previous attempts.
     Command.objects.filter(attempt=attempt).delete()
-    parseInstructions(json.loads(attemptData.get('commandStack', "")), attempt, 0)
+    parseInstructions(json.loads(attemptData.get('commandStack', "")), attempt, 1)
     attempt.save()
 
 def parseInstructions(instructions, attempt, init):
     command = None
+    index = init
 
-    for (counter, instruction) in enumerate(instructions):
-        curr = init + counter
+    for instruction in instructions:
 
         if instruction['command'] == 'Forward':
-            command = Command(step=curr, attempt=attempt, command='Forward', next=curr+1)
+            command = Command(step=index, attempt=attempt, command='Forward', next=index+1)
         elif instruction['command'] == 'Left':
-            command = Command(step=curr, attempt=attempt, command='Left', next=curr+1)
+            command = Command(step=index, attempt=attempt, command='Left', next=index+1)
         elif instruction['command'] == 'Right':
-            command = Command(step=curr, attempt=attempt, command='Right', next=curr+1)
+            command = Command(step=index, attempt=attempt, command='Right', next=index+1)
         elif instruction['command'] == 'TurnAround':
-            command = Command(step=curr, attempt=attempt, command='TurnAround', next=curr+1)
+            command = Command(step=index, attempt=attempt, command='TurnAround', next=index+1)
+
         elif instruction['command'] == 'While':
-            parseInstructions(instruction['block'], attempt, curr+1)
-            command = Command(step=curr, attempt=attempt, command='While',
-                              next=len(instruction['block']))
-            #condition = 
+            condition = instruction['condition']
+            block = instruction['block']
+            parseInstructions(block, attempt, index + 1)
+            execBlock = range(index + 1, index + len(block) + 1)
+            command = Command(step=index, attempt=attempt, command='While', condition=condition,
+                              next=index+len(block)+1, executedBlock1=execBlock)
+            index += len(block)
+
         elif instruction['command'] == 'If':
-            command = Command(step=curr, attempt=attempt, command='If', next=counter+1)
+            next = index + 1
+            condition = instruction['condition']
+            ifBlock = instruction['ifBlock']
+            parseInstructions(ifBlock, attempt, next)
+            ifBlock = range(index + 1, index + len(ifBlock) + 1)
+            next += len(ifBlock)
+            if 'elseBlock' in instruction:
+                elseBlock = instruction['elseBlock']
+                parseInstructions(elseBlock, attempt, next)
+                elseBlock = range(next, next + len(elseBlock) + 1)
+                next += len(elseBlock)
+                command = Command(step=curr+1, attempt=attempt, command='If', condition=condition,
+                                  executedBlock1=ifBlock, executedBlock2=elseBlock, next=next)
+            else:
+                command = Command(step=curr, attempt=attempt, command='If', condition=condition,
+                                  executedBlock1=ifBlock, next=next)
         else:
-            command = Command(step=curr, attempt=attempt, command='Forward', next=curr+1)
+            command = Command(step=index, attempt=attempt, command='Forward', next=index+1)
         command.save()
+        index += 1
+    last = Command.objects.get(step=index-1, attempt=attempt)
+    last.next = None;
+    last.save()
 
 def logged_students(request):
     """ Renders the page with information about all the logged in students."""

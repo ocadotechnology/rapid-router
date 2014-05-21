@@ -16,7 +16,7 @@ ocargo.Level.prototype.play = function(program){
     this.attemptData = {};
     var commandStack = [];
 
-    ocargo.level.attemptData['level'] = ocargo.level.levelId.toString(); 
+    ocargo.level.attemptData.level = ocargo.level.levelId.toString(); 
 
     for (var i = 0; i < program.stack.length; i++) {
         for(var j = 0; j < program.stack[i].length; j++) {
@@ -24,7 +24,8 @@ ocargo.Level.prototype.play = function(program){
             commandStack.push(command);
         }
     }
-    this.attemptData['commandStack'] = JSON.stringify(commandStack);
+    console.debug(JSON.stringify(commandStack));
+    this.attemptData.commandStack = JSON.stringify(commandStack);
     // TODO: calculate score
     program.startBlock.select();
 
@@ -37,24 +38,47 @@ ocargo.Level.prototype.play = function(program){
 
 ocargo.Level.prototype.recogniseCommand = function(command) {
     console.debug(command);
+    var parsedCommand = {};
+    
     if (command instanceof ForwardCommand) {
-        return {'command': 'Forward'};
+        parsedCommand.command = 'Forward';
     } else if (command instanceof TurnLeftCommand) {
-        return {'command': 'Left'};
+        parsedCommand.command = 'Left';
     } else if (command instanceof TurnRightCommand) {
-        return {'command': 'Right'};
+        parsedCommand.command = 'Right';
     } else if (command instanceof TurnAroundCommand) {
-        return {'command': 'TurnAround'};
+        parsedCommand.command = 'TurnAround';
+   
     } else if (command instanceof While) {
-        var condition = command['condition'];
+        var condition = command.condition.toString();
         var block = [];
-        for(var i = 0; i < command['body'].length; i++) {
-            block.push(ocargo.level.recogniseCommand(command['body'][i]));
-        } 
-        return {'command': 'While', 'condition': condition, 'block': block};
+        for(var i = 0; i < command.body.length; i++) {
+            block.push(ocargo.level.recogniseCommand(command.body[i]));
+        }
+        parsedCommand.command = 'While';
+        parsedCommand.condition = condition;
+        parsedCommand.block = block;
+   
     } else if (command instanceof If) {
-        return {'command': 'If'}; 
+        var commands = command.conditionalCommandSets;
+        var condition = commands.condition;
+        var ifBlock = [];
+        for(var i = 0; i < commands.commands.length; i++) {
+            ifBlock.push(ocargo.level.recogniseCommand(commands.commands[i]));
+        }
+        if(command.hasOwnProperty('elseCommands')) {
+            var elseBlock = [];
+            commands = command.elseCommands;
+            for(var i = 0; i < commands.commands.length; i++) {
+                elseBlock.push(ocargo.level.recogniseCommand(commands.commands[i]));
+            }
+            parsedCommand.elseBlock = elseBlock;
+        }
+        parsedCommand.command = 'If';
+        parsedCommand.condition = condition;
+        parsedCommand.ifBlock = ifBlock;
     }
+    return parsedCommand;
 };
 
 ocargo.Level.prototype.step = function(){

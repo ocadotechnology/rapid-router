@@ -71,24 +71,14 @@ class Command (models.Model):
         ('If', 'if'),
     )
 
-    CONDITON_CHOICES = (
-        ('DeadEnd', 'dead end'),
-        ('Destination', 'destination'),
-        ('Forward', 'exists road forward'),
-        ('Left', 'exists road left'),
-        ('Right', 'exists road right'),
-    )
-
     step = models.IntegerField()
     attempt = models.ForeignKey(Attempt, related_name='commands')
     command = models.CharField(max_length=15, choices=STEP_CHOICES, default='Forward')
-    next = models.IntegerField()
+    next = models.IntegerField(blank=True, null=True)
 
     # Condition in While or If statements. Optional.
-    condition = models.CharField(max_length=15, choices=CONDITON_CHOICES, blank=True)
+    condition = models.CharField(max_length=400 , blank=True)
     # 'While' or 'If' block. Optional.
     executedBlock1 = models.CommaSeparatedIntegerField(blank=True, max_length=100)
     # 'Else' block. Optional.
     executedBlock2 = models.CommaSeparatedIntegerField(blank=True, max_length=100)
-    # Whether or not the 'not' block was used. Optional.
-    condition_boolean = models.NullBooleanField(blank=True, null=True)
