@@ -21,7 +21,8 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
 
-    if not request.user.is_anonymous():
+    #FIXME: figure out how to check for all this better
+    if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
