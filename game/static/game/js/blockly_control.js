@@ -19,7 +19,7 @@ Blockly.Blocks['move_forwards'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u2191 Move Forward');
+            .appendField('\u2191 Move Forwards');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Move the van forwards');
