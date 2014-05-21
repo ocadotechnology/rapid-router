@@ -21,8 +21,8 @@ ocargo.Level.prototype.play = function(program){
     for (var i = 0; i < program.stack.length; i++) {
         ocargo.level.recogniseStack(program.stack[i], commandStack);
     }
+
     this.attemptData.commandStack = JSON.stringify(commandStack);
-    // TODO: calculate score
     program.startBlock.select();
 
     var stepFunction = stepper(this);
@@ -33,12 +33,15 @@ ocargo.Level.prototype.play = function(program){
 };
 
 ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
-    for (var i = 0; i < stack.length; i++) {
-        var command = recogniseCommand(stack[i]);
-        returnStack.push(command);
+    console.debug(stack);
+    if(stack) {
+        for (var i = 0; i < stack.length; i++) {
+            var command = recogniseCommand(stack[i], returnStack);
+            returnStack.push(command);
+        } 
     }
     
-    function recogniseCommand(command) {
+    function recogniseCommand(command, returnStack) {
         var parsedCommand = {};
         
         if (command instanceof ForwardCommand) {
@@ -51,23 +54,25 @@ ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
             parsedCommand.command = 'TurnAround';
        
         } else if (command instanceof While) {
-            var condition = command.condition.toString();
-            var block = recogniseStack(command.body);
+            var block = [];
+            ocargo.level.recogniseStack(command.body, block);
             parsedCommand.command = 'While';
-            parsedCommand.condition = condition;
+            parsedCommand.condition = command.condition.toString();
             parsedCommand.block = block;
        
         } else if (command instanceof If) {
             var commands = command.conditionalCommandSets[0];
-            var condition = commands.condition.toString();
-            var ifBlock = recogniseStack(commands.commands);
+            var ifBlock = [];
+            parsedCommand.condition = commands.condition.toString();
+            ocargo.level.recogniseStack(commands.commands, ifBlock);
+
             if (command.elseCommands) {
                 commands = command.elseCommands;
-                var elseBlock = recogniseStack(commands.commands);
+                var elseBlock = [];
+                ocargo.level.recogniseStack(commands, elseBlock);
                 parsedCommand.elseBlock = elseBlock;
             }
             parsedCommand.command = 'If';
-            parsedCommand.condition = condition;
             parsedCommand.ifBlock = ifBlock;
         }
         return parsedCommand;

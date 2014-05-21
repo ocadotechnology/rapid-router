@@ -1,11 +1,11 @@
 import os
 import json
+
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.http import HttpResponse
-
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
-from django.core.exceptions import ObjectDoesNotExist
 from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import Class, Level, Attempt, Command, Block
 
@@ -139,6 +139,7 @@ def parseInstructions(instructions, attempt, init):
     index = init
 
     for instruction in instructions:
+        next = index + 1
 
         if instruction['command'] == 'Forward':
             command = Command(step=index, attempt=attempt, command='Forward', next=index+1)
@@ -151,37 +152,34 @@ def parseInstructions(instructions, attempt, init):
 
         elif instruction['command'] == 'While':
             condition = instruction['condition']
-            block = instruction['block']
-            parseInstructions(block, attempt, index + 1)
-            execBlock = range(index + 1, index + len(block) + 1)
+            parseInstructions(instruction['block'], attempt, next)
+            execBlock = range(index + 1, index + len(instruction['block']) + 1)
             command = Command(step=index, attempt=attempt, command='While', condition=condition,
-                              next=index+len(block)+1, executedBlock1=execBlock)
-            index += len(block)
+                next=index+len(execBlock)+1, executedBlock1=execBlock)
+            index += len(execBlock)
 
         elif instruction['command'] == 'If':
-            next = index + 1
             condition = instruction['condition']
-            ifBlock = instruction['ifBlock']
-            parseInstructions(ifBlock, attempt, next)
-            ifBlock = range(index + 1, index + len(ifBlock) + 1)
-            next += len(ifBlock)
+            parseInstructions(instruction['ifBlock'], attempt, next)
+            next += len(instruction['ifBlock'])
+            ifBlock = range(index + 1, next)
+            
             if 'elseBlock' in instruction:
-                elseBlock = instruction['elseBlock']
-                parseInstructions(elseBlock, attempt, next)
-                elseBlock = range(next, next + len(elseBlock) + 1)
-                next += len(elseBlock)
-                command = Command(step=index, attempt=attempt, command='If', condition=condition,
-                                  executedBlock1=ifBlock, executedBlock2=elseBlock, next=next)
+                parseInstructions(instruction['elseBlock'], attempt, next)
+                next += len(instruction['elseBlock'])
+                elseBlock = range(index + len(ifBlock) + 1, next + 2)
+                command = Command(step=index, attempt=attempt, condition=condition,
+                    command='If', executedBlock1=ifBlock, executedBlock2=elseBlock, next=next)
                 index += len(elseBlock)
             else:
                 command = Command(step=index, attempt=attempt, command='If', condition=condition,
-                                  executedBlock1=ifBlock, next=next)
-                index += len(ifBlock)
+                    executedBlock1=ifBlock, next=next)
+            index += len(ifBlock)
 
         else:
             command = Command(step=index, attempt=attempt, command='Forward', next=index+1)
         command.save()
         index += 1
-    last = Command.objects.get(step=index-1, attempt=attempt)
+    last = Command.objects.get(step=init+len(instructions) - 1, attempt=attempt)
     last.next = None
     last.save()
