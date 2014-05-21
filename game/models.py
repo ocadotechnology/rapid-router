@@ -55,6 +55,7 @@ class Block (models.Model):
 class Level (models.Model):
     name = models.IntegerField()
     path = models.CharField(max_length=300)
+    blockLimit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
     
     def __unicode__(self):

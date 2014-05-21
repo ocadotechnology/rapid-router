@@ -9,12 +9,20 @@ ocargo.Level = function(map, van, ui) {
     this.ui = ui;
     this.correct = 0;
     this.attemptData = {};
+    this.blockLimit = null;
 };
 
 ocargo.Level.prototype.play = function(program){
 
     this.attemptData = {};
     var commandStack = [];
+    console.debug(ocargo.blocklyControl.getBlocksCount());
+
+    if (ocargo.level.blockLimit && ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
+        window.alert("You used too many blocks!");
+        return;
+    }
+
 
     ocargo.level.attemptData.level = ocargo.level.levelId.toString(); 
 
@@ -33,7 +41,6 @@ ocargo.Level.prototype.play = function(program){
 };
 
 ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
-    console.debug(stack);
     if(stack) {
         for (var i = 0; i < stack.length; i++) {
             var command = recogniseCommand(stack[i], returnStack);
