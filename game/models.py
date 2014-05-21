@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.db import models
 
-
 class UserProfile (models.Model):
     user = models.OneToOneField(User)
     avatar = models.ImageField(upload_to='static/game/image/avatars/', null=True, blank=True,
@@ -33,6 +32,9 @@ class Class (models.Model):
 
         # Query all logged in users based on id list
         return Student.objects.filter(class_field=self).filter(user__id__in=uid_list)
+    
+    class Meta:
+        verbose_name_plural = "classes"
 
 class Student (models.Model):
     name = models.CharField(max_length=200)
@@ -46,12 +48,18 @@ class Guardian (models.Model):
 
 class Block (models.Model):
     type = models.CharField(max_length=200)
+    
+    def __unicode__(self):
+        return self.type
 
 class Level (models.Model):
     name = models.IntegerField()
     path = models.CharField(max_length=300)
     blockLimit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
+    
+    def __unicode__(self):
+        return 'Level ' + str(self.id)
 
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)

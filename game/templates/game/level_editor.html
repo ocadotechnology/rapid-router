@@ -19,7 +19,7 @@
 {% block css %}
 {{block.super}}
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
-
+  <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
@@ -32,6 +32,7 @@
           <input id="export" type="button" value="Play it!"/>
         </form>
         <button id="clear">Clear</button>
+        <a class="button" href="/">Quit</a>
       </div><br>
       <ul class="tabs">
         <li>
