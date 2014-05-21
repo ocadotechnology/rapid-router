@@ -48,6 +48,9 @@ class Guardian (models.Model):
 
 class Block (models.Model):
     type = models.CharField(max_length=200)
+    
+    def __unicode__(self):
+        return self.type
 
 class Level (models.Model):
     name = models.IntegerField()
