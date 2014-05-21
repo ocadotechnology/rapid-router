@@ -16,8 +16,7 @@ ocargo.Level.prototype.play = function(program){
 
     this.attemptData = {};
     var commandStack = [];
-    console.debug(ocargo.blocklyControl.getBlocksCount());
-
+    
     if (ocargo.level.blockLimit && ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
         window.alert("You used too many blocks!");
         return;

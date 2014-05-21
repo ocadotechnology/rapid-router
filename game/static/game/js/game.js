@@ -52,7 +52,9 @@ function initialiseDefault() {
     ocargo.ui = createUi();
     ocargo.level = createDefaultLevel(path, ocargo.ui);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
-    ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT) + 1;
+    ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
+    if (ocargo.level.blockLimit)
+        ocargo.level.blockLimit++;
     if ($.cookie("muted") == "true") {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
