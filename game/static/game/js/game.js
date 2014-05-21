@@ -75,6 +75,8 @@ function trackDevelopment() {
     });
     
     $('#play').click(function() {
+        if (ocargo.blocklyControl.incorrect)
+            ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
         var program = ocargo.blocklyControl.populateProgram();
         program.instructionHandler = new InstructionHandler(ocargo.level);
         var nodes = ocargo.level.map.nodes;
