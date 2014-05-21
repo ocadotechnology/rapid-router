@@ -20,9 +20,9 @@ def level(request, level):
     path = lvl.path
     blocks = lvl.blocks.order_by('id')
     attempt = None
-    student = request.user.userprofile.student
 
     if not request.user.is_anonymous():
+        student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
         except Http404:
