@@ -95,6 +95,7 @@ Blockly.Blocks['at_destination'] = {
 
 ocargo.BlocklyControl = function(){
     this.incorrect = null;
+    this.incorrectColour = null;
 };
 
 ocargo.blocklyControl = new ocargo.BlocklyControl();
@@ -167,6 +168,7 @@ ocargo.BlocklyControl.prototype.removeWrong = function() {
 ocargo.BlocklyControl.prototype.blink = function() {
     var badBlock = Blockly.selected;
     this.incorrect = badBlock;
+    this.incorrectColour = badBlock.getColour();
     badBlock.setColour(0);
     for(var i = 0; i < 3; i++) {
         window.setTimeout(function() { badBlock.select(); }, i * 600 - 300);
