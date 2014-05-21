@@ -247,6 +247,11 @@ $('#dragMagic').click(function() {
     ocargo.mapEditor.jsonToPoints(coord);
     var unified = ocargo.mapEditor.elements == ocargo.mapEditor.submittedPoints.length;
 
+    if (ocargo.mapEditor.submittedPoints.length < 3) {
+            window.alert("Your map is too short. Try adding a few more segments.");
+            return;
+    }
+
     // If all the road segments are connected or user knows of the discontinuity and wants
     // to proceed.
     if (unified || window.confirm(message)) {
@@ -283,6 +288,10 @@ $('#tab2').click(function() {
 });
 
 $('#createFromSelect').click(function() {
+    if (ocargo.mapEditor.submittedPoints.length < 3) {
+        window.alert("Your map is too short. Try adding a few more segments.");
+        return;
+    }
     var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
     var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
 });
