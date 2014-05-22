@@ -88,13 +88,26 @@ NUIT_GLOBAL_LINK = "/home/"
 # Deployment
 
 import os
-if os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.getenv('APPLICATION_ID', None):
+if os.getenv('DEPLOYMENT', None):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': os.getenv('CLOUD_SQL_HOST'),
+            'NAME': 'ocargo',
+            'USER': 'root',
+            'PASSWORD': os.getenv('CLOUD_SQL_PASSWORD'),
+        }
+    }
+    COMPRESS_OFFLINE = True
+    COMPRESS_ROOT = STATIC_ROOT
+    COMPRESS_URL = STATIC_URL
+elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.getenv('APPLICATION_ID', None):
     # Running on production App Engine, so use a Google Cloud SQL database.
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '/cloudsql/numeric-incline-526:db',
-            'NAME': 'django_test',
+            'NAME': 'ocargo',
             'USER': 'root',
         }
     }
