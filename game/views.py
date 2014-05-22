@@ -7,6 +7,7 @@ from django.http import Http404
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
+from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import Class, Level, Attempt, Command, Block
 
@@ -27,7 +28,7 @@ def level(request, level):
     else:
         lesson = 'description_level_default'
     messageCall = getattr(messages, lesson)
-    lesson = messageCall()
+    lesson = mark_safe(messageCall())
 
     #FIXME: figure out how to check for all this better
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
