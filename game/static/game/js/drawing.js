@@ -298,20 +298,26 @@ function createRoad(paper, roadDefinition) {
 
 var van;
 
-function moveVan(attr, callback) {
-    van.animate(attr, 500, 'easeIn', callback);
+function scrollToShowVan() {
     var point = getVanPosition();
     var element = document.getElementById('paper');
-    
-    // Scrolling of the paper if the van is about to go out of the view.
-    if (point[0] > Math.floor(2 * PAPER_WIDTH / 3))
+
+    if (point[0] > Math.floor(PAPER_WIDTH / 2)) {
         element.scrollLeft = PAPER_WIDTH / 2;
-    else if (point[0] < Math.floor(PAPER_WIDTH / 3))
+    } else {
         element.scrollLeft = 0;
-    if (point[1] > Math.floor(2 * PAPER_HEIGHT / 3))
+    }
+
+    if (point[1] > Math.floor(PAPER_HEIGHT / 2)) {
         element.scrollTop = PAPER_HEIGHT / 2;
-    else if (point[1] < Math.floor(PAPER_HEIGHT / 3))
+    } else {
         element.scrollTop = 0;
+    }
+}
+
+function moveVan(attr, callback) {
+    van.animate(attr, 500, 'easeIn', callback);
+    scrollToShowVan();
 }
 
 function moveForward(callback) {
@@ -347,6 +353,7 @@ function resetVan() {
         transform: 'r90'
     });
     van.toFront();
+    scrollToShowVan();
 }
 
 function getVanPosition() {
@@ -413,4 +420,5 @@ function renderTheMap(map) {
     createCFC(paper);
     createDestination(map.destination.coordinate);
     van = createVan(paper);
+    scrollToShowVan();
 }
