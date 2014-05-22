@@ -21,7 +21,11 @@ def level(request, level):
     path = lvl.path
     blocks = lvl.blocks.order_by('id')
     attempt = None
-    lesson = 'description_level' + str(level)
+    lesson = None
+    if int(level) < 16:
+        lesson = 'description_level' + str(level)
+    else:
+        lesson = 'description_level_default'
     messageCall = getattr(messages, lesson)
     lesson = messageCall()
 

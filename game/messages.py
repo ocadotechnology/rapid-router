@@ -3,10 +3,13 @@ def buttons():
     + "the van to the destination. "
 
 def dragAndDrop():
-    return "Drag the blocks from the left to the white space and connect them with one another "
-    + "to create series of commands that will guide the driver to the destination. "
-    + "To remove an instruction place it back in the gray area. Remember to start from the "
-    + "start block."
+    return "Drag the blocks from the left to the white space and connect them with one another " \
+        + "to create series of commands that will guide the driver to the destination. " \
+        + "To remove an instruction place it back in the gray area. Remember to start from the " \
+        + "start block."
+
+def description_level_default():
+    return description_overall() + dragAndDrop()
 
 def description_overall():
     return "Help the van deliver the order to the customers in the house. "
@@ -39,7 +42,7 @@ def description_level6():
 
 def description_level7():
     message = "This road looks quite familiar, doesnt it? Use the repeat block to simplify " \
-    + "your program which guides the driver."
+    + "your program which guides the driver. "
     return message + description_overall()
 
 def description_level8():
@@ -48,7 +51,7 @@ def description_level8():
     + "while or until loops will be executed as long as the condition is true. " \
     + "Change the while block to the until and append the at destination condition. " \
     + "Use the modifed set of blocks to create a program that guides the driver to the house. "
-    return message + descripton_overall()
+    return message + description_overall()
 
 def description_level9():
     message = "Use the Until block together with the at destination condition to guide the van " \
@@ -87,5 +90,5 @@ def description_level14():
 
 def description_level15():
     message = "Now you are ready! Use all your knowledge and the newly added conditions to guide " \
-    + "the van to the house."
+    + "the van to the house. "
     return message + description_overall()
