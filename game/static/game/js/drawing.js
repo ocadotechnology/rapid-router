@@ -316,8 +316,12 @@ function scrollToShowVan() {
 }
 
 function moveVan(attr, callback) {
-    van.animate(attr, 500, 'easeIn', callback);
-    scrollToShowVan();
+    var combinedCallback = function () {
+        scrollToShowVan();
+        callback();
+    };
+
+    van.animate(attr, 500, 'easeIn', combinedCallback);
 }
 
 function moveForward(callback) {
