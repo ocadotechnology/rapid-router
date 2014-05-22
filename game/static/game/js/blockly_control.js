@@ -192,7 +192,7 @@ ocargo.BlocklyControl.prototype.getStartBlock = function() {
 
 ocargo.BlocklyControl.prototype.getBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
-}
+};
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createWhile(block) {
