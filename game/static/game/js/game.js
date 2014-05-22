@@ -140,6 +140,7 @@ function trackDevelopment() {
 
 $(function() {
     initialiseDefault();
+    window.alert(LESSON);
     trackDevelopment();
 });
 

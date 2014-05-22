@@ -1,5 +1,6 @@
 import os
 import json
+import messages
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
@@ -20,6 +21,9 @@ def level(request, level):
     path = lvl.path
     blocks = lvl.blocks.order_by('id')
     attempt = None
+    lesson = 'description_level' + str(level)
+    messageCall = getattr(messages, lesson)
+    lesson = messageCall()
 
     #FIXME: figure out how to check for all this better
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
@@ -35,6 +39,7 @@ def level(request, level):
         'path': path,
         'blocks': blocks,
         'blockLimit': lvl.blockLimit,
+        'lesson': lesson,
     })
 
     return render(request, 'game/game.html', context)
