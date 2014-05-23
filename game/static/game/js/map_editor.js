@@ -289,7 +289,7 @@ $('#tab2').click(function() {
 
 $('#createFromSelect').click(function() {
     if (ocargo.mapEditor.submittedPoints.length < 3) {
-            startPopup("Oh no!", "", "Your map is too short! Try adding a few more segments.");
+        startPopup("Oh no!", "", "Your map is too short! Try adding a few more segments.");
         return;
     }
     var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
