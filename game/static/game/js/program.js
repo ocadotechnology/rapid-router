@@ -18,7 +18,7 @@ ocargo.Program.prototype.step = function(level) {
 };
 
 ocargo.Program.prototype.canStep = function() {
-	return this.stack.length !== 0;
+	return this.stack.length !== 0 && this.stack[0].length !== 0;
 };
 
 ocargo.Program.prototype.addNewStackLevel = function(commands) {

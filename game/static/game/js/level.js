@@ -12,7 +12,7 @@ ocargo.Level = function(map, van, ui) {
     this.blockLimit = null;
 };
 
-ocargo.Level.prototype.play = function(program){
+ocargo.Level.prototype.play = function(program) {
 
     this.attemptData = {};
     var commandStack = [];
@@ -22,7 +22,6 @@ ocargo.Level.prototype.play = function(program){
         startPopup("Oh no!", "", "You used too many blocks!");
         return;
     }
-
 
     ocargo.level.attemptData.level = ocargo.level.levelId.toString(); 
 
@@ -123,24 +122,23 @@ ocargo.Level.prototype.fail = function(msg) {
 };
 
 function stepper(level) {
-	return function(){
+    return function() {
         try {
-    		if (level.program.canStep()) {
+            if (level.program.canStep()) {
                 level.correct = level.correct + 1;
-    			level.program.step(level);
-    	    } else {
+                level.program.step(level);
+            } else {
                 if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
                     level.win();
                 } else {
                     level.fail("You ran out of instructions!");
-
                     level.program.terminate();
                 }
             }
         } catch (error) {
             level.program.terminate();
         }
-	};
+    };
 }
 
 function InstructionHandler(level){

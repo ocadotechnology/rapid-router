@@ -230,25 +230,24 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createIf(block) {
 		var conditionalCommandSets = [];
     	
-    	var i = 0;
-    	while(i < block.inputList.length - block.elseCount_) {
-    		var input = block.inputList[i];
-    		var condition;
+        var i = 0;
+        while(i < block.inputList.length - block.elseCount_) {
+            var input = block.inputList[i];
+            var condition;
 
-    		if(input.name.indexOf('IF') === 0) {
-    			condition = getCondition(input.connection.targetBlock());
-    		} else if(input.name.indexOf('DO') === 0){
-    			var conditionalCommandSet = {};
-    			conditionalCommandSet.condition = condition;
-    			conditionalCommandSet.commands = getCommandsAtThisLevel(input.connection.targetBlock());
-    			conditionalCommandSets.push(conditionalCommandSet);
-    		}
-    		
-    		i++;
+            if(input.name.indexOf('IF') === 0) {
+                condition = getCondition(input.connection.targetBlock());
+            } else if(input.name.indexOf('DO') === 0){
+                var conditionalCommandSet = {};
+                conditionalCommandSet.condition = condition;
+                conditionalCommandSet.commands = getCommandsAtThisLevel(input.connection.targetBlock());
+                conditionalCommandSets.push(conditionalCommandSet);
+    	    }	
+    	    i++;
     	}
     	
-    	if(block.elseCount_ === 1){
-    		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
+    	if (block.elseCount_ === 1) {
+            var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
     	}
     	
     	return new If(conditionalCommandSets, elseCommands, block);
