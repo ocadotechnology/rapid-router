@@ -229,9 +229,10 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
 	
 	function createIf(block) {
 		var conditionalCommandSets = [];
-    	
+
+        var elseCount = block.elseCount_ || 0;
     	var i = 0;
-    	while(i < block.inputList.length - block.elseCount_) {
+    	while(i < block.inputList.length - elseCount) {
     		var input = block.inputList[i];
     		var condition;
 
@@ -247,7 +248,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     		i++;
     	}
     	
-    	if(block.elseCount_ === 1){
+    	if(elseCount === 1){
     		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
     	}
     	
