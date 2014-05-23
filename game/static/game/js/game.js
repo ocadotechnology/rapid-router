@@ -48,10 +48,8 @@ function loadDefaultProgram() {
 
 function initialiseDefault() {
     'use strict';
-    
-    // Start the pop-up.
-    startPopup(); 
-    $(".blackout").click(closePopup);
+
+    startPopup(LESSON); 
 
     var path = JSON.parse(PATH);
     ocargo.ui = createUi();
@@ -64,17 +62,6 @@ function initialiseDefault() {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
     }
-}
-
-function closePopup(){
-    $(".blackout").css("display", "none");
-    $(".msgbox").css("display", "none");
-}
-
-//This is the function that starts the pop-up
-function startPopup(message){
-    $(".msgbox").css("display", "block");
-    $(".blackout").css("display", "block");
 }
 
 function trackDevelopment() {

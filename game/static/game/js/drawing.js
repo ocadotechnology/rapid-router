@@ -426,3 +426,17 @@ function renderTheMap(map) {
     van = createVan(paper);
     scrollToShowVan();
 }
+
+
+function closePopup(){
+    $(".blackout").css("display", "none");
+    $(".msgbox").css("display", "none");
+}
+
+//This is the function that starts the pop-up
+function startPopup(message){
+    $('.msgbox').html(message);
+    $('.msgbox').css('display', 'block');
+    $('.blackout').css('display', 'block');
+    $(".blackout").click(closePopup);
+}

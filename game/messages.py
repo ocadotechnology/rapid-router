@@ -1,9 +1,9 @@
 def buttons():
-    return "<br><br>Use the buttons in the left bottom part of the screen to create a path that " \
+    return "Use the buttons in the left bottom part of the screen to create a path that " \
         + "will lead the van to the destination."
 
 def dragAndDrop():
-    return "<br><br>Drag the blocks from the left to the white space and connect them with one " \
+    return "<br>Drag the blocks from the left to the white space and connect them with one " \
         + "another to create series of commands that will guide the driver to the destination. " \
         + "To remove an instruction place it back in the gray area. Remember to start from the " \
         + "<b>start block</b>."
@@ -12,88 +12,88 @@ def description_level_default():
     return description_overall() + dragAndDrop()
 
 def description_overall():
-    return "Help the van deliver the order to the customers in the house."
+    return "<i>Help the van deliver the order to the customers in the house.</i><br><br>"
 
 def description_level1():
     return description_overall() + buttons()
 
 def description_level2():
-    message = "To connect two instructions stack them together on the white space. <br><br>"
-    return message + description_overall() + dragAndDrop()
+    message = "To connect two instructions stack them together on the white space. "
+    return description_overall() + message + dragAndDrop()
 
 def description_level3():
-    message = "<b>Turn right</b> lets the driver know he has to turn right. <br><br>"
-    return message + description_overall() + dragAndDrop()
+    message = "<b>Turn right</b> lets the driver know he has to turn right. "
+    return description_overall() + message + dragAndDrop()
 
 def description_level4():
     message = "Turning only right is really boring. Let\'s add turning left as well. Now you can " \
-        + "also use <b>Turn Left</b> command. <br><br>"
-    return message + description_overall()
+        + "also use <b>Turn Left</b> command. "
+    return description_overall() + message
 
 def description_level5():
-    message = "Now you are ready for more complex paths. <br><br>"
+    message = "Now you are ready for more complex paths! <br><br>"
     return message + description_overall()
 
 def description_level6():
     message = "Manualy adding repeating instructions is boring. That\'s why there is a " \
         + "<b>repeat</b> block. <b>Repeat</b> block executes the instructions attached inside it " \
         + "specified amount of times. Type into the light green box in the block a number of " \
-        + "repetitions. <br><br>"
-    return message + description_overall()
+        + "repetitions. "
+    return description_overall() + message
 
 def description_level7():
-    message = "This road looks quite familiar, doesn\'t it? Use the <b>repeat</b> block to " \
-        + "simplify your program which guides the driver. <br><br>"
-    return message + description_overall()
+    message = "This road looks quite familiar, doesn\'t it? <br> Use the <b>repeat</b> " \
+        + "block to simplify your program which guides the driver. "
+    return description_overall() + message
 
 def description_level8():
     message = "<b>While</b> and <b>until</b> blocks are quite similar to the repeat one. But " \
         + "instead of specifying exact amount of repetitions, we append a condition. The blocks " \
         + "inside the <b>while</b> or <b>until</b> loops will be executed as long as the " \
-        + "condition is true.<br><br>Change the <b>while</b> block to the <b>until</b> and add " \
-        + "the <b>at destination</b> condition. Use the modifed set of blocks to create " \
-        + "a program that guides the driver to the house.<br><br>"
-    return message + description_overall()
+        + "condition is true.<br> Change the <b>while</b> block to the <b>until</b> and add " \
+        + "the <b>at destination</b> condition. <br> Use the modifed set of blocks to create " \
+        + "a program that guides the driver to the house."
+    return description_overall() + message
 
 def description_level9():
     message = "Use the <b>until</b> block together with the <b>at destination</b> condition " \
-        + "to guide the van to the destination. <br><br>"
-    return message + description_overall()
+        + "to guide the van to the destination. "
+    return description_overall() + message
 
 def description_level10():
     message = "Usually there is no such thing as <b>until</b>. A <b>while</b> block with " \
-        + "a negated condition can be used to achieve the same result. Use the <b>not</b> block " \
-        + "to reverse the condition. <br><br>"
-    return message + description_overall()
+        + "a negated condition can be used to achieve the same result. <br> Use the <b>not</b> " \
+        + "block to reverse the condition. "
+    return description_overall() + message
 
 def description_level11():
-    message = "Use the <b>while</b> block to create a simpler program to guide the van. <br><br>"
-    return message + description_overall()
+    message = "Use the <b>while</b> block to create a simpler program to guide the van. "
+    return description_overall() + message
 
 def description_level12():
-    message = "In this lesson, we have a look at the <b>if</b> statement. <b>If</b> statements " \
-        + "are used when we want a set of commands to be executed only if a condition holds. " \
-        + "For example, \'if there is a turn right, turn right\'. If the condition is false, " \
-        + "the block is omitted. Use the <b>if</b> block to create a path for the driver " \
-        + "to reach the destination. <br><br>"
-    return message + description_overall()
+    message = "In this lesson, we have a look at the <b>if</b> statement. <br> <b>If</b> " \
+        + "statements are used when we want a set of commands to be executed only if a condition " \
+        + "holds. For example, \'if there is a turn right, turn right\'. If the condition " \
+        + "is false, the block is omitted. <br> Use the <b>if</b> block to create a path " \
+        + "for the driver to reach the destination. "
+    return description_overall() + message
 
 def description_level13():
     message = "The <b>if</b> statement is often used with the <b>else</b> clause. " \
         + "If the condition is true, the block in the <b>if</b> gap is executed, otherwise " \
-        + "the one following <b>else</b> is. <br><br>Use an <b>if</b> block together with " \
-        + "<b>else</b> one to create a path for the driver. <br><br>"
-    return message + description_overall()
+        + "the one following <b>else</b> is. <br> Use an <b>if</b> block together with " \
+        + "<b>else</b> one to create a path for the driver. "
+    return description_overall() + message
 
 def description_level14():
     message = "Quite often we need to check more than one condition to know how to behave - " \
         + "there might not be a turn right, but we still dont know whether we can go forwards " \
         + "or we have to turn left first. Hence, we can append <b>else if</b> blocks " \
-        + "to the </b>if<b> statement. Use the <b>if</b> together with <b>else if</b> " \
-        + "and else to guide the driver to the customer. <br><br>"
-    return message + description_overall()
+        + "to the <b>if</b> statement. <br> Use the <b>if</b> together with <b>else if</b> " \
+        + "and else to guide the driver to the customer. "
+    return description_overall() + message
 
 def description_level15():
-    message = "Now you are ready! Use all your knowledge and the newly added conditions to guide " \
-        + "the van to the house. <br><br>"
-    return message + description_overall()
+    message = "Now you are ready! <br> Use all your knowledge and the newly added conditions " \
+        + "to guide the van to the house. "
+    return description_overall() + message
