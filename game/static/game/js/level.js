@@ -100,7 +100,11 @@ ocargo.Level.prototype.step = function() {
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
     ocargo.sound.win();
-    startPopup('You win!');
+    console.debug("Przed");
+    var message = '<center> You win! <br><br>' + '<button onclick="window.location.href=' + 
+            "'/game/" + (ocargo.level.levelId + 1) + "'" + '"">Next lesson</button> </center>';
+    startPopup(message);
+    console.debug("Po");
 };
 
 ocargo.Level.prototype.fail = function(msg) {
