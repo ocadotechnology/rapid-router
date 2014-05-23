@@ -17,8 +17,8 @@ ocargo.Level.prototype.play = function(program){
     this.attemptData = {};
     var commandStack = [];
     
-    if (ocargo.level.blockLimit 
-        && ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
+    if (ocargo.level.blockLimit && 
+            ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
         startPopup("You used too many blocks!");
         return;
     }
@@ -100,11 +100,9 @@ ocargo.Level.prototype.step = function() {
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
     ocargo.sound.win();
-    console.debug("Przed");
     var message = '<center> You win! <br><br>' + '<button onclick="window.location.href=' + 
             "'/game/" + (ocargo.level.levelId + 1) + "'" + '"">Next lesson</button> </center>';
     startPopup(message);
-    console.debug("Po");
 };
 
 ocargo.Level.prototype.fail = function(msg) {

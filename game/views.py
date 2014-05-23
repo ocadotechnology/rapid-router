@@ -168,7 +168,7 @@ def parseInstructions(instructions, attempt, init):
             parseInstructions(instruction['block'], attempt, next)
             execBlock = range(index + 1, index + len(instruction['block']) + 1)
             command = Command(step=index, attempt=attempt, command='While', condition=condition,
-                next=index+len(execBlock)+1, executedBlock1=execBlock)
+                              next=index+len(execBlock)+1, executedBlock1=execBlock)
             index += len(execBlock)
 
         elif instruction['command'] == 'If':
@@ -176,17 +176,17 @@ def parseInstructions(instructions, attempt, init):
             parseInstructions(instruction['ifBlock'], attempt, next)
             next += len(instruction['ifBlock'])
             ifBlock = range(index + 1, next)
-            
+
             if 'elseBlock' in instruction:
                 parseInstructions(instruction['elseBlock'], attempt, next)
                 next += len(instruction['elseBlock'])
                 elseBlock = range(index + len(ifBlock) + 1, next + 2)
-                command = Command(step=index, attempt=attempt, condition=condition,
-                    command='If', executedBlock1=ifBlock, executedBlock2=elseBlock, next=next)
+                command = Command(step=index, attempt=attempt, condition=condition, command='If',
+                                  executedBlock1=ifBlock, executedBlock2=elseBlock, )
                 index += len(elseBlock)
             else:
                 command = Command(step=index, attempt=attempt, command='If', condition=condition,
-                    executedBlock1=ifBlock, next=next)
+                                  executedBlock1=ifBlock, next=next)
             index += len(ifBlock)
 
         else:
