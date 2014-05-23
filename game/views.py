@@ -79,8 +79,10 @@ def parseAttempt(attemptData, request):
 
     # Remove all the old commands from previous attempts.
     Command.objects.filter(attempt=attempt).delete()
-    parseInstructions(json.loads(attemptData.get('commandStack', "")), attempt, 1)
-    attempt.save()
+    commands = attemptData.get('commandStack', None)
+    if not commands:
+        parseInstructions(json.loads(commands), attempt, 1)
+        attempt.save()
 
 
 def logged_students(request):
