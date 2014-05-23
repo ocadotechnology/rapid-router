@@ -84,7 +84,6 @@ def parseAttempt(attemptData, request):
         parseInstructions(json.loads(commands), attempt, 1)
         attempt.save()
 
-
 def logged_students(request):
     """ Renders the page with information about all the logged in students."""
     return render_student_info(request, True)

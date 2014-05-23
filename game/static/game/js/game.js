@@ -48,6 +48,11 @@ function loadDefaultProgram() {
 
 function initialiseDefault() {
     'use strict';
+    
+    // Start the pop-up.
+    startPopup(); 
+    $(".blackout").click(closePopup);
+
     var path = JSON.parse(PATH);
     ocargo.ui = createUi();
     ocargo.level = createDefaultLevel(path, ocargo.ui);
@@ -59,6 +64,17 @@ function initialiseDefault() {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
     }
+}
+
+function closePopup(){
+    $(".blackout").css("display", "none");
+    $(".msgbox").css("display", "none");
+}
+
+//This is the function that starts the pop-up
+function startPopup(message){
+    $(".msgbox").css("display", "block");
+    $(".blackout").css("display", "block");
 }
 
 function trackDevelopment() {
@@ -90,12 +106,12 @@ function trackDevelopment() {
             var attemptData = JSON.stringify(ocargo.level.attemptData);
 
             $.ajax({
-                url : "/game/submit",
-                type : "POST",
+                url : '/game/submit',
+                type : 'POST',
                 dataType: 'json',
                 data : {
                    attemptData : attemptData,
-                   csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val()
+                   csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val()
                },
                success : function(json) {
                },
@@ -140,17 +156,16 @@ function trackDevelopment() {
 
 $(function() {
     initialiseDefault();
-    window.alert(LESSON);
     trackDevelopment();
 });
 
 $('#mute').click(function() {
     var $this = $(this);
     if (ocargo.sound.volume === 0) {
-        $this.text("Mute");
+        $this.text('Mute');
         ocargo.sound.unmute();  
     } else {
-        $this.text("Unmute");
+        $this.text('Unmute');
         ocargo.sound.mute();
     }
 });

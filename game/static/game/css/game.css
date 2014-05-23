@@ -49,3 +49,32 @@ button{
 	z-index: 1;
 }
 
+.blackout {
+	background-color:#000;
+	opacity:.7;
+	filter:alpha(opacity=70);
+	height:100%;
+	width:100%;
+	position:fixed;
+	top:0;
+	left:0;
+	display:none;
+	cursor:pointer;
+}
+.msgbox {
+	background-color:#FFF;
+	border:3px solid #737373;
+	color:#565656;
+	width:30%;
+	position:fixed;
+	top:20%;
+	left:15%;
+	border-radius:5px;
+	padding:30px;
+	z-index:101;
+	display:none;
+	margin-left: 20%;
+	font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
+    font-weight: normal;
+    line-height: normal;
+}
