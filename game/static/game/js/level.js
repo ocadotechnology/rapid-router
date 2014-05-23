@@ -17,8 +17,9 @@ ocargo.Level.prototype.play = function(program){
     this.attemptData = {};
     var commandStack = [];
     
-    if (ocargo.level.blockLimit && ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
-        window.alert("You used too many blocks!");
+    if (ocargo.level.blockLimit 
+        && ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
+        startPopup("You used too many blocks!");
         return;
     }
 
@@ -99,13 +100,13 @@ ocargo.Level.prototype.step = function() {
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
     ocargo.sound.win();
-    window.alert('You win!');
+    startPopup('You win!');
 };
 
 ocargo.Level.prototype.fail = function(msg) {
     console.debug('Oh dear! :(');
     ocargo.sound.failure();
-    window.alert(msg);
+    startPopup(msg);
 };
 
 function stepper(level) {
@@ -141,7 +142,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
 
-        this.level.fail("Oh dear! :( Your first " + n + " instructions were right." + 
+        this.level.fail("Oh dear! :( <br> Your first " + n + " instructions were right." + 
             " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
 
         program.terminate();

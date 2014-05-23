@@ -248,7 +248,7 @@ $('#dragMagic').click(function() {
     var unified = ocargo.mapEditor.elements == ocargo.mapEditor.submittedPoints.length;
 
     if (ocargo.mapEditor.submittedPoints.length < 3) {
-            window.alert("Your map is too short. Try adding a few more segments.");
+            startPopup("Your map is too short. Try adding a few more segments.");
             return;
     }
 
@@ -289,7 +289,7 @@ $('#tab2').click(function() {
 
 $('#createFromSelect').click(function() {
     if (ocargo.mapEditor.submittedPoints.length < 3) {
-        window.alert("Your map is too short. Try adding a few more segments.");
+        startPopup("Your map is too short. Try adding a few more segments.");
         return;
     }
     var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
