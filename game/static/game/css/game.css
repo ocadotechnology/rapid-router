@@ -65,10 +65,11 @@ button{
 	background-color:#FFF;
 	border:3px solid #737373;
 	color:#565656;
-	width:30%;
+	width:35%;
+	min-width: 300px;
 	position:fixed;
 	top:20%;
-	left:15%;
+	left:13%;
 	border-radius:5px;
 	padding:30px;
 	z-index:101;
