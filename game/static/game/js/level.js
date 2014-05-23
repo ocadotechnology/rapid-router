@@ -19,7 +19,7 @@ ocargo.Level.prototype.play = function(program){
     
     if (ocargo.level.blockLimit && 
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
-        startPopup("You used too many blocks!");
+        startPopup("Oh no!", "", "You used too many blocks!");
         return;
     }
 
@@ -101,23 +101,25 @@ ocargo.Level.prototype.win = function() {
     console.debug('You win!');
     ocargo.sound.win();
     var message = '';
+    var subtitle = ''
     if (ocargo.level.levelId < 15) {
-    message = '<center> You win! <br><br>' + '<button onclick="window.location.href=' + 
-            "'/game/" + (ocargo.level.levelId + 1) + "'" + '"">Next lesson</button> </center>';
+        message = '<button onclick="window.location.href=' + "'/game/" + (ocargo.level.levelId + 1) + 
+                  "'" + '"">Next lesson</button>';
     } else {
-        message = "<center>You win!<br>Congratulations, that's all we've got for you now! " +
-            "Why not try to create your own road? <br><br> " +
-            '<button onclick="window.location.href=' + "'/game/level_editor'" +
-            '"">Create your own map!</button> </center>' +
-            '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button> </center>';
+        subtitle = "Congratulations, that's all we've got for you now! ";
+        message = "Why not try to create your own road? <br><br> " +
+                  '<button onclick="window.location.href=' + "'/game/level_editor'" +
+                  '"">Create your own map!</button> </center>' +
+                  '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
     }
-    startPopup(message);
+    startPopup("You win!", subtitle, message);
 };
 
 ocargo.Level.prototype.fail = function(msg) {
-    console.debug('Oh dear! :(');
+    var title = 'Oh dear! :(';
+    console.debug(title);
     ocargo.sound.failure();
-    startPopup(msg);
+    startPopup(title, '', msg);
 };
 
 function stepper(level) {
@@ -130,7 +132,7 @@ function stepper(level) {
                 if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
                     level.win();
                 } else {
-                    level.fail("Oh dear! :( You ran out of instructions!");
+                    level.fail("You ran out of instructions!");
 
                     level.program.terminate();
                 }
@@ -153,8 +155,8 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
 
-        this.level.fail("Oh dear! :( <br> Your first " + n + " instructions were right." + 
-            " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
+        this.level.fail("Your first " + n + " instructions were right." + 
+                        " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
 
         program.terminate();
         return; //TODO: animate the crash

@@ -69,8 +69,13 @@
   </div>
 </div>
 
-<div class="blackout"> </div>
-<div class="msgbox"></div>
+<a href="#" data-reveal-id="myModal">Click Me For A Modal</a>
+<div id="myModal" class="reveal-modal" data-reveal>
+  <h2 class="title"></h2>
+  <p class="lead"></p>
+  <p class="mainText"></p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
 
 <xml id="toolbox" style="display: none">
     {% for block in blocks %}

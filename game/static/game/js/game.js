@@ -49,7 +49,8 @@ function loadDefaultProgram() {
 function initialiseDefault() {
     'use strict';
 
-    startPopup(LESSON); 
+    var title = "Lesson " + LEVEL_ID;
+    startPopup(title, "", LESSON); 
 
     var path = JSON.parse(PATH);
     ocargo.ui = createUi();

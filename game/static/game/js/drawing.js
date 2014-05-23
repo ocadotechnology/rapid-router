@@ -429,14 +429,13 @@ function renderTheMap(map) {
 
 
 function closePopup(){
-    $(".blackout").css("display", "none");
-    $(".msgbox").css("display", "none");
+    $('#myModal').foundation('reveal', 'close');
 }
 
 //This is the function that starts the pop-up
-function startPopup(message){
-    $('.msgbox').html(message);
-    $('.msgbox').css('display', 'block');
-    $('.blackout').css('display', 'block');
-    $(".blackout").click(closePopup);
+function startPopup(title, subtitle, message){
+    $('#myModal').foundation('reveal', 'open');
+    $('.title').html(title);
+    $('.lead').html(subtitle);
+    $('.mainText').html(message);
 }
