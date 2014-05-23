@@ -100,8 +100,17 @@ ocargo.Level.prototype.step = function() {
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
     ocargo.sound.win();
-    var message = '<center> You win! <br><br>' + '<button onclick="window.location.href=' + 
+    var message = '';
+    if (ocargo.level.levelId < 15) {
+    message = '<center> You win! <br><br>' + '<button onclick="window.location.href=' + 
             "'/game/" + (ocargo.level.levelId + 1) + "'" + '"">Next lesson</button> </center>';
+    } else {
+        message = "<center>You win!<br>Congratulations, that's all we've got for you now! " +
+            "Why not try to create your own road? <br><br> " +
+            '<button onclick="window.location.href=' + "'/game/level_editor'" +
+            '"">Create your own map!</button> </center>' +
+            '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button> </center>';
+    }
     startPopup(message);
 };
 
