@@ -93,7 +93,7 @@ if os.getenv('DEPLOYMENT', None):
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'HOST': os.getenv('CLOUD_SQL_HOST'),
-            'NAME': 'ocargo',
+            'NAME': os.getenv('DATABASE_NAME'),
             'USER': 'root',
             'PASSWORD': os.getenv('CLOUD_SQL_PASSWORD'),
         }
