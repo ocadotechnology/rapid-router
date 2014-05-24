@@ -27,25 +27,6 @@ function generateNodes(points){
     return nodes;
 }
 
-function loadDefaultProgram() {
-    ocargo.blocklyControl.reset();
-
-    ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-    ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-    ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-    ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-    ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-    ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-    ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-}
-
 function initialiseDefault() {
     'use strict';
 
@@ -109,11 +90,6 @@ function trackDevelopment() {
             });
         }
         return false;
-    });
-
-
-    $('#loadDefaultProgram').click(function() {
-        loadDefaultProgram();
     });
 
     $('#clearIncorrect').click(function() {
