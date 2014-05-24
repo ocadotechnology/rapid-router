@@ -81,19 +81,19 @@ function generateRandomPathPoints(current, seed, length) {
 }
 
 function initialiseVisited() {
-	var visited = new Array(GRID_WIDTH);
-	for (var i = 0; i < GRID_WIDTH; i++) {
-		visited[i] = new Array(GRID_HEIGHT);
+	var visited = new Array(10);
+	for (var i = 0; i < 10; i++) {
+		visited[i] = new Array(8);
 	}
 	return visited;
 }
 
 function isOutOfBounds(point) {
-	return point[0] < 0 || point[0] >= GRID_WIDTH || point[1] < 0 || point[1] >= GRID_HEIGHT;
+	return point[0] < 0 || point[0] >= 10 || point[1] < 0 || point[1] >= 8;
 }
 
 function isOnBorder(point) {
-	return point[0] == 0 || point[0] == GRID_WIDTH || point[1] == 0 || point[1] == GRID_HEIGHT;
+	return point[0] == 0 || point[0] == 10 || point[1] == 0 || point[1] == 8;
 }
 
 function isFree(point, visited) {
@@ -113,3 +113,23 @@ function getPossibleNextMoves(point, visited) {
 	}
 	return possible;
 }
+
+$('#randomRoad').click(function() {
+    var path = JSON.stringify(generateRandomPathPoints([0,3], 0.5, 13));
+    $.ajax({
+            url: "/game/levels/new",
+	    type: "POST",
+	    dataType: "json",
+	    data: {
+                path: path,
+	        csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+	    },
+	    success: function(json) {
+                window.location.href = ("/game/" + json.server_response);
+	    },
+            error: function(xhr, errmsg, err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            },
+        });
+    return false;
+});
