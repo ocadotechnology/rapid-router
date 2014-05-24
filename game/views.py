@@ -23,7 +23,8 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    if int(level) < 16:
+    levelCount = Level.objects.filter(owner=None).count()
+    if int(level) <= levelCount:
         lesson = 'description_level' + str(level)
     else:
         lesson = 'description_level_default'
@@ -45,6 +46,7 @@ def level(request, level):
         'blocks': blocks,
         'blockLimit': lvl.blockLimit,
         'lesson': lesson,
+        'defaultLevelCount': levelCount,
     })
 
     return render(request, 'game/game.html', context)
@@ -53,7 +55,7 @@ def level_new(request):
     """ Processes a request on creation of the map in the level editor."""
     if 'path' in request.POST:
         path = request.POST.get('path', False)
-        passedLevel = Level(name=10, path=path)
+        passedLevel = Level(name=10, path=path, owner=request.user.userprofile)
         passedLevel.save()
 
         # Insert all the blockly blocks as available to use.

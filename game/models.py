@@ -55,6 +55,7 @@ class Block (models.Model):
 class Level (models.Model):
     name = models.IntegerField()
     path = models.CharField(max_length=300)
+    owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blockLimit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
     
@@ -69,7 +70,6 @@ class Attempt (models.Model):
     score = models.FloatField()
 
 class Command (models.Model):
-    # TODO: deal with storing the complex commands.
     STEP_CHOICES = (
         ('Right', 'right'),
         ('Left', 'left'),
