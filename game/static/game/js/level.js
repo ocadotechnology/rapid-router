@@ -101,7 +101,7 @@ ocargo.Level.prototype.win = function() {
     ocargo.sound.win();
     var message = '';
     var subtitle = ''
-    if (ocargo.level.levelId < 15) {
+    if (ocargo.level.levelId < LEVEL_COUNT) {
         message = '<button onclick="window.location.href=' + "'/game/" + (ocargo.level.levelId + 1) + 
                   "'" + '"">Next lesson</button>';
     } else {
