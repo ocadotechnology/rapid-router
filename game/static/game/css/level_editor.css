@@ -1,46 +1,6 @@
-#wrapper {
-    position: fixed;
-    overflow: auto;
-    left: 0;
-    right: 0;
-    top: 20px;
-    bottom: 0;
-}
-
 #toolbox {
     width: 340px;
     margin-left: 10px;
-}
-
-#programmingConsole {
-    width: 50%;
-    height: 100%;
-    overflow: auto;
-}
-
-#paper {
-    border: 0;
-    width: 50%;
-    height: 100%;
-    overflow: auto;
-}
-
-#controls {
-    position: fixed;
-    bottom: 20px;
-    right: 0;
-}
-
-#controls button {
-    margin-bottom: 0;
-}
-
-button {
-    margin-right: 10px;
-}
-
-.col {
-    float: left;
 }
 
 #tools {
@@ -110,7 +70,6 @@ button {
     width: 340px;
     font-size: 20px;
     line-height: 140%;
-    padding-top: 10px;
     padding: 30px;
     color: white;
     left: 0;
