@@ -272,27 +272,25 @@ function createTurnUR(baseX, baseY) {
 
 function createRoad(paper, roadDefinition) {
     var roadElements = [];
-    for (var i = 0; i < GRID_WIDTH; i++) {
-        var roadSlice = roadDefinition[i];
-        if (roadSlice) {
-            for (var j = 0; j < GRID_HEIGHT; j++) {
-                var roadType = roadSlice[j];
-                if (roadType) {
-                    switch (roadType) {
-                        case 'H':
-                            roadElements.push(createHorizontalRoad(paper, i, j));
-                            break;
-                        case 'V':
-                            roadElements.push(createVerticalRoad(paper, i, j));
-                            break;
-                        default:
-                            roadElements.push(createTurn(paper, i, j, roadType));
-                            break;
-                    }
+
+    $.each(roadDefinition, function(i, roadSlice) {
+        $.each(roadSlice, function(j, roadType) {
+            if (roadType) {
+                switch (roadType) {
+                    case 'H':
+                        roadElements.push(createHorizontalRoad(paper, i, j));
+                        break;
+                    case 'V':
+                        roadElements.push(createVerticalRoad(paper, i, j));
+                        break;
+                    default:
+                        roadElements.push(createTurn(paper, i, j, roadType));
+                        break;
                 }
             }
-        }
-    }
+        });
+    });
+
     return roadElements;
 }
 
