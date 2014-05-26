@@ -1,20 +1,20 @@
 #wrapper {
-	position: fixed;
-	overflow: auto;
-	left: 0px;
-	right: 0px;
-	top: 0px;
-	bottom: 0px;
+    position: fixed;
+    overflow: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
-.top-bar{
-	display: none;
+.top-bar {
+    display: none;
 }
 
-#programmingConsole{
-	width: 50%;
-	height: 100%;
-	overflow: auto;
+#programmingConsole {
+    width: 50%;
+    height: 100%;
+    overflow: auto;
 }
 
 #paper {
@@ -25,17 +25,17 @@
     overflow: auto;
 }
 
-#controls{
-	position: fixed;
-	bottom: 20px;
-	right: 0px;
+#controls {
+    position: fixed;
+    bottom: 20px;
+    right: 0;
 }
 
-#controls button{
-	margin-bottom: 0px;
+#controls button {
+    margin-bottom: 0;
 }
 
-button{
+button {
     margin-right: 10px;
 }
 
@@ -43,8 +43,8 @@ button{
     float: left;
 }
 
-#sliderControls{
-	position: absolute;
-	left: 50%;
-	z-index: 1;
+#sliderControls {
+    position: absolute;
+    left: 50%;
+    z-index: 1;
 }

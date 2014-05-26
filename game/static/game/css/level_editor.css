@@ -1,10 +1,10 @@
 #wrapper {
     position: fixed;
     overflow: auto;
-    left: 0px;
-    right: 0px;
-    top:20px;
-    bottom: 0px;
+    left: 0;
+    right: 0;
+    top: 20px;
+    bottom: 0;
 }
 
 #toolbox {
@@ -25,17 +25,17 @@
     overflow: auto;
 }
 
-#controls{
+#controls {
     position: fixed;
     bottom: 20px;
-    right: 0px;
+    right: 0;
 }
 
-#controls button{
-    margin-bottom: 0px;
+#controls button {
+    margin-bottom: 0;
 }
 
-button{
+button {
     margin-right: 10px;
 }
 
@@ -54,11 +54,11 @@ button{
 }
 
 .tabs input[type="radio"] + label {
-    margin-left: 0px;
-    margin-right: 0px;
+    margin-left: 0;
+    margin-right: 0;
 }
 
- .tabs {
+.tabs {
     text-align: center;
     float: none;
     list-style: none;
@@ -70,20 +70,19 @@ button{
     float: left;
 }
 
- .tabs label {
+.tabs label {
     text-align: center;
-    margin: 0px;
+    margin: 0;
     display: block;
     padding: 10px 20px;
     color: #008CBA;
     font-weight: bold;
     background: #63BEDD;
     width: 170px;
-    border-left: solid;
-    border-right: solid;
-    border-top: solid;
-    border-width: 3px;
-    border-color: #63BEDD;
+    border: 3px #63BEDD;
+    border-top-style: solid;
+    border-right-style: solid;
+    border-left-style: solid;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
@@ -92,19 +91,19 @@ button{
 
 .tabs label:hover {
     background: #63BEDD;
-    top: 0px;
+    top: 0;
 }
-       
+
 [id^=tab]:checked + label {
     background: white;
     top: 0;
 }
-       
+
 [id^=tab]:checked ~ [id^=tab-content] {
     display: block;
 }
 
-.tab-content{
+.tab-content {
     z-index: 2;
     display: none;
     text-align: left;
@@ -114,49 +113,40 @@ button{
     padding-top: 10px;
     padding: 30px;
     color: white;
-    left: 0px;
+    left: 0;
     background-color: white;
     position: absolute;
-    border-left: solid;
-    border-right: solid;
-    border-bottom: solid;
-    border-width: 3px;
-    border-color: #63BEDD;
+    border: 3px #63BEDD;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
     box-sizing: border-box;
     -webkit-animation-duration: 0.5s;
     -o-animation-duration: 0.5s;
     -moz-animation-duration: 0.5s;
     animation-duration: 0.5s;
-  }
+}
 
-  #export  {
-    border-style: solid;
+#export {
     cursor: pointer;
     font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-    font-weight: normal;
+    font-weight: normal !important;
     line-height: normal;
-    margin: 0 0 1.25rem;
+    margin: 0 10px 1.25rem 0;
     position: relative;
     text-decoration: none;
     text-align: center;
     display: inline-block;
-    padding-top: 1rem;
-    padding-right: 2rem;
-    padding-bottom: 1.0625rem;
-    padding-left: 2rem;
+    padding: 1.0625rem 2rem 1rem;
     font-size: 1rem;
     background-color: #008cba;
-    border-color: #007095;
     color: white;
     -webkit-transition: background-color 300ms ease-out;
     -moz-transition: background-color 300ms ease-out;
+    -o-transition: background-color 300ms ease-out;
     transition: background-color 300ms ease-out;
-    padding-top: 1.0625rem;
-    padding-bottom: 1rem;
     -webkit-appearance: none;
     border: none;
-    font-weight: normal !important;
     float: left;
     overflow: hidden;
-    margin-right: 10px;
 }
