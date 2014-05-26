@@ -6,20 +6,6 @@ var forwardAngle = Math.PI;
 var leftCutoffAngle = 5 * Math.PI / 6;
 var rightCutoffAngle = 7 * Math.PI / 6;
 
-function calculateAngle(nodeA, nodeB) {
-    var coordinateA = nodeA.coordinate;
-    var coordinateB = nodeB.coordinate;
-
-    return Math.atan2(coordinateB.y - coordinateA.y, coordinateB.x - coordinateA.x);
-}
-
-function calculateClockwiseAngle(nodeA, nodeB, nodeC) {
-    var angleAB = calculateAngle(nodeA, nodeB);
-    var angleBC = calculateAngle(nodeB, nodeC);
-    var angle = (Math.PI + angleAB - angleBC) % (2 * Math.PI);
-    return angle < 0 ? angle + 2 * Math.PI : angle;
-}
-
 ocargo.Instruction = function(name) {
     this.name = name;
 };
@@ -38,7 +24,7 @@ FORWARD.getNextNode = function(previousNode, currentNode){
     var nodes = currentNode.connectedNodes;
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
-        var angle = calculateClockwiseAngle(previousNode, currentNode, node);
+        var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, node);
         var deviation = Math.abs(forwardAngle - angle);
         if (angle >= leftCutoffAngle && angle <= rightCutoffAngle
                 && (nextNode === null || deviation < nextNodeDeviation)) {
@@ -59,7 +45,7 @@ TURN_LEFT.getNextNode = function(previousNode, currentNode) {
         nextNode = currentNode.connectedNodes[index];
     }
 
-    var angle = calculateClockwiseAngle(previousNode, currentNode, nextNode);
+    var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, nextNode);
     return (angle > 0 && angle < leftCutoffAngle) ? nextNode : null;
 };
 
@@ -72,7 +58,7 @@ TURN_RIGHT.getNextNode = function(previousNode, currentNode) {
         nextNode = currentNode.connectedNodes[index];
     }
 
-    var angle = calculateClockwiseAngle(previousNode, currentNode, nextNode);
+    var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, nextNode);
     return (angle > rightCutoffAngle && angle < 2 * Math.PI) ? nextNode : null;
 };
 
