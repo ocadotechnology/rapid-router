@@ -59,10 +59,9 @@ def level_new(request):
         passedLevel.save()
 
         # Insert all the blockly blocks as available to use.
-        for a in range(1, 12):
-            passedLevel.blocks.add(get_object_or_404(Block, id=a))
-
+        passedLevel.blocks = Block.objects.all()
         passedLevel.save()
+
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
