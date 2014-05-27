@@ -1,3 +1,15 @@
+
+""" Strings used in the class view. """
+
+def chooseClass():
+    return "Choose a class you want to see."
+
+def noPermission():
+    return "You don't have permissions to see this."
+
+
+""" String messages used as lesson tips in the game view. """
+
 def buttons():
     return "Use the buttons in the left bottom part of the screen to create a path that " \
         + "will lead the van to the destination."

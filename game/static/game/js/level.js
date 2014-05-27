@@ -10,6 +10,7 @@ ocargo.Level = function(map, van, ui) {
     this.correct = 0;
     this.attemptData = {};
     this.blockLimit = null;
+    this.successful = false;
 };
 
 ocargo.Level.prototype.play = function(program) {
@@ -20,6 +21,8 @@ ocargo.Level.prototype.play = function(program) {
     if (ocargo.level.blockLimit && 
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
         startPopup("Oh no!", "", "You used too many blocks!");
+        sendAttempt(0);
+        ocargo.level.successful = false;
         return;
     }
 
@@ -98,9 +101,11 @@ ocargo.Level.prototype.step = function() {
 
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
+    sendAttempt(100);
+    ocargo.level.successful = false;
     ocargo.sound.win();
     var message = '';
-    var subtitle = ''
+    var subtitle = '';
     if (ocargo.level.levelId < LEVEL_COUNT) {
         message = '<button onclick="window.location.href=' + "'/game/" + (ocargo.level.levelId + 1) + 
                   "'" + '"">Next lesson</button>';
@@ -116,9 +121,11 @@ ocargo.Level.prototype.win = function() {
 
 ocargo.Level.prototype.fail = function(msg) {
     var title = 'Oh dear! :(';
+    ocargo.level.successful = false;
     console.debug(title);
     ocargo.sound.failure();
     startPopup(title, '', msg);
+    sentAttempt(0);
 };
 
 function stepper(level) {
@@ -141,6 +148,31 @@ function stepper(level) {
     };
 }
 
+function sendAttempt(score) {
+
+    // Send out the submitted data.
+    if (ocargo.level.levelId) {
+        var attemptData = JSON.stringify(ocargo.level.attemptData);
+
+        $.ajax({
+            url : '/game/submit',
+            type : 'POST',
+            dataType: 'json',
+            data : {
+                attemptData : attemptData,
+                csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
+                score : score
+            },
+            success : function(json) {
+            },
+            error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    }
+    return false;
+}
+
 function InstructionHandler(level){
 	this.level = level;
 }
@@ -153,7 +185,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
 
-        this.level.fail("Your first " + n + " instructions were right." + 
+        this.level.fail("Your first " + n + " execution steps were right." + 
                         " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
 
         program.terminate();

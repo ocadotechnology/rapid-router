@@ -77,13 +77,14 @@ def submit(request):
 def parseAttempt(attemptData, request):
     level = get_object_or_404(Level, id=attemptData.get('level', 1))
     attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
+    attempt.score = request.POST.get('score', 0)
 
     # Remove all the old commands from previous attempts.
     Command.objects.filter(attempt=attempt).delete()
     commands = attemptData.get('commandStack', None)
-    if not commands:
-        parseInstructions(json.loads(commands), attempt, 1)
-        attempt.save()
+    #if not commands:
+    parseInstructions(json.loads(commands), attempt, 1)
+    attempt.save()
 
 def logged_students(request):
     """ Renders the page with information about all the logged in students."""
@@ -126,9 +127,12 @@ def settings(request):
 def render_student_info(request, logged):
     """ Helper method for rendering the studend info for a logged-in teacher."""
     user = request.user
-    message = "Choose a class you want to see."
+    message = messages.chooseClass()
     currentClass = ""
+    thead = ["Avatar", "Name", "Surname", "Levels attempted", "Levels completed", "Best level",
+             "Best score", "Worst level", "Worst score"]
     students = []
+    studentData = []
 
     if request.method == 'POST':
         cl = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
@@ -137,12 +141,26 @@ def render_student_info(request, logged):
     try:
         classes = user.userprofile.teacher.class_teacher.all()
     except ObjectDoesNotExist:
-        message = "You don't have permissions to see this."
+        message = messages.noPermission
+
+    for student in students:
+        best = None
+        worst = None
+        # Exclude your own levels.
+        levels = Attempt.objects.filter(student=student,
+                                        level__owner__isnull=True).order_by('-score')
+        # TODO: Add scoring so that we actually get some variation in best and worst fields.
+        levels_completed = levels.exclude(score=0)
+        if len(levels_completed) > 0:
+            best = levels_completed[0]
+            worst = levels_completed[len(levels_completed)-1]
+        studentData.append([student, len(levels), len(levels_completed), best, worst])
 
     context = RequestContext(request, {
         'classes': classes,
         'message': message,
-        'students': students,
+        'thead': thead,
+        'studentData': studentData,
         'currentClass': currentClass,
     })
     return render(request, 'game/logged_students.html', context)

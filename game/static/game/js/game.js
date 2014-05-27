@@ -69,27 +69,6 @@ function trackDevelopment() {
         ocargo.ui.setVanToFront();
         ocargo.level.play(program);
         ocargo.level.correct = 0;
-
-        // Send out the submitted data.
-        if (ocargo.level.levelId) {
-            var attemptData = JSON.stringify(ocargo.level.attemptData);
-
-            $.ajax({
-                url : '/game/submit',
-                type : 'POST',
-                dataType: 'json',
-                data : {
-                   attemptData : attemptData,
-                   csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val()
-               },
-               success : function(json) {
-               },
-               error : function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-                }
-            });
-        }
-        return false;
     });
 
     $('#clearIncorrect').click(function() {

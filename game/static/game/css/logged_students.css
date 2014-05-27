@@ -8,6 +8,20 @@
     margin-right: 3%;
 }
 
+table {
+    width: 100%;
+    border: none !important;
+    border-collapse:collapse;
+}
+
+th {
+    background-color: #dcdcdc;
+}
+
+tr:nth-child(odd) {
+    background: #eee;
+}
+
 #class_form {
     margin-left: 20px;
     margin-bottom: 50px;
