@@ -49,14 +49,17 @@ function initialiseDefault() {
 function trackDevelopment() {
     $('#moveForward').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
+        moveForward(function(){});
     });
     
     $('#turnLeft').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
+        moveLeft(function(){});
     });
 
     $('#turnRight').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
+        moveRight(function(){});
     });
     
     $('#play').click(function() {
