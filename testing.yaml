@@ -15,6 +15,7 @@ handlers:
 
 env_variables:
   DJANGO_SETTINGS_MODULE: 'website.settings'
+  DATABASE_NAME: 'ocargo_testing'
 
 libraries:
 - name: PIL
