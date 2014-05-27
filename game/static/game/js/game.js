@@ -79,11 +79,6 @@ function trackDevelopment() {
         ocargo.blocklyControl.reset();
     });
     
-    $('#reset').click(function() {
-        initialiseDefault();
-        ocargo.blocklyControl.reset();
-    });
-    
     $('#slideBlockly').click(function() {
         var c = $('#programmingConsole');
         if (c.is(':visible')) {
