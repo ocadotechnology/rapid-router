@@ -35,7 +35,7 @@
     margin-bottom: 0;
 }
 
-button {
+button, .button{
     margin-right: 10px;
 }
 
