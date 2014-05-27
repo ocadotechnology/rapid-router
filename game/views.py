@@ -13,7 +13,7 @@ from models import Class, Level, Attempt, Command, Block
 
 def levels(request):
     context = RequestContext(request, {
-        'levels': Level.objects.filter(provided=True).order_by('id'),
+        'levels': Level.objects.filter(default=True).order_by('id'),
     })
     return render(request, 'game/level_selection.html', context)
 
@@ -23,7 +23,7 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    levelCount = Level.objects.filter(provided=True).count()
+    levelCount = Level.objects.filter(default=True).count()
     if int(level) <= levelCount:
         lesson = 'description_level' + str(level)
     else:
@@ -57,9 +57,9 @@ def level_new(request):
         path = request.POST.get('path', False)
         passedLevel = None
         if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
-            passedLevel = Level(name=10, path=path, owner=request.user.userprofile, provided=False)
+            passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False)
         else:
-            passedLevel = Level(name=10, path=path, provided=False)
+            passedLevel = Level(name=10, path=path, default=False)
         passedLevel.save()
 
         # Insert all the blockly blocks as available to use.
