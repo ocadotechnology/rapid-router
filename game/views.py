@@ -82,7 +82,6 @@ def parseAttempt(attemptData, request):
     # Remove all the old commands from previous attempts.
     Command.objects.filter(attempt=attempt).delete()
     commands = attemptData.get('commandStack', None)
-    #if not commands:
     parseInstructions(json.loads(commands), attempt, 1)
     attempt.save()
 
@@ -141,7 +140,7 @@ def render_student_info(request, logged):
     try:
         classes = user.userprofile.teacher.class_teacher.all()
     except ObjectDoesNotExist:
-        message = messages.noPermission
+        message = messages.noPermission()
 
     for student in students:
         best = None
@@ -153,7 +152,7 @@ def render_student_info(request, logged):
         levels_completed = levels.exclude(score=0)
         if len(levels_completed) > 0:
             best = levels_completed[0]
-            worst = levels_completed[len(levels_completed)-1]
+            worst = levels_completed[len(levels_completed) - 1]
         studentData.append([student, len(levels), len(levels_completed), best, worst])
 
     context = RequestContext(request, {

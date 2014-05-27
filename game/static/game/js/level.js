@@ -10,7 +10,6 @@ ocargo.Level = function(map, van, ui) {
     this.correct = 0;
     this.attemptData = {};
     this.blockLimit = null;
-    this.successful = false;
 };
 
 ocargo.Level.prototype.play = function(program) {
