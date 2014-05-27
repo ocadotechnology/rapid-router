@@ -107,7 +107,7 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '/cloudsql/numeric-incline-526:db',
-            'NAME': 'ocargo',
+            'NAME': os.getenv('DATABASE_NAME'),
             'USER': 'root',
         }
     }

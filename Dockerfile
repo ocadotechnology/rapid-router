@@ -14,6 +14,8 @@ RUN cd /opt; curl -O -s https://storage.googleapis.com/appengine-sdks/featured/g
     unzip -qq google_appengine_1.9.5.zip && rm google_appengine_1.9.5.zip
 ENV PATH /opt/google_appengine:$PATH
 ADD . /opt/ocargo/
+ENV TMPDIR /pip
+RUN mkdir -p $TMPDIR
 RUN pip install -r /opt/ocargo/requirements.txt
 RUN ls -d /usr/local/lib/python2.7/dist-packages/* | grep -v info | xargs -i cp -R {} /opt/ocargo/
 RUN chmod +x /opt/ocargo/deploy.sh
