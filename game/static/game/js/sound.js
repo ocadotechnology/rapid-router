@@ -40,28 +40,23 @@ ocargo.sound.failureSound = new Sound("/static/game/sound/failure.mp3", 1.0, fal
 ocargo.sound.turningSound = new Sound("/static/game/sound/turning.mp3", 1.0, false);
 
 ocargo.sound.starting = function() {
-    console.debug("Playing 'starting' sound.");
-    ocargo.sound.startingSound.play();
+    // TODO: Reimplement when actual sounds exist
 };
 
 ocargo.sound.moving = function() {
-    console.debug("Playing 'moving' sound.");
-    ocargo.sound.movingSound.play();
+    // TODO: Reimplement when actual sounds exist
 };
 
 ocargo.sound.turning = function() {
-    console.debug("Playing 'turning' sound.");
-    ocargo.sound.turningSound.play();
+    // TODO: Reimplement when actual sounds exist
 };
 
 ocargo.sound.win = function() {
-    console.debug("Playing 'win' sound.");
-    ocargo.sound.winSound.play();
+    // TODO: Reimplement when actual sounds exist
 };
 
 ocargo.sound.failure = function() {
-    console.debug("Playing 'failure' sound.");
-    ocargo.sound.failureSound.play();
+    // TODO: Reimplement when actual sounds exist
 };
 
 ocargo.sound.setAllVolumes = function(volume, loop) {
