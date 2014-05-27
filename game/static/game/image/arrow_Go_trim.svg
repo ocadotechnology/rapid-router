@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="351.229px" height="351.228px" viewBox="0 0 351.229 351.228" enable-background="new 0 0 351.229 351.228"
+	 xml:space="preserve">
+<g id="btnGo">
+	<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="175.6138" y1="141.1294" x2="175.6138" y2="246.4567">
+		<stop  offset="0" style="stop-color:#8BC53F"/>
+		<stop  offset="1" style="stop-color:#009145"/>
+	</linearGradient>
+	<circle fill="url(#SVGID_1_)" stroke="#009145" stroke-width="5" stroke-miterlimit="10" cx="175.614" cy="175.614" r="44.524"/>
+	<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="175.6138" y1="141.3945" x2="175.6138" y2="207.2557">
+		<stop  offset="0.0051" style="stop-color:#FFFFFF;stop-opacity:0.4"/>
+		<stop  offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+	</linearGradient>
+	<path fill="url(#SVGID_2_)" d="M212.569,172.614c0,20.411-16.545,26.956-36.955,26.956c-20.41,0-36.955-6.545-36.955-26.956
+		c0-20.409,16.545-34.954,36.955-34.954C196.024,137.66,212.569,152.205,212.569,172.614z"/>
+	<text transform="matrix(1 0 0 1 143.8745 187.9146)"><tspan x="0" y="0" fill="#FFFFFF" font-family="'Eagle-Bold'" font-size="40">G</tspan><tspan x="25.04" y="0" fill="#FFFFFF" font-family="'Eagle-Bold'" font-size="40">O</tspan></text>
+</g>
+<g id="arrowLeft">
+</g>
+<g id="arrowDown">
+</g>
+<g id="arrowRight">
+</g>
+<g id="arrowUp">
+</g>
+</svg>

@@ -28,14 +28,14 @@
 #controls {
     position: fixed;
     bottom: 20px;
-    right: 0;
+    right: 20px;
 }
 
 #controls button {
     margin-bottom: 0;
 }
 
-button, .button{
+button, .button, img.control{
     margin-right: 10px;
 }
 
@@ -47,4 +47,9 @@ button, .button{
     position: absolute;
     left: 50%;
     z-index: 1;
+}
+
+img.control{
+	height:50px;
+	cursor: pointer;
 }
