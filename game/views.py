@@ -57,9 +57,9 @@ def level_new(request):
         path = request.POST.get('path', False)
         passedLevel = None
         if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
-            passedLevel = Level(name=10, path=path, default=False)
-        else:
             passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False)
+        else:
+            passedLevel = Level(name=10, path=path, default=False)
         passedLevel.save()
 
         # Insert all the blockly blocks as available to use.
