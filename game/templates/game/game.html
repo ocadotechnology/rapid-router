@@ -1,42 +1,46 @@
 {% extends 'website/base.html' %}
 
 {% load static %}
+{% load compress %}
 
 {% block title %}Game{% endblock %}
 
 {% block scripts %}
 {{block.super}}
-  <script src="{% static 'game/js/mobile-detect.min.js' %}"></script>
-  <script src="{% static 'game/js/raphael.js' %}"></script>
-  <script src="{% static 'game/js/drawing.js' %}"></script>
-  <script src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
-  <script src="{% static 'game/js/blockly_control.js' %}"></script>
-  <script src="{% static 'game/js/coordinate.js' %}"></script>
-  <script src="{% static 'game/js/game.js' %}"></script>
-  <script src="{% static 'game/js/instruction.js' %}"></script>
-  <script src="{% static 'game/js/level.js' %}"></script>
-  <script src="{% static 'game/js/map.js' %}"></script>
-  <script src="{% static 'game/js/node.js' %}"></script>
-  <script src="{% static 'game/js/program.js' %}"></script>
-  <script src="{% static 'game/js/ui.js' %}"></script>
-  <script src="{% static 'game/js/van.js' %}"></script>
-  <script src="{% static 'game/js/sound.js' %}"></script>
-  <script>
-    var PATH = "{{path}}";
-    var LEVEL_ID = "{{level}}";
-    var BLOCK_LIMIT = "{{blockLimit}}" != "None" ?  "{{blockLimit}}" : null;
-    var LESSON = "{{lesson}}";
-    var LEVEL_COUNT = "{{defaultLevelCount}}";
-  </script>
-
+  {% compress js %}
+    <script src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+    <script src="{% static 'game/js/raphael.js' %}"></script>
+    <script src="{% static 'game/js/drawing.js' %}"></script>
+    <script src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+    <script src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+    <script src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
+    <script src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+    <script src="{% static 'game/js/blockly_control.js' %}"></script>
+    <script src="{% static 'game/js/coordinate.js' %}"></script>
+    <script src="{% static 'game/js/game.js' %}"></script>
+    <script src="{% static 'game/js/instruction.js' %}"></script>
+    <script src="{% static 'game/js/level.js' %}"></script>
+    <script src="{% static 'game/js/map.js' %}"></script>
+    <script src="{% static 'game/js/node.js' %}"></script>
+    <script src="{% static 'game/js/program.js' %}"></script>
+    <script src="{% static 'game/js/ui.js' %}"></script>
+    <script src="{% static 'game/js/van.js' %}"></script>
+    <script src="{% static 'game/js/sound.js' %}"></script>
+    <script>
+      var PATH = "{{path}}";
+      var LEVEL_ID = "{{level}}";
+      var BLOCK_LIMIT = "{{blockLimit}}" != "None" ?  "{{blockLimit}}" : null;
+      var LESSON = "{{lesson}}";
+      var LEVEL_COUNT = "{{defaultLevelCount}}";
+    </script>
+  {% endcompress %}
 {% endblock %}
 
 {% block css %}
 {{block.super}}
-  <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
+  {% compress css %}
+    <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
+  {% endcompress %}
 {% endblock %}
 
 {% block content %}
