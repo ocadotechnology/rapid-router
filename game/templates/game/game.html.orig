@@ -62,7 +62,12 @@
   <div id="controls" class="col">
     <a class="button" href="/">Quit</a>
     <button id="play">&#x25B6;</button>
+<<<<<<< HEAD
+    <button id="mute">Mute</button>
+=======
+    <button id="reset">Reset</button>
     <button id="mute" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
+>>>>>>> 20a6a5cd37e438b6548ab12320acbbb9e3cc645d
   </div>
 </div>
 <div id="myModal" class="reveal-modal" data-reveal>
