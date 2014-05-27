@@ -1,3 +1,0 @@
-SETTINGS = {
-    'DEBUG': False,
-}
