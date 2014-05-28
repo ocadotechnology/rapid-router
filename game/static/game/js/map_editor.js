@@ -100,8 +100,8 @@ ocargo.MapEditor.prototype.trackCreation = function() {
     function handle(point) {
         var isPossible = false;
         for (var i = 0; i < ocargo.mapEditor.possibleNext.length; i++) {
-            if (ocargo.mapEditor.possibleNext[i][0] === point[0] 
-               && ocargo.mapEditor.possibleNext[i][1] === point[1]) {
+            if (ocargo.mapEditor.possibleNext[i][0] === point[0] && 
+                ocargo.mapEditor.possibleNext[i][1] === point[1]) {
                 isPossible = true;
                 break;
             }
@@ -312,12 +312,7 @@ Raphael.st.draggable = function() {
         startFnc = function() {
             var x = ox / GRID_SPACE_SIZE;
             var y = oy / GRID_SPACE_SIZE;
-            if (ocargo.mapEditor.json.hasOwnProperty(x))
-                if(ocargo.mapEditor.json[x].hasOwnProperty(y))
-                    delete ocargo.mapEditor.json[x][y];
-                if (isEmpty(ocargo.mapEditor.json))
-                    delete ocargo.mapEditor.json[x];
-
+            ocargo.mapEditor.map[x][y] = false;
         },
         endFnc = function() {
             var point = getGridSpace(lx, ly);
