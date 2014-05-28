@@ -1,5 +1,5 @@
 #toolbox {
-    width: 340px;
+    width: 510px;
     margin-left: 10px;
 }
 
@@ -67,10 +67,10 @@
     z-index: 2;
     display: none;
     text-align: left;
-    width: 340px;
+    width: 510px;
     font-size: 20px;
     line-height: 140%;
-    padding: 30px 30px 0;
+    padding: 30px;
     color: white;
     left: 0;
     background-color: white;
