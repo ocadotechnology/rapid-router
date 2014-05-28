@@ -38,7 +38,7 @@ function initialiseDefault() {
     ocargo.level = createDefaultLevel(path, ocargo.ui);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
-    setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
+    enableDirectControl();
     if (ocargo.level.blockLimit)
         ocargo.level.blockLimit++;
     if ($.cookie("muted") == "true") {
@@ -47,31 +47,38 @@ function initialiseDefault() {
     }
 }
 
-function setDirectControl(forward, left, right) {
-    ocargo.moveForward = forward;
-    ocargo.moveLeft = left;
-    ocargo.moveRigt = right;
+function enableDirectControl() {
+    document.getElementById('moveForward').disabled = false;
+    document.getElementById('turnLeft').disabled = false;
+    document.getElementById('turnRight').disabled = false;
+}
+
+function disableDirectControl() {
+    document.getElementById('moveForward').disabled = true;
+    document.getElementById('turnLeft').disabled = true;
+    document.getElementById('turnRight').disabled = true;
 }
 
 function trackDevelopment() {
     $('#moveForward').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        ocargo.moveForward();
+        moveForward(function(){});
     });
     
     $('#turnLeft').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        ocargo.moveLeft();
+        moveLeft(function(){});
     });
 
     $('#turnRight').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        ocargo.moveRight();
+        moveRight(function(){});
     });
     
     $('#play').click(function() {
         if (ocargo.blocklyControl.incorrect)
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
+        disableDirectControl();
         var program = ocargo.blocklyControl.populateProgram();
         program.instructionHandler = new InstructionHandler(ocargo.level);
         var nodes = ocargo.level.map.nodes;

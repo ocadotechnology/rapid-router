@@ -115,7 +115,7 @@ ocargo.MapEditor.prototype.trackCreation = function() {
             default:
                 console.debug("Hit default.");
         }
-    }
+    };
 
     $('#up').click(function() {
         up();

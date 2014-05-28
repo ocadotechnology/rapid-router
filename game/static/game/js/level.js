@@ -21,7 +21,7 @@ ocargo.Level.prototype.play = function(program) {
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
         startPopup("Oh no!", "", "You used too many blocks!");
         sendAttempt(0);
-        ocargo.level.successful = false;
+        enableDirectControl();
         return;
     }
 
@@ -116,6 +116,7 @@ ocargo.Level.prototype.win = function() {
                   '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
     }
     startPopup("You win!", subtitle, message);
+    enableDirectControl();
 };
 
 ocargo.Level.prototype.fail = function(msg) {
@@ -125,6 +126,7 @@ ocargo.Level.prototype.fail = function(msg) {
     ocargo.sound.failure();
     startPopup(title, '', msg);
     sentAttempt(0);
+    enableDirectControl();
 };
 
 function stepper(level) {
@@ -188,6 +190,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
                         " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
 
         program.terminate();
+        enableDirectControl()
         return; //TODO: animate the crash
     }
 
