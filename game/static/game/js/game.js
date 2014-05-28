@@ -51,12 +51,14 @@ function enableDirectControl() {
     document.getElementById('moveForward').disabled = false;
     document.getElementById('turnLeft').disabled = false;
     document.getElementById('turnRight').disabled = false;
+    ocargo.level.blockedPlay = false;
 }
 
 function disableDirectControl() {
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
+    ocargo.level.blockedPlay = true;
 }
 
 function trackDevelopment() {
@@ -78,14 +80,17 @@ function trackDevelopment() {
     $('#play').click(function() {
         if (ocargo.blocklyControl.incorrect)
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        disableDirectControl();
-        var program = ocargo.blocklyControl.populateProgram();
-        program.instructionHandler = new InstructionHandler(ocargo.level);
-        var nodes = ocargo.level.map.nodes;
-        ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
-        ocargo.ui.setVanToFront();
-        ocargo.level.play(program);
-        ocargo.level.correct = 0;
+        console.debug(!ocargo.level.blockedPlay);
+        if (!ocargo.level.blockedPlay) {
+            disableDirectControl();
+            var program = ocargo.blocklyControl.populateProgram();
+            program.instructionHandler = new InstructionHandler(ocargo.level);
+            var nodes = ocargo.level.map.nodes;
+            ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+            ocargo.ui.setVanToFront();
+            ocargo.level.play(program);
+            ocargo.level.correct = 0;
+        }
     });
 
     $('#clearIncorrect').click(function() {
