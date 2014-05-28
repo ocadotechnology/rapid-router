@@ -65,34 +65,40 @@ img.control{
 }
 
 .picButton {    
-    padding-bottom: 0;
-    padding-top: 4px;
+    background-color: transparent;
+    padding: 4px 2px 0;
+    vertical-align: top;
+}
+
+.picButton:hover,
+.picButton:focus {
+   background-color:rgba(255,255,255,0.5);
 }
 
 .picButton span {
     background-image : url('/static/game/image/arrowBtns_v2.svg');
     background-repeat: no-repeat;
-    background-size: 200px 200px;
+    background-size: 150px 150px;
     display: inline-block;
-    height: 60px;
+    height: 45px;
     overflow: hidden;
     text-indent: 200%;
     white-space: nowrap;
-    width: 60px;
+    width: 45px;
 }
 
 .picButton#turnLeft span {
-    background-position: 0px -61px;
+    background-position: 0px -45px;
 }
 
 .picButton#turnRight span {
-    background-position: -141px -61px;
+    background-position: -105px -43px;
 }
 
 .picButton#moveForward span {
-    background-position: -70px 2px;
+    background-position: -52px 2px;
 }
 
 .picButton#play span {
-    background-position: -70px 2px;
+    background-position: -52px -49px;
 }
