@@ -148,6 +148,8 @@ function createTurn(paper, i, j, direction) {
     var baseX = i * GRID_SPACE_SIZE;
     var baseY = j * GRID_SPACE_SIZE;
     var turnAndMarker = [];
+    
+    console.log(baseX, baseY);
 
     switch (direction) {
         case 'UL':
@@ -270,25 +272,88 @@ function createTurnUR(baseX, baseY) {
     return [turn, marker];
 }
 
-function createRoad(paper, roadDefinition) {
-    var roadElements = [];
+function getRoadLetters(previous, node1, node2){
+	previous = transformY(previous);
+	node1 = transformY(node1);
+	node2 = transformY(node2);
+	
+	if (isHorizontal(node1, node2) 
+		&& (previous == null || isHorizontal(previous, node1))) {
+		return 'H';
 
-    $.each(roadDefinition, function(i, roadSlice) {
-        $.each(roadSlice, function(j, roadType) {
-            if (roadType) {
-                switch (roadType) {
-                    case 'H':
-                        roadElements.push(createHorizontalRoad(paper, i, j));
-                        break;
-                    case 'V':
-                        roadElements.push(createVerticalRoad(paper, i, j));
-                        break;
-                    default:
-                        roadElements.push(createTurn(paper, i, j, roadType));
-                        break;
-                }
-            }
-        });
+	} else if (isVertical(node1, node2) 
+		&& (previous == null || isVertical(previous, node1))) {
+		return 'V';
+
+	// Handle turns.
+	} else { 
+		if (isProgressive(previous.x, node1.x)) {
+			return nextPointAbove(node1, node2) ? 'DL' : 'UL';
+		}
+		if (isProgressive(node1.x, previous.x)) {
+			return nextPointAbove(node1, node2) ? 'DR' : 'UR';
+		}
+		if (isProgressive(previous.y, node1.y)) {
+			return nextPointFurther(node1, node2) ? 'UR' : 'UL';
+		}
+		if (isProgressive(node1.y, previous.y)) {
+			return nextPointFurther(node1, node2) ? 'DR' : 'DL';
+		}
+	}
+}
+
+function isHorizontal(prev, next) {
+	return prev.y == next.y;
+}
+
+function isVertical(prev, next) {
+	return prev.x == next.x;
+}
+
+function nextPointAbove(curr, next) {
+	return curr.y < next.y;
+}
+
+function nextPointFurther(curr, next) {
+	return curr.x < next.x;
+}
+
+function isProgressive(coord1, coord2) {
+	return coord1 < coord2;
+}
+
+function transformY(coord) {
+    return new ocargo.Coordinate(coord.x, GRID_HEIGHT - 1 - coord.y);
+}
+
+function createRoad(paper, nodes) {
+    var roadElements = [];
+    
+    //TODO: draw dead ends (if connectedNodes.length == 1)
+    $.each(nodes, function(i, node) {
+    	for(var i = 0; i < node.connectedNodes.length; i++){
+    		var previousNode = node.connectedNodes[i];
+    		
+    		for(var j = i + 1; j < node.connectedNodes.length; j++){
+    			var nextNode = node.connectedNodes[j];
+    			var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+    			console.log(roadLetters);
+    			
+    			var flipped = transformY(node.coordinate);
+    			
+    			switch (roadLetters) {
+	                case 'H':
+	                    createHorizontalRoad(paper, flipped.x, flipped.y);
+	                    break;
+	                case 'V':
+	                    createVerticalRoad(paper, flipped.x, flipped.y);
+	                    break;
+	                default:
+	                    createTurn(paper, flipped.x, flipped.y, roadLetters);
+	                    break;
+	            }
+    		}
+    	}
     });
 
     return roadElements;
@@ -418,7 +483,7 @@ function createDestination(destination){
 function renderTheMap(map) {
     paper.clear();
     drawBackground(paper);
-    createRoad(paper, map.instructions);
+    createRoad(paper, map.nodes);
     createCFC(paper);
     createDestination(map.destination.coordinate);
     van = createVan(paper);
