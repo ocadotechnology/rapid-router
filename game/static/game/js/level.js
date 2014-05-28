@@ -127,7 +127,7 @@ ocargo.Level.prototype.fail = function(msg) {
     enableDirectControl();
     ocargo.sound.failure();
     startPopup(title, '', msg);
-    sentAttempt(0);
+    sendAttempt(0);
 };
 
 function stepper(level) {
