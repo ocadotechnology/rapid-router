@@ -38,6 +38,7 @@ function initialiseDefault() {
     ocargo.level = createDefaultLevel(path, ocargo.ui);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
+    setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
     if (ocargo.level.blockLimit)
         ocargo.level.blockLimit++;
     if ($.cookie("muted") == "true") {
@@ -46,20 +47,26 @@ function initialiseDefault() {
     }
 }
 
+function setDirectControl(forward, left, right) {
+    ocargo.moveForward = forward;
+    ocargo.moveLeft = left;
+    ocargo.moveRigt = right;
+}
+
 function trackDevelopment() {
     $('#moveForward').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(function(){});
+        ocargo.moveForward();
     });
     
     $('#turnLeft').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(function(){});
+        ocargo.moveLeft();
     });
 
     $('#turnRight').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(function(){});
+        ocargo.moveRight();
     });
     
     $('#play').click(function() {
@@ -76,10 +83,12 @@ function trackDevelopment() {
 
     $('#clearIncorrect').click(function() {
         ocargo.blocklyControl.removeWrong();
+        setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
     });
 
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
+        setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
     });
     
     $('#slideBlockly').click(function() {

@@ -108,7 +108,7 @@ ocargo.MapEditor.prototype.trackCreation = function() {
         }
         if (!isOutOfBounds(point) && isPossible) {
             ocargo.mapEditor.markPossible(point);
-            ocargo.mapEditor.mark(point, SUGGESTED_COLOR, 1, true);
+            ocargo.mapEditor.mark(point, SELECTED_COLOR, 1, true);
             ocargo.mapEditor.current = point;
         }
     }
@@ -231,11 +231,12 @@ $(function() {
 });
 
 $('#undo').click(function() {
-    if (ocargo.mapEditor.submittedPoints.length > 1) {
+       if (ocargo.mapEditor.submittedPoints.length > 1) {
         var toChange = ocargo.mapEditor.submittedPoints.pop();
-        ocargo.mapEditor.current 
-            = ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1];
-        ocargo.mapEditor.mark(toChange, BACKGROUND_COLOR, 0, false);
+        var transposedChange = [toChange[0], GRID_HEIGHT - 1 - toChange[1]];
+        var current = ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1];
+        ocargo.mapEditor.current = [current[0], GRID_HEIGHT - 1 - current[1]];
+        ocargo.mapEditor.mark(transposedChange, BACKGROUND_COLOR, 0, false);
         ocargo.mapEditor.markPossible(ocargo.mapEditor.current, BACKGROUND_COLOR, 0, false);
     }
 });
