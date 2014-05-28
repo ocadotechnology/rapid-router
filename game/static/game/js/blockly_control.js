@@ -111,7 +111,7 @@ Blockly.Blocks['at_destination'] = {
     }
 };
 
-// Customise controls_repeat block to not allow more than a sensible number of repetitions
+//Customise controls_repeat block to not allow more than a sensible number of repetitions
 var controlsRepeatBlock = Blockly.Blocks['controls_repeat'];
 var originalInit = controlsRepeatBlock.init;
 controlsRepeatBlock.init = function () {
@@ -126,6 +126,14 @@ controlsRepeatBlock.init = function () {
         }
         return n;
     };
+};
+
+// Make 'not' taller
+var notBlock = Blockly.Blocks['logic_negate'];
+var originalNotInit = notBlock.init;
+notBlock.init = function () {
+	originalNotInit.call(this);
+	this.inputList[0].appendField(new Blockly.FieldImage('/static/game/image/empty.svg', ocargo.blocklyControl.EXTRA_BLOCK_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
 };
 
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
