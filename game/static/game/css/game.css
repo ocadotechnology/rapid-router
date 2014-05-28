@@ -58,10 +58,10 @@ img.control{
 #instructions {
     background-color:rgba(255,255,255,0.5);
     bottom: 20px;
-    left: 0;
+    left: 185px;
     padding: 20px;
     position: absolute;
-    width: 45%;
+    width: 35%;
 }
 
 .picButton {    
@@ -90,5 +90,9 @@ img.control{
 }
 
 .picButton#moveForward span {
+    background-position: -70px 2px;
+}
+
+.picButton#play span {
     background-position: -70px 2px;
 }
