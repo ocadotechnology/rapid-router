@@ -420,22 +420,30 @@ $('#V').click(function() {
 $(document).ready(function() {
     $("#export").click(function() {
         var input_string = JSON.stringify(ocargo.mapEditor.submittedPoints);
+
+        var blockTypes = [];
+        $('.js-block-checkbox:checked').each(function(index, checkbox) {
+            blockTypes.push(checkbox.id);
+        });
+
         $.ajax({
-            url : "/game/levels/new",
-            type : "POST",
+            url: "/game/levels/new",
+            type: "POST",
             dataType: 'json',
-            data : {
-              path : input_string,
-              csrfmiddlewaretoken :$( "#csrfmiddlewaretoken" ).val()
+            data: {
+                path: input_string,
+                blockTypes: JSON.stringify(blockTypes),
+                csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
             },
-            success : function(json) {
+            success: function (json) {
                 window.location.href = ("/game/" + json.server_response);
 
             },
-            error : function(xhr,errmsg,err) {
-              console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            error: function (xhr, errmsg, err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
+
         return false;
     });
 });

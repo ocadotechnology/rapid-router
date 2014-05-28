@@ -62,8 +62,13 @@ def level_new(request):
             passedLevel = Level(name=10, path=path, default=False)
         passedLevel.save()
 
-        # Insert all the blockly blocks as available to use.
-        passedLevel.blocks = Block.objects.all()
+        if 'blockTypes' in request.POST:
+            blockTypes = json.loads(request.POST['blockTypes'])
+            blocks = Block.objects.filter(type__in=blockTypes)
+        else:
+            blocks = Block.objects.all()
+
+        passedLevel.blocks = blocks
         passedLevel.save()
 
         response_dict = {}
@@ -98,7 +103,10 @@ def students_in_class(request):
     return render_student_info(request, False)
 
 def level_editor(request):
-    return render(request, 'game/level_editor.html')
+    context = RequestContext(request, {
+        'blocks': Block.objects.all()
+    })
+    return render(request, 'game/level_editor.html', context)
 
 def settings(request):
     """ Renders the settings page.  """
