@@ -2,6 +2,17 @@
 
 var ocargo = ocargo || {};
 
+ocargo.BlocklyControl = function(){
+    this.incorrect = null;
+    this.incorrectColour = null;
+};
+
+ocargo.blocklyControl = new ocargo.BlocklyControl();
+
+ocargo.blocklyControl.BLOCK_HEIGHT = 30;
+ocargo.blocklyControl.EXTRA_BLOCK_WIDTH = 1;
+ocargo.blocklyControl.IMAGE_WIDTH = 30;
+
 Blockly.Blocks['start'] = {
     // Beginning block - identifies the start of the program
     init: function() {
@@ -19,7 +30,8 @@ Blockly.Blocks['move_forwards'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u2191 move forwards');
+            .appendField('move forwards')
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_forward.svg', ocargo.blocklyControl.IMAGE_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Move the van forwards');
@@ -31,7 +43,8 @@ Blockly.Blocks['turn_left'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u21BA turn left');
+            .appendField('turn left')
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_left.svg', ocargo.blocklyControl.IMAGE_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van left');
@@ -43,7 +56,8 @@ Blockly.Blocks['turn_right'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u21BB turn right');
+            .appendField('turn right')
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_right.svg', ocargo.blocklyControl.IMAGE_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van right');
@@ -55,7 +69,8 @@ Blockly.Blocks['turn_around'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('turn around');
+            .appendField('turn around')
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_u.svg', ocargo.blocklyControl.IMAGE_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van around');
@@ -71,7 +86,8 @@ Blockly.Blocks['road_exists'] = {
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE');
+            .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg', ocargo.blocklyControl.EXTRA_BLOCK_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
 
@@ -80,7 +96,8 @@ Blockly.Blocks['dead_end'] = {
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField('is dead end');
+            .appendField('is dead end')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg', ocargo.blocklyControl.EXTRA_BLOCK_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
 
@@ -89,16 +106,10 @@ Blockly.Blocks['at_destination'] = {
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField('at destination');
+            .appendField('at destination')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg', ocargo.blocklyControl.EXTRA_BLOCK_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
-
-ocargo.BlocklyControl = function(){
-    this.incorrect = null;
-    this.incorrectColour = null;
-};
-
-ocargo.blocklyControl = new ocargo.BlocklyControl();
 
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
