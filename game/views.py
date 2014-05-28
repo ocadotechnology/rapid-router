@@ -54,7 +54,7 @@ def level(request, level):
 def level_new(request):
     """ Processes a request on creation of the map in the level editor."""
     if 'path' in request.POST:
-        path = request.POST.get('path', False)
+        path = request.POST['path']
         passedLevel = None
         if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
             passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False)
