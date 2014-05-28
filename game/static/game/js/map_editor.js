@@ -63,7 +63,7 @@ ocargo.MapEditor.prototype.markPossible = function(point) {
 
 ocargo.MapEditor.prototype.mark = function(point, colour, opacity, occupied) {
     var element = this.grid[point[0]][point[1]];
-    if(occupied) {
+    if (occupied) {
         this.current = point;
         this.submittedPoints.push([point[0], GRID_HEIGHT - 1 - point[1]]);
     }
@@ -72,29 +72,65 @@ ocargo.MapEditor.prototype.mark = function(point, colour, opacity, occupied) {
 };
 
 ocargo.MapEditor.prototype.trackCreation = function() {
-
-    $('#up').click(function() {
+    function up() {
         var point = ocargo.mapEditor.current.slice(0);
         point[1] -= 1;
         point = handle(point);
-    });
+    }
 
-    $('#down').click(function() {   
+    function down() {
         var point = ocargo.mapEditor.current.slice(0);
         point[1] += 1;
         point = handle(point);
-    });
+    }
 
-    $('#left').click(function() {
+    function left() {
         var point = ocargo.mapEditor.current.slice(0);
         point[0] -= 1;
         point = handle(point);
-    });
+    }
 
-    $('#right').click(function() {
+    function right() {
         var point = ocargo.mapEditor.current.slice(0);
         point[0] += 1;
         point = handle(point);
+    }
+
+    document.onkeydown = function(event) {
+        var code = event.keyCode;
+        console.debug(code);
+        switch (code) {
+            case 37:
+                left();
+                break;
+            case 38:
+                up()
+                break;
+            case 39:
+                right();
+                break;
+            case 40:
+                down();
+                break;
+            default:
+                console.debug("Hit default.");
+        }
+    }
+
+    $('#up').click(function() {
+        up();
+    });
+
+    $('#down').click(function() {   
+        down();
+    });
+
+    $('#left').click(function() {
+        left();
+    });
+
+    $('#right').click(function() {
+        right();
     });
 
     function handle(point) {
