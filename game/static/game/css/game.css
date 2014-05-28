@@ -30,7 +30,7 @@
     height: 200px;
     position: fixed;
     right: 20px;
-    width: 400px
+    width: 420px
 }
 
 #controls button {
@@ -126,4 +126,8 @@ img.control{
 
 .picButton#play span {
     background-position: -52px -49px;
+}
+
+#blockly {
+    height: 95%;
 }
