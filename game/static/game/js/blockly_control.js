@@ -111,6 +111,23 @@ Blockly.Blocks['at_destination'] = {
     }
 };
 
+// Customise controls_repeat block to not allow more than a sensible number of repetitions
+var controlsRepeatBlock = Blockly.Blocks['controls_repeat'];
+var originalInit = controlsRepeatBlock.init;
+controlsRepeatBlock.init = function () {
+    originalInit.call(this);
+
+    var input = this.inputList[0];
+    var field = input.fieldRow[1];
+    field.changeHandler_ = function(text) {
+        var n = Blockly.FieldTextInput.numberValidator(text);
+        if (n) {
+            n = String(Math.min(Math.max(0, Math.floor(n)), 20));
+        }
+        return n;
+    };
+};
+
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
 	block.initSvg();
