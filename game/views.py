@@ -77,8 +77,8 @@ def level_new(request):
 
 def submit(request):
     """ Processes a request on submission of the program solving the current level."""
-    if request.method == 'POST':
-        attemptJson = request.POST.get('attemptData', False)
+    if request.method == 'POST' and 'attemptData' in request.POST:
+        attemptJson = request.POST['attemptData']
         attemptData = json.loads(attemptJson)
         parseAttempt(attemptData, request)
         return HttpResponse(attemptJson, content_type='application/javascript')
