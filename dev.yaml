@@ -1,0 +1,24 @@
+application: numeric-incline-526
+module: dev
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /static
+  static_dir: static
+  application_readable: true
+
+- url: /.*
+  script: main.application
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: 'website.settings'
+  DATABASE_NAME: 'ocargo_dev'
+
+libraries:
+- name: PIL
+  version: latest
+- name: MySQLdb
+  version: latest

@@ -38,12 +38,27 @@ function initialiseDefault() {
     ocargo.level = createDefaultLevel(path, ocargo.ui);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
+    enableDirectControl();
     if (ocargo.level.blockLimit)
         ocargo.level.blockLimit++;
     if ($.cookie("muted") == "true") {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
     }
+}
+
+function enableDirectControl() {
+    document.getElementById('moveForward').disabled = false;
+    document.getElementById('turnLeft').disabled = false;
+    document.getElementById('turnRight').disabled = false;
+    ocargo.level.blockedPlay = false;
+}
+
+function disableDirectControl() {
+    document.getElementById('moveForward').disabled = true;
+    document.getElementById('turnLeft').disabled = true;
+    document.getElementById('turnRight').disabled = true;
+    ocargo.level.blockedPlay = true;
 }
 
 function trackDevelopment() {
@@ -65,21 +80,27 @@ function trackDevelopment() {
     $('#play').click(function() {
         if (ocargo.blocklyControl.incorrect)
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        var program = ocargo.blocklyControl.populateProgram();
-        program.instructionHandler = new InstructionHandler(ocargo.level);
-        var nodes = ocargo.level.map.nodes;
-        ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
-        ocargo.ui.setVanToFront();
-        ocargo.level.play(program);
-        ocargo.level.correct = 0;
+        console.debug(!ocargo.level.blockedPlay);
+        if (!ocargo.level.blockedPlay) {
+            disableDirectControl();
+            var program = ocargo.blocklyControl.populateProgram();
+            program.instructionHandler = new InstructionHandler(ocargo.level);
+            var nodes = ocargo.level.map.nodes;
+            ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+            ocargo.ui.setVanToFront();
+            ocargo.level.play(program);
+            ocargo.level.correct = 0;
+        }
     });
 
     $('#clearIncorrect').click(function() {
         ocargo.blocklyControl.removeWrong();
+        setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
     });
 
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
+        setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
     });
     
     $('#slideBlockly').click(function() {
