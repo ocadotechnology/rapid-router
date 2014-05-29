@@ -54,7 +54,7 @@ class Block (models.Model):
 
 class Level (models.Model):
     name = models.IntegerField()
-    path = models.CharField(max_length=300)
+    path = models.CharField(max_length=600)
     default = models.BooleanField()
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blockLimit = models.IntegerField(blank=True, null=True)

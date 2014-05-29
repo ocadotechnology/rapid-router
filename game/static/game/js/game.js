@@ -58,6 +58,7 @@ function disableDirectControl() {
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
+    document.getElementById('play').disabled = true;
     ocargo.level.blockedPlay = true;
 }
 
@@ -80,7 +81,6 @@ function trackDevelopment() {
     $('#play').click(function() {
         if (ocargo.blocklyControl.incorrect)
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        console.debug(!ocargo.level.blockedPlay);
         if (!ocargo.level.blockedPlay) {
             disableDirectControl();
             var program = ocargo.blocklyControl.populateProgram();

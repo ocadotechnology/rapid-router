@@ -10,6 +10,7 @@ ocargo.Level = function(map, van, ui) {
     this.correct = 0;
     this.attemptData = {};
     this.blockLimit = null;
+    this.pathFinder = new ocargo.PathFinder(map.nodes);
 };
 
 ocargo.Level.prototype.play = function(program) {
@@ -100,8 +101,10 @@ ocargo.Level.prototype.step = function() {
 
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
-    sendAttempt(100);
-    ocargo.level.successful = false;
+    ocargo.level.pathFinder.getOptimalSolution(ocargo.level.attemptData.commandStack);
+    //var score = ocargo.level.pathFinder.getScore(ocargo.level.attemptData.commandStack);
+    console.debug("skldhksjhd");
+    sendAttempt();
     ocargo.sound.win();
     var message = '';
     var subtitle = '';
@@ -122,7 +125,6 @@ ocargo.Level.prototype.win = function() {
 
 ocargo.Level.prototype.fail = function(msg) {
     var title = 'Oh dear! :(';
-    ocargo.level.successful = false;
     console.debug(title);
     enableDirectControl();
     ocargo.sound.failure();
