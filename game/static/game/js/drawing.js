@@ -65,18 +65,24 @@ function identifyInstruction(roadSet) {
     var diffY = Math.abs(weightPointBox.y - roadBox.y);
     var instruction = '';
 
-    if (diffX === 0 && diffY === 0)
+    if (diffX === 0 && diffY === 0) {
         instruction = 'UL';
-    if (diffX === 0 && diffY === EDGE_GAP)
+    }
+    if (diffX === 0 && diffY === EDGE_GAP) {
         instruction = 'DL';
-    if (diffX === EDGE_GAP && diffY === EDGE_GAP)
+    }
+    if (diffX === EDGE_GAP && diffY === EDGE_GAP) {
         instruction = 'DR';
-    if (diffX === EDGE_GAP && diffY === 0)
+    }
+    if (diffX === EDGE_GAP && diffY === 0) {
         instruction = 'UR';
-    if (roadBox.width === 50 && roadBox.height === 100)
+    }
+    if (roadBox.width === 50 && roadBox.height === 100) {
         instruction = 'V';
-    if (roadBox.width === 100 && roadBox.height === 50)
+    }
+    if (roadBox.width === 100 && roadBox.height === 50) {
         instruction = 'H';
+    }
 
     return instruction;
 }
@@ -326,7 +332,6 @@ function transformY(coord) {
 }
 
 function createRoad(paper, nodes) {
-    var roadElements = [];
     
     //TODO: draw dead ends (if connectedNodes.length == 1)
     $.each(nodes, function(i, node) {
@@ -355,8 +360,6 @@ function createRoad(paper, nodes) {
     		}
     	}
     });
-
-    return roadElements;
 }
 
 var van;

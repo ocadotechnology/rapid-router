@@ -10,7 +10,7 @@ ocargo.Level = function(map, van, ui) {
     this.correct = 0;
     this.attemptData = {};
     this.blockLimit = null;
-    this.pathFinder = new ocargo.PathFinder(map.nodes);
+    this.pathFinder = new ocargo.PathFinder(map);
 };
 
 ocargo.Level.prototype.play = function(program) {
@@ -101,8 +101,9 @@ ocargo.Level.prototype.step = function() {
 
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
-    //ocargo.level.pathFinder.getOptimalSolution(ocargo.level.attemptData.commandStack);
-    //var score = ocargo.level.pathFinder.getScore(ocargo.level.attemptData.commandStack);
+    ocargo.level.pathFinder.getOptimalInstructions();
+    var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
+    console.debug(score);
     sendAttempt();
     ocargo.sound.win();
     var message = '';

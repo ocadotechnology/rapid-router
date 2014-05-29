@@ -41,7 +41,7 @@ function initialiseDefault() {
     enableDirectControl();
     if (ocargo.level.blockLimit)
         ocargo.level.blockLimit++;
-    if ($.cookie("muted") == "true") {
+    if ($.cookie("muted") === "true") {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
     }
