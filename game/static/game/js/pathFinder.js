@@ -24,7 +24,7 @@ ocargo.PathFinder.prototype.getScore = function(stack) {
 ocargo.PathFinder.prototype.getOptimalPath = function() {
 	var node = ocargo.level.pathFinder.nodes[0];
 	var startingNode = node;
-	while (node != ocargo.level.pathFinder.destination) {
+	while (node !== ocargo.level.pathFinder.destination) {
 		var next = node.connectedNodes[0];
 		node.addConnectedNode(next);
 		node = next;
@@ -32,6 +32,6 @@ ocargo.PathFinder.prototype.getOptimalPath = function() {
 	ocargo.level.pathFinder.optimalPath = node;
 };
 
-ocargo.PathFinder.prototype.recogniseInstruction = function(stack){
-	
+ocargo.PathFinder.prototype.recogniseInstruction = function(stack) {
+
 };
