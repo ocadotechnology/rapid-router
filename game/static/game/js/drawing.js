@@ -19,8 +19,7 @@ var ROTATION_OFFSET_X = 25;
 var ROTATION_OFFSET_Y = VAN_WIDTH - 20;
 
 var ROAD_WIDTH = GRID_SPACE_SIZE / 2;
-var EDGE_GAP_X = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-var EDGE_GAP_Y = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
+var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
     fill: ROAD_COLOUR
@@ -68,15 +67,15 @@ function identifyInstruction(roadSet) {
 
     if (diffX === 0 && diffY === 0)
         instruction = 'UL';
-    if (diffX === 0 && diffY == EDGE_GAP_Y)
+    if (diffX === 0 && diffY === EDGE_GAP)
         instruction = 'DL';
-    if (diffX == EDGE_GAP_X && diffY == EDGE_GAP_Y)
+    if (diffX === EDGE_GAP && diffY === EDGE_GAP)
         instruction = 'DR';
-    if (diffX == EDGE_GAP_X && diffY === 0)
+    if (diffX === EDGE_GAP && diffY === 0)
         instruction = 'UR';
-    if (roadBox.width == 50 && roadBox.height == 100)
+    if (roadBox.width === 50 && roadBox.height === 100)
         instruction = 'V';
-    if (roadBox.width == 100 && roadBox.height == 50)
+    if (roadBox.width === 100 && roadBox.height === 50)
         instruction = 'H';
 
     return instruction;
@@ -186,11 +185,11 @@ function createTurn(paper, i, j, direction) {
 function createTurnUL(baseX, baseY) {
 
     var turn = paper.path([
-        'M', baseX, baseY + EDGE_GAP_Y,
-        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X, baseY,
-        'H', baseX + EDGE_GAP_X + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX,
-            baseY + EDGE_GAP_Y + ROAD_WIDTH
+        'M', baseX, baseY + EDGE_GAP,
+        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY,
+        'H', baseX + EDGE_GAP + ROAD_WIDTH,
+        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH, baseX,
+            baseY + EDGE_GAP + ROAD_WIDTH
     ]);
 
     var marker = paper.path([
@@ -208,11 +207,11 @@ function createTurnUL(baseX, baseY) {
 function createTurnDL(baseX, baseY) {
 
     var turn = paper.path([
-        'M', baseX, baseY + EDGE_GAP_Y + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + EDGE_GAP_X,
+        'M', baseX, baseY + EDGE_GAP + ROAD_WIDTH,
+        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + EDGE_GAP,
             baseY + GRID_SPACE_SIZE,
-        'H', baseX + EDGE_GAP_X + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX, baseY + EDGE_GAP_Y
+        'H', baseX + EDGE_GAP + ROAD_WIDTH,
+        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX, baseY + EDGE_GAP
     ]);
 
     var marker = paper.path([
@@ -230,11 +229,11 @@ function createTurnDL(baseX, baseY) {
 function createTurnDR(baseX, baseY) {
 
     var turn = paper.path([
-        'M', baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP_Y,
-        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X, baseY + GRID_SPACE_SIZE,
-        'H', baseX + EDGE_GAP_X + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y + ROAD_WIDTH,
-            baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP_Y + ROAD_WIDTH
+        'M', baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP,
+        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY + GRID_SPACE_SIZE,
+        'H', baseX + EDGE_GAP + ROAD_WIDTH,
+        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH,
+            baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP + ROAD_WIDTH
     ]);
 
     var marker = paper.path([
@@ -252,11 +251,11 @@ function createTurnDR(baseX, baseY) {
 function createTurnUR(baseX, baseY) {
 
     var turn = paper.path([
-        'M', baseX + EDGE_GAP_X, baseY,
-        'Q', baseX + EDGE_GAP_X, baseY + EDGE_GAP_Y + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY +
-            EDGE_GAP_Y + ROAD_WIDTH,
-        'V', baseY + EDGE_GAP_Y,
-        'Q', baseX + EDGE_GAP_X + ROAD_WIDTH, baseY + EDGE_GAP_Y, baseX + EDGE_GAP_X + 
+        'M', baseX + EDGE_GAP, baseY,
+        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY +
+            EDGE_GAP + ROAD_WIDTH,
+        'V', baseY + EDGE_GAP,
+        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX + EDGE_GAP + 
             ROAD_WIDTH, baseY
     ]);
 
@@ -277,12 +276,12 @@ function getRoadLetters(previous, node1, node2){
 	node1 = transformY(node1);
 	node2 = transformY(node2);
 	
-	if (isHorizontal(node1, node2) 
-		&& (previous == null || isHorizontal(previous, node1))) {
+	if (isHorizontal(node1, node2) &&
+        (previous === null || isHorizontal(previous, node1))) {
 		return 'H';
 
-	} else if (isVertical(node1, node2) 
-		&& (previous == null || isVertical(previous, node1))) {
+	} else if (isVertical(node1, node2) &&
+        (previous === null || isVertical(previous, node1))) {
 		return 'V';
 
 	// Handle turns.
@@ -303,11 +302,11 @@ function getRoadLetters(previous, node1, node2){
 }
 
 function isHorizontal(prev, next) {
-	return prev.y == next.y;
+	return prev.y === next.y;
 }
 
 function isVertical(prev, next) {
-	return prev.x == next.x;
+	return prev.x === next.x;
 }
 
 function nextPointAbove(curr, next) {
@@ -331,12 +330,13 @@ function createRoad(paper, nodes) {
     
     //TODO: draw dead ends (if connectedNodes.length == 1)
     $.each(nodes, function(i, node) {
-    	for(var i = 0; i < node.connectedNodes.length; i++){
+    	for (i = 0; i < node.connectedNodes.length; i++) {
     		var previousNode = node.connectedNodes[i];
     		
-    		for(var j = i + 1; j < node.connectedNodes.length; j++){
+    		for (var j = i + 1; j < node.connectedNodes.length; j++) {
     			var nextNode = node.connectedNodes[j];
-    			var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+    			var roadLetters = getRoadLetters(previousNode.coordinate,
+                                                 node.coordinate, nextNode.coordinate);
     			console.log(roadLetters);
     			
     			var flipped = transformY(node.coordinate);
@@ -379,7 +379,7 @@ function scrollToShowVan() {
 }
 
 function moveVan(attr, callback) {
-    var combinedCallback = function () {
+    var combinedCallback = function() {
         scrollToShowVan();
         callback();
     };
@@ -461,19 +461,19 @@ function isMobile() {
     return !!mobileDetect.mobile();
 }
 
-function drawBackground(paper){
+function drawBackground(paper) {
     if (!isMobile()) {
         paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
             .attr({fill: 'url(/static/game/image/grassTile1.svg)'});
     }
 }
 
-function createCFC(){
+function createCFC() {
 	paper.image('/static/game/image/OcadoCFC.svg', INITIAL_X - 90, INITIAL_Y - 40, 100, 100)
         .transform('r90');
 }
 
-function createDestination(destination){
+function createDestination(destination) {
 	console.log(destination);
 	paper.image('/static/game/image/house1_noGreen.svg',
 		destination.x * GRID_SPACE_SIZE, PAPER_HEIGHT - (destination.y * GRID_SPACE_SIZE) - 25,
@@ -491,12 +491,12 @@ function renderTheMap(map) {
 }
 
 
-function closePopup(){
+function closePopup() {
     $('#myModal').foundation('reveal', 'close');
 }
 
-//This is the function that starts the pop-up
-function startPopup(title, subtitle, message){
+// This is the function that starts the pop-up.
+function startPopup(title, subtitle, message) {
     $('#myModal').foundation('reveal', 'open');
     $('.title').html(title);
     $('.lead').html(subtitle);

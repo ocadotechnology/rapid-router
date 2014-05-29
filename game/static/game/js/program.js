@@ -1,6 +1,6 @@
 var ocargo = ocargo || {};
 
-ocargo.Program = function(instructionHandler){
+ocargo.Program = function(instructionHandler) {
 	this.instructionHandler = instructionHandler;
 	this.stack = [];
 	this.isTerminated = false;
@@ -8,9 +8,9 @@ ocargo.Program = function(instructionHandler){
 
 ocargo.Program.prototype.step = function(level) {
 	var stackLevel = this.stack[this.stack.length - 1];
-	
+
 	var commandToProcess = stackLevel.splice(0, 1)[0];
-	if(stackLevel.length === 0){
+	if (stackLevel.length === 0) {
 		this.stack.pop();
 	}
 	
@@ -30,7 +30,7 @@ ocargo.Program.prototype.terminate = function() {
 	this.isTerminated = true;
 };
 
-function If(conditionalCommandSets, elseCommands, block){
+function If(conditionalCommandSets, elseCommands, block) {
 	this.conditionalCommandSets = conditionalCommandSets;
 	this.elseCommands = elseCommands;
 	this.block = block;
@@ -38,46 +38,46 @@ function If(conditionalCommandSets, elseCommands, block){
 
 If.prototype.execute = function(program, level) {
 	this.block.select();
-	
+
 	this.executeIfCommand(program, level);
-	
+
 	setTimeout(program.stepCallback, 500);
 };
 
 If.prototype.executeIfCommand = function(program, level) {
 	var i = 0;
-	while(i < this.conditionalCommandSets.length){
+	while(i < this.conditionalCommandSets.length) {
 		if(this.conditionalCommandSets[i].condition(level)) {
 			program.addNewStackLevel(this.conditionalCommandSets[i].commands.slice(0));
 			return;
 		}
-		
+
 		i++;
 	}
-	
-	if(this.elseCommands){
+
+	if(this.elseCommands) {
 		program.addNewStackLevel(this.elseCommands.slice(0));
 	}
 };
 
-function While(condition, body, block){
+function While(condition, body, block) {
 	this.condition = condition;
 	this.body = body;
 	this.block = block;
 }
 
-While.prototype.execute = function(program, level){
+While.prototype.execute = function(program, level) {
 	this.block.select();
-	
-	if(this.condition(level)){
+
+	if(this.condition(level)) {
 		program.addNewStackLevel([this]);
 		program.addNewStackLevel(this.body.slice(0));
 	}
-	
+
 	setTimeout(program.stepCallback, 500);
 };
 
-function counterCondition(count){
+function counterCondition(count) {
     return function() {
         if (count > 0) {
             count--;
@@ -114,8 +114,8 @@ function deadEndCondition() {
     };
 }
 
-function negateCondition(otherCondition){
-	return function(level){
+function negateCondition(otherCondition) {
+	return function(level) {
 		return !otherCondition(level);
 	};
 }
@@ -126,29 +126,29 @@ function atDestinationCondition() {
     };
 }
 
-function TurnLeftCommand(block){
+function TurnLeftCommand(block) {
 	this.block = block;
 }
 
-TurnLeftCommand.prototype.execute = function(program){
+TurnLeftCommand.prototype.execute = function(program) {
 	this.block.select();
 	program.instructionHandler.handleInstruction(TURN_LEFT, program);
 };
 
-function TurnRightCommand(block){
+function TurnRightCommand(block) {
 	this.block = block;
 }
 
-TurnRightCommand.prototype.execute = function(program){
+TurnRightCommand.prototype.execute = function(program) {
 	this.block.select();
 	program.instructionHandler.handleInstruction(TURN_RIGHT, program);
 };
 
-function ForwardCommand(block){
+function ForwardCommand(block) {
 	this.block = block;
 }
 
-ForwardCommand.prototype.execute = function(program){
+ForwardCommand.prototype.execute = function(program) {
 	this.block.select();
 	program.instructionHandler.handleInstruction(FORWARD, program);
 };
@@ -161,4 +161,3 @@ TurnAroundCommand.prototype.execute = function(program) {
     this.block.select();
     program.instructionHandler.handleInstruction(TURN_AROUND, program);
 };
-
