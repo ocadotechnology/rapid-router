@@ -8,7 +8,7 @@ def noPermission():
     return "You don't have permissions to see this."
 
 
-""" String messages used as lesson tips in the game view. """
+""" String messages used as level tips in the game view. """
 
 def buttons():
     return "Use the buttons in the left bottom part of the screen to create a path that " \
@@ -83,7 +83,7 @@ def description_level11():
     return description_overall() + message
 
 def description_level12():
-    message = "In this lesson, we have a look at the <b>if</b> statement. <br> <b>If</b> " \
+    message = "In this level, we have a look at the <b>if</b> statement. <br> <b>If</b> " \
         + "statements are used when we want a set of commands to be executed only if a condition " \
         + "holds. For example, \'if there is a turn right, turn right\'. If the condition " \
         + "is false, the block is omitted. <br> Use the <b>if</b> block to create a path " \

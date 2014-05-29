@@ -11,4 +11,5 @@ local_settings.py
 dbfile
 *.orig
 .sass-cache
-.DS_Store
+*.DS_Store
+*.jshintrc

@@ -10,6 +10,7 @@ ocargo.Level = function(map, van, ui) {
     this.correct = 0;
     this.attemptData = {};
     this.blockLimit = null;
+    this.pathFinder = new ocargo.PathFinder(map.nodes);
 };
 
 ocargo.Level.prototype.play = function(program) {
@@ -17,7 +18,7 @@ ocargo.Level.prototype.play = function(program) {
     this.attemptData = {};
     var commandStack = [];
 
-    if (ocargo.level.blockLimit && 
+    if (ocargo.level.blockLimit &&
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
         enableDirectControl();
         startPopup("Oh no!", "", "You used too many blocks!");
@@ -25,7 +26,7 @@ ocargo.Level.prototype.play = function(program) {
         return;
     }
 
-    ocargo.level.attemptData.level = ocargo.level.levelId.toString(); 
+    ocargo.level.attemptData.level = ocargo.level.levelId.toString();
 
     for (var i = 0; i < program.stack.length; i++) {
         ocargo.level.recogniseStack(program.stack[i], commandStack);
@@ -46,9 +47,9 @@ ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
         for (var i = 0; i < stack.length; i++) {
             var command = recogniseCommand(stack[i], returnStack);
             returnStack.push(command);
-        } 
+        }
     }
-    
+
     function recogniseCommand(command, returnStack) {
         var parsedCommand = {};
         
@@ -60,14 +61,14 @@ ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
             parsedCommand.command = 'Right';
         } else if (command instanceof TurnAroundCommand) {
             parsedCommand.command = 'TurnAround';
-       
+
         } else if (command instanceof While) {
             var block = [];
             ocargo.level.recogniseStack(command.body, block);
             parsedCommand.command = 'While';
             parsedCommand.condition = command.condition.toString();
             parsedCommand.block = block;
-       
+
         } else if (command instanceof If) {
             var commands = command.conditionalCommandSets[0];
             var ifBlock = [];
@@ -100,16 +101,17 @@ ocargo.Level.prototype.step = function() {
 
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
-    sendAttempt(100);
-    ocargo.level.successful = false;
+    //ocargo.level.pathFinder.getOptimalSolution(ocargo.level.attemptData.commandStack);
+    //var score = ocargo.level.pathFinder.getScore(ocargo.level.attemptData.commandStack);
+    sendAttempt();
     ocargo.sound.win();
     var message = '';
     var subtitle = '';
     enableDirectControl();
 
     if (ocargo.level.levelId < LEVEL_COUNT) {
-        message = '<button onclick="window.location.href=' + "'/game/" + (ocargo.level.levelId + 1) + 
-                  "'" + '"">Next lesson</button>';
+        message = '<button onclick="window.location.href=' + "'/game/" +
+                    (ocargo.level.levelId + 1) + "'" + '"">Next level</button>';
     } else {
         subtitle = "Congratulations, that's all we've got for you now! ";
         message = "Why not try to create your own road? <br><br> " +
@@ -122,7 +124,6 @@ ocargo.Level.prototype.win = function() {
 
 ocargo.Level.prototype.fail = function(msg) {
     var title = 'Oh dear! :(';
-    ocargo.level.successful = false;
     console.debug(title);
     enableDirectControl();
     ocargo.sound.failure();
@@ -175,7 +176,7 @@ function sendAttempt(score) {
     return false;
 }
 
-function InstructionHandler(level){
+function InstructionHandler(level) {
 	this.level = level;
 }
 
@@ -186,7 +187,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
     if (!nextNode) {
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
-        this.level.fail("Your first " + n + " execution steps were right." + 
+        this.level.fail("Your first " + n + " execution steps were right." +
                         " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
 
         program.terminate();

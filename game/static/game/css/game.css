@@ -26,13 +26,44 @@
 }
 
 #controls {
-    position: fixed;
     bottom: 20px;
+    height: 200px;
+    position: fixed;
     right: 20px;
+    width: 420px
 }
 
 #controls button {
     margin-bottom: 0;
+}
+
+#controls .quit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#controls #turnLeft,
+#controls #turnRight,
+#controls #play {
+    top: 50px;
+}
+
+#controls #moveForward, 
+#controls #play {
+    right: 50px;
+}
+
+#controls #turnLeft {
+    right: 100px;
+}
+
+#controls #turnRight {
+    right: 0;
+}
+
+#controls #moveForward {
+    top: 0;
 }
 
 button, .button, img.control{
@@ -55,24 +86,18 @@ img.control{
 }
 
 /* Styles for the instruction buttons */
-#instructions {
-    background-color:rgba(255,255,255,0.5);
-    bottom: 20px;
-    left: 185px;
-    padding: 20px;
-    position: absolute;
-    width: 35%;
-}
-
 .picButton {    
     background-color: transparent;
     padding: 4px 2px 0;
+    position: absolute;
     vertical-align: top;
 }
 
+.picButton[disabled],
 .picButton:hover,
 .picButton:focus {
    background-color:rgba(255,255,255,0.5);
+   border:none;
 }
 
 .picButton span {
@@ -92,7 +117,7 @@ img.control{
 }
 
 .picButton#turnRight span {
-    background-position: -105px -43px;
+    background-position: -105px -45px;
 }
 
 .picButton#moveForward span {
@@ -101,4 +126,8 @@ img.control{
 
 .picButton#play span {
     background-position: -52px -49px;
+}
+
+#blockly {
+    height: 95%;
 }

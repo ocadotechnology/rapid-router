@@ -30,7 +30,7 @@ function generateNodes(points){
 function initialiseDefault() {
     'use strict';
 
-    var title = LEVEL_ID > 15 ? "" : "Lesson " + LEVEL_ID;
+    var title = LEVEL_ID > 15 ? "" : "Level " + LEVEL_ID;
     startPopup(title, "", LESSON); 
 
     var path = JSON.parse(PATH);
@@ -51,14 +51,14 @@ function enableDirectControl() {
     document.getElementById('moveForward').disabled = false;
     document.getElementById('turnLeft').disabled = false;
     document.getElementById('turnRight').disabled = false;
-    ocargo.level.blockedPlay = false;
+    document.getElementById('play').disabled = false;
 }
 
 function disableDirectControl() {
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
-    ocargo.level.blockedPlay = true;
+    document.getElementById('play').disabled = true;
 }
 
 function trackDevelopment() {
@@ -80,17 +80,14 @@ function trackDevelopment() {
     $('#play').click(function() {
         if (ocargo.blocklyControl.incorrect)
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        console.debug(!ocargo.level.blockedPlay);
-        if (!ocargo.level.blockedPlay) {
-            disableDirectControl();
-            var program = ocargo.blocklyControl.populateProgram();
-            program.instructionHandler = new InstructionHandler(ocargo.level);
-            var nodes = ocargo.level.map.nodes;
-            ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
-            ocargo.ui.setVanToFront();
-            ocargo.level.play(program);
-            ocargo.level.correct = 0;
-        }
+        disableDirectControl();
+        var program = ocargo.blocklyControl.populateProgram();
+        program.instructionHandler = new InstructionHandler(ocargo.level);
+        var nodes = ocargo.level.map.nodes;
+        ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+        ocargo.ui.setVanToFront();
+        ocargo.level.play(program);
+        ocargo.level.correct = 0;
     });
 
     $('#clearIncorrect').click(function() {

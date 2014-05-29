@@ -31,7 +31,9 @@ Blockly.Blocks['move_forwards'] = {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('move forwards')
-            .appendField(new Blockly.FieldImage('/static/game/image/arrow_forward.svg', ocargo.blocklyControl.IMAGE_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_forward.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Move the van forwards');
@@ -44,7 +46,9 @@ Blockly.Blocks['turn_left'] = {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn left')
-            .appendField(new Blockly.FieldImage('/static/game/image/arrow_left.svg', ocargo.blocklyControl.IMAGE_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_left.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van left');
@@ -57,7 +61,9 @@ Blockly.Blocks['turn_right'] = {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn right')
-            .appendField(new Blockly.FieldImage('/static/game/image/arrow_right.svg', ocargo.blocklyControl.IMAGE_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_right.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van right');
@@ -70,7 +76,9 @@ Blockly.Blocks['turn_around'] = {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn around')
-            .appendField(new Blockly.FieldImage('/static/game/image/arrow_u.svg', ocargo.blocklyControl.IMAGE_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_u.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH, 
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van around');
@@ -87,7 +95,9 @@ Blockly.Blocks['road_exists'] = {
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
             .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE')
-            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg', ocargo.blocklyControl.EXTRA_BLOCK_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
 
@@ -97,7 +107,9 @@ Blockly.Blocks['dead_end'] = {
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
             .appendField('is dead end')
-            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg', ocargo.blocklyControl.EXTRA_BLOCK_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
 
@@ -107,11 +119,13 @@ Blockly.Blocks['at_destination'] = {
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
             .appendField('at destination')
-            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg', ocargo.blocklyControl.EXTRA_BLOCK_WIDTH, ocargo.blocklyControl.BLOCK_HEIGHT));
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
 
-// Customise controls_repeat block to not allow more than a sensible number of repetitions
+//Customise controls_repeat block to not allow more than a sensible number of repetitions
 var controlsRepeatBlock = Blockly.Blocks['controls_repeat'];
 var originalInit = controlsRepeatBlock.init;
 controlsRepeatBlock.init = function () {
@@ -126,6 +140,16 @@ controlsRepeatBlock.init = function () {
         }
         return n;
     };
+};
+
+// Make 'not' taller
+var notBlock = Blockly.Blocks['logic_negate'];
+var originalNotInit = notBlock.init;
+notBlock.init = function () {
+	originalNotInit.call(this);
+	this.inputList[0].appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                         ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                         ocargo.blocklyControl.BLOCK_HEIGHT));
 };
 
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
