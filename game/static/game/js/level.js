@@ -112,7 +112,7 @@ ocargo.Level.prototype.win = function() {
 
     if (ocargo.level.levelId < LEVEL_COUNT) {
         message = '<button onclick="window.location.href=' + "'/game/" + (ocargo.level.levelId + 1) + 
-                  "'" + '"">Next lesson</button>';
+                  "'" + '"">Next level</button>';
     } else {
         subtitle = "Congratulations, that's all we've got for you now! ";
         message = "Why not try to create your own road? <br><br> " +

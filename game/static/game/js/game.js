@@ -30,7 +30,7 @@ function generateNodes(points){
 function initialiseDefault() {
     'use strict';
 
-    var title = LEVEL_ID > 15 ? "" : "Lesson " + LEVEL_ID;
+    var title = LEVEL_ID > 15 ? "" : "Level " + LEVEL_ID;
     startPopup(title, "", LESSON); 
 
     var path = JSON.parse(PATH);
