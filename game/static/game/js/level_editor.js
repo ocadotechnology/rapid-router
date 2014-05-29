@@ -58,13 +58,13 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
 };
 
 ocargo.MapEditor.prototype.markPossible = function(point) {
-    var curr;
-    for (var i = 0; i < this.possibleNext.length; i++) {
+    var i, curr;
+    for (i = 0; i < this.possibleNext.length; i++) {
         curr = this.possibleNext[i];
         this.mark(curr, BACKGROUND_COLOR, 0, false);
     }
     this.possibleNext = getPossibleNextMoves(point, this.map);
-    for (var i = 0; i < this.possibleNext.length; i++) {
+    for (i = 0; i < this.possibleNext.length; i++) {
         curr = this.possibleNext[i];
         this.mark(this.possibleNext[i], SUGGESTED_COLOR, 1, undefined);
     }
@@ -84,25 +84,25 @@ ocargo.MapEditor.prototype.trackCreation = function() {
     function up() {
         var point = ocargo.mapEditor.current.slice(0);
         point[1] -= 1;
-        point = handle(point);
+        handle(point);
     }
 
     function down() {
         var point = ocargo.mapEditor.current.slice(0);
         point[1] += 1;
-        point = handle(point);
+        handle(point);
     }
 
     function left() {
         var point = ocargo.mapEditor.current.slice(0);
         point[0] -= 1;
-        point = handle(point);
+        handle(point);
     }
 
     function right() {
         var point = ocargo.mapEditor.current.slice(0);
         point[0] += 1;
-        point = handle(point);
+        handle(point);
     }
 
     document.onkeydown = function(event) {
@@ -113,7 +113,7 @@ ocargo.MapEditor.prototype.trackCreation = function() {
                 left();
                 break;
             case 38:
-                up()
+                up();
                 break;
             case 39:
                 right();
@@ -306,15 +306,18 @@ $('#dragMagic').click(function() {
         var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
     }
     if (!unified) {
-        // Clear the map to get rid of the seperate road segments.
+        var i;
+
+        // Clear the map to get rid of the separate road segments.
         ocargo.mapEditor.elements = ocargo.mapEditor.submittedPoints.length;
-        for (var i = 0; i < ocargo.mapEditor.map.length; i++) {
+        for (i = 0; i < ocargo.mapEditor.map.length; i++) {
             for(var j = 0; j < ocargo.mapEditor.map[0].length; j++) {
                 ocargo.mapEditor.map[i][j] = false;
             }
         }
+
         // Mark the remaining road elements on the map.
-        for (var i = 0; i < ocargo.mapEditor.submittedPoints.length; i++) {
+        for (i = 0; i < ocargo.mapEditor.submittedPoints.length; i++) {
             var point = ocargo.mapEditor.submittedPoints[i];
             ocargo.mapEditor.map[point[0]][point[1]] = true;
         }
@@ -378,15 +381,6 @@ Raphael.st.draggable = function() {
         };
 
     this.drag(moveFnc, startFnc, endFnc);
-
-    function isEmpty(map) {
-        for (var key in map) {
-            if (map.hasOwnProperty(key)) {
-                return false;
-            }
-        }
-        return true;
-    }
 };
 
 $('#UL').click(function() {
