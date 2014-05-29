@@ -7,6 +7,15 @@ var BORDER = '#bce369';
 
 var ocargo = ocargo || {};
 
+function pushInstruction(json, coord, instruction) {
+    var x = coord.x.toString();
+    var y = coord.y.toString();
+    if (!json.hasOwnProperty(x)) {
+        json[x] = {};
+    }
+    json[x][y] = instruction;
+}
+
 ocargo.MapEditor = function() {
     this.submittedPoints = [];
     this.map = initialiseVisited();
