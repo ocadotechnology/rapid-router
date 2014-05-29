@@ -5,7 +5,7 @@ import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
@@ -74,6 +74,12 @@ def level_new(request):
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
+
+def level_random(request):
+    """ Generates a new random level"""
+    level = Level.random_road()
+    return redirect("game.views.level", level=level.id)
+
 
 def submit(request):
     """ Processes a request on submission of the program solving the current level."""
