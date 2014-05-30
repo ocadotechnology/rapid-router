@@ -113,3 +113,12 @@ def description_level15():
 def description_level16():
     message = "zomg! Junctions! "
     return description_overall() + message
+
+def description_level17():
+    message = "zomg! Loops! "
+    return description_overall() + message
+
+
+def description_level18():
+    message = "zomg! Non-trivial loops! "
+    return description_overall() + message
