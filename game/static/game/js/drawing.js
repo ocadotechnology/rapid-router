@@ -451,7 +451,7 @@ function drawBackground(paper) {
 }
 
 function createCFC() {
-	paper.image('/static/game/image/OcadoCFC.svg', INITIAL_X - 90, INITIAL_Y - 40, 100, 100)
+	return paper.image('/static/game/image/OcadoCFC_no_road.svg', INITIAL_X - 95, INITIAL_Y - 21, 100, 100)
         .transform('r90');
 }
 
@@ -468,9 +468,9 @@ function renderTheMap(map) {
     paper.clear();
     drawBackground(paper);
     createRoad(paper, map.nodes);
-    createCFC(paper);
-    createDestination(map.destination.coordinate);
     van = createVan(paper);
+    createDestination(map.destination.coordinate);
+    createCFC(paper);
     scrollToShowVan();
 }
 
