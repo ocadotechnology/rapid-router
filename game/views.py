@@ -5,7 +5,7 @@ import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
@@ -32,7 +32,7 @@ def level(request, level):
     lesson = mark_safe(messageCall())
 
     #FIXME: figure out how to check for all this better
-    if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
+    if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
@@ -52,11 +52,11 @@ def level(request, level):
     return render(request, 'game/game.html', context)
 
 def level_new(request):
-    """ Processes a request on creation of the map in the level editor."""
+    """Processes a request on creation of the map in the level editor."""
     if 'path' in request.POST:
         path = request.POST['path']
         passedLevel = None
-        if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
+        if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
             passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False)
         else:
             passedLevel = Level(name=10, path=path, default=False)
@@ -74,6 +74,12 @@ def level_new(request):
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
+
+def level_random(request):
+    """ Generates a new random level"""
+    level = Level.random_road()
+    return redirect("game.views.level", level=level.id)
+
 
 def submit(request):
     """ Processes a request on submission of the program solving the current level."""

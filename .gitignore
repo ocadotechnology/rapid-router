@@ -5,6 +5,7 @@ local_settings.py
 *.iml
 *~
 
+.settings
 .project
 .pydevproject
 .idea

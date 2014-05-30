@@ -27,7 +27,7 @@
   <script src="{% static 'game/js/van.js' %}"></script>
   <script src="{% static 'game/js/sound.js' %}"></script>
   <script>
-    var PATH = "{{path}}";
+    var PATH = {{path|safe}};
     var LEVEL_ID = "{{level}}";
     var BLOCK_LIMIT = "{{blockLimit}}" != "None" ?  "{{blockLimit}}" : null;
     var LESSON = "{{lesson}}";

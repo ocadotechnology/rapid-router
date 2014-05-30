@@ -154,8 +154,6 @@ function createTurn(paper, i, j, direction) {
     var baseY = j * GRID_SPACE_SIZE;
     var turnAndMarker = [];
     
-    console.log(baseX, baseY);
-
     switch (direction) {
         case 'UL':
             turnAndMarker = createTurnUL(baseX, baseY);
@@ -342,7 +340,6 @@ function createRoad(paper, nodes) {
     			var nextNode = node.connectedNodes[j];
     			var roadLetters = getRoadLetters(previousNode.coordinate,
                                                  node.coordinate, nextNode.coordinate);
-    			console.log(roadLetters);
     			
     			var flipped = transformY(node.coordinate);
     			
@@ -477,7 +474,6 @@ function createCFC() {
 }
 
 function createDestination(destination) {
-	console.log(destination);
 	paper.image('/static/game/image/house1_noGreen.svg',
 		destination.x * GRID_SPACE_SIZE, PAPER_HEIGHT - (destination.y * GRID_SPACE_SIZE) - 25,
         100, 100).transform('r90');
