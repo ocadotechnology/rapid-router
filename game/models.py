@@ -8,7 +8,7 @@ import random
 class UserProfile (models.Model):
     user = models.OneToOneField(User)
     avatar = models.ImageField(upload_to='static/game/image/avatars/', null=True, blank=True,
-                               default='/static/game/image/avatars/default-avatar.jpeg')
+                               default='static/game/image/avatars/default-avatar.jpeg')
 
 class School (models.Model):
     name = models.CharField(max_length=200)
