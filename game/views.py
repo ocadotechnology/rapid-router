@@ -184,6 +184,9 @@ def render_student_info(request, logged):
 
 def parseInstructions(instructions, attempt, init):
     """ Helper method for inserting user-submitted instructions to the database."""
+
+    if not instructions:
+        return 
     command = None
     index = init
 

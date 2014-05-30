@@ -5,6 +5,7 @@ var ocargo = ocargo || {};
 ocargo.Node = function (coordinate) {
     this.coordinate = coordinate;
     this.connectedNodes = [];
+    this.parent = null;
 };
 
 ocargo.Node.prototype.addConnectedNode = function(node) {

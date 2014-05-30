@@ -10,7 +10,7 @@ ocargo.Level = function(map, van, ui) {
     this.correct = 0;
     this.attemptData = {};
     this.blockLimit = null;
-    this.pathFinder = new ocargo.PathFinder(map.nodes);
+    this.pathFinder = new ocargo.PathFinder(map);
 };
 
 ocargo.Level.prototype.play = function(program) {
@@ -101,20 +101,22 @@ ocargo.Level.prototype.step = function() {
 
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
-    //ocargo.level.pathFinder.getOptimalSolution(ocargo.level.attemptData.commandStack);
-    //var score = ocargo.level.pathFinder.getScore(ocargo.level.attemptData.commandStack);
+    ocargo.level.pathFinder.getOptimalPath();
+    ocargo.level.pathFinder.getOptimalInstructions();
+    var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
+    console.debug("score: ", score, " out of 200.");
     sendAttempt();
     ocargo.sound.win();
     var message = '';
-    var subtitle = '';
+    var subtitle = "Your score: " + score + " / " + ocargo.level.pathFinder.max;
     enableDirectControl();
 
     if (ocargo.level.levelId < LEVEL_COUNT) {
         message = '<button onclick="window.location.href=' + "'/game/" +
                     (ocargo.level.levelId + 1) + "'" + '"">Next level</button>';
     } else {
-        subtitle = "Congratulations, that's all we've got for you now! ";
-        message = "Why not try to create your own road? <br><br> " +
+        message = "Congratulations, that's all we've got for you now! <br>" + 
+                  "Why not try to create your own road? <br><br> " +
                   '<button onclick="window.location.href=' + "'/game/level_editor'" +
                   '"">Create your own map!</button> </center>' +
                   '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
