@@ -101,6 +101,7 @@ ocargo.Level.prototype.step = function() {
 
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
+    ocargo.level.pathFinder.getOptimalPath();
     ocargo.level.pathFinder.getOptimalInstructions();
     var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
     console.debug(score);
