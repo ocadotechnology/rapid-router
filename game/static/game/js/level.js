@@ -104,7 +104,7 @@ ocargo.Level.prototype.win = function() {
     ocargo.level.pathFinder.getOptimalPath();
     ocargo.level.pathFinder.getOptimalInstructions();
     var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
-    console.debug(score);
+    console.debug("score: ", score, " out of 200.");
     sendAttempt();
     ocargo.sound.win();
     var message = '';

@@ -10,7 +10,6 @@ ocargo.PathFinder = function(map) {
 };
 
 ocargo.PathFinder.prototype.getOptimalInstructions = function() {
-    console.debug("Optimal path length", ocargo.level.pathFinder.optimalPath.length);
     ocargo.level.pathFinder.optimalInstructions = [];
     for (var i = 1; i < ocargo.level.pathFinder.optimalPath.length - 1; i++) {
         var previousNode = ocargo.level.pathFinder.optimalPath[i - 1];
@@ -24,14 +23,12 @@ ocargo.PathFinder.prototype.getOptimalInstructions = function() {
 };
 
 ocargo.PathFinder.prototype.getScore = function(stack) {
-    console.debug("Instructions: ", stack);
+
     var userSolutionLength = this.getLength(stack);
-    console.debug("User instruction length ", userSolutionLength);
     var instrLengthScore = 100;
     var pathLenScore = 100;
     instrLengthScore = Math.min(100, Math.max(
         0, instrLengthScore - (userSolutionLength - this.optimalInstructions.length) * 10));
-    console.debug("Instruction length score " + instrLengthScore + " = ");
     return instrLengthScore + pathLenScore;
 };
 
@@ -56,6 +53,7 @@ ocargo.PathFinder.prototype.aStar = function() {
     while (openSet.length > 0) {
         current = openSet[openSet.length-1];
         currentIndex = this.nodes.indexOf(current);
+
         // End case.
         if (current === end) {
             var curr = current;
@@ -64,12 +62,9 @@ ocargo.PathFinder.prototype.aStar = function() {
                 ret.push(curr);
                 curr = curr.parent;
             }
-            for(var i = 0; i < this.nodes.length; i++) {
-            }
             ret.push(start);
             ret.reverse();
             for(var a = 0; a < ret.length; a++) {
-                console.debug("Path", a, ret[a].coordinate);
             }
             return ret;
         }
@@ -95,7 +90,6 @@ ocargo.PathFinder.prototype.aStar = function() {
             }
 
             if (gScoreIsBest) {
-                console.debug(current.coordinate," <-> ", neighbour.coordinate);
                 neighbour.parent = current;
                 g_score[neighbourIndex] = gScore;
                 f_score[neighbourIndex] = g_score[neighbourIndex] + h_score[neighbourIndex];
