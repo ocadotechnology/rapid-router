@@ -40,15 +40,15 @@ ocargo.PathFinder.prototype.aStar = function() {
     var end = this.destination;     // Nodes already visited.
     var current;
     var start = this.nodes[0]
-    var closedSet = [];                                 // The neightbours yet to be evaluated.
-    var openSet = [start];
-    start.parent = null;
-    var came_from = [];                                 // The map of navigated nodes.
-    var g_score = [0];
-    var f_score = [0];
-    var h_score = [0]
+    var closedSet = [];             // The neightbours yet to be evaluated.
+    var openSet = [start];          // All 3 lists are indexed the same way original nodes are.
+    var costFromStart = [0];        // Costs from the starting point.
+    var reversePriority = [0];      // The lower the value, the higher priority of the node.
+    var heuristics = [0]            // Stores results of heuristic().
     var currentIndex = 0;
     var neighbourIndex = 0;
+
+    initialiseParents();
 
     while (openSet.length > 0) {
         current = openSet[openSet.length-1];
@@ -56,17 +56,7 @@ ocargo.PathFinder.prototype.aStar = function() {
 
         // End case.
         if (current === end) {
-            var curr = current;
-            var ret = [];
-            while(curr !== start && curr !== null) {
-                ret.push(curr);
-                curr = curr.parent;
-            }
-            ret.push(start);
-            ret.reverse();
-            for(var a = 0; a < ret.length; a++) {
-            }
-            return ret;
+            return getNodeList(current);
         }
         openSet.pop();
         closedSet.push(current);
@@ -78,21 +68,22 @@ ocargo.PathFinder.prototype.aStar = function() {
                 continue;
             }
 
-            var gScore = g_score[currentIndex] + 1;
+            var gScore = costFromStart[currentIndex] + 1;
             var gScoreIsBest = false;
 
             if (openSet.indexOf(current) === -1) {
                 gScoreIsBest = true;
-                h_score[neighbourIndex] = heuristic(neighbour, end);
+                heuristics[neighbourIndex] = heuristic(neighbour, end);
                 openSet.push(neighbour);
-            } else if (gScore < g_score[neighbourIndex]) {
+            } else if (gScore < costFromStart[neighbourIndex]) {
                 gScoreIsBest = true;
             }
 
             if (gScoreIsBest) {
                 neighbour.parent = current;
-                g_score[neighbourIndex] = gScore;
-                f_score[neighbourIndex] = g_score[neighbourIndex] + h_score[neighbourIndex];
+                costFromStart[neighbourIndex] = gScore;
+                reversePriority[neighbourIndex] =
+                    costFromStart[neighbourIndex] + heuristics[neighbourIndex];
             }
         }
     }
@@ -102,6 +93,24 @@ ocargo.PathFinder.prototype.aStar = function() {
         var d1 = Math.abs(node2.coordinate.x - node1.coordinate.x);
         var d2 = Math.abs(node2.coordinate.y - node1.coordinate.y);
         return d1 + d2;
+    }
+
+    function initialiseParents() {
+        for(var i = 0; i < ocargo.level.pathFinder.nodes.length; i++) {
+            ocargo.level.pathFinder.nodes[i].parent = null;
+        }
+    }
+
+    function getNodeList(current) {
+        var curr = current;
+        var ret = [];
+        while(curr !== start && curr !== null) {
+            ret.push(curr);
+            curr = curr.parent;
+        }
+        ret.push(start);
+        ret.reverse();
+        return ret;
     }
 };
 
