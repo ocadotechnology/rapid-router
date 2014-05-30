@@ -106,8 +106,7 @@ class Level (models.Model):
 
     @staticmethod
     def is_possible(tile, tiles):
-        return (tile not in tiles) and tile[0] > 0 and tile[0] < 10 - 1
-                and tile[1] > 0 and tile[1] < 8 - 1
+        return (tile not in tiles) and tile[0] > 0 and tile[0] < 10 - 1 and tile[1] > 0 and tile[1] < 8 - 1
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
