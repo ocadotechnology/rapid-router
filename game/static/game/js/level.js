@@ -108,15 +108,15 @@ ocargo.Level.prototype.win = function() {
     sendAttempt();
     ocargo.sound.win();
     var message = '';
-    var subtitle = '';
+    var subtitle = "Your score: " + score + " / " + ocargo.level.pathFinder.max;
     enableDirectControl();
 
     if (ocargo.level.levelId < LEVEL_COUNT) {
         message = '<button onclick="window.location.href=' + "'/game/" +
                     (ocargo.level.levelId + 1) + "'" + '"">Next level</button>';
     } else {
-        subtitle = "Congratulations, that's all we've got for you now! ";
-        message = "Why not try to create your own road? <br><br> " +
+        message = "Congratulations, that's all we've got for you now! <br>" + 
+                  "Why not try to create your own road? <br><br> " +
                   '<button onclick="window.location.href=' + "'/game/level_editor'" +
                   '"">Create your own map!</button> </center>' +
                   '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';

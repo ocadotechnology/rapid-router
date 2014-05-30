@@ -7,9 +7,11 @@ ocargo.PathFinder = function(map) {
     this.destination = map.destination;
     this.optimalInstructions = [];
     this.optimalPath = null;
+    this.max = 0;
 };
 
 ocargo.PathFinder.prototype.getOptimalInstructions = function() {
+
     ocargo.level.pathFinder.optimalInstructions = [];
     for (var i = 1; i < ocargo.level.pathFinder.optimalPath.length - 1; i++) {
         var previousNode = ocargo.level.pathFinder.optimalPath[i - 1];
@@ -27,6 +29,7 @@ ocargo.PathFinder.prototype.getScore = function(stack) {
     var userSolutionLength = this.getLength(stack);
     var instrLengthScore = 100;
     var pathLenScore = 100;
+    this.max = instrLengthScore + pathLenScore;
     instrLengthScore = Math.min(100, Math.max(
         0, instrLengthScore - (userSolutionLength - this.optimalInstructions.length) * 10));
     return instrLengthScore + pathLenScore;
@@ -37,6 +40,7 @@ ocargo.PathFinder.prototype.getOptimalPath = function() {
 };
 
 ocargo.PathFinder.prototype.aStar = function() {
+
     var end = this.destination;     // Nodes already visited.
     var current;
     var start = this.nodes[0]
@@ -90,18 +94,21 @@ ocargo.PathFinder.prototype.aStar = function() {
     return [];
 
     function heuristic(node1, node2) {
+
         var d1 = Math.abs(node2.coordinate.x - node1.coordinate.x);
         var d2 = Math.abs(node2.coordinate.y - node1.coordinate.y);
         return d1 + d2;
     }
 
     function initialiseParents() {
+
         for(var i = 0; i < ocargo.level.pathFinder.nodes.length; i++) {
             ocargo.level.pathFinder.nodes[i].parent = null;
         }
     }
 
     function getNodeList(current) {
+
         var curr = current;
         var ret = [];
         while(curr !== start && curr !== null) {
@@ -115,6 +122,7 @@ ocargo.PathFinder.prototype.aStar = function() {
 };
 
 ocargo.PathFinder.prototype.getLength = function(stack) {
+
     var total = 0;
     var i;
     if (!stack) {
@@ -134,6 +142,7 @@ ocargo.PathFinder.prototype.getLength = function(stack) {
 };
 
 ocargo.PathFinder.prototype.recogniseIndividualInstruction = function(previous, point1, point2) {
+
     if (isHorizontal(point1, point2) &&
         (previous === null || isHorizontal(previous, point1))) {
         return 'Forward';
