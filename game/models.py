@@ -90,19 +90,23 @@ class Level (models.Model):
         for attempts in xrange(5):
             origin = random.sample(tiles, 1)[0]
             possibles = set()
-            if (origin[0] - 1, origin[1]) not in tiles:
+            if Level.is_possible((origin[0] - 1, origin[1]), tiles):
                 possibles.add((origin[0] - 1, origin[1]))
-            if (origin[0] + 1, origin[1]) not in tiles:
+            if Level.is_possible((origin[0] + 1, origin[1]), tiles):
                 possibles.add((origin[0] + 1, origin[1]))
-            if (origin[0], origin[1] - 1) not in tiles:
+            if Level.is_possible((origin[0], origin[1] - 1), tiles):
                 possibles.add((origin[0], origin[1] - 1))
-            if (origin[0], origin[1] + 1) not in tiles:
+            if Level.is_possible((origin[0], origin[1] + 1), tiles):
                 possibles.add((origin[0], origin[1] + 1))
 
             if possibles:
                 return random.sample(possibles, 1)[0]
 
         return None
+
+    @staticmethod
+    def is_possible(tile, tiles):
+        return (tile not in tiles) and tile[0] > 0 and tile[0] < 10 - 1 and tile[1] > 0 and tile[1] < 8 - 1
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
