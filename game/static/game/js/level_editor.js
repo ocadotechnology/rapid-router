@@ -419,10 +419,26 @@ $('#V').click(function() {
     ocargo.mapEditor.elements++;
 });
 
+//TODO: remove once we use new map structure here
+function oldPathToNew(old){
+	var newPath = [];
+	for(var i = 0; i < old.length; i++){
+		var node = {'coordinate': [old[i][0], old[i][1]], 'connectedNodes': []};
+		if(i > 0){
+			node['connectedNodes'].push(i - 1);
+		}
+		if(i < old.length - 1){
+			node['connectedNodes'].push(i + 1);
+		}
+		newPath.push(node);
+	}
+	return newPath;
+}
+
 // Submission of a path of the created level which is then processed in level_new view.
 $(document).ready(function() {
     $("#export").click(function() {
-        var input_string = JSON.stringify(ocargo.mapEditor.submittedPoints);
+        var input_string = JSON.stringify(oldPathToNew(ocargo.mapEditor.submittedPoints));
 
         var blockTypes = [];
         $('.js-block-checkbox:checked').each(function(index, checkbox) {

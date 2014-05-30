@@ -5,26 +5,35 @@ function createUi() {
 }
 
 function createDefaultLevel(path, ui) {
-    var nodes = generateNodes(path);
+	var nodeData = path;
+	console.log(JSON.stringify(nodeData));
+	
+	nodes = createNodes(nodeData);
+    
     var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ui);
     var van = new ocargo.Van(nodes[0], nodes[1], ui);
     return new ocargo.Level(map, van, ui);
 }
 
-function generateNodes(points){
-    var previousNode = null;
-    var nodes = [];
-    for (var i = 0; i < points.length; i++) {
-          var p = points[i];
-          var coordinate = new ocargo.Coordinate(p[0], p[1]);
-          var node = new ocargo.Node(coordinate);
-          if (previousNode) {
-              node.addConnectedNodeWithBacklink(previousNode);
-          }
-          previousNode = node;
-          nodes.push(node);
-    }
-    return nodes;
+function createNodes(nodeData){
+	var nodes = [];
+	
+	// Create nodes with coords
+	for(var i = 0; i < nodeData.length; i++){
+		 var coordinate = new ocargo.Coordinate(nodeData[i]['coordinate'][0], nodeData[i]['coordinate'][1]);
+         nodes.push(new ocargo.Node(coordinate));
+	}
+	
+	// Link nodes (must be done in second loop so that linked nodes have definitely been created)
+	for(var i = 0; i < nodeData.length; i++){
+		var node = nodes[i];
+        var connectedNodes = nodeData[i]['connectedNodes'];
+        for(var j = 0; j < connectedNodes.length; j++){
+            node.addConnectedNode(nodes[connectedNodes[j]]);
+    	}
+	}
+	
+	return nodes;
 }
 
 function initialiseDefault() {
@@ -33,9 +42,8 @@ function initialiseDefault() {
     var title = LEVEL_ID > 15 ? "" : "Level " + LEVEL_ID;
     startPopup(title, "", LESSON); 
 
-    var path = JSON.parse(PATH);
     ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(path, ocargo.ui);
+    ocargo.level = createDefaultLevel(PATH, ocargo.ui);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
     enableDirectControl();
@@ -127,12 +135,4 @@ $('#mute').click(function() {
         $this.text('Unmute');
         ocargo.sound.mute();
     }
-});
-
-$('#randomRoad').click(function() {
-    var points = generateRandomPathPoints([0,3], 0.5, 13);
-    var nodes = generateNodes(points);  
-    var van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
-    var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
-    ocargo.level = new ocargo.Level(map, van, ocargo.ui);
 });

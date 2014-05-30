@@ -147,6 +147,7 @@ function stepper(level) {
             }
         } catch (error) {
             level.program.terminate();
+            throw error;
         }
     };
 }

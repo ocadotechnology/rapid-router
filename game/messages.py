@@ -109,3 +109,7 @@ def description_level15():
     message = "Now you are ready! <br> Use all your knowledge and the newly added conditions " \
         + "to guide the van to the house. "
     return description_overall() + message
+
+def description_level16():
+    message = "zomg! Junctions! "
+    return description_overall() + message

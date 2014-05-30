@@ -32,7 +32,7 @@ def level(request, level):
     lesson = mark_safe(messageCall())
 
     #FIXME: figure out how to check for all this better
-    if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
+    if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
@@ -52,11 +52,11 @@ def level(request, level):
     return render(request, 'game/game.html', context)
 
 def level_new(request):
-    """ Processes a request on creation of the map in the level editor."""
+    """Processes a request on creation of the map in the level editor."""
     if 'path' in request.POST:
         path = request.POST['path']
         passedLevel = None
-        if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
+        if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
             passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False)
         else:
             passedLevel = Level(name=10, path=path, default=False)
