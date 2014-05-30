@@ -11,7 +11,8 @@ function createDefaultLevel(path, ui) {
 	nodes = createNodes(nodeData);
     
     var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ui);
-    var van = new ocargo.Van(nodes[0], nodes[1], ui);
+    var maxFuel = 50; //TODO: load from server per level
+    var van = new ocargo.Van(nodes[0], nodes[1], maxFuel, ui);
     return new ocargo.Level(map, van, ui);
 }
 
@@ -92,7 +93,7 @@ function trackDevelopment() {
         var program = ocargo.blocklyControl.populateProgram();
         program.instructionHandler = new InstructionHandler(ocargo.level);
         var nodes = ocargo.level.map.nodes;
-        ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
+        ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.level.van.maxFuel, ocargo.ui);
         ocargo.ui.setVanToFront();
         ocargo.level.play(program);
         ocargo.level.correct = 0;

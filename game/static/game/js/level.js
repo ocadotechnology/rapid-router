@@ -196,6 +196,12 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
         program.terminate();
         return; //TODO: animate the crash
     }
+    
+    if(this.level.van.fuel === 0){
+        this.level.fail("You ran out of fuel! Try to find a shorter path to the destination.");
+		program.terminate();
+		return;
+    }
 
     this.level.van.move(nextNode, instruction, program.stepCallback);
 };
