@@ -77,7 +77,7 @@ Blockly.Blocks['turn_around'] = {
         this.appendDummyInput()
             .appendField('turn around')
             .appendField(new Blockly.FieldImage('/static/game/image/arrow_u.svg',
-                                                ocargo.blocklyControl.IMAGE_WIDTH, 
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
@@ -152,6 +152,10 @@ notBlock.init = function () {
                                                          ocargo.blocklyControl.BLOCK_HEIGHT));
 };
 
+// Disable the right-click context menus
+Blockly.showContextMenu_ = function(e) {};
+Blockly.Block.prototype.showContextMenu_ = function(e) {};
+
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
 	block.initSvg();
@@ -161,12 +165,12 @@ ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 
 ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(typeOfBlockToAdd) {
 	var blockToAdd = this.createBlock(typeOfBlockToAdd);
-	
+
 	var block = this.getStartBlock();
 	while(block.nextConnection.targetBlock()){
 		block = block.nextConnection.targetBlock();
 	}
-	
+
 	block.nextConnection.connect(blockToAdd.previousConnection);
 };
 
@@ -249,23 +253,23 @@ ocargo.BlocklyControl.prototype.getBlocksCount = function() {
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createWhile(block) {
 		return new While(
-			counterCondition(block.inputList[0].fieldRow[1].text_), 
+			counterCondition(block.inputList[0].fieldRow[1].text_),
 			getCommandsAtThisLevel(block.inputList[1].connection.targetBlock()),
 			block);
 	}
-	
+
 	function createWhileUntil(block) {
 		var condition = getCondition(block.inputList[0].connection.targetBlock());
 		if(block.inputList[0].fieldRow[1].value_ == 'UNTIL') {
 			condition = negateCondition(condition);
 		}
-		
+
 		return new While(
-			condition, 
+			condition,
 			getCommandsAtThisLevel(block.inputList[1].connection.targetBlock()),
 			block);
 	}
-	
+
 	function getCondition(conditionBlock){
 		if(conditionBlock.type === 'road_exists'){
 			var selection = conditionBlock.inputList[0].fieldRow[1].value_;
@@ -278,7 +282,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
         	return negateCondition(getCondition(conditionBlock.inputList[0].connection.targetBlock()));
         }
 	}
-	
+
 	function createIf(block) {
 		var conditionalCommandSets = [];
 
@@ -296,20 +300,20 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     			conditionalCommandSet.commands = getCommandsAtThisLevel(input.connection.targetBlock());
     			conditionalCommandSets.push(conditionalCommandSet);
     		}
-    		
+
     		i++;
     	}
-    	
+
     	if (elseCount === 1) {
     		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
     	}
-    	
+
     	return new If(conditionalCommandSets, elseCommands, block);
 	}
-	
+
 	function getCommandsAtThisLevel(block){
     	var commands = [];
-    	
+
     	while(block){
     		if (block.type === 'move_forwards') {
     			commands.push(new ForwardCommand(block));
@@ -326,13 +330,13 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
             } else if (block.type === 'controls_if') {
             	commands.push(createIf(block));
             }
-    		
+
     		block = block.nextConnection.targetBlock();
     	}
-    	
+
     	return commands;
     }
-	
+
     var program = new ocargo.Program();
     var startBlock = this.getStartBlock();
     program.startBlock = startBlock;
