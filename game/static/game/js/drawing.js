@@ -22,9 +22,14 @@ var ROAD_WIDTH = GRID_SPACE_SIZE / 2;
 var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
-    fill: ROAD_COLOUR,
-    'stroke': '#aaa'
-};
+	    fill: ROAD_COLOUR,
+	    'stroke': '#aaa'
+	};
+
+var ROAD_ATTR_JUNCTION = {
+	    fill: ROAD_COLOUR,
+	    'stroke': 'none'
+	};
 
 var ROAD_MARKER_ATTR = {
     'stroke': 'white',
@@ -88,23 +93,26 @@ function identifyInstruction(roadSet) {
     return instruction;
 }
 
-function createHorizontalRoad(paper, i, j) {
+function createHorizontalRoad(paper, i, j, drawLines) {
     var x = i * GRID_SPACE_SIZE;
     var y = j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 
     var road = paper.rect(x, y, GRID_SPACE_SIZE, ROAD_WIDTH);
-    road.attr(ROAD_ATTR);
-
-    var marker = paper.path(['M', x, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-            'l', GRID_SPACE_SIZE, 0]);
-    marker.attr(ROAD_MARKER_ATTR);
-    marker.node.setAttribute('stroke-dasharray', DASH);
+    
+    var markerSet = paper.set();
+    if(drawLines){
+	    var marker = paper.path(['M', x, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
+	            'l', GRID_SPACE_SIZE, 0]);
+	    marker.attr(ROAD_MARKER_ATTR);
+	    marker.node.setAttribute('stroke-dasharray', DASH);
+	    markerSet.push(marker);
+	    road.attr(ROAD_ATTR);
+    }else{
+    	road.attr(ROAD_ATTR_JUNCTION);
+    }
     
     var weightPoint = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
     weightPoint.attr(WEIGHT_POINT_ATTR);
-
-    var markerSet = paper.set();
-    markerSet.push(marker);
 
     var roadSet = paper.set();
     roadSet.push(road, markerSet, weightPoint);
@@ -112,23 +120,27 @@ function createHorizontalRoad(paper, i, j) {
     return roadSet;
 }
 
-function createVerticalRoad(paper, i, j) {
+function createVerticalRoad(paper, i, j, drawLines) {
     var x = i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
     var y = j * GRID_SPACE_SIZE;
 
     var road = paper.rect(x, y, ROAD_WIDTH, GRID_SPACE_SIZE);
     road.attr(ROAD_ATTR);
-
-    var marker = paper.path(['M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, y,
-        'l', 0, GRID_SPACE_SIZE]);
-    marker.attr(ROAD_MARKER_ATTR);
-
+    
+    var markerSet = paper.set();
+    if(drawLines){
+	    var marker = paper.path(['M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, y,
+	        'l', 0, GRID_SPACE_SIZE]);
+	    marker.attr(ROAD_MARKER_ATTR);
+	    marker.node.setAttribute('stroke-dasharray', DASH);
+	    markerSet.push(marker);
+	    road.attr(ROAD_ATTR);
+    }else{
+    	road.attr(ROAD_ATTR_JUNCTION);
+    }
+    
     var weightPoint = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
     weightPoint.attr(WEIGHT_POINT_ATTR);
-    marker.node.setAttribute('stroke-dasharray', DASH);
-
-    var markerSet = paper.set();
-    markerSet.push(marker);
 
     var roadSet = paper.set();
     roadSet.push(road, markerSet, weightPoint);
@@ -136,26 +148,26 @@ function createVerticalRoad(paper, i, j) {
     return roadSet;
 }
 
-function createTurn(paper, i, j, direction) {
+function createTurn(paper, i, j, direction, drawLines) {
     var baseX = i * GRID_SPACE_SIZE;
     var baseY = j * GRID_SPACE_SIZE;
     var turnAndMarker = [];
     
     switch (direction) {
         case 'UL':
-            turnAndMarker = createTurnUL(baseX, baseY);
+            turnAndMarker = createTurnUL(baseX, baseY, drawLines);
             break;
 
         case 'UR':
-            turnAndMarker = createTurnUR(baseX, baseY);
+            turnAndMarker = createTurnUR(baseX, baseY, drawLines);
             break;
 
         case 'DR':
-            turnAndMarker = createTurnDR(baseX, baseY);
+            turnAndMarker = createTurnDR(baseX, baseY, drawLines);
             break;
 
         case 'DL':
-            turnAndMarker = createTurnDL(baseX, baseY);
+            turnAndMarker = createTurnDL(baseX, baseY, drawLines);
             break;
     }
 
@@ -163,9 +175,13 @@ function createTurn(paper, i, j, direction) {
     var marker = turnAndMarker[1];
     var weightPoint = paper.rect(baseX, baseY, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
-    turn.attr(ROAD_ATTR);
-    marker.attr(ROAD_MARKER_ATTR);
-    marker.node.setAttribute('stroke-dasharray', DASH);
+    if(drawLines){
+	    marker.attr(ROAD_MARKER_ATTR);
+	    marker.node.setAttribute('stroke-dasharray', DASH);
+	    turn.attr(ROAD_ATTR);
+    }else{
+    	turn.attr(ROAD_ATTR_JUNCTION);
+    }
     weightPoint.attr(WEIGHT_POINT_ATTR);
 
     var roadSet = paper.set();
@@ -174,7 +190,7 @@ function createTurn(paper, i, j, direction) {
     return roadSet;
 }
 
-function createTurnUL(baseX, baseY) {
+function createTurnUL(baseX, baseY, drawLines) {
     var turn = paper.path([
         'M', baseX, baseY + EDGE_GAP,
         'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY,
@@ -182,17 +198,19 @@ function createTurnUL(baseX, baseY) {
         'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH, baseX,
             baseY + EDGE_GAP + ROAD_WIDTH
     ]);
-
-    var marker = paper.path([
-        'M', baseX, baseY + GRID_SPACE_SIZE / 2,
-        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-            baseX + GRID_SPACE_SIZE / 2, baseY
-    ]);
+    
+    if(drawLines){
+	    var marker = paper.path([
+	        'M', baseX, baseY + GRID_SPACE_SIZE / 2,
+	        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
+	            baseX + GRID_SPACE_SIZE / 2, baseY
+	    ]);
+    }
 
     return [turn, marker];
 }
 
-function createTurnDL(baseX, baseY) {
+function createTurnDL(baseX, baseY, drawLines) {
     var turn = paper.path([
         'M', baseX, baseY + EDGE_GAP + ROAD_WIDTH,
         'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + EDGE_GAP,
@@ -200,17 +218,19 @@ function createTurnDL(baseX, baseY) {
         'H', baseX + EDGE_GAP + ROAD_WIDTH,
         'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX, baseY + EDGE_GAP
     ]);
-
-    var marker = paper.path([
-        'M', baseX, baseY + GRID_SPACE_SIZE / 2,
-        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-            baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE
-    ]);
+    
+    if(drawLines){
+	    var marker = paper.path([
+	        'M', baseX, baseY + GRID_SPACE_SIZE / 2,
+	        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
+	            baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE
+	    ]);
+    }
 
     return [turn, marker];
 }
 
-function createTurnDR(baseX, baseY) {
+function createTurnDR(baseX, baseY, drawLines) {
     var turn = paper.path([
         'M', baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP,
         'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY + GRID_SPACE_SIZE,
@@ -218,17 +238,19 @@ function createTurnDR(baseX, baseY) {
         'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH,
             baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP + ROAD_WIDTH
     ]);
-
-    var marker = paper.path([
-        'M', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE,
-        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-            baseX + GRID_SPACE_SIZE, baseY + GRID_SPACE_SIZE / 2
-    ]);
+    
+    if(drawLines){
+	    var marker = paper.path([
+	        'M', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE,
+	        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
+	            baseX + GRID_SPACE_SIZE, baseY + GRID_SPACE_SIZE / 2
+        ]);
+    }
 
     return [turn, marker];
 }
 
-function createTurnUR(baseX, baseY) {
+function createTurnUR(baseX, baseY, drawLines) {
     var turn = paper.path([
         'M', baseX + EDGE_GAP, baseY,
         'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY +
@@ -237,12 +259,14 @@ function createTurnUR(baseX, baseY) {
         'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX + EDGE_GAP + 
             ROAD_WIDTH, baseY
     ]);
-
-    var marker = paper.path([
-        'M', baseX + GRID_SPACE_SIZE, baseY + GRID_SPACE_SIZE / 2,
-        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-            baseX + GRID_SPACE_SIZE / 2, baseY
-    ]);
+    
+    if(drawLines){
+	    var marker = paper.path([
+	        'M', baseX + GRID_SPACE_SIZE, baseY + GRID_SPACE_SIZE / 2,
+	        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
+	            baseX + GRID_SPACE_SIZE / 2, baseY
+	    ]);
+    }
 
     return [turn, marker];
 }
@@ -301,20 +325,20 @@ function transformY(coord) {
     return new ocargo.Coordinate(coord.x, GRID_HEIGHT - 1 - coord.y);
 }
 
-function drawSingleRoadSegment(previousNode, node, nextNode){
+function drawSingleRoadSegment(previousNode, node, nextNode, drawLines){
 	var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
 	
 	var flipped = transformY(node.coordinate);
 	
 	switch (roadLetters) {
         case 'H':
-            createHorizontalRoad(paper, flipped.x, flipped.y);
+            createHorizontalRoad(paper, flipped.x, flipped.y, drawLines);
             break;
         case 'V':
-            createVerticalRoad(paper, flipped.x, flipped.y);
+            createVerticalRoad(paper, flipped.x, flipped.y, drawLines);
             break;
         default:
-            createTurn(paper, flipped.x, flipped.y, roadLetters);
+            createTurn(paper, flipped.x, flipped.y, roadLetters, drawLines);
             break;
     }
 }
@@ -328,12 +352,14 @@ function createRoad(paper, nodes) {
     		nextNode.coordinate = new ocargo.Coordinate(
     				node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
     				node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y));
-    		drawSingleRoadSegment(node.connectedNodes[0], node, nextNode);
+    		drawSingleRoadSegment(node.connectedNodes[0], node, nextNode, true);
     	}else{
+    		var drawLines = node.connectedNodes.length === 2;
+    		console.log(drawLines);
 	    	for (i = 0; i < node.connectedNodes.length; i++) {
 	    		var previousNode = node.connectedNodes[i];
 	    		for (var j = i + 1; j < node.connectedNodes.length; j++) {
-	    			drawSingleRoadSegment(previousNode, node, node.connectedNodes[j]);
+	    			drawSingleRoadSegment(previousNode, node, node.connectedNodes[j], drawLines);
 	    		}
 	    	}
     	}
