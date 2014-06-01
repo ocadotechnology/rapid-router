@@ -4,11 +4,8 @@ function createUi() {
     return new ocargo.SimpleUi();
 }
 
-function createDefaultLevel(path, ui) {
-	var nodeData = path;
-	console.log(JSON.stringify(nodeData));
-	
-	nodes = createNodes(nodeData);
+function createDefaultLevel(nodeData, ui) {
+	var nodes = createNodes(nodeData);
     
     var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ui);
     var maxFuel = 50; //TODO: load from server per level
@@ -101,12 +98,12 @@ function trackDevelopment() {
 
     $('#clearIncorrect').click(function() {
         ocargo.blocklyControl.removeWrong();
-        setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
+        enableDirectControl();
     });
 
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
-        setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
+        enableDirectControl();
     });
     
     $('#slideBlockly').click(function() {

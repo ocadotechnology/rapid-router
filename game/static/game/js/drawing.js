@@ -32,7 +32,7 @@ var ROAD_ATTR_JUNCTION = {
 	};
 
 var ROAD_MARKER_ATTR = {
-    'stroke': 'white',
+    'stroke': 'white'
 };
 var DASH = '10';
 
@@ -343,7 +343,7 @@ function drawSingleRoadSegment(previousNode, node, nextNode, drawLines){
     }
 }
 
-function createRoad(paper, nodes) {
+function createRoad(nodes) {
     $.each(nodes, function(i, node) {
     	if(node.connectedNodes.length === 1){
     		// Draw dead ends
@@ -355,7 +355,6 @@ function createRoad(paper, nodes) {
     		drawSingleRoadSegment(node.connectedNodes[0], node, nextNode, true);
     	}else{
     		var drawLines = node.connectedNodes.length === 2;
-    		console.log(drawLines);
 	    	for (i = 0; i < node.connectedNodes.length; i++) {
 	    		var previousNode = node.connectedNodes[i];
 	    		for (var j = i + 1; j < node.connectedNodes.length; j++) {
@@ -493,16 +492,11 @@ function createDestination(destination) {
 function renderTheMap(map) {
     paper.clear();
     drawBackground(paper);
-    createRoad(paper, map.nodes);
+    createRoad(map.nodes);
     van = createVan(paper);
     createDestination(map.destination.coordinate);
     createCFC(paper);
     scrollToShowVan();
-}
-
-
-function closePopup() {
-    $('#myModal').foundation('reveal', 'close');
 }
 
 // This is the function that starts the pop-up.
