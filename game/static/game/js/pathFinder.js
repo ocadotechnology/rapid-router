@@ -28,11 +28,14 @@ ocargo.PathFinder.prototype.getScore = function(stack) {
 
     var userSolutionLength = this.getLength(stack);
     var instrLengthScore = 100;
-    var pathLenScore = 100;
-    this.max = instrLengthScore + pathLenScore;
+    var fuelScore = 100;
+    var usedFuel = ocargo.level.van.maxFuel - ocargo.level.van.fuel;
+    console.debug(ocargo.level.van.maxFuel, ocargo.level.van.fuel, usedFuel, this.optimalPath.length - 2);
+    this.max = instrLengthScore + fuelScore;
     instrLengthScore = Math.min(100, Math.max(
         0, instrLengthScore - (userSolutionLength - this.optimalInstructions.length) * 10));
-    return instrLengthScore + pathLenScore;
+    fuelScore = Math.max(0, fuelScore - (usedFuel - (this.optimalPath.length - 2)) * 10);
+    return instrLengthScore + fuelScore;
 };
 
 ocargo.PathFinder.prototype.getOptimalPath = function() {

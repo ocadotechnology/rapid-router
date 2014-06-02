@@ -28,10 +28,10 @@
   <script src="{% static 'game/js/sound.js' %}"></script>
   <script>
     var PATH = {{path|safe}};
-    var LEVEL_ID = "{{level}}";
-    var BLOCK_LIMIT = "{{blockLimit}}" != "None" ?  "{{blockLimit}}" : null;
+    var LEVEL_ID = {{level}};
+    var BLOCK_LIMIT = "{{blockLimit}}" != "None" ?  {{blockLimit}} : null;
     var LESSON = "{{lesson}}";
-    var LEVEL_COUNT = "{{defaultLevelCount}}";
+    var LEVEL_COUNT = {{defaultLevelCount}};
   </script>
 {% endblock %}
 
