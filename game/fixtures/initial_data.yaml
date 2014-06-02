@@ -181,7 +181,7 @@
     default: true
     name: 10
     owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,4,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[5,3],"connectedNodes":[2]}]'
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,4,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2]}]'
   model: game.level
   pk: 17
 - fields:
