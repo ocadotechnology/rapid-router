@@ -32,6 +32,10 @@
     var BLOCK_LIMIT = "{{blockLimit}}" != "None" ?  {{blockLimit}} : null;
     var LESSON = "{{lesson}}";
     var LEVEL_COUNT = {{defaultLevelCount}};
+    var BLOCKS =  [];
+    {% for block in blocks %}
+      BLOCKS.push("{{block.type}}");
+    {% endfor %}
   </script>
 {% endblock %}
 
@@ -76,9 +80,9 @@
 </div>
 
 <xml id="toolbox" style="display: none">
-    {% for block in blocks %}
-        <block type="{{ block.type }}"></block>
-    {% endfor %}
+  {% for block in blocks %}
+    <block type="{{ block.type }}"></block>
+  {% endfor %}
 </xml>
 
 

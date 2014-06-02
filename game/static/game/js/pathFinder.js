@@ -8,20 +8,49 @@ ocargo.PathFinder = function(map) {
     this.optimalInstructions = [];
     this.optimalPath = null;
     this.max = 0;
+    this.blocks = BLOCKS;
 };
 
 ocargo.PathFinder.prototype.getOptimalInstructions = function() {
 
     ocargo.level.pathFinder.optimalInstructions = [];
+    var previousInstruction = null;
+    var whileBlock = [];
     for (var i = 1; i < ocargo.level.pathFinder.optimalPath.length - 1; i++) {
         var previousNode = ocargo.level.pathFinder.optimalPath[i - 1];
         var node = ocargo.level.pathFinder.optimalPath[i];
         var nextNode = ocargo.level.pathFinder.optimalPath[i + 1];
         var instr = ocargo.level.pathFinder.recogniseIndividualInstruction(
             previousNode.coordinate, node.coordinate, nextNode.coordinate);
-        ocargo.level.pathFinder.optimalInstructions.push(instr);
-        console.debug(instr);
+
+        if(nextNode === this.destination) {
+            if(instr === previousInstruction) {
+                whileBlock.push(instr);
+                console.debug('while');
+                console.debug(whileBlock);
+                ocargo.level.pathFinder.optimalInstructions.push('While');
+                ocargo.level.pathFinder.optimalInstructions.push(whileBlock);
+            } else {
+                console.debug(instr);
+                ocargo.level.pathFinder.optimalInstructions.push(instr);
+            }
+        } else if(instr !== previousInstruction) {
+            if(whileBlock.length > 1) {
+                console.debug('while');
+                console.debug(whileBlock);
+                ocargo.level.pathFinder.optimalInstructions.push('While');
+                ocargo.level.pathFinder.optimalInstructions.push(whileBlock);
+            } else if(previousInstruction !== null) {
+                console.debug(previousInstruction);
+                ocargo.level.pathFinder.optimalInstructions.push(previousInstruction);
+            }
+            whileBlock = [instr];
+        } else {
+            whileBlock.push(instr);
+        }
+        previousInstruction = instr;
     }
+    console.debug(this.optimalInstructions.length, this.optimalPath.length);
 };
 
 ocargo.PathFinder.prototype.getScore = function(stack) {
@@ -30,7 +59,6 @@ ocargo.PathFinder.prototype.getScore = function(stack) {
     var instrLengthScore = 100;
     var fuelScore = 100;
     var usedFuel = ocargo.level.van.maxFuel - ocargo.level.van.fuel;
-    console.debug(ocargo.level.van.maxFuel, ocargo.level.van.fuel, usedFuel, this.optimalPath.length - 2);
     this.max = instrLengthScore + fuelScore;
     instrLengthScore = Math.min(100, Math.max(
         0, instrLengthScore - (userSolutionLength - this.optimalInstructions.length) * 10));

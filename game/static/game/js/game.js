@@ -37,7 +37,7 @@ function createNodes(nodeData){
 function initialiseDefault() {
     'use strict';
 
-    var title = LEVEL_ID > 15 ? "" : "Level " + LEVEL_ID;
+    var title = "Level " + LEVEL_ID;
     startPopup(title, "", LESSON); 
 
     ocargo.ui = createUi();
