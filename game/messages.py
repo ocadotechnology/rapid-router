@@ -127,5 +127,9 @@ def description_level19():
     return description_overall() + message
 
 def description_level20():
+    message = "Non-trivial loops??!? "
+    return description_overall() + message
+
+def description_level21():    
     message = "zomg! I don't even know what to say!"
     return description_overall() + message
