@@ -23,7 +23,7 @@ var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
 	    fill: ROAD_COLOUR,
-	    'stroke': '#aaa'
+	    'stroke': '#aaa',
 	};
 
 var ROAD_ATTR_JUNCTION = {
@@ -36,6 +36,7 @@ var ROAD_MARKER_ATTR = {
 };
 var DASH = '10';
 
+//TODO: Remove weight point when we alter the level editor to not need it
 var WEIGHT_POINT_ATTR = {
     fill: '#FFF',
     'fill-opacity': 0,
@@ -196,7 +197,8 @@ function createTurnUL(baseX, baseY, drawLines) {
         'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY,
         'H', baseX + EDGE_GAP + ROAD_WIDTH,
         'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH, baseX,
-            baseY + EDGE_GAP + ROAD_WIDTH
+            baseY + EDGE_GAP + ROAD_WIDTH,
+        'V', baseY + EDGE_GAP
     ]);
     
     if(drawLines){
@@ -216,7 +218,8 @@ function createTurnDL(baseX, baseY, drawLines) {
         'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + EDGE_GAP,
             baseY + GRID_SPACE_SIZE,
         'H', baseX + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX, baseY + EDGE_GAP
+        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX, baseY + EDGE_GAP,
+        'V', baseY + EDGE_GAP + ROAD_WIDTH
     ]);
     
     if(drawLines){
@@ -236,7 +239,8 @@ function createTurnDR(baseX, baseY, drawLines) {
         'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY + GRID_SPACE_SIZE,
         'H', baseX + EDGE_GAP + ROAD_WIDTH,
         'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH,
-            baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP + ROAD_WIDTH
+            baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP + ROAD_WIDTH,
+        'V', baseY + EDGE_GAP
     ]);
     
     if(drawLines){
@@ -257,7 +261,8 @@ function createTurnUR(baseX, baseY, drawLines) {
             EDGE_GAP + ROAD_WIDTH,
         'V', baseY + EDGE_GAP,
         'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX + EDGE_GAP + 
-            ROAD_WIDTH, baseY
+            ROAD_WIDTH, baseY,
+        'H', baseX + EDGE_GAP
     ]);
     
     if(drawLines){
