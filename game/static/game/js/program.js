@@ -37,7 +37,7 @@ function If(conditionalCommandSets, elseCommands, block) {
 }
 
 If.prototype.execute = function(program, level) {
-	this.block.select();
+	this.block.selectWithConnected();
 
 	this.executeIfCommand(program, level);
 
@@ -67,7 +67,7 @@ function While(condition, body, block) {
 }
 
 While.prototype.execute = function(program, level) {
-	this.block.select();
+	this.block.selectWithConnected();
 
 	if(this.condition(level)) {
 		program.addNewStackLevel([this]);
@@ -131,7 +131,7 @@ function TurnLeftCommand(block) {
 }
 
 TurnLeftCommand.prototype.execute = function(program) {
-	this.block.select();
+	this.block.selectWithConnected();
 	program.instructionHandler.handleInstruction(TURN_LEFT, program);
 };
 
@@ -140,7 +140,7 @@ function TurnRightCommand(block) {
 }
 
 TurnRightCommand.prototype.execute = function(program) {
-	this.block.select();
+	this.block.selectWithConnected();
 	program.instructionHandler.handleInstruction(TURN_RIGHT, program);
 };
 
@@ -149,7 +149,7 @@ function ForwardCommand(block) {
 }
 
 ForwardCommand.prototype.execute = function(program) {
-	this.block.select();
+	this.block.selectWithConnected();
 	program.instructionHandler.handleInstruction(FORWARD, program);
 };
 
@@ -158,6 +158,6 @@ function TurnAroundCommand(block) {
 }
 
 TurnAroundCommand.prototype.execute = function(program) {
-    this.block.select();
+    this.block.selectWithConnected();
     program.instructionHandler.handleInstruction(TURN_AROUND, program);
 };
