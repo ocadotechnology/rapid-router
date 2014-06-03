@@ -481,7 +481,7 @@ function drawBackground(paper) {
 }
 
 function createCFC() {
-	return paper.image('/static/game/image/OcadoCFC_no_road.svg', INITIAL_X - 95, INITIAL_Y - 21, 100, 100)
+	return paper.image('/static/game/image/OcadoCFC_no_road.svg', INITIAL_X - 95, INITIAL_Y - 25, 100, 107)
         .transform('r90');
 }
 
