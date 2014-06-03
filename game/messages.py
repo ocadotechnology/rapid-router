@@ -125,3 +125,7 @@ def description_level18():
 def description_level19():
     message = "Have fun! "
     return description_overall() + message
+
+def description_level20():
+    message = "zomg! I don't even know what to say!"
+    return description_overall() + message
