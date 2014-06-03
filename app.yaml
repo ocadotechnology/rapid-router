@@ -1,7 +1,7 @@
 application: numeric-incline-526
 version: 1
 runtime: python27
-instance_class: F4
+instance_class: F2
 api_version: 1
 threadsafe: true
 
@@ -22,3 +22,7 @@ libraries:
   version: latest
 - name: MySQLdb
   version: latest
+
+automatic_scaling:
+  min_idle_instances: 4
+  max_pending_latency: 30ms
