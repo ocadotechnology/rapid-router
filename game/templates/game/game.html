@@ -17,6 +17,7 @@
   <script src="{% static 'game/js/blockly_control.js' %}"></script>
   <script src="{% static 'game/js/coordinate.js' %}"></script>
   <script src="{% static 'game/js/game.js' %}"></script>
+  <script src="{% static 'game/js/pathFinder.js' %}"></script>
   <script src="{% static 'game/js/instruction.js' %}"></script>
   <script src="{% static 'game/js/level.js' %}"></script>
   <script src="{% static 'game/js/map.js' %}"></script>
@@ -26,7 +27,7 @@
   <script src="{% static 'game/js/van.js' %}"></script>
   <script src="{% static 'game/js/sound.js' %}"></script>
   <script>
-    var PATH = "{{path}}";
+    var PATH = {{path|safe}};
     var LEVEL_ID = "{{level}}";
     var BLOCK_LIMIT = "{{blockLimit}}" != "None" ?  "{{blockLimit}}" : null;
     var LESSON = "{{lesson}}";
@@ -46,13 +47,6 @@
   <div id="programmingConsole" class="col">
     <div id="blockly"></div>
 
-    <div id="instructions">
-      <button class="picButton" id="turnLeft"><span>&#x21BA; Turn Left</span></button>
-      <button class="picButton" id="moveForward"><span>&uarr; Move Forwards</span></button>
-      <button class="picButton" id="turnRight"><span>&#x21BB; Turn Right</span></button>
-      <button id="clearIncorrect">Clear Incorrect</button>
-      <button id="clear">Clear</button>
-    </div>
   </div>
 
   <div id="sliderControls">
@@ -62,9 +56,16 @@
   <div id="paper" class="col"></div>
 
   <div id="controls" class="col">
-    <img id="play" src="{% static 'game/image/arrow_Go_trim.png' %}" class="control"/>
-    <a class="button" href="/">Quit</a>
-    <button id="mute" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
+      <button class="picButton" id="moveForward"><span>&uarr; Move Forwards</span></button>
+      <button class="picButton" id="turnLeft"><span>&#x21BA; Turn Left</span></button>
+      <button class="picButton" id="play" /><span>Go</span></button>
+      <button class="picButton" id="turnRight"><span>&#x21BB; Turn Right</span></button>
+      <div class="quit">
+        <button id="clearIncorrect">Clear Incorrect</button>
+        <button id="clear">Clear</button>
+        <a class="button" href="/">Quit</a>
+        <button id="mute" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
+      </div>
   </div>
 </div>
 <div id="myModal" class="reveal-modal" data-reveal>

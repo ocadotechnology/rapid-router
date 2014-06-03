@@ -26,13 +26,44 @@
 }
 
 #controls {
-    position: fixed;
     bottom: 20px;
+    height: 200px;
+    position: fixed;
     right: 20px;
+    width: 420px
 }
 
 #controls button {
     margin-bottom: 0;
+}
+
+#controls .quit {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#controls #turnLeft,
+#controls #turnRight,
+#controls #play {
+    top: 50px;
+}
+
+#controls #moveForward, 
+#controls #play {
+    right: 50px;
+}
+
+#controls #turnLeft {
+    right: 100px;
+}
+
+#controls #turnRight {
+    right: 0;
+}
+
+#controls #moveForward {
+    top: 0;
 }
 
 button, .button, img.control{
@@ -55,40 +86,48 @@ img.control{
 }
 
 /* Styles for the instruction buttons */
-#instructions {
-    background-color:rgba(255,255,255,0.5);
-    bottom: 20px;
-    left: 0;
-    padding: 20px;
+.picButton {    
+    background-color: transparent;
+    padding: 4px 2px 0;
     position: absolute;
-    width: 45%;
+    vertical-align: top;
 }
 
-.picButton {    
-    padding-bottom: 0;
-    padding-top: 4px;
+.picButton[disabled],
+.picButton:hover,
+.picButton:focus {
+   background-color:rgba(255,255,255,0.5);
+   border:none;
 }
 
 .picButton span {
     background-image : url('/static/game/image/arrowBtns_v2.svg');
     background-repeat: no-repeat;
-    background-size: 200px 200px;
+    background-size: 150px 150px;
     display: inline-block;
-    height: 60px;
+    height: 45px;
     overflow: hidden;
     text-indent: 200%;
     white-space: nowrap;
-    width: 60px;
+    width: 45px;
 }
 
 .picButton#turnLeft span {
-    background-position: 0px -61px;
+    background-position: 0px -45px;
 }
 
 .picButton#turnRight span {
-    background-position: -141px -61px;
+    background-position: -105px -45px;
 }
 
 .picButton#moveForward span {
-    background-position: -70px 2px;
+    background-position: -52px 2px;
+}
+
+.picButton#play span {
+    background-position: -52px -49px;
+}
+
+#blockly {
+    height: 95%;
 }

@@ -2,6 +2,17 @@
 
 var ocargo = ocargo || {};
 
+ocargo.BlocklyControl = function(){
+    this.incorrect = null;
+    this.incorrectColour = null;
+};
+
+ocargo.blocklyControl = new ocargo.BlocklyControl();
+
+ocargo.blocklyControl.BLOCK_HEIGHT = 30;
+ocargo.blocklyControl.EXTRA_BLOCK_WIDTH = 1;
+ocargo.blocklyControl.IMAGE_WIDTH = 30;
+
 Blockly.Blocks['start'] = {
     // Beginning block - identifies the start of the program
     init: function() {
@@ -19,7 +30,10 @@ Blockly.Blocks['move_forwards'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u2191 move forwards');
+            .appendField('move forwards')
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_forward.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Move the van forwards');
@@ -31,7 +45,10 @@ Blockly.Blocks['turn_left'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u21BA turn left');
+            .appendField('turn left')
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_left.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van left');
@@ -43,7 +60,10 @@ Blockly.Blocks['turn_right'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('\u21BB turn right');
+            .appendField('turn right')
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_right.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van right');
@@ -55,7 +75,10 @@ Blockly.Blocks['turn_around'] = {
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
-            .appendField('turn around');
+            .appendField('turn around')
+            .appendField(new Blockly.FieldImage('/static/game/image/arrow_u.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Turn the van around');
@@ -71,7 +94,10 @@ Blockly.Blocks['road_exists'] = {
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE');
+            .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
 
@@ -80,7 +106,10 @@ Blockly.Blocks['dead_end'] = {
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField('is dead end');
+            .appendField('is dead end')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
 
@@ -89,16 +118,43 @@ Blockly.Blocks['at_destination'] = {
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
-            .appendField('at destination');
+            .appendField('at destination')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
     }
 };
 
-ocargo.BlocklyControl = function(){
-    this.incorrect = null;
-    this.incorrectColour = null;
+//Customise controls_repeat block to not allow more than a sensible number of repetitions
+var controlsRepeatBlock = Blockly.Blocks['controls_repeat'];
+var originalInit = controlsRepeatBlock.init;
+controlsRepeatBlock.init = function () {
+    originalInit.call(this);
+
+    var input = this.inputList[0];
+    var field = input.fieldRow[1];
+    field.changeHandler_ = function(text) {
+        var n = Blockly.FieldTextInput.numberValidator(text);
+        if (n) {
+            n = String(Math.min(Math.max(0, Math.floor(n)), 20));
+        }
+        return n;
+    };
 };
 
-ocargo.blocklyControl = new ocargo.BlocklyControl();
+// Make 'not' taller
+var notBlock = Blockly.Blocks['logic_negate'];
+var originalNotInit = notBlock.init;
+notBlock.init = function () {
+	originalNotInit.call(this);
+	this.inputList[0].appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                         ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                         ocargo.blocklyControl.BLOCK_HEIGHT));
+};
+
+// Disable the right-click context menus
+Blockly.showContextMenu_ = function(e) {};
+Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
@@ -109,12 +165,12 @@ ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 
 ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(typeOfBlockToAdd) {
 	var blockToAdd = this.createBlock(typeOfBlockToAdd);
-	
+
 	var block = this.getStartBlock();
 	while(block.nextConnection.targetBlock()){
 		block = block.nextConnection.targetBlock();
 	}
-	
+
 	block.nextConnection.connect(blockToAdd.previousConnection);
 };
 
@@ -197,23 +253,23 @@ ocargo.BlocklyControl.prototype.getBlocksCount = function() {
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createWhile(block) {
 		return new While(
-			counterCondition(block.inputList[0].fieldRow[1].text_), 
+			counterCondition(block.inputList[0].fieldRow[1].text_),
 			getCommandsAtThisLevel(block.inputList[1].connection.targetBlock()),
 			block);
 	}
-	
+
 	function createWhileUntil(block) {
 		var condition = getCondition(block.inputList[0].connection.targetBlock());
 		if(block.inputList[0].fieldRow[1].value_ == 'UNTIL') {
 			condition = negateCondition(condition);
 		}
-		
+
 		return new While(
-			condition, 
+			condition,
 			getCommandsAtThisLevel(block.inputList[1].connection.targetBlock()),
 			block);
 	}
-	
+
 	function getCondition(conditionBlock){
 		if(conditionBlock.type === 'road_exists'){
 			var selection = conditionBlock.inputList[0].fieldRow[1].value_;
@@ -226,7 +282,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
         	return negateCondition(getCondition(conditionBlock.inputList[0].connection.targetBlock()));
         }
 	}
-	
+
 	function createIf(block) {
 		var conditionalCommandSets = [];
 
@@ -244,20 +300,20 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     			conditionalCommandSet.commands = getCommandsAtThisLevel(input.connection.targetBlock());
     			conditionalCommandSets.push(conditionalCommandSet);
     		}
-    		
+
     		i++;
     	}
-    	
+
     	if (elseCount === 1) {
     		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
     	}
-    	
+
     	return new If(conditionalCommandSets, elseCommands, block);
 	}
-	
+
 	function getCommandsAtThisLevel(block){
     	var commands = [];
-    	
+
     	while(block){
     		if (block.type === 'move_forwards') {
     			commands.push(new ForwardCommand(block));
@@ -274,13 +330,13 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
             } else if (block.type === 'controls_if') {
             	commands.push(createIf(block));
             }
-    		
+
     		block = block.nextConnection.targetBlock();
     	}
-    	
+
     	return commands;
     }
-	
+
     var program = new ocargo.Program();
     var startBlock = this.getStartBlock();
     program.startBlock = startBlock;

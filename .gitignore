@@ -5,10 +5,12 @@ local_settings.py
 *.iml
 *~
 
+.settings
 .project
 .pydevproject
 .idea
 dbfile
 *.orig
 .sass-cache
-.DS_Store
+*.DS_Store
+*.jshintrc
