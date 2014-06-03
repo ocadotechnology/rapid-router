@@ -4,11 +4,10 @@ function createUi() {
     return new ocargo.SimpleUi();
 }
 
-function createDefaultLevel(nodeData, ui) {
+function createDefaultLevel(nodeData, ui, maxFuel) {
 	var nodes = createNodes(nodeData);
     
     var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ui);
-    var maxFuel = 50; //TODO: load from server per level
     var van = new ocargo.Van(nodes[0], nodes[1], maxFuel, ui);
     return new ocargo.Level(map, van, ui);
 }
@@ -41,7 +40,7 @@ function initialiseDefault() {
     startPopup(title, "", LESSON); 
 
     ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(PATH, ocargo.ui);
+    ocargo.level = createDefaultLevel(PATH, ocargo.ui, MAX_FUEL);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
     enableDirectControl();

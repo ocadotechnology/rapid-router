@@ -47,6 +47,7 @@ def level(request, level):
         'blockLimit': lvl.blockLimit,
         'lesson': lesson,
         'defaultLevelCount': levelCount,
+        'maxFuel': lvl.maxFuel,
     })
 
     return render(request, 'game/game.html', context)
