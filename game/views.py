@@ -10,10 +10,11 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import Class, Level, Attempt, Command, Block
+from cache import cached_all_levels
 
 def levels(request):
     context = RequestContext(request, {
-        'levels': Level.objects.filter(default=True).order_by('id'),
+        'levels': cached_all_levels()
     })
     return render(request, 'game/level_selection.html', context)
 
