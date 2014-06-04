@@ -229,7 +229,6 @@ ocargo.BlocklyControl.prototype.init = function() {
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
     } catch (e) {
-        Blockly.mainWorkspace.clear();
         ocargo.blocklyControl.reset();
     }
 };
@@ -243,10 +242,7 @@ ocargo.BlocklyControl.prototype.teardown = function() {
 };
 
 ocargo.BlocklyControl.prototype.reset = function() {
-    var allBlocks = Blockly.mainWorkspace.getAllBlocks();
-    for (var i = 0; i < allBlocks.length; i++) {
-        allBlocks[i].dispose();
-    }
+    Blockly.mainWorkspace.clear();
     this.createBlock('start');
 };
 
@@ -343,7 +339,8 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     	}
 
     	if (elseCount === 1) {
-    		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
+    		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1]
+                                                                    .connection.targetBlock());
     	}
 
     	return new If(conditionalCommandSets, elseCommands, block);
