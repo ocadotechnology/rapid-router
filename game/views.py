@@ -19,7 +19,6 @@ def levels(request):
 
 def level(request, level):
     lvl = get_object_or_404(Level, id=level)
-    path = lvl.path
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
@@ -41,13 +40,10 @@ def level(request, level):
             attempt.save()
 
     context = RequestContext(request, {
-        'level': lvl.id,
-        'path': path,
+        'level': lvl,
         'blocks': blocks,
-        'blockLimit': lvl.blockLimit,
         'lesson': lesson,
         'defaultLevelCount': levelCount,
-        'maxFuel': lvl.maxFuel,
     })
 
     return render(request, 'game/game.html', context)
