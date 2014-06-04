@@ -36,6 +36,7 @@
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}
+    var MAX_FUEL = {{maxFuel}};
   </script>
 {% endblock %}
 

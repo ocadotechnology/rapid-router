@@ -40,7 +40,7 @@ ocargo.PathFinder.prototype.getOptimalInstructions = function() {
         var count = 0;
         var start = -1;
         var currLen, prevLen, loopLen;
-        var ascending, descending, indexNotCovered, prevAsc;
+        var ascending, descending, indexNotCovered;
 
         while (index < suffixArray.length) {
             currentInstr = suffixArray[index][0];
@@ -69,7 +69,6 @@ ocargo.PathFinder.prototype.getOptimalInstructions = function() {
                         loopBlock = currentInstr;
                         count = 0;
                         start = currentIndex;
-                        prevAsc = undefined;
                     } 
                     // If current still classifies as the ongoing loop and was not rolled in before.
                     if (indexNotCovered && ascending &&
@@ -81,11 +80,9 @@ ocargo.PathFinder.prototype.getOptimalInstructions = function() {
                             count++;
                             loopDic.push([start, start + count * loopLen - 1, loopBlock]);
                             count = 1;
-                            prevAsc = undefined;
                         } else {
                             loopBlock = currentInstr.slice(0, currLen - prevLen);
                             count++;
-                            prevAsc = true;
                         }
 
                     } else if (indexNotCovered && descending &&
@@ -96,11 +93,9 @@ ocargo.PathFinder.prototype.getOptimalInstructions = function() {
                             count++;
                             loopDic.push([start, start + count * loopLen - 1, loopBlock]);
                             count = 1;
-                            prevAsc = undefined;                            
                         } else {
                             loopBlock = previous.slice(0, prevLen - currLen);
                             count++;
-                            prevAsc = false;
                         }
                     }
                 }

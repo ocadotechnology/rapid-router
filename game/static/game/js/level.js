@@ -33,7 +33,7 @@ ocargo.Level.prototype.play = function(program) {
     }
 
     this.attemptData.commandStack = JSON.stringify(commandStack);
-    program.startBlock.select();
+    program.startBlock.selectWithConnected();
 
     var stepFunction = stepper(this);
 

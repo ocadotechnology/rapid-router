@@ -62,6 +62,7 @@ class Level (models.Model):
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blockLimit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
+    maxFuel = models.IntegerField()
 
     @classmethod
     def random_road(cls):

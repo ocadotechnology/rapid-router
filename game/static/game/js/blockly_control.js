@@ -156,6 +156,46 @@ notBlock.init = function () {
 Blockly.showContextMenu_ = function(e) {};
 Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
+// Define custom select methods that select a block and its connected blocks
+function setBlockAndConnectedBlocksSelected(block, selected) {
+    goog.asserts.assertObject(block.svg_, 'Block is not rendered.');
+
+    block.inputList.forEach(function(input) {
+        if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
+            var targetBlock = input.connection.targetBlock();
+            if (targetBlock) {
+                setBlockAndConnectedBlocksSelected(targetBlock, selected);
+            }
+        }
+    });
+
+    if (selected) {
+        block.svg_.addSelect();
+    } else {
+        block.svg_.removeSelect();
+    }
+}
+
+var selectedWithConnected;
+
+Blockly.Block.prototype.selectWithConnected = function() {
+    // Unselect any previously selected blocks
+    if (Blockly.selected) {
+        Blockly.selected.unselect();
+    }
+    if (selectedWithConnected) {
+        selectedWithConnected.unselectWithConnected();
+    }
+
+    selectedWithConnected = this;
+    setBlockAndConnectedBlocksSelected(this, true);
+};
+
+Blockly.Block.prototype.unselectWithConnected = function() {
+    selectedWithConnected = null;
+    setBlockAndConnectedBlocksSelected(this, false);
+};
+
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
 	block.initSvg();
@@ -217,20 +257,20 @@ ocargo.BlocklyControl.prototype.removeWrong = function() {
         var previous = this.incorrect.previousConnection.targetBlock();
         this.incorrect.dispose();
         this.incorrect = null;
-        previous.select();
+        previous.selectWithConnected();
     }
 };
 
 ocargo.BlocklyControl.prototype.blink = function() {
-    var badBlock = Blockly.selected;
+    var badBlock = selectedWithConnected;
     this.incorrect = badBlock;
     this.incorrectColour = badBlock.getColour();
     badBlock.setColour(0);
     for(var i = 0; i < 3; i++) {
-        window.setTimeout(function() { badBlock.select(); }, i * 600 - 300);
-        window.setTimeout(function() { badBlock.unselect(); }, i * 600);
+        window.setTimeout(function() { badBlock.selectWithConnected(); }, i * 600 - 300);
+        window.setTimeout(function() { badBlock.unselectWithConnected(); }, i * 600);
     }
-    window.setTimeout(function() { badBlock.select(); }, 1500);
+    window.setTimeout(function() { badBlock.selectWithConnected(); }, 1500);
 };
 
 window.addEventListener('load', ocargo.blocklyControl.init);
