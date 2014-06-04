@@ -13,7 +13,8 @@ WORKSPACE=`pwd`
 
 echo 'Creating dev-requirements.txt'
 echo "-e git+https://github.com/ocadotechnology/django-nuit.git@0.7.0#egg=django-nuit
-pyyaml==3.11" > $PROJECT_PATH/dev-requirements.txt
+pyyaml==3.11
+django-debug-toolbar==1.2.1" > $PROJECT_PATH/dev-requirements.txt
 
 # install cloud sdk
 echo 'Installing Google Cloud SDK'
