@@ -5,7 +5,7 @@ import messages
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
@@ -32,7 +32,7 @@ def level(request, level):
     lesson = mark_safe(messageCall())
 
     #FIXME: figure out how to check for all this better
-    if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
+    if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
@@ -47,33 +47,45 @@ def level(request, level):
         'blockLimit': lvl.blockLimit,
         'lesson': lesson,
         'defaultLevelCount': levelCount,
+        'maxFuel': lvl.maxFuel,
     })
 
     return render(request, 'game/game.html', context)
 
 def level_new(request):
-    """ Processes a request on creation of the map in the level editor."""
+    """Processes a request on creation of the map in the level editor."""
     if 'path' in request.POST:
-        path = request.POST.get('path', False)
+        path = request.POST['path']
         passedLevel = None
-        if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
+        if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
             passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False)
         else:
             passedLevel = Level(name=10, path=path, default=False)
         passedLevel.save()
 
-        # Insert all the blockly blocks as available to use.
-        passedLevel.blocks = Block.objects.all()
+        if 'blockTypes' in request.POST:
+            blockTypes = json.loads(request.POST['blockTypes'])
+            blocks = Block.objects.filter(type__in=blockTypes)
+        else:
+            blocks = Block.objects.all()
+
+        passedLevel.blocks = blocks
         passedLevel.save()
 
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
+def level_random(request):
+    """ Generates a new random level"""
+    level = Level.random_road()
+    return redirect("game.views.level", level=level.id)
+
+
 def submit(request):
     """ Processes a request on submission of the program solving the current level."""
-    if request.method == 'POST':
-        attemptJson = request.POST.get('attemptData', False)
+    if request.method == 'POST' and 'attemptData' in request.POST:
+        attemptJson = request.POST['attemptData']
         attemptData = json.loads(attemptJson)
         parseAttempt(attemptData, request)
         return HttpResponse(attemptJson, content_type='application/javascript')
@@ -98,7 +110,10 @@ def students_in_class(request):
     return render_student_info(request, False)
 
 def level_editor(request):
-    return render(request, 'game/level_editor.html')
+    context = RequestContext(request, {
+        'blocks': Block.objects.all()
+    })
+    return render(request, 'game/level_editor.html', context)
 
 def settings(request):
     """ Renders the settings page.  """
@@ -170,6 +185,9 @@ def render_student_info(request, logged):
 
 def parseInstructions(instructions, attempt, init):
     """ Helper method for inserting user-submitted instructions to the database."""
+
+    if not instructions:
+        return 
     command = None
     index = init
 

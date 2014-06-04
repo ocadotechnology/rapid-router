@@ -2,9 +2,11 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Van = function(previousNode, startNode, ui) {
+ocargo.Van = function(previousNode, startNode, maxFuel, ui) {
     this.previousNode = previousNode;
     this.currentNode = startNode;
+    this.maxFuel = maxFuel;
+    this.fuel = maxFuel;
     this.ui = ui;
     ocargo.sound.starting();
 };
@@ -27,4 +29,6 @@ ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
 	
 	this.previousNode = this.currentNode;
 	this.currentNode = nextNode;
+	
+	this.fuel--;
 };

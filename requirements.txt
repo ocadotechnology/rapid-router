@@ -9,3 +9,4 @@ django-appconf==0.6
 django-casper
 unittest2
 pyyaml==3.11
+six==1.6.1

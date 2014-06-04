@@ -4,44 +4,49 @@ function createUi() {
     return new ocargo.SimpleUi();
 }
 
-function createDefaultLevel(path, ui) {
-    var nodes = generateNodes(path);
+function createDefaultLevel(nodeData, ui, maxFuel) {
+	var nodes = createNodes(nodeData);
+    
     var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ui);
-    var van = new ocargo.Van(nodes[0], nodes[1], ui);
+    var van = new ocargo.Van(nodes[0], nodes[1], maxFuel, ui);
     return new ocargo.Level(map, van, ui);
 }
 
-function generateNodes(points){
-    var previousNode = null;
-    var nodes = [];
-    for (var i = 0; i < points.length; i++) {
-          var p = points[i];
-          var coordinate = new ocargo.Coordinate(p[0], p[1]);
-          var node = new ocargo.Node(coordinate);
-          if (previousNode) {
-              node.addConnectedNodeWithBacklink(previousNode);
-          }
-          previousNode = node;
-          nodes.push(node);
-    }
-    return nodes;
+function createNodes(nodeData){
+	var nodes = [];
+	
+	// Create nodes with coords
+	for(var i = 0; i < nodeData.length; i++){
+		 var coordinate = new ocargo.Coordinate(nodeData[i]['coordinate'][0], nodeData[i]['coordinate'][1]);
+         nodes.push(new ocargo.Node(coordinate));
+	}
+	
+	// Link nodes (must be done in second loop so that linked nodes have definitely been created)
+	for(var i = 0; i < nodeData.length; i++){
+		var node = nodes[i];
+        var connectedNodes = nodeData[i]['connectedNodes'];
+        for(var j = 0; j < connectedNodes.length; j++){
+            node.addConnectedNode(nodes[connectedNodes[j]]);
+    	}
+	}
+	
+	return nodes;
 }
 
 function initialiseDefault() {
     'use strict';
 
-    var title = LEVEL_ID > 15 ? "" : "Lesson " + LEVEL_ID;
+    var title = "Level " + LEVEL_ID;
     startPopup(title, "", LESSON); 
 
-    var path = JSON.parse(PATH);
     ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(path, ocargo.ui);
+    ocargo.level = createDefaultLevel(PATH, ocargo.ui, MAX_FUEL);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
     enableDirectControl();
     if (ocargo.level.blockLimit)
         ocargo.level.blockLimit++;
-    if ($.cookie("muted") == "true") {
+    if ($.cookie("muted") === "true") {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
     }
@@ -51,14 +56,22 @@ function enableDirectControl() {
     document.getElementById('moveForward').disabled = false;
     document.getElementById('turnLeft').disabled = false;
     document.getElementById('turnRight').disabled = false;
-    ocargo.level.blockedPlay = false;
+    document.getElementById('play').disabled = false;
+    document.getElementById('controls').style.visibility='visible';
 }
 
 function disableDirectControl() {
+    document.getElementById('controls').style.visibility='hidden';
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
-    ocargo.level.blockedPlay = true;
+    document.getElementById('play').disabled = true;
+}
+
+function clearVanData() {
+    var nodes = ocargo.level.map.nodes;
+    ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.level.van.maxFuel, ocargo.ui);
+    ocargo.ui.setVanToFront();
 }
 
 function trackDevelopment() {
@@ -80,27 +93,24 @@ function trackDevelopment() {
     $('#play').click(function() {
         if (ocargo.blocklyControl.incorrect)
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        console.debug(!ocargo.level.blockedPlay);
-        if (!ocargo.level.blockedPlay) {
-            disableDirectControl();
-            var program = ocargo.blocklyControl.populateProgram();
-            program.instructionHandler = new InstructionHandler(ocargo.level);
-            var nodes = ocargo.level.map.nodes;
-            ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
-            ocargo.ui.setVanToFront();
-            ocargo.level.play(program);
-            ocargo.level.correct = 0;
-        }
+        disableDirectControl();
+        var program = ocargo.blocklyControl.populateProgram();
+        program.instructionHandler = new InstructionHandler(ocargo.level);
+        clearVanData();
+        ocargo.level.play(program);
+        ocargo.level.correct = 0;
     });
 
     $('#clearIncorrect').click(function() {
         ocargo.blocklyControl.removeWrong();
-        setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
+        enableDirectControl();
+        clearVanData();
     });
 
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
-        setDirectControl(moveForward(function(){}, moveLeft(function(){}), moveRight(function(){})));
+        enableDirectControl();
+        clearVanData();
     });
     
     $('#slideBlockly').click(function() {
@@ -130,12 +140,4 @@ $('#mute').click(function() {
         $this.text('Unmute');
         ocargo.sound.mute();
     }
-});
-
-$('#randomRoad').click(function() {
-    var points = generateRandomPathPoints([0,3], 0.5, 13);
-    var nodes = generateNodes(points);  
-    var van = new ocargo.Van(nodes[0], nodes[1], ocargo.ui);
-    var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
-    ocargo.level = new ocargo.Level(map, van, ocargo.ui);
 });

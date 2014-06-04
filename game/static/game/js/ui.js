@@ -10,6 +10,5 @@ ocargo.SimpleUi.prototype.setVanToFront = function() {
 };
 
 ocargo.SimpleUi.prototype.renderMap = function(map) {
-    console.debug('Updating the map: ' + JSON.stringify(map.instructions));
     renderTheMap(map);
 };

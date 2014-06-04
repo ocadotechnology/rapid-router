@@ -8,7 +8,7 @@
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script>
 
-  <script src="/static/game/js/map_editor.js"></script>
+  <script src="/static/game/js/level_editor.js"></script>
   <script src="/static/game/js/coordinate.js"></script>
   <script src="/static/game/js/node.js"></script>
   <script src="/static/game/js/ui.js"></script>
@@ -37,8 +37,8 @@
       </div><br>
       <ul class="tabs">
         <li>
-          <input type="radio" checked name="tabs" id="tab1"> 
-          <label for="tab1">Arrows</label> 
+          <input type="radio" checked name="tabs" id="tab1">
+          <label for="tab1">Arrows</label>
           <div id="tab-content-arrows" class="tab-content">
             <button id="createFromSelect">Show me</button>
             <button id="undo">Undo</button><hr>
@@ -62,6 +62,17 @@
               <button id="H">&#x97;</button>
               <button id="V">&#x7C;</button>
             </div>
+          </div>
+        </li>
+        <li>
+          <input type="radio" name="tabs" id="tab3">
+          <label for="tab3">Blocks</label>
+          <div id="tab-content-blocks" class="tab-content">
+            {% for block in blocks %}
+              <input type="checkbox" id="{{ block.type }}" class="js-block-checkbox" checked>
+              <label for="{{ block.type }}">{{ block.type }}</label>
+              <br>
+            {% endfor %}
           </div>
         </li>
       </ul>
