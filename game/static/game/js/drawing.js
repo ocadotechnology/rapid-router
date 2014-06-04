@@ -480,6 +480,14 @@ function drawBackground(paper) {
     }
 }
 
+function drawDecor(decor){
+	for(var i = 0; i < decor.length; i++){
+		var obj = decor[i];
+		var coord = transformY(obj['coordinate']);
+		paper.image(obj['url'], coord.x * GRID_SPACE_SIZE, coord.y * GRID_SPACE_SIZE, 100, 100);
+	}
+}
+
 function createCFC() {
 	return paper.image('/static/game/image/OcadoCFC_no_road.svg', INITIAL_X - 95, INITIAL_Y - 25, 100, 107)
         .transform('r90');
@@ -567,6 +575,7 @@ function createDestination(destination) {
 function renderTheMap(map) {
     paper.clear();
     drawBackground(paper);
+    drawDecor(map.decor);
     createRoad(map.nodes);
     van = createVan(paper);
     createDestination(map.destination);
