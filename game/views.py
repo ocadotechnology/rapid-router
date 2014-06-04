@@ -1,3 +1,4 @@
+from game import random_road
 import os
 import json
 import messages
@@ -78,7 +79,7 @@ def level_new(request):
 
 def level_random(request):
     """ Generates a new random level"""
-    level = Level.random_road()
+    level = random_road.create()
     return redirect("game.views.level", level=level.id)
 
 
