@@ -158,7 +158,9 @@ Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
 // Define custom select methods that select a block and its connected blocks
 function setBlockAndConnectedBlocksSelected(block, selected) {
-    goog.asserts.assertObject(block.svg_, 'Block is not rendered.');
+    if (!block.svg_) {
+        return;
+    }
 
     block.inputList.forEach(function(input) {
         if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
