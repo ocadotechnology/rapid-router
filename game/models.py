@@ -58,11 +58,12 @@ class Block (models.Model):
 class Level (models.Model):
     name = models.IntegerField()
     path = models.CharField(max_length=10000)
+    decor = models.CharField(max_length=10000, default='[]')
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blockLimit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
-    maxFuel = models.IntegerField()
+    maxFuel = models.IntegerField(default=50)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)

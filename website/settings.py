@@ -111,6 +111,15 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
             'USER': 'root',
         }
     }
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': '127.0.0.1:11211',
+            'OPTIONS': {
+                'KEY_PREFIX': os.getenv('MEMCACHE_PREFIX'),
+            }
+        }
+    }
     COMPRESS_OFFLINE = True
     COMPRESS_ROOT = STATIC_ROOT
     COMPRESS_URL = STATIC_URL
@@ -119,6 +128,12 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': rel('dbfile'),
+        }
+    }
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake'
         }
     }
 
