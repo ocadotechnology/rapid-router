@@ -228,9 +228,12 @@ ocargo.BlocklyControl.prototype.init = function() {
         var text = localStorage.getItem('blocklyWorkspaceXml');
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+        ocargo.blocklyControl.removeUnavailableBlocks();
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
+    
+
 };
 
 ocargo.BlocklyControl.prototype.teardown = function() {
@@ -283,6 +286,17 @@ ocargo.BlocklyControl.prototype.getStartBlock = function() {
 ocargo.BlocklyControl.prototype.getBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };
+
+ocargo.BlocklyControl.prototype.removeUnavailableBlocks = function() {
+    var blocks = Blockly.mainWorkspace.getTopBlocks();
+    var block;
+    for(var i = 0; i < blocks.length; i++) {
+        block = blocks[i];
+        if (BLOCKS.indexOf(block.type) === -1 && block.type !== 'start') {
+            block.dispose();
+        }
+    }
+}
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createWhile(block) {

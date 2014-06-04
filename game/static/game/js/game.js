@@ -104,7 +104,6 @@ function trackDevelopment() {
     $('#clearIncorrect').click(function() {
         ocargo.blocklyControl.removeWrong();
         enableDirectControl();
-        clearVanData();
     });
 
     $('#clear').click(function() {
@@ -129,6 +128,7 @@ function trackDevelopment() {
 $(function() {
     initialiseDefault();
     trackDevelopment();
+    
 });
 
 $('#mute').click(function() {
