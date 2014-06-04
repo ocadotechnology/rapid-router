@@ -74,6 +74,13 @@ button, .button, img.control{
     float: left;
 }
 
+
+
+#myModal > p.mainText,
+#myModal > p.lead {
+    font-size: 1.2rem !important;
+}
+
 #sliderControls {
     position: absolute;
     left: 50%;
