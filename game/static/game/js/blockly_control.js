@@ -243,15 +243,11 @@ ocargo.BlocklyControl.prototype.teardown = function() {
 };
 
 ocargo.BlocklyControl.prototype.reset = function() {
-    var startBlock = this.getStartBlock();
-    if (startBlock) {
-        var nextBlock = startBlock.nextConnection.targetBlock();
-        if (nextBlock) {
-            nextBlock.dispose();
-        }
-    } else {
-        this.createBlock('start');
+    var allBlocks = Blockly.mainWorkspace.getAllBlocks();
+    for (var i = 0; i < allBlocks.length; i++) {
+        allBlocks[i].dispose();
     }
+    this.createBlock('start');
 };
 
 ocargo.BlocklyControl.prototype.removeWrong = function() {
