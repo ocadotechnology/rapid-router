@@ -485,13 +485,83 @@ function createCFC() {
         .transform('r90');
 }
 
+//find a side of the road
+function getHousePosition(destination){
+	var roadLetters = [];
+	
+	//might be best to just use the coordinates rather than get road letters and then convert back to directions
+	if(destination.connectedNodes.length === 1){
+		var previousNode = destination.connectedNodes[0];
+		var nextNode = {};
+		nextNode.coordinate = new ocargo.Coordinate(
+				destination.coordinate.x + (destination.coordinate.x - previousNode.coordinate.x),
+				destination.coordinate.y + (destination.coordinate.y - previousNode.coordinate.y));
+    	roadLetters.push(getRoadLetters(previousNode.coordinate, destination.coordinate, nextNode.coordinate));
+    }
+    else {
+		for (var i = 0; i < destination.connectedNodes.length; i++) {
+			var previousNode = destination.connectedNodes[i];
+			for (var j = i + 1; j < destination.connectedNodes.length; j++) {
+				roadLetters.push(getRoadLetters(previousNode.coordinate, destination.coordinate, destination.connectedNodes[j].coordinate));
+			}
+		}
+	}
+	var left = true;
+	var right = true;
+	var up = true;
+	var down = true;
+	
+	if(roadLetters.indexOf('H') >= 0 ){
+		left = false;
+		right = false;
+	}
+	if(roadLetters.indexOf('V') >= 0 ){
+		up = false;
+		down = false;
+	}
+	if(roadLetters.indexOf('UL') >= 0 ){
+		left = false;
+		up = false;
+	}
+	if(roadLetters.indexOf('DL') >= 0 ){
+		left = false;
+		down = false;
+	}
+	if(roadLetters.indexOf('UR') >= 0 ){
+		right = false;
+		up = false;
+	}
+	if(roadLetters.indexOf('DR') >= 0 ){
+		right = false;
+		down = false;
+	}
+	
+	//variation specifies x,y,rotation
+	var variation = [25,25,90];
+	if(down){
+		//prioritise current position for nostalgia, do nothing
+	} else if (up){
+		variation = [25,125,270];
+	} else if (left){
+		variation = [-25,75,180];
+	} else if (right){
+		variation = [75,75,0];
+	} else {
+		//4-way junction, so hang it off to the bottom left
+		variation = [-25,25,135];
+	}
+	return variation;
+}
+
 function createDestination(destination) {
-	paper.rect(destination.x * GRID_SPACE_SIZE, PAPER_HEIGHT - (destination.y * GRID_SPACE_SIZE) - 100,
+	var variation = getHousePosition(destination);
+
+	paper.rect(destination.coordinate.x * GRID_SPACE_SIZE, PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100,
 			100, 100).attr({'stroke': 'yellow'});
 	
 	paper.image('/static/game/image/house1_noGreen.svg',
-		destination.x * GRID_SPACE_SIZE + 25, PAPER_HEIGHT - (destination.y * GRID_SPACE_SIZE) - 25,
-        50, 50).transform('r90');
+		destination.coordinate.x * GRID_SPACE_SIZE + variation[0], PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
+        50, 50).transform('r' + variation[2]);
 }
 
 function renderTheMap(map) {
@@ -499,7 +569,7 @@ function renderTheMap(map) {
     drawBackground(paper);
     createRoad(map.nodes);
     van = createVan(paper);
-    createDestination(map.destination.coordinate);
+    createDestination(map.destination);
     createCFC(paper);
     scrollToShowVan();
 }

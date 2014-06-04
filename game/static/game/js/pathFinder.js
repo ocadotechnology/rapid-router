@@ -13,14 +13,131 @@ ocargo.PathFinder = function(map) {
 ocargo.PathFinder.prototype.getOptimalInstructions = function() {
 
     ocargo.level.pathFinder.optimalInstructions = [];
+    var sequentialInstructions = []
     for (var i = 1; i < ocargo.level.pathFinder.optimalPath.length - 1; i++) {
         var previousNode = ocargo.level.pathFinder.optimalPath[i - 1];
         var node = ocargo.level.pathFinder.optimalPath[i];
         var nextNode = ocargo.level.pathFinder.optimalPath[i + 1];
         var instr = ocargo.level.pathFinder.recogniseIndividualInstruction(
             previousNode.coordinate, node.coordinate, nextNode.coordinate);
-        ocargo.level.pathFinder.optimalInstructions.push(instr);
-        console.debug(instr);
+        sequentialInstructions.push(instr);
+
+    }
+    // [[[instructions], startIndex]],
+    var suffixArray = buildSuffixArray(sequentialInstructions);
+    // [[startIndex, endIndex, loopBody]]
+    //var loopDic = getLoops(suffixArray);
+    ocargo.level.pathFinder.optimalInstructions = sequentialInstructions;
+
+    function getLoops(suffixArray) {
+        var loopDic = [];
+        var index = 0;
+        var loopBlock = null;
+        var previous = null;
+        var prevIndex;
+        var currentInstr, currentIndex;
+        var count = 0;
+        var start = -1;
+        var currLen, prevLen, loopLen;
+        var ascending, descending, indexNotCovered;
+
+        while (index < suffixArray.length) {
+            currentInstr = suffixArray[index][0];
+            currentIndex = suffixArray[index][1];
+
+            if (previous !== null) {
+
+                prevLen = previous.length;
+                currLen = currentInstr.length;
+                loopLen = loopBlock.length;
+
+                ascending = compare(currentInstr, currLen - prevLen, currLen, previous, 0, prevLen);
+                descending = compare(previous, prevLen - currLen, prevLen, currentInstr, 0, currLen);
+                indexNotCovered = checkIndex(currentIndex, loopDic);
+
+                if (loopBlock !== null) {
+                    // If we were inversigating a loop and it is not continued on current line.
+                    if (count > 1 && (indexNotCovered && 
+                        !((ascending && compare(currentInstr, 0, loopLen, loopBlock, 0, loopLen) &&
+                            (prevLen + loopLen === currLen))) ||
+                          (descending && compare(previous, 0, loopLen, loopBlock, 0, loopLen) &&
+                            (currLen + loopLen === prevLen)))) {
+                        
+                        count++;
+                        loopDic.push([start, start + count * loopLen - 1, loopBlock]);
+                        loopBlock = currentInstr;
+                        count = 0;
+                        start = currentIndex;
+                    } 
+                    // If current still classifies as the ongoing loop and was not rolled in before.
+                    if (indexNotCovered && ascending &&
+                        compare(currentInstr, 0, loopLen, loopBlock, 0, loopLen)) {
+                        
+                        start = currentIndex;
+                        // Loop ends with the program end.
+                        if (index === suffixArray.length - 1 && count > 0) {
+                            count++;
+                            loopDic.push([start, start + count * loopLen - 1, loopBlock]);
+                            count = 1;
+                        } else {
+                            loopBlock = currentInstr.slice(0, currLen - prevLen);
+                            count++;
+                        }
+
+                    } else if (indexNotCovered && descending &&
+                        compare(previous, 0, loopLen, loopBlock, 0, loopLen)) {
+                        
+                        // Loop ends with the program end.
+                        if (index === suffixArray.length - 1 && count > 0) {
+                            count++;
+                            loopDic.push([start, start + count * loopLen - 1, loopBlock]);
+                            count = 1;
+                        } else {
+                            loopBlock = previous.slice(0, prevLen - currLen);
+                            count++;
+                        }
+                    }
+                }
+            } else {
+                loopBlock = currentInstr;
+                count = 1;
+            }
+            previous = currentInstr;
+            index++;
+        }
+        return loopDic;
+    }
+
+    // Check if you have to cover this part of the loop.
+    function checkIndex(index, dictionary) {
+        for (var i = 0; i < dictionary.length; i++) {
+            if (dictionary[i][0] <= index && index <= dictionary[i][1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Checks if two arrays slices defined by start and end indices are identical.
+    function compare(arr1, start1, end1, arr2, start2, end2) {
+        if(end1 - start1 !== end2 - start2) {
+            return false;
+        }
+        for(var i = 0; i < end1 - start1; i++) {
+            if(arr1[start1 + i] !== arr2[start2 + i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function buildSuffixArray(instructions) {
+        var suffixArray = [];
+        for (var i = 0; i < instructions.length; i++) {
+            suffixArray.push([instructions.slice(i, instructions.length), i]);
+        }
+        suffixArray.sort();
+        return suffixArray;
     }
 };
 
@@ -28,11 +145,13 @@ ocargo.PathFinder.prototype.getScore = function(stack) {
 
     var userSolutionLength = this.getLength(stack);
     var instrLengthScore = 100;
-    var pathLenScore = 100;
-    this.max = instrLengthScore + pathLenScore;
+    var fuelScore = 100;
+    var usedFuel = ocargo.level.van.maxFuel - ocargo.level.van.fuel;
+    this.max = instrLengthScore + fuelScore;
     instrLengthScore = Math.min(100, Math.max(
         0, instrLengthScore - (userSolutionLength - this.optimalInstructions.length) * 10));
-    return instrLengthScore + pathLenScore;
+    fuelScore = Math.max(0, fuelScore - (usedFuel - (this.optimalPath.length - 2)) * 10);
+    return instrLengthScore + fuelScore;
 };
 
 ocargo.PathFinder.prototype.getOptimalPath = function() {
@@ -55,14 +174,23 @@ ocargo.PathFinder.prototype.aStar = function() {
     initialiseParents();
 
     while (openSet.length > 0) {
-        current = openSet[openSet.length-1];
+
+        var smallestInOpen = 0;
+        var smallestInReverse = 0;
+        for (var i = 0; i < openSet.lenght; i++) {
+            if (reversePriority[this.nodes.indexOf(openSet[i])] < reversePriority[smallestInReverse]) {
+                smallestInOpen = i;
+                smallestInReverse = this.nodes.indexOf(openSet[i]); 
+            }
+        }
+        current = openSet[smallestInOpen];
         currentIndex = this.nodes.indexOf(current);
 
         // End case.
         if (current === end) {
             return getNodeList(current);
         }
-        openSet.pop();
+        openSet.splice(smallestInOpen, 1);
         closedSet.push(current);
         var neighbour;
         for (var i = 0; i < current.connectedNodes.length; i++) {

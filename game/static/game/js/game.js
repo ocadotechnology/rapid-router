@@ -36,7 +36,7 @@ function createNodes(nodeData){
 function initialiseDefault() {
     'use strict';
 
-    var title = LEVEL_ID > 15 ? "" : "Level " + LEVEL_ID;
+    var title = "Level " + LEVEL_ID;
     startPopup(title, "", LESSON); 
 
     ocargo.ui = createUi();
@@ -68,6 +68,12 @@ function disableDirectControl() {
     document.getElementById('play').disabled = true;
 }
 
+function clearVanData() {
+    var nodes = ocargo.level.map.nodes;
+    ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.level.van.maxFuel, ocargo.ui);
+    ocargo.ui.setVanToFront();
+}
+
 function trackDevelopment() {
     $('#moveForward').click(function() {
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
@@ -90,9 +96,7 @@ function trackDevelopment() {
         disableDirectControl();
         var program = ocargo.blocklyControl.populateProgram();
         program.instructionHandler = new InstructionHandler(ocargo.level);
-        var nodes = ocargo.level.map.nodes;
-        ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.level.van.maxFuel, ocargo.ui);
-        ocargo.ui.setVanToFront();
+        clearVanData();
         ocargo.level.play(program);
         ocargo.level.correct = 0;
     });
@@ -105,6 +109,7 @@ function trackDevelopment() {
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
         enableDirectControl();
+        clearVanData();
     });
     
     $('#slideBlockly').click(function() {
@@ -123,6 +128,7 @@ function trackDevelopment() {
 $(function() {
     initialiseDefault();
     trackDevelopment();
+    
 });
 
 $('#mute').click(function() {

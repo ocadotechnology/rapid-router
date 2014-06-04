@@ -158,7 +158,9 @@ Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
 // Define custom select methods that select a block and its connected blocks
 function setBlockAndConnectedBlocksSelected(block, selected) {
-    goog.asserts.assertObject(block.svg_, 'Block is not rendered.');
+    if (!block.svg_) {
+        return;
+    }
 
     block.inputList.forEach(function(input) {
         if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
@@ -219,17 +221,20 @@ ocargo.BlocklyControl.prototype.init = function() {
     var toolbox = document.getElementById('toolbox');
     Blockly.inject(blockly, {
         path: '/static/game/js/blockly/',
-        toolbox: toolbox
+        toolbox: toolbox,
+        trashcan: true
     });
 
     try {
         var text = localStorage.getItem('blocklyWorkspaceXml');
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+        ocargo.blocklyControl.removeUnavailableBlocks();
     } catch (e) {
-        Blockly.mainWorkspace.clear();
         ocargo.blocklyControl.reset();
     }
+    
+
 };
 
 ocargo.BlocklyControl.prototype.teardown = function() {
@@ -241,15 +246,8 @@ ocargo.BlocklyControl.prototype.teardown = function() {
 };
 
 ocargo.BlocklyControl.prototype.reset = function() {
-    var startBlock = this.getStartBlock();
-    if (startBlock) {
-        var nextBlock = startBlock.nextConnection.targetBlock();
-        if (nextBlock) {
-            nextBlock.dispose();
-        }
-    } else {
-        this.createBlock('start');
-    }
+    Blockly.mainWorkspace.clear();
+    this.createBlock('start');
 };
 
 ocargo.BlocklyControl.prototype.removeWrong = function() {
@@ -289,6 +287,17 @@ ocargo.BlocklyControl.prototype.getStartBlock = function() {
 ocargo.BlocklyControl.prototype.getBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };
+
+ocargo.BlocklyControl.prototype.removeUnavailableBlocks = function() {
+    var blocks = Blockly.mainWorkspace.getTopBlocks();
+    var block;
+    for(var i = 0; i < blocks.length; i++) {
+        block = blocks[i];
+        if (BLOCKS.indexOf(block.type) === -1 && block.type !== 'start') {
+            block.dispose();
+        }
+    }
+}
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createWhile(block) {
@@ -345,7 +354,8 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     	}
 
     	if (elseCount === 1) {
-    		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1].connection.targetBlock());
+    		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1]
+                                                                    .connection.targetBlock());
     	}
 
     	return new If(conditionalCommandSets, elseCommands, block);
