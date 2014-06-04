@@ -175,14 +175,23 @@ ocargo.PathFinder.prototype.aStar = function() {
     initialiseParents();
 
     while (openSet.length > 0) {
-        current = openSet[openSet.length-1];
+
+        var smallestInOpen = 0;
+        var smallestInReverse = 0;
+        for (var i = 0; i < openSet.lenght; i++) {
+            if (reversePriority[this.nodes.indexOf(openSet[i])] < reversePriority[smallestInReverse]) {
+                smallestInOpen = i;
+                smallestInReverse = this.nodes.indexOf(openSet[i]); 
+            }
+        }
+        current = openSet[smallestInOpen];
         currentIndex = this.nodes.indexOf(current);
 
         // End case.
         if (current === end) {
             return getNodeList(current);
         }
-        openSet.pop();
+        openSet.splice(smallestInOpen, 1);
         closedSet.push(current);
         var neighbour;
         for (var i = 0; i < current.connectedNodes.length; i++) {
