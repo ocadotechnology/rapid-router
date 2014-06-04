@@ -7,7 +7,7 @@ function createUi() {
 function createDefaultLevel(nodeData, ui, maxFuel) {
 	var nodes = createNodes(nodeData);
     
-    var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ui);
+    var map = new ocargo.Map(nodes, [{'coordinate': new ocargo.Coordinate(1, 1), 'url': '/static/game/image/tree1.svg'}], nodes[nodes.length - 1], ui);
     var van = new ocargo.Van(nodes[0], nodes[1], maxFuel, ui);
     return new ocargo.Level(map, van, ui);
 }
