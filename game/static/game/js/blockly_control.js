@@ -221,7 +221,8 @@ ocargo.BlocklyControl.prototype.init = function() {
     var toolbox = document.getElementById('toolbox');
     Blockly.inject(blockly, {
         path: '/static/game/js/blockly/',
-        toolbox: toolbox
+        toolbox: toolbox,
+        trashcan: true
     });
 
     try {
