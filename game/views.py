@@ -10,7 +10,7 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import Class, Level, Attempt, Command, Block
-from cache import cached_all_levels
+from cache import cached_all_levels, cached_max_level, cached_level
 
 def levels(request):
     context = RequestContext(request, {
@@ -19,12 +19,12 @@ def levels(request):
     return render(request, 'game/level_selection.html', context)
 
 def level(request, level):
-    lvl = get_object_or_404(Level, id=level)
+    lvl = cached_level(level)
     path = lvl.path
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    levelCount = Level.objects.filter(default=True).count()
+    levelCount = cached_max_level()
     if int(level) <= levelCount:
         lesson = 'description_level' + str(level)
     else:
