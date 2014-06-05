@@ -80,6 +80,22 @@ button, .button, img.control{
     z-index: 1;
 }
 
+#fuelGuage {
+    left: 85%;
+    position: absolute;
+    z-index: 1;
+    width: 70px;
+    height: 70px;
+}
+
+#fuelGuagePointer {
+    position: absolute;
+    z-index: 2;
+    width: 70px;
+    height: 70px;
+    top: 0px;
+}
+
 img.control{
 	height:50px;
 	cursor: pointer;

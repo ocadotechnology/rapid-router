@@ -31,4 +31,10 @@ ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
 	this.currentNode = nextNode;
 	
 	this.fuel--;
+        updateFuelGuage(this.fuel, this.maxFuel);
 };
+
+function updateFuelGuage(fuel, maxFuel) {
+    var rotation = 'rotate(' + (((fuel/maxFuel)*300)-150) + 'deg)';
+    document.getElementById('fuelGuagePointer').style.transform=rotation;
+}
