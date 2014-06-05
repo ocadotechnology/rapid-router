@@ -34,6 +34,7 @@ INSTALLED_APPS = (
     'game',
     'reports',
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -77,6 +78,10 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = rel('static')
 
+
+# Required for admindocs
+
+SITE_ID = 1
 
 
 # PRESENTATION LAYER
