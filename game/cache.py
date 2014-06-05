@@ -21,7 +21,7 @@ def get_level(level):
 @receiver(post_delete, sender=Level)
 def clear_level_cache(sender, **kwargs):
     for level in all_levels():
-        cache.delete(LEVEL_PREFIX + level.id)
+        cache.delete(LEVEL_PREFIX + str(level.id))
     cache.delete(ALL_LEVELS_KEY)
     cache.delete(MAX_LEVEL_KEY)
 
