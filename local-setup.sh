@@ -64,7 +64,7 @@ echo 'Doing local setup (syncdb, collectstatic)'
 # create the database
 ./manage.py syncdb
 # collectstatic
-./manage.py collectstatic -l --noinput > /dev/null 2>&1
+./manage.py collectstatic --noinput > /dev/null 2>&1
 # compress
 # ./manage.py compress
 # echo starting command
