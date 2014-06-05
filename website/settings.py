@@ -34,6 +34,7 @@ INSTALLED_APPS = (
     'game',
     'reports',
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -78,6 +79,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = rel('static')
 
 
+# Required for admindocs
+
+SITE_ID = 1
+
 
 # PRESENTATION LAYER
 
@@ -111,6 +116,12 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
             'USER': 'root',
         }
     }
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake'
+        }
+    }
     COMPRESS_OFFLINE = True
     COMPRESS_ROOT = STATIC_ROOT
     COMPRESS_URL = STATIC_URL
@@ -119,6 +130,12 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': rel('dbfile'),
+        }
+    }
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'unique-snowflake'
         }
     }
 
