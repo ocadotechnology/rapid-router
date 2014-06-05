@@ -8,21 +8,20 @@ var SUGGESTED_COLOR = '#95b650';
 var BORDER = '#bce369';
 
 ocargo.LevelEditor = function() {
-	this.nodes = [];
-    this.current = [];
+    this.nodes = [];
     this.start = null;
     this.end = null;
+    this.currentStrike = [];
     this.map = this.initialiseVisited();
-    this.grid = this.initialiseVisited();
-    
+    this.grid = this.initialiseVisited();    
 }
 
 ocargo.LevelEditor.prototype.initialiseVisited = function() {
-	var visited = new Array(10);
-	for (var i = 0; i < 10; i++) {
-		visited[i] = new Array(8);
-	}
-	return visited;
+    var visited = new Array(10);
+    for (var i = 0; i < 10; i++) {
+        visited[i] = new Array(8);
+    }
+    return visited;
 }
 
 ocargo.LevelEditor.prototype.createGrid = function(paper) {
@@ -35,38 +34,43 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
             segment.attr({stroke: BORDER, fill: BACKGROUND_COLOR, "fill-opacity": 0});
 
             segment.node.onmousedown = function() {
-            	var this_rect = segment;
+                var this_rect = segment;
 
                 return function () {
-                	ocargo.levelEditor.start = segment;
-                	console.debug("Not null");
+                    ocargo.levelEditor.start = segment;
+                    console.debug("Not null");
                     var getBBox = this_rect.getBBox();
                     var point = [getBBox.x / 100, getBBox.y / 100];
                     ocargo.levelEditor.mark(point, SELECTED_COLOR, 1, true);
+                    ocargo.levelEditor.current.push(point);
                 }
             } ();
 
             segment.node.onmouseover = function() {
-        		var this_rect = segment;
+                var this_rect = segment;
 
                 return function () {
-                	if (ocargo.levelEditor.start !== null) {
-	                    var getBBox = this_rect.getBBox();
-	                    var point = [getBBox.x / 100, getBBox.y / 100];
-	                    ocargo.levelEditor.mark(point, SELECTED_COLOR, 1, true);
-	                }
+                    if (ocargo.levelEditor.start !== null) {
+                        var getBBox = this_rect.getBBox();
+                        var getBBox = this_rect.getBBox();
+                        ocargo.levelEditor.mark(point, SELECTED_COLOR, 1, true);
+                        ocargo.levelEditor.current.push(point);
+                    }
                 }
-            	return;
+                return;
             } ();
 
             segment.node.onmouseup = function() {
-				var this_rect = segment;
+                var this_rect = segment;
 
                 return function () {
-                	console.debug("null");
-            		ocargo.levelEditor.end = segment;
-            		ocargo.levelEditor.start = null;
-            		//Generate the road
+                    console.debug("null");
+                    ocargo.levelEditor.end = segment;
+                    ocargo.levelEditor.start = null;
+                    var getBBox = this_rect.getBBox();
+                    var point = [getBBox.x / 100, getBBox.y / 100];
+                    ocargo.levelEditor.current.push(point);
+                    //Generate the road
                 }
             } ();
 

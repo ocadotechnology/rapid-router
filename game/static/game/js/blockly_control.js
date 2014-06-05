@@ -230,6 +230,7 @@ ocargo.BlocklyControl.prototype.init = function() {
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeUnavailableBlocks();
+
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
@@ -289,7 +290,7 @@ ocargo.BlocklyControl.prototype.getBlocksCount = function() {
 };
 
 ocargo.BlocklyControl.prototype.removeUnavailableBlocks = function() {
-    var blocks = Blockly.mainWorkspace.getTopBlocks();
+    var blocks = Blockly.mainWorkspace.getAllBlocks();
     var block;
     for(var i = 0; i < blocks.length; i++) {
         block = blocks[i];
