@@ -1,4 +1,4 @@
-from game import random_road
+#from game import random_road
 import os
 import json
 import messages
