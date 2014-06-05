@@ -1,3 +1,4 @@
+from game import random_road
 import os
 import json
 import messages
@@ -10,20 +11,20 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import Class, Level, Attempt, Command, Block
+from cache import cached_all_levels, cached_max_level, cached_level
 
 def levels(request):
     context = RequestContext(request, {
-        'levels': Level.objects.filter(default=True).order_by('id'),
+        'levels': cached_all_levels()
     })
     return render(request, 'game/level_selection.html', context)
 
 def level(request, level):
-    lvl = get_object_or_404(Level, id=level)
-    path = lvl.path
+    lvl = cached_level(level)
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    levelCount = Level.objects.filter(default=True).count()
+    levelCount = cached_max_level()
     if int(level) <= levelCount:
         lesson = 'description_level' + str(level)
     else:
@@ -41,13 +42,10 @@ def level(request, level):
             attempt.save()
 
     context = RequestContext(request, {
-        'level': lvl.id,
-        'path': path,
+        'level': lvl,
         'blocks': blocks,
-        'blockLimit': lvl.blockLimit,
         'lesson': lesson,
         'defaultLevelCount': levelCount,
-        'maxFuel': lvl.maxFuel,
     })
 
     return render(request, 'game/game.html', context)
@@ -78,7 +76,7 @@ def level_new(request):
 
 def level_random(request):
     """ Generates a new random level"""
-    level = Level.random_road()
+    level = random_road.create()
     return redirect("game.views.level", level=level.id)
 
 

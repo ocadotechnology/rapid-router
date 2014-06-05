@@ -1,9 +1,9 @@
 from datetime import datetime
+
 from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.db import models
 
-import random
 
 class UserProfile (models.Model):
     user = models.OneToOneField(User)
@@ -58,56 +58,12 @@ class Block (models.Model):
 class Level (models.Model):
     name = models.IntegerField()
     path = models.CharField(max_length=10000)
+    decor = models.CharField(max_length=10000, default='[]')
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blockLimit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
-    maxFuel = models.IntegerField()
-
-    @classmethod
-    def random_road(cls):
-        generated_path = Level.generate_random_path()
-        level = cls(name=3000, path=generated_path)
-        level.save()
-        level.blocks = Block.objects.all()
-        level.save()
-        return level
-
-    @staticmethod
-    def generate_random_path():
-        road_tiles = set()
-        road_tiles.add((1,3))
-
-        for _ in xrange(20):
-            new_tile = Level.pick_adjacent_tile(road_tiles)
-            if new_tile is not None:
-                road_tiles.add(new_tile)
-
-        print(road_tiles)
-        return "[[0,3],[1,3],[1,4],[1,5],[1,6],[2,6],[2,5],[3,5],[3,4],[3,3],[3,2],[4,2],[4,3],[5,3]]"
-
-    @staticmethod
-    def pick_adjacent_tile(tiles):
-        for attempts in xrange(5):
-            origin = random.sample(tiles, 1)[0]
-            possibles = set()
-            if Level.is_possible((origin[0] - 1, origin[1]), tiles):
-                possibles.add((origin[0] - 1, origin[1]))
-            if Level.is_possible((origin[0] + 1, origin[1]), tiles):
-                possibles.add((origin[0] + 1, origin[1]))
-            if Level.is_possible((origin[0], origin[1] - 1), tiles):
-                possibles.add((origin[0], origin[1] - 1))
-            if Level.is_possible((origin[0], origin[1] + 1), tiles):
-                possibles.add((origin[0], origin[1] + 1))
-
-            if possibles:
-                return random.sample(possibles, 1)[0]
-
-        return None
-
-    @staticmethod
-    def is_possible(tile, tiles):
-        return (tile not in tiles) and tile[0] > 0 and tile[0] < 10 - 1 and tile[1] > 0 and tile[1] < 8 - 1
+    maxFuel = models.IntegerField(default=50)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
