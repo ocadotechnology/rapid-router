@@ -27,16 +27,17 @@
   <script src="{% static 'game/js/van.js' %}"></script>
   <script src="{% static 'game/js/sound.js' %}"></script>
   <script>
-    var PATH = {{path|safe}};
-    var LEVEL_ID = {{level}};
-    var BLOCK_LIMIT = "{{blockLimit}}" != "None" ?  {{blockLimit}} : null;
+    var PATH = {{level.path|safe}};
+    var DECOR = {{level.decor|safe}};
+    var LEVEL_ID = {{level.id}};
+    var BLOCK_LIMIT = "{{level.blockLimit}}" != "None" ?  {{level.blockLimit}} : null;
     var LESSON = "{{lesson}}";
     var LEVEL_COUNT = {{defaultLevelCount}};
     var BLOCKS =  [];
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}
-    var MAX_FUEL = {{maxFuel}};
+    var MAX_FUEL = {{level.maxFuel}};
   </script>
 {% endblock %}
 

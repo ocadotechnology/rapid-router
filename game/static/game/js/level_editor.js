@@ -303,7 +303,7 @@ $('#dragMagic').click(function() {
     if (unified || window.confirm(message)) {
         console.debug("Creating a map from your choice.");
         var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);
-        var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
+        var map = new ocargo.Map(nodes, [], nodes[nodes.length - 1], ocargo.ui);
     }
     if (!unified) {
         var i;
@@ -342,7 +342,7 @@ $('#createFromSelect').click(function() {
         return;
     }
     var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
-    var map = new ocargo.Map(nodes, nodes[nodes.length - 1], ocargo.ui);
+    var map = new ocargo.Map(nodes, [], nodes[nodes.length - 1], ocargo.ui);
 });
 
 
