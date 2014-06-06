@@ -17,8 +17,8 @@ ocargo.LevelEditor = function() {
     this.start = null;
     this.end = null;
     this.currentStrike = [];
-    // Do I need this? \/
     this.map = this.initialiseVisited();
+    // TODO: add tree insertion.
     this.grid = this.initialiseVisited();    
 }
 
@@ -35,7 +35,6 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
         for (var j = 0; j < GRID_HEIGHT; j++) {
             var x = i * GRID_SPACE_SIZE;
             var y = j * GRID_SPACE_SIZE;
-            // Create node to be inserted into nodes list.
             var segment = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
             segment.attr({stroke: BORDER, fill: BACKGROUND_COLOR, "fill-opacity": 0});
 
@@ -72,10 +71,7 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
                     var getBBox = this_rect.getBBox();
                     var coord = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
                     ocargo.levelEditor.finaliseMove(coord);
-                    //Generate the road
-                    console.debug(ocargo.levelEditor.nodes.length)
                     for (var i = 0; i < ocargo.levelEditor.nodes.length; i++) {
-                        console.debug("node",i, ocargo.levelEditor.nodes[i].coordinate, 
                              ocargo.levelEditor.nodes[i].connectedNodes);
                     }
                     createRoad(ocargo.levelEditor.nodes);
@@ -96,10 +92,8 @@ ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
         var index = this.findNodeByCoordinate(this.nodes, current.coordinate);
         if (index > -1) {
             var alreadyExisting = ocargo.levelEditor.nodes[index]
-            console.debug(alreadyExisting.connectedNodes);
             for (var j = 0; j < current.connectedNodes.length; j++) {
                 var neighbour = current.connectedNodes[j];
-                console.debug("neighbourskhadkhdkajhd", neighbour);
                 alreadyExisting.addConnectedNodeWithBacklink(neighbour);
                 neighbour.addConnectedNodeWithBacklink(alreadyExisting);
                 neighbour.removeDoublyConnectedNode(current);
@@ -126,7 +120,6 @@ ocargo.LevelEditor.prototype.recalculatePredictedRoad = function(coordinate) {
 };
 
 ocargo.LevelEditor.prototype.markFromStart = function(coord) {
-    //console.debug(this.start, this.start.coordinate, coord, coord.x)
     ocargo.levelEditor.currentStrike.push(new ocargo.Node(this.translate(this.start)));
     ocargo.levelEditor.mark(this.start, SELECTED_COLOR, 1, true);
     var x, y;
@@ -167,7 +160,8 @@ ocargo.LevelEditor.prototype.cleanPredictedRoad = function() {
         node = ocargo.levelEditor.currentStrike[i];
         coord = ocargo.levelEditor.translate(node.coordinate);
         ocargo.levelEditor.mark(coord, BACKGROUND_COLOR, 0, false);
-        // Handle removing remaining references - although we pop, we think we are pointing to another node. §
+        // TODO: Handle removing remaining references - although we pop, we think 
+        //    we are pointing to another node. §
     }
     ocargo.levelEditor.currentStrike = [];
 };
