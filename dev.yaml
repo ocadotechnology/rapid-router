@@ -16,6 +16,7 @@ handlers:
 env_variables:
   DJANGO_SETTINGS_MODULE: 'website.settings'
   DATABASE_NAME: 'ocargo_dev'
+  CACHE_PREFIX: 'dev-'
 
 libraries:
 - name: PIL
