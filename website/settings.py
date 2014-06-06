@@ -119,6 +119,7 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'KEY_PREFIX': os.getenv('CACHE_PREFIX'),
             'TIMEOUT': 0,
         }
     }
