@@ -17,6 +17,17 @@ ocargo.Node.prototype.addConnectedNodeWithBacklink = function(node) {
 	node.addConnectedNode(this);
 };
 
+ocargo.Node.prototype.removeDoublyConnectedNode = function(node) {
+    var index = this.connectedNodes.indexOf(node);
+    if (index >= -1) {
+        this.connectedNodes.splice(index, 1);
+    }
+    index = node.connectedNodes.indexOf(this);
+    if (index >= -1) {
+        node.connectedNodes.splice(index, 1);
+    }
+}
+
 ocargo.calculateNodeAngle = function(nodeA, nodeB) {
     var coordinateA = nodeA.coordinate;
     var coordinateB = nodeB.coordinate;
