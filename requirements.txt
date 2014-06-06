@@ -12,3 +12,4 @@ pyyaml==3.11
 six==1.6.1
 docutils==0.11
 django-silk==0.1
+requests==2.1.0
