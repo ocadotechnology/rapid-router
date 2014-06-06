@@ -7,6 +7,7 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+ 
 
 # Build paths inside the project like this: rel(rel_path)
 import os
@@ -128,8 +129,11 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
     COMPRESS_URL = STATIC_URL
     # And require login for now
     MIDDLEWARE_CLASSES.append('website.middleware.loginrequired.LoginRequiredMiddleware')
-    # This middleware currently only injects app engine's memcache into the python path
-    MIDDLEWARE_CLASSES.append('website.middleware.appengine.AppEngineMiddleware')
+    # inject the lib folder into the python path
+    import sys
+    lib_path = os.path.join(os.path.dirname(__file__), 'lib')
+    if lib_path not in sys.path:
+        sys.path.append(lib_path)
 else:
     DATABASES = {
         'default': {
