@@ -118,8 +118,8 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
     }
     CACHES = {
         'default': {
-            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-            'LOCATION': 'unique-snowflake'
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'TIMEOUT': 0,
         }
     }
     COMPRESS_OFFLINE = True
