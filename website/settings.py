@@ -127,6 +127,8 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
     COMPRESS_URL = STATIC_URL
     # And require login for now
     MIDDLEWARE_CLASSES.append('website.middleware.loginrequired.LoginRequiredMiddleware')
+    # This middleware currently only injects app engine's memcache into the python path
+    MIDDLEWARE_CLASSES.append('website.middleware.appengine.AppEngineMiddleware')
 else:
     DATABASES = {
         'default': {
