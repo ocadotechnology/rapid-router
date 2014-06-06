@@ -17,6 +17,7 @@ ADD . /opt/ocargo/
 ENV TMPDIR /pip
 RUN mkdir -p $TMPDIR
 RUN pip install -r /opt/ocargo/requirements.txt
+RUN pip uninstall -y pep8
 RUN ls -d /usr/local/lib/python2.7/dist-packages/* | grep -v info | xargs -i cp -R {} /opt/ocargo/
 RUN chmod +x /opt/ocargo/deploy.sh
 CMD ["/opt/ocargo/deploy.sh"]
