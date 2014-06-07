@@ -81,6 +81,11 @@ button, .button, img.control{
     font-size: 1.2rem !important;
 }
 
+#myModal > p.mainText > #hintText,
+#myModal > p.mainText > #hintBtnPara{
+	margin: 2rem 1rem 0;
+}
+
 #sliderControls {
     position: absolute;
     left: 50%;

@@ -27,10 +27,14 @@ def level(request, level):
     levelCount = cached_max_level()
     if int(level) <= levelCount:
         lesson = 'description_level' + str(level)
+        hint = 'hint_level' + str(level)
     else:
         lesson = 'description_level_default'
+        hint = 'hint_level_default'
     messageCall = getattr(messages, lesson)
     lesson = mark_safe(messageCall())
+    messageCall = getattr(messages, hint)
+    hint = mark_safe(messageCall())
 
     #FIXME: figure out how to check for all this better
     if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and \
@@ -46,6 +50,7 @@ def level(request, level):
         'level': lvl,
         'blocks': blocks,
         'lesson': lesson,
+        'hint': hint,
         'defaultLevelCount': levelCount,
     })
 
