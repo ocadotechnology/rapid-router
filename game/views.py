@@ -11,11 +11,11 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
 from models import Class, Level, Attempt, Command, Block
-from cache import cached_all_levels, cached_max_level, cached_level
+from cache import cached_all_episodes, cached_level, cached_episode
 
 def levels(request):
     context = RequestContext(request, {
-        'levels': cached_all_levels()
+        'episodes': cached_all_episodes()
     })
     return render(request, 'game/level_selection.html', context)
 
@@ -24,7 +24,7 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    if lvl.owner is None:
+    if lvl.default:
         lesson = 'description_level' + str(level)
         hint = 'hint_level' + str(level)
     else:
@@ -53,6 +53,11 @@ def level(request, level):
     })
 
     return render(request, 'game/game.html', context)
+
+def start_episode(request, episode):
+    episode = cached_episode(episode)
+    return redirect("game.views.level", level=episode.first_level.id)
+
 
 def level_new(request):
     """Processes a request on creation of the map in the level editor."""

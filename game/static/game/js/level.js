@@ -2,7 +2,7 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Level = function(map, van, ui, nextLevel) {
+ocargo.Level = function(map, van, ui, nextLevel, nextEpisode) {
     this.levelId = null;
     this.map = map;
     this.van = van;
@@ -14,6 +14,7 @@ ocargo.Level = function(map, van, ui, nextLevel) {
     this.fails = 0;
     this.hintOpened = false;
     this.nextLevel = nextLevel;
+    this.nextEpisode = nextEpisode;
 };
 
 ocargo.Level.prototype.failsBeforeHintBtn = 3;
@@ -118,13 +119,23 @@ ocargo.Level.prototype.win = function() {
 
     if (ocargo.level.nextLevel != null) {
         message = '<button onclick="window.location.href=' + "'/game/" +
-                    (ocargo.level.levelId + 1) + "'" + '"">Next level</button>';
+                    ocargo.level.nextLevel + "'" + '"">Next level</button>';
     } else {
-        message = "Congratulations, that's all we've got for you now! <br>" + 
-                  "Why not try to create your own road? <br><br> " +
-                  '<button onclick="window.location.href=' + "'/game/level_editor'" +
-                  '"">Create your own map!</button> </center>' +
-                  '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
+        if (ocargo.level.nextEpisode != null) {
+            var episodeUri = "/game/episode/" + ocargo.level.nextEpisode;
+            message = "Well done, you've completed the episode!<br>" +
+                      "Are you ready for the next challenge? <br><br> " +
+                      '<button onclick="window.location.href=' + 
+                      "'" + episodeUri + "'" +
+                      '"">Next episode</button> </center>' +
+                      '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
+        } else {
+            message = "Congratulations, that's all we've got for you now! <br>" +
+                      "Why not try to create your own road? <br><br> " +
+                      '<button onclick="window.location.href=' + "'/game/level_editor'" +
+                      '"">Create your own map!</button> </center>' +
+                      '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
+        }
     }
     startPopup("You win!", subtitle, message);
 };

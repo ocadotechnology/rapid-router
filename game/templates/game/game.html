@@ -39,6 +39,7 @@
     {% endfor %}
     var MAX_FUEL = {{level.max_fuel}};
     var NEXT_LEVEL = "{{level.next_level}}" != "None" ? "{{level.next_level.id}}" : null;
+    var NEXT_EPISODE = "{{level.episode.next_episode}}" != "None" ? "{{level.episode.next_episode.id}}" : null;
   </script>
 {% endblock %}
 

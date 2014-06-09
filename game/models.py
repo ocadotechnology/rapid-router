@@ -69,6 +69,27 @@ class Level (models.Model):
     def __unicode__(self):
         return 'Level ' + str(self.id)
 
+    @property
+    def episode(self):
+        for episode in Episode.objects.all():
+            if self in episode.levels:
+                return episode
+        return None
+
+
+class Episode (models.Model):
+    name = models.CharField(max_length=200)
+    first_level = models.ForeignKey(Level)
+    next_episode = models.ForeignKey("self", null=True, default=None)
+
+    @property
+    def levels(self):
+        if self.first_level is not None:
+            level = self.first_level
+            while level is not None:
+                yield level
+                level = level.next_level
+
 
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
