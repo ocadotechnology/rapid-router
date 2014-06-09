@@ -4,12 +4,12 @@ function createUi() {
     return new ocargo.SimpleUi();
 }
 
-function createDefaultLevel(nodeData, decor, ui, maxFuel) {
+function createDefaultLevel(nodeData, decor, ui, maxFuel, nextLevel) {
 	var nodes = createNodes(nodeData);
     
     var map = new ocargo.Map(nodes, decor, nodes[nodes.length - 1], ui);
     var van = new ocargo.Van(nodes[0], nodes[1], maxFuel, ui);
-    return new ocargo.Level(map, van, ui);
+    return new ocargo.Level(map, van, ui, nextLevel);
 }
 
 function createNodes(nodeData){
@@ -40,7 +40,7 @@ function initialiseDefault() {
     startPopup(title, "", LESSON); 
 
     ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(PATH, DECOR, ocargo.ui, MAX_FUEL);
+    ocargo.level = createDefaultLevel(PATH, DECOR, ocargo.ui, MAX_FUEL, NEXT_LEVEL);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
     enableDirectControl();

@@ -24,8 +24,7 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    levelCount = cached_max_level()
-    if int(level) <= levelCount:
+    if lvl.owner is None:
         lesson = 'description_level' + str(level)
         hint = 'hint_level' + str(level)
     else:
@@ -51,7 +50,6 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'hint': hint,
-        'defaultLevelCount': levelCount,
     })
 
     return render(request, 'game/game.html', context)

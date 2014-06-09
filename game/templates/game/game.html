@@ -30,15 +30,15 @@
     var PATH = {{level.path|safe}};
     var DECOR = {{level.decor|safe}};
     var LEVEL_ID = {{level.id}};
-    var BLOCK_LIMIT = "{{level.blockLimit}}" != "None" ?  {{level.blockLimit}} : null;
+    var BLOCK_LIMIT = "{{level.block_limit}}" != "None" ?  {{level.block_limit}} : null;
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
-    var LEVEL_COUNT = {{defaultLevelCount}};
     var BLOCKS =  [];
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}
-    var MAX_FUEL = {{level.maxFuel}};
+    var MAX_FUEL = {{level.max_fuel}};
+    var NEXT_LEVEL = "{{level.next_level}}" != "None" ? "{{level.next_level.id}}" : null;
   </script>
 {% endblock %}
 

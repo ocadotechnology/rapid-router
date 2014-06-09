@@ -64,6 +64,7 @@ class Level (models.Model):
     block_limit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
     max_fuel = models.IntegerField(default=50)
+    next_level = models.ForeignKey('self', null=True, default=None)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
