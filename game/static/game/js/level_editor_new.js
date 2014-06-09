@@ -18,6 +18,7 @@ ocargo.LevelEditor = function() {
     this.end = null;
     this.currentStrike = [];
     this.map = this.initialiseVisited();
+    this.decor = [];
     // TODO: add tree insertion.
     this.grid = this.initialiseVisited();    
 }
@@ -71,10 +72,17 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
                     var getBBox = this_rect.getBBox();
                     var coord = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
                     ocargo.levelEditor.finaliseMove(coord);
-                    for (var i = 0; i < ocargo.levelEditor.nodes.length; i++) {
-                             ocargo.levelEditor.nodes[i].connectedNodes);
-                    }
+                    paper.clear();
+                    ocargo.levelEditor.createGrid(paper)
                     createRoad(ocargo.levelEditor.nodes);
+                    console.debug("----------");
+                    for(var i = 0; i < ocargo.levelEditor.nodes.length; i++) {
+                        var nei = [];
+                        for(var j = 0; j < ocargo.levelEditor.nodes[i].connectedNodes.length; j++) {
+                            nei.push(ocargo.levelEditor.nodes[i].connectedNodes[j].coordinate);
+                        }
+                        console.debug(i, ocargo.levelEditor.nodes[i].coordinate, nei);
+                    }
                 }
             } ();
 
@@ -87,17 +95,27 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
 ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
     var current;
     var prev;
+
     for (var i = 0; i < ocargo.levelEditor.currentStrike.length; i++) {
         current = ocargo.levelEditor.currentStrike[i];
         var index = this.findNodeByCoordinate(this.nodes, current.coordinate);
         if (index > -1) {
-            var alreadyExisting = ocargo.levelEditor.nodes[index]
+            var alreadyExisting = ocargo.levelEditor.nodes[index];
+            console.debug("alreadyExisting", alreadyExisting.coordinate, alreadyExisting.connectedNodes);
+            if(current.connectedNodes.length > 1) {
+                console.debug("current", current.coordinate, current.connectedNodes[0].coordinate, current.connectedNodes[1].coordinate);
+            }
+            var list = []
             for (var j = 0; j < current.connectedNodes.length; j++) {
                 var neighbour = current.connectedNodes[j];
                 alreadyExisting.addConnectedNodeWithBacklink(neighbour);
-                neighbour.addConnectedNodeWithBacklink(alreadyExisting);
-                neighbour.removeDoublyConnectedNode(current);
+                console.debug('adding to current', alreadyExisting.coordinate, neighbour.coordinate);
+                list.push(neighbour);
             }
+            for(var k = 0; k < list.length; k++) {
+                list[k].removeDoublyConnectedNode(current);
+            }
+
         } else {
             this.nodes.push(current);
         }
