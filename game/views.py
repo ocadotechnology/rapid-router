@@ -58,13 +58,15 @@ def level(request, level):
 
 def level_new(request):
     """Processes a request on creation of the map in the level editor."""
-    if 'path' in request.POST:
-        path = request.POST['path']
+    if 'nodes' in request.POST:
+        path = request.POST['nodes']
+        destination = request.POST['destination']
+        decor = request.POST['decor']
         passedLevel = None
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
-            passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False)
+            passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False, destination=destination, decor=decor)
         else:
-            passedLevel = Level(name=10, path=path, default=False)
+            passedLevel = Level(name=10, path=path, default=False, destination=destination, decor=decor)
         passedLevel.save()
 
         if 'blockTypes' in request.POST:

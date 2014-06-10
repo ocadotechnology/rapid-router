@@ -28,6 +28,7 @@
   <script src="{% static 'game/js/sound.js' %}"></script>
   <script>
     var PATH = {{level.path|safe}};
+    var DESTINATION = {{level.destination|safe}};
     var DECOR = {{level.decor|safe}};
     var LEVEL_ID = {{level.id}};
     var BLOCK_LIMIT = "{{level.blockLimit}}" != "None" ?  {{level.blockLimit}} : null;

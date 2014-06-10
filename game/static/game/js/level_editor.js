@@ -1,32 +1,51 @@
 'use strict';
 
+var ocargo = ocargo || {};
+
 var BACKGROUND_COLOR = '#a8d44a';
 var SELECTED_COLOR = '#70961f';
 var SUGGESTED_COLOR = '#95b650';
 var BORDER = '#bce369';
 
-var ocargo = ocargo || {};
+var BUSH_URL = '/static/game/image/bush.svg';
+var TREE1_URL = '/static/game/image/tree1.svg';
+var TREE2_URL = '/static/game/image/tree2.svg';
+var HOUSE_URL = '/static/game/image/house1_noGreen.svg';
+var CFC_URL = '/static/game/image/OcadoCFC_no_road.svg';
 
-function pushInstruction(json, coord, instruction) {
-    var x = coord.x.toString();
-    var y = coord.y.toString();
-    if (!json.hasOwnProperty(x)) {
-        json[x] = {};
-    }
-    json[x][y] = instruction;
+
+ocargo.LevelEditor = function() {
+    this.nodes = [];
+
+    // History is stored as a list of ranges of each road segment created, i.e. [[0,4], [4,8]],
+    // where 0, 4, 8 are indices of nodes pushed to nodes.
+    this.history = [];
+    this.start = null;
+    this.end = null;
+    this.currentStrike = [];
+    this.map = this.initialiseVisited();
+    this.decor = [];
+    this.grid = this.initialiseVisited();
+
+    // Is the start or end setting mode on?
+    this.startFlag = false;
+    this.endFlag = false;
+
+    // type: Node
+    this.pathStart = null;
+    this.destination = null;
+
 }
 
-ocargo.MapEditor = function() {
-    this.submittedPoints = [];
-    this.map = initialiseVisited();
-    this.grid = initialiseVisited();
-    this.current = [];
-    this.possibleNext = [];
-    this.json = {};
-    this.elements = 1;
-};
+ocargo.LevelEditor.prototype.initialiseVisited = function() {
+    var visited = new Array(10);
+    for (var i = 0; i < 10; i++) {
+        visited[i] = new Array(8);
+    }
+    return visited;
+}
 
-ocargo.MapEditor.prototype.createGrid = function(paper) {
+ocargo.LevelEditor.prototype.createGrid = function(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
         for (var j = 0; j < GRID_HEIGHT; j++) {
             var x = i * GRID_SPACE_SIZE;
@@ -34,324 +53,200 @@ ocargo.MapEditor.prototype.createGrid = function(paper) {
             var segment = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
             segment.attr({stroke: BORDER, fill: BACKGROUND_COLOR, "fill-opacity": 0});
 
-            segment.node.onclick = function () {
+            segment.node.onmousedown = function() {
                 var this_rect = segment;
-                return function () {
+
+                return function() {
                     var getBBox = this_rect.getBBox();
-                    var point = [getBBox.x / 100, getBBox.y / 100];
-                    if(ocargo.mapEditor.map[point[0]][point[1]] === undefined) {
-                        ocargo.mapEditor.markPossible(point);
-                        ocargo.mapEditor.mark(point, SELECTED_COLOR, 1, true);
+                    var coord = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
+                    var transCoord = ocargo.levelEditor.translate(coord);
+                    var isPresent = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
+                    if (ocargo.levelEditor.startFlag && isPresent > -1) {
+                        if(ocargo.levelEditor.pathStart) {
+                            var prevStart = ocargo.levelEditor.translate(
+                                ocargo.levelEditor.pathStart.coordinate);
+                            ocargo.levelEditor.mark(prevStart, BACKGROUND_COLOR, 0, true);
+                        }
+                        ocargo.levelEditor.mark(coord, 'red', 1, true);
+                        var prevIndex = ocargo.levelEditor.findNodeByCoordinate(
+                            ocargo.levelEditor.nodes, transCoord);
+                        // Putting the new start in the front of the nodes list.
+                        var temp = ocargo.levelEditor.nodes[prevIndex];
+                        ocargo.levelEditor.nodes[prevIndex] = ocargo.levelEditor.nodes[0];
+                        ocargo.levelEditor.nodes[0] = temp;
+                        ocargo.levelEditor.pathStart = ocargo.levelEditor.nodes[0];
+
+                    } else if (ocargo.levelEditor.endFlag && isPresent > -1) {
+                         if(ocargo.levelEditor.destination) {
+                            var prevEnd = ocargo.levelEditor.translate(
+                                ocargo.levelEditor.destination.coordinate);
+                            ocargo.levelEditor.mark(prevEnd, BACKGROUND_COLOR, 0, true);
+                        }
+                        ocargo.levelEditor.mark(coord, 'blue', '1', true);
+                        var newEnd = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
+                        ocargo.levelEditor.destination = ocargo.levelEditor.nodes[newEnd];
+
+                    } else if (!(ocargo.levelEditor.endFlag || ocargo.levelEditor.startFlag)) {
+                        ocargo.levelEditor.start = coord;
+                        ocargo.levelEditor.mark(coord, SELECTED_COLOR, 1, true);
                     }
                 }
-            }();
+            } ();
+
+
+            segment.node.onmouseover = function() {
+                var this_rect = segment;
+
+                return function() {
+                    var startOrEnd = ocargo.levelEditor.endFlag || ocargo.levelEditor.startFlag
+                    if (ocargo.levelEditor.start !== null && !startOrEnd) {
+                        var getBBox = this_rect.getBBox();
+                        var coord = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
+                        ocargo.levelEditor.recalculatePredictedRoad(coord);
+                    }
+                }
+                return;
+            } ();
+
+            segment.node.onmouseup = function() {
+                var this_rect = segment;
+
+                return function() {
+                    var startOrEnd = ocargo.levelEditor.endFlag || ocargo.levelEditor.startFlag
+                    if (!startOrEnd) {
+                        ocargo.levelEditor.end = segment;
+                        ocargo.levelEditor.start = null;
+                        var getBBox = this_rect.getBBox();
+                        var coord = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
+                        ocargo.levelEditor.finaliseMove(coord);
+                        paper.clear();
+                        ocargo.levelEditor.createGrid(paper)
+                        createRoad(ocargo.levelEditor.nodes);
+                        drawDecor(ocargo.levelEditor.decor);
+                        if (ocargo.levelEditor.pathStart !== null) {
+                            coord = ocargo.levelEditor.translate(ocargo.levelEditor.pathStart.coordinate);
+                            ocargo.levelEditor.mark(coord, 'red', 1, true);
+                        } 
+                        if (ocargo.levelEditor.destination !== null) {
+                            coord = ocargo.levelEditor.translate(ocargo.levelEditor.destination.coordinate);
+                            ocargo.levelEditor.mark(coord, 'blue', 1, true);
+                        }
+                    }
+                }
+            } ();
+
             this.grid[i][j] = segment;
             this.map[i][j] = false;
         }
     }
-    this.current = [0,4];
-    createHorizontalRoad(paper, 0, 4);
-    this.mark(this.current, SELECTED_COLOR, 1, true);
-    this.possibleNext = [[1,4]];
-    this.mark([1,4], SUGGESTED_COLOR, 1, undefined);
-    pushInstruction(ocargo.mapEditor.json, new ocargo.Coordinate(0,4), "H");
 };
 
-ocargo.MapEditor.prototype.markPossible = function(point) {
-    var i, curr;
-    for (i = 0; i < this.possibleNext.length; i++) {
-        curr = this.possibleNext[i];
-        this.mark(curr, BACKGROUND_COLOR, 0, false);
+ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
+    var current;
+    var prev;
+
+    this.history.push([this.start, this.end]);
+
+    for (var i = 0; i < ocargo.levelEditor.currentStrike.length; i++) {
+        current = ocargo.levelEditor.currentStrike[i];
+        var index = this.findNodeByCoordinate(this.nodes, current.coordinate);
+        if (index > -1) {
+            var alreadyExisting = ocargo.levelEditor.nodes[index];
+            var list = []
+            for (var j = 0; j < current.connectedNodes.length; j++) {
+                var neighbour = current.connectedNodes[j];
+                alreadyExisting.addConnectedNodeWithBacklink(neighbour);
+                list.push(neighbour);
+            }
+            for(var k = 0; k < list.length; k++) {
+                list[k].removeDoublyConnectedNode(current);
+            }
+
+        } else {
+            this.nodes.push(current);
+        }
     }
-    this.possibleNext = getPossibleNextMoves(point, this.map);
-    for (i = 0; i < this.possibleNext.length; i++) {
-        curr = this.possibleNext[i];
-        this.mark(this.possibleNext[i], SUGGESTED_COLOR, 1, undefined);
+    this.currentStrike = [];
+}
+
+ocargo.LevelEditor.prototype.findNodeByCoordinate = function(nodes, coordinate) {
+    for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].coordinate.x === coordinate.x && nodes[i].coordinate.y === coordinate.y) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+ocargo.LevelEditor.prototype.recalculatePredictedRoad = function(coordinate) {
+    ocargo.levelEditor.cleanPredictedRoad(coordinate);
+    ocargo.levelEditor.markFromStart(coordinate);
+};
+
+ocargo.LevelEditor.prototype.markFromStart = function(coord) {
+    ocargo.levelEditor.currentStrike.push(new ocargo.Node(this.translate(this.start)));
+    ocargo.levelEditor.mark(this.start, SELECTED_COLOR, 1, true);
+    var x, y;
+
+    if (this.start.x <= coord.x) {
+        for (x = this.start.x + 1; x <= coord.x; x++) {
+            setup(x, this.start.y);
+        }
+    } else {
+        for (x = this.start.x - 1; x >= coord.x; x--) {
+            setup(x, this.start.y);
+        }
+    }
+    if (this.start.y <= coord.y) {
+        for (y = this.start.y + 1; y <= coord.y; y++) {
+            setup(coord.x, y);
+        }
+    } else {
+        for (y = this.start.y - 1; y >= coord.y; y--) {
+            setup(coord.x, y);
+        }
+    }
+
+    function setup(x, y) {
+        var coordinate = new ocargo.Coordinate(x, y);
+        var node = new ocargo.Node(ocargo.levelEditor.translate(coordinate));
+        node.addConnectedNodeWithBacklink(
+            ocargo.levelEditor.currentStrike[ocargo.levelEditor.currentStrike.length - 1]);
+        ocargo.levelEditor.currentStrike.push(node);
+        ocargo.levelEditor.mark(coordinate, SELECTED_COLOR, 1, true);
     }
 };
 
-ocargo.MapEditor.prototype.mark = function(point, colour, opacity, occupied) {
-    var element = this.grid[point[0]][point[1]];
-    if (occupied) {
-        this.current = point;
-        this.submittedPoints.push([point[0], GRID_HEIGHT - 1 - point[1]]);
+ocargo.LevelEditor.prototype.cleanPredictedRoad = function() {
+    var node;
+    var coord;
+    for (var i = this.currentStrike.length - 1; i >=0; i--) {
+        node = ocargo.levelEditor.currentStrike[i];
+        coord = ocargo.levelEditor.translate(node.coordinate);
+        ocargo.levelEditor.mark(coord, BACKGROUND_COLOR, 0, false);
+        // TODO: Handle removing remaining references - although we pop, we think 
+        //    we are pointing to another node. §
     }
-    this.map[point[0]][point[1]] = occupied;
+    ocargo.levelEditor.currentStrike = [];
+};
+
+ocargo.LevelEditor.prototype.translate = function(coordinate) {
+    return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
+}
+
+ocargo.LevelEditor.prototype.mark = function(point, colour, opacity, occupied) {
+    var element = this.grid[point.x][point.y];
+    this.map[point.x][point.y] = occupied;
     element.attr({fill:colour, "fill-opacity": opacity});
 };
 
-ocargo.MapEditor.prototype.trackCreation = function() {
-    function up() {
-        var point = ocargo.mapEditor.current.slice(0);
-        point[1] -= 1;
-        handle(point);
-    }
-
-    function down() {
-        var point = ocargo.mapEditor.current.slice(0);
-        point[1] += 1;
-        handle(point);
-    }
-
-    function left() {
-        var point = ocargo.mapEditor.current.slice(0);
-        point[0] -= 1;
-        handle(point);
-    }
-
-    function right() {
-        var point = ocargo.mapEditor.current.slice(0);
-        point[0] += 1;
-        handle(point);
-    }
-
-    document.onkeydown = function(event) {
-        var code = event.keyCode;
-        console.debug(code);
-        switch (code) {
-            case 37:
-                left();
-                break;
-            case 38:
-                up();
-                break;
-            case 39:
-                right();
-                break;
-            case 40:
-                down();
-                break;
-            default:
-                console.debug("Hit default.");
-        }
-    };
-
-    $('#up').click(function() {
-        up();
-    });
-
-    $('#down').click(function() {   
-        down();
-    });
-
-    $('#left').click(function() {
-        left();
-    });
-
-    $('#right').click(function() {
-        right();
-    });
-
-    function handle(point) {
-        var isPossible = false;
-        for (var i = 0; i < ocargo.mapEditor.possibleNext.length; i++) {
-            if (ocargo.mapEditor.possibleNext[i][0] === point[0] && 
-                ocargo.mapEditor.possibleNext[i][1] === point[1]) {
-                isPossible = true;
-                break;
-            }
-        }
-        if (!isOutOfBounds(point) && isPossible) {
-            ocargo.mapEditor.markPossible(point);
-            ocargo.mapEditor.mark(point, SELECTED_COLOR, 1, true);
-            ocargo.mapEditor.current = point;
-        }
-    }
-};
-
-ocargo.MapEditor.prototype.generateNodes = function(points) {
-    var previousNode = null;
-    var nodes = [];
-    for (var i = 0; i < points.length; i++) {
-          var p = points[i];
-          var coordinate = new ocargo.Coordinate(p[0], p[1]);
-          var node = new ocargo.Node(coordinate);
-          if (previousNode) {
-              node.addConnectedNodeWithBacklink(previousNode);
-          }
-          previousNode = node;
-          nodes.push(node);
-    }
-    return nodes;
-};
-
-/* Pass in the coordinate in top-down orientation - applies to JSON and paper, not nodes. */
-ocargo.MapEditor.prototype.jsonToPoints = function(startCoord) {
-    this.submittedPoints = [];
-    var x = startCoord[0]; 
-    var y = startCoord[1];  
-    var progressiveX = true;
-    var progressiveY = undefined;
-    var currDirection = null;
-    var bool = true;
-
-    while (bool) {
-        this.submittedPoints.push([x, GRID_HEIGHT - 1 - y]);
-        if (this.json.hasOwnProperty(x.toString())) {
-            currDirection = this.json[x.toString()][y.toString()];
-        } else {
-            break;
-        }
-        process();
-    }
-    this.submittedPoints.pop();
-
-    function process() {
-        switch (currDirection) {
-            case 'H':
-                if (progressiveX)
-                    x++;
-                else
-                    x--;
-                break;
-            case 'V':
-                if(progressiveY)
-                    y++;
-                else 
-                    y--;
-                break;
-            case 'UL':
-                if (progressiveX) {
-                    y--;
-                    progressiveX = undefined;
-                    progressiveY = false;
-                } else if (progressiveY) {
-                    x--;
-                    progressiveX = false;
-                    progressiveY = undefined;
-                }
-                break;
-            case 'DL':
-                if (progressiveX) {
-                    y++;
-                    progressiveX = undefined;
-                    progressiveY = true;
-                } else if (progressiveY === false) {
-                    x--;
-                    progressiveX = false;
-                    progressiveY = undefined;
-                }
-                break;
-            case 'DR':
-                if (progressiveX === false) {
-                    y++;
-                    progressiveX = undefined;
-                    progressiveY = true;
-                } else if (progressiveY === false) {
-                    x++;
-                    progressiveX = true;
-                    progressiveY = undefined;
-                }
-                break;
-            case 'UR':
-                if (progressiveY) {
-                    x++;
-                    progressiveX = true;
-                    progressiveY = undefined;
-                } else if (progressiveX === false) {
-                    y--;
-                    progressiveX = undefined;
-                    progressiveY = false;
-                }
-                break;
-            default:
-                bool = false;      
-        }
-    }
-};
-
-ocargo.MapEditor.prototype.clear = function() {
-    paper.clear();
-    ocargo.mapEditor = new ocargo.MapEditor();
-    ocargo.mapEditor.createGrid(paper);
-};
-
-$(function() {
-    paper.clear();
-    ocargo.ui = new ocargo.SimpleUi();
-    ocargo.mapEditor = new ocargo.MapEditor();
-    ocargo.mapEditor.createGrid(paper);
-    ocargo.mapEditor.trackCreation();
-
-});
-
-$('#undo').click(function() {
-       if (ocargo.mapEditor.submittedPoints.length > 1) {
-        var toChange = ocargo.mapEditor.submittedPoints.pop();
-        var transposedChange = [toChange[0], GRID_HEIGHT - 1 - toChange[1]];
-        var current = ocargo.mapEditor.submittedPoints[ocargo.mapEditor.submittedPoints.length-1];
-        ocargo.mapEditor.current = [current[0], GRID_HEIGHT - 1 - current[1]];
-        ocargo.mapEditor.mark(transposedChange, BACKGROUND_COLOR, 0, false);
-        ocargo.mapEditor.markPossible(ocargo.mapEditor.current, BACKGROUND_COLOR, 0, false);
-    }
-});
-
-$('#dragMagic').click(function() {
-    var message = "You are about to submit a road that is not completely connected. Are you sure " +
-        "you want to continue?";
-    var coord = [0, 4];
-    ocargo.mapEditor.jsonToPoints(coord);
-    var unified = ocargo.mapEditor.elements == ocargo.mapEditor.submittedPoints.length;
-
-    if (ocargo.mapEditor.submittedPoints.length < 3) {
-            startPopup("Oh no!", "", "Your map is too short! Try adding a few more segments.");
-            return;
-    }
-
-    // If all the road segments are connected or user knows of the discontinuity and wants
-    // to proceed.
-    if (unified || window.confirm(message)) {
-        console.debug("Creating a map from your choice.");
-        var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);
-        var map = new ocargo.Map(nodes, [], nodes[nodes.length - 1], ocargo.ui);
-    }
-    if (!unified) {
-        var i;
-
-        // Clear the map to get rid of the separate road segments.
-        ocargo.mapEditor.elements = ocargo.mapEditor.submittedPoints.length;
-        for (i = 0; i < ocargo.mapEditor.map.length; i++) {
-            for(var j = 0; j < ocargo.mapEditor.map[0].length; j++) {
-                ocargo.mapEditor.map[i][j] = false;
-            }
-        }
-
-        // Mark the remaining road elements on the map.
-        for (i = 0; i < ocargo.mapEditor.submittedPoints.length; i++) {
-            var point = ocargo.mapEditor.submittedPoints[i];
-            ocargo.mapEditor.map[point[0]][point[1]] = true;
-        }
-    }
-});
-
-$('#clear').click(function() {
-    ocargo.mapEditor.clear();
-});
-
-$('#tab1').click(function() {
-   ocargo.mapEditor.clear();
-});
-
-$('#tab2').click(function() {
-    ocargo.mapEditor.clear();
-});
-
-$('#createFromSelect').click(function() {
-    if (ocargo.mapEditor.submittedPoints.length < 3) {
-        startPopup("Oh no!", "", "Your map is too short! Try adding a few more segments.");
-        return;
-    }
-    var nodes = ocargo.mapEditor.generateNodes(ocargo.mapEditor.submittedPoints);  
-    var map = new ocargo.Map(nodes, [], nodes[nodes.length - 1], ocargo.ui);
-});
-
-
-Raphael.st.draggable = function() {
+Raphael.st.draggableDecor = function() {
     var me = this,
         lx = 0,
         ly = 0,
         ox = 0,
         oy = 0,
+        url = '',
         moveFnc = function(dx, dy) {
             lx = dx + ox;
             ly = dy + oy;
@@ -360,109 +255,125 @@ Raphael.st.draggable = function() {
         startFnc = function() {
             var x = ox / GRID_SPACE_SIZE;
             var y = oy / GRID_SPACE_SIZE;
-            ocargo.mapEditor.map[x][y] = false;
+            // Find the element in decor and remove it.
+            for (var i = 0; i < ocargo.levelEditor.decor.length; i++) {
+                if (ocargo.levelEditor.decor[i].coordinate.x === x &&
+                    ocargo.levelEditor.decor[i].coordinate.y === GRID_HEIGHT - 1 - y) {
+                    url = ocargo.levelEditor.decor[i].url;
+                    ocargo.levelEditor.decor.splice(i, 1);
+                    break;
+                }
+            }
+            //ocargo.levelEditor.map[x][y] = false;
         },
         endFnc = function() {
             var point = getGridSpace(lx, ly);
+            ox = point[0] * GRID_SPACE_SIZE;
+            oy = point[1] * GRID_SPACE_SIZE;
+            me.transform('t' + ox + ',' + oy);
+            var coord = new ocargo.Coordinate(point[0], GRID_HEIGHT - 1 - point[1]);
+            ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
 
-            // Currently protecting against loops.
-            if (!isOutOfBounds(point) && !ocargo.mapEditor.map[point[0]][point[1]]) {
-                var coord = new ocargo.Coordinate(point[0], point[1]);
-                var instruction = identifyInstruction(me);
-                ox = point[0] * GRID_SPACE_SIZE;
-                oy = point[1] * GRID_SPACE_SIZE;
-                me.transform('t' + ox + ',' + oy);
-                pushInstruction(ocargo.mapEditor.json, coord, instruction);
-                ocargo.mapEditor.map[point[0]][point[1]] = true;
-
-            } else {
-                me.transform('t' + ox + ',' + oy);
-            }
+            //ocargo.levelEditor.map[point[0]][point[1]] = true;
         };
 
     this.drag(moveFnc, startFnc, endFnc);
-};
 
-$('#UL').click(function() {
-    var myset = createTurn(paper, 0, 0, 'UL');
-    myset.draggable();
-    ocargo.mapEditor.elements++;
-});
-
-$('#DR').click(function() {
-    var myset = createTurn(paper, 0, 0, 'DR');
-    myset.draggable();
-    ocargo.mapEditor.elements++;
-});
-
-$('#DL').click(function() {
-    var myset = createTurn(paper, 0, 0, 'DL');
-    myset.draggable();
-    ocargo.mapEditor.elements++;
-});
-
-$('#UR').click(function() {
-    var myset = createTurn(paper, 0, 0, 'UR');
-    myset.draggable();
-    ocargo.mapEditor.elements++;
-});
-
-$('#H').click(function() {
-    var turn = createHorizontalRoad(paper, 0, 0);
-    turn.draggable();
-    ocargo.mapEditor.elements++;
-});
-
-$('#V').click(function() {
-    var turn = createVerticalRoad(paper, 0, 0);
-    turn.draggable();
-    ocargo.mapEditor.elements++;
-});
-
-//TODO: remove once we use new map structure here
-function oldPathToNew(old){
-	var newPath = [];
-	for(var i = 0; i < old.length; i++){
-		var node = {'coordinate': [old[i][0], old[i][1]], 'connectedNodes': []};
-		if(i > 0){
-			node['connectedNodes'].push(i - 1);
-		}
-		if(i < old.length - 1){
-			node['connectedNodes'].push(i + 1);
-		}
-		newPath.push(node);
-	}
-	return newPath;
 }
 
-// Submission of a path of the created level which is then processed in level_new view.
-$(document).ready(function() {
-    $("#export").click(function() {
-        var input_string = JSON.stringify(oldPathToNew(ocargo.mapEditor.submittedPoints));
+function initialiseDecorGraphic(url) {
+    var myset = paper.set();
+    myset.push(paper.image(url, 0, 0, 100, 100));
+    console.debug(myset);
+    myset.draggableDecor();
+    var coord = new ocargo.Coordinate(0, 7);
+    ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
+}
 
-        var blockTypes = [];
-        $('.js-block-checkbox:checked').each(function(index, checkbox) {
-            blockTypes.push(checkbox.id);
-        });
-
-        $.ajax({
-            url: "/game/levels/new",
-            type: "POST",
-            dataType: 'json',
-            data: {
-                path: input_string,
-                blockTypes: JSON.stringify(blockTypes),
-                csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
-            },
-            success: function (json) {
-                window.location.href = ("/game/" + json.server_response);
-
-            },
-            error: function (xhr, errmsg, err) {
-                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-            }
-        });
-
-        return false;
-    });
+$('#bush').click(function() {
+    initialiseDecorGraphic(BUSH_URL);
 });
+
+$('#tree1').click(function() {
+    initialiseDecorGraphic(TREE1_URL);
+});
+
+$('#tree2').click(function() {
+    initialiseDecorGraphic(TREE2_URL);
+});
+
+$('#clear').click(function() {
+    paper.clear();
+    ocargo.levelEditor = new ocargo.LevelEditor();
+    ocargo.levelEditor.createGrid(paper);
+});
+
+$('#start').click(function() {
+    ocargo.levelEditor.startFlag = !ocargo.levelEditor.startFlag;
+    ocargo.levelEditor.endFlag = false;
+});
+
+$('#end').click(function() {
+    ocargo.levelEditor.endFlag = !ocargo.levelEditor.endFlag;
+    ocargo.levelEditor.startFlag = false;
+});
+
+ocargo.LevelEditor.prototype.oldPathToNew = function() {
+    var newPath = [];
+    
+    for(var i = 0; i < this.nodes.length; i++) {
+        var curr = this.nodes[i];
+        var node = {'coordinate': [curr.coordinate.x, curr.coordinate.y], 'connectedNodes': []};
+        
+        for(var j = 0; j < curr.connectedNodes.length; j++) {
+            var index = this.findNodeByCoordinate(this.nodes, curr.connectedNodes[j].coordinate);
+            node.connectedNodes.push(index);
+        }
+        newPath.push(node);
+    }
+    return newPath;
+}
+
+$("#export").click(function() {
+
+    var input_string = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
+    var blockTypes = [];
+    var endCoord = ocargo.levelEditor.destination.coordinate;
+    var destination = JSON.stringify([endCoord.x, endCoord.y]);
+    var decor = JSON.stringify(ocargo.levelEditor.decor);
+    console.debug(decor);
+
+    $('.js-block-checkbox:checked').each(function(index, checkbox) {
+        blockTypes.push(checkbox.id);
+    });
+
+    $.ajax({
+        url: "/game/levels/new",
+        type: "POST",
+        dataType: 'json',
+        data: {
+            nodes: input_string,
+            destination: destination,
+            decor: decor,
+            blockTypes: JSON.stringify(blockTypes),
+            csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+        },
+        success: function (json) {
+            window.location.href = ("/game/" + json.server_response);
+
+        },
+        error: function (xhr, errmsg, err) {
+            console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+
+    return false;
+    });
+
+$(function() {
+    paper.clear();
+    ocargo.ui = new ocargo.SimpleUi();
+    ocargo.levelEditor = new ocargo.LevelEditor();
+    ocargo.levelEditor.createGrid(paper);
+});
+
