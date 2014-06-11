@@ -164,7 +164,11 @@ function stepper(level) {
             } else {
                 if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
                     level.win();
-                } else {
+                } else if(level.program.isTerminated) {
+                    level.fail("Program terminated!");
+                    $("#myModal > .title").text("Stopping...");
+                }
+                else {
                     level.fail("You ran out of instructions!");
                     level.program.terminate();
                 }
