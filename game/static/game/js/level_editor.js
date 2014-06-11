@@ -284,7 +284,6 @@ Raphael.st.draggableDecor = function() {
 function initialiseDecorGraphic(url) {
     var myset = paper.set();
     myset.push(paper.image(url, 0, 0, 100, 100));
-    console.debug(myset);
     myset.draggableDecor();
     var coord = new ocargo.Coordinate(0, 7);
     ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
@@ -341,7 +340,6 @@ $("#export").click(function() {
     var endCoord = ocargo.levelEditor.destination.coordinate;
     var destination = JSON.stringify([endCoord.x, endCoord.y]);
     var decor = JSON.stringify(ocargo.levelEditor.decor);
-    console.debug(decor);
 
     $('.js-block-checkbox:checked').each(function(index, checkbox) {
         blockTypes.push(checkbox.id);
