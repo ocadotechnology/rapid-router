@@ -62,11 +62,12 @@ def level_new(request):
         path = request.POST['nodes']
         destination = request.POST['destination']
         decor = request.POST['decor']
+        maxFuel = request.POST['maxFuel']
         passedLevel = None
+        passedLevel = Level(name=10, path=path, default=False, destination=destination, decor=decor, maxFuel=maxFuel)
+
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
-            passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False, destination=destination, decor=decor)
-        else:
-            passedLevel = Level(name=10, path=path, default=False, destination=destination, decor=decor)
+            passedLevel.owner = request.user.userprofile
         passedLevel.save()
 
         if 'blockTypes' in request.POST:

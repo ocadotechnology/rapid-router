@@ -289,6 +289,28 @@ function initialiseDecorGraphic(url) {
     ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
 }
 
+function sortNodes(nodes) {
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].connectedNodes.sort(function(a, b) { return comparator(a, b, nodes[i])}).reverse();
+    }
+}
+
+function comparator(node1, node2, centralNode) {
+    var coord1 = node1.coordinate;
+    var coord2 = node2.coordinate;
+    var center = centralNode.coordinate;
+
+    var a1 = ocargo.calculateNodeAngle(centralNode, node1);
+    var a2 = ocargo.calculateNodeAngle(centralNode, node2)
+    if (a1 < a2) {
+        return -1;
+    } else if (a1 > a2) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 $('#bush').click(function() {
     initialiseDecorGraphic(BUSH_URL);
 });
@@ -335,11 +357,13 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
 
 $("#export").click(function() {
 
+    sortNodes(ocargo.levelEditor.nodes);
     var input_string = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
     var blockTypes = [];
     var endCoord = ocargo.levelEditor.destination.coordinate;
     var destination = JSON.stringify([endCoord.x, endCoord.y]);
     var decor = JSON.stringify(ocargo.levelEditor.decor);
+    var maxFuel = $('#maxFuel').val();
 
     $('.js-block-checkbox:checked').each(function(index, checkbox) {
         blockTypes.push(checkbox.id);
@@ -353,6 +377,7 @@ $("#export").click(function() {
             nodes: input_string,
             destination: destination,
             decor: decor,
+            maxFuel: maxFuel,
             blockTypes: JSON.stringify(blockTypes),
             csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
         },

@@ -8,9 +8,15 @@ function createDefaultLevel(nodeData, destination, decor, ui, maxFuel) {
 	var nodes = createNodes(nodeData);
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
-    
+    for(var i = 0; i < nodes.length; i++) {
+        var list = [];
+        for(var j = 0; j < nodes[i].connectedNodes.length; j++) {
+            list.push(nodes[i].connectedNodes[j].coordinate.x + " " + nodes[i].connectedNodes[j].coordinate.y);
+        }
+        console.debug(nodes[i].coordinate.x, nodes[i].coordinate.y, list);
+    }
     var map = new ocargo.Map(nodes, decor, dest, ui);
-    var van = new ocargo.Van(nodes[0], nodes[1], maxFuel, ui);
+    var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
     return new ocargo.Level(map, van, ui);
 }
 
