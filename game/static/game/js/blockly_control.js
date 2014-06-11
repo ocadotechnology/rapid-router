@@ -221,16 +221,21 @@ ocargo.BlocklyControl.prototype.init = function() {
     var toolbox = document.getElementById('toolbox');
     Blockly.inject(blockly, {
         path: '/static/game/js/blockly/',
-        toolbox: toolbox
+        toolbox: toolbox,
+        trashcan: true
     });
 
     try {
         var text = localStorage.getItem('blocklyWorkspaceXml');
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
+        ocargo.blocklyControl.removeUnavailableBlocks();
+        ocargo.blocklyControl.addClickListenerToStartBlock();
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
+    
+
 };
 
 ocargo.BlocklyControl.prototype.teardown = function() {
@@ -244,6 +249,7 @@ ocargo.BlocklyControl.prototype.teardown = function() {
 ocargo.BlocklyControl.prototype.reset = function() {
     Blockly.mainWorkspace.clear();
     this.createBlock('start');
+    this.addClickListenerToStartBlock();
 };
 
 ocargo.BlocklyControl.prototype.removeWrong = function() {
@@ -283,6 +289,46 @@ ocargo.BlocklyControl.prototype.getStartBlock = function() {
 ocargo.BlocklyControl.prototype.getBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };
+
+ocargo.BlocklyControl.prototype.removeUnavailableBlocks = function() {
+    var blocks = Blockly.mainWorkspace.getAllBlocks();
+    var block;
+    for(var i = 0; i < blocks.length; i++) {
+        block = blocks[i];
+        if (BLOCKS.indexOf(block.type) === -1 && block.type !== 'start') {
+            block.dispose();
+        }
+    }
+}
+
+ocargo.BlocklyControl.prototype.addClickListenerToStartBlock = function() {
+	var startBlock = this.getStartBlock();
+	if(startBlock){
+		var svgRoot = startBlock.getSvgRoot();
+		if(svgRoot){
+			if(!svgRoot.id || svgRoot.id == ""){
+				svgRoot.id = "startBlockSvg"
+			}
+			var downX = 0;
+			var downY = 0;
+			var maxMove = 5;
+			$('#' + svgRoot.id).on({
+				mousedown: function(e) {
+					downX  = e.pageX;
+					downY   = e.pageY;
+				},
+				mouseup: function(e) {
+					if ( Math.abs(downX - e.pageX) < maxMove && Math.abs(downY - e.pageY) < maxMove) {
+						var playEls = $('#play');
+						if(playEls && playEls.length && playEls.length > 0){
+							playEls[0].click();
+						}
+					}
+				}
+			});
+		}
+    } 
+}
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createWhile(block) {

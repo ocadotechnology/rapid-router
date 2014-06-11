@@ -11,7 +11,11 @@ ocargo.Level = function(map, van, ui) {
     this.attemptData = {};
     this.blockLimit = null;
     this.pathFinder = new ocargo.PathFinder(map);
+    this.fails = 0;
+    this.hintOpened = false;
 };
+
+ocargo.Level.prototype.failsBeforeHintBtn = 3;
 
 ocargo.Level.prototype.play = function(program) {
 
@@ -130,6 +134,24 @@ ocargo.Level.prototype.fail = function(msg) {
     enableDirectControl();
     ocargo.sound.failure();
     startPopup(title, '', msg);
+    var level = this;
+    level.fails++;
+    if(level.fails >= level.failsBeforeHintBtn){
+	    var hintBtns = $("#hintPopupBtn");
+		if(hintBtns.length == null || hintBtns.length == 0){
+			$("#myModal > .mainText").append('<p id="hintBtnPara"><button id="hintPopupBtn">Are you stuck? Need a hint?</button></p><p id="hintText">' + HINT + '</p>');
+			if(level.hintOpened){
+				$("#hintBtnPara").hide();
+			} else {
+				$("#hintText" ).hide();
+				$("#hintPopupBtn").click( function(){
+					$("#hintText").show(500);
+					$("#hintBtnPara").hide();
+					level.hintOpened = true;
+				});
+			}
+    	}
+    }
     sendAttempt(0);
 };
 

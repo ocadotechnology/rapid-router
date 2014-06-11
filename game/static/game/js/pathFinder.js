@@ -8,7 +8,6 @@ ocargo.PathFinder = function(map) {
     this.optimalInstructions = [];
     this.optimalPath = null;
     this.max = 0;
-    this.blocks = BLOCKS;
 };
 
 ocargo.PathFinder.prototype.getOptimalInstructions = function() {

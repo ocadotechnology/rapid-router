@@ -34,7 +34,7 @@ then
     pip install virtualenvwrapper
 fi
 # create virtualenv
-source /opt/boxen/homebrew/bin/virtualenvwrapper.sh
+source virtualenvwrapper.sh
 cd $PROJECT_PATH
 # check virtualenv exists
 echo "Creating virtualenv called ${VIRTUALENV_NAME} - to use do 'workon ${VIRTUALENV_NAME}'"
@@ -64,7 +64,7 @@ echo 'Doing local setup (syncdb, collectstatic)'
 # create the database
 ./manage.py syncdb
 # collectstatic
-./manage.py collectstatic -l --noinput > /dev/null 2>&1
+./manage.py collectstatic --noinput > /dev/null 2>&1
 # compress
 # ./manage.py compress
 # echo starting command

@@ -6,5 +6,9 @@ django-compressor==1.4
 django==1.6.5
 django-foundation-statics==5.1.1
 django-appconf==0.6
+django-casper==0.0.2
+unittest2==0.5.1
 pyyaml==3.11
 six==1.6.1
+docutils==0.11
+django-silk==0.1
