@@ -220,7 +220,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
     }
     
     if(this.level.van.fuel === 0){
-        this.level.fail("You ran out of fuel! Try to find a shorter path to the destination.");
+        this.level.fail(ocargo.messages.nofuel);
 		program.terminate();
 		return;
     }
