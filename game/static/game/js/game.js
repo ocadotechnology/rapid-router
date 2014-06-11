@@ -87,19 +87,23 @@ function clearVanData() {
 }
 
 function trackDevelopment() {
+
     $('#moveForward').click(function() {
+        disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(function(){});
+        moveForward(enableDirectControl);
     });
     
     $('#turnLeft').click(function() {
+        disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(function(){});
+        moveLeft(enableDirectControl);
     });
 
     $('#turnRight').click(function() {
+        disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(function(){});
+        moveRight(enableDirectControl);
     });
     
     $('#play').click(function() {
@@ -107,6 +111,7 @@ function trackDevelopment() {
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
         disableDirectControl();
         var program = ocargo.blocklyControl.populateProgram();
+
         program.instructionHandler = new InstructionHandler(ocargo.level);
         clearVanData();
         ocargo.level.play(program);
