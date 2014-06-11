@@ -27,13 +27,18 @@ def level(request, level):
     levelCount = cached_max_level()
     if int(level) <= levelCount:
         lesson = 'description_level' + str(level)
+        hint = 'hint_level' + str(level)
     else:
         lesson = 'description_level_default'
+        hint = 'hint_level_default'
     messageCall = getattr(messages, lesson)
     lesson = mark_safe(messageCall())
+    messageCall = getattr(messages, hint)
+    hint = mark_safe(messageCall())
 
     #FIXME: figure out how to check for all this better
-    if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
+    if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and \
+            hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
@@ -45,6 +50,7 @@ def level(request, level):
         'level': lvl,
         'blocks': blocks,
         'lesson': lesson,
+        'hint': hint,
         'defaultLevelCount': levelCount,
     })
 
@@ -52,13 +58,16 @@ def level(request, level):
 
 def level_new(request):
     """Processes a request on creation of the map in the level editor."""
-    if 'path' in request.POST:
-        path = request.POST['path']
+    if 'nodes' in request.POST:
+        path = request.POST['nodes']
+        destination = request.POST['destination']
+        decor = request.POST['decor']
+        maxFuel = request.POST['maxFuel']
         passedLevel = None
+        passedLevel = Level(name=10, path=path, default=False, destination=destination, decor=decor, maxFuel=maxFuel)
+
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
-            passedLevel = Level(name=10, path=path, owner=request.user.userprofile, default=False)
-        else:
-            passedLevel = Level(name=10, path=path, default=False)
+            passedLevel.owner = request.user.userprofile
         passedLevel.save()
 
         if 'blockTypes' in request.POST:
@@ -185,7 +194,7 @@ def parseInstructions(instructions, attempt, init):
     """ Helper method for inserting user-submitted instructions to the database."""
 
     if not instructions:
-        return 
+        return
     command = None
     index = init
 

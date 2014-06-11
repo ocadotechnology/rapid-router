@@ -7,6 +7,7 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
+ 
 
 # Build paths inside the project like this: rel(rel_path)
 import os
@@ -34,22 +35,25 @@ INSTALLED_APPS = (
     'game',
     'reports',
     'django.contrib.admin',
+    'django.contrib.admindocs',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'nuit',
+    'silk',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+    'silk.middleware.SilkyMiddleware',
+]
 
 ROOT_URLCONF = 'website.urls'
 
@@ -77,6 +81,10 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = rel('static')
 
+
+# Required for admindocs
+
+SITE_ID = 1
 
 
 # PRESENTATION LAYER
@@ -114,15 +122,20 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
     CACHES = {
         'default': {
             'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-            'LOCATION': '127.0.0.1:11211',
-            'OPTIONS': {
-                'KEY_PREFIX': os.getenv('MEMCACHE_PREFIX'),
-            }
+            'KEY_PREFIX': os.getenv('CACHE_PREFIX'),
+            'TIMEOUT': 0,
         }
     }
     COMPRESS_OFFLINE = True
     COMPRESS_ROOT = STATIC_ROOT
     COMPRESS_URL = STATIC_URL
+    # And require login for now
+    MIDDLEWARE_CLASSES.append('website.middleware.loginrequired.LoginRequiredMiddleware')
+    # inject the lib folder into the python path
+    import sys
+    lib_path = os.path.join(os.path.dirname(__file__), 'lib')
+    if lib_path not in sys.path:
+        sys.path.append(lib_path)
 else:
     DATABASES = {
         'default': {
