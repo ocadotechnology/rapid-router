@@ -34,7 +34,7 @@ then
     pip install virtualenvwrapper
 fi
 # create virtualenv
-source /opt/boxen/homebrew/bin/virtualenvwrapper.sh
+source virtualenvwrapper.sh
 cd $PROJECT_PATH
 # check virtualenv exists
 echo "Creating virtualenv called ${VIRTUALENV_NAME} - to use do 'workon ${VIRTUALENV_NAME}'"
