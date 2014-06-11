@@ -21,11 +21,7 @@ var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
     fill: ROAD_COLOUR,
-<<<<<<< HEAD
-    'stroke': '#aaa',
-=======
     'stroke': '#aaa'
->>>>>>> 7ad83123c4ac262b674d432e8be48d7038fa847a
 };
 
 var ROAD_ATTR_JUNCTION = {

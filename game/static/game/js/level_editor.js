@@ -68,6 +68,7 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
                                 ocargo.levelEditor.pathStart.coordinate);
                             ocargo.levelEditor.mark(prevStart, BACKGROUND_COLOR, 0, true);
                         }
+
                         ocargo.levelEditor.mark(coord, 'red', 1, true);
                         var prevIndex = ocargo.levelEditor.findNodeByCoordinate(
                             ocargo.levelEditor.nodes, transCoord);
@@ -119,7 +120,11 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
                         ocargo.levelEditor.end = segment;
                         var getBBox = this_rect.getBBox();
                         var coord = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
-                        ocargo.levelEditor.finaliseMove(coord);
+                        if (ocargo.levelEditor.deleteFlag) {
+                            ocargo.levelEditor.finaliseDelete(coord);
+                        } else {
+                            ocargo.levelEditor.finaliseMove(coord);
+                        }
                         paper.clear();
                         ocargo.levelEditor.start = null;
                         ocargo.levelEditor.createGrid(paper)
@@ -142,6 +147,43 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
         }
     }
 };
+
+ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
+    var x, y;
+    if (this.start.x <= coord.x) {
+        for (x = this.start.x + 1; x <= coord.x; x++) {
+            deleteNode(x, this.start.y);
+        }
+    } else {
+        for (x = this.start.x - 1; x >= coord.x; x--) {
+            deleteNode(x, this.start.y);
+        }
+    }
+    if (this.start.y <= coord.y) {
+        for (y = this.start.y + 1; y <= coord.y; y++) {
+            deleteNode(coord.x, y);
+        }
+    } else {
+        for (y = this.start.y - 1; y >= coord.y; y--) {
+            deleteNode(coord.x, y);
+        }
+    }
+
+    function deleteNode(x, y) {
+        var coord = ocargo.levelEditor.translate(new ocargo.Coordinate(x, y));
+        var nodeIndex = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, coord);
+        if (nodeIndex > -1) {
+            var node = ocargo.levelEditor.nodes[nodeIndex];
+            // Remove all the references to the node we're removing.
+            for (var i = 0; i < node.connectedNodes.length; i++) {
+                node.removeDoublyConnectedNode(node.connectedNodes[i]);
+            }
+            var index = ocargo.levelEditor.nodes.indexOf(node);
+            ocargo.levelEditor.nodes.splice(index, 1);
+        }
+    }
+
+}
 
 ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
     var current;
@@ -349,7 +391,9 @@ $('#end').click(function() {
 });
 
 $('#undo').click(function() {
-    ocargo.levelEditor.deleteFlag = !ocargo.levelEditor.deleteFlag; 
+    ocargo.levelEditor.deleteFlag = !ocargo.levelEditor.deleteFlag;
+    var text = ocargo.levelEditor.deleteFlag ? "Delete Mode On" : "Delete Mode Off";
+    $(this).text(text);
 });
 
 ocargo.LevelEditor.prototype.oldPathToNew = function() {
@@ -412,5 +456,7 @@ $(function() {
     ocargo.ui = new ocargo.SimpleUi();
     ocargo.levelEditor = new ocargo.LevelEditor();
     ocargo.levelEditor.createGrid(paper);
+    $('#undo').text("Delete Mode");
+
 });
 
