@@ -35,6 +35,7 @@ ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
 };
 
 function updateFuelGuage(fuel, maxFuel) {
-    var rotation = 'rotate(' + (((fuel/maxFuel)*300)-150) + 'deg)';
+    var rotation = 'rotate(' + (((fuel/maxFuel)*240)-120) + 'deg)';
     document.getElementById('fuelGuagePointer').style.transform=rotation;
+    document.getElementById('fuelGuagePointer').style.webkitTransform=rotation;
 }

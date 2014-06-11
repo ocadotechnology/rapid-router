@@ -37,13 +37,6 @@ var ROAD_MARKER_ATTR = {
 
 var DASH = '10';
 
-//TODO: Remove weight point when we alter the level editor to not need it
-var WEIGHT_POINT_ATTR = {
-    fill: '#FFF',
-    'fill-opacity': 0,
-    stroke: 'none'
-};
-
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
@@ -66,35 +59,6 @@ function getGridSpace(x, y) {
         Math.floor((y + GRID_SPACE_SIZE / 2) / GRID_SPACE_SIZE)];
 }
 
-function identifyInstruction(roadSet) {
-    var weightPointBox = roadSet[2].getBBox();
-    var roadBox = roadSet[0].getBBox();
-    var diffX = Math.abs(weightPointBox.x - roadBox.x);
-    var diffY = Math.abs(weightPointBox.y - roadBox.y);
-    var instruction = '';
-
-    if (diffX === 0 && diffY === 0) {
-        instruction = 'UL';
-    }
-    if (diffX === 0 && diffY === EDGE_GAP) {
-        instruction = 'DL';
-    }
-    if (diffX === EDGE_GAP && diffY === EDGE_GAP) {
-        instruction = 'DR';
-    }
-    if (diffX === EDGE_GAP && diffY === 0) {
-        instruction = 'UR';
-    }
-    if (roadBox.width === 50 && roadBox.height === 100) {
-        instruction = 'V';
-    }
-    if (roadBox.width === 100 && roadBox.height === 50) {
-        instruction = 'H';
-    }
-
-    return instruction;
-}
-
 function createHorizontalRoad(paper, i, j, drawLines) {
     var x = i * GRID_SPACE_SIZE;
     var y = j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
@@ -112,12 +76,9 @@ function createHorizontalRoad(paper, i, j, drawLines) {
     } else {
         road.attr(ROAD_ATTR_JUNCTION);
     }
-    
-    var weightPoint = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-    weightPoint.attr(WEIGHT_POINT_ATTR);
 
     var roadSet = paper.set();
-    roadSet.push(road, markerSet, weightPoint);
+    roadSet.push(road, markerSet);
 
     return roadSet;
 }
@@ -141,11 +102,8 @@ function createVerticalRoad(paper, i, j, drawLines) {
         road.attr(ROAD_ATTR_JUNCTION);
     }
 
-    var weightPoint = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-    weightPoint.attr(WEIGHT_POINT_ATTR);
-
     var roadSet = paper.set();
-    roadSet.push(road, markerSet, weightPoint);
+    roadSet.push(road, markerSet);
 
     return roadSet;
 }
@@ -175,7 +133,6 @@ function createTurn(paper, i, j, direction, drawLines) {
 
     var turn = turnAndMarker[0];
     var marker = turnAndMarker[1];
-    var weightPoint = paper.rect(baseX, baseY, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
     if (drawLines) {
         marker.attr(ROAD_MARKER_ATTR);
@@ -184,10 +141,9 @@ function createTurn(paper, i, j, direction, drawLines) {
     } else {
         turn.attr(ROAD_ATTR_JUNCTION);
     }
-    weightPoint.attr(WEIGHT_POINT_ATTR);
 
     var roadSet = paper.set();
-    roadSet.push(turn, marker, weightPoint);
+    roadSet.push(turn, marker);
 
     return roadSet;
 }
