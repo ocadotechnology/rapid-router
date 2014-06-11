@@ -87,8 +87,10 @@ function disableDirectControl() {
 
 function clearVanData() {
     var nodes = ocargo.level.map.nodes;
-    ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.level.van.maxFuel, ocargo.ui);
-    ocargo.ui.setVanToFront();
+    var previousNode = nodes[0];
+    var startNode = nodes[1];
+    ocargo.level.van = new ocargo.Van(previousNode, startNode, ocargo.level.van.maxFuel, ocargo.ui);
+    ocargo.ui.setVanToFront(previousNode, startNode);
 }
 
 function trackDevelopment() {
