@@ -12,9 +12,7 @@ var VAN_HEIGHT = 20;
 var MOVE_DISTANCE = GRID_SPACE_SIZE;
 var TURN_DISTANCE = MOVE_DISTANCE / 2;
 var INITIAL_OFFSET_X = 10;
-var INITIAL_OFFSET_Y = 32;
-var INITIAL_X = GRID_SPACE_SIZE - INITIAL_OFFSET_X;
-var INITIAL_Y = 450 - INITIAL_OFFSET_Y;
+var INITIAL_OFFSET_Y = 82;
 var ROTATION_OFFSET_X = 22;
 var ROTATION_OFFSET_Y = VAN_WIDTH - 20;
 
@@ -23,7 +21,11 @@ var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
     fill: ROAD_COLOUR,
+<<<<<<< HEAD
     'stroke': '#aaa',
+=======
+    'stroke': '#aaa'
+>>>>>>> 7ad83123c4ac262b674d432e8be48d7038fa847a
 };
 
 var ROAD_ATTR_JUNCTION = {
@@ -48,10 +50,42 @@ function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     return transformation;
 }
 
-function createVan(paper) {
-    return paper.image(
-        '/static/game/image/ocadoVan_big.svg', INITIAL_X, INITIAL_Y, VAN_HEIGHT, VAN_WIDTH)
-        .transform('r90');
+function rotateElement(element, degrees, rotationPointX, rotationPointY) {
+    var transformation = createRotationTransformation(degrees, rotationPointX, rotationPointY);
+    element.transform(transformation);
+}
+
+function rotateElementAroundCentreOfGridSpace(element, degrees, x, y) {
+    var rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE;
+    var rotationPointY = (GRID_HEIGHT - (y + 1/2)) * GRID_SPACE_SIZE;
+    rotateElement(element, degrees, rotationPointX, rotationPointY);
+}
+
+function calculateInitialX(startNode) {
+    return startNode.coordinate.x * GRID_SPACE_SIZE - INITIAL_OFFSET_X;
+}
+
+function calculateInitialY(startNode) {
+    return (GRID_HEIGHT - startNode.coordinate.y) * GRID_SPACE_SIZE - INITIAL_OFFSET_Y;
+}
+
+function calculateInitialRotation(previousNode, startNode) {
+    var nodeAngleRadians = ocargo.calculateNodeAngle(previousNode, startNode);
+    var nodeAngleDegrees = nodeAngleRadians * (180 / Math.PI);
+    return -nodeAngleDegrees; // Calculation is counterclockwise, transformations are clockwise
+}
+
+function createVan(paper, previousNode, startNode) {
+    var initialX = calculateInitialX(startNode);
+    var initialY = calculateInitialY(startNode);
+
+    van = paper.image(
+        '/static/game/image/ocadoVan_big.svg', initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
+
+    var rotation = calculateInitialRotation(previousNode, startNode);
+    rotateElementAroundCentreOfGridSpace(van, rotation, startNode.coordinate.x, startNode.coordinate.y);
+
+    return van.transform('... r90');
 }
 
 function getGridSpace(x, y) {
@@ -112,7 +146,7 @@ function createTurn(paper, i, j, direction, drawLines) {
     var baseX = i * GRID_SPACE_SIZE;
     var baseY = j * GRID_SPACE_SIZE;
     var turnAndMarker = [];
-    
+
     switch (direction) {
         case 'UL':
             turnAndMarker = createTurnUL(baseX, baseY, drawLines);
@@ -220,7 +254,7 @@ function createTurnUR(baseX, baseY, drawLines) {
         'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY +
             EDGE_GAP + ROAD_WIDTH,
         'V', baseY + EDGE_GAP,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX + EDGE_GAP + 
+        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX + EDGE_GAP +
             ROAD_WIDTH, baseY,
         'H', baseX + EDGE_GAP
     ]);
@@ -241,7 +275,7 @@ function getRoadLetters(previous, node1, node2) {
     previous = transformY(previous);
     node1 = transformY(node1);
     node2 = transformY(node2);
-    
+
     if (isHorizontal(node1, node2) &&
         (previous === null || isHorizontal(previous, node1))) {
         return 'H';
@@ -251,7 +285,7 @@ function getRoadLetters(previous, node1, node2) {
         return 'V';
 
     // Handle turns.
-    } else { 
+    } else {
         if (isProgressive(previous.x, node1.x)) {
             return nextPointAbove(node1, node2) ? 'DL' : 'UL';
         }
@@ -386,12 +420,20 @@ function moveRight(callback) {
     }, callback);
 }
 
-function resetVan() {
+function resetVan(previousNode, startNode) {
+    van.transform('r0');
+
+    var rotation = calculateInitialRotation(previousNode, startNode);
+    rotateElementAroundCentreOfGridSpace(van, rotation, startNode.coordinate.x, startNode.coordinate.y);
+
+    var initialX = calculateInitialX(startNode);
+    var initialY = calculateInitialY(startNode);
     van.attr({
-        x: INITIAL_X,
-        y: INITIAL_Y,
-        transform: 'r90'
+        x: initialX,
+        y: initialY
     });
+
+    van.transform('... r90');
     van.toFront();
     scrollToShowVan();
 }
@@ -450,9 +492,16 @@ function drawDecor(decor) {
     }
 }
 
-function createCFC() {
-    return paper.image('/static/game/image/OcadoCFC_no_road.svg', INITIAL_X - 95, INITIAL_Y - 25, 100, 107)
-        .transform('r90');
+function createCFC(paper, previousNode, startNode) {
+    var initialX = calculateInitialX(startNode);
+    var initialY = calculateInitialY(startNode);
+
+    var cfc = paper.image('/static/game/image/OcadoCFC_no_road.svg', initialX - 95, initialY - 25, 100, 107);
+
+    var rotation = calculateInitialRotation(previousNode, startNode);
+    rotateElementAroundCentreOfGridSpace(cfc, rotation, startNode.coordinate.x, startNode.coordinate.y);
+
+    cfc.transform('... r90');
 }
 
 //find a side of the road
@@ -481,7 +530,7 @@ function getHousePosition(destination) {
     var right = true;
     var up = true;
     var down = true;
-    
+
     if (roadLetters.indexOf('H') >= 0 ) {
         left = false;
         right = false;
@@ -541,9 +590,11 @@ function renderTheMap(map) {
     drawBackground(paper);
     drawDecor(map.decor);
     createRoad(map.nodes);
-    van = createVan(paper);
     createDestination(map.destination);
-    createCFC(paper);
+    var previousNode = map.nodes[0];
+    var startNode = map.nodes[1];
+    createCFC(paper, previousNode, startNode);
+    van = createVan(paper, previousNode, startNode);
     scrollToShowVan();
 }
 
