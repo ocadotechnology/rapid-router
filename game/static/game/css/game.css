@@ -66,6 +66,12 @@
     top: 0;
 }
 
+#stop {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
 button, .button, img.control{
     margin-right: 10px;
 }

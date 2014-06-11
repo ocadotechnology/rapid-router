@@ -74,10 +74,12 @@ function enableDirectControl() {
     document.getElementById('turnRight').disabled = false;
     document.getElementById('play').disabled = false;
     document.getElementById('controls').style.visibility='visible';
+    document.getElementById('stop').style.visibility='hidden';
 }
 
 function disableDirectControl() {
     document.getElementById('controls').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='visible';
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
@@ -134,6 +136,10 @@ function trackDevelopment() {
         ocargo.blocklyControl.reset();
         enableDirectControl();
         clearVanData();
+    });
+
+    $('#stop').click(function() {
+        ocargo.level.program.terminate();
     });
 
     $('#slideBlockly').click(function() {
