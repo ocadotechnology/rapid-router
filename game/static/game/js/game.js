@@ -5,6 +5,7 @@ function createUi() {
 }
 
 function createDefaultLevel(nodeData, destination, decor, ui, maxFuel) {
+    console.debug(JSON.stringify(nodeData));
     var nodes = createNodes(nodeData);
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];

@@ -86,6 +86,17 @@
     animation-duration: 0.5s;
 }
 
+#tab-content-arrows > p {
+    color: #008CBA;
+    font-weight: bold;
+    width: 200px;
+}
+
+#maxFuel {
+    width:100px;
+    float: right;
+}
+
 #export {
     cursor: pointer;
     font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;

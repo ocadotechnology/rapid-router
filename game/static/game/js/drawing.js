@@ -22,18 +22,19 @@ var ROAD_WIDTH = GRID_SPACE_SIZE / 2;
 var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
-        fill: ROAD_COLOUR,
-        'stroke': '#aaa',
-    };
+    fill: ROAD_COLOUR,
+    'stroke': '#aaa',
+};
 
 var ROAD_ATTR_JUNCTION = {
-        fill: ROAD_COLOUR,
-        'stroke': 'none'
-    };
+    fill: ROAD_COLOUR,
+    'stroke': 'none'
+};
 
 var ROAD_MARKER_ATTR = {
     'stroke': 'white'
 };
+
 var DASH = '10';
 
 //TODO: Remove weight point when we alter the level editor to not need it
