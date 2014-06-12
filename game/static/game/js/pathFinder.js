@@ -239,7 +239,7 @@ ocargo.PathFinder.prototype.aStar = function() {
 
         var curr = current;
         var ret = [];
-        while(curr !== start && curr !== null) {
+        while (curr !== start && curr !== null) {
             ret.push(curr);
             curr = curr.parent;
         }

@@ -47,7 +47,7 @@ ocargo.Level.prototype.play = function(program) {
 };
 
 ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
-    if(stack) {
+    if (stack) {
         for (var i = 0; i < stack.length; i++) {
             var command = recogniseCommand(stack[i], returnStack);
             returnStack.push(command);
@@ -136,10 +136,12 @@ ocargo.Level.prototype.fail = function(msg) {
     startPopup(title, '', msg);
     var level = this;
     level.fails++;
-    if(level.fails >= level.failsBeforeHintBtn){
+    if (level.fails >= level.failsBeforeHintBtn) {
 	    var hintBtns = $("#hintPopupBtn");
-		if(hintBtns.length == null || hintBtns.length == 0){
-			$("#myModal > .mainText").append('<p id="hintBtnPara"><button id="hintPopupBtn">Are you stuck? Need a hint?</button></p><p id="hintText">' + HINT + '</p>');
+		if (hintBtns.length === null || hintBtns.length === 0) {
+			$("#myModal > .mainText").append('<p id="hintBtnPara">' +
+                '<button id="hintPopupBtn">Are you stuck? Need a hint?</button>' + 
+                '</p><p id="hintText">' + HINT + '</p>');
 			if(level.hintOpened){
 				$("#hintBtnPara").hide();
 			} else {
@@ -223,7 +225,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
         return; //TODO: animate the crash
     }
     
-    if(this.level.van.fuel === 0){
+    if (this.level.van.fuel === 0) {
         this.level.fail("You ran out of fuel! Try to find a shorter path to the destination.");
 		program.terminate();
 		return;

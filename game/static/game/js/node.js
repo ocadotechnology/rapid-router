@@ -26,7 +26,7 @@ ocargo.Node.prototype.removeDoublyConnectedNode = function(node) {
     if (index >= -1) {
         node.connectedNodes.splice(index, 1);
     }
-}
+};
 
 ocargo.calculateNodeAngle = function(nodeA, nodeB) {
     var coordinateA = nodeA.coordinate;

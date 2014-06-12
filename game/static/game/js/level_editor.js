@@ -69,22 +69,19 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
             } ();
 
             segment.node.ontouchstart = function() {
-                segment.node.onmousedown = null;
                 var this_rect = segment;
                 return handleMouseDown(this_rect, segment);
-            }
+            } ();
 
             segment.node.ontouchmove = function() {
-                segment.node.onmouseover = null;
                 var this_rect = segment;
                 return handleMouseOver(this_rect, segment);
-            }
+            } ();
 
             segment.node.ontouchend = function() {
-                segment.node.onmouseup = null;
                 var this_rect = segment;
                 return handleMouseUp(this_rect, segment);
-            }
+            } ();
 
             this.grid[i][j] = segment;
             this.map[i][j] = false;
