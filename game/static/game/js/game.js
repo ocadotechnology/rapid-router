@@ -5,12 +5,10 @@ function createUi() {
 }
 
 function createDefaultLevel(nodeData, destination, decor, ui, maxFuel) {
-    console.debug(JSON.stringify(nodeData));
     var nodes = createNodes(nodeData);
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
     var map = new ocargo.Map(nodes, decor, dest, ui);
-    console.debug(nodes[0].coordinate, nodes[0].connectedNodes[0].coordinate);
     var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
     return new ocargo.Level(map, van, ui);
 }
