@@ -35,7 +35,7 @@ ocargo.LevelEditor = function() {
     // type: Node
     this.pathStart = null;
     this.destination = null;
-}
+};
 
 ocargo.LevelEditor.prototype.initialiseVisited = function() {
     var visited = new Array(10);
@@ -43,7 +43,7 @@ ocargo.LevelEditor.prototype.initialiseVisited = function() {
         visited[i] = new Array(8);
     }
     return visited;
-}
+};
 
 ocargo.LevelEditor.prototype.createGrid = function(paper) {
     for (var i = 0; i < GRID_WIDTH; i++) {
@@ -205,7 +205,7 @@ ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
             ocargo.levelEditor.nodes.splice(index, 1);
         }
     }
-}
+};
 
 ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
     var current;
@@ -234,7 +234,7 @@ ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
         }
     }
     this.currentStrike = [];
-}
+};
 
 ocargo.LevelEditor.prototype.findNodeByCoordinate = function(nodes, coordinate) {
     for (var i = 0; i < nodes.length; i++) {
@@ -243,7 +243,7 @@ ocargo.LevelEditor.prototype.findNodeByCoordinate = function(nodes, coordinate) 
         }
     }
     return -1;
-}
+};
 
 ocargo.LevelEditor.prototype.recalculatePredictedRoad = function(coordinate) {
     ocargo.levelEditor.cleanPredictedRoad(coordinate);
@@ -299,7 +299,7 @@ ocargo.LevelEditor.prototype.cleanPredictedRoad = function() {
 
 ocargo.LevelEditor.prototype.translate = function(coordinate) {
     return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
-}
+};
 
 ocargo.LevelEditor.prototype.mark = function(point, colour, opacity, occupied) {
     var element = this.grid[point.x][point.y];
@@ -343,7 +343,7 @@ Raphael.st.draggableDecor = function() {
         };
 
     this.drag(moveFnc, startFnc, endFnc);
-}
+};
 
 function initialiseDecorGraphic(url) {
     var myset = paper.set();
@@ -412,6 +412,8 @@ $('#end').click(function() {
 
 $('#undo').click(function() {
     ocargo.levelEditor.deleteFlag = !ocargo.levelEditor.deleteFlag;
+    ocargo.levelEditor.startFlag = false;
+    ocargo.levelEditor.endFlag = false;
     var text = ocargo.levelEditor.deleteFlag ? "Delete Mode On" : "Delete Mode Off";
     $(this).text(text);
 });
@@ -430,7 +432,7 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
         newPath.push(node);
     }
     return newPath;
-}
+};
 
 $("#export").click(function() {
 
@@ -469,7 +471,7 @@ $("#export").click(function() {
     });
 
     return false;
-    });
+});
 
 $(function() {
     paper.clear();
