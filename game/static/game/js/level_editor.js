@@ -297,12 +297,11 @@ Raphael.st.draggableDecor = function() {
             me.transform('t' + lx + ',' + ly);
         },
         startFnc = function() {
-            var x = ox / GRID_SPACE_SIZE;
-            var y = oy / GRID_SPACE_SIZE;
+
             // Find the element in decor and remove it.
             for (var i = 0; i < ocargo.levelEditor.decor.length; i++) {
-                if (ocargo.levelEditor.decor[i].coordinate.x === x &&
-                    ocargo.levelEditor.decor[i].coordinate.y === GRID_HEIGHT - 1 - y) {
+                if (ocargo.levelEditor.decor[i].coordinate.x === ox &&
+                    ocargo.levelEditor.decor[i].coordinate.y === PAPER_HEIGHT -  oy - DECOR_SIZE) {
                     url = ocargo.levelEditor.decor[i].url;
                     ocargo.levelEditor.decor.splice(i, 1);
                     break;
@@ -311,13 +310,12 @@ Raphael.st.draggableDecor = function() {
             //ocargo.levelEditor.map[x][y] = false;
         },
         endFnc = function() {
-            var point = getGridSpace(lx, ly);
-            ox = point[0] * GRID_SPACE_SIZE;
-            oy = point[1] * GRID_SPACE_SIZE;
+            ox = lx;
+            oy = ly;
             me.transform('t' + ox + ',' + oy);
-            var coord = new ocargo.Coordinate(point[0], GRID_HEIGHT - 1 - point[1]);
+            var coord = new ocargo.Coordinate(ox, PAPER_HEIGHT -  oy - DECOR_SIZE);
             ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
-
+            console.debug(JSON.stringify(ocargo.levelEditor.decor));
             //ocargo.levelEditor.map[point[0]][point[1]] = true;
         };
 
@@ -327,9 +325,9 @@ Raphael.st.draggableDecor = function() {
 
 function initialiseDecorGraphic(url) {
     var myset = paper.set();
-    myset.push(paper.image(url, 0, 0, 100, 100));
+    myset.push(paper.image(url, 0, 0, DECOR_SIZE, DECOR_SIZE));
     myset.draggableDecor();
-    var coord = new ocargo.Coordinate(0, 7);
+    var coord = new ocargo.Coordinate(0, PAPER_HEIGHT - DECOR_SIZE);
     ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
 }
 

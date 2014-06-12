@@ -16,6 +16,8 @@ var INITIAL_OFFSET_Y = 82;
 var ROTATION_OFFSET_X = 22;
 var ROTATION_OFFSET_Y = VAN_WIDTH - 20;
 
+var DECOR_SIZE = 100;
+
 var ROAD_WIDTH = GRID_SPACE_SIZE / 2;
 var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
@@ -483,8 +485,9 @@ function drawBackground(paper) {
 function drawDecor(decor) {
     for (var i = 0; i < decor.length; i++) {
         var obj = decor[i];
-        var coord = transformY(obj['coordinate']);
-        paper.image(obj['url'], coord.x * GRID_SPACE_SIZE, coord.y * GRID_SPACE_SIZE, 100, 100);
+        var coord = obj['coordinate'];
+        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE,
+                    DECOR_SIZE, DECOR_SIZE);
     }
 }
 
