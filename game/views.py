@@ -20,6 +20,12 @@ def levels(request):
     return render(request, 'game/level_selection.html', context)
 
 def level(request, level):
+    """Loads a level for rendering in the game
+
+    **Template:**
+
+    :template:`game/game.html`
+    """
     lvl = cached_level(level)
     blocks = lvl.blocks.order_by('id')
     attempt = None
@@ -84,7 +90,10 @@ def level_new(request):
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 def level_random(request):
-    """ Generates a new random level"""
+    """Generates a new random level
+
+    Redirects to :view:`game.views.level` with the id of the newly created :model:`game.Level` object
+    """
     level = random_road.create()
     return redirect("game.views.level", level=level.id)
 
