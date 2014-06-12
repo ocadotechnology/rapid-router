@@ -10,6 +10,7 @@ function createDefaultLevel(nodeData, destination, decor, ui, maxFuel) {
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
     var map = new ocargo.Map(nodes, decor, dest, ui);
+    console.debug(nodes[0].coordinate, nodes[0].connectedNodes[0].coordinate);
     var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
     return new ocargo.Level(map, van, ui);
 }
@@ -89,7 +90,7 @@ function disableDirectControl() {
 function clearVanData() {
     var nodes = ocargo.level.map.nodes;
     var previousNode = nodes[0];
-    var startNode = nodes[1];
+    var startNode = nodes[0].connectedNodes[0];
     ocargo.level.van = new ocargo.Van(previousNode, startNode, ocargo.level.van.maxFuel, ocargo.ui);
     ocargo.ui.setVanToFront(previousNode, startNode);
 }

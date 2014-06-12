@@ -487,6 +487,7 @@ function drawDecor(decor) {
         var obj = decor[i];
         var coord = obj['coordinate'];
         paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE,
+
                     DECOR_SIZE, DECOR_SIZE);
     }
 }
@@ -591,7 +592,7 @@ function renderTheMap(map) {
     createRoad(map.nodes);
     createDestination(map.destination);
     var previousNode = map.nodes[0];
-    var startNode = map.nodes[1];
+    var startNode = map.nodes[0].connectedNodes[0];
     createCFC(paper, previousNode, startNode);
     van = createVan(paper, previousNode, startNode);
     scrollToShowVan();

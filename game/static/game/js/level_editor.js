@@ -70,11 +70,12 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
                         }
 
                         ocargo.levelEditor.mark(coord, 'red', 1, true);
-                        var prevIndex = ocargo.levelEditor.findNodeByCoordinate(
+                        var newStartIndex = ocargo.levelEditor.findNodeByCoordinate(
                             ocargo.levelEditor.nodes, transCoord);
+
                         // Putting the new start in the front of the nodes list.
-                        var temp = ocargo.levelEditor.nodes[prevIndex];
-                        ocargo.levelEditor.nodes[prevIndex] = ocargo.levelEditor.nodes[0];
+                        var temp = ocargo.levelEditor.nodes[newStartIndex];
+                        ocargo.levelEditor.nodes[newStartIndex] = ocargo.levelEditor.nodes[0];
                         ocargo.levelEditor.nodes[0] = temp;
                         ocargo.levelEditor.pathStart = ocargo.levelEditor.nodes[0];
 
