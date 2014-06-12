@@ -216,15 +216,15 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
     if (!nextNode) {
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
-        this.level.fail("Your first " + n + " execution steps were right." +
-                        " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
+        this.level.fail( ocargo.messages.xcorrect(n) +
+                        ocargo.messages.tryagain);
 
         program.terminate();
         return; //TODO: animate the crash
     }
     
     if(this.level.van.fuel === 0){
-        this.level.fail("You ran out of fuel! Try to find a shorter path to the destination.");
+        this.level.fail(ocargo.messages.nofuel);
 		program.terminate();
 		return;
     }
