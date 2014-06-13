@@ -218,12 +218,14 @@ ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
         var index = this.findNodeByCoordinate(this.nodes, current.coordinate);
 
         if (index > -1) {
-            var alreadyExisting = ocargo.levelEditor.nodes[index];
+            var existing = ocargo.levelEditor.nodes[index];
             var list = []
             for (var j = 0; j < current.connectedNodes.length; j++) {
                 var neighbour = current.connectedNodes[j];
-                alreadyExisting.addConnectedNodeWithBacklink(neighbour);
-                list.push(neighbour);
+                if (this.findNodeByCoordinate(existing.connectedNodes, neighbour.coordinate) === -1) {
+                    existing.addConnectedNodeWithBacklink(neighbour);
+                    list.push(neighbour);
+                }
             }
             for (var k = 0; k < list.length; k++) {
                 list[k].removeDoublyConnectedNode(current);
@@ -338,7 +340,6 @@ Raphael.st.draggableDecor = function() {
             me.transform('t' + ox + ',' + oy);
             var coord = new ocargo.Coordinate(ox, PAPER_HEIGHT - oy - DECOR_SIZE);
             ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
-            console.debug(JSON.stringify(ocargo.levelEditor.decor));
             //ocargo.levelEditor.map[point[0]][point[1]] = true;
         };
 
