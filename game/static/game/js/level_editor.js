@@ -16,14 +16,9 @@ var CFC_URL = '/static/game/image/OcadoCFC_no_road.svg';
 
 ocargo.LevelEditor = function() {
     this.nodes = [];
-
-    // History is stored as a list of ranges of each road segment created, i.e. [[0,4], [4,8]],
-    // where 0, 4, 8 are indices of nodes pushed to nodes.
-    this.history = [];
     this.start = null;
     this.end = null;
     this.currentStrike = [];
-    this.map = this.initialiseVisited();
     this.decor = [];
     this.grid = this.initialiseVisited();
 
@@ -84,7 +79,6 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
             } ();
 
             this.grid[i][j] = segment;
-            this.map[i][j] = false;
         }
     }
 };
@@ -211,8 +205,6 @@ ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
     var current;
     var prev;
 
-    this.history.push([this.start, this.end]);
-
     for (var i = 0; i < ocargo.levelEditor.currentStrike.length; i++) {
         current = ocargo.levelEditor.currentStrike[i];
         var index = this.findNodeByCoordinate(this.nodes, current.coordinate);
@@ -305,7 +297,6 @@ ocargo.LevelEditor.prototype.translate = function(coordinate) {
 
 ocargo.LevelEditor.prototype.mark = function(point, colour, opacity, occupied) {
     var element = this.grid[point.x][point.y];
-    this.map[point.x][point.y] = occupied;
     element.attr({fill:colour, "fill-opacity": opacity});
 };
 
@@ -332,7 +323,6 @@ Raphael.st.draggableDecor = function() {
                     break;
                 }
             }
-            //ocargo.levelEditor.map[x][y] = false;
         },
         endFnc = function() {
             ox = lx;
@@ -340,7 +330,6 @@ Raphael.st.draggableDecor = function() {
             me.transform('t' + ox + ',' + oy);
             var coord = new ocargo.Coordinate(ox, PAPER_HEIGHT - oy - DECOR_SIZE);
             ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
-            //ocargo.levelEditor.map[point[0]][point[1]] = true;
         };
 
     this.drag(moveFnc, startFnc, endFnc);
@@ -437,7 +426,7 @@ $('#undo').click(function() {
 
 ocargo.LevelEditor.prototype.oldPathToNew = function() {
     var newPath = [];
-    
+
     for (var i = 0; i < this.nodes.length; i++) {
         var curr = this.nodes[i];
         var node = {'coordinate': [curr.coordinate.x, curr.coordinate.y], 'connectedNodes': []};
@@ -453,7 +442,7 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
 
 $("#export").click(function() {
 
-    if (!(ocargo.levelEditor.startFlag && ocargo.levelEditor.endFlag)) {
+    if (ocargo.levelEditor.pathStart === null || ocargo.levelEditor.destination === null) {
          startPopup("Oh no!", "You forgot to mark the start and end points.", "Click on the 'Mark Start' " +
             "or 'Mark End' then select the road of the segment you want to serve as the starting " +
             "or ending point.");
@@ -466,11 +455,8 @@ $("#export").click(function() {
             "the destination.", "Edit your level to allow the driver to get to the end.");
         return;
     }
-
-    if (ocargo.levelEditor.startFlag && ocargo.levelEditor.endFlag) {
         sortNodes(ocargo.levelEditor.nodes);
         var input_string = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
-        console.debug(input_string);
         var blockTypes = [];
         var endCoord = ocargo.levelEditor.destination.coordinate;
         var destination = JSON.stringify([endCoord.x, endCoord.y]);
@@ -503,9 +489,6 @@ $("#export").click(function() {
         });
 
         return false;
-    } else {
-       
-    }
 });
 
 $(function() {
