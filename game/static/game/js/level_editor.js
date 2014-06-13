@@ -394,6 +394,20 @@ $('#tree2').click(function() {
     initialiseDecorGraphic(TREE2_URL);
 });
 
+$('#help').click(function() {
+    var mobileSubtitle = "Click on the point you want this part of the road to start and, while " +
+        "holding it, click on the square you want it to end.";
+    var pcSubtitle = "Click on the point you want this part of the road to start and drag it to " +
+        "the point you want it to end.";
+    var title = "Welcome to the Level Editor!";
+    var subtitle = isMobile() ? mobileSubtitle : pcSubtitle;
+    var mainText = "Click on the 'Mark Start' or 'Mark End' then select the road of the segment " +
+        "you want to serve as the starting or ending point. <br>" +
+        "To delete a part of the road, click on the 'Delete' button and remove it the same way " +
+        "you added it.";
+    startPopup(title, subtitle, mainText);
+});
+
 $('#clear').click(function() {
     paper.clear();
     ocargo.levelEditor = new ocargo.LevelEditor();
@@ -403,11 +417,13 @@ $('#clear').click(function() {
 $('#start').click(function() {
     ocargo.levelEditor.startFlag = !ocargo.levelEditor.startFlag;
     ocargo.levelEditor.endFlag = false;
+    ocargo.levelEditor.deleteFlag = false;
 });
 
 $('#end').click(function() {
     ocargo.levelEditor.endFlag = !ocargo.levelEditor.endFlag;
     ocargo.levelEditor.startFlag = false;
+    ocargo.levelEditor.deleteFlag = false;
 });
 
 $('#undo').click(function() {
@@ -436,41 +452,47 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
 
 $("#export").click(function() {
 
-    sortNodes(ocargo.levelEditor.nodes);
-    var input_string = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
-    console.debug(input_string);
-    var blockTypes = [];
-    var endCoord = ocargo.levelEditor.destination.coordinate;
-    var destination = JSON.stringify([endCoord.x, endCoord.y]);
-    var decor = JSON.stringify(ocargo.levelEditor.decor);
-    var maxFuel = $('#maxFuel').val();
+    if (ocargo.levelEditor.startFlag && ocargo.levelEditor.endFlag) {
+        sortNodes(ocargo.levelEditor.nodes);
+        var input_string = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
+        console.debug(input_string);
+        var blockTypes = [];
+        var endCoord = ocargo.levelEditor.destination.coordinate;
+        var destination = JSON.stringify([endCoord.x, endCoord.y]);
+        var decor = JSON.stringify(ocargo.levelEditor.decor);
+        var maxFuel = $('#maxFuel').val();
 
-    $('.js-block-checkbox:checked').each(function(index, checkbox) {
-        blockTypes.push(checkbox.id);
-    });
+        $('.js-block-checkbox:checked').each(function(index, checkbox) {
+            blockTypes.push(checkbox.id);
+        });
 
-    $.ajax({
-        url: "/game/levels/new",
-        type: "POST",
-        dataType: 'json',
-        data: {
-            nodes: input_string,
-            destination: destination,
-            decor: decor,
-            maxFuel: maxFuel,
-            blockTypes: JSON.stringify(blockTypes),
-            csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
-        },
-        success: function (json) {
-            window.location.href = ("/game/" + json.server_response);
+        $.ajax({
+            url: "/game/levels/new",
+            type: "POST",
+            dataType: 'json',
+            data: {
+                nodes: input_string,
+                destination: destination,
+                decor: decor,
+                maxFuel: maxFuel,
+                blockTypes: JSON.stringify(blockTypes),
+                csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+            },
+            success: function (json) {
+                window.location.href = ("/game/" + json.server_response);
 
-        },
-        error: function (xhr, errmsg, err) {
-            console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-        }
-    });
+            },
+            error: function (xhr, errmsg, err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
 
-    return false;
+        return false;
+    } else {
+        startPopup("Oh no!", "You forgot to mark the start and end points.", "Click on the 'Mark Start' " +
+            "or 'Mark End' then select the road of the segment you want to serve as the starting " +
+            "or ending point.");
+    }
 });
 
 $(function() {
