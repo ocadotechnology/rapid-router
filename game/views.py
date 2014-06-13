@@ -1,8 +1,8 @@
-from game import random_road
-import os
 import json
+import os
 import messages
 
+from cache import cached_all_levels, cached_max_level, cached_level
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.http import HttpResponse
@@ -10,14 +10,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import AvatarUploadForm, AvatarPreUploadedForm
+from game import random_road
 from models import Class, Level, Attempt, Command, Block
-from cache import cached_all_levels, cached_max_level, cached_level
+
 
 def levels(request):
     context = RequestContext(request, {
         'levels': cached_all_levels()
     })
     return render(request, 'game/level_selection.html', context)
+
 
 def level(request, level):
     """Loads a level for rendering in the game
@@ -62,6 +64,7 @@ def level(request, level):
 
     return render(request, 'game/game.html', context)
 
+
 def level_new(request):
     """Processes a request on creation of the map in the level editor."""
     if 'nodes' in request.POST:
@@ -69,8 +72,9 @@ def level_new(request):
         destination = request.POST['destination']
         decor = request.POST['decor']
         maxFuel = request.POST['maxFuel']
+        name = request.POST.get('name')
         passedLevel = None
-        passedLevel = Level(name=10, path=path, default=False, destination=destination, decor=decor, maxFuel=maxFuel)
+        passedLevel = Level(name=name, path=path, default=False, destination=destination, decor=decor, maxFuel=maxFuel)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
             passedLevel.owner = request.user.userprofile
@@ -89,6 +93,7 @@ def level_new(request):
         response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
+
 def level_random(request):
     """Generates a new random level
 
@@ -106,6 +111,7 @@ def submit(request):
         parseAttempt(attemptData, request)
         return HttpResponse(attemptJson, content_type='application/javascript')
 
+
 def parseAttempt(attemptData, request):
     level = get_object_or_404(Level, id=attemptData.get('level', 1))
     attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
@@ -117,19 +123,23 @@ def parseAttempt(attemptData, request):
     parseInstructions(json.loads(commands), attempt, 1)
     attempt.save()
 
+
 def logged_students(request):
     """ Renders the page with information about all the logged in students."""
     return render_student_info(request, True)
 
+
 def students_in_class(request):
     """ Renders the page with information about all the students enrolled in a chosen class."""
     return render_student_info(request, False)
+
 
 def level_editor(request):
     context = RequestContext(request, {
         'blocks': Block.objects.all()
     })
     return render(request, 'game/level_editor.html', context)
+
 
 def settings(request):
     """ Renders the settings page.  """
@@ -140,7 +150,8 @@ def settings(request):
     userProfile = request.user.userprofile
     avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
     avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
-
+    studentLevels = Level.objects.filter(owner=userProfile.id)
+    levelMessage = messages.noLevelsToShow() if len(studentLevels) == 0 else messages.levelsMessage() 
     if request.method == 'POST':
         if "pre-uploaded" in request.POST:
             if avatarPreUploadedForm.is_valid:
@@ -154,9 +165,12 @@ def settings(request):
     context = RequestContext(request, {
         'avatarPreUploadedForm': avatarPreUploadedForm,
         'avatarUploadForm': avatarUploadForm,
+        'levels': studentLevels,
         'user': request.user,
+        'levelMessage': levelMessage
     })
     return render(request, 'game/settings.html', context)
+
 
 def render_student_info(request, logged):
     """ Helper method for rendering the studend info for a logged-in teacher."""
@@ -198,6 +212,7 @@ def render_student_info(request, logged):
         'currentClass': currentClass,
     })
     return render(request, 'game/logged_students.html', context)
+
 
 def parseInstructions(instructions, attempt, init):
     """ Helper method for inserting user-submitted instructions to the database."""
@@ -249,6 +264,6 @@ def parseInstructions(instructions, attempt, init):
             command = Command(step=index, attempt=attempt, command='Forward', next=index+1)
         command.save()
         index += 1
-    last = Command.objects.get(step=init+len(instructions) - 1, attempt=attempt)
+    last = Command.objects.get(step=init+len(instructions)- 1, attempt=attempt)
     last.next = None
     last.save()

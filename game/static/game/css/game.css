@@ -80,11 +80,11 @@ button, .button, img.control{
     float: left;
 }
 
-
-
-#myModal > p.mainText,
-#myModal > p.lead {
+#myModal > p.mainText{
     font-size: 1.2rem !important;
+}
+#myModal > p.lead {
+    font-size: 1.4rem !important;
 }
 
 #myModal > p.mainText > #hintText,

@@ -44,7 +44,8 @@
             <img id="bush" src="/static/game/image/bush.svg" width="70">
             <img id="tree1" src="/static/game/image/tree1.svg" width="70">
             <img id="tree2" src="/static/game/image/tree2.svg" width="70"><br><br>
-            <p>MAX FUEL <input type="number" id="maxFuel" value="50" size="4"></p>
+            <p>NAME<input id="name" value="name"></p>
+            <p>MAX FUEL<input type="number" id="maxFuel" value="50" size="4"></p>
             <button id="clear">Clear</button><br>
             <button id="start">Mark Start</button><br>
             <button id="end">Mark End</button><br>
@@ -52,8 +53,8 @@
           </div>
         </li>
         <li>
-          <input type="radio" name="tabs" id="tab3">
-          <label for="tab3">Blocks</label>
+          <input type="radio" name="tabs" id="tab2">
+          <label for="tab2">Blocks</label>
           <div id="tab-content-blocks" class="tab-content">
             {% for block in blocks %}
               <input type="checkbox" id="{{ block.type }}" class="js-block-checkbox" checked>

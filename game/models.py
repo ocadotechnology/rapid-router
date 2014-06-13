@@ -62,7 +62,7 @@ class Block (models.Model):
 
 
 class Level (models.Model):
-    name = models.IntegerField()
+    name = models.CharField(max_length="100")
     path = models.CharField(max_length=10000)
     decor = models.CharField(max_length=10000, default='[]')
     destination = models.CharField(max_length=10)
@@ -71,6 +71,7 @@ class Level (models.Model):
     blockLimit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
     maxFuel = models.IntegerField(default=50)
+    sharedWith = models.ManyToManyField(UserProfile, related_name="shared", blank=True, null=True)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)

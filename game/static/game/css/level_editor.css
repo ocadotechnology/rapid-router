@@ -26,6 +26,12 @@
     margin: 10px auto;
 }
 
+#name {
+    height: 36px;
+    padding: 8px;
+    border: 1px solid #cccccc;
+}
+
 .tabs li {
     float: left;
 }
@@ -71,7 +77,6 @@
     font-size: 20px;
     line-height: 140%;
     padding: 30px;
-    color: white;
     left: 0;
     background-color: white;
     position: absolute;
@@ -84,6 +89,11 @@
     -o-animation-duration: 0.5s;
     -moz-animation-duration: 0.5s;
     animation-duration: 0.5s;
+}
+
+#tab-content-blocks > label {
+    background-color: white;
+    border: none;
 }
 
 #tab-content-arrows > p {

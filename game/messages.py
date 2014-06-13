@@ -1,38 +1,42 @@
 """ String messages used on the settings page """
 
 def chooseAvatar():
-    return "Choose your avatar"
+    return "Choose your avatar "
 
 def uploadAvatar():
-    return "Or upload your own"
+    return "...Or upload your own "
 
 def noLevelsToShow():
-    return "It seems that you have not created any levels. How about creating one now?"
+    return "It seems that you have not created any levels. How about creating one now? "
+
+def levelsMessage():
+    return "All the levels you have created so far. Click on them to play them or share them " \
+        + "with your friends. "
 
 def noSharedLevels():
-    return "No one shared a level with you yet."
+    return "No one shared a level with you yet. "
 
 
 """ Strings used in the class view. """
 
 def chooseClass():
-    return "Choose a class you want to see."
+    return "Choose a class you want to see. "
 
 def noPermission():
-    return "You don't have permissions to see this."
+    return "You don't have permissions to see this. "
 
 
 """ String messages used as level tips in the game view. """
 
 def buttons():
     return "Use the buttons in the left bottom part of the screen to create a path that " \
-        + "will lead the van to the destination."
+        + "will lead the van to the destination. "
 
 def dragAndDrop():
     return "<br>Drag the blocks from the left to the white space and connect them with one " \
         + "another to create series of commands that will guide the driver to the destination. " \
         + "To remove an instruction place it back in the gray area. Remember to start from the " \
-        + "<b>start block</b>."
+        + "<b>start block</b>. "
 
 def description_level_default():
     return description_overall() + dragAndDrop()
@@ -78,7 +82,7 @@ def description_level8():
         + "inside the <b>while</b> or <b>until</b> loops will be executed as long as the " \
         + "condition is true.<br> Change the <b>while</b> block to the <b>until</b> and add " \
         + "the <b>at destination</b> condition. <br> Use the modified set of blocks to create " \
-        + "a program that guides the driver to the house."
+        + "a program that guides the driver to the house. "
     return description_overall() + message
 
 def description_level9():
@@ -237,7 +241,7 @@ def hint_level15():
     return message
      
 def hint_level16():
-    message = "<b>If</b> the road <b>is a dead end</b>, you will need to <b>turn around</b> "
+    message = "<b>If</b> the road <b>is a dead end</b>, you will need to <b>turn around</b>. "
     return message
      
 def hint_level17():

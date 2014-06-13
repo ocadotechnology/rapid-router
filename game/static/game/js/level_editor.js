@@ -394,7 +394,8 @@ $('#help').click(function() {
     var mainText = "Click on the 'Mark Start' or 'Mark End' then select the road of the segment " +
         "you want to serve as the starting or ending point. <br>" +
         "To delete a part of the road, click on the 'Delete' button and remove it the same way " +
-        "you added it.";
+        "you added it.<br> Don't forget to choose a name and fuel limit for your level! It will " +
+        "make sharing it with others much easier for you.";
     startPopup(title, subtitle, mainText);
 });
 
@@ -443,9 +444,9 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
 $("#export").click(function() {
 
     if (ocargo.levelEditor.pathStart === null || ocargo.levelEditor.destination === null) {
-         startPopup("Oh no!", "You forgot to mark the start and end points.", "Click on the 'Mark Start' " +
-            "or 'Mark End' then select the road of the segment you want to serve as the starting " +
-            "or ending point.");
+         startPopup("Oh no!", "You forgot to mark the start and end points.", "Click on the " +
+            "'Mark Start' or 'Mark End' then select the road of the segment you want to serve as " +
+            "the starting or ending point.");
          return;
     }
 
@@ -456,12 +457,13 @@ $("#export").click(function() {
         return;
     }
         sortNodes(ocargo.levelEditor.nodes);
-        var input_string = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
+        var input = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
         var blockTypes = [];
         var endCoord = ocargo.levelEditor.destination.coordinate;
         var destination = JSON.stringify([endCoord.x, endCoord.y]);
         var decor = JSON.stringify(ocargo.levelEditor.decor);
         var maxFuel = $('#maxFuel').val();
+        var name = $('#name').val();
 
         $('.js-block-checkbox:checked').each(function(index, checkbox) {
             blockTypes.push(checkbox.id);
@@ -472,9 +474,10 @@ $("#export").click(function() {
             type: "POST",
             dataType: 'json',
             data: {
-                nodes: input_string,
+                nodes: input,
                 destination: destination,
                 decor: decor,
+                name: name,
                 maxFuel: maxFuel,
                 blockTypes: JSON.stringify(blockTypes),
                 csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
