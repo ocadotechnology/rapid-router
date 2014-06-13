@@ -1,3 +1,17 @@
+""" String messages used on the settings page """
+
+def chooseAvatar():
+    return "Choose your avatar"
+
+def uploadAvatar():
+    return "Or upload your own"
+
+def noLevelsToShow():
+    return "It seems that you have not created any levels. How about creating one now?"
+
+def noSharedLevels():
+    return "No one shared a level with you yet."
+
 
 """ Strings used in the class view. """
 
@@ -135,19 +149,23 @@ def description_level21():
     return description_overall() + message
 
 def hint_level_default():
-    message = "There is no specific information I can give for this level.<br>Do your best to remember some of the things you have learnt in the previous levels. "
+    message = "There is no specific information I can give for this level.<br>Do your best to " \
+        + "remember some of the things you have learnt in the previous levels. "
     return message
    
 def hint_level1():
-    message = "Drag and drop the <b>move forwards</b> block so that it is under the <b>start</b> block - close enough to be touching. "
+    message = "Drag and drop the <b>move forwards</b> block so that it is under the <b>start</b> " \
+        + "block - close enough to be touching. "
     return message
      
 def hint_level2():
-    message = "A block can be placed next to another if the jigsaw pieces fit. A second <b>move forwards</b> block can be placed under the first <b>move forwards</b> block. "
+    message = "A block can be placed next to another if the jigsaw pieces fit. A second <b>move " \
+        + "forwards</b> block can be placed under the first <b>move forwards</b> block. "
     return message
      
 def hint_level3():
-    message = "A block can be placed next to another if the jigsaw pieces fit. A <b>turn right</b> block can be placed under the first <b>move forwards</b> block. "
+    message = "A block can be placed next to another if the jigsaw pieces fit. A <b>turn " \
+        + "right</b> block can be placed under the first <b>move forwards</b> block. "
     return message
      
 def hint_level4():
@@ -155,11 +173,14 @@ def hint_level4():
     return message
      
 def hint_level5():
-    message = "Follow the road round. Doing this with the arrows next to the <b>GO</b> button will produce the instructions for you! "
+    message = "Follow the road round. Doing this with the arrows next to the <b>GO</b> button " \
+        + "will produce the instructions for you! "
     return message
      
 def hint_level6():
-    message = "A <b>move forwards</b> block can be placed inside of the <b>repeat</b> block (to the right of the word 'do'). <br>Don't forget to change the number of times you need to repeat. "
+    message = "A <b>move forwards</b> block can be placed inside of the <b>repeat</b> block (to " \
+        + "the right of the word 'do'). <br>Don't forget to change the number of times you need " \
+        + "to repeat. "
     return message
      
 def hint_level7():
@@ -167,31 +188,48 @@ def hint_level7():
     return message
      
 def hint_level8():
-    message = "The blocks should read like a sentence: <b>Repeat</b> (the following) <b>until at destination</b>: <b>move forwards</b>. "
+    message = "The blocks should read like a sentence: <b>Repeat</b> (the following) <b>until at " \
+        + "destination</b>: <b>move forwards</b>. "
     return message
      
 def hint_level9():
-    message = "The blocks should read like a sentence: <b>Repeat</b> (the following) <b>until at destination</b>: <b>turn left</b>, (then) <b>turn right</b>. "
+    message = "The blocks should read like a sentence: <b>Repeat</b> (the following) <b>until at " \
+        + "destination</b>: <b>turn left</b>, (then) <b>turn right</b>. "
     return message
      
 def hint_level10():
-    message = "<b>while not</b> is the same as <b>until</b>. <br>The blocks should read like a sentence: <b>Repeat</b> (the following) <b>while not at destination</b>: <b>move forwards</b>. "
+    message = "<b>while not</b> is the same as <b>until</b>. <br>The blocks should read like a " \
+        + "sentence: <b>Repeat</b> (the following) <b>while not at destination</b>: <b>move " \
+        + "forwards</b>. "
     return message
      
 def hint_level11():
-    message = "<b>while not</b> is the same as <b>until</b>. <br>The blocks should read like a sentence: <b>Repeat</b> (the following) <b>while not at destination</b>: <b>turn left</b>, (then) <b>turn right</b>. "
+    message = "<b>while not</b> is the same as <b>until</b>. <br>The blocks should read like a " \
+        + "sentence: <b>Repeat</b> (the following) <b>while not at destination</b>: <b>turn " \
+        + "left</b>, (then) <b>turn right</b>. "
     return message
      
 def hint_level12():
-    message = "<b>if</b> a <b>road exists forwards</b> then <b>move forwards</b>. This instruction will need to be repeated to get to the destination. "
+    message = "<b>if</b> a <b>road exists forwards</b> then <b>move forwards</b>. This "\
+        + "instruction will need to be repeated to get to the destination. "
     return message
      
 def hint_level13():
-    message = "We need to check where the road is using an <b>if-else</b> block. <br>You can create an <b>if-else</b> block by clicking the star on the <b>if</b> block, and adding the <b>else</b> clause. <br>If the condition block is true, the blocks after <b>if</b> are executed, otherwise the blocks after <b>else</b> are. <br><b>if</b> a <b>road exists left</b>, <b>turn left</b>. <b>else</b> (otherwise) <b>turn right</b>. "
+    message = "We need to check where the road is using an <b>if-else</b> block. <br>You can " \
+        + "create an <b>if-else</b> block by clicking the star on the <b>if</b> block, and " \
+        + "adding the <b>else</b> clause. <br>If the condition block is true, the blocks after " \
+        + "<b>if</b> are executed, otherwise the blocks after <b>else</b> are. <br><b>if</b> a " \
+        + "<b>road exists left</b>, <b>turn left</b>. <b>else</b> (otherwise) <b>turn right</b>. "
     return message
      
 def hint_level14():
-    message = "We need to check where the road is using an <b>if-else if</b> block. <br>You can create an <b>if-else if</b> block by clicking the star on the <b>if</b> block, and adding the <b>else if</b> clause. <br>If the first condition block is true, the blocks after <b>if</b> are executed, otherwise if the second condition block is true, the blocks after <b>else if</b> are executed. <br><b>if</b> a <b>road exists left</b>, <b>turn left</b>. <b>else if a road exists right</b>, <b>turn right</b>. <b>else move forwards</b>. "
+    message = "We need to check where the road is using an <b>if-else if</b> block. <br>You can " \
+        + "create an <b>if-else if</b> block by clicking the star on the <b>if</b> block, and " \
+        + "adding the <b>else if</b> clause. <br>If the first condition block is true, the " \
+        + "blocks after <b>if</b> are executed, otherwise if the second condition block is true, " \
+        + "the blocks after <b>else if</b> are executed. <br><b>if</b> a <b>road exists " \
+        + "left</b>, <b>turn left</b>. <b>else if a road exists right</b>, <b>turn right</b>. " \
+        + "<b>else move forwards</b>. "
     return message
      
 def hint_level15():
