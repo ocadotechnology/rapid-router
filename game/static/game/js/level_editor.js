@@ -453,6 +453,20 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
 
 $("#export").click(function() {
 
+    if (!(ocargo.levelEditor.startFlag && ocargo.levelEditor.endFlag)) {
+         startPopup("Oh no!", "You forgot to mark the start and end points.", "Click on the 'Mark Start' " +
+            "or 'Mark End' then select the road of the segment you want to serve as the starting " +
+            "or ending point.");
+         return;
+    }
+
+    var pathToDestination = aStar(ocargo.levelEditor.nodes, ocargo.levelEditor.destination);
+    if (pathToDestination.length === 0) {
+        startPopup("Something is wrong.", "There is no way to get from the starting point to " +
+            "the destination.", "Edit your level to allow the driver to get to the end.");
+        return;
+    }
+
     if (ocargo.levelEditor.startFlag && ocargo.levelEditor.endFlag) {
         sortNodes(ocargo.levelEditor.nodes);
         var input_string = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
@@ -490,9 +504,7 @@ $("#export").click(function() {
 
         return false;
     } else {
-        startPopup("Oh no!", "You forgot to mark the start and end points.", "Click on the 'Mark Start' " +
-            "or 'Mark End' then select the road of the segment you want to serve as the starting " +
-            "or ending point.");
+       
     }
 });
 
