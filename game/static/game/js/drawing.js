@@ -86,11 +86,6 @@ function createVan(paper, previousNode, startNode) {
     return van.transform('... r90');
 }
 
-function getGridSpace(x, y) {
-    return [Math.floor((x + GRID_SPACE_SIZE / 2) / GRID_SPACE_SIZE),
-        Math.floor((y + GRID_SPACE_SIZE / 2) / GRID_SPACE_SIZE)];
-}
-
 function createHorizontalRoad(paper, i, j, drawLines) {
     var x = i * GRID_SPACE_SIZE;
     var y = j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
