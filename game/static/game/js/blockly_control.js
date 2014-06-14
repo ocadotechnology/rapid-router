@@ -299,7 +299,7 @@ ocargo.BlocklyControl.prototype.removeUnavailableBlocks = function() {
             block.dispose();
         }
     }
-}
+};
 
 ocargo.BlocklyControl.prototype.addClickListenerToStartBlock = function() {
 	var startBlock = this.getStartBlock();
@@ -328,7 +328,7 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlock = function() {
 			});
 		}
     } 
-}
+};
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createWhile(block) {
