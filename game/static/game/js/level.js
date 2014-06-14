@@ -176,6 +176,7 @@ function stepper(level) {
                 }
             }
         } catch (error) {
+            level.fail("Your program crashed!");
             level.program.terminate();
             throw error;
         }
