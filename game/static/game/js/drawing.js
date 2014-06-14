@@ -427,7 +427,6 @@ function resetVan(previousNode, startNode) {
     });
 
     van.transform('... r90');
-    van.toFront();
     scrollToShowVan();
 }
 
@@ -583,13 +582,13 @@ function createDestination(destination) {
 function renderTheMap(map) {
     paper.clear();
     drawBackground(paper);
-    drawDecor(map.decor);
     createRoad(map.nodes);
     createDestination(map.destination);
     var previousNode = map.nodes[0];
     var startNode = map.nodes[0].connectedNodes[0];
     createCFC(paper, previousNode, startNode);
     van = createVan(paper, previousNode, startNode);
+    drawDecor(map.decor);
     scrollToShowVan();
 }
 
