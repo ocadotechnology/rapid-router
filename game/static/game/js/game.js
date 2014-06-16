@@ -118,7 +118,13 @@ function trackDevelopment() {
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
         }
         disableDirectControl();
-        var program = ocargo.blocklyControl.populateProgram();
+
+        try {
+            var program = ocargo.blocklyControl.populateProgram();
+        } catch (error) {
+            ocargo.level.fail('Your program crashed!');
+            throw error;
+        }
 
         program.instructionHandler = new InstructionHandler(ocargo.level);
         clearVanData();

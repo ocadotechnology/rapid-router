@@ -49,12 +49,12 @@ ocargo.Level.prototype.play = function(program) {
 ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
     if (stack) {
         for (var i = 0; i < stack.length; i++) {
-            var command = recogniseCommand(stack[i], returnStack);
+            var command = recogniseCommand(stack[i]);
             returnStack.push(command);
         }
     }
 
-    function recogniseCommand(command, returnStack) {
+    function recogniseCommand(command) {
         var parsedCommand = {};
         
         if (command instanceof ForwardCommand) {
@@ -176,6 +176,7 @@ function stepper(level) {
                 }
             }
         } catch (error) {
+            level.fail("Your program crashed!");
             level.program.terminate();
             throw error;
         }
