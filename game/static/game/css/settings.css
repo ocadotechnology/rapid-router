@@ -47,6 +47,10 @@
     width: 500px;
 }
 
+.shareButton {
+    float: right;
+}
+
 .avatar_container input[type=submit] {
     cursor: pointer;
     font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;

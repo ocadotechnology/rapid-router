@@ -58,6 +58,7 @@
           {% for level in levels %}
             <br>
             <a href="/game/{{level.id}}"> {{level.name}} </a>
+            <a href="#" data-reveal-id="firstModal" class="radius button shareButton">Share</a>
           {% endfor %}
 
         {% else %}
@@ -79,5 +80,20 @@
 	  <h5>{{user.first_name}}</h5>
 	  <h5>{{user.last_name}} </h5>
   </div>
+</div>
+
+<div id="firstModal" class="reveal-modal" data-reveal>
+  <form method="post" action="">
+  {% csrf_token %}
+
+
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<div id="whichPerson" class="reveal-modal" data-reveal>
+  <h2 class="title"></h2>
+  <p class="lead"></p>
+  <p class="mainText"></p>
+  <a class="close-reveal-modal">&#215;</a>
 </div>
 {% endblock %}

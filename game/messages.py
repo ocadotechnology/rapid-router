@@ -1,5 +1,15 @@
 """ String messages used on the settings page """
 
+def shareTitle():
+    return "Level Share"
+
+def shareSuccessful(name, surname):
+    return "You shared your level with {0} {1} successfully! ".format(name, surname)
+
+def shareUnsuccessful(name, surname):
+    return "We were unable to find {0} {1}. Are you sure you got their name " \
+        + "right?".format(name,surname)
+
 def chooseAvatar():
     return "Choose your avatar "
 

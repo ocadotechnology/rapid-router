@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
-from forms import AvatarUploadForm, AvatarPreUploadedForm
+from forms import AvatarPreUploadedForm, AvatarUploadForm, ShareLevel
 from game import random_road
 from models import Class, Level, Attempt, Command, Block
 
@@ -150,13 +150,15 @@ def settings(request):
     userProfile = request.user.userprofile
     avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
     avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
+    shareLevelForm = ShareLevel(request.POST or None)
     studentLevels = Level.objects.filter(owner=userProfile.id)
     levelMessage = messages.noLevelsToShow() if len(studentLevels) == 0 else messages.levelsMessage() 
     if request.method == 'POST':
         if "pre-uploaded" in request.POST:
             if avatarPreUploadedForm.is_valid:
                 avatar = avatarPreUploadedForm.data.get('pre-uploaded', False)
-        else:
+        elif "share-level" in request.POST and shareLevelForm.is_valid():
+            message, people = handleSharedLevel(request, shareLevelForm)
             if avatarUploadForm.is_valid() and "user-uploaded" in request.POST:
                 avatar = request.FILES.get('avatar', False)
         userProfile.avatar = avatar
@@ -170,6 +172,19 @@ def settings(request):
         'levelMessage': levelMessage
     })
     return render(request, 'game/settings.html', context)
+
+
+def handleSharedLevel(request, form):
+    level = get_object_or_404(Level, id=form.level)
+    people = User.objects.filter(first_name=form.name, last_name=form.surname)
+    message = None
+    peopleLen = len(people)
+    if peopleLen == 0:
+        message = shareUnsuccessful(form.name, form.surname)
+    elif peopleLen == 1:
+        level.sharedWith.add(people[0])
+        message = shareSuccessful(form.name, form.surname)
+    return message, people
 
 
 def render_student_info(request, logged):
