@@ -130,6 +130,7 @@ ocargo.Level.prototype.win = function() {
 
 ocargo.Level.prototype.fail = function(msg) {
     var title = 'Oh dear! :(';
+    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
     console.debug(title);
     enableDirectControl();
     ocargo.sound.failure();

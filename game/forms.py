@@ -25,4 +25,3 @@ class ShareLevel(forms.Form):
     name = forms.CharField(max_length=100)
     surname = forms.CharField(max_length=100)
     level = forms.IntegerField()
-

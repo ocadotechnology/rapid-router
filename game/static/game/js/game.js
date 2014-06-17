@@ -132,6 +132,9 @@ function trackDevelopment() {
         ocargo.level.correct = 0;
     });
 
+    $('#step').click(function() {
+    });
+
     $('#clearIncorrect').click(function() {
         ocargo.blocklyControl.removeWrong();
         enableDirectControl();
@@ -141,6 +144,7 @@ function trackDevelopment() {
         ocargo.blocklyControl.reset();
         enableDirectControl();
         clearVanData();
+        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
     });
 
     $('#stop').click(function() {
