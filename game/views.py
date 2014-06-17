@@ -3,13 +3,14 @@ import os
 import messages
 
 from cache import cached_all_levels, cached_max_level, cached_level
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
-from forms import AvatarPreUploadedForm, AvatarUploadForm, ShareLevel
+from forms import AvatarPreUploadedForm, AvatarUploadForm, ShareLevel, ScoreboardForm
 from game import random_road
 from models import Class, Level, Attempt, Command, Block
 
@@ -129,9 +130,30 @@ def logged_students(request):
     return render_student_info(request, True)
 
 
-def students_in_class(request):
-    """ Renders the page with information about all the students enrolled in a chosen class."""
-    return render_student_info(request, False)
+def scoreboard(request):
+    """ Renders a page with students' scores.
+
+     **Template:**
+    :template:`game/scoreboard.html`
+    """
+    teacher = request.user.userprofile.teacher
+    form = ScoreboardForm(request.POST or None, teacher=teacher)
+    students = None
+
+    if request.method == 'POST':
+        if form.is_valid():
+            levelID = form.data.get('levels', False)
+            classID = form.data.get('classes', False)
+            cl = get_object_or_404(Class, id=classID)
+            level = get_object_or_404(Level, id=levelID)
+            students =  cl.students.all()
+
+
+    context = RequestContext(request, {
+        'form': form,
+        'students': students
+    })
+    return render(request, 'game/scoreboard.html', context)
 
 
 def level_editor(request):

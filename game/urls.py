@@ -9,5 +9,5 @@ urlpatterns = patterns('',
     url(r'^levels/new$', 'game.views.level_new'),
     url(r'^settings$', 'game.views.settings'),
     url(r'^logged_students$', 'game.views.logged_students'),
-    url(r'^students_in_class$', 'game.views.students_in_class'),
+    url(r'^scoreboard$', 'game.views.scoreboard'),
 )
