@@ -147,6 +147,7 @@ def settings(request):
     path = os.path.join(x, 'static/game/image/Avatars/')
     img_list = os.listdir(path)
     avatar = None
+    modal = False
     userProfile = request.user.userprofile
     avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
     avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
@@ -167,9 +168,11 @@ def settings(request):
     context = RequestContext(request, {
         'avatarPreUploadedForm': avatarPreUploadedForm,
         'avatarUploadForm': avatarUploadForm,
+        'shareLevelForm': shareLevelForm,
         'levels': studentLevels,
         'user': request.user,
-        'levelMessage': levelMessage
+        'levelMessage': levelMessage,
+        'modal': modal
     })
     return render(request, 'game/settings.html', context)
 

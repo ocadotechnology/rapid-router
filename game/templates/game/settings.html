@@ -85,7 +85,9 @@
 <div id="firstModal" class="reveal-modal" data-reveal>
   <form method="post" action="">
   {% csrf_token %}
-
+  {{shareLevelForm.as_p}}
+  <input type="submit" value="Submit" />
+  </form>
 
   <a class="close-reveal-modal">&#215;</a>
 </div>
