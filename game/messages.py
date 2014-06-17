@@ -39,7 +39,7 @@ def noPermission():
 """ String messages used as level tips in the game view. """
 
 def buttons():
-    return "Use the buttons in the left bottom part of the screen to create a path that " \
+    return "Use the buttons in the bottom right part of the screen to create a path that " \
         + "will lead the van to the destination. "
 
 def dragAndDrop():
