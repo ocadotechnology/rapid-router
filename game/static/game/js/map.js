@@ -8,4 +8,3 @@ ocargo.Map = function(nodes, decor, destination, ui) {
 	this.destination = destination;
 	ui.renderMap(this);
 };
-

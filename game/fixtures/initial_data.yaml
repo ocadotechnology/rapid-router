@@ -35,7 +35,7 @@
     blockLimit: null
     blocks: [1]
     destination: [2, 3]
-    decor: '[{''coordinate'': new ocargo.Coordinate(1, 1), ''url'': ''/static/game/image/tree1.svg''}]'
+    decor: '[{''coordinate'': new ocargo.Coordinate(100, 100), ''url'': ''/static/game/image/tree1.svg''}]'
     default: true
     maxFuel: 50
     name: 10
@@ -47,7 +47,7 @@
     blockLimit: null
     blocks: [1]
     destination: [4, 3]
-    decor: '[{''coordinate'': new ocargo.Coordinate(1, 4), ''url'': ''/static/game/image/tree1.svg''}]'
+    decor: '[{''coordinate'': new ocargo.Coordinate(100, 400), ''url'': ''/static/game/image/tree1.svg''}]'
     default: true
     maxFuel: 50
     name: 10

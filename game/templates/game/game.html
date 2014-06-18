@@ -27,6 +27,7 @@
   <script src="{% static 'game/js/ui.js' %}"></script>
   <script src="{% static 'game/js/van.js' %}"></script>
   <script src="{% static 'game/js/sound.js' %}"></script>
+
   <script>
     var PATH = {{level.path|safe}};
     var DESTINATION = {{level.destination|safe}};
@@ -42,6 +43,7 @@
     {% endfor %}
     var MAX_FUEL = {{level.maxFuel}};
   </script>
+  
 {% endblock %}
 
 {% block css %}
@@ -70,13 +72,14 @@
   </div>
 
   <div id="paper" class="col"></div>
-
+  <button id="stop">Stop</button>
   <div id="controls" class="col">
       <button class="picButton" id="moveForward"><span>&uarr; Move Forwards</span></button>
       <button class="picButton" id="turnLeft"><span>&#x21BA; Turn Left</span></button>
       <button class="picButton" id="play" /><span>Go</span></button>
       <button class="picButton" id="turnRight"><span>&#x21BB; Turn Right</span></button>
       <div class="quit">
+        <button id="step">Step</button>
         <button id="clearIncorrect">Clear Incorrect</button>
         <button id="clear">Clear</button>
         <a class="button" href="/">Quit</a>

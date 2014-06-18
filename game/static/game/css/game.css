@@ -30,7 +30,7 @@
     height: 200px;
     position: fixed;
     right: 20px;
-    width: 420px
+    width: 520px
 }
 
 #controls button {
@@ -66,6 +66,12 @@
     top: 0;
 }
 
+#stop {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
 button, .button, img.control{
     margin-right: 10px;
 }
@@ -74,11 +80,11 @@ button, .button, img.control{
     float: left;
 }
 
-
-
-#myModal > p.mainText,
-#myModal > p.lead {
+#myModal > p.mainText{
     font-size: 1.2rem !important;
+}
+#myModal > p.lead {
+    font-size: 1.4rem !important;
 }
 
 #myModal > p.mainText > #hintText,

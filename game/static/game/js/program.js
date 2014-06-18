@@ -46,8 +46,8 @@ If.prototype.execute = function(program, level) {
 
 If.prototype.executeIfCommand = function(program, level) {
 	var i = 0;
-	while(i < this.conditionalCommandSets.length) {
-		if(this.conditionalCommandSets[i].condition(level)) {
+	while (i < this.conditionalCommandSets.length) {
+		if (this.conditionalCommandSets[i].condition(level)) {
 			program.addNewStackLevel(this.conditionalCommandSets[i].commands.slice(0));
 			return;
 		}
@@ -69,7 +69,7 @@ function While(condition, body, block) {
 While.prototype.execute = function(program, level) {
 	this.block.selectWithConnected();
 
-	if(this.condition(level)) {
+	if (this.condition(level)) {
 		program.addNewStackLevel([this]);
 		program.addNewStackLevel(this.body.slice(0));
 	}
@@ -88,7 +88,7 @@ function counterCondition(count) {
     };
 }
 
-function roadCondition(selection){
+function roadCondition(selection) {
     return function(level) {
         if (selection === 'FORWARD') {
             return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);

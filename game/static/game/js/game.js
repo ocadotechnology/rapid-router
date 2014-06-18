@@ -73,10 +73,12 @@ function enableDirectControl() {
     document.getElementById('turnRight').disabled = false;
     document.getElementById('play').disabled = false;
     document.getElementById('controls').style.visibility='visible';
+    document.getElementById('stop').style.visibility='hidden';
 }
 
 function disableDirectControl() {
     document.getElementById('controls').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='visible';
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
@@ -85,8 +87,10 @@ function disableDirectControl() {
 
 function clearVanData() {
     var nodes = ocargo.level.map.nodes;
-    ocargo.level.van = new ocargo.Van(nodes[0], nodes[1], ocargo.level.van.maxFuel, ocargo.ui);
-    ocargo.ui.setVanToFront();
+    var previousNode = nodes[0];
+    var startNode = nodes[0].connectedNodes[0];
+    ocargo.level.van = new ocargo.Van(previousNode, startNode, ocargo.level.van.maxFuel, ocargo.ui);
+    ocargo.ui.setVanToFront(previousNode, startNode);
 }
 
 function trackDevelopment() {
@@ -114,12 +118,21 @@ function trackDevelopment() {
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
         }
         disableDirectControl();
-        var program = ocargo.blocklyControl.populateProgram();
+
+        try {
+            var program = ocargo.blocklyControl.populateProgram();
+        } catch (error) {
+            ocargo.level.fail('Your program crashed!');
+            throw error;
+        }
 
         program.instructionHandler = new InstructionHandler(ocargo.level);
         clearVanData();
         ocargo.level.play(program);
         ocargo.level.correct = 0;
+    });
+
+    $('#step').click(function() {
     });
 
     $('#clearIncorrect').click(function() {
@@ -131,6 +144,11 @@ function trackDevelopment() {
         ocargo.blocklyControl.reset();
         enableDirectControl();
         clearVanData();
+        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
+    });
+
+    $('#stop').click(function() {
+        ocargo.level.program.terminate();
     });
 
     $('#slideBlockly').click(function() {
