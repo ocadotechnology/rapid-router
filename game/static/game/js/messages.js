@@ -3,8 +3,10 @@ var ocargo = ocargo || {};
 ocargo.messages = {
 	nofuel : "You ran out of fuel! Try to find a shorter path to the destination.",
 	tryagain : "Click 'Clear Incorrect' to remove the incorrect blocks and try again!",
-	tryagainbutton: '<br><br> <button onclick="document.getElementById(' + "'close-modal'" +
-		').click()">Try again</button>',
+	closebutton: function(label) {
+		return '<br><br> <button onclick="document.getElementById(' + "'close-modal'" +
+		').click()">' + label +'</button>';
+	},
 	xcorrect : function(x){
 		return "Your first " + x + " execution steps were right. ";
 	},

@@ -129,7 +129,7 @@ ocargo.Level.prototype.fail = function(msg) {
     console.debug(title);
     enableDirectControl();
     ocargo.sound.failure();
-    startPopup(title, '', msg + ocargo.messages.tryagainbutton);
+    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
     var level = this;
     level.fails++;
     if (level.fails >= level.failsBeforeHintBtn) {

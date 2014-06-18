@@ -50,7 +50,7 @@ function initialiseDefault() {
     'use strict';
 
     var title = "Level " + LEVEL_ID;
-    startPopup(title, "", LESSON);
+    startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
 
     ocargo.ui = createUi();
     ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, ocargo.ui, MAX_FUEL);
