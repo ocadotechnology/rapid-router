@@ -12,16 +12,40 @@
 {% block css %}
 {{block.super}}
   {% compress css %}
+      <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
   {% endcompress %}
 {% endblock %}
 
 {% block content %}
-<div id="form" style="float:left">
+<div id="form" class="form">
 <form action="" method="post" id="scoreboardForm">
   {% csrf_token %}
   {{form}}
   <button type="submit">Submit</button>
 </form>
 </div>
-
+<div class="mainBody">
+  {% if studentData %}
+  <table>
+    <thead>
+    {% for header in thead %}
+      <th> {{header}} </th>
+    {% endfor %}
+    </thead>
+    <tbody>
+    {% for student in studentData %}
+    <tr>
+        <td> <img class="avatar" src="/{{student.0.user.avatar.url}}"> </td>
+        <td> {{student.0.user.user.first_name}} </td>
+        <td> {{student.0.user.user.last_name}} </td>
+        <td> {{student.1.score}} </td>
+        <td> {{student.2}}</td>
+        <td> {{student.1.start_time}} </td>
+        <td> {{student.1.finish_time}} </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
 {% endblock %}

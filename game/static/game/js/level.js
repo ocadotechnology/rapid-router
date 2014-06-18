@@ -116,14 +116,9 @@ ocargo.Level.prototype.win = function() {
     enableDirectControl();
 
     if (ocargo.level.levelId < LEVEL_COUNT) {
-        message = '<button onclick="window.location.href=' + "'/game/" +
-                    (ocargo.level.levelId + 1) + "'" + '"">Next level</button>';
+        message = ocargo.messages.nextLevelButton(ocargo.level.levelId + 1);
     } else {
-        message = "Congratulations, that's all we've got for you now! <br>" + 
-                  "Why not try to create your own road? <br><br> " +
-                  '<button onclick="window.location.href=' + "'/game/level_editor'" +
-                  '"">Create your own map!</button> </center>' +
-                  '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
+        message = ocargo.messages.lastLevel;
     }
     startPopup("You win!", subtitle, message);
 };
@@ -134,7 +129,7 @@ ocargo.Level.prototype.fail = function(msg) {
     console.debug(title);
     enableDirectControl();
     ocargo.sound.failure();
-    startPopup(title, '', msg);
+    startPopup(title, '', msg + ocargo.messages.tryagainbutton);
     var level = this;
     level.fails++;
     if (level.fails >= level.failsBeforeHintBtn) {
@@ -220,8 +215,7 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
     if (!nextNode) {
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
-        this.level.fail( ocargo.messages.xcorrect(n) +
-                        ocargo.messages.tryagain);
+        this.level.fail(ocargo.messages.xcorrect(n) + ocargo.messages.tryagain);
 
         program.terminate();
         return; //TODO: animate the crash

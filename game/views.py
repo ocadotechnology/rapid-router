@@ -13,6 +13,7 @@ from django.utils.safestring import mark_safe
 from forms import AvatarPreUploadedForm, AvatarUploadForm, ShareLevel, ScoreboardForm
 from game import random_road
 from models import Class, Level, Attempt, Command, Block
+from operator import itemgetter
 
 
 def levels(request):
@@ -139,6 +140,8 @@ def scoreboard(request):
     teacher = request.user.userprofile.teacher
     form = ScoreboardForm(request.POST or None, teacher=teacher)
     students = None
+    thead = ['avatar', 'name', 'surname', 'score', 'total time', 'start time', 'finish time']
+    studentData = None
 
     if request.method == 'POST':
         if form.is_valid():
@@ -147,13 +150,30 @@ def scoreboard(request):
             cl = get_object_or_404(Class, id=classID)
             level = get_object_or_404(Level, id=levelID)
             students =  cl.students.all()
-
+            studentData = handleStudents(students, level)
+            studentData.sort(key=lambda x: x[1].score, reverse=True)
 
     context = RequestContext(request, {
         'form': form,
-        'students': students
+        'studentData': studentData,
+        'thead': thead,
     })
     return render(request, 'game/scoreboard.html', context)
+
+
+def handleStudents(students, level):
+    studentData = []
+    for student in students:
+        row = []
+        row.append(student)
+        try:
+            attempt = Attempt.objects.get(level=level, student=student)
+            row.append(attempt)
+            row.append(attempt.finish_time - attempt.start_time)
+        except ObjectDoesNotExist:
+            pass
+        studentData.append(row)
+    return studentData
 
 
 def level_editor(request):
