@@ -14,6 +14,15 @@ ocargo.messages = {
 		return '<button onclick="window.location.href=' + "'/game/" + level + "'" + 
 			'">Next Level</button>';
 	},
+        nextEpisodeButton: function(episode) {
+                var episodeUri = "/game/episode/" + ocargo.level.nextEpisode;
+                return "Well done, you've completed the episode!<br>" +
+                       "Are you ready for the next challenge? <br><br> " +
+                       '<button onclick="window.location.href=' + 
+                       "'" + episodeUri + "'" +
+                       '"">Next episode</button> </center>' +
+                       '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
+        },
 	lastLevel: "Congratulations, that's all we've got for you for now! <br>" +
 		"Wny not try creating your own road? <br><br> <button onclick=" +
 		'"window.location.href=' + "'/game/level_editor'" + 
