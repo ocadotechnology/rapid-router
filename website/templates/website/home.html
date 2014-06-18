@@ -1,11 +1,52 @@
 {% extends 'website/base.html' %}
 
+{% block css %}
+    <style type="text/css">
+        .main {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        #form-collect label,
+        #form-collect input,
+        #form-collect button {
+            display: inline-block;
+            height: 60px; 
+            margin-right: 5px;
+            padding: 2px 5px;
+        }
+
+        #form-collect input {
+            width: 250px;
+        }
+
+        .video-wrapper {
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
+<img src="/static/img/logo.png" alt="Lorem ipsum logo" alt="Lorem ipsum logo"/>
+
 <h1>Oh, car. Go!</h1>
 
 <p>Tell the van how to get to the groceries to earn points, compete against your friends!</p>
 
-<h2><a href="/game/">Click here to play the game!</a></h2>
+<form id="form-collect">
+    <label for="email-field">Email address</label>
+    <input type="email" id="email-field" required/>
+    <button type="submit">Submit</button>
+</form>
+
+<div class="video-wrapper">
+    <iframe width="400" height="300" src="//www.youtube.com/embed/ftNG15GpnTU" frameborder="0" allowfullscreen></iframe>
+    <legend class="caption">Lorem ipsum</legend>
+</div>
+
+<footer>
+    <small>Ocado Technology &#169; 2014</small>
+</footer>
 
 
 {% endblock %}
