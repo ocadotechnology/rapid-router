@@ -257,7 +257,6 @@ ocargo.BlocklyControl.prototype.removeWrong = function() {
         var previous = this.incorrect.previousConnection.targetBlock();
         this.incorrect.dispose();
         this.incorrect = null;
-        previous.selectWithConnected();
     }
 };
 
