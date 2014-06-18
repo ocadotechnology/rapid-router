@@ -12,29 +12,30 @@ ocargo.Van = function(previousNode, startNode, maxFuel, ui) {
 };
 
 ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
-    if (instruction == FORWARD) {
+    if (instruction === FORWARD) {
         moveForward(callback);
         ocargo.sound.moving();
-    } else if (instruction == TURN_LEFT) {
+    } else if (instruction === TURN_LEFT) {
         moveLeft(callback);
         ocargo.sound.turning();
-    } else if (instruction == TURN_RIGHT) {
+    } else if (instruction === TURN_RIGHT) {
         moveRight(callback);
         ocargo.sound.turning();
-    } else if (instruction == TURN_AROUND) {
+    } else if (instruction === TURN_AROUND) {
         turnAround(callback);
         ocargo.sound.turning();
         ocargo.sound.turning();
     }
-	
+
 	this.previousNode = this.currentNode;
 	this.currentNode = nextNode;
-	
+
 	this.fuel--;
-        updateFuelGuage(this.fuel, this.maxFuel);
+    updateFuelGuage(this.fuel, this.maxFuel);
 };
 
 function updateFuelGuage(fuel, maxFuel) {
-    var rotation = 'rotate(' + (((fuel/maxFuel)*300)-150) + 'deg)';
+    var rotation = 'rotate(' + (((fuel/maxFuel)*240)-120) + 'deg)';
     document.getElementById('fuelGuagePointer').style.transform=rotation;
+    document.getElementById('fuelGuagePointer').style.webkitTransform=rotation;
 }

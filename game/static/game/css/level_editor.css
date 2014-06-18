@@ -26,6 +26,12 @@
     margin: 10px auto;
 }
 
+#name {
+    height: 36px;
+    padding: 8px;
+    border: 1px solid #cccccc;
+}
+
 .tabs li {
     float: left;
 }
@@ -37,9 +43,9 @@
     padding: 10px 20px;
     color: #008CBA;
     font-weight: bold;
-    background: #63BEDD;
+    background: #8BD5EE;
     width: 170px;
-    border: 3px #63BEDD;
+    border: 3px #8BD5EE;
     border-top-style: solid;
     border-right-style: solid;
     border-left-style: solid;
@@ -50,7 +56,7 @@
 }
 
 .tabs label:hover {
-    background: #63BEDD;
+    background: #A6DCEE;
     top: 0;
 }
 
@@ -67,15 +73,14 @@
     z-index: 2;
     display: none;
     text-align: left;
-    width: 510px;
+    width: 100%;
     font-size: 20px;
     line-height: 140%;
     padding: 30px;
-    color: white;
     left: 0;
     background-color: white;
     position: absolute;
-    border: 3px #63BEDD;
+    border: 3px #8BD5EE;
     border-right-style: solid;
     border-bottom-style: solid;
     border-left-style: solid;
@@ -84,6 +89,22 @@
     -o-animation-duration: 0.5s;
     -moz-animation-duration: 0.5s;
     animation-duration: 0.5s;
+}
+
+#tab-content-blocks > label {
+    background-color: white;
+    border: none;
+}
+
+#tab-content-arrows > p {
+    color: #008CBA;
+    font-weight: bold;
+    width: 200px;
+}
+
+#maxFuel {
+    width:100px;
+    float: right;
 }
 
 #export {

@@ -10,12 +10,15 @@ class UserProfile (models.Model):
     avatar = models.ImageField(upload_to='static/game/image/avatars/', null=True, blank=True,
                                default='static/game/image/avatars/default-avatar.jpeg')
 
+
 class School (models.Model):
     name = models.CharField(max_length=200)
+
 
 class Teacher (models.Model):
     name = models.CharField(max_length=200)
     user = models.OneToOneField(UserProfile)
+
 
 class Class (models.Model):
     name = models.CharField(max_length=200)
@@ -38,15 +41,18 @@ class Class (models.Model):
     class Meta:
         verbose_name_plural = "classes"
 
+
 class Student (models.Model):
     name = models.CharField(max_length=200)
     class_field = models.ForeignKey(Class, related_name='students')
     user = models.OneToOneField(UserProfile)
 
+
 class Guardian (models.Model):
     name = models.CharField(max_length=200)
     children = models.ManyToManyField(Student)
     user = models.OneToOneField(UserProfile)
+
 
 class Block (models.Model):
     type = models.CharField(max_length=200)
@@ -56,15 +62,17 @@ class Block (models.Model):
 
 
 class Level (models.Model):
-    name = models.IntegerField()
+    name = models.CharField(max_length="100")
     path = models.CharField(max_length=10000)
     decor = models.CharField(max_length=10000, default='[]')
+    destination = models.CharField(max_length=10)
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     block_limit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
     max_fuel = models.IntegerField(default=50)
     next_level = models.ForeignKey('self', null=True, default=None)
+    shared_with = models.ManyToManyField(UserProfile, related_name="shared", blank=True, null=True)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
@@ -97,6 +105,7 @@ class Attempt (models.Model):
     student = models.ForeignKey(Student, related_name='attempts')
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField()
+
 
 class Command (models.Model):
     STEP_CHOICES = (

@@ -7,6 +7,7 @@
 
 {% block scripts %}
 {{block.super}}
+  <script src="{% static 'game/js/messages.js' %}"></script>
   <script src="{% static 'game/js/mobile-detect.min.js' %}"></script>
   <script src="{% static 'game/js/raphael.js' %}"></script>
   <script src="{% static 'game/js/drawing.js' %}"></script>
@@ -26,8 +27,10 @@
   <script src="{% static 'game/js/ui.js' %}"></script>
   <script src="{% static 'game/js/van.js' %}"></script>
   <script src="{% static 'game/js/sound.js' %}"></script>
+
   <script>
     var PATH = {{level.path|safe}};
+    var DESTINATION = {{level.destination|safe}};
     var DECOR = {{level.decor|safe}};
     var LEVEL_ID = {{level.id}};
     var BLOCK_LIMIT = "{{level.block_limit}}" != "None" ?  {{level.block_limit}} : null;
@@ -41,6 +44,7 @@
     var NEXT_LEVEL = "{{level.next_level}}" != "None" ? "{{level.next_level.id}}" : null;
     var NEXT_EPISODE = "{{level.episode.next_episode}}" != "None" ? "{{level.episode.next_episode.id}}" : null;
   </script>
+  
 {% endblock %}
 
 {% block css %}
@@ -69,13 +73,14 @@
   </div>
 
   <div id="paper" class="col"></div>
-
+  <button id="stop">Stop</button>
   <div id="controls" class="col">
       <button class="picButton" id="moveForward"><span>&uarr; Move Forwards</span></button>
       <button class="picButton" id="turnLeft"><span>&#x21BA; Turn Left</span></button>
       <button class="picButton" id="play" /><span>Go</span></button>
       <button class="picButton" id="turnRight"><span>&#x21BB; Turn Right</span></button>
       <div class="quit">
+        <button id="step">Step</button>
         <button id="clearIncorrect">Clear Incorrect</button>
         <button id="clear">Clear</button>
         <a class="button" href="/">Quit</a>
@@ -87,7 +92,7 @@
   <h2 class="title"></h2>
   <p class="lead"></p>
   <p class="mainText"></p>
-  <a class="close-reveal-modal">&#215;</a>
+  <a class="close-reveal-modal" id="close-modal">&#215;</a>
 </div>
 
 <xml id="toolbox" style="display: none">

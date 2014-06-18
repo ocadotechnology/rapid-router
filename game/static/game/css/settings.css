@@ -18,6 +18,11 @@
     margin-left: 5%;
 }
 
+#choice > label {
+    background-color: white;
+    border: none;
+}
+
 #wrapper {
     margin-top: 30px;
     margin-left: 3%;
@@ -36,6 +41,14 @@
     width: 110px;
     height: 110px;
     margin: 20px 50px 20px 20px;
+}
+
+.tab-content {
+    width: 500px;
+}
+
+.shareButton {
+    float: right;
 }
 
 .avatar_container input[type=submit] {

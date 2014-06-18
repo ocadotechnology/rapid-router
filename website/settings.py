@@ -7,7 +7,7 @@ https://docs.djangoproject.com/en/1.6/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.6/ref/settings/
 """
- 
+
 
 # Build paths inside the project like this: rel(rel_path)
 import os
@@ -129,6 +129,8 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
     COMPRESS_OFFLINE = True
     COMPRESS_ROOT = STATIC_ROOT
     COMPRESS_URL = STATIC_URL
+    # Enable appstats
+    MIDDLEWARE_CLASSES.insert(0, 'google.appengine.ext.appstats.recording.AppStatsDjangoMiddleware')
     # And require login for now
     MIDDLEWARE_CLASSES.append('website.middleware.loginrequired.LoginRequiredMiddleware')
     # inject the lib folder into the python path

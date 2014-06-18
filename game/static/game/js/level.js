@@ -49,14 +49,14 @@ ocargo.Level.prototype.play = function(program) {
 };
 
 ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
-    if(stack) {
+    if (stack) {
         for (var i = 0; i < stack.length; i++) {
-            var command = recogniseCommand(stack[i], returnStack);
+            var command = recogniseCommand(stack[i]);
             returnStack.push(command);
         }
     }
 
-    function recogniseCommand(command, returnStack) {
+    function recogniseCommand(command) {
         var parsedCommand = {};
         
         if (command instanceof ForwardCommand) {
@@ -118,23 +118,12 @@ ocargo.Level.prototype.win = function() {
     enableDirectControl();
 
     if (ocargo.level.nextLevel != null) {
-        message = '<button onclick="window.location.href=' + "'/game/" +
-                    ocargo.level.nextLevel + "'" + '"">Next level</button>';
+      message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
     } else {
         if (ocargo.level.nextEpisode != null) {
-            var episodeUri = "/game/episode/" + ocargo.level.nextEpisode;
-            message = "Well done, you've completed the episode!<br>" +
-                      "Are you ready for the next challenge? <br><br> " +
-                      '<button onclick="window.location.href=' + 
-                      "'" + episodeUri + "'" +
-                      '"">Next episode</button> </center>' +
-                      '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
+            message = ocargo.messages.nextEpisodeButton(ocargo.level.nextEpisode);
         } else {
-            message = "Congratulations, that's all we've got for you now! <br>" +
-                      "Why not try to create your own road? <br><br> " +
-                      '<button onclick="window.location.href=' + "'/game/level_editor'" +
-                      '"">Create your own map!</button> </center>' +
-                      '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
+            message = ocargo.messages.lastLevel;
         }
     }
     startPopup("You win!", subtitle, message);
@@ -142,16 +131,19 @@ ocargo.Level.prototype.win = function() {
 
 ocargo.Level.prototype.fail = function(msg) {
     var title = 'Oh dear! :(';
+    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
     console.debug(title);
     enableDirectControl();
     ocargo.sound.failure();
-    startPopup(title, '', msg);
+    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
     var level = this;
     level.fails++;
-    if(level.fails >= level.failsBeforeHintBtn){
+    if (level.fails >= level.failsBeforeHintBtn) {
 	    var hintBtns = $("#hintPopupBtn");
-		if(hintBtns.length == null || hintBtns.length == 0){
-			$("#myModal > .mainText").append('<p id="hintBtnPara"><button id="hintPopupBtn">Are you stuck? Need a hint?</button></p><p id="hintText">' + HINT + '</p>');
+		if (hintBtns.length === null || hintBtns.length === 0) {
+			$("#myModal > .mainText").append('<p id="hintBtnPara">' +
+                '<button id="hintPopupBtn">Are you stuck? Need a hint?</button>' + 
+                '</p><p id="hintText">' + HINT + '</p>');
 			if(level.hintOpened){
 				$("#hintBtnPara").hide();
 			} else {
@@ -176,12 +168,17 @@ function stepper(level) {
             } else {
                 if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
                     level.win();
-                } else {
+                } else if(level.program.isTerminated) {
+                    level.fail("Program terminated!");
+                    $("#myModal > .title").text("Stopping...");
+                }
+                else {
                     level.fail("You ran out of instructions!");
                     level.program.terminate();
                 }
             }
         } catch (error) {
+            level.fail("Your program crashed!");
             level.program.terminate();
             throw error;
         }
@@ -224,15 +221,14 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
     if (!nextNode) {
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
-        this.level.fail("Your first " + n + " execution steps were right." +
-                        " Click 'Clear Incorrect' to remove the incorrect blocks and try again!");
+        this.level.fail(ocargo.messages.xcorrect(n) + ocargo.messages.tryagain);
 
         program.terminate();
         return; //TODO: animate the crash
     }
     
-    if(this.level.van.fuel === 0){
-        this.level.fail("You ran out of fuel! Try to find a shorter path to the destination.");
+    if (this.level.van.fuel === 0) {
+        this.level.fail(ocargo.messages.nofuel);
 		program.terminate();
 		return;
     }

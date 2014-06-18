@@ -13,7 +13,7 @@
   <script src="/static/game/js/node.js"></script>
   <script src="/static/game/js/ui.js"></script>
   <script src="/static/game/js/map.js"></script>
-  <script src="/static/game/js/random_road.js"></script>
+  <script src="/static/game/js/pathFinder.js"></script>
 
 {% endblock %}
 
@@ -32,41 +32,29 @@
           {% csrf_token %}
           <input id="export" type="button" value="Play it!"/>
         </form>
-        <button id="clear">Clear</button>
+        <button id="help">Help</button>
         <a class="button" href="/">Quit</a>
+
       </div><br>
       <ul class="tabs">
         <li>
           <input type="radio" checked name="tabs" id="tab1">
-          <label for="tab1">Arrows</label>
+          <label for="tab1">Map</label>
           <div id="tab-content-arrows" class="tab-content">
-            <button id="createFromSelect">Show me</button>
-            <button id="undo">Undo</button><hr>
-            <button id="dummy" style="visibility:hidden">&#x2190;</button>
-            <button id="up">&#x2191;</button><br>
-            <button id="left">&#x2190;</button>
-            <button id="down">&#x2193;</button>
-            <button id="right">&#x2192;</button>
+            <img id="bush" src="/static/game/image/bush.svg" width="70">
+            <img id="tree1" src="/static/game/image/tree1.svg" width="70">
+            <img id="tree2" src="/static/game/image/tree2.svg" width="70"><br><br>
+            <p>NAME<input id="name" value="name"></p>
+            <p>MAX FUEL<input type="number" id="maxFuel" value="50" size="4"></p>
+            <button id="clear">Clear</button><br>
+            <button id="start">Mark Start</button><br>
+            <button id="end">Mark End</button><br>
+            <button id="undo"></button>
           </div>
         </li>
         <li>
           <input type="radio" name="tabs" id="tab2">
-          <label for="tab2">Drag and drop</label>
-          <div id="tab-content-dragNdrop" class="tab-content">
-            <div id="drag-elements" class="col">
-              <button id="dragMagic">Show me</button><hr>
-              <button id="UL">&#x2934;</button>
-              <button id="DL">&#x2935;</button><br>
-              <button id="DR">&#x2939;</button>
-              <button id="UR">&#x2937;</button><br>
-              <button id="H">&#x97;</button>
-              <button id="V">&#x7C;</button>
-            </div>
-          </div>
-        </li>
-        <li>
-          <input type="radio" name="tabs" id="tab3">
-          <label for="tab3">Blocks</label>
+          <label for="tab2">Blocks</label>
           <div id="tab-content-blocks" class="tab-content">
             {% for block in blocks %}
               <input type="checkbox" id="{{ block.type }}" class="js-block-checkbox" checked>
