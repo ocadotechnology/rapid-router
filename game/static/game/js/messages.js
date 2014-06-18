@@ -19,4 +19,6 @@ ocargo.messages = {
 		'"window.location.href=' + "'/game/level_editor'" + 
 		'"">Create your own map!</button> </center>' + '<button onclick="window.location.href=' +
 		"'/home/'" + '"">Home</button>',
+	tooManyBlocks: "You used too many blocks!",
+
 }

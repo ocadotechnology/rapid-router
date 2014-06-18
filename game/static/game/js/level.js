@@ -25,7 +25,7 @@ ocargo.Level.prototype.play = function(program) {
     if (ocargo.level.blockLimit &&
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
         enableDirectControl();
-        startPopup("Oh no!", "", "You used too many blocks!");
+        startPopup("Oh no!", "", ocargo.messages.tooManyBlocks);
         sendAttempt(0);
         return;
     }
@@ -109,7 +109,7 @@ ocargo.Level.prototype.win = function() {
     ocargo.level.pathFinder.getOptimalInstructions();
     var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
     console.debug("score: ", score, " out of 200.");
-    sendAttempt();
+    sendAttempt(score);
     ocargo.sound.win();
     var message = '';
     var subtitle = "Your score: " + score + " / " + ocargo.level.pathFinder.max;
