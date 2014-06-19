@@ -68,13 +68,35 @@ class Level (models.Model):
     destination = models.CharField(max_length=10)
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
-    blockLimit = models.IntegerField(blank=True, null=True)
+    block_limit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
-    maxFuel = models.IntegerField(default=50)
-    sharedWith = models.ManyToManyField(UserProfile, related_name="shared", blank=True, null=True)
+    max_fuel = models.IntegerField(default=50)
+    next_level = models.ForeignKey('self', null=True, default=None)
+    shared_with = models.ManyToManyField(UserProfile, related_name="shared", blank=True, null=True)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
+
+    @property
+    def episode(self):
+        for episode in Episode.objects.all():
+            if self in episode.levels:
+                return episode
+        return None
+
+
+class Episode (models.Model):
+    name = models.CharField(max_length=200)
+    first_level = models.ForeignKey(Level)
+    next_episode = models.ForeignKey("self", null=True, default=None)
+
+    @property
+    def levels(self):
+        if self.first_level is not None:
+            level = self.first_level
+            while level is not None:
+                yield level
+                level = level.next_level
 
 
 class Attempt (models.Model):

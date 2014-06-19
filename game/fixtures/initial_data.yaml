@@ -32,252 +32,266 @@
   model: game.block
   pk: 11
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1]
     destination: [2, 3]
     decor: '[{''coordinate'': new ocargo.Coordinate(100, 100), ''url'': ''/static/game/image/tree1.svg''}]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1]}] '
+    next_level: 2
   model: game.level
   pk: 1
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1]
     destination: [4, 3]
     decor: '[{''coordinate'': new ocargo.Coordinate(100, 400), ''url'': ''/static/game/image/tree1.svg''}]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] '
+    next_level: 3
   model: game.level
   pk: 2
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 3]
     destination: [2, 2]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[2,2],"connectedNodes":[2]}] '
+    next_level: 4
   model: game.level
   pk: 3
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3]
     destination: [4, 6]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
+    next_level: 5
   model: game.level
   pk: 4
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3]
     destination: [5, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}]'
   model: game.level
   pk: 5
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 5]
     destination: [4, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] '
+    next_level: 7
   model: game.level
   pk: 6
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 5]
     destination: [4, 6]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
   model: game.level
   pk: 7
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 6, 11]
     destination: [4, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}]'
+    next_level: 9
   model: game.level
   pk: 8
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 6, 11]
     destination: [4, 6]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
   model: game.level
   pk: 9
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 6, 8, 11]
     destination: [4, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] '
+    next_level: 11
   model: game.level
   pk: 10
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 6, 8, 11]
     destination: [4, 6]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}]'
   model: game.level
   pk: 11
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 6, 7, 8, 9, 11]
     destination: [4, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] '
+    next_level: 13
   model: game.level
   pk: 12
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 6, 7, 8, 9, 11]
     destination: [4, 6]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
+    next_level: 14
   model: game.level
   pk: 13
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 6, 7, 8, 9, 11]
     destination: [5, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] '
+    next_level: 15
   model: game.level
   pk: 14
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     destination: [5, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] '
   model: game.level
   pk: 15
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     destination: [4, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3]},{"coordinate":[3,3],"connectedNodes":[2,6]},{"coordinate":[4,3],"connectedNodes":[5]}]'
+    next_level: 17
   model: game.level
   pk: 16
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     destination: [3, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,4,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2]}]'
+    next_level: 18
   model: game.level
   pk: 17
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     destination: [5, 3]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3,9]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[3,4],"connectedNodes":[3,5]},{"coordinate":[4,4],"connectedNodes":[4,6]},{"coordinate":[4,3],"connectedNodes":[5,10,7]},{"coordinate":[4,2],"connectedNodes":[6,8]},{"coordinate":[3,2],"connectedNodes":[7,9]},{"coordinate":[2,2],"connectedNodes":[2,8]},{"coordinate":[5,3],"connectedNodes":[6]}]'
   model: game.level
   pk: 18
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     destination: [7, 7]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2,20]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4,10]},{"coordinate":[0,5],"connectedNodes":[3,5]},{"coordinate":[0,6],"connectedNodes":[4,6]},{"coordinate":[0,7],"connectedNodes":[5,7]},{"coordinate":[1,7],"connectedNodes":[6,8]},{"coordinate":[2,7],"connectedNodes":[7,9]},{"coordinate":[2,6],"connectedNodes":[8,11,10]},{"coordinate":[2,5],"connectedNodes":[3,9]},{"coordinate":[3,6],"connectedNodes":[9,13]},{"coordinate":[4,7],"connectedNodes":[13]},{"coordinate":[4,6],"connectedNodes":[11,12,14]},{"coordinate":[4,5],"connectedNodes":[13,15]},{"coordinate":[4,4],"connectedNodes":[14,42,16]},{"coordinate":[3,4],"connectedNodes":[15,17]},{"coordinate":[3,3],"connectedNodes":[16,18]},{"coordinate":[3,2],"connectedNodes":[17,28,27,19]},{"coordinate":[2,2],"connectedNodes":[18,20]},{"coordinate":[1,2],"connectedNodes":[19,21,1]},{"coordinate":[0,2],"connectedNodes":[20,22]},{"coordinate":[0,1],"connectedNodes":[21,23]},{"coordinate":[0,0],"connectedNodes":[22,24]},{"coordinate":[1,0],"connectedNodes":[23,25]},{"coordinate":[2,0],"connectedNodes":[24,26]},{"coordinate":[3,0],"connectedNodes":[25,27]},{"coordinate":[3,1],"connectedNodes":[18,26]},{"coordinate":[4,2],"connectedNodes":[18,29]},{"coordinate":[5,2],"connectedNodes":[28,30]},{"coordinate":[5,1],"connectedNodes":[29,31]},{"coordinate":[5,0],"connectedNodes":[30,32]},{"coordinate":[6,0],"connectedNodes":[31,33]},{"coordinate":[6,1],"connectedNodes":[32,34]},{"coordinate":[6,2],"connectedNodes":[33,35]},{"coordinate":[6,3],"connectedNodes":[34,36]},{"coordinate":[6,4],"connectedNodes":[38,37,35,42]},{"coordinate":[7,4],"connectedNodes":[36]},{"coordinate":[6,5],"connectedNodes":[36,39]},{"coordinate":[6,6],"connectedNodes":[38,41]},{"coordinate":[5,7],"connectedNodes":[41]},{"coordinate":[6,7],"connectedNodes":[39,40,43]},{"coordinate":[5,4],"connectedNodes":[15,36]},{"coordinate":[7,7],"connectedNodes":[41]}]'
+    next_level: 20
   model: game.level
   pk: 19
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     destination: [4, 2]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[2,27,26,0]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[1,7],"connectedNodes":[4,6]},{"coordinate":[2,7],"connectedNodes":[5,7]},{"coordinate":[3,7],"connectedNodes":[6,8]},{"coordinate":[4,7],"connectedNodes":[7,9]},{"coordinate":[5,7],"connectedNodes":[8,10]},{"coordinate":[6,7],"connectedNodes":[9,11]},{"coordinate":[7,7],"connectedNodes":[10,12]},{"coordinate":[7,6],"connectedNodes":[11,13]},{"coordinate":[7,5],"connectedNodes":[12,14]},{"coordinate":[7,4],"connectedNodes":[13,15]},{"coordinate":[7,3],"connectedNodes":[14,16]},{"coordinate":[7,2],"connectedNodes":[15,17]},{"coordinate":[7,1],"connectedNodes":[16,18]},{"coordinate":[7,0],"connectedNodes":[17,19]},{"coordinate":[6,0],"connectedNodes":[18,20]},{"coordinate":[5,0],"connectedNodes":[19,21]},{"coordinate":[4,0],"connectedNodes":[20,22]},{"coordinate":[3,0],"connectedNodes":[21,23]},{"coordinate":[2,0],"connectedNodes":[22,24]},{"coordinate":[1,0],"connectedNodes":[23,25]},{"coordinate":[1,1],"connectedNodes":[24,26]},{"coordinate":[1,2],"connectedNodes":[25,1]},{"coordinate":[2,3],"connectedNodes":[28,45,44,1]},{"coordinate":[2,4],"connectedNodes":[27,29]},{"coordinate":[2,5],"connectedNodes":[28,30]},{"coordinate":[2,6],"connectedNodes":[29,31]},{"coordinate":[3,6],"connectedNodes":[30,32]},{"coordinate":[4,6],"connectedNodes":[31,33]},{"coordinate":[5,6],"connectedNodes":[32,34]},{"coordinate":[6,6],"connectedNodes":[33,35]},{"coordinate":[6,5],"connectedNodes":[34,36]},{"coordinate":[6,4],"connectedNodes":[35,37]},{"coordinate":[6,3],"connectedNodes":[36,38]},{"coordinate":[6,2],"connectedNodes":[37,39]},{"coordinate":[6,1],"connectedNodes":[38,40]},{"coordinate":[5,1],"connectedNodes":[39,41]},{"coordinate":[4,1],"connectedNodes":[40,42]},{"coordinate":[3,1],"connectedNodes":[41,43]},{"coordinate":[2,1],"connectedNodes":[42,44]},{"coordinate":[2,2],"connectedNodes":[43,27]},{"coordinate":[3,3],"connectedNodes":[46,54,53,27]},{"coordinate":[3,4],"connectedNodes":[45,47]},{"coordinate":[3,5],"connectedNodes":[46,48]},{"coordinate":[4,5],"connectedNodes":[47,49]},{"coordinate":[5,5],"connectedNodes":[48,50]},{"coordinate":[5,4],"connectedNodes":[49,51]},{"coordinate":[5,3],"connectedNodes":[50,52]},{"coordinate":[5,2],"connectedNodes":[51,56]},{"coordinate":[3,2],"connectedNodes":[45,56]},{"coordinate":[4,3],"connectedNodes":[45,55]},{"coordinate":[4,4],"connectedNodes":[54]},{"coordinate":[4,2],"connectedNodes":[52,53]}]'
+    next_level: 21
   model: game.level
   pk: 20
 - fields:
-    blockLimit: null
+    block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     destination: [6, 4]
     decor: '[]'
     default: true
-    maxFuel: 50
+    max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]}, {"coordinate":[1,3],"connectedNodes":[0,27,2]},
@@ -304,3 +318,44 @@
       {"coordinate":[6,4],"connectedNodes":[26]} ]'
   model: game.level
   pk: 21
+- fields:
+    name: Basic
+    first_level: 1
+    next_episode: 2
+  model: game.episode
+  pk: 1
+- fields:
+    name: Loop
+    first_level: 6
+    next_episode: 3
+  model: game.episode
+  pk: 2
+- fields:
+    name: Repeat .. Until
+    first_level: 8
+    next_episode: 4
+  model: game.episode
+  pk: 3
+- fields:
+    name: Repeat .. While
+    first_level: 10
+    next_episode: 5
+  model: game.episode
+  pk: 4
+- fields:
+    name: If ...
+    first_level: 12
+    next_episode: 6
+  model: game.episode
+  pk: 5
+- fields:
+    name: Junction
+    first_level: 16
+    next_episode: 7
+  model: game.episode
+  pk: 6
+- fields:
+    name: The rest!
+    first_level: 19
+  model: game.episode
+  pk: 7

@@ -2,7 +2,7 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Level = function(map, van, ui) {
+ocargo.Level = function(map, van, ui, nextLevel, nextEpisode) {
     this.levelId = null;
     this.map = map;
     this.van = van;
@@ -13,6 +13,8 @@ ocargo.Level = function(map, van, ui) {
     this.pathFinder = new ocargo.PathFinder(map);
     this.fails = 0;
     this.hintOpened = false;
+    this.nextLevel = nextLevel;
+    this.nextEpisode = nextEpisode;
 };
 
 ocargo.Level.prototype.failsBeforeHintBtn = 3;
@@ -115,10 +117,14 @@ ocargo.Level.prototype.win = function() {
     var subtitle = "Your score: " + score + " / " + ocargo.level.pathFinder.max;
     enableDirectControl();
 
-    if (ocargo.level.levelId < LEVEL_COUNT) {
-        message = ocargo.messages.nextLevelButton(ocargo.level.levelId + 1);
+    if (ocargo.level.nextLevel != null) {
+      message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
     } else {
-        message = ocargo.messages.lastLevel;
+        if (ocargo.level.nextEpisode != null) {
+            message = ocargo.messages.nextEpisodeButton(ocargo.level.nextEpisode);
+        } else {
+            message = ocargo.messages.lastLevel;
+        }
     }
     startPopup("You win!", subtitle, message);
 };

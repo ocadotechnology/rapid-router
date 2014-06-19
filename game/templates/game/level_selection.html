@@ -3,11 +3,19 @@
 {% block title %}Game{% endblock %}
 
 {% block content %}
-    {% for level in levels %}
-        <h6>
-            <a href="/game/{{ level.id }}">Go to Level {{ level.id }}</a>
-        </h6>
+
+    {% for episode in episodes %}
+
+    <h5>{{ episode.name }}</h5>
+
+        {% for level in episode.levels %}
+            <h6>
+                <a href="/game/{{ level.id }}">Go to Level {{ level.id }}</a>
+            </h6>
+        {% endfor %}
+
     {% endfor %}
+
     <a class="button" href="/game/levels/random">Random Road!</a>
 
 {% endblock %}

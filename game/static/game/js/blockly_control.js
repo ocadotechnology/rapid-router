@@ -226,7 +226,7 @@ ocargo.BlocklyControl.prototype.init = function() {
     });
 
     try {
-        var text = localStorage.getItem('blocklyWorkspaceXml');
+        var text = localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID);
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeUnavailableBlocks();
@@ -242,7 +242,11 @@ ocargo.BlocklyControl.prototype.teardown = function() {
     if (localStorage) {
         var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
         var text = Blockly.Xml.domToText(xml);
-        localStorage.setItem('blocklyWorkspaceXml', text);
+        try {
+            localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
+        } catch (e) {
+            // No point in even logging, as page is unloading
+        }
     }
 };
 

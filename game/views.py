@@ -2,7 +2,6 @@ import json
 import os
 import messages
 
-from cache import cached_all_levels, cached_max_level, cached_level
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
@@ -13,12 +12,12 @@ from django.utils.safestring import mark_safe
 from forms import AvatarPreUploadedForm, AvatarUploadForm, ShareLevel, ScoreboardForm
 from game import random_road
 from models import Class, Level, Attempt, Command, Block
+from cache import cached_all_episodes, cached_level, cached_episode
 from operator import itemgetter
-
 
 def levels(request):
     context = RequestContext(request, {
-        'levels': cached_all_levels()
+        'episodes': cached_all_episodes()
     })
     return render(request, 'game/level_selection.html', context)
 
@@ -34,8 +33,7 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    levelCount = cached_max_level()
-    if int(level) <= levelCount:
+    if lvl.default:
         lesson = 'description_level' + str(level)
         hint = 'hint_level' + str(level)
     else:
@@ -61,11 +59,13 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'hint': hint,
-        'defaultLevelCount': levelCount,
     })
 
     return render(request, 'game/game.html', context)
 
+def start_episode(request, episode):
+    episode = cached_episode(episode)
+    return redirect("game.views.level", level=episode.first_level.id)
 
 def level_new(request):
     """Processes a request on creation of the map in the level editor."""
@@ -73,10 +73,10 @@ def level_new(request):
         path = request.POST['nodes']
         destination = request.POST['destination']
         decor = request.POST['decor']
-        maxFuel = request.POST['maxFuel']
+        max_fuel = request.POST['maxFuel']
         name = request.POST.get('name')
         passedLevel = None
-        passedLevel = Level(name=name, path=path, default=False, destination=destination, decor=decor, maxFuel=maxFuel)
+        passedLevel = Level(name=name, path=path, default=False, destination=destination, decor=decor, max_fuel=max_fuel)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
             passedLevel.owner = request.user.userprofile
