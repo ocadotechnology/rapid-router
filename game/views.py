@@ -145,13 +145,7 @@ def scoreboard(request):
 
     if request.method == 'POST':
         if form.is_valid():
-            levelID = form.data.get('levels', False)
-            classID = form.data.get('classes', False)
-            cl = get_object_or_404(Class, id=classID)
-            level = get_object_or_404(Level, id=levelID)
-            students =  cl.students.all()
-            studentData = handleStudents(students, level)
-            studentData.sort(key=lambda x: x[1].score, reverse=True)
+            studentData = renderScoreboard(request, form)
 
     context = RequestContext(request, {
         'form': form,
@@ -161,7 +155,26 @@ def scoreboard(request):
     return render(request, 'game/scoreboard.html', context)
 
 
-def handleStudents(students, level):
+def renderScoreboard(request, form):
+    studentData = None
+    levelID = form.data.get('levels', 1)
+    classID = form.data.get('classes', 1)
+    cl = get_object_or_404(Class, id=classID)
+    level = get_object_or_404(Level, id=levelID)
+    if classID and levelID:
+        students =  cl.students.all()
+        studentData = handleOneClassOneLevel(students, level)
+    elif classID:
+        studentData = handleOneClassAllLevels(request, students)
+    elif levelID:
+        studentData = handleAllClassesOneLevel(level)
+    else:
+        # How open do we want the scoreboard to be?
+        studentData = handleAllClassesAllLevels()
+    return studentData
+
+
+def handleOneClassOneLevel(students, level):
     studentData = []
     for student in students:
         row = []
@@ -174,6 +187,31 @@ def handleStudents(students, level):
             pass
         studentData.append(row)
     return studentData
+
+
+def handleOneClassAllLevels(students):
+    """ Show statisctics for all students in a class across all levels (sum). """
+    studentData = []
+    for student in students:
+
+
+
+def handleAllClassesOneLevel(request, level):
+    """ Show all the students's (from the same school for now) performance on this level. """
+    studentData = []
+    if request.user.is_anonymous():
+        return studentData
+    if hasattr(request.user.userprofile, 'student'):
+        school = request.user.userprofile.student.class_field.school
+    elif hasattr(request.user.userprofile, 'teacher'):
+        school = request.user.userprofile.teacher.class_teacher.school
+    classes = school.classs.all()
+
+
+def handleAllClassesAllLevels():
+    """ For now restricting it to the same school. """
+    studentData = []
+     if not request.user.is_anonymous():
 
 
 def level_editor(request):

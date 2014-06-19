@@ -1,4 +1,4 @@
-""" String messages used on the settings page """
+""" String messages used on the settings page. """
 
 def shareTitle():
     return "Level Share"

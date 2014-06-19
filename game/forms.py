@@ -31,6 +31,11 @@ class ScoreboardForm(forms.Form):
         super(ScoreboardForm, self).__init__(*args, **kwargs)
         self.fields['classes'] = forms.ModelChoiceField(queryset=teacher.class_teacher.all(),
                                                         required=False)
-        self.fields['levels'] = forms.ModelChoiceField(queryset=Level.objects.filter(default=1))
+        self.fields['levels'] = forms.ModelChoiceField(queryset=Level.objects.filter(default=1),
+                                                        required=False)
 
-
+        def validate(self):
+            cleaned_data = super(ScoreboardForm, self).clean()
+            classes = cleaned_data.get('classes')
+            levels = cleaned_data.get('levels')
+            return classes or levels
