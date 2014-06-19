@@ -73,10 +73,10 @@ def level_new(request):
         path = request.POST['nodes']
         destination = request.POST['destination']
         decor = request.POST['decor']
-        maxFuel = request.POST['maxFuel']
+        max_fuel = request.POST['maxFuel']
         name = request.POST.get('name')
         passedLevel = None
-        passedLevel = Level(name=name, path=path, default=False, destination=destination, decor=decor, maxFuel=maxFuel)
+        passedLevel = Level(name=name, path=path, default=False, destination=destination, decor=decor, max_fuel=max_fuel)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
             passedLevel.owner = request.user.userprofile
