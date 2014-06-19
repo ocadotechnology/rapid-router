@@ -27,9 +27,9 @@ class ShareLevel(forms.Form):
 
 class ScoreboardForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        teacher = kwargs.pop('teacher')
+        classes = kwargs.pop('classes')
         super(ScoreboardForm, self).__init__(*args, **kwargs)
-        self.fields['classes'] = forms.ModelChoiceField(queryset=teacher.class_teacher.all(),
+        self.fields['classes'] = forms.ModelChoiceField(queryset=classes,
                                                         required=False)
         self.fields['levels'] = forms.ModelChoiceField(queryset=Level.objects.filter(default=1),
                                                         required=False)

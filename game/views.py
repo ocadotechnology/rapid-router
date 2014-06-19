@@ -2,10 +2,11 @@ import json
 import os
 import messages
 
+from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
@@ -130,22 +131,35 @@ def logged_students(request):
     """ Renders the page with information about all the logged in students."""
     return render_student_info(request, True)
 
-
+################################
 def scoreboard(request):
     """ Renders a page with students' scores.
 
      **Template:**
     :template:`game/scoreboard.html`
     """
-    teacher = request.user.userprofile.teacher
-    form = ScoreboardForm(request.POST or None, teacher=teacher)
+    # Not showing this part to outsiders.
+    if request.user.is_anonymous():
+        return HttpResponseNotFound('<h1> Page not found </h1>')
+    school = None
+    classes = []
+    if hasattr(request.user.userprofile, 'teacher'):
+        classes = request.user.userprofile.teacher.class_teacher.all()
+        school = classes[0].school
+    elif hasattr(request.user.userprofile, 'student'):
+        classes = request.user.userprofile.student.class_field
+        school = classes.school
+    else:
+        return HttpResponseNotFound('<h1> Page not found </h1>')
+
+    form = ScoreboardForm(request.POST or None, classes=classes)
     students = None
     thead = ['avatar', 'name', 'surname', 'score', 'total time', 'start time', 'finish time']
     studentData = None
 
     if request.method == 'POST':
         if form.is_valid():
-            studentData = renderScoreboard(request, form)
+            studentData = renderScoreboard(request, form, school)
 
     context = RequestContext(request, {
         'form': form,
@@ -155,36 +169,66 @@ def scoreboard(request):
     return render(request, 'game/scoreboard.html', context)
 
 
-def renderScoreboard(request, form):
+def renderScoreboard(request, form, school):
     studentData = None
-    levelID = form.data.get('levels', 1)
-    classID = form.data.get('classes', 1)
-    cl = get_object_or_404(Class, id=classID)
-    level = get_object_or_404(Level, id=levelID)
-    if classID and levelID:
+    levelID = form.data.get('levels', False)
+    classID = form.data.get('classes', False)
+    if classID:
+        cl = get_object_or_404(Class, id=classID)
         students =  cl.students.all()
+    if levelID:
+        level = get_object_or_404(Level, id=levelID)
+
+    # Both class and level were selected - compare students of 1 class with regards to 1 level.
+    if classID and levelID:
         studentData = handleOneClassOneLevel(students, level)
+
+    # Class was sellected - compare students of 1 class 
     elif classID:
-        studentData = handleOneClassAllLevels(request, students)
+        studentData = handleOneClassAllLevels(students)
+
+    # Level was selected - show all students in the school and their performance
     elif levelID:
-        studentData = handleAllClassesOneLevel(level)
+        studentData = handleAllClassesOneLevel(request, level)
+    
     else:
-        # How open do we want the scoreboard to be?
-        studentData = handleAllClassesAllLevels()
+    # How open do we want the scoreboard to be?
+        studentData = handleAllClassesAllLevels(request)
+    return studentData
+
+
+def createOneRow(student, level):
+    row = []
+    row.append(student)
+    try:
+        attempt = Attempt.objects.get(level=level, student=student)
+        row.append(attempt.score)
+        row.append(attempt.finish_time - attempt.start_time)
+        row.append(attempt.start_time)
+        row.append(attempt.finish_time)
+    except ObjectDoesNotExist:
+        pass
+    return row
+
+
+def createRows(studentData, levels):
+    for row in studentData:
+        for level in levels:
+            try:
+                attempt = Attempt.objects.get(level=level, student=row[0])
+                row[1] += attempt.score
+                row[2].append(attempt.finish_time - attempt.start_time)
+            except ObjectDoesNotExist:
+                pass
+    for row in studentData:
+        row[2] = sum(row[2], timedelta())
     return studentData
 
 
 def handleOneClassOneLevel(students, level):
     studentData = []
     for student in students:
-        row = []
-        row.append(student)
-        try:
-            attempt = Attempt.objects.get(level=level, student=student)
-            row.append(attempt)
-            row.append(attempt.finish_time - attempt.start_time)
-        except ObjectDoesNotExist:
-            pass
+        row = createOneRow(student, level)
         studentData.append(row)
     return studentData
 
@@ -192,26 +236,44 @@ def handleOneClassOneLevel(students, level):
 def handleOneClassAllLevels(students):
     """ Show statisctics for all students in a class across all levels (sum). """
     studentData = []
+    levels = Level.objects.filter(default=1)
     for student in students:
-
+        studentData.append([student, 0.0, []])
+    return createRows(studentData, levels)
 
 
 def handleAllClassesOneLevel(request, level):
     """ Show all the students's (from the same school for now) performance on this level. """
     studentData = []
-    if request.user.is_anonymous():
-        return studentData
     if hasattr(request.user.userprofile, 'student'):
         school = request.user.userprofile.student.class_field.school
     elif hasattr(request.user.userprofile, 'teacher'):
         school = request.user.userprofile.teacher.class_teacher.school
-    classes = school.classs.all()
+    classes = school.class_school.all()
+
+    for cl in classes:
+        students =  cl.students.all()
+        for student in students:
+            row = createOneRow(student, level)
+            studentData.append(row)
+    return studentData
 
 
-def handleAllClassesAllLevels():
+def handleAllClassesAllLevels(request):
     """ For now restricting it to the same school. """
     studentData = []
-     if not request.user.is_anonymous():
+    if hasattr(request.user.userprofile, 'student'):
+        school = request.user.userprofile.student.class_field.school
+    elif hasattr(request.user.userprofile, 'teacher'):
+        school = request.user.userprofile.teacher.class_teacher.school
+    classes = school.class_school.all()
+    levels = Level.objects.filter(default=1)
+
+    for cl in classes:
+        students = cl.students.all()
+        for student in students:
+            studentData.append([student, 0.0, []])
+    return createRows(studentData, levels)
 
 
 def level_editor(request):
