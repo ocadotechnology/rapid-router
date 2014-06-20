@@ -17,3 +17,19 @@
 	border: 1px solid #000;
 	padding: 5px;
 }
+/* tables */
+
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+	padding: 15px;
+}
+table.tablesorter thead tr .header {
+	background-repeat: no-repeat;
+	background-position: center right;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url('/static/game/image/asc.gif') !important;
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url('/static/game/image/desc.gif') !important;
+}
+
