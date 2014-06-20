@@ -6,6 +6,12 @@
 {% block title %}Game{% endblock %}
 
 {% block scripts %}
+  <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+      $("#table").tablesorter();
+    })
+  </script>
 {{block.super}}
 {% endblock %}
 
@@ -26,7 +32,7 @@
 </div>
 <div class="mainBody">
   {% if studentData %}
-  <table>
+  <table id="table" class="tablesorter">
     <thead>
     {% for header in thead %}
       <th> {{header}} </th>
