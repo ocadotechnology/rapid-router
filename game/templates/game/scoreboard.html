@@ -10,7 +10,7 @@
   <script>
     $(document).ready(function() {
       $("#table").tablesorter();
-    })
+    });
   </script>
 {{block.super}}
 {% endblock %}
@@ -46,8 +46,10 @@
         <td> {{student.0.user.user.last_name}} </td>
         <td> {{student.1}} </td>
         <td> {{student.2}}</td>
-        <td> {{student.3}} </td>
-        <td> {{student.4}} </td>
+        {% if thead.3 == 'score' %}
+          <td> {{student.3}} </td>
+          <td> {{student.4}} </td>
+        {% endif %}
       </tr>
     {% endfor %}
     </tbody>
