@@ -139,8 +139,12 @@ def scoreboard(request):
     :template:`game/scoreboard.html`
     """
     # Not showing this part to outsiders.
+    context = RequestContext(request, {
+        'title': messages.noPermissionTitle(),
+        'message': messages.noPermissionScoreboard()
+        })
     if request.user.is_anonymous():
-        return HttpResponseNotFound('<h1> Page not found </h1>')
+        return render(request, 'game/error.html', context)
     school = None
     classes = []
     if hasattr(request.user.userprofile, 'teacher'):
@@ -150,7 +154,7 @@ def scoreboard(request):
         classes = request.user.userprofile.student.class_field
         school = classes.school
     else:
-        return HttpResponseNotFound('<h1> Page not found </h1>')
+        return render(request, 'game/error.html', context)
 
     form = ScoreboardForm(request.POST or None, classes=classes)
     students = None

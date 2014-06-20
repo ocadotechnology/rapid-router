@@ -1,3 +1,13 @@
+""" Strings used in the scoreboard. """
+
+def noPermissionTitle():
+    return "No permission "
+
+def noPermissionScoreboard():
+    return "Scoreboard is only visible to students and teachers. Log in if you think you " + \
+        "should be able to see it. "
+
+
 """ String messages used on the settings page. """
 
 def shareTitle():
