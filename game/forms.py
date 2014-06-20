@@ -32,7 +32,7 @@ class ScoreboardForm(forms.Form):
         self.fields['classes'] = forms.ModelChoiceField(queryset=classes,
                                                         required=False)
         self.fields['levels'] = forms.ModelChoiceField(queryset=Level.objects.filter(default=1),
-                                                        required=False)
+                                                       required=False)
 
         def validate(self):
             cleaned_data = super(ScoreboardForm, self).clean()

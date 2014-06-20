@@ -6,7 +6,7 @@ from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
@@ -14,9 +14,20 @@ from forms import AvatarPreUploadedForm, AvatarUploadForm, ShareLevel, Scoreboar
 from game import random_road
 from models import Class, Level, Attempt, Command, Block
 from cache import cached_all_episodes, cached_level, cached_episode
-from operator import itemgetter
+
 
 def levels(request):
+    """Loads a page with all levels listed.
+
+    **Context**
+
+    ``RequestContext``
+    ``episodes``
+
+    **Template:**
+
+    :template:`game/level_selection.html`
+    """
     context = RequestContext(request, {
         'episodes': cached_all_episodes()
     })
@@ -24,7 +35,19 @@ def levels(request):
 
 
 def level(request, level):
-    """Loads a level for rendering in the game
+    """Loads a level for rendering in the game.
+
+    **Context**
+
+    ``RequestContext``
+    ``level``
+        Level that is about to be played. An instance of :model:`game.Level`.
+    ``blocks``
+        Blocks that are available during the game. List of :model:`game.Block`.
+    ``lesson``
+        Instruction shown at the load of the level. String from `game.messages`.
+    ``hint``
+        Hint shown after a number of failed attempts. String from `game.messages`.
 
     **Template:**
 
@@ -64,88 +87,94 @@ def level(request, level):
 
     return render(request, 'game/game.html', context)
 
-def start_episode(request, episode):
-    episode = cached_episode(episode)
-    return redirect("game.views.level", level=episode.first_level.id)
 
-def level_new(request):
-    """Processes a request on creation of the map in the level editor."""
-    if 'nodes' in request.POST:
-        path = request.POST['nodes']
-        destination = request.POST['destination']
-        decor = request.POST['decor']
-        max_fuel = request.POST['maxFuel']
-        name = request.POST.get('name')
-        passedLevel = None
-        passedLevel = Level(name=name, path=path, default=False, destination=destination, decor=decor, max_fuel=max_fuel)
+def level_editor(request):
+    """Renders the level editor page.
 
-        if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and hasattr(request.user.userprofile, 'student'):
-            passedLevel.owner = request.user.userprofile
-        passedLevel.save()
+    **Context**
 
-        if 'blockTypes' in request.POST:
-            blockTypes = json.loads(request.POST['blockTypes'])
-            blocks = Block.objects.filter(type__in=blockTypes)
-        else:
-            blocks = Block.objects.all()
+    ``RequestContext``
+    ``blocks``
+        Blocks that can be chosen to be played with later on. List of :model:`game.Block`.
 
-        passedLevel.blocks = blocks
-        passedLevel.save()
+    **Template:**
 
-        response_dict = {}
-        response_dict.update({'server_response': passedLevel.id})
-        return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
-
-
-def level_random(request):
-    """Generates a new random level
-
-    Redirects to :view:`game.views.level` with the id of the newly created :model:`game.Level` object
+    :template:`game/level_editor.html`
     """
-    level = random_road.create()
-    return redirect("game.views.level", level=level.id)
+    context = RequestContext(request, {
+        'blocks': Block.objects.all()
+    })
+    return render(request, 'game/level_editor.html', context)
 
 
-def submit(request):
-    """ Processes a request on submission of the program solving the current level."""
-    if request.method == 'POST' and 'attemptData' in request.POST:
-        attemptJson = request.POST['attemptData']
-        attemptData = json.loads(attemptJson)
-        parseAttempt(attemptData, request)
-        return HttpResponse(attemptJson, content_type='application/javascript')
+def renderError(request, title, message):
+    """Renders an error page with passed title and message.
 
+    **Context**
 
-def parseAttempt(attemptData, request):
-    level = get_object_or_404(Level, id=attemptData.get('level', 1))
-    attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
-    attempt.score = request.POST.get('score', 0)
+    ``RequestContext``
+    ``title``
+        Title that is to be used as a title and header of the page. String.
+    ``message``
+        Message that will be shown on the error page. String.
 
-    # Remove all the old commands from previous attempts.
-    Command.objects.filter(attempt=attempt).delete()
-    commands = attemptData.get('commandStack', None)
-    parseInstructions(json.loads(commands), attempt, 1)
-    attempt.save()
+    **Template:**
+
+    :template:`game/error.html`
+    """
+    context = RequestContext(request, {
+        'title': title,
+        'message': message
+    })
+    return render(request, 'game/error.html', context)
 
 
 def logged_students(request):
-    """ Renders the page with information about all the logged in students."""
-    return render_student_info(request, True)
+    """ Renders the page with information about all the logged in students. Uses 
 
-################################
+    **Context**
+
+    ``RequestContext``
+    ``classes``
+        List of :model:`game.Class` available to teacher.
+    ``message``
+        Message shown at the top of the screen. String from `game.messages`.
+    ``thead``
+        List of table headers for the table with all logged in students.
+    ``studentData``
+        List of lists with data about all logged in students to be shown in the table.
+    ``currentClass``
+        Chosen class to be shown. Instance of :model:`game.Class.`
+
+    **Template:**
+
+    :template:`game/logged_students.html`
+    """
+    return render_student_info(request)
+
+
 def scoreboard(request):
     """ Renders a page with students' scores.
 
-     **Template:**
+    **Context**
+
+    ``RequestContext``
+    ``form``
+        Form used to choose a class and level to show. Instance of `forms.ScoreboardForm.`
+    ``studentData``
+        List of lists containing all the data to be stored in the scoreboard table.
+    ``thead`` 
+        List of Strings representing the headers of the scoreboard table.
+
+    **Template:**
+
     :template:`game/scoreboard.html`
     """
     # Not showing this part to outsiders.
-    context = RequestContext(request, {
-        'title': messages.noPermissionTitle(),
-        'message': messages.noPermissionScoreboard()
-        })
     if request.user.is_anonymous():
-        return render(request, 'game/error.html', context)
+        return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
     school = None
+    thead = []
     classes = []
     if hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
@@ -154,16 +183,14 @@ def scoreboard(request):
         classes = request.user.userprofile.student.class_field
         school = classes.school
     else:
-        return render(request, 'game/error.html', context)
+        return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
     form = ScoreboardForm(request.POST or None, classes=classes)
-    students = None
-    thead = ['avatar', 'name', 'surname', 'score', 'total time', 'start time', 'finish time']
     studentData = None
 
     if request.method == 'POST':
         if form.is_valid():
-            studentData = renderScoreboard(request, form, school)
+            studentData, thead = renderScoreboard(request, form, school)
 
     context = RequestContext(request, {
         'form': form,
@@ -173,122 +200,30 @@ def scoreboard(request):
     return render(request, 'game/scoreboard.html', context)
 
 
-def renderScoreboard(request, form, school):
-    studentData = None
-    levelID = form.data.get('levels', False)
-    classID = form.data.get('classes', False)
-    if classID:
-        cl = get_object_or_404(Class, id=classID)
-        students =  cl.students.all()
-    if levelID:
-        level = get_object_or_404(Level, id=levelID)
-
-    # Both class and level were selected - compare students of 1 class with regards to 1 level.
-    if classID and levelID:
-        studentData = handleOneClassOneLevel(students, level)
-
-    # Class was sellected - compare students of 1 class 
-    elif classID:
-        studentData = handleOneClassAllLevels(students)
-
-    # Level was selected - show all students in the school and their performance
-    elif levelID:
-        studentData = handleAllClassesOneLevel(request, level)
-    
-    else:
-    # How open do we want the scoreboard to be?
-        studentData = handleAllClassesAllLevels(request)
-    return studentData
-
-
-def createOneRow(student, level):
-    row = []
-    row.append(student)
-    try:
-        attempt = Attempt.objects.get(level=level, student=student)
-        row.append(attempt.score)
-        row.append(attempt.finish_time - attempt.start_time)
-        row.append(attempt.start_time)
-        row.append(attempt.finish_time)
-    except ObjectDoesNotExist:
-        pass
-    return row
-
-
-def createRows(studentData, levels):
-    for row in studentData:
-        for level in levels:
-            try:
-                attempt = Attempt.objects.get(level=level, student=row[0])
-                row[1] += attempt.score
-                row[2].append(attempt.finish_time - attempt.start_time)
-            except ObjectDoesNotExist:
-                pass
-    for row in studentData:
-        row[2] = sum(row[2], timedelta())
-    return studentData
-
-
-def handleOneClassOneLevel(students, level):
-    studentData = []
-    for student in students:
-        row = createOneRow(student, level)
-        studentData.append(row)
-    return studentData
-
-
-def handleOneClassAllLevels(students):
-    """ Show statisctics for all students in a class across all levels (sum). """
-    studentData = []
-    levels = Level.objects.filter(default=1)
-    for student in students:
-        studentData.append([student, 0.0, []])
-    return createRows(studentData, levels)
-
-
-def handleAllClassesOneLevel(request, level):
-    """ Show all the students's (from the same school for now) performance on this level. """
-    studentData = []
-    if hasattr(request.user.userprofile, 'student'):
-        school = request.user.userprofile.student.class_field.school
-    elif hasattr(request.user.userprofile, 'teacher'):
-        school = request.user.userprofile.teacher.class_teacher.school
-    classes = school.class_school.all()
-
-    for cl in classes:
-        students =  cl.students.all()
-        for student in students:
-            row = createOneRow(student, level)
-            studentData.append(row)
-    return studentData
-
-
-def handleAllClassesAllLevels(request):
-    """ For now restricting it to the same school. """
-    studentData = []
-    if hasattr(request.user.userprofile, 'student'):
-        school = request.user.userprofile.student.class_field.school
-    elif hasattr(request.user.userprofile, 'teacher'):
-        school = request.user.userprofile.teacher.class_teacher.school
-    classes = school.class_school.all()
-    levels = Level.objects.filter(default=1)
-
-    for cl in classes:
-        students = cl.students.all()
-        for student in students:
-            studentData.append([student, 0.0, []])
-    return createRows(studentData, levels)
-
-
-def level_editor(request):
-    context = RequestContext(request, {
-        'blocks': Block.objects.all()
-    })
-    return render(request, 'game/level_editor.html', context)
-
-
 def settings(request):
-    """ Renders the settings page.  """
+    """ Renders the settings page. Accessible only to logged-in users.
+
+    **Context**
+
+    ``avatarPreUploadedForm``
+        Form used to choose an avatar from already existing images. 
+        Instance of `forms.avatarPreUploadedForm`.
+    ``avatarUploadForm``
+        Form used to upload any image as an avatar. Instance of `forms.avatarUploadForm`.
+    ``shareLevelForm``
+        Form used to share a level with friends. Instance of `forms.shareLevelForm`.
+    ``levels``
+        List of :model:`game.Level` created by the user.
+    ``user``
+        Currently logged in :model:`auth.User`.
+    ``levelMessage``
+        Message shown on the settings page, level listing part. String from `game.messages`.
+    ``modal``
+
+    **Template:**
+
+    :template:`game/settings.html`
+    """
     x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path = os.path.join(x, 'static/game/image/Avatars/')
     img_list = os.listdir(path)
@@ -299,7 +234,7 @@ def settings(request):
     avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
     shareLevelForm = ShareLevel(request.POST or None)
     studentLevels = Level.objects.filter(owner=userProfile.id)
-    levelMessage = messages.noLevelsToShow() if len(studentLevels) == 0 else messages.levelsMessage() 
+    levelMessage = messages.noLevelsToShow() if len(studentLevels) == 0 else messages.levelsMessage()
     if request.method == 'POST':
         if "pre-uploaded" in request.POST:
             if avatarPreUploadedForm.is_valid:
@@ -323,20 +258,203 @@ def settings(request):
     return render(request, 'game/settings.html', context)
 
 
+def level_random(request):
+    """Generates a new random level
+
+    Redirects to :view:`game.views.level` with the id of the newly created :model:`game.Level`.
+    """
+    level = random_road.create()
+    return redirect("game.views.level", level=level.id)
+
+
+def start_episode(request, episode):
+    episode = cached_episode(episode)
+    return redirect("game.views.level", level=episode.first_level.id)
+
+
+def submit(request):
+    """ Processes a request on submission of the program solving the current level.
+    """
+    if request.method == 'POST' and 'attemptData' in request.POST:
+        attemptJson = request.POST['attemptData']
+        attemptData = json.loads(attemptJson)
+        parseAttempt(attemptData, request)
+        return HttpResponse(attemptJson, content_type='application/javascript')
+
+
+def level_new(request):
+    """Processes a request on creation of the map in the level editor.
+    """
+    if 'nodes' in request.POST:
+        path = request.POST['nodes']
+        destination = request.POST['destination']
+        decor = request.POST['decor']
+        max_fuel = request.POST['maxFuel']
+        name = request.POST.get('name')
+        passedLevel = None
+        passedLevel = Level(name=name, path=path, default=False, destination=destination,
+                            decor=decor, max_fuel=max_fuel)
+
+        if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and \
+                hasattr(request.user.userprofile, 'student'):
+            passedLevel.owner = request.user.userprofile
+        passedLevel.save()
+
+        if 'blockTypes' in request.POST:
+            blockTypes = json.loads(request.POST['blockTypes'])
+            blocks = Block.objects.filter(type__in=blockTypes)
+        else:
+            blocks = Block.objects.all()
+
+        passedLevel.blocks = blocks
+        passedLevel.save()
+
+        response_dict = {}
+        response_dict.update({'server_response': passedLevel.id})
+        return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
+
+
+# Helper methods for rendering views in the game.
+
+def renderScoreboard(request, form, school):
+    """ Helper method rendering the scoreboard. 
+    """
+    studentData = None
+    levelID = form.data.get('levels', False)
+    classID = form.data.get('classes', False)
+    thead = ['avatar', 'name', 'surname', 'score', 'total time', 'start time', 'finish time']
+    if classID:
+        cl = get_object_or_404(Class, id=classID)
+        students = cl.students.all()
+    if levelID:
+        level = get_object_or_404(Level, id=levelID)
+
+    if classID and levelID:
+        studentData = handleOneClassOneLevel(students, level)
+    elif classID:
+        studentData = handleOneClassAllLevels(students)
+        thead = ['avatar', 'name', 'surname', 'total score', 'total time']
+    elif levelID:
+        studentData = handleAllClassesOneLevel(request, level)
+    else:
+    # TODO: Decide on how open do we want the scoreboard to be?
+        studentData = handleAllClassesAllLevels(request)
+        thead = ['avatar', 'name', 'surname', 'total score', 'total time']
+    return studentData, thead
+
+
+def createOneRow(student, level):
+    row = []
+    row.append(student)
+    try:
+        attempt = Attempt.objects.get(level=level, student=student)
+        row.append(attempt.score)
+        row.append(attempt.finish_time - attempt.start_time)
+        row.append(attempt.start_time)
+        row.append(attempt.finish_time)
+    except ObjectDoesNotExist:
+        pass
+    return row
+
+
+def createRows(studentData, levels):
+    """ Helper method getting overall result for students in studentData in given levels.
+    """
+    for row in studentData:
+        for level in levels:
+            try:
+                attempt = Attempt.objects.get(level=level, student=row[0])
+                row[1] += attempt.score
+                row[2].append(attempt.finish_time - attempt.start_time)
+            except ObjectDoesNotExist:
+                pass
+    for row in studentData:
+        row[2] = sum(row[2], timedelta())
+    return studentData
+
+
+def handleOneClassOneLevel(students, level):
+    """ Show scoreboard for a chosen level for students of one class.
+    """
+    studentData = []
+    for student in students:
+        row = createOneRow(student, level)
+        studentData.append(row)
+    return studentData
+
+
+def handleOneClassAllLevels(students):
+    """ Show statisctics for all students in a class across all levels (sum).
+    """
+    studentData = []
+    levels = Level.objects.filter(default=1)
+    for student in students:
+        studentData.append([student, 0.0, []])
+    return createRows(studentData, levels)
+
+
+def handleAllClassesOneLevel(request, level):
+    """ Show all the students's (from the same school for now) performance on this level.
+    """
+    studentData = []
+    if hasattr(request.user.userprofile, 'student'):
+        school = request.user.userprofile.student.class_field.school
+    elif hasattr(request.user.userprofile, 'teacher'):
+        school = request.user.userprofile.teacher.class_teacher.school
+    classes = school.class_school.all()
+
+    for cl in classes:
+        students = cl.students.all()
+        for student in students:
+            row = createOneRow(student, level)
+            studentData.append(row)
+    return studentData
+
+
+def handleAllClassesAllLevels(request):
+    """ For now restricting it to the same school.
+    """
+    studentData = []
+    if hasattr(request.user.userprofile, 'student'):
+        school = request.user.userprofile.student.class_field.school
+    elif hasattr(request.user.userprofile, 'teacher'):
+        school = request.user.userprofile.teacher.class_teacher.school
+    classes = school.class_school.all()
+    levels = Level.objects.filter(default=1)
+
+    for cl in classes:
+        students = cl.students.all()
+        for student in students:
+            studentData.append([student, 0.0, []])
+    return createRows(studentData, levels)
+
+
 def handleSharedLevel(request, form):
     level = get_object_or_404(Level, id=form.level)
     people = User.objects.filter(first_name=form.name, last_name=form.surname)
     message = None
     peopleLen = len(people)
     if peopleLen == 0:
-        message = shareUnsuccessful(form.name, form.surname)
+        message = messages.shareUnsuccessful(form.name, form.surname)
     elif peopleLen == 1:
         level.sharedWith.add(people[0])
-        message = shareSuccessful(form.name, form.surname)
+        message = messages.shareSuccessful(form.name, form.surname)
     return message, people
 
 
-def render_student_info(request, logged):
+def parseAttempt(attemptData, request):
+    level = get_object_or_404(Level, id=attemptData.get('level', 1))
+    attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
+    attempt.score = request.POST.get('score', 0)
+
+    # Remove all the old commands from previous attempts.
+    Command.objects.filter(attempt=attempt).delete()
+    commands = attemptData.get('commandStack', None)
+    parseInstructions(json.loads(commands), attempt, 1)
+    attempt.save()
+
+
+def render_student_info(request):
     """ Helper method for rendering the studend info for a logged-in teacher."""
     user = request.user
     message = messages.chooseClass()
@@ -348,7 +466,7 @@ def render_student_info(request, logged):
 
     if request.method == 'POST':
         cl = get_object_or_404(Class, id=request.POST.getlist('classes')[0])
-        students = cl.get_logged_in_students() if logged else cl.students.all()
+        students = cl.get_logged_in_students()
         currentClass = cl.name
     try:
         classes = user.userprofile.teacher.class_teacher.all()
@@ -361,7 +479,6 @@ def render_student_info(request, logged):
         # Exclude your own levels.
         levels = Attempt.objects.filter(student=student,
                                         level__owner__isnull=True).order_by('-score')
-        # TODO: Add scoring so that we actually get some variation in best and worst fields.
         levels_completed = levels.exclude(score=0)
         if len(levels_completed) > 0:
             best = levels_completed[0]
