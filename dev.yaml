@@ -13,9 +13,6 @@ handlers:
 - url: /.*
   script: main.application
 
-builtins:
-- appstats: on
-
 env_variables:
   DJANGO_SETTINGS_MODULE: 'website.settings'
   DATABASE_NAME: 'ocargo_dev'
