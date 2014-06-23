@@ -97,7 +97,7 @@ function handleMouseDown(this_rect, segment) {
                 ocargo.levelEditor.mark(prevStart, BACKGROUND_COLOR, 0, true);
             }
 
-            ocargo.levelEditor.mark(coord, 'red', 1, true);
+            ocargo.levelEditor.mark(coord, 'red', 0.7, true);
             var newStartIndex = ocargo.levelEditor.findNodeByCoordinate(
                 ocargo.levelEditor.nodes, transCoord);
 
@@ -113,14 +113,14 @@ function handleMouseDown(this_rect, segment) {
                     ocargo.levelEditor.destination.coordinate);
                 ocargo.levelEditor.mark(prevEnd, BACKGROUND_COLOR, 0, true);
             }
-            ocargo.levelEditor.mark(coord, 'blue', '1', true);
+            ocargo.levelEditor.mark(coord, 'blue', 0.7, true);
             var newEnd = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
             ocargo.levelEditor.destination = ocargo.levelEditor.nodes[newEnd];
 
         } else if (ocargo.levelEditor.deleteFlag ||
             !(ocargo.levelEditor.endFlag || ocargo.levelEditor.startFlag)) {
             ocargo.levelEditor.start = coord;
-            ocargo.levelEditor.mark(coord, SELECTED_COLOR, 1, true);
+            ocargo.levelEditor.mark(coord, SELECTED_COLOR, 0.7, true);
         }
     }
 }
@@ -155,11 +155,11 @@ function handleMouseUp(this_rect, segment) {
             drawDecor(ocargo.levelEditor.decor);
             if (ocargo.levelEditor.pathStart !== null) {
                 coord = ocargo.levelEditor.translate(ocargo.levelEditor.pathStart.coordinate);
-                ocargo.levelEditor.mark(coord, 'red', 1, true);
+                ocargo.levelEditor.mark(coord, 'red', 0.7, true);
             }
             if (ocargo.levelEditor.destination !== null) {
                 coord = ocargo.levelEditor.translate(ocargo.levelEditor.destination.coordinate);
-                ocargo.levelEditor.mark(coord, 'blue', 1, true);
+                ocargo.levelEditor.mark(coord, 'blue', 0.7, true);
             }
         }
     }

@@ -44,7 +44,7 @@
     color: #008CBA;
     font-weight: bold;
     background: #8BD5EE;
-    width: 170px;
+    width: 186px;
     border: 3px #8BD5EE;
     border-top-style: solid;
     border-right-style: solid;
@@ -73,7 +73,7 @@
     z-index: 2;
     display: none;
     text-align: left;
-    width: 100%;
+    width: 73%;
     font-size: 20px;
     line-height: 140%;
     padding: 30px;
