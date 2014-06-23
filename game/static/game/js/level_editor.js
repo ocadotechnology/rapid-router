@@ -150,8 +150,8 @@ function handleMouseUp(this_rect, segment) {
             }
             paper.clear();
             ocargo.levelEditor.start = null;
-            ocargo.levelEditor.createGrid(paper)
             createRoad(ocargo.levelEditor.nodes);
+            ocargo.levelEditor.createGrid(paper)
             drawDecor(ocargo.levelEditor.decor);
             if (ocargo.levelEditor.pathStart !== null) {
                 coord = ocargo.levelEditor.translate(ocargo.levelEditor.pathStart.coordinate);
@@ -274,7 +274,7 @@ ocargo.LevelEditor.prototype.markFromStart = function(coord) {
         node.addConnectedNodeWithBacklink(
             ocargo.levelEditor.currentStrike[ocargo.levelEditor.currentStrike.length - 1]);
         ocargo.levelEditor.currentStrike.push(node);
-        ocargo.levelEditor.mark(coordinate, SELECTED_COLOR, 1, true);
+        ocargo.levelEditor.mark(coordinate, SELECTED_COLOR, 0.7, true);
     }
 };
 

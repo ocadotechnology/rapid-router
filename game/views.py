@@ -130,7 +130,7 @@ def renderError(request, title, message):
 
 
 def logged_students(request):
-    """ Renders the page with information about all the logged in students. Uses 
+    """ Renders the page with information about all the logged in students. Uses
 
     **Context**
 
@@ -163,7 +163,7 @@ def scoreboard(request):
         Form used to choose a class and level to show. Instance of `forms.ScoreboardForm.`
     ``studentData``
         List of lists containing all the data to be stored in the scoreboard table.
-    ``thead`` 
+    ``thead``
         List of Strings representing the headers of the scoreboard table.
 
     **Template:**
@@ -206,7 +206,7 @@ def settings(request):
     **Context**
 
     ``avatarPreUploadedForm``
-        Form used to choose an avatar from already existing images. 
+        Form used to choose an avatar from already existing images.
         Instance of `forms.avatarPreUploadedForm`.
     ``avatarUploadForm``
         Form used to upload any image as an avatar. Instance of `forms.avatarUploadForm`.
@@ -317,7 +317,7 @@ def level_new(request):
 # Helper methods for rendering views in the game.
 
 def renderScoreboard(request, form, school):
-    """ Helper method rendering the scoreboard. 
+    """ Helper method rendering the scoreboard.
     """
     studentData = None
     levelID = form.data.get('levels', False)
