@@ -26,10 +26,20 @@
 <div id="form" class="form">
 <form action="" method="post" id="scoreboardForm">
   {% csrf_token %}
-  {{form}}
+  {{form.classes.errors}}
+  <label for="id_classes" class="formLabel">
+    Classes: 
+    {{form.classes}}
+  </label>
+  {{form.levels.errors}}
+  <label for="id_levels" class="formLabel">
+    Levels:
+    {{form.levels}} </select>
+  </label>
   <button type="submit">Submit</button>
 </form>
 </div>
+<br>
 <div class="mainBody">
   {% if studentData %}
   <table id="table" class="tablesorter">
