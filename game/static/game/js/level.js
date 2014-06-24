@@ -41,10 +41,10 @@ ocargo.Level.prototype.play = function(program) {
     this.attemptData.commandStack = JSON.stringify(commandStack);
     program.startBlock.selectWithConnected();
 
-    var stepFunction = stepper(this);
+    var stepFunction = stepper(this, true);
 
     program.stepCallback = stepFunction;
-    this.program = program;
+    this.program = program;    
     setTimeout(stepFunction, 500);
 };
 
@@ -129,7 +129,7 @@ ocargo.Level.prototype.win = function() {
     startPopup("You win!", subtitle, message);
 };
 
-ocargo.Level.prototype.fail = function(msg) {
+ocargo.Level.prototype.fail = function(msg, send) {
     var title = 'Oh dear! :(';
     $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
     console.debug(title);
@@ -156,10 +156,12 @@ ocargo.Level.prototype.fail = function(msg) {
 			}
     	}
     }
-    sendAttempt(0);
+    if (send) {
+        sendAttempt(0);
+    }
 };
 
-function stepper(level) {
+function stepper(level, play) {
     return function() {
         try {
             if (level.program.canStep()) {
@@ -167,18 +169,20 @@ function stepper(level) {
                 level.program.step(level);
             } else {
                 if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
-                    level.win();
-                } else if(level.program.isTerminated) {
-                    level.fail("Program terminated!");
+                    if(play) {
+                        level.win();
+                    }
+                } else if (level.program.isTerminated) {
+                    level.fail("Program terminated!", play);
                     $("#myModal > .title").text("Stopping...");
                 }
                 else {
-                    level.fail("You ran out of instructions!");
+                    level.fail("You ran out of instructions!", play);
                     level.program.terminate();
                 }
             }
         } catch (error) {
-            level.fail("Your program crashed!");
+            level.fail("Your program crashed!", play);
             level.program.terminate();
             throw error;
         }
@@ -210,14 +214,14 @@ function sendAttempt(score) {
     return false;
 }
 
-function InstructionHandler(level) {
+function InstructionHandler(level, isPlay) {
 	this.level = level;
+    this.isPlay = isPlay
 }
 
 InstructionHandler.prototype.handleInstruction = function(instruction, program) {
 	console.debug('Calculating next node for instruction ' + instruction.name);
     var nextNode = instruction.getNextNode(this.level.van.previousNode, this.level.van.currentNode);
-
     if (!nextNode) {
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();

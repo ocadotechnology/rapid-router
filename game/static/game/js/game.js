@@ -127,13 +127,38 @@ function trackDevelopment() {
             throw error;
         }
 
-        program.instructionHandler = new InstructionHandler(ocargo.level);
+        program.instructionHandler = new InstructionHandler(ocargo.level, true);
         clearVanData();
         ocargo.level.play(program);
         ocargo.level.correct = 0;
     });
 
     $('#step').click(function() {
+        if (ocargo.blocklyControl.incorrect) {
+            ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
+        }
+
+        if (ocargo.level.program === undefined || ocargo.level.program.isTerminated) {
+            try {
+                ocargo.level.correct = 0;
+                ocargo.level.program = ocargo.blocklyControl.populateProgram();
+                ocargo.level.program.stepCallback = function() {};
+                ocargo.level.stepper = stepper(ocargo.level, false);
+                ocargo.level.program.startBlock.selectWithConnected();
+                ocargo.level.program.instructionHandler = new InstructionHandler(ocargo.level, false);
+                clearVanData();
+                Blockly.addChangeListener(terminate);
+            } catch (error) {
+                ocargo.level.fail('Your program crashed!');
+                throw error;
+            }
+        }
+        ocargo.level.stepper();
+
+        function terminate() {
+            ocargo.level.program.isTerminated = true;
+        }
+
     });
 
     $('#clearIncorrect').click(function() {
