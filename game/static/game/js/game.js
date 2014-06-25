@@ -4,13 +4,13 @@ function createUi() {
     return new ocargo.SimpleUi();
 }
 
-function createDefaultLevel(nodeData, destination, decor, ui, maxFuel) {
+function createDefaultLevel(nodeData, destination, decor, ui, maxFuel, nextLevel, nextEpisode) {
     var nodes = createNodes(nodeData);
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
     var map = new ocargo.Map(nodes, decor, dest, ui);
     var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
-    return new ocargo.Level(map, van, ui);
+    return new ocargo.Level(map, van, ui, nextLevel, nextEpisode);
 }
 
 function createNodes(nodeData) {
@@ -50,10 +50,11 @@ function initialiseDefault() {
     'use strict';
 
     var title = "Level " + LEVEL_ID;
-    startPopup(title, "", LESSON);
+    startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
 
     ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, ocargo.ui, MAX_FUEL);
+    ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, ocargo.ui, MAX_FUEL,
+        NEXT_LEVEL, NEXT_EPISODE);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
     enableDirectControl();
@@ -126,13 +127,42 @@ function trackDevelopment() {
             throw error;
         }
 
-        program.instructionHandler = new InstructionHandler(ocargo.level);
+        program.instructionHandler = new InstructionHandler(ocargo.level, true);
         clearVanData();
         ocargo.level.play(program);
         ocargo.level.correct = 0;
     });
 
     $('#step').click(function() {
+        if (ocargo.blocklyControl.incorrect) {
+            ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
+        }
+
+        if (ocargo.level.program === undefined || ocargo.level.program.isTerminated) {
+            try {
+                ocargo.level.correct = 0;
+                ocargo.level.program = ocargo.blocklyControl.populateProgram();
+                ocargo.level.program.stepCallback = function() {};
+                ocargo.level.stepper = stepper(ocargo.level, false);
+                ocargo.level.program.startBlock.selectWithConnected();
+                ocargo.level.program.instructionHandler = new InstructionHandler(ocargo.level, false);
+                clearVanData();
+                Blockly.addChangeListener(terminate);
+            } catch (error) {
+                ocargo.level.fail('Your program crashed!');
+                throw error;
+            }
+        }
+        ocargo.level.stepper();
+
+        function terminate() {
+            ocargo.level.program.isTerminated = true;
+        }
+
+    });
+    
+    $('#help').click(function() {
+        startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
     });
 
     $('#clearIncorrect').click(function() {

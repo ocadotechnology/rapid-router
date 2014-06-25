@@ -2,7 +2,7 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Level = function(map, van, ui) {
+ocargo.Level = function(map, van, ui, nextLevel, nextEpisode) {
     this.levelId = null;
     this.map = map;
     this.van = van;
@@ -13,6 +13,8 @@ ocargo.Level = function(map, van, ui) {
     this.pathFinder = new ocargo.PathFinder(map);
     this.fails = 0;
     this.hintOpened = false;
+    this.nextLevel = nextLevel;
+    this.nextEpisode = nextEpisode;
 };
 
 ocargo.Level.prototype.failsBeforeHintBtn = 3;
@@ -25,7 +27,7 @@ ocargo.Level.prototype.play = function(program) {
     if (ocargo.level.blockLimit &&
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
         enableDirectControl();
-        startPopup("Oh no!", "", "You used too many blocks!");
+        startPopup("Oh no!", "", ocargo.messages.tooManyBlocks);
         sendAttempt(0);
         return;
     }
@@ -39,10 +41,10 @@ ocargo.Level.prototype.play = function(program) {
     this.attemptData.commandStack = JSON.stringify(commandStack);
     program.startBlock.selectWithConnected();
 
-    var stepFunction = stepper(this);
+    var stepFunction = stepper(this, true);
 
     program.stepCallback = stepFunction;
-    this.program = program;
+    this.program = program;    
     setTimeout(stepFunction, 500);
 };
 
@@ -109,32 +111,31 @@ ocargo.Level.prototype.win = function() {
     ocargo.level.pathFinder.getOptimalInstructions();
     var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
     console.debug("score: ", score, " out of 200.");
-    sendAttempt();
+    sendAttempt(score);
     ocargo.sound.win();
     var message = '';
     var subtitle = "Your score: " + score + " / " + ocargo.level.pathFinder.max;
     enableDirectControl();
 
-    if (ocargo.level.levelId < LEVEL_COUNT) {
-        message = '<button onclick="window.location.href=' + "'/game/" +
-                    (ocargo.level.levelId + 1) + "'" + '"">Next level</button>';
+    if (ocargo.level.nextLevel != null) {
+      message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
     } else {
-        message = "Congratulations, that's all we've got for you now! <br>" + 
-                  "Why not try to create your own road? <br><br> " +
-                  '<button onclick="window.location.href=' + "'/game/level_editor'" +
-                  '"">Create your own map!</button> </center>' +
-                  '<button onclick="window.location.href=' + "'/home/'" + '"">Home</button>';
+        if (ocargo.level.nextEpisode != null) {
+            message = ocargo.messages.nextEpisodeButton(ocargo.level.nextEpisode);
+        } else {
+            message = ocargo.messages.lastLevel;
+        }
     }
     startPopup("You win!", subtitle, message);
 };
 
-ocargo.Level.prototype.fail = function(msg) {
+ocargo.Level.prototype.fail = function(msg, send) {
     var title = 'Oh dear! :(';
     $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
     console.debug(title);
     enableDirectControl();
     ocargo.sound.failure();
-    startPopup(title, '', msg);
+    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
     var level = this;
     level.fails++;
     if (level.fails >= level.failsBeforeHintBtn) {
@@ -155,10 +156,12 @@ ocargo.Level.prototype.fail = function(msg) {
 			}
     	}
     }
-    sendAttempt(0);
+    if (send) {
+        sendAttempt(0);
+    }
 };
 
-function stepper(level) {
+function stepper(level, play) {
     return function() {
         try {
             if (level.program.canStep()) {
@@ -166,18 +169,20 @@ function stepper(level) {
                 level.program.step(level);
             } else {
                 if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
-                    level.win();
-                } else if(level.program.isTerminated) {
-                    level.fail("Program terminated!");
+                    if(play) {
+                        level.win();
+                    }
+                } else if (level.program.isTerminated) {
+                    level.fail("Program terminated!", play);
                     $("#myModal > .title").text("Stopping...");
                 }
                 else {
-                    level.fail("You ran out of instructions!");
+                    level.fail("You ran out of instructions!", play);
                     level.program.terminate();
                 }
             }
         } catch (error) {
-            level.fail("Your program crashed!");
+            level.fail("Your program crashed!", play);
             level.program.terminate();
             throw error;
         }
@@ -209,19 +214,18 @@ function sendAttempt(score) {
     return false;
 }
 
-function InstructionHandler(level) {
+function InstructionHandler(level, isPlay) {
 	this.level = level;
+    this.isPlay = isPlay
 }
 
 InstructionHandler.prototype.handleInstruction = function(instruction, program) {
 	console.debug('Calculating next node for instruction ' + instruction.name);
     var nextNode = instruction.getNextNode(this.level.van.previousNode, this.level.van.currentNode);
-
     if (!nextNode) {
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
-        this.level.fail( ocargo.messages.xcorrect(n) +
-                        ocargo.messages.tryagain);
+        this.level.fail(ocargo.messages.xcorrect(n) + ocargo.messages.tryagain);
 
         program.terminate();
         return; //TODO: animate the crash

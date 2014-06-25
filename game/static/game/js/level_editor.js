@@ -97,7 +97,7 @@ function handleMouseDown(this_rect, segment) {
                 ocargo.levelEditor.mark(prevStart, BACKGROUND_COLOR, 0, true);
             }
 
-            ocargo.levelEditor.mark(coord, 'red', 1, true);
+            ocargo.levelEditor.mark(coord, 'red', 0.7, true);
             var newStartIndex = ocargo.levelEditor.findNodeByCoordinate(
                 ocargo.levelEditor.nodes, transCoord);
 
@@ -113,14 +113,14 @@ function handleMouseDown(this_rect, segment) {
                     ocargo.levelEditor.destination.coordinate);
                 ocargo.levelEditor.mark(prevEnd, BACKGROUND_COLOR, 0, true);
             }
-            ocargo.levelEditor.mark(coord, 'blue', '1', true);
+            ocargo.levelEditor.mark(coord, 'blue', 0.7, true);
             var newEnd = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
             ocargo.levelEditor.destination = ocargo.levelEditor.nodes[newEnd];
 
         } else if (ocargo.levelEditor.deleteFlag ||
             !(ocargo.levelEditor.endFlag || ocargo.levelEditor.startFlag)) {
             ocargo.levelEditor.start = coord;
-            ocargo.levelEditor.mark(coord, SELECTED_COLOR, 1, true);
+            ocargo.levelEditor.mark(coord, SELECTED_COLOR, 0.7, true);
         }
     }
 }
@@ -150,16 +150,16 @@ function handleMouseUp(this_rect, segment) {
             }
             paper.clear();
             ocargo.levelEditor.start = null;
-            ocargo.levelEditor.createGrid(paper)
             createRoad(ocargo.levelEditor.nodes);
+            ocargo.levelEditor.createGrid(paper)
             drawDecor(ocargo.levelEditor.decor);
             if (ocargo.levelEditor.pathStart !== null) {
                 coord = ocargo.levelEditor.translate(ocargo.levelEditor.pathStart.coordinate);
-                ocargo.levelEditor.mark(coord, 'red', 1, true);
+                ocargo.levelEditor.mark(coord, 'red', 0.7, true);
             }
             if (ocargo.levelEditor.destination !== null) {
                 coord = ocargo.levelEditor.translate(ocargo.levelEditor.destination.coordinate);
-                ocargo.levelEditor.mark(coord, 'blue', 1, true);
+                ocargo.levelEditor.mark(coord, 'blue', 0.7, true);
             }
         }
     }
@@ -274,7 +274,7 @@ ocargo.LevelEditor.prototype.markFromStart = function(coord) {
         node.addConnectedNodeWithBacklink(
             ocargo.levelEditor.currentStrike[ocargo.levelEditor.currentStrike.length - 1]);
         ocargo.levelEditor.currentStrike.push(node);
-        ocargo.levelEditor.mark(coordinate, SELECTED_COLOR, 1, true);
+        ocargo.levelEditor.mark(coordinate, SELECTED_COLOR, 0.7, true);
     }
 };
 
@@ -285,8 +285,6 @@ ocargo.LevelEditor.prototype.cleanPredictedRoad = function() {
         node = ocargo.levelEditor.currentStrike[i];
         coord = ocargo.levelEditor.translate(node.coordinate);
         ocargo.levelEditor.mark(coord, BACKGROUND_COLOR, 0, false);
-        // TODO: Handle removing remaining references - although we pop, we think 
-        //    we are pointing to another node. §
     }
     ocargo.levelEditor.currentStrike = [];
 };
@@ -385,18 +383,10 @@ $('#tree2').click(function() {
 });
 
 $('#help').click(function() {
-    var mobileSubtitle = "Click on the point you want this part of the road to start and, while " +
-        "holding it, click on the square you want it to end.";
-    var pcSubtitle = "Click on the point you want this part of the road to start and drag it to " +
-        "the point you want it to end.";
-    var title = "Welcome to the Level Editor!";
-    var subtitle = isMobile() ? mobileSubtitle : pcSubtitle;
-    var mainText = "Click on the 'Mark Start' or 'Mark End' then select the road of the segment " +
-        "you want to serve as the starting or ending point. <br>" +
-        "To delete a part of the road, click on the 'Delete' button and remove it the same way " +
-        "you added it.<br> Don't forget to choose a name and fuel limit for your level! It will " +
-        "make sharing it with others much easier for you.";
-    startPopup(title, subtitle, mainText);
+    var subtitle = isMobile() ? ocargo.messages.levelEditorMobileSubtitle :
+                                                ocargo.messages.levelEditorPCSubtitle;
+    
+    startPopup(ocargo.messages.levelEditorTitle, subtitle, ocargo.messages.levelEditorMainText);
 });
 
 $('#clear').click(function() {
@@ -444,16 +434,15 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
 $("#export").click(function() {
 
     if (ocargo.levelEditor.pathStart === null || ocargo.levelEditor.destination === null) {
-         startPopup("Oh no!", "You forgot to mark the start and end points.", "Click on the " +
-            "'Mark Start' or 'Mark End' then select the road of the segment you want to serve as " +
-            "the starting or ending point.");
+         startPopup(ocargo.messages.ohNo, ocargo.messages.noStartOrEndSubtitle, 
+            ocargo.messages.noStartOrEnd);
          return;
     }
 
     var pathToDestination = aStar(ocargo.levelEditor.nodes, ocargo.levelEditor.destination);
     if (pathToDestination.length === 0) {
-        startPopup("Something is wrong.", "There is no way to get from the starting point to " +
-            "the destination.", "Edit your level to allow the driver to get to the end.");
+        startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
+            ocargo.messages.noStartEndRoute);
         return;
     }
         sortNodes(ocargo.levelEditor.nodes);

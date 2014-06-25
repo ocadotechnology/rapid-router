@@ -1,0 +1,69 @@
+{% extends 'website/base.html' %}
+
+{% load static %}
+{% load compress %}
+
+{% block title %}Game{% endblock %}
+
+{% block scripts %}
+  <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
+  <script>
+    $(document).ready(function() {
+      $("#table").tablesorter();
+    });
+  </script>
+{{block.super}}
+{% endblock %}
+
+{% block css %}
+{{block.super}}
+  {% compress css %}
+      <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
+  {% endcompress %}
+{% endblock %}
+
+{% block content %}
+<div id="form" class="form">
+<form action="" method="post" id="scoreboardForm">
+  {% csrf_token %}
+  {{form.classes.errors}}
+  <label for="id_classes" class="formLabel">
+    Classes: 
+    {{form.classes}}
+  </label>
+  {{form.levels.errors}}
+  <label for="id_levels" class="formLabel">
+    Levels:
+    {{form.levels}} </select>
+  </label>
+  <button type="submit">Submit</button>
+</form>
+</div>
+<br>
+<div class="mainBody">
+  {% if studentData %}
+  <table id="table" class="tablesorter">
+    <thead>
+    {% for header in thead %}
+      <th> {{header}} </th>
+    {% endfor %}
+    </thead>
+    <tbody>
+    {% for student in studentData %}
+    <tr>
+        <td> <img class="avatar" src="/{{student.0.user.avatar.url}}"> </td>
+        <td> {{student.0.user.user.first_name}} </td>
+        <td> {{student.0.user.user.last_name}} </td>
+        <td> {{student.1}} </td>
+        <td> {{student.2}}</td>
+        {% if thead.3 == 'score' %}
+          <td> {{student.3}} </td>
+          <td> {{student.4}} </td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+{% endblock %}

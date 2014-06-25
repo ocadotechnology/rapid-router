@@ -1,0 +1,38 @@
+.avatar {
+	vertical-align: middle;
+	width: 75px;
+}
+
+.form {
+}
+
+.form label {
+	width: 200px;
+	float: left;
+	margin: 0 20px 0 0;
+}
+
+.form input {
+	width: 200px;
+	border: 1px solid #000;
+	padding: 5px;
+}
+/* tables */
+
+table {
+	width: 99%;
+}
+
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+	padding: 15px;
+}
+table.tablesorter thead tr .header {
+	background-repeat: no-repeat;
+	background-position: center right;
+}
+table.tablesorter thead tr .headerSortUp {
+	background-image: url('/static/game/image/asc.gif') !important;
+}
+table.tablesorter thead tr .headerSortDown {
+	background-image: url('/static/game/image/desc.gif') !important;
+}

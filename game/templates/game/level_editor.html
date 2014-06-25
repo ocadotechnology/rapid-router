@@ -6,7 +6,9 @@
 {{block.super}}
   <script src="/static/game/js/mobile-detect.min.js"></script>
   <script src="/static/game/js/raphael.js"></script>
-  <script src="/static/game/js/drawing.js"></script>
+  <script src="/static/game/js/drawing.js"></script> 
+  <script src="/static/game/js/messages.js"></script>
+
 
   <script src="/static/game/js/level_editor.js"></script>
   <script src="/static/game/js/coordinate.js"></script>
@@ -21,6 +23,7 @@
 {{block.super}}
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
   <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
+
 {% endblock %}
 
 {% block content %}
@@ -46,10 +49,10 @@
             <img id="tree2" src="/static/game/image/tree2.svg" width="70"><br><br>
             <p>NAME<input id="name" value="name"></p>
             <p>MAX FUEL<input type="number" id="maxFuel" value="50" size="4"></p>
-            <button id="clear">Clear</button><br>
-            <button id="start">Mark Start</button><br>
+            <button id="clear">Clear</button>            
+            <button id="undo"></button> <br>
+            <button id="start">Mark Start</button>
             <button id="end">Mark End</button><br>
-            <button id="undo"></button>
           </div>
         </li>
         <li>
