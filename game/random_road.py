@@ -96,7 +96,7 @@ def is_possible(node, nodes):
 def add_new_connections(nodes, connections, node_1, node_2):
     node_1_index = nodes.index(node_1)
     node_2_index = nodes.index(node_2)
-    connections[node_1_index].append((node_2_index, node_1))
-    connections[node_2_index].append((node_1_index, node_2))
+    connections[node_1_index].append((node_2_index, node_2))
+    connections[node_2_index].append((node_1_index, node_1))
 
     return connections
