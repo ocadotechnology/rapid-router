@@ -7,7 +7,7 @@ from models import Level, Block
 
 def create():
     path = generate_random_path((0, 3), 20, 0.8, 0.0)
-    level = Level(name=3000, path=json.dumps(path), maxFuel=30, destination=path[-1])
+    level = Level(name=3000, path=json.dumps(path), max_fuel=30, destination=path[-1])
     level.save()
     level.blocks = Block.objects.all()
     level.save()
