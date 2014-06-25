@@ -51,15 +51,15 @@
 
 #controls #moveForward, 
 #controls #play {
-    right: 50px;
+    right: 170px;
 }
 
 #controls #turnLeft {
-    right: 100px;
+    right: 220px;
 }
 
 #controls #turnRight {
-    right: 0;
+    right: 120px;
 }
 
 #controls #moveForward {
@@ -103,12 +103,14 @@ button, .button, img.control{
     z-index: 1;
     width: 100px;
     height: 100px;
-    top: 20px;
-    right: 20px;
+    right: 30px;
+    bottom: 120px;
 }
 
 #fuelGuagePointer {
     position: absolute;
+    width: 100px;
+    height: 100px;
     z-index: 2;
     top: 0px;
 }
