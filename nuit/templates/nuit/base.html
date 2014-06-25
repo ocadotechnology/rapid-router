@@ -8,7 +8,7 @@
 <head>
     <meta charset='utf-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-    <title>{% block title %}Home{% endblock title %}{% if nuit_app_title %} - {{page_title|default:nuit_app_title}}{% else %} - {{page_title|default:'Nuit'}}{% endif %}</title>
+    <title>{% block title %}Home{% endblock title %}{% if nuit_app_title %} - {{page_title|default:nuit_app_title}}{% else %} - {{page_title|default:'Lorem ipsum'}}{% endif %}</title>
 
     {% compress css %}
     <link rel='stylesheet' type='text/x-scss' href='{% static 'nuit.scss' %}' />
