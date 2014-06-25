@@ -160,6 +160,10 @@ function trackDevelopment() {
         }
 
     });
+    
+    $('#help').click(function() {
+        startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
+    });
 
     $('#clearIncorrect').click(function() {
         ocargo.blocklyControl.removeWrong();
