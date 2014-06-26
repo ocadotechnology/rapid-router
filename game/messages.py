@@ -1,3 +1,8 @@
+def noPermissionMessage():
+    return "You have no permission to see this."
+
+
+
 """ Strings used in the scoreboard. """
 
 
@@ -120,6 +125,26 @@ def description_level5():
 
 
 def description_level6():
+    return description_level5()
+
+
+def description_level7():
+    return description_level5()
+
+
+def description_level8():
+    return description_level5()
+
+
+def description_level9():
+    return description_level5()
+
+
+def description_level10():
+    return description_level5()
+
+
+def description_level11():
     message = "Manually adding repeating instructions is boring. That's why there is a " \
         + "<b>repeat</b> block. <b>Repeat</b> block executes the instructions attached inside it " \
         + "specified amount of times. Type into the light green box in the block a number of " \
@@ -127,13 +152,13 @@ def description_level6():
     return description_overall() + message
 
 
-def description_level7():
+def description_level12():
     message = "This road looks quite familiar, doesn't it? <br> Use the <b>repeat</b> " \
         + "block to simplify your program which guides the driver. "
     return description_overall() + message
 
 
-def description_level8():
+def description_level13():
     message = "<b>While</b> and <b>until</b> blocks are quite similar to the repeat one. But " \
         + "instead of specifying exact amount of repetitions, we append a condition. The blocks " \
         + "inside the <b>while</b> or <b>until</b> loops will be executed as long as the " \
@@ -143,25 +168,26 @@ def description_level8():
     return description_overall() + message
 
 
-def description_level9():
+def description_level14():
     message = "Use the <b>until</b> block together with the <b>at destination</b> condition " \
         + "to guide the van to the destination. "
     return description_overall() + message
 
 
-def description_level10():
+def description_level15():
     message = "Usually there is no such thing as <b>until</b>. A <b>while</b> block with " \
         + "a negated condition can be used to achieve the same result. <br> Use the <b>not</b> " \
         + "block to reverse the condition. "
     return description_overall() + message
 
 
-def description_level11():
-    message = "Use the <b>while</b> block to create a simpler program to guide the van. "
+def description_level16():
+    message = "Use the <b>while</b> block together with the negation of the <b>at destination<b>" \
+        + "block to lead the driver to the house. "
     return description_overall() + message
 
 
-def description_level12():
+def description_level17():
     message = "In this level, we have a look at the <b>if</b> statement. <br> <b>If</b> " \
         + "statements are used when we want a set of commands to be executed only if a condition " \
         + "holds. For example, 'if there is a turn right, turn right'. If the condition " \
@@ -170,7 +196,7 @@ def description_level12():
     return description_overall() + message
 
 
-def description_level13():
+def description_level18():
     message = "The <b>if</b> statement is often used with the <b>else</b> clause. " \
         + "If the condition is true, the block in the <b>if</b> gap is executed, otherwise " \
         + "the one following <b>else</b> is. <br> Use an <b>if</b> block together with " \
@@ -178,7 +204,7 @@ def description_level13():
     return description_overall() + message
 
 
-def description_level14():
+def description_level19():
     message = "Quite often we need to check more than one condition to know how to behave - " \
         + "there might not be a turn right, but we still don't know whether we can go forwards " \
         + "or we have to turn left first. Hence, we can append <b>else if</b> blocks " \
@@ -187,40 +213,67 @@ def description_level14():
     return description_overall() + message
 
 
-def description_level15():
+def description_level20():
     message = "Now you are ready! <br> Use all your knowledge and the newly added conditions " \
         + "to guide the van to the house. "
     return description_overall() + message
 
 
-def description_level16():
+def description_level21():
     message = "zomg! Junctions! "
     return description_overall() + message
 
 
-def description_level17():
+def description_level22():
     message = "zomg! Loops! "
     return description_overall() + message
 
 
-def description_level18():
+def description_level23():
     message = "zomg! Non-trivial loops! "
     return description_overall() + message
 
 
-def description_level19():
+def description_level24():
     message = "Have fun! "
     return description_overall() + message
 
 
-def description_level20():
+def description_level25():
     message = "Non-trivial loops??!? "
     return description_overall() + message
 
 
-def description_level21():
+def description_level26():
     message = "zomg! I don't even know what to say! "
     return description_overall() + message
+
+def description_level27():
+    return description_level25()
+
+
+def description_level28():
+    return description_level25()
+
+
+def description_level29():
+    return description_level25()
+
+
+def description_level30():
+    return description_level25()
+
+
+def description_level31():
+    return description_level25()
+
+
+def description_level32():
+    return description_level25()
+
+
+def description_level33():
+   return description_level25()
 
 
 def hint_level_default():
@@ -353,5 +406,40 @@ def hint_level20():
 
 
 def hint_level21():
+    message = hint_level_default()
+    return message
+
+
+def hint_level22():
+    message = hint_level_default()
+    return message
+
+
+def hint_level23():
+    message = hint_level_default()
+    return message
+
+
+def hint_level24():
+    message = hint_level_default()
+    return message
+
+
+def hint_level25():
+    message = hint_level_default()
+    return message
+
+
+def hint_level26():
+    message = hint_level_default()
+    return message
+
+
+def hint_level27():
+    message = hint_level_default()
+    return message
+
+
+def hint_level28():
     message = hint_level_default()
     return message

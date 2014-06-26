@@ -155,7 +155,8 @@ function trackDevelopment() {
                 throw error;
             }
         }
-        disableDirectControl()
+        disableDirectControl();
+        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
         ocargo.level.stepper();
 
         function terminate() {

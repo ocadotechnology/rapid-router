@@ -171,7 +171,7 @@ def scoreboard(request):
     :template:`game/scoreboard.html`
     """
     # Not showing this part to outsiders.
-    if request.user.is_anonymous():
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
     school = None
     thead = []
@@ -224,6 +224,8 @@ def settings(request):
 
     :template:`game/settings.html`
     """
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
+        return renderError(request, messages.noPermissionTitle(), messages.noPermissionMessage())
     message = "None"
     levels = Level.objects.filter(owner=request.user.userprofile.id)
     avatarUploadForm, avatarPreUploadedForm = renderAvatarChoice(request)
