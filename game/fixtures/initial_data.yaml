@@ -48,7 +48,7 @@
     block_limit: null
     blocks: [1]
     destination: [4, 3]
-    decor: '[{''coordinate'': new ocargo.Coordinate(100, 400), ''url'': ''/static/game/image/tree1.svg''}]'
+    decor: '[{"coordinate":{"x":67,"y":570},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":663,"y":443},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":192,"y":58},"url":"/static/game/image/bush.svg"}]'
     default: true
     max_fuel: 50
     name: 10
@@ -61,7 +61,7 @@
     block_limit: null
     blocks: [1, 3]
     destination: [2, 2]
-    decor: '[]'
+    decor: '[{"coordinate":{"x":0,"y":398},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":100,"y":397},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":201,"y":397},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":300,"y":404},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":401,"y":409},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":499,"y":398},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":601,"y":403},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":704,"y":402},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":804,"y":398},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":903,"y":401},"url":"/static/game/image/tree2.svg"}]'
     default: true
     max_fuel: 50
     name: 10
@@ -74,7 +74,7 @@
     block_limit: null
     blocks: [1, 2, 3]
     destination: [4, 6]
-    decor: '[]'
+    decor: '[{"coordinate":{"x":138,"y":457},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":164,"y":344},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":237,"y":560},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":259,"y":441},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":355,"y":545},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":45,"y":363},"url":"/static/game/image/tree1.svg"}]'
     default: true
     max_fuel: 50
     name: 10
@@ -87,237 +87,287 @@
     block_limit: null
     blocks: [1, 2, 3]
     destination: [5, 3]
-    decor: '[]'
+    decor: '[{"coordinate":{"x":479,"y":551},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":404,"y":446},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":363,"y":354},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":428,"y":124},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":212,"y":130},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":398,"y":590},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":261,"y":670},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":232,"y":428},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":25,"y":479},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":230,"y":333},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":227,"y":236},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":104,"y":133},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":-21,"y":-11},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":633,"y":16},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":688,"y":601},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":634,"y":387},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":827,"y":616},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":751,"y":450},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":833,"y":47},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":842,"y":374},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":703,"y":237},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":535,"y":353},"url":"/static/game/image/tree2.svg"}]'
     default: true
     max_fuel: 50
     name: 10
+    next_level: 6
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}]'
   model: game.level
   pk: 5
 - fields:
     block_limit: null
-    blocks: [1, 2, 3, 5]
-    destination: [4, 3]
-    decor: '[]'
-    default: true
+    blocks: [1, 2, 3]
+    decor: '[{"coordinate":{"x":271,"y":406},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":164,"y": 392},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":63,"y":397},"url":"/static/game/image/tree1.svg" },{"coordinate":{"x":114,"y":478},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":697,"y":198},"url": "/static/game/image/tree2.svg"},{"coordinate":{"x":532,"y":76},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":705,"y":44},"url":"/static/game/image/tree2.svg"}]'
+    default: false
+    destination: '[4,1]'
     max_fuel: 50
-    name: 10
-    owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] '
+    name: 6
     next_level: 7
+    owner: null
+    path: '[{"coordinate":[4,6],"connectedNodes":[1]},{"coordinate":[4,5],"connectedNodes":[0,2]},{"coordinate":[4,4],"connectedNodes":[1,3]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,2],"connectedNodes":[3,5]},{"coordinate":[4,1],"connectedNodes":[4]}]'
+    shared_with: []
   model: game.level
   pk: 6
 - fields:
     block_limit: null
-    blocks: [1, 2, 3, 5]
-    destination: [4, 6]
-    decor: '[]'
-    default: true
+    blocks: [1, 2, 3]
+    decor: '[{"coordinate":{"x":167,"y":207},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":263,"y":203},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":364,"y":202},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":571,"y":203},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":465,"y":199},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":29,"y":433},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":505,"y":652},"url":"/static/game/image/bush.svg"}]'
+    default: false
+    destination: '[8,1]'
     max_fuel: 50
-    name: 10
+    name: 7
+    next_level: 8
     owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
+    path: '[{"coordinate":[6,3],"connectedNodes":[1]},{"coordinate":[5,3],"connectedNodes":[2,0]},{"coordinate":[4,3],"connectedNodes":[3,1]},{"coordinate":[3,3],"connectedNodes":[4,2]},{"coordinate":[2,3],"connectedNodes":[5,3]},{"coordinate":[1,3],"connectedNodes":[4,6]},{"coordinate":[1,2],"connectedNodes":[5,7]},{"coordinate":[1,1],"connectedNodes":[6,8]},{"coordinate":[2,1],"connectedNodes":[7,9]},{"coordinate":[3,1],"connectedNodes":[8,10]},{"coordinate":[4,1],"connectedNodes":[9,11]},{"coordinate":[5,1],"connectedNodes":[10,12]},{"coordinate":[6,1],"connectedNodes":[11,13]},{"coordinate":[7,1],"connectedNodes":[12,14]},{"coordinate":[8,1],"connectedNodes":[13]}]'
+    shared_with: []
   model: game.level
   pk: 7
 - fields:
     block_limit: null
+    blocks: [1, 2, 3]
+    decor: '[{"coordinate":{"x":596,"y":585},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":233,"y":353},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":248,"y":32},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":709,"y":20},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":106,"y":603},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":99,"y":490},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":597,"y":352},"url":"/static/game/image/tree2.svg"}]'
+    default: false
+    destination: '[7,3]'
+    max_fuel: 50
+    name: 8
+    next_level: 9
+    owner: null
+    path: '[{"coordinate":[9,5],"connectedNodes":[1]},{"coordinate":[8,5],"connectedNodes":[2,0]},{"coordinate":[7,5],"connectedNodes":[3,1]},{"coordinate":[7,6],"connectedNodes":[4,2]},{"coordinate":[7,7],"connectedNodes":[5,3]},{"coordinate":[6,7],"connectedNodes":[6,4]},{"coordinate":[5,7],"connectedNodes":[5,7]},{"coordinate":[5,6],"connectedNodes":[6,8]},{"coordinate":[5,5],"connectedNodes":[7,9]},{"coordinate":[5,4],"connectedNodes":[8,10]},{"coordinate":[5,3],"connectedNodes":[11,9]},{"coordinate":[4,3],"connectedNodes":[12,10]},{"coordinate":[3,3],"connectedNodes":[13,11]},{"coordinate":[3,4],"connectedNodes":[14,12]},{"coordinate":[3,5],"connectedNodes":[15,13]},{"coordinate":[2,5],"connectedNodes":[14,16]},{"coordinate":[2,4],"connectedNodes":[17,15]},{"coordinate":[1,4],"connectedNodes":[18,16]},{"coordinate":[0,4],"connectedNodes":[17,19]},{"coordinate":[0,3],"connectedNodes":[18,20]},{"coordinate":[0,2],"connectedNodes":[19,21]},{"coordinate":[0,1],"connectedNodes":[20,22]},{"coordinate":[1,1],"connectedNodes":[21,23]},{"coordinate":[2,1],"connectedNodes":[22,24]},{"coordinate":[3,1],"connectedNodes":[23,25]},{"coordinate":[4,1],"connectedNodes":[24,26]},{"coordinate":[5,1],"connectedNodes":[25,27]},{"coordinate":[6,1],"connectedNodes":[26,28]},{"coordinate":[7,1],"connectedNodes":[27,29]},{"coordinate":[7,2],"connectedNodes":[30,28]},{"coordinate":[7,3],"connectedNodes":[29]}]'
+    shared_with: []
+  model: game.level
+  pk: 8
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3]
+    decor: '[{"coordinate":{"x":499,"y":398},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":399,"y":397},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":293,"y":409},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":300,"y":606},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":407,"y":607},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":507,"y":603},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":304,"y":200},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":408,"y":198},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":509,"y":208},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":506,"y":-3},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":402,"y":8},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":295,"y":11},"url":"/static/game/image/tree2.svg"}]'
+    default: false
+    destination: '[0,4]'
+    max_fuel: 50
+    name: 9
+    next_level: 10
+    owner: null
+    path: '[{"coordinate":[4,3],"connectedNodes":[1]},{"coordinate":[5,3],"connectedNodes":[0,2]},{"coordinate":[6,3],"connectedNodes":[1,3]},{"coordinate":[6,4],"connectedNodes":[4,2]},{"coordinate":[6,5],"connectedNodes":[5,3]},{"coordinate":[5,5],"connectedNodes":[6,4]},{"coordinate":[4,5],"connectedNodes":[7,5]},{"coordinate":[3,5],"connectedNodes":[8,6]},{"coordinate":[2,5],"connectedNodes":[7,9]},{"coordinate":[2,4],"connectedNodes":[8,10]},{"coordinate":[2,3],"connectedNodes":[9,11]},{"coordinate":[2,2],"connectedNodes":[10,12]},{"coordinate":[2,1],"connectedNodes":[11,13]},{"coordinate":[3,1],"connectedNodes":[12,14]},{"coordinate":[4,1],"connectedNodes":[13,15]},{"coordinate":[5,1],"connectedNodes":[14,16]},{"coordinate":[6,1],"connectedNodes":[15,17]},{"coordinate":[7,1],"connectedNodes":[16,18]},{"coordinate":[8,1],"connectedNodes":[17,19]},{"coordinate":[8,2],"connectedNodes":[20,18]},{"coordinate":[8,3],"connectedNodes":[21,19]},{"coordinate":[8,4],"connectedNodes":[22,20]},{"coordinate":[8,5],"connectedNodes":[23,21]},{"coordinate":[8,6],"connectedNodes":[24,22]},{"coordinate":[8,7],"connectedNodes":[25,23]},{"coordinate":[7,7],"connectedNodes":[26,24]},{"coordinate":[6,7],"connectedNodes":[27,25]},{"coordinate":[5,7],"connectedNodes":[28,26]},{"coordinate":[4,7],"connectedNodes":[29,27]},{"coordinate":[3,7],"connectedNodes":[30,28]},{"coordinate":[2,7],"connectedNodes":[31,29]},{"coordinate":[1,7],"connectedNodes":[30,32]},{"coordinate":[1,6],"connectedNodes":[31,33]},{"coordinate":[1,5],"connectedNodes":[32,34]},{"coordinate":[1,4],"connectedNodes":[35,33]},{"coordinate":[0,4],"connectedNodes":[34]}]'
+    shared_with: []
+  model: game.level
+  pk: 9
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3]
+    decor: '[{"coordinate":{"x":195,"y":619},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":108,"y":356},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":399,"y":695},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":515,"y":690},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":595,"y":509},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":700,"y":510},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":496,"y":306},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":296,"y":63},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":691,"y":147},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":887,"y":448},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":891,"y":68},"url":"/static/game/image/tree2.svg"}]'
+    default: false
+    destination: '[9,7]'
+    max_fuel: 57
+    name: 10
+    next_level: null
+    owner: null
+    path: '[{"coordinate":[0,0],"connectedNodes":[57]},{"coordinate":[8,2],"connectedNodes":[2,58]},{"coordinate":[8,3],"connectedNodes":[3,1]},{"coordinate":[7,3],"connectedNodes":[4,2]},{"coordinate":[6,3],"connectedNodes":[3,5]},{"coordinate":[6,2],"connectedNodes":[4,6]},{"coordinate":[6,1],"connectedNodes":[7,5]},{"coordinate":[5,1],"connectedNodes":[8,6]},{"coordinate":[4,1],"connectedNodes":[9,7]},{"coordinate":[4,2],"connectedNodes":[10,8]},{"coordinate":[4,3],"connectedNodes":[11,9]},{"coordinate":[3,3],"connectedNodes":[12,10]},{"coordinate":[2,3],"connectedNodes":[11,13]},{"coordinate":[2,2],"connectedNodes":[12,14]},{"coordinate":[2,1],"connectedNodes":[15,13]},{"coordinate":[1,1],"connectedNodes":[16,14]},{"coordinate":[0,1],"connectedNodes":[17,15]},{"coordinate":[0,2],"connectedNodes":[18,16]},{"coordinate":[0,3],"connectedNodes":[19,17]},{"coordinate":[0,4],"connectedNodes":[20,18]},{"coordinate":[0,5],"connectedNodes":[21,19]},{"coordinate":[1,5],"connectedNodes":[20,22]},{"coordinate":[1,6],"connectedNodes":[23,21]},{"coordinate":[0,6],"connectedNodes":[24,22]},{"coordinate":[0,7],"connectedNodes":[25,23]},{"coordinate":[1,7],"connectedNodes":[24,26]},{"coordinate":[2,7],"connectedNodes":[25,27]},{"coordinate":[3,7],"connectedNodes":[26,28]},{"coordinate":[3,6],"connectedNodes":[27,29]},{"coordinate":[4,6],"connectedNodes":[28,30]},{"coordinate":[5,6],"connectedNodes":[29,31]},{"coordinate":[5,5],"connectedNodes":[32,30]},{"coordinate":[4,5],"connectedNodes":[33,31]},{"coordinate":[3,5],"connectedNodes":[34,32]},{"coordinate":[2,5],"connectedNodes":[33,35]},{"coordinate":[2,4],"connectedNodes":[34,36]},{"coordinate":[3,4],"connectedNodes":[35,37]},{"coordinate":[4,4],"connectedNodes":[36,38]},{"coordinate":[5,4],"connectedNodes":[37,39]},{"coordinate":[6,4],"connectedNodes":[38,40]},{"coordinate":[7,4],"connectedNodes":[39,41]},{"coordinate":[8,4],"connectedNodes":[40,42]},{"coordinate":[8,5],"connectedNodes":[43,41]},{"coordinate":[8,6],"connectedNodes":[44,42]},{"coordinate":[7,6],"connectedNodes":[45,43]},{"coordinate":[6,6],"connectedNodes":[46,44]},{"coordinate":[6,7],"connectedNodes":[47,45]},{"coordinate":[7,7],"connectedNodes":[46,48]},{"coordinate":[8,7],"connectedNodes":[47,49]},{"coordinate":[9,7],"connectedNodes":[48]},{"coordinate":[8,0],"connectedNodes":[51,58]},{"coordinate":[7,0],"connectedNodes":[52,50]},{"coordinate":[6,0],"connectedNodes":[53,51]},{"coordinate":[5,0],"connectedNodes":[54,52]},{"coordinate":[4,0],"connectedNodes":[55,53]},{"coordinate":[3,0],"connectedNodes":[56,54]},{"coordinate":[2,0],"connectedNodes":[57,55]},{"coordinate":[1,0],"connectedNodes":[0,56]},{"coordinate":[8,1],"connectedNodes":[1,50]}]'
+    shared_with: []
+  model: game.level
+  pk: 10
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3, 5]
+    destination: [4, 3]
+    decor: '[{"coordinate":{"x":136,"y":260},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":192,"y":342},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":240,"y":255},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":292,"y":342},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":339,"y":256},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":240,"y":428},"url":"/static/game/image/tree2.svg"}]'
+    default: true
+    max_fuel: 57
+    name: 11
+    owner: null
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] '
+    next_level: 12
+  model: game.level
+  pk: 11
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3, 5]
+    destination: [4, 6]
+    decor: '[{"coordinate":{"x":348,"y":659},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":341,"y":536},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":454,"y":667},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":454,"y":532},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":335,"y":403},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":455,"y":411},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":232,"y":659},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":230,"y":558},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":239,"y":411},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":135,"y":674},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":128,"y":554},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":127,"y":463},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":140,"y":342},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":21,"y":557},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":20,"y":439},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":7,"y":352},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":34,"y":240},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":138,"y":250},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":242,"y":279},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":347,"y":274},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":449,"y":297},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":556,"y":677},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":551,"y":544},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":558,"y":427},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":557,"y":289},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":22,"y":683},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":559,"y":174},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":348,"y":169},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":235,"y":167},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":135,"y":146},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":18,"y":134},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":20,"y":29},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":131,"y":30},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":240,"y":36},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":349,"y":48},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":451,"y":44},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":559,"y":39},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":659,"y":46},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":667,"y":153},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":663,"y":271},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":660,"y":395},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":660,"y":525},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":657,"y":648},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":757,"y":651},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":756,"y":522},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":756,"y":398},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":759,"y":278},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":765,"y":129},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":759,"y":2},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":873,"y":683},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":863,"y":567},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":869,"y":458},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":864,"y":340},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":862,"y":222},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":865,"y":124},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":866,"y":8},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":448,"y":192},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":490,"y":-61},"url":"/static/game/image/tree2.svg"}]'
+    default: true
+    max_fuel: 50
+    name: 12
+    owner: null
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
+  model: game.level
+  pk: 12
+- fields:
+    block_limit: null
     blocks: [1, 2, 3, 6, 11]
     destination: [4, 3]
-    decor: '[]'
+    decor: '[{"coordinate":{"x":96,"y":599},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":200,"y":599},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":300,"y":600},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":257,"y":514},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":149,"y":512},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":209,"y":431},"url":"/static/game/image/tree1.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}]'
-    next_level: 9
+    next_level: 14
   model: game.level
-  pk: 8
+  pk: 13
 - fields:
     block_limit: null
     blocks: [1, 2, 3, 6, 11]
     destination: [4, 6]
-    decor: '[]'
+    decor: '[{"coordinate":{"x":96,"y":599},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":200,"y":599},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":300,"y":600},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":257,"y":514},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":149,"y":512},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":209,"y":431},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":209,"y":188},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":132,"y":118},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":261,"y":102},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":190,"y":33},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":75,"y":35},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":296,"y":11},"url":"/static/game/image/tree2.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
   model: game.level
-  pk: 9
+  pk: 14
 - fields:
     block_limit: null
     blocks: [1, 2, 3, 6, 8, 11]
     destination: [4, 3]
-    decor: '[]'
+    decor: '[{"coordinate":{"x":2,"y":101},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":101,"y":100},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":203,"y":98},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":306,"y":101},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":403,"y":97},"url":"/static/game/image/tree1.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] '
-    next_level: 11
+    next_level: 16
   model: game.level
-  pk: 10
+  pk: 15
 - fields:
     block_limit: null
     blocks: [1, 2, 3, 6, 8, 11]
     destination: [4, 6]
-    decor: '[]'
+    decor: '[{"coordinate":{"x":101,"y":205},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":200,"y":203},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":198,"y":99},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":302,"y":99},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":294,"y":-1},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":401,"y":4},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":0,"y":601},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":104,"y":695},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":4,"y":700},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":899,"y":697},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":798,"y":698},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":897,"y":598},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":695,"y":693},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":597,"y":695},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":498,"y":696},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":201,"y":697},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":400,"y":696},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":299,"y":697},"url":"/static/game/image/tree2.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}]'
   model: game.level
-  pk: 11
+  pk: 16
 - fields:
     block_limit: null
     blocks: [1, 2, 3, 6, 7, 8, 9, 11]
     destination: [4, 3]
-    decor: '[]'
+    decor: '[{"coordinate":{"x":454,"y":354},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":455,"y":249},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":555,"y":349},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":558,"y":249},"url":"/static/game/image/bush.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
     path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] '
-    next_level: 13
-  model: game.level
-  pk: 12
-- fields:
-    block_limit: null
-    blocks: [1, 2, 3, 6, 7, 8, 9, 11]
-    destination: [4, 6]
-    decor: '[]'
-    default: true
-    max_fuel: 50
-    name: 10
-    owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
-    next_level: 14
-  model: game.level
-  pk: 13
-- fields:
-    block_limit: null
-    blocks: [1, 2, 3, 6, 7, 8, 9, 11]
-    destination: [5, 3]
-    decor: '[]'
-    default: true
-    max_fuel: 50
-    name: 10
-    owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] '
-    next_level: 15
-  model: game.level
-  pk: 14
-- fields:
-    block_limit: null
-    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    destination: [5, 3]
-    decor: '[]'
-    default: true
-    max_fuel: 50
-    name: 10
-    owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] '
-  model: game.level
-  pk: 15
-- fields:
-    block_limit: null
-    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    destination: [4, 3]
-    decor: '[]'
-    default: true
-    max_fuel: 50
-    name: 10
-    owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3]},{"coordinate":[3,3],"connectedNodes":[2,6]},{"coordinate":[4,3],"connectedNodes":[5]}]'
-    next_level: 17
-  model: game.level
-  pk: 16
-- fields:
-    block_limit: null
-    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    destination: [3, 3]
-    decor: '[]'
-    default: true
-    max_fuel: 50
-    name: 10
-    owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,4,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2]}]'
     next_level: 18
   model: game.level
   pk: 17
 - fields:
     block_limit: null
-    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    destination: [5, 3]
-    decor: '[]'
+    blocks: [1, 2, 3, 6, 7, 8, 9, 11]
+    destination: [4, 6]
+    decor: '[{"coordinate":{"x":156,"y":344},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":252,"y":443},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":349,"y":543},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":49,"y":354},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":142,"y":458},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":239,"y":556},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":52,"y":249},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":338,"y":657},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":230,"y":659},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":157,"y":239},"url":"/static/game/image/tree2.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3,9]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[3,4],"connectedNodes":[3,5]},{"coordinate":[4,4],"connectedNodes":[4,6]},{"coordinate":[4,3],"connectedNodes":[5,10,7]},{"coordinate":[4,2],"connectedNodes":[6,8]},{"coordinate":[3,2],"connectedNodes":[7,9]},{"coordinate":[2,2],"connectedNodes":[2,8]},{"coordinate":[5,3],"connectedNodes":[6]}]'
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
+    next_level: 19
   model: game.level
   pk: 18
 - fields:
     block_limit: null
-    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    destination: [7, 7]
-    decor: '[]'
+    blocks: [1, 2, 3, 6, 7, 8, 9, 11]
+    destination: [5, 3]
+    decor: '[{"coordinate":{"x":350,"y":337},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":348,"y":439},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":344,"y":540},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":342,"y":645},"url":"/static/game/image/tree2.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2,20]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4,10]},{"coordinate":[0,5],"connectedNodes":[3,5]},{"coordinate":[0,6],"connectedNodes":[4,6]},{"coordinate":[0,7],"connectedNodes":[5,7]},{"coordinate":[1,7],"connectedNodes":[6,8]},{"coordinate":[2,7],"connectedNodes":[7,9]},{"coordinate":[2,6],"connectedNodes":[8,11,10]},{"coordinate":[2,5],"connectedNodes":[3,9]},{"coordinate":[3,6],"connectedNodes":[9,13]},{"coordinate":[4,7],"connectedNodes":[13]},{"coordinate":[4,6],"connectedNodes":[11,12,14]},{"coordinate":[4,5],"connectedNodes":[13,15]},{"coordinate":[4,4],"connectedNodes":[14,42,16]},{"coordinate":[3,4],"connectedNodes":[15,17]},{"coordinate":[3,3],"connectedNodes":[16,18]},{"coordinate":[3,2],"connectedNodes":[17,28,27,19]},{"coordinate":[2,2],"connectedNodes":[18,20]},{"coordinate":[1,2],"connectedNodes":[19,21,1]},{"coordinate":[0,2],"connectedNodes":[20,22]},{"coordinate":[0,1],"connectedNodes":[21,23]},{"coordinate":[0,0],"connectedNodes":[22,24]},{"coordinate":[1,0],"connectedNodes":[23,25]},{"coordinate":[2,0],"connectedNodes":[24,26]},{"coordinate":[3,0],"connectedNodes":[25,27]},{"coordinate":[3,1],"connectedNodes":[18,26]},{"coordinate":[4,2],"connectedNodes":[18,29]},{"coordinate":[5,2],"connectedNodes":[28,30]},{"coordinate":[5,1],"connectedNodes":[29,31]},{"coordinate":[5,0],"connectedNodes":[30,32]},{"coordinate":[6,0],"connectedNodes":[31,33]},{"coordinate":[6,1],"connectedNodes":[32,34]},{"coordinate":[6,2],"connectedNodes":[33,35]},{"coordinate":[6,3],"connectedNodes":[34,36]},{"coordinate":[6,4],"connectedNodes":[38,37,35,42]},{"coordinate":[7,4],"connectedNodes":[36]},{"coordinate":[6,5],"connectedNodes":[36,39]},{"coordinate":[6,6],"connectedNodes":[38,41]},{"coordinate":[5,7],"connectedNodes":[41]},{"coordinate":[6,7],"connectedNodes":[39,40,43]},{"coordinate":[5,4],"connectedNodes":[15,36]},{"coordinate":[7,7],"connectedNodes":[41]}]'
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] '
     next_level: 20
   model: game.level
   pk: 19
 - fields:
     block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    destination: [4, 2]
-    decor: '[]'
+    destination: [5, 3]
+    decor: '[{"coordinate":{"x":244,"y":339},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":246,"y":232},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":246,"y":127},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":669,"y":639},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":469,"y":597},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":596,"y":512},"url":"/static/game/image/tree1.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[2,27,26,0]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[1,7],"connectedNodes":[4,6]},{"coordinate":[2,7],"connectedNodes":[5,7]},{"coordinate":[3,7],"connectedNodes":[6,8]},{"coordinate":[4,7],"connectedNodes":[7,9]},{"coordinate":[5,7],"connectedNodes":[8,10]},{"coordinate":[6,7],"connectedNodes":[9,11]},{"coordinate":[7,7],"connectedNodes":[10,12]},{"coordinate":[7,6],"connectedNodes":[11,13]},{"coordinate":[7,5],"connectedNodes":[12,14]},{"coordinate":[7,4],"connectedNodes":[13,15]},{"coordinate":[7,3],"connectedNodes":[14,16]},{"coordinate":[7,2],"connectedNodes":[15,17]},{"coordinate":[7,1],"connectedNodes":[16,18]},{"coordinate":[7,0],"connectedNodes":[17,19]},{"coordinate":[6,0],"connectedNodes":[18,20]},{"coordinate":[5,0],"connectedNodes":[19,21]},{"coordinate":[4,0],"connectedNodes":[20,22]},{"coordinate":[3,0],"connectedNodes":[21,23]},{"coordinate":[2,0],"connectedNodes":[22,24]},{"coordinate":[1,0],"connectedNodes":[23,25]},{"coordinate":[1,1],"connectedNodes":[24,26]},{"coordinate":[1,2],"connectedNodes":[25,1]},{"coordinate":[2,3],"connectedNodes":[28,45,44,1]},{"coordinate":[2,4],"connectedNodes":[27,29]},{"coordinate":[2,5],"connectedNodes":[28,30]},{"coordinate":[2,6],"connectedNodes":[29,31]},{"coordinate":[3,6],"connectedNodes":[30,32]},{"coordinate":[4,6],"connectedNodes":[31,33]},{"coordinate":[5,6],"connectedNodes":[32,34]},{"coordinate":[6,6],"connectedNodes":[33,35]},{"coordinate":[6,5],"connectedNodes":[34,36]},{"coordinate":[6,4],"connectedNodes":[35,37]},{"coordinate":[6,3],"connectedNodes":[36,38]},{"coordinate":[6,2],"connectedNodes":[37,39]},{"coordinate":[6,1],"connectedNodes":[38,40]},{"coordinate":[5,1],"connectedNodes":[39,41]},{"coordinate":[4,1],"connectedNodes":[40,42]},{"coordinate":[3,1],"connectedNodes":[41,43]},{"coordinate":[2,1],"connectedNodes":[42,44]},{"coordinate":[2,2],"connectedNodes":[43,27]},{"coordinate":[3,3],"connectedNodes":[46,54,53,27]},{"coordinate":[3,4],"connectedNodes":[45,47]},{"coordinate":[3,5],"connectedNodes":[46,48]},{"coordinate":[4,5],"connectedNodes":[47,49]},{"coordinate":[5,5],"connectedNodes":[48,50]},{"coordinate":[5,4],"connectedNodes":[49,51]},{"coordinate":[5,3],"connectedNodes":[50,52]},{"coordinate":[5,2],"connectedNodes":[51,56]},{"coordinate":[3,2],"connectedNodes":[45,56]},{"coordinate":[4,3],"connectedNodes":[45,55]},{"coordinate":[4,4],"connectedNodes":[54]},{"coordinate":[4,2],"connectedNodes":[52,53]}]'
-    next_level: 21
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] '
   model: game.level
   pk: 20
 - fields:
     block_limit: null
     blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    destination: [6, 4]
-    decor: '[]'
+    destination: [4, 3]
+    decor: '[{"coordinate":{"x":197,"y":202},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":196,"y":94},"url":"/static/game/image/tree2.svg"}]'
     default: true
     max_fuel: 50
     name: 10
     owner: null
-    path: '[{"coordinate":[0,3],"connectedNodes":[1]}, {"coordinate":[1,3],"connectedNodes":[0,27,2]},
-      {"coordinate":[1,2],"connectedNodes":[1,3]}, {"coordinate":[1,1],"connectedNodes":[2,4]},
-      {"coordinate":[2,1],"connectedNodes":[3,6,5]}, {"coordinate":[2,0],"connectedNodes":[4]},
-      {"coordinate":[3,1],"connectedNodes":[4,7]}, {"coordinate":[4,1],"connectedNodes":[6,8]},
-      {"coordinate":[4,2],"connectedNodes":[9,11,7]}, {"coordinate":[4,3],"connectedNodes":[10,36,8]},
-      {"coordinate":[3,3],"connectedNodes":[9]}, {"coordinate":[5,2],"connectedNodes":[8,12]},
-      {"coordinate":[6,2],"connectedNodes":[11,15,13]}, {"coordinate":[6,1],"connectedNodes":[12,14]},
-      {"coordinate":[6,0],"connectedNodes":[13]}, {"coordinate":[7,2],"connectedNodes":[12,16]},
-      {"coordinate":[8,2],"connectedNodes":[15,25,17]}, {"coordinate":[8,1],"connectedNodes":[16,18]},
-      {"coordinate":[8,0],"connectedNodes":[17,19]}, {"coordinate":[9,0],"connectedNodes":[18,20]},
-      {"coordinate":[9,1],"connectedNodes":[21,19]}, {"coordinate":[9,2],"connectedNodes":[22,20]},
-      {"coordinate":[9,3],"connectedNodes":[23,21]}, {"coordinate":[9,4],"connectedNodes":[24,22]},
-      {"coordinate":[8,4],"connectedNodes":[26,23,25]}, {"coordinate":[8,3],"connectedNodes":[24,16]},
-      {"coordinate":[7,4],"connectedNodes":[42,28,24]}, {"coordinate":[1,4],"connectedNodes":[41,1]},
-      {"coordinate":[7,5],"connectedNodes":[29,26]}, {"coordinate":[7,6],"connectedNodes":[32,30,28]},
-      {"coordinate":[8,6],"connectedNodes":[29,31]}, {"coordinate":[9,6],"connectedNodes":[30]},
-      {"coordinate":[6,6],"connectedNodes":[33,29]}, {"coordinate":[5,6],"connectedNodes":[34,32]},
-      {"coordinate":[4,6],"connectedNodes":[33,35]}, {"coordinate":[4,5],"connectedNodes":[37,34,36]},
-      {"coordinate":[4,4],"connectedNodes":[35,9]}, {"coordinate":[3,5],"connectedNodes":[38,35]},
-      {"coordinate":[2,5],"connectedNodes":[39,37]}, {"coordinate":[2,6],"connectedNodes":[40,38]},
-      {"coordinate":[1,6],"connectedNodes":[39,41]}, {"coordinate":[1,5],"connectedNodes":[40,27]},
-      {"coordinate":[6,4],"connectedNodes":[26]} ]'
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3]},{"coordinate":[3,3],"connectedNodes":[2,6]},{"coordinate":[4,3],"connectedNodes":[5]}]'
+    next_level: 22
   model: game.level
   pk: 21
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    destination: [3, 3]
+    decor: '[{"coordinate":{"x":152,"y":339},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":302,"y":505},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":403,"y":503},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":508,"y":512},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":3,"y":103},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":104,"y":101},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":207,"y":94},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":399,"y":2},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":506,"y":3},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":604,"y":2},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":407,"y":605},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":503,"y":609},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":600,"y":599},"url":"/static/game/image/bush.svg"}]'
+    default: true
+    max_fuel: 50
+    name: 10
+    owner: null
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,4,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2]}]'
+    next_level: 23
+  model: game.level
+  pk: 22
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    destination: [5, 3]
+    decor: '[{"coordinate":{"x":99,"y":597},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":100,"y":495},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":117,"y":408},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":101,"y":197},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":92,"y":107},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":106,"y":1},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":607,"y":593},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":590,"y":493},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":513,"y":412},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":597,"y":3},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":697,"y":1},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":799,"y":0},"url":"/static/game/image/tree2.svg"}]'
+    default: true
+    max_fuel: 50
+    name: 10
+    owner: null
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3,9]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[3,4],"connectedNodes":[3,5]},{"coordinate":[4,4],"connectedNodes":[4,6]},{"coordinate":[4,3],"connectedNodes":[5,10,7]},{"coordinate":[4,2],"connectedNodes":[6,8]},{"coordinate":[3,2],"connectedNodes":[7,9]},{"coordinate":[2,2],"connectedNodes":[2,8]},{"coordinate":[5,3],"connectedNodes":[6]}]'
+  model: game.level
+  pk: 23
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    destination: [7, 7]
+    decor: '[{"coordinate":{"x":566,"y":175},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":838,"y":565},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":223,"y":56},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":121,"y":44},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":351,"y":546},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":547,"y":548},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":643,"y":654},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":251,"y":654},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":247,"y":436},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":48,"y":242},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":443,"y":656},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":443,"y":440},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":651,"y":438},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":653,"y":62},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":853,"y":244},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":848,"y":40},"url":"/static/game/image/tree2.svg"}]'
+    default: true
+    max_fuel: 50
+    name: 10
+    owner: null
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2,20]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4,10]},{"coordinate":[0,5],"connectedNodes":[3,5]},{"coordinate":[0,6],"connectedNodes":[4,6]},{"coordinate":[0,7],"connectedNodes":[5,7]},{"coordinate":[1,7],"connectedNodes":[6,8]},{"coordinate":[2,7],"connectedNodes":[7,9]},{"coordinate":[2,6],"connectedNodes":[8,11,10]},{"coordinate":[2,5],"connectedNodes":[3,9]},{"coordinate":[3,6],"connectedNodes":[9,13]},{"coordinate":[4,7],"connectedNodes":[13]},{"coordinate":[4,6],"connectedNodes":[11,12,14]},{"coordinate":[4,5],"connectedNodes":[13,15]},{"coordinate":[4,4],"connectedNodes":[14,42,16]},{"coordinate":[3,4],"connectedNodes":[15,17]},{"coordinate":[3,3],"connectedNodes":[16,18]},{"coordinate":[3,2],"connectedNodes":[17,28,27,19]},{"coordinate":[2,2],"connectedNodes":[18,20]},{"coordinate":[1,2],"connectedNodes":[19,21,1]},{"coordinate":[0,2],"connectedNodes":[20,22]},{"coordinate":[0,1],"connectedNodes":[21,23]},{"coordinate":[0,0],"connectedNodes":[22,24]},{"coordinate":[1,0],"connectedNodes":[23,25]},{"coordinate":[2,0],"connectedNodes":[24,26]},{"coordinate":[3,0],"connectedNodes":[25,27]},{"coordinate":[3,1],"connectedNodes":[18,26]},{"coordinate":[4,2],"connectedNodes":[18,29]},{"coordinate":[5,2],"connectedNodes":[28,30]},{"coordinate":[5,1],"connectedNodes":[29,31]},{"coordinate":[5,0],"connectedNodes":[30,32]},{"coordinate":[6,0],"connectedNodes":[31,33]},{"coordinate":[6,1],"connectedNodes":[32,34]},{"coordinate":[6,2],"connectedNodes":[33,35]},{"coordinate":[6,3],"connectedNodes":[34,36]},{"coordinate":[6,4],"connectedNodes":[38,37,35,42]},{"coordinate":[7,4],"connectedNodes":[36]},{"coordinate":[6,5],"connectedNodes":[36,39]},{"coordinate":[6,6],"connectedNodes":[38,41]},{"coordinate":[5,7],"connectedNodes":[41]},{"coordinate":[6,7],"connectedNodes":[39,40,43]},{"coordinate":[5,4],"connectedNodes":[15,36]},{"coordinate":[7,7],"connectedNodes":[41]}]'
+    next_level: 25
+  model: game.level
+  pk: 24
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    destination: [4, 2]
+    decor: '[{"coordinate":{"x":0,"y":595},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":2,"y":502},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":6,"y":398},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":0,"y":700},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":5,"y":201},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":8,"y":104},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":0,"y":5},"url":"/static/game/image/tree1.svg"}]'
+    default: true
+    max_fuel: 50
+    name: 10
+    owner: null
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[2,27,26,0]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[1,7],"connectedNodes":[4,6]},{"coordinate":[2,7],"connectedNodes":[5,7]},{"coordinate":[3,7],"connectedNodes":[6,8]},{"coordinate":[4,7],"connectedNodes":[7,9]},{"coordinate":[5,7],"connectedNodes":[8,10]},{"coordinate":[6,7],"connectedNodes":[9,11]},{"coordinate":[7,7],"connectedNodes":[10,12]},{"coordinate":[7,6],"connectedNodes":[11,13]},{"coordinate":[7,5],"connectedNodes":[12,14]},{"coordinate":[7,4],"connectedNodes":[13,15]},{"coordinate":[7,3],"connectedNodes":[14,16]},{"coordinate":[7,2],"connectedNodes":[15,17]},{"coordinate":[7,1],"connectedNodes":[16,18]},{"coordinate":[7,0],"connectedNodes":[17,19]},{"coordinate":[6,0],"connectedNodes":[18,20]},{"coordinate":[5,0],"connectedNodes":[19,21]},{"coordinate":[4,0],"connectedNodes":[20,22]},{"coordinate":[3,0],"connectedNodes":[21,23]},{"coordinate":[2,0],"connectedNodes":[22,24]},{"coordinate":[1,0],"connectedNodes":[23,25]},{"coordinate":[1,1],"connectedNodes":[24,26]},{"coordinate":[1,2],"connectedNodes":[25,1]},{"coordinate":[2,3],"connectedNodes":[28,45,44,1]},{"coordinate":[2,4],"connectedNodes":[27,29]},{"coordinate":[2,5],"connectedNodes":[28,30]},{"coordinate":[2,6],"connectedNodes":[29,31]},{"coordinate":[3,6],"connectedNodes":[30,32]},{"coordinate":[4,6],"connectedNodes":[31,33]},{"coordinate":[5,6],"connectedNodes":[32,34]},{"coordinate":[6,6],"connectedNodes":[33,35]},{"coordinate":[6,5],"connectedNodes":[34,36]},{"coordinate":[6,4],"connectedNodes":[35,37]},{"coordinate":[6,3],"connectedNodes":[36,38]},{"coordinate":[6,2],"connectedNodes":[37,39]},{"coordinate":[6,1],"connectedNodes":[38,40]},{"coordinate":[5,1],"connectedNodes":[39,41]},{"coordinate":[4,1],"connectedNodes":[40,42]},{"coordinate":[3,1],"connectedNodes":[41,43]},{"coordinate":[2,1],"connectedNodes":[42,44]},{"coordinate":[2,2],"connectedNodes":[43,27]},{"coordinate":[3,3],"connectedNodes":[46,54,53,27]},{"coordinate":[3,4],"connectedNodes":[45,47]},{"coordinate":[3,5],"connectedNodes":[46,48]},{"coordinate":[4,5],"connectedNodes":[47,49]},{"coordinate":[5,5],"connectedNodes":[48,50]},{"coordinate":[5,4],"connectedNodes":[49,51]},{"coordinate":[5,3],"connectedNodes":[50,52]},{"coordinate":[5,2],"connectedNodes":[51,56]},{"coordinate":[3,2],"connectedNodes":[45,56]},{"coordinate":[4,3],"connectedNodes":[45,55]},{"coordinate":[4,4],"connectedNodes":[54]},{"coordinate":[4,2],"connectedNodes":[52,53]}]'
+    next_level: 26
+  model: game.level
+  pk: 25
+- fields:
+    block_limit: null
+    blocks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    destination: [6, 4]
+    decor: '[{"coordinate":{"x":0,"y":595},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":2,"y":502},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":6,"y":398},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":5,"y":201},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":8,"y":104},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":0,"y":5},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":0,"y":700},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":193,"y":702},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":403,"y":698},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":598,"y":700},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":799,"y":694},"url":"/static/game/image/tree2.svg"}]'
+    default: true
+    max_fuel: 50
+    name: 10
+    owner: null
+    path: '[{"coordinate":[0,3],"connectedNodes":[1]}, {"coordinate":[1,3],"connectedNodes":[0,27,2]}, {"coordinate":[1,2],"connectedNodes":[1,3]}, {"coordinate":[1,1],"connectedNodes":[2,4]}, {"coordinate":[2,1],"connectedNodes":[3,6,5]}, {"coordinate":[2,0],"connectedNodes":[4]}, {"coordinate":[3,1],"connectedNodes":[4,7]}, {"coordinate":[4,1],"connectedNodes":[6,8]}, {"coordinate":[4,2],"connectedNodes":[9,11,7]}, {"coordinate":[4,3],"connectedNodes":[10,36,8]}, {"coordinate":[3,3],"connectedNodes":[9]}, {"coordinate":[5,2],"connectedNodes":[8,12]}, {"coordinate":[6,2],"connectedNodes":[11,15,13]}, {"coordinate":[6,1],"connectedNodes":[12,14]}, {"coordinate":[6,0],"connectedNodes":[13]}, {"coordinate":[7,2],"connectedNodes":[12,16]}, {"coordinate":[8,2],"connectedNodes":[15,25,17]}, {"coordinate":[8,1],"connectedNodes":[16,18]}, {"coordinate":[8,0],"connectedNodes":[17,19]}, {"coordinate":[9,0],"connectedNodes":[18,20]}, {"coordinate":[9,1],"connectedNodes":[21,19]}, {"coordinate":[9,2],"connectedNodes":[22,20]}, {"coordinate":[9,3],"connectedNodes":[23,21]}, {"coordinate":[9,4],"connectedNodes":[24,22]}, {"coordinate":[8,4],"connectedNodes":[26,23,25]}, {"coordinate":[8,3],"connectedNodes":[24,16]}, {"coordinate":[7,4],"connectedNodes":[42,28,24]}, {"coordinate":[1,4],"connectedNodes":[41,1]}, {"coordinate":[7,5],"connectedNodes":[29,26]}, {"coordinate":[7,6],"connectedNodes":[32,30,28]}, {"coordinate":[8,6],"connectedNodes":[29,31]}, {"coordinate":[9,6],"connectedNodes":[30]}, {"coordinate":[6,6],"connectedNodes":[33,29]}, {"coordinate":[5,6],"connectedNodes":[34,32]}, {"coordinate":[4,6],"connectedNodes":[33,35]}, {"coordinate":[4,5],"connectedNodes":[37,34,36]}, {"coordinate":[4,4],"connectedNodes":[35,9]}, {"coordinate":[3,5],"connectedNodes":[38,35]}, {"coordinate":[2,5],"connectedNodes":[39,37]}, {"coordinate":[2,6],"connectedNodes":[40,38]}, {"coordinate":[1,6],"connectedNodes":[39,41]}, {"coordinate":[1,5],"connectedNodes":[40,27]}, {"coordinate":[6,4],"connectedNodes":[26]} ]'
+  model: game.level
+  pk: 26
 - fields:
     name: Basic
     first_level: 1
@@ -326,36 +376,36 @@
   pk: 1
 - fields:
     name: Loop
-    first_level: 6
+    first_level: 11
     next_episode: 3
   model: game.episode
   pk: 2
 - fields:
     name: Repeat .. Until
-    first_level: 8
+    first_level: 13
     next_episode: 4
   model: game.episode
   pk: 3
 - fields:
     name: Repeat .. While
-    first_level: 10
+    first_level: 15
     next_episode: 5
   model: game.episode
   pk: 4
 - fields:
     name: If ...
-    first_level: 12
+    first_level: 17
     next_episode: 6
   model: game.episode
   pk: 5
 - fields:
     name: Junction
-    first_level: 16
+    first_level: 21
     next_episode: 7
   model: game.episode
   pk: 6
 - fields:
     name: The rest!
-    first_level: 19
+    first_level: 24
   model: game.episode
   pk: 7

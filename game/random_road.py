@@ -1,29 +1,32 @@
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 import json
 import random
 import math
 from models import Level, Block
 
+Node = namedtuple('Node', ['x', 'y'])
+
 
 def create():
-    path = generate_random_path((0, 3), 20, 0.8, 0.0)
-    level = Level(name=3000, path=json.dumps(path), maxFuel=30, destination=path[-1])
+    path = generate_random_path(Node(0, 3), 20, 0.2, 0.1)
+    destination = json.dumps(path[-1]['coordinate'])
+    level = Level(name=3000, path=json.dumps(path), max_fuel=30, destination=destination)
     level.save()
     level.blocks = Block.objects.all()
     level.save()
     return level
 
 
-def calculate_node_angle(node1, node2):
-    return math.atan2(node2[1] - node1[1], node2[0] - node1[0])
+def calculate_node_angle(node_1, node_2):
+    return math.atan2(node_2.y - node_1.y, node_2.x - node_1.x)
 
 
-def generate_random_path(start_position, num_road_tiles, straightness_factor, loopiness_factor):
+def generate_random_path(start_position, num_road_tiles, branchiness_factor, loopiness_factor):
     nodes = [start_position]
     connections = defaultdict(list)
 
     for _ in xrange(num_road_tiles):
-        (previous_node, new_node) = pick_adjacent_node(nodes, straightness_factor)
+        (previous_node, new_node) = pick_adjacent_node(nodes, branchiness_factor)
         if not new_node:
             continue
 
@@ -35,26 +38,25 @@ def generate_random_path(start_position, num_road_tiles, straightness_factor, lo
     for index, node in enumerate(nodes):
         result.append({
             'coordinate': node,
-            'connectedNodes': [c[0] for c in sorted(connections[index], # O Noes! This doesn't work with loops!
-                                                    key=lambda conn: calculate_node_angle(node, conn[1]),
-                                                    reverse=True)]
+            'connectedNodes': sorted(connections[index],
+                                     key=lambda conn: calculate_node_angle(node, nodes[conn]),
+                                     reverse=True)
         })
 
     return result
 
 
-def pick_adjacent_node(nodes, straightness_factor):
+def pick_adjacent_node(nodes, branchiness_factor):
     for attempts in xrange(5):
-        origin = pick_origin_node(nodes, straightness_factor)
+        origin = pick_origin_node(nodes, branchiness_factor)
         possibles = []
-        if is_possible((origin[0] - 1, origin[1]), nodes):
-            possibles.append((origin[0] - 1, origin[1]))
-        if is_possible((origin[0] + 1, origin[1]), nodes):
-            possibles.append((origin[0] + 1, origin[1]))
-        if is_possible((origin[0], origin[1] - 1), nodes):
-            possibles.append((origin[0], origin[1] - 1))
-        if is_possible((origin[0], origin[1] + 1), nodes):
-            possibles.append((origin[0], origin[1] + 1))
+
+        x = origin.x
+        y = origin.y
+        for (delta_x, delta_y) in {(-1, 0), (1, 0), (0, -1), (1, 0)}: # TODO: Make this set a constant
+            node = Node(x + delta_x, y + delta_y)
+            if is_possible(node, nodes):
+                possibles.append(node)
 
         if possibles:
             return origin, random.choice(possibles)
@@ -62,17 +64,17 @@ def pick_adjacent_node(nodes, straightness_factor):
     return None, None
 
 
-def pick_origin_node(nodes, straightness_factor):
-    if random.random() > straightness_factor:
+def pick_origin_node(nodes, branchiness_factor):
+    if random.random() < branchiness_factor:
         return random.choice(nodes)
     else:
         return nodes[-1]
 
 
 def join_up_loops(nodes, connections, loopiness_factor):
-    for node in nodes:
-        for adjacent_node in nodes:  # TODO: This can _surely_ be improved!
-            if adjacent_node == node or not are_adjacent(node, adjacent_node):
+    for node_index, node in enumerate(nodes):
+        for adjacent_node_index, adjacent_node in enumerate(nodes):  # TODO: This can _surely_ be improved!
+            if adjacent_node == node or not are_adjacent(node, adjacent_node) or adjacent_node_index in connections[node_index]:
                 continue
 
             if random.random() < loopiness_factor:
@@ -82,20 +84,19 @@ def join_up_loops(nodes, connections, loopiness_factor):
 
 
 def are_adjacent(node_1, node_2):
-    return node_2 == (node_1[0] - 1, node_1[1]) \
-           or node_2 == (node_1[0] + 1, node_1[1]) \
-           or node_2 == (node_1[0], node_1[1] - 1) \
-           or node_2 == (node_1[0], node_1[1] + 1)
+    delta_x = node_2.x - node_1.x
+    delta_y = node_2.y - node_1.y
+    return (delta_x, delta_y) in {(-1, 0), (1, 0), (0, -1), (1, 0)}
 
 
 def is_possible(node, nodes):
-    return (node not in nodes) and 0 < node[0] < 10 - 1 and 0 < node[1] < 8 - 1
+    return (node not in nodes) and 0 < node.x < 10 - 1 and 0 < node.y < 8 - 1
 
 
 def add_new_connections(nodes, connections, node_1, node_2):
     node_1_index = nodes.index(node_1)
     node_2_index = nodes.index(node_2)
-    connections[node_1_index].append((node_2_index, node_1))
-    connections[node_2_index].append((node_1_index, node_2))
+    connections[node_1_index].append(node_2_index)
+    connections[node_2_index].append(node_1_index)
 
     return connections
