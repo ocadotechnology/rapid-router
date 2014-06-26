@@ -37,11 +37,17 @@
 
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in quam vitae lectus ultrices faucibus at gravida mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
 
-<form id="form-collect">
-    <label for="email-field">Email address</label>
-    <input type="email" id="email-field" required/>
-    <button type="submit">Submit</button>
+{% if submitted %}
+    <h2>Thanks for submitting your email address!</h2>
+{% else %}
+    <form method='post'>
+    {% foundation_form form %}
+    email {'prefix': 'Email:', 'show_label': False};
+    {% end_foundation_form %}
+    <button type='submit'>Submit</button>
 </form>
+{% endif %}
+
 
 <div class="video-wrapper">
     <iframe width="400" height="300" src="//www.youtube.com/embed/ftNG15GpnTU" frameborder="0" allowfullscreen></iframe>
