@@ -72,7 +72,7 @@ class Level (models.Model):
     blocks = models.ManyToManyField(Block, related_name='+')
     max_fuel = models.IntegerField(default=50)
     next_level = models.ForeignKey('self', null=True, default=None)
-    shared_with = models.ManyToManyField(UserProfile, related_name="shared", blank=True, null=True)
+    shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
