@@ -152,7 +152,7 @@ function handleMouseUp(this_rect, segment) {
             ocargo.levelEditor.start = null;
             createRoad(ocargo.levelEditor.nodes);
             ocargo.levelEditor.createGrid(paper)
-            drawDecor(ocargo.levelEditor.decor);
+            ocargo.levelEditor.drawDecor();
             if (ocargo.levelEditor.pathStart !== null) {
                 coord = ocargo.levelEditor.translate(ocargo.levelEditor.pathStart.coordinate);
                 ocargo.levelEditor.mark(coord, 'red', 0.7, true);
@@ -162,6 +162,17 @@ function handleMouseUp(this_rect, segment) {
                 ocargo.levelEditor.mark(coord, 'blue', 0.7, true);
             }
         }
+    }
+}
+
+ocargo.LevelEditor.prototype.drawDecor = function() {
+    for (var i = 0; i < ocargo.levelEditor.decor.length; i++) {
+        var obj = ocargo.levelEditor.decor[i];
+        var coord = obj['coordinate'];
+        console.debug(JSON.stringify(coord));
+        var img = paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
+            DECOR_SIZE, DECOR_SIZE);
+        img.draggableDecor(coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE);
     }
 }
 
@@ -298,24 +309,31 @@ ocargo.LevelEditor.prototype.mark = function(point, colour, opacity, occupied) {
     element.attr({fill:colour, "fill-opacity": opacity});
 };
 
-Raphael.st.draggableDecor = function() {
+Raphael.el.draggableDecor = function(initX, initY) {
     var me = this,
+        locX = initX,
+        locY = initY,
+        kx = 0,
+        ky = 0,
         lx = 0,
         ly = 0,
         ox = 0,
         oy = 0,
-        url = '',
+        url = this.url,
         moveFnc = function(dx, dy) {
             lx = dx + ox;
             ly = dy + oy;
+            kx = dx + locX,
+            ky = dy + locY,
             me.transform('t' + lx + ',' + ly);
         },
         startFnc = function() {
-
+            console.debug("Decor", JSON.stringify(ocargo.levelEditor.decor));
+            console.debug("Box", locX, PAPER_HEIGHT - locY - DECOR_SIZE);
             // Find the element in decor and remove it.
             for (var i = 0; i < ocargo.levelEditor.decor.length; i++) {
-                if (ocargo.levelEditor.decor[i].coordinate.x === ox &&
-                    ocargo.levelEditor.decor[i].coordinate.y === PAPER_HEIGHT - oy - DECOR_SIZE) {
+                if (ocargo.levelEditor.decor[i].coordinate.x === locX &&
+                    ocargo.levelEditor.decor[i].coordinate.y === PAPER_HEIGHT - locY - DECOR_SIZE) {
                     url = ocargo.levelEditor.decor[i].url;
                     ocargo.levelEditor.decor.splice(i, 1);
                     break;
@@ -325,8 +343,10 @@ Raphael.st.draggableDecor = function() {
         endFnc = function() {
             ox = lx;
             oy = ly;
+            locX = kx;
+            locY = ky;
             me.transform('t' + ox + ',' + oy);
-            var coord = new ocargo.Coordinate(ox, PAPER_HEIGHT - oy - DECOR_SIZE);
+            var coord = new ocargo.Coordinate(locX, PAPER_HEIGHT - locY - DECOR_SIZE);
             ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
         };
 
@@ -334,9 +354,8 @@ Raphael.st.draggableDecor = function() {
 };
 
 function initialiseDecorGraphic(url) {
-    var myset = paper.set();
-    myset.push(paper.image(url, 0, 0, DECOR_SIZE, DECOR_SIZE));
-    myset.draggableDecor();
+    var img = paper.image(url, 0, 0, DECOR_SIZE, DECOR_SIZE);
+    img.draggableDecor(0, 0);
     var coord = new ocargo.Coordinate(0, PAPER_HEIGHT - DECOR_SIZE);
     ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
 }
