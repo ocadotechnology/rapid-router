@@ -142,7 +142,7 @@ ocargo.Level.prototype.fail = function(msg, send) {
 	    var hintBtns = $("#hintPopupBtn");
 		if (hintBtns.length === null || hintBtns.length === 0) {
 			$("#myModal > .mainText").append('<p id="hintBtnPara">' +
-                '<button id="hintPopupBtn">'ocargo.messages.needHint'</button>' + 
+                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
                 '</p><p id="hintText">' + HINT + '</p>');
 			if(level.hintOpened){
 				$("#hintBtnPara").hide();
