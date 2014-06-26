@@ -169,7 +169,6 @@ ocargo.LevelEditor.prototype.drawDecor = function() {
     for (var i = 0; i < ocargo.levelEditor.decor.length; i++) {
         var obj = ocargo.levelEditor.decor[i];
         var coord = obj['coordinate'];
-        console.debug(JSON.stringify(coord));
         var img = paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
             DECOR_SIZE, DECOR_SIZE);
         img.draggableDecor(coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE);
@@ -328,8 +327,6 @@ Raphael.el.draggableDecor = function(initX, initY) {
             me.transform('t' + lx + ',' + ly);
         },
         startFnc = function() {
-            console.debug("Decor", JSON.stringify(ocargo.levelEditor.decor));
-            console.debug("Box", locX, PAPER_HEIGHT - locY - DECOR_SIZE);
             // Find the element in decor and remove it.
             for (var i = 0; i < ocargo.levelEditor.decor.length; i++) {
                 if (ocargo.levelEditor.decor[i].coordinate.x === locX &&
