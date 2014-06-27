@@ -421,9 +421,9 @@ def handleAllClassesAllLevels(request):
     studentData = []
     if hasattr(request.user.userprofile, 'student'):
         school = request.user.userprofile.student.class_field.school
+        classes = school.class_school.all()
     elif hasattr(request.user.userprofile, 'teacher'):
-        school = request.user.userprofile.teacher.class_teacher.school
-    classes = school.class_school.all()
+        classes = request.user.userprofile.teacher.class_teacher.all()
     levels = Level.objects.filter(default=1)
 
     for cl in classes:
