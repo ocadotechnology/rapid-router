@@ -142,7 +142,6 @@ function trackDevelopment() {
 
         if (ocargo.level.program === undefined || ocargo.level.program.isTerminated) {
             try {
-                disableDirectControl()
                 ocargo.level.correct = 0;
                 ocargo.level.program = ocargo.blocklyControl.populateProgram();
                 ocargo.level.program.stepCallback = enableDirectControl;
@@ -156,6 +155,8 @@ function trackDevelopment() {
                 throw error;
             }
         }
+        disableDirectControl();
+        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
         ocargo.level.stepper();
 
         function terminate() {
