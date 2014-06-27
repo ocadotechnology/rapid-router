@@ -142,7 +142,7 @@ ocargo.Level.prototype.fail = function(msg, send) {
 	    var hintBtns = $("#hintPopupBtn");
 		if (hintBtns.length === null || hintBtns.length === 0) {
 			$("#myModal > .mainText").append('<p id="hintBtnPara">' +
-                '<button id="hintPopupBtn">Are you stuck? Need a hint?</button>' + 
+                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
                 '</p><p id="hintText">' + HINT + '</p>');
 			if(level.hintOpened){
 				$("#hintBtnPara").hide();
@@ -171,19 +171,21 @@ function stepper(level, play) {
                 if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
                     if(play) {
                         level.win();
-                    }
+                    } 
+                    enableDirectControl();
                 } else if (level.program.isTerminated) {
-                    level.fail("Program terminated!", play);
-                    $("#myModal > .title").text("Stopping...");
+                    level.fail(ocargo.messages.te, play);
+                    $("#myModal > .title").text(ocargo.messages.stoppingTittle);
                 }
                 else {
-                    level.fail("You ran out of instructions!", play);
+                    level.fail(ocargo.messages.outOfInstructions, play);
                     level.program.terminate();
                 }
             }
         } catch (error) {
-            level.fail("Your program crashed!", play);
+            level.fail(ocargo.messages.crashed, play);
             level.program.terminate();
+            enableDirectControl();
             throw error;
         }
     };

@@ -2,6 +2,7 @@ import json
 import os
 import messages
 
+from cache import cached_all_episodes, cached_level, cached_episode
 from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -10,10 +11,9 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
-from forms import AvatarPreUploadedForm, AvatarUploadForm, ShareLevel, ScoreboardForm
+from forms import *
 from game import random_road
 from models import Class, Level, Attempt, Command, Block
-from cache import cached_all_episodes, cached_level, cached_episode
 
 
 def levels(request):
@@ -171,7 +171,7 @@ def scoreboard(request):
     :template:`game/scoreboard.html`
     """
     # Not showing this part to outsiders.
-    if request.user.is_anonymous():
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
     school = None
     thead = []
@@ -224,36 +224,31 @@ def settings(request):
 
     :template:`game/settings.html`
     """
-    x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path = os.path.join(x, 'static/game/image/Avatars/')
-    img_list = os.listdir(path)
-    avatar = None
-    modal = False
-    userProfile = request.user.userprofile
-    avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
-    avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
-    shareLevelForm = ShareLevel(request.POST or None)
-    studentLevels = Level.objects.filter(owner=userProfile.id)
-    levelMessage = messages.noLevelsToShow() if len(studentLevels) == 0 else messages.levelsMessage()
-    if request.method == 'POST':
-        if "pre-uploaded" in request.POST:
-            if avatarPreUploadedForm.is_valid:
-                avatar = avatarPreUploadedForm.data.get('pre-uploaded', False)
-        elif "share-level" in request.POST and shareLevelForm.is_valid():
-            message, people = handleSharedLevel(request, shareLevelForm)
-            if avatarUploadForm.is_valid() and "user-uploaded" in request.POST:
-                avatar = request.FILES.get('avatar', False)
-        userProfile.avatar = avatar
-        userProfile.save()
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile") or True:
+        return renderError(request, messages.noPermissionTitle(), messages.noPermissionMessage())
+    message = "None"
+    levels = Level.objects.filter(owner=request.user.userprofile.id)
+    avatarUploadForm, avatarPreUploadedForm = renderAvatarChoice(request)
+    shareLevelClassForm, shareLevelPersonForm, message = renderLevelSharing(request)
+    levelMessage = messages.noLevelsToShow() if len(levels) == 0 else messages.levelsMessage()
+    sharedLevels = request.user.shared.all()
+    sharedMessage = messages.noSharedLevels() if len(sharedLevels) == 0 \
+        else messages.sharedLevelsMessage()
+    title = messages.shareTitle()
+    message = ""
 
     context = RequestContext(request, {
         'avatarPreUploadedForm': avatarPreUploadedForm,
         'avatarUploadForm': avatarUploadForm,
-        'shareLevelForm': shareLevelForm,
-        'levels': studentLevels,
+        'shareLevelPersonForm': shareLevelPersonForm,
+        'shareLevelClassForm': shareLevelClassForm,
+        'levels': levels,
+        'sharedLevels': sharedLevels,
         'user': request.user,
         'levelMessage': levelMessage,
-        'modal': modal
+        'sharedLevelMessage': sharedMessage,
+        'message': message,
+        'title': title
     })
     return render(request, 'game/settings.html', context)
 
@@ -275,11 +270,13 @@ def start_episode(request, episode):
 def submit(request):
     """ Processes a request on submission of the program solving the current level.
     """
-    if request.method == 'POST' and 'attemptData' in request.POST:
+    if not request.user.is_anonymous() and request.method == 'POST' \
+            and 'attemptData' in request.POST:
         attemptJson = request.POST['attemptData']
         attemptData = json.loads(attemptJson)
         parseAttempt(attemptData, request)
         return HttpResponse(attemptJson, content_type='application/javascript')
+    return HttpResponse('')
 
 
 def level_new(request):
@@ -308,13 +305,19 @@ def level_new(request):
 
         passedLevel.blocks = blocks
         passedLevel.save()
+        prev = get_object_or_404(Level, id=passedLevel.id-1)
+        prev.next_level = passedLevel
+        prev.save()
 
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 
+#
 # Helper methods for rendering views in the game.
+#
+
 
 def renderScoreboard(request, form, school):
     """ Helper method rendering the scoreboard.
@@ -397,12 +400,13 @@ def handleAllClassesOneLevel(request, level):
     """ Show all the students's (from the same school for now) performance on this level.
     """
     studentData = []
+    classes = []
     if hasattr(request.user.userprofile, 'student'):
         school = request.user.userprofile.student.class_field.school
+        classes = school.class_school.all()
     elif hasattr(request.user.userprofile, 'teacher'):
-        school = request.user.userprofile.teacher.class_teacher.school
-    classes = school.class_school.all()
-
+        classes = request.user.userprofile.teacher.class_teacher.all()
+    
     for cl in classes:
         students = cl.students.all()
         for student in students:
@@ -417,9 +421,9 @@ def handleAllClassesAllLevels(request):
     studentData = []
     if hasattr(request.user.userprofile, 'student'):
         school = request.user.userprofile.student.class_field.school
+        classes = school.class_school.all()
     elif hasattr(request.user.userprofile, 'teacher'):
-        school = request.user.userprofile.teacher.class_teacher.school
-    classes = school.class_school.all()
+        classes = request.user.userprofile.teacher.class_teacher.all()
     levels = Level.objects.filter(default=1)
 
     for cl in classes:
@@ -429,17 +433,48 @@ def handleAllClassesAllLevels(request):
     return createRows(studentData, levels)
 
 
-def handleSharedLevel(request, form):
-    level = get_object_or_404(Level, id=form.level)
-    people = User.objects.filter(first_name=form.name, last_name=form.surname)
+def handleSharedLevelPerson(request, form):
+    level = get_object_or_404(Level, id=form.data['level'])
+    people = User.objects.filter(first_name=form.data['name'], last_name=form.data['surname'])
     message = None
     peopleLen = len(people)
     if peopleLen == 0:
-        message = messages.shareUnsuccessful(form.name, form.surname)
+        message = messages.shareUnsuccessfulPerson(form.name, form.surname)
     elif peopleLen == 1:
-        level.sharedWith.add(people[0])
-        message = messages.shareSuccessful(form.name, form.surname)
-    return message, people
+        level.shared_with.add(people[0])
+        message = messages.shareSuccessfulPerson(form.data['name'], form.data['surname'])
+    else:
+        message = "Say whaaaaat"
+    return message
+
+
+def handleSharedLevelClass(request, form):
+    cl = form.data.get('classes', False)
+    level = form.data.get('levels', False)
+    students = cl.students.all()
+    for student in students:
+        level.shared_with.add(student.user.user)
+    return messages.shareSuccessfulClass(cl.name)
+
+
+def renderLevelSharing(request):
+    classes = None
+    message = "Entered Render"
+    userProfile = request.user.userprofile
+    shareLevelPersonForm = ShareLevelPerson(request.POST or None)
+    if hasattr(userProfile, "teacher"):
+        classes = userProfile.teacher.class_teacher.all()
+    elif hasattr(userProfile, "student"):
+        classes = [userProfile.student.class_field]
+    else:
+        return None, shareLevelPersonForm
+    shareLevelClassForm = ShareLevelClass(request.POST or None, classes=classes)
+    if request.method == 'POST':
+        if "share-level-person" in request.POST and shareLevelPersonForm.is_valid():
+            message = handleSharedLevelPerson(request, shareLevelPersonForm)
+        if "share-level-class" in request.POST and shareLevelClassForm.is_valid():
+            message = handleSharedLevelClass(request, shareLevelClassForm)
+    return shareLevelClassForm, shareLevelPersonForm, message
 
 
 def parseAttempt(attemptData, request):
@@ -452,6 +487,26 @@ def parseAttempt(attemptData, request):
     commands = attemptData.get('commandStack', None)
     parseInstructions(json.loads(commands), attempt, 1)
     attempt.save()
+
+
+def renderAvatarChoice(request):
+    """ Helper method for settings view. Generates and processes the avatar changing forms.
+    """
+    avatar = None
+    x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    path = os.path.join(x, 'static/game/image/Avatars')
+    img_list = os.listdir(path)
+    userProfile = request.user.userprofile
+    avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
+    avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
+    if request.method == 'POST':
+        if "pre-uploaded" in request.POST and avatarPreUploadedForm.is_valid:
+            avatar = avatarPreUploadedForm.data.get('pre-uploaded', False)
+        elif "user-uploaded" in request.POST and avatarUploadForm.is_valid():
+            avatar = request.FILES.get('avatar', False)
+        userProfile.avatar = avatar
+        userProfile.save()
+    return avatarUploadForm, avatarPreUploadedForm
 
 
 def render_student_info(request):

@@ -75,6 +75,7 @@ function enableDirectControl() {
     document.getElementById('play').disabled = false;
     document.getElementById('controls').style.visibility='visible';
     document.getElementById('stop').style.visibility='hidden';
+    document.getElementById('step').disabled = false;
 }
 
 function disableDirectControl() {
@@ -84,6 +85,7 @@ function disableDirectControl() {
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
     document.getElementById('play').disabled = true;
+    document.getElementById('step').disabled = true;
 }
 
 function clearVanData() {
@@ -142,7 +144,7 @@ function trackDevelopment() {
             try {
                 ocargo.level.correct = 0;
                 ocargo.level.program = ocargo.blocklyControl.populateProgram();
-                ocargo.level.program.stepCallback = function() {};
+                ocargo.level.program.stepCallback = enableDirectControl;
                 ocargo.level.stepper = stepper(ocargo.level, false);
                 ocargo.level.program.startBlock.selectWithConnected();
                 ocargo.level.program.instructionHandler = new InstructionHandler(ocargo.level, false);
@@ -153,6 +155,8 @@ function trackDevelopment() {
                 throw error;
             }
         }
+        disableDirectControl();
+        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
         ocargo.level.stepper();
 
         function terminate() {

@@ -1,8 +1,9 @@
 from collections import defaultdict, namedtuple
+from django.shortcuts import render, get_object_or_404
 import json
-import random
 import math
 from models import Level, Block
+import random
 
 Node = namedtuple('Node', ['x', 'y'])
 
@@ -14,6 +15,10 @@ def create():
     level.save()
     level.blocks = Block.objects.all()
     level.save()
+    prev = get_object_or_404(Level, id=level.id-1)
+    prev.next_level = level
+    prev.save()
+
     return level
 
 
@@ -53,7 +58,7 @@ def pick_adjacent_node(nodes, branchiness_factor):
 
         x = origin.x
         y = origin.y
-        for (delta_x, delta_y) in {(-1, 0), (1, 0), (0, -1), (1, 0)}: # TODO: Make this set a constant
+        for (delta_x, delta_y) in {(-1, 0), (1, 0), (0, -1), (1, 0)}:  # TODO: Make this set a constant
             node = Node(x + delta_x, y + delta_y)
             if is_possible(node, nodes):
                 possibles.append(node)

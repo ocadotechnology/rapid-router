@@ -409,3 +409,1653 @@
     first_level: 24
   model: game.episode
   pk: 7
+- fields: {name: Test Primary School}
+  model: game.school
+  pk: 1
+- fields: {name: John Smith, user: 7}
+  model: game.teacher
+- fields: {name: c1, school: 1, teacher: 1}
+  model: game.class
+  pk: 1
+- fields: {name: c2, school: 1, teacher: 1}
+  model: game.class
+  pk: 2
+- fields: {class_field: 1, name: bart, user: 1}
+  model: game.student
+  pk: 1
+- fields: {class_field: 1, name: jon, user: 3}
+  model: game.student
+  pk: 2
+- fields: {class_field: 1, name: hayley, user: 2}
+  model: game.student
+  pk: 3
+- fields: {class_field: 2, name: kenny, user: 4}
+  model: game.student
+  pk: 4
+- fields: {class_field: 2, name: meg, user: 5}
+  model: game.student
+  pk: 5
+- fields: {finish_time: !!timestamp '2014-06-27 14:06:16.923286+00:00', level: 1,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:06:12.280152+00:00', student: 5}
+  model: game.attempt
+  pk: 1
+- fields: {finish_time: !!timestamp '2014-06-27 14:06:26.407963+00:00', level: 2,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:06:18.748972+00:00', student: 5}
+  model: game.attempt
+  pk: 2
+- fields: {finish_time: !!timestamp '2014-06-27 14:06:36.708948+00:00', level: 3,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:06:30.521502+00:00', student: 5}
+  model: game.attempt
+  pk: 3
+- fields: {finish_time: !!timestamp '2014-06-27 14:06:54.398689+00:00', level: 4,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:06:38.630204+00:00', student: 5}
+  model: game.attempt
+  pk: 4
+- fields: {finish_time: !!timestamp '2014-06-27 14:07:44.068555+00:00', level: 5,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:07:21.113771+00:00', student: 5}
+  model: game.attempt
+  pk: 5
+- fields: {finish_time: !!timestamp '2014-06-27 14:08:00.199943+00:00', level: 6,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:07:48.414644+00:00', student: 5}
+  model: game.attempt
+  pk: 6
+- fields: {finish_time: !!timestamp '2014-06-27 14:08:36.493638+00:00', level: 7,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:08:01.359340+00:00', student: 5}
+  model: game.attempt
+  pk: 7
+- fields: {finish_time: !!timestamp '2014-06-27 14:09:35.103496+00:00', level: 8,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:08:38.273751+00:00', student: 5}
+  model: game.attempt
+  pk: 8
+- fields: {finish_time: !!timestamp '2014-06-27 14:10:43.384674+00:00', level: 9,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:09:36.529785+00:00', student: 5}
+  model: game.attempt
+  pk: 9
+- fields: {finish_time: !!timestamp '2014-06-27 14:10:49.064280+00:00', level: 10,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:10:49.064222+00:00', student: 5}
+  model: game.attempt
+  pk: 10
+- fields: {finish_time: !!timestamp '2014-06-27 14:10:55.089768+00:00', level: 12,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:10:55.089712+00:00', student: 5}
+  model: game.attempt
+  pk: 11
+- fields: {finish_time: !!timestamp '2014-06-27 14:10:59.027642+00:00', level: 16,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:10:59.027591+00:00', student: 5}
+  model: game.attempt
+  pk: 12
+- fields: {finish_time: !!timestamp '2014-06-27 14:11:03.131291+00:00', level: 19,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:11:03.131238+00:00', student: 5}
+  model: game.attempt
+  pk: 13
+- fields: {finish_time: !!timestamp '2014-06-27 14:11:53.100279+00:00', level: 20,
+    score: 120.0, start_time: !!timestamp '2014-06-27 14:11:16.181735+00:00', student: 5}
+  model: game.attempt
+  pk: 14
+- fields: {finish_time: !!timestamp '2014-06-27 14:12:20.273016+00:00', level: 1,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:12:16.643777+00:00', student: 2}
+  model: game.attempt
+  pk: 15
+- fields: {finish_time: !!timestamp '2014-06-27 14:12:25.961657+00:00', level: 2,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:12:21.169275+00:00', student: 2}
+  model: game.attempt
+  pk: 16
+- fields: {finish_time: !!timestamp '2014-06-27 14:12:32.137392+00:00', level: 3,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:12:27.111054+00:00', student: 2}
+  model: game.attempt
+  pk: 17
+- fields: {finish_time: !!timestamp '2014-06-27 14:12:39.191128+00:00', level: 4,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:12:33.257486+00:00', student: 2}
+  model: game.attempt
+  pk: 18
+- fields: {finish_time: !!timestamp '2014-06-27 14:12:43.924335+00:00', level: 6,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:12:43.924279+00:00', student: 2}
+  model: game.attempt
+  pk: 19
+- fields: {finish_time: !!timestamp '2014-06-27 14:12:54.325938+00:00', level: 5,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:12:44.791448+00:00', student: 2}
+  model: game.attempt
+  pk: 20
+- fields: {finish_time: !!timestamp '2014-06-27 14:13:24.008032+00:00', level: 1,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:13:19.877951+00:00', student: 3}
+  model: game.attempt
+  pk: 21
+- fields: {finish_time: !!timestamp '2014-06-27 14:13:31.856599+00:00', level: 2,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:13:27.345571+00:00', student: 3}
+  model: game.attempt
+  pk: 22
+- fields: {finish_time: !!timestamp '2014-06-27 14:13:48.426398+00:00', level: 4,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:13:34.749377+00:00', student: 3}
+  model: game.attempt
+  pk: 23
+- fields: {finish_time: !!timestamp '2014-06-27 14:13:39.610747+00:00', level: 3,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:13:35.711422+00:00', student: 3}
+  model: game.attempt
+  pk: 24
+- fields: {finish_time: !!timestamp '2014-06-27 14:13:59.072203+00:00', level: 5,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:13:49.629933+00:00', student: 3}
+  model: game.attempt
+  pk: 25
+- fields: {finish_time: !!timestamp '2014-06-27 14:14:05.815018+00:00', level: 6,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:14:00.318882+00:00', student: 3}
+  model: game.attempt
+  pk: 26
+- fields: {finish_time: !!timestamp '2014-06-27 14:14:17.342819+00:00', level: 7,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:14:07.025870+00:00', student: 3}
+  model: game.attempt
+  pk: 27
+- fields: {finish_time: !!timestamp '2014-06-27 14:14:38.459998+00:00', level: 8,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:14:19.393779+00:00', student: 3}
+  model: game.attempt
+  pk: 28
+- fields: {finish_time: !!timestamp '2014-06-27 14:15:45.341445+00:00', level: 10,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:15:42.170113+00:00', student: 3}
+  model: game.attempt
+  pk: 29
+- fields: {finish_time: !!timestamp '2014-06-27 14:18:24.013228+00:00', level: 1,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:18:20.519942+00:00', student: 4}
+  model: game.attempt
+  pk: 30
+- fields: {finish_time: !!timestamp '2014-06-27 14:18:43.271503+00:00', level: 2,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:18:25.220466+00:00', student: 4}
+  model: game.attempt
+  pk: 31
+- fields: {finish_time: !!timestamp '2014-06-27 14:19:47.535844+00:00', level: 1,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:19:43.816029+00:00', student: 1}
+  model: game.attempt
+  pk: 32
+- fields: {finish_time: !!timestamp '2014-06-27 14:19:54.915576+00:00', level: 2,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:19:48.675853+00:00', student: 1}
+  model: game.attempt
+  pk: 33
+- fields: {finish_time: !!timestamp '2014-06-27 14:20:00.399674+00:00', level: 3,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:19:55.981870+00:00', student: 1}
+  model: game.attempt
+  pk: 34
+- fields: {finish_time: !!timestamp '2014-06-27 14:20:08.168072+00:00', level: 4,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:20:01.480083+00:00', student: 1}
+  model: game.attempt
+  pk: 35
+- fields: {finish_time: !!timestamp '2014-06-27 14:20:18.659562+00:00', level: 5,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:20:09.237478+00:00', student: 1}
+  model: game.attempt
+  pk: 36
+- fields: {finish_time: !!timestamp '2014-06-27 14:20:25.885932+00:00', level: 6,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:20:20.701442+00:00', student: 1}
+  model: game.attempt
+  pk: 37
+- fields: {finish_time: !!timestamp '2014-06-27 14:20:37.002287+00:00', level: 7,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:20:27.232691+00:00', student: 1}
+  model: game.attempt
+  pk: 38
+- fields: {finish_time: !!timestamp '2014-06-27 14:20:57.007992+00:00', level: 8,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:20:38.155588+00:00', student: 1}
+  model: game.attempt
+  pk: 39
+- fields: {finish_time: !!timestamp '2014-06-27 14:21:21.649567+00:00', level: 9,
+    score: 200.0, start_time: !!timestamp '2014-06-27 14:20:58.746377+00:00', student: 1}
+  model: game.attempt
+  pk: 40
+- fields: {finish_time: !!timestamp '2014-06-27 14:21:27.591100+00:00', level: 10,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:21:27.591045+00:00', student: 1}
+  model: game.attempt
+  pk: 41
+- fields: {finish_time: !!timestamp '2014-06-27 14:21:30.897922+00:00', level: 11,
+    score: 0.0, start_time: !!timestamp '2014-06-27 14:21:30.897852+00:00', student: 1}
+  model: game.attempt
+  pk: 42
+- fields: {finish_time: !!timestamp '2014-06-27 14:21:51.594053+00:00', level: 20,
+    score: 160.0, start_time: !!timestamp '2014-06-27 14:21:34.243328+00:00', student: 1}
+  model: game.attempt
+  pk: 43
+- fields: {attempt: 1, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 1}
+  model: game.command
+  pk: 1
+- fields: {attempt: 2, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 2
+- fields: {attempt: 2, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 3
+- fields: {attempt: 2, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 3}
+  model: game.command
+  pk: 4
+- fields: {attempt: 3, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 5
+- fields: {attempt: 3, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 2}
+  model: game.command
+  pk: 6
+- fields: {attempt: 4, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 7
+- fields: {attempt: 4, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 8
+- fields: {attempt: 4, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 9
+- fields: {attempt: 4, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 10
+- fields: {attempt: 4, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 11
+- fields: {attempt: 4, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 6}
+  model: game.command
+  pk: 12
+- fields: {attempt: 5, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 13
+- fields: {attempt: 5, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 14
+- fields: {attempt: 5, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 15
+- fields: {attempt: 5, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 16
+- fields: {attempt: 5, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 17
+- fields: {attempt: 5, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 18
+- fields: {attempt: 5, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 19
+- fields: {attempt: 5, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 20
+- fields: {attempt: 5, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 21
+- fields: {attempt: 5, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 22
+- fields: {attempt: 5, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 23
+- fields: {attempt: 5, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 12}
+  model: game.command
+  pk: 24
+- fields: {attempt: 6, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 25
+- fields: {attempt: 6, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 26
+- fields: {attempt: 6, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 27
+- fields: {attempt: 6, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 4}
+  model: game.command
+  pk: 28
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 29
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 30
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 31
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 32
+- fields: {attempt: 7, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 33
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 34
+- fields: {attempt: 7, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 35
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 36
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 37
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 38
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 39
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 40
+- fields: {attempt: 7, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 13}
+  model: game.command
+  pk: 41
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 42
+- fields: {attempt: 8, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 43
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 44
+- fields: {attempt: 8, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 45
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 46
+- fields: {attempt: 8, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 47
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 48
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 49
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 50
+- fields: {attempt: 8, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 51
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 52
+- fields: {attempt: 8, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 53
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 14, step: 13}
+  model: game.command
+  pk: 54
+- fields: {attempt: 8, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 15, step: 14}
+  model: game.command
+  pk: 55
+- fields: {attempt: 8, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 16, step: 15}
+  model: game.command
+  pk: 56
+- fields: {attempt: 8, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 17, step: 16}
+  model: game.command
+  pk: 57
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 18, step: 17}
+  model: game.command
+  pk: 58
+- fields: {attempt: 8, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 19, step: 18}
+  model: game.command
+  pk: 59
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 20, step: 19}
+  model: game.command
+  pk: 60
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 21, step: 20}
+  model: game.command
+  pk: 61
+- fields: {attempt: 8, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 22, step: 21}
+  model: game.command
+  pk: 62
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 23, step: 22}
+  model: game.command
+  pk: 63
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 24, step: 23}
+  model: game.command
+  pk: 64
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 25, step: 24}
+  model: game.command
+  pk: 65
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 26, step: 25}
+  model: game.command
+  pk: 66
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 27, step: 26}
+  model: game.command
+  pk: 67
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 28, step: 27}
+  model: game.command
+  pk: 68
+- fields: {attempt: 8, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 29, step: 28}
+  model: game.command
+  pk: 69
+- fields: {attempt: 8, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 29}
+  model: game.command
+  pk: 70
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 71
+- fields: {attempt: 9, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 72
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 73
+- fields: {attempt: 9, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 74
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 75
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 76
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 77
+- fields: {attempt: 9, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 78
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 79
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 80
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 81
+- fields: {attempt: 9, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 82
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 14, step: 13}
+  model: game.command
+  pk: 83
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 15, step: 14}
+  model: game.command
+  pk: 84
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 16, step: 15}
+  model: game.command
+  pk: 85
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 17, step: 16}
+  model: game.command
+  pk: 86
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 18, step: 17}
+  model: game.command
+  pk: 87
+- fields: {attempt: 9, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 19, step: 18}
+  model: game.command
+  pk: 88
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 20, step: 19}
+  model: game.command
+  pk: 89
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 21, step: 20}
+  model: game.command
+  pk: 90
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 22, step: 21}
+  model: game.command
+  pk: 91
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 23, step: 22}
+  model: game.command
+  pk: 92
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 24, step: 23}
+  model: game.command
+  pk: 93
+- fields: {attempt: 9, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 25, step: 24}
+  model: game.command
+  pk: 94
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 26, step: 25}
+  model: game.command
+  pk: 95
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 27, step: 26}
+  model: game.command
+  pk: 96
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 28, step: 27}
+  model: game.command
+  pk: 97
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 29, step: 28}
+  model: game.command
+  pk: 98
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 30, step: 29}
+  model: game.command
+  pk: 99
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 31, step: 30}
+  model: game.command
+  pk: 100
+- fields: {attempt: 9, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 32, step: 31}
+  model: game.command
+  pk: 101
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 33, step: 32}
+  model: game.command
+  pk: 102
+- fields: {attempt: 9, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 34, step: 33}
+  model: game.command
+  pk: 103
+- fields: {attempt: 9, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 34}
+  model: game.command
+  pk: 104
+- fields: {attempt: 14, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 105
+- fields: {attempt: 14, command: TurnAround, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 106
+- fields: {attempt: 14, command: TurnAround, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 107
+- fields: {attempt: 14, command: TurnAround, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 108
+- fields: {attempt: 14, command: TurnAround, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 109
+- fields: {attempt: 14, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 110
+- fields: {attempt: 14, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 111
+- fields: {attempt: 14, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 112
+- fields: {attempt: 14, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 113
+- fields: {attempt: 14, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 114
+- fields: {attempt: 14, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 115
+- fields: {attempt: 14, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 116
+- fields: {attempt: 14, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 14, step: 13}
+  model: game.command
+  pk: 117
+- fields: {attempt: 14, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 15, step: 14}
+  model: game.command
+  pk: 118
+- fields: {attempt: 14, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 16, step: 15}
+  model: game.command
+  pk: 119
+- fields: {attempt: 14, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 16}
+  model: game.command
+  pk: 120
+- fields: {attempt: 15, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 1}
+  model: game.command
+  pk: 121
+- fields: {attempt: 16, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 122
+- fields: {attempt: 16, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 123
+- fields: {attempt: 16, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 3}
+  model: game.command
+  pk: 124
+- fields: {attempt: 17, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 125
+- fields: {attempt: 17, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 2}
+  model: game.command
+  pk: 126
+- fields: {attempt: 18, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 127
+- fields: {attempt: 18, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 128
+- fields: {attempt: 18, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 129
+- fields: {attempt: 18, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 130
+- fields: {attempt: 18, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 131
+- fields: {attempt: 18, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 6}
+  model: game.command
+  pk: 132
+- fields: {attempt: 20, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 133
+- fields: {attempt: 20, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 134
+- fields: {attempt: 20, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 135
+- fields: {attempt: 20, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 136
+- fields: {attempt: 20, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 137
+- fields: {attempt: 20, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 138
+- fields: {attempt: 20, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 139
+- fields: {attempt: 20, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 140
+- fields: {attempt: 20, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 141
+- fields: {attempt: 20, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 142
+- fields: {attempt: 20, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 143
+- fields: {attempt: 20, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 12}
+  model: game.command
+  pk: 144
+- fields: {attempt: 21, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 1}
+  model: game.command
+  pk: 145
+- fields: {attempt: 22, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 146
+- fields: {attempt: 22, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 147
+- fields: {attempt: 22, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 3}
+  model: game.command
+  pk: 148
+- fields: {attempt: 24, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 149
+- fields: {attempt: 24, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 2}
+  model: game.command
+  pk: 150
+- fields: {attempt: 23, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 151
+- fields: {attempt: 23, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 152
+- fields: {attempt: 23, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 153
+- fields: {attempt: 23, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 154
+- fields: {attempt: 23, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 155
+- fields: {attempt: 23, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 6}
+  model: game.command
+  pk: 156
+- fields: {attempt: 25, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 157
+- fields: {attempt: 25, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 158
+- fields: {attempt: 25, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 159
+- fields: {attempt: 25, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 160
+- fields: {attempt: 25, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 161
+- fields: {attempt: 25, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 162
+- fields: {attempt: 25, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 163
+- fields: {attempt: 25, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 164
+- fields: {attempt: 25, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 165
+- fields: {attempt: 25, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 166
+- fields: {attempt: 25, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 167
+- fields: {attempt: 25, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 12}
+  model: game.command
+  pk: 168
+- fields: {attempt: 26, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 169
+- fields: {attempt: 26, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 170
+- fields: {attempt: 26, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 171
+- fields: {attempt: 26, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 4}
+  model: game.command
+  pk: 172
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 173
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 174
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 175
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 176
+- fields: {attempt: 27, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 177
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 178
+- fields: {attempt: 27, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 179
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 180
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 181
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 182
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 183
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 184
+- fields: {attempt: 27, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 13}
+  model: game.command
+  pk: 185
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 186
+- fields: {attempt: 28, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 187
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 188
+- fields: {attempt: 28, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 189
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 190
+- fields: {attempt: 28, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 191
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 192
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 193
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 194
+- fields: {attempt: 28, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 195
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 196
+- fields: {attempt: 28, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 197
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 14, step: 13}
+  model: game.command
+  pk: 198
+- fields: {attempt: 28, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 15, step: 14}
+  model: game.command
+  pk: 199
+- fields: {attempt: 28, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 16, step: 15}
+  model: game.command
+  pk: 200
+- fields: {attempt: 28, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 17, step: 16}
+  model: game.command
+  pk: 201
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 18, step: 17}
+  model: game.command
+  pk: 202
+- fields: {attempt: 28, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 19, step: 18}
+  model: game.command
+  pk: 203
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 20, step: 19}
+  model: game.command
+  pk: 204
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 21, step: 20}
+  model: game.command
+  pk: 205
+- fields: {attempt: 28, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 22, step: 21}
+  model: game.command
+  pk: 206
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 23, step: 22}
+  model: game.command
+  pk: 207
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 24, step: 23}
+  model: game.command
+  pk: 208
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 25, step: 24}
+  model: game.command
+  pk: 209
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 26, step: 25}
+  model: game.command
+  pk: 210
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 27, step: 26}
+  model: game.command
+  pk: 211
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 28, step: 27}
+  model: game.command
+  pk: 212
+- fields: {attempt: 28, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 29, step: 28}
+  model: game.command
+  pk: 213
+- fields: {attempt: 28, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 29}
+  model: game.command
+  pk: 214
+- fields: {attempt: 30, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 1}
+  model: game.command
+  pk: 215
+- fields: {attempt: 31, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 216
+- fields: {attempt: 31, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 2}
+  model: game.command
+  pk: 217
+- fields: {attempt: 32, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 1}
+  model: game.command
+  pk: 218
+- fields: {attempt: 33, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 219
+- fields: {attempt: 33, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 220
+- fields: {attempt: 33, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 3}
+  model: game.command
+  pk: 221
+- fields: {attempt: 34, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 222
+- fields: {attempt: 34, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 2}
+  model: game.command
+  pk: 223
+- fields: {attempt: 35, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 224
+- fields: {attempt: 35, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 225
+- fields: {attempt: 35, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 226
+- fields: {attempt: 35, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 227
+- fields: {attempt: 35, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 228
+- fields: {attempt: 35, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 6}
+  model: game.command
+  pk: 229
+- fields: {attempt: 36, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 230
+- fields: {attempt: 36, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 231
+- fields: {attempt: 36, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 232
+- fields: {attempt: 36, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 233
+- fields: {attempt: 36, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 234
+- fields: {attempt: 36, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 235
+- fields: {attempt: 36, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 236
+- fields: {attempt: 36, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 237
+- fields: {attempt: 36, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 238
+- fields: {attempt: 36, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 239
+- fields: {attempt: 36, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 240
+- fields: {attempt: 36, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 12}
+  model: game.command
+  pk: 241
+- fields: {attempt: 37, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 242
+- fields: {attempt: 37, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 243
+- fields: {attempt: 37, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 244
+- fields: {attempt: 37, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 4}
+  model: game.command
+  pk: 245
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 246
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 247
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 248
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 249
+- fields: {attempt: 38, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 250
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 251
+- fields: {attempt: 38, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 252
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 253
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 254
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 255
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 256
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 257
+- fields: {attempt: 38, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 13}
+  model: game.command
+  pk: 258
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 259
+- fields: {attempt: 39, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 260
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 261
+- fields: {attempt: 39, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 262
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 263
+- fields: {attempt: 39, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 264
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 265
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 266
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 267
+- fields: {attempt: 39, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 268
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 269
+- fields: {attempt: 39, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 270
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 14, step: 13}
+  model: game.command
+  pk: 271
+- fields: {attempt: 39, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 15, step: 14}
+  model: game.command
+  pk: 272
+- fields: {attempt: 39, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 16, step: 15}
+  model: game.command
+  pk: 273
+- fields: {attempt: 39, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 17, step: 16}
+  model: game.command
+  pk: 274
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 18, step: 17}
+  model: game.command
+  pk: 275
+- fields: {attempt: 39, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 19, step: 18}
+  model: game.command
+  pk: 276
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 20, step: 19}
+  model: game.command
+  pk: 277
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 21, step: 20}
+  model: game.command
+  pk: 278
+- fields: {attempt: 39, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 22, step: 21}
+  model: game.command
+  pk: 279
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 23, step: 22}
+  model: game.command
+  pk: 280
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 24, step: 23}
+  model: game.command
+  pk: 281
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 25, step: 24}
+  model: game.command
+  pk: 282
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 26, step: 25}
+  model: game.command
+  pk: 283
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 27, step: 26}
+  model: game.command
+  pk: 284
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 28, step: 27}
+  model: game.command
+  pk: 285
+- fields: {attempt: 39, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 29, step: 28}
+  model: game.command
+  pk: 286
+- fields: {attempt: 39, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 29}
+  model: game.command
+  pk: 287
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 288
+- fields: {attempt: 40, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 289
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 290
+- fields: {attempt: 40, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 291
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 292
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 293
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 294
+- fields: {attempt: 40, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 295
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 296
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 297
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 298
+- fields: {attempt: 40, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 299
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 14, step: 13}
+  model: game.command
+  pk: 300
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 15, step: 14}
+  model: game.command
+  pk: 301
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 16, step: 15}
+  model: game.command
+  pk: 302
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 17, step: 16}
+  model: game.command
+  pk: 303
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 18, step: 17}
+  model: game.command
+  pk: 304
+- fields: {attempt: 40, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 19, step: 18}
+  model: game.command
+  pk: 305
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 20, step: 19}
+  model: game.command
+  pk: 306
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 21, step: 20}
+  model: game.command
+  pk: 307
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 22, step: 21}
+  model: game.command
+  pk: 308
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 23, step: 22}
+  model: game.command
+  pk: 309
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 24, step: 23}
+  model: game.command
+  pk: 310
+- fields: {attempt: 40, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 25, step: 24}
+  model: game.command
+  pk: 311
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 26, step: 25}
+  model: game.command
+  pk: 312
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 27, step: 26}
+  model: game.command
+  pk: 313
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 28, step: 27}
+  model: game.command
+  pk: 314
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 29, step: 28}
+  model: game.command
+  pk: 315
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 30, step: 29}
+  model: game.command
+  pk: 316
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 31, step: 30}
+  model: game.command
+  pk: 317
+- fields: {attempt: 40, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 32, step: 31}
+  model: game.command
+  pk: 318
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 33, step: 32}
+  model: game.command
+  pk: 319
+- fields: {attempt: 40, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 34, step: 33}
+  model: game.command
+  pk: 320
+- fields: {attempt: 40, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 34}
+  model: game.command
+  pk: 321
+- fields: {attempt: 43, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 2, step: 1}
+  model: game.command
+  pk: 322
+- fields: {attempt: 43, command: TurnAround, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 3, step: 2}
+  model: game.command
+  pk: 323
+- fields: {attempt: 43, command: TurnAround, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 4, step: 3}
+  model: game.command
+  pk: 324
+- fields: {attempt: 43, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 5, step: 4}
+  model: game.command
+  pk: 325
+- fields: {attempt: 43, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 6, step: 5}
+  model: game.command
+  pk: 326
+- fields: {attempt: 43, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 7, step: 6}
+  model: game.command
+  pk: 327
+- fields: {attempt: 43, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 8, step: 7}
+  model: game.command
+  pk: 328
+- fields: {attempt: 43, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 9, step: 8}
+  model: game.command
+  pk: 329
+- fields: {attempt: 43, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 10, step: 9}
+  model: game.command
+  pk: 330
+- fields: {attempt: 43, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 11, step: 10}
+  model: game.command
+  pk: 331
+- fields: {attempt: 43, command: Forward, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 12, step: 11}
+  model: game.command
+  pk: 332
+- fields: {attempt: 43, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 13, step: 12}
+  model: game.command
+  pk: 333
+- fields: {attempt: 43, command: Left, condition: '', executedBlock1: '', executedBlock2: '',
+    next: 14, step: 13}
+  model: game.command
+  pk: 334
+- fields: {attempt: 43, command: Right, condition: '', executedBlock1: '', executedBlock2: '',
+    next: null, step: 14}
+  model: game.command
+  pk: 335
+- fields:
+    date_joined: 2014-06-27 13:46:45+00:00
+    email: john@mail.com
+    first_name: John
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2014-06-27 14:32:33.353432+00:00
+    last_name: Smith
+    password: pbkdf2_sha256$12000$eU0qSI74dJEj$xzGRW1GwRBb3CCAQhNKv5v/B94+HEVapOrp19brQMpk=
+    user_permissions: []
+    username: trial
+  model: auth.user
+  pk: 2
+- fields:
+    date_joined: 2014-06-27 13:55:23+00:00
+    email: bart@mail.com
+    first_name: Bart
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2014-06-27 14:19:41+00:00
+    last_name: Simpson
+    password: pbkdf2_sha256$12000$KCT8u3jx9Vp1$CoWNg5RD94gS9FUbOBRKFYRP3MvKn+46AU2Wyrw9MH8=
+    user_permissions: []
+    username: bart
+  model: auth.user
+  pk: 3
+- fields:
+    date_joined: 2014-06-27 13:56:33+00:00
+    email: meg@mail.com
+    first_name: Meg
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2014-06-27 14:06:09.766884+00:00
+    last_name: Griffin
+    password: pbkdf2_sha256$12000$eqD8xThuIRKy$Y7NpNj/SBdurHlLQx7szujyL+CxpRwqiiZ8G5aga/TE=
+    user_permissions: []
+    username: meg
+  model: auth.user
+  pk: 4
+- fields:
+    date_joined: 2014-06-27 13:56:45+00:00
+    email: jon@mail.com
+    first_name: Jon
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2014-06-27 14:12:13.340776+00:00
+    last_name: Snow
+    password: pbkdf2_sha256$12000$XZ6TD8XH6Rat$Dyxj+iX5JguCp8lSSyjv/4EitFtjqShd2NsIOSrT3Cw=
+    user_permissions: []
+    username: jon
+  model: auth.user
+  pk: 5
+- fields:
+    date_joined: 2014-06-27 13:57:27+00:00
+    email: hayley@mail.com
+    first_name: Hayley
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2014-06-27 14:13:09.795383+00:00
+    last_name: Smith
+    password: pbkdf2_sha256$12000$Gyg0Fb5jXvMo$57abCloGR7kAZAoW6048K8k12W6XhvzFjZ+Ovi3Iev0=
+    user_permissions: []
+    username: hayley
+  model: auth.user
+  pk: 6
+- fields:
+    date_joined: 2014-06-27 14:00:18+00:00
+    email: kenny@mail.com
+    first_name: Kenny
+    groups: []
+    is_active: true
+    is_staff: false
+    is_superuser: false
+    last_login: 2014-06-27 14:15:58.101630+00:00
+    last_name: McCormick
+    password: pbkdf2_sha256$12000$dnPJFbCk8rsk$XSpHzJN4CNLpUKpio5/8GphBtaySGuK39THI6Eq+GGc=
+    user_permissions: []
+    username: kenny
+  model: auth.user
+  pk: 7
+- fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 3}
+  model: game.userprofile
+  pk: 1
+- fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 6}
+  model: game.userprofile
+  pk: 2
+- fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 5}
+  model: game.userprofile
+  pk: 3
+- fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 7}
+  model: game.userprofile
+  pk: 4
+- fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 4}
+  model: game.userprofile
+  pk: 5
+- fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 1}
+  model: game.userprofile
+  pk: 6
+- fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 2}
+  model: game.userprofile
+  pk: 7
+
