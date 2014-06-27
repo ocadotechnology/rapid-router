@@ -224,7 +224,7 @@ def settings(request):
 
     :template:`game/settings.html`
     """
-    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile") or True:
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionMessage())
     message = "None"
     levels = Level.objects.filter(owner=request.user.userprofile.id)
@@ -400,12 +400,13 @@ def handleAllClassesOneLevel(request, level):
     """ Show all the students's (from the same school for now) performance on this level.
     """
     studentData = []
+    classes = []
     if hasattr(request.user.userprofile, 'student'):
         school = request.user.userprofile.student.class_field.school
+        classes = school.class_school.all()
     elif hasattr(request.user.userprofile, 'teacher'):
-        school = request.user.userprofile.teacher.class_teacher.school
-    classes = school.class_school.all()
-
+        classes = request.user.userprofile.teacher.class_teacher.all()
+    
     for cl in classes:
         students = cl.students.all()
         for student in students:
@@ -462,9 +463,9 @@ def renderLevelSharing(request):
     userProfile = request.user.userprofile
     shareLevelPersonForm = ShareLevelPerson(request.POST or None)
     if hasattr(userProfile, "teacher"):
-        classes = request.user.userprofile.teacher.class_teacher.all()
+        classes = userProfile.teacher.class_teacher.all()
     elif hasattr(userProfile, "student"):
-        classes = [userprofile.student.class_field]
+        classes = [userProfile.student.class_field]
     else:
         return None, shareLevelPersonForm
     shareLevelClassForm = ShareLevelClass(request.POST or None, classes=classes)
