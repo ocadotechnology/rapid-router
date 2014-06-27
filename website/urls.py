@@ -13,5 +13,4 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout, {'next_page': '/'}),
-    url(r'^silk', include('silk.urls', namespace='silk')),
 )

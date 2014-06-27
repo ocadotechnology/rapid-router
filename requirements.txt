@@ -11,4 +11,3 @@ unittest2==0.5.1
 pyyaml==3.11
 six==1.6.1
 docutils==0.11
-django-silk==0.1
