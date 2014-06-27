@@ -25,6 +25,13 @@ class ShareLevelPerson(forms.Form):
     level = forms.IntegerField()
 
 
+class ShareLevelChoosePerson(forms.Form):
+    def __init__(self, *args, **kwargs):
+        people = kwargs.pop('people')
+        super(ShareLevelChoosePerson, self).__init__(*args, **kwargs)
+        self.fields['people'] = forms.ModelChoiceField(queryset=people)
+
+
 class ShareLevelClass(forms.Form):
     def __init__(self, *args, **kwargs):
         classes = kwargs.pop('classes')

@@ -233,6 +233,7 @@ def settings(request):
     sharedMessage = messages.noSharedLevels() if len(sharedLevels) == 0 \
         else messages.sharedLevelsMessage()
     title = messages.shareTitle()
+    message = ""
 
     context = RequestContext(request, {
         'avatarPreUploadedForm': avatarPreUploadedForm,
