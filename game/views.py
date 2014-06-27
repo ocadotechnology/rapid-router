@@ -270,11 +270,13 @@ def start_episode(request, episode):
 def submit(request):
     """ Processes a request on submission of the program solving the current level.
     """
-    if request.method == 'POST' and 'attemptData' in request.POST:
+    if not request.user.is_anonymous() and request.method == 'POST' \
+            and 'attemptData' in request.POST:
         attemptJson = request.POST['attemptData']
         attemptData = json.loads(attemptJson)
         parseAttempt(attemptData, request)
         return HttpResponse(attemptJson, content_type='application/javascript')
+    return HttpResponse('')
 
 
 def level_new(request):
@@ -303,6 +305,9 @@ def level_new(request):
 
         passedLevel.blocks = blocks
         passedLevel.save()
+        prev = get_object_or_404(Level, id=passedLevel.id-1)
+        prev.next_level = passedLevel
+        prev.save()
 
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
