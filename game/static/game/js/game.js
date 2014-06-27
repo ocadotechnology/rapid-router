@@ -55,7 +55,6 @@ function initialiseDefault() {
     ocargo.ui = createUi();
     ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, ocargo.ui, MAX_FUEL,
         NEXT_LEVEL, NEXT_EPISODE);
-    console.debug("level, episode", NEXT_LEVEL, "break", NEXT_EPISODE)
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
     enableDirectControl();

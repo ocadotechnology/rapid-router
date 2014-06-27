@@ -171,7 +171,8 @@ function stepper(level, play) {
                 if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
                     if(play) {
                         level.win();
-                    }
+                    } 
+                    enableDirectControl();
                 } else if (level.program.isTerminated) {
                     level.fail(ocargo.messages.te, play);
                     $("#myModal > .title").text(ocargo.messages.stoppingTittle);
@@ -184,6 +185,7 @@ function stepper(level, play) {
         } catch (error) {
             level.fail(ocargo.messages.crashed, play);
             level.program.terminate();
+            enableDirectControl();
             throw error;
         }
     };
