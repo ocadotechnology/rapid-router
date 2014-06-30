@@ -2,6 +2,16 @@
 
 {% block title %}Settings{% endblock %}
 
+{% block scripts %}
+  <script>
+    function changeLevelValue(val) {
+      document.getElementById("id_level").value = val;
+      document.getElementById("id_levels").value = val;
+    }
+  </script>
+{{block.super}}
+{% endblock %}
+
 {% block css %}
 {{block.super}}
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
@@ -11,15 +21,16 @@
 {% block content %}
 <dif id="main">
   <div id="wrapper">
-    <h4>Settings</h4>
+    <h4> Settings </h4>
+    {{message}} <br>
     <ul class="tabs">
       <li>
         <input type="radio" checked name="tabs" id="tab1">
-        <label for="tab1">Avatar</label>
+        <label for="tab1"> Avatar </label>
         <div id="tab-content-avatar" class="tab-content">
           <form method="post" action="">
           {% csrf_token %}
-            <h5>{{chooseAvatar}}</h5>
+            <h5> {{chooseAvatar}} </h5>
             <div class="avatar_container">
             {% for image in avatarPreUploadedForm.avatars.field.choices %}
               <div id="choice">
@@ -51,24 +62,41 @@
       </li>
       <li>
         <input type="radio" name="tabs" id="tab2">
-        <label for="tab2">Levels Owned</label>
+        <label for="tab2"> Levels Owned </label>
         <div id="tab-content-levels" class="tab-content">
-        <h5>{{levelMessage}}</h5>
+        <h5> {{levelMessage}} </h5>
+        <br>
         {% if levels %}
           {% for level in levels %}
-            <br>
             <a href="/game/{{level.id}}"> {{level.name}} </a>
-            <a href="#" data-reveal-id="firstModal" class="radius button shareButton">Share</a>
-          {% endfor %}
-
+            <span style="float:right">
+            Share with
+            <a href="#" onclick="changeLevelValue({{level.id}});" 
+              data-reveal-id="firstModal"> a person </a> |
+            <a href="#" onclick="changeLevelValue({{level.id}});" 
+              data-reveal-id="secondModal"> a class </a>
+            </span>
+            <hr>
+          {% endfor %} 
         {% else %}
           <button onclick="window.location.href='/game/level_editor'"> Create a level! </button>
         {% endif %}
         </div>
       </li>
-    </ul>
-    {{message}}
-   
+      <li>
+        <input type="radio" name="tabs" id="tab3">
+        <label for="tab3"> Shared Levels </label>
+        <div id="tab-content-shared" class="tab-content">
+        <h5> {{sharedLevelMessage}} </h5>
+        <br>
+        {% if sharedLevels %}
+          {% for level in sharedLevels %}
+            <a href="/game/{{level.id}}"> {{level.name}} </a> <hr>
+          {% endfor %}
+        {% endif %}
+        </div>
+      </li>
+    </ul>   
   </div>
 </dif> 
 <div id="profile">
@@ -83,17 +111,28 @@
 </div>
 
 <div id="firstModal" class="reveal-modal" data-reveal>
-  <form method="post" action="">
+  <form method="post" id="share-level-person" name="share-level-person" action="">
+  <h2 class="title"> {{title}} </h2>
   {% csrf_token %}
-  {{shareLevelForm.as_p}}
-  <input type="submit" value="Submit" />
+    {{shareLevelPersonForm.as_p}}
+    <input type="submit" name="share-level-person" value="Submit" />
   </form>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
 
+<div id="secondModal" class="reveal-modal" data-reveal>
+  <h2 class="title"> {{title}} </h2>
+  <form method="post" name="share-level-class" action="">
+  {% csrf_token %}
+    {{shareLevelClassForm.as_p}}
+
+    <input type="submit" name="share-level-class" value="Submit" />
+  </form>
   <a class="close-reveal-modal">&#215;</a>
 </div>
 
 <div id="whichPerson" class="reveal-modal" data-reveal>
-  <h2 class="title"></h2>
+  <h2 class="title"> {{title}} </h2>
   <p class="lead"></p>
   <p class="mainText"></p>
   <a class="close-reveal-modal">&#215;</a>
