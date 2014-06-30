@@ -46,4 +46,5 @@ ocargo.messages = {
 		"you added it.<br> Don't forget to choose a name and fuel limit for your level! It will " +
 		"make sharing it with others much easier for you.",
 	levelEditorTitle: "Welcome to the Level Editor!",
+	throughRedTrafficLight: "You just directed the van through a red traffic light! Stick to the highway code!",
 }

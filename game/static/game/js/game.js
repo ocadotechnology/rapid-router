@@ -4,11 +4,12 @@ function createUi() {
     return new ocargo.SimpleUi();
 }
 
-function createDefaultLevel(nodeData, destination, decor, ui, maxFuel, nextLevel, nextEpisode) {
+function createDefaultLevel(nodeData, destination, decor, trafficLightData, ui, maxFuel, nextLevel, nextEpisode) {
     var nodes = createNodes(nodeData);
+    var trafficLights = createAndAddTrafficLightsToNodes(nodes, trafficLightData);
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
-    var map = new ocargo.Map(nodes, decor, dest, ui);
+    var map = new ocargo.Map(nodes, decor, trafficLights, dest, ui);
     var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
     return new ocargo.Level(map, van, ui, nextLevel, nextEpisode);
 }
@@ -36,6 +37,26 @@ function createNodes(nodeData) {
     return nodes;
 }
 
+function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
+	var trafficLights = [];
+	for(i = 0; i < trafficLightData.length; i++){
+    	var trafficLight = trafficLightData[i];
+    	var controlledNodeId = trafficLight['node'];
+    	var sourceNodeId = trafficLight['sourceNode'];
+    	var redDuration = trafficLight['redDuration'];
+    	var greenDuration = trafficLight['greenDuration'];
+    	var startTime = trafficLight['startTime'];
+    	var startingState = trafficLight['startingState'];
+    	var controlledNode = nodes[controlledNodeId];
+    	var sourceNode = nodes[sourceNodeId];
+    	
+    	var light = new ocargo.TrafficLight(startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
+    	trafficLights.push(light);
+    	controlledNode.addTrafficLight(light);
+    }
+    return trafficLights;
+}
+
 function findByCoordinate(coordinate, nodes) {
     for (var i = 0; i < nodes.length; i++) {
         var coord = nodes[i].coordinate;
@@ -52,8 +73,9 @@ function initialiseDefault() {
     var title = "Level " + LEVEL_ID;
     startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
 
+	ocargo.time = new ocargo.Time();
     ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, ocargo.ui, MAX_FUEL,
+    ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, ocargo.ui, MAX_FUEL,
         NEXT_LEVEL, NEXT_EPISODE);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
     ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
@@ -100,18 +122,21 @@ function trackDevelopment() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
         moveForward(enableDirectControl);
+        ocargo.time.incrementTime();
     });
 
     $('#turnLeft').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
         moveLeft(enableDirectControl);
+        ocargo.time.incrementTime();
     });
 
     $('#turnRight').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
         moveRight(enableDirectControl);
+        ocargo.time.incrementTime();
     });
 
     $('#play').click(function() {
@@ -129,6 +154,7 @@ function trackDevelopment() {
 
         program.instructionHandler = new InstructionHandler(ocargo.level, true);
         clearVanData();
+        ocargo.time.resetTime();
         ocargo.level.play(program);
         ocargo.level.correct = 0;
     });
@@ -147,6 +173,7 @@ function trackDevelopment() {
                 ocargo.level.program.startBlock.selectWithConnected();
                 ocargo.level.program.instructionHandler = new InstructionHandler(ocargo.level, false);
                 clearVanData();
+                ocargo.time.resetTime();
                 Blockly.addChangeListener(terminate);
             } catch (error) {
                 ocargo.level.fail('Your program crashed!');
@@ -174,6 +201,7 @@ function trackDevelopment() {
         ocargo.blocklyControl.reset();
         enableDirectControl();
         clearVanData();
+        ocargo.time.resetTime();
         $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
     });
 

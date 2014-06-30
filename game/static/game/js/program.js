@@ -125,6 +125,19 @@ function atDestinationCondition() {
     	return level.van.currentNode === level.map.destination;
     };
 }
+function trafficLightCondition(lightColour){
+	return function(level) {
+        var prevNode = level.van.previousNode;
+        var currNode = level.van.currentNode;
+		for(var i = 0; i < currNode.trafficLights.length; i++){
+			var tl = currNode.trafficLights[i];
+			if(tl.sourceNode == prevNode && tl.state == lightColour){
+				return true;
+			}
+		}
+		return false;
+    };
+}
 
 function TurnLeftCommand(block) {
 	this.block = block;
@@ -160,4 +173,13 @@ function TurnAroundCommand(block) {
 TurnAroundCommand.prototype.execute = function(program) {
     this.block.selectWithConnected();
     program.instructionHandler.handleInstruction(TURN_AROUND, program);
+};
+
+function WaitCommand(block) {
+    this.block = block;
+}
+
+WaitCommand.prototype.execute = function(program) {
+    this.block.selectWithConnected();
+    program.instructionHandler.handleInstruction(WAIT, program);
 };

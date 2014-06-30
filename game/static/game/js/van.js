@@ -25,11 +25,17 @@ ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
         turnAround(callback);
         ocargo.sound.turning();
         ocargo.sound.turning();
+    } else if (instruction === WAIT) {
+    	wait(callback);
+        //ocargo.sound.idling();
     }
 
-	this.previousNode = this.currentNode;
-	this.currentNode = nextNode;
+	if (instruction !== WAIT) {
+        this.previousNode = this.currentNode;
+	    this.currentNode = nextNode;
+    }
 
+	ocargo.time.incrementTime();
 	this.fuel--;
     updateFuelGuage(this.fuel, this.maxFuel);
 };

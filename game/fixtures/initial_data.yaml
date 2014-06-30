@@ -31,6 +31,12 @@
 - fields: {type: at_destination}
   model: game.block
   pk: 11
+- fields: {type: traffic_light}
+  model: game.block
+  pk: 12
+- fields: {type: wait}
+  model: game.block
+  pk: 13
 - fields:
     block_limit: null
     blocks: [1]
