@@ -224,7 +224,7 @@ def settings(request):
 
     :template:`game/settings.html`
     """
-    if request.user.is_anonymous() or not hasattr(request.user, "userprofile") or True:
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionMessage())
     message = "None"
     levels = Level.objects.filter(owner=request.user.userprofile.id)
@@ -235,7 +235,7 @@ def settings(request):
     sharedMessage = messages.noSharedLevels() if len(sharedLevels) == 0 \
         else messages.sharedLevelsMessage()
     title = messages.shareTitle()
-    message = ""
+    #message = ""
 
     context = RequestContext(request, {
         'avatarPreUploadedForm': avatarPreUploadedForm,
@@ -292,8 +292,7 @@ def level_new(request):
         passedLevel = Level(name=name, path=path, default=False, destination=destination,
                             decor=decor, max_fuel=max_fuel)
 
-        if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and \
-                hasattr(request.user.userprofile, 'student'):
+        if not request.user.is_anonymous() and hasattr(request.user, 'userprofile'):
             passedLevel.owner = request.user.userprofile
         passedLevel.save()
 
@@ -406,7 +405,7 @@ def handleAllClassesOneLevel(request, level):
         classes = school.class_school.all()
     elif hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
-    
+
     for cl in classes:
         students = cl.students.all()
         for student in students:
@@ -449,8 +448,10 @@ def handleSharedLevelPerson(request, form):
 
 
 def handleSharedLevelClass(request, form):
-    cl = form.data.get('classes', False)
-    level = form.data.get('levels', False)
+    classID = form.data.get('classes', False)
+    levelID = form.data.get('levels', False)
+    cl = get_object_or_404(Class, id=classID)
+    level = get_object_or_404(Level, id=levelID)
     students = cl.students.all()
     for student in students:
         level.shared_with.add(student.user.user)
@@ -465,7 +466,8 @@ def renderLevelSharing(request):
     if hasattr(userProfile, "teacher"):
         classes = userProfile.teacher.class_teacher.all()
     elif hasattr(userProfile, "student"):
-        classes = [userProfile.student.class_field]
+        classesObj = userProfile.student.class_field
+        classes = Class.objects.filter(pk=classesObj.id)
     else:
         return None, shareLevelPersonForm
     shareLevelClassForm = ShareLevelClass(request.POST or None, classes=classes)
@@ -474,7 +476,7 @@ def renderLevelSharing(request):
             message = handleSharedLevelPerson(request, shareLevelPersonForm)
         if "share-level-class" in request.POST and shareLevelClassForm.is_valid():
             message = handleSharedLevelClass(request, shareLevelClassForm)
-    return shareLevelClassForm, shareLevelPersonForm, message
+    return shareLevelClassForm, shareLevelPersonForm, str(type(classes)) #message
 
 
 def parseAttempt(attemptData, request):
