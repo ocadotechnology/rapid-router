@@ -235,7 +235,6 @@ def settings(request):
     sharedMessage = messages.noSharedLevels() if len(sharedLevels) == 0 \
         else messages.sharedLevelsMessage()
     title = messages.shareTitle()
-    #message = ""
 
     context = RequestContext(request, {
         'avatarPreUploadedForm': avatarPreUploadedForm,
@@ -460,7 +459,7 @@ def handleSharedLevelClass(request, form):
 
 def renderLevelSharing(request):
     classes = None
-    message = "Entered Render"
+    message = ""
     userProfile = request.user.userprofile
     shareLevelPersonForm = ShareLevelPerson(request.POST or None)
     if hasattr(userProfile, "teacher"):
@@ -476,7 +475,7 @@ def renderLevelSharing(request):
             message = handleSharedLevelPerson(request, shareLevelPersonForm)
         if "share-level-class" in request.POST and shareLevelClassForm.is_valid():
             message = handleSharedLevelClass(request, shareLevelClassForm)
-    return shareLevelClassForm, shareLevelPersonForm, str(type(classes)) #message
+    return shareLevelClassForm, shareLevelPersonForm, message
 
 
 def parseAttempt(attemptData, request):
@@ -494,11 +493,11 @@ def parseAttempt(attemptData, request):
 def renderAvatarChoice(request):
     """ Helper method for settings view. Generates and processes the avatar changing forms.
     """
-    avatar = None
     x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     path = os.path.join(x, 'static/game/image/Avatars')
     img_list = os.listdir(path)
     userProfile = request.user.userprofile
+    avatar = userProfile.avatar
     avatarUploadForm = AvatarUploadForm(request.POST or None, request.FILES)
     avatarPreUploadedForm = AvatarPreUploadedForm(request.POST or None, my_choices=img_list)
     if request.method == 'POST':
