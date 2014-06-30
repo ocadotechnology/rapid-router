@@ -2,6 +2,16 @@
 
 {% block title %}Settings{% endblock %}
 
+{% block scripts %}
+  <script>
+    function changeLevelValue(val) {
+      document.getElementById("id_level").value = val;
+      document.getElementById("id_levels").value = val;
+    }
+  </script>
+{{block.super}}
+{% endblock %}
+
 {% block css %}
 {{block.super}}
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
@@ -61,8 +71,10 @@
             <a href="/game/{{level.id}}"> {{level.name}} </a>
             <span style="float:right">
             Share with
-            <a href="#" data-reveal-id="firstModal"> a person </a> |
-            <a href="#" data-reveal-id="secondModal"> a class </a>
+            <a href="#" onclick="changeLevelValue({{level.id}});" 
+              data-reveal-id="firstModal"> a person </a> |
+            <a href="#" onclick="changeLevelValue({{level.id}});" 
+              data-reveal-id="secondModal"> a class </a>
             </span>
             <hr>
           {% endfor %} 
@@ -99,7 +111,7 @@
 </div>
 
 <div id="firstModal" class="reveal-modal" data-reveal>
-  <form method="post" name="share-level-person" action="">
+  <form method="post" id="share-level-person" name="share-level-person" action="">
   <h2 class="title"> {{title}} </h2>
   {% csrf_token %}
     {{shareLevelPersonForm.as_p}}
@@ -113,6 +125,7 @@
   <form method="post" name="share-level-class" action="">
   {% csrf_token %}
     {{shareLevelClassForm.as_p}}
+
     <input type="submit" name="share-level-class" value="Submit" />
   </form>
   <a class="close-reveal-modal">&#215;</a>
