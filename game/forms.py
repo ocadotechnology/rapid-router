@@ -20,9 +20,12 @@ class AvatarPreUploadedForm(forms.Form):
 
 
 class ShareLevelPerson(forms.Form):
-    name = forms.CharField(max_length=100)
-    surname = forms.CharField(max_length=100)
-    level = forms.IntegerField()
+    def __init__(self, *args, **kwargs):
+        super(ShareLevelPerson, self).__init__(*args, **kwargs)
+        self.fields['name'] = forms.CharField(max_length=100)
+        self.fields['surname'] = forms.CharField(max_length=100)
+        self.fields['level'] = forms.IntegerField()
+        self.fields['level'].widget = forms.HiddenInput()
 
 
 class ShareLevelChoosePerson(forms.Form):
@@ -38,6 +41,7 @@ class ShareLevelClass(forms.Form):
         super(ShareLevelClass, self).__init__(*args, **kwargs)
         self.fields['classes'] = forms.ModelChoiceField(queryset=classes)
         self.fields['levels'] = forms.IntegerField()
+        self.fields['levels'].widget = forms.HiddenInput()
 
 
 class ScoreboardForm(forms.Form):
