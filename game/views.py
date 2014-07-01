@@ -304,9 +304,6 @@ def level_new(request):
 
         passedLevel.blocks = blocks
         passedLevel.save()
-        prev = get_object_or_404(Level, id=passedLevel.id-1)
-        prev.next_level = passedLevel
-        prev.save()
 
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})

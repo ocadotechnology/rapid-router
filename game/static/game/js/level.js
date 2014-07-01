@@ -120,7 +120,7 @@ ocargo.Level.prototype.win = function() {
     if (ocargo.level.nextLevel != null) {
       message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
     } else {
-        if (ocargo.level.nextEpisode != null) {
+        if (ocargo.level.nextEpisode != null && ocargo.level.nextEpisode !== "") {
             message = ocargo.messages.nextEpisodeButton(ocargo.level.nextEpisode);
         } else {
             message = ocargo.messages.lastLevel;
