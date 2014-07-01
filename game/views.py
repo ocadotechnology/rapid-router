@@ -180,8 +180,9 @@ def scoreboard(request):
         classes = request.user.userprofile.teacher.class_teacher.all()
         school = classes[0].school
     elif hasattr(request.user.userprofile, 'student'):
-        classes = request.user.userprofile.student.class_field
-        school = classes.school
+        class_ = request.user.userprofile.student.class_field
+        school = class_.school
+        classes = Class.objects.filter(id=class_.id)
     else:
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
