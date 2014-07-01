@@ -572,6 +572,8 @@ def parseInstructions(instructions, attempt, init):
             command = Command(step=index, attempt=attempt, command='Right', next=index+1)
         elif instruction['command'] == 'TurnAround':
             command = Command(step=index, attempt=attempt, command='TurnAround', next=index+1)
+        elif instruction['command'] == 'Wait':
+            command = Command(step=index, attempt=attempt, command='Wait', next=index+1)
 
         elif instruction['command'] == 'While':
             condition = instruction['condition']

@@ -15,6 +15,7 @@ var FORWARD = new ocargo.Instruction("FORWARD");
 var TURN_LEFT = new ocargo.Instruction("TURN_LEFT");
 var TURN_RIGHT = new ocargo.Instruction("TURN_RIGHT");
 var TURN_AROUND = new ocargo.Instruction("TURN_AROUND");
+var WAIT = new ocargo.Instruction("WAIT");
 
 
 FORWARD.getNextNode = function(previousNode, currentNode) {
@@ -64,4 +65,8 @@ TURN_RIGHT.getNextNode = function(previousNode, currentNode) {
 
 TURN_AROUND.getNextNode = function(previousNode, currentNode) {
     return previousNode;
+};
+
+WAIT.getNextNode = function(previousNode, currentNode) {
+    return currentNode;
 };
