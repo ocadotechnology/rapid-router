@@ -31,7 +31,7 @@ def levels(request):
     context = RequestContext(request, {
         'episodes': cached_all_episodes()
     })
-    return render(request, 'game/level_selection.html', context)
+    return render(request, 'game/level_selection.html', context_instance=context)
 
 
 def level(request, level):
@@ -85,7 +85,7 @@ def level(request, level):
         'hint': hint,
     })
 
-    return render(request, 'game/game.html', context)
+    return render(request, 'game/game.html', context_instance=context)
 
 
 def level_editor(request):
