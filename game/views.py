@@ -1,3 +1,4 @@
+from __future__ import division
 import json
 import os
 import messages
@@ -28,8 +29,19 @@ def levels(request):
 
     :template:`game/level_selection.html`
     """
+    colour = (88, 148, 194)
+    episodes = cached_all_episodes()
+    ratio = 1 / len(episodes)
+    dataArray = []
+    
+    for episode in episodes:
+        dataArray.append([])
+        dataArray[-1].append(episode)
+        dataArray[-1].append(colour)
+        dataArray[-1].append(len(dataArray) * ratio)
+
     context = RequestContext(request, {
-        'episodes': cached_all_episodes()
+        'episodeData': dataArray
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
