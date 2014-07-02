@@ -126,6 +126,11 @@ def episode1(apps, schema_editor):
         level.save()
 
 
+    Episode = apps.get_model('game', 'Episode')
+    episode1 = Episode(name="Basic", first_level=level1)
+    episode1.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
