@@ -87,7 +87,7 @@ SITE_ID = 1
 
 # PRESENTATION LAYER
 
-NUIT_GLOBAL_TITLE = "Oh, Car. Go!"
+NUIT_GLOBAL_TITLE = "Delivery Dash"
 NUIT_GLOBAL_LINK = "/home/"
 
 
