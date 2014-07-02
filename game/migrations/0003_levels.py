@@ -131,6 +131,189 @@ def episode1(apps, schema_editor):
     episode1.save()
 
 
+def episode2(apps, schema_editor):
+    Level = apps.get_model('game', 'Level')
+
+    level12 = Level(
+            destination=[4, 6],
+            decor='[{"coordinate":{"x":348,"y":659},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":341,"y":536},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":454,"y":667},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":454,"y":532},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":335,"y":403},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":455,"y":411},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":232,"y":659},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":230,"y":558},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":239,"y":411},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":135,"y":674},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":128,"y":554},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":127,"y":463},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":140,"y":342},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":21,"y":557},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":20,"y":439},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":7,"y":352},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":34,"y":240},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":138,"y":250},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":242,"y":279},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":347,"y":274},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":449,"y":297},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":556,"y":677},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":551,"y":544},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":558,"y":427},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":557,"y":289},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":22,"y":683},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":559,"y":174},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":348,"y":169},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":235,"y":167},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":135,"y":146},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":18,"y":134},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":20,"y":29},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":131,"y":30},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":240,"y":36},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":349,"y":48},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":451,"y":44},' + \
+                    '"url":"/static/game/image/bush.svg"},{"coordinate":{"x":559,"y":39},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":659,"y":46},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":667,"y":153},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":663,"y":271},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":660,"y":395},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":660,"y":525},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":657,"y":648},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":757,"y":651},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":756,"y":522},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":756,"y":398},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":759,"y":278},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":765,"y":129},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":759,"y":2},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":873,"y":683},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":863,"y":567},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":869,"y":458},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":864,"y":340},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":862,"y":222},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":865,"y":124},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":866,"y":8},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":448,"y":192},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":490,"y":-61},"url":"/static/game/image/tree2.svg"}]',
+            default=True,
+            max_fuel=50,
+            name="12",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
+        )
+    level12.save()
+
+    level11 = Level(
+            destination=[4, 3],
+            decor='[{"coordinate":{"x":136,"y":260},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":192,"y":342},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":240,"y":255},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":292,"y":342},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":339,"y":256},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":240,"y":428},"url":"/static/game/image/tree2.svg"}]',
+            default=True,
+            max_fuel=57,
+            name="11",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] ',
+            next_level=level12)
+    level11.save()
+
+    # add blocks
+    Block = apps.get_model('game', 'Block')
+    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forward", "controls_repeat"])
+
+    level11.blocks = episode_blocks
+    level12.blocks = episode_blocks
+    level11.save()
+    level12.save()
+
+    Episode = apps.get_model('game', 'Episode')
+    episode2 = Episode(name="Loop", first_level=level11)
+    episode2.save()
+
+
+
+def episode3(apps, schema_editor):
+    Level = apps.get_model('game', 'Level')
+
+    level14 = Level(
+            destination=[4, 6],
+            decor='[{"coordinate":{"x":96,"y":599},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":200,"y":599},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":300,"y":600},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":257,"y":514},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":149,"y":512},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":209,"y":431},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":209,"y":188},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":132,"y":118},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":261,"y":102},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":190,"y":33},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":75,"y":35},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":296,"y":11},"url":"/static/game/image/tree2.svg"}]',
+            default=True,
+            max_fuel=50,
+            name="14",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] '
+        )
+    level14.save()
+
+    level13 = Level(
+            destination=[4, 3],
+            decor='[{"coordinate":{"x":96,"y":599},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":200,"y":599},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":300,"y":600},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":257,"y":514},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":149,"y":512},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":209,"y":431},"url":"/static/game/image/tree1.svg"}]',
+            default=True,
+            max_fuel=57,
+            name="13",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}]',
+            next_level=level14)
+    level13.save()
+
+    # add blocks
+    Block = apps.get_model('game', 'Block')
+    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forward", "controls_whileUntil"])
+
+    level13.blocks = episode_blocks
+    level14.blocks = episode_blocks
+    level13.save()
+    level14.save()
+
+    Episode = apps.get_model('game', 'Episode')
+    episode3 = Episode(name="Repeat .. Until", first_level=level13)
+    episode3.save()
+
+
+
+def episode4(apps, schema_editor):
+    Level = apps.get_model('game', 'Level')
+
+    level16 = Level(
+            destination=[4, 6],
+            decor='[{"coordinate":{"x":101,"y":205},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":200,"y":203},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":198,"y":99},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":302,"y":99},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":294,"y":-1},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":401,"y":4},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":0,"y":601},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":104,"y":695},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":4,"y":700},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":899,"y":697},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":798,"y":698},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":897,"y":598},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":695,"y":693},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":597,"y":695},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":498,"y":696},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":201,"y":697},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":400,"y":696},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":299,"y":697},"url":"/static/game/image/tree2.svg"}]',
+            default=True,
+            max_fuel=50,
+            name="16",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}]'
+        )
+    level16.save()
+
+    level15 = Level(
+            destination=[4, 3],
+            decor='[{"coordinate":{"x":2,"y":101},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":101,"y":100},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":203,"y":98},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":306,"y":101},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":403,"y":97},"url":"/static/game/image/tree1.svg"}]',
+            default=True,
+            max_fuel=50,
+            name="15",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] ',
+            next_level=level16)
+    level15.save()
+
+    # add blocks
+    Block = apps.get_model('game', 'Block')
+    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forward", \
+            "controls_whileUntil", "logic_negate"])
+
+    level15.blocks = episode_blocks
+    level16.blocks = episode_blocks
+    level15.save()
+    level16.save()
+
+    Episode = apps.get_model('game', 'Episode')
+    episode4 = Episode(name="Repeat .. While", first_level=level15)
+    episode4.save()
+
+
+
+def episode4(apps, schema_editor):
+    Level = apps.get_model('game', 'Level')
+
+    level20 = Level(
+            destination=[5, 3],
+            decor='[{"coordinate":{"x":244,"y":339},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":246,"y":232},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":246,"y":127},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":669,"y":639},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":469,"y":597},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":596,"y":512},"url":"/static/game/image/tree1.svg"}]',
+            default=True,
+            max_fuel=50,
+            name="20",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] '
+        )
+    level20.save()
+
+    level19 = Level(
+            destination=[5, 3],
+            decor='[{"coordinate":{"x":350,"y":337},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":348,"y":439},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":344,"y":540},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":342,"y":645},"url":"/static/game/image/tree2.svg"}]',
+            default=True,
+            max_fuel=50,
+            name="19",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] ',
+            next_level=level20)
+    level19.save()
+
+    level18 = Level(
+            destination=[4, 6],
+            decor='[{"coordinate":{"x":156,"y":344},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":252,"y":443},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":349,"y":543},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":49,"y":354},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":142,"y":458},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":239,"y":556},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":52,"y":249},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":338,"y":657},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":230,"y":659},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":157,"y":239},"url":"/static/game/image/tree2.svg"}]',
+            default=True,
+            max_fuel=50,
+            name="18",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3,5]},{"coordinate":[3,5],"connectedNodes":[4,6]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6]}] ',
+            next_level=level19)
+    level18.save()
+
+    level17 = Level(
+            destination=[4, 3],
+            decor='[{"coordinate":{"x":454,"y":354},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":455,"y":249},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":555,"y":349},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":558,"y":249},"url":"/static/game/image/bush.svg"}]',
+            default=True,
+            max_fuel=50,
+            name="17",
+            path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3]}] ',
+            next_level=level18)
+    level17.save()
+
+    # add blocks
+    Block = apps.get_model('game', 'Block')
+    episode_blocks = Block.objects.filter(
+            type__in=["move_forwards", "turn_left", "turn_right", \
+                    "controls_whileUntil", "controls_if", "logic_negate", \
+                    "road_exists", "at_destination"])
+
+    level17.blocks = episode_blocks
+    level18.blocks = episode_blocks
+    level19.blocks = episode_blocks
+    level20.blocks = Block.objects.filter(type__in=["move_forwards", "turn_left", "turn_right", \
+        "controls_whileUntil", "controls_if", "logic_negate", \
+        "road_exists", "at_destination", "turn_around", "controls_repeat"])
+    level17.save()
+    level18.save()
+    level19.save()
+    level20.save()
+
+    Episode = apps.get_model('game', 'Episode')
+    episode4 = Episode(name="If ...", first_level=level17)
+    episode4.save()
+
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -139,4 +322,7 @@ class Migration(migrations.Migration):
 
     operations = [
             migrations.RunPython(episode1),
+            migrations.RunPython(episode2),
+            migrations.RunPython(episode3),
+            migrations.RunPython(episode4),
     ]
