@@ -1,15 +1,17 @@
 .episode {
-	border: 2px solid #5894C2;
 	color: #206396;
-	float: left;
-	padding: 20px;
+	padding: 20px 50px 20px 50px;
 	margin: 10px;
-	height: 350px;
-	width: 12.5%;
+	height: 200px;
+	width: 95%;
 	min-width: 150px;
 	overflow: auto;
 }
 
 .episode a {
 	color: #206396;
+}
+
+.episode > h5 {
+	text-align: center
 }

@@ -16,7 +16,8 @@
 
   {% for episode in episodeData %}
     <div class="episode" id="{{episode.0.name}}"
-       style="background: rgba({{episode.1.0}}, {{episode.1.1}}, {{episode.1.2}}, {{episode.2}})">
+       style="background: rgba({{episode.1.0}}, {{episode.1.1}}, {{episode.1.2}}, {{episode.2}});">
+        
       <h5>{{ episode.0.name }}</h5>
 
         {% for level in episode.0.levels %}
