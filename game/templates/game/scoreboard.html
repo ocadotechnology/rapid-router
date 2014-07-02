@@ -41,29 +41,35 @@
 </div>
 <br>
 <div class="mainBody">
-  {% if studentData %}
-  <table id="table" class="tablesorter">
-    <thead>
-    {% for header in thead %}
-      <th> {{header}} </th>
-    {% endfor %}
-    </thead>
-    <tbody>
-    {% for student in studentData %}
-    <tr>
-        <td> <img class="avatar" src="/{{student.0.user.avatar.url}}"> </td>
-        <td> {{student.0.user.user.first_name}} </td>
-        <td> {{student.0.user.user.last_name}} </td>
-        <td> {{student.1}} </td>
-        <td> {{student.2}}</td>
-        {% if thead.3 == 'score' %}
-          <td> {{student.3}} </td>
-          <td> {{student.4}} </td>
-        {% endif %}
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-  {% endif %}
+  <div class="tableWrapper">
+    {% if studentData %}
+    <table id="table" class="tablesorter">
+      <thead>
+      {% for header in thead %}
+        <th> {{header}} </th>
+      {% endfor %}
+      </thead>
+      <tbody>
+      {% for student in studentData %}
+      <tr>
+          <td> <img class="avatar" src="/{{student.0.user.avatar.url}}"> </td>
+          <td> {{student.0.user.user.first_name}} </td>
+          <td> {{student.0.user.user.last_name}} </td>
+          <td> {{student.1}} </td>
+          <td> {{student.2}}</td>
+          {% if thead.3 == 'score' %}
+            <td> {{student.3}} </td>
+            <td> {{student.4}} </td>
+          {% else %}
+            {% for levelScore in student.3 %}
+              <td> {{levelScore}} </td>
+            {% endfor %}
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

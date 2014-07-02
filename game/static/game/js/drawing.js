@@ -9,6 +9,9 @@ var GRID_SPACE_SIZE = 100;
 var VAN_WIDTH = 40;
 var VAN_HEIGHT = 20;
 
+var TRAFFIC_LIGHT_WIDTH = 60;
+var TRAFFIC_LIGHT_HEIGHT = 22;
+
 var MOVE_DISTANCE = GRID_SPACE_SIZE;
 var TURN_DISTANCE = MOVE_DISTANCE / 2;
 var INITIAL_OFFSET_X = 10;
@@ -413,6 +416,13 @@ function moveRight(callback) {
     }, callback);
 }
 
+function wait(callback) {
+	//no movement for now
+    moveVan({
+        transform: '... t0,0'
+    }, callback);
+}
+
 function resetVan(previousNode, startNode) {
     van.transform('r0');
 
@@ -480,9 +490,8 @@ function drawDecor(decor) {
     for (var i = 0; i < decor.length; i++) {
         var obj = decor[i];
         var coord = obj['coordinate'];
-        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE,
-
-                    DECOR_SIZE, DECOR_SIZE);
+        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
+            DECOR_SIZE, DECOR_SIZE);
     }
 }
 
@@ -589,7 +598,49 @@ function renderTheMap(map) {
     createCFC(paper, previousNode, startNode);
     van = createVan(paper, previousNode, startNode);
     drawDecor(map.decor);
+    createTrafficLights(map.trafficLights);
     scrollToShowVan();
+}
+
+function createTrafficLights(trafficLights) {
+	for (var i = 0; i < trafficLights.length; i++) {
+		var trafficLight = trafficLights[i];
+		var controlledNode = trafficLight.controlledNode;
+		var sourceNode = trafficLight.sourceNode;
+		
+		//get position based on nodes
+		var x = (controlledNode.coordinate.x + sourceNode.coordinate.x) / 2.0;
+		var y = (controlledNode.coordinate.y + sourceNode.coordinate.y) / 2.0;
+		
+		//get rotation based on nodes (should face source)
+		var rotation = calculateInitialRotation(sourceNode, controlledNode) + 90;
+		
+		//draw red and green lights, keep reference to both
+        var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
+        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
+        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+            .transform('r' + rotation + 's-1,1');
+        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+            .transform('r' + rotation + 's-1,1');
+		
+		//hide light which isn't the starting state
+		if(trafficLight.startingState == trafficLight.RED){
+			trafficLight.greenLightEl.hide();
+		} else {
+			trafficLight.redLightEl.hide();//
+		}
+		
+		//add listeners to the traffic light to show/hide when lights change
+		$(trafficLight).on(trafficLight.RED, function(){
+			this.redLightEl.show();
+			this.greenLightEl.hide();
+		});
+		
+		$(trafficLight).on(trafficLight.GREEN, function(){
+			this.redLightEl.hide();
+			this.greenLightEl.show();;
+		});
+	}
 }
 
 // This is the function that starts the pop-up.

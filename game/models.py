@@ -10,20 +10,32 @@ class UserProfile (models.Model):
     avatar = models.ImageField(upload_to='static/game/image/avatars/', null=True, blank=True,
                                default='static/game/image/avatars/default-avatar.jpeg')
 
+    def __unicode__(self):
+        return self.user.username
+
 
 class School (models.Model):
     name = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Teacher (models.Model):
     name = models.CharField(max_length=200)
     user = models.OneToOneField(UserProfile)
 
+    def __unicode__(self):
+        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
+
 
 class Class (models.Model):
     name = models.CharField(max_length=200)
     school = models.ForeignKey(School, related_name='class_school')
     teacher = models.ForeignKey(Teacher, related_name='class_teacher')
+
+    def __unicode__(self):
+        return self.name
 
     def get_logged_in_students(self):
         """This gets all the students who are logged in."""
@@ -47,11 +59,17 @@ class Student (models.Model):
     class_field = models.ForeignKey(Class, related_name='students')
     user = models.OneToOneField(UserProfile)
 
+    def __unicode__(self):
+        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
+
 
 class Guardian (models.Model):
     name = models.CharField(max_length=200)
     children = models.ManyToManyField(Student)
     user = models.OneToOneField(UserProfile)
+
+    def __unicode__(self):
+        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
 
 
 class Block (models.Model):
@@ -63,8 +81,9 @@ class Block (models.Model):
 
 class Level (models.Model):
     name = models.CharField(max_length="100")
-    path = models.CharField(max_length=10000)
-    decor = models.CharField(max_length=10000, default='[]')
+    path = models.TextField(max_length=10000)
+    decor = models.TextField(max_length=10000, default='[]')
+    traffic_lights = models.TextField(max_length=10000, default='[]')
     destination = models.CharField(max_length=10)
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
@@ -72,7 +91,7 @@ class Level (models.Model):
     blocks = models.ManyToManyField(Block, related_name='+')
     max_fuel = models.IntegerField(default=50)
     next_level = models.ForeignKey('self', null=True, default=None)
-    shared_with = models.ManyToManyField(UserProfile, related_name="shared", blank=True, null=True)
+    shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
@@ -113,6 +132,7 @@ class Command (models.Model):
         ('Left', 'left'),
         ('Forward', 'forward'),
         ('TurnAround', 'turn around'),
+        ('Wait', 'wait'),
         ('While', 'while'),
         ('If', 'if'),
     )
