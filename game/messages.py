@@ -2,7 +2,6 @@ def noPermissionMessage():
     return "You have no permission to see this."
 
 
-
 """ Strings used in the scoreboard. """
 
 
@@ -79,201 +78,344 @@ def noPermission():
 """ String messages used as level tips in the game view. """
 
 
-def buttons():
-    return "Use the buttons in the bottom right part of the screen to create a path that " \
-        + "will lead the van to the destination. "
-
-
-def dragAndDrop():
-    return "<br>Drag the blocks from the left to the white space and connect them with one " \
-        + "another to create series of commands that will guide the driver to the destination. " \
-        + "To remove an instruction place it back in the gray area. Remember to start from the " \
-        + "<b>start block</b>. "
-
-
 def description_level_default():
-    return description_overall() + dragAndDrop()
+    return "Write something. "  # TODO: Come up with something.
 
 
 def description_overall():
     return "<i>Help the van deliver the order to the customers in the house.</i><br><br>"
 
 
+def title_level1():
+    return "Can you help the van get to the house? "
+
+
 def description_level1():
-    return description_overall() + buttons()
+    message = "Choose the right blocks to tell the van where to go. <br> Drag the blocks under " \
+        + " the 'Start' block to attach them. <br> Are you happy with your sequence? Then click " \
+        + "'go'! "  # TODO: not direct control?
+    return "<b>" + title_level1() + "</b><br><br>" + message
+
+
+def title_level2():
+    return "This time the house is further away. "
 
 
 def description_level2():
-    message = "To connect two instructions stack them together on the white space. "
-    return description_overall() + message + dragAndDrop()
+    message = "Can you hel the van get there? <br> Like last time, drag the right blocks and " \
+        + "attach them under the 'Start' block. <br> To remove a block, drag it back to the " \
+        + "left of the screen. "  # TODO: or the bin.
+    return "<b>" + title_level2() + "</b><br><br>" + message
+
+
+def title_level3():
+    return "Can you make the van turn right? "
 
 
 def description_level3():
-    message = "<b>Turn right</b> lets the driver know he has to turn right. "
-    return description_overall() + message + dragAndDrop()
+    message = "This time, the van has to turn right to reach the house. Make sure you use the " \
+        + "'turn right' block in your sequence. <br> Drag the blocks and attach them under the " \
+        + "'Start' block like before. To remove a block, drag it back to the left of the screen. "
+    return "<b>" + title_level3() + "</b><br><br>" + message
+
+
+def title_level4():
+    return "You are getting good ath this! Let's try turning left. "
 
 
 def description_level4():
-    message = "Turning only right is really boring. Let's add turning left as well. Now you can " \
-        + "also use <b>Turn Left</b> command. "
-    return description_overall() + message
+    message = "This time the van has to go left as well as right. Make sure you use the 'Turn " \
+        + "left' block in your sequence. <br> Drag and attach the blocks like before."
+    return "<b>" + title_level4() + "</b><br><br>" + message
+
+
+def title_level5():
+    return "Good work! You are ready for something harder. "
 
 
 def description_level5():
-    message = "Now you are ready for more complex paths! <br><br>"
-    return message + description_overall()
+    message = "You already know how to make the van turn left or right. This time the van has to " \
+        + "make lots of turns to reach the house. <br> Drag and attach the blocks to make your " \
+        + "sequence. "
+    return "<b>" + title_level5() + "</b><br><br>" + message
+
+
+#
+# MISSING
+#
+#
+
+def title_level6():
+    return "Level 6"
 
 
 def description_level6():
-    return description_level5()
+    return "Description level 6"
+
+
+def title_level7():
+    return "Level 7"
 
 
 def description_level7():
-    return description_level5()
+    return "Description level 7"
+
+
+def title_level8():
+    return "Level 8"
 
 
 def description_level8():
-    return description_level5()
+    return "Description level 8"
+
+
+def title_level9():
+    return "Level 9"
 
 
 def description_level9():
-    return description_level5()
+    return "Description level 9"
+
+
+def title_level10():
+    return "Level 10"
 
 
 def description_level10():
-    return description_level5()
+    return "Description level 10"
+
+
+def title_level11():
+    return "Repeating yourself is boring."
 
 
 def description_level11():
-    message = "Manually adding repeating instructions is boring. That's why there is a " \
-        + "<b>repeat</b> block. <b>Repeat</b> block executes the instructions attached inside it " \
-        + "specified amount of times. Type into the light green box in the block a number of " \
-        + "repetitions. "
-    return description_overall() + message
+    message = "Attach a block inside the 'Repeat' block to make the van repeat it. <br> This " \
+        + "means you can use one block instead of lots of blocks to do the same thing. <br> " \
+        + "How many times do you want the block repeated? Type the number into the 'Repeat' " \
+        + "block. "
+    return "<b>" + title_level11() + "</b><br><br>" + message
+
+
+def title_level12():
+    return "Use 'Repeat' block to make your sequence simpler. "
 
 
 def description_level12():
-    message = "This road looks quite familiar, doesn't it? <br> Use the <b>repeat</b> " \
-        + "block to simplify your program which guides the driver. "
-    return description_overall() + message
+    message = "You drove the van down this road on Level 7. This time, use the 'Repeat' block to " \
+        + "get the van to the house. This will make your sequence simpler than last time."
+    return "<b>" + title_level12() + "</b><br><br>" + message
+
+
+def title_level13():
+    return "No need for numbers. "
 
 
 def description_level13():
-    message = "<b>While</b> and <b>until</b> blocks are quite similar to the repeat one. But " \
-        + "instead of specifying exact amount of repetitions, we append a condition. The blocks " \
-        + "inside the <b>while</b> or <b>until</b> loops will be executed as long as the " \
-        + "condition is true.<br> Change the <b>while</b> block to the <b>until</b> and add " \
-        + "the <b>at destination</b> condition. <br> Use the modified set of blocks to create " \
-        + "a program that guides the driver to the house. "
-    return description_overall() + message
+    message = "Attach a block inside a 'Repeat until' block, and the van will keep repeating it. " \
+        + "The van will not stop until it has reached the point you want it to stop. <br> " \
+        + "You do not have to work out how many times the van should repeat your block. Instead, " \
+        + "just tell the van to stop when it reaches the house. "
+    return "<b>" + title_level13() + "</b><br><br>" + message
+
+
+def title_level14():
+    return "Can you do that again? "
 
 
 def description_level14():
-    message = "Use the <b>until</b> block together with the <b>at destination</b> condition " \
-        + "to guide the van to the destination. "
-    return description_overall() + message
+    message = "Well done, you did it! Now haave a go at using the 'Repeat until' block on a road " \
+        + "with lots of turns. "
+    return "<b>" + title_level14() + "</b><br><br>" + message
+
+
+def title_level15():
+    return "This time use 'Repeat While'. "
 
 
 def description_level15():
-    message = "Usually there is no such thing as <b>until</b>. A <b>while</b> block with " \
-        + "a negated condition can be used to achieve the same result. <br> Use the <b>not</b> " \
-        + "block to reverse the condition. "
-    return description_overall() + message
+    message = "Last time you told the van to repeat a block until it reached the house. This " \
+        + "time, tell the van to repeat the block while not at the house. This means it will " \
+        + "stop when it does reach the house. <br> This is called a While Loop. The block is " \
+        + "repeated while it is true that the van is not at the house. "
+    return "<b>" + title_level15() + "</b><br><br>" + message
+
+
+def title_level16():
+    return "Put the 'while loop' to the test. "
 
 
 def description_level16():
-    message = "Use the <b>while</b> block together with the negation of the <b>at destination<b>" \
-        + "block to lead the driver to the house. "
-    return description_overall() + message
+    message = "The van is back at the bendy road. Can you use the 'Repeat while' block to make a " \
+        + "While Loop? <br> Make the van repeat your While Loop while it is not at the house. " \
+        + "This means you will have a short, simple sequence to make it reach the house. "
+    return "<b>" + title_level16() + "</b><br><br>" + message
+
+
+def title_level17():
+    return "Now it's time to try the 'if' block. "
 
 
 def description_level17():
-    message = "In this level, we have a look at the <b>if</b> statement. <br> <b>If</b> " \
-        + "statements are used when we want a set of commands to be executed only if a condition " \
-        + "holds. For example, 'if there is a turn right, turn right'. If the condition " \
-        + "is false, the block is omitted. <br> Use the <b>if</b> block to create a path " \
-        + "for the driver to reach the destination. "
-    return description_overall() + message
+    message = "Another way of telling the van what to do is to use the 'If' block . For example, " \
+        + "you can tell the van to go forward if the road goes forward, or to turn left if the " \
+        + "road goes forward, or to turn ledt if it goes left. <br> Try using the 'If block' and " \
+        + "the 'Repeat' block together. <br> The 'Repeat' block will stretch if you attach the " \
+        + "'If' block inside it. "
+    return "<b>" + title_level17() + "</b><br><br>" + message
+
+
+def title_level18():
+    return "Good work! What else can you do? "
 
 
 def description_level18():
-    message = "The <b>if</b> statement is often used with the <b>else</b> clause. " \
-        + "If the condition is true, the block in the <b>if</b> gap is executed, otherwise " \
-        + "the one following <b>else</b> is. <br> Use an <b>if</b> block together with " \
-        + "<b>else</b> one to create a path for the driver. "
-    return description_overall() + message
+    message = "You can also use the 'If' block to create choices. Add 'else' to the 'If' block " \
+        + "so the van knows what to do if the first choice can't be done. <br> For example, " \
+        + "tell the van to 'turn left if the road turns left. Add 'else turn right' and the van " \
+        + "turns right if the road does not turn left. "
+    return "<b>" + title_level18() + "</b><br><br>" + message
+
+
+def title_level19():
+    return "What if you cannot see the road? "
 
 
 def description_level19():
-    message = "Quite often we need to check more than one condition to know how to behave - " \
-        + "there might not be a turn right, but we still don't know whether we can go forwards " \
-        + "or we have to turn left first. Hence, we can append <b>else if</b> blocks " \
-        + "to the <b>if</b> statement. <br> Use the <b>if</b> together with <b>else if</b> " \
-        + "and else to guide the driver to the customer. "
-    return description_overall() + message
+    message = "If you cannot see the road, you cannot see the choices to make. No problem! " \
+        + "This is where 'If' and 'else' are useful. <br> You can tell the van to go one way if " \
+        + "the road goes that wat. If the road does not go that way, the van will do nothing. " \
+        + "<br> Keep adding choice using 'else if' and the van will move when the program finds " \
+        + "the right choice. <br> You can add as many 'else if' choices as you like. Add 'else' " \
+        + "as your last choice so that the van knows what to do when the choices run out."
+    return "<b>" + title_level19() + "</b><br><br>" + message
+
+
+def title_level20():
+    return "Fantastic! Can you do it again? "
 
 
 def description_level20():
-    message = "Now you are ready! <br> Use all your knowledge and the newly added conditions " \
-        + "to guide the van to the house. "
-    return description_overall() + message
+    message = "Here is another road. It is even bendier than before, but you know lots of ways " \
+        + "to get the van to the house. <br> Get the van to the house using what you have learnt. "
+    return "<b>" + title_level20() + "</b><br><br>" + message
+
+
+def title_level21():
+    return "Title level 21"
 
 
 def description_level21():
     message = "zomg! Junctions! "
-    return description_overall() + message
+    return "<b>" + title_level21() + "</b><br><br>" + message
+
+
+def title_level22():
+    return "Title level 22"
 
 
 def description_level22():
     message = "zomg! Loops! "
-    return description_overall() + message
+    return "<b>" + title_level22() + "</b><br><br>" + message
+
+
+def title_level23():
+    return "Title level 23"
 
 
 def description_level23():
     message = "zomg! Non-trivial loops! "
-    return description_overall() + message
+    return "<b>" + title_level23() + "</b><br><br>" + message
+
+
+def title_level24():
+    return "Title level 24"
 
 
 def description_level24():
     message = "Have fun! "
-    return description_overall() + message
+    return "<b>" + title_level24() + "</b><br><br>" + message
+
+
+def title_level25():
+    return "Title level 25"
 
 
 def description_level25():
     message = "Non-trivial loops??!? "
-    return description_overall() + message
+    return "<b>" + title_level25() + "</b><br><br>" + message
+
+
+def title_level26():
+    return "Title level 26"
 
 
 def description_level26():
     message = "zomg! I don't even know what to say! "
-    return description_overall() + message
+    return "<b>" + title_level26() + "</b><br><br>" + message
+
+
+def title_level27():
+    return "Title level 27"
+
 
 def description_level27():
-    return description_level25()
+    message = ""
+    return "<b>" + title_level27() + "</b><br><br>" + message
+
+
+def title_level28():
+    return "Title level 28"
 
 
 def description_level28():
-    return description_level25()
+    message = ""
+    return "<b>" + title_level28() + "</b><br><br>" + message
+
+
+def title_level29():
+    return "Title level 29"
 
 
 def description_level29():
-    return description_level25()
+    message = ""
+    return "<b>" + title_level29() + "</b><br><br>" + message
+
+
+def title_level30():
+    return "Title level 30"
 
 
 def description_level30():
-    return description_level25()
+    message = ""
+    return "<b>" + title_level30() + "</b><br><br>" + message
+
+
+def title_level31():
+    return "Title level 31"
 
 
 def description_level31():
-    return description_level25()
+    message = ""
+    return "<b>" + title_level31() + "</b><br><br>" + message
+
+
+def title_level32():
+    return "Title level 32"
 
 
 def description_level32():
-    return description_level25()
+    message = ""
+    return "<b>" + title_level32() + "</b><br><br>" + message
+
+
+def title_level33():
+    return "Title level 33"
 
 
 def description_level33():
-   return description_level25()
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
 
 
 def hint_level_default():

@@ -106,7 +106,7 @@
     block_limit: null
     blocks: [1, 2, 3]
     decor: '[{"coordinate":{"x":271,"y":406},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":164,"y": 392},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":63,"y":397},"url":"/static/game/image/tree1.svg" },{"coordinate":{"x":114,"y":478},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":697,"y":198},"url": "/static/game/image/tree2.svg"},{"coordinate":{"x":532,"y":76},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":705,"y":44},"url":"/static/game/image/tree2.svg"}]'
-    default: false
+    default: true
     destination: '[4,1]'
     max_fuel: 50
     name: 6
@@ -120,7 +120,7 @@
     block_limit: null
     blocks: [1, 2, 3]
     decor: '[{"coordinate":{"x":167,"y":207},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":263,"y":203},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":364,"y":202},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":571,"y":203},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":465,"y":199},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":29,"y":433},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":505,"y":652},"url":"/static/game/image/bush.svg"}]'
-    default: false
+    default: true
     destination: '[8,1]'
     max_fuel: 50
     name: 7
@@ -134,7 +134,7 @@
     block_limit: null
     blocks: [1, 2, 3]
     decor: '[{"coordinate":{"x":596,"y":585},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":233,"y":353},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":248,"y":32},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":709,"y":20},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":106,"y":603},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":99,"y":490},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":597,"y":352},"url":"/static/game/image/tree2.svg"}]'
-    default: false
+    default: true
     destination: '[7,3]'
     max_fuel: 50
     name: 8
@@ -148,7 +148,7 @@
     block_limit: null
     blocks: [1, 2, 3]
     decor: '[{"coordinate":{"x":499,"y":398},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":399,"y":397},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":293,"y":409},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":300,"y":606},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":407,"y":607},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":507,"y":603},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":304,"y":200},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":408,"y":198},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":509,"y":208},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":506,"y":-3},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":402,"y":8},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":295,"y":11},"url":"/static/game/image/tree2.svg"}]'
-    default: false
+    default: true
     destination: '[0,4]'
     max_fuel: 50
     name: 9
@@ -162,7 +162,7 @@
     block_limit: null
     blocks: [1, 2, 3]
     decor: '[{"coordinate":{"x":195,"y":619},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":108,"y":356},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":399,"y":695},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":515,"y":690},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":595,"y":509},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":700,"y":510},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":496,"y":306},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":296,"y":63},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":691,"y":147},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":887,"y":448},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":891,"y":68},"url":"/static/game/image/tree2.svg"}]'
-    default: false
+    default: true
     destination: '[9,7]'
     max_fuel: 57
     name: 10

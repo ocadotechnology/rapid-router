@@ -29,7 +29,21 @@ def levels(request):
 
     :template:`game/level_selection.html`
     """
-    colour = (88, 148, 194)
+    # blue bgcolour = (88, 148, 194)
+    #fontcolour = "#206396"
+    # grass 
+    bgcolour = (171, 196, 37)
+    fontcolour = "#617400"
+    # button bgcolour = (0, 140, 186)
+    # fontcolour = "#00536E"
+    # yellow bgcolour = (255, 158, 0)
+    # fontcolour = "#B06D00"
+    # turkus bgcolour = (0, 191, 143)
+    # fontcolour = "#007356" 
+    # orange bgcolour = (255, 131, 0)
+    # fontcolour = "#B05A00"
+
+
     episodes = cached_all_episodes()
     ratio = 1 / len(episodes)
     dataArray = []
@@ -37,7 +51,7 @@ def levels(request):
     for episode in episodes:
         dataArray.append([])
         dataArray[-1].append(episode)
-        dataArray[-1].append(colour)
+        dataArray[-1].append(bgcolour)
         dataArray[-1].append(len(dataArray) * ratio)
 
     context = RequestContext(request, {
@@ -69,7 +83,7 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    if lvl.default:
+    if lvl.default == 1:
         lesson = 'description_level' + str(level)
         hint = 'hint_level' + str(level)
     else:
