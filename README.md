@@ -12,6 +12,14 @@ To start the development server, run `python manage.py runserver` with optional 
 
 When you pull changes, you may need to `collectstatic` again, and will need to wipe the database schema (delete sqlite file or `manage.py sqlclear`) and re-create it (`manage.py syncdb`) if there have been schema changes.
 
+## Branches
+
+Most of the work happens on "master", which gets deployed automatically to [dev](http://dev.numeric-incline-526.appspot.com).
+
+Changes for the next deployment go on "staging", which gets deployed automatically to [test](http://testing.numeric-incline-526.appspot.com).
+
+Production - tbd.
+
 ## Useful links:
 - [Google Group Forum](https://groups.google.com/a/ocado.com/forum/#!forum/coding-for-life-dev-xd)
 - [Google Group Email](mailto:coding-for-life-dev-xd@ocado.com)
