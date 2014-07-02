@@ -83,6 +83,7 @@ class Level (models.Model):
     name = models.CharField(max_length="100")
     path = models.CharField(max_length=10000)
     decor = models.CharField(max_length=10000, default='[]')
+    traffic_lights = models.CharField(max_length=10000, default='[]')
     destination = models.CharField(max_length=10)
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
@@ -131,6 +132,7 @@ class Command (models.Model):
         ('Left', 'left'),
         ('Forward', 'forward'),
         ('TurnAround', 'turn around'),
+        ('Wait', 'wait'),
         ('While', 'while'),
         ('If', 'if'),
     )

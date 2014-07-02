@@ -180,8 +180,9 @@ def scoreboard(request):
         classes = request.user.userprofile.teacher.class_teacher.all()
         school = classes[0].school
     elif hasattr(request.user.userprofile, 'student'):
-        classes = request.user.userprofile.student.class_field
-        school = classes.school
+        class_ = request.user.userprofile.student.class_field
+        school = class_.school
+        classes = Class.objects.filter(id=class_.id)
     else:
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
@@ -205,6 +206,7 @@ def settings(request):
 
     **Context**
 
+    ``RequestContext``
     ``avatarPreUploadedForm``
         Form used to choose an avatar from already existing images.
         Instance of `forms.avatarPreUploadedForm`.
@@ -303,9 +305,6 @@ def level_new(request):
 
         passedLevel.blocks = blocks
         passedLevel.save()
-        prev = get_object_or_404(Level, id=passedLevel.id-1)
-        prev.next_level = passedLevel
-        prev.save()
 
         response_dict = {}
         response_dict.update({'server_response': passedLevel.id})
@@ -332,15 +331,18 @@ def renderScoreboard(request, form, school):
 
     if classID and levelID:
         studentData = handleOneClassOneLevel(students, level)
-    elif classID:
-        studentData = handleOneClassAllLevels(students)
-        thead = ['avatar', 'name', 'surname', 'total score', 'total time']
     elif levelID:
         studentData = handleAllClassesOneLevel(request, level)
     else:
-    # TODO: Decide on how open do we want the scoreboard to be?
-        studentData = handleAllClassesAllLevels(request)
         thead = ['avatar', 'name', 'surname', 'total score', 'total time']
+        levels = Level.objects.filter(default=1)
+        for level in levels:
+            thead.append(str(level))
+        if classID:
+            studentData = handleOneClassAllLevels(students, levels)
+        else:
+            # TODO: Decide on how open do we want the scoreboard to be?
+            studentData = handleAllClassesAllLevels(request, levels)
     return studentData, thead
 
 
@@ -367,6 +369,8 @@ def createRows(studentData, levels):
                 attempt = Attempt.objects.get(level=level, student=row[0])
                 row[1] += attempt.score
                 row[2].append(attempt.finish_time - attempt.start_time)
+                row.append(attempt.score)
+                row[3].append(attempt.score)
             except ObjectDoesNotExist:
                 pass
     for row in studentData:
@@ -382,16 +386,6 @@ def handleOneClassOneLevel(students, level):
         row = createOneRow(student, level)
         studentData.append(row)
     return studentData
-
-
-def handleOneClassAllLevels(students):
-    """ Show statisctics for all students in a class across all levels (sum).
-    """
-    studentData = []
-    levels = Level.objects.filter(default=1)
-    for student in students:
-        studentData.append([student, 0.0, []])
-    return createRows(studentData, levels)
 
 
 def handleAllClassesOneLevel(request, level):
@@ -413,7 +407,16 @@ def handleAllClassesOneLevel(request, level):
     return studentData
 
 
-def handleAllClassesAllLevels(request):
+def handleOneClassAllLevels(students, levels):
+    """ Show statisctics for all students in a class across all levels (sum).
+    """
+    studentData = []
+    for student in students:
+        studentData.append([student, 0.0, [], []])
+    return createRows(studentData, levels)
+
+
+def handleAllClassesAllLevels(request, levels):
     """ For now restricting it to the same school.
     """
     studentData = []
@@ -422,12 +425,11 @@ def handleAllClassesAllLevels(request):
         classes = school.class_school.all()
     elif hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
-    levels = Level.objects.filter(default=1)
 
     for cl in classes:
         students = cl.students.all()
         for student in students:
-            studentData.append([student, 0.0, []])
+            studentData.append([student, 0.0, [], []])
     return createRows(studentData, levels)
 
 
@@ -570,6 +572,8 @@ def parseInstructions(instructions, attempt, init):
             command = Command(step=index, attempt=attempt, command='Right', next=index+1)
         elif instruction['command'] == 'TurnAround':
             command = Command(step=index, attempt=attempt, command='TurnAround', next=index+1)
+        elif instruction['command'] == 'Wait':
+            command = Command(step=index, attempt=attempt, command='Wait', next=index+1)
 
         elif instruction['command'] == 'While':
             condition = instruction['condition']

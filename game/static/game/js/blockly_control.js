@@ -85,12 +85,42 @@ Blockly.Blocks['turn_around'] = {
     }
 };
 
+Blockly.Blocks['wait'] = {
+    // Block for not moving the van for a time
+    init: function() {
+        this.setColour(160);
+        this.appendDummyInput()
+            .appendField('wait')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Keep the van stationary');
+    }
+};
+
 Blockly.Blocks['road_exists'] = {
     init: function() {
         var BOOLEANS =
             [['road exists forward', 'FORWARD'],
              ['road exists left', 'LEFT'],
              ['road exists right', 'RIGHT']];
+        this.setColour(210);
+        this.setOutput(true, 'Boolean');
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
+    }
+};
+
+Blockly.Blocks['traffic_light'] = {
+    init: function() {
+        var BOOLEANS =
+            [['traffic light red', 'RED'],
+             ['traffic light green', 'GREEN']];
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
@@ -363,6 +393,8 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
         	return atDestinationCondition();
         } else if (conditionBlock.type === 'logic_negate') {
         	return negateCondition(getCondition(conditionBlock.inputList[0].connection.targetBlock()));
+        } else if (conditionBlock.type === 'traffic_light') {
+        	return trafficLightCondition(conditionBlock.inputList[0].fieldRow[1].value_);
         }
 	}
 
@@ -407,6 +439,8 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
                 commands.push(new TurnRightCommand(block));
             } else if (block.type === 'turn_around') {
                 commands.push(new TurnAroundCommand(block));
+            } else if (block.type === 'wait') {
+                commands.push(new WaitCommand(block));
             } else if (block.type === 'controls_repeat') {
             	commands.push(createWhile(block));
             } else if (block.type === 'controls_whileUntil') {

@@ -68,6 +68,8 @@ ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
         } else if (command instanceof TurnAroundCommand) {
             parsedCommand.command = 'TurnAround';
 
+        } else if (command instanceof WaitCommand) {
+            parsedCommand.command = 'Wait';
         } else if (command instanceof While) {
             var block = [];
             ocargo.level.recogniseStack(command.body, block);
@@ -120,7 +122,7 @@ ocargo.Level.prototype.win = function() {
     if (ocargo.level.nextLevel != null) {
       message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
     } else {
-        if (ocargo.level.nextEpisode != null) {
+        if (ocargo.level.nextEpisode != null && ocargo.level.nextEpisode !== "") {
             message = ocargo.messages.nextEpisodeButton(ocargo.level.nextEpisode);
         } else {
             message = ocargo.messages.lastLevel;
@@ -216,6 +218,16 @@ function sendAttempt(score) {
     return false;
 }
 
+function directedThroughRedTrafficLight(previousNode, currentNode, nextNode){
+	for(var i = 0; i < currentNode.trafficLights.length; i++){
+		var tl = currentNode.trafficLights[i];
+		if(tl.sourceNode == previousNode && tl.state == tl.RED){
+			return true;
+		}
+	}
+	return false;
+}
+
 function InstructionHandler(level, isPlay) {
 	this.level = level;
     this.isPlay = isPlay
@@ -223,7 +235,9 @@ function InstructionHandler(level, isPlay) {
 
 InstructionHandler.prototype.handleInstruction = function(instruction, program) {
 	console.debug('Calculating next node for instruction ' + instruction.name);
-    var nextNode = instruction.getNextNode(this.level.van.previousNode, this.level.van.currentNode);
+	var prevNode = this.level.van.previousNode;
+	var currNode = this.level.van.currentNode;
+    var nextNode = instruction.getNextNode(prevNode, currNode);
     if (!nextNode) {
         var n = this.level.correct - 1;
         ocargo.blocklyControl.blink();
@@ -231,6 +245,10 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
 
         program.terminate();
         return; //TODO: animate the crash
+    } else if (nextNode !== currNode && directedThroughRedTrafficLight(prevNode, currNode, nextNode)){
+        this.level.fail(ocargo.messages.throughRedTrafficLight);
+        program.terminate();
+        return; //TODO: play police siren sound
     }
     
     if (this.level.van.fuel === 0) {

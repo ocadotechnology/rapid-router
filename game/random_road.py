@@ -15,9 +15,6 @@ def create():
     level.save()
     level.blocks = Block.objects.all()
     level.save()
-    prev = get_object_or_404(Level, id=level.id-1)
-    prev.next_level = level
-    prev.save()
 
     return level
 

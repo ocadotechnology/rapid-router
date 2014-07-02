@@ -5,6 +5,7 @@ var ocargo = ocargo || {};
 ocargo.Node = function (coordinate) {
     this.coordinate = coordinate;
     this.connectedNodes = [];
+    this.trafficLights = [];
     this.parent = null;
 };
 
@@ -26,6 +27,10 @@ ocargo.Node.prototype.removeDoublyConnectedNode = function(node) {
     if (index >= -1) {
         node.connectedNodes.splice(index, 1);
     }
+};
+
+ocargo.Node.prototype.addTrafficLight = function(trafficLight) {
+	this.trafficLights.push(trafficLight);
 };
 
 ocargo.calculateNodeAngle = function(nodeA, nodeB) {
