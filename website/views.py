@@ -14,7 +14,7 @@ def home(request):
                 # because I didn't want the 'email is already in database'
                 # error showing up on the form on the web page.
                 # This way, submitting your email is idempotent, no errors.
-                Email.objects.get(email=form.cleaned_data['email']
+                Email.objects.get(email=form.cleaned_data['email'])
             except Email.DoesNotExist:
                 form.save()
             return HttpResponseRedirect('?submitted=True')
