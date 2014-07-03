@@ -141,6 +141,7 @@ def description_level5():
 
 
 #
+#
 # MISSING
 #
 #
@@ -151,7 +152,7 @@ def title_level6():
 
 def description_level6():
     message = "Driver does not always start the journey by going to the right of the screen. "
-    return "Description level 6"
+    return "<b>" + title_level6() + "</b><br><br>" + message
 
 
 def title_level7():
@@ -161,7 +162,7 @@ def title_level7():
 def description_level7():
     message = "Practise your newly aquired skills on this road by helping the driver to arrive " \
         + "at the house. "
-    return "Description level 7"
+    return "<b>" + title_level7() + "</b><br><br>" + message
 
 
 def title_level8():
@@ -169,27 +170,31 @@ def title_level8():
 
 
 def description_level8():
-    message = "Congratulations, you should be now ab"
-    return 
+    message = "Congratulations, you should be now able to solve quite complex levels. Here's one " \
+        + "you can have a go at. "
+    return "<b>" + title_level8() + "</b><br><br>" + message
 
 
 def title_level9():
-    return "Level 9"
+    return "Snail maze! "
 
 
 def description_level9():
-    return "Description level 9"
+    message = "Look at this snail maze! Can you navigate the driver through it? "
+    return "<b>" + title_level9() + "</b><br><br>" + message
 
 
 def title_level10():
-    return "Level 10"
+    return "Very long and very bendy. "
 
 
 def description_level10():
-    return "Description level 10"
+    message = "Wow! Look at that! It won't get more complicated than this, we promise!"
+    return "<b>" + title_level5() + "</b><br><br>" + message
 
-
-
+#
+# End of Paulina's substitutes
+#
 
 
 def title_level11():
@@ -308,66 +313,77 @@ def description_level20():
     return "<b>" + title_level20() + "</b><br><br>" + message
 
 
+#
+# Paulina's happy creations
+#
+#
 def title_level21():
-    return "Title level 21"
+    return "Junction time!"
 
 
 def description_level21():
-    message = "zomg! Junctions! "
+    message = "Have you noticed something different? Now you can solve mazes with junctions. " \
+        + "This means you have more than one way to reach the destination. Do you accept the" \
+        + "challenge? "
     return "<b>" + title_level21() + "</b><br><br>" + message
 
 
 def title_level22():
-    return "Title level 22"
+    return "Snail roundabout. "
 
 
 def description_level22():
-    message = "zomg! Loops! "
+    message = "This maze does look like a snail a bit, doesn't it? Can you navigate the van " \
+        + "to the destination having a knot on your way? Remember - the shorter the path, the " \
+        + "better. "
     return "<b>" + title_level22() + "</b><br><br>" + message
 
 
 def title_level23():
-    return "Title level 23"
+    return "Great! Another try? "
 
 
 def description_level23():
-    message = "zomg! Non-trivial loops! "
+    message = "You've done fantastiv job so far! Can you find the way to the house this time? " \
+        + "There is more than one solution! "
     return "<b>" + title_level23() + "</b><br><br>" + message
 
 
 def title_level24():
-    return "Title level 24"
+    return "That's tangled up! "
 
 
 def description_level24():
-    message = "Have fun! "
+    message = "This sure is one complicated maze. Can you spot the shortest path? "
     return "<b>" + title_level24() + "</b><br><br>" + message
 
 
 def title_level25():
-    return "Title level 25"
+    return "Find the pattern in this chaos."
 
 
 def description_level25():
-    message = "Non-trivial loops??!? "
+    message = "This maze surely can be solved with the general algorithm. But watch out - the " \
+        + "order in which you check for the instructions will matter in this case! "
     return "<b>" + title_level25() + "</b><br><br>" + message
 
 
 def title_level26():
-    return "Title level 26"
+    return "Congratulations! You've made it so far!"
 
 
 def description_level26():
-    message = "zomg! I don't even know what to say! "
+    message = "Let's now practise what you've learnt so far. Create a program which lets the " \
+        + "driver reach the house in the shortest way. "
     return "<b>" + title_level26() + "</b><br><br>" + message
 
 
 def title_level27():
-    return "Title level 27"
+    return "Traffic lights!"
 
 
 def description_level27():
-    message = ""
+    message = "Don't ignore the law. Don't let the van driver drive through the red lights. "
     return "<b>" + title_level27() + "</b><br><br>" + message
 
 
@@ -424,6 +440,10 @@ def description_level33():
     message = ""
     return "<b>" + title_level33() + "</b><br><br>" + message
 
+#
+# The end of Paulina's Happy Creation.
+#
+#
 
 def hint_level_default():
     message = "There is no specific information I can give for this level.<br>Do your best to " \

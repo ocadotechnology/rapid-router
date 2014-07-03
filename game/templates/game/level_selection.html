@@ -25,7 +25,7 @@
         <col width="10%">
           {% for level in episode.0.levels %}
             <tr>
-              <td> <button class="levelButton" onclik="window.location.href=/game/{{ level.id }}"
+              <td> <button class="levelButton" onclick="window.location.href='/game/{{ level.id }}'"
                     style="background: rgba(99, 119, 0, {{episode.2}});">
                     {{ level }} </button>
               </td>
