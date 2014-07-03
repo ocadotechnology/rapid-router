@@ -29,20 +29,20 @@ def levels(request):
 
     :template:`game/level_selection.html`
     """
+    """ Keeping other schemes here for now, just in case we decide on different scheme. """
     # blue bgcolour = (88, 148, 194)
     #fontcolour = "#206396"
-    # grass 
-    bgcolour = (171, 196, 37)
-    fontcolour = "#617400"
     # button bgcolour = (0, 140, 186)
     # fontcolour = "#00536E"
     # yellow bgcolour = (255, 158, 0)
     # fontcolour = "#B06D00"
     # turkus bgcolour = (0, 191, 143)
-    # fontcolour = "#007356" 
+    # fontcolour = "#007356"
     # orange bgcolour = (255, 131, 0)
     # fontcolour = "#B05A00"
-
+    # grass
+    bgcolour = (171, 196, 37)
+    fontcolour = "#617400"
 
     episodes = cached_all_episodes()
     ratio = 1 / len(episodes)
@@ -54,8 +54,18 @@ def levels(request):
         dataArray[-1].append(bgcolour)
         dataArray[-1].append(len(dataArray) * ratio)
 
+    defaultCount = Level.object.filter(default=1).count()
+
+    titles = []
+    for i in range(0, defaultCount):
+        title = 'title_level' + str(level)
+        titleCall = getattr(messages, title)
+        title = mark_safe(titleCall())
+        titles[i].append(title)
+
     context = RequestContext(request, {
-        'episodeData': dataArray
+        'episodeData': dataArray,
+        'titles': titles
     })
     return render(request, 'game/level_selection.html', context)
 
