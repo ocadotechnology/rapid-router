@@ -2,59 +2,12 @@
 
 
 {% block css %}
-    <style type="text/css">
-        .main {
-            margin: 0 auto;
-            text-align: center;
-            background-image: url('/static/website/img/mascot.jpg');
-            background-repeat: no-repeat;
-            background-position: right 105px;
-        }
-
-        #form-collect label,
-        #form-collect input,
-        #form-collect button {
-            display: inline-block;
-            height: 60px; 
-            margin-right: 5px;
-            padding: 2px 5px;
-        }
-
-        #form-collect input {
-            width: 250px;
-        }
-
-        .video-wrapper {
-            display: inline-block;
-        }
-    </style>
 {% endblock %}
 
 {% block content %}
-<img src="/static/website/img/logo.png" alt="Lorem ipsum logo" alt="Lorem ipsum logo"/>
 
-<h1>Lorem ipsum</h1>
+<h1>Delivery Dash</h1>
 
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in quam vitae lectus ultrices faucibus at gravida mi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-
-{% if submitted %}
-    <h2>Thanks for submitting your email address!</h2>
-{% else %}
-    <form method='post'>
-    {% foundation_form form %}
-    email {'prefix': 'Email:', 'show_label': False};
-    {% end_foundation_form %}
-    <button type='submit'>Submit</button>
-</form>
-{% endif %}
-
-<div class="video-wrapper">
-    <iframe width="400" height="300" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
-    <legend class="caption">Lorem ipsum</legend>
-</div>
-
-<footer>
-    <small>Ocado Technology &#169; 2014</small>
-</footer>
+<h2><a href="/game/">Click here to play the game!</a></h2>
 
 {% endblock %}
