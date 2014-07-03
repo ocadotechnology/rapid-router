@@ -25,7 +25,10 @@
         <col width="10%">
           {% for level in episode.0.levels %}
             <tr>
-              <td><h6> <a href="/game/{{ level.id }}">{{ level }}</a> </h6></td>
+              <td> <button class="levelButton" onclik="window.location.href=/game/{{ level.id }}"
+                    style="background: rgba(99, 119, 0, {{episode.2}});">
+                    {{ level }} </button>
+              </td>
               {% for row in data %}
                 {% if forloop.counter == level.id %}
                   <td> {{row.0}} </td>

@@ -146,27 +146,31 @@ def description_level5():
 #
 
 def title_level6():
-    return "Level 6"
+    return "CFC is not always in the same place. "
 
 
 def description_level6():
+    message = "Driver does not always start the journey by going to the right of the screen. "
     return "Description level 6"
 
 
 def title_level7():
-    return "Level 7"
+    return "Can you go from right to left? "
 
 
 def description_level7():
+    message = "Practise your newly aquired skills on this road by helping the driver to arrive " \
+        + "at the house. "
     return "Description level 7"
 
 
 def title_level8():
-    return "Level 8"
+    return "More complicated maze. "
 
 
 def description_level8():
-    return "Description level 8"
+    message = "Congratulations, you should be now ab"
+    return 
 
 
 def title_level9():
@@ -183,6 +187,9 @@ def title_level10():
 
 def description_level10():
     return "Description level 10"
+
+
+
 
 
 def title_level11():
