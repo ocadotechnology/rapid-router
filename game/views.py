@@ -54,18 +54,30 @@ def levels(request):
         dataArray[-1].append(bgcolour)
         dataArray[-1].append(len(dataArray) * ratio)
 
-    defaultCount = Level.object.filter(default=1).count()
+    defaultCount = Level.objects.filter(default=1).count()
+    titlesAndScores = []
 
-    titles = []
-    for i in range(0, defaultCount):
-        title = 'title_level' + str(level)
+    for i in range(1, defaultCount):
+        row = []
+        title = 'title_level' + str(i)
         titleCall = getattr(messages, title)
         title = mark_safe(titleCall())
-        titles[i].append(title)
+        row.append(title)
+        user = request.user
+        lvl = Level.objects.get(id=i)
+
+        if (not user.is_anonymous()) and hasattr(request.user.userprofile, 'student'):
+            try:
+                student = user.userprofile.student
+                attempt = get_object_or_404(Attempt, level=lvl, student=student)
+                row.append(attempt.score)
+            except Http404:
+                row.append("    ")
+        titlesAndScores.append(row)
 
     context = RequestContext(request, {
         'episodeData': dataArray,
-        'titles': titles
+        'data': titlesAndScores
     })
     return render(request, 'game/level_selection.html', context)
 
