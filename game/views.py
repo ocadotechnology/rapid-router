@@ -545,7 +545,7 @@ def renderAvatarChoice(request):
     """ Helper method for settings view. Generates and processes the avatar changing forms.
     """
     x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path = os.path.join(x, 'static/game/image/Avatars')
+    path = os.path.join(x, 'static/game/image/avatars')
     img_list = os.listdir(path)
     userProfile = request.user.userprofile
     avatar = userProfile.avatar
