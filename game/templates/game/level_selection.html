@@ -13,31 +13,18 @@
 {% endblock %}
 
 {% block content %}
-  {% for episode in episodeData %}
-    <div class="episode" id="{{episode.0.name}}" 
-    style="background: rgba({{episode.1.0}}, {{episode.1.1}}, {{episode.1.2}}, {{episode.2}});">
-        
-      <h5>{{ episode.0.name }}</h5> <br>
 
-        <table class="transparent">
-        <col width="20%">
-        <col width="70%">
-        <col width="10%">
-          {% for level in episode.0.levels %}
-            <tr>
-              <td> <button class="levelButton" onclick="window.location.href='/game/{{ level.id }}'"
-                    style="background: rgba(99, 119, 0, {{episode.2}});">
-                    {{ level }} </button>
-              </td>
-              {% for row in data %}
-                {% if forloop.counter == level.id %}
-                  <td> {{row.0}} </td>
-                  <td> {{row.1}} </td>
-                {% endif %}
-              {% endfor %}
-            </tr>
-          {% endfor %}
-        </table>
+  {% for episode in episodes %}
+    <div class="episode">
+      <h5>{{ episode.name }}</h5>
+
+        {% for level in episode.levels %}
+
+          <h6>
+            <a href="/game/{{ level.id }}">{{ level }}</a>
+          </h6>
+
+        {% endfor %}
     </div>
   {% endfor %}
   <a class="button" href="/game/levels/random">Random Road!</a>
