@@ -66,7 +66,8 @@ def levels(request):
         user = request.user
         lvl = Level.objects.get(id=i)
 
-        if (not user.is_anonymous()) and hasattr(request.user.userprofile, 'student'):
+        if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
+                hasattr(request.user.userprofile, 'student'):
             try:
                 student = user.userprofile.student
                 attempt = get_object_or_404(Attempt, level=lvl, student=student)
