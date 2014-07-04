@@ -45,14 +45,14 @@ def levels(request):
     fontcolour = "#617400"
 
     episodes = cached_all_episodes()
-    ratio = 1 / len(episodes)
+    ratio = 1 / (len(episodes) + 1)
     dataArray = []
     
     for episode in episodes:
         dataArray.append([])
         dataArray[-1].append(episode)
         dataArray[-1].append(bgcolour)
-        dataArray[-1].append(len(dataArray) * ratio)
+        dataArray[-1].append((len(dataArray) + 0.75) * ratio)
 
     defaultCount = Level.objects.filter(default=1).count()
     titlesAndScores = []
@@ -66,7 +66,8 @@ def levels(request):
         user = request.user
         lvl = Level.objects.get(id=i)
 
-        if (not user.is_anonymous()) and hasattr(request.user.userprofile, 'student'):
+        if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
+                hasattr(request.user.userprofile, 'student'):
             try:
                 student = user.userprofile.student
                 attempt = get_object_or_404(Attempt, level=lvl, student=student)
