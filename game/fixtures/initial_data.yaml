@@ -2071,9 +2071,6 @@
 - fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 4}
   model: game.userprofile
   pk: 5
-- fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 1}
-  model: game.userprofile
-  pk: 6
 - fields: {avatar: static/game/image/avatars/default-avatar.jpeg, user: 2}
   model: game.userprofile
   pk: 7
