@@ -14,7 +14,7 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import *
 from game import random_road
-from models import Class, Level, Attempt, Command, Block
+from models import Class, Level, Attempt, Command, Block, Episode
 
 
 def levels(request):
@@ -44,7 +44,7 @@ def levels(request):
     bgcolour = (171, 196, 37)
     fontcolour = "#617400"
 
-    episodes = cached_all_episodes()
+    episodes = Episode.objects.all()
     ratio = 1 / (len(episodes) + 1)
     dataArray = []
     
