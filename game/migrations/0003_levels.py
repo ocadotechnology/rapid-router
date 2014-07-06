@@ -98,14 +98,14 @@ def levels(apps, schema_editor):
 
     # add blocks
     Block = apps.get_model('game', 'Block')
-    forwards = Block.objects.filter(type__in=["move_forward"])
-    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forward"])
+    forwards = Block.objects.filter(type__in=["move_forwards"])
+    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards"])
 
     level1.blocks = forwards
     level1.next_level = level2
     level2.blocks = forwards
     level2.next_level = level3
-    level3.blocks = Block.objects.filter(type__in=["move_forward", "turn_right"])
+    level3.blocks = Block.objects.filter(type__in=["move_forwards", "turn_right"])
     level3.next_level = level4
     level4.blocks = episode_blocks
     level4.next_level = level5
@@ -150,7 +150,7 @@ def levels(apps, schema_editor):
     level12.save()
 
     # add blocks
-    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forward", "controls_repeat"])
+    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards", "controls_repeat"])
 
     level11.blocks = episode_blocks
     level11.next_level = level12
@@ -183,7 +183,7 @@ def levels(apps, schema_editor):
     level14.save()
 
     # add blocks
-    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forward", "controls_whileUntil"])
+    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards", "controls_whileUntil"])
 
     level13.blocks = episode_blocks
     level13.next_level = level14
@@ -217,7 +217,7 @@ def levels(apps, schema_editor):
     level16.save()
 
     # add blocks
-    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forward", \
+    episode_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards", \
             "controls_whileUntil", "logic_negate"])
 
     level15.blocks = episode_blocks
