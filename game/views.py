@@ -116,7 +116,7 @@ def level_editor(request):
     context = RequestContext(request, {
         'blocks': Block.objects.all()
     })
-    return render(request, 'game/level_editor.html', context)
+    return render(request, 'game/level_editor.html', context_instance=context)
 
 
 def renderError(request, title, message):
@@ -138,7 +138,7 @@ def renderError(request, title, message):
         'title': title,
         'message': message
     })
-    return render(request, 'game/error.html', context)
+    return render(request, 'game/error.html', context_instance=context)
 
 
 def logged_students(request):
@@ -210,7 +210,7 @@ def scoreboard(request):
         'studentData': studentData,
         'thead': thead,
     })
-    return render(request, 'game/scoreboard.html', context)
+    return render(request, 'game/scoreboard.html', context_instance=context)
 
 
 def settings(request):
@@ -263,7 +263,7 @@ def settings(request):
         'message': message,
         'title': title
     })
-    return render(request, 'game/settings.html', context)
+    return render(request, 'game/settings.html', context_instance=context)
 
 
 def level_random(request):
