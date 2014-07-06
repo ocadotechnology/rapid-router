@@ -16,6 +16,11 @@ def load_level(apps, schema_editor):
     level27.save()
 
     Block = apps.get_model('game', 'Block')
+    types = ["traffic_light", "wait"]
+    for t in types:
+        b = Block(type=t)
+        b.save()
+
     level27.blocks = Block.objects.filter(
             type__in=["move_forwards", "turn_left", "turn_right", \
                     "controls_whileUntil", "controls_if", "logic_negate", \
