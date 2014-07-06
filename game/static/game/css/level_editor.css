@@ -76,7 +76,7 @@
     width: 73%;
     font-size: 20px;
     line-height: 140%;
-    padding: 30px;
+    padding: 10px 30px;
     left: 0;
     background-color: white;
     position: absolute;
@@ -89,6 +89,8 @@
     -o-animation-duration: 0.5s;
     -moz-animation-duration: 0.5s;
     animation-duration: 0.5s;
+    max-height: 500px;
+    overflow: auto;
 }
 
 #tab-content-blocks > label {

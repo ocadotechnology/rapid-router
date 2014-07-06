@@ -29,19 +29,56 @@ def levels(request):
 
     :template:`game/level_selection.html`
     """
-    colour = (88, 148, 194)
+    """ Keeping other schemes here for now, just in case we decide on different scheme. """
+    # blue bgcolour = (88, 148, 194)
+    #fontcolour = "#206396"
+    # button bgcolour = (0, 140, 186)
+    # fontcolour = "#00536E"
+    # yellow bgcolour = (255, 158, 0)
+    # fontcolour = "#B06D00"
+    # turkus bgcolour = (0, 191, 143)
+    # fontcolour = "#007356"
+    # orange bgcolour = (255, 131, 0)
+    # fontcolour = "#B05A00"
+    # grass
+    bgcolour = (171, 196, 37)
+    fontcolour = "#617400"
+
     episodes = cached_all_episodes()
-    ratio = 1 / len(episodes)
+    ratio = 1 / (len(episodes) + 1)
     dataArray = []
     
     for episode in episodes:
         dataArray.append([])
         dataArray[-1].append(episode)
-        dataArray[-1].append(colour)
-        dataArray[-1].append(len(dataArray) * ratio)
+        dataArray[-1].append(bgcolour)
+        dataArray[-1].append((len(dataArray) + 0.75) * ratio)
+
+    defaultCount = Level.objects.filter(default=1).count()
+    titlesAndScores = []
+
+    for i in range(1, defaultCount):
+        row = []
+        title = 'title_level' + str(i)
+        titleCall = getattr(messages, title)
+        title = mark_safe(titleCall())
+        row.append(title)
+        user = request.user
+        lvl = Level.objects.get(id=i)
+
+        if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
+                hasattr(request.user.userprofile, 'student'):
+            try:
+                student = user.userprofile.student
+                attempt = get_object_or_404(Attempt, level=lvl, student=student)
+                row.append(attempt.score)
+            except Http404:
+                row.append("    ")
+        titlesAndScores.append(row)
 
     context = RequestContext(request, {
-        'episodeData': dataArray
+        'episodeData': dataArray,
+        'data': titlesAndScores
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
@@ -69,7 +106,7 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    if lvl.default:
+    if lvl.default == 1:
         lesson = 'description_level' + str(level)
         hint = 'hint_level' + str(level)
     else:
@@ -508,7 +545,7 @@ def renderAvatarChoice(request):
     """ Helper method for settings view. Generates and processes the avatar changing forms.
     """
     x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path = os.path.join(x, 'static/game/image/Avatars')
+    path = os.path.join(x, 'static/game/image/avatars')
     img_list = os.listdir(path)
     userProfile = request.user.userprofile
     avatar = userProfile.avatar
