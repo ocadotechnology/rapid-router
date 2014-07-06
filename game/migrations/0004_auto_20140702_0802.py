@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='level',
             name='traffic_lights',
-            field=models.CharField(default=b'[]', max_length=10000),
+            field=models.TextField(default=b'[]', max_length=10000),
             preserve_default=True,
         ),
         migrations.AlterField(

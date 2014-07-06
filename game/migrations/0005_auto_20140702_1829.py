@@ -21,9 +21,4 @@ class Migration(migrations.Migration):
             name='path',
             field=models.TextField(max_length=10000),
         ),
-        migrations.AlterField(
-            model_name='level',
-            name='traffic_lights',
-            field=models.TextField(default=b'[]', max_length=10000),
-        ),
     ]
