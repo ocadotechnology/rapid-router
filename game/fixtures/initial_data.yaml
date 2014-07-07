@@ -388,7 +388,7 @@
   model: game.level
   pk: 27
 - fields:
-    name: Basic
+    name: Let's Get Started
     first_level: 1
     next_episode: 2
   model: game.episode
