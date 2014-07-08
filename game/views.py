@@ -216,7 +216,10 @@ def scoreboard(request):
     classes = []
     if hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
-        school = classes[0].school
+        if len(classes) > 0:
+            school = classes[0].school
+        else:
+            return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
     elif hasattr(request.user.userprofile, 'student'):
         class_ = request.user.userprofile.student.class_field
         school = class_.school

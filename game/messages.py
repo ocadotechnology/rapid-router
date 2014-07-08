@@ -13,6 +13,8 @@ def noPermissionScoreboard():
     return "Scoreboard is only visible to students and teachers. Log in if you think you " + \
         "should be able to see it. "
 
+def noDataToShow():
+    return "There is no data to show. Please contact your administrator if this is unexpected. "
 
 """ String messages used on the settings page. """
 
