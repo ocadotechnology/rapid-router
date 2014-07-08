@@ -14,7 +14,7 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import *
 from game import random_road
-from models import Class, Level, Attempt, Command, Block
+from models import Class, Level, Attempt, Command, Block, Episode
 
 
 def levels(request):
@@ -41,46 +41,56 @@ def levels(request):
     # orange bgcolour = (255, 131, 0)
     # fontcolour = "#B05A00"
     # grass
-    bgcolour = (171, 196, 37)
+    bgcolour = 'rgba(171, 196, 37, {:f})'
     fontcolour = "#617400"
 
-    episodes = cached_all_episodes()
-    ratio = 1 / (len(episodes) + 1)
+    episodes = Episode.objects.all()
+    ratio = 1.0 / (len(episodes) + 1)
     dataArray = []
     
-    for episode in episodes:
-        dataArray.append([])
-        dataArray[-1].append(episode)
-        dataArray[-1].append(bgcolour)
-        dataArray[-1].append((len(dataArray) + 0.75) * ratio)
-
-    defaultCount = Level.objects.filter(default=1).count()
-    titlesAndScores = []
-
-    for i in range(1, defaultCount):
-        row = []
+    def get_level_title(i):
         title = 'title_level' + str(i)
         titleCall = getattr(messages, title)
-        title = mark_safe(titleCall())
-        row.append(title)
-        user = request.user
-        lvl = Level.objects.get(id=i)
+        return mark_safe(titleCall())
 
+    def get_attempt_score(lvl):
+        user = request.user
+        score = "    "
         if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
                 hasattr(request.user.userprofile, 'student'):
             try:
                 student = user.userprofile.student
                 attempt = get_object_or_404(Attempt, level=lvl, student=student)
-                row.append(attempt.score)
+                score = attempt.score
             except Http404:
-                row.append("    ")
-        titlesAndScores.append(row)
+                pass
+        return score
+
+    episode_data = []
+    for episode in episodes:
+        levels = []
+        for level in episode.levels:
+            levels.append({
+                "id": level.id,
+                "name": level.name,
+                "title": get_level_title(level.id),
+                "score": get_attempt_score(level)})
+        opacity = (len(episode_data) + 0.75) * ratio
+        colour = bgcolour.format(opacity)
+        e = {
+                "id": episode.id,
+                "name": episode.name,
+                "colour": colour,
+                "levels": levels,
+                "opacity": opacity
+            }
+
+        episode_data.append(e)
 
     context = RequestContext(request, {
-        'episodeData': dataArray,
-        'data': titlesAndScores
+        'episodeData': json.dumps(episode_data),
     })
-    return render(request, 'game/level_selection.html', context_instance=context)
+    return render(request, 'game/level_selection.html', context)
 
 
 def level(request, level):
@@ -134,7 +144,7 @@ def level(request, level):
         'hint': hint,
     })
 
-    return render(request, 'game/game.html', context_instance=context)
+    return render(request, 'game/game.html', context)
 
 
 def level_editor(request):
@@ -153,7 +163,7 @@ def level_editor(request):
     context = RequestContext(request, {
         'blocks': Block.objects.all()
     })
-    return render(request, 'game/level_editor.html', context_instance=context)
+    return render(request, 'game/level_editor.html', context)
 
 
 def renderError(request, title, message):
@@ -175,7 +185,7 @@ def renderError(request, title, message):
         'title': title,
         'message': message
     })
-    return render(request, 'game/error.html', context_instance=context)
+    return render(request, 'game/error.html', context)
 
 
 def logged_students(request):
@@ -247,7 +257,7 @@ def scoreboard(request):
         'studentData': studentData,
         'thead': thead,
     })
-    return render(request, 'game/scoreboard.html', context_instance=context)
+    return render(request, 'game/scoreboard.html', context)
 
 
 def settings(request):
@@ -300,7 +310,7 @@ def settings(request):
         'message': message,
         'title': title
     })
-    return render(request, 'game/settings.html', context_instance=context)
+    return render(request, 'game/settings.html', context)
 
 
 def level_random(request):
