@@ -109,14 +109,33 @@ ocargo.Level.prototype.step = function() {
 
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
+
     ocargo.level.pathFinder.getOptimalPath();
     ocargo.level.pathFinder.getOptimalInstructions();
-    var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
-    console.debug("score: ", score, " out of 200.");
+    var fuelScore = ocargo.level.pathFinder.getFuelScore(JSON.parse(ocargo.level.attemptData.commandStack));
+    var instrLengthScore = ocargo.level.pathFinder.getInstrLengthScore(JSON.parse(ocargo.level.attemptData.commandStack));
+	var score = fuelScore + instrLengthScore;
+
+	console.debug("fuel score: ", fuelScore, " out of ", ocargo.level.pathFinder.maxFuelScore);
+	console.debug("instr length score: ", instrLengthScore, " out of ", ocargo.level.pathFinder.maxInstrLengthScore);
+	console.debug("score: ", score, " out of ", ocargo.level.pathFinder.maxScore);
+
     sendAttempt(score);
     ocargo.sound.win();
+
     var message = '';
-    var subtitle = "Your score: " + score + " / " + ocargo.level.pathFinder.max;
+    var subtitle = "Your total score: " + score + " / " + ocargo.level.pathFinder.maxScore;
+	subtitle += "<br><br> Your fuel score: " + fuelScore + " / " + ocargo.level.pathFinder.maxFuelScore;
+	subtitle += "<br> Your program score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore;
+
+	if (fuelScore !== ocargo.level.pathFinder.maxFuelScore) {
+		subtitle += "<br><br>Hint: try finding a quicker route to improve your score.";
+	} else if (instrLengthScore !== ocargo.level.pathFinder.maxInstrLengthScore) {
+		subtitle += "<br><br>Hint: try finding a smaller program to improve your score.";
+	} else {
+		subtitle += "<br><br>Perfect!";	
+	}
+
     enableDirectControl();
 
     if (ocargo.level.nextLevel != null) {
