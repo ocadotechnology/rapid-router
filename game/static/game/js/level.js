@@ -101,7 +101,7 @@ ocargo.Level.prototype.step = function() {
         this.program.step(this);
 
     } else {
-    	if (this.van.currentNode === this.map.destination && !this.program.isTerminated) {
+        if (this.van.currentNode === this.map.destination && !this.program.isTerminated) {
             this.win();
         }
     }
@@ -114,27 +114,27 @@ ocargo.Level.prototype.win = function() {
     ocargo.level.pathFinder.getOptimalInstructions();
     var fuelScore = ocargo.level.pathFinder.getFuelScore(JSON.parse(ocargo.level.attemptData.commandStack));
     var instrLengthScore = ocargo.level.pathFinder.getInstrLengthScore(JSON.parse(ocargo.level.attemptData.commandStack));
-	var score = fuelScore + instrLengthScore;
+    var score = fuelScore + instrLengthScore;
 
-	console.debug("fuel score: ", fuelScore, " out of ", ocargo.level.pathFinder.maxFuelScore);
-	console.debug("instr length score: ", instrLengthScore, " out of ", ocargo.level.pathFinder.maxInstrLengthScore);
-	console.debug("score: ", score, " out of ", ocargo.level.pathFinder.maxScore);
+    console.debug("fuel score: ", fuelScore, " out of ", ocargo.level.pathFinder.maxFuelScore);
+    console.debug("instr length score: ", instrLengthScore, " out of ", ocargo.level.pathFinder.maxInstrLengthScore);
+    console.debug("score: ", score, " out of ", ocargo.level.pathFinder.maxScore);
 
     sendAttempt(score);
     ocargo.sound.win();
 
     var message = '';
     var subtitle = "Your total score: " + score + " / " + ocargo.level.pathFinder.maxScore;
-	subtitle += "<br><br> Your fuel score: " + fuelScore + " / " + ocargo.level.pathFinder.maxFuelScore;
-	subtitle += "<br> Your program score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore;
+    subtitle += "<br><br> Your fuel score: " + fuelScore + " / " + ocargo.level.pathFinder.maxFuelScore;
+    subtitle += "<br> Your program score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore;
 
-	if (fuelScore !== ocargo.level.pathFinder.maxFuelScore) {
-		subtitle += "<br><br>Hint: try finding a quicker route to improve your score.";
-	} else if (instrLengthScore !== ocargo.level.pathFinder.maxInstrLengthScore) {
-		subtitle += "<br><br>Hint: try finding a smaller program to improve your score.";
-	} else {
-		subtitle += "<br><br>Perfect!";	
-	}
+    if (fuelScore !== ocargo.level.pathFinder.maxFuelScore) {
+        subtitle += "<br><br>Hint: try finding a quicker route to improve your score.";
+    } else if (instrLengthScore !== ocargo.level.pathFinder.maxInstrLengthScore) {
+        subtitle += "<br><br>Hint: try finding a smaller program to improve your score.";
+    } else {
+        subtitle += "<br><br>Perfect!";    
+    }
 
     enableDirectControl();
 
@@ -160,22 +160,22 @@ ocargo.Level.prototype.fail = function(msg, send) {
     var level = this;
     level.fails++;
     if (level.fails >= level.failsBeforeHintBtn) {
-	    var hintBtns = $("#hintPopupBtn");
-		if (hintBtns.length === null || hintBtns.length === 0) {
-			$("#myModal > .mainText").append('<p id="hintBtnPara">' +
+        var hintBtns = $("#hintPopupBtn");
+        if (hintBtns.length === null || hintBtns.length === 0) {
+            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
                 '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
                 '</p><p id="hintText">' + HINT + '</p>');
-			if(level.hintOpened){
-				$("#hintBtnPara").hide();
-			} else {
-				$("#hintText" ).hide();
-				$("#hintPopupBtn").click( function(){
-					$("#hintText").show(500);
-					$("#hintBtnPara").hide();
-					level.hintOpened = true;
-				});
-			}
-    	}
+            if(level.hintOpened){
+                $("#hintBtnPara").hide();
+            } else {
+                $("#hintText" ).hide();
+                $("#hintPopupBtn").click( function(){
+                    $("#hintText").show(500);
+                    $("#hintBtnPara").hide();
+                    level.hintOpened = true;
+                });
+            }
+        }
     }
     if (send) {
         sendAttempt(0);
@@ -238,24 +238,24 @@ function sendAttempt(score) {
 }
 
 function directedThroughRedTrafficLight(previousNode, currentNode, nextNode){
-	for(var i = 0; i < currentNode.trafficLights.length; i++){
-		var tl = currentNode.trafficLights[i];
-		if(tl.sourceNode == previousNode && tl.state == tl.RED){
-			return true;
-		}
-	}
-	return false;
+    for(var i = 0; i < currentNode.trafficLights.length; i++){
+        var tl = currentNode.trafficLights[i];
+        if(tl.sourceNode == previousNode && tl.state == tl.RED){
+            return true;
+        }
+    }
+    return false;
 }
 
 function InstructionHandler(level, isPlay) {
-	this.level = level;
+    this.level = level;
     this.isPlay = isPlay
 }
 
 InstructionHandler.prototype.handleInstruction = function(instruction, program) {
-	console.debug('Calculating next node for instruction ' + instruction.name);
-	var prevNode = this.level.van.previousNode;
-	var currNode = this.level.van.currentNode;
+    console.debug('Calculating next node for instruction ' + instruction.name);
+    var prevNode = this.level.van.previousNode;
+    var currNode = this.level.van.currentNode;
     var nextNode = instruction.getNextNode(prevNode, currNode);
     if (!nextNode) {
         var n = this.level.correct - 1;
@@ -272,8 +272,8 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
     
     if (this.level.van.fuel === 0) {
         this.level.fail(ocargo.messages.nofuel);
-		program.terminate();
-		return;
+        program.terminate();
+        return;
     }
 
     this.level.van.move(nextNode, instruction, program.stepCallback);
