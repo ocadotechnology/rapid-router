@@ -116,10 +116,6 @@ ocargo.Level.prototype.win = function() {
     var instrLengthScore = ocargo.level.pathFinder.getInstrLengthScore(JSON.parse(ocargo.level.attemptData.commandStack));
     var score = fuelScore + instrLengthScore;
 
-    console.debug("fuel score: ", fuelScore, " out of ", ocargo.level.pathFinder.maxFuelScore);
-    console.debug("instr length score: ", instrLengthScore, " out of ", ocargo.level.pathFinder.maxInstrLengthScore);
-    console.debug("score: ", score, " out of ", ocargo.level.pathFinder.maxScore);
-
     sendAttempt(score);
     ocargo.sound.win();
 
