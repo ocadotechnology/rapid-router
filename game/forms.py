@@ -33,7 +33,8 @@ class ShareLevelChoosePerson(forms.Form):
         people = kwargs.pop('people')
         super(ShareLevelChoosePerson, self).__init__(*args, **kwargs)
         self.fields['people'] = forms.ModelChoiceField(queryset=people)
-
+        self.fields['level'] = forms.IntegerField()
+        self.fields['level'].widget = forms.HiddenInput()
 
 class ShareLevelClass(forms.Form):
     def __init__(self, *args, **kwargs):

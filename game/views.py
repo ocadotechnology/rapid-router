@@ -30,24 +30,13 @@ def levels(request):
     :template:`game/level_selection.html`
     """
     """ Keeping other schemes here for now, just in case we decide on different scheme. """
-    # blue bgcolour = (88, 148, 194)
-    #fontcolour = "#206396"
-    # button bgcolour = (0, 140, 186)
-    # fontcolour = "#00536E"
-    # yellow bgcolour = (255, 158, 0)
-    # fontcolour = "#B06D00"
-    # turkus bgcolour = (0, 191, 143)
-    # fontcolour = "#007356"
-    # orange bgcolour = (255, 131, 0)
-    # fontcolour = "#B05A00"
-    # grass
     bgcolour = (171, 196, 37)
     fontcolour = "#617400"
 
     episodes = cached_all_episodes()
     ratio = 1 / (len(episodes) + 1)
     dataArray = []
-    
+
     for episode in episodes:
         dataArray.append([])
         dataArray[-1].append(episode)
@@ -227,7 +216,10 @@ def scoreboard(request):
     classes = []
     if hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
-        school = classes[0].school
+        if len(classes) > 0:
+            school = classes[0].school
+        else:
+            return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
     elif hasattr(request.user.userprofile, 'student'):
         class_ = request.user.userprofile.student.class_field
         school = class_.school
@@ -275,12 +267,14 @@ def settings(request):
 
     :template:`game/settings.html`
     """
+    choosePerson = False
     if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionMessage())
     message = "None"
     levels = Level.objects.filter(owner=request.user.userprofile.id)
     avatarUploadForm, avatarPreUploadedForm = renderAvatarChoice(request)
-    shareLevelClassForm, shareLevelPersonForm, message = renderLevelSharing(request)
+    choosePerson, shareLevelClassForm, shareLevelPersonForm, shareLevelChoosePerson, message \
+        = renderLevelSharing(request)
     levelMessage = messages.noLevelsToShow() if len(levels) == 0 else messages.levelsMessage()
     sharedLevels = request.user.shared.all()
     sharedMessage = messages.noSharedLevels() if len(sharedLevels) == 0 \
@@ -292,6 +286,8 @@ def settings(request):
         'avatarUploadForm': avatarUploadForm,
         'shareLevelPersonForm': shareLevelPersonForm,
         'shareLevelClassForm': shareLevelClassForm,
+        'shareLevelChoosePerson': shareLevelChoosePerson,
+        'choosePerson': choosePerson,
         'levels': levels,
         'sharedLevels': sharedLevels,
         'user': request.user,
@@ -486,15 +482,18 @@ def handleSharedLevelPerson(request, form):
     level = get_object_or_404(Level, id=form.data['level'])
     people = User.objects.filter(first_name=form.data['name'], last_name=form.data['surname'])
     message = None
+    choosePerson = False
     peopleLen = len(people)
+    shareLevelChoosePerson = None
     if peopleLen == 0:
-        message = messages.shareUnsuccessfulPerson(form.name, form.surname)
+        message = messages.shareUnsuccessfulPerson(form.data['name'], form.data['surname'])
     elif peopleLen == 1:
         level.shared_with.add(people[0])
         message = messages.shareSuccessfulPerson(form.data['name'], form.data['surname'])
     else:
-        message = "Say whaaaaat"
-    return message
+        shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None, people=people)
+        choosePerson = True
+    return choosePerson, shareLevelChoosePerson, message
 
 
 def handleSharedLevelClass(request, form):
@@ -508,6 +507,13 @@ def handleSharedLevelClass(request, form):
     return messages.shareSuccessfulClass(cl.name)
 
 
+def handleChoosePerson(request, form):
+    people = get_object_or_404(User, id=form.data['people'])
+    level = get_object_or_404(Level, id=form.data['level'])
+    level.shared_with.add(people)
+    return messages.shareSuccessfulPerson(people.first_name, people.last_name)
+
+
 def renderLevelSharing(request):
     classes = None
     message = ""
@@ -519,14 +525,23 @@ def renderLevelSharing(request):
         classesObj = userProfile.student.class_field
         classes = Class.objects.filter(pk=classesObj.id)
     else:
-        return None, shareLevelPersonForm
+        return False, None, shareLevelPersonForm, None, None
+
+    people = User.objects.all()
+    shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None, people=people)
     shareLevelClassForm = ShareLevelClass(request.POST or None, classes=classes)
+    choosePerson = False
     if request.method == 'POST':
         if "share-level-person" in request.POST and shareLevelPersonForm.is_valid():
-            message = handleSharedLevelPerson(request, shareLevelPersonForm)
+            choosePerson, shareLevelChoosePerson, message = handleSharedLevelPerson(request, shareLevelPersonForm)
+            people = User.objects.filter(first_name=shareLevelPersonForm.data['name'],
+                                         last_name=shareLevelPersonForm.data['surname'])
+            shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None, people=people)
         if "share-level-class" in request.POST and shareLevelClassForm.is_valid():
             message = handleSharedLevelClass(request, shareLevelClassForm)
-    return shareLevelClassForm, shareLevelPersonForm, message
+        if "level-choose-person" in request.POST and shareLevelChoosePerson.is_valid():
+            message = handleChoosePerson(request, shareLevelChoosePerson)
+    return choosePerson, shareLevelClassForm, shareLevelPersonForm, shareLevelChoosePerson, message
 
 
 def parseAttempt(attemptData, request):
