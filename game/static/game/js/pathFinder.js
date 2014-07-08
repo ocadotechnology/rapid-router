@@ -7,7 +7,9 @@ ocargo.PathFinder = function(map) {
     this.destination = map.destination;
     this.optimalInstructions = [];
     this.optimalPath = null;
-    this.max = 0;
+    this.maxFuelScore = 100;
+		this.maxInstrLengthScore = 100;
+		this.maxScore = this.maxFuelScore + this.maxInstrLengthScore;
 };
 
 ocargo.PathFinder.prototype.getOptimalInstructions = function() {
@@ -143,15 +145,26 @@ ocargo.PathFinder.prototype.getOptimalInstructions = function() {
 
 ocargo.PathFinder.prototype.getScore = function(stack) {
 
-    var userSolutionLength = this.getLength(stack);
-    var instrLengthScore = 100;
-    var fuelScore = 100;
-    var usedFuel = ocargo.level.van.maxFuel - ocargo.level.van.fuel;
-    this.max = instrLengthScore + fuelScore;
-    instrLengthScore = Math.min(100, Math.max(
-        0, instrLengthScore - (userSolutionLength - this.optimalInstructions.length) * 10));
-    fuelScore = Math.max(0, fuelScore - (usedFuel - (this.optimalPath.length - 2)) * 10);
+    var fuelScore = ocargo.PathFinder.prototype.getFuelScore(stack);
+		var instrLengthScore = ocargo.PathFinder.prototype.getInstrLengthScore(stack);
+
     return instrLengthScore + fuelScore;
+};
+
+ocargo.PathFinder.prototype.getFuelScore = function(stack) {
+
+    var usedFuel = ocargo.level.van.maxFuel - ocargo.level.van.fuel;
+    var fuelScore = Math.max(0, ocargo.level.pathFinder.maxFuelScore - (usedFuel - (ocargo.level.pathFinder.optimalPath.length - 2)) * 10);
+    
+		return fuelScore;
+};
+
+ocargo.PathFinder.prototype.getInstrLengthScore = function(stack) {
+
+    var userSolutionLength = this.getLength(stack);
+    var instrLengthScore = Math.max(0, ocargo.level.pathFinder.maxInstrLengthScore - (userSolutionLength - ocargo.level.pathFinder.optimalInstructions.length) * 10);
+    
+		return instrLengthScore;
 };
 
 ocargo.PathFinder.prototype.getOptimalPath = function() {
