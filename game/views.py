@@ -481,8 +481,9 @@ def handleSharedLevelPerson(request, form):
     message = None
     choosePerson = False
     peopleLen = len(people)
+    shareLevelChoosePerson = None
     if peopleLen == 0:
-        message = messages.shareUnsuccessfulPerson(form.name, form.surname)
+        message = messages.shareUnsuccessfulPerson(form.data['name'], form.data['surname'])
     elif peopleLen == 1:
         level.shared_with.add(people[0])
         message = messages.shareSuccessfulPerson(form.data['name'], form.data['surname'])

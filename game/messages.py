@@ -30,8 +30,7 @@ def shareSuccessfulClass(className):
 
 
 def shareUnsuccessfulPerson(name, surname):
-    return "We were unable to find {0} {1}. Are you sure you got their name " \
-        + "right?".format(name, surname)
+    return "We were unable to find {0} {1}. Are you sure you got their name right?".format(name, surname)
 
 
 def shareUnsuccessfulClass(className):
