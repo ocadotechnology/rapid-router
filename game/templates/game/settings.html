@@ -9,6 +9,12 @@
       document.getElementById("id_levels").value = val;
     }
   </script>
+
+{% if choosePerson == True %}
+  <script>
+    $('#whichPerson').foundation('reveal', 'open');
+  </script>
+{% endif %}
 {{block.super}}
 {% endblock %}
 
@@ -24,6 +30,7 @@
     <h4> Settings </h4>
     {{message}} <br>
     <ul class="tabs">
+
       <li>
         <input type="radio" checked name="tabs" id="tab1">
         <label for="tab1"> Avatar </label>
@@ -31,6 +38,7 @@
           <form method="post" action="">
           {% csrf_token %}
             <h5> {{chooseAvatar}} </h5>
+
             <div class="avatar_container">
             {% for image in avatarPreUploadedForm.avatars.field.choices %}
               <div id="choice">
@@ -50,6 +58,7 @@
               <input id="submitAvatar" type="submit" name="pre" value="Change the avatar">
             </div>
           </form><hr>
+
           <div class="avatar_container">
             <form method="post" action="" name="user-uploaded"  enctype="multipart/form-data"> 
             {% csrf_token %}
@@ -60,6 +69,7 @@
           </div>
         </div>
       </li>
+
       <li>
         <input type="radio" name="tabs" id="tab2">
         <label for="tab2"> Levels Owned </label>
@@ -83,6 +93,7 @@
         {% endif %}
         </div>
       </li>
+
       <li>
         <input type="radio" name="tabs" id="tab3">
         <label for="tab3"> Shared Levels </label>
@@ -96,9 +107,11 @@
         {% endif %}
         </div>
       </li>
+
     </ul>   
   </div>
-</dif> 
+</dif>
+
 <div id="profile">
   <div id="wrapper">
 	  {% if user.userprofile.avatar %}
@@ -131,10 +144,15 @@
   <a class="close-reveal-modal">&#215;</a>
 </div>
 
+{% if choosePerson == True %}
 <div id="whichPerson" class="reveal-modal" data-reveal>
   <h2 class="title"> {{title}} </h2>
-  <p class="lead"></p>
-  <p class="mainText"></p>
-  <a class="close-reveal-modal">&#215;</a>
+  <form method="post" name="level-choose-person" action="">
+  {% csrf_token %}
+    {{shareLevelChoosePerson.as_p}}
+    <input type="submit" name="level-choose-person" value="Submit">
+  </form>
+<a class="close-reveal-modal">&#215;</a>
 </div>
+{% endif %}
 {% endblock %}
