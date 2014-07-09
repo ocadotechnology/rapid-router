@@ -414,23 +414,27 @@ $('#clear').click(function() {
 });
 
 $('#start').click(function() {
-    ocargo.levelEditor.startFlag = !ocargo.levelEditor.startFlag;
+    ocargo.levelEditor.startFlag = true;
     ocargo.levelEditor.endFlag = false;
     ocargo.levelEditor.deleteFlag = false;
 });
 
 $('#end').click(function() {
-    ocargo.levelEditor.endFlag = !ocargo.levelEditor.endFlag;
     ocargo.levelEditor.startFlag = false;
+    ocargo.levelEditor.endFlag = true;
     ocargo.levelEditor.deleteFlag = false;
 });
 
-$('#undo').click(function() {
-    ocargo.levelEditor.deleteFlag = !ocargo.levelEditor.deleteFlag;
+$('#add').click(function() {
     ocargo.levelEditor.startFlag = false;
     ocargo.levelEditor.endFlag = false;
-    var text = ocargo.levelEditor.deleteFlag ? "Delete Mode On" : "Delete Mode Off";
-    $(this).text(text);
+    ocargo.levelEditor.deleteFlag = false;
+});
+
+$('#delete').click(function() {
+    ocargo.levelEditor.startFlag = false;
+    ocargo.levelEditor.endFlag = false;
+    ocargo.levelEditor.deleteFlag = true;
 });
 
 ocargo.LevelEditor.prototype.oldPathToNew = function() {
@@ -506,5 +510,4 @@ $(function() {
     ocargo.ui = new ocargo.SimpleUi();
     ocargo.levelEditor = new ocargo.LevelEditor();
     ocargo.levelEditor.createGrid(paper);
-    $('#undo').text("Delete Mode");
 });
