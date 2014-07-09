@@ -37,7 +37,7 @@
     margin-bottom: 0;
 }
 
-#controls .quit {
+#controls .navigation {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -96,6 +96,16 @@ button, .button, img.control{
     position: absolute;
     left: 50%;
     z-index: 1;
+}
+
+#consoleSlider {
+    position: absolute;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    z-index: 3;
+    background-color: #444;
+    cursor: col-resize;
 }
 
 #fuelGuage {
@@ -165,4 +175,12 @@ img.control{
 
 #blockly {
     height: 95%;
+}
+
+@media print {
+    #controls, #fuelGuage, #sliderControls, #myModal,
+    #blockly > svg > g:nth-child(2),
+    #blockly > svg > g:nth-child(3) > g:nth-child(1) {
+        display: none !important;
+    }
 }

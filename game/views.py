@@ -90,7 +90,7 @@ def levels(request):
     context = RequestContext(request, {
         'episodeData': json.dumps(episode_data),
     })
-    return render(request, 'game/level_selection.html', context)
+    return render(request, 'game/level_selection.html', context_instance=context)
 
 
 def level(request, level):
@@ -136,7 +136,7 @@ def level(request, level):
         except Http404:
             attempt = Attempt(level=lvl, score=0, student=student)
             attempt.save()
-
+            
     context = RequestContext(request, {
         'level': lvl,
         'blocks': blocks,
@@ -144,7 +144,7 @@ def level(request, level):
         'hint': hint,
     })
 
-    return render(request, 'game/game.html', context)
+    return render(request, 'game/game.html', context_instance=context)
 
 
 def level_editor(request):
@@ -163,7 +163,7 @@ def level_editor(request):
     context = RequestContext(request, {
         'blocks': Block.objects.all()
     })
-    return render(request, 'game/level_editor.html', context)
+    return render(request, 'game/level_editor.html', context_instance=context)
 
 
 def renderError(request, title, message):
@@ -185,7 +185,7 @@ def renderError(request, title, message):
         'title': title,
         'message': message
     })
-    return render(request, 'game/error.html', context)
+    return render(request, 'game/error.html', context_instance=context)
 
 
 def logged_students(request):
@@ -237,7 +237,10 @@ def scoreboard(request):
     classes = []
     if hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
-        school = classes[0].school
+        if len(classes) > 0:
+            school = classes[0].school
+        else:
+            return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
     elif hasattr(request.user.userprofile, 'student'):
         class_ = request.user.userprofile.student.class_field
         school = class_.school
@@ -257,7 +260,7 @@ def scoreboard(request):
         'studentData': studentData,
         'thead': thead,
     })
-    return render(request, 'game/scoreboard.html', context)
+    return render(request, 'game/scoreboard.html', context_instance=context)
 
 
 def settings(request):
@@ -287,10 +290,10 @@ def settings(request):
     """
     if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionMessage())
-    message = "None"
     levels = Level.objects.filter(owner=request.user.userprofile.id)
     avatarUploadForm, avatarPreUploadedForm = renderAvatarChoice(request)
-    shareLevelClassForm, shareLevelPersonForm, message = renderLevelSharing(request)
+    choosePerson, shareLevelClassForm, shareLevelPersonForm, shareLevelChoosePerson, message \
+        = renderLevelSharing(request)
     levelMessage = messages.noLevelsToShow() if len(levels) == 0 else messages.levelsMessage()
     sharedLevels = request.user.shared.all()
     sharedMessage = messages.noSharedLevels() if len(sharedLevels) == 0 \
@@ -302,6 +305,8 @@ def settings(request):
         'avatarUploadForm': avatarUploadForm,
         'shareLevelPersonForm': shareLevelPersonForm,
         'shareLevelClassForm': shareLevelClassForm,
+        'shareLevelChoosePerson': shareLevelChoosePerson,
+        'choosePerson': choosePerson,
         'levels': levels,
         'sharedLevels': sharedLevels,
         'user': request.user,
@@ -310,14 +315,15 @@ def settings(request):
         'message': message,
         'title': title
     })
-    return render(request, 'game/settings.html', context)
+    return render(request, 'game/settings.html', context_instance=context)
 
 
-def level_random(request):
+def level_random(request,episode):
     """Generates a new random level
 
     Redirects to :view:`game.views.level` with the id of the newly created :model:`game.Level`.
     """
+    episode = cached_episode(episode)
     level = random_road.create()
     return redirect("game.views.level", level=level.id)
 
@@ -492,63 +498,85 @@ def handleAllClassesAllLevels(request, levels):
     return createRows(studentData, levels)
 
 
-def handleSharedLevelPerson(request, form):
-    level = get_object_or_404(Level, id=form.data['level'])
-    people = User.objects.filter(first_name=form.data['name'], last_name=form.data['surname'])
-    message = None
-    peopleLen = len(people)
-    if peopleLen == 0:
-        message = messages.shareUnsuccessfulPerson(form.name, form.surname)
-    elif peopleLen == 1:
-        level.shared_with.add(people[0])
-        message = messages.shareSuccessfulPerson(form.data['name'], form.data['surname'])
-    else:
-        message = "Say whaaaaat"
-    return message
-
-
-def handleSharedLevelClass(request, form):
-    classID = form.data.get('classes', False)
-    levelID = form.data.get('levels', False)
-    cl = get_object_or_404(Class, id=classID)
-    level = get_object_or_404(Level, id=levelID)
-    students = cl.students.all()
-    for student in students:
-        level.shared_with.add(student.user.user)
-    return messages.shareSuccessfulClass(cl.name)
-
-
 def renderLevelSharing(request):
+    choosePerson = False
     classes = None
     message = ""
     userProfile = request.user.userprofile
     shareLevelPersonForm = ShareLevelPerson(request.POST or None)
+
     if hasattr(userProfile, "teacher"):
         classes = userProfile.teacher.class_teacher.all()
     elif hasattr(userProfile, "student"):
         classesObj = userProfile.student.class_field
         classes = Class.objects.filter(pk=classesObj.id)
     else:
-        return None, shareLevelPersonForm
+        return False, None, shareLevelPersonForm, None, None
+
+    shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None, 
+                                                    people=User.objects.all())
     shareLevelClassForm = ShareLevelClass(request.POST or None, classes=classes)
+
     if request.method == 'POST':
         if "share-level-person" in request.POST and shareLevelPersonForm.is_valid():
-            message = handleSharedLevelPerson(request, shareLevelPersonForm)
+            choosePerson, shareLevelChoosePerson, message \
+                = handleSharedLevelPerson(request, shareLevelPersonForm)
+            people = User.objects.filter(first_name=shareLevelPersonForm.data['name'],
+                                         last_name=shareLevelPersonForm.data['surname'])
+            shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None, people=people)
         if "share-level-class" in request.POST and shareLevelClassForm.is_valid():
             message = handleSharedLevelClass(request, shareLevelClassForm)
-    return shareLevelClassForm, shareLevelPersonForm, message
+        if "level-choose-person" in request.POST and shareLevelChoosePerson.is_valid():
+            message = handleChoosePerson(request, shareLevelChoosePerson)
+    return choosePerson, shareLevelClassForm, shareLevelPersonForm, shareLevelChoosePerson, message
+
+
+def handleSharedLevelPerson(request, form):
+    level = get_object_or_404(Level, id=form.data['level'])
+    people = User.objects.filter(first_name=form.data['name'], last_name=form.data['surname'])
+    message = None
+    choosePerson = False
+    peopleLen = len(people)
+    shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None,
+                                                    people=User.objects.none())
+    if peopleLen == 0:
+        message = messages.shareUnsuccessfulPerson(form.data['name'], form.data['surname'])
+    elif peopleLen == 1:
+        level.shared_with.add(people[0])
+        message = messages.shareSuccessfulPerson(form.data['name'], form.data['surname'])
+    else:
+        shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None, people=people)
+        choosePerson = True
+    return choosePerson, shareLevelChoosePerson, message
+
+
+def handleSharedLevelClass(request, form):
+    class_ = get_object_or_404(form.data.get('classes', False))
+    level = get_object_or_404(form.data.get('levels', False))
+    students = class_.students.all()
+    for student in students:
+        level.shared_with.add(student.user.user)
+    return messages.shareSuccessfulClass(class_.name)
+
+
+def handleChoosePerson(request, form):
+    people = get_object_or_404(User, id=form.data['people'])
+    level = get_object_or_404(Level, id=form.data['level'])
+    level.shared_with.add(people)
+    return messages.shareSuccessfulPerson(people.first_name, people.last_name)
 
 
 def parseAttempt(attemptData, request):
-    level = get_object_or_404(Level, id=attemptData.get('level', 1))
-    attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
-    attempt.score = request.POST.get('score', 0)
+    if hasattr(request.user, "userprofile") and hasattr(request.user.userprofile, "student"):
+        level = get_object_or_404(Level, id=attemptData.get('level', 1))
+        attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
+        attempt.score = request.POST.get('score', 0)
 
-    # Remove all the old commands from previous attempts.
-    Command.objects.filter(attempt=attempt).delete()
-    commands = attemptData.get('commandStack', None)
-    parseInstructions(json.loads(commands), attempt, 1)
-    attempt.save()
+        # Remove all the old commands from previous attempts.
+        Command.objects.filter(attempt=attempt).delete()
+        commands = attemptData.get('commandStack', None)
+        parseInstructions(json.loads(commands), attempt, 1)
+        attempt.save()
 
 
 def renderAvatarChoice(request):

@@ -101,7 +101,7 @@ ocargo.Level.prototype.step = function() {
         this.program.step(this);
 
     } else {
-    	if (this.van.currentNode === this.map.destination && !this.program.isTerminated) {
+        if (this.van.currentNode === this.map.destination && !this.program.isTerminated) {
             this.win();
         }
     }
@@ -109,16 +109,20 @@ ocargo.Level.prototype.step = function() {
 
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
+
     ocargo.level.pathFinder.getOptimalPath();
     ocargo.level.pathFinder.getOptimalInstructions();
-    var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
-    console.debug("score: ", score, " out of 200.");
+    var fuelScore = ocargo.level.pathFinder.getTravelledPathScore(
+            JSON.parse(ocargo.level.attemptData.commandStack));
+    var instrLengthScore = ocargo.level.pathFinder.getInstrLengthScore(
+            JSON.parse(ocargo.level.attemptData.commandStack));
+    var score = fuelScore + instrLengthScore;
+
     sendAttempt(score);
     ocargo.sound.win();
-    var message = '';
-    var subtitle = "Your score: " + score + " / " + ocargo.level.pathFinder.max;
-    enableDirectControl();
 
+    var subtitle = ocargo.messages.scoreCard(fuelScore,instrLengthScore)
+    var message = '';
     if (ocargo.level.nextLevel != null) {
       message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
     } else {
@@ -128,6 +132,9 @@ ocargo.Level.prototype.win = function() {
             message = ocargo.messages.lastLevel;
         }
     }
+
+    enableDirectControl();
+
     startPopup("You win!", subtitle, message);
 };
 
@@ -141,22 +148,22 @@ ocargo.Level.prototype.fail = function(msg, send) {
     var level = this;
     level.fails++;
     if (level.fails >= level.failsBeforeHintBtn) {
-	    var hintBtns = $("#hintPopupBtn");
-		if (hintBtns.length === null || hintBtns.length === 0) {
-			$("#myModal > .mainText").append('<p id="hintBtnPara">' +
+        var hintBtns = $("#hintPopupBtn");
+        if (hintBtns.length === null || hintBtns.length === 0) {
+            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
                 '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
                 '</p><p id="hintText">' + HINT + '</p>');
-			if(level.hintOpened){
-				$("#hintBtnPara").hide();
-			} else {
-				$("#hintText" ).hide();
-				$("#hintPopupBtn").click( function(){
-					$("#hintText").show(500);
-					$("#hintBtnPara").hide();
-					level.hintOpened = true;
-				});
-			}
-    	}
+            if(level.hintOpened){
+                $("#hintBtnPara").hide();
+            } else {
+                $("#hintText" ).hide();
+                $("#hintPopupBtn").click( function(){
+                    $("#hintText").show(500);
+                    $("#hintBtnPara").hide();
+                    level.hintOpened = true;
+                });
+            }
+        }
     }
     if (send) {
         sendAttempt(0);
@@ -219,24 +226,24 @@ function sendAttempt(score) {
 }
 
 function directedThroughRedTrafficLight(previousNode, currentNode, nextNode){
-	for(var i = 0; i < currentNode.trafficLights.length; i++){
-		var tl = currentNode.trafficLights[i];
-		if(tl.sourceNode == previousNode && tl.state == tl.RED){
-			return true;
-		}
-	}
-	return false;
+    for(var i = 0; i < currentNode.trafficLights.length; i++){
+        var tl = currentNode.trafficLights[i];
+        if(tl.sourceNode == previousNode && tl.state == tl.RED){
+            return true;
+        }
+    }
+    return false;
 }
 
 function InstructionHandler(level, isPlay) {
-	this.level = level;
+    this.level = level;
     this.isPlay = isPlay
 }
 
 InstructionHandler.prototype.handleInstruction = function(instruction, program) {
-	console.debug('Calculating next node for instruction ' + instruction.name);
-	var prevNode = this.level.van.previousNode;
-	var currNode = this.level.van.currentNode;
+    console.debug('Calculating next node for instruction ' + instruction.name);
+    var prevNode = this.level.van.previousNode;
+    var currNode = this.level.van.currentNode;
     var nextNode = instruction.getNextNode(prevNode, currNode);
     if (!nextNode) {
         var n = this.level.correct - 1;
@@ -253,8 +260,8 @@ InstructionHandler.prototype.handleInstruction = function(instruction, program) 
     
     if (this.level.van.fuel === 0) {
         this.level.fail(ocargo.messages.nofuel);
-		program.terminate();
-		return;
+        program.terminate();
+        return;
     }
 
     this.level.van.move(nextNode, instruction, program.stepCallback);

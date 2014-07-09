@@ -13,6 +13,8 @@ def noPermissionScoreboard():
     return "Scoreboard is only visible to students and teachers. Log in if you think you " + \
         "should be able to see it. "
 
+def noDataToShow():
+    return "There is no data to show. Please contact your administrator if this is unexpected. "
 
 """ String messages used on the settings page. """
 
@@ -30,8 +32,7 @@ def shareSuccessfulClass(className):
 
 
 def shareUnsuccessfulPerson(name, surname):
-    return "We were unable to find {0} {1}. Are you sure you got their name " \
-        + "right?".format(name, surname)
+    return "We were unable to find {0} {1}. Are you sure you got their name right?".format(name, surname)
 
 
 def shareUnsuccessfulClass(className):
