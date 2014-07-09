@@ -5,6 +5,17 @@
 
 {% block title %}Game{% endblock %}
 
+{% block scripts %}
+{{block.super}}
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <script>
+    EPISODE_LIST = {{episodeData|safe}};
+  </script>
+
+  <script src="/static/game/js/levelSelection.js"></script>
+{% endblock %}
+
 {% block css %}
 {{block.super}}
   {% compress css %}
@@ -12,63 +23,7 @@
   {% endcompress %}
 {% endblock %}
 
-{% block scripts %}
-{{block.super}}
-  <script>
-    function tab(tab) {
-      {% for episode in episodeData %}
-        document.getElementById("{{ episode.0.name }}").style.display = "none";
-        document.getElementById("{{ episode.0.name }}").setAttribute("class", "");
-      {% endfor %}
-      
-      document.getElementById(tab).style.display = "block";
-      document.getElementById("li_"+tab).setAttribute("class", "active");
-    };
-    tab("{{ episodeData.0.0.name}}")
-  </script>
-{% endblock %}
-
 {% block content %}
-  <div id="Tabs">
-    <ul>
-      {% for episode in episodeData %}
-        <li id="li_{{ episode.0.name }}" onclick="tab('{{ episode.0.name }}')"><a style="background: rgba({{episode.1.0}}, {{episode.1.1}}, {{episode.1.2}}, {{episode.2}})"><h5>{{ episode.0.name }}</h5></a></li>
-      {% endfor %}
-    </ul>
-  </div>
-
-  <div id="Content_Area">
-    {% for episode in episodeData %}
-      <div id="{{ episode.0.name }}" style="background: rgba({{episode.1.0}}, {{episode.1.1}}, {{episode.1.2}}, {{episode.2}}); display: none; border: 1px solid black">
-        <table class="transparent">
-          <col width="20%">
-          <col width="70%">
-          <col width="10%">
-          {% for level in episode.0.levels %}
-            <tr>
-              <td> <button class="levelButton" onclick="window.location.href='/game/{{ level.id }}'"
-                    style="background: rgba(99, 119, 0, {{episode.2}})">
-                    {{ level }} </button>
-              </td>
-              {% for row in levelData %}
-                {% if forloop.counter == level.id %}
-                  <td>{{ row.0 }} </td>
-                  <td>{{ row.1 }} </td>
-                {% endif %}
-              {% endfor %}
-            </tr>
-          {% endfor %}
-
-          <tr>
-            <td>
-              <a class="button" style="padding-left:30px" href="/game/levels/random/{{episode.0.id}}">Random Road!</a>
-            </td>
-            <td> Generate a random level for this theme. </td>
-            <td> </td>
-          </tr>
-
-        </table>
-      </div>
-    {% endfor %}
-  </div>
+  <div id="container"></div>
+  <a class="button" href="/game/levels/random">Random Road!</a>
 {% endblock %}
