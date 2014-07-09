@@ -25,10 +25,10 @@
 {% endblock %}
 
 {% block content %}
-<dif id="main">
-  <div id="wrapper">
-    <h4> Settings </h4>
-    {{message}} <br>
+<div id="wrapper">
+  <h4> Settings </h4>
+  {{message}} <br>
+  <div class="menu">
     <ul class="tabs">
 
       <li>
@@ -44,12 +44,12 @@
               <div id="choice">
                 <label>
                   {% if forloop.counter == 1 %}
-                    <input type="radio" name="pre-uploaded" 
+                    <input type="radio" name="pre-uploaded"
                   value="static/game/image/avatars/{{image}}" checked>
                   {% else %}    
                     <input type="radio" name="pre-uploaded" value="static/game/image/avatars/{{image}}" >
                   {% endif %}
-                  <img src="/static/game/image/avatars/{{image}}"/> 
+                  <img src="/static/game/image/avatars/{{image}}"/>
                 </label>
               </div>
             {% endfor %}
@@ -60,7 +60,7 @@
           </form><hr>
 
           <div class="avatar_container">
-            <form method="post" action="" name="user-uploaded"  enctype="multipart/form-data"> 
+            <form method="post" action="" name="user-uploaded"  enctype="multipart/form-data">
             {% csrf_token %}
               <h5> Or upload your own </h5>
               {{avatarUploadForm.avatar}}
@@ -78,16 +78,17 @@
         <br>
         {% if levels %}
           {% for level in levels %}
-            <a href="/game/{{level.id}}"> {{level.name}} </a>
-            <span style="float:right">
-            Share with
-            <a href="#" onclick="changeLevelValue({{level.id}});" 
-              data-reveal-id="firstModal"> a person </a> |
-            <a href="#" onclick="changeLevelValue({{level.id}});" 
-              data-reveal-id="secondModal"> a class </a>
-            </span>
-            <hr>
-          {% endfor %} 
+            <div class="levelListing">
+              <a href="/game/{{level.id}}"> {{level.name}} </a>
+              <span style="float:right">
+              Share with
+              <a href="#" onclick="changeLevelValue({{level.id}});"
+                data-reveal-id="firstModal"> a person </a> |
+              <a href="#" onclick="changeLevelValue({{level.id}});"
+                data-reveal-id="secondModal"> a class </a>
+              </span>
+            </div>
+          {% endfor %}
         {% else %}
           <button onclick="window.location.href='/game/level_editor'"> Create a level! </button>
         {% endif %}
@@ -102,15 +103,17 @@
         <br>
         {% if sharedLevels %}
           {% for level in sharedLevels %}
-            <a href="/game/{{level.id}}"> {{level.name}} </a> <hr>
+          <div class="levelListing">
+            <a href="/game/{{level.id}}"> {{level.name}} </a>
+          </div>
           {% endfor %}
         {% endif %}
         </div>
       </li>
 
-    </ul>   
+    </ul>
   </div>
-</dif>
+</div>
 
 <div id="profile">
   <div id="wrapper">

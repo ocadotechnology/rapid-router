@@ -1,14 +1,18 @@
-#main {
-    float: left;
-    width: 60%;
-}
-
 #profile {
     float: right;
     margin-top: 100px;
     margin-left: 3%;
     width: 16%;
     min-width: 200px;
+}
+
+#tab-content-levels > div:nth-child(odd) {
+    padding: 10px;
+}
+
+#tab-content-levels > div:nth-child(even) {
+    padding: 10px;
+    background: rgba(187, 234, 249, 0.5);
 }
 
 #profile img {
@@ -24,8 +28,11 @@
 }
 
 #wrapper {
+    float: left;
+    width: 60%;
     margin-top: 30px;
     margin-left: 3%;
+    min-width: 500px;
 }
 
 #choice {
@@ -43,11 +50,22 @@
     margin: 20px 50px 20px 20px;
 }
 
-#wrapper > ul > li> label {
+#wrapper > ul {
+    width: 100%;
+}
+
+.tabs > li > label {
     display:inline-block;
+    width: 100%;
+
+}
+
+.tabs li {
+    width: 33.33333%;
 }
 
 .tab-content {
+    padding: 40px;
     width: 100%;
 }
 
