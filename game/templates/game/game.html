@@ -77,19 +77,30 @@
 
   <div id="paper" class="col"></div>
   <button id="stop">Stop</button>
+
   <div id="controls" class="col">
-      <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}><span>&uarr; Move Forwards</span></button>
-      <button class="picButton" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}><span>&#x21BA; Turn Left</span></button>
-      <button class="picButton" id="play" /><span>Go</span></button>
-      <button class="picButton" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}><span>&#x21BB; Turn Right</span></button>
-      <div class="quit">
-      	<button id="help">Help</button>
-        <button id="step">Step</button>
-        <button id="clearIncorrect">Clear Incorrect</button>
-        <button id="clear">Clear</button>
-        <a class="button" href="/game/">Quit</a>
-        <button id="mute" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
-      </div>
+    <div id="direct_drive">
+      <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+        <span>&uarr; Move Forwards</span>
+      </button>
+      <button class="picButton" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+        <span>&#x21BA; Turn Left</span>
+      </button>
+      <button class="picButton" id="play" />
+        <span>Go</span>
+      </button>
+      <button class="picButton" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+        <span>&#x21BB; Turn Right</span>
+      </button>
+    </div>
+
+    <div class="navigation">
+      <button id="help">Help</button>
+      <button id="step">Step</button>
+      <button id="clear">Clear</button>
+      <a class="button" href="/game/">Quit</a>
+      <button id="mute" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
+    </div>
   </div>
     <div id="consoleSlider">
   </div>
