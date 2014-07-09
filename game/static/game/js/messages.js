@@ -47,15 +47,15 @@ ocargo.messages = {
 	throughRedTrafficLight: "You just directed the van through a red traffic light! Stick to the highway code!",
     needHint: "Are you stuck? Need a hint?",
     terminated: "Program terminated!",
-    outOfInstructions: "You ran out of instructions!",
+    outOfInstructions: "You ran out of instructions without reaching your destination!",
     crashed: "Your program crashed!",
     stoppingTitle: "Stopping...",
-    scoreCard : function(fuelScore,instrLengthScore) {
-        score = fuelScore + instrLengthScore;
+    scoreCard : function(travelledScore, instrLengthScore) {
+        score = travelledScore + instrLengthScore;
         message = "Your total score: " + score + " / " + ocargo.level.pathFinder.maxScore;
-        message += "<br><br> Your fuel score: " + fuelScore + " / " + ocargo.level.pathFinder.maxFuelScore;
-        message += "<br> Your program score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore + "<br><br>";
-        if (fuelScore !== ocargo.level.pathFinder.maxFuelScore) {
+        message += "<br><br> Travelled path score: " + travelledScore + " / " + ocargo.level.pathFinder.maxDistanceScore;
+        message += "<br> Algorithm score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore + "<br><br>";
+        if (travelledScore !== ocargo.level.pathFinder.maxDistanceScore) {
             message += "Hint: try finding a quicker route to improve your score.";
         } else if (instrLengthScore !== ocargo.level.pathFinder.maxInstrLengthScore) {
             message += "Hint: try finding a smaller program to improve your score.";
@@ -63,5 +63,8 @@ ocargo.messages = {
             message += "Perfect!";    
         }
         return message
-    }
+    },
+    whileConditionError: "Perhaps try looking at your 'While' blocks?",
+    whileBodyError: "Perhaps try looking at your 'While' blocks?",
+    ifConditionError: "Perhaps try looking at your 'If' blocks?",
 }

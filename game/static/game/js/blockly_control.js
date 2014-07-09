@@ -365,21 +365,33 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlock = function() {
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 	function createWhile(block) {
+        var bodyBlock = block.inputList[1].connection.targetBlock();
+        if (bodyBlock === null) {
+            throw ocargo.messages.whileBodyError;
+        }
 		return new While(
 			counterCondition(block.inputList[0].fieldRow[1].text_),
-			getCommandsAtThisLevel(block.inputList[1].connection.targetBlock()),
+			getCommandsAtThisLevel(bodyBlock),
 			block);
 	}
 
 	function createWhileUntil(block) {
-		var condition = getCondition(block.inputList[0].connection.targetBlock());
+        var conditionBlock = block.inputList[0].connection.targetBlock();
+        if (conditionBlock === null) {
+            throw ocargo.messages.whileConditionError;
+        }
+		var condition = getCondition(conditionBlock);
 		if (block.inputList[0].fieldRow[1].value_ == 'UNTIL') {
 			condition = negateCondition(condition);
 		}
 
+        var bodyBlock = block.inputList[1].connection.targetBlock();
+        if (bodyBlock === null) {
+            throw ocargo.messages.whileBodyError;
+        }
 		return new While(
 			condition,
-			getCommandsAtThisLevel(block.inputList[1].connection.targetBlock()),
+			getCommandsAtThisLevel(bodyBlock),
 			block);
 	}
 
@@ -408,7 +420,11 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     		var condition;
 
     		if (input.name.indexOf('IF') === 0) {
-    			condition = getCondition(input.connection.targetBlock());
+                var conditionBlock = input.connection.targetBlock();
+                if (conditionBlock === null) {
+                    throw ocargo.messages.ifConditionError;
+                }
+    			condition = getCondition(conditionBlock);
     		} else if (input.name.indexOf('DO') === 0) {
     			var conditionalCommandSet = {};
     			conditionalCommandSet.condition = condition;
