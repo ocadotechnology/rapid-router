@@ -178,9 +178,11 @@ img.control{
 }
 
 @media print {
-    #controls, #fuelGuage, #sliderControls, #myModal,
-    #blockly > svg > g:nth-child(2),
-    #blockly > svg > g:nth-child(3) > g:nth-child(1) {
+    #paper {
+        width: 100% !important;
+    }
+
+    .no-print {
         display: none !important;
     }
 }
