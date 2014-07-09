@@ -31,7 +31,7 @@ def levels(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0008_trial_user'),
+        ('game', '0010_level_direct_drive_data'),
     ]
 
     operations = [
