@@ -178,11 +178,11 @@ ocargo.LevelEditor.prototype.drawDecor = function() {
 ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
     var x, y;
     if (this.start.x <= coord.x) {
-        for (x = this.start.x + 1; x <= coord.x; x++) {
+        for (x = this.start.x; x <= coord.x; x++) {
             deleteNode(x, this.start.y);
         }
     } else {
-        for (x = this.start.x - 1; x >= coord.x; x--) {
+        for (x = this.start.x; x >= coord.x; x--) {
             deleteNode(x, this.start.y);
         }
     }
@@ -197,6 +197,7 @@ ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
     }
 
     function deleteNode(x, y) {
+        console.info("deleting at " + x + ", " + y);
         var coord = ocargo.levelEditor.translate(new ocargo.Coordinate(x, y));
         var nodeIndex = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, coord);
         if (nodeIndex > -1) {
