@@ -196,11 +196,6 @@ function trackDevelopment() {
         startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
     });
 
-    $('#clearIncorrect').click(function() {
-        ocargo.blocklyControl.removeWrong();
-        enableDirectControl();
-    });
-
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
         enableDirectControl();

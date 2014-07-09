@@ -321,14 +321,6 @@ ocargo.BlocklyControl.prototype.reset = function() {
     this.addClickListenerToStartBlock();
 };
 
-ocargo.BlocklyControl.prototype.removeWrong = function() {
-    if (this.incorrect) {
-        var previous = this.incorrect.previousConnection.targetBlock();
-        this.incorrect.dispose();
-        this.incorrect = null;
-    }
-};
-
 ocargo.BlocklyControl.prototype.blink = function() {
     var badBlock = selectedWithConnected;
     this.incorrect = badBlock;
