@@ -98,6 +98,16 @@ button, .button, img.control{
     z-index: 1;
 }
 
+#consoleSlider {
+    position: absolute;
+    left: 50%;
+    width: 3px;
+    height: 100%;
+    z-index: 3;
+    background-color: #444;
+    cursor: col-resize;
+}
+
 #fuelGuage {
     position: fixed;
     z-index: 1;
