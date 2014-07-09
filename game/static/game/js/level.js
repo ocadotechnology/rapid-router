@@ -112,8 +112,10 @@ ocargo.Level.prototype.win = function() {
 
     ocargo.level.pathFinder.getOptimalPath();
     ocargo.level.pathFinder.getOptimalInstructions();
-    var fuelScore = ocargo.level.pathFinder.getFuelScore(JSON.parse(ocargo.level.attemptData.commandStack));
-    var instrLengthScore = ocargo.level.pathFinder.getInstrLengthScore(JSON.parse(ocargo.level.attemptData.commandStack));
+    var fuelScore = ocargo.level.pathFinder.getTravelledPathScore(
+            JSON.parse(ocargo.level.attemptData.commandStack));
+    var instrLengthScore = ocargo.level.pathFinder.getInstrLengthScore(
+            JSON.parse(ocargo.level.attemptData.commandStack));
     var score = fuelScore + instrLengthScore;
 
     sendAttempt(score);

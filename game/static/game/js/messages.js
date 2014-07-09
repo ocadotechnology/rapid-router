@@ -50,12 +50,12 @@ ocargo.messages = {
     outOfInstructions: "You ran out of instructions!",
     crashed: "Your program crashed!",
     stoppingTitle: "Stopping...",
-    scoreCard : function(fuelScore,instrLengthScore) {
-        score = fuelScore + instrLengthScore;
+    scoreCard : function(travelledScore, instrLengthScore) {
+        score = travelledScore + instrLengthScore;
         message = "Your total score: " + score + " / " + ocargo.level.pathFinder.maxScore;
-        message += "<br><br> Your fuel score: " + fuelScore + " / " + ocargo.level.pathFinder.maxFuelScore;
-        message += "<br> Your program score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore + "<br><br>";
-        if (fuelScore !== ocargo.level.pathFinder.maxFuelScore) {
+        message += "<br><br> Travelled path score: " + travelledScore + " / " + ocargo.level.pathFinder.maxDistanceScore;
+        message += "<br> Algorithm score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore + "<br><br>";
+        if (travelledScore !== ocargo.level.pathFinder.maxDistanceScore) {
             message += "Hint: try finding a quicker route to improve your score.";
         } else if (instrLengthScore !== ocargo.level.pathFinder.maxInstrLengthScore) {
             message += "Hint: try finding a smaller program to improve your score.";
