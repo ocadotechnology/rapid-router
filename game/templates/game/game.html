@@ -61,7 +61,6 @@
 <div id="wrapper">
   <div id="programmingConsole" class="col">
     <div id="blockly"></div>
-
   </div>
 
   <div id="sliderControls">
@@ -87,11 +86,12 @@
         <button id="step">Step</button>
         <button id="clearIncorrect">Clear Incorrect</button>
         <button id="clear">Clear</button>
-        <a class="button" href="/">Quit</a>
+        <a class="button" href="/game/">Quit</a>
         <button id="mute" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
       </div>
   </div>
 </div>
+
 <div id="myModal" class="reveal-modal" data-reveal>
   <h2 class="title"></h2>
   <p class="lead"></p>
@@ -104,6 +104,5 @@
     <block type="{{ block.type }}"></block>
   {% endfor %}
 </xml>
-
 
 {% endblock %}

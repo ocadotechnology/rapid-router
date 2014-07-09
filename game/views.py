@@ -34,17 +34,14 @@ def levels(request):
     fontcolour = "#617400"
 
     episodes = cached_all_episodes()
-    ratio = 1 / (len(episodes) + 1)
-    dataArray = []
-
-    for episode in episodes:
-        dataArray.append([])
-        dataArray[-1].append(episode)
-        dataArray[-1].append(bgcolour)
-        dataArray[-1].append((len(dataArray) + 0.75) * ratio)
+    ratio = 0.5 / (len(episodes) + 1)
+    
+    episodeData = []
+    for i, episode in enumerate(episodes):
+        episodeData.append([episode, bgcolour, (i + 10.25) * ratio])
 
     defaultCount = Level.objects.filter(default=1).count()
-    titlesAndScores = []
+    levelData = []
 
     for i in range(1, defaultCount):
         row = []
@@ -54,7 +51,6 @@ def levels(request):
         row.append(title)
         user = request.user
         lvl = Level.objects.get(id=i)
-
         if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
                 hasattr(request.user.userprofile, 'student'):
             try:
@@ -62,12 +58,12 @@ def levels(request):
                 attempt = get_object_or_404(Attempt, level=lvl, student=student)
                 row.append(attempt.score)
             except Http404:
-                row.append("    ")
-        titlesAndScores.append(row)
+                row.append("Could not load score")
+        levelData.append(row)
 
     context = RequestContext(request, {
-        'episodeData': dataArray,
-        'data': titlesAndScores
+        'episodeData': episodeData,
+        'levelData': levelData
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
