@@ -195,9 +195,9 @@ ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
             deleteNode(coord.x, y);
         }
     }
+    this.currentStrike = [];
 
     function deleteNode(x, y) {
-        console.info("deleting at " + x + ", " + y);
         var coord = ocargo.levelEditor.translate(new ocargo.Coordinate(x, y));
         var nodeIndex = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, coord);
         if (nodeIndex > -1) {
@@ -221,6 +221,7 @@ ocargo.LevelEditor.prototype.finaliseMove = function(coord) {
         var index = this.findNodeByCoordinate(this.nodes, current.coordinate);
 
         if (index > -1) {
+            
             var existing = ocargo.levelEditor.nodes[index];
             var list = []
             for (var j = 0; j < current.connectedNodes.length; j++) {
