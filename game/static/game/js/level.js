@@ -116,28 +116,11 @@ ocargo.Level.prototype.win = function() {
     var instrLengthScore = ocargo.level.pathFinder.getInstrLengthScore(JSON.parse(ocargo.level.attemptData.commandStack));
     var score = fuelScore + instrLengthScore;
 
-    console.debug("fuel score: ", fuelScore, " out of ", ocargo.level.pathFinder.maxFuelScore);
-    console.debug("instr length score: ", instrLengthScore, " out of ", ocargo.level.pathFinder.maxInstrLengthScore);
-    console.debug("score: ", score, " out of ", ocargo.level.pathFinder.maxScore);
-
     sendAttempt(score);
     ocargo.sound.win();
 
+    var subtitle = ocargo.messages.scoreCard(fuelScore,instrLengthScore)
     var message = '';
-    var subtitle = "Your total score: " + score + " / " + ocargo.level.pathFinder.maxScore;
-    subtitle += "<br><br> Your fuel score: " + fuelScore + " / " + ocargo.level.pathFinder.maxFuelScore;
-    subtitle += "<br> Your program score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore;
-
-    if (fuelScore !== ocargo.level.pathFinder.maxFuelScore) {
-        subtitle += "<br><br>Hint: try finding a quicker route to improve your score.";
-    } else if (instrLengthScore !== ocargo.level.pathFinder.maxInstrLengthScore) {
-        subtitle += "<br><br>Hint: try finding a smaller program to improve your score.";
-    } else {
-        subtitle += "<br><br>Perfect!";    
-    }
-
-    enableDirectControl();
-
     if (ocargo.level.nextLevel != null) {
       message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
     } else {
@@ -147,6 +130,9 @@ ocargo.Level.prototype.win = function() {
             message = ocargo.messages.lastLevel;
         }
     }
+
+    enableDirectControl();
+
     startPopup("You win!", subtitle, message);
 };
 
