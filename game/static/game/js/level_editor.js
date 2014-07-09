@@ -96,7 +96,11 @@ function handleMouseDown(this_rect, segment) {
                     ocargo.levelEditor.pathStart.coordinate);
                 ocargo.levelEditor.mark(prevStart, BACKGROUND_COLOR, 0, true);
             }
-
+            // Check if same as destination node
+            if (ocargo.levelEditor.destination && ocargo.levelEditor.destination.coordinate.x === transCoord.x
+                && ocargo.levelEditor.destination.coordinate.y === transCoord.y) {
+                ocargo.levelEditor.destination = null;
+            }
             ocargo.levelEditor.mark(coord, 'red', 0.7, true);
             var newStartIndex = ocargo.levelEditor.findNodeByCoordinate(
                 ocargo.levelEditor.nodes, transCoord);
@@ -112,6 +116,11 @@ function handleMouseDown(this_rect, segment) {
                 var prevEnd = ocargo.levelEditor.translate(
                     ocargo.levelEditor.destination.coordinate);
                 ocargo.levelEditor.mark(prevEnd, BACKGROUND_COLOR, 0, true);
+            }
+            // Check if same as starting node
+            if (ocargo.levelEditor.pathStart && ocargo.levelEditor.pathStart.coordinate.x === transCoord.x
+                && ocargo.levelEditor.pathStart.coordinate.y === transCoord.y) {
+                ocargo.levelEditor.pathStart = null;
             }
             ocargo.levelEditor.mark(coord, 'blue', 0.7, true);
             var newEnd = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
@@ -195,6 +204,15 @@ ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
             deleteNode(coord.x, y);
         }
     }
+
+    // Delete any nodes made isolated through deletion
+    for (var i = ocargo.levelEditor.nodes.length - 1; i >= 0; i--) {
+      if (ocargo.levelEditor.nodes[i].connectedNodes.length === 0) {
+        var coord = ocargo.levelEditor.translate(ocargo.levelEditor.nodes[i].coordinate);
+        deleteNode(coord.x, coord.y);
+      }
+    }
+
     this.currentStrike = [];
 
     function deleteNode(x, y) {
@@ -209,6 +227,16 @@ ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
             var index = ocargo.levelEditor.nodes.indexOf(node);
             ocargo.levelEditor.nodes.splice(index, 1);
         }
+
+        // Check if start or destination node        
+        if (ocargo.levelEditor.pathStart && ocargo.levelEditor.pathStart.coordinate.x === coord.x && ocargo.levelEditor.pathStart.coordinate.y === coord.y) {
+            ocargo.levelEditor.mark(ocargo.levelEditor.pathStart.coordinate, BACKGROUND_COLOR, 0, true);
+            ocargo.levelEditor.pathStart = null;
+        }
+        if (ocargo.levelEditor.destination && ocargo.levelEditor.destination.coordinate.x === coord.x && ocargo.levelEditor.destination.coordinate.y === coord.y) {
+            ocargo.levelEditor.mark(ocargo.levelEditor.destination.coordinate, BACKGROUND_COLOR, 0, true);
+            ocargo.levelEditor.destination = null;
+        }     
     }
 };
 
