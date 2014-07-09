@@ -89,12 +89,9 @@ function createVan(paper, previousNode, startNode) {
     return van.transform('... r90');
 }
 
-function createDeadEndRoadU(paper, i, j) {
-    var x = i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-    var y = j * GRID_SPACE_SIZE;
-
+function createDeadEndRoad(i, j) {
     var road = paper.path([
-        'M', x, y,
+        'M', i * GRID_SPACE_SIZE + EDGE_GAP, j * GRID_SPACE_SIZE,
         'l', 0, GRID_SPACE_SIZE / 2,
         'a', ROAD_WIDTH / 2, ROAD_WIDTH / 2, 0, 1, 0, ROAD_WIDTH, 0,
         'l', 0, -GRID_SPACE_SIZE / 2,
@@ -102,269 +99,64 @@ function createDeadEndRoadU(paper, i, j) {
     ]);
     road.attr(ROAD_ATTR);
 
-    var markerSet = paper.set();
     var marker = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, y,
+        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE,
         'l', 0, GRID_SPACE_SIZE / 2
     ]);
     marker.attr(ROAD_MARKER_ATTR);
     marker.node.setAttribute('stroke-dasharray', DASH);
-    markerSet.push(marker);
 
     var roadSet = paper.set();
-    roadSet.push(road, markerSet);
-
+    roadSet.push(road, marker);
     return roadSet;
 }
 
-function createDeadEndRoadD(paper, i, j) {
-    var x = i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-    var y = (j + 1) * GRID_SPACE_SIZE;
-
-    var road = paper.path([
-        'M', x, y,
-        'l', 0, -GRID_SPACE_SIZE / 2,
-        'a', ROAD_WIDTH / 2, ROAD_WIDTH / 2, 0, 1, 1, ROAD_WIDTH, 0,
-        'l', 0, GRID_SPACE_SIZE / 2,
-        'l', -ROAD_WIDTH, 0
-    ]);
+function createStraightRoad(i, j) {
+    var road = paper.rect(i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + EDGE_GAP, GRID_SPACE_SIZE, ROAD_WIDTH);
     road.attr(ROAD_ATTR);
 
-    var markerSet = paper.set();
     var marker = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, y,
-        'l', 0, -GRID_SPACE_SIZE / 2
-    ]);
-    marker.attr(ROAD_MARKER_ATTR);
-    marker.node.setAttribute('stroke-dasharray', DASH);
-    markerSet.push(marker);
-
-    var roadSet = paper.set();
-    roadSet.push(road, markerSet);
-
-    return roadSet;
-}
-
-function createDeadEndRoadL(paper, i, j) {
-    var x = i * GRID_SPACE_SIZE;
-    var y = j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-
-    var road = paper.path([
-        'M', x, y,
-        'l', GRID_SPACE_SIZE / 2, 0,
-        'a', ROAD_WIDTH / 2, ROAD_WIDTH / 2, 0, 1, 1, 0, ROAD_WIDTH,
-        'l', -GRID_SPACE_SIZE / 2, 0,
-        'l', 0, -ROAD_WIDTH
-    ]);
-    road.attr(ROAD_ATTR);
-
-    var markerSet = paper.set();
-    var marker = paper.path([
-        'M', x, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-        'l', GRID_SPACE_SIZE / 2, 0
-    ]);
-    marker.attr(ROAD_MARKER_ATTR);
-    marker.node.setAttribute('stroke-dasharray', DASH);
-    markerSet.push(marker);
-
-    var roadSet = paper.set();
-    roadSet.push(road, markerSet);
-
-    return roadSet;
-}
-
-function createDeadEndRoadR(paper, i, j) {
-    var x = (i + 1) * GRID_SPACE_SIZE;
-    var y = j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-
-    var road = paper.path([
-        'M', x, y,
-        'l', -GRID_SPACE_SIZE / 2, 0,
-        'a', ROAD_WIDTH / 2, ROAD_WIDTH / 2, 0, 1, 0, 0, ROAD_WIDTH,
-        'l', GRID_SPACE_SIZE / 2, 0,
-        'l', 0, -ROAD_WIDTH
-    ]);
-    road.attr(ROAD_ATTR);
-
-    var markerSet = paper.set();
-    var marker = paper.path([
-        'M', x, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-        'l', -GRID_SPACE_SIZE / 2, 0
-    ]);
-    marker.attr(ROAD_MARKER_ATTR);
-    marker.node.setAttribute('stroke-dasharray', DASH);
-    markerSet.push(marker);
-
-    var roadSet = paper.set();
-    roadSet.push(road, markerSet);
-
-    return roadSet;
-}
-
-function createHorizontalRoad(paper, i, j) {
-    var x = i * GRID_SPACE_SIZE;
-    var y = j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-
-    var road = paper.rect(x, y, GRID_SPACE_SIZE, ROAD_WIDTH);
-    road.attr(ROAD_ATTR);
-
-    var markerSet = paper.set();
-    var marker = paper.path([
-        'M', x, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
+        'M', i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
         'l', GRID_SPACE_SIZE, 0
     ]);
     marker.attr(ROAD_MARKER_ATTR);
     marker.node.setAttribute('stroke-dasharray', DASH);
-    markerSet.push(marker);
 
     var roadSet = paper.set();
-    roadSet.push(road, markerSet);
-
+    roadSet.push(road, marker);
     return roadSet;
 }
 
-function createVerticalRoad(paper, i, j, drawLines) {
-    var x = i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-    var y = j * GRID_SPACE_SIZE;
-
-    var road = paper.rect(x, y, ROAD_WIDTH, GRID_SPACE_SIZE);
+function createTurn(i, j) {
+    var road = paper.path([
+        'M', i * GRID_SPACE_SIZE + EDGE_GAP, j * GRID_SPACE_SIZE,
+        'l', ROAD_WIDTH, 0,
+        'a', EDGE_GAP + ROAD_WIDTH, EDGE_GAP + ROAD_WIDTH, 0, 0, 1, -(EDGE_GAP + ROAD_WIDTH), EDGE_GAP + ROAD_WIDTH,
+        'l', 0, -ROAD_WIDTH,
+        'a', EDGE_GAP, EDGE_GAP, 0, 0, 0, EDGE_GAP, -EDGE_GAP
+    ]);
     road.attr(ROAD_ATTR);
 
-    var markerSet = paper.set();
     var marker = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, y,
-        'l', 0, GRID_SPACE_SIZE
+        'M', i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
+        'a', GRID_SPACE_SIZE / 2, GRID_SPACE_SIZE / 2, 0, 0, 0, GRID_SPACE_SIZE / 2, -GRID_SPACE_SIZE / 2
     ]);
     marker.attr(ROAD_MARKER_ATTR);
     marker.node.setAttribute('stroke-dasharray', DASH);
-    markerSet.push(marker);
 
     var roadSet = paper.set();
-    roadSet.push(road, markerSet);
-
+    roadSet.push(road, marker);
     return roadSet;
 }
 
-function createTurn(paper, i, j, direction) {
-    var baseX = i * GRID_SPACE_SIZE;
-    var baseY = j * GRID_SPACE_SIZE;
-    var turnAndMarker = [];
-
-    switch (direction) {
-        case 'UL':
-            turnAndMarker = createTurnUL(paper, baseX, baseY);
-            break;
-
-        case 'UR':
-            turnAndMarker = createTurnUR(paper, baseX, baseY);
-            break;
-
-        case 'DR':
-            turnAndMarker = createTurnDR(paper, baseX, baseY);
-            break;
-
-        case 'DL':
-            turnAndMarker = createTurnDL(paper, baseX, baseY);
-            break;
-    }
-
-    var turn = turnAndMarker[0];
-    var marker = turnAndMarker[1];
-    marker.attr(ROAD_MARKER_ATTR);
-    marker.node.setAttribute('stroke-dasharray', DASH);
-    turn.attr(ROAD_ATTR);
-
-    var roadSet = paper.set();
-    roadSet.push(turn, marker);
-
-    return roadSet;
-}
-
-function createTurnUL(paper, baseX, baseY) {
-    var turn = paper.path([
-        'M', baseX, baseY + EDGE_GAP,
-        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY,
-        'H', baseX + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH, baseX,
-            baseY + EDGE_GAP + ROAD_WIDTH,
-        'V', baseY + EDGE_GAP
-    ]);
-
-    var marker = paper.path([
-        'M', baseX, baseY + GRID_SPACE_SIZE / 2,
-        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-            baseX + GRID_SPACE_SIZE / 2, baseY
-    ]);
-
-    return [turn, marker];
-}
-
-function createTurnDL(paper, baseX, baseY) {
-    var turn = paper.path([
-        'M', baseX, baseY + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + EDGE_GAP,
-            baseY + GRID_SPACE_SIZE,
-        'H', baseX + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX, baseY + EDGE_GAP,
-        'V', baseY + EDGE_GAP + ROAD_WIDTH
-    ]);
-
-    var marker = paper.path([
-        'M', baseX, baseY + GRID_SPACE_SIZE / 2,
-        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-            baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE
-    ]);
-
-    return [turn, marker];
-}
-
-function createTurnDR(paper, baseX, baseY) {
-    var turn = paper.path([
-        'M', baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP,
-        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY + GRID_SPACE_SIZE,
-        'H', baseX + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH,
-            baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP + ROAD_WIDTH,
-        'V', baseY + EDGE_GAP
-    ]);
-
-    var marker = paper.path([
-        'M', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE,
-        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-            baseX + GRID_SPACE_SIZE, baseY + GRID_SPACE_SIZE / 2
-    ]);
-
-    return [turn, marker];
-}
-
-function createTurnUR(paper, baseX, baseY) {
-    var turn = paper.path([
-        'M', baseX + EDGE_GAP, baseY,
-        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY +
-            EDGE_GAP + ROAD_WIDTH,
-        'V', baseY + EDGE_GAP,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX + EDGE_GAP +
-            ROAD_WIDTH, baseY,
-        'H', baseX + EDGE_GAP
-    ]);
-
-    var marker = paper.path([
-        'M', baseX + GRID_SPACE_SIZE, baseY + GRID_SPACE_SIZE / 2,
-        'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-            baseX + GRID_SPACE_SIZE / 2, baseY
-    ]);
-
-    return [turn, marker];
-}
-
-function createTJunctionU(paper, i, j) {
+function createTJunction(i, j) {
     var roadSet = paper.set();
 
     var road = paper.path([
-        'M', i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
+        'M', i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + EDGE_GAP,
+        'a', EDGE_GAP, EDGE_GAP, 0, 0, 0, EDGE_GAP, -EDGE_GAP,
         'l', ROAD_WIDTH, 0,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
+        'a', EDGE_GAP, EDGE_GAP, 0, 0, 0, EDGE_GAP, EDGE_GAP,
         'l', 0, ROAD_WIDTH,
         'l', -GRID_SPACE_SIZE, 0,
         'l', 0, -ROAD_WIDTH
@@ -384,7 +176,7 @@ function createTJunctionU(paper, i, j) {
     // Center line of child road
     var markings = paper.path([
         'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE,
-        'l', 0, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2
+        'l', 0, EDGE_GAP
     ]);
     markings.attr(ROAD_MARKER_ATTR);
     markings.node.setAttribute('stroke-dasharray', DASH);
@@ -392,7 +184,7 @@ function createTJunctionU(paper, i, j) {
 
     // Stopping line of child road
     var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
+        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE + EDGE_GAP,
         'l', GRID_SPACE_SIZE / 4, 0
     ]);
     markings.attr(ROAD_MARKER_ATTR);
@@ -402,156 +194,19 @@ function createTJunctionU(paper, i, j) {
     return roadSet;
 }
 
-function createTJunctionD(paper, i, j) {
+function createCrossRoads(i, j) {
     var roadSet = paper.set();
 
     var road = paper.path([
-        'M', i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', GRID_SPACE_SIZE, 0,
-        'l', 0, ROAD_WIDTH,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', -ROAD_WIDTH, 0,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', 0, -ROAD_WIDTH
-    ]);
-    road.attr(ROAD_ATTR);
-    roadSet.push(road);
-
-    // Center line of main road
-    var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-        'l', GRID_SPACE_SIZE, 0
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH);
-    roadSet.push(markings);
-
-    // Center line of child road
-    var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, (j + 1) * GRID_SPACE_SIZE,
-        'l', 0, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH);
-    roadSet.push(markings);
-
-    // Stopping line of child road
-    var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, (j + 1) * GRID_SPACE_SIZE - (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', -GRID_SPACE_SIZE / 4, 0
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH / 4);
-    roadSet.push(markings);
-
-    return roadSet;
-}
-
-
-function createTJunctionL(paper, i, j) {
-    var roadSet = paper.set();
-
-    var road = paper.path([
-        'M', i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2 , j * GRID_SPACE_SIZE,
+        'M', i * GRID_SPACE_SIZE + EDGE_GAP, j * GRID_SPACE_SIZE,
         'l', ROAD_WIDTH, 0,
-        'l', 0, GRID_SPACE_SIZE,
+        'a', EDGE_GAP, EDGE_GAP, 0, 0, 0, EDGE_GAP, EDGE_GAP,
+        'l', 0, ROAD_WIDTH,
+        'a', EDGE_GAP, EDGE_GAP, 0, 0, 0, -EDGE_GAP, EDGE_GAP,
         'l', -ROAD_WIDTH, 0,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
+        'a', EDGE_GAP, EDGE_GAP, 0, 0, 0, -EDGE_GAP, -EDGE_GAP,
         'l', 0, -ROAD_WIDTH,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2
-    ]);
-    road.attr(ROAD_ATTR);
-    roadSet.push(road);
-
-    // Center line of main road
-    var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE,
-        'l', 0, GRID_SPACE_SIZE
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH);
-    roadSet.push(markings);
-
-    // Center line of child road
-    var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-        'l', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH);
-    roadSet.push(markings);
-
-    // Stopping line of child road
-    var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-        'l', 0, -GRID_SPACE_SIZE / 4
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH / 4);
-    roadSet.push(markings);
-
-    return roadSet;
-}
-
-
-function createTJunctionR(paper, i, j) {
-    var roadSet = paper.set();
-
-    var road = paper.path([
-        'M', i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2 , j * GRID_SPACE_SIZE,
-        'l', ROAD_WIDTH, 0,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', 0, ROAD_WIDTH,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', -ROAD_WIDTH, 0,
-        'l', 0, -GRID_SPACE_SIZE
-    ]);
-    road.attr(ROAD_ATTR);
-    roadSet.push(road);
-
-    // Center line of main road
-    var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE,
-        'l', 0, GRID_SPACE_SIZE
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH);
-    roadSet.push(markings);
-
-    // Center line of child road
-    var markings = paper.path([
-        'M', (i + 1) * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-        'l', -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH);
-    roadSet.push(markings);
-
-    // Stopping line of child road
-    var markings = paper.path([
-        'M', (i + 1) * GRID_SPACE_SIZE - (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-        'l', 0, GRID_SPACE_SIZE / 4
-    ]);
-    markings.attr(ROAD_MARKER_ATTR);
-    markings.node.setAttribute('stroke-dasharray', DASH / 4);
-    roadSet.push(markings);
-
-    return roadSet;
-}
-
-function createCrossRoads(paper, i, j) {
-    var roadSet = paper.set();
-
-    var road = paper.path([
-        'M', i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, j * GRID_SPACE_SIZE,
-        'l', ROAD_WIDTH, 0,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', 0, ROAD_WIDTH,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', -ROAD_WIDTH, 0,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
-        'l', 0, -ROAD_WIDTH,
-        'a', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0, 0, 0, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2
+        'a', EDGE_GAP, EDGE_GAP, 0, 0, 0, EDGE_GAP, -EDGE_GAP
     ]);
     road.attr(ROAD_ATTR);
     roadSet.push(road);
@@ -559,13 +214,13 @@ function createCrossRoads(paper, i, j) {
     // Center lines
     var markings = paper.path([
         'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE,        // up
-        'l', 0, (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
+        'l', 0, EDGE_GAP,
         'M', (i + 1) * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,  // right
-        'l', -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0,
+        'l', -EDGE_GAP, 0,
         'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, (j + 1) * GRID_SPACE_SIZE,  // down
-        'l', 0, -(GRID_SPACE_SIZE - ROAD_WIDTH) / 2,
+        'l', 0, -EDGE_GAP,
         'M', i * GRID_SPACE_SIZE, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,        // left
-        'l', (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, 0
+        'l', EDGE_GAP, 0
     ]);
     markings.attr(ROAD_MARKER_ATTR);
     markings.node.setAttribute('stroke-dasharray', DASH);
@@ -573,13 +228,13 @@ function createCrossRoads(paper, i, j) {
 
     // Stopping lines
     var markings = paper.path([
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,           // up
+        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, j * GRID_SPACE_SIZE + EDGE_GAP,           // up
         'l', ROAD_WIDTH / 2, 0,
-        'M', (i + 1) * GRID_SPACE_SIZE - (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,     // right
+        'M', (i + 1) * GRID_SPACE_SIZE - EDGE_GAP, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,     // right
         'l', 0, ROAD_WIDTH / 2,
-        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, (j + 1) * GRID_SPACE_SIZE - (GRID_SPACE_SIZE - ROAD_WIDTH) / 2,     // down
+        'M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, (j + 1) * GRID_SPACE_SIZE - EDGE_GAP,     // down
         'l', -ROAD_WIDTH / 2, 0,
-        'M', i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,           // left
+        'M', i * GRID_SPACE_SIZE + EDGE_GAP, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,           // left
         'l', 0, -ROAD_WIDTH / 2
     ]);
     markings.attr(ROAD_MARKER_ATTR);
@@ -657,16 +312,19 @@ function drawDeadEndRoad(node) {
     var flipped = transformY(node.coordinate);
 
     if (roadLetters == 'H' && prevFlipped.x < flipped.x) {
-        createDeadEndRoadL(paper, flipped.x, flipped.y);
+        var roadSet = createDeadEndRoad(flipped.x, flipped.y);
+        roadSet.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
     else if (roadLetters == 'H' && prevFlipped.x > flipped.x) {
-        createDeadEndRoadR(paper, flipped.x, flipped.y);
+        var roadSet = createDeadEndRoad(flipped.x, flipped.y);
+        roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
     else if (roadLetters == 'V' && prevFlipped.y < flipped.y) {
-        createDeadEndRoadU(paper, flipped.x, flipped.y);
+        createDeadEndRoad(flipped.x, flipped.y);
     }
     else if (roadLetters == 'V' && prevFlipped.y > flipped.y) {
-        createDeadEndRoadD(paper, flipped.x, flipped.y);
+        var roadSet = createDeadEndRoad(flipped.x, flipped.y);
+        roadSet.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
 }
 
@@ -675,16 +333,25 @@ function drawSingleRoadSegment(previousNode, node, nextNode) {
 
     var flipped = transformY(node.coordinate);
 
-    switch (roadLetters) {
-        case 'H':
-            createHorizontalRoad(paper, flipped.x, flipped.y);
-            break;
-        case 'V':
-            createVerticalRoad(paper, flipped.x, flipped.y);
-            break;
-        default:
-            createTurn(paper, flipped.x, flipped.y, roadLetters);
-            break;
+    if (roadLetters == 'H') {
+        createStraightRoad(flipped.x, flipped.y);
+    }
+    else if (roadLetters == 'V') {
+        var roadSet = createStraightRoad(flipped.x, flipped.y);
+        roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else {
+        var roadSet = createTurn(flipped.x, flipped.y, roadLetters);
+
+        if (roadLetters == 'UR') {
+            roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+        else if (roadLetters == 'DR') {
+            roadSet.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+        else if (roadLetters == 'DL') {
+            roadSet.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
     }
 }
 
@@ -701,59 +368,38 @@ function drawTJunction(node) {
     var roadLetters = getRoadLetters(node1.coordinate, node.coordinate, node3.coordinate);
     var innerLetters = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
 
-    switch (roadLetters) {
-        case 'H':
-            createTJunctionU(paper, flipped.x, flipped.y);
-            break;
+    var roadSet = createTJunction(flipped.x, flipped.y);
 
-        case 'V':
-            createTJunctionR(paper, flipped.x, flipped.y);
-            break;
-
-        case 'UL':
-            if (innerLetters === 'UR') {
-                createTJunctionU(paper, flipped.x, flipped.y);
-            }
-            else {
-                createTJunctionL(paper, flipped.x, flipped.y);
-            }
-            break;
-
-        case 'UR':
-            if (innerLetters === 'DR') {
-                createTJunctionR(paper, flipped.x, flipped.y);
-            }
-            else {
-                createTJunctionU(paper, flipped.x, flipped.y);
-            }
-            break;
-
-        case 'DL':
-            if (innerLetters === 'UL') {
-                createTJunctionL(paper, flipped.x, flipped.y);
-            }
-            else {
-                createTJunctionD(paper, flipped.x, flipped.y);
-            }
-            break;
-
-        case 'DR':
-            if (innerLetters === 'DL') {
-                createTJunctionD(paper, flipped.x, flipped.y);
-            }
-            else {
-                createTJunctionR(paper, flipped.x, flipped.y);
-            }
-            break;
-
-        default:
-            break;
+    if (roadLetters == 'V') {
+        roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters == 'UL' && innerLetters !== 'UR') {
+        roadSet.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters == 'UR' && innerLetters === 'DR') {
+        roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters == 'DL') {
+        if (innerLetters === 'UL') {
+            roadSet.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+        else {
+            roadSet.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+    }
+    else if (roadLetters == 'DR') {
+        if (innerLetters === 'DL') {
+            roadSet.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+        else {
+            roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
     }
 }
 
 function drawCrossRoads(node) {
     var flipped = transformY(node.coordinate);
-    createCrossRoads(paper, flipped.x, flipped.y);
+    createCrossRoads(flipped.x, flipped.y);
 }
 
 function createRoad(nodes) {
