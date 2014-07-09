@@ -46,24 +46,24 @@
 #controls #turnLeft,
 #controls #turnRight,
 #controls #play {
-    top: 50px;
+    bottom: 20px;
 }
 
 #controls #moveForward, 
 #controls #play {
-    right: 170px;
+    left: 80px;
 }
 
 #controls #turnLeft {
-    right: 220px;
+    left: 30px;
 }
 
 #controls #turnRight {
-    right: 120px;
+    left: 130px;
 }
 
 #controls #moveForward {
-    top: 0;
+    bottom: 70px;
 }
 
 #stop {

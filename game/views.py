@@ -14,7 +14,7 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import *
 from game import random_road
-from models import Class, Level, Attempt, Command, Block
+from models import Class, Level, Attempt, Command, Block, Episode
 
 
 def levels(request):
@@ -30,40 +30,65 @@ def levels(request):
     :template:`game/level_selection.html`
     """
     """ Keeping other schemes here for now, just in case we decide on different scheme. """
-    bgcolour = (171, 196, 37)
+    # blue bgcolour = (88, 148, 194)
+    #fontcolour = "#206396"
+    # button bgcolour = (0, 140, 186)
+    # fontcolour = "#00536E"
+    # yellow bgcolour = (255, 158, 0)
+    # fontcolour = "#B06D00"
+    # turkus bgcolour = (0, 191, 143)
+    # fontcolour = "#007356"
+    # orange bgcolour = (255, 131, 0)
+    # fontcolour = "#B05A00"
+    # grass
+    bgcolour = 'rgba(171, 196, 37, {:f})'
     fontcolour = "#617400"
 
-    episodes = cached_all_episodes()
-    ratio = 0.5 / (len(episodes) + 1)
+    episodes = Episode.objects.all()
+    ratio = 1.0 / (len(episodes) + 1)
+    dataArray = []
     
-    episodeData = []
-    for i, episode in enumerate(episodes):
-        episodeData.append([episode, bgcolour, (i + 10.25) * ratio])
-
-    defaultCount = Level.objects.filter(default=1).count()
-    levelData = []
-
-    for i in range(1, defaultCount):
-        row = []
+    def get_level_title(i):
         title = 'title_level' + str(i)
         titleCall = getattr(messages, title)
-        title = mark_safe(titleCall())
-        row.append(title)
+        return mark_safe(titleCall())
+
+    def get_attempt_score(lvl):
         user = request.user
-        lvl = Level.objects.get(id=i)
+        score = "    "
         if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
                 hasattr(request.user.userprofile, 'student'):
             try:
                 student = user.userprofile.student
                 attempt = get_object_or_404(Attempt, level=lvl, student=student)
-                row.append(attempt.score)
+                score = attempt.score
             except Http404:
-                row.append("Could not load score")
-        levelData.append(row)
+                pass
+        return score
+
+    episode_data = []
+    for episode in episodes:
+        levels = []
+        for level in episode.levels:
+            levels.append({
+                "id": level.id,
+                "name": level.name,
+                "title": get_level_title(level.id),
+                "score": get_attempt_score(level)})
+        opacity = (len(episode_data) + 0.75) * ratio
+        colour = bgcolour.format(opacity)
+        e = {
+                "id": episode.id,
+                "name": episode.name,
+                "colour": colour,
+                "levels": levels,
+                "opacity": opacity
+            }
+
+        episode_data.append(e)
 
     context = RequestContext(request, {
-        'episodeData': episodeData,
-        'levelData': levelData
+        'episodeData': json.dumps(episode_data),
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
