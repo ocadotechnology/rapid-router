@@ -47,7 +47,7 @@ ocargo.messages = {
 	throughRedTrafficLight: "You just directed the van through a red traffic light! Stick to the highway code!",
     needHint: "Are you stuck? Need a hint?",
     terminated: "Program terminated!",
-    outOfInstructions: "You ran out of instructions!",
+    outOfInstructions: "You ran out of instructions without reaching your destination!",
     crashed: "Your program crashed!",
     stoppingTitle: "Stopping...",
     scoreCard : function(travelledScore, instrLengthScore) {
@@ -63,5 +63,8 @@ ocargo.messages = {
             message += "Perfect!";    
         }
         return message
-    }
+    },
+    whileConditionError: "Perhaps try looking at your 'While' blocks?",
+    whileBodyError: "Perhaps try looking at your 'While' blocks?",
+    ifConditionError: "Perhaps try looking at your 'If' blocks?",
 }

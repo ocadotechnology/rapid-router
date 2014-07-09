@@ -150,7 +150,7 @@ function trackDevelopment() {
         try {
             var program = ocargo.blocklyControl.populateProgram();
         } catch (error) {
-            ocargo.level.fail('Your program crashed!');
+            ocargo.level.fail('Your program crashed!<br>' + error);
             throw error;
         }
 
