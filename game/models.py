@@ -90,6 +90,7 @@ class Level (models.Model):
     block_limit = models.IntegerField(blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='+')
     max_fuel = models.IntegerField(default=50)
+    direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
 
