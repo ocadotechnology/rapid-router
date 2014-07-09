@@ -213,12 +213,44 @@ function trackDevelopment() {
         if (c.is(':visible')) {
             $('#paper').animate({width: '100%'});
             $('#sliderControls').animate({left: '0%'});
+            $('#consoleSlider').animate({left: '0px'});
         } else {
             $('#paper').animate({width: '50%'});
-            $('#sliderControls').animate({left: '50%'});
+            $('#programmingConsole').animate({ width: '50%'});
+            $('#sliderControls').animate({left: '50%'})
+            $('#consoleSlider').animate({left: '50%'});
         }
         c.animate({width: 'toggle'});
     });
+
+    $('#consoleSlider').on('mousedown', function(e){
+        var slider = $(this);
+        var p = slider.parent().offset();
+
+        //disable drag when mouse leaves this or the parent
+        slider.on('mouseup', function(e){
+            slider.off('mousemove');
+            slider.parent().off('mousemove');
+        });
+        slider.parent().on('mouseup', function(e) {
+            slider.off('mousemove');
+            slider.parent().off('mousemove');
+        });
+
+        slider.parent().on('mousemove', function(me){
+            var mx = me.pageX - p.left;
+            var half = $( window ).width()/2;
+            if (mx > half) {
+                mx = half;
+            }
+            $('#consoleSlider').css({ left: mx });
+            $('#paper').css({ width: ($( window ).width() - mx) });
+            $('#programmingConsole').css({ width: mx });
+            $('#sliderControls').css({ left: mx });
+
+        });
+    });
+
 }
 
 $(function() {

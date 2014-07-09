@@ -111,7 +111,7 @@ def level(request, level):
         except Http404:
             attempt = Attempt(level=lvl, score=0, student=student)
             attempt.save()
-
+            
     context = RequestContext(request, {
         'level': lvl,
         'blocks': blocks,
