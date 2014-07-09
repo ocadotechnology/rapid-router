@@ -36,12 +36,15 @@ ocargo.messages = {
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
     levelEditorMobileSubtitle: "Click on the point you want this part of the road to start and, " +
         "while holding it, click on the square you want it to end.",
-    levelEditorPCSubtitle: "Click on the point you want this part of the road to start and drag " +
-        "it to the point you want it to end.",
+    levelEditorPCSubtitle: "Click on the point you want this part of the road to start then click " +
+        "where you would like it to end.",
     levelEditorMainText: "Click on the 'Mark Start' or 'Mark End' then select the road of the " +
         "segment you want to serve as the starting or ending point. <br>" +
-        "To delete a part of the road, click on the 'Delete' button and remove it the same way " +
-        "you added it.<br> Don't forget to choose a name and fuel limit for your level! It will " +
+        "To delete a part of the road, click on the 'Delete Mode' button and remove it the same way " +
+        "you added it.<br>" +
+        "To add bushes or trees, click their image and one will be added in the top left corner of " +
+        "the map, from there you can drag it wherever you like!<br>" +
+        "Don't forget to choose a name and fuel limit for your level! It will " +
         "make sharing it with others much easier for you.",
     levelEditorTitle: "Welcome to the Level Editor!",
 	throughRedTrafficLight: "You just directed the van through a red traffic light! Stick to the highway code!",
@@ -50,12 +53,12 @@ ocargo.messages = {
     outOfInstructions: "You ran out of instructions without reaching your destination!",
     crashed: "Your program crashed!",
     stoppingTitle: "Stopping...",
-    scoreCard : function(fuelScore,instrLengthScore) {
-        score = fuelScore + instrLengthScore;
+    scoreCard : function(travelledScore, instrLengthScore) {
+        score = travelledScore + instrLengthScore;
         message = "Your total score: " + score + " / " + ocargo.level.pathFinder.maxScore;
-        message += "<br><br> Your fuel score: " + fuelScore + " / " + ocargo.level.pathFinder.maxFuelScore;
-        message += "<br> Your program score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore + "<br><br>";
-        if (fuelScore !== ocargo.level.pathFinder.maxFuelScore) {
+        message += "<br><br> Travelled path score: " + travelledScore + " / " + ocargo.level.pathFinder.maxDistanceScore;
+        message += "<br> Algorithm score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore + "<br><br>";
+        if (travelledScore !== ocargo.level.pathFinder.maxDistanceScore) {
             message += "Hint: try finding a quicker route to improve your score.";
         } else if (instrLengthScore !== ocargo.level.pathFinder.maxInstrLengthScore) {
             message += "Hint: try finding a smaller program to improve your score.";
