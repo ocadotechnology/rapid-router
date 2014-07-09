@@ -365,30 +365,38 @@ function drawTJunction(node) {
     var flipped2 = transformY(node2.coordinate);
     var flipped3 = transformY(node3.coordinate);
 
-    var roadLetters = getRoadLetters(node1.coordinate, node.coordinate, node3.coordinate);
-    var innerLetters = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
+    var letters12 = getRoadLetters(node1.coordinate, node.coordinate, node3.coordinate);
+    var letters13 = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
 
     var roadSet = createTJunction(flipped.x, flipped.y);
 
-    if (roadLetters == 'V') {
-        roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    if (letters12 == 'V') {
+        if (letters13 == 'UR') {
+            roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+        else {
+            roadSet.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
     }
-    else if (roadLetters == 'UL' && innerLetters !== 'UR') {
+    else if (letters12 == 'H' && (letters13 == 'DL' || letters13 == 'DR')) {
+        roadSet.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (letters12 == 'UL' && (letters13 == 'DL' || letters13 == 'V')) {
         roadSet.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
-    else if (roadLetters == 'UR' && innerLetters === 'DR') {
+    else if (letters12 == 'UR' && (letters13 == 'DR' || letters13 == 'V')) {
         roadSet.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
-    else if (roadLetters == 'DL') {
-        if (innerLetters === 'UL') {
+    else if (letters12 == 'DL') {
+        if (letters13 == 'UL' || letters13 == 'V') {
             roadSet.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
         else {
             roadSet.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
     }
-    else if (roadLetters == 'DR') {
-        if (innerLetters === 'DL') {
+    else if (letters12 == 'DR') {
+        if (letters13 == 'DL' || letters13 == 'H') {
             roadSet.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
         else {
