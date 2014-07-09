@@ -155,6 +155,41 @@ Blockly.Blocks['at_destination'] = {
     }
 };
 
+Blockly.Blocks['call_proc'] = {
+    // Block for calling a defined procedure
+    init: function() {
+        this.setColour(160);
+        this.appendValueInput('Name:')
+            .appendField('Call')
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Call');
+    }
+};
+
+Blockly.Blocks['declare_proc'] = {
+    // Block for declaring a procedure
+    init: function() {
+        this.setColour(160);
+        this.appendValueInput('Name:')
+            .appendField('Define')
+        this.appendStatementInput()
+            .appendField('Do');
+
+        this.setTooltip('Declares the procedure');
+    }
+};
+
+Blockly.Blocks['proc_name'] = {
+    // Block for declaring a procedure
+    init: function() {
+        this.setColour(160);
+        this.setOutput(true, 'String');
+
+        this.setTooltip('Holds a name for a procedure');
+    }
+};
+
 //Customise controls_repeat block to not allow more than a sensible number of repetitions
 var controlsRepeatBlock = Blockly.Blocks['controls_repeat'];
 var originalInit = controlsRepeatBlock.init;
@@ -364,7 +399,29 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlock = function() {
 };
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
-	function createWhile(block) {
+	
+    function getFunctions() {
+        var functionBlocks = []
+        Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
+            if (block.type === 'declare_proc') {
+                functionBlocks.append(block);
+            }
+        });
+    }
+
+    function createFunction(block)
+    {
+        var bodyBlock = block.inputList[1].connection.targetBlock();
+        if(bodyBlock == null) {
+            throw ocargo.messages.procBodyError;
+        }
+        
+        return new Function("Name",getCommandsAtThisLevel(bodyBlock))
+    }
+
+
+
+    function createWhile(block) {
         var bodyBlock = block.inputList[1].connection.targetBlock();
         if (bodyBlock === null) {
             throw ocargo.messages.whileBodyError;
