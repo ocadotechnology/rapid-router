@@ -203,7 +203,7 @@ ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
         if (nodeIndex > -1) {
             var node = ocargo.levelEditor.nodes[nodeIndex];
             // Remove all the references to the node we're removing.
-            for (var i = 0; i < node.connectedNodes.length; i++) {
+            for (var i = node.connectedNodes.length - 1; i >= 0; i--) {
                 node.removeDoublyConnectedNode(node.connectedNodes[i]);
             }
             var index = ocargo.levelEditor.nodes.indexOf(node);
