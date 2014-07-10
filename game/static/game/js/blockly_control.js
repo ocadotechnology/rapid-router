@@ -158,7 +158,7 @@ Blockly.Blocks['at_destination'] = {
 Blockly.Blocks['call_proc'] = {
     // Block for calling a defined procedure
     init: function() {
-        this.setColour(160);
+        this.setColour(0);
         this.appendValueInput('Name:')
             .appendField('Call')
         this.setPreviousStatement(true);
@@ -170,25 +170,23 @@ Blockly.Blocks['call_proc'] = {
 Blockly.Blocks['declare_proc'] = {
     // Block for declaring a procedure
     init: function() {
-        this.setColour(160);
-        this.appendValueInput('Name:')
-            .appendField('Define')
-        this.appendStatementInput()
+        this.setColour(0);
+        this.appendValueInput('ID')
+            .appendField('Define');
+        this.appendStatementInput('DO')
             .appendField('Do');
 
         this.setTooltip('Declares the procedure');
     }
 };
 
-Blockly.Blocks['proc_name'] = {
-    // Block for declaring a procedure
-    init: function() {
-        this.setColour(160);
-        this.setOutput(true, 'String');
-
-        this.setTooltip('Holds a name for a procedure');
-    }
-};
+// Set text colour to red
+var textBlock = Blockly.Blocks['text']
+var originalTextInit = textBlock.init;
+textBlock.init = function() {
+    originalTextInit.call(this);
+    this.setColour(0);
+}
 
 //Customise controls_repeat block to not allow more than a sensible number of repetitions
 var controlsRepeatBlock = Blockly.Blocks['controls_repeat'];
@@ -295,18 +293,19 @@ ocargo.BlocklyControl.prototype.init = function() {
         e.innerHTML = text;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
-
+    console.log(WORKSPACE);
     ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
 };
 
 ocargo.BlocklyControl.prototype.deserialize = function(text) {
     try {
+        console.log(text);
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeUnavailableBlocks();
         ocargo.blocklyControl.addClickListenerToStartBlock();
     } catch (e) {
-        console.log("caught error");
+        console.log("caught error: " + e);
         ocargo.blocklyControl.reset();
     }
 };
