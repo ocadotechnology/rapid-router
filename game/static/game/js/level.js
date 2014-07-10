@@ -9,12 +9,12 @@ ocargo.Level = function(map, van, ui, nextLevel, nextEpisode) {
     this.ui = ui;
     this.correct = 0;
     this.attemptData = {};
-    this.blockLimit = null;
-    this.pathFinder = new ocargo.PathFinder(map);
+    this.pathFinder = new ocargo.PathFinder(map, MODEL_SOLUTION);
     this.fails = 0;
     this.hintOpened = false;
     this.nextLevel = nextLevel;
     this.nextEpisode = nextEpisode;
+    console.debug(MODEL_SOLUTION)
 };
 
 ocargo.Level.prototype.failsBeforeHintBtn = 3;
@@ -127,18 +127,11 @@ ocargo.Level.prototype.step = function() {
 ocargo.Level.prototype.win = function() {
     console.debug('You win!');
 
-    ocargo.level.pathFinder.getOptimalPath();
-    ocargo.level.pathFinder.getOptimalInstructions();
-    var fuelScore = ocargo.level.pathFinder.getTravelledPathScore(
-            JSON.parse(ocargo.level.attemptData.commandStack));
-    var instrLengthScore = ocargo.level.pathFinder.getInstrLengthScore(
-            JSON.parse(ocargo.level.attemptData.commandStack));
-    var score = fuelScore + instrLengthScore;
+    var scoreArray = ocargo.level.pathFinder.getScore();
 
-    sendAttempt(score);
+    sendAttempt(scoreArray[0]);
     ocargo.sound.win();
 
-    var subtitle = ocargo.messages.scoreCard(fuelScore,instrLengthScore)
     var message = '';
     if (ocargo.level.nextLevel != null) {
       message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
@@ -152,7 +145,7 @@ ocargo.Level.prototype.win = function() {
 
     enableDirectControl();
 
-    startPopup("You win!", subtitle, message);
+    startPopup("You win!", scoreArray[1], message);
 };
 
 ocargo.Level.prototype.fail = function(msg, send) {

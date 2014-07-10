@@ -59,15 +59,15 @@
 
 #moveForward, 
 #play {
-    left: 50px;
+    left: 60px;
 }
 
 #turnLeft {
-    left: 0px;
+    left: 10px;
 }
 
 #turnRight {
-    left: 100px;
+    left: 110px;
 }
 
 #moveForward {

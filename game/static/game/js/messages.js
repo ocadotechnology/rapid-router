@@ -36,37 +36,37 @@ ocargo.messages = {
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
     levelEditorMobileSubtitle: "Click on the point you want this part of the road to start and, " +
         "while holding it, click on the square you want it to end.",
-    levelEditorPCSubtitle: "Click on the point you want this part of the road to start then click " +
-        "where you would like it to end.",
+    levelEditorPCSubtitle: "Click on the point you want this part of the road to start then " +
+        "click where you would like it to end.",
     levelEditorMainText: "Click on the 'Mark Start' or 'Mark End' then select the road of the " +
         "segment you want to serve as the starting or ending point. <br>" +
-        "To delete a part of the road, click on the 'Delete Mode' button and remove it the same way " +
-        "you added it.<br>" +
-        "To add bushes or trees, click their image and one will be added in the top left corner of " +
-        "the map, from there you can drag it wherever you like!<br>" +
+        "To delete a part of the road, click on the 'Delete Mode' button and remove it the same " +
+        "way you added it.<br>" +
+        "To add bushes or trees, click their image and one will be added in the top left corner " +
+        "of the map, from there you can drag it wherever you like!<br>" +
         "Don't forget to choose a name and fuel limit for your level! It will " +
         "make sharing it with others much easier for you.",
     levelEditorTitle: "Welcome to the Level Editor!",
-	throughRedTrafficLight: "You just directed the van through a red traffic light! Stick to the highway code!",
+	throughRedTrafficLight: "You just directed the van through a red traffic light! Stick to the " +
+        "highway code!",
     needHint: "Are you stuck? Need a hint?",
     terminated: "Program terminated!",
     outOfInstructions: "You ran out of instructions without reaching your destination!",
     crashed: "Your program crashed!",
     stoppingTitle: "Stopping...",
-    scoreCard : function(travelledScore, instrLengthScore) {
-        score = travelledScore + instrLengthScore;
-        message = "Your total score: " + score + " / " + ocargo.level.pathFinder.maxScore;
-        message += "<br><br> Travelled path score: " + travelledScore + " / " + ocargo.level.pathFinder.maxDistanceScore;
-        message += "<br> Algorithm score: " + instrLengthScore + " / " + ocargo.level.pathFinder.maxInstrLengthScore + "<br><br>";
-        if (travelledScore !== ocargo.level.pathFinder.maxDistanceScore) {
-            message += "Hint: try finding a quicker route to improve your score.";
-        } else if (instrLengthScore !== ocargo.level.pathFinder.maxInstrLengthScore) {
-            message += "Hint: try finding a smaller program to improve your score.";
-        } else {
-            message += "Perfect!";    
-        }
-        return message
+    totalScore: function(score, maxScore) {
+        return "Your total score: " + score + "/" + maxScore;
     },
+    pathScore: function(score, maxScore) {
+        return "Travelled path score: " + score + "/" + maxScore;
+    },
+    pathLonger: "Try finding a shorter path to reach the destination.",
+    algorithmScore: function(score, maxScore) {
+        return "Algorithm score: " + score + "/" + maxScore;
+    },
+    algorithmLonger: "Try creating a smaller program to improve the score",
+    algorithmShorter: "That's not exactly the solution we wanted you to come up with. Read the " +
+        "level instructions for more information.",
     whileConditionError: "Perhaps try looking at your 'While' blocks?",
     whileBodyError: "Perhaps try looking at your 'While' blocks?",
     ifConditionError: "Perhaps try looking at your 'If' blocks?",
