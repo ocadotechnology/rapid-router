@@ -110,7 +110,7 @@ button, .button, img.control{
 #consoleSlider {
     position: absolute;
     left: 50%;
-    width: 3px;
+    width: 5px;
     height: 100%;
     z-index: 3;
     background-color: #444;
@@ -194,4 +194,13 @@ img.control{
     .no-print {
         display: none !important;
     }
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

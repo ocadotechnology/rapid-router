@@ -206,19 +206,20 @@ function trackDevelopment() {
         ocargo.level.program.terminate();
     });
 
+    var consoleSliderPosition = $(window).width()/2;
+
     $('#slideBlockly').click(function() {
-        var c = $('#programmingConsole');
-        if (c.is(':visible')) {
-            $('#paper').animate({width: '100%'});
-            $('#sliderControls').animate({left: '0%'});
-            $('#consoleSlider').animate({left: '0px'});
+        if ($('#programmingConsole').width() != 0) {
+            $('#paper').animate({width: '100%'}, {queue: false});
+            $('#programmingConsole').animate({width: '0%'}, {queue: false});
+            $('#sliderControls').animate({left: '0%'}, {queue: false});
+            $('#consoleSlider').animate({left: '0px'}, {queue: false});
         } else {
-            $('#paper').animate({width: '50%'});
-            $('#programmingConsole').animate({ width: '50%'});
-            $('#sliderControls').animate({left: '50%'})
-            $('#consoleSlider').animate({left: '50%'});
+            $('#paper').animate({width: $(window).width()-consoleSliderPosition}, {queue: false});
+            $('#programmingConsole').animate({width: consoleSliderPosition}, {queue: false});
+            $('#sliderControls').animate({left: consoleSliderPosition}, {queue: false})
+            $('#consoleSlider').animate({left: consoleSliderPosition}, {queue: false});
         }
-        c.animate({width: 'toggle'});
     });
 
     $('#consoleSlider').on('mousedown', function(e){
@@ -236,16 +237,16 @@ function trackDevelopment() {
         });
 
         slider.parent().on('mousemove', function(me){
-            var mx = me.pageX - p.left;
+            consoleSliderPosition = me.pageX - p.left;
             var half = $( window ).width()/2;
-            if (mx > half) {
-                mx = half;
+            if (consoleSliderPosition > half) {
+                consoleSliderPosition = half;
             }
-            $('#consoleSlider').css({ left: mx });
-            $('#paper').css({ width: ($( window ).width() - mx) });
-            $('#programmingConsole').css({ width: mx });
-            $('#sliderControls').css({ left: mx });
 
+            $('#consoleSlider').css({ left: consoleSliderPosition });
+            $('#paper').css({ width: ($( window ).width() - consoleSliderPosition) });
+            $('#programmingConsole').css({ width: consoleSliderPosition });
+            $('#sliderControls').css({ left: consoleSliderPosition });
         });
     });
 
