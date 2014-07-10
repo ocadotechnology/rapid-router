@@ -293,19 +293,16 @@ ocargo.BlocklyControl.prototype.init = function() {
         e.innerHTML = text;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
-    console.log(WORKSPACE);
     ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
 };
 
 ocargo.BlocklyControl.prototype.deserialize = function(text) {
     try {
-        console.log(text);
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeUnavailableBlocks();
         ocargo.blocklyControl.addClickListenerToStartBlock();
     } catch (e) {
-        console.log("caught error: " + e);
         ocargo.blocklyControl.reset();
     }
 };
