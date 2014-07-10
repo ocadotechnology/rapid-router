@@ -142,6 +142,7 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'hint': hint,
+        'attempt': attempt
     })
 
     return render(request, 'game/game.html', context_instance=context)
@@ -571,6 +572,7 @@ def parseAttempt(attemptData, request):
         level = get_object_or_404(Level, id=attemptData.get('level', 1))
         attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
         attempt.score = request.POST.get('score', 0)
+        attempt.workspace = request.POST.get('workspace', '')
 
         # Remove all the old commands from previous attempts.
         Command.objects.filter(attempt=attempt).delete()

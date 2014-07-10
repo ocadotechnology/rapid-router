@@ -213,7 +213,8 @@ function sendAttempt(score) {
             data : {
                 attemptData : attemptData,
                 csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
-                score : score
+                score : score,
+                workspace : ocargo.blocklyControl.serialize()
             },
             success : function(json) {
             },

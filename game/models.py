@@ -126,6 +126,7 @@ class Attempt (models.Model):
     student = models.ForeignKey(Student, related_name='attempts')
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0)
+    workspace = models.TextField(default="")
 
 
 class Command (models.Model):
