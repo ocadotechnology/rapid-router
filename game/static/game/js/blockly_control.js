@@ -158,7 +158,7 @@ Blockly.Blocks['at_destination'] = {
 Blockly.Blocks['call_proc'] = {
     // Block for calling a defined procedure
     init: function() {
-        this.setColour(0);
+        this.setColour(260);
         this.appendValueInput('Name:')
             .appendField('Call')
         this.setPreviousStatement(true);
@@ -170,7 +170,7 @@ Blockly.Blocks['call_proc'] = {
 Blockly.Blocks['declare_proc'] = {
     // Block for declaring a procedure
     init: function() {
-        this.setColour(0);
+        this.setColour(260);
         this.appendValueInput('ID')
             .appendField('Define');
         this.appendStatementInput('DO')
@@ -185,7 +185,7 @@ var textBlock = Blockly.Blocks['text']
 var originalTextInit = textBlock.init;
 textBlock.init = function() {
     originalTextInit.call(this);
-    this.setColour(0);
+    this.setColour(260);
 }
 
 //Customise controls_repeat block to not allow more than a sensible number of repetitions
