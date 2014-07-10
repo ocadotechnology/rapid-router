@@ -389,11 +389,11 @@ def description_level27():
 
 
 def title_level28():
-    return "Title level 28"
+    return "Following procedure"
 
 
 def description_level28():
-    message = ""
+    message = "Use procedures to find the destination."
     return "<b>" + title_level28() + "</b><br><br>" + message
 
 
