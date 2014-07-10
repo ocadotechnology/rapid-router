@@ -6,8 +6,8 @@ ocargo.PathFinder = function(map, modelLength) {
     this.nodes = map.nodes;
     this.destination = map.destination;
     this.optimalPath = this.getOptimalPath();
-    this.maxDistanceScore = 100;
-    this.maxInstrLengthScore = 100;
+    this.maxDistanceScore = 10;
+    this.maxInstrLengthScore = 10;
     this.maxScore = this.maxDistanceScore + this.maxInstrLengthScore;
     this.modelLength = modelLength;
 };
@@ -38,8 +38,7 @@ ocargo.PathFinder.prototype.getInstrLengthScore = function() {
     console.debug(this.modelLength);
 
     var userLength = ocargo.blocklyControl.getBlocksCount();
-    var algorithmScore = this.maxInstrLengthScore -
-        (userLength - this.modelLength);
+    var algorithmScore = this.maxInstrLengthScore - (userLength - 1 - this.modelLength);
 
     return algorithmScore;
 };

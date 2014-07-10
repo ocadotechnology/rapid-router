@@ -6,6 +6,7 @@ from django.db import models, migrations
 
 def insert_model_scores(apps, schema_editor):
     Level = apps.get_model('game', 'Level')
+    Block = apps.get_model('game', 'Block')
 
     level = Level.objects.get(id=1)
     level.model_solution = 1
