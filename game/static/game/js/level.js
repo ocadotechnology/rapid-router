@@ -200,7 +200,7 @@ function stepper(level, play) {
                     } 
                     enableDirectControl();
                 } else if (level.program.isTerminated) {
-                    level.fail(ocargo.messages.te, play);
+                    level.fail(ocargo.messages.terminated, play);
                     $("#myModal > .title").text(ocargo.messages.stoppingTittle);
                 }
                 else {
@@ -230,7 +230,8 @@ function sendAttempt(score) {
             data : {
                 attemptData : attemptData,
                 csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
-                score : score
+                score : score,
+                workspace : ocargo.blocklyControl.serialize()
             },
             success : function(json) {
             },
