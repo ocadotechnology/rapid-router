@@ -70,4 +70,8 @@ ocargo.messages = {
     whileConditionError: "Perhaps try looking at your 'While' blocks?",
     whileBodyError: "Perhaps try looking at your 'While' blocks?",
     ifConditionError: "Perhaps try looking at your 'If' blocks?",
+    procMissingNameError: "Perhaps try looking at your 'Proc' blocks?",
+    procMissingBodyError: "Perhaps try looking at your 'Proc' blocks?",
+    procDupNameError: "Perhaps try checking the names of your 'Proc' blocks?",
+    procCallNameError: "Perhaps try checking the names in your 'Call' blocks?"
 }

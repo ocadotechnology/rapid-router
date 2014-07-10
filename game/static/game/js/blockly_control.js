@@ -391,27 +391,52 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlock = function() {
 };
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
-	
-    function getFunctions() {
-        var functionBlocks = []
-        Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
-            if (block.type === 'declare_proc') {
-                functionBlocks.append(block);
-            }
-        });
-    }
 
-    function createFunction(block)
-    {
-        var bodyBlock = block.inputList[1].connection.targetBlock();
-        if(bodyBlock == null) {
-            throw ocargo.messages.procBodyError;
+    function createProcedures() {
+        var newProcs = {};
+        var topBlocks = Blockly.mainWorkspace.getTopBlocks();
+
+        for (var i = 0; i < topBlocks.length; i++)
+        {
+            var block = topBlocks[i];
+            if(topBlocks[i].type === 'declare_proc') {
+                var nameBlock = block.inputList[0].connection.targetBlock();
+                if(nameBlock == null) {
+                    throw ocargo.messages.procMissingNameError;
+                }
+                var name = nameBlock.inputList[0].fieldRow[1].text_;
+                if (name === "") {
+                    throw ocargo.messages.procMissingNameError;
+                }
+
+                var bodyBlock = block.inputList[1].connection.targetBlock();
+
+                if (!(name in newProcs)) {
+                    newProcs[name] = new Procedure(name,getCommandsAtThisLevel(bodyBlock),block)
+                }
+                else {
+                    throw ocargo.messages.procDupNameError;
+                }
+            }
         }
         
-        return new Function("Name",getCommandsAtThisLevel(bodyBlock))
+        return newProcs;
     }
 
+    function createProcCall(block) {
+        var nameBlock = block.inputList[0].connection.targetBlock();
+        if(nameBlock == null) {
+            throw ocargo.messages.procMissingNameError;
+        }
+        var name = nameBlock.inputList[0].fieldRow[1].text_;
+        if (name === "") {
+            throw ocargo.messages.procCallNameError;
+        }
 
+        var procCall = new ProcedureCall(block);
+        procedureBindings.push({call:procCall,name:name});
+        return procCall;
+    }
 
     function createWhile(block) {
         var bodyBlock = block.inputList[1].connection.targetBlock();
@@ -511,7 +536,9 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
             } else if (block.type === 'controls_whileUntil') {
             	commands.push(createWhileUntil(block));
             } else if (block.type === 'controls_if') {
-            	commands.push(createIf(block));
+            	commands.push(createIf(block));            
+            } else if (block.type === 'call_proc') {
+                commands.push(createProcCall(block));
             }
 
     		block = block.nextConnection.targetBlock();
@@ -521,8 +548,24 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     }
 
     var program = new ocargo.Program();
+    var procedureBindings = [];
+    var procedures = createProcedures();
+
     var startBlock = this.getStartBlock();
     program.startBlock = startBlock;
     program.stack.push(getCommandsAtThisLevel(startBlock));
+
+    program.procedures = procedures;
+    for (var i = 0; i < procedureBindings.length; i++) {
+        var name = procedureBindings[i].name;
+        var call = procedureBindings[i].call;
+
+        if (name in procedures) {
+            call.bind(procedures[name]);
+        } else {
+            throw ocargo.messages.procCallNameError;
+        }
+    }
+
     return program;
 };
