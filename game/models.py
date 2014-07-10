@@ -93,6 +93,7 @@ class Level (models.Model):
     direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
+    model_solution = models.IntegerField(blank=True, default=50)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
