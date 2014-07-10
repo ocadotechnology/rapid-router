@@ -183,7 +183,7 @@ function stepper(level, play) {
                     } 
                     enableDirectControl();
                 } else if (level.program.isTerminated) {
-                    level.fail(ocargo.messages.te, play);
+                    level.fail(ocargo.messages.terminated, play);
                     $("#myModal > .title").text(ocargo.messages.stoppingTittle);
                 }
                 else {
