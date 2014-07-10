@@ -4,6 +4,7 @@ ocargo.Program = function(instructionHandler) {
 	this.instructionHandler = instructionHandler;
 	this.stack = [];
 	this.isTerminated = false;
+	this.procedures = {};
 };
 
 ocargo.Program.prototype.step = function(level) {
@@ -183,3 +184,31 @@ WaitCommand.prototype.execute = function(program) {
     this.block.selectWithConnected();
     program.instructionHandler.handleInstruction(WAIT, program);
 };
+
+function Procedure(name,body,block) {
+	this.name = name;
+	this.body = body;
+	this.block = block;
+};
+
+Procedure.prototype.execute = function(program) {
+	this.block.selectWithConnected();
+	/* Slice necessary to shallow copy procedure body otherwise
+	in the next call to the procedure the body is empty */
+	program.addNewStackLevel(this.body.slice());
+	setTimeout(program.stepCallback, 500);
+}
+
+function ProcedureCall(block) {
+	this.block = block;
+};
+
+ProcedureCall.prototype.bind = function(proc) {
+	this.proc = proc;
+}
+
+ProcedureCall.prototype.execute = function(program) {
+	this.block.selectWithConnected();
+	program.addNewStackLevel([this.proc]);
+	setTimeout(program.stepCallback, 500);
+}

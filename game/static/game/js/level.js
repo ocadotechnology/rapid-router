@@ -23,8 +23,9 @@ ocargo.Level.prototype.play = function(program) {
 
     this.attemptData = {};
     var commandStack = [];
+    var procedureStack = {};
 
-    if (ocargo.level.blockLimit &&
+    if (ocargo.level.blockaLimit &&
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
         enableDirectControl();
         startPopup("Oh no!", "", ocargo.messages.tooManyBlocks);
@@ -34,11 +35,14 @@ ocargo.Level.prototype.play = function(program) {
 
     ocargo.level.attemptData.level = ocargo.level.levelId.toString();
 
+    ocargo.level.recogniseProcedureStack(program.procedures, procedureStack)
     for (var i = 0; i < program.stack.length; i++) {
-        ocargo.level.recogniseStack(program.stack[i], commandStack);
+        ocargo.level.recogniseProgramStack(program.stack[i], commandStack);
     }
 
     this.attemptData.commandStack = JSON.stringify(commandStack);
+    this.attemptData.procedureStack = JSON.stringify(procedureStack);
+
     program.startBlock.selectWithConnected();
 
     var stepFunction = stepper(this, true);
@@ -48,7 +52,17 @@ ocargo.Level.prototype.play = function(program) {
     setTimeout(stepFunction, 500);
 };
 
-ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
+ocargo.Level.prototype.recogniseProcedureStack = function(stack, returnStack) {
+    if (stack) {
+        for (var proc in stack) {
+            var bodyStack = [];
+            ocargo.Level.prototype.recogniseProgramStack(stack[proc].body,bodyStack)
+            returnStack[proc] = bodyStack;
+        }
+    }
+}
+
+ocargo.Level.prototype.recogniseProgramStack = function(stack, returnStack) {
     if (stack) {
         for (var i = 0; i < stack.length; i++) {
             var command = recogniseCommand(stack[i]);
@@ -72,7 +86,7 @@ ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
             parsedCommand.command = 'Wait';
         } else if (command instanceof While) {
             var block = [];
-            ocargo.level.recogniseStack(command.body, block);
+            ocargo.level.recogniseProgramStack(command.body, block);
             parsedCommand.command = 'While';
             parsedCommand.condition = command.condition.toString();
             parsedCommand.block = block;
@@ -81,16 +95,19 @@ ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
             var commands = command.conditionalCommandSets[0];
             var ifBlock = [];
             parsedCommand.condition = commands.condition.toString();
-            ocargo.level.recogniseStack(commands.commands, ifBlock);
+            ocargo.level.recogniseProgramStack(commands.commands, ifBlock);
 
             if (command.elseCommands) {
                 commands = command.elseCommands;
                 var elseBlock = [];
-                ocargo.level.recogniseStack(commands, elseBlock);
+                ocargo.level.recogniseProgramStack(commands, elseBlock);
                 parsedCommand.elseBlock = elseBlock;
             }
             parsedCommand.command = 'If';
             parsedCommand.ifBlock = ifBlock;
+        } else if (command instanceof ProcedureCall) {
+            parsedCommand.command = "ProcedureCall";
+            parsedCommand.procName = command.proc.name;
         }
         return parsedCommand;
     }
