@@ -75,7 +75,7 @@ def levels(request):
                 "name": level.name,
                 "title": get_level_title(level.id),
                 "score": get_attempt_score(level)})
-        opacity = (len(episode_data) + 0.75) * ratio
+        opacity = (len(episode_data) + 1) * ratio
         colour = bgcolour.format(opacity)
         e = {
                 "id": episode.id,
