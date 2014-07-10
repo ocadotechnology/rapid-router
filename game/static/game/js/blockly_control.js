@@ -290,29 +290,31 @@ ocargo.BlocklyControl.prototype.init = function() {
         trashcan: true
     });
 
+    function decodeHTML(text) {
+        var e = document.createElement('div');
+        e.innerHTML = text;
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
+};
+
+ocargo.BlocklyControl.prototype.deserialize = function(text) {
     try {
-        var text = localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID);
         var xml = Blockly.Xml.textToDom(text);
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeUnavailableBlocks();
         ocargo.blocklyControl.addClickListenerToStartBlock();
     } catch (e) {
+        console.log("caught error");
         ocargo.blocklyControl.reset();
     }
-    
-
 };
 
-ocargo.BlocklyControl.prototype.teardown = function() {
-    if (localStorage) {
-        var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-        var text = Blockly.Xml.domToText(xml);
-        try {
-            localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
-        } catch (e) {
-            // No point in even logging, as page is unloading
-        }
-    }
+ocargo.BlocklyControl.prototype.serialize = function() {
+    var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+    var text = Blockly.Xml.domToText(xml);
+    return text;
 };
 
 ocargo.BlocklyControl.prototype.reset = function() {
