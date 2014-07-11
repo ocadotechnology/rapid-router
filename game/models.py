@@ -87,7 +87,7 @@ class Level (models.Model):
     destination = models.CharField(max_length=10)
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
-    blocks = models.ManyToManyField(Block, related_name='+')
+    blocks = models.ManyToManyField(Block, related_name='levels')
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
@@ -113,7 +113,7 @@ class Episode (models.Model):
     r_branchiness = models.FloatField(default=0)
     r_loopiness = models.FloatField(default=0)
     r_num_tiles = models.IntegerField(default=5)
-    r_blocks = models.ManyToManyField(Block, related_name='+')
+    r_blocks = models.ManyToManyField(Block, related_name='episodes')
     
     @property
     def levels(self):
