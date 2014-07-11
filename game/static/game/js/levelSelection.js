@@ -14,9 +14,6 @@ function showEpisodes(data, func) {
 
 
 function showLevels(episodeID,levels, opacity) {
-
-  levels.push({name:"Random", title:"Try your hand at a random level.", score:"", id:"levels/random/"+episodeID});
-
   var selection = d3.select('div.episode')
                     .selectAll("div.level")
                     .data(levels);
@@ -43,7 +40,9 @@ function clearLevels() {
 };
 
 function showLevelsForEpisode(episode, colour) {
-  showLevels(episode.id,episode.levels, colour);
+  levels = episode.levels.slice()
+  levels.push({name:"Random", title:"Try your hand at a random level.", score:"", id:"levels/random/"+episode.id});
+  showLevels(episode.id,levels,colour);
 };
 
 function showEpisode(id) {
