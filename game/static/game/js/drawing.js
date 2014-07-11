@@ -607,45 +607,60 @@ function getHousePosition(destination) {
     var up = true;
     var down = true;
 
+    //variation specifies x,y,rotation
+    var variation = [25,25,90];
+
+    // Set "default" variations of the house position
+    // based on straight roads and turns
     if (roadLetters.indexOf('H') >= 0 ) {
         left = false;
         right = false;
+        variation = [25,25,90];
     }
     if (roadLetters.indexOf('V') >= 0 ) {
         up = false;
         down = false;
+        variation = [-25,75,180];
     }
     if (roadLetters.indexOf('UL') >= 0 ) {
         left = false;
         up = false;
+        variation = [45,55,45];
     }
     if (roadLetters.indexOf('DL') >= 0 ) {
         left = false;
         down = false;
+        variation = [45,95,315];
     }
     if (roadLetters.indexOf('UR') >= 0 ) {
         right = false;
         up = false;
+        variation = [5,55,135];
     }
     if (roadLetters.indexOf('DR') >= 0 ) {
         right = false;
         down = false;
+        variation = [5,95,225];
     }
 
-    //variation specifies x,y,rotation
-    var variation = [25,25,90];
-    if (down) {
-        //prioritise current position for nostalgia, do nothing
-    } else if (up) {
-        variation = [25,125,270];
-    } else if (left) {
-        variation = [-25,75,180];
-    } else if (right) {
-        variation = [75,75,0];
-    } else {
-        //4-way junction, so hang it off to the bottom left
+    // Adapt for T-junctions and crossroads
+    if (!(left || right || up || down)) {
+        // 4-way junction, so hang it off to the bottom left
         variation = [-25,25,135];
+    } else if (!(up || left || right)) {
+        // T junction, road at bottom
+        variation = [25,25,90];
+    } else if (!(down || left || right)) {
+        // T junction, road at top
+        variation = [25,125,270];
+    } else if (!(up || down || left)) {
+        // T junction, road at right
+        variation = [75,75,0];
+    } else if (!(up || down || right)) {
+        // T junction, road at left
+        variation = [-25,75,180];
     }
+
     return variation;
 }
 
