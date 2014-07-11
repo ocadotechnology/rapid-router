@@ -422,7 +422,7 @@ def createOneRow(student, level):
         row.append(attempt.start_time)
         row.append(attempt.finish_time)
     except ObjectDoesNotExist:
-        row.append([0, 0, 0, 0])
+        row.append("")
     return row
 
 
