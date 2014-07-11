@@ -3,6 +3,8 @@
 
 {% block css %}
 
+    <link rel='stylesheet' type='text/css' href='{% static 'website/css/magnific-popup.css' %}' />
+
     <style type="text/css">
 
         body {
@@ -131,6 +133,13 @@
 
         .video {
             display: inline-block;
+            opacity: 0.7;
+            -webkit-transition: all 1s;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .video:hover {
+            opacity: 1;
         }
 
         ul.clock {
@@ -172,6 +181,8 @@
 
 {% block scripts %}
 
+    <script type='text/javascript' src='{% static 'website/js/jquery.magnific-popup.min.js' %}'></script>
+
     <script type='text/javascript'>
 
         var date_future = new Date('01 Sept 2014, 10:00');
@@ -208,8 +219,19 @@
         }
 
         $(document).ready(function() {
+
             update_date();
             setInterval(update_date, 1000);
+
+            $('.popup-video').magnificPopup({
+                  disableOn: 700,
+                  type: 'iframe',
+                  mainClass: 'mfp-fade',
+                  removalDelay: 160,
+                  preloader: false,
+                  fixedContentPos: false
+            });
+
         })
 
     </script>
@@ -270,8 +292,11 @@
         <h3>Find out more</h3>
 
         <div class="video">
-            <iframe width="400" height="300" src="//www.youtube.com/embed/" frameborder="0" allowfullscreen></iframe>
+            <a class="popup-video" href="http://www.youtube.com/watch?v=0O2aH4XLbto">
+                <img src='{% static 'website/img/video_still.png' %}' alt='Watch Video' />
+            </a>
         </div>
+
 
     </div>
     <div class='large-6 columns game'>
