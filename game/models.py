@@ -114,7 +114,6 @@ class Episode (models.Model):
     r_branchiness = models.FloatField(default=0)
     r_loopiness = models.FloatField(default=0)
     r_num_tiles = models.IntegerField(default=5)
-    r_blocks = models.ManyToManyField(Block, related_name='+')
     
     @property
     def levels(self):
