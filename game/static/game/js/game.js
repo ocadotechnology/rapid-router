@@ -239,7 +239,7 @@ function trackDevelopment() {
         slider.parent().on('mouseup', function(e) {
             slider.off('mousemove');
             slider.parent().off('mousemove');
-            Blockly.fireUiEvent(window, 'resize');
+            redrawBlockly();
         });
 
         slider.parent().on('mousemove', function(me){
