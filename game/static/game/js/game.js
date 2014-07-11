@@ -78,12 +78,8 @@ function initialiseDefault() {
     ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, ocargo.ui, MAX_FUEL,
         NEXT_LEVEL, NEXT_EPISODE);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
-    ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
     enableDirectControl();
 
-    if (ocargo.level.blockLimit) {
-        ocargo.level.blockLimit++;
-    }
     if ($.cookie("muted") === "true") {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
@@ -96,12 +92,14 @@ function enableDirectControl() {
     document.getElementById('turnRight').disabled = false;
     document.getElementById('play').disabled = false;
     document.getElementById('controls').style.visibility='visible';
+    document.getElementById('direct_drive').style.visibility='visible';
     document.getElementById('stop').style.visibility='hidden';
     document.getElementById('step').disabled = false;
 }
 
 function disableDirectControl() {
     document.getElementById('controls').style.visibility='hidden';
+    document.getElementById('direct_drive').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;

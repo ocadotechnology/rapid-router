@@ -43,27 +43,35 @@
     right: 0;
 }
 
-#controls #turnLeft,
-#controls #turnRight,
-#controls #play {
-    bottom: 20px;
+#direct_drive {
+    width: 140px;
+    height: 95px;
+    position: absolute;
+    z-index: 1;
+    bottom: 15px;
 }
 
-#controls #moveForward, 
-#controls #play {
-    left: 80px;
+#turnLeft,
+#turnRight,
+#play {
+    bottom: 0px;
 }
 
-#controls #turnLeft {
-    left: 30px;
+#moveForward, 
+#play {
+    left: 60px;
 }
 
-#controls #turnRight {
-    left: 130px;
+#turnLeft {
+    left: 10px;
 }
 
-#controls #moveForward {
-    bottom: 70px;
+#turnRight {
+    left: 110px;
+}
+
+#moveForward {
+    bottom: 50px;
 }
 
 #stop {
@@ -95,6 +103,7 @@ button, .button, img.control{
 #sliderControls {
     position: absolute;
     left: 50%;
+    height: 100%;
     z-index: 1;
 }
 

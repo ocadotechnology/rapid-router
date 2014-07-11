@@ -36,7 +36,7 @@
     var DECOR = {{level.decor|safe}};
     var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
     var LEVEL_ID = "{{level.id}}";
-    var BLOCK_LIMIT = "{{level.block_limit}}" != "None" ?  {{level.block_limit}} : null;
+    var MODEL_SOLUTION = {{level.model_solution}};
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
     var BLOCKS =  [];
@@ -66,21 +66,10 @@
   </div>
 
   <div id="sliderControls" class="no-print">
+
     <button id="slideBlockly" class="unselectable">Blockly</button>
-  </div>
-  
-  <div id="fuelGuage" class="no-print unselectable">
-    <img src="/static/game/image/fuelGuage.svg"/>
-    <div id="fuelGuagePointer">
-      <img src="/static/game/image/fuelGuagePointer.svg"/>
-    </div>
-  </div>
 
-  <div id="paper" class="col"></div>
-  <button id="stop" class="no-print">Stop</button>
-
-  <div id="controls" class="col no-print unselectable">
-    <div id="direct_drive">
+    <div id="direct_drive" class="unselectable">
       <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
         <span>&uarr; Move Forwards</span>
       </button>
@@ -94,6 +83,20 @@
         <span>&#x21BB; Turn Right</span>
       </button>
     </div>
+    
+  </div>
+  
+  <div id="fuelGuage" class="no-print unselectable">
+    <img src="/static/game/image/fuelGuage.svg"/>
+    <div id="fuelGuagePointer">
+      <img src="/static/game/image/fuelGuagePointer.svg"/>
+    </div>
+  </div>
+
+  <div id="paper" class="col"></div>
+  <button id="stop" class="no-print">Stop</button>
+
+  <div id="controls" class="col no-print unselectable">
 
     <div class="navigation" class="unselectable">
       <button id="help" class="unselectable">Help</button>

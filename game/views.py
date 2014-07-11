@@ -75,7 +75,7 @@ def levels(request):
                 "name": level.name,
                 "title": get_level_title(level.id),
                 "score": get_attempt_score(level)})
-        opacity = (len(episode_data) + 0.75) * ratio
+        opacity = (len(episode_data) + 1) * ratio
         colour = bgcolour.format(opacity)
         e = {
                 "id": episode.id,
@@ -422,7 +422,7 @@ def createOneRow(student, level):
         row.append(attempt.start_time)
         row.append(attempt.finish_time)
     except ObjectDoesNotExist:
-        pass
+        row.append([0, 0, 0, 0])
     return row
 
 
@@ -438,7 +438,9 @@ def createRows(studentData, levels):
                 row.append(attempt.score)
                 row[3].append(attempt.score)
             except ObjectDoesNotExist:
-                pass
+                row[2].append(timedelta(0))
+                row.append("")
+                row[3].append("")
     for row in studentData:
         row[2] = sum(row[2], timedelta())
     return studentData
