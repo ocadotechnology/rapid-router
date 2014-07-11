@@ -422,7 +422,7 @@ def createOneRow(student, level):
         row.append(attempt.start_time)
         row.append(attempt.finish_time)
     except ObjectDoesNotExist:
-        pass
+        row.append([0, 0, 0, 0])
     return row
 
 
@@ -438,7 +438,9 @@ def createRows(studentData, levels):
                 row.append(attempt.score)
                 row[3].append(attempt.score)
             except ObjectDoesNotExist:
-                pass
+                row[2].append(timedelta(0))
+                row.append("")
+                row[3].append("")
     for row in studentData:
         row[2] = sum(row[2], timedelta())
     return studentData
