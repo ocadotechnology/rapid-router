@@ -15,13 +15,28 @@ ocargo.PathFinder = function(map, modelLength) {
 ocargo.PathFinder.prototype.getScore = function() {
 
     var pathLengthScore = this.getTravelledPathScore();
-    var instrLengthScore = this.getInstrLengthScore();
-    var totalScore = pathLengthScore + instrLengthScore;
+    var initInstrScore = this.getInstrLengthScore();
+    var instrScore = initInstrScore <= this.maxInstrLengthScore ? initInstrScore :
+        this.maxInstrLengthScore - initInstrScore % this.maxInstrLengthScore;
+
+    var totalScore = pathLengthScore + instrScore;
 
     var message = ocargo.messages.totalScore(totalScore, this.maxScore) +
                 "<br>" + ocargo.messages.pathScore(pathLengthScore, this.maxDistanceScore) +
-                "<br>" + ocargo.messages.algorithmScore(instrLengthScore, this.maxInstrLengthScore);
+                "<br>" + ocargo.messages.algorithmScore(instrScore, this.maxInstrLengthScore);
 
+    if (initInstrScore > this.maxInstrLengthScore) {
+        message += "<br><br>" + ocargo.messages.algorithmShorter;
+    }
+    if (initInstrScore < this.maxInstrLengthScore) {
+        message += "<br><br>" + ocargo.messages.algorithmLonger;
+    }
+    if (pathLengthScore < this.maxDistanceScore) {
+        message += "<br><br>" + ocargo.messages.pathLonger;
+    }
+    if (totalScore === this.maxScore) {
+        message += "<br><br>" + ocargo.messages.scorePerfect;
+    }
     return [totalScore, message];
 };
 

@@ -67,6 +67,7 @@ ocargo.messages = {
     algorithmLonger: "Try creating a smaller program to improve the score",
     algorithmShorter: "That's not exactly the solution we wanted you to come up with. Read the " +
         "level instructions for more information.",
+    scorePerfect: "Congratulations! You've aced it.",
     whileConditionError: "Perhaps try looking at your 'While' blocks?",
     whileBodyError: "Perhaps try looking at your 'While' blocks?",
     ifConditionError: "Perhaps try looking at your 'If' blocks?",
