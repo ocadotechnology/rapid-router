@@ -6,19 +6,34 @@ from models import Episode, Level, Block
 import random
 
 Node = namedtuple('Node', ['x', 'y'])
+
 DIRECTIONS = {(1, 0), (0, 1), (-1, 0), (0, -1)}
 WIDTH = 10
 HEIGHT = 8
 
+DEFAULT_START_NODE = Node(0,3)
+DEFAULT_NUM_TILES = 20
+DEFAULT_BRANCHINESS = 0.3
+DEFAULT_LOOPINESS = 0.1
+DEFAULT_CURVINESS = 0.5
+
 def create(episode=None):
 
     if episode is None:
-        path = generate_random_path(Node(0, 3), 20, 0.2, 0.1, 0.5)
+        path = generate_random_path(DEFAULT_START_NODE,
+                                    DEFAULT_NUM_TILES, 
+                                    DEFAULT_BRANCHINESS,
+                                    DEFAULT_LOOPINESS,
+                                    DEFAULT_CURVINESS)
         destination = json.dumps(path[-1]['coordinate'])
-        level = Level(name=3000, path=json.dumps(path), max_fuel=30, destination=destination)
+        level = Level(name="Default random level", path=json.dumps(path), max_fuel=30, destination=destination)
         
     else:
-        path = generate_random_path(Node(0,3), episode.r_num_tiles, episode.r_branchiness, episode.r_loopiness, 0.0)
+        path = generate_random_path(DEFAULT_START_NODE,
+                                    episode.r_num_tiles,
+                                    episode.r_branchiness,
+                                    episode.r_loopiness,
+                                    episode.r_curviness)
         destination = json.dumps(path[-1]['coordinate'])
         level = Level(name="Random level for " + episode.name + ".", path=json.dumps(path), max_fuel=30, destination=destination)
 
@@ -30,15 +45,16 @@ def create(episode=None):
 
 def generate_random_path(start_position, num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
     nodes = [start_position]
+    index_by_node = {start_position:0}
+
     connections = defaultdict(list)
 
     for _ in xrange(num_road_tiles):
         (previous_node, new_node) = pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor)
-        if not new_node:
-            continue
-
-        nodes.append(new_node)
-        connections = add_new_connections(nodes, connections, new_node, previous_node)
+        if new_node:
+            nodes.append(new_node)
+            index_by_node[new_node] = len(nodes)-1
+            connections = add_new_connections(connections, len(nodes)-1, index_by_node[previous_node])
 
     connections = join_up_loops(nodes, connections, loopiness_factor)
     result = []
@@ -94,20 +110,17 @@ def pick_destination_node(nodes, connections, origin, possibles, curviness_facto
 
 
 def join_up_loops(nodes, connections, loopiness_factor):
-    nodesByLocation = {(node.x,node.y):(index,node) for index, node in enumerate(nodes)}
+    nodes_by_location = {(node.x,node.y):(index,node) for index, node in enumerate(nodes)}
 
     for node_index, node in enumerate(nodes):
         for location in get_neighbouring_locations(node):
-            if location in nodesByLocation:
-                adjacent_node_index, adjacent_node = nodesByLocation[location]
+            if location in nodes_by_location:
+                adjacent_node_index, adjacent_node = nodes_by_location[location]
                 if adjacent_node_index not in connections[node_index] and random.random() < loopiness_factor:
-                    connections = add_new_connections(nodes, connections, node, adjacent_node)
-
+                    connections = add_new_connections(nodes, connections, node_index, adjacent_node_index)
     return connections
 
-def add_new_connections(nodes, connections, node_1, node_2):
-    node_1_index = nodes.index(node_1)
-    node_2_index = nodes.index(node_2)
+def add_new_connections(connections, node_1_index, node_2_index):
     connections[node_1_index].append(node_2_index)
     connections[node_2_index].append(node_1_index)
 
