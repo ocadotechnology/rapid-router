@@ -183,7 +183,7 @@ img.control{
 }
 
 #blockly {
-    height: 95%;
+    height: 100%;
 }
 
 @media print {
