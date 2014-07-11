@@ -2,16 +2,25 @@ from collections import defaultdict, namedtuple
 from django.shortcuts import render, get_object_or_404
 import json
 import math
-from models import Level, Block
+from models import Episode, Level, Block
 import random
 
 Node = namedtuple('Node', ['x', 'y'])
 
 
-def create():
-    path = generate_random_path(Node(0, 3), 20, 0.2, 0.1)
-    destination = json.dumps(path[-1]['coordinate'])
-    level = Level(name=3000, path=json.dumps(path), max_fuel=30, destination=destination)
+def create(episode=None):
+
+    if episode is None:
+        path = generate_random_path(Node(0, 3), 20, 0.2, 0.1)
+        destination = json.dumps(path[-1]['coordinate'])
+        level = Level(name=3000, path=json.dumps(path), max_fuel=30, destination=destination)
+        
+    else:
+        print(episode.__dict__)
+        path = generate_random_path(Node(0,3), episode.r_num_tiles,episode.r_branchiness,episode.r_loopiness)
+        destination = json.dumps(path[-1]['coordinate'])
+        level = Level(name="Random level for " + episode.name + ".", path=json.dumps(path), max_fuel=30, destination=destination)
+
     level.save()
     level.blocks = Block.objects.all()
     level.save()

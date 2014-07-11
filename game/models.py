@@ -110,6 +110,11 @@ class Episode (models.Model):
     first_level = models.ForeignKey(Level)
     next_episode = models.ForeignKey("self", null=True, default=None)
 
+    r_branchiness = models.FloatField(default=0)
+    r_loopiness = models.FloatField(default=0)
+    r_num_tiles = models.IntegerField(default=5)
+    r_blocks = models.ManyToManyField(Block, related_name='+')
+    
     @property
     def levels(self):
         if self.first_level is not None:

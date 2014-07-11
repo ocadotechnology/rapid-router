@@ -13,7 +13,10 @@ function showEpisodes(data, func) {
 };
 
 
-function showLevels(levels, opacity) {
+function showLevels(episodeID,levels, opacity) {
+
+  levels.push({name:"Random", title:"Try your hand at a random level.", score:"", id:"levels/random/"+episodeID});
+
   var selection = d3.select('div.episode')
                     .selectAll("div.level")
                     .data(levels);
@@ -29,7 +32,7 @@ function showLevels(levels, opacity) {
            .attr("class", "levelScore")
            .html(function(d) { return d.score; });
   selection.exit()
-           .remove();
+           .remove();       
 };
 
 function clearLevels() {
@@ -40,7 +43,7 @@ function clearLevels() {
 };
 
 function showLevelsForEpisode(episode, colour) {
-  showLevels(episode.levels, colour);
+  showLevels(episode.id,episode.levels, colour);
 };
 
 function showEpisode(id) {

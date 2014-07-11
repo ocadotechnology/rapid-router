@@ -319,13 +319,13 @@ def settings(request):
     return render(request, 'game/settings.html', context_instance=context)
 
 
-def level_random(request,episode):
+def level_random(request,episodeID):
     """Generates a new random level
 
     Redirects to :view:`game.views.level` with the id of the newly created :model:`game.Level`.
     """
-    episode = cached_episode(episode)
-    level = random_road.create()
+    episode = cached_episode(episodeID)
+    level = random_road.create(episode)
     return redirect("game.views.level", level=level.id)
 
 
