@@ -1,5 +1,5 @@
 #toolbox {
-    width: 510px;
+    width: 610px;
     margin-left: 10px;
 }
 
@@ -73,7 +73,7 @@
     z-index: 2;
     display: none;
     text-align: left;
-    width: 400px;
+    width: 600px;
     font-size: 20px;
     line-height: 140%;
     padding: 10px 30px;
@@ -98,7 +98,8 @@
     border: none;
 }
 
-#tab-content-arrows > p {
+#tab-content-arrows > p,
+#tab-content-random > p {
     color: #008CBA;
     font-weight: bold;
 }
@@ -108,6 +109,13 @@
 }
 
 #maxFuel {
+    width:100px;
+    float: right;
+}
+
+#branchiness,
+#loopiness,
+#curviness {
     width:100px;
     float: right;
 }

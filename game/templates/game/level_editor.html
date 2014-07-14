@@ -16,14 +16,12 @@
   <script src="/static/game/js/ui.js"></script>
   <script src="/static/game/js/map.js"></script>
   <script src="/static/game/js/pathFinder.js"></script>
-
 {% endblock %}
 
 {% block css %}
 {{block.super}}
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
   <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
-
 {% endblock %}
 
 {% block content %}
@@ -41,7 +39,7 @@
       </div><br>
       <ul class="tabs">
         <li>
-          <input type="radio" checked name="tabs" id="tab1">
+          <input type="radio" name="tabs" id="tab1">
           <label for="tab1">Map</label>
           <div id="tab-content-arrows" class="tab-content">
             <img id="bush" src="/static/game/image/bush.svg" width="70">
@@ -66,6 +64,17 @@
               <label for="{{ block.type }}">{{ block.type }}</label>
               <br>
             {% endfor %}
+          </div>
+        </li>
+        <li>
+          <input type="radio" checked name="tabs" id="tab3">
+          <label for="tab3">Random</label>
+          <div id="tab-content-random" class="tab-content">
+            <p>Size:<input type="number" id="size" value="15" size="4" min="1" max="40"></p> <br>
+            <p>Branchiness:<input type="number" id="branchiness" value="5" size="4" min="0" max="10"></p> <br>
+            <p>Loopiness:<input type="number" id="loopiness" value="5" size="4" min="0" max="10"></p> <br>
+            <p>Curviness:<input type="number" id="curviness" value="5" size="4" min="0" max="10"></p> <br>
+            <button id="generate">Generate</button>
           </div>
         </li>
       </ul>
