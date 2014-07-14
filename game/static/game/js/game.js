@@ -239,12 +239,20 @@ function trackDevelopment() {
                     $('#workspaceTable td').css('background-color', '#FFFFFF');
                     $(event.target).css('background-color', '#C0C0C0');
                     selectedWorkspace = $(event.target).attr('value');
+                    $('#loadWorkspace').removeAttr('disabled');
+                    $('#overwriteWorkspace').removeAttr('disabled');
+                    $('#deleteWorkspace').removeAttr('disabled');
                 });
 
                 // Finally show the modal dialog and reenable the button
                 $('#loadSaveModal').foundation('reveal', 'open');
                 $('#loadSave').removeAttr('disabled');
+
+                // But disable all the modal buttons as nothing is selected yet
                 selectedWorkspace = null;
+                $('#loadWorkspace').attr('disabled', 'disabled');
+                $('#overwriteWorkspace').attr('disabled', 'disabled');
+                $('#deleteWorkspace').attr('disabled', 'disabled');
             },
             error: function(xhr,errmsg,err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -275,7 +283,6 @@ function trackDevelopment() {
             $.ajax({
                 url: '/game/workspace/' + selectedWorkspace,
                 type: 'PUT',
-                dataType: 'json',
                 data: {
                     workspace: ocargo.blocklyControl.serialize()
                 },
