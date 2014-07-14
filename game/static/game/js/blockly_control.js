@@ -299,6 +299,7 @@ ocargo.BlocklyControl.prototype.init = function() {
 ocargo.BlocklyControl.prototype.deserialize = function(text) {
     try {
         var xml = Blockly.Xml.textToDom(text);
+        Blockly.mainWorkspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeUnavailableBlocks();
         ocargo.blocklyControl.addClickListenerToStartBlock();

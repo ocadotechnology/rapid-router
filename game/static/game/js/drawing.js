@@ -571,7 +571,7 @@ function createTrafficLights(trafficLights) {
 // This is the function that starts the pop-up.
 function startPopup(title, subtitle, message) {
     $('#myModal').foundation('reveal', 'open');
-    $('.title').html(title);
-    $('.lead').html(subtitle);
-    $('.mainText').html(message);
+    $('#myModal-title').html(title);
+    $('#myModal-lead').html(subtitle);
+    $('#myModal-mainText').html(message);
 }
