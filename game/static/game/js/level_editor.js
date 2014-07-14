@@ -88,7 +88,7 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
 function handleMouseDown(this_rect, segment) {
     return function () {
         var getBBox = this_rect.getBBox();
-        var coord = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
+        var coord = new ocargo.Coordinate(getBBox.x / GRID_SPACE_SIZE, getBBox.y / GRID_SPACE_SIZE);
         var transCoord = ocargo.levelEditor.translate(coord);
         var isPresent = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
 
@@ -155,7 +155,8 @@ function handleMouseUp(this_rect, segment) {
         if (!startOrEnd) {
             ocargo.levelEditor.end = segment;
             var getBBox = this_rect.getBBox();
-            var coord = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
+            var coord = new ocargo.Coordinate(getBBox.x / GRID_SPACE_SIZE,
+                                              getBBox.y / GRID_SPACE_SIZE);
             if (ocargo.levelEditor.deleteFlag) {
                 ocargo.levelEditor.finaliseDelete(coord);
             } else {
@@ -234,12 +235,17 @@ ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
         }
 
         // Check if start or destination node        
-        if (ocargo.levelEditor.pathStart && ocargo.levelEditor.pathStart.coordinate.x === coord.x && ocargo.levelEditor.pathStart.coordinate.y === coord.y) {
-            ocargo.levelEditor.mark(ocargo.levelEditor.pathStart.coordinate, BACKGROUND_COLOR, 0, true);
+        if (ocargo.levelEditor.pathStart && ocargo.levelEditor.pathStart.coordinate.x === coord.x &&
+                ocargo.levelEditor.pathStart.coordinate.y === coord.y) {
+            ocargo.levelEditor.mark(ocargo.levelEditor.pathStart.coordinate,
+                                    BACKGROUND_COLOR, 0, true);
             ocargo.levelEditor.pathStart = null;
         }
-        if (ocargo.levelEditor.destination && ocargo.levelEditor.destination.coordinate.x === coord.x && ocargo.levelEditor.destination.coordinate.y === coord.y) {
-            ocargo.levelEditor.mark(ocargo.levelEditor.destination.coordinate, BACKGROUND_COLOR, 0, true);
+        if (ocargo.levelEditor.destination &&
+                ocargo.levelEditor.destination.coordinate.x === coord.x &&
+                ocargo.levelEditor.destination.coordinate.y === coord.y) {
+            ocargo.levelEditor.mark(ocargo.levelEditor.destination.coordinate,
+                                    BACKGROUND_COLOR, 0, true);
             ocargo.levelEditor.destination = null;
         }     
     }
@@ -403,10 +409,10 @@ Raphael.el.draggableLights = function(initX, initY) {
             ocargo.levelEditor.mark(kx, BACKGROUND_COLOR, 0, false);
             ocargo.levelEditor.mark(ky, BACKGROUND_COLOR, 0, false);
             var box = me.getBBox();
-            kx.x = Math.max(0, Math.floor(box.x / 100));
-            kx.y = Math.max(0, Math.floor(box.y / 100));
+            kx.x = Math.min(Math.max(0, Math.floor(box.x / GRID_SPACE_SIZE)), GRID_WIDTH - 1);
+            kx.y = Math.min(Math.max(0, Math.floor(box.y / GRID_SPACE_SIZE)), GRID_HEIGHT - 1);
             ky.x = kx.x;
-            ky.y = kx.y + 1;
+            ky.y = Math.min(kx.y + 1, GRID_HEIGHT - 1);
             ocargo.levelEditor.mark(kx, SELECTED_COLOR, 0.7, false);
             ocargo.levelEditor.mark(ky, SELECTED_COLOR, 0.7, false);
         },
@@ -414,12 +420,25 @@ Raphael.el.draggableLights = function(initX, initY) {
             // Find the element in decor and remove it.
         },
         endFnc = function() {
-            ox = Math.max(0, Math.floor(lx / 100) * 100);
-            oy = Math.max(0, Math.floor(ly / 100) * 100);
+            ox = Math.min(Math.max(0, Math.floor(lx / GRID_SPACE_SIZE) * GRID_SPACE_SIZE),
+                PAPER_WIDTH - GRID_SPACE_SIZE) + TRAFFIC_LIGHT_HEIGHT;
+            oy = Math.min(Math.max(0, Math.floor(ly / GRID_SPACE_SIZE) * GRID_SPACE_SIZE),
+                PAPER_HEIGHT - GRID_SPACE_SIZE) + TRAFFIC_LIGHT_WIDTH + TRAFFIC_LIGHT_HEIGHT;
             locX = kx;
             locY = ky;
             me.transform('t' + ox + ',' + oy);
+            ocargo.levelEditor.mark(kx, BACKGROUND_COLOR, 0, false);
+            ocargo.levelEditor.mark(ky, BACKGROUND_COLOR, 0, false);
         };
+
+
+        /*var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
+        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
+        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+            .transform('r' + rotation + 's-1,1');
+        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+            .transform('r' + rotation + 's-1,1');
+        */
 
     this.drag(moveFnc, startFnc, endFnc);
 };

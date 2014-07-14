@@ -706,10 +706,10 @@ function createTrafficLights(trafficLights) {
 		//draw red and green lights, keep reference to both
         var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
         var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
-        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-            .transform('r' + rotation + 's-1,1');
-        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-            .transform('r' + rotation + 's-1,1');
+        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg', drawX,
+            drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
+        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
+            drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
 		
 		//hide light which isn't the starting state
 		if(trafficLight.startingState == trafficLight.RED){
