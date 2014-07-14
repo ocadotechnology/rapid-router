@@ -212,6 +212,16 @@ function trackDevelopment() {
 
     var consoleSliderPosition = $(window).width()/2;
 
+    $('#bigCodeModeBtn').click(function() {
+        if(ocargo.blocklyControl.bigCodeMode){
+            ocargo.blocklyControl.decreaseBlockSize();
+            $('#bigCodeModeBtn').text("Big Code Mode");
+        } else {
+            ocargo.blocklyControl.increaseBlockSize();
+            $('#bigCodeModeBtn').html("<del>Big</del> Code Mode");
+        }
+    });
+    
     $('#slideBlockly').click(function() {
         if ($('#programmingConsole').width() != 0) {
             $('#paper').animate({width: '100%'}, {queue: false});
