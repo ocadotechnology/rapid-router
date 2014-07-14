@@ -117,7 +117,7 @@ def join_up_loops(nodes, connections, loopiness_factor):
             if location in nodes_by_location:
                 adjacent_node_index, adjacent_node = nodes_by_location[location]
                 if adjacent_node_index not in connections[node_index] and random.random() < loopiness_factor:
-                    connections = add_new_connections(nodes, connections, node_index, adjacent_node_index)
+                    connections = add_new_connections(connections, node_index, adjacent_node_index)
     return connections
 
 def add_new_connections(connections, node_1_index, node_2_index):

@@ -465,6 +465,53 @@ $('#delete').click(function() {
     ocargo.levelEditor.deleteFlag = true;
 });
 
+$('#generate').click(function() {
+    var size = $('#size').val();
+    var branchiness = $('#branchiness').val()/10;
+    var loopiness = $('#loopiness').val()/10;
+    var curviness = $('#curviness').val()/10;
+
+    console.log(size);
+    console.log(branchiness);
+    console.log(loopiness);
+    console.log(curviness);
+
+    $.ajax({
+        url: "/game/levels/random/editor",
+        type: "POST",
+        dataType: 'json',
+        data: {
+            numberOfTiles: size,
+            branchiness: branchiness,
+            loopiness: loopiness,
+            curviness: curviness,
+            csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+        },
+        success: function (json) {
+            ocargo.levelEditor.nodes = [];
+            for (var i = 0; i < json.length; i++) {
+                var node = new ocargo.Node(new ocargo.Coordinate(json[i].coordinate[0],json[i].coordinate[1]));
+                ocargo.levelEditor.nodes.push(node);
+            }
+
+            for (var i = 0; i < json.length; i++) {
+                ocargo.levelEditor.nodes[i].connectedNodes = [];
+                for(var j = 0; j < json[i].connectedNodes.length; j++) {
+                    ocargo.levelEditor.nodes[i].connectedNodes.push(ocargo.levelEditor.nodes[json[i].connectedNodes[j]]);
+                }
+            }
+
+            paper.clear();
+            createRoad(ocargo.levelEditor.nodes);
+            ocargo.levelEditor.createGrid(paper);
+            ocargo.levelEditor.drawDecor();
+        },
+        error: function (xhr, errmsg, err) {
+            console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+});
+
 ocargo.LevelEditor.prototype.oldPathToNew = function() {
     var newPath = [];
 
