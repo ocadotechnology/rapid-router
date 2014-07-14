@@ -554,6 +554,10 @@ function createTrafficLights(trafficLights, draggable) {
         if (draggable) {
             trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate));
             trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate));
+            trafficLight.redLightEl.node.ondblclick = function() {
+                var image = trafficLight.redLightEl;
+                return image.transform('...r90');
+            };
         }
 		
 		//hide light which isn't the starting state

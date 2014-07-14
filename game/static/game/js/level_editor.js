@@ -395,10 +395,12 @@ Raphael.el.draggableLights = function(coordinate) {
         ly = 0,
         ox = 0,                                 // Where the drag has started.
         oy = 0,
+        s = "",
+        r = "",
         moveFnc = function(dx, dy) {
             lx = dx + ox;
             ly = dy + oy;
-            me.transform('t' + lx + ',' + ly);
+            me.transform('t' + lx + ',' + ly + s + r);
             ocargo.levelEditor.mark(kx, BACKGROUND_COLOR, 0, false);
             ocargo.levelEditor.mark(ky, BACKGROUND_COLOR, 0, false);
             var box = me.getBBox();
@@ -410,6 +412,9 @@ Raphael.el.draggableLights = function(coordinate) {
             ocargo.levelEditor.mark(ky, SELECTED_COLOR, 0.7, false);
         },
         startFnc = function() {
+            s = getOrientation(me);
+            r = getRotation(me)
+            console.debug("orientation", s)
             console.debug(JSON.stringify(me.transform()), me.transform());
             // Find the element in decor and remove it.
             var first = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(kx));
@@ -417,7 +422,6 @@ Raphael.el.draggableLights = function(coordinate) {
 
             var index = ocargo.levelEditor.findTrafficLight(first, second);
             if (index > -1) {
-                console.debug("removing");
                 ocargo.levelEditor.trafficLights.splice(index, 1);
             }
         },
@@ -443,6 +447,27 @@ Raphael.el.draggableLights = function(coordinate) {
 
 
     this.drag(moveFnc, startFnc, endFnc);
+
+    function getOrientation(object) {
+        var transform = object.transform();
+        for(var i = 0; i < transform.length; i++) {
+            if(transform[i][0] === 's') {
+                return 's' + transform[i][1] + ',' + transform[i][2];
+            }
+        }
+        return "";
+    }
+
+    function getRotation(object) {
+        var transform = object.transform();
+        var value = 0;
+        for(var i = 0; i < transform.length; i++) {
+            if(transform[i][0] === 'r') {
+                value += transform[i][1];
+            }
+        }
+        return 'r' + value;   
+    }
 };
 
 function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
@@ -488,10 +513,10 @@ function initialiseDecorGraphic(url) {
 function initialiseTrafficLight() {
     var img = paper.image(LIGHTS_URL, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
     img.draggableLights(new ocargo.Coordinate(0, 0));
-    /* img.node.ondblclick = function() {
+    img.node.ondblclick = function() {
         var image = img;
-        return image.transform('...r90');
-    }; */
+        return image.transform('..r90');
+    };
 }
 
 function sortNodes(nodes) {
