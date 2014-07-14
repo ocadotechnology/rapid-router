@@ -57,7 +57,7 @@ def levelsMessage():
 
 
 def sharedLevelsMessage():
-    return "All the levels your created by others that were shared with you. Click on them to " \
+    return "All the levels created by others that were shared with you. Click on them to " \
         + "play them"
 
 
@@ -103,7 +103,7 @@ def title_level2():
 
 
 def description_level2():
-    message = "Can you hel the van get there? <br> Like last time, drag the right blocks and " \
+    message = "Can you help the van get there? <br> Like last time, drag the right blocks and " \
         + "attach them under the 'Start' block. <br> To remove a block, drag it back to the " \
         + "left of the screen. "  # TODO: or the bin.
     return "<b>" + title_level2() + "</b><br><br>" + message
@@ -121,7 +121,7 @@ def description_level3():
 
 
 def title_level4():
-    return "You are getting good ath this! Let's try turning left. "
+    return "You are getting good at this! Let's try turning left. "
 
 
 def description_level4():
@@ -148,11 +148,11 @@ def description_level5():
 #
 
 def title_level6():
-    return "CFC is not always in the same place. "
+    return "The CFC is not always in the same place. "
 
 
 def description_level6():
-    message = "Driver does not always start the journey by going to the right of the screen. "
+    message = "The driver does not always start the journey by going to the right of the screen. "
     return "<b>" + title_level6() + "</b><br><br>" + message
 
 
@@ -211,7 +211,7 @@ def description_level11():
 
 
 def title_level12():
-    return "Use 'Repeat' block to make your sequence simpler. "
+    return "Use the 'Repeat' block to make your sequence simpler. "
 
 
 def description_level12():
@@ -272,7 +272,7 @@ def title_level17():
 def description_level17():
     message = "Another way of telling the van what to do is to use the 'If' block . For example, " \
         + "you can tell the van to go forward if the road goes forward, or to turn left if the " \
-        + "road goes forward, or to turn ledt if it goes left. <br> Try using the 'If block' and " \
+        + "road goes forward, or to turn left if it goes left. <br> Try using the 'If block' and " \
         + "the 'Repeat' block together. <br> The 'Repeat' block will stretch if you attach the " \
         + "'If' block inside it. "
     return "<b>" + title_level17() + "</b><br><br>" + message
@@ -297,7 +297,7 @@ def title_level19():
 def description_level19():
     message = "If you cannot see the road, you cannot see the choices to make. No problem! " \
         + "This is where 'If' and 'else' are useful. <br> You can tell the van to go one way if " \
-        + "the road goes that wat. If the road does not go that way, the van will do nothing. " \
+        + "the road goes that way. If the road does not go that way, the van will do nothing. " \
         + "<br> Keep adding choice using 'else if' and the van will move when the program finds " \
         + "the right choice. <br> You can add as many 'else if' choices as you like. Add 'else' " \
         + "as your last choice so that the van knows what to do when the choices run out."
@@ -345,7 +345,7 @@ def title_level23():
 
 
 def description_level23():
-    message = "You've done fantastiv job so far! Can you find the way to the house this time? " \
+    message = "You've done fantastic job so far! Can you find the way to the house this time? " \
         + "There is more than one solution! "
     return "<b>" + title_level23() + "</b><br><br>" + message
 
