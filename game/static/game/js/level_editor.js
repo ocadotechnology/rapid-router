@@ -548,11 +548,6 @@ $('#generate').click(function() {
     var loopiness = $('#loopiness').val()/10;
     var curviness = $('#curviness').val()/10;
 
-    console.log(size);
-    console.log(branchiness);
-    console.log(loopiness);
-    console.log(curviness);
-
     $.ajax({
         url: "/game/levels/random/editor",
         type: "POST",

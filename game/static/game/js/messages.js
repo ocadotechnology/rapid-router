@@ -2,13 +2,13 @@ var ocargo = ocargo || {};
 
 ocargo.messages = {
     nofuel : "You ran out of fuel! Try to find a shorter path to the destination.",
-    tryagain : "Click 'Clear Incorrect' to remove the incorrect blocks and try again!",
+    tryagain : "Either remove the incorrect blocks or click clear and try again!",
     closebutton: function(label) {
         return '<br><br> <button onclick="document.getElementById(' + "'close-modal'" +
         ').click()">' + label +'</button>';
     },
     xcorrect : function(x){
-        return "Your first " + x + " execution steps were right. ";
+        return "Your first " + x + " execution steps worked. ";
     },
     nextLevelButton: function(level) {
         return '<button onclick="window.location.href=' + "'/game/" + level + "'" + 
