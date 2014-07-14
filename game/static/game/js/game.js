@@ -116,6 +116,10 @@ function clearVanData() {
     ocargo.ui.setVanToFront(previousNode, startNode);
 }
 
+function redrawBlockly() {
+    Blockly.fireUiEvent(window, 'resize');
+}
+
 function trackDevelopment() {
 
     $('#moveForward').click(function() {
@@ -213,12 +217,12 @@ function trackDevelopment() {
             $('#paper').animate({width: '100%'}, {queue: false});
             $('#programmingConsole').animate({width: '0%'}, {queue: false});
             $('#sliderControls').animate({left: '0%'}, {queue: false});
-            $('#consoleSlider').animate({left: '0px'}, {queue: false});
+            $('#consoleSlider').animate({left: '0px'}, {queue: false, complete: function() { redrawBlockly(); }});
         } else {
             $('#paper').animate({width: $(window).width()-consoleSliderPosition}, {queue: false});
             $('#programmingConsole').animate({width: consoleSliderPosition}, {queue: false});
             $('#sliderControls').animate({left: consoleSliderPosition}, {queue: false})
-            $('#consoleSlider').animate({left: consoleSliderPosition}, {queue: false});
+            $('#consoleSlider').animate({left: consoleSliderPosition}, {queue: false, complete: function() { redrawBlockly(); }});
         }
     });
 
@@ -230,10 +234,12 @@ function trackDevelopment() {
         slider.on('mouseup', function(e){
             slider.off('mousemove');
             slider.parent().off('mousemove');
+            redrawBlockly();
         });
         slider.parent().on('mouseup', function(e) {
             slider.off('mousemove');
             slider.parent().off('mousemove');
+            redrawBlockly();
         });
 
         slider.parent().on('mousemove', function(me){
