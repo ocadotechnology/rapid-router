@@ -389,13 +389,12 @@ Raphael.el.draggableDecor = function(initX, initY) {
 
 Raphael.el.draggableLights = function(coordinate) {
     var me = this,
-        kx = coordinate,
+        kx = coordinate,                        // Coordinates used for centralisation.
         ky = new ocargo.Coordinate(coordinate.x, coordinate.y + 1),
-        lx = 0,
+        lx = 0,                // Current position of the element
         ly = 0,
-        ox = 0,
+        ox = 0,                                 // Where the drag has started.
         oy = 0,
-        url = this.url,
         moveFnc = function(dx, dy) {
             lx = dx + ox;
             ly = dy + oy;
@@ -411,6 +410,7 @@ Raphael.el.draggableLights = function(coordinate) {
             ocargo.levelEditor.mark(ky, SELECTED_COLOR, 0.7, false);
         },
         startFnc = function() {
+            console.debug(JSON.stringify(me.transform()), me.transform());
             // Find the element in decor and remove it.
             var first = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(kx));
             var second = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(ky));
@@ -422,13 +422,11 @@ Raphael.el.draggableLights = function(coordinate) {
             }
         },
         endFnc = function() {
-            ox = Math.min(Math.max(0, Math.floor(lx / GRID_SPACE_SIZE) * GRID_SPACE_SIZE),
-                PAPER_WIDTH - GRID_SPACE_SIZE) + TRAFFIC_LIGHT_HEIGHT;
-            oy = Math.min(Math.max(0, Math.floor(ly / GRID_SPACE_SIZE) * GRID_SPACE_SIZE),
-                PAPER_HEIGHT - GRID_SPACE_SIZE) + TRAFFIC_LIGHT_WIDTH + TRAFFIC_LIGHT_HEIGHT;
+            ox = lx;
+            oy = ly;
             ocargo.levelEditor.mark(kx, BACKGROUND_COLOR, 0, false);
             ocargo.levelEditor.mark(ky, BACKGROUND_COLOR, 0, false);
-            me.transform('t' + ox + ',' + oy);
+            console.debug("ox, oy", ox, oy, "lx, ly", lx, ly)
             var firstIndex = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(kx));
             var secondIndex = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(ky));
 
