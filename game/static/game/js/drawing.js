@@ -523,11 +523,15 @@ function renderTheMap(map) {
     createCFC(paper, previousNode, startNode);
     van = createVan(paper, previousNode, startNode);
     drawDecor(map.decor);
-    createTrafficLights(map.trafficLights);
+    createTrafficLights(map.trafficLights, false);
     scrollToShowVan();
 }
 
-function createTrafficLights(trafficLights) {
+function translate(coordinate) {
+    return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
+}
+
+function createTrafficLights(trafficLights, draggable) {
 	for (var i = 0; i < trafficLights.length; i++) {
 		var trafficLight = trafficLights[i];
 		var controlledNode = trafficLight.controlledNode;
@@ -547,6 +551,10 @@ function createTrafficLights(trafficLights) {
             drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
         trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
             drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
+        if (draggable) {
+            trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate));
+            trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate));
+        }
 		
 		//hide light which isn't the starting state
 		if(trafficLight.startingState == trafficLight.RED){
@@ -563,7 +571,7 @@ function createTrafficLights(trafficLights) {
 		
 		$(trafficLight).on(trafficLight.GREEN, function(){
 			this.redLightEl.hide();
-			this.greenLightEl.show();;
+			this.greenLightEl.show();
 		});
 	}
 }
