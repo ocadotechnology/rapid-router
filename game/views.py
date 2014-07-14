@@ -319,8 +319,8 @@ def settings(request):
     return render(request, 'game/settings.html', context_instance=context)
 
 
-def level_random(request,episodeID):
-    """Generates a new random level
+def random_level_for_episode(request,episodeID):
+    """Generates a new random level based on the episodeID
 
     Redirects to :view:`game.views.level` with the id of the newly created :model:`game.Level`.
     """
@@ -328,6 +328,17 @@ def level_random(request,episodeID):
     level = random_road.create(episode)
     return redirect("game.views.level", level=level.id)
 
+def random_level_for_editor(request):
+    """Generates a new random path suitable for a random level with the parameters provided"""
+
+    size = int(request.POST['numberOfTiles'])
+    branchiness = float(request.POST['branchiness'])
+    loopiness = float(request.POST['loopiness'])
+    curviness = float(request.POST['curviness'])
+
+    path = random_road.generate_random_path(random_road.Node(0,3),size,branchiness,loopiness,curviness)
+
+    return HttpResponse(json.dumps(path), content_type='application/javascript')
 
 def start_episode(request, episode):
     episode = cached_episode(episode)
