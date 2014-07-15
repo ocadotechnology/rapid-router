@@ -421,7 +421,7 @@ Raphael.el.draggableLights = function(coordinate) {
 
             var index = ocargo.levelEditor.findTrafficLight(first, second);
             if (index > -1) {
-                console.debug("Removing");
+                console.debug("Removing", index);
                 ocargo.levelEditor.trafficLights.splice(index, 1);
             }
             ky = getPrevious(me, kx);
@@ -684,6 +684,11 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
     return newPath;
 };
 
+//[{"node":5,"sourceNode":4,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"},
+// "node":2,"sourceNode":9,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"},
+// {"node":2,"sourceNode":3,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"},
+// {"node":2,"sourceNode":8,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"},
+// {"node":2,"sourceNode":1,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"}]
 $("#export").click(function() {
 
     if (ocargo.levelEditor.pathStart === null || ocargo.levelEditor.destination === null) {
@@ -704,6 +709,7 @@ $("#export").click(function() {
         var endCoord = ocargo.levelEditor.destination.coordinate;
         var destination = JSON.stringify([endCoord.x, endCoord.y]);
         var decor = JSON.stringify(ocargo.levelEditor.decor);
+        var trafficLights = JSON.stringify(ocargo.levelEditor.trafficLights);
         var maxFuel = $('#maxFuel').val();
         var name = $('#name').val();
 
@@ -719,6 +725,7 @@ $("#export").click(function() {
                 nodes: input,
                 destination: destination,
                 decor: decor,
+                trafficLights: trafficLights,
                 name: name,
                 maxFuel: maxFuel,
                 blockTypes: JSON.stringify(blockTypes),
