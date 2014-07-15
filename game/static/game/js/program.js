@@ -4,11 +4,12 @@ var ocargo = ocargo || {};
 
 ocargo.Program = function() {
 	this.threads = [];
-	this.isTerminated = false;
+	this.isFinished = false;
 	this.procedures = {};
 };
 
 ocargo.Program.prototype.step = function(level) {
+	this.isFinished = true;
 	for (var i = 0; i < this.threads.length; i++) {
 		if (this.threads[i].canStep()) {
 			this.threads[i].step(level);
@@ -16,6 +17,7 @@ ocargo.Program.prototype.step = function(level) {
 		else {
 			this.threads[i].currentAction = ocargo.EMPTY_ACTION;
 		}
+		this.isFinished = this.isFinished && this.threads[i].isFinished;
 	}
 };
 
@@ -32,7 +34,7 @@ ocargo.Program.prototype.terminate = function() {
 	for (var i = 0; i < this.threads.length; i++) {
 		this.threads[i].terminate();
 	}
-	this.isTerminated = true;
+	this.isFinished = true;
 };
 
 
@@ -41,7 +43,7 @@ ocargo.Program.prototype.terminate = function() {
 ocargo.Thread = function(id) {
 	this.id = id;
 	this.stack = [];
-	this.isTerminated = false;
+	this.isFinished = false;
 	this.instructionHandler = null;
 	this.currentAction = null;
 };
@@ -54,6 +56,10 @@ ocargo.Thread.prototype.step = function(level) {
 		this.stack.pop();
 	}
 	commandToProcess.execute(this, level);
+
+	if(this.stack.length == 0) {
+		this.isFinished = true;
+	}
 };
 
 ocargo.Thread.prototype.canStep = function() {
@@ -66,7 +72,7 @@ ocargo.Thread.prototype.addNewStackLevel = function(commands) {
 
 ocargo.Thread.prototype.terminate = function() {
 	this.stack = [];
-	this.isTerminated = true;
+	this.isFinished = true;
 };
 
 

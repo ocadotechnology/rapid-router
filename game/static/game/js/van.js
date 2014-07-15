@@ -13,26 +13,26 @@ ocargo.Van = function(id, previousNode, startNode, maxFuel, ui) {
     this.travelled = 0;
 };
 
-ocargo.Van.prototype.move = function(nextNode, instruction) {
+ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
     if (instruction === ocargo.FORWARD_ACTION) {
-        moveForward(this);
+        moveForward(this, callback);
         this.travelled++;
         ocargo.sound.moving();
     } else if (instruction === ocargo.TURN_LEFT_ACTION) {
-        moveLeft(this);
+        moveLeft(this, callback);
         this.travelled++;
         ocargo.sound.turning();
     } else if (instruction === ocargo.TURN_RIGHT_ACTION) {
-        moveRight(this);
+        moveRight(this, callback);
         this.travelled++;
         ocargo.sound.turning();
     } else if (instruction === ocargo.TURN_AROUND_ACTION) {
-        turnAround(this);
+        turnAround(this, callback);
         this.travelled++;
         ocargo.sound.turning();
         ocargo.sound.turning();
     } else if (instruction === ocargo.WAIT_ACTION) {
-    	wait(this);
+    	wait(this, callback);
         //ocargo.sound.idling();
     }
 
