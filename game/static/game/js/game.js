@@ -239,6 +239,17 @@ function trackDevelopment() {
                 $('#workspaceTable td').off('click');
                 table.empty();
 
+                // Order them alphabetically
+                json.workspaces.sort(function(a, b) {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    else if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
                 // Add a row to the table for each workspace saved in the database
                 for (var i = 0, ii = json.workspaces.length; i < ii; i++) {
                     var workspace = json.workspaces[i];
@@ -340,6 +351,13 @@ function trackDevelopment() {
                     console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
                 }
             });
+        }
+    });
+
+    // If the user pressed the enter key in the textbox, should be the same as clicking the button
+    $('#newWorkspaceName').on('keypress', function(e) {
+        if (e.which == 13) {
+            $('#createNewWorkspace').trigger('click');
         }
     });
 
