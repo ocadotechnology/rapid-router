@@ -207,6 +207,17 @@ img.control{
 
 #pythonCode {
     display: none;
+    height: 100%;
+    overflow: auto;
+    padding: 5px;
+}
+
+#consoleOutput {
+    background-color: #eceaee;
+    max-height: 300px;
+    min-height: 100px;
+    overflow: auto;
+    padding: 5px;
 }
 
 @media print {

@@ -367,7 +367,7 @@ function trackDevelopment() {
         }
     });
     
-    $('#slideBlockly').click(function() {
+    $('#slideConsole').click(function() {
         if ($('#programmingConsole').width() != 0) {
             $('#paper').animate({width: '100%'}, {queue: false});
             $('#programmingConsole').animate({width: '0%'}, {queue: false});
@@ -378,6 +378,18 @@ function trackDevelopment() {
             $('#programmingConsole').animate({width: consoleSliderPosition}, {queue: false});
             $('#sliderControls').animate({left: consoleSliderPosition}, {queue: false})
             $('#consoleSlider').animate({left: consoleSliderPosition}, {queue: false, complete: function() { redrawBlockly(); }});
+        }
+    });
+
+    $('#toggleConsole').click(function() {
+        if($('#blockly').css("display")=="none") {
+            $('#pythonCode').fadeOut();
+            $('#blockly').fadeIn();
+            redrawBlockly();
+}
+        else {
+            $('#blockly').fadeOut();
+            $('#pythonCode').fadeIn();
         }
     });
 
