@@ -1,82 +1,76 @@
 var ocargo = ocargo || {};
 
-ocargo.Program = function(instructionHandler) {
-	this.instructionHandler = instructionHandler;
-	this.stack = [];
+/* Program */
+
+ocargo.Program = function() {
+	this.threads = [];
 	this.isTerminated = false;
 	this.procedures = {};
 };
 
 ocargo.Program.prototype.step = function(level) {
-	var stackLevel = this.stack[this.stack.length - 1];
-
-	var commandToProcess = stackLevel.splice(0, 1)[0];
-	if (stackLevel.length === 0) {
-		this.stack.pop();
+	for (var i = 0; i < this.threads.length; i++) {
+		if (this.threads[i].canStep()) {
+			this.threads[i].step(level);
+		}
+		else {
+			this.threads[i].currentAction = ocargo.EMPTY_ACTION;
+		}
 	}
-	
-	commandToProcess.execute(this, level);
 };
 
 ocargo.Program.prototype.canStep = function() {
-	return this.stack.length !== 0 && this.stack[0].length !== 0;
-};
-
-ocargo.Program.prototype.addNewStackLevel = function(commands) {
-	this.stack.push(commands);
+	for (var i = 0; i < this.threads.length; i++) {
+		if (this.threads[i].canStep()) {
+			return true;
+		}
+	}
+	return false;
 };
 
 ocargo.Program.prototype.terminate = function() {
+	for (var i = 0; i < this.threads.length; i++) {
+		this.threads[i].terminate();
+	}
+	this.isTerminated = true;
+};
+
+
+/* Thread */
+
+ocargo.Thread = function(id) {
+	this.id = id;
+	this.stack = [];
+	this.isTerminated = false;
+	this.instructionHandler = null;
+	this.currentAction = null;
+};
+
+ocargo.Thread.prototype.step = function(level) {
+	var stackLevel = this.stack[this.stack.length - 1];
+	var commandToProcess = stackLevel.splice(0, 1)[0];
+
+	if (stackLevel.length === 0) {
+		this.stack.pop();
+	}
+	commandToProcess.execute(this, level);
+};
+
+ocargo.Thread.prototype.canStep = function() {
+	return this.stack.length !== 0 && this.stack[0].length !== 0;
+};
+
+ocargo.Thread.prototype.addNewStackLevel = function(commands) {
+	this.stack.push(commands);
+};
+
+ocargo.Thread.prototype.terminate = function() {
 	this.stack = [];
 	this.isTerminated = true;
 };
 
-function If(conditionalCommandSets, elseCommands, block) {
-	this.conditionalCommandSets = conditionalCommandSets;
-	this.elseCommands = elseCommands;
-	this.block = block;
-}
 
-If.prototype.execute = function(program, level) {
-	this.block.selectWithConnected();
-
-	this.executeIfCommand(program, level);
-
-	setTimeout(program.stepCallback, 500);
-};
-
-If.prototype.executeIfCommand = function(program, level) {
-	var i = 0;
-	while (i < this.conditionalCommandSets.length) {
-		if (this.conditionalCommandSets[i].condition(level)) {
-			program.addNewStackLevel(this.conditionalCommandSets[i].commands.slice(0));
-			return;
-		}
-
-		i++;
-	}
-
-	if(this.elseCommands) {
-		program.addNewStackLevel(this.elseCommands.slice(0));
-	}
-};
-
-function While(condition, body, block) {
-	this.condition = condition;
-	this.body = body;
-	this.block = block;
-}
-
-While.prototype.execute = function(program, level) {
-	this.block.selectWithConnected();
-
-	if (this.condition(level)) {
-		program.addNewStackLevel([this]);
-		program.addNewStackLevel(this.body.slice(0));
-	}
-
-	setTimeout(program.stepCallback, 500);
-};
+/* Conditions */
 
 function counterCondition(count) {
     return function() {
@@ -90,23 +84,24 @@ function counterCondition(count) {
 }
 
 function roadCondition(selection) {
-    return function(level) {
+    return function(level,threadID) {
+    	van = level.vans[threadID];
         if (selection === 'FORWARD') {
-            return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);
+            return ocargo.FORWARD_ACTION.getNextNode(van.previousNode, van.currentNode);
         } else if (selection === 'LEFT') {
-            return TURN_LEFT.getNextNode(level.van.previousNode, level.van.currentNode);
+            return ocargo.TURN_LEFT_ACTION.getNextNode(van.previousNode, van.currentNode);
         } else if (selection === 'RIGHT') {
-            return TURN_RIGHT.getNextNode(level.van.previousNode, level.van.currentNode);
+            return ocargo.TURN_RIGHT_ACTION.getNextNode(van.previousNode, van.currentNode);
         }
     };
 }
 
 function deadEndCondition() {
-    return function(level) {
-        var instructions = [FORWARD, TURN_LEFT, TURN_RIGHT];
-        for (var i = 0; i < instructions.length; i++) {
-            var instruction = instructions[i];
-            var nextNode = instruction.getNextNode(level.van.previousNode, level.van.currentNode);
+    return function(level,threadID) {
+        var actions = [ocargo.FORWARD_ACTION, ocargo.TURN_LEFT_ACTION, ocargo.TURN_RIGHT_ACTION];
+        for (var i = 0; i < actions.length; i++) {
+            var action = actions[i];
+            var nextNode = action.getNextNode(level.vans[threadID].previousNode, level.vans[threadID].currentNode);
             if (nextNode) {
                 return false;
             }
@@ -116,20 +111,20 @@ function deadEndCondition() {
 }
 
 function negateCondition(otherCondition) {
-	return function(level) {
-		return !otherCondition(level);
+	return function(level,threadID) {
+		return !otherCondition(level,threadID);
 	};
 }
 
 function atDestinationCondition() {
-    return function(level) {
-    	return level.van.currentNode === level.map.destination;
+    return function(level,threadID) {
+    	return level.vans[threadID].currentNode === level.map.destination;
     };
 }
 function trafficLightCondition(lightColour){
-	return function(level) {
-        var prevNode = level.van.previousNode;
-        var currNode = level.van.currentNode;
+	return function(level,threadID) {
+        var prevNode = level.vans[threadID].previousNode;
+        var currNode = level.vans[threadID].currentNode;
 		for(var i = 0; i < currNode.trafficLights.length; i++){
 			var tl = currNode.trafficLights[i];
 			if(tl.sourceNode == prevNode && tl.state == lightColour){
@@ -140,50 +135,147 @@ function trafficLightCondition(lightColour){
     };
 }
 
+/* Instructions */
+
 function TurnLeftCommand(block) {
 	this.block = block;
 }
 
-TurnLeftCommand.prototype.execute = function(program) {
+TurnLeftCommand.prototype.execute = function(thread) {
 	this.block.selectWithConnected();
-	program.instructionHandler.handleInstruction(TURN_LEFT, program);
+	thread.currentAction = ocargo.TURN_LEFT_ACTION;
 };
+
+TurnLeftCommand.prototype.parse = function() {
+	return {command: 'Left'};
+}
+
 
 function TurnRightCommand(block) {
 	this.block = block;
 }
 
-TurnRightCommand.prototype.execute = function(program) {
+TurnRightCommand.prototype.execute = function(thread) {
 	this.block.selectWithConnected();
-	program.instructionHandler.handleInstruction(TURN_RIGHT, program);
+	thread.currentAction = ocargo.TURN_RIGHT_ACTION;
 };
+
+TurnRightCommand.prototype.parse = function() {
+	return {command: 'Right'};
+}
+
 
 function ForwardCommand(block) {
 	this.block = block;
 }
 
-ForwardCommand.prototype.execute = function(program) {
+ForwardCommand.prototype.execute = function(thread) {
 	this.block.selectWithConnected();
-	program.instructionHandler.handleInstruction(FORWARD, program);
+	thread.currentAction = ocargo.FORWARD_ACTION;
 };
+
+ForwardCommand.prototype.parse = function() {
+	return {command: 'Forward'};
+}
+
 
 function TurnAroundCommand(block) {
     this.block = block;
 }
 
-TurnAroundCommand.prototype.execute = function(program) {
+TurnAroundCommand.prototype.execute = function(thread) {
     this.block.selectWithConnected();
-    program.instructionHandler.handleInstruction(TURN_AROUND, program);
+    thread.currentAction = ocargo.TURN_AROUND_ACTION;
 };
+
+TurnAroundCommand.prototype.parse = function() {
+	return {command: 'TurnAround'};
+}
+
+
 
 function WaitCommand(block) {
     this.block = block;
 }
 
-WaitCommand.prototype.execute = function(program) {
+WaitCommand.prototype.execute = function(thread) {
     this.block.selectWithConnected();
-    program.instructionHandler.handleInstruction(WAIT, program);
+    thread.currentAction = ocargo.WAIT_ACTION;
 };
+
+WaitCommand.prototype.parse = function() {
+	return {command: 'Wait'};
+}
+
+
+
+function If(conditionalCommandSets, elseBody, block) {
+	this.conditionalCommandSets = conditionalCommandSets;
+	this.elseBody = elseBody;
+	this.block = block;
+}
+
+If.prototype.execute = function(thread, level) {
+	this.block.selectWithConnected();
+	thread.currentAction = ocargo.EMPTY_ACTION;
+
+	var i = 0;
+	while (i < this.conditionalCommandSets.length) {
+		if (this.conditionalCommandSets[i].condition(level,thread.id)) {
+			thread.addNewStackLevel(this.conditionalCommandSets[i].commands.slice());
+			return;
+		}
+
+		i++;
+	}
+
+	if(this.elseBody) {
+		thread.addNewStackLevel(this.elseBody.slice());
+	}
+};
+
+If.prototype.parse = function() {
+	var ifBlocks = [];
+	for(var i = 0; i < this.conditionalCommandSets.length; i++) {
+		ifBlock = { condition: this.conditionalCommandSets[i].condition.toString(),
+					body: parseBody(this.conditionalCommandSets[i].commands)};
+		ifBlocks.push(ifBlock);
+	}
+
+	var parsedCommand = {command: 'If',
+						ifBlocks: ifBlocks};
+   	
+    if (this.elseCommands) {
+        parsedCommand.elseBlock = parseBody(this.elseBody);
+    }
+
+    return parsedCommand;
+}
+
+
+
+function While(condition, body, block) {
+	this.condition = condition;
+	this.body = body;
+	this.block = block;
+}
+
+While.prototype.execute = function(thread, level) {
+	this.block.selectWithConnected();
+	thread.currentAction = ocargo.EMPTY_ACTION;
+
+	if (this.condition(level,thread.id)) {
+		thread.addNewStackLevel([this]);
+		thread.addNewStackLevel(this.body.slice());
+	}
+};
+
+While.prototype.parse = function() {
+    return {command: 'While',
+			condition: this.condition.toString(),
+			body: parseBody(this.body)};
+}
+
 
 function Procedure(name,body,block) {
 	this.name = name;
@@ -191,13 +283,20 @@ function Procedure(name,body,block) {
 	this.block = block;
 };
 
-Procedure.prototype.execute = function(program) {
+Procedure.prototype.execute = function(thread) {
 	this.block.selectWithConnected();
-	/* Slice necessary to shallow copy procedure body otherwise
-	in the next call to the procedure the body is empty */
-	program.addNewStackLevel(this.body.slice());
-	setTimeout(program.stepCallback, 500);
+	thread.currentAction = ocargo.EMPTY_ACTION;
+
+	thread.addNewStackLevel(this.body.slice());
 }
+
+Procedure.prototype.parse = function() {
+	return {command: "Procedure",
+			name: this.name,
+			body: parseBody(this.body)};
+}
+
+
 
 function ProcedureCall(block) {
 	this.block = block;
@@ -207,8 +306,24 @@ ProcedureCall.prototype.bind = function(proc) {
 	this.proc = proc;
 }
 
-ProcedureCall.prototype.execute = function(program) {
+ProcedureCall.prototype.execute = function(thread) {
 	this.block.selectWithConnected();
-	program.addNewStackLevel([this.proc]);
-	setTimeout(program.stepCallback, 500);
+	thread.currentAction = ocargo.EMPTY_ACTION;
+
+	thread.addNewStackLevel([this.proc]);
+}
+
+ProcedureCall.prototype.parse = function() {
+	return {command: "ProcedureCall",
+			name: this.proc.name};
+}
+
+
+
+function parseBody(body) {
+	var parses = [];
+	for (var i = 0; i < body.length; i++) {
+		parses.push(body[i].parse())
+	}
+	return parses;
 }

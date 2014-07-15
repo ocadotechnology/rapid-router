@@ -10,8 +10,16 @@ function createDefaultLevel(nodeData, destination, decor, trafficLightData, ui, 
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
     var map = new ocargo.Map(nodes, decor, trafficLights, dest, ui);
-    var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
-    return new ocargo.Level(map, van, ui, nextLevel, nextEpisode);
+    var vans = [];
+
+    var previousNode = nodes[0];
+    var startNode = nodes[0].connectedNodes[0];
+    for (var i = 0; i < THREADS; i++) {
+        vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel, ui));
+    }
+    ocargo.ui.renderVans(vans);
+
+    return new ocargo.Level(map, vans, ui, nextLevel, nextEpisode);
 }
 
 function createNodes(nodeData) {
@@ -112,8 +120,12 @@ function clearVanData() {
     var nodes = ocargo.level.map.nodes;
     var previousNode = nodes[0];
     var startNode = nodes[0].connectedNodes[0];
-    ocargo.level.van = new ocargo.Van(previousNode, startNode, ocargo.level.van.maxFuel, ocargo.ui);
-    ocargo.ui.setVanToFront(previousNode, startNode);
+
+    for (var i = 0; i < THREADS; i++) {
+        var van = new ocargo.Van(i,previousNode, startNode, MAX_FUEL, ocargo.ui);
+        ocargo.level.vans[i] = van;
+        ocargo.ui.setVanToFront(previousNode, startNode, van);
+    }
 }
 
 function redrawBlockly() {
@@ -156,7 +168,6 @@ function trackDevelopment() {
             throw error;
         }
 
-        program.instructionHandler = new InstructionHandler(ocargo.level, true);
         clearVanData();
         ocargo.time.resetTime();
         ocargo.level.play(program);

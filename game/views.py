@@ -142,7 +142,7 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'hint': hint,
-        'attempt': attempt
+        'attempt': attempt,
     })
 
     return render(request, 'game/game.html', context_instance=context)
@@ -165,7 +165,6 @@ def level_editor(request):
         'blocks': Block.objects.all()
     })
     return render(request, 'game/level_editor.html', context_instance=context)
-
 
 def renderError(request, title, message):
     """Renders an error page with passed title and message.

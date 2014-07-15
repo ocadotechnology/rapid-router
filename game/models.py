@@ -93,7 +93,8 @@ class Level (models.Model):
     next_level = models.ForeignKey('self', null=True, default=None)
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
     model_solution = models.IntegerField(blank=True, default=50)
-
+    threads = models.IntegerField(blank=False, default=1)
+    
     def __unicode__(self):
         return 'Level ' + str(self.id)
 

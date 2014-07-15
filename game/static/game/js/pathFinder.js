@@ -42,7 +42,7 @@ ocargo.PathFinder.prototype.getScore = function() {
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
 
-    var travelled = ocargo.level.van.travelled;
+    var travelled = ocargo.level.vans[0].travelled;
     var travelledScore = this.maxDistanceScore -
         (travelled - this.optimalPath.length + 2);
     
