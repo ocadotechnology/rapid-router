@@ -137,21 +137,21 @@ function trackDevelopment() {
     $('#moveForward').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(enableDirectControl);
+        moveForward(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 
     $('#turnLeft').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(enableDirectControl);
+        moveLeft(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 
     $('#turnRight').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(enableDirectControl);
+        moveRight(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 

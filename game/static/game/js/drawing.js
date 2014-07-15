@@ -292,9 +292,9 @@ function scrollToShowVanImage(vanImage) {
     }
 }
 
-function moveVanImage(attr, vanImage, callback, length) {
+function moveVanImage(attr, vanImage, callback, animationLength) {
 
-    var length = length || 490;
+    animationLength = animationLength || 490;
 
     var combinedCallback = function() {
         scrollToShowVanImage(vanImage);
@@ -304,35 +304,35 @@ function moveVanImage(attr, vanImage, callback, length) {
     };
 
     console.log("Trigger at " + (new Date().getTime() % 20000));
-    vanImage.animate(attr, length, 'easeIn', combinedCallback);
+    vanImage.animate(attr, animationLength, 'easeIn', combinedCallback);
 }
 
-function moveForward(van) {
+function moveForward(van, callback) {
     var moveDistance = -MOVE_DISTANCE;
     var transformation = "... t 0, " + moveDistance;
     moveVanImage({
         transform: transformation
-    }, vanImages[van.id]);
+    }, vanImages[van.id], callback);
 }
 
-function moveLeft(van) {
+function moveLeft(van, callback) {
     var vanImage = vanImages[van.id];
     var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
     var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
     var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, vanImage);
+    }, vanImage, callback);
 }
 
-function moveRight(van) {
+function moveRight(van, callback) {
     var vanImage = vanImages[van.id];
     var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
     var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
     var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, vanImage);
+    }, vanImage, callback);
 }
 
 function wait(van) {
