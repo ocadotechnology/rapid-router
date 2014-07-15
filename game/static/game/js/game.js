@@ -170,8 +170,7 @@ function trackDevelopment() {
 
         clearVanData();
         ocargo.time.resetTime();
-        ocargo.level.play(program);
-        ocargo.level.correct = 0;
+        ocargo.level.playProgram(program);
     });
 
     $('#step').click(function() {
@@ -179,14 +178,10 @@ function trackDevelopment() {
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
         }
 
-        if (ocargo.level.program === undefined || ocargo.level.program.isTerminated) {
+        if (ocargo.level.program === undefined || ocargo.level.program.isFinished) {
             try {
-                ocargo.level.correct = 0;
                 ocargo.level.program = ocargo.blocklyControl.populateProgram();
-                ocargo.level.program.stepCallback = enableDirectControl;
-                ocargo.level.stepper = stepper(ocargo.level, false);
-                ocargo.level.program.startBlock.selectWithConnected();
-                ocargo.level.program.instructionHandler = new InstructionHandler(ocargo.level, false);
+                ocargo.level.selectStartBlocks();
                 clearVanData();
                 ocargo.time.resetTime();
                 Blockly.addChangeListener(terminate);
@@ -197,12 +192,11 @@ function trackDevelopment() {
         }
         disableDirectControl();
         $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
-        ocargo.level.stepper();
+        ocargo.level.stepProgram(enableDirectControl);
 
         function terminate() {
             ocargo.level.program.isTerminated = true;
         }
-
     });
     
     $('#help').click(function() {

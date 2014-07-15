@@ -1,14 +1,10 @@
 var ocargo = ocargo || {};
 
 ocargo.messages = {
-    nofuel : "You ran out of fuel! Try to find a shorter path to the destination.",
     tryagain : "Either remove the incorrect blocks or click clear and try again!",
     closebutton: function(label) {
         return '<br><br> <button onclick="document.getElementById(' + "'close-modal'" +
         ').click()">' + label +'</button>';
-    },
-    xcorrect : function(x){
-        return "Your first " + x + " execution steps worked. ";
     },
     nextLevelButton: function(level) {
         return '<button onclick="window.location.href=' + "'/game/" + level + "'" + 
@@ -28,6 +24,25 @@ ocargo.messages = {
         "'/home/'" + '"">Home</button>',
     tooManyBlocks: "You used too many blocks!",
     ohNo: "Oh no!",
+    needHint: "Are you stuck? Need a hint?",
+    terminated: "Program terminated!",
+    crashed: "Your program crashed!",
+    stoppingTitle: "Stopping...",
+
+    outOfFuel : "You ran out of fuel! Try to find a shorter path to the destination.",
+    outOfInstructions: "You ran out of instructions without reaching your destination!",
+    throughRedLight: "You just directed the van through a red traffic light! Stick to the " +
+        "highway code!",
+    offRoad : function(correctSteps){
+        if (correctSteps === 1) {
+            return "Your first execution step worked.";
+        }
+        else {
+            return "Your first " + correctSteps + " execution steps worked.";
+        }
+    },
+
+    /* Level editor */
     noStartOrEndSubtitle: "You forgot to mark the start and end points.",
     noStartOrEnd: "Click on the 'Mark Start' or 'Mark End' then select the road of the segment " +
         "you want to serve as the starting or ending point.",
@@ -47,13 +62,8 @@ ocargo.messages = {
         "Don't forget to choose a name and fuel limit for your level! It will " +
         "make sharing it with others much easier for you.",
     levelEditorTitle: "Welcome to the Level Editor!",
-	throughRedTrafficLight: "You just directed the van through a red traffic light! Stick to the " +
-        "highway code!",
-    needHint: "Are you stuck? Need a hint?",
-    terminated: "Program terminated!",
-    outOfInstructions: "You ran out of instructions without reaching your destination!",
-    crashed: "Your program crashed!",
-    stoppingTitle: "Stopping...",
+
+    /* Scoring */
     totalScore: function(score, maxScore) {
         return "Your total score: " + score + "/" + maxScore;
     },
@@ -68,6 +78,8 @@ ocargo.messages = {
     algorithmShorter: "That's not exactly the solution we wanted you to come up with. Read the " +
         "level instructions for more information.",
     scorePerfect: "Congratulations! You've aced it.",
+    
+    /* Malformed program */
     whileConditionError: "Perhaps try looking at your 'While' blocks?",
     whileBodyError: "Perhaps try looking at your 'While' blocks?",
     ifConditionError: "Perhaps try looking at your 'If' blocks?",

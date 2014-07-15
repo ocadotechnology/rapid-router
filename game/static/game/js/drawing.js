@@ -77,21 +77,6 @@ function calculateInitialRotation(previousNode, startNode) {
     return -nodeAngleDegrees; // Calculation is counterclockwise, transformations are clockwise
 }
 
-function createVanImage(paper, van) {
-    var initialX = calculateInitialX(van.currentNode);
-    var initialY = calculateInitialY(van.currentNode);
-
-    var vanImage = paper.image(
-        '/static/game/image/ocadoVan_big.svg', initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
-
-    var rotation = calculateInitialRotation(van.previousNode, van.currentNode);
-    rotateElementAroundCentreOfGridSpace(vanImage, rotation, van.currentNode.coordinate.x, van.currentNode.coordinate.y);
-
-    vanImages[van.id] = vanImage;
-
-    return vanImage.transform('... r90');
-}
-
 function getRoadLetters(previous, node1, node2) {
     previous = transformY(previous);
     node1 = transformY(node1);
@@ -273,126 +258,6 @@ function createRoad(nodes) {
                 break;
         }
     });
-}
-
-function scrollToShowVanImage(vanImage) {
-    var point = getVanImagePosition(vanImage);
-    var element = document.getElementById('paper');
-
-    if (point[0] > Math.floor(PAPER_WIDTH / 2)) {
-        element.scrollLeft = PAPER_WIDTH / 2;
-    } else {
-        element.scrollLeft = 0;
-    }
-
-    if (point[1] > Math.floor(PAPER_HEIGHT / 2)) {
-        element.scrollTop = PAPER_HEIGHT / 2;
-    } else {
-        element.scrollTop = 0;
-    }
-}
-
-function moveVanImage(attr, vanImage, callback, animationLength) {
-
-    animationLength = animationLength || 490;
-
-    var combinedCallback = function() {
-        scrollToShowVanImage(vanImage);
-        if (callback) {
-            callback();
-        }
-    };
-
-    console.log("Trigger at " + (new Date().getTime() % 20000));
-    vanImage.animate(attr, animationLength, 'easeIn', combinedCallback);
-}
-
-function moveForward(van, callback) {
-    var moveDistance = -MOVE_DISTANCE;
-    var transformation = "... t 0, " + moveDistance;
-    moveVanImage({
-        transform: transformation
-    }, vanImages[van.id], callback);
-}
-
-function moveLeft(van, callback) {
-    var vanImage = vanImages[van.id];
-    var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-    var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
-    var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
-    moveVanImage({
-        transform: transformation
-    }, vanImage, callback);
-}
-
-function moveRight(van, callback) {
-    var vanImage = vanImages[van.id];
-    var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-    var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
-    var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
-    moveVanImage({
-        transform: transformation
-    }, vanImage, callback);
-}
-
-function wait(van) {
-	//no movement for now
-    moveVanImage({
-        transform: '... t0,0'
-    }, vanImages[van.id]);
-}
-
-function resetVanImage(previousNode, startNode, van) {
-    var vanImage = vanImages[van.id];
-    
-    vanImage.transform('r0');
-
-    var rotation = calculateInitialRotation(previousNode, startNode);
-    rotateElementAroundCentreOfGridSpace(vanImage, rotation, startNode.coordinate.x, startNode.coordinate.y);
-
-    var initialX = calculateInitialX(startNode);
-    var initialY = calculateInitialY(startNode);
-    vanImage.attr({
-        x: initialX,
-        y: initialY
-    });
-
-    vanImage.transform('... r90');
-    scrollToShowVanImage(vanImage);
-}
-
-function getVanImagePosition(vanImage) {
-    var box = vanImage.getBBox();
-    return [box.x, box.y];
-}
-
-function turnAround(van) {
-    var moveDistance = -GRID_SPACE_SIZE / 2;
-    var moveTransformation = "... t 0, " + moveDistance;
-    var vanImage = vanImages[van.id];
-
-    function moveForward() {
-        moveVanImage({
-            transform: moveTransformation
-        }, vanImage, rotate, 400);
-    }
-
-    function rotate() {
-        var rotationPointX = vanImage.attrs.x + 22;
-        var rotationPointY = vanImage.attrs.y + 20;
-
-        moveVanImage({
-            transform: createRotationTransformation(180, rotationPointX, rotationPointY)
-        }, vanImage, moveBack, 400);
-    }
-
-    function moveBack() {
-        moveVanImage({
-            transform: moveTransformation
-        }, vanImage, undefined, 400);
-    }
-    
-    moveForward();
 }
 
 function isMobile() {
@@ -592,4 +457,143 @@ function startPopup(title, subtitle, message) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
+}
+
+
+/*****************/
+/** Van methods **/
+/*****************/
+
+function scrollToShowVanImage(vanImage) {
+    var point = getVanImagePosition(vanImage);
+    var element = document.getElementById('paper');
+
+    if (point[0] > Math.floor(PAPER_WIDTH / 2)) {
+        element.scrollLeft = PAPER_WIDTH / 2;
+    } else {
+        element.scrollLeft = 0;
+    }
+
+    if (point[1] > Math.floor(PAPER_HEIGHT / 2)) {
+        element.scrollTop = PAPER_HEIGHT / 2;
+    } else {
+        element.scrollTop = 0;
+    }
+}
+
+function moveVanImage(attr, vanImage, callback, animationLength) {
+
+    animationLength = animationLength || 490;
+
+    var combinedCallback = function() {
+        scrollToShowVanImage(vanImage);
+        if (callback) {
+            callback();
+        }
+    };
+
+    vanImage.animate(attr, animationLength, 'easeIn', combinedCallback);
+}
+
+function moveForward(van, callback) {
+    var moveDistance = -MOVE_DISTANCE;
+    var transformation = "... t 0, " + moveDistance;
+    moveVanImage({
+        transform: transformation
+    }, vanImages[van.id], callback);
+}
+
+function moveLeft(van, callback) {
+    var vanImage = vanImages[van.id];
+    var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
+    var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+    var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
+    moveVanImage({
+        transform: transformation
+    }, vanImage, callback);
+}
+
+function moveRight(van, callback) {
+    var vanImage = vanImages[van.id];
+    var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
+    var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+    var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
+    moveVanImage({
+        transform: transformation
+    }, vanImage, callback);
+}
+
+function turnAround(van, callback) {
+    var moveDistance = -GRID_SPACE_SIZE / 2;
+    var moveTransformation = "... t 0, " + moveDistance;
+    var vanImage = vanImages[van.id];
+
+    function moveForward() {
+        moveVanImage({
+            transform: moveTransformation
+        }, vanImage, rotate, 400);
+    }
+
+    function rotate() {
+        var rotationPointX = vanImage.attrs.x + 22;
+        var rotationPointY = vanImage.attrs.y + 20;
+
+        moveVanImage({
+            transform: createRotationTransformation(180, rotationPointX, rotationPointY)
+        }, vanImage, moveBack, 400);
+    }
+
+    function moveBack() {
+        moveVanImage({
+            transform: moveTransformation
+        }, vanImage, callback, 400);
+    }
+    
+    moveForward();
+}
+
+function wait(van) {
+    //no movement for now
+    moveVanImage({
+        transform: '... t0,0'
+    }, vanImages[van.id]);
+}
+
+function createVanImage(paper, van) {
+    var initialX = calculateInitialX(van.currentNode);
+    var initialY = calculateInitialY(van.currentNode);
+
+    var vanImage = paper.image(
+        '/static/game/image/ocadoVan_big.svg', initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
+
+    var rotation = calculateInitialRotation(van.previousNode, van.currentNode);
+    rotateElementAroundCentreOfGridSpace(vanImage, rotation, van.currentNode.coordinate.x, van.currentNode.coordinate.y);
+
+    vanImages[van.id] = vanImage;
+
+    return vanImage.transform('... r90');
+}
+
+function resetVanImage(previousNode, startNode, van) {
+    var vanImage = vanImages[van.id];
+    
+    vanImage.transform('r0');
+
+    var rotation = calculateInitialRotation(previousNode, startNode);
+    rotateElementAroundCentreOfGridSpace(vanImage, rotation, startNode.coordinate.x, startNode.coordinate.y);
+
+    var initialX = calculateInitialX(startNode);
+    var initialY = calculateInitialY(startNode);
+    vanImage.attr({
+        x: initialX,
+        y: initialY
+    });
+
+    vanImage.transform('... r90');
+    scrollToShowVanImage(vanImage);
+}
+
+function getVanImagePosition(vanImage) {
+    var box = vanImage.getBBox();
+    return [box.x, box.y];
 }

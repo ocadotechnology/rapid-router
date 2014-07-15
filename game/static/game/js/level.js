@@ -2,11 +2,20 @@
 
 var ocargo = ocargo || {};
 
+var TERMINATION_DELAY = 1000;
+
+var ERRORS = {
+  THROUGH_RED_LIGHT: "Through red light", 
+  OFF_ROAD: "Off road", 
+  OUT_OF_FUEL: "Out of fuel"
+};
+
+
 ocargo.Level = function(map, vans, ui, nextLevel, nextEpisode) {
     this.levelId = null;
     this.map = map;
     this.ui = ui;
-    this.correct = 0;
+    this.numStepsCorrect = 0;
     this.attemptData = {};
     this.pathFinder = new ocargo.PathFinder(map, MODEL_SOLUTION);
     this.fails = 0;
@@ -19,12 +28,7 @@ ocargo.Level = function(map, vans, ui, nextLevel, nextEpisode) {
 
 ocargo.Level.prototype.failsBeforeHintBtn = 3;
 
-ocargo.Level.prototype.play = function(program) {
-
-    this.attemptData = {};
-
-    var threadStacks = [];
-    var procedureStack = {};
+ocargo.Level.prototype.playProgram = function(program) {
 
     if (ocargo.level.blockLimit &&
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
@@ -34,17 +38,23 @@ ocargo.Level.prototype.play = function(program) {
         return;
     }
 
+    this.numStepsCorrect = 0;
+    this.program = program;
     this.initAttemptData(program);
 
-    for (var i = 0; i < program.threads.length; i++) {
-        program.threads[i].startBlock.selectWithConnected();
-    }
+    this.selectStartBlocks();    
 
-    this.program = program;
-    stepProgram(this);
+    playOutProgram(this);
 };
 
+ocargo.Level.prototype.selectStartBlocks = function() {
+    for (var i = 0; i < this.program.threads.length; i++) {
+        this.program.threads[i].startBlock.selectWithConnected();
+    }
+}
+
 ocargo.Level.prototype.initAttemptData = function(program) {
+    this.attemptData = {};
     this.attemptData.level = ocargo.level.levelId.toString();
     
     var parsedProcedures = [];
@@ -65,43 +75,62 @@ ocargo.Level.prototype.initAttemptData = function(program) {
     this.attemptData.procedureStack = JSON.stringify(parsedProcedures);
 }
 
-function stepProgram(level) {
-    var terminationDelay = 1000;
-    try {
-        if (level.program.canStep()) {
-            level.correct++;
-            level.program.step(level);
-
-            var animationLength = 0;
-            for (var i = 0; i < THREADS; i++) {
-                var action = level.program.threads[i].currentAction;
-                level.handleAction(action, level.program.threads[i], level.vans[i]);
-
-                if (action.animationLength > animationLength) {
-                    animationLength = action.animationLength;
-                }
-            }
-
-            setTimeout(function () {stepProgram(level)}, animationLength);
-        } 
-        else if (level.hasWon()) {
-            setTimeout(function () {programTerminated(level, true)}, terminationDelay);
-        } 
-        else if (level.program.isTerminated) {
-            setTimeout(function () {programTerminated(level, false, ocargo.messages.terminated)}, terminationDelay);
-            $("#myModal > .title").text(ocargo.messages.stoppingTitle);
-        } 
-        else {
-            setTimeout(function () {programTerminated(level, false, ocargo.messages.outOfInstructions)}, terminationDelay);
-            level.program.terminate();
-        }
-    } 
-    catch (error) {
-        level.fail(ocargo.messages.crashed);
-        level.program.terminate();
-        enableDirectControl();
-        throw error;
+function playOutProgram(level) {
+    var animationLength = level.stepProgram();
+    if (animationLength) {
+        setTimeout(function () {playOutProgram(level)}, animationLength);
     }
+}
+
+ocargo.Level.prototype.stepProgram = function(callback) {
+
+    var level = this;
+
+    if (!this.program.canStep()) {
+        this.program.terminate();
+        setTimeout(function () {programFinished(level, false, ocargo.messages.outOfInstructions)}, TERMINATION_DELAY);
+        return;
+    }
+
+    this.program.step(this);
+
+    var longestAnimation = 0;
+    for (var i = 0; i < THREADS; i++) {
+        var action = this.program.threads[i].currentAction;
+
+        try {
+            this.handleAction(action, this.program.threads[i], this.vans[i], callback);
+        }
+        catch (error) {
+            this.program.terminate();
+            if (error === ERRORS.OFF_ROAD) {
+                setTimeout(function () {programFinished(level, false, ocargo.messages.offRoad(level.numStepsCorrect))}, TERMINATION_DELAY);
+            }
+            else if (error === ERRORS.THROUGH_RED_LIGHT) {
+                setTimeout(function () {programFinished(level, false, ocargo.messages.throughRedLight)}, TERMINATION_DELAY);
+            }
+            else if (error === ERRORS.OUT_OF_FUEL) {
+                setTimeout(function () {programFinished(level, false, ocargo.messages.outOfFuel)}, TERMINATION_DELAY);
+            }
+            else {
+                setTimeout(function () {programFinished(level, false, ocargo.messages.programCrashed)}, TERMINATION_DELAY);
+                throw error;
+            }
+            return;
+        }
+
+        if (action.animationLength > longestAnimation) {
+            longestAnimation = action.animationLength;
+        }
+    }    
+    
+    this.numStepsCorrect++;
+
+    if (!this.program.canStep() && this.hasWon()) {
+        setTimeout(function () {programFinished(level, true)}, TERMINATION_DELAY);
+        return;
+    }
+    return longestAnimation;
 }
 
 ocargo.Level.prototype.hasWon = function() {
@@ -113,7 +142,7 @@ ocargo.Level.prototype.hasWon = function() {
     return true;    
 }
 
-ocargo.Level.prototype.handleAction = function(action, thread, van) {
+ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
     console.debug('Calculating next node for action ' + action.name);
 
     if (action === ocargo.EMPTY_ACTION) {
@@ -124,28 +153,23 @@ ocargo.Level.prototype.handleAction = function(action, thread, van) {
     var currNode = van.currentNode;
     var nextNode = action.getNextNode(prevNode, currNode);
     if (!nextNode) {
-        var n = this.correct - 1;
+        var n = this.numStepsCorrect - 1;
         ocargo.blocklyControl.blink();
-        this.fail(ocargo.messages.xcorrect(n) + ocargo.messages.tryagain);
-
-        thread.terminate();
-        return; //TODO: animate the crash
-    } else if (nextNode !== currNode && directedThroughRedTrafficLight(prevNode, currNode, nextNode)){
-        this.fail(ocargo.messages.throughRedTrafficLight);
-        thread.terminate();
-        return; //TODO: play police siren sound
+         //TODO: animate the crash
+        throw ERRORS.OFF_ROAD;
+    } 
+    if (nextNode !== currNode && directedThroughRedTrafficLight(prevNode, currNode, nextNode)){
+        //TODO: play police siren sound
+        throw ERRORS.THROUGH_RED_LIGHT;
     }
-    
     if (van.fuel === 0) {
-        this.fail(ocargo.messages.nofuel);
-        thread.terminate();
-        return;
+        throw ERRORS.OUT_OF_FUEL;
     }
 
-    van.move(nextNode, action);
+    van.move(nextNode, action, callback);
 };
  
-function programTerminated(level, result, msg) {
+function programFinished(level, result, msg) {
     if (result) {
         level.win();
     }
@@ -238,7 +262,7 @@ function sendAttempt(score) {
 function directedThroughRedTrafficLight(previousNode, currentNode, nextNode){
     for(var i = 0; i < currentNode.trafficLights.length; i++){
         var tl = currentNode.trafficLights[i];
-        if(tl.sourceNode == previousNode && tl.state == tl.RED){
+        if(tl.sourceNode == currentNode && currentNode != nextNode && tl.state == tl.RED){
             return true;
         }
     }
