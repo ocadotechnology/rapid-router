@@ -210,8 +210,140 @@ function trackDevelopment() {
         ocargo.level.program.terminate();
     });
 
+    var selectedWorkspace = null;
+
+    $('#loadSave').click(function() {
+        // Disable the button to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        $('#loadSave').attr('disabled', 'disabled');
+
+        $.ajax({
+            url: '/game/workspace',
+            type: 'GET',
+            dataType: 'json',
+            success: function(json) {
+                var table = $('#workspaceTable');
+
+                // Remove click listeners to avoid memory leak and remove all rows
+                $('#workspaceTable td').off('click');
+                table.empty();
+
+                // Add a row to the table for each workspace saved in the database
+                for (var i = 0, ii = json.workspaces.length; i < ii; i++) {
+                    var workspace = json.workspaces[i];
+                    table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
+                }
+
+                // Add click listeners to all rows
+                $('#workspaceTable td').on('click', function(event) {
+                    $('#workspaceTable td').css('background-color', '#FFFFFF');
+                    $(event.target).css('background-color', '#C0C0C0');
+                    selectedWorkspace = $(event.target).attr('value');
+                    $('#loadWorkspace').removeAttr('disabled');
+                    $('#overwriteWorkspace').removeAttr('disabled');
+                    $('#deleteWorkspace').removeAttr('disabled');
+                });
+
+                // Finally show the modal dialog and reenable the button
+                $('#loadSaveModal').foundation('reveal', 'open');
+                $('#loadSave').removeAttr('disabled');
+
+                // But disable all the modal buttons as nothing is selected yet
+                selectedWorkspace = null;
+                $('#loadWorkspace').attr('disabled', 'disabled');
+                $('#overwriteWorkspace').attr('disabled', 'disabled');
+                $('#deleteWorkspace').attr('disabled', 'disabled');
+            },
+            error: function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    });
+
+    $('#loadWorkspace').click(function() {
+        if (selectedWorkspace) {
+            $.ajax({
+                url: '/game/workspace/' + selectedWorkspace,
+                type: 'GET',
+                dataType: 'json',
+                success: function(json) {
+                    ocargo.blocklyControl.reset();
+                    ocargo.blocklyControl.deserialize(json.workspace);
+                    $('#loadSaveModal').foundation('reveal', 'close');
+                },
+                error: function(xhr,errmsg,err) {
+                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $('#overwriteWorkspace').click(function() {
+        if (selectedWorkspace) {
+            $.ajax({
+                url: '/game/workspace/' + selectedWorkspace,
+                type: 'PUT',
+                data: {
+                    workspace: ocargo.blocklyControl.serialize()
+                },
+                success: function(json) {
+                    $('#loadSaveModal').foundation('reveal', 'close');
+                },
+                error: function(xhr,errmsg,err) {
+                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $('#deleteWorkspace').click(function() {
+        if (selectedWorkspace) {
+            $.ajax({
+                url: '/game/workspace/' + selectedWorkspace,
+                type: 'DELETE',
+                success: function() {
+                    $('#workspaceTable td[value=' + selectedWorkspace + ']').remove();
+                    selectedWorkspace = null;
+                },
+                error: function(xhr,errmsg,err) {
+                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                }
+            });
+        }
+    });
+
+    $('#createNewWorkspace').click(function() {
+        var newName = $('#newWorkspaceName').val();
+        if (newName && newName != "") {
+            $.ajax({
+                url: '/game/workspace',
+                type: 'POST',
+                data: {
+                    name: newName,
+                    workspace: ocargo.blocklyControl.serialize()
+                },
+                success: function() {
+                    $('#loadSaveModal').foundation('reveal', 'close');
+                },
+                error: function(xhr,errmsg,err) {
+                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                }
+            });
+        }
+    });
+
     var consoleSliderPosition = $(window).width()/2;
 
+    $('#bigCodeModeBtn').click(function() {
+        if(ocargo.blocklyControl.bigCodeMode){
+            ocargo.blocklyControl.decreaseBlockSize();
+            $('#bigCodeModeBtn').text("Big Code Mode");
+        } else {
+            ocargo.blocklyControl.increaseBlockSize();
+            $('#bigCodeModeBtn').html("<del>Big</del> Code Mode");
+        }
+    });
+    
     $('#slideBlockly').click(function() {
         if ($('#programmingConsole').width() != 0) {
             $('#paper').animate({width: '100%'}, {queue: false});

@@ -3,6 +3,8 @@ from django.conf.urls import patterns, url
 urlpatterns = patterns('',
     url(r'^$', 'game.views.levels'),
     url(r'^submit$', 'game.views.submit'),
+    url(r'^workspace$', 'game.views.workspace'),
+    url(r'^workspace/(?P<workspace_id>[0-9]+)$', 'game.views.workspace'),
     url(r'^(?P<level>[0-9]+)$', 'game.views.level'),
     url(r'^episode/(?P<episode>[0-9]+)$', 'game.views.start_episode'),
     url(r'^level_editor$', 'game.views.level_editor'),
