@@ -73,7 +73,7 @@ function initialiseDefault() {
     var title = "Level " + LEVEL_ID;
     startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
 
-	ocargo.time = new ocargo.Time();
+    ocargo.time = new ocargo.Time();
     ocargo.ui = createUi();
     ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, ocargo.ui, MAX_FUEL,
         NEXT_LEVEL, NEXT_EPISODE);

@@ -29,6 +29,11 @@
   <script src="{% static 'game/js/ui.js' %}"></script>
   <script src="{% static 'game/js/van.js' %}"></script>
   <script src="{% static 'game/js/sound.js' %}"></script>
+  <script src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
+  <script src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
+  <script src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
+  <script src="{% static 'game/js/skulpt/python.js' %}"></script>
+  <script src="{% static 'game/js/skulpt/editor.js' %}"></script>
 
   <script>
     var PATH = {{level.path|safe}};
@@ -56,6 +61,8 @@
 {{block.super}}
   {% compress css %}
     <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/skulpt/codemirror.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'game/css/skulpt/solarized.css' %}" rel="stylesheet" type="text/css">
   {% endcompress %}
 {% endblock %}
 
@@ -63,6 +70,12 @@
 <div id="wrapper">
   <div id="programmingConsole" class="col no-print">
     <div id="blockly"></div>
+    <div id="pythonCode">
+      <textarea id="code" cols="85" rows="25">
+      </textarea>
+      <button id="skulpt_run">Run</button>
+      <pre id="edoutput"></pre>
+    </div>
   </div>
 
   <div id="sliderControls" class="no-print">
