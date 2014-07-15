@@ -215,7 +215,9 @@ img.control{
 #consoleOutput {
     background-color: #eceaee;
     max-height: 300px;
-    min-height: 100px;
+    max-width: 100%;
+    min-height: 250px;
+    min-width: 100%;
     overflow: auto;
     padding: 5px;
 }
