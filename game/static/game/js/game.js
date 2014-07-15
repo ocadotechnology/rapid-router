@@ -10,8 +10,16 @@ function createDefaultLevel(nodeData, destination, decor, trafficLightData, ui, 
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
     var map = new ocargo.Map(nodes, decor, trafficLights, dest, ui);
-    var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
-    return new ocargo.Level(map, van, ui, nextLevel, nextEpisode);
+    var vans = [];
+
+    var previousNode = nodes[0];
+    var startNode = nodes[0].connectedNodes[0];
+    for (var i = 0; i < THREADS; i++) {
+        vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel, ui));
+    }
+    ocargo.ui.renderVans(vans);
+
+    return new ocargo.Level(map, vans, ui, nextLevel, nextEpisode);
 }
 
 function createNodes(nodeData) {
@@ -112,8 +120,12 @@ function clearVanData() {
     var nodes = ocargo.level.map.nodes;
     var previousNode = nodes[0];
     var startNode = nodes[0].connectedNodes[0];
-    ocargo.level.van = new ocargo.Van(previousNode, startNode, ocargo.level.van.maxFuel, ocargo.ui);
-    ocargo.ui.setVanToFront(previousNode, startNode);
+
+    for (var i = 0; i < THREADS; i++) {
+        var van = new ocargo.Van(i,previousNode, startNode, MAX_FUEL, ocargo.ui);
+        ocargo.level.vans[i] = van;
+        ocargo.ui.setVanToFront(previousNode, startNode, van);
+    }
 }
 
 function redrawBlockly() {
@@ -125,21 +137,21 @@ function trackDevelopment() {
     $('#moveForward').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(enableDirectControl);
+        moveForward(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 
     $('#turnLeft').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(enableDirectControl);
+        moveLeft(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 
     $('#turnRight').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(enableDirectControl);
+        moveRight(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 
@@ -156,7 +168,6 @@ function trackDevelopment() {
             throw error;
         }
 
-        program.instructionHandler = new InstructionHandler(ocargo.level, true);
         clearVanData();
         ocargo.time.resetTime();
         ocargo.level.play(program);
@@ -239,12 +250,20 @@ function trackDevelopment() {
                     $('#workspaceTable td').css('background-color', '#FFFFFF');
                     $(event.target).css('background-color', '#C0C0C0');
                     selectedWorkspace = $(event.target).attr('value');
+                    $('#loadWorkspace').removeAttr('disabled');
+                    $('#overwriteWorkspace').removeAttr('disabled');
+                    $('#deleteWorkspace').removeAttr('disabled');
                 });
 
                 // Finally show the modal dialog and reenable the button
                 $('#loadSaveModal').foundation('reveal', 'open');
                 $('#loadSave').removeAttr('disabled');
+
+                // But disable all the modal buttons as nothing is selected yet
                 selectedWorkspace = null;
+                $('#loadWorkspace').attr('disabled', 'disabled');
+                $('#overwriteWorkspace').attr('disabled', 'disabled');
+                $('#deleteWorkspace').attr('disabled', 'disabled');
             },
             error: function(xhr,errmsg,err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -275,7 +294,6 @@ function trackDevelopment() {
             $.ajax({
                 url: '/game/workspace/' + selectedWorkspace,
                 type: 'PUT',
-                dataType: 'json',
                 data: {
                     workspace: ocargo.blocklyControl.serialize()
                 },
@@ -327,6 +345,16 @@ function trackDevelopment() {
 
     var consoleSliderPosition = $(window).width()/2;
 
+    $('#bigCodeModeBtn').click(function() {
+        if(ocargo.blocklyControl.bigCodeMode){
+            ocargo.blocklyControl.decreaseBlockSize();
+            $('#bigCodeModeBtn').text("Big Code Mode");
+        } else {
+            ocargo.blocklyControl.increaseBlockSize();
+            $('#bigCodeModeBtn').html("<del>Big</del> Code Mode");
+        }
+    });
+    
     $('#slideBlockly').click(function() {
         if ($('#programmingConsole').width() != 0) {
             $('#paper').animate({width: '100%'}, {queue: false});

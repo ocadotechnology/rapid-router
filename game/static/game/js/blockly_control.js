@@ -271,7 +271,7 @@ ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(typeOfBlockToAdd) {
 	var blockToAdd = this.createBlock(typeOfBlockToAdd);
 
-	var block = this.getStartBlock();
+	var block = this.getStartBlocks()[0];
 	while (block.nextConnection.targetBlock()) {
 		block = block.nextConnection.targetBlock();
 	}
@@ -302,7 +302,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         Blockly.mainWorkspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeUnavailableBlocks();
-        ocargo.blocklyControl.addClickListenerToStartBlock();
+        ocargo.blocklyControl.addClickListenerToStartBlocks();
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
@@ -316,8 +316,12 @@ ocargo.BlocklyControl.prototype.serialize = function() {
 
 ocargo.BlocklyControl.prototype.reset = function() {
     Blockly.mainWorkspace.clear();
-    this.createBlock('start');
-    this.addClickListenerToStartBlock();
+
+    for (var i = 0; i < THREADS; i++) {
+        var startBlock = this.createBlock('start');
+        startBlock.moveBy(30,30+i*50);
+    }
+    this.addClickListenerToStartBlocks();
 };
 
 ocargo.BlocklyControl.prototype.blink = function() {
@@ -335,14 +339,14 @@ ocargo.BlocklyControl.prototype.blink = function() {
 window.addEventListener('load', ocargo.blocklyControl.init);
 window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
-ocargo.BlocklyControl.prototype.getStartBlock = function() {
-    var startBlock = null;
+ocargo.BlocklyControl.prototype.getStartBlocks = function() {
+    var startBlocks = [];
     Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
         if (block.type === 'start') {
-            startBlock = block;
+            startBlocks.push(block);
         }
     });
-    return startBlock;
+    return startBlocks;
 };
 
 ocargo.BlocklyControl.prototype.getBlocksCount = function() {
@@ -360,32 +364,120 @@ ocargo.BlocklyControl.prototype.removeUnavailableBlocks = function() {
     }
 };
 
-ocargo.BlocklyControl.prototype.addClickListenerToStartBlock = function() {
-	var startBlock = this.getStartBlock();
-	if (startBlock) {
-		var svgRoot = startBlock.getSvgRoot();
-		if (svgRoot) {
-			if (!svgRoot.id || svgRoot.id === "") {
-				svgRoot.id = "startBlockSvg"
+ocargo.BlocklyControl.prototype.resetWidthOnBlocks = function(blocks){
+	for (var i = 0; i < blocks.length; i++) {
+		var block = blocks[i];
+		for( var j = 0; j < block.inputList.length; j++){
+			var input = block.inputList[j];
+			for(var k = 0; k < input.fieldRow.length; k++){
+				input.fieldRow[k].size_.width = null;
 			}
-			var downX = 0;
-			var downY = 0;
-			var maxMove = 5;
-			$('#' + svgRoot.id).on({
-				mousedown: function(e) {
-					downX  = e.pageX;
-					downY   = e.pageY;
-				},
-				mouseup: function(e) {
-					if ( Math.abs(downX - e.pageX) < maxMove && Math.abs(downY - e.pageY) < maxMove) {
-						var playEls = $('#play');
-						if(playEls && playEls.length && playEls.length > 0){
-							playEls[0].click();
-						}
-					}
-				}
-			});
 		}
+	}
+};
+
+//so that image fields render properly when their size_ variable is broken above
+Blockly.FieldImage.prototype.render_ = function(){
+    this.size_ = {height: this.height_ + 10, width: this.width_};
+};
+
+ocargo.BlocklyControl.prototype.increaseBlockSize = function(){
+	ocargo.blocklyControl.bigCodeMode = true;
+    Blockly.BlockSvg.FIELD_HEIGHT *= 2; //30
+    Blockly.BlockSvg.MIN_BLOCK_Y *= 2; // 25
+    Blockly.BlockSvg.JAGGED_TEETH_HEIGHT *= 2; //20
+    Blockly.BlockSvg.JAGGED_TEETH_WIDTH *= 2;
+    Blockly.BlockSvg.SEP_SPACE_X *= 2;
+    Blockly.BlockSvg.SEP_SPACE_Y *= 2;
+    Blockly.BlockSvg.INLINE_PADDING_Y *= 2;
+    Blockly.Icon.RADIUS *= 2;
+    
+    /*Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l 12,8 6,0 12,-8';
+    Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l 13,4 4,0 13,-8';
+    Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l -12,4 -6,0 -12,-8';
+    Blockly.BlockSvg.TAB_HEIGHT *= 2;
+    Blockly.BlockSvg.TAB_WIDTH *= 2;
+    Blockly.BlockSvg.NOTCH_WIDTH *= 2;
+    */
+    
+    ocargo.blocklyControl.IMAGE_WIDTH *= 2;
+    ocargo.blocklyControl.BLOCK_HEIGHT *= 2;
+
+	document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' + ':'+'22pt !important'+'}', document.styleSheets[0].cssRules.length);
+	document.styleSheets[0].insertRule(".blocklyIconMark, .beaconClass" + ' { font-size' + ':'+'18pt !important'+'}', document.styleSheets[0].cssRules.length);
+	var blocks = Blockly.mainWorkspace.getAllBlocks();
+    ocargo.blocklyControl.resetWidthOnBlocks(blocks);
+    Blockly.mainWorkspace.render();
+
+	Blockly.mainWorkspace.flyout_.show(Blockly.languageTree.childNodes);
+	
+    $(".blocklyIconMark").attr("x", 16).attr("y", 24);
+    $(".blocklyEditableText > rect").attr("height", 41).attr("y", -32);
+};
+
+ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
+	ocargo.blocklyControl.bigCodeMode = false;
+    Blockly.BlockSvg.FIELD_HEIGHT /= 2;
+    Blockly.BlockSvg.MIN_BLOCK_Y /= 2;
+    Blockly.BlockSvg.JAGGED_TEETH_HEIGHT /= 2;
+    Blockly.BlockSvg.JAGGED_TEETH_WIDTH /= 2;
+    Blockly.BlockSvg.SEP_SPACE_X /= 2;
+    Blockly.BlockSvg.SEP_SPACE_Y /= 2;
+    Blockly.BlockSvg.INLINE_PADDING_Y /= 2;
+    Blockly.Icon.RADIUS /= 2;
+    
+    /*Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l 12,8 6,0 12,-8';
+    Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l 13,4 4,0 13,-8';
+    Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l -12,4 -6,0 -12,-8';
+    Blockly.BlockSvg.TAB_HEIGHT /= 2;
+    Blockly.BlockSvg.TAB_WIDTH /= 2;
+    Blockly.BlockSvg.NOTCH_WIDTH /= 2;
+    */
+    
+    ocargo.blocklyControl.IMAGE_WIDTH /= 2;
+    ocargo.blocklyControl.BLOCK_HEIGHT /= 2;
+
+    var sheet = document.styleSheets[0];
+	for(var i = 0; i < 2; i++){
+	    sheet.deleteRule(sheet.cssRules.length-1);
+	}
+
+	var blocks = Blockly.mainWorkspace.getAllBlocks();
+    ocargo.blocklyControl.resetWidthOnBlocks(blocks);
+    Blockly.mainWorkspace.render();
+
+	Blockly.mainWorkspace.flyout_.show(Blockly.languageTree.childNodes);
+};
+
+ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
+	var startBlocks = this.getStartBlocks();
+    if (startBlocks) {
+        for (var i = 0; i < startBlocks.length; i++) {
+            var startBlock = startBlocks[i];
+        	var svgRoot = startBlock.getSvgRoot();
+        	if (svgRoot) {
+        		if (!svgRoot.id || svgRoot.id === "") {
+        			svgRoot.id = "startBlockSvg"
+        		}
+        		var downX = 0;
+        		var downY = 0;
+        		var maxMove = 5;
+        		$('#' + svgRoot.id).on({
+        			mousedown: function(e) {
+        				downX  = e.pageX;
+        				downY   = e.pageY;
+        			},
+        			mouseup: function(e) {
+        				if ( Math.abs(downX - e.pageX) < maxMove && Math.abs(downY - e.pageY) < maxMove) {
+        					var playEls = $('#play');
+        					if(playEls && playEls.length && playEls.length > 0){
+        						playEls[0].click();
+        					}
+        				}
+        			}
+        		});
+        	}
+        }
     } 
 };
 
@@ -411,7 +503,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
                 var bodyBlock = block.inputList[1].connection.targetBlock();
 
                 if (!(name in newProcs)) {
-                    newProcs[name] = new Procedure(name,getCommandsAtThisLevel(bodyBlock),block)
+                    newProcs[name] = new Procedure(name, createSequence(bodyBlock),block)
                 }
                 else {
                     throw ocargo.messages.procDupNameError;
@@ -444,7 +536,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
         }
 		return new While(
 			counterCondition(block.inputList[0].fieldRow[1].text_),
-			getCommandsAtThisLevel(bodyBlock),
+			createSequence(bodyBlock),
 			block);
 	}
 
@@ -462,10 +554,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
         if (bodyBlock === null) {
             throw ocargo.messages.whileBodyError;
         }
-		return new While(
-			condition,
-			getCommandsAtThisLevel(bodyBlock),
-			block);
+		return new While(condition,	createSequence(bodyBlock), block);
 	}
 
 	function getCondition(conditionBlock) {
@@ -501,7 +590,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     		} else if (input.name.indexOf('DO') === 0) {
     			var conditionalCommandSet = {};
     			conditionalCommandSet.condition = condition;
-    			conditionalCommandSet.commands = getCommandsAtThisLevel(input.connection.targetBlock());
+    			conditionalCommandSet.commands = createSequence(input.connection.targetBlock());
     			conditionalCommandSets.push(conditionalCommandSet);
     		}
 
@@ -509,14 +598,13 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     	}
 
     	if (elseCount === 1) {
-    		var elseCommands = getCommandsAtThisLevel(block.inputList[block.inputList.length - 1]
-                                                                    .connection.targetBlock());
+    		var elseBody = createSequence(block.inputList[block.inputList.length - 1].connection.targetBlock());
     	}
 
-    	return new If(conditionalCommandSets, elseCommands, block);
+    	return new If(conditionalCommandSets, elseBody, block);
 	}
 
-	function getCommandsAtThisLevel(block){
+	function createSequence(block){
     	var commands = [];
 
     	while (block) {
@@ -543,28 +631,36 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     		block = block.nextConnection.targetBlock();
     	}
 
-    	return commands;
+        return commands;
     }
 
-    var program = new ocargo.Program();
+    function bindProcedureCalls(program) {
+        program.procedures = procedures;
+        for (var i = 0; i < procedureBindings.length; i++) {
+            var name = procedureBindings[i].name;
+            var call = procedureBindings[i].call;
+
+            if (name in procedures) {
+                call.bind(procedures[name]);
+            } else {
+                throw ocargo.messages.procCallNameError;
+            }
+        }
+    }
+
     var procedureBindings = [];
     var procedures = createProcedures();
 
-    var startBlock = this.getStartBlock();
-    program.startBlock = startBlock;
-    program.stack.push(getCommandsAtThisLevel(startBlock));
-
-    program.procedures = procedures;
-    for (var i = 0; i < procedureBindings.length; i++) {
-        var name = procedureBindings[i].name;
-        var call = procedureBindings[i].call;
-
-        if (name in procedures) {
-            call.bind(procedures[name]);
-        } else {
-            throw ocargo.messages.procCallNameError;
-        }
+    var program = new ocargo.Program();
+    var startBlocks = this.getStartBlocks();
+    for(var i = 0; i < THREADS; i++) {
+        var thread = new ocargo.Thread(i);
+        thread.startBlock = startBlocks[i];
+        thread.stack.push(createSequence(thread.startBlock));
+        program.threads.push(thread);
     }
+
+    bindProcedureCalls(program);
 
     return program;
 };

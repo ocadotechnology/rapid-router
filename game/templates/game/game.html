@@ -53,6 +53,7 @@
     var NEXT_LEVEL = "{{level.next_level}}" != "None" ? "{{level.next_level.id}}" : null;
     var NEXT_EPISODE = "{{level.episode.next_episode}}" != "None" ? "{{level.episode.next_episode.id}}" : null;
     var WORKSPACE = "{{attempt.workspace}}";
+    var THREADS = "{{level.threads}}";
   </script>
   
 {% endblock %}
@@ -81,6 +82,7 @@
   <div id="sliderControls" class="no-print">
 
     <button id="slideBlockly" class="unselectable">Blockly</button>
+    <button id="bigCodeModeBtn" class="unselectable">Big Code Mode</button>
 
     <div id="direct_drive" class="unselectable">
       <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>

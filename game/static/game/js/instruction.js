@@ -6,67 +6,78 @@ var forwardAngle = Math.PI;
 var leftCutoffAngle = 5 * Math.PI / 6;
 var rightCutoffAngle = 7 * Math.PI / 6;
 
-ocargo.Instruction = function(name) {
-    this.name = name;
+
+ocargo.FORWARD_ACTION = {
+    name: "FORWARD",
+    animationLength: 500,
+    getNextNode: function(previousNode, currentNode) {
+                    var nextNode = null;
+                    var nextNodeDeviation = null;
+
+                    var nodes = currentNode.connectedNodes;
+                    for (var i = 0; i < nodes.length; i++) {
+                        var node = nodes[i];
+                        var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, node);
+                        var deviation = Math.abs(forwardAngle - angle);
+                        if (angle >= leftCutoffAngle && angle <= rightCutoffAngle && 
+                            (nextNode === null || deviation < nextNodeDeviation)) {
+                            nextNode = node;
+                            nextNodeDeviation = deviation;
+                        }
+                    }
+                    return nextNode;
+                }
 };
 
-//TODO: actually do javascript inheritance by extending prototypes
-var FORWARD = new ocargo.Instruction("FORWARD");
-var TURN_LEFT = new ocargo.Instruction("TURN_LEFT");
-var TURN_RIGHT = new ocargo.Instruction("TURN_RIGHT");
-var TURN_AROUND = new ocargo.Instruction("TURN_AROUND");
-var WAIT = new ocargo.Instruction("WAIT");
+ocargo.TURN_LEFT_ACTION = {
+    name: "TURN_LEFT",
+    animationLength: 500,
+    getNextNode: function(previousNode, currentNode) {
+                    var index = currentNode.connectedNodes.indexOf(previousNode) + 1;
+                    var nextNode;
+                    if (index === currentNode.connectedNodes.length) {
+                        nextNode = currentNode.connectedNodes[0];
+                    } else {
+                        nextNode = currentNode.connectedNodes[index];
+                    }
 
-
-FORWARD.getNextNode = function(previousNode, currentNode) {
-    var nextNode = null;
-    var nextNodeDeviation = null;
-
-    var nodes = currentNode.connectedNodes;
-    for (var i = 0; i < nodes.length; i++) {
-        var node = nodes[i];
-        var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, node);
-        var deviation = Math.abs(forwardAngle - angle);
-        if (angle >= leftCutoffAngle && angle <= rightCutoffAngle && 
-            (nextNode === null || deviation < nextNodeDeviation)) {
-            nextNode = node;
-            nextNodeDeviation = deviation;
-        }
-    }
-
-    return nextNode;
+                    var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, nextNode);
+                    return (angle > 0 && angle < leftCutoffAngle) ? nextNode : null;
+                }
 };
 
-TURN_LEFT.getNextNode = function(previousNode, currentNode) {
-    var index = currentNode.connectedNodes.indexOf(previousNode) + 1;
-    var nextNode;
-    if (index === currentNode.connectedNodes.length) {
-        nextNode = currentNode.connectedNodes[0];
-    } else {
-        nextNode = currentNode.connectedNodes[index];
-    }
+ocargo.TURN_RIGHT_ACTION = {
+    name: "TURN_RIGHT",
+    animationLength: 500,
+    getNextNode: function(previousNode, currentNode) {
+                    var index = currentNode.connectedNodes.indexOf(previousNode) - 1;
+                    var nextNode;
+                    if (index === -1) {
+                        nextNode = currentNode.connectedNodes[currentNode.connectedNodes.length - 1];
+                    } else {
+                        nextNode = currentNode.connectedNodes[index];
+                    }
 
-    var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, nextNode);
-    return (angle > 0 && angle < leftCutoffAngle) ? nextNode : null;
+                    var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, nextNode);
+                    return (angle > rightCutoffAngle && angle < 2 * Math.PI) ? nextNode : null;
+                }
 };
 
-TURN_RIGHT.getNextNode = function(previousNode, currentNode) {
-    var index = currentNode.connectedNodes.indexOf(previousNode) - 1;
-    var nextNode;
-    if (index === -1) {
-        nextNode = currentNode.connectedNodes[currentNode.connectedNodes.length - 1];
-    } else {
-        nextNode = currentNode.connectedNodes[index];
-    }
 
-    var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, nextNode);
-    return (angle > rightCutoffAngle && angle < 2 * Math.PI) ? nextNode : null;
+ocargo.TURN_AROUND_ACTION = {
+    name: "TURN_AROUND",
+    animationLength: 1500,
+    getNextNode: function(previousNode, currentNode) { return previousNode; }
 };
 
-TURN_AROUND.getNextNode = function(previousNode, currentNode) {
-    return previousNode;
+
+ocargo.WAIT_ACTION = {
+    name: "WAIT",
+    animationLength: 500,
+    getNextNode: function(previousNode, currentNode) { return previousNode; }
 };
 
-WAIT.getNextNode = function(previousNode, currentNode) {
-    return currentNode;
+ocargo.EMPTY_ACTION = {
+    name: "EMPTY",
+    animationLength: 500,
 };
