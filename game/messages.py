@@ -398,11 +398,11 @@ def description_level28():
 
 
 def title_level29():
-    return "Title level 29"
+    return "Threading your way"
 
 
 def description_level29():
-    message = ""
+    message = "Try using multiple threads to get both vans to their destination"
     return "<b>" + title_level29() + "</b><br><br>" + message
 
 
@@ -612,5 +612,9 @@ def hint_level27():
 
 
 def hint_level28():
+    message = hint_level_default()
+    return message
+
+def hint_level29():
     message = hint_level_default()
     return message

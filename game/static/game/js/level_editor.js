@@ -400,21 +400,20 @@ Raphael.el.draggableLights = function(coordinate) {
         moveFnc = function(dx, dy) {
             lx = dx + ox;
             ly = dy + oy;
-            me.transform('t' + lx + ',' + ly + s + r);
+            me.transform('t' + lx + ',' + ly + s + 'r' + r);
             ocargo.levelEditor.mark(kx, BACKGROUND_COLOR, 0, false);
             ocargo.levelEditor.mark(ky, BACKGROUND_COLOR, 0, false);
             var box = me.getBBox();
             kx.x = Math.min(Math.max(0, Math.floor(box.x / GRID_SPACE_SIZE)), GRID_WIDTH - 1);
             kx.y = Math.min(Math.max(0, Math.floor(box.y / GRID_SPACE_SIZE)), GRID_HEIGHT - 1);
-            ky.x = kx.x;
-            ky.y = Math.min(kx.y + 1, GRID_HEIGHT - 1);
+            ky = getPrevious(me, kx);
             ocargo.levelEditor.mark(kx, SELECTED_COLOR, 0.7, false);
             ocargo.levelEditor.mark(ky, SELECTED_COLOR, 0.7, false);
         },
         startFnc = function() {
             s = getOrientation(me);
-            r = getRotation(me)
-            console.debug("orientation", s)
+            r = getRotation(me);
+            console.debug("rotation", r)
             console.debug(JSON.stringify(me.transform()), me.transform());
             // Find the element in decor and remove it.
             var first = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(kx));
@@ -422,8 +421,10 @@ Raphael.el.draggableLights = function(coordinate) {
 
             var index = ocargo.levelEditor.findTrafficLight(first, second);
             if (index > -1) {
+                console.debug("Removing");
                 ocargo.levelEditor.trafficLights.splice(index, 1);
             }
+            ky = getPrevious(me, kx);
         },
         endFnc = function() {
             ox = lx;
@@ -460,13 +461,36 @@ Raphael.el.draggableLights = function(coordinate) {
 
     function getRotation(object) {
         var transform = object.transform();
-        var value = 0;
+        var value = 360;
         for(var i = 0; i < transform.length; i++) {
             if(transform[i][0] === 'r') {
                 value += transform[i][1];
             }
         }
-        return 'r' + value;   
+        return value;   
+    }
+
+
+    function getPrevious(object, coordinate) {
+        var rotation = getRotation(object);
+        var remainder = rotation % 360;
+        var prevNode;
+        switch (remainder) {
+            case 0:
+                prevNode = new ocargo.Coordinate(coordinate.x, coordinate.y + 1);
+                break;
+            case 90:
+                prevNode = new ocargo.Coordinate(coordinate.x + 1, coordinate.y);
+                break;
+            case 180:
+                prevNode = new ocargo.Coordinate(coordinate.x, coordinate.y - 1);
+                break;
+            case 270:
+            default:
+                prevNode = new ocargo.Coordinate(coordinate.x - 1, coordinate.y);
+                break;
+        }
+        return prevNode;
     }
 };
 
@@ -507,15 +531,15 @@ function initialiseDecorGraphic(url) {
     img.draggableDecor(0, 0);
     var coord = new ocargo.Coordinate(0, PAPER_HEIGHT - DECOR_SIZE);
     ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
-
 }
 
 function initialiseTrafficLight() {
     var img = paper.image(LIGHTS_URL, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
     img.draggableLights(new ocargo.Coordinate(0, 0));
+    img.transform('...s-1,1');
     img.node.ondblclick = function() {
         var image = img;
-        return image.transform('..r90');
+        return image.transform('...r90');
     };
 }
 
