@@ -205,6 +205,10 @@ img.control{
     height: 100%;
 }
 
+#pythonCode {
+    display: none;
+}
+
 @media print {
     #paper {
         width: 100% !important;

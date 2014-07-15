@@ -7,14 +7,19 @@ from cache import cached_all_episodes, cached_level, cached_episode
 from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
+from rest_framework import status, permissions, mixins, generics
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from forms import *
 from game import random_road
 from models import Class, Level, Attempt, Command, Block, Episode, Workspace
+from serializers import WorkspaceSerializer
+from permissions import UserIsStudent, WorkspacePermissions
 
 
 def levels(request):
@@ -710,60 +715,41 @@ def parseInstructions(instructions, attempt, init):
     last.next = None
     last.save()
 
-# Method adapted from https://bitbucket.org/jespern/django-piston/src/c4b2d21db51a/piston/utils.py
-def coerce_put_post(request):
-    """
-    Django doesn't particularly understand REST.
-    In case we send data over PUT, Django won't actually look at the data and load it.
-    We need to twist its arm here.
-    """
-    if request.method == "PUT":
-        if hasattr(request, '_post'):
-            del request._post
-            del request._files
-        
-        request.method = "POST"
-        request._load_post_and_files()
-        request.method = "PUT"
-            
-        request.PUT = request.POST
+class WorkspaceViewList(generics.ListCreateAPIView):
+    
+    permission_classes = (permissions.IsAuthenticated,
+                          UserIsStudent,
+                          WorkspacePermissions,)
 
-def workspace(request, workspace_id=None):
-    if request.user.is_anonymous() or not hasattr(request.user, "userprofile") or not hasattr(request.user.userprofile, "student"):
-        return HttpResponse(status=500)
+    serializer_class = WorkspaceSerializer
 
-    if request.method == 'GET':
-        jsonData = {}
-        if workspace_id == None:
-            jsonData['workspaces'] = []
-            for workspace in Workspace.objects.filter(owner=request.user.userprofile.student):
-                obj = {}
-                obj['id'] = workspace.id
-                obj['name'] = workspace.name
-                jsonData['workspaces'].append(obj)
-        else:
-            workspace = Workspace.objects.filter(owner=request.user.userprofile.student, id=workspace_id)[0]
-            if workspace != None:
-                jsonData['id'] = workspace.id
-                jsonData['name'] = workspace.name
-                jsonData['workspace'] = workspace.workspace
-        return HttpResponse(json.dumps(jsonData), content_type='application/json')
+    def get_queryset(self):
+        user = self.request.user.userprofile.student
+        return Workspace.objects.filter(owner=user)
 
-    elif request.method == 'POST':
-        workspace = Workspace(owner=request.user.userprofile.student, name=request.POST['name'], workspace=request.POST['workspace'])
-        workspace.save();
-        return HttpResponse('')
+    def post(self, request, format=None):
+        serializer = WorkspaceSerializer(Workspace(owner=request.user.userprofile.student), data=request.DATA, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'PUT':
-        coerce_put_post(request)
+class WorkspaceViewDetail(generics.RetrieveUpdateDestroyAPIView):
 
-        workspace = Workspace.objects.get(owner=request.user.userprofile.student, id=workspace_id);
-        workspace.workspace = request.PUT['workspace']
-        workspace.save()
-        return HttpResponse('')
+    permission_classes = (permissions.IsAuthenticated,
+                          UserIsStudent,
+                          WorkspacePermissions,)
 
-    elif request.method == 'DELETE':
-        Workspace.objects.filter(owner=request.user.userprofile.student, id=workspace_id).delete()
-        return HttpResponse('')
+    serializer_class = WorkspaceSerializer
 
-    return HttpResponse(status=500)
+    def get_queryset(self):
+        user = self.request.user.userprofile.student
+        return Workspace.objects.filter(owner=user)
+
+    def put(self, request, pk, format=None):
+        workspace = self.get_object()
+        serializer = WorkspaceSerializer(workspace, data=request.DATA, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

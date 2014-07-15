@@ -81,7 +81,7 @@ function initialiseDefault() {
     var title = "Level " + LEVEL_ID;
     startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
 
-	ocargo.time = new ocargo.Time();
+    ocargo.time = new ocargo.Time();
     ocargo.ui = createUi();
     ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, ocargo.ui, MAX_FUEL,
         NEXT_LEVEL, NEXT_EPISODE);
@@ -233,9 +233,20 @@ function trackDevelopment() {
                 $('#workspaceTable td').off('click');
                 table.empty();
 
+                // Order them alphabetically
+                json.sort(function(a, b) {
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+                    else if (a.name > b.name) {
+                        return 1;
+                    }
+                    return 0;
+                });
+
                 // Add a row to the table for each workspace saved in the database
-                for (var i = 0, ii = json.workspaces.length; i < ii; i++) {
-                    var workspace = json.workspaces[i];
+                for (var i = 0, ii = json.length; i < ii; i++) {
+                    var workspace = json[i];
                     table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
                 }
 
@@ -291,7 +302,7 @@ function trackDevelopment() {
                 data: {
                     workspace: ocargo.blocklyControl.serialize()
                 },
-                success: function(json) {
+                success: function() {
                     $('#loadSaveModal').foundation('reveal', 'close');
                 },
                 error: function(xhr,errmsg,err) {
@@ -334,6 +345,13 @@ function trackDevelopment() {
                     console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
                 }
             });
+        }
+    });
+
+    // If the user pressed the enter key in the textbox, should be the same as clicking the button
+    $('#newWorkspaceName').on('keypress', function(e) {
+        if (e.which == 13) {
+            $('#createNewWorkspace').trigger('click');
         }
     });
 
