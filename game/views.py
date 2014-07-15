@@ -7,14 +7,19 @@ from cache import cached_all_episodes, cached_level, cached_episode
 from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
+from rest_framework import status, permissions, mixins, generics
+from rest_framework.views import APIView
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 from forms import *
 from game import random_road
 from models import Class, Level, Attempt, Command, Block, Episode, Workspace
+from serializers import WorkspaceSerializer
+from permissions import UserIsStudent, WorkspacePermissions
 
 
 def levels(request):
@@ -710,6 +715,7 @@ def parseInstructions(instructions, attempt, init):
     last.next = None
     last.save()
 
+<<<<<<< HEAD
 # Method adapted from https://bitbucket.org/jespern/django-piston/src/c4b2d21db51a/piston/utils.py
 def coerce_put_post(request):
     """
@@ -767,3 +773,43 @@ def workspace(request, workspace_id=None):
         return HttpResponse('')
 
     return HttpResponse(status=500)
+=======
+class WorkspaceViewList(generics.ListCreateAPIView):
+    
+    permission_classes = (permissions.IsAuthenticated,
+                          UserIsStudent,
+                          WorkspacePermissions,)
+
+    serializer_class = WorkspaceSerializer
+
+    def get_queryset(self):
+        user = self.request.user.userprofile.student
+        return Workspace.objects.filter(owner=user)
+
+    def post(self, request, format=None):
+        serializer = WorkspaceSerializer(Workspace(owner=request.user.userprofile.student), data=request.DATA, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class WorkspaceViewDetail(generics.RetrieveUpdateDestroyAPIView):
+
+    permission_classes = (permissions.IsAuthenticated,
+                          UserIsStudent,
+                          WorkspacePermissions,)
+
+    serializer_class = WorkspaceSerializer
+
+    def get_queryset(self):
+        user = self.request.user.userprofile.student
+        return Workspace.objects.filter(owner=user)
+
+    def put(self, request, pk, format=None):
+        workspace = self.get_object()
+        serializer = WorkspaceSerializer(workspace, data=request.DATA, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+>>>>>>> rest
