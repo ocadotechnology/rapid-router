@@ -126,6 +126,12 @@ class Episode (models.Model):
                 level = level.next_level
 
 
+class Workspace (models.Model):
+    name = models.CharField(max_length=200)
+    owner = models.ForeignKey(Student, related_name='workspaces')
+    workspace = models.TextField(default="")
+
+
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name='attempts')

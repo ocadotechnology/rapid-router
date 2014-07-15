@@ -69,6 +69,7 @@
   <div id="sliderControls" class="no-print">
 
     <button id="slideBlockly" class="unselectable">Blockly</button>
+    <button id="bigCodeModeBtn" class="unselectable">Big Code Mode</button>
 
     <div id="direct_drive" class="unselectable">
       <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
@@ -102,6 +103,7 @@
     <div class="navigation" class="unselectable">
       <button id="help" class="unselectable">Help</button>
       <button id="step" class="unselectable">Step</button>
+      <button id="loadSave" class="unselectable">Load/Save</button>
       <button id="clear" class="unselectable">Clear</button>
       <a class="button unselectable" href="/game/">Quit</a>
       <button id="mute" class="unselectable" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
@@ -111,11 +113,32 @@
   </div>
 </div>
 
-<div id="myModal" class="reveal-modal no-print" data-reveal>
-  <h2 class="title"></h2>
-  <p class="lead"></p>
-  <p class="mainText"></p>
+<div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <h2 id="myModal-title" class="ocargo-modal-title"></h2>
+  <p id="myModal-lead" class="ocargo-modal-lead"></p>
+  <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
   <a class="close-reveal-modal" id="close-modal">&#215;</a>
+</div>
+
+<div id="loadSaveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <h2 class="title">Here you can save your program or load a previously saved one.</h2>
+  
+  <div class="scrolling-table-wrapper">
+    <div class="scrolling-table">
+      <table id="workspaceTable"></table>
+    </div>
+  </div>
+  <div style="margin-top: 1.25rem">
+    <button id="loadWorkspace">Load</button>
+    <button id="overwriteWorkspace">Overwrite</button>
+    <button id="deleteWorkspace">Delete</button>
+    <div style="float: right">
+      <input id="newWorkspaceName"/>
+      <button id="createNewWorkspace">Create new</button>
+    </div>
+  </div>
+
+  <a class="close-reveal-modal" id="close-loadSave-modal">&#215;</a>
 </div>
 
 <xml id="toolbox" style="display: none">

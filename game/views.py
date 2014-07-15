@@ -14,7 +14,7 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from forms import *
 from game import random_road
-from models import Class, Level, Attempt, Command, Block, Episode
+from models import Class, Level, Attempt, Command, Block, Episode, Workspace
 
 
 def levels(request):
@@ -709,3 +709,61 @@ def parseInstructions(instructions, attempt, init):
     last = Command.objects.get(step=init+len(instructions)- 1, attempt=attempt)
     last.next = None
     last.save()
+
+# Method adapted from https://bitbucket.org/jespern/django-piston/src/c4b2d21db51a/piston/utils.py
+def coerce_put_post(request):
+    """
+    Django doesn't particularly understand REST.
+    In case we send data over PUT, Django won't actually look at the data and load it.
+    We need to twist its arm here.
+    """
+    if request.method == "PUT":
+        if hasattr(request, '_post'):
+            del request._post
+            del request._files
+        
+        request.method = "POST"
+        request._load_post_and_files()
+        request.method = "PUT"
+            
+        request.PUT = request.POST
+
+def workspace(request, workspace_id=None):
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile") or not hasattr(request.user.userprofile, "student"):
+        return HttpResponse(status=500)
+
+    if request.method == 'GET':
+        jsonData = {}
+        if workspace_id == None:
+            jsonData['workspaces'] = []
+            for workspace in Workspace.objects.filter(owner=request.user.userprofile.student):
+                obj = {}
+                obj['id'] = workspace.id
+                obj['name'] = workspace.name
+                jsonData['workspaces'].append(obj)
+        else:
+            workspace = Workspace.objects.filter(owner=request.user.userprofile.student, id=workspace_id)[0]
+            if workspace != None:
+                jsonData['id'] = workspace.id
+                jsonData['name'] = workspace.name
+                jsonData['workspace'] = workspace.workspace
+        return HttpResponse(json.dumps(jsonData), content_type='application/json')
+
+    elif request.method == 'POST':
+        workspace = Workspace(owner=request.user.userprofile.student, name=request.POST['name'], workspace=request.POST['workspace'])
+        workspace.save();
+        return HttpResponse('')
+
+    elif request.method == 'PUT':
+        coerce_put_post(request)
+
+        workspace = Workspace.objects.get(owner=request.user.userprofile.student, id=workspace_id);
+        workspace.workspace = request.PUT['workspace']
+        workspace.save()
+        return HttpResponse('')
+
+    elif request.method == 'DELETE':
+        Workspace.objects.filter(owner=request.user.userprofile.student, id=workspace_id).delete()
+        return HttpResponse('')
+
+    return HttpResponse(status=500)

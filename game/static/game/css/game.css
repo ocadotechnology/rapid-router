@@ -88,16 +88,35 @@ button, .button, img.control{
     float: left;
 }
 
-#myModal > p.mainText{
+.ocago-modal-mainText{
     font-size: 1.2rem !important;
 }
-#myModal > p.lead {
+.ocago-modal-lead {
     font-size: 1.4rem !important;
 }
 
-#myModal > p.mainText > #hintText,
-#myModal > p.mainText > #hintBtnPara{
+.ocago-modal-mainText > #hintText,
+.ocago-modal-mainText > #hintBtnPara {
 	margin: 2rem 1rem 0;
+}
+
+#newWorkspaceName {
+    height: 50px;
+    width: 500px;
+    font-size: 1.4rem !important;
+}
+
+.scrolling-table-wrapper {
+    position: relative;
+}
+
+.scrolling-table {
+    max-height: 200px;
+    overflow: auto;
+}
+
+#workspaceTable {
+    width: 100%;
 }
 
 #sliderControls {
