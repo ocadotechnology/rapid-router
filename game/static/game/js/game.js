@@ -229,7 +229,7 @@ function trackDevelopment() {
                 table.empty();
 
                 // Order them alphabetically
-                json.workspaces.sort(function(a, b) {
+                json.sort(function(a, b) {
                     if (a.name < b.name) {
                         return -1;
                     }
@@ -240,8 +240,8 @@ function trackDevelopment() {
                 });
 
                 // Add a row to the table for each workspace saved in the database
-                for (var i = 0, ii = json.workspaces.length; i < ii; i++) {
-                    var workspace = json.workspaces[i];
+                for (var i = 0, ii = json.length; i < ii; i++) {
+                    var workspace = json[i];
                     table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
                 }
 
@@ -297,7 +297,7 @@ function trackDevelopment() {
                 data: {
                     workspace: ocargo.blocklyControl.serialize()
                 },
-                success: function(json) {
+                success: function() {
                     $('#loadSaveModal').foundation('reveal', 'close');
                 },
                 error: function(xhr,errmsg,err) {

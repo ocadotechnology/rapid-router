@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'nuit',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = [
