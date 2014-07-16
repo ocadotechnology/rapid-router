@@ -69,20 +69,25 @@
 
 {% block content %}
 <div id="wrapper">
-  <div id="programmingConsole" class="col no-print">
+  <div id="programmingConsole" class="col no-print unselectable">
     <div id="blockly"></div>
     <div id="pythonCode">
-      <textarea id="code" cols="85" rows="25">
-      </textarea>
-      <button id="skulpt_run">Run</button>
-      <pre id="edoutput"></pre>
+      <h3>Python Program</h3>
+        <p>Use the Python editor below to design your program, and click run to try it out!</p>
+        <textarea id="code" cols="85" rows="25">
+        </textarea>
+        <button id="skulpt_run">Run</button>
+        <h4>Console Output:</h4>
+        <textarea disabled="" id="consoleOutput"></textarea>
+        <button id="clearConsole">Clear Console</button>
     </div>
   </div>
 
-  <div id="sliderControls" class="no-print">
+  <div id="sliderControls" class="no-print unselectable">
 
-    <button id="slideBlockly" class="unselectable">Blockly</button>
+    <button id="slideConsole" class="unselectable">Slide Program</button>
     <button id="bigCodeModeBtn" class="unselectable">Big Code Mode</button>
+    <button id="toggleConsole" class="unselectable">Toggle Console</button>
 
     <div id="direct_drive" class="unselectable">
       <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
