@@ -264,6 +264,8 @@ ocargo.BlocklyControl.prototype.init = function() {
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
 
+    ocargo.blocklyControl.reset();
+
     // Use the user's last attempt if available, else use whatever's in local storage
     if (WORKSPACE && WORKSPACE != '') {
         ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));

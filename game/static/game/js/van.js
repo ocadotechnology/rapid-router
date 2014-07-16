@@ -41,8 +41,6 @@ ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
 	    this.currentNode = nextNode;
     }
 
-    console.log("Van moving to (" + this.currentNode.coordinate.x + ", " + this.currentNode.coordinate.y + ")");
-
 	ocargo.time.incrementTime();
 	this.fuel--;
     updateFuelGuage(this.fuel, this.maxFuel);
