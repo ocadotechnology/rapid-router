@@ -372,11 +372,17 @@ function trackDevelopment() {
             $('#pythonCode').fadeOut();
             $('#blockly').fadeIn();
             redrawBlockly();
-}
+        }
         else {
             $('#blockly').fadeOut();
             $('#pythonCode').fadeIn();
         }
+    });
+
+    $('#blocklyExpand').click(function() {
+        blocklyHeight += 10;
+        $('#blockly').height($('#blockly').height()*1.1);
+        redrawBlockly();
     });
 
     $('#consoleSlider').on('mousedown', function(e){
