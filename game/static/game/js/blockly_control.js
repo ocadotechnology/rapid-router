@@ -190,8 +190,6 @@ Blockly.Python['traffic_light'] = function(block) {
 	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
 };
 
-//TODO: Python generation
-
 Blockly.Blocks['dead_end'] = {
     init: function() {
         this.setColour(210);
@@ -273,11 +271,6 @@ controlsRepeatBlock.init = function () {
         return n;
     };
 };
-
-//FIXME: dodgy hack on account of addLoopTrap not existing...
-//I think the version of python_compressed.js we are using may be incompatible
-//with the version of the rest of blockly.
-Blockly.Python.addLoopTrap = function(branch){return branch};
 
 // Make 'not' taller
 var notBlock = Blockly.Blocks['logic_negate'];
