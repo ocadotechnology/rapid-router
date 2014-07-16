@@ -1,3 +1,5 @@
+var ocargo = ocargo || {};
+
 $(document).ready(function () {
     var output = $('#consoleOutput');
     var outf = function (text) {
@@ -30,7 +32,7 @@ $(document).ready(function () {
     // set default code
     document.getElementById("code").value = "import van\nv = van.Van()";
 
-    var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+    ocargo.editor = CodeMirror.fromTextArea(document.getElementById('code'), {
         parserfile: ["parsepython.js"],
         autofocus: true,
         theme: "solarized dark",
@@ -47,7 +49,7 @@ $(document).ready(function () {
 
 
 
-    $("#skulpt_run").click(function (e) { keymap["Ctrl-Enter"](editor)} );
+    $("#skulpt_run").click(function (e) { keymap["Ctrl-Enter"](ocargo.editor)} );
 
 
     $('#clearConsole').click(function (e) {
@@ -61,5 +63,5 @@ $(document).ready(function () {
         return Sk.builtinFiles["files"][x];
     }
 
-    editor.focus();
+    ocargo.editor.focus();
 });

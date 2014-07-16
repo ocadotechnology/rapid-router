@@ -31,6 +31,11 @@ Blockly.Blocks['start'] = {
     }
 };
 
+Blockly.Python['start'] = function(block) {
+	return 'import van\n\
+v = van.Van()\n';
+};
+
 Blockly.Blocks['move_forwards'] = {
     // Block for moving forward
     init: function() {
@@ -44,6 +49,10 @@ Blockly.Blocks['move_forwards'] = {
         this.setNextStatement(true);
         this.setTooltip('Move the van forwards');
     }
+};
+
+Blockly.Python['move_forwards'] = function(block) {
+	return 'v.move_forwards()\n';
 };
 
 Blockly.Blocks['turn_left'] = {
@@ -64,6 +73,10 @@ Blockly.Blocks['turn_left'] = {
     }
 };
 
+Blockly.Python['turn_left'] = function(block) {
+	return 'v.turn_left()\n';
+};
+
 Blockly.Blocks['turn_right'] = {
     // Block for turning right
     init: function() {
@@ -80,6 +93,10 @@ Blockly.Blocks['turn_right'] = {
         this.setNextStatement(true);
         this.setTooltip('Turn the van right');
     }
+};
+
+Blockly.Python['turn_right'] = function(block) {
+	return 'v.turn_right()\n';
 };
 
 Blockly.Blocks['turn_around'] = {
@@ -100,6 +117,10 @@ Blockly.Blocks['turn_around'] = {
     }
 };
 
+Blockly.Python['turn_around'] = function(block) {
+	return 'v.turn_around()\n';
+};
+
 Blockly.Blocks['wait'] = {
     // Block for not moving the van for a time
     init: function() {
@@ -118,6 +139,10 @@ Blockly.Blocks['wait'] = {
     }
 };
 
+Blockly.Python['wait'] = function(block) {
+	return 'v.wait()\n';
+};
+
 Blockly.Blocks['road_exists'] = {
     init: function() {
         var BOOLEANS =
@@ -132,6 +157,18 @@ Blockly.Blocks['road_exists'] = {
                                                 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
     }
+};
+
+Blockly.Python['road_exists'] = function(block) {
+	if(block.inputList[0].fieldRow[1].value_ === 'FORWARD'){
+		var python = 'v.is_road_forward()';
+	}else if(block.inputList[0].fieldRow[1].value_ === 'LEFT'){
+		var python = 'v.is_road_left()';
+	}else{
+		var python = 'v.is_road_right()';
+	}
+	
+	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
 };
 
 Blockly.Blocks['traffic_light'] = {
@@ -149,6 +186,16 @@ Blockly.Blocks['traffic_light'] = {
     }
 };
 
+Blockly.Python['traffic_light'] = function(block) {
+	if(block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED){
+		var python = 'v.at_red_traffic_light()';
+	}else{
+		var python = 'v.at_green_traffic_light()';
+	}
+	
+	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
+};
+
 Blockly.Blocks['dead_end'] = {
     init: function() {
         this.setColour(210);
@@ -161,6 +208,10 @@ Blockly.Blocks['dead_end'] = {
     }
 };
 
+Blockly.Python['dead_end'] = function(block) {
+	return ['v.at_dead_end()', Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
+};
+
 Blockly.Blocks['at_destination'] = {
     init: function() {
         this.setColour(210);
@@ -171,6 +222,10 @@ Blockly.Blocks['at_destination'] = {
                                                 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
     }
+};
+
+Blockly.Python['at_destination'] = function(block) {
+	return ['v.at_destination()', Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to;
 };
 
 Blockly.Blocks['call_proc'] = {
