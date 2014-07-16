@@ -64,8 +64,4 @@ $(document).ready(function () {
     }
 
     ocargo.editor.focus();
-    
-    $(document).click(function(){
-    	ocargo.editor.setValue(Blockly.Python.workspaceToCode());
-    });
 });

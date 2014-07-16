@@ -376,6 +376,7 @@ function trackDevelopment() {
         else {
             $('#blockly').fadeOut();
             $('#pythonCode').fadeIn();
+            ocargo.editor.setValue(Blockly.Python.workspaceToCode());
         }
     });
 
