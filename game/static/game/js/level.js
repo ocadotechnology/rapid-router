@@ -46,6 +46,7 @@ ocargo.Level.prototype.playProgram = function(program) {
 };
 
 ocargo.Level.prototype.selectStartBlocks = function() {
+    ocargo.blocklyControl.clearAllSelections();
     for (var i = 0; i < THREADS; i++) {
         this.blockHandlers[i].selectBlock(this.program.threads[i].startBlock);
     }

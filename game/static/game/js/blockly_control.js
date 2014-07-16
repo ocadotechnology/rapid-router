@@ -312,6 +312,14 @@ ocargo.BlocklyControl.prototype.reset = function() {
     this.addClickListenerToStartBlocks();
 };
 
+ocargo.BlocklyControl.prototype.clearAllSelections = function() {
+    Blockly.mainWorkspace.getAllBlocks().forEach(
+        function (block) {
+            ocargo.blocklyControl.setBlockSelected(block, false);
+        }
+    );
+}
+
 // Define custom select methods that select a block and its inputs
 ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
     if (!block.svg_) {
