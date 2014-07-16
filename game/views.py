@@ -133,8 +133,10 @@ def level(request, level):
     hint = mark_safe(messageCall())
 
     #FIXME: figure out how to check for all this better
+    loggedInAsStudent = False
     if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and \
             hasattr(request.user.userprofile, 'student'):
+        loggedInAsStudent = True
         student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
@@ -147,7 +149,7 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'hint': hint,
-        'attempt': attempt,
+        'attempt': attempt
     })
 
     return render(request, 'game/game.html', context_instance=context)

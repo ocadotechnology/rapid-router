@@ -29,6 +29,7 @@
   <script src="{% static 'game/js/ui.js' %}"></script>
   <script src="{% static 'game/js/van.js' %}"></script>
   <script src="{% static 'game/js/sound.js' %}"></script>
+  <script src="{% static 'game/js/saving.js' %}"></script>
   <script src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
   <script src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
   <script src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
@@ -54,6 +55,7 @@
     var NEXT_EPISODE = "{{level.episode.next_episode}}" != "None" ? "{{level.episode.next_episode.id}}" : null;
     var WORKSPACE = "{{attempt.workspace}}";
     var THREADS = "{{level.threads}}";
+    var LOGGED_IN_AS_STUDENT = "{{attempt}}" != "None";
   </script>
   
 {% endblock %}

@@ -222,108 +222,95 @@ function trackDevelopment() {
         // whilst waiting for the table data to load
         $('#loadSave').attr('disabled', 'disabled');
 
-        $.ajax({
-            url: '/game/workspace',
-            type: 'GET',
-            dataType: 'json',
-            success: function(json) {
-                var table = $('#workspaceTable');
 
-                // Remove click listeners to avoid memory leak and remove all rows
-                $('#workspaceTable td').off('click');
-                table.empty();
-
-                // Order them alphabetically
-                json.sort(function(a, b) {
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-                    else if (a.name > b.name) {
-                        return 1;
-                    }
-                    return 0;
-                });
-
-                // Add a row to the table for each workspace saved in the database
-                for (var i = 0, ii = json.length; i < ii; i++) {
-                    var workspace = json[i];
-                    table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
-                }
-
-                // Add click listeners to all rows
-                $('#workspaceTable td').on('click', function(event) {
-                    $('#workspaceTable td').css('background-color', '#FFFFFF');
-                    $(event.target).css('background-color', '#C0C0C0');
-                    selectedWorkspace = $(event.target).attr('value');
-                    $('#loadWorkspace').removeAttr('disabled');
-                    $('#overwriteWorkspace').removeAttr('disabled');
-                    $('#deleteWorkspace').removeAttr('disabled');
-                });
-
-                // Finally show the modal dialog and reenable the button
-                $('#loadSaveModal').foundation('reveal', 'open');
-                $('#loadSave').removeAttr('disabled');
-
-                // But disable all the modal buttons as nothing is selected yet
-                selectedWorkspace = null;
-                $('#loadWorkspace').attr('disabled', 'disabled');
-                $('#overwriteWorkspace').attr('disabled', 'disabled');
-                $('#deleteWorkspace').attr('disabled', 'disabled');
-            },
-            error: function(xhr,errmsg,err) {
-                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        loadAllSavedWorkspaces(function(err, workspaces) {
+            if (err != null) {
+                console.debug(err);
+                return;
             }
+
+            var table = $('#workspaceTable');
+
+            // Remove click listeners to avoid memory leak and remove all rows
+            $('#workspaceTable td').off('click');
+            table.empty();
+
+            // Order them alphabetically
+            workspaces.sort(function(a, b) {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                else if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            // Add a row to the table for each workspace saved in the database
+            for (var i = 0, ii = workspaces.length; i < ii; i++) {
+                var workspace = workspaces[i];
+                table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
+            }
+
+            // Add click listeners to all rows
+            $('#workspaceTable td').on('click', function(event) {
+                $('#workspaceTable td').css('background-color', '#FFFFFF');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                $('#loadWorkspace').removeAttr('disabled');
+                $('#overwriteWorkspace').removeAttr('disabled');
+                $('#deleteWorkspace').removeAttr('disabled');
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#loadSaveModal').foundation('reveal', 'open');
+            $('#loadSave').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+            $('#loadWorkspace').attr('disabled', 'disabled');
+            $('#overwriteWorkspace').attr('disabled', 'disabled');
+            $('#deleteWorkspace').attr('disabled', 'disabled');
         });
     });
 
     $('#loadWorkspace').click(function() {
         if (selectedWorkspace) {
-            $.ajax({
-                url: '/game/workspace/' + selectedWorkspace,
-                type: 'GET',
-                dataType: 'json',
-                success: function(json) {
-                    ocargo.blocklyControl.reset();
-                    ocargo.blocklyControl.deserialize(json.workspace);
-                    $('#loadSaveModal').foundation('reveal', 'close');
-                },
-                error: function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            loadWorkspace(selectedWorkspace, function(err, workspace) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
                 }
+
+                ocargo.blocklyControl.reset();
+                ocargo.blocklyControl.deserialize(workspace);
+                $('#loadSaveModal').foundation('reveal', 'close');
             });
         }
     });
 
     $('#overwriteWorkspace').click(function() {
         if (selectedWorkspace) {
-            $.ajax({
-                url: '/game/workspace/' + selectedWorkspace,
-                type: 'PUT',
-                data: {
-                    workspace: ocargo.blocklyControl.serialize()
-                },
-                success: function() {
-                    $('#loadSaveModal').foundation('reveal', 'close');
-                },
-                error: function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            overwriteWorkspace(selectedWorkspace, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
                 }
+                $('#loadSaveModal').foundation('reveal', 'close');
             });
         }
     });
 
     $('#deleteWorkspace').click(function() {
         if (selectedWorkspace) {
-            $.ajax({
-                url: '/game/workspace/' + selectedWorkspace,
-                type: 'DELETE',
-                success: function() {
-                    $('#workspaceTable td[value=' + selectedWorkspace + ']').remove();
-                    selectedWorkspace = null;
-                },
-                error: function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            deleteWorkspace(selectedWorkspace, function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
                 }
+
+                $('#workspaceTable td[value=' + selectedWorkspace + ']').remove();
+                selectedWorkspace = null;
             });
         }
     });
@@ -331,19 +318,13 @@ function trackDevelopment() {
     $('#createNewWorkspace').click(function() {
         var newName = $('#newWorkspaceName').val();
         if (newName && newName != "") {
-            $.ajax({
-                url: '/game/workspace',
-                type: 'POST',
-                data: {
-                    name: newName,
-                    workspace: ocargo.blocklyControl.serialize()
-                },
-                success: function() {
-                    $('#loadSaveModal').foundation('reveal', 'close');
-                },
-                error: function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
                 }
+
+                $('#loadSaveModal').foundation('reveal', 'close');
             });
         }
     });
