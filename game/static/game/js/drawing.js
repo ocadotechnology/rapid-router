@@ -403,7 +403,6 @@ function renderTheMap(map) {
 }
 
 function renderTheVans(vans) {
-    
     for (var i = 0; i < vans.length; i++) {
         var vanImage = createVanImage(paper, vans[i]);
         scrollToShowVanImage(vanImage);
@@ -564,8 +563,8 @@ function createVanImage(paper, van) {
     var initialX = calculateInitialX(van.currentNode);
     var initialY = calculateInitialY(van.currentNode);
 
-    var vanImage = paper.image(
-        '/static/game/image/ocadoVan_big.svg', initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
+    var imageStr = (van.id % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+    var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
 
     var rotation = calculateInitialRotation(van.previousNode, van.currentNode);
     rotateElementAroundCentreOfGridSpace(vanImage, rotation, van.currentNode.coordinate.x, van.currentNode.coordinate.y);
