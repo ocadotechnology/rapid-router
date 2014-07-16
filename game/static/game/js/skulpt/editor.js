@@ -6,6 +6,9 @@ $(document).ready(function () {
     
     var keymap = {
         "Ctrl-Enter" : function (editor) {
+            clearVanData();
+            ocargo.time.resetTime();
+            
             Sk.configure({output: outf, read: builtinRead});
             //Sk.canvas = "mycanvas";
             Sk.pre = "consoleOutput";

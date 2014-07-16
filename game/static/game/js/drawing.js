@@ -43,6 +43,9 @@ var DASH = '10';
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 var vanImages = {};
 
+var animationQueues = {}
+var isVanAnimating = {}
+
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;
     if (rotationPointX !== undefined && rotationPointY !== undefined) {
@@ -481,18 +484,28 @@ function scrollToShowVanImage(vanImage) {
     }
 }
 
-function moveVanImage(attr, vanImage, callback, animationLength) {
+function animateVan(van) {
+    if (!isVanAnimating[van.id] && animationQueues[van.id].length > 0) {
+        var a = animationQueues[van.id].splice(0, 1)[0];
+        isVanAnimating[van.id] = true;
 
+        vanImages[van.id].animate(a[0], a[1], a[2], function() {
+            isVanAnimating[van.id] = false;
+            scrollToShowVanImage(vanImages[van.id]);
+            animateVan(van);
+        });
+    }
+}
+
+function moveVanImage(attr, van, callback, animationLength) {
     animationLength = animationLength || 480;
 
-    var combinedCallback = function() {
-        scrollToShowVanImage(vanImage);
-        if (callback) {
-            callback();
-        }
-    };
+    animationQueues[van.id].push([attr, animationLength, 'easeIn']);
+    animateVan(van);
 
-    vanImage.animate(attr, animationLength, 'easeIn', combinedCallback);
+    if (callback) {
+        callback();
+    }
 }
 
 function moveForward(van, callback) {
@@ -500,7 +513,7 @@ function moveForward(van, callback) {
     var transformation = "... t 0, " + moveDistance;
     moveVanImage({
         transform: transformation
-    }, vanImages[van.id], callback, ocargo.FORWARD_ACTION.animationLength-20);
+    }, van, callback, ocargo.FORWARD_ACTION.animationLength-20);
 }
 
 function moveLeft(van, callback) {
@@ -510,7 +523,7 @@ function moveLeft(van, callback) {
     var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, vanImage, callback, ocargo.TURN_LEFT_ACTION.animationLength-20);
+    }, van, callback, ocargo.TURN_LEFT_ACTION.animationLength-20);
 }
 
 function moveRight(van, callback) {
@@ -520,7 +533,7 @@ function moveRight(van, callback) {
     var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, vanImage, callback, ocargo.TURN_RIGHT_ACTION.animationLength-20);
+    }, van, callback, ocargo.TURN_RIGHT_ACTION.animationLength-20);
 }
 
 function turnAround(van, callback) {
@@ -532,7 +545,7 @@ function turnAround(van, callback) {
     function moveForward() {
         moveVanImage({
             transform: moveTransformation
-        }, vanImage, rotate, timePerState);
+        }, van, rotate, timePerState);
     }
 
     function rotate() {
@@ -541,23 +554,23 @@ function turnAround(van, callback) {
 
         moveVanImage({
             transform: createRotationTransformation(180, rotationPointX, rotationPointY)
-        }, vanImage, moveBack, timePerState);
+        }, van, moveBack, timePerState);
     }
 
     function moveBack() {
         moveVanImage({
             transform: moveTransformation
-        }, vanImage, callback, timePerState);
+        }, van, callback, timePerState);
     }
     
     moveForward();
 }
 
-function wait(van) {
+function wait(van, callback) {
     //no movement for now
     moveVanImage({
-        transform: '... t0,0'
-    }, vanImages[van.id]);
+        transform: '... r 360'
+    }, van, callback);
 }
 
 function createVanImage(paper, van) {
@@ -571,6 +584,8 @@ function createVanImage(paper, van) {
     rotateElementAroundCentreOfGridSpace(vanImage, rotation, van.currentNode.coordinate.x, van.currentNode.coordinate.y);
 
     vanImages[van.id] = vanImage;
+    isVanAnimating[van.id] = false;
+    animationQueues[van.id] = [];
 
     return vanImage.transform('... r90');
 }
