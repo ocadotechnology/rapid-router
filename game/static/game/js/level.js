@@ -283,6 +283,14 @@ ocargo.Level.prototype.isTrafficLightInState = function(previousNode, currentNod
     return state === this.getTrafficLightState(previousNode, currentNode);
 }
 
+ocargo.Level.prototype.isVanAtRedLight = function(van) {
+    return this.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.RED);
+}
+
+ocargo.Level.prototype.isVanAtGreenLight = function(van) {
+    return this.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.GREEN);
+}
+
 ocargo.Level.prototype.isActionValidForVan = function(van, action) {
     return action.getNextNode(van.previousNode, van.currentNode);
 }
