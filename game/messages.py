@@ -441,6 +441,78 @@ def description_level33():
     message = ""
     return "<b>" + title_level33() + "</b><br><br>" + message
 
+def title_level34():
+    return "Title level 33"
+
+
+def description_level34():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level35():
+    return "Title level 33"
+
+
+def description_level35():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level36():
+    return "Title level 33"
+
+
+def description_level36():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level37():
+    return "Title level 33"
+
+
+def description_level37():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level38():
+    return "Title level 33"
+
+
+def description_level38():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level39():
+    return "Title level 33"
+
+
+def description_level39():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+
+def title_level40():
+    return "Title level 33"
+
+
+def description_level40():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level41():
+    return "Title level 33"
+
+
+def description_level41():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level42():
+    return "Title level 33"
+
+
+def description_level42():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
 #
 # The end of Paulina's Happy Creation.
 #
