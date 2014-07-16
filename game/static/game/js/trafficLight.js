@@ -16,14 +16,17 @@ ocargo.TrafficLight = function(startingState, startTime, redDuration, greenDurat
 
 ocargo.TrafficLight.prototype.incrementTime = function() {
     this.currentLightTime++;
-    if(this.state == this.RED && this.currentLightTime >= this.redDuration){
-    	this.state = this.GREEN;
+    var r = this.state;
+    var r2 = ocargo.TrafficLight.RED;
+    var t = r == r2;
+    if(this.state === ocargo.TrafficLight.RED && this.currentLightTime >= this.redDuration){
+    	this.state = ocargo.TrafficLight.GREEN;
     	this.currentLightTime = 0;
-    	$(this).trigger(this.GREEN);
-    } else if(this.state == this.GREEN && this.currentLightTime >= this.greenDuration){
-    	this.state = this.RED;
+    	$(this).trigger(ocargo.TrafficLight.GREEN);
+    } else if(this.state === ocargo.TrafficLight.GREEN && this.currentLightTime >= this.greenDuration){
+    	this.state = ocargo.TrafficLight.RED;
     	this.currentLightTime = 0;
-    	$(this).trigger(this.RED);
+    	$(this).trigger(ocargo.TrafficLight.RED);
     }
 };
 
@@ -33,5 +36,5 @@ ocargo.TrafficLight.prototype.reset = function() {
    	$(this).trigger(this.startingState);
 };
 
-ocargo.TrafficLight.prototype.RED = 'RED';
-ocargo.TrafficLight.prototype.GREEN = 'GREEN';
+ocargo.TrafficLight.RED = 'RED';
+ocargo.TrafficLight.GREEN = 'GREEN';

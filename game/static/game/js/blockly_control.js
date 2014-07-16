@@ -119,8 +119,8 @@ Blockly.Blocks['road_exists'] = {
 Blockly.Blocks['traffic_light'] = {
     init: function() {
         var BOOLEANS =
-            [['traffic light red', 'RED'],
-             ['traffic light green', 'GREEN']];
+            [['traffic light red', ocargo.TrafficLight.RED],
+             ['traffic light green', ocargo.TrafficLight.GREEN]];
         this.setColour(210);
         this.setOutput(true, 'Boolean');
         this.appendDummyInput()
@@ -501,6 +501,8 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 
+    /** Instructions **/
+
     function createProcedures() {
         var newProcs = {};
         var topBlocks = Blockly.mainWorkspace.getTopBlocks();
@@ -664,6 +666,57 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
                 throw ocargo.messages.procCallNameError;
             }
         }
+    }
+
+    /** Conditions **/
+
+    function trafficLightCondition(lightColour) {
+        return function(level,threadID) {
+            var van = level.vans[threadID];
+            return level.isTrafficLightInState(van.previousNode, van.currentNode, lightColour);
+        };
+    }
+
+    function roadCondition(selection) {
+        return function(level,threadID) {
+            var van = level.vans[threadID];
+            if (selection === 'FORWARD') {
+                return level.isActionValidForVan(van, ocargo.FORWARD_ACTION);
+            } else if (selection === 'LEFT') {
+                return level.isActionValidForVan(van, ocargo.TURN_LEFT_ACTION);
+            } else if (selection === 'RIGHT') {
+                return level.isActionValidForVan(van, ocargo.TURN_RIGHT_ACTION);
+            }
+        };
+    }
+
+    function counterCoundition(count) {
+        return function() {
+            if (count > 0) {
+                count--;
+                return true;
+            }
+
+            return false;
+        };
+    }
+
+    function deadEndCondition() {
+        return function(level,threadID) {
+            return level.isVanAtDeadEnd(level.vans[threadID]);
+        };
+    }
+
+    function negateCondition(otherCondition) {
+        return function(level,threadID) {
+            return !otherCondition(level,threadID);
+        };
+    }
+
+    function atDestinationCondition() {
+        return function(level,threadID) {
+            return level.isVanAtDestination(level.vans[threadID]);
+        };
     }
 
     var procedureBindings = [];
