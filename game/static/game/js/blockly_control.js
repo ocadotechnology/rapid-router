@@ -46,6 +46,9 @@ Blockly.Blocks['turn_left'] = {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn left')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                40,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
             .appendField(new Blockly.FieldImage('/static/game/image/arrow_left.svg',
                                                 ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
@@ -61,6 +64,9 @@ Blockly.Blocks['turn_right'] = {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn right')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                31,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
             .appendField(new Blockly.FieldImage('/static/game/image/arrow_right.svg',
                                                 ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
@@ -76,6 +82,9 @@ Blockly.Blocks['turn_around'] = {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn around')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                14,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
             .appendField(new Blockly.FieldImage('/static/game/image/arrow_u.svg',
                                                 ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
@@ -92,7 +101,10 @@ Blockly.Blocks['wait'] = {
         this.appendDummyInput()
             .appendField('wait')
             .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
-                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                62,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
+            .appendField(new Blockly.FieldImage('/static/game/image/wait.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
