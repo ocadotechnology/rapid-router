@@ -234,6 +234,10 @@ Blockly.Blocks['call_proc'] = {
     }
 };
 
+Blockly.Python['call_proc'] = function(block) {
+	return block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '()\n';
+};
+
 Blockly.Blocks['declare_proc'] = {
     // Block for declaring a procedure
     init: function() {
@@ -245,6 +249,11 @@ Blockly.Blocks['declare_proc'] = {
 
         this.setTooltip('Declares the procedure');
     }
+};
+
+Blockly.Python['declare_proc'] = function(block) {
+	return 'def ' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '():\n\
+	pass';//TODO: get code out of sub-blocks (there's a Blockly function for it)
 };
 
 // Set text colour to red
