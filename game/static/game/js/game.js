@@ -58,6 +58,7 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
     	var controlledNode = nodes[controlledNodeId];
     	var sourceNode = nodes[sourceNodeId];
     	
+        console.log(startingState);
     	var light = new ocargo.TrafficLight(startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
     	trafficLights.push(light);
     	controlledNode.addTrafficLight(light);
