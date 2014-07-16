@@ -13,12 +13,18 @@ ocargo.blocklyControl.BLOCK_HEIGHT = 20;
 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH = 1;
 ocargo.blocklyControl.IMAGE_WIDTH = 20;
 
+ocargo.blocklyControl.numStartBlocks = 0;
+
 Blockly.Blocks['start'] = {
     // Beginning block - identifies the start of the program
     init: function() {
+        var imageStr = (ocargo.blocklyControl.numStartBlocks%2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+        ocargo.blocklyControl.numStartBlocks++;
+        
         this.setColour(50);
         this.appendDummyInput()
-            .appendField('Start');
+            .appendField('Start')
+            .appendField(new Blockly.FieldImage(imageStr, VAN_HEIGHT, VAN_WIDTH));
         this.setNextStatement(true);
         this.setTooltip('The beginning of the program');
         this.setDeletable(false);
@@ -263,6 +269,8 @@ ocargo.BlocklyControl.prototype.init = function() {
         e.innerHTML = text;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
+
+    //ocargo.blocklyControl.reset();
 
     // Use the user's last attempt if available, else use whatever's in local storage
     if (WORKSPACE && WORKSPACE != '') {
