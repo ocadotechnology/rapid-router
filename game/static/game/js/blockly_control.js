@@ -9,9 +9,9 @@ ocargo.BlocklyControl = function(){
 
 ocargo.blocklyControl = new ocargo.BlocklyControl();
 
-ocargo.blocklyControl.BLOCK_HEIGHT = 30;
+ocargo.blocklyControl.BLOCK_HEIGHT = 20;
 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH = 1;
-ocargo.blocklyControl.IMAGE_WIDTH = 30;
+ocargo.blocklyControl.IMAGE_WIDTH = 20;
 
 Blockly.Blocks['start'] = {
     // Beginning block - identifies the start of the program
@@ -310,7 +310,7 @@ ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
         if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
             var targetBlock = input.connection.targetBlock();
             if (targetBlock) {
-                setBlockAndConnectedBlocksSelected(targetBlock, selected);
+                ocargo.blocklyControl.setBlockSelected(targetBlock, selected);
             }
         }
     });
