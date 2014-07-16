@@ -592,9 +592,9 @@ def parseAttempt(attemptData, request):
         attempt.workspace = request.POST.get('workspace', '')
 
         # Remove all the old commands from previous attempts.
-        Command.objects.filter(attempt=attempt).delete()
-        commands = attemptData.get('commandStack', None)
-        parseInstructions(json.loads(commands), attempt, 1)
+        # Command.objects.filter(attempt=attempt).delete()
+        # commands = attemptData.get('commandStack', None)
+        # parseInstructions(json.loads(commands), attempt, 1)
         attempt.save()
 
 

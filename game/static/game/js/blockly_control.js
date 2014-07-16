@@ -293,7 +293,25 @@ ocargo.BlocklyControl.prototype.init = function() {
         e.innerHTML = text;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
-    ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
+
+    // Use the user's last attempt if available, else use whatever's in local storage
+    if (WORKSPACE && WORKSPACE != '') {
+        ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
+    }
+    else {
+        ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
+    }
+};
+
+ocargo.BlocklyControl.prototype.teardown = function() {
+    if (localStorage) {
+        var text = ocargo.blocklyControl.serialize();
+        try {
+            localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
+        } catch (e) {
+            // No point in even logging, as page is unloading
+        }
+    }
 };
 
 ocargo.BlocklyControl.prototype.deserialize = function(text) {
