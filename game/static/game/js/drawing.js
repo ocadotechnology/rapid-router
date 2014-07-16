@@ -483,7 +483,7 @@ function scrollToShowVanImage(vanImage) {
 
 function moveVanImage(attr, vanImage, callback, animationLength) {
 
-    animationLength = animationLength || 490;
+    animationLength = animationLength || 480;
 
     var combinedCallback = function() {
         scrollToShowVanImage(vanImage);
