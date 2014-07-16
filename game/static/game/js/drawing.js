@@ -500,7 +500,7 @@ function moveForward(van, callback) {
     var transformation = "... t 0, " + moveDistance;
     moveVanImage({
         transform: transformation
-    }, vanImages[van.id], callback);
+    }, vanImages[van.id], callback, ocargo.FORWARD_ACTION.animationLength-20);
 }
 
 function moveLeft(van, callback) {
@@ -510,7 +510,7 @@ function moveLeft(van, callback) {
     var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, vanImage, callback);
+    }, vanImage, callback, ocargo.TURN_LEFT_ACTION.animationLength-20);
 }
 
 function moveRight(van, callback) {
@@ -520,18 +520,19 @@ function moveRight(van, callback) {
     var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, vanImage, callback);
+    }, vanImage, callback, ocargo.TURN_RIGHT_ACTION.animationLength-20);
 }
 
 function turnAround(van, callback) {
     var moveDistance = -GRID_SPACE_SIZE / 2;
     var moveTransformation = "... t 0, " + moveDistance;
     var vanImage = vanImages[van.id];
+    var timePerState = ocargo.TURN_AROUND_ACTION.animationLength/3 - 50;
 
     function moveForward() {
         moveVanImage({
             transform: moveTransformation
-        }, vanImage, rotate, 400);
+        }, vanImage, rotate, timePerState);
     }
 
     function rotate() {
@@ -540,13 +541,13 @@ function turnAround(van, callback) {
 
         moveVanImage({
             transform: createRotationTransformation(180, rotationPointX, rotationPointY)
-        }, vanImage, moveBack, 400);
+        }, vanImage, moveBack, timePerState);
     }
 
     function moveBack() {
         moveVanImage({
             transform: moveTransformation
-        }, vanImage, callback, 400);
+        }, vanImage, callback, timePerState);
     }
     
     moveForward();

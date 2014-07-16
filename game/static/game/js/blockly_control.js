@@ -219,48 +219,6 @@ notBlock.init = function () {
 Blockly.showContextMenu_ = function(e) {};
 Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
-// Define custom select methods that select a block and its connected blocks
-function setBlockAndConnectedBlocksSelected(block, selected) {
-    if (!block.svg_) {
-        return;
-    }
-
-    block.inputList.forEach(function(input) {
-        if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
-            var targetBlock = input.connection.targetBlock();
-            if (targetBlock) {
-                setBlockAndConnectedBlocksSelected(targetBlock, selected);
-            }
-        }
-    });
-
-    if (selected) {
-        block.svg_.addSelect();
-    } else {
-        block.svg_.removeSelect();
-    }
-}
-
-var selectedWithConnected;
-
-Blockly.Block.prototype.selectWithConnected = function() {
-    // Unselect any previously selected blocks
-    if (Blockly.selected) {
-        Blockly.selected.unselect();
-    }
-    if (selectedWithConnected) {
-        selectedWithConnected.unselectWithConnected();
-    }
-
-    selectedWithConnected = this;
-    setBlockAndConnectedBlocksSelected(this, true);
-};
-
-Blockly.Block.prototype.unselectWithConnected = function() {
-    selectedWithConnected = null;
-    setBlockAndConnectedBlocksSelected(this, false);
-};
-
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
 	block.initSvg();
@@ -319,21 +277,45 @@ ocargo.BlocklyControl.prototype.reset = function() {
 
     for (var i = 0; i < THREADS; i++) {
         var startBlock = this.createBlock('start');
-        startBlock.moveBy(30,30+i*50);
+        startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
     }
     this.addClickListenerToStartBlocks();
 };
 
-ocargo.BlocklyControl.prototype.blink = function() {
-    var badBlock = selectedWithConnected;
+// Define custom select methods that select a block and its inputs
+ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
+    if (!block.svg_) {
+        return;
+    }
+
+    block.inputList.forEach(function(input) {
+        if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
+            var targetBlock = input.connection.targetBlock();
+            if (targetBlock) {
+                setBlockAndConnectedBlocksSelected(targetBlock, selected);
+            }
+        }
+    });
+
+    if (selected) {
+        block.svg_.addSelect();
+    } else {
+        block.svg_.removeSelect();
+    }
+}
+
+ocargo.BlocklyControl.prototype.makeBlockBlink = function(badBlock) {
+    var blocklyControl = this;
+    var frequency = 300;
+    var repeats = 3;
+
     this.incorrect = badBlock;
     this.incorrectColour = badBlock.getColour();
     badBlock.setColour(0);
-    for (var i = 0; i < 3; i++) {
-        window.setTimeout(function() { badBlock.selectWithConnected(); }, i * 600 - 300);
-        window.setTimeout(function() { badBlock.unselectWithConnected(); }, i * 600);
+    for (var i = 0; i < repeats; i++) {
+        window.setTimeout(function() { blocklyControl.setBlockSelected(badBlock, true); }, 2 * i * frequency);
+        window.setTimeout(function() { blocklyControl.setBlockSelected(badBlock, false); }, (2 * i + 1) * frequency);
     }
-    window.setTimeout(function() { badBlock.selectWithConnected(); }, 1500);
 };
 
 window.addEventListener('load', ocargo.blocklyControl.init);
@@ -457,7 +439,7 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
         	var svgRoot = startBlock.getSvgRoot();
         	if (svgRoot) {
         		if (!svgRoot.id || svgRoot.id === "") {
-        			svgRoot.id = "startBlockSvg"
+        			svgRoot.id = "startBlockSvg" + i;
         		}
         		var downX = 0;
         		var downY = 0;
@@ -480,6 +462,30 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
         }
     } 
 };
+
+
+
+ocargo.BlocklyControl.BlockHandler = function(id) {
+    this.id = id;
+    this.selectedBlock = null;
+};
+
+ocargo.BlocklyControl.BlockHandler.prototype.selectBlock = function(block) {
+    if (block) {
+        this.deselectCurrent();
+        ocargo.blocklyControl.setBlockSelected(block, true);
+        this.selectedBlock = block;
+    }
+};
+
+ocargo.BlocklyControl.BlockHandler.prototype.deselectCurrent = function() {
+    if (this.selectedBlock) {
+        ocargo.blocklyControl.setBlockSelected(this.selectedBlock, false);
+        this.selectedBlock = null;
+    }
+};
+
+
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 

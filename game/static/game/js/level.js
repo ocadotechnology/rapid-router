@@ -3,12 +3,7 @@
 var ocargo = ocargo || {};
 
 var TERMINATION_DELAY = 1000;
-
-var ERRORS = {
-  THROUGH_RED_LIGHT: "Through red light", 
-  OFF_ROAD: "Off road", 
-  OUT_OF_FUEL: "Out of fuel"
-};
+var FAILS_BEFORE_HINT = 3;
 
 
 ocargo.Level = function(map, vans, ui, nextLevel, nextEpisode) {
@@ -23,10 +18,13 @@ ocargo.Level = function(map, vans, ui, nextLevel, nextEpisode) {
     this.nextLevel = nextLevel;
     this.nextEpisode = nextEpisode;
     this.vans = vans;
+    this.blockHandlers = [];
+    for (var i = 0; i < THREADS; i++) {
+        this.blockHandlers.push(new ocargo.BlocklyControl.BlockHandler(i));
+    }
+
     console.debug(MODEL_SOLUTION);
 };
-
-ocargo.Level.prototype.failsBeforeHintBtn = 3;
 
 ocargo.Level.prototype.playProgram = function(program) {
 
@@ -48,8 +46,8 @@ ocargo.Level.prototype.playProgram = function(program) {
 };
 
 ocargo.Level.prototype.selectStartBlocks = function() {
-    for (var i = 0; i < this.program.threads.length; i++) {
-        this.program.threads[i].startBlock.selectWithConnected();
+    for (var i = 0; i < THREADS; i++) {
+        this.blockHandlers[i].selectBlock(this.program.threads[i].startBlock);
     }
 }
 
@@ -83,7 +81,6 @@ function playOutProgram(level) {
 }
 
 ocargo.Level.prototype.stepProgram = function(callback) {
-
     var level = this;
 
     if (!this.program.canStep()) {
@@ -102,9 +99,10 @@ ocargo.Level.prototype.stepProgram = function(callback) {
 
     var longestAnimation = 0;
     for (var i = 0; i < THREADS; i++) {
+        this.blockHandlers[i].selectBlock(this.program.threads[i].currentBlock);
+
         var action = this.program.threads[i].currentAction;
         var successful = this.handleAction(action, this.program.threads[i], this.vans[i], callback);
-
         if (!successful) {
             return;
         }
@@ -144,7 +142,7 @@ ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
 
     if (!nextNode) {
         var n = this.numStepsCorrect - 1;
-        ocargo.blocklyControl.blink();
+        ocargo.blocklyControl.makeBlockBlink(thread.currentBlock);
          //TODO: animate the crash
         setTimeout(function () {programFinished(level, false, ocargo.messages.offRoad(level.numStepsCorrect))}, TERMINATION_DELAY);
         return false;
@@ -164,96 +162,6 @@ ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
         return true;
     }
 };
- 
-function programFinished(level, result, msg) {
-    if (result) {
-        level.win();
-    }
-    else {
-        level.fail(msg);
-    }
-}
-
-ocargo.Level.prototype.win = function() {
-    console.debug('You win!');
-
-    var scoreArray = ocargo.level.pathFinder.getScore();
-
-    sendAttempt(scoreArray[0]);
-    ocargo.sound.win();
-
-    var message = '';
-    if (ocargo.level.nextLevel != null) {
-      message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
-    } else {
-        if (ocargo.level.nextEpisode != null && ocargo.level.nextEpisode !== "") {
-            message = ocargo.messages.nextEpisodeButton(ocargo.level.nextEpisode);
-        } else {
-            message = ocargo.messages.lastLevel;
-        }
-    }
-
-    enableDirectControl();
-
-    startPopup("You win!", scoreArray[1], message);
-};
-
-ocargo.Level.prototype.fail = function(msg) {
-    var title = 'Oh dear! :(';
-    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
-    console.debug(title);
-    enableDirectControl();
-    ocargo.sound.failure();
-    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
-    var level = this;
-    level.fails++;
-    if (level.fails >= level.failsBeforeHintBtn) {
-        var hintBtns = $("#hintPopupBtn");
-        if (hintBtns.length === null || hintBtns.length === 0) {
-            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
-                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
-                '</p><p id="hintText">' + HINT + '</p>');
-            if(level.hintOpened){
-                $("#hintBtnPara").hide();
-            } else {
-                $("#hintText" ).hide();
-                $("#hintPopupBtn").click( function(){
-                    $("#hintText").show(500);
-                    $("#hintBtnPara").hide();
-                    level.hintOpened = true;
-                });
-            }
-        }
-    }
-    
-    sendAttempt(0);
-};
-
-function sendAttempt(score) {
-
-    // Send out the submitted data.
-    if (ocargo.level.levelId) {
-        var attemptData = JSON.stringify(ocargo.level.attemptData);
-
-        $.ajax({
-            url : '/game/submit',
-            type : 'POST',
-            dataType: 'json',
-            data : {
-                attemptData : attemptData,
-                csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
-                score : score,
-                workspace : ocargo.blocklyControl.serialize()
-            },
-            success : function(json) {
-            },
-            error : function(xhr,errmsg,err) {
-                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-            }
-        });
-    }
-    return false;
-}
 
 ocargo.Level.prototype.getTrafficLightState = function(previousNode, currentNode) {
     for(var i = 0; i < currentNode.trafficLights.length; i++) {
@@ -310,3 +218,98 @@ ocargo.Level.prototype.isVanAtDestination = function(van) {
     return van.currentNode === this.map.destination;
 }
 
+
+
+function programFinished(level, result, msg) {
+    enableDirectControl();
+    for (var i = 0; i < THREADS; i++) {
+        level.blockHandlers[i].deselectCurrent();
+    }
+
+    if (result) {
+        win(level);
+    }
+    else {
+        fail(level,msg);
+    }
+}
+
+function win(level) {
+    console.debug('You win!');
+    ocargo.sound.win();
+
+    var scoreArray = level.pathFinder.getScore();
+    sendAttempt(scoreArray[0]);
+    
+    var message = '';
+    if (level.nextLevel != null) {
+        message = ocargo.messages.nextLevelButton(level.nextLevel);
+    } 
+    else {
+        if (level.nextEpisode != null && level.nextEpisode !== "") {
+            message = ocargo.messages.nextEpisodeButton(level.nextEpisode);
+        } else {
+            message = ocargo.messages.lastLevel;
+        }
+    }
+
+    startPopup("You win!", scoreArray[1], message);
+};
+
+function fail(level, msg) {
+    console.debug('You lose!');
+    ocargo.sound.failure();
+
+    sendAttempt(0);
+
+    var title = 'Oh dear! :(';
+    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
+    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
+    
+    level.fails++;
+    if (level.fails >= FAILS_BEFORE_HINT) {
+        var hintBtns = $("#hintPopupBtn");
+        if (hintBtns.length === null || hintBtns.length === 0) {
+            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
+                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
+                '</p><p id="hintText">' + HINT + '</p>');
+            if(level.hintOpened){
+                $("#hintBtnPara").hide();
+            } 
+            else {
+                $("#hintText" ).hide();
+                $("#hintPopupBtn").click( function(){
+                    $("#hintText").show(500);
+                    $("#hintBtnPara").hide();
+                    level.hintOpened = true;
+                });
+            }
+        }
+    }
+};
+
+function sendAttempt(score) {
+
+    // Send out the submitted data.
+    if (ocargo.level.levelId) {
+        var attemptData = JSON.stringify(ocargo.level.attemptData);
+
+        $.ajax({
+            url : '/game/submit',
+            type : 'POST',
+            dataType: 'json',
+            data : {
+                attemptData : attemptData,
+                csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
+                score : score,
+                workspace : ocargo.blocklyControl.serialize()
+            },
+            success : function(json) {
+            },
+            error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    }
+    return false;
+}
