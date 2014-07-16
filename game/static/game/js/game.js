@@ -380,7 +380,6 @@ function trackDevelopment() {
     });
 
     $('#blocklyExpand').click(function() {
-        blocklyHeight += 10;
         $('#blockly').height($('#blockly').height()*1.1);
         redrawBlockly();
     });
