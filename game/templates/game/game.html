@@ -71,9 +71,6 @@
 
 {% block content %}
 <div id="wrapper">
-  <div id="blocklySizing">
-    <button id="blocklyExpand">+</button>
-  </div>
   <div id="programmingConsole" class="col no-print unselectable">
     <div id="blockly"></div>
 
@@ -87,7 +84,7 @@
         <textarea disabled="" id="consoleOutput"></textarea>
         <button id="clearConsole">Clear Console</button>
         <h4>Van Commands:</h4>
-        <p>move_forward(), turn_left(), turn_right(), turn_around(), wait()</p>
+        <p>move_forwards(), turn_left(), turn_right(), turn_around(), wait()</p>
         <p>at_dead_end(), at_destination()</p>
         <p>at_red_traffic_light(), at_green_traffic_light()</p>
         <p>is_road_forward(), is_road_left(), is_road_right()</p>
@@ -169,9 +166,11 @@
 </div>
 
 <xml id="toolbox" style="display: none">
-  {% for block in blocks %}
-    <block type="{{ block.type }}"></block>
-  {% endfor %}
+  <category name="">
+    {% for block in blocks %}
+      <block type="{{ block.type }}"></block>
+    {% endfor %}
+  </category>
 </xml>
 
 {% endblock %}

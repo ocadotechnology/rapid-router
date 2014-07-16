@@ -379,11 +379,6 @@ function trackDevelopment() {
         }
     });
 
-    $('#blocklyExpand').click(function() {
-        $('#blockly').height($('#blockly').height()*1.1);
-        redrawBlockly();
-    });
-
     $('#consoleSlider').on('mousedown', function(e){
         var slider = $(this);
         var p = slider.parent().offset();
