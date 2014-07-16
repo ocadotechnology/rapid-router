@@ -91,26 +91,24 @@
   </div>
 
   <div id="sliderControls" class="no-print unselectable">
-
     <button id="slideConsole" class="unselectable">Slide Program</button>
     <button id="bigCodeModeBtn" class="unselectable">Big Code Mode</button>
     <button id="toggleConsole" class="unselectable">Toggle Console</button>
+  </div>
 
-    <div id="direct_drive" class="unselectable">
-      <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
-        <span>&uarr; Move Forwards</span>
-      </button>
-      <button class="picButton" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
-        <span>&#x21BA; Turn Left</span>
-      </button>
-      <button class="picButton" id="play" />
-        <span>Go</span>
-      </button>
-      <button class="picButton" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
-        <span>&#x21BB; Turn Right</span>
-      </button>
-    </div>
-    
+  <div id="direct_drive" class="unselectable">
+    <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+      <span>&uarr; Move Forwards</span>
+    </button>
+    <button class="picButton" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+      <span>&#x21BA; Turn Left</span>
+    </button>
+    <button class="picButton" id="play" />
+      <span>Go</span>
+    </button>
+    <button class="picButton" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+      <span>&#x21BB; Turn Right</span>
+    </button>
   </div>
   
   <div id="fuelGuage" class="no-print unselectable">

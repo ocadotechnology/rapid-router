@@ -355,12 +355,14 @@ function trackDevelopment() {
             $('#paper').animate({left: '0%'}, {queue: false});
             $('#programmingConsole').animate({width: '0%'}, {queue: false});
             $('#sliderControls').animate({left: '0%'}, {queue: false});
+            $('#direct_drive').animate({left: '0%'}, {queue: false});
             $('#consoleSlider').animate({left: '0px'}, {queue: false, complete: function() { redrawBlockly(); }});
         } else {
             $('#paper').animate({ width: (100 - consoleSliderPosition) + '%' }, {queue: false});
             $('#paper').animate({ left: consoleSliderPosition + '%' }, {queue: false});
             $('#programmingConsole').animate({ width: consoleSliderPosition + '%' }, {queue: false});
             $('#sliderControls').animate({ left: consoleSliderPosition + '%' }, {queue: false})
+            $('#direct_drive').animate({ left: consoleSliderPosition + '%' }, {queue: false})
             $('#consoleSlider').animate({ left: consoleSliderPosition + '%' }, {queue: false, complete: function() { redrawBlockly(); }});
         }
     });
@@ -404,6 +406,7 @@ function trackDevelopment() {
             $('#paper').css({ left: consoleSliderPosition + '%' });
             $('#programmingConsole').css({ width: consoleSliderPosition + '%' });
             $('#sliderControls').css({ left: consoleSliderPosition + '%' });
+            $('#direct_drive').css({ left: consoleSliderPosition + '%' });
             
             redrawBlockly();
         });

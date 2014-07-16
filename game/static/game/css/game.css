@@ -132,6 +132,12 @@ button, .button, img.control{
     z-index: 1;
 }
 
+#direct_drive {
+    position: absolute;
+    left: 50%;
+    z-index: 1;
+}
+
 #consoleSlider {
     position: absolute;
     left: 50%;
