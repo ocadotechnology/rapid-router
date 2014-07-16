@@ -46,7 +46,7 @@ Blockly.Blocks['move_forwards'] = {
 };
 
 Blockly.Python['move_forwards'] = function(block) {
-	return 'v.move_forward()\n';
+	return 'v.move_forwards()\n';
 };
 
 Blockly.Blocks['turn_left'] = {
