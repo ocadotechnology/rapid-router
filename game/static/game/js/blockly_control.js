@@ -788,17 +788,6 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
         };
     }
 
-    function counterCoundition(count) {
-        return function() {
-            if (count > 0) {
-                count--;
-                return true;
-            }
-
-            return false;
-        };
-    }
-
     function deadEndCondition() {
         return function(level,threadID) {
             return level.isVanAtDeadEnd(level.vans[threadID]);
@@ -814,6 +803,16 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     function atDestinationCondition() {
         return function(level,threadID) {
             return level.isVanAtDestination(level.vans[threadID]);
+        };
+    }
+
+    function counterCondition(count) {
+        return function(level,threadID) {
+            if (count > 0) {
+                count--;
+                return true;
+            }
+            return false;
         };
     }
 
