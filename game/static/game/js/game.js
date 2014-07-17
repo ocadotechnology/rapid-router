@@ -59,7 +59,7 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
     	var sourceNode = nodes[sourceNodeId];
     	
         console.log(startingState);
-    	var light = new ocargo.TrafficLight(startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
+    	var light = new ocargo.TrafficLight(i, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
     	trafficLights.push(light);
     	controlledNode.addTrafficLight(light);
     }
@@ -129,6 +129,85 @@ function clearVanData() {
     }
 }
 
+function levelWon(level) {
+    console.debug('You win!');
+    ocargo.sound.win();
+
+    var scoreArray = level.pathFinder.getScore();
+    sendAttempt(scoreArray[0]);
+    
+    var message = '';
+    if (level.nextLevel != null) {
+        message = ocargo.messages.nextLevelButton(level.nextLevel);
+    } 
+    else {
+        if (level.nextEpisode != null && level.nextEpisode !== "") {
+            message = ocargo.messages.nextEpisodeButton(level.nextEpisode);
+        } else {
+            message = ocargo.messages.lastLevel;
+        }
+    }
+
+    startPopup("You win!", scoreArray[1], message);
+};
+
+function levelFailed(level, msg) {
+    console.debug('You lose!');
+    ocargo.sound.failure();
+
+    sendAttempt(0);
+
+    var title = 'Oh dear! :(';
+    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
+    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
+    
+    level.fails++;
+    if (level.fails >= FAILS_BEFORE_HINT) {
+        var hintBtns = $("#hintPopupBtn");
+        if (hintBtns.length === null || hintBtns.length === 0) {
+            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
+                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
+                '</p><p id="hintText">' + HINT + '</p>');
+            if(level.hintOpened){
+                $("#hintBtnPara").hide();
+            } 
+            else {
+                $("#hintText" ).hide();
+                $("#hintPopupBtn").click( function(){
+                    $("#hintText").show(500);
+                    $("#hintBtnPara").hide();
+                    level.hintOpened = true;
+                });
+            }
+        }
+    }
+};
+
+function sendAttempt(score) {
+    // Send out the submitted data.
+    if (ocargo.level.levelId) {
+        var attemptData = JSON.stringify(ocargo.level.attemptData);
+
+        $.ajax({
+            url : '/game/submit',
+            type : 'POST',
+            dataType: 'json',
+            data : {
+                attemptData : attemptData,
+                csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
+                score : score,
+                workspace : ocargo.blocklyControl.serialize()
+            },
+            success : function(json) {
+            },
+            error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    }
+    return false;
+}
+
 function redrawBlockly() {
     Blockly.fireUiEvent(window, 'resize');
 }
@@ -165,6 +244,7 @@ function trackDevelopment() {
         try {
             var program = ocargo.blocklyControl.populateProgram();
         } catch (error) {
+            enableDirectControl();
             levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
             return;
         }
