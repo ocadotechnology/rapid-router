@@ -66,5 +66,8 @@ $(document).ready(function () {
         return Sk.builtinFiles["files"][x];
     }
 
+    // Limit the code so that it stops after 2 seconds
+    Sk.execLimit = 2000;
+
     ocargo.editor.focus();
 });

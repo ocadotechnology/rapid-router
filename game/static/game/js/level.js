@@ -298,14 +298,11 @@ function sendAttempt(score) {
         $.ajax({
             url : '/game/submit',
             type : 'POST',
-            dataType: 'json',
             data : {
                 attemptData : attemptData,
                 csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
                 score : score,
                 workspace : ocargo.blocklyControl.serialize()
-            },
-            success : function(json) {
             },
             error : function(xhr,errmsg,err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);

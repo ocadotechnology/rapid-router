@@ -604,7 +604,6 @@ function startAnimation() {
             if (a.type == 'van') {
                 // Set all current animations to the final position, so we don't get out of sync
                 var anims = vanImages[a.id].status();
-                console.log(anims);
                 for (var i = 0, ii = anims.length; i < ii; i++) {
                     vanImages[a.id].status(anims[i].anim, 1);
                 }
