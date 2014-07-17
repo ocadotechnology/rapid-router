@@ -165,8 +165,8 @@ function trackDevelopment() {
         try {
             var program = ocargo.blocklyControl.populateProgram();
         } catch (error) {
-            ocargo.level.fail('Your program crashed!<br>' + error);
-            throw error;
+            levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
+            return;
         }
 
         clearVanData();
@@ -413,20 +413,20 @@ function trackDevelopment() {
         });
     });
 
+    $('#mute').click(function() {
+        var $this = $(this);
+        if (ocargo.sound.volume === 0) {
+            $this.text('Mute');
+            ocargo.sound.unmute();
+        } else {
+            $this.text('Unmute');
+            ocargo.sound.mute();
+        }
+    });
+
 }
 
 $(function() {
     initialiseDefault();
     trackDevelopment();
-});
-
-$('#mute').click(function() {
-    var $this = $(this);
-    if (ocargo.sound.volume === 0) {
-        $this.text('Mute');
-        ocargo.sound.unmute();
-    } else {
-        $this.text('Unmute');
-        ocargo.sound.mute();
-    }
 });

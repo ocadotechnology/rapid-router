@@ -228,14 +228,14 @@ function programFinished(level, result, msg) {
     }
 
     if (result) {
-        win(level);
+        levelWon(level);
     }
     else {
-        fail(level,msg);
+        levelFailed(level,msg);
     }
 }
 
-function win(level) {
+function levelWon(level) {
     console.debug('You win!');
     ocargo.sound.win();
 
@@ -257,7 +257,7 @@ function win(level) {
     startPopup("You win!", scoreArray[1], message);
 };
 
-function fail(level, msg) {
+function levelFailed(level, msg) {
     console.debug('You lose!');
     ocargo.sound.failure();
 
