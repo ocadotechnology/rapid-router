@@ -464,17 +464,8 @@ function scrollToShowVanImage(vanImage) {
     var point = getVanImagePosition(vanImage);
     var element = document.getElementById('paper');
 
-    if (point[0] > Math.floor(PAPER_WIDTH / 2)) {
-        element.scrollLeft = PAPER_WIDTH / 2;
-    } else {
-        element.scrollLeft = 0;
-    }
-
-    if (point[1] > Math.floor(PAPER_HEIGHT / 2)) {
-        element.scrollTop = PAPER_HEIGHT / 2;
-    } else {
-        element.scrollTop = 0;
-    }
+    element.scrollLeft = point[0] - element.offsetWidth/2;
+    element.scrollTop = point[1] - element.offsetHeight/2;
 }
 
 function moveForward(van, callback) {
