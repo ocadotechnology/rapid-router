@@ -134,7 +134,7 @@ ocargo.Level.prototype.hasWon = function() {
 // Function to be used by python with support for animating/highlighlting correct line of code editor to follow...
 ocargo.Level.prototype.handlePythonAction = function(action, thread, van) {
     console.info("Will do some action highlighting of line no. " + Sk.currLineNo);
-    highlightLine(Sk.currLineNo - 1);
+    //highlightLine(Sk.currLineNo - 1);
     return ocargo.level.handleAction(action, thread, van);
 };
 
