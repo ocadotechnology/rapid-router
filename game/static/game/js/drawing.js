@@ -6,6 +6,8 @@ var GRID_WIDTH = 10;
 var GRID_HEIGHT = 8;
 var GRID_SPACE_SIZE = 100;
 
+var ANIMATION_FRAME = 500;
+
 var VAN_WIDTH = 40;
 var VAN_HEIGHT = 20;
 
@@ -482,7 +484,7 @@ function moveForward(van, callback) {
     var transformation = "... t 0, " + moveDistance;
     moveVanImage({
         transform: transformation
-    }, van, callback, ocargo.FORWARD_ACTION.animationLength-20);
+    }, van, callback);
 }
 
 function moveLeft(van, callback) {
@@ -492,7 +494,7 @@ function moveLeft(van, callback) {
     var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, van, callback, ocargo.TURN_LEFT_ACTION.animationLength-20);
+    }, van, callback);
 }
 
 function moveRight(van, callback) {
@@ -502,14 +504,14 @@ function moveRight(van, callback) {
     var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, van, callback, ocargo.TURN_RIGHT_ACTION.animationLength-20);
+    }, van, callback);
 }
 
 function turnAround(van, callback) {
     var moveDistance = -GRID_SPACE_SIZE / 2;
     var moveTransformation = "... t 0, " + moveDistance;
     var vanImage = vanImages[van.id];
-    var timePerState = ocargo.TURN_AROUND_ACTION.animationLength/3 - 50;
+    var timePerState = (ANIMATION_FRAME - 50) / 3;
 
     function moveForward() {
         moveVanImage({
@@ -600,17 +602,24 @@ function startAnimation() {
             var a = animationQueue.splice(0, 1)[0];
 
             if (a.type == 'van') {
+                // Set all current animations to the final position, so we don't get out of sync
+                var anims = vanImages[a.id].status();
+                console.log(anims);
+                for (var i = 0, ii = anims.length; i < ii; i++) {
+                    vanImages[a.id].status(anims[i].anim, 1);
+                }
+
                 scrollToShowVanImage(vanImages[a.id]);
                 vanImages[a.id].animate(a.attr, a.animationLength, a.animationType, a.callback);
             }
             else if (a.type == 'trafficLight') {
                 if (a.colour == ocargo.TrafficLight.GREEN) {
-                    lightImages[a.id][0].animate({ opacity : 1 }, 500, 'linear', a.callback);
-                    lightImages[a.id][1].animate({ opacity : 0 }, 500, 'linear', a.callback);
+                    lightImages[a.id][0].animate({ opacity : 1 }, ANIMATION_FRAME/4, 'linear', a.callback);
+                    lightImages[a.id][1].animate({ opacity : 0 }, ANIMATION_FRAME/2, 'linear', a.callback);
                 }
                 else {
-                    lightImages[a.id][0].animate({ opacity : 0 }, 500, 'linear', a.callback);
-                    lightImages[a.id][1].animate({ opacity : 1 }, 500, 'linear', a.callback);
+                    lightImages[a.id][0].animate({ opacity : 0 }, ANIMATION_FRAME/2, 'linear', a.callback);
+                    lightImages[a.id][1].animate({ opacity : 1 }, ANIMATION_FRAME/4, 'linear', a.callback);
                 }
             }
         }
@@ -619,14 +628,14 @@ function startAnimation() {
             animationTimestamp++;
             isAnimating = false;
             startAnimation();
-        }, 520);
+        }, ANIMATION_FRAME);
     }
 }
 
 function moveVanImage(attr, van, callback, animationLength) {
-    animationLength = animationLength || 480;
+    animationLength = animationLength || ANIMATION_FRAME;
 
-    animationQueue.push({type: 'van', timestamp: ocargo.time.timestamp, id: van.id, attr: attr, animationLength: animationLength, animationType: 'easeIn', callback: callback});
+    animationQueue.push({type: 'van', timestamp: ocargo.time.timestamp, id: van.id, attr: attr, animationLength: animationLength, animationType: 'linear', callback: callback});
 
     if (!isAnimating) {
         startAnimation();
