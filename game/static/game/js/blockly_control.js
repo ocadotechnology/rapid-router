@@ -333,8 +333,8 @@ ocargo.BlocklyControl.prototype.init = function() {
         e.innerHTML = text;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
-
-    //ocargo.blocklyControl.reset();
+    
+    ocargo.blocklyControl.reset();
 
     // Use the user's last attempt if available, else use whatever's in local storage
     if (WORKSPACE && WORKSPACE != '') {
