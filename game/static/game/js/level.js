@@ -131,6 +131,13 @@ ocargo.Level.prototype.hasWon = function() {
     return true;    
 }
 
+// Function to be used by python with support for animating/highlighlting correct line of code editor to follow...
+ocargo.Level.prototype.handlePythonAction = function(action, thread, van) {
+    console.info("Will do some action highlighting of line no. " + Sk.currLineNo);
+    highlightLine(Sk.currLineNo - 1);
+    return ocargo.level.handleAction(action, thread, van);
+};
+
 ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
     console.debug('Calculating next node for action ' + action.name);
     var level = this;
@@ -173,8 +180,13 @@ ocargo.Level.prototype.getTrafficLightState = function(previousNode, currentNode
     }
 }
 
-
 /** Conditions **/
+
+// Condition checker to be used by python with support for animating/highlighting correct line of code editor to follow...
+ocargo.Level.prototype.checkAndHighlightPythonCondition = function(conditionFunction, van, action) {
+    console.info("Will do some condition highlighting of line no. " + Sk.currLineNo);
+    return conditionFunction(van, action);
+}
 
 ocargo.Level.prototype.isVanGoingThroughRedLight = function(van, nextNode){
     var previousNode = van.previousNode;
@@ -216,7 +228,7 @@ ocargo.Level.prototype.isVanAtDeadEnd = function(van) {
 }
 
 ocargo.Level.prototype.isVanAtDestination = function(van) {
-    return van.currentNode === this.map.destination;
+    return van.currentNode === ocargo.level.map.destination;
 }
 
 
