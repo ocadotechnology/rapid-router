@@ -612,6 +612,11 @@ function startAnimation() {
                     lightImages[a.id][1].animate({ opacity : 1 }, ANIMATION_FRAME/4, 'linear', a.callback);
                 }
             }
+            else if (a.type == 'highlightLine') {
+                var line = a.line;
+                $('.CodeMirror-code')[0].children[line].style.background = a.highlight;
+                setTimeout(function() {$('.CodeMirror-code')[0].children[line].style.background = "";}, 400);
+            }
         }
         
         setTimeout(function() {
@@ -651,4 +656,12 @@ function resetTrafficLightAnimation(id, colour) {
     }
 
     resetAnimation();
+}
+
+function highlightLine(lineIndex) {
+    animationQueue.push({type: 'highlightLine', timestamp: ocargo.time.timestamp, line: lineIndex, highlight: "yellowgreen"});
+
+    if (!isAnimating) {
+        startAnimation();
+    }
 }
