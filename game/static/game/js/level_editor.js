@@ -640,11 +640,6 @@ $("#export").click(function() {
             blockTypes.push(checkbox.id);
         });
 
-        console.debug("blockTypes", JSON.stringify(blockTypes));
-        console.debug("nodes", input);
-        console.debug("destination", destination);
-        console.debug("decor", decor);
-        
 
         $.ajax({
             url: "/game/levels/new",
@@ -660,7 +655,7 @@ $("#export").click(function() {
                 csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
             },
             success: function (json) {
-                //window.location.href = ("/game/" + json.server_response);
+                window.location.href = ("/game/" + json.server_response);
 
             },
             error: function (xhr, errmsg, err) {
