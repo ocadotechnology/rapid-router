@@ -131,6 +131,12 @@ ocargo.Level.prototype.hasWon = function() {
     return true;    
 }
 
+// Function to be used by python with support for animating/highlighlting correct line of code editor to follow...
+ocargo.Level.prototype.handlePythonAction = function(action, thread, van) {
+    highlightLine(Sk.currLineNo - 1);
+    return ocargo.level.handleAction(action, thread, van);
+};
+
 ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
     console.debug('Calculating next node for action ' + action.name);
     var level = this;
@@ -173,8 +179,13 @@ ocargo.Level.prototype.getTrafficLightState = function(previousNode, currentNode
     }
 }
 
-
 /** Conditions **/
+
+// Condition checker to be used by python with support for animating/highlighting correct line of code editor to follow...
+ocargo.Level.prototype.checkAndHighlightPythonCondition = function(conditionFunction, van, action) {
+    // highlightLine(Sk.currLineNo - 1);
+    return conditionFunction(van, action);
+}
 
 ocargo.Level.prototype.isVanGoingThroughRedLight = function(van, nextNode){
     var previousNode = van.previousNode;
@@ -216,7 +227,7 @@ ocargo.Level.prototype.isVanAtDeadEnd = function(van) {
 }
 
 ocargo.Level.prototype.isVanAtDestination = function(van) {
-    return van.currentNode === this.map.destination;
+    return van.currentNode === ocargo.level.map.destination;
 }
 
 
@@ -233,4 +244,81 @@ function programFinished(level, result, msg) {
     else {
         levelFailed(level,msg);
     }
+}
+
+function levelWon(level) {
+    console.debug('You win!');
+    ocargo.sound.win();
+
+    var scoreArray = level.pathFinder.getScore();
+    sendAttempt(scoreArray[0]);
+    
+    var message = '';
+    if (level.nextLevel != null) {
+        message = ocargo.messages.nextLevelButton(level.nextLevel);
+    } 
+    else {
+        if (level.nextEpisode != null && level.nextEpisode !== "") {
+            message = ocargo.messages.nextEpisodeButton(level.nextEpisode);
+        } else {
+            message = ocargo.messages.lastLevel;
+        }
+    }
+
+    startPopup("You win!", scoreArray[1], message);
+};
+
+function levelFailed(level, msg) {
+    console.debug('You lose!');
+    ocargo.sound.failure();
+
+    sendAttempt(0);
+
+    var title = 'Oh dear! :(';
+    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
+    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
+    
+    level.fails++;
+    if (level.fails >= FAILS_BEFORE_HINT) {
+        var hintBtns = $("#hintPopupBtn");
+        if (hintBtns.length === null || hintBtns.length === 0) {
+            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
+                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
+                '</p><p id="hintText">' + HINT + '</p>');
+            if(level.hintOpened){
+                $("#hintBtnPara").hide();
+            } 
+            else {
+                $("#hintText" ).hide();
+                $("#hintPopupBtn").click( function(){
+                    $("#hintText").show(500);
+                    $("#hintBtnPara").hide();
+                    level.hintOpened = true;
+                });
+            }
+        }
+    }
+};
+
+function sendAttempt(score) {
+
+    // Send out the submitted data.
+    if (ocargo.level.levelId) {
+        var attemptData = JSON.stringify(ocargo.level.attemptData);
+
+        $.ajax({
+            url : '/game/submit',
+            type : 'POST',
+            data : {
+                attemptData : attemptData,
+                csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
+                score : score,
+                workspace : ocargo.blocklyControl.serialize()
+            },
+            error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    }
+    return false;
 }
