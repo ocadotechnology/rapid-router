@@ -161,11 +161,11 @@ Blockly.Blocks['road_exists'] = {
 
 Blockly.Python['road_exists'] = function(block) {
 	if(block.inputList[0].fieldRow[1].value_ === 'FORWARD'){
-		var python = 'v.is_road_forward()';
+		var python = "v.is_road('FORWARD')";
 	}else if(block.inputList[0].fieldRow[1].value_ === 'LEFT'){
-		var python = 'v.is_road_left()';
+		var python = "v.is_road('LEFT')";
 	}else{
-		var python = 'v.is_road_right()';
+		var python = "v.is_road('RIGHT')";
 	}
 	
 	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
@@ -188,9 +188,9 @@ Blockly.Blocks['traffic_light'] = {
 
 Blockly.Python['traffic_light'] = function(block) {
 	if(block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED){
-		var python = 'v.at_red_traffic_light()';
+		var python = "v.at_traffic_light('RED')";
 	}else{
-		var python = 'v.at_green_traffic_light()';
+		var python = "v.at_traffic_light('GREEN')";
 	}
 	
 	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
@@ -241,7 +241,7 @@ Blockly.Blocks['call_proc'] = {
 };
 
 Blockly.Python['call_proc'] = function(block) {
-	return block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '()\n';
+	return 'this.' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '()\n';
 };
 
 Blockly.Blocks['declare_proc'] = {
@@ -259,7 +259,7 @@ Blockly.Blocks['declare_proc'] = {
 
 Blockly.Python['declare_proc'] = function(block) {
 	return 'def ' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '():\n\
-	pass';//TODO: get code out of sub-blocks (there's a Blockly function for it)
+	print "TODO get sub-blocks"';//TODO: get code out of sub-blocks (there's a Blockly function for it)
 };
 
 // Set text colour to red

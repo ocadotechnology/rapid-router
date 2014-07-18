@@ -200,15 +200,15 @@ ocargo.Level.prototype.isVanGoingThroughRedLight = function(van, nextNode){
 }
 
 ocargo.Level.prototype.isTrafficLightInState = function(previousNode, currentNode, state) {
-    return state === this.getTrafficLightState(previousNode, currentNode);
+    return state === ocargo.level.getTrafficLightState(previousNode, currentNode);
 }
 
 ocargo.Level.prototype.isVanAtRedLight = function(van) {
-    return this.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.RED);
+    return ocargo.level.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.RED);
 }
 
 ocargo.Level.prototype.isVanAtGreenLight = function(van) {
-    return this.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.GREEN);
+    return ocargo.level.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.GREEN);
 }
 
 ocargo.Level.prototype.isActionValidForVan = function(van, action) {
