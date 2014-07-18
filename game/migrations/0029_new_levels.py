@@ -65,7 +65,7 @@ def levels(Level, Block):
     level12 = Level(pk=12, name=12, default=1, destination=[1, 3], direct_drive=1, model_solution=17,
                     path='[{"coordinate":[5,7],"connectedNodes":[17]},{"coordinate":[2,6],"connectedNodes":[18,2]},{"coordinate":[2,5],"connectedNodes":[3,1]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,4],"connectedNodes":[3,5]},{"coordinate":[2,4],"connectedNodes":[4,6]},{"coordinate":[3,4],"connectedNodes":[5,7]},{"coordinate":[4,4],"connectedNodes":[6,8]},{"coordinate":[4,3],"connectedNodes":[7,9]},{"coordinate":[4,2],"connectedNodes":[10,8]},{"coordinate":[3,2],"connectedNodes":[11,9]},{"coordinate":[2,2],"connectedNodes":[12,10]},{"coordinate":[1,2],"connectedNodes":[13,11]},{"coordinate":[1,3],"connectedNodes":[12]},{"coordinate":[1,7],"connectedNodes":[15,18]},{"coordinate":[2,7],"connectedNodes":[14,16]},{"coordinate":[3,7],"connectedNodes":[15,17]},{"coordinate":[4,7],"connectedNodes":[16,0]},{"coordinate":[1,6],"connectedNodes":[14,1]}]',
                     decor='[{"coordinate":{"x":331,"y":509},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":267,"y":489},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":284,"y":561},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":402,"y":479},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":452,"y":532},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":418,"y":583},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":376,"y":545},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":356,"y":606},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":164,"y":86},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":-15,"y":-11},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":279,"y":-20},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":202,"y":4},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":73,"y":109},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":-4,"y":84},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":63,"y":18},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":119,"y":2},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":381,"y":-14},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":323,"y":40},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":565,"y":81},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":493,"y":148},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":445,"y":-23},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":417,"y":72},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":549,"y":7},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":265,"y":120},"url":"/static/game/image/tree2.svg"}]')
-    
+
     level1.save()
     level2.save()
     level3.save()
@@ -131,7 +131,7 @@ def levels(Level, Block):
     level14 = Level(pk=14, name=14, default=1, destination=[2, 5], direct_drive=1, model_solution=7,
                     path='[{"coordinate":[7,2],"connectedNodes":[27]},{"coordinate":[4,2],"connectedNodes":[4,14]},{"coordinate":[3,1],"connectedNodes":[3,14]},{"coordinate":[2,1],"connectedNodes":[7,2]},{"coordinate":[4,3],"connectedNodes":[10,5,1]},{"coordinate":[5,3],"connectedNodes":[4,6]},{"coordinate":[6,3],"connectedNodes":[5,11,27]},{"coordinate":[1,1],"connectedNodes":[8,3]},{"coordinate":[1,2],"connectedNodes":[21,7]},{"coordinate":[3,4],"connectedNodes":[16,10]},{"coordinate":[4,4],"connectedNodes":[9,4]},{"coordinate":[6,4],"connectedNodes":[12,6]},{"coordinate":[6,5],"connectedNodes":[20,11]},{"coordinate":[5,1],"connectedNodes":[14,15]},{"coordinate":[4,1],"connectedNodes":[2,1,13]},{"coordinate":[6,1],"connectedNodes":[13,27]},{"coordinate":[3,5],"connectedNodes":[26,17,9]},{"coordinate":[3,6],"connectedNodes":[18,16]},{"coordinate":[4,6],"connectedNodes":[17,19]},{"coordinate":[5,6],"connectedNodes":[18,20]},{"coordinate":[6,6],"connectedNodes":[19,12]},{"coordinate":[2,2],"connectedNodes":[8,22]},{"coordinate":[2,3],"connectedNodes":[23,21]},{"coordinate":[1,3],"connectedNodes":[24,22]},{"coordinate":[1,4],"connectedNodes":[25,23]},{"coordinate":[1,5],"connectedNodes":[26,24]},{"coordinate":[2,5],"connectedNodes":[25,16]},{"coordinate":[6,2],"connectedNodes":[6,0,15]}]',
                     decor='[{"coordinate":{"x":209,"y":392},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":307,"y":302},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":281,"y":187},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":498,"y":197},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":771,"y":662},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":866,"y":557},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":754,"y":491},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":890,"y":310},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":725,"y":353},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":780,"y":87},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":862,"y":177},"url":"/static/game/image/tree1.svg"}]')
-    
+
     level15 = Level(pk=15, name=15, default=1, destination=[7, 2], direct_drive=1, model_solution=11,
                     path='[{"coordinate":[2,7],"connectedNodes":[1]},{"coordinate":[2,6],"connectedNodes":[0,4,2]},{"coordinate":[2,5],"connectedNodes":[3,1]},{"coordinate":[1,5],"connectedNodes":[9,2]},{"coordinate":[3,6],"connectedNodes":[1,5]},{"coordinate":[4,6],"connectedNodes":[4,6]},{"coordinate":[4,7],"connectedNodes":[7,5]},{"coordinate":[5,7],"connectedNodes":[6,8]},{"coordinate":[5,6],"connectedNodes":[7,13]},{"coordinate":[0,5],"connectedNodes":[3,10]},{"coordinate":[0,4],"connectedNodes":[9,11]},{"coordinate":[1,4],"connectedNodes":[10,12]},{"coordinate":[2,4],"connectedNodes":[11,15]},{"coordinate":[5,5],"connectedNodes":[8,14]},{"coordinate":[5,4],"connectedNodes":[16,13,17]},{"coordinate":[3,4],"connectedNodes":[12,16]},{"coordinate":[4,4],"connectedNodes":[15,14,21]},{"coordinate":[5,3],"connectedNodes":[21,14,18]},{"coordinate":[5,2],"connectedNodes":[17,19]},{"coordinate":[6,2],"connectedNodes":[18,20]},{"coordinate":[7,2],"connectedNodes":[19]},{"coordinate":[4,3],"connectedNodes":[16,17]}]',
                     decor='[{"coordinate":{"x":406,"y":205},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":296,"y":296},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":98,"y":661},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":93,"y":592},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":15,"y":608},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":46,"y":697},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":579,"y":501},"url":"/static/game/image/bush.svg"}]')
@@ -208,9 +208,9 @@ def levels(Level, Block):
                     path='[{"coordinate":[0,6],"connectedNodes":[1]},{"coordinate":[1,6],"connectedNodes":[0,2]},{"coordinate":[2,6],"connectedNodes":[1,3]},{"coordinate":[2,5],"connectedNodes":[2,4]},{"coordinate":[3,5],"connectedNodes":[3,5]},{"coordinate":[3,4],"connectedNodes":[4,6]},{"coordinate":[4,4],"connectedNodes":[5,7]},{"coordinate":[5,4],"connectedNodes":[6,8]},{"coordinate":[5,3],"connectedNodes":[7,9]},{"coordinate":[6,3],"connectedNodes":[8,10]},{"coordinate":[6,2],"connectedNodes":[9,11]},{"coordinate":[7,2],"connectedNodes":[10,12]},{"coordinate":[8,2],"connectedNodes":[11]}]')
 
     # Data for levels 26, 27, 28 will come once we can change the theme of the level.
-    level26 = Level(pk=26, name=26, default=0, destination=[], 
+    level26 = Level(pk=26, name=26, default=0, destination=[],
                     decor='',
-                    path='') 
+                    path='')
 
     level27 = Level(pk=27, name=27, default=0, destination=[],
                     decor='',
@@ -251,7 +251,7 @@ def levels(Level, Block):
     level26.blocks = blocks
     level27.blocks = blocks
     level28.blocks = blocks
-    
+
     level19.save()
     level20.save()
     level21.save()
@@ -324,7 +324,7 @@ def levels(Level, Block):
     level37 = Level(pk=37, name=37, default=1, destination=[5, 3], model_solution=8,
                     decor='[{"coordinate":{"x":350,"y":337},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":348,"y":439},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":344,"y":540},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":342,"y":645},"url":"/static/game/image/tree2.svg"}]',
                     path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[2,6],"connectedNodes":[4,6]},{"coordinate":[2,5],"connectedNodes":[5,7]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[3,4],"connectedNodes":[7,9]},{"coordinate":[3,3],"connectedNodes":[8,10]},{"coordinate":[3,2],"connectedNodes":[9,11]},{"coordinate":[4,2],"connectedNodes":[10,12]},{"coordinate":[4,3],"connectedNodes":[11,13]},{"coordinate":[5,3],"connectedNodes":[12]}] ')
-    
+
     level38 = Level(pk=38, name=38, default=1, destination=[3, 2], model_solution=8,
                     decor='[{"coordinate":{"x":424,"y":640},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":441,"y":561},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":503,"y":545},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":503,"y":639},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":298,"y":401},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":19,"y":594},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":85,"y":551},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":7,"y":507},"url":"/static/game/image/tree2.svg"},{"coordinate":{"x":38,"y":58},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":6,"y":89},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":101,"y":16},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":177,"y":6},"url":"/static/game/image/tree2.svg"}]',
                     path='[{"coordinate":[6,1],"connectedNodes":[19]},{"coordinate":[5,3],"connectedNodes":[2,22]},{"coordinate":[4,3],"connectedNodes":[3,1]},{"coordinate":[3,3],"connectedNodes":[4,2]},{"coordinate":[2,3],"connectedNodes":[5,3]},{"coordinate":[2,4],"connectedNodes":[6,4]},{"coordinate":[2,5],"connectedNodes":[7,5]},{"coordinate":[3,5],"connectedNodes":[6,8]},{"coordinate":[4,5],"connectedNodes":[7,9]},{"coordinate":[4,4],"connectedNodes":[8,10]},{"coordinate":[5,4],"connectedNodes":[9,11]},{"coordinate":[6,4],"connectedNodes":[10,12]},{"coordinate":[6,5],"connectedNodes":[13,11]},{"coordinate":[6,6],"connectedNodes":[14,12]},{"coordinate":[7,6],"connectedNodes":[13,15]},{"coordinate":[7,5],"connectedNodes":[14,16]},{"coordinate":[7,4],"connectedNodes":[15,17]},{"coordinate":[7,3],"connectedNodes":[16,18]},{"coordinate":[7,2],"connectedNodes":[17,19]},{"coordinate":[7,1],"connectedNodes":[0,18]},{"coordinate":[3,2],"connectedNodes":[21]},{"coordinate":[4,2],"connectedNodes":[20,22]},{"coordinate":[5,2],"connectedNodes":[21,1]}] ')
@@ -358,7 +358,7 @@ def levels(Level, Block):
     level39.save()
     level40.save()
     level41.save()
-    level42.save() 
+    level42.save()
     level43.save()
 
     level33.next_level = level34
@@ -492,9 +492,9 @@ def levels(Level, Block):
     level52 = Level(pk=52, name=52, default=1, destination=[4, 2], model_solution=8,
                     decor='[{"coordinate":{"x":0,"y":595},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":2,"y":502},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":6,"y":398},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":0,"y":700},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":5,"y":201},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":8,"y":104},"url":"/static/game/image/tree1.svg"},{"coordinate":{"x":0,"y":5},"url":"/static/game/image/tree1.svg"}]',
                     path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[2,27,26,0]},{"coordinate":[1,4],"connectedNodes":[1,3]},{"coordinate":[1,5],"connectedNodes":[2,4]},{"coordinate":[1,6],"connectedNodes":[3,5]},{"coordinate":[1,7],"connectedNodes":[4,6]},{"coordinate":[2,7],"connectedNodes":[5,7]},{"coordinate":[3,7],"connectedNodes":[6,8]},{"coordinate":[4,7],"connectedNodes":[7,9]},{"coordinate":[5,7],"connectedNodes":[8,10]},{"coordinate":[6,7],"connectedNodes":[9,11]},{"coordinate":[7,7],"connectedNodes":[10,12]},{"coordinate":[7,6],"connectedNodes":[11,13]},{"coordinate":[7,5],"connectedNodes":[12,14]},{"coordinate":[7,4],"connectedNodes":[13,15]},{"coordinate":[7,3],"connectedNodes":[14,16]},{"coordinate":[7,2],"connectedNodes":[15,17]},{"coordinate":[7,1],"connectedNodes":[16,18]},{"coordinate":[7,0],"connectedNodes":[17,19]},{"coordinate":[6,0],"connectedNodes":[18,20]},{"coordinate":[5,0],"connectedNodes":[19,21]},{"coordinate":[4,0],"connectedNodes":[20,22]},{"coordinate":[3,0],"connectedNodes":[21,23]},{"coordinate":[2,0],"connectedNodes":[22,24]},{"coordinate":[1,0],"connectedNodes":[23,25]},{"coordinate":[1,1],"connectedNodes":[24,26]},{"coordinate":[1,2],"connectedNodes":[25,1]},{"coordinate":[2,3],"connectedNodes":[28,45,44,1]},{"coordinate":[2,4],"connectedNodes":[27,29]},{"coordinate":[2,5],"connectedNodes":[28,30]},{"coordinate":[2,6],"connectedNodes":[29,31]},{"coordinate":[3,6],"connectedNodes":[30,32]},{"coordinate":[4,6],"connectedNodes":[31,33]},{"coordinate":[5,6],"connectedNodes":[32,34]},{"coordinate":[6,6],"connectedNodes":[33,35]},{"coordinate":[6,5],"connectedNodes":[34,36]},{"coordinate":[6,4],"connectedNodes":[35,37]},{"coordinate":[6,3],"connectedNodes":[36,38]},{"coordinate":[6,2],"connectedNodes":[37,39]},{"coordinate":[6,1],"connectedNodes":[38,40]},{"coordinate":[5,1],"connectedNodes":[39,41]},{"coordinate":[4,1],"connectedNodes":[40,42]},{"coordinate":[3,1],"connectedNodes":[41,43]},{"coordinate":[2,1],"connectedNodes":[42,44]},{"coordinate":[2,2],"connectedNodes":[43,27]},{"coordinate":[3,3],"connectedNodes":[46,54,53,27]},{"coordinate":[3,4],"connectedNodes":[45,47]},{"coordinate":[3,5],"connectedNodes":[46,48]},{"coordinate":[4,5],"connectedNodes":[47,49]},{"coordinate":[5,5],"connectedNodes":[48,50]},{"coordinate":[5,4],"connectedNodes":[49,51]},{"coordinate":[5,3],"connectedNodes":[50,52]},{"coordinate":[5,2],"connectedNodes":[51,56]},{"coordinate":[3,2],"connectedNodes":[45,56]},{"coordinate":[4,3],"connectedNodes":[45,55]},{"coordinate":[4,4],"connectedNodes":[54]},{"coordinate":[4,2],"connectedNodes":[52,53]}]')
-    
+
     level52.save()
-    
+
     blocks = Block.objects.filter(type__in=["move_forwards", "turn_left", "turn_right",
                                             "controls_whileUntil", "controls_if", "logic_negate",
                                             "road_exists", "at_destination", "turn_around",
@@ -507,11 +507,11 @@ def levels(Level, Block):
     level53 = Level(pk=53, name=53, default=1, destination=[4, 3], threads=2,
                     decor='[{"coordinate":{"x":197,"y":202},"url":"/static/game/image/bush.svg"},{"coordinate":{"x":196,"y":94},"url":"/static/game/image/tree2.svg"}]',
                     path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3,5]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,5],"connectedNodes":[3]},{"coordinate":[3,3],"connectedNodes":[2,6]},{"coordinate":[4,3],"connectedNodes":[5]}]')
-    
-    level53.save()
-    level53.blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards", "turn_around"])
-    level53.save()
 
+    level53.save()
+    level53.blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
+                                                    "turn_around"])
+    level53.save()
 
 
 class Migration(migrations.Migration):

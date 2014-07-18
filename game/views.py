@@ -55,8 +55,11 @@ def levels(request):
     
     def get_level_title(i):
         title = 'title_level' + str(i)
-        titleCall = getattr(messages, title)
-        return mark_safe(titleCall())
+        try:
+            titleCall = getattr(messages, title)
+            return mark_safe(titleCall())
+        except AttributeError:
+            return ""
 
     def get_attempt_score(lvl):
         user = request.user
