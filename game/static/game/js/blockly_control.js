@@ -653,7 +653,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
             throw ocargo.messages.whileBodyError;
         }
 		return new While(
-			counterCondition(block.inputList[0].fieldRow[1].text_),
+			counterCondition(parseInt(block.inputList[0].fieldRow[1].text_)),
 			createSequence(bodyBlock),
 			block);
 	}
@@ -807,11 +807,14 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     }
 
     function counterCondition(count) {
+        var startCount = count;
         return function(level,threadID) {
             if (count > 0) {
                 count--;
                 return true;
             }
+            // Resets the counter for nested loops
+            count = startCount;
             return false;
         };
     }
