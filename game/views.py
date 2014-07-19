@@ -15,6 +15,7 @@ from django.utils.safestring import mark_safe
 from forms import *
 from game import random_road
 from models import Class, Level, Attempt, Command, Block
+from django.utils.translation import ugettext
 
 
 def levels(request):

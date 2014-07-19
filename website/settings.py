@@ -46,6 +46,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -147,6 +148,15 @@ else:
             'LOCATION': 'unique-snowflake'
         }
     }
+
+LOCALE_PATHS = (
+    'conf/locale',
+)
+
+from django.conf import global_settings
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + \
+     ('django.core.context_processors.i18n',)
+
 
 # Keep this at the bottom
 from django_autoconfig.autoconfig import configure_settings
