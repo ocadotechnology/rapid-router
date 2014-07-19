@@ -2,27 +2,31 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Level = function(map, van, ui, nextLevel, nextEpisode) {
+var TERMINATION_DELAY = 1000;
+var FAILS_BEFORE_HINT = 3;
+
+
+ocargo.Level = function(map, vans, ui, nextLevel, nextEpisode) {
     this.levelId = null;
     this.map = map;
-    this.van = van;
     this.ui = ui;
-    this.correct = 0;
+    this.numStepsCorrect = 0;
     this.attemptData = {};
-    this.blockLimit = null;
-    this.pathFinder = new ocargo.PathFinder(map);
+    this.pathFinder = new ocargo.PathFinder(map, MODEL_SOLUTION);
     this.fails = 0;
     this.hintOpened = false;
     this.nextLevel = nextLevel;
     this.nextEpisode = nextEpisode;
+    this.vans = vans;
+    this.blockHandlers = [];
+    for (var i = 0; i < THREADS; i++) {
+        this.blockHandlers.push(new ocargo.BlocklyControl.BlockHandler(i));
+    }
+
+    console.debug(MODEL_SOLUTION);
 };
 
-ocargo.Level.prototype.failsBeforeHintBtn = 3;
-
-ocargo.Level.prototype.play = function(program) {
-
-    this.attemptData = {};
-    var commandStack = [];
+ocargo.Level.prototype.playProgram = function(program) {
 
     if (ocargo.level.blockLimit &&
             ocargo.blocklyControl.getBlocksCount() > ocargo.level.blockLimit) {
@@ -32,166 +36,269 @@ ocargo.Level.prototype.play = function(program) {
         return;
     }
 
-    ocargo.level.attemptData.level = ocargo.level.levelId.toString();
+    this.numStepsCorrect = 0;
+    this.program = program;
+    this.initAttemptData(program);
 
-    for (var i = 0; i < program.stack.length; i++) {
-        ocargo.level.recogniseStack(program.stack[i], commandStack);
-    }
+    this.selectStartBlocks();    
 
-    this.attemptData.commandStack = JSON.stringify(commandStack);
-    program.startBlock.selectWithConnected();
-
-    var stepFunction = stepper(this, true);
-
-    program.stepCallback = stepFunction;
-    this.program = program;    
-    setTimeout(stepFunction, 500);
+    playOutProgram(this);
 };
 
-ocargo.Level.prototype.recogniseStack = function(stack, returnStack) {
-    if (stack) {
-        for (var i = 0; i < stack.length; i++) {
-            var command = recogniseCommand(stack[i]);
-            returnStack.push(command);
-        }
+ocargo.Level.prototype.selectStartBlocks = function() {
+    ocargo.blocklyControl.clearAllSelections();
+    for (var i = 0; i < THREADS; i++) {
+        this.blockHandlers[i].selectBlock(this.program.threads[i].startBlock);
+    }
+}
+
+ocargo.Level.prototype.initAttemptData = function(program) {
+    this.attemptData = {};
+    this.attemptData.level = ocargo.level.levelId.toString();
+    
+    var parsedProcedures = [];
+    for (var i = 0; i < program.procedures.length; i++) {
+        parsedProcedures.push(program.procedures[i].parse());
     }
 
-    function recogniseCommand(command) {
-        var parsedCommand = {};
-        
-        if (command instanceof ForwardCommand) {
-            parsedCommand.command = 'Forward';
-        } else if (command instanceof TurnLeftCommand) {
-            parsedCommand.command = 'Left';
-        } else if (command instanceof TurnRightCommand) {
-            parsedCommand.command = 'Right';
-        } else if (command instanceof TurnAroundCommand) {
-            parsedCommand.command = 'TurnAround';
-
-        } else if (command instanceof WaitCommand) {
-            parsedCommand.command = 'Wait';
-        } else if (command instanceof While) {
-            var block = [];
-            ocargo.level.recogniseStack(command.body, block);
-            parsedCommand.command = 'While';
-            parsedCommand.condition = command.condition.toString();
-            parsedCommand.block = block;
-
-        } else if (command instanceof If) {
-            var commands = command.conditionalCommandSets[0];
-            var ifBlock = [];
-            parsedCommand.condition = commands.condition.toString();
-            ocargo.level.recogniseStack(commands.commands, ifBlock);
-
-            if (command.elseCommands) {
-                commands = command.elseCommands;
-                var elseBlock = [];
-                ocargo.level.recogniseStack(commands, elseBlock);
-                parsedCommand.elseBlock = elseBlock;
-            }
-            parsedCommand.command = 'If';
-            parsedCommand.ifBlock = ifBlock;
+    var parsedThreads = [];
+    for (var i = 0; i < program.threads.length; i++) {
+        var parsedThread = [];
+        for (var j = 0; j < program.threads[i].stack[0].length; j++) {
+            parsedThread.push(program.threads[i].stack[0][j].parse());
         }
-        return parsedCommand;
+        parsedThreads.push(parsedThread);
+    }   
+
+    this.attemptData.commandStack = JSON.stringify(parsedThreads);
+    this.attemptData.procedureStack = JSON.stringify(parsedProcedures);
+}
+
+function playOutProgram(level) {
+    var animationLength = level.stepProgram();
+    if (animationLength) {
+        setTimeout(function () {playOutProgram(level)}, animationLength);
+    }
+}
+
+ocargo.Level.prototype.stepProgram = function(callback) {
+    var level = this;
+
+    if (!this.program.canStep()) {
+        this.program.terminate();
+        setTimeout(function () {programFinished(level, false, ocargo.messages.outOfInstructions)}, TERMINATION_DELAY);
+        return;
+    }
+
+    try {
+        this.program.step(this);   
+    }
+    catch(error) {
+        setTimeout(function () {programFinished(level, false, ocargo.messages.programCrashed)}, TERMINATION_DELAY);
+        return;
+    }
+
+    var longestAnimation = 0;
+    for (var i = 0; i < THREADS; i++) {
+        this.blockHandlers[i].selectBlock(this.program.threads[i].currentBlock);
+
+        var action = this.program.threads[i].currentAction;
+        var successful = this.handleAction(action, this.program.threads[i], this.vans[i], callback);
+        if (!successful) {
+            return;
+        }
+
+        if (action.animationLength > longestAnimation) {
+            longestAnimation = action.animationLength;
+        }
+    }    
+    
+    this.numStepsCorrect++;
+
+    if (!this.program.canStep() && this.hasWon()) {
+        setTimeout(function () {programFinished(level, true)}, TERMINATION_DELAY);
+        return;
+    }
+    return longestAnimation;
+}
+
+ocargo.Level.prototype.hasWon = function() {
+    for (var i = 0; i < THREADS; i++) {
+        if (this.vans[i].currentNode !== this.map.destination) {
+            return false;
+        }
+    }
+    return true;    
+}
+
+// Function to be used by python with support for animating/highlighlting correct line of code editor to follow...
+ocargo.Level.prototype.handlePythonAction = function(action, thread, van) {
+    highlightLine(Sk.currLineNo - 1);
+    return ocargo.level.handleAction(action, thread, van);
+};
+
+ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
+    console.debug('Calculating next node for action ' + action.name);
+    var level = this;
+
+    if (action === ocargo.EMPTY_ACTION) {
+        return true;
+    }
+
+    var nextNode = action.getNextNode(van.previousNode, van.currentNode);
+
+    if (!nextNode) {
+        var n = this.numStepsCorrect - 1;
+        ocargo.blocklyControl.makeBlockBlink(thread.currentBlock);
+         //TODO: animate the crash
+        setTimeout(function () {programFinished(level, false, ocargo.messages.offRoad(level.numStepsCorrect))}, TERMINATION_DELAY);
+        return false;
+    } 
+    else if (this.isVanGoingThroughRedLight(van, nextNode)){
+        //TODO: play police siren sound
+        setTimeout(function () {programFinished(level, false, ocargo.messages.throughRedLight)}, TERMINATION_DELAY);
+        return false;
+    }
+    else if(van.fuel === 0) {
+        //TODO: play empty tank noise
+        setTimeout(function () {programFinished(level, false, ocargo.messages.outOfFuel)}, TERMINATION_DELAY);
+        return false;
+    }
+    else {
+        van.move(nextNode, action, callback);
+        return true;
     }
 };
 
-ocargo.Level.prototype.step = function() {
-    if (this.program.canStep()) {
-        this.program.step(this);
-
-    } else {
-    	if (this.van.currentNode === this.map.destination && !this.program.isTerminated) {
-            this.win();
+ocargo.Level.prototype.getTrafficLightState = function(previousNode, currentNode) {
+    for(var i = 0; i < currentNode.trafficLights.length; i++) {
+        var tl = currentNode.trafficLights[i];
+        if(tl.sourceNode == previousNode) {
+            return tl.state;
         }
     }
-};
+}
 
-ocargo.Level.prototype.win = function() {
-    console.debug('You win!');
-    ocargo.level.pathFinder.getOptimalPath();
-    ocargo.level.pathFinder.getOptimalInstructions();
-    var score = ocargo.level.pathFinder.getScore(JSON.parse(ocargo.level.attemptData.commandStack));
-    console.debug("score: ", score, " out of 200.");
-    sendAttempt(score);
-    ocargo.sound.win();
-    var message = '';
-    var subtitle = "Your score: " + score + " / " + ocargo.level.pathFinder.max;
+/** Conditions **/
+
+// Condition checker to be used by python with support for animating/highlighting correct line of code editor to follow...
+ocargo.Level.prototype.checkAndHighlightPythonCondition = function(conditionFunction, van, action) {
+    // highlightLine(Sk.currLineNo - 1);
+    return conditionFunction(van, action);
+}
+
+ocargo.Level.prototype.isVanGoingThroughRedLight = function(van, nextNode){
+    var previousNode = van.previousNode;
+    var currentNode = van.currentNode;
+    if(currentNode === nextNode) {
+        return false;
+    }
+    else {
+        // TODO fix creating a new traffic light object each time
+        return this.isTrafficLightInState(previousNode, currentNode, ocargo.TrafficLight.RED);
+    }
+}
+
+ocargo.Level.prototype.isTrafficLightInState = function(previousNode, currentNode, state) {
+    return state === ocargo.level.getTrafficLightState(previousNode, currentNode);
+}
+
+ocargo.Level.prototype.isVanAtRedLight = function(van) {
+    return ocargo.level.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.RED);
+}
+
+ocargo.Level.prototype.isVanAtGreenLight = function(van) {
+    return ocargo.level.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.GREEN);
+}
+
+ocargo.Level.prototype.isActionValidForVan = function(van, action) {
+    return action.getNextNode(van.previousNode, van.currentNode);
+}
+
+ocargo.Level.prototype.isVanAtDeadEnd = function(van) {
+    var actions = [ocargo.FORWARD_ACTION, ocargo.TURN_LEFT_ACTION, ocargo.TURN_RIGHT_ACTION];
+    for (var i = 0; i < actions.length; i++) {
+        var nextNode = actions[i].getNextNode(van.previousNode, van.currentNode);
+        if (nextNode) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ocargo.Level.prototype.isVanAtDestination = function(van) {
+    return van.currentNode === ocargo.level.map.destination;
+}
+
+
+
+function programFinished(level, result, msg) {
     enableDirectControl();
+    for (var i = 0; i < THREADS; i++) {
+        level.blockHandlers[i].deselectCurrent();
+    }
 
-    if (ocargo.level.nextLevel != null) {
-      message = ocargo.messages.nextLevelButton(ocargo.level.nextLevel);
-    } else {
-        if (ocargo.level.nextEpisode != null && ocargo.level.nextEpisode !== "") {
-            message = ocargo.messages.nextEpisodeButton(ocargo.level.nextEpisode);
+    if (result) {
+        levelWon(level);
+    }
+    else {
+        levelFailed(level,msg);
+    }
+}
+
+function levelWon(level) {
+    console.debug('You win!');
+    ocargo.sound.win();
+
+    var scoreArray = level.pathFinder.getScore();
+    sendAttempt(scoreArray[0]);
+    
+    var message = '';
+    if (level.nextLevel != null) {
+        message = ocargo.messages.nextLevelButton(level.nextLevel);
+    } 
+    else {
+        if (level.nextEpisode != null && level.nextEpisode !== "") {
+            message = ocargo.messages.nextEpisodeButton(level.nextEpisode);
         } else {
             message = ocargo.messages.lastLevel;
         }
     }
-    startPopup("You win!", subtitle, message);
+
+    startPopup("You win!", scoreArray[1], message);
 };
 
-ocargo.Level.prototype.fail = function(msg, send) {
-    var title = 'Oh dear! :(';
-    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
-    console.debug(title);
-    enableDirectControl();
+function levelFailed(level, msg) {
+    console.debug('You lose!');
     ocargo.sound.failure();
+
+    sendAttempt(0);
+
+    var title = 'Oh dear! :(';
     startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
-    var level = this;
+    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
+    
     level.fails++;
-    if (level.fails >= level.failsBeforeHintBtn) {
-	    var hintBtns = $("#hintPopupBtn");
-		if (hintBtns.length === null || hintBtns.length === 0) {
-			$("#myModal > .mainText").append('<p id="hintBtnPara">' +
+    if (level.fails >= FAILS_BEFORE_HINT) {
+        var hintBtns = $("#hintPopupBtn");
+        if (hintBtns.length === null || hintBtns.length === 0) {
+            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
                 '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
                 '</p><p id="hintText">' + HINT + '</p>');
-			if(level.hintOpened){
-				$("#hintBtnPara").hide();
-			} else {
-				$("#hintText" ).hide();
-				$("#hintPopupBtn").click( function(){
-					$("#hintText").show(500);
-					$("#hintBtnPara").hide();
-					level.hintOpened = true;
-				});
-			}
-    	}
-    }
-    if (send) {
-        sendAttempt(0);
+            if(level.hintOpened){
+                $("#hintBtnPara").hide();
+            } 
+            else {
+                $("#hintText" ).hide();
+                $("#hintPopupBtn").click( function(){
+                    $("#hintText").show(500);
+                    $("#hintBtnPara").hide();
+                    level.hintOpened = true;
+                });
+            }
+        }
     }
 };
-
-function stepper(level, play) {
-    return function() {
-        try {
-            if (level.program.canStep()) {
-                level.correct = level.correct + 1;
-                level.program.step(level);
-            } else {
-                if (level.van.currentNode === level.map.destination && !level.program.isTerminated) {
-                    if(play) {
-                        level.win();
-                    } 
-                    enableDirectControl();
-                } else if (level.program.isTerminated) {
-                    level.fail(ocargo.messages.te, play);
-                    $("#myModal > .title").text(ocargo.messages.stoppingTittle);
-                }
-                else {
-                    level.fail(ocargo.messages.outOfInstructions, play);
-                    level.program.terminate();
-                }
-            }
-        } catch (error) {
-            level.fail(ocargo.messages.crashed, play);
-            level.program.terminate();
-            enableDirectControl();
-            throw error;
-        }
-    };
-}
 
 function sendAttempt(score) {
 
@@ -202,13 +309,11 @@ function sendAttempt(score) {
         $.ajax({
             url : '/game/submit',
             type : 'POST',
-            dataType: 'json',
             data : {
                 attemptData : attemptData,
                 csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
-                score : score
-            },
-            success : function(json) {
+                score : score,
+                workspace : ocargo.blocklyControl.serialize()
             },
             error : function(xhr,errmsg,err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -217,45 +322,3 @@ function sendAttempt(score) {
     }
     return false;
 }
-
-function directedThroughRedTrafficLight(previousNode, currentNode, nextNode){
-	for(var i = 0; i < currentNode.trafficLights.length; i++){
-		var tl = currentNode.trafficLights[i];
-		if(tl.sourceNode == previousNode && tl.state == tl.RED){
-			return true;
-		}
-	}
-	return false;
-}
-
-function InstructionHandler(level, isPlay) {
-	this.level = level;
-    this.isPlay = isPlay
-}
-
-InstructionHandler.prototype.handleInstruction = function(instruction, program) {
-	console.debug('Calculating next node for instruction ' + instruction.name);
-	var prevNode = this.level.van.previousNode;
-	var currNode = this.level.van.currentNode;
-    var nextNode = instruction.getNextNode(prevNode, currNode);
-    if (!nextNode) {
-        var n = this.level.correct - 1;
-        ocargo.blocklyControl.blink();
-        this.level.fail(ocargo.messages.xcorrect(n) + ocargo.messages.tryagain);
-
-        program.terminate();
-        return; //TODO: animate the crash
-    } else if (nextNode !== currNode && directedThroughRedTrafficLight(prevNode, currNode, nextNode)){
-        this.level.fail(ocargo.messages.throughRedTrafficLight);
-        program.terminate();
-        return; //TODO: play police siren sound
-    }
-    
-    if (this.level.van.fuel === 0) {
-        this.level.fail(ocargo.messages.nofuel);
-		program.terminate();
-		return;
-    }
-
-    this.level.van.move(nextNode, instruction, program.stepCallback);
-};

@@ -1,5 +1,5 @@
 #toolbox {
-    width: 510px;
+    width: 610px;
     margin-left: 10px;
 }
 
@@ -44,7 +44,7 @@
     color: #008CBA;
     font-weight: bold;
     background: #8BD5EE;
-    width: 186px;
+    width: 200px;
     border: 3px #8BD5EE;
     border-top-style: solid;
     border-right-style: solid;
@@ -73,10 +73,10 @@
     z-index: 2;
     display: none;
     text-align: left;
-    width: 73%;
+    width: 600px;
     font-size: 20px;
     line-height: 140%;
-    padding: 30px;
+    padding: 10px 30px;
     left: 0;
     background-color: white;
     position: absolute;
@@ -89,6 +89,8 @@
     -o-animation-duration: 0.5s;
     -moz-animation-duration: 0.5s;
     animation-duration: 0.5s;
+    max-height: 500px;
+    overflow: auto;
 }
 
 #tab-content-blocks > label {
@@ -96,13 +98,24 @@
     border: none;
 }
 
-#tab-content-arrows > p {
+#tab-content-arrows > p,
+#tab-content-random > p {
     color: #008CBA;
     font-weight: bold;
-    width: 200px;
+}
+
+#name {
+    float: right;
 }
 
 #maxFuel {
+    width:100px;
+    float: right;
+}
+
+#branchiness,
+#loopiness,
+#curviness {
     width:100px;
     float: right;
 }

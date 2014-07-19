@@ -8,36 +8,43 @@
 
 {% block scripts %}
 {{block.super}}
-  <script src="{% static 'game/js/messages.js' %}"></script>
-  <script src="{% static 'game/js/mobile-detect.min.js' %}"></script>
-  <script src="{% static 'game/js/raphael.js' %}"></script>
-  <script src="{% static 'game/js/drawing.js' %}"></script>
-  <script src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
-  <script src="{% static 'game/js/blockly_control.js' %}"></script>
-  <script src="{% static 'game/js/coordinate.js' %}"></script>
-  <script src="{% static 'game/js/game.js' %}"></script>
-  <script src="{% static 'game/js/time.js' %}"></script>
-  <script src="{% static 'game/js/trafficLight.js' %}"></script>
-  <script src="{% static 'game/js/pathFinder.js' %}"></script>
-  <script src="{% static 'game/js/instruction.js' %}"></script>
-  <script src="{% static 'game/js/level.js' %}"></script>
-  <script src="{% static 'game/js/map.js' %}"></script>
-  <script src="{% static 'game/js/node.js' %}"></script>
-  <script src="{% static 'game/js/program.js' %}"></script>
-  <script src="{% static 'game/js/ui.js' %}"></script>
-  <script src="{% static 'game/js/van.js' %}"></script>
-  <script src="{% static 'game/js/sound.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/python_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly_control.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/time.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/action.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/level.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/ui.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/python.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/editor.js' %}"></script>
 
   <script>
     var PATH = {{level.path|safe}};
     var DESTINATION = {{level.destination|safe}};
     var DECOR = {{level.decor|safe}};
     var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
-    var LEVEL_ID = {{level.id}};
-    var BLOCK_LIMIT = "{{level.block_limit}}" != "None" ?  {{level.block_limit}} : null;
+    var LEVEL_ID = "{{level.id}}";
+    var MODEL_SOLUTION = {{level.model_solution}};
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
     var BLOCKS =  [];
@@ -45,8 +52,12 @@
       BLOCKS.push("{{block.type}}");
     {% endfor %}
     var MAX_FUEL = {{level.max_fuel}};
+    var DIRECT_DRIVE = "{{level.direct_drive}}" == "True";
     var NEXT_LEVEL = "{{level.next_level}}" != "None" ? "{{level.next_level.id}}" : null;
     var NEXT_EPISODE = "{{level.episode.next_episode}}" != "None" ? "{{level.episode.next_episode.id}}" : null;
+    var WORKSPACE = "{{attempt.workspace}}";
+    var THREADS = "{{level.threads}}";
+    var LOGGED_IN_AS_STUDENT = "{{attempt}}" != "None";
   </script>
   
 {% endblock %}
@@ -55,21 +66,57 @@
 {{block.super}}
   {% compress css %}
     <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/skulpt/codemirror.css' %}" rel="stylesheet" type="text/css">
+        <link href="{% static 'game/css/skulpt/solarized.css' %}" rel="stylesheet" type="text/css">
   {% endcompress %}
 {% endblock %}
 
 {% block content %}
 <div id="wrapper">
-  <div id="programmingConsole" class="col">
+  <div id="programmingConsole" class="col no-print unselectable">
     <div id="blockly"></div>
 
+    <div id="pythonCode">
+      <h3>Python Program</h3>
+        <p>Use the Python editor below to design your program, and click run to try it out!</p>
+        <textarea id="code" cols="85" rows="25">
+        </textarea>
+        <button id="skulpt_run">Run</button>
+        <h4>Console Output:</h4>
+        <textarea disabled="" id="consoleOutput"></textarea>
+        <button id="clearConsole">Clear Console</button>
+        <h4>Van Commands:</h4>
+        <p>move_forwards(), turn_left(), turn_right(), turn_around(), wait()</p>
+        <p>at_dead_end(), at_destination()</p>
+        <p>at_traffic_light(c), where c is 'GREEN' or 'RED'</p>
+        <p>at_red_traffic_light(), at_green_traffic_light()</p>
+        <p>is_road(d), where d is 'FORWARD', 'LEFT' or 'RIGHT'</p>
+        <p>is_road_forward(), is_road_left(), is_road_right()</p>
+    </div>
   </div>
 
-  <div id="sliderControls">
-    <button id="slideBlockly">Blockly</button>
+  <div id="sliderControls" class="no-print unselectable">
+    <button id="slideConsole" class="unselectable">Slide Program</button>
+    <button id="bigCodeModeBtn" class="unselectable">Big Code Mode</button>
+    <button id="toggleConsole" class="unselectable">Toggle Console</button>
+  </div>
+
+  <div id="direct_drive" class="unselectable">
+    <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+      <span>&uarr; Move Forwards</span>
+    </button>
+    <button class="picButton" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+      <span>&#x21BA; Turn Left</span>
+    </button>
+    <button class="picButton" id="play" />
+      <span>Go</span>
+    </button>
+    <button class="picButton" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+      <span>&#x21BB; Turn Right</span>
+    </button>
   </div>
   
-  <div id="fuelGuage">
+  <div id="fuelGuage" class="no-print unselectable">
     <img src="/static/game/image/fuelGuage.svg"/>
     <div id="fuelGuagePointer">
       <img src="/static/game/image/fuelGuagePointer.svg"/>
@@ -77,34 +124,57 @@
   </div>
 
   <div id="paper" class="col"></div>
-  <button id="stop">Stop</button>
-  <div id="controls" class="col">
-      <button class="picButton" id="moveForward"><span>&uarr; Move Forwards</span></button>
-      <button class="picButton" id="turnLeft"><span>&#x21BA; Turn Left</span></button>
-      <button class="picButton" id="play" /><span>Go</span></button>
-      <button class="picButton" id="turnRight"><span>&#x21BB; Turn Right</span></button>
-      <div class="quit">
-      	<button id="help">Help</button>
-        <button id="step">Step</button>
-        <button id="clearIncorrect">Clear Incorrect</button>
-        <button id="clear">Clear</button>
-        <a class="button" href="/">Quit</a>
-        <button id="mute" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
-      </div>
+  <button id="stop" class="no-print">Stop</button>
+
+  <div id="controls" class="col no-print unselectable">
+
+    <div class="navigation" class="unselectable">
+      <button id="help" class="unselectable">Help</button>
+      <button id="step" class="unselectable">Step</button>
+      <button id="loadSave" class="unselectable">Load/Save</button>
+      <button id="clear" class="unselectable">Clear</button>
+      <a class="button unselectable" href="/game/">Quit</a>
+      <button id="mute" class="unselectable" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
+    </div>
+  </div>
+  <div id="consoleSlider" class="no-print">
   </div>
 </div>
-<div id="myModal" class="reveal-modal" data-reveal>
-  <h2 class="title"></h2>
-  <p class="lead"></p>
-  <p class="mainText"></p>
+
+<div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <h2 id="myModal-title" class="ocargo-modal-title"></h2>
+  <p id="myModal-lead" class="ocargo-modal-lead"></p>
+  <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
   <a class="close-reveal-modal" id="close-modal">&#215;</a>
 </div>
 
-<xml id="toolbox" style="display: none">
-  {% for block in blocks %}
-    <block type="{{ block.type }}"></block>
-  {% endfor %}
-</xml>
+<div id="loadSaveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <h2 class="title">Here you can save your program or load a previously saved one.</h2>
+  
+  <div class="scrolling-table-wrapper">
+    <div class="scrolling-table">
+      <table id="workspaceTable"></table>
+    </div>
+  </div>
+  <div style="margin-top: 1.25rem">
+    <button id="loadWorkspace">Load</button>
+    <button id="overwriteWorkspace">Overwrite</button>
+    <button id="deleteWorkspace">Delete</button>
+    <div style="float: right">
+      <input id="newWorkspaceName"/>
+      <button id="createNewWorkspace">Create new</button>
+    </div>
+  </div>
 
+  <a class="close-reveal-modal" id="close-loadSave-modal">&#215;</a>
+</div>
+
+<xml id="toolbox" style="display: none">
+  <category name="+">
+    {% for block in blocks %}
+      <block type="{{ block.type }}"></block>
+    {% endfor %}
+  </category>
+</xml>
 
 {% endblock %}

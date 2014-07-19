@@ -10,8 +10,16 @@ function createDefaultLevel(nodeData, destination, decor, trafficLightData, ui, 
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
     var map = new ocargo.Map(nodes, decor, trafficLights, dest, ui);
-    var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
-    return new ocargo.Level(map, van, ui, nextLevel, nextEpisode);
+    var vans = [];
+
+    var previousNode = nodes[0];
+    var startNode = nodes[0].connectedNodes[0];
+    for (var i = 0; i < THREADS; i++) {
+        vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel, ui));
+    }
+    ocargo.ui.renderVans(vans);
+
+    return new ocargo.Level(map, vans, ui, nextLevel, nextEpisode);
 }
 
 function createNodes(nodeData) {
@@ -50,7 +58,8 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
     	var controlledNode = nodes[controlledNodeId];
     	var sourceNode = nodes[sourceNodeId];
     	
-    	var light = new ocargo.TrafficLight(startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
+        console.log(startingState);
+    	var light = new ocargo.TrafficLight(i, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
     	trafficLights.push(light);
     	controlledNode.addTrafficLight(light);
     }
@@ -73,17 +82,13 @@ function initialiseDefault() {
     var title = "Level " + LEVEL_ID;
     startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
 
-	ocargo.time = new ocargo.Time();
+    ocargo.time = new ocargo.Time();
     ocargo.ui = createUi();
     ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, ocargo.ui, MAX_FUEL,
         NEXT_LEVEL, NEXT_EPISODE);
     ocargo.level.levelId = JSON.parse(LEVEL_ID);
-    ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
     enableDirectControl();
 
-    if (ocargo.level.blockLimit) {
-        ocargo.level.blockLimit++;
-    }
     if ($.cookie("muted") === "true") {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
@@ -96,12 +101,14 @@ function enableDirectControl() {
     document.getElementById('turnRight').disabled = false;
     document.getElementById('play').disabled = false;
     document.getElementById('controls').style.visibility='visible';
+    document.getElementById('direct_drive').style.visibility='visible';
     document.getElementById('stop').style.visibility='hidden';
     document.getElementById('step').disabled = false;
 }
 
 function disableDirectControl() {
     document.getElementById('controls').style.visibility='hidden';
+    document.getElementById('direct_drive').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
@@ -114,8 +121,95 @@ function clearVanData() {
     var nodes = ocargo.level.map.nodes;
     var previousNode = nodes[0];
     var startNode = nodes[0].connectedNodes[0];
-    ocargo.level.van = new ocargo.Van(previousNode, startNode, ocargo.level.van.maxFuel, ocargo.ui);
-    ocargo.ui.setVanToFront(previousNode, startNode);
+
+    for (var i = 0; i < THREADS; i++) {
+        var van = new ocargo.Van(i,previousNode, startNode, MAX_FUEL, ocargo.ui);
+        ocargo.level.vans[i] = van;
+        ocargo.ui.setVanToFront(previousNode, startNode, van);
+    }
+}
+
+function levelWon(level) {
+    console.debug('You win!');
+    ocargo.sound.win();
+
+    var scoreArray = level.pathFinder.getScore();
+    sendAttempt(scoreArray[0]);
+    
+    var message = '';
+    if (level.nextLevel != null) {
+        message = ocargo.messages.nextLevelButton(level.nextLevel);
+    } 
+    else {
+        if (level.nextEpisode != null && level.nextEpisode !== "") {
+            message = ocargo.messages.nextEpisodeButton(level.nextEpisode);
+        } else {
+            message = ocargo.messages.lastLevel;
+        }
+    }
+
+    startPopup("You win!", scoreArray[1], message);
+};
+
+function levelFailed(level, msg) {
+    console.debug('You lose!');
+    ocargo.sound.failure();
+
+    sendAttempt(0);
+
+    var title = 'Oh dear! :(';
+    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
+    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
+    
+    level.fails++;
+    if (level.fails >= FAILS_BEFORE_HINT) {
+        var hintBtns = $("#hintPopupBtn");
+        if (hintBtns.length === null || hintBtns.length === 0) {
+            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
+                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
+                '</p><p id="hintText">' + HINT + '</p>');
+            if(level.hintOpened){
+                $("#hintBtnPara").hide();
+            } 
+            else {
+                $("#hintText" ).hide();
+                $("#hintPopupBtn").click( function(){
+                    $("#hintText").show(500);
+                    $("#hintBtnPara").hide();
+                    level.hintOpened = true;
+                });
+            }
+        }
+    }
+};
+
+function sendAttempt(score) {
+    // Send out the submitted data.
+    if (ocargo.level.levelId) {
+        var attemptData = JSON.stringify(ocargo.level.attemptData);
+
+        $.ajax({
+            url : '/game/submit',
+            type : 'POST',
+            dataType: 'json',
+            data : {
+                attemptData : attemptData,
+                csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
+                score : score,
+                workspace : ocargo.blocklyControl.serialize()
+            },
+            success : function(json) {
+            },
+            error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    }
+    return false;
+}
+
+function redrawBlockly() {
+    Blockly.fireUiEvent(window, 'resize');
 }
 
 function trackDevelopment() {
@@ -123,21 +217,21 @@ function trackDevelopment() {
     $('#moveForward').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(enableDirectControl);
+        moveForward(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 
     $('#turnLeft').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(enableDirectControl);
+        moveLeft(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 
     $('#turnRight').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(enableDirectControl);
+        moveRight(ocargo.level.vans[0],enableDirectControl);
         ocargo.time.incrementTime();
     });
 
@@ -150,15 +244,14 @@ function trackDevelopment() {
         try {
             var program = ocargo.blocklyControl.populateProgram();
         } catch (error) {
-            ocargo.level.fail('Your program crashed!');
-            throw error;
+            enableDirectControl();
+            levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
+            return;
         }
 
-        program.instructionHandler = new InstructionHandler(ocargo.level, true);
         clearVanData();
         ocargo.time.resetTime();
-        ocargo.level.play(program);
-        ocargo.level.correct = 0;
+        ocargo.level.playProgram(program);
     });
 
     $('#step').click(function() {
@@ -166,14 +259,10 @@ function trackDevelopment() {
             ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
         }
 
-        if (ocargo.level.program === undefined || ocargo.level.program.isTerminated) {
+        if (ocargo.level.program === undefined || ocargo.level.program.isFinished) {
             try {
-                ocargo.level.correct = 0;
                 ocargo.level.program = ocargo.blocklyControl.populateProgram();
-                ocargo.level.program.stepCallback = enableDirectControl;
-                ocargo.level.stepper = stepper(ocargo.level, false);
-                ocargo.level.program.startBlock.selectWithConnected();
-                ocargo.level.program.instructionHandler = new InstructionHandler(ocargo.level, false);
+                ocargo.level.selectStartBlocks();
                 clearVanData();
                 ocargo.time.resetTime();
                 Blockly.addChangeListener(terminate);
@@ -184,21 +273,15 @@ function trackDevelopment() {
         }
         disableDirectControl();
         $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
-        ocargo.level.stepper();
+        ocargo.level.stepProgram(enableDirectControl);
 
         function terminate() {
             ocargo.level.program.isTerminated = true;
         }
-
     });
     
     $('#help').click(function() {
         startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
-    });
-
-    $('#clearIncorrect').click(function() {
-        ocargo.blocklyControl.removeWrong();
-        enableDirectControl();
     });
 
     $('#clear').click(function() {
@@ -213,31 +296,217 @@ function trackDevelopment() {
         ocargo.level.program.terminate();
     });
 
-    $('#slideBlockly').click(function() {
-        var c = $('#programmingConsole');
-        if (c.is(':visible')) {
-            $('#paper').animate({width: '100%'});
-            $('#sliderControls').animate({left: '0%'});
-        } else {
-            $('#paper').animate({width: '50%'});
-            $('#sliderControls').animate({left: '50%'});
-        }
-        c.animate({width: 'toggle'});
+    var selectedWorkspace = null;
+
+    $('#loadSave').click(function() {
+        // Disable the button to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        $('#loadSave').attr('disabled', 'disabled');
+
+
+        loadAllSavedWorkspaces(function(err, workspaces) {
+            if (err != null) {
+                console.debug(err);
+                return;
+            }
+
+            var table = $('#workspaceTable');
+
+            // Remove click listeners to avoid memory leak and remove all rows
+            $('#workspaceTable td').off('click');
+            table.empty();
+
+            // Order them alphabetically
+            workspaces.sort(function(a, b) {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                else if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            // Add a row to the table for each workspace saved in the database
+            for (var i = 0, ii = workspaces.length; i < ii; i++) {
+                var workspace = workspaces[i];
+                table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
+            }
+
+            // Add click listeners to all rows
+            $('#workspaceTable td').on('click', function(event) {
+                $('#workspaceTable td').css('background-color', '#FFFFFF');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                $('#loadWorkspace').removeAttr('disabled');
+                $('#overwriteWorkspace').removeAttr('disabled');
+                $('#deleteWorkspace').removeAttr('disabled');
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#loadSaveModal').foundation('reveal', 'open');
+            $('#loadSave').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+            $('#loadWorkspace').attr('disabled', 'disabled');
+            $('#overwriteWorkspace').attr('disabled', 'disabled');
+            $('#deleteWorkspace').attr('disabled', 'disabled');
+        });
     });
+
+    $('#loadWorkspace').click(function() {
+        if (selectedWorkspace) {
+            loadWorkspace(selectedWorkspace, function(err, workspace) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                ocargo.blocklyControl.reset();
+                ocargo.blocklyControl.deserialize(workspace);
+                $('#loadSaveModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    $('#overwriteWorkspace').click(function() {
+        if (selectedWorkspace) {
+            overwriteWorkspace(selectedWorkspace, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+                $('#loadSaveModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    $('#deleteWorkspace').click(function() {
+        if (selectedWorkspace) {
+            deleteWorkspace(selectedWorkspace, function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                $('#workspaceTable td[value=' + selectedWorkspace + ']').remove();
+                selectedWorkspace = null;
+            });
+        }
+    });
+
+    $('#createNewWorkspace').click(function() {
+        var newName = $('#newWorkspaceName').val();
+        if (newName && newName != "") {
+            createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                $('#loadSaveModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    // If the user pressed the enter key in the textbox, should be the same as clicking the button
+    $('#newWorkspaceName').on('keypress', function(e) {
+        if (e.which == 13) {
+            $('#createNewWorkspace').trigger('click');
+        }
+    });
+
+    $('#bigCodeModeBtn').click(function() {
+        if(ocargo.blocklyControl.bigCodeMode){
+            ocargo.blocklyControl.decreaseBlockSize();
+            $('#bigCodeModeBtn').text("Big Code Mode");
+        } else {
+            ocargo.blocklyControl.increaseBlockSize();
+            $('#bigCodeModeBtn').html("<del>Big</del> Code Mode");
+        }
+    });
+
+    var consoleSliderPosition = 50;
+    
+    $('#slideConsole').click(function() {
+        if ($('#programmingConsole').width() != 0) {
+            $('#paper').animate({width: '100%'}, {queue: false});
+            $('#paper').animate({left: '0%'}, {queue: false});
+            $('#programmingConsole').animate({width: '0%'}, {queue: false});
+            $('#sliderControls').animate({left: '0%'}, {queue: false});
+            $('#direct_drive').animate({left: '0%'}, {queue: false});
+            $('#consoleSlider').animate({left: '0px'}, {queue: false, complete: function() { redrawBlockly(); }});
+        } else {
+            $('#paper').animate({ width: (100 - consoleSliderPosition) + '%' }, {queue: false});
+            $('#paper').animate({ left: consoleSliderPosition + '%' }, {queue: false});
+            $('#programmingConsole').animate({ width: consoleSliderPosition + '%' }, {queue: false});
+            $('#sliderControls').animate({ left: consoleSliderPosition + '%' }, {queue: false})
+            $('#direct_drive').animate({ left: consoleSliderPosition + '%' }, {queue: false})
+            $('#consoleSlider').animate({ left: consoleSliderPosition + '%' }, {queue: false, complete: function() { redrawBlockly(); }});
+        }
+    });
+
+    $('#toggleConsole').click(function() {
+        if($('#blockly').css("display")=="none") {
+            $('#pythonCode').fadeOut();
+            $('#blockly').fadeIn();
+            redrawBlockly();
+        }
+        else {
+            $('#blockly').fadeOut();
+            $('#pythonCode').fadeIn();
+            ocargo.editor.setValue(Blockly.Python.workspaceToCode());
+        }
+    });
+
+    $('#consoleSlider').on('mousedown', function(e){
+        var slider = $(this);
+        var p = slider.parent().offset();
+
+        //disable drag when mouse leaves this or the parent
+        slider.on('mouseup', function(e){
+            slider.off('mousemove');
+            slider.parent().off('mousemove');
+            redrawBlockly();
+        });
+        slider.parent().on('mouseup', function(e) {
+            slider.off('mousemove');
+            slider.parent().off('mousemove');
+            redrawBlockly();
+        });
+
+        slider.parent().on('mousemove', function(me){
+            consoleSliderPosition = 100 * me.pageX / $( window ).width();
+            if (consoleSliderPosition > 50) {
+                consoleSliderPosition = 50;
+            }
+
+            $('#consoleSlider').css({ left: consoleSliderPosition + '%' });
+            $('#paper').css({ width: (100 - consoleSliderPosition) + '%' });
+            $('#paper').css({ left: consoleSliderPosition + '%' });
+            $('#programmingConsole').css({ width: consoleSliderPosition + '%' });
+            $('#sliderControls').css({ left: consoleSliderPosition + '%' });
+            $('#direct_drive').css({ left: consoleSliderPosition + '%' });
+            
+            redrawBlockly();
+        });
+    });
+
+    $('#mute').click(function() {
+        var $this = $(this);
+        if (ocargo.sound.volume === 0) {
+            $this.text('Mute');
+            ocargo.sound.unmute();
+        } else {
+            $this.text('Unmute');
+            ocargo.sound.mute();
+        }
+    });
+
 }
 
 $(function() {
     initialiseDefault();
     trackDevelopment();
-});
-
-$('#mute').click(function() {
-    var $this = $(this);
-    if (ocargo.sound.volume === 0) {
-        $this.text('Mute');
-        ocargo.sound.unmute();
-    } else {
-        $this.text('Unmute');
-        ocargo.sound.mute();
-    }
 });

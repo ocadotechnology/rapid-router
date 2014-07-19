@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'nuit',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = [
@@ -88,7 +89,7 @@ SITE_ID = 1
 
 # PRESENTATION LAYER
 
-NUIT_GLOBAL_TITLE = "Oh, Car. Go!"
+NUIT_GLOBAL_TITLE = "Rapid Router"
 NUIT_GLOBAL_LINK = "/home/"
 
 
@@ -122,7 +123,6 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
         'default': {
             'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
             'KEY_PREFIX': os.getenv('CACHE_PREFIX'),
-            'TIMEOUT': 0,
         }
     }
     COMPRESS_OFFLINE = True

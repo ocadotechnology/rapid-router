@@ -1,12 +1,16 @@
 from django.conf.urls import patterns, url
+from views import WorkspaceViewList, WorkspaceViewDetail
 
 urlpatterns = patterns('',
     url(r'^$', 'game.views.levels'),
     url(r'^submit$', 'game.views.submit'),
+    url(r'^workspace$', WorkspaceViewList.as_view()),
+    url(r'^workspace/(?P<pk>[0-9]+)$', WorkspaceViewDetail.as_view()),
     url(r'^(?P<level>[0-9]+)$', 'game.views.level'),
     url(r'^episode/(?P<episode>[0-9]+)$', 'game.views.start_episode'),
     url(r'^level_editor$', 'game.views.level_editor'),
-    url(r'^levels/random$', 'game.views.level_random'),
+    url(r'^levels/random/([0-9]+)$', 'game.views.random_level_for_episode'),
+    url(r'^levels/random/editor', 'game.views.random_level_for_editor'),
     url(r'^levels/new$', 'game.views.level_new'),
     url(r'^settings$', 'game.views.settings'),
     url(r'^logged_students$', 'game.views.logged_students'),

@@ -12,12 +12,18 @@
 }
 
 #programmingConsole {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 50%;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #paper {
+    position: absolute;
+    top: 0;
+    left: 50%;
     border: 0;
     background-color: #A0C53A;
     width: 50%;
@@ -37,33 +43,41 @@
     margin-bottom: 0;
 }
 
-#controls .quit {
+#controls .navigation {
     position: absolute;
     bottom: 0;
     right: 0;
 }
 
-#controls #turnLeft,
-#controls #turnRight,
-#controls #play {
-    top: 50px;
+#direct_drive {
+    width: 140px;
+    height: 95px;
+    position: absolute;
+    z-index: 1;
+    bottom: 15px;
 }
 
-#controls #moveForward, 
-#controls #play {
-    right: 170px;
+#turnLeft,
+#turnRight,
+#play {
+    bottom: 0px;
 }
 
-#controls #turnLeft {
-    right: 220px;
+#moveForward, 
+#play {
+    left: 60px;
 }
 
-#controls #turnRight {
-    right: 120px;
+#turnLeft {
+    left: 10px;
 }
 
-#controls #moveForward {
-    top: 0;
+#turnRight {
+    left: 110px;
+}
+
+#moveForward {
+    bottom: 50px;
 }
 
 #stop {
@@ -80,22 +94,58 @@ button, .button, img.control{
     float: left;
 }
 
-#myModal > p.mainText{
+.ocago-modal-mainText{
     font-size: 1.2rem !important;
 }
-#myModal > p.lead {
+.ocago-modal-lead {
     font-size: 1.4rem !important;
 }
 
-#myModal > p.mainText > #hintText,
-#myModal > p.mainText > #hintBtnPara{
+.ocago-modal-mainText > #hintText,
+.ocago-modal-mainText > #hintBtnPara {
 	margin: 2rem 1rem 0;
+}
+
+#newWorkspaceName {
+    height: 50px;
+    width: 500px;
+    font-size: 1.4rem !important;
+}
+
+.scrolling-table-wrapper {
+    position: relative;
+}
+
+.scrolling-table {
+    max-height: 200px;
+    overflow: auto;
+}
+
+#workspaceTable {
+    width: 100%;
 }
 
 #sliderControls {
     position: absolute;
     left: 50%;
+    height: 0%;
     z-index: 1;
+}
+
+#direct_drive {
+    position: absolute;
+    left: 50%;
+    z-index: 1;
+}
+
+#consoleSlider {
+    position: absolute;
+    left: 50%;
+    width: 5px;
+    height: 100%;
+    z-index: 3;
+    background-color: #444;
+    cursor: col-resize;
 }
 
 #fuelGuage {
@@ -164,5 +214,41 @@ img.control{
 }
 
 #blockly {
-    height: 95%;
+    height: 100%;
+}
+
+#pythonCode {
+    display: none;
+    height: 100%;
+    overflow: auto;
+    padding: 5px;
+}
+
+#consoleOutput {
+    background-color: #eceaee;
+    max-height: 300px;
+    max-width: 100%;
+    min-height: 250px;
+    min-width: 100%;
+    overflow: auto;
+    padding: 5px;
+}
+
+@media print {
+    #paper {
+        width: 100% !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

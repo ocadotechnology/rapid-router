@@ -87,12 +87,14 @@ class Level (models.Model):
     destination = models.CharField(max_length=10)
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
-    block_limit = models.IntegerField(blank=True, null=True)
-    blocks = models.ManyToManyField(Block, related_name='+')
+    blocks = models.ManyToManyField(Block, related_name='levels')
     max_fuel = models.IntegerField(default=50)
+    direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
-
+    model_solution = models.IntegerField(blank=True, default=50)
+    threads = models.IntegerField(blank=False, default=1)
+    
     def __unicode__(self):
         return 'Level ' + str(self.id)
 
@@ -109,6 +111,12 @@ class Episode (models.Model):
     first_level = models.ForeignKey(Level)
     next_episode = models.ForeignKey("self", null=True, default=None)
 
+    r_branchiness = models.FloatField(default=0)
+    r_loopiness = models.FloatField(default=0)
+    r_curviness = models.FloatField(default=0)
+    r_num_tiles = models.IntegerField(default=5)
+    r_blocks = models.ManyToManyField(Block, related_name='episodes')
+    
     @property
     def levels(self):
         if self.first_level is not None:
@@ -118,12 +126,19 @@ class Episode (models.Model):
                 level = level.next_level
 
 
+class Workspace (models.Model):
+    name = models.CharField(max_length=200)
+    owner = models.ForeignKey(Student, related_name='workspaces')
+    workspace = models.TextField(default="")
+
+
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name='attempts')
     student = models.ForeignKey(Student, related_name='attempts')
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0)
+    workspace = models.TextField(default="")
 
 
 class Command (models.Model):
