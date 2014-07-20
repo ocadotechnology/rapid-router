@@ -431,8 +431,9 @@ ocargo.BlocklyControl.prototype.increaseBlockSize = function(){
 
 	Blockly.mainWorkspace.flyout_.show(Blockly.languageTree.childNodes);
 	
+    $(".blocklyIconShield").attr("width", 32).attr("height", 32).attr("rx", 8).attr("ry", 8);
     $(".blocklyIconMark").attr("x", 16).attr("y", 24);
-    $(".blocklyEditableText > rect").attr("height", 41).attr("y", -32);
+    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24);
 };
 
 ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
@@ -467,6 +468,9 @@ ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
     Blockly.mainWorkspace.render();
 
 	Blockly.mainWorkspace.flyout_.show(Blockly.languageTree.childNodes);
+    $(".blocklyIconShield").attr("width", 16).attr("height", 16).attr("rx", 4).attr("ry", 4);
+    $(".blocklyIconMark").attr("x", 8).attr("y", 12);
+    $(".blocklyEditableText > rect").attr("height", 16).attr("y", -12);
 };
 
 ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
