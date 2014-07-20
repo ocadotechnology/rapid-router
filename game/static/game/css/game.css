@@ -17,8 +17,7 @@
     top: 0;
     width: 50%;
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 #paper {
@@ -216,13 +215,6 @@ img.control{
 
 #blockly {
     height: 100%;
-}
-
-#blocklySizing {
-    position: absolute;
-    left: 0px;
-    top: 90%;
-    z-index: 3;
 }
 
 #pythonCode {

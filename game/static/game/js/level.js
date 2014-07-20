@@ -131,6 +131,12 @@ ocargo.Level.prototype.hasWon = function() {
     return true;    
 }
 
+// Function to be used by python with support for animating/highlighlting correct line of code editor to follow...
+ocargo.Level.prototype.handlePythonAction = function(action, thread, van) {
+    highlightLine(Sk.currLineNo - 1);
+    return ocargo.level.handleAction(action, thread, van);
+};
+
 ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
     console.debug('Calculating next node for action ' + action.name);
     var level = this;
@@ -173,8 +179,13 @@ ocargo.Level.prototype.getTrafficLightState = function(previousNode, currentNode
     }
 }
 
-
 /** Conditions **/
+
+// Condition checker to be used by python with support for animating/highlighting correct line of code editor to follow...
+ocargo.Level.prototype.checkAndHighlightPythonCondition = function(conditionFunction, van, action) {
+    // highlightLine(Sk.currLineNo - 1);
+    return conditionFunction(van, action);
+}
 
 ocargo.Level.prototype.isVanGoingThroughRedLight = function(van, nextNode){
     var previousNode = van.previousNode;
@@ -189,15 +200,15 @@ ocargo.Level.prototype.isVanGoingThroughRedLight = function(van, nextNode){
 }
 
 ocargo.Level.prototype.isTrafficLightInState = function(previousNode, currentNode, state) {
-    return state === this.getTrafficLightState(previousNode, currentNode);
+    return state === ocargo.level.getTrafficLightState(previousNode, currentNode);
 }
 
 ocargo.Level.prototype.isVanAtRedLight = function(van) {
-    return this.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.RED);
+    return ocargo.level.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.RED);
 }
 
 ocargo.Level.prototype.isVanAtGreenLight = function(van) {
-    return this.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.GREEN);
+    return ocargo.level.isTrafficLightInState(van.previousNode, van.currentNode, ocargo.TrafficLight.GREEN);
 }
 
 ocargo.Level.prototype.isActionValidForVan = function(van, action) {
@@ -216,7 +227,7 @@ ocargo.Level.prototype.isVanAtDeadEnd = function(van) {
 }
 
 ocargo.Level.prototype.isVanAtDestination = function(van) {
-    return van.currentNode === this.map.destination;
+    return van.currentNode === ocargo.level.map.destination;
 }
 
 
@@ -228,14 +239,14 @@ function programFinished(level, result, msg) {
     }
 
     if (result) {
-        win(level);
+        levelWon(level);
     }
     else {
-        fail(level,msg);
+        levelFailed(level,msg);
     }
 }
 
-function win(level) {
+function levelWon(level) {
     console.debug('You win!');
     ocargo.sound.win();
 
@@ -257,7 +268,7 @@ function win(level) {
     startPopup("You win!", scoreArray[1], message);
 };
 
-function fail(level, msg) {
+function levelFailed(level, msg) {
     console.debug('You lose!');
     ocargo.sound.failure();
 
@@ -298,14 +309,11 @@ function sendAttempt(score) {
         $.ajax({
             url : '/game/submit',
             type : 'POST',
-            dataType: 'json',
             data : {
                 attemptData : attemptData,
                 csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
                 score : score,
                 workspace : ocargo.blocklyControl.serialize()
-            },
-            success : function(json) {
             },
             error : function(xhr,errmsg,err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);

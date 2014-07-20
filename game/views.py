@@ -55,8 +55,11 @@ def levels(request):
     
     def get_level_title(i):
         title = 'title_level' + str(i)
-        titleCall = getattr(messages, title)
-        return mark_safe(titleCall())
+        try:
+            titleCall = getattr(messages, title)
+            return mark_safe(titleCall())
+        except AttributeError:
+            return ""
 
     def get_attempt_score(lvl):
         user = request.user
@@ -121,16 +124,21 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
     lesson = None
-    if lvl.default == 1:
-        lesson = 'description_level' + str(level)
-        hint = 'hint_level' + str(level)
-    else:
+
+    lesson = 'description_level' + str(level)
+    hint = 'hint_level' + str(level)
+    
+    try:
+        lessonCall = getattr(messages, lesson)
+        hintCall = getattr(messages, hint)
+    except AttributeError:
         lesson = 'description_level_default'
         hint = 'hint_level_default'
-    messageCall = getattr(messages, lesson)
-    lesson = mark_safe(messageCall())
-    messageCall = getattr(messages, hint)
-    hint = mark_safe(messageCall())
+        lessonCall = getattr(messages, lesson)
+        hintCall = getattr(messages, hint)
+
+    lesson = mark_safe(lessonCall())
+    hint = mark_safe(hintCall())
 
     #FIXME: figure out how to check for all this better
     loggedInAsStudent = False

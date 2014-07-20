@@ -13,16 +13,27 @@ ocargo.blocklyControl.BLOCK_HEIGHT = 20;
 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH = 1;
 ocargo.blocklyControl.IMAGE_WIDTH = 20;
 
+ocargo.blocklyControl.numStartBlocks = 0;
+
 Blockly.Blocks['start'] = {
     // Beginning block - identifies the start of the program
     init: function() {
+        var imageStr = (ocargo.blocklyControl.numStartBlocks%2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+        ocargo.blocklyControl.numStartBlocks++;
+        
         this.setColour(50);
         this.appendDummyInput()
-            .appendField('Start');
+            .appendField('Start')
+            .appendField(new Blockly.FieldImage(imageStr, VAN_HEIGHT, VAN_WIDTH));
         this.setNextStatement(true);
         this.setTooltip('The beginning of the program');
         this.setDeletable(false);
     }
+};
+
+Blockly.Python['start'] = function(block) {
+	return 'import van\n\
+v = van.Van()\n';
 };
 
 Blockly.Blocks['move_forwards'] = {
@@ -38,6 +49,10 @@ Blockly.Blocks['move_forwards'] = {
         this.setNextStatement(true);
         this.setTooltip('Move the van forwards');
     }
+};
+
+Blockly.Python['move_forwards'] = function(block) {
+	return 'v.move_forwards()\n';
 };
 
 Blockly.Blocks['turn_left'] = {
@@ -58,6 +73,10 @@ Blockly.Blocks['turn_left'] = {
     }
 };
 
+Blockly.Python['turn_left'] = function(block) {
+	return 'v.turn_left()\n';
+};
+
 Blockly.Blocks['turn_right'] = {
     // Block for turning right
     init: function() {
@@ -74,6 +93,10 @@ Blockly.Blocks['turn_right'] = {
         this.setNextStatement(true);
         this.setTooltip('Turn the van right');
     }
+};
+
+Blockly.Python['turn_right'] = function(block) {
+	return 'v.turn_right()\n';
 };
 
 Blockly.Blocks['turn_around'] = {
@@ -94,6 +117,10 @@ Blockly.Blocks['turn_around'] = {
     }
 };
 
+Blockly.Python['turn_around'] = function(block) {
+	return 'v.turn_around()\n';
+};
+
 Blockly.Blocks['wait'] = {
     // Block for not moving the van for a time
     init: function() {
@@ -112,6 +139,10 @@ Blockly.Blocks['wait'] = {
     }
 };
 
+Blockly.Python['wait'] = function(block) {
+	return 'v.wait()\n';
+};
+
 Blockly.Blocks['road_exists'] = {
     init: function() {
         var BOOLEANS =
@@ -126,6 +157,18 @@ Blockly.Blocks['road_exists'] = {
                                                 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
     }
+};
+
+Blockly.Python['road_exists'] = function(block) {
+	if(block.inputList[0].fieldRow[1].value_ === 'FORWARD'){
+		var python = "v.is_road('FORWARD')";
+	}else if(block.inputList[0].fieldRow[1].value_ === 'LEFT'){
+		var python = "v.is_road('LEFT')";
+	}else{
+		var python = "v.is_road('RIGHT')";
+	}
+	
+	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
 };
 
 Blockly.Blocks['traffic_light'] = {
@@ -143,6 +186,16 @@ Blockly.Blocks['traffic_light'] = {
     }
 };
 
+Blockly.Python['traffic_light'] = function(block) {
+	if(block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED){
+		var python = "v.at_traffic_light('RED')";
+	}else{
+		var python = "v.at_traffic_light('GREEN')";
+	}
+	
+	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
+};
+
 Blockly.Blocks['dead_end'] = {
     init: function() {
         this.setColour(210);
@@ -153,6 +206,10 @@ Blockly.Blocks['dead_end'] = {
                                                 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
     }
+};
+
+Blockly.Python['dead_end'] = function(block) {
+	return ['v.at_dead_end()', Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
 };
 
 Blockly.Blocks['at_destination'] = {
@@ -167,6 +224,10 @@ Blockly.Blocks['at_destination'] = {
     }
 };
 
+Blockly.Python['at_destination'] = function(block) {
+	return ['v.at_destination()', Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to;
+};
+
 Blockly.Blocks['call_proc'] = {
     // Block for calling a defined procedure
     init: function() {
@@ -177,6 +238,10 @@ Blockly.Blocks['call_proc'] = {
         this.setNextStatement(true);
         this.setTooltip('Call');
     }
+};
+
+Blockly.Python['call_proc'] = function(block) {
+	return 'this.' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '()\n';
 };
 
 Blockly.Blocks['declare_proc'] = {
@@ -190,6 +255,11 @@ Blockly.Blocks['declare_proc'] = {
 
         this.setTooltip('Declares the procedure');
     }
+};
+
+Blockly.Python['declare_proc'] = function(block) {
+	return 'def ' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '():\n\
+	print "TODO get sub-blocks"';//TODO: get code out of sub-blocks (there's a Blockly function for it)
 };
 
 // Set text colour to red
@@ -263,6 +333,8 @@ ocargo.BlocklyControl.prototype.init = function() {
         e.innerHTML = text;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
+    
+    ocargo.blocklyControl.reset();
 
     // Use the user's last attempt if available, else use whatever's in local storage
     if (WORKSPACE && WORKSPACE != '') {
@@ -585,7 +657,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
             throw ocargo.messages.whileBodyError;
         }
 		return new While(
-			counterCondition(block.inputList[0].fieldRow[1].text_),
+			counterCondition(parseInt(block.inputList[0].fieldRow[1].text_)),
 			createSequence(bodyBlock),
 			block);
 	}
@@ -720,17 +792,6 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
         };
     }
 
-    function counterCoundition(count) {
-        return function() {
-            if (count > 0) {
-                count--;
-                return true;
-            }
-
-            return false;
-        };
-    }
-
     function deadEndCondition() {
         return function(level,threadID) {
             return level.isVanAtDeadEnd(level.vans[threadID]);
@@ -746,6 +807,19 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     function atDestinationCondition() {
         return function(level,threadID) {
             return level.isVanAtDestination(level.vans[threadID]);
+        };
+    }
+
+    function counterCondition(count) {
+        var startCount = count;
+        return function(level,threadID) {
+            if (count > 0) {
+                count--;
+                return true;
+            }
+            // Resets the counter for nested loops
+            count = startCount;
+            return false;
         };
     }
 

@@ -7,34 +7,35 @@
 
 {% block scripts %}
 {{block.super}}
-  <script src="{% static 'game/js/messages.js' %}"></script>
-  <script src="{% static 'game/js/mobile-detect.min.js' %}"></script>
-  <script src="{% static 'game/js/raphael.js' %}"></script>
-  <script src="{% static 'game/js/drawing.js' %}"></script>
-  <script src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
-  <script src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
-  <script src="{% static 'game/js/blockly_control.js' %}"></script>
-  <script src="{% static 'game/js/coordinate.js' %}"></script>
-  <script src="{% static 'game/js/game.js' %}"></script>
-  <script src="{% static 'game/js/time.js' %}"></script>
-  <script src="{% static 'game/js/trafficLight.js' %}"></script>
-  <script src="{% static 'game/js/pathFinder.js' %}"></script>
-  <script src="{% static 'game/js/action.js' %}"></script>
-  <script src="{% static 'game/js/level.js' %}"></script>
-  <script src="{% static 'game/js/map.js' %}"></script>
-  <script src="{% static 'game/js/node.js' %}"></script>
-  <script src="{% static 'game/js/program.js' %}"></script>
-  <script src="{% static 'game/js/ui.js' %}"></script>
-  <script src="{% static 'game/js/van.js' %}"></script>
-  <script src="{% static 'game/js/sound.js' %}"></script>
-  <script src="{% static 'game/js/saving.js' %}"></script>
-  <script src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
-  <script src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
-  <script src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
-  <script src="{% static 'game/js/skulpt/python.js' %}"></script>
-  <script src="{% static 'game/js/skulpt/editor.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/python_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly_control.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/time.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/action.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/level.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/ui.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/python.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/editor.js' %}"></script>
 
   <script>
     var PATH = {{level.path|safe}};
@@ -71,9 +72,6 @@
 
 {% block content %}
 <div id="wrapper">
-  <div id="blocklySizing">
-    <button id="blocklyExpand">+</button>
-  </div>
   <div id="programmingConsole" class="col no-print unselectable">
     <div id="blockly"></div>
 
@@ -87,9 +85,11 @@
         <textarea disabled="" id="consoleOutput"></textarea>
         <button id="clearConsole">Clear Console</button>
         <h4>Van Commands:</h4>
-        <p>move_forward(), turn_left(), turn_right(), turn_around(), wait()</p>
+        <p>move_forwards(), turn_left(), turn_right(), turn_around(), wait()</p>
         <p>at_dead_end(), at_destination()</p>
+        <p>at_traffic_light(c), where c is 'GREEN' or 'RED'</p>
         <p>at_red_traffic_light(), at_green_traffic_light()</p>
+        <p>is_road(d), where d is 'FORWARD', 'LEFT' or 'RIGHT'</p>
         <p>is_road_forward(), is_road_left(), is_road_right()</p>
     </div>
   </div>
@@ -169,9 +169,11 @@
 </div>
 
 <xml id="toolbox" style="display: none">
-  {% for block in blocks %}
-    <block type="{{ block.type }}"></block>
-  {% endfor %}
+  <category name="+">
+    {% for block in blocks %}
+      <block type="{{ block.type }}"></block>
+    {% endfor %}
+  </category>
 </xml>
 
 {% endblock %}
