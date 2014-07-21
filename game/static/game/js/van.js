@@ -34,3 +34,7 @@ ocargo.Van.prototype.move = function(nextNode) {
 ocargo.Van.prototype.getPosition = function() {
     return { previousNode: this.previousNode, currentNode: this.currentNode };
 };
+
+ocargo.Van.prototype.getFuelPercentage = function() {
+    return 100 * this.van.fuel() / this.van.maxFuel();
+}

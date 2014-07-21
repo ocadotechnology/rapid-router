@@ -1,3 +1,5 @@
+'use strict';
+
 var ocargo = ocargo || {};
 
 ocargo.TrafficLight = function(id, data, map) {
