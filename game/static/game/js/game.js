@@ -1,40 +1,61 @@
 var ocargo = ocargo || {};
 
-function createUi() {
-    return new ocargo.SimpleUi();
+'use strict';
+
+function init() {
+    ocargo.time = new ocargo.Time();
+    ocargo.ui = new ocargo.SimpleUi();
+    ocargo.blocklyControl = new ocargo.BlocklyControl();
+    ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
+    
+    ocargo.level = createLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, MAX_FUEL, NEXT_LEVEL, NEXT_EPISODE);
+    ocargo.level.levelId = JSON.parse(LEVEL_ID);
+
+    ocargo.blocklyControl.loadPreviousAttempt();
+    setupListeners();
+    enableDirectControl();
+    startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
+
+    window.addEventListener('unload', ocargo.blocklyControl.teardown);
+
+    if ($.cookie("muted") === "true") {
+        $('#mute').text("Unmute");
+        ocargo.sound.mute();
+    }
 }
 
-function createDefaultLevel(nodeData, destination, decor, trafficLightData, ui, maxFuel, nextLevel, nextEpisode) {
+function createLevel(nodeData, destination, decor, trafficLightData, maxFuel, nextLevel, nextEpisode) {
     var nodes = createNodes(nodeData);
     var trafficLights = createAndAddTrafficLightsToNodes(nodes, trafficLightData);
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
-    var map = new ocargo.Map(nodes, decor, trafficLights, dest, ui);
+    var map = new ocargo.Map(nodes, decor, trafficLights, dest);
     var vans = [];
 
     var previousNode = nodes[0];
     var startNode = nodes[0].connectedNodes[0];
     for (var i = 0; i < THREADS; i++) {
-        vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel, ui));
+        vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel));
     }
+
+    ocargo.ui.renderMap(map);
     ocargo.ui.renderVans(vans);
 
-    return new ocargo.Level(map, vans, ui, nextLevel, nextEpisode);
+    return new ocargo.Level(map, vans, nextLevel, nextEpisode);
 }
 
 function createNodes(nodeData) {
     var nodes = [];
 
-    var i;
     // Create nodes with coords
-    for (i = 0; i < nodeData.length; i++) {
+    for (var i = 0; i < nodeData.length; i++) {
          var coordinate = new ocargo.Coordinate(
             nodeData[i]['coordinate'][0], nodeData[i]['coordinate'][1]);
          nodes.push(new ocargo.Node(coordinate));
     }
 
     // Link nodes (must be done in second loop so that linked nodes have definitely been created)
-    for (i = 0; i < nodeData.length; i++) {
+    for (var i = 0; i < nodeData.length; i++) {
         var node = nodes[i];
         var connectedNodes = nodeData[i]['connectedNodes'];
         for (var j = 0; j < connectedNodes.length; j++) {
@@ -76,25 +97,6 @@ function findByCoordinate(coordinate, nodes) {
     return -1;
 }
 
-function initialiseDefault() {
-    'use strict';
-
-    var title = "Level " + LEVEL_ID;
-    startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
-
-    ocargo.time = new ocargo.Time();
-    ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, ocargo.ui, MAX_FUEL,
-        NEXT_LEVEL, NEXT_EPISODE);
-    ocargo.level.levelId = JSON.parse(LEVEL_ID);
-    enableDirectControl();
-
-    if ($.cookie("muted") === "true") {
-        $('#mute').text("Unmute");
-        ocargo.sound.mute();
-    }
-}
-
 function enableDirectControl() {
     document.getElementById('moveForward').disabled = false;
     document.getElementById('turnLeft').disabled = false;
@@ -123,7 +125,7 @@ function clearVanData() {
     var startNode = nodes[0].connectedNodes[0];
 
     for (var i = 0; i < THREADS; i++) {
-        var van = new ocargo.Van(i,previousNode, startNode, MAX_FUEL, ocargo.ui);
+        var van = new ocargo.Van(i,previousNode, startNode, MAX_FUEL);
         ocargo.level.vans[i] = van;
         ocargo.ui.setVanToFront(previousNode, startNode, van);
     }
@@ -208,11 +210,7 @@ function sendAttempt(score) {
     return false;
 }
 
-function redrawBlockly() {
-    Blockly.fireUiEvent(window, 'resize');
-}
-
-function trackDevelopment() {
+function setupListeners() {
 
     $('#moveForward').click(function() {
         disableDirectControl();
@@ -236,13 +234,11 @@ function trackDevelopment() {
     });
 
     $('#play').click(function() {
-        if (ocargo.blocklyControl.incorrect) {
-            ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        }
+        ocargo.blocklyControl.resetIncorrectBlock();
         disableDirectControl();
 
         try {
-            var program = ocargo.blocklyControl.populateProgram();
+            var program = ocargo.blocklyCompiler.compile();
         } catch (error) {
             enableDirectControl();
             levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
@@ -436,14 +432,14 @@ function trackDevelopment() {
             $('#programmingConsole').animate({width: '0%'}, {queue: false});
             $('#sliderControls').animate({left: '0%'}, {queue: false});
             $('#direct_drive').animate({left: '0%'}, {queue: false});
-            $('#consoleSlider').animate({left: '0px'}, {queue: false, complete: function() { redrawBlockly(); }});
+            $('#consoleSlider').animate({left: '0px'}, {queue: false, complete: function() { ocargo.blocklyControl.redrawBlockly(); }});
         } else {
             $('#paper').animate({ width: (100 - consoleSliderPosition) + '%' }, {queue: false});
             $('#paper').animate({ left: consoleSliderPosition + '%' }, {queue: false});
             $('#programmingConsole').animate({ width: consoleSliderPosition + '%' }, {queue: false});
             $('#sliderControls').animate({ left: consoleSliderPosition + '%' }, {queue: false})
             $('#direct_drive').animate({ left: consoleSliderPosition + '%' }, {queue: false})
-            $('#consoleSlider').animate({ left: consoleSliderPosition + '%' }, {queue: false, complete: function() { redrawBlockly(); }});
+            $('#consoleSlider').animate({ left: consoleSliderPosition + '%' }, {queue: false, complete: function() { ocargo.blocklyControl.redrawBlockly(); }});
         }
     });
 
@@ -451,7 +447,7 @@ function trackDevelopment() {
         if($('#blockly').css("display")=="none") {
             $('#pythonCode').fadeOut();
             $('#blockly').fadeIn();
-            redrawBlockly();
+            ocargo.blocklyControl.redrawBlockly();
         }
         else {
             $('#blockly').fadeOut();
@@ -468,12 +464,12 @@ function trackDevelopment() {
         slider.on('mouseup', function(e){
             slider.off('mousemove');
             slider.parent().off('mousemove');
-            redrawBlockly();
+            ocargo.blocklyControl.redrawBlockly();
         });
         slider.parent().on('mouseup', function(e) {
             slider.off('mousemove');
             slider.parent().off('mousemove');
-            redrawBlockly();
+            ocargo.blocklyControl.redrawBlockly();
         });
 
         slider.parent().on('mousemove', function(me){
@@ -489,7 +485,7 @@ function trackDevelopment() {
             $('#sliderControls').css({ left: consoleSliderPosition + '%' });
             $('#direct_drive').css({ left: consoleSliderPosition + '%' });
             
-            redrawBlockly();
+            ocargo.blocklyControl.redrawBlockly();
         });
     });
 
@@ -507,6 +503,5 @@ function trackDevelopment() {
 }
 
 $(function() {
-    initialiseDefault();
-    trackDevelopment();
+    init();
 });
