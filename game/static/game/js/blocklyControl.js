@@ -48,6 +48,10 @@ ocargo.BlocklyControl.prototype.teardown = function() {
     }
 };
 
+ocargo.BlocklyControl.prototype.redrawBlockly = function() {
+    Blockly.fireUiEvent(window, 'resize');
+}
+
 ocargo.BlocklyControl.prototype.deserialize = function(text) {
     try {
         var xml = Blockly.Xml.textToDom(text);
@@ -110,8 +114,6 @@ ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(blockType) {
 
     block.nextConnection.connect(blockToAdd.previousConnection);
 };
-
-
 
 ocargo.BlocklyControl.prototype.getStartBlocks = function() {
     var startBlocks = [];

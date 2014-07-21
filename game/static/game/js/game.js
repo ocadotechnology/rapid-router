@@ -22,6 +22,13 @@ function init() {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
     }
+
+    if(BLOCKLY_ENABLED) {
+        $('#blockly').fadeIn();
+    }
+    else {
+        $('#pythonCode').fadeIn();
+    }
 }
 
 function createLevel(nodeData, destination, decor, trafficLightData, maxFuel, nextLevel, nextEpisode) {

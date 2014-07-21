@@ -26,7 +26,12 @@ def create(episode=None):
                                     DEFAULT_LOOPINESS,
                                     DEFAULT_CURVINESS)
         destination = json.dumps(path[-1]['coordinate'])
-        level = Level(name="Default random level", path=json.dumps(path), max_fuel=30, destination=destination)
+        level = Level(name="Default random level", 
+                                    path=json.dumps(path),
+                                    max_fuel=30,
+                                    destination=destination,
+                                    blocklyEnabled=True,
+                                    pythonEnabled=False)
         
     else:
         path = generate_random_path(DEFAULT_START_NODE,
@@ -35,7 +40,12 @@ def create(episode=None):
                                     episode.r_loopiness,
                                     episode.r_curviness)
         destination = json.dumps(path[-1]['coordinate'])
-        level = Level(name="Random level for " + episode.name + ".", path=json.dumps(path), max_fuel=30, destination=destination)
+        level = Level(name="Random level for " + episode.name + ".",
+                                    path=json.dumps(path), 
+                                    max_fuel=30, 
+                                    destination=destination,
+                                    blocklyEnabled=episode.r_blocklyEnabled,
+                                    pythonEnabled=episode.r_pythonEnabled)
 
     level.save()
     level.blocks = episode.r_blocks.all()

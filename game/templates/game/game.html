@@ -59,6 +59,11 @@
     var WORKSPACE = "{{attempt.workspace}}";
     var THREADS = "{{level.threads}}";
     var LOGGED_IN_AS_STUDENT = "{{attempt}}" != "None";
+    var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" == "True";
+    var PYTHON_ENABLED = "{{level.pythonEnabled}}" == "True";
+
+    console.log("B:",BLOCKLY_ENABLED)
+    console.log("P:",PYTHON_ENABLED)
   </script>
   
 {% endblock %}
@@ -68,16 +73,16 @@
   {% compress css %}
     <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/codemirror.css' %}" rel="stylesheet" type="text/css">
-        <link href="{% static 'game/css/skulpt/solarized.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/skulpt/solarized.css' %}" rel="stylesheet" type="text/css">
   {% endcompress %}
 {% endblock %}
 
 {% block content %}
 <div id="wrapper">
-  <div id="programmingConsole" class="col no-print unselectable">
-    <div id="blockly"></div>
+  <div id="programmingConsole" class="col no-print unselectable" >
+    <div id="blockly" {% if not level.blocklyEnabled%} style="visibility: hidden" {% endif %}></div>
 
-    <div id="pythonCode">
+    <div id="pythonCode" {% if not level.pythonEnabled%} style="visibility: hidden" {% endif %}>
       <h3>Python Program</h3>
         <p>Use the Python editor below to design your program, and click run to try it out!</p>
         <textarea id="code" cols="85" rows="25">
@@ -99,7 +104,7 @@
   <div id="sliderControls" class="no-print unselectable">
     <button id="slideConsole" class="unselectable">Slide Program</button>
     <button id="bigCodeModeBtn" class="unselectable">Big Code Mode</button>
-    <button id="toggleConsole" class="unselectable">Toggle Console</button>
+    <button id="toggleConsole" class="unselectable" {% if not level.blocklyEnabled or not level.pythonEnabled%} style="visibility: hidden" {% endif %}>Toggle Console</button>
   </div>
 
   <div id="direct_drive" class="unselectable">
