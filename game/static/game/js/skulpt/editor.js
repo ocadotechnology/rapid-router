@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var output = $('#edoutput');
+    var output = $('#consoleOutput');
     var outf = function (text) {
         output.text(output.text() + text);
     };
@@ -8,7 +8,7 @@ $(document).ready(function () {
         "Ctrl-Enter" : function (editor) {
             Sk.configure({output: outf, read: builtinRead});
             //Sk.canvas = "mycanvas";
-            Sk.pre = "edoutput";
+            Sk.pre = "consoleOutput";
             try {
                 Sk.importMainWithBody("<stdin>", false, editor.getValue());
             } catch(e) {
@@ -18,7 +18,7 @@ $(document).ready(function () {
         "Shift-Enter": function (editor) {
             Sk.configure({output: outf, read: builtinRead});
             //Sk.canvas = "mycanvas";
-            Sk.pre = "edoutput";
+            Sk.pre = "consoleOutput";
             try {
                 Sk.importMainWithBody("<stdin>", false, editor.getSelection());
             } catch(e) {
@@ -50,8 +50,8 @@ $(document).ready(function () {
     $("#skulpt_run").click(function (e) { keymap["Ctrl-Enter"](editor)} );
 
 
-    $('#clearoutput').click(function (e) {
-        $('#edoutput').text('');
+    $('#clearConsole').click(function (e) {
+        $('#consoleOutput').text('');
     });
 
 

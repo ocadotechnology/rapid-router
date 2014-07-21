@@ -92,30 +92,20 @@ ocargo.Level.prototype.stepProgram = function(callback) {
         return;
     }
 
-    this.program.step(this);
+    try {
+        this.program.step(this);   
+    }
+    catch(error) {
+        setTimeout(function () {programFinished(level, false, ocargo.messages.programCrashed)}, TERMINATION_DELAY);
+        return;
+    }
 
     var longestAnimation = 0;
     for (var i = 0; i < THREADS; i++) {
         var action = this.program.threads[i].currentAction;
+        var successful = this.handleAction(action, this.program.threads[i], this.vans[i], callback);
 
-        try {
-            this.handleAction(action, this.program.threads[i], this.vans[i], callback);
-        }
-        catch (error) {
-            this.program.terminate();
-            if (error === ERRORS.OFF_ROAD) {
-                setTimeout(function () {programFinished(level, false, ocargo.messages.offRoad(level.numStepsCorrect))}, TERMINATION_DELAY);
-            }
-            else if (error === ERRORS.THROUGH_RED_LIGHT) {
-                setTimeout(function () {programFinished(level, false, ocargo.messages.throughRedLight)}, TERMINATION_DELAY);
-            }
-            else if (error === ERRORS.OUT_OF_FUEL) {
-                setTimeout(function () {programFinished(level, false, ocargo.messages.outOfFuel)}, TERMINATION_DELAY);
-            }
-            else {
-                setTimeout(function () {programFinished(level, false, ocargo.messages.programCrashed)}, TERMINATION_DELAY);
-                throw error;
-            }
+        if (!successful) {
             return;
         }
 
@@ -144,29 +134,35 @@ ocargo.Level.prototype.hasWon = function() {
 
 ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
     console.debug('Calculating next node for action ' + action.name);
+    var level = this;
 
     if (action === ocargo.EMPTY_ACTION) {
-        return;
+        return true;
     }
 
-    var prevNode = van.previousNode;
-    var currNode = van.currentNode;
-    var nextNode = action.getNextNode(prevNode, currNode);
+    var nextNode = action.getNextNode(van.previousNode, van.currentNode);
+
     if (!nextNode) {
         var n = this.numStepsCorrect - 1;
         ocargo.blocklyControl.blink();
          //TODO: animate the crash
-        throw ERRORS.OFF_ROAD;
+        setTimeout(function () {programFinished(level, false, ocargo.messages.offRoad(level.numStepsCorrect))}, TERMINATION_DELAY);
+        return false;
     } 
-    if (nextNode !== currNode && directedThroughRedTrafficLight(prevNode, currNode, nextNode)){
+    else if (this.isVanGoingThroughRedLight(van, nextNode)){
         //TODO: play police siren sound
-        throw ERRORS.THROUGH_RED_LIGHT;
+        setTimeout(function () {programFinished(level, false, ocargo.messages.throughRedLight)}, TERMINATION_DELAY);
+        return false;
     }
-    if (van.fuel === 0) {
-        throw ERRORS.OUT_OF_FUEL;
+    else if(van.fuel === 0) {
+        //TODO: play empty tank noise
+        setTimeout(function () {programFinished(level, false, ocargo.messages.outOfFuel)}, TERMINATION_DELAY);
+        return false;
     }
-
-    van.move(nextNode, action, callback);
+    else {
+        van.move(nextNode, action, callback);
+        return true;
+    }
 };
  
 function programFinished(level, result, msg) {
@@ -259,12 +255,50 @@ function sendAttempt(score) {
     return false;
 }
 
-function directedThroughRedTrafficLight(previousNode, currentNode, nextNode){
-    for(var i = 0; i < currentNode.trafficLights.length; i++){
+ocargo.Level.prototype.getTrafficLightState = function(previousNode, currentNode) {
+    for(var i = 0; i < currentNode.trafficLights.length; i++) {
         var tl = currentNode.trafficLights[i];
-        if(tl.sourceNode == currentNode && currentNode != nextNode && tl.state == tl.RED){
-            return true;
+        if(tl.sourceNode == previousNode) {
+            return tl.state;
         }
     }
-    return false;
 }
+
+
+/** Conditions **/
+
+ocargo.Level.prototype.isVanGoingThroughRedLight = function(van, nextNode){
+    var previousNode = van.previousNode;
+    var currentNode = van.currentNode;
+    if(currentNode === nextNode) {
+        return false;
+    }
+    else {
+        // TODO fix creating a new traffic light object each time
+        return this.isTrafficLightInState(previousNode, currentNode, ocargo.TrafficLight.RED);
+    }
+}
+
+ocargo.Level.prototype.isTrafficLightInState = function(previousNode, currentNode, state) {
+    return state === this.getTrafficLightState(previousNode, currentNode);
+}
+
+ocargo.Level.prototype.isActionValidForVan = function(van, action) {
+    return action.getNextNode(van.previousNode, van.currentNode);
+}
+
+ocargo.Level.prototype.isVanAtDeadEnd = function(van) {
+    var actions = [ocargo.FORWARD_ACTION, ocargo.TURN_LEFT_ACTION, ocargo.TURN_RIGHT_ACTION];
+    for (var i = 0; i < actions.length; i++) {
+        var nextNode = actions[i].getNextNode(van.previousNode, van.currentNode);
+        if (nextNode) {
+            return false;
+        }
+    }
+    return true;
+}
+
+ocargo.Level.prototype.isVanAtDestination = function(van) {
+    return van.currentNode === this.map.destination;
+}
+

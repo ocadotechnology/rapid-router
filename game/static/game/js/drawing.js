@@ -444,19 +444,19 @@ function createTrafficLights(trafficLights, draggable) {
         }
 		
 		//hide light which isn't the starting state
-		if(trafficLight.startingState === trafficLight.RED){
+		if(trafficLight.startingState == ocargo.TrafficLight.RED){
 			trafficLight.greenLightEl.hide();
 		} else {
 			trafficLight.redLightEl.hide();//
 		}
 		
 		//add listeners to the traffic light to show/hide when lights change
-		$(trafficLight).on(trafficLight.RED, function(){
+		$(trafficLight).on(ocargo.TrafficLight.RED, function(){
 			this.redLightEl.show();
 			this.greenLightEl.hide();
 		});
 		
-		$(trafficLight).on(trafficLight.GREEN, function(){
+		$(trafficLight).on(ocargo.TrafficLight.GREEN, function(){
 			this.redLightEl.hide();
 			this.greenLightEl.show();
 		});

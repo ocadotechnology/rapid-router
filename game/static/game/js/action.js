@@ -74,7 +74,7 @@ ocargo.TURN_AROUND_ACTION = {
 ocargo.WAIT_ACTION = {
     name: "WAIT",
     animationLength: 500,
-    getNextNode: function(previousNode, currentNode) { return previousNode; }
+    getNextNode: function(previousNode, currentNode) { return currentNode; }
 };
 
 ocargo.EMPTY_ACTION = {
