@@ -59,7 +59,7 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
     	var sourceNode = nodes[sourceNodeId];
     	
         console.log(startingState);
-    	var light = new ocargo.TrafficLight(startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
+    	var light = new ocargo.TrafficLight(i, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
     	trafficLights.push(light);
     	controlledNode.addTrafficLight(light);
     }
@@ -129,6 +129,85 @@ function clearVanData() {
     }
 }
 
+function levelWon(level) {
+    console.debug('You win!');
+    ocargo.sound.win();
+
+    var scoreArray = level.pathFinder.getScore();
+    sendAttempt(scoreArray[0]);
+    
+    var message = '';
+    if (level.nextLevel != null) {
+        message = ocargo.messages.nextLevelButton(level.nextLevel);
+    } 
+    else {
+        if (level.nextEpisode != null && level.nextEpisode !== "") {
+            message = ocargo.messages.nextEpisodeButton(level.nextEpisode);
+        } else {
+            message = ocargo.messages.lastLevel;
+        }
+    }
+
+    startPopup("You win!", scoreArray[1], message);
+};
+
+function levelFailed(level, msg) {
+    console.debug('You lose!');
+    ocargo.sound.failure();
+
+    sendAttempt(0);
+
+    var title = 'Oh dear! :(';
+    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
+    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
+    
+    level.fails++;
+    if (level.fails >= FAILS_BEFORE_HINT) {
+        var hintBtns = $("#hintPopupBtn");
+        if (hintBtns.length === null || hintBtns.length === 0) {
+            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
+                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
+                '</p><p id="hintText">' + HINT + '</p>');
+            if(level.hintOpened){
+                $("#hintBtnPara").hide();
+            } 
+            else {
+                $("#hintText" ).hide();
+                $("#hintPopupBtn").click( function(){
+                    $("#hintText").show(500);
+                    $("#hintBtnPara").hide();
+                    level.hintOpened = true;
+                });
+            }
+        }
+    }
+};
+
+function sendAttempt(score) {
+    // Send out the submitted data.
+    if (ocargo.level.levelId) {
+        var attemptData = JSON.stringify(ocargo.level.attemptData);
+
+        $.ajax({
+            url : '/game/submit',
+            type : 'POST',
+            dataType: 'json',
+            data : {
+                attemptData : attemptData,
+                csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
+                score : score,
+                workspace : ocargo.blocklyControl.serialize()
+            },
+            success : function(json) {
+            },
+            error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    }
+    return false;
+}
+
 function redrawBlockly() {
     Blockly.fireUiEvent(window, 'resize');
 }
@@ -165,8 +244,9 @@ function trackDevelopment() {
         try {
             var program = ocargo.blocklyControl.populateProgram();
         } catch (error) {
-            ocargo.level.fail('Your program crashed!<br>' + error);
-            throw error;
+            enableDirectControl();
+            levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
+            return;
         }
 
         clearVanData();
@@ -223,108 +303,95 @@ function trackDevelopment() {
         // whilst waiting for the table data to load
         $('#loadSave').attr('disabled', 'disabled');
 
-        $.ajax({
-            url: '/game/workspace',
-            type: 'GET',
-            dataType: 'json',
-            success: function(json) {
-                var table = $('#workspaceTable');
 
-                // Remove click listeners to avoid memory leak and remove all rows
-                $('#workspaceTable td').off('click');
-                table.empty();
-
-                // Order them alphabetically
-                json.sort(function(a, b) {
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-                    else if (a.name > b.name) {
-                        return 1;
-                    }
-                    return 0;
-                });
-
-                // Add a row to the table for each workspace saved in the database
-                for (var i = 0, ii = json.length; i < ii; i++) {
-                    var workspace = json[i];
-                    table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
-                }
-
-                // Add click listeners to all rows
-                $('#workspaceTable td').on('click', function(event) {
-                    $('#workspaceTable td').css('background-color', '#FFFFFF');
-                    $(event.target).css('background-color', '#C0C0C0');
-                    selectedWorkspace = $(event.target).attr('value');
-                    $('#loadWorkspace').removeAttr('disabled');
-                    $('#overwriteWorkspace').removeAttr('disabled');
-                    $('#deleteWorkspace').removeAttr('disabled');
-                });
-
-                // Finally show the modal dialog and reenable the button
-                $('#loadSaveModal').foundation('reveal', 'open');
-                $('#loadSave').removeAttr('disabled');
-
-                // But disable all the modal buttons as nothing is selected yet
-                selectedWorkspace = null;
-                $('#loadWorkspace').attr('disabled', 'disabled');
-                $('#overwriteWorkspace').attr('disabled', 'disabled');
-                $('#deleteWorkspace').attr('disabled', 'disabled');
-            },
-            error: function(xhr,errmsg,err) {
-                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        loadAllSavedWorkspaces(function(err, workspaces) {
+            if (err != null) {
+                console.debug(err);
+                return;
             }
+
+            var table = $('#workspaceTable');
+
+            // Remove click listeners to avoid memory leak and remove all rows
+            $('#workspaceTable td').off('click');
+            table.empty();
+
+            // Order them alphabetically
+            workspaces.sort(function(a, b) {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                else if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            // Add a row to the table for each workspace saved in the database
+            for (var i = 0, ii = workspaces.length; i < ii; i++) {
+                var workspace = workspaces[i];
+                table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
+            }
+
+            // Add click listeners to all rows
+            $('#workspaceTable td').on('click', function(event) {
+                $('#workspaceTable td').css('background-color', '#FFFFFF');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                $('#loadWorkspace').removeAttr('disabled');
+                $('#overwriteWorkspace').removeAttr('disabled');
+                $('#deleteWorkspace').removeAttr('disabled');
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#loadSaveModal').foundation('reveal', 'open');
+            $('#loadSave').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+            $('#loadWorkspace').attr('disabled', 'disabled');
+            $('#overwriteWorkspace').attr('disabled', 'disabled');
+            $('#deleteWorkspace').attr('disabled', 'disabled');
         });
     });
 
     $('#loadWorkspace').click(function() {
         if (selectedWorkspace) {
-            $.ajax({
-                url: '/game/workspace/' + selectedWorkspace,
-                type: 'GET',
-                dataType: 'json',
-                success: function(json) {
-                    ocargo.blocklyControl.reset();
-                    ocargo.blocklyControl.deserialize(json.workspace);
-                    $('#loadSaveModal').foundation('reveal', 'close');
-                },
-                error: function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            loadWorkspace(selectedWorkspace, function(err, workspace) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
                 }
+
+                ocargo.blocklyControl.reset();
+                ocargo.blocklyControl.deserialize(workspace);
+                $('#loadSaveModal').foundation('reveal', 'close');
             });
         }
     });
 
     $('#overwriteWorkspace').click(function() {
         if (selectedWorkspace) {
-            $.ajax({
-                url: '/game/workspace/' + selectedWorkspace,
-                type: 'PUT',
-                data: {
-                    workspace: ocargo.blocklyControl.serialize()
-                },
-                success: function() {
-                    $('#loadSaveModal').foundation('reveal', 'close');
-                },
-                error: function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            overwriteWorkspace(selectedWorkspace, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
                 }
+                $('#loadSaveModal').foundation('reveal', 'close');
             });
         }
     });
 
     $('#deleteWorkspace').click(function() {
         if (selectedWorkspace) {
-            $.ajax({
-                url: '/game/workspace/' + selectedWorkspace,
-                type: 'DELETE',
-                success: function() {
-                    $('#workspaceTable td[value=' + selectedWorkspace + ']').remove();
-                    selectedWorkspace = null;
-                },
-                error: function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            deleteWorkspace(selectedWorkspace, function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
                 }
+
+                $('#workspaceTable td[value=' + selectedWorkspace + ']').remove();
+                selectedWorkspace = null;
             });
         }
     });
@@ -332,19 +399,13 @@ function trackDevelopment() {
     $('#createNewWorkspace').click(function() {
         var newName = $('#newWorkspaceName').val();
         if (newName && newName != "") {
-            $.ajax({
-                url: '/game/workspace',
-                type: 'POST',
-                data: {
-                    name: newName,
-                    workspace: ocargo.blocklyControl.serialize()
-                },
-                success: function() {
-                    $('#loadSaveModal').foundation('reveal', 'close');
-                },
-                error: function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
                 }
+
+                $('#loadSaveModal').foundation('reveal', 'close');
             });
         }
     });
@@ -374,12 +435,14 @@ function trackDevelopment() {
             $('#paper').animate({left: '0%'}, {queue: false});
             $('#programmingConsole').animate({width: '0%'}, {queue: false});
             $('#sliderControls').animate({left: '0%'}, {queue: false});
+            $('#direct_drive').animate({left: '0%'}, {queue: false});
             $('#consoleSlider').animate({left: '0px'}, {queue: false, complete: function() { redrawBlockly(); }});
         } else {
             $('#paper').animate({ width: (100 - consoleSliderPosition) + '%' }, {queue: false});
             $('#paper').animate({ left: consoleSliderPosition + '%' }, {queue: false});
             $('#programmingConsole').animate({ width: consoleSliderPosition + '%' }, {queue: false});
             $('#sliderControls').animate({ left: consoleSliderPosition + '%' }, {queue: false})
+            $('#direct_drive').animate({ left: consoleSliderPosition + '%' }, {queue: false})
             $('#consoleSlider').animate({ left: consoleSliderPosition + '%' }, {queue: false, complete: function() { redrawBlockly(); }});
         }
     });
@@ -389,10 +452,11 @@ function trackDevelopment() {
             $('#pythonCode').fadeOut();
             $('#blockly').fadeIn();
             redrawBlockly();
-}
+        }
         else {
             $('#blockly').fadeOut();
             $('#pythonCode').fadeIn();
+            ocargo.editor.setValue(Blockly.Python.workspaceToCode());
         }
     });
 
@@ -423,9 +487,21 @@ function trackDevelopment() {
             $('#paper').css({ left: consoleSliderPosition + '%' });
             $('#programmingConsole').css({ width: consoleSliderPosition + '%' });
             $('#sliderControls').css({ left: consoleSliderPosition + '%' });
+            $('#direct_drive').css({ left: consoleSliderPosition + '%' });
             
             redrawBlockly();
         });
+    });
+
+    $('#mute').click(function() {
+        var $this = $(this);
+        if (ocargo.sound.volume === 0) {
+            $this.text('Mute');
+            ocargo.sound.unmute();
+        } else {
+            $this.text('Unmute');
+            ocargo.sound.mute();
+        }
     });
 
 }
@@ -433,15 +509,4 @@ function trackDevelopment() {
 $(function() {
     initialiseDefault();
     trackDevelopment();
-});
-
-$('#mute').click(function() {
-    var $this = $(this);
-    if (ocargo.sound.volume === 0) {
-        $this.text('Mute');
-        ocargo.sound.unmute();
-    } else {
-        $this.text('Unmute');
-        ocargo.sound.mute();
-    }
 });

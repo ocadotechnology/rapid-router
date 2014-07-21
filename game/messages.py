@@ -441,6 +441,135 @@ def description_level33():
     message = ""
     return "<b>" + title_level33() + "</b><br><br>" + message
 
+def title_level34():
+    return "Title level 33"
+
+
+def description_level34():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level35():
+    return "Title level 33"
+
+
+def description_level35():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level36():
+    return "Title level 33"
+
+
+def description_level36():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level37():
+    return "Title level 33"
+
+
+def description_level37():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level38():
+    return "Title level 33"
+
+
+def description_level38():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level39():
+    return "Title level 33"
+
+
+def description_level39():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+
+def title_level40():
+    return "Title level 33"
+
+
+def description_level40():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level41():
+    return "Title level 33"
+
+
+def description_level41():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level42():
+    return "Title level 33"
+
+
+def description_level42():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level43():
+    return "Title level 33"
+
+
+def description_level43():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level44():
+    return "Title level 33"
+
+
+def description_level44():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level45():
+    return "Title level 33"
+
+
+def description_level45():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level46():
+    return "Title level 33"
+
+
+def description_level46():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level47():
+    return "Title level 33"
+
+
+def description_level47():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level48():
+    return "Title level 33"
+
+
+def description_level48():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level49():
+    return "Title level 33"
+
+
+def description_level49():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
 #
 # The end of Paulina's Happy Creation.
 #
@@ -616,5 +745,89 @@ def hint_level28():
     return message
 
 def hint_level29():
+    message = hint_level_default()
+    return message
+
+def hint_level30():
+    message = hint_level_default()
+    return message
+
+def hint_level31():
+    message = hint_level_default()
+    return message
+
+def hint_level32():
+    message = hint_level_default()
+    return message
+
+def hint_level33():
+    message = hint_level_default()
+    return message
+
+def hint_level34():
+    message = hint_level_default()
+    return message
+
+def hint_level35():
+    message = hint_level_default()
+    return message
+
+def hint_level36():
+    message = hint_level_default()
+    return message
+
+def hint_level37():
+    message = hint_level_default()
+    return message
+
+def hint_level38():
+    message = hint_level_default()
+    return message
+
+def hint_level39():
+    message = hint_level_default()
+    return message
+
+def hint_level40():
+    message = hint_level_default()
+    return message
+
+def hint_level41():
+    message = hint_level_default()
+    return message
+
+def hint_level42():
+    message = hint_level_default()
+    return message
+
+def hint_level43():
+    message = hint_level_default()
+    return message
+
+def hint_level44():
+    message = hint_level_default()
+    return message
+
+def hint_level45():
+    message = hint_level_default()
+    return message
+
+def hint_level46():
+    message = hint_level_default()
+    return message
+
+def hint_level47():
+    message = hint_level_default()
+    return message
+
+def hint_level48():
+    message = hint_level_default()
+    return message
+
+def hint_level49():
+    message = hint_level_default()
+    return message
+
+def hint_level50():
     message = hint_level_default()
     return message

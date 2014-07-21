@@ -9,20 +9,31 @@ ocargo.BlocklyControl = function(){
 
 ocargo.blocklyControl = new ocargo.BlocklyControl();
 
-ocargo.blocklyControl.BLOCK_HEIGHT = 30;
+ocargo.blocklyControl.BLOCK_HEIGHT = 20;
 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH = 1;
-ocargo.blocklyControl.IMAGE_WIDTH = 30;
+ocargo.blocklyControl.IMAGE_WIDTH = 20;
+
+ocargo.blocklyControl.numStartBlocks = 0;
 
 Blockly.Blocks['start'] = {
     // Beginning block - identifies the start of the program
     init: function() {
+        var imageStr = (ocargo.blocklyControl.numStartBlocks%2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+        ocargo.blocklyControl.numStartBlocks++;
+        
         this.setColour(50);
         this.appendDummyInput()
-            .appendField('Start');
+            .appendField('Start')
+            .appendField(new Blockly.FieldImage(imageStr, VAN_HEIGHT, VAN_WIDTH));
         this.setNextStatement(true);
         this.setTooltip('The beginning of the program');
         this.setDeletable(false);
     }
+};
+
+Blockly.Python['start'] = function(block) {
+	return 'import van\n\
+v = van.Van()\n';
 };
 
 Blockly.Blocks['move_forwards'] = {
@@ -40,12 +51,19 @@ Blockly.Blocks['move_forwards'] = {
     }
 };
 
+Blockly.Python['move_forwards'] = function(block) {
+	return 'v.move_forwards()\n';
+};
+
 Blockly.Blocks['turn_left'] = {
     // Block for turning left
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn left')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                40,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
             .appendField(new Blockly.FieldImage('/static/game/image/arrow_left.svg',
                                                 ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
@@ -55,12 +73,19 @@ Blockly.Blocks['turn_left'] = {
     }
 };
 
+Blockly.Python['turn_left'] = function(block) {
+	return 'v.turn_left()\n';
+};
+
 Blockly.Blocks['turn_right'] = {
     // Block for turning right
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn right')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                31,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
             .appendField(new Blockly.FieldImage('/static/game/image/arrow_right.svg',
                                                 ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
@@ -70,12 +95,19 @@ Blockly.Blocks['turn_right'] = {
     }
 };
 
+Blockly.Python['turn_right'] = function(block) {
+	return 'v.turn_right()\n';
+};
+
 Blockly.Blocks['turn_around'] = {
     // Block for turning around
     init: function() {
         this.setColour(160);
         this.appendDummyInput()
             .appendField('turn around')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                14,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
             .appendField(new Blockly.FieldImage('/static/game/image/arrow_u.svg',
                                                 ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
@@ -85,6 +117,10 @@ Blockly.Blocks['turn_around'] = {
     }
 };
 
+Blockly.Python['turn_around'] = function(block) {
+	return 'v.turn_around()\n';
+};
+
 Blockly.Blocks['wait'] = {
     // Block for not moving the van for a time
     init: function() {
@@ -92,12 +128,19 @@ Blockly.Blocks['wait'] = {
         this.appendDummyInput()
             .appendField('wait')
             .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
-                                                ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
+                                                62,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
+            .appendField(new Blockly.FieldImage('/static/game/image/wait.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setTooltip('Keep the van stationary');
     }
+};
+
+Blockly.Python['wait'] = function(block) {
+	return 'v.wait()\n';
 };
 
 Blockly.Blocks['road_exists'] = {
@@ -116,6 +159,18 @@ Blockly.Blocks['road_exists'] = {
     }
 };
 
+Blockly.Python['road_exists'] = function(block) {
+	if(block.inputList[0].fieldRow[1].value_ === 'FORWARD'){
+		var python = "v.is_road('FORWARD')";
+	}else if(block.inputList[0].fieldRow[1].value_ === 'LEFT'){
+		var python = "v.is_road('LEFT')";
+	}else{
+		var python = "v.is_road('RIGHT')";
+	}
+	
+	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
+};
+
 Blockly.Blocks['traffic_light'] = {
     init: function() {
         var BOOLEANS =
@@ -131,6 +186,16 @@ Blockly.Blocks['traffic_light'] = {
     }
 };
 
+Blockly.Python['traffic_light'] = function(block) {
+	if(block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED){
+		var python = "v.at_traffic_light('RED')";
+	}else{
+		var python = "v.at_traffic_light('GREEN')";
+	}
+	
+	return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
+};
+
 Blockly.Blocks['dead_end'] = {
     init: function() {
         this.setColour(210);
@@ -141,6 +206,10 @@ Blockly.Blocks['dead_end'] = {
                                                 ocargo.blocklyControl.EXTRA_BLOCK_WIDTH,
                                                 ocargo.blocklyControl.BLOCK_HEIGHT));
     }
+};
+
+Blockly.Python['dead_end'] = function(block) {
+	return ['v.at_dead_end()', Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
 };
 
 Blockly.Blocks['at_destination'] = {
@@ -155,6 +224,10 @@ Blockly.Blocks['at_destination'] = {
     }
 };
 
+Blockly.Python['at_destination'] = function(block) {
+	return ['v.at_destination()', Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to;
+};
+
 Blockly.Blocks['call_proc'] = {
     // Block for calling a defined procedure
     init: function() {
@@ -165,6 +238,10 @@ Blockly.Blocks['call_proc'] = {
         this.setNextStatement(true);
         this.setTooltip('Call');
     }
+};
+
+Blockly.Python['call_proc'] = function(block) {
+	return 'this.' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '()\n';
 };
 
 Blockly.Blocks['declare_proc'] = {
@@ -178,6 +255,11 @@ Blockly.Blocks['declare_proc'] = {
 
         this.setTooltip('Declares the procedure');
     }
+};
+
+Blockly.Python['declare_proc'] = function(block) {
+	return 'def ' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '():\n\
+	print "TODO get sub-blocks"';//TODO: get code out of sub-blocks (there's a Blockly function for it)
 };
 
 // Set text colour to red
@@ -219,48 +301,6 @@ notBlock.init = function () {
 Blockly.showContextMenu_ = function(e) {};
 Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
-// Define custom select methods that select a block and its connected blocks
-function setBlockAndConnectedBlocksSelected(block, selected) {
-    if (!block.svg_) {
-        return;
-    }
-
-    block.inputList.forEach(function(input) {
-        if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
-            var targetBlock = input.connection.targetBlock();
-            if (targetBlock) {
-                setBlockAndConnectedBlocksSelected(targetBlock, selected);
-            }
-        }
-    });
-
-    if (selected) {
-        block.svg_.addSelect();
-    } else {
-        block.svg_.removeSelect();
-    }
-}
-
-var selectedWithConnected;
-
-Blockly.Block.prototype.selectWithConnected = function() {
-    // Unselect any previously selected blocks
-    if (Blockly.selected) {
-        Blockly.selected.unselect();
-    }
-    if (selectedWithConnected) {
-        selectedWithConnected.unselectWithConnected();
-    }
-
-    selectedWithConnected = this;
-    setBlockAndConnectedBlocksSelected(this, true);
-};
-
-Blockly.Block.prototype.unselectWithConnected = function() {
-    selectedWithConnected = null;
-    setBlockAndConnectedBlocksSelected(this, false);
-};
-
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 	var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
 	block.initSvg();
@@ -293,7 +333,27 @@ ocargo.BlocklyControl.prototype.init = function() {
         e.innerHTML = text;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
-    ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
+    
+    ocargo.blocklyControl.reset();
+
+    // Use the user's last attempt if available, else use whatever's in local storage
+    if (WORKSPACE && WORKSPACE != '') {
+        ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
+    }
+    else {
+        ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
+    }
+};
+
+ocargo.BlocklyControl.prototype.teardown = function() {
+    if (localStorage) {
+        var text = ocargo.blocklyControl.serialize();
+        try {
+            localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
+        } catch (e) {
+            // No point in even logging, as page is unloading
+        }
+    }
 };
 
 ocargo.BlocklyControl.prototype.deserialize = function(text) {
@@ -319,21 +379,53 @@ ocargo.BlocklyControl.prototype.reset = function() {
 
     for (var i = 0; i < THREADS; i++) {
         var startBlock = this.createBlock('start');
-        startBlock.moveBy(30,30+i*50);
+        startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
     }
     this.addClickListenerToStartBlocks();
 };
 
-ocargo.BlocklyControl.prototype.blink = function() {
-    var badBlock = selectedWithConnected;
+ocargo.BlocklyControl.prototype.clearAllSelections = function() {
+    Blockly.mainWorkspace.getAllBlocks().forEach(
+        function (block) {
+            ocargo.blocklyControl.setBlockSelected(block, false);
+        }
+    );
+}
+
+// Define custom select methods that select a block and its inputs
+ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
+    if (!block.svg_) {
+        return;
+    }
+
+    block.inputList.forEach(function(input) {
+        if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
+            var targetBlock = input.connection.targetBlock();
+            if (targetBlock) {
+                ocargo.blocklyControl.setBlockSelected(targetBlock, selected);
+            }
+        }
+    });
+
+    if (selected) {
+        block.svg_.addSelect();
+    } else {
+        block.svg_.removeSelect();
+    }
+}
+
+ocargo.BlocklyControl.prototype.makeBlockBlink = function(badBlock) {
+    var blocklyControl = this;
+    var frequency = 300;
+    var repeats = 3;
+
     this.incorrect = badBlock;
     this.incorrectColour = badBlock.getColour();
     badBlock.setColour(0);
-    for (var i = 0; i < 3; i++) {
-        window.setTimeout(function() { badBlock.selectWithConnected(); }, i * 600 - 300);
-        window.setTimeout(function() { badBlock.unselectWithConnected(); }, i * 600);
+    for (var i = 0; i < repeats; i++) {
+        window.setTimeout(function() { blocklyControl.setBlockSelected(badBlock, true); }, 2 * i * frequency);
+        window.setTimeout(function() { blocklyControl.setBlockSelected(badBlock, false); }, (2 * i + 1) * frequency);
     }
-    window.setTimeout(function() { badBlock.selectWithConnected(); }, 1500);
 };
 
 window.addEventListener('load', ocargo.blocklyControl.init);
@@ -411,8 +503,9 @@ ocargo.BlocklyControl.prototype.increaseBlockSize = function(){
 
 	Blockly.mainWorkspace.flyout_.show(Blockly.languageTree.childNodes);
 	
+    $(".blocklyIconShield").attr("width", 32).attr("height", 32).attr("rx", 8).attr("ry", 8);
     $(".blocklyIconMark").attr("x", 16).attr("y", 24);
-    $(".blocklyEditableText > rect").attr("height", 41).attr("y", -32);
+    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24);
 };
 
 ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
@@ -447,6 +540,9 @@ ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
     Blockly.mainWorkspace.render();
 
 	Blockly.mainWorkspace.flyout_.show(Blockly.languageTree.childNodes);
+    $(".blocklyIconShield").attr("width", 16).attr("height", 16).attr("rx", 4).attr("ry", 4);
+    $(".blocklyIconMark").attr("x", 8).attr("y", 12);
+    $(".blocklyEditableText > rect").attr("height", 16).attr("y", -12);
 };
 
 ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
@@ -457,7 +553,7 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
         	var svgRoot = startBlock.getSvgRoot();
         	if (svgRoot) {
         		if (!svgRoot.id || svgRoot.id === "") {
-        			svgRoot.id = "startBlockSvg"
+        			svgRoot.id = "startBlockSvg" + i;
         		}
         		var downX = 0;
         		var downY = 0;
@@ -480,6 +576,30 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
         }
     } 
 };
+
+
+
+ocargo.BlocklyControl.BlockHandler = function(id) {
+    this.id = id;
+    this.selectedBlock = null;
+};
+
+ocargo.BlocklyControl.BlockHandler.prototype.selectBlock = function(block) {
+    if (block) {
+        this.deselectCurrent();
+        ocargo.blocklyControl.setBlockSelected(block, true);
+        this.selectedBlock = block;
+    }
+};
+
+ocargo.BlocklyControl.BlockHandler.prototype.deselectCurrent = function() {
+    if (this.selectedBlock) {
+        ocargo.blocklyControl.setBlockSelected(this.selectedBlock, false);
+        this.selectedBlock = null;
+    }
+};
+
+
 
 ocargo.BlocklyControl.prototype.populateProgram = function() {
 
@@ -537,7 +657,7 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
             throw ocargo.messages.whileBodyError;
         }
 		return new While(
-			counterCondition(block.inputList[0].fieldRow[1].text_),
+			counterCondition(parseInt(block.inputList[0].fieldRow[1].text_)),
 			createSequence(bodyBlock),
 			block);
 	}
@@ -672,17 +792,6 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
         };
     }
 
-    function counterCoundition(count) {
-        return function() {
-            if (count > 0) {
-                count--;
-                return true;
-            }
-
-            return false;
-        };
-    }
-
     function deadEndCondition() {
         return function(level,threadID) {
             return level.isVanAtDeadEnd(level.vans[threadID]);
@@ -698,6 +807,19 @@ ocargo.BlocklyControl.prototype.populateProgram = function() {
     function atDestinationCondition() {
         return function(level,threadID) {
             return level.isVanAtDestination(level.vans[threadID]);
+        };
+    }
+
+    function counterCondition(count) {
+        var startCount = count;
+        return function(level,threadID) {
+            if (count > 0) {
+                count--;
+                return true;
+            }
+            // Resets the counter for nested loops
+            count = startCount;
+            return false;
         };
     }
 

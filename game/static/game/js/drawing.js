@@ -6,6 +6,8 @@ var GRID_WIDTH = 10;
 var GRID_HEIGHT = 8;
 var GRID_SPACE_SIZE = 100;
 
+var ANIMATION_FRAME = 500;
+
 var VAN_WIDTH = 40;
 var VAN_HEIGHT = 20;
 
@@ -41,7 +43,13 @@ var ROAD_MARKER_ATTR = {
 var DASH = '10';
 
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
+
 var vanImages = {};
+var lightImages = {};
+
+var animationQueue = []
+var isAnimating = false;
+var animationTimestamp = 0;
 
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;
@@ -403,7 +411,6 @@ function renderTheMap(map) {
 }
 
 function renderTheVans(vans) {
-    
     for (var i = 0; i < vans.length; i++) {
         var vanImage = createVanImage(paper, vans[i]);
         scrollToShowVanImage(vanImage);
@@ -442,24 +449,16 @@ function createTrafficLights(trafficLights, draggable) {
                 return image.transform('...r90');
             };
         }
+
+        lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
 		
 		//hide light which isn't the starting state
-		if(trafficLight.startingState == ocargo.TrafficLight.RED){
-			trafficLight.greenLightEl.hide();
+		if(trafficLight.startingState === ocargo.TrafficLight.RED){
+			trafficLight.greenLightEl.attr({'opacity': 0});
 		} else {
-			trafficLight.redLightEl.hide();//
+			trafficLight.redLightEl.attr({'opacity': 0});
 		}
 		
-		//add listeners to the traffic light to show/hide when lights change
-		$(trafficLight).on(ocargo.TrafficLight.RED, function(){
-			this.redLightEl.show();
-			this.greenLightEl.hide();
-		});
-		
-		$(trafficLight).on(ocargo.TrafficLight.GREEN, function(){
-			this.redLightEl.hide();
-			this.greenLightEl.show();
-		});
 	}
 }
 
@@ -480,31 +479,8 @@ function scrollToShowVanImage(vanImage) {
     var point = getVanImagePosition(vanImage);
     var element = document.getElementById('paper');
 
-    if (point[0] > Math.floor(PAPER_WIDTH / 2)) {
-        element.scrollLeft = PAPER_WIDTH / 2;
-    } else {
-        element.scrollLeft = 0;
-    }
-
-    if (point[1] > Math.floor(PAPER_HEIGHT / 2)) {
-        element.scrollTop = PAPER_HEIGHT / 2;
-    } else {
-        element.scrollTop = 0;
-    }
-}
-
-function moveVanImage(attr, vanImage, callback, animationLength) {
-
-    animationLength = animationLength || 490;
-
-    var combinedCallback = function() {
-        scrollToShowVanImage(vanImage);
-        if (callback) {
-            callback();
-        }
-    };
-
-    vanImage.animate(attr, animationLength, 'easeIn', combinedCallback);
+    element.scrollLeft = point[0] - element.offsetWidth/2;
+    element.scrollTop = point[1] - element.offsetHeight/2;
 }
 
 function moveForward(van, callback) {
@@ -512,7 +488,7 @@ function moveForward(van, callback) {
     var transformation = "... t 0, " + moveDistance;
     moveVanImage({
         transform: transformation
-    }, vanImages[van.id], callback);
+    }, van, callback);
 }
 
 function moveLeft(van, callback) {
@@ -522,7 +498,7 @@ function moveLeft(van, callback) {
     var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, vanImage, callback);
+    }, van, callback);
 }
 
 function moveRight(van, callback) {
@@ -532,51 +508,52 @@ function moveRight(van, callback) {
     var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, vanImage, callback);
+    }, van, callback);
 }
 
 function turnAround(van, callback) {
     var moveDistance = -GRID_SPACE_SIZE / 2;
     var moveTransformation = "... t 0, " + moveDistance;
     var vanImage = vanImages[van.id];
+    var timePerState = (ANIMATION_FRAME - 50) / 3;
 
     function moveForward() {
         moveVanImage({
             transform: moveTransformation
-        }, vanImage, rotate, 400);
+        }, van, rotate, timePerState);
     }
 
     function rotate() {
         var rotationPointX = vanImage.attrs.x + 22;
         var rotationPointY = vanImage.attrs.y + 20;
 
-        moveVanImage({
+        vanImage.animate({
             transform: createRotationTransformation(180, rotationPointX, rotationPointY)
-        }, vanImage, moveBack, 400);
+        }, timePerState, 'easeIn', moveBack);
     }
 
     function moveBack() {
-        moveVanImage({
+        vanImage.animate({
             transform: moveTransformation
-        }, vanImage, callback, 400);
+        }, timePerState, 'easeIn', callback);
     }
     
     moveForward();
 }
 
-function wait(van) {
+function wait(van, callback) {
     //no movement for now
     moveVanImage({
-        transform: '... t0,0'
-    }, vanImages[van.id]);
+        transform: '... t 0,0'
+    }, van, callback);
 }
 
 function createVanImage(paper, van) {
     var initialX = calculateInitialX(van.currentNode);
     var initialY = calculateInitialY(van.currentNode);
 
-    var vanImage = paper.image(
-        '/static/game/image/ocadoVan_big.svg', initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
+    var imageStr = (van.id % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+    var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
 
     var rotation = calculateInitialRotation(van.previousNode, van.currentNode);
     rotateElementAroundCentreOfGridSpace(vanImage, rotation, van.currentNode.coordinate.x, van.currentNode.coordinate.y);
@@ -609,3 +586,98 @@ function getVanImagePosition(vanImage) {
     var box = vanImage.getBBox();
     return [box.x, box.y];
 }
+<<<<<<< HEAD
+=======
+
+
+/***********************/
+/** Animation methods **/
+/***********************/
+
+function resetAnimation() {
+    isAnimating = false;
+    animationQueue = [];
+    animationTimestamp = 0;
+}
+
+function startAnimation() {
+    if (!isAnimating && animationQueue.length > 0) {
+        isAnimating = true;
+
+        while (animationQueue.length > 0 && animationQueue[0].timestamp <= animationTimestamp) {
+            var a = animationQueue.splice(0, 1)[0];
+
+            if (a.type == 'van') {
+                // Set all current animations to the final position, so we don't get out of sync
+                var anims = vanImages[a.id].status();
+                for (var i = 0, ii = anims.length; i < ii; i++) {
+                    vanImages[a.id].status(anims[i].anim, 1);
+                }
+
+                scrollToShowVanImage(vanImages[a.id]);
+                vanImages[a.id].animate(a.attr, a.animationLength, a.animationType, a.callback);
+            }
+            else if (a.type == 'trafficLight') {
+                if (a.colour == ocargo.TrafficLight.GREEN) {
+                    lightImages[a.id][0].animate({ opacity : 1 }, ANIMATION_FRAME/4, 'linear', a.callback);
+                    lightImages[a.id][1].animate({ opacity : 0 }, ANIMATION_FRAME/2, 'linear', a.callback);
+                }
+                else {
+                    lightImages[a.id][0].animate({ opacity : 0 }, ANIMATION_FRAME/2, 'linear', a.callback);
+                    lightImages[a.id][1].animate({ opacity : 1 }, ANIMATION_FRAME/4, 'linear', a.callback);
+                }
+            }
+            else if (a.type == 'highlightLine') {
+                var line = a.line;
+                $('.CodeMirror-code')[0].children[line].style.background = a.highlight;
+                setTimeout(function() {$('.CodeMirror-code')[0].children[line].style.background = "";}, 400);
+            }
+        }
+        
+        setTimeout(function() {
+            animationTimestamp++;
+            isAnimating = false;
+            startAnimation();
+        }, ANIMATION_FRAME);
+    }
+}
+
+function moveVanImage(attr, van, callback, animationLength) {
+    animationLength = animationLength || ANIMATION_FRAME;
+
+    animationQueue.push({type: 'van', timestamp: ocargo.time.timestamp, id: van.id, attr: attr, animationLength: animationLength, animationType: 'linear', callback: callback});
+
+    if (!isAnimating) {
+        startAnimation();
+    }
+}
+
+function changeTrafficLight(id, colour) {
+    animationQueue.push({type: 'trafficLight', timestamp: ocargo.time.timestamp, id: id, colour: colour});
+
+    if (!isAnimating) {
+        startAnimation();
+    }
+}
+
+function resetTrafficLightAnimation(id, colour) {
+    if (colour == ocargo.TrafficLight.GREEN) {
+        lightImages[id][0].attr({ opacity : 1 });
+        lightImages[id][1].attr({ opacity : 0 });
+    }
+    else {
+        lightImages[id][0].attr({ opacity : 0 });
+        lightImages[id][1].attr({ opacity : 1 });
+    }
+
+    resetAnimation();
+}
+
+function highlightLine(lineIndex) {
+    animationQueue.push({type: 'highlightLine', timestamp: ocargo.time.timestamp, line: lineIndex, highlight: "yellowgreen"});
+
+    if (!isAnimating) {
+        startAnimation();
+    }
+}
+>>>>>>> c7895fd6ca8b881a07e97b8281d53aee439483a4

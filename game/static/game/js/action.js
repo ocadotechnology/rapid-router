@@ -66,8 +66,14 @@ ocargo.TURN_RIGHT_ACTION = {
 
 ocargo.TURN_AROUND_ACTION = {
     name: "TURN_AROUND",
-    animationLength: 1500,
-    getNextNode: function(previousNode, currentNode) { return previousNode; }
+    animationLength: 500,
+    getNextNode: function(previousNode, currentNode) { 
+                    var forward = ocargo.FORWARD_ACTION.getNextNode(previousNode, currentNode);
+                    var left = ocargo.TURN_LEFT_ACTION.getNextNode(previousNode, currentNode);
+                    var right = ocargo.TURN_RIGHT_ACTION.getNextNode(previousNode, currentNode);
+
+                    return (forward || ((!left) && (!right))) ? previousNode : null;
+                }
 };
 
 

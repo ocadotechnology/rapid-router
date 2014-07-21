@@ -46,6 +46,7 @@ ocargo.Thread = function(id) {
 	this.isFinished = false;
 	this.instructionHandler = null;
 	this.currentAction = null;
+	this.currentBlock = null;
 };
 
 ocargo.Thread.prototype.step = function(level) {
@@ -83,7 +84,7 @@ function TurnLeftCommand(block) {
 }
 
 TurnLeftCommand.prototype.execute = function(thread) {
-	this.block.selectWithConnected();
+	thread.currentBlock = this.block;
 	thread.currentAction = ocargo.TURN_LEFT_ACTION;
 };
 
@@ -97,7 +98,7 @@ function TurnRightCommand(block) {
 }
 
 TurnRightCommand.prototype.execute = function(thread) {
-	this.block.selectWithConnected();
+	thread.currentBlock = this.block;
 	thread.currentAction = ocargo.TURN_RIGHT_ACTION;
 };
 
@@ -111,7 +112,7 @@ function ForwardCommand(block) {
 }
 
 ForwardCommand.prototype.execute = function(thread) {
-	this.block.selectWithConnected();
+	thread.currentBlock = this.block;
 	thread.currentAction = ocargo.FORWARD_ACTION;
 };
 
@@ -125,7 +126,7 @@ function TurnAroundCommand(block) {
 }
 
 TurnAroundCommand.prototype.execute = function(thread) {
-    this.block.selectWithConnected();
+    thread.currentBlock = this.block;
     thread.currentAction = ocargo.TURN_AROUND_ACTION;
 };
 
@@ -140,7 +141,7 @@ function WaitCommand(block) {
 }
 
 WaitCommand.prototype.execute = function(thread) {
-    this.block.selectWithConnected();
+    thread.currentBlock = this.block;
     thread.currentAction = ocargo.WAIT_ACTION;
 };
 
@@ -157,7 +158,7 @@ function If(conditionalCommandSets, elseBody, block) {
 }
 
 If.prototype.execute = function(thread, level) {
-	this.block.selectWithConnected();
+	thread.currentBlock = this.block;
 	thread.currentAction = ocargo.EMPTY_ACTION;
 
 	var i = 0;
@@ -202,7 +203,7 @@ function While(condition, body, block) {
 }
 
 While.prototype.execute = function(thread, level) {
-	this.block.selectWithConnected();
+	thread.currentBlock = this.block;
 	thread.currentAction = ocargo.EMPTY_ACTION;
 
 	if (this.condition(level,thread.id)) {
@@ -225,7 +226,7 @@ function Procedure(name,body,block) {
 };
 
 Procedure.prototype.execute = function(thread) {
-	this.block.selectWithConnected();
+	thread.currentBlock = this.block;
 	thread.currentAction = ocargo.EMPTY_ACTION;
 
 	thread.addNewStackLevel(this.body.slice());
@@ -248,7 +249,7 @@ ProcedureCall.prototype.bind = function(proc) {
 }
 
 ProcedureCall.prototype.execute = function(thread) {
-	this.block.selectWithConnected();
+	thread.currentBlock = this.block;
 	thread.currentAction = ocargo.EMPTY_ACTION;
 
 	thread.addNewStackLevel([this.proc]);
