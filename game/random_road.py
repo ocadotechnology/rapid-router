@@ -38,7 +38,7 @@ def create(episode=None):
         level = Level(name="Random level for " + episode.name + ".", path=json.dumps(path), max_fuel=30, destination=destination)
 
     level.save()
-    level.blocks = Block.objects.all()
+    level.blocks = episode.r_blocks.all()
     level.save()
 
     return level
