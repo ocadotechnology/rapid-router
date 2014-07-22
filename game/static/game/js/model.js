@@ -170,7 +170,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 	    sendAttempt(scoreArray[0]);
 
 		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp,
+			timestamp: this.timestamp - 1,
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'WIN',
@@ -181,7 +181,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 		sendAttempt(0);
 
 		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp,
+			timestamp: this.timestamp - 1,
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
