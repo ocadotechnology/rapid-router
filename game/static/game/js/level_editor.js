@@ -22,6 +22,7 @@ ocargo.LevelEditor = function() {
     this.trafficLights = [];
     this.currentStrike = [];
     this.decor = [];
+    this.trafficCounter = 0;
     this.grid = this.initialiseVisited();
 
     // Is the start, end or delete mode on?
@@ -121,7 +122,7 @@ function handleMouseDown(this_rect, segment) {
         } else if (ocargo.levelEditor.endFlag && isPresent > -1) {
             
             if (ocargo.levelEditor.destination) {
-                var prevEnd = translate(ocargo.l
+                var prevEnd = translate(ocargo.levelEditor.destination.coordinate);
                 ocargo.levelEditor.mark(prevEnd, BACKGROUND_COLOR, 0, true);
             }
             // Check if same as starting node
@@ -156,13 +157,14 @@ function handleMouseOver(this_rect, segment) {
             var transCoord = translate(coord);
 
             if(startOrEnd) {
-                var nodeIndex = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
-                if (nodeIndex != -1) {
+                var nodeIndex = findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
+                if (nodeIndex !== -1) {
                     var node = ocargo.levelEditor.nodes[nodeIndex];
 
                     if(ocargo.levelEditor.endFlag)
                     {
-                        if (ocargo.levelEditor.destination == node || ocargo.levelEditor.pathStart == node)
+                        if (ocargo.levelEditor.destination === node ||
+                            ocargo.levelEditor.pathStart === node)
                         {
                             return;
                         }
@@ -170,8 +172,9 @@ function handleMouseOver(this_rect, segment) {
                     }
                     else 
                     {
-                        if (ocargo.levelEditor.destination == node || ocargo.levelEditor.pathStart == node
-                            || !ocargo.levelEditor.canPlaceCFC(node))
+                        if (ocargo.levelEditor.destination === node ||
+                            ocargo.levelEditor.pathStart === node ||
+                            !ocargo.levelEditor.canPlaceCFC(node))
                         {
                             return;
                         }
@@ -180,8 +183,10 @@ function handleMouseOver(this_rect, segment) {
                 }
             }
             else {
-                if ((ocargo.levelEditor.destination && ocargo.levelEditor.destination.coordinate.equals(transCoord))
-                    || (ocargo.levelEditor.pathStart && ocargo.levelEditor.pathStart.coordinate.equals(transCoord)))
+                if ((ocargo.levelEditor.destination &&
+                        ocargo.levelEditor.destination.coordinate.equals(transCoord)) ||
+                    (ocargo.levelEditor.pathStart &&
+                        ocargo.levelEditor.pathStart.coordinate.equals(transCoord)))
                 {
                     return;
                 }
@@ -199,10 +204,11 @@ function handleMouseOut(this_rect, segment) {
         var transCoord = translate(coord);
 
         if(startOrEnd) {
-            var nodeIndex = ocargo.levelEditor.findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
-            if (nodeIndex != -1) {
+            var nodeIndex = findNodeByCoordinate(ocargo.levelEditor.nodes, transCoord);
+            if (nodeIndex !== -1) {
                 var node = ocargo.levelEditor.nodes[nodeIndex];
-                if (ocargo.levelEditor.destination == node || ocargo.levelEditor.pathStart == node)
+                if (ocargo.levelEditor.destination === node ||
+                    ocargo.levelEditor.pathStart === node)
                 {
                     return;
                 }
@@ -210,8 +216,10 @@ function handleMouseOut(this_rect, segment) {
             }
         }
         else {
-            if ((ocargo.levelEditor.destination && ocargo.levelEditor.destination.coordinate.equals(transCoord))
-                || (ocargo.levelEditor.pathStart && ocargo.levelEditor.pathStart.coordinate.equals(transCoord)))
+            if ((ocargo.levelEditor.destination &&
+                    ocargo.levelEditor.destination.coordinate.equals(transCoord)) ||
+                (ocargo.levelEditor.pathStart &&
+                    ocargo.levelEditor.pathStart.coordinate.equals(transCoord)))
             {
                 return;
             }
@@ -346,11 +354,11 @@ ocargo.LevelEditor.prototype.finaliseMove = function() {
                 list[k].removeDoublyConnectedNode(current);
             }
 
-            if(existing == ocargo.levelEditor.pathStart) {
+            if(existing === ocargo.levelEditor.pathStart) {
                 ocargo.levelEditor.mark(ocargo.levelEditor.pathStart.coordinate, BACKGROUND_COLOR, 0.0, true);
                 ocargo.levelEditor.pathStart = null;
             }
-            if(existing == ocargo.levelEditor.destination) {
+            if(existing === ocargo.levelEditor.destination) {
                 ocargo.levelEditor.mark(ocargo.levelEditor.destination.coordinate, BACKGROUND_COLOR, 0.0, true);
                 ocargo.levelEditor.pathStart = null;
             }
@@ -479,7 +487,7 @@ Raphael.el.draggableDecor = function(initX, initY) {
     this.drag(moveFnc, startFnc, endFnc);
 };
 
-Raphael.el.draggableLights = function(coordinate) {
+Raphael.el.draggableLights = function(coordinate, id) {
     var me = this,
         kx = coordinate,                        // Coordinates used for centralisation.
         ky = new ocargo.Coordinate(coordinate.x, coordinate.y + 1),
@@ -506,34 +514,32 @@ Raphael.el.draggableLights = function(coordinate) {
             s = getOrientation(me);
             r = getRotation(me);
             console.debug("rotation", r)
-            console.debug(JSON.stringify(me.transform()), me.transform());
-            // Find the element in decor and remove it.
-            var first = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(kx));
-            var second = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(ky));
+            console.debug("rotationData", JSON.stringify(me.transform()), me.transform());
 
-            var index = ocargo.levelEditor.findTrafficLight(first, second);
+            // Find the element in trafficLights and remove it.
+            var index = findTrafficLightByIndex(id, ocargo.levelEditor.trafficLights);
+            console.debug(index);
             if (index > -1) {
-                console.debug("Removing", index);
                 ocargo.levelEditor.trafficLights.splice(index, 1);
             }
-            ky = getPrevious(me, kx);
+            
+
         },
         endFnc = function() {
             ox = lx;
             oy = ly;
             ocargo.levelEditor.mark(kx, BACKGROUND_COLOR, 0, false);
             ocargo.levelEditor.mark(ky, BACKGROUND_COLOR, 0, false);
-            console.debug("ox, oy", ox, oy, "lx, ly", lx, ly)
             var firstIndex = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(kx));
             var secondIndex = findNodeByCoordinate(ocargo.levelEditor.nodes, translate(ky));
 
             if (firstIndex > -1 && secondIndex > -1) {
                 // TODO: randomise some of the parameters.
-                ocargo.levelEditor.trafficLights.push({"node": firstIndex, "sourceNode": secondIndex,
-                                                        "redDuration":4, "greenDuration": 2,
-                                                        "startTime": 0, "startingState": "RED"});
+                ocargo.levelEditor.trafficLights.push({"id": id, "node": firstIndex, 
+                                                       "sourceNode": secondIndex, "redDuration":4,
+                                                       "greenDuration": 2, "startTime": 0,
+                                                       "startingState": "RED"});
                 console.debug("Lights: ", JSON.stringify(ocargo.levelEditor.trafficLights));
-                //console.debug("Nodes: ", ocargo.levelEditor.nodes);
             }
             
         };
@@ -553,13 +559,22 @@ Raphael.el.draggableLights = function(coordinate) {
 
     function getRotation(object) {
         var transform = object.transform();
-        var value = 360;
+        var value = 0;
         for(var i = 0; i < transform.length; i++) {
             if(transform[i][0] === 'r') {
-                value += transform[i][1];
+                value += Math.abs(transform[i][1]);
             }
         }
-        return value;   
+        return value % 360;   
+    }
+
+    function findTrafficLightByIndex(index, lights) {
+        for (var i = 0; i < lights.length; i++) {
+            if (lights[i].id === index) {
+                return i;
+            }
+        }
+        return -1;
     }
 
 
@@ -599,7 +614,7 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
         var controlledNode = nodes[controlledNodeId];
         var sourceNode = nodes[sourceNodeId];
         
-        var light = new ocargo.TrafficLight(startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
+        var light = new ocargo.TrafficLight(i, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
         trafficLights.push(light);
         controlledNode.addTrafficLight(light);
     }
@@ -617,7 +632,6 @@ ocargo.LevelEditor.prototype.findTrafficLight = function(firstIndex, secondIndex
     return -1;
 }
 
-
 function initialiseDecorGraphic(url) {
     var img = paper.image(url, 0, 0, DECOR_SIZE, DECOR_SIZE);
     img.draggableDecor(0, 0);
@@ -627,9 +641,11 @@ function initialiseDecorGraphic(url) {
 
 function initialiseTrafficLight() {
     var img = paper.image(LIGHTS_URL, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
-    img.draggableLights(new ocargo.Coordinate(0, 0));
+    img.draggableLights(new ocargo.Coordinate(0, 0), ocargo.levelEditor.trafficCounter);
+    ocargo.levelEditor.trafficCounter++;
     img.transform('...s-1,1');
     img.node.ondblclick = function() {
+
         var image = img;
         return image.transform('...r90');
     };
@@ -776,11 +792,6 @@ ocargo.LevelEditor.prototype.oldPathToNew = function() {
     return newPath;
 };
 
-//[{"node":5,"sourceNode":4,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"},
-// "node":2,"sourceNode":9,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"},
-// {"node":2,"sourceNode":3,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"},
-// {"node":2,"sourceNode":8,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"},
-// {"node":2,"sourceNode":1,"redDuration":4,"greenDuration":2,"startTime":0,"startingState":"RED"}]
 $("#export").click(function() {
 
     if (ocargo.levelEditor.pathStart === null || ocargo.levelEditor.destination === null) {
@@ -839,6 +850,7 @@ $("#export").click(function() {
 $(function() {
     paper.clear();
     ocargo.ui = new ocargo.SimpleUi();
+    ocargo.time = new ocargo.Time();
     ocargo.levelEditor = new ocargo.LevelEditor();
     ocargo.levelEditor.createGrid(paper);
 });

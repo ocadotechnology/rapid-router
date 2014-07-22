@@ -425,6 +425,7 @@ function createTrafficLights(trafficLights, draggable) {
 	for (var i = 0; i < trafficLights.length; i++) {
 		var trafficLight = trafficLights[i];
 		var controlledNode = trafficLight.controlledNode;
+
 		var sourceNode = trafficLight.sourceNode;
 		
 		//get position based on nodes
@@ -441,11 +442,20 @@ function createTrafficLights(trafficLights, draggable) {
             drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
         trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
             drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
+
         if (draggable) {
-            trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate));
-            trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate));
+            var id = trafficLight.id;
+            trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate), id);
+            trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id);
             trafficLight.redLightEl.node.ondblclick = function() {
+                console.debug("id", trafficLight.id);
                 var image = trafficLight.redLightEl;
+                return image.transform('...r90');
+            };
+
+            trafficLight.greenLightEl.node.ondblclick = function() {
+                console.debug("id", id);
+                var image = trafficLight.greenLightEl;
                 return image.transform('...r90');
             };
         }
@@ -586,9 +596,6 @@ function getVanImagePosition(vanImage) {
     var box = vanImage.getBBox();
     return [box.x, box.y];
 }
-<<<<<<< HEAD
-=======
-
 
 /***********************/
 /** Animation methods **/
@@ -680,4 +687,3 @@ function highlightLine(lineIndex) {
         startAnimation();
     }
 }
->>>>>>> c7895fd6ca8b881a07e97b8281d53aee439483a4
