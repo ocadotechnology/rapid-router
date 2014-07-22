@@ -507,7 +507,9 @@ Raphael.el.draggableLights = function(coordinate, idIndex) {
             var box = me.getBBox();
             kx.x = Math.min(Math.max(0, Math.floor(box.x / GRID_SPACE_SIZE)), GRID_WIDTH - 1);
             kx.y = Math.min(Math.max(0, Math.floor(box.y / GRID_SPACE_SIZE)), GRID_HEIGHT - 1);
-            ky = getPrevious(me, kx);
+            var arr = getPrevious(me, kx);
+            kx = arr[0];
+            ky = arr[1]
             ocargo.levelEditor.mark(kx, SELECTED_COLOR, 0.7, false);
             ocargo.levelEditor.mark(ky, SELECTED_COLOR, 0.7, false);
         },
@@ -515,17 +517,14 @@ Raphael.el.draggableLights = function(coordinate, idIndex) {
             s = getOrientation(me);
             r = getRotation(me);
             console.debug(id);
-          //  console.debug("rotation", r)
-           // console.debug("rotationData", JSON.stringify(me.transform()), me.transform());
+            //  console.debug("rotation", r)
+            // console.debug("rotationData", JSON.stringify(me.transform()), me.transform());
 
             // Find the element in trafficLights and remove it.
             var index = findTrafficLightByIndex(id, ocargo.levelEditor.trafficLights);
-
             if (index > -1) {
                 ocargo.levelEditor.trafficLights.splice(index, 1);
             }
-            
-
         },
         endFnc = function() {
             ox = lx;
@@ -599,7 +598,23 @@ Raphael.el.draggableLights = function(coordinate, idIndex) {
                 prevNode = new ocargo.Coordinate(coordinate.x - 1, coordinate.y);
                 break;
         }
-        return prevNode;
+        while (coordinate.x < 0 || prevNode.x < 0) {
+            coordinate.x += 1;
+            prevNode.x += 1;
+        }
+        while (coordinate.x >= GRID_WIDTH || prevNode.x >= GRID_WIDTH) {
+            coordinate.x -= 1;
+            prevNode.x -= 1;
+        }
+        while (coordinate.y < 0 || prevNode.y < 0) {
+            coordinate.y += 1;
+            prevNode.y += 1;
+        }
+        while (coordinate.y >= GRID_HEIGHT || prevNode.y >= GRID_HEIGHT) {
+            coordinate.y -= 1;
+            prevNode.y -= 1;
+        }
+        return [coordinate, prevNode];
     }
 };
 

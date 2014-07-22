@@ -448,6 +448,7 @@ function createTrafficLights(trafficLights, draggable) {
         if (draggable) {
             var id = trafficLight.id;
             trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id);
+            
             trafficLight.redLightEl.node.ondblclick = function() {
                 var traffic = trafficLight;
                 console.debug("id", traffic.id);
