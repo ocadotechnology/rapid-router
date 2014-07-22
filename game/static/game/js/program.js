@@ -45,8 +45,14 @@ ocargo.Thread.prototype.step = function(model) {
 	var successful = commandToProcess.execute(this, model);
 
 	if (!successful) {
-		// Program crashed
-		// ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
+		// Program crashed, queue a block highlight event
+		ocargo.animation.queueAnimation({
+			timestamp: model.timestamp,
+			type: 'callable',
+			functionCall: function() {
+				ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
+			}
+		});
 		return false;
 	}
 
