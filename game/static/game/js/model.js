@@ -38,7 +38,7 @@ ocargo.Model.prototype.observe = function(value) {
 		timestamp: this.timestamp,
 		type: 'van',
 		id: this.vanId,
-		vanAction: "OBSERVE",
+		vanAction: 'OBSERVE',
 		fuel: this.van.getFuelPercentage(),
 	});
 };
@@ -91,7 +91,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
-			popupType: 'CRASH',
+			popupType: 'FAIL',
+			popupMessage: ocargo.messages.offRoad(this.van.travelled),
 		});
 		return false;
 	}
@@ -102,7 +103,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
-			popupType: 'NO_FUEL',
+			popupType: 'FAIL',
+			popupMessage: ocargo.messages.outOfFuel,
 		});
 		return false;
 	}
@@ -114,7 +116,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
-			popupType: 'RAN_RED_LIGHT',
+			popupType: 'FAIL',
+			popupMessage: ocargo.messages.throughRedLight,
 		});
 		return false;
 	}
