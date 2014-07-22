@@ -1,3 +1,5 @@
+'use strict';
+
 var ocargo = ocargo || {};
 
 /* Program */
@@ -77,6 +79,7 @@ ocargo.Thread.prototype.terminate = function() {
 };
 
 
+
 /* Instructions */
 
 function TurnLeftCommand(block) {
@@ -88,9 +91,6 @@ TurnLeftCommand.prototype.execute = function(thread) {
 	thread.currentAction = ocargo.TURN_LEFT_ACTION;
 };
 
-TurnLeftCommand.prototype.parse = function() {
-	return {command: 'Left'};
-}
 
 
 function TurnRightCommand(block) {
@@ -102,9 +102,6 @@ TurnRightCommand.prototype.execute = function(thread) {
 	thread.currentAction = ocargo.TURN_RIGHT_ACTION;
 };
 
-TurnRightCommand.prototype.parse = function() {
-	return {command: 'Right'};
-}
 
 
 function ForwardCommand(block) {
@@ -116,9 +113,6 @@ ForwardCommand.prototype.execute = function(thread) {
 	thread.currentAction = ocargo.FORWARD_ACTION;
 };
 
-ForwardCommand.prototype.parse = function() {
-	return {command: 'Forward'};
-}
 
 
 function TurnAroundCommand(block) {
@@ -130,10 +124,6 @@ TurnAroundCommand.prototype.execute = function(thread) {
     thread.currentAction = ocargo.TURN_AROUND_ACTION;
 };
 
-TurnAroundCommand.prototype.parse = function() {
-	return {command: 'TurnAround'};
-}
-
 
 
 function WaitCommand(block) {
@@ -144,10 +134,6 @@ WaitCommand.prototype.execute = function(thread) {
     thread.currentBlock = this.block;
     thread.currentAction = ocargo.WAIT_ACTION;
 };
-
-WaitCommand.prototype.parse = function() {
-	return {command: 'Wait'};
-}
 
 
 
@@ -176,24 +162,6 @@ If.prototype.execute = function(thread, level) {
 	}
 };
 
-If.prototype.parse = function() {
-	var ifBlocks = [];
-	for(var i = 0; i < this.conditionalCommandSets.length; i++) {
-		ifBlock = { condition: this.conditionalCommandSets[i].condition.toString(),
-					body: parseBody(this.conditionalCommandSets[i].commands)};
-		ifBlocks.push(ifBlock);
-	}
-
-	var parsedCommand = {command: 'If',
-						ifBlocks: ifBlocks};
-   	
-    if (this.elseCommands) {
-        parsedCommand.elseBlock = parseBody(this.elseBody);
-    }
-
-    return parsedCommand;
-}
-
 
 
 function While(condition, body, block) {
@@ -212,11 +180,6 @@ While.prototype.execute = function(thread, level) {
 	}
 };
 
-While.prototype.parse = function() {
-    return {command: 'While',
-			condition: this.condition.toString(),
-			body: parseBody(this.body)};
-}
 
 
 function Procedure(name,body,block) {
@@ -230,12 +193,6 @@ Procedure.prototype.execute = function(thread) {
 	thread.currentAction = ocargo.EMPTY_ACTION;
 
 	thread.addNewStackLevel(this.body.slice());
-}
-
-Procedure.prototype.parse = function() {
-	return {command: "Procedure",
-			name: this.name,
-			body: parseBody(this.body)};
 }
 
 
@@ -253,19 +210,4 @@ ProcedureCall.prototype.execute = function(thread) {
 	thread.currentAction = ocargo.EMPTY_ACTION;
 
 	thread.addNewStackLevel([this.proc]);
-}
-
-ProcedureCall.prototype.parse = function() {
-	return {command: "ProcedureCall",
-			name: this.proc.name};
-}
-
-
-
-function parseBody(body) {
-	var parses = [];
-	for (var i = 0; i < body.length; i++) {
-		parses.push(body[i].parse())
-	}
-	return parses;
 }
