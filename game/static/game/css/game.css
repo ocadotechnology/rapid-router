@@ -148,7 +148,7 @@ button, .button, img.control{
     cursor: col-resize;
 }
 
-#fuelGuage {
+#fuelGauge {
     position: fixed;
     z-index: 1;
     width: 100px;
@@ -157,7 +157,7 @@ button, .button, img.control{
     bottom: 120px;
 }
 
-#fuelGuagePointer {
+#fuelGaugePointer {
     position: absolute;
     width: 100px;
     height: 100px;
