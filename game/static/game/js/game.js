@@ -59,6 +59,14 @@ function disableDirectControl() {
     document.getElementById('step').disabled = true;
 }
 
+function runProgramAndPrepareAnimation() {
+    // clear animations
+    ocargo.animation.resetAnimation();
+    // compile and run program
+    var program = ocargo.blocklyCompiler.compile();
+    program.run();
+}
+
 function setupListeners() {
 
     $('#moveForward').click(function() {
@@ -84,49 +92,51 @@ function setupListeners() {
         disableDirectControl();
 
         try {
-            var program = ocargo.blocklyCompiler.compile();
-        
-            program.run();
-
-            var timestamp = ocaro.animation.getLastTimestamp();
+            runProgramAndPrepareAnimation();
+            // append function call to enable direct control
+            var timestamp = ocargo.animation.getLastTimestamp();
             ocargo.animation.queueAnimation(timestamp, {
                 type: 'callable',
                 functionCall: enableDirectControl,
             });
-
             ocargo.animation.playAnimation();
         }
         catch (error) {
             enableDirectControl();
-            levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
+            console.info("level failed, error: " + error);
+            //levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
             return;
         }
     });
 
+
+    $('#resume').click(function() {
+        ocargo.animation.playAnimation();
+    });
+
     $('#step').click(function() {
-        if (ocargo.blocklyControl.incorrect) {
-            ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
+        if (ocargo.blocklyControl.incorrectBlock) {
+            ocargo.blocklyControl.incorrectBlock.setColour(ocargo.blocklyControl.incorrectBlockColour);
         }
 
-        if (ocargo.level.program === undefined || ocargo.level.program.isFinished) {
+        disableDirectControl();
+
+        if (!ocargo.animation.isFinished()) {
+            ocargo.animation.stepAnimation();
+        } else {
             try {
-                ocargo.level.program = ocargo.blocklyControl.populateProgram();
-                ocargo.level.selectStartBlocks();
-                clearVanData();
-                ocargo.time.resetTime();
-                Blockly.addChangeListener(terminate);
-            } catch (error) {
-                ocargo.level.fail('Your program crashed!');
-                throw error;
+                runProgramAndPrepareAnimation();
+                ocargo.animation.stepAnimation();
+            }
+            catch (error) {
+                console.info("level failed, error: " + error);
+                // levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
             }
         }
-        disableDirectControl();
-        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
-        ocargo.level.stepProgram(enableDirectControl);
 
-        function terminate() {
-            ocargo.level.program.isTerminated = true;
-        }
+        
+        // show start over button
+        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
     });
     
     $('#help').click(function() {
@@ -136,13 +146,13 @@ function setupListeners() {
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
         enableDirectControl();
-        clearVanData();
-        ocargo.time.resetTime();
+        ocargo.animation.resetAnimation();
+        // show go button
         $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
     });
 
     $('#stop').click(function() {
-        ocargo.level.program.terminate();
+        ocargo.animation.resetAnimation();
     });
 
     var selectedWorkspace = null;
