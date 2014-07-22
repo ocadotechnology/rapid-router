@@ -438,23 +438,48 @@ function createTrafficLights(trafficLights, draggable) {
 		//draw red and green lights, keep reference to both
         var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
         var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
-        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg', drawX,
-            drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
-        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
-            drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
+        if (trafficLight.startingState === "RED") {
+            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
+                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
+                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+        } else {
+            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
+                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
+                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+        }
+        
 
         lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
 
         if (draggable) {
             var id = trafficLight.id;
-            trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id);
-            
-            trafficLight.redLightEl.node.ondblclick = function() {
-                var traffic = trafficLight;
-                console.debug("id", traffic.id);
-                var image = traffic.redLightEl;
-                return image.transform('...r90');
-            };
+            if (trafficLight.startingState === "RED") {
+                trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id, true);
+            } else {
+                trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate), id, false);
+            }
+
+            if (trafficLight.startingState === "RED") {
+                trafficLight.redLightEl.node.ondblclick = function() {
+                    var traffic = trafficLight;
+                    console.debug("id", traffic.id);
+                    var image = traffic.redLightEl;
+                    return image.transform('...r90');
+                };
+            } else {
+                trafficLight.greenLightEl.node.ondblclick = function() {
+                    var traffic = trafficLight;
+                    console.debug("id", traffic.id);
+                    var image = traffic.greenLightEl;
+                    return image.transform('...r90');
+                };
+            }
         }
 
 		

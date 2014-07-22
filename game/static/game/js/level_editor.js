@@ -12,7 +12,8 @@ var TREE1_URL = '/static/game/image/tree1.svg';
 var TREE2_URL = '/static/game/image/tree2.svg';
 var HOUSE_URL = '/static/game/image/house1_noGreen.svg';
 var CFC_URL = '/static/game/image/OcadoCFC_no_road.svg';
-var LIGHTS_URL = '/static/game/image/trafficLights.svg';
+var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
+var LIGHT_GREEN_URL = '/static/game/image/trafficLight_green.svg';
 
 
 ocargo.LevelEditor = function() {
@@ -487,7 +488,7 @@ Raphael.el.draggableDecor = function(initX, initY) {
     this.drag(moveFnc, startFnc, endFnc);
 };
 
-Raphael.el.draggableLights = function(coordinate, idIndex) {
+Raphael.el.draggableLights = function(coordinate, idIndex, red) {
     var me = this,
         id = idIndex,
         kx = coordinate,                        // Coordinates used for centralisation.
@@ -536,10 +537,17 @@ Raphael.el.draggableLights = function(coordinate, idIndex) {
 
             if (firstIndex > -1 && secondIndex > -1) {
                 // TODO: randomise some of the parameters.
-                ocargo.levelEditor.trafficLights.push({"id": id, "node": firstIndex, 
-                                                       "sourceNode": secondIndex, "redDuration":4,
-                                                       "greenDuration": 2, "startTime": 0,
-                                                       "startingState": "RED"});
+                if (red) {
+                    ocargo.levelEditor.trafficLights.push({"id": id, "node": firstIndex, 
+                                                           "sourceNode": secondIndex, "redDuration":3,
+                                                           "greenDuration": 3, "startTime": 0,
+                                                           "startingState": "RED"});
+                } else {
+                    ocargo.levelEditor.trafficLights.push({"id": id, "node": firstIndex, 
+                                                           "sourceNode": secondIndex, "redDuration":3,
+                                                           "greenDuration": 3, "startTime": 0,
+                                                           "startingState": "GREEN"});
+                }
                 console.debug("Lights: ", JSON.stringify(ocargo.levelEditor.trafficLights));
             }
             
@@ -657,9 +665,14 @@ function initialiseDecorGraphic(url) {
     ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
 }
 
-function initialiseTrafficLight() {
-    var img = paper.image(LIGHTS_URL, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
-    img.draggableLights(new ocargo.Coordinate(0, 0), ocargo.levelEditor.trafficCounter);
+function initialiseTrafficLight(red) {
+    var img;
+    if (red) {
+        img = paper.image(LIGHT_RED_URL, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
+    } else {
+        img = paper.image(LIGHT_GREEN_URL, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
+    }
+    img.draggableLights(new ocargo.Coordinate(0, 0), ocargo.levelEditor.trafficCounter, red);
     ocargo.levelEditor.trafficCounter++;
     img.transform('...s-1,1');
 
@@ -717,8 +730,12 @@ $('#help').click(function() {
     startPopup(ocargo.messages.levelEditorTitle, subtitle, ocargo.messages.levelEditorMainText);
 });
 
-$('#trafficLight').click(function() {
-    initialiseTrafficLight();
+$('#trafficLightRed').click(function() {
+    initialiseTrafficLight(true);
+});
+
+$('#trafficLightGreen').click(function() {
+    initialiseTrafficLight(false);
 });
 
 $('#clear').click(function() {
