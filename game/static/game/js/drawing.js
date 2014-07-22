@@ -465,44 +465,44 @@ function scrollToShowVanImage(vanImage) {
     element.scrollTop = point[1] - element.offsetHeight/2;
 }
 
-function moveForward(van, animationLength, callback) {
+function moveForward(vanId, animationLength, callback) {
     var moveDistance = -MOVE_DISTANCE;
     var transformation = "... t 0, " + moveDistance;
     moveVanImage({
         transform: transformation
-    }, van, animationLength, callback);
+    }, vanId, animationLength, callback);
 }
 
-function moveLeft(van, animationLength,callback) {
-    var vanImage = vanImages[van.id];
+function moveLeft(vanId, animationLength,callback) {
+    var vanImage = vanImages[vanId];
     var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
     var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
     var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, van, animationLength, callback);
+    }, vanId, animationLength, callback);
 }
 
-function moveRight(van, animationLength, callback) {
-    var vanImage = vanImages[van.id];
+function moveRight(vanId, animationLength, callback) {
+    var vanImage = vanImages[vanId];
     var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
     var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
     var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
     moveVanImage({
         transform: transformation
-    }, van, animationLength, callback);
+    }, vanId, animationLength, callback);
 }
 
-function turnAround(van, animationLength, callback) {
+function turnAround(vanId, animationLength, callback) {
     var moveDistance = -GRID_SPACE_SIZE / 2;
     var moveTransformation = "... t 0, " + moveDistance;
-    var vanImage = vanImages[van.id];
+    var vanImage = vanImages[vanId];
     var timePerState = (animationLength - 50) / 3;
 
     function moveForward() {
         moveVanImage({
             transform: moveTransformation
-        }, van, rotate, timePerState);
+        }, vanId, rotate, timePerState);
     }
 
     function rotate() {
@@ -523,19 +523,15 @@ function turnAround(van, animationLength, callback) {
     moveForward();
 }
 
-function wait(van, callback) {
+function wait(vanId, callback) {
     //no movement for now
     moveVanImage({
         transform: '... t 0,0'
-    }, van, animationLength, callback);
+    }, vanId, animationLength, callback);
 }
 
-function moveVanImage(attr, van, animationLength, callback) {
-    vanImages[van].animate(attr, animationLength, 'linear');
-    if (callback) {
-        console.debug("calling back on van " + van);
-        callback();
-    }
+function moveVanImage(attr, vanId, animationLength, callback) {
+    vanImages[vanId].animate(attr, animationLength, 'linear', callback);
 }
 
 function createVanImage(position, vanId) {

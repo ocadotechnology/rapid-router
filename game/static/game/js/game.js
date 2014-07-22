@@ -64,22 +64,19 @@ function setupListeners() {
     $('#moveForward').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(ocargo.level.vans[0],enableDirectControl);
-        ocargo.time.incrementTime();
+        moveForward(0, enableDirectControl);
     });
 
     $('#turnLeft').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(ocargo.level.vans[0],enableDirectControl);
-        ocargo.time.incrementTime();
+        moveLeft(0, enableDirectControl);
     });
 
     $('#turnRight').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(ocargo.level.vans[0],enableDirectControl);
-        ocargo.time.incrementTime();
+        moveRight(0, enableDirectControl);
     });
 
     $('#play').click(function() {
@@ -88,15 +85,22 @@ function setupListeners() {
 
         try {
             var program = ocargo.blocklyCompiler.compile();
-        } catch (error) {
+        
+            program.run();
+
+            var timestamp = ocaro.animation.getLastTimestamp();
+            ocargo.animation.queueAnimation(timestamp, {
+                type: 'callable',
+                functionCall: enableDirectControl,
+            });
+
+            ocargo.animation.playAnimation();
+        }
+        catch (error) {
             enableDirectControl();
             levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
             return;
         }
-
-        clearVanData();
-        ocargo.time.resetTime();
-        ocargo.level.playProgram(program);
     });
 
     $('#step').click(function() {
