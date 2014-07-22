@@ -41,7 +41,7 @@ ocargo.Model.prototype.observe = function(value) {
 		vanAction: "OBSERVE",
 		fuel: this.van.getFuelPercentage(),
 	});
-}
+};
 
 ocargo.Model.prototype.isRoadForward = function() {
 	this.observe();
@@ -122,10 +122,10 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 		fuel: this.van.getFuelPercentage(),
 	});
 
-	this.timestamp += 1;
+	this.incrementTime();
 
 	return true;
-}
+};
 
 ocargo.Model.prototype.moveForwards = function() {
 	var nextNode = this.map.isRoadForward(this.van.getPosition());
@@ -154,22 +154,30 @@ ocargo.Model.prototype.wait = function() {
 // the play has won or not and send off those events
 ocargo.Model.prototype.programExecutionEnded = function() {
 	if (this.van.getPosition().currentNode === this.map.getDestinationNode()) {
+		var scoreArray = this.pathFinder.getScore();
+	    sendAttempt(scoreArray[0]);
+
 		ocargo.animation.queueAnimation(this.timestamp, {
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'WIN',
+			popupMessage: scoreArray[1],
 		});
 	}
 	else {
+		sendAttempt(0);
+
 		ocargo.animation.queueAnimation(this.timestamp, {
 			type: 'popup',
 			id: this.vanId,
-			popupType: 'NO_INSTRUCTIONS',
+			popupType: 'FAIL',
+			popupMessage: ocargo.messages.outOfInstructions,
+			hint: registerFailure(),
 		});
 	}
 };
 
-// A helper function that returns the traffic light associated
+// A helper function which returns the traffic light associated
 // with a particular node and orientation
 ocargo.Model.prototype.getTrafficLightForNode = function(position) {
 	var i;
@@ -180,4 +188,15 @@ ocargo.Model.prototype.getTrafficLightForNode = function(position) {
 		}
 	}
 	return null;
+};
+
+// A helper function which handles telling all parts of the model
+// that time has incremented and they should generate events
+ocargo.Model.prototype.incrementTime = function() {
+	this.timestamp += 1;
+
+	var i;
+	for (i = 0; i < this.trafficLights.length; i++) {
+		trafficLights[i].incrementTime();
+	}
 };

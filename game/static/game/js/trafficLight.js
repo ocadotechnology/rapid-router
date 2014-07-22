@@ -29,11 +29,21 @@ ocargo.TrafficLight.prototype.incrementTime = function() {
     if (this.state === ocargo.TrafficLight.RED && this.currentLightTime >= this.redDuration) {
     	this.state = ocargo.TrafficLight.GREEN;
     	this.currentLightTime = 0;
+        this.queueAnimation();
     }
     else if (this.state === ocargo.TrafficLight.GREEN && this.currentLightTime >= this.greenDuration) {
     	this.state = ocargo.TrafficLight.RED;
     	this.currentLightTime = 0;
+        this.queueAnimation();
     }
+};
+
+ocargo.TrafficLight.prototype.queueAnimation = function() {
+    ocargo.animation.queueAnimation(this.timestamp, {
+        type: 'trafficlight',
+        id: this.id,
+        colour: this.state,
+    });
 };
 
 ocargo.TrafficLight.RED = 'RED';

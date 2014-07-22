@@ -1,20 +1,18 @@
-var ocargo = ocargo || {};
-
 'use strict';
 
+var ocargo = ocargo || {};
+
 function init() {
-    ocargo.time = new ocargo.Time();
-    ocargo.ui = new ocargo.SimpleUi();
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
-    
-    ocargo.level = createLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, MAX_FUEL, NEXT_LEVEL, NEXT_EPISODE);
-    ocargo.level.levelId = JSON.parse(LEVEL_ID);
-
     ocargo.blocklyControl.loadPreviousAttempt();
+    
+    ocargo.model = new ocargo.Model(PATH, DESTINATION, TRAFFIC_LIGHTS, MAX_FUEL);
+
     setupListeners();
     enableDirectControl();
-    startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
+
+    // startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
 
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
@@ -24,77 +22,14 @@ function init() {
     }
 }
 
-function createLevel(nodeData, destination, decor, trafficLightData, maxFuel, nextLevel, nextEpisode) {
-    var nodes = createNodes(nodeData);
-    var trafficLights = createAndAddTrafficLightsToNodes(nodes, trafficLightData);
-    var destinationIndex = findByCoordinate(destination, nodes);
-    var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
-    var map = new ocargo.Map(nodes, decor, trafficLights, dest);
-    var vans = [];
-
-    var previousNode = nodes[0];
-    var startNode = nodes[0].connectedNodes[0];
-    for (var i = 0; i < THREADS; i++) {
-        vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel));
+var failures = 0;
+var hasFailedThisTry = false;
+function registerFailure() {
+    if (!hasFailedThisTry) {
+        failures += 1;
+        hasFailedThisTry = true;
     }
-
-    ocargo.ui.renderMap(map);
-    ocargo.ui.renderVans(vans);
-
-    return new ocargo.Level(map, vans, nextLevel, nextEpisode);
-}
-
-function createNodes(nodeData) {
-    var nodes = [];
-
-    // Create nodes with coords
-    for (var i = 0; i < nodeData.length; i++) {
-         var coordinate = new ocargo.Coordinate(
-            nodeData[i]['coordinate'][0], nodeData[i]['coordinate'][1]);
-         nodes.push(new ocargo.Node(coordinate));
-    }
-
-    // Link nodes (must be done in second loop so that linked nodes have definitely been created)
-    for (var i = 0; i < nodeData.length; i++) {
-        var node = nodes[i];
-        var connectedNodes = nodeData[i]['connectedNodes'];
-        for (var j = 0; j < connectedNodes.length; j++) {
-            node.addConnectedNode(nodes[connectedNodes[j]]);
-        }
-    }
-    
-    return nodes;
-}
-
-function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
-	var trafficLights = [];
-	for(i = 0; i < trafficLightData.length; i++){
-    	var trafficLight = trafficLightData[i];
-    	var controlledNodeId = trafficLight['node'];
-    	var sourceNodeId = trafficLight['sourceNode'];
-    	var redDuration = trafficLight['redDuration'];
-    	var greenDuration = trafficLight['greenDuration'];
-    	var startTime = trafficLight['startTime'];
-    	var startingState = trafficLight['startingState'];
-    	var controlledNode = nodes[controlledNodeId];
-    	var sourceNode = nodes[sourceNodeId];
-    	
-        console.log(startingState);
-    	var light = new ocargo.TrafficLight(i, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
-    	trafficLights.push(light);
-    	controlledNode.addTrafficLight(light);
-    }
-    return trafficLights;
-}
-
-function findByCoordinate(coordinate, nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-        var coord = nodes[i].coordinate;
-        if (coord.x === coordinate[0] && coord.y === coordinate[1]) {
-            return i;
-        }
-    }
-    return -1;
+    return (failures >= 3);
 }
 
 function enableDirectControl() {
@@ -117,97 +52,6 @@ function disableDirectControl() {
     document.getElementById('turnRight').disabled = true;
     document.getElementById('play').disabled = true;
     document.getElementById('step').disabled = true;
-}
-
-function clearVanData() {
-    var nodes = ocargo.level.map.nodes;
-    var previousNode = nodes[0];
-    var startNode = nodes[0].connectedNodes[0];
-
-    for (var i = 0; i < THREADS; i++) {
-        var van = new ocargo.Van(i,previousNode, startNode, MAX_FUEL);
-        ocargo.level.vans[i] = van;
-        ocargo.ui.setVanToFront(previousNode, startNode, van);
-    }
-}
-
-function levelWon(level) {
-    console.debug('You win!');
-    ocargo.sound.win();
-
-    var scoreArray = level.pathFinder.getScore();
-    sendAttempt(scoreArray[0]);
-    
-    var message = '';
-    if (level.nextLevel != null) {
-        message = ocargo.messages.nextLevelButton(level.nextLevel);
-    } 
-    else {
-        if (level.nextEpisode != null && level.nextEpisode !== "") {
-            message = ocargo.messages.nextEpisodeButton(level.nextEpisode);
-        } else {
-            message = ocargo.messages.lastLevel;
-        }
-    }
-
-    startPopup("You win!", scoreArray[1], message);
-};
-
-function levelFailed(level, msg) {
-    console.debug('You lose!');
-    ocargo.sound.failure();
-
-    sendAttempt(0);
-
-    var title = 'Oh dear! :(';
-    startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
-    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
-    
-    level.fails++;
-    if (level.fails >= FAILS_BEFORE_HINT) {
-        var hintBtns = $("#hintPopupBtn");
-        if (hintBtns.length === null || hintBtns.length === 0) {
-            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
-                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
-                '</p><p id="hintText">' + HINT + '</p>');
-            if(level.hintOpened){
-                $("#hintBtnPara").hide();
-            } 
-            else {
-                $("#hintText" ).hide();
-                $("#hintPopupBtn").click( function(){
-                    $("#hintText").show(500);
-                    $("#hintBtnPara").hide();
-                    level.hintOpened = true;
-                });
-            }
-        }
-    }
-};
-
-function sendAttempt(score) {
-    // Send out the submitted data.
-    if (ocargo.level.levelId) {
-        var attemptData = JSON.stringify(ocargo.level.attemptData);
-
-        $.ajax({
-            url : '/game/submit',
-            type : 'POST',
-            dataType: 'json',
-            data : {
-                attemptData : attemptData,
-                csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
-                score : score,
-                workspace : ocargo.blocklyControl.serialize()
-            },
-            success : function(json) {
-            },
-            error : function(xhr,errmsg,err) {
-                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-            }
-        });
-    }
-    return false;
 }
 
 function setupListeners() {
