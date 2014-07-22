@@ -2,13 +2,12 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Van = function(id, previousNode, startNode, maxFuel, ui) {
+ocargo.Van = function(id, previousNode, startNode, maxFuel) {
     this.id = id;
     this.previousNode = previousNode;
     this.currentNode = startNode;
     this.maxFuel = maxFuel;
     this.fuel = maxFuel;
-    this.ui = ui;
     ocargo.sound.starting();
     this.travelled = 0;
 };

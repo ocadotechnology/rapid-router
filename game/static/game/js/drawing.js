@@ -244,7 +244,8 @@ function drawCrossRoads(node) {
 }
 
 function createRoad(nodes) {
-    $.each(nodes, function(i, node) {
+    for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
         switch (node.connectedNodes.length) {
             case 1:
                 drawDeadEndRoad(node);
@@ -265,7 +266,7 @@ function createRoad(nodes) {
             default:
                 break;
         }
-    });
+    }
 }
 
 function isMobile() {
