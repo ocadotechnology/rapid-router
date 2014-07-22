@@ -36,5 +36,5 @@ ocargo.Van.prototype.getPosition = function() {
 };
 
 ocargo.Van.prototype.getFuelPercentage = function() {
-    return 100 * this.van.fuel() / this.van.maxFuel();
+    return 100 * this.fuel / this.maxFuel;
 }

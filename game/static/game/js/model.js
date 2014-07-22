@@ -21,8 +21,8 @@ ocargo.Model.prototype.reset = function(vanId) {
 	this.van.reset();
 
 	var i;
-	for (i = 0; i < this.trafficLightData.length; i++) {
-		this.trafficLights.reset();
+	for (i = 0; i < this.trafficLights.length; i++) {
+		this.trafficLights[i].reset();
 	}
 
 	this.timestamp = 0;
@@ -34,7 +34,8 @@ ocargo.Model.prototype.reset = function(vanId) {
 // and returns a boolean
 
 ocargo.Model.prototype.observe = function(value) {
-	ocargo.animation.queueAnimation(this.timestamp, {
+	ocargo.animation.queueAnimation({
+		timestamp: this.timestamp,
 		type: 'van',
 		id: this.vanId,
 		vanAction: "OBSERVE",
@@ -84,11 +85,10 @@ ocargo.Model.prototype.isAtDestination = function() {
 // true if it was a valid action or false otherwise
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
-	var nextNode = this.map.isRoadForward(this.van.getPosition());
-
 	if (nextNode === null) {
 		// Crash
-		ocargo.animation.queueAnimation(this.timestamp, {
+		ocargo.animation.queueAnimation({
+			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'CRASH',
@@ -98,7 +98,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
 	if (this.van.fuel <= 0) {
 		// Ran out of fuel
-		ocargo.animation.queueAnimation(this.timestamp, {
+		ocargo.animation.queueAnimation({
+			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'NO_FUEL',
@@ -109,7 +110,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 	var light = this.getTrafficLightForNode(this.van.getPosition());
 	if (light !== null && light.getState() === ocargo.TrafficLight.RED) {
 		// Ran a red light
-		ocargo.animation.queueAnimation(this.timestamp, {
+		ocargo.animation.queueAnimation({
+			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'RAN_RED_LIGHT',
@@ -119,7 +121,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
 	this.van.move(nextNode);
 
-	ocargo.animation.queueAnimation(this.timestamp, {
+	ocargo.animation.queueAnimation({
+		timestamp: this.timestamp,
 		type: 'van',
 		id: this.vanId,
 		vanAction: action,
@@ -133,35 +136,38 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
 ocargo.Model.prototype.moveForwards = function() {
 	var nextNode = this.map.isRoadForward(this.van.getPosition());
-	return this.moveVan(nextNode);
+	return this.moveVan(nextNode, 'FORWARD');
 };
 
 ocargo.Model.prototype.turnLeft = function() {
 	var nextNode = this.map.isRoadLeft(this.van.getPosition());
-	return this.moveVan(nextNode);
+	console.debug(nextNode);
+	return this.moveVan(nextNode, 'TURN_LEFT');
 };
 
 ocargo.Model.prototype.turnRight = function() {
 	var nextNode = this.map.isRoadRight(this.van.getPosition());
-	return this.moveVan(nextNode);
+	return this.moveVan(nextNode, 'TURN_RIGHT');
 };
 
 ocargo.Model.prototype.turnAround = function() {
-	return this.moveVan(this.van.getPosition().previousNode);
+	return this.moveVan(this.van.getPosition().previousNode, 'TURN_AROUND');
 };
 
 ocargo.Model.prototype.wait = function() {
-	return this.moveVan(this.van.getPosition().currentNode);
+	return this.moveVan(this.van.getPosition().currentNode, 'WAIT');
 };
 
 // Signal that the program has ended and we should calculate whether
 // the play has won or not and send off those events
 ocargo.Model.prototype.programExecutionEnded = function() {
 	if (this.van.getPosition().currentNode === this.map.getDestinationNode()) {
-		var scoreArray = this.pathFinder.getScore();
+		//var scoreArray = this.pathFinder.getScore();
+		var scoreArray = [0, "hello"];
 	    sendAttempt(scoreArray[0]);
 
-		ocargo.animation.queueAnimation(this.timestamp, {
+		ocargo.animation.queueAnimation({
+			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'WIN',
@@ -171,7 +177,8 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 	else {
 		sendAttempt(0);
 
-		ocargo.animation.queueAnimation(this.timestamp, {
+		ocargo.animation.queueAnimation({
+			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
@@ -186,7 +193,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 ocargo.Model.prototype.getTrafficLightForNode = function(position) {
 	var i;
 	for (i = 0; i < this.trafficLights.length; i++) {
-		var light = trafficLights[i];
+		var light = this.trafficLights[i];
 		if (light.sourceNode === position.previousNode && light.controlledNode === position.currentNode) {
 			return light;
 		}
@@ -201,6 +208,6 @@ ocargo.Model.prototype.incrementTime = function() {
 
 	var i;
 	for (i = 0; i < this.trafficLights.length; i++) {
-		trafficLights[i].incrementTime();
+		this.trafficLights[i].incrementTime();
 	}
 };

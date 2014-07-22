@@ -37,6 +37,25 @@ function registerFailure() {
     return (failures >= 3);
 }
 
+function sendAttempt(score) {
+    // Send out the submitted data.
+    if (LEVEL_ID) {
+        // $.ajax({
+        //     url : '/game/submit',
+        //     type : 'POST',
+        //     data : {
+        //         attemptData : attemptData,
+        //         csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
+        //         score : score,
+        //         workspace : ocargo.blocklyControl.serialize()
+        //     },
+        //     error : function(xhr,errmsg,err) {
+        //         console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        //     }
+        // });
+    }
+}
+
 function enableDirectControl() {
     document.getElementById('moveForward').disabled = false;
     document.getElementById('turnLeft').disabled = false;
@@ -49,22 +68,28 @@ function enableDirectControl() {
 }
 
 function disableDirectControl() {
-    document.getElementById('controls').style.visibility='hidden';
+    //document.getElementById('controls').style.visibility='hidden';
     document.getElementById('direct_drive').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
     document.getElementById('play').disabled = true;
-    document.getElementById('step').disabled = true;
+    //document.getElementById('step').disabled = true;
 }
 
 function runProgramAndPrepareAnimation() {
     // clear animations
     ocargo.animation.resetAnimation();
-    // compile and run program
-    var program = ocargo.blocklyCompiler.compile();
-    program.run(ocargo.model);
+    // try to compile and run program
+    try {
+        var program = ocargo.blocklyCompiler.compile();
+        program.run(ocargo.model);
+    }
+    catch (error) {
+        // print error for now
+        console.info("compilation error " + error);
+    }
 }
 
 function setupListeners() {
@@ -91,22 +116,17 @@ function setupListeners() {
         ocargo.blocklyControl.resetIncorrectBlock();
         disableDirectControl();
 
-        try {
             runProgramAndPrepareAnimation();
             // append function call to enable direct control
             var timestamp = ocargo.animation.getLastTimestamp();
-            ocargo.animation.queueAnimation(timestamp, {
+            ocargo.animation.queueAnimation({
+                timestamp: timestamp,
                 type: 'callable',
                 functionCall: enableDirectControl,
             });
             ocargo.animation.playAnimation();
-        }
-        catch (error) {
+            // some stuff to sort and do, don't use PLAY!
             enableDirectControl();
-            console.info("level failed, error: " + error);
-            //levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
-            return;
-        }
     });
 
 
@@ -124,17 +144,10 @@ function setupListeners() {
         if (!ocargo.animation.isFinished()) {
             ocargo.animation.stepAnimation();
         } else {
-            try {
-                runProgramAndPrepareAnimation();
-                ocargo.animation.stepAnimation();
-            }
-            catch (error) {
-                console.info("level failed, error: " + error);
-                // levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
-            }
+            runProgramAndPrepareAnimation();
+            console.info("about to step....");
+            ocargo.animation.stepAnimation();
         }
-
-        
         // show start over button
         $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
     });

@@ -25,8 +25,12 @@ ocargo.Thread = function() {
 };
 
 ocargo.Thread.prototype.run = function(model) {
-	while (this.canStep()) {
-		this.step(model);
+	var failed = false;
+	while (!failed && this.canStep()) {
+		failed = !this.step(model);
+	}
+	if (!failed) {
+		model.programExecutionEnded();
 	}
 };
 
@@ -42,8 +46,11 @@ ocargo.Thread.prototype.step = function(model) {
 
 	if (!successful) {
 		// Program crashed
-		ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
+		// ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
+		return false;
 	}
+
+	return true;
 };
 
 ocargo.Thread.prototype.canStep = function() {
@@ -63,7 +70,7 @@ function TurnLeftCommand(block) {
 }
 
 TurnLeftCommand.prototype.execute = function(thread, model) {
-	queueHighlight(this.block);
+	queueHighlight(model, this.block);
 	return model.turnLeft();
 };
 
@@ -74,7 +81,7 @@ function TurnRightCommand(block) {
 }
 
 TurnRightCommand.prototype.execute = function(thread, model) {
-	queueHighlight(this.block);
+	queueHighlight(model, this.block);
 	return model.turnRight();
 };
 
@@ -85,7 +92,7 @@ function ForwardCommand(block) {
 }
 
 ForwardCommand.prototype.execute = function(thread, model) {
-	queueHighlight(this.block);
+	queueHighlight(model, this.block);
 	return model.moveForwards();
 };
 
@@ -96,7 +103,7 @@ function TurnAroundCommand(block) {
 }
 
 TurnAroundCommand.prototype.execute = function(thread, model) {
-	queueHighlight(this.block);
+	queueHighlight(model, this.block);
 	return model.turnAround();
 };
 
@@ -107,7 +114,7 @@ function WaitCommand(block) {
 }
 
 WaitCommand.prototype.execute = function(thread, model) {
-	queueHighlight(this.block);
+	queueHighlight(model, this.block);
 	return model.wait();
 };
 
@@ -180,15 +187,17 @@ ProcedureCall.prototype.execute = function(thread) {
 
 /* Highlighting of blocks */
 
-function queueHighlight(block) {
-	ocargo.animation.queueAnimation(model.timestamp, {
+function queueHighlight(model, block) {
+	ocargo.animation.queueAnimation({
+		timestamp: model.timestamp,
 		type: 'callable',
-		functionCall: makeHighLightCallable(this.block),
+		functionCall: makeHighLightCallable(block),
 	});
 }
 
 function makeHighLightCallable(block) {
 	return function() {
-		ocargo.blocklyControl.selectBlock(block);
+		ocargo.blocklyControl.clearAllSelections();
+		ocargo.blocklyControl.setBlockSelected(block, true);
 	};
 }

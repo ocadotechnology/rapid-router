@@ -9,13 +9,23 @@ ocargo.Animation = function(model, decor, numVans) {
 	this.decor = decor;
 	this.numVans = numVans;
 
+	// timer identifier for pausing
+	this.playTimer = -1;
+
 	this.resetAnimation();
+};
+
+ocargo.Animation.prototype.isFinished = function() {
+	return (this.animationQueue.length == 0);
 };
 
 ocargo.Animation.prototype.resetAnimation = function() {
 	this.animationQueue = [];
 	this.animationTimestamp = 0;
 	this.isPlaying = false;
+
+	// cancel timer
+	clearTimeout(this.playTimer);
 
 	clearPaper();
 	renderMap(this.model.map);
@@ -27,11 +37,10 @@ ocargo.Animation.prototype.resetAnimation = function() {
 ocargo.Animation.prototype.stepAnimation = function() {
 	var maxDelay = 0;
 	// do all things in this timestep
-	while (this.animationQueue.length > 0 && animationQueue[0].timestamp <= this.animationTimestamp) {
-		var a = animationQueue.splice(0, 1)[0];
+	while (this.animationQueue.length > 0 && this.animationQueue[0].timestamp <= this.animationTimestamp) {
+		var a = this.animationQueue.shift();
 		// animation length is either default or may be custom set
 		var animationLength = a.animationLength  || ANIMATION_LENGTH;
-
 		switch (a.type) {
 			case 'callable':
 				animationLength = a.animationLength || 0;
@@ -83,12 +92,12 @@ ocargo.Animation.prototype.stepAnimation = function() {
 					case 'WIN':
 						title = ocargo.messages.winTitle;
 						var levelMsg = "";
-						if (level.nextLevel != null) {
-					        levelMsg = ocargo.messages.nextLevelButton(level.nextLevel);
+						if (NEXT_LEVEL) {
+					        levelMsg = ocargo.messages.nextLevelButton(NEXT_LEVEL);
 					    } 
 					    else {
-					        if (level.nextEpisode != null && level.nextEpisode !== "") {
-					            levelMsg = ocargo.messages.nextEpisodeButton(level.nextEpisode);
+					        if (NEXT_EPISODE) {
+					            levelMsg = ocargo.messages.nextEpisodeButton(NEXT_EPISODE);
 					        } else {
 					            levelMsg = ocargo.messages.lastLevel;
 					        }
@@ -156,7 +165,7 @@ ocargo.Animation.prototype.stepAnimation = function() {
 	if (this.isPlaying) {
 		if (this.animationQueue.length > 0) {
 			// set timeout for longest animation
-			setTimeout(this.stepAnimation, maxDelay);
+			this.playTimer = setTimeout(this.stepAnimation, maxDelay);
 		} else {
 			// finished animation, stop playing
 			this.isPlaying = false;
@@ -173,6 +182,7 @@ ocargo.Animation.prototype.playAnimation = function() {
 
 ocargo.Animation.prototype.pauseAnimation = function() {
 	this.isPlaying = false;
+	clearTimeout(this.playTimer);
 };
 
 ocargo.Animation.prototype.queueAnimation = function(a) {
