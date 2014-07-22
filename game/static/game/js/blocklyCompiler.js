@@ -197,46 +197,49 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block){
 /** Conditions **/
 
 ocargo.BlocklyCompiler.prototype.trafficLightCondition = function(lightColour) {
-    return function(level,threadID) {
-        var van = level.vans[threadID];
-        return level.isTrafficLightInState(van.previousNode, van.currentNode, lightColour);
+    return function(model) {
+        if (lightColour === ocargo.TrafficLight.RED) {
+            return model.isTrafficLightRed();
+        }
+        else if (lightColour === ocargo.TrafficLight.GREEN) {
+            return model.isTrafficLightGreen();
+        }
     };
 }
 
 ocargo.BlocklyCompiler.prototype.roadCondition = function(selection) {
-    return function(level,threadID) {
-        var van = level.vans[threadID];
+    return function(model) {
         if (selection === 'FORWARD') {
-            return level.isActionValidForVan(van, ocargo.FORWARD_ACTION);
+            return model.isRoadForward();
         } else if (selection === 'LEFT') {
-            return level.isActionValidForVan(van, ocargo.TURN_LEFT_ACTION);
+            return model.isRoadLeft();
         } else if (selection === 'RIGHT') {
-            return level.isActionValidForVan(van, ocargo.TURN_RIGHT_ACTION);
+            return model.isRoadRight();
         }
     };
 }
 
 ocargo.BlocklyCompiler.prototype.deadEndCondition = function() {
-    return function(level,threadID) {
-        return level.isVanAtDeadEnd(level.vans[threadID]);
+    return function(model) {
+        return model.isDeadEnd();
     };
 }
 
 ocargo.BlocklyCompiler.prototype.negateCondition = function(otherCondition) {
-    return function(level,threadID) {
-        return !otherCondition(level,threadID);
+    return function(model) {
+        return !otherCondition(model);
     };
 }
 
 ocargo.BlocklyCompiler.prototype.atDestinationCondition = function() {
-    return function(level,threadID) {
-        return level.isVanAtDestination(level.vans[threadID]);
+    return function(model) {
+        return model.isAtDestination();
     };
 }
 
 ocargo.BlocklyCompiler.prototype.counterCondition = function(count) {
     var startCount = count;
-    return function(level,threadID) {
+    return function(model) {
         if (count > 0) {
             count--;
             return true;

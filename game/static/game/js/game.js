@@ -86,7 +86,7 @@ function setupListeners() {
         try {
             var program = ocargo.blocklyCompiler.compile();
         
-            program.run();
+            program.run(ocargo.model);
 
             var timestamp = ocaro.animation.getLastTimestamp();
             ocargo.animation.queueAnimation(timestamp, {

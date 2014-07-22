@@ -74,6 +74,11 @@ ocargo.Model.prototype.isTrafficLightGreen = function() {
 	return (light !== null && light.getState() === ocargo.TrafficLight.GREEN);
 };
 
+ocargo.Model.prototype.isAtDestination = function() {
+	this.observe();
+	return (this.map.getDestinationNode() === this.van.getPosition().currentNode);
+};
+
 ///////////////////////
 // Begin action functions, each changes something and returns
 // true if it was a valid action or false otherwise
