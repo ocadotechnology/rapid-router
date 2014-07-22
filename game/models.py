@@ -94,7 +94,9 @@ class Level (models.Model):
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
     model_solution = models.IntegerField(blank=True, default=50)
     threads = models.IntegerField(blank=False, default=1)
-    
+    blocklyEnabled = models.BooleanField(default=True)
+    pythonEnabled = models.BooleanField(default=True)
+
     def __unicode__(self):
         return 'Level ' + str(self.id)
 
@@ -116,7 +118,9 @@ class Episode (models.Model):
     r_curviness = models.FloatField(default=0)
     r_num_tiles = models.IntegerField(default=5)
     r_blocks = models.ManyToManyField(Block, related_name='episodes')
-    
+    r_blocklyEnabled = models.BooleanField(default=True)
+    r_pythonEnabled = models.BooleanField(default=False)
+
     @property
     def levels(self):
         if self.first_level is not None:

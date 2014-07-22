@@ -1,40 +1,72 @@
 var ocargo = ocargo || {};
 
-function createUi() {
-    return new ocargo.SimpleUi();
+'use strict';
+
+function init() {
+    ocargo.time = new ocargo.Time();
+    ocargo.ui = new ocargo.SimpleUi();
+    ocargo.blocklyControl = new ocargo.BlocklyControl();
+    ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
+    
+    ocargo.level = createLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, MAX_FUEL, NEXT_LEVEL, NEXT_EPISODE);
+    ocargo.level.levelId = JSON.parse(LEVEL_ID);
+
+    setupSliderListeners();
+    setupDirectDriveListeners();
+    setupLoadSaveListeners();
+    setupMenuListeners();
+
+    window.addEventListener('unload', ocargo.blocklyControl.teardown);
+
+    enableDirectControl();
+    ocargo.blocklyControl.loadPreviousAttempt();
+    startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
+
+    if ($.cookie("muted") === "true") {
+        $('#mute').text("Unmute");
+        ocargo.sound.mute();
+    }
+
+    if(BLOCKLY_ENABLED) {
+        $('#blockly').fadeIn();
+    }
+    else {
+        $('#pythonCode').fadeIn();
+    }
 }
 
-function createDefaultLevel(nodeData, destination, decor, trafficLightData, ui, maxFuel, nextLevel, nextEpisode) {
+function createLevel(nodeData, destination, decor, trafficLightData, maxFuel, nextLevel, nextEpisode) {
     var nodes = createNodes(nodeData);
     var trafficLights = createAndAddTrafficLightsToNodes(nodes, trafficLightData);
     var destinationIndex = findByCoordinate(destination, nodes);
     var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
-    var map = new ocargo.Map(nodes, decor, trafficLights, dest, ui);
+    var map = new ocargo.Map(nodes, decor, trafficLights, dest);
     var vans = [];
 
     var previousNode = nodes[0];
     var startNode = nodes[0].connectedNodes[0];
     for (var i = 0; i < THREADS; i++) {
-        vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel, ui));
+        vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel));
     }
+
+    ocargo.ui.renderMap(map);
     ocargo.ui.renderVans(vans);
 
-    return new ocargo.Level(map, vans, ui, nextLevel, nextEpisode);
+    return new ocargo.Level(map, vans, nextLevel, nextEpisode);
 }
 
 function createNodes(nodeData) {
     var nodes = [];
 
-    var i;
     // Create nodes with coords
-    for (i = 0; i < nodeData.length; i++) {
+    for (var i = 0; i < nodeData.length; i++) {
          var coordinate = new ocargo.Coordinate(
             nodeData[i]['coordinate'][0], nodeData[i]['coordinate'][1]);
          nodes.push(new ocargo.Node(coordinate));
     }
 
     // Link nodes (must be done in second loop so that linked nodes have definitely been created)
-    for (i = 0; i < nodeData.length; i++) {
+    for (var i = 0; i < nodeData.length; i++) {
         var node = nodes[i];
         var connectedNodes = nodeData[i]['connectedNodes'];
         for (var j = 0; j < connectedNodes.length; j++) {
@@ -58,7 +90,6 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
     	var controlledNode = nodes[controlledNodeId];
     	var sourceNode = nodes[sourceNodeId];
     	
-        console.log(startingState);
     	var light = new ocargo.TrafficLight(i, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
     	trafficLights.push(light);
     	controlledNode.addTrafficLight(light);
@@ -74,25 +105,6 @@ function findByCoordinate(coordinate, nodes) {
         }
     }
     return -1;
-}
-
-function initialiseDefault() {
-    'use strict';
-
-    var title = "Level " + LEVEL_ID;
-    startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
-
-    ocargo.time = new ocargo.Time();
-    ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, ocargo.ui, MAX_FUEL,
-        NEXT_LEVEL, NEXT_EPISODE);
-    ocargo.level.levelId = JSON.parse(LEVEL_ID);
-    enableDirectControl();
-
-    if ($.cookie("muted") === "true") {
-        $('#mute').text("Unmute");
-        ocargo.sound.mute();
-    }
 }
 
 function enableDirectControl() {
@@ -123,7 +135,7 @@ function clearVanData() {
     var startNode = nodes[0].connectedNodes[0];
 
     for (var i = 0; i < THREADS; i++) {
-        var van = new ocargo.Van(i,previousNode, startNode, MAX_FUEL, ocargo.ui);
+        var van = new ocargo.Van(i,previousNode, startNode, MAX_FUEL);
         ocargo.level.vans[i] = van;
         ocargo.ui.setVanToFront(previousNode, startNode, van);
     }
@@ -208,12 +220,7 @@ function sendAttempt(score) {
     return false;
 }
 
-function redrawBlockly() {
-    Blockly.fireUiEvent(window, 'resize');
-}
-
-function trackDevelopment() {
-
+function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
@@ -236,13 +243,263 @@ function trackDevelopment() {
     });
 
     $('#play').click(function() {
-        if (ocargo.blocklyControl.incorrect) {
-            ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        }
+        ocargo.blocklyControl.resetIncorrectBlock();
         disableDirectControl();
 
         try {
-            var program = ocargo.blocklyControl.populateProgram();
+            var program = ocargo.blocklyCompiler.compile();
+        } catch (error) {
+            enableDirectControl();
+            levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
+            return;
+        }
+
+        clearVanData();
+        ocargo.time.resetTime();
+        ocargo.level.playProgram(program);
+    });
+}
+
+function setupSliderListeners() {
+    var getSliderRightLimit = function() {return $(window).width()/2};
+    var getSliderLeftLimit = function() {return 46};
+    var consoleSliderPosition = $(window).width()/2;
+    var open = true;
+
+    $('#slideConsole').click(function() {
+        var pageWidth = $(window).width();
+        var rightLimit = getSliderRightLimit();
+        var leftLimit = getSliderLeftLimit();
+
+        if (open) {
+            $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
+            $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
+            $('#sliderControls').animate({left: leftLimit + 'px'}, {queue: false});
+            $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
+            $('#consoleSlider').animate({left: leftLimit + 'px'}, {queue: false});
+            open = false;
+        } else {
+            $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
+            $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+            $('#sliderControls').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
+            $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
+            $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+            open = true;
+        }
+    });
+
+    $('#consoleSlider').on('mousedown', function(e){
+        var slider = $(this);
+        var p = slider.parent().offset();
+
+        //disable drag when mouse leaves this or the parent
+        slider.on('mouseup', function(e){
+            slider.off('mousemove');
+            slider.parent().off('mousemove');
+            ocargo.blocklyControl.redrawBlockly();
+        });
+        slider.parent().on('mouseup', function(e) {
+            slider.off('mousemove');
+            slider.parent().off('mousemove');
+            ocargo.blocklyControl.redrawBlockly();
+        });
+
+        slider.parent().on('mousemove', function(me){
+            consoleSliderPosition = me.pageX;
+            var pageWidth = $(window).width();
+            var rightLimit = getSliderRightLimit();
+            var leftLimit = getSliderLeftLimit();
+
+            if (consoleSliderPosition > rightLimit) {
+                consoleSliderPosition = rightLimit;
+            }
+            if (consoleSliderPosition < leftLimit) {
+                consoleSliderPosition = leftLimit;
+            }
+
+            $('#consoleSlider').css({ left: consoleSliderPosition + 'px' });
+            $('#paper').css({ width: (pageWidth - consoleSliderPosition) + 'px' });
+            $('#paper').css({ left: consoleSliderPosition + 'px' });
+            $('#programmingConsole').css({ width: consoleSliderPosition + 'px' });
+            $('#sliderControls').css({ left: consoleSliderPosition + 'px' });
+            $('#direct_drive').css({ left: consoleSliderPosition + 'px' });
+            
+            ocargo.blocklyControl.redrawBlockly();
+        });
+    });
+}
+
+function setupLoadSaveListeners() {
+
+    var selectedWorkspace = null;
+
+    var populateTable = function(tableName, workspaces) {
+        var table = $('#'+tableName);
+
+        // Remove click listeners to avoid memory leak and remove all rows
+        $('#'+tableName+' td').off('click');
+        table.empty();
+
+        // Order them alphabetically
+        workspaces.sort(function(a, b) {
+            if (a.name < b.name) {
+                return -1;
+            }
+            else if (a.name > b.name) {
+                return 1;
+            }
+            return 0;
+        });
+
+        // Add a row to the table for each workspace saved in the database
+        for (var i = 0, ii = workspaces.length; i < ii; i++) {
+            var workspace = workspaces[i];
+            table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
+        }
+    }
+
+
+    $('#load').click(function() {
+        // Disable the button to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        $('#load').attr('disabled', 'disabled');
+        retrieveAllWorkspaces(function(err, workspaces) {
+            if (err != null) {
+                console.debug(err);
+                return;
+            }
+
+            populateTable("loadWorkspaceTable", workspaces);
+
+            // Add click listeners to all rows
+            $('#loadWorkspaceTable td').on('click', function(event) {
+                $('#loadWorkspaceTable td').css('background-color', '#FFFFFF');
+                $('#loadWorkspaceTable td').css('cursor', 'pointer');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                $('#loadWorkspace').removeAttr('disabled');
+                $('#lDeleteWorkspace').removeAttr('disabled');
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#loadModal').foundation('reveal', 'open');
+            $('#load').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+            $('#loadWorkspace').attr('disabled', 'disabled');
+            $('#lDeleteWorkspace').attr('disabled', 'disabled');
+        });
+    });
+
+    $('#save').click(function() {
+        // Disable the button to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        $('#save').attr('disabled', 'disabled');
+
+        retrieveAllWorkspaces(function(err, workspaces) {
+            if (err != null) {
+                console.debug(err);
+                return;
+            }
+
+            populateTable("saveWorkspaceTable", workspaces);
+
+            // Add click listeners to all rows
+            $('#saveWorkspaceTable td').on('click', function(event) {
+                $('#saveWorkspaceTable td').css('background-color', '#FFFFFF');
+                $('#saveWorkspaceTable td').css('cursor', 'pointer');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                var workspaceName = $(event.target)[0].innerHTML;
+                document.getElementById("workspaceNameInput").value = workspaceName;
+                $('#sDeleteWorkspace').removeAttr('disabled');
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#saveModal').foundation('reveal', 'open');
+            $('#save').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+            $('#overwriteWorkspace').attr('disabled', 'disabled');
+            $('#sDeleteWorkspace').attr('disabled', 'disabled');
+        });
+    });
+    
+    $('#saveWorkspace').click(function() {
+        var newName = $('#workspaceNameInput').val();
+        if (newName && newName != "") {
+            createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                $('#saveModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    $('#loadWorkspace').click(function() {
+        if (selectedWorkspace) {
+            retrieveWorkspace(selectedWorkspace, function(err, workspace) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                ocargo.blocklyControl.deserialize(workspace);
+                ocargo.blocklyControl.redrawBlockly();
+                $('#loadModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    $('#lDeleteWorkspace').click(function() {
+        if (selectedWorkspace) {
+            deleteWorkspace(selectedWorkspace, function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                $('#loadWorkspaceTable td[value=' + selectedWorkspace + ']').remove();
+                selectedWorkspace = null;
+            });
+        }
+    });
+
+    $('#sDeleteWorkspace').click(function() {
+        if (selectedWorkspace) {
+            deleteWorkspace(selectedWorkspace, function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                $('#saveWorkspaceTable td[value=' + selectedWorkspace + ']').remove();
+                selectedWorkspace = null;
+            });
+        }
+    });
+
+    // If the user pressed the enter key in the textbox, should be the same as clicking the button
+    $('#newWorkspaceName').on('keypress', function(e) {
+        if (e.which == 13) {
+            $('#saveWorkspace').trigger('click');
+        }
+    });
+}
+
+function setupMenuListeners() {
+
+    $('#play2').click(function() {
+        ocargo.blocklyControl.resetIncorrectBlock();
+        disableDirectControl();
+
+        try {
+            var program = ocargo.blocklyCompiler.compile();
         } catch (error) {
             enableDirectControl();
             levelFailed(ocargo.level, 'Your program crashed!<br>' + error);
@@ -261,7 +518,7 @@ function trackDevelopment() {
 
         if (ocargo.level.program === undefined || ocargo.level.program.isFinished) {
             try {
-                ocargo.level.program = ocargo.blocklyControl.populateProgram();
+                ocargo.level.program = ocargo.blocklyCompiler.compile();
                 ocargo.level.selectStartBlocks();
                 clearVanData();
                 ocargo.time.resetTime();
@@ -272,7 +529,6 @@ function trackDevelopment() {
             }
         }
         disableDirectControl();
-        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
         ocargo.level.stepProgram(enableDirectControl);
 
         function terminate() {
@@ -289,208 +545,35 @@ function trackDevelopment() {
         enableDirectControl();
         clearVanData();
         ocargo.time.resetTime();
-        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
     });
 
     $('#stop').click(function() {
         ocargo.level.program.terminate();
     });
 
-    var selectedWorkspace = null;
-
-    $('#loadSave').click(function() {
-        // Disable the button to stop users clicking it multiple times
-        // whilst waiting for the table data to load
-        $('#loadSave').attr('disabled', 'disabled');
-
-
-        loadAllSavedWorkspaces(function(err, workspaces) {
-            if (err != null) {
-                console.debug(err);
-                return;
-            }
-
-            var table = $('#workspaceTable');
-
-            // Remove click listeners to avoid memory leak and remove all rows
-            $('#workspaceTable td').off('click');
-            table.empty();
-
-            // Order them alphabetically
-            workspaces.sort(function(a, b) {
-                if (a.name < b.name) {
-                    return -1;
-                }
-                else if (a.name > b.name) {
-                    return 1;
-                }
-                return 0;
-            });
-
-            // Add a row to the table for each workspace saved in the database
-            for (var i = 0, ii = workspaces.length; i < ii; i++) {
-                var workspace = workspaces[i];
-                table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
-            }
-
-            // Add click listeners to all rows
-            $('#workspaceTable td').on('click', function(event) {
-                $('#workspaceTable td').css('background-color', '#FFFFFF');
-                $(event.target).css('background-color', '#C0C0C0');
-                selectedWorkspace = $(event.target).attr('value');
-                $('#loadWorkspace').removeAttr('disabled');
-                $('#overwriteWorkspace').removeAttr('disabled');
-                $('#deleteWorkspace').removeAttr('disabled');
-            });
-
-            // Finally show the modal dialog and reenable the button
-            $('#loadSaveModal').foundation('reveal', 'open');
-            $('#loadSave').removeAttr('disabled');
-
-            // But disable all the modal buttons as nothing is selected yet
-            selectedWorkspace = null;
-            $('#loadWorkspace').attr('disabled', 'disabled');
-            $('#overwriteWorkspace').attr('disabled', 'disabled');
-            $('#deleteWorkspace').attr('disabled', 'disabled');
-        });
-    });
-
-    $('#loadWorkspace').click(function() {
-        if (selectedWorkspace) {
-            loadWorkspace(selectedWorkspace, function(err, workspace) {
-                if (err != null) {
-                    console.debug(err);
-                    return;
-                }
-
-                ocargo.blocklyControl.reset();
-                ocargo.blocklyControl.deserialize(workspace);
-                $('#loadSaveModal').foundation('reveal', 'close');
-            });
-        }
-    });
-
-    $('#overwriteWorkspace').click(function() {
-        if (selectedWorkspace) {
-            overwriteWorkspace(selectedWorkspace, ocargo.blocklyControl.serialize(), function(err) {
-                if (err != null) {
-                    console.debug(err);
-                    return;
-                }
-                $('#loadSaveModal').foundation('reveal', 'close');
-            });
-        }
-    });
-
-    $('#deleteWorkspace').click(function() {
-        if (selectedWorkspace) {
-            deleteWorkspace(selectedWorkspace, function(err) {
-                if (err != null) {
-                    console.debug(err);
-                    return;
-                }
-
-                $('#workspaceTable td[value=' + selectedWorkspace + ']').remove();
-                selectedWorkspace = null;
-            });
-        }
-    });
-
-    $('#createNewWorkspace').click(function() {
-        var newName = $('#newWorkspaceName').val();
-        if (newName && newName != "") {
-            createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
-                if (err != null) {
-                    console.debug(err);
-                    return;
-                }
-
-                $('#loadSaveModal').foundation('reveal', 'close');
-            });
-        }
-    });
-
-    // If the user pressed the enter key in the textbox, should be the same as clicking the button
-    $('#newWorkspaceName').on('keypress', function(e) {
-        if (e.which == 13) {
-            $('#createNewWorkspace').trigger('click');
-        }
-    });
-
-    $('#bigCodeModeBtn').click(function() {
-        if(ocargo.blocklyControl.bigCodeMode){
-            ocargo.blocklyControl.decreaseBlockSize();
-            $('#bigCodeModeBtn').text("Big Code Mode");
-        } else {
-            ocargo.blocklyControl.increaseBlockSize();
-            $('#bigCodeModeBtn').html("<del>Big</del> Code Mode");
-        }
-    });
-
-    var consoleSliderPosition = 50;
-    
-    $('#slideConsole').click(function() {
-        if ($('#programmingConsole').width() != 0) {
-            $('#paper').animate({width: '100%'}, {queue: false});
-            $('#paper').animate({left: '0%'}, {queue: false});
-            $('#programmingConsole').animate({width: '0%'}, {queue: false});
-            $('#sliderControls').animate({left: '0%'}, {queue: false});
-            $('#direct_drive').animate({left: '0%'}, {queue: false});
-            $('#consoleSlider').animate({left: '0px'}, {queue: false, complete: function() { redrawBlockly(); }});
-        } else {
-            $('#paper').animate({ width: (100 - consoleSliderPosition) + '%' }, {queue: false});
-            $('#paper').animate({ left: consoleSliderPosition + '%' }, {queue: false});
-            $('#programmingConsole').animate({ width: consoleSliderPosition + '%' }, {queue: false});
-            $('#sliderControls').animate({ left: consoleSliderPosition + '%' }, {queue: false})
-            $('#direct_drive').animate({ left: consoleSliderPosition + '%' }, {queue: false})
-            $('#consoleSlider').animate({ left: consoleSliderPosition + '%' }, {queue: false, complete: function() { redrawBlockly(); }});
-        }
-    });
-
-    $('#toggleConsole').click(function() {
+    $('#toggle_console').click(function() {
         if($('#blockly').css("display")=="none") {
-            $('#pythonCode').fadeOut();
+            $('#pythonCode').css("display","none");
             $('#blockly').fadeIn();
-            redrawBlockly();
         }
         else {
-            $('#blockly').fadeOut();
+            $('#blockly').css("display","none");
             $('#pythonCode').fadeIn();
             ocargo.editor.setValue(Blockly.Python.workspaceToCode());
         }
     });
 
-    $('#consoleSlider').on('mousedown', function(e){
-        var slider = $(this);
-        var p = slider.parent().offset();
+    $('#big_code_mode').click(function() {
+        if(ocargo.blocklyControl.bigCodeMode){
+            ocargo.blocklyControl.decreaseBlockSize()
+        } else {
+            ocargo.blocklyControl.increaseBlockSize();
+        }
+    });
 
-        //disable drag when mouse leaves this or the parent
-        slider.on('mouseup', function(e){
-            slider.off('mousemove');
-            slider.parent().off('mousemove');
-            redrawBlockly();
-        });
-        slider.parent().on('mouseup', function(e) {
-            slider.off('mousemove');
-            slider.parent().off('mousemove');
-            redrawBlockly();
-        });
 
-        slider.parent().on('mousemove', function(me){
-            consoleSliderPosition = 100 * me.pageX / $( window ).width();
-            if (consoleSliderPosition > 50) {
-                consoleSliderPosition = 50;
-            }
-
-            $('#consoleSlider').css({ left: consoleSliderPosition + '%' });
-            $('#paper').css({ width: (100 - consoleSliderPosition) + '%' });
-            $('#paper').css({ left: consoleSliderPosition + '%' });
-            $('#programmingConsole').css({ width: consoleSliderPosition + '%' });
-            $('#sliderControls').css({ left: consoleSliderPosition + '%' });
-            $('#direct_drive').css({ left: consoleSliderPosition + '%' });
-            
-            redrawBlockly();
-        });
+    $('#quit').click(function() {
+        window.location.href = "/game/";
     });
 
     $('#mute').click(function() {
@@ -507,6 +590,5 @@ function trackDevelopment() {
 }
 
 $(function() {
-    initialiseDefault();
-    trackDevelopment();
+    init();
 });

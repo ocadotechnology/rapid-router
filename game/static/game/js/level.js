@@ -5,11 +5,9 @@ var ocargo = ocargo || {};
 var TERMINATION_DELAY = 1000;
 var FAILS_BEFORE_HINT = 3;
 
-
-ocargo.Level = function(map, vans, ui, nextLevel, nextEpisode) {
+ocargo.Level = function(map, vans, nextLevel, nextEpisode) {
     this.levelId = null;
     this.map = map;
-    this.ui = ui;
     this.numStepsCorrect = 0;
     this.attemptData = {};
     this.pathFinder = new ocargo.PathFinder(map, MODEL_SOLUTION);
@@ -20,7 +18,7 @@ ocargo.Level = function(map, vans, ui, nextLevel, nextEpisode) {
     this.vans = vans;
     this.blockHandlers = [];
     for (var i = 0; i < THREADS; i++) {
-        this.blockHandlers.push(new ocargo.BlocklyControl.BlockHandler(i));
+        this.blockHandlers.push(new ocargo.BlockHandler(i));
     }
 
     console.debug(MODEL_SOLUTION);
@@ -38,7 +36,7 @@ ocargo.Level.prototype.playProgram = function(program) {
 
     this.numStepsCorrect = 0;
     this.program = program;
-    this.initAttemptData(program);
+    this.initAttemptData();
 
     this.selectStartBlocks();    
 
@@ -52,26 +50,9 @@ ocargo.Level.prototype.selectStartBlocks = function() {
     }
 }
 
-ocargo.Level.prototype.initAttemptData = function(program) {
+ocargo.Level.prototype.initAttemptData = function() {
     this.attemptData = {};
     this.attemptData.level = ocargo.level.levelId.toString();
-    
-    var parsedProcedures = [];
-    for (var i = 0; i < program.procedures.length; i++) {
-        parsedProcedures.push(program.procedures[i].parse());
-    }
-
-    var parsedThreads = [];
-    for (var i = 0; i < program.threads.length; i++) {
-        var parsedThread = [];
-        for (var j = 0; j < program.threads[i].stack[0].length; j++) {
-            parsedThread.push(program.threads[i].stack[0][j].parse());
-        }
-        parsedThreads.push(parsedThread);
-    }   
-
-    this.attemptData.commandStack = JSON.stringify(parsedThreads);
-    this.attemptData.procedureStack = JSON.stringify(parsedProcedures);
 }
 
 function playOutProgram(level) {
@@ -149,13 +130,14 @@ ocargo.Level.prototype.handleAction = function(action, thread, van, callback) {
 
     if (!nextNode) {
         var n = this.numStepsCorrect - 1;
-        ocargo.blocklyControl.makeBlockBlink(thread.currentBlock);
+        ocargo.blocklyControl.highlightIncorrectBlock(thread.currentBlock);
          //TODO: animate the crash
         setTimeout(function () {programFinished(level, false, ocargo.messages.offRoad(level.numStepsCorrect))}, TERMINATION_DELAY);
         return false;
     } 
     else if (this.isVanGoingThroughRedLight(van, nextNode)){
         //TODO: play police siren sound
+        ocargo.blocklyControl.highlightIncorrectBlock(thread.currentBlock);
         setTimeout(function () {programFinished(level, false, ocargo.messages.throughRedLight)}, TERMINATION_DELAY);
         return false;
     }
@@ -276,7 +258,6 @@ function levelFailed(level, msg) {
 
     var title = 'Oh dear! :(';
     startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
-    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
     
     level.fails++;
     if (level.fails >= FAILS_BEFORE_HINT) {

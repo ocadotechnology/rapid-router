@@ -29,6 +29,7 @@
     width: 50%;
     height: 100%;
     overflow: auto;
+    z-index: 6;
 }
 
 #controls {
@@ -44,43 +45,6 @@
 }
 
 #controls .navigation {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-#direct_drive {
-    width: 140px;
-    height: 95px;
-    position: absolute;
-    z-index: 1;
-    bottom: 15px;
-}
-
-#turnLeft,
-#turnRight,
-#play {
-    bottom: 0px;
-}
-
-#moveForward, 
-#play {
-    left: 60px;
-}
-
-#turnLeft {
-    left: 10px;
-}
-
-#turnRight {
-    left: 110px;
-}
-
-#moveForward {
-    bottom: 50px;
-}
-
-#stop {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -129,13 +93,7 @@ button, .button, img.control{
     position: absolute;
     left: 50%;
     height: 0%;
-    z-index: 1;
-}
-
-#direct_drive {
-    position: absolute;
-    left: 50%;
-    z-index: 1;
+    z-index: 7;
 }
 
 #consoleSlider {
@@ -143,25 +101,25 @@ button, .button, img.control{
     left: 50%;
     width: 5px;
     height: 100%;
-    z-index: 3;
+    z-index: 9;
     background-color: #444;
     cursor: col-resize;
 }
 
 #fuelGuage {
     position: fixed;
-    z-index: 1;
+    z-index: 7;
     width: 100px;
     height: 100px;
     right: 30px;
-    bottom: 120px;
+    bottom: 20px;
 }
 
 #fuelGuagePointer {
     position: absolute;
     width: 100px;
     height: 100px;
-    z-index: 2;
+    z-index: 8;
     top: 0px;
 }
 
@@ -173,7 +131,7 @@ img.control{
 /* Styles for the instruction buttons */
 .picButton {    
     background-color: transparent;
-    padding: 4px 2px 0;
+    padding: 0px 0px 0;
     position: absolute;
     vertical-align: top;
 }
@@ -186,31 +144,14 @@ img.control{
 }
 
 .picButton span {
-    background-image : url('/static/game/image/arrowBtns_v2.svg');
     background-repeat: no-repeat;
-    background-size: 150px 150px;
+    background-size: 45px 45px;
+    background-position: center;
     display: inline-block;
     height: 45px;
-    overflow: hidden;
+    width: 45px;
     text-indent: 200%;
     white-space: nowrap;
-    width: 45px;
-}
-
-.picButton#turnLeft span {
-    background-position: 0px -45px;
-}
-
-.picButton#turnRight span {
-    background-position: -105px -45px;
-}
-
-.picButton#moveForward span {
-    background-position: -52px 2px;
-}
-
-.picButton#play span {
-    background-position: -52px -49px;
 }
 
 #blockly {
@@ -218,10 +159,13 @@ img.control{
 }
 
 #pythonCode {
+    position:absolute;
     display: none;
     height: 100%;
+    width:90%;
     overflow: auto;
-    padding: 5px;
+    padding: 15px;
+    left:46px;
 }
 
 #consoleOutput {
@@ -251,4 +195,154 @@ img.control{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+/******************/
+/** Direct drive **/
+/******************/
+
+#direct_drive {
+    width: 140px;
+    height: 95px;
+    position: absolute;
+    z-index: 7;
+    bottom: 15px;
+    left: 50%;
+}
+
+#turnLeft,
+#turnRight,
+#play {
+    bottom: 0px;
+}
+
+#moveForward, 
+#play {
+    left: 60px;
+}
+
+#turnLeft {
+    left: 10px;
+}
+
+#turnRight {
+    left: 110px;
+}
+
+#moveForward {
+    bottom: 50px;
+}
+
+.picButton#turnLeft span {
+    background-image : url('/static/game/image/arrow_left.svg');
+}
+
+.picButton#turnRight span {
+    background-image : url('/static/game/image/arrow_right.svg');
+}
+
+.picButton#moveForward span {
+    background-image : url('/static/game/image/arrow_forward.svg');
+}
+
+.picButton#play span {
+    background-image : url('/static/game/image/arrow_go.svg');
+}
+
+/***************/
+/** Side menu **/
+/***************/
+
+#side_menu {
+    width: 46px;
+    height: 46px;
+    position: absolute;
+    z-index: 1;
+    top: 30px;
+}
+
+.picButton#play2 {
+    top: 0px;
+}
+
+.picButton#play2 span {
+    background-image : url('/static/game/image/menu_button_play.svg');
+}
+
+.picButton#stop {
+    top: 0px;
+}
+
+.picButton#stop span {
+    background-image : url('/static/game/image/menu_button_stop.svg');
+}
+
+.picButton#step {
+    top: 50px;
+}
+
+.picButton#step span {
+    background-image : url('/static/game/image/menu_button_step.svg');
+}
+
+
+.picButton#save {
+    top: 120px;
+}
+
+.picButton#save span {
+    background-image : url('/static/game/image/menu_button_save.svg');
+}
+
+.picButton#load {
+    top: 170px;
+}
+
+.picButton#load span {
+    background-image : url('/static/game/image/menu_button_load.svg');
+}
+
+.picButton#clear {
+    top: 220px;
+}
+
+.picButton#clear span {
+    background-image : url('/static/game/image/menu_button_clear.svg');
+}
+
+
+
+.picButton#big_code_mode {
+    top: 290px;
+}
+
+.picButton#big_code_mode span {
+    background-image : url('/static/game/image/menu_button_big_code_mode.svg');
+}
+
+
+.picButton#toggle_console {
+    top: 340px;
+}
+
+.picButton#toggle_console span {
+    background-image : url('/static/game/image/menu_button_toggle_console.svg');
+}
+
+
+.picButton#help {
+    top: 410px;
+}
+
+.picButton#help span {
+    background-image : url('/static/game/image/menu_button_help.svg');
+}
+
+
+.picButton#quit {
+    top: 460px;
+}
+
+.picButton#quit span {
+    background-image : url('/static/game/image/menu_button_quit.svg');
 }
