@@ -244,8 +244,7 @@ function drawCrossRoads(node) {
 }
 
 function createRoad(nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-        var node = nodes[i];
+    $.each(nodes, function(i, node) {
         switch (node.connectedNodes.length) {
             case 1:
                 drawDeadEndRoad(node);
@@ -266,7 +265,7 @@ function createRoad(nodes) {
             default:
                 break;
         }
-    }
+    });
 }
 
 function isMobile() {
@@ -444,24 +443,19 @@ function createTrafficLights(trafficLights, draggable) {
         trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
             drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT).transform('r' + rotation + 's-1,1');
 
+        lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
+
         if (draggable) {
             var id = trafficLight.id;
-            trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate), id);
             trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id);
             trafficLight.redLightEl.node.ondblclick = function() {
-                console.debug("id", trafficLight.id);
-                var image = trafficLight.redLightEl;
-                return image.transform('...r90');
-            };
-
-            trafficLight.greenLightEl.node.ondblclick = function() {
-                console.debug("id", id);
-                var image = trafficLight.greenLightEl;
+                var traffic = trafficLight;
+                console.debug("id", traffic.id);
+                var image = traffic.redLightEl;
                 return image.transform('...r90');
             };
         }
 
-        lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
 		
 		//hide light which isn't the starting state
 		if(trafficLight.startingState === ocargo.TrafficLight.RED){

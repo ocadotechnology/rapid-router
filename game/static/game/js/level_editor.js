@@ -487,8 +487,9 @@ Raphael.el.draggableDecor = function(initX, initY) {
     this.drag(moveFnc, startFnc, endFnc);
 };
 
-Raphael.el.draggableLights = function(coordinate, id) {
+Raphael.el.draggableLights = function(coordinate, idIndex) {
     var me = this,
+        id = idIndex,
         kx = coordinate,                        // Coordinates used for centralisation.
         ky = new ocargo.Coordinate(coordinate.x, coordinate.y + 1),
         lx = 0,                // Current position of the element
@@ -513,12 +514,13 @@ Raphael.el.draggableLights = function(coordinate, id) {
         startFnc = function() {
             s = getOrientation(me);
             r = getRotation(me);
-            console.debug("rotation", r)
-            console.debug("rotationData", JSON.stringify(me.transform()), me.transform());
+            console.debug(id);
+          //  console.debug("rotation", r)
+           // console.debug("rotationData", JSON.stringify(me.transform()), me.transform());
 
             // Find the element in trafficLights and remove it.
             var index = findTrafficLightByIndex(id, ocargo.levelEditor.trafficLights);
-            console.debug(index);
+
             if (index > -1) {
                 ocargo.levelEditor.trafficLights.splice(index, 1);
             }
@@ -605,6 +607,7 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
     var trafficLights = [];
     for(var i = 0; i < trafficLightData.length; i++){
         var trafficLight = trafficLightData[i];
+        var id = trafficLight['id'];
         var controlledNodeId = trafficLight['node'];
         var sourceNodeId = trafficLight['sourceNode'];
         var redDuration = trafficLight['redDuration'];
@@ -614,7 +617,7 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
         var controlledNode = nodes[controlledNodeId];
         var sourceNode = nodes[sourceNodeId];
         
-        var light = new ocargo.TrafficLight(i, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
+        var light = new ocargo.TrafficLight(id, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
         trafficLights.push(light);
         controlledNode.addTrafficLight(light);
     }
@@ -644,8 +647,8 @@ function initialiseTrafficLight() {
     img.draggableLights(new ocargo.Coordinate(0, 0), ocargo.levelEditor.trafficCounter);
     ocargo.levelEditor.trafficCounter++;
     img.transform('...s-1,1');
-    img.node.ondblclick = function() {
 
+    img.node.ondblclick = function() {
         var image = img;
         return image.transform('...r90');
     };
