@@ -89,11 +89,13 @@ function runProgramAndPrepareAnimation() {
     catch (error) {
         // print error for now
         console.info("compilation error " + error);
+        return false;
     }
+    return true;
 }
 
 function setupListeners() {
-
+    // Direct Control Listeners
     $('#moveForward').click(function() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
@@ -112,12 +114,12 @@ function setupListeners() {
         moveRight(0, enableDirectControl);
     });
 
+    // Normal Control Listeners
     $('#play').click(function() {
         ocargo.blocklyControl.resetIncorrectBlock();
         disableDirectControl();
-
-            runProgramAndPrepareAnimation();
-            // append function call to enable direct control
+        if (runProgramAndPrepareAnimation()) {
+            // append function call to ~~enable direct control~~ TODO: sort all buttons out at end of a full run of playing?
             var timestamp = ocargo.animation.getLastTimestamp();
             ocargo.animation.queueAnimation({
                 timestamp: timestamp,
@@ -125,23 +127,21 @@ function setupListeners() {
                 functionCall: enableDirectControl,
             });
             ocargo.animation.playAnimation();
-            // some stuff to sort and do, don't use PLAY!
+        } else {
             enableDirectControl();
+        }
     });
 
+    $('#pause').click(function() {
+        ocargo.animation.pauseAnimation();
+    });
 
     $('#resume').click(function() {
         ocargo.animation.playAnimation();
     });
 
     $('#step').click(function() {
-        if (ocargo.blocklyControl.incorrectBlock) {
-            ocargo.blocklyControl.incorrectBlock.setColour(ocargo.blocklyControl.incorrectBlockColour);
-        }
-
-        disableDirectControl();
-
-        if (!ocargo.animation.isFinished()) {
+        if (!ocargo.animation.isFinished()) {  // NB Should NOT be *visible* at the end of execution - should wait for a reset!
             ocargo.animation.stepAnimation();
         } else {
             runProgramAndPrepareAnimation();
@@ -149,6 +149,16 @@ function setupListeners() {
         }
         // show start over button
         $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
+    });
+
+    $('#stop').click(function() {
+        ocargo.animation.resetAnimation();
+    });
+
+    $('#reset').click(function() {
+        ocargo.animation.resetAnimation();
+        // show go button
+        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
     });
     
     $('#help').click(function() {
@@ -161,10 +171,6 @@ function setupListeners() {
         ocargo.animation.resetAnimation();
         // show go button
         $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
-    });
-
-    $('#stop').click(function() {
-        ocargo.animation.resetAnimation();
     });
 
     var selectedWorkspace = null;
