@@ -38,10 +38,10 @@ ocargo.messages = {
         "highway code!",
     offRoad : function(correctSteps){
         if (correctSteps === 1) {
-            return "Your first execution step worked.";
+            return "Your first move worked.";
         }
         else {
-            return "Your first " + correctSteps + " execution steps worked.";
+            return "Your first " + correctSteps + " moves worked.";
         }
     },
 
