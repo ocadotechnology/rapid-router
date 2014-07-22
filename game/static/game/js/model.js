@@ -18,7 +18,6 @@ ocargo.Model = function(nodeData, destination, trafficLightData, maxFuel, vanId)
 
 // Resets the entire model to how it was when it was just constructed
 ocargo.Model.prototype.reset = function(vanId) {
-	this.map.reset();
 	this.van.reset();
 
 	var i;

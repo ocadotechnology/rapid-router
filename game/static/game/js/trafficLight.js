@@ -11,7 +11,7 @@ ocargo.TrafficLight = function(id, data, map) {
     this.greenDuration = data.greenDuration;
     this.currentLightTime = this.startTime;
     this.sourceNode = map.nodes[data.sourceNode];
-    this.controlledNode = map.noes[data.node];
+    this.controlledNode = map.nodes[data.node];
 };
 
 ocargo.TrafficLight.prototype.reset = function() {

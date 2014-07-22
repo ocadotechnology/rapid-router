@@ -3,18 +3,23 @@
 var ocargo = ocargo || {};
 
 function init() {
+    // Setup blockly
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.blocklyControl.loadPreviousAttempt();
+    window.addEventListener('unload', ocargo.blocklyControl.teardown);
     
+    // Create the model
     ocargo.model = new ocargo.Model(PATH, DESTINATION, TRAFFIC_LIGHTS, MAX_FUEL);
 
+    // Setup animation
+    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
+
+    // Setup the ui
     setupListeners();
     enableDirectControl();
 
     // startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
-
-    window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
     if ($.cookie("muted") === "true") {
         $('#mute').text("Unmute");

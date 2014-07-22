@@ -1,22 +1,30 @@
+'use strict';
+
 var ocargo = ocargo || {};
 
 var ANIMATION_LENGTH = 500;
 
-ocargo.Animation = function(map, vans) {
-	this.map = map;
-	this.vans = vans;
+ocargo.Animation = function(model, decor, numVans) {
+	this.model = model;
+	this.decor = decor;
+	this.numVans = numVans;
+
 	this.resetAnimation();
 };
 
-ocargo.Animation.prototype.resetAnimation() {
+ocargo.Animation.prototype.resetAnimation = function() {
 	this.animationQueue = [];
 	this.animationTimestamp = 0;
 	this.isPlaying = false;
-	renderTheMap(this.map);
-	renderTheVans(this.vans);
+
+	clearPaper();
+	renderMap(this.model.map);
+	renderDecor(this.decor);
+	renderTrafficLights(this.model.trafficLights);
+	renderVans(this.model.map.getStartingPosition(), this.numVans);
 };
 
-ocargo.Animation.prototype.stepAnimation() {
+ocargo.Animation.prototype.stepAnimation = function() {
 	var maxDelay = 0;
 	// do all things in this timestep
 	while (this.animationQueue.length > 0 && animationQueue[0].timestamp <= this.animationTimestamp) {
@@ -141,7 +149,7 @@ ocargo.Animation.prototype.stepAnimation() {
 		if (animationLength > maxDelay) {
 			maxDelay = animationLength;
 		}
-	
+	}
 
 	this.animationTimestamp ++;
 
@@ -156,18 +164,18 @@ ocargo.Animation.prototype.stepAnimation() {
 	}
 };
 
-ocargo.Animation.prototype.playAnimation() {
+ocargo.Animation.prototype.playAnimation = function() {
 	if (!this.isPlaying && this.animationQueue.length > 0) {
 		this.isPlaying = true;
 		this.stepAnimation();
 	}
 };
 
-ocargo.Animation.prototype.pauseAnimation() {
+ocargo.Animation.prototype.pauseAnimation = function() {
 	this.isPlaying = false;
 };
 
-ocargo.Animation.prototype.queueAnimation(a) {
+ocargo.Animation.prototype.queueAnimation = function(a) {
 	// Find correct position to insert into animation queue in time ascending order
 	// (backwards linear search likely to be better for one van setup at least...)
 	var found = false;
@@ -185,7 +193,7 @@ ocargo.Animation.prototype.queueAnimation(a) {
 	// Remove duplicate animations... or make any animations that could potentially appear twice idempotent... Undecided...
 };
 
-ocargo.Animation.prototype.queueAnimations(as) {
+ocargo.Animation.prototype.queueAnimations = function(as) {
 	for (var i = 0; i < as.length; i++) {
 		this.queueAnimation(as[i]);
 	}

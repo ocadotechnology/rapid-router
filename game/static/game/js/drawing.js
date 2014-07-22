@@ -270,7 +270,7 @@ function isMobile() {
     return !!mobileDetect.mobile();
 }
 
-function drawBackground(paper) {
+function drawBackground() {
     if (!isMobile()) {
         paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
             .attr({fill: 'url(/static/game/image/grassTile1.svg)',
@@ -278,23 +278,14 @@ function drawBackground(paper) {
     }
 }
 
-function drawDecor(decor) {
-    for (var i = 0; i < decor.length; i++) {
-        var obj = decor[i];
-        var coord = obj['coordinate'];
-        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
-            DECOR_SIZE, DECOR_SIZE);
-    }
-}
-
-function createCFC(paper, previousNode, startNode) {
-    var initialX = calculateInitialX(startNode);
-    var initialY = calculateInitialY(startNode);
+function createCFC(position) {
+    var initialX = calculateInitialX(position.currentNode);
+    var initialY = calculateInitialY(position.currentNode);
 
     var cfc = paper.image('/static/game/image/OcadoCFC_no_road.svg', initialX - 95, initialY - 25, 100, 107);
 
-    var rotation = calculateInitialRotation(previousNode, startNode);
-    rotateElementAroundCentreOfGridSpace(cfc, rotation, startNode.coordinate.x, startNode.coordinate.y);
+    var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
+    rotateElementAroundCentreOfGridSpace(cfc, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
 
     cfc.transform('... r90');
 }
@@ -395,39 +386,40 @@ function createDestination(destination) {
         50, 50).transform('r' + variation[2]);
 }
 
-function renderTheMap(map) {
+function clearPaper() {
     paper.clear();
-    drawBackground(paper);
-    createRoad(map.nodes);
-    createDestination(map.destination);
-    var previousNode = map.nodes[0];
-    var startNode = map.nodes[0].connectedNodes[0];
-    createCFC(paper, previousNode, startNode);
-    drawDecor(map.decor);
-    createTrafficLights(map.trafficLights);
 }
 
-function renderTheVans(vans) {
-    for (var i = 0; i < vans.length; i++) {
-        var vanImage = createVanImage(paper, vans[i]);
-        scrollToShowVanImage(vanImage);
+function renderMap(map) {
+    drawBackground();
+    createRoad(map.nodes);
+    createDestination(map.destination);
+    createCFC(map.getStartingPosition());
+}
+
+function renderDecor(decor) {
+    for (var i = 0; i < decor.length; i++) {
+        var obj = decor[i];
+        var coord = obj['coordinate'];
+        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
+            DECOR_SIZE, DECOR_SIZE);
     }
 }
 
-function createTrafficLights(trafficLights) {
-	for (var i = 0; i < trafficLights.length; i++) {
-		var trafficLight = trafficLights[i];
-		var controlledNode = trafficLight.controlledNode;
-		var sourceNode = trafficLight.sourceNode;
-		
-		//get position based on nodes
-		var x = (controlledNode.coordinate.x + sourceNode.coordinate.x) / 2.0;
-		var y = (controlledNode.coordinate.y + sourceNode.coordinate.y) / 2.0;
-		
-		//get rotation based on nodes (should face source)
-		var rotation = calculateInitialRotation(sourceNode, controlledNode) + 90;
-		
-		//draw red and green lights, keep reference to both
+function renderTrafficLights(trafficLights) {
+    for (var i = 0; i < trafficLights.length; i++) {
+        var trafficLight = trafficLights[i];
+        var controlledNode = trafficLight.controlledNode;
+        var sourceNode = trafficLight.sourceNode;
+        
+        //get position based on nodes
+        var x = (controlledNode.coordinate.x + sourceNode.coordinate.x) / 2.0;
+        var y = (controlledNode.coordinate.y + sourceNode.coordinate.y) / 2.0;
+        
+        //get rotation based on nodes (should face source)
+        var rotation = calculateInitialRotation(sourceNode, controlledNode) + 90;
+        
+        //draw red and green lights, keep reference to both
         var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
         var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
         trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
@@ -436,14 +428,21 @@ function createTrafficLights(trafficLights) {
             .transform('r' + rotation + 's-1,1');
 
         lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
-		
-		//hide light which isn't the starting state
-		if(trafficLight.startingState == ocargo.TrafficLight.RED){
-			trafficLight.greenLightEl.attr({'opacity': 0});
-		} else {
-			trafficLight.redLightEl.attr({'opacity': 0});
-		}
-	}
+        
+        //hide light which isn't the starting state
+        if(trafficLight.startingState == ocargo.TrafficLight.RED){
+            trafficLight.greenLightEl.attr({'opacity': 0});
+        } else {
+            trafficLight.redLightEl.attr({'opacity': 0});
+        }
+    }
+}
+
+function renderVans(position, numVans) {
+    for (var i = 0; i < numVans; i++) {
+        vanImages[i] = createVanImage(position, i);
+    }
+    scrollToShowVanImage(vanImages[0]);
 }
 
 // This is the function that starts the pop-up.
@@ -539,61 +538,22 @@ function moveVanImage(attr, van, animationLength, callback) {
     }
 }
 
-function createVanImage(paper, van) {
-    var initialX = calculateInitialX(van.currentNode);
-    var initialY = calculateInitialY(van.currentNode);
+function createVanImage(position, vanId) {
+    var initialX = calculateInitialX(position.currentNode);
+    var initialY = calculateInitialY(position.currentNode);
 
-    var imageStr = (van.id % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+    var imageStr = (vanId % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
     var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
 
-    var rotation = calculateInitialRotation(van.previousNode, van.currentNode);
-    rotateElementAroundCentreOfGridSpace(vanImage, rotation, van.currentNode.coordinate.x, van.currentNode.coordinate.y);
-
-    vanImages[van.id] = vanImage;
-
-    return vanImage.transform('... r90');
-}
-
-function resetVanImage(previousNode, startNode, van) {
-    var vanImage = vanImages[van.id];
-    
-    vanImage.transform('r0');
-
-    var rotation = calculateInitialRotation(previousNode, startNode);
-    rotateElementAroundCentreOfGridSpace(vanImage, rotation, startNode.coordinate.x, startNode.coordinate.y);
-
-    var initialX = calculateInitialX(startNode);
-    var initialY = calculateInitialY(startNode);
-    vanImage.attr({
-        x: initialX,
-        y: initialY
-    });
+    var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
+    rotateElementAroundCentreOfGridSpace(vanImage, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
 
     vanImage.transform('... r90');
-    scrollToShowVanImage(vanImage);
+
+    return vanImage;
 }
 
 function getVanImagePosition(vanImage) {
     var box = vanImage.getBBox();
     return [box.x, box.y];
 }
-
-
-/***********************/
-/** Animation methods **/
-/***********************/
-
-
-/*function resetTrafficLightAnimation(id, colour) {
-    if (colour == ocargo.TrafficLight.GREEN) {
-        lightImages[id][0].attr({ opacity : 1 });
-        lightImages[id][1].attr({ opacity : 0 });
-    }
-    else {
-        lightImages[id][0].attr({ opacity : 0 });
-        lightImages[id][1].attr({ opacity : 1 });
-    }
-
-    resetAnimation();
-}
-*/

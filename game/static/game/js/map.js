@@ -8,10 +8,10 @@ var rightCutoffAngle = 7 * Math.PI / 6;
 
 ocargo.Map = function(nodeData, destinationId) {
 	this.nodeData = nodeData;
-	this.destinationData = destinationData;
+	this.destinationId = destinationId;
 
 	this.nodes = this.createNodes(this.nodeData);
-	this.destination = this.nodes[desttinationId]
+	this.destination = this.findByCoordinate(destinationId, this.nodes);
 };
 
 ocargo.Map.prototype.createNodes = function(nodeData) {
@@ -36,6 +36,16 @@ ocargo.Map.prototype.createNodes = function(nodeData) {
     
     return nodes;
 };
+
+ocargo.Map.prototype.findByCoordinate = function(coordinate, nodes) {
+    for (var i = 0; i < nodes.length; i++) {
+        var coord = nodes[i].coordinate;
+        if (coord.x === coordinate[0] && coord.y === coordinate[1]) {
+            return nodes[i];
+        }
+    }
+    return null;
+}
 
 ocargo.Map.prototype.getStartingPosition = function() {
 	var previousNode = this.nodes[0];
