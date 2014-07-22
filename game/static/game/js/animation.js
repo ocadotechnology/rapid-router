@@ -19,9 +19,14 @@ ocargo.Animation.prototype.isFinished = function() {
 	return (this.animationQueue.length == 0);
 };
 
+ocargo.Animation.prototype.getLastTimestamp = function() {
+	return this.latestTimestamp;
+};
+
 ocargo.Animation.prototype.resetAnimation = function() {
 	this.animationQueue = [];
 	this.animationTimestamp = 0;
+	this.latestTimestamp = 0;
 	this.isPlaying = false;
 
 	// cancel timer
@@ -165,7 +170,8 @@ ocargo.Animation.prototype.stepAnimation = function() {
 	if (this.isPlaying) {
 		if (this.animationQueue.length > 0) {
 			// set timeout for longest animation
-			this.playTimer = setTimeout(this.stepAnimation, maxDelay);
+			var self = this;
+			this.playTimer = setTimeout(function() { self.stepAnimation(); }, maxDelay);
 		} else {
 			// finished animation, stop playing
 			this.isPlaying = false;
@@ -199,6 +205,10 @@ ocargo.Animation.prototype.queueAnimation = function(a) {
 		}
 	}
 	this.animationQueue.splice(index, 0, a);
+
+	if (this.latestTimestamp < a.timestamp) {
+		this.latestTimestamp = a.timestamp;
+	}
 
 	// Remove duplicate animations... or make any animations that could potentially appear twice idempotent... Undecided...
 };
