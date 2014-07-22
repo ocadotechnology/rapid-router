@@ -137,7 +137,7 @@ If.prototype.execute = function(thread, model) {
 	while (i < this.conditionalCommandSets.length) {
 		if (this.conditionalCommandSets[i].condition(model)) {
 			thread.addNewStackLevel(this.conditionalCommandSets[i].commands.slice());
-			return;
+			return true;
 		}
 
 		i++;
