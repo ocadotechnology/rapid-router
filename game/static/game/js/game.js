@@ -64,7 +64,7 @@ function runProgramAndPrepareAnimation() {
     ocargo.animation.resetAnimation();
     // compile and run program
     var program = ocargo.blocklyCompiler.compile();
-    program.run();
+    program.run(ocargo.model);
 }
 
 function setupListeners() {
