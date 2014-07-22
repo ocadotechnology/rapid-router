@@ -84,11 +84,14 @@ function runProgramAndPrepareAnimation() {
     // try to compile and run program
     try {
         var program = ocargo.blocklyCompiler.compile();
-        program.run(ocargo.model);
     }
     catch (error) {
         // print error for now
         console.info("compilation error " + error);
+    }
+
+    if (program) {
+        program.run(ocargo.model);
     }
 }
 

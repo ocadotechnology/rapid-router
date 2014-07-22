@@ -14,6 +14,8 @@ ocargo.Model = function(nodeData, destination, trafficLightData, maxFuel, vanId)
 
 	this.timestamp = 0;
 	this.vanId = vanId || 0;
+
+	this.pathFinder = new ocargo.PathFinder(this);
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -161,8 +163,7 @@ ocargo.Model.prototype.wait = function() {
 // the play has won or not and send off those events
 ocargo.Model.prototype.programExecutionEnded = function() {
 	if (this.van.getPosition().currentNode === this.map.getDestinationNode()) {
-		//var scoreArray = this.pathFinder.getScore();
-		var scoreArray = [0, "hello"];
+		var scoreArray = this.pathFinder.getScore();
 	    sendAttempt(scoreArray[0]);
 
 		ocargo.animation.queueAnimation({

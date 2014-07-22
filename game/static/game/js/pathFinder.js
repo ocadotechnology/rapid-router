@@ -2,14 +2,14 @@
 
 var ocargo = ocargo || {};
 
-ocargo.PathFinder = function(map, modelLength) {
-    this.nodes = map.nodes;
-    this.destination = map.destination;
+ocargo.PathFinder = function(model) {
+    this.nodes = model.map.nodes;
+    this.destination = model.map.destination;
     this.optimalPath = this.getOptimalPath();
     this.maxDistanceScore = 10;
     this.maxInstrLengthScore = 10;
     this.maxScore = this.maxDistanceScore + this.maxInstrLengthScore;
-    this.modelLength = modelLength;
+    this.modelLength = MODEL_SOLUTION;
 };
 
 ocargo.PathFinder.prototype.getScore = function() {
@@ -41,8 +41,7 @@ ocargo.PathFinder.prototype.getScore = function() {
 };
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
-
-    var travelled = ocargo.level.vans[0].travelled;
+    var travelled = ocargo.model.van.travelled;
     var travelledScore = this.maxDistanceScore -
         (travelled - this.optimalPath.length + 2);
     
@@ -50,8 +49,6 @@ ocargo.PathFinder.prototype.getTravelledPathScore = function() {
 };
 
 ocargo.PathFinder.prototype.getInstrLengthScore = function() {
-    console.debug(this.modelLength);
-
     var userLength = ocargo.blocklyControl.getBlocksCount();
     var algorithmScore = this.maxInstrLengthScore - (userLength - 1 - this.modelLength);
 
