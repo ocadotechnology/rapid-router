@@ -141,7 +141,6 @@ ocargo.Model.prototype.moveForwards = function() {
 
 ocargo.Model.prototype.turnLeft = function() {
 	var nextNode = this.map.isRoadLeft(this.van.getPosition());
-	console.debug(nextNode);
 	return this.moveVan(nextNode, 'TURN_LEFT');
 };
 

@@ -145,7 +145,6 @@ function setupListeners() {
             ocargo.animation.stepAnimation();
         } else {
             runProgramAndPrepareAnimation();
-            console.info("about to step....");
             ocargo.animation.stepAnimation();
         }
         // show start over button
