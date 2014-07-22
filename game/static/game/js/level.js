@@ -258,7 +258,6 @@ function levelFailed(level, msg) {
 
     var title = 'Oh dear! :(';
     startPopup(title, '', msg + ocargo.messages.closebutton("Try again"));
-    $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
     
     level.fails++;
     if (level.fails >= FAILS_BEFORE_HINT) {
