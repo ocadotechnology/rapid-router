@@ -85,7 +85,7 @@ ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     }
 
     // Use the user's last attempt if available, else use whatever's in local storage
-    if (WORKSPACE && WORKSPACE != '') {
+    if (WORKSPACE) {
         ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
     }
     else {

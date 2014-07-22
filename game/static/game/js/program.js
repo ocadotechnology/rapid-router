@@ -45,8 +45,14 @@ ocargo.Thread.prototype.step = function(model) {
 	var successful = commandToProcess.execute(this, model);
 
 	if (!successful) {
-		// Program crashed
-		// ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
+		// Program crashed, queue a block highlight event
+		ocargo.animation.queueAnimation({
+			timestamp: model.timestamp,
+			type: 'callable',
+			functionCall: function() {
+				ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
+			}
+		});
 		return false;
 	}
 
@@ -140,6 +146,7 @@ If.prototype.execute = function(thread, model) {
 	if(this.elseBody) {
 		thread.addNewStackLevel(this.elseBody.slice());
 	}
+	return true;
 };
 
 
@@ -155,6 +162,7 @@ While.prototype.execute = function(thread, model) {
 		thread.addNewStackLevel([this]);
 		thread.addNewStackLevel(this.body.slice());
 	}
+	return true;
 };
 
 
@@ -167,6 +175,7 @@ function Procedure(name,body,block) {
 
 Procedure.prototype.execute = function(thread) {
 	thread.addNewStackLevel(this.body.slice());
+	return true;
 }
 
 
@@ -181,6 +190,7 @@ ProcedureCall.prototype.bind = function(proc) {
 
 ProcedureCall.prototype.execute = function(thread) {
 	thread.addNewStackLevel([this.proc]);
+	return true;
 }
 
 

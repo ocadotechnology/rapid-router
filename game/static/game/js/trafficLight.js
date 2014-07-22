@@ -23,24 +23,24 @@ ocargo.TrafficLight.prototype.getState = function() {
     return this.state;
 };
 
-ocargo.TrafficLight.prototype.incrementTime = function() {
+ocargo.TrafficLight.prototype.incrementTime = function(model) {
     this.currentLightTime++;
 
     if (this.state === ocargo.TrafficLight.RED && this.currentLightTime >= this.redDuration) {
     	this.state = ocargo.TrafficLight.GREEN;
     	this.currentLightTime = 0;
-        this.queueAnimation();
+        this.queueAnimation(model);
     }
     else if (this.state === ocargo.TrafficLight.GREEN && this.currentLightTime >= this.greenDuration) {
     	this.state = ocargo.TrafficLight.RED;
     	this.currentLightTime = 0;
-        this.queueAnimation();
+        this.queueAnimation(model);
     }
 };
 
-ocargo.TrafficLight.prototype.queueAnimation = function() {
+ocargo.TrafficLight.prototype.queueAnimation = function(model) {
     ocargo.animation.queueAnimation({
-        timestamp: this.timestamp,
+        timestamp: model.timestamp,
         type: 'trafficlight',
         id: this.id,
         colour: this.state,
