@@ -264,26 +264,27 @@ function setupSliderListeners() {
     var getSliderRightLimit = function() {return $(window).width()/2};
     var getSliderLeftLimit = function() {return 46};
     var consoleSliderPosition = $(window).width()/2;
+    var open = true;
 
     $('#slideConsole').click(function() {
         var pageWidth = $(window).width();
         var rightLimit = getSliderRightLimit();
         var leftLimit = getSliderLeftLimit();
 
-        if ($('#programmingConsole').width() != 0) {
+        if (open) {
             $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
             $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#programmingConsole').animate({width: '0px'}, {queue: false});
             $('#sliderControls').animate({left: leftLimit + 'px'}, {queue: false});
             $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#consoleSlider').animate({left: leftLimit + 'px'}, {queue: false, complete: function() { ocargo.blocklyControl.redrawBlockly(); }});
+            $('#consoleSlider').animate({left: leftLimit + 'px'}, {queue: false});
+            open = false;
         } else {
             $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
             $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-            $('#programmingConsole').animate({ width: consoleSliderPosition + 'px' }, {queue: false});
             $('#sliderControls').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
             $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
-            $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false, complete: function() { ocargo.blocklyControl.redrawBlockly(); }});
+            $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+            open = true;
         }
     });
 
@@ -552,12 +553,11 @@ function setupMenuListeners() {
 
     $('#toggle_console').click(function() {
         if($('#blockly').css("display")=="none") {
-            $('#pythonCode').fadeOut();
+            $('#pythonCode').css("display","none");
             $('#blockly').fadeIn();
-            ocargo.blocklyControl.redrawBlockly();
         }
         else {
-            $('#blockly').fadeOut();
+            $('#blockly').css("display","none");
             $('#pythonCode').fadeIn();
             ocargo.editor.setValue(Blockly.Python.workspaceToCode());
         }
@@ -565,11 +565,9 @@ function setupMenuListeners() {
 
     $('#big_code_mode').click(function() {
         if(ocargo.blocklyControl.bigCodeMode){
-            ocargo.blocklyControl.decreaseBlockSize();
-            $('#bigCodeModeBtn').text("Big Code Mode");
+            ocargo.blocklyControl.decreaseBlockSize()
         } else {
             ocargo.blocklyControl.increaseBlockSize();
-            $('#bigCodeModeBtn').html("<del>Big</del> Code Mode");
         }
     });
 

@@ -29,6 +29,7 @@
     width: 50%;
     height: 100%;
     overflow: auto;
+    z-index: 6;
 }
 
 #controls {
@@ -92,7 +93,7 @@ button, .button, img.control{
     position: absolute;
     left: 50%;
     height: 0%;
-    z-index: 1;
+    z-index: 7;
 }
 
 #consoleSlider {
@@ -100,14 +101,14 @@ button, .button, img.control{
     left: 50%;
     width: 5px;
     height: 100%;
-    z-index: 3;
+    z-index: 9;
     background-color: #444;
     cursor: col-resize;
 }
 
 #fuelGuage {
     position: fixed;
-    z-index: 1;
+    z-index: 7;
     width: 100px;
     height: 100px;
     right: 30px;
@@ -118,7 +119,7 @@ button, .button, img.control{
     position: absolute;
     width: 100px;
     height: 100px;
-    z-index: 2;
+    z-index: 8;
     top: 0px;
 }
 
@@ -204,7 +205,7 @@ img.control{
     width: 140px;
     height: 95px;
     position: absolute;
-    z-index: 1;
+    z-index: 7;
     bottom: 15px;
     left: 50%;
 }
