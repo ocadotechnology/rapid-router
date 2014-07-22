@@ -95,6 +95,8 @@ ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     else {
         ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
     }
+
+    ocargo.blocklyControl.redrawBlockly();
 }
 
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {

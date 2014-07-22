@@ -1,6 +1,6 @@
 var ocargo = ocargo || {};
 
-function loadAllSavedWorkspaces(callback) {
+function retrieveAllWorkspaces(callback) {
 	if (LOGGED_IN_AS_STUDENT) {
 		$.ajax({
 	        url: '/game/workspace',
@@ -37,7 +37,7 @@ function loadAllSavedWorkspaces(callback) {
 	}
 }
 
-function loadWorkspace(id, callback) {
+function retrieveWorkspace(id, callback) {
 	if (LOGGED_IN_AS_STUDENT) {
 		$.ajax({
             url: '/game/workspace/' + id,

@@ -82,8 +82,7 @@
     <div id="pythonCode" {% if not level.pythonEnabled%} style="visibility: hidden" {% endif %}>
       <h3>Python Program</h3>
         <p>Use the Python editor below to design your program, and click run to try it out!</p>
-        <textarea id="code" cols="85" rows="25">
-        </textarea>
+        <textarea id="code" cols="85" rows="25"></textarea>
         <button id="skulpt_run">Run</button>
         <h4>Console Output:</h4>
         <textarea disabled="" id="consoleOutput"></textarea>
@@ -98,10 +97,21 @@
     </div>
   </div>
 
+  <div id="side_menu" class="no-print unselectable">
+    <button class="picButton" id="play2"><span>play</span></slideButton>
+    <button class="picButton" id="stop"><span>stop</span></slideButton>
+    <button class="picButton" id="step"><span>step</span></slideButton>
+    <button class="picButton" id="save"><span>save</span></slideButton>
+    <button class="picButton" id="load"><span>load</span></slideButton>
+    <button class="picButton" id="clear"><span>clear</span></slideButton>
+    <button class="picButton" id="toggle_console" {% if not level.blocklyEnabled or not level.pythonEnabled%} style="visibility: hidden" {% endif %}><span>toggle console</span></slideButton>
+    <button class="picButton" id="big_code_mode"><span>big code mode</span></slideButton>
+    <button class="picButton" id="help"><span>help</span></slideButton>
+    <button class="picButton" id="quit"><span>quit</span></slideButton>
+  </div>
+
   <div id="sliderControls" class="no-print unselectable">
     <button id="slideConsole" class="unselectable">Slide Program</button>
-    <button id="bigCodeModeBtn" class="unselectable">Big Code Mode</button>
-    <button id="toggleConsole" class="unselectable" {% if not level.blocklyEnabled or not level.pythonEnabled%} style="visibility: hidden" {% endif %}>Toggle Console</button>
   </div>
 
   <div id="direct_drive" class="unselectable">
@@ -111,7 +121,7 @@
     <button class="picButton" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
       <span>&#x21BA; Turn Left</span>
     </button>
-    <button class="picButton" id="play" />
+    <button class="picButton" id="play" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
       <span>Go</span>
     </button>
     <button class="picButton" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
@@ -127,21 +137,14 @@
   </div>
 
   <div id="paper" class="col"></div>
-  <button id="stop" class="no-print">Stop</button>
-
+  
   <div id="controls" class="col no-print unselectable">
-
     <div class="navigation" class="unselectable">
-      <button id="help" class="unselectable">Help</button>
-      <button id="step" class="unselectable">Step</button>
-      <button id="loadSave" class="unselectable">Load/Save</button>
-      <button id="clear" class="unselectable">Clear</button>
-      <a class="button unselectable" href="/game/">Quit</a>
       <button id="mute" class="unselectable" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
     </div>
   </div>
-  <div id="consoleSlider" class="no-print">
-  </div>
+
+  <div id="consoleSlider" class="no-print"></div>
 </div>
 
 <div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
@@ -151,24 +154,36 @@
   <a class="close-reveal-modal" id="close-modal">&#215;</a>
 </div>
 
-<div id="loadSaveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title">Here you can save your program or load a previously saved one.</h2>
-  
+<div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <h2 class="title">Load</h2>
+  <p>Here you can load a previously saved program.</p>
   <div class="scrolling-table-wrapper">
     <div class="scrolling-table">
-      <table id="workspaceTable"></table>
+      <table id="loadWorkspaceTable"></table>
     </div>
   </div>
   <div style="margin-top: 1.25rem">
+    <button id="lDeleteWorkspace">Delete</button>
     <button id="loadWorkspace">Load</button>
-    <button id="overwriteWorkspace">Overwrite</button>
-    <button id="deleteWorkspace">Delete</button>
-    <div style="float: right">
-      <input id="newWorkspaceName"/>
-      <button id="createNewWorkspace">Create new</button>
+  </div>
+  <a class="close-reveal-modal" id="close-loadSave-modal">&#215;</a>
+</div>
+
+<div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <h2 class="title">Save</h2>
+  <p>Here you can save your program.</p>
+  <div class="scrolling-table-wrapper">
+    <div class="scrolling-table">
+      <table id="saveWorkspaceTable"></table>
     </div>
   </div>
-
+  <div style="margin-top: 1.25rem">
+    <button id="sDeleteWorkspace">Delete</button>
+    <div style="float: right">
+      <input id="workspaceNameInput"/>
+      <button id="saveWorkspace">Save</button>
+    </div>
+  </div>
   <a class="close-reveal-modal" id="close-loadSave-modal">&#215;</a>
 </div>
 

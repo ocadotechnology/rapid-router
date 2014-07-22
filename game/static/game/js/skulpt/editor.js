@@ -47,7 +47,7 @@ $(document).ready(function () {
         fontSize: "9pt",
         autoMatchParens: true,
         extraKeys: keymap,
-        parserConfig: {'pythonVersion': 2, 'strictErrors': true}
+        parserConfig: {'pythonVersion': 2, 'strictErrors': true},
     });
 
 
