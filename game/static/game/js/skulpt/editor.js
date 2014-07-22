@@ -1,7 +1,7 @@
 var ocargo = ocargo || {};
 
 $(document).ready(function () {
-    var output = $('#consoleOutput');
+    ocargo.consoleOutput = $('#consoleOutput');
     var outf = function (text) {
         output.text(output.text() + text);
     };
