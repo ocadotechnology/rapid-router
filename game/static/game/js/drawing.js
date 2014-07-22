@@ -523,7 +523,7 @@ function turnAround(vanId, animationLength, callback) {
     moveForward();
 }
 
-function wait(vanId, callback) {
+function wait(vanId, animationLength, callback) {
     //no movement for now
     moveVanImage({
         transform: '... t 0,0'

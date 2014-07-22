@@ -3,6 +3,7 @@
 var ocargo = ocargo || {};
 
 ocargo.PathFinder = function(model) {
+    this.van = model.van;
     this.nodes = model.map.nodes;
     this.destination = model.map.destination;
     this.optimalPath = this.getOptimalPath();
@@ -41,7 +42,7 @@ ocargo.PathFinder.prototype.getScore = function() {
 };
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
-    var travelled = ocargo.model.van.travelled;
+    var travelled = this.van.travelled;
     var travelledScore = this.maxDistanceScore -
         (travelled - this.optimalPath.length + 2);
     

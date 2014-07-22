@@ -110,7 +110,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 	}
 
 	var light = this.getTrafficLightForNode(this.van.getPosition());
-	if (light !== null && light.getState() === ocargo.TrafficLight.RED) {
+	if (light !== null && light.getState() === ocargo.TrafficLight.RED && nextNode !== light.controlledNode) {
 		// Ran a red light
 		ocargo.animation.queueAnimation({
 			timestamp: this.timestamp,
@@ -208,6 +208,6 @@ ocargo.Model.prototype.incrementTime = function() {
 
 	var i;
 	for (i = 0; i < this.trafficLights.length; i++) {
-		this.trafficLights[i].incrementTime();
+		this.trafficLights[i].incrementTime(this);
 	}
 };
