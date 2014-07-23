@@ -73,7 +73,7 @@ function sendAttempt(score) {
 function onPlayControls() {
     document.getElementById('direct_drive').style.visibility='hidden';
 
-    document.getElementById('play2').style.visibility='hidden';
+    document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='visible';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
@@ -90,7 +90,7 @@ function onPlayControls() {
 function onStepControls() {
     document.getElementById('direct_drive').style.visibility='hidden';
 
-    document.getElementById('play2').style.visibility='hidden';
+    document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
@@ -107,7 +107,7 @@ function onStepControls() {
 function onStopControls() {
     document.getElementById('direct_drive').style.visibility='visible';
 
-    document.getElementById('play2').style.visibility='visible';
+    document.getElementById('play').style.visibility='visible';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='hidden';
@@ -122,7 +122,7 @@ function onStopControls() {
 }
 
 function onPauseControls() {
-    document.getElementById('play2').style.visibility='hidden';
+    document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
@@ -130,7 +130,7 @@ function onPauseControls() {
 }
 
 function onResumeControls() {
-    document.getElementById('play2').style.visibility='hidden';
+    document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='visible';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
@@ -180,6 +180,9 @@ function setupDirectDriveListeners() {
         disableDirectControl();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
         moveRight(0, enableDirectControl);
+    });
+    $('#go').click(function() {
+        $('#play')[0].click();
     });
 }
 
@@ -412,7 +415,7 @@ function setupLoadSaveListeners() {
 
 function setupMenuListeners() {
 
-    $('#play2').click(function() {
+    $('#play').click(function() {
         ocargo.blocklyControl.resetIncorrectBlock();
         onPlayControls();
 

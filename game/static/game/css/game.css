@@ -226,12 +226,12 @@ img.control{
 
 #turnLeft,
 #turnRight,
-#play {
+#go {
     bottom: 0px;
 }
 
 #moveForward, 
-#play {
+#go {
     left: 60px;
 }
 
@@ -259,7 +259,7 @@ img.control{
     background-image : url('/static/game/image/arrow_forward.svg');
 }
 
-.picButton#play span {
+.picButton#go span {
     background-image : url('/static/game/image/arrow_go.svg');
 }
 
@@ -275,11 +275,11 @@ img.control{
     top: 30px;
 }
 
-.picButton#play2 {
+.picButton#play {
     top: 0px;
 }
 
-.picButton#play2 span {
+.picButton#play span {
     background-image : url('/static/game/image/menu_button_play.svg');
 }
 
