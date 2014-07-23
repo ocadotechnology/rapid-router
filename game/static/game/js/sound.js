@@ -33,10 +33,10 @@ function Sound(source, initialVolume, loop) {
 // *****
 
 ocargo.sound.startingSound = new Sound("/static/game/sound/starting.mp3", 1.0, false);
-ocargo.sound.movingSound = new Sound("/static/game/sound/turning.mp3", 1.0, false);
+ocargo.sound.movingSound = new Sound("/static/game/sound/moving.mp3", 1.0, false);
+ocargo.sound.turningSound = new Sound("/static/game/sound/turning.mp3", 1.0, false);
 ocargo.sound.winSound = new Sound("/static/game/sound/win.mp3", 1.0, false);
 ocargo.sound.failureSound = new Sound("/static/game/sound/failure.mp3", 1.0, false);
-ocargo.sound.turningSound = new Sound("/static/game/sound/turning.mp3", 1.0, false);
 
 ocargo.sound.starting = function() {
     // TODO: Reimplement when actual sounds exist

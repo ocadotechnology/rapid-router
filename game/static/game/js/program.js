@@ -6,63 +6,57 @@ var ocargo = ocargo || {};
 
 ocargo.Program = function() {
 	this.threads = [];
-	this.isFinished = false;
 	this.procedures = {};
 };
 
-ocargo.Program.prototype.step = function(level) {
-	this.isFinished = true;
+ocargo.Program.prototype.run = function(model) {
 	for (var i = 0; i < this.threads.length; i++) {
-		if (this.threads[i].canStep()) {
-			this.threads[i].step(level);
-		}
-		else {
-			this.threads[i].currentAction = ocargo.EMPTY_ACTION;
-		}
-		this.isFinished = this.isFinished && this.threads[i].isFinished;
+		model.reset(i);
+		this.threads[i].run(model);
 	}
 };
 
-ocargo.Program.prototype.canStep = function() {
-	for (var i = 0; i < this.threads.length; i++) {
-		if (this.threads[i].canStep()) {
-			return true;
-		}
-	}
-	return false;
-};
-
-ocargo.Program.prototype.terminate = function() {
-	for (var i = 0; i < this.threads.length; i++) {
-		this.threads[i].terminate();
-	}
-	this.isFinished = true;
-};
 
 
 /* Thread */
 
-ocargo.Thread = function(id) {
-	this.id = id;
+ocargo.Thread = function() {
 	this.stack = [];
-	this.isFinished = false;
-	this.instructionHandler = null;
-	this.currentAction = null;
-	this.currentBlock = null;
 };
 
-ocargo.Thread.prototype.step = function(level) {
+ocargo.Thread.prototype.run = function(model) {
+	var failed = false;
+	while (!failed && this.canStep()) {
+		failed = !this.step(model);
+	}
+	if (!failed) {
+		model.programExecutionEnded();
+	}
+};
+
+ocargo.Thread.prototype.step = function(model) {
 	var stackLevel = this.stack[this.stack.length - 1];
-	var commandToProcess = stackLevel.splice(0, 1)[0];
+	var commandToProcess = stackLevel.shift();
 
 	if (stackLevel.length === 0) {
 		this.stack.pop();
 	}
-	commandToProcess.execute(this, level);
 
-	if(this.stack.length == 0) {
-		this.isFinished = true;
+	var successful = commandToProcess.execute(this, model);
+
+	if (!successful) {
+		// Program crashed, queue a block highlight event
+		ocargo.animation.queueAnimation({
+			timestamp: model.timestamp,
+			type: 'callable',
+			functionCall: function() {
+				ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
+			}
+		});
+		return false;
 	}
+
+	return true;
 };
 
 ocargo.Thread.prototype.canStep = function() {
@@ -73,10 +67,6 @@ ocargo.Thread.prototype.addNewStackLevel = function(commands) {
 	this.stack.push(commands);
 };
 
-ocargo.Thread.prototype.terminate = function() {
-	this.stack = [];
-	this.isFinished = true;
-};
 
 
 
@@ -86,9 +76,9 @@ function TurnLeftCommand(block) {
 	this.block = block;
 }
 
-TurnLeftCommand.prototype.execute = function(thread) {
-	thread.currentBlock = this.block;
-	thread.currentAction = ocargo.TURN_LEFT_ACTION;
+TurnLeftCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.turnLeft();
 };
 
 
@@ -97,9 +87,9 @@ function TurnRightCommand(block) {
 	this.block = block;
 }
 
-TurnRightCommand.prototype.execute = function(thread) {
-	thread.currentBlock = this.block;
-	thread.currentAction = ocargo.TURN_RIGHT_ACTION;
+TurnRightCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.turnRight();
 };
 
 
@@ -108,9 +98,9 @@ function ForwardCommand(block) {
 	this.block = block;
 }
 
-ForwardCommand.prototype.execute = function(thread) {
-	thread.currentBlock = this.block;
-	thread.currentAction = ocargo.FORWARD_ACTION;
+ForwardCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.moveForwards();
 };
 
 
@@ -119,9 +109,9 @@ function TurnAroundCommand(block) {
     this.block = block;
 }
 
-TurnAroundCommand.prototype.execute = function(thread) {
-    thread.currentBlock = this.block;
-    thread.currentAction = ocargo.TURN_AROUND_ACTION;
+TurnAroundCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.turnAround();
 };
 
 
@@ -130,9 +120,9 @@ function WaitCommand(block) {
     this.block = block;
 }
 
-WaitCommand.prototype.execute = function(thread) {
-    thread.currentBlock = this.block;
-    thread.currentAction = ocargo.WAIT_ACTION;
+WaitCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.wait();
 };
 
 
@@ -143,15 +133,12 @@ function If(conditionalCommandSets, elseBody, block) {
 	this.block = block;
 }
 
-If.prototype.execute = function(thread, level) {
-	thread.currentBlock = this.block;
-	thread.currentAction = ocargo.EMPTY_ACTION;
-
+If.prototype.execute = function(thread, model) {
 	var i = 0;
 	while (i < this.conditionalCommandSets.length) {
-		if (this.conditionalCommandSets[i].condition(level,thread.id)) {
+		if (this.conditionalCommandSets[i].condition(model)) {
 			thread.addNewStackLevel(this.conditionalCommandSets[i].commands.slice());
-			return;
+			return true;
 		}
 
 		i++;
@@ -160,6 +147,7 @@ If.prototype.execute = function(thread, level) {
 	if(this.elseBody) {
 		thread.addNewStackLevel(this.elseBody.slice());
 	}
+	return true;
 };
 
 
@@ -170,14 +158,12 @@ function While(condition, body, block) {
 	this.block = block;
 }
 
-While.prototype.execute = function(thread, level) {
-	thread.currentBlock = this.block;
-	thread.currentAction = ocargo.EMPTY_ACTION;
-
-	if (this.condition(level,thread.id)) {
+While.prototype.execute = function(thread, model) {
+	if (this.condition(model)) {
 		thread.addNewStackLevel([this]);
 		thread.addNewStackLevel(this.body.slice());
 	}
+	return true;
 };
 
 
@@ -189,10 +175,8 @@ function Procedure(name,body,block) {
 };
 
 Procedure.prototype.execute = function(thread) {
-	thread.currentBlock = this.block;
-	thread.currentAction = ocargo.EMPTY_ACTION;
-
 	thread.addNewStackLevel(this.body.slice());
+	return true;
 }
 
 
@@ -206,8 +190,25 @@ ProcedureCall.prototype.bind = function(proc) {
 }
 
 ProcedureCall.prototype.execute = function(thread) {
-	thread.currentBlock = this.block;
-	thread.currentAction = ocargo.EMPTY_ACTION;
-
 	thread.addNewStackLevel([this.proc]);
+	return true;
+}
+
+
+
+/* Highlighting of blocks */
+
+function queueHighlight(model, block) {
+	ocargo.animation.queueAnimation({
+		timestamp: model.timestamp,
+		type: 'callable',
+		functionCall: makeHighLightCallable(block),
+	});
+}
+
+function makeHighLightCallable(block) {
+	return function() {
+		ocargo.blocklyControl.clearAllSelections();
+		ocargo.blocklyControl.setBlockSelected(block, true);
+	};
 }

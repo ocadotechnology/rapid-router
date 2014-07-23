@@ -1,37 +1,15 @@
 var ocargo = ocargo || {};
 
 $(document).ready(function () {
-    var output = $('#consoleOutput');
-    var outf = function (text) {
-        output.text(output.text() + text);
+    ocargo.consoleOutput = $('#consoleOutput');
+    var outf = function (outputText) {
+        ocargo.animation.queueAnimation({
+            timestamp: ocargo.model.timestamp,
+            type: 'console',
+            text: outputText,
+        });
     };
     
-    var keymap = {
-        "Ctrl-Enter" : function (editor) {
-            clearVanData();
-            ocargo.time.resetTime();
-            
-            Sk.configure({output: outf, read: builtinRead});
-            //Sk.canvas = "mycanvas";
-            Sk.pre = "consoleOutput";
-            try {
-                Sk.importMainWithBody("<stdin>", false, editor.getValue());
-            } catch(e) {
-                outf(e.toString() + "\n")
-            }
-        },
-        "Shift-Enter": function (editor) {
-            Sk.configure({output: outf, read: builtinRead});
-            //Sk.canvas = "mycanvas";
-            Sk.pre = "consoleOutput";
-            try {
-                Sk.importMainWithBody("<stdin>", false, editor.getSelection());
-            } catch(e) {
-                outf(e.toString() + "\n")
-            }
-        }
-    }
-
     // set default code
     document.getElementById("code").value = "import van\nv = van.Van()";
 
@@ -46,19 +24,35 @@ $(document).ready(function () {
         height: "160px",
         fontSize: "9pt",
         autoMatchParens: true,
-        extraKeys: keymap,
         parserConfig: {'pythonVersion': 2, 'strictErrors': true},
     });
 
+   ocargo.editor.run = function() {
+        ocargo.model.reset(0);
+        Sk.failed = false;
+        Sk.configure({output: outf, read: builtinRead});
+        //Sk.canvas = "mycanvas";
+        Sk.pre = "consoleOutput";
+        try {
+            Sk.importMainWithBody("<stdin>", false, ocargo.editor.getValue());
+            if (!Sk.failed) {
+                ocargo.model.programExecutionEnded();
+            }
+        } catch(e) {
+            outf(e.toString() + "\n")
+        }
+    };
 
+    ocargo.editor.prepare = function() {
+        return { run: function() { ocargo.editor.run() }};
+    };
 
-    $("#skulpt_run").click(function (e) { keymap["Ctrl-Enter"](ocargo.editor)} );
+    $("#skulpt_run").click(function (e) { $('#play')[0].click(); });
 
 
     $('#clearConsole').click(function (e) {
         $('#consoleOutput').text('');
     });
-
 
     function builtinRead(x) {
         if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)

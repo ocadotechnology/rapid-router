@@ -11,6 +11,7 @@
   <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
@@ -21,15 +22,12 @@
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/time.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/action.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/level.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/ui.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
@@ -98,15 +96,21 @@
   </div>
 
   <div id="side_menu" class="no-print unselectable">
-    <button class="picButton" id="play2"><span>play</span></button>
+    <button class="picButton" id="pause"><span>pause</span></button>
+    <button class="picButton" id="play"><span>play</span></button>
     <button class="picButton" id="stop"><span>stop</span></button>
+    <button class="picButton" id="resume"><span>resume</span></button>
     <button class="picButton" id="step"><span>step</span></button>
+
     <button class="picButton" id="save"><span>save</span></button>
     <button class="picButton" id="load"><span>load</span></button>
     <button class="picButton" id="clear"><span>clear</span></button>
+
     <button class="picButton" id="toggle_console" {% if not level.blocklyEnabled or not level.pythonEnabled%} style="visibility: hidden" {% endif %}><span>toggle console</span></button>
     <button class="picButton" id="big_code_mode"><span>big code mode</span></button>
+
     <button class="picButton" id="help"><span>help</span></button>
+
     <button class="picButton" id="mute"><span>mute</span></button>
     <button class="picButton" id="quit"><span>quit</span></button>
   </div>
@@ -122,7 +126,7 @@
     <button class="picButton" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
       <span>&#x21BA; Turn Left</span>
     </button>
-    <button class="picButton" id="play" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
+    <button class="picButton" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
       <span>Go</span>
     </button>
     <button class="picButton" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
@@ -130,10 +134,10 @@
     </button>
   </div>
   
-  <div id="fuelGuage" class="no-print unselectable">
-    <img src="/static/game/image/fuelGuage.svg"/>
-    <div id="fuelGuagePointer">
-      <img src="/static/game/image/fuelGuagePointer.svg"/>
+  <div id="fuelGauge" class="no-print unselectable">
+    <img src="/static/game/image/fuelGauge.svg"/>
+    <div id="fuelGaugePointer">
+      <img src="/static/game/image/fuelGaugePointer.svg"/>
     </div>
   </div>
 
