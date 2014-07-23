@@ -114,19 +114,35 @@ function enableDirectControl() {
     document.getElementById('play').disabled = false;
     document.getElementById('controls').style.visibility='visible';
     document.getElementById('direct_drive').style.visibility='visible';
+
+    document.getElementById('play').style.visibility='visible';
     document.getElementById('stop').style.visibility='hidden';
     document.getElementById('step').disabled = false;
+    document.getElementById('load').disabled = false;
+    document.getElementById('save').disabled = false;
+    document.getElementById('clear').disabled = false;
+    document.getElementById('big_code_mode').disabled = false;
+    document.getElementById('toggle_console').disabled = false;
+    document.getElementById('help').disabled = false;
 }
 
 function disableDirectControl() {
     document.getElementById('controls').style.visibility='hidden';
     document.getElementById('direct_drive').style.visibility='hidden';
-    document.getElementById('stop').style.visibility='visible';
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
     document.getElementById('turnRight').disabled = true;
+
+    document.getElementById('play').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='visible';
     document.getElementById('play').disabled = true;
     document.getElementById('step').disabled = true;
+    document.getElementById('load').disabled = true;
+    document.getElementById('save').disabled = true;
+    document.getElementById('clear').disabled = true;
+    document.getElementById('big_code_mode').disabled = true;
+    document.getElementById('toggle_console').disabled = true;
+    document.getElementById('help').disabled = true;
 }
 
 function clearVanData() {
@@ -374,11 +390,10 @@ function setupLoadSaveListeners() {
             // Add click listeners to all rows
             $('#loadWorkspaceTable td').on('click', function(event) {
                 $('#loadWorkspaceTable td').css('background-color', '#FFFFFF');
-                $('#loadWorkspaceTable td').css('cursor', 'pointer');
                 $(event.target).css('background-color', '#C0C0C0');
                 selectedWorkspace = $(event.target).attr('value');
                 $('#loadWorkspace').removeAttr('disabled');
-                $('#lDeleteWorkspace').removeAttr('disabled');
+                $('#deleteWorkspace').removeAttr('disabled');
             });
 
             // Finally show the modal dialog and reenable the button
@@ -388,7 +403,7 @@ function setupLoadSaveListeners() {
             // But disable all the modal buttons as nothing is selected yet
             selectedWorkspace = null;
             $('#loadWorkspace').attr('disabled', 'disabled');
-            $('#lDeleteWorkspace').attr('disabled', 'disabled');
+            $('#deleteWorkspace').attr('disabled', 'disabled');
         });
     });
 
@@ -408,12 +423,10 @@ function setupLoadSaveListeners() {
             // Add click listeners to all rows
             $('#saveWorkspaceTable td').on('click', function(event) {
                 $('#saveWorkspaceTable td').css('background-color', '#FFFFFF');
-                $('#saveWorkspaceTable td').css('cursor', 'pointer');
                 $(event.target).css('background-color', '#C0C0C0');
                 selectedWorkspace = $(event.target).attr('value');
                 var workspaceName = $(event.target)[0].innerHTML;
                 document.getElementById("workspaceNameInput").value = workspaceName;
-                $('#sDeleteWorkspace').removeAttr('disabled');
             });
 
             // Finally show the modal dialog and reenable the button
@@ -423,19 +436,32 @@ function setupLoadSaveListeners() {
             // But disable all the modal buttons as nothing is selected yet
             selectedWorkspace = null;
             $('#overwriteWorkspace').attr('disabled', 'disabled');
-            $('#sDeleteWorkspace').attr('disabled', 'disabled');
         });
     });
     
     $('#saveWorkspace').click(function() {
         var newName = $('#workspaceNameInput').val();
         if (newName && newName != "") {
+            var table = $("#saveWorkspaceTable");
+            for (var i = 0; i < table[0].rows.length; i++) {
+                 var cell = table[0].rows[i].cells[0];
+                 var wName = cell.innerHTML;
+                 if(wName == newName) {
+                    deleteWorkspace(cell.attributes[0].value, 
+                                    function(err, workspace) {
+                                        if (err != null) {
+                                            console.debug(err);
+                                            return;
+                                        }
+                                    });
+                 }
+            }
+
             createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
                 if (err != null) {
                     console.debug(err);
                     return;
                 }
-
                 $('#saveModal').foundation('reveal', 'close');
             });
         }
@@ -456,29 +482,14 @@ function setupLoadSaveListeners() {
         }
     });
 
-    $('#lDeleteWorkspace').click(function() {
+    $('#deleteWorkspace').click(function() {
         if (selectedWorkspace) {
             deleteWorkspace(selectedWorkspace, function(err) {
                 if (err != null) {
                     console.debug(err);
                     return;
                 }
-
                 $('#loadWorkspaceTable td[value=' + selectedWorkspace + ']').remove();
-                selectedWorkspace = null;
-            });
-        }
-    });
-
-    $('#sDeleteWorkspace').click(function() {
-        if (selectedWorkspace) {
-            deleteWorkspace(selectedWorkspace, function(err) {
-                if (err != null) {
-                    console.debug(err);
-                    return;
-                }
-
-                $('#saveWorkspaceTable td[value=' + selectedWorkspace + ']').remove();
                 selectedWorkspace = null;
             });
         }
@@ -542,7 +553,6 @@ function setupMenuListeners() {
 
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
-        enableDirectControl();
         clearVanData();
         ocargo.time.resetTime();
     });
@@ -586,7 +596,6 @@ function setupMenuListeners() {
             ocargo.sound.mute();
         }
     });
-
 }
 
 $(function() {

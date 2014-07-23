@@ -70,25 +70,6 @@ button, .button, img.control{
 	margin: 2rem 1rem 0;
 }
 
-#newWorkspaceName {
-    height: 50px;
-    width: 500px;
-    font-size: 1.4rem !important;
-}
-
-.scrolling-table-wrapper {
-    position: relative;
-}
-
-.scrolling-table {
-    max-height: 200px;
-    overflow: auto;
-}
-
-#workspaceTable {
-    width: 100%;
-}
-
 #sliderControls {
     position: absolute;
     left: 50%;
@@ -195,6 +176,39 @@ img.control{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+/********************/
+/* Loading & Saving */
+/********************/
+
+#workspaceNameInput {
+    height: 51px;
+    width: 200px;
+    margin-right: 45px;
+    font-size: 1.4rem !important;
+    padding-left: 10px;
+}
+
+.scrolling-table-wrapper {
+    position: relative;
+}
+
+.scrolling-table {
+    max-height: 200px;
+    width: 350px;
+    overflow: auto;
+}
+
+#saveWorkspaceTable,
+#loadWorkspaceTable {
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 0rem;
+}
+
+#deleteWorkspace {
+    margin-left: 124px;
 }
 
 /******************/
