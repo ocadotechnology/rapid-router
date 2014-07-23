@@ -13,6 +13,8 @@ ocargo.Model = function(nodeData, destination, trafficLightData, maxFuel, vanId)
 	}
 
 	this.timestamp = 0;
+	this.subTimestamp = 0;
+
 	this.vanId = vanId || 0;
 
 	this.pathFinder = new ocargo.PathFinder(this);
@@ -28,6 +30,8 @@ ocargo.Model.prototype.reset = function(vanId) {
 	}
 
 	this.timestamp = 0;
+	this.subTimestamp = 0;
+
 	if (vanId !== null && vanId !== undefined) {
 		this.vanId = vanId;
 	}
@@ -37,50 +41,52 @@ ocargo.Model.prototype.reset = function(vanId) {
 // Begin observation function, each tests something about the model
 // and returns a boolean
 
-ocargo.Model.prototype.observe = function(value) {
-	ocargo.animation.queueAnimation({
-		timestamp: this.timestamp,
+ocargo.Model.prototype.observe = function(desc) {
+	ocargo.animation.appendAnimation({
 		type: 'van',
 		id: this.vanId,
 		vanAction: 'OBSERVE',
 		fuel: this.van.getFuelPercentage(),
+		description: 'van observe: ' + desc,
 	});
+
+	this.incrementSubTime();
 };
 
 ocargo.Model.prototype.isRoadForward = function() {
-	this.observe();
+	this.observe('forward');
 	return (this.map.isRoadForward(this.van.getPosition()) !== null);
 };
 
 ocargo.Model.prototype.isRoadLeft = function() {
-	this.observe();
+	this.observe('left');
 	return (this.map.isRoadLeft(this.van.getPosition()) !== null);
 };
 
 ocargo.Model.prototype.isRoadRight = function() {
-	this.observe();
+	this.observe('right');
 	return (this.map.isRoadRight(this.van.getPosition()) !== null);
 };
 
 ocargo.Model.prototype.isDeadEnd = function() {
-	this.observe();
+	this.observe('dead end');
 	return (this.map.isDeadEnd(this.van.getPosition()) !== null);
 };
 
 ocargo.Model.prototype.isTrafficLightRed = function() {
-	this.observe();
+	this.observe('traffic light red');
 	var light = this.getTrafficLightForNode(this.van.getPosition());
 	return (light !== null && light.getState() === ocargo.TrafficLight.RED);
 };
 
 ocargo.Model.prototype.isTrafficLightGreen = function() {
-	this.observe();
+	this.observe('traffic light green');
 	var light = this.getTrafficLightForNode(this.van.getPosition());
 	return (light !== null && light.getState() === ocargo.TrafficLight.GREEN);
 };
 
 ocargo.Model.prototype.isAtDestination = function() {
-	this.observe();
+	this.observe('at destination');
 	return (this.map.getDestinationNode() === this.van.getPosition().currentNode);
 };
 
@@ -91,24 +97,24 @@ ocargo.Model.prototype.isAtDestination = function() {
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
 	if (nextNode === null) {
 		// Crash
-		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp,
+		ocargo.animation.appendAnimation({
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
 			popupMessage: ocargo.messages.offRoad(this.van.travelled),
+			description: 'crash popup',
 		});
 		return false;
 	}
 
 	if (this.van.fuel <= 0) {
 		// Ran out of fuel
-		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp,
+		ocargo.animation.appendAnimation({
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
 			popupMessage: ocargo.messages.outOfFuel,
+			description: 'no fuel popup',
 		});
 		return false;
 	}
@@ -116,12 +122,12 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 	var light = this.getTrafficLightForNode(this.van.getPosition());
 	if (light !== null && light.getState() === ocargo.TrafficLight.RED && nextNode !== light.controlledNode) {
 		// Ran a red light
-		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp,
+		ocargo.animation.appendAnimation({
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
 			popupMessage: ocargo.messages.throughRedLight,
+			description: 'ran red traffic light popup',
 		});
 		return false;
 	}
@@ -129,19 +135,19 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 	this.van.move(nextNode);
 
 	// Van movement animation
-	ocargo.animation.queueAnimation({
-		timestamp: this.timestamp,
+	ocargo.animation.appendAnimation({
 		type: 'van',
 		id: this.vanId,
 		vanAction: action,
 		fuel: this.van.getFuelPercentage(),
+		description: 'van move action: ' + action,
 	});
 
 	// Van movement sound
-	ocargo.animation.queueAnimation({
-		timestamp: this.timestamp,
+	ocargo.animation.appendAnimation({
 		type: 'callable',
 		functionCall: (action === 'FORWARD') ? ocargo.sound.moving : ocargo.sound.turning,
+		description: 'van sound: ' + action,
 	});
 
 	this.incrementTime();
@@ -180,39 +186,39 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 	    sendAttempt(scoreArray[0]);
 
 	    // Winning popup
-		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp - 1,
+		ocargo.animation.appendAnimation({
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'WIN',
 			popupMessage: scoreArray[1],
+			description: 'win popup',
 		});
 
 		// Winning sound
-		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp - 1,
+		ocargo.animation.appendAnimation({
 			type: 'callable',
 			functionCall: ocargo.sound.win,
+			description: 'win sound',
 		});
 	}
 	else {
 		sendAttempt(0);
 
 		// Failure popup
-		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp - 1,
+		ocargo.animation.appendAnimation({
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
 			popupMessage: ocargo.messages.outOfInstructions,
 			hint: registerFailure(),
+			description: 'failure popup',
 		});
 
 		// Failure sound
-		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp - 1,
+		ocargo.animation.appendAnimation({
 			type: 'callable',
 			functionCall: ocargo.sound.failure,
+			description: 'failure sound',
 		});
 	}
 };
@@ -230,13 +236,22 @@ ocargo.Model.prototype.getTrafficLightForNode = function(position) {
 	return null;
 };
 
-// A helper function which handles telling all parts of the model
+// Helper functions which handles telling all parts of the model
 // that time has incremented and they should generate events
 ocargo.Model.prototype.incrementTime = function() {
 	this.timestamp += 1;
+	this.subTimestamp = 0;
+
+	ocargo.animation.startNewTimestamp();
 
 	var i;
 	for (i = 0; i < this.trafficLights.length; i++) {
 		this.trafficLights[i].incrementTime(this);
 	}
+};
+
+ocargo.Model.prototype.incrementSubTime = function() {
+	this.subTimestamp += 1;
+
+	ocargo.animation.startNewSubTimestamp();
 };

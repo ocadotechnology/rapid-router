@@ -39,8 +39,7 @@ ocargo.TrafficLight.prototype.incrementTime = function(model) {
 };
 
 ocargo.TrafficLight.prototype.queueAnimation = function(model) {
-    ocargo.animation.queueAnimation({
-        timestamp: model.timestamp,
+    ocargo.animation.appendAnimation({
         type: 'trafficlight',
         id: this.id,
         colour: this.state,
