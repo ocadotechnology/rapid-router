@@ -368,9 +368,16 @@ img.control{
     background-image : url('/static/game/image/menu_button_help.svg');
 }
 
+.picButton#mute {
+    top: 460px;
+}
+
+.picButton#mute span {
+    background-image : url('/static/game/image/menu_button_mute.svg');
+}
 
 .picButton#quit {
-    top: 490px;
+    top: 510px;
 }
 
 .picButton#quit span {

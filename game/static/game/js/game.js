@@ -33,7 +33,9 @@ function init() {
         ocargo.controller = ocargo.editor;
     }
 
-    // startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
+    startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
+
+    setupFuelGauge(nodes, BLOCKS);
 
     if ($.cookie("muted") === "true") {
         $('#mute').text("Unmute");
@@ -72,6 +74,7 @@ function sendAttempt(score) {
 
 function onPlayControls() {
     document.getElementById('direct_drive').style.visibility='hidden';
+
 
     document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='visible';
@@ -135,6 +138,21 @@ function onResumeControls() {
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('step').style.visibility='hidden';
+}
+
+function setupFuelGauge(nodes, blocks) {
+    if(blocks.indexOf("turn_around") != -1 || blocks.indexOf("wait") != -1)
+    {
+        return;
+    }
+
+    for(var i = 0; i < nodes.length; i++) {
+        if(nodes[i].connectedNodes.length > 2) {
+            return;
+        }
+    }
+
+    $('#fuelGuage').css("display","none");
 }
 
 function runProgramAndPrepareAnimation() {
@@ -463,18 +481,21 @@ function setupMenuListeners() {
         ocargo.animation.resetAnimation();
     });
 
+    var blockly = true;
     $('#toggle_console').click(function() {
-        if($('#blockly').css("display")=="none") {
-            $('#pythonCode').css("display","none");
-            $('#blockly').fadeIn();
-            ocargo.blocklyControl.redrawBlockly();
-            ocargo.controller = ocargo.blocklyControl;
-        }
-        else {
-            $('#blockly').css("display","none");
+        $('#blockly').css("display","none");
+        $('#pythonCode').css("display","none");
+        if(blockly) {
             $('#pythonCode').fadeIn();
             ocargo.editor.setValue(Blockly.Python.workspaceToCode());
             ocargo.controller = ocargo.editor;
+            blockly = false;
+        }
+        else {
+            $('#blockly').fadeIn();
+            ocargo.blocklyControl.redrawBlockly();
+            ocargo.controller = ocargo.blocklyControl;
+            blockly = true;
         }
     });
 
