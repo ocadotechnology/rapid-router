@@ -185,18 +185,27 @@ function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
+        if(ocargo.animation.isFinished()) {
+            renderVans(ocargo.model.map.getStartingPosition(), THREADS);
+        }
         moveForward(0, ANIMATION_LENGTH, onStopControls);
     });
 
     $('#turnLeft').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
+        if(ocargo.animation.isFinished()) {
+            renderVans(ocargo.model.map.getStartingPosition(), THREADS);
+        }
         moveLeft(0, ANIMATION_LENGTH, onStopControls);
     });
 
     $('#turnRight').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
+        if(ocargo.animation.isFinished()) {
+            renderVans(ocargo.model.map.getStartingPosition(), THREADS);
+        }
         moveRight(0, ANIMATION_LENGTH, onStopControls);
     });
     $('#go').click(function() {

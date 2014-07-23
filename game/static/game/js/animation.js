@@ -16,7 +16,7 @@ ocargo.Animation = function(model, decor, numVans) {
 };
 
 ocargo.Animation.prototype.isFinished = function() {
-	return (this.animationQueue.length == 0);
+	return this.finished;
 };
 
 ocargo.Animation.prototype.getLastTimestamp = function() {
@@ -29,6 +29,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.latestTimestamp = 0;
 	this.isPlaying = false;
 	this.currentlyAnimating = false;
+	this.finished = false;
 
 	clearPaper();
 	renderMap(this.model.map);
@@ -86,6 +87,8 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
                 	case 'WAIT':
                 		wait(vanID, animationLength);
                 		break;
+                	case 'CRASH':
+                		crash(vanID, animationLength, a.previousNode, a.currentNode, a.attemptedAction);
                 	case 'OBSERVE':
                 		break;
                 }
@@ -176,6 +179,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 	if (this.animationQueue.length == 0) {
 		// finished animation, stop playing
 		this.isPlaying = false;
+		this.finished = true;
 	}
 
 	this.animationTimestamp ++;

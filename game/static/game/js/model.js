@@ -93,6 +93,17 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 		// Crash
 		ocargo.animation.queueAnimation({
 			timestamp: this.timestamp,
+			type: 'van',
+			id: this.vanId,
+			vanAction: 'CRASH',
+			previousNode: this.van.previousNode,
+			currentNode: this.van.currentNode,
+			attemptedAction: action,
+			fuel: this.van.getFuelPercentage(),
+		});
+
+		ocargo.animation.queueAnimation({
+			timestamp: this.timestamp,
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
