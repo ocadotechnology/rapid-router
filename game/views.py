@@ -125,6 +125,12 @@ def level(request, level):
     attempt = None
     lesson = None
 
+    if not lvl.default and lvl.owner is not None and \
+            (request.user.is_anonymous() or (request.user != lvl.owner.user and
+            not lvl.shared_with.filter(pk=request.user.pk).exists())):
+        return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
+
+
     lesson = 'description_level' + str(level)
     hint = 'hint_level' + str(level)
     
@@ -350,7 +356,8 @@ def random_level_for_editor(request):
     loopiness = float(request.POST['loopiness'])
     curviness = float(request.POST['curviness'])
 
-    path = random_road.generate_random_path(random_road.Node(0,3),size,branchiness,loopiness,curviness)
+    path = random_road.generate_random_path(random_road.Node(0, 3), size, branchiness,
+                                            loopiness, curviness)
 
     return HttpResponse(json.dumps(path), content_type='application/javascript')
 
