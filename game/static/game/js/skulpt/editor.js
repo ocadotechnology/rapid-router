@@ -29,12 +29,15 @@ $(document).ready(function () {
 
    ocargo.editor.run = function() {
         ocargo.model.reset(0);
+        Sk.failed = false;
         Sk.configure({output: outf, read: builtinRead});
         //Sk.canvas = "mycanvas";
         Sk.pre = "consoleOutput";
         try {
             Sk.importMainWithBody("<stdin>", false, ocargo.editor.getValue());
-            ocargo.model.programExecutionEnded();
+            if (!Sk.failed) {
+                ocargo.model.programExecutionEnded();
+            }
         } catch(e) {
             outf(e.toString() + "\n")
         }
