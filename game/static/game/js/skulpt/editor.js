@@ -2,35 +2,33 @@ var ocargo = ocargo || {};
 
 $(document).ready(function () {
     ocargo.consoleOutput = $('#consoleOutput');
-    var outf = function (text) {
-        output.text(output.text() + text);
+    var outf = function (outputText) {
+        ocargo.animation.queueAnimation({
+            timestamp: ocargo.model.timestamp,
+            type: 'console',
+            text: outputText,
+        });
     };
     
     var keymap = {
         "Ctrl-Enter" : function (editor) {
-            clearVanData();
-            ocargo.time.resetTime();
+            ocargo.model.reset(0);
+            ocargo.animation.resetAnimation();
             
             Sk.configure({output: outf, read: builtinRead});
             //Sk.canvas = "mycanvas";
             Sk.pre = "consoleOutput";
             try {
                 Sk.importMainWithBody("<stdin>", false, editor.getValue());
+                ocargo.model.programExecutionEnded();
             } catch(e) {
                 outf(e.toString() + "\n")
             }
-        },
-        "Shift-Enter": function (editor) {
-            Sk.configure({output: outf, read: builtinRead});
-            //Sk.canvas = "mycanvas";
-            Sk.pre = "consoleOutput";
-            try {
-                Sk.importMainWithBody("<stdin>", false, editor.getSelection());
-            } catch(e) {
-                outf(e.toString() + "\n")
-            }
+            ocargo.animation.playAnimation();
         }
     }
+
+
 
     // set default code
     document.getElementById("code").value = "import van\nv = van.Van()";
@@ -58,7 +56,6 @@ $(document).ready(function () {
     $('#clearConsole').click(function (e) {
         $('#consoleOutput').text('');
     });
-
 
     function builtinRead(x) {
         if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
