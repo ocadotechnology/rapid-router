@@ -4,7 +4,11 @@ from django.contrib import admin
 from django.contrib.auth.views import login, logout
 admin.autodiscover()
 
-urlpatterns = i18n_patterns('',
+js_info_dict = {
+    'packages': ('conf.locale',),
+}
+
+urlpatterns = patterns('',
     url(r'^$', 'website.views.home', name='home'),
     url(r'^home/', 'website.views.home'),
     url(r'^game/', include('game.urls')),
@@ -15,4 +19,5 @@ urlpatterns = i18n_patterns('',
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout, {'next_page': '/'}),
     url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 )
