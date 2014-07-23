@@ -175,6 +175,9 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             	case 'WAIT':
             		wait(vanID, animationLength);
             		break;
+            	case 'CRASH':
+            		crash(vanID, animationLength, a.previousNode, a.currentNode, a.attemptedAction);
+            		break;
             	case 'OBSERVE':
             		break;
             }

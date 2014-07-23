@@ -97,6 +97,18 @@ ocargo.Model.prototype.isAtDestination = function() {
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
 	if (nextNode === null) {
 		// Crash
+
+		ocargo.animation.appendAnimation({
+			type: 'van',
+			id: this.vanId,
+			vanAction: 'CRASH',
+			previousNode: this.van.previousNode,
+			currentNode: this.van.currentNode,
+			attemptedAction: action,
+			fuel: this.van.getFuelPercentage(),
+			description: 'van move action: ' + action,
+		});
+
 		ocargo.animation.appendAnimation({
 			type: 'popup',
 			id: this.vanId,
