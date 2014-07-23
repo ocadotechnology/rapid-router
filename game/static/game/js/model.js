@@ -9,7 +9,7 @@ ocargo.Model = function(nodeData, destination, trafficLightData, maxFuel, vanId)
 	this.trafficLights = [];
 	var i;
 	for (i = 0; i < trafficLightData.length; i++) {
-		this.trafficLights.push(new ocargo.TrafficLight(i, trafficLightData[i], this.map));
+		this.trafficLights.push(new ocargo.TrafficLight(i, trafficLightData[i], this.map.nodes));
 	}
 
 	this.timestamp = 0;
