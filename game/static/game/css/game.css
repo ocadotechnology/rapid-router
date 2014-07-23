@@ -283,8 +283,24 @@ img.control{
     background-image : url('/static/game/image/menu_button_play.svg');
 }
 
-.picButton#stop {
+.picButton#pause {
     top: 0px;
+}
+
+.picButton#pause span {
+    background-image : url('/static/game/image/menu_button_pause.svg');
+}
+
+.picButton#resume {
+    top: 0px;
+}
+
+.picButton#resume span {
+    background-image : url('/static/game/image/menu_button_play.svg');
+}
+
+.picButton#stop {
+    top: 50px;
 }
 
 .picButton#stop span {
@@ -292,7 +308,7 @@ img.control{
 }
 
 .picButton#step {
-    top: 50px;
+    top: 100px;
 }
 
 .picButton#step span {
@@ -301,7 +317,7 @@ img.control{
 
 
 .picButton#save {
-    top: 120px;
+    top: 170px;
 }
 
 .picButton#save span {
@@ -309,7 +325,7 @@ img.control{
 }
 
 .picButton#load {
-    top: 170px;
+    top: 220px;
 }
 
 .picButton#load span {
@@ -317,7 +333,7 @@ img.control{
 }
 
 .picButton#clear {
-    top: 220px;
+    top: 270px;
 }
 
 .picButton#clear span {
@@ -327,7 +343,7 @@ img.control{
 
 
 .picButton#big_code_mode {
-    top: 290px;
+    top: 340px;
 }
 
 .picButton#big_code_mode span {
@@ -336,7 +352,7 @@ img.control{
 
 
 .picButton#toggle_console {
-    top: 340px;
+    top: 390px;
 }
 
 .picButton#toggle_console span {
@@ -345,7 +361,7 @@ img.control{
 
 
 .picButton#help {
-    top: 410px;
+    top: 440px;
 }
 
 .picButton#help span {
@@ -354,7 +370,7 @@ img.control{
 
 
 .picButton#quit {
-    top: 460px;
+    top: 490px;
 }
 
 .picButton#quit span {

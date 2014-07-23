@@ -18,11 +18,10 @@ function init() {
     // Setup the ui
     setupSliderListeners();
     setupDirectDriveListeners();
-    setupPlaybackListeners();
     setupLoadSaveListeners();
     setupMenuListeners();
 
-    enableDirectControl();
+    onStopControls();
 
     // default controller
     if(BLOCKLY_ENABLED) {
@@ -71,17 +70,49 @@ function sendAttempt(score) {
     }
 }
 
-function enableDirectControl() {
-    document.getElementById('moveForward').disabled = false;
-    document.getElementById('turnLeft').disabled = false;
-    document.getElementById('turnRight').disabled = false;
-    document.getElementById('play').disabled = false;
-    document.getElementById('controls').style.visibility='visible';
+function onPlayControls() {
+    document.getElementById('direct_drive').style.visibility='hidden';
+
+    document.getElementById('play2').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='visible';
+    document.getElementById('resume').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='visible';
+    document.getElementById('step').style.visibility='false';
+
+    document.getElementById('load').disabled = true;
+    document.getElementById('save').disabled = true;
+    document.getElementById('clear').disabled = true;
+    document.getElementById('big_code_mode').disabled = true;
+    document.getElementById('toggle_console').disabled = true;
+    document.getElementById('help').disabled = true;
+}
+
+function onStepControls() {
+    document.getElementById('direct_drive').style.visibility='hidden';
+
+    document.getElementById('play2').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='hidden';
+    document.getElementById('resume').style.visibility='visible';
+    document.getElementById('stop').style.visibility='visible';
+    document.getElementById('step').style.visibility='hidden';
+
+    document.getElementById('load').disabled = true;
+    document.getElementById('save').disabled = true;
+    document.getElementById('clear').disabled = true;
+    document.getElementById('big_code_mode').disabled = true;
+    document.getElementById('toggle_console').disabled = true;
+    document.getElementById('help').disabled = true;
+}
+
+function onStopControls() {
     document.getElementById('direct_drive').style.visibility='visible';
 
-    document.getElementById('play').style.visibility='visible';
+    document.getElementById('play2').style.visibility='visible';
+    document.getElementById('pause').style.visibility='hidden';
+    document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='hidden';
-    document.getElementById('step').disabled = false;
+    document.getElementById('step').style.visibility='visible';
+
     document.getElementById('load').disabled = false;
     document.getElementById('save').disabled = false;
     document.getElementById('clear').disabled = false;
@@ -90,24 +121,21 @@ function enableDirectControl() {
     document.getElementById('help').disabled = false;
 }
 
-function disableDirectControl() {
-    //document.getElementById('controls').style.visibility='hidden';
-    document.getElementById('direct_drive').style.visibility='hidden';
-    document.getElementById('moveForward').disabled = true;
-    document.getElementById('turnLeft').disabled = true;
-    document.getElementById('turnRight').disabled = true;
-
-    document.getElementById('play').style.visibility='hidden';
+function onPauseControls() {
+    document.getElementById('play2').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='hidden';
+    document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
-    document.getElementById('play').disabled = true;
-    //document.getElementById('step').disabled = true;
-    document.getElementById('step').disabled = true;
-    document.getElementById('load').disabled = true;
-    document.getElementById('save').disabled = true;
-    document.getElementById('clear').disabled = true;
-    document.getElementById('big_code_mode').disabled = true;
-    document.getElementById('toggle_console').disabled = true;
-    document.getElementById('help').disabled = true;
+    document.getElementById('step').style.visibility='visible';
+    console.log("Hi");
+}
+
+function onResumeControls() {
+    document.getElementById('play2').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='visible';
+    document.getElementById('resume').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='visible';
+    document.getElementById('step').style.visibility='hidden';
 }
 
 function runProgramAndPrepareAnimation() {
@@ -124,6 +152,14 @@ function runProgramAndPrepareAnimation() {
     });
 
     program.run(ocargo.model);
+
+    // resets to start control states
+    var timestamp = ocargo.animation.getLastTimestamp();
+    ocargo.animation.queueAnimation({
+        timestamp: timestamp,
+        type: 'callable',
+        functionCall: onStopControls,
+    });
 
     return true;
 }
@@ -148,64 +184,6 @@ function setupDirectDriveListeners() {
     });
 }
 
-function setupPlaybackListeners() {
-    // Normal Control Listeners
-    $('#play').click(function() {
-        ocargo.blocklyControl.resetIncorrectBlock();
-        disableDirectControl();
-
-        if (runProgramAndPrepareAnimation()) {
-            // append function call to ~~enable direct control~~ TODO: sort all buttons out at end of a full run of playing?
-            var timestamp = ocargo.animation.getLastTimestamp();
-            ocargo.animation.queueAnimation({
-                timestamp: timestamp,
-                type: 'callable',
-                functionCall: enableDirectControl,
-            });
-            ocargo.animation.playAnimation();
-        }
-        else {
-            enableDirectControl();
-        }
-    });
-
-    $('#pause').click(function() {
-        ocargo.animation.pauseAnimation();
-    });
-
-    $('#resume').click(function() {
-        ocargo.animation.playAnimation();
-    });
-
-    $('#step').click(function() {
-        if (!ocargo.animation.isFinished()) {  // NB Should NOT be *visible* at the end of execution - should wait for a reset!
-            ocargo.animation.stepAnimation();
-        } else {
-            runProgramAndPrepareAnimation();
-            ocargo.animation.stepAnimation();
-        }
-        // show start over button
-        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
-    });
-
-    $('#stop').click(function() {
-        ocargo.animation.resetAnimation();
-    });
-
-    $('#reset').click(function() {
-        ocargo.animation.resetAnimation();
-        // show go button
-        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
-    });
-
-    $('#clear').click(function() {
-        ocargo.blocklyControl.reset();
-        enableDirectControl();
-        ocargo.animation.resetAnimation();
-        // show go button
-        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
-    });
-}
 
 function setupSliderListeners() {
     var getSliderRightLimit = function() {return $(window).width()/2};
@@ -436,11 +414,44 @@ function setupLoadSaveListeners() {
 function setupMenuListeners() {
 
     $('#play2').click(function() {
-        $('#play')[0].click();
+        ocargo.blocklyControl.resetIncorrectBlock();
+        onPlayControls();
+
+        if (runProgramAndPrepareAnimation()) {
+            ocargo.animation.playAnimation();
+        }
+        else {
+            onStopControls();
+        }
     });
-    
-    $('#help').click(function() {
-        startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
+
+    $('#pause').click(function() {
+        ocargo.animation.pauseAnimation();
+        onPauseControls();
+    });
+
+    $('#resume').click(function() {
+        ocargo.animation.playAnimation();
+        onResumeControls();
+    });
+
+    $('#stop').click(function() {
+        ocargo.animation.resetAnimation();
+        onStopControls();
+    });
+
+    $('#step').click(function() {
+        if (ocargo.animation.isFinished()) {  // NB Should NOT be *visible* at the end of execution - should wait for a reset!
+            runProgramAndPrepareAnimation();
+        }
+        ocargo.animation.stepAnimation(onPauseControls);
+        onStepControls();
+    });
+
+    $('#clear').click(function() {
+        ocargo.blocklyControl.reset();
+        onStopControls();
+        ocargo.animation.resetAnimation();
     });
 
     $('#toggle_console').click(function() {
@@ -466,8 +477,8 @@ function setupMenuListeners() {
         }
     });
 
-    $('#quit').click(function() {
-        window.location.href = "/game/"
+    $('#help').click(function() {
+        startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
     });
 
     $('#mute').click(function() {
@@ -479,6 +490,10 @@ function setupMenuListeners() {
             $this.text('Unmute');
             ocargo.sound.mute();
         }
+    });
+
+    $('#quit').click(function() {
+        window.location.href = "/game/"
     });
 }
 

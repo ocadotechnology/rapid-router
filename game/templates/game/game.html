@@ -96,16 +96,21 @@
   </div>
 
   <div id="side_menu" class="no-print unselectable">
-    <button class="picButton" id="play2"><span>play</span></slideButton>
-    <button class="picButton" id="stop"><span>stop</span></slideButton>
-    <button class="picButton" id="step"><span>step</span></slideButton>
-    <button class="picButton" id="save"><span>save</span></slideButton>
-    <button class="picButton" id="load"><span>load</span></slideButton>
-    <button class="picButton" id="clear"><span>clear</span></slideButton>
-    <button class="picButton" id="toggle_console" {% if not level.blocklyEnabled or not level.pythonEnabled%} style="visibility: hidden" {% endif %}><span>toggle console</span></slideButton>
-    <button class="picButton" id="big_code_mode"><span>big code mode</span></slideButton>
-    <button class="picButton" id="help"><span>help</span></slideButton>
-    <button class="picButton" id="quit"><span>quit</span></slideButton>
+    <button class="picButton" id="pause"><span>pause</span></button>
+    <button class="picButton" id="play2"><span>play</span></button>
+    <button class="picButton" id="stop"><span>stop</span></button>
+    <button class="picButton" id="resume"><span>resume</span></button>
+    <button class="picButton" id="step"><span>step</span></button>
+
+    <button class="picButton" id="save"><span>save</span></button>
+    <button class="picButton" id="load"><span>load</span></button>
+    <button class="picButton" id="clear"><span>clear</span></button>
+
+    <button class="picButton" id="toggle_console" {% if not level.blocklyEnabled or not level.pythonEnabled%} style="visibility: hidden" {% endif %}><span>toggle console</span></button>
+    <button class="picButton" id="big_code_mode"><span>big code mode</span></button>
+
+    <button class="picButton" id="help"><span>help</span></button>
+    <button class="picButton" id="quit"><span>quit</span></button>
   </div>
 
   <div id="sliderControls" class="no-print unselectable">
@@ -138,9 +143,6 @@
   
   <div id="controls" class="col no-print unselectable">
     <div class="navigation" class="unselectable">
-      <button id="pause" class="unselectable">Pause</button>
-      <button id="resume" class="unselectable">Resume</button>
-      <button id="reset" class="unselectable">Reset</button>
       <button id="mute" class="unselectable" style="display: none">Mute</button> {# TODO: Remove style when actual sounds exist #}
     </div>
   </div>

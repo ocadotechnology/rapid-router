@@ -29,9 +29,6 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.latestTimestamp = 0;
 	this.isPlaying = false;
 
-	// cancel timer
-	clearTimeout(this.playTimer);
-
 	clearPaper();
 	renderMap(this.model.map);
 	renderDecor(this.decor);
@@ -39,7 +36,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	renderVans(this.model.map.getStartingPosition(), this.numVans);
 };
 
-ocargo.Animation.prototype.stepAnimation = function() {
+ocargo.Animation.prototype.stepAnimation = function(callback) {
 	var maxDelay = 0;
 	// do all things in this timestep
 	while (this.animationQueue.length > 0 && this.animationQueue[0].timestamp <= this.animationTimestamp) {
@@ -163,20 +160,24 @@ ocargo.Animation.prototype.stepAnimation = function() {
 		if (animationLength > maxDelay) {
 			maxDelay = animationLength;
 		}
-	}
 
-	this.animationTimestamp ++;
-
-	if (this.isPlaying) {
 		if (this.animationQueue.length > 0) {
-			// set timeout for longest animation
-			var self = this;
-			this.playTimer = setTimeout(function() { self.stepAnimation(); }, maxDelay);
-		} else {
 			// finished animation, stop playing
 			this.isPlaying = false;
 		}
+
+		var self = this;
+		setTimeout(function() {
+			if (callback) {
+				callback();
+			}
+			if (self.isPlaying) {
+				self.stepAnimation();
+			}
+		}, maxDelay);
 	}
+
+	this.animationTimestamp ++;
 };
 
 ocargo.Animation.prototype.playAnimation = function() {
@@ -188,7 +189,6 @@ ocargo.Animation.prototype.playAnimation = function() {
 
 ocargo.Animation.prototype.pauseAnimation = function() {
 	this.isPlaying = false;
-	clearTimeout(this.playTimer);
 };
 
 ocargo.Animation.prototype.queueAnimation = function(a) {
