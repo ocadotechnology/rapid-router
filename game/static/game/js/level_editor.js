@@ -211,7 +211,7 @@ function handleMouseOut(this_rect, segment) {
             {
                 return;
             }
-             ocargo.levelEditor.mark(coord, BACKGROUND_COLOR, 0, true);
+            ocargo.levelEditor.mark(coord, BACKGROUND_COLOR, 0, true);
         }
     }
 }
@@ -668,7 +668,6 @@ $("#export").click(function() {
 
 $(function() {
     paper.clear();
-    ocargo.ui = new ocargo.SimpleUi();
     ocargo.levelEditor = new ocargo.LevelEditor();
     ocargo.levelEditor.createGrid(paper);
 });
