@@ -362,12 +362,14 @@ def start_episode(request, episode):
 def submit(request):
     """ Processes a request on submission of the program solving the current level.
     """
-    if not request.user.is_anonymous() and request.method == 'POST' \
-            and 'attemptData' in request.POST:
-        attemptJson = request.POST['attemptData']
-        attemptData = json.loads(attemptJson)
-        parseAttempt(attemptData, request)
-        return HttpResponse(attemptJson, content_type='application/javascript')
+    if not request.user.is_anonymous() and request.method == 'POST':
+        if hasattr(request.user, "userprofile") and hasattr(request.user.userprofile, "student"):
+            level = get_object_or_404(Level, id=request.POST.get('level', 1))
+            attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
+            attempt.score = request.POST.get('score', 0)
+            attempt.workspace = request.POST.get('workspace', '')
+
+            attempt.save()
     return HttpResponse('')
 
 
@@ -375,14 +377,15 @@ def level_new(request):
     """Processes a request on creation of the map in the level editor.
     """
     if 'nodes' in request.POST:
-        path = request.POST['nodes']
-        destination = request.POST['destination']
-        decor = request.POST['decor']
-        max_fuel = request.POST['maxFuel']
+        path = request.POST.get('nodes')
+        destination = request.POST.get('destination')
+        decor = request.POST.get('decor')
+        traffic_lights = request.POST.get('trafficLights')
+        max_fuel = request.POST.get('maxFuel')
         name = request.POST.get('name')
         passedLevel = None
         passedLevel = Level(name=name, path=path, default=False, destination=destination,
-                            decor=decor, max_fuel=max_fuel)
+                            decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile'):
             passedLevel.owner = request.user.userprofile
@@ -592,20 +595,6 @@ def handleChoosePerson(request, form):
     level = get_object_or_404(Level, id=form.data['level'])
     level.shared_with.add(people)
     return messages.shareSuccessfulPerson(people.first_name, people.last_name)
-
-
-def parseAttempt(attemptData, request):
-    if hasattr(request.user, "userprofile") and hasattr(request.user.userprofile, "student"):
-        level = get_object_or_404(Level, id=attemptData.get('level', 1))
-        attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
-        attempt.score = request.POST.get('score', 0)
-        attempt.workspace = request.POST.get('workspace', '')
-
-        # Remove all the old commands from previous attempts.
-        # Command.objects.filter(attempt=attempt).delete()
-        # commands = attemptData.get('commandStack', None)
-        # parseInstructions(json.loads(commands), attempt, 1)
-        attempt.save()
 
 
 def renderAvatarChoice(request):

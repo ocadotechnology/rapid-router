@@ -13,7 +13,7 @@ ocargo.messages = {
     nextEpisodeButton: function(episode) {
         return "Well done, you've completed the episode!<br>" +
            "Are you ready for the next challenge? <br><br> " +
-           '<button onclick="window.location.href=' + "'/game/episode/" + ocargo.level.nextEpisode +
+           '<button onclick="window.location.href=' + "'/game/episode/" + episode +
             "'" + '"">Next episode</button> </center>' + '<button onclick="window.location.href=' +
             "'/home/'" + '"">Home</button>';
     },
@@ -24,6 +24,9 @@ ocargo.messages = {
         "'/home/'" + '"">Home</button>',
     tooManyBlocks: "You used too many blocks!",
     ohNo: "Oh no!",
+    winTitle: "You win!",
+    failTitle: "Oh dear! :(",
+    tryagainLabel: "Try again",
     needHint: "Are you stuck? Need a hint?",
     terminated: "Program terminated!",
     crashed: "Your program crashed!",
@@ -35,10 +38,10 @@ ocargo.messages = {
         "highway code!",
     offRoad : function(correctSteps){
         if (correctSteps === 1) {
-            return "Your first execution step worked.";
+            return "Your first move worked.";
         }
         else {
-            return "Your first " + correctSteps + " execution steps worked.";
+            return "Your first " + correctSteps + " moves worked.";
         }
     },
 
