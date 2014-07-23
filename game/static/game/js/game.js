@@ -38,7 +38,8 @@ function init() {
     setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
 
     if ($.cookie("muted") === "true") {
-        $('#mute').text("Unmute");
+        $('#muted').css('display','block');
+        $('#unmuted').css('display','none');
         ocargo.sound.mute();
     }
 }
@@ -519,15 +520,16 @@ function setupMenuListeners() {
         startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
     });
 
-    $('#mute').click(function() {
-        var $this = $(this);
-        if (ocargo.sound.volume === 0) {
-            $this.text('Mute');
-            ocargo.sound.unmute();
-        } else {
-            $this.text('Unmute');
-            ocargo.sound.mute();
-        }
+    $('#muted').click(function() {
+        $('#muted').css('display','none');
+        $('#unmuted').css('display','block');
+        ocargo.sound.mute();
+    });
+
+    $('#unmuted').click(function() {
+        $('#muted').css('display','block');
+        $('#unmuted').css('display','none');
+        ocargo.sound.mute();
     });
 
     $('#quit').click(function() {
