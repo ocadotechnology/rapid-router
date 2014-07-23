@@ -25,6 +25,21 @@ ocargo.BlocklyControl.prototype.IMAGE_WIDTH = 20;
 ocargo.BlocklyControl.prototype.incorrectBlock = null;
 ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
 
+ocargo.BlocklyControl.prototype.prepare = function() {
+    try {
+        return ocargo.blocklyCompiler.compile();
+    }
+    catch (error) {
+        // print error for now
+        console.info("compilation error " + error);
+        return null;
+    }
+};
+
+ocargo.BlocklyControl.prototype.redrawBlockly = function() {
+    Blockly.fireUiEvent(window, 'resize');
+};
+
 ocargo.BlocklyControl.prototype.reset = function() {
     Blockly.mainWorkspace.clear();
 

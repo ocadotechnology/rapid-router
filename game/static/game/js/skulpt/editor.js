@@ -10,26 +10,6 @@ $(document).ready(function () {
         });
     };
     
-    var keymap = {
-        "Ctrl-Enter" : function (editor) {
-            ocargo.model.reset(0);
-            ocargo.animation.resetAnimation();
-            
-            Sk.configure({output: outf, read: builtinRead});
-            //Sk.canvas = "mycanvas";
-            Sk.pre = "consoleOutput";
-            try {
-                Sk.importMainWithBody("<stdin>", false, editor.getValue());
-                ocargo.model.programExecutionEnded();
-            } catch(e) {
-                outf(e.toString() + "\n")
-            }
-            ocargo.animation.playAnimation();
-        }
-    }
-
-
-
     // set default code
     document.getElementById("code").value = "import van\nv = van.Van()";
 
@@ -44,13 +24,27 @@ $(document).ready(function () {
         height: "160px",
         fontSize: "9pt",
         autoMatchParens: true,
-        extraKeys: keymap,
         parserConfig: {'pythonVersion': 2, 'strictErrors': true}
     });
 
+   ocargo.editor.run = function() {
+        ocargo.model.reset(0);
+        Sk.configure({output: outf, read: builtinRead});
+        //Sk.canvas = "mycanvas";
+        Sk.pre = "consoleOutput";
+        try {
+            Sk.importMainWithBody("<stdin>", false, ocargo.editor.getValue());
+            ocargo.model.programExecutionEnded();
+        } catch(e) {
+            outf(e.toString() + "\n")
+        }
+    };
 
+    ocargo.editor.prepare = function() {
+        return { run: function() { ocargo.editor.run() }};
+    };
 
-    $("#skulpt_run").click(function (e) { keymap["Ctrl-Enter"](ocargo.editor)} );
+    $("#skulpt_run").click(function (e) { $('#play')[0].click(); });
 
 
     $('#clearConsole').click(function (e) {

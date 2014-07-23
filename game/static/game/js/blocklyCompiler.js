@@ -8,6 +8,7 @@ ocargo.BlocklyCompiler.prototype.procedureBindings = null;
 ocargo.BlocklyCompiler.prototype.procedures = null;
 ocargo.BlocklyCompiler.prototype.program = null;
 
+
 ocargo.BlocklyCompiler.prototype.compile = function() 
 {
     this.compileProcedures();

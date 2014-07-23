@@ -2,6 +2,7 @@
 
 var ocargo = ocargo || {};
 
+
 function init() {
     // Setup blockly
     ocargo.blocklyControl = new ocargo.BlocklyControl();
@@ -18,6 +19,9 @@ function init() {
     // Setup the ui
     setupListeners();
     enableDirectControl();
+
+    // default controller
+    ocargo.controller = ocargo.blocklyControl;
 
     // startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
 
@@ -82,15 +86,7 @@ function runProgramAndPrepareAnimation() {
     // clear animations
     ocargo.animation.resetAnimation();
 
-    // try to compile and run program
-    try {
-        var program = ocargo.blocklyCompiler.compile();
-    }
-    catch (error) {
-        // print error for now
-        console.info("compilation error " + error);
-        return false;
-    }
+    var program = ocargo.controller.prepare();
 
     // Starting sound
     ocargo.animation.queueAnimation({
@@ -339,11 +335,13 @@ function setupListeners() {
             $('#pythonCode').fadeOut();
             $('#blockly').fadeIn();
             ocargo.blocklyControl.redrawBlockly();
+            ocargo.controller = ocargo.blocklyControl;
         }
         else {
             $('#blockly').fadeOut();
             $('#pythonCode').fadeIn();
             ocargo.editor.setValue(Blockly.Python.workspaceToCode());
+            ocargo.controller = ocargo.editor;
         }
     });
 
