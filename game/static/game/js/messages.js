@@ -13,7 +13,7 @@ ocargo.messages = {
     nextEpisodeButton: function(episode) {
         return "Well done, you've completed the episode!<br>" +
            "Are you ready for the next challenge? <br><br> " +
-           '<button onclick="window.location.href=' + "'/game/episode/" + ocargo.level.nextEpisode +
+           '<button onclick="window.location.href=' + "'/game/episode/" + episode +
             "'" + '"">Next episode</button> </center>' + '<button onclick="window.location.href=' +
             "'/home/'" + '"">Home</button>';
     },

@@ -2,7 +2,7 @@
 
 var ocargo = ocargo || {};
 
-ocargo.TrafficLight = function(id, data, map) {
+ocargo.TrafficLight = function(id, data, nodes) {
     this.id = id;
     this.startingState = data.startingState;
     this.state = this.startingState;
@@ -10,8 +10,8 @@ ocargo.TrafficLight = function(id, data, map) {
     this.redDuration = data.redDuration;
     this.greenDuration = data.greenDuration;
     this.currentLightTime = this.startTime;
-    this.sourceNode = map.nodes[data.sourceNode];
-    this.controlledNode = map.nodes[data.node];
+    this.sourceNode = nodes[data.sourceNode];
+    this.controlledNode = nodes[data.node];
 };
 
 ocargo.TrafficLight.prototype.reset = function() {
