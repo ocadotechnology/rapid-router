@@ -377,14 +377,15 @@ def level_new(request):
     """Processes a request on creation of the map in the level editor.
     """
     if 'nodes' in request.POST:
-        path = request.POST['nodes']
-        destination = request.POST['destination']
-        decor = request.POST['decor']
-        max_fuel = request.POST['maxFuel']
+        path = request.POST.get('nodes')
+        destination = request.POST.get('destination')
+        decor = request.POST.get('decor')
+        traffic_lights = request.POST.get('trafficLights')
+        max_fuel = request.POST.get('maxFuel')
         name = request.POST.get('name')
         passedLevel = None
         passedLevel = Level(name=name, path=path, default=False, destination=destination,
-                            decor=decor, max_fuel=max_fuel)
+                            decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile'):
             passedLevel.owner = request.user.userprofile

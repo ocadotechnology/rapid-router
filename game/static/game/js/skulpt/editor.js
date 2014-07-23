@@ -24,7 +24,7 @@ $(document).ready(function () {
         height: "160px",
         fontSize: "9pt",
         autoMatchParens: true,
-        parserConfig: {'pythonVersion': 2, 'strictErrors': true}
+        parserConfig: {'pythonVersion': 2, 'strictErrors': true},
     });
 
    ocargo.editor.run = function() {

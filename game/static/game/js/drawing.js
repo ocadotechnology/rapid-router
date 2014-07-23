@@ -27,7 +27,7 @@ var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
-    fill: ROAD_COLOUR,
+    fill: ROAD_COLOUR,      
     'stroke': '#aaa'
 };
 
@@ -151,13 +151,13 @@ function drawDeadEndRoad(node) {
     var road = paper.image('/static/game/image/roadTile_deadEnd.svg',
         flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
-    if (roadLetters == 'H' && prevFlipped.x < flipped.x) {
+    if (roadLetters === 'H' && prevFlipped.x < flipped.x) {
         road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
-    else if (roadLetters == 'H' && prevFlipped.x > flipped.x) {
+    else if (roadLetters === 'H' && prevFlipped.x > flipped.x) {
         road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
-    else if (roadLetters == 'V' && prevFlipped.y < flipped.y) {
+    else if (roadLetters === 'V' && prevFlipped.y < flipped.y) {
         road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
 }
@@ -166,27 +166,27 @@ function drawSingleRoadSegment(previousNode, node, nextNode) {
     var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
 
     var flipped = transformY(node.coordinate);
-
-    if (roadLetters == 'H') {
-        var road = paper.image('/static/game/image/roadTile_straight.svg',
+    var road;
+    if (roadLetters === 'H') {
+        road = paper.image('/static/game/image/roadTile_straight.svg',
             flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
         road.rotate(90);
     }
-    else if (roadLetters == 'V') {
-        var road = paper.image('/static/game/image/roadTile_straight.svg',
+    else if (roadLetters === 'V') {
+        road = paper.image('/static/game/image/roadTile_straight.svg',
             flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
     }
     else {
-        var road = paper.image('/static/game/image/roadTile_turn.svg',
+        road = paper.image('/static/game/image/roadTile_turn.svg',
             flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
-        if (roadLetters == 'UL') {
+        if (roadLetters === 'UL') {
             road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
-        else if (roadLetters == 'UR') {
+        else if (roadLetters === 'UR') {
             road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
-        else if (roadLetters == 'DR') {
+        else if (roadLetters === 'DR') {
             road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
     }
@@ -206,24 +206,24 @@ function drawTJunction(node) {
     var letters13 = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
 
     var rotation = 0;
-    if      ((letters12 == 'V'  && (letters13 == 'UL' || letters13 == 'DL')) ||
-             (letters12 == 'UL' && (letters13 == 'DL' || letters13 == 'V' )) ||
-             (letters12 == 'DL' && (letters13 == 'UL' || letters13 == 'V' ))) {
+    if      ((letters12 === 'V'  && (letters13 === 'UL' || letters13 === 'DL')) ||
+             (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V' )) ||
+             (letters12 === 'DL' && (letters13 === 'UL' || letters13 === 'V' ))) {
         rotation = 0;
     }
-    else if ((letters12 == 'H'  && (letters13 == 'UL' || letters13 == 'UR')) ||
-             (letters12 == 'UL' && (letters13 == 'UR' || letters13 == 'H' )) ||
-             (letters12 == 'UR' && (letters13 == 'UL' || letters13 == 'H' ))) {
+    else if ((letters12 === 'H'  && (letters13 === 'UL' || letters13 === 'UR')) ||
+             (letters12 === 'UL' && (letters13 === 'UR' || letters13 === 'H' )) ||
+             (letters12 === 'UR' && (letters13 === 'UL' || letters13 === 'H' ))) {
         rotation = 90;
     }
-    else if ((letters12 == 'V'  && (letters13 == 'UR' || letters13 == 'DR')) ||
-             (letters12 == 'UR' && (letters13 == 'DR' || letters13 == 'V' )) ||
-             (letters12 == 'DR' && (letters13 == 'UR' || letters13 == 'V' ))) {
+    else if ((letters12 === 'V'  && (letters13 === 'UR' || letters13 === 'DR')) ||
+             (letters12 === 'UR' && (letters13 === 'DR' || letters13 === 'V' )) ||
+             (letters12 === 'DR' && (letters13 === 'UR' || letters13 === 'V' ))) {
         rotation = 180;
     }
-    else if ((letters12 == 'H'  && (letters13 == 'DL' || letters13 == 'DR')) ||
-             (letters12 == 'DL' && (letters13 == 'DR' || letters13 == 'H' )) ||
-             (letters12 == 'DR' && (letters13 == 'DL' || letters13 == 'H' ))) {
+    else if ((letters12 === 'H'  && (letters13 === 'DL' || letters13 === 'DR')) ||
+             (letters12 === 'DL' && (letters13 === 'DR' || letters13 === 'H' )) ||
+             (letters12 === 'DR' && (letters13 === 'DL' || letters13 === 'H' ))) {
         rotation = 270;
     }
 
@@ -406,7 +406,11 @@ function renderDecor(decor) {
     }
 }
 
-function renderTrafficLights(trafficLights) {
+function translate(coordinate) {
+    return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
+}
+
+function renderTrafficLights(trafficLights, draggable) {
     for (var i = 0; i < trafficLights.length; i++) {
         var trafficLight = trafficLights[i];
         var controlledNode = trafficLight.controlledNode;
@@ -422,20 +426,58 @@ function renderTrafficLights(trafficLights) {
         //draw red and green lights, keep reference to both
         var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
         var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
-        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-            .transform('r' + rotation + 's-1,1');
-        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-            .transform('r' + rotation + 's-1,1');
+        if (trafficLight.startingState === "RED") {
+            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
+                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
+                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+        } else {
+            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
+                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
+                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+        }
+        
 
         lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
-        
-        //hide light which isn't the starting state
-        if(trafficLight.startingState == ocargo.TrafficLight.RED){
-            trafficLight.greenLightEl.attr({'opacity': 0});
-        } else {
-            trafficLight.redLightEl.attr({'opacity': 0});
+
+        if (draggable) {
+            var id = trafficLight.id;
+            if (trafficLight.startingState === "RED") {
+                trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id, true);
+            } else {
+                trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate), id, false);
+            }
+
+            if (trafficLight.startingState === "RED") {
+                trafficLight.redLightEl.node.ondblclick = function() {
+                    var traffic = trafficLight;
+                    console.debug("id", traffic.id);
+                    var image = traffic.redLightEl;
+                    return image.transform('...r90');
+                };
+            } else {
+                trafficLight.greenLightEl.node.ondblclick = function() {
+                    var traffic = trafficLight;
+                    console.debug("id", traffic.id);
+                    var image = traffic.greenLightEl;
+                    return image.transform('...r90');
+                };
+            }
         }
-    }
+
+		
+		//hide light which isn't the starting state
+		if(trafficLight.startingState === ocargo.TrafficLight.RED){
+			trafficLight.greenLightEl.attr({'opacity': 0});
+		} else {
+			trafficLight.redLightEl.attr({'opacity': 0});
+		}
+	}
 }
 
 function renderVans(position, numVans) {
