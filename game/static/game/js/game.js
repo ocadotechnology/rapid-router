@@ -40,19 +40,19 @@ function registerFailure() {
 function sendAttempt(score) {
     // Send out the submitted data.
     if (LEVEL_ID) {
-        // $.ajax({
-        //     url : '/game/submit',
-        //     type : 'POST',
-        //     data : {
-        //         attemptData : attemptData,
-        //         csrfmiddlewaretoken :$( '#csrfmiddlewaretoken' ).val(),
-        //         score : score,
-        //         workspace : ocargo.blocklyControl.serialize()
-        //     },
-        //     error : function(xhr,errmsg,err) {
-        //         console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-        //     }
-        // });
+        $.ajax({
+            url : '/game/submit',
+            type : 'POST',
+            data : {
+                csrfmiddlewaretoken : $( '#csrfmiddlewaretoken' ).val(),
+                level : LEVEL_ID,
+                score : score,
+                workspace : ocargo.blocklyControl.serialize(),
+            },
+            error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
     }
 }
 
