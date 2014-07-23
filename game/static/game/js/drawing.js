@@ -544,7 +544,7 @@ function turnAround(vanId, animationLength, callback) {
     function moveForward() {
         moveVanImage({
             transform: moveTransformation
-        }, vanId, rotate, timePerState);
+        }, vanId, timePerState, rotate);
     }
 
     function rotate() {

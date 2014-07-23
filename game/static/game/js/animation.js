@@ -70,6 +70,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
                 		moveRight(vanID, animationLength);
                 		break;
                 	case 'TURN_AROUND':
+                		animationLength *= 3;
                 		turnAround(vanID, animationLength);
                 		break;
                 	case 'WAIT':

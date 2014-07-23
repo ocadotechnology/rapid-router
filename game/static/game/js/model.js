@@ -28,7 +28,9 @@ ocargo.Model.prototype.reset = function(vanId) {
 	}
 
 	this.timestamp = 0;
-	this.vanId = vanId || this.vanId;
+	if (vanId !== null && vanId !== undefined) {
+		this.vanId = vanId;
+	}
 };
 
 ///////////////////////
