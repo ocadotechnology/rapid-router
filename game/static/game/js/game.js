@@ -22,6 +22,8 @@ function init() {
     ocargo.blocklyControl.loadPreviousAttempt();
     startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
 
+    
+
     if ($.cookie("muted") === "true") {
         $('#mute').text("Unmute");
         ocargo.sound.mute();
@@ -48,6 +50,8 @@ function createLevel(nodeData, destination, decor, trafficLightData, maxFuel, ne
     for (var i = 0; i < THREADS; i++) {
         vans.push(new ocargo.Van(i,previousNode, startNode, maxFuel));
     }
+
+    setupFuelGauge(nodes, BLOCKS);
 
     ocargo.ui.renderMap(map);
     ocargo.ui.renderVans(vans);
@@ -112,7 +116,6 @@ function enableDirectControl() {
     document.getElementById('turnLeft').disabled = false;
     document.getElementById('turnRight').disabled = false;
     document.getElementById('play').disabled = false;
-    document.getElementById('controls').style.visibility='visible';
     document.getElementById('direct_drive').style.visibility='visible';
 
     document.getElementById('play').style.visibility='visible';
@@ -127,7 +130,6 @@ function enableDirectControl() {
 }
 
 function disableDirectControl() {
-    document.getElementById('controls').style.visibility='hidden';
     document.getElementById('direct_drive').style.visibility='hidden';
     document.getElementById('moveForward').disabled = true;
     document.getElementById('turnLeft').disabled = true;
@@ -155,6 +157,21 @@ function clearVanData() {
         ocargo.level.vans[i] = van;
         ocargo.ui.setVanToFront(previousNode, startNode, van);
     }
+}
+
+function setupFuelGauge(nodes, blocks) {
+    if(blocks.indexOf("turn_around") != -1 || blocks.indexOf("wait") != -1)
+    {
+        return;
+    }
+
+    for(var i = 0; i < nodes.length; i++) {
+        if(nodes[i].connectedNodes.length > 2) {
+            return;
+        }
+    }
+
+    $('#fuelGuage').css("display","none");
 }
 
 function levelWon(level) {
@@ -561,15 +578,18 @@ function setupMenuListeners() {
         ocargo.level.program.terminate();
     });
 
+    var blockly = true;
     $('#toggle_console').click(function() {
-        if($('#blockly').css("display")=="none") {
-            $('#pythonCode').css("display","none");
-            $('#blockly').fadeIn();
-        }
-        else {
-            $('#blockly').css("display","none");
+        $('#blockly').css("display","none");
+        $('#pythonCode').css("display","none");
+        if(blockly) {
             $('#pythonCode').fadeIn();
             ocargo.editor.setValue(Blockly.Python.workspaceToCode());
+            blockly = false;
+        }
+        else {
+            $('#blockly').fadeIn();
+            blockly = true;
         }
     });
 
