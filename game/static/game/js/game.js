@@ -81,6 +81,7 @@ function disableDirectControl() {
 function runProgramAndPrepareAnimation() {
     // clear animations
     ocargo.animation.resetAnimation();
+
     // try to compile and run program
     try {
         var program = ocargo.blocklyCompiler.compile();
@@ -91,9 +92,15 @@ function runProgramAndPrepareAnimation() {
         return false;
     }
 
-    if (program) {
-        program.run(ocargo.model);
-    }
+    // Starting sound
+    ocargo.animation.queueAnimation({
+        timestamp: 0,
+        type: 'callable',
+        functionCall: ocargo.sound.starting,
+    });
+
+    program.run(ocargo.model);
+
     return true;
 }
 

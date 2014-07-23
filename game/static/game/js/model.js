@@ -126,12 +126,20 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
 	this.van.move(nextNode);
 
+	// Van movement animation
 	ocargo.animation.queueAnimation({
 		timestamp: this.timestamp,
 		type: 'van',
 		id: this.vanId,
 		vanAction: action,
 		fuel: this.van.getFuelPercentage(),
+	});
+
+	// Van movement sound
+	ocargo.animation.queueAnimation({
+		timestamp: this.timestamp,
+		type: 'callable',
+		functionCall: (action === 'FORWARD') ? ocargo.sound.moving : ocargo.sound.turning,
 	});
 
 	this.incrementTime();
@@ -169,6 +177,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 		var scoreArray = this.pathFinder.getScore();
 	    sendAttempt(scoreArray[0]);
 
+	    // Winning popup
 		ocargo.animation.queueAnimation({
 			timestamp: this.timestamp - 1,
 			type: 'popup',
@@ -176,10 +185,18 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 			popupType: 'WIN',
 			popupMessage: scoreArray[1],
 		});
+
+		// Winning sound
+		ocargo.animation.queueAnimation({
+			timestamp: this.timestamp,
+			type: 'callable',
+			functionCall: ocargo.sound.win,
+		});
 	}
 	else {
 		sendAttempt(0);
 
+		// Failure popup
 		ocargo.animation.queueAnimation({
 			timestamp: this.timestamp - 1,
 			type: 'popup',
@@ -187,6 +204,13 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 			popupType: 'FAIL',
 			popupMessage: ocargo.messages.outOfInstructions,
 			hint: registerFailure(),
+		});
+
+		// Failure sound
+		ocargo.animation.queueAnimation({
+			timestamp: this.timestamp,
+			type: 'callable',
+			functionCall: ocargo.sound.failure,
 		});
 	}
 };
