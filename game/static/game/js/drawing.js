@@ -489,10 +489,10 @@ function renderVans(position, numVans) {
 
 // This is the function that starts the pop-up.
 function startPopup(title, subtitle, message) {
-    $('#myModal').foundation('reveal', 'open');
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
+    $('#myModal').foundation('reveal', 'open');
 }
 
 /*****************/
@@ -594,4 +594,134 @@ function createVanImage(position, vanId) {
 function getVanImagePosition(vanImage) {
     var box = vanImage.getBBox();
     return [box.x, box.y];
+}
+
+/**********************/
+/** Crash animations **/
+/**********************/
+
+function crash(vanID, animationLength, previousNode, currentNode, attemptedAction) {
+    var road = getLeftRightForwardRoad(previousNode, currentNode);
+    var roadLeft = road[0];
+    var roadForward = road[1];
+    var roadRight = road[2];
+    var vanImage = vanImages[vanID];
+
+    if(attemptedAction === "FORWARD") {
+        var distanceForwards;
+        if(roadLeft && roadRight) {
+            distanceForwards = 0.5*GRID_SPACE_SIZE + 0.5*ROAD_WIDTH;
+        }
+        else if(roadLeft) {
+            distanceForwards = 0.5*GRID_SPACE_SIZE + 0.3*ROAD_WIDTH;
+        }
+        else if(roadRight) {
+            distanceForwards = 0.5*GRID_SPACE_SIZE + 0.2*ROAD_WIDTH;
+        }
+        else {
+            distanceForwards = 0.5*GRID_SPACE_SIZE + 0.5*ROAD_WIDTH;
+        }
+        var transformation = "... t 0, " + (-distanceForwards);
+    }
+    else if(attemptedAction == "TURN_LEFT") {
+        var rotationAngle;
+        if(roadForward) {
+            rotationAngle = 45;
+        }
+        else if(roadRight) {
+            rotationAngle = 45;
+        }
+        else {
+            rotationAngle = 45;
+        }
+        var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
+        var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+        var transformation = createRotationTransformation(-rotationAngle, rotationPointX, rotationPointY);
+    }
+    else if(attemptedAction == "TURN_RIGHT") {
+        var rotationAngle;
+        if(roadForward) {
+            rotationAngle = 75;
+        }
+        else if(roadLeft) {
+            rotationAngle = 75;
+        }
+        else {
+            rotationAngle = 75;
+        }
+        var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
+        var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+        var transformation = createRotationTransformation(rotationAngle, rotationPointX, rotationPointY);
+    }
+
+    moveVanImage({
+        transform: transformation
+    }, vanID, animationLength, animateExplosion);
+
+
+    function animateExplosion() {
+        
+        var bbox = vanImage.getBBox();
+
+        var x = bbox.x + bbox.width/2;
+        var y = bbox.y + bbox.height/2;
+
+        var width = 20;
+        var height = 20;
+
+        var maxSize = 20;
+        var minSize = 10;
+
+        vanImage.animate({opacity: 0}, 1000);
+
+        for(var i = 0; i < 20; i++) {
+            setTimeout(function() {
+                var size = minSize + Math.random()*(maxSize-minSize);
+                var xco = x + width*(Math.random()-0.5) - 0.5*size;
+                var yco = y + height*(Math.random()-0.5) - 0.5*size;
+                var imageStr = '/static/game/image/' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg'; 
+                var img = paper.image(imageStr, xco, yco, size, size);
+                img.animate({opacity: 0, transform: 's2'}, 1000, function () {});
+            },(i < 5 ? 0 :(i-5)*50));
+        }
+    }
+}
+
+function getLeftRightForwardRoad(previousNode, currentNode) {
+    var N = 0;
+    var E = 1;
+    var S = 2;
+    var W = 3;
+
+    function getOrientation(n1,n2) {
+        var c1 = n1.coordinate;
+        var c2 = n2.coordinate;
+
+        if(c1.y < c2.y) {
+            return N;
+        }
+        else if(c1.x < c2.x) {
+            return E;
+        }
+        else if(c1.y > c2.y) {
+            return S;
+        }
+        else {
+            return W;
+        }
+    }
+
+    var neighbours = [null,null,null,null];
+    for(var i = 0; i < currentNode.connectedNodes.length; i++) {
+        var neighbour = currentNode.connectedNodes[i];
+        neighbours[getOrientation(currentNode,neighbour)] = neighbour;
+    }
+
+    var vanOr = getOrientation(previousNode, currentNode);
+
+    var roadLeft = neighbours[(W+vanOr)%4];
+    var roadForward = neighbours[(N+vanOr)%4];
+    var roadRight = neighbours[(E+vanOr)%4];
+
+    return [roadLeft, roadForward, roadRight];
 }
