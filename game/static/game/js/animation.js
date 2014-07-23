@@ -16,7 +16,7 @@ ocargo.Animation = function(model, decor, numVans) {
 };
 
 ocargo.Animation.prototype.isFinished = function() {
-	return (this.animationQueue.length == 0);
+	return this.finished;
 };
 
 ocargo.Animation.prototype.resetAnimation = function() {
@@ -28,6 +28,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.lastSubTimestamp = 0;
 	this.isPlaying = false;
 	this.currentlyAnimating = false;
+	this.finished = false;
 
 	clearPaper();
 	renderMap(this.model.map);
@@ -57,7 +58,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 			}
 		}
 
-		// And always move onto the next subTimestamp
+		// And move onto the next subTimestamp
 		this.subTimestamp += 1;
 	}
 
