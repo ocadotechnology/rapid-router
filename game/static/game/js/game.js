@@ -163,20 +163,19 @@ function runProgramAndPrepareAnimation() {
     var program = ocargo.controller.prepare();
 
     // Starting sound
-    ocargo.animation.queueAnimation({
-        timestamp: 0,
+    ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: ocargo.sound.starting,
+        description: 'starting sound',
     });
 
     program.run(ocargo.model);
 
     // resets to start control states
-    var timestamp = ocargo.animation.getLastTimestamp();
-    ocargo.animation.queueAnimation({
-        timestamp: timestamp,
+    ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: onStopControls,
+        description: 'onStopControls',
     });
 
     return true;

@@ -3,8 +3,7 @@ var ocargo = ocargo || {};
 $(document).ready(function () {
     ocargo.consoleOutput = $('#consoleOutput');
     var outf = function (outputText) {
-        ocargo.animation.queueAnimation({
-            timestamp: ocargo.model.timestamp,
+        ocargo.animation.appendAnimation({
             type: 'console',
             text: outputText,
         });
