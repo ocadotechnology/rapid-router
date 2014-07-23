@@ -14,9 +14,9 @@
   <script src="/static/game/js/level_editor.js"></script>
   <script src="/static/game/js/coordinate.js"></script>
   <script src="/static/game/js/node.js"></script>
-  <script src="/static/game/js/ui.js"></script>
   <script src="/static/game/js/map.js"></script>
   <script src="/static/game/js/pathFinder.js"></script>
+  <script src="/static/game/js/trafficLight.js"></script>
 {% endblock %}
 
 {% block css %}
@@ -46,6 +46,8 @@
             <img id="bush" src="/static/game/image/bush.svg" width="70">
             <img id="tree1" src="/static/game/image/tree1.svg" width="70">
             <img id="tree2" src="/static/game/image/tree2.svg" width="70"><br><br>
+            <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
+            <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
             <p>NAME<input id="name" value="name"></p>
             <p>MAX FUEL<input type="number" id="maxFuel" value="50" size="4"></p>
             <button id="clear">Clear all</button> <br>            

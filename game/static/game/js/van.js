@@ -2,52 +2,39 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Van = function(id, previousNode, startNode, maxFuel, ui) {
-    this.id = id;
-    this.previousNode = previousNode;
-    this.currentNode = startNode;
+ocargo.Van = function(position, maxFuel) {
+    this.previousNodeOriginal = position.previousNode;
+    this.currentNodeOriginal = position.currentNode;
+
+    this.previousNode = position.previousNode;
+    this.currentNode = position.currentNode;
     this.maxFuel = maxFuel;
     this.fuel = maxFuel;
-    this.ui = ui;
-    ocargo.sound.starting();
     this.travelled = 0;
 };
 
-ocargo.Van.prototype.move = function(nextNode, instruction, callback) {
-    if (instruction === ocargo.FORWARD_ACTION) {
-        moveForward(this, callback);
-        this.travelled++;
-        ocargo.sound.moving();
-    } else if (instruction === ocargo.TURN_LEFT_ACTION) {
-        moveLeft(this, callback);
-        this.travelled++;
-        ocargo.sound.turning();
-    } else if (instruction === ocargo.TURN_RIGHT_ACTION) {
-        moveRight(this, callback);
-        this.travelled++;
-        ocargo.sound.turning();
-    } else if (instruction === ocargo.TURN_AROUND_ACTION) {
-        turnAround(this, callback);
-        this.travelled++;
-        ocargo.sound.turning();
-        ocargo.sound.turning();
-    } else if (instruction === ocargo.WAIT_ACTION) {
-    	wait(this, callback);
-        //ocargo.sound.idling();
-    }
-
-	if (instruction !== ocargo.WAIT_ACTION) {
-        this.previousNode = this.currentNode;
-	    this.currentNode = nextNode;
-    }
-
-	ocargo.time.incrementTime();
-	this.fuel--;
-    updateFuelGuage(this.fuel, this.maxFuel);
+ocargo.Van.prototype.reset = function() {
+    this.currentNode = this.currentNodeOriginal;
+    this.previousNode = this.previousNodeOriginal;
+    this.fuel = this.maxFuel;
+    this.travelled = 0;
 };
 
-function updateFuelGuage(fuel, maxFuel) {
-    var rotation = 'rotate(' + (((fuel/maxFuel)*240)-120) + 'deg)';
-    document.getElementById('fuelGuagePointer').style.transform=rotation;
-    document.getElementById('fuelGuagePointer').style.webkitTransform=rotation;
+ocargo.Van.prototype.move = function(nextNode) {
+    if (nextNode !== this.currentNode) {
+        this.previousNode = this.currentNode;
+        this.currentNode = nextNode;
+
+        this.travelled += 1;
+    }
+
+    this.fuel -= 1;
+};
+
+ocargo.Van.prototype.getPosition = function() {
+    return { previousNode: this.previousNode, currentNode: this.currentNode };
+};
+
+ocargo.Van.prototype.getFuelPercentage = function() {
+    return 100 * this.fuel / this.maxFuel;
 }

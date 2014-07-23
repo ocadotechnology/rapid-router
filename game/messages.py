@@ -1,6 +1,10 @@
 def noPermissionMessage():
     return "You have no permission to see this."
 
+def notSharedLevel():
+    return "This level is private. You can only see the public levels and the ones created by " \
+        + "other users only if they share them with you."
+
 
 """ Strings used in the scoreboard. """
 
