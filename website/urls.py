@@ -1,8 +1,12 @@
 from django.conf.urls import patterns, include, url
-
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
 admin.autodiscover()
+
+js_info_dict = {
+    'packages': ('conf.locale',),
+}
 
 urlpatterns = patterns('',
     url(r'^$', 'website.views.home', name='home'),
@@ -14,4 +18,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', login),
     url(r'^accounts/logout/$', logout, {'next_page': '/'}),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
 )

@@ -11,7 +11,7 @@ Blockly.Blocks['start'] = {
         this.setColour(50);
         this.appendDummyInput()
             .appendField('Start')
-            .appendField(new Blockly.FieldImage(imageStr, VAN_HEIGHT, VAN_WIDTH));
+            .appendField(new Blockly.FieldImage(imageStr, ocargo.blocklyControl.BLOCK_VAN_HEIGHT, ocargo.blocklyControl.BLOCK_VAN_WIDTH));
         this.setNextStatement(true);
         this.setTooltip('The beginning of the program');
         this.setDeletable(false);

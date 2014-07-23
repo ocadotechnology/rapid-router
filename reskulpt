@@ -1,0 +1,7 @@
+cd skulpt
+python skulpt.py dist
+cd ..
+rm game/static/game/js/skulpt/skulpt.min.js
+rm game/static/game/js/skulpt/skulpt-stdlib.js
+cp skulpt/dist/skulpt.min.js game/static/game/js/skulpt/skulpt.min.js
+cp skulpt/dist/skulpt-stdlib.js game/static/game/js/skulpt/skulpt-stdlib.js

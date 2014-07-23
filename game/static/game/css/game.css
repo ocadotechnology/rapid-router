@@ -361,23 +361,31 @@ img.control{
 
 
 .picButton#help {
-    top: 440px;
+    top: 460px;
 }
 
 .picButton#help span {
     background-image : url('/static/game/image/menu_button_help.svg');
 }
 
-.picButton#mute {
-    top: 460px;
+.picButton#muted {
+    top: 510px;
 }
 
-.picButton#mute span {
-    background-image : url('/static/game/image/menu_button_mute.svg');
+.picButton#muted span {
+    background-image : url('/static/game/image/menu_button_muted.svg');
+}
+
+.picButton#unmuted {
+    top: 510px;
+}
+
+.picButton#unmuted span {
+    background-image : url('/static/game/image/menu_button_unmuted.svg');
 }
 
 .picButton#quit {
-    top: 510px;
+    top: 560px;
 }
 
 .picButton#quit span {
