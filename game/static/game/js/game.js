@@ -183,21 +183,21 @@ function runProgramAndPrepareAnimation() {
 
 function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
-        disableDirectControl();
+        onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(0, enableDirectControl);
+        moveForward(0, ANIMATION_LENGTH, onStopControls);
     });
 
     $('#turnLeft').click(function() {
-        disableDirectControl();
+        onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(0, enableDirectControl);
+        moveLeft(0, ANIMATION_LENGTH, onStopControls);
     });
 
     $('#turnRight').click(function() {
-        disableDirectControl();
+        onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(0, enableDirectControl);
+        moveRight(0, ANIMATION_LENGTH, onStopControls);
     });
     $('#go').click(function() {
         $('#play')[0].click();
