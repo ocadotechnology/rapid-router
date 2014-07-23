@@ -91,7 +91,7 @@ ocargo.BlocklyCompiler.prototype.createWhile = function(block) {
         throw ocargo.messages.whileBodyError;
     }
 	return new While(
-		this.counterCondition(parseInt(block.inputList[0].fieldRow[1].text_)),
+		this.counterCondition(block, parseInt(block.inputList[0].fieldRow[1].text_)),
 		this.createSequence(bodyBlock),
 		block);
 }
@@ -116,15 +116,15 @@ ocargo.BlocklyCompiler.prototype.createWhileUntil = function(block) {
 ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
 	if (conditionBlock.type === 'road_exists') {
 		var selection = conditionBlock.inputList[0].fieldRow[1].value_;
-		return this.roadCondition(selection);
+		return this.roadCondition(conditionBlock, selection);
 	} else if (conditionBlock.type === 'dead_end') {
-		return this.deadEndCondition();
+		return this.deadEndCondition(conditionBlock);
     } else if (conditionBlock.type === 'at_destination') {
-    	return this.atDestinationCondition();
+    	return this.atDestinationCondition(conditionBlock);
     } else if (conditionBlock.type === 'logic_negate') {
     	return this.negateCondition(this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
     } else if (conditionBlock.type === 'traffic_light') {
-    	return this.trafficLightCondition(conditionBlock.inputList[0].fieldRow[1].value_);
+    	return this.trafficLightCondition(conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
     }
 }
 
@@ -192,8 +192,9 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block){
 
 /** Conditions **/
 
-ocargo.BlocklyCompiler.prototype.trafficLightCondition = function(lightColour) {
+ocargo.BlocklyCompiler.prototype.trafficLightCondition = function(block, lightColour) {
     return function(model) {
+        queueHighlight(model, block);
         if (lightColour === ocargo.TrafficLight.RED) {
             return model.isTrafficLightRed();
         }
@@ -203,8 +204,9 @@ ocargo.BlocklyCompiler.prototype.trafficLightCondition = function(lightColour) {
     };
 }
 
-ocargo.BlocklyCompiler.prototype.roadCondition = function(selection) {
+ocargo.BlocklyCompiler.prototype.roadCondition = function(block, selection) {
     return function(model) {
+        queueHighlight(model, block);
         if (selection === 'FORWARD') {
             return model.isRoadForward();
         } else if (selection === 'LEFT') {
@@ -215,8 +217,9 @@ ocargo.BlocklyCompiler.prototype.roadCondition = function(selection) {
     };
 }
 
-ocargo.BlocklyCompiler.prototype.deadEndCondition = function() {
+ocargo.BlocklyCompiler.prototype.deadEndCondition = function(block) {
     return function(model) {
+        queueHighlight(model, block);
         return model.isDeadEnd();
     };
 }
@@ -227,15 +230,17 @@ ocargo.BlocklyCompiler.prototype.negateCondition = function(otherCondition) {
     };
 }
 
-ocargo.BlocklyCompiler.prototype.atDestinationCondition = function() {
+ocargo.BlocklyCompiler.prototype.atDestinationCondition = function(block) {
     return function(model) {
+        queueHighlight(model, block);
         return model.isAtDestination();
     };
 }
 
-ocargo.BlocklyCompiler.prototype.counterCondition = function(count) {
+ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
     var startCount = count;
     return function(model) {
+        queueHighlight(model, block);
         if (count > 0) {
             count--;
             return true;

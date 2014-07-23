@@ -21,6 +21,8 @@ ocargo.BlocklyControl = function () {
 ocargo.BlocklyControl.prototype.BLOCK_HEIGHT = 20;
 ocargo.BlocklyControl.prototype.EXTRA_BLOCK_WIDTH = 1;
 ocargo.BlocklyControl.prototype.IMAGE_WIDTH = 20;
+ocargo.BlocklyControl.prototype.BLOCK_VAN_HEIGHT = VAN_HEIGHT;
+ocargo.BlocklyControl.prototype.BLOCK_VAN_WIDTH = VAN_WIDTH;
 
 ocargo.BlocklyControl.prototype.incorrectBlock = null;
 ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
@@ -195,7 +197,12 @@ ocargo.BlocklyControl.prototype.resetWidthOnBlocks = function(blocks){
 		for( var j = 0; j < block.inputList.length; j++){
 			var input = block.inputList[j];
 			for(var k = 0; k < input.fieldRow.length; k++){
-				input.fieldRow[k].size_.width = null;
+			    var field = input.fieldRow[k];
+				field.size_.width = null;
+				if(field.imageElement_){
+			        field.height_ = field.imageElement_.height.baseVal.value;
+			        field.width_ = field.imageElement_.width.baseVal.value;
+				}
 			}
 		}
 	}
@@ -226,19 +233,31 @@ ocargo.BlocklyControl.prototype.increaseBlockSize = function(){
     */
     
     ocargo.blocklyControl.IMAGE_WIDTH *= 2;
+    ocargo.blocklyControl.BLOCK_VAN_HEIGHT *= 2;
+    ocargo.blocklyControl.BLOCK_VAN_WIDTH *= 2;    
     ocargo.blocklyControl.BLOCK_HEIGHT *= 2;
 
 	document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' + ':'+'22pt !important'+'}', document.styleSheets[0].cssRules.length);
 	document.styleSheets[0].insertRule(".blocklyIconMark, .beaconClass" + ' { font-size' + ':'+'18pt !important'+'}', document.styleSheets[0].cssRules.length);
 	var blocks = Blockly.mainWorkspace.getAllBlocks();
+    $(".blocklyDraggable > g > image").each( function(index, element){
+    	var jQueryElement = $(element);
+    	var heightStr = jQueryElement.attr("height");
+    	var heightNumber = parseInt(heightStr.substring(0, heightStr.length - 2));
+    	var widthStr = jQueryElement.attr("width");
+    	var widthNumber = parseInt(widthStr.substring(0, widthStr.length - 2));
+    	jQueryElement.attr("height", heightNumber * 2 + "px");
+    	jQueryElement.attr("width", widthNumber * 2 + "px");
+    	jQueryElement.attr("y", -32);
+    });
     ocargo.blocklyControl.resetWidthOnBlocks(blocks);
     Blockly.mainWorkspace.render();
 
-	Blockly.mainWorkspace.flyout_.show(Blockly.languageTree.childNodes);
+	Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
 	
     $(".blocklyIconShield").attr("width", 32).attr("height", 32).attr("rx", 8).attr("ry", 8);
     $(".blocklyIconMark").attr("x", 16).attr("y", 24);
-    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24);
+    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24);  
 };
 
 ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
@@ -261,6 +280,8 @@ ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
     */
     
     ocargo.blocklyControl.IMAGE_WIDTH /= 2;
+    ocargo.blocklyControl.BLOCK_VAN_HEIGHT /= 2;
+    ocargo.blocklyControl.BLOCK_VAN_WIDTH /= 2;  
     ocargo.blocklyControl.BLOCK_HEIGHT /= 2;
 
     var sheet = document.styleSheets[0];
@@ -269,10 +290,21 @@ ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
 	}
 
 	var blocks = Blockly.mainWorkspace.getAllBlocks();
+    
+    $(".blocklyDraggable > g > image").each( function(index, element){
+    	var jQueryElement = $(element);
+    	var heightStr = jQueryElement.attr("height");
+    	var heightNumber = parseInt(heightStr.substring(0, heightStr.length - 2));
+    	var widthStr = jQueryElement.attr("width");
+    	var widthNumber = parseInt(widthStr.substring(0, widthStr.length - 2));
+    	jQueryElement.attr("height", heightNumber / 2 + "px");
+    	jQueryElement.attr("width", widthNumber / 2 + "px");
+    	jQueryElement.attr("y", -12);
+    });
     ocargo.blocklyControl.resetWidthOnBlocks(blocks);
     Blockly.mainWorkspace.render();
 
-	Blockly.mainWorkspace.flyout_.show(Blockly.languageTree.childNodes);
+	Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
     $(".blocklyIconShield").attr("width", 16).attr("height", 16).attr("rx", 4).attr("ry", 4);
     $(".blocklyIconMark").attr("x", 8).attr("y", 12);
     $(".blocklyEditableText > rect").attr("height", 16).attr("y", -12);

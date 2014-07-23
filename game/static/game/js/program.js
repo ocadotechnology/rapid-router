@@ -46,8 +46,7 @@ ocargo.Thread.prototype.step = function(model) {
 
 	if (!successful) {
 		// Program crashed, queue a block highlight event
-		ocargo.animation.queueAnimation({
-			timestamp: model.timestamp,
+		ocargo.animation.appendAnimation({
 			type: 'callable',
 			functionCall: function() {
 				ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
@@ -199,10 +198,10 @@ ProcedureCall.prototype.execute = function(thread) {
 /* Highlighting of blocks */
 
 function queueHighlight(model, block) {
-	ocargo.animation.queueAnimation({
-		timestamp: model.timestamp,
+	ocargo.animation.appendAnimation({
 		type: 'callable',
 		functionCall: makeHighLightCallable(block),
+		description: 'Blockly highlight: ' + block.type,
 	});
 }
 

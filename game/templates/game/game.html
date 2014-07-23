@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load compress %}
+{% load i18n %}
 
 {% block title %}Game{% endblock %}
 
@@ -101,7 +102,6 @@
     <button class="picButton" id="stop"><span>stop</span></button>
     <button class="picButton" id="resume"><span>resume</span></button>
     <button class="picButton" id="step"><span>step</span></button>
-
     <button class="picButton" id="save"><span>save</span></button>
     <button class="picButton" id="load"><span>load</span></button>
     <button class="picButton" id="clear"><span>clear</span></button>
@@ -110,8 +110,8 @@
     <button class="picButton" id="big_code_mode"><span>big code mode</span></button>
 
     <button class="picButton" id="help"><span>help</span></button>
-
-    <button class="picButton" id="mute"><span>mute</span></button>
+    <button class="picButton" id="muted"><span>muted</span></button>
+    <button class="picButton" id="unmuted"><span>unmuted</span></button>
     <button class="picButton" id="quit"><span>quit</span></button>
   </div>
 

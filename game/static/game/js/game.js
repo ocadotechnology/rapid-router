@@ -38,7 +38,8 @@ function init() {
     setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
 
     if ($.cookie("muted") === "true") {
-        $('#mute').text("Unmute");
+        $('#muted').css('display','block');
+        $('#unmuted').css('display','none');
         ocargo.sound.mute();
     }
 }
@@ -162,20 +163,19 @@ function runProgramAndPrepareAnimation() {
     var program = ocargo.controller.prepare();
 
     // Starting sound
-    ocargo.animation.queueAnimation({
-        timestamp: 0,
+    ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: ocargo.sound.starting,
+        description: 'starting sound',
     });
 
     program.run(ocargo.model);
 
     // resets to start control states
-    var timestamp = ocargo.animation.getLastTimestamp();
-    ocargo.animation.queueAnimation({
-        timestamp: timestamp,
+    ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: onStopControls,
+        description: 'onStopControls',
     });
 
     return true;
@@ -503,6 +503,7 @@ function setupMenuListeners() {
         else {
             $('#blockly').fadeIn();
             ocargo.blocklyControl.redrawBlockly();
+            Blockly.mainWorkspace.render();
             ocargo.controller = ocargo.blocklyControl;
             blockly = true;
         }
@@ -520,15 +521,16 @@ function setupMenuListeners() {
         startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
     });
 
-    $('#mute').click(function() {
-        var $this = $(this);
-        if (ocargo.sound.volume === 0) {
-            $this.text('Mute');
-            ocargo.sound.unmute();
-        } else {
-            $this.text('Unmute');
-            ocargo.sound.mute();
-        }
+    $('#muted').click(function() {
+        $('#muted').css('display','none');
+        $('#unmuted').css('display','block');
+        ocargo.sound.mute();
+    });
+
+    $('#unmuted').click(function() {
+        $('#muted').css('display','block');
+        $('#unmuted').css('display','none');
+        ocargo.sound.mute();
     });
 
     $('#quit').click(function() {
