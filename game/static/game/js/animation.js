@@ -126,9 +126,9 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 						leadMsg = leadMsg + ocargo.messages.closebutton(ocargo.messages.tryagainLabel);
 						break;
 				}
+				var otherMsg = "";
 				if (a.popupHint) {
 					var hintBtns = $("#hintPopupBtn");
-					var otherMsg = "";
 			        if (hintBtns.length === null || hintBtns.length === 0) {
 			            otherMsg = '<p id="hintBtnPara">' +
 			                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 

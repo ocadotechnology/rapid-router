@@ -35,7 +35,7 @@ function init() {
 
     startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
 
-    setupFuelGauge(nodes, BLOCKS);
+    setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
 
     if ($.cookie("muted") === "true") {
         $('#mute').text("Unmute");
