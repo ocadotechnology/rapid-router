@@ -494,6 +494,7 @@ function setupMenuListeners() {
         else {
             $('#blockly').fadeIn();
             ocargo.blocklyControl.redrawBlockly();
+            Blockly.mainWorkspace.render();
             ocargo.controller = ocargo.blocklyControl;
             blockly = true;
         }
