@@ -496,7 +496,7 @@ function setupMenuListeners() {
         $('#pythonCode').css("display","none");
         if(blockly) {
             $('#pythonCode').fadeIn();
-            ocargo.editor.setValue(Blockly.Python.workspaceToCode());
+            ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
             ocargo.controller = ocargo.editor;
             blockly = false;
         }

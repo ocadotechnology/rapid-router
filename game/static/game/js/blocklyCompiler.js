@@ -20,29 +20,25 @@ ocargo.BlocklyCompiler.prototype.compile = function()
 ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
     this.procedures = {};
     this.procedureBindings = [];
+    
+    var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
+    for (var i = 0; i < procBlocks.length; i++) {
+        var block = procBlocks[i];
+        var nameBlock = block.inputList[0].connection.targetBlock();
+        if(nameBlock == null) {
+            throw ocargo.messages.procMissingNameError;
+        }
+        var name = nameBlock.inputList[0].fieldRow[1].text_;
+        if (name === "") {
+            throw ocargo.messages.procMissingNameError;
+        }
 
-    var topBlocks = Blockly.mainWorkspace.getTopBlocks();
-    for (var i = 0; i < topBlocks.length; i++)
-    {
-        var block = topBlocks[i];
-        if(topBlocks[i].type === 'declare_proc') {
-            var nameBlock = block.inputList[0].connection.targetBlock();
-            if(nameBlock == null) {
-                throw ocargo.messages.procMissingNameError;
-            }
-            var name = nameBlock.inputList[0].fieldRow[1].text_;
-            if (name === "") {
-                throw ocargo.messages.procMissingNameError;
-            }
+        var bodyBlock = block.inputList[1].connection.targetBlock();
 
-            var bodyBlock = block.inputList[1].connection.targetBlock();
-
-            if (!(name in this.procedures)) {
-                this.procedures[name] = new Procedure(name, this.createSequence(bodyBlock),block)
-            }
-            else {
-                throw ocargo.messages.procDupNameError;
-            }
+        if (!(name in this.procedures)) {
+            this.procedures[name] = new Procedure(name, this.createSequence(bodyBlock),block)
+        } else {
+            throw ocargo.messages.procDupNameError;
         }
     }
 }
@@ -248,4 +244,21 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function(count) {
         count = startCount;
         return false;
     };
+}
+
+
+ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
+	var code = 'import van\n\nv = van.Van()\n';
+	
+	var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
+    for (var i = 0; i < procBlocks.length; i++) {
+    	code += '\n' + Blockly.Python.blockToCode(procBlocks[i]);
+    }
+	
+	var startBlocks = ocargo.blocklyControl.getStartBlocks();
+	for(var i = 0; i < startBlocks.length; i++) {
+		code += '\n' + Blockly.Python.blockToCode(startBlocks[i]);
+	}
+	
+	return code;
 }

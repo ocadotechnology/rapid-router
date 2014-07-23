@@ -138,6 +138,16 @@ ocargo.BlocklyControl.prototype.getStartBlocks = function() {
     return startBlocks;
 };
 
+ocargo.BlocklyControl.prototype.getProcedureBlocks = function() {
+    var startBlocks = [];
+    Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
+        if (block.type === 'declare_proc') {
+            startBlocks.push(block);
+        }
+    });
+    return startBlocks;
+};
+
 ocargo.BlocklyControl.prototype.getBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };

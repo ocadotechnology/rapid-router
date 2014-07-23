@@ -19,8 +19,7 @@ Blockly.Blocks['start'] = {
 };
 
 Blockly.Python['start'] = function(block) {
-	return 'import van\n\
-v = van.Van()\n';
+	return '';
 };
 
 Blockly.Blocks['move_forwards'] = {
@@ -228,7 +227,7 @@ Blockly.Blocks['call_proc'] = {
 };
 
 Blockly.Python['call_proc'] = function(block) {
-	return 'this.' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '()\n';
+	return block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '()\n';
 };
 
 Blockly.Blocks['declare_proc'] = {
@@ -245,8 +244,9 @@ Blockly.Blocks['declare_proc'] = {
 };
 
 Blockly.Python['declare_proc'] = function(block) {
-	return 'def ' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '():\n\
-	print "TODO get sub-blocks"';//TODO: get code out of sub-blocks (there's a Blockly function for it)
+	var branch = Blockly.Python.statementToCode(block, 'DO');
+	return 'def ' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '():\n'
+		+ branch;//TODO: get code out of sub-blocks (there's a Blockly function for it)
 };
 
 // Set text colour to red
