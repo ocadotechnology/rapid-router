@@ -98,11 +98,11 @@ ocargo.Animation.prototype.stepAnimation = function() {
 						title = ocargo.messages.winTitle;
 						var levelMsg = "";
 						if (NEXT_LEVEL) {
-					        levelMsg = ocargo.messages.nextLevelButton(NEXT_LEVEL);
+					        levelMsg = '<br><br>' + ocargo.messages.nextLevelButton(NEXT_LEVEL);
 					    } 
 					    else {
 					        if (NEXT_EPISODE) {
-					            levelMsg = ocargo.messages.nextEpisodeButton(NEXT_EPISODE);
+					            levelMsg = '<br><br>' + ocargo.messages.nextEpisodeButton(NEXT_EPISODE);
 					        } else {
 					            levelMsg = ocargo.messages.lastLevel;
 					        }
