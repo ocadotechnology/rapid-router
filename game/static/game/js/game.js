@@ -77,7 +77,7 @@ function onPlayControls() {
     document.getElementById('pause').style.visibility='visible';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
-    document.getElementById('step').style.visibility='false';
+    document.getElementById('step').style.visibility='hidden';
 
     document.getElementById('load').disabled = true;
     document.getElementById('save').disabled = true;
@@ -127,7 +127,6 @@ function onPauseControls() {
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('step').style.visibility='visible';
-    console.log("Hi");
 }
 
 function onResumeControls() {
@@ -444,7 +443,14 @@ function setupMenuListeners() {
         if (ocargo.animation.isFinished()) {  // NB Should NOT be *visible* at the end of execution - should wait for a reset!
             runProgramAndPrepareAnimation();
         }
-        ocargo.animation.stepAnimation(onPauseControls);
+        ocargo.animation.stepAnimation(function() {
+            if (ocargo.animation.isFinished()) {
+                onStopControls();
+            }
+            else {
+                onPauseControls();
+            }
+        });
         onStepControls();
     });
 

@@ -28,6 +28,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.animationTimestamp = 0;
 	this.latestTimestamp = 0;
 	this.isPlaying = false;
+	this.currentlyAnimating = false;
 
 	clearPaper();
 	renderMap(this.model.map);
@@ -37,12 +38,21 @@ ocargo.Animation.prototype.resetAnimation = function() {
 };
 
 ocargo.Animation.prototype.stepAnimation = function(callback) {
-	var maxDelay = 0;
+	if (this.currentlyAnimating) {
+		return;
+	}
+
+	this.currentlyAnimating = true;
+
+	var maxDelay = ANIMATION_LENGTH;
+
 	// do all things in this timestep
 	while (this.animationQueue.length > 0 && this.animationQueue[0].timestamp <= this.animationTimestamp) {
 		var a = this.animationQueue.shift();
+
 		// animation length is either default or may be custom set
-		var animationLength = a.animationLength  || ANIMATION_LENGTH;
+		var animationLength = a.animationLength || ANIMATION_LENGTH;
+
 		switch (a.type) {
 			case 'callable':
 				animationLength = a.animationLength || 0;
@@ -161,28 +171,29 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		if (animationLength > maxDelay) {
 			maxDelay = animationLength;
 		}
+	}
 
-		if (this.animationQueue.length > 0) {
-			// finished animation, stop playing
-			this.isPlaying = false;
-		}
-
-		var self = this;
-		setTimeout(function() {
-			if (callback) {
-				callback();
-			}
-			if (self.isPlaying) {
-				self.stepAnimation();
-			}
-		}, maxDelay);
+	if (this.animationQueue.length == 0) {
+		// finished animation, stop playing
+		this.isPlaying = false;
 	}
 
 	this.animationTimestamp ++;
+
+	var self = this;
+	setTimeout(function() {
+		if (callback) {
+			callback();
+		}
+		self.currentlyAnimating = false;
+		if (self.isPlaying) {
+			self.stepAnimation();
+		}
+	}, maxDelay);
 };
 
 ocargo.Animation.prototype.playAnimation = function() {
-	if (!this.isPlaying && this.animationQueue.length > 0) {
+	if (!this.currentlyAnimating && !this.isPlaying && this.animationQueue.length > 0) {
 		this.isPlaying = true;
 		this.stepAnimation();
 	}

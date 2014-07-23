@@ -190,7 +190,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 
 		// Winning sound
 		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp,
+			timestamp: this.timestamp - 1,
 			type: 'callable',
 			functionCall: ocargo.sound.win,
 		});
@@ -210,7 +210,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 
 		// Failure sound
 		ocargo.animation.queueAnimation({
-			timestamp: this.timestamp,
+			timestamp: this.timestamp - 1,
 			type: 'callable',
 			functionCall: ocargo.sound.failure,
 		});
