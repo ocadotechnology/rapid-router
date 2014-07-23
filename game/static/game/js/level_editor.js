@@ -248,7 +248,7 @@ function handleMouseUp(this_rect, segment) {
             var trafficLights = createAndAddTrafficLightsToNodes(ocargo.levelEditor.nodes, ocargo.levelEditor.trafficLights);
             ocargo.levelEditor.createGrid(paper)
             ocargo.levelEditor.drawDecor();
-            createTrafficLights(trafficLights, true);
+            renderTrafficLights(trafficLights, true);
             if (ocargo.levelEditor.pathStart !== null) {
                 coord = translate(ocargo.levelEditor.pathStart.coordinate);
                 ocargo.levelEditor.mark(coord, 'red', 0.7, true);
@@ -630,17 +630,7 @@ function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
     var trafficLights = [];
     for(var i = 0; i < trafficLightData.length; i++){
         var trafficLight = trafficLightData[i];
-        var id = trafficLight['id'];
-        var controlledNodeId = trafficLight['node'];
-        var sourceNodeId = trafficLight['sourceNode'];
-        var redDuration = trafficLight['redDuration'];
-        var greenDuration = trafficLight['greenDuration'];
-        var startTime = trafficLight['startTime'];
-        var startingState = trafficLight['startingState'];
-        var controlledNode = nodes[controlledNodeId];
-        var sourceNode = nodes[sourceNodeId];
-        
-        var light = new ocargo.TrafficLight(id, startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
+        var light = new ocargo.TrafficLight(id, trafficLight, nodes);
         trafficLights.push(light);
         controlledNode.addTrafficLight(light);
     }
