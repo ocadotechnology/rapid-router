@@ -53,10 +53,4 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(to='game.Theme'),
             preserve_default=True,
         ),
-        migrations.AddField(
-            model_name='level',
-            name='theme',
-            field=models.ForeignKey(default=None, to='game.Theme'),
-            preserve_default=True,
-        ),
     ]
