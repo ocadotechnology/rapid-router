@@ -235,7 +235,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		                '</p><p id="hintText">' + HINT + '</p>');
     			}
 			}
-			startPopup(title, leadMsg, otherMsg);
+			startPopup(title, leadMsg, otherMsg, 1000);
 			if (a.popupHint) {
 				if(level.hintOpened){
 	                $("#hintBtnPara").hide();

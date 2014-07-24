@@ -488,11 +488,11 @@ function renderVans(position, numVans) {
 }
 
 // This is the function that starts the pop-up.
-function startPopup(title, subtitle, message) {
+function startPopup(title, subtitle, message, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
-    $('#myModal').foundation('reveal', 'open');
+    setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
 }
 
 /*****************/
