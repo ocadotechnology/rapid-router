@@ -19,6 +19,10 @@ ocargo.Animation.prototype.isFinished = function() {
 	return this.finished;
 };
 
+ocargo.Animation.prototype.wasJustReset = function() {
+	return (!this.isFinished() && this.animationQueue.length == 1 && this.animationQueue[0].length == 1 && this.animationQueue[0][0].length == 0);
+};
+
 ocargo.Animation.prototype.resetAnimation = function() {
 	this.animationQueue = [[[]]];
 
@@ -70,8 +74,9 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 	}
 
 	// Check if we've performed all events we have
-	if (this.timestamp > this.lastTimestamp) {
+	if (this.timestamp >= this.animationQueue.length) {
 		this.isPlaying = false;
+		this.finished = true;
 	}
 
 	// Call this function again after the events have finished
