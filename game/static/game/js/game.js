@@ -8,6 +8,8 @@ function init() {
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.blocklyControl.loadPreviousAttempt();
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
+    // Setup blockly to python
+    Blockly.Python.init();
     
     // Create the model
     ocargo.model = new ocargo.Model(PATH, DESTINATION, TRAFFIC_LIGHTS, MAX_FUEL);
@@ -548,6 +550,8 @@ function setupMenuListeners() {
             $('#blockly').fadeIn();
             ocargo.blocklyControl.redrawBlockly();
             Blockly.mainWorkspace.render();
+            // reset blockly to python converter
+            Blockly.Python.init();
             ocargo.controller = ocargo.blocklyControl;
             blockly = true;
         }

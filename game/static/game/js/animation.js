@@ -37,8 +37,8 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	clearPaper();
 	renderMap(this.model.map);
 	renderDecor(this.decor);
-	renderTrafficLights(this.model.trafficLights);
 	renderVans(this.model.map.getStartingPosition(), this.numVans);
+	renderTrafficLights(this.model.trafficLights);
 };
 
 ocargo.Animation.prototype.stepAnimation = function(callback) {
@@ -235,7 +235,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		                '</p><p id="hintText">' + HINT + '</p>');
     			}
 			}
-			startPopup(title, leadMsg, otherMsg);
+			startPopup(title, leadMsg, otherMsg, 1000);
 			if (a.popupHint) {
 				if(level.hintOpened){
 	                $("#hintBtnPara").hide();
