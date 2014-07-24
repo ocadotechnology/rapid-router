@@ -21,7 +21,7 @@ function init() {
     setupLoadSaveListeners();
     setupMenuListeners();
 
-    onStopControls();
+    onStopOrResetControls();
 
     // default controller
     if(BLOCKLY_ENABLED) {
@@ -73,14 +73,30 @@ function sendAttempt(score) {
     }
 }
 
-function onPlayControls() {
-    document.getElementById('direct_drive').style.visibility='hidden';
+// function to enable or disable pointerEvents on running python or blockly code
+function allowCodeChanges(changesAllowed) {
+    var setting = "";
+    if (!changesAllowed) {
+        setting = "none";
+    }
+    document.getElementById('blockly').style.pointerEvents = setting;
+    var codeMirrors = document.getElementsByClassName('CodeMirror');
+    var i;
+    for (i = 0; i < codeMirrors.length; i++) {
+        codeMirrors[i].style.pointerEvents = setting;
+    }
+}
 
+function onPlayControls() {
+    allowCodeChanges(false);
+
+    document.getElementById('direct_drive').style.visibility='hidden';
 
     document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='visible';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
+    document.getElementById('reset').style.visibility='hidden';
     document.getElementById('step').style.visibility='hidden';
 
     document.getElementById('load').disabled = true;
@@ -92,12 +108,15 @@ function onPlayControls() {
 }
 
 function onStepControls() {
+    allowCodeChanges(false);
+
     document.getElementById('direct_drive').style.visibility='hidden';
 
     document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
+    document.getElementById('reset').style.visibility='hidden';
     document.getElementById('step').style.visibility='hidden';
 
     document.getElementById('load').disabled = true;
@@ -108,13 +127,16 @@ function onStepControls() {
     document.getElementById('help').disabled = true;
 }
 
-function onStopControls() {
-    document.getElementById('direct_drive').style.visibility='visible';
+function onStopOrResetControls() {
+    allowCodeChanges(true);
+
+    document.getElementById('direct_drive').style.visibility='visible';  // TODO make this hidden unless blocks are clear or something...
 
     document.getElementById('play').style.visibility='visible';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='hidden';
+    document.getElementById('reset').style.visibility='hidden';
     document.getElementById('step').style.visibility='visible';
 
     document.getElementById('load').disabled = false;
@@ -125,19 +147,45 @@ function onStopControls() {
     document.getElementById('help').disabled = false;
 }
 
+function onEndControls() {
+    allowCodeChanges(true);
+
+    document.getElementById('direct_drive').style.visibility='visible';
+
+    document.getElementById('play').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='hidden';
+    document.getElementById('resume').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='hidden';
+    document.getElementById('reset').style.visibility='visible';
+    document.getElementById('step').style.visibility='hidden';
+
+    document.getElementById('load').disabled = false;
+    document.getElementById('save').disabled = false;
+    document.getElementById('clear').disabled = false;
+    document.getElementById('big_code_mode').disabled = false;
+    document.getElementById('toggle_console').disabled = false;
+    document.getElementById('help').disabled = false;
+}
+
 function onPauseControls() {
+    allowCodeChanges(false);
+
     document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
+    document.getElementById('reset').style.visibility='hidden';
     document.getElementById('step').style.visibility='visible';
 }
 
 function onResumeControls() {
+    allowCodeChanges(false);
+
     document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='visible';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
+    document.getElementById('reset').style.visibility='hidden';
     document.getElementById('step').style.visibility='hidden';
 }
 
@@ -171,11 +219,11 @@ function runProgramAndPrepareAnimation() {
 
     program.run(ocargo.model);
 
-    // resets to start control states
+    // Set controls ready for user to reset
     ocargo.animation.appendAnimation({
         type: 'callable',
-        functionCall: onStopControls,
-        description: 'onStopControls',
+        functionCall: onEndControls,
+        description: 'onEndControls',
     });
 
     return true;
@@ -185,28 +233,19 @@ function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        if(ocargo.animation.isFinished()) {
-            renderVans(ocargo.model.map.getStartingPosition(), THREADS);
-        }
-        moveForward(0, ANIMATION_LENGTH, onStopControls);
+        moveForward(0, ANIMATION_LENGTH, onEndControls);
     });
 
     $('#turnLeft').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        if(ocargo.animation.isFinished()) {
-            renderVans(ocargo.model.map.getStartingPosition(), THREADS);
-        }
-        moveLeft(0, ANIMATION_LENGTH, onStopControls);
+        moveLeft(0, ANIMATION_LENGTH, onEndControls);
     });
 
     $('#turnRight').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        if(ocargo.animation.isFinished()) {
-            renderVans(ocargo.model.map.getStartingPosition(), THREADS);
-        }
-        moveRight(0, ANIMATION_LENGTH, onStopControls);
+        moveRight(0, ANIMATION_LENGTH, onEndControls);
     });
     $('#go').click(function() {
         $('#play')[0].click();
@@ -450,7 +489,7 @@ function setupMenuListeners() {
             ocargo.animation.playAnimation();
         }
         else {
-            onStopControls();
+            onStopOrResetControls();
         }
     });
 
@@ -466,16 +505,21 @@ function setupMenuListeners() {
 
     $('#stop').click(function() {
         ocargo.animation.resetAnimation();
-        onStopControls();
+        onStopOrResetControls();
+    });
+
+    $('#reset').click(function() {
+        ocargo.animation.resetAnimation();
+        onStopOrResetControls();
     });
 
     $('#step').click(function() {
-        if (ocargo.animation.isFinished()) {  // NB Should NOT be *visible* at the end of execution - should wait for a reset!
+        if (ocargo.animation.wasJustReset()) {
             runProgramAndPrepareAnimation();
         }
         ocargo.animation.stepAnimation(function() {
             if (ocargo.animation.isFinished()) {
-                onStopControls();
+                onEndControls();
             }
             else {
                 onPauseControls();
@@ -486,7 +530,7 @@ function setupMenuListeners() {
 
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
-        onStopControls();
+        onStopOrResetControls();
         ocargo.animation.resetAnimation();
     });
 
