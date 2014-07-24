@@ -108,7 +108,7 @@ class Level (models.Model):
     threads = models.IntegerField(blank=False, default=1)
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
-    theme = models.ForeignKey(Theme, default=None)
+    theme = models.ForeignKey(Theme, default=1)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
