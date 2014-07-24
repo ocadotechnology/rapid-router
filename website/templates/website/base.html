@@ -7,14 +7,18 @@
 
 {% block top_bar_menu %}
     {% menu_item link='/home' name='Home' %}
-    {% menu_item link='/game' name='Game' %}
-    {% menu_item link='/game/level_editor' name='Create' %}
-    {% menu_item link='/game/scoreboard' name='Scoreboard' %}
+    {% if user.is_authenticated %}
+        {% menu_item link='/game' name='Game' %}
+        {% menu_item link='/game/level_editor' name='Create' %}
+        {% menu_item link='/game/scoreboard' name='Scoreboard' %}
+    {% endif %}
 {% endblock top_bar_menu %}
 
 {% block top_bar_right_menu %}
-    {% menu_item link='/feedback' name='Feedback' %}
-    {% menu_item link='/admin' name='Admin' %}
+    {% if user.is_authenticated %}
+        {% menu_item link='/feedback' name='Feedback' %}
+        {% menu_item link='/admin' name='Admin' %}
+    {% endif %}
 {% endblock top_bar_right_menu %}
 
 {% block user_info_menu %}
