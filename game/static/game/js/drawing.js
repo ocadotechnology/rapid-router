@@ -143,11 +143,12 @@ function isMobile() {
 }
 
 // This is the function that starts the pop-up.
-function startPopup(title, subtitle, message) {
+// This is the function that starts the pop-up.
+function startPopup(title, subtitle, message, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
-    $('#myModal').foundation('reveal', 'open');
+    setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
 }
 
 function clearPaper() {
@@ -699,9 +700,11 @@ function crash(vanID, animationLength, previousNode, currentNode, attemptedActio
         var maxSize = 20;
         var minSize = 10;
 
+        var explosionParts = 20;
+
         vanImage.animate({opacity: 0}, 1000);
 
-        for(var i = 0; i < 20; i++) {
+        for(var i = 0; i < explosionParts; i++) {
             setTimeout(function() {
                 var size = minSize + Math.random()*(maxSize-minSize);
                 var xco = x + width*(Math.random()-0.5) - 0.5*size;
@@ -711,6 +714,11 @@ function crash(vanID, animationLength, previousNode, currentNode, attemptedActio
                 img.animate({opacity: 0, transform: 's2'}, 1000, function () {});
             },(i < 5 ? 0 :(i-5)*50));
         }
+
+        // reset the drawing after explosion
+        setTimeout(function() {
+            ocargo.animation.resetAnimation();
+        }, ((explosionParts-5)*50)+1000);
     }
 }
 

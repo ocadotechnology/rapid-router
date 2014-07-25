@@ -130,6 +130,7 @@ img.control{
     background-position: center;
     display: inline-block;
     height: 45px;
+    overflow: hidden;
     width: 45px;
     text-indent: 200%;
     white-space: nowrap;
@@ -305,6 +306,14 @@ img.control{
 
 .picButton#stop span {
     background-image : url('/static/game/image/menu_button_stop.svg');
+}
+
+.picButton#reset {
+    top: 50px;
+}
+
+.picButton#reset span {
+    background-image : url('/static/game/image/menu_button_reset.svg');
 }
 
 .picButton#step {
