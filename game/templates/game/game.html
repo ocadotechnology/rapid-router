@@ -7,39 +7,41 @@
 
 {% block scripts %}
 {{block.super}}
-  <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/python_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/skulpt/python.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/skulpt/editor.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/python_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/destination.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
 
   <script>
     var PATH = {{level.path|safe}};
-    var DESTINATION = {{level.destination|safe}};
+    var DESTINATIONS = {{level.destination|safe}};
     var DECOR = {{level.decor|safe}};
     var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
     var LEVEL_ID = "{{level.id}}";

@@ -826,7 +826,8 @@ $("#export").click(function() {
          return;
     }
 
-    var pathToDestination = aStar(ocargo.levelEditor.nodes, ocargo.levelEditor.destination);
+    var destination = new ocargo.Destination(0, ocargo.levelEditor.destination);
+    var pathToDestination = getOptimalPath(ocargo.levelEditor.nodes, [destination]);
     if (pathToDestination.length === 0) {
         startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
             ocargo.messages.noStartEndRoute);
@@ -836,7 +837,7 @@ $("#export").click(function() {
         var input = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
         var blockTypes = [];
         var endCoord = ocargo.levelEditor.destination.coordinate;
-        var destination = JSON.stringify([endCoord.x, endCoord.y]);
+        var destination = JSON.stringify([[endCoord.x, endCoord.y]]);
         var decor = JSON.stringify(ocargo.levelEditor.decor);
         var trafficLights = JSON.stringify(ocargo.levelEditor.trafficLights);
         var maxFuel = $('#maxFuel').val();

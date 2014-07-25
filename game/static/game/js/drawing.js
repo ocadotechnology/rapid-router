@@ -6,8 +6,6 @@ var GRID_WIDTH = 10;
 var GRID_HEIGHT = 8;
 var GRID_SPACE_SIZE = 100;
 
-var ANIMATION_FRAME = 500;
-
 var VAN_WIDTH = 40;
 var VAN_HEIGHT = 20;
 
@@ -40,12 +38,16 @@ var ROAD_MARKER_ATTR = {
     'stroke': 'white'
 };
 
+var DESTINATION_NOT_VISITED_COLOUR = 'yellow';
+var DESTINATION_VISITED_COLOUR = 'green';
+
 var DASH = '10';
 
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
 var vanImages = {};
 var lightImages = {};
+var destinationImages = {};
 
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;
@@ -82,9 +84,9 @@ function calculateInitialRotation(previousNode, startNode) {
 }
 
 function getRoadLetters(previous, node1, node2) {
-    previous = transformY(previous);
-    node1 = transformY(node1);
-    node2 = transformY(node2);
+    previous = translate(previous);
+    node1 = translate(node1);
+    node2 = translate(node2);
 
     if (isHorizontal(node1, node2) &&
         (previous === null || isHorizontal(previous, node1))) {
@@ -131,143 +133,32 @@ function isProgressive(coord1, coord2) {
     return coord1 < coord2;
 }
 
-function transformY(coord) {
-    return new ocargo.Coordinate(coord.x, GRID_HEIGHT - 1 - coord.y);
-}
-
-function drawDeadEndRoad(node) {
-    var previousNode = node.connectedNodes[0];
-
-    var nextNode = {};
-    nextNode.coordinate = new ocargo.Coordinate(
-            node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
-            node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y));
-
-    var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
-
-    var prevFlipped = transformY(previousNode.coordinate);
-    var flipped = transformY(node.coordinate);
-
-    var road = paper.image('/static/game/image/roadTile_deadEnd.svg',
-        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-
-    if (roadLetters === 'H' && prevFlipped.x < flipped.x) {
-        road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-    }
-    else if (roadLetters === 'H' && prevFlipped.x > flipped.x) {
-        road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-    }
-    else if (roadLetters === 'V' && prevFlipped.y < flipped.y) {
-        road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-    }
-}
-
-function drawSingleRoadSegment(previousNode, node, nextNode) {
-    var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
-
-    var flipped = transformY(node.coordinate);
-    var road;
-    if (roadLetters === 'H') {
-        road = paper.image('/static/game/image/roadTile_straight.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-        road.rotate(90);
-    }
-    else if (roadLetters === 'V') {
-        road = paper.image('/static/game/image/roadTile_straight.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-    }
-    else {
-        road = paper.image('/static/game/image/roadTile_turn.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-
-        if (roadLetters === 'UL') {
-            road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
-        else if (roadLetters === 'UR') {
-            road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
-        else if (roadLetters === 'DR') {
-            road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
-    }
-}
-
-function drawTJunction(node) {
-    var node1 = node.connectedNodes[0];
-    var node2 = node.connectedNodes[1];
-    var node3 = node.connectedNodes[2];
-
-    var flipped = transformY(node.coordinate);
-    var flipped1 = transformY(node1.coordinate);
-    var flipped2 = transformY(node2.coordinate);
-    var flipped3 = transformY(node3.coordinate);
-
-    var letters12 = getRoadLetters(node1.coordinate, node.coordinate, node3.coordinate);
-    var letters13 = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
-
-    var rotation = 0;
-    if      ((letters12 === 'V'  && (letters13 === 'UL' || letters13 === 'DL')) ||
-             (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V' )) ||
-             (letters12 === 'DL' && (letters13 === 'UL' || letters13 === 'V' ))) {
-        rotation = 0;
-    }
-    else if ((letters12 === 'H'  && (letters13 === 'UL' || letters13 === 'UR')) ||
-             (letters12 === 'UL' && (letters13 === 'UR' || letters13 === 'H' )) ||
-             (letters12 === 'UR' && (letters13 === 'UL' || letters13 === 'H' ))) {
-        rotation = 90;
-    }
-    else if ((letters12 === 'V'  && (letters13 === 'UR' || letters13 === 'DR')) ||
-             (letters12 === 'UR' && (letters13 === 'DR' || letters13 === 'V' )) ||
-             (letters12 === 'DR' && (letters13 === 'UR' || letters13 === 'V' ))) {
-        rotation = 180;
-    }
-    else if ((letters12 === 'H'  && (letters13 === 'DL' || letters13 === 'DR')) ||
-             (letters12 === 'DL' && (letters13 === 'DR' || letters13 === 'H' )) ||
-             (letters12 === 'DR' && (letters13 === 'DL' || letters13 === 'H' ))) {
-        rotation = 270;
-    }
-
-    var road = paper.image('/static/game/image/roadTile_TJunction.svg',
-        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-    road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-}
-
-function drawCrossRoads(node) {
-    var flipped = transformY(node.coordinate);
-    
-    var road = paper.image('/static/game/image/roadTile_crossRoads.svg',
-        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-}
-
-function createRoad(nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-        var node = nodes[i];
-        switch (node.connectedNodes.length) {
-            case 1:
-                drawDeadEndRoad(node);
-                break;
-            
-            case 2:
-                drawSingleRoadSegment(node.connectedNodes[0], node, node.connectedNodes[1]);
-                break;
-            
-            case 3:
-                drawTJunction(node);
-                break;
-            
-            case 4:
-                drawCrossRoads(node);
-                break;
-
-            default:
-                break;
-        }
-    }
+function translate(coordinate) {
+    return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
 }
 
 function isMobile() {
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
     return !!mobileDetect.mobile();
+}
+
+// This is the function that starts the pop-up.
+function startPopup(title, subtitle, message) {
+    $('#myModal-title').html(title);
+    $('#myModal-lead').html(subtitle);
+    $('#myModal-mainText').html(message);
+    $('#myModal').foundation('reveal', 'open');
+}
+
+function clearPaper() {
+    paper.clear();
+}
+
+function renderMap(map) {
+    drawBackground();
+    createRoad(map.nodes);
+    renderDestinations(map.destinations);
+    createCFC(map.getStartingPosition());
 }
 
 function drawBackground() {
@@ -288,6 +179,113 @@ function createCFC(position) {
     rotateElementAroundCentreOfGridSpace(cfc, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
 
     cfc.transform('... r90');
+}
+
+function renderDecor(decor) {
+    for (var i = 0; i < decor.length; i++) {
+        var obj = decor[i];
+        var coord = obj['coordinate'];
+        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
+            DECOR_SIZE, DECOR_SIZE);
+    }
+}
+
+/*****************************/
+/** Traffic light rendering **/
+/*****************************/
+
+function renderTrafficLights(trafficLights, draggable) {
+    for (var i = 0; i < trafficLights.length; i++) {
+        var trafficLight = trafficLights[i];
+        var controlledNode = trafficLight.controlledNode;
+        var sourceNode = trafficLight.sourceNode;
+        
+        //get position based on nodes
+        var x = (controlledNode.coordinate.x + sourceNode.coordinate.x) / 2.0;
+        var y = (controlledNode.coordinate.y + sourceNode.coordinate.y) / 2.0;
+        
+        //get rotation based on nodes (should face source)
+        var rotation = calculateInitialRotation(sourceNode, controlledNode) + 90;
+        
+        //draw red and green lights, keep reference to both
+        var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
+        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
+        if (trafficLight.startingState === "RED") {
+            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
+                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
+                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+        } else {
+            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
+                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
+                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
+                    .transform('r' + rotation + 's-1,1');
+        }
+        
+
+        lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
+
+        if (draggable) {
+            var id = trafficLight.id;
+            if (trafficLight.startingState === "RED") {
+                trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id, true);
+            } else {
+                trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate), id, false);
+            }
+
+            if (trafficLight.startingState === "RED") {
+                trafficLight.redLightEl.node.ondblclick = function() {
+                    var traffic = trafficLight;
+                    console.debug("id", traffic.id);
+                    var image = traffic.redLightEl;
+                    return image.transform('...r90');
+                };
+            } else {
+                trafficLight.greenLightEl.node.ondblclick = function() {
+                    var traffic = trafficLight;
+                    console.debug("id", traffic.id);
+                    var image = traffic.greenLightEl;
+                    return image.transform('...r90');
+                };
+            }
+        }
+
+		
+		//hide light which isn't the starting state
+		if(trafficLight.startingState === ocargo.TrafficLight.RED){
+			trafficLight.greenLightEl.attr({'opacity': 0});
+		} else {
+			trafficLight.redLightEl.attr({'opacity': 0});
+		}
+	}
+}
+
+
+
+/***************************/
+/** Destination rendering **/
+/***************************/
+
+function renderDestinations(destinations) {
+    for(var i = 0; i < destinations.length; i++) {
+        var destination = destinations[i].node;
+        var variation = getHousePosition(destination);
+
+        var destinationRect = paper.rect(destination.coordinate.x * GRID_SPACE_SIZE, 
+                                PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100,
+                                100, 100).attr({'stroke': DESTINATION_NOT_VISITED_COLOUR});
+
+        var destinationHouse = paper.image('/static/game/image/house1_noGreen.svg',
+                                destination.coordinate.x * GRID_SPACE_SIZE + variation[0],
+                                PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
+                                50, 50).transform('r' + variation[2]);
+
+        destinationImages[destinations[i].id] = [destinationRect, destinationHouse];
+    }
 }
 
 //find a side of the road
@@ -374,111 +372,146 @@ function getHousePosition(destination) {
     return variation;
 }
 
-function createDestination(destination) {
-    var variation = getHousePosition(destination);
 
-    paper.rect(destination.coordinate.x * GRID_SPACE_SIZE, PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100,
-            100, 100).attr({'stroke': 'yellow'});
 
-    paper.image('/static/game/image/house1_noGreen.svg',
-        destination.coordinate.x * GRID_SPACE_SIZE + variation[0],
-        PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
-        50, 50).transform('r' + variation[2]);
-}
+/********************/
+/** Road rendering **/
+/********************/
 
-function clearPaper() {
-    paper.clear();
-}
+function createRoad(nodes) {
+    for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        switch (node.connectedNodes.length) {
+            case 1:
+                drawDeadEndRoad(node);
+                break;
+            
+            case 2:
+                drawSingleRoadSegment(node.connectedNodes[0], node, node.connectedNodes[1]);
+                break;
+            
+            case 3:
+                drawTJunction(node);
+                break;
+            
+            case 4:
+                drawCrossRoads(node);
+                break;
 
-function renderMap(map) {
-    drawBackground();
-    createRoad(map.nodes);
-    createDestination(map.destination);
-    createCFC(map.getStartingPosition());
-}
-
-function renderDecor(decor) {
-    for (var i = 0; i < decor.length; i++) {
-        var obj = decor[i];
-        var coord = obj['coordinate'];
-        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
-            DECOR_SIZE, DECOR_SIZE);
+            default:
+                break;
+        }
     }
 }
 
-function translate(coordinate) {
-    return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
+function drawDeadEndRoad(node) {
+    var previousNode = node.connectedNodes[0];
+
+    var nextNode = {};
+    nextNode.coordinate = new ocargo.Coordinate(
+            node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
+            node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y));
+
+    var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+
+    var prevFlipped = translate(previousNode.coordinate);
+    var flipped = translate(node.coordinate);
+
+    var road = paper.image('/static/game/image/roadTile_deadEnd.svg',
+        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+
+    if (roadLetters === 'H' && prevFlipped.x < flipped.x) {
+        road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters === 'H' && prevFlipped.x > flipped.x) {
+        road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters === 'V' && prevFlipped.y < flipped.y) {
+        road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
 }
 
-function renderTrafficLights(trafficLights, draggable) {
-    for (var i = 0; i < trafficLights.length; i++) {
-        var trafficLight = trafficLights[i];
-        var controlledNode = trafficLight.controlledNode;
-        var sourceNode = trafficLight.sourceNode;
-        
-        //get position based on nodes
-        var x = (controlledNode.coordinate.x + sourceNode.coordinate.x) / 2.0;
-        var y = (controlledNode.coordinate.y + sourceNode.coordinate.y) / 2.0;
-        
-        //get rotation based on nodes (should face source)
-        var rotation = calculateInitialRotation(sourceNode, controlledNode) + 90;
-        
-        //draw red and green lights, keep reference to both
-        var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
-        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
-        if (trafficLight.startingState === "RED") {
-            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
-                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-                    .transform('r' + rotation + 's-1,1');
-            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
-                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-                    .transform('r' + rotation + 's-1,1');
-        } else {
-            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
-                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-                    .transform('r' + rotation + 's-1,1');
-            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
-                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-                    .transform('r' + rotation + 's-1,1');
+function drawSingleRoadSegment(previousNode, node, nextNode) {
+    var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+
+    var flipped = translate(node.coordinate);
+    var road;
+    if (roadLetters === 'H') {
+        road = paper.image('/static/game/image/roadTile_straight.svg',
+            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+        road.rotate(90);
+    }
+    else if (roadLetters === 'V') {
+        road = paper.image('/static/game/image/roadTile_straight.svg',
+            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+    }
+    else {
+        road = paper.image('/static/game/image/roadTile_turn.svg',
+            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+
+        if (roadLetters === 'UL') {
+            road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
-        
-
-        lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
-
-        if (draggable) {
-            var id = trafficLight.id;
-            if (trafficLight.startingState === "RED") {
-                trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id, true);
-            } else {
-                trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate), id, false);
-            }
-
-            if (trafficLight.startingState === "RED") {
-                trafficLight.redLightEl.node.ondblclick = function() {
-                    var traffic = trafficLight;
-                    console.debug("id", traffic.id);
-                    var image = traffic.redLightEl;
-                    return image.transform('...r90');
-                };
-            } else {
-                trafficLight.greenLightEl.node.ondblclick = function() {
-                    var traffic = trafficLight;
-                    console.debug("id", traffic.id);
-                    var image = traffic.greenLightEl;
-                    return image.transform('...r90');
-                };
-            }
+        else if (roadLetters === 'UR') {
+            road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
-
-		
-		//hide light which isn't the starting state
-		if(trafficLight.startingState === ocargo.TrafficLight.RED){
-			trafficLight.greenLightEl.attr({'opacity': 0});
-		} else {
-			trafficLight.redLightEl.attr({'opacity': 0});
-		}
-	}
+        else if (roadLetters === 'DR') {
+            road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+    }
 }
+
+function drawTJunction(node) {
+    var node1 = node.connectedNodes[0];
+    var node2 = node.connectedNodes[1];
+    var node3 = node.connectedNodes[2];
+
+    var flipped = translate(node.coordinate);
+    var flipped1 = translate(node1.coordinate);
+    var flipped2 = translate(node2.coordinate);
+    var flipped3 = translate(node3.coordinate);
+
+    var letters12 = getRoadLetters(node1.coordinate, node.coordinate, node3.coordinate);
+    var letters13 = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
+
+    var rotation = 0;
+    if      ((letters12 === 'V'  && (letters13 === 'UL' || letters13 === 'DL')) ||
+             (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V' )) ||
+             (letters12 === 'DL' && (letters13 === 'UL' || letters13 === 'V' ))) {
+        rotation = 0;
+    }
+    else if ((letters12 === 'H'  && (letters13 === 'UL' || letters13 === 'UR')) ||
+             (letters12 === 'UL' && (letters13 === 'UR' || letters13 === 'H' )) ||
+             (letters12 === 'UR' && (letters13 === 'UL' || letters13 === 'H' ))) {
+        rotation = 90;
+    }
+    else if ((letters12 === 'V'  && (letters13 === 'UR' || letters13 === 'DR')) ||
+             (letters12 === 'UR' && (letters13 === 'DR' || letters13 === 'V' )) ||
+             (letters12 === 'DR' && (letters13 === 'UR' || letters13 === 'V' ))) {
+        rotation = 180;
+    }
+    else if ((letters12 === 'H'  && (letters13 === 'DL' || letters13 === 'DR')) ||
+             (letters12 === 'DL' && (letters13 === 'DR' || letters13 === 'H' )) ||
+             (letters12 === 'DR' && (letters13 === 'DL' || letters13 === 'H' ))) {
+        rotation = 270;
+    }
+
+    var road = paper.image('/static/game/image/roadTile_TJunction.svg',
+        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+    road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+}
+
+function drawCrossRoads(node) {
+    var flipped = translate(node.coordinate);
+    
+    var road = paper.image('/static/game/image/roadTile_crossRoads.svg',
+        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+}
+
+
+/*********************************/
+/** Van rendering and animation **/
+/*********************************/
 
 function renderVans(position, numVans) {
     for (var i = 0; i < numVans; i++) {
@@ -487,17 +520,25 @@ function renderVans(position, numVans) {
     scrollToShowVanImage(vanImages[0]);
 }
 
-// This is the function that starts the pop-up.
-function startPopup(title, subtitle, message) {
-    $('#myModal-title').html(title);
-    $('#myModal-lead').html(subtitle);
-    $('#myModal-mainText').html(message);
-    $('#myModal').foundation('reveal', 'open');
+function createVanImage(position, vanId) {
+    var initialX = calculateInitialX(position.currentNode);
+    var initialY = calculateInitialY(position.currentNode);
+
+    var imageStr = (vanId % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+    var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
+
+    var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
+    rotateElementAroundCentreOfGridSpace(vanImage, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
+
+    vanImage.transform('... r90');
+
+    return vanImage;
 }
 
-/*****************/
-/** Van methods **/
-/*****************/
+function getVanImagePosition(vanImage) {
+    var box = vanImage.getBBox();
+    return [box.x, box.y];
+}
 
 function scrollToShowVanImage(vanImage) {
     var point = getVanImagePosition(vanImage);
@@ -572,28 +613,15 @@ function wait(vanId, animationLength, callback) {
     }, vanId, animationLength, callback);
 }
 
+function deliver(vanID, animationLength, destinationID, callback) {
+    var images = destinationImages[destinationID];
+    var destinationRect = images[0];
+
+    destinationRect.animate({'stroke': DESTINATION_VISITED_COLOUR}, animationLength, 'linear', callback);
+}
+
 function moveVanImage(attr, vanId, animationLength, callback) {
     vanImages[vanId].animate(attr, animationLength, 'linear', callback);
-}
-
-function createVanImage(position, vanId) {
-    var initialX = calculateInitialX(position.currentNode);
-    var initialY = calculateInitialY(position.currentNode);
-
-    var imageStr = (vanId % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
-    var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
-
-    var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
-    rotateElementAroundCentreOfGridSpace(vanImage, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
-
-    vanImage.transform('... r90');
-
-    return vanImage;
-}
-
-function getVanImagePosition(vanImage) {
-    var box = vanImage.getBBox();
-    return [box.x, box.y];
 }
 
 /**********************/
@@ -657,7 +685,6 @@ function crash(vanID, animationLength, previousNode, currentNode, attemptedActio
     moveVanImage({
         transform: transformation
     }, vanID, animationLength, animateExplosion);
-
 
     function animateExplosion() {
         

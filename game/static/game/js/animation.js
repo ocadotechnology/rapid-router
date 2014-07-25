@@ -33,8 +33,8 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	clearPaper();
 	renderMap(this.model.map);
 	renderDecor(this.decor);
-	renderTrafficLights(this.model.trafficLights);
 	renderVans(this.model.map.getStartingPosition(), this.numVans);
+	renderTrafficLights(this.model.trafficLights);
 };
 
 ocargo.Animation.prototype.stepAnimation = function(callback) {
@@ -178,6 +178,8 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             	case 'CRASH':
             		crash(vanID, animationLength, a.previousNode, a.currentNode, a.attemptedAction);
             		break;
+            	case 'DELIVER':
+            		deliver(vanID, animationLength, a.destinationID);
             	case 'OBSERVE':
             		break;
             }

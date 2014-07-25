@@ -5,12 +5,13 @@ var ocargo = ocargo || {};
 ocargo.PathFinder = function(model) {
     this.van = model.van;
     this.nodes = model.map.nodes;
-    this.destination = model.map.destination;
-    this.optimalPath = this.getOptimalPath();
+    this.destinations = model.map.destinations;
     this.maxDistanceScore = 10;
     this.maxInstrLengthScore = 10;
     this.maxScore = this.maxDistanceScore + this.maxInstrLengthScore;
     this.modelLength = MODEL_SOLUTION;
+
+    this.optimalPath = getOptimalPath(this.nodes, this.destinations);
 };
 
 ocargo.PathFinder.prototype.getScore = function() {
@@ -56,10 +57,6 @@ ocargo.PathFinder.prototype.getInstrLengthScore = function() {
     return algorithmScore;
 };
 
-ocargo.PathFinder.prototype.getOptimalPath = function() {
-    return aStar(this.nodes, this.destination);
-};
-
 ocargo.PathFinder.prototype.getLength = function(stack) {
 
     var total = 0;
@@ -80,11 +77,90 @@ ocargo.PathFinder.prototype.getLength = function(stack) {
     return total;
 };
 
-function aStar(nodes, destination) {
+function getOptimalPath(nodes, destinations) {
+    // Very crude Travelling Salesman implementation
+    // If the map size increases or lots of destinations are required, it may need to be rethought
+    var hash = {};
+    function getPathBetweenNodes(node1, node2) {
+        var key = '('+node1.coordinate.x+','+node1.coordinate.y+'),('+node2.coordinate.x+','+node2.coordinate.y+')';
+        var solution;
+        if(key in hash) {
+            solution = hash[key];
+        }
+        else {
+            solution = aStar(node1, node2, nodes);
+            hash[key] = solution;
+        }
+        return solution;
+    }
+
+    function getPermutationPath(start, permutation) {
+        var fragPath = [getPathBetweenNodes(start, permutation[0], nodes)];
+        for(var i = 1; i < permutation.length; i++) {
+            fragPath.push(getPathBetweenNodes(permutation[i-1], permutation[i], nodes));
+        }
+
+        var fullPath = [start];
+        for(var i = 0; i < fragPath.length; i++) {
+            if(!fragPath[i]) {
+                return null;
+            } 
+            else {
+                fullPath = fullPath.concat(fragPath[i].slice(1));
+            }
+        }
+        return fullPath;
+    }
+
+    var permutations = [];
+    function permute (array, data) 
+    {
+        var current;
+        var currentPermutation = data || [];
+
+        for(var i = 0; i < array.length; i++) 
+        {
+            // Take node out
+            current = array.splice(i, 1)[0];
+            // Then the current permutation is complete so add it
+            if(array.length === 0) {
+                permutations.push(currentPermutation.concat([current]));
+            }
+            //Recurse over the remaining array
+            permute(array.slice(), currentPermutation.concat([current]));
+            // Add node back in
+            array.splice(i, 0, current);
+        }
+    }
+    
+    var start = nodes[0];
+    var bestScore = Number.POSITIVE_INFINITY;
+    var bestPermutationPath = null;
+    var destinationNodes = [];
+
+    for(var i = 0; i < destinations.length; i++) {
+        destinationNodes.push(destinations[i].node);
+    }
+    permute(destinationNodes);
+    
+    for(var i = 0; i < permutations.length; i++) {
+        var permutation = permutations[i];
+        var permutationPath = getPermutationPath(start, permutation, nodes);
+
+        if(permutationPath && permutationPath.length < bestScore) {
+            bestScore = permutationPath.length;
+            bestPermutationPath = permutationPath;
+        }
+    }
+
+    return bestPermutationPath;
+};
+
+function aStar(origin, destination, nodes) {
 
     var end = destination;          // Nodes already visited.
     var current;
-    var start = nodes[0]
+    var start = origin;
     var closedSet = [];             // The neightbours yet to be evaluated.
     var openSet = [start];          // All 3 lists are indexed the same way original nodes are.
     var costFromStart = [0];        // Costs from the starting point.
@@ -141,7 +217,8 @@ function aStar(nodes, destination) {
             }
         }
     }
-    return [];
+    // Failed to find a path
+    return null;
 
     function heuristic(node1, node2) {
 

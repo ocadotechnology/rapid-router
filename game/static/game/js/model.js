@@ -2,13 +2,12 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Model = function(nodeData, destination, trafficLightData, maxFuel, vanId) {
-	this.map = new ocargo.Map(nodeData, destination);
+ocargo.Model = function(nodeData, destinations, trafficLightData, maxFuel, vanId) {
+	this.map = new ocargo.Map(nodeData, destinations);
 	this.van = new ocargo.Van(this.map.getStartingPosition(), maxFuel);
 
 	this.trafficLights = [];
-	var i;
-	for (i = 0; i < trafficLightData.length; i++) {
+	for(var i = 0; i < trafficLightData.length; i++) {
 		this.trafficLights.push(new ocargo.TrafficLight(i, trafficLightData[i], this.map.nodes));
 	}
 
@@ -24,8 +23,12 @@ ocargo.Model = function(nodeData, destination, trafficLightData, maxFuel, vanId)
 ocargo.Model.prototype.reset = function(vanId) {
 	this.van.reset();
 
-	var i;
-	for (i = 0; i < this.trafficLights.length; i++) {
+	var destinations = this.map.getDestinations();
+	for(var i = 0; i < destinations.length; i++) {
+		destinations[i].reset();
+	}
+
+	for (var i = 0; i < this.trafficLights.length; i++) {
 		this.trafficLights[i].reset();
 	}
 
@@ -85,9 +88,9 @@ ocargo.Model.prototype.isTrafficLightGreen = function() {
 	return (light !== null && light.getState() === ocargo.TrafficLight.GREEN);
 };
 
-ocargo.Model.prototype.isAtDestination = function() {
-	this.observe('at destination');
-	return (this.map.getDestinationNode() === this.van.getPosition().currentNode);
+ocargo.Model.prototype.isAtADestination = function() {
+	this.observe('at a destination');
+	return this.getDestinationForNode(this.van.getPosition().currentNode) != null;
 };
 
 ///////////////////////
@@ -95,9 +98,9 @@ ocargo.Model.prototype.isAtDestination = function() {
 // true if it was a valid action or false otherwise
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
+	
 	if (nextNode === null) {
 		// Crash
-
 		ocargo.animation.appendAnimation({
 			type: 'van',
 			id: this.vanId,
@@ -119,8 +122,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 		return false;
 	}
 
-	if (this.van.fuel <= 0) {
-		// Ran out of fuel
+	if (this.van.fuel < 0) {
+		// Van ran out of fuel last step
 		ocargo.animation.appendAnimation({
 			type: 'popup',
 			id: this.vanId,
@@ -167,6 +170,19 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 	return true;
 };
 
+ocargo.Model.prototype.makeDelivery = function(destination) {
+	// We're at a destination node and making a delivery!
+	destination.visited = true;
+	ocargo.animation.appendAnimation({
+		type: 'van',
+		id: this.vanId,
+		destinationID: destination.id,
+		vanAction: 'DELIVER',
+		fuel: this.van.getFuelPercentage(),
+		description: 'Van making a delivery',
+	});
+}
+
 ocargo.Model.prototype.moveForwards = function() {
 	var nextNode = this.map.isRoadForward(this.van.getPosition());
 	return this.moveVan(nextNode, 'FORWARD');
@@ -190,10 +206,42 @@ ocargo.Model.prototype.wait = function() {
 	return this.moveVan(this.van.getPosition().currentNode, 'WAIT');
 };
 
+ocargo.Model.prototype.deliver = function() {
+	var destination = this.getDestinationForNode(this.van.getPosition().currentNode);
+	if(destination) {
+		this.makeDelivery(destination, 'DELIVER');
+	}
+	return destination;
+}
+
 // Signal that the program has ended and we should calculate whether
 // the play has won or not and send off those events
 ocargo.Model.prototype.programExecutionEnded = function() {
-	if (this.van.getPosition().currentNode === this.map.getDestinationNode()) {
+	var success;
+	var destinations = this.map.getDestinations();
+
+	if(destinations.length == 1) {
+		success = this.van.getPosition().currentNode === destinations[0].node;
+
+		if(success) {
+			ocargo.animation.appendAnimation({
+				type: 'van',
+				id: this.vanId,
+				destinationID: destinations[0].id,
+				vanAction: 'DELIVER',
+				fuel: this.van.getFuelPercentage(),
+				description: 'van delivering',
+			});
+		}
+	}
+	else {
+		success = true;
+		for(var i = 0; i < destinations.length; i++) {
+			success &= destinations[i].visited;
+		}
+	}
+
+	if(success) {
 		var scoreArray = this.pathFinder.getScore();
 	    sendAttempt(scoreArray[0]);
 
@@ -238,8 +286,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 // A helper function which returns the traffic light associated
 // with a particular node and orientation
 ocargo.Model.prototype.getTrafficLightForNode = function(position) {
-	var i;
-	for (i = 0; i < this.trafficLights.length; i++) {
+	for (var i = 0; i < this.trafficLights.length; i++) {
 		var light = this.trafficLights[i];
 		if (light.sourceNode === position.previousNode && light.controlledNode === position.currentNode) {
 			return light;
@@ -247,6 +294,17 @@ ocargo.Model.prototype.getTrafficLightForNode = function(position) {
 	}
 	return null;
 };
+
+// A helper function which returns the destination associated with the node
+ocargo.Model.prototype.getDestinationForNode = function(node) {
+	var destinations = this.map.getDestinations();
+	for(var i = 0; i < destinations.length; i++) {
+		if(destinations[i].node === node) {
+			return destinations[i];
+		}
+	}
+	return null;
+}
 
 // Helper functions which handles telling all parts of the model
 // that time has incremented and they should generate events
@@ -256,8 +314,7 @@ ocargo.Model.prototype.incrementTime = function() {
 
 	ocargo.animation.startNewTimestamp();
 
-	var i;
-	for (i = 0; i < this.trafficLights.length; i++) {
+	for (var i = 0; i < this.trafficLights.length; i++) {
 		this.trafficLights[i].incrementTime(this);
 	}
 };

@@ -127,7 +127,29 @@ Blockly.Blocks['wait'] = {
 };
 
 Blockly.Python['wait'] = function(block) {
-	return 'v.wait()\n';
+    return 'v.wait()\n';
+};
+
+Blockly.Blocks['deliver'] = {
+    // Block for delivering (only on levels with multiple destinations)
+    init: function() {
+        this.setColour(160);
+        this.appendDummyInput()
+            .appendField('deliver')
+            .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                                                45,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT))
+            .appendField(new Blockly.FieldImage('/static/game/image/deliver.svg',
+                                                ocargo.blocklyControl.IMAGE_WIDTH,
+                                                ocargo.blocklyControl.BLOCK_HEIGHT));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setTooltip('Deliver the goods from the van');
+    }
+};
+
+Blockly.Python['deliver'] = function(block) {
+    return 'v.deliver()\n';
 };
 
 Blockly.Blocks['road_exists'] = {

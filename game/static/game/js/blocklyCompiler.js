@@ -178,6 +178,8 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block){
             commands.push(new TurnAroundCommand(block));
         } else if (block.type === 'wait') {
             commands.push(new WaitCommand(block));
+        } else if (block.type === 'deliver') {
+            commands.push(new DeliverCommand(block));
         } else if (block.type === 'controls_repeat') {
         	commands.push(this.createWhile(block));
         } else if (block.type === 'controls_whileUntil') {

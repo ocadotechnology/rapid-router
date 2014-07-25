@@ -126,6 +126,17 @@ WaitCommand.prototype.execute = function(thread, model) {
 
 
 
+function DeliverCommand(block) {
+    this.block = block;
+}
+
+DeliverCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.deliver();
+};
+
+
+
 function If(conditionalCommandSets, elseBody, block) {
 	this.conditionalCommandSets = conditionalCommandSets;
 	this.elseBody = elseBody;

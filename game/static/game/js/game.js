@@ -10,7 +10,7 @@ function init() {
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
     
     // Create the model
-    ocargo.model = new ocargo.Model(PATH, DESTINATION, TRAFFIC_LIGHTS, MAX_FUEL);
+    ocargo.model = new ocargo.Model(PATH, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
 
     // Setup animation
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
@@ -75,7 +75,6 @@ function sendAttempt(score) {
 
 function onPlayControls() {
     document.getElementById('direct_drive').style.visibility='hidden';
-
 
     document.getElementById('play').style.visibility='hidden';
     document.getElementById('pause').style.visibility='visible';
@@ -157,10 +156,10 @@ function setupFuelGauge(nodes, blocks) {
 }
 
 function runProgramAndPrepareAnimation() {
+    var program = ocargo.controller.prepare();
+    
     // clear animations
     ocargo.animation.resetAnimation();
-
-    var program = ocargo.controller.prepare();
 
     // Starting sound
     ocargo.animation.appendAnimation({
