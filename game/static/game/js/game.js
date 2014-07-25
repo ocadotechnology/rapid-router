@@ -37,7 +37,10 @@ function init() {
 
 function runProgramAndPrepareAnimation() {
     var program = ocargo.controller.prepare();
-    
+    if(!program) {
+        return false;
+    }
+
     // clear animations
     ocargo.animation.resetAnimation();
 
@@ -485,9 +488,9 @@ function setupMenuListeners() {
 
     $('#play').click(function() {
         ocargo.blocklyControl.resetIncorrectBlock();
-        onPlayControls();
 
         if (runProgramAndPrepareAnimation()) {
+            onPlayControls();
             ocargo.animation.playAnimation();
         }
         else {
@@ -518,8 +521,12 @@ function setupMenuListeners() {
 
     $('#step').click(function() {
         if (ocargo.animation.wasJustReset()) {
-            runProgramAndPrepareAnimation();
+            var successfullyCompiled = runProgramAndPrepareAnimation();
+            if(!successfullyCompiled) {
+                return;
+            }
         }
+
         ocargo.animation.stepAnimation(function() {
             if (ocargo.animation.isFinished()) {
                 onEndControls(true);
