@@ -46,14 +46,30 @@ function init() {
     }
 }
 
-var failures = 0;
-var hasFailedThisTry = false;
-function registerFailure() {
-    if (!hasFailedThisTry) {
-        failures += 1;
-        hasFailedThisTry = true;
-    }
-    return (failures >= 3);
+function runProgramAndPrepareAnimation() {
+    var program = ocargo.controller.prepare();
+    
+    // clear animations
+    ocargo.animation.resetAnimation();
+
+    // Starting sound
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.starting,
+        description: 'starting sound',
+    });
+
+    program.run(ocargo.model);
+    var reason = ocargo.model.reasonForTermination;
+    var enableDirectDrive = (reason ==  "THROUGH_RED_LIGHT" || reason == "OUT_OF_INSTRUCTIONS");
+    // Set controls ready for user to reset
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: function() {onEndControls(enableDirectDrive)},
+        description: 'onEndControls',
+    });
+
+    return true;
 }
 
 function sendAttempt(score) {
@@ -73,6 +89,16 @@ function sendAttempt(score) {
             }
         });
     }
+}
+
+var failures = 0;
+var hasFailedThisTry = false;
+function registerFailure() {
+    if (!hasFailedThisTry) {
+        failures += 1;
+        hasFailedThisTry = true;
+    }
+    return (failures >= 3);
 }
 
 // function to enable or disable pointerEvents on running python or blockly code
@@ -98,9 +124,10 @@ function onPlayControls() {
     document.getElementById('pause').style.visibility='visible';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
+    document.getElementById('stop').disabled=false;
     document.getElementById('reset').style.visibility='hidden';
-    document.getElementById('step').style.visibility='hidden';
-
+    
+    document.getElementById('step').disabled = true;
     document.getElementById('load').disabled = true;
     document.getElementById('save').disabled = true;
     document.getElementById('clear').disabled = true;
@@ -119,8 +146,8 @@ function onStepControls() {
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('reset').style.visibility='hidden';
-    document.getElementById('step').style.visibility='hidden';
 
+    document.getElementById('step').disabled = true;
     document.getElementById('load').disabled = true;
     document.getElementById('save').disabled = true;
     document.getElementById('clear').disabled = true;
@@ -134,13 +161,15 @@ function onStopOrResetControls() {
 
     document.getElementById('direct_drive').style.visibility='visible';  // TODO make this hidden unless blocks are clear or something...
 
+    document.getElementById('play').disabled=false;
     document.getElementById('play').style.visibility='visible';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='hidden';
-    document.getElementById('stop').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='visible';
+    document.getElementById('stop').disabled = true;
     document.getElementById('reset').style.visibility='hidden';
-    document.getElementById('step').style.visibility='visible';
 
+    document.getElementById('step').disabled = false;
     document.getElementById('load').disabled = false;
     document.getElementById('save').disabled = false;
     document.getElementById('clear').disabled = false;
@@ -149,17 +178,21 @@ function onStopOrResetControls() {
     document.getElementById('help').disabled = false;
 }
 
-function onEndControls() {
+function onEndControls(enableDirectDrive) {
     allowCodeChanges(true);
 
-    document.getElementById('direct_drive').style.visibility='visible';
+    if(enableDirectDrive){
+        document.getElementById('direct_drive').style.visibility='visible';
+    }
 
-    document.getElementById('play').style.visibility='hidden';
+    document.getElementById('play').style.visibility='visible';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='hidden';
     document.getElementById('reset').style.visibility='visible';
-    document.getElementById('step').style.visibility='hidden';
+
+    document.getElementById('play').disabled = true;
+    document.getElementById('step').disabled = true;
 
     document.getElementById('load').disabled = false;
     document.getElementById('save').disabled = false;
@@ -177,7 +210,8 @@ function onPauseControls() {
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('reset').style.visibility='hidden';
-    document.getElementById('step').style.visibility='visible';
+
+    document.getElementById('step').disabled = false;
 }
 
 function onResumeControls() {
@@ -188,7 +222,8 @@ function onResumeControls() {
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('reset').style.visibility='hidden';
-    document.getElementById('step').style.visibility='hidden';
+
+    document.getElementById('step').disabled = true;
 }
 
 function setupFuelGauge(nodes, blocks) {
@@ -206,51 +241,26 @@ function setupFuelGauge(nodes, blocks) {
     $('#fuelGuage').css("display","none");
 }
 
-function runProgramAndPrepareAnimation() {
-    var program = ocargo.controller.prepare();
-    
-    // clear animations
-    ocargo.animation.resetAnimation();
-
-    // Starting sound
-    ocargo.animation.appendAnimation({
-        type: 'callable',
-        functionCall: ocargo.sound.starting,
-        description: 'starting sound',
-    });
-
-    program.run(ocargo.model);
-
-    // Set controls ready for user to reset
-    ocargo.animation.appendAnimation({
-        type: 'callable',
-        functionCall: onEndControls,
-        description: 'onEndControls',
-    });
-
-    return true;
-}
-
 function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(0, ANIMATION_LENGTH, onEndControls);
+        moveForward(0, ANIMATION_LENGTH, function() {onEndControls(true)});
     });
 
     $('#turnLeft').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(0, ANIMATION_LENGTH, onEndControls);
+        moveLeft(0, ANIMATION_LENGTH, function() {onEndControls(true)});
     });
 
     $('#turnRight').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(0, ANIMATION_LENGTH, onEndControls);
+        moveRight(0, ANIMATION_LENGTH, function() {onEndControls(true)});
     });
     $('#go').click(function() {
-        $('#play')[0].click();
+        $('#play').trigger('click');
     });
 }
 
@@ -521,7 +531,7 @@ function setupMenuListeners() {
         }
         ocargo.animation.stepAnimation(function() {
             if (ocargo.animation.isFinished()) {
-                onEndControls();
+                onEndControls(true);
             }
             else {
                 onPauseControls();

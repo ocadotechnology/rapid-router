@@ -116,7 +116,6 @@ ocargo.Animation.prototype.queueAnimation = function(a) {
 		this.lastTimestamp = Math.max(this.lastTimestamp, a.timestamp);
 		this.lastSubTimestamp = Math.max(this.lastSubTimestamp, a.subTimestamp);
 	}
-
 	// Remove duplicate animations... or make any animations that could potentially appear twice idempotent... Undecided...
 };
 
@@ -181,7 +180,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             		wait(vanID, animationLength);
             		break;
             	case 'CRASH':
-            		crash(vanID, animationLength, a.previousNode, a.currentNode, a.attemptedAction);
+            		crash(vanID, animationLength, a.previousNode, a.currentNode, a.attemptedAction, a.startNode);
             		break;
             	case 'DELIVER':
             		deliver(vanID, animationLength, a.destinationID);
@@ -199,6 +198,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		case 'popup':
 			var title = "";
 			var leadMsg = a.popupMessage;
+			var delay;
 			// sort popup...
 			switch (a.popupType) {
 				case 'WIN':
@@ -215,14 +215,22 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 				        }
 				    }
 				    leadMsg = leadMsg + levelMsg;
+				    delay = 1000;
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
 					leadMsg = leadMsg + ocargo.messages.closebutton(ocargo.messages.tryagainLabel);
+					if(a.failSubtype == "CRASH") {
+						delay = 3000;
+					}
+					else {
+						delay = 1000;
+					}
 					break;
 				case 'WARNING':
 					title = ocargo.messages.ohNo;
 					leadMsg = leadMsg + ocargo.messages.closebutton(ocargo.messages.tryagainLabel);
+					delay = 1000;
 					break;
 			}
 			var otherMsg = "";
@@ -237,7 +245,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		                '</p><p id="hintText">' + HINT + '</p>');
     			}
 			}
-			startPopup(title, leadMsg, otherMsg, 1000);
+			startPopup(title, leadMsg, otherMsg, delay);
 			if (a.popupHint) {
 				if(level.hintOpened){
 	                $("#hintBtnPara").hide();

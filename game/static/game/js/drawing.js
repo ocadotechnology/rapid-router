@@ -95,7 +95,6 @@ function getRoadLetters(previous, node1, node2) {
     } else if (isVertical(node1, node2) &&
         (previous === null || isVertical(previous, node1))) {
         return 'V';
-
     // Handle turns.
     } else {
         if (isProgressive(previous.x, node1.x)) {
@@ -285,7 +284,8 @@ function renderDestinations(destinations) {
                                 PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
                                 50, 50).transform('r' + variation[2]);
 
-        destinationImages[destinations[i].id] = [destinationRect, destinationHouse];
+        destinationImages[destinations[i].id] = {rect: destinationRect, 
+                                                house: destinationHouse};
     }
 }
 
@@ -615,9 +615,7 @@ function wait(vanId, animationLength, callback) {
 }
 
 function deliver(vanID, animationLength, destinationID, callback) {
-    var images = destinationImages[destinationID];
-    var destinationRect = images[0];
-
+    var destinationRect = destinationImages[destinationID].rect;
     destinationRect.animate({'stroke': DESTINATION_VISITED_COLOUR}, animationLength, 'linear', callback);
 }
 
@@ -629,7 +627,7 @@ function moveVanImage(attr, vanId, animationLength, callback) {
 /** Crash animations **/
 /**********************/
 
-function crash(vanID, animationLength, previousNode, currentNode, attemptedAction) {
+function crash(vanID, animationLength, previousNode, currentNode, attemptedAction,  startNode) {
     var road = getLeftRightForwardRoad(previousNode, currentNode);
     var roadLeft = road[0];
     var roadForward = road[1];
@@ -655,13 +653,13 @@ function crash(vanID, animationLength, previousNode, currentNode, attemptedActio
     else if(attemptedAction == "TURN_LEFT") {
         var rotationAngle;
         if(roadForward) {
-            rotationAngle = 45;
+            rotationAngle = 75;
         }
         else if(roadRight) {
-            rotationAngle = 45;
+            rotationAngle = 75;
         }
         else {
-            rotationAngle = 45;
+            rotationAngle = 75;
         }
         var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
         var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
@@ -702,23 +700,27 @@ function crash(vanID, animationLength, previousNode, currentNode, attemptedActio
 
         var explosionParts = 20;
 
-        vanImage.animate({opacity: 0}, 1000);
+        var initialX = calculateInitialX(startNode);
+        var initialY = calculateInitialY(startNode);
 
-        for(var i = 0; i < explosionParts; i++) {
-            setTimeout(function() {
-                var size = minSize + Math.random()*(maxSize-minSize);
-                var xco = x + width*(Math.random()-0.5) - 0.5*size;
-                var yco = y + height*(Math.random()-0.5) - 0.5*size;
-                var imageStr = '/static/game/image/' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg'; 
-                var img = paper.image(imageStr, xco, yco, size, size);
-                img.animate({opacity: 0, transform: 's2'}, 1000, function () {});
-            },(i < 5 ? 0 :(i-5)*50));
-        }
+        var wreckageImage = paper.image('/static/game/image/van_wreckage.svg', initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
+        wreckageImage.transform(vanImage.transform());
+        wreckageImage.attr({"opacity":0});
 
-        // reset the drawing after explosion
         setTimeout(function() {
-            ocargo.animation.resetAnimation();
-        }, ((explosionParts-5)*50)+1000);
+            wreckageImage.animate({opacity: 1}, 1000);
+            vanImage.animate({opacity: 0}, 1000);
+            for(var i = 0; i < explosionParts; i++) {
+                setTimeout(function() {
+                    var size = minSize + Math.random()*(maxSize-minSize);
+                    var xco = x + width*(Math.random()-0.5) - 0.5*size;
+                    var yco = y + height*(Math.random()-0.5) - 0.5*size;
+                    var imageStr = '/static/game/image/' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg'; 
+                    var img = paper.image(imageStr, xco, yco, size, size);
+                    img.animate({opacity: 0, transform: 's2'}, 1000, function () {});
+                },(i < 5 ? 0 :(i-5)*50));
+            }
+        }, 100);
     }
 }
 

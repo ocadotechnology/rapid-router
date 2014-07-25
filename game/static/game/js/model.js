@@ -17,6 +17,7 @@ ocargo.Model = function(nodeData, destinations, trafficLightData, maxFuel, vanId
 	this.vanId = vanId || 0;
 
 	this.pathFinder = new ocargo.PathFinder(this);
+	this.reasonForTermination  =  null;
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -34,6 +35,7 @@ ocargo.Model.prototype.reset = function(vanId) {
 
 	this.timestamp = 0;
 	this.subTimestamp = 0;
+	this.reasonForTermination  =  null;
 
 	if (vanId !== null && vanId !== undefined) {
 		this.vanId = vanId;
@@ -108,6 +110,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			previousNode: this.van.previousNode,
 			currentNode: this.van.currentNode,
 			attemptedAction: action,
+			startNode: this.van.currentNodeOriginal,
 			fuel: this.van.getFuelPercentage(),
 			description: 'van move action: ' + action,
 		});
@@ -116,9 +119,12 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
+			failSubtype: 'CRASH',
 			popupMessage: ocargo.messages.offRoad(this.van.travelled),
 			description: 'crash popup',
 		});
+
+		this.reasonForTermination = 'CRASH';
 		return false;
 	}
 
@@ -128,9 +134,12 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
+			failSubtype: 'OUT_OF_FUEL',
 			popupMessage: ocargo.messages.outOfFuel,
 			description: 'no fuel popup',
 		});
+
+		this.reasonForTermination = 'OUT_OF_FUEL';
 		return false;
 	}
 
@@ -141,9 +150,12 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
+			failSubtype: 'THROUGH_RED_LIGHT',
 			popupMessage: ocargo.messages.throughRedLight,
 			description: 'ran red traffic light popup',
 		});
+
+		this.reasonForTermination = 'THROUGH_RED_LIGHT';
 		return false;
 	}
 
@@ -260,6 +272,8 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 			functionCall: ocargo.sound.win,
 			description: 'win sound',
 		});
+
+		this.reasonForTermination = 'SUCCESS';
 	}
 	else {
 		sendAttempt(0);
@@ -269,6 +283,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 			type: 'popup',
 			id: this.vanId,
 			popupType: 'FAIL',
+			failSubtype: 'OUT_OF_INSTRUCTIONS',
 			popupMessage: ocargo.messages.outOfInstructions,
 			hint: registerFailure(),
 			description: 'failure popup',
@@ -280,6 +295,8 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 			functionCall: ocargo.sound.failure,
 			description: 'failure sound',
 		});
+
+		this.reasonForTermination ='OUT_OF_INSTRUCTIONS';
 	}
 };
 
