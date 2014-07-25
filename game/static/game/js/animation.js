@@ -38,6 +38,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	renderMap(this.model.map);
 	renderDecor(this.decor);
 	renderVans(this.model.map.getStartingPosition(), this.numVans);
+	renderEndpoints(this.model.map);
 	renderTrafficLights(this.model.trafficLights);
 };
 
