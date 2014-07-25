@@ -235,7 +235,7 @@ ocargo.BlocklyCompiler.prototype.negateCondition = function(otherCondition) {
 ocargo.BlocklyCompiler.prototype.atDestinationCondition = function(block) {
     return function(model) {
         queueHighlight(model, block);
-        return model.isAtDestination();
+        return model.isAtADestination();
     };
 }
 
