@@ -279,6 +279,53 @@ textBlock.init = function() {
     this.setColour(260);
 }
 
+Blockly.Blocks['controls_repeat_while'] = {
+    // Block for repeat while
+    init: function() {
+      this.setColour(120);
+      this.appendValueInput("condition")
+          .setCheck("Boolean")
+          .appendField("repeat while");
+      this.appendStatementInput("code")
+          .setCheck("null")
+          .appendField("do");
+      this.setPreviousStatement(true, "null");
+      this.setNextStatement(true, "null");
+      this.setTooltip('While a value is true, do some statements');
+    }
+};
+
+Blockly.Python['controls_repeat_while'] = function(block) {
+  var condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
+  var subBlock = Blockly.Python.statementToCode(block, 'code');
+  var code = 'while (' + condition + '):\n' + subBlock;
+  return code;
+};
+
+Blockly.Blocks['controls_repeat_until'] = {
+    // Block for repeat until
+    init: function() {
+      this.setColour(120);
+      this.appendValueInput("condition")
+          .setCheck("Boolean")
+          .appendField("repeat until");
+      this.appendStatementInput("code")
+          .setCheck("null")
+          .appendField("do");
+      this.setPreviousStatement(true, "null");
+      this.setNextStatement(true, "null");
+      this.setTooltip('Until a value is true, do some statements');
+    }
+};
+
+Blockly.Python['controls_repeat_until'] = function(block) {
+  var condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
+  var subBlock = Blockly.Python.statementToCode(block, 'code');
+  var code = 'while not (' + condition + '):\n' + subBlock;
+  return code;
+};
+
+
 //Customise controls_repeat block to not allow more than a sensible number of repetitions
 var controlsRepeatBlock = Blockly.Blocks['controls_repeat'];
 var originalInit = controlsRepeatBlock.init;
