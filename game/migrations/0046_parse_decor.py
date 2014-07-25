@@ -26,22 +26,6 @@ def parse_levels(apps, schema_editor):
                 levelDecor.save()
 
 
-
-        # Parse each row
-
-# 0 ('{"coordinate":{"x":479,"y":551},"url":"/static/game/image/tree1.svg"}',
-# 1  '{"coordinate":{"x":',
-# 2  '479',
-# 3  ',"y":', 
-# 4  '551',
-# 5  '},"url":',
-# 6  '"/static/game/image/tree1.svg"',
-# 7  '/static/game/image/tree1.svg',
-# 8  '/tree1',
-# 9  '}')
-
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
