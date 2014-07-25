@@ -425,9 +425,6 @@ def parseDecor(theme, decor):
     """ Helper method parsing decor into a format 'sendable' to javascript.
     """
     decorData = []
-    for dec in decor:
-        type_ = theme.get(name=dec.name)
-        decorData.append(str([dec.x, dex.y], type_.url))
     return decorData
 
 
