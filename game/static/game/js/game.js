@@ -3,26 +3,19 @@
 var ocargo = ocargo || {};
 
 function init() {
-    // Setup blockly
+
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
-    ocargo.blocklyControl.loadPreviousAttempt();
-    window.addEventListener('unload', ocargo.blocklyControl.teardown);
-    // Setup blockly to python
-    Blockly.Python.init();
-    
-    // Create the model
     ocargo.model = new ocargo.Model(PATH, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
-
-    // Setup animation
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
+    ocargo.blocklyControl.loadPreviousAttempt();
 
     // Setup the ui
     setupSliderListeners();
     setupDirectDriveListeners();
     setupLoadSaveListeners();
     setupMenuListeners();
-
+    setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
     onStopOrResetControls();
 
     // default controller
@@ -35,15 +28,11 @@ function init() {
         ocargo.controller = ocargo.editor;
     }
 
+    // Setup blockly to python
+    Blockly.Python.init();
+
+    window.addEventListener('unload', ocargo.blocklyControl.teardown);
     startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
-
-    setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
-
-    if ($.cookie("muted") === "true") {
-        $('#muted').css('display','block');
-        $('#unmuted').css('display','none');
-        ocargo.sound.mute();
-    }
 }
 
 function runProgramAndPrepareAnimation() {
@@ -211,6 +200,7 @@ function onPauseControls() {
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('reset').style.visibility='hidden';
 
+    document.getElementById('stop').disabled=false;
     document.getElementById('step').disabled = false;
 }
 
@@ -501,7 +491,7 @@ function setupMenuListeners() {
             ocargo.animation.playAnimation();
         }
         else {
-            onStopOrResetControls();
+            //onStopOrResetControls();
         }
     });
 
@@ -511,8 +501,9 @@ function setupMenuListeners() {
     });
 
     $('#resume').click(function() {
-        ocargo.animation.playAnimation();
+        // Important ordering
         onResumeControls();
+        ocargo.animation.playAnimation();
     });
 
     $('#stop').click(function() {
@@ -590,6 +581,12 @@ function setupMenuListeners() {
         $('#unmuted').css('display','none');
         ocargo.sound.mute();
     });
+
+    if ($.cookie("muted") === "true") {
+        $('#muted').css('display','block');
+        $('#unmuted').css('display','none');
+        ocargo.sound.mute();
+    }
 
     $('#quit').click(function() {
         window.location.href = "/game/"
