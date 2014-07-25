@@ -79,6 +79,18 @@ class Block (models.Model):
         return self.type
 
 
+class Theme(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class Decor(models.Model):
+    name = models.CharField(max_length=100)
+    url = models.CharField(max_length=500)
+    width = models.IntegerField()
+    height = models.IntegerField()
+    theme = models.ForeignKey(Theme, related_name='decor')
+
+
 class Level (models.Model):
     name = models.CharField(max_length="100")
     path = models.TextField(max_length=10000)
@@ -96,6 +108,7 @@ class Level (models.Model):
     threads = models.IntegerField(blank=False, default=1)
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
+    theme = models.ForeignKey(Theme, default=1)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
@@ -106,6 +119,13 @@ class Level (models.Model):
             if self in episode.levels:
                 return episode
         return None
+
+
+class LevelDecor(models.Model):
+    x = models.IntegerField()
+    y = models.IntegerField()
+    level = models.ForeignKey(Level)
+    decor = models.ForeignKey(Decor)
 
 
 class Episode (models.Model):
