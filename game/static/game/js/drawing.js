@@ -158,6 +158,9 @@ function clearPaper() {
 function renderMap(map) {
     drawBackground();
     createRoad(map.nodes);
+}
+
+function renderEndpoints(map) {
     renderDestinations(map.destinations);
     createCFC(map.getStartingPosition());
 }
