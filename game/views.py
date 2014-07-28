@@ -389,13 +389,13 @@ def level_new(request):
     """
     if 'nodes' in request.POST:
         path = request.POST.get('nodes')
-        destination = request.POST.get('destination')
+        destinations = request.POST.get('destinations')
         decor = request.POST.get('decor')
         traffic_lights = request.POST.get('trafficLights')
         max_fuel = request.POST.get('maxFuel')
         name = request.POST.get('name')
         passedLevel = None
-        passedLevel = Level(name=name, path=path, default=False, destination=destination,
+        passedLevel = Level(name=name, path=path, default=False, destinations=destinations,
                             decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile'):

@@ -837,7 +837,7 @@ $("#export").click(function() {
         var input = JSON.stringify(ocargo.levelEditor.oldPathToNew(ocargo.levelEditor.nodes));
         var blockTypes = [];
         var endCoord = ocargo.levelEditor.destination.coordinate;
-        var destination = JSON.stringify([[endCoord.x, endCoord.y]]);
+        var destinations = JSON.stringify([[endCoord.x, endCoord.y]]);
         var decor = JSON.stringify(ocargo.levelEditor.decor);
         var trafficLights = JSON.stringify(ocargo.levelEditor.trafficLights);
         var maxFuel = $('#maxFuel').val();
@@ -854,7 +854,7 @@ $("#export").click(function() {
             dataType: 'json',
             data: {
                 nodes: input,
-                destination: destination,
+                destinations: destinations,
                 decor: decor,
                 trafficLights: trafficLights,
                 name: name,

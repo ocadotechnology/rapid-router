@@ -25,11 +25,11 @@ def create(episode=None):
                                     DEFAULT_BRANCHINESS,
                                     DEFAULT_LOOPINESS,
                                     DEFAULT_CURVINESS)
-        destination = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
+        destinations = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
         level = Level(name="Default random level", 
                                     path=json.dumps(path),
                                     max_fuel=30,
-                                    destination=destination,
+                                    destinations=destinations,
                                     blocklyEnabled=True,
                                     pythonEnabled=False)
     else:
@@ -38,11 +38,11 @@ def create(episode=None):
                                     episode.r_branchiness,
                                     episode.r_loopiness,
                                     episode.r_curviness)
-        destination = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
+        destinations = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
         level = Level(name="Random level for " + episode.name + ".",
                                     path=json.dumps(path), 
                                     max_fuel=30, 
-                                    destination=destination,
+                                    destinations=destinations,
                                     blocklyEnabled=episode.r_blocklyEnabled,
                                     pythonEnabled=episode.r_pythonEnabled)
 
