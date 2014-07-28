@@ -286,7 +286,7 @@ Blockly.Blocks['controls_repeat_while'] = {
       this.appendValueInput("condition")
           .setCheck("Boolean")
           .appendField("repeat while");
-      this.appendStatementInput("code")
+      this.appendStatementInput("body")
           .setCheck("null")
           .appendField("do");
       this.setPreviousStatement(true, "null");
@@ -297,7 +297,7 @@ Blockly.Blocks['controls_repeat_while'] = {
 
 Blockly.Python['controls_repeat_while'] = function(block) {
   var condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
-  var subBlock = Blockly.Python.statementToCode(block, 'code');
+  var subBlock = Blockly.Python.statementToCode(block, 'body');
   var code = 'while (' + condition + '):\n' + subBlock;
   return code;
 };
@@ -309,7 +309,7 @@ Blockly.Blocks['controls_repeat_until'] = {
       this.appendValueInput("condition")
           .setCheck("Boolean")
           .appendField("repeat until");
-      this.appendStatementInput("code")
+      this.appendStatementInput("body")
           .setCheck("null")
           .appendField("do");
       this.setPreviousStatement(true, "null");
@@ -320,7 +320,7 @@ Blockly.Blocks['controls_repeat_until'] = {
 
 Blockly.Python['controls_repeat_until'] = function(block) {
   var condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
-  var subBlock = Blockly.Python.statementToCode(block, 'code');
+  var subBlock = Blockly.Python.statementToCode(block, 'body');
   var code = 'while not (' + condition + '):\n' + subBlock;
   return code;
 };
