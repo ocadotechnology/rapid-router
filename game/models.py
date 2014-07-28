@@ -92,7 +92,7 @@ class Decor(models.Model):
 
 
 class Level (models.Model):
-    name = models.CharField(max_length="100")
+    name = models.CharField(max_length=100)
     path = models.TextField(max_length=10000)
     decor = models.TextField(max_length=10000, default='[]')
     traffic_lights = models.TextField(max_length=10000, default='[]')
@@ -125,7 +125,7 @@ class LevelDecor(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     level = models.ForeignKey(Level)
-    decor = models.ForeignKey(Decor)
+    decorName = models.CharField(max_length=100, default='tree1')
 
 
 class Episode (models.Model):
