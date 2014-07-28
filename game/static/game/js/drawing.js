@@ -186,7 +186,7 @@ function createCFC(position) {
 
 function renderDecor(decor) {
     for (var i = 0; i < decor.length; i++) {
-        var obj = decor[i];
+        var obj = JSON.parse(decor[i]);
         var coord = obj['coordinate'];
         paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
             DECOR_SIZE, DECOR_SIZE);
