@@ -17,13 +17,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from forms import *
 from game import random_road
-from models import Class, Level, Attempt, Command, Block, Episode, Workspace
+from models import Class, Level, Attempt, Command, Block, Episode, Workspace, LevelDecor
 from serializers import WorkspaceSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
 
 def levels(request):
-    """Loads a page with all levels listed.
+    """ Loads a page with all levels listed.
 
     **Context**
 
@@ -51,8 +51,7 @@ def levels(request):
 
     episodes = Episode.objects.all()
     ratio = 1.0 / (len(episodes) + 1)
-    dataArray = []
-    
+
     def get_level_title(i):
         title = 'title_level' + str(i)
         try:
@@ -85,13 +84,12 @@ def levels(request):
                 "score": get_attempt_score(level)})
         opacity = (len(episode_data) + 1) * ratio
         colour = bgcolour.format(opacity)
-        e = {
-                "id": episode.id,
-                "name": episode.name,
-                "colour": colour,
-                "levels": levels,
-                "opacity": opacity
-            }
+
+        e = {"id": episode.id,
+             "name": episode.name,
+             "colour": colour,
+             "levels": levels,
+             "opacity": opacity}
 
         episode_data.append(e)
 
@@ -102,7 +100,7 @@ def levels(request):
 
 
 def level(request, level):
-    """Loads a level for rendering in the game.
+    """ Loads a level for rendering in the game.
 
     **Context**
 
@@ -130,7 +128,6 @@ def level(request, level):
             not lvl.shared_with.filter(pk=request.user.pk).exists())):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
-
     lesson = 'description_level' + str(level)
     hint = 'hint_level' + str(level)
     
@@ -145,6 +142,11 @@ def level(request, level):
 
     lesson = mark_safe(lessonCall())
     hint = mark_safe(hintCall())
+
+    themeDecor = lvl.theme.decor
+    decor = LevelDecor.objects.filter(level=lvl)
+
+    decorData = parseDecor(themeDecor, decor)
 
     #FIXME: figure out how to check for all this better
     loggedInAsStudent = False
@@ -162,6 +164,7 @@ def level(request, level):
         'level': lvl,
         'blocks': blocks,
         'lesson': lesson,
+        'decor': decorData,
         'hint': hint,
         'attempt': attempt
     })
@@ -170,7 +173,7 @@ def level(request, level):
 
 
 def level_editor(request):
-    """Renders the level editor page.
+    """ Renders the level editor page.
 
     **Context**
 
@@ -188,7 +191,7 @@ def level_editor(request):
     return render(request, 'game/level_editor.html', context_instance=context)
 
 def renderError(request, title, message):
-    """Renders an error page with passed title and message.
+    """ Renders an error page with passed title and message.
 
     **Context**
 
@@ -339,14 +342,15 @@ def settings(request):
     return render(request, 'game/settings.html', context_instance=context)
 
 
-def random_level_for_episode(request,episodeID):
-    """Generates a new random level based on the episodeID
+def random_level_for_episode(request, episodeID):
+    """ Generates a new random level based on the episodeID
 
     Redirects to :view:`game.views.level` with the id of the newly created :model:`game.Level`.
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
     return redirect("game.views.level", level=level.id)
+
 
 def random_level_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
@@ -360,6 +364,7 @@ def random_level_for_editor(request):
                                             loopiness, curviness)
 
     return HttpResponse(json.dumps(path), content_type='application/javascript')
+
 
 def start_episode(request, episode):
     episode = cached_episode(episode)
@@ -381,7 +386,7 @@ def submit(request):
 
 
 def level_new(request):
-    """Processes a request on creation of the map in the level editor.
+    """ Processes a request on creation of the map in the level editor.
     """
     if 'nodes' in request.POST:
         path = request.POST.get('nodes')
@@ -415,6 +420,12 @@ def level_new(request):
 #
 # Helper methods for rendering views in the game.
 #
+
+def parseDecor(theme, decor):
+    """ Helper method parsing decor into a format 'sendable' to javascript.
+    """
+    decorData = []
+    return decorData
 
 
 def renderScoreboard(request, form, school):

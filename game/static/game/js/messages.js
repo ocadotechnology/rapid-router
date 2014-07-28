@@ -30,6 +30,7 @@ ocargo.messages = {
     needHint: "Are you stuck? Need a hint?",
     terminated: "Program terminated!",
     crashed: "Your program crashed!",
+    compilationError: "Your program doesn't look quite right!",
     stoppingTitle: "Stopping...",
 
     outOfFuel : "You ran out of fuel! Try to find a shorter path to the destination.",
@@ -83,11 +84,11 @@ ocargo.messages = {
     scorePerfect: "Congratulations! You've aced it.",
     
     /* Malformed program */
-    whileConditionError: "Perhaps try looking at your 'Repeat' blocks?",
-    whileBodyError: "Perhaps try looking at your 'Repeat' blocks?",
-    ifConditionError: "Perhaps try looking at your 'If' blocks?",
-    procMissingNameError: "Perhaps try looking at your 'Proc' blocks?",
-    procMissingBodyError: "Perhaps try looking at your 'Proc' blocks?",
-    procDupNameError: "Perhaps try checking the names of your 'Proc' blocks?",
-    procCallNameError: "Perhaps try checking the names in your 'Call' blocks?"
+    whileConditionError: "Perhaps try looking at your 'repeat' blocks?",
+    whileBodyError: "Perhaps try looking at your 'repeat' blocks?",
+    ifConditionError: "Perhaps try looking at your 'if' blocks?",
+    procMissingNameError: "Perhaps try looking at your 'define' blocks?",
+    procMissingBodyError: "Perhaps try looking at your 'define' blocks?",
+    procDupNameError: "Perhaps try checking the names of your 'define' blocks?",
+    procCallNameError: "Perhaps try checking the names in your 'call' blocks?"
 }

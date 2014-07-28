@@ -32,8 +32,9 @@ ocargo.BlocklyControl.prototype.prepare = function() {
         return ocargo.blocklyCompiler.compile();
     }
     catch (error) {
-        // print error for now
-        console.info("compilation error " + error);
+        startPopup(ocargo.messages.failTitle, 
+                "", 
+                ocargo.messages.compilationError + "<br><br>" + error);
         return null;
     }
 };
