@@ -362,7 +362,6 @@ def random_level_for_editor(request):
 
     path = random_road.generate_random_path(random_road.Node(0, 3), size, branchiness,
                                             loopiness, curviness)
-
     return HttpResponse(json.dumps(path), content_type='application/javascript')
 
 

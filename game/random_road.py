@@ -25,21 +25,20 @@ def create(episode=None):
                                     DEFAULT_BRANCHINESS,
                                     DEFAULT_LOOPINESS,
                                     DEFAULT_CURVINESS)
-        destination = json.dumps(path[-1]['coordinate'])
+        destination = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
         level = Level(name="Default random level", 
                                     path=json.dumps(path),
                                     max_fuel=30,
                                     destination=destination,
                                     blocklyEnabled=True,
                                     pythonEnabled=False)
-        
     else:
         path = generate_random_path(DEFAULT_START_NODE,
                                     episode.r_num_tiles,
                                     episode.r_branchiness,
                                     episode.r_loopiness,
                                     episode.r_curviness)
-        destination = json.dumps(path[-1]['coordinate'])
+        destination = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
         level = Level(name="Random level for " + episode.name + ".",
                                     path=json.dumps(path), 
                                     max_fuel=30, 
