@@ -843,9 +843,9 @@ $("#export").click(function() {
         var maxFuel = $('#maxFuel').val();
         var name = $('#name').val();
 
-        console.debug("path", input)
-        console.debug("destinations", destinations)
-        console.debug("decor", decor)
+        //console.debug("path", input)
+        //console.debug("destinations", destinations)
+        //console.debug("decor", decor)
 
         $('.js-block-checkbox:checked').each(function(index, checkbox) {
             blockTypes.push(checkbox.id);
@@ -867,7 +867,7 @@ $("#export").click(function() {
                 csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
             },
             success: function (json) {
-            //    window.location.href = ("/game/" + json.server_response);
+                window.location.href = ("/game/" + json.server_response);
 
             },
             error: function (xhr, errmsg, err) {
