@@ -83,8 +83,8 @@ ocargo.messages = {
     scorePerfect: "Congratulations! You've aced it.",
     
     /* Malformed program */
-    whileConditionError: "Perhaps try looking at your 'While' blocks?",
-    whileBodyError: "Perhaps try looking at your 'While' blocks?",
+    whileConditionError: "Perhaps try looking at your 'Repeat' blocks?",
+    whileBodyError: "Perhaps try looking at your 'Repeat' blocks?",
     ifConditionError: "Perhaps try looking at your 'If' blocks?",
     procMissingNameError: "Perhaps try looking at your 'Proc' blocks?",
     procMissingBodyError: "Perhaps try looking at your 'Proc' blocks?",

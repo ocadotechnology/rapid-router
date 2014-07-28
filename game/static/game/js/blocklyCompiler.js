@@ -70,6 +70,38 @@ ocargo.BlocklyCompiler.prototype.bindProcedureCalls = function() {
 
 /** Instructions **/
 
+// New completely custom repeat until and repeat while blocks
+
+ocargo.BlocklyCompiler.prototype.createRepeatUntil = function(block) {
+    var conditionBlock = block.inputList[0].connection.targetBlock();
+    if (conditionBlock === null) {
+        throw ocargo.messages.whileConditionError;
+    }
+    var condition = this.getCondition(conditionBlock);
+    // negate condition for repeat until
+    condition = this.negateCondition(condition);
+
+    var bodyBlock = block.inputList[1].connection.targetBlock();
+    if (bodyBlock === null) {
+        throw ocargo.messages.whileBodyError;
+    }
+    return new While(condition, this.createSequence(bodyBlock), block);
+}
+
+ocargo.BlocklyCompiler.prototype.createRepeatWhile = function(block) {
+    var conditionBlock = block.inputList[0].connection.targetBlock();
+    if (conditionBlock === null) {
+        throw ocargo.messages.whileConditionError;
+    }
+    var condition = this.getCondition(conditionBlock);
+
+    var bodyBlock = block.inputList[1].connection.targetBlock();
+    if (bodyBlock === null) {
+        throw ocargo.messages.whileBodyError;
+    }
+    return new While(condition, this.createSequence(bodyBlock), block);
+}
+
 ocargo.BlocklyCompiler.prototype.createProcedureCall = function(block) {
     var nameBlock = block.inputList[0].connection.targetBlock();
     if(nameBlock == null) {
@@ -176,6 +208,10 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block){
             commands.push(new WaitCommand(block));
         } else if (block.type === 'deliver') {
             commands.push(new DeliverCommand(block));
+        } else if (block.type === 'controls_repeat_until') {
+            commands.push(this.createRepeatUntil(block));
+        } else if (block.type === 'controls_repeat_while') {
+            commands.push(this.createRepeatWhile(block));
         } else if (block.type === 'controls_repeat') {
         	commands.push(this.createWhile(block));
         } else if (block.type === 'controls_whileUntil') {
