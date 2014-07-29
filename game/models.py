@@ -92,11 +92,11 @@ class Decor(models.Model):
 
 
 class Level (models.Model):
-    name = models.CharField(max_length="100")
+    name = models.CharField(max_length=100)
     path = models.TextField(max_length=10000)
     decor = models.TextField(max_length=10000, default='[]')
     traffic_lights = models.TextField(max_length=10000, default='[]')
-    destinations = models.CharField(max_length=50)
+    destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='levels')
@@ -125,7 +125,7 @@ class LevelDecor(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     level = models.ForeignKey(Level)
-    decor = models.ForeignKey(Decor)
+    decorName = models.CharField(max_length=100, default='tree1')
 
 
 class Episode (models.Model):

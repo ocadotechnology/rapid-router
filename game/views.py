@@ -17,7 +17,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from forms import *
 from game import random_road
-from models import Class, Level, Attempt, Command, Block, Episode, Workspace, LevelDecor
+from models import Class, Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
@@ -143,10 +143,10 @@ def level(request, level):
     lesson = mark_safe(lessonCall())
     hint = mark_safe(hintCall())
 
-    themeDecor = lvl.theme.decor
     decor = LevelDecor.objects.filter(level=lvl)
-
-    decorData = parseDecor(themeDecor, decor)
+    decorData = parseDecor(lvl.theme, decor)
+    house = Decor.objects.get(name='house', theme=lvl.theme).url
+    background = Decor.objects.get(name='tile1', theme=lvl.theme).url
 
     #FIXME: figure out how to check for all this better
     loggedInAsStudent = False
@@ -165,6 +165,8 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'decor': decorData,
+        'background': background,
+        'house': house,
         'hint': hint,
         'attempt': attempt
     })
@@ -426,10 +428,14 @@ def level_new(request):
 # Helper methods for rendering views in the game.
 #
 
-def parseDecor(theme, decor):
+def parseDecor(theme, levelDecors):
     """ Helper method parsing decor into a format 'sendable' to javascript.
     """
     decorData = []
+    for levelDecor in levelDecors:
+        decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)
+        decorData.append(json.dumps(
+            {"coordinate":{"x":levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url}))
     return decorData
 
 

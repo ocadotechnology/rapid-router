@@ -168,7 +168,7 @@ function renderEndpoints(map) {
 function drawBackground() {
     if (!isMobile()) {
         paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
-            .attr({fill: 'url(/static/game/image/grassTile1.svg)',
+            .attr({fill: 'url(' + BACKGROUND_URL + ')',
                 'stroke': 'none'});
     }
 }
@@ -187,7 +187,7 @@ function createCFC(position) {
 
 function renderDecor(decor) {
     for (var i = 0; i < decor.length; i++) {
-        var obj = decor[i];
+        var obj = JSON.parse(decor[i]);
         var coord = obj['coordinate'];
         paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
             DECOR_SIZE, DECOR_SIZE);

@@ -441,7 +441,7 @@ function setupToolboxListeners() {
         ocargo.levelEditor.startFlag = false;
         ocargo.levelEditor.endFlag = false;
         ocargo.levelEditor.deleteFlag = true;
-    });
+    }); 
 
     $('#generate').click(function() {
         var size = $('#size').val();
