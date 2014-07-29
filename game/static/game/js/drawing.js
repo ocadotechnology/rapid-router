@@ -167,7 +167,7 @@ function renderEndpoints(map) {
 function drawBackground() {
     if (!isMobile()) {
         paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
-            .attr({fill: 'url(/static/game/image/grassTile1.svg)',
+            .attr({fill: 'url(' + BACKGROUND_URL + ')',
                 'stroke': 'none'});
     }
 }

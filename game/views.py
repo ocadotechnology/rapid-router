@@ -145,6 +145,8 @@ def level(request, level):
 
     decor = LevelDecor.objects.filter(level=lvl)
     decorData = parseDecor(lvl.theme, decor)
+    house = Decor.objects.get(name='house', theme=lvl.theme).url
+    background = Decor.objects.get(name='tile1', theme=lvl.theme).url
 
     #FIXME: figure out how to check for all this better
     loggedInAsStudent = False
@@ -163,6 +165,8 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'decor': decorData,
+        'background': background,
+        'house': house,
         'hint': hint,
         'attempt': attempt
     })
