@@ -10,6 +10,7 @@ var BORDER = '#bce369';
 var BUSH_URL = '/static/game/image/bush.svg';
 var TREE1_URL = '/static/game/image/tree1.svg';
 var TREE2_URL = '/static/game/image/tree2.svg';
+var POND_URL = '/static/game/image/pond.svg';
 var HOUSE_URL = '/static/game/image/house1_noGreen.svg';
 var CFC_URL = '/static/game/image/OcadoCFC_no_road.svg';
 var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
@@ -288,8 +289,8 @@ ocargo.LevelEditor.prototype.bringTrafficLightsToFront = function() {
     }
 }
 
-function initialiseDecorGraphic(url) {
-    var image = paper.image(url, 0, 0, DECOR_SIZE, DECOR_SIZE);
+function initialiseDecorGraphic(url, width, height) {
+    var image = paper.image(url, 0, 0, width, height);
     var coord = new ocargo.Coordinate(0, PAPER_HEIGHT - DECOR_SIZE);
 
     setupDecorDragListeners(image,0,0);
@@ -396,15 +397,19 @@ ocargo.LevelEditor.prototype.markTentativeRoad = function(coord) {
 
 function setupToolboxListeners() {
     $('#bush').click(function() {
-        initialiseDecorGraphic(BUSH_URL);
+        initialiseDecorGraphic(BUSH_URL, 70, 70);
     });
 
     $('#tree1').click(function() {
-        initialiseDecorGraphic(TREE1_URL);
+        initialiseDecorGraphic(TREE1_URL, 100, 100);
     });
 
     $('#tree2').click(function() {
-        initialiseDecorGraphic(TREE2_URL);
+        initialiseDecorGraphic(TREE2_URL, 100, 100);
+    });
+
+    $('#pond').click(function() {
+        initialiseDecorGraphic(POND_URL, 150, 100);
     });
 
     $('#trafficLightRed').click(function() {
