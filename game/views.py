@@ -435,7 +435,8 @@ def parseDecor(theme, levelDecors):
     for levelDecor in levelDecors:
         decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)
         decorData.append(json.dumps(
-            {"coordinate":{"x":levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url}))
+            {"coordinate":{"x":levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
+             "width": decor.width, "height": decor.height}))
     return decorData
 
 

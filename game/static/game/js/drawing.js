@@ -188,8 +188,10 @@ function renderDecor(decor) {
     for (var i = 0; i < decor.length; i++) {
         var obj = JSON.parse(decor[i]);
         var coord = obj['coordinate'];
+        var width = obj['width'];
+        var height = obj['height']
         paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
-            DECOR_SIZE, DECOR_SIZE);
+            width, height);
     }
 }
 
@@ -282,7 +284,7 @@ function renderDestinations(destinations) {
                                 PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100,
                                 100, 100).attr({'stroke': DESTINATION_NOT_VISITED_COLOUR});
 
-        var destinationHouse = paper.image('/static/game/image/house1_noGreen.svg',
+        var destinationHouse = paper.image(HOUSE_URL,
                                 destination.coordinate.x * GRID_SPACE_SIZE + variation[0],
                                 PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
                                 50, 50).transform('r' + variation[2]);
