@@ -278,7 +278,7 @@ ocargo.LevelEditor.prototype.redrawRoad = function() {
 
 ocargo.LevelEditor.prototype.bringDecorToFront = function() {
     for (var i = 0; i < this.decor.length; i++) {
-        //this.decor[i].image.toFront();
+        this.decor[i].image.toFront();
     }
 }
 
@@ -290,9 +290,10 @@ ocargo.LevelEditor.prototype.bringTrafficLightsToFront = function() {
 
 function initialiseDecorGraphic(url) {
     var image = paper.image(url, 0, 0, DECOR_SIZE, DECOR_SIZE);
-    image.draggableDecor(0, 0);
     var coord = new ocargo.Coordinate(0, PAPER_HEIGHT - DECOR_SIZE);
-    ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url, 'image': image});
+
+    setupDecorDragListeners(image,0,0);
+    ocargo.levelEditor.decor.push({'coordinate': new ocargo.Coordinate(0,0), 'url': url, 'image': image});    
 }
 
 function initialiseTrafficLight(red) {
@@ -300,13 +301,12 @@ function initialiseTrafficLight(red) {
     var image = paper.image(imgStr, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
 
     setupTrafficLightDragListeners(image, ocargo.levelEditor.trafficCounter, red);
-    
-    ocargo.levelEditor.trafficCounter++;
-    image.transform('...s-1,1');
-
     image.node.ondblclick = function() {
         return image.transform('...r90');
     };
+
+    ocargo.levelEditor.trafficCounter++;
+    image.transform('...s-1,1');
 }
 
 /************/
@@ -902,46 +902,41 @@ function handleMouseUp(this_rect, segment) {
     }
 }
 
-Raphael.el.draggableDecor = function(initX, initY) {
-    var me = this,
-        locX = initX,
-        locY = initY,
-        kx = 0,
-        ky = 0,
-        lx = 0,
-        ly = 0,
-        ox = 0,
-        oy = 0,
-        url = this.url,
-        moveFnc = function(dx, dy) {
-            lx = dx + ox;
-            ly = dy + oy;
-            kx = dx + locX,
-            ky = dy + locY,
-            me.transform('t' + lx + ',' + ly);
-        },
-        startFnc = function() {
-            // Find the element in decor and remove it.
-            for (var i = 0; i < ocargo.levelEditor.decor.length; i++) {
-                if (ocargo.levelEditor.decor[i].coordinate.x === locX &&
-                    ocargo.levelEditor.decor[i].coordinate.y === PAPER_HEIGHT - locY - DECOR_SIZE) {
-                    url = ocargo.levelEditor.decor[i].url;
-                    ocargo.levelEditor.decor.splice(i, 1);
-                    break;
-                }
-            }
-        },
-        endFnc = function() {
-            ox = lx;
-            oy = ly;
-            locX = kx;
-            locY = ky;
-            me.transform('t' + ox + ',' + oy);
-            var coord = new ocargo.Coordinate(locX, PAPER_HEIGHT - locY - DECOR_SIZE);
-            ocargo.levelEditor.decor.push({'coordinate': coord, 'url': url});
-        };
+function setupDecorDragListeners(image, initX, initY) {
 
-    this.drag(moveFnc, startFnc, endFnc);
+    var paperX = initX;
+    var paperY = initY;
+    var originX = 0;
+    var originY = 0;
+    var mapCoordinate;
+
+    function onDragMove(dx, dy) {
+        paperX = dx + originX;
+        paperY = dy + originY;
+
+        mapCoordinate = new ocargo.Coordinate(paperX, PAPER_HEIGHT - paperY - DECOR_SIZE);
+        image.transform('t' + paperX + ',' + paperY);
+    };
+
+    function onDragStart() {
+        mapCoordinate = new ocargo.Coordinate(paperX, PAPER_HEIGHT - paperY - DECOR_SIZE);
+
+        // Find the element in decor and remove it.
+        for (var i = 0; i < ocargo.levelEditor.decor.length; i++) {
+            if (ocargo.levelEditor.decor[i].image === image) {
+                ocargo.levelEditor.decor.splice(i, 1);
+                break;
+            }
+        }
+    };
+
+    function onDragEnd() {
+        originX = paperX;
+        originY = paperY;
+        ocargo.levelEditor.decor.push({'coordinate': mapCoordinate, 'url': image.attr('src'), 'image': image});
+    };
+
+    image.drag(onDragMove, onDragStart, onDragEnd);
 };
 
 function setupTrafficLightDragListeners(image, idIndex, red) {
