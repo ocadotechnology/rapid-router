@@ -12,7 +12,8 @@ ocargo.Map = function(nodeData, destinationCoordinates) {
 
     this.destinations = [];
     for(var i = 0; i < destinationCoordinates.length; i++) {
-        var destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoordinates[i], this.nodes);
+        var coordinate = new ocargo.Coordinate(destinationCoordinates[i][0],destinationCoordinates[i][1]);
+        var destinationNode = this.nodes[ocargo.Node.findNodeIndexByCoordinate(coordinate, this.nodes)];
         this.destinations.push(new ocargo.Destination(i,destinationNode));
     }
 };

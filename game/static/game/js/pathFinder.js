@@ -77,8 +77,10 @@ ocargo.PathFinder.prototype.getLength = function(stack) {
     return total;
 };
 
+
+
 function getOptimalPath(nodes, destinations) {
-    // Very crude Travelling Salesman implementation
+    // Brute force Travelling Salesman implementation, using A* to determinee the connection lengths
     // If the map size increases or lots of destinations are required, it may need to be rethought
     var hash = {};
     function getPathBetweenNodes(node1, node2) {

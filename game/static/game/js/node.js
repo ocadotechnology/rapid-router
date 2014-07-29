@@ -54,11 +54,22 @@ ocargo.Node.parsePathData = function(nodeData) {
     return nodes;
 };
 
-// Helper m ethod that returns a node matching the given coordinate
+// Helper method that returns the index of the first node at the given coordinate
+ocargo.Node.findNodeIndexByCoordinate = function(coordinate, nodes) {
+    for (var i = 0; i < nodes.length; i++) {
+        var coord = nodes[i].coordinate;
+        if (coord.equals(coordinate)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Helper method that returns the first node at the given coordinate
 ocargo.Node.findNodeByCoordinate = function(coordinate, nodes) {
     for (var i = 0; i < nodes.length; i++) {
         var coord = nodes[i].coordinate;
-        if (coord.x === coordinate[0] && coord.y === coordinate[1]) {
+        if (coord.equals(coordinate)) {
             return nodes[i];
         }
     }
@@ -67,10 +78,7 @@ ocargo.Node.findNodeByCoordinate = function(coordinate, nodes) {
 
 
 ocargo.calculateNodeAngle = function(nodeA, nodeB) {
-    var coordinateA = nodeA.coordinate;
-    var coordinateB = nodeB.coordinate;
-
-    return Math.atan2(coordinateB.y - coordinateA.y, coordinateB.x - coordinateA.x);
+    return nodeA.coordinate.angleTo(nodeB.coordinate);
 };
 
 ocargo.calculateClockwiseNodeAngle = function(nodeA, nodeB, nodeC) {
