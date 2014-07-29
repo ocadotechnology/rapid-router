@@ -48,6 +48,7 @@ var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 var vanImages = {};
 var lightImages = {};
 var destinationImages = {};
+var roadImages = [];
 
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;
@@ -202,73 +203,44 @@ function renderDecor(decor) {
 function renderTrafficLights(trafficLights, draggable) {
     for (var i = 0; i < trafficLights.length; i++) {
         var trafficLight = trafficLights[i];
-        var controlledNode = trafficLight.controlledNode;
-        var sourceNode = trafficLight.sourceNode;
-        
-        //get position based on nodes
-        var x = (controlledNode.coordinate.x + sourceNode.coordinate.x) / 2.0;
-        var y = (controlledNode.coordinate.y + sourceNode.coordinate.y) / 2.0;
-        
-        //get rotation based on nodes (should face source)
-        var rotation = calculateInitialRotation(sourceNode, controlledNode) + 90;
-        
-        //draw red and green lights, keep reference to both
-        var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
-        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
-        if (trafficLight.startingState === "RED") {
-            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
-                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-                    .transform('r' + rotation + 's-1,1');
-            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
-                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-                    .transform('r' + rotation + 's-1,1');
-        } else {
-            trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX,
-                drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-                    .transform('r' + rotation + 's-1,1');
-            trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
-                drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-                    .transform('r' + rotation + 's-1,1');
-        }
-        
+        var sourceCoordinate = trafficLight.sourceNode.coordinate;
+        var controlledCoordinate = trafficLight.controlledNode.coordinate;
 
-        lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
+        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
+                                                0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
+        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', 
+                                                0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
 
-        if (draggable) {
-            var id = trafficLight.id;
-            if (trafficLight.startingState === "RED") {
-                trafficLight.redLightEl.draggableLights(translate(controlledNode.coordinate), id, true);
-            } else {
-                trafficLight.greenLightEl.draggableLights(translate(controlledNode.coordinate), id, false);
-            }
-
-            if (trafficLight.startingState === "RED") {
-                trafficLight.redLightEl.node.ondblclick = function() {
-                    var traffic = trafficLight;
-                    console.debug("id", traffic.id);
-                    var image = traffic.redLightEl;
-                    return image.transform('...r90');
-                };
-            } else {
-                trafficLight.greenLightEl.node.ondblclick = function() {
-                    var traffic = trafficLight;
-                    console.debug("id", traffic.id);
-                    var image = traffic.greenLightEl;
-                    return image.transform('...r90');
-                };
-            }
-        }
-
+        setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.greenLightEl);
+        setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.redLightEl);
 		
-		//hide light which isn't the starting state
-		if(trafficLight.startingState === ocargo.TrafficLight.RED){
+		// hide light which isn't the starting state
+		if(trafficLight.startingState === ocargo.TrafficLight.RED) {
 			trafficLight.greenLightEl.attr({'opacity': 0});
-		} else {
+		} 
+        else {
 			trafficLight.redLightEl.attr({'opacity': 0});
 		}
+
+        lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
 	}
 }
 
+function setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, image) {
+    // get position based on nodes
+    var x = (controlledCoordinate.x + sourceCoordinate.x) / 2.0;
+    var y = (controlledCoordinate.y + sourceCoordinate.y) / 2.0;
+    
+    // get rotation based on nodes (should face source)
+    var angle = sourceCoordinate.angleTo(controlledCoordinate) * (180 / Math.PI);
+    var rotation = 90 - angle;
+
+    // draw red and green lights, keep reference to both
+    var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
+    var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
+
+    image.transform('t' + drawX + ',' + drawY + ' r' + rotation + 's-1,1');
+}
 
 
 /***************************/
@@ -385,28 +357,35 @@ function getHousePosition(destination) {
 /********************/
 
 function createRoad(nodes) {
+    for(var i = 0; i < roadImages.length; i++) {
+        roadImages[i].remove();
+    }
+
+    roadImages = [];
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
+        var roadImage;
         switch (node.connectedNodes.length) {
             case 1:
-                drawDeadEndRoad(node);
+                roadImage = drawDeadEndRoad(node);
                 break;
             
             case 2:
-                drawSingleRoadSegment(node.connectedNodes[0], node, node.connectedNodes[1]);
+                roadImage = drawSingleRoadSegment(node.connectedNodes[0], node, node.connectedNodes[1]);
                 break;
             
             case 3:
-                drawTJunction(node);
+                roadImage = drawTJunction(node);
                 break;
             
             case 4:
-                drawCrossRoads(node);
+                roadImage = drawCrossRoads(node);
                 break;
 
             default:
                 break;
         }
+        roadImages.push(roadImage);
     }
 }
 
@@ -435,6 +414,8 @@ function drawDeadEndRoad(node) {
     else if (roadLetters === 'V' && prevFlipped.y < flipped.y) {
         road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
+
+    return road;
 }
 
 function drawSingleRoadSegment(previousNode, node, nextNode) {
@@ -465,6 +446,8 @@ function drawSingleRoadSegment(previousNode, node, nextNode) {
             road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
         }
     }
+
+    return road;
 }
 
 function drawTJunction(node) {
@@ -505,6 +488,8 @@ function drawTJunction(node) {
     var road = paper.image('/static/game/image/roadTile_TJunction.svg',
         flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
     road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+
+    return road;
 }
 
 function drawCrossRoads(node) {
@@ -512,6 +497,8 @@ function drawCrossRoads(node) {
     
     var road = paper.image('/static/game/image/roadTile_crossRoads.svg',
         flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+
+    return road;
 }
 
 
