@@ -26,6 +26,8 @@ ocargo.LevelEditor = function() {
     this.trafficCounter = 0;
     this.grid = this.initialiseVisited();
 
+    ocargo.saving = new ocargo.Saving();
+
     // Is the start, end or delete mode on?
     this.startFlag = false;
     this.endFlag = false;
@@ -34,6 +36,9 @@ ocargo.LevelEditor = function() {
     // type: Node
     this.pathStart = null;
     this.destination = null;
+
+    // setup listeners
+    setupLoadSaveListeners();
 };
 
 ocargo.LevelEditor.prototype.initialiseVisited = function() {
@@ -246,7 +251,7 @@ function handleMouseUp(this_rect, segment) {
             ocargo.levelEditor.start = null;
             createRoad(ocargo.levelEditor.nodes);
             var trafficLights = createAndAddTrafficLightsToNodes(ocargo.levelEditor.nodes, ocargo.levelEditor.trafficLights);
-            ocargo.levelEditor.createGrid(paper)
+            ocargo.levelEditor.createGrid(paper);
             ocargo.levelEditor.drawDecor();
             renderTrafficLights(trafficLights, true);
             if (ocargo.levelEditor.pathStart !== null) {
@@ -702,6 +707,13 @@ function comparator(node1, node2, centralNode) {
     }
 }
 
+$('#help').click(function() {
+    var subtitle = isMobile() ? ocargo.messages.levelEditorMobileSubtitle :
+                                                ocargo.messages.levelEditorPCSubtitle;
+    
+    startPopup(ocargo.messages.levelEditorTitle, subtitle, ocargo.messages.levelEditorMainText);
+});
+
 $('#bush').click(function() {
     initialiseDecorGraphic(BUSH_URL);
 });
@@ -712,13 +724,6 @@ $('#tree1').click(function() {
 
 $('#tree2').click(function() {
     initialiseDecorGraphic(TREE2_URL);
-});
-
-$('#help').click(function() {
-    var subtitle = isMobile() ? ocargo.messages.levelEditorMobileSubtitle :
-                                                ocargo.messages.levelEditorPCSubtitle;
-    
-    startPopup(ocargo.messages.levelEditorTitle, subtitle, ocargo.messages.levelEditorMainText);
 });
 
 $('#trafficLightRed').click(function() {
@@ -766,7 +771,7 @@ $('#generate').click(function() {
     var curviness = $('#curviness').val()/10;
 
     $.ajax({
-        url: "/game/levels/random/editor",
+        url: "/game/level_editor/random",
         type: "POST",
         dataType: 'json',
         data: {
@@ -776,6 +781,7 @@ $('#generate').click(function() {
             curviness: curviness,
             csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
         },
+
         success: function (json) {
             ocargo.levelEditor.nodes = [];
             var i;
@@ -873,6 +879,184 @@ $("#export").click(function() {
 
         return false;
 });
+
+
+function setupLoadSaveListeners() {
+    var selectedLevel = null;
+
+    var populateTable = function(tableName, levels) {
+        var table = $('#'+tableName);
+
+        // Remove click listeners to avoid memory leak and remove all rows
+        $('#'+tableName+' tr').off('click');
+        table.empty();
+
+        // Order them alphabetically
+        levels.sort(function(a, b) {
+            if (a.name < b.name) {
+                return -1;
+            }
+            else if (a.name > b.name) {
+                return 1;
+            }
+            return 0;
+        });
+
+        // Add a row to the table for each workspace saved in the database
+        table.append('<tr>  <th>Name</th>   <th>Owner</th>  <th>Shared</th> </tr>')
+        for (var i = 0, ii = levels.length; i < ii; i++) {
+            var level = levels[i];
+            table.append('<tr value=' + level.id + '>  <td>' + level.name + '</td>  <td>' + level.owner + '</td> <td>false</td>');
+        }
+    }
+
+    $('#load').click(function() {
+        // Disable the button to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        $('#load').attr('disabled', 'disabled');
+
+        ocargo.saving.retrieveListOfLevels(function(err, levels) {
+            if (err != null) {
+                console.debug(err);
+                return;
+            }
+
+            populateTable("loadLevelTable", levels);
+
+            // Add click listeners to all rows
+            $('#loadLevelTable tr').on('click', function(event) {
+                $('#loadLevelTable tr').css('background-color', '#FFFFFF');
+                $(event.target.parentElement).css('background-color', '#C0C0C0');
+                $('#loadLevel').removeAttr('disabled');
+                $('#deleteLevel').removeAttr('disabled');
+                selectedLevel = $(event.target.parentElement).attr('value');
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#loadModal').foundation('reveal', 'open');
+            $('#load').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedLevel = null;
+            $('#loadLevel').attr('disabled', 'disabled');
+            $('#deleteLevel').attr('disabled', 'disabled');
+        });
+    });
+
+    $('#save').click(function() {
+        // Disable the button to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        $('#save').attr('disabled', 'disabled');
+
+        ocargo.saving.retrieveListOfLevels(function(err, workspaces) {
+            if (err != null) {
+                console.debug(err);
+                return;
+            }
+
+            populateTable("saveLevelTable", workspaces);
+
+            // Add click listeners to all rows
+            $('#saveLevelTable td').on('click', function(event) {
+                $('#saveLevelTable td').css('background-color', '#FFFFFF');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedLevel = $(event.target).attr('value');
+                var workspaceName = $(event.target)[0].innerHTML;
+                document.getElementById("workspaceNameInput").value = workspaceName;
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#saveModal').foundation('reveal', 'open');
+            $('#save').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedLevel = null;
+            $('#overwriteLevel').attr('disabled', 'disabled');
+        });
+    });
+
+    $('#loadLevel').click(function() {
+        if (selectedLevel) {
+            ocargo.saving.retrieveLevel(selectedLevel, function(err, level) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                ocargo.levelEditor.nodes = ocargo.Node.parsePathData($.parseJSON(level.path));
+                ocargo.levelEditor.decor = $.parseJSON(level.decor);
+
+                ocargo.levelEditor.trafficLights = $.parseJSON(level.traffic_lights);
+                ocargo.levelEditor.trafficCounter = ocargo.levelEditor.trafficLights.length;
+
+                ocargo.levelEditor.pathStart = ocargo.levelEditor.nodes[0];
+                // TODO needs to be fixed in the long term with multiple destinations
+                ocargo.levelEditor.destination = ocargo.Node.findNodeByCoordinate($.parseJSON(level.destinations)[0],
+                                                                                    ocargo.levelEditor.nodes);
+
+                paper.clear();
+                createRoad(ocargo.levelEditor.nodes);
+                ocargo.levelEditor.createGrid(paper);
+                ocargo.levelEditor.drawDecor();
+                renderTrafficLights(createAndAddTrafficLightsToNodes(ocargo.levelEditor.nodes, ocargo.levelEditor.trafficLights), true);
+                ocargo.levelEditor.mark(translate(ocargo.levelEditor.pathStart.coordinate), 'red', 0.7, true);
+                ocargo.levelEditor.mark(translate(ocargo.levelEditor.destination.coordinate), 'blue', 0.7, true);
+
+                // Reset interface state to be safe
+                ocargo.levelEditor.currentStrike = [];
+                ocargo.levelEditor.start = null;
+                ocargo.levelEditor.end = null
+                ocargo.levelEditor.startFlag = false;
+                ocargo.levelEditor.endFlag = false;
+                ocargo.levelEditor.deleteFlag = false;
+
+                // Close the popup
+                $('#loadModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    $('#saveLevel').click(function() {
+        var newName = $('#levelNameInput').val();
+        if (newName && newName != "") {
+            var table = $("#saveLevelTable");
+            for (var i = 0; i < table[0].rows.length; i++) {
+                 var cell = table[0].rows[i].cells[0];
+                 var wName = cell.innerHTML;
+                 if(wName == newName) {
+                    deleteLevel(cell.attributes[0].value, 
+                                    function(err, level) {
+                                        if (err != null) {
+                                            console.debug(err);
+                                            return;
+                                        }
+                                    });
+                 }
+            }
+
+            ocargo.saving.createNewLevel(newName, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+                $('#saveModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    $('#deleteLevel').click(function() {
+        if (selectedLevel) {
+            ocargo.saving.deleteLevel(selectedLevel, function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+                $('#loadLevelTable td[value=' + selectedLevel + ']').remove();
+                selectedLevel = null;
+            });
+        }
+    });
+}
 
 $(function() {
     paper.clear();

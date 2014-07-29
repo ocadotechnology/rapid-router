@@ -1,6 +1,12 @@
 var ocargo = ocargo || {};
 
-function retrieveAllWorkspaces(callback) {
+ocargo.Saving = function() {}
+
+/************************/
+/* Workspaces (game.js) */
+/************************/
+
+ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 	if (LOGGED_IN_AS_STUDENT) {
 		$.ajax({
 	        url: '/game/workspace',
@@ -37,7 +43,7 @@ function retrieveAllWorkspaces(callback) {
 	}
 }
 
-function retrieveWorkspace(id, callback) {
+ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
 	if (LOGGED_IN_AS_STUDENT) {
 		$.ajax({
             url: '/game/workspace/' + id,
@@ -60,40 +66,7 @@ function retrieveWorkspace(id, callback) {
 	}
 }
 
-function overwriteWorkspace(id, workspace, callback) {
-	if (LOGGED_IN_AS_STUDENT) {
-		$.ajax({
-            url: '/game/workspace/' + id,
-            type: 'PUT',
-            data: {
-                workspace: workspace,
-            },
-            success: function() {
-                callback(null);
-            },
-            error: function(xhr,errmsg,err) {
-                callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-            }
-        });
-	}
-	else if (localStorage) {
-		var value = localStorage.getItem('blocklySavedWorkspaceXml-' + id);
-		if (value && value != '') {
-			var json = JSON.parse(value);
-			json.workspace = workspace;
-			localStorage.setItem('blocklySavedWorkspaceXml-' + id, JSON.stringify(json));
-			callback(null);
-		}
-		else {
-			callback("No workspace found with id=" + id + " to overwrite");
-		}
-	}
-	else {
-		callback("Not logged in and no local storage available");
-	}	
-}
-
-function deleteWorkspace(id, callback) {
+ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
 	if (LOGGED_IN_AS_STUDENT) {
 		$.ajax({
             url: '/game/workspace/' + id,
@@ -115,7 +88,7 @@ function deleteWorkspace(id, callback) {
 	}
 }
 
-function createNewWorkspace(name, workspace, callback) {
+ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback) {
 	if (LOGGED_IN_AS_STUDENT) {
 		$.ajax({
             url: '/game/workspace',
@@ -146,4 +119,66 @@ function createNewWorkspace(name, workspace, callback) {
 	else {
 		callback("Not logged in and no local storage available");
 	}
+}
+
+/****************************/
+/* Levels (level_editor.js) */
+/****************************/
+
+ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
+	$.ajax({
+        url: '/game/level_editor/level',
+        type: 'GET',
+        dataType: 'json',
+        success: function(json) {
+        	callback(null, json);
+        },
+        error: function(xhr,errmsg,err) {
+        	callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+}
+
+ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
+	$.ajax({
+        url: '/game/level_editor/level/' + id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(json) {
+            callback(null, json);
+        },
+        error: function(xhr,errmsg,err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+}
+
+ocargo.Saving.prototype.deleteLevel = function(id, callback) {
+	$.ajax({
+        url: '/game/level_editor/level/' + id,
+        type: 'DELETE',
+        success: function() {
+            callback(null);
+        },
+        error: function(xhr,errmsg,err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+}
+
+ocargo.Saving.prototype.createNewLevel = function(name, level, callback) {
+	$.ajax({
+        url: '/game/level_editor/level',
+        type: 'POST',
+        data: {
+            name: name,
+            level: level,
+        },
+        success: function() {
+            callback(null);
+        },
+        error: function(xhr,errmsg,err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    })
 }

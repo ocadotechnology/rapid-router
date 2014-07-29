@@ -8,8 +8,9 @@
   <script src="/static/game/js/mobile-detect.min.js"></script>
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script> 
-  <script src="/static/game/js/messages.js"></script>
 
+  <script src="/static/game/js/messages.js"></script>
+  <script src="/static/game/js/saving.js"></script>
   <script src="/static/game/js/level_editor.js"></script>
   <script src="/static/game/js/coordinate.js"></script>
   <script src="/static/game/js/node.js"></script>
@@ -29,15 +30,17 @@
 <div id="wrapper">
   <div id="tools" class="col">
     <div id="toolbox">
+
       <div id="buttons">
         <form method="post" name="example form" >
           {% csrf_token %}
           <input id="export" type="button" value="Play it!"/>
         </form>
         <button id="help">Help</button>
+        <button id="load">Load</button>
         <a class="button" href="/">Quit</a>
+      </div>
 
-      </div><br>
       <ul class="tabs">
         <li>
           <input type="radio" checked name="tabs" id="tab1">
@@ -90,6 +93,38 @@
   <p id="myModal-lead" class="ocargo-modal-lead"></p>
   <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
   <a class="close-reveal-modal" id="close-modal">&#215;</a>
+</div>
+
+<div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <h2 class="title">Load</h2>
+  <p>Here you can load a previously saved level.</p>
+  <div class="scrolling-table-wrapper">
+    <div class="scrolling-table">
+      <table id="loadLevelTable"></table>
+    </div>
+  </div>
+  <div style="margin-top: 1.25rem">
+    <button id="loadLevel">Load</button>
+    <button id="deleteLevel">Delete</button>
+  </div>
+  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
+</div>
+
+<div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <h2 class="title">Save</h2>
+  <p>Here you can save your new level.</p>
+  <div class="scrolling-table-wrapper">
+    <div class="scrolling-table">
+      <table id="saveLevelTable"></table>
+    </div>
+  </div>
+  <div style="margin-top: 1.25rem">
+    <div>
+      <input id="levelNameInput"/>
+      <button id="saveLevel">Save</button>
+    </div>
+  </div>
+  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
 </div>
 
 {% endblock %}

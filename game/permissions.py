@@ -8,3 +8,7 @@ class UserIsStudent(permissions.BasePermission):
 class WorkspacePermissions(permissions.BasePermission):
 	def has_object_permission(self, request, view, obj):
 		return (obj.owner == request.user.userprofile.student)
+
+class LevelPermissions(permissions.BasePermission):
+	def has_object_permission(self, request, view, obj):
+		return (obj.owner == request.user.userprofile.student)
