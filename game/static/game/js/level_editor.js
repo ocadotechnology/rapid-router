@@ -60,7 +60,7 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
             var x = i * GRID_SPACE_SIZE;
             var y = j * GRID_SPACE_SIZE;
             var segment = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-            segment.attr({stroke: BORDER, fill: BACKGROUND_COLOR, "fill-opacity": 0});
+            segment.attr({stroke: BORDER, fill: BACKGROUND_COLOR, "fill-opacity": 1});
 
             segment.node.onmousedown = function() {
                 var this_rect = segment;
