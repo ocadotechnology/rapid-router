@@ -96,7 +96,7 @@ class Level (models.Model):
     path = models.TextField(max_length=10000)
     decor = models.TextField(max_length=10000, default='[]')
     traffic_lights = models.TextField(max_length=10000, default='[]')
-    destinations = models.CharField(max_length=50)
+    destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='levels')
