@@ -18,7 +18,7 @@ from rest_framework.response import Response
 from forms import *
 from game import random_road
 from models import Class, Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor
-from serializers import WorkspaceSerializer
+from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
 
@@ -350,7 +350,7 @@ def random_level_for_episode(request, episodeID):
     return redirect("game.views.level", level=level.id)
 
 
-def random_level_for_editor(request):
+def level_editor_random(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
 
     size = int(request.POST['numberOfTiles'])
@@ -361,6 +361,12 @@ def random_level_for_editor(request):
     path = random_road.generate_random_path(random_road.Node(0, 3), size, branchiness,
                                             loopiness, curviness)
     return HttpResponse(json.dumps(path), content_type='application/javascript')
+
+def level_editor_request(request):
+    """Generates a new random path suitable for a random level with the parameters provided"""
+
+
+
 
 
 def start_episode(request, episode):
@@ -733,8 +739,49 @@ def parseInstructions(instructions, attempt, init):
     last.next = None
     last.save()
 
+
+class LevelViewList(generics.ListCreateAPIView):
+    """ Handles requests for a list of level objects viewable by the user"""
+    permission_classes = []
+    serializer_class = LevelSerializer
+
+    def get_queryset(self):
+        if hasattr(self.request.user, 'userprofile'):
+            user = self.request.user.userprofile.student
+            return Level.objects.filter(owner=user)
+        else:
+            return Level.objects.all()
+
+    def post(self, request, format=None):
+        serializer = LevelSerializer(Level(owner=request.user.userprofile.student), data=request.DATA, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LevelViewDetail(generics.RetrieveUpdateDestroyAPIView):
+    """ Handles requests for a specific level object"""
+    permission_classes = []
+    serializer_class = LevelSerializer
+
+    def get_queryset(self):
+        if hasattr(self.request.user, 'userprofile'):
+            user = self.request.user.userprofile.student
+            return Level.objects.filter(id=self.kwargs['pk'])
+        else:
+            return Level.objects.filter(id=self.kwargs['pk'])
+
+    def put(self, request, pk, format=None):
+        level = self.get_object()
+        serializer = LevelSerializer(level, data=request.DATA, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class WorkspaceViewList(generics.ListCreateAPIView):
-    
+    """ Handles requests for the list of workspace objects viewable by the user"""
     permission_classes = (permissions.IsAuthenticated,
                           UserIsStudent,
                           WorkspacePermissions,)
@@ -753,7 +800,7 @@ class WorkspaceViewList(generics.ListCreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class WorkspaceViewDetail(generics.RetrieveUpdateDestroyAPIView):
-
+    """ Handles requests for a specific workspace object"""
     permission_classes = (permissions.IsAuthenticated,
                           UserIsStudent,
                           WorkspacePermissions,)

@@ -8,47 +8,14 @@ var rightCutoffAngle = 7 * Math.PI / 6;
 
 ocargo.Map = function(nodeData, destinationCoordinates) {
 	this.nodeData = nodeData;
-	this.nodes = this.createNodes(nodeData);
+	this.nodes = ocargo.Node.parsePathData(nodeData);
 
     this.destinations = [];
     for(var i = 0; i < destinationCoordinates.length; i++) {
-        var destinationNode = this.findByCoordinate(destinationCoordinates[i], this.nodes);
+        var destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoordinates[i], this.nodes);
         this.destinations.push(new ocargo.Destination(i,destinationNode));
     }
 };
-
-ocargo.Map.prototype.createNodes = function(nodeData) {
-    var nodes = [];
-
-    var i;
-    // Create nodes with coords
-    for (i = 0; i < nodeData.length; i++) {
-         var coordinate = new ocargo.Coordinate(
-            nodeData[i]['coordinate'][0], nodeData[i]['coordinate'][1]);
-         nodes.push(new ocargo.Node(coordinate));
-    }
-
-    // Link nodes (must be done in second loop so that linked nodes have definitely been created)
-    for (i = 0; i < nodeData.length; i++) {
-        var node = nodes[i];
-        var connectedNodes = nodeData[i]['connectedNodes'];
-        for (var j = 0; j < connectedNodes.length; j++) {
-            node.addConnectedNode(nodes[connectedNodes[j]]);
-        }
-    }
-    
-    return nodes;
-};
-
-ocargo.Map.prototype.findByCoordinate = function(coordinate, nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-        var coord = nodes[i].coordinate;
-        if (coord.x === coordinate[0] && coord.y === coordinate[1]) {
-            return nodes[i];
-        }
-    }
-    return null;
-}
 
 ocargo.Map.prototype.getStartingPosition = function() {
 	var previousNode = this.nodes[0];

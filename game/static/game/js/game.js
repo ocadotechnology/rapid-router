@@ -8,6 +8,7 @@ function init() {
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.model = new ocargo.Model(PATH, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
+    ocargo.saving = new ocargo.Saving();
     ocargo.blocklyControl.loadPreviousAttempt();
 
     // Setup the ui
@@ -332,11 +333,11 @@ function setupLoadSaveListeners() {
 
     var populateTable = function(tableName, workspaces) {
         var table = $('#'+tableName);
-
+        
         // Remove click listeners to avoid memory leak and remove all rows
         $('#'+tableName+' td').off('click');
         table.empty();
-
+        
         // Order them alphabetically
         workspaces.sort(function(a, b) {
             if (a.name < b.name) {
@@ -360,7 +361,7 @@ function setupLoadSaveListeners() {
         // Disable the button to stop users clicking it multiple times
         // whilst waiting for the table data to load
         $('#load').attr('disabled', 'disabled');
-        retrieveAllWorkspaces(function(err, workspaces) {
+        ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
             if (err != null) {
                 console.debug(err);
                 return;
@@ -393,7 +394,7 @@ function setupLoadSaveListeners() {
         // whilst waiting for the table data to load
         $('#save').attr('disabled', 'disabled');
 
-        retrieveAllWorkspaces(function(err, workspaces) {
+        ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
             if (err != null) {
                 console.debug(err);
                 return;
@@ -438,7 +439,7 @@ function setupLoadSaveListeners() {
                  }
             }
 
-            createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
+            ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
                 if (err != null) {
                     console.debug(err);
                     return;
@@ -450,7 +451,7 @@ function setupLoadSaveListeners() {
 
     $('#loadWorkspace').click(function() {
         if (selectedWorkspace) {
-            retrieveWorkspace(selectedWorkspace, function(err, workspace) {
+            ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
                 if (err != null) {
                     console.debug(err);
                     return;
@@ -465,7 +466,7 @@ function setupLoadSaveListeners() {
 
     $('#deleteWorkspace').click(function() {
         if (selectedWorkspace) {
-            deleteWorkspace(selectedWorkspace, function(err) {
+            ocargo.saving.deleteWorkspace(selectedWorkspace, function(err) {
                 if (err != null) {
                     console.debug(err);
                     return;
