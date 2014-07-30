@@ -95,12 +95,24 @@ ocargo.Model.prototype.isAtADestination = function() {
 	return this.getDestinationForNode(this.van.getPosition().currentNode) != null;
 };
 
+ocargo.Model.prototype.getCurrentCoordinate = function() {
+    this.observe('current coordinate');
+    var node = this.van.getPosition().currentNode;
+    return node.coordinate;
+};
+
+ocargo.Model.prototype.getPreviousCoordinate = function() {
+    this.observe('previous coordinate');
+    var node = this.van.getPosition().previousNode;
+    return node.coordinate;
+};
+
 ///////////////////////
 // Begin action functions, each changes something and returns
 // true if it was a valid action or false otherwise
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
-	
+
 	if (nextNode === null) {
 		// Crash
 		ocargo.animation.appendAnimation({
