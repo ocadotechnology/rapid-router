@@ -17,7 +17,7 @@ ocargo.Model = function(nodeData, destinations, trafficLightData, maxFuel, vanId
 	this.vanId = vanId || 0;
 
 	this.pathFinder = new ocargo.PathFinder(this);
-	this.reasonForTermination  =  null;
+	this.reasonForTermination = null;
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -29,8 +29,8 @@ ocargo.Model.prototype.reset = function(vanId) {
 		destinations[i].reset();
 	}
 
-	for (var i = 0; i < this.trafficLights.length; i++) {
-		this.trafficLights[i].reset();
+	for (var j = 0; j < this.trafficLights.length; j++) {
+		this.trafficLights[j].reset();
 	}
 
 	this.timestamp = 0;
@@ -52,8 +52,8 @@ ocargo.Model.prototype.observe = function(desc) {
 		id: this.vanId,
 		vanAction: 'OBSERVE',
 		fuel: this.van.getFuelPercentage(),
-		description: 'van observe: ' + desc,
-	});
+		description: 'van observe: ' + desc
+    });
 
 	this.incrementSubTime();
 };
@@ -112,8 +112,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			attemptedAction: action,
 			startNode: this.van.currentNodeOriginal,
 			fuel: this.van.getFuelPercentage(),
-			description: 'van move action: ' + action,
-		});
+			description: 'van move action: ' + action
+        });
 
 		ocargo.animation.appendAnimation({
 			type: 'popup',
@@ -121,8 +121,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			popupType: 'FAIL',
 			failSubtype: 'CRASH',
 			popupMessage: ocargo.messages.offRoad(this.van.travelled),
-			description: 'crash popup',
-		});
+			description: 'crash popup'
+        });
 
 		this.reasonForTermination = 'CRASH';
 		return false;
@@ -136,8 +136,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			popupType: 'FAIL',
 			failSubtype: 'OUT_OF_FUEL',
 			popupMessage: ocargo.messages.outOfFuel,
-			description: 'no fuel popup',
-		});
+			description: 'no fuel popup'
+        });
 
 		this.reasonForTermination = 'OUT_OF_FUEL';
 		return false;
@@ -152,8 +152,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 			popupType: 'FAIL',
 			failSubtype: 'THROUGH_RED_LIGHT',
 			popupMessage: ocargo.messages.throughRedLight,
-			description: 'ran red traffic light popup',
-		});
+			description: 'ran red traffic light popup'
+        });
 
 		this.reasonForTermination = 'THROUGH_RED_LIGHT';
 		return false;
@@ -167,15 +167,15 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 		id: this.vanId,
 		vanAction: action,
 		fuel: this.van.getFuelPercentage(),
-		description: 'van move action: ' + action,
-	});
+		description: 'van move action: ' + action
+    });
 
 	// Van movement sound
 	ocargo.animation.appendAnimation({
 		type: 'callable',
 		functionCall: (action === 'FORWARD') ? ocargo.sound.moving : ocargo.sound.turning,
-		description: 'van sound: ' + action,
-	});
+		description: 'van sound: ' + action
+    });
 
 	this.incrementTime();
 
@@ -191,9 +191,9 @@ ocargo.Model.prototype.makeDelivery = function(destination) {
 		destinationID: destination.id,
 		vanAction: 'DELIVER',
 		fuel: this.van.getFuelPercentage(),
-		description: 'Van making a delivery',
-	});
-}
+		description: 'Van making a delivery'
+    });
+};
 
 ocargo.Model.prototype.moveForwards = function() {
 	var nextNode = this.map.isRoadForward(this.van.getPosition());
@@ -224,7 +224,7 @@ ocargo.Model.prototype.deliver = function() {
 		this.makeDelivery(destination, 'DELIVER');
 	}
 	return destination;
-}
+};
 
 // Signal that the program has ended and we should calculate whether
 // the play has won or not and send off those events
@@ -242,8 +242,8 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 				destinationID: destinations[0].id,
 				vanAction: 'DELIVER',
 				fuel: this.van.getFuelPercentage(),
-				description: 'van delivering',
-			});
+				description: 'van delivering'
+            });
 		}
 	}
 	else {
@@ -263,15 +263,15 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 			id: this.vanId,
 			popupType: 'WIN',
 			popupMessage: scoreArray[1],
-			description: 'win popup',
-		});
+			description: 'win popup'
+        });
 
 		// Winning sound
 		ocargo.animation.appendAnimation({
 			type: 'callable',
 			functionCall: ocargo.sound.win,
-			description: 'win sound',
-		});
+			description: 'win sound'
+        });
 
 		this.reasonForTermination = 'SUCCESS';
 	}
@@ -286,15 +286,15 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 			failSubtype: 'OUT_OF_INSTRUCTIONS',
 			popupMessage: ocargo.messages.outOfInstructions,
 			hint: registerFailure(),
-			description: 'failure popup',
-		});
+			description: 'failure popup'
+        });
 
 		// Failure sound
 		ocargo.animation.appendAnimation({
 			type: 'callable',
 			functionCall: ocargo.sound.failure,
-			description: 'failure sound',
-		});
+			description: 'failure sound'
+        });
 
 		this.reasonForTermination ='OUT_OF_INSTRUCTIONS';
 	}
@@ -321,7 +321,7 @@ ocargo.Model.prototype.getDestinationForNode = function(node) {
 		}
 	}
 	return null;
-}
+};
 
 // Helper functions which handles telling all parts of the model
 // that time has incremented and they should generate events
