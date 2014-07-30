@@ -1,10 +1,25 @@
 .episode {
 	padding: 20px 70px 20px 70px;
 	margin: 10px;
-	height: 200px;
 	width: 95%;
 	min-width: 150px;
 	overflow: auto;
+}
+
+.level {
+	padding: 20px 70px 20px 70px;
+	margin: 10px;
+	width: 95%;
+	min-width: 150px;
+	overflow: auto;
+}
+
+.levelTitle {
+  float: left;
+}
+
+.levelScore {
+  float: right;
 }
 
 .transparent {

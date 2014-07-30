@@ -1,13 +1,353 @@
-{% extends 'website/base.html' %}
-
+{% extends 'website/basenonav.html' %}
+{% load static %}
 
 {% block css %}
+
+    <link rel='stylesheet' type='text/css' href='{% static 'website/css/magnific-popup.css' %}' />
+
+    <style type="text/css">
+
+        body {
+            font-family: Helvetica, 'Helvetica Neue', Arial, sans;
+            background: #eceaee;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        .main {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h2, footer {
+            background-color: #00072c;
+            color: #ffffff;
+            display: block;
+            height: 70px;
+            margin: 20px 0 30px 0;
+            line-height: 70px;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        h2 {
+            background: #00072c url({% static 'website/img/logo_white.png' %}) no-repeat 20px 50%;
+            text-indent: -9000px;
+        }
+
+        h3 {
+            margin-bottom: 1em;
+            font-weight: bold;
+        }
+
+        .row.content {
+            margin: 0;
+        }
+
+        .intro {
+            padding-right: 30px;
+        }
+
+        input[type='email'] {
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -o-border-radius: 5px;
+            display: inline-block;
+            width: 95%;
+        }
+
+        input[type='submit'] {
+            -moz-box-shadow: inset 0px 1px 0px 0px #fce2c1;
+            -webkit-box-shadow: inset 0px 1px 0px 0px #fce2c1;
+            box-shadow: inset 0px 1px 0px 0px #fce2c1;
+            background: -webkit-gradient( linear, left top, left bottom, color-stop(0.05, #fbed27), color-stop(1, #faac38) );
+            background: -moz-linear-gradient( center top, #fbed27 5%, #faac38 100% );
+            filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#fbed27', endColorstr='#faac38');
+            background-color: #fbed27;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -o-border-radius: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-indent: 0;
+            border: 2px solid #eeb44f;
+            display: inline-block;
+            color: #080808;
+            font-size: 15px;
+            font-weight: bold;
+            font-style: normal;
+            height: 37px;
+            line-height: 37px;
+            width: 100%;
+            text-decoration: none;
+            text-align: center;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        input[type='submit']:hover {
+            background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #faac38), color-stop(1, #fbed27) );
+            background:-moz-linear-gradient( center top, #faac38 5%, #fbed27 100% );
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#faac38', endColorstr='#fbed27');
+            background-color:#faac38;
+        }
+
+        ul.errorlist, ul.errorlist li {
+            padding: 0;
+            margin: 0 0 5px 0;
+            list-style: none;
+            color: #a00;
+        }
+
+        .game {
+            background: #440e62;
+            border-radius: 10px;
+            -webkit-border-radius: 10px;
+            -moz-border-radius: 10px;
+            -o-border-radius: 10px;
+            padding-top: 0.9375rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .splash {
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            -o-border-radius: 5px;
+            background: #a0c53a url({% static 'website/img/rapid_router_background.jpg' %});
+            background-size: cover;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .splash h3 {
+            color: #fff;
+            font-size: 1.4em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .popup-video {
+            display: inline-block;
+            opacity: 0.7;
+            -webkit-transition: all 1s;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .popup-video:hover {
+            opacity: 1;
+        }
+
+        ul.clock {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul.clock li {
+            display: inline-block;
+            list-style: none;
+            width: 50px;
+            margin: 0 2px 20px 2px;
+        }
+
+        ul.clock li span {
+            display: inline-block;
+            color: #444;
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+            width: 21px;
+            height: 34px;
+            background: url({% static 'website/img/clock_back.png' %});
+            line-height: 31px;
+            font-weight: bold;
+            padding: 2px;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        ul.clock li em {
+            font-style: normal;
+            font-size: 0.8em;
+        }
+
+        .description {
+            padding: 10px;
+        }
+
+    </style>
 {% endblock %}
+
+{% block scripts %}
+
+    {{block.super}}
+    <script type="text/javascript" src="{% url 'django.views.i18n.javascript_catalog' %}"></script>
+
+    <script type='text/javascript' src='{% static 'website/js/jquery.magnific-popup.min.js' %}'></script>
+
+    <script type='text/javascript'>
+
+        var date_future = new Date('1 Sept 2014, 00:01');
+
+        function set_clock(section, num) {
+
+            var s = num + "";
+            if (s.length < 2) {
+                s = "0" + s;
+            }
+            $('.' + section + ' span.ten').html(s[0]);
+            $('.' + section + ' span.unit').html(s[1]);
+
+        }
+
+        function update_date() {
+
+            date_now = new Date();
+
+            seconds = Math.floor((date_future - (date_now))/1000);
+            minutes = Math.floor(seconds/60);
+            hours = Math.floor(minutes/60);
+            days = Math.floor(hours/24);
+
+            hours = hours-(days*24);
+            minutes = minutes-(days*24*60)-(hours*60);
+            seconds = seconds-(days*24*60*60)-(hours*60*60)-(minutes*60);
+
+            set_clock('days', days);
+            set_clock('hours', hours);
+            set_clock('mins', minutes);
+            set_clock('secs', seconds);
+
+        }
+
+        $(document).ready(function() {
+
+            update_date();
+            setInterval(update_date, 1000);
+
+            $('.popup-video').magnificPopup({
+                  disableOn: 700,
+                  type: 'iframe',
+                  mainClass: 'mfp-fade',
+                  removalDelay: 160,
+                  preloader: false,
+                  fixedContentPos: false
+            });
+
+        })
+
+    </script>
+
+{% endblock %}
+
+{% block title %}Code For Life{% endblock %}
 
 {% block content %}
 
-<h1>Rapid Router</h1>
+<h2>[ code ] for { life }</h2>
 
-<h2><a href="/game/">Click here to play the game!</a></h2>
+<div class='content row'>
+    <div class='medium-6 medium-push-6 columns game'>
+
+        <div class="splash">
+
+            <img src='{% static 'website/img/rapid_router.png' %}' alt='Rapid Router' />
+
+            <h3>Coming soon</h3>
+
+            <ul class='clock'>
+                <li class='days'>
+                    <span class='ten'>0</span>
+                    <span class='unit'>0</span>
+                    <em>Days</em>
+                </li>
+                <li class='hours'>
+                    <span class='ten'>0</span>
+                    <span class='unit'>0</span></span>
+                    <em>Hours</em>
+                </li>
+                <li class='mins'>
+                    <span class='ten'>0</span>
+                    <span class='unit'>0</span>
+                    <em>Mins</em>
+                </li>
+                <li class='secs'>
+                    <span class='ten'>0</span>
+                    <span class='unit'>0</span>
+                    <em>Secs</em>
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="description">
+
+            <p><strong><em>Rapid Router</em> is a fun and engaging education resource, which includes a coding game that helps teach children the basic principles of programming.</strong></p>
+
+            <p>Built on 'Blockly', an easy-to-use visual programming language that's similar to Scratch, <em>Rapid Router</em> enables teachers to monitor and manage individual pupil progress and identify where more support is required.</p>
+
+        </div>
+
+    </div>
+    <div class='medium-6 medium-pull-6 columns intro'>
+
+        {% if submitted %}
+        <p class='callout panel'>Thank you for registering your interest!</p>
+        {% endif %}
+
+        <h3>An Introduction</h3>
+
+        <p>In September 2014, the UK becomes the first country in the world to put Computing at the heart of the school curriculum.</p>
+
+        <p>Ocado Technology's Code for Life initiative has been developed to help teachers deliver the new curriculum, so they can inspire the next generation of computer scientists.</p>
+
+        <p>But this is just the beginning. Over the next couple of years, this initiative will be expanded to support pupils throughout their school career, from age five to 16, and beyond.</p>
+
+        <p><em>Rapid Router</em> marks the first step in this journey. It is a free, comprehensive Key Stage 1 and lower Key Stage 2 teaching resource and web application, designed for, and tested by, primary school teachers.</p>
+
+        <p>Enter your email address below to be the first to get the free <em>Rapid Router</em> resource when it's released in September, which will include:</p>
+
+        <ul>
+            <li>Fun and engaging education coding web application</li>
+            <li>Detailed lesson plans for Key Stage 1 and lower Key Stage 2 pupils</li>
+            <li>Unplugged educational activity</li>
+            <li>Coding videos</li>
+        </ul>
+
+        {% if not submitted %}
+        <form method='post'>
+
+            {{form.email.errors}}
+
+            <div class='row collapse'>
+                <div class='small-9 columns'>
+                    <input type='email' name='email' id='id_email' maxlength='75' placeholder='Email address' />
+                </div>
+                <div class='small-3 columns'>
+                    <input type='submit' value='Sign up' />
+                </div>
+            </div>
+
+            {% csrf_token %}
+
+        </form>
+        {% endif %}
+
+        <h3>Find out more</h3>
+
+        <div class="video">
+            <a class="popup-video" href="http://www.youtube.com/watch?v=0O2aH4XLbto">
+                <img src='{% static 'website/img/video_still.png' %}' alt='Watch Video' />
+            </a>
+        </div>
+
+
+    </div>
+</div>
+
+<footer>
+    <small>Ocado Technology &copy; 2014</small>
+</footer>
 
 {% endblock %}

@@ -1,6 +1,10 @@
 def noPermissionMessage():
     return "You have no permission to see this."
 
+def notSharedLevel():
+    return "This level is private. You can only see the public levels and the ones created by " \
+        + "other users only if they share them with you."
+
 
 """ Strings used in the scoreboard. """
 
@@ -13,6 +17,8 @@ def noPermissionScoreboard():
     return "Scoreboard is only visible to students and teachers. Log in if you think you " + \
         "should be able to see it. "
 
+def noDataToShow():
+    return "There is no data to show. Please contact your administrator if this is unexpected. "
 
 """ String messages used on the settings page. """
 
@@ -30,8 +36,7 @@ def shareSuccessfulClass(className):
 
 
 def shareUnsuccessfulPerson(name, surname):
-    return "We were unable to find {0} {1}. Are you sure you got their name " \
-        + "right?".format(name, surname)
+    return "We were unable to find {0} {1}. Are you sure you got their name right?".format(name, surname)
 
 
 def shareUnsuccessfulClass(className):
@@ -56,7 +61,7 @@ def levelsMessage():
 
 
 def sharedLevelsMessage():
-    return "All the levels your created by others that were shared with you. Click on them to " \
+    return "All the levels created by others that were shared with you. Click on them to " \
         + "play them"
 
 
@@ -102,7 +107,7 @@ def title_level2():
 
 
 def description_level2():
-    message = "Can you hel the van get there? <br> Like last time, drag the right blocks and " \
+    message = "Can you help the van get there? <br> Like last time, drag the right blocks and " \
         + "attach them under the 'Start' block. <br> To remove a block, drag it back to the " \
         + "left of the screen. "  # TODO: or the bin.
     return "<b>" + title_level2() + "</b><br><br>" + message
@@ -147,11 +152,11 @@ def description_level5():
 #
 
 def title_level6():
-    return "CFC is not always in the same place. "
+    return "The CFC is not always in the same place. "
 
 
 def description_level6():
-    message = "Driver does not always start the journey by going to the right of the screen. "
+    message = "The driver does not always start the journey by going to the right of the screen. "
     return "<b>" + title_level6() + "</b><br><br>" + message
 
 
@@ -210,7 +215,7 @@ def description_level11():
 
 
 def title_level12():
-    return "Use 'Repeat' block to make your sequence simpler. "
+    return "Use the 'Repeat' block to make your sequence simpler. "
 
 
 def description_level12():
@@ -271,7 +276,7 @@ def title_level17():
 def description_level17():
     message = "Another way of telling the van what to do is to use the 'If' block . For example, " \
         + "you can tell the van to go forward if the road goes forward, or to turn left if the " \
-        + "road goes forward, or to turn ledt if it goes left. <br> Try using the 'If block' and " \
+        + "road goes forward, or to turn left if it goes left. <br> Try using the 'If block' and " \
         + "the 'Repeat' block together. <br> The 'Repeat' block will stretch if you attach the " \
         + "'If' block inside it. "
     return "<b>" + title_level17() + "</b><br><br>" + message
@@ -296,7 +301,7 @@ def title_level19():
 def description_level19():
     message = "If you cannot see the road, you cannot see the choices to make. No problem! " \
         + "This is where 'If' and 'else' are useful. <br> You can tell the van to go one way if " \
-        + "the road goes that wat. If the road does not go that way, the van will do nothing. " \
+        + "the road goes that way. If the road does not go that way, the van will do nothing. " \
         + "<br> Keep adding choice using 'else if' and the van will move when the program finds " \
         + "the right choice. <br> You can add as many 'else if' choices as you like. Add 'else' " \
         + "as your last choice so that the van knows what to do when the choices run out."
@@ -344,7 +349,7 @@ def title_level23():
 
 
 def description_level23():
-    message = "You've done fantastiv job so far! Can you find the way to the house this time? " \
+    message = "You've done fantastic job so far! Can you find the way to the house this time? " \
         + "There is more than one solution! "
     return "<b>" + title_level23() + "</b><br><br>" + message
 
@@ -388,20 +393,20 @@ def description_level27():
 
 
 def title_level28():
-    return "Title level 28"
+    return "Following procedure"
 
 
 def description_level28():
-    message = ""
+    message = "Use procedures to find the destination."
     return "<b>" + title_level28() + "</b><br><br>" + message
 
 
 def title_level29():
-    return "Title level 29"
+    return "Threading your way"
 
 
 def description_level29():
-    message = ""
+    message = "Try using multiple threads to get both vans to their destination"
     return "<b>" + title_level29() + "</b><br><br>" + message
 
 
@@ -440,10 +445,140 @@ def description_level33():
     message = ""
     return "<b>" + title_level33() + "</b><br><br>" + message
 
+def title_level34():
+    return "Title level 33"
+
+
+def description_level34():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level35():
+    return "Title level 33"
+
+
+def description_level35():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level36():
+    return "Title level 33"
+
+
+def description_level36():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level37():
+    return "Title level 33"
+
+
+def description_level37():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level38():
+    return "Title level 33"
+
+
+def description_level38():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level39():
+    return "Title level 33"
+
+
+def description_level39():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+
+def title_level40():
+    return "Title level 33"
+
+
+def description_level40():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level41():
+    return "Title level 33"
+
+
+def description_level41():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level42():
+    return "Title level 33"
+
+
+def description_level42():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level43():
+    return "Title level 33"
+
+
+def description_level43():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level44():
+    return "Title level 33"
+
+
+def description_level44():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level45():
+    return "Title level 33"
+
+
+def description_level45():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level46():
+    return "Title level 33"
+
+
+def description_level46():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level47():
+    return "Title level 33"
+
+
+def description_level47():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level48():
+    return "Title level 33"
+
+
+def description_level48():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
+def title_level49():
+    return "Title level 33"
+
+
+def description_level49():
+    message = ""
+    return "<b>" + title_level33() + "</b><br><br>" + message
+
 #
 # The end of Paulina's Happy Creation.
 #
 #
+
 
 def hint_level_default():
     message = "There is no specific information I can give for this level.<br>Do your best to " \
@@ -610,5 +745,93 @@ def hint_level27():
 
 
 def hint_level28():
+    message = hint_level_default()
+    return message
+
+def hint_level29():
+    message = hint_level_default()
+    return message
+
+def hint_level30():
+    message = hint_level_default()
+    return message
+
+def hint_level31():
+    message = hint_level_default()
+    return message
+
+def hint_level32():
+    message = hint_level_default()
+    return message
+
+def hint_level33():
+    message = hint_level_default()
+    return message
+
+def hint_level34():
+    message = hint_level_default()
+    return message
+
+def hint_level35():
+    message = hint_level_default()
+    return message
+
+def hint_level36():
+    message = hint_level_default()
+    return message
+
+def hint_level37():
+    message = hint_level_default()
+    return message
+
+def hint_level38():
+    message = hint_level_default()
+    return message
+
+def hint_level39():
+    message = hint_level_default()
+    return message
+
+def hint_level40():
+    message = hint_level_default()
+    return message
+
+def hint_level41():
+    message = hint_level_default()
+    return message
+
+def hint_level42():
+    message = hint_level_default()
+    return message
+
+def hint_level43():
+    message = hint_level_default()
+    return message
+
+def hint_level44():
+    message = hint_level_default()
+    return message
+
+def hint_level45():
+    message = hint_level_default()
+    return message
+
+def hint_level46():
+    message = hint_level_default()
+    return message
+
+def hint_level47():
+    message = hint_level_default()
+    return message
+
+def hint_level48():
+    message = hint_level_default()
+    return message
+
+def hint_level49():
+    message = hint_level_default()
+    return message
+
+def hint_level50():
     message = hint_level_default()
     return message

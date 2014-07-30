@@ -79,19 +79,36 @@ class Block (models.Model):
         return self.type
 
 
+class Theme(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class Decor(models.Model):
+    name = models.CharField(max_length=100)
+    url = models.CharField(max_length=500)
+    width = models.IntegerField()
+    height = models.IntegerField()
+    theme = models.ForeignKey(Theme, related_name='decor')
+
+
 class Level (models.Model):
-    name = models.CharField(max_length="100")
+    name = models.CharField(max_length=100)
     path = models.TextField(max_length=10000)
     decor = models.TextField(max_length=10000, default='[]')
     traffic_lights = models.TextField(max_length=10000, default='[]')
-    destination = models.CharField(max_length=10)
+    destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
-    block_limit = models.IntegerField(blank=True, null=True)
-    blocks = models.ManyToManyField(Block, related_name='+')
+    blocks = models.ManyToManyField(Block, related_name='levels')
     max_fuel = models.IntegerField(default=50)
+    direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
+    model_solution = models.CharField(blank=True, max_length=10, default='[]')
+    threads = models.IntegerField(blank=False, default=1)
+    blocklyEnabled = models.BooleanField(default=True)
+    pythonEnabled = models.BooleanField(default=True)
+    theme = models.ForeignKey(Theme, default=1)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
@@ -104,10 +121,25 @@ class Level (models.Model):
         return None
 
 
+class LevelDecor(models.Model):
+    x = models.IntegerField()
+    y = models.IntegerField()
+    level = models.ForeignKey(Level)
+    decorName = models.CharField(max_length=100, default='tree1')
+
+
 class Episode (models.Model):
     name = models.CharField(max_length=200)
     first_level = models.ForeignKey(Level)
     next_episode = models.ForeignKey("self", null=True, default=None)
+
+    r_branchiness = models.FloatField(default=0)
+    r_loopiness = models.FloatField(default=0)
+    r_curviness = models.FloatField(default=0)
+    r_num_tiles = models.IntegerField(default=5)
+    r_blocks = models.ManyToManyField(Block, related_name='episodes')
+    r_blocklyEnabled = models.BooleanField(default=True)
+    r_pythonEnabled = models.BooleanField(default=False)
 
     @property
     def levels(self):
@@ -118,12 +150,19 @@ class Episode (models.Model):
                 level = level.next_level
 
 
+class Workspace (models.Model):
+    name = models.CharField(max_length=200)
+    owner = models.ForeignKey(Student, related_name='workspaces')
+    workspace = models.TextField(default="")
+
+
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name='attempts')
     student = models.ForeignKey(Student, related_name='attempts')
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0)
+    workspace = models.TextField(default="")
 
 
 class Command (models.Model):

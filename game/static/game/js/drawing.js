@@ -21,11 +21,11 @@ var ROTATION_OFFSET_Y = VAN_WIDTH - 20;
 
 var DECOR_SIZE = 100;
 
-var ROAD_WIDTH = GRID_SPACE_SIZE / 2;
+var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
 var ROAD_COLOUR = '#222';
 var ROAD_ATTR = {
-    fill: ROAD_COLOUR,
+    fill: ROAD_COLOUR,      
     'stroke': '#aaa'
 };
 
@@ -38,9 +38,17 @@ var ROAD_MARKER_ATTR = {
     'stroke': 'white'
 };
 
+var DESTINATION_NOT_VISITED_COLOUR = 'yellow';
+var DESTINATION_VISITED_COLOUR = 'green';
+
 var DASH = '10';
 
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
+
+var vanImages = {};
+var lightImages = {};
+var destinationImages = {};
+var roadImages = [];
 
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;
@@ -76,201 +84,10 @@ function calculateInitialRotation(previousNode, startNode) {
     return -nodeAngleDegrees; // Calculation is counterclockwise, transformations are clockwise
 }
 
-function createVan(paper, previousNode, startNode) {
-    var initialX = calculateInitialX(startNode);
-    var initialY = calculateInitialY(startNode);
-
-    van = paper.image(
-        '/static/game/image/ocadoVan_big.svg', initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
-
-    var rotation = calculateInitialRotation(previousNode, startNode);
-    rotateElementAroundCentreOfGridSpace(van, rotation, startNode.coordinate.x, startNode.coordinate.y);
-
-    return van.transform('... r90');
-}
-
-function createHorizontalRoad(paper, i, j, drawLines) {
-    var x = i * GRID_SPACE_SIZE;
-    var y = j * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-
-    var road = paper.rect(x, y, GRID_SPACE_SIZE, ROAD_WIDTH);
-
-    var markerSet = paper.set();
-    if (drawLines) {
-        var marker = paper.path(['M', x, j * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2,
-                'l', GRID_SPACE_SIZE, 0]);
-        marker.attr(ROAD_MARKER_ATTR);
-        marker.node.setAttribute('stroke-dasharray', DASH);
-        markerSet.push(marker);
-        road.attr(ROAD_ATTR);
-    } else {
-        road.attr(ROAD_ATTR_JUNCTION);
-    }
-
-    var roadSet = paper.set();
-    roadSet.push(road, markerSet);
-
-    return roadSet;
-}
-
-function createVerticalRoad(paper, i, j, drawLines) {
-    var x = i * GRID_SPACE_SIZE + (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-    var y = j * GRID_SPACE_SIZE;
-
-    var road = paper.rect(x, y, ROAD_WIDTH, GRID_SPACE_SIZE);
-    road.attr(ROAD_ATTR);
-
-    var markerSet = paper.set();
-    if (drawLines) {
-        var marker = paper.path(['M', i * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, y,
-            'l', 0, GRID_SPACE_SIZE]);
-        marker.attr(ROAD_MARKER_ATTR);
-        marker.node.setAttribute('stroke-dasharray', DASH);
-        markerSet.push(marker);
-        road.attr(ROAD_ATTR);
-    } else {
-        road.attr(ROAD_ATTR_JUNCTION);
-    }
-
-    var roadSet = paper.set();
-    roadSet.push(road, markerSet);
-
-    return roadSet;
-}
-
-function createTurn(paper, i, j, direction, drawLines) {
-    var baseX = i * GRID_SPACE_SIZE;
-    var baseY = j * GRID_SPACE_SIZE;
-    var turnAndMarker = [];
-
-    switch (direction) {
-        case 'UL':
-            turnAndMarker = createTurnUL(baseX, baseY, drawLines);
-            break;
-
-        case 'UR':
-            turnAndMarker = createTurnUR(baseX, baseY, drawLines);
-            break;
-
-        case 'DR':
-            turnAndMarker = createTurnDR(baseX, baseY, drawLines);
-            break;
-
-        case 'DL':
-            turnAndMarker = createTurnDL(baseX, baseY, drawLines);
-            break;
-    }
-
-    var turn = turnAndMarker[0];
-    var marker = turnAndMarker[1];
-
-    if (drawLines) {
-        marker.attr(ROAD_MARKER_ATTR);
-        marker.node.setAttribute('stroke-dasharray', DASH);
-        turn.attr(ROAD_ATTR);
-    } else {
-        turn.attr(ROAD_ATTR_JUNCTION);
-    }
-
-    var roadSet = paper.set();
-    roadSet.push(turn, marker);
-
-    return roadSet;
-}
-
-function createTurnUL(baseX, baseY, drawLines) {
-    var turn = paper.path([
-        'M', baseX, baseY + EDGE_GAP,
-        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY,
-        'H', baseX + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH, baseX,
-            baseY + EDGE_GAP + ROAD_WIDTH,
-        'V', baseY + EDGE_GAP
-    ]);
-
-    var marker;
-    if (drawLines) {
-        marker = paper.path([
-            'M', baseX, baseY + GRID_SPACE_SIZE / 2,
-            'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-                baseX + GRID_SPACE_SIZE / 2, baseY
-        ]);
-    }
-
-    return [turn, marker];
-}
-
-function createTurnDL(baseX, baseY, drawLines) {
-    var turn = paper.path([
-        'M', baseX, baseY + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + EDGE_GAP,
-            baseY + GRID_SPACE_SIZE,
-        'H', baseX + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX, baseY + EDGE_GAP,
-        'V', baseY + EDGE_GAP + ROAD_WIDTH
-    ]);
-
-    var marker;
-    if (drawLines) {
-        marker = paper.path([
-            'M', baseX, baseY + GRID_SPACE_SIZE / 2,
-            'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-                baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE
-        ]);
-    }
-
-    return [turn, marker];
-}
-
-function createTurnDR(baseX, baseY, drawLines) {
-    var turn = paper.path([
-        'M', baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP,
-        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP, baseX + EDGE_GAP, baseY + GRID_SPACE_SIZE,
-        'H', baseX + EDGE_GAP + ROAD_WIDTH,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP + ROAD_WIDTH,
-            baseX + GRID_SPACE_SIZE, baseY + EDGE_GAP + ROAD_WIDTH,
-        'V', baseY + EDGE_GAP
-    ]);
-
-    var marker;
-    if (drawLines) {
-        marker = paper.path([
-            'M', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE,
-            'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-                baseX + GRID_SPACE_SIZE, baseY + GRID_SPACE_SIZE / 2
-        ]);
-    }
-
-    return [turn, marker];
-}
-
-function createTurnUR(baseX, baseY, drawLines) {
-    var turn = paper.path([
-        'M', baseX + EDGE_GAP, baseY,
-        'Q', baseX + EDGE_GAP, baseY + EDGE_GAP + ROAD_WIDTH, baseX + GRID_SPACE_SIZE, baseY +
-            EDGE_GAP + ROAD_WIDTH,
-        'V', baseY + EDGE_GAP,
-        'Q', baseX + EDGE_GAP + ROAD_WIDTH, baseY + EDGE_GAP, baseX + EDGE_GAP +
-            ROAD_WIDTH, baseY,
-        'H', baseX + EDGE_GAP
-    ]);
-
-    var marker;
-    if (drawLines) {
-        marker = paper.path([
-            'M', baseX + GRID_SPACE_SIZE, baseY + GRID_SPACE_SIZE / 2,
-            'Q', baseX + GRID_SPACE_SIZE / 2, baseY + GRID_SPACE_SIZE / 2,
-                baseX + GRID_SPACE_SIZE / 2, baseY
-        ]);
-    }
-
-    return [turn, marker];
-}
-
 function getRoadLetters(previous, node1, node2) {
-    previous = transformY(previous);
-    node1 = transformY(node1);
-    node2 = transformY(node2);
+    previous = translate(previous);
+    node1 = translate(node1);
+    node2 = translate(node2);
 
     if (isHorizontal(node1, node2) &&
         (previous === null || isHorizontal(previous, node1))) {
@@ -279,7 +96,6 @@ function getRoadLetters(previous, node1, node2) {
     } else if (isVertical(node1, node2) &&
         (previous === null || isVertical(previous, node1))) {
         return 'V';
-
     // Handle turns.
     } else {
         if (isProgressive(previous.x, node1.x)) {
@@ -317,160 +133,8 @@ function isProgressive(coord1, coord2) {
     return coord1 < coord2;
 }
 
-function transformY(coord) {
-    return new ocargo.Coordinate(coord.x, GRID_HEIGHT - 1 - coord.y);
-}
-
-function drawSingleRoadSegment(previousNode, node, nextNode, drawLines) {
-    var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
-
-    var flipped = transformY(node.coordinate);
-
-    switch (roadLetters) {
-        case 'H':
-            createHorizontalRoad(paper, flipped.x, flipped.y, drawLines);
-            break;
-        case 'V':
-            createVerticalRoad(paper, flipped.x, flipped.y, drawLines);
-            break;
-        default:
-            createTurn(paper, flipped.x, flipped.y, roadLetters, drawLines);
-            break;
-    }
-}
-
-function createRoad(nodes) {
-    $.each(nodes, function(i, node) {
-        var previousNode;
-        if (node.connectedNodes.length === 1) {
-            // Draw dead ends
-            previousNode = node.connectedNodes[0];
-            var nextNode = {};
-            nextNode.coordinate = new ocargo.Coordinate(
-                    node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
-                    node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y));
-            drawSingleRoadSegment(node.connectedNodes[0], node, nextNode, true);
-        } else {
-            var drawLines = node.connectedNodes.length === 2;
-            for (i = 0; i < node.connectedNodes.length; i++) {
-                previousNode = node.connectedNodes[i];
-                for (var j = i + 1; j < node.connectedNodes.length; j++) {
-                    drawSingleRoadSegment(previousNode, node, node.connectedNodes[j], drawLines);
-                }
-            }
-        }
-    });
-}
-
-var van;
-
-function scrollToShowVan() {
-    var point = getVanPosition();
-    var element = document.getElementById('paper');
-
-    if (point[0] > Math.floor(PAPER_WIDTH / 2)) {
-        element.scrollLeft = PAPER_WIDTH / 2;
-    } else {
-        element.scrollLeft = 0;
-    }
-
-    if (point[1] > Math.floor(PAPER_HEIGHT / 2)) {
-        element.scrollTop = PAPER_HEIGHT / 2;
-    } else {
-        element.scrollTop = 0;
-    }
-}
-
-function moveVan(attr, callback) {
-    var combinedCallback = function() {
-        scrollToShowVan();
-        callback();
-    };
-
-    van.animate(attr, 500, 'easeIn', combinedCallback);
-}
-
-function moveForward(callback) {
-    var moveDistance = -MOVE_DISTANCE;
-    var transformation = "... t 0, " + moveDistance;
-    moveVan({
-        transform: transformation
-    }, callback);
-}
-
-function moveLeft(callback) {
-    var rotationPointX = van.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-    var rotationPointY = van.attrs.y + ROTATION_OFFSET_Y;
-    var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
-    moveVan({
-        transform: transformation
-    }, callback);
-}
-
-function moveRight(callback) {
-    var rotationPointX = van.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-    var rotationPointY = van.attrs.y + ROTATION_OFFSET_Y;
-    var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
-    moveVan({
-        transform: transformation
-    }, callback);
-}
-
-function wait(callback) {
-	//no movement for now
-    moveVan({
-        transform: '... t0,0'
-    }, callback);
-}
-
-function resetVan(previousNode, startNode) {
-    van.transform('r0');
-
-    var rotation = calculateInitialRotation(previousNode, startNode);
-    rotateElementAroundCentreOfGridSpace(van, rotation, startNode.coordinate.x, startNode.coordinate.y);
-
-    var initialX = calculateInitialX(startNode);
-    var initialY = calculateInitialY(startNode);
-    van.attr({
-        x: initialX,
-        y: initialY
-    });
-
-    van.transform('... r90');
-    scrollToShowVan();
-}
-
-function getVanPosition() {
-    var box = van.getBBox();
-    return [box.x, box.y];
-}
-
-function turnAround(callback) {
-    var moveDistance = -GRID_SPACE_SIZE / 2;
-    var moveTransformation = "... t 0, " + moveDistance;
-
-    function moveBack() {
-        moveVan({
-            transform: moveTransformation
-        }, callback);
-    }
-
-    function rotate() {
-        var rotationPointX = van.attrs.x + 22;
-        var rotationPointY = van.attrs.y + 20;
-
-        moveVan({
-            transform: createRotationTransformation(180, rotationPointX, rotationPointY)
-        }, moveBack);
-    }
-
-    function moveForward() {
-        moveVan({
-            transform: moveTransformation
-        }, rotate);
-    }
-
-    moveForward();
+function translate(coordinate) {
+    return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
 }
 
 function isMobile() {
@@ -478,33 +142,128 @@ function isMobile() {
     return !!mobileDetect.mobile();
 }
 
-function drawBackground(paper) {
+// This is the function that starts the pop-up.
+// This is the function that starts the pop-up.
+function startPopup(title, subtitle, message, delay) {
+    $('#myModal-title').html(title);
+    $('#myModal-lead').html(subtitle);
+    $('#myModal-mainText').html(message);
+    setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
+}
+
+function clearPaper() {
+    paper.clear();
+}
+
+function renderMap(map) {
+    drawBackground();
+    createRoad(map.nodes);
+}
+
+function renderEndpoints(map) {
+    renderDestinations(map.destinations);
+    createCFC(map.getStartingPosition());
+}
+
+function drawBackground() {
     if (!isMobile()) {
         paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
-            .attr({fill: 'url(/static/game/image/grassTile1.svg)',
+            .attr({fill: 'url(' + BACKGROUND_URL + ')',
                 'stroke': 'none'});
     }
 }
 
-function drawDecor(decor) {
-    for (var i = 0; i < decor.length; i++) {
-        var obj = decor[i];
-        var coord = obj['coordinate'];
-        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
-            DECOR_SIZE, DECOR_SIZE);
-    }
-}
-
-function createCFC(paper, previousNode, startNode) {
-    var initialX = calculateInitialX(startNode);
-    var initialY = calculateInitialY(startNode);
+function createCFC(position) {
+    var initialX = calculateInitialX(position.currentNode);
+    var initialY = calculateInitialY(position.currentNode);
 
     var cfc = paper.image('/static/game/image/OcadoCFC_no_road.svg', initialX - 95, initialY - 25, 100, 107);
 
-    var rotation = calculateInitialRotation(previousNode, startNode);
-    rotateElementAroundCentreOfGridSpace(cfc, rotation, startNode.coordinate.x, startNode.coordinate.y);
+    var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
+    rotateElementAroundCentreOfGridSpace(cfc, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
 
     cfc.transform('... r90');
+}
+
+function renderDecor(decor) {
+    for (var i = 0; i < decor.length; i++) {
+        var obj = JSON.parse(decor[i]);
+        var coord = obj['coordinate'];
+        var width = obj['width'];
+        var height = obj['height']
+        paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
+            width, height);
+    }
+}
+
+/*****************************/
+/** Traffic light rendering **/
+/*****************************/
+
+function renderTrafficLights(trafficLights, draggable) {
+    for (var i = 0; i < trafficLights.length; i++) {
+        var trafficLight = trafficLights[i];
+        var sourceCoordinate = trafficLight.sourceNode.coordinate;
+        var controlledCoordinate = trafficLight.controlledNode.coordinate;
+
+        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg',
+                                                0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
+        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', 
+                                                0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
+
+        setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.greenLightEl);
+        setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.redLightEl);
+		
+		// hide light which isn't the starting state
+		if(trafficLight.startingState === ocargo.TrafficLight.RED) {
+			trafficLight.greenLightEl.attr({'opacity': 0});
+		} 
+        else {
+			trafficLight.redLightEl.attr({'opacity': 0});
+		}
+
+        lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
+	}
+}
+
+function setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, image) {
+    // get position based on nodes
+    var x = (controlledCoordinate.x + sourceCoordinate.x) / 2.0;
+    var y = (controlledCoordinate.y + sourceCoordinate.y) / 2.0;
+    
+    // get rotation based on nodes (should face source)
+    var angle = sourceCoordinate.angleTo(controlledCoordinate) * (180 / Math.PI);
+    var rotation = 90 - angle;
+
+    // draw red and green lights, keep reference to both
+    var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
+    var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
+
+    image.transform('t' + drawX + ',' + drawY + ' r' + rotation + 's-1,1');
+}
+
+
+/***************************/
+/** Destination rendering **/
+/***************************/
+
+function renderDestinations(destinations) {
+    for(var i = 0; i < destinations.length; i++) {
+        var destination = destinations[i].node;
+        var variation = getHousePosition(destination);
+
+        var destinationRect = paper.rect(destination.coordinate.x * GRID_SPACE_SIZE, 
+                                PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100,
+                                100, 100).attr({'stroke': DESTINATION_NOT_VISITED_COLOUR});
+
+        var destinationHouse = paper.image(HOUSE_URL,
+                                destination.coordinate.x * GRID_SPACE_SIZE + variation[0],
+                                PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
+                                50, 50).transform('r' + variation[2]);
+
+        destinationImages[destinations[i].id] = {rect: destinationRect, 
+                                                house: destinationHouse};
+    }
 }
 
 //find a side of the road
@@ -534,119 +293,464 @@ function getHousePosition(destination) {
     var up = true;
     var down = true;
 
+    //variation specifies x,y,rotation
+    var variation = [25,25,90];
+
+    // Set "default" variations of the house position
+    // based on straight roads and turns
     if (roadLetters.indexOf('H') >= 0 ) {
         left = false;
         right = false;
+        variation = [25,25,90];
     }
     if (roadLetters.indexOf('V') >= 0 ) {
         up = false;
         down = false;
+        variation = [-25,75,180];
     }
     if (roadLetters.indexOf('UL') >= 0 ) {
         left = false;
         up = false;
+        variation = [45,55,45];
     }
     if (roadLetters.indexOf('DL') >= 0 ) {
         left = false;
         down = false;
+        variation = [45,95,315];
     }
     if (roadLetters.indexOf('UR') >= 0 ) {
         right = false;
         up = false;
+        variation = [5,55,135];
     }
     if (roadLetters.indexOf('DR') >= 0 ) {
         right = false;
         down = false;
+        variation = [5,95,225];
     }
 
-    //variation specifies x,y,rotation
-    var variation = [25,25,90];
-    if (down) {
-        //prioritise current position for nostalgia, do nothing
-    } else if (up) {
-        variation = [25,125,270];
-    } else if (left) {
-        variation = [-25,75,180];
-    } else if (right) {
-        variation = [75,75,0];
-    } else {
-        //4-way junction, so hang it off to the bottom left
+    // Adapt for T-junctions and crossroads
+    if (!(left || right || up || down)) {
+        // 4-way junction, so hang it off to the bottom left
         variation = [-25,25,135];
+    } else if (!(up || left || right)) {
+        // T junction, road at bottom
+        variation = [25,25,90];
+    } else if (!(down || left || right)) {
+        // T junction, road at top
+        variation = [25,125,270];
+    } else if (!(up || down || left)) {
+        // T junction, road at right
+        variation = [75,75,0];
+    } else if (!(up || down || right)) {
+        // T junction, road at left
+        variation = [-25,75,180];
     }
+
     return variation;
 }
 
-function createDestination(destination) {
-    var variation = getHousePosition(destination);
 
-    paper.rect(destination.coordinate.x * GRID_SPACE_SIZE, PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100,
-            100, 100).attr({'stroke': 'yellow'});
 
-    paper.image('/static/game/image/house1_noGreen.svg',
-        destination.coordinate.x * GRID_SPACE_SIZE + variation[0],
-        PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
-        50, 50).transform('r' + variation[2]);
+/********************/
+/** Road rendering **/
+/********************/
+
+function createRoad(nodes) {
+    for(var i = 0; i < roadImages.length; i++) {
+        roadImages[i].remove();
+    }
+
+    roadImages = [];
+    for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        var roadImage;
+        switch (node.connectedNodes.length) {
+            case 1:
+                roadImage = drawDeadEndRoad(node);
+                break;
+            
+            case 2:
+                roadImage = drawSingleRoadSegment(node.connectedNodes[0], node, node.connectedNodes[1]);
+                break;
+            
+            case 3:
+                roadImage = drawTJunction(node);
+                break;
+            
+            case 4:
+                roadImage = drawCrossRoads(node);
+                break;
+
+            default:
+                break;
+        }
+        roadImages.push(roadImage);
+    }
 }
 
-function renderTheMap(map) {
-    paper.clear();
-    drawBackground(paper);
-    createRoad(map.nodes);
-    createDestination(map.destination);
-    var previousNode = map.nodes[0];
-    var startNode = map.nodes[0].connectedNodes[0];
-    createCFC(paper, previousNode, startNode);
-    van = createVan(paper, previousNode, startNode);
-    drawDecor(map.decor);
-    createTrafficLights(map.trafficLights);
-    scrollToShowVan();
+function drawDeadEndRoad(node) {
+    var previousNode = node.connectedNodes[0];
+
+    var nextNode = {};
+    nextNode.coordinate = new ocargo.Coordinate(
+            node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
+            node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y));
+
+    var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+
+    var prevFlipped = translate(previousNode.coordinate);
+    var flipped = translate(node.coordinate);
+
+    var road = paper.image('/static/game/image/roadTile_deadEnd.svg',
+        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+
+    if (roadLetters === 'H' && prevFlipped.x < flipped.x) {
+        road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters === 'H' && prevFlipped.x > flipped.x) {
+        road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters === 'V' && prevFlipped.y < flipped.y) {
+        road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+
+    return road;
 }
 
-function createTrafficLights(trafficLights) {
-	for (var i = 0; i < trafficLights.length; i++) {
-		var trafficLight = trafficLights[i];
-		var controlledNode = trafficLight.controlledNode;
-		var sourceNode = trafficLight.sourceNode;
-		
-		//get position based on nodes
-		var x = (controlledNode.coordinate.x + sourceNode.coordinate.x) / 2.0;
-		var y = (controlledNode.coordinate.y + sourceNode.coordinate.y) / 2.0;
-		
-		//get rotation based on nodes (should face source)
-		var rotation = calculateInitialRotation(sourceNode, controlledNode) + 90;
-		
-		//draw red and green lights, keep reference to both
-        var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
-        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
-        trafficLight.greenLightEl = paper.image('/static/game/image/trafficLight_green.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-            .transform('r' + rotation + 's-1,1');
-        trafficLight.redLightEl = paper.image('/static/game/image/trafficLight_red.svg', drawX, drawY, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT)
-            .transform('r' + rotation + 's-1,1');
-		
-		//hide light which isn't the starting state
-		if(trafficLight.startingState == trafficLight.RED){
-			trafficLight.greenLightEl.hide();
-		} else {
-			trafficLight.redLightEl.hide();//
-		}
-		
-		//add listeners to the traffic light to show/hide when lights change
-		$(trafficLight).on(trafficLight.RED, function(){
-			this.redLightEl.show();
-			this.greenLightEl.hide();
-		});
-		
-		$(trafficLight).on(trafficLight.GREEN, function(){
-			this.redLightEl.hide();
-			this.greenLightEl.show();;
-		});
-	}
+function drawSingleRoadSegment(previousNode, node, nextNode) {
+    var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+
+    var flipped = translate(node.coordinate);
+    var road;
+    if (roadLetters === 'H') {
+        road = paper.image('/static/game/image/roadTile_straight.svg',
+            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+        road.rotate(90);
+    }
+    else if (roadLetters === 'V') {
+        road = paper.image('/static/game/image/roadTile_straight.svg',
+            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+    }
+    else {
+        road = paper.image('/static/game/image/roadTile_turn.svg',
+            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+
+        if (roadLetters === 'UL') {
+            road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+        else if (roadLetters === 'UR') {
+            road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+        else if (roadLetters === 'DR') {
+            road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+        }
+    }
+
+    return road;
 }
 
-// This is the function that starts the pop-up.
-function startPopup(title, subtitle, message) {
-    $('#myModal').foundation('reveal', 'open');
-    $('.title').html(title);
-    $('.lead').html(subtitle);
-    $('.mainText').html(message);
+function drawTJunction(node) {
+    var node1 = node.connectedNodes[0];
+    var node2 = node.connectedNodes[1];
+    var node3 = node.connectedNodes[2];
+
+    var flipped = translate(node.coordinate);
+    var flipped1 = translate(node1.coordinate);
+    var flipped2 = translate(node2.coordinate);
+    var flipped3 = translate(node3.coordinate);
+
+    var letters12 = getRoadLetters(node1.coordinate, node.coordinate, node3.coordinate);
+    var letters13 = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
+
+    var rotation = 0;
+    if      ((letters12 === 'V'  && (letters13 === 'UL' || letters13 === 'DL')) ||
+             (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V' )) ||
+             (letters12 === 'DL' && (letters13 === 'UL' || letters13 === 'V' ))) {
+        rotation = 0;
+    }
+    else if ((letters12 === 'H'  && (letters13 === 'UL' || letters13 === 'UR')) ||
+             (letters12 === 'UL' && (letters13 === 'UR' || letters13 === 'H' )) ||
+             (letters12 === 'UR' && (letters13 === 'UL' || letters13 === 'H' ))) {
+        rotation = 90;
+    }
+    else if ((letters12 === 'V'  && (letters13 === 'UR' || letters13 === 'DR')) ||
+             (letters12 === 'UR' && (letters13 === 'DR' || letters13 === 'V' )) ||
+             (letters12 === 'DR' && (letters13 === 'UR' || letters13 === 'V' ))) {
+        rotation = 180;
+    }
+    else if ((letters12 === 'H'  && (letters13 === 'DL' || letters13 === 'DR')) ||
+             (letters12 === 'DL' && (letters13 === 'DR' || letters13 === 'H' )) ||
+             (letters12 === 'DR' && (letters13 === 'DL' || letters13 === 'H' ))) {
+        rotation = 270;
+    }
+
+    var road = paper.image('/static/game/image/roadTile_TJunction.svg',
+        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+    road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+
+    return road;
+}
+
+function drawCrossRoads(node) {
+    var flipped = translate(node.coordinate);
+    
+    var road = paper.image('/static/game/image/roadTile_crossRoads.svg',
+        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+
+    return road;
+}
+
+
+/*********************************/
+/** Van rendering and animation **/
+/*********************************/
+
+function renderVans(position, numVans) {
+    for (var i = 0; i < numVans; i++) {
+        vanImages[i] = createVanImage(position, i);
+    }
+    scrollToShowVanImage(vanImages[0]);
+}
+
+function createVanImage(position, vanId) {
+    var initialX = calculateInitialX(position.currentNode);
+    var initialY = calculateInitialY(position.currentNode);
+
+    var imageStr = (vanId % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+    var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
+
+    var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
+    rotateElementAroundCentreOfGridSpace(vanImage, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
+
+    vanImage.transform('... r90');
+
+    return vanImage;
+}
+
+function getVanImagePosition(vanImage) {
+    var box = vanImage.getBBox();
+    return [box.x, box.y];
+}
+
+function scrollToShowVanImage(vanImage) {
+    var point = getVanImagePosition(vanImage);
+    var element = document.getElementById('paper');
+
+    element.scrollLeft = point[0] - element.offsetWidth/2;
+    element.scrollTop = point[1] - element.offsetHeight/2;
+}
+
+function moveForward(vanId, animationLength, callback) {
+    var moveDistance = -MOVE_DISTANCE;
+    var transformation = "... t 0, " + moveDistance;
+    moveVanImage({
+        transform: transformation
+    }, vanId, animationLength, callback);
+}
+
+function moveLeft(vanId, animationLength,callback) {
+    var vanImage = vanImages[vanId];
+    var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
+    var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+    var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
+    moveVanImage({
+        transform: transformation
+    }, vanId, animationLength, callback);
+}
+
+function moveRight(vanId, animationLength, callback) {
+    var vanImage = vanImages[vanId];
+    var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
+    var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+    var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
+    moveVanImage({
+        transform: transformation
+    }, vanId, animationLength, callback);
+}
+
+function turnAround(vanId, animationLength, callback) {
+    var moveDistance = -GRID_SPACE_SIZE / 2;
+    var moveTransformation = "... t 0, " + moveDistance;
+    var vanImage = vanImages[vanId];
+    var timePerState = (animationLength - 50) / 3;
+
+    function moveForward() {
+        moveVanImage({
+            transform: moveTransformation
+        }, vanId, timePerState, rotate);
+    }
+
+    function rotate() {
+        var rotationPointX = vanImage.attrs.x + 22;
+        var rotationPointY = vanImage.attrs.y + 20;
+
+        vanImage.animate({
+            transform: createRotationTransformation(180, rotationPointX, rotationPointY)
+        }, timePerState, 'easeIn', moveBack);
+    }
+
+    function moveBack() {
+        vanImage.animate({
+            transform: moveTransformation
+        }, timePerState, 'easeIn', callback);
+    }
+    
+    moveForward();
+}
+
+function wait(vanId, animationLength, callback) {
+    //no movement for now
+    moveVanImage({
+        transform: '... t 0,0'
+    }, vanId, animationLength, callback);
+}
+
+function deliver(vanID, animationLength, destinationID, callback) {
+    var destinationRect = destinationImages[destinationID].rect;
+    destinationRect.animate({'stroke': DESTINATION_VISITED_COLOUR}, animationLength, 'linear', callback);
+}
+
+function moveVanImage(attr, vanId, animationLength, callback) {
+    vanImages[vanId].animate(attr, animationLength, 'linear', callback);
+}
+
+/**********************/
+/** Crash animations **/
+/**********************/
+
+function crash(vanID, animationLength, previousNode, currentNode, attemptedAction,  startNode) {
+    var road = getLeftRightForwardRoad(previousNode, currentNode);
+    var roadLeft = road[0];
+    var roadForward = road[1];
+    var roadRight = road[2];
+    var vanImage = vanImages[vanID];
+
+    if(attemptedAction === "FORWARD") {
+        var distanceForwards;
+        if(roadLeft && roadRight) {
+            distanceForwards = 0.5*GRID_SPACE_SIZE + 0.5*ROAD_WIDTH;
+        }
+        else if(roadLeft) {
+            distanceForwards = 0.5*GRID_SPACE_SIZE + 0.3*ROAD_WIDTH;
+        }
+        else if(roadRight) {
+            distanceForwards = 0.5*GRID_SPACE_SIZE + 0.2*ROAD_WIDTH;
+        }
+        else {
+            distanceForwards = 0.5*GRID_SPACE_SIZE + 0.5*ROAD_WIDTH;
+        }
+        var transformation = "... t 0, " + (-distanceForwards);
+    }
+    else if(attemptedAction == "TURN_LEFT") {
+        var rotationAngle;
+        if(roadForward) {
+            rotationAngle = 75;
+        }
+        else if(roadRight) {
+            rotationAngle = 75;
+        }
+        else {
+            rotationAngle = 75;
+        }
+        var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
+        var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+        var transformation = createRotationTransformation(-rotationAngle, rotationPointX, rotationPointY);
+    }
+    else if(attemptedAction == "TURN_RIGHT") {
+        var rotationAngle;
+        if(roadForward) {
+            rotationAngle = 75;
+        }
+        else if(roadLeft) {
+            rotationAngle = 75;
+        }
+        else {
+            rotationAngle = 75;
+        }
+        var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
+        var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+        var transformation = createRotationTransformation(rotationAngle, rotationPointX, rotationPointY);
+    }
+
+    moveVanImage({
+        transform: transformation
+    }, vanID, animationLength, animateExplosion);
+
+    function animateExplosion() {
+        
+        var bbox = vanImage.getBBox();
+
+        var x = bbox.x + bbox.width/2;
+        var y = bbox.y + bbox.height/2;
+
+        var width = 20;
+        var height = 20;
+
+        var maxSize = 20;
+        var minSize = 10;
+
+        var explosionParts = 20;
+
+        var initialX = calculateInitialX(startNode);
+        var initialY = calculateInitialY(startNode);
+
+        var wreckageImage = paper.image('/static/game/image/van_wreckage.svg', initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
+        wreckageImage.transform(vanImage.transform());
+        wreckageImage.attr({"opacity":0});
+
+        setTimeout(function() {
+            wreckageImage.animate({opacity: 1}, 1000);
+            vanImage.animate({opacity: 0}, 1000);
+            for(var i = 0; i < explosionParts; i++) {
+                setTimeout(function() {
+                    var size = minSize + Math.random()*(maxSize-minSize);
+                    var xco = x + width*(Math.random()-0.5) - 0.5*size;
+                    var yco = y + height*(Math.random()-0.5) - 0.5*size;
+                    var imageStr = '/static/game/image/' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg'; 
+                    var img = paper.image(imageStr, xco, yco, size, size);
+                    img.animate({opacity: 0, transform: 's2'}, 1000, function () {});
+                },(i < 5 ? 0 :(i-5)*50));
+            }
+        }, 100);
+    }
+}
+
+function getLeftRightForwardRoad(previousNode, currentNode) {
+    var N = 0;
+    var E = 1;
+    var S = 2;
+    var W = 3;
+
+    function getOrientation(n1,n2) {
+        var c1 = n1.coordinate;
+        var c2 = n2.coordinate;
+
+        if(c1.y < c2.y) {
+            return N;
+        }
+        else if(c1.x < c2.x) {
+            return E;
+        }
+        else if(c1.y > c2.y) {
+            return S;
+        }
+        else {
+            return W;
+        }
+    }
+
+    var neighbours = [null,null,null,null];
+    for(var i = 0; i < currentNode.connectedNodes.length; i++) {
+        var neighbour = currentNode.connectedNodes[i];
+        neighbours[getOrientation(currentNode,neighbour)] = neighbour;
+    }
+
+    var vanOr = getOrientation(previousNode, currentNode);
+
+    var roadLeft = neighbours[(W+vanOr)%4];
+    var roadForward = neighbours[(N+vanOr)%4];
+    var roadRight = neighbours[(E+vanOr)%4];
+
+    return [roadLeft, roadForward, roadRight];
 }

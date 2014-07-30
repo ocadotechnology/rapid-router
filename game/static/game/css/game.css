@@ -12,17 +12,24 @@
 }
 
 #programmingConsole {
+    position: absolute;
+    left: 0;
+    top: 0;
     width: 50%;
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
 }
 
 #paper {
+    position: absolute;
+    top: 0;
+    left: 50%;
     border: 0;
-    background-color: #A0C53A;
+    background: rgb(239, 248, 255);
     width: 50%;
     height: 100%;
     overflow: auto;
+    z-index: 6;
 }
 
 #controls {
@@ -37,36 +44,7 @@
     margin-bottom: 0;
 }
 
-#controls .quit {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-#controls #turnLeft,
-#controls #turnRight,
-#controls #play {
-    top: 50px;
-}
-
-#controls #moveForward, 
-#controls #play {
-    right: 170px;
-}
-
-#controls #turnLeft {
-    right: 220px;
-}
-
-#controls #turnRight {
-    right: 120px;
-}
-
-#controls #moveForward {
-    top: 0;
-}
-
-#stop {
+#controls .navigation {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -80,38 +58,49 @@ button, .button, img.control{
     float: left;
 }
 
-#myModal > p.mainText{
+.ocargo-modal-mainText{
     font-size: 1.2rem !important;
 }
-#myModal > p.lead {
+.ocargo-modal-lead {
     font-size: 1.4rem !important;
 }
 
-#myModal > p.mainText > #hintText,
-#myModal > p.mainText > #hintBtnPara{
+.ocargo-modal-mainText > #hintText,
+.ocargo-modal-mainText > #hintBtnPara {
 	margin: 2rem 1rem 0;
 }
 
 #sliderControls {
     position: absolute;
     left: 50%;
-    z-index: 1;
+    height: 0%;
+    z-index: 7;
 }
 
-#fuelGuage {
+#consoleSlider {
+    position: absolute;
+    left: 50%;
+    width: 5px;
+    height: 100%;
+    z-index: 9;
+    background-color: #444;
+    cursor: col-resize;
+}
+
+#fuelGauge {
     position: fixed;
-    z-index: 1;
+    z-index: 7;
     width: 100px;
     height: 100px;
     right: 30px;
-    bottom: 120px;
+    bottom: 20px;
 }
 
-#fuelGuagePointer {
+#fuelGaugePointer {
     position: absolute;
     width: 100px;
     height: 100px;
-    z-index: 2;
+    z-index: 8;
     top: 0px;
 }
 
@@ -123,46 +112,292 @@ img.control{
 /* Styles for the instruction buttons */
 .picButton {    
     background-color: transparent;
-    padding: 4px 2px 0;
+    padding: 0px 0px 0;
     position: absolute;
     vertical-align: top;
 }
 
 .picButton[disabled],
+.picButton[disabled]:hover,
 .picButton:hover,
 .picButton:focus {
-   background-color:rgba(255,255,255,0.5);
+   background-color: transparent;
    border:none;
 }
 
 .picButton span {
-    background-image : url('/static/game/image/arrowBtns_v2.svg');
     background-repeat: no-repeat;
-    background-size: 150px 150px;
+    background-size: 45px 45px;
+    background-position: center;
     display: inline-block;
     height: 45px;
     overflow: hidden;
+    width: 45px;
     text-indent: 200%;
     white-space: nowrap;
-    width: 45px;
-}
-
-.picButton#turnLeft span {
-    background-position: 0px -45px;
-}
-
-.picButton#turnRight span {
-    background-position: -105px -45px;
-}
-
-.picButton#moveForward span {
-    background-position: -52px 2px;
-}
-
-.picButton#play span {
-    background-position: -52px -49px;
 }
 
 #blockly {
-    height: 95%;
+    height: 100%;
+}
+
+#pythonCode {
+    position:absolute;
+    display: none;
+    height: 100%;
+    width:90%;
+    overflow: auto;
+    padding: 15px;
+    left:46px;
+}
+
+#consoleOutput {
+    background-color: #eceaee;
+    max-height: 300px;
+    max-width: 100%;
+    min-height: 250px;
+    min-width: 100%;
+    overflow: auto;
+    padding: 5px;
+}
+
+@media print {
+    #paper {
+        width: 100% !important;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/********************/
+/* Loading & Saving */
+/********************/
+
+#workspaceNameInput {
+    height: 51px;
+    width: 200px;
+    margin-right: 45px;
+    font-size: 1.4rem !important;
+    padding-left: 10px;
+}
+
+.scrolling-table-wrapper {
+    position: relative;
+}
+
+.scrolling-table {
+    max-height: 200px;
+    width: 350px;
+    overflow: auto;
+}
+
+#saveWorkspaceTable,
+#loadWorkspaceTable {
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 0rem;
+}
+
+#deleteWorkspace {
+    margin-left: 124px;
+}
+
+/******************/
+/** Direct drive **/
+/******************/
+
+#direct_drive {
+    width: 140px;
+    height: 95px;
+    position: absolute;
+    z-index: 7;
+    bottom: 15px;
+    left: 50%;
+}
+
+#turnLeft,
+#turnRight,
+#go {
+    bottom: 0px;
+}
+
+#moveForward, 
+#go {
+    left: 60px;
+}
+
+#turnLeft {
+    left: 10px;
+}
+
+#turnRight {
+    left: 110px;
+}
+
+#moveForward {
+    bottom: 50px;
+}
+
+.picButton#turnLeft span {
+    background-image : url('/static/game/image/arrow_left.svg');
+}
+
+.picButton#turnRight span {
+    background-image : url('/static/game/image/arrow_right.svg');
+}
+
+.picButton#moveForward span {
+    background-image : url('/static/game/image/arrow_forward.svg');
+}
+
+.picButton#go span {
+    background-image : url('/static/game/image/arrow_go.svg');
+}
+
+/***************/
+/** Side menu **/
+/***************/
+
+#side_menu {
+    width: 46px;
+    height: 46px;
+    position: absolute;
+    z-index: 1;
+    top: 30px;
+}
+
+.picButton#play {
+    top: 0px;
+}
+
+.picButton#play span {
+    background-image : url('/static/game/image/menu_button_play.svg');
+}
+
+.picButton#pause {
+    top: 0px;
+}
+
+.picButton#pause span {
+    background-image : url('/static/game/image/menu_button_pause.svg');
+}
+
+.picButton#resume {
+    top: 0px;
+}
+
+.picButton#resume span {
+    background-image : url('/static/game/image/menu_button_play.svg');
+}
+
+.picButton#stop {
+    top: 50px;
+}
+
+.picButton#stop span {
+    background-image : url('/static/game/image/menu_button_stop.svg');
+}
+
+.picButton#reset {
+    top: 50px;
+}
+
+.picButton#reset span {
+    background-image : url('/static/game/image/menu_button_reset.svg');
+}
+
+.picButton#step {
+    top: 100px;
+}
+
+.picButton#step span {
+    background-image : url('/static/game/image/menu_button_step.svg');
+}
+
+
+.picButton#save {
+    top: 170px;
+}
+
+.picButton#save span {
+    background-image : url('/static/game/image/menu_button_save.svg');
+}
+
+.picButton#load {
+    top: 220px;
+}
+
+.picButton#load span {
+    background-image : url('/static/game/image/menu_button_load.svg');
+}
+
+.picButton#clear {
+    top: 270px;
+}
+
+.picButton#clear span {
+    background-image : url('/static/game/image/menu_button_clear.svg');
+}
+
+
+
+.picButton#big_code_mode {
+    top: 340px;
+}
+
+.picButton#big_code_mode span {
+    background-image : url('/static/game/image/menu_button_big_code_mode.svg');
+}
+
+
+.picButton#toggle_console {
+    top: 390px;
+}
+
+.picButton#toggle_console span {
+    background-image : url('/static/game/image/menu_button_toggle_console.svg');
+}
+
+
+.picButton#help {
+    top: 460px;
+}
+
+.picButton#help span {
+    background-image : url('/static/game/image/menu_button_help.svg');
+}
+
+.picButton#muted {
+    top: 510px;
+}
+
+.picButton#muted span {
+    background-image : url('/static/game/image/menu_button_muted.svg');
+}
+
+.picButton#unmuted {
+    top: 510px;
+}
+
+.picButton#unmuted span {
+    background-image : url('/static/game/image/menu_button_unmuted.svg');
+}
+
+.picButton#quit {
+    top: 560px;
+}
+
+.picButton#quit span {
+    background-image : url('/static/game/image/menu_button_quit.svg');
 }

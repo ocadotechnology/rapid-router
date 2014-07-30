@@ -1,37 +1,50 @@
+'use strict';
+
 var ocargo = ocargo || {};
 
-ocargo.TrafficLight = function(startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode) {
-    this.startingState = startingState;
-    this.state = startingState;
-    this.startTime = startTime;
-    this.redDuration = redDuration;
-    this.greenDuration = greenDuration;
-    this.currentLightTime = startTime;
-    this.sourceNode = sourceNode;
-    this.controlledNode = controlledNode;
-    var me = this;
-    $(ocargo.time).on('increment', $.proxy(me.incrementTime, me));
-    $(ocargo.time).on('reset', $.proxy(me.reset, me));
-};
-
-ocargo.TrafficLight.prototype.incrementTime = function() {
-    this.currentLightTime++;
-    if(this.state == this.RED && this.currentLightTime >= this.redDuration){
-    	this.state = this.GREEN;
-    	this.currentLightTime = 0;
-    	$(this).trigger(this.GREEN);
-    } else if(this.state == this.GREEN && this.currentLightTime >= this.greenDuration){
-    	this.state = this.RED;
-    	this.currentLightTime = 0;
-    	$(this).trigger(this.RED);
-    }
+ocargo.TrafficLight = function(id, data, nodes) {
+    this.id = id;
+    this.startingState = data.startingState;
+    this.state = this.startingState;
+    this.startTime = data.startTime;
+    this.redDuration = data.redDuration;
+    this.greenDuration = data.greenDuration;
+    this.currentLightTime = this.startTime;
+    this.sourceNode = nodes[data.sourceNode];
+    this.controlledNode = nodes[data.node];
 };
 
 ocargo.TrafficLight.prototype.reset = function() {
     this.currentLightTime = this.startTime;
     this.state = this.startingState;
-   	$(this).trigger(this.startingState);
 };
 
-ocargo.TrafficLight.prototype.RED = 'RED';
-ocargo.TrafficLight.prototype.GREEN = 'GREEN';
+ocargo.TrafficLight.prototype.getState = function() {
+    return this.state;
+};
+
+ocargo.TrafficLight.prototype.incrementTime = function(model) {
+    this.currentLightTime++;
+
+    if (this.state === ocargo.TrafficLight.RED && this.currentLightTime >= this.redDuration) {
+    	this.state = ocargo.TrafficLight.GREEN;
+    	this.currentLightTime = 0;
+        this.queueAnimation(model);
+    }
+    else if (this.state === ocargo.TrafficLight.GREEN && this.currentLightTime >= this.greenDuration) {
+    	this.state = ocargo.TrafficLight.RED;
+    	this.currentLightTime = 0;
+        this.queueAnimation(model);
+    }
+};
+
+ocargo.TrafficLight.prototype.queueAnimation = function(model) {
+    ocargo.animation.appendAnimation({
+        type: 'trafficlight',
+        id: this.id,
+        colour: this.state,
+    });
+};
+
+ocargo.TrafficLight.RED = 'RED';
+ocargo.TrafficLight.GREEN = 'GREEN';

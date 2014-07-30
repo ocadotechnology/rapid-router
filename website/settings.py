@@ -42,10 +42,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'nuit',
+    'rest_framework',
 )
 
 MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -121,7 +123,6 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
         'default': {
             'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
             'KEY_PREFIX': os.getenv('CACHE_PREFIX'),
-            'TIMEOUT': 0,
         }
     }
     COMPRESS_OFFLINE = True
@@ -147,6 +148,15 @@ else:
             'LOCATION': 'unique-snowflake'
         }
     }
+
+LOCALE_PATHS = (
+    'conf/locale',
+)
+
+from django.conf import global_settings
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + \
+     ('django.core.context_processors.i18n',)
+
 
 # Keep this at the bottom
 from django_autoconfig.autoconfig import configure_settings

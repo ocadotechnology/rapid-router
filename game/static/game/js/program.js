@@ -1,64 +1,166 @@
+'use strict';
+
 var ocargo = ocargo || {};
 
-ocargo.Program = function(instructionHandler) {
-	this.instructionHandler = instructionHandler;
-	this.stack = [];
-	this.isTerminated = false;
+/* Program */
+
+ocargo.Program = function() {
+	this.threads = [];
+	this.procedures = {};
 };
 
-ocargo.Program.prototype.step = function(level) {
-	var stackLevel = this.stack[this.stack.length - 1];
+ocargo.Program.prototype.run = function(model) {
+	for (var i = 0; i < this.threads.length; i++) {
+		model.reset(i);
+		this.threads[i].run(model);
+	}
+};
 
-	var commandToProcess = stackLevel.splice(0, 1)[0];
+
+
+/* Thread */
+
+ocargo.Thread = function() {
+	this.stack = [];
+};
+
+ocargo.Thread.prototype.run = function(model) {
+	var failed = false;
+	while (!failed && this.canStep()) {
+		failed = !this.step(model);
+	}
+	if (!failed) {
+		model.programExecutionEnded();
+	}
+};
+
+ocargo.Thread.prototype.step = function(model) {
+	var stackLevel = this.stack[this.stack.length - 1];
+	var commandToProcess = stackLevel.shift();
+
 	if (stackLevel.length === 0) {
 		this.stack.pop();
 	}
-	
-	commandToProcess.execute(this, level);
+
+	var successful = commandToProcess.execute(this, model);
+
+	if (!successful) {
+		// Program crashed, queue a block highlight event
+		ocargo.animation.appendAnimation({
+			type: 'callable',
+			functionCall: function() {
+				ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
+			}
+		});
+		return false;
+	}
+
+	return true;
 };
 
-ocargo.Program.prototype.canStep = function() {
+ocargo.Thread.prototype.canStep = function() {
 	return this.stack.length !== 0 && this.stack[0].length !== 0;
 };
 
-ocargo.Program.prototype.addNewStackLevel = function(commands) {
+ocargo.Thread.prototype.addNewStackLevel = function(commands) {
 	this.stack.push(commands);
 };
 
-ocargo.Program.prototype.terminate = function() {
-	this.stack = [];
-	this.isTerminated = true;
-};
 
-function If(conditionalCommandSets, elseCommands, block) {
-	this.conditionalCommandSets = conditionalCommandSets;
-	this.elseCommands = elseCommands;
+
+
+/* Instructions */
+
+function TurnLeftCommand(block) {
 	this.block = block;
 }
 
-If.prototype.execute = function(program, level) {
-	this.block.selectWithConnected();
-
-	this.executeIfCommand(program, level);
-
-	setTimeout(program.stepCallback, 500);
+TurnLeftCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.turnLeft();
 };
 
-If.prototype.executeIfCommand = function(program, level) {
+
+
+function TurnRightCommand(block) {
+	this.block = block;
+}
+
+TurnRightCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.turnRight();
+};
+
+
+
+function ForwardCommand(block) {
+	this.block = block;
+}
+
+ForwardCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.moveForwards();
+};
+
+
+
+function TurnAroundCommand(block) {
+    this.block = block;
+}
+
+TurnAroundCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.turnAround();
+};
+
+
+
+function WaitCommand(block) {
+    this.block = block;
+}
+
+WaitCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.wait();
+};
+
+
+
+function DeliverCommand(block) {
+    this.block = block;
+}
+
+DeliverCommand.prototype.execute = function(thread, model) {
+	queueHighlight(model, this.block);
+	return model.deliver();
+};
+
+
+
+function If(conditionalCommandSets, elseBody, block) {
+	this.conditionalCommandSets = conditionalCommandSets;
+	this.elseBody = elseBody;
+	this.block = block;
+}
+
+If.prototype.execute = function(thread, model) {
 	var i = 0;
 	while (i < this.conditionalCommandSets.length) {
-		if (this.conditionalCommandSets[i].condition(level)) {
-			program.addNewStackLevel(this.conditionalCommandSets[i].commands.slice(0));
-			return;
+		if (this.conditionalCommandSets[i].condition(model)) {
+			thread.addNewStackLevel(this.conditionalCommandSets[i].commands.slice());
+			return true;
 		}
 
 		i++;
 	}
 
-	if(this.elseCommands) {
-		program.addNewStackLevel(this.elseCommands.slice(0));
+	if(this.elseBody) {
+		thread.addNewStackLevel(this.elseBody.slice());
 	}
+	return true;
 };
+
+
 
 function While(condition, body, block) {
 	this.condition = condition;
@@ -66,120 +168,57 @@ function While(condition, body, block) {
 	this.block = block;
 }
 
-While.prototype.execute = function(program, level) {
-	this.block.selectWithConnected();
-
-	if (this.condition(level)) {
-		program.addNewStackLevel([this]);
-		program.addNewStackLevel(this.body.slice(0));
+While.prototype.execute = function(thread, model) {
+	if (this.condition(model)) {
+		thread.addNewStackLevel([this]);
+		thread.addNewStackLevel(this.body.slice());
 	}
-
-	setTimeout(program.stepCallback, 500);
+	return true;
 };
 
-function counterCondition(count) {
-    return function() {
-        if (count > 0) {
-            count--;
-            return true;
-        }
 
-        return false;
-    };
+
+function Procedure(name,body,block) {
+	this.name = name;
+	this.body = body;
+	this.block = block;
+};
+
+Procedure.prototype.execute = function(thread) {
+	thread.addNewStackLevel(this.body.slice());
+	return true;
 }
 
-function roadCondition(selection) {
-    return function(level) {
-        if (selection === 'FORWARD') {
-            return FORWARD.getNextNode(level.van.previousNode, level.van.currentNode);
-        } else if (selection === 'LEFT') {
-            return TURN_LEFT.getNextNode(level.van.previousNode, level.van.currentNode);
-        } else if (selection === 'RIGHT') {
-            return TURN_RIGHT.getNextNode(level.van.previousNode, level.van.currentNode);
-        }
-    };
+
+
+function ProcedureCall(block) {
+	this.block = block;
+};
+
+ProcedureCall.prototype.bind = function(proc) {
+	this.proc = proc;
 }
 
-function deadEndCondition() {
-    return function(level) {
-        var instructions = [FORWARD, TURN_LEFT, TURN_RIGHT];
-        for (var i = 0; i < instructions.length; i++) {
-            var instruction = instructions[i];
-            var nextNode = instruction.getNextNode(level.van.previousNode, level.van.currentNode);
-            if (nextNode) {
-                return false;
-            }
-        }
-        return true;
-    };
+ProcedureCall.prototype.execute = function(thread) {
+	thread.addNewStackLevel([this.proc]);
+	return true;
 }
 
-function negateCondition(otherCondition) {
-	return function(level) {
-		return !otherCondition(level);
+
+
+/* Highlighting of blocks */
+
+function queueHighlight(model, block) {
+	ocargo.animation.appendAnimation({
+		type: 'callable',
+		functionCall: makeHighLightCallable(block),
+		description: 'Blockly highlight: ' + block.type,
+	});
+}
+
+function makeHighLightCallable(block) {
+	return function() {
+		ocargo.blocklyControl.clearAllSelections();
+		ocargo.blocklyControl.setBlockSelected(block, true);
 	};
 }
-
-function atDestinationCondition() {
-    return function(level) {
-    	return level.van.currentNode === level.map.destination;
-    };
-}
-function trafficLightCondition(lightColour){
-	return function(level) {
-        var prevNode = level.van.previousNode;
-        var currNode = level.van.currentNode;
-		for(var i = 0; i < currNode.trafficLights.length; i++){
-			var tl = currNode.trafficLights[i];
-			if(tl.sourceNode == prevNode && tl.state == lightColour){
-				return true;
-			}
-		}
-		return false;
-    };
-}
-
-function TurnLeftCommand(block) {
-	this.block = block;
-}
-
-TurnLeftCommand.prototype.execute = function(program) {
-	this.block.selectWithConnected();
-	program.instructionHandler.handleInstruction(TURN_LEFT, program);
-};
-
-function TurnRightCommand(block) {
-	this.block = block;
-}
-
-TurnRightCommand.prototype.execute = function(program) {
-	this.block.selectWithConnected();
-	program.instructionHandler.handleInstruction(TURN_RIGHT, program);
-};
-
-function ForwardCommand(block) {
-	this.block = block;
-}
-
-ForwardCommand.prototype.execute = function(program) {
-	this.block.selectWithConnected();
-	program.instructionHandler.handleInstruction(FORWARD, program);
-};
-
-function TurnAroundCommand(block) {
-    this.block = block;
-}
-
-TurnAroundCommand.prototype.execute = function(program) {
-    this.block.selectWithConnected();
-    program.instructionHandler.handleInstruction(TURN_AROUND, program);
-};
-
-function WaitCommand(block) {
-    this.block = block;
-}
-
-WaitCommand.prototype.execute = function(program) {
-    this.block.selectWithConnected();
-    program.instructionHandler.handleInstruction(WAIT, program);
-};

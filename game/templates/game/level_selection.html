@@ -5,6 +5,17 @@
 
 {% block title %}Game{% endblock %}
 
+{% block scripts %}
+{{block.super}}
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+  <script>
+    EPISODE_LIST = {{episodeData|safe}};
+  </script>
+
+  <script src="/static/game/js/levelSelection.js"></script>
+{% endblock %}
+
 {% block css %}
 {{block.super}}
   {% compress css %}
@@ -13,33 +24,5 @@
 {% endblock %}
 
 {% block content %}
-  {% for episode in episodeData %}
-    <div class="episode" id="{{episode.0.name}}" 
-    style="background: rgba({{episode.1.0}}, {{episode.1.1}}, {{episode.1.2}}, {{episode.2}});">
-        
-      <h5>{{ episode.0.name }}</h5> <br>
-
-        <table class="transparent">
-        <col width="20%">
-        <col width="70%">
-        <col width="10%">
-          {% for level in episode.0.levels %}
-            <tr>
-              <td> <button class="levelButton" onclick="window.location.href='/game/{{ level.id }}'"
-                    style="background: rgba(99, 119, 0, {{episode.2}});">
-                    {{ level }} </button>
-              </td>
-              {% for row in data %}
-                {% if forloop.counter == level.id %}
-                  <td> {{row.0}} </td>
-                  <td> {{row.1}} </td>
-                {% endif %}
-              {% endfor %}
-            </tr>
-          {% endfor %}
-        </table>
-    </div>
-  {% endfor %}
-  <a class="button" href="/game/levels/random">Random Road!</a>
-
+  <div id="container"></div>
 {% endblock %}

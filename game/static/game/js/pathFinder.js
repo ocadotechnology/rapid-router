@@ -2,160 +2,71 @@
 
 var ocargo = ocargo || {};
 
-ocargo.PathFinder = function(map) {
-    this.nodes = map.nodes;
-    this.destination = map.destination;
-    this.optimalInstructions = [];
-    this.optimalPath = null;
-    this.max = 0;
+ocargo.PathFinder = function(model) {
+    this.van = model.van;
+    this.nodes = model.map.nodes;
+    this.destinations = model.map.destinations;
+    this.maxDistanceScore = 10;
+    this.maxInstrLengthScore = 10;
+    this.maxScore = this.maxDistanceScore + this.maxInstrLengthScore;
+    this.modelLength = MODEL_SOLUTION;
+
+    this.optimalPath = getOptimalPath(this.nodes, this.destinations);
 };
 
-ocargo.PathFinder.prototype.getOptimalInstructions = function() {
+ocargo.PathFinder.prototype.getScore = function() {
 
-    ocargo.level.pathFinder.optimalInstructions = [];
-    var sequentialInstructions = []
-    for (var i = 1; i < ocargo.level.pathFinder.optimalPath.length - 1; i++) {
-        var previousNode = ocargo.level.pathFinder.optimalPath[i - 1];
-        var node = ocargo.level.pathFinder.optimalPath[i];
-        var nextNode = ocargo.level.pathFinder.optimalPath[i + 1];
-        var instr = ocargo.level.pathFinder.recogniseIndividualInstruction(
-            previousNode.coordinate, node.coordinate, nextNode.coordinate);
-        sequentialInstructions.push(instr);
+    var pathLengthScore = this.getTravelledPathScore();
+    var initInstrScore = this.getInstrLengthScore();
+    var instrScore = initInstrScore;
 
-    }
-    // [[[instructions], startIndex]],
-    var suffixArray = buildSuffixArray(sequentialInstructions);
-    // [[startIndex, endIndex, loopBody]]
-    //var loopDic = getLoops(suffixArray);
-    ocargo.level.pathFinder.optimalInstructions = sequentialInstructions;
-
-    function getLoops(suffixArray) {
-        var loopDic = [];
-        var index = 0;
-        var loopBlock = null;
-        var previous = null;
-        var prevIndex;
-        var currentInstr, currentIndex;
-        var count = 0;
-        var start = -1;
-        var currLen, prevLen, loopLen;
-        var ascending, descending, indexNotCovered;
-
-        while (index < suffixArray.length) {
-            currentInstr = suffixArray[index][0];
-            currentIndex = suffixArray[index][1];
-
-            if (previous !== null) {
-
-                prevLen = previous.length;
-                currLen = currentInstr.length;
-                loopLen = loopBlock.length;
-
-                ascending = compare(currentInstr, currLen - prevLen, currLen, previous, 0, prevLen);
-                descending = compare(previous, prevLen - currLen, prevLen, currentInstr, 0, currLen);
-                indexNotCovered = checkIndex(currentIndex, loopDic);
-
-                if (loopBlock !== null) {
-                    // If we were inversigating a loop and it is not continued on current line.
-                    if (count > 1 && (indexNotCovered && 
-                        !((ascending && compare(currentInstr, 0, loopLen, loopBlock, 0, loopLen) &&
-                            (prevLen + loopLen === currLen))) ||
-                          (descending && compare(previous, 0, loopLen, loopBlock, 0, loopLen) &&
-                            (currLen + loopLen === prevLen)))) {
-                        
-                        count++;
-                        loopDic.push([start, start + count * loopLen - 1, loopBlock]);
-                        loopBlock = currentInstr;
-                        count = 0;
-                        start = currentIndex;
-                    } 
-                    // If current still classifies as the ongoing loop and was not rolled in before.
-                    if (indexNotCovered && ascending &&
-                        compare(currentInstr, 0, loopLen, loopBlock, 0, loopLen)) {
-                        
-                        start = currentIndex;
-                        // Loop ends with the program end.
-                        if (index === suffixArray.length - 1 && count > 0) {
-                            count++;
-                            loopDic.push([start, start + count * loopLen - 1, loopBlock]);
-                            count = 1;
-                        } else {
-                            loopBlock = currentInstr.slice(0, currLen - prevLen);
-                            count++;
-                        }
-
-                    } else if (indexNotCovered && descending &&
-                        compare(previous, 0, loopLen, loopBlock, 0, loopLen)) {
-                        
-                        // Loop ends with the program end.
-                        if (index === suffixArray.length - 1 && count > 0) {
-                            count++;
-                            loopDic.push([start, start + count * loopLen - 1, loopBlock]);
-                            count = 1;
-                        } else {
-                            loopBlock = previous.slice(0, prevLen - currLen);
-                            count++;
-                        }
-                    }
-                }
-            } else {
-                loopBlock = currentInstr;
-                count = 1;
-            }
-            previous = currentInstr;
-            index++;
-        }
-        return loopDic;
+    if (initInstrScore >= 2 * this.maxInstrLengthScore) {
+        instrScore = 0;
+    } else if (initInstrScore > this.maxInstrLengthScore) {
+        instrScore = this.maxInstrLengthScore - initInstrScore % this.maxInstrLengthScore;
     }
 
-    // Check if you have to cover this part of the loop.
-    function checkIndex(index, dictionary) {
-        for (var i = 0; i < dictionary.length; i++) {
-            if (dictionary[i][0] <= index && index <= dictionary[i][1]) {
-                return false;
-            }
-        }
-        return true;
-    }
+    var totalScore = pathLengthScore + instrScore;
 
-    // Checks if two arrays slices defined by start and end indices are identical.
-    function compare(arr1, start1, end1, arr2, start2, end2) {
-        if(end1 - start1 !== end2 - start2) {
-            return false;
-        }
-        for(var i = 0; i < end1 - start1; i++) {
-            if(arr1[start1 + i] !== arr2[start2 + i]) {
-                return false;
-            }
-        }
-        return true;
-    }
+    var message = ocargo.messages.totalScore(totalScore, this.maxScore) +
+                "<br>" + ocargo.messages.pathScore(pathLengthScore, this.maxDistanceScore) +
+                "<br>" + ocargo.messages.algorithmScore(instrScore, this.maxInstrLengthScore);
 
-    function buildSuffixArray(instructions) {
-        var suffixArray = [];
-        for (var i = 0; i < instructions.length; i++) {
-            suffixArray.push([instructions.slice(i, instructions.length), i]);
-        }
-        suffixArray.sort();
-        return suffixArray;
+    if (initInstrScore > this.maxInstrLengthScore) {
+        message += "<br><br>" + ocargo.messages.algorithmShorter;
     }
+    if (initInstrScore < this.maxInstrLengthScore) {
+        message += "<br><br>" + ocargo.messages.algorithmLonger;
+    }
+    if (pathLengthScore < this.maxDistanceScore) {
+        message += "<br><br>" + ocargo.messages.pathLonger;
+    }
+    if (totalScore === this.maxScore) {
+        message += "<br><br>" + ocargo.messages.scorePerfect;
+    }
+    return [totalScore, message];
 };
 
-ocargo.PathFinder.prototype.getScore = function(stack) {
-
-    var userSolutionLength = this.getLength(stack);
-    var instrLengthScore = 100;
-    var fuelScore = 100;
-    var usedFuel = ocargo.level.van.maxFuel - ocargo.level.van.fuel;
-    this.max = instrLengthScore + fuelScore;
-    instrLengthScore = Math.min(100, Math.max(
-        0, instrLengthScore - (userSolutionLength - this.optimalInstructions.length) * 10));
-    fuelScore = Math.max(0, fuelScore - (usedFuel - (this.optimalPath.length - 2)) * 10);
-    return instrLengthScore + fuelScore;
+ocargo.PathFinder.prototype.getTravelledPathScore = function() {
+    var travelled = this.van.travelled;
+    var travelledScore = this.maxDistanceScore -
+        (travelled - this.optimalPath.length + 2);
+    
+    return travelledScore;
 };
 
-ocargo.PathFinder.prototype.getOptimalPath = function() {
-    this.optimalPath = aStar(this.nodes, this.destination);
+ocargo.PathFinder.prototype.getInstrLengthScore = function() {
+    var userLength = ocargo.blocklyControl.getBlocksCount();
+    var algorithmScore = 0;
+    var difference = this.maxInstrLengthScore;
+    for (var i = 0; i < this.modelLength.length; i++) {
+        var currDifference = userLength - 1 - this.modelLength[i];
+        if (Math.abs(currDifference) < difference) {
+            difference = Math.abs(currDifference);
+            algorithmScore = this.maxInstrLengthScore - currDifference;
+        }
+    }
+    return algorithmScore;
 };
 
 ocargo.PathFinder.prototype.getLength = function(stack) {
@@ -178,35 +89,92 @@ ocargo.PathFinder.prototype.getLength = function(stack) {
     return total;
 };
 
-ocargo.PathFinder.prototype.recogniseIndividualInstruction = function(previous, point1, point2) {
 
-    if (isHorizontal(point1, point2) &&
-        (previous === null || isHorizontal(previous, point1))) {
-        return 'Forward';
 
-    } else if (isVertical(point1, point2) &&
-        (previous === null || isVertical(previous, point1))) {
-        return 'Forward';
+function getOptimalPath(nodes, destinations) {
+    // Brute force Travelling Salesman implementation, using A* to determinee the connection lengths
+    // If the map size increases or lots of destinations are required, it may need to be rethought
+    var hash = {};
+    function getPathBetweenNodes(node1, node2) {
+        var key = '('+node1.coordinate.x+','+node1.coordinate.y+'),('+node2.coordinate.x+','+node2.coordinate.y+')';
+        var solution;
+        if(key in hash) {
+            solution = hash[key];
+        }
+        else {
+            solution = aStar(node1, node2, nodes);
+            hash[key] = solution;
+        }
+        return solution;
     }
-    if (isProgressive(previous.x, point1.x)) {
-        return nextPointAbove(point1, point2) ? 'Left' : 'Right';
+
+    function getPermutationPath(start, permutation) {
+        var fragPath = [getPathBetweenNodes(start, permutation[0], nodes)];
+        for(var i = 1; i < permutation.length; i++) {
+            fragPath.push(getPathBetweenNodes(permutation[i-1], permutation[i], nodes));
+        }
+
+        var fullPath = [start];
+        for(var i = 0; i < fragPath.length; i++) {
+            if(!fragPath[i]) {
+                return null;
+            } 
+            else {
+                fullPath = fullPath.concat(fragPath[i].slice(1));
+            }
+        }
+        return fullPath;
     }
-    if (isProgressive(point1.x, previous.x)) {
-        return nextPointAbove(point1, point2) ? 'Right' : 'Left';
+
+    var permutations = [];
+    function permute (array, data) 
+    {
+        var current;
+        var currentPermutation = data || [];
+
+        for(var i = 0; i < array.length; i++) 
+        {
+            // Take node out
+            current = array.splice(i, 1)[0];
+            // Then the current permutation is complete so add it
+            if(array.length === 0) {
+                permutations.push(currentPermutation.concat([current]));
+            }
+            //Recurse over the remaining array
+            permute(array.slice(), currentPermutation.concat([current]));
+            // Add node back in
+            array.splice(i, 0, current);
+        }
     }
-    if (isProgressive(previous.y, point1.y)) {
-        return nextPointFurther(point1, point2) ? 'Right' : 'Left';
+    
+    var start = nodes[0];
+    var bestScore = Number.POSITIVE_INFINITY;
+    var bestPermutationPath = null;
+    var destinationNodes = [];
+
+    for(var i = 0; i < destinations.length; i++) {
+        destinationNodes.push(destinations[i].node);
     }
-    if (isProgressive(point1.y, previous.y)) {
-        return nextPointFurther(point1, point2) ? 'Left' : 'Right';
+    permute(destinationNodes);
+    
+    for(var i = 0; i < permutations.length; i++) {
+        var permutation = permutations[i];
+        var permutationPath = getPermutationPath(start, permutation, nodes);
+
+        if(permutationPath && permutationPath.length < bestScore) {
+            bestScore = permutationPath.length;
+            bestPermutationPath = permutationPath;
+        }
     }
+
+    return bestPermutationPath;
 };
 
-function aStar(nodes, destination) {
+function aStar(origin, destination, nodes) {
 
     var end = destination;          // Nodes already visited.
     var current;
-    var start = nodes[0]
+    var start = origin;
     var closedSet = [];             // The neightbours yet to be evaluated.
     var openSet = [start];          // All 3 lists are indexed the same way original nodes are.
     var costFromStart = [0];        // Costs from the starting point.
@@ -263,7 +231,8 @@ function aStar(nodes, destination) {
             }
         }
     }
-    return [];
+    // Failed to find a path
+    return null;
 
     function heuristic(node1, node2) {
 

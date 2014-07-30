@@ -1,243 +1,606 @@
+'use strict';
+
 var ocargo = ocargo || {};
 
-function createUi() {
-    return new ocargo.SimpleUi();
+function init() {
+
+    ocargo.blocklyControl = new ocargo.BlocklyControl();
+    ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
+    ocargo.model = new ocargo.Model(PATH, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
+    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
+    ocargo.saving = new ocargo.Saving();
+    ocargo.blocklyControl.loadPreviousAttempt();
+
+    // Setup the ui
+    setupSliderListeners();
+    setupDirectDriveListeners();
+    setupLoadSaveListeners();
+    setupMenuListeners();
+    setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
+    onStopOrResetControls();
+
+    // default controller
+    if(BLOCKLY_ENABLED) {
+        $('#blockly').fadeIn();
+        ocargo.controller = ocargo.blocklyControl;
+    }
+    else {
+        $('#pythonCode').fadeIn();
+        ocargo.controller = ocargo.editor;
+    }
+
+    // Setup blockly to python
+    Blockly.Python.init();
+
+    window.addEventListener('unload', ocargo.blocklyControl.teardown);
+    startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
 }
 
-function createDefaultLevel(nodeData, destination, decor, trafficLightData, ui, maxFuel, nextLevel, nextEpisode) {
-    var nodes = createNodes(nodeData);
-    var trafficLights = createAndAddTrafficLightsToNodes(nodes, trafficLightData);
-    var destinationIndex = findByCoordinate(destination, nodes);
-    var dest = destinationIndex > -1 ? nodes[destinationIndex] : nodes[nodes.length - 1];
-    var map = new ocargo.Map(nodes, decor, trafficLights, dest, ui);
-    var van = new ocargo.Van(nodes[0], nodes[0].connectedNodes[0], maxFuel, ui);
-    return new ocargo.Level(map, van, ui, nextLevel, nextEpisode);
+function runProgramAndPrepareAnimation() {
+    var program = ocargo.controller.prepare();
+    if(!program) {
+        return false;
+    }
+
+    // clear animations
+    ocargo.animation.resetAnimation();
+
+    // Starting sound
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.starting,
+        description: 'starting sound',
+    });
+
+    program.run(ocargo.model);
+    var reason = ocargo.model.reasonForTermination;
+    var enableDirectDrive = (reason ==  "THROUGH_RED_LIGHT" || reason == "OUT_OF_INSTRUCTIONS");
+    // Set controls ready for user to reset
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: function() {onEndControls(enableDirectDrive)},
+        description: 'onEndControls',
+    });
+
+    return true;
 }
 
-function createNodes(nodeData) {
-    var nodes = [];
+function sendAttempt(score) {
+    // Send out the submitted data.
+    if (LEVEL_ID) {
+        $.ajax({
+            url : '/game/submit',
+            type : 'POST',
+            data : {
+                csrfmiddlewaretoken : $( '#csrfmiddlewaretoken' ).val(),
+                level : LEVEL_ID,
+                score : score,
+                workspace : ocargo.blocklyControl.serialize(),
+            },
+            error : function(xhr,errmsg,err) {
+                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    }
+}
 
+var failures = 0;
+var hasFailedThisTry = false;
+function registerFailure() {
+    if (!hasFailedThisTry) {
+        failures += 1;
+        hasFailedThisTry = true;
+    }
+    return (failures >= 3);
+}
+
+// function to enable or disable pointerEvents on running python or blockly code
+function allowCodeChanges(changesAllowed) {
+    var setting = "";
+    if (!changesAllowed) {
+        setting = "none";
+    }
+    document.getElementById('blockly').style.pointerEvents = setting;
+    var codeMirrors = document.getElementsByClassName('CodeMirror');
     var i;
-    // Create nodes with coords
-    for (i = 0; i < nodeData.length; i++) {
-         var coordinate = new ocargo.Coordinate(
-            nodeData[i]['coordinate'][0], nodeData[i]['coordinate'][1]);
-         nodes.push(new ocargo.Node(coordinate));
+    for (i = 0; i < codeMirrors.length; i++) {
+        codeMirrors[i].style.pointerEvents = setting;
     }
+}
 
-    // Link nodes (must be done in second loop so that linked nodes have definitely been created)
-    for (i = 0; i < nodeData.length; i++) {
-        var node = nodes[i];
-        var connectedNodes = nodeData[i]['connectedNodes'];
-        for (var j = 0; j < connectedNodes.length; j++) {
-            node.addConnectedNode(nodes[connectedNodes[j]]);
-        }
-    }
+function onPlayControls() {
+    allowCodeChanges(false);
+
+    document.getElementById('direct_drive').style.visibility='hidden';
+
+    document.getElementById('play').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='visible';
+    document.getElementById('resume').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='visible';
+    document.getElementById('stop').disabled=false;
+    document.getElementById('reset').style.visibility='hidden';
     
-    return nodes;
+    document.getElementById('step').disabled = true;
+    document.getElementById('load').disabled = true;
+    document.getElementById('save').disabled = true;
+    document.getElementById('clear').disabled = true;
+    document.getElementById('big_code_mode').disabled = true;
+    document.getElementById('toggle_console').disabled = true;
+    document.getElementById('help').disabled = true;
 }
 
-function createAndAddTrafficLightsToNodes(nodes, trafficLightData) {
-	var trafficLights = [];
-	for(i = 0; i < trafficLightData.length; i++){
-    	var trafficLight = trafficLightData[i];
-    	var controlledNodeId = trafficLight['node'];
-    	var sourceNodeId = trafficLight['sourceNode'];
-    	var redDuration = trafficLight['redDuration'];
-    	var greenDuration = trafficLight['greenDuration'];
-    	var startTime = trafficLight['startTime'];
-    	var startingState = trafficLight['startingState'];
-    	var controlledNode = nodes[controlledNodeId];
-    	var sourceNode = nodes[sourceNodeId];
-    	
-    	var light = new ocargo.TrafficLight(startingState, startTime, redDuration, greenDuration, sourceNode, controlledNode);
-    	trafficLights.push(light);
-    	controlledNode.addTrafficLight(light);
-    }
-    return trafficLights;
+function onStepControls() {
+    allowCodeChanges(false);
+
+    document.getElementById('direct_drive').style.visibility='hidden';
+
+    document.getElementById('play').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='hidden';
+    document.getElementById('resume').style.visibility='visible';
+    document.getElementById('stop').style.visibility='visible';
+    document.getElementById('reset').style.visibility='hidden';
+
+    document.getElementById('step').disabled = true;
+    document.getElementById('load').disabled = true;
+    document.getElementById('save').disabled = true;
+    document.getElementById('clear').disabled = true;
+    document.getElementById('big_code_mode').disabled = true;
+    document.getElementById('toggle_console').disabled = true;
+    document.getElementById('help').disabled = true;
 }
 
-function findByCoordinate(coordinate, nodes) {
-    for (var i = 0; i < nodes.length; i++) {
-        var coord = nodes[i].coordinate;
-        if (coord.x === coordinate[0] && coord.y === coordinate[1]) {
-            return i;
-        }
-    }
-    return -1;
+function onStopOrResetControls() {
+    allowCodeChanges(true);
+
+    document.getElementById('direct_drive').style.visibility='visible';  // TODO make this hidden unless blocks are clear or something...
+
+    document.getElementById('play').disabled=false;
+    document.getElementById('play').style.visibility='visible';
+    document.getElementById('pause').style.visibility='hidden';
+    document.getElementById('resume').style.visibility='hidden';
+    document.getElementById('stop').style.visibility='visible';
+    document.getElementById('stop').disabled = true;
+    document.getElementById('reset').style.visibility='hidden';
+
+    document.getElementById('step').disabled = false;
+    document.getElementById('load').disabled = false;
+    document.getElementById('save').disabled = false;
+    document.getElementById('clear').disabled = false;
+    document.getElementById('big_code_mode').disabled = false;
+    document.getElementById('toggle_console').disabled = false;
+    document.getElementById('help').disabled = false;
 }
 
-function initialiseDefault() {
-    'use strict';
+function onEndControls(enableDirectDrive) {
+    allowCodeChanges(true);
 
-    var title = "Level " + LEVEL_ID;
-    startPopup(title, "", LESSON + ocargo.messages.closebutton("Play"));
-
-	ocargo.time = new ocargo.Time();
-    ocargo.ui = createUi();
-    ocargo.level = createDefaultLevel(PATH, DESTINATION, DECOR, TRAFFIC_LIGHTS, ocargo.ui, MAX_FUEL,
-        NEXT_LEVEL, NEXT_EPISODE);
-    ocargo.level.levelId = JSON.parse(LEVEL_ID);
-    ocargo.level.blockLimit = JSON.parse(BLOCK_LIMIT);
-    enableDirectControl();
-
-    if (ocargo.level.blockLimit) {
-        ocargo.level.blockLimit++;
+    if(enableDirectDrive){
+        document.getElementById('direct_drive').style.visibility='visible';
     }
-    if ($.cookie("muted") === "true") {
-        $('#mute').text("Unmute");
-        ocargo.sound.mute();
-    }
-}
 
-function enableDirectControl() {
-    document.getElementById('moveForward').disabled = false;
-    document.getElementById('turnLeft').disabled = false;
-    document.getElementById('turnRight').disabled = false;
-    document.getElementById('play').disabled = false;
-    document.getElementById('controls').style.visibility='visible';
+    document.getElementById('play').style.visibility='visible';
+    document.getElementById('pause').style.visibility='hidden';
+    document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='hidden';
+    document.getElementById('reset').style.visibility='visible';
+
+    document.getElementById('play').disabled = true;
+    document.getElementById('step').disabled = true;
+
+    document.getElementById('load').disabled = false;
+    document.getElementById('save').disabled = false;
+    document.getElementById('clear').disabled = false;
+    document.getElementById('big_code_mode').disabled = false;
+    document.getElementById('toggle_console').disabled = false;
+    document.getElementById('help').disabled = false;
+}
+
+function onPauseControls() {
+    allowCodeChanges(false);
+
+    document.getElementById('play').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='hidden';
+    document.getElementById('resume').style.visibility='visible';
+    document.getElementById('stop').style.visibility='visible';
+    document.getElementById('reset').style.visibility='hidden';
+
+    document.getElementById('stop').disabled=false;
     document.getElementById('step').disabled = false;
 }
 
-function disableDirectControl() {
-    document.getElementById('controls').style.visibility='hidden';
+function onResumeControls() {
+    allowCodeChanges(false);
+
+    document.getElementById('play').style.visibility='hidden';
+    document.getElementById('pause').style.visibility='visible';
+    document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
-    document.getElementById('moveForward').disabled = true;
-    document.getElementById('turnLeft').disabled = true;
-    document.getElementById('turnRight').disabled = true;
-    document.getElementById('play').disabled = true;
+    document.getElementById('reset').style.visibility='hidden';
+
     document.getElementById('step').disabled = true;
 }
 
-function clearVanData() {
-    var nodes = ocargo.level.map.nodes;
-    var previousNode = nodes[0];
-    var startNode = nodes[0].connectedNodes[0];
-    ocargo.level.van = new ocargo.Van(previousNode, startNode, ocargo.level.van.maxFuel, ocargo.ui);
-    ocargo.ui.setVanToFront(previousNode, startNode);
+function setupFuelGauge(nodes, blocks) {
+    if(blocks.indexOf("turn_around") != -1 || blocks.indexOf("wait") != -1)
+    {
+        return;
+    }
+
+    for(var i = 0; i < nodes.length; i++) {
+        if(nodes[i].connectedNodes.length > 2) {
+            return;
+        }
+    }
+
+    $('#fuelGuage').css("display","none");
 }
 
-function trackDevelopment() {
-
+function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
-        disableDirectControl();
+        onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(enableDirectControl);
-        ocargo.time.incrementTime();
+        moveForward(0, ANIMATION_LENGTH, function() {onEndControls(true)});
     });
 
     $('#turnLeft').click(function() {
-        disableDirectControl();
+        onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(enableDirectControl);
-        ocargo.time.incrementTime();
+        moveLeft(0, ANIMATION_LENGTH, function() {onEndControls(true)});
     });
 
     $('#turnRight').click(function() {
-        disableDirectControl();
+        onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(enableDirectControl);
-        ocargo.time.incrementTime();
+        moveRight(0, ANIMATION_LENGTH, function() {onEndControls(true)});
+    });
+    $('#go').click(function() {
+        $('#play').trigger('click');
+    });
+}
+
+
+function setupSliderListeners() {
+    var getSliderRightLimit = function() {return $(window).width()/2};
+    var getSliderLeftLimit = function() {return 46};
+    var consoleSliderPosition = $(window).width()/2;
+    var open = true;
+
+    $('#slideConsole').click(function() {
+        var pageWidth = $(window).width();
+        var rightLimit = getSliderRightLimit();
+        var leftLimit = getSliderLeftLimit();
+
+        if (open) {
+            $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
+            $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
+            $('#sliderControls').animate({left: leftLimit + 'px'}, {queue: false});
+            $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
+            $('#consoleSlider').animate({left: leftLimit + 'px'}, {queue: false});
+            open = false;
+        } else {
+            $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
+            $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+            $('#sliderControls').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
+            $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
+            $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+            open = true;
+        }
     });
 
+    $('#consoleSlider').on('mousedown', function(e){
+        var slider = $(this);
+        var p = slider.parent().offset();
+
+        //disable drag when mouse leaves this or the parent
+        slider.on('mouseup', function(e){
+            slider.off('mousemove');
+            slider.parent().off('mousemove');
+            ocargo.blocklyControl.redrawBlockly();
+        });
+        slider.parent().on('mouseup', function(e) {
+            slider.off('mousemove');
+            slider.parent().off('mousemove');
+            ocargo.blocklyControl.redrawBlockly();
+        });
+
+        slider.parent().on('mousemove', function(me){
+            consoleSliderPosition = me.pageX;
+            var pageWidth = $(window).width();
+            var rightLimit = getSliderRightLimit();
+            var leftLimit = getSliderLeftLimit();
+
+            if (consoleSliderPosition > rightLimit) {
+                consoleSliderPosition = rightLimit;
+            }
+            if (consoleSliderPosition < leftLimit) {
+                consoleSliderPosition = leftLimit;
+            }
+
+            $('#consoleSlider').css({ left: consoleSliderPosition + 'px' });
+            $('#paper').css({ width: (pageWidth - consoleSliderPosition) + 'px' });
+            $('#paper').css({ left: consoleSliderPosition + 'px' });
+            $('#programmingConsole').css({ width: consoleSliderPosition + 'px' });
+            $('#sliderControls').css({ left: consoleSliderPosition + 'px' });
+            $('#direct_drive').css({ left: consoleSliderPosition + 'px' });
+            
+            ocargo.blocklyControl.redrawBlockly();
+        });
+    });
+}
+
+function setupLoadSaveListeners() {
+    var selectedWorkspace = null;
+
+    var populateTable = function(tableName, workspaces) {
+        var table = $('#'+tableName);
+        
+        // Remove click listeners to avoid memory leak and remove all rows
+        $('#'+tableName+' td').off('click');
+        table.empty();
+        
+        // Order them alphabetically
+        workspaces.sort(function(a, b) {
+            if (a.name < b.name) {
+                return -1;
+            }
+            else if (a.name > b.name) {
+                return 1;
+            }
+            return 0;
+        });
+
+        // Add a row to the table for each workspace saved in the database
+        for (var i = 0, ii = workspaces.length; i < ii; i++) {
+            var workspace = workspaces[i];
+            table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
+        }
+    }
+
+
+    $('#load').click(function() {
+        // Disable the button to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        $('#load').attr('disabled', 'disabled');
+        ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
+            if (err != null) {
+                console.debug(err);
+                return;
+            }
+
+            populateTable("loadWorkspaceTable", workspaces);
+
+            // Add click listeners to all rows
+            $('#loadWorkspaceTable td').on('click', function(event) {
+                $('#loadWorkspaceTable td').css('background-color', '#FFFFFF');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                $('#loadWorkspace').removeAttr('disabled');
+                $('#deleteWorkspace').removeAttr('disabled');
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#loadModal').foundation('reveal', 'open');
+            $('#load').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+            $('#loadWorkspace').attr('disabled', 'disabled');
+            $('#deleteWorkspace').attr('disabled', 'disabled');
+        });
+    });
+
+    $('#save').click(function() {
+        // Disable the button to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        $('#save').attr('disabled', 'disabled');
+
+        ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
+            if (err != null) {
+                console.debug(err);
+                return;
+            }
+
+            populateTable("saveWorkspaceTable", workspaces);
+
+            // Add click listeners to all rows
+            $('#saveWorkspaceTable td').on('click', function(event) {
+                $('#saveWorkspaceTable td').css('background-color', '#FFFFFF');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                var workspaceName = $(event.target)[0].innerHTML;
+                document.getElementById("workspaceNameInput").value = workspaceName;
+            });
+
+            // Finally show the modal dialog and reenable the button
+            $('#saveModal').foundation('reveal', 'open');
+            $('#save').removeAttr('disabled');
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+            $('#overwriteWorkspace').attr('disabled', 'disabled');
+        });
+    });
+    
+    $('#saveWorkspace').click(function() {
+        var newName = $('#workspaceNameInput').val();
+        if (newName && newName != "") {
+            var table = $("#saveWorkspaceTable");
+            for (var i = 0; i < table[0].rows.length; i++) {
+                 var cell = table[0].rows[i].cells[0];
+                 var wName = cell.innerHTML;
+                 if(wName == newName) {
+                    deleteWorkspace(cell.attributes[0].value, 
+                                    function(err, workspace) {
+                                        if (err != null) {
+                                            console.debug(err);
+                                            return;
+                                        }
+                                    });
+                 }
+            }
+
+            ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+                $('#saveModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    $('#loadWorkspace').click(function() {
+        if (selectedWorkspace) {
+            ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+
+                ocargo.blocklyControl.deserialize(workspace);
+                ocargo.blocklyControl.redrawBlockly();
+                $('#loadModal').foundation('reveal', 'close');
+            });
+        }
+    });
+
+    $('#deleteWorkspace').click(function() {
+        if (selectedWorkspace) {
+            ocargo.saving.deleteWorkspace(selectedWorkspace, function(err) {
+                if (err != null) {
+                    console.debug(err);
+                    return;
+                }
+                $('#loadWorkspaceTable td[value=' + selectedWorkspace + ']').remove();
+                selectedWorkspace = null;
+            });
+        }
+    });
+
+    // If the user pressed the enter key in the textbox, should be the same as clicking the button
+    $('#newWorkspaceName').on('keypress', function(e) {
+        if (e.which == 13) {
+            $('#saveWorkspace').trigger('click');
+        }
+    });
+}
+
+function setupMenuListeners() {
+
     $('#play').click(function() {
-        if (ocargo.blocklyControl.incorrect) {
-            ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        }
-        disableDirectControl();
+        ocargo.blocklyControl.resetIncorrectBlock();
 
-        try {
-            var program = ocargo.blocklyControl.populateProgram();
-        } catch (error) {
-            ocargo.level.fail('Your program crashed!');
-            throw error;
+        if (runProgramAndPrepareAnimation()) {
+            onPlayControls();
+            ocargo.animation.playAnimation();
         }
+        else {
+            //onStopOrResetControls();
+        }
+    });
 
-        program.instructionHandler = new InstructionHandler(ocargo.level, true);
-        clearVanData();
-        ocargo.time.resetTime();
-        ocargo.level.play(program);
-        ocargo.level.correct = 0;
+    $('#pause').click(function() {
+        ocargo.animation.pauseAnimation();
+        onPauseControls();
+    });
+
+    $('#resume').click(function() {
+        // Important ordering
+        onResumeControls();
+        ocargo.animation.playAnimation();
+    });
+
+    $('#stop').click(function() {
+        ocargo.animation.resetAnimation();
+        onStopOrResetControls();
+    });
+
+    $('#reset').click(function() {
+        ocargo.animation.resetAnimation();
+        onStopOrResetControls();
     });
 
     $('#step').click(function() {
-        if (ocargo.blocklyControl.incorrect) {
-            ocargo.blocklyControl.incorrect.setColour(ocargo.blocklyControl.incorrectColour);
-        }
-
-        if (ocargo.level.program === undefined || ocargo.level.program.isTerminated) {
-            try {
-                ocargo.level.correct = 0;
-                ocargo.level.program = ocargo.blocklyControl.populateProgram();
-                ocargo.level.program.stepCallback = enableDirectControl;
-                ocargo.level.stepper = stepper(ocargo.level, false);
-                ocargo.level.program.startBlock.selectWithConnected();
-                ocargo.level.program.instructionHandler = new InstructionHandler(ocargo.level, false);
-                clearVanData();
-                ocargo.time.resetTime();
-                Blockly.addChangeListener(terminate);
-            } catch (error) {
-                ocargo.level.fail('Your program crashed!');
-                throw error;
+        if (ocargo.animation.wasJustReset()) {
+            var successfullyCompiled = runProgramAndPrepareAnimation();
+            if(!successfullyCompiled) {
+                return;
             }
         }
-        disableDirectControl();
-        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v3.svg)');
-        ocargo.level.stepper();
 
-        function terminate() {
-            ocargo.level.program.isTerminated = true;
-        }
-
-    });
-    
-    $('#help').click(function() {
-        startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
-    });
-
-    $('#clearIncorrect').click(function() {
-        ocargo.blocklyControl.removeWrong();
-        enableDirectControl();
+        ocargo.animation.stepAnimation(function() {
+            if (ocargo.animation.isFinished()) {
+                onEndControls(true);
+            }
+            else {
+                onPauseControls();
+            }
+        });
+        onStepControls();
     });
 
     $('#clear').click(function() {
         ocargo.blocklyControl.reset();
-        enableDirectControl();
-        clearVanData();
-        ocargo.time.resetTime();
-        $('#play > span').css('background-image', 'url(/static/game/image/arrowBtns_v2.svg)');
+        onStopOrResetControls();
+        ocargo.animation.resetAnimation();
     });
 
-    $('#stop').click(function() {
-        ocargo.level.program.terminate();
-    });
-
-    $('#slideBlockly').click(function() {
-        var c = $('#programmingConsole');
-        if (c.is(':visible')) {
-            $('#paper').animate({width: '100%'});
-            $('#sliderControls').animate({left: '0%'});
-        } else {
-            $('#paper').animate({width: '50%'});
-            $('#sliderControls').animate({left: '50%'});
+    var blockly = true;
+    $('#toggle_console').click(function() {
+        $('#blockly').css("display","none");
+        $('#pythonCode').css("display","none");
+        if(blockly) {
+            $('#pythonCode').fadeIn();
+            ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
+            ocargo.controller = ocargo.editor;
+            blockly = false;
         }
-        c.animate({width: 'toggle'});
+        else {
+            $('#blockly').fadeIn();
+            ocargo.blocklyControl.redrawBlockly();
+            Blockly.mainWorkspace.render();
+            // reset blockly to python converter
+            Blockly.Python.init();
+            ocargo.controller = ocargo.blocklyControl;
+            blockly = true;
+        }
+    });
+
+    $('#big_code_mode').click(function() {
+        if(ocargo.blocklyControl.bigCodeMode){
+            ocargo.blocklyControl.decreaseBlockSize()
+        } else {
+            ocargo.blocklyControl.increaseBlockSize();
+        }
+    });
+
+    $('#help').click(function() {
+        startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
+    });
+
+    $('#muted').click(function() {
+        $('#muted').css('display','none');
+        $('#unmuted').css('display','block');
+        ocargo.sound.mute();
+    });
+
+    $('#unmuted').click(function() {
+        $('#muted').css('display','block');
+        $('#unmuted').css('display','none');
+        ocargo.sound.mute();
+    });
+
+    if ($.cookie("muted") === "true") {
+        $('#muted').css('display','block');
+        $('#unmuted').css('display','none');
+        ocargo.sound.mute();
+    }
+
+    $('#quit').click(function() {
+        window.location.href = "/game/"
     });
 }
 
 $(function() {
-    initialiseDefault();
-    trackDevelopment();
-});
-
-$('#mute').click(function() {
-    var $this = $(this);
-    if (ocargo.sound.volume === 0) {
-        $this.text('Mute');
-        ocargo.sound.unmute();
-    } else {
-        $this.text('Unmute');
-        ocargo.sound.mute();
-    }
+    init();
 });
