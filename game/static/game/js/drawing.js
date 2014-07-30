@@ -143,12 +143,37 @@ function isMobile() {
 }
 
 // This is the function that starts the pop-up.
-// This is the function that starts the pop-up.
 function startPopup(title, subtitle, message, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
+}
+
+function generateButtonHelp(){
+	return '<div id="buttonHelp">\
+		<p><img src="/static/game/image/menu_button_play.svg" alt="Play" /> Plays your program</p>\
+		<p><img src="/static/game/image/menu_button_pause.svg" alt="Pause" /> Pauses your program</p>\
+		<p><img src="/static/game/image/menu_button_stop.svg" alt="Stop" /> Stops your program</p>\
+		<p><img src="/static/game/image/menu_button_reset.svg" alt="Reset" /> Resets your van and program back to the start</p>\
+		<p><img src="/static/game/image/menu_button_step.svg" alt="Step" /> Steps to the next command in your program</p>\
+		<p><img src="/static/game/image/menu_button_save.svg" alt="Save" /> Saves your program</p>\
+		<p><img src="/static/game/image/menu_button_load.svg" alt="Load" /> Loads your program</p>\
+		<p><img src="/static/game/image/menu_button_clear.svg" alt="Clear" /> Clears your program, removing all instructions</p>\
+		<p><img src="/static/game/image/menu_button_toggle_console.svg" alt="Toggle Console" /> Switches between Blockly and Python</p>\
+		<p><img src="/static/game/image/menu_button_big_code_mode.svg" alt="Big Code Mode" /> Makes Blockly blocks bigger</p>\
+		<p><img src="/static/game/image/menu_button_help.svg" alt="Show Help" /> Shows level hints and button help</p>\
+		<p><img src="/static/game/image/menu_button_muted.svg" alt="Muted / Unmute" /> Shows that the game is muted (click to unmute)</p>\
+		<p><img src="/static/game/image/menu_button_unmuted.svg" alt="Unmuted / Mute" /> Shows that the game is unmuted (click to mute)</p>\
+		<p><img src="/static/game/image/menu_button_quit.svg" alt="Quit" /> Quits the level, returning to the level selection page</p>\
+	  </div>';
+}
+
+function showButtonHelp(){
+	$('#myModal-lead').html('');
+	$('#myModal-mainText').html('<p>' + generateButtonHelp() + '</p>' +
+			'<p><button onclick="document.getElementById(' + "'close-modal'" +
+	        ').click()">Close</button></p>');
 }
 
 function clearPaper() {
