@@ -18,8 +18,13 @@ ocargo.PathFinder.prototype.getScore = function() {
 
     var pathLengthScore = this.getTravelledPathScore();
     var initInstrScore = this.getInstrLengthScore();
-    var instrScore = initInstrScore <= this.maxInstrLengthScore ? initInstrScore :
-        this.maxInstrLengthScore - initInstrScore % this.maxInstrLengthScore;
+    var instrScore = initInstrScore;
+
+    if (initInstrScore >= 2 * this.maxInstrLengthScore) {
+        instrScore = 0;
+    } else if (initInstrScore > this.maxInstrLengthScore) {
+        instrScore = this.maxInstrLengthScore - initInstrScore % this.maxInstrLengthScore;
+    }
 
     var totalScore = pathLengthScore + instrScore;
 
@@ -52,8 +57,15 @@ ocargo.PathFinder.prototype.getTravelledPathScore = function() {
 
 ocargo.PathFinder.prototype.getInstrLengthScore = function() {
     var userLength = ocargo.blocklyControl.getBlocksCount();
-    var algorithmScore = this.maxInstrLengthScore - (userLength - 1 - this.modelLength);
-
+    var algorithmScore = 0;
+    var difference = this.maxInstrLengthScore;
+    for (var i = 0; i < this.modelLength.length; i++) {
+        var currDifference = userLength - 1 - this.modelLength[i];
+        if (Math.abs(currDifference) < difference) {
+            difference = Math.abs(currDifference);
+            algorithmScore = this.maxInstrLengthScore - currDifference;
+        }
+    }
     return algorithmScore;
 };
 

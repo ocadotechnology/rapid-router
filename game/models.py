@@ -104,7 +104,7 @@ class Level (models.Model):
     direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
-    model_solution = models.IntegerField(blank=True, default=50)
+    model_solution = models.CharField(blank=True, max_length=10, default='[]')
     threads = models.IntegerField(blank=False, default=1)
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)

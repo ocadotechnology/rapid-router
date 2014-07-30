@@ -711,12 +711,12 @@ function setupOtherMenuListeners() {
         }
 
         var destination = new ocargo.Destination(0, ocargo.levelEditor.destinationNode);
-        var pathToDestination = getOptimalPath(ocargo.levelEditor.nodes, [destination]);
-        if (pathToDestination.length === 0) {
-            startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
-                ocargo.messages.noStartEndRoute);
-            return;
-        }
+        //var pathToDestination = getOptimalPath(ocargo.levelEditor.nodes, [destination]);
+      //  if (pathToDestination.length === 0) {
+      //      startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
+      //          ocargo.messages.noStartEndRoute);
+      //      return;
+      //  }
 
         sortNodes(ocargo.levelEditor.nodes);
         var input = JSON.stringify(oldPathToNew(ocargo.levelEditor.nodes));
@@ -727,6 +727,12 @@ function setupOtherMenuListeners() {
         var trafficLights = JSON.stringify(stripOutImageProperty(ocargo.levelEditor.trafficLights));
         var maxFuel = $('#maxFuel').val();
         var name = $('#name').val();
+
+        console.debug("path", input)
+        console.debug("destinations", destinations)
+        console.debug("decor", decor)
+
+
 
         $('.js-block-checkbox:checked').each(function(index, checkbox) {
             blockTypes.push(checkbox.id);
@@ -748,7 +754,7 @@ function setupOtherMenuListeners() {
                 csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
             },
             success: function (json) {
-                window.location.href = ("/game/" + json.server_response);
+                //window.location.href = ("/game/" + json.server_response);
 
             },
             error: function (xhr, errmsg, err) {
