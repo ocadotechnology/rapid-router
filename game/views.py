@@ -187,8 +187,10 @@ def level_editor(request):
 
     :template:`game/level_editor.html`
     """
+
     context = RequestContext(request, {
-        'blocks': Block.objects.all()
+        'blocks': Block.objects.all(),
+        'decor': Decor.objects.all()
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 

@@ -18,6 +18,20 @@
   <script src="/static/game/js/pathFinder.js"></script>
   <script src="/static/game/js/trafficLight.js"></script>
   <script src="/static/game/js/destination.js"></script>
+
+  <script> 
+    var DECOR = {};
+    {% for dec in decor %}
+      var name = "{{dec.theme.name}}"
+      if (!(name in DECOR)) {
+        DECOR.name = [];
+      }
+      DECOR.name.push(
+        {"name": "{{dec.name}}", "url": "{{dec.url}}", "width": {{dec.width}}, "height": {{dec.height}}});
+    {% endfor %}
+    var DECOR = JSON.stringify(DECOR);
+  </script>
+
 {% endblock %}
 
 {% block css %}
