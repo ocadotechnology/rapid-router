@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='decor',
             name='theme',
-            field=models.ForeignKey(default=None, to='game.Theme', null=True),
+            field=models.ForeignKey(to='game.Theme'),
             preserve_default=True,
         ),
     ]
