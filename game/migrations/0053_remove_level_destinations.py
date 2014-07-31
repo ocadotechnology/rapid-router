@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 
+import re
+
 
 def populate_level_decor(apps, schema_editor):
 
