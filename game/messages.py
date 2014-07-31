@@ -82,6 +82,8 @@ def noPermission():
 
 """ String messages used as level tips in the game view. """
 
+def build_description(title, message):
+    return "<b>" + title + "</b><br><br>" + message
 
 def description_level_default():
     return "Write something. "  # TODO: Come up with something.
@@ -99,7 +101,7 @@ def description_level1():
     message = "Choose the right blocks to tell the van where to go. <br> Drag the blocks under " \
         + " the 'Start' block to attach them. <br> Are you happy with your sequence? Then click " \
         + "'go'! "  # TODO: not direct control?
-    return "<b>" + title_level1() + "</b><br><br>" + message
+    return build_description(title_level1(), message)
 
 
 def title_level2():
@@ -110,7 +112,7 @@ def description_level2():
     message = "Can you help the van get there? <br> Like last time, drag the right blocks and " \
         + "attach them under the 'Start' block. <br> To remove a block, drag it back to the " \
         + "left of the screen. "  # TODO: or the bin.
-    return "<b>" + title_level2() + "</b><br><br>" + message
+    return build_description(title_level2(), message)
 
 
 def title_level3():
@@ -121,7 +123,7 @@ def description_level3():
     message = "This time, the van has to turn right to reach the house. Make sure you use the " \
         + "'turn right' block in your sequence. <br> Drag the blocks and attach them under the " \
         + "'Start' block like before. To remove a block, drag it back to the left of the screen. "
-    return "<b>" + title_level3() + "</b><br><br>" + message
+    return build_description(title_level3(), message)
 
 
 def title_level4():
@@ -131,7 +133,7 @@ def title_level4():
 def description_level4():
     message = "This time the van has to go left as well as right. Make sure you use the 'Turn " \
         + "left' block in your sequence. <br> Drag and attach the blocks like before."
-    return "<b>" + title_level4() + "</b><br><br>" + message
+    return build_description(title_level4(), message)
 
 
 def title_level5():
@@ -142,7 +144,7 @@ def description_level5():
     message = "You already know how to make the van turn left or right. This time the van has to " \
         + "make lots of turns to reach the house. <br> Drag and attach the blocks to make your " \
         + "sequence. "
-    return "<b>" + title_level5() + "</b><br><br>" + message
+    return build_description(title_level5(), message)
 
 
 # Paulina's Creation
@@ -152,9 +154,14 @@ def title_level6():
 
 # Paulina's Creation
 def description_level6():
+<<<<<<< HEAD
     message = "This time the van has to go forward, left and right. <br> Drag and attach the " \
         + "blocks like before. "
     return "<b>" + title_level6() + "</b><br><br>" + message
+=======
+    message = "The driver does not always start the journey by going to the right of the screen. "
+    return build_description(title_level6(), message)
+>>>>>>> e871a0f6237aba5cb2eec2f6014a3b185150807e
 
 
 # Paulina's Creation
@@ -166,7 +173,7 @@ def title_level7():
 def description_level7():
     message = "Practise your newly aquired skills on this road by helping the driver to arrive " \
         + "at the house. "
-    return "<b>" + title_level7() + "</b><br><br>" + message
+    return build_description(title_level7(), message)
 
 
 def title_level8():
@@ -174,8 +181,14 @@ def title_level8():
 
 
 def description_level8():
+<<<<<<< HEAD
     message = "The driver does not always start the journey by going to the right of the screen. "
     return "<b>" + title_level8() + "</b><br><br>" + message
+=======
+    message = "Congratulations, you should be now able to solve quite complex levels. Here's one " \
+        + "you can have a go at. "
+    return build_description(title_level8(), message)
+>>>>>>> e871a0f6237aba5cb2eec2f6014a3b185150807e
 
 
 def title_level9():
@@ -183,8 +196,13 @@ def title_level9():
 
 
 def description_level9():
+<<<<<<< HEAD
     message = "Practise your new skills on this road by helping the driver to arrive at the house. "
     return "<b>" + title_level9() + "</b><br><br>" + message
+=======
+    message = "Look at this snail maze! Can you navigate the driver through it? "
+    return build_description(title_level9(), message)
+>>>>>>> e871a0f6237aba5cb2eec2f6014a3b185150807e
 
 
 
@@ -193,6 +211,7 @@ def title_level10():
 
 
 def description_level10():
+<<<<<<< HEAD
     message = "Congratulations, you should be now able to solve quite complex levels. <br><br> " \
         + "Here's one you can have a go at. "
     return "<b>" + title_level10() + "</b><br><br>" + message
@@ -204,6 +223,10 @@ def title_level11():
 
 def description_level11():
     return "Uh oh, a tricky snail maze! Can you take the driver through it? "
+=======
+    message = "Wow! Look at that! It won't get more complicated than this, we promise!"
+    return build_description(title_level5(), message)
+>>>>>>> e871a0f6237aba5cb2eec2f6014a3b185150807e
 
 
 def title_level12():
@@ -275,7 +298,7 @@ def description_level11():
         + "means you can use one block instead of lots of blocks to do the same thing. <br> " \
         + "How many times do you want the block repeated? Type the number into the 'Repeat' " \
         + "block. "
-    return "<b>" + title_level11() + "</b><br><br>" + message
+    return build_description(title_level11(), message)
 
 
 def title_level12():
@@ -285,7 +308,7 @@ def title_level12():
 def description_level12():
     message = "You drove the van down this road on Level 7. This time, use the 'Repeat' block to " \
         + "get the van to the house. This will make your sequence simpler than last time."
-    return "<b>" + title_level12() + "</b><br><br>" + message
+    return build_description(title_level12(), message)
 
 
 def title_level13():
@@ -297,7 +320,7 @@ def description_level13():
         + "The van will not stop until it has reached the point you want it to stop. <br> " \
         + "You do not have to work out how many times the van should repeat your block. Instead, " \
         + "just tell the van to stop when it reaches the house. "
-    return "<b>" + title_level13() + "</b><br><br>" + message
+    return build_description(title_level13(), message)
 
 
 def title_level14():
@@ -305,9 +328,9 @@ def title_level14():
 
 
 def description_level14():
-    message = "Well done, you did it! Now haave a go at using the 'Repeat until' block on a road " \
+    message = "Well done, you did it! Now have a go at using the 'Repeat until' block on a road " \
         + "with lots of turns. "
-    return "<b>" + title_level14() + "</b><br><br>" + message
+    return build_description(title_level14(), message)
 
 
 def title_level15():
@@ -319,7 +342,7 @@ def description_level15():
         + "time, tell the van to repeat the block while not at the house. This means it will " \
         + "stop when it does reach the house. <br> This is called a While Loop. The block is " \
         + "repeated while it is true that the van is not at the house. "
-    return "<b>" + title_level15() + "</b><br><br>" + message
+    return build_description(title_level15(), message)
 
 
 def title_level16():
@@ -330,7 +353,7 @@ def description_level16():
     message = "The van is back at the bendy road. Can you use the 'Repeat while' block to make a " \
         + "While Loop? <br> Make the van repeat your While Loop while it is not at the house. " \
         + "This means you will have a short, simple sequence to make it reach the house. "
-    return "<b>" + title_level16() + "</b><br><br>" + message
+    return build_description(title_level16(), message)
 
 
 def title_level17():
@@ -343,7 +366,7 @@ def description_level17():
         + "road goes forward, or to turn left if it goes left. <br> Try using the 'If block' and " \
         + "the 'Repeat' block together. <br> The 'Repeat' block will stretch if you attach the " \
         + "'If' block inside it. "
-    return "<b>" + title_level17() + "</b><br><br>" + message
+    return build_description(title_level17(), message)
 
 
 def title_level18():
@@ -355,7 +378,7 @@ def description_level18():
         + "so the van knows what to do if the first choice can't be done. <br> For example, " \
         + "tell the van to 'turn left if the road turns left. Add 'else turn right' and the van " \
         + "turns right if the road does not turn left. "
-    return "<b>" + title_level18() + "</b><br><br>" + message
+    return build_description(title_level18(), message)
 
 
 def title_level19():
@@ -369,7 +392,7 @@ def description_level19():
         + "<br> Keep adding choice using 'else if' and the van will move when the program finds " \
         + "the right choice. <br> You can add as many 'else if' choices as you like. Add 'else' " \
         + "as your last choice so that the van knows what to do when the choices run out."
-    return "<b>" + title_level19() + "</b><br><br>" + message
+    return build_description(title_level19(), message)
 
 
 def title_level20():
@@ -379,7 +402,7 @@ def title_level20():
 def description_level20():
     message = "Here is another road. It is even bendier than before, but you know lots of ways " \
         + "to get the van to the house. <br> Get the van to the house using what you have learnt. "
-    return "<b>" + title_level20() + "</b><br><br>" + message
+    return build_description(title_level20(), message)
 
 
 #
@@ -394,7 +417,7 @@ def description_level21():
     message = "Have you noticed something different? Now you can solve mazes with junctions. " \
         + "This means you have more than one way to reach the destination. Do you accept the" \
         + "challenge? "
-    return "<b>" + title_level21() + "</b><br><br>" + message
+    return build_description(title_level21(), message)
 
 
 def title_level22():
@@ -405,7 +428,7 @@ def description_level22():
     message = "This maze does look like a snail a bit, doesn't it? Can you navigate the van " \
         + "to the destination having a knot on your way? Remember - the shorter the path, the " \
         + "better. "
-    return "<b>" + title_level22() + "</b><br><br>" + message
+    return build_description(title_level22(), message)
 
 
 def title_level23():
@@ -415,7 +438,7 @@ def title_level23():
 def description_level23():
     message = "You've done fantastic job so far! Can you find the way to the house this time? " \
         + "There is more than one solution! "
-    return "<b>" + title_level23() + "</b><br><br>" + message
+    return build_description(title_level23(), message)
 
 
 def title_level24():
@@ -424,7 +447,7 @@ def title_level24():
 
 def description_level24():
     message = "This sure is one complicated maze. Can you spot the shortest path? "
-    return "<b>" + title_level24() + "</b><br><br>" + message
+    return build_description(title_level24(), message)
 
 
 def title_level25():
@@ -434,7 +457,7 @@ def title_level25():
 def description_level25():
     message = "This maze surely can be solved with the general algorithm. But watch out - the " \
         + "order in which you check for the instructions will matter in this case! "
-    return "<b>" + title_level25() + "</b><br><br>" + message
+    return build_description(title_level25(), message)
 
 
 def title_level26():
@@ -444,7 +467,7 @@ def title_level26():
 def description_level26():
     message = "Let's now practise what you've learnt so far. Create a program which lets the " \
         + "driver reach the house in the shortest way. "
-    return "<b>" + title_level26() + "</b><br><br>" + message
+    return build_description(title_level26(), message)
 
 
 def title_level27():
@@ -453,7 +476,7 @@ def title_level27():
 
 def description_level27():
     message = "Don't ignore the law. Don't let the van driver drive through the red lights. "
-    return "<b>" + title_level27() + "</b><br><br>" + message
+    return build_description(title_level27(), message)
 
 
 def title_level28():
@@ -462,7 +485,7 @@ def title_level28():
 
 def description_level28():
     message = "Use procedures to find the destination."
-    return "<b>" + title_level28() + "</b><br><br>" + message
+    return build_description(title_level28(), message)
 
 
 def title_level29():
@@ -471,7 +494,7 @@ def title_level29():
 
 def description_level29():
     message = "Try using multiple threads to get both vans to their destination"
-    return "<b>" + title_level29() + "</b><br><br>" + message
+    return build_description(title_level29(), message)
 
 
 def title_level30():
@@ -480,7 +503,7 @@ def title_level30():
 
 def description_level30():
     message = ""
-    return "<b>" + title_level30() + "</b><br><br>" + message
+    return build_description(title_level30(), message)
 
 
 def title_level31():
@@ -489,7 +512,7 @@ def title_level31():
 
 def description_level31():
     message = ""
-    return "<b>" + title_level31() + "</b><br><br>" + message
+    return build_description(title_level31(), message)
 
 
 def title_level32():
@@ -498,7 +521,7 @@ def title_level32():
 
 def description_level32():
     message = ""
-    return "<b>" + title_level32() + "</b><br><br>" + message
+    return build_description(title_level32(), message)
 
 
 def title_level33():
@@ -507,7 +530,7 @@ def title_level33():
 
 def description_level33():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level34():
     return "Title level 33"
@@ -515,7 +538,7 @@ def title_level34():
 
 def description_level34():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level35():
     return "Title level 33"
@@ -523,7 +546,7 @@ def title_level35():
 
 def description_level35():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level36():
     return "Title level 33"
@@ -531,7 +554,7 @@ def title_level36():
 
 def description_level36():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level37():
     return "Title level 33"
@@ -539,7 +562,7 @@ def title_level37():
 
 def description_level37():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level38():
     return "Title level 33"
@@ -547,7 +570,7 @@ def title_level38():
 
 def description_level38():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level39():
     return "Title level 33"
@@ -555,7 +578,7 @@ def title_level39():
 
 def description_level39():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 
 def title_level40():
@@ -564,7 +587,7 @@ def title_level40():
 
 def description_level40():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level41():
     return "Title level 33"
@@ -572,7 +595,7 @@ def title_level41():
 
 def description_level41():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level42():
     return "Title level 33"
@@ -580,7 +603,7 @@ def title_level42():
 
 def description_level42():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level43():
     return "Title level 33"
@@ -588,55 +611,55 @@ def title_level43():
 
 def description_level43():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level33(), message)
 
 def title_level44():
-    return "Title level 33"
+    return "Simple traffic light."
 
 
 def description_level44():
-    message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    message = "You have to wait at red traffic lights until they become green. "
+    return build_description(title_level44(), message)
 
 def title_level45():
-    return "Title level 33"
+    return "More traffic lights."
 
 
 def description_level45():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level45(), message)
 
 def title_level46():
-    return "Title level 33"
+    return "Traffic lights around a corner."
 
 
 def description_level46():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level46(), message)
 
 def title_level47():
-    return "Title level 33"
+    return "Lots of traffic lights."
 
 
 def description_level47():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level47(), message)
 
 def title_level48():
-    return "Title level 33"
+    return "Make a decision at the traffic lights."
 
 
 def description_level48():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level48(), message)
 
 def title_level49():
-    return "Title level 33"
+    return "Traffic lights everywhere."
 
 
 def description_level49():
     message = ""
-    return "<b>" + title_level33() + "</b><br><br>" + message
+    return build_description(title_level49(), message)
 
 #
 # The end of Paulina's Happy Creation.

@@ -575,7 +575,7 @@ function setupMenuListeners() {
     });
 
     $('#help').click(function() {
-        startPopup('Help', HINT, ocargo.messages.closebutton("Close help"));
+        startPopup('Help', HINT, ocargo.messages.closebutton("Close") + ocargo.messages.buttonHelpButton);
     });
 
     $('#muted').click(function() {
