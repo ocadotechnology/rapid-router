@@ -164,6 +164,7 @@ img.control{
 @media print {
     #paper {
         width: 100% !important;
+        left: 0 !important;
     }
 
     .no-print {
@@ -249,19 +250,19 @@ img.control{
     bottom: 50px;
 }
 
-.picButton#turnLeft span {
+#turnLeft span {
     background-image : url('/static/game/image/arrow_left.svg');
 }
 
-.picButton#turnRight span {
+#turnRight span {
     background-image : url('/static/game/image/arrow_right.svg');
 }
 
-.picButton#moveForward span {
+#moveForward span {
     background-image : url('/static/game/image/arrow_forward.svg');
 }
 
-.picButton#go span {
+#go span {
     background-image : url('/static/game/image/arrow_go.svg');
 }
 
@@ -281,123 +282,128 @@ img.control{
     top: 0px;
 }
 
-.picButton#play span {
+#play span {
     background-image : url('/static/game/image/menu_button_play.svg');
 }
 
-.picButton#pause {
+#pause {
     top: 0px;
 }
 
-.picButton#pause span {
+#pause span {
     background-image : url('/static/game/image/menu_button_pause.svg');
 }
 
-.picButton#resume {
+#resume {
     top: 0px;
 }
 
-.picButton#resume span {
+#resume span {
     background-image : url('/static/game/image/menu_button_play.svg');
 }
 
-.picButton#stop {
+#stop {
     top: 50px;
 }
 
-.picButton#stop span {
+#stop span {
     background-image : url('/static/game/image/menu_button_stop.svg');
 }
 
-.picButton#reset {
+#reset {
     top: 50px;
 }
 
-.picButton#reset span {
+#reset span {
     background-image : url('/static/game/image/menu_button_reset.svg');
 }
 
-.picButton#step {
+#step {
     top: 100px;
 }
 
-.picButton#step span {
+#step span {
     background-image : url('/static/game/image/menu_button_step.svg');
 }
 
 
-.picButton#save {
+#save {
     top: 170px;
 }
 
-.picButton#save span {
+#save span {
     background-image : url('/static/game/image/menu_button_save.svg');
 }
 
-.picButton#load {
+#load {
     top: 220px;
 }
 
-.picButton#load span {
+#load span {
     background-image : url('/static/game/image/menu_button_load.svg');
 }
 
-.picButton#clear {
+#clear {
     top: 270px;
 }
 
-.picButton#clear span {
+#clear span {
     background-image : url('/static/game/image/menu_button_clear.svg');
 }
 
-
-
-.picButton#big_code_mode {
+#big_code_mode {
     top: 340px;
 }
 
-.picButton#big_code_mode span {
+#big_code_mode span {
     background-image : url('/static/game/image/menu_button_big_code_mode.svg');
 }
 
-
-.picButton#toggle_console {
+#toggle_console {
     top: 390px;
 }
 
-.picButton#toggle_console span {
+#toggle_console span {
     background-image : url('/static/game/image/menu_button_toggle_console.svg');
 }
 
-
-.picButton#help {
+#help {
     top: 460px;
 }
 
-.picButton#help span {
+#help span {
     background-image : url('/static/game/image/menu_button_help.svg');
 }
 
-.picButton#muted {
+#muted {
     top: 510px;
 }
 
-.picButton#muted span {
+#muted span {
     background-image : url('/static/game/image/menu_button_muted.svg');
 }
 
-.picButton#unmuted {
+#unmuted {
     top: 510px;
 }
 
-.picButton#unmuted span {
+#unmuted span {
     background-image : url('/static/game/image/menu_button_unmuted.svg');
 }
 
-.picButton#quit {
+#quit {
     top: 560px;
 }
 
-.picButton#quit span {
+#quit span {
     background-image : url('/static/game/image/menu_button_quit.svg');
+}
+
+#buttonHelp img{
+	height: 32px;
+	width: 32px;
+}
+
+#buttonHelp p{
+	margin: 5px;
 }

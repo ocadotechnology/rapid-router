@@ -11,10 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='level',
-            name='theme',
-            field=models.ForeignKey(default=1, to='game.Theme'),
-            preserve_default=True,
-        ),
     ]

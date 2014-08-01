@@ -1,5 +1,7 @@
 var ocargo = ocargo || {};
 
+//FIXME: actually use Django's internationalisation framework.
+//FIXME: remove functionality (buttons, JS) from messages.
 ocargo.messages = {
     tryagain : "Either remove the incorrect blocks or click clear and try again!",
     closebutton: function(label) {
@@ -10,6 +12,7 @@ ocargo.messages = {
         return '<button onclick="window.location.href=' + "'/game/" + level + "'" + 
             '">Next Level</button>';
     },
+    buttonHelpButton: '<button onclick="showButtonHelp();">Button help</button>',
     nextEpisodeButton: function(episode) {
         return "Well done, you've completed the episode!<br>" +
            "Are you ready for the next challenge? <br><br> " +
