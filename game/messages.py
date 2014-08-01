@@ -772,12 +772,13 @@ def title_level37():
 def description_level37():
     message = "Let's raise a bar a bit and help the travel a bit further. Notice that the length " \
         + "of the path no longer changes the length of the program! "
-    return build_description(title_level36(), message)
+    return build_description(title_level37(), message)
 
 
 # Paulina's Creation
 def hint_level37():
     message = "Think back to the solutions you produced using if statements before."
+    return message
 
 
 def title_level38():
@@ -787,19 +788,77 @@ def title_level38():
 def description_level38():
     message = "Well done! You've got so far. Can you apply the knowledge you gained going " \
         + "through this part of the game to this level? "
+    return build_description(title_level38(), message)
 
 
 def hint_level38():
     message = "Think back to the solutions you produced using if statements before."
+    return message
 
 
 # Paulina's Creation
 def title_level39():
-    return "Dead ends!"
+    return "Dead ends! "
 
 
+# Paulina's Creation
+def description_level39():
+    message = "The generic algorithms tend to work in many situations, but sometimes they need " \
+        + "some sort of an adjustment to perform the best. Do you know how to create your " \
+        + "solution to make sure the van is not trapped in an infinite loop and that it travels " \
+        + " the shortest distance possible? "
+    return build_description(title_level39(), message)
 
 
+# Paulina's Creation
+def hint_level39():
+    message = "The generic solution with a check for a dead end as well as the checks for " \
+        + "conditions you already know will work in this case, but will not produce the shortest " \
+        + "path. Do you know why? "
+    return message
+
+
+# Paulina's Creation
+def title_level40():
+    return "Adjust your previous solution."
+
+
+# Paulina's Creation
+def description_level40():
+    message = "Can you think of a way you could change the generic algorithm you have " \
+        + "implemented earlier to make sure the van driver reaches the house having travelled " \
+        + "shortest route? "
+    return build_description(title_level40(), message)
+
+
+# Paulina's Creation
+def hint_level40():
+    message = "If you rearrange the checks for existing roads so that you check if you can turn " \
+        + "right before you check for a road ahead of you, will be able to reach the destination " \
+        + "using the generic algorithm! "
+    return message
+
+
+# Paulina's Creation
+def title_level41():
+    return "Generic or not? "
+
+
+# Paulina's Creation
+def description_level41():
+    message = "Do you think you can adjust the generic algorithm to help the driver deliver to " \
+        + "the house in an efficient way? Or do you have to come up with a different solution? "
+    return build_description(title_level40(), message)
+
+
+# Paulina's Creation
+def hint_level41():
+    message = "If you were thinking that the general algorithm would be useful in this case - " \
+        + "you were right! If you move a check for a turn to be done before you check for the " \
+        + "existence of the road forwards - you will come up with the perfect solution. <br><br>" \
+        + "Notice that it doesn't matter which turn you check for as first - it will change the " \
+        + "the route but provide you with the same score! "
+    return message
 
 
 
@@ -834,20 +893,6 @@ def title_level18():
 
 
 
-def title_level19():
-    return "What if you cannot see the road? "
-
-
-def description_level19():
-    message = "If you cannot see the road, you cannot see the choices to make. No problem! " \
-        + "This is where 'If' and 'else' are useful. <br> You can tell the van to go one way if " \
-        + "the road goes that way. If the road does not go that way, the van will do nothing. " \
-        + "<br> Keep adding choice using 'else if' and the van will move when the program finds " \
-        + "the right choice. <br> You can add as many 'else if' choices as you like. Add 'else' " \
-        + "as your last choice so that the van knows what to do when the choices run out."
-    return build_description(title_level19(), message)
-
-
 def title_level20():
     return "Fantastic! Can you do it again? "
 
@@ -862,66 +907,6 @@ def description_level20():
 # Paulina's happy creations
 #
 #
-def title_level21():
-    return "Junction time!"
-
-
-def description_level21():
-    message = "Have you noticed something different? Now you can solve mazes with junctions. " \
-        + "This means you have more than one way to reach the destination. Do you accept the" \
-        + "challenge? "
-    return build_description(title_level21(), message)
-
-
-def title_level22():
-    return "Snail roundabout. "
-
-
-def description_level22():
-    message = "This maze does look like a snail a bit, doesn't it? Can you navigate the van " \
-        + "to the destination having a knot on your way? Remember - the shorter the path, the " \
-        + "better. "
-    return build_description(title_level22(), message)
-
-
-def title_level23():
-    return "Great! Another try? "
-
-
-def description_level23():
-    message = "You've done fantastic job so far! Can you find the way to the house this time? " \
-              + "There is more than one solution! "
-    return build_description(title_level23(), message)
-
-
-def title_level24():
-    return "That's tangled up! "
-
-
-def description_level24():
-    message = "This sure is one complicated maze. Can you spot the shortest path? "
-    return build_description(title_level24(), message)
-
-
-def title_level25():
-    return "Find the pattern in this chaos."
-
-
-def description_level25():
-    message = "This maze surely can be solved with the general algorithm. But watch out - the " \
-        + "order in which you check for the instructions will matter in this case! "
-    return build_description(title_level25(), message)
-
-
-def title_level26():
-    return "Congratulations! You've made it so far!"
-
-
-def description_level26():
-    message = "Let's now practise what you've learnt so far. Create a program which lets the " \
-              + "driver reach the house in the shortest way. "
-    return build_description(title_level26(), message)
-
 
 def title_level27():
     return "Traffic lights!"
@@ -950,33 +935,6 @@ def description_level29():
     return build_description(title_level29(), message)
 
 
-def title_level30():
-    return "Title level 30"
-
-
-def description_level30():
-    message = ""
-    return build_description(title_level30(), message)
-
-
-def title_level31():
-    return "Title level 31"
-
-
-def description_level31():
-    message = ""
-    return build_description(title_level31(), message)
-
-
-def title_level32():
-    return "Title level 32"
-
-
-def description_level32():
-    message = ""
-    return build_description(title_level32(), message)
-
-
 def title_level33():
     return "Decision making"
 
@@ -986,24 +944,6 @@ def description_level33():
     return build_description(title_level33(), message)
 
 
-def title_level34():
-    return "Check for several things."
-
-
-def description_level34():
-    message = "See if you can move forwards, and then see if you can turn. "
-    return build_description(title_level34(), message)
-
-
-def title_level35():
-    return "Look both ways"
-
-
-def description_level35():
-    message = "If you can drive forwards, drive forwards, or if you can drive " \
-              + "right go right, or if you can drive left, drive left. "
-    return build_description(title_level35(), message)
-
 
 def title_level36():
     return "Drive where there's road"
@@ -1012,24 +952,6 @@ def title_level36():
 def description_level36():
     message = "If you're able to drive in a direction, you should drive that way. "
     return build_description(title_level36(), message)
-
-
-def title_level37():
-    return "Title level 37"
-
-
-def description_level37():
-    message = ""
-    return build_description(title_level37(), message)
-
-
-def title_level38():
-    return "Title level 38"
-
-
-def description_level38():
-    message = ""
-    return build_description(title_level38(), message)
 
 
 def title_level39():
