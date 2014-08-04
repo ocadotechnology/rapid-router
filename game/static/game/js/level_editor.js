@@ -159,11 +159,11 @@ ocargo.LevelEditor.prototype.finaliseDelete = function(coord) {
         }
 
         // Check if start or destination node        
-        if (this.isOriginCoordinate(coord)) {
+        if (ocargo.levelEditor.isOriginCoordinate(coord)) {
             ocargo.levelEditor.markAsBackground(ocargo.levelEditor.originNode.coordinate);
             ocargo.levelEditor.originNode = null;
         }
-        if (this.isDestinationCoordinate(coord)) {
+        if (ocargo.levelEditor.isDestinationCoordinate(coord)) {
             ocargo.levelEditor.markAsBackground(ocargo.levelEditor.destinationNode.coordinate);
             ocargo.levelEditor.destinationNode = null;
         }     
