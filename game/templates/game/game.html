@@ -101,42 +101,35 @@
   </div>
 
   <div id="side_menu" class="no-print unselectable">
-    <button class="picButton" id="pause"><span>pause</span></button>
-    <button class="picButton" id="play"><span>play</span></button>
-    <button class="picButton" id="stop"><span>stop</span></button>
-    <button class="picButton" id="reset"><span>reset</span></button>
-    <button class="picButton" id="resume"><span>resume</span></button>
-    <button class="picButton" id="step"><span>step</span></button>
-    <button class="picButton" id="save"><span>save</span></button>
-    <button class="picButton" id="load"><span>load</span></button>
-    <button class="picButton" id="clear"><span>clear</span></button>
+    <button class="picture_button menu_button" id="pause"></button>
+    <button class="picture_button menu_button" id="play"></button>
+    <button class="picture_button menu_button" id="stop"></button>
+    <button class="picture_button menu_button" id="reset"></button>
+    <button class="picture_button menu_button" id="resume"></button>
+    <button class="picture_button menu_button" id="step"></button>
 
-    <button class="picButton" id="toggle_console" {% if not level.blocklyEnabled or not level.pythonEnabled%} style="visibility: hidden" {% endif %}><span>toggle console</span></button>
-    <button class="picButton" id="big_code_mode"><span>big code mode</span></button>
+    <button class="picture_button menu_button" id="save"></button>
+    <button class="picture_button menu_button" id="load"></button>
+    <button class="picture_button menu_button" id="clear"></button>
 
-    <button class="picButton" id="help"><span>help</span></button>
-    <button class="picButton" id="muted"><span>muted</span></button>
-    <button class="picButton" id="unmuted"><span>unmuted</span></button>
-    <button class="picButton" id="quit"><span>quit</span></button>
+    <button class="picture_button menu_button" id="toggle_console"></button>
+    <button class="picture_button menu_button" id="big_code_mode"></button>
+
+    <button class="picture_button menu_button" id="help"></button>
+    <button class="picture_button menu_button" id="muted"></button>
+    <button class="picture_button menu_button" id="unmuted"></button>
+    <button class="picture_button menu_button" id="quit"></button>
   </div>
 
-  <div id="sliderControls" class="no-print unselectable">
-    <button id="slideConsole" class="unselectable">Slide Program</button>
+  <div class="no-print unselectable">
+    <button class="picture_button unselectable" id="slide_console"></button>
   </div>
 
   <div id="direct_drive" class="unselectable">
-    <button class="picButton" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
-      <span>&uarr; Move Forwards</span>
-    </button>
-    <button class="picButton" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
-      <span>&#x21BA; Turn Left</span>
-    </button>
-    <button class="picButton" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
-      <span>Go</span>
-    </button>
-    <button class="picButton" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}>
-      <span>&#x21BB; Turn Right</span>
-    </button>
+    <button class="picture_button direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="picture_button direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="picture_button direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="picture_button direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
   </div>
   
   <div id="fuelGauge" class="no-print unselectable">
@@ -159,7 +152,7 @@
 </div>
 
 <div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title">Load</h2>
+  <h2 class="title"><img class="save_load_image" src='/static/game/image/menu_button_load.svg'/>Load</h2>
   <p>Here you can load a previously saved program.</p>
   <div class="scrolling-table-wrapper">
     <div class="scrolling-table">
@@ -174,7 +167,7 @@
 </div>
 
 <div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title">Save</h2>
+  <h2 class="title"><img class="save_load_image" src='/static/game/image/menu_button_save.svg'/>Save</h2>
   <p>Here you can save your program.</p>
   <div class="scrolling-table-wrapper">
     <div class="scrolling-table">
