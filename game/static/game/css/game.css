@@ -1,3 +1,7 @@
+.top-bar {
+    display: none;
+}
+
 #wrapper {
     position: fixed;
     overflow: auto;
@@ -5,10 +9,6 @@
     right: 0;
     top: 0;
     bottom: 0;
-}
-
-.top-bar {
-    display: none;
 }
 
 #programmingConsole {
@@ -32,28 +32,6 @@
     z-index: 6;
 }
 
-#controls {
-    bottom: 20px;
-    height: 200px;
-    position: fixed;
-    right: 20px;
-    width: 700px
-}
-
-#controls button {
-    margin-bottom: 0;
-}
-
-#controls .navigation {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-}
-
-button, .button, img.control{
-    margin-right: 10px;
-}
-
 .col {
     float: left;
 }
@@ -68,23 +46,6 @@ button, .button, img.control{
 .ocargo-modal-mainText > #hintText,
 .ocargo-modal-mainText > #hintBtnPara {
 	margin: 2rem 1rem 0;
-}
-
-#sliderControls {
-    position: absolute;
-    left: 50%;
-    height: 0%;
-    z-index: 7;
-}
-
-#consoleSlider {
-    position: absolute;
-    left: 50%;
-    width: 5px;
-    height: 100%;
-    z-index: 9;
-    background-color: #444;
-    cursor: col-resize;
 }
 
 #fuelGauge {
@@ -107,34 +68,6 @@ button, .button, img.control{
 img.control{
 	height:50px;
 	cursor: pointer;
-}
-
-/* Styles for the instruction buttons */
-.picButton {    
-    background-color: transparent;
-    padding: 0px 0px 0;
-    position: absolute;
-    vertical-align: top;
-}
-
-.picButton[disabled],
-.picButton[disabled]:hover,
-.picButton:hover,
-.picButton:focus {
-   background-color: transparent;
-   border:none;
-}
-
-.picButton span {
-    background-repeat: no-repeat;
-    background-size: 45px 45px;
-    background-position: center;
-    display: inline-block;
-    height: 45px;
-    overflow: hidden;
-    width: 45px;
-    text-indent: 200%;
-    white-space: nowrap;
 }
 
 #blockly {
@@ -181,6 +114,46 @@ img.control{
     user-select: none;
 }
 
+.picture_button {
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    overflow: hidden;
+    text-indent: 200%;
+    white-space: nowrap;
+    cursor: pointer;
+    position: absolute;
+    background-color: transparent;
+    padding: 2px;
+}
+
+/***********/
+/* Sliders */
+/***********/
+
+/* Button */
+#slide_console {
+    position: absolute;
+    left: 50%;
+    width: 100px;
+    height: 38px;
+    z-index: 7;
+    margin-top: 2px;
+    margin-left: 5px;
+    background-image : url('/static/game/image/hide_button.svg');
+}
+
+/* Central slider div */
+#consoleSlider {
+    position: absolute;
+    left: 50%;
+    width: 5px;
+    height: 100%;
+    z-index: 9;
+    background-color: #444;
+    cursor: col-resize;
+}
+
 /********************/
 /* Loading & Saving */
 /********************/
@@ -214,56 +187,59 @@ img.control{
     margin-left: 124px;
 }
 
+.save_load_image {
+    margin-right: 20px;
+}
+
 /******************/
 /** Direct drive **/
 /******************/
 
 #direct_drive {
-    width: 140px;
+    width: 200px;
     height: 95px;
     position: absolute;
     z-index: 7;
-    bottom: 15px;
-    left: 50%;
+    left: 51%;
+    bottom: 10px;
 }
 
-#turnLeft,
-#turnRight,
-#go {
-    bottom: 0px;
+.direct_drive_button {
+    background-size: 45px 45px;
+    width: 50px;
+    height: 50px;
 }
 
-#moveForward, 
-#go {
+.direct_drive_button[disabled],
+.direct_drive_button[disabled]:hover,
+.direct_drive_button:hover,
+.direct_drive_button:focus
+{ 
+    background-color: rgba(240,240,240,0.3);
+}
+
+#go  {
     left: 60px;
+    bottom: 0px;
+    background-image : url('/static/game/image/arrow_go.svg');
 }
 
 #turnLeft {
     left: 10px;
+    bottom: 0px;
+    background-image : url('/static/game/image/arrow_left.svg');
 }
 
 #turnRight {
     left: 110px;
-}
-
-#moveForward {
-    bottom: 50px;
-}
-
-#turnLeft span {
-    background-image : url('/static/game/image/arrow_left.svg');
-}
-
-#turnRight span {
+    bottom: 0px;
     background-image : url('/static/game/image/arrow_right.svg');
 }
 
-#moveForward span {
+#moveForward {
+    left: 60px;
+    bottom: 50px;
     background-image : url('/static/game/image/arrow_forward.svg');
-}
-
-#go span {
-    background-image : url('/static/game/image/arrow_go.svg');
 }
 
 /***************/
@@ -278,125 +254,100 @@ img.control{
     top: 30px;
 }
 
-.picButton#play {
-    top: 0px;
+.menu_button {
+    background-size: 45px 45px;
+    width: 45px;
+    height: 45px;
 }
 
-#play span {
-    background-image : url('/static/game/image/menu_button_play.svg');
+.menu_button[disabled],
+.menu_button[disabled]:hover,
+.menu_button:hover,
+.menu_button:focus
+{ 
+    background-color: rgba(240,240,240,0.3);
+}
+
+.menu_button[disabled] {
+    opacity: 0.5;
+}
+
+#play {
+    top: 0px;
+    background-image : url('/static/game/image/menu_icons/play.svg');
 }
 
 #pause {
     top: 0px;
+    background-image : url('/static/game/image/menu_icons/pause.svg');
 }
 
-#pause span {
-    background-image : url('/static/game/image/menu_button_pause.svg');
-}
 
 #resume {
     top: 0px;
-}
-
-#resume span {
-    background-image : url('/static/game/image/menu_button_play.svg');
+    background-image : url('/static/game/image/menu_icons/play.svg');
 }
 
 #stop {
     top: 50px;
-}
-
-#stop span {
-    background-image : url('/static/game/image/menu_button_stop.svg');
+    background-image : url('/static/game/image/menu_icons/stop.svg');
 }
 
 #reset {
     top: 50px;
-}
-
-#reset span {
-    background-image : url('/static/game/image/menu_button_reset.svg');
+    background-image : url('/static/game/image/menu_icons/reset.svg');
 }
 
 #step {
     top: 100px;
+    background-image : url('/static/game/image/menu_icons/step.svg');
 }
 
-#step span {
-    background-image : url('/static/game/image/menu_button_step.svg');
-}
-
-
-#save {
-    top: 170px;
-}
-
-#save span {
-    background-image : url('/static/game/image/menu_button_save.svg');
-}
 
 #load {
-    top: 220px;
+    top: 170px;
+    background-image : url('/static/game/image/menu_icons/load.svg');
 }
 
-#load span {
-    background-image : url('/static/game/image/menu_button_load.svg');
+#save {
+    top: 220px;
+    background-image : url('/static/game/image/menu_icons/save.svg');
 }
 
 #clear {
     top: 270px;
-}
-
-#clear span {
-    background-image : url('/static/game/image/menu_button_clear.svg');
+    background-image : url('/static/game/image/menu_icons/clear.svg');
 }
 
 #big_code_mode {
     top: 340px;
-}
-
-#big_code_mode span {
-    background-image : url('/static/game/image/menu_button_big_code_mode.svg');
+    background-image : url('/static/game/image/menu_icons/big_code_mode.svg');
 }
 
 #toggle_console {
     top: 390px;
-}
-
-#toggle_console span {
-    background-image : url('/static/game/image/menu_button_toggle_console.svg');
+    background-image : url('/static/game/image/menu_icons/toggle_console.svg');
 }
 
 #help {
     top: 460px;
-}
-
-#help span {
-    background-image : url('/static/game/image/menu_button_help.svg');
+    background-image : url('/static/game/image/menu_icons/help.svg');
 }
 
 #muted {
     top: 510px;
+    background-image : url('/static/game/image/menu_icons/muted.svg');
 }
 
-#muted span {
-    background-image : url('/static/game/image/menu_button_muted.svg');
-}
 
 #unmuted {
     top: 510px;
-}
-
-#unmuted span {
-    background-image : url('/static/game/image/menu_button_unmuted.svg');
+    background-image : url('/static/game/image/menu_icons/unmuted.svg');
 }
 
 #quit {
     top: 560px;
-}
-
-#quit span {
-    background-image : url('/static/game/image/menu_button_quit.svg');
+    background-image : url('/static/game/image/menu_icons/quit.svg');
 }
 
 #buttonHelp img{

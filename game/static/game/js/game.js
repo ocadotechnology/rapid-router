@@ -241,13 +241,11 @@ function setupDirectDriveListeners() {
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
         moveForward(0, ANIMATION_LENGTH, function() {onEndControls(true)});
     });
-
     $('#turnLeft').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
         moveLeft(0, ANIMATION_LENGTH, function() {onEndControls(true)});
     });
-
     $('#turnRight').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
@@ -265,7 +263,7 @@ function setupSliderListeners() {
     var consoleSliderPosition = $(window).width()/2;
     var open = true;
 
-    $('#slideConsole').click(function() {
+    $('#slide_console').click(function() {
         var pageWidth = $(window).width();
         var rightLimit = getSliderRightLimit();
         var leftLimit = getSliderLeftLimit();
@@ -273,14 +271,14 @@ function setupSliderListeners() {
         if (open) {
             $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
             $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#sliderControls').animate({left: leftLimit + 'px'}, {queue: false});
+            $('#slide_console').animate({left: leftLimit + 'px'}, {queue: false});
             $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
             $('#consoleSlider').animate({left: leftLimit + 'px'}, {queue: false});
             open = false;
         } else {
             $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
             $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-            $('#sliderControls').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
+            $('#slide_console').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
             $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
             $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
             open = true;
@@ -320,7 +318,7 @@ function setupSliderListeners() {
             $('#paper').css({ width: (pageWidth - consoleSliderPosition) + 'px' });
             $('#paper').css({ left: consoleSliderPosition + 'px' });
             $('#programmingConsole').css({ width: consoleSliderPosition + 'px' });
-            $('#sliderControls').css({ left: consoleSliderPosition + 'px' });
+            $('#slide_console').css({ left: consoleSliderPosition + 'px' });
             $('#direct_drive').css({ left: consoleSliderPosition + 'px' });
             
             ocargo.blocklyControl.redrawBlockly();
