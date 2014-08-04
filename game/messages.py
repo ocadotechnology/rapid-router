@@ -848,7 +848,7 @@ def title_level41():
 def description_level41():
     message = "Do you think you can adjust the generic algorithm to help the driver deliver to " \
         + "the house in an efficient way? Or do you have to come up with a different solution? "
-    return build_description(title_level40(), message)
+    return build_description(title_level41(), message)
 
 
 # Paulina's Creation
@@ -861,155 +861,74 @@ def hint_level41():
     return message
 
 
-
-def title_level15():
-    return "This time use 'Repeat While'. "
-
-
-def description_level15():
-    message = "Last time you told the van to repeat a block until it reached the house. This " \
-        + "time, tell the van to repeat the block while not at the house. This means it will " \
-        + "stop when it does reach the house. <br> This is called a While Loop. The block is " \
-        + "repeated while it is true that the van is not at the house. "
-    return build_description(title_level15(), message)
-
-
-def title_level16():
-    return "Put the 'while loop' to the test. "
-
-
-def description_level16():
-    message = "The van is back at the bendy road. Can you use the 'Repeat while' block to make a " \
-        + "While Loop? <br> Make the van repeat your While Loop while it is not at the house. " \
-        + "This means you will have a short, simple sequence to make it reach the house. "
-    return build_description(title_level16(), message)
-
-
-
-
-
-def title_level18():
-    return "Good work! What else can you do? "
-
-
-
-def title_level20():
-    return "Fantastic! Can you do it again? "
-
-
-def description_level20():
-    message = "Here is another road. It is even bendier than before, but you know lots of ways " \
-        + "to get the van to the house. <br> Get the van to the house using what you have learnt. "
-    return build_description(title_level20(), message)
-
-
-#
-# Paulina's happy creations
-#
-#
-
-def title_level27():
-    return "Traffic lights!"
-
-
-def description_level27():
-    message = "Don't ignore the law. Don't let the van driver drive through the red lights. "
-    return build_description(title_level27(), message)
-
-
-def title_level28():
-    return "Following procedure"
-
-
-def description_level28():
-    message = "Use procedures to find the destination."
-    return build_description(title_level28(), message)
-
-
-def title_level29():
-    return "Threading your way"
-
-
-def description_level29():
-    message = "Try using multiple threads to get both vans to their destination"
-    return build_description(title_level29(), message)
-
-
-def title_level33():
-    return "Decision making"
-
-
-def description_level33():
-    message = "Head forwards if you can.  "
-    return build_description(title_level33(), message)
-
-
-
-def title_level36():
-    return "Drive where there's road"
-
-
-def description_level36():
-    message = "If you're able to drive in a direction, you should drive that way. "
-    return build_description(title_level36(), message)
-
-
-def title_level39():
-    return "House at the end of the road"
-
-
-def description_level39():
-    message = ""
-    return build_description(title_level39(), message)
-
-
-def title_level40():
-    return "Title level 40"
-
-
-def description_level40():
-    message = ""
-    return build_description(title_level40(), message)
-
-
-def title_level41():
-    return "Title level 41"
-
-
-def description_level41():
-    message = ""
-    return build_description(title_level41(), message)
-
-
+# Paulina's Creation
 def title_level42():
-    return "Title level 42"
+    return "Tinker, tailor"
 
 
+# Paulina's Creation
 def description_level42():
-    message = ""
+    message = "Can you try the generic algorithm in this case? Can you think of a way to adjust " \
+        + "it or do you see another way of solving this puzzle? "
     return build_description(title_level42(), message)
 
 
+# Paulina's Creation
+def hint_level42():
+    message = "In this case, generic algorithm cannot be adjusted by simply reshuffling the " \
+        + "condition checks. How about creating a straightforward solution without if statements " \
+        + "that will help the driver reach the house? "
+    return message
+
+
 def title_level43():
-    return "Title level 43"
+    return "Good work! What else can you do? "
 
 
 def description_level43():
-    message = "You should be really good at this by now. Can you manage this complicated route?"
+    message = "You should be really good at this by now. Can you manage this complicated route? "
     return build_description(title_level43(), message)
 
 
+# Paulina's Creation
+def hint_level43():
+    message = "This route cannot be solved by a generic algorithm. Can you solve it without if " \
+        + "statements? Remember to choose the shortest path an algorithm which is as short as " \
+        + "possible. "
+    return message
+
+
 def title_level44():
-    return "Simple traffic light."
+    return "Uh oh... Traffic lights! "
 
 
 def description_level44():
-    message = "You have to wait at red traffic lights until they become green. "
+    message = "Don't break the law. The van must not go through a red light. <br><br>" \
+        + "When the van gets to the traffic lights make it wait while the light is red."
     return build_description(title_level44(), message)
 
 
+def hint_level44():
+    message = "Don't worry about the algorithm you've already come up with. Just go forwards! " \
+        + "<br><br> Once your van is right under the traffic lights, make it wait for a green " \
+        + "light by adding 'wait' blocks. "
+    return message
+
+
+# Paulina's Creation
 def title_level45():
-    return "More traffic lights."
+    return "Generic lights! "
+
+
+def description_level45():
+    message = "Now we're working towards incorporating the lights into the generic algorithm. " \
+        + "Can you write a program lets the van either move forwards or wait on the red light? "
+    return build_description(title_level45(), message)
+
+
+def hint_level45():
+    message = "You can use an if statement and check if the light is red. If it is, wait, else " \
+        + "move forwards. Remember to repeat that until you get to the destination! "
 
 
 def description_level45():
@@ -1057,243 +976,6 @@ def description_level49():
 # The end of Paulina's Happy Creation.
 #
 #
-
-
-
-
-
-
-
-
-
-
-
-
-
-def hint_level6():
-    message = "A <b>move forwards</b> block can be placed inside of the <b>repeat</b> block (to " \
-              + "the right of the word 'do'). <br>Don't forget to change the number of times you need " \
-              + "to repeat. "
-    return message
-
-
-
-
-def hint_level6():
-    message = "This maze might look much longer and more complicated, but it's not that hard. " \
-        + "<br><br> Start by going <b>forwards</b> and <b>right</b> first. "
-
-
-def hint_level8():
-    message = "The blocks should read like a sentence: <b>Repeat</b> (the following) <b>until at " \
-              + "destination</b>: <b>move forwards</b>. "
-    return message
-
-
-
-
-def hint_level10():
-    message = "With all these twists and turns, you will have to think hard about what blocks to " \
-        + "use. <br><br> Which block is first, and which blocks will keep the van going? "
-    return message
-
-
-
-
-
-
-
-def hint_level14():
-    message = "The blocks should read like a sentence: '<b>Repeat</b> (this block) <b>until " \
-        + "at house: turn left</b>, (then) <b>turn right</b>'."
-    return message
-
-
-def hint_level15():
-    message = "<b>While not</b> is like <b>until</b>. <br><br> The blocks should read like a " \
-        + "sentence: '<b>Repeat</b> (these block) <b>until at house: move forwards</b>."
-    return message
-
-
-def hint_level16():
-    message = ""
-    return 
-
-
-
-
-
-def hint_level18():
-    message = "Check where the road is by using '<b>if-else</b>'. <br><br> You can make an '<b>" \
-        + "if-else</b>' block by clicking on tge star of the '<b>if</b>' block and adding '<b>" \
-        + "else</b>'. <br><br> If the road goes the same way you've put after '<b>if</b>' (we " \
-        + "say 'if the conditions are true'), the van will follow those blocks. <br><br>" \
-        + "If the road doesn't go the same way (we say 'the conditions are false', the van will " \
-        + "follow the blocks after '<b>else</b>'. <br><br> <b>If</b> a <b>road exists left, turn " \
-        + "left, else turn right</b>. "
-    return message
-
-
-def hint_level19():
-    message = "We need to check where the road is using an 'if-else if' block. <br><br> You can " \
-        + "make an '<b>if-else if</b>' block by clicking the star on the '<b>if</b>' block and " \
-        + "adding the '<b>else if</b>'.If the first condition block is true (if the road goes " \
-        + "the way you've put), the van follows the blocks after '<b>if</b>'. <br><br>" \
-        + "If the second condition block is true (if the road doesn't go the way you've put), " \
-        + "the van follows the blocks after '<b>else if</b>'. <br><br> <b>If</b> a <b>road " \
-        + "exists left, turn left. Else if</b> a <b>road exists right, turn right, else move " \
-        + "forwards.</b> "
-    return message
-
-
-def hint_level20():
-    message = "We need to check where the road is using an '<b>if-else if</b>' block. <br><br> " \
-        + "You can make an '<b>if-else if</b>' block by clicking the star on the '<b>if</b>' " \
-        + "block and adding the '<b>else if</b>'. <br><br> If the first condition block is true " \
-        + "(if the road goes the way you've put), the van follows the blocks after '<b>if</b>'. " \
-        + "If the second condition block is true (if the road doesn't go the way you've put), " \
-        + "the van follows the blocks after '<b>else if</b>'. <br><br> " \
-        + "<b>If</> a <b>road exists left, turn left. Else if</b> a <b>road exists right, turn " \
-        + "right, else move forwards</b>. "
-    return message
-
-
-def hint_level21():
-    message = "We need to check where the road is using an '<b>if-else if</b>' block. <br><br> " \
-        + "You can make an '<b>if-else if</b>' block by clicking the star on the '<b>if</b>' " \
-        + "block and adding the '<b>else if</b>'. <br><br> If the first condition block is true " \
-        + "(if the road goes the way you've put), the van follows the blocks after '<b>if</b>'. " \
-        + "If the second condition block is true (if the road doesn't go the way you've put), " \
-        + "the van follows the blocks after '<b>else if</b>'. <br><br> " \
-        + "<b>If</> a <b>road exists left, turn left. Else if</b> a <b>road exists right, turn " \
-        + "right, else move forwards</b>. "
-    return message
-
-
-def hint_level22():
-    message = "Be careful about the order you put your '<b>if</b>' blocks in. <br><br> If you " \
-        + "make the van check for a left turn first you might make the van go further than it " \
-        + "needs to. "
-    return message
-
-
-def hint_level23():
-    message = "Be careful about the order you put your '<b>if</b>' blocks in. <br><br> If you " \
-        + "make the van check the road goes forwards, you might make the van go in a circle. "
-    return message
-
-
-def hint_level24():
-    message = "This is a complicated maze! There are many paths, but one is definitely shorter " \
-        + "than the others. Hint: try going right first. "
-    return message
-
-
-def hint_level25():
-    message = "Do not use the solution you came up with earlier. Direct commands will work " \
-        + "better here. "
-    return message
-
-
-def hint_level26():
-    message = "Here you can use a mix of direct commands your algorithm to make sure your route " \
-        + "is as short as possible. <br><br> You need to go forward then turn left. Then add a " \
-        + "'<b>while not at destination</b>', '<b>if road exists forward go forward</b>' and " \
-        + "'<b>else turn right</b>'"
-    return message
-
-
-def hint_level27():
-    message = "Don't worry about the algorithm you've already come up with. Take the first turn " \
-        + "left which has fewer traffic lights. <br><br> Once your van is right under the " \
-        + "traffic lights, make it wait for a green light by adding '<b>while traffic light red" \
-        + "</b>' '<b>do</b>' '<b>wait</b>' blocks."
-    return message
-
-
-def hint_level28():
-    message = hint_level_default()
-    return message
-
-
-def hint_level29():
-    message = hint_level_default()
-    return message
-
-
-def hint_level30():
-    message = hint_level_default()
-    return message
-
-
-def hint_level31():
-    message = hint_level_default()
-    return message
-
-
-def hint_level32():
-    message = hint_level_default()
-    return message
-
-
-def hint_level33():
-    message = hint_level_default()
-    return message
-
-
-def hint_level34():
-    message = hint_level_default()
-    return message
-
-
-def hint_level35():
-    message = hint_level_default()
-    return message
-
-
-def hint_level36():
-    message = hint_level_default()
-    return message
-
-
-def hint_level37():
-    message = hint_level_default()
-    return message
-
-
-def hint_level38():
-    message = hint_level_default()
-    return message
-
-
-def hint_level39():
-    message = hint_level_default()
-    return message
-
-
-def hint_level40():
-    message = hint_level_default()
-    return message
-
-
-def hint_level41():
-    message = hint_level_default()
-    return message
-
-
-def hint_level42():
-    message = hint_level_default()
-    return message
-
-
-def hint_level43():
-    message = hint_level_default()
-    return message
-
-
-def hint_level44():
-    message = hint_level_default()
-    return message
 
 
 def hint_level45():
