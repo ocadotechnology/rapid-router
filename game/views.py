@@ -180,14 +180,24 @@ def level_editor(request):
     message = ''
     theme = Theme.objects.get(pk=1)
     themeForm = LevelThemeForm(request.POST or None)
+
     if request.method == 'POST' and themeForm.is_valid():
         theme = Theme.objects.get(pk=themeForm.data.get('theme'))
+        
+    tree1 = Decor.objects.get(theme=theme, name='tree1')
+    tree2 = Decor.objects.get(theme=theme, name='tree2')
+    bush = Decor.objects.get(theme=theme, name='bush')
+    pond = Decor.objects.get(theme=theme, name='pond')
     context = RequestContext(request, {
         'blocks': Block.objects.all(),
         'decor': Decor.objects.all(),
         'themeForm': themeForm,
         'message': message,
-        'theme': theme
+        'theme': theme,
+        'tree1': tree1,
+        'tree2': tree2,
+        'bush': bush,
+        'pond': pond
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
