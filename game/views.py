@@ -2,6 +2,7 @@ from __future__ import division
 import json
 import os
 import messages
+import re
 
 from cache import cached_all_episodes, cached_level, cached_episode
 from datetime import timedelta
@@ -17,7 +18,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from forms import *
 from game import random_road
-from models import Class, Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor
+from models import Class, Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
@@ -35,17 +36,6 @@ def levels(request):
     :template:`game/level_selection.html`
     """
     """ Keeping other schemes here for now, just in case we decide on different scheme. """
-    # blue bgcolour = (88, 148, 194)
-    #fontcolour = "#206396"
-    # button bgcolour = (0, 140, 186)
-    # fontcolour = "#00536E"
-    # yellow bgcolour = (255, 158, 0)
-    # fontcolour = "#B06D00"
-    # turkus bgcolour = (0, 191, 143)
-    # fontcolour = "#007356"
-    # orange bgcolour = (255, 131, 0)
-    # fontcolour = "#B05A00"
-    # grass
     bgcolour = 'rgba(171, 196, 37, {:f})'
     fontcolour = "#617400"
 
@@ -404,13 +394,16 @@ def level_new(request):
         traffic_lights = request.POST.get('trafficLights')
         max_fuel = request.POST.get('maxFuel')
         name = request.POST.get('name')
-        passedLevel = None
+        theme = Theme.objects.get(pk=1)
         passedLevel = Level(name=name, path=path, default=False, destinations=destinations,
-                            decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights)
+                            decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
+                            theme=theme)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile'):
             passedLevel.owner = request.user.userprofile
         passedLevel.save()
+
+        decorToLevelDecor(passedLevel, decor)
 
         if 'blockTypes' in request.POST:
             blockTypes = json.loads(request.POST['blockTypes'])
@@ -429,6 +422,18 @@ def level_new(request):
 #
 # Helper methods for rendering views in the game.
 #
+def decorToLevelDecor(level, decor):
+    """ Helper method creating LevelDecor objects given a string of all decors.
+    """
+    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"url": *")(((/[a-zA-Z0-9]+)+.svg)+)("}))')
+
+    items = regex.findall(decor)
+
+    for item in items:
+        name = item[8][1:]
+        levelDecor = LevelDecor(level=level, x=item[2], y=item[4], decorName=name)
+        levelDecor.save()
+
 
 def parseDecor(theme, levelDecors):
     """ Helper method parsing decor into a format 'sendable' to javascript.
