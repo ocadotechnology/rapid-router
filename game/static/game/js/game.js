@@ -258,31 +258,41 @@ function setupDirectDriveListeners() {
 
 
 function setupSliderListeners() {
-    var getSliderRightLimit = function() {return $(window).width()/2};
+    var getSliderRightLimit = function(pageWidth) {return pageWidth/2};
     var getSliderLeftLimit = function() {return 46};
     var consoleSliderPosition = $(window).width()/2;
-    var open = true;
 
-    $('#slide_console').click(function() {
+    $('#hide').click(function() {
         var pageWidth = $(window).width();
-        var rightLimit = getSliderRightLimit();
         var leftLimit = getSliderLeftLimit();
 
-        if (open) {
-            $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
-            $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#slide_console').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#consoleSlider').animate({left: leftLimit + 'px'}, {queue: false});
-            open = false;
-        } else {
-            $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
-            $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-            $('#slide_console').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
-            $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
-            $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-            open = true;
-        }
+        $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
+        $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
+        $('#hide').animate({left: leftLimit + 'px'}, {queue: false});
+        $('#show').animate({left: leftLimit + 'px'}, {queue: false});
+        $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
+        $('#consoleSlider').css('left', leftLimit + 'px');
+
+        $('#hide').css('display','none');
+        $('#show').css('display','block');
+        $('#consoleSlider').css('display','none');
+    });
+
+    $('#show').click(function() {
+        var pageWidth = $(window).width();
+        var rightLimit = getSliderRightLimit(pageWidth);
+        var leftLimit = getSliderLeftLimit();
+
+        $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
+        $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+        $('#hide').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+        $('#show').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+        $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+        $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+
+        $('#hide').css('display','block');
+        $('#show').css('display','none');
+        $('#consoleSlider').css('display','block');
     });
 
     $('#consoleSlider').on('mousedown', function(e){
@@ -304,7 +314,7 @@ function setupSliderListeners() {
         slider.parent().on('mousemove', function(me){
             consoleSliderPosition = me.pageX;
             var pageWidth = $(window).width();
-            var rightLimit = getSliderRightLimit();
+            var rightLimit = getSliderRightLimit(pageWidth);
             var leftLimit = getSliderLeftLimit();
 
             if (consoleSliderPosition > rightLimit) {
@@ -318,7 +328,8 @@ function setupSliderListeners() {
             $('#paper').css({ width: (pageWidth - consoleSliderPosition) + 'px' });
             $('#paper').css({ left: consoleSliderPosition + 'px' });
             $('#programmingConsole').css({ width: consoleSliderPosition + 'px' });
-            $('#slide_console').css({ left: consoleSliderPosition + 'px' });
+            $('#hide').css({ left: consoleSliderPosition + 'px' });
+            $('#show').css({ left: consoleSliderPosition + 'px' });
             $('#direct_drive').css({ left: consoleSliderPosition + 'px' });
             
             ocargo.blocklyControl.redrawBlockly();
@@ -562,6 +573,10 @@ function setupMenuListeners() {
             ocargo.controller = ocargo.blocklyControl;
             blockly = true;
         }
+    });
+
+    $('#clear_console').click(function (e) {
+        $('#consoleOutput').text('');
     });
 
     $('#big_code_mode').click(function() {

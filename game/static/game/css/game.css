@@ -74,26 +74,6 @@ img.control{
     height: 100%;
 }
 
-#pythonCode {
-    position:absolute;
-    display: none;
-    height: 100%;
-    width:90%;
-    overflow: auto;
-    padding: 15px;
-    left:46px;
-}
-
-#consoleOutput {
-    background-color: #eceaee;
-    max-height: 300px;
-    max-width: 100%;
-    min-height: 250px;
-    min-width: 100%;
-    overflow: auto;
-    padding: 5px;
-}
-
 @media print {
     #paper {
         width: 100% !important;
@@ -117,14 +97,68 @@ img.control{
 .picture_button {
     background-repeat: no-repeat;
     background-position: center;
-    display: inline-block;
-    overflow: hidden;
+    display: inline;
     text-indent: 200%;
     white-space: nowrap;
     cursor: pointer;
-    position: absolute;
     background-color: transparent;
     padding: 2px;
+    margin-bottom: 0rem;
+    transition: background-size 0.3s;
+}
+
+.picture_button:hover,
+.picture_button:focus {
+    transition: background-size 0.3s;
+    background-color: transparent;
+    border: none;
+}
+
+.picture_button[disabled],
+.picture_button[disabled]:hover {
+    background-color: transparent;
+}
+
+.navigation_button {
+    width: 126px;
+    height: 52px;
+    background-size: 120px 50px;
+    position: relative;
+}
+
+.navigation_button:hover {
+    background-size: 125px 52px;
+}
+
+/******************/
+/* Python console */
+/******************/
+
+#pythonCode {
+    position:absolute;
+    display: none;
+    height: 100%;
+    width:90%;
+    overflow: auto;
+    padding: 15px;
+    left:46px;
+}
+
+#consoleOutput {
+    background-color: #eceaee;
+    max-height: 300px;
+    max-width: 100%;
+    min-height: 250px;
+    min-width: 100%;
+    overflow: auto;
+    padding: 5px;
+    margin-bottom: 20px;
+}
+
+#clear_console {
+    background-image : url('/static/game/image/buttons/navigation/clear.svg');
+    float: right;
+    margin-bottom: 0px
 }
 
 /***********/
@@ -132,16 +166,31 @@ img.control{
 /***********/
 
 /* Button */
-#slide_console {
+#hide,
+#show {
     position: absolute;
     left: 50%;
-    width: 100px;
-    height: 38px;
+    width: 105px;
+    height: 40px;
     z-index: 7;
     margin-top: 2px;
     margin-left: 5px;
-    background-image : url('/static/game/image/hide_button.svg');
+    background-size: 100px 38px;
 }
+
+#hide:hover,
+#show:hover {
+    background-size: 105px 40px;
+}
+
+#hide {
+    background-image : url('/static/game/image/buttons/navigation/hide.svg');
+}
+
+#show {
+    background-image : url('/static/game/image/buttons/navigation/show.svg');
+}
+
 
 /* Central slider div */
 #consoleSlider {
@@ -160,8 +209,7 @@ img.control{
 
 #workspaceNameInput {
     height: 51px;
-    width: 200px;
-    margin-right: 45px;
+    width: 202px;
     font-size: 1.4rem !important;
     padding-left: 10px;
 }
@@ -173,6 +221,7 @@ img.control{
 .scrolling-table {
     max-height: 200px;
     width: 350px;
+    max-width: 350px;
     overflow: auto;
 }
 
@@ -180,11 +229,21 @@ img.control{
 #loadWorkspaceTable {
     width: 100%;
     cursor: pointer;
-    margin-bottom: 0rem;
+}
+
+
+#loadWorkspace {
+    background-image: url('/static/game/image/buttons/navigation/load.svg');
+    margin-left: 20px;
+}
+
+#saveWorkspace {
+    background-image: url('/static/game/image/buttons/navigation/save.svg');
+    margin-left: 20px;
 }
 
 #deleteWorkspace {
-    margin-left: 124px;
+    background-image: url('/static/game/image/buttons/navigation/delete.svg');
 }
 
 .save_load_image {
@@ -201,21 +260,21 @@ img.control{
     position: absolute;
     z-index: 7;
     left: 51%;
-    bottom: 10px;
+    bottom: 20px;
 }
 
 .direct_drive_button {
     background-size: 45px 45px;
     width: 50px;
     height: 50px;
+    position: absolute;
 }
 
-.direct_drive_button[disabled],
-.direct_drive_button[disabled]:hover,
 .direct_drive_button:hover,
 .direct_drive_button:focus
 { 
     background-color: rgba(240,240,240,0.3);
+    background-size: 50px 50px;
 }
 
 #go  {
@@ -255,17 +314,18 @@ img.control{
 }
 
 .menu_button {
-    background-size: 45px 45px;
-    width: 45px;
-    height: 45px;
+    background-size: 42px 42px;
+    width: 46px;
+    height: 46px;
+    padding: 0px;
+    position: absolute;
 }
 
-.menu_button[disabled],
-.menu_button[disabled]:hover,
 .menu_button:hover,
 .menu_button:focus
 { 
-    background-color: rgba(240,240,240,0.3);
+    background-size: 46px 46px;
+    background-color:transparent;
 }
 
 .menu_button[disabled] {
@@ -274,80 +334,80 @@ img.control{
 
 #play {
     top: 0px;
-    background-image : url('/static/game/image/menu_icons/play.svg');
+    background-image : url('/static/game/image/buttons/menu/play.svg');
 }
 
 #pause {
     top: 0px;
-    background-image : url('/static/game/image/menu_icons/pause.svg');
+    background-image : url('/static/game/image/buttons/menu/pause.svg');
 }
 
 
 #resume {
     top: 0px;
-    background-image : url('/static/game/image/menu_icons/play.svg');
+    background-image : url('/static/game/image/buttons/menu/play.svg');
 }
 
 #stop {
     top: 50px;
-    background-image : url('/static/game/image/menu_icons/stop.svg');
+    background-image : url('/static/game/image/buttons/menu/stop.svg');
 }
 
 #reset {
     top: 50px;
-    background-image : url('/static/game/image/menu_icons/reset.svg');
+    background-image : url('/static/game/image/buttons/menu/reset.svg');
 }
 
 #step {
     top: 100px;
-    background-image : url('/static/game/image/menu_icons/step.svg');
+    background-image : url('/static/game/image/buttons/menu/step.svg');
 }
 
 
 #load {
     top: 170px;
-    background-image : url('/static/game/image/menu_icons/load.svg');
+    background-image : url('/static/game/image/buttons/menu/load.svg');
 }
 
 #save {
     top: 220px;
-    background-image : url('/static/game/image/menu_icons/save.svg');
+    background-image : url('/static/game/image/buttons/menu/save.svg');
 }
 
 #clear {
     top: 270px;
-    background-image : url('/static/game/image/menu_icons/clear.svg');
+    background-image : url('/static/game/image/buttons/menu/clear.svg');
 }
 
 #big_code_mode {
     top: 340px;
-    background-image : url('/static/game/image/menu_icons/big_code_mode.svg');
+    background-image : url('/static/game/image/buttons/menu/big_code_mode.svg');
 }
 
 #toggle_console {
     top: 390px;
-    background-image : url('/static/game/image/menu_icons/toggle_console.svg');
+    background-image : url('/static/game/image/buttons/menu/toggle_console.svg');
 }
 
 #help {
     top: 460px;
-    background-image : url('/static/game/image/menu_icons/help.svg');
+    background-image : url('/static/game/image/buttons/menu/help.svg');
 }
 
 #muted {
     top: 510px;
-    background-image : url('/static/game/image/menu_icons/muted.svg');
+    background-image : url('/static/game/image/buttons/menu/muted.svg');
 }
 
 
 #unmuted {
     top: 510px;
-    background-image : url('/static/game/image/menu_icons/unmuted.svg');
+    background-image : url('/static/game/image/buttons/menu/unmuted.svg');
 }
 
 #quit {
     top: 560px;
-    background-image : url('/static/game/image/menu_icons/quit.svg');
+    background-image : url('/static/game/image/buttons/menu/quit.svg');
 }
 
 #buttonHelp img{

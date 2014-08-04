@@ -84,19 +84,25 @@
 
     <div id="pythonCode" {% if not level.pythonEnabled%} style="visibility: hidden" {% endif %}>
       <h3>Python Program</h3>
-        <p>Use the Python editor below to design your program, and click run to try it out!</p>
-        <textarea id="code" cols="85" rows="25"></textarea>
-        <button id="skulpt_run">Run</button>
-        <h4>Console Output:</h4>
-        <textarea disabled="" id="consoleOutput"></textarea>
-        <button id="clearConsole">Clear Console</button>
-        <h4>Van Commands:</h4>
-        <p>move_forwards(), turn_left(), turn_right(), turn_around(), wait()</p>
-        <p>at_dead_end(), at_destination()</p>
-        <p>at_traffic_light(c), where c is 'GREEN' or 'RED'</p>
-        <p>at_red_traffic_light(), at_green_traffic_light()</p>
-        <p>is_road(d), where d is 'FORWARD', 'LEFT' or 'RIGHT'</p>
-        <p>is_road_forward(), is_road_left(), is_road_right()</p>
+        <div id="editor" style="margin-bottom:50px">
+          <p>Use the Python editor below to design your program, and click run to try it out!</p>
+          <textarea id="code" cols="85" rows="25"></textarea>
+        </div>
+
+        <div id="console">
+          <h4 style="height:50px; line-height: 50px;">Console Output <button class="picture_button navigation_button" id="clear_console"> Clear Console</button></h4>
+          <textarea disabled="" id="consoleOutput"></textarea>
+        </div>
+
+        <div id="python_help">
+          <h4>Van Commands:</h4>
+          <p>move_forwards(), turn_left(), turn_right(), turn_around(), wait()</p>
+          <p>at_dead_end(), at_destination()</p>
+          <p>at_traffic_light(c), where c is 'GREEN' or 'RED'</p>
+          <p>at_red_traffic_light(), at_green_traffic_light()</p>
+          <p>is_road(d), where d is 'FORWARD', 'LEFT' or 'RIGHT'</p>
+          <p>is_road_forward(), is_road_left(), is_road_right()</p>
+        </div>
     </div>
   </div>
 
@@ -122,7 +128,8 @@
   </div>
 
   <div class="no-print unselectable">
-    <button class="picture_button unselectable" id="slide_console"></button>
+    <button class="picture_button unselectable" id="show"></button>
+    <button class="picture_button unselectable" id="hide"></button>
   </div>
 
   <div id="direct_drive" class="unselectable">
@@ -154,14 +161,16 @@
 <div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
   <h2 class="title"><img class="save_load_image" src='/static/game/image/menu_button_load.svg'/>Load</h2>
   <p>Here you can load a previously saved program.</p>
-  <div class="scrolling-table-wrapper">
-    <div class="scrolling-table">
-      <table id="loadWorkspaceTable"></table>
+  <div style="width:auto">
+    <div class="scrolling-table-wrapper">
+      <div class="scrolling-table">
+        <table id="loadWorkspaceTable"></table>
+      </div>
     </div>
-  </div>
-  <div style="margin-top: 1.25rem">
-    <button id="loadWorkspace">Load</button>
-    <button id="deleteWorkspace">Delete</button>
+    <div>
+      <button class="picture_button navigation_button" id="deleteWorkspace">Delete</button>
+      <button class="picture_button navigation_button" id="loadWorkspace">Load</button>
+    </div>
   </div>
   <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
 </div>
@@ -169,15 +178,15 @@
 <div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
   <h2 class="title"><img class="save_load_image" src='/static/game/image/menu_button_save.svg'/>Save</h2>
   <p>Here you can save your program.</p>
-  <div class="scrolling-table-wrapper">
-    <div class="scrolling-table">
-      <table id="saveWorkspaceTable"></table>
+  <div>
+    <div class="scrolling-table-wrapper">
+      <div class="scrolling-table">
+        <table id="saveWorkspaceTable"></table>
+      </div>
     </div>
-  </div>
-  <div style="margin-top: 1.25rem">
     <div>
       <input id="workspaceNameInput"/>
-      <button id="saveWorkspace">Save</button>
+      <button class="picture_button navigation_button" id="saveWorkspace">Save</button>
     </div>
   </div>
   <a class="close-reveal-modal" id="close-load-modal">&#215;</a>

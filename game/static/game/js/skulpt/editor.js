@@ -46,13 +46,6 @@ $(document).ready(function () {
         return { run: function() { ocargo.editor.run() }};
     };
 
-    $("#skulpt_run").click(function (e) { $('#play')[0].click(); });
-
-
-    $('#clearConsole').click(function (e) {
-        $('#consoleOutput').text('');
-    });
-
     function builtinRead(x) {
         if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
             throw "File not found: '" + x + "'";
