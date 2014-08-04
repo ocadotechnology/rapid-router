@@ -81,6 +81,7 @@ class Block (models.Model):
 
 class Theme(models.Model):
     name = models.CharField(max_length=100)
+    background = models.CharField(max_length=7, default='#EFF8FF')
 
 
 class Decor(models.Model):
