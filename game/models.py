@@ -83,6 +83,9 @@ class Theme(models.Model):
     name = models.CharField(max_length=100)
     background = models.CharField(max_length=7, default='#EFF8FF')
 
+    def __unicode__(self):
+        return self.name
+
 
 class Decor(models.Model):
     name = models.CharField(max_length=100)

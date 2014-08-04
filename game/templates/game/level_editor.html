@@ -60,6 +60,12 @@
           <input type="radio" checked name="tabs" id="tab1">
           <label for="tab1">Map</label>
           <div id="tab-content-arrows" class="tab-content">
+            <form name="themeForm" action="" method="post" action="" onChange="themeForm.submit()" id="themeForm">
+              {% csrf_token %}
+              {{form.classes.errors}}
+               Theme: {{themeForm.theme}}
+               {{message}}
+            </form>
             <img id="bush" src="/static/game/image/bush.svg" width="70">
             <img id="tree1" src="/static/game/image/tree1.svg" width="70">
             <img id="tree2" src="/static/game/image/tree2.svg" width="70">
@@ -100,7 +106,7 @@
       </ul>
     </div>
   </div>
-  <div id="paper" class="col"></div>
+  <div id="paper" class="col" style="background-color:{{theme.background}}"></div>
 </div>
 
 <div id="myModal" class="ocargo-modal reveal-modal" data-reveal>

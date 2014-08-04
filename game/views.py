@@ -177,12 +177,20 @@ def level_editor(request):
 
     :template:`game/level_editor.html`
     """
-
+    message = ''
+    theme = Theme.objects.get(pk=1)
+    themeForm = LevelThemeForm(request.POST or None)
+    if request.method == 'POST' and themeForm.is_valid():
+        theme = Theme.objects.get(pk=themeForm.data.get('theme'))
     context = RequestContext(request, {
         'blocks': Block.objects.all(),
-        'decor': Decor.objects.all()
+        'decor': Decor.objects.all(),
+        'themeForm': themeForm,
+        'message': message,
+        'theme': theme
     })
     return render(request, 'game/level_editor.html', context_instance=context)
+
 
 def renderError(request, title, message):
     """ Renders an error page with passed title and message.
