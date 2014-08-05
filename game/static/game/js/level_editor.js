@@ -722,12 +722,12 @@ function setupOtherMenuListeners() {
         }
 
         var destination = new ocargo.Destination(0, ocargo.levelEditor.destinationNode);
-        //var pathToDestination = getOptimalPath(ocargo.levelEditor.nodes, [destination]);
-      //  if (pathToDestination.length === 0) {
-      //      startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
-      //          ocargo.messages.noStartEndRoute);
-      //      return;
-      //  }
+        var pathToDestination = getOptimalPath(ocargo.levelEditor.nodes, [destination]);
+        if (pathToDestination.length === 0) {
+            startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
+                ocargo.messages.noStartEndRoute);
+            return;
+        }
 
         sortNodes(ocargo.levelEditor.nodes);
         var input = JSON.stringify(oldPathToNew(ocargo.levelEditor.nodes));
@@ -742,9 +742,6 @@ function setupOtherMenuListeners() {
         $('.js-block-checkbox:checked').each(function(index, checkbox) {
             blockTypes.push(checkbox.id);
         });
-
-        console.debug("theme", ocargo.levelEditor.theme);
-        console.debug("decor", decor)
 
         $.ajax({
             url: "/game/levels/new",

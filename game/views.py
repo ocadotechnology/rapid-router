@@ -442,12 +442,12 @@ def level_new(request):
 def decorToLevelDecor(level, decor):
     """ Helper method creating LevelDecor objects given a string of all decors.
     """
-    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"url": *")(((/[a-zA-Z0-9]+)+.svg)+)("}))')
+    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"name": *")([a-zA-Z0-9]+)("}))')
 
     items = regex.findall(decor)
 
     for item in items:
-        name = item[8][1:]
+        name = item[6]
         levelDecor = LevelDecor(level=level, x=item[2], y=item[4], decorName=name)
         levelDecor.save()
 
