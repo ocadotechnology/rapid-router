@@ -352,11 +352,6 @@ img.control{
     background-image : url('/static/game/image/buttons/menu/stop.svg');
 }
 
-#reset {
-    top: 50px;
-    background-image : url('/static/game/image/buttons/menu/reset.svg');
-}
-
 #step {
     top: 100px;
     background-image : url('/static/game/image/buttons/menu/step.svg');
@@ -373,7 +368,7 @@ img.control{
     background-image : url('/static/game/image/buttons/menu/save.svg');
 }
 
-#clear {
+#clear_program {
     top: 270px;
     background-image : url('/static/game/image/buttons/menu/clear.svg');
 }

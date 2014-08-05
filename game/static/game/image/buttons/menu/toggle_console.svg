@@ -16,7 +16,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="menu_button_toggle_console.svg">
+   sodipodi:docname="toggle_console.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -185,16 +185,17 @@
          inkscape:connector-curvature="0"
          style="fill:url(#linearGradient4514);stroke:none" />
     </g>
-    <text
-       xml:space="preserve"
-       style="font-size:57.24892044px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Sans"
-       x="15.828075"
-       y="1017.2754"
-       id="text4063"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         x="15.828075"
-         y="1017.2754"
-         id="tspan4067">Py</tspan></text>
+    <g
+       style="font-size:57.24892044px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;font-family:Sans"
+       id="text4063">
+      <path
+         d="m 27.093366,980.181 0,15.68195 7.100208,0 c 2.627615,2e-5 4.658906,-0.68018 6.093879,-2.04061 1.434924,-1.36038 2.152399,-3.29849 2.152425,-5.81434 -2.6e-5,-2.49716 -0.717501,-4.42595 -2.152425,-5.78639 -1.434973,-1.36037 -3.466264,-2.04058 -6.093879,-2.04061 l -7.100208,0 m -5.646622,-4.6403 12.74683,0 c 4.677542,5e-5 8.209006,1.06228 10.594405,3.18671 2.403976,2.10587 3.605978,5.1994 3.606011,9.28059 -3.3e-5,4.11852 -1.202035,7.23068 -3.606011,9.33649 -2.385399,2.10586 -5.916863,3.15881 -10.594405,3.15871 l -7.100208,0 0,16.7722 -5.646622,0 0,-41.7347"
+         style=""
+         id="path3009" />
+      <path
+         d="m 68.800098,1020.1826 c -1.453603,3.7271 -2.869916,6.1591 -4.248943,7.2958 -1.379056,1.1368 -3.22399,1.7052 -5.534808,1.7052 l -4.109175,0 0,-4.3048 3.018986,0 c 1.416305,0 2.515811,-0.3355 3.298522,-1.0064 0.782688,-0.6709 1.649248,-2.2549 2.599682,-4.7521 l 0.922468,-2.3481 -12.662969,-30.80481 5.450947,0 9.783751,24.48731 9.783751,-24.48731 5.450947,0 -13.753159,34.21521"
+         style=""
+         id="path3011" />
+    </g>
   </g>
 </svg>
