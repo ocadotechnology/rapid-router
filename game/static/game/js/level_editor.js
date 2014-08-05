@@ -3,9 +3,9 @@
 var ocargo = ocargo || {};
 
 var BACKGROUND_COLOR = '#a8d44a';
-var SELECTED_COLOR = '#70961f';
-var SUGGESTED_COLOR = '#95b650';
-var BORDER = '#bce369';
+var SELECTED_COLOR = '#000000';
+var SUGGESTED_COLOR = '#000000';
+var BORDER = '#D7D7D7';
 
 var DECOR_LIST = JSON.parse(DECOR);
 
@@ -345,7 +345,7 @@ ocargo.LevelEditor.prototype.markAsBackground = function(coordinate) {
 }
 
 ocargo.LevelEditor.prototype.markAsSelected = function(coordinate) {
-    this.mark(coordinate, SELECTED_COLOR, 1, true);
+    this.mark(coordinate, SELECTED_COLOR, 0.3, true);
 }
 
 ocargo.LevelEditor.prototype.redrawTentativeRoad = function(coordinate) {
@@ -862,7 +862,7 @@ function handleMouseOver(this_rect, segment) {
                 {
                     return;
                 }
-                ocargo.levelEditor.mark(coordMap, SUGGESTED_COLOR, 0.7, true);
+                ocargo.levelEditor.mark(coordMap, SUGGESTED_COLOR, 0.1, true);
             }
         } 
     }
