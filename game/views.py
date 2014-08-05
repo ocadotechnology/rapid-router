@@ -183,21 +183,19 @@ def level_editor(request):
 
     if request.method == 'POST' and themeForm.is_valid():
         theme = Theme.objects.get(pk=themeForm.data.get('theme'))
-        
-    tree1 = Decor.objects.get(theme=theme, name='tree1')
-    tree2 = Decor.objects.get(theme=theme, name='tree2')
-    bush = Decor.objects.get(theme=theme, name='bush')
-    pond = Decor.objects.get(theme=theme, name='pond')
+
+    decor = Decor.objects.filter(theme=theme)
+
     context = RequestContext(request, {
         'blocks': Block.objects.all(),
-        'decor': Decor.objects.all(),
+        'decor': Decor.objects.filter(theme=theme),
         'themeForm': themeForm,
         'message': message,
         'theme': theme,
-        'tree1': tree1,
-        'tree2': tree2,
-        'bush': bush,
-        'pond': pond
+        'tree1': decor.get(name='tree1'),
+        'tree2': decor.get(name='tree2'),
+        'bush': decor.get(name='bush'),
+        'pond': decor.get(name='pond')
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
@@ -412,16 +410,17 @@ def level_new(request):
         traffic_lights = request.POST.get('trafficLights')
         max_fuel = request.POST.get('maxFuel')
         name = request.POST.get('name')
-        theme = Theme.objects.get(pk=1)
-        passedLevel = Level(name=name, path=path, default=False, destinations=destinations,
+        theme_name = request.POST.get('theme')
+        theme = Theme.objects.get(name=theme_name)
+        passed_level = Level(name=name, path=path, default=False, destinations=destinations,
                             decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
                             theme=theme)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile'):
-            passedLevel.owner = request.user.userprofile
-        passedLevel.save()
+            passed_level.owner = request.user.userprofile
+        passed_level.save()
 
-        decorToLevelDecor(passedLevel, decor)
+        decorToLevelDecor(passed_level, decor)
 
         if 'blockTypes' in request.POST:
             blockTypes = json.loads(request.POST['blockTypes'])
@@ -429,11 +428,11 @@ def level_new(request):
         else:
             blocks = Block.objects.all()
 
-        passedLevel.blocks = blocks
-        passedLevel.save()
+        passed_level.blocks = blocks
+        passed_level.save()
 
         response_dict = {}
-        response_dict.update({'server_response': passedLevel.id})
+        response_dict.update({'server_response': passed_level.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 

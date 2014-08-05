@@ -5,6 +5,16 @@
 
 {% block scripts %}
 {{block.super}}
+  <script> 
+    var DECOR = [];
+    {% for dec in decor %}
+      DECOR.push(
+        {'name': '{{dec.name}}', 'url': '{{dec.url}}', 'width': {{dec.width}}, 'height': {{dec.height}}});
+    {% endfor %}
+    var DECOR = JSON.stringify(DECOR);
+    var THEME = '{{theme.name}}';
+  </script>
+
   <script src="/static/game/js/mobile-detect.min.js"></script>
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script> 
@@ -18,19 +28,6 @@
   <script src="/static/game/js/pathFinder.js"></script>
   <script src="/static/game/js/trafficLight.js"></script>
   <script src="/static/game/js/destination.js"></script>
-
-  <script> 
-    var DECOR = {};
-    {% for dec in decor %}
-      var name = "{{dec.theme.name}}"
-      if (!(name in DECOR)) {
-        DECOR.name = [];
-      }
-      DECOR.name.push(
-        {"name": "{{dec.name}}", "url": "{{dec.url}}", "width": {{dec.width}}, "height": {{dec.height}}});
-    {% endfor %}
-    var DECOR = JSON.stringify(DECOR);
-  </script>
 
 {% endblock %}
 
@@ -66,7 +63,7 @@
                Theme: {{themeForm.theme}}
                {{message}}
             </form>
-            <img id="bush" src="{{bush.url}}" width="70">
+            <img id="bush" src="{{bush.url}}" width="50">
             <img id="tree1" src="{{tree1.url}}" width="70">
             <img id="tree2" src="{{tree2.url}}" width="70">
             <img id="pond" src="{{pond.url}}" width="100"><br><br>
