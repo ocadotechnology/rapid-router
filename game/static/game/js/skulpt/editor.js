@@ -9,9 +9,6 @@ $(document).ready(function () {
         });
     };
     
-    // set default code
-    document.getElementById("code").value = "import van\nv = van.Van()";
-
     ocargo.editor = CodeMirror.fromTextArea(document.getElementById('code'), {
         parserfile: ["parsepython.js"],
         autofocus: true,
@@ -46,12 +43,10 @@ $(document).ready(function () {
         return { run: function() { ocargo.editor.run() }};
     };
 
-    $("#skulpt_run").click(function (e) { $('#play')[0].click(); });
-
-
-    $('#clearConsole').click(function (e) {
+    ocargo.editor.reset = function() {
+        document.getElementById("code").value = "import van\nv = van.Van()";
         $('#consoleOutput').text('');
-    });
+    }
 
     function builtinRead(x) {
         if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)

@@ -17,7 +17,7 @@ function init() {
     setupLoadSaveListeners();
     setupMenuListeners();
     setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
-    onStopOrResetControls();
+    onStopControls();
 
     // default controller
     if(BLOCKLY_ENABLED) {
@@ -42,6 +42,8 @@ function runProgramAndPrepareAnimation() {
         return false;
     }
 
+    ocargo.blocklyControl.resetIncorrectBlock();
+
     // clear animations
     ocargo.animation.resetAnimation();
 
@@ -54,12 +56,11 @@ function runProgramAndPrepareAnimation() {
 
     program.run(ocargo.model);
     var reason = ocargo.model.reasonForTermination;
-    var enableDirectDrive = (reason ==  "THROUGH_RED_LIGHT" || reason == "OUT_OF_INSTRUCTIONS");
     // Set controls ready for user to reset
     ocargo.animation.appendAnimation({
         type: 'callable',
-        functionCall: function() {onEndControls(enableDirectDrive)},
-        description: 'onEndControls',
+        functionCall: function() {onStopControls()},
+        description: 'onStopControls',
     });
 
     return true;
@@ -118,12 +119,11 @@ function onPlayControls() {
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('stop').disabled=false;
-    document.getElementById('reset').style.visibility='hidden';
     
     document.getElementById('step').disabled = true;
     document.getElementById('load').disabled = true;
     document.getElementById('save').disabled = true;
-    document.getElementById('clear').disabled = true;
+    document.getElementById('clear_program').disabled = true;
     document.getElementById('big_code_mode').disabled = true;
     document.getElementById('toggle_console').disabled = true;
     document.getElementById('help').disabled = true;
@@ -138,58 +138,33 @@ function onStepControls() {
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
-    document.getElementById('reset').style.visibility='hidden';
 
     document.getElementById('step').disabled = true;
     document.getElementById('load').disabled = true;
     document.getElementById('save').disabled = true;
-    document.getElementById('clear').disabled = true;
+    document.getElementById('clear_program').disabled = true;
     document.getElementById('big_code_mode').disabled = true;
     document.getElementById('toggle_console').disabled = true;
     document.getElementById('help').disabled = true;
 }
 
-function onStopOrResetControls() {
+function onStopControls() {
     allowCodeChanges(true);
 
-    document.getElementById('direct_drive').style.visibility='visible';  // TODO make this hidden unless blocks are clear or something...
-
+    // TODO make this hidden unless blocks are clear or something... 
+    document.getElementById('direct_drive').style.visibility='visible';
+    
     document.getElementById('play').disabled=false;
     document.getElementById('play').style.visibility='visible';
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
     document.getElementById('stop').disabled = true;
-    document.getElementById('reset').style.visibility='hidden';
 
     document.getElementById('step').disabled = false;
     document.getElementById('load').disabled = false;
     document.getElementById('save').disabled = false;
-    document.getElementById('clear').disabled = false;
-    document.getElementById('big_code_mode').disabled = false;
-    document.getElementById('toggle_console').disabled = false;
-    document.getElementById('help').disabled = false;
-}
-
-function onEndControls(enableDirectDrive) {
-    allowCodeChanges(true);
-
-    if(enableDirectDrive){
-        document.getElementById('direct_drive').style.visibility='visible';
-    }
-
-    document.getElementById('play').style.visibility='visible';
-    document.getElementById('pause').style.visibility='hidden';
-    document.getElementById('resume').style.visibility='hidden';
-    document.getElementById('stop').style.visibility='hidden';
-    document.getElementById('reset').style.visibility='visible';
-
-    document.getElementById('play').disabled = true;
-    document.getElementById('step').disabled = true;
-
-    document.getElementById('load').disabled = false;
-    document.getElementById('save').disabled = false;
-    document.getElementById('clear').disabled = false;
+    document.getElementById('clear_program').disabled = false;
     document.getElementById('big_code_mode').disabled = false;
     document.getElementById('toggle_console').disabled = false;
     document.getElementById('help').disabled = false;
@@ -202,7 +177,6 @@ function onPauseControls() {
     document.getElementById('pause').style.visibility='hidden';
     document.getElementById('resume').style.visibility='visible';
     document.getElementById('stop').style.visibility='visible';
-    document.getElementById('reset').style.visibility='hidden';
 
     document.getElementById('stop').disabled=false;
     document.getElementById('step').disabled = false;
@@ -215,7 +189,6 @@ function onResumeControls() {
     document.getElementById('pause').style.visibility='visible';
     document.getElementById('resume').style.visibility='hidden';
     document.getElementById('stop').style.visibility='visible';
-    document.getElementById('reset').style.visibility='hidden';
 
     document.getElementById('step').disabled = true;
 }
@@ -239,17 +212,17 @@ function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(0, ANIMATION_LENGTH, function() {onEndControls(true)});
+        moveForward(0, ANIMATION_LENGTH, function() {onStopControls()});
     });
     $('#turnLeft').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(0, ANIMATION_LENGTH, function() {onEndControls(true)});
+        moveLeft(0, ANIMATION_LENGTH, function() {onStopControls()});
     });
     $('#turnRight').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(0, ANIMATION_LENGTH, function() {onEndControls(true)});
+        moveRight(0, ANIMATION_LENGTH, function() {onStopControls()});
     });
     $('#go').click(function() {
         $('#play').trigger('click');
@@ -258,31 +231,41 @@ function setupDirectDriveListeners() {
 
 
 function setupSliderListeners() {
-    var getSliderRightLimit = function() {return $(window).width()/2};
+    var getSliderRightLimit = function(pageWidth) {return pageWidth/2};
     var getSliderLeftLimit = function() {return 46};
     var consoleSliderPosition = $(window).width()/2;
-    var open = true;
 
-    $('#slide_console').click(function() {
+    $('#hide').click(function() {
         var pageWidth = $(window).width();
-        var rightLimit = getSliderRightLimit();
         var leftLimit = getSliderLeftLimit();
 
-        if (open) {
-            $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
-            $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#slide_console').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
-            $('#consoleSlider').animate({left: leftLimit + 'px'}, {queue: false});
-            open = false;
-        } else {
-            $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
-            $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-            $('#slide_console').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
-            $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false})
-            $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-            open = true;
-        }
+        $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
+        $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
+        $('#hide').animate({left: leftLimit + 'px'}, {queue: false});
+        $('#show').animate({left: leftLimit + 'px'}, {queue: false});
+        $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
+        $('#consoleSlider').css('left', leftLimit + 'px');
+
+        $('#hide').css('display','none');
+        $('#show').css('display','block');
+        $('#consoleSlider').css('display','none');
+    });
+
+    $('#show').click(function() {
+        var pageWidth = $(window).width();
+        var rightLimit = getSliderRightLimit(pageWidth);
+        var leftLimit = getSliderLeftLimit();
+
+        $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
+        $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+        $('#hide').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+        $('#show').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+        $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+        $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
+
+        $('#hide').css('display','block');
+        $('#show').css('display','none');
+        $('#consoleSlider').css('display','block');
     });
 
     $('#consoleSlider').on('mousedown', function(e){
@@ -304,7 +287,7 @@ function setupSliderListeners() {
         slider.parent().on('mousemove', function(me){
             consoleSliderPosition = me.pageX;
             var pageWidth = $(window).width();
-            var rightLimit = getSliderRightLimit();
+            var rightLimit = getSliderRightLimit(pageWidth);
             var leftLimit = getSliderLeftLimit();
 
             if (consoleSliderPosition > rightLimit) {
@@ -318,7 +301,8 @@ function setupSliderListeners() {
             $('#paper').css({ width: (pageWidth - consoleSliderPosition) + 'px' });
             $('#paper').css({ left: consoleSliderPosition + 'px' });
             $('#programmingConsole').css({ width: consoleSliderPosition + 'px' });
-            $('#slide_console').css({ left: consoleSliderPosition + 'px' });
+            $('#hide').css({ left: consoleSliderPosition + 'px' });
+            $('#show').css({ left: consoleSliderPosition + 'px' });
             $('#direct_drive').css({ left: consoleSliderPosition + 'px' });
             
             ocargo.blocklyControl.redrawBlockly();
@@ -486,14 +470,12 @@ function setupLoadSaveListeners() {
 function setupMenuListeners() {
 
     $('#play').click(function() {
-        ocargo.blocklyControl.resetIncorrectBlock();
-
         if (runProgramAndPrepareAnimation()) {
             onPlayControls();
             ocargo.animation.playAnimation();
         }
         else {
-            //onStopOrResetControls();
+            //onStopControls();
         }
     });
 
@@ -510,16 +492,11 @@ function setupMenuListeners() {
 
     $('#stop').click(function() {
         ocargo.animation.resetAnimation();
-        onStopOrResetControls();
-    });
-
-    $('#reset').click(function() {
-        ocargo.animation.resetAnimation();
-        onStopOrResetControls();
+        onStopControls();
     });
 
     $('#step').click(function() {
-        if (ocargo.animation.wasJustReset()) {
+        if (ocargo.animation.isFinished()) {
             var successfullyCompiled = runProgramAndPrepareAnimation();
             if(!successfullyCompiled) {
                 return;
@@ -528,7 +505,7 @@ function setupMenuListeners() {
 
         ocargo.animation.stepAnimation(function() {
             if (ocargo.animation.isFinished()) {
-                onEndControls(true);
+                onStopControls();
             }
             else {
                 onPauseControls();
@@ -537,10 +514,9 @@ function setupMenuListeners() {
         onStepControls();
     });
 
-    $('#clear').click(function() {
+    $('#clear_program').click(function() {
         ocargo.blocklyControl.reset();
-        onStopOrResetControls();
-        ocargo.animation.resetAnimation();
+        ocargo.editor.reset();
     });
 
     var blockly = true;
@@ -562,6 +538,10 @@ function setupMenuListeners() {
             ocargo.controller = ocargo.blocklyControl;
             blockly = true;
         }
+    });
+
+    $('#clear_console').click(function (e) {
+        $('#consoleOutput').text('');
     });
 
     $('#big_code_mode').click(function() {

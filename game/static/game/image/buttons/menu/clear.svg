@@ -16,7 +16,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="menu_button_toggle_console.svg">
+   sodipodi:docname="clear.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -117,8 +117,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
-     inkscape:cx="-235.85341"
-     inkscape:cy="41.638838"
+     inkscape:cx="-297.47272"
+     inkscape:cy="27.353124"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -185,16 +185,19 @@
          inkscape:connector-curvature="0"
          style="fill:url(#linearGradient4514);stroke:none" />
     </g>
-    <text
-       xml:space="preserve"
-       style="font-size:57.24892044px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:2;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;font-family:Sans"
-       x="15.828075"
-       y="1017.2754"
-       id="text4063"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         x="15.828075"
-         y="1017.2754"
-         id="tspan4067">Py</tspan></text>
+    <g
+       transform="matrix(1.5440067,0,0,1.5440067,-17.136503,938.94365)"
+       id="g18-6">
+      <path
+         style="fill:#232323"
+         inkscape:connector-curvature="0"
+         id="path20-0"
+         d="M 56.892,24.45 H 47.92 v -1.506 c 0,-1.354 -1.618,-2.375 -3.766,-2.375 h -2.548 c -2.147,0 -3.767,1.021 -3.767,2.375 v 1.506 h -7.765 c -0.796,0 -1.447,0.652 -1.447,1.449 v 2.048 c 0,0.797 0.651,1.448 1.447,1.448 H 56.89 c 0.796,0 1.447,-0.651 1.447,-1.448 V 25.899 C 58.339,25.103 57.688,24.45 56.892,24.45 z m -17.314,0 -0.002,-1.486 c 0.061,-0.181 0.776,-0.656 2.03,-0.656 h 2.548 c 1.254,0 1.97,0.476 2.027,0.637 v 1.506 h -6.603 z" />
+      <path
+         style="fill:#232323"
+         inkscape:connector-curvature="0"
+         id="path22-7"
+         d="M 55.442,30.871 H 31.524 c -1.593,0 -2.834,1.303 -2.757,2.894 l 1.206,24.92 c 0.077,1.592 1.443,2.894 3.036,2.894 h 20.947 c 1.594,0 2.96,-1.302 3.037,-2.894 l 1.205,-24.92 c 0.078,-1.591 -1.163,-2.894 -2.756,-2.894 z m -19.13,27.924 c -0.032,0.002 -0.064,0.003 -0.096,0.003 -0.758,0 -1.394,-0.587 -1.444,-1.353 L 33.323,35.408 c -0.052,-0.798 0.553,-1.488 1.351,-1.541 0.794,-0.052 1.488,0.553 1.541,1.351 l 1.448,22.037 c 0.052,0.799 -0.553,1.488 -1.351,1.54 z m 8.621,-1.442 c 0,0.8 -0.649,1.448 -1.449,1.448 -0.8,0 -1.448,-0.648 -1.448,-1.448 V 35.315 c 0,-0.8 0.648,-1.449 1.448,-1.449 0.8,0 1.449,0.649 1.449,1.449 v 22.038 z m 7.261,0.092 c -0.05,0.766 -0.687,1.353 -1.443,1.353 -0.032,0 -0.064,-0.001 -0.097,-0.003 -0.798,-0.052 -1.402,-0.741 -1.351,-1.54 l 1.449,-22.037 c 0.052,-0.798 0.734,-1.402 1.54,-1.351 0.799,0.053 1.402,0.743 1.351,1.541 l -1.449,22.037 z" />
+    </g>
   </g>
 </svg>
