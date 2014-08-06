@@ -8,7 +8,7 @@ from cache import cached_all_episodes, cached_level, cached_episode
 from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
@@ -281,6 +281,7 @@ def scoreboard(request):
         # user is a school student
         class_ = request.user.userprofile.student.class_field
         classes = Class.objects.filter(id=class_.id)
+        school = class_.teacher.school
     else:
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
@@ -470,6 +471,20 @@ def renderScoreboard(request, form, school):
     if classID:
         cl = get_object_or_404(Class, id=classID)
         students = cl.students.all()
+    # check user has permission to look at this class!
+    if hasattr(request.user.userprofile, 'teacher'):
+        teachers = Teacher.objects.filter(school=request.user.userprofile.teacher.school)
+        classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
+        if classID not in classes_list:
+            return HttpResponseNotFound()
+    elif hasattr(request.user.userprofile, 'student') and request.user.userprofile.student.class_field != None:
+        # user is a school student
+        class_ = request.user.userprofile.student.class_field
+        if classID != class_.id:
+            return HttpResponseNotFound()
+    else:
+        return HttpResponseNotFound()
+
     if levelID:
         level = get_object_or_404(Level, id=levelID)
 
