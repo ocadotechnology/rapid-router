@@ -115,6 +115,8 @@ class Level (models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
+    character = models.CharField(max_length=500,
+                                 default='/static/game/image/characters/van_small.svg')
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
