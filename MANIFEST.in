@@ -1,0 +1,3 @@
+include README.md
+recursive-include game/static *
+recursive-include game/templates *
