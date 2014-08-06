@@ -475,15 +475,15 @@ def renderScoreboard(request, form, school):
     if hasattr(request.user.userprofile, 'teacher'):
         teachers = Teacher.objects.filter(school=request.user.userprofile.teacher.school)
         classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
-        if classID not in classes_list:
-            return HttpResponseNotFound()
-    elif hasattr(request.user.userprofile, 'student') and request.user.userprofile.student.class_field != None:
+        if classID and not int(classID) in classes_list:
+            raise Http404
+    elif hasattr(request.user.userprofile, 'student') and not request.user.userprofile.student.class_field is None:
         # user is a school student
         class_ = request.user.userprofile.student.class_field
-        if classID != class_.id:
-            return HttpResponseNotFound()
+        if classID and int(classID) != class_.id:
+            raise Http404
     else:
-        return HttpResponseNotFound()
+        raise Http404
 
     if levelID:
         level = get_object_or_404(Level, id=levelID)
@@ -560,7 +560,7 @@ def handleAllClassesOneLevel(request, level):
     elif hasattr(request.user.userprofile, 'teacher'):
         # Allow teachers to see school stats
         school = request.user.userprofile.teacher.school
-        teachers = Teachers.objects.filter(school=school)
+        teachers = Teacher.objects.filter(school=school)
         classes = [c for c in Class.objects.all() if (c.teacher in teachers)]
 
     for cl in classes:
@@ -590,7 +590,7 @@ def handleAllClassesAllLevels(request, levels):
     elif hasattr(request.user.userprofile, 'teacher'):
         # allow teachers to see school stats
         school = request.user.userprofile.teacher.school
-        teachers = Teachers.objects.filter(school=school)
+        teachers = Teacher.objects.filter(school=school)
         classes = [c for c in Class.objects.all() if (c.teacher in teachers)]
 
     for cl in classes:
@@ -608,15 +608,20 @@ def renderLevelSharing(request):
     shareLevelPersonForm = ShareLevelPerson(request.POST or None)
 
     if hasattr(userProfile, "teacher"):
-        classes = userProfile.teacher.class_teacher.all()
-    elif hasattr(userProfile, "student"):
+        school = request.user.userprofile.teacher.school
+        teachers = Teacher.objects.filter(school=school)
+        classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
+        classes = Class.objects.filter(id__in=classes_list)
+        people = User.objects.filter(userprofile__teacher__school=school) | User.objects.filter(userprofile__student__class_field__in=classes_list) 
+    elif hasattr(userProfile, "student") and userProfile.student.class_field != None:
         classesObj = userProfile.student.class_field
         classes = Class.objects.filter(pk=classesObj.id)
+        people = User.objects.filter(userprofile__student__class_field=classesObj) | User.objects.filter(userprofile__teacher=classesObj.teacher)
     else:
         return False, None, shareLevelPersonForm, None, None
 
     shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None, 
-                                                    people=User.objects.all())
+                                                    people=people)
     shareLevelClassForm = ShareLevelClass(request.POST or None, classes=classes)
 
     if request.method == 'POST':
@@ -672,7 +677,7 @@ def renderAvatarChoice(request):
     """ Helper method for settings view. Generates and processes the avatar changing forms.
     """
     x = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    path = os.path.join(x, 'static/game/image/avatars')
+    path = os.path.join(x, 'portal/static/portal/img/avatars')
     img_list = os.listdir(path)
     userProfile = request.user.userprofile
     avatar = userProfile.avatar
