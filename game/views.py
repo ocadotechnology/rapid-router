@@ -135,8 +135,9 @@ def level(request, level):
 
     decor = LevelDecor.objects.filter(level=lvl)
     decorData = parseDecor(lvl.theme, decor)
-    house = Decor.objects.get(name='house', theme=lvl.theme).url
-    background = Decor.objects.get(name='tile1', theme=lvl.theme).url
+    house = getDecorElement('house', lvl.theme).url
+    cfc = getDecorElement('cfc', lvl.theme).url
+    background = getDecorElement('tile1', lvl.theme).url
 
     #FIXME: figure out how to check for all this better
     loggedInAsStudent = False
@@ -157,6 +158,7 @@ def level(request, level):
         'decor': decorData,
         'background': background,
         'house': house,
+        'cfc': cfc,
         'hint': hint,
         'attempt': attempt
     })
@@ -177,12 +179,28 @@ def level_editor(request):
 
     :template:`game/level_editor.html`
     """
+    message = ''
+    theme = Theme.objects.get(pk=1)
+    themeForm = LevelThemeForm(request.POST or None)
+
+    if request.method == 'POST' and themeForm.is_valid():
+        theme = Theme.objects.get(pk=themeForm.data.get('theme'))
+
+    decor = Decor.objects.filter(theme=theme)
 
     context = RequestContext(request, {
         'blocks': Block.objects.all(),
-        'decor': Decor.objects.all()
+        'decor': Decor.objects.filter(theme=theme),
+        'themeForm': themeForm,
+        'message': message,
+        'theme': theme,
+        'tree1': decor.get(name='tree1'),
+        'tree2': decor.get(name='tree2'),
+        'bush': decor.get(name='bush'),
+        'pond': decor.get(name='pond')
     })
     return render(request, 'game/level_editor.html', context_instance=context)
+
 
 def renderError(request, title, message):
     """ Renders an error page with passed title and message.
@@ -394,16 +412,17 @@ def level_new(request):
         traffic_lights = request.POST.get('trafficLights')
         max_fuel = request.POST.get('maxFuel')
         name = request.POST.get('name')
-        theme = Theme.objects.get(pk=1)
-        passedLevel = Level(name=name, path=path, default=False, destinations=destinations,
+        theme_name = request.POST.get('theme')
+        theme = Theme.objects.get(name=theme_name)
+        passed_level = Level(name=name, path=path, default=False, destinations=destinations,
                             decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
                             theme=theme)
 
         if not request.user.is_anonymous() and hasattr(request.user, 'userprofile'):
-            passedLevel.owner = request.user.userprofile
-        passedLevel.save()
+            passed_level.owner = request.user.userprofile
+        passed_level.save()
 
-        decorToLevelDecor(passedLevel, decor)
+        decorToLevelDecor(passed_level, decor)
 
         if 'blockTypes' in request.POST:
             blockTypes = json.loads(request.POST['blockTypes'])
@@ -411,26 +430,35 @@ def level_new(request):
         else:
             blocks = Block.objects.all()
 
-        passedLevel.blocks = blocks
-        passedLevel.save()
+        passed_level.blocks = blocks
+        passed_level.save()
 
         response_dict = {}
-        response_dict.update({'server_response': passedLevel.id})
+        response_dict.update({'server_response': passed_level.id})
         return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
 
 
 #
 # Helper methods for rendering views in the game.
 #
+def getDecorElement(name, theme):
+    """ Helper method to get a decor element corresponding to the theme or a default one.
+    """
+    try:
+        return Decor.objects.get(name=name, theme=theme)
+    except ObjectDoesNotExist:
+        return Decor.objects.filter(name=name)[0]
+
+
 def decorToLevelDecor(level, decor):
     """ Helper method creating LevelDecor objects given a string of all decors.
     """
-    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"url": *")(((/[a-zA-Z0-9]+)+.svg)+)("}))')
+    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"name": *")([a-zA-Z0-9]+)("}))')
 
     items = regex.findall(decor)
 
     for item in items:
-        name = item[8][1:]
+        name = item[6]
         levelDecor = LevelDecor(level=level, x=item[2], y=item[4], decorName=name)
         levelDecor.save()
 

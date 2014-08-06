@@ -5,6 +5,19 @@
 
 {% block scripts %}
 {{block.super}}
+  <script> 
+    var DECOR = [];
+    {% for dec in decor %}
+      DECOR.push(
+        {'name': '{{dec.name}}', 'url': '{{dec.url}}', 'width': {{dec.width}}, 'height': {{dec.height}}});
+    {% endfor %}
+    var DECOR = JSON.stringify(DECOR);
+    var THEME = '{{theme.name}}';
+    var BACKGROUND_COLOR = '{{theme.background}}';
+    var SELECTED_COLOR = '{{theme.selected}}';
+    var BORDER = '{{theme.border}}';
+  </script>
+
   <script src="/static/game/js/mobile-detect.min.js"></script>
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script> 
@@ -18,19 +31,6 @@
   <script src="/static/game/js/pathFinder.js"></script>
   <script src="/static/game/js/trafficLight.js"></script>
   <script src="/static/game/js/destination.js"></script>
-
-  <script> 
-    var DECOR = {};
-    {% for dec in decor %}
-      var name = "{{dec.theme.name}}"
-      if (!(name in DECOR)) {
-        DECOR.name = [];
-      }
-      DECOR.name.push(
-        {"name": "{{dec.name}}", "url": "{{dec.url}}", "width": {{dec.width}}, "height": {{dec.height}}});
-    {% endfor %}
-    var DECOR = JSON.stringify(DECOR);
-  </script>
 
 {% endblock %}
 
@@ -60,10 +60,16 @@
           <input type="radio" checked name="tabs" id="tab1">
           <label for="tab1">Map</label>
           <div id="tab-content-arrows" class="tab-content">
-            <img id="bush" src="/static/game/image/bush.svg" width="70">
-            <img id="tree1" src="/static/game/image/tree1.svg" width="70">
-            <img id="tree2" src="/static/game/image/tree2.svg" width="70">
-            <img id="pond" src="/static/game/image/pond.svg" width="100"><br><br>
+            <form name="themeForm" action="" method="post" action="" onChange="themeForm.submit()" id="themeForm">
+              {% csrf_token %}
+              {{form.classes.errors}}
+               Theme: {{themeForm.theme}}
+               {{message}}
+            </form>
+            <img id="bush" src="{{bush.url}}" width="50">
+            <img id="tree1" src="{{tree1.url}}" width="70">
+            <img id="tree2" src="{{tree2.url}}" width="70">
+            <img id="pond" src="{{pond.url}}" width="100"><br><br>
             <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
             <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
             <p>NAME<input id="name" value="name"></p>
@@ -100,7 +106,7 @@
       </ul>
     </div>
   </div>
-  <div id="paper" class="col"></div>
+  <div id="paper" class="col" style="background-color:{{theme.background}}"></div>
 </div>
 
 <div id="myModal" class="ocargo-modal reveal-modal" data-reveal>

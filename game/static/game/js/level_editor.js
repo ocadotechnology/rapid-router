@@ -2,16 +2,13 @@
 
 var ocargo = ocargo || {};
 
-var BACKGROUND_COLOR = '#a8d44a';
-var SELECTED_COLOR = '#70961f';
-var SUGGESTED_COLOR = '#95b650';
-var BORDER = '#bce369';
+var DECOR_LIST = JSON.parse(DECOR);
 
-var BUSH_URL = '/static/game/image/bush.svg';
-var TREE1_URL = '/static/game/image/tree1.svg';
-var TREE2_URL = '/static/game/image/tree2.svg';
-var POND_URL = '/static/game/image/pond.svg';
-var HOUSE_URL = '/static/game/image/house1_noGreen.svg';
+var BUSH_URL = findDecorUrl('bush', DECOR_LIST);
+var TREE1_URL = findDecorUrl('tree1', DECOR_LIST);
+var TREE2_URL = findDecorUrl('tree2', DECOR_LIST);
+var POND_URL = findDecorUrl('pond', DECOR_LIST);
+var HOUSE_URL = findDecorUrl('house', DECOR_LIST);
 var CFC_URL = '/static/game/image/OcadoCFC_no_road.svg';
 var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
 var LIGHT_GREEN_URL = '/static/game/image/trafficLight_green.svg';
@@ -26,6 +23,7 @@ ocargo.LevelEditor = function() {
     this.decor = [];
     this.trafficCounter = 0;
     this.grid = this.initialiseVisited();
+    this.theme = THEME;
 
     ocargo.saving = new ocargo.Saving();
 
@@ -260,6 +258,15 @@ function sortNodes(nodes) {
     }
 }
 
+function findDecorUrl(decor, list) {
+    for (var i = 0; i < list.length; i++) {
+        if (list[i].name === decor) {
+            return list[i].url;
+        }
+    }
+    return -1;
+}
+
 /*************/
 /* Rendering */
 /*************/
@@ -289,12 +296,12 @@ ocargo.LevelEditor.prototype.bringTrafficLightsToFront = function() {
     }
 }
 
-function initialiseDecorGraphic(url, width, height) {
+function initialiseDecorGraphic(name, url, width, height) {
     var image = paper.image(url, 0, 0, width, height);
     var coord = new ocargo.Coordinate(0, PAPER_HEIGHT - DECOR_SIZE);
 
-    setupDecorDragListeners(image,0,0);
-    ocargo.levelEditor.decor.push({'coordinate': new ocargo.Coordinate(0,0), 'url': url, 'image': image});    
+    image.draggableDecor(name, 0, 0);
+    ocargo.levelEditor.decor.push({'coordinate': new ocargo.Coordinate(0,0), 'name': name, 'image': image});    
 }
 
 function initialiseTrafficLight(red) {
@@ -397,19 +404,19 @@ ocargo.LevelEditor.prototype.markTentativeRoad = function(coord) {
 
 function setupToolboxListeners() {
     $('#bush').click(function() {
-        initialiseDecorGraphic(BUSH_URL, 70, 70);
+        initialiseDecorGraphic('bush', BUSH_URL, 70, 70);
     });
 
     $('#tree1').click(function() {
-        initialiseDecorGraphic(TREE1_URL, 100, 100);
+        initialiseDecorGraphic('tree1', TREE1_URL, 100, 100);
     });
 
     $('#tree2').click(function() {
-        initialiseDecorGraphic(TREE2_URL, 100, 100);
+        initialiseDecorGraphic('tree2', TREE2_URL, 100, 100);
     });
 
     $('#pond').click(function() {
-        initialiseDecorGraphic(POND_URL, 150, 100);
+        initialiseDecorGraphic('pond', POND_URL, 150, 100);
     });
 
     $('#trafficLightRed').click(function() {
@@ -484,7 +491,6 @@ function setupToolboxListeners() {
                 paper.clear();
                 createRoad(ocargo.levelEditor.nodes);
                 ocargo.levelEditor.createGrid(paper);
-                ocargo.levelEditor.drawDecor();
             },
             error: function (xhr, errmsg, err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -711,12 +717,12 @@ function setupOtherMenuListeners() {
         }
 
         var destination = new ocargo.Destination(0, ocargo.levelEditor.destinationNode);
-        //var pathToDestination = getOptimalPath(ocargo.levelEditor.nodes, [destination]);
-      //  if (pathToDestination.length === 0) {
-      //      startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
-      //          ocargo.messages.noStartEndRoute);
-      //      return;
-      //  }
+        var pathToDestination = getOptimalPath(ocargo.levelEditor.nodes, [destination]);
+        if (pathToDestination.length === 0) {
+            startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
+                ocargo.messages.noStartEndRoute);
+            return;
+        }
 
         sortNodes(ocargo.levelEditor.nodes);
         var input = JSON.stringify(oldPathToNew(ocargo.levelEditor.nodes));
@@ -732,7 +738,6 @@ function setupOtherMenuListeners() {
             blockTypes.push(checkbox.id);
         });
 
-
         $.ajax({
             url: "/game/levels/new",
             type: "POST",
@@ -742,6 +747,7 @@ function setupOtherMenuListeners() {
                 destinations: destinations,
                 decor: decor,
                 trafficLights: trafficLights,
+                theme: ocargo.levelEditor.theme,
                 name: name,
                 maxFuel: maxFuel,
                 blockTypes: JSON.stringify(blockTypes),
@@ -842,7 +848,7 @@ function handleMouseOver(this_rect, segment) {
                         {
                             return;
                         }
-                        ocargo.levelEditor.mark(coordMap, 'red', 0.3, true);
+                        ocargo.levelEditor.mark(coordMap, 'red', 0.5, true);
                     }
                 }
             }
@@ -851,7 +857,7 @@ function handleMouseOver(this_rect, segment) {
                 {
                     return;
                 }
-                ocargo.levelEditor.mark(coordMap, SUGGESTED_COLOR, 0.7, true);
+                ocargo.levelEditor.mark(coordMap, SELECTED_COLOR, 0.3, true);
             }
         } 
     }
@@ -907,8 +913,8 @@ function handleMouseUp(this_rect, segment) {
     }
 }
 
-function setupDecorDragListeners(image, initX, initY) {
-
+Raphael.el.draggableDecor = function(name, initX, initY) {
+    var image = this;
     var paperX = initX;
     var paperY = initY;
     var originX = 0;
@@ -938,7 +944,7 @@ function setupDecorDragListeners(image, initX, initY) {
     function onDragEnd() {
         originX = paperX;
         originY = paperY;
-        ocargo.levelEditor.decor.push({'coordinate': mapCoordinate, 'url': image.attr('src'), 'image': image});
+        ocargo.levelEditor.decor.push({'coordinate': mapCoordinate, 'name': name, 'image': image});
     };
 
     image.drag(onDragMove, onDragStart, onDragEnd);

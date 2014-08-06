@@ -81,7 +81,12 @@ class Block (models.Model):
 
 class Theme(models.Model):
     name = models.CharField(max_length=100)
-    background = models.CharField(max_length=7, default='#EFF8FF')
+    background = models.CharField(max_length=7, default='#eff8ff')
+    border = models.CharField(max_length=7, default='#bce369')
+    selected = models.CharField(max_length=7, default='#70961f')
+
+    def __unicode__(self):
+        return self.name
 
 
 class Decor(models.Model):
