@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import find_packages, setup
 setup(name='game',
       version='1.0',
       packages=find_packages(),
@@ -18,6 +18,7 @@ setup(name='game',
         'pyyaml==3.11',
         'six==1.6.1',
         'docutils==0.11',
+        'Pillow==2.5.1',
       ],
       dependency_links = [
         'https://www.djangoproject.com/download/1.7c1/tarball/',
