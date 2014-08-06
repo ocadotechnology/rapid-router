@@ -53,6 +53,25 @@
 	margin: 2rem 1rem 0;
 }
 
+.modal_image {
+    margin-right: 20px;
+}
+
+.scrolling-table-wrapper {
+    position: relative;
+}
+
+.scrolling-table {
+    max-height: 200px;
+    width: 350px;
+    max-width: 350px;
+    overflow: auto;
+}
+
+.scrolling-table td {
+    cursor: pointer;
+}
+
 /*************/
 /** Buttons **/
 /*************/
@@ -99,6 +118,10 @@
   padding: 0px;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.navigation_button:disabled {
+  border-color: rgb(246,146,30);
 }
 
 .navigation_button img {

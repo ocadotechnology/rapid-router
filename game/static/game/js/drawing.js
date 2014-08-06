@@ -22,26 +22,9 @@ var ROTATION_OFFSET_Y = VAN_WIDTH - 20;
 var DECOR_SIZE = 100;
 
 var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
-var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-var ROAD_COLOUR = '#222';
-var ROAD_ATTR = {
-    fill: ROAD_COLOUR,      
-    'stroke': '#aaa'
-};
-
-var ROAD_ATTR_JUNCTION = {
-    fill: ROAD_COLOUR,
-    'stroke': 'none'
-};
-
-var ROAD_MARKER_ATTR = {
-    'stroke': 'white'
-};
 
 var DESTINATION_NOT_VISITED_COLOUR = 'yellow';
 var DESTINATION_VISITED_COLOUR = 'green';
-
-var DASH = '10';
 
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
@@ -214,7 +197,7 @@ function renderDecor(decor) {
         var obj = JSON.parse(decor[i]);
         var coord = obj['coordinate'];
         var width = obj['width'];
-        var height = obj['height']
+        var height = obj['height'];
         paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
             width, height);
     }
@@ -224,7 +207,7 @@ function renderDecor(decor) {
 /** Traffic light rendering **/
 /*****************************/
 
-function renderTrafficLights(trafficLights, draggable) {
+function renderTrafficLights(trafficLights) {
     for (var i = 0; i < trafficLights.length; i++) {
         var trafficLight = trafficLights[i];
         var sourceCoordinate = trafficLight.sourceNode.coordinate;
@@ -480,9 +463,6 @@ function drawTJunction(node) {
     var node3 = node.connectedNodes[2];
 
     var flipped = translate(node.coordinate);
-    var flipped1 = translate(node1.coordinate);
-    var flipped2 = translate(node2.coordinate);
-    var flipped3 = translate(node3.coordinate);
 
     var letters12 = getRoadLetters(node1.coordinate, node.coordinate, node3.coordinate);
     var letters13 = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
@@ -518,11 +498,9 @@ function drawTJunction(node) {
 
 function drawCrossRoads(node) {
     var flipped = translate(node.coordinate);
-    
-    var road = paper.image('/static/game/image/roadTile_crossRoads.svg',
-        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
-    return road;
+    return paper.image('/static/game/image/roadTile_crossRoads.svg',
+            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 }
 
 

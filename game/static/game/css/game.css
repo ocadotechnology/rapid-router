@@ -52,7 +52,7 @@ img.control{
     position:absolute;
     display: none;
     height: 100%;
-    width:90%;
+    width:93%;
     overflow: auto;
     padding: 15px;
     left:46px;
@@ -63,14 +63,16 @@ img.control{
     max-height: 300px;
     max-width: 100%;
     min-height: 250px;
-    min-width: 100%;
     overflow: auto;
     padding: 5px;
     margin-bottom: 20px;
 }
 
+#editor {
+    min-width: 0%;
+}
+
 #clear_console {
-    background-image : url('/static/game/image/buttons/navigation/clear.svg');
     float: right;
     margin-bottom: 0px
 }
@@ -111,23 +113,11 @@ img.control{
     padding-left: 10px;
 }
 
-.scrolling-table-wrapper {
-    position: relative;
-}
-
-.scrolling-table {
-    max-height: 200px;
-    width: 350px;
-    max-width: 350px;
-    overflow: auto;
-}
-
 #saveWorkspaceTable,
 #loadWorkspaceTable {
     width: 100%;
     cursor: pointer;
 }
-
 
 #loadWorkspace {
     margin-left: 20px;
@@ -135,10 +125,6 @@ img.control{
 
 #saveWorkspace {
     margin-left: 20px;
-}
-
-.save_load_image {
-    margin-right: 20px;
 }
 
 /******************/

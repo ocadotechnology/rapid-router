@@ -24,11 +24,7 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
     var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
     for (var i = 0; i < procBlocks.length; i++) {
         var block = procBlocks[i];
-        var nameBlock = block.inputList[0].connection.targetBlock();
-        if(nameBlock == null) {
-            throw ocargo.messages.procMissingNameError;
-        }
-        var name = nameBlock.inputList[0].fieldRow[1].text_;
+        var name = block.inputList[0].fieldRow[1].text_;
         if (name === "") {
             throw ocargo.messages.procMissingNameError;
         }
@@ -103,11 +99,7 @@ ocargo.BlocklyCompiler.prototype.createRepeatWhile = function(block) {
 }
 
 ocargo.BlocklyCompiler.prototype.createProcedureCall = function(block) {
-    var nameBlock = block.inputList[0].connection.targetBlock();
-    if(nameBlock == null) {
-        throw ocargo.messages.procMissingNameError;
-    }
-    var name = nameBlock.inputList[0].fieldRow[1].text_;
+    var name = block.inputList[0].fieldRow[1].text_;
     if (name === "") {
         throw ocargo.messages.procCallNameError;
     }
