@@ -4,73 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.db import models
 
-
-class UserProfile (models.Model):
-    user = models.OneToOneField(User)
-    avatar = models.ImageField(upload_to='static/game/image/avatars/', null=True, blank=True,
-                               default='static/game/image/avatars/default-avatar.jpeg')
-
-    def __unicode__(self):
-        return self.user.username
-
-
-class School (models.Model):
-    name = models.CharField(max_length=200)
-
-    def __unicode__(self):
-        return self.name
-
-
-class Teacher (models.Model):
-    name = models.CharField(max_length=200)
-    user = models.OneToOneField(UserProfile)
-
-    def __unicode__(self):
-        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
-
-
-class Class (models.Model):
-    name = models.CharField(max_length=200)
-    school = models.ForeignKey(School, related_name='class_school')
-    teacher = models.ForeignKey(Teacher, related_name='class_teacher')
-
-    def __unicode__(self):
-        return self.name
-
-    def get_logged_in_students(self):
-        """This gets all the students who are logged in."""
-        sessions = Session.objects.filter(expire_date__gte=datetime.now())
-        uid_list = []
-
-        # Build a list of user ids from that query
-        for session in sessions:
-            data = session.get_decoded()
-            uid_list.append(data.get('_auth_user_id', None))
-
-        # Query all logged in users based on id list
-        return Student.objects.filter(class_field=self).filter(user__id__in=uid_list)
-
-    class Meta:
-        verbose_name_plural = "classes"
-
-
-class Student (models.Model):
-    name = models.CharField(max_length=200)
-    class_field = models.ForeignKey(Class, related_name='students')
-    user = models.OneToOneField(UserProfile)
-
-    def __unicode__(self):
-        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
-
-
-class Guardian (models.Model):
-    name = models.CharField(max_length=200)
-    children = models.ManyToManyField(Student)
-    user = models.OneToOneField(UserProfile)
-
-    def __unicode__(self):
-        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
-
+from portal.models import UserProfile, Student
 
 class Block (models.Model):
     type = models.CharField(max_length=200)

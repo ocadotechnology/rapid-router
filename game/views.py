@@ -18,7 +18,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from forms import *
 from game import random_road
-from models import Class, Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme
+from models import Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme
+from portal.models import Class
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
