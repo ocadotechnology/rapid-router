@@ -14,4 +14,6 @@ SETTINGS = {
         'nuit',
         'rest_framework',
     ],
+    'NUIT_GLOBAL_TITLE': "Rapid Router",
+    'NUIT_GLOBAL_LINK': "/game/",
 }
