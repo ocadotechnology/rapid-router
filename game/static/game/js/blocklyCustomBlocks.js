@@ -189,8 +189,9 @@ function initCustomBlocksDescription() {
         // Block for calling a defined procedure
         init: function() {
             this.setColour(260);
-            this.appendValueInput('Name:')
+            this.appendDummyInput()
                 .appendField('Call')
+                .appendField(new Blockly.FieldTextInput(''));
             this.setPreviousStatement(true);
             this.setNextStatement(true);
             this.setTooltip('Call');
@@ -201,8 +202,9 @@ function initCustomBlocksDescription() {
         // Block for declaring a procedure
         init: function() {
             this.setColour(260);
-            this.appendValueInput('ID')
-                .appendField('Define');
+            this.appendDummyInput()
+                .appendField('Define')
+                .appendField(new Blockly.FieldTextInput(''));
             this.appendStatementInput('DO')
                 .appendField('Do');
 
@@ -338,12 +340,12 @@ function initCustomBlocksPython() {
     };
 
     Blockly.Python['call_proc'] = function(block) {
-        return block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '()\n';
+        return block.inputList[0].fieldRow[1].text_ + '()\n';
     };
 
     Blockly.Python['declare_proc'] = function(block) {
         var branch = Blockly.Python.statementToCode(block, 'DO');
-        return 'def ' + block.inputList[0].connection.targetBlock().inputList[0].fieldRow[1].text_ + '():\n'
+        return 'def ' + block.inputList[0].fieldRow[1].text_ + '():\n'
             + branch;//TODO: get code out of sub-blocks (there's a Blockly function for it)
     };
 

@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, url
 from views import WorkspaceViewList, WorkspaceViewDetail, LevelViewList, LevelViewDetail
+from django.views.generic.base import TemplateView
 
 urlpatterns = patterns('',
     url(r'^$', 'game.views.levels'),
@@ -17,4 +18,5 @@ urlpatterns = patterns('',
     url(r'^scoreboard$', 'game.views.scoreboard'),
     url(r'^workspace$', WorkspaceViewList.as_view()),
     url(r'^workspace/(?P<pk>[0-9]+)$', WorkspaceViewDetail.as_view()),
+    url(r'^credits$', TemplateView.as_view(template_name='game/credits.html')),
 )
