@@ -467,7 +467,6 @@ function setupBlocksTab() {
     $('#blockly').css('display','none');
 }
 
-
 function setupToolboxListeners() {
     $('#bush').click(function() {
         initialiseDecorGraphic('bush', BUSH_URL, 70, 70);
@@ -597,21 +596,36 @@ function setupLoadSaveListeners() {
         // whilst waiting for the table data to load
         $('#load').attr('disabled', 'disabled');
 
-        ocargo.saving.retrieveListOfLevels(function(err, levels) {
+        ocargo.saving.retrieveListOfLevels(function(err, ownLevels, sharedLevels) {
             if (err != null) {
                 console.debug(err);
                 return;
             }
 
-            populateTable("loadLevelTable", levels);
+            populateTable("loadOwnLevelTable", ownLevels);
 
             // Add click listeners to all rows
-            $('#loadLevelTable tr').on('click', function(event) {
-                $('#loadLevelTable tr').css('background-color', '#FFFFFF');
-                $(event.target.parentElement).css('background-color', '#C0C0C0');
+            $('#loadOwnLevelTable td').on('click', function(event) {
+                var rowSelected = $(event.target.parentElement);
+                $('#loadOwnLevelTable tr').css('background-color', '#FFFFFF');
+                $('#loadSharedLevelTable tr').css('background-color', '#FFFFFF');
+                rowSelected.css('background-color', '#C0C0C0');
                 $('#loadLevel').removeAttr('disabled');
                 $('#deleteLevel').removeAttr('disabled');
-                selectedLevel = $(event.target.parentElement).attr('value');
+                selectedLevel = rowSelected.attr('value');
+            });
+
+            populateTable("loadSharedLevelTable", sharedLevels);
+
+            // Add click listeners to all rows
+            $('#loadSharedLevelTable td').on('click', function(event) {
+                var rowSelected = $(event.target.parentElement);
+                $('#loadOwnLevelTable tr').css('background-color', '#FFFFFF');
+                $('#loadSharedLevelTable tr').css('background-color', '#FFFFFF');
+                rowSelected.css('background-color', '#C0C0C0');
+                $('#loadLevel').removeAttr('disabled');
+                $('#deleteLevel').removeAttr('disabled');
+                selectedLevel = rowSelected.attr('value');
             });
 
             // Finally show the modal dialog and reenable the button
@@ -829,6 +843,10 @@ function setupOtherMenuListeners() {
         });
 
         return false;
+    });
+
+    $('#quit').click(function() {
+        window.location.href = "/game/"
     });
 }
 

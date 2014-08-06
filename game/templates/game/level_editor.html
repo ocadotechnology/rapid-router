@@ -126,11 +126,36 @@
         <div id="tab-content-map" class="tab-content">
           <p>NAME<input id="name" value="name"></p>
           <p>MAX FUEL<input type="number" id="maxFuel" value="50" size="4"></p>
-          <button id="clear">Clear all</button> <br>            
-          <button id="add">Add Mode</button>
-          <button id="delete">Delete Mode</button> <br>
-          <button id="start">Mark Start</button>
-          <button id="end">Mark End</button><br>
+
+          <button class="navigation_button" id="clear">
+            <image src="/static/game/image/icons/clear.svg"/>
+            <span>Clear</span>
+          </button>
+
+          <br>
+
+          <button class="navigation_button" id="add">
+            <image src="/static/game/image/icons/add_road.svg"/>
+            <span>Add</span>
+          </button>
+
+          <button class="navigation_button" id="delete">
+            <image src="/static/game/image/icons/delete_road.svg"/>
+            <span>Delete</span>
+          </button>
+
+          <br>
+
+          <button class="navigation_button" id="start">
+            <image src="/static/game/image/icons/origin.svg"/>
+            <span>Mark start</span>
+          </button>
+
+          <button class="navigation_button" id="end">
+            <image src="/static/game/image/icons/destination.svg"/>
+            <span>Mark end</span>
+          </button>
+
         </div>
 
         <div id="tab-content-decor" class="tab-content">
@@ -204,22 +229,46 @@
 </div>
 
 <div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title">Load</h2>
-  <p>Here you can load a previously saved level.</p>
-  <div class="scrolling-table-wrapper">
-    <div class="scrolling-table">
-      <table id="loadLevelTable"></table>
+  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/load.svg'/>Load</h2>
+  <div>
+    <div id="own_levels" class="unselectable">
+      <p>Your own levels:</p>
+      <div class="scrolling-table-wrapper">
+        <div class="scrolling-table">
+          <table id="loadOwnLevelTable"></table>
+        </div>
+      </div>
+    </div>
+    
+    <div id="shared_levels" class="unselectable">
+      <p>Levels shared with you: (DOES NOT WORK!)</p>
+      <div class="scrolling-table-wrapper">
+        <div class="scrolling-table">
+          <table id="loadSharedLevelTable"></table>
+        </div>
+      </div>
     </div>
   </div>
+
+  <br style="clear:both">
+  
   <div style="margin-top: 1.25rem">
-    <button id="loadLevel">Load</button>
-    <button id="deleteLevel">Delete</button>
+    <button class="navigation_button" id="deleteLevel">
+        <image src="/static/game/image/icons/clear.svg"/>
+        <span>Delete</span>
+      </button>
+
+      <button class="navigation_button" id="loadLevel">
+        <image src="/static/game/image/icons/load.svg"/>
+        <span>Load</span>
+      </button>
   </div>
+
   <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
 </div>
 
 <div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title">Save</h2>
+  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'/>Save</h2>
   <p>Here you can save your new level.</p>
   <div class="scrolling-table-wrapper">
     <div class="scrolling-table">
@@ -229,7 +278,10 @@
   <div style="margin-top: 1.25rem">
     <div>
       <input id="levelNameInput"/>
-      <button id="saveLevel">Save</button>
+      <button class="navigation_button" id="saveLevel">
+        <image src="/static/game/image/icons/save.svg"/>
+        <span>Save</span>
+      </button>
     </div>
   </div>
   <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
