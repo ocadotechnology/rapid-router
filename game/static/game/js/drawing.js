@@ -202,7 +202,7 @@ function createCFC(position) {
     var initialX = calculateInitialX(position.currentNode);
     var initialY = calculateInitialY(position.currentNode);
 
-    var cfc = paper.image('/static/game/image/OcadoCFC_no_road.svg', initialX - 95, initialY - 25, 100, 107);
+    var cfc = paper.image(CFC_URL, initialX - 95, initialY - 25, 100, 107);
 
     var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
     rotateElementAroundCentreOfGridSpace(cfc, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);

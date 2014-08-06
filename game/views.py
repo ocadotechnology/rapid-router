@@ -135,8 +135,9 @@ def level(request, level):
 
     decor = LevelDecor.objects.filter(level=lvl)
     decorData = parseDecor(lvl.theme, decor)
-    house = Decor.objects.get(name='house', theme=lvl.theme).url
-    background = Decor.objects.get(name='tile1', theme=lvl.theme).url
+    house = getDecorElement('house', lvl.theme).url
+    cfc = getDecorElement('cfc', lvl.theme).url
+    background = getDecorElement('tile1', lvl.theme).url
 
     #FIXME: figure out how to check for all this better
     loggedInAsStudent = False
@@ -157,6 +158,7 @@ def level(request, level):
         'decor': decorData,
         'background': background,
         'house': house,
+        'cfc': cfc,
         'hint': hint,
         'attempt': attempt
     })
@@ -439,6 +441,15 @@ def level_new(request):
 #
 # Helper methods for rendering views in the game.
 #
+def getDecorElement(name, theme):
+    """ Helper method to get a decor element corresponding to the theme or a default one.
+    """
+    try:
+        return Decor.objects.get(name=name, theme=theme)
+    except ObjectDoesNotExist:
+        return Decor.objects.filter(name=name)[0]
+
+
 def decorToLevelDecor(level, decor):
     """ Helper method creating LevelDecor objects given a string of all decors.
     """
