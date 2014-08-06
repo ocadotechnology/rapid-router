@@ -18,11 +18,11 @@ ocargo.BlocklyControl = function () {
     this.numberOfStartBlocks = 0;
 }
 
-ocargo.BlocklyControl.prototype.BLOCK_HEIGHT = 20;
-ocargo.BlocklyControl.prototype.EXTRA_BLOCK_WIDTH = 1;
-ocargo.BlocklyControl.prototype.IMAGE_WIDTH = 20;
-ocargo.BlocklyControl.prototype.BLOCK_VAN_HEIGHT = VAN_HEIGHT;
-ocargo.BlocklyControl.prototype.BLOCK_VAN_WIDTH = VAN_WIDTH;
+ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
+ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH = 1;
+ocargo.BlocklyControl.IMAGE_WIDTH = 20;
+ocargo.BlocklyControl.BLOCK_VAN_HEIGHT = VAN_HEIGHT;
+ocargo.BlocklyControl.BLOCK_VAN_WIDTH = VAN_WIDTH;
 
 ocargo.BlocklyControl.prototype.incorrectBlock = null;
 ocargo.BlocklyControl.prototype.incorrectBlockColour = null;

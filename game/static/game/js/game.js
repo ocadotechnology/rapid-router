@@ -4,6 +4,8 @@ var ocargo = ocargo || {};
 
 function init() {
 
+    initCustomBlocks();
+
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.model = new ocargo.Model(PATH, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
@@ -411,7 +413,7 @@ function setupLoadSaveListeners() {
                  var cell = table[0].rows[i].cells[0];
                  var wName = cell.innerHTML;
                  if(wName == newName) {
-                    deleteWorkspace(cell.attributes[0].value, 
+                    ocargo.saving.deleteWorkspace(cell.attributes[0].value, 
                                     function(err, workspace) {
                                         if (err != null) {
                                             console.debug(err);

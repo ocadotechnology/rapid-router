@@ -1,33 +1,23 @@
 #paper {
     background: #a8d44a;
-}
-
-#toolbox {
-    width: 610px;
-    margin-left: 10px;
+    left: 30%;
+    width: 70%;
 }
 
 #tools {
-    width: 50%;
+    width: 30%;
+    height: 100%;
 }
 
-.tabs input[type=radio] {
-    top: -9999px;
-    left: -9999px;
-    position: absolute;
+#buttons {
+    height: 16%;
+    width: 100%;
 }
 
-.tabs input[type="radio"] + label {
-    margin-left: 0;
-    margin-right: 0;
-}
-
-.tabs {
-    text-align: center;
-    float: none;
-    list-style: none;
-    position: relative;
-    margin: 10px auto;
+#toolbox {
+    height: 84%;
+    float:center;
+    margin: 0px auto;
 }
 
 #name {
@@ -36,65 +26,115 @@
     border: 1px solid #cccccc;
 }
 
-.tabs li {
+#maxFuel {
+    width:100px;
+}
+
+input[type="number"] {
+    margin: 0;
+    vertical-align: middle;
+}
+
+.table_cell .field_label {
+    width: 100px;
+    margin: 0px;
+}
+
+.table_cell .field_value {
+    width: 100px;
+}
+
+/********************/
+/* Table  structure */
+/********************/
+
+#table,
+#table2 {
+    display: table;
+}
+
+.table_row {
+    display: table-row;
+}
+
+.table_cell {
+    display: table-cell;
+}
+
+
+/*****************/
+/* Tab structure */
+/*****************/
+
+#tabs {
+    height: 100%;
+    width: 20%;
+    background: #8BD5EE;
     float: left;
 }
 
-.tabs label {
+#tab_contents {
+    height: 100%;
+    width: 80%;
+    float:left;
+}
+
+
+.tab {
+    list-style: none;
+    width: 100%;
+    height: 40px;
+}
+
+.tab input[type=radio] {
+    display:none;
+    margin: 0;
+}
+
+.tab input[type=radio]+label {
     text-align: center;
     margin: 0;
     display: block;
-    padding: 10px 20px;
+    padding: 10px 0px 10px 0px;
     color: #008CBA;
     font-weight: bold;
     background: #8BD5EE;
-    width: 200px;
+    width: 100%;
     border: 3px #8BD5EE;
-    border-top-style: solid;
-    border-right-style: solid;
-    border-left-style: solid;
+    border-style: solid;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
 
-.tabs label:hover {
+.tab label:hover {
     background: #A6DCEE;
     top: 0;
 }
 
-[id^=tab]:checked + label {
+.tab input[type=radio]:checked + label {
     background: white;
     top: 0;
-}
-
-[id^=tab]:checked ~ [id^=tab-content] {
-    display: block;
 }
 
 .tab-content {
     z-index: 2;
     display: none;
     text-align: left;
-    width: 600px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
     font-size: 20px;
     line-height: 140%;
-    padding: 10px 30px;
-    left: 0;
+    padding: 20px 0px 0px 20px;
     background-color: white;
-    position: absolute;
-    border: 3px #8BD5EE;
-    border-right-style: solid;
-    border-bottom-style: solid;
-    border-left-style: solid;
+    border: 10px #8BD5EE;
+    border-style: solid;
     box-sizing: border-box;
     -webkit-animation-duration: 0.5s;
     -o-animation-duration: 0.5s;
     -moz-animation-duration: 0.5s;
     animation-duration: 0.5s;
-    max-height: 500px;
     overflow: auto;
 }
 
@@ -103,48 +143,37 @@
     border: none;
 }
 
-#tab-content-arrows > p,
+#tab-content-map > p,
 #tab-content-random > p {
     color: #008CBA;
     font-weight: bold;
 }
 
-#name {
-    float: right;
+/**************/
+/* Blocks tab */
+/**************/
+
+.table_cell .block_image {
+    vertical-align: top;
 }
 
-#maxFuel {
-    width:100px;
-    float: right;
-}
-
-#branchiness,
-#loopiness,
-#curviness {
-    width:100px;
-    float: right;
-}
-
-#export {
+.block_image {
+    width: 180px;
+    height: 36px;
     cursor: pointer;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-    font-weight: normal !important;
-    line-height: normal;
-    margin: 0 10px 1.25rem 0;
-    position: relative;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    padding: 1.0625rem 2rem 1rem;
-    font-size: 1rem;
-    background-color: #008cba;
-    color: white;
-    -webkit-transition: background-color 300ms ease-out;
-    -moz-transition: background-color 300ms ease-out;
-    -o-transition: background-color 300ms ease-out;
-    transition: background-color 300ms ease-out;
-    -webkit-appearance: none;
-    border: none;
-    float: left;
-    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.block_image.large {
+    height: 66px;
+    cursor: pointer;
+}
+
+input[type="checkbox"].block_checkbox {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.block_image text {
+    cursor: pointer;
 }

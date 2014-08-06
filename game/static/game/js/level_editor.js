@@ -37,6 +37,8 @@ ocargo.LevelEditor = function() {
     this.destinationNode = null;
 
     // setup listeners
+    setupBlocksTab();
+    setupTabListeners();
     setupToolboxListeners();
     setupLoadSaveListeners();
     setupOtherMenuListeners();
@@ -402,6 +404,70 @@ ocargo.LevelEditor.prototype.markTentativeRoad = function(coord) {
 /* Button setup */
 /****************/
 
+function setupTabListeners() {
+
+    function setListenerForTab(i) {
+        tabs[i].change(function() {
+            for(var j = 0; j < tabs.length; j++) {
+                var status = (i == j ? "block" : "none");
+                tabContents[j].css({display: status});
+            }
+        });
+    }
+
+    var tabContents = [$('#tab-content-map'), $('#tab-content-decor'), $('#tab-content-blocks'), $('#tab-content-random')]
+    var tabs = [$('#tab1'), $('#tab2'), $('#tab3'), $('#tab4')];
+
+    for(var i = 0; i < tabs.length; i++) {
+        setListenerForTab(i);
+    }
+
+    tabs[0].change();
+}
+
+/* Adds blockly images to the blocks tab. Hacky, if a way can 
+be found without initialising the entire work space that would
+be great */
+function setupBlocksTab() {
+
+    function addListenerToImage(type) {
+        $('#' + type + '_image').click(function() {
+            $('#' + type + '_checkbox').click();
+        });
+    }
+
+    initCustomBlocksDescription();
+
+    var blockly = document.getElementById('blockly');
+    var toolbox = document.getElementById('toolbox');
+    Blockly.inject(blockly, {
+        path: '/static/game/js/blockly/',
+        toolbox: toolbox,
+        trashcan: true
+    });
+
+    for(var i = 0; i < BLOCKS.length; i++) {
+        var type = BLOCKS[i];
+        var block = Blockly.Block.obtain(Blockly.mainWorkspace, type);
+        block.initSvg();
+        block.render();
+
+        var svg = block.getSvgRoot();
+        var large = type == "controls_whileUntil" || 
+                    type == "controls_repeat" ||
+                    type == "controls_if" ||
+                    type == "declare_proc";
+
+        var content = '<svg class="block_image' + (large ? ' large' : '') + '">' +  svg.innerHTML + '</svg>';
+        $('#' + type + '_image').html(content);
+
+        addListenerToImage(type);
+    }
+
+    $('#blockly').css('display','none');
+}
+
+
 function setupToolboxListeners() {
     $('#bush').click(function() {
         initialiseDecorGraphic('bush', BUSH_URL, 70, 70);
@@ -475,22 +541,20 @@ function setupToolboxListeners() {
 
             success: function (json) {
                 ocargo.levelEditor.nodes = [];
-                var i;
-                for (i = 0; i < json.length; i++) {
+
+                for (var i = 0; i < json.length; i++) {
                     var node = new ocargo.Node(new ocargo.Coordinate(json[i].coordinate[0], json[i].coordinate[1]));
                     ocargo.levelEditor.nodes.push(node);
                 }
 
-                for (i = 0; i < json.length; i++) {
+                for (var i = 0; i < json.length; i++) {
                     ocargo.levelEditor.nodes[i].connectedNodes = [];
                     for(var j = 0; j < json[i].connectedNodes.length; j++) {
                         ocargo.levelEditor.nodes[i].connectedNodes.push(ocargo.levelEditor.nodes[json[i].connectedNodes[j]]);
                     }
                 }
 
-                paper.clear();
-                createRoad(ocargo.levelEditor.nodes);
-                ocargo.levelEditor.createGrid(paper);
+                ocargo.levelEditor.redrawAll();
             },
             error: function (xhr, errmsg, err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -610,7 +674,7 @@ function setupLoadSaveListeners() {
                 ocargo.levelEditor.originNode = ocargo.levelEditor.nodes[0];
                 // TODO needs to be fixed in the long term with multiple destinations
                 var destinationList = $.parseJSON(level.destinations)[0];
-                var destinationCoordinate = new ocargo.Coordinate(destList[0],destList[1]);
+                var destinationCoordinate = new ocargo.Coordinate(destinationList[0],destinationList[1]);
                 ocargo.levelEditor.destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoordinate,
                                                                                     ocargo.levelEditor.nodes);
 
@@ -678,7 +742,7 @@ function setupOtherMenuListeners() {
         startPopup(ocargo.messages.levelEditorTitle, subtitle, ocargo.messages.levelEditorMainText);
     });
 
-    $("#export").click(function() {
+    $("#play").click(function() {
 
         function oldPathToNew() {
             var newPath = [];
@@ -734,9 +798,11 @@ function setupOtherMenuListeners() {
         var maxFuel = $('#maxFuel').val();
         var name = $('#name').val();
 
-        $('.js-block-checkbox:checked').each(function(index, checkbox) {
-            blockTypes.push(checkbox.id);
-        });
+        for(var i = 0; i < BLOCKS.length; i++) {
+            if($('#' + BLOCKS[i] + "_checkbox").is(':checked')) {
+                blockTypes.push(BLOCKS[i]);
+            }
+        }
 
         $.ajax({
             url: "/game/levels/new",

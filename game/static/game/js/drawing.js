@@ -155,7 +155,6 @@ function generateButtonHelp(){
 		<p><img src="/static/game/image/buttons/menu/play.svg" alt="Play" /> Plays your program</p>\
 		<p><img src="/static/game/image/buttons/menu/pause.svg" alt="Pause" /> Pauses your program</p>\
 		<p><img src="/static/game/image/buttons/menu/stop.svg" alt="Stop" /> Stops your program</p>\
-		<p><img src="/static/game/image/buttons/menu/reset.svg" alt="Reset" /> Resets your van and program back to the start</p>\
 		<p><img src="/static/game/image/buttons/menu/step.svg" alt="Step" /> Steps to the next command in your program</p>\
 		<p><img src="/static/game/image/buttons/menu/save.svg" alt="Save" /> Saves your program</p>\
 		<p><img src="/static/game/image/buttons/menu/load.svg" alt="Load" /> Loads your program</p>\
