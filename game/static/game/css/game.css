@@ -111,23 +111,11 @@ img.control{
     padding-left: 10px;
 }
 
-.scrolling-table-wrapper {
-    position: relative;
-}
-
-.scrolling-table {
-    max-height: 200px;
-    width: 350px;
-    max-width: 350px;
-    overflow: auto;
-}
-
 #saveWorkspaceTable,
 #loadWorkspaceTable {
     width: 100%;
     cursor: pointer;
 }
-
 
 #loadWorkspace {
     margin-left: 20px;
@@ -135,10 +123,6 @@ img.control{
 
 #saveWorkspace {
     margin-left: 20px;
-}
-
-.save_load_image {
-    margin-right: 20px;
 }
 
 /******************/

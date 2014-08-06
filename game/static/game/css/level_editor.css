@@ -12,6 +12,7 @@
 #buttons {
     height: 16%;
     width: 100%;
+    margin-left: 5px;
 }
 
 #toolbox {
@@ -176,4 +177,27 @@ input[type="checkbox"].block_checkbox {
 
 .block_image text {
     cursor: pointer;
+}
+
+/********************/
+/* Load/save modals */
+/********************/
+
+#own_levels,
+#shared_levels {
+    margin-top: 10px;
+    float: left;
+}
+
+#own_levels {
+    margin-right: 80px;
+}
+
+#deleteLevel {
+    margin-right: 20px;
+}
+
+.scrolling-table {
+    width: 220px;
+    max-width: 350px;
 }
