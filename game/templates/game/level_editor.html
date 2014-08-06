@@ -8,15 +8,12 @@
 {{block.super}}
 
   <script> 
-    var DECOR = {};
+    var DECOR = [];
     {% for dec in decor %}
-      var name = "{{dec.theme.name}}"
-      if (!(name in DECOR)) {
-        DECOR.name = [];
-      }
-      DECOR.name.push(
-        {"name": "{{dec.name}}", "url": "{{dec.url}}", "width": {{dec.width}}, "height": {{dec.height}}});
+      DECOR.push(
+        {'name': '{{dec.name}}', 'url': '{{dec.url}}', 'width': {{dec.width}}, 'height': {{dec.height}}});
     {% endfor %}
+
     var DECOR = JSON.stringify(DECOR);
     var THEME = '{{theme.name}}';
     var BACKGROUND_COLOR = '{{theme.background}}';
