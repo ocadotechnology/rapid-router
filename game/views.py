@@ -19,7 +19,7 @@ from rest_framework.response import Response
 from forms import *
 from game import random_road
 from models import Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme
-from portal.models import Class
+from portal.models import Class, Teacher
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
@@ -271,15 +271,15 @@ def scoreboard(request):
     thead = []
     classes = []
     if hasattr(request.user.userprofile, 'teacher'):
-        classes = request.user.userprofile.teacher.class_teacher.all()
-        if len(classes) > 0:
-            school = classes[0].teacher.school
-        else:
+        school = request.user.userprofile.teacher.school
+        teachers = Teacher.objects.filter(school=school)
+        classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
+        classes = Class.objects.filter(id__in=classes_list)
+        if len(classes) <= 0:
             return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
     elif hasattr(request.user.userprofile, 'student') and request.user.userprofile.student.class_field != None:
         # user is a school student
         class_ = request.user.userprofile.student.class_field
-        school = class_.teacher.school
         classes = Class.objects.filter(id=class_.id)
     else:
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
@@ -375,12 +375,6 @@ def level_editor_random(request):
     path = random_road.generate_random_path(random_road.Node(0, 3), size, branchiness,
                                             loopiness, curviness)
     return HttpResponse(json.dumps(path), content_type='application/javascript')
-
-def level_editor_request(request):
-    """Generates a new random path suitable for a random level with the parameters provided"""
-
-
-
 
 
 def start_episode(request, episode):
@@ -546,10 +540,13 @@ def handleAllClassesOneLevel(request, level):
     studentData = []
     classes = []
     if hasattr(request.user.userprofile, 'student'):
-        school = request.user.userprofile.student.class_field.teacher.school
-        classes = school.class_school.all()
+        # Allow students to see their classmates
+        classes = [request.user.userprofile.student.class_field]
     elif hasattr(request.user.userprofile, 'teacher'):
-        classes = request.user.userprofile.teacher.class_teacher.all()
+        # Allow teachers to see school stats
+        school = request.user.userprofile.teacher.school
+        teachers = Teachers.objects.filter(school=school)
+        classes = [c for c in Class.objects.all() if (c.teacher in teachers)]
 
     for cl in classes:
         students = cl.students.all()
@@ -573,10 +570,13 @@ def handleAllClassesAllLevels(request, levels):
     """
     studentData = []
     if hasattr(request.user.userprofile, 'student'):
-        school = request.user.userprofile.student.class_field.teacher.school
-        classes = school.class_school.all()
+        # allow students to see their classmates
+        classes = [request.user.userprofile.student.class_field]
     elif hasattr(request.user.userprofile, 'teacher'):
-        classes = request.user.userprofile.teacher.class_teacher.all()
+        # allow teachers to see school stats
+        school = request.user.userprofile.teacher.school
+        teachers = Teachers.objects.filter(school=school)
+        classes = [c for c in Class.objects.all() if (c.teacher in teachers)]
 
     for cl in classes:
         students = cl.students.all()
