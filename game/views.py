@@ -273,13 +273,13 @@ def scoreboard(request):
     if hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
         if len(classes) > 0:
-            school = classes[0].school
+            school = classes[0].teacher.school
         else:
             return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
     elif hasattr(request.user.userprofile, 'student') and request.user.userprofile.student.class_field != None:
         # user is a school student
         class_ = request.user.userprofile.student.class_field
-        school = class_.school
+        school = class_.teacher.school
         classes = Class.objects.filter(id=class_.id)
     else:
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
@@ -546,7 +546,7 @@ def handleAllClassesOneLevel(request, level):
     studentData = []
     classes = []
     if hasattr(request.user.userprofile, 'student'):
-        school = request.user.userprofile.student.class_field.school
+        school = request.user.userprofile.student.class_field.teacher.school
         classes = school.class_school.all()
     elif hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
@@ -573,7 +573,7 @@ def handleAllClassesAllLevels(request, levels):
     """
     studentData = []
     if hasattr(request.user.userprofile, 'student'):
-        school = request.user.userprofile.student.class_field.school
+        school = request.user.userprofile.student.class_field.teacher.school
         classes = school.class_school.all()
     elif hasattr(request.user.userprofile, 'teacher'):
         classes = request.user.userprofile.teacher.class_teacher.all()
