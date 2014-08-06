@@ -1,0 +1,132 @@
+/*  CSS file for components shared between game and level_editor **/
+
+.top-bar {
+    display: none;
+}
+
+#paper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border: 0;
+    width: 50%;
+    height: 100%;
+    overflow: auto;
+    z-index: 6;
+}
+
+#wrapper {
+    position: fixed;
+    overflow: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.col {
+    float: left;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/**********/
+/* Popups */
+/**********/
+
+.ocargo-modal-mainText{
+    font-size: 1.2rem !important;
+}
+.ocargo-modal-lead {
+    font-size: 1.4rem !important;
+}
+
+.ocargo-modal-mainText > #hintText,
+.ocargo-modal-mainText > #hintBtnPara {
+	margin: 2rem 1rem 0;
+}
+
+/*************/
+/** Buttons **/
+/*************/
+
+.svg_button {
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline;
+    text-indent: 200%;
+    white-space: nowrap;
+    cursor: pointer;
+    background-color: transparent;
+    padding: 2px;
+    margin-bottom: 0rem;
+    transition: background-size 0.3s;
+}
+
+.svg_button:hover,
+.svg_button:focus {
+    transition: background-size 0.3s;
+    background-color: transparent;
+    border: none;
+}
+
+.svg_button[disabled],
+.svg_button[disabled]:hover {
+    background-color: transparent;
+}
+
+.navigation_button {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  min-width: 120px;
+  font-size: 20px;
+  height: 50px;
+  text-align: center;
+  background: -webkit-linear-gradient(top, #fbed21 0%,#faaf3b 100%);
+  border: solid;
+  border-color: rgb(246,146,30);
+  border-radius: 8px;
+  cursor: pointer;
+  color: black;
+  padding: 0px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.navigation_button img {
+    height: 30px;
+    width: auto;
+    margin-right:2px;
+    margin-left: 5px;
+}
+
+.navigation_button span {
+    margin-left:2px;
+    margin-right: 10px;
+}
+
+.navigation_button img,
+.navigation_button span {
+    vertical-align: middle;
+    color: black;
+}
+
+.navigation_button:hover,
+.navigation_button:focus
+{
+    background-image: -webkit-linear-gradient(top, #fce623 0%,#f4a73a 100%);
+    border-color: rgb(246,146,30);
+}
+
+.navigation_button:active {
+  background-image: -webkit-linear-gradient(top, #f9d922 0%,#f7933b 100%);
+  outline: none;
+}

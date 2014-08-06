@@ -1,26 +1,41 @@
 {% extends 'website/base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}Map Designer{% endblock %}
 
 {% block scripts %}
 {{block.super}}
+
   <script> 
     var DECOR = [];
     {% for dec in decor %}
       DECOR.push(
         {'name': '{{dec.name}}', 'url': '{{dec.url}}', 'width': {{dec.width}}, 'height': {{dec.height}}});
     {% endfor %}
+
     var DECOR = JSON.stringify(DECOR);
     var THEME = '{{theme.name}}';
     var BACKGROUND_COLOR = '{{theme.background}}';
     var SELECTED_COLOR = '{{theme.selected}}';
     var BORDER = '{{theme.border}}';
+
+    var BLOCKS = [];
+    {% for block in blocks %}
+      BLOCKS.push("{{block}}");
+    {% endfor %}
   </script>
 
   <script src="/static/game/js/mobile-detect.min.js"></script>
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script> 
+
+  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
 
   <script src="/static/game/js/messages.js"></script>
   <script src="/static/game/js/saving.js"></script>
@@ -32,78 +47,147 @@
   <script src="/static/game/js/trafficLight.js"></script>
   <script src="/static/game/js/destination.js"></script>
 
+  <!-- retrieves blockly images, bit hacky -->
+  <script>
+    
+  </script>
+
 {% endblock %}
 
 {% block css %}
 {{block.super}}
-  <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
+  <link href="/static/game/css/game_screen.css" rel="stylesheet" type="text/css">
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
 <div id="wrapper">
   <div id="tools" class="col">
-    <div id="toolbox">
 
-      <div id="buttons">
-        <form method="post" name="example form" >
-          {% csrf_token %}
-          <input id="export" type="button" value="Play it!"/>
-        </form>
-        <button id="help">Help</button>
-        <button id="load">Load</button>
-        <a class="button" href="/">Quit</a>
+    <div id="buttons">
+      <button class="navigation_button" id="play">
+        <image src="/static/game/image/icons/play.svg"/>
+        <span>Play</span>
+      </button>
+
+      <button class="navigation_button" id="help">
+        <image src="/static/game/image/icons/help.svg"/>
+        <span>Help</span>
+      </button>
+
+      <button class="navigation_button" id="quit">
+        <image src="/static/game/image/icons/quit.svg"/>
+        <span>Quit</span>
+      </button>
+
+      <button class="navigation_button" id="load">
+        <image src="/static/game/image/icons/load.svg"/>
+        <span>Load</span>
+      </button>
+
+      <button class="navigation_button" id="save">
+        <image src="/static/game/image/icons/save.svg"/>
+        <span>Save</span>
+      </button>
+
+      <button class="navigation_button" id="share">
+        <image src="/static/game/image/icons/share.svg"/>
+        <span>Share</span>
+      </button>
+    </div>
+
+    <div id="toolbox">
+      <div id="tabs">
+        <div class="tab">
+          <input type="radio" name="tabs" id="tab1" checked>
+          <label for="tab1">Map</label>
+        </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="tab2">
+          <label for="tab2">Decor</label>
+        </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="tab3">
+          <label for="tab3">Blocks</label>
+        </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="tab4">
+          <label for="tab4">Random</label>
+        </div>
       </div>
 
-      <ul class="tabs">
-        <li>
-          <input type="radio" checked name="tabs" id="tab1">
-          <label for="tab1">Map</label>
-          <div id="tab-content-arrows" class="tab-content">
-            <form name="themeForm" action="" method="post" action="" onChange="themeForm.submit()" id="themeForm">
-              {% csrf_token %}
-              {{form.classes.errors}}
-               Theme: {{themeForm.theme}}
-               {{message}}
-            </form>
-            <img id="bush" src="{{bush.url}}" width="50">
-            <img id="tree1" src="{{tree1.url}}" width="70">
-            <img id="tree2" src="{{tree2.url}}" width="70">
-            <img id="pond" src="{{pond.url}}" width="100"><br><br>
-            <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
-            <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
-            <p>NAME<input id="name" value="name"></p>
-            <p>MAX FUEL<input type="number" id="maxFuel" value="50" size="4"></p>
-            <button id="clear">Clear all</button> <br>            
-            <button id="add">Add Mode</button>
-            <button id="delete">Delete Mode</button> <br>
-            <button id="start">Mark Start</button>
-            <button id="end">Mark End</button><br>
-          </div>
-        </li>
-        <li>
-          <input type="radio" name="tabs" id="tab2">
-          <label for="tab2">Blocks</label>
-          <div id="tab-content-blocks" class="tab-content">
+      <div id="tab_contents">
+        <div id="tab-content-map" class="tab-content">
+          <p>NAME<input id="name" value="name"></p>
+          <p>MAX FUEL<input type="number" id="maxFuel" value="50" size="4"></p>
+          <button id="clear">Clear all</button> <br>            
+          <button id="add">Add Mode</button>
+          <button id="delete">Delete Mode</button> <br>
+          <button id="start">Mark Start</button>
+          <button id="end">Mark End</button><br>
+        </div>
+
+        <div id="tab-content-decor" class="tab-content">
+          <form name="themeForm" action="" method="post" action="" onChange="themeForm.submit()" id="themeForm">
+            {% csrf_token %}
+            {{form.classes.errors}}
+             Theme: {{themeForm.theme}}
+             {{message}}
+          </form>
+          <img id="bush" src="{{bush.url}}" width="50">
+          <img id="tree1" src="{{tree1.url}}" width="70">
+          <img id="tree2" src="{{tree2.url}}" width="70">
+          <img id="pond" src="{{pond.url}}" width="100"><br><br>
+          <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
+          <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
+        </div>
+
+        <div id="tab-content-blocks" class="tab-content">
+          <div id="block_table">
             {% for block in blocks %}
-              <input type="checkbox" id="{{ block.type }}" class="js-block-checkbox" checked>
-              <label for="{{ block.type }}">{{ block.type }}</label>
-              <br>
-            {% endfor %}
+              <div class="table_row">
+                <div class="table_cell field_label">
+                  <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" checked>
+                </div>
+                <div id="{{block.type}}_image" class="table_cell field_value unselectable"></div>
+              </div>
+            {% endfor %}  
           </div>
-        </li>
-        <li>
-          <input type="radio" name="tabs" id="tab3">
-          <label for="tab3">Random</label>
-          <div id="tab-content-random" class="tab-content">
-            <p>Size:<input type="number" id="size" value="15" size="4" min="1" max="40"></p> <br>
-            <p>Branchiness:<input type="number" id="branchiness" value="2" size="4" min="0" max="10"></p> <br>
-            <p>Loopiness:<input type="number" id="loopiness" value="2" size="4" min="0" max="10"></p> <br>
-            <p>Curviness:<input type="number" id="curviness" value="5" size="4" min="0" max="10"></p> <br>
-            <button id="generate">Generate</button>
+        </div>
+
+        <div id="tab-content-random" class="tab-content">
+          <div id="table2">
+            <div class="table_row">
+              <div class="table_cell"><p class="field_label">Size:</p></div>
+              <div class="table_cell"><input class="field_value" type="number" id="size" value="15" size="4" min="1" max="40"></div>
+            </div>
+
+            <div class="table_row">
+              <div class="table_cell"><p class="field_label">Branchiness:</p></div>
+              <div class="table_cell"><input class="field_value" type="number" id="branchiness" value="2" size="4" min="0" max="10"></div>
+            </div>
+
+            <div class="table_row">
+              <div class="table_cell"><p class="field_label">Loopiness:</p></div>
+              <div class="table_cell"><input class="field_value" type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
+            </div>
+
+            <div class="table_row">
+              <div class="table_cell"><p class="field_label">Curviness:</p></div>
+              <div class="table_cell"><input class="field_value" type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
+            </div>
           </div>
-        </li>
-      </ul>
+
+          <button class="navigation_button" id="generate">
+            <image src="/static/game/image/icons/random.svg">
+            <span>Generate</span>
+          </button>
+        </div>
+
+      </div>
     </div>
   </div>
   <div id="paper" class="col" style="background-color:{{theme.background}}"></div>
@@ -147,5 +231,8 @@
   </div>
   <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
 </div>
+
+<div id="blockly"></div>
+<xml id="toolbox"></xml>
 
 {% endblock %}
