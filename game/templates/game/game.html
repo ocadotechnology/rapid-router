@@ -53,6 +53,8 @@
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
     var BLOCKS =  [];
+    var CHARACTER_NAME = "{{character.name}}"
+    var CHARACTER_URL = "{{character.top_down}}"
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}

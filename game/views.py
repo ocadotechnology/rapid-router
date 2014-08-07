@@ -138,6 +138,7 @@ def level(request, level):
     house = getDecorElement('house', lvl.theme).url
     cfc = getDecorElement('cfc', lvl.theme).url
     background = getDecorElement('tile1', lvl.theme).url
+    character = lvl.character
 
     #FIXME: figure out how to check for all this better
     loggedInAsStudent = False
@@ -156,6 +157,7 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'decor': decorData,
+        'character': character,
         'background': background,
         'house': house,
         'cfc': cfc,
