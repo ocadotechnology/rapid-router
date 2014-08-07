@@ -29,9 +29,9 @@ def populate_characters(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0071_character'),
+        ('game', '0072_remove_text_block'),
     ]
 
     operations = [
-        migrations.RunPython(populate_characters)
+    	migrations.RunPython(populate_characters)
     ]

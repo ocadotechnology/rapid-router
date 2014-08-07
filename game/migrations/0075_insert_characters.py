@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 
 
-def populate_level_characters(apps, schema_editor):
+def operations(apps, schema_editor):
 
     Level = apps.get_model('game', 'Level')
     Character = apps.get_model('game', 'Character')
@@ -31,13 +31,12 @@ def populate_level_characters(apps, schema_editor):
     level28.save()
 
 
-
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0074_merge'),
+        ('game', '0074_change_character_field'),
     ]
 
     operations = [
-        migrations.RunPython(populate_level_characters)
+        migrations.RunPython(operations)
     ]
