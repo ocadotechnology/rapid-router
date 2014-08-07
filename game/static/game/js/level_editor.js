@@ -415,8 +415,8 @@ function setupTabListeners() {
         });
     }
 
-    var tabContents = [$('#tab-content-map'), $('#tab-content-decor'), $('#tab-content-blocks'), $('#tab-content-random')]
-    var tabs = [$('#tab1'), $('#tab2'), $('#tab3'), $('#tab4')];
+    var tabContents = [$('#tab-content-map'), $('#tab-content-decor'), $('#tab-content-character'), $('#tab-content-blocks'), $('#tab-content-random')]
+    var tabs = [$('#tab1'), $('#tab2'), $('#tab3'), $('#tab4'), $('#tab5')];
 
     for(var i = 0; i < tabs.length; i++) {
         setListenerForTab(i);

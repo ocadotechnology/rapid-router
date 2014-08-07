@@ -110,12 +110,17 @@
 
         <div class="tab">
           <input type="radio" name="tabs" id="tab3">
-          <label for="tab3">Blocks</label>
+          <label for="tab3">Character</label>
         </div>
 
         <div class="tab">
           <input type="radio" name="tabs" id="tab4">
-          <label for="tab4">Random</label>
+          <label for="tab4">Blocks</label>
+        </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="tab5">
+          <label for="tab5">Random</label>
         </div>
       </div>
 
@@ -168,6 +173,15 @@
           <img id="pond" src="{{pond.url}}" width="100"><br><br>
           <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
           <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
+        </div>
+
+        <div id="tab-content-character" class="tab-content">
+          <form name="Character-form">
+            {% for char in characters %}
+            <input type="radio" name="{{char.name}}" value="{{char.name}}"> 
+              <img src="{{char.en_face}}" width="122" height='122'><br>
+            {% endfor %}
+          </form>
         </div>
 
         <div id="tab-content-blocks" class="tab-content">

@@ -35,7 +35,7 @@ def populate_level_characters(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0075_auto_20140807_1228'),
+        ('game', '0074_merge'),
     ]
 
     operations = [
