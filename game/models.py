@@ -97,6 +97,12 @@ class Decor(models.Model):
     theme = models.ForeignKey(Theme, related_name='decor')
 
 
+class Character(models.Model):
+    name = models.CharField(max_length=100)
+    en_face = models.CharField(max_length=500)
+    top_down = models.CharField(max_length=500)
+
+
 class Level (models.Model):
     name = models.CharField(max_length=100)
     path = models.TextField(max_length=10000)
@@ -115,8 +121,7 @@ class Level (models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
-    character = models.CharField(max_length=500,
-                                 default='/static/game/image/characters/van_small.svg')
+    character = models.ForeignKey(Character, default=4)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)

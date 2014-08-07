@@ -519,7 +519,7 @@ function createVanImage(position, vanId) {
     var initialX = calculateInitialX(position.currentNode);
     var initialY = calculateInitialY(position.currentNode);
 
-    var imageStr = (vanId % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+    var imageStr = (vanId % 2 == 0) ? CHARACTER_URL : '/static/game/image/van_small2.svg';
     var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
 
     var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
@@ -681,6 +681,9 @@ function crash(vanID, animationLength, previousNode, currentNode, attemptedActio
 
     function animateExplosion() {
         
+        if (CHARACTER_NAME !== "Van") {
+            return;
+        }
         var bbox = vanImage.getBBox();
 
         var x = bbox.x + bbox.width/2;
