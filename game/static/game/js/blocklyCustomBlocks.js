@@ -191,6 +191,7 @@ function initCustomBlocksDescription() {
             this.setColour(260);
             this.appendDummyInput()
                 .appendField('Call')
+                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg', 7, ocargo.BlocklyControl.BLOCK_HEIGHT))
                 .appendField(new Blockly.FieldTextInput(''));
             this.setPreviousStatement(true);
             this.setNextStatement(true);

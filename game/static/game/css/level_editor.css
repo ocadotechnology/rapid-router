@@ -1,18 +1,27 @@
+#wrapper {
+    border: 5px solid #8BD5EE;
+    background-color: #8BD5EE;
+}
+
 #paper {
-    background: #a8d44a;
-    left: 30%;
-    width: 70%;
+    float:left;
+    width: auto;
+    height: 100%;
+    position: initial;
 }
 
 #tools {
-    width: 30%;
+    width: 380px;
     height: 100%;
+    float:left;
+    border-right: 5px solid #8BD5EE;
 }
 
 #buttons {
     height: 16%;
-    width: 100%;
-    margin-left: 5px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #toolbox {
@@ -22,16 +31,19 @@
 }
 
 #name {
+    width: 100px;
     height: 36px;
     padding: 8px;
     border: 1px solid #cccccc;
+    float: right;
 }
 
 #maxFuel {
     width:100px;
+    float:right;
 }
 
-input[type="number"] {
+input {
     margin: 0;
     vertical-align: middle;
 }
@@ -39,6 +51,8 @@ input[type="number"] {
 .table_cell .field_label {
     width: 100px;
     margin: 0px;
+    vertical-align: middle;
+    margin-bottom: 0px;
 }
 
 .table_cell .field_value {
@@ -49,8 +63,7 @@ input[type="number"] {
 /* Table  structure */
 /********************/
 
-#table,
-#table2 {
+.table {
     display: table;
 }
 
@@ -129,8 +142,6 @@ input[type="number"] {
     line-height: 140%;
     padding: 20px 0px 0px 20px;
     background-color: white;
-    border: 10px #8BD5EE;
-    border-style: solid;
     box-sizing: border-box;
     -webkit-animation-duration: 0.5s;
     -o-animation-duration: 0.5s;
@@ -177,6 +188,15 @@ input[type="checkbox"].block_checkbox {
 
 .block_image text {
     cursor: pointer;
+}
+
+/******************/
+/* Characters tab */
+/******************/
+
+.character  {
+    cursor: pointer;
+    margin-left: 20px;
 }
 
 /********************/

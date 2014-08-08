@@ -879,8 +879,8 @@ function setupOtherMenuListeners() {
         // Create other data
         var destinationCoord = ocargo.levelEditor.destinationNode.coordinate;
         var destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
-        var maxFuel = $('#maxFuel').val();
-        var name = $('#name').val();
+        var maxFuel = $('#max_fuel').val();
+        var name = $('#level_name').val();
 
         
         $.ajax({

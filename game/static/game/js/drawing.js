@@ -26,12 +26,16 @@ var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 var DESTINATION_NOT_VISITED_COLOUR = 'yellow';
 var DESTINATION_VISITED_COLOUR = 'green';
 
+var FRONT_VIEW  = "front_view";
+var TOP_VIEW = "top_view";
+
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
 var vanImages = {};
 var lightImages = {};
 var destinationImages = {};
 var roadImages = [];
+
 
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;
@@ -508,6 +512,11 @@ function drawCrossRoads(node) {
 /** Van rendering and animation **/
 /*********************************/
 
+function getCharacterImageURL(characterName, view) {
+    return '/static/game/image/characters/'  + view + '/' + name + ".svg";
+}
+
+
 function renderVans(position, numVans) {
     for (var i = 0; i < numVans; i++) {
         vanImages[i] = createVanImage(position, i);
@@ -519,7 +528,7 @@ function createVanImage(position, vanId) {
     var initialX = calculateInitialX(position.currentNode);
     var initialY = calculateInitialY(position.currentNode);
 
-    var imageStr = (vanId % 2 == 0) ? CHARACTER_URL : '/static/game/image/van_small2.svg';
+    var imageStr = (vanId % 2 == 0) ? CHARACTER_URL : '/static/game/image/characters/top_view/Van2.svg';
     var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
 
     var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
