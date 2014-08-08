@@ -2,14 +2,6 @@
 
 var ocargo = ocargo || {};
 
-var DECOR_LIST = JSON.parse(DECOR);
-
-var BUSH_URL = findDecorUrl('bush');
-var TREE1_URL = findDecorUrl('tree1');
-var TREE2_URL = findDecorUrl('tree2');
-var POND_URL = findDecorUrl('pond');
-var HOUSE_URL = findDecorUrl('house');
-var CFC_URL = '/static/game/image/OcadoCFC_no_road.svg';
 var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
 var LIGHT_GREEN_URL = '/static/game/image/trafficLight_green.svg';
 
@@ -24,7 +16,7 @@ ocargo.LevelEditor = function() {
     this.decor = [];
     this.grid = this.initialiseVisited();
     this.trafficLights = [];
-    this.theme = THEME;
+    this.currentTheme = null;
 
     ocargo.saving = new ocargo.Saving();
 
@@ -36,13 +28,12 @@ ocargo.LevelEditor = function() {
     this.destinationNode = null;
 
     // setup listeners
-    setupBlocksTab();
-    setupTabListeners();
-    setupToolboxListeners();
+    setupToolbox();
     setupLoadSaveListeners();
     setupOtherMenuListeners();
 
     // initialises paper
+    this.setTheme(THEMES["grass"])
     this.drawAll();
 };
 
@@ -66,7 +57,7 @@ ocargo.LevelEditor.prototype.createGrid = function(paper) {
             var x = i * GRID_SPACE_SIZE;
             var y = j * GRID_SPACE_SIZE;
             var segment = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-            segment.attr({stroke: BORDER, fill: BACKGROUND_COLOR, "fill-opacity": 1});
+            segment.attr({stroke: this.currentTheme.border, fill: this.currentTheme.background, "fill-opacity": 1});
 
             segment.node.onmousedown = function() {
                 var this_rect = segment;
@@ -216,6 +207,18 @@ ocargo.LevelEditor.prototype.findTrafficLight = function(firstIndex, secondIndex
     return -1;
 }
 
+ocargo.LevelEditor.prototype.setTheme = function(theme) {
+    this.currentTheme = theme;
+
+    for(var i = 0; i < this.decor.length; i++) {
+        this.decor[i].updateTheme();
+    }
+
+    $('.decor_button').each(function(index, element) {
+        element.src = theme.decor[element.id].url;
+    });
+}
+
 function sortNodes(nodes) {
     for (var i = 0; i < nodes.length; i++) {
         // Remove duplicates.
@@ -348,16 +351,6 @@ ocargo.LevelEditor.prototype.bringTrafficLightsToFront = function() {
     }
 }
 
-function initialiseTrafficLight(state) {
-    new ocargo.LevelEditor.InternalTrafficLight({"redDuration": 3, "greenDuration": 3, 
-                                                 "startTime": 0, "startingState": state,
-                                                 "controlledNode": -1, "sourceNode": -1});
-}
-
-function initialiseDecorGraphic(url, name) {
-    new ocargo.LevelEditor.InternalDecor({"url": url, "coordinate": null}, name);
-}
-
 /************/
 /*  Marking */
 /************/
@@ -377,11 +370,15 @@ ocargo.LevelEditor.prototype.markAsDestination = function(coordinate) {
 }
 
 ocargo.LevelEditor.prototype.markAsBackground = function(coordinate) {
-    this.mark(coordinate, BACKGROUND_COLOR, 0, false);
+    this.mark(coordinate, this.currentTheme.background, 0, false);
 }
 
 ocargo.LevelEditor.prototype.markAsSelected = function(coordinate) {
-    this.mark(coordinate, SELECTED_COLOR, 1, true);
+    this.mark(coordinate, this.currentTheme.selected, 1, true);
+}
+
+ocargo.LevelEditor.prototype.markAsHighlighted = function(coordinate) {
+    this.mark(coordinate, this.currentTheme.selected, 0.3, true);
 }
 
 ocargo.LevelEditor.prototype.redrawTentativeRoad = function(coordinate) {
@@ -443,158 +440,177 @@ ocargo.LevelEditor.prototype.markTentativeRoad = function(coord) {
 /* Button setup */
 /****************/
 
-function setupTabListeners() {
+function setupToolbox() {
+    setupTabListeners();
+    setupBlocksTab();
+    setupDecorTab();
+    setupMapTab();
+    setupGenerateTab();
 
-    function setListenerForTab(i) {
-        tabs[i].change(function() {
-            for(var j = 0; j < tabs.length; j++) {
-                var status = (i == j ? "block" : "none");
-                tabContents[j].css({display: status});
-            }
-        });
-    }
-
-    var tabContents = [$('#tab-content-map'), $('#tab-content-decor'), $('#tab-content-character'), $('#tab-content-blocks'), $('#tab-content-random')]
-    var tabs = [$('#tab1'), $('#tab2'), $('#tab3'), $('#tab4'), $('#tab5')];
-
-    for(var i = 0; i < tabs.length; i++) {
-        setListenerForTab(i);
-    }
-
-    tabs[0].change();
-}
-
-/* Adds blockly images to the blocks tab. Hacky, if a way can 
-be found without initialising the entire work space that would
-be great */
-function setupBlocksTab() {
-
-    function addListenerToImage(type) {
-        $('#' + type + '_image').click(function() {
-            $('#' + type + '_checkbox').click();
-        });
-    }
-
-    initCustomBlocksDescription();
-
-    var blockly = document.getElementById('blockly');
-    var toolbox = document.getElementById('toolbox');
-    Blockly.inject(blockly, {
-        path: '/static/game/js/blockly/',
-        toolbox: toolbox,
-        trashcan: true
-    });
-
-    for(var i = 0; i < BLOCKS.length; i++) {
-        var type = BLOCKS[i];
-        var block = Blockly.Block.obtain(Blockly.mainWorkspace, type);
-        block.initSvg();
-        block.render();
-
-        var svg = block.getSvgRoot();
-        var large = type == "controls_whileUntil" || 
-                    type == "controls_repeat" ||
-                    type == "controls_if" ||
-                    type == "declare_proc";
-
-        var content = '<svg class="block_image' + (large ? ' large' : '') + '">' +  svg.innerHTML + '</svg>';
-        $('#' + type + '_image').html(content);
-
-        addListenerToImage(type);
-    }
-
-    $('#blockly').css('display','none');
-}
-
-function setupToolboxListeners() {
-    $('#bush').click(function() {
-        initialiseDecorGraphic(BUSH_URL, 'bush');
-    });
-
-    $('#tree1').click(function() {
-        initialiseDecorGraphic(TREE1_URL, 'tree1');
-    });
-
-    $('#tree2').click(function() {
-        initialiseDecorGraphic(TREE2_URL, 'tree2');
-    });
-
-    $('#pond').click(function() {
-        initialiseDecorGraphic(POND_URL, 'pond');
-    });
-
-    $('#trafficLightRed').click(function() {
-        initialiseTrafficLight(ocargo.TrafficLight.RED);
-    });
-
-    $('#trafficLightGreen').click(function() {
-        initialiseTrafficLight(ocargo.TrafficLight.GREEN);
-    });
-
-    $('#clear').click(function() {
-        ocargo.levelEditor = new ocargo.LevelEditor();
-    });
-
-    $('#start').click(function() {
-        ocargo.levelEditor.mode = ocargo.LevelEditor.MARK_START_MODE;
-    });
-
-    $('#end').click(function() {
-        ocargo.levelEditor.mode = ocargo.LevelEditor.MARK_END_MODE;
-    });
-
-    $('#add_road').click(function() {
-        ocargo.levelEditor.mode = ocargo.LevelEditor.ADD_ROAD_MODE;
-    });
-
-    $('#delete_road').click(function() {
-        ocargo.levelEditor.mode = ocargo.LevelEditor.DELETE_ROAD_MODE;
-    });
-
-    $('#delete_decor').click(function() {
-        ocargo.levelEditor.mode = ocargo.LevelEditor.DELETE_DECOR_MODE;
-    });
-
-    $('#generate').click(function() {
-        var size = $('#size').val();
-        var branchiness = $('#branchiness').val()/10;
-        var loopiness = $('#loopiness').val()/10;
-        var curviness = $('#curviness').val()/10;
-
-        $.ajax({
-            url: "/game/level_editor/random",
-            type: "POST",
-            dataType: 'json',
-            data: {
-                numberOfTiles: size,
-                branchiness: branchiness,
-                loopiness: loopiness,
-                curviness: curviness,
-                csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
-            },
-
-            success: function (json) {
-                ocargo.levelEditor.clear();
-
-                for (var i = 0; i < json.length; i++) {
-                    var node = new ocargo.Node(new ocargo.Coordinate(json[i].coordinate[0], json[i].coordinate[1]));
-                    ocargo.levelEditor.nodes.push(node);
+    /** Adds listeners to control the transitioning between tabs  **/
+    function setupTabListeners() {
+        function setListenerForTab(i) {
+            tabs[i].change(function() {
+                for(var j = 0; j < tabs.length; j++) {
+                    var status = (i == j ? "block" : "none");
+                    tabContents[j].css({display: status});
                 }
+            });
+        }
 
-                for (var i = 0; i < json.length; i++) {
-                    ocargo.levelEditor.nodes[i].connectedNodes = [];
-                    for(var j = 0; j < json[i].connectedNodes.length; j++) {
-                        ocargo.levelEditor.nodes[i].connectedNodes.push(ocargo.levelEditor.nodes[json[i].connectedNodes[j]]);
+        var tabContents = [$('#tab-content-map'), $('#tab-content-decor'), $('#tab-content-character'), $('#tab-content-blocks'), $('#tab-content-random')]
+        var tabs = [$('#tab1'), $('#tab2'), $('#tab3'), $('#tab4'), $('#tab5')];
+
+        for(var i = 0; i < tabs.length; i++) {
+            setListenerForTab(i);
+        }
+
+        tabs[0].change();
+    }
+
+    function setupMapTab() {
+        $('#clear').click(function() {
+            ocargo.levelEditor = new ocargo.LevelEditor();
+        });
+
+        $('#start').click(function() {
+            ocargo.levelEditor.mode = ocargo.LevelEditor.MARK_START_MODE;
+        });
+
+        $('#end').click(function() {
+            ocargo.levelEditor.mode = ocargo.LevelEditor.MARK_END_MODE;
+        });
+
+        $('#add_road').click(function() {
+            ocargo.levelEditor.mode = ocargo.LevelEditor.ADD_ROAD_MODE;
+        });
+
+        $('#delete_road').click(function() {
+            ocargo.levelEditor.mode = ocargo.LevelEditor.DELETE_ROAD_MODE;
+        });
+    }
+
+    /* Hacky, if a way can be found without initialising the entire work space that would be great */
+    function setupBlocksTab() {
+
+        function addListenerToImage(type) {
+            $('#' + type + '_image').click(function() {
+                $('#' + type + '_checkbox').click();
+            });
+        }
+
+        initCustomBlocksDescription();
+
+        var blockly = document.getElementById('blockly');
+        var toolbox = document.getElementById('toolbox');
+        Blockly.inject(blockly, {
+            path: '/static/game/js/blockly/',
+            toolbox: toolbox,
+            trashcan: true
+        });
+
+        for(var i = 0; i < BLOCKS.length; i++) {
+            var type = BLOCKS[i];
+            var block = Blockly.Block.obtain(Blockly.mainWorkspace, type);
+            block.initSvg();
+            block.render();
+
+            var svg = block.getSvgRoot();
+            var large = type == "controls_whileUntil" || 
+                        type == "controls_repeat" ||
+                        type == "controls_if" ||
+                        type == "declare_proc";
+
+            var content = '<svg class="block_image' + (large ? ' large' : '') + '">' +  svg.innerHTML + '</svg>';
+            $('#' + type + '_image').html(content);
+
+            addListenerToImage(type);
+        }
+
+        $('#blockly').css('display','none');
+    }
+
+    function setupDecorTab() {
+
+        $('#theme_select').change(function() {
+            ocargo.levelEditor.setTheme(THEMES[$(this).val()]);
+        });
+
+        $('#bush').click(function() {
+            new ocargo.LevelEditor.InternalDecor('bush');
+        });
+
+        $('#tree1').click(function() {
+            new ocargo.LevelEditor.InternalDecor('tree1');
+        });
+
+        $('#tree2').click(function() {
+            new ocargo.LevelEditor.InternalDecor('tree2');
+        });
+
+        $('#pond').click(function() {
+            new ocargo.LevelEditor.InternalDecor('pond');
+        });
+
+        $('#trafficLightRed').click(function() {
+            new ocargo.LevelEditor.InternalTrafficLight({"redDuration": 3, "greenDuration": 3, 
+                                                        "startTime": 0, "startingState": ocargo.TrafficLight.RED,
+                                                        "controlledNode": -1, "sourceNode": -1});
+        });
+
+        $('#trafficLightGreen').click(function() {
+            new ocargo.LevelEditor.InternalTrafficLight({"redDuration": 3, "greenDuration": 3, 
+                                                        "startTime": 0, "startingState": ocargo.TrafficLight.GREEN,
+                                                        "controlledNode": -1, "sourceNode": -1});
+        });
+
+        $('#delete_decor').click(function() {
+            ocargo.levelEditor.mode = ocargo.LevelEditor.DELETE_DECOR_MODE;
+        });
+    }
+
+    function setupGenerateTab() {
+        $('#generate').click(function() {
+            var size = $('#size').val();
+            var branchiness = $('#branchiness').val()/10;
+            var loopiness = $('#loopiness').val()/10;
+            var curviness = $('#curviness').val()/10;
+
+            $.ajax({
+                url: "/game/level_editor/random",
+                type: "POST",
+                dataType: 'json',
+                data: {
+                    numberOfTiles: size,
+                    branchiness: branchiness,
+                    loopiness: loopiness,
+                    curviness: curviness,
+                    csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+                },
+
+                success: function (json) {
+                    ocargo.levelEditor.clear();
+
+                    for (var i = 0; i < json.length; i++) {
+                        var node = new ocargo.Node(new ocargo.Coordinate(json[i].coordinate[0], json[i].coordinate[1]));
+                        ocargo.levelEditor.nodes.push(node);
                     }
-                }
 
-                ocargo.levelEditor.drawAll();
-            },
-            error: function (xhr, errmsg, err) {
-                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-            }
+                    for (var i = 0; i < json.length; i++) {
+                        ocargo.levelEditor.nodes[i].connectedNodes = [];
+                        for(var j = 0; j < json[i].connectedNodes.length; j++) {
+                            ocargo.levelEditor.nodes[i].connectedNodes.push(ocargo.levelEditor.nodes[json[i].connectedNodes[j]]);
+                        }
+                    }
+
+                    ocargo.levelEditor.drawAll();
+                },
+                error: function (xhr, errmsg, err) {
+                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                }
+            });
         });
-    });
+    }
 }
 
 function setupLoadSaveListeners() {
@@ -982,7 +998,7 @@ function handleMouseOver(this_rect, segment) {
             }
             else if(!ocargo.levelEditor.isOriginCoordinate(coordMap) && !ocargo.levelEditor.isDestinationCoordinate(coordMap))
             {
-                ocargo.levelEditor.mark(coordMap, SELECTED_COLOR, 0.3, true);
+                ocargo.levelEditor.markAsHighlighted(coordMap);
             }
         }
         else if(ocargo.levelEditor.inMarkStartMode() || ocargo.levelEditor.inMarkEndMode()) 
@@ -1057,21 +1073,17 @@ function setupDecorDragListeners(decor) {
     var paperX;
     var paperY;
 
-    var originX = decor.coordinate.x;
-    var originY = decor.coordinate.y;
-    var mapCoordinate;
+    var bBox = image.getBBox();
+    var originX = bBox.x;
+    var originY = bBox.y;
 
     function onDragMove(dx, dy) {
         paperX = dx + originX;
         paperY = dy + originY;
-
-        mapCoordinate = new ocargo.Coordinate(paperX, PAPER_HEIGHT - paperY - DECOR_SIZE);
         image.transform('t' + paperX + ',' + paperY);
     };
 
-    function onDragStart() {
-        mapCoordinate = new ocargo.Coordinate(paperX, PAPER_HEIGHT - paperY - DECOR_SIZE);
-    };
+    function onDragStart() {};
 
     function onDragEnd() {
         originX = paperX;
@@ -1233,6 +1245,10 @@ function setupTrafficLightDragListeners(trafficLight) {
     };
 
     image.drag(onDragMove, onDragStart, onDragEnd);
+    
+    image.node.ondblclick = function() {
+        image.transform('...r90');
+    };
 
     function getOrientation(object) {
         var transform = object.transform();
@@ -1294,9 +1310,6 @@ ocargo.LevelEditor.InternalTrafficLight = function(data) {
     }
 
     setupTrafficLightDragListeners(this);
-    this.image.node.ondblclick = function() {
-        this.image.transform('...r90');
-    };
     this.image.attr({'cursor':'pointer'});
 
     ocargo.levelEditor.trafficLights.push(this);
@@ -1320,35 +1333,44 @@ ocargo.LevelEditor.InternalTrafficLight.prototype.destroy = function() {
 /* Internal decor representation */
 /*********************************/
 
-ocargo.LevelEditor.InternalDecor = function(data, name) {
-    this.url = data.url;
+ocargo.LevelEditor.InternalDecor = function(name) {
     this.name = name;
+    this.image = null;
+    this.updateTheme();
 
-    var dimensions = findDecorDimensions(this.name);
-    this.image = paper.image(this.url, 0, 0, dimensions.width, dimensions.height);
-    
-    if(data.coordinate) {
-        this.coordinate = data.coordinate;
-    }
-    else {
-        var bBox = this.image.getBBox();
-        this.coordinate = new ocargo.Coordinate(0, 0);
-    }
-
-    this.image.transform('t' + this.coordinate.x + ',' + this.coordinate.y);
-    this.image.attr({'cursor':'pointer'});
-    setupDecorDragListeners(this);
-    
     ocargo.levelEditor.decor.push(this);
 }
 
 ocargo.LevelEditor.InternalDecor.prototype.getData = function() {
-    return {'coordinate': coordinate, 'url': url};
+    var bBox = this.image.getBBox();
+    return {'coordinate': new ocargo.Coordinate(bBox.x, bBox.y), 'url': url};
 }
 
-ocargo.LevelEditor.InternalDecor.prototype.destory = function() {
+ocargo.LevelEditor.InternalDecor.prototype.setCoordinate = function(coordinate) {
+    this.image.transform('t' + coordinate.x + ',' + coordinate.y);
+}
+
+ocargo.LevelEditor.InternalDecor.prototype.updateTheme = function() {
+
+    var description = ocargo.levelEditor.currentTheme.decor[this.name];
+    var newImage = paper.image(description.url, 0, 0, description.width, description.height);
+
+    if(this.image) {
+        console.log(this.image.matrix.toTransformString());
+        newImage.transform(this.image.matrix.toTransformString());
+        this.image.remove();
+    }
+
+    this.image = newImage;
+    this.image.attr({'cursor':'pointer'});
+    setupDecorDragListeners(this);
+}
+
+ocargo.LevelEditor.InternalDecor.prototype.destroy = function() {
     this.image.remove();
 }
+
+
 
 /******************/
 /* Initialisation */

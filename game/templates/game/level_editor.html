@@ -7,23 +7,47 @@
 {% block scripts %}
 {{block.super}}
 
-  <script> 
-    var DECOR = [];
-    {% for dec in decor %}
-      DECOR.push(
-        {'name': '{{dec.name}}', 'url': '{{dec.url}}', 'width': {{dec.width}}, 'height': {{dec.height}}});
-    {% endfor %}
-
-    var DECOR = JSON.stringify(DECOR);
-    var THEME = '{{theme.name}}';
-    var BACKGROUND_COLOR = '{{theme.background}}';
-    var SELECTED_COLOR = '{{theme.selected}}';
-    var BORDER = '{{theme.border}}';
-
+  <script>
     var BLOCKS = [];
-    {% for block in blocks %}
-      BLOCKS.push("{{block}}");
-    {% endfor %}
+    var THEMES =  [];
+
+    function initGlobals() {
+      {% for block in blocks %}
+        BLOCKS.push("{{block}}");
+      {% endfor %}
+
+      var themes = [];
+      {% for theme in themes %}
+        themes.push({"name":"{{theme.name}}",
+                     "border":"{{theme.border}}",
+                     "background":"{{theme.background}}",
+                     "selected":"{{theme.selected}}"});
+      {% endfor %}
+
+      var decor = [];
+      {% for dec in decor %}
+        decor.push({"id":"{{dec.id}}",
+                    "name":"{{dec.name}}",
+                    "url":"{{dec.url}}",
+                    "width":"{{dec.width}}",
+                    "height":"{{dec.height}}",
+                    "theme_name":themes[{{dec.theme_id}}-1].name});
+      {% endfor %}
+
+      
+      for(var i = 0; i < themes.length; i++) {
+        var theme = themes[i];
+        THEMES[theme.name] = theme;
+        THEMES[theme.name].decor = {};
+      }
+
+      for(var i = 0; i < decor.length; i++) {
+        var themeDecor = THEMES[decor[i].theme_name].decor;
+        themeDecor[decor[i].name] = decor[i];
+      }
+    }
+    
+    initGlobals();
   </script>
 
   <script src="/static/game/js/mobile-detect.min.js"></script>
@@ -46,11 +70,6 @@
   <script src="/static/game/js/pathFinder.js"></script>
   <script src="/static/game/js/trafficLight.js"></script>
   <script src="/static/game/js/destination.js"></script>
-
-  <!-- retrieves blockly images, bit hacky -->
-  <script>
-    
-  </script>
 
 {% endblock %}
 
@@ -145,13 +164,13 @@
           
           <div class="table">
             <div class="table_row">
-              <div class="table_cell"><p class="field_label">Name:</p></div>
-              <div class="table_cell"><input class="field_value" type="text" id="level_name" value="test_name"></div>
+              <div class="table_cell field_label"><p>Name:</p></div>
+              <div class="table_cell field_value"><input class="field_value" type="text" id="level_name" value="test_name"></div>
             </div>
 
             <div class="table_row">
-              <div class="table_cell"><p class="field_label">Max fuel:</p></div>
-              <div class="table_cell"><input class="field_value" type="number" id="max_fuel" value="50"></div>
+              <div class="table_cell field_label"><p class="field_label">Max fuel:</p></div>
+              <div class="table_cell field_value"><input class="field_value" type="number" id="max_fuel" value="50"></div>
             </div>
           </div>
           
@@ -187,16 +206,23 @@
         </div>
 
         <div id="tab-content-decor" class="tab-content">
-          <form name="themeForm" action="" method="post" action="" onChange="themeForm.submit()" id="themeForm">
-            {% csrf_token %}
-            {{form.classes.errors}}
-             Theme: {{themeForm.theme}}
-             {{message}}
-          </form>
-          <img id="bush" src="{{bush.url}}" width="50">
-          <img id="tree1" src="{{tree1.url}}" width="70">
-          <img id="tree2" src="{{tree2.url}}" width="70">
-          <img id="pond" src="{{pond.url}}" width="100"><br><br>
+          <div class="table">
+            <div class="table_row">
+              <div class="table_cell field_label"><p>Theme</p></div>
+              <div class="table_cell field_value">
+                <select id="theme_select">
+                  {% for theme in themes %}
+                    <option value="{{theme.name}}">{{theme.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <img id="bush" class="decor_button" src="{{bush.url}}" width="50">
+          <img id="tree1" class="decor_button" src="{{tree1.url}}" width="70">
+          <img id="tree2" class="decor_button" src="{{tree2.url}}" width="70">
+          <img id="pond" class="decor_button" src="{{pond.url}}" width="100"><br><br>
           <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
           <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
         </div>
@@ -229,23 +255,23 @@
         <div id="tab-content-random" class="tab-content">
           <div class="table">
             <div class="table_row">
-              <div class="table_cell"><p class="field_label">Size:</p></div>
-              <div class="table_cell"><input class="field_value" type="number" id="size" value="15" size="4" min="1" max="40"></div>
+              <div class="table_cell field_label"><p>Size:</p></div>
+              <div class="table_cell field_value"><input type="number" id="size" value="15" size="4" min="1" max="40"></div>
             </div>
 
             <div class="table_row">
-              <div class="table_cell"><p class="field_label">Branchiness:</p></div>
-              <div class="table_cell"><input class="field_value" type="number" id="branchiness" value="2" size="4" min="0" max="10"></div>
+              <div class="table_cell field_label"><p>Branchiness:</p></div>
+              <div class="table_cell field_value"><input type="number" id="branchiness" value="2" size="4" min="0" max="10"></div>
             </div>
 
             <div class="table_row">
-              <div class="table_cell"><p class="field_label">Loopiness:</p></div>
-              <div class="table_cell"><input class="field_value" type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
+              <div class="table_cell field_label"><p>Loopiness:</p></div>
+              <div class="table_cell field_value"><input type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
             </div>
 
             <div class="table_row">
-              <div class="table_cell"><p class="field_label">Curviness:</p></div>
-              <div class="table_cell"><input class="field_value" type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
+              <div class="table_cell field_label"><p>Curviness:</p></div>
+              <div class="table_cell field_value"><input type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
             </div>
           </div>
 

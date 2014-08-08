@@ -179,27 +179,11 @@ def level_editor(request):
 
     :template:`game/level_editor.html`
     """
-    message = ''
-    theme = Theme.objects.get(pk=1)
-    themeForm = LevelThemeForm(request.POST or None)
-
-    if request.method == 'POST' and themeForm.is_valid():
-        theme = Theme.objects.get(pk=themeForm.data.get('theme'))
-
-    decor = Decor.objects.filter(theme=theme)
-    characters = Character.objects.all()
-
     context = RequestContext(request, {
         'blocks': Block.objects.all(),
-        'decor': Decor.objects.filter(theme=theme),
-        'characters': characters,
-        'themeForm': themeForm,
-        'message': message,
-        'theme': theme,
-        'tree1': decor.get(name='tree1'),
-        'tree2': decor.get(name='tree2'),
-        'bush': decor.get(name='bush'),
-        'pond': decor.get(name='pond')
+        'decor': Decor.objects.all(),
+        'characters': Character.objects.all(),
+        'themes': Theme.objects.all()
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 

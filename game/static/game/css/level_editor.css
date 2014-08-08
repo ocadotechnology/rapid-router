@@ -48,14 +48,14 @@ input {
     vertical-align: middle;
 }
 
-.table_cell .field_label {
+.table_cell.field_label {
     width: 100px;
     margin: 0px;
     vertical-align: middle;
     margin-bottom: 0px;
 }
 
-.table_cell .field_value {
+.table_cell.field_value {
     width: 100px;
 }
 
