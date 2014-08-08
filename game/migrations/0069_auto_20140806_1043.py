@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attempt',
             name='student',
-            field=models.ForeignKey(default=0, to='portal.Student'),
+            field=models.ForeignKey(to='portal.Student', null=True, blank=True, default=None),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='workspace',
             name='owner',
-            field=models.ForeignKey(default=0, to='portal.Student'),
+            field=models.ForeignKey(to='portal.Student', null=True, blank=True, default=None),
             preserve_default=False,
         ),
     ]
