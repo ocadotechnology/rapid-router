@@ -1,21 +1,22 @@
 #wrapper {
-    border: 5px solid #8BD5EE;
+   /*border: 5px solid #8BD5EE;*/
     background-color: #8BD5EE;
-}
-
-#paper {
-    float:left;
-    width: auto;
-    height: 100%;
-    position: initial;
+    min-width: 100%;
 }
 
 #tools {
-    width: 380px;
+    width: 360px;
     height: 100%;
     float:left;
     border-right: 5px solid #8BD5EE;
 }
+
+#paper {
+    width: auto;
+    height: 100%;
+}
+
+
 
 #buttons {
     height: 16%;
@@ -30,33 +31,9 @@
     margin: 0px auto;
 }
 
-#name {
-    width: 100px;
-    height: 36px;
-    padding: 8px;
-    border: 1px solid #cccccc;
-    float: right;
-}
-
-#maxFuel {
-    width:100px;
-    float:right;
-}
-
 input {
     margin: 0;
     vertical-align: middle;
-}
-
-.table_cell.field_label {
-    width: 100px;
-    margin: 0px;
-    vertical-align: middle;
-    margin-bottom: 0px;
-}
-
-.table_cell.field_value {
-    width: 100px;
 }
 
 /********************/
@@ -73,6 +50,17 @@ input {
 
 .table_cell {
     display: table-cell;
+}
+
+.table_cell.field_label {
+    width: 100px;
+    margin: 0px;
+    vertical-align: middle;
+    margin-bottom: 0px;
+}
+
+.table_cell.field_value {
+    width: 100px;
 }
 
 

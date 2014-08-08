@@ -1,3 +1,10 @@
+#paper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 50%;
+}
+
 #programmingConsole {
     position: absolute;
     left: 0;
@@ -158,25 +165,25 @@ img.control{
 #go  {
     left: 60px;
     bottom: 0px;
-    background-image : url('/static/game/image/arrow_go.svg');
+    background-image : url('/static/game/image/actions/go.svg');
 }
 
 #turnLeft {
     left: 10px;
     bottom: 0px;
-    background-image : url('/static/game/image/arrow_left.svg');
+    background-image : url('/static/game/image/actions/left.svg');
 }
 
 #turnRight {
     left: 110px;
     bottom: 0px;
-    background-image : url('/static/game/image/arrow_right.svg');
+    background-image : url('/static/game/image/actions/right.svg');
 }
 
 #moveForward {
     left: 60px;
     bottom: 50px;
-    background-image : url('/static/game/image/arrow_forward.svg');
+    background-image : url('/static/game/image/actions/forward.svg');
 }
 
 /***************/

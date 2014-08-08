@@ -413,7 +413,7 @@ function drawDeadEndRoad(node) {
     var prevFlipped = translate(previousNode.coordinate);
     var flipped = translate(node.coordinate);
 
-    var road = paper.image('/static/game/image/roadTile_deadEnd.svg',
+    var road = paper.image('/static/game/image/road_tiles/dead_end.svg',
         flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
     if (roadLetters === 'H' && prevFlipped.x < flipped.x) {
@@ -433,29 +433,20 @@ function drawSingleRoadSegment(previousNode, node, nextNode) {
     var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
 
     var flipped = translate(node.coordinate);
-    var road;
+    var roadSrc = '/static/game/image/road_tiles/' + (roadLetters === 'H' || roadLetters ==='V' ? 'straight' : 'turn') + '.svg';
+    var road = paper.image(roadSrc, flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+
     if (roadLetters === 'H') {
-        road = paper.image('/static/game/image/roadTile_straight.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
         road.rotate(90);
     }
-    else if (roadLetters === 'V') {
-        road = paper.image('/static/game/image/roadTile_straight.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+    else if (roadLetters === 'UL') {
+        road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
-    else {
-        road = paper.image('/static/game/image/roadTile_turn.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-
-        if (roadLetters === 'UL') {
-            road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
-        else if (roadLetters === 'UR') {
-            road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
-        else if (roadLetters === 'DR') {
-            road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
+    else if (roadLetters === 'UR') {
+        road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters === 'DR') {
+        road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
 
     return road;
@@ -493,7 +484,7 @@ function drawTJunction(node) {
         rotation = 270;
     }
 
-    var road = paper.image('/static/game/image/roadTile_TJunction.svg',
+    var road = paper.image('/static/game/image/road_tiles/t_junction.svg',
         flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
     road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
 
@@ -503,7 +494,7 @@ function drawTJunction(node) {
 function drawCrossRoads(node) {
     var flipped = translate(node.coordinate);
 
-    return paper.image('/static/game/image/roadTile_crossRoads.svg',
+    return paper.image('/static/game/image/road_tiles/crossroads.svg',
             flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 }
 

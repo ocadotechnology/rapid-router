@@ -31,7 +31,7 @@ function initCustomBlocksDescription() {
             this.setColour(160);
             this.appendDummyInput()
                 .appendField('move forwards')
-                .appendField(new Blockly.FieldImage('/static/game/image/arrow_forward.svg',
+                .appendField(new Blockly.FieldImage('/static/game/image/actions/forward.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -49,7 +49,7 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
                                                     40,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/arrow_left.svg',
+                .appendField(new Blockly.FieldImage('/static/game/image/actions/left.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -67,7 +67,7 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
                                                     31,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/arrow_right.svg',
+                .appendField(new Blockly.FieldImage('/static/game/image/actions/right.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -85,7 +85,7 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
                                                     14,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/arrow_u.svg',
+                .appendField(new Blockly.FieldImage('/static/game/image/actions/turn_around.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -103,7 +103,7 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
                                                     62,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/wait.svg',
+                .appendField(new Blockly.FieldImage('/static/game/image/actions/wait.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -121,7 +121,7 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
                                                     45,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/deliver.svg',
+                .appendField(new Blockly.FieldImage('/static/game/image/actions/deliver.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);

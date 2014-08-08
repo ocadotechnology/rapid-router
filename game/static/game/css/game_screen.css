@@ -5,11 +5,6 @@
 }
 
 #paper {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    border: 0;
-    width: 50%;
     height: 100%;
     overflow: auto;
     z-index: 6;
