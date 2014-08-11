@@ -6,7 +6,6 @@
 {% endblock %}
 
 {% block top_bar_menu %}
-    {% menu_item link='/home' name='Home' %}
     {% if user.is_authenticated %}
         {% menu_item link='/game' name='Game' %}
         {% menu_item link='/game/level_editor' name='Create' %}
@@ -15,8 +14,8 @@
 {% endblock top_bar_menu %}
 
 {% block top_bar_right_menu %}
+    {% menu_item link='/' name='Portal' %}
     {% if user.is_authenticated %}
-        {% menu_item link='/feedback' name='Feedback' %}
         {% if user.is_staff %}
             {% menu_item link='/admin' name='Admin' %}
         {% endif %}
