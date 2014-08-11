@@ -18,7 +18,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from forms import *
 from game import random_road
-from models import Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme
+from models import Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
 from portal.models import Class, Teacher
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
@@ -116,7 +116,7 @@ def level(request, level):
 
     if not lvl.default and lvl.owner is not None and \
             (request.user.is_anonymous() or (request.user != lvl.owner.user and
-            not lvl.shared_with.filter(pk=request.user.pk).exists())):
+             not lvl.shared_with.filter(pk=request.user.pk).exists())):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     lesson = 'description_level' + str(level)
@@ -136,14 +136,13 @@ def level(request, level):
 
     decor = LevelDecor.objects.filter(level=lvl)
     decorData = parseDecor(lvl.theme, decor)
-    house = Decor.objects.get(name='house', theme=lvl.theme).url
-    background = Decor.objects.get(name='tile1', theme=lvl.theme).url
+    house = getDecorElement('house', lvl.theme).url
+    cfc = getDecorElement('cfc', lvl.theme).url
+    background = getDecorElement('tile1', lvl.theme).url
+    character = lvl.character
 
-    #FIXME: figure out how to check for all this better
-    loggedInAsStudent = False
     if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and \
             hasattr(request.user.userprofile, 'student'):
-        loggedInAsStudent = True
         student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
@@ -156,8 +155,10 @@ def level(request, level):
         'blocks': blocks,
         'lesson': lesson,
         'decor': decorData,
+        'character': character,
         'background': background,
         'house': house,
+        'cfc': cfc,
         'hint': hint,
         'attempt': attempt
     })
@@ -178,25 +179,11 @@ def level_editor(request):
 
     :template:`game/level_editor.html`
     """
-    message = ''
-    theme = Theme.objects.get(pk=1)
-    themeForm = LevelThemeForm(request.POST or None)
-
-    if request.method == 'POST' and themeForm.is_valid():
-        theme = Theme.objects.get(pk=themeForm.data.get('theme'))
-
-    decor = Decor.objects.filter(theme=theme)
-
     context = RequestContext(request, {
         'blocks': Block.objects.all(),
-        'decor': Decor.objects.filter(theme=theme),
-        'themeForm': themeForm,
-        'message': message,
-        'theme': theme,
-        'tree1': decor.get(name='tree1'),
-        'tree2': decor.get(name='tree2'),
-        'bush': decor.get(name='bush'),
-        'pond': decor.get(name='pond')
+        'decor': Decor.objects.all(),
+        'characters': Character.objects.all(),
+        'themes': Theme.objects.all()
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
@@ -436,6 +423,15 @@ def level_new(request):
 #
 # Helper methods for rendering views in the game.
 #
+def getDecorElement(name, theme):
+    """ Helper method to get a decor element corresponding to the theme or a default one.
+    """
+    try:
+        return Decor.objects.get(name=name, theme=theme)
+    except ObjectDoesNotExist:
+        return Decor.objects.filter(name=name)[0]
+
+
 def decorToLevelDecor(level, decor):
     """ Helper method creating LevelDecor objects given a string of all decors.
     """

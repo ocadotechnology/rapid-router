@@ -131,7 +131,7 @@ ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
         type: 'GET',
         dataType: 'json',
         success: function(json) {
-        	callback(null, json);
+        	callback(null, json, json);
         },
         error: function(xhr,errmsg,err) {
         	callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);

@@ -15,9 +15,6 @@ class Block (models.Model):
 
 class Theme(models.Model):
     name = models.CharField(max_length=100)
-    background = models.CharField(max_length=7, default='#eff8ff')
-    border = models.CharField(max_length=7, default='#bce369')
-    selected = models.CharField(max_length=7, default='#70961f')
 
     def __unicode__(self):
         return self.name
@@ -29,6 +26,12 @@ class Decor(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     theme = models.ForeignKey(Theme, related_name='decor')
+
+
+class Character(models.Model):
+    name = models.CharField(max_length=100)
+    en_face = models.CharField(max_length=500)
+    top_down = models.CharField(max_length=500)
 
 
 class Level (models.Model):
@@ -49,6 +52,7 @@ class Level (models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
+    character = models.ForeignKey(Character, default=4)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)

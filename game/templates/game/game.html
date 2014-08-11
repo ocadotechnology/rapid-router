@@ -46,12 +46,15 @@
     var DECOR = {{decor|safe}};
     var BACKGROUND_URL = "{{background}}";
     var HOUSE_URL = "{{house}}";
+    var CFC_URL = "{{cfc}}"
     var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
     var LEVEL_ID = "{{level.id}}";
     var MODEL_SOLUTION = {{level.model_solution}};
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
     var BLOCKS =  [];
+    var CHARACTER_NAME = "{{character.name}}"
+    var CHARACTER_URL = "{{character.top_down}}"
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}
@@ -72,6 +75,7 @@
 {{block.super}}
   {% compress css %}
     <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/game_screen.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/codemirror.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/solarized.css' %}" rel="stylesheet" type="text/css">
   {% endcompress %}
@@ -90,7 +94,14 @@
         </div>
 
         <div id="console">
-          <h4 style="height:50px; line-height: 50px;">Console Output <button class="picture_button navigation_button" id="clear_console"> Clear Console</button></h4>
+          <h4 style="height:50px; line-height: 50px;">
+            Console Output
+
+            <button class="navigation_button" id="clear_console">
+              <image src="/static/game/image/icons/clear.svg"/>
+              <span>Clear console</span>
+            </button>
+          </h4>
           <textarea disabled="" id="consoleOutput"></textarea>
         </div>
 
@@ -107,35 +118,42 @@
   </div>
 
   <div id="side_menu" class="no-print unselectable">
-    <button class="picture_button menu_button" id="pause"></button>
-    <button class="picture_button menu_button" id="play"></button>
-    <button class="picture_button menu_button" id="stop"></button>
-    <button class="picture_button menu_button" id="resume"></button>
-    <button class="picture_button menu_button" id="step"></button>
+    <button class="svg_button menu_button" id="pause"></button>
+    <button class="svg_button menu_button" id="play"></button>
+    <button class="svg_button menu_button" id="stop"></button>
+    <button class="svg_button menu_button" id="resume"></button>
+    <button class="svg_button menu_button" id="step"></button>
 
-    <button class="picture_button menu_button" id="save"></button>
-    <button class="picture_button menu_button" id="load"></button>
-    <button class="picture_button menu_button" id="clear_program"></button>
+    <button class="svg_button menu_button" id="save"></button>
+    <button class="svg_button menu_button" id="load"></button>
+    <button class="svg_button menu_button" id="clear_program"></button>
 
-    <button class="picture_button menu_button" id="toggle_console"></button>
-    <button class="picture_button menu_button" id="big_code_mode"></button>
+    <button class="svg_button menu_button" id="toggle_console"></button>
+    <button class="svg_button menu_button" id="big_code_mode"></button>
 
-    <button class="picture_button menu_button" id="help"></button>
-    <button class="picture_button menu_button" id="muted"></button>
-    <button class="picture_button menu_button" id="unmuted"></button>
-    <button class="picture_button menu_button" id="quit"></button>
+    <button class="svg_button menu_button" id="help"></button>
+    <button class="svg_button menu_button" id="muted"></button>
+    <button class="svg_button menu_button" id="unmuted"></button>
+    <button class="svg_button menu_button" id="quit"></button>
   </div>
 
   <div class="no-print unselectable">
-    <button class="picture_button unselectable" id="show"></button>
-    <button class="picture_button unselectable" id="hide"></button>
+    <button class="navigation_button" id="show">
+      <image src="/static/game/image/icons/show.svg"/>
+      <span>Show</span>
+    </button>
+
+    <button class="navigation_button" id="hide">
+      <image src="/static/game/image/icons/hide.svg"/>
+      <span>Hide</span>
+    </button>
   </div>
 
   <div id="direct_drive" class="unselectable">
-    <button class="picture_button direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-    <button class="picture_button direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-    <button class="picture_button direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-    <button class="picture_button direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
   </div>
   
   <div id="fuelGauge" class="no-print unselectable">
@@ -158,7 +176,7 @@
 </div>
 
 <div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title"><img class="save_load_image" src='/static/game/image/menu_button_load.svg'/>Load</h2>
+  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'/>Load</h2>
   <p>Here you can load a previously saved program.</p>
   <div style="width:auto">
     <div class="scrolling-table-wrapper">
@@ -167,15 +185,22 @@
       </div>
     </div>
     <div>
-      <button class="picture_button navigation_button" id="deleteWorkspace">Delete</button>
-      <button class="picture_button navigation_button" id="loadWorkspace">Load</button>
+      <button class="navigation_button" id="deleteWorkspace">
+        <image src="/static/game/image/icons/clear.svg"/>
+        <span>Delete</span>
+      </button>
+
+      <button class="navigation_button" id="loadWorkspace">
+        <image src="/static/game/image/icons/load.svg"/>
+        <span>Load</span>
+      </button>
     </div>
   </div>
   <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
 </div>
 
 <div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title"><img class="save_load_image" src='/static/game/image/menu_button_save.svg'/>Save</h2>
+  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'/>Save</h2>
   <p>Here you can save your program.</p>
   <div>
     <div class="scrolling-table-wrapper">
@@ -185,7 +210,11 @@
     </div>
     <div>
       <input id="workspaceNameInput"/>
-      <button class="picture_button navigation_button" id="saveWorkspace">Save</button>
+
+      <button class="navigation_button" id="saveWorkspace">
+        <image src="/static/game/image/icons/save.svg"/>
+        <span>Save</span>
+      </button>
     </div>
   </div>
   <a class="close-reveal-modal" id="close-load-modal">&#215;</a>

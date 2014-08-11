@@ -1,100 +1,131 @@
-#paper {
-    background: #a8d44a;
-}
-
-#toolbox {
-    width: 610px;
-    margin-left: 10px;
+#wrapper {
+    padding: 5px;
 }
 
 #tools {
-    width: 50%;
+    float:left;
+    width: 380px;
+    height:100%;
+    padding-right: 10px;
 }
 
-.tabs input[type=radio] {
-    top: -9999px;
-    left: -9999px;
-    position: absolute;
+#paper {
+    height:100%;
+    overflow:scroll;
 }
 
-.tabs input[type="radio"] + label {
-    margin-left: 0;
-    margin-right: 0;
+#buttons {
+    height: 16%;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.tabs {
-    text-align: center;
-    float: none;
-    list-style: none;
-    position: relative;
-    margin: 10px auto;
+#toolbox {
+    height: 84%;
+    float:center;
+    margin: 0px auto;
 }
 
-#name {
-    height: 36px;
-    padding: 8px;
-    border: 1px solid #cccccc;
+input {
+    margin: 0;
+    vertical-align: middle;
 }
 
-.tabs li {
+/********************/
+/* Table  structure */
+/********************/
+
+.table {
+    display: table;
+}
+
+.table_row {
+    display: table-row;
+}
+
+.table_cell {
+    display: table-cell;
+}
+
+.table_cell.field_label {
+    width: 100px;
+    margin: 0px;
+    vertical-align: middle;
+    margin-bottom: 0px;
+}
+
+.table_cell.field_value {
+    width: 100px;
+}
+
+
+/*****************/
+/* Tab structure */
+/*****************/
+
+#tabs {
+    height: 100%;
+    width: 20%;
     float: left;
 }
 
-.tabs label {
+#tab_contents {
+    height: 100%;
+    width: 80%;
+    float:left;
+}
+
+
+.tab {
+    list-style: none;
+    width: 100%;
+    height: 40px;
+}
+
+.tab input[type=radio] {
+    display:none;
+    margin: 0;
+}
+
+.tab input[type=radio]+label {
     text-align: center;
     margin: 0;
     display: block;
-    padding: 10px 20px;
-    color: #008CBA;
+    padding: 10px 0px 10px 0px;
     font-weight: bold;
-    background: #8BD5EE;
-    width: 200px;
-    border: 3px #8BD5EE;
-    border-top-style: solid;
-    border-right-style: solid;
-    border-left-style: solid;
+    width: 100%;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
 
-.tabs label:hover {
+.tab label:hover {
     background: #A6DCEE;
     top: 0;
 }
 
-[id^=tab]:checked + label {
+.tab input[type=radio]:checked + label {
     background: white;
     top: 0;
-}
-
-[id^=tab]:checked ~ [id^=tab-content] {
-    display: block;
 }
 
 .tab-content {
     z-index: 2;
     display: none;
     text-align: left;
-    width: 600px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
     font-size: 20px;
     line-height: 140%;
-    padding: 10px 30px;
-    left: 0;
+    padding: 20px 0px 0px 20px;
     background-color: white;
-    position: absolute;
-    border: 3px #8BD5EE;
-    border-right-style: solid;
-    border-bottom-style: solid;
-    border-left-style: solid;
     box-sizing: border-box;
     -webkit-animation-duration: 0.5s;
     -o-animation-duration: 0.5s;
     -moz-animation-duration: 0.5s;
     animation-duration: 0.5s;
-    max-height: 500px;
     overflow: auto;
 }
 
@@ -103,48 +134,69 @@
     border: none;
 }
 
-#tab-content-arrows > p,
+#tab-content-map > p,
 #tab-content-random > p {
     color: #008CBA;
     font-weight: bold;
 }
 
-#name {
-    float: right;
+/**************/
+/* Blocks tab */
+/**************/
+
+.table_cell .block_image {
+    vertical-align: top;
 }
 
-#maxFuel {
-    width:100px;
-    float: right;
-}
-
-#branchiness,
-#loopiness,
-#curviness {
-    width:100px;
-    float: right;
-}
-
-#export {
+.block_image {
+    width: 180px;
+    height: 36px;
     cursor: pointer;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-    font-weight: normal !important;
-    line-height: normal;
-    margin: 0 10px 1.25rem 0;
-    position: relative;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    padding: 1.0625rem 2rem 1rem;
-    font-size: 1rem;
-    background-color: #008cba;
-    color: white;
-    -webkit-transition: background-color 300ms ease-out;
-    -moz-transition: background-color 300ms ease-out;
-    -o-transition: background-color 300ms ease-out;
-    transition: background-color 300ms ease-out;
-    -webkit-appearance: none;
-    border: none;
+    margin-bottom: 20px;
+}
+
+.block_image.large {
+    height: 66px;
+    cursor: pointer;
+}
+
+input[type="checkbox"].block_checkbox {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.block_image text {
+    cursor: pointer;
+}
+
+/******************/
+/* Characters tab */
+/******************/
+
+.character  {
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+/********************/
+/* Load/save modals */
+/********************/
+
+#own_levels,
+#shared_levels {
+    margin-top: 10px;
     float: left;
-    overflow: hidden;
+}
+
+#own_levels {
+    margin-right: 80px;
+}
+
+#deleteLevel {
+    margin-right: 20px;
+}
+
+.scrolling-table {
+    width: 220px;
+    max-width: 350px;
 }

@@ -22,26 +22,12 @@ var ROTATION_OFFSET_Y = VAN_WIDTH - 20;
 var DECOR_SIZE = 100;
 
 var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
-var EDGE_GAP = (GRID_SPACE_SIZE - ROAD_WIDTH) / 2;
-var ROAD_COLOUR = '#222';
-var ROAD_ATTR = {
-    fill: ROAD_COLOUR,      
-    'stroke': '#aaa'
-};
-
-var ROAD_ATTR_JUNCTION = {
-    fill: ROAD_COLOUR,
-    'stroke': 'none'
-};
-
-var ROAD_MARKER_ATTR = {
-    'stroke': 'white'
-};
 
 var DESTINATION_NOT_VISITED_COLOUR = 'yellow';
 var DESTINATION_VISITED_COLOUR = 'green';
 
-var DASH = '10';
+var FRONT_VIEW  = "front_view";
+var TOP_VIEW = "top_view";
 
 var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
 
@@ -49,6 +35,10 @@ var vanImages = {};
 var lightImages = {};
 var destinationImages = {};
 var roadImages = [];
+
+var THEME_PALETTES = {"grass": {"background":"#bce369", "border":"#70961f", "selected":"#a0c53a"},
+                      "snow":  {"background":"#b3deff", "border":"#83c9fe", "selected":"#eff8ff"},
+                      "farm":  {"background":"#edd56b", "border":"#67564c", "selected":"#413127"}};
 
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;
@@ -155,7 +145,6 @@ function generateButtonHelp(){
 		<p><img src="/static/game/image/buttons/menu/play.svg" alt="Play" /> Plays your program</p>\
 		<p><img src="/static/game/image/buttons/menu/pause.svg" alt="Pause" /> Pauses your program</p>\
 		<p><img src="/static/game/image/buttons/menu/stop.svg" alt="Stop" /> Stops your program</p>\
-		<p><img src="/static/game/image/buttons/menu/reset.svg" alt="Reset" /> Resets your van and program back to the start</p>\
 		<p><img src="/static/game/image/buttons/menu/step.svg" alt="Step" /> Steps to the next command in your program</p>\
 		<p><img src="/static/game/image/buttons/menu/save.svg" alt="Save" /> Saves your program</p>\
 		<p><img src="/static/game/image/buttons/menu/load.svg" alt="Load" /> Loads your program</p>\
@@ -202,7 +191,7 @@ function createCFC(position) {
     var initialX = calculateInitialX(position.currentNode);
     var initialY = calculateInitialY(position.currentNode);
 
-    var cfc = paper.image('/static/game/image/OcadoCFC_no_road.svg', initialX - 95, initialY - 25, 100, 107);
+    var cfc = paper.image(CFC_URL, initialX - 95, initialY - 25, 100, 107);
 
     var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
     rotateElementAroundCentreOfGridSpace(cfc, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
@@ -215,7 +204,7 @@ function renderDecor(decor) {
         var obj = JSON.parse(decor[i]);
         var coord = obj['coordinate'];
         var width = obj['width'];
-        var height = obj['height']
+        var height = obj['height'];
         paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, 
             width, height);
     }
@@ -225,7 +214,7 @@ function renderDecor(decor) {
 /** Traffic light rendering **/
 /*****************************/
 
-function renderTrafficLights(trafficLights, draggable) {
+function renderTrafficLights(trafficLights) {
     for (var i = 0; i < trafficLights.length; i++) {
         var trafficLight = trafficLights[i];
         var sourceCoordinate = trafficLight.sourceNode.coordinate;
@@ -427,7 +416,7 @@ function drawDeadEndRoad(node) {
     var prevFlipped = translate(previousNode.coordinate);
     var flipped = translate(node.coordinate);
 
-    var road = paper.image('/static/game/image/roadTile_deadEnd.svg',
+    var road = paper.image('/static/game/image/road_tiles/dead_end.svg',
         flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
     if (roadLetters === 'H' && prevFlipped.x < flipped.x) {
@@ -447,29 +436,20 @@ function drawSingleRoadSegment(previousNode, node, nextNode) {
     var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
 
     var flipped = translate(node.coordinate);
-    var road;
+    var roadSrc = '/static/game/image/road_tiles/' + (roadLetters === 'H' || roadLetters ==='V' ? 'straight' : 'turn') + '.svg';
+    var road = paper.image(roadSrc, flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+
     if (roadLetters === 'H') {
-        road = paper.image('/static/game/image/roadTile_straight.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
         road.rotate(90);
     }
-    else if (roadLetters === 'V') {
-        road = paper.image('/static/game/image/roadTile_straight.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+    else if (roadLetters === 'UL') {
+        road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
-    else {
-        road = paper.image('/static/game/image/roadTile_turn.svg',
-            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-
-        if (roadLetters === 'UL') {
-            road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
-        else if (roadLetters === 'UR') {
-            road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
-        else if (roadLetters === 'DR') {
-            road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
-        }
+    else if (roadLetters === 'UR') {
+        road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+    }
+    else if (roadLetters === 'DR') {
+        road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
     }
 
     return road;
@@ -481,9 +461,6 @@ function drawTJunction(node) {
     var node3 = node.connectedNodes[2];
 
     var flipped = translate(node.coordinate);
-    var flipped1 = translate(node1.coordinate);
-    var flipped2 = translate(node2.coordinate);
-    var flipped3 = translate(node3.coordinate);
 
     var letters12 = getRoadLetters(node1.coordinate, node.coordinate, node3.coordinate);
     var letters13 = getRoadLetters(node1.coordinate, node.coordinate, node2.coordinate);
@@ -510,7 +487,7 @@ function drawTJunction(node) {
         rotation = 270;
     }
 
-    var road = paper.image('/static/game/image/roadTile_TJunction.svg',
+    var road = paper.image('/static/game/image/road_tiles/t_junction.svg',
         flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
     road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
 
@@ -519,17 +496,20 @@ function drawTJunction(node) {
 
 function drawCrossRoads(node) {
     var flipped = translate(node.coordinate);
-    
-    var road = paper.image('/static/game/image/roadTile_crossRoads.svg',
-        flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
-    return road;
+    return paper.image('/static/game/image/road_tiles/crossroads.svg',
+            flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 }
 
 
 /*********************************/
 /** Van rendering and animation **/
 /*********************************/
+
+function getCharacterImageURL(characterName, view) {
+    return '/static/game/image/characters/'  + view + '/' + name + ".svg";
+}
+
 
 function renderVans(position, numVans) {
     for (var i = 0; i < numVans; i++) {
@@ -542,7 +522,7 @@ function createVanImage(position, vanId) {
     var initialX = calculateInitialX(position.currentNode);
     var initialY = calculateInitialY(position.currentNode);
 
-    var imageStr = (vanId % 2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+    var imageStr = (vanId % 2 == 0) ? CHARACTER_URL : '/static/game/image/characters/top_view/Van2.svg';
     var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
 
     var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
@@ -704,6 +684,9 @@ function crash(vanID, animationLength, previousNode, currentNode, attemptedActio
 
     function animateExplosion() {
         
+        if (CHARACTER_NAME !== "Van") {
+            return;
+        }
         var bbox = vanImage.getBBox();
 
         var x = bbox.x + bbox.width/2;

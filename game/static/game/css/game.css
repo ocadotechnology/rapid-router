@@ -1,14 +1,11 @@
-.top-bar {
-    display: none;
-}
-
-#wrapper {
-    position: fixed;
-    overflow: auto;
-    left: 0;
-    right: 0;
+#paper {
+    position: absolute;
     top: 0;
-    bottom: 0;
+    left: 50%;
+    width: 50%;
+    height: 100%;
+    overflow: auto;
+    z-index: 6;
 }
 
 #programmingConsole {
@@ -18,33 +15,6 @@
     width: 50%;
     height: 100%;
     overflow: hidden;
-}
-
-#paper {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    border: 0;
-    width: 50%;
-    height: 100%;
-    overflow: auto;
-    z-index: 6;
-}
-
-.col {
-    float: left;
-}
-
-.ocargo-modal-mainText{
-    font-size: 1.2rem !important;
-}
-.ocargo-modal-lead {
-    font-size: 1.4rem !important;
-}
-
-.ocargo-modal-mainText > #hintText,
-.ocargo-modal-mainText > #hintBtnPara {
-	margin: 2rem 1rem 0;
 }
 
 #fuelGauge {
@@ -84,51 +54,6 @@ img.control{
     }
 }
 
-.unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.picture_button {
-    background-repeat: no-repeat;
-    background-position: center;
-    display: inline;
-    text-indent: 200%;
-    white-space: nowrap;
-    cursor: pointer;
-    background-color: transparent;
-    padding: 2px;
-    margin-bottom: 0rem;
-    transition: background-size 0.3s;
-}
-
-.picture_button:hover,
-.picture_button:focus {
-    transition: background-size 0.3s;
-    background-color: transparent;
-    border: none;
-}
-
-.picture_button[disabled],
-.picture_button[disabled]:hover {
-    background-color: transparent;
-}
-
-.navigation_button {
-    width: 126px;
-    height: 52px;
-    background-size: 120px 50px;
-    position: relative;
-}
-
-.navigation_button:hover {
-    background-size: 125px 52px;
-}
-
 /******************/
 /* Python console */
 /******************/
@@ -137,7 +62,8 @@ img.control{
     position:absolute;
     display: none;
     height: 100%;
-    width:90%;
+    width:93
+    %;
     overflow: auto;
     padding: 15px;
     left:46px;
@@ -148,14 +74,16 @@ img.control{
     max-height: 300px;
     max-width: 100%;
     min-height: 250px;
-    min-width: 100%;
     overflow: auto;
     padding: 5px;
     margin-bottom: 20px;
 }
 
+#editor {
+    min-width: 0%;
+}
+
 #clear_console {
-    background-image : url('/static/game/image/buttons/navigation/clear.svg');
     float: right;
     margin-bottom: 0px
 }
@@ -169,27 +97,10 @@ img.control{
 #show {
     position: absolute;
     left: 50%;
-    width: 105px;
-    height: 40px;
     z-index: 7;
     margin-top: 2px;
     margin-left: 5px;
-    background-size: 100px 38px;
 }
-
-#hide:hover,
-#show:hover {
-    background-size: 105px 40px;
-}
-
-#hide {
-    background-image : url('/static/game/image/buttons/navigation/hide.svg');
-}
-
-#show {
-    background-image : url('/static/game/image/buttons/navigation/show.svg');
-}
-
 
 /* Central slider div */
 #consoleSlider {
@@ -213,40 +124,18 @@ img.control{
     padding-left: 10px;
 }
 
-.scrolling-table-wrapper {
-    position: relative;
-}
-
-.scrolling-table {
-    max-height: 200px;
-    width: 350px;
-    max-width: 350px;
-    overflow: auto;
-}
-
 #saveWorkspaceTable,
 #loadWorkspaceTable {
     width: 100%;
     cursor: pointer;
 }
 
-
 #loadWorkspace {
-    background-image: url('/static/game/image/buttons/navigation/load.svg');
     margin-left: 20px;
 }
 
 #saveWorkspace {
-    background-image: url('/static/game/image/buttons/navigation/save.svg');
     margin-left: 20px;
-}
-
-#deleteWorkspace {
-    background-image: url('/static/game/image/buttons/navigation/delete.svg');
-}
-
-.save_load_image {
-    margin-right: 20px;
 }
 
 /******************/
@@ -279,25 +168,25 @@ img.control{
 #go  {
     left: 60px;
     bottom: 0px;
-    background-image : url('/static/game/image/arrow_go.svg');
+    background-image : url('/static/game/image/actions/go.svg');
 }
 
 #turnLeft {
     left: 10px;
     bottom: 0px;
-    background-image : url('/static/game/image/arrow_left.svg');
+    background-image : url('/static/game/image/actions/left.svg');
 }
 
 #turnRight {
     left: 110px;
     bottom: 0px;
-    background-image : url('/static/game/image/arrow_right.svg');
+    background-image : url('/static/game/image/actions/right.svg');
 }
 
 #moveForward {
     left: 60px;
     bottom: 50px;
-    background-image : url('/static/game/image/arrow_forward.svg');
+    background-image : url('/static/game/image/actions/forward.svg');
 }
 
 /***************/
