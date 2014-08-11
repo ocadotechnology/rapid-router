@@ -6,9 +6,9 @@
 {% endblock %}
 
 {% block top_bar_menu %}
+    {% menu_item link='/game' name='Game' %}
+    {% menu_item link='/game/level_editor' name='Create' %}
     {% if user.is_authenticated %}
-        {% menu_item link='/game' name='Game' %}
-        {% menu_item link='/game/level_editor' name='Create' %}
         {% menu_item link='/game/scoreboard' name='Scoreboard' %}
     {% endif %}
 {% endblock top_bar_menu %}
