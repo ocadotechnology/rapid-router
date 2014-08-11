@@ -1,22 +1,18 @@
 #wrapper {
-   /*border: 5px solid #8BD5EE;*/
-    background-color: #8BD5EE;
-    min-width: 100%;
+    padding: 5px;
 }
 
 #tools {
-    width: 360px;
-    height: 100%;
     float:left;
-    border-right: 5px solid #8BD5EE;
+    width: 380px;
+    height:100%;
+    padding-right: 10px;
 }
 
 #paper {
-    width: auto;
-    height: 100%;
+    height:100%;
+    overflow:scroll;
 }
-
-
 
 #buttons {
     height: 16%;
@@ -71,7 +67,6 @@ input {
 #tabs {
     height: 100%;
     width: 20%;
-    background: #8BD5EE;
     float: left;
 }
 
@@ -98,12 +93,8 @@ input {
     margin: 0;
     display: block;
     padding: 10px 0px 10px 0px;
-    color: #008CBA;
     font-weight: bold;
-    background: #8BD5EE;
     width: 100%;
-    border: 3px #8BD5EE;
-    border-style: solid;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;

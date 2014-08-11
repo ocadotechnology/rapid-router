@@ -6,6 +6,26 @@
 
 {% block scripts %}
 {{block.super}}
+  <script src="/static/game/js/mobile-detect.min.js"></script>
+  <script src="/static/game/js/raphael.js"></script>
+  <script src="/static/game/js/drawing.js"></script> 
+
+  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
+
+  <script src="/static/game/js/messages.js"></script>
+  <script src="/static/game/js/saving.js"></script>
+  <script src="/static/game/js/level_editor.js"></script>
+  <script src="/static/game/js/coordinate.js"></script>
+  <script src="/static/game/js/node.js"></script>
+  <script src="/static/game/js/map.js"></script>
+  <script src="/static/game/js/pathFinder.js"></script>
+  <script src="/static/game/js/trafficLight.js"></script>
+  <script src="/static/game/js/destination.js"></script>
 
   <script>
     var BLOCKS = [];
@@ -18,10 +38,11 @@
 
       var themes = [];
       {% for theme in themes %}
-        themes.push({"name":"{{theme.name}}",
-                     "border":"{{theme.border}}",
-                     "background":"{{theme.background}}",
-                     "selected":"{{theme.selected}}"});
+        var name = "{{theme.name}}";
+        themes.push({"name": name,
+                     "border": THEME_PALETTES[name].border,
+                     "background": THEME_PALETTES[name].background,
+                     "selected": THEME_PALETTES[name].selected});
       {% endfor %}
 
       var decor = [];
@@ -49,28 +70,6 @@
     
     initGlobals();
   </script>
-
-  <script src="/static/game/js/mobile-detect.min.js"></script>
-  <script src="/static/game/js/raphael.js"></script>
-  <script src="/static/game/js/drawing.js"></script> 
-
-  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
-
-  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
-
-  <script src="/static/game/js/messages.js"></script>
-  <script src="/static/game/js/saving.js"></script>
-  <script src="/static/game/js/level_editor.js"></script>
-  <script src="/static/game/js/coordinate.js"></script>
-  <script src="/static/game/js/node.js"></script>
-  <script src="/static/game/js/map.js"></script>
-  <script src="/static/game/js/pathFinder.js"></script>
-  <script src="/static/game/js/trafficLight.js"></script>
-  <script src="/static/game/js/destination.js"></script>
-
 {% endblock %}
 
 {% block css %}
@@ -80,8 +79,13 @@
 {% endblock %}
 
 {% block content %}
+
+<div>
+  
+</div>
+
 <div id="wrapper">
-  <span id="tools" class="col unselectable">
+  <div id="tools" class="col" unselectable>
 
     <div id="buttons" class="table unselectable">
       <div class="table_row">
@@ -283,8 +287,8 @@
 
       </div>
     </div>
-  </span>
-  <span id="paper" class="col" style="background-color:{{theme.background}}"></span>
+  </div>
+  <div id="paper"></div>
 </div>
 
 <div id="myModal" class="ocargo-modal reveal-modal" data-reveal>

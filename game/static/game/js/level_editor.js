@@ -217,6 +217,8 @@ ocargo.LevelEditor.prototype.setTheme = function(theme) {
     $('.decor_button').each(function(index, element) {
         element.src = theme.decor[element.id].url;
     });
+
+    $('#wrapper').css({'background-color': theme.background});
 }
 
 function sortNodes(nodes) {
@@ -887,7 +889,7 @@ function setupOtherMenuListeners() {
         // Create decor data
         var decorData = [];
         for(var i = 0; i < ocargo.levelEditor.decor.length; i++) {
-            decor.push(ocargo.levelEditor.decor[i].getData());
+            decorData.push(ocargo.levelEditor.decor[i].getData());
         }
         decorData = JSON.stringify(decorData);
 
@@ -909,7 +911,7 @@ function setupOtherMenuListeners() {
                 blockTypes: blockData,
                 decor: decorData,
                 destinations: destinations,
-                theme: ocargo.levelEditor.theme,
+                theme: ocargo.levelEditor.currentTheme.name,
                 name: name,
                 maxFuel: maxFuel,
                 
@@ -1212,7 +1214,7 @@ function setupTrafficLightDragListeners(trafficLight) {
 
         var bBox = image.getBBox();
         var paperPosition = $('#paper').position();
-
+        console.log(paperPosition);
         originX = x - paperPosition.left - bBox.width/2;
         originY = y - paperPosition.top - bBox.height/2;
 
@@ -1343,7 +1345,7 @@ ocargo.LevelEditor.InternalDecor = function(name) {
 
 ocargo.LevelEditor.InternalDecor.prototype.getData = function() {
     var bBox = this.image.getBBox();
-    return {'coordinate': new ocargo.Coordinate(bBox.x, bBox.y), 'url': url};
+    return {'coordinate': new ocargo.Coordinate(bBox.x, bBox.y), 'name': this.name};
 }
 
 ocargo.LevelEditor.InternalDecor.prototype.setCoordinate = function(coordinate) {
@@ -1369,8 +1371,6 @@ ocargo.LevelEditor.InternalDecor.prototype.updateTheme = function() {
 ocargo.LevelEditor.InternalDecor.prototype.destroy = function() {
     this.image.remove();
 }
-
-
 
 /******************/
 /* Initialisation */

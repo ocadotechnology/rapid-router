@@ -36,6 +36,9 @@ var lightImages = {};
 var destinationImages = {};
 var roadImages = [];
 
+var THEME_PALETTES = {"grass": {"background":"#bce369", "border":"#70961f", "selected":"#a0c53a"},
+                      "snow":  {"background":"#b3deff", "border":"#83c9fe", "selected":"#eff8ff"},
+                      "farm":  {"background":"#edd56b", "border":"#67564c", "selected":"#413127"}};
 
 function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
     var transformation = '... r' + degrees;

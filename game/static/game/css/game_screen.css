@@ -4,12 +4,6 @@
     display: none;
 }
 
-#paper {
-    height: 100%;
-    overflow: auto;
-    z-index: 6;
-}
-
 #wrapper {
     position: fixed;
     overflow: auto;
