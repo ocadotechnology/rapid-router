@@ -401,6 +401,9 @@ ocargo.LevelEditor.prototype.clearMarkings = function() {
     if(this.destinationNode) {
         this.markAsDestination(this.destinationNode.coordinate);
     }
+
+    this.bringTrafficLightsToFront();
+    this.bringDecorToFront();
 };
 
 ocargo.LevelEditor.prototype.markTentativeRoad = function(coord) {
@@ -1071,7 +1074,7 @@ function handleMouseUp(this_rect, segment) {
     }
 }
 
-function setupDecorDragListeners(decor) {
+function setupDecorListeners(decor) {
     var image = decor.image;
 
     var originX;
@@ -1129,9 +1132,15 @@ function setupDecorDragListeners(decor) {
     };
 
     image.drag(onDragMove, onDragStart, onDragEnd);
+
+    image.click(function() {
+        if(ocargo.levelEditor.inDeleteDecorMode()) {
+            decor.destroy();
+        }
+    });
 };
 
-function setupTrafficLightDragListeners(trafficLight) {
+function setupTrafficLightListeners(trafficLight) {
 
     var image = trafficLight.image;
 
@@ -1140,12 +1149,12 @@ function setupTrafficLightDragListeners(trafficLight) {
     var controlledCoord;
 
     // Current position of the element in paper coordinates
-    var paperX = 0;                                 
-    var paperY = 0;
+    var paperX;                                 
+    var paperY;
 
     // Where the drag started in paper coordinates
-    var originX = 0;                                 
-    var originY = 0;
+    var originX;                                 
+    var originY;
 
     // Size of the paper
     var paperWidth;
@@ -1156,11 +1165,10 @@ function setupTrafficLightDragListeners(trafficLight) {
     var imageHeight;
 
     // Orientation and rotation transformations
-    var s = 0;
-    var rotation = 0;
+    var scaling;
+    var rotation;
 
     var moved = false;
-    var firstMove = false;
 
     function onDragMove(dx, dy) {
         // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
@@ -1193,7 +1201,7 @@ function setupTrafficLightDragListeners(trafficLight) {
         }
 
         // And perform the updatee
-        image.transform('t' + paperX + ',' + paperY + 'r' + rotation + s);
+        image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
 
 
         // Unmark the squares the light previously occupied
@@ -1210,7 +1218,7 @@ function setupTrafficLightDragListeners(trafficLight) {
             ocargo.levelEditor.markAsDestination(ocargo.levelEditor.destinationNode.coordinate);
         }
 
-        // Now calculate which squares it is currently occupying
+        // Now calculate the source coordinate
         var box = image.getBBox();
         var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
         var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
@@ -1230,7 +1238,6 @@ function setupTrafficLightDragListeners(trafficLight) {
                 break;
         }
 
-        // Find source position in map coordinates
         var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
         var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
         sourceCoord = new ocargo.Coordinate(x,y);
@@ -1282,10 +1289,9 @@ function setupTrafficLightDragListeners(trafficLight) {
 
     function onDragStart(x, y) {
         moved = false;
-        firstMove = true;
 
-        s = getOrientation(image);
-        rotation = getRotation(image);
+        scaling = getScaling(image);
+        rotation = (image.matrix.split().rotate + 360) % 360;
         
         console.log("Starting:",image.matrix.toTransformString());
 
@@ -1338,22 +1344,24 @@ function setupTrafficLightDragListeners(trafficLight) {
 
     image.drag(onDragMove, onDragStart, onDragEnd);
     
-    image.node.ondblclick = function() {
+    image.dblclick(function() {
         image.transform('...r90');
-    };
+    });
 
-    function getOrientation(object) {
+    image.click(function() {
+        if(ocargo.levelEditor.inDeleteDecorMode()) {
+            trafficLight.destroy();
+        }
+    });
+
+    function getScaling(object) {
         var transform = object.transform();
         for(var i = 0; i < transform.length; i++) {
             if(transform[i][0] === 's') {
-                return 's' + transform[i][1] + ',' + transform[i][2];
+                return transform[i][1] + ',' + transform[i][2];
             }
         }
-        return "";
-    }
-
-    function getRotation(object) {
-        return (object.matrix.split().rotate + 360) % 360;
+        return "0,0";
     }
 
     function canGetFromSourceToControlled(sourceCoord, controlledCoord) {
@@ -1396,7 +1404,7 @@ ocargo.LevelEditor.InternalTrafficLight = function(data) {
         setTrafficLightImagePosition(sourceCoord, controlledCoord, this.image);
     }
 
-    setupTrafficLightDragListeners(this);
+    setupTrafficLightListeners(this);
     this.image.attr({'cursor':'pointer'});
 
     ocargo.levelEditor.trafficLights.push(this);
@@ -1414,6 +1422,10 @@ ocargo.LevelEditor.InternalTrafficLight.prototype.getData = function() {
 
 ocargo.LevelEditor.InternalTrafficLight.prototype.destroy = function() {
     this.image.remove();
+    var index = ocargo.levelEditor.trafficLights.indexOf(this);
+    if(index != -1) {
+        ocargo.levelEditor.trafficLights.splice(index, 1);       
+    }
 }
 
 /*********************************/
@@ -1450,11 +1462,15 @@ ocargo.LevelEditor.InternalDecor.prototype.updateTheme = function() {
 
     this.image = newImage;
     this.image.attr({'cursor':'pointer'});
-    setupDecorDragListeners(this);
+    setupDecorListeners(this);
 }
 
 ocargo.LevelEditor.InternalDecor.prototype.destroy = function() {
     this.image.remove();
+    var index = ocargo.levelEditor.decor.indexOf(this);
+    if(index != -1) {
+        ocargo.levelEditor.decor.splice(index, 1);       
+    }
 }
 
 /******************/
