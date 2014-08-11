@@ -11,9 +11,15 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-     	migrations.AlterField(
+        migrations.RemoveField(
+            model_name='level',
+            name='character',
+        ),
+        migrations.AddField(
             model_name='level',
             name='character',
             field=models.ForeignKey(default=4, to='game.Character'),
+            preserve_default=True,
         ),
+
     ]
