@@ -12,6 +12,7 @@
 #paper {
     height:100%;
     overflow:scroll;
+    z-index:10;
 }
 
 #buttons {
@@ -119,7 +120,7 @@ input {
     height: 100%;
     font-size: 20px;
     line-height: 140%;
-    padding: 20px 0px 0px 20px;
+    padding: 20px 0px 0px 30px;
     background-color: white;
     box-sizing: border-box;
     -webkit-animation-duration: 0.5s;
@@ -140,15 +141,23 @@ input {
     font-weight: bold;
 }
 
+/*************/
+/* Decor tab */
+/*************/
+
+#trafficLightRed,
+#trafficLightGreens,
+.decor_button {
+    cursor: pointer;
+}
+
+
 /**************/
 /* Blocks tab */
 /**************/
 
 .table_cell .block_image {
     vertical-align: top;
-}
-
-.block_image {
     width: 180px;
     height: 36px;
     cursor: pointer;
@@ -161,8 +170,8 @@ input {
 }
 
 input[type="checkbox"].block_checkbox {
-    margin-right: 20px;
     cursor: pointer;
+    margin-right: 30px;
 }
 
 .block_image text {
@@ -176,6 +185,10 @@ input[type="checkbox"].block_checkbox {
 .character  {
     cursor: pointer;
     margin-left: 20px;
+}
+
+input[type="radio"].character_radio {
+    cursor: pointer;
 }
 
 /********************/

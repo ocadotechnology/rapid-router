@@ -84,8 +84,8 @@
   
 </div>
 
-<div id="wrapper">
-  <div id="tools" class="col" unselectable>
+<div id="wrapper" class="unselectable">
+  <div id="tools" class="col">
 
     <div id="buttons" class="table unselectable">
       <div class="table_row">
@@ -229,13 +229,18 @@
           <img id="pond" class="decor_button" src="{{pond.url}}" width="100"><br><br>
           <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
           <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
+
+          <button class="navigation_button" id="delete_decor">
+            <image src="/static/game/image/icons/delete_decor.svg"/>
+            <span>Delete decor</span>
+          </button>
         </div>
 
         <div id="tab-content-character" class="tab-content">
           <form name="Character-form">
             {% for char in characters %}
-            <input type="radio" name="characters" id="{{char.name}}_checkbox" value="{{char.name}}"> 
-            <label for="{{char.name}}_checkbox">
+            <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
+            <label for="{{char.name}}_radio">
               <img class="character" src="{{char.en_face}}" width="122" height='122'>
             </label>
             <br>
@@ -247,10 +252,10 @@
           <div class="block_table">
             {% for block in blocks %}
               <div class="table_row">
-                <div class="table_cell field_label">
+                <div class="table_cell">
                   <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" checked>
                 </div>
-                <div id="{{block.type}}_image" class="table_cell field_value unselectable"></div>
+                <div id="{{block.type}}_image" class="table_cell unselectable"></div>
               </div>
             {% endfor %}  
           </div>
