@@ -175,32 +175,23 @@ ocargo.LevelEditor = function() {
 
                 // TODO character data
                 
-                $.ajax({
-                    url: "/game/levels/new",
-                    type: "POST",
-                    dataType: 'json',
-                    data: {
-                        nodes: nodeData,
+
+                var data = {nodes: nodeData,
                         trafficLights: trafficLightData,
                         blockTypes: blockData,
                         decor: decorData,
                         destinations: destinations,
                         theme: currentTheme.name,
                         name: name,
-                        maxFuel: maxFuel,
-                        
-                        csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
-                    },
-                    success: function (json) {
-                        window.location.href = ("/game/" + json.server_response);
+                        maxFuel: maxFuel}
 
-                    },
-                    error: function (xhr, errmsg, err) {
-                        console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                ocargo.saving.saveLevel(data, function(err, level_id) {
+                    if (err != null) {
+                        console.debug(err);
+                        return;
                     }
+                    window.location.href = "/game/" + level_id;
                 });
-
-                return false;
             });
         }
 
@@ -430,12 +421,12 @@ ocargo.LevelEditor = function() {
                         new InternalTrafficLight(trafficLightData[i]);
                     }
 
-                    // TO-DO a serious amount of work
-                    /*
+                    // Load in the decor data
                     var decorData = JSON.parse(level.decor);
                     for(var i = 0; i < decorData.length; i++) {
-                        new InternalDecor(decorData[i]);
-                    }*/
+                        var decorObject = new InternalDecor(decorData[i].name);
+                        decorObject.setCoordinate(decorData[i].coordinate);
+                    }
 
                     // Load other data
                     originNode = nodes[0];
@@ -443,6 +434,15 @@ ocargo.LevelEditor = function() {
                     var destinationList = $.parseJSON(level.destinations)[0];
                     var destinationCoordinate = new ocargo.Coordinate(destinationList[0],destinationList[1]);
                     destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoordinate, nodes);
+
+                    var themeID = JSON.parse(level.theme);
+                    for(var theme in THEMES) {
+                        if(THEMES[theme]['id'] == themeID) {
+                            setTheme(THEMES[theme]);
+                        }
+                    }
+
+                    
 
                     drawAll();
                 });
@@ -459,7 +459,8 @@ ocargo.LevelEditor = function() {
                         console.debug(err);
                         return;
                     }
-                    $('#loadLevelTable td[value=' + selectedLevel + ']').remove();
+
+                    $('#loadOwnLevelTable tr[value=' + selectedLevel + ']').remove();
                     selectedLevel = null;
                 });
             });
@@ -856,8 +857,7 @@ ocargo.LevelEditor = function() {
             image.transform('t' + paperX + ',' + paperY);
         };
 
-        function onDragStart(x, y) 
-        {
+        function onDragStart(x, y) {
             var bBox = image.getBBox();
             imageWidth = bBox.width;
             imageHeight = bBox.height;
@@ -868,8 +868,6 @@ ocargo.LevelEditor = function() {
         
             paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
             paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
-
-            console.log(paperWidth, paperHeight);
         };
 
         function onDragEnd() {
@@ -1039,8 +1037,6 @@ ocargo.LevelEditor = function() {
             scaling = getScaling(image);
             rotation = (image.matrix.split().rotate + 360) % 360;
             
-            console.log("Starting:",image.matrix.toTransformString());
-
             var bBox = image.getBBox();
             imageWidth = bBox.width;
             imageHeight = bBox.height;
@@ -1398,12 +1394,10 @@ ocargo.LevelEditor = function() {
     }
 
     InternalDecor.prototype.updateTheme = function() {
-
         var description = currentTheme.decor[this.name];
         var newImage = paper.image(description.url, 0, 0, description.width, description.height);
 
         if(this.image) {
-            console.log(this.image.matrix.toTransformString());
             newImage.transform(this.image.matrix.toTransformString());
             this.image.remove();
         }

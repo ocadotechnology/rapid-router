@@ -127,11 +127,11 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 
 ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
 	$.ajax({
-        url: '/game/level_editor/level',
+        url: '/game/level_editor/level/get_all',
         type: 'GET',
         dataType: 'json',
         success: function(json) {
-        	callback(null, json, json);
+        	callback(null, json.ownedLevels, json.sharedLevels);
         },
         error: function(xhr,errmsg,err) {
         	callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -141,7 +141,7 @@ ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
 
 ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
 	$.ajax({
-        url: '/game/level_editor/level/' + id,
+        url: '/game/level_editor/level/get/' + id,
         type: 'GET',
         dataType: 'json',
         success: function(json) {
@@ -155,8 +155,8 @@ ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
 
 ocargo.Saving.prototype.deleteLevel = function(id, callback) {
 	$.ajax({
-        url: '/game/level_editor/level/' + id,
-        type: 'DELETE',
+        url: '/game/level_editor/level/delete/' + id,
+        type: 'POST',
         success: function() {
             callback(null);
         },
@@ -166,16 +166,14 @@ ocargo.Saving.prototype.deleteLevel = function(id, callback) {
     });
 }
 
-ocargo.Saving.prototype.createNewLevel = function(name, level, callback) {
+ocargo.Saving.prototype.saveLevel = function(data, callback) {
 	$.ajax({
-        url: '/game/level_editor/level',
+        url: '/game/level_editor/level/save',
         type: 'POST',
-        data: {
-            name: name,
-            level: level,
-        },
-        success: function() {
-            callback(null);
+        dataType: 'json',
+        data: data,
+        success: function(json) {
+            callback(null, json.newID);
         },
         error: function(xhr,errmsg,err) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
