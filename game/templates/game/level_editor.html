@@ -88,70 +88,60 @@
   <div id="tools" class="col">
 
     <div id="buttons" class="table unselectable">
-      <div class="table_row">
-        <div class="table_cell">
-          <button class="navigation_button" id="play">
-            <image src="/static/game/image/icons/play.svg"></image>
-            <span>Play</span>
-          </button>
-        </div>
-
-        <div class="table_cell">
-          <button class="navigation_button" id="share">
-            <image src="/static/game/image/icons/share.svg"></image>
-            <span>Share</span>
-          </button>
-        </div>
-
-        <div class="table_cell">
-          <button class="navigation_button" id="quit">
-            <image src="/static/game/image/icons/quit.svg"></image>
-            <span>Quit</span>
-          </button>
-        </div>
-      </div>
+      <h1>Level editor</h1>
     </div>
 
     <div id="toolbox">
       <div id="tabs">
+
         <div class="tab">
+          <input type="radio" name="tabs" id="play_radio" checked>
+          <label for="play_radio">Play</label>
+        </div>
+
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="map_radio" checked>
           <label for="map_radio">Map</label>
         </div>
 
-        <div class="tab">
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="decor_radio">
           <label for="decor_radio">Decor</label>
         </div>
 
-        <div class="tab">
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="character_radio">
           <label for="character_radio">Character</label>
         </div>
 
-        <div class="tab">
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="blocks_radio">
           <label for="blocks_radio">Blocks</label>
         </div>
 
-        <div class="tab">
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="random_radio">
           <label for="random_radio">Random</label>
         </div>
 
-        <div class="tab">
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="load_radio">
           <label for="load_radio">Load</label>
         </div>
 
-        <div class="tab">
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="save_radio">
           <label for="save_radio">Save</label>
         </div>
 
-        <div class="tab">
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="help_radio">
           <label for="help_radio">Help</label>
+        </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="quit_radio" checked>
+          <label for="quit_radio">Quit</label>
         </div>
 
       </div>
