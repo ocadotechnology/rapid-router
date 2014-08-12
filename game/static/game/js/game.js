@@ -8,6 +8,7 @@ function init() {
 
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
+    ocargo.drawing = new ocargo.Drawing();
     ocargo.model = new ocargo.Model(PATH, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
     ocargo.saving = new ocargo.Saving();
@@ -35,7 +36,7 @@ function init() {
     Blockly.Python.init();
 
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
-    startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
+    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
 }
 
 function runProgramAndPrepareAnimation() {
@@ -555,7 +556,7 @@ function setupMenuListeners() {
     });
 
     $('#help').click(function() {
-        startPopup('Help', HINT, ocargo.messages.closebutton("Close") + ocargo.messages.buttonHelpButton);
+        ocargo.Drawing.startPopup('Help', HINT, ocargo.messages.closebutton("Close") + ocargo.messages.buttonHelpButton);
     });
 
     $('#muted').click(function() {

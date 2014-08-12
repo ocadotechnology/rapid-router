@@ -34,12 +34,13 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.currentlyAnimating = false;
 	this.finished = false;
 
-	clearPaper();
-	renderMap(this.model.map);
-	renderDecor(this.decor);
-	renderVans(this.model.map.getStartingPosition(), this.numVans);
-	renderEndpoints(this.model.map);
-	renderTrafficLights(this.model.trafficLights);
+	ocargo.drawing.clearPaper();
+	ocargo.drawing.renderMap(this.model.map);
+	ocargo.drawing.renderDecor(this.decor);
+	ocargo.drawing.renderVans(this.model.map.getStartingPosition(), this.numVans);
+	ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
+	ocargo.drawing.renderDestinations(this.model.map.getDestinations());
+	ocargo.drawing.renderTrafficLights(this.model.trafficLights);
 };
 
 ocargo.Animation.prototype.stepAnimation = function(callback) {
@@ -155,36 +156,32 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		case 'van':
 			// Set all current animations to the final position, so we don't get out of sync
 			var vanID = a.id;
-            var anims = vanImages[vanID].status();
-            for (var i = 0, ii = anims.length; i < ii; i++) {
-                vanImages[vanID].status(anims[i].anim, 1);
-            }
-
-            scrollToShowVanImage(vanImages[vanID]);
+			ocargo.drawing.skipOutstandingVanAnimationsToEnd(vanID);
+            ocargo.drawing.scrollToShowVan(vanID);
 
             // move van
             switch (a.vanAction) {
             	case 'FORWARD':
-            		moveForward(vanID, animationLength);
+            		ocargo.drawing.moveForward(vanID, animationLength);
             		break;
             	case 'TURN_LEFT':
-            		moveLeft(vanID, animationLength);
+            		ocargo.drawing.moveLeft(vanID, animationLength);
             		break;
             	case 'TURN_RIGHT':
-            		moveRight(vanID, animationLength);
+            		ocargo.drawing.moveRight(vanID, animationLength);
             		break;
             	case 'TURN_AROUND':
             		animationLength *= 3;
-            		turnAround(vanID, animationLength);
+            		ocargo.drawing.turnAround(vanID, animationLength);
             		break;
             	case 'WAIT':
-            		wait(vanID, animationLength);
+            		ocargo.drawing.wait(vanID, animationLength);
             		break;
             	case 'CRASH':
-            		crash(vanID, animationLength, a.previousNode, a.currentNode, a.attemptedAction, a.startNode);
+            		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode, a.attemptedAction, a.startNode);
             		break;
             	case 'DELIVER':
-            		deliver(vanID, animationLength, a.destinationID);
+            		ocargo.drawing.deliver(vanID, animationLength, a.destinationID);
             	case 'OBSERVE':
             		break;
             }
@@ -246,7 +243,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		                '</p><p id="hintText">' + HINT + '</p>');
     			}
 			}
-			startPopup(title, leadMsg, otherMsg, delay);
+			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, delay);
 			if (a.popupHint) {
 				if(level.hintOpened){
 	                $("#hintBtnPara").hide();
