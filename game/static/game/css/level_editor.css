@@ -4,7 +4,7 @@
 
 #tools {
     float:left;
-    width: 380px;
+    width: 400px;
     height:100%;
     padding-right: 10px;
 }
@@ -16,14 +16,14 @@
 }
 
 #buttons {
-    height: 16%;
+    height: 8%;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
 }
 
 #toolbox {
-    height: 84%;
+    height: 92%;
     float:center;
     margin: 0px auto;
 }
@@ -67,16 +67,9 @@ input {
 
 #tabs {
     height: 100%;
-    width: 20%;
+    width: 22%;
     float: left;
 }
-
-#tab_contents {
-    height: 100%;
-    width: 80%;
-    float:left;
-}
-
 
 .tab {
     list-style: none;
@@ -89,11 +82,11 @@ input {
     margin: 0;
 }
 
-.tab input[type=radio]+label {
-    text-align: center;
+.tab input[type=radio] + label {
+    text-align: left;
     margin: 0;
     display: block;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0px 10px 5px;
     font-weight: bold;
     width: 100%;
     -webkit-transition: all 0.2s ease-in-out;
@@ -103,16 +96,23 @@ input {
 }
 
 .tab label:hover {
-    background: #A6DCEE;
+    background: rgba(255, 255, 255, 0.5);
     top: 0;
 }
 
 .tab input[type=radio]:checked + label {
-    background: white;
+    background: rgba(255, 255, 255, 1.0);
+    opacity: 1;
     top: 0;
 }
 
-.tab-content {
+#tab_panes {
+    height: 100%;
+    width: 78%;
+    float:left;
+}
+
+.tab_pane {
     z-index: 2;
     display: none;
     text-align: left;
@@ -130,13 +130,13 @@ input {
     overflow: auto;
 }
 
-#tab-content-blocks > label {
+#blocks.tab_pane > label {
     background-color: white;
     border: none;
 }
 
-#tab-content-map > p,
-#tab-content-random > p {
+#map.tab_pane > p,
+#random.tab_pane > p {
     color: #008CBA;
     font-weight: bold;
 }
@@ -191,18 +191,16 @@ input[type="radio"].character_radio {
     cursor: pointer;
 }
 
-/********************/
-/* Load/save modals */
-/********************/
+/************/
+/* Load tab */
+/************/
 
-#own_levels,
-#shared_levels {
-    margin-top: 10px;
-    float: left;
+#load input[type='radio'] {
+    margin: 0px;
 }
 
-#own_levels {
-    margin-right: 80px;
+#loading_tables {
+    margin-top: 20px;
 }
 
 #deleteLevel {
@@ -210,6 +208,13 @@ input[type="radio"].character_radio {
 }
 
 .scrolling-table {
-    width: 220px;
-    max-width: 350px;
+    max-width: 90%;
+}
+
+/************/
+/* Save tab */
+/************/
+
+#levelNameInput {
+    max-width: 100px;
 }
