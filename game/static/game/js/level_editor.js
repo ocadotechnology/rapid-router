@@ -43,9 +43,8 @@ ocargo.LevelEditor = function() {
     // Holds the state for when the user is drawing or deleting roads
     var strikeStart = null;
 
-    // setup listeners
+    // setup the toolbox
     setupToolbox();
-    setupOtherMenuListeners();
 
     // initialises paper
     setTheme(THEMES["grass"])
@@ -69,15 +68,140 @@ ocargo.LevelEditor = function() {
         /** Adds listeners to control the transitioning between tabs  **/
         function setupTabListeners() {
             var tabPanes = $('.tab_pane');
-            $('.tab input[type=radio]').each(function(tabIndex) {
+            var lastTabSelected = null;
+
+            $('.tab.selectable input[type=radio]').each(function(tabIndex) {
                 $(this).change(function() {
+                    lastTabSelected = $(this);
                     tabPanes.each(function(tabPaneIndex) {
                         var status = (tabIndex === tabPaneIndex ? 'block' : 'none');
                         $(this).css({display: status});
                     });
                 });
             });
-            $('.tab input[type=radio]').first().change();
+            $('#map_radio').change();
+            $('#map_radio').prop('checked', true);
+        
+            $('#quit_radio').change(function() {
+                window.location.href = "/game/";
+            });
+
+            $("#play_radio").click(function() {
+
+                function oldPathToNew() {
+                    var newPath = [];
+
+                    for (var i = 0; i < nodes.length; i++) {
+                        var curr = nodes[i];
+                        var node = {'coordinate': [curr.coordinate.x, curr.coordinate.y], 'connectedNodes': []};
+
+                        for(var j = 0; j < curr.connectedNodes.length; j++) {
+                            var index = ocargo.Node.findNodeIndexByCoordinate(curr.connectedNodes[j].coordinate, nodes);
+                            node.connectedNodes.push(index);
+                        }
+                        newPath.push(node);
+                    }
+                    return newPath;
+                };
+
+                function stripOutImageProperty(objects) {
+                    var newObjects = [];
+                    for(var i = 0; i < objects.length; i++) {
+                        var newObject = {};
+                        for (var property in objects[i])  {
+                            if (property !== "image") {
+                                newObject[property] = objects[i][property];
+                            }
+                        }
+                        newObjects.push(newObject);
+                    }
+                    return newObjects;
+                }
+
+                // Check to see if start and end nodes have been marked
+                if (!originNode || !destinationNode) {
+                     startPopup(ocargo.messages.ohNo, ocargo.messages.noStartOrEndSubtitle, ocargo.messages.noStartOrEnd);
+                     lastTabSelected.prop('checked', true);
+                     return;
+                }
+
+                // Check to see if path exists from start to end
+                var destination = new ocargo.Destination(0, destinationNode);
+                var pathToDestination = getOptimalPath(nodes, [destination]);
+                if (pathToDestination.length === 0) {
+                    startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
+                        ocargo.messages.noStartEndRoute);
+                    return;
+                }
+
+                // Create node data
+                sortNodes(nodes);
+                var delinkedNodes = oldPathToNew(nodes);
+                var nodeData = JSON.stringify(delinkedNodes);
+
+                // Create traffic light data
+                var trafficLightData = [];
+                for(var i = 0; i < trafficLights.length; i++) {
+                    var tl =  trafficLights[i];
+                    if(tl.valid) {
+                        trafficLightData.push(tl.getData());
+                    }
+                }
+                trafficLightData = JSON.stringify(trafficLightData);
+
+                // Create block data
+                var blockData = [];
+                for(var i = 0; i < BLOCKS.length; i++) {
+                    var type = BLOCKS[i];
+                    if($('#' + type + "_checkbox").is(':checked')) {
+                        blockData.push(type);
+                    }
+                }
+                blockData = JSON.stringify(blockData);
+                
+                // Create decor data
+                var decorData = [];
+                for(var i = 0; i < decor.length; i++) {
+                    decorData.push(decor[i].getData());
+                }
+                decorData = JSON.stringify(decorData);
+
+
+                // Create other data
+                var destinationCoord = destinationNode.coordinate;
+                var destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
+                var maxFuel = $('#max_fuel').val();
+                var name = $('#level_name').val();
+
+                // TODO character data
+                
+                $.ajax({
+                    url: "/game/levels/new",
+                    type: "POST",
+                    dataType: 'json',
+                    data: {
+                        nodes: nodeData,
+                        trafficLights: trafficLightData,
+                        blockTypes: blockData,
+                        decor: decorData,
+                        destinations: destinations,
+                        theme: currentTheme.name,
+                        name: name,
+                        maxFuel: maxFuel,
+                        
+                        csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
+                    },
+                    success: function (json) {
+                        window.location.href = ("/game/" + json.server_response);
+
+                    },
+                    error: function (xhr, errmsg, err) {
+                        console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                    }
+                });
+
+                return false;
+            });
         }
 
         function setupMapTab() {
@@ -430,128 +554,6 @@ ocargo.LevelEditor = function() {
                 table.append('<tr value=' + level.id + '>  <td>' + level.name + '</td>  <td>' + level.owner + '</td> <td>false</td>');
             }
         }
-    }
-
-    function setupOtherMenuListeners() {
-        $("#play").click(function() {
-
-            function oldPathToNew() {
-                var newPath = [];
-
-                for (var i = 0; i < nodes.length; i++) {
-                    var curr = nodes[i];
-                    var node = {'coordinate': [curr.coordinate.x, curr.coordinate.y], 'connectedNodes': []};
-
-                    for(var j = 0; j < curr.connectedNodes.length; j++) {
-                        var index = ocargo.Node.findNodeIndexByCoordinate(curr.connectedNodes[j].coordinate, nodes);
-                        node.connectedNodes.push(index);
-                    }
-                    newPath.push(node);
-                }
-                return newPath;
-            };
-
-            function stripOutImageProperty(objects) {
-                var newObjects = [];
-                for(var i = 0; i < objects.length; i++) {
-                    var newObject = {};
-                    for (var property in objects[i])  {
-                        if (property !== "image") {
-                            newObject[property] = objects[i][property];
-                        }
-                    }
-                    newObjects.push(newObject);
-                }
-                return newObjects;
-            }
-
-            // Check to see if start and end nodes have been marked
-            if (!originNode || !destinationNode) {
-                 startPopup(ocargo.messages.ohNo, ocargo.messages.noStartOrEndSubtitle, ocargo.messages.noStartOrEnd);
-                 return;
-            }
-
-            // Check to see if path exists from start to end
-            var destination = new ocargo.Destination(0, destinationNode);
-            var pathToDestination = getOptimalPath(nodes, [destination]);
-            if (pathToDestination.length === 0) {
-                startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
-                    ocargo.messages.noStartEndRoute);
-                return;
-            }
-
-            // Create node data
-            sortNodes(nodes);
-            var delinkedNodes = oldPathToNew(nodes);
-            var nodeData = JSON.stringify(delinkedNodes);
-
-            // Create traffic light data
-            var trafficLightData = [];
-            for(var i = 0; i < trafficLights.length; i++) {
-                var tl =  trafficLights[i];
-                if(tl.valid) {
-                    trafficLightData.push(tl.getData());
-                }
-            }
-            trafficLightData = JSON.stringify(trafficLightData);
-
-            // Create block data
-            var blockData = [];
-            for(var i = 0; i < BLOCKS.length; i++) {
-                var type = BLOCKS[i];
-                if($('#' + type + "_checkbox").is(':checked')) {
-                    blockData.push(type);
-                }
-            }
-            blockData = JSON.stringify(blockData);
-            
-            // Create decor data
-            var decorData = [];
-            for(var i = 0; i < decor.length; i++) {
-                decorData.push(decor[i].getData());
-            }
-            decorData = JSON.stringify(decorData);
-
-
-            // Create other data
-            var destinationCoord = destinationNode.coordinate;
-            var destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
-            var maxFuel = $('#max_fuel').val();
-            var name = $('#level_name').val();
-
-            // TODO character data
-            
-            $.ajax({
-                url: "/game/levels/new",
-                type: "POST",
-                dataType: 'json',
-                data: {
-                    nodes: nodeData,
-                    trafficLights: trafficLightData,
-                    blockTypes: blockData,
-                    decor: decorData,
-                    destinations: destinations,
-                    theme: currentTheme.name,
-                    name: name,
-                    maxFuel: maxFuel,
-                    
-                    csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
-                },
-                success: function (json) {
-                    window.location.href = ("/game/" + json.server_response);
-
-                },
-                error: function (xhr, errmsg, err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-                }
-            });
-
-            return false;
-        });
-
-        $('#quit').click(function() {
-            window.location.href = "/game/"
-        });
     }
 
     /************************/
