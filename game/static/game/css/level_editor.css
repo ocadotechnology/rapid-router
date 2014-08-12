@@ -30,6 +30,10 @@ input {
     vertical-align: middle;
 }
 
+.navigation_button.fixed_size {
+    width: 180px;
+}
+
 /********************/
 /* Table  structure */
 /********************/
@@ -142,9 +146,18 @@ input {
 /* Decor tab */
 /*************/
 
+.decor_div {
+    height: 80px;
+    text-align: center;
+}
+
+#pond {
+    margin-t
+}
+
+.decor_button,
 #trafficLightRed,
-#trafficLightGreens,
-.decor_button {
+#trafficLightGreen {
     cursor: pointer;
 }
 

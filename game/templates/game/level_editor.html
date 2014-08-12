@@ -162,31 +162,27 @@
           </div>
           
 
-          <button class="navigation_button" id="add_road">
+          <button class="navigation_button fixed_size" id="add_road">
             <image src="/static/game/image/icons/add_road.svg"/>
             <span>Add road</span>
           </button>
 
-          <button class="navigation_button" id="delete_road">
+          <button class="navigation_button fixed_size" id="delete_road">
             <image src="/static/game/image/icons/delete_road.svg"/>
             <span>Delete road</span>
           </button>
 
-          <br>
-
-          <button class="navigation_button" id="start">
+          <button class="navigation_button fixed_size" id="start">
             <image src="/static/game/image/icons/origin.svg"/>
             <span>Mark start</span>
           </button>
 
-          <button class="navigation_button" id="end">
+          <button class="navigation_button fixed_size" id="end">
             <image src="/static/game/image/icons/destination.svg"/>
             <span>Mark end</span>
           </button>
 
-          <br>
-
-          <button class="navigation_button" id="clear">
+          <button class="navigation_button fixed_size" id="clear">
             <image src="/static/game/image/icons/clear.svg"/>
             <span>Clear all</span>
           </button>
@@ -204,14 +200,32 @@
                 </select>
               </div>
             </div>
-          </div>
 
-          <img id="bush" class="decor_button" src="{{bush.url}}" width="50">
-          <img id="tree1" class="decor_button" src="{{tree1.url}}" width="70">
-          <img id="tree2" class="decor_button" src="{{tree2.url}}" width="70">
-          <img id="pond" class="decor_button" src="{{pond.url}}" width="100"><br><br>
-          <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
-          <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
+            <div class="table_row">
+              <div class="table_cell">
+                <div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></div>
+              </div>
+              <div class="table_cell">
+                <div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div>
+              </div>
+            </div>
+            <div class="table_row">
+              <div class="table_cell">
+                <div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div>
+              </div>
+              <div class="table_cell">
+                <div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div>
+              </div>
+            </div>
+            <div class="table_row">
+              <div class="table_cell">
+                <div class="decor_div"><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></div>
+              </div>
+              <div class="table_cell">
+                <div class="decor_div"><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></div>
+              </div>
+            </div>
+          </div>
 
           <button class="navigation_button" id="delete_decor">
             <image src="/static/game/image/icons/delete_decor.svg"/>
