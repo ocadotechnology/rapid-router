@@ -12,6 +12,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
+from django.forms.models import model_to_dict
 from rest_framework import status, permissions, mixins, generics
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
@@ -164,29 +165,6 @@ def level(request, level):
     })
 
     return render(request, 'game/game.html', context_instance=context)
-
-
-def level_editor(request):
-    """ Renders the level editor page.
-
-    **Context**
-
-    ``RequestContext``
-    ``blocks``
-        Blocks that can be chosen to be played with later on. List of :model:`game.Block`.
-
-    **Template:**
-
-    :template:`game/level_editor.html`
-    """
-    context = RequestContext(request, {
-        'blocks': Block.objects.all(),
-        'decor': Decor.objects.all(),
-        'characters': Character.objects.all(),
-        'themes': Theme.objects.all()
-    })
-    return render(request, 'game/level_editor.html', context_instance=context)
-
 
 def renderError(request, title, message):
     """ Renders an error page with passed title and message.
@@ -386,43 +364,6 @@ def submit(request):
 
             attempt.save()
     return HttpResponse('')
-
-
-def level_new(request):
-    """ Processes a request on creation of the map in the level editor.
-    """
-    if 'nodes' in request.POST:
-        path = request.POST.get('nodes')
-        destinations = request.POST.get('destinations')
-        decor = request.POST.get('decor')
-        traffic_lights = request.POST.get('trafficLights')
-        max_fuel = request.POST.get('maxFuel')
-        name = request.POST.get('name')
-        theme_name = request.POST.get('theme')
-        theme = Theme.objects.get(name=theme_name)
-        passed_level = Level(name=name, path=path, default=False, destinations=destinations,
-                            decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
-                            theme=theme)
-
-        if not request.user.is_anonymous() and hasattr(request.user, 'userprofile'):
-            passed_level.owner = request.user.userprofile
-        passed_level.save()
-
-        decorToLevelDecor(passed_level, decor)
-
-        if 'blockTypes' in request.POST:
-            blockTypes = json.loads(request.POST['blockTypes'])
-            blocks = Block.objects.filter(type__in=blockTypes)
-        else:
-            blocks = Block.objects.all()
-
-        passed_level.blocks = blocks
-        passed_level.save()
-
-        response_dict = {}
-        response_dict.update({'server_response': passed_level.id})
-        return HttpResponse(json.dumps(response_dict), content_type='application/javascript')
-
 
 #
 # Helper methods for rendering views in the game.
@@ -766,46 +707,6 @@ def parseInstructions(instructions, attempt, init):
     last.save()
 
 
-class LevelViewList(generics.ListCreateAPIView):
-    """ Handles requests for a list of level objects viewable by the user"""
-    permission_classes = []
-    serializer_class = LevelSerializer
-
-    def get_queryset(self):
-        if hasattr(self.request.user, 'userprofile'):
-            user = self.request.user.userprofile.student
-            return Level.objects.filter(owner=user)
-        else:
-            return Level.objects.all()
-
-    def post(self, request, format=None):
-        serializer = LevelSerializer(Level(owner=request.user.userprofile.student), data=request.DATA, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class LevelViewDetail(generics.RetrieveUpdateDestroyAPIView):
-    """ Handles requests for a specific level object"""
-    permission_classes = []
-    serializer_class = LevelSerializer
-
-    def get_queryset(self):
-        if hasattr(self.request.user, 'userprofile'):
-            user = self.request.user.userprofile.student
-            return Level.objects.filter(id=self.kwargs['pk'])
-        else:
-            return Level.objects.filter(id=self.kwargs['pk'])
-
-    def put(self, request, pk, format=None):
-        level = self.get_object()
-        serializer = LevelSerializer(level, data=request.DATA, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class WorkspaceViewList(generics.ListCreateAPIView):
     """ Handles requests for the list of workspace objects viewable by the user"""
     permission_classes = (permissions.IsAuthenticated,
@@ -844,3 +745,89 @@ class WorkspaceViewDetail(generics.RetrieveUpdateDestroyAPIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+################
+# Level editor #
+################
+
+def level_editor(request):
+    """ Renders the level editor page.
+
+    **Context**
+
+    ``RequestContext``
+    ``blocks``
+        Blocks that can be chosen to be played with later on. List of :model:`game.Block`.
+
+    **Template:**
+
+    :template:`game/level_editor.html`
+    """
+    context = RequestContext(request, {
+        'blocks': Block.objects.all(),
+        'decor': Decor.objects.all(),
+        'characters': Character.objects.all(),
+        'themes': Theme.objects.all()
+    })
+    return render(request, 'game/level_editor.html', context_instance=context)
+
+def getListOfLevelsForEditor(request):
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
+        ownedLevels = []
+        sharedLevels = []
+    else:
+        ownedLevels = Level.objects.filter(owner=request.user.userprofile.id)
+        sharedLevels = request.user.shared.all()
+
+    owned = [{'name':level.name,'owner':level.owner.user.first_name, 'id':level.id} for level in ownedLevels]
+    shared = [{'name':level.name,'owner':level.owner.user.first_name, 'id':level.id} for level in sharedLevels]
+
+    response = {'ownedLevels':owned, 'sharedLevels':shared};
+    return HttpResponse(json.dumps(response), content_type='application/javascript')
+
+def getLevelForEditor(request, levelID):
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
+        response = ""
+    else:
+        level = Level.objects.get(id=levelID)
+        if(level.owner == request.user.userprofile or request.user.shared.get(id=levelID)):
+            response = level
+        else:
+            response = ''
+
+    return HttpResponse(json.dumps(model_to_dict(response)), content_type='application/javascript')    
+
+def deleteLevelForEditor(request, levelID):
+    if not request.user.is_anonymous() and hasattr(request.user, "userprofile"):
+        level = Level.objects.get(id=levelID)
+        if(level.owner == request.user.userprofile):
+            level.delete()
+
+    return HttpResponse('', content_type='application/javascript')
+
+def saveLevelForEditor(request):
+    """ Processes a request on creation of the map in the level editor """
+    
+    path = request.POST.get('nodes')
+    destinations = request.POST.get('destinations')
+    decor = request.POST.get('decor')
+    traffic_lights = request.POST.get('trafficLights')
+    max_fuel = request.POST.get('maxFuel')
+    name = request.POST.get('name')
+    theme_name = request.POST.get('theme')
+    theme = Theme.objects.get(name=theme_name)
+    
+    passed_level = Level(name=name, path=path, default=False, destinations=destinations,
+                        decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
+                        theme=theme, owner=request.user.userprofile)
+    passed_level.save()
+
+    decorToLevelDecor(passed_level, decor)
+
+    blockTypes = json.loads(request.POST['blockTypes'])
+    blocks = Block.objects.filter(type__in=blockTypes)
+    passed_level.blocks = blocks
+    passed_level.save()
+
+    return HttpResponse(json.dumps({'newID': passed_level.id}), content_type='application/javascript')
