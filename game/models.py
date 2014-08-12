@@ -96,14 +96,14 @@ class Episode (models.Model):
 
 class Workspace (models.Model):
     name = models.CharField(max_length=200)
-    owner = models.ForeignKey(Student, related_name='workspaces')
+    owner = models.ForeignKey(Student, related_name='workspaces', blank=True, null=True)
     workspace = models.TextField(default="")
 
 
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name='attempts')
-    student = models.ForeignKey(Student, related_name='attempts')
+    student = models.ForeignKey(Student, related_name='attempts', blank=True, null=True)
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0)
     workspace = models.TextField(default="")
