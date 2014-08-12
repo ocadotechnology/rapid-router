@@ -97,9 +97,9 @@
         </div>
 
         <div class="table_cell">
-          <button class="navigation_button" id="help">
-            <image src="/static/game/image/icons/help.svg"></image>
-            <span>Help</span>
+          <button class="navigation_button" id="share">
+            <image src="/static/game/image/icons/share.svg"></image>
+            <span>Share</span>
           </button>
         </div>
 
@@ -110,61 +110,54 @@
           </button>
         </div>
       </div>
-
-      <div class="table_row">
-        <div class="table_cell">
-          <button class="navigation_button" id="load">
-            <image src="/static/game/image/icons/load.svg"></image>
-            <span>Load</span>
-          </button>
-        </div>
-
-        <div class="table_cell">
-          <button class="navigation_button" id="save">
-            <image src="/static/game/image/icons/save.svg"></image>
-            <span>Save</span>
-          </button>
-        </div>
-
-        <div class="table_cell">
-          <button class="navigation_button" id="share">
-            <image src="/static/game/image/icons/share.svg"></image>
-            <span>Share</span>
-          </button>
-        </div>
-      </div>
     </div>
 
     <div id="toolbox">
       <div id="tabs">
         <div class="tab">
-          <input type="radio" name="tabs" id="tab1" checked>
-          <label for="tab1">Map</label>
+          <input type="radio" name="tabs" id="map_radio" checked>
+          <label for="map_radio">Map</label>
         </div>
 
         <div class="tab">
-          <input type="radio" name="tabs" id="tab2">
-          <label for="tab2">Decor</label>
+          <input type="radio" name="tabs" id="decor_radio">
+          <label for="decor_radio">Decor</label>
         </div>
 
         <div class="tab">
-          <input type="radio" name="tabs" id="tab3">
-          <label for="tab3">Character</label>
+          <input type="radio" name="tabs" id="character_radio">
+          <label for="character_radio">Character</label>
         </div>
 
         <div class="tab">
-          <input type="radio" name="tabs" id="tab4">
-          <label for="tab4">Blocks</label>
+          <input type="radio" name="tabs" id="blocks_radio">
+          <label for="blocks_radio">Blocks</label>
         </div>
 
         <div class="tab">
-          <input type="radio" name="tabs" id="tab5">
-          <label for="tab5">Random</label>
+          <input type="radio" name="tabs" id="random_radio">
+          <label for="random_radio">Random</label>
         </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="load_radio">
+          <label for="load_radio">Load</label>
+        </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="save_radio">
+          <label for="save_radio">Save</label>
+        </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="help_radio">
+          <label for="help_radio">Help</label>
+        </div>
+
       </div>
 
-      <div id="tab_contents">
-        <div id="tab-content-map" class="tab-content">
+      <div id="tab_panes">
+        <div id="map" class="tab_pane">
           
           <div class="table">
             <div class="table_row">
@@ -209,7 +202,7 @@
           </button>
         </div>
 
-        <div id="tab-content-decor" class="tab-content">
+        <div id="decor" class="tab_pane">
           <div class="table">
             <div class="table_row">
               <div class="table_cell field_label"><p>Theme</p></div>
@@ -236,7 +229,7 @@
           </button>
         </div>
 
-        <div id="tab-content-character" class="tab-content">
+        <div id="character" class="tab_pane">
           <form name="Character-form">
             {% for char in characters %}
             <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
@@ -248,7 +241,7 @@
           </form>
         </div>
 
-        <div id="tab-content-blocks" class="tab-content">
+        <div id="blocks" class="tab_pane">
           <div class="block_table">
             {% for block in blocks %}
               <div class="table_row">
@@ -261,7 +254,7 @@
           </div>
         </div>
 
-        <div id="tab-content-random" class="tab-content">
+        <div id="random" class="tab_pane">
           <div class="table">
             <div class="table_row">
               <div class="table_cell field_label"><p>Size:</p></div>
@@ -290,6 +283,71 @@
           </button>
         </div>
 
+        <div id="load" class="tab_pane">
+          <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/load.svg'></image>Load</h2>
+
+          <input type="radio" name="type_of_loaded_levels" id="own_levels_radio" checked>
+          <label for="own_levels_radio">Your own levels</label>
+          <br>
+          <input type="radio" name="type_of_loaded_levels" id="shared_levels_radio">
+          <label for="shared_levels_radio">Levels shared with you</label>
+
+          <div id="loading_tables">
+            <div id="own_levels">
+              <div class="scrolling-table-wrapper">
+                <div class="scrolling-table">
+                  <table id="loadOwnLevelTable"></table>
+                </div>
+              </div>
+            </div>
+            
+            <div id="shared_levels">
+              <div class="scrolling-table-wrapper">
+                <div class="scrolling-table">
+                  <table id="loadSharedLevelTable"></table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br style="clear:both">
+          
+          <div style="margin-top: 1.25rem">
+            <button class="navigation_button" id="deleteLevel">
+                <image src="/static/game/image/icons/clear.svg"/></image>
+                <span>Delete</span>
+              </button>
+
+              <button class="navigation_button" id="loadLevel">
+                <image src="/static/game/image/icons/load.svg"></image>
+                <span>Load</span>
+              </button>
+          </div>
+        </div>
+
+        <div id="save" class="tab_pane">
+          <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/save.svg'></image>Save</h2>
+          <p>Here you can save your new level.</p>
+          <div class="scrolling-table-wrapper">
+            <div class="scrolling-table">
+              <table id="saveLevelTable"></table>
+            </div>
+          </div>
+          <div style="margin-top: 1.25rem">
+            <div>
+              <input type="text" id="levelNameInput">
+              <button class="navigation_button" id="saveLevel">
+                <image src="/static/game/image/icons/save.svg"></image>
+                <span>Save</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="help" class="tab_pane">
+        Test help!
+        </div>
+
       </div>
     </div>
   </div>
@@ -301,65 +359,6 @@
   <p id="myModal-lead" class="ocargo-modal-lead"></p>
   <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
   <a class="close-reveal-modal" id="close-modal">&#215;</a>
-</div>
-
-<div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/load.svg'/>Load</h2>
-  <div>
-    <div id="own_levels" class="unselectable">
-      <p>Your own levels:</p>
-      <div class="scrolling-table-wrapper">
-        <div class="scrolling-table">
-          <table id="loadOwnLevelTable"></table>
-        </div>
-      </div>
-    </div>
-    
-    <div id="shared_levels" class="unselectable">
-      <p>Levels shared with you: (DOES NOT WORK!)</p>
-      <div class="scrolling-table-wrapper">
-        <div class="scrolling-table">
-          <table id="loadSharedLevelTable"></table>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <br style="clear:both">
-  
-  <div style="margin-top: 1.25rem">
-    <button class="navigation_button" id="deleteLevel">
-        <image src="/static/game/image/icons/clear.svg"/>
-        <span>Delete</span>
-      </button>
-
-      <button class="navigation_button" id="loadLevel">
-        <image src="/static/game/image/icons/load.svg"/>
-        <span>Load</span>
-      </button>
-  </div>
-
-  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
-</div>
-
-<div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'/>Save</h2>
-  <p>Here you can save your new level.</p>
-  <div class="scrolling-table-wrapper">
-    <div class="scrolling-table">
-      <table id="saveLevelTable"></table>
-    </div>
-  </div>
-  <div style="margin-top: 1.25rem">
-    <div>
-      <input id="levelNameInput"/>
-      <button class="navigation_button" id="saveLevel">
-        <image src="/static/game/image/icons/save.svg"/>
-        <span>Save</span>
-      </button>
-    </div>
-  </div>
-  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
 </div>
 
 <div id="blockly"></div>

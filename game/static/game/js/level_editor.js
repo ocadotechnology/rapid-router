@@ -45,7 +45,6 @@ ocargo.LevelEditor = function() {
 
     // setup listeners
     setupToolbox();
-    setupLoadSaveListeners();
     setupOtherMenuListeners();
 
     // initialises paper
@@ -63,26 +62,22 @@ ocargo.LevelEditor = function() {
         setupDecorTab();
         setupMapTab();
         setupGenerateTab();
+        setupLoadTab();
+        setupSaveTab();
+        setupHelpTab();
 
         /** Adds listeners to control the transitioning between tabs  **/
         function setupTabListeners() {
-            function setListenerForTab(i) {
-                tabs[i].change(function() {
-                    for(var j = 0; j < tabs.length; j++) {
-                        var status = (i == j ? "block" : "none");
-                        tabContents[j].css({display: status});
-                    }
+            var tabPanes = $('.tab_pane');
+            $('.tab input[type=radio]').each(function(tabIndex) {
+                $(this).change(function() {
+                    tabPanes.each(function(tabPaneIndex) {
+                        var status = (tabIndex === tabPaneIndex ? 'block' : 'none');
+                        $(this).css({display: status});
+                    });
                 });
-            }
-
-            var tabContents = [$('#tab-content-map'), $('#tab-content-decor'), $('#tab-content-character'), $('#tab-content-blocks'), $('#tab-content-random')]
-            var tabs = [$('#tab1'), $('#tab2'), $('#tab3'), $('#tab4'), $('#tab5')];
-
-            for(var i = 0; i < tabs.length; i++) {
-                setListenerForTab(i);
-            }
-
-            tabs[0].change();
+            });
+            $('.tab input[type=radio]').first().change();
         }
 
         function setupMapTab() {
@@ -229,119 +224,71 @@ ocargo.LevelEditor = function() {
                 });
             });
         }
-    }
 
-    function setupLoadSaveListeners() {
-        var selectedLevel = null;
+        function setupLoadTab() {
+            var selectedLevel = null;
 
-        var populateTable = function(tableName, levels) {
-            var table = $('#'+tableName);
-
-            // Remove click listeners to avoid memory leak and remove all rows
-            $('#'+tableName+' tr').off('click');
-            table.empty();
-
-            // Order them alphabetically
-            levels.sort(function(a, b) {
-                if (a.name < b.name) {
-                    return -1;
-                }
-                else if (a.name > b.name) {
-                    return 1;
-                }
-                return 0;
+            $('#own_levels_radio').change(function() {
+                $('#loadOwnLevelTable').css('display','table');
+                $('#loadSharedLevelTable').css('display','none');
             });
 
-            // Add a row to the table for each workspace saved in the database
-            table.append('<tr>  <th>Name</th>   <th>Owner</th>  <th>Shared</th> </tr>')
-            for (var i = 0, ii = levels.length; i < ii; i++) {
-                var level = levels[i];
-                table.append('<tr value=' + level.id + '>  <td>' + level.name + '</td>  <td>' + level.owner + '</td> <td>false</td>');
-            }
-        }
+            $('#shared_levels_radio').change(function() {
+                $('#loadOwnLevelTable').css('display','none');
+                $('#loadSharedLevelTable').css('display','table');
+            });
 
-        $('#load').click(function() {
-            // Disable the button to stop users clicking it multiple times
-            // whilst waiting for the table data to load
-            $('#load').attr('disabled', 'disabled');
+            $('#own_levels_radio').change();
 
-            ocargo.saving.retrieveListOfLevels(function(err, ownLevels, sharedLevels) {
-                if (err != null) {
-                    console.debug(err);
+
+            $('#load_radio').click(function() {
+                // Disable the button to stop users clicking it multiple times
+                // whilst waiting for the table data to load
+                ocargo.saving.retrieveListOfLevels(function(err, ownLevels, sharedLevels) {
+                    if (err != null) {
+                        console.debug(err);
+                        return;
+                    }
+
+                    populateTable("loadOwnLevelTable", ownLevels);
+
+                    // Add click listeners to all rows
+                    $('#loadOwnLevelTable td').on('click', function(event) {
+                        var rowSelected = $(event.target.parentElement);
+                        $('#loadOwnLevelTable tr').css('background-color', '#FFFFFF');
+                        $('#loadSharedLevelTable tr').css('background-color', '#FFFFFF');
+                        rowSelected.css('background-color', '#C0C0C0');
+                        $('#loadLevel').removeAttr('disabled');
+                        $('#deleteLevel').removeAttr('disabled');
+                        selectedLevel = rowSelected.attr('value');
+                    });
+
+                    populateTable("loadSharedLevelTable", sharedLevels);
+
+                    // Add click listeners to all rows
+                    $('#loadSharedLevelTable td').on('click', function(event) {
+                        var rowSelected = $(event.target.parentElement);
+                        $('#loadOwnLevelTable tr').css('background-color', '#FFFFFF');
+                        $('#loadSharedLevelTable tr').css('background-color', '#FFFFFF');
+                        rowSelected.css('background-color', '#C0C0C0');
+                        $('#loadLevel').removeAttr('disabled');
+                        $('#deleteLevel').removeAttr('disabled');
+                        selectedLevel = rowSelected.attr('value');
+                    });
+
+                    // But disable all the modal buttons as nothing is selected yet
+                    selectedLevel = null;
+                    $('#loadLevel').attr('disabled', 'disabled');
+                    $('#deleteLevel').attr('disabled', 'disabled');
+                });
+            });
+
+            $('#loadLevel').click(function() {
+                if(!selectedLevel)
+                {
                     return;
                 }
 
-                populateTable("loadOwnLevelTable", ownLevels);
-
-                // Add click listeners to all rows
-                $('#loadOwnLevelTable td').on('click', function(event) {
-                    var rowSelected = $(event.target.parentElement);
-                    $('#loadOwnLevelTable tr').css('background-color', '#FFFFFF');
-                    $('#loadSharedLevelTable tr').css('background-color', '#FFFFFF');
-                    rowSelected.css('background-color', '#C0C0C0');
-                    $('#loadLevel').removeAttr('disabled');
-                    $('#deleteLevel').removeAttr('disabled');
-                    selectedLevel = rowSelected.attr('value');
-                });
-
-                populateTable("loadSharedLevelTable", sharedLevels);
-
-                // Add click listeners to all rows
-                $('#loadSharedLevelTable td').on('click', function(event) {
-                    var rowSelected = $(event.target.parentElement);
-                    $('#loadOwnLevelTable tr').css('background-color', '#FFFFFF');
-                    $('#loadSharedLevelTable tr').css('background-color', '#FFFFFF');
-                    rowSelected.css('background-color', '#C0C0C0');
-                    $('#loadLevel').removeAttr('disabled');
-                    $('#deleteLevel').removeAttr('disabled');
-                    selectedLevel = rowSelected.attr('value');
-                });
-
-                // Finally show the modal dialog and reenable the button
-                $('#loadModal').foundation('reveal', 'open');
-                $('#load').removeAttr('disabled');
-
-                // But disable all the modal buttons as nothing is selected yet
-                selectedLevel = null;
-                $('#loadLevel').attr('disabled', 'disabled');
-                $('#deleteLevel').attr('disabled', 'disabled');
-            });
-        });
-
-        $('#save').click(function() {
-            // Disable the button to stop users clicking it multiple times
-            // whilst waiting for the table data to load
-            $('#save').attr('disabled', 'disabled');
-
-            ocargo.saving.retrieveListOfLevels(function(err, workspaces) {
-                if (err != null) {
-                    console.debug(err);
-                    return;
-                }
-
-                populateTable("saveLevelTable", workspaces);
-
-                // Add click listeners to all rows
-                $('#saveLevelTable td').on('click', function(event) {
-                    $('#saveLevelTable td').css('background-color', '#FFFFFF');
-                    $(event.target).css('background-color', '#C0C0C0');
-                    selectedLevel = $(event.target).attr('value');
-                    var workspaceName = $(event.target)[0].innerHTML;
-                    document.getElementById("workspaceNameInput").value = workspaceName;
-                });
-
-                // Finally show the modal dialog and reenable the button
-                $('#saveModal').foundation('reveal', 'open');
-                $('#save').removeAttr('disabled');
-
-                // But disable all the modal buttons as nothing is selected yet
-                selectedLevel = null;
-                $('#overwriteLevel').attr('disabled', 'disabled');
-            });
-        });
-
-        $('#loadLevel').click(function() {
-            if (selectedLevel) {
                 ocargo.saving.retrieveLevel(selectedLevel, function(err, level) {
                     if (err != null) {
                         console.debug(err);
@@ -374,43 +321,15 @@ ocargo.LevelEditor = function() {
                     destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoordinate, nodes);
 
                     drawAll();
-
-                    // Close the popup
-                    $('#loadModal').foundation('reveal', 'close');
                 });
-            }
-        });
+            });
 
-        $('#saveLevel').click(function() {
-            var newName = $('#levelNameInput').val();
-            if (newName && newName != "") {
-                var table = $("#saveLevelTable");
-                for (var i = 0; i < table[0].rows.length; i++) {
-                     var cell = table[0].rows[i].cells[0];
-                     var wName = cell.innerHTML;
-                     if(wName == newName) {
-                        deleteLevel(cell.attributes[0].value, 
-                                        function(err, level) {
-                                            if (err != null) {
-                                                console.debug(err);
-                                                return;
-                                            }
-                                        });
-                     }
+            $('#deleteLevel').click(function() {
+                if(!selectedLevel) 
+                {
+                    return;
                 }
 
-                ocargo.saving.createNewLevel(newName, ocargo.blocklyControl.serialize(), function(err) {
-                    if (err != null) {
-                        console.debug(err);
-                        return;
-                    }
-                    $('#saveModal').foundation('reveal', 'close');
-                });
-            }
-        });
-
-        $('#deleteLevel').click(function() {
-            if (selectedLevel) {
                 ocargo.saving.deleteLevel(selectedLevel, function(err) {
                     if (err != null) {
                         console.debug(err);
@@ -419,16 +338,101 @@ ocargo.LevelEditor = function() {
                     $('#loadLevelTable td[value=' + selectedLevel + ']').remove();
                     selectedLevel = null;
                 });
+            });
+        }
+
+        function setupSaveTab() {
+            var selectedLevel = null;
+
+            $('#save_radio').click(function() {
+                ocargo.saving.retrieveListOfLevels(function(err, ownLevels, sharedLevels) {
+                    if (err != null) {
+                        console.debug(err);
+                        return;
+                    }
+
+                    populateTable("saveLevelTable", ownLevels);
+
+                    // Add click listeners to all rows
+                    $('#saveLevelTable td').on('click', function(event) {
+                        var rowSelected = $(event.target.parentElement);
+                        $('#saveLevelTable tr').css('background-color', '#FFFFFF');
+                        rowSelected.css('background-color', '#C0C0C0');
+                        $('#saveLevel').removeAttr('disabled');
+                        selectedLevel = rowSelected.attr('value');
+
+                        for(var i = 0; i < ownLevels.length; i++) {
+                            if(ownLevels[i].id == selectedLevel) {
+                                $("#levelNameInput").val(ownLevels[i].name);
+                            }
+                        }
+                    });
+
+                    selectedLevel = null;
+                });
+            });
+
+            $('#saveLevel').click(function() {
+                var newName = $('#levelNameInput').val();
+                if (newName && newName != "") {
+                    var table = $("#saveLevelTable");
+                    for (var i = 0; i < table[0].rows.length; i++) {
+                         var cell = table[0].rows[i].cells[0];
+                         var wName = cell.innerHTML;
+                         if(wName == newName) {
+                            deleteLevel(cell.attributes[0].value, 
+                                            function(err, level) {
+                                                if (err != null) {
+                                                    console.debug(err);
+                                                    return;
+                                                }
+                                            });
+                         }
+                    }
+
+                    ocargo.saving.createNewLevel(newName, ocargo.blocklyControl.serialize(), function(err) {
+                        if (err != null) {
+                            console.debug(err);
+                            return;
+                        }
+                    });
+                }
+            });
+        }
+
+        function setupHelpTab() {
+            $('#help.tab_pane').html(ocargo.messages.levelEditorHelpText);
+        }
+
+
+        function populateTable(tableName, levels) {
+            var table = $('#'+tableName);
+
+            // Remove click listeners to avoid memory leak and remove all rows
+            $('#'+tableName+' tr').off('click');
+            table.empty();
+
+            // Order them alphabetically
+            levels.sort(function(a, b) {
+                if (a.name < b.name) {
+                    return -1;
+                }
+                else if (a.name > b.name) {
+                    return 1;
+                }
+                return 0;
+            });
+
+            // Add a row to the table for each workspace saved in the database
+            table.append('<tr>  <th>Name</th>   <th>Owner</th>  <th>Shared</th> </tr>')
+            for (var i = 0, ii = levels.length; i < ii; i++) {
+                var level = levels[i];
+                table.append('<tr value=' + level.id + '>  <td>' + level.name + '</td>  <td>' + level.owner + '</td> <td>false</td>');
             }
-        });
+        }
     }
 
     function setupOtherMenuListeners() {
-        $('#help').click(function() {
-            var subtitle = isMobile() ? ocargo.messages.levelEditorMobileSubtitle : ocargo.messages.levelEditorPCSubtitle;
-            startPopup(ocargo.messages.levelEditorTitle, subtitle, ocargo.messages.levelEditorMainText);
-        });
-
         $("#play").click(function() {
 
             function oldPathToNew() {
@@ -681,7 +685,7 @@ ocargo.LevelEditor = function() {
         }
     };
 
-        /***************************/
+    /***************************/
     /* Paper interaction logic */
     /***************************/
 
@@ -1118,7 +1122,7 @@ ocargo.LevelEditor = function() {
             return false;
         }
     };
-    
+
     /********************************/
     /* Miscaellaneous state methods */
     /********************************/
