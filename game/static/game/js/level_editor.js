@@ -25,6 +25,7 @@ ocargo.LevelEditor = function() {
     /*********/
 
     ocargo.saving = new ocargo.Saving();
+    ocargo.drawing = new ocargo.Drawing();
 
     // Level information
     var nodes = [];
@@ -442,8 +443,6 @@ ocargo.LevelEditor = function() {
                         }
                     }
 
-                    
-
                     drawAll();
                 });
             });
@@ -595,7 +594,7 @@ ocargo.LevelEditor = function() {
         originNode = null;
         destinationNode = null;
 
-        paper.clear();
+        ocargo.drawing.clearPaper();
     }
 
     function drawAll() {
@@ -604,7 +603,7 @@ ocargo.LevelEditor = function() {
     }
 
     function redrawRoad() {
-        createRoad(nodes);
+        ocargo.drawing.renderRoad(nodes);
         clearMarkings();
         bringTrafficLightsToFront();
         bringDecorToFront();
@@ -628,7 +627,7 @@ ocargo.LevelEditor = function() {
     // Methods for highlighting squares
 
     function mark(coordMap, colour, opacity, occupied) {
-        var coordPaper = translate(coordMap);
+        var coordPaper = ocargo.Drawing.translate(coordMap);
         var element = grid[coordPaper.x][coordPaper.y];
         element.attr({fill:colour, "fill-opacity": opacity});
     };
@@ -692,11 +691,11 @@ ocargo.LevelEditor = function() {
     /* Paper interaction logic */
     /***************************/
 
-    function handleMouseDown(this_rect, segment) {
+    function handleMouseDown(this_rect) {
         return function () {
             var getBBox = this_rect.getBBox();
             var coordPaper = new ocargo.Coordinate(getBBox.x / GRID_SPACE_SIZE, getBBox.y / GRID_SPACE_SIZE);
-            var coordMap = translate(coordPaper);
+            var coordMap = ocargo.Drawing.translate(coordPaper);
             var existingNode = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
 
             if(mode === MARK_ORIGIN_MODE && existingNode && canPlaceCFC(existingNode)) 
@@ -740,11 +739,11 @@ ocargo.LevelEditor = function() {
         }
     }
 
-    function handleMouseOver(this_rect, segment) {
+    function handleMouseOver(this_rect) {
         return function() {
             var getBBox = this_rect.getBBox();
             var coordPaper = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
-            var coordMap = translate(coordPaper);
+            var coordMap = ocargo.Drawing.translate(coordPaper);
 
             if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) 
             {
@@ -775,11 +774,11 @@ ocargo.LevelEditor = function() {
         }
     }
 
-    function handleMouseOut(this_rect, segment) {
+    function handleMouseOut(this_rect) {
         return function() {
             var getBBox = this_rect.getBBox();
             var coordPaper = new ocargo.Coordinate(getBBox.x/GRID_SPACE_SIZE, getBBox.y/GRID_SPACE_SIZE);
-            var coordMap = translate(coordPaper);
+            var coordMap = ocargo.Drawing.translate(coordPaper);
 
             if(mode === MARK_ORIGIN_MODE || mode === MARK_DESTINATION_MODE) 
             {
@@ -799,12 +798,12 @@ ocargo.LevelEditor = function() {
         }
     }
 
-    function handleMouseUp(this_rect, segment) {
+    function handleMouseUp(this_rect) {
         return function() {
             if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) {
                 var getBBox = this_rect.getBBox();
                 var coordPaper = new ocargo.Coordinate(getBBox.x/GRID_SPACE_SIZE, getBBox.y/GRID_SPACE_SIZE);
-                var coordMap = translate(coordPaper);
+                var coordMap = ocargo.Drawing.translate(coordPaper);
 
                 if (mode === DELETE_ROAD_MODE) 
                 {
@@ -1018,7 +1017,7 @@ ocargo.LevelEditor = function() {
                 {
                     // Valid placement
                     colour = VALID_LIGHT_COLOUR;
-                    setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
                 }
                 else
                 {
@@ -1077,7 +1076,7 @@ ocargo.LevelEditor = function() {
                     trafficLight.sourceNode = sourceIndex;
                     trafficLight.controlledNode = controlledIndex;
 
-                    setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
                 }
             }
 
@@ -1133,53 +1132,21 @@ ocargo.LevelEditor = function() {
         return visited;
     };
 
-    function createGrid(paper) {
-        for (var i = 0; i < GRID_WIDTH; i++) {
-            for (var j = 0; j < GRID_HEIGHT; j++) {
-                var x = i * GRID_SPACE_SIZE;
-                var y = j * GRID_SPACE_SIZE;
-                var segment = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-                segment.attr({stroke: currentTheme.border, fill: currentTheme.background, "fill-opacity": 1});
+    function createGrid() {
+        grid = ocargo.drawing.renderGrid(currentTheme);
 
-                segment.node.onmousedown = function() {
-                    var this_rect = segment;
-                    return handleMouseDown(this_rect, segment);
-                } ();
-
-                segment.node.onmouseover = function() {
-                    var this_rect = segment;
-                    return handleMouseOver(this_rect, segment);
-                } ();
-
-                segment.node.onmouseout = function() {
-                    var this_rect = segment;
-                    return handleMouseOut(this_rect, segment);
-                } ();
-
-                segment.node.onmouseup = function() {
-                    var this_rect = segment;
-                    return handleMouseUp(this_rect, segment);
-                } ();
-
-                segment.node.ontouchstart = function() {
-                    var this_rect = segment;
-                    return handleMouseDown(this_rect, segment);
-                } ();
-
-                segment.node.ontouchmove = function() {
-                    var this_rect = segment;
-                    return handleMouseOver(this_rect, segment);
-                } ();
-
-                segment.node.ontouchend = function() {
-                    var this_rect = segment;
-                    return handleMouseUp(this_rect, segment);
-                } ();
-
-                grid[i][j] = segment;
+        for(var i = 0; i < grid.length; i++) {
+            for(var j = 0; j < grid[i].length; j++) {
+                grid[i][j].node.onmousedown = handleMouseDown(grid[i][j]);
+                grid[i][j].node.onmouseover = handleMouseOver(grid[i][j]);
+                grid[i][j].node.onmouseout = handleMouseOut(grid[i][j]);
+                grid[i][j].node.onmouseup = handleMouseUp(grid[i][j]);
+                grid[i][j].node.ontouchstart = handleMouseDown(grid[i][j]);
+                grid[i][j].node.ontouchmove = handleMouseOver(grid[i][j]);
+                grid[i][j].node.ontouchend = handleMouseUp(grid[i][j]);
             }
         }
-    };
+    }
 
     function finaliseDelete(strikeEnd) {
         
@@ -1338,14 +1305,14 @@ ocargo.LevelEditor = function() {
         this.valid = false;
 
         var imgStr = this.startingState == ocargo.TrafficLight.RED ? LIGHT_RED_URL : LIGHT_GREEN_URL;
-        this.image = paper.image(imgStr, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
+        this.image = ocargo.drawing.createTrafficLightImage(imgStr);
         this.image.transform('...s-1,1');
 
         if(this.controlledNode != -1 && this.sourceNode != -1) {
             var sourceCoord = nodes[this.sourceNode].coordinate;
             var controlledCoord = nodes[this.controlledNode].coordinate;
             this.valid = true;
-            setTrafficLightImagePosition(sourceCoord, controlledCoord, this.image);
+            ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, this.image);
         }
 
         setupTrafficLightListeners(this);
@@ -1395,7 +1362,7 @@ ocargo.LevelEditor = function() {
 
     InternalDecor.prototype.updateTheme = function() {
         var description = currentTheme.decor[this.name];
-        var newImage = paper.image(description.url, 0, 0, description.width, description.height);
+        var newImage = ocargo.drawing.createImage(description.url, 0, 0, description.width, description.height);
 
         if(this.image) {
             newImage.transform(this.image.matrix.toTransformString());
