@@ -249,7 +249,10 @@ ocargo.LevelEditor = function() {
                             type == "controls_if" ||
                             type == "declare_proc";
 
-                var content = '<svg class="block_image' + (large ? ' large' : '') + '">' +  svg.innerHTML + '</svg>';
+                var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
+                content += '<g transform="translate(10,0)"';
+                content += svg.innerHTML + '</g></svg>';
+
                 $('#' + type + '_image').html(content);
 
                 addListenerToImage(type);

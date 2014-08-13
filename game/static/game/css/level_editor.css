@@ -181,7 +181,7 @@ input {
 
 input[type="checkbox"].block_checkbox {
     cursor: pointer;
-    margin-right: 30px;
+    margin-right: 25px;
 }
 
 .block_image text {
