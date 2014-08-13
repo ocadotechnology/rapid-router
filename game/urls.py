@@ -1,6 +1,5 @@
 from django.conf.urls import patterns, url
 from views import WorkspaceViewList, WorkspaceViewDetail
-from django.views.generic.base import TemplateView
 
 urlpatterns = patterns('',
     url(r'^$', 'game.views.levels'),
