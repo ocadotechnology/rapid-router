@@ -852,11 +852,14 @@ def save_level_for_editor(request):
     max_fuel = request.POST.get('maxFuel')
     name = request.POST.get('name')
     theme_name = request.POST.get('theme')
+    character_name = request.POST.get('characterName')
     theme = Theme.objects.get(name=theme_name)
+
+    character = Character.objects.get(name=character_name)
 
     passed_level = Level(name=name, path=path, default=False, destinations=destinations,
                          decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
-                         theme=theme)
+                         theme=theme, character=character)
 
     if not request.user.is_anonymous():
         passed_level.owner = request.user.userprofile

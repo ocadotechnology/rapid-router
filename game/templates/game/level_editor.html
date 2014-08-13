@@ -235,7 +235,7 @@
         </div>
 
         <div id="character" class="tab_pane">
-          <form name="Character-form">
+          <form name="character-form" id="character-form">
             {% for char in characters %}
             <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
             <label for="{{char.name}}_radio">
