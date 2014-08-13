@@ -258,15 +258,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 	        }
 			break;
 		case 'trafficlight':
-			var lightID = a.id;
-			if (a.colour == ocargo.TrafficLight.GREEN) {
-                lightImages[lightID][0].animate({ opacity : 1 }, animationLength/4, 'linear');
-                lightImages[lightID][1].animate({ opacity : 0 }, animationLength/2, 'linear');
-            }
-            else {
-                lightImages[lightID][0].animate({ opacity : 0 }, animationLength/2, 'linear');
-                lightImages[lightID][1].animate({ opacity : 1 }, animationLength/4, 'linear');
-            }
+			ocargo.drawing.transitionTrafficLight(a.id, a.colour, animationLength/2);
 			break;
 		case 'console':
 			ocargo.consoleOutput.text(ocargo.consoleOutput.text() + a.text);

@@ -121,7 +121,7 @@ ocargo.LevelEditor = function() {
 
                 // Check to see if start and end nodes have been marked
                 if (!originNode || !destinationNode) {
-                     startPopup(ocargo.messages.ohNo, ocargo.messages.noStartOrEndSubtitle, ocargo.messages.noStartOrEnd);
+                     ocargo.Drawing.startPopup(ocargo.messages.ohNo, ocargo.messages.noStartOrEndSubtitle, ocargo.messages.noStartOrEnd);
                      lastTabSelected.prop('checked', true);
                      return;
                 }
@@ -130,7 +130,7 @@ ocargo.LevelEditor = function() {
                 var destination = new ocargo.Destination(0, destinationNode);
                 var pathToDestination = getOptimalPath(nodes, [destination]);
                 if (pathToDestination.length === 0) {
-                    startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
+                    ocargo.Drawing.startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
                         ocargo.messages.noStartEndRoute);
                     return;
                 }
