@@ -347,6 +347,7 @@ def submit(request):
             attempt.save()
     return HttpResponse('')
 
+
 #
 # Helper methods for rendering views in the game.
 #
@@ -364,7 +365,9 @@ def decorToLevelDecor(level, decor):
     """
     regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"name": *")([a-zA-Z0-9]+)("}))')
 
+    print decor
     items = regex.findall(decor)
+    print items
 
     for item in items:
         name = item[6]
@@ -379,7 +382,7 @@ def parseDecor(theme, levelDecors):
     for levelDecor in levelDecors:
         decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)
         decorData.append(json.dumps(
-            {"coordinate":{"x":levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
+            {"coordinate": {"x":levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
              "width": decor.width, "height": decor.height}))
     return decorData
 
@@ -406,7 +409,8 @@ def renderScoreboard(request, form, school):
         if classID and int(classID) != class_.id:
             raise Http404
         students = class_.students.all()
-        # remove all students except this student from students if the class config doesn't allow for students to see classmates' data
+        # remove all students except this student from students if the class config doesn't allow
+        # for students to see classmates' data
         if not class_.classmates_data_viewable:
             students = students.filter(id=request.user.userprofile.student.id)
     else:
@@ -416,9 +420,9 @@ def renderScoreboard(request, form, school):
     if levelID:
         level = get_object_or_404(Level, id=levelID)
 
-    # Apply filters using handlers - note handleAllClasses filter must further take responsibility for filtering
-    # when school students are in a class where they aren't allowed to see classmates' data or for only showing
-    # data from students in their class
+    # Apply filters using handlers - note handleAllClasses filter must further take responsibility
+    # for filtering when school students are in a class where they aren't allowed to see classmates'
+    # data or for only showing data from students in their class
     if classID and levelID:
         studentData = handleOneClassOneLevel(students, level)
     elif levelID:
@@ -557,7 +561,7 @@ def renderLevelSharing(request):
     else:
         return False, None, shareLevelPersonForm, None, None
 
-    shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None, 
+    shareLevelChoosePerson = ShareLevelChoosePerson(request.POST or None,
                                                     people=people)
     shareLevelClassForm = ShareLevelClass(request.POST or None, classes=classes)
 
@@ -747,6 +751,7 @@ class WorkspaceViewList(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class WorkspaceViewDetail(generics.RetrieveUpdateDestroyAPIView):
     """ Handles requests for a specific workspace object"""
     permission_classes = (permissions.IsAuthenticated,
@@ -793,6 +798,7 @@ def level_editor(request):
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
+
 def get_list_of_levels_for_editor(request):
     if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         ownedLevels = []
@@ -807,6 +813,7 @@ def get_list_of_levels_for_editor(request):
     response = {'ownedLevels':owned, 'sharedLevels':shared};
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
+
 def get_level_for_editor(request, levelID):
     if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         response = ""
@@ -817,7 +824,8 @@ def get_level_for_editor(request, levelID):
         else:
             response = ''
 
-    return HttpResponse(json.dumps(model_to_dict(response)), content_type='application/javascript')    
+    return HttpResponse(json.dumps(model_to_dict(response)), content_type='application/javascript')
+
 
 def delete_level_for_editor(request, levelID):
     if not request.user.is_anonymous() and hasattr(request.user, "userprofile"):
@@ -826,6 +834,7 @@ def delete_level_for_editor(request, levelID):
             level.delete()
 
     return HttpResponse('', content_type='application/javascript')
+
 
 def save_level_for_editor(request):
     """ Processes a request on creation of the map in the level editor """
@@ -840,8 +849,12 @@ def save_level_for_editor(request):
     theme = Theme.objects.get(name=theme_name)
     
     passed_level = Level(name=name, path=path, default=False, destinations=destinations,
-                        decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
-                        theme=theme, owner=request.user.userprofile)
+                         decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
+                         theme=theme)
+
+    if not request.user.is_anonymous():
+        passed_level.owner = request.user.userprofile
+
     passed_level.save()
 
     decorToLevelDecor(passed_level, decor)
@@ -852,6 +865,7 @@ def save_level_for_editor(request):
     passed_level.save()
 
     return HttpResponse(json.dumps({'newID': passed_level.id}), content_type='application/javascript')
+
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""

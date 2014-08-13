@@ -41,9 +41,9 @@
         var name = "{{theme.name}}";
         themes.push({"name": name,
                      "id": {{theme.id}},
-                     "border": THEME_PALETTES[name].border,
-                     "background": THEME_PALETTES[name].background,
-                     "selected": THEME_PALETTES[name].selected});
+                     "border": "{{theme.border}}",
+                     "background": "{{theme.background}}",
+                     "selected": "{{theme.selected}}"});
       {% endfor %}
 
       var decor = [];

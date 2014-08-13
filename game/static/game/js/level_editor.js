@@ -33,7 +33,7 @@ ocargo.LevelEditor = function() {
     var trafficLights = [];
     var originNode = null;
     var destinationNode = null;
-    var currentTheme = null;
+    var currentTheme = THEMES["grass"];
 
     // Reference to the Raphael elements for each square
     var grid = initialiseVisited();
@@ -48,8 +48,8 @@ ocargo.LevelEditor = function() {
     setupToolbox();
 
     // initialises paper
-    setTheme(THEMES["grass"])
     drawAll();
+    setTheme(THEMES["grass"])
 
     /***************/
     /* Setup tools */
@@ -167,7 +167,6 @@ ocargo.LevelEditor = function() {
                 }
                 decorData = JSON.stringify(decorData);
 
-
                 // Create other data
                 var destinationCoord = destinationNode.coordinate;
                 var destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
@@ -244,10 +243,10 @@ ocargo.LevelEditor = function() {
                 block.render();
 
                 var svg = block.getSvgRoot();
-                var large = type == "controls_whileUntil" || 
-                            type == "controls_repeat" ||
-                            type == "controls_if" ||
-                            type == "declare_proc";
+                var large = type === "controls_whileUntil" || 
+                            type === "controls_repeat" ||
+                            type === "controls_if" ||
+                            type === "declare_proc";
 
                 var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
                 content += '<g transform="translate(10,0)"';
@@ -449,7 +448,7 @@ ocargo.LevelEditor = function() {
 
                     var themeID = JSON.parse(level.theme);
                     for(var theme in THEMES) {
-                        if(THEMES[theme]['id'] == themeID) {
+                        if(THEMES[theme]['id'] === themeID) {
                             setTheme(THEMES[theme]);
                         }
                     }
@@ -1220,7 +1219,7 @@ ocargo.LevelEditor = function() {
             }
 
             // Now connect it up with it's new neighbours
-            if(previousNode && node.connectedNodes.indexOf(previousNode) == -1) {
+            if(previousNode && node.connectedNodes.indexOf(previousNode) === -1) {
                 node.addConnectedNodeWithBacklink(previousNode);
             }
             previousNode = node;
@@ -1265,7 +1264,13 @@ ocargo.LevelEditor = function() {
     function setTheme(theme) {
         currentTheme = theme;
 
-        for(var i = 0; i < decor.length; i++) {
+        for (var x = 0; x < GRID_WIDTH; x++) {
+            for (var y = 0; y < GRID_HEIGHT; y++) {
+                grid[x][y].attr({stroke: theme.border});
+            }
+        }
+
+        for (var i = 0; i < decor.length; i++) {
             decor[i].updateTheme();
         }
 
@@ -1364,7 +1369,8 @@ ocargo.LevelEditor = function() {
 
     InternalDecor.prototype.getData = function() {
         var bBox = this.image.getBBox();
-        return {'coordinate': new ocargo.Coordinate(bBox.x, bBox.y), 'name': this.name};
+        console.debug(Math.floor(bBox.x), PAPER_HEIGHT ,bBox.height , Math.floor(bBox.y))
+        return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x), PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)), 'name': this.name};
     }
 
     InternalDecor.prototype.setCoordinate = function(coordinate) {
