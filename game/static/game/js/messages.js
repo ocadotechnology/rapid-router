@@ -74,13 +74,9 @@ ocargo.messages = {
     totalScore: function(score, maxScore) {
         return "Your total score: " + score + "/" + maxScore;
     },
-    pathScore: function(score, maxScore) {
-        return "Travelled path score: " + score + "/" + maxScore;
-    },
+    pathScore: "Travelled path score: ",
     pathLonger: "Try finding a shorter path to reach the destination.",
-    algorithmScore: function(score, maxScore) {
-        return "Algorithm score: " + score + "/" + maxScore;
-    },
+    algorithmScore: "Algorithm score: ",
     algorithmLonger: "Try creating a smaller program to improve the score",
     algorithmShorter: "That's not exactly the solution we wanted you to come up with. Read the " +
         "level instructions for more information.",
