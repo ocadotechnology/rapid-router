@@ -50,7 +50,7 @@ ocargo.LevelEditor = function() {
     // initialises paper
     drawAll();
 
-    setTheme(THEMES["grass"])
+    setTheme(THEMES["grass"]);
 
     /***************/
     /* Setup tools */
@@ -189,7 +189,7 @@ ocargo.LevelEditor = function() {
                         theme: currentTheme.name,
                         name: name,
                         characterName: characterName,
-                        maxFuel: maxFuel}
+                        maxFuel: maxFuel};
 
                 ocargo.saving.saveLevel(data, function(err, level_id) {
                     if (err != null) {
@@ -326,7 +326,7 @@ ocargo.LevelEditor = function() {
                     },
 
                     success: function (mapData) {
-                        clear()
+                        clear();
 
                         var path = JSON.parse(mapData.path);
                         var i;
@@ -570,7 +570,7 @@ ocargo.LevelEditor = function() {
             });
 
             // Add a row to the table for each workspace saved in the database
-            table.append('<tr>  <th>Name</th>   <th>Owner</th>  <th>Shared</th> </tr>')
+            table.append('<tr>  <th>Name</th>   <th>Owner</th>  <th>Shared</th> </tr>');
             for (var i = 0, ii = levels.length; i < ii; i++) {
                 var level = levels[i];
                 table.append('<tr value=' + level.id + '>  <td>' + level.name + '</td>  <td>' + level.owner + '</td> <td>false</td>');
@@ -758,7 +758,7 @@ ocargo.LevelEditor = function() {
                 strikeStart = coordMap;
                 markAsSelected(coordMap);
             }
-        }
+        };
     }
 
     function handleMouseOver(this_rect) {
@@ -793,7 +793,7 @@ ocargo.LevelEditor = function() {
                     }
                 }
             } 
-        }
+        };
     }
 
     function handleMouseOut(this_rect) {
@@ -817,7 +817,7 @@ ocargo.LevelEditor = function() {
                     markAsBackground(coordMap);
                 }
             }
-        }
+        };
     }
 
     function handleMouseUp(this_rect) {
@@ -839,7 +839,7 @@ ocargo.LevelEditor = function() {
                 sortNodes(nodes);
                 redrawRoad();
             }
-        }
+        };
     }
 
     function setupDecorListeners(decor) {
@@ -1297,18 +1297,18 @@ ocargo.LevelEditor = function() {
     function sortNodes(nodes) {
         for (var i = 0; i < nodes.length; i++) {
             // Remove duplicates.
-            var newConnected = []
+            var newConnected = [];
             for (var j = 0; j < nodes[i].connectedNodes.length; j++) {
                 if (newConnected.indexOf(nodes[i].connectedNodes[j]) === -1) {
                     newConnected.push(nodes[i].connectedNodes[j]);
                 }
             }
-            nodes[i].connectedNodes.sort(function(a, b) { return comparator(a, b, nodes[i])}).reverse();
+            nodes[i].connectedNodes.sort(function(a, b) { return comparator(a, b, nodes[i]);}).reverse();
         }
 
         function comparator(node1, node2, centralNode) {
             var a1 = ocargo.calculateNodeAngle(centralNode, node1);
-            var a2 = ocargo.calculateNodeAngle(centralNode, node2)
+            var a2 = ocargo.calculateNodeAngle(centralNode, node2);
             if (a1 < a2) {
                 return -1;
             } else if (a1 > a2) {
@@ -1382,13 +1382,13 @@ ocargo.LevelEditor = function() {
 
     InternalDecor.prototype.getData = function() {
         var bBox = this.image.getBBox();
-        console.debug(Math.floor(bBox.x), PAPER_HEIGHT ,bBox.height , Math.floor(bBox.y))
+        console.debug(Math.floor(bBox.x), PAPER_HEIGHT ,bBox.height , Math.floor(bBox.y));
         return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x), PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)), 'name': this.name};
-    }
+    };
 
     InternalDecor.prototype.setCoordinate = function(coordinate) {
         this.image.transform('t' + coordinate.x + ',' + coordinate.y);
-    }
+    };
 
     InternalDecor.prototype.updateTheme = function() {
         var description = currentTheme.decor[this.name];
@@ -1402,7 +1402,7 @@ ocargo.LevelEditor = function() {
         this.image = newImage;
         this.image.attr({'cursor':'pointer'});
         setupDecorListeners(this);
-    }
+    };
 
     InternalDecor.prototype.destroy = function() {
         this.image.remove();
@@ -1410,7 +1410,7 @@ ocargo.LevelEditor = function() {
         if(index !== -1) {
             decor.splice(index, 1);       
         }
-    }
+    };
 };
 
 /******************/

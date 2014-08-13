@@ -237,7 +237,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		        if (hintBtns.length === null || hintBtns.length === 0) {
 		            otherMsg = '<p id="hintBtnPara">' +
 		                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
-		                '</p><p id="hintText">' + HINT + '</p>'
+		                '</p><p id="hintText">' + HINT + '</p>';
 		            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
 		                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
 		                '</p><p id="hintText">' + HINT + '</p>');
@@ -266,4 +266,4 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 	}
 
 	return animationLength;
-}
+};

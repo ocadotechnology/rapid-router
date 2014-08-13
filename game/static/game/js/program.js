@@ -16,8 +16,6 @@ ocargo.Program.prototype.run = function(model) {
 	}
 };
 
-
-
 /* Thread */
 
 ocargo.Thread = function() {
@@ -187,7 +185,7 @@ function Procedure(name,body,block) {
 Procedure.prototype.execute = function(thread) {
 	thread.addNewStackLevel(this.body.slice());
 	return true;
-}
+};
 
 
 
@@ -197,12 +195,12 @@ function ProcedureCall(block) {
 
 ProcedureCall.prototype.bind = function(proc) {
 	this.proc = proc;
-}
+};
 
 ProcedureCall.prototype.execute = function(thread) {
 	thread.addNewStackLevel([this.proc]);
 	return true;
-}
+};
 
 
 

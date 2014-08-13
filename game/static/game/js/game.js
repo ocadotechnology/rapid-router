@@ -40,8 +40,7 @@ function init() {
 
 function runProgramAndPrepareAnimation() {
     var result = ocargo.controller.prepare();
-    if(!result.success)
-    {
+    if(!result.success) {
         ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error);
         return false;
     }
@@ -60,11 +59,10 @@ function runProgramAndPrepareAnimation() {
     });
 
     program.run(ocargo.model);
-    var reason = ocargo.model.reasonForTermination;
     // Set controls ready for user to reset
     ocargo.animation.appendAnimation({
         type: 'callable',
-        functionCall: function() {onStopControls()},
+        functionCall: function() {onStopControls();},
         description: 'onStopControls',
     });
 
@@ -217,17 +215,17 @@ function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        ocargo.drawing.moveForward(0, ANIMATION_LENGTH, function() {onStopControls()});
+        ocargo.drawing.moveForward(0, ANIMATION_LENGTH, function() {onStopControls();});
     });
     $('#turnLeft').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        ocargo.drawing.moveLeft(0, ANIMATION_LENGTH, function() {onStopControls()});
+        ocargo.drawing.moveLeft(0, ANIMATION_LENGTH, function() {onStopControls();});
     });
     $('#turnRight').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        ocargo.drawing.moveRight(0, ANIMATION_LENGTH, function() {onStopControls()});
+        ocargo.drawing.moveRight(0, ANIMATION_LENGTH, function() {onStopControls();});
     });
     $('#go').click(function() {
         $('#play').trigger('click');
@@ -236,8 +234,8 @@ function setupDirectDriveListeners() {
 
 
 function setupSliderListeners() {
-    var getSliderRightLimit = function(pageWidth) {return pageWidth/2};
-    var getSliderLeftLimit = function() {return 46};
+    var getSliderRightLimit = function(pageWidth) {return pageWidth/2;};
+    var getSliderLeftLimit = function() {return 46;};
     var consoleSliderPosition = $(window).width()/2;
 
     $('#hide').click(function() {
@@ -258,8 +256,6 @@ function setupSliderListeners() {
 
     $('#show').click(function() {
         var pageWidth = $(window).width();
-        var rightLimit = getSliderRightLimit(pageWidth);
-        var leftLimit = getSliderLeftLimit();
 
         $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
         $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
@@ -275,7 +271,6 @@ function setupSliderListeners() {
 
     $('#consoleSlider').on('mousedown', function(e){
         var slider = $(this);
-        var p = slider.parent().offset();
 
         //disable drag when mouse leaves this or the parent
         slider.on('mouseup', function(e){
@@ -341,8 +336,7 @@ function setupLoadSaveListeners() {
             var workspace = workspaces[i];
             table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
         }
-    }
-
+    };
 
     $('#load').click(function() {
         // Disable the button to stop users clicking it multiple times
@@ -551,7 +545,7 @@ function setupMenuListeners() {
 
     $('#big_code_mode').click(function() {
         if(ocargo.blocklyControl.bigCodeMode){
-            ocargo.blocklyControl.decreaseBlockSize()
+            ocargo.blocklyControl.decreaseBlockSize();
         } else {
             ocargo.blocklyControl.increaseBlockSize();
         }
@@ -580,7 +574,7 @@ function setupMenuListeners() {
     }
 
     $('#quit').click(function() {
-        window.location.href = "/game/"
+        window.location.href = "/game/";
     });
 }
 

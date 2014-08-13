@@ -181,7 +181,7 @@ ocargo.Drawing = function() {
             var down = true;
 
             //variation specifies x,y,rotation
-            var variation = [25,25,90];
+            var variation = [25, 25, 90];
 
             // Set "default" variations of the house position
             // based on straight roads and turns
@@ -236,7 +236,7 @@ ocargo.Drawing = function() {
 
             return variation;
         }
-    }
+    };
 
     this.renderOrigin = function(position) {
         var initialX = calculateInitialX(position.currentNode);
@@ -249,7 +249,7 @@ ocargo.Drawing = function() {
                                              position.currentNode.coordinate.y);
 
         cfc.transform('... r90');
-    }
+    };
 
     this.renderRoad = function(nodes) {
         for(var i = 0; i < roadImages.length; i++) {
@@ -380,7 +380,7 @@ ocargo.Drawing = function() {
             return paper.image('/static/game/image/road_tiles/crossroads.svg',
                     flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
         }
-    }
+    };
 
     this.renderBackground = function() {
         if(!ocargo.Drawing.isMobile()) {
@@ -388,7 +388,7 @@ ocargo.Drawing = function() {
                 .attr({fill: 'url(' + BACKGROUND_URL + ')',
                     'stroke': 'none'});
         }
-    }
+    };
 
     this.renderDecor = function(decor) {
         for (var i = 0; i < decor.length; i++) {
@@ -398,11 +398,11 @@ ocargo.Drawing = function() {
             var height = obj['height'];
             paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, width, height);
         }
-    }
+    };
 
     this.createTrafficLightImage = function(url) {
         return paper.image(url, 0, 0, TRAFFIC_LIGHT_WIDTH, TRAFFIC_LIGHT_HEIGHT);
-    }
+    };
 
     this.setTrafficLightImagePosition = function(sourceCoordinate, controlledCoordinate, image) {
         // get position based on nodes
@@ -418,7 +418,7 @@ ocargo.Drawing = function() {
         var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
 
         image.transform('t' + drawX + ',' + drawY + ' r' + rotation + 's-1,1');
-    }
+    };
 
     this.renderTrafficLights = function(trafficLights) {
         for (var i = 0; i < trafficLights.length; i++) {
@@ -442,14 +442,14 @@ ocargo.Drawing = function() {
 
             lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
         }
-    }
+    };
     
     this.renderVans = function(position, numVans) {
         for (var i = 0; i < numVans; i++) {
             vanImages[i] = this.createVanImage(position, i);
         }
         this.scrollToShowVan(0);
-    }
+    };
 
     this.createVanImage = function(position, vanId) {
         var initialX = calculateInitialX(position.currentNode);
@@ -464,7 +464,7 @@ ocargo.Drawing = function() {
         vanImage.transform('... r90');
 
         return vanImage;
-    }
+    };
 
     this.renderGrid = function(currentTheme) {
         var grid = [];
@@ -487,16 +487,16 @@ ocargo.Drawing = function() {
 
     this.clearPaper = function() {
         paper.clear();
-    }
+    };
 
     this.renderMap = function(map) {
         this.renderBackground();
         this.renderRoad(map.nodes);
-    }
+    };
 
     this.createImage = function(url, x, y, width, height) {
         return paper.image(url, x, y, width, height);
-    }
+    };
 
     /****************/
     /** Animations **/
@@ -511,14 +511,14 @@ ocargo.Drawing = function() {
             lightImages[lightID][0].animate({opacity : 0}, animationLength/2, 'linear');
             lightImages[lightID][1].animate({opacity : 1}, animationLength, 'linear');
         }
-    }
+    };
 
     this.skipOutstandingVanAnimationsToEnd = function(vanID) {
         var anims = vanImages[vanID].status();
         for (var i = 0, ii = anims.length; i < ii; i++) {
             vanImages[vanID].status(anims[i].anim, 1);
         }
-    }
+    };
 
     function getCharacterImageURL(characterName, view) {
         return '/static/game/image/characters/'  + view + '/' + name + ".svg";
@@ -536,7 +536,7 @@ ocargo.Drawing = function() {
 
         element.scrollLeft = point[0] - element.offsetWidth/2;
         element.scrollTop = point[1] - element.offsetHeight/2;
-    }
+    };
 
     this.moveForward = function(vanId, animationLength, callback) {
         var moveDistance = -MOVE_DISTANCE;
@@ -544,7 +544,7 @@ ocargo.Drawing = function() {
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
-    }
+    };
 
     this.moveLeft = function(vanId, animationLength,callback) {
         var vanImage = vanImages[vanId];
@@ -554,7 +554,7 @@ ocargo.Drawing = function() {
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
-    }
+    };
 
     this.moveRight = function(vanId, animationLength, callback) {
         var vanImage = vanImages[vanId];
@@ -564,7 +564,7 @@ ocargo.Drawing = function() {
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
-    }
+    };
 
     this.turnAround = function(vanId, animationLength, callback) {
         var moveDistance = -GRID_SPACE_SIZE / 2;
@@ -594,19 +594,19 @@ ocargo.Drawing = function() {
         }
         
         moveForward();
-    }
+    };
 
     this.wait = function(vanId, animationLength, callback) {
         //no movement for now
         moveVanImage({
             transform: '... t 0,0'
         }, vanId, animationLength, callback);
-    }
+    };
 
     this.deliver = function(vanID, animationLength, destinationID, callback) {
         var destinationRect = destinationImages[destinationID].rect;
         destinationRect.animate({'stroke': DESTINATION_VISITED_COLOUR}, animationLength, 'linear', callback);
-    }
+    };
 
     function moveVanImage(attr, vanId, animationLength, callback) {
         vanImages[vanId].animate(attr, animationLength, 'linear', callback);
@@ -749,8 +749,8 @@ ocargo.Drawing = function() {
 
             return [roadLeft, roadForward, roadRight];
         }
-    }
-}
+    };
+};
 
 /********************************/
 /* Static methods and constants */
@@ -758,7 +758,7 @@ ocargo.Drawing = function() {
 
 ocargo.Drawing.translate = function(coordinate) {
     return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
-}
+};
 
 // This is the function that starts the pop-up.
 ocargo.Drawing.startPopup = function(title, subtitle, message, delay) {
@@ -766,19 +766,19 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, delay) {
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
-}
+};
 
 ocargo.Drawing.showButtonHelp = function(){
     $('#myModal-lead').html('');
     $('#myModal-mainText').html('<p>' + ocargo.messages.buttonHelp + '</p>' +
                                 '<p><button onclick="document.getElementById(' + "'close-modal'" +
                                 ').click()">Close</button></p>');
-}
+};
 
 ocargo.Drawing.isMobile = function() {
     var mobileDetect = new MobileDetect(window.navigator.userAgent);
     return !!mobileDetect.mobile();
-}
+};
 
 ocargo.Drawing.FRONT_VIEW  = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";

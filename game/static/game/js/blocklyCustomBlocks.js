@@ -246,12 +246,12 @@ function initCustomBlocksDescription() {
     };
 
     // Set text colour to red
-    var textBlock = Blockly.Blocks['text']
+    var textBlock = Blockly.Blocks['text'];
     var originalTextInit = textBlock.init;
     textBlock.init = function() {
         originalTextInit.call(this);
         this.setColour(260);
-    }
+    };
 
     //Customise controls_repeat block to not allow more than a sensible number of repetitions
     var controlsRepeatBlock = Blockly.Blocks['controls_repeat'];

@@ -106,4 +106,4 @@ ocargo.messages = {
                     <p><img src="/static/game/image/buttons/menu/unmuted.svg" alt="Unmuted / Mute" /> Shows that the game is unmuted (click to mute)</p>\
                     <p><img src="/static/game/image/buttons/menu/quit.svg" alt="Quit" /> Quits the level, returning to the level selection page</p>\
                   </div>',
-}
+};

@@ -53,17 +53,16 @@ ocargo.PathFinder.prototype.getScore = function() {
 
 // Renders the gained score in coins.
 ocargo.PathFinder.prototype.renderCoins = function(score, maxScore) {
-    var coins = "<div>"
+    var coins = "<div>";
     var i;
     for (i = 0; i < Math.floor(score); i++) {
-        coins += "<img src='/static/game/image/coins/coin_gold.svg' width='50'>"
+        coins += "<img src='/static/game/image/coins/coin_gold.svg' width='50'>";
     }
     if (score - Math.floor(score) > 0) {
-        coins += "<img src='/static/game/image/coins/coin_5050_transparent.svg' width='50'>"
+        coins += "<img src='/static/game/image/coins/coin_5050_transparent.svg' width='50'>";
     }
     for (i = Math.ceil(score); i < maxScore; i++) {
-        console.debug(":skdhadjkh")
-        coins += "<img src='/static/game/image/coins/coin_empty_transparent.svg' width='50'>"
+        coins += "<img src='/static/game/image/coins/coin_empty_transparent.svg' width='50'>";
     }
     coins += "      " + score + "/" + maxScore;
     coins += "</div>";
@@ -204,7 +203,7 @@ function aStar(origin, destination, nodes) {
     var openSet = [start];          // All 3 lists are indexed the same way original nodes are.
     var costFromStart = [0];        // Costs from the starting point.
     var reversePriority = [0];      // The lower the value, the higher priority of the node.
-    var heuristics = [0]            // Stores results of heuristic().
+    var heuristics = [0];            // Stores results of heuristic().
     var currentIndex = 0;
     var neighbourIndex = 0;
 

@@ -2,7 +2,7 @@
 
 var ocargo = ocargo || {};
 
-ocargo.BlocklyCompiler = function() {}
+ocargo.BlocklyCompiler = function() {};
 
 ocargo.BlocklyCompiler.prototype.procedureBindings = null;
 ocargo.BlocklyCompiler.prototype.procedures = null;
@@ -32,12 +32,12 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
         var bodyBlock = block.inputList[1].connection.targetBlock();
 
         if (!(name in this.procedures)) {
-            this.procedures[name] = new Procedure(name, this.createSequence(bodyBlock),block)
+            this.procedures[name] = new Procedure(name, this.createSequence(bodyBlock),block);
         } else {
             throw ocargo.messages.procDupNameError;
         }
     }
-}
+};
 
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {
     this.program = new ocargo.Program();
@@ -48,7 +48,7 @@ ocargo.BlocklyCompiler.prototype.compileProgram = function() {
         thread.stack.push(this.createSequence(thread.startBlock));
         this.program.threads.push(thread);
     }
-}
+};
 
 ocargo.BlocklyCompiler.prototype.bindProcedureCalls = function() {
     this.program.procedures = this.procedures;
@@ -62,7 +62,7 @@ ocargo.BlocklyCompiler.prototype.bindProcedureCalls = function() {
             throw ocargo.messages.procCallNameError;
         }
     }
-}
+};
 
 /** Instructions **/
 
@@ -82,7 +82,7 @@ ocargo.BlocklyCompiler.prototype.createRepeatUntil = function(block) {
         throw ocargo.messages.whileBodyError;
     }
     return new While(condition, this.createSequence(bodyBlock), block);
-}
+};
 
 ocargo.BlocklyCompiler.prototype.createRepeatWhile = function(block) {
     var conditionBlock = block.inputList[0].connection.targetBlock();
@@ -96,7 +96,7 @@ ocargo.BlocklyCompiler.prototype.createRepeatWhile = function(block) {
         throw ocargo.messages.whileBodyError;
     }
     return new While(condition, this.createSequence(bodyBlock), block);
-}
+};
 
 ocargo.BlocklyCompiler.prototype.createProcedureCall = function(block) {
     var name = block.inputList[0].fieldRow[1].text_;
@@ -107,7 +107,7 @@ ocargo.BlocklyCompiler.prototype.createProcedureCall = function(block) {
     var procCall = new ProcedureCall(block);
     this.procedureBindings.push({call:procCall,name:name});
     return procCall;
-}
+};
 
 ocargo.BlocklyCompiler.prototype.createWhile = function(block) {
     var bodyBlock = block.inputList[1].connection.targetBlock();
@@ -118,7 +118,7 @@ ocargo.BlocklyCompiler.prototype.createWhile = function(block) {
 		this.counterCondition(block, parseInt(block.inputList[0].fieldRow[1].text_)),
 		this.createSequence(bodyBlock),
 		block);
-}
+};
 
 ocargo.BlocklyCompiler.prototype.createWhileUntil = function(block) {
     var conditionBlock = block.inputList[0].connection.targetBlock();
@@ -135,7 +135,7 @@ ocargo.BlocklyCompiler.prototype.createWhileUntil = function(block) {
         throw ocargo.messages.whileBodyError;
     }
 	return new While(condition,	this.createSequence(bodyBlock), block);
-}
+};
 
 ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
 	if (conditionBlock.type === 'road_exists') {
@@ -150,7 +150,7 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
     } else if (conditionBlock.type === 'traffic_light') {
     	return this.trafficLightCondition(conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
     }
-}
+};
 
 ocargo.BlocklyCompiler.prototype.createIf = function(block) {
 	var conditionalCommandSets = [];
@@ -182,7 +182,7 @@ ocargo.BlocklyCompiler.prototype.createIf = function(block) {
 	}
 
 	return new If(conditionalCommandSets, elseBody, block);
-}
+};
 
 ocargo.BlocklyCompiler.prototype.createSequence = function(block){
 	var commands = [];
@@ -218,7 +218,7 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block){
 	}
 
     return commands;
-}
+};
 
 /** Conditions **/
 
@@ -232,7 +232,7 @@ ocargo.BlocklyCompiler.prototype.trafficLightCondition = function(block, lightCo
             return model.isTrafficLightGreen();
         }
     };
-}
+};
 
 ocargo.BlocklyCompiler.prototype.roadCondition = function(block, selection) {
     return function(model) {
@@ -245,27 +245,27 @@ ocargo.BlocklyCompiler.prototype.roadCondition = function(block, selection) {
             return model.isRoadRight();
         }
     };
-}
+};
 
 ocargo.BlocklyCompiler.prototype.deadEndCondition = function(block) {
     return function(model) {
         queueHighlight(model, block);
         return model.isDeadEnd();
     };
-}
+};
 
 ocargo.BlocklyCompiler.prototype.negateCondition = function(otherCondition) {
     return function(model) {
         return !otherCondition(model);
     };
-}
+};
 
 ocargo.BlocklyCompiler.prototype.atDestinationCondition = function(block) {
     return function(model) {
         queueHighlight(model, block);
         return model.isAtADestination();
     };
-}
+};
 
 ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
     var startCount = count;
@@ -279,7 +279,7 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
         count = startCount;
         return false;
     };
-}
+};
 
 
 ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
@@ -296,4 +296,4 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
 	}
 	
 	return code;
-}
+};

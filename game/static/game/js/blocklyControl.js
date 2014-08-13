@@ -18,7 +18,7 @@ ocargo.BlocklyControl = function () {
     this.numberOfStartBlocks = 0;
 
     Blockly.Flyout.autoClose = false;
-}
+};
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
 ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH = 1;
@@ -34,7 +34,7 @@ ocargo.BlocklyControl.prototype.prepare = function() {
         return {success:true, program: ocargo.blocklyCompiler.compile()};
     }
     catch (error) {
-        return {success:false, error: ocargo.messages.compilationError + "<br><br>" + error}
+        return {success:false, error: ocargo.messages.compilationError + "<br><br>" + error};
     }
 };
 
@@ -110,7 +110,7 @@ ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     }
 
     ocargo.blocklyControl.redrawBlockly();
-}
+};
 
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
     var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
