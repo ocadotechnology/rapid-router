@@ -1,5 +1,6 @@
 from django.contrib import admin
-from game.models import Class, Student, Guardian, Teacher, School, UserProfile, Level, Block
+from game.models import Level, Block
+from portal.models import Class, Student, Guardian, Teacher, School, UserProfile
 
 admin.site.register(Class)
 admin.site.register(Student)

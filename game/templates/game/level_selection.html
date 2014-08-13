@@ -1,4 +1,4 @@
-{% extends 'website/base.html' %}
+{% extends 'game/base.html' %}
 
 {% load compress %}
 {% load static %}
@@ -7,7 +7,7 @@
 
 {% block scripts %}
 {{block.super}}
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="/static/game/js/d3.v3.min.js" charset="utf-8"></script>
 
   <script>
     EPISODE_LIST = {{episodeData|safe}};

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'website',
     'game',
+    'portal',
     'reports',
     'django.contrib.admin',
     'django.contrib.admindocs',
@@ -128,13 +129,6 @@ elif os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.gete
     COMPRESS_OFFLINE = True
     COMPRESS_ROOT = STATIC_ROOT
     COMPRESS_URL = STATIC_URL
-    # And require login for now
-    MIDDLEWARE_CLASSES.append('website.middleware.loginrequired.LoginRequiredMiddleware')
-    # inject the lib folder into the python path
-    import sys
-    lib_path = os.path.join(os.path.dirname(__file__), 'lib')
-    if lib_path not in sys.path:
-        sys.path.append(lib_path)
 else:
     DATABASES = {
         'default': {

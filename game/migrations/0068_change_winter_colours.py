@@ -17,7 +17,7 @@ def change_theme_data(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0067_theme_add_colours'),
+        ('game', '0069_auto_20140806_1043'),
     ]
 
     operations = [

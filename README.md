@@ -1,4 +1,8 @@
-# O-Car-Go
+# O-Car-Go - Integrate branch
+
+This integrate branch is to keep separate (initially) the transition from using Ocargo as a separate application to using it through a central Deploy application (see the [codeforlife-deploy](http://github.com/ocadotechnology/codeforlife-deploy/) repository).
+
+## Previous README text:
 
 O-Car-Go is a 'Coding For Life' project, aimed at teaching children programming concepts through a vehicle routing game. It is a Django based web application.
 

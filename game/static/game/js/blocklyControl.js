@@ -16,6 +16,8 @@ ocargo.BlocklyControl = function () {
     Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
     this.numberOfStartBlocks = 0;
+
+    Blockly.Flyout.autoClose = false;
 }
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
