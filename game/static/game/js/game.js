@@ -5,7 +5,6 @@ var ocargo = ocargo || {};
 function init() {
 
     initCustomBlocks();
-
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.drawing = new ocargo.Drawing();
@@ -215,17 +214,17 @@ function setupDirectDriveListeners() {
     $('#moveForward').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        moveForward(0, ANIMATION_LENGTH, function() {onStopControls()});
+        ocargo.drawing.moveForward(0, ANIMATION_LENGTH, function() {onStopControls()});
     });
     $('#turnLeft').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        moveLeft(0, ANIMATION_LENGTH, function() {onStopControls()});
+        ocargo.drawing.moveLeft(0, ANIMATION_LENGTH, function() {onStopControls()});
     });
     $('#turnRight').click(function() {
         onPlayControls();
         ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        moveRight(0, ANIMATION_LENGTH, function() {onStopControls()});
+        ocargo.drawing.moveRight(0, ANIMATION_LENGTH, function() {onStopControls()});
     });
     $('#go').click(function() {
         $('#play').trigger('click');
