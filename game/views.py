@@ -329,20 +329,6 @@ def random_level_for_episode(request, episodeID):
     level = random_road.create(episode)
     return redirect("game.views.level", level=level.id)
 
-
-def level_editor_random(request):
-    """Generates a new random path suitable for a random level with the parameters provided"""
-
-    size = int(request.POST['numberOfTiles'])
-    branchiness = float(request.POST['branchiness'])
-    loopiness = float(request.POST['loopiness'])
-    curviness = float(request.POST['curviness'])
-
-    path = random_road.generate_random_path(random_road.Node(0, 3), size, branchiness,
-                                            loopiness, curviness)
-    return HttpResponse(json.dumps(path), content_type='application/javascript')
-
-
 def start_episode(request, episode):
     episode = cached_episode(episode)
     return redirect("game.views.level", level=episode.first_level.id)
@@ -793,7 +779,7 @@ def level_editor(request):
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
-def getListOfLevelsForEditor(request):
+def get_list_of_levels_for_editor(request):
     if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         ownedLevels = []
         sharedLevels = []
@@ -807,7 +793,7 @@ def getListOfLevelsForEditor(request):
     response = {'ownedLevels':owned, 'sharedLevels':shared};
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
-def getLevelForEditor(request, levelID):
+def get_level_for_editor(request, levelID):
     if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         response = ""
     else:
@@ -819,7 +805,7 @@ def getLevelForEditor(request, levelID):
 
     return HttpResponse(json.dumps(model_to_dict(response)), content_type='application/javascript')    
 
-def deleteLevelForEditor(request, levelID):
+def delete_level_for_editor(request, levelID):
     if not request.user.is_anonymous() and hasattr(request.user, "userprofile"):
         level = Level.objects.get(id=levelID)
         if(level.owner == request.user.userprofile):
@@ -827,7 +813,7 @@ def deleteLevelForEditor(request, levelID):
 
     return HttpResponse('', content_type='application/javascript')
 
-def saveLevelForEditor(request):
+def save_level_for_editor(request):
     """ Processes a request on creation of the map in the level editor """
     
     path = request.POST.get('nodes')
@@ -852,3 +838,15 @@ def saveLevelForEditor(request):
     passed_level.save()
 
     return HttpResponse(json.dumps({'newID': passed_level.id}), content_type='application/javascript')
+
+def generate_random_map_for_editor(request):
+    """Generates a new random path suitable for a random level with the parameters provided"""
+
+    size = int(request.POST['numberOfTiles'])
+    branchiness = float(request.POST['branchiness'])
+    loopiness = float(request.POST['loopiness'])
+    curviness = float(request.POST['curviness'])
+    traffic_lights_enabled = request.POST['trafficLightsEnabled']
+
+    data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness, traffic_lights_enabled)
+    return HttpResponse(json.dumps(data), content_type='application/javascript')

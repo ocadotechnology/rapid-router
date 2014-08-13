@@ -73,6 +73,8 @@ class LevelDecor(models.Model):
 
 
 class Episode (models.Model):
+    '''Variables prefixed with r_ signify they are parameters for random level generation'''
+    
     name = models.CharField(max_length=200)
     first_level = models.ForeignKey(Level)
     next_episode = models.ForeignKey("self", null=True, default=None)
@@ -84,6 +86,7 @@ class Episode (models.Model):
     r_blocks = models.ManyToManyField(Block, related_name='episodes')
     r_blocklyEnabled = models.BooleanField(default=True)
     r_pythonEnabled = models.BooleanField(default=False)
+    r_trafficLights = models.BooleanField(default=False)
 
     @property
     def levels(self):

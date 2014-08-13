@@ -25,35 +25,39 @@ def create(episode=None):
     maxFuel = DEFAULT_MAX_FUEL
 
     if episode:
-        numTiles = DEFAULT_NUM_TILES
+        num_tiles = DEFAULT_NUM_TILES
         branchiness = DEFAULT_BRANCHINESS
         loopiness = DEFAULT_LOOPINESS
         curviness = DEFAULT_CURVINESS
-        blocklyEnabled = True
-        pythonEnabled = False
+        blockly_enabled = True
+        python_enabled = False
         blocks = Block.objects.all();
         name = "Default random level"
+        traffic_lights_enabled = True
     else:
-        numTiles = episode.r_num_tiles
+        num_tiles = episode.r_num_tiles
         branchiness = episode.r_branchiness
         loopiness = episode.r_loopiness
         curviness = episode.r_curviness
-        blocklyEnabled = episode.r_blocklyEnabled
-        pythonEnabled = episode.r_pythonEnabled
+        blockly_enabled = episode.r_blocklyEnabled
+        python_enabled = episode.r_pythonEnabled
         blocks = episode.r_blocks.all()
         name = "Random level for " + episode.name
-        
-    path = generate_random_path(startNode, numTiles, branchiness, loopiness, curviness)
-    destinations = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
-    trafficLights = []
+        traffic_lights_enabled = True
+    
+    level_data = generate_random_map_data(num_tiles,
+                                        branchiness_factor,
+                                        loopiness_factor,
+                                        curviness_factor,
+                                        traffic_lights_enabled)
 
     level = Level(name=name,
-                  path=json.dumps(path),
+                  path=level_data['path'],
+                  destinations=level_data['destinations'],
+                  traffic_lights=level_data['traffic_lights'],
                   max_fuel=maxFuel,
-                  destinations=destinations,
-                  blocklyEnabled=blocklyEnabled,
-                  pythonEnabled=pythonEnabled,
-                  traffic_lights=json.dumps(trafficLights))
+                  blocklyEnabled=blockly_enabled,
+                  pythonEnabled=python_enabled)
 
     level.save()
     level.blocks = blocks
@@ -61,8 +65,14 @@ def create(episode=None):
 
     return level
 
+def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled):
+    path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
+    traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
+    destinations = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
 
-def generate_random_path(start_position, num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
+    return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights), 'destinations': json.dumps(destinations)}
+
+def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
     
     def pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor):
         
@@ -146,8 +156,8 @@ def generate_random_path(start_position, num_road_tiles, branchiness_factor, loo
 
 
 
-    nodes = [start_position]
-    index_by_node = {start_position:0}
+    nodes = [Node(random.randint(0, WIDTH-1), random.randint(0, HEIGHT-1))]
+    index_by_node = {nodes[0]: 0}
 
     connections = defaultdict(list)
 
