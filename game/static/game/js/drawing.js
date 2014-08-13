@@ -429,11 +429,11 @@ ocargo.Drawing = function() {
             var sourceCoordinate = trafficLight.sourceNode.coordinate;
             var controlledCoordinate = trafficLight.controlledNode.coordinate;
 
-            trafficLight.greenLightEl = createTrafficLightImage('/static/game/image/trafficLight_green.svg');
-            trafficLight.redLightEl = createTrafficLightImage('/static/game/image/trafficLight_red.svg');
+            trafficLight.greenLightEl = this.createTrafficLightImage('/static/game/image/trafficLight_green.svg');
+            trafficLight.redLightEl = this.createTrafficLightImage('/static/game/image/trafficLight_red.svg');
 
-            setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.greenLightEl);
-            setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.redLightEl);
+            this.setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.greenLightEl);
+            this.setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.redLightEl);
             
             // hide light which isn't the starting state
             if(trafficLight.startingState === ocargo.TrafficLight.RED) {
@@ -501,9 +501,20 @@ ocargo.Drawing = function() {
         return paper.image(url, x, y, width, height);
     }
 
-    /**************************/
-    /** Character animations **/
-    /**************************/
+    /****************/
+    /** Animations **/
+    /****************/
+
+    this.transitionTrafficLight = function(lightID, endState, animationLength) {
+        if (endState == ocargo.TrafficLight.GREEN) {
+            lightImages[lightID][0].animate({opacity : 1}, animationLength/2, 'linear');
+            lightImages[lightID][1].animate({opacity : 0}, animationLength, 'linear');
+        }
+        else {
+            lightImages[lightID][0].animate({opacity : 0}, animationLength/2, 'linear');
+            lightImages[lightID][1].animate({opacity : 1}, animationLength, 'linear');
+        }
+    }
 
     this.skipOutstandingVanAnimationsToEnd = function(vanID) {
         var anims = vanImages[vanID].status();
@@ -603,10 +614,6 @@ ocargo.Drawing = function() {
     function moveVanImage(attr, vanId, animationLength, callback) {
         vanImages[vanId].animate(attr, animationLength, 'linear', callback);
     }
-
-    /**********************/
-    /** Crash animations **/
-    /**********************/
 
     this.crash = function(vanID, animationLength, previousNode, currentNode, attemptedAction,  startNode) {
         var road = getLeftRightForwardRoad(previousNode, currentNode);

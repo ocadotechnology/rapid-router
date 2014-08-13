@@ -121,7 +121,7 @@ ocargo.LevelEditor = function() {
 
                 // Check to see if start and end nodes have been marked
                 if (!originNode || !destinationNode) {
-                     startPopup(ocargo.messages.ohNo, ocargo.messages.noStartOrEndSubtitle, ocargo.messages.noStartOrEnd);
+                     ocargo.Drawing.startPopup(ocargo.messages.ohNo, ocargo.messages.noStartOrEndSubtitle, ocargo.messages.noStartOrEnd);
                      lastTabSelected.prop('checked', true);
                      return;
                 }
@@ -130,7 +130,7 @@ ocargo.LevelEditor = function() {
                 var destination = new ocargo.Destination(0, destinationNode);
                 var pathToDestination = getOptimalPath(nodes, [destination]);
                 if (pathToDestination.length === 0) {
-                    startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
+                    ocargo.Drawing.startPopup(ocargo.messages.somethingWrong, ocargo.messages.noStartEndRouteSubtitle, 
                         ocargo.messages.noStartEndRoute);
                     return;
                 }
@@ -249,7 +249,10 @@ ocargo.LevelEditor = function() {
                             type == "controls_if" ||
                             type == "declare_proc";
 
-                var content = '<svg class="block_image' + (large ? ' large' : '') + '">' +  svg.innerHTML + '</svg>';
+                var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
+                content += '<g transform="translate(10,0)"';
+                content += svg.innerHTML + '</g></svg>';
+
                 $('#' + type + '_image').html(content);
 
                 addListenerToImage(type);
@@ -300,36 +303,44 @@ ocargo.LevelEditor = function() {
 
         function setupGenerateTab() {
             $('#generate').click(function() {
-                var size = $('#size').val();
-                var branchiness = $('#branchiness').val()/10;
-                var loopiness = $('#loopiness').val()/10;
-                var curviness = $('#curviness').val()/10;
-
                 $.ajax({
-                    url: "/game/level_editor/random",
+                    url: "/game/level_editor/level/random",
                     type: "POST",
                     dataType: 'json',
                     data: {
-                        numberOfTiles: size,
-                        branchiness: branchiness,
-                        loopiness: loopiness,
-                        curviness: curviness,
+                        numberOfTiles: $('#size').val(),
+                        branchiness: $('#branchiness').val()/10,
+                        loopiness: $('#loopiness').val()/10,
+                        curviness: $('#curviness').val()/10,
+                        trafficLightsEnabled: true,
                         csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()
                     },
 
-                    success: function (json) {
-                        clear();
+                    success: function (mapData) {
+                        clear()
 
-                        for (var i = 0; i < json.length; i++) {
-                            var node = new ocargo.Node(new ocargo.Coordinate(json[i].coordinate[0], json[i].coordinate[1]));
+                        var path = JSON.parse(mapData.path);
+                        for (var i = 0; i < path.length; i++) {
+                            var node = new ocargo.Node(new ocargo.Coordinate(path[i].coordinate[0], path[i].coordinate[1]));
                             nodes.push(node);
                         }
 
-                        for (var i = 0; i < json.length; i++) {
+                        for (var i = 0; i < path.length; i++) {
                             nodes[i].connectedNodes = [];
-                            for(var j = 0; j < json[i].connectedNodes.length; j++) {
-                                nodes[i].connectedNodes.push(nodes[json[i].connectedNodes[j]]);
+                            for(var j = 0; j < path[i].connectedNodes.length; j++) {
+                                nodes[i].connectedNodes.push(nodes[path[i].connectedNodes[j]]);
                             }
+                        }
+
+                        // TODO add in support for multiple destinations
+                        var destination = JSON.parse(mapData.destinations)[0];
+                        var destinationCoord = new ocargo.Coordinate(destination[0], destination[1]);
+                        destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoord, nodes);
+                        originNode = nodes[0];
+
+                        var tls = JSON.parse(mapData.traffic_lights);
+                        for(var i = 0; i < tls.length; i++) {
+                            new InternalTrafficLight(tls[i]);
                         }
 
                         drawAll();
