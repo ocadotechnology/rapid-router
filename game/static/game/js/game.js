@@ -39,10 +39,13 @@ function init() {
 }
 
 function runProgramAndPrepareAnimation() {
-    var program = ocargo.controller.prepare();
-    if(!program) {
+    var result = ocargo.controller.prepare();
+    if(!result.success)
+    {
+        ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error);
         return false;
     }
+    program = result.program;
 
     ocargo.blocklyControl.resetIncorrectBlock();
 

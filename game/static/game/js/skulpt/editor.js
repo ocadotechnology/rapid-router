@@ -40,7 +40,7 @@ $(document).ready(function () {
     };
 
     ocargo.editor.prepare = function() {
-        return { run: function() { ocargo.editor.run() }};
+        return {success: true, program:{ run: function() { ocargo.editor.run() }}};
     };
 
     ocargo.editor.reset = function() {

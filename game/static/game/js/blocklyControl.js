@@ -31,13 +31,10 @@ ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
 
 ocargo.BlocklyControl.prototype.prepare = function() {
     try {
-        return ocargo.blocklyCompiler.compile();
+        return {success:true, program: ocargo.blocklyCompiler.compile()};
     }
     catch (error) {
-        startPopup(ocargo.messages.failTitle, 
-                "", 
-                ocargo.messages.compilationError + "<br><br>" + error);
-        return null;
+        return {success:false, error: ocargo.messages.compilationError + "<br><br>" + error}
     }
 };
 
