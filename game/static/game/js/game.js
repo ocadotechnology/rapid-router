@@ -45,7 +45,7 @@ function runProgramAndPrepareAnimation() {
         ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error);
         return false;
     }
-    program = result.program;
+    var program = result.program;
 
     ocargo.blocklyControl.resetIncorrectBlock();
 
