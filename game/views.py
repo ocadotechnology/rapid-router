@@ -405,12 +405,20 @@ def renderScoreboard(request, form, school):
         class_ = request.user.userprofile.student.class_field
         if classID and int(classID) != class_.id:
             raise Http404
+        students = class_.students.all()
+        # remove all students except this student from students if the class config doesn't allow for students to see classmates' data
+        if not class_.classmates_data_viewable:
+            students = students.filter(id=request.user.userprofile.student.id)
     else:
         raise Http404
 
+    # Get level to filter by
     if levelID:
         level = get_object_or_404(Level, id=levelID)
 
+    # Apply filters using handlers - note handleAllClasses filter must further take responsibility for filtering
+    # when school students are in a class where they aren't allowed to see classmates' data or for only showing
+    # data from students in their class
     if classID and levelID:
         studentData = handleOneClassOneLevel(students, level)
     elif levelID:
@@ -478,7 +486,7 @@ def handleAllClassesOneLevel(request, level):
     studentData = []
     classes = []
     if hasattr(request.user.userprofile, 'student'):
-        # Allow students to see their classmates
+        # Students can only see at most their classmates
         classes = [request.user.userprofile.student.class_field]
     elif hasattr(request.user.userprofile, 'teacher'):
         # Allow teachers to see school stats
@@ -488,6 +496,9 @@ def handleAllClassesOneLevel(request, level):
 
     for cl in classes:
         students = cl.students.all()
+        if not request.user.userprofile.student.class_field.classmates_data_viewable:
+            # Filter out other students' data if not allowed to see classmates
+            students = students.filter(id=request.user.userprofile.student.id)
         for student in students:
             row = createOneRow(student, level)
             studentData.append(row)
@@ -508,7 +519,7 @@ def handleAllClassesAllLevels(request, levels):
     """
     studentData = []
     if hasattr(request.user.userprofile, 'student'):
-        # allow students to see their classmates
+        # Students can only see at most their classmates
         classes = [request.user.userprofile.student.class_field]
     elif hasattr(request.user.userprofile, 'teacher'):
         # allow teachers to see school stats
@@ -518,6 +529,9 @@ def handleAllClassesAllLevels(request, levels):
 
     for cl in classes:
         students = cl.students.all()
+        if not request.user.userprofile.student.class_field.classmates_data_viewable:
+            # Filter out other students' data if not allowed to see classmates
+            students = students.filter(id=request.user.userprofile.student.id)
         for student in students:
             studentData.append([student, 0.0, [], []])
     return createRows(studentData, levels)
