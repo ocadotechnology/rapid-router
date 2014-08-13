@@ -103,7 +103,7 @@ ocargo.LevelEditor = function() {
                         newPath.push(node);
                     }
                     return newPath;
-                };
+                }
 
                 function stripOutImageProperty(objects) {
                     var newObjects = [];
@@ -142,7 +142,8 @@ ocargo.LevelEditor = function() {
 
                 // Create traffic light data
                 var trafficLightData = [];
-                for(var i = 0; i < trafficLights.length; i++) {
+                var i;
+                for(i = 0; i < trafficLights.length; i++) {
                     var tl =  trafficLights[i];
                     if(tl.valid) {
                         trafficLightData.push(tl.getData());
@@ -152,7 +153,7 @@ ocargo.LevelEditor = function() {
 
                 // Create block data
                 var blockData = [];
-                for(var i = 0; i < BLOCKS.length; i++) {
+                for(i = 0; i < BLOCKS.length; i++) {
                     var type = BLOCKS[i];
                     if($('#' + type + "_checkbox").is(':checked')) {
                         blockData.push(type);
@@ -162,7 +163,7 @@ ocargo.LevelEditor = function() {
                 
                 // Create decor data
                 var decorData = [];
-                for(var i = 0; i < decor.length; i++) {
+                for(i = 0; i < decor.length; i++) {
                     decorData.push(decor[i].getData());
                 }
                 decorData = JSON.stringify(decorData);
@@ -319,12 +320,13 @@ ocargo.LevelEditor = function() {
                         clear()
 
                         var path = JSON.parse(mapData.path);
-                        for (var i = 0; i < path.length; i++) {
+                        var i;
+                        for (i = 0; i < path.length; i++) {
                             var node = new ocargo.Node(new ocargo.Coordinate(path[i].coordinate[0], path[i].coordinate[1]));
                             nodes.push(node);
                         }
 
-                        for (var i = 0; i < path.length; i++) {
+                        for (i = 0; i < path.length; i++) {
                             nodes[i].connectedNodes = [];
                             for(var j = 0; j < path[i].connectedNodes.length; j++) {
                                 nodes[i].connectedNodes.push(nodes[path[i].connectedNodes[j]]);
@@ -338,7 +340,7 @@ ocargo.LevelEditor = function() {
                         originNode = nodes[0];
 
                         var tls = JSON.parse(mapData.traffic_lights);
-                        for(var i = 0; i < tls.length; i++) {
+                        for(i = 0; i < tls.length; i++) {
                             new InternalTrafficLight(tls[i]);
                         }
 
@@ -427,14 +429,15 @@ ocargo.LevelEditor = function() {
                     nodes = ocargo.Node.parsePathData(JSON.parse(level.path));
 
                     // Load traffic light data
+                    var i;
                     var trafficLightData = JSON.parse(level.traffic_lights);
-                    for(var i = 0; i < trafficLightData.length; i++) {
+                    for(i = 0; i < trafficLightData.length; i++) {
                         new InternalTrafficLight(trafficLightData[i]);
                     }
 
                     // Load in the decor data
                     var decorData = JSON.parse(level.decor);
-                    for(var i = 0; i < decorData.length; i++) {
+                    for(i = 0; i < decorData.length; i++) {
                         var decorObject = new InternalDecor(decorData[i].name);
                         decorObject.setCoordinate(decorData[i].coordinate);
                     }
@@ -496,7 +499,7 @@ ocargo.LevelEditor = function() {
                         selectedLevel = rowSelected.attr('value');
 
                         for(var i = 0; i < ownLevels.length; i++) {
-                            if(ownLevels[i].id == selectedLevel) {
+                            if(ownLevels[i].id === selectedLevel) {
                                 $("#levelNameInput").val(ownLevels[i].name);
                             }
                         }
@@ -508,12 +511,12 @@ ocargo.LevelEditor = function() {
 
             $('#saveLevel').click(function() {
                 var newName = $('#levelNameInput').val();
-                if (newName && newName != "") {
+                if (newName && newName !== "") {
                     var table = $("#saveLevelTable");
                     for (var i = 0; i < table[0].rows.length; i++) {
                          var cell = table[0].rows[i].cells[0];
                          var wName = cell.innerHTML;
-                         if(wName == newName) {
+                         if(wName === newName) {
                             deleteLevel(cell.attributes[0].value, 
                                             function(err, level) {
                                                 if (err != null) {
@@ -640,7 +643,7 @@ ocargo.LevelEditor = function() {
         var coordPaper = ocargo.Drawing.translate(coordMap);
         var element = grid[coordPaper.x][coordPaper.y];
         element.attr({fill:colour, "fill-opacity": opacity});
-    };
+    }
 
     function markAsOrigin(coordinate) {
         mark(coordinate, 'red', 0.7, true);
@@ -678,7 +681,7 @@ ocargo.LevelEditor = function() {
 
         bringTrafficLightsToFront();
         bringDecorToFront();
-    };
+    }
 
     function markTentativeRoad(currentEnd) {
         clearMarkings();
@@ -695,7 +698,7 @@ ocargo.LevelEditor = function() {
             previousNode = node;
             markAsSelected(coordinate);
         }
-    };
+    }
 
     /***************************/
     /* Paper interaction logic */
@@ -864,7 +867,7 @@ ocargo.LevelEditor = function() {
             }
 
             image.transform('t' + paperX + ',' + paperY);
-        };
+        }
 
         function onDragStart(x, y) {
             var bBox = image.getBBox();
@@ -877,12 +880,12 @@ ocargo.LevelEditor = function() {
         
             paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
             paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
-        };
+        }
 
         function onDragEnd() {
             originX = paperX;
             originY = paperY;
-        };
+        }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
 
@@ -891,7 +894,7 @@ ocargo.LevelEditor = function() {
                 decor.destroy();
             }
         });
-    };
+    }
 
     function setupTrafficLightListeners(trafficLight) {
 
@@ -927,7 +930,7 @@ ocargo.LevelEditor = function() {
             // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
             trafficLight.valid = false;
             image.attr({'cursor':'default'});
-            moved = dx != 0 || dy != 0;
+            moved = dx !== 0 || dy !== 0;
 
             // Update image's position
             paperX = dx + originX;
@@ -948,7 +951,7 @@ ocargo.LevelEditor = function() {
             }
             
             // Adjust for the fact that we've rotated the image
-            if(rotation == 90 || rotation == 270)  {
+            if(rotation === 90 || rotation === 270)  {
                 paperX += (imageWidth - imageHeight)/2;
                 paperY -= (imageWidth - imageHeight)/2;
             }
@@ -1038,7 +1041,7 @@ ocargo.LevelEditor = function() {
                 mark(controlledCoord, colour, 0.7, false);
                 mark(sourceCoord, colour, 0.7, false);
             }
-        };
+        }
 
         function onDragStart(x, y) {
             moved = false;
@@ -1060,7 +1063,7 @@ ocargo.LevelEditor = function() {
 
             originX = mouseX - imageWidth/2;
             originY = mouseY - imageHeight/2;
-        };
+        }
 
         function onDragEnd() {
             if(moved) {
@@ -1091,7 +1094,7 @@ ocargo.LevelEditor = function() {
             }
 
             image.attr({'cursor':'pointer'});
-        };
+        }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
         
@@ -1128,7 +1131,7 @@ ocargo.LevelEditor = function() {
             }
             return false;
         }
-    };
+    }
 
     /********************************/
     /* Miscaellaneous state methods */
@@ -1140,7 +1143,7 @@ ocargo.LevelEditor = function() {
             visited[i] = new Array(8);
         }
         return visited;
-    };
+    }
 
     function createGrid() {
         grid = ocargo.drawing.renderGrid(currentTheme);
@@ -1193,7 +1196,7 @@ ocargo.LevelEditor = function() {
                 destinationNode = null;
             }     
         }
-    };
+    }
 
     function finaliseMove(strikeEnd) {
 
@@ -1224,27 +1227,28 @@ ocargo.LevelEditor = function() {
             }
             previousNode = node;
         }
-    };
+    }
 
     function applyAlongStrike(func, strikeEnd) {
+        var x, y;
         if (strikeStart.x <= strikeEnd.x) {
-            for (var x = strikeStart.x; x <= strikeEnd.x; x++) {
+            for (x = strikeStart.x; x <= strikeEnd.x; x++) {
                 func(x, strikeStart.y);
             }
         } 
         else {
-            for (var x = strikeStart.x; x >= strikeEnd.x; x--) {
+            for (x = strikeStart.x; x >= strikeEnd.x; x--) {
                 func(x, strikeStart.y);
             }
         }
 
         if (strikeStart.y <= strikeEnd.y) {
-            for (var y = strikeStart.y + 1; y <= strikeEnd.y; y++) {
+            for (y = strikeStart.y + 1; y <= strikeEnd.y; y++) {
                 func(strikeEnd.x, y);
             }
         } 
         else {
-            for (var y = strikeStart.y - 1; y >= strikeEnd.y; y--) {
+            for (y = strikeStart.y - 1; y >= strikeEnd.y; y--) {
                 func(strikeEnd.x, y);
             }
         }    
@@ -1320,11 +1324,11 @@ ocargo.LevelEditor = function() {
 
         this.valid = false;
 
-        var imgStr = this.startingState == ocargo.TrafficLight.RED ? LIGHT_RED_URL : LIGHT_GREEN_URL;
+        var imgStr = this.startingState === ocargo.TrafficLight.RED ? LIGHT_RED_URL : LIGHT_GREEN_URL;
         this.image = ocargo.drawing.createTrafficLightImage(imgStr);
         this.image.transform('...s-1,1');
 
-        if(this.controlledNode != -1 && this.sourceNode != -1) {
+        if(this.controlledNode !== -1 && this.sourceNode !== -1) {
             var sourceCoord = nodes[this.sourceNode].coordinate;
             var controlledCoord = nodes[this.controlledNode].coordinate;
             this.valid = true;
@@ -1350,7 +1354,7 @@ ocargo.LevelEditor = function() {
     InternalTrafficLight.prototype.destroy = function() {
         this.image.remove();
         var index = trafficLights.indexOf(this);
-        if(index != -1) {
+        if(index !== -1) {
             trafficLights.splice(index, 1);       
         }
     }
@@ -1394,7 +1398,7 @@ ocargo.LevelEditor = function() {
     InternalDecor.prototype.destroy = function() {
         this.image.remove();
         var index = decor.indexOf(this);
-        if(index != -1) {
+        if(index !== -1) {
             decor.splice(index, 1);       
         }
     }

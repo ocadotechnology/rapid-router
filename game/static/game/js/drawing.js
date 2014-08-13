@@ -245,7 +245,8 @@ ocargo.Drawing = function() {
         var cfc = paper.image(CFC_URL, initialX - 95, initialY - 25, 100, 107);
 
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
-        rotateElementAroundCentreOfGridSpace(cfc, rotation, position.currentNode.coordinate.x, position.currentNode.coordinate.y);
+        rotateElementAroundCentreOfGridSpace(cfc, rotation, position.currentNode.coordinate.x,
+                                             position.currentNode.coordinate.y);
 
         cfc.transform('... r90');
     }
@@ -454,7 +455,7 @@ ocargo.Drawing = function() {
         var initialX = calculateInitialX(position.currentNode);
         var initialY = calculateInitialY(position.currentNode);
 
-        var imageStr = (vanId % 2 == 0) ? CHARACTER_URL : '/static/game/image/characters/top_view/Van2.svg';
+        var imageStr = (vanId % 2 === 0) ? CHARACTER_URL : '/static/game/image/characters/top_view/Van2.svg';
         var vanImage = paper.image(imageStr, initialX, initialY, VAN_HEIGHT, VAN_WIDTH);
 
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
@@ -502,7 +503,7 @@ ocargo.Drawing = function() {
     /****************/
 
     this.transitionTrafficLight = function(lightID, endState, animationLength) {
-        if (endState == ocargo.TrafficLight.GREEN) {
+        if (endState === ocargo.TrafficLight.GREEN) {
             lightImages[lightID][0].animate({opacity : 1}, animationLength/2, 'linear');
             lightImages[lightID][1].animate({opacity : 0}, animationLength, 'linear');
         }
@@ -634,7 +635,7 @@ ocargo.Drawing = function() {
             }
             var transformation = "... t 0, " + (-distanceForwards);
         }
-        else if(attemptedAction == "TURN_LEFT") {
+        else if(attemptedAction === "TURN_LEFT") {
             var rotationAngle;
             if(roadForward) {
                 rotationAngle = 75;
@@ -649,7 +650,7 @@ ocargo.Drawing = function() {
             var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
             var transformation = createRotationTransformation(-rotationAngle, rotationPointX, rotationPointY);
         }
-        else if(attemptedAction == "TURN_RIGHT") {
+        else if(attemptedAction === "TURN_RIGHT") {
             var rotationAngle;
             if(roadForward) {
                 rotationAngle = 75;

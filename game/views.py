@@ -8,7 +8,7 @@ from cache import cached_all_episodes, cached_level, cached_episode
 from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404, HttpResponse, HttpResponseNotFound
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
@@ -37,9 +37,7 @@ def levels(request):
 
     :template:`game/level_selection.html`
     """
-    """ Keeping other schemes here for now, just in case we decide on different scheme. """
     bgcolour = 'rgba(171, 196, 37, {:f})'
-    fontcolour = "#617400"
 
     episodes = Episode.objects.all()
     ratio = 1.0 / (len(episodes) + 1)
@@ -122,7 +120,7 @@ def level(request, level):
 
     lesson = 'description_level' + str(level)
     hint = 'hint_level' + str(level)
-    
+
     try:
         lessonCall = getattr(messages, lesson)
         hintCall = getattr(messages, hint)
@@ -150,7 +148,7 @@ def level(request, level):
         except Http404:
             attempt = Attempt(level=lvl, score=0, student=student)
             attempt.save()
-            
+
     context = RequestContext(request, {
         'level': lvl,
         'blocks': blocks,
@@ -165,6 +163,7 @@ def level(request, level):
     })
 
     return render(request, 'game/game.html', context_instance=context)
+
 
 def renderError(request, title, message):
     """ Renders an error page with passed title and message.
@@ -242,7 +241,8 @@ def scoreboard(request):
         classes = Class.objects.filter(id__in=classes_list)
         if len(classes) <= 0:
             return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
-    elif hasattr(request.user.userprofile, 'student') and request.user.userprofile.student.class_field != None:
+    elif hasattr(request.user.userprofile, 'student') and \
+            request.user.userprofile.student.class_field is not None:
         # user is a school student
         class_ = request.user.userprofile.student.class_field
         classes = Class.objects.filter(id=class_.id)
@@ -329,6 +329,7 @@ def random_level_for_episode(request, episodeID):
     level = random_road.create(episode)
     return redirect("game.views.level", level=level.id)
 
+
 def start_episode(request, episode):
     episode = cached_episode(episode)
     return redirect("game.views.level", level=episode.first_level.id)
@@ -340,7 +341,8 @@ def submit(request):
     if not request.user.is_anonymous() and request.method == 'POST':
         if hasattr(request.user, "userprofile") and hasattr(request.user.userprofile, "student"):
             level = get_object_or_404(Level, id=request.POST.get('level', 1))
-            attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
+            attempt = get_object_or_404(Attempt, level=level,
+                                        student=request.user.userprofile.student)
             attempt.score = request.POST.get('score', 0)
             attempt.workspace = request.POST.get('workspace', '')
 
@@ -382,7 +384,7 @@ def parseDecor(theme, levelDecors):
     for levelDecor in levelDecors:
         decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)
         decorData.append(json.dumps(
-            {"coordinate": {"x":levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
+            {"coordinate": {"x": levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
              "width": decor.width, "height": decor.height}))
     return decorData
 
@@ -403,7 +405,8 @@ def renderScoreboard(request, form, school):
         classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
         if classID and not int(classID) in classes_list:
             raise Http404
-    elif hasattr(request.user.userprofile, 'student') and not request.user.userprofile.student.class_field is None:
+    elif hasattr(request.user.userprofile, 'student') and not \
+            request.user.userprofile.student.class_field is None:
         # user is a school student
         class_ = request.user.userprofile.student.class_field
         if classID and int(classID) != class_.id:
@@ -553,8 +556,8 @@ def renderLevelSharing(request):
         teachers = Teacher.objects.filter(school=school)
         classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
         classes = Class.objects.filter(id__in=classes_list)
-        people = User.objects.filter(userprofile__teacher__school=school) | User.objects.filter(userprofile__student__class_field__in=classes_list) 
-    elif hasattr(userProfile, "student") and userProfile.student.class_field != None:
+        people = User.objects.filter(userprofile__teacher__school=school) | User.objects.filter(userprofile__student__class_field__in=classes_list)
+    elif hasattr(userProfile, "student") and userProfile.student.class_field is not None:
         classesObj = userProfile.student.class_field
         classes = Class.objects.filter(pk=classesObj.id)
         people = User.objects.filter(userprofile__student__class_field=classesObj) | User.objects.filter(userprofile__teacher=classesObj.teacher)
@@ -745,7 +748,8 @@ class WorkspaceViewList(generics.ListCreateAPIView):
         return Workspace.objects.filter(owner=user)
 
     def post(self, request, format=None):
-        serializer = WorkspaceSerializer(Workspace(owner=request.user.userprofile.student), data=request.DATA, partial=True)
+        serializer = WorkspaceSerializer(Workspace(owner=request.user.userprofile.student),
+                                         data=request.DATA, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -807,10 +811,12 @@ def get_list_of_levels_for_editor(request):
         ownedLevels = Level.objects.filter(owner=request.user.userprofile.id)
         sharedLevels = request.user.shared.all()
 
-    owned = [{'name':level.name,'owner':level.owner.user.first_name, 'id':level.id} for level in ownedLevels]
-    shared = [{'name':level.name,'owner':level.owner.user.first_name, 'id':level.id} for level in sharedLevels]
+    owned = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
+             for level in ownedLevels]
+    shared = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
+              for level in sharedLevels]
 
-    response = {'ownedLevels':owned, 'sharedLevels':shared};
+    response = {'ownedLevels': owned, 'sharedLevels': shared}
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 
@@ -838,7 +844,7 @@ def delete_level_for_editor(request, levelID):
 
 def save_level_for_editor(request):
     """ Processes a request on creation of the map in the level editor """
-    
+
     path = request.POST.get('nodes')
     destinations = request.POST.get('destinations')
     decor = request.POST.get('decor')
@@ -847,7 +853,7 @@ def save_level_for_editor(request):
     name = request.POST.get('name')
     theme_name = request.POST.get('theme')
     theme = Theme.objects.get(name=theme_name)
-    
+
     passed_level = Level(name=name, path=path, default=False, destinations=destinations,
                          decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
                          theme=theme)
@@ -876,5 +882,6 @@ def generate_random_map_for_editor(request):
     curviness = float(request.POST['curviness'])
     traffic_lights_enabled = request.POST['trafficLightsEnabled']
 
-    data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness, traffic_lights_enabled)
+    data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
+                                                traffic_lights_enabled)
     return HttpResponse(json.dumps(data), content_type='application/javascript')
