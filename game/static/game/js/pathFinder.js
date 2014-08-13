@@ -28,9 +28,12 @@ ocargo.PathFinder.prototype.getScore = function() {
 
     var totalScore = pathLengthScore + instrScore;
 
-    var message = ocargo.messages.totalScore(totalScore, this.maxScore) +
-                "<br>" + ocargo.messages.pathScore(pathLengthScore, this.maxDistanceScore) +
-                "<br>" + ocargo.messages.algorithmScore(instrScore, this.maxInstrLengthScore);
+    var message = ocargo.messages.pathScore + 
+                    this.renderCoins(pathLengthScore, this.maxDistanceScore) + "<br>" +
+                    ocargo.messages.algorithmScore + 
+                    this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>" +
+                    ocargo.messages.totalScore(totalScore, this.maxScore);
+
 
     if (initInstrScore > this.maxInstrLengthScore) {
         message += "<br><br>" + ocargo.messages.algorithmShorter;
@@ -45,6 +48,27 @@ ocargo.PathFinder.prototype.getScore = function() {
         message += "<br><br>" + ocargo.messages.scorePerfect;
     }
     return [totalScore, message];
+};
+
+
+// Renders the gained score in coins.
+ocargo.PathFinder.prototype.renderCoins = function(score, maxScore) {
+    var coins = "<div>"
+    var i;
+    for (i = 0; i < Math.floor(score); i++) {
+        coins += "<img src='/static/game/image/coins/coin_gold.svg' width='50'>"
+    }
+    if (score - Math.floor(score) > 0) {
+        coins += "<img src='/static/game/image/coins/coin_5050_transparent.svg' width='50'>"
+    }
+    for (i = Math.ceil(score); i < maxScore; i++) {
+        console.debug(":skdhadjkh")
+        coins += "<img src='/static/game/image/coins/coin_empty_transparent.svg' width='50'>"
+    }
+    coins += "      " + score + "/" + maxScore;
+    coins += "</div>";
+
+    return coins;
 };
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
@@ -96,9 +120,10 @@ function getOptimalPath(nodes, destinations) {
     // If the map size increases or lots of destinations are required, it may need to be rethought
     var hash = {};
     function getPathBetweenNodes(node1, node2) {
-        var key = '('+node1.coordinate.x+','+node1.coordinate.y+'),('+node2.coordinate.x+','+node2.coordinate.y+')';
+        var key = '(' + node1.coordinate.x + ',' + node1.coordinate.y + '),(' + node2.coordinate.x +
+                    ',' + node2.coordinate.y + ')';
         var solution;
-        if(key in hash) {
+        if (key in hash) {
             solution = hash[key];
         }
         else {
@@ -110,13 +135,13 @@ function getOptimalPath(nodes, destinations) {
 
     function getPermutationPath(start, permutation) {
         var fragPath = [getPathBetweenNodes(start, permutation[0], nodes)];
-        for(var i = 1; i < permutation.length; i++) {
+        for (var i = 1; i < permutation.length; i++) {
             fragPath.push(getPathBetweenNodes(permutation[i-1], permutation[i], nodes));
         }
 
         var fullPath = [start];
-        for(var i = 0; i < fragPath.length; i++) {
-            if(!fragPath[i]) {
+        for (var i = 0; i < fragPath.length; i++) {
+            if (!fragPath[i]) {
                 return null;
             } 
             else {
@@ -127,17 +152,17 @@ function getOptimalPath(nodes, destinations) {
     }
 
     var permutations = [];
-    function permute (array, data) 
+    function permute(array, data) 
     {
         var current;
         var currentPermutation = data || [];
 
-        for(var i = 0; i < array.length; i++) 
+        for (var i = 0; i < array.length; i++) 
         {
             // Take node out
             current = array.splice(i, 1)[0];
             // Then the current permutation is complete so add it
-            if(array.length === 0) {
+            if (array.length === 0) {
                 permutations.push(currentPermutation.concat([current]));
             }
             //Recurse over the remaining array
@@ -152,23 +177,23 @@ function getOptimalPath(nodes, destinations) {
     var bestPermutationPath = null;
     var destinationNodes = [];
 
-    for(var i = 0; i < destinations.length; i++) {
+    for (var i = 0; i < destinations.length; i++) {
         destinationNodes.push(destinations[i].node);
     }
     permute(destinationNodes);
     
-    for(var i = 0; i < permutations.length; i++) {
+    for (var i = 0; i < permutations.length; i++) {
         var permutation = permutations[i];
         var permutationPath = getPermutationPath(start, permutation, nodes);
 
-        if(permutationPath && permutationPath.length < bestScore) {
+        if (permutationPath && permutationPath.length < bestScore) {
             bestScore = permutationPath.length;
             bestPermutationPath = permutationPath;
         }
     }
 
     return bestPermutationPath;
-};
+}
 
 function aStar(origin, destination, nodes) {
 
@@ -243,7 +268,7 @@ function aStar(origin, destination, nodes) {
 
     function initialiseParents(nodes) {
 
-        for(var i = 0; i < nodes.length; i++) {
+        for (var i = 0; i < nodes.length; i++) {
             nodes[i].parent = null;
         }
     }

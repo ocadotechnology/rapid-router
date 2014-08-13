@@ -244,7 +244,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 	var success;
 	var destinations = this.map.getDestinations();
 
-	if(destinations.length == 1) {
+	if(destinations.length === 1) {
 		success = this.van.getPosition().currentNode === destinations[0].node;
 
 		if(success) {
