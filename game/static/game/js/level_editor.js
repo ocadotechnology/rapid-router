@@ -49,6 +49,7 @@ ocargo.LevelEditor = function() {
 
     // initialises paper
     drawAll();
+
     setTheme(THEMES["grass"])
 
     /***************/
@@ -60,6 +61,7 @@ ocargo.LevelEditor = function() {
         setupTabListeners();
         setupBlocksTab();
         setupDecorTab();
+        setupCharacterTab();
         setupMapTab();
         setupGenerateTab();
         setupLoadTab();
@@ -160,7 +162,9 @@ ocargo.LevelEditor = function() {
                     }
                 }
                 blockData = JSON.stringify(blockData);
-                
+
+                var characterName = $('input:checked', '#character-form').val();
+
                 // Create decor data
                 var decorData = [];
                 for(i = 0; i < decor.length; i++) {
@@ -184,6 +188,7 @@ ocargo.LevelEditor = function() {
                         destinations: destinations,
                         theme: currentTheme.name,
                         name: name,
+                        characterName: characterName,
                         maxFuel: maxFuel}
 
                 ocargo.saving.saveLevel(data, function(err, level_id) {
@@ -299,6 +304,10 @@ ocargo.LevelEditor = function() {
                 mode = DELETE_DECOR_MODE;
                 console.log("Hi");
             });
+        }
+
+        function setupCharacterTab() {
+            $("#Van_radio").prop("checked", true);
         }
 
         function setupGenerateTab() {
