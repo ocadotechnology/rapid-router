@@ -402,7 +402,7 @@ ocargo.Drawing = function() {
             var coord = obj['coordinate'];
             var width = obj['width'];
             var height = obj['height'];
-            paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, width, height);
+            paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - height, width, height);
         }
     };
 

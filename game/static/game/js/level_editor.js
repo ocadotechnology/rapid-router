@@ -322,7 +322,6 @@ ocargo.LevelEditor = function() {
 
             $('#delete_decor').click(function() {
                 mode = DELETE_DECOR_MODE;
-                console.log("Hi");
             });
         }
 
@@ -1414,7 +1413,6 @@ ocargo.LevelEditor = function() {
 
     InternalDecor.prototype.getData = function() {
         var bBox = this.image.getBBox();
-        console.debug(Math.floor(bBox.x), PAPER_HEIGHT ,bBox.height , Math.floor(bBox.y));
         return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x),
                                                     PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)),
                 'name': this.name};
