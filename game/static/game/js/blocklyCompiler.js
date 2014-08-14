@@ -99,7 +99,7 @@ ocargo.BlocklyCompiler.prototype.createRepeatWhile = function(block) {
 };
 
 ocargo.BlocklyCompiler.prototype.createProcedureCall = function(block) {
-    var name = block.inputList[0].fieldRow[1].text_;
+    var name = block.inputList[0].fieldRow[2].text_;
     if (name === "") {
         throw ocargo.messages.procCallNameError;
     }
@@ -109,7 +109,7 @@ ocargo.BlocklyCompiler.prototype.createProcedureCall = function(block) {
     return procCall;
 };
 
-ocargo.BlocklyCompiler.prototype.createWhile = function(block) {
+ocargo.BlocklyCompiler.prototype.createRepeat = function(block) {
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
         throw ocargo.messages.whileBodyError;
@@ -205,7 +205,7 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block){
         } else if (block.type === 'controls_repeat_while') {
             commands.push(this.createRepeatWhile(block));
         } else if (block.type === 'controls_repeat') {
-        	commands.push(this.createWhile(block));
+        	commands.push(this.createRepeat(block));
         } else if (block.type === 'controls_whileUntil') {
         	commands.push(this.createWhileUntil(block));
         } else if (block.type === 'controls_if') {
