@@ -248,10 +248,20 @@
 
         <div id="blocks" class="tab_pane">
           <div class="block_table">
+            <div class="table_row">
+
+              <div class="table_cell">
+                <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
+              </div>
+              <div>
+                <label id="select_all_label" for="select_all_checkbox"> Select all</label>
+              </div>
+            </div>
+
             {% for block in blocks %}
               <div class="table_row">
                 <div class="table_cell">
-                  <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" checked>
+                  <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
                 </div>
                 <div id="{{block.type}}_image" class="table_cell unselectable"></div>
               </div>

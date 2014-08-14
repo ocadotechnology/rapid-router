@@ -226,6 +226,24 @@ ocargo.LevelEditor = function() {
         /* Hacky, if a way can be found without initialising the entire work space that would be great */
         function setupBlocksTab() {
 
+            // Initial selection
+            $('#move_forwards_checkbox').prop('checked', true);
+            $('#turn_left_checkbox').prop('checked', true);
+            $('#turn_right_checkbox').prop('checked', true);
+
+            // Select all functionality
+
+            var selectAll = $('#select_all_checkbox');
+            selectAll.change(function() {
+                var checked = selectAll.prop('checked');
+                $('.block_checkbox').each(function() {
+                    if($(this) !== selectAll) {
+                        $(this).prop('checked', checked);
+                    }
+                })
+            })
+
+            // Setup the block images
             function addListenerToImage(type) {
                 $('#' + type + '_image').click(function() {
                     $('#' + type + '_checkbox').click();
@@ -1358,7 +1376,7 @@ ocargo.LevelEditor = function() {
         return {"redDuration": this.redDuration, "greenDuration": this.greenDuration,
                 "sourceNode": this.sourceNode, "controlledNode": this.controlledNode,
                 "startTime": this.startTime, "startingState": this.startingState};
-    }
+    };
 
     InternalTrafficLight.prototype.destroy = function() {
         this.image.remove();
@@ -1366,7 +1384,7 @@ ocargo.LevelEditor = function() {
         if(index !== -1) {
             trafficLights.splice(index, 1);       
         }
-    }
+    };
 
     /*********************************/
     /* Internal decor representation */
