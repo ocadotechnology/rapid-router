@@ -131,17 +131,6 @@ input {
     overflow: auto;
 }
 
-#blocks.tab_pane > label {
-    background-color: white;
-    border: none;
-}
-
-#map.tab_pane > p,
-#random.tab_pane > p {
-    color: #008CBA;
-    font-weight: bold;
-}
-
 /*************/
 /* Decor tab */
 /*************/
@@ -186,6 +175,17 @@ input[type="checkbox"].block_checkbox {
 
 .block_image text {
     cursor: pointer;
+}
+
+#select_all_checkbox {
+    margin-top: 10px;
+}
+
+#select_all_label {
+    margin-left: 11px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 /******************/

@@ -79,11 +79,12 @@ ocargo.PathFinder.prototype.getTravelledPathScore = function() {
 };
 
 ocargo.PathFinder.prototype.getInstrLengthScore = function() {
-    var userLength = ocargo.blocklyControl.getBlocksCount();
+    var userLength = ocargo.blocklyControl.getActiveBlocksCount();
+    console.log(userLength);
     var algorithmScore = 0;
     var difference = this.maxInstrLengthScore;
     for (var i = 0; i < this.modelLength.length; i++) {
-        var currDifference = userLength - 1 - this.modelLength[i];
+        var currDifference = userLength - this.modelLength[i];
         if (Math.abs(currDifference) < difference) {
             difference = Math.abs(currDifference);
             algorithmScore = this.maxInstrLengthScore - currDifference;

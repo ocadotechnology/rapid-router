@@ -150,8 +150,86 @@ ocargo.BlocklyControl.prototype.getProcedureBlocks = function() {
     return startBlocks;
 };
 
-ocargo.BlocklyControl.prototype.getBlocksCount = function() {
+ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
+};
+
+ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
+    var startBlocks = this.getStartBlocks();
+    var procedureBlocks = this.getProcedureBlocks();
+    var n = 0;
+
+    for(var i = 0; i < startBlocks.length; i++) {
+        n += count(startBlocks[i].nextConnection.targetBlock());
+    }
+
+    for(var i = 0; i < procedureBlocks.length; i++) {
+        n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
+    }
+
+    return n;
+
+
+    function count(block) {
+        if(!block) {
+            return 0;
+        }
+
+        var n = 1;
+
+        if (block.type === 'controls_repeat_until' 
+            || block.type === 'controls_repeat_while' 
+            || block.type === 'controls_whileUntil') {
+            var conditionBlock = block.inputList[0].connection.targetBlock();
+            n += count(conditionBlock);
+            var bodyBlock = block.inputList[1].connection.targetBlock();
+            n += count(bodyBlock);
+            var nextBlock = block.nextConnection.targetBlock();
+            n += count(nextBlock);
+        } 
+        else if (block.type === 'controls_repeat') {
+            var bodyBlock = block.inputList[1].connection.targetBlock();
+            n += count(conditionBlock);
+            var nextBlock = block.nextConnection.targetBlock();
+            n += count(nextBlock);
+        } 
+        else if (block.type === 'controls_if') {
+            for(var i = 0; i < block.inputList.length - block.elseCount_; i++) {
+                var input = block.inputList[i];
+                if (input.name.indexOf('IF') === 0) {
+                    var conditionBlock = input.connection.targetBlock();
+                    n += count(conditionBlock);
+                } else if (input.name.indexOf('DO') === 0) {
+                    var bodyBlock = input.connection.targetBlock();
+                    n += count(bodyBlock);
+                }
+            }
+
+            if (block.elseCount_ === 1) {
+                var elseBlock = block.inputList[block.inputList.length - 1].connection.targetBlock();
+                n += count(elseBlock);
+            }
+
+            var nextBlock = block.nextConnection.targetBlock();
+            n += count(nextBlock);
+        } 
+        else if (block.type === 'call_proc' 
+                || block.type === 'move_forwards'  
+                || block.type === 'turn_left' 
+                || block.type === 'turn_right' 
+                || block.type === 'turn_around' 
+                || block.type === 'wait' 
+                || block.type === 'deliver') {
+            var nextBlock = block.nextConnection.targetBlock();
+            n += count(nextBlock);
+        } 
+        else if (block.type === 'logic_negate') {
+            var conditionBlock = block.inputList[0].connection.targetBlock();
+            n += count(conditionBlock);
+        }
+        
+        return n;
+    }
 };
 
 ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
