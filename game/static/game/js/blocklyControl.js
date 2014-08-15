@@ -3,11 +3,12 @@
 var ocargo = ocargo || {};
 
 ocargo.BlocklyControl = function () {
-    var blockly = document.getElementById('blockly');
-    var toolbox = document.getElementById('toolbox');
-    Blockly.inject(blockly, {
+    this.blocklyDiv = document.getElementById('blockly_holder');
+    this.toolbox = document.getElementById('toolbox');
+
+    Blockly.inject(this.blocklyDiv, {
         path: '/static/game/js/blockly/',
-        toolbox: toolbox,
+        toolbox: this.toolbox,
         trashcan: true
     });
 
@@ -22,7 +23,7 @@ ocargo.BlocklyControl = function () {
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
 ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH = 1;
-ocargo.BlocklyControl.IMAGE_WIDTH = 20;
+ocargo.BlocklyControl.IMAGE_WIDTH = 20; 
 ocargo.BlocklyControl.BLOCK_VAN_HEIGHT = VAN_HEIGHT;
 ocargo.BlocklyControl.BLOCK_VAN_WIDTH = VAN_WIDTH;
 
@@ -53,6 +54,15 @@ ocargo.BlocklyControl.prototype.reset = function() {
     }
     this.addClickListenerToStartBlocks();
 };
+
+ocargo.BlocklyControl.prototype.showFlyout = function() {
+    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+}
+
+ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
+    Blockly.mainWorkspace.scrollbar.hScroll.set(this.blocklyDiv.offsetWidth - 455);
+    Blockly.mainWorkspace.scrollbar.vScroll.set(this.blocklyDiv.offsetWidth - 15);
+}
 
 ocargo.BlocklyControl.prototype.teardown = function() {
     if (localStorage) {
@@ -93,6 +103,14 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
         }
     }
 };
+
+ocargo.BlocklyControl.prototype.setCodeChangesAllowed = function(changesAllowed) {
+    var setting = "";
+    if (!changesAllowed) {
+        setting = "none";
+    }
+    this.blocklyDiv.style.pointerEvents = setting;
+}
 
 ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     function decodeHTML(text) {
