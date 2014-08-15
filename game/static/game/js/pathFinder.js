@@ -59,10 +59,10 @@ ocargo.PathFinder.prototype.renderCoins = function(score, maxScore) {
         coins += "<img src='/static/game/image/coins/coin_gold.svg' width='50'>";
     }
     if (score - Math.floor(score) > 0) {
-        coins += "<img src='/static/game/image/coins/coin_5050_transparent.svg' width='50'>";
+        coins += "<img src='/static/game/image/coins/coin_5050_dots.svg' width='50'>";
     }
     for (i = Math.ceil(score); i < maxScore; i++) {
-        coins += "<img src='/static/game/image/coins/coin_empty_transparent.svg' width='50'>";
+        coins += "<img src='/static/game/image/coins/coin_empty_dots.svg' width='50'>";
     }
     coins += "      " + score + "/" + maxScore;
     coins += "</div>";
