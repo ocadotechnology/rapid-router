@@ -1,0 +1,32 @@
+ocargo.Tab = function(radioElement, labelElement, onChangeCall, paneElement) {
+    this.setEnabled = function(enabled) {
+        if(enabled) {
+            radioElement.change(onChangeCall);
+            radioElement.attr('disabled', false);
+        }
+        else {
+            radioElement.change(new function(){});
+            radioElement.attr('disabled', true);
+        }
+    }
+
+    this.getText = function() {
+        return labelElement[0].children[1].innerHTML;
+    }
+
+    this.setContents = function(newImageURL, newText) {
+        labelElement[0].children[0].src = newImageURL;
+        labelElement[0].children[1].innerHTML = newText;
+    }
+
+    this.select = function() {
+        radioElement.change();
+        radioElement.prop('checked', true);
+    }
+
+    if(paneElement) {
+        this.setPaneEnabled = function(enabled) {
+            paneElement.css('display', enabled ? 'block' : 'none');
+        }
+    }
+}
