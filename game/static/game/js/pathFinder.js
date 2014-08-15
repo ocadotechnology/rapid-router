@@ -29,16 +29,16 @@ ocargo.PathFinder.prototype.getScore = function() {
     var totalScore = pathLengthScore + instrScore;
 
     var message = ocargo.messages.pathScore + 
-                    this.renderCoins(pathLengthScore, this.maxDistanceScore) + "<br>" +
-                    ocargo.messages.algorithmScore + 
+                    this.renderCoins(pathLengthScore, this.maxDistanceScore) + "<br>";
+    if (this.modelLength.length > 0)
+        message +=  ocargo.messages.algorithmScore +
                     this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>" +
                     ocargo.messages.totalScore(totalScore, this.maxScore);
 
-
-    if (initInstrScore > this.maxInstrLengthScore) {
+    if (initInstrScore > this.maxInstrLengthScore && this.modelLength.length > 0) {
         message += "<br><br>" + ocargo.messages.algorithmShorter;
     }
-    if (initInstrScore < this.maxInstrLengthScore) {
+    if (initInstrScore < this.maxInstrLengthScore && this.modelLength.length > 0) {
         message += "<br><br>" + ocargo.messages.algorithmLonger;
     }
     if (pathLengthScore < this.maxDistanceScore) {
@@ -79,6 +79,9 @@ ocargo.PathFinder.prototype.getTravelledPathScore = function() {
 };
 
 ocargo.PathFinder.prototype.getInstrLengthScore = function() {
+    if (this.modelLength.length === 0) {
+        return;
+    }
     var userLength = ocargo.blocklyControl.getActiveBlocksCount();
     console.log(userLength);
     var algorithmScore = 0;
