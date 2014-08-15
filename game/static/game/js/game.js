@@ -197,18 +197,19 @@ function onResumeControls() {
 }
 
 function setupFuelGauge(nodes, blocks) {
-    if(blocks.indexOf("turn_around") != -1 || blocks.indexOf("wait") != -1)
-    {
-        return;
-    }
-
-    for(var i = 0; i < nodes.length; i++) {
-        if(nodes[i].connectedNodes.length > 2) {
+    console.debug(FUEL_GAUGE)
+    if (FUEL_GAUGE) {
+        document.getElementById('fuelGauge').style.visibility='visible';
+            if (blocks.indexOf("turn_around") !== -1 || blocks.indexOf("wait") !== -1) {
             return;
         }
-    }
 
-    $('#fuelGuage').css("display","none");
+        for(var i = 0; i < nodes.length; i++) {
+            if(nodes[i].connectedNodes.length > 2) {
+                return;
+            }
+        }
+    }
 }
 
 function setupDirectDriveListeners() {

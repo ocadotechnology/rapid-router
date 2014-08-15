@@ -24,6 +24,7 @@
     height: 100px;
     right: 30px;
     bottom: 20px;
+    visibility: hidden;
 }
 
 #fuelGaugePointer {
