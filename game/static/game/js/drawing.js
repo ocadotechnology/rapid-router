@@ -256,25 +256,30 @@ ocargo.Drawing = function() {
             roadImages[i].remove();
         }
 
+        var path = '/static/game/image/road_tiles/';
+
+        path += CHARACTER_NAME === 'Van' ? 'road/' : 'path/';
+
         roadImages = [];
         for (var i = 0; i < nodes.length; i++) {
             var node = nodes[i];
             var roadImage;
             switch (node.connectedNodes.length) {
                 case 1:
-                    roadImage = drawDeadEndRoad(node);
+                    roadImage = drawDeadEndRoad(node, path);
                     break;
                 
                 case 2:
-                    roadImage = drawSingleRoadSegment(node.connectedNodes[0], node, node.connectedNodes[1]);
+                    roadImage = drawSingleRoadSegment(node.connectedNodes[0], node,
+                                                      node.connectedNodes[1], path);
                     break;
                 
                 case 3:
-                    roadImage = drawTJunction(node);
+                    roadImage = drawTJunction(node, path);
                     break;
                 
                 case 4:
-                    roadImage = drawCrossRoads(node);
+                    roadImage = drawCrossRoads(node, path);
                     break;
 
                 default:
@@ -283,7 +288,7 @@ ocargo.Drawing = function() {
             roadImages.push(roadImage);
         }
 
-        function drawDeadEndRoad(node) {
+        function drawDeadEndRoad(node, path) {
             var previousNode = node.connectedNodes[0];
 
             var nextNode = {};
@@ -296,7 +301,7 @@ ocargo.Drawing = function() {
             var prevFlipped = ocargo.Drawing.translate(previousNode.coordinate);
             var flipped = ocargo.Drawing.translate(node.coordinate);
 
-            var road = paper.image('/static/game/image/road_tiles/dead_end.svg',
+            var road = paper.image(path + 'dead_end.svg',
                 flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
             if (roadLetters === 'H' && prevFlipped.x < flipped.x) {
@@ -312,11 +317,11 @@ ocargo.Drawing = function() {
             return road;
         }
 
-        function drawSingleRoadSegment(previousNode, node, nextNode) {
+        function drawSingleRoadSegment(previousNode, node, nextNode, path) {
             var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
 
             var flipped = ocargo.Drawing.translate(node.coordinate);
-            var roadSrc = '/static/game/image/road_tiles/' + (roadLetters === 'H' || roadLetters ==='V' ? 'straight' : 'turn') + '.svg';
+            var roadSrc = path + (roadLetters === 'H' || roadLetters ==='V' ? 'straight' : 'turn') + '.svg';
             var road = paper.image(roadSrc, flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
             if (roadLetters === 'H') {
@@ -335,7 +340,7 @@ ocargo.Drawing = function() {
             return road;
         }
 
-        function drawTJunction(node) {
+        function drawTJunction(node, path) {
             var node1 = node.connectedNodes[0];
             var node2 = node.connectedNodes[1];
             var node3 = node.connectedNodes[2];
@@ -367,17 +372,17 @@ ocargo.Drawing = function() {
                 rotation = 270;
             }
 
-            var road = paper.image('/static/game/image/road_tiles/t_junction.svg',
+            var road = paper.image(path + 't_junction.svg',
                 flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
             road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
 
             return road;
         }
 
-        function drawCrossRoads(node) {
+        function drawCrossRoads(node, path) {
             var flipped = ocargo.Drawing.translate(node.coordinate);
 
-            return paper.image('/static/game/image/road_tiles/crossroads.svg',
+            return paper.image(path + '/crossroads.svg',
                     flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
         }
     };
@@ -396,7 +401,7 @@ ocargo.Drawing = function() {
             var coord = obj['coordinate'];
             var width = obj['width'];
             var height = obj['height'];
-            paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - DECOR_SIZE, width, height);
+            paper.image(obj['url'], coord.x, PAPER_HEIGHT - coord.y - height, width, height);
         }
     };
 
@@ -519,10 +524,6 @@ ocargo.Drawing = function() {
             vanImages[vanID].status(anims[i].anim, 1);
         }
     };
-
-    function getCharacterImageURL(characterName, view) {
-        return '/static/game/image/characters/'  + view + '/' + name + ".svg";
-    }
 
     function getVanImagePosition(vanImage) {
         var box = vanImage.getBBox();

@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0084_city_theme_populate_colours_add_Phil'),
-        ('game', '0082_traffic_light_episode_random_level'),
+        ('game', '0086_themes_change_colours_set_fuel_gauge'),
+        ('game', '0085_merge'),
     ]
 
     operations = [

@@ -8,8 +8,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('game', '0084_city_theme_populate_colours_add_Phil'),
-        ('game', '0082_traffic_light_episode_random_level'),
     ]
 
     operations = [
+        migrations.AddField(
+            model_name='level',
+            name='fuel_gauge',
+            field=models.BooleanField(default=True),
+            preserve_default=True,
+        ),
     ]

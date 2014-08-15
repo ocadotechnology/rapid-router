@@ -47,27 +47,28 @@
     var DECOR = {{decor|safe}};
     var BACKGROUND_URL = "{{background}}";
     var HOUSE_URL = "{{house}}";
-    var CFC_URL = "{{cfc}}"
+    var CFC_URL = "{{cfc}}";
     var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
     var LEVEL_ID = "{{level.id}}";
     var MODEL_SOLUTION = {{level.model_solution}};
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
     var BLOCKS =  [];
-    var CHARACTER_NAME = "{{character.name}}"
-    var CHARACTER_URL = "{{character.top_down}}"
+    var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
+    var CHARACTER_NAME = "{{character.name}}";
+    var CHARACTER_URL = "{{character.top_down}}";
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}
     var MAX_FUEL = {{level.max_fuel}};
-    var DIRECT_DRIVE = "{{level.direct_drive}}" == "True";
-    var NEXT_LEVEL = "{{level.next_level}}" != "None" ? "{{level.next_level.id}}" : null;
-    var NEXT_EPISODE = "{{level.episode.next_episode}}" != "None" ? "{{level.episode.next_episode.id}}" : null;
+    var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
+    var NEXT_LEVEL = "{{level.next_level}}" !== "None" ? "{{level.next_level.id}}" : null;
+    var NEXT_EPISODE = "{{level.episode.next_episode}}" !== "None" ? "{{level.episode.next_episode.id}}" : null;
     var WORKSPACE = "{{attempt.workspace}}";
     var THREADS = "{{level.threads}}";
-    var LOGGED_IN_AS_STUDENT = "{{attempt}}" != "None";
-    var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" == "True";
-    var PYTHON_ENABLED = "{{level.pythonEnabled}}" == "True";
+    var LOGGED_IN_AS_STUDENT = "{{attempt}}" !== "None";
+    var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";
+    var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
   </script>
   
 {% endblock %}

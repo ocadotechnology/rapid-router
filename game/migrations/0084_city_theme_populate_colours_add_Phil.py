@@ -39,12 +39,12 @@ def change_house_farm(Theme, Decor):
 
     farm = Theme.objects.get(name='farm')
     house = Decor.objects.get(name='house', theme=farm)
-    house.url = '/static/game/image/decor/farm.house1.svg'
+    house.url = '/static/game/image/decor/farm/house1.svg'
     house.save()
 
 
 def populate_colours(Theme):
-    
+
     grass = Theme.objects.get(name='grass')
     winter = Theme.objects.get(name='snow')
     farm = Theme.objects.get(name='farm')
@@ -73,7 +73,7 @@ def add_Phill(Character):
 
 
 def run_changes(apps, schema_editor):
-    
+
     Theme = apps.get_model('game', 'Theme')
     Level = apps.get_model('game', 'Level')
     Decor = apps.get_model('game', 'Decor')
