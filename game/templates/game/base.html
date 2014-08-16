@@ -14,10 +14,10 @@
 <div class="subnavBar">
     <div class="subnav">
         <ul>
-            <li><a href="{% url 'game.views.levels' %}">Levels</a></li>
-            <li><a href="{% url 'game.views.level_editor' %}">Create</a></li>
-            <li><a href="{% url 'game.views.scoreboard' %}">Scoreboard</a></li>
-            {% if user|is_logged_in_as_teacher %}<li><a href="#">Moderate</a></li>{% endif %}
+            <li>{% block nav_ocargo_levels %}<a href="{% url 'game.views.levels' %}">Levels</a>{% endblock nav_ocargo_levels %}</li>
+            <li>{% block nav_ocargo_create %}<a href="{% url 'game.views.level_editor' %}">Create</a>{% endblock nav_ocargo_create %}</li>
+            <li>{% block nav_ocargo_scoreboard %}<a href="{% url 'game.views.scoreboard' %}">Scoreboard</a>{% endblock nav_ocargo_scoreboard %}</li>
+            {% if user|is_logged_in_as_teacher %}<li>{% block nav_ocargo_moderate %}<a href="#">Moderate</a>{% endblock nav_ocargo_moderate %}</li>{% endif %}
         </ul>
     </div>
 </div>
