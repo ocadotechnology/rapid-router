@@ -393,7 +393,7 @@ def renderScoreboard(request, form, school):
     studentData = None
     levelID = form.data.get('levels', False)
     classID = form.data.get('classes', False)
-    thead = ['avatar', 'name', 'surname', 'score', 'total time', 'start time', 'finish time']
+    thead = ['', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
     if classID:
         cl = get_object_or_404(Class, id=classID)
         students = cl.students.all()
@@ -429,7 +429,7 @@ def renderScoreboard(request, form, school):
     elif levelID:
         studentData = handleAllClassesOneLevel(request, level)
     else:
-        thead = ['avatar', 'name', 'surname', 'total score', 'total time']
+        thead = ['', 'Name', 'Total Score', 'Total Time']
         levels = Level.objects.filter(default=1)
         for level in levels:
             thead.append(str(level))
@@ -501,7 +501,7 @@ def handleAllClassesOneLevel(request, level):
 
     for cl in classes:
         students = cl.students.all()
-        if not request.user.userprofile.student.class_field.classmates_data_viewable:
+        if hasattr(request.user.userprofile, 'student') and not request.user.userprofile.student.class_field.classmates_data_viewable:
             # Filter out other students' data if not allowed to see classmates
             students = students.filter(id=request.user.userprofile.student.id)
         for student in students:
@@ -534,7 +534,7 @@ def handleAllClassesAllLevels(request, levels):
 
     for cl in classes:
         students = cl.students.all()
-        if not request.user.userprofile.student.class_field.classmates_data_viewable:
+        if hasattr(request.user.userprofile, 'student') and not request.user.userprofile.student.class_field.classmates_data_viewable:
             # Filter out other students' data if not allowed to see classmates
             students = students.filter(id=request.user.userprofile.student.id)
         for student in students:
