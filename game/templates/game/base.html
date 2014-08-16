@@ -1,31 +1,27 @@
-{% extend 'nuit/base.html' topbar=True leftmenu=False breadcrumbs=False show_user_info=True %}
+{% extend 'portal/base.html' %}
+{% load static %}
+{% load app_tags %}
 
 {% load compress %}
 
 {% block css %}
+<link rel="stylesheet" type="text/css" href='{% static "game/css/ocargo.css" %}'>
 {% endblock %}
 
-{% block top_bar_menu %}
-    {% menu_item link='/game' name='Game' %}
-    {% menu_item link='/game/level_editor' name='Create' %}
-    {% if user.is_authenticated %}
-        {% menu_item link='/game/scoreboard' name='Scoreboard' %}
-    {% endif %}
-{% endblock top_bar_menu %}
+{% block title %}Code for Life - Rapid Router{% endblock %}
 
-{% block top_bar_right_menu %}
-    {% menu_item link='/' name='Portal' %}
-    {% if user.is_authenticated %}
-        {% if user.is_staff %}
-            {% menu_item link='/admin' name='Admin' %}
-        {% endif %}
-    {% endif%}
-{% endblock top_bar_right_menu %}
-
-{% block user_info_menu %}
-    {% menu_item link='/game/settings' name='Settings' %}
-{% endblock user_info_menu %}
-
+{% block subNav %}
+<div class="subnavBar">
+    <div class="subnav">
+        <ul>
+            <li><a href="{% url 'game.views.levels' %}">Levels</a></li>
+            <li><a href="{% url 'game.views.level_editor' %}">Create</a></li>
+            <li><a href="{% url 'game.views.scoreboard' %}">Scoreboard</a></li>
+            {% if user|is_logged_in_as_teacher %}<li><a href="#">Moderate</a></li>{% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock subNav %}
 
 {% block content %}{% endblock %}
 
