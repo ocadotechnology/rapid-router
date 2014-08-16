@@ -367,9 +367,7 @@ def decorToLevelDecor(level, decor):
     """
     regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"name": *")([a-zA-Z0-9]+)("}))')
 
-    print decor
     items = regex.findall(decor)
-    print items
 
     for item in items:
         name = item[6]

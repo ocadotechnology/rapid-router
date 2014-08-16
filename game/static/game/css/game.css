@@ -1,46 +1,16 @@
 #paper {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: auto;
-    z-index: 6;
+    width: 48%;
+    height:100%;
+    overflow:scroll;
+    z-index:6;
 }
 
-#programmingConsole {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-}
-
-#fuelGauge {
-    position: fixed;
-    z-index: 7;
-    width: 100px;
-    height: 100px;
-    right: 30px;
-    bottom: 20px;
-}
-
-#fuelGaugePointer {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    z-index: 8;
-    top: 0px;
-}
-
-img.control{
-	height:50px;
-	cursor: pointer;
-}
-
-#blockly {
-    height: 100%;
+#left {
+    float:left;
+    width: 52%;
+    height:100%;
+    padding-right: 10px;
+    z-index: 5;
 }
 
 @media print {
@@ -54,19 +24,112 @@ img.control{
     }
 }
 
-/******************/
-/* Python console */
-/******************/
+/*****************/
+/* Tab structure */
+/*****************/
+
+#tabs {
+    height: 100%;
+    float: left;
+    width: 95px;
+    background-color: #a0c53a;
+}
+
+.tab {
+    list-style: none;
+    width: 100%;
+    height: 40px;
+    padding-top: 10px;
+}
+
+.tab input[type=radio] {
+    display:none;
+    margin: 0;
+}
+
+.tab input[type=radio] + label {
+    text-align: left;
+    margin: 0;
+    display: block;
+    padding: 5px 0px 5px 5px;
+    font-weight: bold;
+    width: 100%;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+}
+
+.tab label img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.tab label span {
+    line-height: 20px;
+}
+
+.tab label:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.tab input[type=radio]:checked + label {
+    background: rgba(255, 255, 255, 1.0);
+    opacity: 1;
+}
+
+#tab_panes {
+    height: 100%;
+    width: 85%;
+    float:left;
+}
+
+.tab_pane {
+    position:relative;
+    z-index: 2;
+    text-align: left;
+    width: 100%;
+    height: 100%;
+    font-size: 20px;
+    line-height: 140%;
+    padding: 20px 0px 0px 30px;
+    background-color: white;
+    box-sizing: border-box;
+    -webkit-animation-duration: 0.5s;
+    -o-animation-duration: 0.5s;
+    -moz-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    overflow: auto;
+}
+
+.tab_break {
+    width: auto;
+    height: 20px;
+}
+
+/***************/
+/* Blockly tab */
+/***************/
+
+#blockly_pane {
+    padding: 0px;
+    overflow: hidden;
+}
+
+#blockly_holder {
+    width: 110%;
+    height: 100%;
+    margin-left: -51px;
+}
+
+
+/**************/
+/* Python tab */
+/**************/
 
 #pythonCode {
-    position:absolute;
-    display: none;
     height: 100%;
-    width:93
-    %;
-    overflow: auto;
-    padding: 15px;
-    left:46px;
 }
 
 #consoleOutput {
@@ -88,40 +151,16 @@ img.control{
     margin-bottom: 0px
 }
 
-/***********/
-/* Sliders */
-/***********/
-
-/* Button */
-#hide,
-#show {
-    position: absolute;
-    left: 50%;
-    z-index: 7;
-    margin-top: 2px;
-    margin-left: 5px;
-}
-
-/* Central slider div */
-#consoleSlider {
-    position: absolute;
-    left: 50%;
-    width: 5px;
-    height: 100%;
-    z-index: 9;
-    background-color: #444;
-    cursor: col-resize;
-}
-
-/********************/
-/* Loading & Saving */
-/********************/
+/*************************/
+/* Loading & Saving tabs */
+/*************************/
 
 #workspaceNameInput {
     height: 51px;
     width: 202px;
     font-size: 1.4rem !important;
     padding-left: 10px;
+    float: left;
 }
 
 #saveWorkspaceTable,
@@ -135,7 +174,55 @@ img.control{
 }
 
 #saveWorkspace {
-    margin-left: 20px;
+    margin-top: 0px;
+    margin-left: 28px;
+}
+
+/**************/
+/* Fuel gauge */
+/**************/
+
+#fuelGauge {
+    position: fixed;
+    z-index: 7;
+    width: 100px;
+    height: 100px;
+    right: 30px;
+    bottom: 20px;
+    visibility: hidden;
+}
+
+#fuelGaugePointer {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    z-index: 8;
+    top: 0px;
+}
+
+/***********/
+/* Sliders */
+/***********/
+
+/* Button */
+#hide,
+#show {
+    position: absolute;
+    left: 52%;
+    z-index: 7;
+    margin-top: 2px;
+    margin-left: 5px;
+}
+
+/* Central slider div */
+#consoleSlider {
+    position: absolute;
+    left: 52%;
+    width: 5px;
+    height: 100%;
+    z-index: 9;
+    background-color: #444;
+    cursor: col-resize;
 }
 
 /******************/
@@ -147,7 +234,7 @@ img.control{
     height: 95px;
     position: absolute;
     z-index: 7;
-    left: 51%;
+    left: 53%;
     bottom: 20px;
 }
 
@@ -187,117 +274,4 @@ img.control{
     left: 60px;
     bottom: 50px;
     background-image : url('/static/game/image/actions/forward.svg');
-}
-
-/***************/
-/** Side menu **/
-/***************/
-
-#side_menu {
-    width: 46px;
-    height: 46px;
-    position: absolute;
-    z-index: 1;
-    top: 30px;
-}
-
-.menu_button {
-    background-size: 42px 42px;
-    width: 46px;
-    height: 46px;
-    padding: 0px;
-    position: absolute;
-}
-
-.menu_button:hover,
-.menu_button:focus
-{ 
-    background-size: 46px 46px;
-    background-color:transparent;
-}
-
-.menu_button[disabled] {
-    opacity: 0.5;
-}
-
-#play {
-    top: 0px;
-    background-image : url('/static/game/image/buttons/menu/play.svg');
-}
-
-#pause {
-    top: 0px;
-    background-image : url('/static/game/image/buttons/menu/pause.svg');
-}
-
-
-#resume {
-    top: 0px;
-    background-image : url('/static/game/image/buttons/menu/play.svg');
-}
-
-#stop {
-    top: 50px;
-    background-image : url('/static/game/image/buttons/menu/stop.svg');
-}
-
-#step {
-    top: 100px;
-    background-image : url('/static/game/image/buttons/menu/step.svg');
-}
-
-
-#load {
-    top: 170px;
-    background-image : url('/static/game/image/buttons/menu/load.svg');
-}
-
-#save {
-    top: 220px;
-    background-image : url('/static/game/image/buttons/menu/save.svg');
-}
-
-#clear_program {
-    top: 270px;
-    background-image : url('/static/game/image/buttons/menu/clear.svg');
-}
-
-#big_code_mode {
-    top: 340px;
-    background-image : url('/static/game/image/buttons/menu/big_code_mode.svg');
-}
-
-#toggle_console {
-    top: 390px;
-    background-image : url('/static/game/image/buttons/menu/toggle_console.svg');
-}
-
-#help {
-    top: 460px;
-    background-image : url('/static/game/image/buttons/menu/help.svg');
-}
-
-#muted {
-    top: 510px;
-    background-image : url('/static/game/image/buttons/menu/muted.svg');
-}
-
-
-#unmuted {
-    top: 510px;
-    background-image : url('/static/game/image/buttons/menu/unmuted.svg');
-}
-
-#quit {
-    top: 560px;
-    background-image : url('/static/game/image/buttons/menu/quit.svg');
-}
-
-#buttonHelp img{
-	height: 32px;
-	width: 32px;
-}
-
-#buttonHelp p{
-	margin: 5px;
 }

@@ -372,7 +372,6 @@ ocargo.Drawing = function() {
                 rotation = 270;
             }
 
-            console.debug(path)
             var road = paper.image(path + 't_junction.svg',
                 flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
             road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);

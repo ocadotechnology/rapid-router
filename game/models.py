@@ -47,6 +47,7 @@ class Level (models.Model):
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='levels')
+    fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
@@ -78,7 +79,7 @@ class LevelDecor(models.Model):
 
 class Episode (models.Model):
     '''Variables prefixed with r_ signify they are parameters for random level generation'''
-    
+
     name = models.CharField(max_length=200)
     first_level = models.ForeignKey(Level)
     next_episode = models.ForeignKey("self", null=True, default=None)

@@ -29,16 +29,16 @@ ocargo.PathFinder.prototype.getScore = function() {
     var totalScore = pathLengthScore + instrScore;
 
     var message = ocargo.messages.pathScore + 
-                    this.renderCoins(pathLengthScore, this.maxDistanceScore) + "<br>" +
-                    ocargo.messages.algorithmScore + 
+                    this.renderCoins(pathLengthScore, this.maxDistanceScore) + "<br>";
+    if (this.modelLength.length > 0)
+        message +=  ocargo.messages.algorithmScore +
                     this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>" +
                     ocargo.messages.totalScore(totalScore, this.maxScore);
 
-
-    if (initInstrScore > this.maxInstrLengthScore) {
+    if (initInstrScore > this.maxInstrLengthScore && this.modelLength.length > 0) {
         message += "<br><br>" + ocargo.messages.algorithmShorter;
     }
-    if (initInstrScore < this.maxInstrLengthScore) {
+    if (initInstrScore < this.maxInstrLengthScore && this.modelLength.length > 0) {
         message += "<br><br>" + ocargo.messages.algorithmLonger;
     }
     if (pathLengthScore < this.maxDistanceScore) {
@@ -59,10 +59,10 @@ ocargo.PathFinder.prototype.renderCoins = function(score, maxScore) {
         coins += "<img src='/static/game/image/coins/coin_gold.svg' width='50'>";
     }
     if (score - Math.floor(score) > 0) {
-        coins += "<img src='/static/game/image/coins/coin_5050_transparent.svg' width='50'>";
+        coins += "<img src='/static/game/image/coins/coin_5050_dots.svg' width='50'>";
     }
     for (i = Math.ceil(score); i < maxScore; i++) {
-        coins += "<img src='/static/game/image/coins/coin_empty_transparent.svg' width='50'>";
+        coins += "<img src='/static/game/image/coins/coin_empty_dots.svg' width='50'>";
     }
     coins += "      " + score + "/" + maxScore;
     coins += "</div>";
@@ -79,8 +79,11 @@ ocargo.PathFinder.prototype.getTravelledPathScore = function() {
 };
 
 ocargo.PathFinder.prototype.getInstrLengthScore = function() {
+    if (this.modelLength.length === 0) {
+        return;
+    }
     var userLength = ocargo.blocklyControl.getActiveBlocksCount();
-    console.log(userLength);
+    console.log("len", userLength);
     var algorithmScore = 0;
     var difference = this.maxInstrLengthScore;
     for (var i = 0; i < this.modelLength.length; i++) {
@@ -152,13 +155,11 @@ function getOptimalPath(nodes, destinations) {
     }
 
     var permutations = [];
-    function permute(array, data) 
-    {
+    function permute(array, data) {
         var current;
         var currentPermutation = data || [];
 
-        for (var i = 0; i < array.length; i++) 
-        {
+        for (var i = 0; i < array.length; i++) {
             // Take node out
             current = array.splice(i, 1)[0];
             // Then the current permutation is complete so add it
