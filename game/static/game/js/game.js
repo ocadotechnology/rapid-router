@@ -148,7 +148,7 @@ function setupDirectDriveListeners() {
         ocargo.drawing.moveRight(0, ANIMATION_LENGTH, function() {onStopControls();});
     });
     $('#go').click(function() {
-        $('#play').trigger('click');
+        $('#play_radio').trigger('click');
     });
 }
 
@@ -660,7 +660,3 @@ function onResumeControls() {
     tabs['stop'].setEnabled(true);
     tabs['step'].setEnabled(false);
 }
-
-$(function() {
-    new ocargo.Game();
-});
