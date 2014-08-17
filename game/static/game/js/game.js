@@ -116,7 +116,6 @@ function allowCodeChanges(changesAllowed) {
 }
 
 function setupFuelGauge(nodes, blocks) {
-    console.debug(FUEL_GAUGE)
     if (FUEL_GAUGE) {
         document.getElementById('fuelGauge').style.visibility='visible';
             if (blocks.indexOf("turn_around") !== -1 || blocks.indexOf("wait") !== -1) {
@@ -363,7 +362,13 @@ function setupTabs() {
         }
 
         function onMute() {
-            ocargo.sound.mute();
+            if (tabs['mute'].getContents() === 'Unmute') {
+                ocargo.sound.unmute();
+                tabs['mute'].setContents('/static/game/image/icons/muted.svg', 'Mute');
+            } else {
+                ocargo.sound.mute();
+                tabs['mute'].setContents('/static/game/image/icons/unmuted.svg', 'Unmute');
+            }
             currentTabSelected.select();
         }
 
@@ -391,9 +396,16 @@ function setupTabs() {
 
         tabs['big_code_mode'] = new ocargo.Tab($('#big_code_mode_radio'), $('#big_code_mode_radio + label'), onBigCodeMode);
         tabs['print'] = new ocargo.Tab($('#print_radio'), $('#print_radio + label'), onPrint);
-        tabs['mute'] = new ocargo.Tab($('#mute_radio'), $('#mute_radio + label'), onMute);
         tabs['help'] = new ocargo.Tab($('#help_radio'), $('#help_radio + label'), onHelp, $('#help_pane'));
         tabs['quit'] = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'), onQuit);
+
+        tabs['mute'] = new ocargo.Tab($('#mute_radio'), $('#mute_radio + label'), onMute);
+
+        if ($.cookie("muted") === "true") {
+            ocargo.sound.mute();
+            tabs['mute'].setContents('/static/game/image/icons/unmuted.svg', 'Unmute');
+        }
+
 
         //  Trigger the initial tabs
         tabs['blockly'].select();
@@ -411,13 +423,6 @@ function setupTabs() {
         tabs['load'].setPaneEnabled(false);
         tabs['save'].setPaneEnabled(false);
         tabs['help'].setPaneEnabled(false);
-
-        /**
-        if ($.cookie("muted") === "true") {
-            $('#muted').css('display','block');
-            $('#unmuted').css('display','none');
-            ocargo.sound.mute();
-        }**/
     }
 
     function setupBlocklyPane() {
@@ -473,7 +478,7 @@ function setupTabs() {
                 for (var i = 0; i < table[0].rows.length; i++) {
                      var cell = table[0].rows[i].cells[0];
                      var wName = cell.innerHTML;
-                     if(wName == newName) {
+                     if (wName == newName) {
                         ocargo.saving.deleteWorkspace(cell.attributes[0].value, 
                                         function(err, workspace) {
                                             if (err != null) {

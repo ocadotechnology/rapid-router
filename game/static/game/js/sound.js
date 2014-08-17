@@ -59,6 +59,7 @@ ocargo.sound.failure = function() {
 };
 
 ocargo.sound.setAllVolumes = function(volume, loop) {
+    // TODO: Add to the SoundControl once we have the files.
     ocargo.sound.startingSound.setVolume(volume);
     ocargo.sound.movingSound.setVolume(volume);
     ocargo.sound.winSound.setVolume(volume);
@@ -67,16 +68,14 @@ ocargo.sound.setAllVolumes = function(volume, loop) {
 };
 
 ocargo.sound.mute = function() {
-    ocargo.sound.playAudioBackup = Blockly.playAudio;
-    Blockly.playAudio = function(name, options) {};
-    ocargo.sound.volume = 0;
-    ocargo.sound.setAllVolumes(0);
+    this.playAudioBackup = Blockly.SOUNDS_;
+    Blockly.SOUNDS_ = {};
+    //ocargo.sound.setAllVolumes(0);
     $.cookie("muted", true);
 };
 
 ocargo.sound.unmute = function() {
-    Blockly.playAudio = ocargo.sound.playAudioBackup;
-    ocargo.sound.volume = 1;
-    ocargo.sound.setAllVolumes(1.0);
+    Blockly.SOUNDS_ = this.playAudioBackup;
+    //ocargo.sound.setAllVolumes(1.0);
     $.cookie("muted", false);
 };
