@@ -83,7 +83,6 @@ ocargo.PathFinder.prototype.getInstrLengthScore = function() {
         return;
     }
     var userLength = ocargo.blocklyControl.getActiveBlocksCount();
-    console.log("len", userLength);
     var algorithmScore = 0;
     var difference = this.maxInstrLengthScore;
     for (var i = 0; i < this.modelLength.length; i++) {
