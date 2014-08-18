@@ -43,13 +43,13 @@ ocargo.Game.prototype.setup = function() {
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
     // Start the popup
-    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"));
+    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"), true);
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     var result = ocargo.controller.prepare();
     if(!result.success) {
-        ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error);
+        ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error, false);
         return false;
     }
     var program = result.program;

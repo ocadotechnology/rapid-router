@@ -126,7 +126,7 @@ ocargo.LevelEditor = function() {
                 if (!originNode || !destinationNode) {
                      ocargo.Drawing.startPopup(ocargo.messages.ohNo,
                                                ocargo.messages.noStartOrEndSubtitle,
-                                               ocargo.messages.noStartOrEnd);
+                                               ocargo.messages.noStartOrEnd, true);
                      lastTabSelected.prop('checked', true);
                      return;
                 }
@@ -137,7 +137,7 @@ ocargo.LevelEditor = function() {
                 if (pathToDestination.length === 0) {
                     ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
                                               ocargo.messages.noStartEndRouteSubtitle,
-                                              ocargo.messages.noStartEndRoute);
+                                              ocargo.messages.noStartEndRoute, true);
                     return;
                 }
 

@@ -28,12 +28,12 @@
     overflow: hidden;
 }
 
-.modal-text {
+#modal-text {
     float: left;
     width: 78%;
 }
 
-.modal-mascot {
+#modal-mascot {
     float:right;
     width: 20%;
 }
