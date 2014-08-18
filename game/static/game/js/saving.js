@@ -173,3 +173,32 @@ ocargo.Saving.prototype.saveLevel = function(data, callback) {
         }
     });
 };
+
+ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {
+    $.ajax({
+        url: '/game/level_editor/level/get_sharing_data/' + levelID,
+        type: 'POST',
+        dataType: 'json',
+        success: function(json) {
+            callback(null, json.newID);
+        },
+        error: function(xhr,errmsg,err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+};
+
+ocargo.Saving.prototype.shareLevel = function(levelID, recipients, callback) {
+    $.ajax({
+        url: '/game/level_editor/level/share/' + levelID,
+        type: 'POST',
+        dataType: 'json',
+        data: recipients,
+        success: function(json) {
+            callback(null, json.newID);
+        },
+        error: function(xhr,errmsg,err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+};

@@ -66,6 +66,7 @@ ocargo.LevelEditor = function() {
         setupGenerateTab();
         setupLoadTab();
         setupSaveTab();
+        setupShareTab();
         setupHelpTab();
 
         /** Adds listeners to control the transitioning between tabs  **/
@@ -90,61 +91,14 @@ ocargo.LevelEditor = function() {
             });
 
             $("#play_radio").click(function() {
-
-                function oldPathToNew() {
-                    var newPath = [];
-
-                    for (var i = 0; i < nodes.length; i++) {
-                        var curr = nodes[i];
-                        var node = {'coordinate': [curr.coordinate.x, curr.coordinate.y],
-                                    'connectedNodes': []};
-
-                        for(var j = 0; j < curr.connectedNodes.length; j++) {
-                            var index = ocargo.Node.findNodeIndexByCoordinate(curr.connectedNodes[j].coordinate, nodes);
-                            node.connectedNodes.push(index);
-                        }
-                        newPath.push(node);
-                    }
-                    return newPath;
-                }
-
-                function stripOutImageProperty(objects) {
-                    var newObjects = [];
-                    for(var i = 0; i < objects.length; i++) {
-                        var newObject = {};
-                        for (var property in objects[i])  {
-                            if (property !== "image") {
-                                newObject[property] = objects[i][property];
-                            }
-                        }
-                        newObjects.push(newObject);
-                    }
-                    return newObjects;
-                }
-
-                // Check to see if start and end nodes have been marked
-                if (!originNode || !destinationNode) {
-                     ocargo.Drawing.startPopup(ocargo.messages.ohNo,
-                                               ocargo.messages.noStartOrEndSubtitle,
-                                               ocargo.messages.noStartOrEnd);
-                     lastTabSelected.prop('checked', true);
-                     return;
-                }
-
-                // Check to see if path exists from start to end
-                var destination = new ocargo.Destination(0, destinationNode);
-                var pathToDestination = getOptimalPath(nodes, [destination]);
-                if (pathToDestination.length === 0) {
-                    ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
-                                              ocargo.messages.noStartEndRouteSubtitle,
-                                              ocargo.messages.noStartEndRoute);
+               
+                if(!isValidLevel()) {
                     return;
                 }
 
                 // Create node data
                 sortNodes(nodes);
-                var delinkedNodes = oldPathToNew(nodes);
-                var nodeData = JSON.stringify(delinkedNodes);
+                var nodeData = JSON.stringify(ocargo.Node.composePathData(nodes));
 
                 // Create traffic light data
                 var trafficLightData = [];
@@ -569,6 +523,10 @@ ocargo.LevelEditor = function() {
                     });
                 }
             });
+        }
+
+        function setupShareTab() {
+
         }
 
         function setupHelpTab() {
@@ -1350,11 +1308,58 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    /**********************************/
+    /* Loading/saving/sharing methods */
+    /**********************************/
+
+    function isValidLevel() {
+         // Check to see if start and end nodes have been marked
+        if (!originNode || !destinationNode) {
+             ocargo.Drawing.startPopup(ocargo.messages.ohNo,
+                                       ocargo.messages.noStartOrEndSubtitle,
+                                       ocargo.messages.noStartOrEnd);
+             lastTabSelected.prop('checked', true);
+             return false;
+        }
+
+        // Check to see if path exists from start to end
+        var destination = new ocargo.Destination(0, destinationNode);
+        var pathToDestination = getOptimalPath(nodes, [destination]);
+        if (pathToDestination.length === 0) {
+            ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
+                                      ocargo.messages.noStartEndRouteSubtitle,
+                                      ocargo.messages.noStartEndRoute);
+            return false;
+        }
+        return true;
+    }
+
     /*****************************************/
     /* Internal traffic light representation */
     /*****************************************/
 
     function InternalTrafficLight(data) {
+
+        // public methods
+        this.getData = function() {
+            if(!this.valid) {
+                throw "Error: cannot create actual traffic light from invalid internal traffic light!";
+            }
+
+            return {"redDuration": this.redDuration, "greenDuration": this.greenDuration,
+                    "sourceNode": this.sourceNode, "controlledNode": this.controlledNode,
+                    "startTime": this.startTime, "startingState": this.startingState};
+        };
+
+        this.destroy = function() {
+            this.image.remove();
+            var index = trafficLights.indexOf(this);
+            if(index !== -1) {
+                trafficLights.splice(index, 1);       
+            }
+        };
+
+        // data
         this.redDuration = data.redDuration;
         this.greenDuration = data.greenDuration;
         this.startTime = data.startTime;
@@ -1381,69 +1386,54 @@ ocargo.LevelEditor = function() {
         trafficLights.push(this);
     }
 
-    InternalTrafficLight.prototype.getData = function() {
-        if(!this.valid) {
-            throw "Error: cannot create actual traffic light from invalid internal traffic light!";
-        }
-
-        return {"redDuration": this.redDuration, "greenDuration": this.greenDuration,
-                "sourceNode": this.sourceNode, "controlledNode": this.controlledNode,
-                "startTime": this.startTime, "startingState": this.startingState};
-    };
-
-    InternalTrafficLight.prototype.destroy = function() {
-        this.image.remove();
-        var index = trafficLights.indexOf(this);
-        if(index !== -1) {
-            trafficLights.splice(index, 1);       
-        }
-    };
-
     /*********************************/
     /* Internal decor representation */
     /*********************************/
 
     function InternalDecor(name) {
+
+        // public methods
+        this.getData = function() {
+            var bBox = this.image.getBBox();
+            return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x),
+                                                        PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)),
+                    'name': this.name};
+        };
+
+        this.setCoordinate = function(coordinate) {
+            this.image.transform('t' + coordinate.x + ',' + coordinate.y);
+        };
+
+        this.updateTheme = function() {
+            var description = currentTheme.decor[this.name];
+            var newImage = ocargo.drawing.createImage(description.url, 0, 0, description.width,
+                                                      description.height);
+
+            if(this.image) {
+                newImage.transform(this.image.matrix.toTransformString());
+                this.image.remove();
+            }
+
+            this.image = newImage;
+            this.image.attr({'cursor':'pointer'});
+            setupDecorListeners(this);
+        };
+
+        this.destroy = function() {
+            this.image.remove();
+            var index = decor.indexOf(this);
+            if(index !== -1) {
+                decor.splice(index, 1);       
+            }
+        };
+
+        // data
         this.name = name;
         this.image = null;
         this.updateTheme();
 
         decor.push(this);
     }
-
-    InternalDecor.prototype.getData = function() {
-        var bBox = this.image.getBBox();
-        return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x),
-                                                    PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)),
-                'name': this.name};
-    };
-
-    InternalDecor.prototype.setCoordinate = function(coordinate) {
-        this.image.transform('t' + coordinate.x + ',' + coordinate.y);
-    };
-
-    InternalDecor.prototype.updateTheme = function() {
-        var description = currentTheme.decor[this.name];
-        var newImage = ocargo.drawing.createImage(description.url, 0, 0, description.width,
-                                                  description.height);
-
-        if(this.image) {
-            newImage.transform(this.image.matrix.toTransformString());
-            this.image.remove();
-        }
-
-        this.image = newImage;
-        this.image.attr({'cursor':'pointer'});
-        setupDecorListeners(this);
-    };
-
-    InternalDecor.prototype.destroy = function() {
-        this.image.remove();
-        var index = decor.indexOf(this);
-        if(index !== -1) {
-            decor.splice(index, 1);       
-        }
-    };
 };
 
 /******************/
