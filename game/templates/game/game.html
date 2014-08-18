@@ -288,42 +288,45 @@
 
     <div id="paper" class="col" style="background-color:{{level.theme.background}}"></div>
 
-    <div class="no-print unselectable">
-      <button class="navigation_button" id="show">
-        <image src="/static/game/image/icons/show.svg"/>
-        <span>Show</span>
-      </button>
+  <div class="no-print unselectable">
+    <button class="navigation_button" id="show">
+      <image src="/static/game/image/icons/show.svg"/>
+      <span>Show</span>
+    </button>
 
-      <button class="navigation_button" id="hide">
-        <image src="/static/game/image/icons/hide.svg"/>
-        <span>Hide</span>
-      </button>
-    </div>
-
-    <div id="direct_drive" class="unselectable">
-      <button class="svg_button direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-      <button class="svg_button direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-      <button class="svg_button direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-      <button class="svg_button direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-    </div>
-    
-    <div id="fuelGauge" class="no-print unselectable">
-      <img src="/static/game/image/fuelGauge.svg"/>
-      <div id="fuelGaugePointer">
-        <img src="/static/game/image/fuelGaugePointer.svg"/>
-      </div>
-    </div>
-
-    <div id="consoleSlider" class="no-print"></div>
+    <button class="navigation_button" id="hide">
+      <image src="/static/game/image/icons/hide.svg"/>
+      <span>Hide</span>
+    </button>
   </div>
 
-  <div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <div id="direct_drive" class="unselectable">
+    <button class="svg_button direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+  </div>
+  
+  <div id="fuelGauge" class="no-print unselectable">
+    <img src="/static/game/image/fuelGauge.svg"/>
+    <div id="fuelGaugePointer">
+      <img src="/static/game/image/fuelGaugePointer.svg"/>
+    </div>
+  </div>
+
+  <div id="consoleSlider" class="no-print"></div>
+</div>
+
+<div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <div class="modal-text">
     <h2 id="myModal-title" class="ocargo-modal-title"></h2>
     <p id="myModal-lead" class="ocargo-modal-lead"></p>
     <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
     <a class="close-reveal-modal" id="close-modal">&#215;</a>
   </div>
-  </div>
+  <div class="modal-mascot">
+    <img src="/static/game/image/characters/front_view/Dee.svg"
+</div>
   
   
   

@@ -24,6 +24,20 @@
     }
 }
 
+#myModal {
+    overflow: hidden;
+}
+
+.modal-text {
+    float: left;
+    width: 78%;
+}
+
+.modal-mascot {
+    float:right;
+    width: 20%;
+}
+
 /*****************/
 /* Tab structure */
 /*****************/
