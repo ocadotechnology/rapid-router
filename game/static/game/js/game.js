@@ -315,7 +315,6 @@ ocargo.Game.prototype.setupTabs = function() {
             window.location.href = "/game/";
         }
 
-        console.debug(ocargo.game)
         ocargo.game.tabs['blockly'] = new ocargo.Tab($('#blockly_radio'), $('#blockly_radio + label'), onBlockly, $('#blockly_pane'));
         ocargo.game.tabs['python'] = new ocargo.Tab($('#python_radio'), $('#python_radio + label'), onPython, $('#python_pane'));
 
