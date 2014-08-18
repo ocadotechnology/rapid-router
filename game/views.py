@@ -64,7 +64,8 @@ def levels(request):
         return score
 
     episode_data = []
-    for episode in episodes:
+    episode = Episode.objects.get(name='Getting Started')
+    while episode is not None:
         levels = []
         for level in episode.levels:
             levels.append({
@@ -82,6 +83,8 @@ def levels(request):
              "opacity": opacity}
 
         episode_data.append(e)
+        episode = episode.next_episode
+       
 
     context = RequestContext(request, {
         'episodeData': json.dumps(episode_data),
