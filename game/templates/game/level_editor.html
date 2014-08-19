@@ -17,6 +17,7 @@
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
 
+  <script src="/static/game/js/tab.js"></script>
   <script src="/static/game/js/messages.js"></script>
   <script src="/static/game/js/saving.js"></script>
   <script src="/static/game/js/level_editor.js"></script>
@@ -76,7 +77,6 @@
 
 {% block css %}
   <link href="/static/game/css/game_screen.css" rel="stylesheet" type="text/css">
-  <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
@@ -97,59 +97,103 @@
       <div id="tabs">
 
         <div class="tab">
-          <input type="radio" name="tabs" id="play_radio" checked>
-          <label for="play_radio">Play</label>
+          <input type="radio" name="tabs" id="play_radio">
+          <label for="play_radio">
+            <img src='/static/game/image/icons/play.svg'>
+            <span>Play</span>
+          </label>
         </div>
 
+        <div class="tab_break"></div>
+
         <div class="tab selectable">
-          <input type="radio" name="tabs" id="map_radio" checked>
-          <label for="map_radio">Map</label>
+          <input type="radio" name="tabs" id="map_radio">
+          <label for="map_radio">
+            <img src='/static/game/image/icons/map.svg'>
+            <span>Map</span>
+          </label>
         </div>
 
         <div class="tab selectable">
           <input type="radio" name="tabs" id="decor_radio">
-          <label for="decor_radio">Decor</label>
+          <label for="decor_radio">
+            <img src='/static/game/image/icons/decor.svg'>
+            <span>Decor</span>
+          </label>
         </div>
 
         <div class="tab selectable">
           <input type="radio" name="tabs" id="character_radio">
-          <label for="character_radio">Character</label>
+          <label for="character_radio">
+            <img src='/static/game/image/icons/character.svg'>
+            <span>Characters</span>
+          </label>
         </div>
 
         <div class="tab selectable">
           <input type="radio" name="tabs" id="blocks_radio">
-          <label for="blocks_radio">Blocks</label>
+          <label for="blocks_radio">
+            <img src='/static/game/image/icons/blockly.svg'>
+            <span>Blocks</span>
+          </label>
         </div>
 
         <div class="tab selectable">
           <input type="radio" name="tabs" id="random_radio">
-          <label for="random_radio">Random</label>
+          <label for="random_radio">
+            <img src='/static/game/image/icons/random.svg'>
+            <span>Random</span>
+          </label>
         </div>
+
+        <div class="tab_break"></div>
 
         <div class="tab selectable">
           <input type="radio" name="tabs" id="load_radio">
-          <label for="load_radio">Load</label>
+          <label for="load_radio">
+            <img src='/static/game/image/icons/load.svg'>
+            <span>Load</span>
+          </label>
         </div>
 
         <div class="tab selectable">
           <input type="radio" name="tabs" id="save_radio">
-          <label for="save_radio">Save</label>
+          <label for="save_radio">
+            <img src='/static/game/image/icons/save.svg'>
+            <span>Save</span>
+          </label>
         </div>
 
         <div class="tab selectable">
+          <input type="radio" name="tabs" id="share_radio">
+          <label for="share_radio">
+            <img src='/static/game/image/icons/share.svg'>
+            <span>Share</span>
+          </label>
+        </div>
+
+        <div class="tab_break"></div>
+
+        <div class="tab selectable">
           <input type="radio" name="tabs" id="help_radio">
-          <label for="help_radio">Help</label>
+          <label for="help_radio">
+            <img src='/static/game/image/icons/help.svg'>
+            <span>Help</span>
+          </label>
         </div>
 
         <div class="tab">
-          <input type="radio" name="tabs" id="quit_radio" checked>
-          <label for="quit_radio">Quit</label>
+          <input type="radio" name="tabs" id="quit_radio">
+          <label for="quit_radio">
+            <img src='/static/game/image/icons/quit.svg'>
+            <span>Quit</span>
+          </label>
         </div>
 
       </div>
 
       <div id="tab_panes">
-        <div id="map" class="tab_pane">
+        <div id="map_pane" class="tab_pane">
           
           <div class="table">
             <div class="table_row">
@@ -190,7 +234,7 @@
           </button>
         </div>
 
-        <div id="decor" class="tab_pane">
+        <div id="decor_pane" class="tab_pane">
           <div class="table">
             <div class="table_row">
               <div class="table_cell field_label"><p>Theme</p></div>
@@ -235,7 +279,7 @@
           </button>
         </div>
 
-        <div id="character" class="tab_pane">
+        <div id="character_pane" class="tab_pane">
           <form name="character-form" id="character-form">
             {% for char in characters %}
             <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
@@ -247,7 +291,7 @@
           </form>
         </div>
 
-        <div id="blocks" class="tab_pane">
+        <div id="blocks_pane" class="tab_pane">
           <div class="block_table">
             <div class="table_row">
 
@@ -270,7 +314,7 @@
           </div>
         </div>
 
-        <div id="random" class="tab_pane">
+        <div id="random_pane" class="tab_pane">
           <div class="table">
             <div class="table_row">
               <div class="table_cell field_label"><p>Size:</p></div>
@@ -294,12 +338,12 @@
           </div>
 
           <button class="navigation_button" id="generate">
-            <image src="/static/game/image/icons/random.svg">
+            <image src="/static/game/image/icons/random.svg"></image>
             <span>Generate</span>
           </button>
         </div>
 
-        <div id="load" class="tab_pane">
+        <div id="load_pane" class="tab_pane">
           <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/load.svg'></image>Load</h2>
 
           <input type="radio" name="type_of_loaded_levels" id="own_levels_radio" checked>
@@ -328,20 +372,20 @@
 
           <br style="clear:both">
           
-          <div style="margin-top: 1.25rem">
+          <div>
             <button class="navigation_button" id="deleteLevel">
-                <image src="/static/game/image/icons/clear.svg"/></image>
-                <span>Delete</span>
-              </button>
+              <image src="/static/game/image/icons/clear.svg"></image>
+              <span>Delete</span>
+            </button>
 
-              <button class="navigation_button" id="loadLevel">
-                <image src="/static/game/image/icons/load.svg"></image>
-                <span>Load</span>
-              </button>
+            <button class="navigation_button" id="loadLevel">
+              <image src="/static/game/image/icons/load.svg"></image>
+              <span>Load</span>
+            </button>
           </div>
         </div>
 
-        <div id="save" class="tab_pane">
+        <div id="save_pane" class="tab_pane">
           <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/save.svg'></image>Save</h2>
           <p>Here you can save your new level.</p>
           <div class="scrolling-table-wrapper">
@@ -349,7 +393,7 @@
               <table id="saveLevelTable"></table>
             </div>
           </div>
-          <div style="margin-top: 1.25rem">
+          <div>
             <div>
               <input type="text" id="levelNameInput">
               <button class="navigation_button" id="saveLevel">
@@ -360,9 +404,54 @@
           </div>
         </div>
 
-        <div id="help" class="tab_pane">
-        Test help!
+        <div id="share_pane" class="tab_pane">
+          <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/share.svg'></image>Share</h2>
+          
+          <div id='teacher_sharing'>
+            <p>Here you can share your level with your pupils or your fellow teachers</p>
+            
+            <p>Share with:</p>
+            <input type="radio" name="sharing_recipient" id="classes_radio">
+            <label for="classes_radio">Classes:</label>
+
+            <input type="radio" name="sharing_recipient" id="teachers_radio" checked>
+            <label for="teachers_radio">Teachers:</label>
+            
+            <div id='class selection'>
+              <select id="class_select"></select>
+              <select id="student_select"></select>
+            </div>
+
+            <div id='teacher_selection'>
+              <select id="teacher_select"></select>
+            </div>
+          </div>
+
+          <div id='pupil_sharing'>
+            <p>Here you can share your level with your classmates!</p>
+          </div>
+
+          <div id="shared_levels">
+            <div class="scrolling-table-wrapper">
+              <div class="scrolling-table">
+                <table id="levelSharingTable"></table>
+              </div>
+            </div>
+          </div>
+
+          <button class="navigation_button" id="shareLevel">
+            <image src="/static/game/image/icons/share.svg"></image>
+            <span>Share</span>
+          </button>
+
+          <button class="navigation_button" id="shareLevel">
+            <image src="/static/game/image/icons/quit.svg"></image>
+            <span>Unshare</span>
+          </button>
+          
         </div>
+
+        <div id="help_pane" class="tab_pane"></div>
 
       </div>
     </div>
@@ -379,6 +468,7 @@
   </div>
   <div id="modal-mascot">
     <img src="/static/game/image/characters/front_view/Dee.svg">
+  </div>
 </div>
 
 <div id="blockly"></div>

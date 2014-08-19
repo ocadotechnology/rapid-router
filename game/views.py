@@ -20,7 +20,7 @@ from rest_framework.response import Response
 from forms import *
 from game import random_road
 from models import Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
-from portal.models import Class, Teacher
+from portal.models import Student, Class, Teacher
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
@@ -350,44 +350,6 @@ def submit(request):
 
             attempt.save()
     return HttpResponse('')
-
-
-#
-# Helper methods for rendering views in the game.
-#
-def getDecorElement(name, theme):
-    """ Helper method to get a decor element corresponding to the theme or a default one.
-    """
-    try:
-        return Decor.objects.get(name=name, theme=theme)
-    except ObjectDoesNotExist:
-        return Decor.objects.filter(name=name)[0]
-
-
-def decorToLevelDecor(level, decor):
-    """ Helper method creating LevelDecor objects given a string of all decors.
-    """
-    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"name": *")([a-zA-Z0-9]+)("}))')
-
-    items = regex.findall(decor)
-
-    for item in items:
-        name = item[6]
-        levelDecor = LevelDecor(level=level, x=item[2], y=item[4], decorName=name)
-        levelDecor.save()
-
-
-def parseDecor(theme, levelDecors):
-    """ Helper method parsing decor into a format 'sendable' to javascript.
-    """
-    decorData = []
-    for levelDecor in levelDecors:
-        decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)
-        decorData.append(json.dumps(
-            {"coordinate": {"x": levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
-             "width": decor.width, "height": decor.height}))
-    return decorData
-
 
 def renderScoreboard(request, form, school):
     """ Helper method rendering the scoreboard.
@@ -842,49 +804,206 @@ def delete_level_for_editor(request, levelID):
     return HttpResponse('', content_type='application/javascript')
 
 
-def save_level_for_editor(request):
+def save_level_for_editor(request, levelID=None):
     """ Processes a request on creation of the map in the level editor """
 
-    path = request.POST.get('nodes')
+    path = request.POST.get('path')
     destinations = request.POST.get('destinations')
     decor = request.POST.get('decor')
-    traffic_lights = request.POST.get('trafficLights')
-    max_fuel = request.POST.get('maxFuel')
-    name = request.POST.get('name')
-    theme_name = request.POST.get('theme')
-    character_name = request.POST.get('characterName')
-    theme = Theme.objects.get(name=theme_name)
+    traffic_lights = request.POST.get('traffic_lights')
+    max_fuel = request.POST.get('max_fuel')
+    theme_id = request.POST.get('themeID')
+    character_name = request.POST.get('character_name')
+    blockTypes = json.loads(request.POST['block_types'])
 
+    theme = Theme.objects.get(id=theme_id)
     character = Character.objects.get(name=character_name)
 
-    passed_level = Level(name=name, path=path, default=False, destinations=destinations,
-                         decor=decor, max_fuel=max_fuel, traffic_lights=traffic_lights,
-                         theme=theme, character=character)
+    if levelID is not None:
+        level = Level.objects.get(id=levelID)
 
-    if not request.user.is_anonymous():
-        passed_level.owner = request.user.userprofile
+        if request.user.userprofile != level.owner:
+            return
 
-    passed_level.save()
+    else:
+        name = request.POST.get('name')
+        level = Level(name=name, default=False)
 
-    decorToLevelDecor(passed_level, decor)
+        if not request.user.is_anonymous():
+            level.owner = request.user.userprofile
 
-    blockTypes = json.loads(request.POST['blockTypes'])
-    blocks = Block.objects.filter(type__in=blockTypes)
-    passed_level.blocks = blocks
-    passed_level.save()
+    level.path = path
+    level.destinations = destinations
+    level.max_fuel = max_fuel
+    level.traffic_lights = traffic_lights
+    level.theme = theme
+    level.character = character
+    level.save()
 
-    return HttpResponse(json.dumps({'newID': passed_level.id}), content_type='application/javascript')
+    setLevelDecor(level, decor)
 
+    level.blocks = Block.objects.filter(type__in=blockTypes)
+    level.save()
+
+    return HttpResponse(json.dumps({'levelID': level.id}), content_type='application/javascript')
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
 
-    size = int(request.POST['numberOfTiles'])
-    branchiness = float(request.POST['branchiness'])
-    loopiness = float(request.POST['loopiness'])
-    curviness = float(request.POST['curviness'])
-    traffic_lights_enabled = request.POST['trafficLightsEnabled']
+    size = int(request.GET['numberOfTiles'])
+    branchiness = float(request.GET['branchiness'])
+    loopiness = float(request.GET['loopiness'])
+    curviness = float(request.GET['curviness'])
+    traffic_lights_enabled = request.GET['trafficLightsEnabled']
 
     data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
                                                 traffic_lights_enabled)
     return HttpResponse(json.dumps(data), content_type='application/javascript')
+
+
+def get_sharing_information_for_editor(request, levelID):
+    """ Returns a information about who the level can be shared with (valid_recipients)
+        and who the level is shared with (active_recipients) """ 
+    level = Level.objects.get(id=levelID)
+
+    valid_recipients = []
+    active_recipients = []
+    role = 'anonymous'
+
+    if not request.user.is_anonymous():
+        profile = request.user.userprofile
+        
+        if level.owner == profile:
+            valid_recipients = get_all_valid_recipients(profile)
+            active_recipients = get_all_active_recipients(level)
+
+            if hasattr(profile,'student'):
+                role = 'student'
+            if hasattr(profile,'teacher'):
+                role = 'teacher'
+
+            
+    recipient_data = {'validRecipients': valid_recipients, 'activeRecipients': active_recipients}
+    data = {'recipientData': recipient_data, 'role': role}
+
+    return HttpResponse(json.dumps(data), content_type='application/javascript')
+
+
+def share_level_for_editor(request, levelID):
+    """ Shares a level with the provided list of recipients """
+    recipientIDs = request.POST['recipientIDs']
+
+    level = Level.objects.get(id=levelID)
+    recipients = User.objects.filter(id__in=recipientIDs)
+    sharer = level.owner
+
+    if sharer == request.user.userprofile and is_valid_recipient(recipient.userprofile, sharer):
+        level.shared_with.add(recipient.userprofile)
+
+
+#######################
+# Sharing permissions #
+#######################
+
+def get_all_active_recipients(level):
+    """ Returns the list of recipients the level is shared with
+    minus those who the owner of the level cannot currently share with.
+
+    The last is needed because for example students switching classes."""
+
+    active_recipients = []
+
+    for recipient in level.shared_with.all():
+        if is_valid_recipient(recipient.userprofile, level.owner):
+            active_recipients.append({'id': recipient.id, 'name': recipient.first_name})
+
+
+def get_all_valid_recipients(userprofile):
+    valid_recipients = {}
+
+    if hasattr(userprofile, 'student'):
+        student = userprofile.student
+
+        # First get all the student's classmates
+        class_ = student.class_field
+        classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
+        valid_recipients['classmates'] = [{'id': classmate.user.user.id, 
+                                            'name': classmate.user.user.first_name + " " + classmate.user.user.last_name}
+                                             for classmate in classmates]
+
+        # Then add their teacher as well
+        teacher = class_.teacher
+        valid_recipients['teacher'] = {'id': teacher.user.user.id,
+                                     'name': teacher.title + " " + teacher.user.user.last_name}
+
+    elif hasattr(userprofile, 'teacher'):
+        teacher = userprofile.teacher
+
+        # First get all the students they teach
+        valid_recipients['classes'] = {}
+        classes_taught = Class.objects.filter(teacher=teacher)
+        for class_ in classes_taught:
+            students = Student.objects.filter(class_field=class_)
+            valid_recipients['classes'][class_.name] = [{'id': student.user.user.id, 'name': student.user.user.first_name + " " + student.user.user.last_name} for student in students]
+
+        # Then add all the teachers at the same organisation
+        fellow_teachers = Teacher.objects.filter(school=teacher.school)
+        valid_recipients['teachers'] = [{'id': teacher.user.user.id, 'name': teacher.user.user.first_name + " " + teacher.user.user.last_name} for teacher in fellow_teachers]
+
+    return valid_recipients;
+
+def is_valid_recipient(recipient_profile, sharer_profile):
+    if hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'student'):
+        # Are they in the same class?
+        return sharer_profile.student.class_field == recipient_profile.student.class_field
+    elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'student'):
+        # Is the recipient taught by the sharer?
+        return recipient_profile.student.class_field.teacher == sharer_profile.teacher
+    elif hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'teacher'):
+        # Is the sharer taught by the recipient?
+        return sharer_profile.student.class_field.teacher == sharer_profile.teacher
+    elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'teacher'):
+        # Are they in the same organisation?
+        return recipient_profile.teacher.school == sharer_profile.teacher.school
+    else:
+        return Ffalse;
+
+
+##################
+# Helper methods #
+##################
+
+def getDecorElement(name, theme):
+    """ Helper method to get a decor element corresponding to the theme or a default one."""
+    try:
+        return Decor.objects.get(name=name, theme=theme)
+    except ObjectDoesNotExist:
+        return Decor.objects.filter(name=name)[0]
+
+
+def setLevelDecor(level, decorString):
+    """ Helper method creating LevelDecor objects given a string of all decors."""
+
+    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"name": *")([a-zA-Z0-9]+)("}))')
+    items = regex.findall(decorString)
+
+    existingDecor = LevelDecor.objects.filter(level=level)
+    for levelDecor in existingDecor:
+        levelDecor.delete()
+
+    for item in items:
+        name = item[6]
+        levelDecor = LevelDecor(level=level, x=item[2], y=item[4], decorName=name)
+        levelDecor.save()
+
+
+def parseDecor(theme, levelDecors):
+    """ Helper method parsing decor into a format 'sendable' to javascript.
+    """
+    decorData = []
+    for levelDecor in levelDecors:
+        decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)
+        decorData.append(json.dumps(
+            {"coordinate": {"x": levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
+             "width": decor.width, "height": decor.height}))
+    return decorData

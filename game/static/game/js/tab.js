@@ -1,14 +1,4 @@
-ocargo.Tab = function(radioElement, labelElement, onChangeCall, paneElement) {
-    this.setEnabled = function(enabled) {
-        if(enabled) {
-            radioElement.change(onChangeCall);
-        }
-        else {
-            radioElement.change(new function(){});
-        }
-        radioElement.attr('disabled', !enabled);
-    };
-
+ocargo.Tab = function(radioElement, labelElement, paneElement) {
     this.getText = function() {
         return labelElement[0].children[1].innerHTML;
     };
@@ -27,9 +17,25 @@ ocargo.Tab = function(radioElement, labelElement, onChangeCall, paneElement) {
         radioElement.prop('checked', true);
     };
 
+    this.setOnChange = function(onChangeCall) {
+        this.setEnabled = function(enabled) {
+            if(enabled) {
+                radioElement.change(onChangeCall);
+                radioElement.attr('disabled', false);
+            }
+            else {
+                radioElement.change(new function(){});
+                radioElement.attr('disabled', true);
+            }
+        }
+
+        this.setEnabled(true);
+    }
+
     if(paneElement) {
         this.setPaneEnabled = function(enabled) {
             paneElement.css('display', enabled ? 'block' : 'none');
         }
-    };
+        this.setPaneEnabled(false);
+    }
 };
