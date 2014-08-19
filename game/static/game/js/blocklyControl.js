@@ -16,7 +16,7 @@ ocargo.BlocklyControl = function () {
     Blockly.showContextMenu_ = function(e) {};
     Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
-    this.numberOfStartBlocks = 0;
+    this.numberOfStartBlocks = THREADS;
 
     Blockly.Flyout.autoClose = false;
 };
@@ -46,7 +46,7 @@ ocargo.BlocklyControl.prototype.redrawBlockly = function() {
 ocargo.BlocklyControl.prototype.reset = function() {
     Blockly.mainWorkspace.clear();
 
-    this.numStartBlocks = 0;
+    this.numberOfStartBlocks = THREADS;
 
     for (var i = 0; i < THREADS; i++) {
         var startBlock = this.createBlock('start');
@@ -91,15 +91,32 @@ ocargo.BlocklyControl.prototype.serialize = function() {
     var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
     var text = Blockly.Xml.domToText(xml);
     return text;
+
 };
 
 ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
+
+    // Buggy blockly doesn't serialise properly on Safari.
+    var isSafari = navigator.userAgent.indexOf('Safari') !== -1 &&
+                    navigator.userAgent.indexOf('Chrome') === -1;
+
     var blocks = Blockly.mainWorkspace.getAllBlocks();
+    blocks.sort(function(a, b) {
+        return a.id - b.id;
+    });
+    var startCount = this.numberOfStartBlocks;
     var block;
     for (var i = 0; i < blocks.length; i++) {
         block = blocks[i];
         if (BLOCKS.indexOf(block.type) === -1 && block.type !== 'start') {
             block.dispose();
+        }
+        if(isSafari && block.type === 'start') {
+            if (startCount > 0) {
+                startCount--;
+            } else {
+                block.dispose();
+            }
         }
     }
 };
