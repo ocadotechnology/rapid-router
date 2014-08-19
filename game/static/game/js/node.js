@@ -63,7 +63,7 @@ ocargo.Node.findNodeIndexByCoordinate = function(coordinate, nodes) {
         }
     }
     return -1;
-}
+};
 
 // Helper method that returns the first node at the given coordinate
 ocargo.Node.findNodeByCoordinate = function(coordinate, nodes) {
@@ -74,7 +74,7 @@ ocargo.Node.findNodeByCoordinate = function(coordinate, nodes) {
         }
     }
     return null;
-}
+};
 
 
 ocargo.calculateNodeAngle = function(nodeA, nodeB) {

@@ -11,50 +11,153 @@ DIRECTIONS = {(1, 0), (0, 1), (-1, 0), (0, -1)}
 WIDTH = 10
 HEIGHT = 8
 
+DEFAULT_MAX_FUEL = 30
 DEFAULT_START_NODE = Node(0,3)
 DEFAULT_NUM_TILES = 20
 DEFAULT_BRANCHINESS = 0.3
 DEFAULT_LOOPINESS = 0.1
 DEFAULT_CURVINESS = 0.5
 
-def create(episode=None):
+PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
 
-    if episode is None:
-        path = generate_random_path(DEFAULT_START_NODE,
-                                    DEFAULT_NUM_TILES, 
-                                    DEFAULT_BRANCHINESS,
-                                    DEFAULT_LOOPINESS,
-                                    DEFAULT_CURVINESS)
-        destinations = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
-        level = Level(name="Default random level", 
-                                    path=json.dumps(path),
-                                    max_fuel=30,
-                                    destinations=destinations,
-                                    blocklyEnabled=True,
-                                    pythonEnabled=False)
+def create(episode=None):
+    startNode = DEFAULT_START_NODE
+    maxFuel = DEFAULT_MAX_FUEL
+
+    if episode:
+        num_tiles = DEFAULT_NUM_TILES
+        branchiness = DEFAULT_BRANCHINESS
+        loopiness = DEFAULT_LOOPINESS
+        curviness = DEFAULT_CURVINESS
+        blockly_enabled = True
+        python_enabled = False
+        blocks = Block.objects.all();
+        name = "Default random level"
+        traffic_lights_enabled = True
     else:
-        path = generate_random_path(DEFAULT_START_NODE,
-                                    episode.r_num_tiles,
-                                    episode.r_branchiness,
-                                    episode.r_loopiness,
-                                    episode.r_curviness)
-        destinations = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
-        level = Level(name="Random level for " + episode.name + ".",
-                                    path=json.dumps(path), 
-                                    max_fuel=30, 
-                                    destinations=destinations,
-                                    blocklyEnabled=episode.r_blocklyEnabled,
-                                    pythonEnabled=episode.r_pythonEnabled)
+        num_tiles = episode.r_num_tiles
+        branchiness = episode.r_branchiness
+        loopiness = episode.r_loopiness
+        curviness = episode.r_curviness
+        blockly_enabled = episode.r_blocklyEnabled
+        python_enabled = episode.r_pythonEnabled
+        blocks = episode.r_blocks.all()
+        name = "Random level for " + episode.name
+        traffic_lights_enabled = True
+    
+    level_data = generate_random_map_data(num_tiles,
+                                        branchiness_factor,
+                                        loopiness_factor,
+                                        curviness_factor,
+                                        traffic_lights_enabled)
+
+    level = Level(name=name,
+                  path=level_data['path'],
+                  destinations=level_data['destinations'],
+                  traffic_lights=level_data['traffic_lights'],
+                  max_fuel=maxFuel,
+                  blocklyEnabled=blockly_enabled,
+                  pythonEnabled=python_enabled)
 
     level.save()
-    level.blocks = episode.r_blocks.all()
+    level.blocks = blocks
     level.save()
 
     return level
 
-def generate_random_path(start_position, num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
-    nodes = [start_position]
-    index_by_node = {start_position:0}
+def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled):
+    path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
+    traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
+    destinations = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
+
+    return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights), 'destinations': json.dumps(destinations)}
+
+def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
+    
+    def pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor):
+        
+        for attempts in xrange(5):
+            origin = pick_origin_node(nodes, branchiness_factor)
+            possibles = []
+
+            x = origin.x
+            y = origin.y
+            for (delta_x, delta_y) in DIRECTIONS:
+                node = Node(x + delta_x, y + delta_y)
+                if is_possible(node, nodes):
+                    possibles.append(node)
+
+            if possibles:
+                return origin, pick_destination_node(nodes, connections, origin, possibles, curviness_factor)
+
+        return None, None
+
+    def pick_origin_node(nodes, branchiness_factor):
+        if random.random() < branchiness_factor:
+            return random.choice(nodes)
+        else:
+            return nodes[-1]
+
+    def pick_destination_node(nodes, connections, origin, possibles, curviness_factor):
+        existing_connections = [nodes[nodeIndex] for nodeIndex in connections[nodes.index(origin)]]
+        existing_connection_directions = [(node.x-origin.x,node.y-origin.y) for node in existing_connections]
+        linear = [node for node in possibles if (origin.x-node.x,origin.y-node.y) in existing_connection_directions]
+        curved = [node for node in possibles if (origin.x-node.x,origin.y-node.y) not in existing_connection_directions]
+
+        if linear and curved:
+            if random.random() < curviness_factor:
+                pick_from = curved
+            else:
+                pick_from = linear
+        else:
+            pick_from = possibles
+
+        return random.choice(pick_from)
+
+
+    def join_up_loops(nodes, connections, loopiness_factor):
+        nodes_by_location = {(node.x,node.y):(index,node) for index, node in enumerate(nodes)}
+
+        for node_index, node in enumerate(nodes):
+            for location in get_neighbouring_locations(node):
+                if location in nodes_by_location:
+                    adjacent_node_index, adjacent_node = nodes_by_location[location]
+                    if adjacent_node_index not in connections[node_index] and random.random() < loopiness_factor:
+                        connections = add_new_connections(connections, node_index, adjacent_node_index)
+        return connections
+
+    def add_new_connections(connections, node_1_index, node_2_index):
+        connections[node_1_index].append(node_2_index)
+        connections[node_2_index].append(node_1_index)
+
+        return connections
+
+
+    def are_adjacent(node_1, node_2):
+        delta_x = node_2.x - node_1.x
+        delta_y = node_2.y - node_1.y
+        return (delta_x, delta_y) in DIRECTIONS
+
+    def calculate_node_angle(node_1, node_2):
+        return math.atan2(node_2.y - node_1.y, node_2.x - node_1.x)
+
+    def is_possible(node, nodes):
+        return (node not in nodes) and 0 < node.x < WIDTH - 1 and 0 < node.y < HEIGHT - 1
+
+    def get_neighbouring_locations(node):
+        squares = []
+        for delta_x, delta_y in DIRECTIONS:
+            new_x = node.x + delta_x
+            new_y = node.y + delta_y
+
+            if new_x >= 0 and new_x < WIDTH and new_y >= 0 and new_y < HEIGHT:
+                squares.append((new_x,new_y))
+        return squares
+
+
+
+    nodes = [Node(random.randint(0, WIDTH-1), random.randint(0, HEIGHT-1))]
+    index_by_node = {nodes[0]: 0}
 
     connections = defaultdict(list)
 
@@ -77,82 +180,48 @@ def generate_random_path(start_position, num_road_tiles, branchiness_factor, loo
 
     return result
 
-def pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor):
-    
-    for attempts in xrange(5):
-        origin = pick_origin_node(nodes, branchiness_factor)
-        possibles = []
+def generate_traffic_lights(path):
 
-        x = origin.x
-        y = origin.y
-        for (delta_x, delta_y) in DIRECTIONS:
-            node = Node(x + delta_x, y + delta_y)
-            if is_possible(node, nodes):
-                possibles.append(node)
+    degree2Nodes = []
+    degree3or4Nodes = []
 
-        if possibles:
-            return origin, pick_destination_node(nodes, connections, origin, possibles, curviness_factor)
-
-    return None, None
-
-def pick_origin_node(nodes, branchiness_factor):
-    if random.random() < branchiness_factor:
-        return random.choice(nodes)
-    else:
-        return nodes[-1]
-
-def pick_destination_node(nodes, connections, origin, possibles, curviness_factor):
-    existing_connections = [nodes[nodeIndex] for nodeIndex in connections[nodes.index(origin)]]
-    existing_connection_directions = [(node.x-origin.x,node.y-origin.y) for node in existing_connections]
-    linear = [node for node in possibles if (origin.x-node.x,origin.y-node.y) in existing_connection_directions]
-    curved = [node for node in possibles if (origin.x-node.x,origin.y-node.y) not in existing_connection_directions]
-
-    if linear and curved:
-        if random.random() < curviness_factor:
-            pick_from = curved
-        else:
-            pick_from = linear
-    else:
-        pick_from = possibles
-
-    return random.choice(pick_from)
+    for node in path:
+        degree = len(node['connectedNodes'])
+        if degree == 3 or degree == 4:
+            degree3or4Nodes.append(node)
+        elif degree == 2:
+            degree2Nodes.append(node)
 
 
-def join_up_loops(nodes, connections, loopiness_factor):
-    nodes_by_location = {(node.x,node.y):(index,node) for index, node in enumerate(nodes)}
+    if len(degree3or4Nodes) > 0:
+        candidateNodes = degree3or4Nodes   
+    elif len(degree2Nodes) > 0:
+        candidateNodes = degree2Nodes
 
-    for node_index, node in enumerate(nodes):
-        for location in get_neighbouring_locations(node):
-            if location in nodes_by_location:
-                adjacent_node_index, adjacent_node = nodes_by_location[location]
-                if adjacent_node_index not in connections[node_index] and random.random() < loopiness_factor:
-                    connections = add_new_connections(connections, node_index, adjacent_node_index)
-    return connections
+    numberOfJunctions = max(int(len(candidateNodes)*PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS/100.0), 1)
 
-def add_new_connections(connections, node_1_index, node_2_index):
-    connections[node_1_index].append(node_2_index)
-    connections[node_2_index].append(node_1_index)
+    random.shuffle(candidateNodes)
+    nodesSelected = candidateNodes[:numberOfJunctions]
 
-    return connections
+    trafficLights = []
+    for node in nodesSelected:
+        nodeIndex = path.index(node)
 
+        controlledNeighbours = []
+        for neighbourIndex in node['connectedNodes']:
+            neighbour = path[neighbourIndex]
+            if neighbour not in nodesSelected:
+                controlledNeighbours.append(neighbour)
 
-def are_adjacent(node_1, node_2):
-    delta_x = node_2.x - node_1.x
-    delta_y = node_2.y - node_1.y
-    return (delta_x, delta_y) in DIRECTIONS
+        counter = 0
+        for neighbour in controlledNeighbours:
+            neighbourIndex = path.index(neighbour)
+            trafficLights.append({'sourceNode': neighbourIndex,
+                                'controlledNode': nodeIndex,
+                                'startTime': 0 if counter == 0 else 2*(counter-1),
+                                'startingState': 'GREEN' if counter == 0 else 'RED',
+                                'greenDuration': 2,
+                                'redDuration': 2*(len(controlledNeighbours)-1)})
+            counter += 1
 
-def calculate_node_angle(node_1, node_2):
-    return math.atan2(node_2.y - node_1.y, node_2.x - node_1.x)
-
-def is_possible(node, nodes):
-    return (node not in nodes) and 0 < node.x < WIDTH - 1 and 0 < node.y < HEIGHT - 1
-
-def get_neighbouring_locations(node):
-    squares = []
-    for delta_x, delta_y in DIRECTIONS:
-        new_x = node.x + delta_x
-        new_y = node.y + delta_y
-
-        if new_x >= 0 and new_x < WIDTH and new_y >= 0 and new_y < HEIGHT:
-            squares.append((new_x,new_y))
-    return squares
+    return trafficLights

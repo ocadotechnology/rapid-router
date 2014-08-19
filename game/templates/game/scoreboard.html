@@ -1,4 +1,4 @@
-{% extends 'website/base.html' %}
+{% extends 'game/base.html' %}
 
 {% load static %}
 {% load compress %}
@@ -22,39 +22,62 @@
   {% endcompress %}
 {% endblock %}
 
+{% block nav_ocargo_scoreboard %}<b><a href="{% url 'game.views.scoreboard' %}">Scoreboard</a></b>{% endblock nav_ocargo_scoreboard %}
+
 {% block content %}
-<div id="form" class="form">
-<form action="" method="post" id="scoreboardForm">
-  {% csrf_token %}
-  {{form.classes.errors}}
-  <label for="id_classes" class="formLabel">
-    Classes: 
-    {{form.classes}}
-  </label>
-  {{form.levels.errors}}
-  <label for="id_levels" class="formLabel">
-    Levels:
-    {{form.levels}} </select>
-  </label>
-  <button type="submit">Submit</button>
-</form>
+<h1>Scoreboard</h1><br>
+<div class='span_3_of_3'>
+  <div class='login-card'>
+    <h3>Filter Scoreboard</h3><br>
+    <p>Filter the scores by class and level, and click 'Submit' to see the scores!</p>
+    <div id="form" class="form">
+    <form action="" method="post" id="scoreboardForm">
+      {% csrf_token %}
+      <div class='section group'>
+        <div class='col span_1_of_3_strict'>
+          <div class='section group'>
+            <div class='col span_1_of_3'>
+              Classes:
+            </div>
+            <div class='col span_2_of_3'>
+              {{form.classes.errors}}
+              {{form.classes}}
+            </div>
+          </div>
+        </div>
+        <div class='col span_1_of_3_strict'>
+          <div class='section group'>
+            <div class='col span_1_of_3'>
+              Levels:
+            </div>
+            <div class='col span_2_of_3'>
+              {{form.levels.errors}}
+              {{form.levels}}
+            </div>
+          </div>
+        </div>
+        <div class='col span_1_of_3_strict'>
+          <button class='btn btn-primary wide' type="submit">Submit</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
 </div>
 <br>
 <div class="mainBody">
   <div class="tableWrapper">
     {% if studentData %}
-    <table id="table" class="tablesorter">
-      <thead>
+    <table id="" class="CSSTable wide alternate smaller">
+      <tr>
       {% for header in thead %}
         <th> {{header}} </th>
       {% endfor %}
-      </thead>
-      <tbody>
+      </tr>
       {% for student in studentData %}
       <tr>
           <td> <img class="avatar" src="/{{student.0.user.avatar.url}}"> </td>
           <td> {{student.0.user.user.first_name}} </td>
-          <td> {{student.0.user.user.last_name}} </td>
           <td> {{student.1}} </td>
           <td> {{student.2}}</td>
           {% if thead.3 == 'score' %}
@@ -67,7 +90,6 @@
           {% endif %}
         </tr>
       {% endfor %}
-      </tbody>
     </table>
     {% endif %}
   </div>

@@ -1,0 +1,5 @@
+include README.md
+recursive-include game/static *
+recursive-include game/templates *
+recursive-include nuit/static *
+recursive-include nuit/templates *

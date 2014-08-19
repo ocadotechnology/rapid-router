@@ -1,0 +1,25 @@
+from setuptools import find_packages, setup
+setup(name='game',
+      version='1.0',
+      packages=find_packages(),
+      include_package_data=True,
+      install_requires = [
+        'django-foundation-icons==3.1',
+        'django-bourbon==3.1.8',
+        'django-autoconfig==0.1.2',
+        'django-jquery==1.9.1',
+        'django-compressor==1.4',
+        'django-foundation-statics==5.1.1',
+        'django-appconf==0.6',
+        'django-casper==0.0.2',
+        'djangorestframework==2.3.9',
+        'unittest2==0.5.1',
+        'pyyaml==3.11',
+        'six==1.6.1',
+        'docutils==0.11',
+        'Pillow==2.5.1',
+      ],
+      dependency_links = [
+        'https://www.djangoproject.com/download/1.7c1/tarball/',
+      ],
+    )

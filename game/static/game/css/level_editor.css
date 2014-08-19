@@ -1,150 +1,230 @@
-#paper {
-    background: #a8d44a;
-}
-
-#toolbox {
-    width: 610px;
-    margin-left: 10px;
+#wrapper {
+    padding: 5px;
 }
 
 #tools {
-    width: 50%;
+    float:left;
+    width: 400px;
+    height:100%;
+    padding-right: 10px;
 }
 
-.tabs input[type=radio] {
-    top: -9999px;
-    left: -9999px;
-    position: absolute;
+#paper {
+    height:100%;
+    overflow:scroll;
+    z-index:10;
 }
 
-.tabs input[type="radio"] + label {
-    margin-left: 0;
-    margin-right: 0;
+#buttons {
+    height: 8%;
 }
 
-.tabs {
-    text-align: center;
-    float: none;
-    list-style: none;
-    position: relative;
-    margin: 10px auto;
+#toolbox {
+    height: 92%;
+    float:center;
+    margin: 0px auto;
 }
 
-#name {
-    height: 36px;
-    padding: 8px;
-    border: 1px solid #cccccc;
+input {
+    margin: 0;
+    vertical-align: middle;
 }
 
-.tabs li {
+.navigation_button.fixed_size {
+    width: 180px;
+}
+
+/********************/
+/* Table  structure */
+/********************/
+
+.table {
+    display: table;
+}
+
+.table_row {
+    display: table-row;
+}
+
+.table_cell {
+    display: table-cell;
+}
+
+.table_cell.field_label {
+    width: 100px;
+    margin: 0px;
+    vertical-align: middle;
+    margin-bottom: 0px;
+}
+
+.table_cell.field_value {
+    width: 100px;
+}
+
+
+/*****************/
+/* Tab structure */
+/*****************/
+
+#tabs {
+    height: 100%;
+    width: 22%;
     float: left;
 }
 
-.tabs label {
-    text-align: center;
+.tab {
+    list-style: none;
+    width: 100%;
+    height: 40px;
+}
+
+.tab input[type=radio] {
+    display:none;
+    margin: 0;
+}
+
+.tab input[type=radio] + label {
+    text-align: left;
     margin: 0;
     display: block;
-    padding: 10px 20px;
-    color: #008CBA;
+    padding: 10px 0px 10px 5px;
     font-weight: bold;
-    background: #8BD5EE;
-    width: 200px;
-    border: 3px #8BD5EE;
-    border-top-style: solid;
-    border-right-style: solid;
-    border-left-style: solid;
+    width: 100%;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
 
-.tabs label:hover {
-    background: #A6DCEE;
+.tab label:hover {
+    background: rgba(255, 255, 255, 0.5);
     top: 0;
 }
 
-[id^=tab]:checked + label {
-    background: white;
+.tab input[type=radio]:checked + label {
+    background: rgba(255, 255, 255, 1.0);
+    opacity: 1;
     top: 0;
 }
 
-[id^=tab]:checked ~ [id^=tab-content] {
-    display: block;
+#tab_panes {
+    height: 100%;
+    width: 78%;
+    float:left;
 }
 
-.tab-content {
+.tab_pane {
     z-index: 2;
     display: none;
     text-align: left;
-    width: 600px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
     font-size: 20px;
     line-height: 140%;
-    padding: 10px 30px;
-    left: 0;
+    padding: 20px 0px 0px 30px;
     background-color: white;
-    position: absolute;
-    border: 3px #8BD5EE;
-    border-right-style: solid;
-    border-bottom-style: solid;
-    border-left-style: solid;
     box-sizing: border-box;
     -webkit-animation-duration: 0.5s;
     -o-animation-duration: 0.5s;
     -moz-animation-duration: 0.5s;
     animation-duration: 0.5s;
-    max-height: 500px;
     overflow: auto;
 }
 
-#tab-content-blocks > label {
-    background-color: white;
-    border: none;
-}
+/*************/
+/* Decor tab */
+/*************/
 
-#tab-content-arrows > p,
-#tab-content-random > p {
-    color: #008CBA;
-    font-weight: bold;
-}
-
-#name {
-    float: right;
-}
-
-#maxFuel {
-    width:100px;
-    float: right;
-}
-
-#branchiness,
-#loopiness,
-#curviness {
-    width:100px;
-    float: right;
-}
-
-#export {
-    cursor: pointer;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-    font-weight: normal !important;
-    line-height: normal;
-    margin: 0 10px 1.25rem 0;
-    position: relative;
-    text-decoration: none;
+.decor_div {
+    height: 80px;
     text-align: center;
-    display: inline-block;
-    padding: 1.0625rem 2rem 1rem;
-    font-size: 1rem;
-    background-color: #008cba;
-    color: white;
-    -webkit-transition: background-color 300ms ease-out;
-    -moz-transition: background-color 300ms ease-out;
-    -o-transition: background-color 300ms ease-out;
-    transition: background-color 300ms ease-out;
-    -webkit-appearance: none;
-    border: none;
-    float: left;
-    overflow: hidden;
+}
+
+#pond {
+    margin-t
+}
+
+.decor_button,
+#trafficLightRed,
+#trafficLightGreen {
+    cursor: pointer;
+}
+
+
+/**************/
+/* Blocks tab */
+/**************/
+
+.table_cell .block_image {
+    vertical-align: top;
+    width: 180px;
+    height: 36px;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.block_image.large {
+    height: 66px;
+    cursor: pointer;
+}
+
+input[type="checkbox"].block_checkbox {
+    cursor: pointer;
+    margin-right: 25px;
+}
+
+.block_image text {
+    cursor: pointer;
+}
+
+#select_all_checkbox {
+    margin-top: 10px;
+}
+
+#select_all_label {
+    margin-left: 11px;
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/******************/
+/* Characters tab */
+/******************/
+
+.character  {
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+input[type="radio"].character_radio {
+    cursor: pointer;
+}
+
+/************/
+/* Load tab */
+/************/
+
+#load input[type='radio'] {
+    margin: 0px;
+}
+
+#loading_tables {
+    margin-top: 20px;
+}
+
+#deleteLevel {
+    margin-right: 20px;
+}
+
+.scrolling-table {
+    max-width: 90%;
+}
+
+/************/
+/* Save tab */
+/************/
+
+#levelNameInput {
+    max-width: 100px;
 }

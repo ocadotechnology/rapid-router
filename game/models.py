@@ -4,72 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.sessions.models import Session
 from django.db import models
 
-
-class UserProfile (models.Model):
-    user = models.OneToOneField(User)
-    avatar = models.ImageField(upload_to='static/game/image/avatars/', null=True, blank=True,
-                               default='static/game/image/avatars/default-avatar.jpeg')
-
-    def __unicode__(self):
-        return self.user.username
-
-
-class School (models.Model):
-    name = models.CharField(max_length=200)
-
-    def __unicode__(self):
-        return self.name
-
-
-class Teacher (models.Model):
-    name = models.CharField(max_length=200)
-    user = models.OneToOneField(UserProfile)
-
-    def __unicode__(self):
-        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
-
-
-class Class (models.Model):
-    name = models.CharField(max_length=200)
-    school = models.ForeignKey(School, related_name='class_school')
-    teacher = models.ForeignKey(Teacher, related_name='class_teacher')
-
-    def __unicode__(self):
-        return self.name
-
-    def get_logged_in_students(self):
-        """This gets all the students who are logged in."""
-        sessions = Session.objects.filter(expire_date__gte=datetime.now())
-        uid_list = []
-
-        # Build a list of user ids from that query
-        for session in sessions:
-            data = session.get_decoded()
-            uid_list.append(data.get('_auth_user_id', None))
-
-        # Query all logged in users based on id list
-        return Student.objects.filter(class_field=self).filter(user__id__in=uid_list)
-
-    class Meta:
-        verbose_name_plural = "classes"
-
-
-class Student (models.Model):
-    name = models.CharField(max_length=200)
-    class_field = models.ForeignKey(Class, related_name='students')
-    user = models.OneToOneField(UserProfile)
-
-    def __unicode__(self):
-        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
-
-
-class Guardian (models.Model):
-    name = models.CharField(max_length=200)
-    children = models.ManyToManyField(Student)
-    user = models.OneToOneField(UserProfile)
-
-    def __unicode__(self):
-        return '%s %s' % (self.user.user.first_name, self.user.user.last_name)
+from portal.models import UserProfile, Student
 
 
 class Block (models.Model):
@@ -81,6 +16,12 @@ class Block (models.Model):
 
 class Theme(models.Model):
     name = models.CharField(max_length=100)
+    background = models.CharField(max_length=7, default='#eff8ff')
+    border = models.CharField(max_length=7, default='#bce369')
+    selected = models.CharField(max_length=7, default='#70961f')
+
+    def __unicode__(self):
+        return self.name
 
 
 class Decor(models.Model):
@@ -89,6 +30,12 @@ class Decor(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     theme = models.ForeignKey(Theme, related_name='decor')
+
+
+class Character(models.Model):
+    name = models.CharField(max_length=100)
+    en_face = models.CharField(max_length=500)
+    top_down = models.CharField(max_length=500)
 
 
 class Level (models.Model):
@@ -100,6 +47,7 @@ class Level (models.Model):
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
     blocks = models.ManyToManyField(Block, related_name='levels')
+    fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
@@ -109,6 +57,7 @@ class Level (models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
+    character = models.ForeignKey(Character, default=4)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
@@ -129,6 +78,8 @@ class LevelDecor(models.Model):
 
 
 class Episode (models.Model):
+    '''Variables prefixed with r_ signify they are parameters for random level generation'''
+
     name = models.CharField(max_length=200)
     first_level = models.ForeignKey(Level)
     next_episode = models.ForeignKey("self", null=True, default=None)
@@ -140,6 +91,7 @@ class Episode (models.Model):
     r_blocks = models.ManyToManyField(Block, related_name='episodes')
     r_blocklyEnabled = models.BooleanField(default=True)
     r_pythonEnabled = models.BooleanField(default=False)
+    r_trafficLights = models.BooleanField(default=False)
 
     @property
     def levels(self):
@@ -152,14 +104,14 @@ class Episode (models.Model):
 
 class Workspace (models.Model):
     name = models.CharField(max_length=200)
-    owner = models.ForeignKey(Student, related_name='workspaces')
+    owner = models.ForeignKey(Student, related_name='workspaces', blank=True, null=True)
     workspace = models.TextField(default="")
 
 
 class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name='attempts')
-    student = models.ForeignKey(Student, related_name='attempts')
+    student = models.ForeignKey(Student, related_name='attempts', blank=True, null=True)
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0)
     workspace = models.TextField(default="")

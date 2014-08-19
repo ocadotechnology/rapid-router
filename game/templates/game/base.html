@@ -1,0 +1,40 @@
+{% extend 'portal/base.html' %}
+{% load static %}
+{% load app_tags %}
+
+{% load compress %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href='{% static "game/css/ocargo.css" %}'>
+{% endblock %}
+
+{% block title %}Code for Life - Rapid Router{% endblock %}
+
+{% block subNav %}
+<div class="subnavBar">
+    <div class="subnav">
+        <ul>
+            <li>{% block nav_ocargo_levels %}<a href="{% url 'game.views.levels' %}">Levels</a>{% endblock nav_ocargo_levels %}</li>
+            <li>{% block nav_ocargo_create %}<a href="{% url 'game.views.level_editor' %}">Create</a>{% endblock nav_ocargo_create %}</li>
+            <li>{% block nav_ocargo_scoreboard %}<a href="{% url 'game.views.scoreboard' %}">Scoreboard</a>{% endblock nav_ocargo_scoreboard %}</li>
+            {% if user|is_logged_in_as_teacher %}<li>{% block nav_ocargo_moderate %}<a href="#">Moderate</a>{% endblock nav_ocargo_moderate %}</li>{% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock subNav %}
+
+{% block content %}{% endblock %}
+
+{% block scripts %}
+  {{block.super}}
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-49883146-1', 'ocado.com');
+    ga('send', 'pageview');
+
+  </script>
+{% endblock %}

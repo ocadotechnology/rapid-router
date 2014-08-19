@@ -1,13 +1,11 @@
-{% extends 'website/base.html' %}
+{% extends 'game/base.html' %}
 
 {% load compress %}
 {% load static %}
 
-{% block title %}Game{% endblock %}
-
 {% block scripts %}
 {{block.super}}
-  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="/static/game/js/d3.v3.min.js" charset="utf-8"></script>
 
   <script>
     EPISODE_LIST = {{episodeData|safe}};
@@ -23,6 +21,17 @@
   {% endcompress %}
 {% endblock %}
 
+{% block nav_ocargo_levels %}<b><a href="{% url 'game.views.levels' %}">Levels</a></b>{% endblock nav_ocargo_levels %}
+
 {% block content %}
-  <div id="container"></div>
-{% endblock %}
+	<div class="section group">
+		<div class="col span_1_of_3_strict">
+			<h3 style="text-align : center"> Welcome to Rapid Router!</h3>
+			<img class="wide rounded" src="{% static 'portal/img/rrBG.jpg' %}" />
+		</div>
+		<div class="col span_2_of_3_strict">
+			<h3 style="text-align : center">Select a level!</h3>
+			<div id="container"></div>
+		</div>
+	</div>
+{% endblock content %}

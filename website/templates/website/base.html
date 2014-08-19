@@ -14,8 +14,10 @@
 {% block top_bar_right_menu %}
     {% if user.is_authenticated %}
         {% menu_item link='/feedback' name='Feedback' %}
-        {% menu_item link='/admin' name='Admin' %}
-    {% endif %}
+        {% if user.is_staff %}
+            {% menu_item link='/admin' name='Admin' %}
+        {% endif %}
+    {% endif%}
 {% endblock top_bar_right_menu %}
 
 {% block user_info_menu %}

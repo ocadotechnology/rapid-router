@@ -7,7 +7,7 @@ function showEpisodes(data, func) {
            .append("div")
            .attr("class", "episode");
   selection.on("click", func)
-           .style("background-color", function(d){return d.colour})
+           .style("background-color", function(d){return d.colour;})
            .html(function(d) { return d.name; });
   selection.exit().remove();
 };
@@ -21,7 +21,7 @@ function showLevels(episodeID,levels, opacity) {
            .append("div")
            .attr("class", "level");
   selection.on("click", function(d) { window.location.href = d.id; })
-           .style("background-color", function(d){return "rgba(99, 119, 0, " + opacity + ")"});
+           .style("background-color", function(d){return "rgba(99, 119, 0, " + opacity + ")";});
   selection.append("div")
            .attr("class", "levelTitle")
            .html(function(d) { return d.name + ": " + d.title; });
@@ -40,7 +40,7 @@ function clearLevels() {
 };
 
 function showLevelsForEpisode(episode, colour) {
-  levels = episode.levels.slice()
+  levels = episode.levels.slice();
   levels.push({name:"Random", title:"Try your hand at a random level.", score:"", id:"levels/random/"+episode.id});
   showLevels(episode.id,levels,colour);
 };

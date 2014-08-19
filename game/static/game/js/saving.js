@@ -1,6 +1,6 @@
 var ocargo = ocargo || {};
 
-ocargo.Saving = function() {}
+ocargo.Saving = function() {};
 
 /************************/
 /* Workspaces (game.js) */
@@ -37,11 +37,10 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 	    	}
 	  	}
 	  	callback(null, results);
-	}
-	else {
+	} else {
 		callback("Not logged in and no local storage available");
 	}
-}
+};
 
 ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
 	if (LOGGED_IN_AS_STUDENT) {
@@ -56,15 +55,13 @@ ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
-	}
-	else if (localStorage) {
+	} else if (localStorage) {
 		var json = JSON.parse(localStorage.getItem('blocklySavedWorkspaceXml-' + id));
 		callback(null, json.workspace);
-	}
-	else {
+	} else {
 		callback("Not logged in and no local storage available");
 	}
-}
+};
 
 ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
 	if (LOGGED_IN_AS_STUDENT) {
@@ -78,15 +75,13 @@ ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
-	}
-	else if (localStorage) {
+	} else if (localStorage) {
 		localStorage.removeItem('blocklySavedWorkspaceXml-' + id);
 		callback(null);
-	}
-	else {
+	} else {
 		callback("Not logged in and no local storage available");
 	}
-}
+};
 
 ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback) {
 	if (LOGGED_IN_AS_STUDENT) {
@@ -104,8 +99,7 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
-	}
-	else if (localStorage) {
+	} else if (localStorage) {
 		// Need to generate a unique integer, for our purposes this should do
 		var id = new Date().getTime();
 
@@ -115,11 +109,10 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 		}));
 
 		callback(null);
-	}
-	else {
+	} else {
 		callback("Not logged in and no local storage available");
 	}
-}
+};
 
 /****************************/
 /* Levels (level_editor.js) */
@@ -127,21 +120,21 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 
 ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
 	$.ajax({
-        url: '/game/level_editor/level',
+        url: '/game/level_editor/level/get_all',
         type: 'GET',
         dataType: 'json',
         success: function(json) {
-        	callback(null, json);
+        	callback(null, json.ownedLevels, json.sharedLevels);
         },
         error: function(xhr,errmsg,err) {
         	callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
-}
+};
 
 ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
 	$.ajax({
-        url: '/game/level_editor/level/' + id,
+        url: '/game/level_editor/level/get/' + id,
         type: 'GET',
         dataType: 'json',
         success: function(json) {
@@ -151,12 +144,12 @@ ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
-}
+};
 
 ocargo.Saving.prototype.deleteLevel = function(id, callback) {
 	$.ajax({
-        url: '/game/level_editor/level/' + id,
-        type: 'DELETE',
+        url: '/game/level_editor/level/delete/' + id,
+        type: 'POST',
         success: function() {
             callback(null);
         },
@@ -164,21 +157,19 @@ ocargo.Saving.prototype.deleteLevel = function(id, callback) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
-}
+};
 
-ocargo.Saving.prototype.createNewLevel = function(name, level, callback) {
+ocargo.Saving.prototype.saveLevel = function(data, callback) {
 	$.ajax({
-        url: '/game/level_editor/level',
+        url: '/game/level_editor/level/save',
         type: 'POST',
-        data: {
-            name: name,
-            level: level,
-        },
-        success: function() {
-            callback(null);
+        dataType: 'json',
+        data: data,
+        success: function(json) {
+            callback(null, json.newID);
         },
         error: function(xhr,errmsg,err) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
-    })
-}
+    });
+};

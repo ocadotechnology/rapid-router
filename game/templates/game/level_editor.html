@@ -1,5 +1,6 @@
-{% extends 'website/base.html' %}
+{% extends 'game/basenonav.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}Map Designer{% endblock %}
 
@@ -8,6 +9,13 @@
   <script src="/static/game/js/mobile-detect.min.js"></script>
   <script src="/static/game/js/raphael.js"></script>
   <script src="/static/game/js/drawing.js"></script> 
+
+  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
 
   <script src="/static/game/js/messages.js"></script>
   <script src="/static/game/js/saving.js"></script>
@@ -19,127 +27,361 @@
   <script src="/static/game/js/trafficLight.js"></script>
   <script src="/static/game/js/destination.js"></script>
 
-  <script> 
-    var DECOR = {};
-    {% for dec in decor %}
-      var name = "{{dec.theme.name}}"
-      if (!(name in DECOR)) {
-        DECOR.name = [];
-      }
-      DECOR.name.push(
-        {"name": "{{dec.name}}", "url": "{{dec.url}}", "width": {{dec.width}}, "height": {{dec.height}}});
-    {% endfor %}
-    var DECOR = JSON.stringify(DECOR);
-  </script>
+  <script>
+    var BLOCKS = [];
+    var THEMES =  [];
+    var CHARACTER_NAME = 'Van';
 
+    function initGlobals() {
+      {% for block in blocks %}
+        BLOCKS.push("{{block}}");
+      {% endfor %}
+
+      var themes = [];
+      {% for theme in themes %}
+        var name = "{{theme.name}}";
+        themes.push({"name": name,
+                     "id": {{theme.id}},
+                     "border": "{{theme.border}}",
+                     "background": "{{theme.background}}",
+                     "selected": "{{theme.selected}}"});
+      {% endfor %}
+
+      var decor = [];
+      {% for dec in decor %}
+        decor.push({"id":"{{dec.id}}",
+                    "name":"{{dec.name}}",
+                    "url":"{{dec.url}}",
+                    "width":"{{dec.width}}",
+                    "height":"{{dec.height}}",
+                    "theme_name":themes[{{dec.theme_id}}-1].name});
+      {% endfor %}
+
+      
+      for(var i = 0; i < themes.length; i++) {
+        var theme = themes[i];
+        THEMES[theme.name] = theme;
+        THEMES[theme.name].decor = {};
+      }
+
+      for(var i = 0; i < decor.length; i++) {
+        var themeDecor = THEMES[decor[i].theme_name].decor;
+        themeDecor[decor[i].name] = decor[i];
+      }
+    }
+    
+    initGlobals();
+  </script>
 {% endblock %}
 
 {% block css %}
-{{block.super}}
+  <link href="/static/game/css/game_screen.css" rel="stylesheet" type="text/css">
   <link href="/static/game/css/game.css" rel="stylesheet" type="text/css">
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
-<div id="wrapper">
-  <div id="tools" class="col">
-    <div id="toolbox">
 
-      <div id="buttons">
-        <form method="post" name="example form" >
-          {% csrf_token %}
-          <input id="export" type="button" value="Play it!"/>
-        </form>
-        <button id="help">Help</button>
-        <button id="load">Load</button>
-        <a class="button" href="/">Quit</a>
+<div>
+  
+</div>
+
+<div id="wrapper" class="unselectable">
+  <div id="tools" class="col">
+
+    <div id="buttons" class="table unselectable">
+      <h1>Level editor</h1>
+    </div>
+
+    <div id="toolbox">
+      <div id="tabs">
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="play_radio" checked>
+          <label for="play_radio">Play</label>
+        </div>
+
+        <div class="tab selectable">
+          <input type="radio" name="tabs" id="map_radio" checked>
+          <label for="map_radio">Map</label>
+        </div>
+
+        <div class="tab selectable">
+          <input type="radio" name="tabs" id="decor_radio">
+          <label for="decor_radio">Decor</label>
+        </div>
+
+        <div class="tab selectable">
+          <input type="radio" name="tabs" id="character_radio">
+          <label for="character_radio">Character</label>
+        </div>
+
+        <div class="tab selectable">
+          <input type="radio" name="tabs" id="blocks_radio">
+          <label for="blocks_radio">Blocks</label>
+        </div>
+
+        <div class="tab selectable">
+          <input type="radio" name="tabs" id="random_radio">
+          <label for="random_radio">Random</label>
+        </div>
+
+        <div class="tab selectable">
+          <input type="radio" name="tabs" id="load_radio">
+          <label for="load_radio">Load</label>
+        </div>
+
+        <div class="tab selectable">
+          <input type="radio" name="tabs" id="save_radio">
+          <label for="save_radio">Save</label>
+        </div>
+
+        <div class="tab selectable">
+          <input type="radio" name="tabs" id="help_radio">
+          <label for="help_radio">Help</label>
+        </div>
+
+        <div class="tab">
+          <input type="radio" name="tabs" id="quit_radio" checked>
+          <label for="quit_radio">Quit</label>
+        </div>
+
       </div>
 
-      <ul class="tabs">
-        <li>
-          <input type="radio" checked name="tabs" id="tab1">
-          <label for="tab1">Map</label>
-          <div id="tab-content-arrows" class="tab-content">
-            <img id="bush" src="/static/game/image/bush.svg" width="70">
-            <img id="tree1" src="/static/game/image/tree1.svg" width="70">
-            <img id="tree2" src="/static/game/image/tree2.svg" width="70">
-            <img id="pond" src="/static/game/image/pond.svg" width="100"><br><br>
-            <img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"><br><br>
-            <img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"><br><br>
-            <p>NAME<input id="name" value="name"></p>
-            <p>MAX FUEL<input type="number" id="maxFuel" value="50" size="4"></p>
-            <button id="clear">Clear all</button> <br>            
-            <button id="add">Add Mode</button>
-            <button id="delete">Delete Mode</button> <br>
-            <button id="start">Mark Start</button>
-            <button id="end">Mark End</button><br>
+      <div id="tab_panes">
+        <div id="map" class="tab_pane">
+          
+          <div class="table">
+            <div class="table_row">
+              <div class="table_cell field_label"><p>Name:</p></div>
+              <div class="table_cell field_value"><input class="field_value" type="text" id="level_name" value="test_name"></div>
+            </div>
+
+            <div class="table_row">
+              <div class="table_cell field_label"><p class="field_label">Max fuel:</p></div>
+              <div class="table_cell field_value"><input class="field_value" type="number" id="max_fuel" value="50"></div>
+            </div>
           </div>
-        </li>
-        <li>
-          <input type="radio" name="tabs" id="tab2">
-          <label for="tab2">Blocks</label>
-          <div id="tab-content-blocks" class="tab-content">
-            {% for block in blocks %}
-              <input type="checkbox" id="{{ block.type }}" class="js-block-checkbox" checked>
-              <label for="{{ block.type }}">{{ block.type }}</label>
-              <br>
+          
+
+          <button class="navigation_button fixed_size" id="add_road">
+            <image src="/static/game/image/icons/add_road.svg"/>
+            <span>Add road</span>
+          </button>
+
+          <button class="navigation_button fixed_size" id="delete_road">
+            <image src="/static/game/image/icons/delete_road.svg"/>
+            <span>Delete road</span>
+          </button>
+
+          <button class="navigation_button fixed_size" id="start">
+            <image src="/static/game/image/icons/origin.svg"/>
+            <span>Mark start</span>
+          </button>
+
+          <button class="navigation_button fixed_size" id="end">
+            <image src="/static/game/image/icons/destination.svg"/>
+            <span>Mark end</span>
+          </button>
+
+          <button class="navigation_button fixed_size" id="clear">
+            <image src="/static/game/image/icons/clear.svg"/>
+            <span>Clear all</span>
+          </button>
+        </div>
+
+        <div id="decor" class="tab_pane">
+          <div class="table">
+            <div class="table_row">
+              <div class="table_cell field_label"><p>Theme</p></div>
+              <div class="table_cell field_value">
+                <select id="theme_select">
+                  {% for theme in themes %}
+                    <option value="{{theme.name}}">{{theme.name}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="table_row">
+              <div class="table_cell">
+                <div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></div>
+              </div>
+              <div class="table_cell">
+                <div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div>
+              </div>
+            </div>
+            <div class="table_row">
+              <div class="table_cell">
+                <div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div>
+              </div>
+              <div class="table_cell">
+                <div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div>
+              </div>
+            </div>
+            <div class="table_row">
+              <div class="table_cell">
+                <div class="decor_div"><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></div>
+              </div>
+              <div class="table_cell">
+                <div class="decor_div"><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></div>
+              </div>
+            </div>
+          </div>
+
+          <button class="navigation_button" id="delete_decor">
+            <image src="/static/game/image/icons/delete_decor.svg"/>
+            <span>Delete decor</span>
+          </button>
+        </div>
+
+        <div id="character" class="tab_pane">
+          <form name="character-form" id="character-form">
+            {% for char in characters %}
+            <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
+            <label for="{{char.name}}_radio">
+              <img class="character" src="{{char.en_face}}" width="122" height='122'>
+            </label>
+            <br>
             {% endfor %}
+          </form>
+        </div>
+
+        <div id="blocks" class="tab_pane">
+          <div class="block_table">
+            <div class="table_row">
+
+              <div class="table_cell">
+                <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
+              </div>
+              <div>
+                <label id="select_all_label" for="select_all_checkbox"> Select all</label>
+              </div>
+            </div>
+
+            {% for block in blocks %}
+              <div class="table_row">
+                <div class="table_cell">
+                  <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
+                </div>
+                <div id="{{block.type}}_image" class="table_cell unselectable"></div>
+              </div>
+            {% endfor %}  
           </div>
-        </li>
-        <li>
-          <input type="radio" name="tabs" id="tab3">
-          <label for="tab3">Random</label>
-          <div id="tab-content-random" class="tab-content">
-            <p>Size:<input type="number" id="size" value="15" size="4" min="1" max="40"></p> <br>
-            <p>Branchiness:<input type="number" id="branchiness" value="2" size="4" min="0" max="10"></p> <br>
-            <p>Loopiness:<input type="number" id="loopiness" value="2" size="4" min="0" max="10"></p> <br>
-            <p>Curviness:<input type="number" id="curviness" value="5" size="4" min="0" max="10"></p> <br>
-            <button id="generate">Generate</button>
+        </div>
+
+        <div id="random" class="tab_pane">
+          <div class="table">
+            <div class="table_row">
+              <div class="table_cell field_label"><p>Size:</p></div>
+              <div class="table_cell field_value"><input type="number" id="size" value="15" size="4" min="1" max="40"></div>
+            </div>
+
+            <div class="table_row">
+              <div class="table_cell field_label"><p>Branchiness:</p></div>
+              <div class="table_cell field_value"><input type="number" id="branchiness" value="2" size="4" min="0" max="10"></div>
+            </div>
+
+            <div class="table_row">
+              <div class="table_cell field_label"><p>Loopiness:</p></div>
+              <div class="table_cell field_value"><input type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
+            </div>
+
+            <div class="table_row">
+              <div class="table_cell field_label"><p>Curviness:</p></div>
+              <div class="table_cell field_value"><input type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
+            </div>
           </div>
-        </li>
-      </ul>
+
+          <button class="navigation_button" id="generate">
+            <image src="/static/game/image/icons/random.svg">
+            <span>Generate</span>
+          </button>
+        </div>
+
+        <div id="load" class="tab_pane">
+          <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/load.svg'></image>Load</h2>
+
+          <input type="radio" name="type_of_loaded_levels" id="own_levels_radio" checked>
+          <label for="own_levels_radio">Your own levels</label>
+          <br>
+          <input type="radio" name="type_of_loaded_levels" id="shared_levels_radio">
+          <label for="shared_levels_radio">Levels shared with you</label>
+
+          <div id="loading_tables">
+            <div id="own_levels">
+              <div class="scrolling-table-wrapper">
+                <div class="scrolling-table">
+                  <table id="loadOwnLevelTable"></table>
+                </div>
+              </div>
+            </div>
+            
+            <div id="shared_levels">
+              <div class="scrolling-table-wrapper">
+                <div class="scrolling-table">
+                  <table id="loadSharedLevelTable"></table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br style="clear:both">
+          
+          <div style="margin-top: 1.25rem">
+            <button class="navigation_button" id="deleteLevel">
+                <image src="/static/game/image/icons/clear.svg"/></image>
+                <span>Delete</span>
+              </button>
+
+              <button class="navigation_button" id="loadLevel">
+                <image src="/static/game/image/icons/load.svg"></image>
+                <span>Load</span>
+              </button>
+          </div>
+        </div>
+
+        <div id="save" class="tab_pane">
+          <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/save.svg'></image>Save</h2>
+          <p>Here you can save your new level.</p>
+          <div class="scrolling-table-wrapper">
+            <div class="scrolling-table">
+              <table id="saveLevelTable"></table>
+            </div>
+          </div>
+          <div style="margin-top: 1.25rem">
+            <div>
+              <input type="text" id="levelNameInput">
+              <button class="navigation_button" id="saveLevel">
+                <image src="/static/game/image/icons/save.svg"></image>
+                <span>Save</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="help" class="tab_pane">
+        Test help!
+        </div>
+
+      </div>
     </div>
   </div>
-  <div id="paper" class="col"></div>
+  <div id="paper"></div>
 </div>
 
-<div id="myModal" class="ocargo-modal reveal-modal" data-reveal>
-  <h2 id="myModal-title" class="ocargo-modal-title"></h2>
-  <p id="myModal-lead" class="ocargo-modal-lead"></p>
-  <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
-  <a class="close-reveal-modal" id="close-modal">&#215;</a>
+<div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <div id="modal-text">
+    <h2 id="myModal-title" class="ocargo-modal-title"></h2>
+    <p id="myModal-lead" class="ocargo-modal-lead"></p>
+    <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
+    <a class="close-reveal-modal" id="close-modal">&#215;</a>
+  </div>
+  <div id="modal-mascot">
+    <img src="/static/game/image/characters/front_view/Dee.svg">
 </div>
 
-<div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title">Load</h2>
-  <p>Here you can load a previously saved level.</p>
-  <div class="scrolling-table-wrapper">
-    <div class="scrolling-table">
-      <table id="loadLevelTable"></table>
-    </div>
-  </div>
-  <div style="margin-top: 1.25rem">
-    <button id="loadLevel">Load</button>
-    <button id="deleteLevel">Delete</button>
-  </div>
-  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
-</div>
-
-<div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title">Save</h2>
-  <p>Here you can save your new level.</p>
-  <div class="scrolling-table-wrapper">
-    <div class="scrolling-table">
-      <table id="saveLevelTable"></table>
-    </div>
-  </div>
-  <div style="margin-top: 1.25rem">
-    <div>
-      <input id="levelNameInput"/>
-      <button id="saveLevel">Save</button>
-    </div>
-  </div>
-  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
-</div>
+<div id="blockly"></div>
+<xml id="toolbox"></xml>
 
 {% endblock %}
