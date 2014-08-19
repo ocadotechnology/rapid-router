@@ -83,7 +83,6 @@ ocargo.PathFinder.prototype.getInstrLengthScore = function() {
         return;
     }
     var userLength = ocargo.blocklyControl.getActiveBlocksCount();
-    console.log(userLength);
     var algorithmScore = 0;
     var difference = this.maxInstrLengthScore;
     for (var i = 0; i < this.modelLength.length; i++) {
@@ -155,13 +154,11 @@ function getOptimalPath(nodes, destinations) {
     }
 
     var permutations = [];
-    function permute(array, data) 
-    {
+    function permute(array, data) {
         var current;
         var currentPermutation = data || [];
 
-        for (var i = 0; i < array.length; i++) 
-        {
+        for (var i = 0; i < array.length; i++) {
             // Take node out
             current = array.splice(i, 1)[0];
             // Then the current permutation is complete so add it

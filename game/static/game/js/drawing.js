@@ -762,10 +762,13 @@ ocargo.Drawing.translate = function(coordinate) {
 };
 
 // This is the function that starts the pop-up.
-ocargo.Drawing.startPopup = function(title, subtitle, message, delay) {
+ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
+    if (!mascot) {
+        document.getElementById('modal-mascot').remove();
+    }
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
 };
 

@@ -176,12 +176,13 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
     var startBlocks = this.getStartBlocks();
     var procedureBlocks = this.getProcedureBlocks();
     var n = 0;
+    var i;
 
-    for(var i = 0; i < startBlocks.length; i++) {
+    for(i = 0; i < startBlocks.length; i++) {
         n += count(startBlocks[i].nextConnection.targetBlock());
     }
 
-    for(var i = 0; i < procedureBlocks.length; i++) {
+    for(i = 0; i < procedureBlocks.length; i++) {
         n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
     }
 
@@ -189,15 +190,14 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
 
 
     function count(block) {
-        if(!block) {
+        if (!block) {
             return 0;
         }
 
         var n = 1;
 
-        if (block.type === 'controls_repeat_until' 
-            || block.type === 'controls_repeat_while' 
-            || block.type === 'controls_whileUntil') {
+        if (block.type === 'controls_repeat_until' || block.type === 'controls_repeat_while' ||
+            block.type === 'controls_whileUntil') {
             var conditionBlock = block.inputList[0].connection.targetBlock();
             n += count(conditionBlock);
             var bodyBlock = block.inputList[1].connection.targetBlock();
@@ -207,12 +207,12 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
         } 
         else if (block.type === 'controls_repeat') {
             var bodyBlock = block.inputList[1].connection.targetBlock();
-            n += count(conditionBlock);
+            n += count(bodyBlock);
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
         } 
         else if (block.type === 'controls_if') {
-            for(var i = 0; i < block.inputList.length - block.elseCount_; i++) {
+            for (var i = 0; i < block.inputList.length - block.elseCount_; i++) {
                 var input = block.inputList[i];
                 if (input.name.indexOf('IF') === 0) {
                     var conditionBlock = input.connection.targetBlock();
@@ -231,13 +231,10 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
         } 
-        else if (block.type === 'call_proc' 
-                || block.type === 'move_forwards'  
-                || block.type === 'turn_left' 
-                || block.type === 'turn_right' 
-                || block.type === 'turn_around' 
-                || block.type === 'wait' 
-                || block.type === 'deliver') {
+        else if (block.type === 'call_proc' || block.type === 'move_forwards' ||
+                 block.type === 'turn_left' || block.type === 'turn_right' ||
+                 block.type === 'turn_around' || block.type === 'wait' ||
+                 block.type === 'deliver') {
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
         } 
@@ -269,9 +266,9 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
                         downY   = e.pageY;
                     },
                     mouseup: function(e) {
-                        if ( Math.abs(downX - e.pageX) < maxMove && Math.abs(downY - e.pageY) < maxMove) {
+                        if (Math.abs(downX - e.pageX) < maxMove && Math.abs(downY - e.pageY) < maxMove) {
                             var playEls = $('#play');
-                            if(playEls && playEls.length && playEls.length > 0){
+                            if (playEls && playEls.length && playEls.length > 0) {
                                 playEls[0].click();
                             }
                         }
@@ -287,15 +284,15 @@ ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
 /** Big Code Mode **/
 /*******************/
 
-ocargo.BlocklyControl.prototype.resetWidthOnBlocks = function(blocks){
+ocargo.BlocklyControl.prototype.resetWidthOnBlocks = function(blocks) {
 	for (var i = 0; i < blocks.length; i++) {
 		var block = blocks[i];
-		for( var j = 0; j < block.inputList.length; j++){
+		for (var j = 0; j < block.inputList.length; j++) {
 			var input = block.inputList[j];
-			for(var k = 0; k < input.fieldRow.length; k++){
+			for (var k = 0; k < input.fieldRow.length; k++) {
 			    var field = input.fieldRow[k];
 				field.size_.width = null;
-				if(field.imageElement_){
+				if (field.imageElement_) {
 			        field.height_ = field.imageElement_.height.baseVal.value;
 			        field.width_ = field.imageElement_.width.baseVal.value;
 				}
@@ -305,11 +302,11 @@ ocargo.BlocklyControl.prototype.resetWidthOnBlocks = function(blocks){
 };
 
 //so that image fields render properly when their size_ variable is broken above
-Blockly.FieldImage.prototype.render_ = function(){
+Blockly.FieldImage.prototype.render_ = function() {
     this.size_ = {height: this.height_ + 10, width: this.width_};
 };
 
-ocargo.BlocklyControl.prototype.increaseBlockSize = function(){
+ocargo.BlocklyControl.prototype.increaseBlockSize = function() {
 	ocargo.blocklyControl.bigCodeMode = true;
     Blockly.BlockSvg.FIELD_HEIGHT *= 2; //30
     Blockly.BlockSvg.MIN_BLOCK_Y *= 2; // 25
@@ -336,7 +333,7 @@ ocargo.BlocklyControl.prototype.increaseBlockSize = function(){
 	document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' + ':'+'22pt !important'+'}', document.styleSheets[0].cssRules.length);
 	document.styleSheets[0].insertRule(".blocklyIconMark, .beaconClass" + ' { font-size' + ':'+'18pt !important'+'}', document.styleSheets[0].cssRules.length);
 	var blocks = Blockly.mainWorkspace.getAllBlocks();
-    $(".blocklyDraggable > g > image").each( function(index, element){
+    $(".blocklyDraggable > g > image").each( function(index, element) {
     	var jQueryElement = $(element);
     	var heightStr = jQueryElement.attr("height");
     	var heightNumber = parseInt(heightStr.substring(0, heightStr.length - 2));
@@ -356,7 +353,7 @@ ocargo.BlocklyControl.prototype.increaseBlockSize = function(){
     $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24);  
 };
 
-ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
+ocargo.BlocklyControl.prototype.decreaseBlockSize = function() {
 	ocargo.blocklyControl.bigCodeMode = false;
     Blockly.BlockSvg.FIELD_HEIGHT /= 2;
     Blockly.BlockSvg.MIN_BLOCK_Y /= 2;
@@ -381,13 +378,13 @@ ocargo.BlocklyControl.prototype.decreaseBlockSize = function(){
     ocargo.blocklyControl.BLOCK_HEIGHT /= 2;
 
     var sheet = document.styleSheets[0];
-	for(var i = 0; i < 2; i++){
+	for (var i = 0; i < 2; i++) {
 	    sheet.deleteRule(sheet.cssRules.length-1);
 	}
 
 	var blocks = Blockly.mainWorkspace.getAllBlocks();
     
-    $(".blocklyDraggable > g > image").each( function(index, element){
+    $(".blocklyDraggable > g > image").each( function(index, element) {
     	var jQueryElement = $(element);
     	var heightStr = jQueryElement.attr("height");
     	var heightNumber = parseInt(heightStr.substring(0, heightStr.length - 2));
@@ -430,7 +427,7 @@ ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
     } else {
         block.svg_.removeSelect();
     }
-}
+};
 
 ocargo.BlocklyControl.prototype.clearAllSelections = function() {
     Blockly.mainWorkspace.getAllBlocks().forEach(
@@ -438,7 +435,7 @@ ocargo.BlocklyControl.prototype.clearAllSelections = function() {
             ocargo.blocklyControl.setBlockSelected(block, false);
         }
     );
-}
+};
 
 ocargo.BlocklyControl.prototype.highlightIncorrectBlock = function(incorrectBlock) {
     var blocklyControl = this;
@@ -459,7 +456,7 @@ ocargo.BlocklyControl.prototype.resetIncorrectBlock = function() {
     if (this.incorrectBlock) {
         this.incorrectBlock.setColour(ocargo.blocklyControl.incorrectBlockColour);
     }
-}
+};
 
 
 ocargo.BlockHandler = function(id) {

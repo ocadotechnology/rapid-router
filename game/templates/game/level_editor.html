@@ -1,4 +1,4 @@
-{% extends 'game/base.html' %}
+{% extends 'game/basenonav.html' %}
 {% load i18n %}
 {% load static %}
 
@@ -76,7 +76,6 @@
 {% endblock %}
 
 {% block css %}
-{{block.super}}
   <link href="/static/game/css/game_screen.css" rel="stylesheet" type="text/css">
   <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
 {% endblock %}
@@ -375,14 +374,14 @@
           
           <div>
             <button class="navigation_button" id="deleteLevel">
-                <image src="/static/game/image/icons/clear.svg"/></image>
-                <span>Delete</span>
-              </button>
+              <image src="/static/game/image/icons/clear.svg"></image>
+              <span>Delete</span>
+            </button>
 
-              <button class="navigation_button" id="loadLevel">
-                <image src="/static/game/image/icons/load.svg"></image>
-                <span>Load</span>
-              </button>
+            <button class="navigation_button" id="loadLevel">
+              <image src="/static/game/image/icons/load.svg"></image>
+              <span>Load</span>
+            </button>
           </div>
         </div>
 
@@ -460,11 +459,16 @@
   <div id="paper"></div>
 </div>
 
-<div id="myModal" class="ocargo-modal reveal-modal" data-reveal>
-  <h2 id="myModal-title" class="ocargo-modal-title"></h2>
-  <p id="myModal-lead" class="ocargo-modal-lead"></p>
-  <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
-  <a class="close-reveal-modal" id="close-modal">&#215;</a>
+<div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <div id="modal-text">
+    <h2 id="myModal-title" class="ocargo-modal-title"></h2>
+    <p id="myModal-lead" class="ocargo-modal-lead"></p>
+    <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
+    <a class="close-reveal-modal" id="close-modal">&#215;</a>
+  </div>
+  <div id="modal-mascot">
+    <img src="/static/game/image/characters/front_view/Dee.svg">
+  </div>
 </div>
 
 <div id="blockly"></div>

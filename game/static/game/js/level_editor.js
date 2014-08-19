@@ -100,7 +100,6 @@ ocargo.LevelEditor = function() {
         currentTabSelected = tabs['map'];
         tabs['map'].select();
 
-
         function setupPlayTab() {
             tabs['play'].setOnChange(function() {
                 if(isLevelSaved()) {
@@ -205,7 +204,6 @@ ocargo.LevelEditor = function() {
             $('#turn_right_checkbox').prop('checked', true);
 
             // Select all functionality
-
             var selectAll = $('#select_all_checkbox');
             selectAll.change(function() {
                 var checked = selectAll.prop('checked');
@@ -222,6 +220,7 @@ ocargo.LevelEditor = function() {
                     $('#' + type + '_checkbox').click();
                 });
             }
+
 
             initCustomBlocksDescription();
 
@@ -550,7 +549,7 @@ ocargo.LevelEditor = function() {
 
         function setupHelpTab() {
             tabs['help'].setOnChange(function() {
-                transitionTab(tabs['saved']);
+                transitionTab(tabs['help']);
             });
 
             $('#help.tab_pane').html(ocargo.messages.levelEditorHelpText);

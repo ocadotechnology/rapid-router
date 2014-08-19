@@ -1,18 +1,21 @@
 ocargo.Tab = function(radioElement, labelElement, paneElement) {
-    
     this.getText = function() {
         return labelElement[0].children[1].innerHTML;
-    }
+    };
 
     this.setContents = function(newImageURL, newText) {
         labelElement[0].children[0].src = newImageURL;
         labelElement[0].children[1].innerHTML = newText;
-    }
+    };
+
+    this.getContents = function() {
+        return labelElement[0].children[1].innerHTML;
+    };
 
     this.select = function() {
         radioElement.change();
         radioElement.prop('checked', true);
-    }
+    };
 
     this.setOnChange = function(onChangeCall) {
         this.setEnabled = function(enabled) {
@@ -33,8 +36,6 @@ ocargo.Tab = function(radioElement, labelElement, paneElement) {
         this.setPaneEnabled = function(enabled) {
             paneElement.css('display', enabled ? 'block' : 'none');
         }
-
         this.setPaneEnabled(false);
     }
-
-}
+};

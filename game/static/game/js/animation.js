@@ -243,7 +243,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		                '</p><p id="hintText">' + HINT + '</p>');
     			}
 			}
-			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, delay);
+			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, delay);
 			if (a.popupHint) {
 				if(level.hintOpened){
 	                $("#hintBtnPara").hide();

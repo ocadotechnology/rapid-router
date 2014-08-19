@@ -1,11 +1,29 @@
-{% extend 'nuit/base.html' topbar=False leftmenu=False breadcrumbs=False show_user_info=False %}
+{% extend 'nuit/base.html' %}
 
 {% load compress %}
 
 {% block css %}
 {% endblock %}
 
-{% block content %}{% endblock %}
+{% block title %}Code for Life - Rapid Router{% endblock %}
+
+{% block topBar %}
+{% endblock topBar %}
+
+{% block subNav %}
+{% endblock subNav %}
+
+{% block contentDiv %}
+	{% block content %}
+		{% block contentTopPadding %}
+	    {% endblock contentTopPadding %}
+	{% endblock %}
+{% endblock contentDiv %}
+
+
+
+{% block footer %}
+{% endblock footer %}
 
 {% block scripts %}
   {{block.super}}

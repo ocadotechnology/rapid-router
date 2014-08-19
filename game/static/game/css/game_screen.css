@@ -214,3 +214,21 @@
     width: auto;
     height: 20px;
 }
+
+/**********/
+/* Modals */
+/**********/
+
+#myModal {
+    overflow: hidden;
+}
+
+#modal-text {
+    float: left;
+    width: 78%;
+}
+
+#modal-mascot {
+    float:right;
+    width: 20%;
+}

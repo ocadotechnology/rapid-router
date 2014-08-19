@@ -1,45 +1,11 @@
-{% extends 'game/base.html' %}
+{% extends 'game/basenonav.html' %}
 
 {% load static %}
 {% load compress %}
 {% load i18n %}
 
-{% block title %}Game{% endblock %}
-
 {% block scripts %}
 {{block.super}}
-  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/python.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/editor.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/python_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
-
-  <script type="text/javascript" src="{% static 'game/js/tab.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/destination.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
 
   <script>
     var PATH = {{level.path|safe}};
@@ -70,6 +36,40 @@
     var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";
     var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
   </script>
+
+  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/python.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/skulpt/editor.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/python_compressed.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'game/js/tab.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/destination.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
+
   
 {% endblock %}
 
@@ -187,7 +187,7 @@
       <div class="tab">
         <input type="radio" name="tabs" id="mute_radio">
         <label for="mute_radio">
-          <img src='/static/game/image/icons/unmuted.svg'>
+          <img src='/static/game/image/icons/muted.svg'>
           <span>Mute</span>
         </label>
       </div>
@@ -288,42 +288,45 @@
 
     <div id="paper" class="col" style="background-color:{{level.theme.background}}"></div>
 
-    <div class="no-print unselectable">
-      <button class="navigation_button" id="show">
-        <image src="/static/game/image/icons/show.svg"/>
-        <span>Show</span>
-      </button>
+  <div class="no-print unselectable">
+    <button class="navigation_button" id="show">
+      <image src="/static/game/image/icons/show.svg"/>
+      <span>Show</span>
+    </button>
 
-      <button class="navigation_button" id="hide">
-        <image src="/static/game/image/icons/hide.svg"/>
-        <span>Hide</span>
-      </button>
-    </div>
-
-    <div id="direct_drive" class="unselectable">
-      <button class="svg_button direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-      <button class="svg_button direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-      <button class="svg_button direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-      <button class="svg_button direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
-    </div>
-    
-    <div id="fuelGauge" class="no-print unselectable">
-      <img src="/static/game/image/fuelGauge.svg"/>
-      <div id="fuelGaugePointer">
-        <img src="/static/game/image/fuelGaugePointer.svg"/>
-      </div>
-    </div>
-
-    <div id="consoleSlider" class="no-print"></div>
+    <button class="navigation_button" id="hide">
+      <image src="/static/game/image/icons/hide.svg"/>
+      <span>Hide</span>
+    </button>
   </div>
 
-  <div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <div id="direct_drive" class="unselectable">
+    <button class="svg_button direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+    <button class="svg_button direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+  </div>
+  
+  <div id="fuelGauge" class="no-print unselectable">
+    <img src="/static/game/image/fuelGauge.svg"/>
+    <div id="fuelGaugePointer">
+      <img src="/static/game/image/fuelGaugePointer.svg"/>
+    </div>
+  </div>
+
+  <div id="consoleSlider" class="no-print"></div>
+</div>
+
+<div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+  <div id="modal-text">
     <h2 id="myModal-title" class="ocargo-modal-title"></h2>
     <p id="myModal-lead" class="ocargo-modal-lead"></p>
     <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
     <a class="close-reveal-modal" id="close-modal">&#215;</a>
   </div>
-  </div>
+  <div id="modal-mascot">
+    <img src="/static/game/image/characters/front_view/Dee.svg">
+</div>
   
   
   

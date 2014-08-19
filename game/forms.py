@@ -51,9 +51,11 @@ class ScoreboardForm(forms.Form):
         classes = kwargs.pop('classes')
         super(ScoreboardForm, self).__init__(*args, **kwargs)
         self.fields['classes'] = forms.ModelChoiceField(queryset=classes,
-                                                        required=False)
+                                                        required=False,
+                                                        widget=forms.Select(attrs={'class': 'wide'}))
         self.fields['levels'] = forms.ModelChoiceField(queryset=Level.objects.filter(default=1),
-                                                       required=False)
+                                                       required=False,
+                                                       widget=forms.Select(attrs={'class': 'wide'}))
 
         def validate(self):
             cleaned_data = super(ScoreboardForm, self).clean()

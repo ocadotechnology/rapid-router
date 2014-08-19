@@ -1,31 +1,32 @@
-{% extend 'nuit/base.html' topbar=True leftmenu=False breadcrumbs=False show_user_info=True %}
+{% extend 'portal/base.html' %}
+{% load static %}
+{% load app_tags %}
 
 {% load compress %}
 
 {% block css %}
+<link rel="stylesheet" type="text/css" href='{% static "game/css/ocargo.css" %}'>
 {% endblock %}
 
-{% block top_bar_menu %}
-    {% menu_item link='/game' name='Game' %}
-    {% menu_item link='/game/level_editor' name='Create' %}
-    {% if user.is_authenticated %}
-        {% menu_item link='/game/scoreboard' name='Scoreboard' %}
-    {% endif %}
-{% endblock top_bar_menu %}
+{% block title %}Code for Life - Rapid Router{% endblock %}
 
-{% block top_bar_right_menu %}
-    {% menu_item link='/' name='Portal' %}
-    {% if user.is_authenticated %}
-        {% if user.is_staff %}
-            {% menu_item link='/admin' name='Admin' %}
-        {% endif %}
-    {% endif%}
-{% endblock top_bar_right_menu %}
+{% block nav_teach %}{% if user|is_logged_in_as_teacher %}<b>[ <a href="{% url 'portal.views.teach' %}">TEACH</a> ]</b>{% else %}{{ block.super }}{% endif %}{% endblock nav_teach %}
+{% block nav_play %}{% if user|is_logged_in_as_teacher %}{{ block.super }}{% else %}<b>[ <a href="{% url 'portal.views.play' %}">PLAY</a> ]</b>{% endif %}{% endblock nav_play %}
 
-{% block user_info_menu %}
-    {% menu_item link='/game/settings' name='Settings' %}
-{% endblock user_info_menu %}
 
+{% block subNav %}
+<div class="subnavBar">
+    <div class="subnav">
+        <ul>
+            <li><img height=40 src="{% static 'game/image/RR-title.png' %}"/>
+            <li>{% block nav_ocargo_levels %}<a href="{% url 'game.views.levels' %}">Levels</a>{% endblock nav_ocargo_levels %}</li>
+            <li>{% block nav_ocargo_create %}<a href="{% url 'game.views.level_editor' %}">Create</a>{% endblock nav_ocargo_create %}</li>
+            <li>{% block nav_ocargo_scoreboard %}<a href="{% url 'game.views.scoreboard' %}">Scoreboard</a>{% endblock nav_ocargo_scoreboard %}</li>
+            {% if user|is_logged_in_as_teacher %}<li>{% block nav_ocargo_moderate %}<a href="#">Moderate</a>{% endblock nav_ocargo_moderate %}</li>{% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock subNav %}
 
 {% block content %}{% endblock %}
 
