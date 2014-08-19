@@ -159,12 +159,12 @@ ocargo.Saving.prototype.deleteLevel = function(id, callback) {
     });
 };
 
-ocargo.Saving.prototype.saveLevel = function(data, callback) {
+ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
 	$.ajax({
-        url: '/game/level_editor/level/save',
+        url: '/game/level_editor/level/save' + (id ? '/' + id : ''),
         type: 'POST',
         dataType: 'json',
-        data: data,
+        data: level,
         success: function(json) {
             callback(null, json.newID);
         },
