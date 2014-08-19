@@ -99,7 +99,7 @@ def build_description(title, message):
 
 
 def title_level_default():
-    return ugettext("Well done! Try solving this one! ")
+    return ugettext("Well done! Try solving this one... ")
 
 
 def description_level_default():
@@ -119,14 +119,16 @@ def title_level1():
 
 def description_level1():
     message = ugettext("Choose the right blocks to tell the van where to go. <br> Drag the "
-                       + "blocks under the 'Start' block to attach them. <br> Are you happy "
-                       + "with your sequence? Then click 'go'! ")
+                       + "blocks under the <b>Start</b> block to attach them. "
+                       + "<br> Are you happy with your sequence? Then press <b>Go</b>! ")
     return build_description(title_level1(), message)
 
 
 def hint_level1():
-    message = ugettext("Drag the <b>Move forwards</b> block so that it is under the <b>Start"
-                       + "</b> block - close enough to be touching. ")
+    message = ugettext("Drag the <b>Move forwards</b> block so that it is under the <b>Start</b> "
+                       + "block - close enough to be touching. <br>"
+                       + "The arrows next to the <b>Go</b> button will drag the blocks into a "
+                       + "sequence for you. ")
     return message
 
 
@@ -135,17 +137,18 @@ def title_level2():
 
 
 def description_level2():
-    message = ugettext("Can you help the van get there? <br> Like last time, drag the right "
-                       + "blocks and attach them under the 'Start' block. <br> To remove a "
-                       + "block, drag it back to the left of the screen or drop them in the "
-                       + "bin. ")
+    message = ugettext("A block can be placed next to or under another, like a jigsaw. A second "
+                       + "<b>Move forwards</b> block can be placed under the first <b>Move "
+                       + "forwards</b> block. <br>"
+                       + "Are you happy with your sequence? Then press <b>Go</b>! ")
     return build_description(title_level2(), message)
 
 
 def hint_level2():
-    message = ugettext("A block can be placed next to or under another, like a jigsaw. A "
-                       + "second <b>Move forwards</b> block can be placed under the first <b>"
-                       + "Move forwards</b> block. ")
+    message = ugettext("A second Move forwards block can be placed under the first <b>Move "
+                       + "forwards</b> block. <br>"
+                       + "The arrows next to the <b>Go</b> button will drag the blocks into a "
+                       + "sequence for you. ")
     return message
 
 
@@ -154,17 +157,18 @@ def title_level3():
 
 
 def description_level3():
-    message = ugettext("This time, the van has to turn right to reach the house. Make sure "
-                       + "you use the 'turn right' block in your sequence. <br> Drag the "
-                       + "blocks and attach them under the 'Start' block like before. To "
-                       + "remove a block, drag it back to the left of the screen. ")
+    message = ugettext("This time, the van has to turn right to reach the house. Make sure you use "
+                       + "the <b>Turn right</b> block in your sequence. <br>"
+                       + "Drag the blocks and attach them under the <b>Start</b> block like "
+                       + "before. To remove a block, drag it back to the left of the screen. <br>"
+                       + "Are you happy with your sequence? Then press <b>Go</b>! ")
     return build_description(title_level3(), message)
 
 
 def hint_level3():
-    message = ugettext("A block can be placed next to another if the jigsaw pieces fit. A <b>"
-                       + "Turn right</b> block can be placed under the first <b>Move forwards"
-                       + "</b> block. ")
+    message = ugettext("A <b>Turn right</b> block can be placed under the first <b>Move "
+                       + "forwards</b> block. <br> The arrows next to the <b>Go</b> button will "
+                       + "drag the blocks into a sequence for you. ")
     return message
 
 
@@ -173,15 +177,16 @@ def title_level4():
 
 
 def description_level4():
-    message = ugettext("This time the van has to go left as well as right. Make sure you use "
-                       + "the 'Turn left' block in your sequence. <br> Drag and attach the "
-                       + "blocks like before.")
+    message = ugettext("This time the van has to go left. Make sure you use the <B>Turn left</b> "
+                       + "block in your sequence. <br> Drag and attach the blocks like before. <br>"
+                       + "Are you happy with your sequence? Then press <b>Go</b>! ")
     return build_description(title_level4(), message)
 
 
 def hint_level4():
-    message = ugettext(" A <b>Turn left</b> block can be placed under the series of <b>Move "
-                       + "forwards</b> block. ")
+    message = ugettext("A <b>Turn left</b> block can be placed under a series of <b>Move "
+                       + "forwards</b> blocks. <br> The arrows next to the <b>Go</b> button will "
+                       + "drag the blocks into a sequence for you. ")
     return message
 
 
@@ -192,13 +197,15 @@ def title_level5():
 def description_level5():
     message = ugettext("You already know how to make the van turn left or right. This time "
                        + "the van has to make lots of turns to reach the house. <br> Drag and "
-                       + "attach the blocks to make your sequence. ")
+                       + "attach the blocks to make your sequence. <br>"
+                       + "Are you happy with your sequence? Then press <b>Go</b>! ")
     return build_description(title_level5(), message)
 
 
 def hint_level5():
     message = ugettext("This road starts by curving to the <b>left</b>. Then it curves to the "
-                       + "<b>right</b>. ")
+                       + "<b>right</b>. <br> The arrows next to the <b>Go</b> button will drag the "
+                       + "blocks into a sequence for you. ")
     return message
 
 
@@ -208,13 +215,14 @@ def title_level6():
 
 def description_level6():
     message = ugettext("This time the van has to go forward, left and right. <br> Drag and "
-                       + "attach the blocks like before. ")
+                       + "attach the blocks like before. "
+                       + "Are you happy with your sequence? Then press <b>Go</b>! ")
     return build_description(title_level6(), message)
 
 
 def hint_level6():
-    message = ugettext("Follow the road round. Doing this with the arrows next to the <b>GO"
-                       + "</b> button will drag the blocks into a sequence for you. ")
+    message = ugettext("Follow the road around. How many Move forwards do you need? <br> The arrows "
+                       + "next to the Go button will drag the blocks into a sequence for you")
     return message
 
 
