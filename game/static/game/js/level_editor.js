@@ -887,12 +887,10 @@ ocargo.LevelEditor = function() {
                                                        getBBox.y/GRID_SPACE_SIZE);
                 var coordMap = ocargo.Drawing.translate(coordPaper);
 
-                if (mode === DELETE_ROAD_MODE) 
-                {
+                if (mode === DELETE_ROAD_MODE) {
                     finaliseDelete(coordMap);
                 } 
-                else 
-                {
+                else {
                     finaliseMove(coordMap);
                 }
 
@@ -1300,6 +1298,9 @@ ocargo.LevelEditor = function() {
 
     function applyAlongStrike(func, strikeEnd) {
         var x, y;
+        if (strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y) {
+            return;
+        }
         if (strikeStart.x <= strikeEnd.x) {
             for (x = strikeStart.x; x <= strikeEnd.x; x++) {
                 func(x, strikeStart.y);
