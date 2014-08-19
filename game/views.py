@@ -84,7 +84,6 @@ def levels(request):
 
         episode_data.append(e)
         episode = episode.next_episode
-       
 
     context = RequestContext(request, {
         'episodeData': json.dumps(episode_data),
