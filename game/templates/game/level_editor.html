@@ -110,7 +110,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="map_radio">
           <label for="map_radio">
-            <img src='/static/game/image/icons/blockly.svg'>
+            <img src='/static/game/image/icons/map.svg'>
             <span>Map</span>
           </label>
         </div>
@@ -118,7 +118,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="decor_radio">
           <label for="decor_radio">
-            <img src='/static/game/image/icons/blockly.svg'>
+            <img src='/static/game/image/icons/decor.svg'>
             <span>Decor</span>
           </label>
         </div>
@@ -126,7 +126,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="character_radio">
           <label for="character_radio">
-            <img src='/static/game/image/icons/blockly.svg'>
+            <img src='/static/game/image/icons/character.svg'>
             <span>Characters</span>
           </label>
         </div>
@@ -412,13 +412,13 @@
             <p>Here you can share your level with your pupils or your fellow teachers</p>
             
             <p>Share with:</p>
+            <input type="radio" name="sharing_recipient" id="classes_radio">
+            <label for="classes_radio">Classes:</label>
+
             <input type="radio" name="sharing_recipient" id="teachers_radio" checked>
-            <label for="own_levels_radio">Students:</label>
+            <label for="teachers_radio">Teachers:</label>
             
-            <input type="radio" name="sharing_recipient" id="students_radio">
-            <label for="shared_levels_radio">Teachers:</label>
-            
-            <div id='student selection'>
+            <div id='class selection'>
               <select id="class_select"></select>
               <select id="student_select"></select>
             </div>
@@ -430,20 +430,26 @@
 
           <div id='pupil_sharing'>
             <p>Here you can share your level with your classmates!</p>
-            <select id="teacher_select"></select>
+          </div>
+
+          <div id="shared_levels">
+            <div class="scrolling-table-wrapper">
+              <div class="scrolling-table">
+                <table id="levelSharingTable"></table>
+              </div>
+            </div>
           </div>
 
           <button class="navigation_button" id="shareLevel">
-            <image src="/static/game/image/icons/save.svg"></image>
+            <image src="/static/game/image/icons/share.svg"></image>
             <span>Share</span>
           </button>
 
-          <p>Here are the people who you have already shared this level with</p>
-          <div class="scrolling-table-wrapper">
-            <div class="scrolling-table">
-              <table id="saveLevelTable"></table>
-            </div>
-          </div>
+          <button class="navigation_button" id="shareLevel">
+            <image src="/static/game/image/icons/quit.svg"></image>
+            <span>Unshare</span>
+          </button>
+          
         </div>
 
         <div id="help_pane" class="tab_pane"></div>

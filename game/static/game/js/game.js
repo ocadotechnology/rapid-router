@@ -6,8 +6,6 @@ ocargo.Game = function() {
 
     var tabs = [];
 
-
-
     initCustomBlocks();
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
@@ -237,15 +235,42 @@ ocargo.Game = function() {
     }
 
     function setupTabs() {
-        setupTabListeners();
-        setupBlocklyPane();
-        setupPythonPane();
-        setupLoadPane();
-        setupSavePane();
-        setupHelpPane();
 
-        function setupTabListeners() {
-            function onBlockly() {
+        var currentTabSelected;
+
+        tabs['blockly'] = new ocargo.Tab($('#blockly_radio'), $('#blockly_radio + label'), $('#blockly_pane'));
+        tabs['python'] = new ocargo.Tab($('#python_radio'), $('#python_radio + label'), $('#python_pane'));
+
+        tabs['play'] = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
+        tabs['stop'] = new ocargo.Tab($('#stop_radio'), $('#stop_radio + label'));
+        tabs['step'] = new ocargo.Tab($('#step_radio'), $('#step_radio + label'));
+
+        tabs['load'] = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
+        tabs['save'] = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
+        tabs['clear_program'] = new ocargo.Tab($('#clear_program_radio'), $('#clear_program_radio + label'));
+
+        tabs['big_code_mode'] = new ocargo.Tab($('#big_code_mode_radio'), $('#big_code_mode_radio + label'));
+        tabs['print'] = new ocargo.Tab($('#print_radio'), $('#print_radio + label'));
+        tabs['mute'] = new ocargo.Tab($('#mute_radio'), $('#mute_radio + label'));
+        tabs['help'] = new ocargo.Tab($('#help_radio'), $('#help_radio + label'), $('#help_pane'));
+        tabs['quit'] = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));
+
+        setupBlocklyTab();
+        setupPythonTab();
+        setupPlayTab();
+        setupStopTab();
+        setupStepTab();
+        setupLoadTab();
+        setupSaveTab();
+        setupClearTab();
+        setupBigCodeModeTab();
+        setupPrintTab();
+        setupMuteTab();
+        setupHelpTab();
+        setupQuitTab();
+
+        function setupBlocklyTab() {
+            tabs['blockly'].setOnChange(function () {
                 var tab = tabs['blockly'];
                 currentTabSelected.setPaneEnabled(false);
                 tab.setPaneEnabled(true);
@@ -257,9 +282,21 @@ ocargo.Game = function() {
                 Blockly.Python.init();
                 ocargo.controller = ocargo.blocklyControl;
                 ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-            }
+            });
 
-            function onPython() {
+            currentTabSelected = tabs['blockly'];
+            tabs['blockly'].select();
+            
+            ocargo.blocklyControl.showFlyout();
+            ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
+        }
+
+        function setupPythonTab() {
+            $('#clear_console').click(function (e) {
+                    $('#consoleOutput').text('');
+            });
+
+            tabs['python'].setOnChange(function() {
                 var tab = tabs['python'];
                 currentTabSelected.setPaneEnabled(false);
                 tab.setPaneEnabled(true);
@@ -267,9 +304,11 @@ ocargo.Game = function() {
 
                 ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
                 ocargo.controller = ocargo.editor;
-            }
+            });
+        }
 
-            function onPlay() {
+        function setupPlayTab() {
+            tabs['play'].setOnChange(function() {
                 var existingHtml = tabs['play'].getText();
 
                 if(existingHtml == "Play") {
@@ -290,16 +329,20 @@ ocargo.Game = function() {
                 }
 
                 currentTabSelected.select();
-            }
+            });
+        }
 
-            function onStop() {
+        function setupStopTab() {
+            tabs['stop'].setOnChange(function() {
                 ocargo.animation.resetAnimation();
                 onStopControls();
 
                 currentTabSelected.select();
-            }
+            });
+        }
 
-            function onStep() {
+        function setupStepTab() {
+            tabs['step'].setOnChange(function() {
                 if (ocargo.animation.isFinished()) {
                     var successfullyCompiled = runProgramAndPrepareAnimation();
                     if(!successfullyCompiled) {
@@ -318,126 +361,50 @@ ocargo.Game = function() {
                 onStepControls();
 
                 currentTabSelected.select();
-            }
+            });
+        }
 
-            
-            function onLoad() {
+        function setupLoadTab() {
+            var selectedWorkspace = null;
+
+            tabs['load'].setOnChange(function() {
                 var tab = tabs['load'];
                 currentTabSelected.setPaneEnabled(false);
                 tab.setPaneEnabled(true);
                 currentTabSelected = tab;
 
-                onLoadTrigger();
-            }
+                selectedWorkspace = null;
+                // TODO Disable the tab to stop users clicking it multiple times
+                // whilst waiting for the table data to load
+                // JQuery currently throwing errors :(
 
-            function onSave() {
-                var tab = tabs['save'];
-                currentTabSelected.setPaneEnabled(false);
-                tab.setPaneEnabled(true);
-                currentTabSelected = tab;
+                ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
+                    if (err != null) {
+                        console.debug(err);
+                        return;
+                    }
 
-                onSaveTrigger();
-            }
+                    populateTable("loadWorkspaceTable", workspaces);
 
-            function onClearProgram() {
-                ocargo.blocklyControl.reset();
-                ocargo.editor.reset();
+                    // Add click listeners to all rows
+                    $('#loadWorkspaceTable td').on('click', function(event) {
+                        $('#loadWorkspaceTable td').css('background-color', '#FFFFFF');
+                        $(event.target).css('background-color', '#C0C0C0');
+                        selectedWorkspace = $(event.target).attr('value');
+                        $('#loadWorkspace').removeAttr('disabled');
+                        $('#deleteWorkspace').removeAttr('disabled');
+                    });
 
-                currentTabSelected.select();
-            }
-
-            function onBigCodeMode() {
-                tabs['blockly'].select();
-
-                if(ocargo.blocklyControl.bigCodeMode){
-                    tabs['big_code_mode'].setContents('/static/game/image/icons/big_code_mode.svg', "Enlarge");
-                    ocargo.blocklyControl.decreaseBlockSize();
-                } else {
-                    tabs['big_code_mode'].setContents('/static/game/image/icons/big_code_mode.svg', "Shrink");
-                    ocargo.blocklyControl.increaseBlockSize();
-                }
-                ocargo.blocklyControl.showFlyout();
-                ocargo.blocklyControl.showFlyout();
-
-                ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-            }
-
-            function onPrint() {
-                currentTabSelected.select();
-            }
-
-            function onMute() {
-                ocargo.sound.mute();
-                currentTabSelected.select();
-            }
-
-            function onHelp() {
-                var tab = tabs['help'];
-                currentTabSelected.setPaneEnabled(false);
-                tab.setPaneEnabled(true);
-                currentTabSelected = tab;
-            }
-
-            function onQuit() {
-                window.location.href = "/game/";
-            }
-
-            tabs['blockly'] = new ocargo.Tab($('#blockly_radio'), $('#blockly_radio + label'), onBlockly, $('#blockly_pane'));
-            tabs['python'] = new ocargo.Tab($('#python_radio'), $('#python_radio + label'), onPython, $('#python_pane'));
-
-            tabs['play'] = new ocargo.Tab($('#play_radio'), $('#play_radio + label'), onPlay);
-            tabs['stop'] = new ocargo.Tab($('#stop_radio'), $('#stop_radio + label'), onStop);
-            tabs['step'] = new ocargo.Tab($('#step_radio'), $('#step_radio + label'), onStep);
-
-            tabs['load'] = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), onLoad, $('#load_pane'));
-            tabs['save'] = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), onSave, $('#save_pane'));
-            tabs['clear_program'] = new ocargo.Tab($('#clear_program_radio'), $('#clear_program_radio + label'), onClearProgram);
-
-            tabs['big_code_mode'] = new ocargo.Tab($('#big_code_mode_radio'), $('#big_code_mode_radio + label'), onBigCodeMode);
-            tabs['print'] = new ocargo.Tab($('#print_radio'), $('#print_radio + label'), onPrint);
-            tabs['mute'] = new ocargo.Tab($('#mute_radio'), $('#mute_radio + label'), onMute);
-            tabs['help'] = new ocargo.Tab($('#help_radio'), $('#help_radio + label'), onHelp, $('#help_pane'));
-            tabs['quit'] = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'), onQuit);
-
-            //  Trigger the initial tabs
-            tabs['blockly'].select();
-            var currentTabSelected = tabs['blockly'];
-      
-            // Enable all the permanently enabled tabs
-            tabs['blockly'].setEnabled(true);
-            tabs['python'].setEnabled(true);
-            tabs['play'].setEnabled(true);
-            tabs['mute'].setEnabled(true);
-            tabs['quit'].setEnabled(true);
-
-            // Remove the panes of all the initially disabled tabs
-            tabs['python'].setPaneEnabled(false);
-            tabs['load'].setPaneEnabled(false);
-            tabs['save'].setPaneEnabled(false);
-            tabs['help'].setPaneEnabled(false);
-
-            /**
-            if ($.cookie("muted") === "true") {
-                $('#muted').css('display','block');
-                $('#unmuted').css('display','none');
-                ocargo.sound.mute();
-            }**/
-        }
-
-        function setupBlocklyPane() {
-            ocargo.blocklyControl.showFlyout();
-            ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-        }
-
-        function setupPythonPane() {
-            $('#clear_console').click(function (e) {
-                $('#consoleOutput').text('');
+                    
+                    // But disable all the modal buttons as nothing is selected yet
+                    selectedWorkspace = null;
+                    $('#loadWorkspace').attr('disabled', 'disabled');
+                    $('#deleteWorkspace').attr('disabled', 'disabled');
+                });
             });
-        }
 
-        var selectedWorkspace = null;
 
-        function setupLoadPane() {
+
             $('#loadWorkspace').click(function() {
                 if (selectedWorkspace) {
                     ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
@@ -469,7 +436,44 @@ ocargo.Game = function() {
             });
         }
 
-        function setupSavePane() {
+        function setupSaveTab() {
+            var selectedWorkspace = null;
+
+            tabs['save'].setOnChange(function() {
+                var tab = tabs['save'];
+                currentTabSelected.setPaneEnabled(false);
+                tab.setPaneEnabled(true);
+                currentTabSelected = tab;
+
+                selectedWorkspace = null;
+
+                // TODO Disable the tab to stop users clicking it multiple times
+                // whilst waiting for the table data to load
+                // JQuery currently throwing errors :()
+                
+                ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
+                    if (err != null) {
+                        console.debug(err);
+                        return;
+                    }
+                    
+                    populateTable("saveWorkspaceTable", workspaces);
+
+                    // Add click listeners to all rows
+                    $('#saveWorkspaceTable td').on('click', function(event) {
+                        $('#saveWorkspaceTable td').css('background-color', '#FFFFFF');
+                        $(event.target).css('background-color', '#C0C0C0');
+                        selectedWorkspace = $(event.target).attr('value');
+                        var workspaceName = $(event.target)[0].innerHTML;
+                        document.getElementById("workspaceNameInput").value = workspaceName;
+                    });
+
+                    // But disable all the modal buttons as nothing is selected yet
+                    selectedWorkspace = null;
+                    
+                });
+            });
+
             $('#saveWorkspace').click(function() {
                 var newName = $('#workspaceNameInput').val();
                 if (newName && newName != "") {
@@ -508,73 +512,70 @@ ocargo.Game = function() {
             });
         }
 
-        function setupHelpPane() {
-            $('#help_pane').html(HINT)
-        }
+        function setupClearTab() {
+            tabs['clear_program'].setOnChange(function() {
+                ocargo.blocklyControl.reset();
+                ocargo.editor.reset();
 
-        // Helper methods for loading and saving tabs
-        function onLoadTrigger() {
-            selectedWorkspace = null;
-
-            // TODO Disable the tab to stop users clicking it multiple times
-            // whilst waiting for the table data to load
-            // JQuery currently throwing errors :(
-
-            ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
-                if (err != null) {
-                    console.debug(err);
-                    return;
-                }
-
-                populateTable("loadWorkspaceTable", workspaces);
-
-                // Add click listeners to all rows
-                $('#loadWorkspaceTable td').on('click', function(event) {
-                    $('#loadWorkspaceTable td').css('background-color', '#FFFFFF');
-                    $(event.target).css('background-color', '#C0C0C0');
-                    selectedWorkspace = $(event.target).attr('value');
-                    $('#loadWorkspace').removeAttr('disabled');
-                    $('#deleteWorkspace').removeAttr('disabled');
-                });
-
-                
-                // But disable all the modal buttons as nothing is selected yet
-                selectedWorkspace = null;
-                $('#loadWorkspace').attr('disabled', 'disabled');
-                $('#deleteWorkspace').attr('disabled', 'disabled');
+                currentTabSelected.select();
             });
         }
 
-        function onSaveTrigger() {
-            selectedWorkspace = null;
+        function setupBigCodeModeTab() {
+            tabs['big_code_mode'].setOnChange(function() {
+                tabs['blockly'].select();
 
-            // TODO Disable the tab to stop users clicking it multiple times
-            // whilst waiting for the table data to load
-            // JQuery currently throwing errors :()
+                if(ocargo.blocklyControl.bigCodeMode){
+                    tabs['big_code_mode'].setContents('/static/game/image/icons/big_code_mode.svg', "Enlarge");
+                    ocargo.blocklyControl.decreaseBlockSize();
+                } else {
+                    tabs['big_code_mode'].setContents('/static/game/image/icons/big_code_mode.svg', "Shrink");
+                    ocargo.blocklyControl.increaseBlockSize();
+                }
+                ocargo.blocklyControl.showFlyout();
+                ocargo.blocklyControl.showFlyout();
+
+                ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
+            });
+        }
+
+        function setupPrintTab() {
+            tabs['print'].setOnChange(function() {
+                currentTabSelected.select();
+            });
+        }
+
+        function setupMuteTab() {
+            tabs['mute'].setOnChange(function() {
+                ocargo.sound.mute();
+                currentTabSelected.select();
+            });
             
-            ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
-                if (err != null) {
-                    console.debug(err);
-                    return;
-                }
-                
-                populateTable("saveWorkspaceTable", workspaces);
+            /**
+            if ($.cookie("muted") === "true") {
+                // TODO
+                ocargo.sound.mute();
+            }**/
+        }
 
-                // Add click listeners to all rows
-                $('#saveWorkspaceTable td').on('click', function(event) {
-                    $('#saveWorkspaceTable td').css('background-color', '#FFFFFF');
-                    $(event.target).css('background-color', '#C0C0C0');
-                    selectedWorkspace = $(event.target).attr('value');
-                    var workspaceName = $(event.target)[0].innerHTML;
-                    document.getElementById("workspaceNameInput").value = workspaceName;
-                });
+        function setupHelpTab() {
+            tabs['help'].setOnChange(function() {
+                var tab = tabs['help'];
+                currentTabSelected.setPaneEnabled(false);
+                tab.setPaneEnabled(true);
+                currentTabSelected = tab;
+            });
 
-                // But disable all the modal buttons as nothing is selected yet
-                selectedWorkspace = null;
-                
+            $('#help_pane').html(HINT);
+        }
+
+        function setupQuitTab() {
+            tabs['quit'].setOnChange(function() {
+                window.location.href = "/game/";
             });
         }
-        
+
+        // Helper method for load and save tabs
         function populateTable (tableName, workspaces) {
             var table = $('#'+tableName);
             

@@ -70,6 +70,8 @@ ocargo.messages = {
         "Don't forget to choose a name and fuel limit for your level! It will " +
         "make sharing it with others much easier for you.",
     levelEditorTitle: "Welcome to the Level Editor!",
+    notLoggedIn: "Unfortunately you need to be logged in to share levels.",
+    internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
     changesSinceLastSave: "Please save your latest changes!",
     saveOverwriteWarning: function(newName, onNoFunction, onYesFunction) {

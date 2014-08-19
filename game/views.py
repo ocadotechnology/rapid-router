@@ -20,7 +20,7 @@ from rest_framework.response import Response
 from forms import *
 from game import random_road
 from models import Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
-from portal.models import Class, Teacher
+from portal.models import Student, Class, Teacher
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
@@ -844,16 +844,16 @@ def save_level_for_editor(request, levelID=None):
     level.blocks = Block.objects.filter(type__in=blockTypes)
     level.save()
 
-    return HttpResponse(json.dumps({'id': level.id}), content_type='application/javascript')
+    return HttpResponse(json.dumps({'levelID': level.id}), content_type='application/javascript')
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
 
-    size = int(request.POST['numberOfTiles'])
-    branchiness = float(request.POST['branchiness'])
-    loopiness = float(request.POST['loopiness'])
-    curviness = float(request.POST['curviness'])
-    traffic_lights_enabled = request.POST['trafficLightsEnabled']
+    size = int(request.GET['numberOfTiles'])
+    branchiness = float(request.GET['branchiness'])
+    loopiness = float(request.GET['loopiness'])
+    curviness = float(request.GET['curviness'])
+    traffic_lights_enabled = request.GET['trafficLightsEnabled']
 
     data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
                                                 traffic_lights_enabled)
@@ -861,29 +861,64 @@ def generate_random_map_for_editor(request):
 
 
 def get_sharing_information_for_editor(request, levelID):
+    """ Returns a information about who the level can be shared with (valid_recipients)
+        and who the level is shared with (active_recipients) """ 
     level = Level.objects.get(id=levelID)
 
     valid_recipients = []
     active_recipients = []
+    role = 'anonymous'
 
-    if level.owner == request.user.userprofile:
-        valid_recipients = get_all_valid_recipients(request.user.userprofile)
+    if not request.user.is_anonymous():
+        profile = request.user.userprofile
+        
+        if level.owner == profile:
+            valid_recipients = get_all_valid_recipients(profile)
+            active_recipients = get_all_active_recipients(level)
 
-    data = {'valid_recipients': valid_recipients, 'active_recipients': active_recipients}
+            if hasattr(profile,'student'):
+                role = 'student'
+            if hasattr(profile,'teacher'):
+                role = 'teacher'
+
+            
+    recipient_data = {'validRecipients': valid_recipients, 'activeRecipients': active_recipients}
+    data = {'recipientData': recipient_data, 'role': role}
 
     return HttpResponse(json.dumps(data), content_type='application/javascript')
 
+
 def share_level_for_editor(request, levelID):
-    pass
+    """ Shares a level with the provided list of recipients """
+    recipientIDs = request.POST['recipientIDs']
+
+    level = Level.objects.get(id=levelID)
+    recipients = User.objects.filter(id__in=recipientIDs)
+    sharer = level.owner
+
+    if sharer == request.user.userprofile and is_valid_recipient(recipient.userprofile, sharer):
+        level.shared_with.add(recipient.userprofile)
 
 
 #######################
 # Sharing permissions #
 #######################
 
-def get_all_valid_recipients(userprofile):
+def get_all_active_recipients(level):
+    """ Returns the list of recipients the level is shared with
+    minus those who the owner of the level cannot currently share with.
 
-    valid_recipients = []
+    The last is needed because for example students switching classes."""
+
+    active_recipients = []
+
+    for recipient in level.shared_with.all():
+        if is_valid_recipient(recipient.userprofile, level.owner):
+            active_recipients.append({'id': recipient.id, 'name': recipient.first_name})
+
+
+def get_all_valid_recipients(userprofile):
+    valid_recipients = {}
 
     if hasattr(userprofile, 'student'):
         student = userprofile.student
@@ -891,29 +926,46 @@ def get_all_valid_recipients(userprofile):
         # First get all the student's classmates
         class_ = student.class_field
         classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
-        valid_recipients.extend(classmates)
+        valid_recipients['classmates'] = [{'id': classmate.user.user.id, 
+                                            'name': classmate.user.user.first_name + " " + classmate.user.user.last_name}
+                                             for classmate in classmates]
 
         # Then add their teacher as well
         teacher = class_.teacher
-        valid_recipients.append(teacher)
+        valid_recipients['teacher'] = {'id': teacher.user.user.id,
+                                     'name': teacher.title + " " + teacher.user.user.last_name}
 
     elif hasattr(userprofile, 'teacher'):
         teacher = userprofile.teacher
 
         # First get all the students they teach
-        classes_taught = Class.object.filter(teacher=teacher)
-        students_taught = Students.object.filter(class_field__in=classes_taught)
-        valid_recipients.extend(students_taught)
+        valid_recipients['classes'] = {}
+        classes_taught = Class.objects.filter(teacher=teacher)
+        for class_ in classes_taught:
+            students = Student.objects.filter(class_field=class_)
+            valid_recipients['classes'][class_.name] = [{'id': student.user.user.id, 'name': student.user.user.first_name + " " + student.user.user.last_name} for student in students]
 
         # Then add all the teachers at the same organisation
-        fellow_teachers = Teacher.object.filter(school=teacher.school)
-        valid_recipients.extend(fellow_teachers)
+        fellow_teachers = Teacher.objects.filter(school=teacher.school)
+        valid_recipients['teachers'] = [{'id': teacher.user.user.id, 'name': teacher.user.user.first_name + " " + teacher.user.user.last_name} for teacher in fellow_teachers]
 
+    return valid_recipients;
 
-    return [];
-
-def is_valid_recipient():
-    return False;
+def is_valid_recipient(recipient_profile, sharer_profile):
+    if hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'student'):
+        # Are they in the same class?
+        return sharer_profile.student.class_field == recipient_profile.student.class_field
+    elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'student'):
+        # Is the recipient taught by the sharer?
+        return recipient_profile.student.class_field.teacher == sharer_profile.teacher
+    elif hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'teacher'):
+        # Is the sharer taught by the recipient?
+        return sharer_profile.student.class_field.teacher == sharer_profile.teacher
+    elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'teacher'):
+        # Are they in the same organisation?
+        return recipient_profile.teacher.school == sharer_profile.teacher.school
+    else:
+        return Ffalse;
 
 
 ##################
