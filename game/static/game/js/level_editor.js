@@ -1580,7 +1580,7 @@ ocargo.LevelEditor = function() {
 
         ocargo.saving.saveLevel(level, levelID, function(error, newLevelID, ownedLevels, sharedLevels) {
             if (error != null) {
-                console.debug(err);
+                console.debug(error);
                 return;
             }
 

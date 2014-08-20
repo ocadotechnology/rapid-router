@@ -761,6 +761,10 @@ def save_level_for_editor(request, levelID=None):
         if not request.user.is_anonymous():
             level.owner = request.user.userprofile
 
+            if hasattr(level.owner, 'student'):
+                level.save()
+                level.shared_with.add(level.owner.student.class_field.teacher.user.user)
+
     level.path = path
     level.destinations = destinations
     level.max_fuel = max_fuel
