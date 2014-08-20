@@ -272,7 +272,7 @@ ocargo.LevelEditor = function() {
                             branchiness: $('#branchiness').val()/10,
                             loopiness: $('#loopiness').val()/10,
                             curviness: $('#curviness').val()/10,
-                            trafficLightsEnabled: true,
+                            trafficLightsEnabled: $('#trafficLightsEnabled').prop('checked'),
                             csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()};
 
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {

@@ -253,7 +253,10 @@ ocargo.Drawing = function() {
 
     this.renderRoad = function(nodes) {
         for(var i = 0; i < roadImages.length; i++) {
-            roadImages[i].remove();
+            var image = roadImages[i];
+            if (image) {
+                image.remove();
+            }
         }
 
         var path = '/static/game/image/road_tiles/';
