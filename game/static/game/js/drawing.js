@@ -766,7 +766,7 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
-    if (!mascot) {
+    if (!mascot && document.getElementById('modal-mascot')) {
         document.getElementById('modal-mascot').remove();
     }
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
