@@ -46,9 +46,9 @@ def create(episode=None):
         traffic_lights_enabled = True
     
     level_data = generate_random_map_data(num_tiles,
-                                        branchiness_factor,
-                                        loopiness_factor,
-                                        curviness_factor,
+                                        branchiness,
+                                        loopiness,
+                                        curviness,
                                         traffic_lights_enabled)
 
     level = Level(name=name,
