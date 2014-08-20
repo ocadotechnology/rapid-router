@@ -27,7 +27,6 @@
 
 input {
     margin: 0;
-    vertical-align: middle;
 }
 
 .navigation_button.fixed_size {
@@ -180,14 +179,14 @@ input[type="radio"].character_radio {
 /* Share tab */
 /*************/
 
-.share_cell[status='shared'] {
+tr[status='shared'] .share_cell {
     color: green;
 }
 
-.share_cell[status='unshared'] {
+tr[status='unshared'] .share_cell {
     color: red;
 }
 
-.share_cell[status='pending'] {
+tr[status='pending'] .share_cell {
     color: gray;
 }

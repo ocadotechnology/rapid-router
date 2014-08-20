@@ -138,7 +138,7 @@ ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
         type: 'GET',
         dataType: 'json',
         success: function(json) {
-            callback(null, json);
+            callback(null, json.level, json.owned);
         },
         error: function(xhr,errmsg,err) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -164,7 +164,7 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
  ocargo.Saving.prototype.deleteLevel = function(id, callback) {
 	$.ajax({
         url: '/game/level_editor/level/delete/' + id,
-        type: 'POST',
+        type: 'GET',
         success: function() {
             callback(null);
         },
@@ -177,11 +177,11 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
 ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
 	$.ajax({
         url: '/game/level_editor/level/save' + (id ? '/' + id : ''),
-        type: 'POST',
+        type: 'GET',
         dataType: 'json',
         data: level,
         success: function(json) {
-            callback(null, json.levelID);
+            callback(null, json.levelID, json.ownedLevels, json.sharedLevels);
         },
         error: function(xhr,errmsg,err) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -206,7 +206,7 @@ ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {
 ocargo.Saving.prototype.shareLevel = function(levelID, recipientData, callback) {
     $.ajax({
         url: '/game/level_editor/level/share/' + levelID,
-        type: 'POST',
+        type: 'GET',
         dataType: 'json',
         data: recipientData,
         success: function(json) {

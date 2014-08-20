@@ -46,6 +46,7 @@ ocargo.LevelEditor = function() {
 
     // holds the state to do with saving
     var savedState = null;
+    var ownsSavedLevel = null;
     var savedLevelID = -1;
 
     // so that we store the current state when the page unloads
@@ -117,7 +118,8 @@ ocargo.LevelEditor = function() {
             });
 
             $('#clear').click(function() {
-                new ocargo.LevelEditor();
+                clear();
+                drawAll();
             });
 
             $('#start').click(function() {
@@ -368,7 +370,7 @@ ocargo.LevelEditor = function() {
 
             $('#loadLevel').click(function() {
                 if(selectedLevel) {
-                    loadLevel(selectedLevel);    
+                    loadLevel(selectedLevel); 
                 }
             });
 
@@ -381,6 +383,12 @@ ocargo.LevelEditor = function() {
                     if (err != null) {
                         console.debug(err);
                         return;
+                    }
+
+                    if(selectedLevel == savedLevelID) {
+                        savedLevelID = -1;
+                        savedState = null;
+                        ownsSavedLevel = false;
                     }
 
                     $('#loadOwnLevelTable tr[value=' + selectedLevel + ']').remove();
@@ -398,33 +406,7 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                ocargo.saving.retrieveListOfLevels(function(err, ownLevels, sharedLevels) {
-                    if (err != null) {
-                        console.debug(err);
-                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
-                        return;
-                    }
-
-                    populateLoadSaveTable("saveLevelTable", ownLevels);
-
-                    // Add click listeners to all rows
-                    $('#saveLevelTable tr').on('click', function(event) {
-                        var rowSelected = $(event.target.parentElement);
-                        $('#saveLevelTable tr').css('background-color', '#FFFFFF');
-                        rowSelected.css('background-color', '#C0C0C0');
-                        $('#saveLevel').removeAttr('disabled');
-                        selectedLevel = parseInt(rowSelected.attr('value'));
-
-                        for(var i = 0; i < ownLevels.length; i++) {
-                            if(ownLevels[i].id === selectedLevel) {
-                                $("#levelNameInput").val(ownLevels[i].name);
-                            }
-                        }
-                    });
-
-                    transitionTab(tabs['save']);
-                    selectedLevel = null;
-                });
+                ocargo.saving.retrieveListOfLevels(processListOfLevels);
             });
             
             $('#saveLevel').click(function() {
@@ -449,21 +431,45 @@ ocargo.LevelEditor = function() {
 
                 if(existingID != -1) {
                     if(existingID != savedLevelID) {
-                        var onYes = function() {
-                            saveLevel(newName, existingID);
-                        }
-
                         //ocargo.Drawing.startPopup("Overwriting","Warning",ocargo.messages.saveOverwriteWarning(newName, onYes));
-                        saveLevel(newName, existingID)
+                        saveLevel(newName, existingID, processListOfLevels)
                     }
                     else {
-                        saveLevel(newName, existingID)
+                        saveLevel(newName, existingID, processListOfLevels)
                     }
                 }
                 else {
-                    saveLevel(newName, null);
+                    saveLevel(newName, null, processListOfLevels);
                 }
             });
+
+            function processListOfLevels(err, ownLevels, sharedLevels) {
+                if (err != null) {
+                    console.debug(err);
+                    ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
+                    return;
+                }
+
+                populateLoadSaveTable("saveLevelTable", ownLevels);
+
+                // Add click listeners to all rows
+                $('#saveLevelTable tr').on('click', function(event) {
+                    var rowSelected = $(event.target.parentElement);
+                    $('#saveLevelTable tr').css('background-color', '#FFFFFF');
+                    rowSelected.css('background-color', '#C0C0C0');
+                    $('#saveLevel').removeAttr('disabled');
+                    selectedLevel = parseInt(rowSelected.attr('value'));
+
+                    for(var i = 0; i < ownLevels.length; i++) {
+                        if(ownLevels[i].id === selectedLevel) {
+                            $("#levelNameInput").val(ownLevels[i].name);
+                        }
+                    }
+                });
+
+                transitionTab(tabs['save']);
+                selectedLevel = null;
+            }
         }
 
         function setupShareTab() {
@@ -475,7 +481,7 @@ ocargo.LevelEditor = function() {
 
             // Setup the behaviour for when the tab is selected
             tabs['share'].setOnChange(function() {
-                if(!isLevelSaved()) {
+                if(!isLevelSaved() || !isLevelOwned()) {
                     currentTabSelected.select();
                     return;
                 }
@@ -483,22 +489,55 @@ ocargo.LevelEditor = function() {
                 ocargo.saving.getSharingInformation(savedLevelID, processSharingInformation);
             });
 
-            
+            var classesTaught;
+            var fellowTeachers;
+            var currentClassID;
+            var allShared;
+
             // Setup the teachers/classes radio buttons for the teacher panel
             $('#classes_radio').change(function() {
                 $('#class_select').css('display','block');
+                $('#class_select').val(currentClassID);
+                $('#class_select').change();
             });
             $('#teachers_radio').change(function() {
                 $('#class_select').css('display','none');
+                populateSharingTable(fellowTeachers);
             });
             $('#classes_radio').change();
 
-
             // Setup the class dropdown menu for the teacher panel
             $('#class_select').change(function() {
-                var classID = this.getAttribute('value');
-            })
+                var classID = $('#class_select').val();
+                
+                for(var i = 0; i < classesTaught.length; i++) {
+                    if(classesTaught[i].id == classID) {
+                        populateSharingTable(classesTaught[i].students);
+                        currentClassID = classesTaught[i].id;
+                        break;
+                    }
+                }
+            });
 
+            // Setup the select all button
+            $('#shareWithAll').click(function() {
+                if(isLevelSaved() && isLevelOwned()) {
+                    var statusDesired = allShared ? 'shared' : 'unshared';
+                    var actionDesired = allShared ? 'unshare' : 'share';
+
+                    var recipientIDs = [];
+                    $('#levelSharingTable tr[value]').each(function() {
+                        recipientIDs.push(this.getAttribute('value'));
+                    });
+
+                    var recipientData = {recipientIDs: recipientIDs, 
+                                         action: actionDesired};
+
+                    ocargo.saving.shareLevel(savedLevelID, recipientData, processSharingInformation);
+                }
+            });
+
+            // Method to call when we get an update on the level's sharing information
             function processSharingInformation(error, validRecipients, role) {
                 if(error !== null) {
                     console.debug(error);
@@ -525,17 +564,30 @@ ocargo.LevelEditor = function() {
                     $('#teacher_sharing').css('display','block');
                     $('#student_sharing').css('display','none');
 
-                    var teachers = validRecipients.teachers;
-                    var classes = validRecipients.classes;
+                    classesTaught = validRecipients.classes;
+                    fellowTeachers = validRecipients.teachers;
 
-                    if($('#teachers_radio').is('selected')) {
-                        populateSharingTable(teachers);
+                    $('#class_select').empty();
+                    for(var i = 0; i < classesTaught.length; i++) {
+                        var option = '<option value=' + classesTaught[i].id + '>' + classesTaught[i].name + '</option>'
+                        $('#class_select').append(option);
+                    }
+
+                    if($('#teachers_radio').is(':checked')) {
+                        populateSharingTable(validRecipients.teachers);
                     }
                     else {
-                        $('#classes_sharing').empty();
-                        for(var i = 0; i < classes.length; i++) {
-                            var option = '<option value=' + classes[i].id + '>' + classes[i].name + '</option>'
-                            $('#class_select').append(option);
+                        var found = false;
+                        $('#class_select option').each(function() {
+                            if(this.value == currentClassID) {
+                                $('#class_select').val(currentClassID);
+                                $('#class_select').change();
+                                found = true;
+                            }
+                        });
+
+                        if(!found) {
+                            $('#class_select').change();
                         }
                     }
                 }
@@ -543,7 +595,7 @@ ocargo.LevelEditor = function() {
                 transitionTab(tabs['share']);
             }
 
-            function populateSharingTable(mainRecipients, specialRecipient) {
+            function populateSharingTable(recipients) {
                 // Remove click listeners to avoid memory leak and remove all rows
                 var table = $('#levelSharingTable');
                 $('#levelSharingTable tr').off('click');
@@ -552,7 +604,7 @@ ocargo.LevelEditor = function() {
                 table.append('<tr>  <th>Name</th>  <th>Shared</th> </tr>');
                 
                 // Order them alphabetically
-                mainRecipients.sort(function(a, b) {
+                recipients.sort(function(a, b) {
                     if (a.name < b.name) {
                         return -1;
                     }
@@ -562,22 +614,42 @@ ocargo.LevelEditor = function() {
                     return 0;
                 });
 
+                allShared = true;
                 // Add a row to the table for each workspace saved in the database
-                for (var i = 0; i < mainRecipients.length; i++) {
-                    var recipient = mainRecipients[i];
+                for (var i = 0; i < recipients.length; i++) {
+                    var recipient = recipients[i];
                     var status = recipient.shared ? 'shared' : 'unshared';
+                    
+                    if(recipient.shared) {
+                        status = 'shared'
+                    }
+                    else {
+                        status = 'unshared'
+                        allShared = false;
+                    }
 
-                    table.append('<tr value=' + recipient.id + '>' + 
+                    table.append('<tr value=' + recipient.id + ' + status="' +  status + '">' + 
                                     '<td>' + recipient.name + '</td>' + 
-                                    '<td class="share_cell" status="' +  status + '">' + text[status] + '</td>' +
+                                    '<td class="share_cell">' + text[status] + '</td>' +
                                 '</tr>');
                 }
 
-                $('.share_cell').on('click', function(event) {
-                    if(isLevelSaved()) {
+                // Update the shareWithAll button
+                if(allShared) {
+                    $('#shareWithAll span').html('Unshare with all');
+                    $('#shareWithAll img').attr('src','/static/game/image/icons/quit.svg');
+                }
+                else {
+                    $('#shareWithAll span').html('Share with all');
+                    $('#shareWithAll img').attr('src','/static/game/image/icons/share.svg');
+                }
+
+                // update click listeners in the new rows
+                $('#levelSharingTable tr[value]').on('click', function(event) {
+                    if(isLevelSaved() && isLevelOwned()) {
                         var status = this.getAttribute('status');
 
-                        var recipientData = {recipientIDs: [this.parentNode.getAttribute('value')], 
+                        var recipientData = {recipientIDs: [this.getAttribute('value')], 
                                              action: (status === 'shared' ? 'unshare' : 'share')};
 
                         ocargo.saving.shareLevel(savedLevelID, recipientData, processSharingInformation);
@@ -627,11 +699,11 @@ ocargo.LevelEditor = function() {
             });
 
             // Add a row to the table for each workspace saved in the database
-            table.append('<tr>  <th>Name</th>   <th>Owner</th>  <th>Shared</th> </tr>');
+            table.append('<tr>  <th>Name</th>   <th>Owner</th> </tr>');
             for (var i = 0, ii = levels.length; i < ii; i++) {
                 var level = levels[i];
                 table.append('<tr value=' + level.id + '>  <td>' + level.name + '</td>  <td>' +
-                             level.owner + '</td> <td>false</td>');
+                             level.owner + '</td> </tr>');
             }
         }
     }
@@ -1478,21 +1550,25 @@ ocargo.LevelEditor = function() {
     }
 
     function loadLevel(levelID) { 
-        ocargo.saving.retrieveLevel(levelID, function(err, level) {
+        ocargo.saving.retrieveLevel(levelID, function(err, level, owned) {
             if (err != null) {
                 console.debug(err);
                 return;
             }
 
             restoreState(level);
+
+            ownsSavedLevel = owned;
+            savedState = JSON.stringify(extractState());
+            savedLevelID = level.id;
         });
     }
 
-    function saveLevel(name, levelID) {
+    function saveLevel(name, levelID, callback) {
         var level = extractState();
         level.name = name;
 
-        ocargo.saving.saveLevel(level, levelID, function(error, newLevelID) {
+        ocargo.saving.saveLevel(level, levelID, function(error, newLevelID, ownedLevels, sharedLevels) {
             if (error != null) {
                 console.debug(err);
                 return;
@@ -1501,13 +1577,13 @@ ocargo.LevelEditor = function() {
             // Delete name so that we can use if for comparison purposes
             // to see if changes have been made to the level later on
             delete level.name;
+            ownsSavedLevel = true;
             savedState = JSON.stringify(level);
             savedLevelID = newLevelID;
 
-            ocargo.Drawing.startPopup("Saving","",ocargo.messages.saveSuccesful);
+            callback(null, ownedLevels, sharedLevels);
         });
     }
-
 
     function storeStateInLocalStorage() {
         if(localStorage) {
@@ -1516,6 +1592,7 @@ ocargo.LevelEditor = function() {
             // Append additional non-level orientated editor state
             state.savedLevelID = savedLevelID;
             state.savedState = savedState;
+            state.ownsSavedLevel = ownsSavedLevel;
 
             localStorage['levelEditorState'] = JSON.stringify(state);
         }
@@ -1532,6 +1609,7 @@ ocargo.LevelEditor = function() {
             // Restore additional non-level orientated editor state
             savedLevelID = state.savedLevelID;
             savedState = state.savedState;
+            ownsSavedLevel = state.ownsSavedLevel;
         }
     }
 
@@ -1565,6 +1643,15 @@ ocargo.LevelEditor = function() {
         }
         else if(currentState !== savedState) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.changesSinceLastSave);
+            return false;
+        }
+        return true;
+    }
+
+    function isLevelOwned() {
+        if(!ownsSavedLevel)
+        {
+            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notOwned);
             return false;
         }
         return true;

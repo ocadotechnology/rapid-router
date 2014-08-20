@@ -706,35 +706,22 @@ def level_editor(request):
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
-
 def get_list_of_levels_for_editor(request):
-    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
-        ownedLevels = []
-        sharedLevels = []
-    else:
-        ownedLevels = Level.objects.filter(owner=request.user.userprofile.id)
-        sharedLevels = request.user.shared.all()
-
-    owned = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
-             for level in ownedLevels]
-    shared = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
-              for level in sharedLevels]
-
-    response = {'ownedLevels': owned, 'sharedLevels': shared}
+    response = compile_list_of_levels_for_editor(request);
     return HttpResponse(json.dumps(response), content_type='application/javascript')
-
+    
 
 def get_level_for_editor(request, levelID):
-    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
-        response = ""
-    else:
+
+    response = {}
+
+    if not request.user.is_anonymous() and hasattr(request.user, "userprofile"):
         level = Level.objects.get(id=levelID)
         if(level.owner == request.user.userprofile or request.user.shared.get(id=levelID)):
-            response = level
-        else:
-            response = ''
+            response = {'owned': level.owner == request.user.userprofile,
+                        'level': model_to_dict(level)}
 
-    return HttpResponse(json.dumps(model_to_dict(response)), content_type='application/javascript')
+    return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 
 def delete_level_for_editor(request, levelID):
@@ -749,14 +736,14 @@ def delete_level_for_editor(request, levelID):
 def save_level_for_editor(request, levelID=None):
     """ Processes a request on creation of the map in the level editor """
 
-    path = request.POST.get('path')
-    destinations = request.POST.get('destinations')
-    decor = request.POST.get('decor')
-    traffic_lights = request.POST.get('traffic_lights')
-    max_fuel = request.POST.get('max_fuel')
-    theme_id = request.POST.get('themeID')
-    character_name = request.POST.get('character_name')
-    blockTypes = json.loads(request.POST['block_types'])
+    path = request.GET.get('path')
+    destinations = request.GET.get('destinations')
+    decor = request.GET.get('decor')
+    traffic_lights = request.GET.get('traffic_lights')
+    max_fuel = request.GET.get('max_fuel')
+    theme_id = request.GET.get('themeID')
+    character_name = request.GET.get('character_name')
+    blockTypes = json.loads(request.GET['block_types'])
 
     theme = Theme.objects.get(id=theme_id)
     character = Character.objects.get(name=character_name)
@@ -768,7 +755,7 @@ def save_level_for_editor(request, levelID=None):
             return
 
     else:
-        name = request.POST.get('name')
+        name = request.GET.get('name')
         level = Level(name=name, default=False)
 
         if not request.user.is_anonymous():
@@ -787,7 +774,10 @@ def save_level_for_editor(request, levelID=None):
     level.blocks = Block.objects.filter(type__in=blockTypes)
     level.save()
 
-    return HttpResponse(json.dumps({'levelID': level.id}), content_type='application/javascript')
+    response = compile_list_of_levels_for_editor(request);
+    response['levelID'] = level.id;
+
+    return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
@@ -813,9 +803,6 @@ def get_sharing_information_for_editor(request, levelID):
     if not request.user.is_anonymous():
         profile = request.user.userprofile
         
-        print("hi!")
-        print(profile.__dict__)
-        print(level.owner.__dict__)
         if level.owner == profile:
             valid_recipients = get_all_valid_recipients(profile, level)
 
@@ -831,8 +818,8 @@ def get_sharing_information_for_editor(request, levelID):
 
 def share_level_for_editor(request, levelID):
     """ Shares a level with the provided list of recipients """
-    recipientIDs = request.POST.getlist('recipientIDs[]')
-    action = request.POST.get('action')
+    recipientIDs = request.GET.getlist('recipientIDs[]')
+    action = request.GET.get('action')
 
     level = Level.objects.get(id=levelID)
     recipients = User.objects.filter(id__in=recipientIDs)
@@ -847,6 +834,23 @@ def share_level_for_editor(request, levelID):
                     level.shared_with.remove(recipient.userprofile.user)
                         
     return get_sharing_information_for_editor(request, levelID);
+
+
+def compile_list_of_levels_for_editor(request):
+    """ Helper method """
+    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
+        ownedLevels = []
+        sharedLevels = []
+    else:
+        ownedLevels = Level.objects.filter(owner=request.user.userprofile.id)
+        sharedLevels = request.user.shared.all()
+
+    owned = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
+             for level in ownedLevels]
+    shared = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
+              for level in sharedLevels]
+
+    return {'ownedLevels': owned, 'sharedLevels': shared}
 
 #######################
 # Sharing permissions #

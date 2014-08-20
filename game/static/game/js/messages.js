@@ -73,6 +73,7 @@ ocargo.messages = {
     notLoggedIn: "Unfortunately you need to be logged in to share levels.",
     internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
+    notOwned: "You do not own this level. If you would like to share it you will first have to save your own copy!",
     changesSinceLastSave: "Please save your latest changes!",
     saveOverwriteWarning: function(newName, onNoFunction, onYesFunction) {
         return "Level " + newName + " already exists. Are you sure you want to overwrite it? THIS DOESN'T WORK" + 
@@ -80,7 +81,6 @@ ocargo.messages = {
         '<button onclick="onYesFunction(); document.getElementById(' + '"close-modal"' +').click();">Yes</button>' +
         '<button onclick=document.getElementById(' + '"close-modal"' +').click();">No</button>';
     },
-    saveSuccesful: "Your level has been succesfully saved!",
     shareSuccessful: "Your level has been succesfully shared!",
 
     /* Scoring */
