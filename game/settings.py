@@ -31,10 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
-    'website',
     'game',
     'portal',
-    'reports',
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -42,7 +40,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'nuit',
     'rest_framework',
 )
 
@@ -56,9 +53,9 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'website.urls'
+ROOT_URLCONF = 'game.urls'
 
-WSGI_APPLICATION = 'website.wsgi.application'
+WSGI_APPLICATION = 'game.wsgi.application'
 
 
 # Internationalization
@@ -86,13 +83,6 @@ STATIC_ROOT = rel('static')
 # Required for admindocs
 
 SITE_ID = 1
-
-
-# PRESENTATION LAYER
-
-NUIT_GLOBAL_TITLE = "Rapid Router"
-NUIT_GLOBAL_LINK = "/home/"
-
 
 # Deployment
 
