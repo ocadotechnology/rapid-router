@@ -172,10 +172,17 @@
 }
 
 .direct_drive_button {
+    display: inline;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
     background-size: 45px 45px;
+    background-color: transparent;
     width: 50px;
     height: 50px;
     position: absolute;
+    padding: 2px;
+    transition: background-size 0.3s;
 }
 
 .direct_drive_button:hover,
@@ -183,6 +190,8 @@
 { 
     background-color: rgba(240,240,240,0.3);
     background-size: 50px 50px;
+    background-color: transparent;
+    border: none;
 }
 
 #go  {

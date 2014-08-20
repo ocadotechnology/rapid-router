@@ -382,7 +382,7 @@ ocargo.Drawing = function() {
         function drawCrossRoads(node, path) {
             var flipped = ocargo.Drawing.translate(node.coordinate);
 
-            return paper.image(path + '/crossroads.svg',
+            return paper.image(path + 'crossroads.svg',
                     flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
         }
     };

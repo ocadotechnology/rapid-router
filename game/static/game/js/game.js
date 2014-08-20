@@ -183,16 +183,16 @@ ocargo.Game.prototype.setupTabs = function() {
 
     setupBlocklyTab();
     setupPythonTab();
+    setupClearTab();
     setupPlayTab();
     setupStopTab();
     setupStepTab();
     setupLoadTab();
     setupSaveTab();
-    setupClearTab();
-    setupBigCodeModeTab();
     setupPrintTab();
-    setupMuteTab();
     setupHelpTab();
+    setupBigCodeModeTab();
+    setupMuteTab();
     setupQuitTab();
 
     ocargo.game.tabs = tabs;
@@ -232,6 +232,15 @@ ocargo.Game.prototype.setupTabs = function() {
 
             ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
             ocargo.controller = ocargo.editor;
+        });
+    }
+
+    function setupClearTab() {
+        tabs['clear_program'].setOnChange(function() {
+            ocargo.blocklyControl.reset();
+            ocargo.editor.reset();
+
+            currentTabSelected.select();
         });
     }
 
@@ -417,13 +426,21 @@ ocargo.Game.prototype.setupTabs = function() {
         });
     }
 
-    function setupClearTab() {
-        tabs['clear_program'].setOnChange(function() {
-            ocargo.blocklyControl.reset();
-            ocargo.editor.reset();
-
+    function setupPrintTab() {
+        tabs['print'].setOnChange(function() {
             currentTabSelected.select();
         });
+    }
+
+    function setupHelpTab() {
+        tabs['help'].setOnChange(function() {
+            var tab = tabs['help'];
+            currentTabSelected.setPaneEnabled(false);
+            tab.setPaneEnabled(true);
+            currentTabSelected = tab;
+        });
+
+        $('#help_pane').html(HINT);
     }
 
     function setupBigCodeModeTab() {
@@ -444,12 +461,6 @@ ocargo.Game.prototype.setupTabs = function() {
         });
     }
 
-    function setupPrintTab() {
-        tabs['print'].setOnChange(function() {
-            currentTabSelected.select();
-        });
-    }
-
     function setupMuteTab() {
         tabs['mute'].setOnChange(function() {
             ocargo.sound.mute();
@@ -461,17 +472,6 @@ ocargo.Game.prototype.setupTabs = function() {
             // TODO
             ocargo.sound.mute();
         }**/
-    }
-
-    function setupHelpTab() {
-        tabs['help'].setOnChange(function() {
-            var tab = tabs['help'];
-            currentTabSelected.setPaneEnabled(false);
-            tab.setPaneEnabled(true);
-            currentTabSelected = tab;
-        });
-
-        $('#help_pane').html(HINT);
     }
 
     function setupQuitTab() {

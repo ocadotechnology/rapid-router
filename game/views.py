@@ -19,7 +19,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from forms import *
 from game import random_road
-from models import Level, Attempt, Command, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
+from models import Level, Attempt, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
 from portal.models import Student, Class, Teacher
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
@@ -638,64 +638,6 @@ def render_student_info(request):
         'currentClass': currentClass,
     })
     return render(request, 'game/logged_students.html', context)
-
-
-def parseInstructions(instructions, attempt, init):
-    """ Helper method for inserting user-submitted instructions to the database."""
-
-    if not instructions:
-        return
-    command = None
-    index = init
-
-    for instruction in instructions:
-        next = index + 1
-
-        if instruction['command'] == 'Forward':
-            command = Command(step=index, attempt=attempt, command='Forward', next=index+1)
-        elif instruction['command'] == 'Left':
-            command = Command(step=index, attempt=attempt, command='Left', next=index+1)
-        elif instruction['command'] == 'Right':
-            command = Command(step=index, attempt=attempt, command='Right', next=index+1)
-        elif instruction['command'] == 'TurnAround':
-            command = Command(step=index, attempt=attempt, command='TurnAround', next=index+1)
-        elif instruction['command'] == 'Wait':
-            command = Command(step=index, attempt=attempt, command='Wait', next=index+1)
-
-        elif instruction['command'] == 'While':
-            condition = instruction['condition']
-            parseInstructions(instruction['block'], attempt, next)
-            execBlock = range(index + 1, index + len(instruction['block']) + 1)
-            command = Command(step=index, attempt=attempt, command='While', condition=condition,
-                              next=index+len(execBlock)+1, executedBlock1=execBlock)
-            index += len(execBlock)
-
-        elif instruction['command'] == 'If':
-            condition = instruction['condition']
-            parseInstructions(instruction['ifBlock'], attempt, next)
-            next += len(instruction['ifBlock'])
-            ifBlock = range(index + 1, next)
-
-            if 'elseBlock' in instruction:
-                parseInstructions(instruction['elseBlock'], attempt, next)
-                next += len(instruction['elseBlock'])
-                elseBlock = range(index + len(ifBlock) + 1, next + 2)
-                command = Command(step=index, attempt=attempt, condition=condition, command='If',
-                                  executedBlock1=ifBlock, executedBlock2=elseBlock, )
-                index += len(elseBlock)
-            else:
-                command = Command(step=index, attempt=attempt, command='If', condition=condition,
-                                  executedBlock1=ifBlock, next=next)
-            index += len(ifBlock)
-
-        else:
-            command = Command(step=index, attempt=attempt, command='Forward', next=index+1)
-        command.save()
-        index += 1
-    last = Command.objects.get(step=init+len(instructions)- 1, attempt=attempt)
-    last.next = None
-    last.save()
-
 
 class WorkspaceViewList(generics.ListCreateAPIView):
     """ Handles requests for the list of workspace objects viewable by the user"""

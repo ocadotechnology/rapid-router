@@ -65,31 +65,6 @@
 /** Buttons **/
 /*************/
 
-.svg_button {
-    background-repeat: no-repeat;
-    background-position: center;
-    display: inline;
-    text-indent: 200%;
-    white-space: nowrap;
-    cursor: pointer;
-    background-color: transparent;
-    padding: 2px;
-    margin-bottom: 0rem;
-    transition: background-size 0.3s;
-}
-
-.svg_button:hover,
-.svg_button:focus {
-    transition: background-size 0.3s;
-    background-color: transparent;
-    border: none;
-}
-
-.svg_button[disabled],
-.svg_button[disabled]:hover {
-    background-color: transparent;
-}
-
 .navigation_button {
   display: inline-block;
   position: relative;

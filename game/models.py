@@ -115,27 +115,3 @@ class Attempt (models.Model):
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0)
     workspace = models.TextField(default="")
-
-
-class Command (models.Model):
-    STEP_CHOICES = (
-        ('Right', 'right'),
-        ('Left', 'left'),
-        ('Forward', 'forward'),
-        ('TurnAround', 'turn around'),
-        ('Wait', 'wait'),
-        ('While', 'while'),
-        ('If', 'if'),
-    )
-
-    step = models.IntegerField()
-    attempt = models.ForeignKey(Attempt, related_name='commands')
-    command = models.CharField(max_length=15, choices=STEP_CHOICES, default='Forward')
-    next = models.IntegerField(blank=True, null=True)
-
-    # Condition in While or If statements. Optional.
-    condition = models.CharField(max_length=400, blank=True)
-    # 'While' or 'If' block. Optional.
-    executedBlock1 = models.CommaSeparatedIntegerField(blank=True, max_length=100)
-    # 'Else' block. Optional.
-    executedBlock2 = models.CommaSeparatedIntegerField(blank=True, max_length=100)
