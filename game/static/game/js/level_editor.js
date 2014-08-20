@@ -175,7 +175,11 @@ ocargo.LevelEditor = function() {
             });
 
             $('#delete_decor').click(function() {
-                mode = DELETE_DECOR_MODE;
+                if (mode === DELETE_DECOR_MODE) {
+                    mode = ADD_ROAD_MODE;
+                } else {
+                    mode = DELETE_DECOR_MODE;
+                }
             });
         }
 
