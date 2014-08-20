@@ -39,7 +39,7 @@ ocargo.Game.prototype.setup = function() {
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
     // Start the popup
-    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"), true);
+    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.jsElements.closebutton("Play"), true);
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
