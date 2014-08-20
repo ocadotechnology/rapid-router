@@ -367,7 +367,7 @@ ocargo.BlocklyControl.prototype.increaseBlockSize = function() {
 	
     $(".blocklyIconShield").attr("width", 32).attr("height", 32).attr("rx", 8).attr("ry", 8);
     $(".blocklyIconMark").attr("x", 16).attr("y", 24);
-    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24);  
+    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24).attr("x", -5).attr("width", 85);  
 };
 
 ocargo.BlocklyControl.prototype.decreaseBlockSize = function() {
@@ -417,7 +417,7 @@ ocargo.BlocklyControl.prototype.decreaseBlockSize = function() {
 	Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
     $(".blocklyIconShield").attr("width", 16).attr("height", 16).attr("rx", 4).attr("ry", 4);
     $(".blocklyIconMark").attr("x", 8).attr("y", 12);
-    $(".blocklyEditableText > rect").attr("height", 16).attr("y", -12);
+    $(".blocklyEditableText > rect").attr("height", 16).attr("y", -12).attr("x", -5).attr("width", 43);
 };
 
 /************************/
