@@ -287,18 +287,6 @@
 
     <div id="paper" class="col" style="background-color:{{level.theme.background}}"></div>
 
-    <div class="no-print unselectable">
-      <button class="navigation_button" id="show">
-        <image src="/static/game/image/icons/show.svg"/>
-        <span>Show</span>
-      </button>
-
-      <button class="navigation_button" id="hide">
-        <image src="/static/game/image/icons/hide.svg"/>
-        <span>Hide</span>
-      </button>
-    </div>
-
     <div id="direct_drive" class="unselectable">
       <button class="direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
