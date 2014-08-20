@@ -480,6 +480,7 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupPrintTab() {
         tabs['print'].setOnChange(function() {
             currentTabSelected.select();
+            window.print()
         });
     }
 

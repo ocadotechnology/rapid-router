@@ -673,7 +673,7 @@ ocargo.LevelEditor = function() {
                 transitionTab(tabs['help']);
             });
 
-            $('#help.tab_pane').html(ocargo.messages.levelEditorHelpText);
+            $('#help_pane').html(ocargo.messages.levelEditorHelpText);
         }
 
         function setupQuitTab() {
