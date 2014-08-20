@@ -64,6 +64,37 @@ ocargo.LevelEditor = function() {
     // set the default theme
     setTheme(THEMES["grass"]);
 
+
+
+    /*********************************/
+    /* Two finger scrolling of paper */
+    /*********************************/
+
+    var scrollStartPosX = 0;
+    var scrollStartPosY = 0;
+    var touchStartPosX = 0;
+    var touchStartPosY = 0;
+
+    $('#paper').on('touchstart', function(ev) {
+        if (ev.originalEvent.touches.length === 2) {
+            ev.preventDefault();
+            scrollStartPosX = $('#paper').scrollLeft();
+            touchStartPosX = ev.originalEvent.touches[0].pageX;
+            scrollStartPosY = $('#paper').scrollTop();
+            touchStartPosY = ev.originalEvent.touches[0].pageY;
+        }
+    });
+
+    $('#paper').on('touchmove', function(ev) {
+        if (ev.originalEvent.touches.length === 2) {
+            ev.preventDefault();
+            $('#paper').scrollLeft(scrollStartPosX - (ev.originalEvent.touches[0].pageX - touchStartPosX));
+            $('#paper').scrollTop(scrollStartPosY - (ev.originalEvent.touches[0].pageY - touchStartPosY));
+        }
+    });
+
+
+
     /***************/
     /* Setup tools */
     /***************/
@@ -854,7 +885,9 @@ ocargo.LevelEditor = function() {
     /***************************/
 
     function handleMouseDown(this_rect) {
-        return function () {
+        return function (ev) {
+            ev.preventDefault();
+
             var getBBox = this_rect.getBBox();
             var coordPaper = new ocargo.Coordinate(getBBox.x / GRID_SPACE_SIZE,
                                                    getBBox.y / GRID_SPACE_SIZE);
@@ -903,7 +936,9 @@ ocargo.LevelEditor = function() {
     }
 
     function handleMouseOver(this_rect) {
-        return function() {
+        return function(ev) {
+            ev.preventDefault();
+
             var getBBox = this_rect.getBBox();
             var coordPaper = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
             var coordMap = ocargo.Drawing.translate(coordPaper);
@@ -933,12 +968,14 @@ ocargo.LevelEditor = function() {
                         mark(coordMap, 'red', 0.5, true);
                     }
                 }
-            } 
+            }
         };
     }
 
     function handleMouseOut(this_rect) {
-        return function() {
+        return function(ev) {
+            ev.preventDefault();
+
             var getBBox = this_rect.getBBox();
             var coordPaper = new ocargo.Coordinate(getBBox.x/GRID_SPACE_SIZE,
                                                    getBBox.y/GRID_SPACE_SIZE);
@@ -963,7 +1000,9 @@ ocargo.LevelEditor = function() {
     }
 
     function handleMouseUp(this_rect) {
-        return function() {
+        return function(ev) {
+            ev.preventDefault();
+
             if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) {
                 var getBBox = this_rect.getBBox();
                 var coordPaper = new ocargo.Coordinate(getBBox.x/GRID_SPACE_SIZE,
@@ -979,6 +1018,57 @@ ocargo.LevelEditor = function() {
 
                 sortNodes(nodes);
                 redrawRoad();
+            }
+        };
+    }
+
+    function handleTouchStart(this_rect) {
+        return function (ev) {
+            if (ev.touches.length === 1) {
+                var x = ev.touches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
+                var y = ev.touches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+
+                x /= GRID_SPACE_SIZE;
+                y /= GRID_SPACE_SIZE;
+
+                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
+                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
+
+                handleMouseDown(grid[x][y])(ev);
+            }
+        };
+    }
+
+    function handleTouchMove(this_rect) {
+        return function(ev) {
+            if (ev.touches.length === 1) {
+                var x = ev.touches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
+                var y = ev.touches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+
+                x /= GRID_SPACE_SIZE;
+                y /= GRID_SPACE_SIZE;
+
+                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
+                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
+
+                handleMouseOver(grid[x][y])(ev);
+            }
+        };
+    }
+
+    function handleTouchEnd(this_rect) {
+        return function(ev) {
+            if (ev.changedTouches.length === 1) {
+                var x = ev.changedTouches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
+                var y = ev.changedTouches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+
+                x /= GRID_SPACE_SIZE;
+                y /= GRID_SPACE_SIZE;
+
+                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
+                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
+
+                handleMouseUp(grid[x][y])(ev);
             }
         };
     }
@@ -1304,9 +1394,10 @@ ocargo.LevelEditor = function() {
                 grid[i][j].node.onmouseover = handleMouseOver(grid[i][j]);
                 grid[i][j].node.onmouseout = handleMouseOut(grid[i][j]);
                 grid[i][j].node.onmouseup = handleMouseUp(grid[i][j]);
-                grid[i][j].node.ontouchstart = handleMouseDown(grid[i][j]);
-                grid[i][j].node.ontouchmove = handleMouseOver(grid[i][j]);
-                grid[i][j].node.ontouchend = handleMouseUp(grid[i][j]);
+
+                grid[i][j].node.ontouchstart = handleTouchStart(grid[i][j]);
+                grid[i][j].node.ontouchmove = handleTouchMove(grid[i][j]);
+                grid[i][j].node.ontouchend = handleTouchEnd(grid[i][j]);
             }
         }
     }
