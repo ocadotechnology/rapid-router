@@ -382,7 +382,7 @@ ocargo.Drawing = function() {
         function drawCrossRoads(node, path) {
             var flipped = ocargo.Drawing.translate(node.coordinate);
 
-            return paper.image(path + '/crossroads.svg',
+            return paper.image(path + 'crossroads.svg',
                     flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
         }
     };
@@ -766,7 +766,7 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
-    if (!mascot) {
+    if (!mascot && document.getElementById('modal-mascot')) {
         document.getElementById('modal-mascot').remove();
     }
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);

@@ -1,16 +1,9 @@
 #paper {
-    width: 48%;
+    width: 50%;
     height:100%;
     overflow:scroll;
     z-index:6;
-}
-
-#left {
-    float:left;
-    width: 52%;
-    height:100%;
-    padding-right: 10px;
-    z-index: 5;
+    float: left;
 }
 
 @media print {
@@ -29,16 +22,22 @@
 /*****************/
 
 #tabs {
-    height: 100%;
-    float: left;
     width: 95px;
+    height: 100%;
     background-color: #a0c53a;
+    float: left;
+}
+
+#right {
+    position: relative;
+    height: 100%;
+    margin-left: 95px;
 }
 
 #tab_panes {
+    width: 50%;
     height: 100%;
-    width: 85%;
-    float:left;
+    float: left;
 }
 
 /***************/
@@ -51,9 +50,8 @@
 }
 
 #blockly_holder {
-    width: 110%;
+    width: 100%;
     height: 100%;
-    margin-left: -51px;
 }
 
 
@@ -141,7 +139,7 @@
 #hide,
 #show {
     position: absolute;
-    left: 52%;
+    left: 50%;
     z-index: 7;
     margin-top: 2px;
     margin-left: 5px;
@@ -150,7 +148,7 @@
 /* Central slider div */
 #consoleSlider {
     position: absolute;
-    left: 52%;
+    left: 50%;
     width: 5px;
     height: 100%;
     z-index: 9;
