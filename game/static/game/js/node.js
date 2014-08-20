@@ -33,6 +33,8 @@ ocargo.Node.prototype.addTrafficLight = function(trafficLight) {
 	this.trafficLights.push(trafficLight);
 };
 
+// Takes a list of node data which reference connected nodes
+// by coordinate to nodes which directly reference connected node
 ocargo.Node.parsePathData = function(nodeData) {
     var nodes = [];
 
@@ -53,6 +55,25 @@ ocargo.Node.parsePathData = function(nodeData) {
     
     return nodes;
 };
+
+// Takes a list of nodes which directly reference connected nodes
+// to node data which reference connected nodes by coordinate
+ocargo.Node.composePathData = function(nodes) {
+    var newPath = [];
+
+    for (var i = 0; i < nodes.length; i++) {
+        var curr = nodes[i];
+        var node = {'coordinate': [curr.coordinate.x, curr.coordinate.y],
+                    'connectedNodes': []};
+
+        for(var j = 0; j < curr.connectedNodes.length; j++) {
+            var index = ocargo.Node.findNodeIndexByCoordinate(curr.connectedNodes[j].coordinate, nodes);
+            node.connectedNodes.push(index);
+        }
+        newPath.push(node);
+    }
+    return newPath;
+}
 
 // Helper method that returns the index of the first node at the given coordinate
 ocargo.Node.findNodeIndexByCoordinate = function(coordinate, nodes) {

@@ -24,20 +24,6 @@
     }
 }
 
-#myModal {
-    overflow: hidden;
-}
-
-#modal-text {
-    float: left;
-    width: 78%;
-}
-
-#modal-mascot {
-    float:right;
-    width: 20%;
-}
-
 /*****************/
 /* Tab structure */
 /*****************/
@@ -49,77 +35,10 @@
     background-color: #a0c53a;
 }
 
-.tab {
-    list-style: none;
-    width: 100%;
-    height: 40px;
-    padding-top: 10px;
-}
-
-.tab input[type=radio] {
-    display:none;
-    margin: 0;
-}
-
-.tab input[type=radio] + label {
-    text-align: left;
-    margin: 0;
-    display: block;
-    padding: 5px 0px 5px 5px;
-    font-weight: bold;
-    width: 100%;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
-}
-
-.tab label img {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-}
-
-.tab label span {
-    line-height: 20px;
-}
-
-.tab label:hover {
-    background: rgba(255, 255, 255, 0.5);
-}
-
-.tab input[type=radio]:checked + label {
-    background: rgba(255, 255, 255, 1.0);
-    opacity: 1;
-}
-
 #tab_panes {
     height: 100%;
     width: 85%;
     float:left;
-}
-
-.tab_pane {
-    position:relative;
-    z-index: 2;
-    text-align: left;
-    width: 100%;
-    height: 100%;
-    font-size: 20px;
-    line-height: 140%;
-    padding: 20px 0px 0px 30px;
-    background-color: white;
-    box-sizing: border-box;
-    -webkit-animation-duration: 0.5s;
-    -o-animation-duration: 0.5s;
-    -moz-animation-duration: 0.5s;
-    animation-duration: 0.5s;
-    overflow: auto;
-}
-
-.tab_break {
-    width: auto;
-    height: 20px;
 }
 
 /***************/
@@ -253,10 +172,17 @@
 }
 
 .direct_drive_button {
+    display: inline;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center;
     background-size: 45px 45px;
+    background-color: transparent;
     width: 50px;
     height: 50px;
     position: absolute;
+    padding: 2px;
+    transition: background-size 0.3s;
 }
 
 .direct_drive_button:hover,
@@ -264,6 +190,8 @@
 { 
     background-color: rgba(240,240,240,0.3);
     background-size: 50px 50px;
+    background-color: transparent;
+    border: none;
 }
 
 #go  {

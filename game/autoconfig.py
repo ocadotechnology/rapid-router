@@ -11,9 +11,21 @@ SETTINGS = {
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'nuit',
+        'foundation_scss',
+        'foundation_icons',
+        'bourbon',
+        'compressor',
         'rest_framework',
     ],
-    'NUIT_GLOBAL_TITLE': "Rapid Router",
-    'NUIT_GLOBAL_LINK': "/game/",
+    'COMPRESS_ENABLED': True,
+    'COMPRESS_PRECOMPILERS': [
+        ('text/x-sass', 'sass {infile} {outfile}'),
+        ('text/x-scss', 'sass {infile} {outfile}'),
+    ],
+    'STATICFILES_FINDERS': [
+        'compressor.finders.CompressorFinder',
+    ],
+    'TEMPLATE_CONTEXT_PROCESSORS': [
+        'django.core.context_processors.request',
+    ],
 }

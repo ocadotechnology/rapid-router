@@ -70,6 +70,20 @@ ocargo.messages = {
         "Don't forget to choose a name and fuel limit for your level! It will " +
         "make sharing it with others much easier for you.",
     levelEditorTitle: "Welcome to the Level Editor!",
+    notLoggedIn: "Unfortunately you need to be logged in to share levels.",
+    internetDown: "Could not connect to server. Your internet might not be working properly.",
+    notSaved: "Please save your level before continuing!",
+    changesSinceLastSave: "Please save your latest changes!",
+    saveOverwriteWarning: function(newName, onNoFunction, onYesFunction) {
+        return "Level " + newName + " already exists. Are you sure you want to overwrite it? THIS DOESN'T WORK" + 
+        "<br><br>" + 
+        '<button onclick="onYesFunction(); document.getElementById(' + '"close-modal"' +').click();">Yes</button>' +
+        '<button onclick=document.getElementById(' + '"close-modal"' +').click();">No</button>';
+    },
+    saveSuccesful: "Your level has been succesfully saved!",
+    shareSuccessful: function(name) {
+        return "Your level has been succesfully shared with " + name + "!";
+    },
 
     /* Scoring */
     totalScore: function(score, maxScore) {

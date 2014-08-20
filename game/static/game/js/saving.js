@@ -126,7 +126,7 @@ ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
         success: function(json) {
         	callback(null, json.ownedLevels, json.sharedLevels);
         },
-        error: function(xhr,errmsg,err) {
+        error: function(xhr, errmsg, err) {
         	callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
@@ -146,7 +146,22 @@ ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
     });
 };
 
-ocargo.Saving.prototype.deleteLevel = function(id, callback) {
+ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
+    $.ajax({
+        url: "/game/level_editor/level/random",
+        type: "GET",
+        dataType: 'json',
+        data: data,
+        success: function(json) {
+            callback(null, json);
+        },
+        error: function(xhr, errmsg, err) {
+           callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+}
+
+ ocargo.Saving.prototype.deleteLevel = function(id, callback) {
 	$.ajax({
         url: '/game/level_editor/level/delete/' + id,
         type: 'POST',
@@ -159,12 +174,41 @@ ocargo.Saving.prototype.deleteLevel = function(id, callback) {
     });
 };
 
-ocargo.Saving.prototype.saveLevel = function(data, callback) {
+ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
 	$.ajax({
-        url: '/game/level_editor/level/save',
+        url: '/game/level_editor/level/save' + (id ? '/' + id : ''),
         type: 'POST',
         dataType: 'json',
-        data: data,
+        data: level,
+        success: function(json) {
+            callback(null, json.levelID);
+        },
+        error: function(xhr,errmsg,err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+};
+
+ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {
+    $.ajax({
+        url: '/game/level_editor/level/get_sharing_information/' + levelID,
+        type: 'GET',
+        dataType: 'json',
+        success: function(json) {
+            callback(null, json.recipientData, json.role);
+        },
+        error: function(xhr,errmsg,err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+};
+
+ocargo.Saving.prototype.shareLevel = function(levelID, recipientData, callback) {
+    $.ajax({
+        url: '/game/level_editor/level/share/' + levelID,
+        type: 'POST',
+        dataType: 'json',
+        data: recipientData,
         success: function(json) {
             callback(null, json.newID);
         },
