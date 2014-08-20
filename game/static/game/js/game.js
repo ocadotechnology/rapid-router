@@ -209,7 +209,6 @@ ocargo.Game.prototype.setupTabs = function() {
             // reset blockly to python converter
             Blockly.Python.init();
             ocargo.controller = ocargo.blocklyControl;
-            ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
         });
 
         currentTabSelected = tabs['blockly'];
@@ -454,6 +453,9 @@ ocargo.Game.prototype.setupTabs = function() {
                 tabs['big_code_mode'].setContents('/static/game/image/icons/big_code_mode.svg', "Shrink");
                 ocargo.blocklyControl.increaseBlockSize();
             }
+
+            // Note that showFlyout is misnamed and actually toggles the flyout.
+            // So these two lines force the flyout to refresh and be the correct size.
             ocargo.blocklyControl.showFlyout();
             ocargo.blocklyControl.showFlyout();
 
