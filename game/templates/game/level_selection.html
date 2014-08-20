@@ -35,6 +35,8 @@
 			        <p><a href="/game/{{level.id}}">{{level.id}}: {{level.title.strip}}</a> 
 			        {% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/20{% endif %}</span></p>
 			        {% endfor %}
+			        
+			        <p><a href="levels/random/{{episode.id}}">Random: Try your hand at a random level.</a></p>
 			    </div>
 			    {% endfor %}
 			</div>

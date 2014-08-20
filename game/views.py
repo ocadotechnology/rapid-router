@@ -67,7 +67,8 @@ def levels(request):
                 "title": get_level_title(level.id),
                 "score": get_attempt_score(level)})
 
-        e = {"name": episode.name,
+        e = {"id": episode.id,
+             "name": episode.name,
              "levels": levels}
 
         episode_data.append(e)
