@@ -804,63 +804,55 @@ def generate_random_map_for_editor(request):
 
 
 def get_sharing_information_for_editor(request, levelID):
-    """ Returns a information about who the level can be shared with (valid_recipients)
-        and who the level is shared with (active_recipients) """ 
+    """ Returns a information about who the level can be and is shared with """ 
     level = Level.objects.get(id=levelID)
 
     valid_recipients = []
-    active_recipients = []
     role = 'anonymous'
 
     if not request.user.is_anonymous():
         profile = request.user.userprofile
         
+        print("hi!")
+        print(profile.__dict__)
+        print(level.owner.__dict__)
         if level.owner == profile:
-            valid_recipients = get_all_valid_recipients(profile)
-            active_recipients = get_all_active_recipients(level)
+            valid_recipients = get_all_valid_recipients(profile, level)
 
             if hasattr(profile,'student'):
                 role = 'student'
             if hasattr(profile,'teacher'):
                 role = 'teacher'
 
-            
-    recipient_data = {'validRecipients': valid_recipients, 'activeRecipients': active_recipients}
-    data = {'recipientData': recipient_data, 'role': role}
+    data = {'validRecipients': valid_recipients, 'role': role}
 
     return HttpResponse(json.dumps(data), content_type='application/javascript')
 
 
 def share_level_for_editor(request, levelID):
     """ Shares a level with the provided list of recipients """
-    recipientIDs = request.POST['recipientIDs']
+    recipientIDs = request.POST.getlist('recipientIDs[]')
+    action = request.POST.get('action')
 
     level = Level.objects.get(id=levelID)
     recipients = User.objects.filter(id__in=recipientIDs)
     sharer = level.owner
 
-    if sharer == request.user.userprofile and is_valid_recipient(recipient.userprofile, sharer):
-        level.shared_with.add(recipient.userprofile)
-
+    if sharer == request.user.userprofile:
+        for recipient in recipients:
+            if is_valid_recipient(recipient.userprofile, sharer):
+                if action == 'share':
+                    level.shared_with.add(recipient.userprofile.user)
+                elif action == 'unshare':
+                    level.shared_with.remove(recipient.userprofile.user)
+                        
+    return get_sharing_information_for_editor(request, levelID);
 
 #######################
 # Sharing permissions #
 #######################
 
-def get_all_active_recipients(level):
-    """ Returns the list of recipients the level is shared with
-    minus those who the owner of the level cannot currently share with.
-
-    The last is needed because for example students switching classes."""
-
-    active_recipients = []
-
-    for recipient in level.shared_with.all():
-        if is_valid_recipient(recipient.userprofile, level.owner):
-            active_recipients.append({'id': recipient.id, 'name': recipient.first_name})
-
-
-def get_all_valid_recipients(userprofile):
+def get_all_valid_recipients(userprofile, level):
     valid_recipients = {}
 
     if hasattr(userprofile, 'student'):
@@ -870,27 +862,37 @@ def get_all_valid_recipients(userprofile):
         class_ = student.class_field
         classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
         valid_recipients['classmates'] = [{'id': classmate.user.user.id, 
-                                            'name': classmate.user.user.first_name + " " + classmate.user.user.last_name}
+                                            'name': classmate.user.user.first_name + " " + classmate.user.user.last_name,
+                                            'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
                                              for classmate in classmates]
 
         # Then add their teacher as well
         teacher = class_.teacher
         valid_recipients['teacher'] = {'id': teacher.user.user.id,
-                                     'name': teacher.title + " " + teacher.user.user.last_name}
+                                    'name': teacher.title + " " + teacher.user.user.last_name,
+                                    'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
 
     elif hasattr(userprofile, 'teacher'):
         teacher = userprofile.teacher
 
         # First get all the students they teach
-        valid_recipients['classes'] = {}
+        valid_recipients['classes'] = []
         classes_taught = Class.objects.filter(teacher=teacher)
         for class_ in classes_taught:
             students = Student.objects.filter(class_field=class_)
-            valid_recipients['classes'][class_.name] = [{'id': student.user.user.id, 'name': student.user.user.first_name + " " + student.user.user.last_name} for student in students]
+            valid_recipients['classes'].append({'name': class_.name,
+                                                'id': class_.id,
+                                                'students': [{'id': student.user.user.id, 
+                                                            'name': student.user.user.first_name + " " + student.user.user.last_name,
+                                                            'shared': level.shared_with.filter(id=student.user.user.id).exists()}
+                                                            for student in students]});
 
         # Then add all the teachers at the same organisation
         fellow_teachers = Teacher.objects.filter(school=teacher.school)
-        valid_recipients['teachers'] = [{'id': teacher.user.user.id, 'name': teacher.user.user.first_name + " " + teacher.user.user.last_name} for teacher in fellow_teachers]
+        valid_recipients['teachers'] = [{'id': teacher.user.user.id,
+                                         'name': teacher.user.user.first_name + " " + teacher.user.user.last_name,
+                                         'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
+                                         for teacher in fellow_teachers]
 
     return valid_recipients;
 
@@ -940,8 +942,7 @@ def setLevelDecor(level, decorString):
 
 
 def parseDecor(theme, levelDecors):
-    """ Helper method parsing decor into a format 'sendable' to javascript.
-    """
+    """ Helper method parsing decor into a format 'sendable' to javascript. """
     decorData = []
     for levelDecor in levelDecors:
         decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)

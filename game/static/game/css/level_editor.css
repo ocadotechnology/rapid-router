@@ -175,3 +175,19 @@ input[type="radio"].character_radio {
 #levelNameInput {
     max-width: 100px;
 }
+
+/*************/
+/* Share tab */
+/*************/
+
+.share_cell[status='shared'] {
+    color: green;
+}
+
+.share_cell[status='unshared'] {
+    color: red;
+}
+
+.share_cell[status='pending'] {
+    color: gray;
+}

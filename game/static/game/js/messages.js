@@ -81,9 +81,7 @@ ocargo.messages = {
         '<button onclick=document.getElementById(' + '"close-modal"' +').click();">No</button>';
     },
     saveSuccesful: "Your level has been succesfully saved!",
-    shareSuccessful: function(name) {
-        return "Your level has been succesfully shared with " + name + "!";
-    },
+    shareSuccessful: "Your level has been succesfully shared!",
 
     /* Scoring */
     totalScore: function(score, maxScore) {

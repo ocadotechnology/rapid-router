@@ -195,7 +195,7 @@ ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {
         type: 'GET',
         dataType: 'json',
         success: function(json) {
-            callback(null, json.recipientData, json.role);
+            callback(null, json.validRecipients, json.role);
         },
         error: function(xhr,errmsg,err) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
@@ -210,7 +210,7 @@ ocargo.Saving.prototype.shareLevel = function(levelID, recipientData, callback) 
         dataType: 'json',
         data: recipientData,
         success: function(json) {
-            callback(null, json.newID);
+            callback(null, json.validRecipients, json.role);
         },
         error: function(xhr,errmsg,err) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);

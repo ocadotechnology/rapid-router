@@ -411,24 +411,17 @@
             <p>Here you can share your level with your pupils or your fellow teachers</p>
             
             <p>Share with:</p>
-            <input type="radio" name="sharing_recipient" id="classes_radio">
+            <input type="radio" name="sharing_recipient" id="classes_radio" checked>
             <label for="classes_radio">Classes:</label>
 
-            <input type="radio" name="sharing_recipient" id="teachers_radio" checked>
+            <input type="radio" name="sharing_recipient" id="teachers_radio">
             <label for="teachers_radio">Teachers:</label>
             
-            <div id='class selection'>
-              <select id="class_select"></select>
-              <select id="student_select"></select>
-            </div>
-
-            <div id='teacher_selection'>
-              <select id="teacher_select"></select>
-            </div>
+            <select id="class_select"></select>
           </div>
 
           <div id='pupil_sharing'>
-            <p>Here you can share your level with your classmates!</p>
+            <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
           </div>
 
           <div id="shared_levels">
@@ -439,16 +432,10 @@
             </div>
           </div>
 
-          <button class="navigation_button" id="shareLevel">
+          <button class="navigation_button" id="shareToAll">
             <image src="/static/game/image/icons/share.svg"></image>
-            <span>Share</span>
+            <span>Share with all</span>
           </button>
-
-          <button class="navigation_button" id="shareLevel">
-            <image src="/static/game/image/icons/quit.svg"></image>
-            <span>Unshare</span>
-          </button>
-          
         </div>
 
         <div id="help_pane" class="tab_pane"></div>
