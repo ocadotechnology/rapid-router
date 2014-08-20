@@ -37,11 +37,6 @@ def levels(request):
 
     :template:`game/level_selection.html`
     """
-    bgcolour = 'rgba(171, 196, 37, {:f})'
-
-    episodes = Episode.objects.all()
-    ratio = 1.0 / (len(episodes) + 1)
-
     def get_level_title(i):
         title = 'title_level' + str(i)
         try:
@@ -52,16 +47,15 @@ def levels(request):
 
     def get_attempt_score(lvl):
         user = request.user
-        score = "    "
         if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
                 hasattr(request.user.userprofile, 'student'):
             try:
                 student = user.userprofile.student
                 attempt = get_object_or_404(Attempt, level=lvl, student=student)
-                score = attempt.score
+                return attempt.score
             except Http404:
                 pass
-        return score
+        return None
 
     episode_data = []
     episode = Episode.objects.get(name='Getting Started')
@@ -70,23 +64,17 @@ def levels(request):
         for level in episode.levels:
             levels.append({
                 "id": level.id,
-                "name": level.name,
                 "title": get_level_title(level.id),
                 "score": get_attempt_score(level)})
-        opacity = (len(episode_data) + 1) * ratio
-        colour = bgcolour.format(opacity)
 
-        e = {"id": episode.id,
-             "name": episode.name,
-             "colour": colour,
-             "levels": levels,
-             "opacity": opacity}
+        e = {"name": episode.name,
+             "levels": levels}
 
         episode_data.append(e)
         episode = episode.next_episode
 
     context = RequestContext(request, {
-        'episodeData': json.dumps(episode_data),
+        'episodeData': episode_data,
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
@@ -113,7 +101,6 @@ def level(request, level):
     lvl = cached_level(level)
     blocks = lvl.blocks.order_by('id')
     attempt = None
-    lesson = None
 
     if not lvl.default and lvl.owner is not None and \
             (request.user.is_anonymous() or (request.user != lvl.owner.user and
@@ -918,7 +905,7 @@ def is_valid_recipient(recipient_profile, sharer_profile):
         # Are they in the same organisation?
         return recipient_profile.teacher.school == sharer_profile.teacher.school
     else:
-        return Ffalse;
+        return False;
 
 
 ##################
