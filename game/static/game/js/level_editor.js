@@ -330,7 +330,7 @@ ocargo.LevelEditor = function() {
                     populateLoadSaveTable("loadOwnLevelTable", ownLevels);
 
                     // Add click listeners to all rows
-                    $('#loadOwnLevelTable tr').on('click', function(event) {
+                    $('#loadOwnLevelTable tr[value]').on('click', function(event) {
                         $('#loadOwnLevelTable tr').css('background-color', '#FFFFFF');
                         $('#loadSharedLevelTable tr').css('background-color', '#FFFFFF');
                         $(this).css('background-color', '#C0C0C0');
@@ -342,7 +342,7 @@ ocargo.LevelEditor = function() {
                     populateLoadSaveTable("loadSharedLevelTable", sharedLevels);
 
                     // Add click listeners to all rows
-                    $('#loadSharedLevelTable tr').on('click', function(event) {
+                    $('#loadSharedLevelTable tr[value]').on('click', function(event) {
                         $('#loadOwnLevelTable tr').css('background-color', '#FFFFFF');
                         $('#loadSharedLevelTable tr').css('background-color', '#FFFFFF');
                         $(this).css('background-color', '#C0C0C0');
@@ -365,10 +365,16 @@ ocargo.LevelEditor = function() {
             $('#own_levels_radio').change(function() {
                 $('#loadOwnLevelTable').css('display','table');
                 $('#loadSharedLevelTable').css('display','none');
+
+                if(selectedLevel) {
+                    $('#deleteLevel').attr('disabled', false);
+                }
             });
             $('#shared_levels_radio').change(function() {
                 $('#loadOwnLevelTable').css('display','none');
                 $('#loadSharedLevelTable').css('display','table');
+
+                $('#deleteLevel').attr('disabled', true);
             });
             $('#own_levels_radio').change();
 
@@ -500,12 +506,12 @@ ocargo.LevelEditor = function() {
 
             // Setup the teachers/classes radio buttons for the teacher panel
             $('#classes_radio').change(function() {
-                $('#class_select').css('display','block');
+                $('#class_selection').css('display','block');
                 $('#class_select').val(currentClassID);
                 $('#class_select').change();
             });
             $('#teachers_radio').change(function() {
-                $('#class_select').css('display','none');
+                $('#class_selection').css('display','none');
                 populateSharingTable(fellowTeachers);
             });
             $('#classes_radio').change();

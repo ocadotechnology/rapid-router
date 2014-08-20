@@ -347,11 +347,12 @@
         <div id="load_pane" class="tab_pane">
           <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/load.svg'></image>Load</h2>
 
+          <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
+
           <input type="radio" name="type_of_loaded_levels" id="own_levels_radio" checked>
           <label for="own_levels_radio">Your own levels</label>
-          <br>
           <input type="radio" name="type_of_loaded_levels" id="shared_levels_radio">
-          <label for="shared_levels_radio">Levels shared with you</label>
+          <label for="shared_levels_radio">Shared levels</label>
 
           <div id="loading_tables">
             <div id="own_levels">
@@ -411,14 +412,18 @@
           <div id='teacher_sharing'>
             <p>Here you can share your level with your pupils or your fellow teachers</p>
             
-            <p>Share with:</p>
-            <input type="radio" name="sharing_recipient" id="classes_radio" checked>
-            <label for="classes_radio">Classes:</label>
+            <p>
+              Share with:
+              <input type="radio" name="sharing_recipient" id="classes_radio" checked>
+              <label for="classes_radio">Classes</label>
+              
+              <input type="radio" name="sharing_recipient" id="teachers_radio">
+              <label for="teachers_radio">Teachers</label>
+            </p>
 
-            <input type="radio" name="sharing_recipient" id="teachers_radio">
-            <label for="teachers_radio">Teachers:</label>
-            
-            <select id="class_select"></select>
+            <p id="class_selection">
+              Class: <select id="class_select"></select>
+            </p>
           </div>
 
           <div id='student_sharing'>

@@ -179,6 +179,15 @@ input[type="radio"].character_radio {
 /* Share tab */
 /*************/
 
+#class_select {
+    width: 100px;
+    padding-left: 15px;
+}
+
+#classes_radio {
+    margin-left: 15px;
+}
+
 tr[status='shared'] .share_cell {
     color: green;
 }
