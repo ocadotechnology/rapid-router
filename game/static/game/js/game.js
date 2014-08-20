@@ -80,7 +80,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
             url : '/game/submit',
             type : 'POST',
             data : {
-                csrfmiddlewaretoken : $( '#csrfmiddlewaretoken' ).val(),
+                csrfmiddlewaretoken : $.cookie('csrftoken'),
                 level : LEVEL_ID,
                 score : score,
                 workspace : ocargo.blocklyControl.serialize(),
@@ -480,6 +480,7 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupPrintTab() {
         tabs['print'].setOnChange(function() {
             currentTabSelected.select();
+            window.print()
         });
     }
 

@@ -273,7 +273,7 @@ ocargo.LevelEditor = function() {
                             loopiness: $('#loopiness').val()/10,
                             curviness: $('#curviness').val()/10,
                             trafficLightsEnabled: $('#trafficLightsEnabled').prop('checked'),
-                            csrfmiddlewaretoken: $("#csrfmiddlewaretoken").val()};
+                            csrfmiddlewaretoken: $.cookie('csrftoken')};
 
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
                     if(error) {
@@ -673,7 +673,7 @@ ocargo.LevelEditor = function() {
                 transitionTab(tabs['help']);
             });
 
-            $('#help.tab_pane').html(ocargo.messages.levelEditorHelpText);
+            $('#help_pane').html(ocargo.messages.levelEditorHelpText);
         }
 
         function setupQuitTab() {
