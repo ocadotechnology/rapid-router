@@ -155,8 +155,7 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
         return squares
 
 
-
-    nodes = [Node(random.randint(0, WIDTH-1), random.randint(0, HEIGHT-1))]
+    nodes = [Node(random.randrange(1, WIDTH-1), random.randrange(1, HEIGHT-1))]
     index_by_node = {nodes[0]: 0}
 
     connections = defaultdict(list)
