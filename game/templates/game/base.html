@@ -1,12 +1,8 @@
-{% extend 'portal/base.html' %}
+{% extends 'portal/base.html' %}
 {% load static %}
 {% load app_tags %}
 
 {% load compress %}
-
-{% block css %}
-<link rel="stylesheet" type="text/css" href='{% static "game/css/ocargo.css" %}'>
-{% endblock %}
 
 {% block title %}Code for Life - Rapid Router{% endblock %}
 
