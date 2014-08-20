@@ -20,11 +20,12 @@ ocargo.Tab = function(radioElement, labelElement, paneElement) {
     this.setOnChange = function(onChangeCall) {
         this.setEnabled = function(enabled) {
             if(enabled) {
+                radioElement.off('change')
                 radioElement.change(onChangeCall);
                 radioElement.attr('disabled', false);
             }
             else {
-                radioElement.change(new function(){});
+                radioElement.off('change')
                 radioElement.attr('disabled', true);
             }
         }
