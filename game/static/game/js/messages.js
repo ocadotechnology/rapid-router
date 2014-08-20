@@ -1,46 +1,48 @@
+
 var ocargo = ocargo || {};
 
 //FIXME: actually use Django's internationalisation framework.
-//FIXME: remove functionality (buttons, JS) from messages.
-ocargo.messages = {
-    tryagain : "Either remove the incorrect blocks or click clear and try again!",
+
+// Object containing helper js objects (buttons etc).
+ocargo.jsElements = {
+    redirectButton: function(location, label) {
+        return '<button onclick="window.location.href=' + location + '">' + label + '</button>';
+    },
     closebutton: function(label) {
         return '<br><br> <button onclick="document.getElementById(' + "'close-modal'" +
         ').click()">' + label +'</button>';
     },
-    nextLevelButton: function(level) {
-        return '<button onclick="window.location.href=' + "'/game/" + level + "'" + 
-            '">Next Level</button>';
-    },
     buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>',
-    nextEpisodeButton: function(episode) {
-        return "Well done, you've completed the episode!<br>" +
-           "Are you ready for the next challenge? <br><br> " +
-           '<button onclick="window.location.href=' + "'/game/episode/" + episode +
-            "'" + '"">Next episode</button> </center>' + '<button onclick="window.location.href=' +
-            "'/home/'" + '"">Home</button>';
-    },
-    lastLevel: "Congratulations, that's all we've got for you for now! <br>" +
-        "Why not try creating your own road? <br><br> <button onclick=" +
-        '"window.location.href=' + "'/game/level_editor'" + 
-        '"">Create your own map!</button> </center>' + '<button onclick="window.location.href=' +
-        "'/home/'" + '"">Home</button>',
+};
 
-    tooManyBlocks: "You used too many blocks!",
+ocargo.messages = {
+    nextEpisode: function(episode) {
+        return "Well done, you've completed the episode! <br> Are you ready for the next " + 
+            "challenge? <br><br>" + 
+            ocargo.jsElements.redirectButton("'/game/episode/" + episode + "'", 'Next episode') + " " +
+            ocargo.jsElements.redirectButton("'/game/'", "Home");
+    },
+
+    lastLevel: "Congratulations, you’ve completed the game! Carry on the fun by creating your " +
+        "own map. <br><br>" +
+        ocargo.jsElements.redirectButton("'/game/level_editor'", "Create your own map!") + " " +
+        ocargo.jsElements.redirectButton("'/game/'", "Home"),
+
+    tooManyBlocks: "Whoops! You used too many blocks.",
     ohNo: "Oh no!",
     winTitle: "You win!",
-    failTitle: "Oh dear! :(",
+    failTitle: "Oh dear! ",
     tryagainLabel: "Try again",
     needHint: "Are you stuck? Need a hint?",
     terminated: "Program terminated!",
     crashed: "Your program crashed!",
-    compilationError: "Your program doesn't look quite right!",
+    compilationError: "Your program doesn't look quite right...",
     stoppingTitle: "Stopping...",
 
     outOfFuel : "You ran out of fuel! Try to find a shorter path to the destination.",
-    outOfInstructions: "You ran out of instructions without reaching your destination!",
-    throughRedLight: "You just directed the van through a red traffic light! Stick to the " +
-        "highway code!",
+    outOfInstructions: "The van ran out of instructions before it reached the house.",
+    throughRedLight: "Uh oh, you just sent the van through a red light! Stick to the Highway " +
+        "Code - the van must wait for green.",
     offRoad : function(correctSteps){
         if (correctSteps === 1) {
             return "Your first move worked.";
@@ -50,11 +52,11 @@ ocargo.messages = {
         }
     },
 
-    /* Level editor */
+    // Level editor.
     noStartOrEndSubtitle: "You forgot to mark the start and end points.",
     noStartOrEnd: "Click on the 'Mark Start' or 'Mark End' then select the road of the segment " +
         "you want to serve as the starting or ending point.",
-    somethingWrong: "Something is wrong.", 
+    somethingWrong: "Something is wrong...", 
     noStartEndRouteSubtitle: "There is no way to get from the starting point to the destination.",
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
     levelEditorMobileSubtitle: "Click on the point you want this part of the road to start and, " +
@@ -81,21 +83,21 @@ ocargo.messages = {
         '<button onclick="onYesFunction(); document.getElementById(' + '"close-modal"' +').click();">Yes</button>' +
         '<button onclick=document.getElementById(' + '"close-modal"' +').click();">No</button>';
     },
-    shareSuccessful: "Your level has been succesfully shared!",
+    shareSuccessful: "Your level has been successfully shared!",
 
-    /* Scoring */
+    // Scoring.
     totalScore: function(score, maxScore) {
         return "Your total score: " + score + "/" + maxScore;
     },
-    pathScore: "Travelled path score: ",
-    pathLonger: "Try finding a shorter path to reach the destination.",
+    pathScore: "Route score: ",
+    pathLonger: "Try finding a shorter path to the destination.",
     algorithmScore: "Algorithm score: ",
-    algorithmLonger: "Try creating a smaller program to improve the score",
-    algorithmShorter: "That's not exactly the solution we wanted you to come up with. Read the " +
-        "level instructions for more information.",
+    algorithmLonger: "Try creating a simpler program.",
+    algorithmShorter: "That solution isn't quite right. Read the level instructions and hints " +
+        "for clues.",
     scorePerfect: "Congratulations! You've aced it.",
-    
-    /* Malformed program */
+
+    // Malormed program.
     whileConditionError: "Perhaps try looking at your 'repeat' blocks?",
     whileBodyError: "Perhaps try looking at your 'repeat' blocks?",
     ifConditionError: "Perhaps try looking at your 'if' blocks?",
@@ -104,19 +106,4 @@ ocargo.messages = {
     procDupNameError: "Perhaps try checking the names of your 'define' blocks?",
     procCallNameError: "Perhaps try checking the names in your 'call' blocks?",
 
-    buttonHelp: '<div id="buttonHelp">\
-                    <p><img src="/static/game/image/buttons/menu/play.svg" alt="Play" /> Plays your program</p>\
-                    <p><img src="/static/game/image/buttons/menu/pause.svg" alt="Pause" /> Pauses your program</p>\
-                    <p><img src="/static/game/image/buttons/menu/stop.svg" alt="Stop" /> Stops your program</p>\
-                    <p><img src="/static/game/image/buttons/menu/step.svg" alt="Step" /> Steps to the next command in your program</p>\
-                    <p><img src="/static/game/image/buttons/menu/save.svg" alt="Save" /> Saves your program</p>\
-                    <p><img src="/static/game/image/buttons/menu/load.svg" alt="Load" /> Loads your program</p>\
-                    <p><img src="/static/game/image/buttons/menu/clear.svg" alt="Clear" /> Clears your program, removing all instructions</p>\
-                    <p><img src="/static/game/image/buttons/menu/toggle_console.svg" alt="Toggle Console" /> Switches between Blockly and Python</p>\
-                    <p><img src="/static/game/image/buttons/menu/big_code_mode.svg" alt="Big Code Mode" /> Makes Blockly blocks bigger</p>\
-                    <p><img src="/static/game/image/buttons/menu/help.svg" alt="Show Help" /> Shows level hints and button help</p>\
-                    <p><img src="/static/game/image/buttons/menu/muted.svg" alt="Muted / Unmute" /> Shows that the game is muted (click to unmute)</p>\
-                    <p><img src="/static/game/image/buttons/menu/unmuted.svg" alt="Unmuted / Mute" /> Shows that the game is unmuted (click to mute)</p>\
-                    <p><img src="/static/game/image/buttons/menu/quit.svg" alt="Quit" /> Quits the level, returning to the level selection page</p>\
-                  </div>',
 };
