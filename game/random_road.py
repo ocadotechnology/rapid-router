@@ -195,7 +195,7 @@ def generate_traffic_lights(path):
 
     if len(degree3or4Nodes) > 0:
         candidateNodes = degree3or4Nodes   
-    elif len(degree2Nodes) > 0:
+    else:
         candidateNodes = degree2Nodes
 
     numberOfJunctions = max(int(len(candidateNodes)*PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS/100.0), 1)
