@@ -86,19 +86,21 @@ def levels(request):
         episode = episode.next_episode
 
     owned_levels = []
-    for level in Level.objects.filter(owner=request.user.userprofile):
-        owned_levels.append({
-            "id": level.id,
-            "title": level.name,
-            "score": get_attempt_score(level)})
-    
     shared_levels = []
-    for level in request.user.shared.all():
-        shared_levels.append({
-            "id": level.id,
-            "title": level.name,
-            "owner": level.owner.user,
-            "score": get_attempt_score(level)})
+
+    if hasattr(request.user, 'userprofile'):
+        for level in Level.objects.filter(owner=request.user.userprofile):
+            owned_levels.append({
+                "id": level.id,
+                "title": level.name,
+                "score": get_attempt_score(level)})
+
+        for level in request.user.shared.all():
+            shared_levels.append({
+                "id": level.id,
+                "title": level.name,
+                "owner": level.owner.user,
+                "score": get_attempt_score(level)})
 
     context = RequestContext(request, {
         'episodeData': episode_data,
