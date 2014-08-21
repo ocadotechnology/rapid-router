@@ -90,7 +90,7 @@
 <div id="wrapper" class="unselectable">
   <div id="tools" class="col">
 
-    <div id="buttons" class="table unselectable">
+    <div id='title'>
       <h1>Level editor</h1>
     </div>
 
@@ -193,269 +193,266 @@
 
       </div>
 
-      <div id="tab_panes">
-        <div id="map_pane" class="tab_pane">
-          
-          <div class="table">
-            <div class="table_row">
-              <div class="table_cell field_label"><p>Name:</p></div>
-              <div class="table_cell field_value"><input class="field_value" type="text" id="level_name" value="test_name"></div>
-            </div>
-
-            <div class="table_row">
-              <div class="table_cell field_label"><p class="field_label">Max fuel:</p></div>
-              <div class="table_cell field_value"><input class="field_value" type="number" id="max_fuel" value="50"></div>
-            </div>
-          </div>
-          
-
-          <button class="navigation_button fixed_size" id="add_road">
-            <image src="/static/game/image/icons/add_road.svg"/>
-            <span>Add road</span>
-          </button>
-
-          <button class="navigation_button fixed_size" id="delete_road">
-            <image src="/static/game/image/icons/delete_road.svg"/>
-            <span>Delete road</span>
-          </button>
-
-          <button class="navigation_button fixed_size" id="start">
-            <image src="/static/game/image/icons/origin.svg"/>
-            <span>Mark start</span>
-          </button>
-
-          <button class="navigation_button fixed_size" id="end">
-            <image src="/static/game/image/icons/destination.svg"/>
-            <span>Mark end</span>
-          </button>
-
-          <button class="navigation_button fixed_size" id="clear">
-            <image src="/static/game/image/icons/clear.svg"/>
-            <span>Clear all</span>
-          </button>
-        </div>
-
-        <div id="decor_pane" class="tab_pane">
-          <div class="table">
-            <div class="table_row">
-              <div class="table_cell field_label"><p>Theme</p></div>
-              <div class="table_cell field_value">
-                <select id="theme_select">
-                  {% for theme in themes %}
-                    <option value="{{theme.name}}">{{theme.name}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-
-            <div class="table_row">
-              <div class="table_cell">
-                <div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></div>
-              </div>
-              <div class="table_cell">
-                <div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div>
-              </div>
-            </div>
-            <div class="table_row">
-              <div class="table_cell">
-                <div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div>
-              </div>
-              <div class="table_cell">
-                <div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div>
-              </div>
-            </div>
-            <div class="table_row">
-              <div class="table_cell">
-                <div class="decor_div"><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></div>
-              </div>
-              <div class="table_cell">
-                <div class="decor_div"><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></div>
-              </div>
-            </div>
-          </div>
-
-          <button class="navigation_button" id="move_decor">
-            <image src="/static/game/image/icons/delete_decor.svg"/>
-            <span>Move decor</span>
-          </button>
-
-          <button class="navigation_button" id="delete_decor">
-            <image src="/static/game/image/icons/delete_decor.svg"/>
-            <span>Delete decor</span>
-          </button>
-        </div>
-
-        <div id="character_pane" class="tab_pane">
-          <form name="character-form" id="character-form">
-            {% for char in characters %}
-            <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
-            <label for="{{char.name}}_radio">
-              <img class="character" src="{{char.en_face}}" width="122" height='122'>
-            </label>
-            <br>
-            {% endfor %}
-          </form>
-        </div>
-
-        <div id="blocks_pane" class="tab_pane">
-          <div class="block_table">
-            <div class="table_row">
-
-              <div class="table_cell">
-                <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
-              </div>
-              <div>
-                <label id="select_all_label" for="select_all_checkbox"> Select all</label>
-              </div>
-            </div>
-
-            {% for block in blocks %}
+      <div id='tab_panes_wrapper'>
+        <div id="tab_panes">
+          <div id="map_pane" class="tab_pane">
+            
+            <div class="table">
               <div class="table_row">
-                <div class="table_cell">
-                  <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
-                </div>
-                <div id="{{block.type}}_image" class="table_cell unselectable"></div>
-              </div>
-            {% endfor %}  
-          </div>
-        </div>
-
-        <div id="random_pane" class="tab_pane">
-          <div class="table">
-            <div class="table_row">
-              <div class="table_cell field_label"><p>Size:</p></div>
-              <div class="table_cell field_value"><input type="number" id="size" value="15" size="4" min="1" max="40"></div>
-            </div>
-
-            <div class="table_row">
-              <div class="table_cell field_label"><p>Branchiness:</p></div>
-              <div class="table_cell field_value"><input type="number" id="branchiness" value="2" size="4" min="0" max="10"></div>
-            </div>
-
-            <div class="table_row">
-              <div class="table_cell field_label"><p>Loopiness:</p></div>
-              <div class="table_cell field_value"><input type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
-            </div>
-
-            <div class="table_row">
-              <div class="table_cell field_label"><p>Curviness:</p></div>
-              <div class="table_cell field_value"><input type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
-            </div>
-
-            <div class="table_row">
-              <div class="table_cell field_label"><p>Traffic Lights:</p></div>
-              <div class="table_cell field_value"><input type="checkbox" id="trafficLightsEnabled" checked class="block_checkbox"></div>
-            </div>
-          </div>
-
-          <button class="navigation_button" id="generate">
-            <image src="/static/game/image/icons/random.svg"></image>
-            <span>Generate</span>
-          </button>
-        </div>
-
-        <div id="load_pane" class="tab_pane">
-          <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/load.svg'></image>Load</h2>
-
-          <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
-
-          <input type="radio" name="type_of_loaded_levels" id="own_levels_radio" checked>
-          <label for="own_levels_radio">Your own levels</label>
-          <input type="radio" name="type_of_loaded_levels" id="shared_levels_radio">
-          <label for="shared_levels_radio">Shared levels</label>
-
-          <div id="loading_tables">
-            <div id="own_levels">
-              <div class="scrolling-table-wrapper">
-                <div class="scrolling-table">
-                  <table id="loadOwnLevelTable"></table>
-                </div>
+                <div class="table_cell field_label"><p class="field_label">Max fuel:</p></div>
+                <div class="table_cell field_value"><input class="field_value" type="number" id="max_fuel" value="50"></div>
               </div>
             </div>
             
-            <div id="shared_levels">
-              <div class="scrolling-table-wrapper">
-                <div class="scrolling-table">
-                  <table id="loadSharedLevelTable"></table>
+
+            <button class="navigation_button fixed_size" id="add_road">
+              <image src="/static/game/image/icons/add_road.svg"/>
+              <span>Add road</span>
+            </button>
+
+            <button class="navigation_button fixed_size" id="delete_road">
+              <image src="/static/game/image/icons/delete_road.svg"/>
+              <span>Delete road</span>
+            </button>
+
+            <button class="navigation_button fixed_size" id="start">
+              <image src="/static/game/image/icons/origin.svg"/>
+              <span>Mark start</span>
+            </button>
+
+            <button class="navigation_button fixed_size" id="end">
+              <image src="/static/game/image/icons/destination.svg"/>
+              <span>Mark end</span>
+            </button>
+
+            <button class="navigation_button fixed_size" id="clear">
+              <image src="/static/game/image/icons/clear.svg"/>
+              <span>Clear all</span>
+            </button>
+          </div>
+
+          <div id="decor_pane" class="tab_pane">
+            <div class="table">
+              <div class="table_row">
+                <div class="table_cell field_label"><p>Theme</p></div>
+                <div class="table_cell field_value">
+                  <select id="theme_select">
+                    {% for theme in themes %}
+                      <option value="{{theme.name}}">{{theme.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="table_row">
+                <div class="table_cell">
+                  <div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></div>
+                </div>
+                <div class="table_cell">
+                  <div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div>
+                </div>
+              </div>
+              <div class="table_row">
+                <div class="table_cell">
+                  <div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div>
+                </div>
+                <div class="table_cell">
+                  <div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div>
+                </div>
+              </div>
+              <div class="table_row">
+                <div class="table_cell">
+                  <div class="decor_div"><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></div>
+                </div>
+                <div class="table_cell">
+                  <div class="decor_div"><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <br style="clear:both">
-          
-          <div>
-            <button class="navigation_button" id="deleteLevel">
-              <image src="/static/game/image/icons/clear.svg"></image>
-              <span>Delete</span>
+            <button class="navigation_button" id="move_decor">
+              <image src="/static/game/image/icons/delete_decor.svg"/>
+              <span>Move decor</span>
             </button>
 
-            <button class="navigation_button" id="loadLevel">
-              <image src="/static/game/image/icons/load.svg"></image>
-              <span>Load</span>
+            <button class="navigation_button" id="delete_decor">
+              <image src="/static/game/image/icons/delete_decor.svg"/>
+              <span>Delete decor</span>
             </button>
           </div>
-        </div>
 
-        <div id="save_pane" class="tab_pane">
-          <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/save.svg'></image>Save</h2>
-          <p>Here you can save your new level.</p>
-          <div class="scrolling-table-wrapper">
-            <div class="scrolling-table">
-              <table id="saveLevelTable"></table>
+          <div id="character_pane" class="tab_pane">
+            <form name="character-form" id="character-form">
+              {% for char in characters %}
+              <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
+              <label for="{{char.name}}_radio">
+                <img class="character" src="{{char.en_face}}" width="122" height='122'>
+              </label>
+              <br>
+              {% endfor %}
+            </form>
+          </div>
+
+          <div id="blocks_pane" class="tab_pane">
+            <div class="block_table">
+              <div class="table_row">
+
+                <div class="table_cell">
+                  <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
+                </div>
+                <div>
+                  <label id="select_all_label" for="select_all_checkbox"> Select all</label>
+                </div>
+              </div>
+
+              {% for block in blocks %}
+                <div class="table_row">
+                  <div class="table_cell">
+                    <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
+                  </div>
+                  <div id="{{block.type}}_image" class="table_cell unselectable"></div>
+                </div>
+              {% endfor %}  
             </div>
           </div>
-          <div>
+
+          <div id="random_pane" class="tab_pane">
+            <div class="table">
+              <div class="table_row">
+                <div class="table_cell field_label"><p>Size:</p></div>
+                <div class="table_cell field_value"><input type="number" id="size" value="15" size="4" min="1" max="40"></div>
+              </div>
+
+              <div class="table_row">
+                <div class="table_cell field_label"><p>Branchiness:</p></div>
+                <div class="table_cell field_value"><input type="number" id="branchiness" value="2" size="4" min="0" max="10"></div>
+              </div>
+
+              <div class="table_row">
+                <div class="table_cell field_label"><p>Loopiness:</p></div>
+                <div class="table_cell field_value"><input type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
+              </div>
+
+              <div class="table_row">
+                <div class="table_cell field_label"><p>Curviness:</p></div>
+                <div class="table_cell field_value"><input type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
+              </div>
+
+              <div class="table_row">
+                <div class="table_cell field_label"><p>Traffic Lights:</p></div>
+                <div class="table_cell field_value"><input type="checkbox" id="trafficLightsEnabled" checked class="block_checkbox"></div>
+              </div>
+            </div>
+
+            <button class="navigation_button" id="generate">
+              <image src="/static/game/image/icons/random.svg"></image>
+              <span>Generate</span>
+            </button>
+          </div>
+
+          <div id="load_pane" class="tab_pane">
+            <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/load.svg'></image>Load</h2>
+
+            <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
+
+            <input type="radio" name="type_of_loaded_levels" id="own_levels_radio" checked>
+            <label for="own_levels_radio">Your own levels</label>
+            <input type="radio" name="type_of_loaded_levels" id="shared_levels_radio">
+            <label for="shared_levels_radio">Shared levels</label>
+
+            <div id="loading_tables">
+              <div id="own_levels">
+                <div class="scrolling-table-wrapper">
+                  <div class="scrolling-table">
+                    <table id="loadOwnLevelTable"></table>
+                  </div>
+                </div>
+              </div>
+              
+              <div id="shared_levels">
+                <div class="scrolling-table-wrapper">
+                  <div class="scrolling-table">
+                    <table id="loadSharedLevelTable"></table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <br style="clear:both">
+            
             <div>
-              <input type="text" id="levelNameInput">
-              <button class="navigation_button" id="saveLevel">
-                <image src="/static/game/image/icons/save.svg"></image>
-                <span>Save</span>
+              <button class="navigation_button" id="deleteLevel">
+                <image src="/static/game/image/icons/clear.svg"></image>
+                <span>Delete</span>
+              </button>
+
+              <button class="navigation_button" id="loadLevel">
+                <image src="/static/game/image/icons/load.svg"></image>
+                <span>Load</span>
               </button>
             </div>
           </div>
-        </div>
 
-        <div id="share_pane" class="tab_pane">
-          <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/share.svg'></image>Share</h2>
-          
-          <div id='teacher_sharing'>
-            <p>Here you can share your level with your pupils or your fellow teachers</p>
-            
-            <p>
-              Share with:
-              <input type="radio" name="sharing_recipient" id="classes_radio" checked>
-              <label for="classes_radio">Classes</label>
-              
-              <input type="radio" name="sharing_recipient" id="teachers_radio">
-              <label for="teachers_radio">Teachers</label>
-            </p>
-
-            <p id="class_selection">
-              Class: <select id="class_select"></select>
-            </p>
-          </div>
-
-          <div id='student_sharing'>
-            <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
-          </div>
-
-          <div id="shared_levels">
+          <div id="save_pane" class="tab_pane">
+            <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/save.svg'></image>Save</h2>
+            <p>Here you can save your new level.</p>
             <div class="scrolling-table-wrapper">
               <div class="scrolling-table">
-                <table id="levelSharingTable"></table>
+                <table id="saveLevelTable"></table>
+              </div>
+            </div>
+            <div>
+              <div>
+                <input type="text" id="levelNameInput">
+                <button class="navigation_button" id="saveLevel">
+                  <image src="/static/game/image/icons/save.svg"></image>
+                  <span>Save</span>
+                </button>
               </div>
             </div>
           </div>
 
-          <button class="navigation_button" id="shareWithAll">
-            <image src="/static/game/image/icons/share.svg"></image>
-            <span>Share with all</span>
-          </button>
+          <div id="share_pane" class="tab_pane">
+            <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/share.svg'></image>Share</h2>
+            
+            <div id='teacher_sharing'>
+              <p>Here you can share your level with your pupils or your fellow teachers</p>
+              
+              <p>
+                Share with:
+                <input type="radio" name="sharing_recipient" id="classes_radio" checked>
+                <label for="classes_radio">Classes</label>
+                
+                <input type="radio" name="sharing_recipient" id="teachers_radio">
+                <label for="teachers_radio">Teachers</label>
+              </p>
+
+              <p id="class_selection">
+                Class: <select id="class_select"></select>
+              </p>
+            </div>
+
+            <div id='student_sharing'>
+              <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
+            </div>
+
+            <div id="shared_levels">
+              <div class="scrolling-table-wrapper">
+                <div class="scrolling-table">
+                  <table id="levelSharingTable"></table>
+                </div>
+              </div>
+            </div>
+
+            <button class="navigation_button" id="shareWithAll">
+              <image src="/static/game/image/icons/share.svg"></image>
+              <span>Share with all</span>
+            </button>
+          </div>
+
+          <div id="help_pane" class="tab_pane"></div>
+
         </div>
-
-        <div id="help_pane" class="tab_pane"></div>
-
       </div>
     </div>
   </div>

@@ -1,46 +1,20 @@
-.episode {
-	padding: 20px 70px 20px 70px;
-	margin: 10px;
-	width: 95%;
-	min-width: 150px;
-	overflow: auto;
+#episodes .ui-accordion-header {
+	color: #000;
+	background: rgba(99, 119, 0, 0.5);
+	margin-bottom: 5px;
+	text-align: left;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
-.level {
-	padding: 20px 70px 20px 70px;
-	margin: 10px;
-	width: 95%;
-	min-width: 150px;
-	overflow: auto;
-}
-
-.levelTitle {
-  float: left;
-}
-
-.levelScore {
-  float: right;
-}
-
-.transparent {
-	width: 100%;
-	background: none;
+#episodes .ui-state-default {
 	border: none;
+	text-shadow: none;
+	box-shadow: none;
+	font-weight: normal;
 }
 
-.transparent > tbody > tr {
-	background: none;
+#episodes .customLevelsEpisode {
+	background: #8EAECA;
 }
 
-.transparent  > tbody > tr > td {
-	font-size: 1rem;
-}
-
-.episode a {
-	color: #617400;
-}
-
-.episode > h5 {
-	text-align: center;
-	font-weight: 500;
-}

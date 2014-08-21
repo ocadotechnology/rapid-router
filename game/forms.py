@@ -1,5 +1,5 @@
 from django import forms
-from models import UserProfile, Level, Theme
+from models import UserProfile, Level, Theme, Student
 
 
 class AvatarUploadForm(forms.ModelForm):
@@ -63,6 +63,18 @@ class ScoreboardForm(forms.Form):
             levels = cleaned_data.get('levels')
             return classes or levels
 
+class LevelModerationForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        classes = kwargs.pop('classes')
+        super(LevelModerationForm, self).__init__(*args, **kwargs)
+        self.fields['classes'] = forms.ModelChoiceField(queryset=classes,
+                                                        required=True,
+                                                        widget=forms.Select(attrs={'class': 'wide'}))
+        self.fields['students'] = forms.CharField(required=True,
+                                                    widget=forms.Select(attrs={'class': 'wide'}))
 
-class LevelThemeForm(forms.Form):
-    theme = forms.ModelChoiceField(queryset=Theme.objects.all(), initial=0)
+        def validate(self):
+            cleaned_data = super(LevelModerationForm, self).clean()
+            classes = cleaned_data.get('classes')
+            students = cleaned_data.get('students')
+            return classes and students
