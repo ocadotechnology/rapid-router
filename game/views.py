@@ -85,7 +85,12 @@ def levels(request):
         episode_data.append(e)
         episode = episode.next_episode
 
-    owned_levels = Level.objects.filter(owner=request.user.userprofile)
+    owned_levels = []
+    for level in Level.objects.filter(owner=request.user.userprofile):
+        owned_levels.append({
+            "title": level.name,
+            "score": get_attempt_score(level)})
+    
 
     context = RequestContext(request, {
         'episodeData': episode_data,
