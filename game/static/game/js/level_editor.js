@@ -631,8 +631,11 @@ ocargo.LevelEditor = function() {
 
                     $('#class_select').empty();
                     for (var i = 0; i < classesTaught.length; i++) {
-                        var option = '<option value=' + classesTaught[i].id + '>' + 
-                            classesTaught[i].name + '</option>';
+                        var option = $('<option>');
+                        option.attr( {
+                            value: classesTaught[i].id,
+                        });
+                        option.text(classesTaught[i].name);
                         $('#class_select').append(option);
                     }
 
@@ -691,10 +694,22 @@ ocargo.LevelEditor = function() {
                         allShared = false;
                     }
 
-                    table.append('<tr value=' + recipient.id + ' + status="' +  status + '">' + 
-                                    '<td>' + recipient.name + '</td>' + 
-                                    '<td class="share_cell">' + text[status] + '</td>' +
-                                '</tr>');
+                    var tableRow = $('<tr>');
+                    tableRow.attr( {
+                        'value': recipient.id,
+                        'status': status,
+                    });
+                    var rowName = $('<td>').text(recipient.name);
+
+                    var rowStatus = $('<td>');
+                    rowStatus.attr( {
+                        'class': 'share_cell'
+                    });
+                    rowStatus.text(text[status]);
+                    tableRow.append(rowName);
+                    tableRow.append(rowStatus);
+
+                    table.append(tableRow);
                 }
 
                 // Update the shareWithAll button
@@ -765,8 +780,17 @@ ocargo.LevelEditor = function() {
             table.append('<tr>  <th>Name</th>   <th>Owner</th> </tr>');
             for (var i = 0, ii = levels.length; i < ii; i++) {
                 var level = levels[i];
-                table.append('<tr value=' + level.id + '>  <td>' + level.name + '</td>  <td>' +
-                             level.owner + '</td> </tr>');
+                var tableRow = $('<tr>');
+                tableRow.attr( {
+                    'value' : level.id
+                });
+                var rowName = $('<td>');
+                rowName.text(level.name);
+                var rowOwner = $('<td>');
+                rowOwner.text(level.owner);
+                tableRow.append(rowName);
+                tableRow.append(rowOwner);
+                table.append(tableRow);
             }
         }
     }
