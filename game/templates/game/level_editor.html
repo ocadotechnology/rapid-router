@@ -119,7 +119,7 @@
           <input type="radio" name="tabs" id="decor_radio">
           <label for="decor_radio">
             <img src='/static/game/image/icons/decor.svg'>
-            <span>Decor</span>
+            <span>Scenery</span>
           </label>
         </div>
 
@@ -272,12 +272,12 @@
 
             <button class="navigation_button" id="move_decor">
               <image src="/static/game/image/icons/delete_decor.svg"/>
-              <span>Move decor</span>
+              <span>Move scenery</span>
             </button>
 
             <button class="navigation_button" id="delete_decor">
               <image src="/static/game/image/icons/delete_decor.svg"/>
-              <span>Delete decor</span>
+              <span>Delete scenery</span>
             </button>
           </div>
 
@@ -317,6 +317,7 @@
           </div>
 
           <div id="random_pane" class="tab_pane">
+            <p> Here you can generate a random map. Try changing some of the parameters! </p>
             <div class="table">
               <div class="table_row">
                 <div class="table_cell field_label"><p>Size:</p></div>
@@ -340,7 +341,12 @@
 
               <div class="table_row">
                 <div class="table_cell field_label"><p>Traffic Lights:</p></div>
-                <div class="table_cell field_value"><input type="checkbox" id="trafficLightsEnabled" checked class="block_checkbox"></div>
+                <div class="table_cell field_value">
+                  <select id="trafficLightsEnabled">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -364,7 +370,7 @@
               <div id="own_levels">
                 <div class="scrolling-table-wrapper">
                   <div class="scrolling-table">
-                    <table id="loadOwnLevelTable"></table>
+                    <table width='100%' id="loadOwnLevelTable"></table>
                   </div>
                 </div>
               </div>
@@ -372,7 +378,7 @@
               <div id="shared_levels">
                 <div class="scrolling-table-wrapper">
                   <div class="scrolling-table">
-                    <table id="loadSharedLevelTable"></table>
+                    <table width='100%' id="loadSharedLevelTable"></table>
                   </div>
                 </div>
               </div>
@@ -398,7 +404,7 @@
             <p>Here you can save your new level.</p>
             <div class="scrolling-table-wrapper">
               <div class="scrolling-table">
-                <table id="saveLevelTable"></table>
+                <table width='100%' id="saveLevelTable"></table>
               </div>
             </div>
             <div>
@@ -439,7 +445,7 @@
             <div id="shared_levels">
               <div class="scrolling-table-wrapper">
                 <div class="scrolling-table">
-                  <table id="levelSharingTable"></table>
+                  <table width='100%' id="levelSharingTable"></table>
                 </div>
               </div>
             </div>

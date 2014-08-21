@@ -21,7 +21,12 @@
                 success: function(studentData){
                     $('#id_students').empty();
                     for(studentID in studentData) {
-                        $('#id_students').append('<option value="' + studentID + '">' + studentData[studentID] +'</option>');
+                        var option = $('<option>');
+                        option.attr({
+                          'value': studentID
+                        });
+                        option.text(studentData[studentID]);
+                        $('#id_students').append(option);
                     }
                     {% if studentID %}
                       $('#id_students').val({{studentID}})

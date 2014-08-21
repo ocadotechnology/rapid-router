@@ -156,6 +156,14 @@ input[type="radio"].character_radio {
 }
 
 /************/
+/* Generate */
+/************/
+
+#random_pane .table_cell.field_label {
+    width: 150px;
+}
+
+/************/
 /* Load tab */
 /************/
 
