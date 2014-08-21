@@ -85,8 +85,11 @@ def levels(request):
         episode_data.append(e)
         episode = episode.next_episode
 
+    owned_levels = Level.objects.filter(owner=request.user.userprofile)
+
     context = RequestContext(request, {
         'episodeData': episode_data,
+        'owned_levels': owned_levels,
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
@@ -760,7 +763,7 @@ def save_level_for_editor(request, levelID=None):
         if not request.user.is_anonymous():
             level.owner = request.user.userprofile
 
-            if hasattr(level.owner, 'student'):
+            if hasattr(level.owner, 'student') and level.owner.student.class_field != None:
                 level.save()
                 level.shared_with.add(level.owner.student.class_field.teacher.user.user)
 

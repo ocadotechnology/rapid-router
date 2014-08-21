@@ -36,7 +36,13 @@
 			    {% endfor %}
 			    <h3 class='customLevelsEpisode'>Levels created by you</h3>
 			    <div>
-			    	<p>No levels have been created by you yet.</p>
+			    	{% if owned_levels %}
+			    		{% for level in owned_levels %}
+			    			<p><a href="/game/{{ level.id }}">{{level.name}}</a></p>
+			    		{% endfor %}
+			    	{% else %}
+			    		<p>No levels have been created by you yet.</p>
+			    	{% endif %}
 			    </div>
 			    <h3 class='customLevelsEpisode'>Levels shared with you</h3>
 			    <div>
