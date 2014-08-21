@@ -5,12 +5,8 @@
 
 {% block scripts %}
 {{block.super}}
+  {# TODO: remove D3 as it's no longer used #}
   <script src="/static/game/js/d3.v3.min.js" charset="utf-8"></script>
-
-  <script>
-    EPISODE_LIST = {{episodeData|safe}};
-  </script>
-
   <script src="/static/game/js/levelSelection.js"></script>
 {% endblock %}
 
@@ -31,6 +27,19 @@
 		</div>
 		<div class="col span_2_of_3_strict">
 			<h3 style="text-align : center">Select a level!</h3>
+			<div id="episodes">
+			    {% for episode in episodeData %}
+			    <h3>{{episode.name}}</h3>
+			    <div>
+			        {% for level in episode.levels %}
+			        <p><a href="/game/{{level.id}}">{{level.id}}: {{level.title.strip}}</a> 
+			        {% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/20{% endif %}</span></p>
+			        {% endfor %}
+			        
+			        <p><a href="levels/random/{{episode.id}}">Random: Try your hand at a random level.</a></p>
+			    </div>
+			    {% endfor %}
+			</div>
 			<div id="container"></div>
 		</div>
 	</div>

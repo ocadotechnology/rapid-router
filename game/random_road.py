@@ -46,9 +46,9 @@ def create(episode=None):
         traffic_lights_enabled = True
     
     level_data = generate_random_map_data(num_tiles,
-                                        branchiness_factor,
-                                        loopiness_factor,
-                                        curviness_factor,
+                                        branchiness,
+                                        loopiness,
+                                        curviness,
                                         traffic_lights_enabled)
 
     level = Level(name=name,
@@ -155,8 +155,7 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
         return squares
 
 
-
-    nodes = [Node(random.randint(0, WIDTH-1), random.randint(0, HEIGHT-1))]
+    nodes = [Node(random.randrange(1, WIDTH-1), random.randrange(1, HEIGHT-1))]
     index_by_node = {nodes[0]: 0}
 
     connections = defaultdict(list)
@@ -195,7 +194,7 @@ def generate_traffic_lights(path):
 
     if len(degree3or4Nodes) > 0:
         candidateNodes = degree3or4Nodes   
-    elif len(degree2Nodes) > 0:
+    else:
         candidateNodes = degree2Nodes
 
     numberOfJunctions = max(int(len(candidateNodes)*PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS/100.0), 1)

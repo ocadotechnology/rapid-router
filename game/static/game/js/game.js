@@ -39,7 +39,7 @@ ocargo.Game.prototype.setup = function() {
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
     // Start the popup
-    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"), true);
+    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.jsElements.closebutton("Play"), true);
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
@@ -80,7 +80,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
             url : '/game/submit',
             type : 'POST',
             data : {
-                csrfmiddlewaretoken : $( '#csrfmiddlewaretoken' ).val(),
+                csrfmiddlewaretoken : $.cookie('csrftoken'),
                 level : LEVEL_ID,
                 score : score,
                 workspace : ocargo.blocklyControl.serialize(),
@@ -154,9 +154,61 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
 
 
 ocargo.Game.prototype.setupSliderListeners = function() {
-    var getSliderRightLimit = function(pageWidth) {return pageWidth/2;};
-    var getSliderLeftLimit = function() {return 46;};
-    var consoleSliderPosition = $(window).width()/2;
+    var tabsWidth = $('#tabs').width();
+
+    var startEvents = ['mousedown', 'touchstart'];
+    var moveEvents = ['mousemove', 'touchmove'];
+    var endEvents = ['mouseup', 'touchend', 'touchcancel'];
+
+    var slider = $('#consoleSlider');
+
+    var endFunc = function(e) {
+        for (var i = 0; i < moveEvents.length; i++) {
+            slider.off(moveEvents[i]);
+            slider.parent().off(moveEvents[i]);
+        }
+
+        ocargo.blocklyControl.redrawBlockly();
+    };
+
+    var moveFunc = function(e) {
+        if (e.type == 'touchmove') {
+            e = e.originalEvent.touches[0];
+        }
+
+        var consoleSliderPosition = e.pageX - tabsWidth;
+        var containerWidth = slider.parent().width();
+
+        if (consoleSliderPosition > containerWidth) {
+            consoleSliderPosition = containerWidth;
+        }
+        if (consoleSliderPosition < 0) {
+            consoleSliderPosition = 0;
+        }
+
+        $('#consoleSlider').css('left', consoleSliderPosition);
+        $('#paper').css('width', containerWidth - consoleSliderPosition);
+        $('#tab_panes').css('width', consoleSliderPosition);
+        $('#direct_drive').css('left', consoleSliderPosition);
+        
+        ocargo.blocklyControl.redrawBlockly();
+    };
+
+    var startFunc = function(e) {
+        for (var i = 0; i < moveEvents.length; i++) {
+            slider.parent().on(moveEvents[i], moveFunc);
+        }
+
+        for (var i = 0; i < endEvents.length; i++) {
+            // disable drag when mouse leaves this or the parent
+            slider.on(endEvents[i], endFunc);
+            slider.parent().on(endEvents[i], endFunc);
+        }
+    };
+
+    for (var i = 0; i < startEvents.length; i++) {
+        slider.on(startEvents[i], startFunc);
+    }
 };
 
 ocargo.Game.prototype.setupTabs = function() {
@@ -209,7 +261,6 @@ ocargo.Game.prototype.setupTabs = function() {
             // reset blockly to python converter
             Blockly.Python.init();
             ocargo.controller = ocargo.blocklyControl;
-            ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
         });
 
         currentTabSelected = tabs['blockly'];
@@ -429,6 +480,7 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupPrintTab() {
         tabs['print'].setOnChange(function() {
             currentTabSelected.select();
+            window.print()
         });
     }
 
@@ -454,6 +506,9 @@ ocargo.Game.prototype.setupTabs = function() {
                 tabs['big_code_mode'].setContents('/static/game/image/icons/big_code_mode.svg', "Shrink");
                 ocargo.blocklyControl.increaseBlockSize();
             }
+
+            // Note that showFlyout is misnamed and actually toggles the flyout.
+            // So these two lines force the flyout to refresh and be the correct size.
             ocargo.blocklyControl.showFlyout();
             ocargo.blocklyControl.showFlyout();
 
@@ -575,77 +630,3 @@ $(document).ready(function() {
     ocargo.game = new ocargo.Game();
     ocargo.game.setup();
 });
-
-    /**
-    $('#hide').click(function() {
-        var pageWidth = $(window).width();
-        var leftLimit = getSliderLeftLimit();
-
-        $('#paper').animate({width: pageWidth + 'px'}, {queue: false});
-        $('#paper').animate({left: leftLimit + 'px'}, {queue: false});
-        $('#hide').animate({left: leftLimit + 'px'}, {queue: false});
-        $('#show').animate({left: leftLimit + 'px'}, {queue: false});
-        $('#direct_drive').animate({left: leftLimit + 'px'}, {queue: false});
-        $('#consoleSlider').css('left', leftLimit + 'px');
-
-        $('#hide').css('display','none');
-        $('#show').css('display','block');
-        $('#consoleSlider').css('display','none');
-    });
-
-    $('#show').click(function() {
-        var pageWidth = $(window).width();
-
-        $('#paper').animate({ width: (pageWidth - consoleSliderPosition) + 'px' }, {queue: false});
-        $('#paper').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-        $('#hide').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-        $('#show').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-        $('#direct_drive').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-        $('#consoleSlider').animate({ left: consoleSliderPosition + 'px' }, {queue: false});
-
-        $('#hide').css('display','block');
-        $('#show').css('display','none');
-        $('#consoleSlider').css('display','block');
-    });
-
-    $('#consoleSlider').on('mousedown', function(e){
-        var slider = $(this);
-
-        //disable drag when mouse leaves this or the parent
-        slider.on('mouseup', function(e){
-            slider.off('mousemove');
-            slider.parent().off('mousemove');
-            ocargo.blocklyControl.redrawBlockly();
-        });
-        slider.parent().on('mouseup', function(e) {
-            slider.off('mousemove');
-            slider.parent().off('mousemove');
-            ocargo.blocklyControl.redrawBlockly();
-        });
-
-        slider.parent().on('mousemove', function(me){
-            consoleSliderPosition = me.pageX;
-            var pageWidth = $(window).width();
-            var rightLimit = getSliderRightLimit(pageWidth);
-            var leftLimit = getSliderLeftLimit();
-
-            if (consoleSliderPosition > rightLimit) {
-                consoleSliderPosition = rightLimit;
-            }
-            if (consoleSliderPosition < leftLimit) {
-                consoleSliderPosition = leftLimit;
-            }
-
-            $('#consoleSlider').css({ left: consoleSliderPosition + 'px' });
-            $('#paper').css({ width: (pageWidth - consoleSliderPosition) + 'px' });
-            $('#paper').css({ left: consoleSliderPosition + 'px' });
-            $('#programmingConsole').css({ width: consoleSliderPosition + 'px' });
-            $('#hide').css({ left: consoleSliderPosition + 'px' });
-            $('#show').css({ left: consoleSliderPosition + 'px' });
-            $('#direct_drive').css({ left: consoleSliderPosition + 'px' });
-            
-            ocargo.blocklyControl.redrawBlockly();
-        });
-    });
-**/
-

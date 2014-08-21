@@ -336,6 +336,11 @@
               <div class="table_cell field_label"><p>Curviness:</p></div>
               <div class="table_cell field_value"><input type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
             </div>
+
+            <div class="table_row">
+              <div class="table_cell field_label"><p>Traffic Lights:</p></div>
+              <div class="table_cell field_value"><input type="checkbox" id="trafficLightsEnabled" checked class="block_checkbox"></div>
+            </div>
           </div>
 
           <button class="navigation_button" id="generate">
@@ -347,11 +352,12 @@
         <div id="load_pane" class="tab_pane">
           <h2 class="title"><image class="modal_image" src='/static/game/image/buttons/menu/load.svg'></image>Load</h2>
 
+          <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
+
           <input type="radio" name="type_of_loaded_levels" id="own_levels_radio" checked>
           <label for="own_levels_radio">Your own levels</label>
-          <br>
           <input type="radio" name="type_of_loaded_levels" id="shared_levels_radio">
-          <label for="shared_levels_radio">Levels shared with you</label>
+          <label for="shared_levels_radio">Shared levels</label>
 
           <div id="loading_tables">
             <div id="own_levels">
@@ -411,25 +417,22 @@
           <div id='teacher_sharing'>
             <p>Here you can share your level with your pupils or your fellow teachers</p>
             
-            <p>Share with:</p>
-            <input type="radio" name="sharing_recipient" id="classes_radio">
-            <label for="classes_radio">Classes:</label>
+            <p>
+              Share with:
+              <input type="radio" name="sharing_recipient" id="classes_radio" checked>
+              <label for="classes_radio">Classes</label>
+              
+              <input type="radio" name="sharing_recipient" id="teachers_radio">
+              <label for="teachers_radio">Teachers</label>
+            </p>
 
-            <input type="radio" name="sharing_recipient" id="teachers_radio" checked>
-            <label for="teachers_radio">Teachers:</label>
-            
-            <div id='class selection'>
-              <select id="class_select"></select>
-              <select id="student_select"></select>
-            </div>
-
-            <div id='teacher_selection'>
-              <select id="teacher_select"></select>
-            </div>
+            <p id="class_selection">
+              Class: <select id="class_select"></select>
+            </p>
           </div>
 
-          <div id='pupil_sharing'>
-            <p>Here you can share your level with your classmates!</p>
+          <div id='student_sharing'>
+            <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
           </div>
 
           <div id="shared_levels">
@@ -440,16 +443,10 @@
             </div>
           </div>
 
-          <button class="navigation_button" id="shareLevel">
+          <button class="navigation_button" id="shareWithAll">
             <image src="/static/game/image/icons/share.svg"></image>
-            <span>Share</span>
+            <span>Share with all</span>
           </button>
-
-          <button class="navigation_button" id="shareLevel">
-            <image src="/static/game/image/icons/quit.svg"></image>
-            <span>Unshare</span>
-          </button>
-          
         </div>
 
         <div id="help_pane" class="tab_pane"></div>

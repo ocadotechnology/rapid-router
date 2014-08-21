@@ -27,7 +27,6 @@
 
 input {
     margin: 0;
-    vertical-align: middle;
 }
 
 .navigation_button.fixed_size {
@@ -174,4 +173,29 @@ input[type="radio"].character_radio {
 
 #levelNameInput {
     max-width: 100px;
+}
+
+/*************/
+/* Share tab */
+/*************/
+
+#class_select {
+    width: 100px;
+    padding-left: 15px;
+}
+
+#classes_radio {
+    margin-left: 15px;
+}
+
+tr[status='shared'] .share_cell {
+    color: green;
+}
+
+tr[status='unshared'] .share_cell {
+    color: red;
+}
+
+tr[status='pending'] .share_cell {
+    color: gray;
 }
