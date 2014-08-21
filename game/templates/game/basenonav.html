@@ -3,6 +3,10 @@
 {% load compress %}
 
 {% block head %}
+# Three disable rubber banding and zooming on ios tablets
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0" />
 {% endblock head %}
 
 {% block css %}
@@ -41,6 +45,17 @@
 {% endblock footer %}
 
 {% block scripts %}
+    <script>
+    // Disable rubber banding on ios tablets
+    $(function() {
+        document.body.addEventListener('touchmove', function(ev) {
+            ev.preventDefault();
+        }, false);
+
+        $(document.body).width(window.innerWidth).height(window.innerHeight);
+    });
+    </script>
+
     <script>
       $(function() {
         $(document).foundation();
