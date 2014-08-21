@@ -133,10 +133,12 @@ def level(request, level):
     blocks = lvl.blocks.order_by('id')
     attempt = None
 
-    if not lvl.default and lvl.owner is not None and \
-            (request.user.is_anonymous() or (request.user != lvl.owner.user and
-             not lvl.shared_with.filter(pk=request.user.pk).exists())):
-        return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
+    if not lvl.default:
+        # Then we're looking at a user created level
+        if request.user.is_anonymous() or (request.user != lvl.owner.user and
+            not lvl.shared_with.filter(pk=request.user.pk).exists()):
+            # If we're anonymous or the user didn't create it and it isn't shared with them
+            return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     lesson = 'description_level' + str(level)
     hint = 'hint_level' + str(level)
@@ -160,8 +162,7 @@ def level(request, level):
     background = getDecorElement('tile1', lvl.theme).url
     character = lvl.character
 
-    if not request.user.is_anonymous() and hasattr(request.user, 'userprofile') and \
-            hasattr(request.user.userprofile, 'student'):
+    if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
         try:
             attempt = get_object_or_404(Attempt, level=lvl, student=student)
