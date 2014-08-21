@@ -24,6 +24,8 @@ ocargo.messages = {
             ocargo.jsElements.redirectButton("'/game/'", "Home");
     },
 
+    loggedOutWarning: "You are not logged in. Your progress won't be saved.",
+
     lastLevel: "Congratulations, you’ve completed the game! Carry on the fun by creating your " +
         "own map. <br><br>" +
         ocargo.jsElements.redirectButton("'/game/level_editor'", "Create your own map!") + " " +

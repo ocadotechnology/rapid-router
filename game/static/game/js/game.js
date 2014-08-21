@@ -38,8 +38,13 @@ ocargo.Game.prototype.setup = function() {
     Blockly.Python.init();
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
+    var loggedOutWarning = ''
+    // Check if logged on
+    if (USER_STATUS == 'UNTRACKED') {
+        loggedOutWarning = '<br>' + ocargo.messages.loggedOutWarning;
+    }
     // Start the popup
-    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.jsElements.closebutton("Play"), true);
+    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
