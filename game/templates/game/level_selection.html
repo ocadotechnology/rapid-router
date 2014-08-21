@@ -54,7 +54,11 @@
 			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
 			    		{% endfor %}
 			    	{% else %}
+			    		{% if user|is_logged_in_as_school_user %}
 			    		<p>No levels have been shared with you yet.</p>
+			    		{% else %}
+			    		<p>You cannot share levels as you are not registered to a school or club.</p>
+			    		{% endif %}
 			    	{% endif %}
 			    </div>
 			</div>
