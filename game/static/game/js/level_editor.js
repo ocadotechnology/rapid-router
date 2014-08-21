@@ -1138,7 +1138,7 @@ ocargo.LevelEditor = function() {
 
         image.drag(onDragMove, onDragStart, onDragEnd);
 
-        image.on('click touchstart', function() {
+        $(image.node).on('click touchstart', function() {
             if(mode === DELETE_DECOR_MODE) {
                 decor.destroy();
             }
