@@ -23,6 +23,8 @@
     var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
     var CHARACTER_NAME = "{{character.name}}";
     var CHARACTER_URL = "{{character.top_down}}";
+    var CHAR_WIDTH = {{character.width}};
+    var CHAR_HEIGHT = {{character.height}};
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}

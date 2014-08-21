@@ -7,10 +7,8 @@ ocargo.PathFinder = function(model) {
     this.nodes = model.map.nodes;
     this.destinations = model.map.destinations;
     this.maxDistanceScore = 10;
-    
-    console.log(MODEL_SOLUTION)
 
-    if(MODEL_SOLUTION) {
+    if (MODEL_SOLUTION) {
         this.maxInstrLengthScore = 10;
         this.modelLength = MODEL_SOLUTION;
     }
@@ -45,7 +43,7 @@ ocargo.PathFinder.prototype.getScore = function() {
         }
 
         message +=  ocargo.messages.algorithmScore +
-                    this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>"
+                    this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>";
 
         totalScore += instrScore;
     }

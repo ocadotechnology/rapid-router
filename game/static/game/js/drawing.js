@@ -464,8 +464,7 @@ ocargo.Drawing = function() {
         var initialY = calculateInitialY(position.currentNode);
 
         var imageStr = vanId % 2 === 0 ? CHARACTER_URL : '/static/game/image/characters/top_view/Van2.svg';
-        var vanImage = paper.image(imageStr, initialX, initialY, CHARACTER_HEIGHT,
-            CHARACTER_WIDTH);
+        var vanImage = paper.image(imageStr, initialX, initialY, CHAR_HEIGHT, CHAR_WIDTH);
 
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
         rotateElementAroundCentreOfGridSpace(vanImage, rotation, position.currentNode.coordinate.x,
