@@ -557,7 +557,14 @@ ocargo.Game.prototype.setupTabs = function() {
         // Add a row to the table for each workspace saved in the database
         for (var i = 0, ii = workspaces.length; i < ii; i++) {
             var workspace = workspaces[i];
-            table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
+            var tableRow = $('<tr>');
+            var workspaceEntry = $('<td>');
+            workspaceEntry.attr({
+                'value':workspace.id
+            })
+            workspaceEntry.text(workspace.name);
+            tableRow.append(workspaceEntry);
+            table.append(tableRow);
         }
     }
 };
