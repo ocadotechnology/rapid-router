@@ -149,6 +149,7 @@ ocargo.LevelEditor = function() {
 
             $('#clear').click(function() {
                 clear();
+                localStorage.removeItem('levelEditorState'); 
                 drawAll();
             });
 
@@ -1549,6 +1550,8 @@ ocargo.LevelEditor = function() {
         // Create node data
         sortNodes(nodes);
         state.path = JSON.stringify(ocargo.Node.composePathData(nodes));
+        // To prevent circular JSON conversion
+        state.selectedOrigin = originNode ? true : false;
 
         // Create traffic light data
         var trafficLightData = [];
@@ -1592,7 +1595,7 @@ ocargo.LevelEditor = function() {
         return state;
     }
 
-    function restoreState(state) {
+    function restoreState(state, origin) {
         clear();
 
         // Load node data
@@ -1605,7 +1608,9 @@ ocargo.LevelEditor = function() {
         }
 
         // Load other data
-        originNode = nodes[0];
+        if (origin || state.selectedOrigin) {
+            originNode = nodes[0];
+        }
 
         // TODO needs to be fixed in the long term with multiple destinations
         if (state.destinations) {
@@ -1628,7 +1633,8 @@ ocargo.LevelEditor = function() {
         var decorData = JSON.parse(state.decor);
         for (var i = 0; i < decorData.length; i++) {
             var decorObject = new InternalDecor(decorData[i].name);
-            decorObject.setCoordinate(decorData[i].coordinate);
+            decorObject.setCoordinate(new ocargo.Coordinate(decorData[i].coordinate.x,
+                PAPER_HEIGHT - decorData[i].height - decorData[i].coordinate.y));
         }
     }
 
@@ -1639,7 +1645,7 @@ ocargo.LevelEditor = function() {
                 return;
             }
 
-            restoreState(level);
+            restoreState(level, true);
 
             ownsSavedLevel = owned;
             savedState = JSON.stringify(extractState());
@@ -1708,7 +1714,7 @@ ocargo.LevelEditor = function() {
         // Check to see if path exists from start to end
         var destination = new ocargo.Destination(0, destinationNode);
         var pathToDestination = getOptimalPath(nodes, [destination]);
-        if (pathToDestination.length === 0) {
+        if (!pathToDestination) {
             ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
                                       ocargo.messages.noStartEndRouteSubtitle,
                                       ocargo.messages.noStartEndRoute);
@@ -1803,7 +1809,7 @@ ocargo.LevelEditor = function() {
             var bBox = this.image.getBBox();
             return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x),
                                                         PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)),
-                    'name': this.name};
+                    'name': this.name, 'height': bBox.height};
         };
 
         this.setCoordinate = function(coordinate) {
