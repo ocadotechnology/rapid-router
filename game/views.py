@@ -88,13 +88,22 @@ def levels(request):
     owned_levels = []
     for level in Level.objects.filter(owner=request.user.userprofile):
         owned_levels.append({
+            "id": level.id,
             "title": level.name,
             "score": get_attempt_score(level)})
     
+    shared_levels = []
+    for level in request.user.shared.all():
+        shared_levels.append({
+            "id": level.id,
+            "title": level.name,
+            "owner": level.owner.user,
+            "score": get_attempt_score(level)})
 
     context = RequestContext(request, {
         'episodeData': episode_data,
         'owned_levels': owned_levels,
+        'shared_levels': shared_levels,
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
