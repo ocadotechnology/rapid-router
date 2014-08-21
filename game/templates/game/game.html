@@ -88,7 +88,7 @@
 
 
 <div id="wrapper" class="unselectable">
-  <div id="tabs">
+  <div id="tabs" class='no-print'>
     <div class="tab selectable">
       <input type="radio" name="tabs" id="blockly_radio" checked>
       <label for="blockly_radio">
@@ -201,10 +201,10 @@
   </div>
 
   <div id="right">
-    <div id="tab_panes">
+    <div id="tab_panes" class='no-print'>
 
       <div id="blockly_pane" class="tab_pane">
-        <div id="blockly_holder" style='width: calc(100% + 51px); margin-left: -51px'></div>
+        <div id="blockly_holder" style='width: calc(100% + 55px); margin-left: -55px'></div>
       </div>
 
       <div id="python_pane" class="tab_pane">
@@ -287,7 +287,7 @@
 
     <div id="paper" class="col" style="background-color:{{level.theme.background}}"></div>
 
-    <div id="direct_drive" class="unselectable">
+    <div id="direct_drive" class="unselectable no-print">
       <button class="direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>

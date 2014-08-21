@@ -37,11 +37,6 @@ def levels(request):
 
     :template:`game/level_selection.html`
     """
-    bgcolour = 'rgba(171, 196, 37, {:f})'
-
-    episodes = Episode.objects.all()
-    ratio = 1.0 / (len(episodes) + 1)
-
     def get_level_title(i):
         title = 'title_level' + str(i)
         try:
@@ -52,41 +47,49 @@ def levels(request):
 
     def get_attempt_score(lvl):
         user = request.user
-        score = "    "
         if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
                 hasattr(request.user.userprofile, 'student'):
             try:
                 student = user.userprofile.student
                 attempt = get_object_or_404(Attempt, level=lvl, student=student)
-                score = attempt.score
+                return attempt.score
             except Http404:
                 pass
-        return score
+        return None
 
     episode_data = []
     episode = Episode.objects.get(name='Getting Started')
     while episode is not None:
         levels = []
+        minId = -1
+        maxId = -1
         for level in episode.levels:
+            if minId == -1 or maxId == -1:
+                minId = level.id
+                maxId = level.id
             levels.append({
                 "id": level.id,
-                "name": level.name,
                 "title": get_level_title(level.id),
                 "score": get_attempt_score(level)})
-        opacity = (len(episode_data) + 1) * ratio
-        colour = bgcolour.format(opacity)
+            if level.id > maxId:
+                maxId = level.id
+            if level.id < minId:
+                minId = level.id
 
         e = {"id": episode.id,
              "name": episode.name,
-             "colour": colour,
              "levels": levels,
-             "opacity": opacity}
+             "first_level": minId,
+             "last_level": maxId}
 
         episode_data.append(e)
         episode = episode.next_episode
 
+    owned_levels = Level.objects.filter(owner=request.user.userprofile)
+
     context = RequestContext(request, {
-        'episodeData': json.dumps(episode_data),
+        'episodeData': episode_data,
+        'owned_levels': owned_levels,
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
@@ -113,7 +116,6 @@ def level(request, level):
     lvl = cached_level(level)
     blocks = lvl.blocks.order_by('id')
     attempt = None
-    lesson = None
 
     if not lvl.default and lvl.owner is not None and \
             (request.user.is_anonymous() or (request.user != lvl.owner.user and
@@ -801,7 +803,7 @@ def save_level_for_editor(request, levelID=None):
         if not request.user.is_anonymous():
             level.owner = request.user.userprofile
 
-            if hasattr(level.owner, 'student'):
+            if hasattr(level.owner, 'student') and level.owner.student.class_field != None:
                 level.save()
                 level.shared_with.add(level.owner.student.class_field.teacher.user.user)
 
@@ -830,7 +832,7 @@ def generate_random_map_for_editor(request):
     branchiness = float(request.GET['branchiness'])
     loopiness = float(request.GET['loopiness'])
     curviness = float(request.GET['curviness'])
-    traffic_lights_enabled = request.GET['trafficLightsEnabled']
+    traffic_lights_enabled = request.GET['trafficLightsEnabled'] == 'true'
 
     data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
                                                 traffic_lights_enabled)

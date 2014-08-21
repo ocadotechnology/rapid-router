@@ -39,7 +39,7 @@ ocargo.Game.prototype.setup = function() {
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
     // Start the popup
-    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.messages.closebutton("Play"), true);
+    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.jsElements.closebutton("Play"), true);
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
@@ -80,7 +80,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
             url : '/game/submit',
             type : 'POST',
             data : {
-                csrfmiddlewaretoken : $( '#csrfmiddlewaretoken' ).val(),
+                csrfmiddlewaretoken : $.cookie('csrftoken'),
                 level : LEVEL_ID,
                 score : score,
                 workspace : ocargo.blocklyControl.serialize(),
@@ -480,6 +480,7 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupPrintTab() {
         tabs['print'].setOnChange(function() {
             currentTabSelected.select();
+            window.print()
         });
     }
 
