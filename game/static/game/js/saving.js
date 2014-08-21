@@ -164,7 +164,9 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
  ocargo.Saving.prototype.deleteLevel = function(id, callback) {
 	$.ajax({
         url: '/game/level_editor/level/delete/' + id,
-        type: 'GET',
+        type: 'POST',
+        dataType: 'json',
+        data: {csrfmiddlewaretoken : $.cookie('csrftoken')},
         success: function() {
             callback(null);
         },
@@ -175,9 +177,10 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
 };
 
 ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
+    level.csrfmiddlewaretoken = $.cookie('csrftoken');
 	$.ajax({
         url: '/game/level_editor/level/save' + (id ? '/' + id : ''),
-        type: 'GET',
+        type: 'POST',
         dataType: 'json',
         data: level,
         success: function(json) {
@@ -204,9 +207,10 @@ ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {
 };
 
 ocargo.Saving.prototype.shareLevel = function(levelID, recipientData, callback) {
+    recipientData.csrfmiddlewaretoken = $.cookie('csrftoken'),
     $.ajax({
         url: '/game/level_editor/level/share/' + levelID,
-        type: 'GET',
+        type: 'POST',
         dataType: 'json',
         data: recipientData,
         success: function(json) {
