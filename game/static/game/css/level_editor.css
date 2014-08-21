@@ -82,6 +82,7 @@ input {
 #tab_panes_wrapper {
     margin-left: 125px;
     height: 100%;
+    overflow: scroll;
     background: #FFFFFF;
 }
 
