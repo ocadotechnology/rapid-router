@@ -2,6 +2,7 @@
 
 {% load compress %}
 {% load static %}
+{% load app_tags %}
 
 {% block scripts %}
 {{block.super}}
@@ -39,7 +40,7 @@
 			    	{% if owned_levels %}
 			    		{% for level in owned_levels %}
 			    			<p><a href="/game/{{ level.id }}">{{level.title}}</a>
-			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/20{% endif %}</span></p>
+			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
 			    		{% endfor %}
 			    	{% else %}
 			    		<p>No levels have been created by you yet.</p>
@@ -47,7 +48,18 @@
 			    </div>
 			    <h3 class='customLevelsEpisode'>Levels shared with you</h3>
 			    <div>
-			    	<p>No levels have been shared with you yet.</p>
+			    	{% if shared_levels %}
+			    		{% for level in shared_levels %}
+			    			<p><a href="/game/{{ level.id }}">{{level.title}} ({{level.owner|make_into_username}})</a>
+			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
+			    		{% endfor %}
+			    	{% else %}
+			    		{% if user|is_logged_in_as_school_user %}
+			    		<p>No levels have been shared with you yet.</p>
+			    		{% else %}
+			    		<p>You cannot share levels as you are not registered to a school or club.</p>
+			    		{% endif %}
+			    	{% endif %}
 			    </div>
 			</div>
 			<div id="container"></div>
