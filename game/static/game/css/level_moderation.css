@@ -1,0 +1,19 @@
+form label {
+	float:left;
+	width:auto;
+	font-size: 1.6rem;
+	line-height: 37px;
+}
+
+form span {
+	display: block;
+	overflow: hidden;
+}
+
+select {
+	font-size: 1.6rem;
+}
+
+.btn {
+	margin: 0px
+}
