@@ -96,13 +96,7 @@ ocargo.LevelEditor = function() {
         }
     });
 
-    $('#paper').on('touchend', function(ev) {
-        if (ev.originalEvent.touches.length === 0) {
-            IS_SCROLLING = false;
-        }
-    });
-
-    $('#paper').on('touchcancel', function(ev) {
+    $('#paper').on('touchend touchcancel', function(ev) {
         if (ev.originalEvent.touches.length === 0) {
             IS_SCROLLING = false;
         }
@@ -1144,7 +1138,7 @@ ocargo.LevelEditor = function() {
 
         image.drag(onDragMove, onDragStart, onDragEnd);
 
-        image.click(function() {
+        image.on('click touchstart', function() {
             if(mode === DELETE_DECOR_MODE) {
                 decor.destroy();
             }
