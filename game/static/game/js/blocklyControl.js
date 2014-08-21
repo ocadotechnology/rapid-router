@@ -52,7 +52,6 @@ ocargo.BlocklyControl.prototype.reset = function() {
         var startBlock = this.createBlock('start');
         startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
     }
-    this.addClickListenerToStartBlocks();
 };
 
 ocargo.BlocklyControl.prototype.showFlyout = function() {
@@ -81,7 +80,6 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         Blockly.mainWorkspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeIllegalBlocks();
-        ocargo.blocklyControl.addClickListenerToStartBlocks();
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
@@ -262,38 +260,6 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
         
         return n;
     }
-};
-
-ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
-    var startBlocks = this.getStartBlocks();
-    if (startBlocks) {
-        for (var i = 0; i < startBlocks.length; i++) {
-            var startBlock = startBlocks[i];
-            var svgRoot = startBlock.getSvgRoot();
-            if (svgRoot) {
-                if (!svgRoot.id || svgRoot.id === "") {
-                    svgRoot.id = "startBlockSvg" + i;
-                }
-                var downX = 0;
-                var downY = 0;
-                var maxMove = 5;
-                $('#' + svgRoot.id).on({
-                    mousedown: function(e) {
-                        downX  = e.pageX;
-                        downY   = e.pageY;
-                    },
-                    mouseup: function(e) {
-                        if (Math.abs(downX - e.pageX) < maxMove && Math.abs(downY - e.pageY) < maxMove) {
-                            var playEls = $('#play');
-                            if (playEls && playEls.length && playEls.length > 0) {
-                                playEls[0].click();
-                            }
-                        }
-                    }
-                });
-            }
-        }
-    } 
 };
 
 
