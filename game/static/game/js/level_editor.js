@@ -20,6 +20,8 @@ ocargo.LevelEditor = function() {
     var MARK_ORIGIN_MODE = 'Mark origin';
     var DELETE_DECOR_MODE = 'Delete decor';
 
+    var IS_SCROLLING = false;
+
     /*********/
     /* State */
     /*********/
@@ -82,6 +84,7 @@ ocargo.LevelEditor = function() {
             touchStartPosX = ev.originalEvent.touches[0].pageX;
             scrollStartPosY = $('#paper').scrollTop();
             touchStartPosY = ev.originalEvent.touches[0].pageY;
+            IS_SCROLLING = true;
         }
     });
 
@@ -90,6 +93,18 @@ ocargo.LevelEditor = function() {
             ev.preventDefault();
             $('#paper').scrollLeft(scrollStartPosX - (ev.originalEvent.touches[0].pageX - touchStartPosX));
             $('#paper').scrollTop(scrollStartPosY - (ev.originalEvent.touches[0].pageY - touchStartPosY));
+        }
+    });
+
+    $('#paper').on('touchend', function(ev) {
+        if (ev.originalEvent.touches.length === 0) {
+            IS_SCROLLING = false;
+        }
+    });
+
+    $('#paper').on('touchcancel', function(ev) {
+        if (ev.originalEvent.touches.length === 0) {
+            IS_SCROLLING = false;
         }
     });
 
@@ -1024,7 +1039,7 @@ ocargo.LevelEditor = function() {
 
     function handleTouchStart(this_rect) {
         return function (ev) {
-            if (ev.touches.length === 1) {
+            if (ev.touches.length === 1 && !IS_SCROLLING) {
                 var x = ev.touches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
                 var y = ev.touches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
 
@@ -1041,7 +1056,7 @@ ocargo.LevelEditor = function() {
 
     function handleTouchMove(this_rect) {
         return function(ev) {
-            if (ev.touches.length === 1) {
+            if (ev.touches.length === 1 && !IS_SCROLLING) {
                 var x = ev.touches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
                 var y = ev.touches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
 
@@ -1058,7 +1073,7 @@ ocargo.LevelEditor = function() {
 
     function handleTouchEnd(this_rect) {
         return function(ev) {
-            if (ev.changedTouches.length === 1) {
+            if (ev.changedTouches.length === 1 && !IS_SCROLLING) {
                 var x = ev.changedTouches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
                 var y = ev.changedTouches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
 
