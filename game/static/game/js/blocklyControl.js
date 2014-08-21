@@ -24,8 +24,8 @@ ocargo.BlocklyControl = function () {
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
 ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH = 1;
 ocargo.BlocklyControl.IMAGE_WIDTH = 20; 
-ocargo.BlocklyControl.BLOCK_VAN_HEIGHT = VAN_HEIGHT;
-ocargo.BlocklyControl.BLOCK_VAN_WIDTH = VAN_WIDTH;
+ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT = CHARACTER_HEIGHT;
+ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH = CHARACTER_WIDTH;
 
 ocargo.BlocklyControl.prototype.incorrectBlock = null;
 ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
@@ -309,8 +309,8 @@ ocargo.BlocklyControl.prototype.increaseBlockSize = function() {
     */
     
     ocargo.blocklyControl.IMAGE_WIDTH *= 2;
-    ocargo.blocklyControl.BLOCK_VAN_HEIGHT *= 2;
-    ocargo.blocklyControl.BLOCK_VAN_WIDTH *= 2;    
+    ocargo.blocklyControl.BLOCK_CHARACTER_HEIGHT *= 2;
+    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH *= 2;    
     ocargo.blocklyControl.BLOCK_HEIGHT *= 2;
 
 	document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' + ':'+'22pt !important'+'}', document.styleSheets[0].cssRules.length);
@@ -356,8 +356,8 @@ ocargo.BlocklyControl.prototype.decreaseBlockSize = function() {
     */
     
     ocargo.blocklyControl.IMAGE_WIDTH /= 2;
-    ocargo.blocklyControl.BLOCK_VAN_HEIGHT /= 2;
-    ocargo.blocklyControl.BLOCK_VAN_WIDTH /= 2;  
+    ocargo.blocklyControl.BLOCK_CHARACTER_HEIGHT /= 2;
+    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH /= 2;  
     ocargo.blocklyControl.BLOCK_HEIGHT /= 2;
 
     var sheet = document.styleSheets[0];

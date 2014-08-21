@@ -9,7 +9,7 @@ ocargo.PathFinder = function(model) {
     this.maxDistanceScore = 10;
 
     this.modelLength = MODEL_SOLUTION;
-    this.maxInstrLengthScore = (this.modelLength.length == 0 ? 0 : 10);
+    this.maxInstrLengthScore = (this.modelLength.length === 0 ? 0 : 10);
 
     this.maxScore = this.maxDistanceScore + this.maxInstrLengthScore;
     
@@ -38,7 +38,7 @@ ocargo.PathFinder.prototype.getScore = function() {
         }
 
         message +=  ocargo.messages.algorithmScore +
-                    this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>"
+                    this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>";
 
         totalScore += instrScore;
     }
