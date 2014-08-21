@@ -189,7 +189,7 @@ input[type="radio"].character_radio {
 /************/
 
 #levelNameInput {
-    max-width: 100px;
+    width: 90%;
 }
 
 /*************/
