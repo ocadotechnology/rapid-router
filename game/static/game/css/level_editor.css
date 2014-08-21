@@ -42,6 +42,23 @@ input {
     width: 180px;
 }
 
+#currentTool {
+    position: absolute;
+    top: 22px;
+    left: 380px;
+    width: 120px;
+    height: 33px;
+}
+
+.currentToolImage {
+    height: 22px;
+}
+
+.currentToolText {
+    font-size: 0.65em;
+    font-weight: bold;
+}
+
 /********************/
 /* Table  structure */
 /********************/

@@ -10,6 +10,12 @@ ocargo.LevelEditor = function() {
 
     var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
     var LIGHT_GREEN_URL = '/static/game/image/trafficLight_green.svg';
+    
+    var DELETE_DECOR_IMG_URL = "/static/game/image/icons/delete_decor.svg";
+    var ADD_ROAD_IMG_URL = "/static/game/image/icons/add_road.svg";
+    var DELETE_ROAD_IMG_URL = "/static/game/image/icons/delete_road.svg";
+    var MARK_START_IMG_URL = "/static/game/image/icons/origin.svg";
+    var MARK_END_IMG_URL = "/static/game/image/icons/destination.svg";
 
     var VALID_LIGHT_COLOUR = '#87E34D';
     var INVALID_LIGHT_COLOUR = '#E35F4D';
@@ -155,10 +161,20 @@ ocargo.LevelEditor = function() {
             });
         }
 
+        function changeCurrentToolDisplay(text, imgSrc){
+            $('#currentToolText').text(text);
+            $('#currentToolImg').attr("src", imgSrc);            
+        }
+        
+        function changeCurrentToolToMoveDecor(){
+            changeCurrentToolDisplay("Move scenery", DELETE_DECOR_IMG_URL);
+        }
+        
         function setupMapTab() {
             tabs.map.setOnChange(function() {
                 transitionTab(tabs.map);
                 mode = ADD_ROAD_MODE;
+                changeCurrentToolDisplay("Add road", ADD_ROAD_IMG_URL);
             });
 
             $('#clear').click(function() {
@@ -169,18 +185,22 @@ ocargo.LevelEditor = function() {
 
             $('#start').click(function() {
                 mode = MARK_ORIGIN_MODE;
+                changeCurrentToolDisplay("Mark start", MARK_START_IMG_URL);
             });
 
             $('#end').click(function() {
                 mode = MARK_DESTINATION_MODE;
+                changeCurrentToolDisplay("Mark end", MARK_END_IMG_URL);
             });
 
             $('#add_road').click(function() {
                 mode = ADD_ROAD_MODE;
+                changeCurrentToolDisplay("Add road", ADD_ROAD_IMG_URL);
             });
 
             $('#delete_road').click(function() {
                 mode = DELETE_ROAD_MODE;
+                changeCurrentToolDisplay("Delete road", DELETE_ROAD_IMG_URL);
             });
         }
 
@@ -188,6 +208,7 @@ ocargo.LevelEditor = function() {
             tabs.decor.setOnChange(function() {
                 transitionTab(tabs.decor);
                 mode = MOVE_DECOR_MODE;
+                changeCurrentToolToMoveDecor();
             });
 
             $('#theme_select').change(function() {
@@ -197,21 +218,25 @@ ocargo.LevelEditor = function() {
             $('#bush').click(function() {
                 new InternalDecor('bush');
                 mode = MOVE_DECOR_MODE;
+                changeCurrentToolToMoveDecor();
             });
 
             $('#tree1').click(function() {
                 new InternalDecor('tree1');
                 mode = MOVE_DECOR_MODE;
+                changeCurrentToolToMoveDecor();
             });
 
             $('#tree2').click(function() {
                 new InternalDecor('tree2');
                 mode = MOVE_DECOR_MODE;
+                changeCurrentToolToMoveDecor();
             });
 
             $('#pond').click(function() {
                 new InternalDecor('pond');
                 mode = MOVE_DECOR_MODE;
+                changeCurrentToolToMoveDecor();
             });
 
             $('#trafficLightRed').click(function() {
@@ -219,6 +244,7 @@ ocargo.LevelEditor = function() {
                                           "startingState": ocargo.TrafficLight.RED,
                                           "controlledNode": -1, "sourceNode": -1});
                 mode = MOVE_DECOR_MODE;
+                changeCurrentToolToMoveDecor();
             });
 
             $('#trafficLightGreen').click(function() {
@@ -226,14 +252,17 @@ ocargo.LevelEditor = function() {
                                           "startingState": ocargo.TrafficLight.GREEN,
                                           "controlledNode": -1, "sourceNode": -1});
                 mode = MOVE_DECOR_MODE;
+                changeCurrentToolToMoveDecor();
             });
 
             $('#move_decor').click(function() {
                 mode = MOVE_DECOR_MODE;
+                changeCurrentToolToMoveDecor();
             });
 
             $('#delete_decor').click(function() {
                 mode = DELETE_DECOR_MODE;
+                changeCurrentToolDisplay("Delete scenery", DELETE_DECOR_IMG_URL);
             });
         }
 
