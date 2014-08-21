@@ -18,9 +18,12 @@ ocargo.LevelEditor = function() {
     var DELETE_ROAD_MODE = 'Delete road';
     var MARK_DESTINATION_MODE = 'Mark destination';
     var MARK_ORIGIN_MODE = 'Mark origin';
+    var MOVE_DECOR_MODE = 'Move decor';
     var DELETE_DECOR_MODE = 'Delete decor';
 
     var IS_SCROLLING = false;
+
+    var paper = $('#paper') // May as well cache this
 
     /*********/
     /* State */
@@ -77,26 +80,26 @@ ocargo.LevelEditor = function() {
     var touchStartPosX = 0;
     var touchStartPosY = 0;
 
-    $('#paper').on('touchstart', function(ev) {
+    paper.on('touchstart', function(ev) {
         if (ev.originalEvent.touches.length === 2) {
             ev.preventDefault();
-            scrollStartPosX = $('#paper').scrollLeft();
+            scrollStartPosX = paper.scrollLeft();
             touchStartPosX = ev.originalEvent.touches[0].pageX;
-            scrollStartPosY = $('#paper').scrollTop();
+            scrollStartPosY = paper.scrollTop();
             touchStartPosY = ev.originalEvent.touches[0].pageY;
             IS_SCROLLING = true;
         }
     });
 
-    $('#paper').on('touchmove', function(ev) {
+    paper.on('touchmove', function(ev) {
         if (ev.originalEvent.touches.length === 2) {
             ev.preventDefault();
-            $('#paper').scrollLeft(scrollStartPosX - (ev.originalEvent.touches[0].pageX - touchStartPosX));
-            $('#paper').scrollTop(scrollStartPosY - (ev.originalEvent.touches[0].pageY - touchStartPosY));
+            paper.scrollLeft(scrollStartPosX - (ev.originalEvent.touches[0].pageX - touchStartPosX));
+            paper.scrollTop(scrollStartPosY - (ev.originalEvent.touches[0].pageY - touchStartPosY));
         }
     });
 
-    $('#paper').on('touchend touchcancel', function(ev) {
+    paper.on('touchend touchcancel', function(ev) {
         if (ev.originalEvent.touches.length === 0) {
             IS_SCROLLING = false;
         }
@@ -155,6 +158,7 @@ ocargo.LevelEditor = function() {
         function setupMapTab() {
             tabs['map'].setOnChange(function() {
                 transitionTab(tabs['map']);
+                mode = ADD_ROAD_MODE;
             });
 
             $('#clear').click(function() {
@@ -182,6 +186,7 @@ ocargo.LevelEditor = function() {
         function setupDecorTab() {
             tabs['decor'].setOnChange(function() {
                 transitionTab(tabs['decor']);
+                mode = MOVE_DECOR_MODE;
             });
 
             $('#theme_select').change(function() {
@@ -190,38 +195,44 @@ ocargo.LevelEditor = function() {
 
             $('#bush').click(function() {
                 new InternalDecor('bush');
+                mode = MOVE_DECOR_MODE;
             });
 
             $('#tree1').click(function() {
                 new InternalDecor('tree1');
+                mode = MOVE_DECOR_MODE;
             });
 
             $('#tree2').click(function() {
                 new InternalDecor('tree2');
+                mode = MOVE_DECOR_MODE;
             });
 
             $('#pond').click(function() {
                 new InternalDecor('pond');
+                mode = MOVE_DECOR_MODE;
             });
 
             $('#trafficLightRed').click(function() {
                 new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
                                           "startingState": ocargo.TrafficLight.RED,
                                           "controlledNode": -1, "sourceNode": -1});
+                mode = MOVE_DECOR_MODE;
             });
 
             $('#trafficLightGreen').click(function() {
                 new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
                                           "startingState": ocargo.TrafficLight.GREEN,
                                           "controlledNode": -1, "sourceNode": -1});
+                mode = MOVE_DECOR_MODE;
+            });
+
+            $('#move_decor').click(function() {
+                mode = MOVE_DECOR_MODE;
             });
 
             $('#delete_decor').click(function() {
-                if (mode === DELETE_DECOR_MODE) {
-                    mode = ADD_ROAD_MODE;
-                } else {
-                    mode = DELETE_DECOR_MODE;
-                }
+                mode = DELETE_DECOR_MODE;
             });
         }
 
@@ -1034,8 +1045,9 @@ ocargo.LevelEditor = function() {
     function handleTouchStart(this_rect) {
         return function (ev) {
             if (ev.touches.length === 1 && !IS_SCROLLING) {
-                var x = ev.touches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
-                var y = ev.touches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+                var paperPosition = paper.position();
+                var x = ev.touches[0].pageX - paperPosition.left + paper.scrollLeft();
+                var y = ev.touches[0].pageY - paperPosition.top + paper.scrollTop();
 
                 x /= GRID_SPACE_SIZE;
                 y /= GRID_SPACE_SIZE;
@@ -1051,8 +1063,9 @@ ocargo.LevelEditor = function() {
     function handleTouchMove(this_rect) {
         return function(ev) {
             if (ev.touches.length === 1 && !IS_SCROLLING) {
-                var x = ev.touches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
-                var y = ev.touches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+                var paperPosition = paper.position();
+                var x = ev.touches[0].pageX - paperPosition.left + paper.scrollLeft();
+                var y = ev.touches[0].pageY - paperPosition.top + paper.scrollTop();
 
                 x /= GRID_SPACE_SIZE;
                 y /= GRID_SPACE_SIZE;
@@ -1068,8 +1081,9 @@ ocargo.LevelEditor = function() {
     function handleTouchEnd(this_rect) {
         return function(ev) {
             if (ev.changedTouches.length === 1 && !IS_SCROLLING) {
-                var x = ev.changedTouches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
-                var y = ev.changedTouches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+                var paperPosition = paper.position();
+                var x = ev.changedTouches[0].pageX - paperPosition.left + paper.scrollLeft();
+                var y = ev.changedTouches[0].pageY - paperPosition.top + paper.scrollTop();
 
                 x /= GRID_SPACE_SIZE;
                 y /= GRID_SPACE_SIZE;
@@ -1098,42 +1112,48 @@ ocargo.LevelEditor = function() {
         var imageHeight;
 
         function onDragMove(dx, dy) {
-            paperX = dx + originX;
-            paperY = dy + originY;
+            if (mode === MOVE_DECOR_MODE) {
+                paperX = dx + originX;
+                paperY = dy + originY;
 
-            // Stop it being dragged off the edge of the page
-            if(paperX < 0) {
-                paperX = 0;
-            }
-            else if(paperX + imageWidth > paperWidth) {
-                paperX = paperWidth - imageWidth;
-            }
-            if(paperY < 0) {
-                paperY =  0;
-            }
-            else if(paperY + imageHeight >  paperHeight) {
-                paperY = paperHeight - imageHeight;
-            }
+                // Stop it being dragged off the edge of the page
+                if(paperX < 0) {
+                    paperX = 0;
+                }
+                else if(paperX + imageWidth > paperWidth) {
+                    paperX = paperWidth - imageWidth;
+                }
+                if(paperY < 0) {
+                    paperY =  0;
+                }
+                else if(paperY + imageHeight >  paperHeight) {
+                    paperY = paperHeight - imageHeight;
+                }
 
-            image.transform('t' + paperX + ',' + paperY);
+                image.transform('t' + paperX + ',' + paperY);
+            }
         }
 
         function onDragStart(x, y) {
-            var bBox = image.getBBox();
-            imageWidth = bBox.width;
-            imageHeight = bBox.height;
+            if (mode === MOVE_DECOR_MODE) {
+                var bBox = image.getBBox();
+                imageWidth = bBox.width;
+                imageHeight = bBox.height;
 
-            var paperPosition = $('#paper').position();
-            originX = x - paperPosition.left - imageWidth/2;
-            originY = y - paperPosition.top - imageHeight/2;
-        
-            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
-            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+                var paperPosition = paper.position();
+                originX = x - paperPosition.left + paper.scrollLeft() - imageWidth/2;
+                originY = y - paperPosition.top + paper.scrollTop() - imageHeight/2;
+
+                paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
+                paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+            }
         }
 
         function onDragEnd() {
-            originX = paperX;
-            originY = paperY;
+            if (mode === MOVE_DECOR_MODE) {
+                originX = paperX;
+                originY = paperY;
+            }
         }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
@@ -1305,7 +1325,7 @@ ocargo.LevelEditor = function() {
             paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
             paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
 
-            var paperPosition = $('#paper').position();
+            var paperPosition = paper.position();
 
             var mouseX = x - paperPosition.left;
             var mouseY = y - paperPosition.top;
