@@ -214,60 +214,6 @@ def logged_students(request):
     """
     return render_student_info(request)
 
-def settings(request):
-    """ Renders the settings page. Accessible only to logged-in users.
-
-    **Context**
-
-    ``RequestContext``
-    ``avatarPreUploadedForm``
-        Form used to choose an avatar from already existing images.
-        Instance of `forms.avatarPreUploadedForm`.
-    ``avatarUploadForm``
-        Form used to upload any image as an avatar. Instance of `forms.avatarUploadForm`.
-    ``shareLevelForm``
-        Form used to share a level with friends. Instance of `forms.shareLevelForm`.
-    ``levels``
-        List of :model:`game.Level` created by the user.
-    ``user``
-        Currently logged in :model:`auth.User`.
-    ``levelMessage``
-        Message shown on the settings page, level listing part. String from `game.messages`.
-    ``modal``
-
-    **Template:**
-
-    :template:`game/settings.html`
-    """
-    if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
-        return renderError(request, messages.noPermissionTitle(), messages.noPermissionMessage())
-    levels = Level.objects.filter(owner=request.user.userprofile.id)
-    avatarUploadForm, avatarPreUploadedForm = renderAvatarChoice(request)
-    choosePerson, shareLevelClassForm, shareLevelPersonForm, shareLevelChoosePerson, message \
-        = renderLevelSharing(request)
-    levelMessage = messages.noLevelsToShow() if len(levels) == 0 else messages.levelsMessage()
-    sharedLevels = request.user.shared.all()
-    sharedMessage = messages.noSharedLevels() if len(sharedLevels) == 0 \
-        else messages.sharedLevelsMessage()
-    title = messages.shareTitle()
-
-    context = RequestContext(request, {
-        'avatarPreUploadedForm': avatarPreUploadedForm,
-        'avatarUploadForm': avatarUploadForm,
-        'shareLevelPersonForm': shareLevelPersonForm,
-        'shareLevelClassForm': shareLevelClassForm,
-        'shareLevelChoosePerson': shareLevelChoosePerson,
-        'choosePerson': choosePerson,
-        'levels': levels,
-        'sharedLevels': sharedLevels,
-        'user': request.user,
-        'levelMessage': levelMessage,
-        'sharedLevelMessage': sharedMessage,
-        'message': message,
-        'title': title
-    })
-    return render(request, 'game/settings.html', context_instance=context)
-
 
 def random_level_for_episode(request, episodeID):
     """ Generates a new random level based on the episodeID
