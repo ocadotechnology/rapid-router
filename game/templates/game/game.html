@@ -23,6 +23,8 @@
     var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
     var CHARACTER_NAME = "{{character.name}}";
     var CHARACTER_URL = "{{character.top_down}}";
+    var CHAR_WIDTH = {{character.width}};
+    var CHAR_HEIGHT = {{character.height}};
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}
@@ -204,7 +206,7 @@
     <div id="tab_panes" class='no-print'>
 
       <div id="blockly_pane" class="tab_pane">
-        <div id="blockly_holder" style='width: calc(100% + 51px); margin-left: -51px'></div>
+        <div id="blockly_holder" style='width: calc(100% + 55px); margin-left: -55px'></div>
       </div>
 
       <div id="python_pane" class="tab_pane">

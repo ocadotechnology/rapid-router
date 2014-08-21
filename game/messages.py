@@ -27,6 +27,28 @@ def noDataToShow():
                     + "unexpected. ")
 
 
+""" Strings used on the level moderation page. """
+
+def noPermissionLevelModerationTitle():
+    return ugettext("No permission ")
+
+
+def noPermissionLevelModerationPage():
+    return ugettext("Level moderation is only visible to teachers. Log in if you "
+                    + "think you should be able to see it. ")
+
+def noPermissionLevelModerationClass():
+    return ugettext("You do not teach this class. Please contact your administrator if this "
+                    + "is unexpected.")
+
+def noPermissionLevelModerationStudent():
+    return ugettext("You do not teach this student. Please contact your administrator if this "
+                    + "is unexpected.")
+
+def noDataToShowLevelModeration():
+    return ugettext("You have not created any classes and therefore is no data to show. " +
+                    "Please contact your administrator if this is unexpected.")
+
 """ String messages used on the settings page. """
 
 

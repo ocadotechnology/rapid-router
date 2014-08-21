@@ -20,7 +20,8 @@ ocargo.Animation.prototype.isFinished = function() {
 };
 
 ocargo.Animation.prototype.wasJustReset = function() {
-	return (!this.isFinished() && this.animationQueue.length == 1 && this.animationQueue[0].length == 1 && this.animationQueue[0][0].length == 0);
+	return (!this.isFinished() && this.animationQueue.length === 1 &&
+			this.animationQueue[0].length === 1 && this.animationQueue[0][0].length === 0);
 };
 
 ocargo.Animation.prototype.resetAnimation = function() {
@@ -178,7 +179,8 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             		ocargo.drawing.wait(vanID, animationLength);
             		break;
             	case 'CRASH':
-            		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode, a.attemptedAction, a.startNode);
+            		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode,
+            			a.attemptedAction, a.startNode);
             		break;
             	case 'DELIVER':
             		ocargo.drawing.deliver(vanID, animationLength, a.destinationID);
@@ -203,12 +205,15 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					title = ocargo.messages.winTitle;
 					var levelMsg = "";
 					if (NEXT_LEVEL) {
-				        levelMsg = '<br><br>' + ocargo.messages.nextLevelButton(NEXT_LEVEL);
+				        levelMsg = '<br><br>' +
+				        	ocargo.jsElements.redirectButton("'/game/" + NEXT_LEVEL + "'",
+				        								   'Next Level');
 				    } 
 				    else {
 				        if (NEXT_EPISODE) {
-				            levelMsg = '<br><br>' + ocargo.messages.nextEpisodeButton(NEXT_EPISODE);
-				        } else {
+				            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE);
+				        } 
+				        else if(MODEL_SOLUTION.length > 0) {
 				            levelMsg = ocargo.messages.lastLevel;
 				        }
 				    }
@@ -217,8 +222,8 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
-					leadMsg = leadMsg + ocargo.messages.closebutton(ocargo.messages.tryagainLabel);
-					if(a.failSubtype == "CRASH") {
+					leadMsg = leadMsg + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+					if (a.failSubtype === "CRASH") {
 						delay = 3000;
 					}
 					else {
@@ -227,7 +232,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					break;
 				case 'WARNING':
 					title = ocargo.messages.ohNo;
-					leadMsg = leadMsg + ocargo.messages.closebutton(ocargo.messages.tryagainLabel);
+					leadMsg = leadMsg + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
 					delay = 1000;
 					break;
 			}
@@ -245,7 +250,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			}
 			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, delay);
 			if (a.popupHint) {
-				if(level.hintOpened){
+				if (level.hintOpened){
 	                $("#hintBtnPara").hide();
 	            } else {
 	                $("#hintText" ).hide();

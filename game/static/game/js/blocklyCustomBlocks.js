@@ -12,13 +12,15 @@ function initCustomBlocksDescription() {
     Blockly.Blocks['start'] = {
         // Beginning block - identifies the start of the program
         init: function() {
-            var imageStr = (ocargo.blocklyControl.numStartBlocks%2 == 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+            var imageStr = (ocargo.blocklyControl.numStartBlocks%2 === 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
             ocargo.blocklyControl.numStartBlocks++;
             
             this.setColour(50);
             this.appendDummyInput()
                 .appendField('Start')
-                .appendField(new Blockly.FieldImage(imageStr, ocargo.BlocklyControl.BLOCK_VAN_HEIGHT, ocargo.BlocklyControl.BLOCK_VAN_WIDTH));
+                .appendField(new Blockly.FieldImage(imageStr, 
+                    ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
+                    ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH));
             this.setNextStatement(true);
             this.setTooltip('The beginning of the program');
             this.setDeletable(false);

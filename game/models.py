@@ -36,6 +36,8 @@ class Character(models.Model):
     name = models.CharField(max_length=100)
     en_face = models.CharField(max_length=500)
     top_down = models.CharField(max_length=500)
+    width = models.IntegerField(default=40)
+    height = models.IntegerField(default=20)
 
 
 class Level (models.Model):

@@ -24,8 +24,8 @@ ocargo.BlocklyControl = function () {
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
 ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH = 1;
 ocargo.BlocklyControl.IMAGE_WIDTH = 20; 
-ocargo.BlocklyControl.BLOCK_VAN_HEIGHT = VAN_HEIGHT;
-ocargo.BlocklyControl.BLOCK_VAN_WIDTH = VAN_WIDTH;
+ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT = CHARACTER_HEIGHT;
+ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH = CHARACTER_WIDTH;
 
 ocargo.BlocklyControl.prototype.incorrectBlock = null;
 ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
@@ -52,7 +52,6 @@ ocargo.BlocklyControl.prototype.reset = function() {
         var startBlock = this.createBlock('start');
         startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
     }
-    this.addClickListenerToStartBlocks();
 };
 
 ocargo.BlocklyControl.prototype.showFlyout = function() {
@@ -81,7 +80,6 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         Blockly.mainWorkspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
         ocargo.blocklyControl.removeIllegalBlocks();
-        ocargo.blocklyControl.addClickListenerToStartBlocks();
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
@@ -264,38 +262,6 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
     }
 };
 
-ocargo.BlocklyControl.prototype.addClickListenerToStartBlocks = function() {
-    var startBlocks = this.getStartBlocks();
-    if (startBlocks) {
-        for (var i = 0; i < startBlocks.length; i++) {
-            var startBlock = startBlocks[i];
-            var svgRoot = startBlock.getSvgRoot();
-            if (svgRoot) {
-                if (!svgRoot.id || svgRoot.id === "") {
-                    svgRoot.id = "startBlockSvg" + i;
-                }
-                var downX = 0;
-                var downY = 0;
-                var maxMove = 5;
-                $('#' + svgRoot.id).on({
-                    mousedown: function(e) {
-                        downX  = e.pageX;
-                        downY   = e.pageY;
-                    },
-                    mouseup: function(e) {
-                        if (Math.abs(downX - e.pageX) < maxMove && Math.abs(downY - e.pageY) < maxMove) {
-                            var playEls = $('#play');
-                            if (playEls && playEls.length && playEls.length > 0) {
-                                playEls[0].click();
-                            }
-                        }
-                    }
-                });
-            }
-        }
-    } 
-};
-
 
 /*******************/
 /** Big Code Mode **/
@@ -343,8 +309,8 @@ ocargo.BlocklyControl.prototype.increaseBlockSize = function() {
     */
     
     ocargo.blocklyControl.IMAGE_WIDTH *= 2;
-    ocargo.blocklyControl.BLOCK_VAN_HEIGHT *= 2;
-    ocargo.blocklyControl.BLOCK_VAN_WIDTH *= 2;    
+    ocargo.blocklyControl.BLOCK_CHARACTER_HEIGHT *= 2;
+    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH *= 2;    
     ocargo.blocklyControl.BLOCK_HEIGHT *= 2;
 
 	document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' + ':'+'22pt !important'+'}', document.styleSheets[0].cssRules.length);
@@ -390,8 +356,8 @@ ocargo.BlocklyControl.prototype.decreaseBlockSize = function() {
     */
     
     ocargo.blocklyControl.IMAGE_WIDTH /= 2;
-    ocargo.blocklyControl.BLOCK_VAN_HEIGHT /= 2;
-    ocargo.blocklyControl.BLOCK_VAN_WIDTH /= 2;  
+    ocargo.blocklyControl.BLOCK_CHARACTER_HEIGHT /= 2;
+    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH /= 2;  
     ocargo.blocklyControl.BLOCK_HEIGHT /= 2;
 
     var sheet = document.styleSheets[0];
