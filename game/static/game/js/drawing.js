@@ -44,6 +44,26 @@ ocargo.Drawing = function() {
     var destinationImages = {};
     var roadImages = [];
 
+    /*********************/
+    /* Preloading images */
+    /*********************/
+    // Used by level editor to preload road tiles to prevent jittery drawing
+
+    this.preloadRoadTiles = function() {
+        var tiles = ['dead_end', 'crossroads', 'straight', 't_junction', 'turn']
+        var tileImages = [];
+        var path = '/static/game/image/road_tiles/'
+
+        for(var i = 0; i < tiles.length; i++) {
+            tileImages.push(paper.image(path + 'road/' + tiles[i] + '.svg', 0, 0, GRID_SPACE_SIZE, GRID_SPACE_SIZE));
+            tileImages.push(paper.image(path + 'path/' + tiles[i] + '.svg', 0, 0, GRID_SPACE_SIZE, GRID_SPACE_SIZE));
+        }
+        
+        for(var i = 0; i < tileImages.length; i++) {
+            tileImages[i].remove()
+        }
+    }
+
     /***************************/
     /* Geometry helper methods */
     /***************************/

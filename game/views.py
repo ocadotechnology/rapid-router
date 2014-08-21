@@ -740,14 +740,14 @@ def get_level_for_editor(request, levelID):
 def save_level_for_editor(request, levelID=None):
     """ Processes a request on creation of the map in the level editor """
 
-    path = request.GET.get('path')
-    destinations = request.GET.get('destinations')
-    decor = request.GET.get('decor')
-    traffic_lights = request.GET.get('traffic_lights')
-    max_fuel = request.GET.get('max_fuel')
-    theme_id = request.GET.get('themeID')
-    character_name = request.GET.get('character_name')
-    blockTypes = json.loads(request.GET['block_types'])
+    path = request.POST.get('path')
+    destinations = request.POST.get('destinations')
+    decor = request.POST.get('decor')
+    traffic_lights = request.POST.get('traffic_lights')
+    max_fuel = request.POST.get('max_fuel')
+    theme_id = request.POST.get('themeID')
+    character_name = request.POST.get('character_name')
+    blockTypes = json.loads(request.POST['block_types'])
 
     theme = Theme.objects.get(id=theme_id)
     character = Character.objects.get(name=character_name)
@@ -759,7 +759,7 @@ def save_level_for_editor(request, levelID=None):
             return
 
     else:
-        name = request.GET.get('name')
+        name = request.POST.get('name')
         level = Level(name=name, default=False)
 
         if not request.user.is_anonymous():
@@ -826,8 +826,8 @@ def get_sharing_information_for_editor(request, levelID):
 
 def share_level_for_editor(request, levelID):
     """ Shares a level with the provided list of recipients """
-    recipientIDs = request.GET.getlist('recipientIDs[]')
-    action = request.GET.get('action')
+    recipientIDs = request.POST.getlist('recipientIDs[]')
+    action = request.POST.get('action')
 
     level = Level.objects.get(id=levelID)
     recipients = User.objects.filter(id__in=recipientIDs)
@@ -874,7 +874,7 @@ def get_all_valid_recipients(userprofile, level):
         class_ = student.class_field
         classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
         valid_recipients['classmates'] = [{'id': classmate.user.user.id, 
-                                            'name': classmate.user.user.first_name + " " + classmate.user.user.last_name,
+                                            'name': classmate.user.user.first_name,
                                             'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
                                              for classmate in classmates]
 
@@ -895,7 +895,7 @@ def get_all_valid_recipients(userprofile, level):
             valid_recipients['classes'].append({'name': class_.name,
                                                 'id': class_.id,
                                                 'students': [{'id': student.user.user.id, 
-                                                            'name': student.user.user.first_name + " " + student.user.user.last_name,
+                                                            'name': student.user.user.first_name,
                                                             'shared': level.shared_with.filter(id=student.user.user.id).exists()}
                                                             for student in students]});
 

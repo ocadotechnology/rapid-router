@@ -17,8 +17,8 @@ def add_character_sizes(apps, schema_editor):
     kristy = Character.objects.get(name='Kristy')
     phil = Character.objects.get(name='Phil')
 
-    wes.width = int(1.3 * van_width)
-    wes.height = int(1.75 * van_width)
+    wes.width = van_width
+    wes.height = van_width
     wes.save()
 
     dee.width = int(1.3 * van_width)

@@ -8,13 +8,8 @@ ocargo.PathFinder = function(model) {
     this.destinations = model.map.destinations;
     this.maxDistanceScore = 10;
 
-    if (MODEL_SOLUTION) {
-        this.maxInstrLengthScore = 10;
-        this.modelLength = MODEL_SOLUTION;
-    }
-    else {
-        this.maxInstrLengthScore = 0;
-    }
+    this.modelLength = MODEL_SOLUTION;
+    this.maxInstrLengthScore = (this.modelLength.length === 0 ? 0 : 10);
 
     this.maxScore = this.maxDistanceScore + this.maxInstrLengthScore;
     
