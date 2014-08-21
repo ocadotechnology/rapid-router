@@ -874,7 +874,7 @@ def get_all_valid_recipients(userprofile, level):
         class_ = student.class_field
         classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
         valid_recipients['classmates'] = [{'id': classmate.user.user.id, 
-                                            'name': classmate.user.user.first_name + " " + classmate.user.user.last_name,
+                                            'name': classmate.user.user.first_name,
                                             'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
                                              for classmate in classmates]
 
@@ -895,7 +895,7 @@ def get_all_valid_recipients(userprofile, level):
             valid_recipients['classes'].append({'name': class_.name,
                                                 'id': class_.id,
                                                 'students': [{'id': student.user.user.id, 
-                                                            'name': student.user.user.first_name + " " + student.user.user.last_name,
+                                                            'name': student.user.user.first_name,
                                                             'shared': level.shared_with.filter(id=student.user.user.id).exists()}
                                                             for student in students]});
 
