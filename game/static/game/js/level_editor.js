@@ -31,6 +31,7 @@ ocargo.LevelEditor = function() {
 
     ocargo.saving = new ocargo.Saving();
     ocargo.drawing = new ocargo.Drawing();
+    ocargo.drawing.preloadRoadTiles();
 
     // Level information
     var nodes = [];
