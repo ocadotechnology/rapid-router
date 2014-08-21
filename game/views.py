@@ -61,15 +61,26 @@ def levels(request):
     episode = Episode.objects.get(name='Getting Started')
     while episode is not None:
         levels = []
+        minId = -1
+        maxId = -1
         for level in episode.levels:
+            if minId == -1 or maxId == -1:
+                minId = level.id
+                maxId = level.id
             levels.append({
                 "id": level.id,
                 "title": get_level_title(level.id),
                 "score": get_attempt_score(level)})
+            if level.id > maxId:
+                maxId = level.id
+            if level.id < minId:
+                minId = level.id
 
         e = {"id": episode.id,
              "name": episode.name,
-             "levels": levels}
+             "levels": levels,
+             "first_level": minId,
+             "last_level": maxId}
 
         episode_data.append(e)
         episode = episode.next_episode

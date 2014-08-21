@@ -10,9 +10,7 @@
 
 {% block css %}
 {{block.super}}
-  {% compress css %}
       <link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
-  {% endcompress %}
 {% endblock %}
 
 {% block nav_ocargo_levels %}<b><a href="{% url 'game.views.levels' %}">Levels</a></b>{% endblock nav_ocargo_levels %}
@@ -20,14 +18,12 @@
 {% block content %}
 	<div class="section group">
 		<div class="col span_1_of_3_strict">
-			<h3 style="text-align : center"> Welcome to Rapid Router!</h3>
 			<img class="wide rounded" src="{% static 'portal/img/RRlogo_on_less_green_small.png' %}" />
 		</div>
 		<div class="col span_2_of_3_strict">
-			<h3 style="text-align : center">Select a level!</h3>
 			<div id="episodes">
 			    {% for episode in episodeData %}
-			    <h3>{{episode.name}}</h3>
+			    <h3>{{episode.name}}<span style="float:right; font-size: 10pt">Levels {{episode.first_level}}-{{episode.last_level}}</span></h3>
 			    <div>
 			        {% for level in episode.levels %}
 			        <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
@@ -38,6 +34,14 @@
 			        <p><a href="levels/random/{{episode.id}}">Random: Try your hand at a random level.</a></p>
 			    </div>
 			    {% endfor %}
+			    <h3 class='customLevelsEpisode'>Levels created by you</h3>
+			    <div>
+			    	<p>No levels have been created by you yet.</p>
+			    </div>
+			    <h3 class='customLevelsEpisode'>Levels shared with you</h3>
+			    <div>
+			    	<p>No levels have been shared with you yet.</p>
+			    </div>
 			</div>
 			<div id="container"></div>
 		</div>
