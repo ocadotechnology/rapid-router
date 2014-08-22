@@ -42,7 +42,7 @@ ocargo.TrafficLight.prototype.queueAnimation = function(model) {
     ocargo.animation.appendAnimation({
         type: 'trafficlight',
         id: this.id,
-        colour: this.state,
+        colour: this.state
     });
 };
 

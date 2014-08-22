@@ -31,7 +31,7 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 	        		results.push({
 	        			id: matches[1],
 	        			name: json.name,
-	        			workspace: json.workspace,
+	        			workspace: json.workspace
 	        		});
 	      		}
 	    	}
@@ -90,7 +90,7 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
             type: 'POST',
             data: {
                 name: name,
-                workspace: workspace,
+                workspace: workspace
             },
             success: function() {
                 callback(null);
@@ -105,7 +105,7 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 
 		localStorage.setItem('blocklySavedWorkspaceXml-' + id, JSON.stringify({
 			name: name,
-			workspace: workspace,
+			workspace: workspace
 		}));
 
 		callback(null);

@@ -210,7 +210,7 @@ function queueHighlight(model, block) {
 	ocargo.animation.appendAnimation({
 		type: 'callable',
 		functionCall: makeHighLightCallable(block),
-		description: 'Blockly highlight: ' + block.type,
+		description: 'Blockly highlight: ' + block.type
 	});
 }
 
