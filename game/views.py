@@ -147,10 +147,14 @@ def level(request, level):
 
     if not lvl.default:
         # Then we're looking at a user created level
-        if request.user.is_anonymous() or (request.user != lvl.owner.user and
-            not lvl.shared_with.filter(pk=request.user.pk).exists()):
-            # If we're anonymous or the user didn't create it and it isn't shared with them
+        if request.user.is_anonymous():
+            # If we're anonymous
             return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
+        elif (request.user != lvl.owner.user and not lvl.shared_with.filter(pk=request.user.pk).exists()):
+            # User doesn't have automatic permissions to view/play level.
+            if not (hasattr(request.user.userprofile, 'teacher') and hasattr(lvl.owner, 'student') and request.user.userprofile.teacher == lvl.owner.student.class_field.teacher):
+                # User is not level owner's teacher
+                return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     lesson = 'description_level' + str(level)
     hint = 'hint_level' + str(level)
