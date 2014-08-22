@@ -20,16 +20,17 @@ ocargo.LevelEditor = function() {
     var VALID_LIGHT_COLOUR = '#87E34D';
     var INVALID_LIGHT_COLOUR = '#E35F4D';
 
-    var ADD_ROAD_MODE = 'Add road';
-    var DELETE_ROAD_MODE = 'Delete road';
-    var MARK_DESTINATION_MODE = 'Mark destination';
-    var MARK_ORIGIN_MODE = 'Mark origin';
-    var MOVE_DECOR_MODE = 'Move decor';
-    var DELETE_DECOR_MODE = 'Delete decor';
-
     var IS_SCROLLING = false;
 
-    var paper = $('#paper') // May as well cache this
+    var paper = $('#paper'); // May as well cache this
+
+    var modes = {
+        ADD_ROAD_MODE: {name: 'Add Road', url: "/static/game/image/icons/add_road.svg"},
+        DELETE_ROAD_MODE: {name: 'Delete Road', url: "/static/game/image/icons/delete_road.svg"},
+        MARK_DESTINATION_MODE: {name: 'Mark end', url: "/static/game/image/icons/destination.svg"},
+        MARK_ORIGIN_MODE: {name: 'Mark start', url: "/static/game/image/icons/origin.svg"},
+        DELETE_DECOR_MODE: {name: 'Delete decor', url: "/static/game/image/icons/delete_decor.svg"}
+    };
 
     /*********/
     /* State */
@@ -51,7 +52,8 @@ ocargo.LevelEditor = function() {
     var grid = initialiseVisited();
 
     // Current mode the user is in
-    var mode = ADD_ROAD_MODE;
+    var mode = modes.ADD_ROAD_MODE;
+    var prevMode = null;
 
     // Holds the state for when the user is drawing or deleting roads
     var strikeStart = null;
@@ -161,20 +163,16 @@ ocargo.LevelEditor = function() {
             });
         }
 
-        function changeCurrentToolDisplay(text, imgSrc){
-            $('#currentToolText').text(text);
-            $('#currentToolImg').attr("src", imgSrc);            
-        }
-        
-        function changeCurrentToolToMoveDecor(){
-            changeCurrentToolDisplay("Move scenery", DELETE_DECOR_IMG_URL);
+        function changeCurrentToolDisplay(mode){
+            $('#currentToolText').text(mode.name);
+            $('#currentToolImg').attr("src", mode.url);            
         }
         
         function setupMapTab() {
             tabs.map.setOnChange(function() {
                 transitionTab(tabs.map);
-                mode = ADD_ROAD_MODE;
-                changeCurrentToolDisplay("Add road", ADD_ROAD_IMG_URL);
+                mode = modes.ADD_ROAD_MODE;
+                changeCurrentToolDisplay(modes.ADD_ROAD_MODE);
             });
 
             $('#clear').click(function() {
@@ -184,31 +182,29 @@ ocargo.LevelEditor = function() {
             });
 
             $('#start').click(function() {
-                mode = MARK_ORIGIN_MODE;
-                changeCurrentToolDisplay("Mark start", MARK_START_IMG_URL);
+                mode = modes.MARK_ORIGIN_MODE;
+                changeCurrentToolDisplay(modes.MARK_ORIGIN_MODE);
             });
 
             $('#end').click(function() {
-                mode = MARK_DESTINATION_MODE;
-                changeCurrentToolDisplay("Mark end", MARK_END_IMG_URL);
+                mode = modes.MARK_DESTINATION_MODE;
+                changeCurrentToolDisplay(modes.MARK_DESTINATION_MODE);
             });
 
             $('#add_road').click(function() {
-                mode = ADD_ROAD_MODE;
-                changeCurrentToolDisplay("Add road", ADD_ROAD_IMG_URL);
+                mode = modes.ADD_ROAD_MODE;
+                changeCurrentToolDisplay(modes.ADD_ROAD_MODE);
             });
 
             $('#delete_road').click(function() {
-                mode = DELETE_ROAD_MODE;
-                changeCurrentToolDisplay("Delete road", DELETE_ROAD_IMG_URL);
+                mode = modes.DELETE_ROAD_MODE;
+                changeCurrentToolDisplay(modes.DELETE_ROAD_MODE);
             });
         }
 
         function setupDecorTab() {
             tabs.decor.setOnChange(function() {
                 transitionTab(tabs.decor);
-                mode = MOVE_DECOR_MODE;
-                changeCurrentToolToMoveDecor();
             });
 
             $('#theme_select').change(function() {
@@ -217,26 +213,18 @@ ocargo.LevelEditor = function() {
 
             $('#bush').click(function() {
                 new InternalDecor('bush');
-                mode = MOVE_DECOR_MODE;
-                changeCurrentToolToMoveDecor();
             });
 
             $('#tree1').click(function() {
                 new InternalDecor('tree1');
-                mode = MOVE_DECOR_MODE;
-                changeCurrentToolToMoveDecor();
             });
 
             $('#tree2').click(function() {
                 new InternalDecor('tree2');
-                mode = MOVE_DECOR_MODE;
-                changeCurrentToolToMoveDecor();
             });
 
             $('#pond').click(function() {
                 new InternalDecor('pond');
-                mode = MOVE_DECOR_MODE;
-                changeCurrentToolToMoveDecor();
             });
 
             $('#trafficLightRed').click(function() {
@@ -261,8 +249,15 @@ ocargo.LevelEditor = function() {
             });
 
             $('#delete_decor').click(function() {
-                mode = DELETE_DECOR_MODE;
-                changeCurrentToolDisplay("Delete scenery", DELETE_DECOR_IMG_URL);
+                if (mode === modes.DELETE_DECOR_MODE) {
+                    mode = prevMode;
+                    prevMode = null;
+                    changeCurrentToolDisplay(mode);
+                } else {
+                    prevMode = mode;
+                    mode = modes.DELETE_DECOR_MODE;
+                    changeCurrentToolDisplay(modes.DELETE_DECOR_MODE);
+                }
             });
         }
 
@@ -312,7 +307,7 @@ ocargo.LevelEditor = function() {
             initCustomBlocksDescription();
 
             var blockly = document.getElementById('blockly');
-            var toolbox = document.getElementById('toolbox');
+            var toolbox = document.getElementById('blockly_toolbox');
             Blockly.inject(blockly, {
                 path: '/static/game/js/blockly/',
                 toolbox: toolbox,
@@ -969,7 +964,7 @@ ocargo.LevelEditor = function() {
             var coordMap = ocargo.Drawing.translate(coordPaper);
             var existingNode = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
 
-            if (mode === MARK_ORIGIN_MODE && existingNode && canPlaceCFC(existingNode)) {
+            if (mode === modes.MARK_ORIGIN_MODE && existingNode && canPlaceCFC(existingNode)) {
                 if (originNode) {
                     var prevStart = originNode.coordinate;
                     markAsBackground(prevStart);
@@ -986,7 +981,7 @@ ocargo.LevelEditor = function() {
                 nodes[newStartIndex] = nodes[0];
                 nodes[0] = temp;
                 originNode = nodes[0];
-            } else if (mode === MARK_DESTINATION_MODE && existingNode) {    
+            } else if (mode === modes.MARK_DESTINATION_MODE && existingNode) {    
                 if (destinationNode) {
                     var prevEnd = destinationNode.coordinate;
                     markAsBackground(prevEnd);
@@ -999,7 +994,7 @@ ocargo.LevelEditor = function() {
                 var newEnd = ocargo.Node.findNodeIndexByCoordinate(coordMap, nodes);
                 destinationNode = nodes[newEnd];
 
-            }  else if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) {
+            }  else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 strikeStart = coordMap;
                 markAsSelected(coordMap);
             }
@@ -1014,7 +1009,7 @@ ocargo.LevelEditor = function() {
             var coordPaper = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
             var coordMap = ocargo.Drawing.translate(coordPaper);
 
-            if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) {
+            if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 if (strikeStart !== null) {
                     markTentativeRoad(coordMap);
                 }
@@ -1022,10 +1017,10 @@ ocargo.LevelEditor = function() {
                     markAsHighlighted(coordMap);
                 }
             }
-            else if (mode === MARK_ORIGIN_MODE || mode === MARK_DESTINATION_MODE) {
+            else if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE) {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
                 if (node && destinationNode !== node && originNode !== node) {
-                    if (mode === MARK_DESTINATION_MODE) {
+                    if (mode === modes.MARK_DESTINATION_MODE) {
                         mark(coordMap, 'blue', 0.3, true); 
                     }
                     else if (canPlaceCFC(node)) {
@@ -1045,13 +1040,13 @@ ocargo.LevelEditor = function() {
                                                    getBBox.y/GRID_SPACE_SIZE);
             var coordMap = ocargo.Drawing.translate(coordPaper);
 
-            if (mode === MARK_ORIGIN_MODE || mode === MARK_DESTINATION_MODE) {
+            if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE) {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
                 if (node && destinationNode !== node && originNode !== node) {
                     markAsBackground(coordMap);
                 }
             }
-            else if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) {
+            else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap)) {
                     markAsBackground(coordMap);
                 }
@@ -1063,13 +1058,13 @@ ocargo.LevelEditor = function() {
         return function(ev) {
             ev.preventDefault();
 
-            if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) {
+            if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 var getBBox = this_rect.getBBox();
                 var coordPaper = new ocargo.Coordinate(getBBox.x/GRID_SPACE_SIZE,
                                                        getBBox.y/GRID_SPACE_SIZE);
                 var coordMap = ocargo.Drawing.translate(coordPaper);
 
-                if (mode === DELETE_ROAD_MODE) {
+                if (mode === modes.DELETE_ROAD_MODE) {
                     finaliseDelete(coordMap);
                 } 
                 else {
@@ -1152,7 +1147,7 @@ ocargo.LevelEditor = function() {
         var imageHeight;
 
         function onDragMove(dx, dy) {
-            if (mode === MOVE_DECOR_MODE) {
+            if (mode !== modes.DELETE_DECOR_MODE) {
                 paperX = dx + originX;
                 paperY = dy + originY;
 
@@ -1175,7 +1170,7 @@ ocargo.LevelEditor = function() {
         }
 
         function onDragStart(x, y) {
-            if (mode === MOVE_DECOR_MODE) {
+            if (mode !== modes.DELETE_DECOR_MODE) {
                 var bBox = image.getBBox();
                 imageWidth = bBox.width;
                 imageHeight = bBox.height;
@@ -1190,7 +1185,7 @@ ocargo.LevelEditor = function() {
         }
 
         function onDragEnd() {
-            if (mode === MOVE_DECOR_MODE) {
+            if (mode !== modes.DELETE_DECOR_MODE) {
                 originX = paperX;
                 originY = paperY;
             }
@@ -1199,7 +1194,7 @@ ocargo.LevelEditor = function() {
         image.drag(onDragMove, onDragStart, onDragEnd);
 
         $(image.node).on('click touchstart', function() {
-            if (mode === DELETE_DECOR_MODE) {
+            if (mode === modes.DELETE_DECOR_MODE) {
                 decor.destroy();
             }
         });
@@ -1409,7 +1404,7 @@ ocargo.LevelEditor = function() {
         });
 
         image.click(function() {
-            if (mode === DELETE_DECOR_MODE) {
+            if (mode === modes.DELETE_DECOR_MODE) {
                 trafficLight.destroy();
             }
         });
@@ -1545,7 +1540,7 @@ ocargo.LevelEditor = function() {
 
     function applyAlongStrike(func, strikeEnd) {
         var x, y;
-        if (strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y) {
+        if (!strikeStart || strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y) {
             return;
         }
         if (strikeStart.x <= strikeEnd.x) {

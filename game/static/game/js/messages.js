@@ -11,7 +11,7 @@ ocargo.jsElements = {
         return '<br><br> <button onclick="document.getElementById(' + "'close-modal'" +
         ').click()">' + label +'</button>';
     },
-    buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>',
+    buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>'
 };
 
 
@@ -107,5 +107,5 @@ ocargo.messages = {
     procMissingNameError: "Perhaps try looking at your 'define' blocks?",
     procMissingBodyError: "Perhaps try looking at your 'define' blocks?",
     procDupNameError: "Perhaps try checking the names of your 'define' blocks?",
-    procCallNameError: "Perhaps try checking the names in your 'call' blocks?",
+    procCallNameError: "Perhaps try checking the names in your 'call' blocks?"
 };

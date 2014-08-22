@@ -10,6 +10,7 @@ var CONFIRMATION_DATA = {
           $.ajax({
               url : '/game/level_moderation/delete/' + levelID,
               type : 'POST',
+              contentType:"application/json; charset=utf-8",
               dataType: 'json',
               data : {
                   csrfmiddlewaretoken : $.cookie('csrftoken'),

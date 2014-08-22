@@ -29,7 +29,7 @@
 			        {% for level in episode.levels %}
 			        <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
 			        <p><a href="/game/{{level.id}}">{{level.id}}: {{level.title.strip | safe}}</a> 
-			        {% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/20{% endif %}</span></p>
+			        {% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/20</span>{% endif %}</p>
 			        {% endfor %}
 			        
 			        <p><a href="levels/random/{{episode.id}}">Random: Try your hand at a random level.</a></p>

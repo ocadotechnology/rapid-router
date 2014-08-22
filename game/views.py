@@ -21,6 +21,7 @@ from forms import *
 from game import random_road
 from models import Level, Attempt, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
 from portal.models import Student, Class, Teacher
+from portal.templatetags import app_tags
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
@@ -94,8 +95,19 @@ def levels(request):
                 "id": level.id,
                 "title": level.name,
                 "score": get_attempt_score(level)})
+        
+        explicitly_shared_levels = Level.objects.filter(shared_with__id=request.user.id)
+        validly_shared_levels = [level for level in explicitly_shared_levels 
+                            if is_valid_recipient(level.owner, request.user.userprofile)]
 
-        for level in request.user.shared.all():
+        if hasattr(request.user.userprofile, 'teacher'):
+            classes_taught = Class.objects.filter(teacher=request.user.userprofile)
+            students_taught = Student.objects.filter(class_field__in=classes_taught)
+            for student in students_taught:
+                validly_shared_levels.extend(Level.objects.filter(owner=student.user))
+
+
+        for level in validly_shared_levels:
             shared_levels.append({
                 "id": level.id,
                 "title": level.name,
@@ -135,10 +147,14 @@ def level(request, level):
 
     if not lvl.default:
         # Then we're looking at a user created level
-        if request.user.is_anonymous() or (request.user != lvl.owner.user and
-            not lvl.shared_with.filter(pk=request.user.pk).exists()):
-            # If we're anonymous or the user didn't create it and it isn't shared with them
+        if request.user.is_anonymous():
+            # If we're anonymous
             return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
+        elif (request.user != lvl.owner.user and not lvl.shared_with.filter(pk=request.user.pk).exists()):
+            # User doesn't have automatic permissions to view/play level.
+            if not (hasattr(request.user.userprofile, 'teacher') and hasattr(lvl.owner, 'student') and request.user.userprofile.teacher == lvl.owner.student.class_field.teacher):
+                # User is not level owner's teacher
+                return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     lesson = 'description_level' + str(level)
     hint = 'hint_level' + str(level)
@@ -863,9 +879,9 @@ def compile_list_of_levels_for_editor(request):
             for student in students_taught:
                 validly_shared_levels.extend(Level.objects.filter(owner=student.user))
 
-    owned = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
+    owned = [{'name': level.name, 'owner': app_tags.make_into_username(level.owner.user), 'id': level.id}
              for level in ownedLevels]
-    shared = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
+    shared = [{'name': level.name, 'owner': app_tags.make_into_username(level.owner.user), 'id': level.id}
               for level in validly_shared_levels]
 
     return {'ownedLevels': owned, 'sharedLevels': shared}
@@ -921,7 +937,6 @@ def get_all_valid_recipients(userprofile, level):
 def is_valid_recipient(recipient_profile, sharer_profile):
     if hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'student'):
         # Are they in the same class?
-        print("hi")
         return sharer_profile.student.class_field == recipient_profile.student.class_field
     elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'student'):
         # Is the recipient taught by the sharer?

@@ -64,7 +64,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: ocargo.sound.starting,
-        description: 'starting sound',
+        description: 'starting sound'
     });
 
     program.run(ocargo.model);
@@ -72,7 +72,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: function() {ocargo.game.onStopControls();},
-        description: 'onStopControls',
+        description: 'onStopControls'
     });
 
     return true;
@@ -84,11 +84,12 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         $.ajax({
             url : '/game/submit',
             type : 'POST',
+            contentType:"application/json; charset=utf-8",
             data : {
                 csrfmiddlewaretoken : $.cookie('csrftoken'),
                 level : LEVEL_ID,
                 score : score,
-                workspace : ocargo.blocklyControl.serialize(),
+                workspace : ocargo.blocklyControl.serialize()
             },
             error : function(xhr,errmsg,err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);

@@ -5,7 +5,7 @@ $(document).ready(function () {
     var outf = function (outputText) {
         ocargo.animation.appendAnimation({
             type: 'console',
-            text: outputText,
+            text: outputText
         });
     };
     
@@ -20,7 +20,7 @@ $(document).ready(function () {
         height: "160px",
         fontSize: "9pt",
         autoMatchParens: true,
-        parserConfig: {'pythonVersion': 2, 'strictErrors': true},
+        parserConfig: {'pythonVersion': 2, 'strictErrors': true}
     });
 
    ocargo.editor.run = function() {
