@@ -2,8 +2,8 @@
 
 var ocargo = ocargo || {};
 
-ocargo.Model = function(nodeData, destinations, trafficLightData, maxFuel, vanId) {
-    this.map = new ocargo.Map(nodeData, destinations);
+ocargo.Model = function(nodeData, origin, destinations, trafficLightData, maxFuel, vanId) {
+    this.map = new ocargo.Map(nodeData, origin, destinations);
     this.van = new ocargo.Van(this.map.getStartingPosition(), maxFuel);
 
     this.trafficLights = [];

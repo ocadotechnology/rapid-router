@@ -760,6 +760,7 @@ def save_level_for_editor(request, levelID=None):
 
     path = request.POST.get('path')
     destinations = request.POST.get('destinations')
+    origin = request.POST.get('origin')
     decor = request.POST.get('decor')
     traffic_lights = request.POST.get('traffic_lights')
     max_fuel = request.POST.get('max_fuel')
@@ -788,6 +789,7 @@ def save_level_for_editor(request, levelID=None):
                 level.shared_with.add(level.owner.student.class_field.teacher.user.user)
 
     level.path = path
+    level.origin = origin
     level.destinations = destinations
     level.max_fuel = max_fuel
     level.traffic_lights = traffic_lights
