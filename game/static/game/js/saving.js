@@ -31,7 +31,7 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 	        		results.push({
 	        			id: matches[1],
 	        			name: json.name,
-	        			workspace: json.workspace,
+	        			workspace: json.workspace
 	        		});
 	      		}
 	    	}
@@ -88,9 +88,10 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 		$.ajax({
             url: '/game/workspace',
             type: 'POST',
+            contentType:"application/json; charset=utf-8",
             data: {
                 name: name,
-                workspace: workspace,
+                workspace: workspace
             },
             success: function() {
                 callback(null);
@@ -105,7 +106,7 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 
 		localStorage.setItem('blocklySavedWorkspaceXml-' + id, JSON.stringify({
 			name: name,
-			workspace: workspace,
+			workspace: workspace
 		}));
 
 		callback(null);
@@ -212,6 +213,7 @@ ocargo.Saving.prototype.shareLevel = function(levelID, recipientData, callback) 
     $.ajax({
         url: '/game/level_editor/level/share/' + levelID,
         type: 'POST',
+        contentType:"application/json; charset=utf-8",
         dataType: 'json',
         data: recipientData,
         success: function(json) {

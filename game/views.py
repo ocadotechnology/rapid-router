@@ -95,8 +95,19 @@ def levels(request):
                 "id": level.id,
                 "title": level.name,
                 "score": get_attempt_score(level)})
+        
+        explicitly_shared_levels = Level.objects.filter(shared_with__id=request.user.id)
+        validly_shared_levels = [level for level in explicitly_shared_levels 
+                            if is_valid_recipient(level.owner, request.user.userprofile)]
 
-        for level in request.user.shared.all():
+        if hasattr(request.user.userprofile, 'teacher'):
+            classes_taught = Class.objects.filter(teacher=request.user.userprofile)
+            students_taught = Student.objects.filter(class_field__in=classes_taught)
+            for student in students_taught:
+                validly_shared_levels.extend(Level.objects.filter(owner=student.user))
+
+
+        for level in validly_shared_levels:
             shared_levels.append({
                 "id": level.id,
                 "title": level.name,
@@ -136,10 +147,14 @@ def level(request, level):
 
     if not lvl.default:
         # Then we're looking at a user created level
-        if request.user.is_anonymous() or (request.user != lvl.owner.user and
-            not lvl.shared_with.filter(pk=request.user.pk).exists()):
-            # If we're anonymous or the user didn't create it and it isn't shared with them
+        if request.user.is_anonymous():
+            # If we're anonymous
             return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
+        elif (request.user != lvl.owner.user and not lvl.shared_with.filter(pk=request.user.pk).exists()):
+            # User doesn't have automatic permissions to view/play level.
+            if not (hasattr(request.user.userprofile, 'teacher') and hasattr(lvl.owner, 'student') and request.user.userprofile.teacher == lvl.owner.student.class_field.teacher):
+                # User is not level owner's teacher
+                return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     lesson = 'description_level' + str(level)
     hint = 'hint_level' + str(level)
@@ -171,6 +186,7 @@ def level(request, level):
             attempt = Attempt(level=lvl, score=0, student=student)
             attempt.save()
 
+    print(lvl.traffic_lights)
     context = RequestContext(request, {
         'level': lvl,
         'blocks': blocks,
@@ -744,6 +760,7 @@ def save_level_for_editor(request, levelID=None):
 
     path = request.POST.get('path')
     destinations = request.POST.get('destinations')
+    origin = request.POST.get('origin')
     decor = request.POST.get('decor')
     traffic_lights = request.POST.get('traffic_lights')
     max_fuel = request.POST.get('max_fuel')
@@ -772,6 +789,7 @@ def save_level_for_editor(request, levelID=None):
                 level.shared_with.add(level.owner.student.class_field.teacher.user.user)
 
     level.path = path
+    level.origin = origin
     level.destinations = destinations
     level.max_fuel = max_fuel
     level.traffic_lights = traffic_lights
@@ -850,7 +868,7 @@ def compile_list_of_levels_for_editor(request):
     """ Helper method """
     if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         ownedLevels = []
-        sharedLevels = []
+        validly_shared_levels = []
     else:
         ownedLevels = Level.objects.filter(owner=request.user.userprofile.id)
         explicitly_shared_levels = Level.objects.filter(shared_with__id=request.user.id)

@@ -215,12 +215,23 @@ def generate_traffic_lights(path):
         counter = 0
         for neighbour in controlledNeighbours:
             neighbourIndex = path.index(neighbour)
-            trafficLights.append({'sourceNode': neighbourIndex,
-                                'controlledNode': nodeIndex,
+
+            if neighbour['coordinate'].y < node['coordinate'].y:
+                direction = "N"
+            elif neighbour['coordinate'].x < node['coordinate'].x:
+                direction = "E"
+            elif neighbour['coordinate'].y > node['coordinate'].y:
+                direction = "S"
+            elif neighbour['coordinate'].x > node['coordinate'].x:
+                direction = "W"
+
+            trafficLights.append({'sourceCoordinate': {'x':neighbour['coordinate'].x, 'y':neighbour['coordinate'].y},
+                                'direction': direction,
                                 'startTime': 0 if counter == 0 else 2*(counter-1),
                                 'startingState': 'GREEN' if counter == 0 else 'RED',
                                 'greenDuration': 2,
                                 'redDuration': 2*(len(controlledNeighbours)-1)})
             counter += 1
 
+        print(trafficLights)
     return trafficLights

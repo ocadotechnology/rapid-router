@@ -2,80 +2,101 @@ var ocargo = ocargo || {};
 
 ocargo.sound = {};
 
-// Stolen from: http://stackoverflow.com/questions/11330917/how-to-play-a-mp3-using-javascript
 function Sound(source, initialVolume, loop) {
-    // Create the audio tag
-    this.soundFile = document.createElement("audio");
-    this.soundFile.preload = "auto";
+    var audio = new Audio(source);
+    audio.volume = initialVolume;
 
-    // Load the sound file (using a source element for expandability)
-    var src = document.createElement("source");
-    src.src = source;
-    this.soundFile.appendChild(src);
-    this.soundFile.volume = initialVolume;
+    audio.loop = loop;
+
+    // A fallback, incase audio.loop doesn't work,
+    // which apparently it doesn't in some browsers
+    if (loop) {
+        audio.onended = function() {
+            audio.src = audio.src;
+            audio.play();
+        }
+    }
 
     this.play = function() {
-        var self = this;
-        setTimeout(function() {
-            self.soundFile.pause();
-            if (self.soundFile.duration) {
-                self.soundFile.currentTime = 0;
+        if (audio.duration) {
+            if (audio.ended) {
+                audio.src = audio.src;
             }
-            self.soundFile.play();
-        }, 1);
+            else {
+                audio.currentTime = 0;
+            }
+
+            audio.play();
+        }
     };
 
+    this.pause = function() {
+        audio.pause();
+    }
+
     this.setVolume = function(volume) {
-        this.soundFile.volume = volume;
+        audio.volume = volume;
     };
 }
 
-// *****
-
 ocargo.sound.startingSound = new Sound("/static/game/sound/starting.mp3", 1.0, false);
-ocargo.sound.movingSound = new Sound("/static/game/sound/moving.mp3", 1.0, false);
-ocargo.sound.turningSound = new Sound("/static/game/sound/turning.mp3", 1.0, false);
+ocargo.sound.engineSound = new Sound("/static/game/sound/moving.wav", 1.0, true);
+ocargo.sound.deliverySound = new Sound("/static/game/sound/delivery.mp3", 1.0, false);
 ocargo.sound.winSound = new Sound("/static/game/sound/win.mp3", 1.0, false);
 ocargo.sound.failureSound = new Sound("/static/game/sound/failure.mp3", 1.0, false);
+ocargo.sound.crashSound = new Sound("/static/game/sound/crash.mp3", 1.0, false);
+ocargo.sound.tensionSound = new Sound("/static/game/sound/tension.mp3", 1.0, false);
 
 ocargo.sound.starting = function() {
-    // TODO: Reimplement when actual sounds exist
+    ocargo.sound.startingSound.play();
 };
 
-ocargo.sound.moving = function() {
-    // TODO: Reimplement when actual sounds exist
+ocargo.sound.start_engine = function() {
+    ocargo.sound.engineSound.play();
 };
 
-ocargo.sound.turning = function() {
-    // TODO: Reimplement when actual sounds exist
+ocargo.sound.stop_engine = function() {
+    ocargo.sound.engineSound.pause();
+};
+
+ocargo.sound.delivery = function() {
+    ocargo.sound.deliverySound.play();
 };
 
 ocargo.sound.win = function() {
-    // TODO: Reimplement when actual sounds exist
+    ocargo.sound.winSound.play();
 };
 
 ocargo.sound.failure = function() {
-    // TODO: Reimplement when actual sounds exist
+    ocargo.sound.failureSound.play();
 };
 
-ocargo.sound.setAllVolumes = function(volume, loop) {
-    // TODO: Add to the SoundControl once we have the files.
+ocargo.sound.crash = function() {
+    ocargo.sound.crashSound.play();
+};
+
+ocargo.sound.tension = function() {
+    ocargo.sound.tensionSound.play();
+};
+
+ocargo.sound.setAllVolumes = function(volume) {
     ocargo.sound.startingSound.setVolume(volume);
     ocargo.sound.movingSound.setVolume(volume);
+    ocargo.sound.turningSound.setVolume(volume);
     ocargo.sound.winSound.setVolume(volume);
     ocargo.sound.failureSound.setVolume(volume);
-    ocargo.sound.turningSound.setVolume(volume);
+    ocargo.sound.tensionSound.setVolume(volume);
 };
 
 ocargo.sound.mute = function() {
     this.playAudioBackup = Blockly.SOUNDS_;
     Blockly.SOUNDS_ = {};
-    //ocargo.sound.setAllVolumes(0);
+    ocargo.sound.setAllVolumes(0);
     $.cookie("muted", true);
 };
 
 ocargo.sound.unmute = function() {
     Blockly.SOUNDS_ = this.playAudioBackup;
-    //ocargo.sound.setAllVolumes(1.0);
+    ocargo.sound.setAllVolumes(1.0);
     $.cookie("muted", false);
 };

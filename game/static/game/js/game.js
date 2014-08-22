@@ -13,7 +13,7 @@ ocargo.Game.prototype.setup = function() {
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.drawing = new ocargo.Drawing();
-    ocargo.model = new ocargo.Model(PATH, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
+    ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
     ocargo.saving = new ocargo.Saving();
     ocargo.blocklyControl.loadPreviousAttempt();
@@ -50,6 +50,7 @@ ocargo.Game.prototype.setup = function() {
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     var result = ocargo.controller.prepare();
     if(!result.success) {
+        ocargo.sound.tension();
         ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error, false);
         return false;
     }
@@ -65,6 +66,14 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
         type: 'callable',
         functionCall: ocargo.sound.starting,
         description: 'starting sound',
+        animationLength: 820
+    });
+    ocargo.animation.startNewTimestamp();
+
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.start_engine,
+        description: 'starting engine',
     });
 
     program.run(ocargo.model);
@@ -72,7 +81,13 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: function() {ocargo.game.onStopControls();},
-        description: 'onStopControls',
+        description: 'onStopControls'
+    });
+
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.stop_engine,
+        description: 'stopping engine'
     });
 
     return true;
@@ -84,11 +99,12 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         $.ajax({
             url : '/game/submit',
             type : 'POST',
+            contentType:"application/json; charset=utf-8",
             data : {
                 csrfmiddlewaretoken : $.cookie('csrftoken'),
                 level : LEVEL_ID,
                 score : score,
-                workspace : ocargo.blocklyControl.serialize(),
+                workspace : ocargo.blocklyControl.serialize()
             },
             error : function(xhr,errmsg,err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);

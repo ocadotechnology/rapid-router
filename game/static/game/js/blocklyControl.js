@@ -4,7 +4,7 @@ var ocargo = ocargo || {};
 
 ocargo.BlocklyControl = function () {
     this.blocklyDiv = document.getElementById('blockly_holder');
-    this.toolbox = document.getElementById('toolbox');
+    this.toolbox = document.getElementById('blockly_toolbox');
 
     Blockly.inject(this.blocklyDiv, {
         path: '/static/game/js/blockly/',
