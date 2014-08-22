@@ -852,12 +852,20 @@ def compile_list_of_levels_for_editor(request):
         sharedLevels = []
     else:
         ownedLevels = Level.objects.filter(owner=request.user.userprofile.id)
-        sharedLevels = request.user.shared.all()
+        explicitly_shared_levels = Level.objects.filter(shared_with__id=request.user.id)
+        validly_shared_levels = [level for level in explicitly_shared_levels 
+                                if is_valid_recipient(level.owner, request.user.userprofile)]
+
+        if hasattr(request.user.userprofile, 'teacher'):
+            classes_taught = Class.objects.filter(teacher=request.user.userprofile)
+            students_taught = Student.objects.filter(class_field__in=classes_taught)
+            for student in students_taught:
+                validly_shared_levels.extend(Level.objects.filter(owner=student.user))
 
     owned = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
              for level in ownedLevels]
     shared = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
-              for level in sharedLevels]
+              for level in validly_shared_levels]
 
     return {'ownedLevels': owned, 'sharedLevels': shared}
 

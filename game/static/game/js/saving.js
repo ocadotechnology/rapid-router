@@ -190,6 +190,7 @@ ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
+    delete level.csrfmiddlewaretoken
 };
 
 ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {
@@ -220,4 +221,5 @@ ocargo.Saving.prototype.shareLevel = function(levelID, recipientData, callback) 
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
+    delete recipientData.csrfmiddlewaretoken
 };
