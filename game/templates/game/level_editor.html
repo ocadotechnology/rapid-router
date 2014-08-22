@@ -245,7 +245,7 @@
                 <div class="table_cell field_value">
                   <select id="theme_select">
                     {% for theme in themes %}
-                      <option value="{{theme.name}}">{{theme.name}}</option>
+                      <option value="{{theme.name}}">{{theme.name|make_title_caps}}</option>
                     {% endfor %}
                   </select>
                 </div>
