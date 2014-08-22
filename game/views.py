@@ -21,6 +21,7 @@ from forms import *
 from game import random_road
 from models import Level, Attempt, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
 from portal.models import Student, Class, Teacher
+from portal.templatetags import app_tags
 from serializers import WorkspaceSerializer, LevelSerializer
 from permissions import UserIsStudent, WorkspacePermissions
 
@@ -862,9 +863,9 @@ def compile_list_of_levels_for_editor(request):
             for student in students_taught:
                 validly_shared_levels.extend(Level.objects.filter(owner=student.user))
 
-    owned = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
+    owned = [{'name': level.name, 'owner': app_tags.make_into_username(level.owner.user), 'id': level.id}
              for level in ownedLevels]
-    shared = [{'name': level.name, 'owner': level.owner.user.first_name, 'id': level.id}
+    shared = [{'name': level.name, 'owner': app_tags.make_into_username(level.owner.user), 'id': level.id}
               for level in validly_shared_levels]
 
     return {'ownedLevels': owned, 'sharedLevels': shared}
