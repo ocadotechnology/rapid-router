@@ -1775,16 +1775,18 @@ ocargo.LevelEditor = function() {
 
     function retrieveStateFromLocalStorage() { 
         if (localStorage) {
-            var state = JSON.parse(localStorage.levelEditorState);
+            if (localStorage.levelEditorState) {
+                var state = JSON.parse(localStorage.levelEditorState);
+                if (state) {
+                    restoreState(state);
+                }
 
-            if (state) {
-                restoreState(state);
+                // Restore additional non-level orientated editor state
+                savedLevelID = state.savedLevelID;
+                savedState = state.savedState;
+                ownsSavedLevel = state.ownsSavedLevel;
             }
 
-            // Restore additional non-level orientated editor state
-            savedLevelID = state.savedLevelID;
-            savedState = state.savedState;
-            ownsSavedLevel = state.ownsSavedLevel;
         }
     }
 
