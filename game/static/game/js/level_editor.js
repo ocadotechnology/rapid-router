@@ -298,7 +298,7 @@ ocargo.LevelEditor = function() {
             initCustomBlocksDescription();
 
             var blockly = document.getElementById('blockly');
-            var toolbox = document.getElementById('toolbox');
+            var toolbox = document.getElementById('blockly_toolbox');
             Blockly.inject(blockly, {
                 path: '/static/game/js/blockly/',
                 toolbox: toolbox,
