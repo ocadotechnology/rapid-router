@@ -50,6 +50,7 @@ ocargo.Game.prototype.setup = function() {
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     var result = ocargo.controller.prepare();
     if(!result.success) {
+        ocargo.sound.tension();
         ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error, false);
         return false;
     }
@@ -64,7 +65,15 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionCall: ocargo.sound.starting,
-        description: 'starting sound'
+        description: 'starting sound',
+        animationLength: 820
+    });
+    ocargo.animation.startNewTimestamp();
+
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.start_engine,
+        description: 'starting engine',
     });
 
     program.run(ocargo.model);
@@ -73,6 +82,12 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
         type: 'callable',
         functionCall: function() {ocargo.game.onStopControls();},
         description: 'onStopControls'
+    });
+
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.stop_engine,
+        description: 'stopping engine'
     });
 
     return true;

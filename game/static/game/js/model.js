@@ -136,6 +136,18 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             description: 'crash popup'
         });
 
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionCall: ocargo.sound.crash,
+            description: 'crash sound'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionCall: ocargo.sound.stop_engine,
+            description: 'stopping engine'
+        });
+
         this.reasonForTermination = 'CRASH';
         return false;
     }
@@ -149,6 +161,18 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             failSubtype: 'OUT_OF_FUEL',
             popupMessage: ocargo.messages.outOfFuel,
             description: 'no fuel popup'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionCall: ocargo.sound.failure,
+            description: 'failure sound'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionCall: ocargo.sound.stop_engine,
+            description: 'stopping engine'
         });
 
         this.reasonForTermination = 'OUT_OF_FUEL';
@@ -167,6 +191,18 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             description: 'ran red traffic light popup'
         });
 
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionCall: ocargo.sound.failure,
+            description: 'failure sound'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionCall: ocargo.sound.stop_engine,
+            description: 'stopping engine'
+        });
+
         this.reasonForTermination = 'THROUGH_RED_LIGHT';
         return false;
     }
@@ -180,13 +216,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         vanAction: action,
         fuel: this.van.getFuelPercentage(),
         description: 'van move action: ' + action
-    });
-
-    // Van movement sound
-    ocargo.animation.appendAnimation({
-        type: 'callable',
-        functionCall: (action === 'FORWARD') ? ocargo.sound.moving : ocargo.sound.turning,
-        description: 'van sound: ' + action
     });
 
     this.incrementTime();
@@ -205,6 +234,14 @@ ocargo.Model.prototype.makeDelivery = function(destination) {
         fuel: this.van.getFuelPercentage(),
         description: 'Van making a delivery'
     });
+
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.delivery,
+        description: 'van sound: delivery'
+    });
+
+    this.incrementTime();
 };
 
 ocargo.Model.prototype.moveForwards = function() {
@@ -264,6 +301,12 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             success &= destinations[i].visited;
         }
     }
+
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.stop_engine,
+        description: 'stopping engine'
+    });
 
     if(success) {
         var scoreArray = this.pathFinder.getScore();
