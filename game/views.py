@@ -921,7 +921,6 @@ def get_all_valid_recipients(userprofile, level):
 def is_valid_recipient(recipient_profile, sharer_profile):
     if hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'student'):
         # Are they in the same class?
-        print("hi")
         return sharer_profile.student.class_field == recipient_profile.student.class_field
     elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'student'):
         # Is the recipient taught by the sharer?
