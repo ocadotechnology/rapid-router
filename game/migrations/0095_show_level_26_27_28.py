@@ -4,8 +4,7 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 
 
-def make_26_27_28_default(apps, schema_editor):
-    
+def make_levels_default(apps, schema_editor):
     Level = apps.get_model('game', 'Level')
 
     level26 = Level.objects.get(pk=26)
@@ -24,9 +23,9 @@ def make_26_27_28_default(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0093_change_traffic_light_representation'),
+        ('game', '0094_level_origin'),
     ]
 
     operations = [
-        migrations.RunPython(make_26_27_28_default)
+        migrations.RunPython(make_levels_default)
     ]
