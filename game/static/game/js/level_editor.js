@@ -759,7 +759,12 @@ ocargo.LevelEditor = function() {
                 transitionTab(tabs.help);
             });
 
-            $('#help_pane').html(ocargo.messages.levelEditorHelpText);
+            var message = ocargo.Drawing.isMobile() ? ocargo.messages.levelEditorMobileSubtitle :
+                ocargo.messages.levelEditorPCSubtitle;
+
+            message += "<br><br>" + ocargo.messages.levelEditorHelpText;
+
+            $('#help_pane').html(message);
         }
 
         function setupQuitTab() {
@@ -1942,4 +1947,5 @@ ocargo.LevelEditor = function() {
 
 $(function() {
     new ocargo.LevelEditor();
+    ocargo.Drawing.startPopup("Welcome to the Level editor!", "Click Help for clues on getting started.");
 });

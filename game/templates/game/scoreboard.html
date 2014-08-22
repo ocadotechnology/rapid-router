@@ -67,12 +67,15 @@
 <br>
 <div class="mainBody">
   <div class="tableWrapper">
+  {{levelScore}}
     {% if studentData %}
-    <table id="" class="CSSTable wide alternate smaller">
+    <table id="table" class="CSSTable wide alternate smaller">
       <tr>
-      {% for header in thead %}
-        <th> {{header}} </th>
-      {% endfor %}
+        <thead>
+        {% for header in thead %}
+          <th> {{header}} </th>
+        {% endfor %}
+        </thead>
       </tr>
       {% for student in studentData %}
       <tr>
@@ -84,9 +87,7 @@
             <td> {{student.3}} </td>
             <td> {{student.4}} </td>
           {% else %}
-            {% for levelScore in student.3 %}
-              <td> {{levelScore}} </td>
-            {% endfor %}
+           jwhejwh
           {% endif %}
         </tr>
       {% endfor %}

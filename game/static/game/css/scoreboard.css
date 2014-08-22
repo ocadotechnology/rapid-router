@@ -3,9 +3,6 @@
 	width: 75px;
 }
 
-.form {
-}
-
 .form label {
 	width: 200px;
 	float: left;
@@ -36,6 +33,11 @@ table.tablesorter thead tr .header {
 	background-repeat: no-repeat;
 	background-position: center right;
 }
+
+table.tablesorter thead tr .header:hover {
+	background-image: url('/static/game/image/bg.gif') !important;
+}
+
 table.tablesorter thead tr .headerSortUp {
 	background-image: url('/static/game/image/asc.gif') !important;
 }
