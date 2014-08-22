@@ -43,7 +43,9 @@
 }
 
 .modal_image {
-    margin-right: 20px;
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
 }
 
 .scrolling-table-wrapper {
