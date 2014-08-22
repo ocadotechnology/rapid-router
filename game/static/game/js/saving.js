@@ -151,7 +151,6 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
     $.ajax({
         url: "/game/level_editor/level/random",
         type: "GET",
-        contentType:"application/json; charset=utf-8",
         dataType: 'json',
         data: data,
         success: function(json) {
@@ -167,7 +166,6 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
 	$.ajax({
         url: '/game/level_editor/level/delete/' + id,
         type: 'POST',
-        contentType:"application/json; charset=utf-8",
         dataType: 'json',
         data: {csrfmiddlewaretoken : $.cookie('csrftoken')},
         success: function() {
@@ -184,7 +182,6 @@ ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
 	$.ajax({
         url: '/game/level_editor/level/save' + (id ? '/' + id : ''),
         type: 'POST',
-        contentType:"application/json; charset=utf-8",
         dataType: 'json',
         data: level,
         success: function(json) {

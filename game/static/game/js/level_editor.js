@@ -49,7 +49,7 @@ ocargo.LevelEditor = function() {
     var currentTheme = THEMES.grass;
 
     // Reference to the Raphael elements for each square
-    var grid = initialiseVisited();
+    var grid;
 
     // Current mode the user is in
     var mode = modes.ADD_ROAD_MODE;
@@ -58,21 +58,24 @@ ocargo.LevelEditor = function() {
     // Holds the state for when the user is drawing or deleting roads
     var strikeStart = null;
 
-    // holds the state to do with saving
+    // Holds the state to do with saving
     var savedState = null;
     var ownsSavedLevel = null;
     var savedLevelID = -1;
 
-    // so that we store the current state when the page unloads
+    // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
 
-    // setup the toolbox
+    // Initiaalise the grid
+    initialiseGrid();
+
+    // Setup the toolbox
     setupToolbox();
 
     // If there's any previous state in local storage retrieve it
     retrieveStateFromLocalStorage();
 
-    // initialises paper
+    // Draw everything
     drawAll();
 
     // set the default theme
@@ -231,21 +234,12 @@ ocargo.LevelEditor = function() {
                 new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
                                           "startingState": ocargo.TrafficLight.RED,
                                           "sourceCoordinate": null,  "direction": null});
-                mode = MOVE_DECOR_MODE;
-                changeCurrentToolToMoveDecor();
             });
 
             $('#trafficLightGreen').click(function() {
                 new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
                                           "startingState": ocargo.TrafficLight.GREEN,
                                           "sourceCoordinate": null,  "direction": null});
-                mode = MOVE_DECOR_MODE;
-                changeCurrentToolToMoveDecor();
-            });
-
-            $('#move_decor').click(function() {
-                mode = MOVE_DECOR_MODE;
-                changeCurrentToolToMoveDecor();
             });
 
             $('#delete_decor').click(function() {
@@ -846,23 +840,38 @@ ocargo.LevelEditor = function() {
     /* Rendering */
     /*************/
 
+    function initialiseGrid() {
+        grid = ocargo.drawing.createGrid();
+        for (var i = 0; i < grid.length; i++) {
+            for (var j = 0; j < grid[i].length; j++) {
+                grid[i][j].node.onmousedown = handleMouseDown(grid[i][j]);
+                grid[i][j].node.onmouseover = handleMouseOver(grid[i][j]);
+                grid[i][j].node.onmouseout = handleMouseOut(grid[i][j]);
+                grid[i][j].node.onmouseup = handleMouseUp(grid[i][j]);
+
+                grid[i][j].node.ontouchstart = handleTouchStart(grid[i][j]);
+                grid[i][j].node.ontouchmove = handleTouchMove(grid[i][j]);
+                grid[i][j].node.ontouchend = handleTouchEnd(grid[i][j]);
+            }
+        }
+    }
+
     function clear() {
         for (var i = 0; i < trafficLights.length; i++) {
             trafficLights[i].destroy();
         }
-        trafficLights = [];
-        decor = [];
+        for(var i = 0; i < decor.length; i++) {
+            decor[i].destroy();
+        }
+
         nodes = [];
-        grid = initialiseVisited();
         strikeStart = null;
         originNode = null;
         destinationNode = null;
-
-        ocargo.drawing.clearPaper();
     }
 
     function drawAll() {
-        createGrid(paper);
+        ocargo.drawing.renderGrid(grid, currentTheme);
         redrawRoad();
     }
 
@@ -1438,31 +1447,6 @@ ocargo.LevelEditor = function() {
     /* Miscaellaneous state methods */
     /********************************/
 
-    function initialiseVisited() {
-        var visited = new Array(10);
-        for (var i = 0; i < 10; i++) {
-            visited[i] = new Array(8);
-        }
-        return visited;
-    }
-
-    function createGrid() {
-        grid = ocargo.drawing.renderGrid(currentTheme);
-
-        for (var i = 0; i < grid.length; i++) {
-            for (var j = 0; j < grid[i].length; j++) {
-                grid[i][j].node.onmousedown = handleMouseDown(grid[i][j]);
-                grid[i][j].node.onmouseover = handleMouseOver(grid[i][j]);
-                grid[i][j].node.onmouseout = handleMouseOut(grid[i][j]);
-                grid[i][j].node.onmouseup = handleMouseUp(grid[i][j]);
-
-                grid[i][j].node.ontouchstart = handleTouchStart(grid[i][j]);
-                grid[i][j].node.ontouchmove = handleTouchMove(grid[i][j]);
-                grid[i][j].node.ontouchend = handleTouchEnd(grid[i][j]);
-            }
-        }
-    }
-
     function finaliseDelete(strikeEnd) {
         
         applyAlongStrike(deleteNode, strikeEnd);
@@ -1636,8 +1620,6 @@ ocargo.LevelEditor = function() {
         // Create node data
         sortNodes(nodes);
         state.path = JSON.stringify(ocargo.Node.composePathData(nodes));
-        // To prevent circular JSON conversion
-        state.selectedOrigin = originNode ? true : false;
 
         // Create traffic light data
         var trafficLightData = [];
@@ -1667,12 +1649,20 @@ ocargo.LevelEditor = function() {
         }
         state.decor = JSON.stringify(decorData);
 
-        // Create other data
+        // Destination and origin data
         if (destinationNode) {
             var destinationCoord = destinationNode.coordinate;
             state.destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
         }
 
+        if (originNode) {
+            var originCoord = originNode.coordinate;
+            var nextCoord = originNode.connectedNodes[0].coordinate;
+            var direction = originCoord.getDirectionTo(nextCoord);
+            state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
+        }
+
+        // Other data
         state.max_fuel = $('#max_fuel').val();
         
         state.themeID = currentTheme.id;
@@ -1693,21 +1683,23 @@ ocargo.LevelEditor = function() {
             new InternalTrafficLight(trafficLightData[i]);
         }
 
-        // Load other data
-        if (origin || state.selectedOrigin) {
-            originNode = nodes[0];
-        }
-
+        // Load in destination and origin nodes
         // TODO needs to be fixed in the long term with multiple destinations
         if (state.destinations) {
-            var destinationList = JSON.parse(state.destinations)[0];
-            var destinationCoordinate = new ocargo.Coordinate(destinationList[0],
-                                                              destinationList[1]);
+            var destination = JSON.parse(state.destinations)[0];
+            var destinationCoordinate = new ocargo.Coordinate(destination[0], destination[1]);
             destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoordinate, nodes);
+        }
+
+        if (state.origin) {
+            var origin = JSON.parse(state.origin);
+            var originCoordinate = new ocargo.Coordinate(origin.coordinate[0], origin.coordinate[1]);
+            originNode = ocargo.Node.findNodeByCoordinate(originCoordinate, nodes);
         }
         
         drawAll();
 
+        // Set the theme
         var themeID = state.themeID;
         for (var theme in THEMES) {
             if (THEMES[theme].id === themeID) {

@@ -495,24 +495,29 @@ ocargo.Drawing = function() {
         return vanImage;
     };
 
-    this.renderGrid = function(currentTheme) {
+    this.createGrid = function() {
         var grid = [];
-
         for (var i = 0; i < GRID_WIDTH; i++) {
             var row = [];
-
             for (var j = 0; j < GRID_HEIGHT; j++) {
                 var x = i * GRID_SPACE_SIZE;
                 var y = j * GRID_SPACE_SIZE;
 
-                var segment = paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-                segment.attr({stroke: currentTheme.border, fill: currentTheme.background,
-                    "fill-opacity": 1});
-                row.push(segment);
+                row.push(paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE));
             }
             grid.push(row);
         }
         return grid;
+    }
+
+    this.renderGrid = function(grid, currentTheme) {
+        for (var i = 0; i < GRID_WIDTH; i++) {
+            for (var j = 0; j < GRID_HEIGHT; j++) {
+                grid[i][j].attr({'stroke': currentTheme.border,
+                                 'fill': currentTheme.background,
+                                 'fill-opacity': 1});
+            }
+        }
     };
 
     this.clearPaper = function() {
