@@ -84,6 +84,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         $.ajax({
             url : '/game/submit',
             type : 'POST',
+            contentType:"application/json; charset=utf-8",
             data : {
                 csrfmiddlewaretoken : $.cookie('csrftoken'),
                 level : LEVEL_ID,
