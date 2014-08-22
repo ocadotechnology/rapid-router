@@ -245,7 +245,7 @@
                 <div class="table_cell field_value">
                   <select id="theme_select">
                     {% for theme in themes %}
-                      <option value="{{theme.name}}">{{theme.name|make_title_caps}}</option>
+                      <option value="{{theme.name}}">{{theme.name}}</option>
                     {% endfor %}
                   </select>
                 </div>
@@ -276,11 +276,6 @@
                 </div>
               </div>
             </div>
-
-            <button class="navigation_button" id="move_decor">
-              <image src="/static/game/image/icons/delete_decor.svg"/>
-              <span>Move scenery</span>
-            </button>
 
             <button class="navigation_button" id="delete_decor">
               <image src="/static/game/image/icons/delete_decor.svg"/>
