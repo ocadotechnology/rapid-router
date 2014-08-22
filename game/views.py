@@ -95,8 +95,19 @@ def levels(request):
                 "id": level.id,
                 "title": level.name,
                 "score": get_attempt_score(level)})
+        
+        explicitly_shared_levels = Level.objects.filter(shared_with__id=request.user.id)
+        validly_shared_levels = [level for level in explicitly_shared_levels 
+                            if is_valid_recipient(level.owner, request.user.userprofile)]
 
-        for level in request.user.shared.all():
+        if hasattr(request.user.userprofile, 'teacher'):
+            classes_taught = Class.objects.filter(teacher=request.user.userprofile)
+            students_taught = Student.objects.filter(class_field__in=classes_taught)
+            for student in students_taught:
+                validly_shared_levels.extend(Level.objects.filter(owner=student.user))
+
+
+        for level in validly_shared_levels:
             shared_levels.append({
                 "id": level.id,
                 "title": level.name,
