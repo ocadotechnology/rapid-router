@@ -170,6 +170,7 @@ def level(request, level):
             attempt = Attempt(level=lvl, score=0, student=student)
             attempt.save()
 
+    print(lvl.traffic_lights)
     context = RequestContext(request, {
         'level': lvl,
         'blocks': blocks,
@@ -849,7 +850,7 @@ def compile_list_of_levels_for_editor(request):
     """ Helper method """
     if request.user.is_anonymous() or not hasattr(request.user, "userprofile"):
         ownedLevels = []
-        sharedLevels = []
+        validly_shared_levels = []
     else:
         ownedLevels = Level.objects.filter(owner=request.user.userprofile.id)
         explicitly_shared_levels = Level.objects.filter(shared_with__id=request.user.id)

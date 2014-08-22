@@ -242,7 +242,7 @@ ocargo.LevelEditor = function() {
             $('#trafficLightRed').click(function() {
                 new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
                                           "startingState": ocargo.TrafficLight.RED,
-                                          "controlledNode": -1, "sourceNode": -1});
+                                          "sourceCoordinate": null,  "direction": null});
                 mode = MOVE_DECOR_MODE;
                 changeCurrentToolToMoveDecor();
             });
@@ -250,7 +250,7 @@ ocargo.LevelEditor = function() {
             $('#trafficLightGreen').click(function() {
                 new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
                                           "startingState": ocargo.TrafficLight.GREEN,
-                                          "controlledNode": -1, "sourceNode": -1});
+                                          "sourceCoordinate": null,  "direction": null});
                 mode = MOVE_DECOR_MODE;
                 changeCurrentToolToMoveDecor();
             });
@@ -1389,13 +1389,13 @@ ocargo.LevelEditor = function() {
 
                 // Add back to the list of traffic lights if on valid nodes
                 if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
-                    var sourceIndex = ocargo.Node.findNodeIndexByCoordinate(sourceCoord, nodes);
-                    var controlledIndex = ocargo.Node.findNodeIndexByCoordinate(controlledCoord, nodes);
+                    trafficLight.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
+                    trafficLight.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
                     trafficLight.valid = true;
-                    trafficLight.sourceNode = sourceIndex;
-                    trafficLight.controlledNode = controlledIndex;
 
-                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                    ocargo.drawing.setTrafficLightImagePosition(trafficLight.sourceNode.coordinate,
+                                                                trafficLight.controlledNode.coordinate,
+                                                                image);
                 }
             }
 
@@ -1489,19 +1489,27 @@ ocargo.LevelEditor = function() {
                 for (var i = node.connectedNodes.length - 1; i >= 0; i--) {
                     node.removeDoublyConnectedNode(node.connectedNodes[i]);
                 }
-                var index = nodes.indexOf(node);
-                nodes.splice(index, 1);
-            }
+                nodes.splice(nodes.indexOf(node), 1);
 
-            // Check if start or destination node        
-            if (isOriginCoordinate(coord)) {
-                markAsBackground(originNode.coordinate);
-                originNode = null;
+                // Check if start or destination node        
+                if(isOriginCoordinate(coord)) {
+                    markAsBackground(originNode.coordinate);
+                    originNode = null;
+                }
+                if(isDestinationCoordinate(coord)) {
+                    markAsBackground(destinationNode.coordinate);
+                    destinationNode = null;
+                }
+
+                //  Check if any traffic lights present
+                for(var i = trafficLights.length-1; i >= 0;  i--) {
+                    var trafficLight  =  trafficLights[i];
+                    if(node === trafficLight.sourceNode || node === trafficLight.controlledNode) {
+                        trafficLights.splice(i, 1);
+                        trafficLight.destroy();
+                    }
+                }
             }
-            if (isDestinationCoordinate(coord)) {
-                markAsBackground(destinationNode.coordinate);
-                destinationNode = null;
-            }     
         }
     }
 
@@ -1841,8 +1849,12 @@ ocargo.LevelEditor = function() {
                 throw "Error: cannot create actual traffic light from invalid internal traffic light!";
             }
 
+            var sourceCoord = this.sourceNode.coordinate;
+            var sourceCoordinate = {'x':sourceCoord.x, 'y':sourceCoord.y};
+            var direction = sourceCoord.getDirectionTo(this.controlledNode.coordinate);
+
             return {"redDuration": this.redDuration, "greenDuration": this.greenDuration,
-                    "sourceNode": this.sourceNode, "controlledNode": this.controlledNode,
+                    "sourceCoordinate": sourceCoordinate, "direction": direction,
                     "startTime": this.startTime, "startingState": this.startingState};
         };
 
@@ -1859,20 +1871,24 @@ ocargo.LevelEditor = function() {
         this.greenDuration = data.greenDuration;
         this.startTime = data.startTime;
         this.startingState = data.startingState;
-        this.controlledNode = data.controlledNode;
-        this.sourceNode = data.sourceNode;
-
-        this.valid = false;
 
         var imgStr = this.startingState === ocargo.TrafficLight.RED ? LIGHT_RED_URL : LIGHT_GREEN_URL;
         this.image = ocargo.drawing.createTrafficLightImage(imgStr);
         this.image.transform('...s-1,1');
 
-        if (this.controlledNode !== -1 && this.sourceNode !== -1) {
-            var sourceCoord = nodes[this.sourceNode].coordinate;
-            var controlledCoord = nodes[this.controlledNode].coordinate;
-            this.valid = true;
-            ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, this.image);
+        this.valid = false;
+
+        if(data.sourceCoordinate && data.direction) {
+            var sourceCoordinate = new ocargo.Coordinate(data.sourceCoordinate.x, data.sourceCoordinate.y);
+            var controlledCoordinate = sourceCoordinate.getNextInDirection(data.direction);
+
+            this.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoordinate, nodes);
+            this.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoordinate, nodes);
+
+            if (this.controlledNode && this.sourceNode) {
+                this.valid = true;
+                ocargo.drawing.setTrafficLightImagePosition(this.sourceNode.coordinate, this.controlledNode.coordinate, this.image);
+            }
         }
 
         setupTrafficLightListeners(this);

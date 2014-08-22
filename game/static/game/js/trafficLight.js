@@ -10,8 +10,12 @@ ocargo.TrafficLight = function(id, data, nodes) {
     this.redDuration = data.redDuration;
     this.greenDuration = data.greenDuration;
     this.currentLightTime = this.startTime;
-    this.sourceNode = nodes[data.sourceNode];
-    this.controlledNode = nodes[data.controlledNode];
+
+    var sourceCoordinate = new ocargo.Coordinate(data.sourceCoordinate.x, data.sourceCoordinate.y);
+    var controlledCoordinate = sourceCoordinate.getNextInDirection(data.direction);
+
+    this.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoordinate, nodes);
+    this.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoordinate, nodes);
 };
 
 ocargo.TrafficLight.prototype.reset = function() {
