@@ -95,6 +95,8 @@
 <br>
 
 <div class="mainBody">
+
+{% if levelData %}
   <div class="tableWrapper">
     {% if thead %}
     <table id="" class="CSSTable wide alternate smaller">
@@ -108,13 +110,20 @@
       <tr>
           <td> {{level.name}} </td>
           <td> {{level.shared_with}} </td>
-          <td> <button value={{level.id}} class="btn btn-primary play">Play</button> </td>
-          <td> <button value={{level.id}} class="btn btn-primary delete">Delete</button> </td>
+          <td> <button value={{level.id}} class="btn btn-default btn-small play">Play</button> </td>
+          <td> <button value={{level.id}} class="btn btn-danger btn-small delete">Delete</button> </td>
         </tr>
       {% endfor %}
     </table>
     {% endif %}
   </div>
+{% else %}
+  {% if thead %}
+    <p>This student has not created any levels.</p>
+  {% else %}
+    <p>Select a class and student to view their created levels.</p>
+  {% endif %}
+{% endif %}
 </div>
 {% endblock %}
  
