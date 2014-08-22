@@ -38,8 +38,13 @@ ocargo.Game.prototype.setup = function() {
     Blockly.Python.init();
     window.addEventListener('unload', ocargo.blocklyControl.teardown);
 
+    var loggedOutWarning = ''
+    // Check if logged on
+    if (USER_STATUS == 'UNTRACKED') {
+        loggedOutWarning = '<br>' + ocargo.messages.loggedOutWarning;
+    }
     // Start the popup
-    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.jsElements.closebutton("Play"), true);
+    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
@@ -557,7 +562,14 @@ ocargo.Game.prototype.setupTabs = function() {
         // Add a row to the table for each workspace saved in the database
         for (var i = 0, ii = workspaces.length; i < ii; i++) {
             var workspace = workspaces[i];
-            table.append('<tr><td value=' + workspace.id + '>' + workspace.name + '</td></tr>');
+            var tableRow = $('<tr>');
+            var workspaceEntry = $('<td>');
+            workspaceEntry.attr({
+                'value':workspace.id
+            })
+            workspaceEntry.text(workspace.name);
+            tableRow.append(workspaceEntry);
+            table.append(tableRow);
         }
     }
 };

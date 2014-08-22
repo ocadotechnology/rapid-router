@@ -10,17 +10,27 @@ ocargo.LevelEditor = function() {
 
     var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
     var LIGHT_GREEN_URL = '/static/game/image/trafficLight_green.svg';
+    
+    var DELETE_DECOR_IMG_URL = "/static/game/image/icons/delete_decor.svg";
+    var ADD_ROAD_IMG_URL = "/static/game/image/icons/add_road.svg";
+    var DELETE_ROAD_IMG_URL = "/static/game/image/icons/delete_road.svg";
+    var MARK_START_IMG_URL = "/static/game/image/icons/origin.svg";
+    var MARK_END_IMG_URL = "/static/game/image/icons/destination.svg";
 
     var VALID_LIGHT_COLOUR = '#87E34D';
     var INVALID_LIGHT_COLOUR = '#E35F4D';
 
-    var ADD_ROAD_MODE = 'Add road';
-    var DELETE_ROAD_MODE = 'Delete road';
-    var MARK_DESTINATION_MODE = 'Mark destination';
-    var MARK_ORIGIN_MODE = 'Mark origin';
-    var DELETE_DECOR_MODE = 'Delete decor';
-
     var IS_SCROLLING = false;
+
+    var paper = $('#paper'); // May as well cache this
+
+    var modes = {
+        ADD_ROAD_MODE: {name: 'Add Road', url: "/static/game/image/icons/add_road.svg"},
+        DELETE_ROAD_MODE: {name: 'Delete Road', url: "/static/game/image/icons/delete_road.svg"},
+        MARK_DESTINATION_MODE: {name: 'Mark end', url: "/static/game/image/icons/destination.svg"},
+        MARK_ORIGIN_MODE: {name: 'Mark start', url: "/static/game/image/icons/origin.svg"},
+        DELETE_DECOR_MODE: {name: 'Delete decor', url: "/static/game/image/icons/delete_decor.svg"}
+    };
 
     /*********/
     /* State */
@@ -28,6 +38,7 @@ ocargo.LevelEditor = function() {
 
     ocargo.saving = new ocargo.Saving();
     ocargo.drawing = new ocargo.Drawing();
+    ocargo.drawing.preloadRoadTiles();
 
     // Level information
     var nodes = [];
@@ -35,13 +46,14 @@ ocargo.LevelEditor = function() {
     var trafficLights = [];
     var originNode = null;
     var destinationNode = null;
-    var currentTheme = THEMES["grass"];
+    var currentTheme = THEMES.grass;
 
     // Reference to the Raphael elements for each square
     var grid = initialiseVisited();
 
     // Current mode the user is in
-    var mode = ADD_ROAD_MODE;
+    var mode = modes.ADD_ROAD_MODE;
+    var prevMode = null;
 
     // Holds the state for when the user is drawing or deleting roads
     var strikeStart = null;
@@ -64,7 +76,7 @@ ocargo.LevelEditor = function() {
     drawAll();
 
     // set the default theme
-    setTheme(THEMES["grass"]);
+    setTheme(THEMES.grass);
 
 
 
@@ -77,26 +89,26 @@ ocargo.LevelEditor = function() {
     var touchStartPosX = 0;
     var touchStartPosY = 0;
 
-    $('#paper').on('touchstart', function(ev) {
+    paper.on('touchstart', function(ev) {
         if (ev.originalEvent.touches.length === 2) {
             ev.preventDefault();
-            scrollStartPosX = $('#paper').scrollLeft();
+            scrollStartPosX = paper.scrollLeft();
             touchStartPosX = ev.originalEvent.touches[0].pageX;
-            scrollStartPosY = $('#paper').scrollTop();
+            scrollStartPosY = paper.scrollTop();
             touchStartPosY = ev.originalEvent.touches[0].pageY;
             IS_SCROLLING = true;
         }
     });
 
-    $('#paper').on('touchmove', function(ev) {
+    paper.on('touchmove', function(ev) {
         if (ev.originalEvent.touches.length === 2) {
             ev.preventDefault();
-            $('#paper').scrollLeft(scrollStartPosX - (ev.originalEvent.touches[0].pageX - touchStartPosX));
-            $('#paper').scrollTop(scrollStartPosY - (ev.originalEvent.touches[0].pageY - touchStartPosY));
+            paper.scrollLeft(scrollStartPosX - (ev.originalEvent.touches[0].pageX - touchStartPosX));
+            paper.scrollTop(scrollStartPosY - (ev.originalEvent.touches[0].pageY - touchStartPosY));
         }
     });
 
-    $('#paper').on('touchend touchcancel', function(ev) {
+    paper.on('touchend touchcancel', function(ev) {
         if (ev.originalEvent.touches.length === 0) {
             IS_SCROLLING = false;
         }
@@ -113,17 +125,17 @@ ocargo.LevelEditor = function() {
         var tabs = [];
         var currentTabSelected = null;
 
-        tabs['play'] = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
-        tabs['map'] = new ocargo.Tab($('#map_radio'), $('#map_radio + label'), $('#map_pane'));
-        tabs['decor'] = new ocargo.Tab($('#decor_radio'), $('#decor_radio + label'), $('#decor_pane'));
-        tabs['character'] = new ocargo.Tab($('#character_radio'), $('#character_radio + label'), $('#character_pane'));
-        tabs['blocks'] = new ocargo.Tab($('#blocks_radio'), $('#blocks_radio + label'), $('#blocks_pane'));
-        tabs['random'] = new ocargo.Tab($('#random_radio'), $('#random_radio + label'), $('#random_pane'));
-        tabs['load'] = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
-        tabs['save'] = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
-        tabs['share'] = new ocargo.Tab($('#share_radio'), $('#share_radio + label'), $('#share_pane'));
-        tabs['help'] = new ocargo.Tab($('#help_radio'), $('#help_radio + label'), $('#help_pane'));
-        tabs['quit'] = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));  
+        tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
+        tabs.map = new ocargo.Tab($('#map_radio'), $('#map_radio + label'), $('#map_pane'));
+        tabs.decor = new ocargo.Tab($('#decor_radio'), $('#decor_radio + label'), $('#decor_pane'));
+        tabs.character = new ocargo.Tab($('#character_radio'), $('#character_radio + label'), $('#character_pane'));
+        tabs.blocks = new ocargo.Tab($('#blocks_radio'), $('#blocks_radio + label'), $('#blocks_pane'));
+        tabs.random = new ocargo.Tab($('#random_radio'), $('#random_radio + label'), $('#random_pane'));
+        tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
+        tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
+        tabs.share = new ocargo.Tab($('#share_radio'), $('#share_radio + label'), $('#share_pane'));
+        tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'), $('#help_pane'));
+        tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));  
 
         setupPlayTab();
         setupMapTab();
@@ -138,50 +150,61 @@ ocargo.LevelEditor = function() {
         setupQuitTab();
 
         // enable the map tab by default
-        currentTabSelected = tabs['map'];
-        tabs['map'].select();
+        currentTabSelected = tabs.map;
+        tabs.map.select();
 
         function setupPlayTab() {
-            tabs['play'].setOnChange(function() {
-                if(isLevelSaved()) {
+            tabs.play.setOnChange(function() {
+                if (isLevelSaved()) {
                     window.location.href = "/game/" + savedLevelID;
-                }
-                else {
+                } else {
                     currentTabSelected.select();
-                };
-            })
+                }
+            });
         }
 
+        function changeCurrentToolDisplay(mode){
+            $('#currentToolText').text(mode.name);
+            $('#currentToolImg').attr("src", mode.url);            
+        }
+        
         function setupMapTab() {
-            tabs['map'].setOnChange(function() {
-                transitionTab(tabs['map']);
+            tabs.map.setOnChange(function() {
+                transitionTab(tabs.map);
+                mode = modes.ADD_ROAD_MODE;
+                changeCurrentToolDisplay(modes.ADD_ROAD_MODE);
             });
 
             $('#clear').click(function() {
                 clear();
+                localStorage.removeItem('levelEditorState'); 
                 drawAll();
             });
 
             $('#start').click(function() {
-                mode = MARK_ORIGIN_MODE;
+                mode = modes.MARK_ORIGIN_MODE;
+                changeCurrentToolDisplay(modes.MARK_ORIGIN_MODE);
             });
 
             $('#end').click(function() {
-                mode = MARK_DESTINATION_MODE;
+                mode = modes.MARK_DESTINATION_MODE;
+                changeCurrentToolDisplay(modes.MARK_DESTINATION_MODE);
             });
 
             $('#add_road').click(function() {
-                mode = ADD_ROAD_MODE;
+                mode = modes.ADD_ROAD_MODE;
+                changeCurrentToolDisplay(modes.ADD_ROAD_MODE);
             });
 
             $('#delete_road').click(function() {
-                mode = DELETE_ROAD_MODE;
+                mode = modes.DELETE_ROAD_MODE;
+                changeCurrentToolDisplay(modes.DELETE_ROAD_MODE);
             });
         }
 
         function setupDecorTab() {
-            tabs['decor'].setOnChange(function() {
-                transitionTab(tabs['decor']);
+            tabs.decor.setOnChange(function() {
+                transitionTab(tabs.decor);
             });
 
             $('#theme_select').change(function() {
@@ -217,17 +240,21 @@ ocargo.LevelEditor = function() {
             });
 
             $('#delete_decor').click(function() {
-                if (mode === DELETE_DECOR_MODE) {
-                    mode = ADD_ROAD_MODE;
+                if (mode === modes.DELETE_DECOR_MODE) {
+                    mode = prevMode;
+                    prevMode = null;
+                    changeCurrentToolDisplay(mode);
                 } else {
-                    mode = DELETE_DECOR_MODE;
+                    prevMode = mode;
+                    mode = modes.DELETE_DECOR_MODE;
+                    changeCurrentToolDisplay(modes.DELETE_DECOR_MODE);
                 }
             });
         }
 
         function setupCharacterTab() {
-            tabs['character'].setOnChange(function() {
-                transitionTab(tabs['character']);
+            tabs.character.setOnChange(function() {
+                transitionTab(tabs.character);
             });
 
             $('#Van_radio').prop("checked", true);
@@ -238,8 +265,8 @@ ocargo.LevelEditor = function() {
         }  
 
         function setupBlocksTab() {
-            tabs['blocks'].setOnChange(function() {
-                transitionTab(tabs['blocks']);
+            tabs.blocks.setOnChange(function() {
+                transitionTab(tabs.blocks);
             });
             
             // Hacky, if a way can be found without initialising the entire work space that would be great!
@@ -254,11 +281,11 @@ ocargo.LevelEditor = function() {
             selectAll.change(function() {
                 var checked = selectAll.prop('checked');
                 $('.block_checkbox').each(function() {
-                    if($(this) !== selectAll) {
+                    if ($(this) !== selectAll) {
                         $(this).prop('checked', checked);
                     }
-                })
-            })
+                });
+            });
 
             // Setup the block images
             function addListenerToImage(type) {
@@ -278,7 +305,7 @@ ocargo.LevelEditor = function() {
                 trashcan: true
             });
 
-            for(var i = 0; i < BLOCKS.length; i++) {
+            for (var i = 0; i < BLOCKS.length; i++) {
                 var type = BLOCKS[i];
                 var block = Blockly.Block.obtain(Blockly.mainWorkspace, type);
                 block.initSvg();
@@ -303,8 +330,8 @@ ocargo.LevelEditor = function() {
         }
 
         function setupRandomTab() {
-            tabs['random'].setOnChange(function() {
-                transitionTab(tabs['random']);
+            tabs.random.setOnChange(function() {
+                transitionTab(tabs.random);
             });
 
             $('#generate').click(function() {
@@ -312,11 +339,11 @@ ocargo.LevelEditor = function() {
                             branchiness: $('#branchiness').val()/10,
                             loopiness: $('#loopiness').val()/10,
                             curviness: $('#curviness').val()/10,
-                            trafficLightsEnabled: $('#trafficLightsEnabled').prop('checked'),
+                            trafficLightsEnabled: $('#trafficLightsEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
-
+                
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
-                    if(error) {
+                    if (error) {
                         console.debug(error);
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                         return;
@@ -334,7 +361,7 @@ ocargo.LevelEditor = function() {
 
                     for (i = 0; i < path.length; i++) {
                         nodes[i].connectedNodes = [];
-                        for(var j = 0; j < path[i].connectedNodes.length; j++) {
+                        for (var j = 0; j < path[i].connectedNodes.length; j++) {
                             nodes[i].connectedNodes.push(nodes[path[i].connectedNodes[j]]);
                         }
                     }
@@ -346,7 +373,7 @@ ocargo.LevelEditor = function() {
                     originNode = nodes[0];
 
                     var tls = JSON.parse(mapData.traffic_lights);
-                    for(i = 0; i < tls.length; i++) {
+                    for (i = 0; i < tls.length; i++) {
                         new InternalTrafficLight(tls[i]);
                     }
 
@@ -358,9 +385,9 @@ ocargo.LevelEditor = function() {
         function setupLoadTab() {
             var selectedLevel = null;
 
-            tabs['load'].setOnChange(function() {
+            tabs.load.setOnChange(function() {
                 ocargo.saving.retrieveListOfLevels(function(err, ownLevels, sharedLevels) {
-                    if (err != null) {
+                    if (err !== null) {
                         console.debug(err);
                         currentTabSelected.select();
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
@@ -397,7 +424,7 @@ ocargo.LevelEditor = function() {
                     $('#deleteLevel').attr('disabled', 'disabled');
 
 
-                    transitionTab(tabs['load']);
+                    transitionTab(tabs.load);
                 });
             });
 
@@ -406,7 +433,7 @@ ocargo.LevelEditor = function() {
                 $('#loadOwnLevelTable').css('display','table');
                 $('#loadSharedLevelTable').css('display','none');
 
-                if(selectedLevel) {
+                if (selectedLevel) {
                     $('#deleteLevel').attr('disabled', false);
                 }
             });
@@ -419,23 +446,23 @@ ocargo.LevelEditor = function() {
             $('#own_levels_radio').change();
 
             $('#loadLevel').click(function() {
-                if(selectedLevel) {
+                if (selectedLevel) {
                     loadLevel(selectedLevel); 
                 }
             });
 
             $('#deleteLevel').click(function() {
-                if(!selectedLevel) {
+                if (!selectedLevel) {
                     return;
                 }
 
                 ocargo.saving.deleteLevel(selectedLevel, function(err) {
-                    if (err != null) {
+                    if (err !== null) {
                         console.debug(err);
                         return;
                     }
 
-                    if(selectedLevel == savedLevelID) {
+                    if (selectedLevel == savedLevelID) {
                         savedLevelID = -1;
                         savedState = null;
                         ownsSavedLevel = false;
@@ -450,8 +477,8 @@ ocargo.LevelEditor = function() {
         function setupSaveTab() {
             var selectedLevel = null;
 
-            tabs['save'].setOnChange(function () {
-                if(!isLevelValid()) {
+            tabs.save.setOnChange(function () {
+                if (!isLevelValid()) {
                     currentTabSelected.select();
                     return;
                 }
@@ -479,13 +506,13 @@ ocargo.LevelEditor = function() {
                      }
                 }
 
-                if(existingID != -1) {
-                    if(existingID != savedLevelID) {
+                if (existingID != -1) {
+                    if (existingID != savedLevelID) {
                         //ocargo.Drawing.startPopup("Overwriting","Warning",ocargo.messages.saveOverwriteWarning(newName, onYes));
-                        saveLevel(newName, existingID, processListOfLevels)
+                        saveLevel(newName, existingID, processListOfLevels);
                     }
                     else {
-                        saveLevel(newName, existingID, processListOfLevels)
+                        saveLevel(newName, existingID, processListOfLevels);
                     }
                 }
                 else {
@@ -494,7 +521,7 @@ ocargo.LevelEditor = function() {
             });
 
             function processListOfLevels(err, ownLevels, sharedLevels) {
-                if (err != null) {
+                if (err !== null) {
                     console.debug(err);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
@@ -510,14 +537,14 @@ ocargo.LevelEditor = function() {
                     $('#saveLevel').removeAttr('disabled');
                     selectedLevel = parseInt(rowSelected.attr('value'));
 
-                    for(var i = 0; i < ownLevels.length; i++) {
-                        if(ownLevels[i].id === selectedLevel) {
+                    for (var i = 0; i < ownLevels.length; i++) {
+                        if (ownLevels[i].id === selectedLevel) {
                             $("#levelNameInput").val(ownLevels[i].name);
                         }
                     }
                 });
 
-                transitionTab(tabs['save']);
+                transitionTab(tabs.save);
                 selectedLevel = null;
             }
         }
@@ -525,13 +552,13 @@ ocargo.LevelEditor = function() {
         function setupShareTab() {
 
             var text = [];
-            text['shared'] = "Yes";
-            text['unshared'] = "No";
-            text['pending'] = "...";
+            text.shared = "Yes";
+            text.unshared = "No";
+            text.pending = "...";
 
             // Setup the behaviour for when the tab is selected
-            tabs['share'].setOnChange(function() {
-                if(!isLevelSaved() || !isLevelOwned()) {
+            tabs.share.setOnChange(function() {
+                if (!isLevelSaved() || !isLevelOwned()) {
                     currentTabSelected.select();
                     return;
                 }
@@ -560,8 +587,8 @@ ocargo.LevelEditor = function() {
             $('#class_select').change(function() {
                 var classID = $('#class_select').val();
                 
-                for(var i = 0; i < classesTaught.length; i++) {
-                    if(classesTaught[i].id == classID) {
+                for (var i = 0; i < classesTaught.length; i++) {
+                    if (classesTaught[i].id == classID) {
                         populateSharingTable(classesTaught[i].students);
                         currentClassID = classesTaught[i].id;
                         break;
@@ -571,7 +598,7 @@ ocargo.LevelEditor = function() {
 
             // Setup the select all button
             $('#shareWithAll').click(function() {
-                if(isLevelSaved() && isLevelOwned()) {
+                if (isLevelSaved() && isLevelOwned()) {
                     var statusDesired = allShared ? 'shared' : 'unshared';
                     var actionDesired = allShared ? 'unshare' : 'share';
 
@@ -589,19 +616,19 @@ ocargo.LevelEditor = function() {
 
             // Method to call when we get an update on the level's sharing information
             function processSharingInformation(error, validRecipients, role) {
-                if(error !== null) {
+                if (error !== null) {
                     console.debug(error);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
 
-                if(role !== "student" && role !== 'teacher') {
+                if (role !== "student" && role !== 'teacher') {
                     ocargo.Drawing.startPopup("Not logged in", "", ocargo.messages.notLoggedIn);
                     currentTabSelected.select();
                     return;
                 }
 
-                if(role === "student") {
+                if (role === "student") {
                     $('#teacher_sharing').css('display','none');
                     $('#student_sharing').css('display','block');
 
@@ -610,7 +637,7 @@ ocargo.LevelEditor = function() {
 
                     populateSharingTable(classmates);
                 }
-                else if(role == "teacher") {
+                else if (role == "teacher") {
                     $('#teacher_sharing').css('display','block');
                     $('#student_sharing').css('display','none');
 
@@ -618,31 +645,35 @@ ocargo.LevelEditor = function() {
                     fellowTeachers = validRecipients.teachers;
 
                     $('#class_select').empty();
-                    for(var i = 0; i < classesTaught.length; i++) {
-                        var option = '<option value=' + classesTaught[i].id + '>' + classesTaught[i].name + '</option>'
+                    for (var i = 0; i < classesTaught.length; i++) {
+                        var option = $('<option>');
+                        option.attr( {
+                            value: classesTaught[i].id,
+                        });
+                        option.text(classesTaught[i].name);
                         $('#class_select').append(option);
                     }
 
-                    if($('#teachers_radio').is(':checked')) {
+                    if ($('#teachers_radio').is(':checked')) {
                         populateSharingTable(validRecipients.teachers);
                     }
                     else {
                         var found = false;
                         $('#class_select option').each(function() {
-                            if(this.value == currentClassID) {
+                            if (this.value == currentClassID) {
                                 $('#class_select').val(currentClassID);
                                 $('#class_select').change();
                                 found = true;
                             }
                         });
 
-                        if(!found) {
+                        if (!found) {
                             $('#class_select').change();
                         }
                     }
                 }
 
-                transitionTab(tabs['share']);
+                transitionTab(tabs.share);
             }
 
             function populateSharingTable(recipients) {
@@ -670,22 +701,34 @@ ocargo.LevelEditor = function() {
                     var recipient = recipients[i];
                     var status = recipient.shared ? 'shared' : 'unshared';
                     
-                    if(recipient.shared) {
-                        status = 'shared'
+                    if (recipient.shared) {
+                        status = 'shared';
                     }
                     else {
-                        status = 'unshared'
+                        status = 'unshared';
                         allShared = false;
                     }
 
-                    table.append('<tr value=' + recipient.id + ' + status="' +  status + '">' + 
-                                    '<td>' + recipient.name + '</td>' + 
-                                    '<td class="share_cell">' + text[status] + '</td>' +
-                                '</tr>');
+                    var tableRow = $('<tr>');
+                    tableRow.attr( {
+                        'value': recipient.id,
+                        'status': status,
+                    });
+                    var rowName = $('<td>').text(recipient.name);
+
+                    var rowStatus = $('<td>');
+                    rowStatus.attr( {
+                        'class': 'share_cell'
+                    });
+                    rowStatus.text(text[status]);
+                    tableRow.append(rowName);
+                    tableRow.append(rowStatus);
+
+                    table.append(tableRow);
                 }
 
                 // Update the shareWithAll button
-                if(allShared) {
+                if (allShared) {
                     $('#shareWithAll span').html('Unshare with all');
                     $('#shareWithAll img').attr('src','/static/game/image/icons/quit.svg');
                 }
@@ -696,7 +739,7 @@ ocargo.LevelEditor = function() {
 
                 // update click listeners in the new rows
                 $('#levelSharingTable tr[value]').on('click', function(event) {
-                    if(isLevelSaved() && isLevelOwned()) {
+                    if (isLevelSaved() && isLevelOwned()) {
                         var status = this.getAttribute('status');
 
                         var recipientData = {recipientIDs: [this.getAttribute('value')], 
@@ -709,15 +752,15 @@ ocargo.LevelEditor = function() {
         }
 
         function setupHelpTab() {
-            tabs['help'].setOnChange(function() {
-                transitionTab(tabs['help']);
+            tabs.help.setOnChange(function() {
+                transitionTab(tabs.help);
             });
 
             $('#help_pane').html(ocargo.messages.levelEditorHelpText);
         }
 
         function setupQuitTab() {
-            tabs['quit'].setOnChange(function() {
+            tabs.quit.setOnChange(function() {
                 window.location.href = "/game/";
             });
         }
@@ -752,8 +795,17 @@ ocargo.LevelEditor = function() {
             table.append('<tr>  <th>Name</th>   <th>Owner</th> </tr>');
             for (var i = 0, ii = levels.length; i < ii; i++) {
                 var level = levels[i];
-                table.append('<tr value=' + level.id + '>  <td>' + level.name + '</td>  <td>' +
-                             level.owner + '</td> </tr>');
+                var tableRow = $('<tr>');
+                tableRow.attr( {
+                    'value' : level.id
+                });
+                var rowName = $('<td>');
+                rowName.text(level.name);
+                var rowOwner = $('<td>');
+                rowOwner.text(level.owner);
+                tableRow.append(rowName);
+                tableRow.append(rowOwner);
+                table.append(tableRow);
             }
         }
     }
@@ -772,7 +824,8 @@ ocargo.LevelEditor = function() {
     }
 
     function isCoordinateOnGrid(coordinate) {
-        return coordinate.x >= 0 && coordinate.x < GRID_WIDTH && coordinate.y >= 0 && coordinate.y < GRID_HEIGHT;
+        return coordinate.x >= 0 && coordinate.x < GRID_WIDTH &&
+            coordinate.y >= 0 && coordinate.y < GRID_HEIGHT;
     }
 
     function canPlaceCFC(node) {
@@ -785,7 +838,7 @@ ocargo.LevelEditor = function() {
     /*************/
 
     function clear() {
-        for(var i = 0; i < trafficLights.length; i++) {
+        for (var i = 0; i < trafficLights.length; i++) {
             trafficLights[i].destroy();
         }
         trafficLights = [];
@@ -818,7 +871,7 @@ ocargo.LevelEditor = function() {
     }
 
     function bringTrafficLightsToFront() {
-        for(var i = 0; i < trafficLights.length; i++) {
+        for (var i = 0; i < trafficLights.length; i++) {
             trafficLights[i].image.toFront();
         }
     }
@@ -861,10 +914,10 @@ ocargo.LevelEditor = function() {
                 grid[i][j].toFront();
             }
         }
-        if(originNode) {
+        if (originNode) {
             markAsOrigin(originNode.coordinate);
         }
-        if(destinationNode) {
+        if (destinationNode) {
             markAsDestination(destinationNode.coordinate);
         }
 
@@ -880,8 +933,7 @@ ocargo.LevelEditor = function() {
         function setup(x, y) {
             var coordinate = new ocargo.Coordinate(x, y);
             var node = new ocargo.Node(coordinate);
-            if(previousNode)
-            {
+            if (previousNode) {
                 node.addConnectedNodeWithBacklink(previousNode);
             }
             previousNode = node;
@@ -903,8 +955,7 @@ ocargo.LevelEditor = function() {
             var coordMap = ocargo.Drawing.translate(coordPaper);
             var existingNode = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
 
-            if(mode === MARK_ORIGIN_MODE && existingNode && canPlaceCFC(existingNode)) 
-            {
+            if (mode === modes.MARK_ORIGIN_MODE && existingNode && canPlaceCFC(existingNode)) {
                 if (originNode) {
                     var prevStart = originNode.coordinate;
                     markAsBackground(prevStart);
@@ -921,9 +972,7 @@ ocargo.LevelEditor = function() {
                 nodes[newStartIndex] = nodes[0];
                 nodes[0] = temp;
                 originNode = nodes[0];
-            } 
-            else if (mode === MARK_DESTINATION_MODE && existingNode) 
-            {    
+            } else if (mode === modes.MARK_DESTINATION_MODE && existingNode) {    
                 if (destinationNode) {
                     var prevEnd = destinationNode.coordinate;
                     markAsBackground(prevEnd);
@@ -936,8 +985,7 @@ ocargo.LevelEditor = function() {
                 var newEnd = ocargo.Node.findNodeIndexByCoordinate(coordMap, nodes);
                 destinationNode = nodes[newEnd];
 
-            } 
-            else if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) {
+            }  else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 strikeStart = coordMap;
                 markAsSelected(coordMap);
             }
@@ -952,28 +1000,21 @@ ocargo.LevelEditor = function() {
             var coordPaper = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
             var coordMap = ocargo.Drawing.translate(coordPaper);
 
-            if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) 
-            {
-                if(strikeStart !== null)
-                {
+            if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
+                if (strikeStart !== null) {
                     markTentativeRoad(coordMap);
                 }
-                else if(!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap))
-                {
+                else if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap)) {
                     markAsHighlighted(coordMap);
                 }
             }
-            else if(mode === MARK_ORIGIN_MODE || mode === MARK_DESTINATION_MODE)
-            {
+            else if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE) {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
-                if (node && destinationNode !== node && originNode !== node) 
-                {
-                    if(mode === MARK_DESTINATION_MODE)
-                    {
+                if (node && destinationNode !== node && originNode !== node) {
+                    if (mode === modes.MARK_DESTINATION_MODE) {
                         mark(coordMap, 'blue', 0.3, true); 
                     }
-                    else if(canPlaceCFC(node))
-                    {
+                    else if (canPlaceCFC(node)) {
                         mark(coordMap, 'red', 0.5, true);
                     }
                 }
@@ -990,18 +1031,14 @@ ocargo.LevelEditor = function() {
                                                    getBBox.y/GRID_SPACE_SIZE);
             var coordMap = ocargo.Drawing.translate(coordPaper);
 
-            if(mode === MARK_ORIGIN_MODE || mode === MARK_DESTINATION_MODE) 
-            {
+            if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE) {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
-                if (node && destinationNode !== node && originNode !== node) 
-                {
+                if (node && destinationNode !== node && originNode !== node) {
                     markAsBackground(coordMap);
                 }
             }
-            else if(mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE)
-            {
-                if(!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap))
-                {
+            else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
+                if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap)) {
                     markAsBackground(coordMap);
                 }
             }
@@ -1012,13 +1049,13 @@ ocargo.LevelEditor = function() {
         return function(ev) {
             ev.preventDefault();
 
-            if (mode === ADD_ROAD_MODE || mode === DELETE_ROAD_MODE) {
+            if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 var getBBox = this_rect.getBBox();
                 var coordPaper = new ocargo.Coordinate(getBBox.x/GRID_SPACE_SIZE,
                                                        getBBox.y/GRID_SPACE_SIZE);
                 var coordMap = ocargo.Drawing.translate(coordPaper);
 
-                if (mode === DELETE_ROAD_MODE) {
+                if (mode === modes.DELETE_ROAD_MODE) {
                     finaliseDelete(coordMap);
                 } 
                 else {
@@ -1034,8 +1071,9 @@ ocargo.LevelEditor = function() {
     function handleTouchStart(this_rect) {
         return function (ev) {
             if (ev.touches.length === 1 && !IS_SCROLLING) {
-                var x = ev.touches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
-                var y = ev.touches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+                var paperPosition = paper.position();
+                var x = ev.touches[0].pageX - paperPosition.left + paper.scrollLeft();
+                var y = ev.touches[0].pageY - paperPosition.top + paper.scrollTop();
 
                 x /= GRID_SPACE_SIZE;
                 y /= GRID_SPACE_SIZE;
@@ -1051,8 +1089,9 @@ ocargo.LevelEditor = function() {
     function handleTouchMove(this_rect) {
         return function(ev) {
             if (ev.touches.length === 1 && !IS_SCROLLING) {
-                var x = ev.touches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
-                var y = ev.touches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+                var paperPosition = paper.position();
+                var x = ev.touches[0].pageX - paperPosition.left + paper.scrollLeft();
+                var y = ev.touches[0].pageY - paperPosition.top + paper.scrollTop();
 
                 x /= GRID_SPACE_SIZE;
                 y /= GRID_SPACE_SIZE;
@@ -1068,8 +1107,9 @@ ocargo.LevelEditor = function() {
     function handleTouchEnd(this_rect) {
         return function(ev) {
             if (ev.changedTouches.length === 1 && !IS_SCROLLING) {
-                var x = ev.changedTouches[0].pageX - $('#paper').position().left + $('#paper').scrollLeft();
-                var y = ev.changedTouches[0].pageY - $('#paper').position().top + $('#paper').scrollTop();
+                var paperPosition = paper.position();
+                var x = ev.changedTouches[0].pageX - paperPosition.left + paper.scrollLeft();
+                var y = ev.changedTouches[0].pageY - paperPosition.top + paper.scrollTop();
 
                 x /= GRID_SPACE_SIZE;
                 y /= GRID_SPACE_SIZE;
@@ -1098,48 +1138,54 @@ ocargo.LevelEditor = function() {
         var imageHeight;
 
         function onDragMove(dx, dy) {
-            paperX = dx + originX;
-            paperY = dy + originY;
+            if (mode !== modes.DELETE_DECOR_MODE) {
+                paperX = dx + originX;
+                paperY = dy + originY;
 
-            // Stop it being dragged off the edge of the page
-            if(paperX < 0) {
-                paperX = 0;
-            }
-            else if(paperX + imageWidth > paperWidth) {
-                paperX = paperWidth - imageWidth;
-            }
-            if(paperY < 0) {
-                paperY =  0;
-            }
-            else if(paperY + imageHeight >  paperHeight) {
-                paperY = paperHeight - imageHeight;
-            }
+                // Stop it being dragged off the edge of the page
+                if (paperX < 0) {
+                    paperX = 0;
+                }
+                else if (paperX + imageWidth > paperWidth) {
+                    paperX = paperWidth - imageWidth;
+                }
+                if (paperY < 0) {
+                    paperY =  0;
+                }
+                else if (paperY + imageHeight >  paperHeight) {
+                    paperY = paperHeight - imageHeight;
+                }
 
-            image.transform('t' + paperX + ',' + paperY);
+                image.transform('t' + paperX + ',' + paperY);
+            }
         }
 
         function onDragStart(x, y) {
-            var bBox = image.getBBox();
-            imageWidth = bBox.width;
-            imageHeight = bBox.height;
+            if (mode !== modes.DELETE_DECOR_MODE) {
+                var bBox = image.getBBox();
+                imageWidth = bBox.width;
+                imageHeight = bBox.height;
 
-            var paperPosition = $('#paper').position();
-            originX = x - paperPosition.left - imageWidth/2;
-            originY = y - paperPosition.top - imageHeight/2;
-        
-            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
-            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+                var paperPosition = paper.position();
+                originX = x - paperPosition.left + paper.scrollLeft() - imageWidth/2;
+                originY = y - paperPosition.top + paper.scrollTop() - imageHeight/2;
+
+                paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
+                paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+            }
         }
 
         function onDragEnd() {
-            originX = paperX;
-            originY = paperY;
+            if (mode !== modes.DELETE_DECOR_MODE) {
+                originX = paperX;
+                originY = paperY;
+            }
         }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
 
         $(image.node).on('click touchstart', function() {
-            if(mode === DELETE_DECOR_MODE) {
+            if (mode === modes.DELETE_DECOR_MODE) {
                 decor.destroy();
             }
         });
@@ -1186,21 +1232,21 @@ ocargo.LevelEditor = function() {
             paperY = dy + originY;
 
             // Stop it being dragged off the edge of the page
-            if(paperX < 0) {
+            if (paperX < 0) {
                 paperX = 0;
             }
-            else if(paperX + imageWidth > paperWidth) {
+            else if (paperX + imageWidth > paperWidth) {
                 paperX = paperWidth - imageWidth;
             }
-            if(paperY < 0) {
+            if (paperY < 0) {
                 paperY =  0;
             }
-            else if(paperY + imageHeight >  paperHeight) {
+            else if (paperY + imageHeight >  paperHeight) {
                 paperY = paperHeight - imageHeight;
             }
             
             // Adjust for the fact that we've rotated the image
-            if(rotation === 90 || rotation === 270)  {
+            if (rotation === 90 || rotation === 270)  {
                 paperX += (imageWidth - imageHeight)/2;
                 paperY -= (imageWidth - imageHeight)/2;
             }
@@ -1210,16 +1256,16 @@ ocargo.LevelEditor = function() {
 
 
             // Unmark the squares the light previously occupied
-            if(sourceCoord) {
+            if (sourceCoord) {
                 markAsBackground(sourceCoord);
             }
-            if(controlledCoord) {
+            if (controlledCoord) {
                 markAsBackground(controlledCoord);
             }
-            if(originNode) {
+            if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
-            if(destinationNode) {
+            if (destinationNode) {
                 markAsDestination(destinationNode.coordinate);
             }
 
@@ -1264,25 +1310,22 @@ ocargo.LevelEditor = function() {
             }
 
             // If controlled node is not on grid, remove it
-            if(!isCoordinateOnGrid(controlledCoord)) {
+            if (!isCoordinateOnGrid(controlledCoord)) {
                 controlledCoord = null;
             }
 
             // If source node is not on grid remove it
-            if(!isCoordinateOnGrid(sourceCoord)) {
+            if (!isCoordinateOnGrid(sourceCoord)) {
                 sourceCoord = null;
             }
 
-            if(sourceCoord && controlledCoord) {
+            if (sourceCoord && controlledCoord) {
                 var colour;
-                if(canGetFromSourceToControlled(sourceCoord, controlledCoord))
-                {
+                if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
                     // Valid placement
                     colour = VALID_LIGHT_COLOUR;
                     ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
-                }
-                else
-                {
+                } else {
                     // Invalid placement
                     colour = INVALID_LIGHT_COLOUR;
                 }
@@ -1305,7 +1348,7 @@ ocargo.LevelEditor = function() {
             paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
             paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
 
-            var paperPosition = $('#paper').position();
+            var paperPosition = paper.position();
 
             var mouseX = x - paperPosition.left;
             var mouseY = y - paperPosition.top;
@@ -1315,23 +1358,23 @@ ocargo.LevelEditor = function() {
         }
 
         function onDragEnd() {
-            if(moved) {
+            if (moved) {
                 // Unmark squares currently occupied
-                if(sourceCoord) {
+                if (sourceCoord) {
                     markAsBackground(sourceCoord);
                 }
-                if(controlledCoord) {
+                if (controlledCoord) {
                     markAsBackground(controlledCoord);
                 }
-                if(originNode) {
+                if (originNode) {
                     markAsOrigin(originNode.coordinate);
                 }
-                if(destinationNode) {
+                if (destinationNode) {
                     markAsDestination(destinationNode.coordinate);
                 }
 
                 // Add back to the list of traffic lights if on valid nodes
-                if(canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
+                if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
                     var sourceIndex = ocargo.Node.findNodeIndexByCoordinate(sourceCoord, nodes);
                     var controlledIndex = ocargo.Node.findNodeIndexByCoordinate(controlledCoord, nodes);
                     trafficLight.valid = true;
@@ -1352,15 +1395,15 @@ ocargo.LevelEditor = function() {
         });
 
         image.click(function() {
-            if(mode === DELETE_DECOR_MODE) {
+            if (mode === modes.DELETE_DECOR_MODE) {
                 trafficLight.destroy();
             }
         });
 
         function getScaling(object) {
             var transform = object.transform();
-            for(var i = 0; i < transform.length; i++) {
-                if(transform[i][0] === 's') {
+            for (var i = 0; i < transform.length; i++) {
+                if (transform[i][0] === 's') {
                     return transform[i][1] + ',' + transform[i][2];
                 }
             }
@@ -1371,9 +1414,9 @@ ocargo.LevelEditor = function() {
             var sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
             var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
 
-            if(sourceNode && controlledNode) {
-                for(var i = 0; i < sourceNode.connectedNodes.length; i++) {
-                    if(sourceNode.connectedNodes[i] === controlledNode) {
+            if (sourceNode && controlledNode) {
+                for (var i = 0; i < sourceNode.connectedNodes.length; i++) {
+                    if (sourceNode.connectedNodes[i] === controlledNode) {
                         return true;
                     }
                 }
@@ -1397,8 +1440,8 @@ ocargo.LevelEditor = function() {
     function createGrid() {
         grid = ocargo.drawing.renderGrid(currentTheme);
 
-        for(var i = 0; i < grid.length; i++) {
-            for(var j = 0; j < grid[i].length; j++) {
+        for (var i = 0; i < grid.length; i++) {
+            for (var j = 0; j < grid[i].length; j++) {
                 grid[i][j].node.onmousedown = handleMouseDown(grid[i][j]);
                 grid[i][j].node.onmouseover = handleMouseOver(grid[i][j]);
                 grid[i][j].node.onmouseout = handleMouseOut(grid[i][j]);
@@ -1427,7 +1470,7 @@ ocargo.LevelEditor = function() {
         function deleteNode(x, y) {
             var coord = new ocargo.Coordinate(x, y);
             var node = ocargo.Node.findNodeByCoordinate(coord, nodes);
-            if(node) {
+            if (node) {
                 // Remove all the references to the node we're removing.
                 for (var i = node.connectedNodes.length - 1; i >= 0; i--) {
                     node.removeDoublyConnectedNode(node.connectedNodes[i]);
@@ -1437,11 +1480,11 @@ ocargo.LevelEditor = function() {
             }
 
             // Check if start or destination node        
-            if(isOriginCoordinate(coord)) {
+            if (isOriginCoordinate(coord)) {
                 markAsBackground(originNode.coordinate);
                 originNode = null;
             }
-            if(isDestinationCoordinate(coord)) {
+            if (isDestinationCoordinate(coord)) {
                 markAsBackground(destinationNode.coordinate);
                 destinationNode = null;
             }     
@@ -1461,18 +1504,17 @@ ocargo.LevelEditor = function() {
                 node = new ocargo.Node(coord);
                 nodes.push(node);
             }
-            else
-            {
+            else {
                 // If we've overwritten the origin node remove it as 
                 // we can no longer place the CFC there
-                if(node === originNode) {
+                if (node === originNode) {
                     markAsBackground(originNode.coordinate);
                     originNode = null;
                 }
             }
 
             // Now connect it up with it's new neighbours
-            if(previousNode && node.connectedNodes.indexOf(previousNode) === -1) {
+            if (previousNode && node.connectedNodes.indexOf(previousNode) === -1) {
                 node.addConnectedNodeWithBacklink(previousNode);
             }
             previousNode = node;
@@ -1481,7 +1523,7 @@ ocargo.LevelEditor = function() {
 
     function applyAlongStrike(func, strikeEnd) {
         var x, y;
-        if (strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y) {
+        if (!strikeStart || strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y) {
             return;
         }
         if (strikeStart.x <= strikeEnd.x) {
@@ -1539,6 +1581,9 @@ ocargo.LevelEditor = function() {
     }
 
     function sortNodes(nodes) {
+        var sorter = function(a, b) {
+            return comparator(a, b, nodes[i]);
+        };
         for (var i = 0; i < nodes.length; i++) {
             // Remove duplicates.
             var newConnected = [];
@@ -1547,9 +1592,7 @@ ocargo.LevelEditor = function() {
                     newConnected.push(nodes[i].connectedNodes[j]);
                 }
             }
-            nodes[i].connectedNodes.sort(function(a, b) {
-                return comparator(a, b, nodes[i]);
-            }).reverse();
+            nodes[i].connectedNodes.sort(sorter).reverse();
         }
 
         function comparator(node1, node2, centralNode) {
@@ -1576,13 +1619,15 @@ ocargo.LevelEditor = function() {
         // Create node data
         sortNodes(nodes);
         state.path = JSON.stringify(ocargo.Node.composePathData(nodes));
+        // To prevent circular JSON conversion
+        state.selectedOrigin = originNode ? true : false;
 
         // Create traffic light data
         var trafficLightData = [];
         var i;
-        for(i = 0; i < trafficLights.length; i++) {
+        for (i = 0; i < trafficLights.length; i++) {
             var tl =  trafficLights[i];
-            if(tl.valid) {
+            if (tl.valid) {
                 trafficLightData.push(tl.getData());
             }
         }
@@ -1590,9 +1635,9 @@ ocargo.LevelEditor = function() {
 
         // Create block data
         var blockData = [];
-        for(i = 0; i < BLOCKS.length; i++) {
+        for (i = 0; i < BLOCKS.length; i++) {
             var type = BLOCKS[i];
-            if($('#' + type + "_checkbox").is(':checked')) {
+            if ($('#' + type + "_checkbox").is(':checked')) {
                 blockData.push(type);
             }
         }
@@ -1600,13 +1645,13 @@ ocargo.LevelEditor = function() {
 
         // Create decor data
         var decorData = [];
-        for(i = 0; i < decor.length; i++) {
+        for (i = 0; i < decor.length; i++) {
             decorData.push(decor[i].getData());
         }
         state.decor = JSON.stringify(decorData);
 
         // Create other data
-        if(destinationNode) {
+        if (destinationNode) {
             var destinationCoord = destinationNode.coordinate;
             state.destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
         }
@@ -1619,7 +1664,7 @@ ocargo.LevelEditor = function() {
         return state;
     }
 
-    function restoreState(state) {
+    function restoreState(state, origin) {
         clear();
 
         // Load node data
@@ -1627,15 +1672,17 @@ ocargo.LevelEditor = function() {
 
         // Load traffic light data
         var trafficLightData = JSON.parse(state.traffic_lights);
-        for(var i = 0; i < trafficLightData.length; i++) {
+        for (var i = 0; i < trafficLightData.length; i++) {
             new InternalTrafficLight(trafficLightData[i]);
         }
 
         // Load other data
-        originNode = nodes[0];
+        if (origin || state.selectedOrigin) {
+            originNode = nodes[0];
+        }
 
         // TODO needs to be fixed in the long term with multiple destinations
-        if(state.destinations) {
+        if (state.destinations) {
             var destinationList = JSON.parse(state.destinations)[0];
             var destinationCoordinate = new ocargo.Coordinate(destinationList[0],
                                                               destinationList[1]);
@@ -1645,28 +1692,29 @@ ocargo.LevelEditor = function() {
         drawAll();
 
         var themeID = state.themeID;
-        for(var theme in THEMES) {
-            if(THEMES[theme]['id'] === themeID) {
+        for (var theme in THEMES) {
+            if (THEMES[theme].id === themeID) {
                 setTheme(THEMES[theme]);
             }
         }
 
         // Load in the decor data
         var decorData = JSON.parse(state.decor);
-        for(var i = 0; i < decorData.length; i++) {
+        for (var i = 0; i < decorData.length; i++) {
             var decorObject = new InternalDecor(decorData[i].name);
-            decorObject.setCoordinate(decorData[i].coordinate);
+            decorObject.setCoordinate(new ocargo.Coordinate(decorData[i].coordinate.x,
+                PAPER_HEIGHT - decorData[i].height - decorData[i].coordinate.y));
         }
     }
 
     function loadLevel(levelID) { 
         ocargo.saving.retrieveLevel(levelID, function(err, level, owned) {
-            if (err != null) {
+            if (err !== null) {
                 console.debug(err);
                 return;
             }
 
-            restoreState(level);
+            restoreState(level, true);
 
             ownsSavedLevel = owned;
             savedState = JSON.stringify(extractState());
@@ -1679,7 +1727,7 @@ ocargo.LevelEditor = function() {
         level.name = name;
 
         ocargo.saving.saveLevel(level, levelID, function(error, newLevelID, ownedLevels, sharedLevels) {
-            if (error != null) {
+            if (error !== null) {
                 console.debug(error);
                 return;
             }
@@ -1696,7 +1744,7 @@ ocargo.LevelEditor = function() {
     }
 
     function storeStateInLocalStorage() {
-        if(localStorage) {
+        if (localStorage) {
             var state = extractState();
             
             // Append additional non-level orientated editor state
@@ -1704,15 +1752,15 @@ ocargo.LevelEditor = function() {
             state.savedState = savedState;
             state.ownsSavedLevel = ownsSavedLevel;
 
-            localStorage['levelEditorState'] = JSON.stringify(state);
+            localStorage.levelEditorState = JSON.stringify(state);
         }
     }
 
     function retrieveStateFromLocalStorage() { 
-        if(localStorage) {
-            var state = JSON.parse(localStorage['levelEditorState']);
+        if (localStorage) {
+            var state = JSON.parse(localStorage.levelEditorState);
 
-            if(state) {
+            if (state) {
                 restoreState(state);
             }
 
@@ -1735,7 +1783,7 @@ ocargo.LevelEditor = function() {
         // Check to see if path exists from start to end
         var destination = new ocargo.Destination(0, destinationNode);
         var pathToDestination = getOptimalPath(nodes, [destination]);
-        if (pathToDestination.length === 0) {
+        if (!pathToDestination) {
             ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
                                       ocargo.messages.noStartEndRouteSubtitle,
                                       ocargo.messages.noStartEndRoute);
@@ -1747,11 +1795,11 @@ ocargo.LevelEditor = function() {
     function isLevelSaved() {
         var currentState = JSON.stringify(extractState());
 
-        if(!savedState) {
+        if (!savedState) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notSaved);
             return false;
         }
-        else if(currentState !== savedState) {
+        else if (currentState !== savedState) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.changesSinceLastSave);
             return false;
         }
@@ -1759,7 +1807,7 @@ ocargo.LevelEditor = function() {
     }
 
     function isLevelOwned() {
-        if(!ownsSavedLevel)
+        if (!ownsSavedLevel)
         {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notOwned);
             return false;
@@ -1775,7 +1823,7 @@ ocargo.LevelEditor = function() {
 
         // public methods
         this.getData = function() {
-            if(!this.valid) {
+            if (!this.valid) {
                 throw "Error: cannot create actual traffic light from invalid internal traffic light!";
             }
 
@@ -1787,7 +1835,7 @@ ocargo.LevelEditor = function() {
         this.destroy = function() {
             this.image.remove();
             var index = trafficLights.indexOf(this);
-            if(index !== -1) {
+            if (index !== -1) {
                 trafficLights.splice(index, 1);       
             }
         };
@@ -1806,7 +1854,7 @@ ocargo.LevelEditor = function() {
         this.image = ocargo.drawing.createTrafficLightImage(imgStr);
         this.image.transform('...s-1,1');
 
-        if(this.controlledNode !== -1 && this.sourceNode !== -1) {
+        if (this.controlledNode !== -1 && this.sourceNode !== -1) {
             var sourceCoord = nodes[this.sourceNode].coordinate;
             var controlledCoord = nodes[this.controlledNode].coordinate;
             this.valid = true;
@@ -1830,7 +1878,7 @@ ocargo.LevelEditor = function() {
             var bBox = this.image.getBBox();
             return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x),
                                                         PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)),
-                    'name': this.name};
+                    'name': this.name, 'height': bBox.height};
         };
 
         this.setCoordinate = function(coordinate) {
@@ -1842,7 +1890,7 @@ ocargo.LevelEditor = function() {
             var newImage = ocargo.drawing.createImage(description.url, 0, 0, description.width,
                                                       description.height);
 
-            if(this.image) {
+            if (this.image) {
                 newImage.transform(this.image.matrix.toTransformString());
                 this.image.remove();
             }
@@ -1855,7 +1903,7 @@ ocargo.LevelEditor = function() {
         this.destroy = function() {
             this.image.remove();
             var index = decor.indexOf(this);
-            if(index !== -1) {
+            if (index !== -1) {
                 decor.splice(index, 1);       
             }
         };
@@ -1876,5 +1924,3 @@ ocargo.LevelEditor = function() {
 $(function() {
     new ocargo.LevelEditor();
 });
-
-

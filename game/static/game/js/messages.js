@@ -1,7 +1,6 @@
 
 var ocargo = ocargo || {};
 
-//FIXME: actually use Django's internationalisation framework.
 
 // Object containing helper js objects (buttons etc).
 ocargo.jsElements = {
@@ -15,6 +14,8 @@ ocargo.jsElements = {
     buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>',
 };
 
+
+//FIXME: actually use Django's internationalisation framework.
 ocargo.messages = {
     nextEpisode: function(episode) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
@@ -22,6 +23,8 @@ ocargo.messages = {
             ocargo.jsElements.redirectButton("'/game/episode/" + episode + "'", 'Next episode') + " " +
             ocargo.jsElements.redirectButton("'/game/'", "Home");
     },
+
+    loggedOutWarning: "You are not logged in. Your progress won't be saved.",
 
     lastLevel: "Congratulations, you’ve completed the game! Carry on the fun by creating your " +
         "own map. <br><br>" +
@@ -105,5 +108,4 @@ ocargo.messages = {
     procMissingBodyError: "Perhaps try looking at your 'define' blocks?",
     procDupNameError: "Perhaps try checking the names of your 'define' blocks?",
     procCallNameError: "Perhaps try checking the names in your 'call' blocks?",
-
 };

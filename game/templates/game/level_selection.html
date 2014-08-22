@@ -2,19 +2,16 @@
 
 {% load compress %}
 {% load static %}
+{% load app_tags %}
 
 {% block scripts %}
 {{block.super}}
-  {# TODO: remove D3 as it's no longer used #}
-  <script src="/static/game/js/d3.v3.min.js" charset="utf-8"></script>
   <script src="/static/game/js/levelSelection.js"></script>
 {% endblock %}
 
 {% block css %}
 {{block.super}}
-  {% compress css %}
       <link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
-  {% endcompress %}
 {% endblock %}
 
 {% block nav_ocargo_levels %}<b><a href="{% url 'game.views.levels' %}">Levels</a></b>{% endblock nav_ocargo_levels %}
@@ -22,23 +19,48 @@
 {% block content %}
 	<div class="section group">
 		<div class="col span_1_of_3_strict">
-			<h3 style="text-align : center"> Welcome to Rapid Router!</h3>
 			<img class="wide rounded" src="{% static 'portal/img/RRlogo_on_less_green_small.png' %}" />
 		</div>
 		<div class="col span_2_of_3_strict">
-			<h3 style="text-align : center">Select a level!</h3>
 			<div id="episodes">
 			    {% for episode in episodeData %}
-			    <h3>{{episode.name}}</h3>
+			    <h3>{{episode.name}}<span style="float:right; font-size: 10pt">Levels {{episode.first_level}}-{{episode.last_level}}</span></h3>
 			    <div>
 			        {% for level in episode.levels %}
-			        <p><a href="/game/{{level.id}}">{{level.id}}: {{level.title.strip}}</a> 
+			        <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+			        <p><a href="/game/{{level.id}}">{{level.id}}: {{level.title.strip | safe}}</a> 
 			        {% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/20{% endif %}</span></p>
 			        {% endfor %}
 			        
 			        <p><a href="levels/random/{{episode.id}}">Random: Try your hand at a random level.</a></p>
 			    </div>
 			    {% endfor %}
+			    <h3 class='customLevelsEpisode'>Levels created by you</h3>
+			    <div>
+			    	{% if owned_levels %}
+			    		{% for level in owned_levels %}
+			    			<p><a href="/game/{{ level.id }}">{{level.title}}</a>
+			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
+			    		{% endfor %}
+			    	{% else %}
+			    		<p>No levels have been created by you yet.</p>
+			    	{% endif %}
+			    </div>
+			    <h3 class='customLevelsEpisode'>Levels shared with you</h3>
+			    <div>
+			    	{% if shared_levels %}
+			    		{% for level in shared_levels %}
+			    			<p><a href="/game/{{ level.id }}">{{level.title}} ({{level.owner|make_into_username}})</a>
+			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
+			    		{% endfor %}
+			    	{% else %}
+			    		{% if user|is_logged_in_as_school_user %}
+			    		<p>No levels have been shared with you yet.</p>
+			    		{% else %}
+			    		<p>You cannot share levels as you are not registered to a school or club.</p>
+			    		{% endif %}
+			    	{% endif %}
+			    </div>
 			</div>
 			<div id="container"></div>
 		</div>

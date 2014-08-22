@@ -3,10 +3,29 @@
 }
 
 #tools {
-    float:left;
+    position: relative;
     width: 500px;
-    height:100%;
-    padding-right: 10px;
+    height: 100%;
+    margin-right: 10px;
+}
+
+#title {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 70px;
+}
+
+#toolbox {
+    display: block;
+    position: absolute;
+    height: auto;
+    bottom: 0px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    margin-top: 70px;
 }
 
 #paper {
@@ -15,22 +34,29 @@
     z-index:10;
 }
 
-#buttons {
-    height: 8%;
-}
-
-#toolbox {
-    height: 92%;
-    float:center;
-    margin: 0px auto;
-}
-
 input {
     margin: 0;
 }
 
 .navigation_button.fixed_size {
     width: 180px;
+}
+
+#currentTool {
+    position: absolute;
+    top: 22px;
+    left: 380px;
+    width: 120px;
+    height: 33px;
+}
+
+.currentToolImage {
+    height: 22px;
+}
+
+.currentToolText {
+    font-size: 0.65em;
+    font-weight: bold;
 }
 
 /********************/
@@ -66,15 +92,15 @@ input {
 /*****************/
 
 #tabs {
-    height: 100%;
-    width: 25%;
+    width: 125px;
     float: left;
 }
 
-#tab_panes {
+#tab_panes_wrapper {
+    margin-left: 125px;
     height: 100%;
-    width: 75%;
-    float:left;
+    overflow: scroll;
+    background: #FFFFFF;
 }
 
 /*************/
@@ -148,6 +174,14 @@ input[type="radio"].character_radio {
 }
 
 /************/
+/* Generate */
+/************/
+
+#random_pane .table_cell.field_label {
+    width: 150px;
+}
+
+/************/
 /* Load tab */
 /************/
 
@@ -172,7 +206,7 @@ input[type="radio"].character_radio {
 /************/
 
 #levelNameInput {
-    max-width: 100px;
+    width: 90%;
 }
 
 /*************/

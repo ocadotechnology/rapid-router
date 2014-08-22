@@ -23,6 +23,8 @@
     var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
     var CHARACTER_NAME = "{{character.name}}";
     var CHARACTER_URL = "{{character.top_down}}";
+    var CHAR_WIDTH = {{character.width}};
+    var CHAR_HEIGHT = {{character.height}};
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}
@@ -175,13 +177,13 @@
       </label>
     </div>
 
-    <div class="tab">
+    <!--div class="tab">
       <input type="radio" name="tabs" id="big_code_mode_radio">
       <label for="big_code_mode_radio">
         <img src='/static/game/image/icons/big_code_mode.svg'>
         <span>Enlarge</span>
       </label>
-    </div>
+    </div-->
 
     <div class="tab">
       <input type="radio" name="tabs" id="mute_radio">
