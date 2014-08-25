@@ -79,7 +79,6 @@
       </tr>
       {% for student in studentData %}
       <tr>
-          <td> <img class="avatar" src="/{{student.0.user.avatar.url}}"> </td>
           <td> {{student.0.user.user.first_name}} </td>
           <td> {{student.1}} </td>
           <td> {{student.2}}</td>
@@ -87,7 +86,6 @@
             <td> {{student.3}} </td>
             <td> {{student.4}} </td>
           {% else %}
-           jwhejwh
           {% endif %}
         </tr>
       {% endfor %}

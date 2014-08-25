@@ -94,19 +94,29 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
 };
 
 ocargo.Game.prototype.sendAttempt = function(score) {
+
+    function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
     // Send out the submitted data.
     if (LEVEL_ID) {
+        var csrftoken = $.cookie('csrftoken');
         $.ajax({
             url : '/game/submit',
             type : 'POST',
-            contentType:"application/json; charset=utf-8",
+            contentType: 'application/json; charset=utf-8',
+            beforeSend: function(xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            },
             data : {
-                csrfmiddlewaretoken : $.cookie('csrftoken'),
                 level : LEVEL_ID,
                 score : score,
                 workspace : ocargo.blocklyControl.serialize()
             },
-            error : function(xhr,errmsg,err) {
+            error : function(xhr, errmsg, err) {
                 console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });

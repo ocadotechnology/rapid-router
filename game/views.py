@@ -274,7 +274,6 @@ def submit(request):
                                         student=request.user.userprofile.student)
             attempt.score = request.POST.get('score', 0)
             attempt.workspace = request.POST.get('workspace', '')
-
             attempt.save()
     return HttpResponse('')
 
@@ -544,7 +543,7 @@ def renderScoreboard(request, form, school):
     studentData = None
     levelID = form.data.get('levels', False)
     classID = form.data.get('classes', False)
-    thead = ['', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
+    thead = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
     if classID:
         cl = get_object_or_404(Class, id=classID)
         students = cl.students.all()
@@ -580,7 +579,7 @@ def renderScoreboard(request, form, school):
     elif levelID:
         studentData = handleAllClassesOneLevel(request, level)
     else:
-        thead = ['', 'Name', 'Total Score', 'Total Time']
+        thead = ['Name', 'Total Score', 'Total Time']
         levels = Level.objects.filter(default=1)
         for level in levels:
             thead.append(str(level))
