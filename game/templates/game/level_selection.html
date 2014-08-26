@@ -28,7 +28,7 @@
 			    <div>
 			        {% for level in episode.levels %}
 			        <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-			        <p><a href="{% url 'game.views.level' level.id %}">{{level.id}}: {{level.title.strip | safe}}</a> 
+			        <p><a href="{% url 'game.views.play_level' level.id %}">{{level.id}}: {{level.title.strip | safe}}</a> 
 			        {% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/20</span>{% endif %}</p>
 			        {% endfor %}
 			        
@@ -39,7 +39,7 @@
 			    <div>
 			    	{% if owned_levels %}
 			    		{% for level in owned_levels %}
-			    			<p><a href="{% url 'game.views.level' level.id %}">{{level.title}}</a>
+			    			<p><a href="{% url 'game.views.play_level' level.id %}">{{level.title}}</a>
 			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
 			    		{% endfor %}
 			    	{% else %}
@@ -50,7 +50,7 @@
 			    <div>
 			    	{% if shared_levels %}
 			    		{% for level in shared_levels %}
-			    			<p><a href="{% url 'game.views.level' level %}">{{level.title}} ({{level.owner|make_into_username}})</a>
+			    			<p><a href="{% url 'game.views.play_level' level.id %}">{{level.title}} ({{level.owner|make_into_username}})</a>
 			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
 			    		{% endfor %}
 			    	{% else %}

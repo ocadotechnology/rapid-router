@@ -378,9 +378,9 @@ ocargo.Game.prototype.setupTabs = function() {
         });
     }
 
+    
     function setupLoadTab() {
         var selectedWorkspace = null;
-
         tabs.load.setOnChange(function() {
             var tab = tabs.load;
             currentTabSelected.setPaneEnabled(false);
@@ -398,22 +398,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     return;
                 }
 
-                populateTable("loadWorkspaceTable", workspaces);
-
-                // Add click listeners to all rows
-                $('#loadWorkspaceTable td').on('click', function(event) {
-                    $('#loadWorkspaceTable td').css('background-color', '#FFFFFF');
-                    $(event.target).css('background-color', '#C0C0C0');
-                    selectedWorkspace = $(event.target).attr('value');
-                    $('#loadWorkspace').removeAttr('disabled');
-                    $('#deleteWorkspace').removeAttr('disabled');
-                });
-
-                
-                // But disable all the modal buttons as nothing is selected yet
-                selectedWorkspace = null;
-                $('#loadWorkspace').attr('disabled', 'disabled');
-                $('#deleteWorkspace').attr('disabled', 'disabled');
+                loadInWorkspaces(workspaces)
             });
         });
 
@@ -425,14 +410,46 @@ ocargo.Game.prototype.setupTabs = function() {
                         return;
                     }
 
-                    ocargo.blocklyControl.deserialize(workspace);
+                    ocargo.blocklyControl.deserialize(workspace.contents);
                     ocargo.blocklyControl.redrawBlockly();
                     $('#loadModal').foundation('reveal', 'close');
                 });
-            }
 
-            tabs.blockly.select();
+                tabs['blockly'].select();
+            }
         });
+
+        $('#deleteWorkspace').click(function() {
+            if (selectedWorkspace) {
+                ocargo.saving.deleteWorkspace(selectedWorkspace, function(err, workspaces) {
+                    if (err != null) {
+                        console.debug(err);
+                        return;
+                    }
+
+                    loadInWorkspaces(workspaces)
+                });
+            }
+        });
+
+        function loadInWorkspaces(workspaces) {
+            populateTable("loadWorkspaceTable", workspaces);
+
+            // Add click listeners to all rows
+            $('#loadWorkspaceTable td').on('click', function(event) {
+                $('#loadWorkspaceTable td').css('background-color', '#FFFFFF');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                $('#loadWorkspace').removeAttr('disabled');
+                $('#deleteWorkspace').removeAttr('disabled');
+            });
+
+            
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+            $('#loadWorkspace').attr('disabled', 'disabled');
+            $('#deleteWorkspace').attr('disabled', 'disabled');
+        }
     }
 
     function setupSaveTab() {
@@ -456,20 +473,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     return;
                 }
                 
-                populateTable("saveWorkspaceTable", workspaces);
-
-                // Add click listeners to all rows
-                $('#saveWorkspaceTable td').on('click', function(event) {
-                    $('#saveWorkspaceTable td').css('background-color', '#FFFFFF');
-                    $(event.target).css('background-color', '#C0C0C0');
-                    selectedWorkspace = $(event.target).attr('value');
-                    var workspaceName = $(event.target)[0].innerHTML;
-                    document.getElementById("workspaceNameInput").value = workspaceName;
-                });
-
-                // But disable all the modal buttons as nothing is selected yet
-                selectedWorkspace = null;
-                
+                loadInWorkspaces(workspaces);
             });
         });
 
@@ -491,15 +495,15 @@ ocargo.Game.prototype.setupTabs = function() {
                      }
                 }
 
-                ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err) {
-                    if (err !== null) {
+                ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err, workspaces) {
+                    if (err != null) {
                         console.debug(err);
                         return;
                     }
-                    $('#saveModal').foundation('reveal', 'close');
+
+                    loadInWorkspaces(workspaces);
                 });
             }
-            ocargo.game.tabs.blockly.select();
         });
 
         // If the user pressed the enter key in the textbox, should be the same as clicking the button
@@ -508,6 +512,22 @@ ocargo.Game.prototype.setupTabs = function() {
                 $('#saveWorkspace').trigger('click');
             }
         });
+
+        function loadInWorkspaces(workspaces) {
+            populateTable("saveWorkspaceTable", workspaces);
+
+            // Add click listeners to all rows
+            $('#saveWorkspaceTable td').on('click', function(event) {
+                $('#saveWorkspaceTable td').css('background-color', '#FFFFFF');
+                $(event.target).css('background-color', '#C0C0C0');
+                selectedWorkspace = $(event.target).attr('value');
+                var workspaceName = $(event.target)[0].innerHTML;
+                document.getElementById("workspaceNameInput").value = workspaceName;
+            });
+
+            // But disable all the modal buttons as nothing is selected yet
+            selectedWorkspace = null;
+        }
     }
 
     function setupPrintTab() {
@@ -565,6 +585,7 @@ ocargo.Game.prototype.setupTabs = function() {
             window.location.href = "/rapidrouter/";
         });
     }
+
 
     // Helper method for load and save tabs
     function populateTable (tableName, workspaces) {
