@@ -865,7 +865,7 @@ ocargo.LevelEditor = function() {
         for (var i = trafficLights.length-1; i >= 0; i--) {
             trafficLights[i].destroy();
         }
-        for(var i = decor.length-1; i >= 0; i--) {
+        for (var i = decor.length-1; i >= 0; i--) {
             decor[i].destroy();
         }
 
@@ -1476,19 +1476,19 @@ ocargo.LevelEditor = function() {
                 nodes.splice(nodes.indexOf(node), 1);
 
                 // Check if start or destination node        
-                if(isOriginCoordinate(coord)) {
+                if (isOriginCoordinate(coord)) {
                     markAsBackground(originNode.coordinate);
                     originNode = null;
                 }
-                if(isDestinationCoordinate(coord)) {
+                if (isDestinationCoordinate(coord)) {
                     markAsBackground(destinationNode.coordinate);
                     destinationNode = null;
                 }
 
                 //  Check if any traffic lights present
-                for(var i = trafficLights.length-1; i >= 0;  i--) {
+                for (var i = trafficLights.length-1; i >= 0;  i--) {
                     var trafficLight  =  trafficLights[i];
-                    if(node === trafficLight.sourceNode || node === trafficLight.controlledNode) {
+                    if (node === trafficLight.sourceNode || node === trafficLight.controlledNode) {
                         trafficLights.splice(i, 1);
                         trafficLight.destroy();
                     }
@@ -1872,7 +1872,7 @@ ocargo.LevelEditor = function() {
 
         this.valid = false;
 
-        if(data.sourceCoordinate && data.direction) {
+        if (data.sourceCoordinate && data.direction) {
             var sourceCoordinate = new ocargo.Coordinate(data.sourceCoordinate.x, data.sourceCoordinate.y);
             var controlledCoordinate = sourceCoordinate.getNextInDirection(data.direction);
 
@@ -1947,5 +1947,5 @@ ocargo.LevelEditor = function() {
 
 $(function() {
     new ocargo.LevelEditor();
-    ocargo.Drawing.startPopup("Welcome to the Level editor!", "Click Help for clues on getting started.");
+    ocargo.Drawing.startPopup(ocargo.messages.levelEditorTitle, ocargo.messages.levelEditorSubtitle);
 });
