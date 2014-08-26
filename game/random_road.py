@@ -75,9 +75,8 @@ def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traff
 def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
     
     def pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor):
-        
         for attempts in xrange(5):
-            origin = pick_origin_node(nodes, branchiness_factor)
+            origin = pick_origin_node(nodes, connections, branchiness_factor)
             possibles = []
 
             x = origin.x
@@ -92,9 +91,9 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
 
         return None, None
 
-    def pick_origin_node(nodes, branchiness_factor):
-        if random.random() < branchiness_factor:
-            return random.choice(nodes)
+    def pick_origin_node(nodes, connections, branchiness_factor):
+        if random.random() < branchiness_factor and len(connections[0]) > 0:
+            return random.choice(nodes[1:])
         else:
             return nodes[-1]
 
@@ -119,11 +118,12 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
         nodes_by_location = {(node.x,node.y):(index,node) for index, node in enumerate(nodes)}
 
         for node_index, node in enumerate(nodes):
-            for location in get_neighbouring_locations(node):
-                if location in nodes_by_location:
-                    adjacent_node_index, adjacent_node = nodes_by_location[location]
-                    if adjacent_node_index not in connections[node_index] and random.random() < loopiness_factor:
-                        connections = add_new_connections(connections, node_index, adjacent_node_index)
+            if node != nodes[0]:
+                for location in get_neighbouring_locations(node):
+                    if location in nodes_by_location and random.random() < loopiness_factor:
+                        adjacent_node_index, adjacent_node = nodes_by_location[location]
+                        if adjacent_node != nodes[0] and (adjacent_node_index not in connections[node_index]):
+                            connections = add_new_connections(connections, node_index, adjacent_node_index)
         return connections
 
     def add_new_connections(connections, node_1_index, node_2_index):
@@ -157,7 +157,6 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
 
     nodes = [Node(random.randrange(1, WIDTH-1), random.randrange(1, HEIGHT-1))]
     index_by_node = {nodes[0]: 0}
-
     connections = defaultdict(list)
 
     for _ in xrange(num_road_tiles):
@@ -233,5 +232,4 @@ def generate_traffic_lights(path):
                                 'redDuration': 2*(len(controlledNeighbours)-1)})
             counter += 1
 
-        print(trafficLights)
     return trafficLights
