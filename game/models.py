@@ -107,8 +107,8 @@ class Episode (models.Model):
 
 class Workspace (models.Model):
     name = models.CharField(max_length=200)
-    owner = models.ForeignKey(Student, related_name='workspaces', blank=True, null=True)
-    workspace = models.TextField(default="")
+    owner = models.ForeignKey(UserProfile, related_name='workspaces', blank=True, null=True)
+    contents = models.TextField(default="")
 
 
 class Attempt (models.Model):

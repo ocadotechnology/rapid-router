@@ -314,7 +314,6 @@ ocargo.LevelEditor = function() {
                 block.initSvg();
                 block.render();
 
-                console.log(type)
                 var svg = block.getSvgRoot();
                 var large = type === "controls_whileUntil" || 
                             type === "controls_repeat" ||
