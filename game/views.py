@@ -46,7 +46,7 @@ def play_level(request, levelID):
     :template:`game/game.html`
     """
     level = cached_level(levelID)
-    
+
     if not permissions.can_play_level(request.user, level):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
@@ -74,11 +74,11 @@ def play_level(request, levelID):
     background = getDecorElement('tile1', level.theme).url
     character = level.character
 
-    role =  'unknown'
+    role = 'unknown'
     if request.user.is_anonymous():
         role = 'anonymous'
     elif hasattr(request.user.userprofile, 'student'):
-        role =  'student'
+        role = 'student'
     else:
         role = 'teacher'
 
@@ -106,14 +106,15 @@ def play_level(request, levelID):
 
     return render(request, 'game/game.html', context_instance=context)
 
+
 def delete_level(request, levelID):
     success = False
     level = Level.objects.get(id=levelID)
-    if permissions.can_delete_level(request.user, level):        
+    if permissions.can_delete_level(request.user, level):
         level_management.delete_level(level)
         success = True
 
-    return HttpResponse(json.dumps({'success':success}), content_type='application/javascript')
+    return HttpResponse(json.dumps({'success': success}), content_type='application/javascript')
 
 
 def submit_attempt(request):
@@ -138,12 +139,14 @@ def load_list_of_workspaces(request):
 
     return HttpResponse(json.dumps(workspaces), content_type='application/json')
 
+
 def load_workspace(request, workspaceID):
     workspace = Workspace.objects.get(id=workspaceID)
     if permissions.can_load_workspace(request.user, workspace):
         return HttpResponse(json.dumps({'contents': workspace.contents}), content_type='application/json')
 
     return HttpResponse(json.dumps(''), content_type='application/json')
+
 
 def save_workspace(request):
     if permissions.can_create_workspace(request.user):
@@ -152,14 +155,15 @@ def save_workspace(request):
         workspace = Workspace(name=name, contents=contents, owner=request.user.userprofile)
         workspace.save()
 
-    return load_list_of_workspaces(request);
+    return load_list_of_workspaces(request)
+
 
 def delete_workspace(request, workspaceID):
     workspace = Workspace.objects.get(id=workspaceID)
     if permissions.can_delete_workspace(request.user, workspace):
         workspace.delete()
 
-    return load_list_of_workspaces(request);
+    return load_list_of_workspaces(request)
 
 
 ###################
@@ -252,19 +256,20 @@ def levels(request):
     })
     return render(request, 'game/level_selection.html', context_instance=context)
 
+
 def start_episode(request, episode):
     episode = cached_episode(episode)
-    return redirect("game.views.level", level=episode.first_level.id)
+    return redirect("game.views.play_level", level=episode.first_level.id)
+
 
 def random_level_for_episode(request, episodeID):
     """ Generates a new random level based on the episodeID
 
-    Redirects to :view:`game.views.level` with the id of the newly created :model:`game.Level`.
+    Redirects to :view:`game.views.play_level` with the id of the newly created :model:`game.Level`.
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return redirect("game.views.level", level=level.id)
-
+    return redirect("game.views.play_level", level=level.id)
 
 
 def logged_students(request):
@@ -378,10 +383,10 @@ def level_moderation(request):
 
             # check user has permission to look at this class!
             cl = get_object_or_404(Class, id=classID)
-            if not permissions.can_see_class(request.user,  cl):
-                return renderError(request, 
-                                    messages.noPermissionLevelModerationTitle(), 
-                                    messages.noPermissionLevelModerationClass())
+            if not permissions.can_see_class(request.user, cl):
+                return renderError(request,
+                                   messages.noPermissionLevelModerationTitle(),
+                                   messages.noPermissionLevelModerationClass())
 
             students = Student.objects.filter(class_field=cl)
             student_dict = {student.id: student.user.user.first_name for student in students}
@@ -397,8 +402,8 @@ def level_moderation(request):
             level_data = []
 
             for level in Level.objects.filter(owner=student.user):
-                users_shared_with = [user for user in level.shared_with.all() 
-                                        if permissions.can_share_level_with(user, student.user.user)]
+                users_shared_with = [user for user in level.shared_with.all()
+                                     if permissions.can_share_level_with(user, student.user.user)]
 
                 if len(users_shared_with) == 0:
                     shared_str = "-"
@@ -409,9 +414,9 @@ def level_moderation(request):
                             shared_str += user.first_name + ", "
                     shared_str = shared_str[:-2]
 
-                level_data.append({'id': level.id, 
-                                    'name': level.name,
-                                    'shared_with': shared_str})
+                level_data.append({'id': level.id,
+                                   'name': level.name,
+                                   'shared_with': shared_str})
 
     context = RequestContext(request, {
         'studentID': studentID,
@@ -670,26 +675,29 @@ def level_editor(request):
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
+
 def get_list_of_loadable_levels(user):
-    owned_levels, shared_levels =  level_management.get_list_of_loadable_levels(user)
+    owned_levels, shared_levels = level_management.get_list_of_loadable_levels(user)
 
     owned_data = []
     shared_data = []
     for level in owned_levels:
         owned_data.append({'name': level.name,
-                             'owner': app_tags.make_into_username(level.owner.user),
-                             'id': level.id})
+                           'owner': app_tags.make_into_username(level.owner.user),
+                           'id': level.id})
     for level in shared_levels:
         shared_data.append({'name': level.name,
-                             'owner': app_tags.make_into_username(level.owner.user),
-                             'id': level.id})
+                            'owner': app_tags.make_into_username(level.owner.user),
+                            'id': level.id})
 
-    return {'ownedLevels': owned_data, 'sharedLevels': shared_data};
+    return {'ownedLevels': owned_data, 'sharedLevels': shared_data}
+
 
 def get_loadable_levels_for_editor(request):
     response = get_list_of_loadable_levels(request.user)
     return HttpResponse(json.dumps(response), content_type='application/javascript')
     
+
 def load_level_for_editor(request, levelID):
     level = Level.objects.get(id=levelID)
 
@@ -711,7 +719,7 @@ def save_level_for_editor(request, levelID=None):
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
 
-            if hasattr(level.owner, 'student') and level.owner.student.class_field != None:
+            if hasattr(level.owner, 'student') and level.owner.student.class_field is not None:
                 level.save()
                 level.shared_with.add(level.owner.student.class_field.teacher.user.user)
 
@@ -758,7 +766,7 @@ def get_sharing_information_for_editor(request, levelID):
     role = 'anonymous'
         
     if permissions.can_share_level(request.user, level):
-        userprofile =  request.user.userprofile
+        userprofile = request.user.userprofile
         valid_recipients = {}
 
         if hasattr(userprofile, 'student'):
@@ -768,16 +776,16 @@ def get_sharing_information_for_editor(request, levelID):
             # First get all the student's classmates
             class_ = student.class_field
             classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
-            valid_recipients['classmates'] = [{'id': classmate.user.user.id, 
-                                                'name': classmate.user.user.first_name,
-                                                'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
-                                                 for classmate in classmates]
+            valid_recipients['classmates'] = [{'id': classmate.user.user.id,
+                                               'name': classmate.user.user.first_name,
+                                               'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
+                                              for classmate in classmates]
 
             # Then add their teacher as well
             teacher = class_.teacher
             valid_recipients['teacher'] = {'id': teacher.user.user.id,
-                                        'name': teacher.title + " " + teacher.user.user.last_name,
-                                        'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
+                                           'name': teacher.title + " " + teacher.user.user.last_name,
+                                           'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
 
         elif hasattr(userprofile, 'teacher'):
             teacher = userprofile.teacher
@@ -790,17 +798,17 @@ def get_sharing_information_for_editor(request, levelID):
                 students = Student.objects.filter(class_field=class_)
                 valid_recipients['classes'].append({'name': class_.name,
                                                     'id': class_.id,
-                                                    'students': [{'id': student.user.user.id, 
-                                                                'name': student.user.user.first_name,
-                                                                'shared': level.shared_with.filter(id=student.user.user.id).exists()}
-                                                                for student in students]})
+                                                    'students': [{'id': student.user.user.id,
+                                                                  'name': student.user.user.first_name,
+                                                                  'shared': level.shared_with.filter(id=student.user.user.id).exists()}
+                                                                 for student in students]})
 
             # Then add all the teachers at the same organisation
             fellow_teachers = Teacher.objects.filter(school=teacher.school)
             valid_recipients['teachers'] = [{'id': fellow_teacher.user.user.id,
                                              'name': fellow_teacher.user.user.first_name + " " + fellow_teacher.user.user.last_name,
                                              'shared': level.shared_with.filter(id=fellow_teacher.user.user.id).exists()}
-                                             for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
+                                            for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
 
     data = {'validRecipients': valid_recipients, 'role': role}
 
@@ -823,6 +831,7 @@ def share_level_for_editor(request, levelID):
                 level_management.unshare_level(level, recipient.userprofile.user)
 
     return get_sharing_information_for_editor(request, levelID)
+
 
 ##################
 # Error handling #
@@ -849,6 +858,7 @@ def renderError(request, title, message):
     })
     return render(request, 'game/error.html', context_instance=context)
 
+
 ##################
 # Helper methods #
 ##################
@@ -860,6 +870,7 @@ def getDecorElement(name, theme):
     except ObjectDoesNotExist:
         return Decor.objects.filter(name=name)[0]
 
+
 def parseDecor(theme, levelDecors):
     """ Helper method parsing decor into a format 'sendable' to javascript. """
     decorData = []
@@ -869,6 +880,7 @@ def parseDecor(theme, levelDecors):
             {"coordinate": {"x": levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
              "width": decor.width, "height": decor.height}))
     return decorData
+
 
 def renderAvatarChoice(request):
     """ Helper method for settings view. Generates and processes the avatar changing forms.
