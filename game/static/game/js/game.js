@@ -58,7 +58,8 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
 
     ocargo.blocklyControl.resetIncorrectBlock();
 
-    // clear animations
+    // clear animations and sound
+    ocargo.sound.stop_engine();
     ocargo.animation.resetAnimation();
 
     // Starting sound
@@ -353,6 +354,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupStopTab() {
         tabs['stop'].setOnChange(function() {
+            ocargo.sound.stop_engine();
             ocargo.animation.resetAnimation();
             ocargo.game.onStopControls();
 
@@ -549,15 +551,15 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupMuteTab() {
         tabs['mute'].setOnChange(function() {
-            ocargo.sound.mute();
+            if ($.cookie('muted') === 'true') {
+                ocargo.sound.unmute();
+            }
+            else {
+                ocargo.sound.mute();
+            }
+
             currentTabSelected.select();
         });
-        
-        /**
-        if ($.cookie("muted") === "true") {
-            // TODO
-            ocargo.sound.mute();
-        }**/
     }
 
     function setupQuitTab() {

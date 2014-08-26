@@ -314,11 +314,14 @@ ocargo.LevelEditor = function() {
                 block.initSvg();
                 block.render();
 
+                console.log(type)
                 var svg = block.getSvgRoot();
                 var large = type === "controls_whileUntil" || 
                             type === "controls_repeat" ||
                             type === "controls_if" ||
-                            type === "declare_proc";
+                            type === "declare_proc" ||
+                            type === "controls_repeat_while" ||
+                            type === "controls_repeat_until";
 
                 var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
                 content += '<g transform="translate(10,0)"';
