@@ -4,6 +4,9 @@ var ocargo = ocargo || {};
 
 // Object containing helper js objects (buttons etc).
 ocargo.jsElements = {
+    image: function(url, width) {
+        return "<img src='" + url + "'width='" + width + "'>";
+    },
     redirectButton: function(location, label) {
         return '<button onclick="window.location.href=' + location + '">' + label + '</button>';
     },
@@ -20,16 +23,16 @@ ocargo.messages = {
     nextEpisode: function(episode) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
             "challenge? <br><br>" + 
-            ocargo.jsElements.redirectButton("'/game/episode/" + episode + "'", 'Next episode') + " " +
-            ocargo.jsElements.redirectButton("'/game/'", "Home");
+            ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "'", 'Next episode') + " " +
+            ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
     },
 
     loggedOutWarning: "You are not logged in. Your progress won't be saved.",
 
     lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own " +
         "challenges. <br><br>" +
-        ocargo.jsElements.redirectButton("'/game/level_editor'", "Create your own map!") + " " +
-        ocargo.jsElements.redirectButton("'/game/'", "Home"),
+        ocargo.jsElements.redirectButton("'/rapidrouter/level_editor'", "Create your own map!") + " " +
+        ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home"),
 
     tooManyBlocks: "Whoops! You used too many blocks.",
     ohNo: "Oh no!",
@@ -56,6 +59,10 @@ ocargo.messages = {
     },
 
     // Level editor.
+    levelEditorTitle: "Welcome to the Level editor! ", 
+    levelEditorSubtitle: "Click  " +
+        ocargo.jsElements.image('/static/game/image/icons/help.svg', 20) +
+        "Help for clues on getting started. ",
     noStartOrEndSubtitle: "You forgot to mark the start and end points.",
     noStartOrEnd: "Click on Mark start or Mark end then select the square where you want the " +
         "road to start or end.",
@@ -70,15 +77,15 @@ ocargo.messages = {
         "road to start from. Then, without letting go of the mouse button, drag to the square " +
         "you'd like the road to end on. <br><br> Do this as many times as you like to add new " +
         "sections of road.",
-    levelEditorHelpText: "In Map menu, click Mark start and select a square for your road to start from. Make " +
-        "sure you use Mark end to select a final destination. <br><br> To remove road, click the " +
-        "Delete road button and select a section to get rid of. <br><br> Select Scenery and " +
-        "choose trees, bushes and more to place around your road. These will show in the top " +
-        "left corner - drag them into place. <br><br> Choose a character to play with. <br><br>" +
-        "Select which blocks you want to use to create a route. <br><br> When you're ready click " +
-        "Play. <br><br> You can also save your road or share it with a friend. <br><br> Don't forget you can set a fuel limit for your level! ", /////////
-    levelEditorTitle: "Welcome to the Level editor!  <br><br> Click Help for clues on getting " +
-        "started.",
+    levelEditorHelpText: "In <b>Map</b> menu, click <b>Mark start</b> and select a square for " +
+        "your road to start from. Make sure you use <b>Mark end</b> to select a final " +
+        "destination. <br><br> To remove road, click the <b>Delete road</b> button and select a " +
+        "section to get rid of. <br><br> Select <b>Scenery</b> and choose trees, bushes and more " +
+        "to place around your road. These will show in the top left corner - drag them into " +
+        "place. <br><br> Choose a character to play with from the <b>Character</b> menu. <br><br>" +
+        "Select which blocks you want to use to create a route from the <b>Blocks</b> menu. " +
+        "<br><br> When you're ready click <b>Play</b>. <br><br> You can also save your road or " +
+        "share it with a friend. <br><br> Don't forget you can set a fuel limit for your level! ", 
     notLoggedIn: "Unfortunately you need to be logged in to share levels.",
     internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",

@@ -2,55 +2,80 @@ var ocargo = ocargo || {};
 
 ocargo.sound = {};
 
-ocargo.sound.soundNodes = [];
+ocargo.sound.allSounds = [];
 
-$(function() {
-    ocargo.sound.soundNodes.push(document.getElementById('startingSound'));
-    ocargo.sound.soundNodes.push(document.getElementById('engineSound'));
-    ocargo.sound.soundNodes.push(document.getElementById('deliverySound'));
-    ocargo.sound.soundNodes.push(document.getElementById('winSound'));
-    ocargo.sound.soundNodes.push(document.getElementById('failureSound'));
-    ocargo.sound.soundNodes.push(document.getElementById('crashSound'));
-    ocargo.sound.soundNodes.push(document.getElementById('tensionSound'));
-    
-    document.getElementById('engineSound').loop = true;
+ocargo.sound.startingSound = new Howl({
+    urls: ['/static/game/sound/starting.mp3']
 });
 
+ocargo.sound.engineSound = new Howl({
+    urls: ['/static/game/sound/moving.wav'],
+    loop: true
+});
+
+ocargo.sound.deliverySound = new Howl({
+    urls: ['/static/game/sound/delivery.mp3']
+});
+
+ocargo.sound.winSound = new Howl({
+    urls: ['/static/game/sound/win.mp3']
+});
+
+ocargo.sound.failureSound = new Howl({
+    urls: ['/static/game/sound/failure.mp3']
+});
+
+ocargo.sound.crashSound = new Howl({
+    urls: ['/static/game/sound/crash.mp3']
+});
+
+ocargo.sound.tensionSound = new Howl({
+    urls: ['/static/game/sound/tension.mp3']
+});
+
+ocargo.sound.allSounds.push(ocargo.sound.startingSound);
+ocargo.sound.allSounds.push(ocargo.sound.engineSound);
+ocargo.sound.allSounds.push(ocargo.sound.deliverySound);
+ocargo.sound.allSounds.push(ocargo.sound.winSound);
+ocargo.sound.allSounds.push(ocargo.sound.failureSound);
+ocargo.sound.allSounds.push(ocargo.sound.crashSound);
+ocargo.sound.allSounds.push(ocargo.sound.tensionSound);
+
 ocargo.sound.starting = function() {
-    document.getElementById('startingSound').cloneNode(true).play();
+    ocargo.sound.startingSound.play();
 };
 
 ocargo.sound.start_engine = function() {
-    document.getElementById('engineSound').play();
+    ocargo.sound.engineSound.play();
 };
 
 ocargo.sound.stop_engine = function() {
-    document.getElementById('engineSound').pause();
+    ocargo.sound.engineSound.pause();
 };
 
 ocargo.sound.delivery = function() {
-    document.getElementById('deliverySound').cloneNode(true).play();
+    ocargo.sound.deliverySound.play();
 };
 
 ocargo.sound.win = function() {
-    document.getElementById('winSound').cloneNode(true).play();
+    ocargo.sound.winSound.play();
 };
 
 ocargo.sound.failure = function() {
-    document.getElementById('failureSound').cloneNode(true).play();
+    ocargo.sound.failureSound.play();
 };
 
 ocargo.sound.crash = function() {
-    document.getElementById('crashSound').cloneNode(true).play();
+    ocargo.sound.crashSound.play();
 };
 
 ocargo.sound.tension = function() {
-    document.getElementById('tensionSound').cloneNode(true).play();
+    ocargo.sound.tensionSound.play();
 };
 
 ocargo.sound.setAllVolumes = function(volume) {
-    for (var i in ocargo.sound.soundNodes) {
-        ocargo.sound.soundNodes[i].volume = volume;
+    for (var i in ocargo.sound.allSounds) {
+        ocargo.sound.allSounds[i].volume(volume);
     }
 };
 

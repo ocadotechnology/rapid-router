@@ -375,7 +375,7 @@ def level_moderation(request):
 
             if not classID or not studentID:
                 raise Http404
-            
+
             # check user has permission to look at this class!
             cl = get_object_or_404(Class, id=classID)
             if not permissions.can_see_class(request.user,  cl):
@@ -389,9 +389,9 @@ def level_moderation(request):
             # check student is in class
             student = get_object_or_404(Student, id=studentID)
             if student.class_field != cl:
-                return renderError(request, 
-                                    messages.noPermissionLevelModerationTitle(), 
-                                    messages.noPermissionLevelModerationStudent())
+                return renderError(request,
+                                   messages.noPermissionLevelModerationTitle(),
+                                   messages.noPermissionLevelModerationStudent())
 
             table_headers = ['Level name', 'Shared with', 'Play', 'Delete']
             level_data = []
@@ -422,12 +422,14 @@ def level_moderation(request):
     })
     return render(request, 'game/level_moderation.html', context_instance=context)
 
+
 def get_students_for_level_moderation(request, class_id):
     class_ = Class.objects.get(id=class_id)
     students = Student.objects.filter(class_field=class_)
     student_dict = {student.id: student.user.user.first_name for student in students}
-    
+
     return HttpResponse(json.dumps(student_dict), content_type="application/javascript")
+
 
 ##############
 # Scoreboard #
@@ -485,6 +487,7 @@ def scoreboard(request):
         'thead': thead,
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
+
 
 def renderScoreboard(request, form, school):
     """ Helper method rendering the scoreboard.
@@ -645,6 +648,7 @@ def handleAllClassesAllLevels(request, levels):
 # Level editor #
 ################
 
+
 def level_editor(request):
     """ Renders the level editor page.
 
@@ -695,6 +699,7 @@ def load_level_for_editor(request, levelID):
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
+
 def save_level_for_editor(request, levelID=None):
     """ Processes a request on creation of the map in the level editor """
 
@@ -728,7 +733,9 @@ def save_level_for_editor(request, levelID=None):
         response['levelID'] = level.id
     else:
         response = ''
+
     return HttpResponse(json.dumps(response), content_type='application/javascript')
+
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
@@ -745,7 +752,7 @@ def generate_random_map_for_editor(request):
 
 
 def get_sharing_information_for_editor(request, levelID):
-    """ Returns a information about who the level can be and is shared with """ 
+    """ Returns a information about who the level can be and is shared with """
     level = Level.objects.get(id=levelID)
     valid_recipients = []
     role = 'anonymous'

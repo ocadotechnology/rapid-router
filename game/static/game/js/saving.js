@@ -14,7 +14,7 @@ function csrfSafeMethod(method) {
 ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 	if (USER_ROLE === 'teacher' ||  USER_ROLE === 'student') {
 		$.ajax({
-	        url: '/game/workspace/load_list',
+	        url: '/rapidrouter/workspace/load_list',
 	        type: 'GET',
 	        dataType: 'json',
 	        success: function(json) {
@@ -50,7 +50,7 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
 	if (USER_ROLE === 'teacher' ||  USER_ROLE === 'student') {
 		$.ajax({
-            url: '/game/workspace/load/' + id,
+            url: '/rapidrouter/workspace/load/' + id,
             type: 'GET',
             dataType: 'json',
             success: function(json) {
@@ -72,7 +72,7 @@ ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
     csrftoken = $.cookie('csrftoken');
 	if (USER_ROLE === 'teacher' ||  USER_ROLE === 'student') {
 		$.ajax({
-            url: '/game/workspace/delete/' + id,
+            url: '/rapidrouter/workspace/delete/' + id,
             type: 'POST',
             dataType: 'json',
             beforeSend: function(xhr, settings) {
@@ -99,7 +99,7 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
     csrftoken = $.cookie('csrftoken');
 	if (USER_ROLE === 'teacher' ||  USER_ROLE === 'student') {
 		$.ajax({
-            url: '/game/workspace/save',
+            url: '/rapidrouter/workspace/save',
             type: 'POST',
             dataType: 'json',
             data: {
@@ -140,7 +140,7 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
     csrftoken = $.cookie('csrftoken');
 	$.ajax({
-        url: '/game/level_editor/level/get_all',
+        url: '/rapidrouter/level_editor/level/get_all',
         type: 'GET',
         dataType: 'json',
         beforeSend: function(xhr, settings) {
@@ -160,7 +160,7 @@ ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
 ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
     csrftoken = $.cookie('csrftoken');
 	$.ajax({
-        url: '/game/level_editor/level/get/' + id,
+        url: '/rapidrouter/level_editor/level/get/' + id,
         type: 'GET',
         dataType: 'json',
         beforeSend: function(xhr, settings) {
@@ -180,7 +180,7 @@ ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
 ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: "/game/level_editor/level/random",
+        url: "/rapidrouter/level_editor/level/random",
         type: "GET",
         dataType: 'json',
         data: data,
@@ -196,12 +196,12 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
-}
+};
 
  ocargo.Saving.prototype.deleteLevel = function(id, callback) {
     csrftoken = $.cookie('csrftoken');
 	$.ajax({
-        url: '/game/level_editor/level/delete/' + id,
+        url: '/rapidrouter/level_editor/level/delete/' + id,
         type: 'POST',
         dataType: 'json',
         data: {csrfmiddlewaretoken : $.cookie('csrftoken')},
@@ -222,7 +222,7 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
 ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
     csrftoken = $.cookie('csrftoken');
 	$.ajax({
-        url: '/game/level_editor/level/save' + (id ? '/' + id : ''),
+        url: '/rapidrouter/level_editor/level/save' + (id ? '/' + id : ''),
         type: 'POST',
         dataType: 'json',
         data: level,
@@ -238,13 +238,13 @@ ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
-    delete level.csrfmiddlewaretoken
+    delete level.csrfmiddlewaretoken;
 };
 
 ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/game/level_editor/level/get_sharing_information/' + levelID,
+        url: '/rapidrouter/level_editor/level/get_sharing_information/' + levelID,
         type: 'GET',
         dataType: 'json',
         beforeSend: function(xhr, settings) {
@@ -264,7 +264,7 @@ ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {
 ocargo.Saving.prototype.shareLevel = function(levelID, recipientData, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/game/level_editor/level/share/' + levelID,
+        url: '/rapidrouter/level_editor/level/share/' + levelID,
         type: 'POST',
         dataType: 'json',
         data: recipientData,
@@ -280,5 +280,5 @@ ocargo.Saving.prototype.shareLevel = function(levelID, recipientData, callback) 
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
-    delete recipientData.csrfmiddlewaretoken
+    delete recipientData.csrfmiddlewaretoken;
 };

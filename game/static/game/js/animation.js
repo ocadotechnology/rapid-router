@@ -206,8 +206,8 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					var levelMsg = "";
 					if (NEXT_LEVEL) {
 				        levelMsg = '<br><br>' +
-				        	ocargo.jsElements.redirectButton("'/game/" + NEXT_LEVEL + "'",
-				        								   'Next Level');
+				        	ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "'",
+				        								     'Next Level');
 				    } 
 				    else {
 				        if (NEXT_EPISODE) {

@@ -112,8 +112,9 @@ input {
     text-align: center;
 }
 
-#pond {
-    margin-t
+#delete_caption {
+    font-size: 0.79rem;
+    visibility: hidden;
 }
 
 .decor_button,
