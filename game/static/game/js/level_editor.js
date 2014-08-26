@@ -862,10 +862,10 @@ ocargo.LevelEditor = function() {
     }
 
     function clear() {
-        for (var i = trafficLights.length-1; i >= 0; i++) {
+        for (var i = trafficLights.length-1; i >= 0; i--) {
             trafficLights[i].destroy();
         }
-        for(var i = decor.length-1; i >= 0; i++) {
+        for(var i = decor.length-1; i >= 0; i--) {
             decor[i].destroy();
         }
 
