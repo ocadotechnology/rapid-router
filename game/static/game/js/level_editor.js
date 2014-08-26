@@ -66,7 +66,7 @@ ocargo.LevelEditor = function() {
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
 
-    // Initiaalise the grid
+    // Initialise the grid
     initialiseGrid();
 
     // Setup the toolbox
@@ -78,7 +78,7 @@ ocargo.LevelEditor = function() {
     // Draw everything
     drawAll();
 
-    // set the default theme
+    // Set the default theme
     setTheme(THEMES.grass);
 
 
@@ -862,10 +862,10 @@ ocargo.LevelEditor = function() {
     }
 
     function clear() {
-        for (var i = 0; i < trafficLights.length; i++) {
+        for (var i = trafficLights.length-1; i >= 0; i++) {
             trafficLights[i].destroy();
         }
-        for(var i = 0; i < decor.length; i++) {
+        for(var i = decor.length-1; i >= 0; i++) {
             decor[i].destroy();
         }
 
