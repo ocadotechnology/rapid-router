@@ -11,10 +11,15 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
+        migrations.RemoveField(
             model_name='workspace',
-            old_name='workspace',
-            new_name='contents',
+            name='workspace',
+        ),
+        migrations.AddField(
+            model_name='workspace',
+            name='contents',
+            field=models.TextField(default=b''),
+            preserve_default=True,
         ),
         migrations.AlterField(
             model_name='level',
