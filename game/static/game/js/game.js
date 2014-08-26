@@ -562,7 +562,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupQuitTab() {
         tabs.quit.setOnChange(function() {
-            window.location.href = "/game/";
+            window.location.href = "/rapidrouter/";
         });
     }
 
