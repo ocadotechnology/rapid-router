@@ -23,16 +23,16 @@ ocargo.messages = {
     nextEpisode: function(episode) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
             "challenge? <br><br>" + 
-            ocargo.jsElements.redirectButton("'/game/episode/" + episode + "'", 'Next episode') + " " +
-            ocargo.jsElements.redirectButton("'/game/'", "Home");
+            ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "'", 'Next episode') + " " +
+            ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
     },
 
     loggedOutWarning: "You are not logged in. Your progress won't be saved.",
 
     lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own " +
         "challenges. <br><br>" +
-        ocargo.jsElements.redirectButton("'/game/level_editor'", "Create your own map!") + " " +
-        ocargo.jsElements.redirectButton("'/game/'", "Home"),
+        ocargo.jsElements.redirectButton("'/rapidrouter/level_editor'", "Create your own map!") + " " +
+        ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home"),
 
     tooManyBlocks: "Whoops! You used too many blocks.",
     ohNo: "Oh no!",

@@ -159,7 +159,7 @@ ocargo.LevelEditor = function() {
         function setupPlayTab() {
             tabs.play.setOnChange(function() {
                 if (isLevelSaved()) {
-                    window.location.href = "/game/" + savedLevelID;
+                    window.location.href = "/rapidrouter/" + savedLevelID;
                 } else {
                     currentTabSelected.select();
                 }
@@ -772,7 +772,7 @@ ocargo.LevelEditor = function() {
 
         function setupQuitTab() {
             tabs.quit.setOnChange(function() {
-                window.location.href = "/game/";
+                window.location.href = "/rapidrouter/";
             });
         }
 

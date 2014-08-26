@@ -95,17 +95,16 @@ def levels(request):
                 "id": level.id,
                 "title": level.name,
                 "score": get_attempt_score(level)})
-        
+
         explicitly_shared_levels = Level.objects.filter(shared_with__id=request.user.id)
-        validly_shared_levels = [level for level in explicitly_shared_levels 
-                            if is_valid_recipient(level.owner, request.user.userprofile)]
+        validly_shared_levels = [level for level in explicitly_shared_levels
+                                 if is_valid_recipient(level.owner, request.user.userprofile)]
 
         if hasattr(request.user.userprofile, 'teacher'):
             classes_taught = Class.objects.filter(teacher=request.user.userprofile)
             students_taught = Student.objects.filter(class_field__in=classes_taught)
             for student in students_taught:
                 validly_shared_levels.extend(Level.objects.filter(owner=student.user))
-
 
         for level in validly_shared_levels:
             shared_levels.append({
@@ -277,6 +276,7 @@ def submit(request):
             attempt.save()
     return HttpResponse('')
 
+
 def renderAvatarChoice(request):
     """ Helper method for settings view. Generates and processes the avatar changing forms.
     """
@@ -426,13 +426,13 @@ def level_moderation(request):
 
             if not classID or not studentID:
                 raise Http404
-            
+
             # check user has permission to look at this class!
             cl = get_object_or_404(Class, id=classID)
             if cl.teacher != teacher:
-                return renderError(request, 
-                                    messages.noPermissionLevelModerationTitle(), 
-                                    messages.noPermissionLevelModerationClass())
+                return renderError(request,
+                                   messages.noPermissionLevelModerationTitle(),
+                                   messages.noPermissionLevelModerationClass())
 
             students = Student.objects.filter(class_field=cl)
             student_dict = {student.id: student.user.user.first_name for student in students}
@@ -440,16 +440,16 @@ def level_moderation(request):
             # check student is in class
             student = get_object_or_404(Student, id=studentID)
             if student.class_field != cl:
-                return renderError(request, 
-                                    messages.noPermissionLevelModerationTitle(), 
-                                    messages.noPermissionLevelModerationStudent())
+                return renderError(request,
+                                   messages.noPermissionLevelModerationTitle(),
+                                   messages.noPermissionLevelModerationStudent())
 
             table_headers = ['Level name', 'Shared with', 'Play', 'Delete']
             level_data = []
             for level in Level.objects.filter(owner=student.user):
 
-                users_shared_with = [user for user in level.shared_with.all() 
-                                        if is_valid_recipient(user.userprofile, student.user)]
+                users_shared_with = [user for user in level.shared_with.all()
+                                     if is_valid_recipient(user.userprofile, student.user)]
 
                 if len(users_shared_with) == 0:
                     shared_str = "-"
@@ -460,9 +460,9 @@ def level_moderation(request):
                             shared_str += user.first_name + ", "
                     shared_str = shared_str[:-2]
 
-                level_data.append({'id': level.id, 
-                            'name': level.name,
-                            'shared_with': shared_str})
+                level_data.append({'id': level.id,
+                                   'name': level.name,
+                                   'shared_with': shared_str})
 
     context = RequestContext(request, {
         'studentID': studentID,
@@ -473,12 +473,14 @@ def level_moderation(request):
     })
     return render(request, 'game/level_moderation.html', context_instance=context)
 
+
 def get_students_for_level_moderation(request, class_id):
     class_ = Class.objects.get(id=class_id)
     students = Student.objects.filter(class_field=class_)
     student_dict = {student.id: student.user.user.first_name for student in students}
-    
+
     return HttpResponse(json.dumps(student_dict), content_type="application/javascript")
+
 
 ##############
 # Scoreboard #
@@ -536,6 +538,7 @@ def scoreboard(request):
         'thead': thead,
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
+
 
 def renderScoreboard(request, form, school):
     """ Helper method rendering the scoreboard.
@@ -691,6 +694,7 @@ def handleAllClassesAllLevels(request, levels):
             studentData.append([student, 0.0, [], []])
     return createRows(studentData, levels)
 
+
 ##################
 # Level deletion #
 ##################
@@ -710,11 +714,12 @@ def delete_level(request, levelID):
                 level.delete()
                 success = True
 
-    return HttpResponse(json.dumps({'success':success}), content_type='application/javascript')
+    return HttpResponse(json.dumps({'success': success}), content_type='application/javascript')
 
 ################
 # Level editor #
 ################
+
 
 def level_editor(request):
     """ Renders the level editor page.
@@ -737,10 +742,11 @@ def level_editor(request):
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
+
 def get_list_of_levels_for_editor(request):
-    response = compile_list_of_levels_for_editor(request);
+    response = compile_list_of_levels_for_editor(request)
     return HttpResponse(json.dumps(response), content_type='application/javascript')
-    
+
 
 def get_level_for_editor(request, levelID):
 
@@ -753,6 +759,7 @@ def get_level_for_editor(request, levelID):
                         'level': model_to_dict(level)}
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
+
 
 def save_level_for_editor(request, levelID=None):
     """ Processes a request on creation of the map in the level editor """
@@ -801,10 +808,11 @@ def save_level_for_editor(request, levelID=None):
     level.blocks = Block.objects.filter(type__in=blockTypes)
     level.save()
 
-    response = compile_list_of_levels_for_editor(request);
-    response['levelID'] = level.id;
+    response = compile_list_of_levels_for_editor(request)
+    response['levelID'] = level.id
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
+
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
@@ -821,7 +829,7 @@ def generate_random_map_for_editor(request):
 
 
 def get_sharing_information_for_editor(request, levelID):
-    """ Returns a information about who the level can be and is shared with """ 
+    """ Returns a information about who the level can be and is shared with """
     level = Level.objects.get(id=levelID)
 
     valid_recipients = []
@@ -829,13 +837,13 @@ def get_sharing_information_for_editor(request, levelID):
 
     if not request.user.is_anonymous():
         profile = request.user.userprofile
-        
+
         if level.owner == profile:
             valid_recipients = get_all_valid_recipients(profile, level)
 
-            if hasattr(profile,'student'):
+            if hasattr(profile, 'student'):
                 role = 'student'
-            if hasattr(profile,'teacher'):
+            if hasattr(profile, 'teacher'):
                 role = 'teacher'
 
     data = {'validRecipients': valid_recipients, 'role': role}
@@ -859,8 +867,8 @@ def share_level_for_editor(request, levelID):
                     level.shared_with.add(recipient.userprofile.user)
                 elif action == 'unshare':
                     level.shared_with.remove(recipient.userprofile.user)
-                        
-    return get_sharing_information_for_editor(request, levelID);
+
+    return get_sharing_information_for_editor(request, levelID)
 
 
 def compile_list_of_levels_for_editor(request):
@@ -871,8 +879,8 @@ def compile_list_of_levels_for_editor(request):
     else:
         ownedLevels = Level.objects.filter(owner=request.user.userprofile.id)
         explicitly_shared_levels = Level.objects.filter(shared_with__id=request.user.id)
-        validly_shared_levels = [level for level in explicitly_shared_levels 
-                                if is_valid_recipient(level.owner, request.user.userprofile)]
+        validly_shared_levels = [level for level in explicitly_shared_levels
+                                 if is_valid_recipient(level.owner, request.user.userprofile)]
 
         if hasattr(request.user.userprofile, 'teacher'):
             classes_taught = Class.objects.filter(teacher=request.user.userprofile)
@@ -880,12 +888,13 @@ def compile_list_of_levels_for_editor(request):
             for student in students_taught:
                 validly_shared_levels.extend(Level.objects.filter(owner=student.user))
 
-    owned = [{'name': level.name, 'owner': app_tags.make_into_username(level.owner.user), 'id': level.id}
-             for level in ownedLevels]
-    shared = [{'name': level.name, 'owner': app_tags.make_into_username(level.owner.user), 'id': level.id}
-              for level in validly_shared_levels]
+    owned = [{'name': level.name, 'owner': app_tags.make_into_username(level.owner.user),
+              'id': level.id} for level in ownedLevels]
+    shared = [{'name': level.name, 'owner': app_tags.make_into_username(level.owner.user),
+               'id': level.id} for level in validly_shared_levels]
 
     return {'ownedLevels': owned, 'sharedLevels': shared}
+
 
 #######################
 # Sharing permissions #
@@ -900,16 +909,16 @@ def get_all_valid_recipients(userprofile, level):
         # First get all the student's classmates
         class_ = student.class_field
         classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
-        valid_recipients['classmates'] = [{'id': classmate.user.user.id, 
-                                            'name': classmate.user.user.first_name,
-                                            'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
-                                             for classmate in classmates]
+        valid_recipients['classmates'] = [{'id': classmate.user.user.id,
+                                           'name': classmate.user.user.first_name,
+                                           'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
+                                          for classmate in classmates]
 
         # Then add their teacher as well
         teacher = class_.teacher
         valid_recipients['teacher'] = {'id': teacher.user.user.id,
-                                    'name': teacher.title + " " + teacher.user.user.last_name,
-                                    'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
+                                       'name': teacher.title + " " + teacher.user.user.last_name,
+                                       'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
 
     elif hasattr(userprofile, 'teacher'):
         teacher = userprofile.teacher
@@ -921,19 +930,20 @@ def get_all_valid_recipients(userprofile, level):
             students = Student.objects.filter(class_field=class_)
             valid_recipients['classes'].append({'name': class_.name,
                                                 'id': class_.id,
-                                                'students': [{'id': student.user.user.id, 
-                                                            'name': student.user.user.first_name,
-                                                            'shared': level.shared_with.filter(id=student.user.user.id).exists()}
-                                                            for student in students]});
+                                                'students': [{'id': student.user.user.id,
+                                                              'name': student.user.user.first_name,
+                                                              'shared': level.shared_with.filter(id=student.user.user.id).exists()}
+                                                             for student in students]})
 
         # Then add all the teachers at the same organisation
         fellow_teachers = Teacher.objects.filter(school=teacher.school)
         valid_recipients['teachers'] = [{'id': teacher.user.user.id,
                                          'name': teacher.user.user.first_name + " " + teacher.user.user.last_name,
                                          'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
-                                         for teacher in fellow_teachers]
+                                        for teacher in fellow_teachers]
 
-    return valid_recipients;
+    return valid_recipients
+
 
 def is_valid_recipient(recipient_profile, sharer_profile):
     if hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'student'):
@@ -949,7 +959,7 @@ def is_valid_recipient(recipient_profile, sharer_profile):
         # Are they in the same organisation?
         return recipient_profile.teacher.school == sharer_profile.teacher.school
     else:
-        return False;
+        return False
 
 
 ##################
