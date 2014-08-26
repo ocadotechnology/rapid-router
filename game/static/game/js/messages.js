@@ -82,7 +82,7 @@ ocargo.messages = {
         "destination. <br><br> To remove road, click the <b>Delete road</b> button and select a " +
         "section to get rid of. <br><br> Select <b>Scenery</b> and choose trees, bushes and more " +
         "to place around your road. These will show in the top left corner - drag them into " +
-        "place. <br><br> Choose a haracter to play with from the <b>Character</b> menu. <br><br>" +
+        "place. <br><br> Choose a character to play with from the <b>Character</b> menu. <br><br>" +
         "Select which blocks you want to use to create a route from the <b>Blocks</b> menu. " +
         "<br><br> When you're ready click <b>Play</b>. <br><br> You can also save your road or " +
         "share it with a friend. <br><br> Don't forget you can set a fuel limit for your level! ", 
