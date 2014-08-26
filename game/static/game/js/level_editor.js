@@ -137,7 +137,7 @@ ocargo.LevelEditor = function() {
         tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
         tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
         tabs.share = new ocargo.Tab($('#share_radio'), $('#share_radio + label'), $('#share_pane'));
-        tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'), $('#help_pane'));
+        tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'));
         tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));  
 
         setupPlayTab();
@@ -314,7 +314,6 @@ ocargo.LevelEditor = function() {
                 block.initSvg();
                 block.render();
 
-                console.log(type)
                 var svg = block.getSvgRoot();
                 var large = type === "controls_whileUntil" || 
                             type === "controls_repeat" ||
@@ -758,16 +757,17 @@ ocargo.LevelEditor = function() {
         }
 
         function setupHelpTab() {
-            tabs.help.setOnChange(function() {
-                transitionTab(tabs.help);
-            });
-
             var message = ocargo.Drawing.isMobile() ? ocargo.messages.levelEditorMobileSubtitle :
                 ocargo.messages.levelEditorPCSubtitle;
 
             message += "<br><br>" + ocargo.messages.levelEditorHelpText;
 
-            $('#help_pane').html(message);
+            tabs.help.setOnChange(function() {
+                currentTabSelected.select();
+                ocargo.Drawing.startPopup('', '', message);
+            });
+
+           
         }
 
         function setupQuitTab() {
