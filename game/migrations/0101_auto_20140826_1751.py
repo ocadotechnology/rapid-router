@@ -9,17 +9,12 @@ class Migration(migrations.Migration):
     dependencies = [
         ('game', '0100_merge'),
     ]
-
+    
     operations = [
-        migrations.RemoveField(
+        migrations.RenameField(
             model_name='workspace',
-            name='workspace',
-        ),
-        migrations.AddField(
-            model_name='workspace',
-            name='contents',
-            field=models.TextField(default=b''),
-            preserve_default=True,
+            old_name='workspace',
+            new_name='contents',
         ),
         migrations.AlterField(
             model_name='level',
