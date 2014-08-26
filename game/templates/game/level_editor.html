@@ -99,7 +99,7 @@
     <div id="currentTool">
       <div id="currentToolTitle" class="currentToolText">Current Tool:</div>
       <img id="currentToolImg" class="currentToolImage" src="/static/game/image/icons/delete_road.svg" >
-      <span id="currentToolText" class="currentToolText">Delete Scenery</span>
+      <span id="currentToolText" class="currentToolText">Delete Road</span>
     </div>
 
     <div id="toolbox">
@@ -124,8 +124,8 @@
         </div>
 
         <div class="tab selectable">
-          <input type="radio" name="tabs" id="decor_radio">
-          <label for="decor_radio">
+          <input type="radio" name="tabs" id="scenery_radio">
+          <label for="scenery_radio">
             <img src='/static/game/image/icons/decor.svg'>
             <span>Scenery</span>
           </label>
@@ -239,7 +239,7 @@
             </button>
           </div>
 
-          <div id="decor_pane" class="tab_pane">
+          <div id="scenery_pane" class="tab_pane">
             <div class="table">
               <div class="table_row">
                 <div class="table_cell field_label"><p>Theme</p></div>
@@ -277,11 +277,15 @@
                 </div>
               </div>
             </div>
-
-            <button class="navigation_button" id="delete_decor">
-              <img src="/static/game/image/icons/delete_decor.svg"/>
-              <span>Delete scenery</span>
-            </button>
+            <div>
+              <div id="delete_caption">
+                You are in Delete mode. Click Delete again to turn this off.
+              </div>
+              <button class="navigation_button" id="delete_decor">
+                <img src="/static/game/image/icons/delete_decor.svg"/>
+                <span>Delete scenery</span>
+              </button>
+            </div>
           </div>
 
           <div id="character_pane" class="tab_pane">

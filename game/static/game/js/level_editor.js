@@ -130,7 +130,7 @@ ocargo.LevelEditor = function() {
 
         tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
         tabs.map = new ocargo.Tab($('#map_radio'), $('#map_radio + label'), $('#map_pane'));
-        tabs.decor = new ocargo.Tab($('#decor_radio'), $('#decor_radio + label'), $('#decor_pane'));
+        tabs.scenery = new ocargo.Tab($('#scenery_radio'), $('#scenery_radio + label'), $('#scenery_pane'));
         tabs.character = new ocargo.Tab($('#character_radio'), $('#character_radio + label'), $('#character_pane'));
         tabs.blocks = new ocargo.Tab($('#blocks_radio'), $('#blocks_radio + label'), $('#blocks_pane'));
         tabs.random = new ocargo.Tab($('#random_radio'), $('#random_radio + label'), $('#random_pane'));
@@ -142,7 +142,7 @@ ocargo.LevelEditor = function() {
 
         setupPlayTab();
         setupMapTab();
-        setupDecorTab();
+        setupSceneryTab();
         setupCharacterTab();
         setupBlocksTab();
         setupRandomTab();
@@ -205,9 +205,9 @@ ocargo.LevelEditor = function() {
             });
         }
 
-        function setupDecorTab() {
-            tabs.decor.setOnChange(function() {
-                transitionTab(tabs.decor);
+        function setupSceneryTab() {
+            tabs.scenery.setOnChange(function() {
+                transitionTab(tabs.scenery);
             });
 
             $('#theme_select').change(function() {
@@ -244,10 +244,12 @@ ocargo.LevelEditor = function() {
 
             $('#delete_decor').click(function() {
                 if (mode === modes.DELETE_DECOR_MODE) {
+                    document.getElementById('delete_caption').style.visibility='hidden';
                     mode = prevMode;
                     prevMode = null;
                     changeCurrentToolDisplay(mode);
                 } else {
+                    document.getElementById('delete_caption').style.visibility='visible';
                     prevMode = mode;
                     mode = modes.DELETE_DECOR_MODE;
                     changeCurrentToolDisplay(modes.DELETE_DECOR_MODE);
