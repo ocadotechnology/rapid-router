@@ -45,7 +45,7 @@ class Level (models.Model):
     path = models.TextField(max_length=10000)
     decor = models.TextField(max_length=10000, default='[]')
     traffic_lights = models.TextField(max_length=10000, default='[]')
-    origin =  models.CharField(max_length=10, default='[]')
+    origin = models.CharField(max_length=10, default='[]')
     destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
@@ -60,7 +60,7 @@ class Level (models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
-    character = models.ForeignKey(Character, default=4)
+    character = models.ForeignKey(Character, default=1)
     anonymous = models.BooleanField(default=False)
 
     def __unicode__(self):

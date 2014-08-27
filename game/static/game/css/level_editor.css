@@ -11,8 +11,8 @@
 
 #title {
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 70px;
 }
@@ -21,10 +21,10 @@
     display: block;
     position: absolute;
     height: auto;
-    bottom: 0px;
-    top: 0px;
-    left: 0px;
-    right: 0px;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     margin-top: 70px;
 }
 
@@ -38,7 +38,7 @@ input {
     margin: 0;
 }
 
-.navigation_button.fixed_size {
+.navigation_button .fixed_size {
     width: 180px;
 }
 
@@ -75,14 +75,14 @@ input {
     display: table-cell;
 }
 
-.table_cell.field_label {
+.table_cell .field_label {
     width: 100px;
-    margin: 0px;
+    margin: 0;
     vertical-align: middle;
-    margin-bottom: 0px;
+    margin-bottom: 0;
 }
 
-.table_cell.field_value {
+.table_cell .field_value {
     width: 100px;
 }
 
@@ -136,7 +136,7 @@ input {
     margin-bottom: 20px;
 }
 
-.block_image.large {
+.block_image .large {
     height: 66px;
     cursor: pointer;
 }
@@ -178,7 +178,7 @@ input[type="radio"].character_radio {
 /* Generate */
 /************/
 
-#random_pane .table_cell.field_label {
+#random_pane .table_cell .field_label {
     width: 150px;
 }
 
@@ -187,7 +187,7 @@ input[type="radio"].character_radio {
 /************/
 
 #load input[type='radio'] {
-    margin: 0px;
+    margin: 0;
 }
 
 #loading_tables {
