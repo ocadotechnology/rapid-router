@@ -136,7 +136,7 @@ input {
     margin-bottom: 20px;
 }
 
-.block_image .large {
+.block_image.large {
     height: 66px;
     cursor: pointer;
 }
