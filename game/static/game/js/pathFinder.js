@@ -18,7 +18,7 @@ ocargo.PathFinder = function(model) {
 
 ocargo.PathFinder.prototype.getScore = function() {
 
-    var pathLengthScore = this.getTravelledPathScore();
+    var pathLengthScore = Math.max(0, this.getTravelledPathScore());
     var message = ocargo.messages.pathScore + 
                     this.renderCoins(pathLengthScore, this.maxDistanceScore) + "<br>";
 
@@ -29,19 +29,20 @@ ocargo.PathFinder.prototype.getScore = function() {
     if (this.modelLength.length > 0) {
         // Then we're on a default level
         var initInstrScore = this.getInstrLengthScore();
-        var instrScore = initInstrScore;
+        var instrScore = Math.max(0, initInstrScore);
 
         if (initInstrScore >= 2 * this.maxInstrLengthScore) {
             instrScore = 0;
         } else if (initInstrScore > this.maxInstrLengthScore) {
             instrScore = this.maxInstrLengthScore - initInstrScore % this.maxInstrLengthScore;
         }
+        instrScore = Math.max(0, instrScore);
 
         message +=  ocargo.messages.algorithmScore +
                     this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>";
-
         totalScore += instrScore;
     }
+
 
     message += ocargo.messages.totalScore(totalScore, this.maxScore);
 

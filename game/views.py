@@ -254,7 +254,7 @@ def levels(request):
 
 def start_episode(request, episode):
     episode = cached_episode(episode)
-    return redirect("game.views.play_level", level=episode.first_level.id)
+    return play_level(request, episode.first_level.id)
 
 
 def random_level_for_episode(request, episodeID):
@@ -455,7 +455,7 @@ def scoreboard(request):
     """
     if not permissions.can_see_scoreboard(request.user):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
-    
+
     school = None
     thead = []
     classes = []
@@ -677,6 +677,7 @@ def level_editor(request):
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
+
 def play_anonymous_level(request, levelID):
     level = Level.objects.filter(id=levelID)
 
@@ -684,7 +685,7 @@ def play_anonymous_level(request, levelID):
         return redirect("/rapidrouter/level_editor", permanent=True)
 
     level = level[:1].get()
-    
+
     if not level.anonymous:
         return redirect("/rapidrouter/level_editor", permanent=True)
 
@@ -724,7 +725,7 @@ def play_anonymous_level(request, levelID):
     level.delete()
 
     return render(request, 'game/game.html', context_instance=context)
-    
+
 
 def get_list_of_loadable_levels(user):
     owned_levels, shared_levels = level_management.get_list_of_loadable_levels(user)
@@ -746,7 +747,7 @@ def get_list_of_loadable_levels(user):
 def get_loadable_levels_for_editor(request):
     response = get_list_of_loadable_levels(request.user)
     return HttpResponse(json.dumps(response), content_type='application/javascript')
-    
+
 
 def load_level_for_editor(request, levelID):
     level = Level.objects.get(id=levelID)
@@ -795,7 +796,7 @@ def save_level_for_editor(request, levelID=None):
         response['levelID'] = level.id
     else:
         response = ''
-    
+
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 def delete_level_for_editor(request, levelID):
@@ -828,7 +829,7 @@ def get_sharing_information_for_editor(request, levelID):
     level = Level.objects.get(id=levelID)
     valid_recipients = {}
     role = 'anonymous'
-        
+
     if permissions.can_share_level(request.user, level):
         userprofile = request.user.userprofile
         valid_recipients = {}
