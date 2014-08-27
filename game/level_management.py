@@ -3,6 +3,7 @@ import permissions
 
 from models import Level, Block, LevelDecor, Decor, Theme, Character
 
+
 ##########
 # Levels #
 ##########
@@ -13,12 +14,15 @@ def get_list_of_loadable_levels(user):
     shared_levels = [level for level in loadable_levels if level.owner != user.userprofile]
     return owned_levels, shared_levels
 
+
 def save_level(level, data):
 
     def set_level_decor(level, decorString):
         """ Helper method creating LevelDecor objects given a string of all decors."""
 
-        regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y": *)([0-9]+)(}, *"name": *")([a-zA-Z0-9]+)("}))')
+        print decorString
+
+        regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))')
         items = regex.findall(decorString)
 
         existingDecor = LevelDecor.objects.filter(level=level)
@@ -41,6 +45,8 @@ def save_level(level, data):
     level.traffic_lights = data['traffic_lights']
     level.blocklyEnabled = data['blocklyEnabled']
     level.pythonEnabled = data['pythonEnabled']
+    level.theme = theme
+    level.character = character
     level.save()
 
     set_level_decor(level, data['decor'])
@@ -48,13 +54,14 @@ def save_level(level, data):
     level.blocks = Block.objects.filter(type__in=data['blockTypes'])
     level.save()
 
+
 def delete_level(level):
     level.delete()
+
 
 def share_level(level, user):
     level.shared_with.add(user)
 
+
 def unshare_level(level, user):
     level.shared_with.remove(user)
-
-

@@ -254,7 +254,7 @@ def levels(request):
 
 def start_episode(request, episode):
     episode = cached_episode(episode)
-    return redirect("game.views.play_level", level=episode.first_level.id)
+    return play_level(request, episode.first_level.id)
 
 
 def random_level_for_episode(request, episodeID):
