@@ -4,8 +4,8 @@ var ocargo = ocargo || {};
 
 // Object containing helper js objects (buttons etc).
 ocargo.jsElements = {
-    image: function(url, width) {
-        return "<img src='" + url + "'width='" + width + "'>";
+    image: function(url, class_) {
+        return "<img src='" + url + "'class='" + class_ + "'>";
     },
     redirectButton: function(location, label) {
         return '<button onclick="window.location.href=' + location + '">' + label + '</button>';
@@ -62,7 +62,7 @@ ocargo.messages = {
     // Level editor.
     levelEditorTitle: "Welcome to the Level editor! ",
     levelEditorSubtitle: "Click  " +
-        ocargo.jsElements.image('/static/game/image/icons/help.svg', 20) +
+        ocargo.jsElements.image('/static/game/image/icons/help.svg', 'popupHelp') +
         "Help for clues on getting started. ",
     noStartOrEndSubtitle: "You forgot to mark the start and end points.",
     noStartOrEnd: "Click on Mark start or Mark end then select the square where you want the " +
@@ -80,17 +80,32 @@ ocargo.messages = {
         "sections of road.",
     trafficLightsWarning: "You should not use traffic lights unless you already have covered " +
         "them in your classroom activities or played the levels from the Traffic Lights episode. ",
-    levelEditorHelpText: "In <b>Map</b> menu, click <b>Mark start</b> and select a square for " +
-        "your road to start from. Make sure you use <b>Mark end</b> to select a final " +
-        "destination. <br><br> To remove road, click the <b>Delete road</b> button and select a " +
-        "section to get rid of. <br><br> Select <b>Scenery</b> and choose trees, bushes and more " +
-        "to place around your road. These will show in the top left corner - drag them into " +
-        "place. <br><br> Choose a character to play with from the <b>Character</b> menu. <br><br>" +
-        "Select which blocks you want to use to create a route from the <b>Blocks</b> menu. " +
-        "<br><br> When you're ready click <b>Play</b>. <br><br> You can also save your road or " +
-        "share it with a friend. <br><br> Don't forget you can set a fuel limit for your level! ", 
+    levelEditorHelpText: "In " +
+        ocargo.jsElements.image('/static/game/image/icons/map.svg', 'popupIcon') +
+        "<b>Map</b> menu, click " +
+        ocargo.jsElements.image('/static/game/image/icons/origin.svg', 'popupIcon') + 
+        "<b>Mark start</b> and select a square for your road to start from. <br> Make sure you " +
+        "use " + ocargo.jsElements.image('/static/game/image/icons/destination.svg', 'popupIcon') + 
+        "<b>Mark end</b> to select a final destination. <br><br> To remove road, click the " +
+        ocargo.jsElements.image('/static/game/image/icons/delete_road.svg', 'popupIcon') + 
+        "<b>Delete road</b> button and select a section to get rid of. <br><br> Select " +
+        ocargo.jsElements.image('/static/game/image/icons/decor.svg', 'popupIcon') +
+        "<b>Scenery</b> and choose trees, bushes and more to place around your road. These will " +
+        "show in the top left corner - drag them into place. <br><i> Remember, using the traffic " +
+        "lights is not covered until level 44.</i><br><br> Click " +
+        ocargo.jsElements.image('/static/game/image/icons/random.svg', 'popupIcon') +
+        "<b>Random</b> if you would like the computer to create a random route for you." +
+        "<br> Choose a character to play with from the " +
+        ocargo.jsElements.image('/static/game/image/icons/character.svg', 'popupIcon') +
+        "<b>Character</b> menu. <br><br> Select which blocks you want to use to create a route " +
+        "from the " + ocargo.jsElements.image('/static/game/image/icons/blockly.svg', 'popupIcon') +
+        "<b>Blocks</b> menu. <br><br> When you're ready click " +
+        ocargo.jsElements.image('/static/game/image/icons/play.svg', 'popupIcon') +
+        "<b>Play</b>. <br><br> You can also save your road or share it with a friend. <br><br> " +
+        "Don't forget you can set a fuel limit for your level! ", 
     notLoggedIn: function(activity) {
-        return "Unfortunately you need to be logged in to " + activity + " levels. You can log on <a href='/play/'>here</a>."
+        return "Unfortunately you need to be logged in to " + activity +
+            " levels. You can log on <a href='/play/'>here</a>.";
     },
     internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
