@@ -89,7 +89,9 @@ ocargo.messages = {
         "Select which blocks you want to use to create a route from the <b>Blocks</b> menu. " +
         "<br><br> When you're ready click <b>Play</b>. <br><br> You can also save your road or " +
         "share it with a friend. <br><br> Don't forget you can set a fuel limit for your level! ", 
-    notLoggedIn: "Unfortunately you need to be logged in to share levels.",
+    notLoggedIn: function(activity) {
+        return "Unfortunately you need to be logged in to " + activity + " levels. You can log on <a href='/play/'>here</a>."
+    },
     internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
     notOwned: "You do not own this level. If you would like to share it you will first have to " +
