@@ -12,7 +12,7 @@ WIDTH = 10
 HEIGHT = 8
 
 DEFAULT_MAX_FUEL = 30
-DEFAULT_START_NODE = Node(0,3)
+DEFAULT_START_NODE = Node(0, 3)
 DEFAULT_NUM_TILES = 20
 DEFAULT_BRANCHINESS = 0.3
 DEFAULT_LOOPINESS = 0.1
@@ -20,18 +20,18 @@ DEFAULT_CURVINESS = 0.5
 
 PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
 
+
 def create(episode=None):
-    startNode = DEFAULT_START_NODE
     maxFuel = DEFAULT_MAX_FUEL
 
-    if episode:
+    if not episode:
         num_tiles = DEFAULT_NUM_TILES
         branchiness = DEFAULT_BRANCHINESS
         loopiness = DEFAULT_LOOPINESS
         curviness = DEFAULT_CURVINESS
         blockly_enabled = True
         python_enabled = False
-        blocks = Block.objects.all();
+        blocks = Block.objects.all()
         name = "Default random level"
         traffic_lights_enabled = True
     else:
@@ -43,19 +43,21 @@ def create(episode=None):
         python_enabled = episode.r_pythonEnabled
         blocks = episode.r_blocks.all()
         name = "Random level for " + episode.name
-        traffic_lights_enabled = True
-    
+        traffic_lights_enabled = episode.r_trafficLights
+
     level_data = generate_random_map_data(num_tiles,
-                                        branchiness,
-                                        loopiness,
-                                        curviness,
-                                        traffic_lights_enabled)
+                                          branchiness,
+                                          loopiness,
+                                          curviness,
+                                          traffic_lights_enabled)
 
     level = Level(name=name,
                   path=level_data['path'],
                   destinations=level_data['destinations'],
                   traffic_lights=level_data['traffic_lights'],
                   max_fuel=maxFuel,
+                  anonymous=True,
+                  origin=level_data['origin'],
                   blocklyEnabled=blockly_enabled,
                   pythonEnabled=python_enabled)
 
@@ -65,15 +67,19 @@ def create(episode=None):
 
     return level
 
+
 def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled):
     path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
-    destinations = [[path[-1]['coordinate'].x,path[-1]['coordinate'].y]]
+    destinations = [[path[-1]['coordinate'].x, path[-1]['coordinate'].y]]
+    origin = get_origin(path)
 
-    return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights), 'destinations': json.dumps(destinations)}
+    return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights),
+            'origin': json.dumps(origin), 'destinations': json.dumps(destinations)}
+
 
 def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
-    
+
     def pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor):
         for attempts in xrange(5):
             origin = pick_origin_node(nodes, connections, branchiness_factor)
@@ -87,7 +93,8 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
                     possibles.append(node)
 
             if possibles:
-                return origin, pick_destination_node(nodes, connections, origin, possibles, curviness_factor)
+                return origin, pick_destination_node(nodes, connections, origin, possibles,
+                                                     curviness_factor)
 
         return None, None
 
@@ -99,9 +106,12 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
 
     def pick_destination_node(nodes, connections, origin, possibles, curviness_factor):
         existing_connections = [nodes[nodeIndex] for nodeIndex in connections[nodes.index(origin)]]
-        existing_connection_directions = [(node.x-origin.x,node.y-origin.y) for node in existing_connections]
-        linear = [node for node in possibles if (origin.x-node.x,origin.y-node.y) in existing_connection_directions]
-        curved = [node for node in possibles if (origin.x-node.x,origin.y-node.y) not in existing_connection_directions]
+        existing_connection_directions = [(node.x - origin.x, node.y - origin.y)
+                                          for node in existing_connections]
+        linear = [node for node in possibles if (origin.x - node.x, origin.y - node.y)
+                  in existing_connection_directions]
+        curved = [node for node in possibles if (origin.x - node.x, origin.y - node.y)
+                  not in existing_connection_directions]
 
         if linear and curved:
             if random.random() < curviness_factor:
@@ -113,9 +123,8 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
 
         return random.choice(pick_from)
 
-
     def join_up_loops(nodes, connections, loopiness_factor):
-        nodes_by_location = {(node.x,node.y):(index,node) for index, node in enumerate(nodes)}
+        nodes_by_location = {(node.x, node.y): (index, node) for index, node in enumerate(nodes)}
         n = len(nodes)
 
         # Floyd-Warshall algorithm to find distances between all nodes
@@ -152,7 +161,7 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
         # Now join up loops (does not dynamically update distances, but still get required effect)
         max_loop_distance = max([distances[s][d] for s, d in possible_loops])
         for origin, destination in possible_loops:
-            adjusted_loopiness_factor = loopiness_factor*(0.5 + distances[origin][destination]/max_loop_distance)
+            adjusted_loopiness_factor = loopiness_factor * (0.5 + distances[origin][destination] / max_loop_distance)
             if random.random() < adjusted_loopiness_factor:
                 connections = add_new_connections(connections, origin, destination)
 
@@ -163,7 +172,6 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
         connections[node_2_index].append(node_1_index)
 
         return connections
-
 
     def are_adjacent(node_1, node_2):
         delta_x = node_2.x - node_1.x
@@ -183,20 +191,19 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
             new_y = node.y + delta_y
 
             if new_x >= 0 and new_x < WIDTH and new_y >= 0 and new_y < HEIGHT:
-                squares.append((new_x,new_y))
+                squares.append((new_x, new_y))
         return squares
 
-
-    nodes = [Node(random.randrange(1, WIDTH-1), random.randrange(1, HEIGHT-1))]
+    nodes = [Node(random.randrange(1, WIDTH - 1), random.randrange(1, HEIGHT - 1))]
     index_by_node = {nodes[0]: 0}
     connections = defaultdict(list)
 
-    for _ in xrange(num_road_tiles-1):
+    for _ in xrange(num_road_tiles - 1):
         (previous_node, new_node) = pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor)
         if new_node:
             nodes.append(new_node)
-            index_by_node[new_node] = len(nodes)-1
-            connections = add_new_connections(connections, len(nodes)-1, index_by_node[previous_node])
+            index_by_node[new_node] = len(nodes) - 1
+            connections = add_new_connections(connections, len(nodes) - 1, index_by_node[previous_node])
 
     connections = join_up_loops(nodes, connections, loopiness_factor)
     result = []
@@ -210,6 +217,16 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
 
     return result
 
+
+def get_origin(path):
+
+    node = path[1]
+    neighbour = path[0]
+    direction = get_direction(node, neighbour)
+    return {'coordinate': [neighbour['coordinate'].x, neighbour['coordinate'].y],
+            'direction': direction}
+
+
 def generate_traffic_lights(path):
 
     degree2Nodes = []
@@ -222,13 +239,12 @@ def generate_traffic_lights(path):
         elif degree == 2:
             degree2Nodes.append(node)
 
-
     if len(degree3or4Nodes) > 0:
-        candidateNodes = degree3or4Nodes   
+        candidateNodes = degree3or4Nodes
     else:
         candidateNodes = degree2Nodes
 
-    numberOfJunctions = max(int(len(candidateNodes)*PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS/100.0), 1)
+    numberOfJunctions = max(int(len(candidateNodes) * PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS / 100.0), 1)
 
     random.shuffle(candidateNodes)
     nodesSelected = candidateNodes[:numberOfJunctions]
@@ -247,21 +263,27 @@ def generate_traffic_lights(path):
         for neighbour in controlledNeighbours:
             neighbourIndex = path.index(neighbour)
 
-            if neighbour['coordinate'].y < node['coordinate'].y:
-                direction = "N"
-            elif neighbour['coordinate'].x < node['coordinate'].x:
-                direction = "E"
-            elif neighbour['coordinate'].y > node['coordinate'].y:
-                direction = "S"
-            elif neighbour['coordinate'].x > node['coordinate'].x:
-                direction = "W"
+            direction = get_direction(node, neighbour)
 
-            trafficLights.append({'sourceCoordinate': {'x':neighbour['coordinate'].x, 'y':neighbour['coordinate'].y},
-                                'direction': direction,
-                                'startTime': 0 if counter == 0 else 2*(counter-1),
-                                'startingState': 'GREEN' if counter == 0 else 'RED',
-                                'greenDuration': 2,
-                                'redDuration': 2*(len(controlledNeighbours)-1)})
+            trafficLights.append({'sourceCoordinate': {'x': neighbour['coordinate'].x,
+                                                       'y': neighbour['coordinate'].y},
+                                  'direction': direction,
+                                  'startTime': 0 if counter == 0 else 2 * (counter - 1),
+                                  'startingState': 'GREEN' if counter == 0 else 'RED',
+                                  'greenDuration': 2,
+                                  'redDuration': 2 * (len(controlledNeighbours) - 1)})
             counter += 1
 
     return trafficLights
+
+
+def get_direction(node, neighbour):
+    if neighbour['coordinate'].y < node['coordinate'].y:
+        direction = "N"
+    elif neighbour['coordinate'].x < node['coordinate'].x:
+        direction = "E"
+    elif neighbour['coordinate'].y > node['coordinate'].y:
+        direction = "S"
+    elif neighbour['coordinate'].x > node['coordinate'].x:
+        direction = "W"
+    return direction

@@ -254,7 +254,7 @@ def levels(request):
 
 def start_episode(request, episode):
     episode = cached_episode(episode)
-    return redirect("game.views.play_level", level=episode.first_level.id)
+    return play_level(request, episode.first_level.id)
 
 
 def random_level_for_episode(request, episodeID):
@@ -264,7 +264,7 @@ def random_level_for_episode(request, episodeID):
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return play_level(request, level.id)
+    return play_anonymous_level(request, level.id)
 
 
 def logged_students(request):
@@ -327,6 +327,7 @@ def logged_students(request):
         'currentClass': currentClass,
     })
     return render(request, 'game/logged_students.html', context)
+
 
 ####################
 # Level moderation #
@@ -454,7 +455,7 @@ def scoreboard(request):
     """
     if not permissions.can_see_scoreboard(request.user):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
-    
+
     school = None
     thead = []
     classes = []
@@ -676,6 +677,7 @@ def level_editor(request):
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
+
 def play_anonymous_level(request, levelID):
     level = Level.objects.filter(id=levelID)
 
@@ -683,7 +685,7 @@ def play_anonymous_level(request, levelID):
         return redirect("/rapidrouter/level_editor", permanent=True)
 
     level = level[:1].get()
-    
+
     if not level.anonymous:
         return redirect("/rapidrouter/level_editor", permanent=True)
 
@@ -724,6 +726,7 @@ def play_anonymous_level(request, levelID):
 
     return render(request, 'game/game.html', context_instance=context)
 
+
 def get_list_of_loadable_levels(user):
     owned_levels, shared_levels = level_management.get_list_of_loadable_levels(user)
 
@@ -744,7 +747,7 @@ def get_list_of_loadable_levels(user):
 def get_loadable_levels_for_editor(request):
     response = get_list_of_loadable_levels(request.user)
     return HttpResponse(json.dumps(response), content_type='application/javascript')
-    
+
 
 def load_level_for_editor(request, levelID):
     level = Level.objects.get(id=levelID)
@@ -793,9 +796,19 @@ def save_level_for_editor(request, levelID=None):
         response['levelID'] = level.id
     else:
         response = ''
-    
+
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
+def delete_level_for_editor(request, levelID):
+    success = False
+    level = Level.objects.get(id=levelID)
+    if permissions.can_delete_level(request.user, level):
+        level_management.delete_level(level)
+        success = True
+
+    response = get_list_of_loadable_levels(request.user)
+
+    return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
@@ -816,7 +829,7 @@ def get_sharing_information_for_editor(request, levelID):
     level = Level.objects.get(id=levelID)
     valid_recipients = {}
     role = 'anonymous'
-        
+
     if permissions.can_share_level(request.user, level):
         userprofile = request.user.userprofile
         valid_recipients = {}
@@ -921,6 +934,7 @@ def get_role(user):
     elif hasattr(user.userprofile, 'teacher'):
         return 'teacher'
     return 'unknown'
+
 
 def getDecorElement(name, theme):
     """ Helper method to get a decor element corresponding to the theme or a default one."""
