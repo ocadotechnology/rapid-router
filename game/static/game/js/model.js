@@ -260,7 +260,21 @@ ocargo.Model.prototype.turnRight = function() {
 };
 
 ocargo.Model.prototype.turnAround = function() {
-    return this.moveVan(this.van.getPosition().previousNode, 'TURN_AROUND');
+    var position = this.van.getPosition();
+    var turnAroundDirection;
+    if(this.map.isRoadForward(position)) {
+        turnAroundDirection = 'FORWARD'
+    }
+    else if(this.map.isRoadRight(position)) {
+        turnAroundDirection = 'RIGHT'
+    }
+    else if(this.map.isRoadLeft(position)) {
+        turnAroundDirection = 'LEFT';
+    }
+    else {
+        turnAroundDirection = 'FORWARD';
+    }
+    return this.moveVan(this.van.getPosition().previousNode, 'TURN_AROUND_' + turnAroundDirection);
 };
 
 ocargo.Model.prototype.wait = function() {
