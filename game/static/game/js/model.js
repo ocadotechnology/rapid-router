@@ -284,6 +284,32 @@ ocargo.Model.prototype.wait = function() {
 ocargo.Model.prototype.deliver = function() {
     var destination = this.getDestinationForNode(this.van.getPosition().currentNode);
     if(destination) {
+        if(destination.visited){
+            //fail if already visited
+            ocargo.animation.appendAnimation({
+                type: 'popup',
+                id: this.vanId,
+                popupType: 'FAIL',
+                failSubtype: 'ALREADY_DELIVERED',
+                popupMessage: ocargo.messages.alreadyDelivered,
+                description: 'already delivered to destination popup'
+            });
+
+            ocargo.animation.appendAnimation({
+                type: 'callable',
+                functionCall: ocargo.sound.failure,
+                description: 'failure sound'
+            });
+
+            ocargo.animation.appendAnimation({
+                type: 'callable',
+                functionCall: ocargo.sound.stop_engine,
+                description: 'stopping engine'
+            });
+
+            this.reasonForTermination = 'ALREADY_DELIVERED';
+            return false;
+        }
         this.makeDelivery(destination, 'DELIVER');
     }
     return destination;

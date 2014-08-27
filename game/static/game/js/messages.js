@@ -50,6 +50,7 @@ ocargo.messages = {
     outOfInstructions: "The van ran out of instructions before it reached a destination.",
     throughRedLight: "Uh oh, you just sent the van through a red light! Stick to the Highway " +
         "Code - the van must wait for green.",
+    alreadyDelivered: "You have already delivered to that destination! You must only deliver once to each destination.",
     offRoad : function(correctSteps){
         if (correctSteps === 1) {
             return "Your first move was right. What went wrong after that?";
