@@ -678,6 +678,9 @@ def play_anonymous_level(request, levelID):
         return redirect("/rapidrouter/level_editor", permanent=True)
 
     level = level[:1].get()
+    
+    if not level.anonymous:
+        return redirect("/rapidrouter/level_editor", permanent=True)
 
     lesson = 'description_level_default'
     hint = 'hint_level_default'
