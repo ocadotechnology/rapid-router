@@ -15,6 +15,7 @@
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+  
 
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
@@ -369,24 +370,36 @@
 
             <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
 
-            <input type="radio" name="type_of_loaded_levels" id="own_levels_radio" checked>
-            <label for="own_levels_radio">Your own levels</label>
-            <input type="radio" name="type_of_loaded_levels" id="shared_levels_radio">
-            <label for="shared_levels_radio">Shared levels</label>
+            <div class="table_control_div">
 
-            <div id="loading_tables">
-              <div id="own_levels">
-                <div class="scrolling-table-wrapper">
-                  <div class="scrolling-table">
-                    <table width='100%' id="loadOwnLevelTable"></table>
-                  </div>
-                </div>
+              <div id="does_not_exist">
+                <p> You don't have any levels to load yet. Try saving one! </p>
               </div>
-              
-              <div id="shared_levels">
-                <div class="scrolling-table-wrapper">
-                  <div class="scrolling-table">
-                    <table width='100%' id="loadSharedLevelTable"></table>
+
+              <div id="does_exist">
+                <p> 
+                  Load:
+                  <select id="load_type_select">
+                    <option value="ownLevels" selected>your own levels</option>
+                    <option value="sharedLevels">shared levels</option>
+                  </select>
+                </p>
+
+                <div id="own_levels">
+                  <div class="scrolling-table-wrapper">
+                    <table width='100%' id="loadLevelTableHeader">
+                      <thead>
+                        <tr>  
+                          <th>Name</th>
+                          <th>Owner</th>
+                        </tr>
+                      </thead>
+                    </table>
+                    <div class="scrolling-table">
+                      <table width='100%' id="loadLevelTable">
+                        <tbody></tbody>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -409,53 +422,75 @@
 
           <div id="save_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'>Save</h2>
-            <p>Here you can save your new level.</p>
-            <div class="scrolling-table-wrapper">
-              <div class="scrolling-table">
-                <table width='100%' id="saveLevelTable"></table>
+            <p>Here you can save your new level. Enter a name below and hit save. Alternatively click on an existing level to update it.</p>
+            
+            <div class="table_control_div">
+              <div class="scrolling-table-wrapper">
+                <table width='100%' id="saveLevelTableHeader">
+                  <thead>
+                    <tr>  
+                      <th>Name</th>
+                      <th>Owner</th>
+                    </tr>
+                  </thead>
+                </table>
+                <div class="scrolling-table">
+                  <table width='100%' id="saveLevelTable">
+                    <tbody></tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-            <div>
+              <br style="clear:both">
               <div>
+                <label>Name:</label>
                 <input type="text" id="levelNameInput">
-                <button class="navigation_button" id="saveLevel">
-                  <img src="/static/game/image/icons/save.svg">
-                  <span>Save</span>
-                </button>
               </div>
             </div>
+            <br>
+            <br>
+            <button class="navigation_button" id="saveLevel">
+              <img src="/static/game/image/icons/save.svg">
+              <span>Save</span>
+            </button>
           </div>
 
           <div id="share_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/share.svg'>Share</h2>
             
             {% if user_role == 'teacher' %}
-              <div id='teacher_sharing'>
-                <p>Here you can share your level with your pupils or your fellow teachers.</p>
-                
+              <p>Here you can share your level with your classes or your fellow teachers.</p>
+            {% elif user_role == 'student' %}
+              <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
+            {% endif %}
+
+            <div class="table_control_div">
+              {% if user_role == 'teacher' %}
                 <p>
                   Share with:
-                  <input type="radio" name="sharing_recipient" id="classes_radio" checked>
-                  <label for="classes_radio">Classes</label>
-                  
-                  <input type="radio" name="sharing_recipient" id="teachers_radio">
-                  <label for="teachers_radio">Teachers</label>
+                  <select id="share_type_select">
+                    <option value="classes" selected>Classes</option>
+                    <option value="teachers">Teachers</option>
+                  </select>
                 </p>
 
                 <p id="class_selection">
                   Class: <select id="class_select"></select>
                 </p>
-              </div>
-            {% elif user_role == 'student' %}
-              <div id='student_sharing'>
-                <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
-              </div>
-            {% endif %}
-
-            <div id="shared_levels">
-              <div class="scrolling-table-wrapper">
+              {% endif %}
+              
+              <div id="shared_levels">
+                <table width='100%' id="shareLevelTableHeader">
+                  <thead>
+                    <tr>  
+                      <th>Name</th>
+                      <th>Shared</th>
+                    </tr>
+                  </thead>
+                </table>
                 <div class="scrolling-table">
-                  <table width='100%' id="levelSharingTable"></table>
+                  <table width='100%' id="shareLevelTable">
+                    <tbody></tbody>
+                  </table>
                 </div>
               </div>
             </div>

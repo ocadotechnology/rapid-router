@@ -799,6 +799,16 @@ def save_level_for_editor(request, levelID=None):
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
+def delete_level_for_editor(request, levelID):
+    success = False
+    level = Level.objects.get(id=levelID)
+    if permissions.can_delete_level(request.user, level):
+        level_management.delete_level(level)
+        success = True
+
+    response = get_list_of_loadable_levels(request.user)
+
+    return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""

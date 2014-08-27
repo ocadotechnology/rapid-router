@@ -210,8 +210,8 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         },
-        success: function() {
-            callback(null);
+        success: function(json) {
+            callback(null, json.ownedLevels, json.sharedLevels);
         },
         error: function(xhr,errmsg,err) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
