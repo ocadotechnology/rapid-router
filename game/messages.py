@@ -651,7 +651,8 @@ def title_level29():
 
 
 def description_level29():
-    message = ugettext("Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
+    message = ugettext("<iframe width='600' height='400' src='//www.youtube.com/embed/EDwc80X_LQI' frameborder='0' allowfullscreen class='video'></iframe><br/>"
+                       + "Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
                        + "instruction. <br> Attach a 'condition' so the van knows when to stop "
                        + "repeating the instruction. <br> Here, you want the van to repeat your "
                        + "instruction until it is at the destination. <br> Doing this means "
@@ -717,7 +718,8 @@ def title_level33():
 
 
 def description_level33():
-    message = ugettext("Another way of telling the van what to do is to use the <b>If</b> block. "
+    message = ugettext("<iframe width='600' height='400' src='//www.youtube.com/embed/O0RXbJyYq8o' frameborder='0' allowfullscreen class='video'></iframe><br/>"
+                       + "Another way of telling the van what to do is to use the <b>If</b> block. "
                        + "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
                        + "forwards</b>. <br> This is called an 'if statement'. <br> Try "
                        + "using the <b>If</b> block and the <b>Repeat</b> block together. <br> "
@@ -781,7 +783,8 @@ def title_level36():
 
 
 def description_level36():
-    message = ugettext("You can change the <b>If</b> block to make more choices. Click on the star "
+    message = ugettext("<iframe width='600' height='400' src='//www.youtube.com/embed/GUUJSRuAyU0' frameborder='0' allowfullscreen class='video'></iframe><br/>"
+                       + "You can change the <b>If</b> block to make more choices. Click on the star "
                        + "in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
                        + "the van what to do if the first <b>If</b> direction can't be done. "
                        + "<br> For example, tell the van to <b>Turn left</b> <b>If</b> the "
