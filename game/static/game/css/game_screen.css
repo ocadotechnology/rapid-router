@@ -153,6 +153,10 @@
     padding-top: 10px;
 }
 
+.tab.hidden {
+    display: none;
+}
+
 .tab input[type=radio] {
     display:none;
     margin: 0;

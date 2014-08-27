@@ -281,6 +281,10 @@ ocargo.Game.prototype.setupTabs = function() {
 
     ocargo.game.tabs = tabs;
 
+    if (!BLOCKLY_ENABLED) {
+        $('#python_radio').click();
+    }
+
     function setupBlocklyTab() {
         tabs.blockly.setOnChange(function () {
             var tab = tabs.blockly;
