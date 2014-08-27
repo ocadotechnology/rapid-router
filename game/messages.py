@@ -481,7 +481,8 @@ def title_level19():
 
 
 def description_level19():
-    message = ugettext("Attach a block inside the <b>Repeat</b> block to make the van repeats that "
+    message = ugettext("<iframe width='600' height='400' src='//www.youtube.com/embed/vFGd0v3msRE' frameborder='0' allowfullscreen class='video'></iframe><br/>"
+                       + "Attach a block inside the <b>Repeat</b> block to make the van repeats that "
                        + "instruction. <br> This means you can use one block instead of lots of "
                        + "blocks to do the same thing over and over again. <br> How many times do "
                        + "you want the instruction repeated? Type the number into the "
