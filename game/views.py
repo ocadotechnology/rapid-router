@@ -708,7 +708,7 @@ def play_anonymous_level(request, levelID):
 
     context = RequestContext(request, {
         'level': level,
-        'blocks': blocks,
+        'blocks': [block for block in blocks],  # No idea why but leaving this as a queryset was causing issues, it was magically emptying between here and the template rendering
         'lesson': lesson,
         'decor': decorData,
         'character': character,
