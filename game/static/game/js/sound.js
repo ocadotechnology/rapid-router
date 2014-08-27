@@ -31,36 +31,51 @@ ocargo.sound.tensionSound = new Howl({
     urls: ['/static/game/sound/tension.mp3', '/static/game/sound/tension.ogg']
 });
 
+function safePlay(sound) {
+    try {
+        sound.play();
+    }
+    catch (err) { };
+}
+
+function safeStop(sound) {
+    try {
+        sound.stop();
+    }
+    catch (err) { };
+}
+
+
 ocargo.sound.starting = function() {
-    ocargo.sound.startingSound.play();
+    safePlay(ocargo.sound.startingSound);
 };
 
 ocargo.sound.start_engine = function() {
-    ocargo.sound.engineSound.play();
+    safePlay(ocargo.sound.engineSound);
 };
 
 ocargo.sound.stop_engine = function() {
-    ocargo.sound.engineSound.stop();
+    safeStop(ocargo.sound.engineSound);
 };
 
 ocargo.sound.delivery = function() {
-    ocargo.sound.deliverySound.play();
+    safePlay(ocargo.sound.deliverySound);
 };
 
 ocargo.sound.win = function() {
-    ocargo.sound.winSound.play();
+    safePlay(ocargo.sound.winSound);
 };
 
 ocargo.sound.failure = function() {
-    ocargo.sound.failureSound.play();
+    safePlay(ocargo.sound.failureSound);
 };
 
 ocargo.sound.crash = function() {
-    ocargo.sound.crashSound.play();
+    safePlay(ocargo.sound.crashSound);
 };
 
 ocargo.sound.tension = function() {
-    ocargo.sound.tensionSound.play();
+    safePlay(ocargo.sound.tensionSound);
 };
 
 ocargo.sound.mute = function() {
