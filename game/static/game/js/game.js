@@ -259,8 +259,8 @@ ocargo.Game.prototype.setupTabs = function() {
     tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
     tabs.clear_program = new ocargo.Tab($('#clear_program_radio'), $('#clear_program_radio + label'));
 
-    tabs.big_code_mode = new ocargo.Tab($('#big_code_mode_radio'), $('#big_code_mode_radio + label'));
-    tabs.print = new ocargo.Tab($('#print_radio'), $('#print_radio + label'));
+    // tabs.big_code_mode = new ocargo.Tab($('#big_code_mode_radio'), $('#big_code_mode_radio + label'));
+    // tabs.print = new ocargo.Tab($('#print_radio'), $('#print_radio + label'));
     tabs.mute = new ocargo.Tab($('#mute_radio'), $('#mute_radio + label'));
     tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'));
     tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));
@@ -273,9 +273,9 @@ ocargo.Game.prototype.setupTabs = function() {
     setupStepTab();
     setupLoadTab();
     setupSaveTab();
-    setupPrintTab();
+    // setupPrintTab();
     setupHelpTab();
-    setupBigCodeModeTab();
+    // setupBigCodeModeTab();
     setupMuteTab();
     setupQuitTab();
 
@@ -633,8 +633,8 @@ ocargo.Game.prototype.onPlayControls = function() {
     ocargo.game.tabs.load.setEnabled(false);
     ocargo.game.tabs.save.setEnabled(false);
     ocargo.game.tabs.clear_program.setEnabled(false);
-    ocargo.game.tabs.big_code_mode.setEnabled(false);
-    ocargo.game.tabs.print.setEnabled(false);
+    // ocargo.game.tabs.big_code_mode.setEnabled(false);
+    // ocargo.game.tabs.print.setEnabled(false);
     ocargo.game.tabs.help.setEnabled(false);
 };
 
@@ -650,8 +650,8 @@ ocargo.Game.prototype.onStepControls = function() {
     ocargo.game.tabs.load.setEnabled(false);
     ocargo.game.tabs.save.setEnabled(false);
     ocargo.game.tabs.clear_program.setEnabled(false);
-    ocargo.game.tabs.big_code_mode.setEnabled(false);
-    ocargo.game.tabs.print.setEnabled(false);
+    // ocargo.game.tabs.big_code_mode.setEnabled(false);
+    // ocargo.game.tabs.print.setEnabled(false);
     ocargo.game.tabs.help.setEnabled(false);
 };
 
@@ -668,8 +668,8 @@ ocargo.Game.prototype.onStopControls = function() {
     ocargo.game.tabs.load.setEnabled(true);
     ocargo.game.tabs.save.setEnabled(true);
     ocargo.game.tabs.clear_program.setEnabled(true);
-    ocargo.game.tabs.big_code_mode.setEnabled(true);
-    ocargo.game.tabs.print.setEnabled(true);
+    // ocargo.game.tabs.big_code_mode.setEnabled(true);
+    // ocargo.game.tabs.print.setEnabled(true);
     ocargo.game.tabs.help.setEnabled(true);
 };
 
