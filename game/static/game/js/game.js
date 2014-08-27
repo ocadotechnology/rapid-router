@@ -572,16 +572,28 @@ ocargo.Game.prototype.setupTabs = function() {
     }
 
     function setupMuteTab() {
-        tabs.mute.setOnChange(function() {
-            if ($.cookie('muted') === 'true') {
-                ocargo.sound.unmute();
+        var setMuted = function(mute) {
+            if (mute) {
+                ocargo.sound.mute();
+                $.cookie("muted", 'true');
+                $('#mute_text').text('Unmute');
+                $('#mute_img').attr('src', '/static/game/image/icons/muted.svg');
             }
             else {
-                ocargo.sound.mute();
+                ocargo.sound.unmute();
+                $.cookie("muted", 'false');
+                $('#mute_text').text('Mute');
+                $('#mute_img').attr('src', '/static/game/image/icons/unmuted.svg');
             }
+        }
+
+        tabs.mute.setOnChange(function() {
+            setMuted($.cookie('muted') !== 'true');
 
             currentTabSelected.select();
         });
+
+        setMuted($.cookie('muted') === 'true');
     }
 
     function setupQuitTab() {
