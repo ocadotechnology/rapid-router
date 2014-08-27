@@ -597,34 +597,80 @@ ocargo.Drawing = function() {
         }, vanId, animationLength, callback);
     };
 
-    this.turnAround = function(vanId, animationLength, callback) {
-        var moveDistance = -GRID_SPACE_SIZE / 2;
-        var moveTransformation = "... t 0, " + moveDistance;
+    this.turnAround = function(vanId, direction, animationLength, callback) {
+        
+        
         var vanImage = vanImages[vanId];
         var timePerState = (animationLength - 50) / 3;
 
-        function moveForward() {
-            moveVanImage({
-                transform: moveTransformation
-            }, vanId, timePerState, rotate);
+        var actions = [];
+        var index = 0;
+
+        switch(direction) {
+            case 'FORWARD':
+                actions = [moveForward('easeIn'),   rotate('linear'), moveForward('easeOut')];
+                break;
+            case 'RIGHT':
+                actions = [turnRight('easeIn'),     rotate('linear'), turnLeft('easeOut')];
+                break;
+            case 'LEFT':
+                actions = [turnLeft('easeIn'),      rotate('linear'), turnRight('easeOut')];
+                break;
         }
 
-        function rotate() {
-            var rotationPointX = vanImage.attrs.x + 22;
-            var rotationPointY = vanImage.attrs.y + 20;
+        performNextAction();
 
-            vanImage.animate({
-                transform: createRotationTransformation(180, rotationPointX, rotationPointY)
-            }, timePerState, 'easeIn', moveBack);
+        function performNextAction() {
+            if(index < actions.length) {
+                actions[index]();
+                index++;
+            }
         }
 
-        function moveBack() {
-            vanImage.animate({
-                transform: moveTransformation
-            }, timePerState, 'easeIn', callback);
+        function moveForward(easing) {
+            return function() {
+                var moveDistance = -GRID_SPACE_SIZE / 2;
+                var moveTransformation = "... t 0, " + moveDistance;
+                vanImage.animate({
+                    transform: moveTransformation
+                }, timePerState, easing, performNextAction);
+            }
         }
-        
-        moveForward();
+
+        function rotate(easing) {
+            return function() {
+                var rotationPointX = vanImage.attrs.x + 22;
+                var rotationPointY = vanImage.attrs.y + 20;
+
+                vanImage.animate({
+                    transform: createRotationTransformation(180, rotationPointX, rotationPointY)
+                }, timePerState, easing, performNextAction);
+            }
+        }
+
+        function turnLeft(easing) {
+            return function() {
+                var vanImage = vanImages[vanId];
+                var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
+                var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+                var transformation = createRotationTransformation(-45, rotationPointX, rotationPointY);
+                vanImage.animate({
+                    transform: transformation
+                }, timePerState, easing, performNextAction);
+            }
+        }
+
+        function turnRight(easing) {
+            return function() {
+                var vanImage = vanImages[vanId];
+                var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
+                var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+                var transformation = createRotationTransformation(45, rotationPointX, rotationPointY);
+                vanImage.animate({
+                    transform: transformation
+                }, timePerState, easing, performNextAction);
+            }
+        }
     };
 
     this.wait = function(vanId, animationLength, callback) {
@@ -799,9 +845,13 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
-    if (!mascot && document.getElementById('modal-mascot')) {
-        document.getElementById('modal-mascot').remove();
+
+    if (mascot) {
+        $('#modal-mascot').show();
+    } else {
+        $('#modal-mascot').hide();
     }
+
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
 };
 

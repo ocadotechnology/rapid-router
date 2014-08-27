@@ -66,7 +66,7 @@ ocargo.LevelEditor = function() {
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
 
-    // Initiaalise the grid
+    // Initialise the grid
     initialiseGrid();
 
     // Setup the toolbox
@@ -78,7 +78,7 @@ ocargo.LevelEditor = function() {
     // Draw everything
     drawAll();
 
-    // set the default theme
+    // Set the default theme
     setTheme(THEMES.grass);
 
 
@@ -130,19 +130,19 @@ ocargo.LevelEditor = function() {
 
         tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
         tabs.map = new ocargo.Tab($('#map_radio'), $('#map_radio + label'), $('#map_pane'));
-        tabs.decor = new ocargo.Tab($('#decor_radio'), $('#decor_radio + label'), $('#decor_pane'));
+        tabs.scenery = new ocargo.Tab($('#scenery_radio'), $('#scenery_radio + label'), $('#scenery_pane'));
         tabs.character = new ocargo.Tab($('#character_radio'), $('#character_radio + label'), $('#character_pane'));
         tabs.blocks = new ocargo.Tab($('#blocks_radio'), $('#blocks_radio + label'), $('#blocks_pane'));
         tabs.random = new ocargo.Tab($('#random_radio'), $('#random_radio + label'), $('#random_pane'));
         tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
         tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
         tabs.share = new ocargo.Tab($('#share_radio'), $('#share_radio + label'), $('#share_pane'));
-        tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'), $('#help_pane'));
+        tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'));
         tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));  
 
         setupPlayTab();
         setupMapTab();
-        setupDecorTab();
+        setupSceneryTab();
         setupCharacterTab();
         setupBlocksTab();
         setupRandomTab();
@@ -158,8 +158,16 @@ ocargo.LevelEditor = function() {
 
         function setupPlayTab() {
             tabs.play.setOnChange(function() {
-                if (isLevelSaved()) {
-                    window.location.href = "/game/" + savedLevelID;
+                if (isLevelValid()) {
+                    var state = extractState()
+                    state.name = "Custom level"
+                    ocargo.saving.saveLevel(state, null, true, function(error, levelID) {
+                        if(error) {
+                            console.debug(error)
+                            return;
+                        }
+                        window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID;
+                    });
                 } else {
                     currentTabSelected.select();
                 }
@@ -205,9 +213,16 @@ ocargo.LevelEditor = function() {
             });
         }
 
-        function setupDecorTab() {
-            tabs.decor.setOnChange(function() {
-                transitionTab(tabs.decor);
+        function setupSceneryTab() {
+            tabs.scenery.popup = true;
+
+            tabs.scenery.setOnChange(function() {
+                if (tabs.scenery.popup) {
+                    tabs.scenery.popup = false;
+                    ocargo.Drawing.startPopup('', '', ocargo.messages.trafficLightsWarning);
+                }
+
+                transitionTab(tabs.scenery);
             });
 
             $('#theme_select').change(function() {
@@ -244,10 +259,12 @@ ocargo.LevelEditor = function() {
 
             $('#delete_decor').click(function() {
                 if (mode === modes.DELETE_DECOR_MODE) {
+                    document.getElementById('delete_caption').style.visibility='hidden';
                     mode = prevMode;
                     prevMode = null;
                     changeCurrentToolDisplay(mode);
                 } else {
+                    document.getElementById('delete_caption').style.visibility='visible';
                     prevMode = mode;
                     mode = modes.DELETE_DECOR_MODE;
                     changeCurrentToolDisplay(modes.DELETE_DECOR_MODE);
@@ -318,11 +335,14 @@ ocargo.LevelEditor = function() {
                 var large = type === "controls_whileUntil" || 
                             type === "controls_repeat" ||
                             type === "controls_if" ||
-                            type === "declare_proc";
+                            type === "declare_proc" ||
+                            type === "controls_repeat_while" ||
+                            type === "controls_repeat_until";
 
                 var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
                 content += '<g transform="translate(10,0)"';
-                content += svg.innerHTML + '</g></svg>';
+                content += svg.innerHTML ? svg.innerHTML : '';
+                content += '</g></svg>';
 
                 $('#' + type + '_image').html(content);
 
@@ -345,7 +365,10 @@ ocargo.LevelEditor = function() {
                             trafficLightsEnabled: $('#trafficLightsEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
                 
+                $('#generate').attr('disabled', true);
+
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
+                    $('#generate').attr('disabled', false);
                     if (error) {
                         console.debug(error);
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
@@ -755,16 +778,22 @@ ocargo.LevelEditor = function() {
         }
 
         function setupHelpTab() {
+            var message = ocargo.Drawing.isMobile() ? ocargo.messages.levelEditorMobileSubtitle :
+                ocargo.messages.levelEditorPCSubtitle;
+
+            message += "<br><br>" + ocargo.messages.levelEditorHelpText;
+
             tabs.help.setOnChange(function() {
-                transitionTab(tabs.help);
+                currentTabSelected.select();
+                ocargo.Drawing.startPopup('', '', message);
             });
 
-            $('#help_pane').html(ocargo.messages.levelEditorHelpText);
+           
         }
 
         function setupQuitTab() {
             tabs.quit.setOnChange(function() {
-                window.location.href = "/game/";
+                window.location.href = "/rapidrouter/";
             });
         }
 
@@ -857,10 +886,10 @@ ocargo.LevelEditor = function() {
     }
 
     function clear() {
-        for (var i = 0; i < trafficLights.length; i++) {
+        for (var i = trafficLights.length-1; i >= 0; i--) {
             trafficLights[i].destroy();
         }
-        for(var i = 0; i < decor.length; i++) {
+        for (var i = decor.length-1; i >= 0; i--) {
             decor[i].destroy();
         }
 
@@ -1471,19 +1500,19 @@ ocargo.LevelEditor = function() {
                 nodes.splice(nodes.indexOf(node), 1);
 
                 // Check if start or destination node        
-                if(isOriginCoordinate(coord)) {
+                if (isOriginCoordinate(coord)) {
                     markAsBackground(originNode.coordinate);
                     originNode = null;
                 }
-                if(isDestinationCoordinate(coord)) {
+                if (isDestinationCoordinate(coord)) {
                     markAsBackground(destinationNode.coordinate);
                     destinationNode = null;
                 }
 
                 //  Check if any traffic lights present
-                for(var i = trafficLights.length-1; i >= 0;  i--) {
+                for (var i = trafficLights.length-1; i >= 0;  i--) {
                     var trafficLight  =  trafficLights[i];
-                    if(node === trafficLight.sourceNode || node === trafficLight.controlledNode) {
+                    if (node === trafficLight.sourceNode || node === trafficLight.controlledNode) {
                         trafficLights.splice(i, 1);
                         trafficLight.destroy();
                     }
@@ -1668,6 +1697,9 @@ ocargo.LevelEditor = function() {
         state.themeID = currentTheme.id;
         state.character_name = CHARACTER_NAME;
 
+        state.blocklyEnabled = true;
+        state.pythonEnabled = false;
+
         return state;
     }
 
@@ -1735,7 +1767,7 @@ ocargo.LevelEditor = function() {
         var level = extractState();
         level.name = name;
 
-        ocargo.saving.saveLevel(level, levelID, function(error, newLevelID, ownedLevels, sharedLevels) {
+        ocargo.saving.saveLevel(level, levelID, false, function(error, newLevelID, ownedLevels, sharedLevels) {
             if (error !== null) {
                 console.debug(error);
                 return;
@@ -1867,7 +1899,7 @@ ocargo.LevelEditor = function() {
 
         this.valid = false;
 
-        if(data.sourceCoordinate && data.direction) {
+        if (data.sourceCoordinate && data.direction) {
             var sourceCoordinate = new ocargo.Coordinate(data.sourceCoordinate.x, data.sourceCoordinate.y);
             var controlledCoordinate = sourceCoordinate.getNextInDirection(data.direction);
 
@@ -1942,4 +1974,5 @@ ocargo.LevelEditor = function() {
 
 $(function() {
     new ocargo.LevelEditor();
+    ocargo.Drawing.startPopup(ocargo.messages.levelEditorTitle, ocargo.messages.levelEditorSubtitle);
 });
