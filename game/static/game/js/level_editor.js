@@ -412,6 +412,11 @@ ocargo.LevelEditor = function() {
             var selectedLevel = null;
 
             tabs.load.setOnChange(function() {
+                if(!isLoggedIn("load")) {
+                    currentTabSelected.select();
+                    return;
+                }
+
                 ocargo.saving.retrieveListOfLevels(function(err, ownLevels, sharedLevels) {
                     if (err !== null) {
                         console.debug(err);
@@ -504,7 +509,7 @@ ocargo.LevelEditor = function() {
             var selectedLevel = null;
 
             tabs.save.setOnChange(function () {
-                if (!isLevelValid()) {
+                if (!isLoggedIn("save") || !isLevelValid()) {
                     currentTabSelected.select();
                     return;
                 }
@@ -513,6 +518,10 @@ ocargo.LevelEditor = function() {
             });
             
             $('#saveLevel').click(function() {
+                if(!isLevelValid()) {
+                    return;
+                }
+
                 var newName = $('#levelNameInput').val();
                 if (!newName || newName === "") {
                     // TODO error message?
@@ -584,7 +593,7 @@ ocargo.LevelEditor = function() {
 
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
-                if (!isLevelSaved() || !isLevelOwned()) {
+                if (!isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
                     currentTabSelected.select();
                     return;
                 }
@@ -624,49 +633,39 @@ ocargo.LevelEditor = function() {
 
             // Setup the select all button
             $('#shareWithAll').click(function() {
-                if (isLevelSaved() && isLevelOwned()) {
-                    var statusDesired = allShared ? 'shared' : 'unshared';
-                    var actionDesired = allShared ? 'unshare' : 'share';
-
-                    var recipientIDs = [];
-                    $('#levelSharingTable tr[value]').each(function() {
-                        recipientIDs.push(this.getAttribute('value'));
-                    });
-
-                    var recipientData = {recipientIDs: recipientIDs, 
-                                         action: actionDesired};
-
-                    ocargo.saving.shareLevel(savedLevelID, recipientData, processSharingInformation);
+                if (!isLevelSaved() || !isLevelOwned()) {
+                    return;
                 }
+
+                var statusDesired = allShared ? 'shared' : 'unshared';
+                var actionDesired = allShared ? 'unshare' : 'share';
+
+                var recipientIDs = [];
+                $('#levelSharingTable tr[value]').each(function() {
+                    recipientIDs.push(this.getAttribute('value'));
+                });
+
+                var recipientData = {recipientIDs: recipientIDs, 
+                                     action: actionDesired};
+
+                ocargo.saving.shareLevel(savedLevelID, recipientData, processSharingInformation);
             });
 
             // Method to call when we get an update on the level's sharing information
-            function processSharingInformation(error, validRecipients, role) {
+            function processSharingInformation(error, validRecipients) {
                 if (error !== null) {
                     console.debug(error);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
 
-                if (role !== "student" && role !== 'teacher') {
-                    ocargo.Drawing.startPopup("Not logged in", "", ocargo.messages.notLoggedIn);
-                    currentTabSelected.select();
-                    return;
-                }
-
-                if (role === "student") {
-                    $('#teacher_sharing').css('display','none');
-                    $('#student_sharing').css('display','block');
-
+                if (USER_ROLE === "student") {
                     var classmates = validRecipients.classmates;
                     var teacher = validRecipients.teacher;
 
                     populateSharingTable(classmates);
                 }
-                else if (role == "teacher") {
-                    $('#teacher_sharing').css('display','block');
-                    $('#student_sharing').css('display','none');
-
+                else if (USER_ROLE == "teacher") {
                     classesTaught = validRecipients.classes;
                     fellowTeachers = validRecipients.teachers;
 
@@ -1853,6 +1852,14 @@ ocargo.LevelEditor = function() {
         if (!ownsSavedLevel)
         {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notOwned);
+            return false;
+        }
+        return true;
+    }
+
+    function isLoggedIn(activity) {
+        if (USER_ROLE !== "student" && USER_ROLE !== 'teacher') {
+            ocargo.Drawing.startPopup("Not logged in", "", ocargo.messages.notLoggedIn(activity));
             return false;
         }
         return true;

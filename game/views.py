@@ -52,8 +52,8 @@ def play_level(request, levelID):
 
     blocks = level.blocks.order_by('id')
     attempt = None
-    lesson = 'description_level' + str(level)
-    hint = 'hint_level' + str(level)
+    lesson = 'description_level' + str(levelID)
+    hint = 'hint_level' + str(levelID)
 
     try:
         lessonCall = getattr(messages, lesson)
@@ -73,14 +73,7 @@ def play_level(request, levelID):
     cfc = getDecorElement('cfc', level.theme).url
     background = getDecorElement('tile1', level.theme).url
     character = level.character
-
-    role = 'unknown'
-    if request.user.is_anonymous():
-        role = 'anonymous'
-    elif hasattr(request.user.userprofile, 'student'):
-        role = 'student'
-    else:
-        role = 'teacher'
+    role = get_role(request.user)
 
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
@@ -556,7 +549,7 @@ def createOneRow(student, level):
     try:
         attempt = Attempt.objects.get(level=level, student=student)
         row.append(attempt.score)
-        row.append(attempt.finish_time - attempt.start_time)
+        row.append(chop_miliseconds(attempt.finish_time - attempt.start_time))
         row.append(attempt.start_time)
         row.append(attempt.finish_time)
     except ObjectDoesNotExist:
@@ -572,7 +565,7 @@ def createRows(studentData, levels):
             try:
                 attempt = Attempt.objects.get(level=level, student=row[0])
                 row[1] += attempt.score
-                row[2].append(attempt.finish_time - attempt.start_time)
+                row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
                 row.append(attempt.score)
                 row[3].append(attempt.score)
             except ObjectDoesNotExist:
@@ -582,6 +575,11 @@ def createRows(studentData, levels):
     for row in studentData:
         row[2] = sum(row[2], timedelta())
     return studentData
+
+
+def chop_miliseconds(delta):
+    delta = delta - timedelta(microseconds=delta.microseconds)
+    return delta
 
 
 def handleOneClassOneLevel(students, level):
@@ -673,7 +671,8 @@ def level_editor(request):
         'blocks': Block.objects.all(),
         'decor': Decor.objects.all(),
         'characters': Character.objects.all(),
-        'themes': Theme.objects.all()
+        'themes': Theme.objects.all(),
+        'user_role': get_role(request.user)
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
@@ -815,7 +814,7 @@ def generate_random_map_for_editor(request):
 def get_sharing_information_for_editor(request, levelID):
     """ Returns a information about who the level can be and is shared with """
     level = Level.objects.get(id=levelID)
-    valid_recipients = []
+    valid_recipients = {}
     role = 'anonymous'
         
     if permissions.can_share_level(request.user, level):
@@ -863,9 +862,7 @@ def get_sharing_information_for_editor(request, levelID):
                                              'shared': level.shared_with.filter(id=fellow_teacher.user.user.id).exists()}
                                             for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
 
-    data = {'validRecipients': valid_recipients, 'role': role}
-
-    return HttpResponse(json.dumps(data), content_type='application/javascript')
+    return HttpResponse(json.dumps(valid_recipients), content_type='application/javascript')
 
 
 def share_level_for_editor(request, levelID):
@@ -915,6 +912,15 @@ def renderError(request, title, message):
 ##################
 # Helper methods #
 ##################
+
+def get_role(user):
+    if user.is_anonymous():
+        return 'anonymous'
+    elif hasattr(user.userprofile, 'student'):
+        return 'student'
+    elif hasattr(user.userprofile, 'teacher'):
+        return 'teacher'
+    return 'unknown'
 
 def getDecorElement(name, theme):
     """ Helper method to get a decor element corresponding to the theme or a default one."""

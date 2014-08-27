@@ -31,6 +31,7 @@
   <script src="/static/game/js/destination.js"></script>
 
   <script>
+    var USER_ROLE = '{{user_role}}';
     var BLOCKS = [];
     var THEMES =  [];
     var CHARACTER_NAME = 'Van';
@@ -428,26 +429,28 @@
           <div id="share_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/share.svg'>Share</h2>
             
-            <div id='teacher_sharing'>
-              <p>Here you can share your level with your pupils or your fellow teachers</p>
-              
-              <p>
-                Share with:
-                <input type="radio" name="sharing_recipient" id="classes_radio" checked>
-                <label for="classes_radio">Classes</label>
+            {% if user_role == 'teacher' %}
+              <div id='teacher_sharing'>
+                <p>Here you can share your level with your pupils or your fellow teachers.</p>
                 
-                <input type="radio" name="sharing_recipient" id="teachers_radio">
-                <label for="teachers_radio">Teachers</label>
-              </p>
+                <p>
+                  Share with:
+                  <input type="radio" name="sharing_recipient" id="classes_radio" checked>
+                  <label for="classes_radio">Classes</label>
+                  
+                  <input type="radio" name="sharing_recipient" id="teachers_radio">
+                  <label for="teachers_radio">Teachers</label>
+                </p>
 
-              <p id="class_selection">
-                Class: <select id="class_select"></select>
-              </p>
-            </div>
-
-            <div id='student_sharing'>
-              <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
-            </div>
+                <p id="class_selection">
+                  Class: <select id="class_select"></select>
+                </p>
+              </div>
+            {% elif user_role == 'student' %}
+              <div id='student_sharing'>
+                <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
+              </div>
+            {% endif %}
 
             <div id="shared_levels">
               <div class="scrolling-table-wrapper">
