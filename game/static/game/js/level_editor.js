@@ -215,7 +215,14 @@ ocargo.LevelEditor = function() {
         }
 
         function setupSceneryTab() {
+            tabs.scenery.popup = true;
+
             tabs.scenery.setOnChange(function() {
+                if (tabs.scenery.popup) {
+                    tabs.scenery.popup = false;
+                    ocargo.Drawing.startPopup('', '', ocargo.messages.trafficLightsWarning);
+                }
+
                 transitionTab(tabs.scenery);
             });
 
@@ -335,7 +342,10 @@ ocargo.LevelEditor = function() {
 
                 var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
                 content += '<g transform="translate(10,0)"';
-                content += svg.innerHTML + '</g></svg>';
+                content += svg.innerHTML ? svg.innerHTML : '';
+                console.log(svg.innerHTML);
+                console.log(svg.outerHTML);
+                content += '</g></svg>';
 
                 $('#' + type + '_image').html(content);
 

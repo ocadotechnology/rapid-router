@@ -126,8 +126,8 @@ def submit_attempt(request):
             level = get_object_or_404(Level, id=request.POST.get('level', 1))
             attempt = get_object_or_404(Attempt, level=level,
                                         student=request.user.userprofile.student)
-            attempt.score = request.POST.get('score', 0)
-            attempt.workspace = request.POST.get('workspace', '')
+            attempt.score = request.POST.get('score')
+            attempt.workspace = request.POST.get('workspace')
             attempt.save()
     return HttpResponse('')
 
@@ -270,7 +270,7 @@ def random_level_for_episode(request, episodeID):
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return redirect("game.views.play_level", level=level.id)
+    return play_level(request, level.id)
 
 
 def logged_students(request):
