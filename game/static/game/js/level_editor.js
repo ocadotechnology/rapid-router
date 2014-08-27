@@ -166,7 +166,6 @@ ocargo.LevelEditor = function() {
                             console.debug(error)
                             return;
                         }
-                        console.log(levelID);
                         window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID;
                     });
                 } else {
@@ -342,7 +341,8 @@ ocargo.LevelEditor = function() {
 
                 var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
                 content += '<g transform="translate(10,0)"';
-                content += svg.innerHTML + '</g></svg>';
+                content += svg.innerHTML ? svg.innerHTML : '';
+                content += '</g></svg>';
 
                 $('#' + type + '_image').html(content);
 

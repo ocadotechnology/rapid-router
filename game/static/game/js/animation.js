@@ -171,9 +171,17 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             	case 'TURN_RIGHT':
             		ocargo.drawing.moveRight(vanID, animationLength);
             		break;
-            	case 'TURN_AROUND':
+            	case 'TURN_AROUND_FORWARD':
             		animationLength *= 3;
-            		ocargo.drawing.turnAround(vanID, animationLength);
+            		ocargo.drawing.turnAround(vanID, 'FORWARD', animationLength);
+            		break;
+            	case 'TURN_AROUND_RIGHT':
+            		animationLength *= 3;
+            		ocargo.drawing.turnAround(vanID, 'RIGHT', animationLength);
+            		break;
+            	case 'TURN_AROUND_LEFT':
+            		animationLength *= 3;
+            		ocargo.drawing.turnAround(vanID, 'LEFT', animationLength);
             		break;
             	case 'WAIT':
             		ocargo.drawing.wait(vanID, animationLength);
