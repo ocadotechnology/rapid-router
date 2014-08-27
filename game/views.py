@@ -264,7 +264,7 @@ def random_level_for_episode(request, episodeID):
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return play_level(request, level.id)
+    return play_anonymous_level(request, level.id)
 
 
 def logged_students(request):
@@ -327,6 +327,7 @@ def logged_students(request):
         'currentClass': currentClass,
     })
     return render(request, 'game/logged_students.html', context)
+
 
 ####################
 # Level moderation #
@@ -549,7 +550,7 @@ def createOneRow(student, level):
     try:
         attempt = Attempt.objects.get(level=level, student=student)
         row.append(attempt.score)
-        row.append(attempt.finish_time - attempt.start_time)
+        row.append(chop_miliseconds(attempt.finish_time - attempt.start_time))
         row.append(attempt.start_time)
         row.append(attempt.finish_time)
     except ObjectDoesNotExist:
@@ -565,7 +566,7 @@ def createRows(studentData, levels):
             try:
                 attempt = Attempt.objects.get(level=level, student=row[0])
                 row[1] += attempt.score
-                row[2].append(attempt.finish_time - attempt.start_time)
+                row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
                 row.append(attempt.score)
                 row[3].append(attempt.score)
             except ObjectDoesNotExist:
@@ -575,6 +576,11 @@ def createRows(studentData, levels):
     for row in studentData:
         row[2] = sum(row[2], timedelta())
     return studentData
+
+
+def chop_miliseconds(delta):
+    delta = delta - timedelta(microseconds=delta.microseconds)
+    return delta
 
 
 def handleOneClassOneLevel(students, level):
@@ -718,6 +724,7 @@ def play_anonymous_level(request, levelID):
     level.delete()
 
     return render(request, 'game/game.html', context_instance=context)
+    
 
 def get_list_of_loadable_levels(user):
     owned_levels, shared_levels = level_management.get_list_of_loadable_levels(user)
@@ -926,6 +933,7 @@ def get_role(user):
     elif hasattr(user.userprofile, 'teacher'):
         return 'teacher'
     return 'unknown'
+
 
 def getDecorElement(name, theme):
     """ Helper method to get a decor element corresponding to the theme or a default one."""

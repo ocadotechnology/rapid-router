@@ -44,7 +44,8 @@ ocargo.Game.prototype.setup = function() {
         loggedOutWarning = '<br>' + ocargo.messages.loggedOutWarning;
     }
     // Start the popup
-    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "", LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
+    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "",
+        LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
@@ -368,6 +369,10 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupStepTab() {
         tabs.step.setOnChange(function() {
+            if (tabs.play.getText() == "Play") {
+                ocargo.game.runProgramAndPrepareAnimation();
+            }
+
             ocargo.animation.stepAnimation(function() {
                 if (ocargo.animation.isFinished()) {
                     ocargo.game.onStopControls();
@@ -572,28 +577,12 @@ ocargo.Game.prototype.setupTabs = function() {
     }
 
     function setupMuteTab() {
-        var setMuted = function(mute) {
-            if (mute) {
-                ocargo.sound.mute();
-                $.cookie("muted", 'true');
-                $('#mute_text').text('Unmute');
-                $('#mute_img').attr('src', '/static/game/image/icons/muted.svg');
-            }
-            else {
-                ocargo.sound.unmute();
-                $.cookie("muted", 'false');
-                $('#mute_text').text('Mute');
-                $('#mute_img').attr('src', '/static/game/image/icons/unmuted.svg');
-            }
-        }
 
         tabs.mute.setOnChange(function() {
-            setMuted($.cookie('muted') !== 'true');
+            ocargo.game.mute($.cookie('muted') !== 'true');
 
             currentTabSelected.select();
         });
-
-        setMuted($.cookie('muted') === 'true');
     }
 
     function setupQuitTab() {
@@ -701,7 +690,22 @@ ocargo.Game.prototype.onResumeControls = function() {
     ocargo.game.tabs.step.setEnabled(false);
 };
 
+ocargo.Game.prototype.mute = function(mute) {
+    if (mute) {
+        ocargo.sound.mute();
+        $.cookie("muted", 'true');
+        $('#mute_text').text('Unmute');
+        $('#mute_img').attr('src', '/static/game/image/icons/muted.svg');
+    } else {
+        ocargo.sound.unmute();
+        $.cookie("muted", 'false');
+        $('#mute_text').text('Mute');
+        $('#mute_img').attr('src', '/static/game/image/icons/unmuted.svg');
+    }
+};
+
 $(document).ready(function() {
     ocargo.game = new ocargo.Game();
     ocargo.game.setup();
+    ocargo.game.mute($.cookie('muted') === 'true');
 });
