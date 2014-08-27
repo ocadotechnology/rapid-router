@@ -1,3 +1,5 @@
+var ocargo = ocargo || {};
+
 ocargo.Tab = function(radioElement, labelElement, paneElement) {
     this.getText = function() {
         return labelElement[0].children[1].innerHTML;

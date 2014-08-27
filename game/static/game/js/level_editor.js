@@ -1694,6 +1694,9 @@ ocargo.LevelEditor = function() {
         state.themeID = currentTheme.id;
         state.character_name = CHARACTER_NAME;
 
+        state.blocklyEnabled = true;
+        state.pythonEnabled = false;
+
         return state;
     }
 
