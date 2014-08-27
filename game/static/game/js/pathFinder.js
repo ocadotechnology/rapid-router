@@ -40,7 +40,9 @@ ocargo.PathFinder.prototype.getScore = function() {
 
         message +=  ocargo.messages.algorithmScore +
                     this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>";
+        totalScore += instrScore;
     }
+
 
     message += ocargo.messages.totalScore(totalScore, this.maxScore);
 
