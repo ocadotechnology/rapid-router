@@ -38,6 +38,14 @@ function safePlay(sound) {
     catch (err) { };
 }
 
+function safeStop(sound) {
+    try {
+        sound.stop();
+    }
+    catch (err) { };
+}
+
+
 ocargo.sound.starting = function() {
     safePlay(ocargo.sound.startingSound);
 };
@@ -47,7 +55,7 @@ ocargo.sound.start_engine = function() {
 };
 
 ocargo.sound.stop_engine = function() {
-    safePlay(ocargo.sound.engineSound);
+    safeStop(ocargo.sound.engineSound);
 };
 
 ocargo.sound.delivery = function() {
