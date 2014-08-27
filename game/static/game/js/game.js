@@ -440,9 +440,9 @@ ocargo.Game.prototype.setupTabs = function() {
             populateTable("loadWorkspaceTable", workspaces);
 
             // Add click listeners to all rows
-            $('#loadWorkspaceTable td').on('click', function(event) {
-                $('#loadWorkspaceTable td').css('background-color', '#FFFFFF');
-                $(event.target).css('background-color', '#C0C0C0');
+            $('#loadWorkspaceTable tr').on('click', function(event) {
+                $('#loadWorkspaceTable tr').attr('selected', false);
+                $(this).attr('selected', true);
                 selectedWorkspace = $(event.target).attr('value');
                 $('#loadWorkspace').removeAttr('disabled');
                 $('#deleteWorkspace').removeAttr('disabled');
@@ -521,9 +521,9 @@ ocargo.Game.prototype.setupTabs = function() {
             populateTable("saveWorkspaceTable", workspaces);
 
             // Add click listeners to all rows
-            $('#saveWorkspaceTable td').on('click', function(event) {
-                $('#saveWorkspaceTable td').css('background-color', '#FFFFFF');
-                $(event.target).css('background-color', '#C0C0C0');
+            $('#saveWorkspaceTable tr').on('click', function(event) {
+                $('#saveWorkspaceTable tr').attr('selected', false);
+                $(this).attr('selected', true);
                 selectedWorkspace = $(event.target).attr('value');
                 var workspaceName = $(event.target)[0].innerHTML;
                 document.getElementById("workspaceNameInput").value = workspaceName;

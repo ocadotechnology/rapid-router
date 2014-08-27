@@ -39,13 +39,13 @@
 
 .ocargo-modal-mainText > #hintText,
 .ocargo-modal-mainText > #hintBtnPara {
-	margin: 2rem 1rem 0;
+	 margin: 2rem 1rem 0;
 }
 
 .modal_image {
-  width: 100px;
-  height: 100px;
-  margin-right: 20px;
+    width: 100px;
+    height: 100px;
+    margin-right: 30px;
 }
 
 .scrolling-table-wrapper {
@@ -53,7 +53,7 @@
 }
 
 .scrolling-table {
-    max-height: 200px;
+    max-height: 180px;
     width: 350px;
     max-width: 350px;
     overflow: auto;
@@ -61,6 +61,22 @@
 
 .scrolling-table td {
     cursor: pointer;
+}
+
+.scrolling-table tr[selected] {
+    background: #fbed21; /* Old browsers */
+    background: -moz-linear-gradient(top, #fbed21 0%, #faaf3b 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbed21), color-stop(100%,#faaf3b)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #fbed21 0%,#faaf3b 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbed21', endColorstr='#faaf3b',GradientType=0 ); /* IE6-9 */
+}
+
+.scrolling-table table {
+    border-collapse: collapse;
+    border-spacing: 0px;
 }
 
 /*************/
@@ -215,6 +231,10 @@
 .tab_break {
     width: auto;
     height: 20px;
+}
+
+.tab_pane h2 {
+    margin-bottom: 15px;
 }
 
 /**********/
