@@ -44,11 +44,13 @@ ocargo.Thread.prototype.step = function(model) {
 
 	if (!successful) {
 		// Program crashed, queue a block highlight event
+        var block = commandToProcess.block;
 		ocargo.animation.appendAnimation({
 			type: 'callable',
 			functionCall: function() {
-				ocargo.blocklyControl.highlightIncorrectBlock(commandToProcess.block);
-			}
+				ocargo.blocklyControl.highlightIncorrectBlock(block);
+			},
+            description: 'Blockly highlight incorrect: ' + block.type
 		});
 		return false;
 	}

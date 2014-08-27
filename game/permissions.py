@@ -85,13 +85,16 @@ def can_share_level_with(recipient, sharer):
     recipient_profile = recipient.userprofile
     sharer_profile = sharer.userprofile
 
-    if hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'student'):
+    if (hasattr(sharer_profile, 'student') and hasattr(sharer_profile.student, 'class_field') and 
+        hasattr(recipient_profile, 'student') and hasattr(recipient_profile.student, 'class_field')):
         # Are they in the same class?
         return sharer_profile.student.class_field == recipient_profile.student.class_field
-    elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'student'):
+    elif (hasattr(sharer_profile, 'teacher') and 
+        hasattr(recipient_profile, 'student') and hasattr(recipient_profile.student, 'class_field')):
         # Is the recipient taught by the sharer?
         return recipient_profile.student.class_field.teacher == sharer_profile.teacher
-    elif hasattr(sharer_profile, 'student') and hasattr(recipient_profile, 'teacher'):
+    elif (hasattr(sharer_profile, 'student') and hasattr(sharer_profile.student, 'class_field')
+        and hasattr(recipient_profile, 'teacher')):
         # Is the sharer taught by the recipient?
         return sharer_profile.student.class_field.teacher == recipient_profile.teacher
     elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'teacher'):
