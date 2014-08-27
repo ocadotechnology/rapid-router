@@ -369,6 +369,10 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupStepTab() {
         tabs.step.setOnChange(function() {
+            if (tabs.play.getText() == "Play") {
+                ocargo.game.runProgramAndPrepareAnimation();
+            }
+
             ocargo.animation.stepAnimation(function() {
                 if (ocargo.animation.isFinished()) {
                     ocargo.game.onStopControls();
