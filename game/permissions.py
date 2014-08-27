@@ -24,6 +24,8 @@ def can_create_level(user):
 def can_play_level(user, level):
     if level.default:
         return True
+    elif level.anonymous:
+        return False
     elif user.is_anonymous():
         return level.default
     elif user.userprofile == level.owner:
@@ -50,7 +52,9 @@ def can_load_level(user, level):
     return False
 
 def can_save_level(user, level):
-    if user.is_anonymous():
+    if level.anonymous:
+        return True; 
+    elif user.is_anonymous():
         return False
     else:
         return user.userprofile == level.owner

@@ -102,6 +102,7 @@ def play_level(request, levelID):
         'hint': hint,
         'attempt': attempt,
         'user_role': role,
+        'return_url': '/rapidrouter/',
     })
 
     return render(request, 'game/game.html', context_instance=context)
@@ -670,6 +671,51 @@ def level_editor(request):
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
+def play_anonymous_level(request, levelID):
+    level = Level.objects.filter(id=levelID)
+
+    if not level.exists():
+        return redirect("/rapidrouter/level_editor", permanent=True)
+
+    level = level[:1].get()
+
+    lesson = 'description_level_default'
+    hint = 'hint_level_default'
+    lessonCall = getattr(messages, lesson)
+    hintCall = getattr(messages, hint)
+    lesson = mark_safe(lessonCall())
+    hint = mark_safe(hintCall())
+
+    attempt = None
+    blocks = level.blocks.order_by('id')
+    decor = LevelDecor.objects.filter(level=level)
+    decorData = parseDecor(level.theme, decor)
+    house = getDecorElement('house', level.theme).url
+    cfc = getDecorElement('cfc', level.theme).url
+    background = getDecorElement('tile1', level.theme).url
+    character = level.character
+
+    role =  'unknown'
+
+    context = RequestContext(request, {
+        'level': level,
+        'blocks': blocks,
+        'lesson': lesson,
+        'decor': decorData,
+        'character': character,
+        'background': background,
+        'house': house,
+        'cfc': cfc,
+        'hint': hint,
+        'attempt': attempt,
+        'user_role': role,
+        'return_url': '/rapidrouter/level_editor',
+    })
+
+    level.delete()
+
+    return render(request, 'game/game.html', context_instance=context)
+
 def get_list_of_loadable_levels(user):
     owned_levels, shared_levels =  level_management.get_list_of_loadable_levels(user)
 
@@ -706,7 +752,7 @@ def save_level_for_editor(request, levelID=None):
     if levelID is not None:
         level = Level.objects.get(id=levelID)
     else:
-        level = Level(default=False)
+        level = Level(default=False, anonymous=request.POST.get('anonymous') == 'true')
 
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
@@ -725,7 +771,7 @@ def save_level_for_editor(request, levelID=None):
                 'max_fuel': request.POST.get('max_fuel'),
                 'theme_id': request.POST.get('themeID'),
                 'character_name': request.POST.get('character_name'),
-                'blockTypes': json.loads(request.POST['block_types'])}
+                'blockTypes': json.loads(request.POST.get('block_types'))}
 
         level_management.save_level(level, data)
 
@@ -733,7 +779,7 @@ def save_level_for_editor(request, levelID=None):
         response['levelID'] = level.id
     else:
         response = ''
-
+    print("hi", response)
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 

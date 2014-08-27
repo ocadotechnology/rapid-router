@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^level_moderation/delete/(?P<levelID>[0-9]+)$', 'game.views.delete_level'),
 
     url(r'^level_editor$', 'game.views.level_editor'),
+    url(r'^level_editor/level/play_anonymous/(?P<levelID>[0-9]+)$', 'game.views.play_anonymous_level'),
     url(r'^level_editor/level/get_all$', 'game.views.get_loadable_levels_for_editor'),
     url(r'^level_editor/level/get/(?P<levelID>[0-9]+)$', 'game.views.load_level_for_editor'),
     url(r'^level_editor/level/delete/(?P<levelID>[0-9]+)$', 'game.views.delete_level'),
