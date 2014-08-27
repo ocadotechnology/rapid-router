@@ -124,16 +124,15 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             attemptedAction: action,
             startNode: this.van.currentNodeOriginal,
             fuel: this.van.getFuelPercentage(),
-            description: 'van move action: ' + action
+            description: 'crashing van move action: ' + action
         });
 
+        this.incrementTime();
+
         ocargo.animation.appendAnimation({
-            type: 'popup',
-            id: this.vanId,
-            popupType: 'FAIL',
-            failSubtype: 'CRASH',
-            popupMessage: ocargo.messages.offRoad(this.van.travelled),
-            description: 'crash popup'
+            type: 'callable',
+            functionCall: ocargo.sound.stop_engine,
+            description: 'stopping engine'
         });
 
         ocargo.animation.appendAnimation({
@@ -142,10 +141,15 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             description: 'crash sound'
         });
 
+        this.incrementTime();
+
         ocargo.animation.appendAnimation({
-            type: 'callable',
-            functionCall: ocargo.sound.stop_engine,
-            description: 'stopping engine'
+            type: 'popup',
+            id: this.vanId,
+            popupType: 'FAIL',
+            failSubtype: 'CRASH',
+            popupMessage: ocargo.messages.offRoad(this.van.travelled),
+            description: 'crash popup'
         });
 
         this.reasonForTermination = 'CRASH';
@@ -320,6 +324,8 @@ ocargo.Model.prototype.deliver = function() {
 ocargo.Model.prototype.programExecutionEnded = function() {
     var success;
     var destinations = this.map.getDestinations();
+    var failType = 'OUT_OF_INSTRUCTIONS';
+    var failMessage = ocargo.messages.outOfInstructions;
 
     if(destinations.length === 1) {
         success = this.van.getPosition().currentNode === destinations[0].node;
@@ -339,6 +345,10 @@ ocargo.Model.prototype.programExecutionEnded = function() {
         success = true;
         for(var i = 0; i < destinations.length; i++) {
             success &= destinations[i].visited;
+        }
+        if(!success){
+            failType = 'UNDELIVERED_DESTINATIONS';
+            failMessage = ocargo.messages.undeliveredDestinations;
         }
     }
 
@@ -378,8 +388,8 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             type: 'popup',
             id: this.vanId,
             popupType: 'FAIL',
-            failSubtype: 'OUT_OF_INSTRUCTIONS',
-            popupMessage: ocargo.messages.outOfInstructions,
+            failSubtype: failType,
+            popupMessage: failMessage,
             hint: ocargo.game.registerFailure(),
             description: 'failure popup'
         });
@@ -391,7 +401,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             description: 'failure sound'
         });
 
-        this.reasonForTermination ='OUT_OF_INSTRUCTIONS';
+        this.reasonForTermination = failType;
     }
 };
 
