@@ -2,8 +2,6 @@ var ocargo = ocargo || {};
 
 ocargo.sound = {};
 
-ocargo.sound.allSounds = [];
-
 ocargo.sound.startingSound = new Howl({
     urls: ['/static/game/sound/starting.mp3', '/static/game/sound/starting.ogg']
 });
@@ -32,14 +30,6 @@ ocargo.sound.crashSound = new Howl({
 ocargo.sound.tensionSound = new Howl({
     urls: ['/static/game/sound/tension.mp3', '/static/game/sound/tension.ogg']
 });
-
-ocargo.sound.allSounds.push(ocargo.sound.startingSound);
-ocargo.sound.allSounds.push(ocargo.sound.engineSound);
-ocargo.sound.allSounds.push(ocargo.sound.deliverySound);
-ocargo.sound.allSounds.push(ocargo.sound.winSound);
-ocargo.sound.allSounds.push(ocargo.sound.failureSound);
-ocargo.sound.allSounds.push(ocargo.sound.crashSound);
-ocargo.sound.allSounds.push(ocargo.sound.tensionSound);
 
 ocargo.sound.starting = function() {
     ocargo.sound.startingSound.play();
@@ -73,19 +63,15 @@ ocargo.sound.tension = function() {
     ocargo.sound.tensionSound.play();
 };
 
-ocargo.sound.setAllVolumes = function(volume) {
-    for (var i in ocargo.sound.allSounds) {
-        ocargo.sound.allSounds[i].volume(volume);
-    }
-};
-
 ocargo.sound.mute = function() {
     this.playAudioBackup = Blockly.SOUNDS_;
     Blockly.SOUNDS_ = {};
-    ocargo.sound.setAllVolumes(0);
+    
+    Howler.mute();
 };
 
 ocargo.sound.unmute = function() {
     Blockly.SOUNDS_ = this.playAudioBackup || Blockly.SOUNDS_;
-    ocargo.sound.setAllVolumes(1.0);
+
+    Howler.unmute();
 };
