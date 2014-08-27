@@ -12,7 +12,7 @@ WIDTH = 10
 HEIGHT = 8
 
 DEFAULT_MAX_FUEL = 30
-DEFAULT_START_NODE = Node(0,3)
+DEFAULT_START_NODE = Node(0, 3)
 DEFAULT_NUM_TILES = 20
 DEFAULT_BRANCHINESS = 0.3
 DEFAULT_LOOPINESS = 0.1
@@ -219,7 +219,7 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
 
 
 def get_origin(path):
-    
+
     node = path[1]
     neighbour = path[0]
     direction = get_direction(node, neighbour)
