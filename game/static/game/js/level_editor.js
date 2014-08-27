@@ -215,7 +215,14 @@ ocargo.LevelEditor = function() {
         }
 
         function setupSceneryTab() {
+            tabs.scenery.popup = true;
+
             tabs.scenery.setOnChange(function() {
+                if (tabs.scenery.popup) {
+                    tabs.scenery.popup = false;
+                    ocargo.Drawing.startPopup('', '', ocargo.messages.trafficLightsWarning);
+                }
+
                 transitionTab(tabs.scenery);
             });
 

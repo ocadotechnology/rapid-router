@@ -23,7 +23,8 @@ ocargo.messages = {
     nextEpisode: function(episode) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
             "challenge? <br><br>" + 
-            ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "'", 'Next episode') + " " +
+            ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "'",
+                                             'Next episode') + " " +
             ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
     },
 
@@ -31,8 +32,8 @@ ocargo.messages = {
 
     lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own " +
         "challenges. <br><br>" +
-        ocargo.jsElements.redirectButton("'/rapidrouter/level_editor'", "Create your own map!") + " " +
-        ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home"),
+        ocargo.jsElements.redirectButton("'/rapidrouter/level_editor'", "Create your own map!") + 
+        " " + ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home"),
 
     tooManyBlocks: "Whoops! You used too many blocks.",
     ohNo: "Oh no!",
@@ -59,7 +60,7 @@ ocargo.messages = {
     },
 
     // Level editor.
-    levelEditorTitle: "Welcome to the Level editor! ", 
+    levelEditorTitle: "Welcome to the Level editor! ",
     levelEditorSubtitle: "Click  " +
         ocargo.jsElements.image('/static/game/image/icons/help.svg', 20) +
         "Help for clues on getting started. ",
@@ -71,12 +72,14 @@ ocargo.messages = {
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
     levelEditorMobileSubtitle: "To draw a road, place two fingers on the " +
         "square you want the road to start from. Then, keeping one finger in place, drag the the " +
-        "other to the square you want the road to end on. <br><br> Do this as many times as you like " +
-        "to add new sections of road.",
+        "other to the square you want the road to end on. <br><br> Do this as many times as you " +
+        "like to add new sections of road.",
     levelEditorPCSubtitle: "To draw a road, click on the square you want the " +
         "road to start from. Then, without letting go of the mouse button, drag to the square " +
         "you'd like the road to end on. <br><br> Do this as many times as you like to add new " +
         "sections of road.",
+    trafficLightsWarning: "You should not use traffic lights unless you already have covered " +
+        "them in your classroom activities or played the levels from the Traffic Lights episode. ",
     levelEditorHelpText: "In <b>Map</b> menu, click <b>Mark start</b> and select a square for " +
         "your road to start from. Make sure you use <b>Mark end</b> to select a final " +
         "destination. <br><br> To remove road, click the <b>Delete road</b> button and select a " +
