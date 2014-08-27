@@ -269,7 +269,7 @@ def random_level_for_episode(request, episodeID):
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return redirect("game.views.play_level", level=level.id)
+    return play_level(request, level.id)
 
 
 def logged_students(request):
