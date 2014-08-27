@@ -40,7 +40,7 @@ ocargo.sound.start_engine = function() {
 };
 
 ocargo.sound.stop_engine = function() {
-    ocargo.sound.engineSound.pause();
+    ocargo.sound.engineSound.stop();
 };
 
 ocargo.sound.delivery = function() {
