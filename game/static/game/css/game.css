@@ -55,6 +55,15 @@
     height: 100%;
 }
 
+#blockly_pane .blocklyFlyoutBackground {
+    fill: #FFFFFF;
+    fill-opacity: 0.87;
+}
+
+#blockly_pane .blocklySvg {
+    background: #f3f3f3;
+}
+
 
 /**************/
 /* Python tab */

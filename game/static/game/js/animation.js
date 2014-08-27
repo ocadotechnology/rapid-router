@@ -189,6 +189,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             	case 'CRASH':
             		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode,
             			a.attemptedAction, a.startNode);
+                    animationLength += 100;
             		break;
             	case 'DELIVER':
             		ocargo.drawing.deliver(vanID, animationLength, a.destinationID);
@@ -206,7 +207,6 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		case 'popup':
 			var title = "";
 			var leadMsg = a.popupMessage;
-			var delay;
 			// sort popup...
 			switch (a.popupType) {
 				case 'WIN':
@@ -226,22 +226,14 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 				        }
 				    }
 				    leadMsg = leadMsg + levelMsg;
-				    delay = 1000;
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
 					leadMsg = leadMsg + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
-					if (a.failSubtype === "CRASH") {
-						delay = 3000;
-					}
-					else {
-						delay = 1000;
-					}
 					break;
 				case 'WARNING':
 					title = ocargo.messages.ohNo;
 					leadMsg = leadMsg + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
-					delay = 1000;
 					break;
 			}
 			var otherMsg = "";
@@ -256,7 +248,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		                '</p><p id="hintText">' + HINT + '</p>');
     			}
 			}
-			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, delay);
+			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true);
 			if (a.popupHint) {
 				if (level.hintOpened){
 	                $("#hintBtnPara").hide();

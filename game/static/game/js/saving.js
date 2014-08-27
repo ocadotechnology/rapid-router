@@ -1,6 +1,25 @@
 var ocargo = ocargo || {};
 
-ocargo.Saving = function() {};
+ocargo.Saving = function() {
+    this.getListOfWorkspacesFromLocalStorage = function() {
+        var query = /blocklySavedWorkspaceXml-([0-9]+)$/;
+        var i, results = [];
+        for (i in localStorage) {
+            if (localStorage.hasOwnProperty(i)) {
+                var matches = query.exec(i);
+                if (matches) {
+                    var json = JSON.parse(localStorage.getItem(i));
+                    results.push({
+                        id: matches[1],
+                        name: json.name,
+                        workspace: json.workspace
+                    });
+                }
+            }
+        }
+        return results;
+    }
+};
 
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -26,21 +45,7 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 	    });
 	}
 	else if (localStorage) {
-		var query = /blocklySavedWorkspaceXml-([0-9]+)$/;
-		var i, results = [];
-		for (i in localStorage) {
-	    	if (localStorage.hasOwnProperty(i)) {
-	    		var matches = query.exec(i);
-	    		if (matches) {
-	    			var json = JSON.parse(localStorage.getItem(i));
-	        		results.push({
-	        			id: matches[1],
-	        			name: json.name,
-	        			workspace: json.workspace
-	        		});
-	      		}
-	    	}
-	  	}
+		var results = this.getListOfWorkspacesFromLocalStorage();
 	  	callback(null, results);
 	} else {
 		callback("Not logged in and no local storage available");
@@ -89,7 +94,8 @@ ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
         });
 	} else if (localStorage) {
 		localStorage.removeItem('blocklySavedWorkspaceXml-' + id);
-		callback(null);
+        var results = this.getListOfWorkspacesFromLocalStorage();
+		callback(null, results);
 	} else {
 		callback("Not logged in and no local storage available");
 	}
@@ -127,11 +133,13 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 			workspace: workspace
 		}));
 
-		callback(null);
+        var results = this.getListOfWorkspacesFromLocalStorage();
+        callback(null, results);
 	} else {
 		callback("Not logged in and no local storage available");
 	}
 };
+
 
 /****************************/
 /* Levels (level_editor.js) */

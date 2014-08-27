@@ -124,16 +124,15 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             attemptedAction: action,
             startNode: this.van.currentNodeOriginal,
             fuel: this.van.getFuelPercentage(),
-            description: 'van move action: ' + action
+            description: 'crashing van move action: ' + action
         });
 
+        this.incrementTime();
+
         ocargo.animation.appendAnimation({
-            type: 'popup',
-            id: this.vanId,
-            popupType: 'FAIL',
-            failSubtype: 'CRASH',
-            popupMessage: ocargo.messages.offRoad(this.van.travelled),
-            description: 'crash popup'
+            type: 'callable',
+            functionCall: ocargo.sound.stop_engine,
+            description: 'stopping engine'
         });
 
         ocargo.animation.appendAnimation({
@@ -142,10 +141,15 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             description: 'crash sound'
         });
 
+        this.incrementTime();
+
         ocargo.animation.appendAnimation({
-            type: 'callable',
-            functionCall: ocargo.sound.stop_engine,
-            description: 'stopping engine'
+            type: 'popup',
+            id: this.vanId,
+            popupType: 'FAIL',
+            failSubtype: 'CRASH',
+            popupMessage: ocargo.messages.offRoad(this.van.travelled),
+            description: 'crash popup'
         });
 
         this.reasonForTermination = 'CRASH';
