@@ -106,14 +106,14 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         $.ajax({
             url : '/rapidrouter/submit',
             type : 'POST',
-            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
             beforeSend: function(xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
                 }
             },
             data : {
-                level : LEVEL_ID,
+                level : parseInt(LEVEL_ID),
                 score : score,
                 workspace : ocargo.blocklyControl.serialize()
             },
