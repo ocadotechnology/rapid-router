@@ -126,8 +126,8 @@ def submit_attempt(request):
             level = get_object_or_404(Level, id=request.POST.get('level', 1))
             attempt = get_object_or_404(Attempt, level=level,
                                         student=request.user.userprofile.student)
-            attempt.score = request.POST.get('score', 0)
-            attempt.workspace = request.POST.get('workspace', '')
+            attempt.score = request.POST.get('score')
+            attempt.workspace = request.POST.get('workspace')
             attempt.save()
     return HttpResponse('')
 

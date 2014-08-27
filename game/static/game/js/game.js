@@ -27,7 +27,7 @@ ocargo.Game.prototype.setup = function() {
     this.onStopControls();
 
     // default controller
-    if(BLOCKLY_ENABLED) {
+    if (BLOCKLY_ENABLED) {
         ocargo.controller = ocargo.blocklyControl;
     }
     else {
@@ -49,7 +49,7 @@ ocargo.Game.prototype.setup = function() {
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     var result = ocargo.controller.prepare();
-    if(!result.success) {
+    if (!result.success) {
         ocargo.sound.tension();
         ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error, false);
         return false;
@@ -155,8 +155,8 @@ ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
             return;
         }
 
-        for(var i = 0; i < nodes.length; i++) {
-            if(nodes[i].connectedNodes.length > 2) {
+        for (var i = 0; i < nodes.length; i++) {
+            if (nodes[i].connectedNodes.length > 2) {
                 return;
             }
         }
@@ -331,18 +331,18 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.play.setOnChange(function() {
             var existingHtml = tabs.play.getText();
 
-            if(existingHtml == "Play") {
-                if(ocargo.game.runProgramAndPrepareAnimation()) {
+            if (existingHtml == "Play") {
+                if (ocargo.game.runProgramAndPrepareAnimation()) {
                     ocargo.game.onPlayControls();
                     ocargo.animation.playAnimation();
                 }
                 
             }
-            else if(existingHtml == 'Pause') {
+            else if (existingHtml == 'Pause') {
                 ocargo.game.onPauseControls();
                 ocargo.animation.pauseAnimation();
             }
-            else if(existingHtml == 'Resume') {
+            else if (existingHtml == 'Resume') {
                 // Important ordering
                 ocargo.game.onResumeControls();
                 ocargo.animation.playAnimation();
@@ -398,7 +398,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     return;
                 }
 
-                loadInWorkspaces(workspaces)
+                loadInWorkspaces(workspaces);
             });
         });
 
@@ -415,19 +415,19 @@ ocargo.Game.prototype.setupTabs = function() {
                     $('#loadModal').foundation('reveal', 'close');
                 });
 
-                tabs['blockly'].select();
+                tabs.blockly.select();
             }
         });
 
         $('#deleteWorkspace').click(function() {
             if (selectedWorkspace) {
                 ocargo.saving.deleteWorkspace(selectedWorkspace, function(err, workspaces) {
-                    if (err != null) {
+                    if (err !== null) {
                         console.debug(err);
                         return;
                     }
 
-                    loadInWorkspaces(workspaces)
+                    loadInWorkspaces(workspaces);
                 });
             }
         });
@@ -484,7 +484,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 for (var i = 0; i < table[0].rows.length; i++) {
                      var cell = table[0].rows[i].cells[0];
                      var wName = cell.innerHTML;
-                     if(wName == newName) {
+                     if (wName == newName) {
                         ocargo.saving.deleteWorkspace(cell.attributes[0].value, 
                                                         function(err, workspace) {
                                                             if (err !== null) {
@@ -496,7 +496,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 }
 
                 ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err, workspaces) {
-                    if (err != null) {
+                    if (err !== null) {
                         console.debug(err);
                         return;
                     }
@@ -550,7 +550,7 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.big_code_mode.setOnChange(function() {
             tabs.blockly.select();
 
-            if(ocargo.blocklyControl.bigCodeMode){
+            if (ocargo.blocklyControl.bigCodeMode){
                 tabs.big_code_mode.setContents('/static/game/image/icons/big_code_mode.svg', "Enlarge");
                 ocargo.blocklyControl.decreaseBlockSize();
             } else {
