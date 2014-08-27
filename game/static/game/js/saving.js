@@ -219,8 +219,9 @@ ocargo.Saving.prototype.retrieveRandomLevel = function(data, callback) {
     });
 };
 
-ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
+ocargo.Saving.prototype.saveLevel = function(level, id, anonymous, callback) {
     csrftoken = $.cookie('csrftoken');
+    level.anonymous = anonymous;
 	$.ajax({
         url: '/rapidrouter/level_editor/level/save' + (id ? '/' + id : ''),
         type: 'POST',
@@ -238,7 +239,7 @@ ocargo.Saving.prototype.saveLevel = function(level, id, callback) {
             callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
-    delete level.csrfmiddlewaretoken;
+    delete level.anonymous;
 };
 
 ocargo.Saving.prototype.getSharingInformation = function(levelID, callback) {

@@ -61,7 +61,7 @@ class Level (models.Model):
     pythonEnabled = models.BooleanField(default=True)
     theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
     character = models.ForeignKey(Character, default=1)
-
+    anonymous = models.BooleanField(default=False)
 
     def __unicode__(self):
         return 'Level ' + str(self.id)

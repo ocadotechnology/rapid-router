@@ -158,8 +158,17 @@ ocargo.LevelEditor = function() {
 
         function setupPlayTab() {
             tabs.play.setOnChange(function() {
-                if (isLevelSaved()) {
-                    window.location.href = "/rapidrouter/" + savedLevelID;
+                if (isLevelValid()) {
+                    var state = extractState()
+                    state.name = "Custom level"
+                    ocargo.saving.saveLevel(state, null, true, function(error, levelID) {
+                        if(error) {
+                            console.debug(error)
+                            return;
+                        }
+                        console.log(levelID);
+                        window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID;
+                    });
                 } else {
                     currentTabSelected.select();
                 }
@@ -1745,7 +1754,7 @@ ocargo.LevelEditor = function() {
         var level = extractState();
         level.name = name;
 
-        ocargo.saving.saveLevel(level, levelID, function(error, newLevelID, ownedLevels, sharedLevels) {
+        ocargo.saving.saveLevel(level, levelID, false, function(error, newLevelID, ownedLevels, sharedLevels) {
             if (error !== null) {
                 console.debug(error);
                 return;
