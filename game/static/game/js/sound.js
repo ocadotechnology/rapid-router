@@ -5,32 +5,32 @@ ocargo.sound = {};
 ocargo.sound.allSounds = [];
 
 ocargo.sound.startingSound = new Howl({
-    urls: ['/static/game/sound/starting.mp3']
+    urls: ['/static/game/sound/starting.mp3', '/static/game/sound/starting.ogg']
 });
 
 ocargo.sound.engineSound = new Howl({
-    urls: ['/static/game/sound/moving.wav'],
+    urls: ['/static/game/sound/moving.mp3', '/static/game/sound/moving.ogg'],
     loop: true
 });
 
 ocargo.sound.deliverySound = new Howl({
-    urls: ['/static/game/sound/delivery.mp3']
+    urls: ['/static/game/sound/delivery.mp3', '/static/game/sound/delivery.ogg']
 });
 
 ocargo.sound.winSound = new Howl({
-    urls: ['/static/game/sound/win.mp3']
+    urls: ['/static/game/sound/win.mp3', '/static/game/sound/win.ogg']
 });
 
 ocargo.sound.failureSound = new Howl({
-    urls: ['/static/game/sound/failure.mp3']
+    urls: ['/static/game/sound/failure.mp3', '/static/game/sound/failure.ogg']
 });
 
 ocargo.sound.crashSound = new Howl({
-    urls: ['/static/game/sound/crash.mp3']
+    urls: ['/static/game/sound/crash.mp3', '/static/game/sound/crash.ogg']
 });
 
 ocargo.sound.tensionSound = new Howl({
-    urls: ['/static/game/sound/tension.mp3']
+    urls: ['/static/game/sound/tension.mp3', '/static/game/sound/tension.ogg']
 });
 
 ocargo.sound.allSounds.push(ocargo.sound.startingSound);

@@ -94,7 +94,7 @@
 
 <div id="wrapper" class="unselectable">
   <div id="tabs" class='no-print'>
-    <div class="tab selectable">
+    <div class="tab selectable {% if level.blocklyEnabled %}{% else %}hidden{% endif %}">
       <input type="radio" name="tabs" id="blockly_radio" checked>
       <label for="blockly_radio">
         <img src='/static/game/image/icons/blockly.svg'>
@@ -102,7 +102,7 @@
       </label>
     </div>
     
-    <div class="tab selectable">
+    <div class="tab selectable {% if level.pythonEnabled %}{% else %}hidden{% endif %}">
       <input type="radio" name="tabs" id="python_radio">
       <label for="python_radio">
         <img src='/static/game/image/icons/python.svg'>
@@ -163,13 +163,13 @@
       </label>
     </div>
 
-    <div class="tab">
+    <!-- <div class="tab">
       <input type="radio" name="tabs" id="print_radio">
       <label for="print_radio">
         <img src='/static/game/image/icons/print.svg'>
         <span>Print</span>
       </label>
-    </div>
+    </div> -->
 
     <div class="tab_break"></div> 
 

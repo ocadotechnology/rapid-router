@@ -128,6 +128,7 @@ def submit_attempt(request):
                                         student=request.user.userprofile.student)
             attempt.score = request.POST.get('score')
             attempt.workspace = request.POST.get('workspace')
+
             attempt.save()
     return HttpResponse('')
 
@@ -707,7 +708,7 @@ def play_anonymous_level(request, levelID):
 
     context = RequestContext(request, {
         'level': level,
-        'blocks': blocks,
+        'blocks': [block for block in blocks],  # No idea why but leaving this as a queryset was causing issues, it was magically emptying between here and the template rendering
         'lesson': lesson,
         'decor': decorData,
         'character': character,
@@ -772,16 +773,20 @@ def save_level_for_editor(request, levelID=None):
                 level.shared_with.add(level.owner.student.class_field.teacher.user.user)
 
     if permissions.can_save_level(request.user, level):
-        data = {'name': request.POST.get('name'),
-                'path': request.POST.get('path'),
-                'destinations': request.POST.get('destinations'),
-                'origin': request.POST.get('origin'),
-                'decor': request.POST.get('decor'),
-                'traffic_lights': request.POST.get('traffic_lights'),
-                'max_fuel': request.POST.get('max_fuel'),
-                'theme_id': request.POST.get('themeID'),
-                'character_name': request.POST.get('character_name'),
-                'blockTypes': json.loads(request.POST.get('block_types'))}
+        data = {
+            'name': request.POST.get('name'),
+            'path': request.POST.get('path'),
+            'destinations': request.POST.get('destinations'),
+            'origin': request.POST.get('origin'),
+            'decor': request.POST.get('decor'),
+            'traffic_lights': request.POST.get('traffic_lights'),
+            'max_fuel': request.POST.get('max_fuel'),
+            'theme_id': request.POST.get('themeID'),
+            'character_name': request.POST.get('character_name'),
+            'blockTypes': json.loads(request.POST.get('block_types')),
+            'blocklyEnabled': request.POST.get('blocklyEnabled') == 'true',
+            'pythonEnabled': request.POST.get('pythonEnabled') == 'true',
+        }
 
         level_management.save_level(level, data)
 
@@ -789,7 +794,7 @@ def save_level_for_editor(request, levelID=None):
         response['levelID'] = level.id
     else:
         response = ''
-    print("hi", response)
+    
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 

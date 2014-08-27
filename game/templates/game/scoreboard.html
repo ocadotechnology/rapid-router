@@ -9,7 +9,7 @@
   <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
   <script>
     $(document).ready(function() {
-      $("#table").tablesorter();
+      $("#scoreboardTable").tablesorter();
     });
   </script>
 {{block.super}}
@@ -67,25 +67,27 @@
 <br>
 <div class="mainBody">
   <div class="tableWrapper">
-  {{levelScore}}
     {% if studentData %}
-    <table id="table" class="CSSTable wide alternate smaller">
+    <table id="scoreboardTable" class="tablesorter CSSTable wide alternate ">
+    <thead>
       <tr>
-        <thead>
         {% for header in thead %}
           <th> {{header}} </th>
         {% endfor %}
-        </thead>
       </tr>
+      </thead>
       {% for student in studentData %}
       <tr>
           <td> {{student.0.user.user.first_name}} </td>
           <td> {{student.1}} </td>
           <td> {{student.2}}</td>
-          {% if thead.3 == 'score' %}
+          {% if thead.1 == 'Score' %}
             <td> {{student.3}} </td>
             <td> {{student.4}} </td>
           {% else %}
+            {% for levelScore in student.3 %}
+              <td> {{levelScore}} </td>
+            {% endfor %}
           {% endif %}
         </tr>
       {% endfor %}
