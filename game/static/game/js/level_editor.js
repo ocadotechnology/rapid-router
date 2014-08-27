@@ -342,7 +342,10 @@ ocargo.LevelEditor = function() {
 
                 var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
                 content += '<g transform="translate(10,0)"';
-                content += svg.innerHTML + '</g></svg>';
+                content += svg.innerHTML ? svg.innerHTML : '';
+                console.log(svg.innerHTML);
+                console.log(svg.outerHTML);
+                content += '</g></svg>';
 
                 $('#' + type + '_image').html(content);
 
