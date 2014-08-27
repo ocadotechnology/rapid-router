@@ -264,7 +264,7 @@ def random_level_for_episode(request, episodeID):
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return play_level(request, level.id)
+    return play_anonymous_level(request, level.id)
 
 
 def logged_students(request):
@@ -327,6 +327,7 @@ def logged_students(request):
         'currentClass': currentClass,
     })
     return render(request, 'game/logged_students.html', context)
+
 
 ####################
 # Level moderation #
@@ -723,6 +724,7 @@ def play_anonymous_level(request, levelID):
     level.delete()
 
     return render(request, 'game/game.html', context_instance=context)
+    
 
 def get_list_of_loadable_levels(user):
     owned_levels, shared_levels = level_management.get_list_of_loadable_levels(user)
@@ -921,6 +923,7 @@ def get_role(user):
     elif hasattr(user.userprofile, 'teacher'):
         return 'teacher'
     return 'unknown'
+
 
 def getDecorElement(name, theme):
     """ Helper method to get a decor element corresponding to the theme or a default one."""
