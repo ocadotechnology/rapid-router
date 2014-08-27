@@ -39,6 +39,8 @@ def save_level(level, data):
     level.destinations = data['destinations']
     level.max_fuel = data['max_fuel']
     level.traffic_lights = data['traffic_lights']
+    level.blocklyEnabled = data['blocklyEnabled']
+    level.pythonEnabled = data['pythonEnabled']
     level.save()
 
     set_level_decor(level, data['decor'])
