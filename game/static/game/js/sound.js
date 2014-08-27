@@ -86,6 +86,6 @@ ocargo.sound.mute = function() {
 };
 
 ocargo.sound.unmute = function() {
-    Blockly.SOUNDS_ = this.playAudioBackup;
+    Blockly.SOUNDS_ = this.playAudioBackup || Blockly.SOUNDS_;
     ocargo.sound.setAllVolumes(1.0);
 };
