@@ -365,7 +365,10 @@ ocargo.LevelEditor = function() {
                             trafficLightsEnabled: $('#trafficLightsEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
                 
+                $('#generate').attr('disabled', true);
+
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
+                    $('#generate').attr('disabled', false);
                     if (error) {
                         console.debug(error);
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);

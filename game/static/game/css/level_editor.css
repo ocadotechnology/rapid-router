@@ -38,7 +38,7 @@ input {
     margin: 0;
 }
 
-.navigation_button .fixed_size {
+.navigation_button.fixed_size {
     width: 180px;
 }
 
@@ -75,14 +75,14 @@ input {
     display: table-cell;
 }
 
-.table_cell .field_label {
+.table_cell.field_label {
     width: 100px;
     margin: 0;
     vertical-align: middle;
     margin-bottom: 0;
 }
 
-.table_cell .field_value {
+.table_cell.field_value {
     width: 100px;
 }
 
@@ -178,7 +178,7 @@ input[type="radio"].character_radio {
 /* Generate */
 /************/
 
-#random_pane .table_cell .field_label {
+#random_pane .table_cell.field_label {
     width: 150px;
 }
 
