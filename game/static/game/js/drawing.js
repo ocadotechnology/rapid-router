@@ -687,7 +687,13 @@ ocargo.Drawing = function() {
     };
 
     function moveVanImage(attr, vanId, animationLength, callback) {
-        vanImages[vanId].animate(attr, animationLength, 'linear', callback);
+        var vanImage = vanImages[vanId];
+
+        // Compress all current transformations into one
+        vanImage.transform(vanImage.matrix.toTransformString());
+
+        // Perform the next animation
+        vanImage.animate(attr, animationLength, 'linear', callback);
     }
 
     this.crash = function(vanID, animationLength, previousNode, currentNode, attemptedAction, startNode) {
