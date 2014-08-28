@@ -459,14 +459,13 @@ ocargo.LevelEditor = function() {
                         return;
                     }
 
-                    processListOfLevels(err, ownedLevels, sharedLevels)
                     if (selectedLevel == savedLevelID) {
                         savedLevelID = -1;
                         savedState = null;
                         ownsSavedLevel = false;
                     }
 
-                    selectedLevel = null;
+                    processListOfLevels(err, ownedLevels, sharedLevels);
                 });
             });
 
@@ -579,6 +578,7 @@ ocargo.LevelEditor = function() {
                     }
                 });
 
+                $('#save_pane .scrolling-table-wrapper').css('display', ownLevels.length === 0 ? 'none' : 'block');
                 selectedLevel = null;
             }
         }
@@ -591,7 +591,7 @@ ocargo.LevelEditor = function() {
 
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
-                if (!isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
+                if (!isSoloStudent() ||  !isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
                     currentTabSelected.select();
                     return;
                 }
@@ -666,13 +666,13 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                if (USER_ROLE === "student") {
+                if (USER_STATUS === "SCHOOL_STUDENT") {
                     var classmates = validRecipients.classmates;
                     var teacher = validRecipients.teacher;
 
                     populateSharingTable(classmates);
                 }
-                else if (USER_ROLE == "teacher") {
+                else if (USER_STATUS === "TEACHER") {
                     classesTaught = validRecipients.classes;
                     fellowTeachers = validRecipients.teachers;
 
@@ -796,8 +796,6 @@ ocargo.LevelEditor = function() {
                 currentTabSelected.select();
                 ocargo.Drawing.startPopup('', '', message);
             });
-
-           
         }
 
         function setupQuitTab() {
@@ -1876,8 +1874,16 @@ ocargo.LevelEditor = function() {
     }
 
     function isLoggedIn(activity) {
-        if (USER_ROLE !== "student" && USER_ROLE !== 'teacher') {
+        if (USER_STATUS !== "SCHOOL_STUDENT" && USER_STATUS !== "TEACHER" && USER_STATUS !== "SOLO_STUDENT") {
             ocargo.Drawing.startPopup("Not logged in", "", ocargo.messages.notLoggedIn(activity));
+            return false;
+        }
+        return true;
+    }
+
+    function isSoloStudent() {
+        if (USER_STATUS === "SOLO_STUDENT") {
+            ocargo.Drawing.startPopup("Sharing as an independent student", "", ocargo.messages.soloSharing);
             return false;
         }
         return true;
