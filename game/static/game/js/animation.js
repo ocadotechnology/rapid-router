@@ -53,6 +53,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	}
 
 	for(var i = 0; i < THREADS; i++) {
+		ocargo.drawing.skipOutstandingVanAnimationsToEnd(i);
 		ocargo.drawing.setVanImagePosition(this.model.map.getStartingPosition(), i);
 	}
 
