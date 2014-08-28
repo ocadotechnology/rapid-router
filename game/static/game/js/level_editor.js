@@ -163,7 +163,7 @@ ocargo.LevelEditor = function() {
                     state.name = "Custom level"
                     ocargo.saving.saveLevel(state, null, true, function(error, levelID) {
                         if(error) {
-                            console.debug(error)
+                            console.error(error)
                             return;
                         }
                         window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID;
@@ -370,7 +370,7 @@ ocargo.LevelEditor = function() {
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
                     $('#generate').attr('disabled', false);
                     if (error) {
-                        console.debug(error);
+                        console.error(error);
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                         return;
                     }
@@ -455,7 +455,7 @@ ocargo.LevelEditor = function() {
 
                 ocargo.saving.deleteLevel(selectedLevel, function(err, ownedLevels, sharedLevels) {
                     if (err !== null) {
-                        console.debug(err);
+                        console.error(err);
                         return;
                     }
 
@@ -472,7 +472,7 @@ ocargo.LevelEditor = function() {
 
             function processListOfLevels(err, listOfOwnLevels, listOfSharedLevels) {
                 if (err !== null) {
-                    console.debug(err);
+                    console.error(err);
                     currentTabSelected.select();
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
@@ -553,7 +553,7 @@ ocargo.LevelEditor = function() {
 
             function processListOfLevels(err, ownLevels, sharedLevels) {
                 if (err !== null) {
-                    console.debug(err);
+                    console.error(err);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
@@ -598,7 +598,7 @@ ocargo.LevelEditor = function() {
                 
                 ocargo.saving.getSharingInformation(savedLevelID, function(error, validRecipients) {
                     if(error) {
-                        console.debug(error);
+                        console.error(error);
                         return;
                     }
 
@@ -661,7 +661,7 @@ ocargo.LevelEditor = function() {
             // Method to call when we get an update on the level's sharing information
             function processSharingInformation(error, validRecipients) {
                 if (error !== null) {
-                    console.debug(error);
+                    console.error(error);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
@@ -1768,7 +1768,7 @@ ocargo.LevelEditor = function() {
     function loadLevel(levelID) { 
         ocargo.saving.retrieveLevel(levelID, function(err, level, owned) {
             if (err !== null) {
-                console.debug(err);
+                console.error(err);
                 return;
             }
 
@@ -1786,7 +1786,7 @@ ocargo.LevelEditor = function() {
 
         ocargo.saving.saveLevel(level, levelID, false, function(error, newLevelID, ownedLevels, sharedLevels) {
             if (error !== null) {
-                console.debug(error);
+                console.error(error);
                 return;
             }
 

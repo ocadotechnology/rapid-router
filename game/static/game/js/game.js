@@ -123,7 +123,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
                 workspace : ocargo.blocklyControl.serialize()
             },
             error : function(xhr, errmsg, err) {
-                console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                console.error(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
     }
@@ -407,7 +407,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
-                    console.debug(err);
+                    console.error(err);
                     return;
                 }
 
@@ -419,7 +419,7 @@ ocargo.Game.prototype.setupTabs = function() {
             if (selectedWorkspace) {
                 ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
                     if (err !== null) {
-                        console.debug(err);
+                        console.error(err);
                         return;
                     }
 
@@ -438,7 +438,7 @@ ocargo.Game.prototype.setupTabs = function() {
             if (selectedWorkspace) {
                 ocargo.saving.deleteWorkspace(selectedWorkspace, function(err, workspaces) {
                     if (err !== null) {
-                        console.debug(err);
+                        console.error(err);
                         return;
                     }
 
@@ -484,7 +484,7 @@ ocargo.Game.prototype.setupTabs = function() {
             
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
-                    console.debug(err);
+                    console.error(err);
                     return;
                 }
                 
@@ -503,7 +503,7 @@ ocargo.Game.prototype.setupTabs = function() {
                         ocargo.saving.deleteWorkspace(cell.attributes[0].value, 
                                                         function(err, workspace) {
                                                             if (err !== null) {
-                                                                console.debug(err);
+                                                                console.error(err);
                                                                 return;
                                                             }
                                                         });
@@ -512,7 +512,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
                 ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err, workspaces) {
                     if (err !== null) {
-                        console.debug(err);
+                        console.error(err);
                         return;
                     }
 
