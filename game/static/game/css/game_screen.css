@@ -48,14 +48,17 @@
     margin-right: 30px;
 }
 
+/************/
+/** Tables **/
+/************/
+
 .scrolling-table-wrapper {
     position: relative;
+    border: solid 1px #dddddd;
 }
 
 .scrolling-table {
     max-height: 180px;
-    width: 350px;
-    max-width: 350px;
     overflow: auto;
 }
 
@@ -74,9 +77,14 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbed21', endColorstr='#faaf3b',GradientType=0 ); /* IE6-9 */
 }
 
-.scrolling-table table {
+table {
     border-collapse: collapse;
     border-spacing: 0px;
+    border: none;
+}
+
+table th {
+    border-bottom: solid 1px #dddddd;
 }
 
 /*************/

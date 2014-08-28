@@ -425,6 +425,8 @@ ocargo.Game.prototype.setupTabs = function() {
                 });
 
                 tabs.blockly.select();
+                ocargo.blocklyControl.showFlyout();
+                ocargo.blocklyControl.showFlyout();
             }
         });
 

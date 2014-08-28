@@ -250,10 +250,20 @@
           <p>Here you can load a program you've previously saved!</p>
           <div style="width:auto">
             <div class="scrolling-table-wrapper">
+              <table id="loadWorkspaceTableHeader">
+                <thead>
+                  <tr>  
+                    <th>Name</th>
+                  </tr>
+                </thead>
+              </table>
               <div class="scrolling-table">
-                <table id="loadWorkspaceTable"></table>
+                <table id="loadWorkspaceTable">
+                  <tbody></tbody>
+                </table>
               </div>
             </div>
+            <br>
             <div>
               <button class="navigation_button" id="deleteWorkspace">
                 <img src="/static/game/image/icons/clear.svg"/>
@@ -272,10 +282,20 @@
         <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'>Save</h2>
         <p>Here you can save your program so you can retrieve it later!</p>
         <div class="scrolling-table-wrapper">
+          <table id="saveWorkspaceTableHeader">
+            <thead>
+              <tr>  
+                <th>Name</th>
+              </tr>
+            </thead>
+          </table>
           <div class="scrolling-table">
-            <table id="saveWorkspaceTable"></table>
+            <table id="saveWorkspaceTable">
+              <tbody></tbody>
+            </table>
           </div>
         </div>
+        <br>
         <div>
           <input type="text" id="workspaceNameInput">
           <button class="navigation_button" id="saveWorkspace">
@@ -319,62 +339,12 @@
   </div>
 </div>
   
-  
-  
-
 <xml id="blockly_toolbox" style="display: none">
-  <category name="+">
+  <category name="+"
     {% for block in blocks %}
       <block type="{{ block.type }}"></block>
     {% endfor %}
   </category>
 </xml>
-
-<!--
-<div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'/>Load</h2>
-  <p>Here you can load a previously saved program.</p>
-  <div style="width:auto">
-    <div class="scrolling-table-wrapper">
-      <div class="scrolling-table">
-        <table id="loadWorkspaceTable"></table>
-      </div>
-    </div>
-    <div>
-      <button class="navigation_button" id="deleteWorkspace">
-        <img src="/static/game/image/icons/clear.svg"/>
-        <span>Delete</span>
-      </button>
-
-      <button class="navigation_button" id="loadWorkspace">
-        <img src="/static/game/image/icons/load.svg"/>
-        <span>Load</span>
-      </button>
-    </div>
-  </div>
-  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
-</div>
-
-<div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'/>Save</h2>
-  <p>Here you can save your program.</p>
-  <div>
-    <div class="scrolling-table-wrapper">
-      <div class="scrolling-table">
-        <table id="saveWorkspaceTable"></table>
-      </div>
-    </div>
-    <div>
-      <input id="workspaceNameInput"/>
-
-      <button class="navigation_button" id="saveWorkspace">
-        <img src="/static/game/image/icons/save.svg"/>
-        <span>Save</span>
-      </button>
-    </div>
-  </div>
-  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
-</div>
--->
 
 {% endblock %}

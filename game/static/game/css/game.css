@@ -119,6 +119,16 @@
     margin-left: 28px;
 }
 
+#load_pane table,
+#save_pane table {
+    margin-bottom: 0px;
+    width: 100%;
+}
+
+.scrolling-table-wrapper {
+    max-width: 380px;
+}
+
 /**************/
 /* Fuel gauge */
 /**************/
