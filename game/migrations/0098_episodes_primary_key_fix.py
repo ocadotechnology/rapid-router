@@ -65,28 +65,28 @@ def recreate_episodes(Episode, Level, Block):
     episode4.next_episode = episode5
     episode5.next_episode = episode6
 
-    episode1.blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards"])
+    episode1.r_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards"])
 
-    episode2.blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
-                                                     "deliver"])
+    episode2.r_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
+                                                       "deliver"])
 
-    episode3.blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
-                                                     "controls_repeat"])
+    episode3.r_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
+                                                       "controls_repeat"])
 
-    episode4.blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
-                                                     "controls_repeat_until", "at_destination",
-                                                     "controls_repeat"])
+    episode4.r_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
+                                                       "controls_repeat_until", "at_destination",
+                                                       "controls_repeat"])
     
-    episode5.blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
-                                                     "controls_repeat_until", "at_destination",
-                                                     "controls_if", "road_exists", "dead_end",
-                                                     "controls_repeat", "turn_around"])
+    episode5.r_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
+                                                       "controls_repeat_until", "at_destination",
+                                                       "controls_if", "road_exists", "dead_end",
+                                                       "controls_repeat", "turn_around"])
 
-    episode6.blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
-                                                     "controls_repeat_until", "controls_if",
-                                                     "road_exists", "at_destination", "wait",
-                                                     "controls_repeat", "dead_end", "turn_around",
-                                                     "controls_repeat_while", "traffic_light"])
+    episode6.r_blocks = Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards",
+                                                       "controls_repeat_until", "controls_if",
+                                                       "road_exists", "at_destination", "wait",
+                                                       "controls_repeat", "dead_end", "turn_around",
+                                                       "controls_repeat_while", "traffic_light"])
 
     episode1.save()
     episode2.save()
