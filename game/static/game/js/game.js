@@ -13,6 +13,7 @@ ocargo.Game.prototype.setup = function() {
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.drawing = new ocargo.Drawing();
+    ocargo.drawing.preloadRoadTiles();
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
     ocargo.saving = new ocargo.Saving();
@@ -58,6 +59,9 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     var program = result.program;
 
     ocargo.blocklyControl.resetIncorrectBlock();
+
+    // Needed so animation can reset with the right information
+    ocargo.model.reset(0);
 
     // clear animations and sound
     ocargo.sound.stop_engine();
