@@ -20,7 +20,7 @@ ocargo.PathFinder.prototype.getScore = function() {
 
     var pathLengthScore = Math.max(0, this.getTravelledPathScore());
     var message = ocargo.messages.pathScore + 
-                    this.renderCoins(pathLengthScore, this.maxDistanceScore) + "<br>";
+                    this.renderCoins(pathLengthScore, this.maxDistanceScore);
 
     
 
@@ -47,16 +47,16 @@ ocargo.PathFinder.prototype.getScore = function() {
     message += ocargo.messages.totalScore(totalScore, this.maxScore);
 
     if (pathLengthScore < this.maxDistanceScore) {
-        message += "<br><br>" + ocargo.messages.pathLonger;
+        message += "<br>" + ocargo.messages.pathLonger;
     }
     else if (initInstrScore > this.maxInstrLengthScore) {
-        message += "<br><br>" + ocargo.messages.algorithmShorter;
+        message += "<br>" + ocargo.messages.algorithmShorter;
     }
     else if (initInstrScore < this.maxInstrLengthScore) {
-        message += "<br><br>" + ocargo.messages.algorithmLonger;
+        message += "<br>" + ocargo.messages.algorithmLonger;
     }
     else  if (totalScore === this.maxScore) {
-        message += "<br><br>" + ocargo.messages.scorePerfect;
+        message += "<br>" + ocargo.messages.scorePerfect;
     }
 
     return [totalScore, message];

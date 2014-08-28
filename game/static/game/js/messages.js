@@ -22,9 +22,11 @@ ocargo.jsElements = {
 ocargo.messages = {
     nextEpisode: function(episode) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
-            "challenge? <br><br>" + 
+            "challenge? Or try one of this episode's random levels! <br><br>" + 
             ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "'",
                                              'Next episode') + " " +
+            ocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "'",
+                                             'Random level') + " " +
             ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
     },
 
