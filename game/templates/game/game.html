@@ -55,6 +55,8 @@
   <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/howler.js' %}"></script>
 
+  <script type="text/javascript" src="{% static 'game/js/fpsmeter.js' %}"></script>
+
   <script type="text/javascript" src="{% static 'game/js/tab.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
@@ -75,6 +77,14 @@
   <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
 
+  <script type="text/javascript">
+    $(function() {
+      document.addEventListener('fps', function(e) {
+        document.getElementById('fps').innerHTML = e.fps + ' fps';
+      }, false);
+      //FPSMeter.run(0.5);
+    });
+  </script>
   
 {% endblock %}
 
@@ -90,7 +100,9 @@
 
 {% block content %}
 
-
+<div style='position: fixed; top: 0px; right: 0px; background: black; z-index: 99'>
+  <div id='fps' style='font-size: 2em; color: white'></div>
+</div>
 
 <div id="wrapper" class="unselectable">
   <div id="tabs" class='no-print'>
