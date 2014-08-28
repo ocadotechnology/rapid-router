@@ -174,19 +174,25 @@ ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
 
 ocargo.Game.prototype.setupDirectDriveListeners = function() {
     $('#moveForward').click(function() {
-        ocargo.game.onPlayControls();
-        ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-        ocargo.drawing.moveForward(0, ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+        if(ocargo.model.reasonForTermination != 'CRASH') {
+            ocargo.game.onPlayControls();
+            ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
+            ocargo.drawing.moveForward(0, ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+        }
     });
     $('#turnLeft').click(function() {
-        ocargo.game.onPlayControls();
-        ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-        ocargo.drawing.moveLeft(0, ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+        if(ocargo.model.reasonForTermination != 'CRASH') {
+            ocargo.game.onPlayControls();
+            ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
+            ocargo.drawing.moveLeft(0, ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+        }
     });
     $('#turnRight').click(function() {
-        ocargo.game.onPlayControls();
-        ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-        ocargo.drawing.moveRight(0, ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+        if(ocargo.model.reasonForTermination != 'CRASH') {
+            ocargo.game.onPlayControls();
+            ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
+            ocargo.drawing.moveRight(0, ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+        }
     });
     $('#go').click(function() {
         $('#play_radio').trigger('click');
@@ -585,10 +591,8 @@ ocargo.Game.prototype.setupTabs = function() {
     }
 
     function setupMuteTab() {
-
         tabs.mute.setOnChange(function() {
             ocargo.game.mute($.cookie('muted') !== 'true');
-
             currentTabSelected.select();
         });
     }
