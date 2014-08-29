@@ -755,7 +755,7 @@ def load_level_for_editor(request, levelID):
     response = ''
     if permissions.can_load_level(request.user, level):
         response = {'owned': level.owner == request.user.userprofile, 'level': model_to_dict(level)}
-
+        
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 

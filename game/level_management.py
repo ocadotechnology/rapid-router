@@ -25,6 +25,8 @@ def save_level(level, data):
         regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))')
         items = regex.findall(decorString)
 
+        level.decor = decorString
+        
         existingDecor = LevelDecor.objects.filter(level=level)
         for levelDecor in existingDecor:
             levelDecor.delete()
