@@ -277,11 +277,13 @@ ocargo.LevelEditor = function() {
                 transitionTab(tabs.character);
             });
 
-            $('#Van_radio').prop("checked", true);
-            $("#character-form").on('change', ':input', function() { 
-                CHARACTER_NAME = $('input:checked', '#character-form').val();
+            $("#character_select").change(function() { 
+                CHARACTER_NAME = $(this).val();
                 redrawRoad();
+                $('#character_image').attr('src', CHARACTERS[CHARACTER_NAME].image);
             });
+
+            $("#character_select").change();
         }  
 
         function setupBlocksTab() {

@@ -128,6 +128,7 @@ input {
 #delete_caption {
     font-size: 0.79rem;
     visibility: hidden;
+    line-height: 15px;
 }
 
 .decor_button,
@@ -178,13 +179,15 @@ input[type="checkbox"].block_checkbox {
 /* Characters tab */
 /******************/
 
-.character  {
-    cursor: pointer;
-    margin-left: 20px;
+#character_select {
+    width: 100px;
+    margin-left: 15px;
+    margin-bottom: 0px;
 }
 
-input[type="radio"].character_radio {
-    cursor: pointer;
+#character_image  {
+    margin-left: 35px;
+    height: 225px;
 }
 
 /************/
