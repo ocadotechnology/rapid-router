@@ -68,13 +68,13 @@ ocargo.PathFinder.prototype.renderCoins = function(score, maxScore) {
     var coins = "<div>";
     var i;
     for (i = 0; i < Math.floor(score); i++) {
-        coins += "<img src='/static/game/image/coins/coin_gold.svg' width='50'>";
+        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_gold.svg' width='50'>";
     }
     if (score - Math.floor(score) > 0) {
-        coins += "<img src='/static/game/image/coins/coin_5050_dots.svg' width='50'>";
+        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_5050_dots.svg' width='50'>";
     }
     for (i = Math.ceil(score); i < maxScore; i++) {
-        coins += "<img src='/static/game/image/coins/coin_empty_dots.svg' width='50'>";
+        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_empty_dots.svg' width='50'>";
     }
     coins += "      " + score + "/" + maxScore;
     coins += "</div>";

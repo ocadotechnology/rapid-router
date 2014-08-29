@@ -8,14 +8,14 @@ ocargo.LevelEditor = function() {
     /* Constants */
     /*************/
 
-    var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
-    var LIGHT_GREEN_URL = '/static/game/image/trafficLight_green.svg';
+    var LIGHT_RED_URL = ocargo.Drawing.imageDir + 'trafficLight_red.svg';
+    var LIGHT_GREEN_URL = ocargo.Drawing.imageDir + 'trafficLight_green.svg';
     
-    var DELETE_DECOR_IMG_URL = "/static/game/image/icons/delete_decor.svg";
-    var ADD_ROAD_IMG_URL = "/static/game/image/icons/add_road.svg";
-    var DELETE_ROAD_IMG_URL = "/static/game/image/icons/delete_road.svg";
-    var MARK_START_IMG_URL = "/static/game/image/icons/origin.svg";
-    var MARK_END_IMG_URL = "/static/game/image/icons/destination.svg";
+    var DELETE_DECOR_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_decor.svg";
+    var ADD_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/add_road.svg";
+    var DELETE_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_road.svg";
+    var MARK_START_IMG_URL = ocargo.Drawing.imageDir + "icons/origin.svg";
+    var MARK_END_IMG_URL = ocargo.Drawing.imageDir + "icons/destination.svg";
 
     var VALID_LIGHT_COLOUR = '#87E34D';
     var INVALID_LIGHT_COLOUR = '#E35F4D';
@@ -25,11 +25,11 @@ ocargo.LevelEditor = function() {
     var paper = $('#paper'); // May as well cache this
 
     var modes = {
-        ADD_ROAD_MODE: {name: 'Add Road', url: "/static/game/image/icons/add_road.svg"},
-        DELETE_ROAD_MODE: {name: 'Delete Road', url: "/static/game/image/icons/delete_road.svg"},
-        MARK_DESTINATION_MODE: {name: 'Mark end', url: "/static/game/image/icons/destination.svg"},
-        MARK_ORIGIN_MODE: {name: 'Mark start', url: "/static/game/image/icons/origin.svg"},
-        DELETE_DECOR_MODE: {name: 'Delete decor', url: "/static/game/image/icons/delete_decor.svg"}
+        ADD_ROAD_MODE: {name: 'Add Road', url: ocargo.Drawing.imageDir + "icons/add_road.svg"},
+        DELETE_ROAD_MODE: {name: 'Delete Road', url: ocargo.Drawing.imageDir + "icons/delete_road.svg"},
+        MARK_DESTINATION_MODE: {name: 'Mark end', url: ocargo.Drawing.imageDir + "icons/destination.svg"},
+        MARK_ORIGIN_MODE: {name: 'Mark start', url: ocargo.Drawing.imageDir + "icons/origin.svg"},
+        DELETE_DECOR_MODE: {name: 'Delete decor', url: ocargo.Drawing.imageDir + "icons/delete_decor.svg"}
     };
 
     /*********/
@@ -760,11 +760,11 @@ ocargo.LevelEditor = function() {
                 // Update the shareWithAll button
                 if (allShared) {
                     $('#shareWithAll span').html('Unshare with all');
-                    $('#shareWithAll img').attr('src','/static/game/image/icons/quit.svg');
+                    $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/quit.svg');
                 }
                 else {
                     $('#shareWithAll span').html('Share with all');
-                    $('#shareWithAll img').attr('src','/static/game/image/icons/share.svg');
+                    $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/share.svg');
                 }
 
                 // update click listeners in the new rows
