@@ -73,7 +73,6 @@ def play_level(request, levelID):
     cfc = getDecorElement('cfc', level.theme).url
     background = getDecorElement('tile1', level.theme).url
     character = level.character
-    role = get_role(request.user)
 
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
@@ -94,7 +93,6 @@ def play_level(request, levelID):
         'cfc': cfc,
         'hint': hint,
         'attempt': attempt,
-        'user_role': role,
         'return_url': '/rapidrouter/',
     })
 
@@ -456,20 +454,21 @@ def scoreboard(request):
     if not permissions.can_see_scoreboard(request.user):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
+    userprofile = request.user.userprofile
+
     school = None
     thead = []
     classes = []
-    if hasattr(request.user.userprofile, 'teacher'):
+    if hasattr(userprofile, 'teacher'):
         school = request.user.userprofile.teacher.school
         teachers = Teacher.objects.filter(school=school)
         classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
         classes = Class.objects.filter(id__in=classes_list)
         if len(classes) <= 0:
             return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
-    elif hasattr(request.user.userprofile, 'student') and \
-            request.user.userprofile.student.class_field is not None:
+    elif hasattr(userprofile, 'student') and not userprofile.student.is_independent():
         # user is a school student
-        class_ = request.user.userprofile.student.class_field
+        class_ = userprofile.student.class_field
         classes = Class.objects.filter(id=class_.id)
         school = class_.teacher.school
     else:
@@ -493,6 +492,8 @@ def scoreboard(request):
 def renderScoreboard(request, form, school):
     """ Helper method rendering the scoreboard.
     """
+    userprofile = request.user.userprofile
+
     studentData = None
     levelID = form.data.get('levels', False)
     classID = form.data.get('classes', False)
@@ -501,22 +502,21 @@ def renderScoreboard(request, form, school):
         cl = get_object_or_404(Class, id=classID)
         students = cl.students.all()
     # check user has permission to look at this class!
-    if hasattr(request.user.userprofile, 'teacher'):
-        teachers = Teacher.objects.filter(school=request.user.userprofile.teacher.school)
+    if hasattr(userprofile, 'teacher'):
+        teachers = Teacher.objects.filter(school=userprofile.teacher.school)
         classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
         if classID and not int(classID) in classes_list:
             raise Http404
-    elif hasattr(request.user.userprofile, 'student') and not \
-            request.user.userprofile.student.class_field is None:
+    elif hasattr(userprofile, 'student') and not userprofile.student.is_independent():
         # user is a school student
-        class_ = request.user.userprofile.student.class_field
+        class_ = userprofile.student.class_field
         if classID and int(classID) != class_.id:
             raise Http404
         students = class_.students.all()
         # remove all students except this student from students if the class config doesn't allow
         # for students to see classmates' data
         if not class_.classmates_data_viewable:
-            students = students.filter(id=request.user.userprofile.student.id)
+            students = students.filter(id=userprofile.student.id)
     else:
         raise Http404
 
@@ -596,22 +596,24 @@ def handleOneClassOneLevel(students, level):
 def handleAllClassesOneLevel(request, level):
     """ Show all the students's (from the same school for now) performance on this level.
     """
+    userprofile = request.user.userprofile
+
     studentData = []
     classes = []
-    if hasattr(request.user.userprofile, 'student'):
+    if hasattr(userprofile, 'student'):
         # Students can only see at most their classmates
-        classes = [request.user.userprofile.student.class_field]
-    elif hasattr(request.user.userprofile, 'teacher'):
+        classes = [userprofile.student.class_field]
+    elif hasattr(userprofile, 'teacher'):
         # Allow teachers to see school stats
-        school = request.user.userprofile.teacher.school
+        school = userprofile.teacher.school
         teachers = Teacher.objects.filter(school=school)
         classes = [c for c in Class.objects.all() if (c.teacher in teachers)]
 
     for cl in classes:
         students = cl.students.all()
-        if hasattr(request.user.userprofile, 'student') and not request.user.userprofile.student.class_field.classmates_data_viewable:
+        if hasattr(userprofile, 'student') and not userprofile.student.class_field.classmates_data_viewable:
             # Filter out other students' data if not allowed to see classmates
-            students = students.filter(id=request.user.userprofile.student.id)
+            students = students.filter(id=userprofile.student.id)
         for student in students:
             row = createOneRow(student, level)
             studentData.append(row)
@@ -630,21 +632,23 @@ def handleOneClassAllLevels(students, levels):
 def handleAllClassesAllLevels(request, levels):
     """ For now restricting it to the same school.
     """
+    userprofile = request.user.userprofile
+
     studentData = []
-    if hasattr(request.user.userprofile, 'student'):
+    if hasattr(userprofile, 'student'):
         # Students can only see at most their classmates
-        classes = [request.user.userprofile.student.class_field]
-    elif hasattr(request.user.userprofile, 'teacher'):
+        classes = [userprofile.student.class_field]
+    elif hasattr(userprofile, 'teacher'):
         # allow teachers to see school stats
-        school = request.user.userprofile.teacher.school
+        school = userprofile.teacher.school
         teachers = Teacher.objects.filter(school=school)
         classes = [c for c in Class.objects.all() if (c.teacher in teachers)]
 
     for cl in classes:
         students = cl.students.all()
-        if hasattr(request.user.userprofile, 'student') and not request.user.userprofile.student.class_field.classmates_data_viewable:
+        if hasattr(userprofile, 'student') and not userprofile.student.class_field.classmates_data_viewable:
             # Filter out other students' data if not allowed to see classmates
-            students = students.filter(id=request.user.userprofile.student.id)
+            students = students.filter(id=userprofile.student.id)
         for student in students:
             studentData.append([student, 0.0, [], []])
     return createRows(studentData, levels)
@@ -673,7 +677,6 @@ def level_editor(request):
         'decor': Decor.objects.all(),
         'characters': Character.objects.all(),
         'themes': Theme.objects.all(),
-        'user_role': get_role(request.user)
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
@@ -705,8 +708,6 @@ def play_anonymous_level(request, levelID):
     background = getDecorElement('tile1', level.theme).url
     character = level.character
 
-    role =  'unknown'
-
     context = RequestContext(request, {
         'level': level,
         'blocks': [block for block in blocks],  # No idea why but leaving this as a queryset was causing issues, it was magically emptying between here and the template rendering
@@ -718,7 +719,6 @@ def play_anonymous_level(request, levelID):
         'cfc': cfc,
         'hint': hint,
         'attempt': attempt,
-        'user_role': role,
         'return_url': '/rapidrouter/level_editor',
     })
 
@@ -770,10 +770,6 @@ def save_level_for_editor(request, levelID=None):
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
 
-            if hasattr(level.owner, 'student') and level.owner.student.class_field is not None:
-                level.save()
-                level.shared_with.add(level.owner.student.class_field.teacher.user.user)
-
     if permissions.can_save_level(request.user, level):
         data = {
             'name': request.POST.get('name'),
@@ -783,7 +779,7 @@ def save_level_for_editor(request, levelID=None):
             'decor': request.POST.get('decor'),
             'traffic_lights': request.POST.get('traffic_lights'),
             'max_fuel': request.POST.get('max_fuel'),
-            'theme_id': request.POST.get('themeID'),
+            'theme_id': request.POST.get('theme'),
             'character_name': request.POST.get('character_name'),
             'blockTypes': json.loads(request.POST.get('block_types')),
             'blocklyEnabled': request.POST.get('blocklyEnabled') == 'true',
@@ -791,6 +787,12 @@ def save_level_for_editor(request, levelID=None):
         }
 
         level_management.save_level(level, data)
+
+        # Add the teacher automatically if it is a new level and the student is not independent
+        if (levelID is None) and hasattr(level.owner, 'student') and not level.owner.student.is_independent():
+            print(level.owner.student.is_independent())
+            level.shared_with.add(level.owner.student.class_field.teacher.user.user)
+            level.save()
 
         response = get_list_of_loadable_levels(request.user)
         response['levelID'] = level.id
@@ -828,15 +830,14 @@ def get_sharing_information_for_editor(request, levelID):
     """ Returns a information about who the level can be and is shared with """
     level = Level.objects.get(id=levelID)
     valid_recipients = {}
-    role = 'anonymous'
 
     if permissions.can_share_level(request.user, level):
         userprofile = request.user.userprofile
         valid_recipients = {}
 
+        # Note: independent users can't share levels so no need to check
         if hasattr(userprofile, 'student'):
             student = userprofile.student
-            role = 'student'
 
             # First get all the student's classmates
             class_ = student.class_field
@@ -854,7 +855,6 @@ def get_sharing_information_for_editor(request, levelID):
 
         elif hasattr(userprofile, 'teacher'):
             teacher = userprofile.teacher
-            role = 'teacher'
 
             # First get all the students they teach
             valid_recipients['classes'] = []
@@ -887,6 +887,7 @@ def share_level_for_editor(request, levelID):
     recipients = User.objects.filter(id__in=recipientIDs)
 
     for recipient in recipients:
+        print(recipient)
         if permissions.can_share_level_with(recipient, level.owner.user):
             if action == 'share':
                 level_management.share_level(level, recipient.userprofile.user)
@@ -925,16 +926,6 @@ def renderError(request, title, message):
 ##################
 # Helper methods #
 ##################
-
-def get_role(user):
-    if user.is_anonymous():
-        return 'anonymous'
-    elif hasattr(user.userprofile, 'student'):
-        return 'student'
-    elif hasattr(user.userprofile, 'teacher'):
-        return 'teacher'
-    return 'unknown'
-
 
 def getDecorElement(name, theme):
     """ Helper method to get a decor element corresponding to the theme or a default one."""

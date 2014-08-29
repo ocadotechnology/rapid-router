@@ -3,7 +3,7 @@
 {% load static %}
 {% load app_tags %}
 
-{% block title %}Code For Life - Rapid Router - Create{% endblock %}
+{% block title %}Code for Life - Rapid Router - Create{% endblock %}
 
 {% block scripts %}
 {{block.super}}
@@ -32,7 +32,6 @@
   <script src="/static/game/js/destination.js"></script>
 
   <script>
-    var USER_ROLE = '{{user_role}}';
     var BLOCKS = [];
     var THEMES =  [];
     var CHARACTER_NAME = 'Van';
@@ -56,7 +55,7 @@
       {% for dec in decor %}
         decor.push({"id":"{{dec.id}}",
                     "name":"{{dec.name}}",
-                    "url":"{{dec.url}}",
+                    "url": ocargo.Drawing.imageDir + "{{dec.url}}",
                     "width":"{{dec.width}}",
                     "height":"{{dec.height}}",
                     "theme_name":themes[{{dec.theme_id}}-1].name});
@@ -73,6 +72,12 @@
         var themeDecor = THEMES[decor[i].theme_name].decor;
         themeDecor[decor[i].name] = decor[i];
       }
+
+      CHARACTERS = [];
+      {% for char in characters %}
+          CHARACTERS['{{char.name}}'] = {name:  '{{char.name}}',
+                                         image: '/static/game/image/{{char.en_face}}'}
+      {% endfor %}
     }
     
     initGlobals();
@@ -99,9 +104,11 @@
     </div>
     
     <div id="currentTool">
-      <div id="currentToolTitle" class="currentToolText">Current Tool:</div>
-      <img id="currentToolImg" class="currentToolImage" src="/static/game/image/icons/delete_road.svg" >
-      <span id="currentToolText" class="currentToolText">Delete Road</span>
+      <!--<div id="currentToolTitle">Current: </div>-->
+      <div id="currentToolHolder">
+        <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
+        <span id="currentToolText">Delete Road</span>
+      </div>
     </div>
 
     <div id="toolbox">
@@ -206,168 +213,184 @@
       <div id='tab_panes_wrapper'>
         <div id="tab_panes">
           <div id="map_pane" class="tab_pane">
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/map.svg'>Map</h2>
+            <p> Here you can design your level! What sort of maze will you make?</p>
             
-            <div class="table">
-              <div class="table_row">
-                <div class="table_cell field_label"><p class="field_label">Max fuel:</p></div>
-                <div class="table_cell field_value"><input class="field_value" type="number" id="max_fuel" value="50"></div>
+            <div class="tab_pane_content_holder">
+              <div class="tab_pane_content">
+                <div class="input_div"> 
+                  <span> Max fuel: </span>
+                  <input type="number" id="max_fuel" value="50"> 
+                </div>
+                <br style="clear:both">
+                <button class="navigation_button fixed_size" id="add_road">
+                  <img src="/static/game/image/icons/add_road.svg"/>
+                  <span>Add road</span>
+                </button>
+
+                <button class="navigation_button fixed_size" id="delete_road">
+                  <img src="/static/game/image/icons/delete_road.svg"/>
+                  <span>Delete road</span>
+                </button>
+
+                <button class="navigation_button fixed_size" id="start">
+                  <img src="/static/game/image/icons/origin.svg"/>
+                  <span>Mark start</span>
+                </button>
+
+                <button class="navigation_button fixed_size" id="end">
+                  <img src="/static/game/image/icons/destination.svg"/>
+                  <span>Mark end</span>
+                </button>
+
+                <button class="navigation_button fixed_size" id="clear">
+                  <img src="/static/game/image/icons/clear.svg"/>
+                  <span>Clear all</span>
+                </button>
               </div>
             </div>
-            
-
-            <button class="navigation_button fixed_size" id="add_road">
-              <img src="/static/game/image/icons/add_road.svg"/>
-              <span>Add road</span>
-            </button>
-
-            <button class="navigation_button fixed_size" id="delete_road">
-              <img src="/static/game/image/icons/delete_road.svg"/>
-              <span>Delete road</span>
-            </button>
-
-            <button class="navigation_button fixed_size" id="start">
-              <img src="/static/game/image/icons/origin.svg"/>
-              <span>Mark start</span>
-            </button>
-
-            <button class="navigation_button fixed_size" id="end">
-              <img src="/static/game/image/icons/destination.svg"/>
-              <span>Mark end</span>
-            </button>
-
-            <button class="navigation_button fixed_size" id="clear">
-              <img src="/static/game/image/icons/clear.svg"/>
-              <span>Clear all</span>
-            </button>
           </div>
 
           <div id="scenery_pane" class="tab_pane">
-            <div class="table">
-              <div class="table_row">
-                <div class="table_cell field_label"><p>Theme</p></div>
-                <div class="table_cell field_value">
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/decor.svg'>Scenery</h2>
+            <p> Here you can liven up your level by choosing the theme and adding scenery! Will you create beautiful countryside or a bustling city?</p>
+            <div class="tab_pane_content_holder">
+              <div class="tab_pane_content">
+                <div class="input_div"> 
+                  <span> Theme: </span>
                   <select id="theme_select">
                     {% for theme in themes %}
                       <option value="{{theme.name}}">{{theme.name|make_title_caps}}</option>
                     {% endfor %}
                   </select>
                 </div>
+                <br style="clear:both">
+                <div class="table">
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></div>
+                    </div>
+                    <div class="table_cell">
+                      <div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div>
+                    </div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div>
+                    </div>
+                    <div class="table_cell">
+                      <div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div>
+                    </div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <div class="decor_div"><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></div>
+                    </div>
+                    <div class="table_cell">
+                      <div class="decor_div"><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:inline-block">
+                  <div id="delete_caption">
+                    You are in Delete mode. Click again to turn it off.
+                  </div>
+                  <button class="navigation_button" id="delete_decor">
+                    <img src="/static/game/image/icons/delete_decor.svg"/>
+                    <span>Delete on/off</span>
+                  </button>
+                </div>
               </div>
-
-              <div class="table_row">
-                <div class="table_cell">
-                  <div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></div>
-                </div>
-                <div class="table_cell">
-                  <div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div>
-                </div>
-              </div>
-              <div class="table_row">
-                <div class="table_cell">
-                  <div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div>
-                </div>
-                <div class="table_cell">
-                  <div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div>
-                </div>
-              </div>
-              <div class="table_row">
-                <div class="table_cell">
-                  <div class="decor_div"><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></div>
-                </div>
-                <div class="table_cell">
-                  <div class="decor_div"><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></div>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div id="delete_caption">
-                You are in Delete mode. Click Delete again to turn this off.
-              </div>
-              <button class="navigation_button" id="delete_decor">
-                <img src="/static/game/image/icons/delete_decor.svg"/>
-                <span>Delete on/off</span>
-              </button>
             </div>
           </div>
 
           <div id="character_pane" class="tab_pane">
-            <form name="character-form" id="character-form">
-              {% for char in characters %}
-              <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
-              <label for="{{char.name}}_radio">
-                <img class="character" src="{{char.en_face}}" width="122" height='122'>
-              </label>
-              <br>
-              {% endfor %}
-            </form>
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/character.svg'>Character</h2>
+            <p> Here you can choose your character. Who will you play as?</p>
+            <div class="tab_pane_content_holder">
+              <div class="tab_pane_content">
+                <p>Character: 
+                  <select id="character_select">
+                  {% for char in characters %}
+                    <option value='{{char.name}}'> {{char.name}} </option>
+                  {% endfor %}
+                  </select>
+                </p>
+                <img id="character_image" src="">
+              </div>
+            </div>
           </div>
 
           <div id="blocks_pane" class="tab_pane">
-            <div class="block_table">
-              <div class="table_row">
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/blockly.svg'>Blocks</h2>
+            <p> Here you can select the blocks you can use while playing your new level! </p>
+            <div class="tab_pane_content_holder">
+              <div class="tab_pane_content">
+                <div id="block_table">
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
+                    </div>
+                    <div>
+                      <label id="select_all_label" for="select_all_checkbox"> Select all</label>
+                    </div>
+                  </div>
 
-                <div class="table_cell">
-                  <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
-                </div>
-                <div>
-                  <label id="select_all_label" for="select_all_checkbox"> Select all</label>
+                  {% for block in blocks %}
+                    <div class="table_row">
+                      <div class="table_cell">
+                        <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
+                      </div>
+                      <div id="{{block.type}}_image" class="table_cell unselectable"></div>
+                    </div>
+                  {% endfor %}  
                 </div>
               </div>
-
-              {% for block in blocks %}
-                <div class="table_row">
-                  <div class="table_cell">
-                    <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
-                  </div>
-                  <div id="{{block.type}}_image" class="table_cell unselectable"></div>
-                </div>
-              {% endfor %}  
             </div>
           </div>
 
           <div id="random_pane" class="tab_pane">
-            <p> Here you can generate a random map. Try changing some of the parameters! </p>
-            <div class="table">
-              <div class="table_row">
-                <div class="table_cell field_label"><p>Size:</p></div>
-                <div class="table_cell field_value"><input type="number" id="size" value="20" size="4" min="1" max="40"></div>
-              </div>
-
-              <div class="table_row">
-                <div class="table_cell field_label"><p>Branchiness:</p></div>
-                <div class="table_cell field_value"><input type="number" id="branchiness" value="1" size="4" min="0" max="10"></div>
-              </div>
-
-              <div class="table_row">
-                <div class="table_cell field_label"><p>Loopiness:</p></div>
-                <div class="table_cell field_value"><input type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
-              </div>
-
-              <div class="table_row">
-                <div class="table_cell field_label"><p>Curviness:</p></div>
-                <div class="table_cell field_value"><input type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
-              </div>
-
-              <div class="table_row">
-                <div class="table_cell field_label"><p>Traffic Lights:</p></div>
-                <div class="table_cell field_value">
-                  <select id="trafficLightsEnabled">
-                    <option value="yes">Yes</option>
-                    <option value="no" selected>No</option>
-                  </select>
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/random.svg'>Random</h2>
+            <p> Here you can generate a random map. Try changing some of the parameters below and see what you get! </p>
+            <div class="tab_pane_content_holder">
+              <div class="tab_pane_content">
+                <div class="table">
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>Size:</p></div>
+                    <div class="table_cell field_value"><input type="number" id="size" value="20" size="4" min="1" max="40"></div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>Branchiness:</p></div>
+                    <div class="table_cell field_value"><input type="number" id="branchiness" value="1" size="4" min="0" max="10"></div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>Loopiness:</p></div>
+                    <div class="table_cell field_value"><input type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>Curviness:</p></div>
+                    <div class="table_cell field_value"><input type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>Traffic Lights:</p></div>
+                    <div class="table_cell field_value">
+                      <select id="trafficLightsEnabled">
+                        <option value="yes">Yes</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
+                <button class="navigation_button" id="generate">
+                  <img src="/static/game/image/icons/random.svg">
+                  <span>Generate</span>
+                </button>
               </div>
             </div>
-
-            <button class="navigation_button" id="generate">
-              <img src="/static/game/image/icons/random.svg">
-              <span>Generate</span>
-            </button>
           </div>
 
           <div id="load_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/load.svg'>Load</h2>
-
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/load.svg'>Load</h2>
             <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
 
             <div class="table_control_div">
@@ -421,7 +444,7 @@
           </div>
 
           <div id="save_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'>Save</h2>
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/save.svg'>Save</h2>
             <p>Here you can save your new level. Enter a name below and hit save. Alternatively click on an existing level to update it.</p>
             
             <div class="table_control_div">
@@ -455,16 +478,16 @@
           </div>
 
           <div id="share_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/share.svg'>Share</h2>
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/share.svg'>Share</h2>
             
-            {% if user_role == 'teacher' %}
+            {% if user|get_user_status == 'TEACHER' %}
               <p>Here you can share your level with your classes or your fellow teachers.</p>
-            {% elif user_role == 'student' %}
+            {% elif user|get_user_status == 'SCHOOL_STUDENT' %}
               <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
             {% endif %}
 
             <div class="table_control_div">
-              {% if user_role == 'teacher' %}
+              {% if user|get_user_status == 'TEACHER' %}
                 <p>
                   Share with:
                   <select id="share_type_select">
@@ -478,7 +501,7 @@
                 </p>
               {% endif %}
               
-              <div id="shared_levels">
+              <div id="shared_levels" class="scrolling-table-wrapper">
                 <table width='100%' id="shareLevelTableHeader">
                   <thead>
                     <tr>  

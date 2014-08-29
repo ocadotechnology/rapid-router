@@ -46,22 +46,7 @@ input {
     width: 180px;
 }
 
-#currentTool {
-    position: absolute;
-    top: 22px;
-    left: 380px;
-    width: 120px;
-    height: 33px;
-}
 
-.currentToolImage {
-    height: 22px;
-}
-
-.currentToolText {
-    font-size: 0.65em;
-    font-weight: bold;
-}
 
 .popupIcon {
     padding-bottom: 3px;
@@ -72,6 +57,59 @@ input {
     padding-bottom: 6px;
     width: 20px;
 }
+
+.input_div span {
+    float: left;
+    font-family: inherit;
+    font-weight: normal;
+    font-size: 1rem;
+    line-height: 36px;
+    margin-right: 15px;
+}
+
+.input_div input,
+.input_div select {
+    float: left;
+}
+
+/****************/
+/* Current tool */
+/****************/
+
+#currentTool {
+    position: absolute;
+    top: 2px;
+    left: 350px;
+    width: 250px;
+    height: 53px;
+}
+
+#currentToolTitle {
+    float: left;
+}
+
+#currentToolHolder {
+    float: left;
+    width: 150px;
+    border: solid 5px;
+    border-color: rgb(246,146,30);
+    border-radius: 12px;
+
+    background: #fbed21; /* Old browsers */
+    background: -moz-linear-gradient(top, #fbed21 0%, #faaf3b 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbed21), color-stop(100%,#faaf3b)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #fbed21 0%,#faaf3b 100%); /* W3C */
+}
+
+#currentToolIcon {
+    padding: 2px;
+    width: 45px;
+    margin-left: 2px;
+}
+
 /********************/
 /* Table  structure */
 /********************/
@@ -116,9 +154,37 @@ input {
     background: #FFFFFF;
 }
 
+.tab_pane_content_holder {
+    text-align: center;
+}
+
+.tab_pane_content {
+    display: inline-block;
+}
+
+.tab_pane p {
+    text-align: justify;
+}
+
+/***********/
+/* Map tab */
+/***********/
+
+#max_fuel {
+    width: 100px;
+}
+
+#map_pane .input_div {
+    display: inherit;
+}
+
 /*************/
 /* Decor tab */
 /*************/
+
+#theme_select {
+    width: 100px;
+}
 
 .decor_div {
     height: 80px;
@@ -128,6 +194,8 @@ input {
 #delete_caption {
     font-size: 0.79rem;
     visibility: hidden;
+    line-height: 15px;
+    width: 180px;
 }
 
 .decor_button,
@@ -172,19 +240,22 @@ input[type="checkbox"].block_checkbox {
     margin-bottom: 30px;
     font-weight: bold;
     font-size: 20px;
+    text-align: left;
 }
+
 
 /******************/
 /* Characters tab */
 /******************/
 
-.character  {
-    cursor: pointer;
-    margin-left: 20px;
+#character_select {
+    width: 100px;
+    margin-left: 15px;
+    margin-bottom: 0px;
 }
 
-input[type="radio"].character_radio {
-    cursor: pointer;
+#character_image  {
+    height: 225px;
 }
 
 /************/
@@ -240,7 +311,7 @@ input[type="radio"].character_radio {
 }
 
 #save_pane #levelNameInput {
-    width: 230px;
+    width: 220px;
     float: left;
     margin-left: 20px;
 }
@@ -266,13 +337,13 @@ input[type="radio"].character_radio {
 }
 
 #share_type_select {
-    width: 190px;
+    width: 180px;
     margin-bottom: 0px;
     margin-left: 35px;
 }
 
 #class_select {
-    width: 190px;
+    width: 180px;
     margin-bottom: 0px;
     margin-left: 70px;
 }

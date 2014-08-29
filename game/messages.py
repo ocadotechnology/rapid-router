@@ -1,6 +1,11 @@
 from django.utils.translation import ugettext
 
 
+def youtubeLink(width, height, url, border):
+    return "<iframe width='" + str(width) + "' height='" + str(height) + "' src='" + str(url) \
+        + "' frameborder='" + str(border) + "' allowfullscreen class='video'></iframe><br>"
+
+
 def noPermissionMessage():
     return ugettext("You have no permission to see this.")
 
@@ -18,7 +23,7 @@ def noPermissionTitle():
 
 
 def noPermissionScoreboard():
-    return ugettext("Scoreboard is only visible to students and teachers. Log in if you "
+    return ugettext("Scoreboard is only visible to school students and teachers. Log in if you "
                     + "think you should be able to see it. ")
 
 
@@ -481,8 +486,8 @@ def title_level19():
 
 
 def description_level19():
-    message = ugettext("<iframe width='600' height='400' src='//www.youtube.com/embed/vFGd0v3msRE' frameborder='0' allowfullscreen class='video'></iframe><br/>"
-                       + "Attach a block inside the <b>Repeat</b> block to make the van repeats that "
+    message = youtubeLink(600, 400, "//www.youtube.com/embed/vFGd0v3msRE", 0)
+    message += ugettext("Attach a block inside the <b>Repeat</b> block to make the van repeats that "
                        + "instruction. <br> This means you can use one block instead of lots of "
                        + "blocks to do the same thing over and over again. <br> How many times do "
                        + "you want the instruction repeated? Type the number into the "
@@ -651,8 +656,8 @@ def title_level29():
 
 
 def description_level29():
-    message = ugettext("<iframe width='600' height='400' src='//www.youtube.com/embed/EDwc80X_LQI' frameborder='0' allowfullscreen class='video'></iframe><br/>"
-                       + "Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
+    message = youtubeLink(600, 400, "//www.youtube.com/embed/EDwc80X_LQI", 0)
+    message += ugettext("Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
                        + "instruction. <br> Attach a 'condition' so the van knows when to stop "
                        + "repeating the instruction. <br> Here, you want the van to repeat your "
                        + "instruction until it is at the destination. <br> Doing this means "
@@ -718,8 +723,8 @@ def title_level33():
 
 
 def description_level33():
-    message = ugettext("<iframe width='600' height='400' src='//www.youtube.com/embed/O0RXbJyYq8o' frameborder='0' allowfullscreen class='video'></iframe><br/>"
-                       + "Another way of telling the van what to do is to use the <b>If</b> block. "
+    message = youtubeLink(600, 400, "//www.youtube.com/embed/O0RXbJyYq8o", 0)
+    message += ugettext("Another way of telling the van what to do is to use the <b>If</b> block. "
                        + "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
                        + "forwards</b>. <br> This is called an 'if statement'. <br> Try "
                        + "using the <b>If</b> block and the <b>Repeat</b> block together. <br> "
@@ -783,8 +788,8 @@ def title_level36():
 
 
 def description_level36():
-    message = ugettext("<iframe width='600' height='400' src='//www.youtube.com/embed/GUUJSRuAyU0' frameborder='0' allowfullscreen class='video'></iframe><br/>"
-                       + "You can change the <b>If</b> block to make more choices. Click on the star "
+    message = youtubeLink(600, 400, "//www.youtube.com/embed/GUUJSRuAyU0", 0)
+    message += ugettext("You can change the <b>If</b> block to make more choices. Click on the star "
                        + "in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
                        + "the van what to do if the first <b>If</b> direction can't be done. "
                        + "<br> For example, tell the van to <b>Turn left</b> <b>If</b> the "

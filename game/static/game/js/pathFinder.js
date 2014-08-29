@@ -20,7 +20,7 @@ ocargo.PathFinder.prototype.getScore = function() {
 
     var pathLengthScore = Math.max(0, this.getTravelledPathScore());
     var message = ocargo.messages.pathScore + 
-                    this.renderCoins(pathLengthScore, this.maxDistanceScore) + "<br>";
+                    this.renderCoins(pathLengthScore, this.maxDistanceScore);
 
     
 
@@ -47,16 +47,16 @@ ocargo.PathFinder.prototype.getScore = function() {
     message += ocargo.messages.totalScore(totalScore, this.maxScore);
 
     if (pathLengthScore < this.maxDistanceScore) {
-        message += "<br><br>" + ocargo.messages.pathLonger;
+        message += "<br>" + ocargo.messages.pathLonger;
     }
     else if (initInstrScore > this.maxInstrLengthScore) {
-        message += "<br><br>" + ocargo.messages.algorithmShorter;
+        message += "<br>" + ocargo.messages.algorithmShorter;
     }
     else if (initInstrScore < this.maxInstrLengthScore) {
-        message += "<br><br>" + ocargo.messages.algorithmLonger;
+        message += "<br>" + ocargo.messages.algorithmLonger;
     }
     else  if (totalScore === this.maxScore) {
-        message += "<br><br>" + ocargo.messages.scorePerfect;
+        message += "<br>" + ocargo.messages.scorePerfect;
     }
 
     return [totalScore, message];
@@ -68,13 +68,13 @@ ocargo.PathFinder.prototype.renderCoins = function(score, maxScore) {
     var coins = "<div>";
     var i;
     for (i = 0; i < Math.floor(score); i++) {
-        coins += "<img src='/static/game/image/coins/coin_gold.svg' width='50'>";
+        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_gold.svg' width='50'>";
     }
     if (score - Math.floor(score) > 0) {
-        coins += "<img src='/static/game/image/coins/coin_5050_dots.svg' width='50'>";
+        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_5050_dots.svg' width='50'>";
     }
     for (i = Math.ceil(score); i < maxScore; i++) {
-        coins += "<img src='/static/game/image/coins/coin_empty_dots.svg' width='50'>";
+        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_empty_dots.svg' width='50'>";
     }
     coins += "      " + score + "/" + maxScore;
     coins += "</div>";

@@ -8,14 +8,14 @@ ocargo.LevelEditor = function() {
     /* Constants */
     /*************/
 
-    var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
-    var LIGHT_GREEN_URL = '/static/game/image/trafficLight_green.svg';
+    var LIGHT_RED_URL = ocargo.Drawing.imageDir + 'trafficLight_red.svg';
+    var LIGHT_GREEN_URL = ocargo.Drawing.imageDir + 'trafficLight_green.svg';
     
-    var DELETE_DECOR_IMG_URL = "/static/game/image/icons/delete_decor.svg";
-    var ADD_ROAD_IMG_URL = "/static/game/image/icons/add_road.svg";
-    var DELETE_ROAD_IMG_URL = "/static/game/image/icons/delete_road.svg";
-    var MARK_START_IMG_URL = "/static/game/image/icons/origin.svg";
-    var MARK_END_IMG_URL = "/static/game/image/icons/destination.svg";
+    var DELETE_DECOR_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_decor.svg";
+    var ADD_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/add_road.svg";
+    var DELETE_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_road.svg";
+    var MARK_START_IMG_URL = ocargo.Drawing.imageDir + "icons/origin.svg";
+    var MARK_END_IMG_URL = ocargo.Drawing.imageDir + "icons/destination.svg";
 
     var VALID_LIGHT_COLOUR = '#87E34D';
     var INVALID_LIGHT_COLOUR = '#E35F4D';
@@ -25,11 +25,11 @@ ocargo.LevelEditor = function() {
     var paper = $('#paper'); // May as well cache this
 
     var modes = {
-        ADD_ROAD_MODE: {name: 'Add Road', url: "/static/game/image/icons/add_road.svg"},
-        DELETE_ROAD_MODE: {name: 'Delete Road', url: "/static/game/image/icons/delete_road.svg"},
-        MARK_DESTINATION_MODE: {name: 'Mark end', url: "/static/game/image/icons/destination.svg"},
-        MARK_ORIGIN_MODE: {name: 'Mark start', url: "/static/game/image/icons/origin.svg"},
-        DELETE_DECOR_MODE: {name: 'Delete decor', url: "/static/game/image/icons/delete_decor.svg"}
+        ADD_ROAD_MODE: {name: 'Add road', url: ocargo.Drawing.imageDir + "icons/add_road.svg"},
+        DELETE_ROAD_MODE: {name: 'Delete road', url: ocargo.Drawing.imageDir + "icons/delete_road.svg"},
+        MARK_DESTINATION_MODE: {name: 'Mark end', url: ocargo.Drawing.imageDir + "icons/destination.svg"},
+        MARK_ORIGIN_MODE: {name: 'Mark start', url: ocargo.Drawing.imageDir + "icons/origin.svg"},
+        DELETE_DECOR_MODE: {name: 'Delete', url: ocargo.Drawing.imageDir + "icons/delete_decor.svg"}
     };
 
     /*********/
@@ -77,10 +77,6 @@ ocargo.LevelEditor = function() {
 
     // Draw everything
     drawAll();
-
-    // Set the default theme
-    setTheme(THEMES.grass);
-
 
 
     /*********************************/
@@ -163,7 +159,7 @@ ocargo.LevelEditor = function() {
                     state.name = "Custom level"
                     ocargo.saving.saveLevel(state, null, true, function(error, levelID) {
                         if(error) {
-                            console.debug(error)
+                            console.error(error)
                             return;
                         }
                         window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID;
@@ -176,7 +172,7 @@ ocargo.LevelEditor = function() {
 
         function changeCurrentToolDisplay(mode){
             $('#currentToolText').text(mode.name);
-            $('#currentToolImg').attr("src", mode.url);            
+            $('#currentToolIcon').attr("src", mode.url);            
         }
         
         function setupMapTab() {
@@ -277,11 +273,13 @@ ocargo.LevelEditor = function() {
                 transitionTab(tabs.character);
             });
 
-            $('#Van_radio').prop("checked", true);
-            $("#character-form").on('change', ':input', function() { 
-                CHARACTER_NAME = $('input:checked', '#character-form').val();
+            $("#character_select").change(function() { 
+                CHARACTER_NAME = $(this).val();
                 redrawRoad();
+                $('#character_image').attr('src', CHARACTERS[CHARACTER_NAME].image);
             });
+
+            $("#character_select").change();
         }  
 
         function setupBlocksTab() {
@@ -370,7 +368,7 @@ ocargo.LevelEditor = function() {
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
                     $('#generate').attr('disabled', false);
                     if (error) {
-                        console.debug(error);
+                        console.error(error);
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                         return;
                     }
@@ -455,24 +453,23 @@ ocargo.LevelEditor = function() {
 
                 ocargo.saving.deleteLevel(selectedLevel, function(err, ownedLevels, sharedLevels) {
                     if (err !== null) {
-                        console.debug(err);
+                        console.error(err);
                         return;
                     }
 
-                    processListOfLevels(err, ownedLevels, sharedLevels)
                     if (selectedLevel == savedLevelID) {
                         savedLevelID = -1;
                         savedState = null;
                         ownsSavedLevel = false;
                     }
 
-                    selectedLevel = null;
+                    processListOfLevels(err, ownedLevels, sharedLevels);
                 });
             });
 
             function processListOfLevels(err, listOfOwnLevels, listOfSharedLevels) {
                 if (err !== null) {
-                    console.debug(err);
+                    console.error(err);
                     currentTabSelected.select();
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
@@ -553,7 +550,7 @@ ocargo.LevelEditor = function() {
 
             function processListOfLevels(err, ownLevels, sharedLevels) {
                 if (err !== null) {
-                    console.debug(err);
+                    console.error(err);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
@@ -579,6 +576,7 @@ ocargo.LevelEditor = function() {
                     }
                 });
 
+                $('#save_pane .scrolling-table-wrapper').css('display', ownLevels.length === 0 ? 'none' : 'block');
                 selectedLevel = null;
             }
         }
@@ -591,14 +589,14 @@ ocargo.LevelEditor = function() {
 
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
-                if (!isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
+                if (!isSoloStudent() ||  !isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
                     currentTabSelected.select();
                     return;
                 }
                 
                 ocargo.saving.getSharingInformation(savedLevelID, function(error, validRecipients) {
                     if(error) {
-                        console.debug(error);
+                        console.error(error);
                         return;
                     }
 
@@ -661,18 +659,18 @@ ocargo.LevelEditor = function() {
             // Method to call when we get an update on the level's sharing information
             function processSharingInformation(error, validRecipients) {
                 if (error !== null) {
-                    console.debug(error);
+                    console.error(error);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
 
-                if (USER_ROLE === "student") {
+                if (USER_STATUS === "SCHOOL_STUDENT") {
                     var classmates = validRecipients.classmates;
                     var teacher = validRecipients.teacher;
 
                     populateSharingTable(classmates);
                 }
-                else if (USER_ROLE == "teacher") {
+                else if (USER_STATUS === "TEACHER") {
                     classesTaught = validRecipients.classes;
                     fellowTeachers = validRecipients.teachers;
 
@@ -758,11 +756,11 @@ ocargo.LevelEditor = function() {
                 // Update the shareWithAll button
                 if (allShared) {
                     $('#shareWithAll span').html('Unshare with all');
-                    $('#shareWithAll img').attr('src','/static/game/image/icons/quit.svg');
+                    $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/quit.svg');
                 }
                 else {
                     $('#shareWithAll span').html('Share with all');
-                    $('#shareWithAll img').attr('src','/static/game/image/icons/share.svg');
+                    $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/share.svg');
                 }
 
                 // update click listeners in the new rows
@@ -796,8 +794,6 @@ ocargo.LevelEditor = function() {
                 currentTabSelected.select();
                 ocargo.Drawing.startPopup('', '', message);
             });
-
-           
         }
 
         function setupQuitTab() {
@@ -1286,143 +1282,147 @@ ocargo.LevelEditor = function() {
         var moved = false;
 
         function onDragMove(dx, dy) {
-            // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
-            trafficLight.valid = false;
-            image.attr({'cursor':'default'});
-            moved = dx !== 0 || dy !== 0;
+            if (mode !== modes.DELETE_DECOR_MODE) {
+                // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
+                trafficLight.valid = false;
+                image.attr({'cursor':'default'});
+                moved = dx !== 0 || dy !== 0;
 
-            // Update image's position
-            paperX = dx + originX;
-            paperY = dy + originY;
+                // Update image's position
+                paperX = dx + originX;
+                paperY = dy + originY;
 
-            // Stop it being dragged off the edge of the page
-            if (paperX < 0) {
-                paperX = 0;
-            }
-            else if (paperX + imageWidth > paperWidth) {
-                paperX = paperWidth - imageWidth;
-            }
-            if (paperY < 0) {
-                paperY =  0;
-            }
-            else if (paperY + imageHeight >  paperHeight) {
-                paperY = paperHeight - imageHeight;
-            }
-            
-            // Adjust for the fact that we've rotated the image
-            if (rotation === 90 || rotation === 270)  {
-                paperX += (imageWidth - imageHeight)/2;
-                paperY -= (imageWidth - imageHeight)/2;
-            }
-
-            // And perform the updatee
-            image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
-
-
-            // Unmark the squares the light previously occupied
-            if (sourceCoord) {
-                markAsBackground(sourceCoord);
-            }
-            if (controlledCoord) {
-                markAsBackground(controlledCoord);
-            }
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (destinationNode) {
-                markAsDestination(destinationNode.coordinate);
-            }
-
-            // Now calculate the source coordinate
-            var box = image.getBBox();
-            var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
-            var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
-
-            switch(rotation) {
-                case 0:
-                    absY += 0.5;
-                    break;
-                case 90:
-                    absX -= 0.5;
-                    break;
-                case 180:
-                    absY -= 0.5;
-                    break;
-                case 270:
-                    absX += 0.5;
-                    break;
-            }
-
-            var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
-            var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
-            sourceCoord = new ocargo.Coordinate(x,y);
-
-            // Find controlled position in map coordinates
-            switch(rotation) {
-                case 0:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y + 1);
-                    break;
-                case 90:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x + 1, sourceCoord.y);
-                    break;
-                case 180:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y - 1);
-                    break;
-                case 270:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x - 1, sourceCoord.y);
-                    break;
-            }
-
-            // If controlled node is not on grid, remove it
-            if (!isCoordinateOnGrid(controlledCoord)) {
-                controlledCoord = null;
-            }
-
-            // If source node is not on grid remove it
-            if (!isCoordinateOnGrid(sourceCoord)) {
-                sourceCoord = null;
-            }
-
-            if (sourceCoord && controlledCoord) {
-                var colour;
-                if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
-                    // Valid placement
-                    colour = VALID_LIGHT_COLOUR;
-                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
-                } else {
-                    // Invalid placement
-                    colour = INVALID_LIGHT_COLOUR;
+                // Stop it being dragged off the edge of the page
+                if (paperX < 0) {
+                    paperX = 0;
+                }
+                else if (paperX + imageWidth > paperWidth) {
+                    paperX = paperWidth - imageWidth;
+                }
+                if (paperY < 0) {
+                    paperY =  0;
+                }
+                else if (paperY + imageHeight >  paperHeight) {
+                    paperY = paperHeight - imageHeight;
+                }
+                
+                // Adjust for the fact that we've rotated the image
+                if (rotation === 90 || rotation === 270)  {
+                    paperX += (imageWidth - imageHeight)/2;
+                    paperY -= (imageWidth - imageHeight)/2;
                 }
 
-                mark(controlledCoord, colour, 0.7, false);
-                mark(sourceCoord, colour, 0.7, false);
+                // And perform the updatee
+                image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
+
+
+                // Unmark the squares the light previously occupied
+                if (sourceCoord) {
+                    markAsBackground(sourceCoord);
+                }
+                if (controlledCoord) {
+                    markAsBackground(controlledCoord);
+                }
+                if (originNode) {
+                    markAsOrigin(originNode.coordinate);
+                }
+                if (destinationNode) {
+                    markAsDestination(destinationNode.coordinate);
+                }
+
+                // Now calculate the source coordinate
+                var box = image.getBBox();
+                var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
+                var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
+
+                switch(rotation) {
+                    case 0:
+                        absY += 0.5;
+                        break;
+                    case 90:
+                        absX -= 0.5;
+                        break;
+                    case 180:
+                        absY -= 0.5;
+                        break;
+                    case 270:
+                        absX += 0.5;
+                        break;
+                }
+
+                var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+                var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+                sourceCoord = new ocargo.Coordinate(x,y);
+
+                // Find controlled position in map coordinates
+                switch(rotation) {
+                    case 0:
+                        controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y + 1);
+                        break;
+                    case 90:
+                        controlledCoord = new ocargo.Coordinate(sourceCoord.x + 1, sourceCoord.y);
+                        break;
+                    case 180:
+                        controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y - 1);
+                        break;
+                    case 270:
+                        controlledCoord = new ocargo.Coordinate(sourceCoord.x - 1, sourceCoord.y);
+                        break;
+                }
+
+                // If controlled node is not on grid, remove it
+                if (!isCoordinateOnGrid(controlledCoord)) {
+                    controlledCoord = null;
+                }
+
+                // If source node is not on grid remove it
+                if (!isCoordinateOnGrid(sourceCoord)) {
+                    sourceCoord = null;
+                }
+
+                if (sourceCoord && controlledCoord) {
+                    var colour;
+                    if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
+                        // Valid placement
+                        colour = VALID_LIGHT_COLOUR;
+                        ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                    } else {
+                        // Invalid placement
+                        colour = INVALID_LIGHT_COLOUR;
+                    }
+
+                    mark(controlledCoord, colour, 0.7, false);
+                    mark(sourceCoord, colour, 0.7, false);
+                }
             }
         }
 
         function onDragStart(x, y) {
-            moved = false;
+            if (mode !== modes.DELETE_DECOR_MODE) {
+                moved = false;
 
-            scaling = getScaling(image);
-            rotation = (image.matrix.split().rotate + 360) % 360;
-            
-            var bBox = image.getBBox();
-            imageWidth = bBox.width;
-            imageHeight = bBox.height;
+                scaling = getScaling(image);
+                rotation = (image.matrix.split().rotate + 360) % 360;
+                
+                var bBox = image.getBBox();
+                imageWidth = bBox.width;
+                imageHeight = bBox.height;
 
-            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
-            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+                paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
+                paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
 
-            var paperPosition = paper.position();
+                var paperPosition = paper.position();
 
-            var mouseX = x - paperPosition.left;
-            var mouseY = y - paperPosition.top;
+                var mouseX = x - paperPosition.left;
+                var mouseY = y - paperPosition.top;
 
-            originX = mouseX - imageWidth/2;
-            originY = mouseY - imageHeight/2;
+                originX = mouseX + paper.scrollLeft()- imageWidth/2;
+                originY = mouseY + paper.scrollTop() - imageHeight/2;
+            }
         }
 
         function onDragEnd() {
-            if (moved) {
+            if (moved && mode !== modes.DELETE_DECOR_MODE) {
                 // Unmark squares currently occupied
                 if (sourceCoord) {
                     markAsBackground(sourceCoord);
@@ -1711,7 +1711,7 @@ ocargo.LevelEditor = function() {
         // Other data
         state.max_fuel = $('#max_fuel').val();
         
-        state.themeID = currentTheme.id;
+        state.theme = currentTheme.id;
         state.character_name = CHARACTER_NAME;
 
         state.blocklyEnabled = true;
@@ -1749,11 +1749,19 @@ ocargo.LevelEditor = function() {
         drawAll();
 
         // Set the theme
-        var themeID = state.themeID;
-        for (var theme in THEMES) {
-            if (THEMES[theme].id === themeID) {
-                setTheme(THEMES[theme]);
+        var themeFound = false;
+        var themeID = state.theme;
+        for (var themeName in THEMES) {
+            var theme = THEMES[themeName];
+            if (theme.id === themeID) {
+                setTheme(theme);
+                themeFound = true;
+                $('#theme_select').val(themeName);
+                break;
             }
+        }
+        if(!themeFound) {
+            setTheme(THEMES.grass);
         }
 
         // Load in the decor data
@@ -1763,12 +1771,15 @@ ocargo.LevelEditor = function() {
             decorObject.setCoordinate(new ocargo.Coordinate(decorData[i].coordinate.x,
                 PAPER_HEIGHT - decorData[i].height - decorData[i].coordinate.y));
         }
+
+        // Other data
+        $('#max_fuel').val(state.max_fuel);
     }
 
     function loadLevel(levelID) { 
         ocargo.saving.retrieveLevel(levelID, function(err, level, owned) {
             if (err !== null) {
-                console.debug(err);
+                console.error(err);
                 return;
             }
 
@@ -1786,7 +1797,7 @@ ocargo.LevelEditor = function() {
 
         ocargo.saving.saveLevel(level, levelID, false, function(error, newLevelID, ownedLevels, sharedLevels) {
             if (error !== null) {
-                console.debug(error);
+                console.error(error);
                 return;
             }
 
@@ -1876,8 +1887,16 @@ ocargo.LevelEditor = function() {
     }
 
     function isLoggedIn(activity) {
-        if (USER_ROLE !== "student" && USER_ROLE !== 'teacher') {
+        if (USER_STATUS !== "SCHOOL_STUDENT" && USER_STATUS !== "TEACHER" && USER_STATUS !== "SOLO_STUDENT") {
             ocargo.Drawing.startPopup("Not logged in", "", ocargo.messages.notLoggedIn(activity));
+            return false;
+        }
+        return true;
+    }
+
+    function isSoloStudent() {
+        if (USER_STATUS === "SOLO_STUDENT") {
+            ocargo.Drawing.startPopup("Sharing as an independent student", "", ocargo.messages.soloSharing);
             return false;
         }
         return true;

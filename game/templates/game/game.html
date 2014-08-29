@@ -16,7 +16,7 @@
     var HOUSE_URL = "{{house}}";
     var CFC_URL = "{{cfc}}";
     var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
-    var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : "created";
+    var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : undefined;
     var MODEL_SOLUTION = {{level.model_solution}};
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
@@ -29,13 +29,17 @@
     {% for block in blocks %}
       BLOCKS.push("{{block.type}}");
     {% endfor %}
+    var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none"><category name="+">';
+    for (var i=0; i < BLOCKS.length; i++) {
+        BLOCKLY_XML += '<block type="' + BLOCKS[i] + '"></block>';
+    }
+    BLOCKLY_XML += '</category></xml>';
     var MAX_FUEL = {{level.max_fuel}};
     var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
     var NEXT_LEVEL = "{{level.next_level}}" !== "None" ? "{{level.next_level.id}}" : null;
     var NEXT_EPISODE = "{{level.episode.next_episode}}" !== "None" ? "{{level.episode.next_episode.id}}" : null;
     var WORKSPACE = "{{attempt.workspace}}";
     var THREADS = "{{level.threads}}";
-    var USER_ROLE = "{{user_role}}";
     var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";
     var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
     var RETURN_URL = "{{return_url}}";
@@ -55,9 +59,11 @@
   <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/howler.js' %}"></script>
 
+  <script type="text/javascript" src="{% static 'game/js/fpsmeter.js' %}"></script>
+
+  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/tab.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
@@ -75,6 +81,14 @@
   <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
 
+  <script type="text/javascript">
+    $(function() {
+      document.addEventListener('fps', function(e) {
+        document.getElementById('fps').innerHTML = e.fps + ' fps';
+      }, false);
+      //FPSMeter.run(0.5);
+    });
+  </script>
   
 {% endblock %}
 
@@ -90,7 +104,9 @@
 
 {% block content %}
 
-
+<div style='position: fixed; top: 0px; right: 0px; background: black; z-index: 99'>
+  <div id='fps' style='font-size: 2em; color: white'></div>
+</div>
 
 <div id="wrapper" class="unselectable">
   <div id="tabs" class='no-print'>
@@ -246,14 +262,24 @@
       </div>
 
       <div id="load_pane" class="tab_pane">
-        <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/load.svg'>Load</h2>
+        <h2 class="title"><img class="modal_image" src='/static/game/image/icons/load.svg'>Load</h2>
           <p>Here you can load a program you've previously saved!</p>
           <div style="width:auto">
             <div class="scrolling-table-wrapper">
+              <table id="loadWorkspaceTableHeader">
+                <thead>
+                  <tr>  
+                    <th>Name</th>
+                  </tr>
+                </thead>
+              </table>
               <div class="scrolling-table">
-                <table id="loadWorkspaceTable"></table>
+                <table id="loadWorkspaceTable">
+                  <tbody></tbody>
+                </table>
               </div>
             </div>
+            <br>
             <div>
               <button class="navigation_button" id="deleteWorkspace">
                 <img src="/static/game/image/icons/clear.svg"/>
@@ -269,13 +295,23 @@
       </div>
 
       <div id="save_pane" class="tab_pane">
-        <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'>Save</h2>
+        <h2 class="title"><img class="modal_image" src='/static/game/image/icons/save.svg'>Save</h2>
         <p>Here you can save your program so you can retrieve it later!</p>
         <div class="scrolling-table-wrapper">
+          <table id="saveWorkspaceTableHeader">
+            <thead>
+              <tr>  
+                <th>Name</th>
+              </tr>
+            </thead>
+          </table>
           <div class="scrolling-table">
-            <table id="saveWorkspaceTable"></table>
+            <table id="saveWorkspaceTable">
+              <tbody></tbody>
+            </table>
           </div>
         </div>
+        <br>
         <div>
           <input type="text" id="workspaceNameInput">
           <button class="navigation_button" id="saveWorkspace">
@@ -318,63 +354,5 @@
     <object width="100%" height="100%" data="/static/game/image/characters/front_view/Dee.svg" type="image/svg+xml"></object>
   </div>
 </div>
-  
-  
-  
-
-<xml id="blockly_toolbox" style="display: none">
-  <category name="+">
-    {% for block in blocks %}
-      <block type="{{ block.type }}"></block>
-    {% endfor %}
-  </category>
-</xml>
-
-<!--
-<div id="loadModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'/>Load</h2>
-  <p>Here you can load a previously saved program.</p>
-  <div style="width:auto">
-    <div class="scrolling-table-wrapper">
-      <div class="scrolling-table">
-        <table id="loadWorkspaceTable"></table>
-      </div>
-    </div>
-    <div>
-      <button class="navigation_button" id="deleteWorkspace">
-        <img src="/static/game/image/icons/clear.svg"/>
-        <span>Delete</span>
-      </button>
-
-      <button class="navigation_button" id="loadWorkspace">
-        <img src="/static/game/image/icons/load.svg"/>
-        <span>Load</span>
-      </button>
-    </div>
-  </div>
-  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
-</div>
-
-<div id="saveModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'/>Save</h2>
-  <p>Here you can save your program.</p>
-  <div>
-    <div class="scrolling-table-wrapper">
-      <div class="scrolling-table">
-        <table id="saveWorkspaceTable"></table>
-      </div>
-    </div>
-    <div>
-      <input id="workspaceNameInput"/>
-
-      <button class="navigation_button" id="saveWorkspace">
-        <img src="/static/game/image/icons/save.svg"/>
-        <span>Save</span>
-      </button>
-    </div>
-  </div>
-  <a class="close-reveal-modal" id="close-load-modal">&#215;</a>
-</div>
--->
 
 {% endblock %}
