@@ -45,7 +45,19 @@
 .modal_image {
     width: 100px;
     height: 100px;
+    padding: 10px;
     margin-right: 30px;
+    border: solid 5px;
+    border-color: rgb(246,146,30);
+    border-radius: 12px;
+
+    background: #fbed21; /* Old browsers */
+    background: -moz-linear-gradient(top, #fbed21 0%, #faaf3b 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbed21), color-stop(100%,#faaf3b)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #fbed21 0%,#faaf3b 100%); /* W3C */
 }
 
 /************/
