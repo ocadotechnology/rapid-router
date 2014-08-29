@@ -72,6 +72,12 @@
         var themeDecor = THEMES[decor[i].theme_name].decor;
         themeDecor[decor[i].name] = decor[i];
       }
+
+      CHARACTERS = [];
+      {% for char in characters %}
+          CHARACTERS['{{char.name}}'] = {name:  '{{char.name}}',
+                                         image: '{{char.en_face}}'}
+      {% endfor %}
     }
     
     initGlobals();
@@ -205,7 +211,9 @@
       <div id='tab_panes_wrapper'>
         <div id="tab_panes">
           <div id="map_pane" class="tab_pane">
-            
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/map.svg'>Map</h2>
+            <p> Here you can design your level! What sort of maze will you make?</p>
+  
             <div class="table">
               <div class="table_row">
                 <div class="table_cell field_label"><p class="field_label">Max fuel:</p></div>
@@ -241,9 +249,11 @@
           </div>
 
           <div id="scenery_pane" class="tab_pane">
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/decor.svg'>Scenery</h2>
+            <p> Here you can liven up your level by choosing the theme and adding scenery! Will you create beautiful countryside or a bustling city?</p>
             <div class="table">
               <div class="table_row">
-                <div class="table_cell field_label"><p>Theme</p></div>
+                <div class="table_cell field_label"><p>Theme:</p></div>
                 <div class="table_cell field_value">
                   <select id="theme_select">
                     {% for theme in themes %}
@@ -280,7 +290,7 @@
             </div>
             <div>
               <div id="delete_caption">
-                You are in Delete mode. Click Delete again to turn this off.
+                You are in Delete mode. Click again to turn it off.
               </div>
               <button class="navigation_button" id="delete_decor">
                 <img src="/static/game/image/icons/delete_decor.svg"/>
@@ -290,18 +300,22 @@
           </div>
 
           <div id="character_pane" class="tab_pane">
-            <form name="character-form" id="character-form">
-              {% for char in characters %}
-              <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
-              <label for="{{char.name}}_radio">
-                <img class="character" src="{{char.en_face}}" width="122" height='122'>
-              </label>
-              <br>
-              {% endfor %}
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/character.svg'>Character</h2>
+            <p> Here you can choose your character. Who will you play as?</p>
+              <p>Character: 
+                <select id="character_select">
+                {% for char in characters %}
+                  <option value='{{char.name}}'> {{char.name}} </option>
+                {% endfor %}
+                </select>
+              </p>
+              <img id="character_image" src="">
             </form>
           </div>
 
           <div id="blocks_pane" class="tab_pane">
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/blockly.svg'>Blocks</h2>
+            <p> Here you can select the blocks you can use while playing your new level! </p>
             <div class="block_table">
               <div class="table_row">
 
@@ -325,7 +339,8 @@
           </div>
 
           <div id="random_pane" class="tab_pane">
-            <p> Here you can generate a random map. Try changing some of the parameters! </p>
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/random.svg'>Random</h2>
+            <p> Here you can generate a random map. Try changing some of the parameters below and see what you get! </p>
             <div class="table">
               <div class="table_row">
                 <div class="table_cell field_label"><p>Size:</p></div>
@@ -365,7 +380,7 @@
           </div>
 
           <div id="load_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/load.svg'>Load</h2>
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/load.svg'>Load</h2>
 
             <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
 
@@ -420,7 +435,7 @@
           </div>
 
           <div id="save_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/save.svg'>Save</h2>
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/save.svg'>Save</h2>
             <p>Here you can save your new level. Enter a name below and hit save. Alternatively click on an existing level to update it.</p>
             
             <div class="table_control_div">
@@ -454,7 +469,7 @@
           </div>
 
           <div id="share_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/share.svg'>Share</h2>
+            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/share.svg'>Share</h2>
             
             {% if user|get_user_status == 'TEACHER' %}
               <p>Here you can share your level with your classes or your fellow teachers.</p>
