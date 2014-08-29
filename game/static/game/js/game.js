@@ -574,10 +574,10 @@ ocargo.Game.prototype.setupTabs = function() {
             tabs.blockly.select();
 
             if (ocargo.blocklyControl.bigCodeMode){
-                tabs.big_code_mode.setContents('/static/game/image/icons/big_code_mode.svg', "Enlarge");
+                tabs.big_code_mode.setContents(ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Enlarge");
                 ocargo.blocklyControl.decreaseBlockSize();
             } else {
-                tabs.big_code_mode.setContents('/static/game/image/icons/big_code_mode.svg', "Shrink");
+                tabs.big_code_mode.setContents(ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Shrink");
                 ocargo.blocklyControl.increaseBlockSize();
             }
 
@@ -643,7 +643,7 @@ ocargo.Game.prototype.onPlayControls = function() {
 
     document.getElementById('direct_drive').style.visibility='hidden';
     
-    ocargo.game.tabs.play.setContents('/static/game/image/icons/pause.svg', 'Pause');
+    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
     ocargo.game.tabs.step.setEnabled(false);
 
     ocargo.game.tabs.load.setEnabled(false);
@@ -659,7 +659,7 @@ ocargo.Game.prototype.onStepControls = function() {
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
-    ocargo.game.tabs.play.setContents('/static/game/image/icons/play.svg', 'Resume');
+    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
     ocargo.game.tabs.step.setEnabled(false);
 
     ocargo.game.tabs.load.setEnabled(false);
@@ -676,7 +676,7 @@ ocargo.Game.prototype.onStopControls = function() {
     // TODO make this hidden unless blocks are clear or something... 
     document.getElementById('direct_drive').style.visibility='visible';
     
-    ocargo.game.tabs.play.setContents('/static/game/image/icons/play.svg', 'Play');
+    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Play');
     ocargo.game.tabs.step.setEnabled(true);
 
     ocargo.game.tabs.load.setEnabled(true);
@@ -688,12 +688,12 @@ ocargo.Game.prototype.onStopControls = function() {
 };
 
 ocargo.Game.prototype.onPauseControls = function() {
-    ocargo.game.tabs.play.setContents('/static/game/image/icons/play.svg', 'Resume');
+    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
     ocargo.game.tabs.step.setEnabled(true);
 };
 
 ocargo.Game.prototype.onResumeControls = function() {
-    ocargo.game.tabs.play.setContents('/static/game/image/icons/pause.svg', 'Pause');
+    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
     ocargo.game.tabs.step.setEnabled(false);
 };
 
@@ -702,12 +702,12 @@ ocargo.Game.prototype.mute = function(mute) {
         ocargo.sound.mute();
         $.cookie("muted", 'true');
         $('#mute_text').text('Unmute');
-        $('#mute_img').attr('src', '/static/game/image/icons/muted.svg');
+        $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/muted.svg');
     } else {
         ocargo.sound.unmute();
         $.cookie("muted", 'false');
         $('#mute_text').text('Mute');
-        $('#mute_img').attr('src', '/static/game/image/icons/unmuted.svg');
+        $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/unmuted.svg');
     }
 };
 

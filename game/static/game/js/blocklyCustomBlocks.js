@@ -12,7 +12,7 @@ function initCustomBlocksDescription() {
     Blockly.Blocks['start'] = {
         // Beginning block - identifies the start of the program
         init: function() {
-            var imageStr = (ocargo.blocklyControl.numStartBlocks%2 === 0) ? '/static/game/image/van_small.svg' : '/static/game/image/van_small2.svg';
+            var imageStr = (ocargo.blocklyControl.numStartBlocks%2 === 0) ? ocargo.Drawing.imageDir + 'van_small.svg' : ocargo.Drawing.imageDir + 'van_small2.svg';
             ocargo.blocklyControl.numStartBlocks++;
             
             this.setColour(50);
@@ -33,7 +33,7 @@ function initCustomBlocksDescription() {
             this.setColour(160);
             this.appendDummyInput()
                 .appendField('move forwards')
-                .appendField(new Blockly.FieldImage('/static/game/image/actions/forward.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/forward.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -48,10 +48,10 @@ function initCustomBlocksDescription() {
             this.setColour(160);
             this.appendDummyInput()
                 .appendField('turn left')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     40,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/actions/left.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/left.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -66,10 +66,10 @@ function initCustomBlocksDescription() {
             this.setColour(160);
             this.appendDummyInput()
                 .appendField('turn right')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     31,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/actions/right.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/right.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -84,10 +84,10 @@ function initCustomBlocksDescription() {
             this.setColour(160);
             this.appendDummyInput()
                 .appendField('turn around')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     14,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/actions/turn_around.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/turn_around.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -102,10 +102,10 @@ function initCustomBlocksDescription() {
             this.setColour(160);
             this.appendDummyInput()
                 .appendField('wait')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     62,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/actions/wait.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/wait.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -120,10 +120,10 @@ function initCustomBlocksDescription() {
             this.setColour(160);
             this.appendDummyInput()
                 .appendField('deliver')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     45,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage('/static/game/image/actions/deliver.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/deliver.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -142,7 +142,7 @@ function initCustomBlocksDescription() {
             this.setOutput(true, 'Boolean');
             this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
         }
@@ -157,7 +157,7 @@ function initCustomBlocksDescription() {
             this.setOutput(true, 'Boolean');
             this.appendDummyInput()
                 .appendField(new Blockly.FieldDropdown(BOOLEANS), 'CHOICE')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
         }
@@ -169,7 +169,7 @@ function initCustomBlocksDescription() {
             this.setOutput(true, 'Boolean');
             this.appendDummyInput()
                 .appendField('is dead end')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
         }
@@ -181,7 +181,7 @@ function initCustomBlocksDescription() {
             this.setOutput(true, 'Boolean');
             this.appendDummyInput()
                 .appendField('at destination')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
         }
@@ -193,7 +193,7 @@ function initCustomBlocksDescription() {
             this.setColour(260);
             this.appendDummyInput()
                 .appendField('Call')
-                .appendField(new Blockly.FieldImage('/static/game/image/empty.svg', 7, ocargo.BlocklyControl.BLOCK_HEIGHT))
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg', 7, ocargo.BlocklyControl.BLOCK_HEIGHT))
                 .appendField(new Blockly.FieldTextInput(''));
             this.setPreviousStatement(true);
             this.setNextStatement(true);
@@ -277,7 +277,7 @@ function initCustomBlocksDescription() {
     var originalNotInit = notBlock.init;
     notBlock.init = function () {
         originalNotInit.call(this);
-        this.inputList[0].appendField(new Blockly.FieldImage('/static/game/image/empty.svg',
+        this.inputList[0].appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                              ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
                                                              ocargo.BlocklyControl.BLOCK_HEIGHT));
     };
