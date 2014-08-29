@@ -35,7 +35,7 @@ def add_characters(apps, schema_editor):
                     width='40')
     Wes.save()
 
-    Phil = Character(pk=6, name="Phil", height='32', width='60',
+    Phil = Character(pk=6, name="Phil", height='40', width='40',
                      en_face='characters/front_view/Phil.svg',
                      top_down='characters/top_view/Phil.svg')
     Phil.save()

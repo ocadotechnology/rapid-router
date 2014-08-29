@@ -1,7 +1,6 @@
 
 var ocargo = ocargo || {};
 
-
 // Object containing helper js objects (buttons etc).
 ocargo.jsElements = {
     image: function(url, class_) {
@@ -52,7 +51,8 @@ ocargo.messages = {
     outOfInstructions: "The van ran out of instructions before it reached a destination.",
     throughRedLight: "Uh oh, you just sent the van through a red light! Stick to the Highway " +
         "Code - the van must wait for green.",
-    alreadyDelivered: "You have already delivered to that destination! You must only deliver once to each destination.",
+    alreadyDelivered: "You have already delivered to that destination! You must only deliver " +
+        "once to each destination.",
     undeliveredDestinations: "There are destinations that have not been delivered to! " + 
         "Ensure you visit all destinations and use the deliver command at each one.",
     offRoad : function(correctSteps){
@@ -75,44 +75,52 @@ ocargo.messages = {
     somethingWrong: "Something is wrong...", 
     noStartEndRouteSubtitle: "There is no way to get from the start to the destination.",
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
-    levelEditorMobileSubtitle: "To draw a road, place two fingers on the " +
+    levelEditorMobileSubtitle: "To get started, draw a road. <br><br> Place two fingers on the " +
         "square you want the road to start from. Then, keeping one finger in place, drag the the " +
-        "other to the square you want the road to end on. <br><br> Do this as many times as you " +
-        "like to add new sections of road.",
-    levelEditorPCSubtitle: "To draw a road, click on the square you want the " +
-        "road to start from. Then, without letting go of the mouse button, drag to the square " +
-        "you'd like the road to end on. <br><br> Do this as many times as you like to add new " +
-        "sections of road.",
-    trafficLightsWarning: "You should not use traffic lights unless you already have covered " +
-        "them in your classroom activities or played the levels from the Traffic Lights episode. ",
+        "other to the square you want the road to end on. <br> Do this as many times as you like " +
+        "to add new sections of road.",
+    levelEditorPCSubtitle: "To get started, draw a road. <br><br> Click on the square you want " +
+        "the road to start from. Then, without letting go of the mouse button, drag to the " +
+        "square you’d like the road to end on. <br> Do this as many times as you like to add " +
+        "new sections of road. ",
+    trafficLightsWarning: "You need to complete level 44 before using a traffic light. ",
     levelEditorHelpText: "In " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon') +
         "<b>Map</b> menu, click " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon') + 
         "<b>Mark start</b> and select a square for your road to start from. <br> Make sure you " +
-        "use " + ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') + 
+        "use " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') + 
         "<b>Mark end</b> to select a final destination. <br><br> To remove road, click the " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/delete_road.svg', 'popupIcon') + 
-        "<b>Delete road</b> button and select a section to get rid of. <br><br> Select " +
+        "<b>Delete road</b> button and select a section to get rid of. <br><br> Click " + 
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/random.svg', 'popupIcon') +
+        "<b>Random</b> if you want the computer to create a random route for you.<br><br> Select " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/decor.svg', 'popupIcon') +
         "<b>Scenery</b> and choose trees, bushes and more to place around your road. These will " +
         "show in the top left corner - drag them into place. <br><i> Remember, using the traffic " +
-        "lights is not covered until level 44.</i><br><br> Click " +
-        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/random.svg', 'popupIcon') +
-        "<b>Random</b> if you would like the computer to create a random route for you." +
-        "<br> Choose a character to play with from the " +
+        "lights is not covered until level 44.</i><br><br> " +
+        "Choose a character to play with from the " + 
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/character.svg', 'popupIcon') +
-        "<b>Character</b> menu. <br><br> Select which blocks you want to use to create a route " +
-        "from the " + ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/blockly.svg', 'popupIcon') +
-        "<b>Blocks</b> menu. <br><br> When you're ready click " +
+        "<b>Character</b> menu. <br><br> Select which blocks of code you want to be used to " +
+        "create a route for your character from the " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/blockly.svg', 'popupIcon') +
+        "<b>Blocks</b> menu. <br><br> Setting a fuel level means the route will need to be short " +
+        "enough for the fuel not to run out. When you're ready click " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/play.svg', 'popupIcon') +
-        "<b>Play</b>. <br><br> You can also save your road or share it with a friend. <br><br> " +
-        "Don't forget you can set a fuel limit for your level! ", 
+        "<b>Play</b>, or " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/save.svg', 'popupIcon') +
+        "<b>Save</b> your road or " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/share.svg', 'popupIcon') +
+        "<b>Share</b> it with a friend. Don't forget to choose a good name for it! <br><br> " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/quit.svg', 'popupIcon') +
+        "<b>Quit</b> will take you back to the Rapid Router homepage.",
     notLoggedIn: function(activity) {
         return "Unfortunately you need to be logged in to " + activity +
             " levels. You can log on <a href='/play/'>here</a>.";
     },
-    soloSharing:  "Sorry but as an independent student you'll need to join a school or club to share your levels with others.",
+    soloSharing:  "Sorry but as an independent student you'll need to join a school or club to " +
+        "share your levels with others.",
     internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
     notOwned: "You do not own this level. If you would like to share it you will first have to " +

@@ -1286,143 +1286,147 @@ ocargo.LevelEditor = function() {
         var moved = false;
 
         function onDragMove(dx, dy) {
-            // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
-            trafficLight.valid = false;
-            image.attr({'cursor':'default'});
-            moved = dx !== 0 || dy !== 0;
+            if (mode !== modes.DELETE_DECOR_MODE) {
+                // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
+                trafficLight.valid = false;
+                image.attr({'cursor':'default'});
+                moved = dx !== 0 || dy !== 0;
 
-            // Update image's position
-            paperX = dx + originX;
-            paperY = dy + originY;
+                // Update image's position
+                paperX = dx + originX;
+                paperY = dy + originY;
 
-            // Stop it being dragged off the edge of the page
-            if (paperX < 0) {
-                paperX = 0;
-            }
-            else if (paperX + imageWidth > paperWidth) {
-                paperX = paperWidth - imageWidth;
-            }
-            if (paperY < 0) {
-                paperY =  0;
-            }
-            else if (paperY + imageHeight >  paperHeight) {
-                paperY = paperHeight - imageHeight;
-            }
-            
-            // Adjust for the fact that we've rotated the image
-            if (rotation === 90 || rotation === 270)  {
-                paperX += (imageWidth - imageHeight)/2;
-                paperY -= (imageWidth - imageHeight)/2;
-            }
-
-            // And perform the updatee
-            image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
-
-
-            // Unmark the squares the light previously occupied
-            if (sourceCoord) {
-                markAsBackground(sourceCoord);
-            }
-            if (controlledCoord) {
-                markAsBackground(controlledCoord);
-            }
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (destinationNode) {
-                markAsDestination(destinationNode.coordinate);
-            }
-
-            // Now calculate the source coordinate
-            var box = image.getBBox();
-            var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
-            var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
-
-            switch(rotation) {
-                case 0:
-                    absY += 0.5;
-                    break;
-                case 90:
-                    absX -= 0.5;
-                    break;
-                case 180:
-                    absY -= 0.5;
-                    break;
-                case 270:
-                    absX += 0.5;
-                    break;
-            }
-
-            var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
-            var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
-            sourceCoord = new ocargo.Coordinate(x,y);
-
-            // Find controlled position in map coordinates
-            switch(rotation) {
-                case 0:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y + 1);
-                    break;
-                case 90:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x + 1, sourceCoord.y);
-                    break;
-                case 180:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y - 1);
-                    break;
-                case 270:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x - 1, sourceCoord.y);
-                    break;
-            }
-
-            // If controlled node is not on grid, remove it
-            if (!isCoordinateOnGrid(controlledCoord)) {
-                controlledCoord = null;
-            }
-
-            // If source node is not on grid remove it
-            if (!isCoordinateOnGrid(sourceCoord)) {
-                sourceCoord = null;
-            }
-
-            if (sourceCoord && controlledCoord) {
-                var colour;
-                if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
-                    // Valid placement
-                    colour = VALID_LIGHT_COLOUR;
-                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
-                } else {
-                    // Invalid placement
-                    colour = INVALID_LIGHT_COLOUR;
+                // Stop it being dragged off the edge of the page
+                if (paperX < 0) {
+                    paperX = 0;
+                }
+                else if (paperX + imageWidth > paperWidth) {
+                    paperX = paperWidth - imageWidth;
+                }
+                if (paperY < 0) {
+                    paperY =  0;
+                }
+                else if (paperY + imageHeight >  paperHeight) {
+                    paperY = paperHeight - imageHeight;
+                }
+                
+                // Adjust for the fact that we've rotated the image
+                if (rotation === 90 || rotation === 270)  {
+                    paperX += (imageWidth - imageHeight)/2;
+                    paperY -= (imageWidth - imageHeight)/2;
                 }
 
-                mark(controlledCoord, colour, 0.7, false);
-                mark(sourceCoord, colour, 0.7, false);
+                // And perform the updatee
+                image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
+
+
+                // Unmark the squares the light previously occupied
+                if (sourceCoord) {
+                    markAsBackground(sourceCoord);
+                }
+                if (controlledCoord) {
+                    markAsBackground(controlledCoord);
+                }
+                if (originNode) {
+                    markAsOrigin(originNode.coordinate);
+                }
+                if (destinationNode) {
+                    markAsDestination(destinationNode.coordinate);
+                }
+
+                // Now calculate the source coordinate
+                var box = image.getBBox();
+                var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
+                var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
+
+                switch(rotation) {
+                    case 0:
+                        absY += 0.5;
+                        break;
+                    case 90:
+                        absX -= 0.5;
+                        break;
+                    case 180:
+                        absY -= 0.5;
+                        break;
+                    case 270:
+                        absX += 0.5;
+                        break;
+                }
+
+                var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+                var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+                sourceCoord = new ocargo.Coordinate(x,y);
+
+                // Find controlled position in map coordinates
+                switch(rotation) {
+                    case 0:
+                        controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y + 1);
+                        break;
+                    case 90:
+                        controlledCoord = new ocargo.Coordinate(sourceCoord.x + 1, sourceCoord.y);
+                        break;
+                    case 180:
+                        controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y - 1);
+                        break;
+                    case 270:
+                        controlledCoord = new ocargo.Coordinate(sourceCoord.x - 1, sourceCoord.y);
+                        break;
+                }
+
+                // If controlled node is not on grid, remove it
+                if (!isCoordinateOnGrid(controlledCoord)) {
+                    controlledCoord = null;
+                }
+
+                // If source node is not on grid remove it
+                if (!isCoordinateOnGrid(sourceCoord)) {
+                    sourceCoord = null;
+                }
+
+                if (sourceCoord && controlledCoord) {
+                    var colour;
+                    if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
+                        // Valid placement
+                        colour = VALID_LIGHT_COLOUR;
+                        ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                    } else {
+                        // Invalid placement
+                        colour = INVALID_LIGHT_COLOUR;
+                    }
+
+                    mark(controlledCoord, colour, 0.7, false);
+                    mark(sourceCoord, colour, 0.7, false);
+                }
             }
         }
 
         function onDragStart(x, y) {
-            moved = false;
+            if (mode !== modes.DELETE_DECOR_MODE) {
+                moved = false;
 
-            scaling = getScaling(image);
-            rotation = (image.matrix.split().rotate + 360) % 360;
-            
-            var bBox = image.getBBox();
-            imageWidth = bBox.width;
-            imageHeight = bBox.height;
+                scaling = getScaling(image);
+                rotation = (image.matrix.split().rotate + 360) % 360;
+                
+                var bBox = image.getBBox();
+                imageWidth = bBox.width;
+                imageHeight = bBox.height;
 
-            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
-            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+                paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
+                paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
 
-            var paperPosition = paper.position();
+                var paperPosition = paper.position();
 
-            var mouseX = x - paperPosition.left;
-            var mouseY = y - paperPosition.top;
+                var mouseX = x - paperPosition.left;
+                var mouseY = y - paperPosition.top;
 
-            originX = mouseX - imageWidth/2;
-            originY = mouseY - imageHeight/2;
+                originX = mouseX - imageWidth/2;
+                originY = mouseY - imageHeight/2;
+            }
         }
 
         function onDragEnd() {
-            if (moved) {
+            if (moved && mode !== modes.DELETE_DECOR_MODE) {
                 // Unmark squares currently occupied
                 if (sourceCoord) {
                     markAsBackground(sourceCoord);
