@@ -6,8 +6,6 @@ local_settings.py
 *.iml
 *~
 
-/game/static/game/chrome_image/
-
 .settings
 .project
 .pydevproject

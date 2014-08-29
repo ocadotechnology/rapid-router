@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:cc="http://creativecommons.org/ns#"
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:svg="http://www.w3.org/2000/svg"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+ xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+ id="svg2"
+ x="0px" y="0px" width="100px" height="100px"
+ version="1.1"
+ inkscape:version="0.48.4 r9939"
+ 
+ 
+ sodipodi:docname="delete_road.svg">
+ <defs
+ id="defs3010" />
+ <sodipodi:namedview
+ pagecolor="#ffffff"
+ bordercolor="#666666"
+ borderopacity="1"
+ objecttolerance="10"
+ gridtolerance="10"
+ guidetolerance="10"
+ inkscape:pageopacity="0"
+ inkscape:pageshadow="2"
+ inkscape:window-width="1375"
+ inkscape:window-height="876"
+ id="namedview3008"
+ showgrid="false"
+ inkscape:zoom="2.36"
+ inkscape:cx="44.312522"
+ inkscape:cy="35.523267"
+ inkscape:window-x="65"
+ inkscape:window-y="204"
+ inkscape:window-maximized="1"
+ inkscape:current-layer="svg2" />
+ <metadata
+ id="metadata7">
+ <rdf:RDF>
+ <cc:Work
+ rdf:about="">
+ <dc:format>image/svg+xml</dc:format>
+ <dc:type
+ rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+ <dc:title />
+ </cc:Work>
+ </rdf:RDF>
+ </metadata>
+ <path
+ style="opacity:0.98999999;fill:#000000;fill-opacity:1;stroke:none"
+ d="m 16.25,11.8125 0,72.21875 27.1875,0 c -1.574181,-3.180548 -2.46875,-6.773349 -2.46875,-10.5625 0.333872,-6.470318 2.567162,-12.236265 6.75,-16.59375 l -5.1875,0 0,-17.875 8.21875,0 0,15.25 c 3.936833,-2.876729 8.781933,-4.59375 14.03125,-4.59375 3.838674,0 7.476061,0.918272 10.6875,2.53125 l 0,-40.375 z m 26.625,2.28125 8.21875,0 0,17.9375 -8.21875,0 z"
+ id="rect3004-0"
+ inkscape:connector-curvature="0"
+ sodipodi:nodetypes="cccccccccscccccccc" />
+ <path
+ style="stroke-width:3.49979997"
+ inkscape:connector-curvature="0"
+ id="path3161"
+ d="m 64.793945,52.962968 c -11.331996,0 -20.519996,9.1886 -20.519996,20.520005 0,11.332 9.1886,20.519997 20.519996,20.519997 11.332,0 20.519996,-9.188697 20.519996,-20.519997 0,-11.332005 -9.188596,-20.520005 -20.519996,-20.520005 z m 13.587,16.392005 v 8.2962 H 51.207949 v -8.2962 z" />
+</svg>
