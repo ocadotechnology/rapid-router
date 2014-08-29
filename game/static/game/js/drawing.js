@@ -283,7 +283,7 @@ ocargo.Drawing = function() {
             }
         }
 
-        var path = '/static/game/image/road_tiles/';
+        var path = ocargo.Drawing.imageDir + 'road_tiles/';
 
         path += CHARACTER_NAME === 'Van' ? 'road/' : 'path/';
 
@@ -895,7 +895,11 @@ ocargo.Drawing.isMobile = function() {
     return !!mobileDetect.mobile();
 };
 
-ocargo.Drawing.imageDir = '/static/game/image/';
+ocargo.Drawing.isChrome = function() {
+    return navigator.userAgent.indexOf('Chrome') > -1;
+}
+
+ocargo.Drawing.imageDir = (isChrome()) ? '/static/game/chrome_image/' : '/static/game/image/';
 
 ocargo.Drawing.FRONT_VIEW  = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
