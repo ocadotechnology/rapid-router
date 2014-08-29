@@ -139,10 +139,14 @@ table th {
     margin-left: 8px;
 }
 
-.navigation_button span {
+.navigation_button img + span {
     line-height: 30px;
-    margin-left: 2px;
-    margin-right: 15px;
+}
+
+.navigation_button img + span {
+    line-height: 30px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .navigation_button img,
