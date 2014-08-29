@@ -78,10 +78,6 @@ ocargo.LevelEditor = function() {
     // Draw everything
     drawAll();
 
-    // Set the default theme
-    setTheme(THEMES.grass);
-
-
 
     /*********************************/
     /* Two finger scrolling of paper */
@@ -1715,7 +1711,7 @@ ocargo.LevelEditor = function() {
         // Other data
         state.max_fuel = $('#max_fuel').val();
         
-        state.themeID = currentTheme.id;
+        state.theme = currentTheme.id;
         state.character_name = CHARACTER_NAME;
 
         state.blocklyEnabled = true;
@@ -1753,11 +1749,19 @@ ocargo.LevelEditor = function() {
         drawAll();
 
         // Set the theme
-        var themeID = state.themeID;
-        for (var theme in THEMES) {
-            if (THEMES[theme].id === themeID) {
-                setTheme(THEMES[theme]);
+        var themeFound = false;
+        var themeID = state.theme;
+        for (var themeName in THEMES) {
+            var theme = THEMES[themeName];
+            if (theme.id === themeID) {
+                setTheme(theme);
+                themeFound = true;
+                $('#theme_select').val(themeName);
+                break;
             }
+        }
+        if(!themeFound) {
+            setTheme(THEMES.grass);
         }
 
         // Load in the decor data
@@ -1767,6 +1771,9 @@ ocargo.LevelEditor = function() {
             decorObject.setCoordinate(new ocargo.Coordinate(decorData[i].coordinate.x,
                 PAPER_HEIGHT - decorData[i].height - decorData[i].coordinate.y));
         }
+
+        // Other data
+        $('#max_fuel').val(state.max_fuel);
     }
 
     function loadLevel(levelID) { 

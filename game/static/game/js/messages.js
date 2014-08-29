@@ -38,6 +38,7 @@ ocargo.messages = {
         ocargo.jsElements.redirectButton("'/rapidrouter/level_editor'", "Create your own map!") + 
         " " + ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home"),
 
+    illegalBlocks: "Sorry, this workspace has blocks in it that aren't allowed in this level!",
     tooManyBlocks: "Whoops! You used too many blocks.",
     ohNo: "Oh no!",
     winTitle: "You win!",

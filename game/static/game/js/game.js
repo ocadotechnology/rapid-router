@@ -316,8 +316,11 @@ ocargo.Game.prototype.setupTabs = function() {
         currentTabSelected = tabs.blockly;
         tabs.blockly.select();
         
-        ocargo.blocklyControl.showFlyout();
-        ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
+        // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
+        setTimeout(function() {
+            ocargo.blocklyControl.toggleFlyout();
+            ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
+            }, 1);
     }
 
     function setupPythonTab() {
@@ -438,8 +441,8 @@ ocargo.Game.prototype.setupTabs = function() {
                 });
 
                 tabs.blockly.select();
-                ocargo.blocklyControl.showFlyout();
-                ocargo.blocklyControl.showFlyout();
+                ocargo.blocklyControl.toggleFlyout();
+                ocargo.blocklyControl.toggleFlyout();
             }
         });
 
@@ -581,10 +584,10 @@ ocargo.Game.prototype.setupTabs = function() {
                 ocargo.blocklyControl.increaseBlockSize();
             }
 
-            // Note that showFlyout is misnamed and actually toggles the flyout.
+            // Note that toggleFlyout is misnamed and actually toggles the flyout.
             // So these two lines force the flyout to refresh and be the correct size.
-            ocargo.blocklyControl.showFlyout();
-            ocargo.blocklyControl.showFlyout();
+            ocargo.blocklyControl.toggleFlyout();
+            ocargo.blocklyControl.toggleFlyout();
 
             ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
         });
