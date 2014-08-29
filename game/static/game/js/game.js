@@ -431,8 +431,9 @@ ocargo.Game.prototype.setupTabs = function() {
                         return;
                     }
 
-                    ocargo.blocklyControl.deserialize(workspace.contents);
+                    ocargo.blocklyControl.deserialize(workspace);
                     ocargo.blocklyControl.redrawBlockly();
+
                     $('#loadModal').foundation('reveal', 'close');
                 });
 
@@ -523,7 +524,6 @@ ocargo.Game.prototype.setupTabs = function() {
                         console.error(err);
                         return;
                     }
-
                     loadInWorkspaces(workspaces);
                 });
             }
