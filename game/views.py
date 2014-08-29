@@ -779,7 +779,7 @@ def save_level_for_editor(request, levelID=None):
             'decor': request.POST.get('decor'),
             'traffic_lights': request.POST.get('traffic_lights'),
             'max_fuel': request.POST.get('max_fuel'),
-            'theme_id': request.POST.get('themeID'),
+            'theme_id': request.POST.get('theme'),
             'character_name': request.POST.get('character_name'),
             'blockTypes': json.loads(request.POST.get('block_types')),
             'blocklyEnabled': request.POST.get('blocklyEnabled') == 'true',
