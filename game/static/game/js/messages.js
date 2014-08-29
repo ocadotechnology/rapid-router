@@ -7,11 +7,13 @@ ocargo.jsElements = {
         return "<img src='" + url + "'class='" + class_ + "'>";
     },
     redirectButton: function(location, label) {
-        return '<button onclick="window.location.href=' + location + '">' + label + '</button>';
+        return '<br><button class="navigation_button" onclick="window.location.href=' + location + 
+            '"><span>' + label + '</span></button>';
     },
     closebutton: function(label) {
-        return '<br><br> <button onclick="document.getElementById(' + "'close-modal'" +
-        ').click()">' + label +'</button>';
+        return '<br><button class="navigation_button" onclick="document.getElementById(' + "'close-modal'" +
+        ').click()"><span>' + label +'</span></button>';
+
     },
     buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>'
 };
