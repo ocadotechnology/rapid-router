@@ -899,7 +899,7 @@ ocargo.Drawing.isChrome = function() {
     return navigator.userAgent.indexOf('Chrome') > -1;
 }
 
-ocargo.Drawing.imageDir = (isChrome()) ? '/static/game/chrome_image/' : '/static/game/image/';
+ocargo.Drawing.imageDir = (ocargo.Drawing.isChrome()) ? '/static/game/chrome_image/' : '/static/game/image/';
 
 ocargo.Drawing.FRONT_VIEW  = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
