@@ -1420,8 +1420,8 @@ ocargo.LevelEditor = function() {
                 var mouseX = x - paperPosition.left;
                 var mouseY = y - paperPosition.top;
 
-                originX = mouseX - imageWidth/2;
-                originY = mouseY - imageHeight/2;
+                originX = mouseX + paper.scrollLeft()- imageWidth/2;
+                originY = mouseY + paper.scrollTop() - imageHeight/2;
             }
         }
 
