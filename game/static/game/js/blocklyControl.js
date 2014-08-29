@@ -6,9 +6,10 @@ ocargo.BlocklyControl = function () {
     this.blocklyDiv = document.getElementById('blockly_holder');
     this.toolbox = document.getElementById('blockly_toolbox');
 
+
     Blockly.inject(this.blocklyDiv, {
         path: '/static/game/js/blockly/',
-        toolbox: this.toolbox,
+        toolbox: BLOCKLY_XML,
         trashcan: true
     });
 
