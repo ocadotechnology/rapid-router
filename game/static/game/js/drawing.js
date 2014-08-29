@@ -31,7 +31,7 @@ ocargo.Drawing = function() {
     var ROTATION_OFFSET_X = 22;
     var ROTATION_OFFSET_Y = CHARACTER_WIDTH - 20;
     
-    var DESTINATION_NOT_VISITED_COLOUR = 'yellow';
+    var DESTINATION_NOT_VISITED_COLOUR = 'red';
     var DESTINATION_VISITED_COLOUR = 'green';
 
     /*********/
