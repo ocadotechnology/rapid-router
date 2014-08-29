@@ -32,7 +32,6 @@
   <script src="/static/game/js/destination.js"></script>
 
   <script>
-    var USER_ROLE = '{{user_role}}';
     var BLOCKS = [];
     var THEMES =  [];
     var CHARACTER_NAME = 'Van';
@@ -457,14 +456,14 @@
           <div id="share_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='/static/game/image/buttons/menu/share.svg'>Share</h2>
             
-            {% if user_role == 'teacher' %}
+            {% if user|get_user_status == 'TEACHER' %}
               <p>Here you can share your level with your classes or your fellow teachers.</p>
-            {% elif user_role == 'student' %}
+            {% elif user|get_user_status == 'SCHOOL_STUDENT' %}
               <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
             {% endif %}
 
             <div class="table_control_div">
-              {% if user_role == 'teacher' %}
+              {% if user|get_user_status == 'TEACHER' %}
                 <p>
                   Share with:
                   <select id="share_type_select">

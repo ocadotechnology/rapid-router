@@ -8,14 +8,14 @@ ocargo.LevelEditor = function() {
     /* Constants */
     /*************/
 
-    var LIGHT_RED_URL = '/static/game/image/trafficLight_red.svg';
-    var LIGHT_GREEN_URL = '/static/game/image/trafficLight_green.svg';
+    var LIGHT_RED_URL = ocargo.Drawing.imageDir + 'trafficLight_red.svg';
+    var LIGHT_GREEN_URL = ocargo.Drawing.imageDir + 'trafficLight_green.svg';
     
-    var DELETE_DECOR_IMG_URL = "/static/game/image/icons/delete_decor.svg";
-    var ADD_ROAD_IMG_URL = "/static/game/image/icons/add_road.svg";
-    var DELETE_ROAD_IMG_URL = "/static/game/image/icons/delete_road.svg";
-    var MARK_START_IMG_URL = "/static/game/image/icons/origin.svg";
-    var MARK_END_IMG_URL = "/static/game/image/icons/destination.svg";
+    var DELETE_DECOR_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_decor.svg";
+    var ADD_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/add_road.svg";
+    var DELETE_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_road.svg";
+    var MARK_START_IMG_URL = ocargo.Drawing.imageDir + "icons/origin.svg";
+    var MARK_END_IMG_URL = ocargo.Drawing.imageDir + "icons/destination.svg";
 
     var VALID_LIGHT_COLOUR = '#87E34D';
     var INVALID_LIGHT_COLOUR = '#E35F4D';
@@ -25,11 +25,11 @@ ocargo.LevelEditor = function() {
     var paper = $('#paper'); // May as well cache this
 
     var modes = {
-        ADD_ROAD_MODE: {name: 'Add Road', url: "/static/game/image/icons/add_road.svg"},
-        DELETE_ROAD_MODE: {name: 'Delete Road', url: "/static/game/image/icons/delete_road.svg"},
-        MARK_DESTINATION_MODE: {name: 'Mark end', url: "/static/game/image/icons/destination.svg"},
-        MARK_ORIGIN_MODE: {name: 'Mark start', url: "/static/game/image/icons/origin.svg"},
-        DELETE_DECOR_MODE: {name: 'Delete decor', url: "/static/game/image/icons/delete_decor.svg"}
+        ADD_ROAD_MODE: {name: 'Add Road', url: ocargo.Drawing.imageDir + "icons/add_road.svg"},
+        DELETE_ROAD_MODE: {name: 'Delete Road', url: ocargo.Drawing.imageDir + "icons/delete_road.svg"},
+        MARK_DESTINATION_MODE: {name: 'Mark end', url: ocargo.Drawing.imageDir + "icons/destination.svg"},
+        MARK_ORIGIN_MODE: {name: 'Mark start', url: ocargo.Drawing.imageDir + "icons/origin.svg"},
+        DELETE_DECOR_MODE: {name: 'Delete decor', url: ocargo.Drawing.imageDir + "icons/delete_decor.svg"}
     };
 
     /*********/
@@ -163,7 +163,7 @@ ocargo.LevelEditor = function() {
                     state.name = "Custom level"
                     ocargo.saving.saveLevel(state, null, true, function(error, levelID) {
                         if(error) {
-                            console.debug(error)
+                            console.error(error)
                             return;
                         }
                         window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID;
@@ -370,7 +370,7 @@ ocargo.LevelEditor = function() {
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
                     $('#generate').attr('disabled', false);
                     if (error) {
-                        console.debug(error);
+                        console.error(error);
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                         return;
                     }
@@ -455,24 +455,23 @@ ocargo.LevelEditor = function() {
 
                 ocargo.saving.deleteLevel(selectedLevel, function(err, ownedLevels, sharedLevels) {
                     if (err !== null) {
-                        console.debug(err);
+                        console.error(err);
                         return;
                     }
 
-                    processListOfLevels(err, ownedLevels, sharedLevels)
                     if (selectedLevel == savedLevelID) {
                         savedLevelID = -1;
                         savedState = null;
                         ownsSavedLevel = false;
                     }
 
-                    selectedLevel = null;
+                    processListOfLevels(err, ownedLevels, sharedLevels);
                 });
             });
 
             function processListOfLevels(err, listOfOwnLevels, listOfSharedLevels) {
                 if (err !== null) {
-                    console.debug(err);
+                    console.error(err);
                     currentTabSelected.select();
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
@@ -553,7 +552,7 @@ ocargo.LevelEditor = function() {
 
             function processListOfLevels(err, ownLevels, sharedLevels) {
                 if (err !== null) {
-                    console.debug(err);
+                    console.error(err);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
@@ -579,6 +578,7 @@ ocargo.LevelEditor = function() {
                     }
                 });
 
+                $('#save_pane .scrolling-table-wrapper').css('display', ownLevels.length === 0 ? 'none' : 'block');
                 selectedLevel = null;
             }
         }
@@ -591,14 +591,14 @@ ocargo.LevelEditor = function() {
 
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
-                if (!isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
+                if (!isSoloStudent() ||  !isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
                     currentTabSelected.select();
                     return;
                 }
                 
                 ocargo.saving.getSharingInformation(savedLevelID, function(error, validRecipients) {
                     if(error) {
-                        console.debug(error);
+                        console.error(error);
                         return;
                     }
 
@@ -661,18 +661,18 @@ ocargo.LevelEditor = function() {
             // Method to call when we get an update on the level's sharing information
             function processSharingInformation(error, validRecipients) {
                 if (error !== null) {
-                    console.debug(error);
+                    console.error(error);
                     ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
 
-                if (USER_ROLE === "student") {
+                if (USER_STATUS === "SCHOOL_STUDENT") {
                     var classmates = validRecipients.classmates;
                     var teacher = validRecipients.teacher;
 
                     populateSharingTable(classmates);
                 }
-                else if (USER_ROLE == "teacher") {
+                else if (USER_STATUS === "TEACHER") {
                     classesTaught = validRecipients.classes;
                     fellowTeachers = validRecipients.teachers;
 
@@ -758,11 +758,11 @@ ocargo.LevelEditor = function() {
                 // Update the shareWithAll button
                 if (allShared) {
                     $('#shareWithAll span').html('Unshare with all');
-                    $('#shareWithAll img').attr('src','/static/game/image/icons/quit.svg');
+                    $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/quit.svg');
                 }
                 else {
                     $('#shareWithAll span').html('Share with all');
-                    $('#shareWithAll img').attr('src','/static/game/image/icons/share.svg');
+                    $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/share.svg');
                 }
 
                 // update click listeners in the new rows
@@ -796,8 +796,6 @@ ocargo.LevelEditor = function() {
                 currentTabSelected.select();
                 ocargo.Drawing.startPopup('', '', message);
             });
-
-           
         }
 
         function setupQuitTab() {
@@ -1768,7 +1766,7 @@ ocargo.LevelEditor = function() {
     function loadLevel(levelID) { 
         ocargo.saving.retrieveLevel(levelID, function(err, level, owned) {
             if (err !== null) {
-                console.debug(err);
+                console.error(err);
                 return;
             }
 
@@ -1786,7 +1784,7 @@ ocargo.LevelEditor = function() {
 
         ocargo.saving.saveLevel(level, levelID, false, function(error, newLevelID, ownedLevels, sharedLevels) {
             if (error !== null) {
-                console.debug(error);
+                console.error(error);
                 return;
             }
 
@@ -1876,8 +1874,16 @@ ocargo.LevelEditor = function() {
     }
 
     function isLoggedIn(activity) {
-        if (USER_ROLE !== "student" && USER_ROLE !== 'teacher') {
+        if (USER_STATUS !== "SCHOOL_STUDENT" && USER_STATUS !== "TEACHER" && USER_STATUS !== "SOLO_STUDENT") {
             ocargo.Drawing.startPopup("Not logged in", "", ocargo.messages.notLoggedIn(activity));
+            return false;
+        }
+        return true;
+    }
+
+    function isSoloStudent() {
+        if (USER_STATUS === "SOLO_STUDENT") {
+            ocargo.Drawing.startPopup("Sharing as an independent student", "", ocargo.messages.soloSharing);
             return false;
         }
         return true;

@@ -9,10 +9,10 @@ ocargo.Program = function() {
 	this.procedures = {};
 };
 
-ocargo.Program.prototype.run = function(model) {
+ocargo.Program.prototype.run = function() {
 	for (var i = 0; i < this.threads.length; i++) {
-		model.reset(i);
-		this.threads[i].run(model);
+		ocargo.model.reset(i);
+		this.threads[i].run(ocargo.model);
 	}
 };
 

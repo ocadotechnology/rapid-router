@@ -18,7 +18,7 @@ def noPermissionTitle():
 
 
 def noPermissionScoreboard():
-    return ugettext("Scoreboard is only visible to students and teachers. Log in if you "
+    return ugettext("Scoreboard is only visible to school students and teachers. Log in if you "
                     + "think you should be able to see it. ")
 
 
