@@ -2,25 +2,25 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 <svg id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" viewBox="0 0 100 100" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
  <metadata id="metadata7">
-  <rdf:RDF>
-   <cc:Work rdf:about="">
-    <dc:format>image/svg+xml</dc:format>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:title/>
-   </cc:Work>
-  </rdf:RDF>
+ <rdf:RDF>
+ <cc:Work rdf:about="">
+ <dc:format>image/svg+xml</dc:format>
+ <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+ <dc:title/>
+ </cc:Work>
+ </rdf:RDF>
  </metadata>
  <g id="layer1" transform="translate(0 -952.36)">
-  <g id="g3895" transform="matrix(.89186 0 0 .89186 199.55 123.26)">
-   <g id="g3013">
-    <path id="path3024-6" d="m-207.88-7.5625v81.781h80.375v-71.438l-10.375-10.344h-70zm17.688 1.5h45v22.844h-45v-22.844zm-9.81 39.218h65v34.625h-65v-34.625z" stroke="#000" stroke-width="1px" transform="translate(0 952.36)"/>
-    <rect id="rect3798-9" y="949.16" width="8.2143" height="17.143" x="-160.01"/>
-    <g id="g3838-3" stroke="#000" stroke-width="1px" transform="translate(97.493 46.187)" fill="none">
-     <path id="path3800-5" d="m-290.71-5h51.429" transform="translate(0 952.36)"/>
-     <path id="path3800-1-7" d="m-290.71 956.65h51.429"/>
-     <path id="path3800-1-2-7" d="m-290.71 965.93h51.429"/>
-    </g>
-   </g>
-  </g>
+ <g id="g3895" transform="matrix(.89186 0 0 .89186 199.55 123.26)">
+ <g id="g3013">
+ <path id="path3024-6" d="m-207.88-7.5625v81.781h80.375v-71.438l-10.375-10.344h-70zm17.688 1.5h45v22.844h-45v-22.844zm-9.81 39.218h65v34.625h-65v-34.625z" stroke="#000" stroke-width="1px" transform="translate(0 952.36)"/>
+ <rect id="rect3798-9" y="949.16" width="8.2143" height="17.143" x="-160.01"/>
+ <g id="g3838-3" stroke="#000" stroke-width="1px" transform="translate(97.493 46.187)" fill="none">
+ <path id="path3800-5" d="m-290.71-5h51.429" transform="translate(0 952.36)"/>
+ <path id="path3800-1-7" d="m-290.71 956.65h51.429"/>
+ <path id="path3800-1-2-7" d="m-290.71 965.93h51.429"/>
+ </g>
+ </g>
+ </g>
  </g>
 </svg>

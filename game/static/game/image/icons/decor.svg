@@ -2,15 +2,15 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 <svg id="svg2" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" viewBox="0 0 100 100" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
  <metadata id="metadata7">
-  <rdf:RDF>
-   <cc:Work rdf:about="">
-    <dc:format>image/svg+xml</dc:format>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:title/>
-   </cc:Work>
-  </rdf:RDF>
+ <rdf:RDF>
+ <cc:Work rdf:about="">
+ <dc:format>image/svg+xml</dc:format>
+ <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+ <dc:title/>
+ </cc:Work>
+ </rdf:RDF>
  </metadata>
  <g id="layer1" transform="translate(0 -952.36)">
-  <path id="path3016" stroke-linejoin="round" stroke="#000" stroke-width="2.3448" d="m49.753 961.34-20.158 24.196h10.861l-17.685 22.192h13.021l-17.967 21.602h26.762v14.05h10.955v-14.05h26.631l-18.461-21.602h12.082l-17.341-22.192h9.9224z"/>
+ <path id="path3016" stroke-linejoin="round" stroke="#000" stroke-width="2.3448" d="m49.753 961.34-20.158 24.196h10.861l-17.685 22.192h13.021l-17.967 21.602h26.762v14.05h10.955v-14.05h26.631l-18.461-21.602h12.082l-17.341-22.192h9.9224z"/>
  </g>
 </svg>
