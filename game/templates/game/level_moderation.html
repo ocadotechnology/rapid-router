@@ -16,7 +16,7 @@
         $('#id_classes').change(function(){
             class_id = $(this).val();
             $.ajax({
-                url: '/game/level_moderation/class/' + class_id,
+                url: '/rapidrouter/level_moderation/class/' + class_id,
                 type: 'GET',
                 dataType: 'json',
                 success: function(studentData){

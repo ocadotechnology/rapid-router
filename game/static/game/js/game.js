@@ -320,7 +320,7 @@ ocargo.Game.prototype.setupTabs = function() {
         setTimeout(function() {
             ocargo.blocklyControl.toggleFlyout();
             ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-            }, 1);
+            }, 100);
     }
 
     function setupPythonTab() {

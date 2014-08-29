@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg id="svg3124" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+<svg id="svg3124" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="200px" height="200px" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
  <metadata id="metadata3155">
-  <rdf:RDF>
-   <cc:Work rdf:about="">
-    <dc:format>image/svg+xml</dc:format>
-    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-   </cc:Work>
-  </rdf:RDF>
+ <rdf:RDF>
+ <cc:Work rdf:about="">
+ <dc:format>image/svg+xml</dc:format>
+ <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+ </cc:Work>
+ </rdf:RDF>
  </metadata>
  <defs id="defs3126">
-  <radialGradient id="turnGradient" gradientUnits="userSpaceOnUse" cy="200" cx="0" r="200">
-   <stop id="stop3129" stop-color="#232323" offset=".275"/>
-   <stop id="stop3131" stop-color="#303030" offset=".388"/>
-   <stop id="stop3133" stop-color="#303030" offset=".612"/>
-   <stop id="stop3135" stop-color="#232323" offset=".725"/>
-  </radialGradient>
+ <radialGradient id="turnGradient" gradientUnits="userSpaceOnUse" cy="200" cx="0" r="200">
+ <stop id="stop3129" stop-color="#232323" offset=".275"/>
+ <stop id="stop3131" stop-color="#303030" offset=".388"/>
+ <stop id="stop3133" stop-color="#303030" offset=".612"/>
+ <stop id="stop3135" stop-color="#232323" offset=".725"/>
+ </radialGradient>
  </defs>
  <path id="path3137" fill="#ddcf8a" d="m0 35a165 165 90 0 1 165 165h-130a35 35 -90 0 0 -35 -35v-130"/>
  <path id="path3139" stroke="#b79c77" stroke-width=".8" fill="none" d="m13.4 168l5.7-14m13.2 33l13.9-6m-26.6-130l1.9-14.9m35.9 25l5.7-13.8m28.2 33.4l8.7-11.9m19 39.9l12-9.4m8 43.4l13-6m-3 43l15-2"/>
