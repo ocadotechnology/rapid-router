@@ -35,27 +35,33 @@ function safePlay(sound) {
     try {
         sound.play();
     }
-    catch (err) { };
+    catch (err) {}
 }
 
 function safeStop(sound) {
     try {
         sound.stop();
     }
-    catch (err) { };
+    catch (err) {}
 }
 
 
 ocargo.sound.starting = function() {
-    safePlay(ocargo.sound.startingSound);
+    if (CHARACTER_NAME === 'Van') {
+        safePlay(ocargo.sound.startingSound);
+    }
 };
 
 ocargo.sound.start_engine = function() {
-    safePlay(ocargo.sound.engineSound);
+    if (CHARACTER_NAME === 'Van') {
+        safePlay(ocargo.sound.engineSound);
+    }
 };
 
 ocargo.sound.stop_engine = function() {
-    safeStop(ocargo.sound.engineSound);
+    if (CHARACTER_NAME === 'Van') {
+        safeStop(ocargo.sound.engineSound);
+    }
 };
 
 ocargo.sound.delivery = function() {
@@ -71,7 +77,11 @@ ocargo.sound.failure = function() {
 };
 
 ocargo.sound.crash = function() {
-    safePlay(ocargo.sound.crashSound);
+    if (CHARACTER_NAME === 'Van') {
+        safePlay(ocargo.sound.crashSound);
+    } else {
+        safePlay(ocargo.sound.failureSound);
+    }
 };
 
 ocargo.sound.tension = function() {
