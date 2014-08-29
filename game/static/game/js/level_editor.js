@@ -25,11 +25,16 @@ ocargo.LevelEditor = function() {
     var paper = $('#paper'); // May as well cache this
 
     var modes = {
-        ADD_ROAD_MODE: {name: 'Add Road', url: ocargo.Drawing.imageDir + "icons/add_road.svg"},
-        DELETE_ROAD_MODE: {name: 'Delete Road', url: ocargo.Drawing.imageDir + "icons/delete_road.svg"},
-        MARK_DESTINATION_MODE: {name: 'Mark end', url: ocargo.Drawing.imageDir + "icons/destination.svg"},
-        MARK_ORIGIN_MODE: {name: 'Mark start', url: ocargo.Drawing.imageDir + "icons/origin.svg"},
-        DELETE_DECOR_MODE: {name: 'Delete decor', url: ocargo.Drawing.imageDir + "icons/delete_decor.svg"}
+        ADD_ROAD_MODE: {name: 'Add Road', url: ocargo.Drawing.imageDir +
+            "icons/add_road.svg"},
+        DELETE_ROAD_MODE: {name: 'Delete Road', url: ocargo.Drawing.imageDir +
+            "icons/delete_road.svg"},
+        MARK_DESTINATION_MODE: {name: 'Mark end', url: ocargo.Drawing.imageDir +
+            "icons/destination.svg"},
+        MARK_ORIGIN_MODE: {name: 'Mark start', url: ocargo.Drawing.imageDir +
+            "icons/origin.svg"},
+        DELETE_DECOR_MODE: {name: 'Delete decor', url: ocargo.Drawing.imageDir +
+            "icons/delete_decor.svg"}
     };
 
     /*********/
