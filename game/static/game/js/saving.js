@@ -60,7 +60,7 @@ ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
             type: 'GET',
             dataType: 'json',
             success: function(json) {
-                callback(null, json);
+                callback(null, json.contents);
             },
             error: function(xhr,errmsg,err) {
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
