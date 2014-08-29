@@ -337,13 +337,13 @@ input[type="checkbox"].block_checkbox {
 }
 
 #share_type_select {
-    width: 190px;
+    width: 180px;
     margin-bottom: 0px;
     margin-left: 35px;
 }
 
 #class_select {
-    width: 190px;
+    width: 180px;
     margin-bottom: 0px;
     margin-left: 70px;
 }
