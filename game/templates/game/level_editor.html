@@ -55,7 +55,7 @@
       {% for dec in decor %}
         decor.push({"id":"{{dec.id}}",
                     "name":"{{dec.name}}",
-                    "url":"{{dec.url}}",
+                    "url": ocargo.Drawing.imageDir + "{{dec.url}}",
                     "width":"{{dec.width}}",
                     "height":"{{dec.height}}",
                     "theme_name":themes[{{dec.theme_id}}-1].name});
@@ -294,7 +294,7 @@
               {% for char in characters %}
               <input type="radio" name="characters" id="{{char.name}}_radio" class="character_radio" value="{{char.name}}"> 
               <label for="{{char.name}}_radio">
-                <img class="character" src="{{char.en_face}}" width="122" height='122'>
+                <img class="character" src="/static/game/image/{{char.en_face}}" width="122" height='122'>
               </label>
               <br>
               {% endfor %}
