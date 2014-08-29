@@ -79,8 +79,6 @@ ocargo.LevelEditor = function() {
     drawAll();
 
 
-
-
     /*********************************/
     /* Two finger scrolling of paper */
     /*********************************/

@@ -55,7 +55,7 @@ ocargo.BlocklyControl.prototype.reset = function() {
     }
 };
 
-ocargo.BlocklyControl.prototype.showFlyout = function() {
+ocargo.BlocklyControl.prototype.toggleFlyout = function() {
     Blockly.Toolbox.tree_.firstChild_.onMouseDown();
 }
 
@@ -77,11 +77,20 @@ ocargo.BlocklyControl.prototype.teardown = function() {
 
 ocargo.BlocklyControl.prototype.deserialize = function(text) {
     try {
-        var xml = Blockly.Xml.textToDom(text);
+        var oldXml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
+
+        var newXml = Blockly.Xml.textToDom(text);
         Blockly.mainWorkspace.clear();
-        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, xml);
-        ocargo.blocklyControl.removeIllegalBlocks();
-    } catch (e) {
+        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, newXml);
+        var legal = ocargo.blocklyControl.removeIllegalBlocks();
+
+        if(!legal) {
+            ocargo.Drawing.startPopup("Loading workspace", "", ocargo.messages.illegalBlocks, true);
+            Blockly.mainWorkspace.clear();
+            Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
+        }
+    } 
+    catch (e) {
         ocargo.blocklyControl.reset();
     }
 };
@@ -109,6 +118,7 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
         block = blocks[i];
         if (BLOCKS.indexOf(block.type) === -1 && block.type !== 'start') {
             block.dispose();
+            return false;
         }
         if(isSafari && block.type === 'start') {
             if (startCount > 0) {
@@ -118,6 +128,7 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
             }
         }
     }
+    return true;
 };
 
 ocargo.BlocklyControl.prototype.setCodeChangesAllowed = function(changesAllowed) {
