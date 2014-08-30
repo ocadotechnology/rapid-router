@@ -45,7 +45,11 @@ ocargo.Game.prototype.setup = function() {
         loggedOutWarning = '<br>' + ocargo.messages.loggedOutWarning;
     }
     // Start the popup
-    ocargo.Drawing.startPopup("Level " + LEVEL_ID, "",
+    var title = "Custom Level";
+    if (LEVEL_ID) {
+        title = "Level " + LEVEL_ID; 
+    }
+    ocargo.Drawing.startPopup(title, "",
         LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
 };
 

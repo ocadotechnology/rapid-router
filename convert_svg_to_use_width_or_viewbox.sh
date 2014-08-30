@@ -11,4 +11,7 @@ find game/static/game/image -name "*.svg" -print0 | xargs -0 perl -0pi -e 's/<sv
 rsync -av --delete game/static/game/image/* game/static/game/chrome_image
 
 # convert chrome images back to width/height
-find game/static/game/chrome_image -name "*.svg" ! -name "tile1.svg" ! -name "van_small*.svg" -print0 | xargs -0 perl -0pi -e 's/<svg([^<]*)viewBox="0 0 ([0-9\.]+) ([0-9\.]+)"/<svg$1x="0px" y="0px" width="$2px" height="$3px"/g;'
+find game/static/game/chrome_image -name "*.svg" ! -name "tile1.svg" -print0 | xargs -0 perl -0pi -e 's/<svg([^<]*)viewBox="0 0 ([0-9\.]+) ([0-9\.]+)"/<svg$1x="0px" y="0px" width="$2px" height="$3px"/g;'
+
+# fix tile1.svg
+find game/static/game/image game/static/game/chrome_image -name "tile1.svg" -print0 | xargs -0 perl -0pi -e 's/<svg([^<]*)viewBox="0 0 ([0-9\.]+) ([0-9\.]+)"/<svg$1x="0px" y="0px" width="$2px" height="$3px" viewBox="0 0 $2 $3"/g;'

@@ -356,10 +356,20 @@ ocargo.LevelEditor = function() {
             });
 
             $('#generate').click(function() {
-                var data = {numberOfTiles: $('#size').val(),
-                            branchiness: $('#branchiness').val()/10,
-                            loopiness: $('#loopiness').val()/10,
-                            curviness: $('#curviness').val()/10,
+                var numberOfTiles = Math.max(Math.min($('#size').val(), 40), 2);
+                var branchiness = Math.max(Math.min($('#branchiness').val(), 10), 2);
+                var loopiness = Math.max(Math.min($('#loopiness').val(), 10), 2); 
+                var curviness = Math.max(Math.min($('#curviness').val(), 10), 2);
+               
+                $('#size').val(numberOfTiles);
+                $('#branchiness').val(branchiness);
+                $('#loopiness').val(loopiness);
+                $('#curviness').val(curviness);
+
+                var data = {numberOfTiles: numberOfTiles,
+                            branchiness: branchiness,
+                            loopiness: loopiness,
+                            curviness: curviness,
                             trafficLightsEnabled: $('#trafficLightsEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
                 
