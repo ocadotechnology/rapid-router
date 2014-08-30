@@ -14,7 +14,7 @@ var CONFIRMATION_DATA = {
         confirm: function() {
             var csrftoken = $.cookie('csrftoken');
             $.ajax({
-                url : '/game/level_moderation/delete/' + levelID,
+                url : '/rapidrouter/level_moderation/delete/' + levelID,
                 type : 'POST',
                 dataType: 'json',
                 beforeSend: function(xhr, settings) {
@@ -27,11 +27,11 @@ var CONFIRMATION_DATA = {
                         document.forms["levelModerationForm"].submit();
                     }
                     else {
-                        console.debug("failure");
+                        console.error("Failed to delete student level.");
                     }
                 },
                 error : function(xhr,errmsg,err) {
-                    console.debug(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+                    console.error(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
                 }
             });
         },
@@ -46,6 +46,6 @@ $(document).ready(function() {
 	});
 
 	$('.play').click(function() {
-		window.location.href = '/game/' + this.getAttribute('value');
+		window.location.href = '/rapidrouter/' + this.getAttribute('value');
 	});
 });

@@ -12,7 +12,13 @@ ocargo.Animation = function(model, decor, numVans) {
 	// timer identifier for pausing
 	this.playTimer = -1;
 
-	this.resetAnimation();
+	ocargo.drawing.clearPaper();
+	ocargo.drawing.renderMap(this.model.map);
+	ocargo.drawing.renderDecor(this.decor);
+	ocargo.drawing.renderVans(this.model.map.getStartingPosition(), this.numVans);
+	ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
+	ocargo.drawing.renderDestinations(this.model.map.getDestinations());
+	ocargo.drawing.renderTrafficLights(this.model.trafficLights);
 };
 
 ocargo.Animation.prototype.isFinished = function() {
@@ -35,13 +41,23 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.currentlyAnimating = false;
 	this.finished = false;
 
-	ocargo.drawing.clearPaper();
-	ocargo.drawing.renderMap(this.model.map);
-	ocargo.drawing.renderDecor(this.decor);
-	ocargo.drawing.renderVans(this.model.map.getStartingPosition(), this.numVans);
-	ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
-	ocargo.drawing.renderDestinations(this.model.map.getDestinations());
-	ocargo.drawing.renderTrafficLights(this.model.trafficLights);
+	// Reset the display
+	for(var i = 0; i < this.model.trafficLights.length; i++) {
+		var tl = this.model.trafficLights[i];
+		ocargo.drawing.transitionTrafficLight(tl.id, tl.state, 0);
+	}
+
+	for(var i = 0; i < this.model.map.destinations.length; i++) {
+		var destination = this.model.map.destinations[i];
+		ocargo.drawing.transitionDestination(destination.id, false, 0);
+	}
+
+	for(var i = 0; i < THREADS; i++) {
+		ocargo.drawing.skipOutstandingVanAnimationsToEnd(i);
+		ocargo.drawing.setVanImagePosition(this.model.map.getStartingPosition(), i);
+	}
+
+	ocargo.drawing.removeWreckageImages();
 };
 
 ocargo.Animation.prototype.stepAnimation = function(callback) {
@@ -192,7 +208,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
                     animationLength += 100;
             		break;
             	case 'DELIVER':
-            		ocargo.drawing.deliver(vanID, animationLength, a.destinationID);
+            		ocargo.drawing.deliver(a.destinationID, animationLength);
             	case 'OBSERVE':
             		break;
             }

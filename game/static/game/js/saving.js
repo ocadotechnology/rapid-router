@@ -31,7 +31,7 @@ function csrfSafeMethod(method) {
 /************************/
 
 ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
-	if (USER_ROLE === 'teacher' ||  USER_ROLE === 'student') {
+	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
 		$.ajax({
 	        url: '/rapidrouter/workspace/load_list',
 	        type: 'GET',
@@ -47,35 +47,38 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 	else if (localStorage) {
 		var results = this.getListOfWorkspacesFromLocalStorage();
 	  	callback(null, results);
-	} else {
+	} 
+    else {
 		callback("Not logged in and no local storage available");
 	}
 };
 
 ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
-	if (USER_ROLE === 'teacher' ||  USER_ROLE === 'student') {
+	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
 		$.ajax({
             url: '/rapidrouter/workspace/load/' + id,
             type: 'GET',
             dataType: 'json',
             success: function(json) {
-                callback(null, json);
+                callback(null, json.contents);
             },
             error: function(xhr,errmsg,err) {
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
-	} else if (localStorage) {
+	}
+    else if (localStorage) {
 		var json = JSON.parse(localStorage.getItem('blocklySavedWorkspaceXml-' + id));
 		callback(null, json.workspace);
-	} else {
+	} 
+    else {
 		callback("Not logged in and no local storage available");
 	}
 };
 
 ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
     csrftoken = $.cookie('csrftoken');
-	if (USER_ROLE === 'teacher' ||  USER_ROLE === 'student') {
+	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
 		$.ajax({
             url: '/rapidrouter/workspace/delete/' + id,
             type: 'POST',
@@ -103,7 +106,7 @@ ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
 
 ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback) {
     csrftoken = $.cookie('csrftoken');
-	if (USER_ROLE === 'teacher' ||  USER_ROLE === 'student') {
+	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
 		$.ajax({
             url: '/rapidrouter/workspace/save',
             type: 'POST',
@@ -124,7 +127,8 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
-	} else if (localStorage) {
+	} 
+    else if (localStorage) {
 		// Need to generate a unique integer, for our purposes this should do
 		var id = new Date().getTime();
 
@@ -135,7 +139,8 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
 
         var results = this.getListOfWorkspacesFromLocalStorage();
         callback(null, results);
-	} else {
+	} 
+    else {
 		callback("Not logged in and no local storage available");
 	}
 };
