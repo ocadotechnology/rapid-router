@@ -97,7 +97,7 @@ class Migration(migrations.Migration):
                 ('fuel_gauge', models.BooleanField(default=True)),
                 ('max_fuel', models.IntegerField(default=50)),
                 ('direct_drive', models.BooleanField(default=False)),
-                ('model_solution', models.CharField(default=b'[]', max_length=10, blank=True)),
+                ('model_solution', models.CharField(default=b'[]', max_length=20, blank=True)),
                 ('threads', models.IntegerField(default=1)),
                 ('blocklyEnabled', models.BooleanField(default=True)),
                 ('pythonEnabled', models.BooleanField(default=True)),
