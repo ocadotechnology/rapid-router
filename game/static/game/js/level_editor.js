@@ -795,8 +795,7 @@ ocargo.LevelEditor = function() {
         }
 
         function setupHelpTab() {
-            var message = ocargo.Drawing.isMobile() ? ocargo.messages.levelEditorMobileSubtitle :
-                ocargo.messages.levelEditorPCSubtitle;
+            var message = ocargo.messages.levelEditorPCSubtitle;
 
             message += "<br><br>" + ocargo.messages.levelEditorHelpText;
 
@@ -1476,7 +1475,7 @@ ocargo.LevelEditor = function() {
 
            var now = new Date().getTime();
            var timesince = now - mylatesttap;
-           if ((timesince < 600) && (timesince > 0)) {
+           if ((timesince < 300) && (timesince > 0)) {
                 image.transform('...r90');
            }
            mylatesttap = new Date().getTime();

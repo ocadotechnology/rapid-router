@@ -78,10 +78,6 @@ ocargo.messages = {
     somethingWrong: "Something is wrong...", 
     noStartEndRouteSubtitle: "There is no way to get from the start to the destination.",
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
-    levelEditorMobileSubtitle: "To get started, draw a road. <br><br> Place two fingers on the " +
-        "square you want the road to start from. Then, keeping one finger in place, drag the the " +
-        "other to the square you want the road to end on. <br> Do this as many times as you like " +
-        "to add new sections of road.",
     levelEditorPCSubtitle: "To get started, draw a road. <br><br> Click on the square you want " +
         "the road to start from. Then, without letting go of the mouse button, drag to the " +
         "square you’d like the road to end on. <br> Do this as many times as you like to add " +
@@ -101,9 +97,9 @@ ocargo.messages = {
         "<b>Random</b> if you want the computer to create a random route for you.<br><br> Select " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/decor.svg', 'popupIcon') +
         "<b>Scenery</b> and choose trees, bushes and more to place around your road. These will " +
-        "show in the top left corner - drag them into place. <br><i> Remember, using the traffic " +
-        "lights is not covered until level 44.</i><br><br> " +
-        "Choose a character to play with from the " + 
+        "show in the top left corner - drag them into place. <br> To rotate a traffic light, " +
+        "simply double click on it. <i>Remember, using the traffic lights is not covered until " +
+        "level 44.</i><br><br> Choose a character to play with from the " + 
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/character.svg', 'popupIcon') +
         "<b>Character</b> menu. <br><br> Select which blocks of code you want to be used to " +
         "create a route for your character from the " +
