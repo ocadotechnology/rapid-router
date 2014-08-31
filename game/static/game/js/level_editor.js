@@ -1465,13 +1465,24 @@ ocargo.LevelEditor = function() {
         image.drag(onDragMove, onDragStart, onDragEnd);
         
         image.dblclick(function() {
-            image.transform('...r90');
         });
 
-        image.click(function() {
+        var mylatesttap;
+
+        $(image.node).on('click touchstart', function() {
             if (mode === modes.DELETE_DECOR_MODE) {
                 trafficLight.destroy();
             }
+
+           var now = new Date().getTime();
+           var timesince = now - mylatesttap;
+           if ((timesince < 600) && (timesince > 0)) {
+                image.transform('...r90');
+           }
+           mylatesttap = new Date().getTime();
+
+
+
         });
 
         function getScaling(object) {
