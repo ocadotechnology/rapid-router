@@ -45,7 +45,7 @@ ocargo.Game.prototype.setup = function() {
         loggedOutWarning = '<br>' + ocargo.messages.loggedOutWarning;
     }
     // Start the popup
-    var title = "Custom Level";
+    var title = "Try solving this one...";
     if (LEVEL_ID) {
         title = "Level " + LEVEL_ID; 
     }
