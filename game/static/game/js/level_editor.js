@@ -358,9 +358,9 @@ ocargo.LevelEditor = function() {
 
             $('#generate').click(function() {
                 var numberOfTiles = Math.max(Math.min($('#size').val(), 40), 2);
-                var branchiness = Math.max(Math.min($('#branchiness').val(), 10), 2);
-                var loopiness = Math.max(Math.min($('#loopiness').val(), 10), 2); 
-                var curviness = Math.max(Math.min($('#curviness').val(), 10), 2);
+                var branchiness = Math.max(Math.min($('#branchiness').val(), 10), 0);
+                var loopiness = Math.max(Math.min($('#loopiness').val(), 10), 0); 
+                var curviness = Math.max(Math.min($('#curviness').val(), 10), 0);
                
                 $('#size').val(numberOfTiles);
                 $('#branchiness').val(branchiness);
