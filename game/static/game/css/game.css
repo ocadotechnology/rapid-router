@@ -146,6 +146,12 @@
     width: 100%;
 }
 
+#load_pane #does_not_exist,
+#load_pane .scrolling-table-wrapper,
+#save_pane .scrolling-table-wrapper {
+    display: none;
+}
+
 .scrolling-table-wrapper {
     max-width: 380px;
 }

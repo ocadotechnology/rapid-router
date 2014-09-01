@@ -268,6 +268,9 @@
         <h2 class="title"><img class="modal_image" src='/static/game/image/icons/load.svg'>Load</h2>
           <p>Here you can load a program you've previously saved!</p>
           <div style="width:auto">
+            <div id="does_not_exist">
+              <p> You don't have any programs to load yet. Try saving one! </p>
+            </div>
             <div class="scrolling-table-wrapper">
               <table id="loadWorkspaceTableHeader">
                 <thead>
@@ -333,7 +336,7 @@
       <button class="direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
     </div>
-      
+
     <div id="fuelGauge" class="no-print unselectable">
       <img src="/static/game/image/fuelGauge.svg"/>
       <div id="fuelGaugePointer">

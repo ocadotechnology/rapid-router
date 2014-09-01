@@ -491,6 +491,9 @@ ocargo.Game.prototype.setupTabs = function() {
                 $('#deleteWorkspace').removeAttr('disabled');
             });
 
+            var empty = workspaces.length == 0;
+            $('#load_pane .scrolling-table-wrapper').css('display',  empty ? 'none' : 'block');
+            $('#load_pane #does_not_exist').css('display',  empty ? 'block' : 'none');
             
             // But disable all the modal buttons as nothing is selected yet
             selectedWorkspace = null;
@@ -571,6 +574,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 document.getElementById("workspaceNameInput").value = workspaceName;
             });
 
+            $('#save_pane .scrolling-table-wrapper').css('display',  workspaces.length == 0 ? 'none' : 'block');
             // But disable all the modal buttons as nothing is selected yet
             selectedWorkspace = null;
         }
