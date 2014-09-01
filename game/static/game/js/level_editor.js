@@ -68,6 +68,7 @@ ocargo.LevelEditor = function() {
 
     // Initialise the grid
     initialiseGrid();
+    setTheme(THEMES.grass);
 
     // Setup the toolbox
     setupToolbox();
