@@ -368,9 +368,9 @@ ocargo.LevelEditor = function() {
                 $('#curviness').val(curviness);
 
                 var data = {numberOfTiles: numberOfTiles,
-                            branchiness: branchiness,
-                            loopiness: loopiness,
-                            curviness: curviness,
+                            branchiness: branchiness/10.0,
+                            loopiness: loopiness/10.0,
+                            curviness: curviness/10.0,
                             trafficLightsEnabled: $('#trafficLightsEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
                 
