@@ -489,7 +489,7 @@ ocargo.Game.prototype.setupTabs = function() {
             $('#loadWorkspaceTable tr').on('click', function(event) {
                 $('#loadWorkspaceTable tr').attr('selected', false);
                 $(this).attr('selected', true);
-                selectedWorkspace = $(event.target).attr('value');
+                selectedWorkspace = $(this).attr('value');
                 $('#loadWorkspace').removeAttr('disabled');
                 $('#deleteWorkspace').removeAttr('disabled');
             });
@@ -535,24 +535,23 @@ ocargo.Game.prototype.setupTabs = function() {
             var newName = $('#workspaceNameInput').val();
             if (newName && newName !== "") {
                 var table = $("#saveWorkspaceTable");
+                var existingID = null;
+                
                 for (var i = 0; i < table[0].rows.length; i++) {
-                     var cell = table[0].rows[i].cells[0];
-                     var wName = cell.innerHTML;
-                     if (wName == newName) {
-                        ocargo.saving.deleteWorkspace(cell.attributes[0].value, 
-                                                        function(err, workspace) {
-                                                            if (err !== null) {
-                                                                ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
-                                                                console.error(err);
-                                                                return;
-                                                            }
-                                                        });
+                     var row = table[0].rows[i];
+                     var existingName = row.cells[0].innerHTML;
+                     if (existingName === newName) {
+                        existingID = row.getAttribute('value');
+                        break;
                      }
                 }
 
-                ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err, workspaces) {
+                var workspace = {name: newName,
+                                 contents: ocargo.blocklyControl.serialize()};
+
+                ocargo.saving.saveWorkspace(workspace, existingID, function(err, workspaces) {
                     if (err !== null) {
-                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
+                        ocargo.Drawing.startPopup("Error", "", ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         console.error(err);
                         return;
                     }
@@ -598,7 +597,6 @@ ocargo.Game.prototype.setupTabs = function() {
             currentTabSelected.select();
             ocargo.Drawing.startPopup('', '', HINT + ocargo.jsElements.closebutton("Close!"));
         });
-
     }
 
     function setupBigCodeModeTab() {
@@ -659,10 +657,8 @@ ocargo.Game.prototype.setupTabs = function() {
         for (var i = 0, ii = workspaces.length; i < ii; i++) {
             var workspace = workspaces[i];
             var tableRow = $('<tr>');
+            tableRow.attr('value', workspace.id);
             var workspaceEntry = $('<td>');
-            workspaceEntry.attr({
-                'value':workspace.id
-            });
             workspaceEntry.text(workspace.name);
             tableRow.append(workspaceEntry);
             table.append(tableRow);

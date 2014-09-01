@@ -8,8 +8,8 @@ def can_create_workspace(user):
 def can_load_workspace(user, workspace):
     return not user.is_anonymous() and workspace.owner == user.userprofile
 
-def can_save_workspace(user):
-    return not user.is_anonymous()
+def can_save_workspace(user, workspace):
+    return not user.is_anonymous() and workspace.owner == user.userprofile
 
 def can_delete_workspace(user, workspace):
     return not user.is_anonymous() and workspace.owner == user.userprofile

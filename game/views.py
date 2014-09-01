@@ -141,11 +141,18 @@ def load_workspace(request, workspaceID):
     return HttpResponse(json.dumps(''), content_type='application/json')
 
 
-def save_workspace(request):
-    if permissions.can_create_workspace(request.user):
-        name = request.POST.get('name')
-        contents = request.POST.get('workspace')
-        workspace = Workspace(name=name, contents=contents, owner=request.user.userprofile)
+def save_workspace(request, workspaceID=None):
+    name = request.POST.get('name')
+    contents = request.POST.get('contents')
+
+    if workspaceID:
+        workspace = Workspace.objects.get(id=workspaceID)
+    elif permissions.can_create_workspace(request.user):
+        workspace = Workspace(owner=request.user.userprofile)
+
+    if permissions.can_save_workspace(request.user, workspace):
+        workspace.name = name
+        workspace.contents = contents
         workspace.save()
 
     return load_list_of_workspaces(request)

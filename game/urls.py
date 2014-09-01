@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^workspace/load/(?P<workspaceID>[0-9]+)$', 'game.views.load_workspace'),
     url(r'^workspace/load_list$', 'game.views.load_list_of_workspaces'),
     url(r'^workspace/save$', 'game.views.save_workspace'),
+    url(r'^workspace/save/(?P<workspaceID>[0-9]+)$', 'game.views.save_workspace'),
     url(r'^workspace/delete/(?P<workspaceID>[0-9]+)$', 'game.views.delete_workspace'),
 
     url(r'^level_moderation$', 'game.views.level_moderation'),

@@ -104,17 +104,14 @@ ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
 	}
 };
 
-ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback) {
+ocargo.Saving.prototype.saveWorkspace = function(workspace, id, callback) {
     csrftoken = $.cookie('csrftoken');
 	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
 		$.ajax({
-            url: '/rapidrouter/workspace/save',
+            url: '/rapidrouter/workspace/save' + (id ? '/' + id : ''),
             type: 'POST',
             dataType: 'json',
-            data: {
-                name: name,
-                workspace: workspace
-            },
+            data: workspace,
             beforeSend: function(xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -129,13 +126,12 @@ ocargo.Saving.prototype.createNewWorkspace = function(name, workspace, callback)
         });
 	} 
     else if (localStorage) {
-		// Need to generate a unique integer, for our purposes this should do
-		var id = new Date().getTime();
+		if(!id) {
+            // Need to generate a unique integer, for our purposes this should do
+            id = new Date().getTime();
+        }
 
-		localStorage.setItem('blocklySavedWorkspaceXml-' + id, JSON.stringify({
-			name: name,
-			workspace: workspace
-		}));
+		localStorage.setItem('blocklySavedWorkspaceXml-' + id, JSON.stringify(workspace));
 
         var results = this.getListOfWorkspacesFromLocalStorage();
         callback(null, results);
