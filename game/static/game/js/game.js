@@ -239,17 +239,19 @@ ocargo.Game.prototype.setupSliderListeners = function() {
         var consoleSliderPosition = e.pageX - tabsWidth - halfSliderWidth;
         var containerWidth = slider.parent().width();
 
-        if (consoleSliderPosition > containerWidth) {
-            consoleSliderPosition = containerWidth;
+        consoleSliderPosition *= 100.0 / containerWidth;
+
+        if (consoleSliderPosition > 100) {
+            consoleSliderPosition = 100;
         }
         if (consoleSliderPosition < 0) {
             consoleSliderPosition = 0;
         }
 
-        $('#consoleSlider').css('left', consoleSliderPosition);
-        $('#paper').css('width', containerWidth - consoleSliderPosition);
-        $('#tab_panes').css('width', consoleSliderPosition);
-        $('#direct_drive').css('left', consoleSliderPosition);
+        $('#consoleSlider').css('left', consoleSliderPosition + '%');
+        $('#paper').css('width', (100 - consoleSliderPosition) + '%');
+        $('#tab_panes').css('width', consoleSliderPosition + '%');
+        $('#direct_drive').css('left', consoleSliderPosition + '%');
         
         ocargo.blocklyControl.redrawBlockly();
     };
