@@ -336,7 +336,8 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.blockly.select();
 
         var flyoutOut = false;
-        $('#flyoutButton').click(ocargo.blocklyControl.toggleFlyout);
+        // Function wrapper needed
+        $('#flyoutButton').click(function(){ocargo.blocklyControl.toggleFlyout()});
 
         // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
         setTimeout(function() {
