@@ -117,6 +117,13 @@
 /* Loading & Saving tabs */
 /*************************/
 
+#load_pane,
+#save_pane {
+    padding: 0px;
+    margin: 20px 20px 0px 30px;
+    width: auto;
+}
+
 #workspaceNameInput {
     height: 51px;
     width: 202px;
