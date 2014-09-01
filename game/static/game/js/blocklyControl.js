@@ -18,7 +18,7 @@ ocargo.BlocklyControl = function () {
     Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
     this.numberOfStartBlocks = THREADS;
-
+    this.flyoutOut = false;
     Blockly.Flyout.autoClose = false;
 };
 
@@ -57,6 +57,11 @@ ocargo.BlocklyControl.prototype.reset = function() {
 
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
     Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+    this.flyoutOut = !this.flyoutOut;
+    $('#flyoutButton').attr('src', imgSrc);
+    $('#flyoutButton').css('left', this.flyoutOut ? '170px' : '0px');
+    var imgSrc = ocargo.Drawing.imageDir + 'icons/' + (this.flyoutOut ? 'hide' : 'show') + '.svg';
+    $('#flyoutButton img').attr('src', imgSrc);
 }
 
 ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {

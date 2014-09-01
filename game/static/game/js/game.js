@@ -54,6 +54,8 @@ ocargo.Game.prototype.setup = function() {
 };
 
 ocargo.Game.prototype.reset = function() {
+    ocargo.blocklyControl.clearAllSelections();
+    
     // Needed so animation can reset with the right information
     ocargo.model.reset(0);
 
@@ -321,14 +323,7 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.blockly.select();
 
         var flyoutOut = false;
-        $('#flyoutButton').click(function () {
-            ocargo.blocklyControl.toggleFlyout();
-            flyoutOut = !flyoutOut;
-            $('#flyoutButton').attr('src', imgSrc);
-            $('#flyoutButton').css('left', flyoutOut ? '170px' : '0px');
-            var imgSrc = ocargo.Drawing.imageDir + 'icons/' + (flyoutOut ? 'hide' : 'show') + '.svg';
-            $('#flyoutButton img').attr('src', imgSrc);
-        });
+        $('#flyoutButton').click(ocargo.blocklyControl.toggleFlyout);
 
         // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
         setTimeout(function() {
