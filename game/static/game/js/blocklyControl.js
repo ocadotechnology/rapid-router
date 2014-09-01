@@ -19,7 +19,12 @@ ocargo.BlocklyControl = function () {
 
     this.numberOfStartBlocks = THREADS;
     this.flyoutOut = false;
+
+    // Needed so that the size of the flyout is available
+    // for when toggle flyout is first called
     Blockly.Flyout.autoClose = false;
+    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
 };
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
@@ -56,10 +61,12 @@ ocargo.BlocklyControl.prototype.reset = function() {
 };
 
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
+    var flyoutWidth = $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
+
     Blockly.Toolbox.tree_.firstChild_.onMouseDown();
     this.flyoutOut = !this.flyoutOut;
     $('#flyoutButton').attr('src', imgSrc);
-    $('#flyoutButton').css('left', this.flyoutOut ? '170px' : '0px');
+    $('#flyoutButton').css('left', this.flyoutOut ? (flyoutWidth-4) : '0px');
     var imgSrc = ocargo.Drawing.imageDir + 'icons/' + (this.flyoutOut ? 'hide' : 'show') + '.svg';
     $('#flyoutButton img').attr('src', imgSrc);
 }
