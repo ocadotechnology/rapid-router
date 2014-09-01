@@ -135,13 +135,12 @@ def build_description(title, message):
 
 
 def title_level_default():
-    return ugettext("Well done! Try solving this one... ")
+    return ugettext(" ")
 
 
 def description_level_default():
-    message = ugettext("Look at this maze! Can you find a way to lead the driver to the house "
-                       + "with the shortest route possible? ")
-    return build_description(title_level_default(), message)
+    message = ugettext("Can you find the shortest route? ")
+    return message
 
 
 def hint_level_default():
