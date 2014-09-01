@@ -33,6 +33,7 @@
     position: relative;
     height: 100%;
     margin-left: 95px;
+    overflow: hidden;
 }
 
 #tab_panes {
@@ -64,6 +65,26 @@
     background: #f3f3f3;
 }
 
+#blockly_pane #flyoutButton {
+    position: absolute;
+    top: 10px;
+    padding: 0px;
+    width: 31px;
+    height: 31px;
+    background: rgba(255, 255, 255, 0.87);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#blockly_pane #flyoutButton img {
+    width: 30px;
+    height: 30px;
+}
+
+#blockly_pane #flyoutButton:focus
+{
+    outline: 0;
+}
 
 /**************/
 /* Python tab */
@@ -96,6 +117,13 @@
 /* Loading & Saving tabs */
 /*************************/
 
+#load_pane,
+#save_pane {
+    padding: 0px;
+    margin: 20px 20px 0px 30px;
+    width: auto;
+}
+
 #workspaceNameInput {
     height: 51px;
     width: 202px;
@@ -123,6 +151,12 @@
 #save_pane table {
     margin-bottom: 0px;
     width: 100%;
+}
+
+#load_pane #does_not_exist,
+#load_pane .scrolling-table-wrapper,
+#save_pane .scrolling-table-wrapper {
+    display: none;
 }
 
 .scrolling-table-wrapper {
@@ -175,8 +209,9 @@
     height: 95px;
     position: absolute;
     z-index: 7;
-    left: 53%;
+    left: 50%;
     bottom: 20px;
+    margin-left: 35px;
 }
 
 .direct_drive_button {
@@ -199,7 +234,7 @@
     background-color: rgba(240,240,240,0.3);
     background-size: 50px 50px;
     background-color: transparent;
-    border: none;
+    outline: none;
 }
 
 #go  {

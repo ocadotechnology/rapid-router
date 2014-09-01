@@ -229,9 +229,8 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					title = ocargo.messages.winTitle;
 					var levelMsg = "";
 					if (NEXT_LEVEL) {
-				        levelMsg = '<br><br>' +
-				        	ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "'",
-				        								     'Next Level');
+				        levelMsg = ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "'",
+				        								     		'Next Level');
 				    } 
 				    else {
 				        if (NEXT_EPISODE) {

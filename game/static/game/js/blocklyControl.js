@@ -18,7 +18,13 @@ ocargo.BlocklyControl = function () {
     Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
     this.numberOfStartBlocks = THREADS;
-
+    
+    // Needed so that the size of the flyout is available
+    // for when toggle flyout is first called
+    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+    this.flyoutWidth = $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
+    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+    this.flyoutOut = false;
     Blockly.Flyout.autoClose = false;
 };
 
@@ -57,6 +63,11 @@ ocargo.BlocklyControl.prototype.reset = function() {
 
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
     Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+    this.flyoutOut = !this.flyoutOut;
+    $('#flyoutButton').attr('src', imgSrc);
+    $('#flyoutButton').css('left', (this.flyoutOut ? (this.flyoutWidth-4)  : 0) +  'px');
+    var imgSrc = ocargo.Drawing.imageDir + 'icons/' + (this.flyoutOut ? 'hide' : 'show') + '.svg';
+    $('#flyoutButton img').attr('src', imgSrc);
 }
 
 ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
@@ -85,7 +96,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         var legal = ocargo.blocklyControl.removeIllegalBlocks();
 
         if(!legal) {
-            ocargo.Drawing.startPopup("Loading workspace", "", ocargo.messages.illegalBlocks, true);
+            ocargo.Drawing.startPopup("Loading workspace", "", ocargo.messages.illegalBlocks + ocargo.jsElements.closebutton("Close"), true);
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }

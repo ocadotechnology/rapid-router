@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="svg3124" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="200px" height="200px" viewBox="0 0 200 200" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <metadata id="metadata3155">
+ <rdf:RDF>
+ <cc:Work rdf:about="">
+ <dc:format>image/svg+xml</dc:format>
+ <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+ </cc:Work>
+ </rdf:RDF>
+ </metadata>
+ <defs id="defs3126">
+ <radialGradient id="turnGradient" gradientUnits="userSpaceOnUse" cy="200" cx="0" r="200">
+ <stop id="stop3129" stop-color="#232323" offset=".275"/>
+ <stop id="stop3131" stop-color="#303030" offset=".388"/>
+ <stop id="stop3133" stop-color="#303030" offset=".612"/>
+ <stop id="stop3135" stop-color="#232323" offset=".725"/>
+ </radialGradient>
+ </defs>
+ <path id="path3137" fill="#ddcf8a" d="m0 35a165 165 90 0 1 165 165h-130a35 35 -90 0 0 -35 -35v-130"/>
+ <path id="path3139" stroke="#b79c77" stroke-width=".8" fill="none" d="m13.4 168l5.7-14m13.2 33l13.9-6m-26.6-130l1.9-14.9m35.9 25l5.7-13.8m28.2 33.4l8.7-11.9m19 39.9l12-9.4m8 43.4l13-6m-3 43l15-2"/>
+ <path id="path3141" stroke="#72612e" stroke-width="2.5" fill="none" d="m0 35c21.6 0 43.2 4.29 63.1 12.6 20 8.27 38.3 20.5 53.5 35.8 15.3 15.3 27.5 33.6 35.8 53.5 8 20 12.6 41.1 12.6 63.1m-165-35c9.16 0 17.7 3.67 24.1 10.2 6.5 7 10.9 15.8 10.9 24.8"/>
+ <path id="path3143" stroke="#72612e" stroke-width="2" fill="none" d="m0 50a150 150 90 0 1 150 150m-150-50a50 50 90 0 1 50 50m-50-150v100m150 50h-100m-14.6-35l3.5-4m-0.1-106l-1.3 4.8m37.5 10.2l-2.5 4.3m33.5 19.5l-3 3.6m27 27.5l-4 3m19 33l-5 1"/>
+ <path id="path3145" d="m0 55a145 145 90 0 1 145 145h-90a55 55 -90 0 0 -55 -55v-90" fill="url(#turnGradient)"/>
+ <path id="path3147" stroke="#808080" d="m0 55v90m55 55h90"/>
+ <path id="path3149" stroke="#101928" stroke-width="3" fill="none" d="m0 55a145 145 90 0 1 145 145m-145-55a55 55 90 0 1 55 55"/>
+ <path id="path3151" stroke="#f4d100" stroke-width="5" fill="none" d="m19.5 102a100 100 22.5 0 1 36.1 15m27.5 27a100 100 22.5 0 1 15 36"/>
+</svg>

@@ -22,8 +22,6 @@ ocargo.PathFinder.prototype.getScore = function() {
     var message = ocargo.messages.pathScore + 
                     this.renderCoins(pathLengthScore, this.maxDistanceScore);
 
-    
-
     var totalScore = pathLengthScore;
 
     if (this.modelLength.length > 0) {

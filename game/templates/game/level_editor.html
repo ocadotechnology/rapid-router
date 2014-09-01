@@ -5,6 +5,10 @@
 
 {% block title %}Code for Life - Rapid Router - Create{% endblock %}
 
+{% block head %}
+  <meta name="viewport" content="user-scalable=no" />
+{% endblock %}
+
 {% block scripts %}
 {{block.super}}
   <script src="/static/game/js/mobile-detect.min.js"></script>
@@ -55,7 +59,7 @@
       {% for dec in decor %}
         decor.push({"id":"{{dec.id}}",
                     "name":"{{dec.name}}",
-                    "url": ocargo.Drawing.imageDir + "{{dec.url}}",
+                    "url": ocargo.Drawing.raphaelImageDir + "{{dec.url}}",
                     "width":"{{dec.width}}",
                     "height":"{{dec.height}}",
                     "theme_name":themes[{{dec.theme_id}}-1].name});
@@ -214,7 +218,7 @@
         <div id="tab_panes">
           <div id="map_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='/static/game/image/icons/map.svg'>Map</h2>
-            <p> Here you can design your level! What sort of maze will you make?</p>
+            <p> Here you can design your level! What sort of road will you make?</p>
             
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
@@ -365,7 +369,7 @@
                   </div>
                   <div class="table_row">
                     <div class="table_cell field_label"><p>Loopiness:</p></div>
-                    <div class="table_cell field_value"><input type="number" id="loopiness" value="2" size="4" min="0" max="10"></div>
+                    <div class="table_cell field_value"><input type="number" id="loopiness" value="1" size="4" min="0" max="10"></div>
                   </div>
                   <div class="table_row">
                     <div class="table_cell field_label"><p>Curviness:</p></div>

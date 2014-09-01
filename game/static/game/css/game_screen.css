@@ -60,6 +60,10 @@
     background: linear-gradient(to bottom, #fbed21 0%,#faaf3b 100%); /* W3C */
 }
 
+.ocargo-modal .navigation_button {
+    margin-top: 20px;
+}
+
 /************/
 /** Tables **/
 /************/
