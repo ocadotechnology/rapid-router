@@ -167,7 +167,8 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
         # Now join up loops (does not dynamically update distances, but still get required effect)
         max_loop_distance = max([distances[s][d] for s, d in possible_loops])
         for origin, destination in possible_loops:
-            adjusted_loopiness_factor = loopiness_factor * ((1-loopiness_deviation) + loopiness_deviation * distances[origin][destination] / max_loop_distance)
+            distance_factor = distances[origin][destination] / max_loop_distance
+            adjusted_loopiness_factor = loopiness_factor * ((1-loopiness_deviation) + loopiness_deviation * distance_factor)
             if random.random() < adjusted_loopiness_factor:
                 connections = add_new_connections(connections, origin, destination)
 
