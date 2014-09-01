@@ -64,6 +64,27 @@
     background: #f3f3f3;
 }
 
+#blockly_pane #flyoutButton {
+    position: absolute;
+    top: 10px;
+    padding: 0px;
+    width: 40px;
+    height: 31px;
+    background: rgba(255, 255, 255, 0.87);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#blockly_pane #flyoutButton img {
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+}
+
+#blockly_pane #flyoutButton:focus
+{
+    outline: 0;
+}
 
 /**************/
 /* Python tab */
