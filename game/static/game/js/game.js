@@ -570,8 +570,7 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupHelpTab() {
         tabs.help.setOnChange(function() {
             currentTabSelected.select();
-            ocargo.Drawing.startPopup('', '', HINT + "<br>" + 
-                ocargo.jsElements.closebutton("Try this time!"));
+            ocargo.Drawing.startPopup('', '', HINT + ocargo.jsElements.closebutton("Close!"));
         });
 
     }

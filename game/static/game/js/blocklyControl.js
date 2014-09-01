@@ -85,7 +85,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         var legal = ocargo.blocklyControl.removeIllegalBlocks();
 
         if(!legal) {
-            ocargo.Drawing.startPopup("Loading workspace", "", ocargo.messages.illegalBlocks, true);
+            ocargo.Drawing.startPopup("Loading workspace", "", ocargo.messages.illegalBlocks + ocargo.jsElements.closebutton("Close"), true);
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }
