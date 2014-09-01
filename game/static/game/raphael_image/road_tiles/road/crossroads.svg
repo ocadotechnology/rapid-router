@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="200px" height="200px" viewBox="0 0 200 200" xmlns:dc="http://purl.org/dc/elements/1.1/">
+ <defs>
+ <radialGradient id="roadGradient1" gradientUnits="userSpaceOnUse" cy="0" cx="0" r="200">
+ <stop stop-color="#232323" offset=".275"/>
+ <stop stop-color="#303030" offset=".388"/>
+ </radialGradient>
+ <radialGradient id="roadGradient2" xlink:href="#roadGradient1" gradientUnits="userSpaceOnUse" cy="200" cx="0" r="200"/>
+ <radialGradient id="roadGradient3" xlink:href="#roadGradient1" gradientUnits="userSpaceOnUse" cy="200" cx="200" r="200"/>
+ <radialGradient id="roadGradient4" xlink:href="#roadGradient1" gradientUnits="userSpaceOnUse" cy="0" cx="200" r="200"/>
+ </defs>
+ <path d="m35 0h130a35 35 -90 0 0 35 35v130a35 35 90 0 0 -35 35h-130a35 35 90 0 0 -35 -35v-130a35 35 -90 0 0 35 -35" fill="#ddcf8a"/>
+ <path stroke="#b79c77" stroke-width=".8" d="m13.4 168l5.7-14m13.2 33l13.9-6m-32.8-149l5.7 14m13.2-33l13.9 6m140.4 13l-5.7 14m-13.2-33l-13.9 6m32.8 149l-5.7-14m-13.2 33l-13.9-6"/>
+ <path stroke="#72612e" stroke-width="2.5" d="m35 200a35 35 -90 0 0 -35 -35m0-130a35 35 -90 0 0 35 -35m130 0a35 35 -90 0 0 35 35m0 130a35 35 90 0 0 -35 35" fill="none"/>
+ <path stroke="#72612e" stroke-width="2" d="m0 145v5a50 50 90 0 1 50 50h5m-19.6-35l3.5-4m-38.9-106v-5a50 50 -90 0 0 50 -50h5m-19.6 35l3.5 4m161.1 106v5a50 50 90 0 0 -50 50h-5m19.6-35l-3.5-4m38.9-106v-5a50 50 -90 0 1 -50 -50h-5m19.6 35l-3.5 4" fill="none"/>
+ <path d="m0 100h100v-100h-45a55 55 -90 0 1 -55 55v45" fill="url(#roadGradient1)"/>
+ <path d="m0 100h100v100h-45a55 55 -90 0 0 -55 -55v-45" fill="url(#roadGradient2)"/>
+ <path d="m200 100h-100v100h45a55 55 -90 0 1 55 -55v-45" fill="url(#roadGradient3)"/>
+ <path d="m200 100h-100v-100h45a55 55 -90 0 0 55 55v45" fill="url(#roadGradient4)"/>
+ <path stroke="#808080" d="m55 0h90m-90 200h90m-145-55v-90m200 0v90"/>
+ <path stroke="#101928" stroke-width="3" d="m55 200a55 55 -90 0 0 -55 -55m0-90a55 55 -90 0 0 55 -55m90 0a55 55 -90 0 0 55 55m0 90a55 55 90 0 0 -55 55" fill="none"/>
+ <path stroke="#f4d100" stroke-width="5" d="m16.66 100h25.33m141.34 0h-25.33m-58-83.34v25.33m0 141.34v-25.33"/>
+ <path stroke="#f4d100" stroke-width="1.5" d="m100 42h58v116h-116v-116h58" fill="none"/>
+ <path stroke="#f4d100" d="m42 129l29 29m-29-58l58 58m-58-87l87 87m-87-116l116 116m-87-116l87 87m-58-87l58 58m-29-58l29 29m-87-29l-29 29m58-29l-58 58m87-58l-87 87m116-87l-116 116m116-87l-87 87m87-58l-58 58m58-29l-29 29" fill="none"/>
+</svg>

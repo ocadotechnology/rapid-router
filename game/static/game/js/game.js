@@ -239,17 +239,19 @@ ocargo.Game.prototype.setupSliderListeners = function() {
         var consoleSliderPosition = e.pageX - tabsWidth - halfSliderWidth;
         var containerWidth = slider.parent().width();
 
-        if (consoleSliderPosition > containerWidth) {
-            consoleSliderPosition = containerWidth;
+        consoleSliderPosition *= 100.0 / containerWidth;
+
+        if (consoleSliderPosition > 100) {
+            consoleSliderPosition = 100;
         }
         if (consoleSliderPosition < 0) {
             consoleSliderPosition = 0;
         }
 
-        $('#consoleSlider').css('left', consoleSliderPosition);
-        $('#paper').css('width', containerWidth - consoleSliderPosition);
-        $('#tab_panes').css('width', consoleSliderPosition);
-        $('#direct_drive').css('left', consoleSliderPosition);
+        $('#consoleSlider').css('left', consoleSliderPosition + '%');
+        $('#paper').css('width', (100 - consoleSliderPosition) + '%');
+        $('#tab_panes').css('width', consoleSliderPosition + '%');
+        $('#direct_drive').css('left', consoleSliderPosition + '%');
         
         ocargo.blocklyControl.redrawBlockly();
     };
@@ -334,7 +336,8 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.blockly.select();
 
         var flyoutOut = false;
-        $('#flyoutButton').click(ocargo.blocklyControl.toggleFlyout);
+        // Function wrapper needed
+        $('#flyoutButton').click(function(){ocargo.blocklyControl.toggleFlyout()});
 
         // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
         setTimeout(function() {
@@ -438,6 +441,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
+                    ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                     console.error(err);
                     return;
                 }
@@ -450,6 +454,7 @@ ocargo.Game.prototype.setupTabs = function() {
             if (selectedWorkspace) {
                 ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
                     if (err !== null) {
+                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         console.error(err);
                         return;
                     }
@@ -461,8 +466,6 @@ ocargo.Game.prototype.setupTabs = function() {
                 });
 
                 tabs.blockly.select();
-                ocargo.blocklyControl.toggleFlyout();
-                ocargo.blocklyControl.toggleFlyout();
             }
         });
 
@@ -470,6 +473,7 @@ ocargo.Game.prototype.setupTabs = function() {
             if (selectedWorkspace) {
                 ocargo.saving.deleteWorkspace(selectedWorkspace, function(err, workspaces) {
                     if (err !== null) {
+                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         console.error(err);
                         return;
                     }
@@ -486,11 +490,14 @@ ocargo.Game.prototype.setupTabs = function() {
             $('#loadWorkspaceTable tr').on('click', function(event) {
                 $('#loadWorkspaceTable tr').attr('selected', false);
                 $(this).attr('selected', true);
-                selectedWorkspace = $(event.target).attr('value');
+                selectedWorkspace = $(this).attr('value');
                 $('#loadWorkspace').removeAttr('disabled');
                 $('#deleteWorkspace').removeAttr('disabled');
             });
 
+            var empty = workspaces.length == 0;
+            $('#load_pane .scrolling-table-wrapper').css('display',  empty ? 'none' : 'block');
+            $('#load_pane #does_not_exist').css('display',  empty ? 'block' : 'none');
             
             // But disable all the modal buttons as nothing is selected yet
             selectedWorkspace = null;
@@ -516,6 +523,7 @@ ocargo.Game.prototype.setupTabs = function() {
             
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
+                    ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                     console.error(err);
                     return;
                 }
@@ -528,22 +536,23 @@ ocargo.Game.prototype.setupTabs = function() {
             var newName = $('#workspaceNameInput').val();
             if (newName && newName !== "") {
                 var table = $("#saveWorkspaceTable");
+                var existingID = null;
+                
                 for (var i = 0; i < table[0].rows.length; i++) {
-                     var cell = table[0].rows[i].cells[0];
-                     var wName = cell.innerHTML;
-                     if (wName == newName) {
-                        ocargo.saving.deleteWorkspace(cell.attributes[0].value, 
-                                                        function(err, workspace) {
-                                                            if (err !== null) {
-                                                                console.error(err);
-                                                                return;
-                                                            }
-                                                        });
+                     var row = table[0].rows[i];
+                     var existingName = row.cells[0].innerHTML;
+                     if (existingName === newName) {
+                        existingID = row.getAttribute('value');
+                        break;
                      }
                 }
 
-                ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err, workspaces) {
+                var workspace = {name: newName,
+                                 contents: ocargo.blocklyControl.serialize()};
+
+                ocargo.saving.saveWorkspace(workspace, existingID, function(err, workspaces) {
                     if (err !== null) {
+                        ocargo.Drawing.startPopup("Error", "", ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         console.error(err);
                         return;
                     }
@@ -571,6 +580,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 document.getElementById("workspaceNameInput").value = workspaceName;
             });
 
+            $('#save_pane .scrolling-table-wrapper').css('display',  workspaces.length == 0 ? 'none' : 'block');
             // But disable all the modal buttons as nothing is selected yet
             selectedWorkspace = null;
         }
@@ -588,7 +598,6 @@ ocargo.Game.prototype.setupTabs = function() {
             currentTabSelected.select();
             ocargo.Drawing.startPopup('', '', HINT + ocargo.jsElements.closebutton("Close!"));
         });
-
     }
 
     function setupBigCodeModeTab() {
@@ -649,10 +658,8 @@ ocargo.Game.prototype.setupTabs = function() {
         for (var i = 0, ii = workspaces.length; i < ii; i++) {
             var workspace = workspaces[i];
             var tableRow = $('<tr>');
+            tableRow.attr('value', workspace.id);
             var workspaceEntry = $('<td>');
-            workspaceEntry.attr({
-                'value':workspace.id
-            });
             workspaceEntry.text(workspace.name);
             tableRow.append(workspaceEntry);
             table.append(tableRow);

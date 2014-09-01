@@ -68,6 +68,7 @@ ocargo.LevelEditor = function() {
 
     // Initialise the grid
     initialiseGrid();
+    setTheme(THEMES.grass);
 
     // Setup the toolbox
     setupToolbox();
@@ -357,9 +358,9 @@ ocargo.LevelEditor = function() {
 
             $('#generate').click(function() {
                 var numberOfTiles = Math.max(Math.min($('#size').val(), 40), 2);
-                var branchiness = Math.max(Math.min($('#branchiness').val(), 10), 2);
-                var loopiness = Math.max(Math.min($('#loopiness').val(), 10), 2); 
-                var curviness = Math.max(Math.min($('#curviness').val(), 10), 2);
+                var branchiness = Math.max(Math.min($('#branchiness').val(), 10), 0);
+                var loopiness = Math.max(Math.min($('#loopiness').val(), 10), 0); 
+                var curviness = Math.max(Math.min($('#curviness').val(), 10), 0);
                
                 $('#size').val(numberOfTiles);
                 $('#branchiness').val(branchiness);
@@ -367,9 +368,9 @@ ocargo.LevelEditor = function() {
                 $('#curviness').val(curviness);
 
                 var data = {numberOfTiles: numberOfTiles,
-                            branchiness: branchiness,
-                            loopiness: loopiness,
-                            curviness: curviness,
+                            branchiness: branchiness/10.0,
+                            loopiness: loopiness/10.0,
+                            curviness: curviness/10.0,
                             trafficLightsEnabled: $('#trafficLightsEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
                 
