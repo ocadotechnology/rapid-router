@@ -55,7 +55,7 @@ ocargo.Game.prototype.setup = function() {
 
 ocargo.Game.prototype.reset = function() {
     ocargo.blocklyControl.clearAllSelections();
-    
+
     // Needed so animation can reset with the right information
     ocargo.model.reset(0);
 
@@ -213,11 +213,19 @@ ocargo.Game.prototype.setupSliderListeners = function() {
     var endEvents = ['mouseup', 'touchend', 'touchcancel'];
 
     var slider = $('#consoleSlider');
+    var tabs =  $('#tabs');
+    var halfSliderWidth;
 
     var endFunc = function(e) {
         for (var i = 0; i < moveEvents.length; i++) {
-            slider.off(moveEvents[i]);
             slider.parent().off(moveEvents[i]);
+            tabs.off(moveEvents[i]);
+        }
+
+        for (var i = 0; i < endEvents.length; i++) {
+            // disable drag when mouse leaves this or the parent
+            slider.parent().off(endEvents[i], endFunc);
+            tabs.off(endEvents[i], endFunc);
         }
 
         ocargo.blocklyControl.redrawBlockly();
@@ -228,7 +236,7 @@ ocargo.Game.prototype.setupSliderListeners = function() {
             e = e.originalEvent.touches[0];
         }
 
-        var consoleSliderPosition = e.pageX - tabsWidth;
+        var consoleSliderPosition = e.pageX - tabsWidth - halfSliderWidth;
         var containerWidth = slider.parent().width();
 
         if (consoleSliderPosition > containerWidth) {
@@ -247,14 +255,17 @@ ocargo.Game.prototype.setupSliderListeners = function() {
     };
 
     var startFunc = function(e) {
+        halfSliderWidth = slider.width()/2;
+
         for (var i = 0; i < moveEvents.length; i++) {
             slider.parent().on(moveEvents[i], moveFunc);
+            tabs.on(moveEvents[i], moveFunc);
         }
 
         for (var i = 0; i < endEvents.length; i++) {
             // disable drag when mouse leaves this or the parent
-            slider.on(endEvents[i], endFunc);
             slider.parent().on(endEvents[i], endFunc);
+            tabs.on(endEvents[i], endFunc);
         }
     };
 
