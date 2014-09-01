@@ -196,8 +196,9 @@
     height: 95px;
     position: absolute;
     z-index: 7;
-    left: 53%;
+    left: 50%;
     bottom: 20px;
+    margin-left: 35px;
 }
 
 .direct_drive_button {
