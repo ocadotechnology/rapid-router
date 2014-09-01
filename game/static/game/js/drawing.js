@@ -54,7 +54,7 @@ ocargo.Drawing = function() {
     this.preloadRoadTiles = function() {
         var tiles = ['dead_end', 'crossroads', 'straight', 't_junction', 'turn']
         var tileImages = [];
-        var path = ocargo.Drawing.imageDir + 'road_tiles/'
+        var path = ocargo.Drawing.raphaelImageDir + 'road_tiles/'
 
         for(var i = 0; i < tiles.length; i++) {
             tileImages.push(paper.image(path + 'road/' + tiles[i] + '.svg', 0, 0, GRID_SPACE_SIZE, GRID_SPACE_SIZE));
@@ -168,7 +168,7 @@ ocargo.Drawing = function() {
                                     PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100,
                                     100, 100).attr({'stroke': DESTINATION_NOT_VISITED_COLOUR});
 
-            var destinationHouse = paper.image(ocargo.Drawing.imageDir + HOUSE_URL,
+            var destinationHouse = paper.image(ocargo.Drawing.raphaelImageDir + HOUSE_URL,
                                     destination.coordinate.x * GRID_SPACE_SIZE + variation[0],
                                     PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
                                     50, 50).transform('r' + variation[2]);
@@ -264,7 +264,7 @@ ocargo.Drawing = function() {
 
     this.renderOrigin = function(position) {
         var initialPosition = calculateInitialPosition(position.currentNode);
-        var cfc = paper.image(ocargo.Drawing.imageDir + CFC_URL, initialPosition.x - 95, initialPosition.y - 25, 100, 107);
+        var cfc = paper.image(ocargo.Drawing.raphaelImageDir + CFC_URL, initialPosition.x - 95, initialPosition.y - 25, 100, 107);
 
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
         var transformation = getRotationTransformationAroundCentreOfGridSpace(cfc,
@@ -283,7 +283,7 @@ ocargo.Drawing = function() {
             }
         }
 
-        var path = ocargo.Drawing.imageDir + 'road_tiles/';
+        var path = ocargo.Drawing.raphaelImageDir + 'road_tiles/';
 
         path += CHARACTER_NAME === 'Van' ? 'road/' : 'path/';
 
@@ -417,7 +417,7 @@ ocargo.Drawing = function() {
     this.renderBackground = function() {
         if(!ocargo.Drawing.isMobile()) {
             paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
-                .attr({fill: 'url(' + ocargo.Drawing.imageDir + BACKGROUND_URL + ')',
+                .attr({fill: 'url(' + ocargo.Drawing.raphaelImageDir + BACKGROUND_URL + ')',
                     'stroke': 'none'});
         }
     };
@@ -428,7 +428,7 @@ ocargo.Drawing = function() {
             var coord = obj.coordinate;
             var width = obj.width;
             var height = obj.height;
-            paper.image(ocargo.Drawing.imageDir + obj['url'], coord.x, PAPER_HEIGHT - coord.y - height, width, height);
+            paper.image(ocargo.Drawing.raphaelImageDir + obj['url'], coord.x, PAPER_HEIGHT - coord.y - height, width, height);
         }
     };
 
@@ -458,8 +458,8 @@ ocargo.Drawing = function() {
             var sourceCoordinate = trafficLight.sourceNode.coordinate;
             var controlledCoordinate = trafficLight.controlledNode.coordinate;
 
-            trafficLight.greenLightEl = this.createTrafficLightImage(ocargo.Drawing.imageDir + 'trafficLight_green.svg');
-            trafficLight.redLightEl = this.createTrafficLightImage(ocargo.Drawing.imageDir + 'trafficLight_red.svg');
+            trafficLight.greenLightEl = this.createTrafficLightImage(ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg');
+            trafficLight.redLightEl = this.createTrafficLightImage(ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg');
 
             this.setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.greenLightEl);
             this.setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.redLightEl);
@@ -500,7 +500,7 @@ ocargo.Drawing = function() {
     };
 
     this.createVanImage = function(position, vanId) {
-        return paper.image(ocargo.Drawing.imageDir + CHARACTER_URL, 0, 0, CHAR_HEIGHT, CHAR_WIDTH);
+        return paper.image(ocargo.Drawing.raphaelImageDir + CHARACTER_URL, 0, 0, CHAR_HEIGHT, CHAR_WIDTH);
     };
 
     this.resetVanImage = function(position, vanID) {
@@ -791,7 +791,7 @@ ocargo.Drawing = function() {
 
             var explosionParts = 20;
 
-            var wreckageImage = paper.image(ocargo.Drawing.imageDir + 'van_wreckage.svg', 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
+            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
             wreckageImage.transform(vanImage.transform());
             wreckageImage.attr({"opacity":0});
             wreckageImages[vanID] = wreckageImage;
@@ -804,7 +804,7 @@ ocargo.Drawing = function() {
                         var size = minSize + Math.random()*(maxSize-minSize);
                         var xco = x + width*(Math.random()-0.5) - 0.5*size;
                         var yco = y + height*(Math.random()-0.5) - 0.5*size;
-                        var imageStr = ocargo.Drawing.imageDir + '' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg'; 
+                        var imageStr = ocargo.Drawing.raphaelImageDir + '' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg'; 
                         var img = paper.image(imageStr, xco, yco, size, size);
                         img.animate({opacity: 0, transform: 's2'}, 1000, function () {img.remove()});
                     },(i < 5 ? 0 :(i-5)*50));
@@ -899,7 +899,8 @@ ocargo.Drawing.isChrome = function() {
     return navigator.userAgent.indexOf('Chrome') > -1;
 }
 
-ocargo.Drawing.imageDir = (ocargo.Drawing.isChrome()) ? '/static/game/chrome_image/' : '/static/game/image/';
+ocargo.Drawing.imageDir = '/static/game/image/';
+ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/';
 
 ocargo.Drawing.FRONT_VIEW  = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
