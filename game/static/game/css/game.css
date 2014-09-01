@@ -33,6 +33,7 @@
     position: relative;
     height: 100%;
     margin-left: 95px;
+    overflow: hidden;
 }
 
 #tab_panes {
@@ -221,7 +222,7 @@
     background-color: rgba(240,240,240,0.3);
     background-size: 50px 50px;
     background-color: transparent;
-    border: none;
+    outline: none;
 }
 
 #go  {

@@ -326,14 +326,14 @@
     </div>
 
     <div id="paper" class="col" style="background-color:{{level.theme.background}}"></div>
-
+    
     <div id="direct_drive" class="unselectable no-print">
       <button class="direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
     </div>
-    
+      
     <div id="fuelGauge" class="no-print unselectable">
       <img src="/static/game/image/fuelGauge.svg"/>
       <div id="fuelGaugePointer">
