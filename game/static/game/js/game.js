@@ -319,12 +319,22 @@ ocargo.Game.prototype.setupTabs = function() {
 
         currentTabSelected = tabs.blockly;
         tabs.blockly.select();
-        
+
+        var flyoutOut = false;
+        $('#flyoutButton').click(function () {
+            ocargo.blocklyControl.toggleFlyout();
+            flyoutOut = !flyoutOut;
+            $('#flyoutButton').attr('src', imgSrc);
+            $('#flyoutButton').css('left', flyoutOut ? '170px' : '0px');
+            var imgSrc = ocargo.Drawing.imageDir + 'icons/' + (flyoutOut ? 'hide' : 'show') + '.svg';
+            $('#flyoutButton img').attr('src', imgSrc);
+        });
+
         // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
         setTimeout(function() {
-            ocargo.blocklyControl.toggleFlyout();
+            $('#flyoutButton').click();
             ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-            }, 100);
+        }, 100);
     }
 
     function setupPythonTab() {
