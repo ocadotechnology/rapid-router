@@ -23,10 +23,6 @@ find game/static/game/{image,raphael_image} -name "*.svg" -print0 | xargs -0 per
   -e 's/<svg([^<]*)height="([0-9\.]+)(?:px)?"(?:[ \n]*viewBox="0 0 [0-9\.]+ [0-9\.]+")[ \n]*width="([0-9\.]+)(?:px)?"/<svg$1viewBox="0 0 $3 $2"/g;' \
   -e 's/ +/ /g;'
 
-# convert raphael images back to width/height
-find game/static/game/raphael_image -name "*.svg" ! -name "tile1.svg" -print0 | xargs -0 perl -0pi \
-  -e 's/<svg([^<]*)viewBox="0 0 ([0-9\.]+) ([0-9\.]+)"/<svg$1x="0px" y="0px" width="$2px" height="$3px"/g;'
-
-# fix tile1.svg to use both attributes
-find game/static/game/image game/static/game/raphael_image -name "tile1.svg" -print0 | xargs -0 perl -0pi \
+# convert all raphael images back to using width, height, x, y, and viewBox
+find game/static/game/raphael_image -name "*.svg" -print0 | xargs -0 perl -0pi \
   -e 's/<svg([^<]*)viewBox="0 0 ([0-9\.]+) ([0-9\.]+)"/<svg$1x="0px" y="0px" width="$2px" height="$3px" viewBox="0 0 $2 $3"/g;'
