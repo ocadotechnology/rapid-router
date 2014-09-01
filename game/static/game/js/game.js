@@ -440,6 +440,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
+                    ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                     console.error(err);
                     return;
                 }
@@ -452,6 +453,7 @@ ocargo.Game.prototype.setupTabs = function() {
             if (selectedWorkspace) {
                 ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
                     if (err !== null) {
+                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         console.error(err);
                         return;
                     }
@@ -470,6 +472,7 @@ ocargo.Game.prototype.setupTabs = function() {
             if (selectedWorkspace) {
                 ocargo.saving.deleteWorkspace(selectedWorkspace, function(err, workspaces) {
                     if (err !== null) {
+                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         console.error(err);
                         return;
                     }
@@ -519,6 +522,7 @@ ocargo.Game.prototype.setupTabs = function() {
             
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
+                    ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                     console.error(err);
                     return;
                 }
@@ -538,6 +542,7 @@ ocargo.Game.prototype.setupTabs = function() {
                         ocargo.saving.deleteWorkspace(cell.attributes[0].value, 
                                                         function(err, workspace) {
                                                             if (err !== null) {
+                                                                ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                                                                 console.error(err);
                                                                 return;
                                                             }
@@ -547,6 +552,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
                 ocargo.saving.createNewWorkspace(newName, ocargo.blocklyControl.serialize(), function(err, workspaces) {
                     if (err !== null) {
+                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         console.error(err);
                         return;
                     }
