@@ -121,7 +121,7 @@ def submit_attempt(request):
             attempt.workspace = request.POST.get('workspace')
 
             attempt.save()
-    return HttpResponse('')
+    return HttpResponse('[]', content_type='application/json')
 
 
 def load_list_of_workspaces(request):

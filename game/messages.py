@@ -139,7 +139,7 @@ def title_level_default():
 
 
 def description_level_default():
-    message = ugettext("Can you find the shorstest route? ")
+    message = ugettext("Can you find the shortest route? ")
     return message
 
 
