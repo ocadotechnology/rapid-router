@@ -1741,7 +1741,7 @@ ocargo.LevelEditor = function() {
         return state;
     }
 
-    function restoreState(state, origin) {
+    function restoreState(state) {
         clear();
 
         // Load node data
