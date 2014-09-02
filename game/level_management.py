@@ -10,32 +10,37 @@ from models import Level, Block, LevelDecor, Decor, Theme, Character
 
 def get_list_of_loadable_levels(user):
     loadable_levels = [level for level in Level.objects.all() if permissions.can_load_level(user, level)]
-    owned_levels  = [level for level in loadable_levels if level.owner == user.userprofile]
+    owned_levels = [level for level in loadable_levels if level.owner == user.userprofile]
     shared_levels = [level for level in loadable_levels if level.owner != user.userprofile]
     return owned_levels, shared_levels
 
 
+def set_level_decor(level, decorString, regex):
+    """ Helper method creating LevelDecor objects given a string of all decors."""
+
+    regex = re.compile(regex)
+    items = regex.findall(decorString)
+
+    level.decor = decorString
+    
+    existingDecor = LevelDecor.objects.filter(level=level)
+    for levelDecor in existingDecor:
+        levelDecor.delete()
+
+    if items[0][1] == '{"coordinate": {"x": ':
+        xIndex = 2
+        yIndex = 4
+    else:
+        xIndex = 4
+        yIndex = 2
+
+    for item in items:
+        name = item[6]
+        levelDecor = LevelDecor(level=level, x=item[xIndex], y=item[yIndex], decorName=name)
+        levelDecor.save()
+
+
 def save_level(level, data):
-
-    def set_level_decor(level, decorString):
-        """ Helper method creating LevelDecor objects given a string of all decors."""
-
-        print decorString
-
-        regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))')
-        items = regex.findall(decorString)
-
-        level.decor = decorString
-        
-        existingDecor = LevelDecor.objects.filter(level=level)
-        for levelDecor in existingDecor:
-            levelDecor.delete()
-
-        for item in items:
-            name = item[6]
-            levelDecor = LevelDecor(level=level, x=item[2], y=item[4], decorName=name)
-            levelDecor.save()
-
     theme = Theme.objects.get(id=data['theme_id'])
     character = Character.objects.get(name=data['character_name'])
 
@@ -51,7 +56,8 @@ def save_level(level, data):
     level.character = character
     level.save()
 
-    set_level_decor(level, data['decor'])
+    regex = '(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))'
+    set_level_decor(level, data['decor'], regex)
 
     level.blocks = Block.objects.filter(type__in=data['blockTypes'])
     level.save()

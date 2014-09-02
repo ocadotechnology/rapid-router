@@ -1,15 +1,19 @@
-from collections import defaultdict, namedtuple
-from django.shortcuts import render, get_object_or_404
 import json
 import math
-from models import Episode, Level, Block
 import random
+
+from collections import defaultdict, namedtuple
+from level_management import set_level_decor
+from models import Level, Block, Theme
 
 Node = namedtuple('Node', ['x', 'y'])
 
 DIRECTIONS = {(1, 0), (0, 1), (-1, 0), (0, -1)}
 WIDTH = 10
 HEIGHT = 8
+
+# Out of 10
+DECOR_RATIOS = {'tree1': 3, 'tree2': 2, 'pond': 1, 'bush': 4}
 
 DEFAULT_MAX_FUEL = 30
 DEFAULT_START_NODE = Node(0, 3)
@@ -23,6 +27,7 @@ PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
 
 def create(episode=None):
     maxFuel = DEFAULT_MAX_FUEL
+    grass = Theme.objects.get(name='grass')
 
     if not episode:
         num_tiles = DEFAULT_NUM_TILES
@@ -58,12 +63,19 @@ def create(episode=None):
                   max_fuel=maxFuel,
                   anonymous=True,
                   origin=level_data['origin'],
+                  decor=level_data['decor'],
+                  theme=grass,
                   blocklyEnabled=blockly_enabled,
                   pythonEnabled=python_enabled)
 
     level.save()
     level.blocks = blocks
     level.save()
+
+    print level_data['decor']
+
+    expr = '(({"coordinate" *: *{"y": *)([0-9]+)(, *"x" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *: *)([0-9]+)( *}))'
+    set_level_decor(level, level_data['decor'], expr)
 
     return level
 
@@ -73,9 +85,11 @@ def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traff
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
     destinations = [[path[-1]['coordinate'].x, path[-1]['coordinate'].y]]
     origin = get_origin(path)
+    decor = generate_decor(path)
 
     return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights),
-            'origin': json.dumps(origin), 'destinations': json.dumps(destinations)}
+            'origin': json.dumps(origin), 'destinations': json.dumps(destinations),
+            'decor': json.dumps(decor)}
 
 
 def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
@@ -226,7 +240,6 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
 
 
 def get_origin(path):
-
     node = path[1]
     neighbour = path[0]
     direction = get_direction(node, neighbour)
@@ -235,7 +248,6 @@ def get_origin(path):
 
 
 def generate_traffic_lights(path):
-
     degree2Nodes = []
     degree3or4Nodes = []
 
@@ -294,3 +306,32 @@ def get_direction(node, neighbour):
     elif neighbour['coordinate'].x > node['coordinate'].x:
         direction = "W"
     return direction
+
+
+def generate_decor(path):
+
+    def find_node_by_coordinate(x, y, nodes):
+        for node in nodes:
+            if node['coordinate'].x == x and node['coordinate'].y == y:
+                return True
+        return False
+
+    def find_decor_by_coordinate(x, y, decor):
+        for dec in decor:
+            if dec['coordinate']['x'] == x and dec['coordinate']['y'] == y:
+                return True
+        print x, y, 700-x, 700-y
+        return False
+
+    decor = []
+    for dec in DECOR_RATIOS:
+        print dec
+        for i in range(0, DECOR_RATIOS[dec]):
+            x = random.randint(0, 9)
+            y = random.randint(0, 7)
+            while find_node_by_coordinate(x, y, path) or \
+                    find_decor_by_coordinate(x * 100, y * 100, decor):
+                x = random.randint(0, 9)
+                y = random.randint(0, 7)
+            decor.append({'coordinate': {'x': x * 100, 'y': y * 100}, 'name': dec, 'height': 100})
+    return decor
