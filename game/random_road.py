@@ -13,7 +13,7 @@ WIDTH = 10
 HEIGHT = 8
 
 # Out of 10
-DECOR_RATIOS = {'tree1': 3, 'tree2': 2, 'pond': 1, 'bush': 4}
+DECOR_RATIOS = {'bush': 4, 'tree1': 3, 'tree2': 2, 'pond': 1}
 
 DEFAULT_MAX_FUEL = 30
 DEFAULT_START_NODE = Node(0, 3)
@@ -74,7 +74,8 @@ def create(episode=None):
 
     print level_data['decor']
 
-    expr = '(({"coordinate" *: *{"y": *)([0-9]+)(, *"x" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *: *)([0-9]+)( *}))'
+    expr = ('(({"coordinate" *: *{"y": *)([0-9]+)(, *"x" *: *)([0-9]+)(}, *"name" *: *")' +
+            '([a-zA-Z0-9]+)(", *"height" *: *)([0-9]+)( *}))')
     set_level_decor(level, level_data['decor'], expr)
 
     return level
@@ -176,13 +177,14 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
             return connections
 
         # Minimum deviation at very low and high loopiness factors, maximum at 0.5
-        loopiness_deviation = 2*loopiness_factor * (1  - loopiness_factor);
+        loopiness_deviation = 2 * loopiness_factor * (1 - loopiness_factor)
 
         # Now join up loops (does not dynamically update distances, but still get required effect)
         max_loop_distance = max([distances[s][d] for s, d in possible_loops])
         for origin, destination in possible_loops:
             distance_factor = distances[origin][destination] / max_loop_distance
-            adjusted_loopiness_factor = loopiness_factor * ((1-loopiness_deviation) + loopiness_deviation * distance_factor)
+            adjusted_loopiness_factor = loopiness_factor * \
+                ((1 - loopiness_deviation) + loopiness_deviation * distance_factor)
             if random.random() < adjusted_loopiness_factor:
                 connections = add_new_connections(connections, origin, destination)
 
@@ -312,18 +314,21 @@ def generate_decor(path):
 
     def find_node_by_coordinate(x, y, dec, nodes):
         for node in nodes:
-            if node['coordinate'].x == x and node['coordinate'].y == y or \
-                    (dec == 'pond' and node['coordinate'].x == x + 1 and node['coordinate'].y == y):
+            coord = node['coordinate']
+            if (coord.x == x and coord.y == y or
+                    (dec == 'pond' and coord.x == x + 1 and coord.y == y)):
                 return True
         return False
 
     def find_decor_by_coordinate(x, y, elem, decor):
         for dec in decor:
-            if dec['coordinate']['x'] == x and dec['coordinate']['y'] == y:
+            coord = dec['coordinate']
+            if coord['x'] == x and coord['y'] == y:
                 return True
-            if elem == 'pond' and (dec['coordinate']['x'] == x + 100 and dec['coordinate']['y'] == y or x + 100 < WIDTH * 100):
+            if (elem == 'pond' and
+                    (coord['x'] == x + 100 and coord['y'] == y or x + 100 < WIDTH * 100)):
                 return True
-            if dec['name'] == 'pond' and dec['coordinate']['x'] + 100 == x and dec['coordinate']['y'] == y:
+            if dec['name'] == 'pond' and coord['x'] + 100 == x and coord['y'] == y:
                 return True
         return False
 
@@ -332,8 +337,8 @@ def generate_decor(path):
         for i in range(0, DECOR_RATIOS[dec]):
             x = random.randint(0, 9)
             y = random.randint(0, 7)
-            while find_node_by_coordinate(x, y, dec, path) or \
-                    find_decor_by_coordinate(x * 100, y * 100, dec, decor):
+            while (find_node_by_coordinate(x, y, dec, path) or
+                    find_decor_by_coordinate(x * 100, y * 100, dec, decor)):
                 x = random.randint(0, 9)
                 y = random.randint(0, 7)
             decor.append({'coordinate': {'x': x * 100, 'y': y * 100}, 'name': dec, 'height': 100})

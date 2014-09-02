@@ -56,7 +56,8 @@ def save_level(level, data):
     level.character = character
     level.save()
 
-    regex = '(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))'
+    regex = ('(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")' +
+             '([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))')
     set_level_decor(level, data['decor'], regex)
 
     level.blocks = Block.objects.filter(type__in=data['blockTypes'])
