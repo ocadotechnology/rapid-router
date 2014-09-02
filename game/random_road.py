@@ -4,16 +4,22 @@ import random
 
 from collections import defaultdict, namedtuple
 from level_management import set_level_decor
-from models import Level, Block, Theme
+from models import Level, Block, Theme, Decor
 
 Node = namedtuple('Node', ['x', 'y'])
 
 DIRECTIONS = {(1, 0), (0, 1), (-1, 0), (0, -1)}
 WIDTH = 10
 HEIGHT = 8
+GRID_SIZE = 100
 
-# Out of 10
-DECOR_RATIOS = {'bush': 4, 'tree1': 3, 'tree2': 2, 'pond': 1}
+THEME = Theme.objects.get(name='grass')
+
+DECOR_DATA = {'bush': {'ratio': 5, 'decor': Decor.objects.get(theme=THEME, name='bush')},
+              'tree1': {'ratio': 4, 'decor': Decor.objects.get(theme=THEME, name='tree1')},
+              'tree2': {'ratio': 3, 'decor': Decor.objects.get(theme=THEME, name='tree2')},
+              'pond': {'ratio': 1, 'decor': Decor.objects.get(theme=THEME, name='pond')}
+              }
 
 DEFAULT_MAX_FUEL = 30
 DEFAULT_START_NODE = Node(0, 3)
@@ -222,11 +228,13 @@ def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, c
     connections = defaultdict(list)
 
     for _ in xrange(num_road_tiles - 1):
-        (previous_node, new_node) = pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor)
+        (previous_node, new_node) = pick_adjacent_node(nodes, connections, branchiness_factor,
+                                                       curviness_factor)
         if new_node:
             nodes.append(new_node)
             index_by_node[new_node] = len(nodes) - 1
-            connections = add_new_connections(connections, len(nodes) - 1, index_by_node[previous_node])
+            connections = add_new_connections(connections, len(nodes) - 1,
+                                              index_by_node[previous_node])
 
     connections = join_up_loops(nodes, connections, loopiness_factor)
     result = []
@@ -265,7 +273,8 @@ def generate_traffic_lights(path):
     else:
         candidateNodes = degree2Nodes
 
-    numberOfJunctions = max(int(len(candidateNodes) * PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS / 100.0), 1)
+    numberOfJunctions = max(int(len(candidateNodes) *
+                                PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS / 100.0), 1)
 
     random.shuffle(candidateNodes)
     nodesSelected = candidateNodes[:numberOfJunctions]
@@ -323,25 +332,54 @@ def generate_decor(path):
     def find_decor_by_coordinate(x, y, elem, decor):
         for dec in decor:
             coord = dec['coordinate']
-            if coord['x'] == x and coord['y'] == y:
+
+            # if there is a decor occupying this grid or neighbouring one in case of the pond
+            if (coord['x'] / GRID_SIZE == x and coord['y'] / GRID_SIZE == y or
+                (elem == 'pond' and (coord['x'] / GRID_SIZE == x + 1 and
+                                     coord['y'] / GRID_SIZE == y or x + 1 < WIDTH)) or
+                (dec['name'] == 'pond' and coord['x'] / GRID_SIZE + 1 == x and
+                    coord['y'] / GRID_SIZE == y)):
                 return True
-            if (elem == 'pond' and
-                    (coord['x'] == x + 100 and coord['y'] == y or x + 100 < WIDTH * 100)):
-                return True
-            if dec['name'] == 'pond' and coord['x'] + 100 == x and coord['y'] == y:
-                return True
+
         return False
 
-    decor = []
-    for dec in DECOR_RATIOS:
-        for i in range(0, DECOR_RATIOS[dec]):
+    def place_randomly(dec, decor):
+        while True:
+            x = random.randint(0, 9)
+            y = random.randint(0, 7)
 
-            while True:
-                x = random.randint(0, 9)
-                y = random.randint(0, 7)
-                if not(find_decor_by_coordinate(x * 100, y * 100, dec, decor) or
+            if not(find_decor_by_coordinate(x, y, dec, decor) or
+                    find_node_by_coordinate(x, y, dec, path)):
+                decor.append({'coordinate': {'x': x * GRID_SIZE, 'y': y * GRID_SIZE},
+                              'name': dec, 'height': GRID_SIZE})
+                return
+
+    def place_near_road(dec, decor, nodes):
+        while True:
+            coordinate = nodes[random.randint(0, len(nodes) - 1)]['coordinate']
+            for (dx, dy) in DIRECTIONS:
+                x = coordinate.x + dx
+                y = coordinate.y + dy
+                
+                if not(find_decor_by_coordinate(x, y, dec, decor) or
                         find_node_by_coordinate(x, y, dec, path)):
-                    break
-            
-            decor.append({'coordinate': {'x': x * 100, 'y': y * 100}, 'name': dec, 'height': 100})
+                    # The decor element is usually in the bottom left corner of the grid space so
+                    # need to pull it closer to the road.
+                    x = x * GRID_SIZE - min(0, dx) * (GRID_SIZE - DECOR_DATA[dec]['decor'].width)
+                    y = y * GRID_SIZE - min(0, dy) * (GRID_SIZE - DECOR_DATA[dec]['decor'].height)
+                    decor.append({'coordinate': {'x': x, 'y': y}, 'name': dec, 'height': 100})
+                    return
+
+    decor = []
+
+    for dec in DECOR_DATA:
+        for i in range(0, DECOR_DATA[dec]['ratio']):
+
+            if dec == 'bush':
+                place_near_road(dec, decor, path)
+            elif dec == 'pond':
+                place_randomly(dec, decor)
+            else:
+                place_randomly(dec, decor)
+
     return decor
