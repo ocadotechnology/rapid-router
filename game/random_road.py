@@ -310,27 +310,30 @@ def get_direction(node, neighbour):
 
 def generate_decor(path):
 
-    def find_node_by_coordinate(x, y, nodes):
+    def find_node_by_coordinate(x, y, dec, nodes):
         for node in nodes:
-            if node['coordinate'].x == x and node['coordinate'].y == y:
+            if node['coordinate'].x == x and node['coordinate'].y == y or \
+                    (dec == 'pond' and node['coordinate'].x == x + 1 and node['coordinate'].y == y):
                 return True
         return False
 
-    def find_decor_by_coordinate(x, y, decor):
+    def find_decor_by_coordinate(x, y, elem, decor):
         for dec in decor:
             if dec['coordinate']['x'] == x and dec['coordinate']['y'] == y:
                 return True
-        print x, y, 700-x, 700-y
+            if elem == 'pond' and (dec['coordinate']['x'] == x + 100 and dec['coordinate']['y'] == y or x + 100 < WIDTH * 100):
+                return True
+            if dec['name'] == 'pond' and dec['coordinate']['x'] + 100 == x and dec['coordinate']['y'] == y:
+                return True
         return False
 
     decor = []
     for dec in DECOR_RATIOS:
-        print dec
         for i in range(0, DECOR_RATIOS[dec]):
             x = random.randint(0, 9)
             y = random.randint(0, 7)
-            while find_node_by_coordinate(x, y, path) or \
-                    find_decor_by_coordinate(x * 100, y * 100, decor):
+            while find_node_by_coordinate(x, y, dec, path) or \
+                    find_decor_by_coordinate(x * 100, y * 100, dec, decor):
                 x = random.randint(0, 9)
                 y = random.randint(0, 7)
             decor.append({'coordinate': {'x': x * 100, 'y': y * 100}, 'name': dec, 'height': 100})
