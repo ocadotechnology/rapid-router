@@ -1730,7 +1730,13 @@ ocargo.LevelEditor = function() {
         }
 
         // Other data
-        state.max_fuel = $('#max_fuel').val();
+        var maxFuel = $('#max_fuel').val();
+        if(isNaN(maxFuel) ||  maxFuel ===  '')
+        {
+            maxFuel = 50;
+            $('#max_fuel').val(50);
+        }
+        state.max_fuel = maxFuel;
         
         state.theme = currentTheme.id;
         state.character_name = CHARACTER_NAME;
