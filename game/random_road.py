@@ -335,11 +335,13 @@ def generate_decor(path):
     decor = []
     for dec in DECOR_RATIOS:
         for i in range(0, DECOR_RATIOS[dec]):
-            x = random.randint(0, 9)
-            y = random.randint(0, 7)
-            while (find_node_by_coordinate(x, y, dec, path) or
-                    find_decor_by_coordinate(x * 100, y * 100, dec, decor)):
+
+            while True:
                 x = random.randint(0, 9)
                 y = random.randint(0, 7)
+                if not(find_decor_by_coordinate(x * 100, y * 100, dec, decor) or
+                        find_node_by_coordinate(x, y, dec, path)):
+                    break
+            
             decor.append({'coordinate': {'x': x * 100, 'y': y * 100}, 'name': dec, 'height': 100})
     return decor
