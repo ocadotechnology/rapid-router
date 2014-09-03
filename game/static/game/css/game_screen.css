@@ -37,10 +37,15 @@
     font-size: 1.4rem !important;
 }
 
-.ocargo-modal-mainText > #hintText,
-.ocargo-modal-mainText > #hintBtnPara {
-	 margin: 2rem 1rem 0;
+.ocargo-modal-mainText > #hintText {
+    display: none;
+    margin: 2rem 1rem 0;
 }
+
+.ocargo-modal-mainText > #hintBtnPara {
+   margin: 2rem 1rem 0;
+}
+
 
 .modal_image {
     width: 100px;
@@ -62,6 +67,7 @@
 
 .ocargo-modal .navigation_button {
     margin-top: 20px;
+    margin-right: 20px;
 }
 
 /************/
@@ -148,6 +154,8 @@ table th {
     line-height: 30px;
     margin-left: auto;
     margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .navigation_button img + span {
