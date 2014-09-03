@@ -426,7 +426,6 @@ ocargo.Game.prototype.setupTabs = function() {
         });
     }
 
-    
     function setupLoadTab() {
         var selectedWorkspace = null;
         tabs.load.setOnChange(function() {
@@ -607,14 +606,12 @@ ocargo.Game.prototype.setupTabs = function() {
 
             if (ocargo.blocklyControl.bigCodeMode){
                 tabs.big_code_mode.setContents(ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Enlarge");
-                ocargo.blocklyControl.decreaseBlockSize();
+                ocargo.blocklyControl.disableBigCodeMode();
             } else {
                 tabs.big_code_mode.setContents(ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Shrink");
-                ocargo.blocklyControl.increaseBlockSize();
+                ocargo.blocklyControl.enableBigCodeMode();
             }
 
-            // Note that toggleFlyout is misnamed and actually toggles the flyout.
-            // So these two lines force the flyout to refresh and be the correct size.
             ocargo.blocklyControl.toggleFlyout();
             ocargo.blocklyControl.toggleFlyout();
 

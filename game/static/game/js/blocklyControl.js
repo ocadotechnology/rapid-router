@@ -3,41 +3,24 @@
 var ocargo = ocargo || {};
 
 ocargo.BlocklyControl = function () {
-    this.blocklyDiv = document.getElementById('blockly_holder');
-    this.toolbox = document.getElementById('blockly_toolbox');
     this.numberOfStartBlocks = THREADS;
 
-    // Setup the number of blocks
-    this.limitedBlocks = false;
-    this.blockCount = [];
-    for(var i = 0; i < BLOCKS.length; i++) {
-        var block = BLOCKS[i];
-        this.blockCount[block.type] = block.number;
-        this.limitedBlocks = this.limitedBlocks || block.number;
-    }
-
-    if(this.limitedBlocks) {
-        this.setupLimitedBlocks();    
-    }
+    this.blocklyHacks = new ocargo.BlocklyHacks();
+    this.blocklyHacks.setupLimitedBlocks();
+    this.blocklyHacks.setupBigCodeMode();
     
+    this.blocklyDiv = document.getElementById('blockly_holder');
+    this.toolbox = document.getElementById('blockly_toolbox');
     Blockly.inject(this.blocklyDiv, {
         path: '/static/game/js/blockly/',
         toolbox: BLOCKLY_XML,
         trashcan: true
     });
 
-    
+    this.blocklyHacks.setupFlyoutToggling(this.blocklyDiv);
+    this.blocklyHacks.disableContextMenus();
 
-    // Disable the right-click context menus
-    Blockly.showContextMenu_ = function(e) {};
-    Blockly.Block.prototype.showContextMenu_ = function(e) {};
-
-    // Needed so that the size of the flyout is available
-    // for when toggle flyout is first called
-    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
-    this.flyoutWidth = $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
-    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
-    this.flyoutOut = false;
+    // Stop the flyout from closing automatically
     Blockly.Flyout.autoClose = false;
 };
 
@@ -74,147 +57,24 @@ ocargo.BlocklyControl.prototype.reset = function() {
     }
 };
 
-
-ocargo.BlocklyControl.prototype.setupLimitedBlocks = function() {
-    var blocklyControl = this;
-
-    // Override blockly flyout's position function to artificially widen it
-    var oldPositionFunction = Blockly.Flyout.prototype.position_;
-    Blockly.Flyout.prototype.position_ = function() {
-        this.width_ += 50;
-        oldPositionFunction.call(this);
-        this.width_ -= 50;
-    }
-
-    // Override blockly flyout's show function to add in the quantity text elements
-    // also adds in listeners for when blocks are added to the workspace
-    var oldShowFunction = Blockly.Flyout.prototype.show;
-    var quantities = [];
-    Blockly.Flyout.prototype.show = function(xmlList) {
-
-        /**
-        function addListenerToBlock(block) {
-            block.getSvgRoot().addEventListener('mousedown', function() {
-                blocklyControl.blockCount[block.type] -= 1;
-                $('.quantity_text[value="' + block.type + '"')[0].textContent = "x" + blocklyControl.blockCount[block.type];
-            });
-        }**/
-
-        var margin = this.CORNER_RADIUS;
-
-        // Remove current quantity elements
-        for (var i = quantities.length - 1; i >= 0; i--) {
-            goog.dom.removeNode(quantities[i]);
-        }
-
-        // Create the blocks to be shown in this flyout.
-        var blocks = [];
-        var gaps = [];
-        for (var i = 0, xml; xml = xmlList[i]; i++) {
-            if (xml.tagName && xml.tagName.toUpperCase() == 'BLOCK') {
-                blocks.push(Blockly.Xml.domToBlock(this.workspace_, xml));
-                gaps.push(margin * 3);
-            }
-        }
-
-        // Lay out the blocks vertically.
-        var cursorY = margin;
-        for (var i = 0; i < blocks.length; i++) {
-            var block = blocks[i];
-            var blockHW = block.getHeightWidth();
-            cursorY += blockHW.height + gaps[i];
-
-            if(blocklyControl.blockCount[block.type]) {
-                var attributes = {'width': 30,
-                              'height': 30,
-                              'x': this.width_,
-                              'y': cursorY + 20,
-                              'class': 'quantity_text',
-                              'value': block.type};
-
-                var element = Blockly.createSvgElement('text', attributes, null);
-                element.textContent = "x" + blocklyControl.blockCount[block.type];
-
-                // Add the rectangles under the blocks, so that the blocks' tooltips work.
-                this.workspace_.getCanvas().insertBefore(element, block.getSvgRoot());
-                quantities.push(element);
-            }
-        }
-
-        oldShowFunction.call(this, xmlList);
-
-        // Add listeners to the blocks
-        blocks = this.workspace_.getTopBlocks(false);
-        for(var i = 0; i < blocks.length; i++) {
-            //addListenerToBlock(blocks[i]);
-        }
-    }
-
-    // Override the blockly flyout's createBlockFunction to control block creation 
-    var oldCreateBlockFunction = Blockly.Flyout.prototype.createBlockFunc_
-    Blockly.Flyout.prototype.createBlockFunc_ = function(originBlock) {
-        var func = oldCreateBlockFunction.call(this, originBlock);
-        return function(e) {
-            if(blocklyControl.blockCount[originBlock.type] > 0) {
-                func(e);
-            }
-        }
-    }
-
-    // Override the initialize method to track blocks entering the  workspace
-    var oldInitialize = Blockly.Block.prototype.initialize;
-    Blockly.Block.prototype.initialize = function(workspace, prototypeName) {
-        oldInitialize.call(this, workspace, prototypeName);
-
-        if(this.type !== "start"  && this.workspace === Blockly.mainWorkspace) {
-            blocklyControl.blockCount[this.type] -= 1;
-            $('.quantity_text[value="' + this.type + '"')[0].textContent = "x" + blocklyControl.blockCount[this.type];
-        }
-    };
-
-    // Override block dispose method to keep track of blocks leaving the workspace
-    var oldDispose = Blockly.Block.prototype.dispose;
-    Blockly.Block.prototype.dispose = function(healStack, animate, opt_dontRemoveFromWorkspace) {
-        if(this.workspace === Blockly.mainWorkspace) {
-            blocklyControl.blockCount[this.type] += 1;
-            $('.quantity_text[value="' + this.type + '"')[0].textContent = "x" + blocklyControl.blockCount[this.type];
-        }
-        oldDispose.call(this, healStack, animate, opt_dontRemoveFromWorkspace);
-    }
-}
-
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
-    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
-    this.flyoutOut = !this.flyoutOut;
-
-    var image;
-    if(this.flyoutOut) {
-        image = 'hide';
-
-        var extraWidth = 40;
-
-        
-        if(this.limitedBlocks) {
-            $('#flyoutButton').css('left', (this.flyoutWidth - 4 ) +  'px');
-        }
-        else {
-            $('#flyoutButton').css('left', (this.flyoutWidth - 4) +  'px');
-        }
-    }
-    else {
-        image = 'show';
-
-        $('#flyoutButton').css('left', '0px');
-        $('#blockCountDiv').css('display','none');
-    }
-    
-    $('#flyoutButton img').attr('src', ocargo.Drawing.imageDir + 'icons/' + image + '.svg');
-}
+    this.blocklyHacks.toggleFlyout();
+};
 
 ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
-    Blockly.mainWorkspace.scrollbar.hScroll.set(this.blocklyDiv.offsetWidth - 455);
-    Blockly.mainWorkspace.scrollbar.vScroll.set(this.blocklyDiv.offsetWidth - 15);
-}
+    this.blocklyHacks.bringStartBlockFromUnderFlyout();
+};
+
+ocargo.BlocklyControl.prototype.enableBigCodeMode = function() {
+    ocargo.blocklyControl.bigCodeMode = true;
+    this.blocklyHacks.enableBigCodeMode();
+};
+
+ocargo.BlocklyControl.prototype.disableBigCodeMode =  function() {
+    ocargo.blocklyControl.bigCodeMode = false;
+    this.blocklyHacks.disableBigCodeMode();
+};
+
 
 ocargo.BlocklyControl.prototype.teardown = function() {
     if (localStorage) {
@@ -436,130 +296,6 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
         
         return n;
     }
-};
-
-
-/*******************/
-/** Big Code Mode **/
-/*******************/
-
-ocargo.BlocklyControl.prototype.resetWidthOnBlocks = function(blocks) {
-	for (var i = 0; i < blocks.length; i++) {
-		var block = blocks[i];
-		for (var j = 0; j < block.inputList.length; j++) {
-			var input = block.inputList[j];
-			for (var k = 0; k < input.fieldRow.length; k++) {
-			    var field = input.fieldRow[k];
-				field.size_.width = null;
-				if (field.imageElement_) {
-			        field.height_ = field.imageElement_.height.baseVal.value;
-			        field.width_ = field.imageElement_.width.baseVal.value;
-				}
-			}
-		}
-	}
-};
-
-//so that image fields render properly when their size_ variable is broken above
-Blockly.FieldImage.prototype.render_ = function() {
-    this.size_ = {height: this.height_ + 10, width: this.width_};
-};
-
-ocargo.BlocklyControl.prototype.increaseBlockSize = function() {
-	ocargo.blocklyControl.bigCodeMode = true;
-    Blockly.BlockSvg.FIELD_HEIGHT *= 2; //30
-    Blockly.BlockSvg.MIN_BLOCK_Y *= 2; // 25
-    Blockly.BlockSvg.JAGGED_TEETH_HEIGHT *= 2; //20
-    Blockly.BlockSvg.JAGGED_TEETH_WIDTH *= 2;
-    Blockly.BlockSvg.SEP_SPACE_X *= 2;
-    Blockly.BlockSvg.SEP_SPACE_Y *= 2;
-    Blockly.BlockSvg.INLINE_PADDING_Y *= 2;
-    Blockly.Icon.RADIUS *= 2;
-    
-    /*Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l 12,8 6,0 12,-8';
-    Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l 13,4 4,0 13,-8';
-    Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l -12,4 -6,0 -12,-8';
-    Blockly.BlockSvg.TAB_HEIGHT *= 2;
-    Blockly.BlockSvg.TAB_WIDTH *= 2;
-    Blockly.BlockSvg.NOTCH_WIDTH *= 2;
-    */
-    
-    ocargo.blocklyControl.IMAGE_WIDTH *= 2;
-    ocargo.blocklyControl.BLOCK_CHARACTER_HEIGHT *= 2;
-    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH *= 2;    
-    ocargo.blocklyControl.BLOCK_HEIGHT *= 2;
-
-	document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' + ':'+'22pt !important'+'}', document.styleSheets[0].cssRules.length);
-	document.styleSheets[0].insertRule(".blocklyIconMark, .beaconClass" + ' { font-size' + ':'+'18pt !important'+'}', document.styleSheets[0].cssRules.length);
-	var blocks = Blockly.mainWorkspace.getAllBlocks();
-    $(".blocklyDraggable > g > image").each( function(index, element) {
-    	var jQueryElement = $(element);
-    	var heightStr = jQueryElement.attr("height");
-    	var heightNumber = parseInt(heightStr.substring(0, heightStr.length - 2));
-    	var widthStr = jQueryElement.attr("width");
-    	var widthNumber = parseInt(widthStr.substring(0, widthStr.length - 2));
-    	jQueryElement.attr("height", heightNumber * 2 + "px");
-    	jQueryElement.attr("width", widthNumber * 2 + "px");
-    	jQueryElement.attr("y", -32);
-    });
-    ocargo.blocklyControl.resetWidthOnBlocks(blocks);
-    Blockly.mainWorkspace.render();
-
-	Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
-	
-    $(".blocklyIconShield").attr("width", 32).attr("height", 32).attr("rx", 8).attr("ry", 8);
-    $(".blocklyIconMark").attr("x", 16).attr("y", 24);
-    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24).attr("x", -5).attr("width", 85);  
-};
-
-ocargo.BlocklyControl.prototype.decreaseBlockSize = function() {
-	ocargo.blocklyControl.bigCodeMode = false;
-    Blockly.BlockSvg.FIELD_HEIGHT /= 2;
-    Blockly.BlockSvg.MIN_BLOCK_Y /= 2;
-    Blockly.BlockSvg.JAGGED_TEETH_HEIGHT /= 2;
-    Blockly.BlockSvg.JAGGED_TEETH_WIDTH /= 2;
-    Blockly.BlockSvg.SEP_SPACE_X /= 2;
-    Blockly.BlockSvg.SEP_SPACE_Y /= 2;
-    Blockly.BlockSvg.INLINE_PADDING_Y /= 2;
-    Blockly.Icon.RADIUS /= 2;
-    
-    /*Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l 12,8 6,0 12,-8';
-    Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l 13,4 4,0 13,-8';
-    Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l -12,4 -6,0 -12,-8';
-    Blockly.BlockSvg.TAB_HEIGHT /= 2;
-    Blockly.BlockSvg.TAB_WIDTH /= 2;
-    Blockly.BlockSvg.NOTCH_WIDTH /= 2;
-    */
-    
-    ocargo.blocklyControl.IMAGE_WIDTH /= 2;
-    ocargo.blocklyControl.BLOCK_CHARACTER_HEIGHT /= 2;
-    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH /= 2;  
-    ocargo.blocklyControl.BLOCK_HEIGHT /= 2;
-
-    var sheet = document.styleSheets[0];
-	for (var i = 0; i < 2; i++) {
-	    sheet.deleteRule(sheet.cssRules.length-1);
-	}
-
-	var blocks = Blockly.mainWorkspace.getAllBlocks();
-    
-    $(".blocklyDraggable > g > image").each( function(index, element) {
-    	var jQueryElement = $(element);
-    	var heightStr = jQueryElement.attr("height");
-    	var heightNumber = parseInt(heightStr.substring(0, heightStr.length - 2));
-    	var widthStr = jQueryElement.attr("width");
-    	var widthNumber = parseInt(widthStr.substring(0, widthStr.length - 2));
-    	jQueryElement.attr("height", heightNumber / 2 + "px");
-    	jQueryElement.attr("width", widthNumber / 2 + "px");
-    	jQueryElement.attr("y", -12);
-    });
-    ocargo.blocklyControl.resetWidthOnBlocks(blocks);
-    Blockly.mainWorkspace.render();
-
-	Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
-    $(".blocklyIconShield").attr("width", 16).attr("height", 16).attr("rx", 4).attr("ry", 4);
-    $(".blocklyIconMark").attr("x", 8).attr("y", 12);
-    $(".blocklyEditableText > rect").attr("height", 16).attr("y", -12).attr("x", -5).attr("width", 43);
 };
 
 /************************/
