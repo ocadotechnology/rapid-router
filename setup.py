@@ -4,6 +4,7 @@ setup(name='game',
       packages=find_packages(),
       include_package_data=True,
       install_requires = [
+        'django==1.7',
         'django-foundation-icons==3.1',
         'django-bourbon==3.1.8',
         'django-autoconfig==0.1.2',
@@ -18,8 +19,5 @@ setup(name='game',
         'six==1.6.1',
         'docutils==0.11',
         'Pillow==2.5.1',
-      ],
-      dependency_links = [
-        'https://www.djangoproject.com/download/1.7c1/tarball/',
       ],
     )
