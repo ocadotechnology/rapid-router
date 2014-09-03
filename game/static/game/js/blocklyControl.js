@@ -5,20 +5,33 @@ var ocargo = ocargo || {};
 ocargo.BlocklyControl = function () {
     this.blocklyDiv = document.getElementById('blockly_holder');
     this.toolbox = document.getElementById('blockly_toolbox');
+    this.numberOfStartBlocks = THREADS;
 
+    // Setup the number of blocks
+    this.limitedBlocks = false;
+    this.blockCount = [];
+    for(var i = 0; i < BLOCKS.length; i++) {
+        var block = BLOCKS[i];
+        this.blockCount[block.type] = block.number;
+        this.limitedBlocks = this.limitedBlocks || block.number;
+    }
 
+    if(this.limitedBlocks) {
+        this.setupLimitedBlocks();    
+    }
+    
     Blockly.inject(this.blocklyDiv, {
         path: '/static/game/js/blockly/',
         toolbox: BLOCKLY_XML,
         trashcan: true
     });
 
+    
+
     // Disable the right-click context menus
     Blockly.showContextMenu_ = function(e) {};
     Blockly.Block.prototype.showContextMenu_ = function(e) {};
 
-    this.numberOfStartBlocks = THREADS;
-    
     // Needed so that the size of the flyout is available
     // for when toggle flyout is first called
     Blockly.Toolbox.tree_.firstChild_.onMouseDown();
@@ -61,13 +74,141 @@ ocargo.BlocklyControl.prototype.reset = function() {
     }
 };
 
+
+ocargo.BlocklyControl.prototype.setupLimitedBlocks = function() {
+    var blocklyControl = this;
+
+    // Override blockly flyout's position function to artificially widen it
+    var oldPositionFunction = Blockly.Flyout.prototype.position_;
+    Blockly.Flyout.prototype.position_ = function() {
+        this.width_ += 50;
+        oldPositionFunction.call(this);
+        this.width_ -= 50;
+    }
+
+    // Override blockly flyout's show function to add in the quantity text elements
+    // also adds in listeners for when blocks are added to the workspace
+    var oldShowFunction = Blockly.Flyout.prototype.show;
+    var quantities = [];
+    Blockly.Flyout.prototype.show = function(xmlList) {
+
+        /**
+        function addListenerToBlock(block) {
+            block.getSvgRoot().addEventListener('mousedown', function() {
+                blocklyControl.blockCount[block.type] -= 1;
+                $('.quantity_text[value="' + block.type + '"')[0].textContent = "x" + blocklyControl.blockCount[block.type];
+            });
+        }**/
+
+        var margin = this.CORNER_RADIUS;
+
+        // Remove current quantity elements
+        for (var i = quantities.length - 1; i >= 0; i--) {
+            goog.dom.removeNode(quantities[i]);
+        }
+
+        // Create the blocks to be shown in this flyout.
+        var blocks = [];
+        var gaps = [];
+        for (var i = 0, xml; xml = xmlList[i]; i++) {
+            if (xml.tagName && xml.tagName.toUpperCase() == 'BLOCK') {
+                blocks.push(Blockly.Xml.domToBlock(this.workspace_, xml));
+                gaps.push(margin * 3);
+            }
+        }
+
+        // Lay out the blocks vertically.
+        var cursorY = margin;
+        for (var i = 0; i < blocks.length; i++) {
+            var block = blocks[i];
+            var blockHW = block.getHeightWidth();
+            cursorY += blockHW.height + gaps[i];
+
+            if(blocklyControl.blockCount[block.type]) {
+                var attributes = {'width': 30,
+                              'height': 30,
+                              'x': this.width_,
+                              'y': cursorY + 20,
+                              'class': 'quantity_text',
+                              'value': block.type};
+
+                var element = Blockly.createSvgElement('text', attributes, null);
+                element.textContent = "x" + blocklyControl.blockCount[block.type];
+
+                // Add the rectangles under the blocks, so that the blocks' tooltips work.
+                this.workspace_.getCanvas().insertBefore(element, block.getSvgRoot());
+                quantities.push(element);
+            }
+        }
+
+        oldShowFunction.call(this, xmlList);
+
+        // Add listeners to the blocks
+        blocks = this.workspace_.getTopBlocks(false);
+        for(var i = 0; i < blocks.length; i++) {
+            //addListenerToBlock(blocks[i]);
+        }
+    }
+
+    // Override the blockly flyout's createBlockFunction to control block creation 
+    var oldCreateBlockFunction = Blockly.Flyout.prototype.createBlockFunc_
+    Blockly.Flyout.prototype.createBlockFunc_ = function(originBlock) {
+        var func = oldCreateBlockFunction.call(this, originBlock);
+        return function(e) {
+            if(blocklyControl.blockCount[originBlock.type] > 0) {
+                func(e);
+            }
+        }
+    }
+
+    // Override the initialize method to track blocks entering the  workspace
+    var oldInitialize = Blockly.Block.prototype.initialize;
+    Blockly.Block.prototype.initialize = function(workspace, prototypeName) {
+        oldInitialize.call(this, workspace, prototypeName);
+
+        if(this.type !== "start"  && this.workspace === Blockly.mainWorkspace) {
+            blocklyControl.blockCount[this.type] -= 1;
+            $('.quantity_text[value="' + this.type + '"')[0].textContent = "x" + blocklyControl.blockCount[this.type];
+        }
+    };
+
+    // Override block dispose method to keep track of blocks leaving the workspace
+    var oldDispose = Blockly.Block.prototype.dispose;
+    Blockly.Block.prototype.dispose = function(healStack, animate, opt_dontRemoveFromWorkspace) {
+        if(this.workspace === Blockly.mainWorkspace) {
+            blocklyControl.blockCount[this.type] += 1;
+            $('.quantity_text[value="' + this.type + '"')[0].textContent = "x" + blocklyControl.blockCount[this.type];
+        }
+        oldDispose.call(this, healStack, animate, opt_dontRemoveFromWorkspace);
+    }
+}
+
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
     Blockly.Toolbox.tree_.firstChild_.onMouseDown();
     this.flyoutOut = !this.flyoutOut;
-    $('#flyoutButton').attr('src', imgSrc);
-    $('#flyoutButton').css('left', (this.flyoutOut ? (this.flyoutWidth-4)  : 0) +  'px');
-    var imgSrc = ocargo.Drawing.imageDir + 'icons/' + (this.flyoutOut ? 'hide' : 'show') + '.svg';
-    $('#flyoutButton img').attr('src', imgSrc);
+
+    var image;
+    if(this.flyoutOut) {
+        image = 'hide';
+
+        var extraWidth = 40;
+
+        
+        if(this.limitedBlocks) {
+            $('#flyoutButton').css('left', (this.flyoutWidth - 4 ) +  'px');
+        }
+        else {
+            $('#flyoutButton').css('left', (this.flyoutWidth - 4) +  'px');
+        }
+    }
+    else {
+        image = 'show';
+
+        $('#flyoutButton').css('left', '0px');
+        $('#blockCountDiv').css('display','none');
+    }
+    
+    $('#flyoutButton img').attr('src', ocargo.Drawing.imageDir + 'icons/' + image + '.svg');
 }
 
 ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
@@ -114,7 +255,6 @@ ocargo.BlocklyControl.prototype.serialize = function() {
 };
 
 ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
-
     // Buggy blockly doesn't serialise properly on Safari.
     var isSafari = navigator.userAgent.indexOf('Safari') !== -1 &&
                     navigator.userAgent.indexOf('Chrome') === -1;
@@ -123,15 +263,28 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
     blocks.sort(function(a, b) {
         return a.id - b.id;
     });
+    
     var startCount = this.numberOfStartBlocks;
-    var block;
+    var clean = true;
+
     for (var i = 0; i < blocks.length; i++) {
-        block = blocks[i];
-        if (BLOCKS.indexOf(block.type) === -1 && block.type !== 'start') {
-            block.dispose();
-            return false;
+        var block = blocks[i];
+
+        if(block.type !== 'start') {
+            var found = false;
+            for(var j = 0; j < BLOCKS.length; j++) {
+                if(BLOCKS[j].type == block.type) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if(!found) {
+                clean = false;
+                block.dispose();
+            }
         }
-        if(isSafari && block.type === 'start') {
+        else if(isSafari) {
             if (startCount > 0) {
                 startCount--;
             } else {
@@ -139,7 +292,7 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
             }
         }
     }
-    return true;
+    return clean;
 };
 
 ocargo.BlocklyControl.prototype.setCodeChangesAllowed = function(changesAllowed) {

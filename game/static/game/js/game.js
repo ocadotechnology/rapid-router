@@ -16,6 +16,9 @@ ocargo.Game.prototype.setup = function() {
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
     ocargo.saving = new ocargo.Saving();
+
+    // Setup the blockly workspace
+    //ocargo.blocklyControl.reset();
     ocargo.blocklyControl.loadPreviousAttempt();
 
     // Setup the ui
@@ -161,8 +164,11 @@ ocargo.Game.prototype.allowCodeChanges = function(changesAllowed) {
 ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
     if (FUEL_GAUGE) {
         document.getElementById('fuelGauge').style.visibility='visible';
-            if (blocks.indexOf("turn_around") !== -1 || blocks.indexOf("wait") !== -1) {
-            return;
+        
+        for(var i = 0; i < blocks.length; i++) {
+            if(blocks[i].type === "turn_around" || blocks[i].type === "wait") {
+                return;
+            }
         }
 
         for (var i = 0; i < nodes.length; i++) {
