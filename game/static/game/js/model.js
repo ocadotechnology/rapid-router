@@ -149,6 +149,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             popupType: 'FAIL',
             failSubtype: 'CRASH',
             popupMessage: ocargo.messages.offRoad(this.van.travelled),
+            popupHint: ocargo.game.registerFailure(),
             description: 'crash popup'
         });
 
@@ -164,6 +165,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             popupType: 'FAIL',
             failSubtype: 'OUT_OF_FUEL',
             popupMessage: ocargo.messages.outOfFuel,
+            popupHint: ocargo.game.registerFailure(),
             description: 'no fuel popup'
         });
 
@@ -192,6 +194,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             popupType: 'FAIL',
             failSubtype: 'THROUGH_RED_LIGHT',
             popupMessage: ocargo.messages.throughRedLight,
+            popupHint: ocargo.game.registerFailure(),
             description: 'ran red traffic light popup'
         });
 
@@ -296,6 +299,7 @@ ocargo.Model.prototype.deliver = function() {
                 popupType: 'FAIL',
                 failSubtype: 'ALREADY_DELIVERED',
                 popupMessage: ocargo.messages.alreadyDelivered,
+                popupHint: ocargo.game.registerFailure(),
                 description: 'already delivered to destination popup'
             });
 
@@ -390,7 +394,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             popupType: 'FAIL',
             failSubtype: failType,
             popupMessage: failMessage,
-            hint: ocargo.game.registerFailure(),
+            popupHint: ocargo.game.registerFailure(),
             description: 'failure popup'
         });
 

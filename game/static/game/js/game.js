@@ -5,7 +5,6 @@ var ocargo = ocargo || {};
 ocargo.Game = function() {
     this.tabs = [];
     this.failures = 0;
-    this.hasFailedThisTry = false;
 };
 
 ocargo.Game.prototype.setup = function() {
@@ -140,10 +139,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
 };
 
 ocargo.Game.prototype.registerFailure = function() {
-    if (!this.hasFailedThisTry) {
-        this.failures += 1;
-        this.hasFailedThisTry = true;
-    }
+    this.failures += 1;
     return (this.failures >= 3);
 };
 

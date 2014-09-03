@@ -47,6 +47,7 @@ ocargo.messages = {
     needHint: "Are you stuck? Do you need help?",
     terminated: "Program terminated!",
     crashed: "Your program crashed!",
+    queryInfiniteLoop: "It looks as though your program's been running a while. Check your repeat loops are okay.",
     compilationError: "Your program doesn't look quite right...",
     stoppingTitle: "Stopping...",
 
