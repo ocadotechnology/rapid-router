@@ -140,6 +140,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
 
 ocargo.Game.prototype.registerFailure = function() {
     this.failures += 1;
+    return (this.failures >= 3);
 };
 
 // function to enable or disable pointerEvents on running python or blockly code
