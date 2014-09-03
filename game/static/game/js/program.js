@@ -2,6 +2,8 @@
 
 var ocargo = ocargo || {};
 
+var MAX_EXECUTION_STEPS = 10000;
+
 /* Program */
 
 ocargo.Program = function() {
@@ -20,6 +22,7 @@ ocargo.Program.prototype.run = function() {
 
 ocargo.Thread = function() {
 	this.stack = [];
+	this.noExecutionSteps = 0;
 };
 
 ocargo.Thread.prototype.run = function(model) {
@@ -35,12 +38,29 @@ ocargo.Thread.prototype.run = function(model) {
 ocargo.Thread.prototype.step = function(model) {
 	var stackLevel = this.stack[this.stack.length - 1];
 	var commandToProcess = stackLevel.shift();
+	this.noExecutionSteps ++;
+	if (this.noExecutionSteps > MAX_EXECUTION_STEPS) {
+		// alert user to likely infinite loop
+		ocargo.animation.appendAnimation({
+            type: 'popup',
+            id: this.vanId,
+            popupType: 'FAIL',
+            failSubtype: 'QUERY_INFINITE_LOOP',
+            popupMessage: ocargo.messages.queryInfiniteLoop,
+            popupHint: ocargo.game.registerFailure(),
+            description: 'failure popup'
+        });
+		return false;
+	}
 
 	if (stackLevel.length === 0) {
 		this.stack.pop();
 	}
 
-	var successful = commandToProcess.execute(this, model);
+	var successful = true;
+	if (commandToProcess) {
+		successful = commandToProcess.execute(this, model);
+	}
 
 	if (!successful) {
 		// Program crashed, queue a block highlight event

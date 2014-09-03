@@ -255,26 +255,16 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			if (a.popupHint) {
 				var hintBtns = $("#hintPopupBtn");
 		        if (hintBtns.length === null || hintBtns.length === 0) {
-		            otherMsg = '<p id="hintBtnPara">' +
-		                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
-		                '</p><p id="hintText">' + HINT + '</p>';
-		            $("#myModal > .mainText").append('<p id="hintBtnPara">' +
-		                '<button id="hintPopupBtn">' + ocargo.messages.needHint + '</button>' + 
-		                '</p><p id="hintText">' + HINT + '</p>');
+		        	leadMsg += '<button class="navigation_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
+		            otherMsg = '<p id="hintBtnPara">' + '</p><p id="hintText">' + HINT + '</p>';
     			}
 			}
 			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true);
 			if (a.popupHint) {
-				if (level.hintOpened){
-	                $("#hintBtnPara").hide();
-	            } else {
-	                $("#hintText" ).hide();
-	                $("#hintPopupBtn").click( function(){
+				$("#hintPopupBtn").click( function(){
 	                    $("#hintText").show(500);
 	                    $("#hintBtnPara").hide();
-	                    level.hintOpened = true;
 	                });
-	            }
 	        }
 			break;
 		case 'trafficlight':
