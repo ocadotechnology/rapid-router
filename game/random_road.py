@@ -21,6 +21,9 @@ DECOR_DATA = {'bush': {'ratio': 5, 'decor': Decor.objects.get(theme=THEME, name=
               'pond': {'ratio': 1, 'decor': Decor.objects.get(theme=THEME, name='pond')}
               }
 
+DECOR_SUM = (DECOR_DATA['bush']['ratio'] + DECOR_DATA['pond']['ratio'] +
+             DECOR_DATA['tree1']['ratio'] + DECOR_DATA['tree2']['ratio'])
+
 DEFAULT_MAX_FUEL = 30
 DEFAULT_START_NODE = Node(0, 3)
 DEFAULT_NUM_TILES = 20
@@ -78,8 +81,6 @@ def create(episode=None):
     level.blocks = blocks
     level.save()
 
-    print level_data['decor']
-
     expr = ('(({"coordinate" *: *{"y": *)([0-9]+)(, *"x" *: *)([0-9]+)(}, *"name" *: *")' +
             '([a-zA-Z0-9]+)(", *"height" *: *)([0-9]+)( *}))')
     set_level_decor(level, level_data['decor'], expr)
@@ -92,7 +93,7 @@ def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traff
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
     destinations = [[path[-1]['coordinate'].x, path[-1]['coordinate'].y]]
     origin = get_origin(path)
-    decor = generate_decor(path)
+    decor = generate_decor(path, num_tiles)
 
     return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights),
             'origin': json.dumps(origin), 'destinations': json.dumps(destinations),
@@ -319,7 +320,7 @@ def get_direction(node, neighbour):
     return direction
 
 
-def generate_decor(path):
+def generate_decor(path, num_tiles):
 
     def find_node_by_coordinate(x, y, dec, nodes):
         for node in nodes:
@@ -343,43 +344,67 @@ def generate_decor(path):
 
         return False
 
+    def near_road(x, y, nodes):
+        for node in nodes:
+            coord = node['coordinate']
+            if (math.fabs(coord.x - x) <= 1 and math.fabs(coord.y - y) <= 1 and
+                    not find_node_by_coordinate(x, y, 'bush', nodes)):
+                return True
+        return False
+
+    def append_decor(decor, x, y, dec, dx=0, dy=0):
+        decor_object = DECOR_DATA[dec]['decor']
+        x = x * GRID_SIZE + int((GRID_SIZE - decor_object.width) * 0.5 * (1 - dx))
+        y = y * GRID_SIZE + int((GRID_SIZE - decor_object.height) * 0.5 * (1 - dy))
+
+        decor.append({'coordinate': {'x': x, 'y': y}, 'name': dec, 'height': decor_object.height})
+
+    def place_near_road(elem, decor, path):
+        for i in range(1, len(path) - 1):
+            node = path[i]
+            for (dx, dy) in DIRECTIONS:
+                x = node['coordinate'].x + dx
+                y = node['coordinate'].y + dy
+                if not (find_decor_by_coordinate(x, y, elem, decor) or
+                        find_node_by_coordinate(x, y, dec, path)):
+                    return append_decor(decor, x, y, elem, dx, dy)
+    
     def place_randomly(dec, decor):
         while True:
             x = random.randint(0, 9)
             y = random.randint(0, 7)
 
-            if not(find_decor_by_coordinate(x, y, dec, decor) or
+            if not (find_decor_by_coordinate(x, y, dec, decor) or
                     find_node_by_coordinate(x, y, dec, path)):
-                decor.append({'coordinate': {'x': x * GRID_SIZE, 'y': y * GRID_SIZE},
-                              'name': dec, 'height': GRID_SIZE})
-                return
+                return append_decor(decor, x, y, dec)
 
-    def place_near_road(dec, decor, nodes):
-        while True:
-            coordinate = nodes[random.randint(0, len(nodes) - 1)]['coordinate']
-            for (dx, dy) in DIRECTIONS:
-                x = coordinate.x + dx
-                y = coordinate.y + dy
-                
-                if not(find_decor_by_coordinate(x, y, dec, decor) or
-                        find_node_by_coordinate(x, y, dec, path)):
-                    # The decor element is usually in the bottom left corner of the grid space so
-                    # need to pull it closer to the road.
-                    x = x * GRID_SIZE - min(0, dx) * (GRID_SIZE - DECOR_DATA[dec]['decor'].width)
-                    y = y * GRID_SIZE - min(0, dy) * (GRID_SIZE - DECOR_DATA[dec]['decor'].height)
-                    decor.append({'coordinate': {'x': x, 'y': y}, 'name': dec, 'height': 100})
-                    return
+    def place_bush(elem, decor, nodes):
+        bush_exists = False
+        for dec in decor:
+            if dec['name'] == elem:
+                bush_exists = True
+                for (dx, dy) in DIRECTIONS:
+                    x = dec['coordinate']['x'] / GRID_SIZE + dx
+                    y = dec['coordinate']['y'] / GRID_SIZE + dy
+                    if near_road(x, y, nodes) and not find_decor_by_coordinate(x, y, elem, decor):
+                        return append_decor(decor, x, y, elem, dx, dy)
+
+        if not bush_exists:
+            place_near_road(elem, decor, path)
 
     decor = []
-
+    decor_count = 0
     for dec in DECOR_DATA:
-        for i in range(0, DECOR_DATA[dec]['ratio']):
-
-            if dec == 'bush':
-                place_near_road(dec, decor, path)
-            elif dec == 'pond':
-                place_randomly(dec, decor)
-            else:
-                place_randomly(dec, decor)
+        for i in range(0, DECOR_DATA[dec]['ratio'] * num_tiles / DECOR_SUM):
+            if (decor_count + num_tiles < WIDTH * HEIGHT):
+                if dec == 'bush':
+                    place_bush(dec, decor, path)
+                    decor_count += 1
+                elif dec == 'pond':
+                    place_randomly(dec, decor)
+                    decor_count += 2
+                else:
+                    place_randomly(dec, decor)
+                    decor_count += 1
 
     return decor
