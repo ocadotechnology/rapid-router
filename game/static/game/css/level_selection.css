@@ -19,3 +19,36 @@
 	background: #8EAECA;
 }
 
+.episode_range_text {
+	font-size: 10pt;
+	text-align: right;
+	margin-right: 2.2em;
+	float: right;
+	width: 98px;
+}
+
+.score_text {
+	float: right;
+	text-align: right;
+	width: 100px;
+	line-height: 25px;
+}
+
+.coin_image {
+	float: right;
+	right: 30px;
+}
+
+.episode_image.coin_image {
+	width: 30px;
+	height: 30px;
+	margin-top: -6px;
+}
+
+.level_image.coin_image {
+	width: 25px;
+	height: 25px;
+	margin-right: 2.5px;
+}
+
+
