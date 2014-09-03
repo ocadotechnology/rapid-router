@@ -28,8 +28,6 @@ function combineColors(bg, color)
 }
 
 function setupCoins() {
-    console.log(EPISODES);
-
     for(var i = 0; i < EPISODES.length; i++) {
         var episode = EPISODES[i];
 
