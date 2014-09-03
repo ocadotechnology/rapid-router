@@ -6,12 +6,25 @@
 
 {% block scripts %}
 {{block.super}}
+	<script>
+  	var EPISODES = [];
+  	{% for episode in episodeData %}
+  		var levels = []
+  		{% for level in episode.levels %}
+  			levels.push({'id': {{level.id}},
+  										'score': '{{level.score}}'});
+  		{% endfor %}
+  		EPISODES.push({'id' : {{episode.id}},
+  										'levels': levels});
+  	{% endfor %}
+  </script>
+
   <script src="/static/game/js/levelSelection.js"></script>
 {% endblock %}
 
 {% block css %}
 {{block.super}}
-      <link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block nav_ocargo_levels %}<b><a href="{% url 'game.views.levels' %}">Levels</a></b>{% endblock nav_ocargo_levels %}
@@ -24,14 +37,25 @@
 		<div class="col span_2_of_3_strict">
 			<div id="episodes">
 			    {% for episode in episodeData %}
-			    <h3>{{episode.name}}<span style="float:right; font-size: 10pt">Levels {{episode.first_level}}-{{episode.last_level}}</span></h3>
+			    <h3>
+			    	<div>
+				    	{{episode.name}}
+				    	<span class="episode_range_text">Levels {{episode.first_level}}-{{episode.last_level}}</span>
+				    	<img class="episode_image coin_image" value="{{episode.id}}">
+			    	<div>
+			    </h3>
 			    <div>
 			        {% for level in episode.levels %}
 			        <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-			        <p><a href="{% url 'game.views.play_level' level.id %}">{{level.id}}: {{level.title.strip | safe}}</a> 
-			        {% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/20</span>{% endif %}</p>
+			        <p>
+				        <a href="{% url 'game.views.play_level' level.id %}">{{level.id}}: {{level.title.strip | safe}}</a> 
+				        {% if level.score != None %}
+				        <span class="score_text">{{level.score|floatformat}}/20</span>
+				        <img class="level_image coin_image" value="{{level.id}}">
+				        {% endif %}
+				    	</p>
 			        {% endfor %}
-			        
+			       	
 			        <p><a href="{% url 'game.views.random_level_for_episode' episode.id %}">Random: Try your hand at a random level.</a></p>
 			    </div>
 			    {% endfor %}
