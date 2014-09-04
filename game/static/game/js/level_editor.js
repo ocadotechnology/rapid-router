@@ -1581,6 +1581,10 @@ ocargo.LevelEditor = function() {
 
     function finaliseMove(strikeEnd) {
 
+        if(!strikeStart || (strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y)) {
+            return;
+        }
+
         applyAlongStrike(addNode, strikeEnd);
         strikeStart =  null;
 
@@ -1611,9 +1615,10 @@ ocargo.LevelEditor = function() {
 
     function applyAlongStrike(func, strikeEnd) {
         var x, y;
-        if (!strikeStart || strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y) {
+        if (!strikeStart) {
             return;
         }
+        
         if (strikeStart.x <= strikeEnd.x) {
             for (x = strikeStart.x; x <= strikeEnd.x; x++) {
                 func(x, strikeStart.y);
