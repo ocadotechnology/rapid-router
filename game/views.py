@@ -46,8 +46,6 @@ def play_level(request, levelID):
     :template:`game/game.html`
     """
     level = cached_level(levelID)
-
-    print("Hi")
     
     if not permissions.can_play_level(request.user, level):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
@@ -98,7 +96,6 @@ def play_level(request, levelID):
         'return_url': '/rapidrouter/',
     })
 
-    print("hi2")
     return render(request, 'game/game.html', context_instance=context)
 
 
