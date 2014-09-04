@@ -32,6 +32,7 @@ function setupCoins() {
         var episode = EPISODES[i];
 
         var minScore = 20;
+        var episodeToOpen;
         for(var j = 0; j < episode.levels.length; j++) {
             var level = episode.levels[j];
             
@@ -41,6 +42,9 @@ function setupCoins() {
             else {
                 $('.level_image.coin_image[value=' + level.id + ']').remove();
                 minScore = "None";
+                if(!episodeToOpen) {
+                    episodeToOpen =  episode;
+                }
             }
 
             if(minScore != "None" && level.score < minScore) {
@@ -65,6 +69,11 @@ function setupCoins() {
         else {
             $('.level_image.coin_image[value=' + level.id + ']').remove();
         }
+    }
+
+    if(episodeToOpen && (USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT')) {
+        console.log($('#episode' + episodeToOpen.id), '#episode' + episodeToOpen.id)
+        $('#episode' + episodeToOpen.id).click();
     }
 
     function getImageStr(score) {

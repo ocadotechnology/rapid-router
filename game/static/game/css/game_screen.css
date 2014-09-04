@@ -46,6 +46,9 @@
    margin: 2rem 1rem 0;
 }
 
+.ocargo-modal-mainText img {
+    margin-right: 0.2rem;
+}
 
 .modal_image {
     width: 100px;
@@ -183,6 +186,7 @@ table th {
     background: linear-gradient(to bottom, #fce623 0%,#f4a73a 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fce623', endColorstr='#f4a73a',GradientType=0 ); /* IE6-9 */
     border-color: rgb(246,146,30);
+    outline: none;
 }
 
 .navigation_button:active {

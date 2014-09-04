@@ -51,7 +51,6 @@ def play_level(request, levelID):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     blocks = LevelBlock.objects.filter(level=level).order_by('type')
-    attempt = None
     lesson = 'description_level' + str(levelID)
     hint = 'hint_level' + str(levelID)
 
@@ -74,14 +73,16 @@ def play_level(request, levelID):
     background = getDecorElement('tile1', level.theme).url
     character = level.character
 
+    workspace = None
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
-        try:
-            attempt = get_object_or_404(Attempt, level=level, student=student)
-        except Http404:
-            attempt = Attempt(level=level, score=0, student=student)
+        attempt = Attempt.objects.filter(level=level, student=student).first()
+        if not attempt:
+            attempt = Attempt(level=level, student=student,  score=None)
             attempt.save()
-
+            
+        workspace =  attempt.workspace
+        
     context = RequestContext(request, {
         'level': level,
         'blocks': blocks,
@@ -92,7 +93,7 @@ def play_level(request, levelID):
         'house': house,
         'cfc': cfc,
         'hint': hint,
-        'attempt': attempt,
+        'workspace': workspace,
         'return_url': '/rapidrouter/',
     })
 
@@ -110,17 +111,14 @@ def delete_level(request, levelID):
 
 
 def submit_attempt(request):
-    """ Processes a request on submission of the program solving the current level.
-    """
-    if not request.user.is_anonymous() and request.method == 'POST':
-        if hasattr(request.user, "userprofile") and hasattr(request.user.userprofile, "student"):
+    """ Processes a request on submission of the program solving the current level. """
+    if not request.user.is_anonymous() and request.method == 'POST' and hasattr(request.user.userprofile, "student"):
             level = get_object_or_404(Level, id=request.POST.get('level', 1))
-            attempt = get_object_or_404(Attempt, level=level,
-                                        student=request.user.userprofile.student)
+            attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
             attempt.score = request.POST.get('score')
             attempt.workspace = request.POST.get('workspace')
-
             attempt.save()
+
     return HttpResponse('[]', content_type='application/json')
 
 
@@ -192,35 +190,30 @@ def levels(request):
 
     def get_attempt_score(level):
         user = request.user
-        if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
-                hasattr(request.user.userprofile, 'student'):
-            try:
-                student = user.userprofile.student
-                attempt = get_object_or_404(Attempt, level=level, student=student)
+        if not user.is_anonymous() and hasattr(user.userprofile, 'student'):
+            student = user.userprofile.student
+            attempt = Attempt.objects.filter(level=level, student=student).first()
+
+            if attempt:
                 return attempt.score
-            except Http404:
-                pass
-        return None
 
     episode_data = []
     episode = Episode.objects.get(name='Getting Started')
     while episode is not None:
         levels = []
-        minId = -1
-        maxId = -1
+        minId = None
+        maxId = None
         for level in episode.levels:
-            if minId == -1 or maxId == -1:
-                minId = level.id
+            if not maxId or level.id > maxId:
                 maxId = level.id
+            if not minId == -1 or level.id < minId:
+                minId = level.id
+
             levels.append({
                 "id": level.id,
                 "title": get_level_title(level.id),
                 "score": get_attempt_score(level)})
-            if level.id > maxId:
-                maxId = level.id
-            if level.id < minId:
-                minId = level.id
-
+            
         e = {"id": episode.id,
              "name": episode.name,
              "levels": levels,
