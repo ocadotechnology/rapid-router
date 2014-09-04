@@ -48,7 +48,7 @@
 		<div class="col span_2_of_3_strict">
 			<div id="episodes">
 			    {% for episode in episodeData %}
-			    <h3>
+			    <h3 id='episode{{episode.id}}'>
 			    	<div>
 				    	{{episode.name}}
 				    	<span class="episode_range_text">Levels {{episode.first_level}}-{{episode.last_level}}</span>
@@ -70,6 +70,7 @@
 			        <p><a href="{% url 'game.views.random_level_for_episode' episode.id %}">Random: Try your hand at a random level.</a></p>
 			    </div>
 			    {% endfor %}
+
 			    <h3 class='customLevelsEpisode'>Levels created by you</h3>
 			    <div>
 			    	{% if owned_levels %}
@@ -85,6 +86,7 @@
 			    		<p>No levels have been created by you yet.</p>
 			    	{% endif %}
 			    </div>
+
 			    <h3 class='customLevelsEpisode'>Levels shared with you</h3>
 			    <div>
 			    	{% if shared_levels %}
