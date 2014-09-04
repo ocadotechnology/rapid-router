@@ -72,15 +72,22 @@ ocargo.messages = {
     levelEditorTitle: "Welcome to the Level editor! ",
     levelEditorSubtitle: "Click  " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/help.svg', 'popupHelp') +
-        "Help for clues on getting started. ",
-    noStartOrEndSubtitle: "You forgot to mark the start and end points.",
-    noStartOrEnd: "Click on Mark start or Mark end then select the square where you want the " +
-        "road to start or end.",
+        "<b>Help</b> for clues on getting started. ",
+    noStartOrEndSubtitle: "You forgot to mark the start and end points. ",
+    noStartOrEnd: "In " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon') +
+        "<b>Map</b> menu, click on  " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon') + 
+        "<b>Mark start</b> or " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') + 
+        "<b>Mark end</b> then select the square where you want the road to start or end.",
     somethingWrong: "Something is wrong...", 
     noStartEndRouteSubtitle: "There is no way to get from the start to the destination.",
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
     noBlocksSubtitle: "You haven't selected any blocks to use in your level.",
-    noBlocks: "Go to <b>Blocks</b> and select some to use. Remember to include the move and turn commands!",
+    noBlocks: "Go to " + 
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/blockly.svg', 'popupIcon') +
+        "<b>Blocks</b> and select some to use. Remember to include the move and turn commands!",
     levelEditorPCSubtitle: "To get started, draw a road. <br><br> Click on the square you want " +
         "the road to start from. Then, without letting go of the mouse button, drag to the " +
         "square you’d like the road to end on. <br> Do this as many times as you like to add " +
@@ -90,8 +97,8 @@ ocargo.messages = {
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon') +
         "<b>Map</b> menu, click " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon') + 
-        "<b>Mark start</b> and select a square for your road to start from. <br> Make sure you " +
-        "use " +
+        "<b>Mark start</b> and select a square for your road to start from. The starting point " +
+        "can only be placed on dead ends. <br> Make sure you use " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') + 
         "<b>Mark end</b> to select a final destination. <br><br> To remove road, click the " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/delete_road.svg', 'popupIcon') + 
@@ -127,33 +134,33 @@ ocargo.messages = {
     internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
     notOwned: "You do not own this level. If you would like to share it you will first have to " +
-        "save your own copy!",
-    changesSinceLastSave: "Please save your latest changes!",
+        "save your own copy! ",
+    changesSinceLastSave: "Please save your latest changes! ",
     saveOverwriteWarning: function(newName, onNoFunction, onYesFunction) {
         return "Level " + newName + " already exists. Are you sure you want to overwrite it? " + 
         "<br><br>" + 
         '<button onclick="onYesFunction(); document.getElementById(' + '"close-modal"' +').click();">Yes</button>' +
         '<button onclick=document.getElementById(' + '"close-modal"' +').click();">No</button>';
     },
-    shareSuccessful: "Your level has been successfully shared!",
+    shareSuccessful: "Your level has been successfully shared! ",
 
     // Scoring.
     totalScore: function(score, maxScore) {
         return "Your total score: " + score + "/" + maxScore;
     },
     pathScore: "Route score: ",
-    pathLonger: "Try finding a shorter route to the destination",
+    pathLonger: "Try finding a shorter route to the destination. ",
     algorithmScore: "Algorithm score: ",
-    algorithmLonger: "Try creating a simpler program.",
+    algorithmLonger: "Try creating a simpler program. ",
     algorithmShorter: "That solution isn't quite right. Read the level instructions or click Help.",
-    scorePerfect: "Congratulations! You've aced it.",
+    scorePerfect: "Congratulations! You've aced it. ",
 
     // Malormed program.
-    whileConditionError: "Perhaps try looking at your 'repeat' blocks?",
-    whileBodyError: "Perhaps try looking at your 'repeat' blocks?",
-    ifConditionError: "Perhaps try looking at your 'if' blocks?",
-    procMissingNameError: "Perhaps try looking at your 'define' blocks?",
-    procMissingBodyError: "Perhaps try looking at your 'define' blocks?",
-    procDupNameError: "Perhaps try checking the names of your 'define' blocks?",
-    procCallNameError: "Perhaps try checking the names in your 'call' blocks?"
+    whileConditionError: "Perhaps try looking at your 'repeat' blocks? ",
+    whileBodyError: "Perhaps try looking at your 'repeat' blocks? ",
+    ifConditionError: "Perhaps try looking at your 'if' blocks? ",
+    procMissingNameError: "Perhaps try looking at your 'define' blocks? ",
+    procMissingBodyError: "Perhaps try looking at your 'define' blocks? ",
+    procDupNameError: "Perhaps try checking the names of your 'define' blocks? ",
+    procCallNameError: "Perhaps try checking the names in your 'call' blocks? "
 };
