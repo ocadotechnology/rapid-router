@@ -4,7 +4,7 @@ import random
 
 from collections import defaultdict, namedtuple
 from level_management import set_level_decor
-from models import Level, Block, Theme, Decor
+from models import Level, LevelBlock, Block, Theme, Decor
 
 Node = namedtuple('Node', ['x', 'y'])
 
@@ -78,8 +78,10 @@ def create(episode=None):
                   pythonEnabled=python_enabled)
 
     level.save()
-    level.blocks = blocks
-    level.save()
+    
+    for block in blocks:
+        levelBlock = LevelBlock(type=block, level=level, number=None)
+        levelBlock.save()
 
     expr = ('(({"coordinate" *: *{"y": *)([0-9]+)(, *"x" *: *)([0-9]+)(}, *"name" *: *")' +
             '([a-zA-Z0-9]+)(", *"height" *: *)([0-9]+)( *}))')
