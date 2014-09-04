@@ -16,6 +16,9 @@ ocargo.Game.prototype.setup = function() {
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
     ocargo.saving = new ocargo.Saving();
+
+    // Setup the blockly workspace
+    //ocargo.blocklyControl.reset();
     ocargo.blocklyControl.loadPreviousAttempt();
 
     // Setup the ui
@@ -162,8 +165,11 @@ ocargo.Game.prototype.allowCodeChanges = function(changesAllowed) {
 ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
     if (FUEL_GAUGE) {
         document.getElementById('fuelGauge').style.visibility='visible';
-            if (blocks.indexOf("turn_around") !== -1 || blocks.indexOf("wait") !== -1) {
-            return;
+        
+        for(var i = 0; i < blocks.length; i++) {
+            if(blocks[i].type === "turn_around" || blocks[i].type === "wait") {
+                return;
+            }
         }
 
         for (var i = 0; i < nodes.length; i++) {
@@ -421,7 +427,6 @@ ocargo.Game.prototype.setupTabs = function() {
         });
     }
 
-    
     function setupLoadTab() {
         var selectedWorkspace = null;
         tabs.load.setOnChange(function() {
@@ -602,14 +607,12 @@ ocargo.Game.prototype.setupTabs = function() {
 
             if (ocargo.blocklyControl.bigCodeMode){
                 tabs.big_code_mode.setContents(ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Enlarge");
-                ocargo.blocklyControl.decreaseBlockSize();
+                ocargo.blocklyControl.disableBigCodeMode();
             } else {
                 tabs.big_code_mode.setContents(ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Shrink");
-                ocargo.blocklyControl.increaseBlockSize();
+                ocargo.blocklyControl.enableBigCodeMode();
             }
 
-            // Note that toggleFlyout is misnamed and actually toggles the flyout.
-            // So these two lines force the flyout to refresh and be the correct size.
             ocargo.blocklyControl.toggleFlyout();
             ocargo.blocklyControl.toggleFlyout();
 

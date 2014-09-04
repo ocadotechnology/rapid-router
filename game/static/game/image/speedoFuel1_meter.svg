@@ -1,55 +1,49 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 16.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0) -->
 <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
-<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 219.814 219.814" viewBox="0 0 219.814 219.814">
-<g id="Layer_1">
-			<linearGradient id="SVGID_1_" y2="186.36" gradientUnits="userSpaceOnUse" x2="109.91" y1="9.9463" x1="109.91">
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 219.814 219.814" enable-background="new 0 0 219.814 219.814">
+			<linearGradient id="c" y2="186.36" gradientUnits="userSpaceOnUse" y1="9.9463" x2="109.91" x1="109.91">
 				<stop stop-color="#050505" offset="0"/>
 				<stop stop-color="#111" offset="1"/>
 			</linearGradient>
-			<circle cy="109.91" cx="109.91" r="106.41" fill="url(#SVGID_1_)"/>
+			<circle cy="109.91" cx="109.91" r="106.41" fill="url(#c)"/>
 				<g stroke="#fff" stroke-width="4" stroke-miterlimit="10" fill="none">
 					<path d="m32.451 149.61c-0.076-0.148-0.152-0.297-0.227-0.445"/>
 					<path stroke-dasharray="0.9604,28.8111" d="m23.691 121.78c-0.53-3.883-0.804-7.848-0.804-11.876 0-48.059 38.96-87.02 87.02-87.02 48.059 0 87.02 38.961 87.02 87.02 0 9.543-1.535 18.727-4.374 27.317"/>
 					<path d="m186.91 150.47c-0.077 0.147-0.155 0.295-0.234 0.441"/>
 				</g>
 			<path d="m109.91 208.06c55.466 0 101.01-52.042 105.96-106.22 0.294 3.225 0.452 6.488 0.452 9.789 0 58.767-47.641 106.41-106.41 106.41s-106.41-47.64-106.41-106.41c0-3.301 0.158-6.564 0.453-9.789 4.943 54.18 50.488 106.22 105.96 106.22z" fill="#1E1E1E"/>
-			<path d="m109.91 23.078c55.466 0 101.01 42.44 105.96 96.618 0.294-3.225 0.452-6.488 0.452-9.789-0.01-58.769-47.65-106.41-106.41-106.41s-106.41 47.641-106.41 106.41c0 3.301 0.158 6.564 0.453 9.789 4.943-54.181 50.488-96.622 105.96-96.622z" fill="#141414"/>
-			<circle stroke-width="7" cy="109.91" stroke="#3A3A3A" cx="109.91" stroke-miterlimit="10" r="106.41" fill="none"/>
-			<circle cx="109.91" cy="109.91" stroke="#E8E8E8" r="92.574" stroke-miterlimit="10" fill="none"/>
-				<g stroke="#E8E8E8" stroke-width="10" stroke-miterlimit="10" fill="none">
+			<path d="m109.91 23.078c55.466 0 101.01 42.44 105.96 96.618 0.294-3.225 0.452-6.488 0.452-9.789-0.01-58.769-47.65-106.41-106.41-106.41s-106.41 47.641-106.41 106.41c0 3.301 0.158 6.564 0.453 9.789 4.943-54.181 50.488-96.622 105.96-96.622z" fill="#141414"/><g stroke-miterlimit="10" fill="none">
+			<circle stroke-width="7" stroke="#3A3A3A" cy="109.91" cx="109.91" r="106.41"/>
+			<circle stroke="#E8E8E8" cy="109.91" cx="109.91" r="92.574"/>
+				<g stroke="#E8E8E8" stroke-width="10">
 					<path d="m32.451 149.61c-0.076-0.148-0.152-0.297-0.227-0.445"/>
 					<path stroke-dasharray="0.9762,58.5694" d="m24.695 92.176c8.189-39.556 43.229-69.288 85.212-69.288 48.059 0 87.02 38.961 87.02 87.02 0 4.38-0.324 8.684-0.947 12.889"/>
 					<path d="m186.91 150.47c-0.077 0.147-0.155 0.295-0.234 0.441"/>
-				</g>
-			<text font-size="25" font-family="&apos;Eagle-Book&apos;" transform="translate(35.708 106.02)" fill="#FFFFFF">10</text>
-			<text font-size="25" font-family="&apos;Eagle-Book&apos;" transform="translate(42.708 146)" fill="#FFFFFF">0</text>
-			<text font-size="25" font-family="&apos;Eagle-Book&apos;" transform="translate(54.608 70.599)" fill="#FFFFFF">20</text>
-			<text font-size="25" font-family="&apos;Eagle-Book&apos;" transform="translate(133.38 70.599)" fill="#FFFFFF">40</text>
-			<text font-size="25" font-family="&apos;Eagle-Book&apos;" transform="translate(95.043 50.599)" fill="#FFFFFF">30</text>
-			<text font-size="25" font-family="&apos;Eagle-Book&apos;" transform="translate(153.18 106.02)" fill="#FFFFFF">50</text>
-			<text font-size="25" font-family="&apos;Eagle-Book&apos;" transform="translate(145.28 146)" fill="#FFFFFF">60</text>
-					<circle cy="162.41" cx="109.91" r="31.922" fill="#111"/>
-					<path stroke="#fff" stroke-miterlimit="10" d="m109.91 194.78c-17.85 0-32.372-14.522-32.372-32.372s14.522-32.372 32.372-32.372 32.372 14.522 32.372 32.372-14.52 32.37-32.37 32.37z" fill="none"/>
-					<path stroke="#fff" stroke-miterlimit="10" d="m109.91 190.33c-15.396 0-27.922-12.525-27.922-27.922s12.525-27.922 27.922-27.922 27.922 12.525 27.922 27.922-12.53 27.92-27.92 27.92z" fill="none"/>
-					<g stroke="#E8E8E8" stroke-width="5" stroke-miterlimit="10" fill="none">
+				</g></g><g font-size="25" font-family="&apos;Eagle-Book&apos;" fill="#FFFFFF">
+			<text transform="translate(35.708 106.02)">10</text>
+			<text transform="translate(42.708 146)">0</text>
+			<text transform="translate(54.608 70.599)">20</text>
+			<text transform="translate(133.38 70.599)">40</text>
+			<text transform="translate(95.043 50.599)">30</text>
+			<text transform="translate(153.18 106.02)">50</text>
+			<text transform="translate(145.28 146)">60</text>
+					</g><circle cy="162.41" cx="109.91" r="31.922" fill="#111"/><g stroke-miterlimit="10" fill="none">
+					<path stroke="#fff" d="m109.91 194.78c-17.85 0-32.372-14.522-32.372-32.372s14.522-32.372 32.372-32.372 32.372 14.522 32.372 32.372-14.52 32.37-32.37 32.37z"/>
+					<path stroke="#fff" d="m109.91 190.33c-15.396 0-27.922-12.525-27.922-27.922s12.525-27.922 27.922-27.922 27.922 12.525 27.922 27.922-12.53 27.92-27.92 27.92z"/>
+					<g stroke="#E8E8E8" stroke-width="5">
 						<path d="m87.458 173.64c-0.076-0.148-0.15-0.297-0.224-0.446"/>
 						<path stroke-dasharray="0.9858,19.7154" d="m86.027 154c3.384-9.938 12.797-17.088 23.88-17.088 13.929 0 25.221 11.293 25.221 25.223 0 0.675-0.025 1.344-0.078 2.006"/>
 						<path d="m132.39 173.57c-0.075 0.148-0.152 0.297-0.23 0.443"/>
 					</g>
-				<path stroke="#C0272D" stroke-width="5" stroke-miterlimit="10" d="m87.758 173.73c-1.771-3.452-2.872-7.463-2.872-11.604 0-3.016 0.83-6.405 1.8-9.086" fill="none"/>
-			<path fill="#fff" clip-rule="evenodd" d="m107.29 170.86h5.18c0.33 0 0.602 0.312 0.602 0.695v5.121c0.587-0.037 1.591 0.017 1.591 0.832v3.799c0 0.404 0.076 0.633 0.204 0.748 0.126 0.113 0.338 0.146 0.595 0.146h0.004v0.002c0.237-0.002 0.425-0.082 0.553-0.205 0.119-0.115 0.186-0.271 0.186-0.438v-5.363l0.11-1.126-0.401-1.03c-0.341-0.557-0.688-0.812-0.688-0.812l0.222-0.299c0.003 0.002 0.393 0.29 0.771 0.906l0.73 0.459 0.148 1.238-0.15 0.664v5.363c0 0.363-0.146 0.711-0.41 0.971-0.259 0.25-0.623 0.412-1.07 0.412v0.002h-0.004c-0.427 0-0.802-0.078-1.09-0.338-0.287-0.256-0.451-0.66-0.451-1.301v-3.799c0-0.171-0.514-0.137-0.849-0.096v5.404h0.446c0.234 0 0.424 0.19 0.424 0.425v0.581c0 0.234-0.189 0.425-0.424 0.425h-7.276c-0.234 0-0.424-0.19-0.424-0.425v-0.581c0-0.234 0.19-0.425 0.424-0.425h0.446v-11.24c0-0.38 0.27-0.7 0.6-0.7zm0.69 0.78c-0.34 0-0.619 0.279-0.619 0.619v3.521c0 0.341 0.279 0.619 0.619 0.619h3.792c0.343 0 0.621-0.278 0.621-0.619v-3.521c0-0.34-0.278-0.619-0.621-0.619h-3.79z" fill-rule="evenodd"/>
-</g>
-<g id="shine">
-		<linearGradient id="SVGID_2_" y2="115.97" gradientUnits="userSpaceOnUse" x2="109.91" y1="5.8555" x1="109.91">
+				<path stroke="#C0272D" stroke-width="5" d="m87.758 173.73c-1.771-3.452-2.872-7.463-2.872-11.604 0-3.016 0.83-6.405 1.8-9.086"/>
+			</g><path fill-rule="evenodd" clip-rule="evenodd" d="m107.29 170.86h5.18c0.33 0 0.602 0.312 0.602 0.695v5.121c0.587-0.037 1.591 0.017 1.591 0.832v3.799c0 0.404 0.076 0.633 0.204 0.748 0.126 0.113 0.338 0.146 0.595 0.146h0.004v0.002c0.237-0.002 0.425-0.082 0.553-0.205 0.119-0.115 0.186-0.271 0.186-0.438v-5.363l0.11-1.126-0.401-1.03c-0.341-0.557-0.688-0.812-0.688-0.812l0.222-0.299c0.003 0.002 0.393 0.29 0.771 0.906l0.73 0.459 0.148 1.238-0.15 0.664v5.363c0 0.363-0.146 0.711-0.41 0.971-0.259 0.25-0.623 0.412-1.07 0.412v0.002h-0.004c-0.427 0-0.802-0.078-1.09-0.338-0.287-0.256-0.451-0.66-0.451-1.301v-3.799c0-0.171-0.514-0.137-0.849-0.096v5.404h0.446c0.234 0 0.424 0.19 0.424 0.425v0.581c0 0.234-0.189 0.425-0.424 0.425h-7.276c-0.234 0-0.424-0.19-0.424-0.425v-0.581c0-0.234 0.19-0.425 0.424-0.425h0.446v-11.24c0-0.38 0.27-0.7 0.6-0.7zm0.69 0.78c-0.34 0-0.619 0.279-0.619 0.619v3.521c0 0.341 0.279 0.619 0.619 0.619h3.792c0.343 0 0.621-0.278 0.621-0.619v-3.521c0-0.34-0.278-0.619-0.621-0.619h-3.79z" fill="#fff"/>
+		<linearGradient id="b" y2="115.97" gradientUnits="userSpaceOnUse" y1="5.8555" x2="109.91" x1="109.91">
 			<stop stop-color="#fff" stop-opacity=".4" offset="0"/>
 			<stop stop-color="#fff" stop-opacity="0" offset="1"/>
 		</linearGradient>
-		<path d="m200.75 86.907c0 50.171-37.953 11.059-90.844 11.059s-90.844 39.112-90.844-11.059c0-32.939 43.466-72.468 90.844-72.468s90.84 40.548 90.84 72.468z" fill="url(#SVGID_2_)"/>
-			<radialGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" cy="6639.1" cx="108.91" gradientTransform="matrix(1 0 0 -.2806 0 2019.4)" r="177.57">
+		<path d="m200.75 86.907c0 50.171-37.953 11.059-90.844 11.059s-90.844 39.112-90.844-11.059c0-32.939 43.466-72.468 90.844-72.468s90.84 40.548 90.84 72.468z" fill="url(#b)"/>
+			<radialGradient id="a" gradientUnits="userSpaceOnUse" cy="6639.1" cx="108.91" gradientTransform="matrix(1 0 0 -.2806 0 2019.4)" r="177.57">
 			<stop stop-color="#fff" stop-opacity="0" offset=".2893"/>
 			<stop stop-color="#fff" stop-opacity=".4" offset="1"/>
 		</radialGradient>
-		<path d="m179.01 167.62c0-24.466-28.872-5.393-69.106-5.393s-69.106-19.073-69.106 5.393c0 16.062 33.065 37.135 69.106 37.135 36.05-0.01 69.11-21.58 69.11-37.14z" fill="url(#SVGID_3_)"/>
-</g>
+		<path d="m179.01 167.62c0-24.466-28.872-5.393-69.106-5.393s-69.106-19.073-69.106 5.393c0 16.062 33.065 37.135 69.106 37.135 36.05-0.01 69.11-21.58 69.11-37.14z" fill="url(#a)"/>
 </svg>
