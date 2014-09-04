@@ -28,8 +28,6 @@ function combineColors(bg, color)
 }
 
 function setupCoins() {
-    console.log(EPISODES);
-
     for(var i = 0; i < EPISODES.length; i++) {
         var episode = EPISODES[i];
 
@@ -55,6 +53,17 @@ function setupCoins() {
         }
         else {
             $('.episode_image.coin_image[value=' + episode.id + ']').remove();
+        }
+    }
+
+    for(var i = 0; i < OTHER_LEVELS.length; i++) {
+        var level = OTHER_LEVELS[i];
+
+        if(level.score !== "None") {
+            $('.level_image.coin_image[value=' + level.id + ']').attr('src', getImageStr(level.score*2));
+        }
+        else {
+            $('.level_image.coin_image[value=' + level.id + ']').remove();
         }
     }
 

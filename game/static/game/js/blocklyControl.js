@@ -77,7 +77,7 @@ ocargo.BlocklyControl.prototype.disableBigCodeMode =  function() {
 
 
 ocargo.BlocklyControl.prototype.teardown = function() {
-    if (localStorage) {
+    if (localStorage && !ANONYMOUS) {
         var text = ocargo.blocklyControl.serialize();
         try {
             localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);

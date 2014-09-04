@@ -67,10 +67,5 @@ class Migration(migrations.Migration):
 
         migrations.RunPython(transferBlockData),
 
-        migrations.RemoveField(
-            model_name='level',
-            name='blocks',
-        ),
-
         migrations.RunPython(addTestLevel)
     ]
