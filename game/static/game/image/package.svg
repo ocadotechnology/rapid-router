@@ -1,14 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) -->
 <!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.1//EN' 'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
-<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 68.306 52.778" enable-background="new 0 0 68.306 52.778">
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 68.306 52.778" enable-background="new 0 0 68.306 52.778">
 		<polygon stroke-linejoin="round" stroke="#8A5D3B" points="32.692 51.778 1 45.607 1 22.334 32.692 28.505" stroke-miterlimit="10" stroke-width="2" fill="#C3996B"/>
-		<polygon points="1 22.158 15.309 41.111 32.692 29.033" fill="#A3704D"/>
-		<polygon stroke-linejoin="round" stroke="#8A5D3B" points="67.25 30.444 32.692 51.778 32.692 28.505 67.25 7.171" stroke-miterlimit="10" stroke-width="2" fill="#A3704D"/>
-		<polygon stroke-linejoin="round" stroke="#A3704D" points="32.692 51.692 15.563 33.092 1 45.521" stroke-miterlimit="10" stroke-width="2" fill="none"/>
-		<polygon stroke-linejoin="round" stroke="#8A5D3B" points="32.692 51.692 15.211 34.502 1 45.521" stroke-miterlimit="10" stroke-width="2" fill="none"/>
-		<polygon stroke-linejoin="round" stroke="#8A5D3B" points="35.668 1 67.306 7.171 32.692 28.505 1 22.334" stroke-miterlimit="10" stroke-width="2" fill="#C3996B"/>
-		<polygon points="35.456 2.926 62.664 8.232 32.897 26.58 5.642 21.273" fill="#D3A87D"/>
+		<polygon points="1 22.158 15.309 41.111 32.692 29.033" fill="#A3704D"/><g stroke-linejoin="round" stroke-width="2" stroke-miterlimit="10">
+		<polygon stroke="#8A5D3B" points="67.25 30.444 32.692 51.778 32.692 28.505 67.25 7.171" fill="#A3704D"/>
+		<polygon stroke="#A3704D" points="32.692 51.692 15.563 33.092 1 45.521" fill="none"/>
+		<polygon stroke="#8A5D3B" points="32.692 51.692 15.211 34.502 1 45.521" fill="none"/>
+		<polygon stroke="#8A5D3B" points="35.668 1 67.306 7.171 32.692 28.505 1 22.334" fill="#C3996B"/>
+		</g><polygon points="35.456 2.926 62.664 8.232 32.897 26.58 5.642 21.273" fill="#D3A87D"/>
 			<g fill="#35251B">
 				<path d="m24.706 16.291c0.014-0.344 0.581-0.371 1.205-0.582 0.59-0.199 0.908-0.533 1.17-0.78 0.424-0.401 0.971-0.66 1.684-0.966 0.703-0.301 1.138-0.703 1.671-1.041 0.424-0.27 1.025-0.482 1.505-0.739 0.494-0.265 0.856-0.591 1.294-0.887 0.939-0.633 1.972-1.299 2.709-2.078 0.298-0.314-0.709-0.373-0.998-0.062-0.772 0.829-1.932 1.524-2.922 2.195-1.026 0.695-2.277 1.249-3.293 1.928-0.461 0.307-1.065 0.556-1.688 0.833-0.634 0.282-0.921 0.655-1.329 0.998-0.421 0.354-1.167 0.381-1.776 0.659-0.464 0.212-0.48 0.443-0.496 0.675-0.021 0.299 1.252 0.141 1.264-0.153z"/>
 				<path d="m27.845 16.972c-0.159-0.372 0.119-0.546 0.795-0.832 0.676-0.285 1.202-0.595 1.641-0.921 0.14-0.104 0.268-0.211 0.318-0.324 0.105-0.229 0.157-0.273 0.59-0.41 0.767-0.242 1.355-0.641 1.893-0.967 0.653-0.398 1.226-0.824 1.79-1.266 0.468-0.367 0.847-0.727 1.544-1.07 0.991-0.488 2.469-1.078 2.756-1.783 0.132-0.326-0.947-0.232-1.07 0.088-0.274 0.713-2.354 1.344-3.189 1.891-0.617 0.403-1.048 0.849-1.59 1.241-0.579 0.419-1.213 0.813-1.92 1.188-0.329 0.176-0.608 0.311-1.084 0.41-0.275 0.059-0.41 0.17-0.536 0.279-0.154 0.133-0.137 0.299-0.251 0.438-0.186 0.228-0.664 0.459-1.026 0.662-0.447 0.251-1.109 0.439-1.535 0.72-0.4 0.263-0.395 0.538-0.293 0.797 0.107 0.281 1.287 0.139 1.167-0.141z"/>

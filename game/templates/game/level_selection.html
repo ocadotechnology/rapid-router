@@ -17,6 +17,17 @@
   		EPISODES.push({'id' : {{episode.id}},
   										'levels': levels});
   	{% endfor %}
+
+  	var OTHER_LEVELS = [];
+  	{% for level in owned_levels %}
+  		OTHER_LEVELS.push({'id': {{level.id}},
+  											'score': '{{level.score}}'});
+  	{% endfor %}
+  	{% for level in shared_levels %}
+  		OTHER_LEVELS.push({'id': {{level.id}},
+  											'score': '{{level.score}}'});
+  	{% endfor %}
+
   </script>
 
   <script src="/static/game/js/levelSelection.js"></script>
@@ -53,7 +64,7 @@
 				        <span class="score_text">{{level.score|floatformat}}/20</span>
 				        <img class="level_image coin_image" value="{{level.id}}">
 				        {% endif %}
-				    	</p>
+				    </p>
 			        {% endfor %}
 			       	
 			        <p><a href="{% url 'game.views.random_level_for_episode' episode.id %}">Random: Try your hand at a random level.</a></p>
@@ -63,8 +74,12 @@
 			    <div>
 			    	{% if owned_levels %}
 			    		{% for level in owned_levels %}
-			    			<p><a href="{% url 'game.views.play_level' level.id %}">{{level.title}}</a>
-			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
+			    			<p>
+				    			<a href="{% url 'game.views.play_level' level.id %}">{{level.title}}</a>
+				    			{% if level.score != None %}
+				    			<span class="score_text">{{level.score|floatformat}}/10{% endif %}</span>
+				    			<img class="level_image coin_image" value="{{level.id}}">
+			    			</p>
 			    		{% endfor %}
 			    	{% else %}
 			    		<p>No levels have been created by you yet.</p>
@@ -74,8 +89,13 @@
 			    <div>
 			    	{% if shared_levels %}
 			    		{% for level in shared_levels %}
-			    			<p><a href="{% url 'game.views.play_level' level.id %}">{{level.title}} ({{level.owner|make_into_username}})</a>
-			    			{% if level.score != None %}<span style="float:right;">{{level.score|floatformat}}/10{% endif %}</span></p>
+			    			<p>
+			    				<a href="{% url 'game.views.play_level' level.id %}">{{level.title}} ({{level.owner|make_into_username}})</a>
+			    				{% if level.score != None %}
+			    				<span class="score_text">{{level.score|floatformat}}/10</span>
+			    				<img class="level_image coin_image" value="{{level.id}}">
+			    				{% endif %}
+			    			</p>
 			    		{% endfor %}
 			    	{% else %}
 			    		{% if user|is_logged_in_as_school_user %}

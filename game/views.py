@@ -16,7 +16,7 @@ from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
 from forms import *
 from game import random_road
-from models import Level, Attempt, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
+from models import Level, Attempt, LevelBlock, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
 from serializers import WorkspaceSerializer, LevelSerializer
@@ -46,11 +46,11 @@ def play_level(request, levelID):
     :template:`game/game.html`
     """
     level = cached_level(levelID)
-
+    
     if not permissions.can_play_level(request.user, level):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
-    blocks = level.blocks.order_by('id')
+    blocks = LevelBlock.objects.filter(level=level).order_by('type')
     attempt = None
     lesson = 'description_level' + str(levelID)
     hint = 'hint_level' + str(levelID)
@@ -269,7 +269,7 @@ def random_level_for_episode(request, episodeID):
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return play_anonymous_level(request, level.id)
+    return play_anonymous_level(request, level.id, False)
 
 
 def logged_students(request):
@@ -688,7 +688,7 @@ def level_editor(request):
     return render(request, 'game/level_editor.html', context_instance=context)
 
 
-def play_anonymous_level(request, levelID):
+def play_anonymous_level(request, levelID, from_level_editor=True):
     level = Level.objects.filter(id=levelID)
 
     if not level.exists():
@@ -707,9 +707,9 @@ def play_anonymous_level(request, levelID):
     hint = mark_safe(hintCall())
 
     attempt = None
-    blocks = level.blocks.order_by('id')
+    blocks = LevelBlock.objects.filter(level=level).order_by('type')
     decor = LevelDecor.objects.filter(level=level)
-    decorData = parseDecor(level.theme, decor)
+    decor_data = parseDecor(level.theme, decor)
     house = getDecorElement('house', level.theme).url
     cfc = getDecorElement('cfc', level.theme).url
     background = getDecorElement('tile1', level.theme).url
@@ -719,14 +719,14 @@ def play_anonymous_level(request, levelID):
         'level': level,
         'blocks': [block for block in blocks],  # No idea why but leaving this as a queryset was causing issues, it was magically emptying between here and the template rendering
         'lesson': lesson,
-        'decor': decorData,
+        'decor': decor_data,
         'character': character,
         'background': background,
         'house': house,
         'cfc': cfc,
         'hint': hint,
         'attempt': attempt,
-        'return_url': '/rapidrouter/level_editor',
+        'return_url': '/rapidrouter/' + ('level_editor' if from_level_editor else ''),
     })
 
     level.delete()

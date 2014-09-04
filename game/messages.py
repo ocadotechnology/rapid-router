@@ -3,7 +3,8 @@ from django.utils.translation import ugettext
 
 def youtubeLink(width, height, url, border):
     return "<iframe width='" + str(width) + "' height='" + str(height) + "' src='" + str(url) \
-        + "' frameborder='" + str(border) + "' allowfullscreen class='video'></iframe><br>"
+        + "?rel=0" + "' frameborder='" + str(border) \
+        + "' allowfullscreen class='video'></iframe><br>"
 
 
 def noPermissionMessage():

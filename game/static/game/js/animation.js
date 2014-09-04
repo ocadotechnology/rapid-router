@@ -19,6 +19,8 @@ ocargo.Animation = function(model, decor, numVans) {
 	ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
 	ocargo.drawing.renderDestinations(this.model.map.getDestinations());
 	ocargo.drawing.renderTrafficLights(this.model.trafficLights);
+
+    this.updateFuelGauge(100);
 };
 
 ocargo.Animation.prototype.isFinished = function() {
@@ -214,10 +216,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             }
             // Check if fuel update present
             if (typeof a.fuel != 'undefined') {
-            	// update fuel gauge
-            	var rotation = 'rotate(' + (((a.fuel/100)*240)-120) + 'deg)';
-				document.getElementById('fuelGaugePointer').style.transform=rotation;
-				document.getElementById('fuelGaugePointer').style.webkitTransform=rotation;
+                this.updateFuelGauge(a.fuel);
             }
 			break;
 		case 'popup':
@@ -276,4 +275,11 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 	}
 
 	return animationLength;
+};
+
+ocargo.Animation.prototype.updateFuelGauge = function(fuelPercentage) {
+    var degrees = ((fuelPercentage / 100) * 240) - 120;
+    var rotation = 'rotate(' + degrees + 'deg)';
+    document.getElementById('fuelGaugePointer').style.transform = rotation;
+    document.getElementById('fuelGaugePointer').style.webkitTransform = rotation;
 };

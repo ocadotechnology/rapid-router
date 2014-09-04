@@ -56,6 +56,17 @@ function setupCoins() {
         }
     }
 
+    for(var i = 0; i < OTHER_LEVELS.length; i++) {
+        var level = OTHER_LEVELS[i];
+
+        if(level.score !== "None") {
+            $('.level_image.coin_image[value=' + level.id + ']').attr('src', getImageStr(level.score*2));
+        }
+        else {
+            $('.level_image.coin_image[value=' + level.id + ']').remove();
+        }
+    }
+
     function getImageStr(score) {
         var imageStr = "/static/game/image/coins/coin_";
         if(score == "None") {
