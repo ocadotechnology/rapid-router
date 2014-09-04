@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
         block5.save()
 
     dependencies = [
-        ('game', '0004_leveldecor'),
+        ('game', '0006_change_27_solution'),
     ]
 
     operations = [
