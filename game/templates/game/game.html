@@ -21,19 +21,22 @@
     var MODEL_SOLUTION = {{level.model_solution}};
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
-    var BLOCKS =  [];
     var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
     var CHARACTER_NAME = "{{character.name}}";
     var CHARACTER_URL = "{{character.top_down}}";
     var CHAR_WIDTH = {{character.width}};
     var CHAR_HEIGHT = {{character.height}};
+
+    var BLOCKS =  [];
     {% for block in blocks %}
-      BLOCKS.push("{{block.type}}");
+      BLOCKS.push({'type':"{{block.type}}", 'number':("{{block.number}}" === "None" ? undefined : {{block.number}})});
     {% endfor %}
+
     var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none"><category name="+">';
     for (var i=0; i < BLOCKS.length; i++) {
-        BLOCKLY_XML += '<block type="' + BLOCKS[i] + '"></block>';
+        BLOCKLY_XML += '<block type="' + BLOCKS[i].type + '"></block>';
     }
+
     BLOCKLY_XML += '</category></xml>';
     var MAX_FUEL = {{level.max_fuel}};
     var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
@@ -69,6 +72,7 @@
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyHacks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
@@ -230,6 +234,9 @@
         <button id="flyoutButton">
           <img id="flyoutButtonImage" src="">
         </button>
+
+        <div id="blockCountDiv"></div>
+
         <div id="blockly_holder" style='width: calc(100% + 55px); margin-left: -55px'></div>
       </div>
 
@@ -344,7 +351,9 @@
         <img src="/static/game/image/fuelGaugePointer.svg"/>
       </div>
     </div>
+
     <div id="consoleSlider" class="no-print"></div>
+
   </div>
 </div>
 

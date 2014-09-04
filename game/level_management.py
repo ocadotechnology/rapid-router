@@ -1,7 +1,7 @@
 import re
 import permissions
 
-from models import Level, Block, LevelDecor, Decor, Theme, Character
+from models import Level, Block, LevelBlock, LevelDecor, Decor, Theme, Character
 
 
 ##########
@@ -34,6 +34,9 @@ def set_level_decor(level, decorString, regex):
         xIndex = 4
         yIndex = 2
 
+    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))')
+    items = regex.findall(decorString)
+
     for item in items:
         name = item[6]
         levelDecor = LevelDecor(level=level, x=item[xIndex], y=item[yIndex], decorName=name)
@@ -60,7 +63,10 @@ def save_level(level, data):
              '([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))')
     set_level_decor(level, data['decor'], regex)
 
-    level.blocks = Block.objects.filter(type__in=data['blockTypes'])
+    for blockType in data['blockTypes']:
+        levelBlock = LevelBlock(level=level, type=Block.objects.get(type=blockType), number=None)
+        levelBlock.save()
+
     level.save()
 
 

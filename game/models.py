@@ -13,7 +13,6 @@ class Block (models.Model):
     def __unicode__(self):
         return self.type
 
-
 class Theme(models.Model):
     name = models.CharField(max_length=100)
     background = models.CharField(max_length=7, default='#eff8ff')
@@ -49,7 +48,6 @@ class Level (models.Model):
     destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
-    blocks = models.ManyToManyField(Block, related_name='levels')
     fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
@@ -73,6 +71,10 @@ class Level (models.Model):
                 return episode
         return None
 
+class LevelBlock(models.Model):
+    type = models.ForeignKey(Block)
+    level = models.ForeignKey(Level)
+    number = models.PositiveIntegerField(default=None, null=True)
 
 class LevelDecor(models.Model):
     x = models.IntegerField()
