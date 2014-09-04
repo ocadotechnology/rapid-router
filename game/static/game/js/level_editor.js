@@ -8,8 +8,8 @@ ocargo.LevelEditor = function() {
     /* Constants */
     /*************/
 
-    var LIGHT_RED_URL = ocargo.Drawing.imageDir + 'trafficLight_red.svg';
-    var LIGHT_GREEN_URL = ocargo.Drawing.imageDir + 'trafficLight_green.svg';
+    var LIGHT_RED_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg';
+    var LIGHT_GREEN_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg';
     
     var DELETE_DECOR_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_decor.svg";
     var ADD_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/add_road.svg";
@@ -1292,118 +1292,119 @@ ocargo.LevelEditor = function() {
         var moved = false;
 
         function onDragMove(dx, dy) {
-            if (mode !== modes.DELETE_DECOR_MODE) {
-                // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
-                trafficLight.valid = false;
-                image.attr({'cursor':'default'});
-                moved = dx !== 0 || dy !== 0;
-
-                // Update image's position
-                paperX = dx + originX;
-                paperY = dy + originY;
-
-                // Stop it being dragged off the edge of the page
-                if (paperX < 0) {
-                    paperX = 0;
-                }
-                else if (paperX + imageWidth > paperWidth) {
-                    paperX = paperWidth - imageWidth;
-                }
-                if (paperY < 0) {
-                    paperY =  0;
-                }
-                else if (paperY + imageHeight >  paperHeight) {
-                    paperY = paperHeight - imageHeight;
-                }
+            // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
+            if (mode === modes.DELETE_DECOR_MODE) {
+                return;
+            }
                 
-                // Adjust for the fact that we've rotated the image
-                if (rotation === 90 || rotation === 270)  {
-                    paperX += (imageWidth - imageHeight)/2;
-                    paperY -= (imageWidth - imageHeight)/2;
+            trafficLight.valid = false;
+            image.attr({'cursor':'default'});
+            moved = dx !== 0 || dy !== 0;
+
+            // Update image's position
+            paperX = dx + originX;
+            paperY = dy + originY;
+
+            // Stop it being dragged off the edge of the page
+            if (paperX < 0) {
+                paperX = 0;
+            }
+            else if (paperX + imageWidth > paperWidth) {
+                paperX = paperWidth - imageWidth;
+            }
+            if (paperY < 0) {
+                paperY =  0;
+            }
+            else if (paperY + imageHeight >  paperHeight) {
+                paperY = paperHeight - imageHeight;
+            }
+            
+            // Adjust for the fact that we've rotated the image
+            if (rotation === 90 || rotation === 270)  {
+                paperX += (imageWidth - imageHeight)/2;
+                paperY -= (imageWidth - imageHeight)/2;
+            }
+
+            // And perform the updatee
+            image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
+
+
+            // Unmark the squares the light previously occupied
+            if (sourceCoord) {
+                markAsBackground(sourceCoord);
+            }
+            if (controlledCoord) {
+                markAsBackground(controlledCoord);
+            }
+            if (originNode) {
+                markAsOrigin(originNode.coordinate);
+            }
+            if (destinationNode) {
+                markAsDestination(destinationNode.coordinate);
+            }
+
+            // Now calculate the source coordinate
+            var box = image.getBBox();
+            var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
+            var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
+
+            switch(rotation) {
+                case 0:
+                    absY += 0.5;
+                    break;
+                case 90:
+                    absX -= 0.5;
+                    break;
+                case 180:
+                    absY -= 0.5;
+                    break;
+                case 270:
+                    absX += 0.5;
+                    break;
+            }
+
+            var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+            var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+            sourceCoord = new ocargo.Coordinate(x,y);
+
+            // Find controlled position in map coordinates
+            switch(rotation) {
+                case 0:
+                    controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y + 1);
+                    break;
+                case 90:
+                    controlledCoord = new ocargo.Coordinate(sourceCoord.x + 1, sourceCoord.y);
+                    break;
+                case 180:
+                    controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y - 1);
+                    break;
+                case 270:
+                    controlledCoord = new ocargo.Coordinate(sourceCoord.x - 1, sourceCoord.y);
+                    break;
+            }
+
+            // If controlled node is not on grid, remove it
+            if (!isCoordinateOnGrid(controlledCoord)) {
+                controlledCoord = null;
+            }
+
+            // If source node is not on grid remove it
+            if (!isCoordinateOnGrid(sourceCoord)) {
+                sourceCoord = null;
+            }
+
+            if (sourceCoord && controlledCoord) {
+                var colour;
+                if(isValidPlacement(sourceCoord, controlledCoord)) {
+                    colour = VALID_LIGHT_COLOUR;
+                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                } 
+                else {
+                    colour = INVALID_LIGHT_COLOUR;
                 }
 
-                // And perform the updatee
-                image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
-
-
-                // Unmark the squares the light previously occupied
-                if (sourceCoord) {
-                    markAsBackground(sourceCoord);
-                }
-                if (controlledCoord) {
-                    markAsBackground(controlledCoord);
-                }
-                if (originNode) {
-                    markAsOrigin(originNode.coordinate);
-                }
-                if (destinationNode) {
-                    markAsDestination(destinationNode.coordinate);
-                }
-
-                // Now calculate the source coordinate
-                var box = image.getBBox();
-                var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
-                var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
-
-                switch(rotation) {
-                    case 0:
-                        absY += 0.5;
-                        break;
-                    case 90:
-                        absX -= 0.5;
-                        break;
-                    case 180:
-                        absY -= 0.5;
-                        break;
-                    case 270:
-                        absX += 0.5;
-                        break;
-                }
-
-                var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
-                var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
-                sourceCoord = new ocargo.Coordinate(x,y);
-
-                // Find controlled position in map coordinates
-                switch(rotation) {
-                    case 0:
-                        controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y + 1);
-                        break;
-                    case 90:
-                        controlledCoord = new ocargo.Coordinate(sourceCoord.x + 1, sourceCoord.y);
-                        break;
-                    case 180:
-                        controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y - 1);
-                        break;
-                    case 270:
-                        controlledCoord = new ocargo.Coordinate(sourceCoord.x - 1, sourceCoord.y);
-                        break;
-                }
-
-                // If controlled node is not on grid, remove it
-                if (!isCoordinateOnGrid(controlledCoord)) {
-                    controlledCoord = null;
-                }
-
-                // If source node is not on grid remove it
-                if (!isCoordinateOnGrid(sourceCoord)) {
-                    sourceCoord = null;
-                }
-
-                if (sourceCoord && controlledCoord) {
-                    var colour;
-                    if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
-                        // Valid placement
-                        colour = VALID_LIGHT_COLOUR;
-                        ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
-                    } else {
-                        // Invalid placement
-                        colour = INVALID_LIGHT_COLOUR;
-                    }
-
-                    mark(controlledCoord, colour, 0.7, false);
-                    mark(sourceCoord, colour, 0.7, false);
-                }
+                mark(controlledCoord, colour, 0.7, false);
+                mark(sourceCoord, colour, 0.7, false);
             }
         }
 
@@ -1448,14 +1449,12 @@ ocargo.LevelEditor = function() {
                 }
 
                 // Add back to the list of traffic lights if on valid nodes
-                if (canGetFromSourceToControlled(sourceCoord, controlledCoord)) {
+                if(isValidPlacement(sourceCoord, controlledCoord)) {
                     trafficLight.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
                     trafficLight.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
                     trafficLight.valid = true;
 
-                    ocargo.drawing.setTrafficLightImagePosition(trafficLight.sourceNode.coordinate,
-                                                                trafficLight.controlledNode.coordinate,
-                                                                image);
+                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
                 }
             }
 
@@ -1495,18 +1494,39 @@ ocargo.LevelEditor = function() {
             return "0,0";
         }
 
-        function canGetFromSourceToControlled(sourceCoord, controlledCoord) {
+        function isValidPlacement(sourceCoord, controlledCoord) {
             var sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
             var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
 
+            // Test if two connected nodes exist
+            var connected = false;
             if (sourceNode && controlledNode) {
                 for (var i = 0; i < sourceNode.connectedNodes.length; i++) {
                     if (sourceNode.connectedNodes[i] === controlledNode) {
-                        return true;
+                        connected = true;
                     }
                 }
             }
-            return false;
+
+            if(!connected) {
+                return false;
+            }
+
+            // Test it's not already occupied
+            for(var i = 0; i < trafficLights.length; i++) {
+                var tl = trafficLights[i];
+                if(tl.valid && 
+                    ((tl.sourceNode === sourceNode && tl.controlledNode === controlledNode) ||
+                    (tl.sourceNode === controlledNode && tl.controlledNode === sourceNode))) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function occupied(sourceCoord, controlledCoord) {
+            
         }
     }
 
