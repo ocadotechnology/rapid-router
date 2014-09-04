@@ -1618,7 +1618,7 @@ ocargo.LevelEditor = function() {
         if (!strikeStart) {
             return;
         }
-        
+
         if (strikeStart.x <= strikeEnd.x) {
             for (x = strikeStart.x; x <= strikeEnd.x; x++) {
                 func(x, strikeStart.y);
@@ -1912,6 +1912,16 @@ ocargo.LevelEditor = function() {
                                       ocargo.messages.noStartEndRoute + ocargo.jsElements.closebutton("Close"));
             return false;
         }
+
+        // Check to see if at least one block selected
+        // (not perfect but ensures that they don't think the blockly toolbar is broken)
+        if($(".block_checkbox:checked").length == 0) {
+            ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
+                                      ocargo.messages.noBlocksSubtitle,
+                                      ocargo.messages.noBlocks + ocargo.jsElements.closebutton("Close"));
+            return false;
+        }
+
         return true;
     }
 

@@ -79,6 +79,8 @@ ocargo.messages = {
     somethingWrong: "Something is wrong...", 
     noStartEndRouteSubtitle: "There is no way to get from the start to the destination.",
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
+    noBlocksSubtitle: "You haven't selected any blocks to use in your level.",
+    noBlocks: "Go to <b>Blocks</b> and select some to use. Remember to include the move and turn commands!",
     levelEditorPCSubtitle: "To get started, draw a road. <br><br> Click on the square you want " +
         "the road to start from. Then, without letting go of the mouse button, drag to the " +
         "square you’d like the road to end on. <br> Do this as many times as you like to add " +
