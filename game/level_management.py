@@ -27,7 +27,7 @@ def set_level_decor(level, decorString, regex):
     for levelDecor in existingDecor:
         levelDecor.delete()
 
-    if len(items) > 0 and len(items[0]) > 1 and items[0][1] == '{"coordinate": {"x": ':
+    if len(items) > 0 and len(items[0]) > 1 and 'x' in items[0][1]:
         xIndex = 2
         yIndex = 4
     else:
