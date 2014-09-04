@@ -46,6 +46,9 @@
    margin: 2rem 1rem 0;
 }
 
+.ocargo-modal-mainText img {
+    margin-right: 0.2rem;
+}
 
 .modal_image {
     width: 100px;
