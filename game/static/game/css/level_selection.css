@@ -27,6 +27,14 @@
 	width: 98px;
 }
 
+.ui-widget-content p {
+	padding-bottom: 15px;
+}
+
+.ui-widget-content a {
+	line-height: 25px;
+}
+
 .score_text {
 	float: right;
 	text-align: right;
