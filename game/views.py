@@ -269,7 +269,7 @@ def random_level_for_episode(request, episodeID):
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return play_anonymous_level(request, level.id)
+    return play_anonymous_level(request, level.id, False)
 
 
 def logged_students(request):
@@ -688,7 +688,7 @@ def level_editor(request):
     return render(request, 'game/level_editor.html', context_instance=context)
 
 
-def play_anonymous_level(request, levelID):
+def play_anonymous_level(request, levelID, from_level_editor=True):
     level = Level.objects.filter(id=levelID)
 
     if not level.exists():
@@ -709,7 +709,7 @@ def play_anonymous_level(request, levelID):
     attempt = None
     blocks = level.blocks.order_by('id')
     decor = LevelDecor.objects.filter(level=level)
-    decorData = parseDecor(level.theme, decor)
+    decor_data = parseDecor(level.theme, decor)
     house = getDecorElement('house', level.theme).url
     cfc = getDecorElement('cfc', level.theme).url
     background = getDecorElement('tile1', level.theme).url
@@ -719,14 +719,14 @@ def play_anonymous_level(request, levelID):
         'level': level,
         'blocks': [block for block in blocks],  # No idea why but leaving this as a queryset was causing issues, it was magically emptying between here and the template rendering
         'lesson': lesson,
-        'decor': decorData,
+        'decor': decor_data,
         'character': character,
         'background': background,
         'house': house,
         'cfc': cfc,
         'hint': hint,
         'attempt': attempt,
-        'return_url': '/rapidrouter/level_editor',
+        'return_url': '/rapidrouter/' + ('level_editor' if from_level_editor else ''),
     })
 
     level.delete()

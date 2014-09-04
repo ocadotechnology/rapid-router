@@ -8,6 +8,7 @@
 {{block.super}}
 
   <script>
+    var ANONYMOUS = '{{level.anonymous}}' === 'True';
     var PATH = {{level.path|safe}};
     var ORIGIN = {{level.origin|safe}};
     var DESTINATIONS = {{level.destinations|safe}};
