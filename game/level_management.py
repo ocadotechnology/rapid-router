@@ -34,7 +34,6 @@ def set_level_decor(level, decorString, regex):
         xIndex = 4
         yIndex = 2
 
-    regex = re.compile('(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))')
     items = regex.findall(decorString)
 
     for item in items:
