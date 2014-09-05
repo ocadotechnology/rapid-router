@@ -1231,6 +1231,8 @@ ocargo.LevelEditor = function() {
 
             $('#trashcanHolder').on('mouseover', openTrashcan);
             $('#trashcanHolder').on('mouseout', closeTrashcan);
+            $('#trashcanHolder').on('touchenter', openTrashcan);
+            $('#trashcanHolder').on('touchleave', closeTrashcan);
         }
 
         function onDragEnd() {
@@ -1242,6 +1244,8 @@ ocargo.LevelEditor = function() {
             }
             $('#trashcanHolder').off('mouseover');
             $('#trashcanHolder').off('mouseout');
+            $('#trashcanHolder').off('touchenter');
+            $('#trashcanHolder').off('touchleave');
 
             closeTrashcan();
         }
@@ -1414,6 +1418,8 @@ ocargo.LevelEditor = function() {
 
             $('#trashcanHolder').on('mouseover', openTrashcan);
             $('#trashcanHolder').on('mouseout', closeTrashcan);
+            $('#trashcanHolder').on('touchenter', openTrashcan);
+            $('#trashcanHolder').on('touchleave', closeTrashcan);
         }
 
         function onDragEnd() {
@@ -1447,6 +1453,8 @@ ocargo.LevelEditor = function() {
 
             $('#trashcanHolder').off('mouseover');
             $('#trashcanHolder').off('mouseout');
+            $('#trashcanHolder').off('touchenter');
+            $('#trashcanHolder').off('touchleave');
 
             closeTrashcan();
         }

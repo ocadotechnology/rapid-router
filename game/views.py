@@ -206,7 +206,7 @@ def levels(request):
         for level in episode.levels:
             if not maxId or level.id > maxId:
                 maxId = level.id
-            if not minId == -1 or level.id < minId:
+            if not minId or level.id < minId:
                 minId = level.id
 
             levels.append({
