@@ -64,6 +64,8 @@ ocargo.LevelEditor = function() {
 
     // Whether the trashcan is currently open
     var trashcanOpen = false;
+    var trashcanAbsolutePaperX;
+    var trashcanAbsolutePaperY;
 
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
@@ -116,8 +118,6 @@ ocargo.LevelEditor = function() {
             isScrolling = false;
         }
     });
-
-
 
     /***************/
     /* Setup tools */
@@ -879,6 +879,12 @@ ocargo.LevelEditor = function() {
 
             trashcan.css('right', right);
             trashcan.css('bottom', bottom);
+
+
+            var trashcanOffset = trashcan.offset();
+            var paperOffset = paper.offset();
+            trashcanAbsolutePaperX = trashcanOffset.left - paperOffset.left;
+            trashcanAbsolutePaperY = trashcanOffset.top - paperOffset.top;
         });
 
         addReleaseListeners(trashcan[0]);
@@ -1076,8 +1082,7 @@ ocargo.LevelEditor = function() {
                 }
             };
 
-        element.ontouchmove = handleTouchStart();
-        element.ontouchend = handleTouchEnd();
+        // Touch events seem to have this behaviour automatically
     };
 
     function handleMouseDown(this_rect) {
@@ -1256,14 +1261,29 @@ ocargo.LevelEditor = function() {
             else if (paperX + imageWidth > paperWidth) {
                 paperX = paperWidth - imageWidth;
             }
+
             if (paperY < 0) {
-                paperY =  0;
+                paperY = 0;
             }
             else if (paperY + imageHeight >  paperHeight) {
                 paperY = paperHeight - imageHeight;
             }
 
             image.transform('t' + paperX + ',' + paperY);
+
+            // Deal with trashcan
+            var paperAbsX = paperX - paper.scrollLeft();
+            var paperAbsY = paperY - paper.scrollTop();
+            var trashcanWidth = $('#trashcanHolder').width();
+            var trashcanHeight = $('#trashcanHolder').height();
+
+            if(paperAbsX >= trashcanAbsolutePaperX - trashcanWidth && paperAbsX < trashcanAbsolutePaperX  &&
+                paperAbsY >= trashcanAbsolutePaperY - trashcanHeight - 20 && paperAbsY < trashcanAbsolutePaperY) {
+                openTrashcan();
+            }
+            else {
+                closeTrashcan();
+            }
         }
 
         function onDragStart(x, y) {
@@ -1277,11 +1297,6 @@ ocargo.LevelEditor = function() {
 
             paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
             paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
-
-            $('#trashcanHolder').on('mouseover', openTrashcan);
-            $('#trashcanHolder').on('mouseout', closeTrashcan);
-            $('#trashcanHolder').on('touchenter', openTrashcan);
-            $('#trashcanHolder').on('touchleave', closeTrashcan);
         }
 
         function onDragEnd() {
@@ -1291,10 +1306,6 @@ ocargo.LevelEditor = function() {
             if(trashcanOpen) {
                 decor.destroy();
             }
-            $('#trashcanHolder').off('mouseover');
-            $('#trashcanHolder').off('mouseout');
-            $('#trashcanHolder').off('touchenter');
-            $('#trashcanHolder').off('touchleave');
 
             closeTrashcan();
         }
@@ -1443,6 +1454,20 @@ ocargo.LevelEditor = function() {
                 mark(controlledCoord, colour, 0.7, false);
                 mark(sourceCoord, colour, 0.7, false);
             }
+
+            // Deal with trashcan
+            var paperAbsX = paperX - paper.scrollLeft();
+            var paperAbsY = paperY - paper.scrollTop();
+            var trashcanWidth = $('#trashcanHolder').width();
+            var trashcanHeight = $('#trashcanHolder').height();
+
+            if(paperAbsX >= trashcanAbsolutePaperX - trashcanWidth && paperAbsX < trashcanAbsolutePaperX  &&
+                paperAbsY >= trashcanAbsolutePaperY - trashcanHeight - 20 && paperAbsY < trashcanAbsolutePaperY) {
+                openTrashcan();
+            }
+            else {
+                closeTrashcan();
+            }
         }
 
         function onDragStart(x, y) {
@@ -1465,11 +1490,6 @@ ocargo.LevelEditor = function() {
 
             originX = mouseX + paper.scrollLeft()- imageWidth/2;
             originY = mouseY + paper.scrollTop() - imageHeight/2;
-
-            $('#trashcanHolder').on('mouseover', openTrashcan);
-            $('#trashcanHolder').on('mouseout', closeTrashcan);
-            $('#trashcanHolder').on('touchenter', openTrashcan);
-            $('#trashcanHolder').on('touchleave', closeTrashcan);
         }
 
         function onDragEnd() {
@@ -1500,12 +1520,6 @@ ocargo.LevelEditor = function() {
             }
 
             image.attr({'cursor':'pointer'});
-
-            $('#trashcanHolder').off('mouseover');
-            $('#trashcanHolder').off('mouseout');
-            $('#trashcanHolder').off('touchenter');
-            $('#trashcanHolder').off('touchleave');
-
             closeTrashcan();
         }
 
