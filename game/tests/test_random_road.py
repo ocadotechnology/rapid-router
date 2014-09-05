@@ -27,8 +27,7 @@ class RandomRoadTestCase(TestCase):
         curviness = random.randint(0, 10)
         traffic_lights_enabled = False
 
-        data = generate_random_map_data(num_tiles, branchiness, loopiness, curviness,
-                                        traffic_lights_enabled)
+        data = generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled)
 
         path = json.loads(data['path'])
         destinations = json.loads(data['destinations'])
@@ -40,7 +39,11 @@ class RandomRoadTestCase(TestCase):
         for node in path:
             self.assertTrue(len(node['connectedNodes']) <= 2)
 
-        #self.assertTrue(find_node(origin['coordinate'][0], origin['coordinate'][1], path))
+        # Test if start and end belong to the path.
+        self.assertTrue(find_node(origin['coordinate'][0], origin['coordinate'][1], path))
 
-    
+        for node in destinations:
+            self.assertTrue(find_node(node[0], node[1], path))
 
+        # Assert no traffic lights got generated.
+        assertFalse(traffic_lights)
