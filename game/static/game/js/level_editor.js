@@ -1531,7 +1531,7 @@ ocargo.LevelEditor = function() {
         $(image.node).on('click touchstart', function() {
            var now = new Date().getTime();
            var timesince = now - myLatestTap;
-           console.log(timesince);
+
            if ((timesince < 300) && (timesince > 0)) {
                 image.transform('...r90');
            }
