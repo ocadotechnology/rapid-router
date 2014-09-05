@@ -69,7 +69,7 @@ ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
 	}
     else if (localStorage) {
 		var json = JSON.parse(localStorage.getItem('blocklySavedWorkspaceXml-' + id));
-		callback(null, json.workspace);
+		callback(null, json.contents);
 	} 
     else {
 		callback("Not logged in and no local storage available");

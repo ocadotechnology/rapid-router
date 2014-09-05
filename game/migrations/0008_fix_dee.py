@@ -4,6 +4,15 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 
 
+def fix_dee(apps, schema_editor):
+
+    Character = apps.get_model('game', 'Character')
+
+    dee = Character.objects.get(name='Dee')
+    dee.en_face = 'characters/front_view/Dee.svg'
+    dee.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -11,9 +20,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='attempt',
-            name='score',
-            field=models.FloatField(default=0, null=True),
-        ),
+        migrations.RunPython(fix_dee)
     ]
