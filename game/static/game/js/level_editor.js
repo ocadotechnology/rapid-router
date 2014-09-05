@@ -64,7 +64,6 @@ ocargo.LevelEditor = function() {
 
     // Whether the trashcan is currently open
     var trashcanOpen = false;
-    closeTrashcan();
 
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
@@ -75,6 +74,7 @@ ocargo.LevelEditor = function() {
 
     // Setup the toolbox
     setupToolbox();
+    setupTrashcan();
 
     // If there's any previous state in local storage retrieve it
     retrieveStateFromLocalStorage();
@@ -854,6 +854,37 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    function setupTrashcan() {
+
+        var trashcan = $('#trashcanHolder');
+
+        // Iffy way of making sure the trashcan stays inside the grid
+        // when window bigger than grid
+        $(window).resize(function() {
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();
+
+            var paperRightEdge = PAPER_WIDTH + $('#tools').width();
+            var paperBottomEdge = PAPER_HEIGHT;
+
+            var bottom = 50;
+            if(windowHeight > paperBottomEdge) {
+                bottom += windowHeight - paperBottomEdge
+            }
+
+            var right = 50;
+            if(windowWidth > paperRightEdge) {
+                right += windowWidth - paperRightEdge;
+            } 
+
+            trashcan.css('right', right);
+            trashcan.css('bottom', bottom);
+        });
+
+        addReleaseListeners(trashcan[0]);
+        closeTrashcan();
+    }
+
     /************************/
     /** Current state tests */
     /************************/
@@ -876,6 +907,19 @@ ocargo.LevelEditor = function() {
         return node.connectedNodes.length <= 1;
     }
 
+    function getGridItem(globalX, globalY) {
+        var paperPosition = paper.position();
+        var x = globalX - paperPosition.left + paper.scrollLeft();
+        var y = globalY - paperPosition.top + paper.scrollTop();
+
+        x /= GRID_SPACE_SIZE;
+        y /= GRID_SPACE_SIZE;
+
+        x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
+        y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
+
+        return grid[x][y];
+    }
 
     /*************/
     /* Rendering */
@@ -1004,6 +1048,38 @@ ocargo.LevelEditor = function() {
     /* Paper interaction logic */
     /***************************/
 
+    // Function for making an element "transparent" to mouse events
+    // e.g. decor, traffic lights, rubbish bin etc.
+    function addReleaseListeners(element) {
+        element.onmouseover = 
+            function(e) {
+                handleMouseOver(getGridItem(e.pageX, e.pageY))(e);
+            };
+
+        var lastGridItem;
+        element.onmousemove = 
+            function(e) {
+                var item = getGridItem(e.pageX, e.pageY);
+                if(item != lastGridItem) {
+                    if(lastGridItem) {
+                        handleMouseOut(lastGridItem)(e);
+                    }
+                    handleMouseOver(item)(e);
+                }
+                lastGridItem = item;
+            };
+
+        element.onmouseup = 
+            function(e) {
+                if((mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) && strikeStart) {
+                    handleMouseUp(getGridItem(e.pageX, e.pageY))(e);
+                }
+            };
+
+        element.ontouchmove = handleTouchStart();
+        element.ontouchend = handleTouchEnd();
+    };
+
     function handleMouseDown(this_rect) {
         return function (ev) {
             ev.preventDefault();
@@ -1127,56 +1203,29 @@ ocargo.LevelEditor = function() {
         };
     }
 
-    function handleTouchStart(this_rect) {
+    function handleTouchStart() {
         return function (ev) {
             if (ev.touches.length === 1 && !isScrolling) {
-                var paperPosition = paper.position();
-                var x = ev.touches[0].pageX - paperPosition.left + paper.scrollLeft();
-                var y = ev.touches[0].pageY - paperPosition.top + paper.scrollTop();
-
-                x /= GRID_SPACE_SIZE;
-                y /= GRID_SPACE_SIZE;
-
-                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
-                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
-
-                handleMouseDown(grid[x][y])(ev);
+                var gridItem = getGridItem(ev.touches[0].pageX, ev.touches[0].pageY);
+                handleMouseDown(gridItem)(ev);
             }
         };
     }
 
-    function handleTouchMove(this_rect) {
+    function handleTouchMove() {
         return function(ev) {
             if (ev.touches.length === 1 && !isScrolling) {
-                var paperPosition = paper.position();
-                var x = ev.touches[0].pageX - paperPosition.left + paper.scrollLeft();
-                var y = ev.touches[0].pageY - paperPosition.top + paper.scrollTop();
-
-                x /= GRID_SPACE_SIZE;
-                y /= GRID_SPACE_SIZE;
-
-                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
-                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
-
-                handleMouseOver(grid[x][y])(ev);
+                var gridItem = getGridItem(ev.touches[0].pageX, ev.touches[0].pageY);
+                handleMouseOver(gridItem)(ev);
             }
         };
     }
 
-    function handleTouchEnd(this_rect) {
+    function handleTouchEnd() {
         return function(ev) {
             if (ev.changedTouches.length === 1 && !isScrolling) {
-                var paperPosition = paper.position();
-                var x = ev.changedTouches[0].pageX - paperPosition.left + paper.scrollLeft();
-                var y = ev.changedTouches[0].pageY - paperPosition.top + paper.scrollTop();
-
-                x /= GRID_SPACE_SIZE;
-                y /= GRID_SPACE_SIZE;
-
-                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
-                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
-
-                handleMouseUp(grid[x][y])(ev);
+                var gridItem = getGridItem(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+                handleMouseUp(gridItem)(ev);
             }
         };
     }
@@ -1251,6 +1300,7 @@ ocargo.LevelEditor = function() {
         }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
+        addReleaseListeners(image.node);
     }
 
     function setupTrafficLightListeners(trafficLight) {
@@ -1460,19 +1510,18 @@ ocargo.LevelEditor = function() {
         }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
+
+        addReleaseListeners(image.node);
         
-        image.dblclick(function() {
-        });
-
-        var mylatesttap;
-
+        var myLatestTap;
         $(image.node).on('click touchstart', function() {
            var now = new Date().getTime();
-           var timesince = now - mylatesttap;
+           var timesince = now - myLatestTap;
+           console.log(timesince);
            if ((timesince < 300) && (timesince > 0)) {
                 image.transform('...r90');
            }
-           mylatesttap = new Date().getTime();
+           myLatestTap = new Date().getTime();
         });
 
         function getScaling(object) {

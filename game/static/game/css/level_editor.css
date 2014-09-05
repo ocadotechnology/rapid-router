@@ -78,8 +78,6 @@ input {
 
 #trashcanHolder {
     position: absolute;
-    right: 50px;
-    bottom: 50px;
     width: 50px;
     text-align: center;
 }
