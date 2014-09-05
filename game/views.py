@@ -405,7 +405,7 @@ def level_moderation(request):
                     shared_str = ""
                     for user in users_shared_with:
                         if user != student.user.user:
-                            shared_str += user.first_name + ", "
+                            shared_str += app_tags.make_into_username(user) + ", "
                     shared_str = shared_str[:-2]
 
                 level_data.append({'id': level.id,
