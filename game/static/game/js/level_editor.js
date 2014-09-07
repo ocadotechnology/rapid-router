@@ -536,8 +536,14 @@ ocargo.LevelEditor = function() {
 
                 if (existingID != -1) {
                     if (existingID != savedLevelID) {
-                        //ocargo.Drawing.startPopup("Overwriting","Warning",ocargo.messages.saveOverwriteWarning(newName, onYes));
-                        saveLevel(newName, existingID, processListOfLevels);
+                        var onYes = function(){
+                            saveLevel(newName, existingID, processListOfLevels);
+                            $("#close-modal").click();
+                        };
+                        var onNo = function(){
+                            $("#close-modal").click();
+                        };
+                        ocargo.Drawing.startYesNoPopup("Overwriting","Warning",ocargo.messages.saveOverwriteWarning(newName), onYes, onNo);
                     }
                     else {
                         saveLevel(newName, existingID, processListOfLevels);

@@ -288,9 +288,13 @@ table th {
     overflow: hidden;
 }
 
-#modal-text {
+#modal-text, #modal-buttons {
     float: left;
     width: 78%;
+}
+
+#modal-buttons button {
+    margin-right: 0.5em;
 }
 
 #modal-mascot {
