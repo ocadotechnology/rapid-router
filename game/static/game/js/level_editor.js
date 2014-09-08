@@ -1065,7 +1065,8 @@ ocargo.LevelEditor = function() {
     function addReleaseListeners(element) {
         element.onmouseover = 
             function(e) {
-                handleMouseOver(getGridItem(e.pageX, e.pageY))(e);
+                var gridItem = getGridItem(e.pageX, e.pageY);
+                handleMouseOut(gridItem)(e);
             };
 
         var lastGridItem;
@@ -1076,7 +1077,9 @@ ocargo.LevelEditor = function() {
                     if(lastGridItem) {
                         handleMouseOut(lastGridItem)(e);
                     }
-                    handleMouseOver(item)(e);
+                    if(strikeStart) {
+                        handleMouseOver(item)(e);
+                    }
                 }
                 lastGridItem = item;
             };
