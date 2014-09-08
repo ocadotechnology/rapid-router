@@ -89,10 +89,14 @@ ocargo.BlocklyHacks = function() {
 		    var oldInitialize = Blockly.Block.prototype.initialize;
 		    Blockly.Block.prototype.initialize = function(workspace, prototypeName) {
 		        oldInitialize.call(this, workspace, prototypeName);
-
 		        if(this.type !== "start"  && this.workspace === Blockly.mainWorkspace) {
 		            blockCount[this.type] -= 1;
-		            $('.quantity_text[value="' + this.type + '"')[0].textContent = "x" + blockCount[this.type];
+
+		            var quantityText = $('.quantity_text[value="' + this.type + '"]')[0];
+		            if(quantityText) {
+		            	// Test needed for loading workspaces (when flyout doesn't exist apparently)
+		            	quantityText.textContent = "x" + blockCount[this.type];
+		            }
 		        }
 		    };
 
@@ -101,7 +105,12 @@ ocargo.BlocklyHacks = function() {
 		    Blockly.Block.prototype.dispose = function(healStack, animate, opt_dontRemoveFromWorkspace) {
 		        if(this.workspace === Blockly.mainWorkspace) {
 		            blockCount[this.type] += 1;
-		            $('.quantity_text[value="' + this.type + '"')[0].textContent = "x" + blockCount[this.type];
+
+		            var quantityText = $('.quantity_text[value="' + this.type + '"]')[0];
+		            if(quantityText) {
+		            	// Test needed for loading workspaces (when flyout doesn't exist apparently)
+		            	quantityText.textContent = "x" + blockCount[this.type];
+		            }
 		        }
 		        oldDispose.call(this, healStack, animate, opt_dontRemoveFromWorkspace);
 		    }

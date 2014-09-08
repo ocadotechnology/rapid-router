@@ -11,7 +11,6 @@ ocargo.LevelEditor = function() {
     var LIGHT_RED_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg';
     var LIGHT_GREEN_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg';
     
-    var DELETE_DECOR_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_decor.svg";
     var ADD_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/add_road.svg";
     var DELETE_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_road.svg";
     var MARK_START_IMG_URL = ocargo.Drawing.imageDir + "icons/origin.svg";
@@ -20,16 +19,13 @@ ocargo.LevelEditor = function() {
     var VALID_LIGHT_COLOUR = '#87E34D';
     var INVALID_LIGHT_COLOUR = '#E35F4D';
 
-    var IS_SCROLLING = false;
-
     var paper = $('#paper'); // May as well cache this
 
     var modes = {
         ADD_ROAD_MODE: {name: 'Add road', url: ocargo.Drawing.imageDir + "icons/add_road.svg"},
         DELETE_ROAD_MODE: {name: 'Delete road', url: ocargo.Drawing.imageDir + "icons/delete_road.svg"},
         MARK_DESTINATION_MODE: {name: 'Mark end', url: ocargo.Drawing.imageDir + "icons/destination.svg"},
-        MARK_ORIGIN_MODE: {name: 'Mark start', url: ocargo.Drawing.imageDir + "icons/origin.svg"},
-        DELETE_DECOR_MODE: {name: 'Delete', url: ocargo.Drawing.imageDir + "icons/delete_decor.svg"}
+        MARK_ORIGIN_MODE: {name: 'Mark start', url: ocargo.Drawing.imageDir + "icons/origin.svg"}
     };
 
     /*********/
@@ -63,6 +59,14 @@ ocargo.LevelEditor = function() {
     var ownsSavedLevel = null;
     var savedLevelID = -1;
 
+    // Whether the user is scrolling on a tablet
+    var isScrolling = false;
+
+    // Whether the trashcan is currently open
+    var trashcanOpen = false;
+    var trashcanAbsolutePaperX;
+    var trashcanAbsolutePaperY;
+
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
 
@@ -72,6 +76,7 @@ ocargo.LevelEditor = function() {
 
     // Setup the toolbox
     setupToolbox();
+    setupTrashcan();
 
     // If there's any previous state in local storage retrieve it
     retrieveStateFromLocalStorage();
@@ -96,7 +101,7 @@ ocargo.LevelEditor = function() {
             touchStartPosX = ev.originalEvent.touches[0].pageX;
             scrollStartPosY = paper.scrollTop();
             touchStartPosY = ev.originalEvent.touches[0].pageY;
-            IS_SCROLLING = true;
+            isScrolling = true;
         }
     });
 
@@ -110,11 +115,9 @@ ocargo.LevelEditor = function() {
 
     paper.on('touchend touchcancel', function(ev) {
         if (ev.originalEvent.touches.length === 0) {
-            IS_SCROLLING = false;
+            isScrolling = false;
         }
     });
-
-
 
     /***************/
     /* Setup tools */
@@ -252,20 +255,6 @@ ocargo.LevelEditor = function() {
                 new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
                                           "startingState": ocargo.TrafficLight.GREEN,
                                           "sourceCoordinate": null,  "direction": null});
-            });
-
-            $('#delete_decor').click(function() {
-                if (mode === modes.DELETE_DECOR_MODE) {
-                    document.getElementById('delete_caption').style.visibility='hidden';
-                    mode = prevMode;
-                    prevMode = null;
-                    changeCurrentToolDisplay(mode);
-                } else {
-                    document.getElementById('delete_caption').style.visibility='visible';
-                    prevMode = mode;
-                    mode = modes.DELETE_DECOR_MODE;
-                    changeCurrentToolDisplay(modes.DELETE_DECOR_MODE);
-                }
             });
         }
 
@@ -547,8 +536,14 @@ ocargo.LevelEditor = function() {
 
                 if (existingID != -1) {
                     if (existingID != savedLevelID) {
-                        //ocargo.Drawing.startPopup("Overwriting","Warning",ocargo.messages.saveOverwriteWarning(newName, onYes));
-                        saveLevel(newName, existingID, processListOfLevels);
+                        var onYes = function(){
+                            saveLevel(newName, existingID, processListOfLevels);
+                            $("#close-modal").click();
+                        };
+                        var onNo = function(){
+                            $("#close-modal").click();
+                        };
+                        ocargo.Drawing.startYesNoPopup("Overwriting","Warning",ocargo.messages.saveOverwriteWarning(newName), onYes, onNo);
                     }
                     else {
                         saveLevel(newName, existingID, processListOfLevels);
@@ -865,6 +860,43 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    function setupTrashcan() {
+
+        var trashcan = $('#trashcanHolder');
+
+        // Iffy way of making sure the trashcan stays inside the grid
+        // when window bigger than grid
+        $(window).resize(function() {
+            var windowWidth = $(window).width();
+            var windowHeight = $(window).height();
+
+            var paperRightEdge = PAPER_WIDTH + $('#tools').width();
+            var paperBottomEdge = PAPER_HEIGHT;
+
+            var bottom = 50;
+            if(windowHeight > paperBottomEdge) {
+                bottom += windowHeight - paperBottomEdge
+            }
+
+            var right = 50;
+            if(windowWidth > paperRightEdge) {
+                right += windowWidth - paperRightEdge;
+            } 
+
+            trashcan.css('right', right);
+            trashcan.css('bottom', bottom);
+
+
+            var trashcanOffset = trashcan.offset();
+            var paperOffset = paper.offset();
+            trashcanAbsolutePaperX = trashcanOffset.left - paperOffset.left;
+            trashcanAbsolutePaperY = trashcanOffset.top - paperOffset.top;
+        });
+
+        addReleaseListeners(trashcan[0]);
+        closeTrashcan();
+    }
+
     /************************/
     /** Current state tests */
     /************************/
@@ -887,6 +919,19 @@ ocargo.LevelEditor = function() {
         return node.connectedNodes.length <= 1;
     }
 
+    function getGridItem(globalX, globalY) {
+        var paperPosition = paper.position();
+        var x = globalX - paperPosition.left + paper.scrollLeft();
+        var y = globalY - paperPosition.top + paper.scrollTop();
+
+        x /= GRID_SPACE_SIZE;
+        y /= GRID_SPACE_SIZE;
+
+        x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
+        y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
+
+        return grid[x][y];
+    }
 
     /*************/
     /* Rendering */
@@ -1015,6 +1060,40 @@ ocargo.LevelEditor = function() {
     /* Paper interaction logic */
     /***************************/
 
+    // Function for making an element "transparent" to mouse events
+    // e.g. decor, traffic lights, rubbish bin etc.
+    function addReleaseListeners(element) {
+        element.onmouseover = 
+            function(e) {
+                var gridItem = getGridItem(e.pageX, e.pageY);
+                handleMouseOut(gridItem)(e);
+            };
+
+        var lastGridItem;
+        element.onmousemove = 
+            function(e) {
+                var item = getGridItem(e.pageX, e.pageY);
+                if(item != lastGridItem) {
+                    if(lastGridItem) {
+                        handleMouseOut(lastGridItem)(e);
+                    }
+                    if(strikeStart) {
+                        handleMouseOver(item)(e);
+                    }
+                }
+                lastGridItem = item;
+            };
+
+        element.onmouseup = 
+            function(e) {
+                if((mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) && strikeStart) {
+                    handleMouseUp(getGridItem(e.pageX, e.pageY))(e);
+                }
+            };
+
+        // Touch events seem to have this behaviour automatically
+    };
+
     function handleMouseDown(this_rect) {
         return function (ev) {
             ev.preventDefault();
@@ -1138,56 +1217,29 @@ ocargo.LevelEditor = function() {
         };
     }
 
-    function handleTouchStart(this_rect) {
+    function handleTouchStart() {
         return function (ev) {
-            if (ev.touches.length === 1 && !IS_SCROLLING) {
-                var paperPosition = paper.position();
-                var x = ev.touches[0].pageX - paperPosition.left + paper.scrollLeft();
-                var y = ev.touches[0].pageY - paperPosition.top + paper.scrollTop();
-
-                x /= GRID_SPACE_SIZE;
-                y /= GRID_SPACE_SIZE;
-
-                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
-                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
-
-                handleMouseDown(grid[x][y])(ev);
+            if (ev.touches.length === 1 && !isScrolling) {
+                var gridItem = getGridItem(ev.touches[0].pageX, ev.touches[0].pageY);
+                handleMouseDown(gridItem)(ev);
             }
         };
     }
 
-    function handleTouchMove(this_rect) {
+    function handleTouchMove() {
         return function(ev) {
-            if (ev.touches.length === 1 && !IS_SCROLLING) {
-                var paperPosition = paper.position();
-                var x = ev.touches[0].pageX - paperPosition.left + paper.scrollLeft();
-                var y = ev.touches[0].pageY - paperPosition.top + paper.scrollTop();
-
-                x /= GRID_SPACE_SIZE;
-                y /= GRID_SPACE_SIZE;
-
-                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
-                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
-
-                handleMouseOver(grid[x][y])(ev);
+            if (ev.touches.length === 1 && !isScrolling) {
+                var gridItem = getGridItem(ev.touches[0].pageX, ev.touches[0].pageY);
+                handleMouseOver(gridItem)(ev);
             }
         };
     }
 
-    function handleTouchEnd(this_rect) {
+    function handleTouchEnd() {
         return function(ev) {
-            if (ev.changedTouches.length === 1 && !IS_SCROLLING) {
-                var paperPosition = paper.position();
-                var x = ev.changedTouches[0].pageX - paperPosition.left + paper.scrollLeft();
-                var y = ev.changedTouches[0].pageY - paperPosition.top + paper.scrollTop();
-
-                x /= GRID_SPACE_SIZE;
-                y /= GRID_SPACE_SIZE;
-
-                x = Math.min(Math.max(0, Math.floor(x)), GRID_WIDTH - 1);
-                y = Math.min(Math.max(0, Math.floor(y)), GRID_HEIGHT - 1);
-
-                handleMouseUp(grid[x][y])(ev);
+            if (ev.changedTouches.length === 1 && !isScrolling) {
+                var gridItem = getGridItem(ev.changedTouches[0].pageX, ev.changedTouches[0].pageY);
+                handleMouseUp(gridItem)(ev);
             }
         };
     }
@@ -1208,57 +1260,67 @@ ocargo.LevelEditor = function() {
         var imageHeight;
 
         function onDragMove(dx, dy) {
-            if (mode !== modes.DELETE_DECOR_MODE) {
-                paperX = dx + originX;
-                paperY = dy + originY;
+            paperX = dx + originX;
+            paperY = dy + originY;
 
-                // Stop it being dragged off the edge of the page
-                if (paperX < 0) {
-                    paperX = 0;
-                }
-                else if (paperX + imageWidth > paperWidth) {
-                    paperX = paperWidth - imageWidth;
-                }
-                if (paperY < 0) {
-                    paperY =  0;
-                }
-                else if (paperY + imageHeight >  paperHeight) {
-                    paperY = paperHeight - imageHeight;
-                }
+            // Stop it being dragged off the edge of the page
+            if (paperX < 0) {
+                paperX = 0;
+            }
+            else if (paperX + imageWidth > paperWidth) {
+                paperX = paperWidth - imageWidth;
+            }
 
-                image.transform('t' + paperX + ',' + paperY);
+            if (paperY < 0) {
+                paperY = 0;
+            }
+            else if (paperY + imageHeight >  paperHeight) {
+                paperY = paperHeight - imageHeight;
+            }
+
+            image.transform('t' + paperX + ',' + paperY);
+
+            // Deal with trashcan
+            var paperAbsX = paperX - paper.scrollLeft();
+            var paperAbsY = paperY - paper.scrollTop();
+            var trashcanWidth = $('#trashcanHolder').width();
+            var trashcanHeight = $('#trashcanHolder').height();
+
+            if(paperAbsX >= trashcanAbsolutePaperX - trashcanWidth && paperAbsX < trashcanAbsolutePaperX  &&
+                paperAbsY >= trashcanAbsolutePaperY - trashcanHeight - 20 && paperAbsY < trashcanAbsolutePaperY) {
+                openTrashcan();
+            }
+            else {
+                closeTrashcan();
             }
         }
 
         function onDragStart(x, y) {
-            if (mode !== modes.DELETE_DECOR_MODE) {
-                var bBox = image.getBBox();
-                imageWidth = bBox.width;
-                imageHeight = bBox.height;
+            var bBox = image.getBBox();
+            imageWidth = bBox.width;
+            imageHeight = bBox.height;
 
-                var paperPosition = paper.position();
-                originX = x - paperPosition.left + paper.scrollLeft() - imageWidth/2;
-                originY = y - paperPosition.top + paper.scrollTop() - imageHeight/2;
+            var paperPosition = paper.position();
+            originX = x - paperPosition.left + paper.scrollLeft() - imageWidth/2;
+            originY = y - paperPosition.top + paper.scrollTop() - imageHeight/2;
 
-                paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
-                paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
-            }
+            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
+            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
         }
 
         function onDragEnd() {
-            if (mode !== modes.DELETE_DECOR_MODE) {
-                originX = paperX;
-                originY = paperY;
+            originX = paperX;
+            originY = paperY;
+
+            if(trashcanOpen) {
+                decor.destroy();
             }
+
+            closeTrashcan();
         }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
-
-        $(image.node).on('click touchstart', function() {
-            if (mode === modes.DELETE_DECOR_MODE) {
-                decor.destroy();
-            }
-        });
+        addReleaseListeners(image.node);
     }
 
     function setupTrafficLightListeners(trafficLight) {
@@ -1292,11 +1354,6 @@ ocargo.LevelEditor = function() {
         var moved = false;
 
         function onDragMove(dx, dy) {
-            // Needs to be in onDragMove, not in onDragStart, to stop clicks triggering drag behaviour
-            if (mode === modes.DELETE_DECOR_MODE) {
-                return;
-            }
-                
             trafficLight.valid = false;
             image.attr({'cursor':'default'});
             moved = dx !== 0 || dy !== 0;
@@ -1406,82 +1463,88 @@ ocargo.LevelEditor = function() {
                 mark(controlledCoord, colour, 0.7, false);
                 mark(sourceCoord, colour, 0.7, false);
             }
+
+            // Deal with trashcan
+            var paperAbsX = paperX - paper.scrollLeft();
+            var paperAbsY = paperY - paper.scrollTop();
+            var trashcanWidth = $('#trashcanHolder').width();
+            var trashcanHeight = $('#trashcanHolder').height();
+
+            if(paperAbsX >= trashcanAbsolutePaperX - trashcanWidth && paperAbsX < trashcanAbsolutePaperX  &&
+                paperAbsY >= trashcanAbsolutePaperY - trashcanHeight - 20 && paperAbsY < trashcanAbsolutePaperY) {
+                openTrashcan();
+            }
+            else {
+                closeTrashcan();
+            }
         }
 
         function onDragStart(x, y) {
-            if (mode !== modes.DELETE_DECOR_MODE) {
-                moved = false;
+            moved = false;
 
-                scaling = getScaling(image);
-                rotation = (image.matrix.split().rotate + 360) % 360;
-                
-                var bBox = image.getBBox();
-                imageWidth = bBox.width;
-                imageHeight = bBox.height;
+            scaling = getScaling(image);
+            rotation = (image.matrix.split().rotate + 360) % 360;
+            
+            var bBox = image.getBBox();
+            imageWidth = bBox.width;
+            imageHeight = bBox.height;
 
-                paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
-                paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
+            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
 
-                var paperPosition = paper.position();
+            var paperPosition = paper.position();
 
-                var mouseX = x - paperPosition.left;
-                var mouseY = y - paperPosition.top;
+            var mouseX = x - paperPosition.left;
+            var mouseY = y - paperPosition.top;
 
-                originX = mouseX + paper.scrollLeft()- imageWidth/2;
-                originY = mouseY + paper.scrollTop() - imageHeight/2;
-            }
+            originX = mouseX + paper.scrollLeft()- imageWidth/2;
+            originY = mouseY + paper.scrollTop() - imageHeight/2;
         }
 
         function onDragEnd() {
-            if (moved && mode !== modes.DELETE_DECOR_MODE) {
-                // Unmark squares currently occupied
-                if (sourceCoord) {
-                    markAsBackground(sourceCoord);
-                }
-                if (controlledCoord) {
-                    markAsBackground(controlledCoord);
-                }
-                if (originNode) {
-                    markAsOrigin(originNode.coordinate);
-                }
-                if (destinationNode) {
-                    markAsDestination(destinationNode.coordinate);
-                }
+            // Unmark squares currently occupied
+            if (sourceCoord) {
+                markAsBackground(sourceCoord);
+            }
+            if (controlledCoord) {
+                markAsBackground(controlledCoord);
+            }
+            if (originNode) {
+                markAsOrigin(originNode.coordinate);
+            }
+            if (destinationNode) {
+                markAsDestination(destinationNode.coordinate);
+            }
 
+            if(trashcanOpen) {
+                trafficLight.destroy();
+            }
+            else if(isValidPlacement(sourceCoord, controlledCoord)) {
                 // Add back to the list of traffic lights if on valid nodes
-                if(isValidPlacement(sourceCoord, controlledCoord)) {
-                    trafficLight.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
-                    trafficLight.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
-                    trafficLight.valid = true;
+                trafficLight.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
+                trafficLight.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+                trafficLight.valid = true;
 
-                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
-                }
+                ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
             }
 
             image.attr({'cursor':'pointer'});
+            closeTrashcan();
         }
 
         image.drag(onDragMove, onDragStart, onDragEnd);
+
+        addReleaseListeners(image.node);
         
-        image.dblclick(function() {
-        });
-
-        var mylatesttap;
-
+        var myLatestTap;
         $(image.node).on('click touchstart', function() {
-            if (mode === modes.DELETE_DECOR_MODE) {
-                trafficLight.destroy();
-            }
-
            var now = new Date().getTime();
-           var timesince = now - mylatesttap;
+           var timesince = now - myLatestTap;
+
            if ((timesince < 300) && (timesince > 0)) {
                 image.transform('...r90');
            }
-           mylatesttap = new Date().getTime();
-
-
-
+           myLatestTap = new Date().getTime();
         });
 
         function getScaling(object) {
@@ -1530,12 +1593,23 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    function openTrashcan() {
+        $('#trashcanLidOpen').css('display', 'block');
+        $('#trashcanLidClosed').css('display', 'none');
+        trashcanOpen = true;
+    }
+
+    function closeTrashcan() {
+        $('#trashcanLidOpen').css('display', 'none');
+        $('#trashcanLidClosed').css('display', 'block');
+        trashcanOpen = false;
+    }
+
     /********************************/
     /* Miscaellaneous state methods */
     /********************************/
 
-    function finaliseDelete(strikeEnd) {
-        
+    function finaliseDelete(strikeEnd) {    
         applyAlongStrike(deleteNode, strikeEnd);
         strikeStart = null;
 

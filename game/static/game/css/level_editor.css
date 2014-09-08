@@ -72,6 +72,35 @@ input {
     float: left;
 }
 
+/************/
+/* Trashcan */
+/************/
+
+#trashcanHolder {
+    position: absolute;
+    width: 50px;
+    text-align: center;
+}
+
+#trashcanLidClosed {
+    position: absolute;
+    max-width: 100%;
+    top: -15px;
+    left: -0.5px;
+}
+
+#trashcanLidOpen {
+    position: absolute;
+    max-width: 95%;
+    top: -36px;
+    left: 0px;
+}
+
+#trashcan {
+    max-width: 90%;
+}
+
+
 /****************/
 /* Current tool */
 /****************/

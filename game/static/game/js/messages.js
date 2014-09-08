@@ -107,7 +107,8 @@ ocargo.messages = {
         "<b>Random</b> if you want the computer to create a random route for you.<br><br> Select " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/decor.svg', 'popupIcon') +
         "<b>Scenery</b> and choose trees, bushes and more to place around your road. These will " +
-        "show in the top left corner - drag them into place. <br> To rotate a traffic light, " +
+        "show in the top left corner - drag them into place. Delete items by dragging them into " + 
+        "the bin in the bottom right. <br> To rotate a traffic light, " +
         "simply double click on it. <i>Remember, using the traffic lights is not covered until " +
         "level 44.</i><br><br> Choose a character to play with from the " + 
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/character.svg', 'popupIcon') +
@@ -135,11 +136,8 @@ ocargo.messages = {
     notOwned: "You do not own this level. If you would like to share it you will first have to " +
         "save your own copy! ",
     changesSinceLastSave: "Please save your latest changes! ",
-    saveOverwriteWarning: function(newName, onNoFunction, onYesFunction) {
-        return "Level " + newName + " already exists. Are you sure you want to overwrite it? " + 
-        "<br><br>" + 
-        '<button onclick="onYesFunction(); document.getElementById(' + '"close-modal"' +').click();">Yes</button>' +
-        '<button onclick=document.getElementById(' + '"close-modal"' +').click();">No</button>';
+    saveOverwriteWarning: function(newName) {
+        return "Level '" + newName + "' already exists. Are you sure you want to overwrite it?";
     },
     shareSuccessful: "Your level has been successfully shared! ",
 

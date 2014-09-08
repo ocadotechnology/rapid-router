@@ -42,7 +42,7 @@
     var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
     var NEXT_LEVEL = "{{level.next_level}}" !== "None" ? "{{level.next_level.id}}" : null;
     var NEXT_EPISODE = "{{level.episode.next_episode}}" !== "None" ? "{{level.episode.next_episode.id}}" : null;
-    var WORKSPACE = "{{attempt.workspace}}";
+    var WORKSPACE = "{{workspace}}";
     var THREADS = "{{level.threads}}";
     var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";
     var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
@@ -363,6 +363,9 @@
     <p id="myModal-lead" class="ocargo-modal-lead"></p>
     <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
     <a class="close-reveal-modal" id="close-modal">&#215;</a>
+  </div>
+  <div id="modal-buttons">
+    <button>OK</button>
   </div>
   <div id="modal-mascot">
     <object width="100%" height="100%" data="/static/game/image/characters/front_view/Dee.svg" type="image/svg+xml"></object>
