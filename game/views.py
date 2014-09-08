@@ -197,9 +197,12 @@ def levels(request):
             if attempt:
                 return attempt.score
 
+    developer = (not request.user.is_anonymous()) and request.user.userprofile.developer
     episode_data = []
-    episode = Episode.objects.get(name='Getting Started')
-    while episode is not None:
+    for episode in Episode.objects.all().order_by('id'):
+        if episode.in_development and not developer:
+            break;
+
         levels = []
         minId = None
         maxId = None
@@ -221,26 +224,30 @@ def levels(request):
              "last_level": maxId}
 
         episode_data.append(e)
-        episode = episode.next_episode
+        if episode.in_development and not developer:
+            episode = None
+        else:
+            episode = episode.next_episode
 
     owned_level_data = []
     shared_level_data = []
-
-    if hasattr(request.user, 'userprofile'):
+    if not request.user.is_anonymous():
         owned_levels, shared_levels = level_management.get_list_of_loadable_levels(request.user)
 
         for level in owned_levels:
             owned_level_data.append({
                 "id": level.id,
                 "title": level.name,
-                "score": get_attempt_score(level)})
+                "score": get_attempt_score(level)
+            })
 
         for level in shared_levels:
             shared_level_data.append({
                 "id": level.id,
                 "title": level.name,
                 "owner": level.owner.user,
-                "score": get_attempt_score(level)})
+                "score": get_attempt_score(level)
+            })
 
     context = RequestContext(request, {
         'episodeData': episode_data,

@@ -90,6 +90,7 @@ class Episode (models.Model):
     name = models.CharField(max_length=200)
     first_level = models.ForeignKey(Level)
     next_episode = models.ForeignKey("self", null=True, default=None)
+    in_development = models.BooleanField(default=False)
 
     r_branchiness = models.FloatField(default=0)
     r_loopiness = models.FloatField(default=0)
