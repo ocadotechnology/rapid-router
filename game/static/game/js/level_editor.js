@@ -1063,30 +1063,35 @@ ocargo.LevelEditor = function() {
     // Function for making an element "transparent" to mouse events
     // e.g. decor, traffic lights, rubbish bin etc.
     function addReleaseListeners(element) {
+        var lastGridItem;
+
         element.onmouseover = 
             function(e) {
-                var gridItem = getGridItem(e.pageX, e.pageY);
-                handleMouseOut(gridItem)(e);
+                lastGridItem = getGridItem(e.pageX, e.pageY);
+                if(strikeStart) {
+                    handleMouseOver(lastGridItem)(e);
+                }
             };
 
-        var lastGridItem;
         element.onmousemove = 
             function(e) {
                 var item = getGridItem(e.pageX, e.pageY);
+                console.log(lastGridItem != item)
                 if(item != lastGridItem) {
+                    console.log("Hit")
                     if(lastGridItem) {
                         handleMouseOut(lastGridItem)(e);
                     }
                     if(strikeStart) {
                         handleMouseOver(item)(e);
                     }
+                    lastGridItem = item;
                 }
-                lastGridItem = item;
             };
 
         element.onmouseup = 
             function(e) {
-                if((mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) && strikeStart) {
+                if(strikeStart) {
                     handleMouseUp(getGridItem(e.pageX, e.pageY))(e);
                 }
             };
@@ -1609,18 +1614,8 @@ ocargo.LevelEditor = function() {
     /* Miscaellaneous state methods */
     /********************************/
 
-    function finaliseDelete(strikeEnd) {    
-        applyAlongStrike(deleteNode, strikeEnd);
-        strikeStart = null;
+    function finaliseDelete(strikeEnd) {
 
-        // Delete any nodes isolated through deletion
-        for (var i = nodes.length - 1; i >= 0; i--) {
-            if (nodes[i].connectedNodes.length === 0) {
-                var coordinate = nodes[i].coordinate;
-                deleteNode(coordinate.x, coordinate.y);
-            }
-        }
-        
         function deleteNode(x, y) {
             var coord = new ocargo.Coordinate(x, y);
             var node = ocargo.Node.findNodeByCoordinate(coord, nodes);
@@ -1651,17 +1646,21 @@ ocargo.LevelEditor = function() {
                 }
             }
         }
+
+
+        applyAlongStrike(deleteNode, strikeEnd);
+        strikeStart = null;
+
+        // Delete any nodes isolated through deletion
+        for (var i = nodes.length - 1; i >= 0; i--) {
+            if (nodes[i].connectedNodes.length === 0) {
+                var coordinate = nodes[i].coordinate;
+                deleteNode(coordinate.x, coordinate.y);
+            }
+        }
     }
 
     function finaliseMove(strikeEnd) {
-
-        if(!strikeStart || (strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y)) {
-            return;
-        }
-
-        applyAlongStrike(addNode, strikeEnd);
-        strikeStart =  null;
-
         var previousNode = null;
         function addNode(x, y) {
             var coord = new ocargo.Coordinate(x,y);
@@ -1685,6 +1684,12 @@ ocargo.LevelEditor = function() {
             }
             previousNode = node;
         }
+
+
+        if(strikeStart && !(strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y)) {
+            applyAlongStrike(addNode, strikeEnd);
+        }
+        strikeStart = null;
     }
 
     function applyAlongStrike(func, strikeEnd) {
