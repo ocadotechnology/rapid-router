@@ -1076,9 +1076,7 @@ ocargo.LevelEditor = function() {
         element.onmousemove = 
             function(e) {
                 var item = getGridItem(e.pageX, e.pageY);
-                console.log(lastGridItem != item)
                 if(item != lastGridItem) {
-                    console.log("Hit")
                     if(lastGridItem) {
                         handleMouseOut(lastGridItem)(e);
                     }
