@@ -1,0 +1,8 @@
+#!/bin/bash
+source ../codeforlife-deploy/VIRTUALENV/bin/activate
+python ../codeforlife-deploy/manage.py test game
+RESULT=$?
+deactivate
+[ $RESULT -ne 0 ] && exit 1
+exit 0
+

@@ -1,29 +1,41 @@
 from django.test import TestCase
 from database_objects import setup_decor, setup_themes
-from game.random_road import *
+from game.random_road import generate_random_map_data
 
 import json
 import random
 
 
 def find_node(x, y, nodes):
-        for node in nodes:
-            if node['coordinate'][0] == x and node['coordinate'][1] == y:
-                return True
-        return False
+    for node in nodes:
+        if node['coordinate'][0] == x and node['coordinate'][1] == y:
+            return True
+    return False
+
+
+def check_direction(node, neighbour):
+    if neighbour['coordinate'][1] < node['coordinate'][1]:
+        direction = "N"
+    elif neighbour['coordinate'][0] < node['coordinate'][0]:
+        direction = "E"
+    elif neighbour['coordinate'][1] > node['coordinate'][1]:
+        direction = "S"
+    elif neighbour['coordinate'][0] > node['coordinate'][0]:
+        direction = "W"
+    return direction
 
 
 class RandomRoadTestCase(TestCase):
 
     def create_test_data(self, num_tiles=None, branchiness=None, loopiness=None, curviness=None,
                          traffic_lights_enabled=False):
-        if not num_tiles:
+        if num_tiles is None:
             num_tiles = random.randint(3, 30)
-        if not branchiness:
+        if branchiness is None:
             branchiness = random.randint(0, 10)
-        if not loopiness:
+        if loopiness is None:
             loopiness = random.randint(0, 10)
-        if not curviness:
+        if curviness is None:
             curviness = random.randint(0, 10)
 
         return generate_random_map_data(num_tiles, branchiness, loopiness, curviness,
@@ -78,11 +90,13 @@ class RandomRoadTestCase(TestCase):
 
         turn_count = 0
         for node in path:
-            turn_count += int(
-                not (get_direction(node['coordinate'], path[node['connectedNodes'][0]])
-                     == get_direction(node['coordinate'], path[node['connectedNodes'][1]]))
-            )
+            if len(node['connectedNodes']) > 1:
+                turn_count += int(
+                    not (check_direction(node, path[int(node['connectedNodes'][0])])
+                         == check_direction(node, path[int(node['connectedNodes'][1])]))
+                )
 
+        # Check if there are any turns.
         self.assertTrue(turn_count)
 
         # Assert no traffic lights got generated.
