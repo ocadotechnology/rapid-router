@@ -26,6 +26,16 @@ from serializers import WorkspaceSerializer, LevelSerializer
 # Level #
 #########
 
+def play_custom_level(request, levelID):
+    level = cached_level(levelID)
+    if level.default:
+        raise Http404
+    return play_level(request, levelID)
+
+def play_default_level(request, levelName):
+    level = get_object_or_404(Level, name=levelName, default=True)
+    return play_level(request, level.id)
+
 def play_level(request, levelID):
     """ Loads a level for rendering in the game.
 
@@ -204,24 +214,26 @@ def levels(request):
             break;
 
         levels = []
-        minId = None
-        maxId = None
+        minName = None
+        maxName = None
         for level in episode.levels:
-            if not maxId or level.id > maxId:
-                maxId = level.id
-            if not minId or level.id < minId:
-                minId = level.id
+            level_name = int(level.name)
+            if not maxName or level_name > maxName:
+                maxName = level_name
+            if not minName or level_name < minName:
+                minName = level_name
 
             levels.append({
                 "id": level.id,
-                "title": get_level_title(level.id),
+                "name": level_name,
+                "title": get_level_title(level_name),
                 "score": get_attempt_score(level)})
             
         e = {"id": episode.id,
              "name": episode.name,
              "levels": levels,
-             "first_level": minId,
-             "last_level": maxId}
+             "first_level": minName,
+             "last_level": maxName}
 
         episode_data.append(e)
         if episode.in_development and not developer:

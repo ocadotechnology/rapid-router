@@ -11,7 +11,7 @@
   	{% for episode in episodeData %}
   		var levels = []
   		{% for level in episode.levels %}
-  			levels.push({'id': {{level.id}},
+  			levels.push({'name': {{level.name}},
   										'score': '{{level.score}}'});
   		{% endfor %}
   		EPISODES.push({'id' : {{episode.id}},
@@ -59,10 +59,10 @@
 			        {% for level in episode.levels %}
 			        <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
 			        <p>
-				        <a href="{% url 'game.views.play_level' level.id %}">{{level.id}}: {{level.title.strip | safe}}</a> 
+				        <a href="{% url 'game.views.play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a> 
 				        {% if level.score != None %}
 				        <span class="score_text">{{level.score|floatformat}}/20</span>
-				        <img class="level_image coin_image" value="{{level.id}}">
+				        <img class="level_image coin_image" value="{{level.name}}">
 				        {% endif %}
 				    </p>
 			        {% endfor %}
@@ -76,7 +76,7 @@
 			    	{% if owned_levels %}
 			    		{% for level in owned_levels %}
 			    			<p>
-				    			<a href="{% url 'game.views.play_level' level.id %}">{{level.title}}</a>
+				    			<a href="{% url 'game.views.play_custom_level' level.id %}">{{level.title}}</a>
 				    			{% if level.score != None %}
 				    			<span class="score_text">{{level.score|floatformat}}/10{% endif %}</span>
 				    			<img class="level_image coin_image" value="{{level.id}}">
@@ -92,7 +92,7 @@
 			    	{% if shared_levels %}
 			    		{% for level in shared_levels %}
 			    			<p>
-			    				<a href="{% url 'game.views.play_level' level.id %}">{{level.title}} ({{level.owner|make_into_username}})</a>
+			    				<a href="{% url 'game.views.play_custom_level' level.id %}">{{level.title}} ({{level.owner|make_into_username}})</a>
 			    				{% if level.score != None %}
 			    				<span class="score_text">{{level.score|floatformat}}/10</span>
 			    				<img class="level_image coin_image" value="{{level.id}}">
