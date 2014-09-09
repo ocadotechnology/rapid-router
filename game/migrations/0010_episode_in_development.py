@@ -95,12 +95,17 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # migrations.AddField(
-        #     model_name='episode',
-        #     name='in_development',
-        #     field=models.BooleanField(default=False),
-        #     preserve_default=True,
-        # ),
+        migrations.RemoveField(
+            model_name='episode',
+            name='in_development',
+        ),
+
+        migrations.AddField(
+            model_name='episode',
+            name='in_development',
+            field=models.BooleanField(default=False),
+            preserve_default=True,
+        ),
 
         migrations.RunPython(add_episodes),
     ]
