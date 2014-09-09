@@ -9,7 +9,7 @@ def fix_level(apps, schema_editor):
     LevelBlock = apps.get_model('game', 'LevelBlock')
     Block = apps.get_model('game', 'Block')
 
-    level52 = Level.objects.get(name="Block scarcity")
+    level52 = Level.objects.get(name="Block scarcity", default=True)
 
     rightType = Block.objects.get(type="turn_right")
 

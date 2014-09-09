@@ -12,8 +12,6 @@ def add_episodes(apps, schema_editor):
     Theme = apps.get_model('game', 'Theme')
     Character = apps.get_model('game', 'Character')
 
-    level51 = Level.objects.get(id=51).delete()
-
     level51 = Level(blocklyEnabled=True,
                     character=Character.objects.get(name="Van"),
                     decor='[{"coordinate":{"x":413,"y":374},"name":"pond","height":100},{"coordinate":{"x":352,"y":594},"name":"tree2","height":100},{"coordinate":{"x":396,"y":438},"name":"bush","height":50},{"coordinate":{"x":530,"y":428},"name":"tree2","height":100},{"coordinate":{"x":134,"y":605},"name":"bush","height":50},{"coordinate":{"x":221,"y":395},"name":"tree2","height":100},{"coordinate":{"x":658,"y":528},"name":"tree2","height":100}]',
