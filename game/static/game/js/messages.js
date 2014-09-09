@@ -136,11 +136,8 @@ ocargo.messages = {
     notOwned: "You do not own this level. If you would like to share it you will first have to " +
         "save your own copy! ",
     changesSinceLastSave: "Please save your latest changes! ",
-    saveOverwriteWarning: function(newName, onNoFunction, onYesFunction) {
-        return "Level " + newName + " already exists. Are you sure you want to overwrite it? " + 
-        "<br><br>" + 
-        '<button onclick="onYesFunction(); document.getElementById(' + '"close-modal"' +').click();">Yes</button>' +
-        '<button onclick=document.getElementById(' + '"close-modal"' +').click();">No</button>';
+    saveOverwriteWarning: function(newName) {
+        return "Level '" + newName + "' already exists. Are you sure you want to overwrite it?";
     },
     shareSuccessful: "Your level has been successfully shared! ",
 
