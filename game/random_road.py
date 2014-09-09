@@ -27,6 +27,8 @@ DECOR_SUM = (DECOR_DATA['bush']['ratio'] + DECOR_DATA['pond']['ratio'] +
 DEFAULT_MAX_FUEL = 30
 DEFAULT_START_NODE = Node(0, 3)
 DEFAULT_NUM_TILES = 20
+
+# Max parameter value: 1
 DEFAULT_BRANCHINESS = 0.3
 DEFAULT_LOOPINESS = 0.1
 DEFAULT_CURVINESS = 0.5
@@ -78,7 +80,7 @@ def create(episode=None):
                   pythonEnabled=python_enabled)
 
     level.save()
-    
+
     for block in blocks:
         levelBlock = LevelBlock(type=block, level=level, number=None)
         levelBlock.save()
@@ -284,7 +286,6 @@ def generate_traffic_lights(path):
 
     trafficLights = []
     for node in nodesSelected:
-        nodeIndex = path.index(node)
 
         controlledNeighbours = []
         for neighbourIndex in node['connectedNodes']:
@@ -370,7 +371,7 @@ def generate_decor(path, num_tiles):
                 if not (find_decor_by_coordinate(x, y, elem, decor) or
                         find_node_by_coordinate(x, y, dec, path)):
                     return append_decor(decor, x, y, elem, dx, dy)
-    
+
     def place_randomly(dec, decor):
         while True:
             x = random.randint(0, 9)
