@@ -28,7 +28,7 @@ def check_direction(node, neighbour):
 class RandomRoadTestCase(TestCase):
 
     def create_test_data(self, num_tiles=None, branchiness=None, loopiness=None, curviness=None,
-                         traffic_lights_enabled=False):
+                         traffic_lights_enabled=False, decor_enabled=True):
         if num_tiles is None:
             num_tiles = random.randint(3, 30)
         if branchiness is None:
@@ -39,7 +39,7 @@ class RandomRoadTestCase(TestCase):
             curviness = random.randint(0, 10)
 
         return generate_random_map_data(num_tiles, branchiness, loopiness, curviness,
-                                        traffic_lights_enabled)
+                                        traffic_lights_enabled, decor_enabled)
 
     def check_if_valid(self, origin, destinations, path, decor):
         check = find_node(origin['coordinate'][0], origin['coordinate'][1], path)
@@ -64,7 +64,7 @@ class RandomRoadTestCase(TestCase):
         destinations = json.loads(data['destinations'])
         traffic_lights = json.loads(data['traffic_lights'])
         origin = json.loads(data['origin'])
-        decor = json.loads(data['decor'])
+        decor = data['decor']
 
         self.check_if_valid(origin, destinations, path, decor)
 
@@ -84,7 +84,7 @@ class RandomRoadTestCase(TestCase):
         destinations = json.loads(data['destinations'])
         traffic_lights = json.loads(data['traffic_lights'])
         origin = json.loads(data['origin'])
-        decor = json.loads(data['decor'])
+        decor = data['decor']
 
         self.check_if_valid(origin, destinations, path, decor)
 
