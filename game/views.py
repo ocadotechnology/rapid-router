@@ -588,7 +588,7 @@ def createRows(studentData, levels):
         for level in levels:
             try:
                 attempt = Attempt.objects.get(level=level, student=row[0])
-                row[1] += attempt.score
+                row[1] += attempt.score if attempt.score is not None else 0
                 row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
                 row.append(attempt.score)
                 row[3].append(attempt.score)

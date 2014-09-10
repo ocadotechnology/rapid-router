@@ -40,7 +40,7 @@ def can_play_level(user, level):
     elif user.userprofile == level.owner:
         return True
     elif level.shared_with.filter(id=user.id).exists():
-        return True
+        return can_share_level_with(user, level.owner.user)
     else:
         return (hasattr(user.userprofile, 'teacher') and
                 user.userprofile.teacher.teaches(level.owner))
@@ -52,7 +52,7 @@ def can_load_level(user, level):
     elif user.userprofile == level.owner:
         return True
     elif level.shared_with.filter(id=user.id).exists():
-        return True
+        return can_share_level_with(user, level.owner.user)
     else:
         return (hasattr(user.userprofile, 'teacher') and
                 user.userprofile.teacher.teaches(level.owner))
