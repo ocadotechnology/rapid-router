@@ -2,9 +2,12 @@ import json
 import math
 import random
 
+import level_management
+
 from collections import defaultdict, namedtuple
-from level_management import set_level_decor
 from models import Level, LevelBlock, Block, Theme, Decor
+
+
 
 Node = namedtuple('Node', ['x', 'y'])
 
@@ -37,8 +40,6 @@ PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
 
 
 def create(episode=None):
-    maxFuel = DEFAULT_MAX_FUEL
-    grass = Theme.objects.get(name='grass')
 
     if not episode:
         num_tiles = DEFAULT_NUM_TILES
@@ -47,7 +48,7 @@ def create(episode=None):
         curviness = DEFAULT_CURVINESS
         blockly_enabled = True
         python_enabled = False
-        blocks = Block.objects.all()
+        blocks = [{'type': block.type} for block in Block.objects.all()]
         name = "Default random level"
         traffic_lights_enabled = True
     else:
@@ -57,37 +58,27 @@ def create(episode=None):
         curviness = episode.r_curviness
         blockly_enabled = episode.r_blocklyEnabled
         python_enabled = episode.r_pythonEnabled
-        blocks = episode.r_blocks.all()
+        blocks = [{'type': block.type} for block in episode.r_blocks.all()]
         name = "Random level for " + episode.name
         traffic_lights_enabled = episode.r_trafficLights
+
 
     level_data = generate_random_map_data(num_tiles,
                                           branchiness,
                                           loopiness,
                                           curviness,
                                           traffic_lights_enabled)
+    level_data['max_fuel'] = DEFAULT_MAX_FUEL
+    level_data['theme'] = 1
+    level_data['name'] = name
+    level_data['blocklyEnabled'] = blockly_enabled
+    level_data['pythonEnabled'] = python_enabled
+    level_data['character_name'] = "Van"
+    level_data['blocks'] = blocks
 
-    level = Level(name=name,
-                  path=level_data['path'],
-                  destinations=level_data['destinations'],
-                  traffic_lights=level_data['traffic_lights'],
-                  max_fuel=maxFuel,
-                  anonymous=True,
-                  origin=level_data['origin'],
-                  decor=level_data['decor'],
-                  theme=grass,
-                  blocklyEnabled=blockly_enabled,
-                  pythonEnabled=python_enabled)
 
-    level.save()
-
-    for block in blocks:
-        levelBlock = LevelBlock(type=block, level=level, number=None)
-        levelBlock.save()
-
-    expr = ('(({"coordinate" *: *{"y": *)([0-9]+)(, *"x" *: *)([0-9]+)(}, *"name" *: *")' +
-            '([a-zA-Z0-9]+)(", *"height" *: *)([0-9]+)( *}))')
-    set_level_decor(level, level_data['decor'], expr)
+    level = Level(default=False, anonymous=True)
+    level_management.save_level(level, level_data)
 
     return level
 
@@ -101,7 +92,7 @@ def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traff
 
     return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights),
             'origin': json.dumps(origin), 'destinations': json.dumps(destinations),
-            'decor': json.dumps(decor)}
+            'decor': decor}
 
 
 def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
@@ -341,7 +332,7 @@ def generate_decor(path, num_tiles):
             if (coord['x'] / GRID_SIZE == x and coord['y'] / GRID_SIZE == y or
                 (elem == 'pond' and (coord['x'] / GRID_SIZE == x + 1 and
                                      coord['y'] / GRID_SIZE == y or x + 1 < WIDTH)) or
-                (dec['name'] == 'pond' and coord['x'] / GRID_SIZE + 1 == x and
+                (dec['decorName'] == 'pond' and coord['x'] / GRID_SIZE + 1 == x and
                     coord['y'] / GRID_SIZE == y)):
                 return True
 
@@ -360,7 +351,7 @@ def generate_decor(path, num_tiles):
         x = x * GRID_SIZE + int((GRID_SIZE - decor_object.width) * 0.5 * (1 - dx))
         y = y * GRID_SIZE + int((GRID_SIZE - decor_object.height) * 0.5 * (1 - dy))
 
-        decor.append({'coordinate': {'x': x, 'y': y}, 'name': dec, 'height': decor_object.height})
+        decor.append({'coordinate': {'x': x, 'y': y}, 'decorName': dec, 'height': decor_object.height})
 
     def place_near_road(elem, decor, path):
         for i in range(1, len(path) - 1):
@@ -384,7 +375,7 @@ def generate_decor(path, num_tiles):
     def place_bush(elem, decor, nodes):
         bush_exists = False
         for dec in decor:
-            if dec['name'] == elem:
+            if dec['decorName'] == elem:
                 bush_exists = True
                 for (dx, dy) in DIRECTIONS:
                     x = dec['coordinate']['x'] / GRID_SIZE + dx
@@ -409,5 +400,10 @@ def generate_decor(path, num_tiles):
                 else:
                     place_randomly(dec, decor)
                     decor_count += 1
+
+    for dec in decor:
+        dec['x'] = dec['coordinate']['x']
+        dec['y'] = dec['coordinate']['y']
+        del dec['coordinate']
 
     return decor

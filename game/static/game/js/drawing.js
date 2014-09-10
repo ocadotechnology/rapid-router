@@ -422,13 +422,15 @@ ocargo.Drawing = function() {
         }
     };
 
-    this.renderDecor = function(decor) {
-        for (var i = 0; i < decor.length; i++) {
-            var obj = JSON.parse(decor[i]);
-            var coord = obj.coordinate;
-            var width = obj.width;
-            var height = obj.height;
-            paper.image(ocargo.Drawing.raphaelImageDir + obj['url'], coord.x, PAPER_HEIGHT - coord.y - height, width, height);
+    this.renderDecor = function(decors) {
+        for (var i = 0; i < decors.length; i++) {
+            var decor = decors[i];
+            var src = ocargo.Drawing.raphaelImageDir + decor.url;
+            var x = decor.x;
+            var y = PAPER_HEIGHT - decor.y - decor.height;
+            var width = decor.width;
+            var height = decor.height;
+            paper.image(src, x, y, width, height);
         }
     };
 

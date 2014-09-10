@@ -29,7 +29,7 @@
 
     var BLOCKS =  [];
     {% for block in blocks %}
-      BLOCKS.push({'type':"{{block.type}}", 'number':("{{block.number}}" === "None" ? undefined : {{block.number}})});
+      BLOCKS.push({'type':"{{block.type}}"{% if block.number %}, 'number':{{block.number}} {% endif %}});
     {% endfor %}
 
     var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none"><category name="+">';

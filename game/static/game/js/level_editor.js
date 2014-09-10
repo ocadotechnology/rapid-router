@@ -302,6 +302,10 @@ ocargo.LevelEditor = function() {
                 });
             }
 
+            // Disable block numbers if not developer
+            if(!DEVELOPER) {
+                $('.block_number').css('display', 'none');
+            }
 
             initCustomBlocksDescription();
 
@@ -366,42 +370,15 @@ ocargo.LevelEditor = function() {
                 $('#generate').attr('disabled', true);
 
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
-                    $('#generate').attr('disabled', false);
                     if (error) {
                         console.error(error);
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         return;
                     }
 
-                    clear();
+                    restoreState(mapData);
 
-                    var path = JSON.parse(mapData.path);
-                    var i;
-                    for (i = 0; i < path.length; i++) {
-                        var node = new ocargo.Node(new ocargo.Coordinate(path[i].coordinate[0],
-                                                   path[i].coordinate[1]));
-                        nodes.push(node);
-                    }
-
-                    for (i = 0; i < path.length; i++) {
-                        nodes[i].connectedNodes = [];
-                        for (var j = 0; j < path[i].connectedNodes.length; j++) {
-                            nodes[i].connectedNodes.push(nodes[path[i].connectedNodes[j]]);
-                        }
-                    }
-
-                    // TODO add in support for multiple destinations
-                    var destination = JSON.parse(mapData.destinations)[0];
-                    var destinationCoord = new ocargo.Coordinate(destination[0], destination[1]);
-                    destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoord, nodes);
-                    originNode = nodes[0];
-
-                    var tls = JSON.parse(mapData.traffic_lights);
-                    for (i = 0; i < tls.length; i++) {
-                        new InternalTrafficLight(tls[i]);
-                    }
-
-                    drawAll();
+                    $('#generate').attr('disabled', false);
                 });
             });
         }
@@ -1783,7 +1760,6 @@ ocargo.LevelEditor = function() {
     /**********************************/
 
     function extractState() {
-
         var state = {};
 
         // Create node data
@@ -1802,28 +1778,31 @@ ocargo.LevelEditor = function() {
         state.traffic_lights = JSON.stringify(trafficLightData);
 
         // Create block data
-        var blockData = [];
+        state.blocks = [];
         for (i = 0; i < BLOCKS.length; i++) {
             var type = BLOCKS[i];
             if ($('#' + type + "_checkbox").is(':checked')) {
-                blockData.push(type);
+                var block = {'type': type}
+                var number = $('#' + type + "_number").val();
+                if(number !== "infinity") {
+                    block.number = parseInt(number);
+                }
+
+                state.blocks.push(block);
             }
         }
-        state.block_types = JSON.stringify(blockData);
 
         // Create decor data
-        var decorData = [];
+        state.decor = [];
         for (i = 0; i < decor.length; i++) {
-            decorData.push(decor[i].getData());
+            state.decor.push(decor[i].getData());
         }
-        state.decor = JSON.stringify(decorData);
 
         // Destination and origin data
         if (destinationNode) {
             var destinationCoord = destinationNode.coordinate;
             state.destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
         }
-
         if (originNode) {
             var originCoord = originNode.coordinate;
             var nextCoord = originNode.connectedNodes[0].coordinate;
@@ -1894,15 +1873,35 @@ ocargo.LevelEditor = function() {
         }
 
         // Load in the decor data
-        var decorData = JSON.parse(state.decor);
-        for (var i = 0; i < decorData.length; i++) {
-            var decorObject = new InternalDecor(decorData[i].name);
-            decorObject.setCoordinate(new ocargo.Coordinate(decorData[i].coordinate.x,
-                PAPER_HEIGHT - decorData[i].height - decorData[i].coordinate.y));
+        var decor = state.decor;
+        for (var i = 0; i < decor.length; i++) {
+            var decorObject = new InternalDecor(decor[i].decorName);
+            decorObject.setPosition(decor[i].x, 
+                                    PAPER_HEIGHT - currentTheme.decor[decor[i].decorName].height - decor[i].y);
         }
 
+        // Load in block data
+        if(state.blocks) {
+            for(var i = 0; i < BLOCKS.length; i++) {
+                var type = BLOCKS[i];
+                $('#' + type + '_checkbox').prop('checked', false);
+                $('#' + type + '_number').val('infinity');
+            }
+            var blocks = state.blocks;
+            for(var i = 0; i < blocks.length; i++) {
+                var type = blocks[i].type;
+                $('#' + type + '_checkbox').prop('checked', true);
+                if(blocks[i].number) {
+                    $('#' + type + '_number').val(blocks[i].number);
+                }
+            }
+        }
+        
+
         // Other data
-        $('#max_fuel').val(state.max_fuel);
+        if(state.max_fuel) {
+            $('#max_fuel').val(state.max_fuel);
+        }
     }
 
     function loadLevel(levelID) { 
@@ -2109,22 +2108,25 @@ ocargo.LevelEditor = function() {
     /* Internal decor representation */
     /*********************************/
 
-    function InternalDecor(name) {
+    function InternalDecor(decorName) {
 
         // public methods
         this.getData = function() {
             var bBox = this.image.getBBox();
-            return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x),
-                                                        PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)),
-                    'name': this.name, 'height': bBox.height};
+            var data =  {
+                            'x': Math.floor(bBox.x),
+                            'y': PAPER_HEIGHT - bBox.height - Math.floor(bBox.y),
+                            'decorName': this.decorName
+                        };
+            return data;
         };
 
-        this.setCoordinate = function(coordinate) {
-            this.image.transform('t' + coordinate.x + ',' + coordinate.y);
+        this.setPosition = function(x, y) {
+            this.image.transform('t' + x + ',' + y);
         };
 
         this.updateTheme = function() {
-            var description = currentTheme.decor[this.name];
+            var description = currentTheme.decor[this.decorName];
             var newImage = ocargo.drawing.createImage(description.url, 0, 0, description.width,
                                                       description.height);
 
@@ -2147,7 +2149,7 @@ ocargo.LevelEditor = function() {
         };
 
         // data
-        this.name = name;
+        this.decorName = decorName;
         this.image = null;
         this.updateTheme();
 
