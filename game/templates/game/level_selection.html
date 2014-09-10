@@ -78,8 +78,9 @@
 			    			<p>
 				    			<a href="{% url 'game.views.play_custom_level' level.id %}">{{level.title}}</a>
 				    			{% if level.score != None %}
-				    			<span class="score_text">{{level.score|floatformat}}/10{% endif %}</span>
+				    			<span class="score_text">{{level.score|floatformat}}/10</span>
 				    			<img class="level_image coin_image" value="{{level.id}}">
+				    			{% endif %}
 			    			</p>
 			    		{% endfor %}
 			    	{% else %}
