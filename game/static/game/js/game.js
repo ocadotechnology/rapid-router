@@ -457,6 +457,7 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.clear_program.setOnChange(function() {
             ocargo.blocklyControl.reset();
             ocargo.editor.reset();
+            ocargo.game.reset();
 
             currentTabSelected.select();
         });
