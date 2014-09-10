@@ -87,6 +87,7 @@ input {
     max-width: 100%;
     top: -15px;
     left: -0.5px;
+    height: 16px;
 }
 
 #trashcanLidOpen {
@@ -94,10 +95,12 @@ input {
     max-width: 95%;
     top: -36px;
     left: 0px;
+    height: 38px;
 }
 
 #trashcan {
     max-width: 90%;
+    height: 48px;
 }
 
 
