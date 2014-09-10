@@ -26,6 +26,18 @@ from serializers import WorkspaceSerializer, LevelSerializer
 # Level #
 #########
 
+def play_custom_level(request, levelID):
+    level = cached_level(levelID)
+    if level.default:
+        raise Http404
+    return play_level(request, levelID)
+
+
+def play_default_level(request, levelName):
+    level = get_object_or_404(Level, name=levelName, default=True)
+    return play_level(request, level.id)
+
+
 def play_level(request, levelID):
     """ Loads a level for rendering in the game.
 
@@ -50,7 +62,6 @@ def play_level(request, levelID):
     if not permissions.can_play_level(request.user, level):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
-    blocks = LevelBlock.objects.filter(level=level).order_by('type')
     lesson = 'description_level' + str(levelID)
     hint = 'hint_level' + str(levelID)
 
@@ -66,8 +77,6 @@ def play_level(request, levelID):
     lesson = mark_safe(lessonCall())
     hint = mark_safe(hintCall())
 
-    decor = LevelDecor.objects.filter(level=level)
-    decorData = parseDecor(level.theme, decor)
     house = getDecorElement('house', level.theme).url
     cfc = getDecorElement('cfc', level.theme).url
     background = getDecorElement('tile1', level.theme).url
@@ -82,11 +91,14 @@ def play_level(request, levelID):
             attempt.save()
             
         workspace =  attempt.workspace
-        
+    
+    decorData = level_management.get_decor(level)
+    blockData = level_management.get_blocks(level)
+
     context = RequestContext(request, {
         'level': level,
-        'blocks': blocks,
         'lesson': lesson,
+        'blocks': blockData,
         'decor': decorData,
         'character': character,
         'background': background,
@@ -197,50 +209,59 @@ def levels(request):
             if attempt:
                 return attempt.score
 
+    developer = (not request.user.is_anonymous()) and request.user.userprofile.developer
     episode_data = []
-    episode = Episode.objects.get(name='Getting Started')
-    while episode is not None:
+    for episode in Episode.objects.all().order_by('id'):
+        if episode.in_development and not developer:
+            break;
+
         levels = []
-        minId = None
-        maxId = None
+        minName = None
+        maxName = None
         for level in episode.levels:
-            if not maxId or level.id > maxId:
-                maxId = level.id
-            if not minId or level.id < minId:
-                minId = level.id
+            level_name = int(level.name)
+            if not maxName or level_name > maxName:
+                maxName = level_name
+            if not minName or level_name < minName:
+                minName = level_name
 
             levels.append({
                 "id": level.id,
-                "title": get_level_title(level.id),
+                "name": level_name,
+                "title": get_level_title(level_name),
                 "score": get_attempt_score(level)})
             
         e = {"id": episode.id,
              "name": episode.name,
              "levels": levels,
-             "first_level": minId,
-             "last_level": maxId}
+             "first_level": minName,
+             "last_level": maxName}
 
         episode_data.append(e)
-        episode = episode.next_episode
+        if episode.in_development and not developer:
+            episode = None
+        else:
+            episode = episode.next_episode
 
     owned_level_data = []
     shared_level_data = []
-
-    if hasattr(request.user, 'userprofile'):
+    if not request.user.is_anonymous():
         owned_levels, shared_levels = level_management.get_list_of_loadable_levels(request.user)
 
         for level in owned_levels:
             owned_level_data.append({
                 "id": level.id,
                 "title": level.name,
-                "score": get_attempt_score(level)})
+                "score": get_attempt_score(level)
+            })
 
         for level in shared_levels:
             shared_level_data.append({
                 "id": level.id,
                 "title": level.name,
                 "owner": level.owner.user,
-                "score": get_attempt_score(level)})
+                "score": get_attempt_score(level)
+            })
 
     context = RequestContext(request, {
         'episodeData': episode_data,
@@ -700,19 +721,19 @@ def play_anonymous_level(request, levelID, from_level_editor=True):
     hint = mark_safe(hintCall())
 
     attempt = None
-    blocks = LevelBlock.objects.filter(level=level).order_by('type')
-    decor = LevelDecor.objects.filter(level=level)
-    decor_data = parseDecor(level.theme, decor)
     house = getDecorElement('house', level.theme).url
     cfc = getDecorElement('cfc', level.theme).url
     background = getDecorElement('tile1', level.theme).url
     character = level.character
 
-    context = RequestContext(request, {
+    decor_data = level_management.get_decor(level)
+    block_data = level_management.get_blocks(level)
+
+    context = RequestContext(request,{
         'level': level,
-        'blocks': [block for block in blocks],  # No idea why but leaving this as a queryset was causing issues, it was magically emptying between here and the template rendering
-        'lesson': lesson,
         'decor': decor_data,
+        'blocks': block_data,
+        'lesson': lesson,
         'character': character,
         'background': background,
         'house': house,
@@ -754,7 +775,11 @@ def load_level_for_editor(request, levelID):
 
     response = ''
     if permissions.can_load_level(request.user, level):
-        response = {'owned': level.owner == request.user.userprofile, 'level': model_to_dict(level)}
+        levelDict = model_to_dict(level)
+        levelDict['decor'] = level_management.get_decor(level)
+        levelDict['blocks'] = level_management.get_blocks(level)
+
+        response = {'owned': level.owner == request.user.userprofile, 'level':levelDict}
         
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
@@ -762,35 +787,21 @@ def load_level_for_editor(request, levelID):
 def save_level_for_editor(request, levelID=None):
     """ Processes a request on creation of the map in the level editor """
 
+    data = json.loads(request.POST['data'])
+
     if levelID is not None:
         level = Level.objects.get(id=levelID)
     else:
-        level = Level(default=False, anonymous=request.POST.get('anonymous') == 'true')
+        level = Level(default=False, anonymous=data['anonymous'])
 
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
 
     if permissions.can_save_level(request.user, level):
-        data = {
-            'name': request.POST.get('name'),
-            'path': request.POST.get('path'),
-            'destinations': request.POST.get('destinations'),
-            'origin': request.POST.get('origin'),
-            'decor': request.POST.get('decor'),
-            'traffic_lights': request.POST.get('traffic_lights'),
-            'max_fuel': request.POST.get('max_fuel'),
-            'theme_id': request.POST.get('theme'),
-            'character_name': request.POST.get('character_name'),
-            'blockTypes': json.loads(request.POST.get('block_types')),
-            'blocklyEnabled': request.POST.get('blocklyEnabled') == 'true',
-            'pythonEnabled': request.POST.get('pythonEnabled') == 'true',
-        }
-
         level_management.save_level(level, data)
 
         # Add the teacher automatically if it is a new level and the student is not independent
         if (levelID is None) and hasattr(level.owner, 'student') and not level.owner.student.is_independent():
-            print(level.owner.student.is_independent())
             level.shared_with.add(level.owner.student.class_field.teacher.user.user)
             level.save()
 
@@ -819,10 +830,12 @@ def generate_random_map_for_editor(request):
     branchiness = float(request.GET['branchiness'])
     loopiness = float(request.GET['loopiness'])
     curviness = float(request.GET['curviness'])
-    traffic_lights_enabled = request.GET['trafficLightsEnabled'] == 'true'
+    traffic_lights = request.GET['trafficLights'] == 'true'
+    scenery = request.GET['scenery'] == 'true'
 
     data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
-                                                traffic_lights_enabled)
+                                                traffic_lights, scenery)
+    
     return HttpResponse(json.dumps(data), content_type='application/javascript')
 
 
@@ -843,14 +856,14 @@ def get_sharing_information_for_editor(request, levelID):
             class_ = student.class_field
             classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
             valid_recipients['classmates'] = [{'id': classmate.user.user.id,
-                                               'name': classmate.user.user.first_name,
+                                               'name': app_tags.make_into_username(classmate.user.user),
                                                'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
                                               for classmate in classmates]
 
             # Then add their teacher as well
             teacher = class_.teacher
             valid_recipients['teacher'] = {'id': teacher.user.user.id,
-                                           'name': teacher.title + " " + teacher.user.user.last_name,
+                                           'name': app_tags.make_into_username(teacher.user.user),
                                            'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
 
         elif hasattr(userprofile, 'teacher'):
@@ -864,14 +877,14 @@ def get_sharing_information_for_editor(request, levelID):
                 valid_recipients['classes'].append({'name': class_.name,
                                                     'id': class_.id,
                                                     'students': [{'id': student.user.user.id,
-                                                                  'name': student.user.user.first_name,
+                                                                  'name': app_tags.make_into_username(student.user.user),
                                                                   'shared': level.shared_with.filter(id=student.user.user.id).exists()}
                                                                  for student in students]})
 
             # Then add all the teachers at the same organisation
             fellow_teachers = Teacher.objects.filter(school=teacher.school)
             valid_recipients['teachers'] = [{'id': fellow_teacher.user.user.id,
-                                             'name': fellow_teacher.user.user.first_name + " " + fellow_teacher.user.user.last_name,
+                                             'name': app_tags.make_into_username(fellow_teacher.user.user),
                                              'shared': level.shared_with.filter(id=fellow_teacher.user.user.id).exists()}
                                             for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
 
@@ -887,7 +900,6 @@ def share_level_for_editor(request, levelID):
     recipients = User.objects.filter(id__in=recipientIDs)
 
     for recipient in recipients:
-        print(recipient)
         if permissions.can_share_level_with(recipient, level.owner.user):
             if action == 'share':
                 level_management.share_level(level, recipient.userprofile.user)
@@ -933,18 +945,6 @@ def getDecorElement(name, theme):
         return Decor.objects.get(name=name, theme=theme)
     except ObjectDoesNotExist:
         return Decor.objects.filter(name=name)[0]
-
-
-def parseDecor(theme, levelDecors):
-    """ Helper method parsing decor into a format 'sendable' to javascript. """
-    decorData = []
-    for levelDecor in levelDecors:
-        decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)
-        decorData.append(json.dumps(
-            {"coordinate": {"x": levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
-             "width": decor.width, "height": decor.height}))
-    return decorData
-
 
 def renderAvatarChoice(request):
     """ Helper method for settings view. Generates and processes the avatar changing forms.

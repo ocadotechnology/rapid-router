@@ -337,6 +337,18 @@
                         <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
                       </div>
                       <div id="{{block.type}}_image" class="table_cell unselectable"></div>
+                      <select id="{{block.type}}_number" class="block_number" class="table_cell unselectable">
+                        <option value="infinity">&infin;</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                      </select>
                     </div>
                   {% endfor %}  
                 </div>
@@ -370,6 +382,15 @@
                     <div class="table_cell field_label"><p>Traffic Lights:</p></div>
                     <div class="table_cell field_value">
                       <select id="trafficLightsEnabled">
+                        <option value="yes">Yes</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>Scenery:</p></div>
+                    <div class="table_cell field_value">
+                      <select id="sceneryEnabled">
                         <option value="yes">Yes</option>
                         <option value="no" selected>No</option>
                       </select>

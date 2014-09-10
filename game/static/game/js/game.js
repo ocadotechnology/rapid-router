@@ -138,7 +138,7 @@ ocargo.Game.prototype.setup = function() {
     // Start the popup
     var title = "Try solving this one...";
     if (LEVEL_ID) {
-        title = "Level " + LEVEL_ID; 
+        title = "Level " + LEVEL_NAME;
     }
     ocargo.Drawing.startPopup(title, "",
         LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
@@ -457,6 +457,7 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.clear_program.setOnChange(function() {
             ocargo.blocklyControl.reset();
             ocargo.editor.reset();
+            ocargo.game.reset();
 
             currentTabSelected.select();
         });

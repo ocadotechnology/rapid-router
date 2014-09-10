@@ -48,7 +48,6 @@ class Level (models.Model):
     destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)
     owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
-    blocks = models.ManyToManyField(Block, related_name='levels')
     fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
@@ -90,6 +89,7 @@ class Episode (models.Model):
     name = models.CharField(max_length=200)
     first_level = models.ForeignKey(Level)
     next_episode = models.ForeignKey("self", null=True, default=None)
+    in_development = models.BooleanField(default=False)
 
     r_branchiness = models.FloatField(default=0)
     r_loopiness = models.FloatField(default=0)

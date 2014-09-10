@@ -272,6 +272,12 @@ input[type="checkbox"].block_checkbox {
     text-align: left;
 }
 
+.block_number {
+    margin-left: 10px;
+    width: 50px;
+    padding-left: 12px;
+}
+
 
 /******************/
 /* Characters tab */

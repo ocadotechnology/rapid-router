@@ -302,6 +302,10 @@ ocargo.LevelEditor = function() {
                 });
             }
 
+            // Disable block numbers if not developer
+            if(!DEVELOPER) {
+                $('.block_number').css('display', 'none');
+            }
 
             initCustomBlocksDescription();
 
@@ -360,48 +364,22 @@ ocargo.LevelEditor = function() {
                             branchiness: branchiness/10.0,
                             loopiness: loopiness/10.0,
                             curviness: curviness/10.0,
-                            trafficLightsEnabled: $('#trafficLightsEnabled').val() == "yes",
+                            trafficLights: $('#trafficLightsEnabled').val() == "yes",
+                            scenery: $('#sceneryEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
                 
                 $('#generate').attr('disabled', true);
 
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
-                    $('#generate').attr('disabled', false);
                     if (error) {
                         console.error(error);
                         ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
                         return;
                     }
 
-                    clear();
+                    restoreState(mapData);
 
-                    var path = JSON.parse(mapData.path);
-                    var i;
-                    for (i = 0; i < path.length; i++) {
-                        var node = new ocargo.Node(new ocargo.Coordinate(path[i].coordinate[0],
-                                                   path[i].coordinate[1]));
-                        nodes.push(node);
-                    }
-
-                    for (i = 0; i < path.length; i++) {
-                        nodes[i].connectedNodes = [];
-                        for (var j = 0; j < path[i].connectedNodes.length; j++) {
-                            nodes[i].connectedNodes.push(nodes[path[i].connectedNodes[j]]);
-                        }
-                    }
-
-                    // TODO add in support for multiple destinations
-                    var destination = JSON.parse(mapData.destinations)[0];
-                    var destinationCoord = new ocargo.Coordinate(destination[0], destination[1]);
-                    destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoord, nodes);
-                    originNode = nodes[0];
-
-                    var tls = JSON.parse(mapData.traffic_lights);
-                    for (i = 0; i < tls.length; i++) {
-                        new InternalTrafficLight(tls[i]);
-                    }
-
-                    drawAll();
+                    $('#generate').attr('disabled', false);
                 });
             });
         }
@@ -1063,13 +1041,16 @@ ocargo.LevelEditor = function() {
     // Function for making an element "transparent" to mouse events
     // e.g. decor, traffic lights, rubbish bin etc.
     function addReleaseListeners(element) {
+        var lastGridItem;
+
         element.onmouseover = 
             function(e) {
-                var gridItem = getGridItem(e.pageX, e.pageY);
-                handleMouseOut(gridItem)(e);
+                lastGridItem = getGridItem(e.pageX, e.pageY);
+                if(strikeStart) {
+                    handleMouseOver(lastGridItem)(e);
+                }
             };
 
-        var lastGridItem;
         element.onmousemove = 
             function(e) {
                 var item = getGridItem(e.pageX, e.pageY);
@@ -1080,13 +1061,13 @@ ocargo.LevelEditor = function() {
                     if(strikeStart) {
                         handleMouseOver(item)(e);
                     }
+                    lastGridItem = item;
                 }
-                lastGridItem = item;
             };
 
         element.onmouseup = 
             function(e) {
-                if((mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) && strikeStart) {
+                if(strikeStart) {
                     handleMouseUp(getGridItem(e.pageX, e.pageY))(e);
                 }
             };
@@ -1281,13 +1262,15 @@ ocargo.LevelEditor = function() {
             image.transform('t' + paperX + ',' + paperY);
 
             // Deal with trashcan
-            var paperAbsX = paperX - paper.scrollLeft();
-            var paperAbsY = paperY - paper.scrollTop();
+            var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
+            var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
             var trashcanWidth = $('#trashcanHolder').width();
             var trashcanHeight = $('#trashcanHolder').height();
 
-            if(paperAbsX >= trashcanAbsolutePaperX - trashcanWidth && paperAbsX < trashcanAbsolutePaperX  &&
-                paperAbsY >= trashcanAbsolutePaperY - trashcanHeight - 20 && paperAbsY < trashcanAbsolutePaperY) {
+            console.log(paperAbsX, trashcanAbsolutePaperX)
+
+            if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
+                paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
                 openTrashcan();
             }
             else {
@@ -1465,13 +1448,13 @@ ocargo.LevelEditor = function() {
             }
 
             // Deal with trashcan
-            var paperAbsX = paperX - paper.scrollLeft();
-            var paperAbsY = paperY - paper.scrollTop();
+            var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
+            var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
             var trashcanWidth = $('#trashcanHolder').width();
             var trashcanHeight = $('#trashcanHolder').height();
 
-            if(paperAbsX >= trashcanAbsolutePaperX - trashcanWidth && paperAbsX < trashcanAbsolutePaperX  &&
-                paperAbsY >= trashcanAbsolutePaperY - trashcanHeight - 20 && paperAbsY < trashcanAbsolutePaperY) {
+            if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
+                paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
                 openTrashcan();
             }
             else {
@@ -1609,18 +1592,8 @@ ocargo.LevelEditor = function() {
     /* Miscaellaneous state methods */
     /********************************/
 
-    function finaliseDelete(strikeEnd) {    
-        applyAlongStrike(deleteNode, strikeEnd);
-        strikeStart = null;
+    function finaliseDelete(strikeEnd) {
 
-        // Delete any nodes isolated through deletion
-        for (var i = nodes.length - 1; i >= 0; i--) {
-            if (nodes[i].connectedNodes.length === 0) {
-                var coordinate = nodes[i].coordinate;
-                deleteNode(coordinate.x, coordinate.y);
-            }
-        }
-        
         function deleteNode(x, y) {
             var coord = new ocargo.Coordinate(x, y);
             var node = ocargo.Node.findNodeByCoordinate(coord, nodes);
@@ -1651,17 +1624,21 @@ ocargo.LevelEditor = function() {
                 }
             }
         }
+
+
+        applyAlongStrike(deleteNode, strikeEnd);
+        strikeStart = null;
+
+        // Delete any nodes isolated through deletion
+        for (var i = nodes.length - 1; i >= 0; i--) {
+            if (nodes[i].connectedNodes.length === 0) {
+                var coordinate = nodes[i].coordinate;
+                deleteNode(coordinate.x, coordinate.y);
+            }
+        }
     }
 
     function finaliseMove(strikeEnd) {
-
-        if(!strikeStart || (strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y)) {
-            return;
-        }
-
-        applyAlongStrike(addNode, strikeEnd);
-        strikeStart =  null;
-
         var previousNode = null;
         function addNode(x, y) {
             var coord = new ocargo.Coordinate(x,y);
@@ -1670,21 +1647,26 @@ ocargo.LevelEditor = function() {
                 node = new ocargo.Node(coord);
                 nodes.push(node);
             }
-            else {
-                // If we've overwritten the origin node remove it as 
-                // we can no longer place the CFC there
-                if (node === originNode) {
-                    markAsBackground(originNode.coordinate);
-                    originNode = null;
-                }
-            }
 
             // Now connect it up with it's new neighbours
             if (previousNode && node.connectedNodes.indexOf(previousNode) === -1) {
                 node.addConnectedNodeWithBacklink(previousNode);
+
+                // If we've overwritten the origin node remove it as 
+                // we can no longer place the CFC there
+                if (node === originNode || previousNode == originNode) {
+                    markAsBackground(originNode.coordinate);
+                    originNode = null;
+                }
             }
             previousNode = node;
         }
+
+
+        if(strikeStart && !(strikeStart.x === strikeEnd.x && strikeStart.y === strikeEnd.y)) {
+            applyAlongStrike(addNode, strikeEnd);
+        }
+        strikeStart = null;
     }
 
     function applyAlongStrike(func, strikeEnd) {
@@ -1780,7 +1762,6 @@ ocargo.LevelEditor = function() {
     /**********************************/
 
     function extractState() {
-
         var state = {};
 
         // Create node data
@@ -1799,28 +1780,31 @@ ocargo.LevelEditor = function() {
         state.traffic_lights = JSON.stringify(trafficLightData);
 
         // Create block data
-        var blockData = [];
+        state.blocks = [];
         for (i = 0; i < BLOCKS.length; i++) {
             var type = BLOCKS[i];
             if ($('#' + type + "_checkbox").is(':checked')) {
-                blockData.push(type);
+                var block = {'type': type}
+                var number = $('#' + type + "_number").val();
+                if(number !== "infinity") {
+                    block.number = parseInt(number);
+                }
+
+                state.blocks.push(block);
             }
         }
-        state.block_types = JSON.stringify(blockData);
 
         // Create decor data
-        var decorData = [];
+        state.decor = [];
         for (i = 0; i < decor.length; i++) {
-            decorData.push(decor[i].getData());
+            state.decor.push(decor[i].getData());
         }
-        state.decor = JSON.stringify(decorData);
 
         // Destination and origin data
         if (destinationNode) {
             var destinationCoord = destinationNode.coordinate;
             state.destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
         }
-
         if (originNode) {
             var originCoord = originNode.coordinate;
             var nextCoord = originNode.connectedNodes[0].coordinate;
@@ -1891,15 +1875,35 @@ ocargo.LevelEditor = function() {
         }
 
         // Load in the decor data
-        var decorData = JSON.parse(state.decor);
-        for (var i = 0; i < decorData.length; i++) {
-            var decorObject = new InternalDecor(decorData[i].name);
-            decorObject.setCoordinate(new ocargo.Coordinate(decorData[i].coordinate.x,
-                PAPER_HEIGHT - decorData[i].height - decorData[i].coordinate.y));
+        var decor = state.decor;
+        for (var i = 0; i < decor.length; i++) {
+            var decorObject = new InternalDecor(decor[i].decorName);
+            decorObject.setPosition(decor[i].x, 
+                                    PAPER_HEIGHT - currentTheme.decor[decor[i].decorName].height - decor[i].y);
         }
 
+        // Load in block data
+        if(state.blocks) {
+            for(var i = 0; i < BLOCKS.length; i++) {
+                var type = BLOCKS[i];
+                $('#' + type + '_checkbox').prop('checked', false);
+                $('#' + type + '_number').val('infinity');
+            }
+            var blocks = state.blocks;
+            for(var i = 0; i < blocks.length; i++) {
+                var type = blocks[i].type;
+                $('#' + type + '_checkbox').prop('checked', true);
+                if(blocks[i].number) {
+                    $('#' + type + '_number').val(blocks[i].number);
+                }
+            }
+        }
+        
+
         // Other data
-        $('#max_fuel').val(state.max_fuel);
+        if(state.max_fuel) {
+            $('#max_fuel').val(state.max_fuel);
+        }
     }
 
     function loadLevel(levelID) { 
@@ -2106,22 +2110,25 @@ ocargo.LevelEditor = function() {
     /* Internal decor representation */
     /*********************************/
 
-    function InternalDecor(name) {
+    function InternalDecor(decorName) {
 
         // public methods
         this.getData = function() {
             var bBox = this.image.getBBox();
-            return {'coordinate': new ocargo.Coordinate(Math.floor(bBox.x),
-                                                        PAPER_HEIGHT - bBox.height - Math.floor(bBox.y)),
-                    'name': this.name, 'height': bBox.height};
+            var data =  {
+                            'x': Math.floor(bBox.x),
+                            'y': PAPER_HEIGHT - bBox.height - Math.floor(bBox.y),
+                            'decorName': this.decorName
+                        };
+            return data;
         };
 
-        this.setCoordinate = function(coordinate) {
-            this.image.transform('t' + coordinate.x + ',' + coordinate.y);
+        this.setPosition = function(x, y) {
+            this.image.transform('t' + x + ',' + y);
         };
 
         this.updateTheme = function() {
-            var description = currentTheme.decor[this.name];
+            var description = currentTheme.decor[this.decorName];
             var newImage = ocargo.drawing.createImage(description.url, 0, 0, description.width,
                                                       description.height);
 
@@ -2144,7 +2151,7 @@ ocargo.LevelEditor = function() {
         };
 
         // data
-        this.name = name;
+        this.decorName = decorName;
         this.image = null;
         this.updateTheme();
 

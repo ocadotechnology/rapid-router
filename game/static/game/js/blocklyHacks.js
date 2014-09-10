@@ -53,7 +53,7 @@ ocargo.BlocklyHacks = function() {
 		            var block = blocks[i];
 		            var blockHW = block.getHeightWidth();
 
-		            if(blockCount[block.type]) {
+		            if(blockCount[block.type] !== undefined) {
 		                var attributes = {'width': 30,
 			                              'height': 30,
 			                              'x': this.width_,
@@ -79,7 +79,7 @@ ocargo.BlocklyHacks = function() {
 		    Blockly.Flyout.prototype.createBlockFunc_ = function(originBlock) {
 		        var func = oldCreateBlockFunction.call(this, originBlock);
 		        return function(e) {
-		            if(blockCount[originBlock.type] > 0) {
+		            if(blockCount[originBlock.type] === undefined || blockCount[originBlock.type] > 0) {
 		                func(e);
 		            }
 		        }
@@ -89,8 +89,8 @@ ocargo.BlocklyHacks = function() {
 		    var oldInitialize = Blockly.Block.prototype.initialize;
 		    Blockly.Block.prototype.initialize = function(workspace, prototypeName) {
 		        oldInitialize.call(this, workspace, prototypeName);
-		        if(this.type !== "start"  && this.workspace === Blockly.mainWorkspace) {
-		            blockCount[this.type] -= 1;
+		        if(this.type !== "start"  && this.workspace === Blockly.mainWorkspace && blockCount[this.type] !== undefined) {
+	        		blockCount[this.type] -= 1;
 
 		            var quantityText = $('.quantity_text[value="' + this.type + '"]')[0];
 		            if(quantityText) {
@@ -103,7 +103,7 @@ ocargo.BlocklyHacks = function() {
 		    // Override block dispose method to keep track of blocks leaving the workspace
 		    var oldDispose = Blockly.Block.prototype.dispose;
 		    Blockly.Block.prototype.dispose = function(healStack, animate, opt_dontRemoveFromWorkspace) {
-		        if(this.workspace === Blockly.mainWorkspace) {
+		        if(this.workspace === Blockly.mainWorkspace && blockCount[this.type] !== undefined) {
 		            blockCount[this.type] += 1;
 
 		            var quantityText = $('.quantity_text[value="' + this.type + '"]')[0];
