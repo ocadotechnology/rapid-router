@@ -8,7 +8,6 @@ from collections import defaultdict, namedtuple
 from models import Level, LevelBlock, Block, Theme, Decor
 
 
-
 Node = namedtuple('Node', ['x', 'y'])
 
 DIRECTIONS = {(1, 0), (0, 1), (-1, 0), (0, -1)}
@@ -31,6 +30,9 @@ DEFAULT_MAX_FUEL = 30
 DEFAULT_START_NODE = Node(0, 3)
 DEFAULT_NUM_TILES = 20
 
+DEFAULT_TRAFFIC_LIGHTS = True
+DEFAULT_DECOR = True
+
 # Max parameter value: 1
 DEFAULT_BRANCHINESS = 0.3
 DEFAULT_LOOPINESS = 0.1
@@ -41,54 +43,35 @@ PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
 
 def create(episode=None):
 
-    if not episode:
-        num_tiles = DEFAULT_NUM_TILES
-        branchiness = DEFAULT_BRANCHINESS
-        loopiness = DEFAULT_LOOPINESS
-        curviness = DEFAULT_CURVINESS
-        blockly_enabled = True
-        python_enabled = False
-        blocks = [{'type': block.type} for block in Block.objects.all()]
-        name = "Default random level"
-        traffic_lights_enabled = True
-    else:
-        num_tiles = episode.r_num_tiles
-        branchiness = episode.r_branchiness
-        loopiness = episode.r_loopiness
-        curviness = episode.r_curviness
-        blockly_enabled = episode.r_blocklyEnabled
-        python_enabled = episode.r_pythonEnabled
-        blocks = [{'type': block.type} for block in episode.r_blocks.all()]
-        name = "Random level for " + episode.name
-        traffic_lights_enabled = episode.r_trafficLights
+    num_tiles = episode.r_num_tiles if episode else DEFAULT_NUM_TILES
+    branchiness = episode.r_branchiness if episode else DEFAULT_BRANCHINESS
+    loopiness = episode.r_loopiness if episode else DEFAULT_LOOPINESS
+    curviness = episode.r_curviness if episode else DEFAULT_CURVINESS
+    traffic_lights = episode.r_trafficLights if episode else DEFAULT_TRAFFIC_LIGHTS
+    decor = DEFAULT_DECOR
+    blocks = episode.r_blocks.all() if episode else Block.objects.all()
 
+    level_data = generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights, decor)
 
-    level_data = generate_random_map_data(num_tiles,
-                                          branchiness,
-                                          loopiness,
-                                          curviness,
-                                          traffic_lights_enabled)
     level_data['max_fuel'] = DEFAULT_MAX_FUEL
     level_data['theme'] = 1
-    level_data['name'] = name
-    level_data['blocklyEnabled'] = blockly_enabled
-    level_data['pythonEnabled'] = python_enabled
+    level_data['name'] = ("Random level for " + episode.name) if episode else "Default random level"
     level_data['character_name'] = "Van"
-    level_data['blocks'] = blocks
-
+    level_data['blocklyEnabled'] = episode.r_blocklyEnabled if episode else True
+    level_data['pythonEnabled'] = episode.r_pythonEnabled if episode else False
+    level_data['blocks'] = [{'type': block.type} for block in blocks]
 
     level = Level(default=False, anonymous=True)
     level_management.save_level(level, level_data)
 
     return level
 
-
-def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled):
+def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled, decor_enabled):
     path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
     destinations = [[path[-1]['coordinate'].x, path[-1]['coordinate'].y]]
     origin = get_origin(path)
-    decor = generate_decor(path, num_tiles)
+    decor = generate_decor(path, num_tiles) if decor_enabled else []
 
     return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights),
             'origin': json.dumps(origin), 'destinations': json.dumps(destinations),

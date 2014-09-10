@@ -364,7 +364,8 @@ ocargo.LevelEditor = function() {
                             branchiness: branchiness/10.0,
                             loopiness: loopiness/10.0,
                             curviness: curviness/10.0,
-                            trafficLightsEnabled: $('#trafficLightsEnabled').val() == "yes",
+                            trafficLights: $('#trafficLightsEnabled').val() == "yes",
+                            scenery: $('#sceneryEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
                 
                 $('#generate').attr('disabled', true);

@@ -828,10 +828,12 @@ def generate_random_map_for_editor(request):
     branchiness = float(request.GET['branchiness'])
     loopiness = float(request.GET['loopiness'])
     curviness = float(request.GET['curviness'])
-    traffic_lights_enabled = request.GET['trafficLightsEnabled'] == 'true'
+    traffic_lights = request.GET['trafficLights'] == 'true'
+    scenery = request.GET['scenery'] == 'true'
 
     data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
-                                                traffic_lights_enabled)
+                                                traffic_lights, scenery)
+    
     return HttpResponse(json.dumps(data), content_type='application/javascript')
 
 
