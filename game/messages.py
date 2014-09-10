@@ -491,7 +491,8 @@ def description_level19():
                        + "instruction. <br> This means you can use one block instead of lots of "
                        + "blocks to do the same thing over and over again. <br> How many times do "
                        + "you want the instruction repeated? Type the number into the "
-                       + "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'. ")
+                       + "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'.  "
+                       + "<br><br> When you are ready, press <b>Play</b>! ")
     return build_description(title_level19(), message)
 
 
