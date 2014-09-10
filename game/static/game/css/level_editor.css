@@ -72,6 +72,38 @@ input {
     float: left;
 }
 
+/************/
+/* Trashcan */
+/************/
+
+#trashcanHolder {
+    position: absolute;
+    width: 50px;
+    text-align: center;
+}
+
+#trashcanLidClosed {
+    position: absolute;
+    max-width: 100%;
+    top: -15px;
+    left: -0.5px;
+    height: 16px;
+}
+
+#trashcanLidOpen {
+    position: absolute;
+    max-width: 95%;
+    top: -36px;
+    left: 0px;
+    height: 38px;
+}
+
+#trashcan {
+    max-width: 90%;
+    height: 48px;
+}
+
+
 /****************/
 /* Current tool */
 /****************/
@@ -241,6 +273,12 @@ input[type="checkbox"].block_checkbox {
     font-weight: bold;
     font-size: 20px;
     text-align: left;
+}
+
+.block_number {
+    margin-left: 10px;
+    width: 50px;
+    padding-left: 12px;
 }
 
 

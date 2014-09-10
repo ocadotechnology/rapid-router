@@ -1,4 +1,3 @@
-import re
 import permissions
 
 from models import Level, Block, LevelBlock, LevelDecor, Decor, Theme, Character
@@ -9,43 +8,64 @@ from models import Level, Block, LevelBlock, LevelDecor, Decor, Theme, Character
 ##########
 
 def get_list_of_loadable_levels(user):
-    loadable_levels = [level for level in Level.objects.all() if permissions.can_load_level(user, level)]
+    loadable_levels = [
+        level for level in Level.objects.all() if permissions.can_load_level(user, level)]
     owned_levels = [level for level in loadable_levels if level.owner == user.userprofile]
     shared_levels = [level for level in loadable_levels if level.owner != user.userprofile]
     return owned_levels, shared_levels
 
 
-def set_level_decor(level, decorString, regex):
-    """ Helper method creating LevelDecor objects given a string of all decors."""
+def get_decor(level):
+    """ Helper method parsing decor into a dictionary format 'sendable' to javascript. """
+    decorData = []
+    for ld in LevelDecor.objects.filter(level=level):
+        decor = Decor.objects.get(name=ld.decorName, theme=level.theme)
+        decorData.append({
+            'x': int(ld.x),
+            'y': int(ld.y),
+            'decorName': str(ld.decorName),
+            'width': int(decor.width),
+            'height': int(decor.height),
+            'url': str(decor.url),
+        })
 
-    regex = re.compile(regex)
-    items = regex.findall(decorString)
+    return decorData
 
-    level.decor = decorString
-    
-    existingDecor = LevelDecor.objects.filter(level=level)
-    for levelDecor in existingDecor:
-        levelDecor.delete()
 
-    if len(items) > 0 and len(items[0]) > 1 and 'x' in items[0][1]:
-        xIndex = 2
-        yIndex = 4
-    else:
-        xIndex = 4
-        yIndex = 2
+def set_decor(level, decor):
+    """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
+    LevelDecor.objects.filter(level=level).delete()
 
-    items = regex.findall(decorString)
-
-    for item in items:
-        name = item[6]
-        levelDecor = LevelDecor(level=level, x=item[xIndex], y=item[yIndex], decorName=name)
+    for data in decor:
+        levelDecor = LevelDecor(
+            level=level,
+            x=data['x'],
+            y=data['y'],
+            decorName=data['decorName'],
+        )
         levelDecor.save()
 
 
-def save_level(level, data):
-    theme = Theme.objects.get(id=data['theme_id'])
-    character = Character.objects.get(name=data['character_name'])
+def get_blocks(level):
+    """ Helper method parsing blocks into a dictionary format 'sendable' to javascript. """
+    levelBlocks = LevelBlock.objects.filter(level=level).order_by('type')
+    return [{'type': lb.type.type, 'number': lb.number} for lb in levelBlocks]
 
+
+def set_blocks(level, blocks):
+    """ Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
+    LevelBlock.objects.filter(level=level).delete()
+
+    for data in blocks:
+        levelBlock = LevelBlock(
+            level=level,
+            type=Block.objects.get(type=data['type']),
+            number=data['number'] if 'number' in data else None,
+        )
+        levelBlock.save()
+
+
+def save_level(level, data):
     level.name = data['name']
     level.path = data['path']
     level.origin = data['origin']
@@ -54,19 +74,12 @@ def save_level(level, data):
     level.traffic_lights = data['traffic_lights']
     level.blocklyEnabled = data['blocklyEnabled']
     level.pythonEnabled = data['pythonEnabled']
-    level.theme = theme
-    level.character = character
+    level.theme = Theme.objects.get(id=data['theme'])
+    level.character = Character.objects.get(name=data['character_name'])
     level.save()
 
-    regex = ('(({"coordinate" *:{"x": *)([0-9]+)(,"y" *: *)([0-9]+)(}, *"name" *: *")' +
-             '([a-zA-Z0-9]+)(", *"height" *:)([0-9]+)( *}))')
-    set_level_decor(level, data['decor'], regex)
-
-    for blockType in data['blockTypes']:
-        levelBlock = LevelBlock(level=level, type=Block.objects.get(type=blockType), number=None)
-        levelBlock.save()
-
-    level.save()
+    set_decor(level, data['decor'])
+    set_blocks(level, data['blocks'])
 
 
 def delete_level(level):

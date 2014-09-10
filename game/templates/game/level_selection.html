@@ -11,7 +11,7 @@
   	{% for episode in episodeData %}
   		var levels = []
   		{% for level in episode.levels %}
-  			levels.push({'id': {{level.id}},
+  			levels.push({'name': {{level.name}},
   										'score': '{{level.score}}'});
   		{% endfor %}
   		EPISODES.push({'id' : {{episode.id}},
@@ -48,7 +48,7 @@
 		<div class="col span_2_of_3_strict">
 			<div id="episodes">
 			    {% for episode in episodeData %}
-			    <h3>
+			    <h3 id='episode{{episode.id}}'>
 			    	<div>
 				    	{{episode.name}}
 				    	<span class="episode_range_text">Levels {{episode.first_level}}-{{episode.last_level}}</span>
@@ -59,10 +59,10 @@
 			        {% for level in episode.levels %}
 			        <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
 			        <p>
-				        <a href="{% url 'game.views.play_level' level.id %}">{{level.id}}: {{level.title.strip | safe}}</a> 
+				        <a href="{% url 'game.views.play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a> 
 				        {% if level.score != None %}
 				        <span class="score_text">{{level.score|floatformat}}/20</span>
-				        <img class="level_image coin_image" value="{{level.id}}">
+				        <img class="level_image coin_image" value="{{level.name}}">
 				        {% endif %}
 				    </p>
 			        {% endfor %}
@@ -70,27 +70,30 @@
 			        <p><a href="{% url 'game.views.random_level_for_episode' episode.id %}">Random: Try your hand at a random level.</a></p>
 			    </div>
 			    {% endfor %}
+
 			    <h3 class='customLevelsEpisode'>Levels created by you</h3>
 			    <div>
 			    	{% if owned_levels %}
 			    		{% for level in owned_levels %}
 			    			<p>
-				    			<a href="{% url 'game.views.play_level' level.id %}">{{level.title}}</a>
+				    			<a href="{% url 'game.views.play_custom_level' level.id %}">{{level.title}}</a>
 				    			{% if level.score != None %}
-				    			<span class="score_text">{{level.score|floatformat}}/10{% endif %}</span>
+				    			<span class="score_text">{{level.score|floatformat}}/10</span>
 				    			<img class="level_image coin_image" value="{{level.id}}">
+				    			{% endif %}
 			    			</p>
 			    		{% endfor %}
 			    	{% else %}
 			    		<p>No levels have been created by you yet.</p>
 			    	{% endif %}
 			    </div>
+
 			    <h3 class='customLevelsEpisode'>Levels shared with you</h3>
 			    <div>
 			    	{% if shared_levels %}
 			    		{% for level in shared_levels %}
 			    			<p>
-			    				<a href="{% url 'game.views.play_level' level.id %}">{{level.title}} ({{level.owner|make_into_username}})</a>
+			    				<a href="{% url 'game.views.play_custom_level' level.id %}">{{level.title}} ({{level.owner|make_into_username}})</a>
 			    				{% if level.score != None %}
 			    				<span class="score_text">{{level.score|floatformat}}/10</span>
 			    				<img class="level_image coin_image" value="{{level.id}}">

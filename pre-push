@@ -1,0 +1,59 @@
+#!/bin/bash
+
+RED='\033[1;31m'
+CYAN='\033[1;36m'
+NC='\033[0m'
+OFF='\033[m'
+BOLD='\033[1m'
+ARRAY=(`git diff --numstat origin/master HEAD | cut -f3`)
+
+STASHARR=(`git status --porcelain | cut -f2`)
+STASH=$(( ${#STASHARR[@]} / 2 ))
+
+echo ''
+
+# Stash the not committed files so that they don't affect the test results.
+if [[ $STASH -ne 0 ]];
+then
+	echo -e "${BOLD}Saving the local changes for the tests. ${OFF}\n"
+	echo `git stash`
+fi
+
+# Run the tests from codeforlife-deploy.
+echo -e "${BOLD}Starting the tests...${OFF}\n"
+source ../codeforlife-deploy/VIRTUALENV/bin/activate
+(cd ../codeforlife-deploy/ && python manage.py test game)
+RESULT=$?
+deactivate
+
+if [[ $RESULT -ne 0 ]];
+then
+	echo -e "\n${BOLD}You are failing some tests. If you are sure your changes should be pushed, use the ${CYAN}git push --no-verify ${NC}${BOLD}command.${OFF}"
+	exit 1
+fi
+
+# If we stashed before, pop to restore the local changes.
+if [[ $STASH -ne 0 ]];
+then
+	echo -e "\n${BOLD}Restoring the local changes...${OFF}\n"
+	echo `git stash pop`
+fi
+
+# Lint the changed files.
+echo -e "\n${BOLD}Linting the changed files...${OFF}\n"
+for FILE in $ARRAY
+do
+	if [[ $FILE =~ \.py$ ]];
+	then
+		python pep8.py --max-line-length=100 $FILE
+	fi
+done
+
+RESULT=$?
+if [[ $RESULT -ne 0 ]];
+then
+	echo -e "\n${BOLD}You are trying to push files that have lint error in them. To push the changes anyway, push them with ${CYAN} git push --no-verify ${NC}${BOLD}command.${OFF}"
+	exit 1
+fi
+echo -e "\n${BOLD}Lint OK.\n${OFF}"
+exit 0

@@ -18,6 +18,7 @@
     var CFC_URL = "{{cfc}}";
     var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
     var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : "";
+    var LEVEL_NAME = "{{level.name}}";
     var MODEL_SOLUTION = {{level.model_solution}};
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
@@ -29,7 +30,7 @@
 
     var BLOCKS =  [];
     {% for block in blocks %}
-      BLOCKS.push({'type':"{{block.type}}", 'number':("{{block.number}}" === "None" ? undefined : {{block.number}})});
+      BLOCKS.push({'type':"{{block.type}}"{% if block.number %}, 'number':{{block.number}} {% endif %}});
     {% endfor %}
 
     var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none"><category name="+">';
@@ -40,9 +41,9 @@
     BLOCKLY_XML += '</category></xml>';
     var MAX_FUEL = {{level.max_fuel}};
     var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
-    var NEXT_LEVEL = "{{level.next_level}}" !== "None" ? "{{level.next_level.id}}" : null;
+    var NEXT_LEVEL = "{{level.next_level}}" !== "None" ? "{{level.next_level.name}}" : null;
     var NEXT_EPISODE = "{{level.episode.next_episode}}" !== "None" ? "{{level.episode.next_episode.id}}" : null;
-    var WORKSPACE = "{{attempt.workspace}}";
+    var WORKSPACE = "{{workspace}}" !== "None" ? "{{workspace}}" : null;
     var THREADS = "{{level.threads}}";
     var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";
     var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
@@ -363,6 +364,9 @@
     <p id="myModal-lead" class="ocargo-modal-lead"></p>
     <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
     <a class="close-reveal-modal" id="close-modal">&#215;</a>
+  </div>
+  <div id="modal-buttons">
+    <button>OK</button>
   </div>
   <div id="modal-mascot">
     <object width="100%" height="100%" data="/static/game/image/characters/front_view/Dee.svg" type="image/svg+xml"></object>

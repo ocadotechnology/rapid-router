@@ -46,6 +46,6 @@ $(document).ready(function() {
 	});
 
 	$('.play').click(function() {
-		window.location.href = '/rapidrouter/' + this.getAttribute('value');
+		window.location.href = '/rapidrouter/custom/' + this.getAttribute('value');
 	});
 });

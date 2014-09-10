@@ -32,15 +32,20 @@ function setupCoins() {
         var episode = EPISODES[i];
 
         var minScore = 20;
+        var episodeToOpen;
         for(var j = 0; j < episode.levels.length; j++) {
             var level = episode.levels[j];
             
-            if(level.score !== "None") {
-                $('.level_image.coin_image[value=' + level.id + ']').attr('src', getImageStr(level.score));
+            imageStr = getImageStr(level.score);
+            if(imageStr !== '') {
+                $('.level_image.coin_image[value=' + level.name + ']').attr('src', imageStr);
             }
             else {
-                $('.level_image.coin_image[value=' + level.id + ']').remove();
+                $('.level_image.coin_image[value=' + level.name + ']').remove();
                 minScore = "None";
+                if(!episodeToOpen) {
+                    episodeToOpen =  episode;
+                }
             }
 
             if(minScore != "None" && level.score < minScore) {
@@ -59,12 +64,17 @@ function setupCoins() {
     for(var i = 0; i < OTHER_LEVELS.length; i++) {
         var level = OTHER_LEVELS[i];
 
-        if(level.score !== "None") {
-            $('.level_image.coin_image[value=' + level.id + ']').attr('src', getImageStr(level.score*2));
+        imageStr = getImageStr(level.score*2);
+        if(imageStr !== '') {
+            $('.level_image.coin_image[value=' + level.id + ']').attr('src', imageStr);
         }
         else {
             $('.level_image.coin_image[value=' + level.id + ']').remove();
         }
+    }
+
+    if(episodeToOpen && (USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT')) {
+        $('#episode' + episodeToOpen.id).click();
     }
 
     function getImageStr(score) {
@@ -78,8 +88,9 @@ function setupCoins() {
         else if(score > 10) {
             return imageStr + 'silver.svg';
         }
-        else if(score) {
+        else if(score >= 0) {
             return imageStr + 'copper.svg';
         }
+        return '';
     }
 }

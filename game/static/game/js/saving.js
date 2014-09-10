@@ -235,7 +235,7 @@ ocargo.Saving.prototype.saveLevel = function(level, id, anonymous, callback) {
         url: '/rapidrouter/level_editor/level/save' + (id ? '/' + id : ''),
         type: 'POST',
         dataType: 'json',
-        data: level,
+        data: {data: JSON.stringify(level)},
         beforeSend: function(xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);

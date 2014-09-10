@@ -5,7 +5,7 @@ import messages
 import level_management
 import permissions
 
-from cache import cached_all_episodes, cached_level, cached_episode
+from cache import cached_level, cached_episode
 from datetime import timedelta
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
@@ -14,17 +14,28 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
-from forms import *
+from forms import AvatarUploadForm, AvatarPreUploadedForm, ScoreboardForm, LevelModerationForm
 from game import random_road
-from models import Level, Attempt, LevelBlock, Block, Episode, Workspace, LevelDecor, Decor, Theme, Character
+from models import Level, Attempt, Block, Episode, Workspace, Decor, Theme, Character
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
-from serializers import WorkspaceSerializer, LevelSerializer
 
 
 #########
 # Level #
 #########
+
+def play_custom_level(request, levelID):
+    level = cached_level(levelID)
+    if level.default:
+        raise Http404
+    return play_level(request, levelID)
+
+
+def play_default_level(request, levelName):
+    level = get_object_or_404(Level, name=levelName, default=True)
+    return play_level(request, level.id)
+
 
 def play_level(request, levelID):
     """ Loads a level for rendering in the game.
@@ -46,12 +57,10 @@ def play_level(request, levelID):
     :template:`game/game.html`
     """
     level = cached_level(levelID)
-    
+
     if not permissions.can_play_level(request.user, level):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
-    blocks = LevelBlock.objects.filter(level=level).order_by('type')
-    attempt = None
     lesson = 'description_level' + str(levelID)
     hint = 'hint_level' + str(levelID)
 
@@ -67,32 +76,35 @@ def play_level(request, levelID):
     lesson = mark_safe(lessonCall())
     hint = mark_safe(hintCall())
 
-    decor = LevelDecor.objects.filter(level=level)
-    decorData = parseDecor(level.theme, decor)
     house = getDecorElement('house', level.theme).url
     cfc = getDecorElement('cfc', level.theme).url
     background = getDecorElement('tile1', level.theme).url
     character = level.character
 
+    workspace = None
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
-        try:
-            attempt = get_object_or_404(Attempt, level=level, student=student)
-        except Http404:
-            attempt = Attempt(level=level, score=0, student=student)
+        attempt = Attempt.objects.filter(level=level, student=student).first()
+        if not attempt:
+            attempt = Attempt(level=level, student=student, score=None)
             attempt.save()
+
+        workspace = attempt.workspace
+
+    decorData = level_management.get_decor(level)
+    blockData = level_management.get_blocks(level)
 
     context = RequestContext(request, {
         'level': level,
-        'blocks': blocks,
         'lesson': lesson,
+        'blocks': blockData,
         'decor': decorData,
         'character': character,
         'background': background,
         'house': house,
         'cfc': cfc,
         'hint': hint,
-        'attempt': attempt,
+        'workspace': workspace,
         'return_url': '/rapidrouter/',
     })
 
@@ -110,17 +122,15 @@ def delete_level(request, levelID):
 
 
 def submit_attempt(request):
-    """ Processes a request on submission of the program solving the current level.
-    """
-    if not request.user.is_anonymous() and request.method == 'POST':
-        if hasattr(request.user, "userprofile") and hasattr(request.user.userprofile, "student"):
-            level = get_object_or_404(Level, id=request.POST.get('level', 1))
-            attempt = get_object_or_404(Attempt, level=level,
-                                        student=request.user.userprofile.student)
-            attempt.score = request.POST.get('score')
-            attempt.workspace = request.POST.get('workspace')
+    """ Processes a request on submission of the program solving the current level. """
+    if (not request.user.is_anonymous() and request.method == 'POST' and
+            hasattr(request.user.userprofile, "student")):
+        level = get_object_or_404(Level, id=request.POST.get('level', 1))
+        attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
+        attempt.score = request.POST.get('score')
+        attempt.workspace = request.POST.get('workspace')
+        attempt.save()
 
-            attempt.save()
     return HttpResponse('[]', content_type='application/json')
 
 
@@ -136,7 +146,8 @@ def load_list_of_workspaces(request):
 def load_workspace(request, workspaceID):
     workspace = Workspace.objects.get(id=workspaceID)
     if permissions.can_load_workspace(request.user, workspace):
-        return HttpResponse(json.dumps({'contents': workspace.contents}), content_type='application/json')
+        return HttpResponse(json.dumps({'contents': workspace.contents}),
+                            content_type='application/json')
 
     return HttpResponse(json.dumps(''), content_type='application/json')
 
@@ -192,62 +203,66 @@ def levels(request):
 
     def get_attempt_score(level):
         user = request.user
-        if (not user.is_anonymous()) and hasattr(request.user, 'userprofile') and \
-                hasattr(request.user.userprofile, 'student'):
-            try:
-                student = user.userprofile.student
-                attempt = get_object_or_404(Attempt, level=level, student=student)
-                return attempt.score
-            except Http404:
-                pass
-        return None
+        if not user.is_anonymous() and hasattr(user.userprofile, 'student'):
+            student = user.userprofile.student
+            attempt = Attempt.objects.filter(level=level, student=student).first()
 
+            if attempt:
+                return attempt.score
+
+    developer = (not request.user.is_anonymous()) and request.user.userprofile.developer
     episode_data = []
-    episode = Episode.objects.get(name='Getting Started')
-    while episode is not None:
+    for episode in Episode.objects.all().order_by('id'):
+        if episode.in_development and not developer:
+            break
+
         levels = []
-        minId = -1
-        maxId = -1
+        minName = None
+        maxName = None
         for level in episode.levels:
-            if minId == -1 or maxId == -1:
-                minId = level.id
-                maxId = level.id
+            level_name = int(level.name)
+            if not maxName or level_name > maxName:
+                maxName = level_name
+            if not minName or level_name < minName:
+                minName = level_name
+
             levels.append({
                 "id": level.id,
-                "title": get_level_title(level.id),
+                "name": level_name,
+                "title": get_level_title(level_name),
                 "score": get_attempt_score(level)})
-            if level.id > maxId:
-                maxId = level.id
-            if level.id < minId:
-                minId = level.id
 
         e = {"id": episode.id,
              "name": episode.name,
              "levels": levels,
-             "first_level": minId,
-             "last_level": maxId}
+             "first_level": minName,
+             "last_level": maxName}
 
         episode_data.append(e)
-        episode = episode.next_episode
+        if episode.in_development and not developer:
+            episode = None
+        else:
+            episode = episode.next_episode
 
     owned_level_data = []
     shared_level_data = []
-
-    if hasattr(request.user, 'userprofile'):
+    if not request.user.is_anonymous():
         owned_levels, shared_levels = level_management.get_list_of_loadable_levels(request.user)
 
         for level in owned_levels:
             owned_level_data.append({
                 "id": level.id,
                 "title": level.name,
-                "score": get_attempt_score(level)})
+                "score": get_attempt_score(level)
+            })
 
         for level in shared_levels:
             shared_level_data.append({
                 "id": level.id,
                 "title": level.name,
                 "owner": level.owner.user,
-                "score": get_attempt_score(level)})
+                "score": get_attempt_score(level)
+            })
 
     context = RequestContext(request, {
         'episodeData': episode_data,
@@ -358,14 +373,15 @@ def level_moderation(request):
 
     # Not showing this part to outsiders.
     if not permissions.can_see_level_moderation(request.user):
-        return renderError(request, messages.noPermissionLevelModerationTitle(), messages.noPermissionLevelModerationPage())
+        return renderError(request, messages.noPermissionLevelModerationTitle(),
+                           messages.noPermissionLevelModerationPage())
 
     teacher = request.user.userprofile.teacher
     classes_taught = Class.objects.filter(teacher=teacher)
-    students_taught = Student.objects.filter(class_field__in=classes_taught)
 
     if len(classes_taught) <= 0:
-        return renderError(request, messages.noPermissionLevelModerationTitle(), messages.noDataToShowLevelModeration())
+        return renderError(request, messages.noPermissionLevelModerationTitle(),
+                           messages.noDataToShowLevelModeration())
 
     form = LevelModerationForm(request.POST or None, classes=classes_taught)
 
@@ -412,7 +428,7 @@ def level_moderation(request):
                     shared_str = ""
                     for user in users_shared_with:
                         if user != student.user.user:
-                            shared_str += user.first_name + ", "
+                            shared_str += app_tags.make_into_username(user) + ", "
                     shared_str = shared_str[:-2]
 
                 level_data.append({'id': level.id,
@@ -556,7 +572,7 @@ def createOneRow(student, level):
     row.append(student)
     try:
         attempt = Attempt.objects.get(level=level, student=student)
-        row.append(attempt.score)
+        row.append(attempt.score if attempt.score is not None else '')
         row.append(chop_miliseconds(attempt.finish_time - attempt.start_time))
         row.append(attempt.start_time)
         row.append(attempt.finish_time)
@@ -572,10 +588,10 @@ def createRows(studentData, levels):
         for level in levels:
             try:
                 attempt = Attempt.objects.get(level=level, student=row[0])
-                row[1] += attempt.score
+                row[1] += attempt.score if attempt.score is not None else 0
                 row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
                 row.append(attempt.score)
-                row[3].append(attempt.score)
+                row[3].append(attempt.score if attempt.score is not None else '')
             except ObjectDoesNotExist:
                 row[2].append(timedelta(0))
                 row.append("")
@@ -618,7 +634,8 @@ def handleAllClassesOneLevel(request, level):
 
     for cl in classes:
         students = cl.students.all()
-        if hasattr(userprofile, 'student') and not userprofile.student.class_field.classmates_data_viewable:
+        if (hasattr(userprofile, 'student') and
+                not userprofile.student.class_field.classmates_data_viewable):
             # Filter out other students' data if not allowed to see classmates
             students = students.filter(id=userprofile.student.id)
         for student in students:
@@ -653,7 +670,8 @@ def handleAllClassesAllLevels(request, levels):
 
     for cl in classes:
         students = cl.students.all()
-        if hasattr(userprofile, 'student') and not userprofile.student.class_field.classmates_data_viewable:
+        if (hasattr(userprofile, 'student') and
+                not userprofile.student.class_field.classmates_data_viewable):
             # Filter out other students' data if not allowed to see classmates
             students = students.filter(id=userprofile.student.id)
         for student in students:
@@ -707,19 +725,19 @@ def play_anonymous_level(request, levelID, from_level_editor=True):
     hint = mark_safe(hintCall())
 
     attempt = None
-    blocks = LevelBlock.objects.filter(level=level).order_by('type')
-    decor = LevelDecor.objects.filter(level=level)
-    decor_data = parseDecor(level.theme, decor)
     house = getDecorElement('house', level.theme).url
     cfc = getDecorElement('cfc', level.theme).url
     background = getDecorElement('tile1', level.theme).url
     character = level.character
 
+    decor_data = level_management.get_decor(level)
+    block_data = level_management.get_blocks(level)
+
     context = RequestContext(request, {
         'level': level,
-        'blocks': [block for block in blocks],  # No idea why but leaving this as a queryset was causing issues, it was magically emptying between here and the template rendering
-        'lesson': lesson,
         'decor': decor_data,
+        'blocks': block_data,
+        'lesson': lesson,
         'character': character,
         'background': background,
         'house': house,
@@ -761,43 +779,34 @@ def load_level_for_editor(request, levelID):
 
     response = ''
     if permissions.can_load_level(request.user, level):
-        response = {'owned': level.owner == request.user.userprofile, 'level': model_to_dict(level)}
-        
+        levelDict = model_to_dict(level)
+        levelDict['decor'] = level_management.get_decor(level)
+        levelDict['blocks'] = level_management.get_blocks(level)
+
+        response = {'owned': level.owner == request.user.userprofile, 'level': levelDict}
+
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 
 def save_level_for_editor(request, levelID=None):
     """ Processes a request on creation of the map in the level editor """
 
+    data = json.loads(request.POST['data'])
+
     if levelID is not None:
         level = Level.objects.get(id=levelID)
     else:
-        level = Level(default=False, anonymous=request.POST.get('anonymous') == 'true')
+        level = Level(default=False, anonymous=data['anonymous'])
 
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
 
     if permissions.can_save_level(request.user, level):
-        data = {
-            'name': request.POST.get('name'),
-            'path': request.POST.get('path'),
-            'destinations': request.POST.get('destinations'),
-            'origin': request.POST.get('origin'),
-            'decor': request.POST.get('decor'),
-            'traffic_lights': request.POST.get('traffic_lights'),
-            'max_fuel': request.POST.get('max_fuel'),
-            'theme_id': request.POST.get('theme'),
-            'character_name': request.POST.get('character_name'),
-            'blockTypes': json.loads(request.POST.get('block_types')),
-            'blocklyEnabled': request.POST.get('blocklyEnabled') == 'true',
-            'pythonEnabled': request.POST.get('pythonEnabled') == 'true',
-        }
-
         level_management.save_level(level, data)
 
         # Add the teacher automatically if it is a new level and the student is not independent
-        if (levelID is None) and hasattr(level.owner, 'student') and not level.owner.student.is_independent():
-            print(level.owner.student.is_independent())
+        if ((levelID is None) and hasattr(level.owner, 'student') and
+                not level.owner.student.is_independent()):
             level.shared_with.add(level.owner.student.class_field.teacher.user.user)
             level.save()
 
@@ -808,16 +817,16 @@ def save_level_for_editor(request, levelID=None):
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
+
 def delete_level_for_editor(request, levelID):
-    success = False
     level = Level.objects.get(id=levelID)
     if permissions.can_delete_level(request.user, level):
         level_management.delete_level(level)
-        success = True
 
     response = get_list_of_loadable_levels(request.user)
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
+
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
@@ -826,10 +835,12 @@ def generate_random_map_for_editor(request):
     branchiness = float(request.GET['branchiness'])
     loopiness = float(request.GET['loopiness'])
     curviness = float(request.GET['curviness'])
-    traffic_lights_enabled = request.GET['trafficLightsEnabled'] == 'true'
+    traffic_lights = request.GET['trafficLights'] == 'true'
+    scenery = request.GET['scenery'] == 'true'
 
     data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
-                                                traffic_lights_enabled)
+                                                traffic_lights, scenery)
+
     return HttpResponse(json.dumps(data), content_type='application/javascript')
 
 
@@ -849,16 +860,18 @@ def get_sharing_information_for_editor(request, levelID):
             # First get all the student's classmates
             class_ = student.class_field
             classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
-            valid_recipients['classmates'] = [{'id': classmate.user.user.id,
-                                               'name': classmate.user.user.first_name,
-                                               'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
-                                              for classmate in classmates]
+            valid_recipients['classmates'] = [
+                {'id': classmate.user.user.id,
+                 'name': app_tags.make_into_username(classmate.user.user),
+                 'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
+                for classmate in classmates]
 
             # Then add their teacher as well
             teacher = class_.teacher
-            valid_recipients['teacher'] = {'id': teacher.user.user.id,
-                                           'name': teacher.title + " " + teacher.user.user.last_name,
-                                           'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
+            valid_recipients['teacher'] = {
+                'id': teacher.user.user.id,
+                'name': app_tags.make_into_username(teacher.user.user),
+                'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
 
         elif hasattr(userprofile, 'teacher'):
             teacher = userprofile.teacher
@@ -868,19 +881,21 @@ def get_sharing_information_for_editor(request, levelID):
             classes_taught = Class.objects.filter(teacher=teacher)
             for class_ in classes_taught:
                 students = Student.objects.filter(class_field=class_)
-                valid_recipients['classes'].append({'name': class_.name,
-                                                    'id': class_.id,
-                                                    'students': [{'id': student.user.user.id,
-                                                                  'name': student.user.user.first_name,
-                                                                  'shared': level.shared_with.filter(id=student.user.user.id).exists()}
-                                                                 for student in students]})
+                valid_recipients['classes'].append({
+                    'name': class_.name, 'id': class_.id,
+                    'students': [{
+                        'id': student.user.user.id,
+                        'name': app_tags.make_into_username(student.user.user),
+                        'shared': level.shared_with.filter(id=student.user.user.id).exists()}
+                        for student in students]})
 
             # Then add all the teachers at the same organisation
             fellow_teachers = Teacher.objects.filter(school=teacher.school)
-            valid_recipients['teachers'] = [{'id': fellow_teacher.user.user.id,
-                                             'name': fellow_teacher.user.user.first_name + " " + fellow_teacher.user.user.last_name,
-                                             'shared': level.shared_with.filter(id=fellow_teacher.user.user.id).exists()}
-                                            for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
+            valid_recipients['teachers'] = [{
+                'id': fellow_teacher.user.user.id,
+                'name': app_tags.make_into_username(fellow_teacher.user.user),
+                'shared': level.shared_with.filter(id=fellow_teacher.user.user.id).exists()}
+                for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
 
     return HttpResponse(json.dumps(valid_recipients), content_type='application/javascript')
 
@@ -894,7 +909,6 @@ def share_level_for_editor(request, levelID):
     recipients = User.objects.filter(id__in=recipientIDs)
 
     for recipient in recipients:
-        print(recipient)
         if permissions.can_share_level_with(recipient, level.owner.user):
             if action == 'share':
                 level_management.share_level(level, recipient.userprofile.user)
@@ -940,17 +954,6 @@ def getDecorElement(name, theme):
         return Decor.objects.get(name=name, theme=theme)
     except ObjectDoesNotExist:
         return Decor.objects.filter(name=name)[0]
-
-
-def parseDecor(theme, levelDecors):
-    """ Helper method parsing decor into a format 'sendable' to javascript. """
-    decorData = []
-    for levelDecor in levelDecors:
-        decor = Decor.objects.get(name=levelDecor.decorName, theme=theme)
-        decorData.append(json.dumps(
-            {"coordinate": {"x": levelDecor.x, "y": str(levelDecor.y)}, "url": decor.url,
-             "width": decor.width, "height": decor.height}))
-    return decorData
 
 
 def renderAvatarChoice(request):

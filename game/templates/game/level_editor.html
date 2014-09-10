@@ -108,7 +108,6 @@
     </div>
     
     <div id="currentTool">
-      <!--<div id="currentToolTitle">Current: </div>-->
       <div id="currentToolHolder">
         <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
         <span id="currentToolText">Delete Road</span>
@@ -295,15 +294,6 @@
                     </div>
                   </div>
                 </div>
-                <div style="display:inline-block">
-                  <div id="delete_caption">
-                    You are in Delete mode. Click again to turn it off.
-                  </div>
-                  <button class="navigation_button" id="delete_decor">
-                    <img src="/static/game/image/icons/delete_decor.svg"/>
-                    <span>Delete on/off</span>
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -346,6 +336,18 @@
                         <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
                       </div>
                       <div id="{{block.type}}_image" class="table_cell unselectable"></div>
+                      <select id="{{block.type}}_number" class="block_number" class="table_cell unselectable">
+                        <option value="infinity">&infin;</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                      </select>
                     </div>
                   {% endfor %}  
                 </div>
@@ -379,6 +381,15 @@
                     <div class="table_cell field_label"><p>Traffic Lights:</p></div>
                     <div class="table_cell field_value">
                       <select id="trafficLightsEnabled">
+                        <option value="yes">Yes</option>
+                        <option value="no" selected>No</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>Scenery:</p></div>
+                    <div class="table_cell field_value">
+                      <select id="sceneryEnabled">
                         <option value="yes">Yes</option>
                         <option value="no" selected>No</option>
                       </select>
@@ -450,6 +461,7 @@
           <div id="save_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='/static/game/image/icons/save.svg'>Save</h2>
             <p>Here you can save your new level. Enter a name below and hit save. Alternatively click on an existing level to update it.</p>
+            <p>To play your level and be tracked, first <b>Quit</b> the Level Editor and select your level from the 'Levels created by you' section.</p>
             
             <div class="table_control_div">
               <div class="scrolling-table-wrapper">
@@ -532,7 +544,14 @@
       </div>
     </div>
   </div>
+
   <div id="paper"></div>
+
+  <div id="trashcanHolder">
+    <img id="trashcanLidClosed" src="/static/game/image/trashcan_lid_closed.svg">
+    <img id="trashcanLidOpen" src="/static/game/image/trashcan_lid_open.svg">
+    <img id="trashcan" src="/static/game/image/trashcan.svg">
+  </div>
 </div>
 
 <div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
@@ -541,6 +560,9 @@
     <p id="myModal-lead" class="ocargo-modal-lead"></p>
     <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
     <a class="close-reveal-modal" id="close-modal">&#215;</a>
+  </div>
+  <div id="modal-buttons">
+    <button>OK</button>
   </div>
   <div id="modal-mascot">
     <img src="/static/game/image/characters/front_view/Dee.svg">
