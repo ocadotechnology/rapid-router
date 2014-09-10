@@ -36,7 +36,6 @@ def get_decor(level):
 
 def set_decor(level, decor):
     """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
-
     existingDecor = LevelDecor.objects.filter(level=level).delete()
 
     for data in decor:
@@ -80,6 +79,7 @@ def save_level(level, data):
     
     set_decor(level, data['decor'])
     set_blocks(level, data['blocks'])
+
 
 def delete_level(level):
     level.delete()

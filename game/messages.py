@@ -156,7 +156,7 @@ def title_level1():
 def description_level1():
     message = ugettext("Choose the right blocks to tell the van where to go. <br> Drag the "
                        + "blocks under the <b>Start</b> block to attach them. <br> To remove a "
-                       + "block, drag it back to the left of the screen or drop it in the bin. "
+                       + "block, drag it into the bin in the bottom right of the screen. "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level1(), message)
 
@@ -491,7 +491,8 @@ def description_level19():
                        + "instruction. <br> This means you can use one block instead of lots of "
                        + "blocks to do the same thing over and over again. <br> How many times do "
                        + "you want the instruction repeated? Type the number into the "
-                       + "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'. ")
+                       + "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'.  "
+                       + "<br><br> When you are ready, press <b>Play</b>! ")
     return build_description(title_level19(), message)
 
 
@@ -627,7 +628,7 @@ def title_level27():
 
 
 def description_level27():
-    message = ugettext("What a muddy road! Can you get the van from the barn to the house? ")
+    message = ugettext("What a muddy road! Can you help Dee find her way from the barn to the house? ")
     return build_description(title_level27(), message)
 
 
