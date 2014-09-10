@@ -1645,18 +1645,17 @@ ocargo.LevelEditor = function() {
                 node = new ocargo.Node(coord);
                 nodes.push(node);
             }
-            else {
-                // If we've overwritten the origin node remove it as 
-                // we can no longer place the CFC there
-                if (node === originNode) {
-                    markAsBackground(originNode.coordinate);
-                    originNode = null;
-                }
-            }
 
             // Now connect it up with it's new neighbours
             if (previousNode && node.connectedNodes.indexOf(previousNode) === -1) {
                 node.addConnectedNodeWithBacklink(previousNode);
+
+                // If we've overwritten the origin node remove it as 
+                // we can no longer place the CFC there
+                if (node === originNode || previousNode == originNode) {
+                    markAsBackground(originNode.coordinate);
+                    originNode = null;
+                }
             }
             previousNode = node;
         }
