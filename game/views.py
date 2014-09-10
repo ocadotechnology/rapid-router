@@ -32,9 +32,11 @@ def play_custom_level(request, levelID):
         raise Http404
     return play_level(request, levelID)
 
+
 def play_default_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)
     return play_level(request, level.id)
+
 
 def play_level(request, levelID):
     """ Loads a level for rendering in the game.
