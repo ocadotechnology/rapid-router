@@ -10,6 +10,3 @@ class WorkspaceSerializer(serializers.ModelSerializer):
 class LevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Level
-
-
-
