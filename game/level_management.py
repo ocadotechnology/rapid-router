@@ -23,11 +23,11 @@ def get_decor(level):
     for ld in LevelDecor.objects.filter(level=level):
         decor = Decor.objects.get(name=ld.decorName, theme=level.theme)
         decorData.append({
-            'x': ld.x,
-            'y': ld.y,
+            'x': int(ld.x),
+            'y': int(ld.y),
             'decorName': str(ld.decorName),
-            'width': decor.width,
-            'height': decor.height,
+            'width': int(decor.width),
+            'height': int(decor.height),
             'url': str(decor.url),
         })
 
