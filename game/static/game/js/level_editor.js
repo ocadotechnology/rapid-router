@@ -1724,7 +1724,7 @@ ocargo.LevelEditor = function() {
             element.src = theme.decor[element.id].url;
         });
 
-        $('#wrapper').css({'background-color': theme.background});
+        $('#paperHolder').css({'background-color': theme.background});
     }
 
     function sortNodes(nodes) {

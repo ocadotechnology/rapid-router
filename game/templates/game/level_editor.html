@@ -102,22 +102,20 @@
 
 <div id="wrapper" class="unselectable">
   <div id="tools" class="col">
-
-    <div id='title'>
-      <h1>Level editor</h1>
-    </div>
     
-    <div id="currentTool">
-      <!--<div id="currentToolTitle">Current: </div>-->
-      <div id="currentToolHolder">
-        <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
-        <span id="currentToolText">Delete Road</span>
-      </div>
-    </div>
-
     <div id="toolbox">
       <div id="tabs">
 
+        <div id="currentTool">
+          <div id="currentToolHolder">
+            <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
+            <br>
+            <span id="currentToolText">Delete Road</span>
+          </div>
+        </div>
+
+        <br style="clear:both">
+        
         <div class="tab">
           <input type="radio" name="tabs" id="play_radio">
           <label for="play_radio">
@@ -148,7 +146,7 @@
           <input type="radio" name="tabs" id="character_radio">
           <label for="character_radio">
             <img src='/static/game/image/icons/character.svg'>
-            <span>Characters</span>
+            <span>Character</span>
           </label>
         </div>
 
@@ -545,7 +543,9 @@
     </div>
   </div>
 
-  <div id="paper"></div>
+  <div id="paperHolder">
+    <div id="paper"></div>
+  </div>
 
   <div id="trashcanHolder">
     <img id="trashcanLidClosed" src="/static/game/image/trashcan_lid_closed.svg">
