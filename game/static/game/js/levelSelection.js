@@ -36,8 +36,9 @@ function setupCoins() {
         for(var j = 0; j < episode.levels.length; j++) {
             var level = episode.levels[j];
             
-            if(level.score !== "None") {
-                $('.level_image.coin_image[value=' + level.name + ']').attr('src', getImageStr(level.score));
+            imageStr = getImageStr(level.score);
+            if(imageStr !== '') {
+                $('.level_image.coin_image[value=' + level.name + ']').attr('src', imageStr);
             }
             else {
                 $('.level_image.coin_image[value=' + level.name + ']').remove();
@@ -63,8 +64,9 @@ function setupCoins() {
     for(var i = 0; i < OTHER_LEVELS.length; i++) {
         var level = OTHER_LEVELS[i];
 
-        if(level.score !== "None") {
-            $('.level_image.coin_image[value=' + level.id + ']').attr('src', getImageStr(level.score*2));
+        imageStr = getImageStr(level.score*2);
+        if(imageStr !== '') {
+            $('.level_image.coin_image[value=' + level.id + ']').attr('src', imageStr);
         }
         else {
             $('.level_image.coin_image[value=' + level.id + ']').remove();
@@ -86,8 +88,9 @@ function setupCoins() {
         else if(score > 10) {
             return imageStr + 'silver.svg';
         }
-        else if(score) {
+        else if(score >= 0) {
             return imageStr + 'copper.svg';
         }
+        return '';
     }
 }
