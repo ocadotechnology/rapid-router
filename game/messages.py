@@ -75,13 +75,13 @@ def shareSuccessfulClass(className):
 
 
 def shareUnsuccessfulPerson(first_name, last_name):
-    return ugettext("We were unable to find %(name)s %(surname)s. " \
+    return ugettext("We were unable to find %(name)s %(surname)s. "
                     % {'name': first_name, 'surname': last_name}
                     + "Are you sure you got their name right?")
 
 
 def shareUnsuccessfulClass(className):
-    return ugettext("We were unable to find class %(class)s. Are you sure you got it right?" \
+    return ugettext("We were unable to find class %(class)s. Are you sure you got it right?"
                     % {'class': className})
 
 
@@ -487,12 +487,12 @@ def title_level19():
 
 def description_level19():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/vFGd0v3msRE", 0)
-    message += ugettext("Attach a block inside the <b>Repeat</b> block to make the van repeats that "
-                       + "instruction. <br> This means you can use one block instead of lots of "
-                       + "blocks to do the same thing over and over again. <br> How many times do "
-                       + "you want the instruction repeated? Type the number into the "
-                       + "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'.  "
-                       + "<br><br> When you are ready, press <b>Play</b>! ")
+    message += ugettext("Attach a block inside the <b>Repeat</b> block to make the van repeats "
+                        + "that instruction. <br> This means you can use one block instead of lots "
+                        + "of blocks to do the same thing over and over again. <br> How many times "
+                        + "do you want the instruction repeated? Type the number into the "
+                        + "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'.  "
+                        + "<br><br> When you are ready, press <b>Play</b>! ")
     return build_description(title_level19(), message)
 
 
@@ -628,7 +628,8 @@ def title_level27():
 
 
 def description_level27():
-    message = ugettext("What a muddy road! Can you help Dee find her way from the barn to the house? ")
+    message = ugettext("What a muddy road! Can you help Dee find her way from the barn to the "
+                       + "house? ")
     return build_description(title_level27(), message)
 
 
@@ -659,11 +660,11 @@ def title_level29():
 def description_level29():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/EDwc80X_LQI", 0)
     message += ugettext("Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
-                       + "instruction. <br> Attach a 'condition' so the van knows when to stop "
-                       + "repeating the instruction. <br> Here, you want the van to repeat your "
-                       + "instruction until it is at the destination. <br> Doing this means "
-                       + "you don't have to work out how many times the van should repeat your "
-                       + "instruction. ")
+                        + "instruction. <br> Attach a 'condition' so the van knows when to stop "
+                        + "repeating the instruction. <br> Here, you want the van to repeat your "
+                        + "instruction until it is at the destination. <br> Doing this means "
+                        + "you don't have to work out how many times the van should repeat your "
+                        + "instruction. ")
     return build_description(title_level29(), message)
 
 
@@ -726,11 +727,11 @@ def title_level33():
 def description_level33():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/O0RXbJyYq8o", 0)
     message += ugettext("Another way of telling the van what to do is to use the <b>If</b> block. "
-                       + "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
-                       + "forwards</b>. <br> This is called an 'if statement'. <br> Try "
-                       + "using the <b>If</b> block and the <b>Repeat</b> block together. <br> "
-                       + "The <b>Repeat</b> block will stretch if you attach the <b>If</b> block "
-                       + "inside it. ")
+                        + "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
+                        + "forwards</b>. <br> This is called an 'if statement'. <br> Try "
+                        + "using the <b>If</b> block and the <b>Repeat</b> block together. <br> "
+                        + "The <b>Repeat</b> block will stretch if you attach the <b>If</b> block "
+                        + "inside it. ")
     return build_description(title_level33(), message)
 
 
@@ -790,15 +791,15 @@ def title_level36():
 
 def description_level36():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/GUUJSRuAyU0", 0)
-    message += ugettext("You can change the <b>If</b> block to make more choices. Click on the star "
-                       + "in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
-                       + "the van what to do if the first <b>If</b> direction can't be done. "
-                       + "<br> For example, tell the van to <b>Turn left</b> <b>If</b> the "
-                       + "<b>road exists left</b>. Add <b>Else if</b> the <b>road exists right"
-                       + "</b>, <b>Turn right</b>. <br> This uses fewer blocks and makes sure "
-                       + "that only one step is taken in each loop. <br> This type of "
-                       + "algorithm is called a 'general algorithm' as it can be used with most "
-                       + "simple routes. ")
+    message += ugettext("You can change the <b>If</b> block to make more choices. Click on the "
+                        + "star in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
+                        + "the van what to do if the first <b>If</b> direction can't be done. "
+                        + "<br> For example, tell the van to <b>Turn left</b> <b>If</b> the "
+                        + "<b>road exists left</b>. Add <b>Else if</b> the <b>road exists right"
+                        + "</b>, <b>Turn right</b>. <br> This uses fewer blocks and makes sure "
+                        + "that only one step is taken in each loop. <br> This type of "
+                        + "algorithm is called a 'general algorithm' as it can be used with most "
+                        + "simple routes. ")
     return build_description(title_level36(), message)
 
 

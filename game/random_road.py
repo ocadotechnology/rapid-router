@@ -5,7 +5,7 @@ import random
 import level_management
 
 from collections import defaultdict, namedtuple
-from models import Level, LevelBlock, Block, Theme, Decor
+from models import Level, Block, Theme, Decor
 
 
 Node = namedtuple('Node', ['x', 'y'])
@@ -51,7 +51,8 @@ def create(episode=None):
     decor = DEFAULT_DECOR
     blocks = episode.r_blocks.all() if episode else Block.objects.all()
 
-    level_data = generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights, decor)
+    level_data = generate_random_map_data(num_tiles, branchiness, loopiness, curviness,
+                                          traffic_lights, decor)
 
     level_data['max_fuel'] = DEFAULT_MAX_FUEL
     level_data['theme'] = 1
@@ -66,7 +67,9 @@ def create(episode=None):
 
     return level
 
-def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled, decor_enabled):
+
+def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled,
+                             decor_enabled):
     path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
     destinations = [[path[-1]['coordinate'].x, path[-1]['coordinate'].y]]
@@ -334,7 +337,8 @@ def generate_decor(path, num_tiles):
         x = x * GRID_SIZE + int((GRID_SIZE - decor_object.width) * 0.5 * (1 - dx))
         y = y * GRID_SIZE + int((GRID_SIZE - decor_object.height) * 0.5 * (1 - dy))
 
-        decor.append({'coordinate': {'x': x, 'y': y}, 'decorName': dec, 'height': decor_object.height})
+        decor.append({'coordinate': {'x': x, 'y': y}, 'decorName': dec,
+                      'height': decor_object.height})
 
     def place_near_road(elem, decor, path):
         for i in range(1, len(path) - 1):
