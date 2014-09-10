@@ -106,12 +106,10 @@
     <div id="toolbox">
       <div id="tabs">
 
-        <div id="currentTool">
-          <div id="currentToolHolder">
-            <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
-            <br>
-            <span id="currentToolText">Delete Road</span>
-          </div>
+        <div id="currentTool" class="mode_panel">
+          <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
+          <br>
+          <span id="currentToolText">Delete Road</span>
         </div>
 
         <br style="clear:both">
@@ -225,27 +223,39 @@
                   <input type="number" id="max_fuel" value="50"> 
                 </div>
                 <br style="clear:both">
-                <button class="navigation_button fixed_size" id="add_road">
-                  <img src="/static/game/image/icons/add_road.svg"/>
-                  <span>Add road</span>
-                </button>
+                
+                <div class="table">
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="add_road">
+                        <img src="/static/game/image/icons/add_road.svg"/>
+                        <span>Add road</span>
+                      </button>
+                    </div>
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="delete_road">
+                        <img src="/static/game/image/icons/delete_road.svg"/>
+                        <span>Delete road</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="start">
+                        <img src="/static/game/image/icons/origin.svg"/>
+                        <span>Mark start</span>
+                      </button>
+                    </div>
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="end">
+                        <img src="/static/game/image/icons/destination.svg"/>
+                        <span>Mark end</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-                <button class="navigation_button fixed_size" id="delete_road">
-                  <img src="/static/game/image/icons/delete_road.svg"/>
-                  <span>Delete road</span>
-                </button>
-
-                <button class="navigation_button fixed_size" id="start">
-                  <img src="/static/game/image/icons/origin.svg"/>
-                  <span>Mark start</span>
-                </button>
-
-                <button class="navigation_button fixed_size" id="end">
-                  <img src="/static/game/image/icons/destination.svg"/>
-                  <span>Mark end</span>
-                </button>
-
-                <button class="navigation_button fixed_size" id="clear">
+                <button class="navigation_button long_button" id="clear">
                   <img src="/static/game/image/icons/clear.svg"/>
                   <span>Clear all</span>
                 </button>
@@ -395,7 +405,7 @@
                     </div>
                   </div>
                 </div>
-                <button class="navigation_button" id="generate">
+                <button class="navigation_button long_button" id="generate">
                   <img src="/static/game/image/icons/random.svg">
                   <span>Generate</span>
                 </button>
@@ -422,21 +432,19 @@
                   </select>
                 </p>
 
-                <div id="own_levels">
-                  <div class="scrolling-table-wrapper">
-                    <table width='100%' id="loadLevelTableHeader">
-                      <thead>
-                        <tr>  
-                          <th>Name</th>
-                          <th>Owner</th>
-                        </tr>
-                      </thead>
+                <div class="scrolling-table-wrapper">
+                  <table width='100%' id="loadLevelTableHeader">
+                    <thead>
+                      <tr>  
+                        <th>Name</th>
+                        <th>Owner</th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <div class="scrolling-table">
+                    <table width='100%' id="loadLevelTable">
+                      <tbody></tbody>
                     </table>
-                    <div class="scrolling-table">
-                      <table width='100%' id="loadLevelTable">
-                        <tbody></tbody>
-                      </table>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -445,12 +453,12 @@
             <br style="clear:both">
             
             <div>
-              <button class="navigation_button" id="deleteLevel">
+              <button class="navigation_button long_button" id="deleteLevel">
                 <img src="/static/game/image/icons/clear.svg">
                 <span>Delete</span>
               </button>
 
-              <button class="navigation_button" id="loadLevel">
+              <button class="navigation_button long_button" id="loadLevel">
                 <img src="/static/game/image/icons/load.svg">
                 <span>Load</span>
               </button>
@@ -485,7 +493,7 @@
             </div>
             <br>
             <br>
-            <button class="navigation_button" id="saveLevel">
+            <button class="navigation_button long_button" id="saveLevel">
               <img src="/static/game/image/icons/save.svg">
               <span>Save</span>
             </button>
@@ -532,7 +540,7 @@
               </div>
             </div>
 
-            <button class="navigation_button" id="shareWithAll">
+            <button class="navigation_button long_button" id="shareWithAll">
               <img src="/static/game/image/icons/share.svg">
               <span>Share with all</span>
             </button>

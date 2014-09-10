@@ -5,7 +5,7 @@
     position: relative;
     width: 500px;
     height: 100%;
-    background-color: lightsteelblue;
+    background-color: #a0c53a;
 }
 
 #title {
@@ -46,8 +46,6 @@ input {
     width: 200px;
 }
 
-
-
 .popupIcon {
     padding-bottom: 3px;
     width: 20px;
@@ -70,6 +68,42 @@ input {
 .input_div input,
 .input_div select {
     float: left;
+}
+
+/***************/
+/* Mode panels */
+/***************/
+
+.mode_panel {
+    height: 100px;
+    width: 100px;
+    border: solid 5px;
+    border-color: rgb(246,146,30);
+    border-radius: 12px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    background: #fbed21; /* Old browsers */
+    background: -moz-linear-gradient(top, #fbed21 0%, #faaf3b 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbed21), color-stop(100%,#faaf3b)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #fbed21 0%,#faaf3b 100%); /* W3C */
+
+    text-align: center;
+}
+
+.mode_panel img {
+    width: 70px;
+    margin-left: 11px;
+    margin-right: 11px;
+}
+
+.mode_panel image + span {
+    color: #444444;
+    font-size: 100%;
 }
 
 /************/
@@ -98,42 +132,6 @@ input {
 
 #trashcan {
     max-width: 90%;
-}
-
-
-/****************/
-/* Current tool */
-/****************/
-
-#currentTool {
-    padding: 5px;
-    text-align: center;
-    margin-top: 18px;
-}
-
-#currentToolHolder {
-    height: 100px;
-    width: 100px;
-    border: solid 5px;
-    border-color: rgb(246,146,30);
-    border-radius: 12px;
-
-    margin-left: auto;
-    margin-right: auto;
-
-    background: #fbed21; /* Old browsers */
-    background: -moz-linear-gradient(top, #fbed21 0%, #faaf3b 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fbed21), color-stop(100%,#faaf3b)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #fbed21 0%,#faaf3b 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #fbed21 0%,#faaf3b 100%); /* W3C */
-}
-
-#currentToolIcon {
-    width: 70px;
-    margin-left: 11px;
-    margin-right: 11px;
 }
 
 /********************/
@@ -196,6 +194,10 @@ input {
     margin-left: 5px;
 }
 
+#currentTool {
+    margin-top: 22px;
+}
+
 /***********/
 /* Map tab */
 /***********/
@@ -206,6 +208,14 @@ input {
 
 #map_pane .input_div {
     display: inherit;
+}
+
+.table_cell .mode_panel {
+    margin: 10px;
+}
+
+#map_pane .table {
+    margin-bottom: 15px;
 }
 
 /*************/

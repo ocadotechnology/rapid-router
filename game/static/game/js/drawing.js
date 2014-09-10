@@ -894,7 +894,7 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay, bu
 
 // This is the function that starts the pop-up with a yes and a no button
 ocargo.Drawing.startYesNoPopup = function(title, subtitle, message, yesFunction, noFunction, mascot, delay) {
-    var buttonHtml = '<button id="modal-yesBtn" class="navigation_button">Yes</button> <button id="modal-noBtn" class="navigation_button">No</button>';
+    var buttonHtml = '<button id="modal-yesBtn" class="navigation_button long_button">Yes</button> <button id="modal-noBtn" class="navigation_button long_button">No</button>';
     ocargo.Drawing.startPopup(title, subtitle, message, mascot, delay, buttonHtml);
     $('#modal-yesBtn').click(yesFunction);
     $('#modal-noBtn').click(noFunction);

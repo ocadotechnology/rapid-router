@@ -402,7 +402,8 @@ ocargo.LevelEditor = function() {
             $('#load_type_select').change(function() {
                 var value = this.value;
 
-                populateLoadSaveTable("loadLevelTable", value === "ownLevels" ? ownLevels : sharedLevels);
+                var levels = value === "ownLevels" ? ownLevels : sharedLevels;
+                populateLoadSaveTable("loadLevelTable", levels);
 
                 // Add click listeners to all rows
                 $('#loadLevelTable tr[value]').on('click', function(event) {
@@ -416,6 +417,8 @@ ocargo.LevelEditor = function() {
 
                 $('#deleteLevel').attr('disabled', value === "sharedLevels" || !selectedLevel);
                 $('#loadLevel').attr('disabled', !selectedLevel);
+
+                $('#load_pane .scrolling-table-wrapper').css('display', levels.length === 0 ? 'none' : 'block');
             });
 
             $('#loadLevel').click(function() {
@@ -1812,7 +1815,7 @@ ocargo.LevelEditor = function() {
 
         // Other data
         var maxFuel = $('#max_fuel').val();
-        if(isNaN(maxFuel) ||  maxFuel ===  '')
+        if(isNaN(maxFuel) ||  maxFuel ===  '' || parseInt(maxFuel) <= 0 || parseInt(maxFuel) > 99)
         {
             maxFuel = 50;
             $('#max_fuel').val(50);
