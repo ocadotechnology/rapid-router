@@ -809,7 +809,6 @@ def save_level_for_editor(request, levelID=None):
 
         # Add the teacher automatically if it is a new level and the student is not independent
         if (levelID is None) and hasattr(level.owner, 'student') and not level.owner.student.is_independent():
-            print(level.owner.student.is_independent())
             level.shared_with.add(level.owner.student.class_field.teacher.user.user)
             level.save()
 
@@ -906,7 +905,6 @@ def share_level_for_editor(request, levelID):
     recipients = User.objects.filter(id__in=recipientIDs)
 
     for recipient in recipients:
-        print(recipient)
         if permissions.can_share_level_with(recipient, level.owner.user):
             if action == 'share':
                 level_management.share_level(level, recipient.userprofile.user)
