@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 
 
-
 def change_episode_names(apps, schema_editor):
     Episode = apps.get_model('game', 'Episode')
 
@@ -16,7 +15,6 @@ def change_episode_names(apps, schema_editor):
 
     procEpisode.save()
     puzzlesEpisode.save()
-
 
 
 class Migration(migrations.Migration):
