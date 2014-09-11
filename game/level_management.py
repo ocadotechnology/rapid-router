@@ -38,7 +38,7 @@ def set_decor(level, decor):
 
     for data in decor:
         levelDecor = LevelDecor(
-            level=level,
+            level_id=level.id,
             x=data['x'],
             y=data['y'],
             decorName=data['decorName'],
@@ -58,7 +58,7 @@ def set_blocks(level, blocks):
 
     for data in blocks:
         levelBlock = LevelBlock(
-            level=level,
+            level_id=level.id,
             type=Block.objects.get(type=data['type']),
             number=data['number'] if 'number' in data else None,
         )
@@ -75,7 +75,7 @@ def save_level(level, data):
     level.blocklyEnabled = data['blocklyEnabled']
     level.pythonEnabled = data['pythonEnabled']
     level.theme = Theme.objects.get(id=data['theme'])
-    level.character = Character.objects.get(name=data['character_name'])
+    level.character = Character.objects.get(id=data['character'])
     level.save()
 
     set_decor(level, data['decor'])

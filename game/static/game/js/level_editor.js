@@ -211,6 +211,15 @@ ocargo.LevelEditor = function() {
                 mode = modes.DELETE_ROAD_MODE;
                 changeCurrentToolDisplay(modes.DELETE_ROAD_MODE);
             });
+
+            if(DEVELOPER) {
+                $('#djangoText').click(function() {
+                    ocargo.Drawing.startPopup('Django level migration', 
+                        'Copy the text in the console into the Django migration file.',
+                        'You will have to change the level name and fill in the model solution field.');
+                    console.log(getLevelTextForDjangoMigration(extractState()));
+                });
+            }
         }
 
         function setupSceneryTab() {
@@ -264,9 +273,9 @@ ocargo.LevelEditor = function() {
             });
 
             $("#character_select").change(function() { 
-                CHARACTER_NAME = $(this).val();
+                CHARACTER_NAME = CHARACTERS[$(this).val()].name;
+                $('#character_image').attr('src', CHARACTERS[$(this).val()].image);
                 redrawRoad();
-                $('#character_image').attr('src', CHARACTERS[CHARACTER_NAME].image);
             });
 
             $("#character_select").change();
@@ -402,7 +411,8 @@ ocargo.LevelEditor = function() {
             $('#load_type_select').change(function() {
                 var value = this.value;
 
-                populateLoadSaveTable("loadLevelTable", value === "ownLevels" ? ownLevels : sharedLevels);
+                var levels = value === "ownLevels" ? ownLevels : sharedLevels;
+                populateLoadSaveTable("loadLevelTable", levels);
 
                 // Add click listeners to all rows
                 $('#loadLevelTable tr[value]').on('click', function(event) {
@@ -416,6 +426,8 @@ ocargo.LevelEditor = function() {
 
                 $('#deleteLevel').attr('disabled', value === "sharedLevels" || !selectedLevel);
                 $('#loadLevel').attr('disabled', !selectedLevel);
+
+                $('#load_pane .scrolling-table-wrapper').css('display', levels.length === 0 ? 'none' : 'block');
             });
 
             $('#loadLevel').click(function() {
@@ -838,6 +850,10 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    /************/
+    /* Trashcan */
+    /************/
+
     function setupTrashcan() {
 
         var trashcan = $('#trashcanHolder');
@@ -873,6 +889,33 @@ ocargo.LevelEditor = function() {
 
         addReleaseListeners(trashcan[0]);
         closeTrashcan();
+    }
+
+    function checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight) {
+        var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
+        var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
+        var trashcanWidth = $('#trashcanHolder').width();
+        var trashcanHeight = $('#trashcanHolder').height();
+
+        if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
+            paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
+            openTrashcan();
+        }
+        else {
+            closeTrashcan();
+        }
+    }
+
+    function openTrashcan() {
+        $('#trashcanLidOpen').css('display', 'block');
+        $('#trashcanLidClosed').css('display', 'none');
+        trashcanOpen = true;
+    }
+
+    function closeTrashcan() {
+        $('#trashcanLidOpen').css('display', 'none');
+        $('#trashcanLidClosed').css('display', 'block');
+        trashcanOpen = false;
     }
 
     /************************/
@@ -1244,6 +1287,9 @@ ocargo.LevelEditor = function() {
             paperX = dx + originX;
             paperY = dy + originY;
 
+            // Deal with trashcan
+            checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight);;
+
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
                 paperX = 0;
@@ -1260,22 +1306,6 @@ ocargo.LevelEditor = function() {
             }
 
             image.transform('t' + paperX + ',' + paperY);
-
-            // Deal with trashcan
-            var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
-            var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
-            var trashcanWidth = $('#trashcanHolder').width();
-            var trashcanHeight = $('#trashcanHolder').height();
-
-            console.log(paperAbsX, trashcanAbsolutePaperX)
-
-            if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
-                paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
-                openTrashcan();
-            }
-            else {
-                closeTrashcan();
-            }
         }
 
         function onDragStart(x, y) {
@@ -1345,6 +1375,15 @@ ocargo.LevelEditor = function() {
             paperX = dx + originX;
             paperY = dy + originY;
 
+            // Adjust for the fact that we've rotated the image
+            if (rotation === 90 || rotation === 270)  {
+                paperX += (imageWidth - imageHeight)/2;
+                paperY -= (imageWidth - imageHeight)/2;
+            }
+
+            // Trashcan check
+            checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight);
+
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
                 paperX = 0;
@@ -1359,15 +1398,8 @@ ocargo.LevelEditor = function() {
                 paperY = paperHeight - imageHeight;
             }
             
-            // Adjust for the fact that we've rotated the image
-            if (rotation === 90 || rotation === 270)  {
-                paperX += (imageWidth - imageHeight)/2;
-                paperY -= (imageWidth - imageHeight)/2;
-            }
-
             // And perform the updatee
             image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
-
 
             // Unmark the squares the light previously occupied
             if (sourceCoord) {
@@ -1576,18 +1608,6 @@ ocargo.LevelEditor = function() {
         }
     }
 
-    function openTrashcan() {
-        $('#trashcanLidOpen').css('display', 'block');
-        $('#trashcanLidClosed').css('display', 'none');
-        trashcanOpen = true;
-    }
-
-    function closeTrashcan() {
-        $('#trashcanLidOpen').css('display', 'none');
-        $('#trashcanLidClosed').css('display', 'block');
-        trashcanOpen = false;
-    }
-
     /********************************/
     /* Miscaellaneous state methods */
     /********************************/
@@ -1726,7 +1746,7 @@ ocargo.LevelEditor = function() {
             element.src = theme.decor[element.id].url;
         });
 
-        $('#wrapper').css({'background-color': theme.background});
+        $('#paper').css({'background-color': theme.background});
     }
 
     function sortNodes(nodes) {
@@ -1814,7 +1834,7 @@ ocargo.LevelEditor = function() {
 
         // Other data
         var maxFuel = $('#max_fuel').val();
-        if(isNaN(maxFuel) ||  maxFuel ===  '')
+        if(isNaN(maxFuel) ||  maxFuel ===  '' || parseInt(maxFuel) <= 0 || parseInt(maxFuel) > 99)
         {
             maxFuel = 50;
             $('#max_fuel').val(50);
@@ -1822,7 +1842,7 @@ ocargo.LevelEditor = function() {
         state.max_fuel = maxFuel;
         
         state.theme = currentTheme.id;
-        state.character_name = CHARACTER_NAME;
+        state.character = $('#character_select').val();
 
         state.blocklyEnabled = true;
         state.pythonEnabled = false;
@@ -1856,6 +1876,10 @@ ocargo.LevelEditor = function() {
             originNode = ocargo.Node.findNodeByCoordinate(originCoordinate, nodes);
         }
         
+        // Load in character
+        $('#character_select').val(state.character);
+        $('#character_select').change();
+
         drawAll();
 
         // Set the theme
@@ -2046,6 +2070,57 @@ ocargo.LevelEditor = function() {
         return true;
     }
 
+    function getLevelTextForDjangoMigration(state) {
+        // Put a call to this function in restoreState and you should get a string 
+        // you can copy and paste into a Django migration file
+
+
+        var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge', 'direct_drive'];
+        var stringFields =  ['path', 'traffic_lights', 'origin', 'destinations'];
+        var otherFields = ['max_fuel']
+        
+        var decor = null;
+        var blocks = null;
+
+        var string = "levelNUMBER = Level(\n";
+        string += "\t\tname='NUMBER',\n";
+        string += "\t\tdefault=True,\n";
+
+        for(var propertyName in state) {
+            if(propertyName === 'decor') {
+                decor = JSON.stringify(state[propertyName]);
+            }
+            else if(propertyName === 'blocks') {
+                blocks = JSON.stringify(state[propertyName]);
+            }
+            else if(propertyName === 'character') {
+                string += "\t\tcharacter=Character.objects.get(id='" + state[propertyName] + "'),\n";
+            }
+            else if(propertyName === 'theme') {
+                string += "\t\ttheme=Theme.objects.get(id=" + state[propertyName] + "),\n";
+            }
+            else if(stringFields.indexOf(propertyName) != -1) {
+                string += "\t\t" + propertyName + "='" + state[propertyName] + "',\n";
+            }
+            else if(boolFields.indexOf(propertyName) != -1) {
+                string += "\t\t" + propertyName + "=" + (state[propertyName] ? "True" : "False") + ",\n";
+            }
+            else if(otherFields.indexOf(propertyName) != -1) {
+                string += "\t\t" + propertyName + "=" + state[propertyName] + ",\n";
+            }
+            else {
+                console.log("DISCARDING " + propertyName)
+            }
+        }
+        string += "\t\tmodel_solution=FILL_IN,\n"
+        string += "\t)\n";;
+        string += "\tlevelNUMBER.save()\n";
+        string += "\tset_decor(levelNUMBER, json.loads('" + decor + "'))\n";
+        string += "\tset_blocks(levelNUMBER, json.loads('" + blocks + "'))\n";
+
+        return string;
+    }
+
     /*****************************************/
     /* Internal traffic light representation */
     /*****************************************/
@@ -2098,6 +2173,9 @@ ocargo.LevelEditor = function() {
                 this.valid = true;
                 ocargo.drawing.setTrafficLightImagePosition(this.sourceNode.coordinate, this.controlledNode.coordinate, this.image);
             }
+        }
+        else {
+            this.image.transform('...t' + (-paper.scrollLeft())  +  ',' +  paper.scrollTop());
         }
 
         setupTrafficLightListeners(this);
@@ -2153,7 +2231,10 @@ ocargo.LevelEditor = function() {
         // data
         this.decorName = decorName;
         this.image = null;
+
+        // setup
         this.updateTheme();
+        this.setPosition(paper.scrollLeft(), paper.scrollTop());
 
         decor.push(this);
     }

@@ -254,7 +254,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			if (a.popupHint) {
 				var hintBtns = $("#hintPopupBtn");
 		        if (hintBtns.length === null || hintBtns.length === 0) {
-		        	leadMsg += '<button class="navigation_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
+		        	leadMsg += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
 		            otherMsg = '<p id="hintBtnPara">' + '</p><p id="hintText">' + HINT + '</p>';
     			}
 			}
