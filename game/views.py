@@ -61,9 +61,17 @@ def play_level(request, levelID):
     if not permissions.can_play_level(request.user, level):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
-    lesson = 'description_level' + str(levelID)
-    hint = 'hint_level' + str(levelID)
+    # Set default level description/hint lookups
+    lesson = 'description_level_default'
+    hint = 'hint_level_default'
 
+    # If it's one of our levels, set level description/hint lookups
+    # to point to what they should be
+    if level.default:
+        lesson = 'description_level' + str(level.name)
+        hint = 'hint_level' + str(level.name)
+
+    # Try to get the relevant message, and fall back on defaults
     try:
         lessonCall = getattr(messages, lesson)
         hintCall = getattr(messages, hint)
@@ -239,10 +247,6 @@ def levels(request):
              "last_level": maxName}
 
         episode_data.append(e)
-        if episode.in_development and not developer:
-            episode = None
-        else:
-            episode = episode.next_episode
 
     owned_level_data = []
     shared_level_data = []
