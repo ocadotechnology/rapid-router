@@ -20,7 +20,6 @@
   <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
   
-
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
 
@@ -79,8 +78,9 @@
 
       CHARACTERS = [];
       {% for char in characters %}
-          CHARACTERS['{{char.name}}'] = {name:  '{{char.name}}',
-                                         image: '/static/game/image/{{char.en_face}}'}
+          CHARACTERS['{{char.id}}'] =   {id:    '{{char.id}}',
+                                        name:  '{{char.name}}',
+                                        image: '/static/game/image/{{char.en_face}}'}
       {% endfor %}
     }
     
@@ -103,20 +103,17 @@
 <div id="wrapper" class="unselectable">
   <div id="tools" class="col">
 
-    <div id='title'>
-      <h1>Level editor</h1>
-    </div>
-    
-    <div id="currentTool">
-      <div id="currentToolHolder">
-        <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
-        <span id="currentToolText">Delete Road</span>
-      </div>
-    </div>
-
     <div id="toolbox">
       <div id="tabs">
 
+        <div id="currentTool" class="mode_panel">
+          <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
+          <br>
+          <span id="currentToolText">Delete Road</span>
+        </div>
+
+        <br style="clear:both">
+        
         <div class="tab">
           <input type="radio" name="tabs" id="play_radio">
           <label for="play_radio">
@@ -147,7 +144,7 @@
           <input type="radio" name="tabs" id="character_radio">
           <label for="character_radio">
             <img src='/static/game/image/icons/character.svg'>
-            <span>Characters</span>
+            <span>Character</span>
           </label>
         </div>
 
@@ -226,30 +223,48 @@
                   <input type="number" id="max_fuel" value="50"> 
                 </div>
                 <br style="clear:both">
-                <button class="navigation_button fixed_size" id="add_road">
-                  <img src="/static/game/image/icons/add_road.svg"/>
-                  <span>Add road</span>
-                </button>
+                
+                <div class="table">
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="add_road">
+                        <img src="/static/game/image/icons/add_road.svg"/>
+                        <span>Add road</span>
+                      </button>
+                    </div>
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="delete_road">
+                        <img src="/static/game/image/icons/delete_road.svg"/>
+                        <span>Delete road</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="start">
+                        <img src="/static/game/image/icons/origin.svg"/>
+                        <span>Mark start</span>
+                      </button>
+                    </div>
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="end">
+                        <img src="/static/game/image/icons/destination.svg"/>
+                        <span>Mark end</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
-                <button class="navigation_button fixed_size" id="delete_road">
-                  <img src="/static/game/image/icons/delete_road.svg"/>
-                  <span>Delete road</span>
-                </button>
-
-                <button class="navigation_button fixed_size" id="start">
-                  <img src="/static/game/image/icons/origin.svg"/>
-                  <span>Mark start</span>
-                </button>
-
-                <button class="navigation_button fixed_size" id="end">
-                  <img src="/static/game/image/icons/destination.svg"/>
-                  <span>Mark end</span>
-                </button>
-
-                <button class="navigation_button fixed_size" id="clear">
+                <button class="navigation_button long_button" id="clear">
                   <img src="/static/game/image/icons/clear.svg"/>
                   <span>Clear all</span>
                 </button>
+
+                {% if user|is_developer %}
+                <button class="navigation_button long_button" id="djangoText">
+                  <span>Django migr text</span>
+                </button>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -259,41 +274,39 @@
             <p> Here you can liven up your level by choosing the theme and adding scenery! Will you create beautiful countryside or a bustling city?</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                <div class="input_div"> 
-                  <span> Theme: </span>
-                  <select id="theme_select">
-                    {% for theme in themes %}
-                      <option value="{{theme.name}}">{{theme.name|make_title_caps}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
+                
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Theme:</td>
+                      <td colspan=2> 
+                        <select id="theme_select">
+                          {% for theme in themes %}
+                          <option value="{{theme.name}}">{{theme.name|make_title_caps}}</option>
+                          {% endfor %}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Scenery:</td>
+                      <td><div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></td>
+                      <td><div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div></td>
+                      <td><div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div></td>
+                    </tr>
+                    <tr>
+                      <td>Traffic lights:</td>
+                      <td><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></td>
+                      <td><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
                 <br style="clear:both">
-                <div class="table">
-                  <div class="table_row">
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></div>
-                    </div>
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div>
-                    </div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div>
-                    </div>
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div>
-                    </div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></div>
-                    </div>
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></div>
-                    </div>
-                  </div>
-                </div>
+
               </div>
             </div>
           </div>
@@ -306,7 +319,7 @@
                 <p>Character: 
                   <select id="character_select">
                   {% for char in characters %}
-                    <option value='{{char.name}}'> {{char.name}} </option>
+                    <option value='{{char.id}}'> {{char.name}} </option>
                   {% endfor %}
                   </select>
                 </p>
@@ -396,7 +409,7 @@
                     </div>
                   </div>
                 </div>
-                <button class="navigation_button" id="generate">
+                <button class="navigation_button long_button" id="generate">
                   <img src="/static/game/image/icons/random.svg">
                   <span>Generate</span>
                 </button>
@@ -423,21 +436,19 @@
                   </select>
                 </p>
 
-                <div id="own_levels">
-                  <div class="scrolling-table-wrapper">
-                    <table width='100%' id="loadLevelTableHeader">
-                      <thead>
-                        <tr>  
-                          <th>Name</th>
-                          <th>Owner</th>
-                        </tr>
-                      </thead>
+                <div class="scrolling-table-wrapper">
+                  <table width='100%' id="loadLevelTableHeader">
+                    <thead>
+                      <tr>  
+                        <th>Name</th>
+                        <th>Owner</th>
+                      </tr>
+                    </thead>
+                  </table>
+                  <div class="scrolling-table">
+                    <table width='100%' id="loadLevelTable">
+                      <tbody></tbody>
                     </table>
-                    <div class="scrolling-table">
-                      <table width='100%' id="loadLevelTable">
-                        <tbody></tbody>
-                      </table>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -446,12 +457,12 @@
             <br style="clear:both">
             
             <div>
-              <button class="navigation_button" id="deleteLevel">
+              <button class="navigation_button long_button" id="deleteLevel">
                 <img src="/static/game/image/icons/clear.svg">
                 <span>Delete</span>
               </button>
 
-              <button class="navigation_button" id="loadLevel">
+              <button class="navigation_button long_button" id="loadLevel">
                 <img src="/static/game/image/icons/load.svg">
                 <span>Load</span>
               </button>
@@ -487,7 +498,7 @@
             </div>
             <br>
             <br>
-            <button class="navigation_button" id="saveLevel">
+            <button class="navigation_button long_button" id="saveLevel">
               <img src="/static/game/image/icons/save.svg">
               <span>Save</span>
             </button>
@@ -534,7 +545,7 @@
               </div>
             </div>
 
-            <button class="navigation_button" id="shareWithAll">
+            <button class="navigation_button long_button" id="shareWithAll">
               <img src="/static/game/image/icons/share.svg">
               <span>Share with all</span>
             </button>

@@ -1069,3 +1069,18 @@ def hint_level50():
                        + "is right under the traffic lights, make sure it waits for a green "
                        + "light. ")
     return message
+
+
+def title_level51():
+    return ugettext("Traffic lights and procedures. ")
+
+
+def description_level51():
+    message = ugettext("Procedures! <br> Can you find the "
+                       + "shortest program to deal with the traffic lights? ")
+    return build_description(title_level51(), message)
+
+
+def hint_level51():
+    message = ugettext("Define a procedure to deal with the traffic waiting. ")
+    return message

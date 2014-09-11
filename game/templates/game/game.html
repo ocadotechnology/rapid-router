@@ -22,6 +22,7 @@
     var MODEL_SOLUTION = {{level.model_solution}};
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
+    var DEFAULT_LEVEL = "{{level.default}}" === "True";
     var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
     var CHARACTER_NAME = "{{character.name}}";
     var CHARACTER_URL = "{{character.top_down}}";
@@ -104,7 +105,7 @@
     <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/game_screen.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/codemirror.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'game/css/skulpt/solarized.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/skulpt/eclipse.css' %}" rel="stylesheet" type="text/css">
   {% endcompress %}
 {% endblock %}
 
@@ -253,7 +254,7 @@
               <h4 style="height:50px; line-height: 50px;">
                 Console Output
 
-                <button class="navigation_button" id="clear_console">
+                <button class="navigation_button long_button" id="clear_console">
                   <img src="/static/game/image/icons/clear.svg">
                   <span>Clear console</span>
                 </button>
@@ -296,12 +297,12 @@
             </div>
             <br>
             <div>
-              <button class="navigation_button" id="deleteWorkspace">
+              <button class="navigation_button long_button" id="deleteWorkspace">
                 <img src="/static/game/image/icons/clear.svg"/>
                 <span>Delete</span>
               </button>
 
-              <button class="navigation_button" id="loadWorkspace">
+              <button class="navigation_button long_button" id="loadWorkspace">
                 <img src="/static/game/image/icons/load.svg"/>
                 <span>Load</span>
               </button>
@@ -329,7 +330,7 @@
         <br>
         <div>
           <input type="text" id="workspaceNameInput">
-          <button class="navigation_button" id="saveWorkspace">
+          <button class="navigation_button long_button" id="saveWorkspace">
             <img src="/static/game/image/icons/save.svg">
             <span>Save</span>
           </button>

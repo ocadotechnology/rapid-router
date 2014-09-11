@@ -138,7 +138,12 @@ ocargo.Game.prototype.setup = function() {
     // Start the popup
     var title = "Try solving this one...";
     if (LEVEL_ID) {
-        title = "Level " + LEVEL_NAME;
+        if (DEFAULT_LEVEL) {
+            title = "Level " + LEVEL_NAME;
+        }
+        else {
+            title = LEVEL_NAME;
+        }
     }
     ocargo.Drawing.startPopup(title, "",
         LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
@@ -450,6 +455,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
             ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
             ocargo.controller = ocargo.editor;
+            $('#clear_console').click();
         });
     }
 
@@ -471,6 +477,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 if (ocargo.game.runProgramAndPrepareAnimation()) {
                     ocargo.game.onPlayControls();
                     ocargo.animation.playAnimation();
+                    $('#clear_console').click();
                 }
                 
             }
@@ -501,6 +508,7 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.step.setOnChange(function() {
             if (tabs.play.getText() == "Play") {
                 ocargo.game.runProgramAndPrepareAnimation();
+                $('#clear_console').click();
             }
 
             ocargo.animation.stepAnimation(function() {
