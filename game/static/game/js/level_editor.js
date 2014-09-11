@@ -1843,9 +1843,7 @@ ocargo.LevelEditor = function() {
 
     function restoreState(state) {
         clear();
-
-        console.log(getLevelTextForDjangoMigration(state));
-
+        
         // Load node data
         nodes = ocargo.Node.parsePathData(JSON.parse(state.path));
 
