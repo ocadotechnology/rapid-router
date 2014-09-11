@@ -138,7 +138,12 @@ ocargo.Game.prototype.setup = function() {
     // Start the popup
     var title = "Try solving this one...";
     if (LEVEL_ID) {
-        title = "Level " + LEVEL_NAME;
+        if (DEFAULT_LEVEL) {
+            title = "Level " + LEVEL_NAME;
+        }
+        else {
+            title = LEVEL_NAME;
+        }
     }
     ocargo.Drawing.startPopup(title, "",
         LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
