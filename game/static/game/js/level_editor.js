@@ -1265,13 +1265,15 @@ ocargo.LevelEditor = function() {
             image.transform('t' + paperX + ',' + paperY);
 
             // Deal with trashcan
-            var paperAbsX = paperX - paper.scrollLeft();
-            var paperAbsY = paperY - paper.scrollTop();
+            var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
+            var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
             var trashcanWidth = $('#trashcanHolder').width();
             var trashcanHeight = $('#trashcanHolder').height();
 
-            if(paperAbsX >= trashcanAbsolutePaperX - trashcanWidth && paperAbsX < trashcanAbsolutePaperX  &&
-                paperAbsY >= trashcanAbsolutePaperY - trashcanHeight - 20 && paperAbsY < trashcanAbsolutePaperY) {
+            console.log(paperAbsX, trashcanAbsolutePaperX)
+
+            if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
+                paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
                 openTrashcan();
             }
             else {
@@ -1449,13 +1451,13 @@ ocargo.LevelEditor = function() {
             }
 
             // Deal with trashcan
-            var paperAbsX = paperX - paper.scrollLeft();
-            var paperAbsY = paperY - paper.scrollTop();
+            var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
+            var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
             var trashcanWidth = $('#trashcanHolder').width();
             var trashcanHeight = $('#trashcanHolder').height();
 
-            if(paperAbsX >= trashcanAbsolutePaperX - trashcanWidth && paperAbsX < trashcanAbsolutePaperX  &&
-                paperAbsY >= trashcanAbsolutePaperY - trashcanHeight - 20 && paperAbsY < trashcanAbsolutePaperY) {
+            if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
+                paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
                 openTrashcan();
             }
             else {
