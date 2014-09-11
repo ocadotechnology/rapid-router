@@ -84,7 +84,11 @@
 			    			</p>
 			    		{% endfor %}
 			    	{% else %}
+			    		{% if user|is_logged_in %}
 			    		<p>No levels have been created by you yet.</p>
+			    		{% else %}
+			    		<p>You cannot save created levels as you are not logged in.</p>
+			    		{% endif %}
 			    	{% endif %}
 			    </div>
 
