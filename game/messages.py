@@ -1082,5 +1082,5 @@ def description_level51():
 
 
 def hint_level51():
-    message = ugettext("Define a procedure to deal with the traffic waiting. ")
+    message = ugettext("Define a procedure to deal with waiting at the traffic lights. ")
     return message
