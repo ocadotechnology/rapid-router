@@ -27,7 +27,7 @@
     right: 0;
 }
 
-#paperHolder {
+#paper {
     height:100%;
     overflow:scroll;
     z-index:10;

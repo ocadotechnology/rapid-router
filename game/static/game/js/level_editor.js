@@ -1270,8 +1270,6 @@ ocargo.LevelEditor = function() {
             var trashcanWidth = $('#trashcanHolder').width();
             var trashcanHeight = $('#trashcanHolder').height();
 
-            console.log(paperAbsX, trashcanAbsolutePaperX)
-
             if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
                 paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
                 openTrashcan();
@@ -1729,7 +1727,7 @@ ocargo.LevelEditor = function() {
             element.src = theme.decor[element.id].url;
         });
 
-        $('#paperHolder').css({'background-color': theme.background});
+        $('#paper').css({'background-color': theme.background});
     }
 
     function sortNodes(nodes) {

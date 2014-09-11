@@ -40,7 +40,6 @@ class Character(models.Model):
 class Level (models.Model):
     name = models.CharField(max_length=100)
     path = models.TextField(max_length=10000)
-    decor = models.TextField(max_length=10000, default='[]')
     traffic_lights = models.TextField(max_length=10000, default='[]')
     origin = models.CharField(max_length=50, default='[]')
     destinations = models.CharField(max_length=50, default='[[]]')
