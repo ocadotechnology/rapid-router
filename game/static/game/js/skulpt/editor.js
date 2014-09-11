@@ -23,7 +23,9 @@ $(document).ready(function () {
         parserConfig: {'pythonVersion': 2, 'strictErrors': true}
     });
 
-   ocargo.editor.run = function() {
+    ocargo.editor.DEFAULT_CODE = "import van\n\nv = van.Van()\n";
+
+    ocargo.editor.run = function() {
         ocargo.model.reset(0);
         Sk.failed = false;
         Sk.configure({output: outf, read: builtinRead});
@@ -44,7 +46,7 @@ $(document).ready(function () {
     };
 
     ocargo.editor.reset = function() {
-        document.getElementById("code").value = "import van\nv = van.Van()";
+        ocargo.editor.setValue(ocargo.editor.DEFAULT_CODE);
         $('#consoleOutput').text('');
     }
 
