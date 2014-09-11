@@ -20,7 +20,6 @@
   <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
   
-
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
 
@@ -79,8 +78,9 @@
 
       CHARACTERS = [];
       {% for char in characters %}
-          CHARACTERS['{{char.name}}'] = {name:  '{{char.name}}',
-                                         image: '/static/game/image/{{char.en_face}}'}
+          CHARACTERS['{{char.id}}'] =   {id:    '{{char.id}}',
+                                        name:  '{{char.name}}',
+                                        image: '/static/game/image/{{char.en_face}}'}
       {% endfor %}
     }
     
@@ -313,7 +313,7 @@
                 <p>Character: 
                   <select id="character_select">
                   {% for char in characters %}
-                    <option value='{{char.name}}'> {{char.name}} </option>
+                    <option value='{{char.id}}'> {{char.name}} </option>
                   {% endfor %}
                   </select>
                 </p>

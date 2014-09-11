@@ -264,9 +264,9 @@ ocargo.LevelEditor = function() {
             });
 
             $("#character_select").change(function() { 
-                CHARACTER_NAME = $(this).val();
+                CHARACTER_NAME = CHARACTERS[$(this).val()].name;
+                $('#character_image').attr('src', CHARACTERS[$(this).val()].image);
                 redrawRoad();
-                $('#character_image').attr('src', CHARACTERS[CHARACTER_NAME].image);
             });
 
             $("#character_select").change();
@@ -1833,7 +1833,7 @@ ocargo.LevelEditor = function() {
         state.max_fuel = maxFuel;
         
         state.theme = currentTheme.id;
-        state.character_name = CHARACTER_NAME;
+        state.character = $('#character_select').val();
 
         state.blocklyEnabled = true;
         state.pythonEnabled = false;
@@ -1843,6 +1843,8 @@ ocargo.LevelEditor = function() {
 
     function restoreState(state) {
         clear();
+
+        console.log(getLevelTextForDjangoMigration(state));
 
         // Load node data
         nodes = ocargo.Node.parsePathData(JSON.parse(state.path));
@@ -1867,6 +1869,10 @@ ocargo.LevelEditor = function() {
             originNode = ocargo.Node.findNodeByCoordinate(originCoordinate, nodes);
         }
         
+        // Load in character
+        $('#character_select').val(state.character);
+        $('#character_select').change();
+
         drawAll();
 
         // Set the theme
@@ -2055,6 +2061,57 @@ ocargo.LevelEditor = function() {
             return false;
         }
         return true;
+    }
+
+    function getLevelTextForDjangoMigration(state) {
+        // Put a call to this function in restoreState and you should get a string 
+        // you can copy and paste into a Django migration file
+
+
+        var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge', 'direct_drive'];
+        var stringFields =  ['path', 'traffic_lights', 'origin', 'destinations'];
+        var otherFields = ['max_fuel']
+        
+        var decor = null;
+        var blocks = null;
+
+        var string = "levelNUMBER = Level(\n";
+        string += "\t\tname='NUMBER',\n";
+        string += "\t\tdefault=True,\n";
+
+        for(var propertyName in state) {
+            if(propertyName === 'decor') {
+                decor = JSON.stringify(state[propertyName]);
+            }
+            else if(propertyName === 'blocks') {
+                blocks = JSON.stringify(state[propertyName]);
+            }
+            else if(propertyName === 'character') {
+                string += "\t\tcharacter=Character.objects.get(id='" + state[propertyName] + "'),\n";
+            }
+            else if(propertyName === 'theme') {
+                string += "\t\ttheme=Theme.objects.get(id=" + state[propertyName] + "),\n";
+            }
+            else if(stringFields.indexOf(propertyName) != -1) {
+                string += "\t\t" + propertyName + "='" + state[propertyName] + "',\n";
+            }
+            else if(boolFields.indexOf(propertyName) != -1) {
+                string += "\t\t" + propertyName + "=" + (state[propertyName] ? "True" : "False") + ",\n";
+            }
+            else if(otherFields.indexOf(propertyName) != -1) {
+                string += "\t\t" + propertyName + "=" + state[propertyName] + ",\n";
+            }
+            else {
+                console.log("DISCARDING " + propertyName)
+            }
+        }
+        string += "\t\tmodel_solution=FILL_IN,\n"
+        string += "\t)\n";;
+        string += "\tlevelNUMBER.save()\n";
+        string += "\tset_decor(levelNUMBER, json.loads('" + decor + "'))\n";
+        string += "\tset_blocks(levelNUMBER, json.loads('" + blocks + "'))\n";
+
+        return string;
     }
 
     /*****************************************/
