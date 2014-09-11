@@ -449,7 +449,7 @@ ocargo.Game.prototype.setupTabs = function() {
         $('#convert_from_blockly').click(function (e) {
                 ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
         });
-        ocargo.editor.setValue('import van\n\nv = van.Van()\n')
+        ocargo.editor.setValue(ocargo.editor.DEFAULT_CODE);
 
         tabs.python.setOnChange(function() {
             var tab = tabs.python;
