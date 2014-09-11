@@ -5,6 +5,10 @@
   font-family: monospace;
   height: 300px;
   margin-bottom: 16px;
+  border: solid 1px rgb(107, 107, 107);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
 }
 .CodeMirror-scroll {
   /* Set scrolling behaviour here */

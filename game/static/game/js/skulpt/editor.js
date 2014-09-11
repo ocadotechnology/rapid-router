@@ -12,7 +12,7 @@ $(document).ready(function () {
     ocargo.editor = CodeMirror.fromTextArea(document.getElementById('code'), {
         parserfile: ["parsepython.js"],
         autofocus: true,
-        theme: "solarized dark",
+        theme: "eclipse",
         //path: "static/env/codemirror/js/",
         lineNumbers: true,
         textWrapping: false,
