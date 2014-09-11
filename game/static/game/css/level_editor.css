@@ -226,11 +226,10 @@ input {
 /*************/
 
 #theme_select {
-    width: 100px;
+    margin: 0px;
 }
 
 .decor_div {
-    height: 80px;
     text-align: center;
 }
 
@@ -245,6 +244,15 @@ input {
 #trafficLightRed,
 #trafficLightGreen {
     cursor: pointer;
+}
+
+#scenery_pane td:first-child {
+    text-align: left;
+    font-size: 1rem;
+}
+
+#scenery_pane tr:nth-of-type(even) {
+    background: white;
 }
 
 

@@ -268,41 +268,39 @@
             <p> Here you can liven up your level by choosing the theme and adding scenery! Will you create beautiful countryside or a bustling city?</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                <div class="input_div"> 
-                  <span> Theme: </span>
-                  <select id="theme_select">
-                    {% for theme in themes %}
-                      <option value="{{theme.name}}">{{theme.name|make_title_caps}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
+                
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Theme:</td>
+                      <td colspan=2> 
+                        <select id="theme_select">
+                          {% for theme in themes %}
+                          <option value="{{theme.name}}">{{theme.name|make_title_caps}}</option>
+                          {% endfor %}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Scenery:</td>
+                      <td><div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></td>
+                      <td><div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div></td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td><div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div></td>
+                      <td><div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div></td>
+                    </tr>
+                    <tr>
+                      <td>Traffic lights:</td>
+                      <td><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></td>
+                      <td><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
                 <br style="clear:both">
-                <div class="table">
-                  <div class="table_row">
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></div>
-                    </div>
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div>
-                    </div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="bush" class="decor_button" src="{{bush.url}}" width="50"></div>
-                    </div>
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div>
-                    </div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></div>
-                    </div>
-                    <div class="table_cell">
-                      <div class="decor_div"><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></div>
-                    </div>
-                  </div>
-                </div>
+
               </div>
             </div>
           </div>

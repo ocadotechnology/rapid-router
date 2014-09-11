@@ -841,6 +841,10 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    /************/
+    /* Trashcan */
+    /************/
+
     function setupTrashcan() {
 
         var trashcan = $('#trashcanHolder');
@@ -876,6 +880,33 @@ ocargo.LevelEditor = function() {
 
         addReleaseListeners(trashcan[0]);
         closeTrashcan();
+    }
+
+    function checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight) {
+        var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
+        var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
+        var trashcanWidth = $('#trashcanHolder').width();
+        var trashcanHeight = $('#trashcanHolder').height();
+
+        if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
+            paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
+            openTrashcan();
+        }
+        else {
+            closeTrashcan();
+        }
+    }
+
+    function openTrashcan() {
+        $('#trashcanLidOpen').css('display', 'block');
+        $('#trashcanLidClosed').css('display', 'none');
+        trashcanOpen = true;
+    }
+
+    function closeTrashcan() {
+        $('#trashcanLidOpen').css('display', 'none');
+        $('#trashcanLidClosed').css('display', 'block');
+        trashcanOpen = false;
     }
 
     /************************/
@@ -1247,6 +1278,9 @@ ocargo.LevelEditor = function() {
             paperX = dx + originX;
             paperY = dy + originY;
 
+            // Deal with trashcan
+            checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight);;
+
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
                 paperX = 0;
@@ -1263,20 +1297,6 @@ ocargo.LevelEditor = function() {
             }
 
             image.transform('t' + paperX + ',' + paperY);
-
-            // Deal with trashcan
-            var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
-            var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
-            var trashcanWidth = $('#trashcanHolder').width();
-            var trashcanHeight = $('#trashcanHolder').height();
-
-            if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
-                paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
-                openTrashcan();
-            }
-            else {
-                closeTrashcan();
-            }
         }
 
         function onDragStart(x, y) {
@@ -1346,6 +1366,15 @@ ocargo.LevelEditor = function() {
             paperX = dx + originX;
             paperY = dy + originY;
 
+            // Adjust for the fact that we've rotated the image
+            if (rotation === 90 || rotation === 270)  {
+                paperX += (imageWidth - imageHeight)/2;
+                paperY -= (imageWidth - imageHeight)/2;
+            }
+
+            // Trashcan check
+            checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight);
+
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
                 paperX = 0;
@@ -1360,15 +1389,8 @@ ocargo.LevelEditor = function() {
                 paperY = paperHeight - imageHeight;
             }
             
-            // Adjust for the fact that we've rotated the image
-            if (rotation === 90 || rotation === 270)  {
-                paperX += (imageWidth - imageHeight)/2;
-                paperY -= (imageWidth - imageHeight)/2;
-            }
-
             // And perform the updatee
             image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
-
 
             // Unmark the squares the light previously occupied
             if (sourceCoord) {
@@ -1575,18 +1597,6 @@ ocargo.LevelEditor = function() {
         function occupied(sourceCoord, controlledCoord) {
             
         }
-    }
-
-    function openTrashcan() {
-        $('#trashcanLidOpen').css('display', 'block');
-        $('#trashcanLidClosed').css('display', 'none');
-        trashcanOpen = true;
-    }
-
-    function closeTrashcan() {
-        $('#trashcanLidOpen').css('display', 'none');
-        $('#trashcanLidClosed').css('display', 'block');
-        trashcanOpen = false;
     }
 
     /********************************/
@@ -2100,6 +2110,9 @@ ocargo.LevelEditor = function() {
                 ocargo.drawing.setTrafficLightImagePosition(this.sourceNode.coordinate, this.controlledNode.coordinate, this.image);
             }
         }
+        else {
+            this.image.transform('...t' + (-paper.scrollLeft())  +  ',' +  paper.scrollTop());
+        }
 
         setupTrafficLightListeners(this);
         this.image.attr({'cursor':'pointer'});
@@ -2154,7 +2167,10 @@ ocargo.LevelEditor = function() {
         // data
         this.decorName = decorName;
         this.image = null;
+
+        // setup
         this.updateTheme();
+        this.setPosition(paper.scrollLeft(), paper.scrollTop());
 
         decor.push(this);
     }
