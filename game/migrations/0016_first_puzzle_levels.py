@@ -113,7 +113,7 @@ def add_levels(apps, schema_editor):
     level61.save()
     level62.save()
 
-    level52 = Level.objects.get(name="52")
+    level52 = Level.objects.get(name="52", default=True)
     level52.next_level_id = level53.id
     level53.next_level_id = level54.id
     level52.save()
