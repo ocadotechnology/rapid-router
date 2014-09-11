@@ -446,23 +446,34 @@ ocargo.Game.prototype.setupTabs = function() {
         $('#clear_console').click(function (e) {
                 $('#consoleOutput').text('');
         });
+        $('#convert_from_blockly').click(function (e) {
+                ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
+        });
+        ocargo.editor.setValue('import van\n\nv = van.Van()\n')
 
         tabs.python.setOnChange(function() {
             var tab = tabs.python;
+            // Only clear console when changing *to* python?
+            if (currentTabSelected !== tab) {
+                $('#clear_console').click();
+            }
             currentTabSelected.setPaneEnabled(false);
             tab.setPaneEnabled(true);
             currentTabSelected = tab;
 
-            ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
             ocargo.controller = ocargo.editor;
-            $('#clear_console').click();
+            ocargo.blocklyControl.redrawBlockly();
         });
     }
 
     function setupClearTab() {
         tabs.clear_program.setOnChange(function() {
-            ocargo.blocklyControl.reset();
-            ocargo.editor.reset();
+            if (currentTabSelected == tabs.blockly) {
+                ocargo.blocklyControl.reset();
+            }
+            if (currentTabSelected == tabs.python) {
+                ocargo.editor.reset();
+            }
             ocargo.game.reset();
 
             currentTabSelected.select();

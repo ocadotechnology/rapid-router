@@ -244,7 +244,13 @@
 
       <div id="python_pane" class="tab_pane">
         <div id="pythonCode" {% if not level.pythonEnabled%} style="visibility: hidden" {% endif %}>
-          <h3>Python Program</h3>
+          <h3>Python Program
+            {% if level.blocklyEnabled %}
+            <button class="navigation_button long_button" id="convert_from_blockly">
+              <span>Convert from Blockly</span>
+            </button>
+            {% endif %}
+          </h3>
             <div id="editor" style="margin-bottom:50px">
               <p>Use the Python editor below to design your program, and click run to try it out!</p>
               <textarea id="code" cols="85" rows="25"></textarea>

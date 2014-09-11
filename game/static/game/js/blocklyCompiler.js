@@ -283,7 +283,7 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
 
 
 ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
-	var code = 'import van\n\nv = van.Van()\n';
+	var code = ocargo.editor.DEFAULT_CODE;
 	
 	var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
     for (var i = 0; i < procBlocks.length; i++) {
