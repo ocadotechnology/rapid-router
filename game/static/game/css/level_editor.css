@@ -219,6 +219,8 @@ input {
 
 #map_pane .table {
     margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /*************/

@@ -259,6 +259,12 @@
                   <img src="/static/game/image/icons/clear.svg"/>
                   <span>Clear all</span>
                 </button>
+
+                {% if user|is_developer %}
+                <button class="navigation_button long_button" id="djangoText">
+                  <span>Django migr text</span>
+                </button>
+                {% endif %}
               </div>
             </div>
           </div>

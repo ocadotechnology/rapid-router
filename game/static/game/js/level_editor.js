@@ -211,6 +211,15 @@ ocargo.LevelEditor = function() {
                 mode = modes.DELETE_ROAD_MODE;
                 changeCurrentToolDisplay(modes.DELETE_ROAD_MODE);
             });
+
+            if(DEVELOPER) {
+                $('#djangoText').click(function() {
+                    ocargo.Drawing.startPopup('Django level migration', 
+                        'Copy the text in the console into the Django migration file.',
+                        'You will have to change the level name and fill in the model solution field.');
+                    console.log(getLevelTextForDjangoMigration(extractState()));
+                });
+            }
         }
 
         function setupSceneryTab() {
@@ -1843,7 +1852,7 @@ ocargo.LevelEditor = function() {
 
     function restoreState(state) {
         clear();
-        
+
         // Load node data
         nodes = ocargo.Node.parsePathData(JSON.parse(state.path));
 
