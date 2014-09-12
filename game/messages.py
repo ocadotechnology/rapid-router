@@ -1200,7 +1200,7 @@ def title_level60():
 
 def description_level60():
     message = ugettext("Can you reach the house with only two <b>Move forwards</b> blocks?")
-    return build_description(title_level60, message)
+    return build_description(title_level60(), message)
 
 
 def hint_level60():
@@ -1214,7 +1214,7 @@ def title_level61():
 def description_level61():
     message = ugettext("How are you going to get past all the traffic lights without knowing "
                        + "when the traffic light is green? ")
-    return build_description(title_level61, message)
+    return build_description(title_level61(), message)
 
 
 def hint_level61():
@@ -1228,7 +1228,7 @@ def title_level62():
 def description_level62():
     message = ugettext("You have to go out of your way to solve this! Are you up for the "
                        + "challenge?")
-    return build_description(title_level62, message)
+    return build_description(title_level62(), message)
 
 
 def hint_level62():
@@ -1241,7 +1241,7 @@ def title_level63():
 
 def description_level63():
     message = ugettext("")
-    return build_description(title_level63, message)
+    return build_description(title_level63(), message)
 
 
 def hint_level63():
