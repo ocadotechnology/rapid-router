@@ -99,6 +99,7 @@ ocargo.Game = function() {
 ocargo.Game.prototype.setup = function() {
     initCustomBlocks();
     ocargo.blocklyControl = new ocargo.BlocklyControl();
+    ocargo.editor = new ocargo.Editor();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.drawing = new ocargo.Drawing();
     ocargo.drawing.preloadRoadTiles();
@@ -422,7 +423,6 @@ ocargo.Game.prototype.setupTabs = function() {
             currentTabSelected = tab;
 
             ocargo.blocklyControl.redrawBlockly();
-            Blockly.mainWorkspace.render();
             // reset blockly to python converter
             Blockly.Python.init();
             ocargo.controller = ocargo.blocklyControl;
@@ -444,13 +444,13 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupPythonTab() {
         $('#clear_console').click(function (e) {
-                $('#consoleOutput').text('');
+            $('#consoleOutput').text('');
         });
-        $('#convert_from_blockly').click(function (e) {
-                ocargo.editor.setValue(ocargo.blocklyCompiler.workspaceToPython());
-        });
-        ocargo.editor.setValue(ocargo.editor.DEFAULT_CODE);
 
+        $('#convert_from_blockly').click(function (e) {
+            ocargo.editor.setCode(ocargo.blocklyCompiler.workspaceToPython());
+        });
+        
         tabs.python.setOnChange(function() {
             var tab = tabs.python;
             // Only clear console when changing *to* python?
@@ -462,7 +462,6 @@ ocargo.Game.prototype.setupTabs = function() {
             currentTabSelected = tab;
 
             ocargo.controller = ocargo.editor;
-            ocargo.blocklyControl.redrawBlockly();
         });
     }
 

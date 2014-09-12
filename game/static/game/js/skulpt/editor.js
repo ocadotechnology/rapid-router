@@ -1,53 +1,83 @@
 var ocargo = ocargo || {};
 
-$(document).ready(function () {
-    ocargo.consoleOutput = $('#consoleOutput');
-    var outf = function (outputText) {
-        ocargo.animation.appendAnimation({
-            type: 'console',
-            text: outputText
-        });
-    };
-    
-    ocargo.editor = CodeMirror.fromTextArea(document.getElementById('code'), {
-        parserfile: ["parsepython.js"],
-        autofocus: true,
-        theme: "eclipse",
-        //path: "static/env/codemirror/js/",
-        lineNumbers: true,
-        textWrapping: false,
-        indentUnit: 4,
-        height: "160px",
-        fontSize: "9pt",
-        autoMatchParens: true,
-        parserConfig: {'pythonVersion': 2, 'strictErrors': true}
-    });
+ocargo.Editor = function() {
 
-    ocargo.editor.DEFAULT_CODE = "import van\n\nv = van.Van()\n";
+    /***************/
+    /** Constants **/
+    /***************/
 
-    ocargo.editor.run = function() {
+    var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
+
+    /***********/
+    /** State **/
+    /***********/
+
+    var codePanel;
+    var console;
+
+    /********************/
+    /** Public methods **/
+    /********************/
+
+    this.run = function() {
         ocargo.model.reset(0);
         Sk.failed = false;
         Sk.configure({output: outf, read: builtinRead});
         //Sk.canvas = "mycanvas";
         Sk.pre = "consoleOutput";
         try {
-            Sk.importMainWithBody("<stdin>", false, ocargo.editor.getValue());
+            Sk.importMainWithBody("<stdin>", false, codePanel.getValue());
             if (!Sk.failed) {
                 ocargo.model.programExecutionEnded();
             }
-        } catch(e) {
+        }
+        catch(e) {
             outf(e.toString() + "\n")
         }
     };
 
-    ocargo.editor.prepare = function() {
-        return {success: true, program:{ run: function() { ocargo.editor.run() }}};
+    this.prepare = function() {
+        return {
+            success: true, 
+            program:{run: this.run}, 
+        };
     };
 
-    ocargo.editor.reset = function() {
-        ocargo.editor.setValue(ocargo.editor.DEFAULT_CODE);
-        $('#consoleOutput').text('');
+    this.reset = function() {
+        this.clearCodePanel();
+        this.clearConsole();
+    }
+
+    this.clearCodePanel = function() {
+        this.setCode("");
+    }
+
+    this.clearConsole = function() {
+        $('#consoleOutput').text("");
+    }
+
+    this.setCode = function(code) {
+        codePanel.setValue(DEFAULT_CODE + code);
+    }
+
+    /*********************/
+    /** Private methods **/
+    /*********************/
+
+    function createCodePanel() {
+        return CodeMirror.fromTextArea(document.getElementById('code'), {
+            parserfile: ["parsepython.js"],
+            autofocus: true,
+            theme: "eclipse",
+            //path: "static/env/codemirror/js/",
+            lineNumbers: true,
+            textWrapping: false,
+            indentUnit: 4,
+            height: "160px",
+            fontSize: "9pt",
+            autoMatchParens: true,
+            parserConfig: {'pythonVersion': 2, 'strictErrors': true}
+        });
     }
 
     function builtinRead(x) {
@@ -56,8 +86,22 @@ $(document).ready(function () {
         return Sk.builtinFiles["files"][x];
     }
 
+    function outf (outputText) {
+        ocargo.animation.appendAnimation({
+            type: 'console',
+            text: outputText
+        });
+    };
+
+    /*************************/
+    /** Initialisation code **/
+    /*************************/
+
+    codePanel = createCodePanel();
+    consoleOutput = $('#consoleOutput');
+
     // Limit the code so that it stops after 2 seconds
     Sk.execLimit = 2000;
 
-    ocargo.editor.focus();
-});
+    this.reset();
+}
