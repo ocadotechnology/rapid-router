@@ -16,7 +16,7 @@ function initCustomBlocksDescription() {
             this.setColour(50);
             this.appendDummyInput()
                 .appendField('Start')
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + CHARACTER_URL, 
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL, 
                     ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
                     ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH));
             this.setNextStatement(true);

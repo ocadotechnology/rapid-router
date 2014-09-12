@@ -12,10 +12,10 @@
   		var levels = []
   		{% for level in episode.levels %}
   			levels.push({'name': {{level.name}},
-  										'score': '{{level.score}}'});
+  						'score': '{{level.score}}'});
   		{% endfor %}
   		EPISODES.push({'id' : {{episode.id}},
-  										'levels': levels});
+  						'levels': levels});
   	{% endfor %}
 
   	var OTHER_LEVELS = [];
@@ -67,7 +67,9 @@
 				    </p>
 			        {% endfor %}
 			       	
+			       	{% if episode.random_levels_enabled %}
 			        <p><a href="{% url 'game.views.random_level_for_episode' episode.id %}">Random: Try your hand at a random level.</a></p>
+			    	{% endif %}
 			    </div>
 			    {% endfor %}
 

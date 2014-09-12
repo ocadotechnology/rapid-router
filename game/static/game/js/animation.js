@@ -227,19 +227,25 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 				case 'WIN':
 					title = ocargo.messages.winTitle;
 					var levelMsg = "";
-					if (NEXT_LEVEL) {
-				        levelMsg = ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "'",
-				        								     		'Next Level');
-				    } 
-				    else {
-				        if (NEXT_EPISODE) {
-				            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE);
-				        } 
-				        else if(MODEL_SOLUTION.length > 0) {
-				            levelMsg = ocargo.messages.lastLevel;
-				        }
-				    }
-				    leadMsg = leadMsg + levelMsg;
+
+					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
+						levelMsg = ocargo.messages.nowTryPython + ocargo.jsElements.closebutton("Close");
+					}
+					else {
+						if (NEXT_LEVEL) {
+					        levelMsg = ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "'",
+					        								     		'Next Level');
+					    } 
+					    else {
+					        if (NEXT_EPISODE) {
+					            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE);
+					        } 
+					        else if(MODEL_SOLUTION.length > 0) {
+					            levelMsg = ocargo.messages.lastLevel;
+					        }
+					    }
+					}
+					leadMsg = leadMsg + levelMsg;
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;

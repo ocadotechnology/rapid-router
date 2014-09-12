@@ -219,11 +219,22 @@
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
                 <div class="input_div"> 
-                  <span> Max fuel: </span>
+                  <span>Max fuel:</span>
                   <input type="number" id="max_fuel" value="50"> 
                 </div>
                 <br style="clear:both">
                 
+                {% if user|is_developer %}
+                <div class="input_div">
+                  <span>Language:</span>
+                  <select id="language_select">
+                    <option value="blockly">Blockly</option>
+                    <option value="python">Python</option>
+                    <option value="both">Both</option>
+                  </select>
+                </div>
+                {% endif %}
+
                 <div class="table">
                   <div class="table_row">
                     <div class="table_cell">
