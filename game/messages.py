@@ -1192,3 +1192,89 @@ def description_level57():
 
 def hint_level57():
     return ""
+
+
+def title_level60():
+    return ugettext("T-junction trouble. ")
+
+
+def description_level60():
+    message = ugettext("Can you reach the house with only two <b>Move forwards</b> blocks?")
+    return build_description(title_level60, message)
+
+
+def hint_level60():
+    return ""
+
+
+def title_level61():
+    return ugettext("Tons of traffic lights! ")
+
+
+def description_level61():
+    message = ugettext("How are you going to get past all the traffic lights without knowing "
+                       + "when the traffic light is green? ")
+    return build_description(title_level61, message)
+
+
+def hint_level61():
+    return ""
+
+
+def title_level62():
+    return ugettext("Wave goodbye to winter! ")
+
+
+def description_level62():
+    message = ugettext("You have to go out of your way to solve this! Are you up for the "
+                       + "challenge?")
+    return build_description(title_level62, message)
+
+
+def hint_level62():
+    return ""
+
+
+def title_level63():
+    return ugettext("A fish out of water. ")
+
+
+def description_level63():
+    message = ugettext("")
+    return build_description(title_level63, message)
+
+
+def hint_level63():
+    return ""
+
+
+def title_level100():
+    return ugettext("Well done! ")
+
+
+def title_level101():
+    return ugettext("Find the shortest path! ")
+
+
+def title_level102():
+    return ugettext("Follow the path. ")
+
+
+def title_level103():
+    return ugettext("Can you spot the pattern. ")
+
+
+def title_level104():
+    return ugettext("Snail time! ")
+
+
+def title_level105():
+    return ugettext("Time to go general! ")
+
+
+def title_level106():
+    return ugettext("Why do you have to go and make things so complicated. ")
+
+
+def title_level107():
+    return ugettext("Trouble in the city!!! ")
