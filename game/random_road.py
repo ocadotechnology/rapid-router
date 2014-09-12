@@ -47,9 +47,9 @@ def create(episode=None):
     branchiness = episode.r_branchiness if episode else DEFAULT_BRANCHINESS
     loopiness = episode.r_loopiness if episode else DEFAULT_LOOPINESS
     curviness = episode.r_curviness if episode else DEFAULT_CURVINESS
+    blocks = episode.r_blocks.all() if episode else Block.objects.all()
     traffic_lights = episode.r_trafficLights if episode else DEFAULT_TRAFFIC_LIGHTS
     decor = DEFAULT_DECOR
-    blocks = episode.r_blocks.all() if episode else Block.objects.all()
 
     level_data = generate_random_map_data(num_tiles, branchiness, loopiness, curviness,
                                           traffic_lights, decor)
