@@ -213,6 +213,12 @@ ocargo.Game.prototype.sendAttempt = function(score) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
     }
+
+    // hack scores so that it works for demo and python TODO implement max scores and remove this!!!!
+    if (PYTHON_ENABLED) {
+        score *= 2;
+    }
+
     // Check that we should actually be sending an attempt - either if only blockly's enabled
     // or if python's enabled and we're on the python tab (assumes they don't change tab quickly...)
     if ((BLOCKLY_ENABLED && !PYTHON_ENABLED) || (PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.python)){   
