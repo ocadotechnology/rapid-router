@@ -14,7 +14,7 @@ def enable_random_levels_for_episodes(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0018_method_levels'),
+        ('game', '0019_sort_scores_and_add_initial_python_episodes'),
     ]
 
     operations = [

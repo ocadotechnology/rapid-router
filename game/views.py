@@ -244,7 +244,8 @@ def levels(request):
              "name": episode.name,
              "levels": levels,
              "first_level": minName,
-             "last_level": maxName}
+             "last_level": maxName,
+             "random_levels_enabled": episode.r_random_levels_enabled}
 
         episode_data.append(e)
 
