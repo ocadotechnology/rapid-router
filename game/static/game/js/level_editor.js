@@ -285,8 +285,8 @@ ocargo.LevelEditor = function() {
             tabs.blocks.setOnChange(function() {
                 transitionTab(tabs.blocks);
             });
-            
-            // Hacky, if a way can be found without initialising the entire work space that would be great!
+
+            setupBlocks();
 
             // Initial selection
             $('#move_forwards_checkbox').prop('checked', true);
@@ -304,53 +304,69 @@ ocargo.LevelEditor = function() {
                 });
             });
 
-            // Setup the block images
-            function addListenerToImage(type) {
-                $('#' + type + '_image').click(function() {
-                    $('#' + type + '_checkbox').click();
-                });
-            }
-
             // Disable block numbers if not developer
             if(!DEVELOPER) {
                 $('.block_number').css('display', 'none');
             }
 
-            initCustomBlocksDescription();
-
-            var blockly = document.getElementById('blockly');
-            var toolbox = document.getElementById('blockly_toolbox');
-            Blockly.inject(blockly, {
-                path: '/static/game/js/blockly/',
-                toolbox: toolbox,
-                trashcan: true
-            });
-
-            for (var i = 0; i < BLOCKS.length; i++) {
-                var type = BLOCKS[i];
-                var block = Blockly.Block.obtain(Blockly.mainWorkspace, type);
-                block.initSvg();
-                block.render();
-
-                var svg = block.getSvgRoot();
-                var large = type === "controls_whileUntil" || 
-                            type === "controls_repeat" ||
-                            type === "controls_if" ||
-                            type === "declare_proc" ||
-                            type === "controls_repeat_while" ||
-                            type === "controls_repeat_until";
-
-                var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
-                content += '<g transform="translate(10,0)"';
-                content += svg.innerHTML ? svg.innerHTML : '';
-                content += '</g></svg>';
-
-                $('#' + type + '_image').html(content);
-
-                addListenerToImage(type);
+            // Language controls
+            if(!DEVELOPER) {
+                $('#language_div').css('display', 'none');
+            }
+            else {
+                $('#language_select').change(function() {
+                    var value = $(this).val();
+                    $('#blockly_blocks_div').css('display', this.value === 'python' ? 'none' : 'block');
+                });
             }
 
-            $('#blockly').css('display','none');
+
+            function setupBlocks() {
+                function addListenerToImage(type) {
+                    $('#' + type + '_image').click(function() {
+                        $('#' + type + '_checkbox').click();
+                    });
+                }
+                
+                // Setup the block images
+                initCustomBlocksDescription();
+
+                // Hacky, if a way can be found without initialising the entire work space that would be great!
+                var blockly = document.getElementById('blockly');
+                var toolbox = document.getElementById('blockly_toolbox');
+                Blockly.inject(blockly, {
+                    path: '/static/game/js/blockly/',
+                    toolbox: toolbox,
+                    trashcan: true
+                });
+
+                for (var i = 0; i < BLOCKS.length; i++) {
+                    var type = BLOCKS[i];
+                    var block = Blockly.Block.obtain(Blockly.mainWorkspace, type);
+                    block.initSvg();
+                    block.render();
+
+                    var svg = block.getSvgRoot();
+                    var large = type === "controls_whileUntil" || 
+                                type === "controls_repeat" ||
+                                type === "controls_if" ||
+                                type === "declare_proc" ||
+                                type === "controls_repeat_while" ||
+                                type === "controls_repeat_until";
+
+                    var content = '<svg class="block_image' + (large ? ' large' : '') + '">';
+                    content += '<g transform="translate(10,0)"';
+                    content += svg.innerHTML ? svg.innerHTML : '';
+                    content += '</g></svg>';
+
+                    $('#' + type + '_image').html(content);
+
+                    addListenerToImage(type);
+                }
+
+                // Hide blockly
+                $('#blockly').css('display','none');
+            }
         }
 
         function setupRandomTab() {
@@ -1832,7 +1848,7 @@ ocargo.LevelEditor = function() {
             state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
         }
 
-        // Other data
+        // Max fuel data
         var maxFuel = $('#max_fuel').val();
         if(isNaN(maxFuel) ||  maxFuel ===  '' || parseInt(maxFuel) <= 0 || parseInt(maxFuel) > 99)
         {
@@ -1841,11 +1857,21 @@ ocargo.LevelEditor = function() {
         }
         state.max_fuel = maxFuel;
         
+        // Language data
+        if(DEVELOPER) {
+            var language = $('#language_select').val();
+            state.blocklyEnabled = language === 'blockly' || language === 'both';
+            state.pythonEnabled = language === 'python' || language === 'both';
+        }
+        else {
+            state.blocklyEnabled = true;
+            state.pythonEnabled = false;
+        }
+        
+
+        // Other data
         state.theme = currentTheme.id;
         state.character = $('#character_select').val();
-
-        state.blocklyEnabled = true;
-        state.pythonEnabled = false;
 
         return state;
     }
@@ -1921,6 +1947,21 @@ ocargo.LevelEditor = function() {
                     $('#' + type + '_number').val(blocks[i].number);
                 }
             }
+        }
+        
+        // Load in language data
+        if(DEVELOPER) {
+            var languageSelect = $('#languageSelect');
+            if(state.blocklyEnabled && state.pythonEnabled) {
+                languageSelect.val('both');
+            }
+            else if(state.pythonEnabled) {
+                languageSelect.val('python');
+            }
+            else {
+                languageSelect.val('blockly');
+            }
+            languageSelect.change();
         }
         
 

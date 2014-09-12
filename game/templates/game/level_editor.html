@@ -223,17 +223,6 @@
                   <input type="number" id="max_fuel" value="50"> 
                 </div>
                 <br style="clear:both">
-                
-                {% if user|is_developer %}
-                <div class="input_div">
-                  <span>Language:</span>
-                  <select id="language_select">
-                    <option value="blockly">Blockly</option>
-                    <option value="python">Python</option>
-                    <option value="both">Both</option>
-                  </select>
-                </div>
-                {% endif %}
 
                 <div class="table">
                   <div class="table_row">
@@ -345,35 +334,49 @@
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
                 <div id="block_table">
-                  <div class="table_row">
-                    <div class="table_cell">
-                      <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
-                    </div>
-                    <div>
-                      <label id="select_all_label" for="select_all_checkbox"> Select all</label>
-                    </div>
-                  </div>
 
-                  {% for block in blocks %}
+                  {% if user|is_developer %}
+                  <div id="language_div" class="input_div">
+                    <span>Language:</span>
+                    <select id="language_select">
+                      <option value="blockly">Blockly</option>
+                      <option value="python">Python</option>
+                      <option value="both">Both</option>
+                    </select>
+                  </div>
+                  {% endif %}
+
+                  <div id="blockly_blocks_div">
                     <div class="table_row">
                       <div class="table_cell">
-                        <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
+                        <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
                       </div>
-                      <div id="{{block.type}}_image" class="table_cell unselectable"></div>
-                      <select id="{{block.type}}_number" class="block_number" class="table_cell unselectable">
-                        <option value="infinity">&infin;</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                      </select>
+                      <div>
+                        <label id="select_all_label" for="select_all_checkbox"> Select all</label>
+                      </div>
                     </div>
-                  {% endfor %}  
+
+                    {% for block in blocks %}
+                      <div class="table_row">
+                        <div class="table_cell">
+                          <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
+                        </div>
+                        <div id="{{block.type}}_image" class="table_cell unselectable"></div>
+                        <select id="{{block.type}}_number" class="block_number" class="table_cell unselectable">
+                          <option value="infinity">&infin;</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                        </select>
+                      </div>
+                    {% endfor %}  
+                  </div>
                 </div>
               </div>
             </div>
