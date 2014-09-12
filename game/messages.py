@@ -1240,7 +1240,7 @@ def title_level63():
 
 
 def description_level63():
-    message = ugettext("")
+    message = ""
     return build_description(title_level63(), message)
 
 
