@@ -22,9 +22,7 @@ ocargo.PythonControl = function() {
     this.run = function() {
         ocargo.model.reset(0);
         Sk.failed = false;
-        Sk.configure({output: outf, read: builtinRead});
-        //Sk.canvas = "mycanvas";
-        Sk.pre = "consoleOutput";
+
         try {
             Sk.importMainWithBody("<stdin>", false, codePanel.getValue());
             if (!Sk.failed) {
@@ -53,7 +51,11 @@ ocargo.PythonControl = function() {
     }
 
     this.clearConsole = function() {
-        $('#consoleOutput').text("");
+        console.text("");
+    }
+
+    this.appendToConsole = function(str) {
+        console.text(console.text() + str);
     }
 
     this.setCode = function(code) {
@@ -69,7 +71,6 @@ ocargo.PythonControl = function() {
             parserfile: ["parsepython.js"],
             autofocus: true,
             theme: "eclipse",
-            //path: "static/env/codemirror/js/",
             lineNumbers: true,
             textWrapping: false,
             indentUnit: 4,
@@ -96,12 +97,16 @@ ocargo.PythonControl = function() {
     /*************************/
     /** Initialisation code **/
     /*************************/
-
     codePanel = createCodePanel();
-    consoleOutput = $('#consoleOutput');
+    console = $('#consoleOutput');
 
     // Limit the code so that it stops after 2 seconds
     Sk.execLimit = 2000;
+
+    // Configure Skulpt
+    Sk.configure({output: outf, read: builtinRead});
+    //Sk.canvas = "mycanvas";
+    Sk.pre = "consoleOutput";
 
     this.reset();
 }

@@ -103,9 +103,9 @@
     background-color: #FEFDFF;
     font-size: 20px;
     font-family: monospace;
-    max-height: 300px;
+    max-height: 250px;
     max-width: 100%;
-    min-height: 250px;
+    min-height: 180px;
     overflow: auto;
     padding: 20px;
     margin-bottom: 20px;

@@ -252,7 +252,7 @@
             </button>
             {% endif %}
           </h3>
-            <div id="editor" style="margin-bottom:50px">
+            <div id="editor">
               <p>Use the Python editor below to design your program, and then click play to try it out!</p>
               <textarea id="code" cols="85" rows="25"></textarea>
             </div>
@@ -273,29 +273,30 @@
               <p>Run the following commands on the van object v, e.g. v.move_forwards()</p>
               <div class="row">
                 <div class="large-4 columns">
-                  <p><b>Movement</b></p>
-                  <p>v.move_forwards()
+                  <p><b>Movement</b>
+                  <br>v.move_forwards()
                   <br>v.turn_left()
                   <br>v.turn_right()
                   <br>v.turn_around()
                   <br>v.wait()</p>
                 </div>
                 <div class="large-4 columns">
-                  <p><b>Position</b></p>
-                  <p>v.at_dead_end()
+                  <p><b>Position</b>
+                  <br>v.at_dead_end()
                   <br>v.at_destination()
                   <br>v.at_red_traffic_light()
                   <br>v.at_green_traffic_light()
                   <br>v.at_traffic_light(c)
-                  <br>where c is 'RED' or 'GREEN'</p>
+                  <br><i>where c is 'RED' or 'GREEN'</i></p>
                 </div>
                 <div class="large-4 columns">
-                  <p>-</p>
-                  <p>v.is_road_forward()
+                  <p>
+                  <br>v.is_road_forward()
                   <br>v.is_road_left()
                   <br>v.is_road_right()
                   <br>v.is_road(d)
-                  <br>where d is 'FORWARD', 'LEFT', or 'RIGHT'</p>
+                  <br><i>where d is 'FORWARD',
+                  <br>'LEFT', or 'RIGHT'</i></p>
                 </div>
               </div>
             </div>
