@@ -276,7 +276,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			ocargo.drawing.transitionTrafficLight(a.id, a.colour, animationLength/2);
 			break;
 		case 'console':
-			ocargo.consoleOutput.text(ocargo.consoleOutput.text() + a.text);
+			ocargo.pythonControl.appendToConsole(a.text);
 			break;
 	}
 
