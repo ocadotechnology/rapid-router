@@ -1076,11 +1076,66 @@ def title_level51():
 
 
 def description_level51():
-    message = ugettext("Procedures! <br> Can you find the "
-                       + "shortest program to deal with the traffic lights? ")
+    message = ugettext("Procedures are blocks of code that can be executed multiple times without "
+                       + "being rewritten. So, for example, if you want to use a set of blocks "
+                       + "which make the van wait while the lights are red - you can define a "
+                       + "procedure to do so and then call it every time you are approaching the "
+                       + "traffic lights. <br> To define a procedure executing a set of blocks "
+                       + "simply put them inside the <b>Define do</b> block. Once you do that, "
+                       + "create a name for it. <br> Now you're ready to use your method! Attach "
+                       + "the <b>Call</b> block where you want your procedure to be executed. "
+                       + "Don't forget to put its the name in it! ")
     return build_description(title_level51(), message)
 
 
 def hint_level51():
-    message = ugettext("Define a procedure to deal with waiting at the traffic lights. ")
+    message = ugettext("Define a procedure that makes the van <b>Wait</b> <b>until the traffic "
+                       + "light</b> is <b>green</b>. Once you name your procedure by typing in "
+                       + "a name in the <b>Define Do</b> block, you can call it. <br> To call "
+                       + "the procedure attach the <b>Call</b> block and type in the name of the "
+                       + "procedure you want to execute into the text box. ")
+
+    return message
+
+
+def title_level52():
+    return ugettext("Well done! Can you spot a potential procedure in here? ")
+
+
+def description_level52():
+    message = ugettext("Procedures can be used on all sorts of blocks, not only waits! Use them  "
+                       + "to save time when creating a program! ")
+    return build_description(title_level52, message)
+
+
+def hint_level52():
+    message = ugettext("Can you see the repeating pattern in the path? The 'wiggle' consisting "
+                       + "of a <b>Turn left</b>, <b>Move forwards</b>, <b>Turn right</b>, "
+                       + "<b>Turn right</b>, <b>Turn left</b> can be put in a <b>Define Do</b> "
+                       + "block to create a procedure. Once you have named it, attach the <b>"
+                       + "<b>Call</b> block with the procedure's name in the text box to execute "
+                       + "it. ")
+    return message
+
+
+def title_level53():
+    return ugettext("Wiggle Wiggle!")
+
+
+def description_level53():
+    message = ('<iframe width="560" height="315" src="http://www.youtube.com/'
+               + 'watch?feature=player_detailpage&v=wyx6JDQCslE#t=130?rel=0"'
+               + ' frameborder="0" allowfullscreen></iframe>')
+    return build_description(title_level53, message)
+
+# def hint_level53():
+
+
+def title_level54():
+    return ugettext("More complicated roads. ")
+
+
+def description_level54():
+    message = ugettext("This road might be a bit more complicated, but the procedures you should "
+                       + "come up with are quite simple. Have a go and find out yourself! ")
     return message
