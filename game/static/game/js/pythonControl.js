@@ -1,6 +1,6 @@
 var ocargo = ocargo || {};
 
-ocargo.Editor = function() {
+ocargo.PythonControl = function() {
 
     /***************/
     /** Constants **/

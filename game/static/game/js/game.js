@@ -100,7 +100,7 @@ ocargo.Game = function() {
 ocargo.Game.prototype.setup = function() {
     initCustomBlocks();
     ocargo.blocklyControl = new ocargo.BlocklyControl();
-    ocargo.editor = new ocargo.Editor();
+    ocargo.pythonControl = new ocargo.PythonControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.drawing = new ocargo.Drawing();
     ocargo.drawing.preloadRoadTiles();
@@ -125,7 +125,7 @@ ocargo.Game.prototype.setup = function() {
         ocargo.controller = ocargo.blocklyControl;
     }
     else {
-        ocargo.controller = ocargo.editor;
+        ocargo.controller = ocargo.pythonControl;
     }
 
     // Setup blockly to python
@@ -451,7 +451,7 @@ ocargo.Game.prototype.setupTabs = function() {
         });
 
         $('#convert_from_blockly').click(function (e) {
-            ocargo.editor.setCode(ocargo.blocklyCompiler.workspaceToPython());
+            ocargo.pythonControl.setCode(ocargo.blocklyCompiler.workspaceToPython());
         });
         
         tabs.python.setOnChange(function() {
@@ -464,7 +464,7 @@ ocargo.Game.prototype.setupTabs = function() {
             tab.setPaneEnabled(true);
             ocargo.game.currentTabSelected = tab;
 
-            ocargo.controller = ocargo.editor;
+            ocargo.controller = ocargo.pythonControl;
         });
     }
 
@@ -474,7 +474,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 ocargo.blocklyControl.reset();
             }
             if (ocargo.game.currentTabSelected == tabs.python) {
-                ocargo.editor.reset();
+                ocargo.pythonControl.reset();
             }
             ocargo.game.reset();
 
