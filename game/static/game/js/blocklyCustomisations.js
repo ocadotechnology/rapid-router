@@ -2,7 +2,7 @@
 
 var ocargo = ocargo || {};
 
-ocargo.BlocklyHacks = function() {
+ocargo.BlocklyCustomisations = function() {
 
 	// Sets up only having a limited number of blocks
 	// Needs to be called BEFORE blockly is injected

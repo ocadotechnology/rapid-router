@@ -5,9 +5,9 @@ var ocargo = ocargo || {};
 ocargo.BlocklyControl = function () {
     this.numberOfStartBlocks = THREADS;
 
-    this.blocklyHacks = new ocargo.BlocklyHacks();
-    this.blocklyHacks.setupLimitedBlocks();
-    this.blocklyHacks.setupBigCodeMode();
+    this.blocklyCustomisations = new ocargo.BlocklyCustomisations();
+    this.blocklyCustomisations.setupLimitedBlocks();
+    this.blocklyCustomisations.setupBigCodeMode();
     
     this.blocklyDiv = document.getElementById('blockly_holder');
     this.toolbox = document.getElementById('blockly_toolbox');
@@ -17,8 +17,8 @@ ocargo.BlocklyControl = function () {
         trashcan: true
     });
 
-    this.blocklyHacks.setupFlyoutToggling(this.blocklyDiv);
-    this.blocklyHacks.disableContextMenus();
+    this.blocklyCustomisations.setupFlyoutToggling(this.blocklyDiv);
+    this.blocklyCustomisations.disableContextMenus();
 
     // Stop the flyout from closing automatically
     Blockly.Flyout.autoClose = false;
@@ -58,21 +58,21 @@ ocargo.BlocklyControl.prototype.reset = function() {
 };
 
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
-    this.blocklyHacks.toggleFlyout();
+    this.blocklyCustomisations.toggleFlyout();
 };
 
 ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
-    this.blocklyHacks.bringStartBlockFromUnderFlyout();
+    this.blocklyCustomisations.bringStartBlockFromUnderFlyout();
 };
 
 ocargo.BlocklyControl.prototype.enableBigCodeMode = function() {
     ocargo.blocklyControl.bigCodeMode = true;
-    this.blocklyHacks.enableBigCodeMode();
+    this.blocklyCustomisations.enableBigCodeMode();
 };
 
 ocargo.BlocklyControl.prototype.disableBigCodeMode =  function() {
     ocargo.blocklyControl.bigCodeMode = false;
-    this.blocklyHacks.disableBigCodeMode();
+    this.blocklyCustomisations.disableBigCodeMode();
 };
 
 
