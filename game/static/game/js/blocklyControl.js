@@ -161,7 +161,7 @@ ocargo.BlocklyControl.prototype.setCodeChangesAllowed = function(changesAllowed)
         setting = "none";
     }
     this.blocklyDiv.style.pointerEvents = setting;
-}
+};
 
 ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     function decodeHTML(text) {
