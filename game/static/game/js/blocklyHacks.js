@@ -24,7 +24,7 @@ ocargo.BlocklyHacks = function() {
 		        this.width_ += 50;
 		        oldPositionFunction.call(this);
 		        this.width_ -= 50;
-		    }
+		    };
 
 		    // Override blockly flyout's show function to add in the quantity text elements
 		    var oldShowFunction = Blockly.Flyout.prototype.show;
@@ -72,24 +72,26 @@ ocargo.BlocklyHacks = function() {
 		        }
 
 		        oldShowFunction.call(this, xmlList);
-		    }
+		    };
 
 		    // Override the blockly flyout's createBlockFunction to control block creation 
-		    var oldCreateBlockFunction = Blockly.Flyout.prototype.createBlockFunc_
+		    var oldCreateBlockFunction = Blockly.Flyout.prototype.createBlockFunc_;
 		    Blockly.Flyout.prototype.createBlockFunc_ = function(originBlock) {
 		        var func = oldCreateBlockFunction.call(this, originBlock);
 		        return function(e) {
-		            if(blockCount[originBlock.type] === undefined || blockCount[originBlock.type] > 0) {
+		            if(blockCount[originBlock.type] === undefined ||
+		            		blockCount[originBlock.type] > 0) {
 		                func(e);
 		            }
-		        }
-		    }
+		        };
+		    };
 
 		    // Override the initialize method to track blocks entering the  workspace
 		    var oldInitialize = Blockly.Block.prototype.initialize;
 		    Blockly.Block.prototype.initialize = function(workspace, prototypeName) {
 		        oldInitialize.call(this, workspace, prototypeName);
-		        if(this.type !== "start"  && this.workspace === Blockly.mainWorkspace && blockCount[this.type] !== undefined) {
+		        if (this.type !== "start"  && this.workspace === Blockly.mainWorkspace &&
+		        		blockCount[this.type] !== undefined) {
 	        		blockCount[this.type] -= 1;
 
 		            var quantityText = $('.quantity_text[value="' + this.type + '"]')[0];
@@ -102,8 +104,10 @@ ocargo.BlocklyHacks = function() {
 
 		    // Override block dispose method to keep track of blocks leaving the workspace
 		    var oldDispose = Blockly.Block.prototype.dispose;
-		    Blockly.Block.prototype.dispose = function(healStack, animate, opt_dontRemoveFromWorkspace) {
-		        if(this.workspace === Blockly.mainWorkspace && blockCount[this.type] !== undefined) {
+		    Blockly.Block.prototype.dispose =
+		    	function(healStack, animate, opt_dontRemoveFromWorkspace) {
+		        if (this.workspace === Blockly.mainWorkspace &&
+		        		blockCount[this.type] !== undefined) {
 		            blockCount[this.type] += 1;
 
 		            var quantityText = $('.quantity_text[value="' + this.type + '"]')[0];
@@ -113,9 +117,9 @@ ocargo.BlocklyHacks = function() {
 		            }
 		        }
 		        oldDispose.call(this, healStack, animate, opt_dontRemoveFromWorkspace);
-		    }
+		    };
 	    }
-	}
+	};
 
 	// Sets up the ability to toggle the flyout
 	// Needs to be called AFTER blockly is injected
@@ -143,13 +147,13 @@ ocargo.BlocklyHacks = function() {
 		    }
 		    
 		    $('#flyoutButton img').attr('src', ocargo.Drawing.imageDir + 'icons/' + image + '.svg');
-		}
+		};
 
 		this.bringStartBlockFromUnderFlyout = function() {
 		    Blockly.mainWorkspace.scrollbar.hScroll.set(blocklyDiv.offsetWidth - 455);
 		    Blockly.mainWorkspace.scrollbar.vScroll.set(blocklyDiv.offsetWidth - 15);
-		}
-	}
+		};
+	};
 
 	// Sets up big code mode (enlarges blockly)
 	// Needs to be called BEFORE blockly is injected
@@ -175,7 +179,7 @@ ocargo.BlocklyHacks = function() {
 					}
 				}
 			}
-		};
+		}
 
 		this.enableBigCodeMode = function() {
 		    Blockly.BlockSvg.FIELD_HEIGHT *= 2; //30
@@ -200,8 +204,12 @@ ocargo.BlocklyHacks = function() {
 		    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH *= 2;    
 		    ocargo.blocklyControl.BLOCK_HEIGHT *= 2;
 
-			document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' + ':'+'22pt !important'+'}', document.styleSheets[0].cssRules.length);
-			document.styleSheets[0].insertRule(".blocklyIconMark, .beaconClass" + ' { font-size' + ':'+'18pt !important'+'}', document.styleSheets[0].cssRules.length);
+			document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' +
+											   ':'+'22pt !important'+'}',
+											   document.styleSheets[0].cssRules.length);
+			document.styleSheets[0].insertRule(".blocklyIconMark, .beaconClass" + ' { font-size' +
+											   ':'+'18pt !important'+'}',
+											   document.styleSheets[0].cssRules.length);
 			var blocks = Blockly.mainWorkspace.getAllBlocks();
 		    $(".blocklyDraggable > g > image").each( function(index, element) {
 		    	var jQueryElement = $(element);
@@ -219,9 +227,11 @@ ocargo.BlocklyHacks = function() {
 
 			Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
 			
-		    $(".blocklyIconShield").attr("width", 32).attr("height", 32).attr("rx", 8).attr("ry", 8);
+		    $(".blocklyIconShield").attr("width", 32).attr("height", 32)
+		    	.attr("rx", 8).attr("ry", 8);
 		    $(".blocklyIconMark").attr("x", 16).attr("y", 24);
-		    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24).attr("x", -5).attr("width", 85);  
+		    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24)
+		    	.attr("x", -5).attr("width", 85);  
 		};
 
 		this.disableBigCodeMode = function() {
@@ -269,15 +279,17 @@ ocargo.BlocklyHacks = function() {
 		    Blockly.mainWorkspace.render();
 
 			Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
-		    $(".blocklyIconShield").attr("width", 16).attr("height", 16).attr("rx", 4).attr("ry", 4);
+		    $(".blocklyIconShield").attr("width", 16).attr("height", 16)
+		    	.attr("rx", 4).attr("ry", 4);
 		    $(".blocklyIconMark").attr("x", 8).attr("y", 12);
-		    $(".blocklyEditableText > rect").attr("height", 16).attr("y", -12).attr("x", -5).attr("width", 43);
+		    $(".blocklyEditableText > rect").attr("height", 16).attr("y", -12)
+		    	.attr("x", -5).attr("width", 43);
 		};
-	}
-	
+	};
+
 	// Disable the right-click context menus
 	this.disableContextMenus = function(blocks) {
 	    Blockly.showContextMenu_ = function(e) {};
     	Blockly.Block.prototype.showContextMenu_ = function(e) {};
-	}
-}
+	};
+};

@@ -192,11 +192,12 @@ function initCustomBlocksDescription() {
             this.appendDummyInput()
                 .appendField('Call')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg', 7, ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldTextInput(''));
+                .appendField(new Blockly.FieldTextInput(name),'NAME');
             this.setPreviousStatement(true);
             this.setNextStatement(true);
             this.setTooltip('Call');
         }
+
     };
 
     Blockly.Blocks['declare_proc'] = {
@@ -205,11 +206,11 @@ function initCustomBlocksDescription() {
             this.setColour(260);
             this.appendDummyInput()
                 .appendField('Define')
-                .appendField(new Blockly.FieldTextInput(''));
+                .appendField(new Blockly.FieldTextInput(name),'NAME');
             this.appendStatementInput('DO')
                 .appendField('Do');
-
             this.setTooltip('Declares the procedure');
+            this.statementConnection_ = null;
         }
     };
 
