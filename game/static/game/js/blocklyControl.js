@@ -36,8 +36,7 @@ ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
 ocargo.BlocklyControl.prototype.prepare = function() {
     try {
         return {success:true, program: ocargo.blocklyCompiler.compile()};
-    }
-    catch (error) {
+    } catch (error) {
         return {success:false, error: ocargo.messages.compilationError + "<br><br>" + error};
     }
 };
@@ -81,6 +80,7 @@ ocargo.BlocklyControl.prototype.teardown = function() {
         var text = ocargo.blocklyControl.serialize();
         try {
             localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
+
         } catch (e) {
             // No point in even logging, as page is unloading
         }
@@ -96,13 +96,14 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, newXml);
         var legal = ocargo.blocklyControl.removeIllegalBlocks();
 
-        if(!legal) {
-            ocargo.Drawing.startPopup("Loading workspace", "", ocargo.messages.illegalBlocks + ocargo.jsElements.closebutton("Close"), true);
+        if (!legal) {
+            ocargo.Drawing.startPopup("Loading workspace", "",
+                ocargo.messages.illegalBlocks + ocargo.jsElements.closebutton("Close"), true);
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }
-    } 
-    catch (e) {
+
+    } catch (e) {
         ocargo.blocklyControl.reset();
     }
 };
@@ -130,27 +131,31 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
     for (var i = 0; i < blocks.length; i++) {
         var block = blocks[i];
 
-        if(block.type !== 'start') {
+        if (block.type !== 'start') {
             var found = false;
-            for(var j = 0; j < BLOCKS.length; j++) {
-                if(BLOCKS[j].type == block.type) {
+            for (var j = 0; j < BLOCKS.length; j++) {
+                if (BLOCKS[j].type == block.type) {
                     found = true;
                     break;
                 }
             }
 
-            if(!found) {
+            if (!found) {
                 clean = false;
                 block.dispose();
             }
         }
-        else if(isSafari) {
+        else if (isSafari) {
             if (startCount > 0) {
                 startCount--;
             } else {
                 block.dispose();
             }
         }
+    }
+    if (startCount > 0) {
+        this.reset();
+        return true;
     }
     return clean;
 };
@@ -228,11 +233,11 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
     var n = 0;
     var i;
 
-    for(i = 0; i < startBlocks.length; i++) {
+    for (i = 0; i < startBlocks.length; i++) {
         n += count(startBlocks[i].nextConnection.targetBlock());
     }
 
-    for(i = 0; i < procedureBlocks.length; i++) {
+    for (i = 0; i < procedureBlocks.length; i++) {
         n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
     }
 
@@ -274,7 +279,8 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
             }
 
             if (block.elseCount_ === 1) {
-                var elseBlock = block.inputList[block.inputList.length - 1].connection.targetBlock();
+                var elseBlock = block.inputList[block.inputList.length - 1]
+                                     .connection.targetBlock();
                 n += count(elseBlock);
             }
 
@@ -341,8 +347,10 @@ ocargo.BlocklyControl.prototype.highlightIncorrectBlock = function(incorrectBloc
 
     incorrectBlock.setColour(0);
     for (var i = 0; i < repeats; i++) {
-        window.setTimeout(function() { blocklyControl.setBlockSelected(incorrectBlock, true); }, 2 * i * frequency);
-        window.setTimeout(function() { blocklyControl.setBlockSelected(incorrectBlock, false); }, (2 * i + 1) * frequency);
+        window.setTimeout(function() {blocklyControl.setBlockSelected(incorrectBlock, true);},
+                          2 * i * frequency);
+        window.setTimeout(function() {blocklyControl.setBlockSelected(incorrectBlock, false);},
+                          (2 * i + 1) * frequency);
     }
 };
 
