@@ -42,7 +42,7 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {
     this.program = new ocargo.Program();
     var startBlocks = ocargo.blocklyControl.getStartBlocks();
-    for(var i = 0; i < THREADS; i++) {
+    for (var i = 0; i < THREADS; i++) {
         var thread = new ocargo.Thread(i);
         thread.startBlock = startBlocks[i];
         thread.stack.push(this.createSequence(thread.startBlock));
@@ -146,9 +146,11 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
     } else if (conditionBlock.type === 'at_destination') {
     	return this.atDestinationCondition(conditionBlock);
     } else if (conditionBlock.type === 'logic_negate') {
-    	return this.negateCondition(this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
+    	return this.negateCondition(
+            this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
     } else if (conditionBlock.type === 'traffic_light') {
-    	return this.trafficLightCondition(conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
+    	return this.trafficLightCondition(
+            conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
     }
 };
 
@@ -178,13 +180,14 @@ ocargo.BlocklyCompiler.prototype.createIf = function(block) {
 	}
 
 	if (elseCount === 1) {
-		var elseBody = this.createSequence(block.inputList[block.inputList.length - 1].connection.targetBlock());
+		var elseBody = this.createSequence(
+            block.inputList[block.inputList.length - 1].connection.targetBlock());
 	}
 
 	return new If(conditionalCommandSets, elseBody, block);
 };
 
-ocargo.BlocklyCompiler.prototype.createSequence = function(block){
+ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
 	var commands = [];
 
 	while (block) {
@@ -283,15 +286,15 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
 
 
 ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
-	var code = 'import van\n\nv = van.Van()\n';
-	
+    var code = "";
+    
 	var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
     for (var i = 0; i < procBlocks.length; i++) {
     	code += '\n' + Blockly.Python.blockToCode(procBlocks[i]);
     }
 	
 	var startBlocks = ocargo.blocklyControl.getStartBlocks();
-	for(var i = 0; i < startBlocks.length; i++) {
+	for (var i = 0; i < startBlocks.length; i++) {
 		code += '\n' + Blockly.Python.blockToCode(startBlocks[i]);
 	}
 	

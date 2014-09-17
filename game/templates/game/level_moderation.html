@@ -30,7 +30,7 @@
                         $('#id_students').append(option);
                     }
                     {% if studentID %}
-                      $('#id_students').val({{studentID}})
+                      $('#id_students').val({{studentID}});
                     {% endif %}
                 }
             });
@@ -53,7 +53,9 @@
     <link href="{% static 'game/css/level_moderation.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block nav_ocargo_moderate %}<b><a href="{% url 'game.views.level_moderation' %}">Moderate</a></b>{% endblock nav_ocargo_moderate %}
+{% block nav_ocargo_moderate %}
+<b><a href="{% url 'game.views.level_moderation.level_moderation' %}">Moderate</a></b>
+{% endblock nav_ocargo_moderate %}
 
 {% block content %}
 <h1>Level moderation</h1><br>

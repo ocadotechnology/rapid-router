@@ -1,0 +1,151 @@
+var ocargo = ocargo || {};
+
+ocargo.PythonControl = function() {
+
+    /***************/
+    /** Constants **/
+    /***************/
+
+    var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
+
+    /***********/
+    /** State **/
+    /***********/
+
+    var codePanel;
+    var console;
+
+    /********************/
+    /** Public methods **/
+    /********************/
+
+    this.run = function() {
+        ocargo.model.reset(0);
+        Sk.failed = false;
+
+        try {
+            Sk.importMainWithBody("<stdin>", false, codePanel.getValue());
+            if (!Sk.failed) {
+                ocargo.model.programExecutionEnded();
+            }
+        } catch(e) {
+            outf(e.toString() + "\n");
+        }
+    };
+
+    this.prepare = function() {
+        return {
+            success: true, 
+            program:{run: this.run}, 
+        };
+    };
+
+    this.reset = function() {
+        this.clearCodePanel();
+        this.clearConsole();
+    };
+
+    this.clearCodePanel = function() {
+        this.setCode(DEFAULT_CODE);
+    };
+
+    this.clearConsole = function() {
+        console.text("");
+    };
+
+    this.appendToConsole = function(str) {
+        console.text(console.text() + str);
+    };
+
+    this.setCode = function(code) {
+        codePanel.setValue(code.replace(/<br\s*[\/]?>/gi, '\n'));
+    };
+
+    this.appendCode = function(code) {
+        codePanel.setValue(DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n'));
+    };
+
+    this.getCode = function() {
+        return codePanel.getValue();
+    };
+
+    this.loadPreviousAttempt = function() {
+        function decodeHTML(text) {
+            var e = document.createElement('div');
+            e.innerHTML = text;
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        }
+        if (PYTHON_WORKSPACE) {
+            this.setCode(PYTHON_WORKSPACE);
+        } else {
+            try {
+                this.setCode(
+                    localStorage.getItem('pythonWorkspace-' + LEVEL_ID));
+            } catch (e) {
+                this.reset();
+            }
+        }
+    };
+
+    this.teardown = function() {
+        if (localStorage && !ANONYMOUS) {
+            var text = this.getCode();
+            try {
+                localStorage.setItem('pythonWorkspace-' + LEVEL_ID, text);
+
+            } catch (e) {
+                // No point in even logging, as page is unloading
+            }
+        }
+    };
+
+
+    /*********************/
+    /** Private methods **/
+    /*********************/
+
+    function createCodePanel() {
+        return CodeMirror.fromTextArea(document.getElementById('code'), {
+            parserfile: ["parsepython.js"],
+            autofocus: true,
+            theme: "eclipse",
+            lineNumbers: true,
+            textWrapping: false,
+            indentUnit: 4,
+            height: "160px",
+            fontSize: "9pt",
+            autoMatchParens: true,
+            parserConfig: {'pythonVersion': 2, 'strictErrors': true}
+        });
+    }
+
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles.files[x] === undefined) {
+            throw "File not found: '" + x + "'";
+        }
+        return Sk.builtinFiles.files[x];
+    }
+
+    function outf (outputText) {
+        ocargo.animation.appendAnimation({
+            type: 'console',
+            text: outputText
+        });
+    }
+
+    /*************************/
+    /** Initialisation code **/
+    /*************************/
+    codePanel = createCodePanel();
+    console = $('#consoleOutput');
+
+    // Limit the code so that it stops after 2 seconds
+    Sk.execLimit = 2000;
+
+    // Configure Skulpt
+    Sk.configure({output: outf, read: builtinRead});
+    //Sk.canvas = "mycanvas";
+    Sk.pre = "consoleOutput";
+
+    this.reset();
+};

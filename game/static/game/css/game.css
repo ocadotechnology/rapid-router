@@ -100,12 +100,14 @@
 }
 
 #consoleOutput {
-    background-color: #eceaee;
-    max-height: 300px;
+    background-color: #FEFDFF;
+    font-size: 20px;
+    font-family: monospace;
+    max-height: 250px;
     max-width: 100%;
-    min-height: 250px;
+    min-height: 180px;
     overflow: auto;
-    padding: 5px;
+    padding: 20px;
     margin-bottom: 20px;
 }
 
@@ -117,6 +119,12 @@
     float: right;
     margin-bottom: 0px
 }
+
+#convert_from_blockly {
+    float: right;
+    margin-bottom: 0px
+}
+
 
 /*************************/
 /* Loading & Saving tabs */

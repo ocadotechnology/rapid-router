@@ -5,9 +5,9 @@ var ocargo = ocargo || {};
 ocargo.BlocklyControl = function () {
     this.numberOfStartBlocks = THREADS;
 
-    this.blocklyHacks = new ocargo.BlocklyHacks();
-    this.blocklyHacks.setupLimitedBlocks();
-    this.blocklyHacks.setupBigCodeMode();
+    this.blocklyCustomisations = new ocargo.BlocklyCustomisations();
+    this.blocklyCustomisations.setupLimitedBlocks();
+    this.blocklyCustomisations.setupBigCodeMode();
     
     this.blocklyDiv = document.getElementById('blockly_holder');
     this.toolbox = document.getElementById('blockly_toolbox');
@@ -17,8 +17,8 @@ ocargo.BlocklyControl = function () {
         trashcan: true
     });
 
-    this.blocklyHacks.setupFlyoutToggling(this.blocklyDiv);
-    this.blocklyHacks.disableContextMenus();
+    this.blocklyCustomisations.setupFlyoutToggling(this.blocklyDiv);
+    this.blocklyCustomisations.disableContextMenus();
 
     // Stop the flyout from closing automatically
     Blockly.Flyout.autoClose = false;
@@ -36,8 +36,7 @@ ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
 ocargo.BlocklyControl.prototype.prepare = function() {
     try {
         return {success:true, program: ocargo.blocklyCompiler.compile()};
-    }
-    catch (error) {
+    } catch (error) {
         return {success:false, error: ocargo.messages.compilationError + "<br><br>" + error};
     }
 };
@@ -58,21 +57,21 @@ ocargo.BlocklyControl.prototype.reset = function() {
 };
 
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
-    this.blocklyHacks.toggleFlyout();
+    this.blocklyCustomisations.toggleFlyout();
 };
 
 ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
-    this.blocklyHacks.bringStartBlockFromUnderFlyout();
+    this.blocklyCustomisations.bringStartBlockFromUnderFlyout();
 };
 
 ocargo.BlocklyControl.prototype.enableBigCodeMode = function() {
     ocargo.blocklyControl.bigCodeMode = true;
-    this.blocklyHacks.enableBigCodeMode();
+    this.blocklyCustomisations.enableBigCodeMode();
 };
 
 ocargo.BlocklyControl.prototype.disableBigCodeMode =  function() {
     ocargo.blocklyControl.bigCodeMode = false;
-    this.blocklyHacks.disableBigCodeMode();
+    this.blocklyCustomisations.disableBigCodeMode();
 };
 
 
@@ -81,6 +80,7 @@ ocargo.BlocklyControl.prototype.teardown = function() {
         var text = ocargo.blocklyControl.serialize();
         try {
             localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
+
         } catch (e) {
             // No point in even logging, as page is unloading
         }
@@ -96,13 +96,14 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, newXml);
         var legal = ocargo.blocklyControl.removeIllegalBlocks();
 
-        if(!legal) {
-            ocargo.Drawing.startPopup("Loading workspace", "", ocargo.messages.illegalBlocks + ocargo.jsElements.closebutton("Close"), true);
+        if (!legal) {
+            ocargo.Drawing.startPopup("Loading workspace", "",
+                ocargo.messages.illegalBlocks + ocargo.jsElements.closebutton("Close"), true);
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }
-    } 
-    catch (e) {
+
+    } catch (e) {
         ocargo.blocklyControl.reset();
     }
 };
@@ -130,27 +131,29 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
     for (var i = 0; i < blocks.length; i++) {
         var block = blocks[i];
 
-        if(block.type !== 'start') {
+        if (block.type !== 'start') {
             var found = false;
-            for(var j = 0; j < BLOCKS.length; j++) {
-                if(BLOCKS[j].type == block.type) {
+            for (var j = 0; j < BLOCKS.length; j++) {
+                if (BLOCKS[j].type == block.type) {
                     found = true;
                     break;
                 }
             }
 
-            if(!found) {
+            if (!found) {
                 clean = false;
                 block.dispose();
             }
-        }
-        else if(isSafari) {
-            if (startCount > 0) {
-                startCount--;
-            } else {
+        } else {
+            startCount--;
+            if (isSafari && startCount < 0) {
                 block.dispose();
             }
         }
+    }
+    if (startCount > 0) {
+        this.reset();
+        return true;
     }
     return clean;
 };
@@ -161,7 +164,7 @@ ocargo.BlocklyControl.prototype.setCodeChangesAllowed = function(changesAllowed)
         setting = "none";
     }
     this.blocklyDiv.style.pointerEvents = setting;
-}
+};
 
 ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     function decodeHTML(text) {
@@ -228,11 +231,11 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
     var n = 0;
     var i;
 
-    for(i = 0; i < startBlocks.length; i++) {
+    for (i = 0; i < startBlocks.length; i++) {
         n += count(startBlocks[i].nextConnection.targetBlock());
     }
 
-    for(i = 0; i < procedureBlocks.length; i++) {
+    for (i = 0; i < procedureBlocks.length; i++) {
         n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
     }
 
@@ -274,7 +277,8 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
             }
 
             if (block.elseCount_ === 1) {
-                var elseBlock = block.inputList[block.inputList.length - 1].connection.targetBlock();
+                var elseBlock = block.inputList[block.inputList.length - 1]
+                                     .connection.targetBlock();
                 n += count(elseBlock);
             }
 
@@ -341,8 +345,10 @@ ocargo.BlocklyControl.prototype.highlightIncorrectBlock = function(incorrectBloc
 
     incorrectBlock.setColour(0);
     for (var i = 0; i < repeats; i++) {
-        window.setTimeout(function() { blocklyControl.setBlockSelected(incorrectBlock, true); }, 2 * i * frequency);
-        window.setTimeout(function() { blocklyControl.setBlockSelected(incorrectBlock, false); }, (2 * i + 1) * frequency);
+        window.setTimeout(function() {blocklyControl.setBlockSelected(incorrectBlock, true);},
+                          2 * i * frequency);
+        window.setTimeout(function() {blocklyControl.setBlockSelected(incorrectBlock, false);},
+                          (2 * i + 1) * frequency);
     }
 };
 

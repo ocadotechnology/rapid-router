@@ -26,6 +26,7 @@
     var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
     var CHARACTER_NAME = "{{character.name}}";
     var CHARACTER_URL = "{{character.top_down}}";
+    var CHARACTER_EN_FACE_URL = "{{character.en_face}}"
     var CHAR_WIDTH = {{character.width}};
     var CHAR_HEIGHT = {{character.height}};
 
@@ -35,7 +36,7 @@
     {% endfor %}
 
     var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none"><category name="+">';
-    for (var i=0; i < BLOCKS.length; i++) {
+    for (var i = 0; i < BLOCKS.length; i++) {
         BLOCKLY_XML += '<block type="' + BLOCKS[i].type + '"></block>';
     }
 
@@ -49,13 +50,14 @@
     var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";
     var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
     var RETURN_URL = "{{return_url}}";
+    var PYTHON_WORKSPACE= "{{python_workspace|linebreaksbr}}" !== "" ? "{{python_workspace|linebreaksbr}}" : null;
+
   </script>
 
   <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/skulpt/python.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/editor.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
@@ -71,10 +73,11 @@
   <script type="text/javascript" src="{% static 'game/js/tab.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/pythonControl.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyHacks.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/blocklyCustomisations.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
@@ -244,16 +247,21 @@
 
       <div id="python_pane" class="tab_pane">
         <div id="pythonCode" {% if not level.pythonEnabled%} style="visibility: hidden" {% endif %}>
-          <h3>Python Program</h3>
-            <div id="editor" style="margin-bottom:50px">
-              <p>Use the Python editor below to design your program, and click run to try it out!</p>
+          <h3>Python Program
+            {% if level.blocklyEnabled %}
+            <button class="navigation_button long_button" id="convert_from_blockly">
+              <span>Convert from Blockly</span>
+            </button>
+            {% endif %}
+          </h3>
+            <div id="editor">
+              <p>Use the Python editor below to design your program, and then click play to try it out!</p>
               <textarea id="code" cols="85" rows="25"></textarea>
             </div>
 
             <div id="console">
               <h4 style="height:50px; line-height: 50px;">
                 Console Output
-
                 <button class="navigation_button long_button" id="clear_console">
                   <img src="/static/game/image/icons/clear.svg">
                   <span>Clear console</span>
@@ -263,13 +271,36 @@
             </div>
 
             <div id="python_help">
-              <h4>Van Commands:</h4>
-              <p>move_forwards(), turn_left(), turn_right(), turn_around(), wait()</p>
-              <p>at_dead_end(), at_destination()</p>
-              <p>at_traffic_light(c), where c is 'GREEN' or 'RED'</p>
-              <p>at_red_traffic_light(), at_green_traffic_light()</p>
-              <p>is_road(d), where d is 'FORWARD', 'LEFT' or 'RIGHT'</p>
-              <p>is_road_forward(), is_road_left(), is_road_right()</p>
+              <h4>Van Commands</h4>
+              <p>Run the following commands on the van object v, e.g. v.move_forwards()</p>
+              <div class="row">
+                <div class="large-4 columns">
+                  <p><b>Movement</b>
+                  <br>v.move_forwards()
+                  <br>v.turn_left()
+                  <br>v.turn_right()
+                  <br>v.turn_around()
+                  <br>v.wait()</p>
+                </div>
+                <div class="large-4 columns">
+                  <p><b>Position</b>
+                  <br>v.at_dead_end()
+                  <br>v.at_destination()
+                  <br>v.at_red_traffic_light()
+                  <br>v.at_green_traffic_light()
+                  <br>v.at_traffic_light(c)
+                  <br><i>where c is 'RED' or 'GREEN'</i></p>
+                </div>
+                <div class="large-4 columns">
+                  <p>
+                  <br>v.is_road_forward()
+                  <br>v.is_road_left()
+                  <br>v.is_road_right()
+                  <br>v.is_road(d)
+                  <br><i>where d is 'FORWARD',
+                  <br>'LEFT', or 'RIGHT'</i></p>
+                </div>
+              </div>
             </div>
         </div>
       </div>
