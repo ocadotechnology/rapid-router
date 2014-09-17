@@ -90,11 +90,12 @@ class Episode (models.Model):
     next_episode = models.ForeignKey("self", null=True, default=None)
     in_development = models.BooleanField(default=False)
 
-    r_branchiness = models.FloatField(default=0)
-    r_loopiness = models.FloatField(default=0)
-    r_curviness = models.FloatField(default=0)
-    r_num_tiles = models.IntegerField(default=5)
-    r_blocks = models.ManyToManyField(Block, related_name='episodes')
+    r_random_levels_enabled = models.BooleanField(default=False)
+    r_branchiness = models.FloatField(default=0, null=True)
+    r_loopiness = models.FloatField(default=0, null=True)
+    r_curviness = models.FloatField(default=0, null=True)
+    r_num_tiles = models.IntegerField(default=5, null=True)
+    r_blocks = models.ManyToManyField(Block, related_name='episodes', null=True)
     r_blocklyEnabled = models.BooleanField(default=True)
     r_pythonEnabled = models.BooleanField(default=False)
     r_trafficLights = models.BooleanField(default=False)
@@ -112,6 +113,7 @@ class Workspace (models.Model):
     name = models.CharField(max_length=200)
     owner = models.ForeignKey(UserProfile, related_name='workspaces', blank=True, null=True)
     contents = models.TextField(default="")
+    python_contents = models.TextField(default="")
 
 
 class Attempt (models.Model):
@@ -121,3 +123,4 @@ class Attempt (models.Model):
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")
+    python_workspace = models.TextField(default="")

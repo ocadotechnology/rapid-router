@@ -6,21 +6,51 @@
 
 {% block title %}Code for Life - Rapid Router{% endblock %}
 
-{% block nav_teach %}{% if user|is_logged_in_as_teacher %}<b>[ <a href="{% url 'teach' %}">TEACH</a> ]</b>{% else %}{{ block.super }}{% endif %}{% endblock nav_teach %}
-{% block nav_play %}{% if user|is_logged_in_as_teacher %}{{ block.super }}{% else %}<b>[ <a href="{% url 'play' %}">PLAY</a> ]</b>{% endif %}{% endblock nav_play %}
+{% block nav_teach %}
+{% if user|is_logged_in_as_teacher %}
+  <b>[ <a href="{% url 'teach' %}">TEACH</a> ]</b>
+{% else %}
+  {{ block.super }}
+{% endif %}
+{% endblock nav_teach %}
+
+{% block nav_play %}
+{% if user|is_logged_in_as_teacher %}
+  {{ block.super }}
+{% else %}
+  <b>[ <a href="{% url 'play' %}">PLAY</a> ]</b>
+{% endif %}
+{% endblock nav_play %}
 
 
 {% block subNav %}
 <div class="subnavBar">
-    <div class="subnav">
-        <ul>
-            <li><img height=40 src="{% static 'game/image/RR-title.png' %}"/>
-            <li>{% block nav_ocargo_levels %}<a href="{% url 'game.views.levels' %}">Levels</a>{% endblock nav_ocargo_levels %}</li>
-            <li>{% block nav_ocargo_create %}<a href="{% url 'game.views.level_editor' %}">Create</a>{% endblock nav_ocargo_create %}</li>
-            {% if user|is_logged_in_as_school_user %}<li>{% block nav_ocargo_scoreboard %}<a href="{% url 'game.views.scoreboard' %}">Scoreboard</a>{% endblock nav_ocargo_scoreboard %}</li>{% endif %}
-            {% if user|is_logged_in_as_teacher %}<li>{% block nav_ocargo_moderate %}<a href="{% url 'game.views.level_moderation' %}">Moderate</a>{% endblock nav_ocargo_moderate %}</li>{% endif %}
-        </ul>
-    </div>
+  <div class="subnav">
+    <ul>
+      <li><img height=40 src="{% static 'game/image/RR-title.png' %}"/>
+      <li>{% block nav_ocargo_levels %}
+        <a href="{% url 'game.views.level_selection.levels' %}">Levels</a>
+        {% endblock nav_ocargo_levels %}
+      </li>
+      <li>{% block nav_ocargo_create %}
+        <a href="{% url 'game.views.level_editor.level_editor' %}">Create</a>
+        {% endblock nav_ocargo_create %}
+      </li>
+      {% if user|is_logged_in_as_school_user %}
+        <li>{% block nav_ocargo_scoreboard %}
+          <a href="{% url 'game.views.scoreboard.scoreboard' %}">Scoreboard</a>
+          {% endblock nav_ocargo_scoreboard %}
+        </li>
+      {% endif %}
+      {% if user|is_logged_in_as_teacher %}
+        <li>
+          {% block nav_ocargo_moderate %}
+          <a href="{% url 'game.views.level_moderation.level_moderation' %}">Moderate</a>
+          {% endblock nav_ocargo_moderate %}
+        </li>
+      {% endif %}
+    </ul>
+  </div>
 </div>
 {% endblock subNav %}
 

@@ -1,9 +1,9 @@
 'use strict';
 
 var ocargo = ocargo || {};
+var Blockly = Blockly || {};
 
-function initCustomBlocks()
-{
+function initCustomBlocks() {
     initCustomBlocksDescription();
     initCustomBlocksPython();
 }
@@ -16,7 +16,7 @@ function initCustomBlocksDescription() {
             this.setColour(50);
             this.appendDummyInput()
                 .appendField('Start')
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + CHARACTER_URL, 
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL, 
                     ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
                     ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH));
             this.setNextStatement(true);
@@ -85,7 +85,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     14,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/turn_around.svg',
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir +
+                                                    'actions/turn_around.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
             this.setPreviousStatement(true);
@@ -188,28 +189,32 @@ function initCustomBlocksDescription() {
     Blockly.Blocks['call_proc'] = {
         // Block for calling a defined procedure
         init: function() {
+            var name = '';
             this.setColour(260);
             this.appendDummyInput()
                 .appendField('Call')
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg', 7, ocargo.BlocklyControl.BLOCK_HEIGHT))
-                .appendField(new Blockly.FieldTextInput(''));
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg', 7,
+                                                    ocargo.BlocklyControl.BLOCK_HEIGHT))
+                .appendField(new Blockly.FieldTextInput(name),'NAME');
             this.setPreviousStatement(true);
             this.setNextStatement(true);
             this.setTooltip('Call');
         }
+
     };
 
     Blockly.Blocks['declare_proc'] = {
         // Block for declaring a procedure
         init: function() {
+            var name = '';
             this.setColour(260);
             this.appendDummyInput()
                 .appendField('Define')
-                .appendField(new Blockly.FieldTextInput(''));
+                .appendField(new Blockly.FieldTextInput(name),'NAME');
             this.appendStatementInput('DO')
                 .appendField('Do');
-
             this.setTooltip('Declares the procedure');
+            this.statementConnection_ = null;
         }
     };
 
@@ -319,25 +324,29 @@ function initCustomBlocksPython() {
             var python = "v.is_road('RIGHT')";
         }
         
-        return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
+        return [python, Blockly.Python.ORDER_NONE];
+        // TODO: figure out what this ordering relates to
     };
 
     Blockly.Python['traffic_light'] = function(block) {
+        var python;
         if(block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED){
-            var python = "v.at_traffic_light('RED')";
+            python = "v.at_traffic_light('RED')";
         }else{
-            var python = "v.at_traffic_light('GREEN')";
+            python = "v.at_traffic_light('GREEN')";
         }
         
         return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
     };
 
     Blockly.Python['dead_end'] = function(block) {
-        return ['v.at_dead_end()', Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
+        return ['v.at_dead_end()', Blockly.Python.ORDER_NONE];
+        // TODO: figure out what this ordering relates to
     };
 
     Blockly.Python['at_destination'] = function(block) {
-        return ['v.at_destination()', Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to;
+        return ['v.at_destination()', Blockly.Python.ORDER_NONE]; 
+        // TODO: figure out what this ordering relates to;
     };
 
     Blockly.Python['call_proc'] = function(block) {
@@ -346,8 +355,8 @@ function initCustomBlocksPython() {
 
     Blockly.Python['declare_proc'] = function(block) {
         var branch = Blockly.Python.statementToCode(block, 'DO');
-        return 'def ' + block.inputList[0].fieldRow[1].text_ + '():\n'
-            + branch;//TODO: get code out of sub-blocks (there's a Blockly function for it)
+        return 'def ' + block.inputList[0].fieldRow[1].text_ + '():\n' + branch;
+        // TODO: get code out of sub-blocks (there's a Blockly function for it)
     };
 
     Blockly.Python['controls_repeat_while'] = function(block) {

@@ -302,6 +302,15 @@ input[type="checkbox"].block_checkbox {
     padding-left: 12px;
 }
 
+#language_select {
+    width: 100px;
+    float: none;
+}
+
+#language_div span {
+    float: none;
+}
+
 
 /******************/
 /* Characters tab */

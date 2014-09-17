@@ -1076,11 +1076,205 @@ def title_level51():
 
 
 def description_level51():
-    message = ugettext("Procedures! <br> Can you find the "
-                       + "shortest program to deal with the traffic lights? ")
+    message = ugettext("Procedures are blocks of code that can be executed multiple times without "
+                       + "being rewritten. So, for example, if you want to use a set of blocks "
+                       + "which make the van wait wguke the lights are red - you can define a "
+                       + "procedure to do so and then call it every time you are approaching the "
+                       + "traffic lights. <br> To define a procedure executing a set of blocks "
+                       + "simply put them inside the <b>Define do</b> block. Once you do that, "
+                       + "create a name for it. <br> Now you're ready to use your method! Attach "
+                       + "the <b>Call</b> block where you want your procedure to be executed. "
+                       + "Don't forget to put its the name in it! ")
     return build_description(title_level51(), message)
 
 
 def hint_level51():
-    message = ugettext("Define a procedure to deal with the traffic waiting. ")
+    message = ugettext("Define a procedure that makes the van <b>Wait</b> <b>until the traffic "
+                       + "light</b> is <b>green</b>. Once you name your procedure by typing in "
+                       + "a name in the <b>Define Do</b> block, you can call it. <br> To call "
+                       + "the procedure attach the <b>Call</b> block and type in the name of the "
+                       + "procedure you want to execute into the text box. ")
+
     return message
+
+
+def title_level52():
+    return ugettext("Well done! Can you spot a potential procedure in here? ")
+
+
+def description_level52():
+    message = ugettext("Procedures can be used on all sorts of blocks, not only waits! Use them  "
+                       + "to save time when creating a program! ")
+    return build_description(title_level52(), message)
+
+
+def hint_level52():
+    message = ugettext("Can you see the repeating pattern in the path? The 'wiggle' consisting "
+                       + "of a <b>Turn left</b>, <b>Move forwards</b>, <b>Turn right</b>, "
+                       + "<b>Turn right</b>, <b>Turn left</b> can be put in a <b>Define Do</b> "
+                       + "block to create a procedure. Once you have named it, attach the <b>"
+                       + "<b>Call</b> block with the procedure's name in the text box to execute "
+                       + "it. ")
+    return message
+
+
+def title_level53():
+    return ugettext("Wiggle Wiggle!")
+
+
+def description_level53():
+    message = ''
+    return build_description(title_level53(), message)
+
+
+def hint_level53():
+    return ""
+
+
+def title_level54():
+    return ugettext("More complicated roads. ")
+
+
+def description_level54():
+    message = ugettext("This road might be a bit more complicated, but the procedures you should "
+                       + "come up with are quite simple. Have a go and find out yourself! ")
+    return build_description(title_level54(), message)
+
+
+def hint_level54():
+    message = ugettext("You might find it useful to create two simple helper procedures - one with "
+                       + "<b>Turn left</b> followed by <b>Turn right</b> and the other one to "
+                       + "first <b>Turn right</b> followed by <b>Turn left</b>.")
+    return message
+
+
+def title_level55():
+    return ugettext("Limited resources! ")
+
+
+def description_level55():
+    message = ugettext("Let's make the levels a bit harder now - can you come up with a solution "
+                       + "to the level with a limited amount of blocks we provide you on the "
+                       + "start? Let's find out! ")
+    return build_description(title_level55(), message)
+
+
+def hint_level55():
+    message = ugettext("Notice that the amount of <b>Move forwards</b> is not restricted - you "
+                       + "are free to use as many as possible. ")
+    return message
+
+
+def title_level56():
+    return ugettext("A bit more tricky.")
+
+
+def description_level56():
+    message = ugettext("Well done so far! Can you find a solution to this road? You have to move "
+                       + "forward, but you have no block forward to use. <br> Do you know how to "
+                       + "help the van to get to the destination? ")
+    return build_description(title_level56(), message)
+
+
+def hint_level56():
+    return ""
+
+
+def title_level57():
+    return ugettext("No <b>Turn left</b>!")
+
+
+def description_level57():
+    message = ugettext("Oh no! Another level where we don't have one very important block! <br>"
+                       + "Do you know how to go around this to lead the van to the house? ")
+    return build_description(title_level57(), message)
+
+
+def hint_level57():
+    return ""
+
+
+def title_level60():
+    return ugettext("T-junction trouble. ")
+
+
+def description_level60():
+    message = ugettext("Can you reach the house with only two <b>Move forwards</b> blocks?")
+    return build_description(title_level60(), message)
+
+
+def hint_level60():
+    return ""
+
+
+def title_level61():
+    return ugettext("Tons of traffic lights! ")
+
+
+def description_level61():
+    message = ugettext("How are you going to get past all the traffic lights without knowing "
+                       + "when the traffic light is green? ")
+    return build_description(title_level61(), message)
+
+
+def hint_level61():
+    return ""
+
+
+def title_level62():
+    return ugettext("Wave goodbye to winter! ")
+
+
+def description_level62():
+    message = ugettext("You have to go out of your way to solve this! Are you up for the "
+                       + "challenge?")
+    return build_description(title_level62(), message)
+
+
+def hint_level62():
+    return ""
+
+
+def title_level63():
+    return ugettext("A fish out of water. ")
+
+
+def description_level63():
+    message = ""
+    return build_description(title_level63(), message)
+
+
+def hint_level63():
+    return ""
+
+
+def title_level100():
+    return ugettext("Well done! ")
+
+
+def title_level101():
+    return ugettext("Find the shortest path! ")
+
+
+def title_level102():
+    return ugettext("Follow the path. ")
+
+
+def title_level103():
+    return ugettext("Can you spot the pattern. ")
+
+
+def title_level104():
+    return ugettext("Snail time! ")
+
+
+def title_level105():
+    return ugettext("Time to go general! ")
+
+
+def title_level106():
+    return ugettext("Why do you have to go and make things so complicated. ")
+
+
+def title_level107():
+    return ugettext("Trouble in the city!!! ")

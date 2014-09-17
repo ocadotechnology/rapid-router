@@ -11,8 +11,6 @@ var PAPER_HEIGHT = GRID_SPACE_SIZE * GRID_HEIGHT;
 var CHARACTER_WIDTH = 40;
 var CHARACTER_HEIGHT = 20;
 
-var DECOR_SIZE = 100;
-
 var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 
 ocargo.Drawing = function() {
@@ -52,9 +50,9 @@ ocargo.Drawing = function() {
     // Used by level editor to preload road tiles to prevent jittery drawing
 
     this.preloadRoadTiles = function() {
-        var tiles = ['dead_end', 'crossroads', 'straight', 't_junction', 'turn']
+        var tiles = ['dead_end', 'crossroads', 'straight', 't_junction', 'turn'];
         var tileImages = [];
-        var path = ocargo.Drawing.raphaelImageDir + 'road_tiles/'
+        var path = ocargo.Drawing.raphaelImageDir + 'road_tiles/';
 
         for(var i = 0; i < tiles.length; i++) {
             tileImages.push(paper.image(path + 'road/' + tiles[i] + '.svg', 0, 0, GRID_SPACE_SIZE, GRID_SPACE_SIZE));
@@ -495,19 +493,15 @@ ocargo.Drawing = function() {
 
     this.renderVans = function(position, numVans) {
         for (var i = 0; i < numVans; i++) {
-            vanImages[i] = this.createVanImage(position, i);
+            vanImages[i] = this.createVanImage();
             this.setVanImagePosition(position, i);
         }
         this.scrollToShowVan(0);
     };
 
-    this.createVanImage = function(position, vanId) {
+    this.createVanImage = function() {
         return paper.image(ocargo.Drawing.raphaelImageDir + CHARACTER_URL, 0, 0, CHAR_HEIGHT, CHAR_WIDTH);
     };
-
-    this.resetVanImage = function(position, vanID) {
-        this.setVanImagePosition(position, vanID)
-    }
 
     this.createGrid = function() {
         var grid = [];
@@ -567,7 +561,7 @@ ocargo.Drawing = function() {
         var colour = visited ? DESTINATION_VISITED_COLOUR : DESTINATION_NOT_VISITED_COLOUR;
 
         destinationRect.animate({'stroke': colour}, animationLength, 'linear');
-    }
+    };
 
     this.skipOutstandingVanAnimationsToEnd = function(vanID) {
         var anims = vanImages[vanID].status();
@@ -618,9 +612,7 @@ ocargo.Drawing = function() {
         }, vanId, animationLength, callback);
     };
 
-    this.turnAround = function(vanId, direction, animationLength, callback) {
-        
-        
+    this.turnAround = function(vanId, direction, animationLength) {
         var vanImage = vanImages[vanId];
         var timePerState = (animationLength - 50) / 3;
 
@@ -914,7 +906,7 @@ ocargo.Drawing.isMobile = function() {
 
 ocargo.Drawing.isChrome = function() {
     return navigator.userAgent.indexOf('Chrome') > -1;
-}
+};
 
 ocargo.Drawing.imageDir = '/static/game/image/';
 ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/';
