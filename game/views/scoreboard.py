@@ -9,7 +9,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from helper import renderError
 from game.forms import ScoreboardForm
-from game.models import Level, Attempt
+from game.models import Level, Attempt, Episode
 from portal.models import Class, Teacher
 
 
@@ -34,19 +34,18 @@ def scoreboard(request):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
     userprofile = request.user.userprofile
-
     school = None
     thead = []
     classes = []
+
     if hasattr(userprofile, 'teacher'):
-        school = request.user.userprofile.teacher.school
-        teachers = Teacher.objects.filter(school=school)
+        teachers = Teacher.objects.filter(school=userprofile.teacher.school)
         classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
         classes = Class.objects.filter(id__in=classes_list)
         if len(classes) <= 0:
             return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
+
     elif hasattr(userprofile, 'student') and not userprofile.student.is_independent():
-        # user is a school student
         class_ = userprofile.student.class_field
         classes = Class.objects.filter(id=class_.id)
         school = class_.teacher.school
@@ -56,6 +55,7 @@ def scoreboard(request):
     form = ScoreboardForm(request.POST or None, classes=classes)
     studentData = None
 
+    # Update the scoreboard if the class and or level were selected.
     if request.method == 'POST':
         if form.is_valid():
             studentData, thead = renderScoreboard(request, form, school)
@@ -72,36 +72,41 @@ def renderScoreboard(request, form, school):
     """ Helper method rendering the scoreboard.
     """
     userprofile = request.user.userprofile
-
     studentData = None
     levelID = form.data.get('levels', False)
     classID = form.data.get('classes', False)
-    thead = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
+
+    # Adjust the table headers to the chosen parameters.
+    if not levelID:
+        thead = ['Name', 'Total Score', 'Total Time']
+    else:
+        thead = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
+
     if classID:
         cl = get_object_or_404(Class, id=classID)
         students = cl.students.all()
-    # check user has permission to look at this class!
+
+    if levelID:
+        level = get_object_or_404(Level, id=levelID)
+
     if hasattr(userprofile, 'teacher'):
         teachers = Teacher.objects.filter(school=userprofile.teacher.school)
         classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
         if classID and not int(classID) in classes_list:
             raise Http404
+
     elif hasattr(userprofile, 'student') and not userprofile.student.is_independent():
-        # user is a school student
         class_ = userprofile.student.class_field
         if classID and int(classID) != class_.id:
             raise Http404
-        students = class_.students.all()
-        # remove all students except this student from students if the class config doesn't allow
-        # for students to see classmates' data
-        if not class_.classmates_data_viewable:
-            students = students.filter(id=userprofile.student.id)
+        # If student is allowed to see other pupils' data
+        if class_.classmates_data_viewable:
+            students = class_.students.all()
+        else:
+
+            class_.students.filter(id=userprofile.student.id)
     else:
         raise Http404
-
-    # Get level to filter by
-    if levelID:
-        level = get_object_or_404(Level, id=levelID)
 
     # Apply filters using handlers - note handleAllClasses filter must further take responsibility
     # for filtering when school students are in a class where they aren't allowed to see classmates'
@@ -111,8 +116,13 @@ def renderScoreboard(request, form, school):
     elif levelID:
         studentData = handleAllClassesOneLevel(request, level)
     else:
-        thead = ['Name', 'Total Score', 'Total Time']
-        levels = Level.objects.filter(default=1)
+        if userprofile.developer:
+            episodes = Episode.objects.all()
+        else:
+            episodes = Episode.objects.filter(in_development=False)
+        levels = []
+        for episode in episodes:
+            levels += episode.levels
         for level in levels:
             thead.append(str(level))
         if classID:
