@@ -6,27 +6,27 @@
 
 {% block scripts %}
 {{block.super}}
-	<script>
-  	var EPISODES = [];
-  	{% for episode in episodeData %}
-  		var levels = []
-  		{% for level in episode.levels %}
-  			levels.push({'name': {{level.name}},
-  						'score': '{{level.score}}'});
-  		{% endfor %}
-  		EPISODES.push({'id' : {{episode.id}},
-  						'levels': levels});
-  	{% endfor %}
+  <script>
+  var EPISODES = [];
+  {% for episode in episodeData %}
+    var levels = [];
+    {% for level in episode.levels %}
+      levels.push({'name': {{level.name}},
+            'score': '{{level.score}}'});
+    {% endfor %}
+    EPISODES.push({'id' : {{episode.id}},
+            'levels': levels});
+  {% endfor %}
 
-  	var OTHER_LEVELS = [];
-  	{% for level in owned_levels %}
-  		OTHER_LEVELS.push({'id': {{level.id}},
-  											'score': '{{level.score}}'});
-  	{% endfor %}
-  	{% for level in shared_levels %}
-  		OTHER_LEVELS.push({'id': {{level.id}},
-  											'score': '{{level.score}}'});
-  	{% endfor %}
+  var OTHER_LEVELS = [];
+  {% for level in owned_levels %}
+    OTHER_LEVELS.push({'id': {{level.id}},
+                      'score': '{{level.score}}'});
+  {% endfor %}
+  {% for level in shared_levels %}
+    OTHER_LEVELS.push({'id': {{level.id}},
+                      'score': '{{level.score}}'});
+  {% endfor %}
 
   </script>
 
@@ -38,84 +38,88 @@
   <link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
-{% block nav_ocargo_levels %}<b><a href="{% url 'game.views.levels' %}">Levels</a></b>{% endblock nav_ocargo_levels %}
+{% block nav_ocargo_levels %}
+  <b><a href="{% url 'game.views.level_selection.levels' %}">Levels</a></b>
+{% endblock nav_ocargo_levels %}
 
 {% block content %}
-	<div class="section group">
-		<div class="col span_1_of_3_strict">
-			<img class="wide rounded" src="{% static 'portal/img/RRlogo_on_less_green_small.png' %}" />
-		</div>
-		<div class="col span_2_of_3_strict">
-			<div id="episodes">
-			    {% for episode in episodeData %}
-			    <h3 id='episode{{episode.id}}'>
-			    	<div>
-				    	{{episode.name}}
-				    	<span class="episode_range_text">Levels {{episode.first_level}}-{{episode.last_level}}</span>
-				    	<img class="episode_image coin_image" value="{{episode.id}}">
-			    	<div>
-			    </h3>
-			    <div>
-			        {% for level in episode.levels %}
-			        <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-			        <p>
-				        <a href="{% url 'game.views.play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a> 
-				        {% if level.score != None %}
-				        <span class="score_text">{{level.score|floatformat}}/20</span>
-				        <img class="level_image coin_image" value="{{level.name}}">
-				        {% endif %}
-				    </p>
-			        {% endfor %}
-			       	
-			       	{% if episode.random_levels_enabled %}
-			        <p><a href="{% url 'game.views.random_level_for_episode' episode.id %}">Random: Try your hand at a random level.</a></p>
-			    	{% endif %}
-			    </div>
-			    {% endfor %}
+  <div class="section group">
+    <div class="col span_1_of_3_strict">
+      <img class="wide rounded" src="{% static 'portal/img/RRlogo_on_less_green_small.png' %}" />
+    </div>
+    <div class="col span_2_of_3_strict">
+      <div id="episodes">
+        {% for episode in episodeData %}
+        <h3 id='episode{{episode.id}}'>
+          <div>
+            {{episode.name}}
+            <span class="episode_range_text">Levels {{episode.first_level}}-{{episode.last_level}}</span>
+            <img class="episode_image coin_image" value="{{episode.id}}">
+          <div>
+        </h3>
+        <div>
+          {% for level in episode.levels %}
+          <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+          <p>
+            <a href="{% url 'game.views.level.play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a> 
+            {% if level.score != None %}
+            <span class="score_text">{{level.score|floatformat}}/20</span>
+            <img class="level_image coin_image" value="{{level.name}}">
+            {% endif %}
+          </p>
+          {% endfor %}
+          
+          {% if episode.random_levels_enabled %}
+          <p><a href="{% url 'game.views.level_selection.random_level_for_episode' episode.id %}">
+            Random: Try your hand at a random level.</a></p>
+          {% endif %}
+        </div>
+        {% endfor %}
 
-			    <h3 class='customLevelsEpisode'>Levels created by you</h3>
-			    <div>
-			    	{% if owned_levels %}
-			    		{% for level in owned_levels %}
-			    			<p>
-				    			<a href="{% url 'game.views.play_custom_level' level.id %}">{{level.title}}</a>
-				    			{% if level.score != None %}
-				    			<span class="score_text">{{level.score|floatformat}}/10</span>
-				    			<img class="level_image coin_image" value="{{level.id}}">
-				    			{% endif %}
-			    			</p>
-			    		{% endfor %}
-			    	{% else %}
-			    		{% if user|is_logged_in %}
-			    		<p>No levels have been created by you yet.</p>
-			    		{% else %}
-			    		<p>You cannot save created levels as you are not logged in.</p>
-			    		{% endif %}
-			    	{% endif %}
-			    </div>
+        <h3 class='customLevelsEpisode'>Levels created by you</h3>
+        <div>
+          {% if owned_levels %}
+            {% for level in owned_levels %}
+              <p>
+                <a href="{% url 'game.views.level.play_custom_level' level.id %}">{{level.title}}</a>
+                {% if level.score != None %}
+                <span class="score_text">{{level.score|floatformat}}/10</span>
+                <img class="level_image coin_image" value="{{level.id}}">
+                {% endif %}
+              </p>
+            {% endfor %}
+          {% else %}
+            {% if user|is_logged_in %}
+            <p>No levels have been created by you yet.</p>
+            {% else %}
+            <p>You cannot save created levels as you are not logged in.</p>
+            {% endif %}
+          {% endif %}
+        </div>
 
-			    <h3 class='customLevelsEpisode'>Levels shared with you</h3>
-			    <div>
-			    	{% if shared_levels %}
-			    		{% for level in shared_levels %}
-			    			<p>
-			    				<a href="{% url 'game.views.play_custom_level' level.id %}">{{level.title}} ({{level.owner|make_into_username}})</a>
-			    				{% if level.score != None %}
-			    				<span class="score_text">{{level.score|floatformat}}/10</span>
-			    				<img class="level_image coin_image" value="{{level.id}}">
-			    				{% endif %}
-			    			</p>
-			    		{% endfor %}
-			    	{% else %}
-			    		{% if user|is_logged_in_as_school_user %}
-			    		<p>No levels have been shared with you yet.</p>
-			    		{% else %}
-			    		<p>You cannot share levels as you are not registered to a school or club.</p>
-			    		{% endif %}
-			    	{% endif %}
-			    </div>
-			</div>
-			<div id="container"></div>
-		</div>
-	</div>
+        <h3 class='customLevelsEpisode'>Levels shared with you</h3>
+        <div>
+          {% if shared_levels %}
+            {% for level in shared_levels %}
+              <p>
+                <a href="{% url 'game.views.level.play_custom_level' level.id %}">
+                {{level.title}} ({{level.owner|make_into_username}})</a>
+                {% if level.score != None %}
+                <span class="score_text">{{level.score|floatformat}}/10</span>
+                <img class="level_image coin_image" value="{{level.id}}">
+                {% endif %}
+              </p>
+            {% endfor %}
+          {% else %}
+            {% if user|is_logged_in_as_school_user %}
+            <p>No levels have been shared with you yet.</p>
+            {% else %}
+            <p>You cannot share levels as you are not registered to a school or club.</p>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      <div id="container"></div>
+    </div>
+  </div>
 {% endblock content %}
