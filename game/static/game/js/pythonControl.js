@@ -58,11 +58,11 @@ ocargo.PythonControl = function() {
     };
 
     this.setCode = function(code) {
-        codePanel.setValue(code.replace('<br />', '\n'));
+        codePanel.setValue(code.replace(/<br\s*[\/]?>/gi, '\n'));
     };
 
     this.appendCode = function(code) {
-        codePanel.setValue(DEFAULT_CODE + code.replace('<br />', '\n'));
+        codePanel.setValue(DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n'));
     };
 
     this.getCode = function() {
