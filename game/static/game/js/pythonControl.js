@@ -28,9 +28,8 @@ ocargo.PythonControl = function() {
             if (!Sk.failed) {
                 ocargo.model.programExecutionEnded();
             }
-        }
-        catch(e) {
-            outf(e.toString() + "\n")
+        } catch(e) {
+            outf(e.toString() + "\n");
         }
     };
 
@@ -44,23 +43,62 @@ ocargo.PythonControl = function() {
     this.reset = function() {
         this.clearCodePanel();
         this.clearConsole();
-    }
+    };
 
     this.clearCodePanel = function() {
-        this.setCode("");
-    }
+        this.setCode(DEFAULT_CODE);
+    };
 
     this.clearConsole = function() {
         console.text("");
-    }
+    };
 
     this.appendToConsole = function(str) {
         console.text(console.text() + str);
-    }
+    };
 
     this.setCode = function(code) {
+        codePanel.setValue(code);
+    };
+
+    this.appendCode = function(code) {
         codePanel.setValue(DEFAULT_CODE + code);
-    }
+    };
+
+    this.getCode = function() {
+        return codePanel.getValue();
+    };
+
+    this.loadPreviousAttempt = function() {
+        function decodeHTML(text) {
+            var e = document.createElement('div');
+            e.innerHTML = text;
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+        }
+        if (PYTHON_WORKSPACE) {
+            this.setCode(PYTHON_WORKSPACE.replace('<br />', '\n'));
+        } else {
+            try {
+                this.setCode(
+                    localStorage.getItem('pythonWorkspace-' + LEVEL_ID).replace('<br />', '\n'));
+            } catch (e) {
+                this.reset();
+            }
+        }
+    };
+
+    this.teardown = function() {
+        if (localStorage && !ANONYMOUS) {
+            var text = this.getCode();
+            try {
+                localStorage.setItem('pythonWorkspace-' + LEVEL_ID, text);
+
+            } catch (e) {
+                // No point in even logging, as page is unloading
+            }
+        }
+    };
+
 
     /*********************/
     /** Private methods **/
@@ -82,9 +120,10 @@ ocargo.PythonControl = function() {
     }
 
     function builtinRead(x) {
-        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles.files[x] === undefined) {
             throw "File not found: '" + x + "'";
-        return Sk.builtinFiles["files"][x];
+        }
+        return Sk.builtinFiles.files[x];
     }
 
     function outf (outputText) {
@@ -92,7 +131,7 @@ ocargo.PythonControl = function() {
             type: 'console',
             text: outputText
         });
-    };
+    }
 
     /*************************/
     /** Initialisation code **/
@@ -109,4 +148,4 @@ ocargo.PythonControl = function() {
     Sk.pre = "consoleOutput";
 
     this.reset();
-}
+};

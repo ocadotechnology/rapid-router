@@ -36,7 +36,7 @@
     {% endfor %}
 
     var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none"><category name="+">';
-    for (var i=0; i < BLOCKS.length; i++) {
+    for (var i = 0; i < BLOCKS.length; i++) {
         BLOCKLY_XML += '<block type="' + BLOCKS[i].type + '"></block>';
     }
 
@@ -50,6 +50,8 @@
     var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";
     var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
     var RETURN_URL = "{{return_url}}";
+    var PYTHON_WORKSPACE= "{{python_workspace|linebreaksbr}}" !== "" ? "{{python_workspace|linebreaksbr}}" : null;
+
   </script>
 
   <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>

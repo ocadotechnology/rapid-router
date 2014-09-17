@@ -90,6 +90,7 @@ def play_level(request, levelID):
     character = level.character
 
     workspace = None
+    python_workspace = None
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
         attempt = Attempt.objects.filter(level=level, student=student).first()
@@ -98,6 +99,7 @@ def play_level(request, levelID):
             attempt.save()
 
         workspace = attempt.workspace
+        python_workspace = attempt.python_workspace
 
     decorData = level_management.get_decor(level)
     blockData = level_management.get_blocks(level)
@@ -113,6 +115,7 @@ def play_level(request, levelID):
         'cfc': cfc,
         'hint': hint,
         'workspace': workspace,
+        'python_workspace': python_workspace,
         'return_url': '/rapidrouter/',
     })
 
@@ -137,6 +140,7 @@ def submit_attempt(request):
         attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
         attempt.score = request.POST.get('score')
         attempt.workspace = request.POST.get('workspace')
+        attempt.python_workspace = request.POST.get('python_workspace')
         attempt.save()
 
     return HttpResponse('[]', content_type='application/json')
@@ -154,7 +158,8 @@ def load_list_of_workspaces(request):
 def load_workspace(request, workspaceID):
     workspace = Workspace.objects.get(id=workspaceID)
     if permissions.can_load_workspace(request.user, workspace):
-        return HttpResponse(json.dumps({'contents': workspace.contents}),
+        return HttpResponse(json.dumps({'contents': workspace.contents,
+                                        'python_contents': workspace.python_contents}),
                             content_type='application/json')
 
     return HttpResponse(json.dumps(''), content_type='application/json')
@@ -163,6 +168,7 @@ def load_workspace(request, workspaceID):
 def save_workspace(request, workspaceID=None):
     name = request.POST.get('name')
     contents = request.POST.get('contents')
+    python_contents = request.POST.get('python_contents')
 
     if workspaceID:
         workspace = Workspace.objects.get(id=workspaceID)
@@ -172,6 +178,7 @@ def save_workspace(request, workspaceID=None):
     if permissions.can_save_workspace(request.user, workspace):
         workspace.name = name
         workspace.contents = contents
+        workspace.python_contents = python_contents
         workspace.save()
 
     return load_list_of_workspaces(request)

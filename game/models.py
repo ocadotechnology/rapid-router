@@ -90,7 +90,7 @@ class Episode (models.Model):
     next_episode = models.ForeignKey("self", null=True, default=None)
     in_development = models.BooleanField(default=False)
 
-    r_random_levels_enabled = models.BooleanField(default=False) 
+    r_random_levels_enabled = models.BooleanField(default=False)
     r_branchiness = models.FloatField(default=0, null=True)
     r_loopiness = models.FloatField(default=0, null=True)
     r_curviness = models.FloatField(default=0, null=True)
@@ -113,6 +113,7 @@ class Workspace (models.Model):
     name = models.CharField(max_length=200)
     owner = models.ForeignKey(UserProfile, related_name='workspaces', blank=True, null=True)
     contents = models.TextField(default="")
+    python_contents = models.TextField(default="")
 
 
 class Attempt (models.Model):
@@ -122,3 +123,4 @@ class Attempt (models.Model):
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")
+    python_workspace = models.TextField(default="")

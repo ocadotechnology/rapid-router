@@ -18,7 +18,7 @@ ocargo.Saving = function() {
             }
         }
         return results;
-    }
+    };
 };
 
 function csrfSafeMethod(method) {
@@ -60,7 +60,7 @@ ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
             type: 'GET',
             dataType: 'json',
             success: function(json) {
-                callback(null, json.contents);
+                callback(null, json);
             },
             error: function(xhr,errmsg,err) {
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
