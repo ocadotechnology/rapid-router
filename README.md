@@ -8,9 +8,9 @@ To run the app, follow the instruction at [codeforlife-deploy](http://github.com
 
 ## Deployments
 
-Most of the work happens on "master", which gets deployed automatically to [dev](http://dev.numeric-incline-526.appspot.com).
+Most of the work happens on "master", which gets deployed automatically to [dev](https://dev-dot-decent-digit-629.appspot.com/).
 
-Changes for the next deployment go on "staging", which gets deployed automatically to [test](http://testing.numeric-incline-526.appspot.com).
+Changes for the next deployment go on "staging", which gets deployed automatically to [test](https://testing-dot-decent-digit-629.appspot.com).
 
 Production - tbd.
 
