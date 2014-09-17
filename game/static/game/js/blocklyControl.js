@@ -144,11 +144,9 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
                 clean = false;
                 block.dispose();
             }
-        }
-        else if (isSafari) {
-            if (startCount > 0) {
-                startCount--;
-            } else {
+        } else {
+            startCount--;
+            if (isSafari && startCount < 0) {
                 block.dispose();
             }
         }
