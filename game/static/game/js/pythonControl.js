@@ -58,11 +58,11 @@ ocargo.PythonControl = function() {
     };
 
     this.setCode = function(code) {
-        codePanel.setValue(code);
+        codePanel.setValue(code.replace('<br />', '\n'));
     };
 
     this.appendCode = function(code) {
-        codePanel.setValue(DEFAULT_CODE + code);
+        codePanel.setValue(DEFAULT_CODE + code.replace('<br />', '\n'));
     };
 
     this.getCode = function() {
@@ -76,11 +76,11 @@ ocargo.PythonControl = function() {
             return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
         }
         if (PYTHON_WORKSPACE) {
-            this.setCode(PYTHON_WORKSPACE.replace('<br />', '\n'));
+            this.setCode(PYTHON_WORKSPACE);
         } else {
             try {
                 this.setCode(
-                    localStorage.getItem('pythonWorkspace-' + LEVEL_ID).replace('<br />', '\n'));
+                    localStorage.getItem('pythonWorkspace-' + LEVEL_ID));
             } catch (e) {
                 this.reset();
             }

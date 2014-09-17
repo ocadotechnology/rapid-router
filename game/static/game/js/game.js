@@ -132,8 +132,8 @@ ocargo.Game.prototype.setup = function() {
     // Setup blockly to python
     Blockly.Python.init();
     window.addEventListener('unload', function(event) {
-        ocargo.blocklyControl.teardown();
         ocargo.pythonControl.teardown();
+        ocargo.blocklyControl.teardown();
     });
 
     var loggedOutWarning = '';
@@ -594,8 +594,7 @@ ocargo.Game.prototype.setupTabs = function() {
                         ocargo.blocklyControl.redrawBlockly();
                     }
                     if (PYTHON_ENABLED) {
-                        var pythonWorkspace = workspace.python_contents.replace('<br />', '\n');
-                        ocargo.pythonControl.setCode(pythonWorkspace);
+                        ocargo.pythonControl.setCode(workspace.python_contents);
                     }
 
                     $('#loadModal').foundation('reveal', 'close');
