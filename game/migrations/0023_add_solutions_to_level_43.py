@@ -9,7 +9,7 @@ def add_solutions(apps, schema_editor):
     Level = apps.get_model('game', 'Level')
 
     level43 = Level.objects.get(name='43', default=True)
-    level43.model_solutions = '[10, 11, 21]'
+    level43.model_solution = '[10, 11, 21]'
     level43.save()
 
 
