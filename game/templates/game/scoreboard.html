@@ -73,7 +73,7 @@
     <table id="scoreboardTable" class="tablesorter CSSTable wide alternate ">
     <thead>
       <tr>
-        {% for header in thead %}
+        {% for header in headers %}
           <th> {{header}} </th>
         {% endfor %}
       </tr>
@@ -83,7 +83,7 @@
           <td> {{student.0.user.user.first_name}} </td>
           <td> {{student.1}} </td>
           <td> {{student.2}}</td>
-          {% if thead.1 == 'Score' %}
+          {% if headers.1 == 'Score' %}
             <td> {{student.3}} </td>
             <td> {{student.4}} </td>
           {% else %}
