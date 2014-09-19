@@ -9,6 +9,7 @@ function initCustomBlocks() {
 }
 
 function initCustomBlocksDescription() {
+
     Blockly.Blocks['start'] = {
         // Beginning block - identifies the start of the program
         init: function() {
