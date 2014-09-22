@@ -322,6 +322,7 @@ ocargo.BlocklyCustomisations = function() {
 
 
 function setupDoubleclick() {
+
 	Blockly.Flyout.prototype.show = function(xmlList) {
   	    this.hide();
 	  	// Delete any blocks from a previous showing.
@@ -420,6 +421,17 @@ function setupDoubleclick() {
 		    block.svg_.addSelect));
 		this.listeners_.push(Blockly.bindEvent_(rect, 'mouseout', block.svg_,
 		    block.svg_.removeSelect));
+		this.listeners_.push(rect.addEventListener('dblclick',
+			function(block) {
+				return function() {
+					if (block.nextConnection) {
+						ocargo.blocklyControl.addBlockToEndOfProgram(block.type);
+					} else {
+						ocargo.blocklyControl.createBlock(block.type);
+					}
+				};
+			}(block2)
+		));
 		}
 
 		// IE 11 is an incompetant browser that fails to fire mouseout events.
