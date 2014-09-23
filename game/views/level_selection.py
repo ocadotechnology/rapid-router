@@ -42,7 +42,8 @@ def levels(request):
 
     developer = (not request.user.is_anonymous()) and request.user.userprofile.developer
     episode_data = []
-    for episode in Episode.objects.all().order_by('id'):
+    episode = Episode.objects.get(pk=1)
+    while episode is not None:
         if episode.in_development and not developer:
             break
 
@@ -70,6 +71,7 @@ def levels(request):
              "random_levels_enabled": episode.r_random_levels_enabled}
 
         episode_data.append(e)
+        episode = episode.next_episode
 
     owned_level_data = []
     shared_level_data = []
