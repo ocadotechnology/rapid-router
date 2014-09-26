@@ -95,6 +95,7 @@ def change_levels(apps, schema_editor):
                                    '{"type":"call_proc"},{"type":"declare_proc"}]'))
 
     level73.model_solution = '[15]'
+    level75.model_solution = '[10, 26]'
 
     level75.name = '73'
     level73.name = '75'
