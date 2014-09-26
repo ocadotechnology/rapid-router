@@ -7,6 +7,8 @@ var GRID_HEIGHT = 8;
 var GRID_SPACE_SIZE = 100;
 var PAPER_WIDTH = GRID_SPACE_SIZE * GRID_WIDTH;
 var PAPER_HEIGHT = GRID_SPACE_SIZE * GRID_HEIGHT;
+var EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 30;
+var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 30;
 
 var CHARACTER_WIDTH = 40;
 var CHARACTER_HEIGHT = 20;
@@ -36,7 +38,7 @@ ocargo.Drawing = function() {
     /* State */
     /*********/
 
-    var paper = new Raphael('paper', PAPER_WIDTH, PAPER_HEIGHT);
+    var paper = new Raphael('paper', EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
     var roadImages = [];
 
     var vanImages = {};
@@ -414,7 +416,7 @@ ocargo.Drawing = function() {
 
     this.renderBackground = function() {
         if(!ocargo.Drawing.isMobile()) {
-            paper.rect(0, 0, PAPER_WIDTH, PAPER_HEIGHT)
+            paper.rect(0, 0, EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT)
                 .attr({fill: 'url(' + ocargo.Drawing.raphaelImageDir + BACKGROUND_URL + ')',
                     'stroke': 'none'});
         }

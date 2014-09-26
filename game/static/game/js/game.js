@@ -100,6 +100,8 @@ ocargo.Game = function() {
 ocargo.Game.prototype.setup = function() {
     initCustomBlocks();
     ocargo.blocklyControl = new ocargo.BlocklyControl();
+    setupDoubleclick();
+    ocargo.blocklyControl.blocklyCustomisations.setupLimitedBlocks();
     ocargo.pythonControl = new ocargo.PythonControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.drawing = new ocargo.Drawing();
