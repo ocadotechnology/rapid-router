@@ -351,7 +351,7 @@ function initCustomBlocksPython() {
     };
 
     Blockly.Python['call_proc'] = function(block) {
-        return block.inputList[0].fieldRow[1].text_ + '()\n';
+        return block.inputList[0].fieldRow[2].text_ + '()\n';
     };
 
     Blockly.Python['declare_proc'] = function(block) {
