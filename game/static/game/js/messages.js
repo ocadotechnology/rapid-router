@@ -21,13 +21,14 @@ ocargo.jsElements = {
 
 //FIXME: actually use Django's internationalisation framework.
 ocargo.messages = {
-    nextEpisode: function(episode) {
+    nextEpisode: function(episode, random) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
-            "challenge? Or try one of this episode's random levels! <br><br>" + 
+            "challenge? " + (random ? "Or try one of this episode's random levels!" : "") +
+            " <br><br>" + 
             ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "'",
                                              'Next episode') + " " +
-            ocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "'",
-                                             'Random level') + " " +
+            (random ? randomocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "'",
+                                                            'Random level') : "") + " " +
             ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
     },
 

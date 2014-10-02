@@ -6,7 +6,7 @@ ocargo.BlocklyControl = function () {
     this.numberOfStartBlocks = THREADS;
 
     this.blocklyCustomisations = new ocargo.BlocklyCustomisations();
-    this.blocklyCustomisations.setupLimitedBlocks();
+    this.blocklyCustomisations.widenFlyout();
     this.blocklyCustomisations.setupBigCodeMode();
     
     this.blocklyDiv = document.getElementById('blockly_holder');
@@ -22,6 +22,7 @@ ocargo.BlocklyControl = function () {
 
     // Stop the flyout from closing automatically
     Blockly.Flyout.autoClose = false;
+
 };
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
