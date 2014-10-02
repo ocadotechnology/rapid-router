@@ -51,6 +51,7 @@ class Level (models.Model):
     next_level = models.ForeignKey('self', null=True, default=None)
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
     model_solution = models.CharField(blank=True, max_length=20, default='[]')
+    disable_route_score = models.BooleanField(default=False)
     threads = models.IntegerField(blank=False, default=1)
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
