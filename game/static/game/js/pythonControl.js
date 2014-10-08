@@ -111,7 +111,7 @@ ocargo.PythonControl = function() {
             theme: "eclipse",
             lineNumbers: true,
             textWrapping: false,
-            indentUnit: 4,
+            indentUnit: 2,
             height: "160px",
             fontSize: "9pt",
             autoMatchParens: true,
