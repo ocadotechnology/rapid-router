@@ -245,7 +245,7 @@
 
         <div id="blockly_holder" style='width: calc(100% + 55px); margin-left: -55px; {% if level.pythonViewEnabled %} height: 50%{% endif %}'></div>
         
-        <div id="editor" {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
+        <div {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
           <p>This is what your program would look like in Python:</p>
           <textarea id="pythonView" cols="85" rows="25"></textarea>
         </div>
