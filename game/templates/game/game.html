@@ -52,7 +52,7 @@
     var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
     var PYTHON_VIEW_ENABLED = "{{level.pythonViewEnabled}}" === "True";
     var RETURN_URL = "{{return_url}}";
-    var PYTHON_WORKSPACE= "{{python_workspace|linebreaksbr}}" !== "" ? "{{python_workspace|linebreaksbr}}" : null;
+    var PYTHON_WORKSPACE= "{{python_workspace|linebreaksbr}}" !== "None" ? "{{python_workspace|linebreaksbr}}" : null;
   </script>
 
   <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>

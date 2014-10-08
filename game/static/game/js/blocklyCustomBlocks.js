@@ -48,7 +48,7 @@ function initCustomBlocksDescription() {
             this.appendDummyInput()
                 .appendField('turn left')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                                                    40,
+                                                    38,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/left.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
@@ -66,7 +66,7 @@ function initCustomBlocksDescription() {
             this.appendDummyInput()
                 .appendField('turn right')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                                                    31,
+                                                    29,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/right.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
@@ -84,7 +84,7 @@ function initCustomBlocksDescription() {
             this.appendDummyInput()
                 .appendField('turn around')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                                                    14,
+                                                    12,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir +
                                                     'actions/turn_around.svg',
@@ -103,7 +103,7 @@ function initCustomBlocksDescription() {
             this.appendDummyInput()
                 .appendField('wait')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                                                    62,
+                                                    60,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/wait.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
@@ -121,7 +121,7 @@ function initCustomBlocksDescription() {
             this.appendDummyInput()
                 .appendField('deliver')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                                                    45,
+                                                    43,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/deliver.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
