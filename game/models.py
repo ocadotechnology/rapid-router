@@ -55,6 +55,7 @@ class Level (models.Model):
     threads = models.IntegerField(blank=False, default=1)
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
+    pythonViewEnabled = models.BooleanField(default=False)
     theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
     character = models.ForeignKey(Character, default=1)
     anonymous = models.BooleanField(default=False)
