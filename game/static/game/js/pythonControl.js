@@ -139,6 +139,7 @@ ocargo.PythonControl = function() {
     codePanel = createCodePanel('code');
     var codeView = createCodePanel('pythonView');
     codeView.setValue(DEFAULT_CODE);
+    codeView.setOption("readOnly", "nocursor");
     console = $('#consoleOutput');
 
     // Limit the code so that it stops after 2 seconds
