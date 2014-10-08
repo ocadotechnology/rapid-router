@@ -104,8 +104,8 @@ ocargo.PythonControl = function() {
     /** Private methods **/
     /*********************/
 
-    function createCodePanel() {
-        return CodeMirror.fromTextArea(document.getElementById('code'), {
+    function createCodePanel(id) {
+        return CodeMirror.fromTextArea(document.getElementById(id), {
             parserfile: ["parsepython.js"],
             autofocus: true,
             theme: "eclipse",
@@ -136,7 +136,9 @@ ocargo.PythonControl = function() {
     /*************************/
     /** Initialisation code **/
     /*************************/
-    codePanel = createCodePanel();
+    codePanel = createCodePanel('code');
+    var codeView = createCodePanel('pythonView');
+    codeView.setValue(DEFAULT_CODE);
     console = $('#consoleOutput');
 
     // Limit the code so that it stops after 2 seconds
