@@ -27,13 +27,12 @@ def can_create_level(user):
     return not user.is_anonymous()
 
 
-def can_play_level(user, level):
+def can_play_level(user, level, early_access):
     if level.default and not level.episode.in_development:
         return True
     elif level.anonymous:
         return False
-    elif (level.default and level.episode.in_development and not user.is_anonymous() and
-            user.userprofile.developer):
+    elif (level.default and level.episode.in_development and early_access):
         return True
     elif user.is_anonymous():
         return level.default and not level.episode.in_development
