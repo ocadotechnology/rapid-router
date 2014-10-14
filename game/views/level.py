@@ -46,7 +46,10 @@ def play_level(request, levelID):
     """
     level = cached_level(levelID)
 
-    if not permissions.can_play_level(request.user, level):
+    beta_mode = (not request.user.is_anonymous()) and request.get_host().startswith("beta")
+    developer = (not request.user.is_anonymous()) and request.user.userprofile.developer
+    early_access = beta_mode or developer
+    if not permissions.can_play_level(request.user, level, early_access):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     # Set default level description/hint lookups

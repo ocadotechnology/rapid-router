@@ -40,11 +40,13 @@ def levels(request):
             if attempt:
                 return attempt.score
 
+    beta_mode = (not request.user.is_anonymous()) and request.get_host().startswith("beta")
     developer = (not request.user.is_anonymous()) and request.user.userprofile.developer
+    early_access = developer or beta_mode
     episode_data = []
     episode = Episode.objects.get(pk=1)
     while episode is not None:
-        if episode.in_development and not developer:
+        if episode.in_development and not early_access:
             break
 
         levels = []
