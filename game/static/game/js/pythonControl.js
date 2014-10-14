@@ -1,13 +1,11 @@
 var ocargo = ocargo || {};
 
+var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
+var appendCodeToPanel = function(code, panel) {
+	panel.setValue(DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n'));
+};
+
 ocargo.PythonControl = function() {
-
-    /***************/
-    /** Constants **/
-    /***************/
-
-    var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
-
     /***********/
     /** State **/
     /***********/
@@ -62,9 +60,9 @@ ocargo.PythonControl = function() {
     };
 
     this.appendCode = function(code) {
-        codePanel.setValue(DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n'));
+    	appendCodeToPanel(code, codePanel);
     };
-
+    
     this.getCode = function() {
         return codePanel.getValue();
     };
@@ -104,14 +102,14 @@ ocargo.PythonControl = function() {
     /** Private methods **/
     /*********************/
 
-    function createCodePanel() {
-        return CodeMirror.fromTextArea(document.getElementById('code'), {
+    function createCodePanel(id) {
+        return CodeMirror.fromTextArea(document.getElementById(id), {
             parserfile: ["parsepython.js"],
             autofocus: true,
             theme: "eclipse",
             lineNumbers: true,
             textWrapping: false,
-            indentUnit: 4,
+            indentUnit: 2,
             height: "160px",
             fontSize: "9pt",
             autoMatchParens: true,
@@ -136,8 +134,13 @@ ocargo.PythonControl = function() {
     /*************************/
     /** Initialisation code **/
     /*************************/
-    codePanel = createCodePanel();
+    codePanel = createCodePanel('code');
     console = $('#consoleOutput');
+    
+    var codeView = createCodePanel('pythonView');
+    codeView.setValue(DEFAULT_CODE);
+    codeView.setOption("readOnly", "nocursor");
+    setInterval(function(){appendCodeToPanel(ocargo.blocklyCompiler.workspaceToPython(), codeView);}, 100);
 
     // Limit the code so that it stops after 2 seconds
     Sk.execLimit = 2000;

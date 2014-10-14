@@ -1078,7 +1078,7 @@ def title_level51():
 def description_level51():
     message = ugettext("Procedures are blocks of code that can be executed multiple times without "
                        + "being rewritten. So, for example, if you want to use a set of blocks "
-                       + "which make the van wait wguke the lights are red - you can define a "
+                       + "which make the van wait while the lights are red - you can define a "
                        + "procedure to do so and then call it every time you are approaching the "
                        + "traffic lights. <br> To define a procedure executing a set of blocks "
                        + "simply put them inside the <b>Define do</b> block. Once you do that, "

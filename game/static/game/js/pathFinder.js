@@ -6,7 +6,9 @@ ocargo.PathFinder = function(model) {
     this.van = model.van;
     this.nodes = model.map.nodes;
     this.destinations = model.map.destinations;
-    this.maxDistanceScore = 10;
+    
+    this.pathScoreDisabled = DISABLE_ROUTE_SCORE;
+    this.maxDistanceScore = DISABLE_ROUTE_SCORE ? 0 : 10;
 
     this.modelLength = MODEL_SOLUTION;
     this.maxInstrLengthScore = (this.modelLength.length === 0 ? 0 : 10);
@@ -17,10 +19,13 @@ ocargo.PathFinder = function(model) {
 };
 
 ocargo.PathFinder.prototype.getScore = function() {
-
-    var pathLengthScore = Math.max(0, this.getTravelledPathScore());
-    var message = ocargo.messages.pathScore + 
+    var message = "";
+    var pathLengthScore = 0;
+    if(!this.pathScoreDisabled){
+        pathLengthScore = Math.max(0, this.getTravelledPathScore());
+        message = ocargo.messages.pathScore + 
                     this.renderCoins(pathLengthScore, this.maxDistanceScore);
+    }
 
     var totalScore = pathLengthScore;
 

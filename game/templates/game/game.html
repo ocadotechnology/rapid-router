@@ -19,6 +19,7 @@
     var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : "";
     var LEVEL_NAME = "{{level.name}}";
     var MODEL_SOLUTION = {{level.model_solution}};
+    var DISABLE_ROUTE_SCORE = "{{level.disable_route_score}}" === "True";
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
     var DEFAULT_LEVEL = "{{level.default}}" === "True";
@@ -51,7 +52,7 @@
     var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
     var PYTHON_VIEW_ENABLED = "{{level.pythonViewEnabled}}" === "True";
     var RETURN_URL = "{{return_url}}";
-    var PYTHON_WORKSPACE= "{{python_workspace|linebreaksbr}}" !== "" ? "{{python_workspace|linebreaksbr}}" : null;
+    var PYTHON_WORKSPACE= "{{python_workspace|linebreaksbr}}" !== "None" ? "{{python_workspace|linebreaksbr}}" : null;
   </script>
 
   <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
@@ -244,7 +245,7 @@
 
         <div id="blockly_holder" style='width: calc(100% + 55px); margin-left: -55px; {% if level.pythonViewEnabled %} height: 50%{% endif %}'></div>
         
-        <div id="editor" {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
+        <div {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
           <p>This is what your program would look like in Python:</p>
           <textarea id="pythonView" cols="85" rows="25"></textarea>
         </div>
