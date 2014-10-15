@@ -33,8 +33,8 @@ ocargo.PythonControl = function() {
 
     this.prepare = function() {
         return {
-            success: true, 
-            program:{run: this.run}, 
+            success: true,
+            program:{run: this.run},
         };
     };
 
@@ -62,7 +62,7 @@ ocargo.PythonControl = function() {
     this.appendCode = function(code) {
     	appendCodeToPanel(code, codePanel);
     };
-    
+
     this.getCode = function() {
         return codePanel.getValue();
     };
@@ -103,18 +103,34 @@ ocargo.PythonControl = function() {
     /*********************/
 
     function createCodePanel(id) {
-        return CodeMirror.fromTextArea(document.getElementById(id), {
+        var cm = CodeMirror.fromTextArea(document.getElementById(id), {
             parserfile: ["parsepython.js"],
             autofocus: true,
             theme: "eclipse",
             lineNumbers: true,
             textWrapping: false,
             indentUnit: 2,
+            tabSize: 2,
             height: "160px",
             fontSize: "9pt",
             autoMatchParens: true,
-            parserConfig: {'pythonVersion': 2, 'strictErrors': true}
+            parserConfig: {pythonVersion: 2, strictErrors: true}
         });
+
+        cm.addKeyMap({
+            Tab: function (cm) {
+                if (cm.somethingSelected()) {
+                    cm.indentSelection("add");
+                } else {
+                    cm.execCommand("insertSoftTab");
+                }
+            },
+            "Shift-Tab": function (cm) {
+                cm.indentSelection("subtract");
+            }
+        });
+
+        return cm;
     }
 
     function builtinRead(x) {
@@ -136,7 +152,7 @@ ocargo.PythonControl = function() {
     /*************************/
     codePanel = createCodePanel('code');
     console = $('#consoleOutput');
-    
+
     var codeView = createCodePanel('pythonView');
     codeView.setValue(DEFAULT_CODE);
     codeView.setOption("readOnly", "nocursor");
