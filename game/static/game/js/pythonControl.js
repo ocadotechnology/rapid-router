@@ -1,11 +1,11 @@
 var ocargo = ocargo || {};
 
 var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
-var appendCodeToPanel = function(code, panel) {
-	panel.setValue(DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n'));
+var appendCodeToPanel = function (code, panel) {
+    panel.setValue(DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n'));
 };
 
-ocargo.PythonControl = function() {
+ocargo.PythonControl = function () {
     /***********/
     /** State **/
     /***********/
@@ -17,7 +17,7 @@ ocargo.PythonControl = function() {
     /** Public methods **/
     /********************/
 
-    this.run = function() {
+    this.run = function () {
         ocargo.model.reset(0);
         Sk.failed = false;
 
@@ -26,53 +26,54 @@ ocargo.PythonControl = function() {
             if (!Sk.failed) {
                 ocargo.model.programExecutionEnded();
             }
-        } catch(e) {
+        } catch (e) {
             outf(e.toString() + "\n");
         }
     };
 
-    this.prepare = function() {
+    this.prepare = function () {
         return {
-            success: true, 
-            program:{run: this.run}, 
+            success: true,
+            program: {run: this.run},
         };
     };
 
-    this.reset = function() {
+    this.reset = function () {
         this.clearCodePanel();
         this.clearConsole();
     };
 
-    this.clearCodePanel = function() {
+    this.clearCodePanel = function () {
         this.setCode(DEFAULT_CODE);
     };
 
-    this.clearConsole = function() {
+    this.clearConsole = function () {
         console.text("");
     };
 
-    this.appendToConsole = function(str) {
+    this.appendToConsole = function (str) {
         console.text(console.text() + str);
     };
 
-    this.setCode = function(code) {
+    this.setCode = function (code) {
         codePanel.setValue(code.replace(/<br\s*[\/]?>/gi, '\n'));
     };
 
-    this.appendCode = function(code) {
-    	appendCodeToPanel(code, codePanel);
+    this.appendCode = function (code) {
+        appendCodeToPanel(code, codePanel);
     };
-    
-    this.getCode = function() {
+
+    this.getCode = function () {
         return codePanel.getValue();
     };
 
-    this.loadPreviousAttempt = function() {
+    this.loadPreviousAttempt = function () {
         function decodeHTML(text) {
             var e = document.createElement('div');
             e.innerHTML = text;
             return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
         }
+
         if (PYTHON_WORKSPACE) {
             this.setCode(PYTHON_WORKSPACE);
         } else {
@@ -85,7 +86,7 @@ ocargo.PythonControl = function() {
         }
     };
 
-    this.teardown = function() {
+    this.teardown = function () {
         if (localStorage && !ANONYMOUS) {
             var text = this.getCode();
             try {
@@ -103,18 +104,35 @@ ocargo.PythonControl = function() {
     /*********************/
 
     function createCodePanel(id) {
-        return CodeMirror.fromTextArea(document.getElementById(id), {
-            parserfile: ["parsepython.js"],
+        var cm = CodeMirror.fromTextArea(document.getElementById(id), {
+            mode: {
+                name: "python",
+                version: 2
+            },
             autofocus: true,
             theme: "eclipse",
             lineNumbers: true,
-            textWrapping: false,
+            lineWrapping: false,
             indentUnit: 2,
+            tabSize: 2,
             height: "160px",
-            fontSize: "9pt",
-            autoMatchParens: true,
-            parserConfig: {'pythonVersion': 2, 'strictErrors': true}
+            fontSize: "9pt"
         });
+
+        cm.addKeyMap({
+            Tab: function (cm) {
+                if (cm.somethingSelected()) {
+                    cm.indentSelection("add");
+                } else {
+                    cm.execCommand("insertSoftTab");
+                }
+            },
+            "Shift-Tab": function (cm) {
+                cm.indentSelection("subtract");
+            }
+        });
+
+        return cm;
     }
 
     function builtinRead(x) {
@@ -124,7 +142,7 @@ ocargo.PythonControl = function() {
         return Sk.builtinFiles.files[x];
     }
 
-    function outf (outputText) {
+    function outf(outputText) {
         ocargo.animation.appendAnimation({
             type: 'console',
             text: outputText
@@ -136,11 +154,13 @@ ocargo.PythonControl = function() {
     /*************************/
     codePanel = createCodePanel('code');
     console = $('#consoleOutput');
-    
+
     var codeView = createCodePanel('pythonView');
     codeView.setValue(DEFAULT_CODE);
     codeView.setOption("readOnly", "nocursor");
-    setInterval(function(){appendCodeToPanel(ocargo.blocklyCompiler.workspaceToPython(), codeView);}, 100);
+    setInterval(function () {
+        appendCodeToPanel(ocargo.blocklyCompiler.workspaceToPython(), codeView);
+    }, 100);
 
     // Limit the code so that it stops after 2 seconds
     Sk.execLimit = 2000;
