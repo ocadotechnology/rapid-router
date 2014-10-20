@@ -72,9 +72,9 @@ def save_level(level, data):
     level.destinations = data['destinations']
     level.max_fuel = data['max_fuel']
     level.traffic_lights = data['traffic_lights']
-    level.blocklyEnabled = data['blocklyEnabled']
-    level.pythonEnabled = data['pythonEnabled']
-    level.pythonViewEnabled = data['pythonViewEnabled']
+    level.blocklyEnabled = data.get('blocklyEnabled', True)
+    level.pythonEnabled = data.get('pythonEnabled', False)
+    level.pythonViewEnabled = data.get('pythonViewEnabled', False)
     level.theme = Theme.objects.get(id=data['theme'])
     level.character = Character.objects.get(id=data['character'])
     level.save()
