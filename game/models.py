@@ -109,6 +109,9 @@ class Episode (models.Model):
             while level is not None:
                 yield level
                 level = level.next_level
+                
+    def __unicode__(self):
+        return 'Episode: ' + self.name
 
 
 class Workspace (models.Model):
