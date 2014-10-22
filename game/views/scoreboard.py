@@ -35,7 +35,10 @@ def scoreboard(request):
     if not permissions.can_see_scoreboard(request.user):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
-    form, student_data, headers = create_scoreboard(request)
+    form, student_data, headers, error_response = create_scoreboard(request)
+
+    if error_response:
+        return error_response
 
     context = RequestContext(request, {
         'form': form,
@@ -217,7 +220,7 @@ def create_scoreboard(request):
         classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
         classes = Class.objects.filter(id__in=classes_list)
         if len(classes) <= 0:
-            return renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
+            return None, None, None, renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
 
     elif is_student(userprofile):
         class_ = userprofile.student.class_field
@@ -225,7 +228,7 @@ def create_scoreboard(request):
         school = class_.teacher.school
 
     else:
-        return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+        return None, None, None, renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
     form = ScoreboardForm(request.POST or None, classes=classes)
     student_data = None
@@ -235,4 +238,4 @@ def create_scoreboard(request):
         if form.is_valid():
             student_data, headers = populate_scoreboard(request, form, school)
 
-    return form, student_data, headers
+    return form, student_data, headers, None
