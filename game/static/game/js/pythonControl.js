@@ -105,17 +105,18 @@ ocargo.PythonControl = function () {
 
     function createCodePanel(id) {
         var cm = CodeMirror.fromTextArea(document.getElementById(id), {
-            parserfile: ["parsepython.js"],
+            mode: {
+                name: "python",
+                version: 2
+            },
             autofocus: true,
             theme: "eclipse",
             lineNumbers: true,
-            textWrapping: false,
+            lineWrapping: false,
             indentUnit: 2,
             tabSize: 2,
             height: "160px",
-            fontSize: "9pt",
-            autoMatchParens: true,
-            parserConfig: {pythonVersion: 2, strictErrors: true}
+            fontSize: "9pt"
         });
 
         cm.addKeyMap({
