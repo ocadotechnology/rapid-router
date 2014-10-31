@@ -946,8 +946,8 @@ ocargo.LevelEditor = function() {
 
     function getGridItem(globalX, globalY) {
         var paperPosition = paper.position();
-        var x = globalX - paperPosition.left + paper.scrollLeft();
-        var y = globalY - paperPosition.top + paper.scrollTop();
+        var x = globalX - paperPosition.left + paper.scrollLeft() + PAPER_PADDING;
+        var y = globalY - paperPosition.top + paper.scrollTop() + PAPER_PADDING;
 
         x /= GRID_SPACE_SIZE;
         y /= GRID_SPACE_SIZE;
@@ -1127,8 +1127,7 @@ ocargo.LevelEditor = function() {
             ev.preventDefault();
 
             var getBBox = this_rect.getBBox();
-            var coordPaper = new ocargo.Coordinate(getBBox.x / GRID_SPACE_SIZE,
-                                                   getBBox.y / GRID_SPACE_SIZE);
+            var coordPaper = getCoordinateFromBBox(getBBox);
             var coordMap = ocargo.Drawing.translate(coordPaper);
             var existingNode = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
 
@@ -1169,12 +1168,16 @@ ocargo.LevelEditor = function() {
         };
     }
 
+    function getCoordinateFromBBox(bBox){
+        return new ocargo.Coordinate((bBox.x - PAPER_PADDING) / GRID_SPACE_SIZE, (bBox.y - PAPER_PADDING) / GRID_SPACE_SIZE);
+    }
+    
     function handleMouseOver(this_rect) {
         return function(ev) {
             ev.preventDefault();
 
             var getBBox = this_rect.getBBox();
-            var coordPaper = new ocargo.Coordinate(getBBox.x / 100, getBBox.y / 100);
+            var coordPaper = getCoordinateFromBBox(getBBox);
             var coordMap = ocargo.Drawing.translate(coordPaper);
 
             if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
@@ -1201,8 +1204,7 @@ ocargo.LevelEditor = function() {
             ev.preventDefault();
 
             var getBBox = this_rect.getBBox();
-            var coordPaper = new ocargo.Coordinate(getBBox.x/GRID_SPACE_SIZE,
-                                                   getBBox.y/GRID_SPACE_SIZE);
+            var coordPaper = getCoordinateFromBBox(getBBox);
             var coordMap = ocargo.Drawing.translate(coordPaper);
 
             if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE) {
@@ -1224,8 +1226,7 @@ ocargo.LevelEditor = function() {
 
             if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 var getBBox = this_rect.getBBox();
-                var coordPaper = new ocargo.Coordinate(getBBox.x/GRID_SPACE_SIZE,
-                                                       getBBox.y/GRID_SPACE_SIZE);
+                var coordPaper = getCoordinateFromBBox(getBBox);
                 var coordMap = ocargo.Drawing.translate(coordPaper);
 
                 if (mode === modes.DELETE_ROAD_MODE) {
@@ -1314,8 +1315,8 @@ ocargo.LevelEditor = function() {
             originX = x - paperPosition.left + paper.scrollLeft() - imageWidth/2;
             originY = y - paperPosition.top + paper.scrollTop() - imageHeight/2;
 
-            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
-            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE + PAPER_PADDING;
+            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE + PAPER_PADDING;
         }
 
         function onDragEnd() {
@@ -1496,8 +1497,8 @@ ocargo.LevelEditor = function() {
             imageWidth = bBox.width;
             imageHeight = bBox.height;
 
-            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
-            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE + PAPER_PADDING;
+            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE + PAPER_PADDING;
 
             var paperPosition = paper.position();
 
