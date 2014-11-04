@@ -7,8 +7,9 @@ var GRID_HEIGHT = 8;
 var GRID_SPACE_SIZE = 100;
 var PAPER_WIDTH = GRID_SPACE_SIZE * GRID_WIDTH;
 var PAPER_HEIGHT = GRID_SPACE_SIZE * GRID_HEIGHT;
-var EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 30;
-var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 30;
+var PAPER_PADDING = 30;
+var EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 2 * PAPER_PADDING;
+var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING;
 
 var CHARACTER_WIDTH = 40;
 var CHARACTER_HEIGHT = 20;
@@ -89,15 +90,15 @@ ocargo.Drawing = function() {
     }
 
     function getRotationTransformationAroundCentreOfGridSpace(element, degrees, x, y) {
-        var rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE;
-        var rotationPointY = (GRID_HEIGHT - (y + 1/2)) * GRID_SPACE_SIZE;
+        var rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE + PAPER_PADDING;
+        var rotationPointY = (GRID_HEIGHT - (y + 1/2)) * GRID_SPACE_SIZE + PAPER_PADDING;
         return createAbsoluteRotationTransformation(degrees, rotationPointX, rotationPointY);
     }
 
     function calculateInitialPosition(startNode) {
         var coord = ocargo.Drawing.translate(startNode.coordinate);
-        return {x: coord.x * GRID_SPACE_SIZE - INITIAL_OFFSET_X,
-                y: (coord.y + 1) * GRID_SPACE_SIZE - INITIAL_OFFSET_Y}
+        return {x: coord.x * GRID_SPACE_SIZE - INITIAL_OFFSET_X + PAPER_PADDING,
+                y: (coord.y + 1) * GRID_SPACE_SIZE - INITIAL_OFFSET_Y + PAPER_PADDING}
     }
 
     function calculateInitialRotation(previousNode, startNode) {
@@ -164,13 +165,13 @@ ocargo.Drawing = function() {
             var destination = destinations[i].node;
             var variation = getDestinationPosition(destination);
 
-            var destinationRect = paper.rect(destination.coordinate.x * GRID_SPACE_SIZE, 
-                                    PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100,
+            var destinationRect = paper.rect(destination.coordinate.x * GRID_SPACE_SIZE + PAPER_PADDING, 
+                                    PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100 + PAPER_PADDING,
                                     100, 100).attr({'stroke': DESTINATION_NOT_VISITED_COLOUR});
 
             var destinationHouse = paper.image(ocargo.Drawing.raphaelImageDir + HOUSE_URL,
-                                    destination.coordinate.x * GRID_SPACE_SIZE + variation[0],
-                                    PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1],
+                                    destination.coordinate.x * GRID_SPACE_SIZE + variation[0] + PAPER_PADDING,
+                                    PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1] + PAPER_PADDING,
                                     50, 50).transform('r' + variation[2]);
 
             destinationImages[destinations[i].id] = {rect: destinationRect, 
@@ -329,16 +330,16 @@ ocargo.Drawing = function() {
             var flipped = ocargo.Drawing.translate(node.coordinate);
 
             var road = paper.image(path + 'dead_end.svg',
-                flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+                flipped.x * GRID_SPACE_SIZE + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + PAPER_PADDING, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
             if (roadLetters === 'H' && prevFlipped.x < flipped.x) {
-                road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+                road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING);
             }
             else if (roadLetters === 'H' && prevFlipped.x > flipped.x) {
-                road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+                road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING);
             }
             else if (roadLetters === 'V' && prevFlipped.y < flipped.y) {
-                road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+                road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING);
             }
 
             return road;
@@ -349,19 +350,19 @@ ocargo.Drawing = function() {
 
             var flipped = ocargo.Drawing.translate(node.coordinate);
             var roadSrc = path + (roadLetters === 'H' || roadLetters ==='V' ? 'straight' : 'turn') + '.svg';
-            var road = paper.image(roadSrc, flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+            var road = paper.image(roadSrc, flipped.x * GRID_SPACE_SIZE + PAPER_PADDING , flipped.y * GRID_SPACE_SIZE + PAPER_PADDING, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
 
             if (roadLetters === 'H') {
                 road.rotate(90);
             }
             else if (roadLetters === 'UL') {
-                road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+                road.rotate(90, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING);
             }
             else if (roadLetters === 'UR') {
-                road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+                road.rotate(180, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING);
             }
             else if (roadLetters === 'DR') {
-                road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+                road.rotate(270, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING);
             }
 
             return road;
@@ -400,8 +401,8 @@ ocargo.Drawing = function() {
             }
 
             var road = paper.image(path + 't_junction.svg',
-                flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
-            road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2);
+                flipped.x * GRID_SPACE_SIZE + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + PAPER_PADDING, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+            road.rotate(rotation, flipped.x * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + GRID_SPACE_SIZE / 2 + PAPER_PADDING);
 
             return road;
         }
@@ -410,7 +411,7 @@ ocargo.Drawing = function() {
             var flipped = ocargo.Drawing.translate(node.coordinate);
 
             return paper.image(path + 'crossroads.svg',
-                    flipped.x * GRID_SPACE_SIZE, flipped.y * GRID_SPACE_SIZE, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
+                    flipped.x * GRID_SPACE_SIZE + PAPER_PADDING, flipped.y * GRID_SPACE_SIZE + PAPER_PADDING, GRID_SPACE_SIZE, GRID_SPACE_SIZE);
         }
     };
 
@@ -426,8 +427,8 @@ ocargo.Drawing = function() {
         for (var i = 0; i < decors.length; i++) {
             var decor = decors[i];
             var src = ocargo.Drawing.raphaelImageDir + decor.url;
-            var x = decor.x;
-            var y = PAPER_HEIGHT - decor.y - decor.height;
+            var x = decor.x + PAPER_PADDING;
+            var y = PAPER_HEIGHT - decor.y - decor.height + PAPER_PADDING;
             var width = decor.width;
             var height = decor.height;
             paper.image(src, x, y, width, height);
@@ -448,8 +449,8 @@ ocargo.Drawing = function() {
         var rotation = 90 - angle;
 
         // draw red and green lights, keep reference to both
-        var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT;
-        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH;
+        var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT + PAPER_PADDING;
+        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - TRAFFIC_LIGHT_WIDTH + PAPER_PADDING;
 
         image.transform('t' + drawX + ',' + drawY + ' r' + rotation + 's-1,1');
     };
@@ -510,8 +511,8 @@ ocargo.Drawing = function() {
         for (var i = 0; i < GRID_WIDTH; i++) {
             var row = [];
             for (var j = 0; j < GRID_HEIGHT; j++) {
-                var x = i * GRID_SPACE_SIZE;
-                var y = j * GRID_SPACE_SIZE;
+                var x = i * GRID_SPACE_SIZE + PAPER_PADDING;
+                var y = j * GRID_SPACE_SIZE + PAPER_PADDING;
 
                 row.push(paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE));
             }
