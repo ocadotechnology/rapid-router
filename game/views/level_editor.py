@@ -86,7 +86,7 @@ def play_anonymous_level(request, levelID, from_level_editor=True):
 
 
 def get_list_of_loadable_levels(user):
-    owned_levels, shared_levels = level_management.get_list_of_loadable_levels(user)
+    owned_levels, shared_levels = level_management.get_loadable_levels(user)
 
     owned_data = []
     shared_data = []

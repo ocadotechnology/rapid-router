@@ -7,11 +7,9 @@ from models import Level, Block, LevelBlock, LevelDecor, Decor, Theme, Character
 # Levels #
 ##########
 
-def get_list_of_loadable_levels(user):
-    loadable_levels = [
-        level for level in Level.objects.all() if permissions.can_load_level(user, level)]
-    owned_levels = [level for level in loadable_levels if level.owner == user.userprofile]
-    shared_levels = [level for level in loadable_levels if level.owner != user.userprofile]
+def get_loadable_levels(user):
+    owned_levels = user.userprofile.levels.iterator()
+    shared_levels = (level for level in user.shared.iterator() if permissions.can_load_level(user, level))
     return owned_levels, shared_levels
 
 
