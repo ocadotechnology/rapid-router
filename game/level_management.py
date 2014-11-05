@@ -36,14 +36,15 @@ def set_decor(level, decor):
     """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
     LevelDecor.objects.filter(level=level).delete()
 
+    level_decors = []
     for data in decor:
-        levelDecor = LevelDecor(
+        level_decors.append(LevelDecor(
             level_id=level.id,
             x=data['x'],
             y=data['y'],
-            decorName=data['decorName'],
-        )
-        levelDecor.save()
+            decorName=data['decorName']
+        ))
+    LevelDecor.objects.bulk_create(level_decors)
 
 
 def get_blocks(level):
@@ -56,13 +57,14 @@ def set_blocks(level, blocks):
     """ Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
     LevelBlock.objects.filter(level=level).delete()
 
+    level_blocks = []
     for data in blocks:
-        levelBlock = LevelBlock(
+        level_blocks.append(LevelBlock(
             level_id=level.id,
             type=Block.objects.get(type=data['type']),
-            number=data['number'] if 'number' in data else None,
-        )
-        levelBlock.save()
+            number=data['number'] if 'number' in data else None
+        ))
+    LevelBlock.objects.bulk_create(level_blocks)
 
 
 def save_level(level, data):
