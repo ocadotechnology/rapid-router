@@ -7,11 +7,9 @@ from models import Level, Block, LevelBlock, LevelDecor, Decor, Theme, Character
 # Levels #
 ##########
 
-def get_list_of_loadable_levels(user):
-    loadable_levels = [
-        level for level in Level.objects.all() if permissions.can_load_level(user, level)]
-    owned_levels = [level for level in loadable_levels if level.owner == user.userprofile]
-    shared_levels = [level for level in loadable_levels if level.owner != user.userprofile]
+def get_loadable_levels(user):
+    owned_levels = user.userprofile.levels.iterator()
+    shared_levels = (level for level in user.shared.iterator() if permissions.can_load_level(user, level))
     return owned_levels, shared_levels
 
 
@@ -36,14 +34,15 @@ def set_decor(level, decor):
     """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
     LevelDecor.objects.filter(level=level).delete()
 
+    level_decors = []
     for data in decor:
-        levelDecor = LevelDecor(
+        level_decors.append(LevelDecor(
             level_id=level.id,
             x=data['x'],
             y=data['y'],
-            decorName=data['decorName'],
-        )
-        levelDecor.save()
+            decorName=data['decorName']
+        ))
+    LevelDecor.objects.bulk_create(level_decors)
 
 
 def get_blocks(level):
@@ -56,13 +55,14 @@ def set_blocks(level, blocks):
     """ Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
     LevelBlock.objects.filter(level=level).delete()
 
+    level_blocks = []
     for data in blocks:
-        levelBlock = LevelBlock(
+        level_blocks.append(LevelBlock(
             level_id=level.id,
             type=Block.objects.get(type=data['type']),
-            number=data['number'] if 'number' in data else None,
-        )
-        levelBlock.save()
+            number=data['number'] if 'number' in data else None
+        ))
+    LevelBlock.objects.bulk_create(level_blocks)
 
 
 def save_level(level, data):

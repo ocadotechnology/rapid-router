@@ -99,7 +99,7 @@ def levels(request):
     owned_level_data = []
     shared_level_data = []
     if not request.user.is_anonymous():
-        owned_levels, shared_levels = level_management.get_list_of_loadable_levels(request.user)
+        owned_levels, shared_levels = level_management.get_loadable_levels(request.user)
 
         for level in owned_levels:
             owned_level_data.append({
