@@ -1071,210 +1071,769 @@ def hint_level50():
     return message
 
 
-def title_level51():
-    return ugettext("Traffic lights and procedures. ")
 
+
+
+
+
+
+
+
+def title_level51():
+    return ugettext("Back to basics with a twist")
 
 def description_level51():
-    message = ugettext("Procedures are blocks of code that can be executed multiple times without "
-                       + "being rewritten. So, for example, if you want to use a set of blocks "
-                       + "which make the van wait while the lights are red - you can define a "
-                       + "procedure to do so and then call it every time you are approaching the "
-                       + "traffic lights. <br> To define a procedure executing a set of blocks "
-                       + "simply put them inside the <b>Define do</b> block. Once you do that, "
-                       + "create a name for it. <br> Now you're ready to use your method! Attach "
-                       + "the <b>Call</b> block where you want your procedure to be executed. "
-                       + "Don't forget to put its the name in it! ")
+    message = ugettext("Can you come up with a solution to this level using the limited number of blocks we provide at the start?")
     return build_description(title_level51(), message)
 
-
 def hint_level51():
-    message = ugettext("Define a procedure that makes the van <b>Wait</b> <b>until the traffic "
-                       + "light</b> is <b>green</b>. Once you name your procedure by typing in "
-                       + "a name in the <b>Define Do</b> block, you can call it. <br> To call "
-                       + "the procedure attach the <b>Call</b> block and type in the name of the "
-                       + "procedure you want to execute into the text box. ")
-
+    message = ugettext("Think back to earlier levels - what did you learn?")
     return message
 
 
 def title_level52():
-    return ugettext("Well done! Can you spot a potential procedure in here? ")
-
+    return ugettext("A Bit more Tricky")
 
 def description_level52():
-    message = ugettext("Procedures can be used on all sorts of blocks, not only waits! Use them  "
-                       + "to save time when creating a program! ")
+    message = ugettext("Well done so far! Can you find a solution to this road? You have to move forward, but you have no forward block to use. Do you know how to help the van get to the destination?")
     return build_description(title_level52(), message)
 
-
 def hint_level52():
-    message = ugettext("Can you see the repeating pattern in the path? The 'wiggle' consisting "
-                       + "of a <b>Turn left</b>, <b>Move forwards</b>, <b>Turn right</b>, "
-                       + "<b>Turn right</b>, <b>Turn left</b> can be put in a <b>Define Do</b> "
-                       + "block to create a procedure. Once you have named it, attach the <b>"
-                       + "<b>Call</b> block with the procedure's name in the text box to execute "
-                       + "it. ")
+    message = ugettext("Dont forget to use the repeat loop.")
     return message
 
 
 def title_level53():
-    return ugettext("Wiggle Wiggle!")
-
+    return ugettext("Choose your blocks wisely")
 
 def description_level53():
-    message = ''
+    message = ugettext("Can you find the shortest route? Use your blocks carefully and dont forget the <b>repeat</b> loop.")
     return build_description(title_level53(), message)
 
-
 def hint_level53():
-    return ""
+    message = ugettext("Think back to earlier levels - what did you learn")
+    return message
 
 
 def title_level54():
-    return ugettext("More complicated roads. ")
-
+    return ugettext("Round and Round")
 
 def description_level54():
-    message = ugettext("This road might be a bit more complicated, but the procedures you should "
-                       + "come up with are quite simple. Have a go and find out yourself! ")
+    message = ugettext("Can you find the shortest route? Use your blocks carefully and don't forget the <b>repeat</b> loop.")
     return build_description(title_level54(), message)
 
-
 def hint_level54():
-    message = ugettext("You might find it useful to create two simple helper procedures - one with "
-                       + "<b>Turn left</b> followed by <b>Turn right</b> and the other one to "
-                       + "first <b>Turn right</b> followed by <b>Turn left</b>.")
+    message = ugettext("Think back to earlier levels - what did you learn")
     return message
 
 
 def title_level55():
-    return ugettext("Limited resources! ")
-
+    return ugettext("Wonky Fish!")
 
 def description_level55():
-    message = ugettext("Let's make the levels a bit harder now - can you come up with a solution "
-                       + "to the level with a limited amount of blocks we provide you on the "
-                       + "start? Let's find out! ")
+    message = ugettext("Use <b>repeat until</b> and the <b>if</b> statment to find your way around the Wonky Fish.")
     return build_description(title_level55(), message)
 
-
 def hint_level55():
-    message = ugettext("Notice that the amount of <b>Move forwards</b> is not restricted - you "
-                       + "are free to use as many as possible. ")
+    message = ugettext("Think back to earlier levels - what did you learn.")
     return message
 
 
 def title_level56():
-    return ugettext("A bit more tricky.")
-
+    return ugettext("Concrete Wasteland")
 
 def description_level56():
-    message = ugettext("Well done so far! Can you find a solution to this road? You have to move "
-                       + "forward, but you have no block forward to use. <br> Do you know how to "
-                       + "help the van to get to the destination? ")
+    message = ugettext("Use <b>repeat until</b> and the <b>if</b> statement to find your way around the Concrete Wasteland")
     return build_description(title_level56(), message)
 
-
 def hint_level56():
-    return ""
+    message = ugettext("Think back to earlier levels - what did you learn.")
+    return message
 
 
 def title_level57():
-    return ugettext("No <b>Turn left</b>!")
-
+    return ugettext("This is <b>not...</b> the same")
 
 def description_level57():
-    message = ugettext("Oh no! Another level where we don't have one very important block! <br>"
-                       + "Do you know how to go around this to lead the van to the house? ")
+    message = ugettext("Like <b>repeat until</b>, <b>repeat while</b> is the opposite. Here, you want the van to repeat your instructions while it is not at the destination.<br />Doing this means you don't have to work out how many times the van should repeat your instructions.")
     return build_description(title_level57(), message)
 
-
 def hint_level57():
-    return ""
+    message = ugettext("The blocks should read like a sentence. Repeat while not at destination then add your instructions using the blocks provided.")
+    return message
+
+
+def title_level58():
+    return ugettext("Snow snake")
+
+def description_level58():
+    message = ugettext("Combining what you have just learnt using <b>repeat while</b> with the repeat loop, can you find your way around the snow snake?")
+    return build_description(title_level58(), message)
+
+def hint_level58():
+    message = ugettext("The blocks should read like a sentence: <b>repeat while not at destination</b> then using the <b>repeat</b> add your instructions")
+    return message
+
+
+def title_level59():
+    return ugettext("Tricky turnaround")
+
+def description_level59():
+    message = ugettext("Use your blocks carefully not forgetting the <b>turnaround</b>.")
+    return build_description(title_level59(), message)
+
+def hint_level59():
+    message = ugettext("Inside the repeat <b>repeat until</b> block, <b>turn left</b>, <b>turn around</b> and <b>turn left<b> again should do it.")
+    return message
 
 
 def title_level60():
-    return ugettext("T-junction trouble. ")
-
+    return ugettext("Right around the block")
 
 def description_level60():
-    message = ugettext("Can you reach the house with only two <b>Move forwards</b> blocks?")
+    message = ugettext("Can you find your way around this puzzle?")
     return build_description(title_level60(), message)
 
-
 def hint_level60():
-    return ""
+    message = ugettext("The trick to this level is to <b>turn right</b> then <b>turn around</b>.")
+    return message
 
 
 def title_level61():
-    return ugettext("Tons of traffic lights! ")
-
+    return ugettext("Can you create the 'Wiggle' procedure?")
 
 def description_level61():
-    message = ugettext("How are you going to get past all the traffic lights without knowing "
-                       + "when the traffic light is green? ")
+    message = ugettext("Procedures are groups of instructions that can be executed multiple times without being rewritten. For example, if you want to instruct the van to follow a repeated pattern in the road, you can create a specific procedure. To create a procedure, simply choose the correct blocks and put them in the right order inside the <b>Define do</b> block. Once you have done that, give it a name eg wiggle.<br />Now you're ready! Attach the <b>Call</b> block where you want your 'wiggle' procedure to be executed. Don't forget to put the name in it!")
     return build_description(title_level61(), message)
 
-
 def hint_level61():
-    return ""
+    message = ugettext("Don't forget to use <b>Define</b>. Name your procedure and attach the blocks in the right order. Start with <b>move forwards</b>, <b>turn left</b>, you can add repeat loops to a procedure and ending with <b>turn left</b>. Call your procedure under your start block and off you go...")
+    return message
 
 
 def title_level62():
-    return ugettext("Wave goodbye to winter! ")
-
+    return ugettext("Lots of Traffic Lights!")
 
 def description_level62():
-    message = ugettext("You have to go out of your way to solve this! Are you up for the "
-                       + "challenge?")
+    message = ugettext("Create a procedure which tells the van to wait until the traffic lights are green.")
     return build_description(title_level62(), message)
 
-
 def hint_level62():
-    return ""
+    message = ugettext("Don't forget to name your procedure eg 'lights' and every time you want the van to check the traffic lights you need to '<b>call</b>' it.")
+    return message
 
 
 def title_level63():
-    return ugettext("A fish out of water. ")
-
+    return ugettext("Wiggle Wiggle")
 
 def description_level63():
-    message = ""
+    message = ugettext("Can you find the repeating pattern here and create a new 'wiggle' procedure? And do the Wiggle Wiggle!")
     return build_description(title_level63(), message)
 
-
 def hint_level63():
+    message = ugettext("Can you see the repeating pattern in the path? The 'wiggle' consisting of a <b>turn left</b>, <b>move forwards</b>, <b>turn right</b>, <b>turn right</b>, <b>turn left</b> can be put in a <b>Define</b> block to create a procedure. Once you have named it, attach the <b>Call block with the procedure's name in the text box to execute it.")
+    return message
+
+
+def title_level64():
+    return ugettext("Muddy Patterns with Phil")
+
+def description_level64():
+    message = ugettext("Can you spot a pattern here? Create several procedures, it can save time when writing a program. Dont forget to clearly names your procedures and then call them")
+    return build_description(title_level64(), message)
+
+def hint_level64():
+    message = ugettext("One procedure could be <b>turn left</b>, <b>turn right</b>, <b>move forwards</b>, <b>turn right</b> and <b>turn left</b>. Don't forget you can create a repeat loop in your procedures.")
+    return message
+
+
+def title_level65():
+    return ugettext("Complicated roads.")
+
+def description_level65():
+    message = ugettext("This road might be a bit more complicated, but the procedures you could come up with are quite simple. Have a go and find out yourself!")
+    return build_description(title_level65(), message)
+
+def hint_level65():
+    message = ugettext("Your first procedure could be <b>turn left</b> and <b>turn right</b> 'left-right' The second procedure could be <b>turn right</b> <b>turn left</b>, 'right-left'.")
+    return message
+
+
+def title_level66():
+    return ugettext("Dee's snowy walk")
+
+def description_level66():
+    message = ugettext("Did you know procedures can call other procedures?")
+    return build_description(title_level66(), message)
+
+def hint_level66():
+    message = ugettext("Create 2 procedures. The first one should read <b>move forwards</b>, <b>move forwards</b>, <b>turn right</b>. The second <b>move forwards</b> then <b>call</b> your first procedure")
+    return message
+
+
+def title_level67():
+    return ugettext("Crazy Farm")
+
+def description_level67():
+    message = ugettext("This one will really test what you have learnt.")
+    return build_description(title_level67(), message)
+
+def hint_level67():
+    message = ugettext("It might be easier to write the program without repeats or procedures then create 3 separate procedures from the patterns that your see.")
+    return message
+
+
+def title_level68():
+    return ugettext("T - time")
+
+def description_level68():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level68(), message)
+
+def hint_level68():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level69():
+    return ugettext("Duck pond dodge")
+
+def description_level69():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level69(), message)
+
+def hint_level69():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level70():
+    return ugettext("Winter wonderland")
+
+def description_level70():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level70(), message)
+
+def hint_level70():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level71():
+    return ugettext("Frozen challenge")
+
+def description_level71():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level71(), message)
+
+def hint_level71():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level72():
+    return ugettext("Can Wes Find his lunch?")
+
+def description_level72():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level72(), message)
+
+def hint_level72():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level73():
+    return ugettext("Traffic light freeze up!")
+
+def description_level73():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level73(), message)
+
+def hint_level73():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level74():
+    return ugettext("Pandemonium")
+
+def description_level74():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level74(), message)
+
+def hint_level74():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level75():
+    return ugettext("Kirstys maze time")
+
+def description_level75():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level75(), message)
+
+def hint_level75():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level76():
+    return ugettext("")
+
+def description_level76():
+    message = ugettext("")
+    return build_description(title_level76(), message)
+
+def hint_level76():
+    message = ugettext("")
+    return message
+
+
+def title_level77():
+    return ugettext("")
+
+def description_level77():
+    message = ugettext("")
+    return build_description(title_level77(), message)
+
+def hint_level77():
+    message = ugettext("")
+    return message
+
+
+def title_level78():
+    return ugettext("")
+
+def description_level78():
+    message = ugettext("")
+    return build_description(title_level78(), message)
+
+def hint_level78():
+    message = ugettext("")
+    return message
+
+
+def title_level79():
+    return ugettext("Muddy Mayhem")
+
+def description_level79():
+    message = ugettext("Can you find the shortest route?")
+    return build_description(title_level79(), message)
+
+def hint_level79():
+    message = ugettext("Think back to earlier levels - what did you learn?")
+    return message
+
+
+def title_level80():
+    return ugettext("Here's Python!")
+
+def description_level80():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Can you tell which Python statement matches which block?")
+    return build_description(title_level80(), message)
+
+def hint_level80():
     return ""
 
 
+def title_level81():
+    return ugettext("Matching Blockly")
+
+def description_level81():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Can you tell which Python statement matches which block?")
+    return build_description(title_level81(), message)
+
+def hint_level81():
+    return ""
+
+
+def title_level82():
+    return ugettext("Dont forget to find the shortest route")
+
+def description_level82():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Can you tell which Python statement matches which block?")
+    return build_description(title_level82(), message)
+
+def hint_level82():
+    return ""
+
+
+def title_level83():
+    return ugettext("Repeating yourself in Python looks different")
+
+def description_level83():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding a <b>repeat</b> block and watch what happens in Python.")
+    return build_description(title_level83(), message)
+
+def hint_level83():
+    return ""
+
+
+def title_level84():
+    return ugettext("Repeat and watch.")
+
+def description_level84():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding a <b>repeat</b> block and watch what happens in Python.")
+    return build_description(title_level84(), message)
+
+def hint_level84():
+    return ""
+
+
+def title_level85():
+    return ugettext("Looks easy but use repeat until and and see what happens?")
+
+def description_level85():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding a <b>repeat</b> until block and watch what happens in Python.")
+    return build_description(title_level85(), message)
+
+def hint_level85():
+    return ""
+
+
+def title_level86():
+    return ugettext("See what the if blocks looks like in Python")
+
+def description_level86():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding an <b>if</b> block and watch what happens in Python.")
+    return build_description(title_level86(), message)
+
+def hint_level86():
+    return ""
+
+
+def title_level87():
+    return ugettext("Dont forget to use else if")
+
+def description_level87():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding an <b>if</b> block and watch what happens in Python particularly with <b>else if</b> and <b>else</b> statements.")
+    return build_description(title_level87(), message)
+
+def hint_level87():
+    return ""
+
+
+def title_level88():
+    return ugettext("See what happens when you add Traffic lights")
+
+def description_level88():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding an <b>if</b> block and watch what happens in Python particularly with <b>else if</b> and <b>else</b> statements.")
+    return build_description(title_level88(), message)
+
+def hint_level88():
+    return ""
+
+
+def title_level89():
+    return ugettext("Watch carefully as you have another go")
+
+def description_level89():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding an <b>if</b> block and watch what happens in Python particularly with <b>else if</b> and <b>else</b> statements.")
+    return build_description(title_level89(), message)
+
+def hint_level89():
+    return ""
+
+
+def title_level90():
+    return ugettext("Have a go at procedures - what do they look like in Python?")
+
+def description_level90():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python language. Try adding a procedure and watch what happens in Python.")
+    return build_description(title_level90(), message)
+
+def hint_level90():
+    message = ugettext("Don't forget to name your procedure and see what happens in Python.")
+    return message
+
+
+def title_level91():
+    return ugettext("Put it all together")
+
+def description_level91():
+    message = ugettext("As you create your program using Blockly see what it looks like in the Python language. Try adding a procedure and watch what happens in Python.")
+    return build_description(title_level91(), message)
+
+def hint_level91():
+    message = ugettext("Don't forget to name your procedure and see what happens in Python.")
+    return message
+
+
+def title_level92():
+    return ugettext("Start with the basics, <b>forward</b>, <b>left</b> and <b>right</b>")
+
+def description_level92():
+    message = ugettext("Now you are coding in Python! This is what real developers do!! To start you off, the van object has been created for you already. Under this you need to add the correct Python statements to instruct the van to drive to the destination.<br />For more information about coding in Python refer to <a href='http://www.diveintopython.net/' target='_blank'>www.diveintopython.net</a>.")
+    return build_description(title_level92(), message)
+
+def hint_level92():
+    message = ugettext("""Try using the following commands:<br /><pre>v.move_forwards()<br />v.turn_left()<br />v.turn_right()</pre>""")
+    return message
+
+
+def title_level93():
+    return ugettext("Keep it simple")
+
+def description_level93():
+    message = ugettext("Try this road. Under the van object you need to add the correct Python statements to instruct the van to drive to the destination.")
+    return build_description(title_level93(), message)
+
+def hint_level93():
+    message = ugettext("""Try using the following commands:
+<pre>v.move_forwards()
+v.turn_left()
+v.turn_right()</pre>""")
+    return message.replace('\n','<br />')
+
+
+def title_level94():
+    return ugettext("Watch out for the ice!")
+
+def description_level94():
+    message = ugettext("You're getting good at this! Can you drive the van along this road using the correct Python statements.")
+    return build_description(title_level94(), message)
+
+def hint_level94():
+    message = ugettext("""Try using the following commands:
+<pre>v.move_forwards()
+v.turn_left()
+v.turn_right()</pre>""")
+    return message.replace('\n','<br />')
+
+
+def title_level95():
+    return ugettext("Count and repeat")
+
+def description_level95():
+    message = ugettext("Now try to use a <b>repeat</b> loop to solve this level. Look back at level 83 to see what this could look like in Python.")
+    return build_description(title_level95(), message)
+
+def hint_level95():
+    message = ugettext("""To repeat some statements a set number of times you can use something like the following:
+<pre>for count in range(3):
+    v.turn left
+    print count</pre>
+The print statement will output the value of count to the console.""")
+    return message.replace('\n','<br />')
+
+
+def title_level96():
+    return ugettext("Count and repeat is easy")
+
+def description_level96():
+    message = ugettext("Now try to use a <b>repeat loop</b> to solve this level. Look back at level 83 to see what this could look like in Python. This time you could use 2 loops, 1 for each straight piece of road.")
+    return build_description(title_level96(), message)
+
+def hint_level96():
+    message = ugettext("""To repeat some statements a set number of times you can use something like the following:
+<pre>for count in range(3):
+    v.turn left
+    print count</pre>
+The print statement will output the value of count to the console.""")
+    return message.replace('\n','<br />')
+
+
+def title_level97():
+    return ugettext("Loop the loop")
+
+def description_level97():
+    message = ugettext("Now try to use a loop within a loop, known as a 'nested loop'. Look back at level 84 to see what this could look like in Python.")
+    return build_description(title_level97(), message)
+
+def hint_level97():
+    message = ugettext("""To repeat within a repeats a set number of times you can use something like the following:
+<pre>for i in range(3):
+    for j in range(5):
+        v.turn left
+        print count</pre>
+The print statement will output the value of count to the console.""")
+    return message.replace('\n','<br />')
+
+
+def title_level98():
+    return ugettext("Repeat and check")
+
+def description_level98():
+    message = ugettext("Try to solve this level by repeatedly moving until the van is at the destination. Also, check whether the van can move forward or else must turn left. Now try and write the Python code. Look back at level 86 to give you an idea of what this could look like.")
+    return build_description(title_level98(), message)
+
+def hint_level98():
+    message = ugettext("""To repeat while a condition is met you can use something like the following:
+<pre>while not v.at_destination():
+    v.move_forwards()</pre>
+To check whether a condition is met you can use something like the following:
+<pre>if v.is_road_forward():
+    v.move_forwards()</pre>
+You may also need to use the <b>else</b> statement.""")
+    return message.replace('\n','<br />')
+
+
+def title_level99():
+    return ugettext("Find a general solution")
+
+def description_level99():
+    message = ugettext("Now try using what you have just learnt to solve this level. You could also try using the <b>if</b>, <b>elif</b> and <b>else</b> statements. Look back at level 86 to give you an idea of what this could look like.")
+    return build_description(title_level99(), message)
+
+def hint_level99():
+    message = ugettext("""To repeat while a condition is met you can use something like the following:
+<pre>while not v.at_destination():
+    v.move_forwards()</pre>
+To check whether a condition is met you can use something like the following:
+<pre>if v.is_road_forward():
+    v.move_forwards()</pre>
+You may also need to use the <b>elif</b> and <b>else</b> statements.""")
+    return message.replace('\n','<br />')
+
+
 def title_level100():
-    return ugettext("Well done! ")
+    return ugettext("Watch out for the dead end!")
+
+def description_level100():
+    message = ugettext("Practice your new Python skills on this road to get the van to the destination. Look back at level 88 for a dead end check.")
+    return build_description(title_level100(), message)
+
+def hint_level100():
+    message = ugettext("Try using<br /><pre>if v.at_dead_end():</pre><br />to check if the van is at a dead end.")
+    return message
 
 
 def title_level101():
-    return ugettext("Find the shortest path! ")
+    return ugettext("Function or Junction?")
+
+def description_level101():
+    message = ugettext("Try defining your own procedure to solve this level. In Python procedures are generally called functions. Look back at level 90 for an example of how to define a function in Python.")
+    return build_description(title_level101(), message)
+
+def hint_level101():
+    message = ugettext("""To define a function in Python you could do something like:
+<pre>def my_function():
+    print 'test'</pre>
+To call a defined function you could do something like:
+<pre>my_function()</pre>
+Remember, you must define a function before you call it.""")
+    return message.replace('\n','<br />')
 
 
 def title_level102():
-    return ugettext("Follow the path. ")
+    return ugettext("Watch for the patterns")
+
+def description_level102():
+    message = ugettext("For this level try defining more than one function. Try to look look for a repeating pattern to simplify your program.")
+    return build_description(title_level102(), message)
+
+def hint_level102():
+    message = ugettext("""To define a function in Python you could do something like:
+<pre>def my_function():
+    print 'test'</pre>
+To call a defined function you could do something like:
+<pre>my_function()</pre>""")
+    return message.replace('\n','<br />')
 
 
 def title_level103():
-    return ugettext("Can you spot the pattern. ")
+    return ugettext("Patterns within patterns.")
+
+def description_level103():
+    message = ugettext("For this level try to define 2 or more functions where inside one function you call another function.")
+    return build_description(title_level103(), message)
+
+def hint_level103():
+    message = ugettext("""To define a function that calls another function you could do something like:
+<pre>def my_function():
+    print 'test'
+
+def my_other_function():
+    for i in range(3):
+        my_function()
+
+my_other_function()</pre>""")
+    return message.replace('\n','<br />')
 
 
 def title_level104():
-    return ugettext("Snail time! ")
+    return ugettext("Can you see the repeating pattern?")
+
+def description_level104():
+    message = ugettext("For this level try to define 2 or more functions where inside one function you call another function.")
+    return build_description(title_level104(), message)
+
+def hint_level104():
+    message = ugettext("""To define a function that calls another function you could do something like:
+<pre>def my_function():
+    print 'test'
+
+def my_other_function():
+    for i in range(3):
+        my_function()
+
+my_other_function()</pre>""")
+    return message.replace('\n','<br />')
 
 
 def title_level105():
-    return ugettext("Time to go general! ")
+    return ugettext("Find the shortest route.")
+
+def description_level105():
+    message = ugettext("For this level try to implement a general algorithm. Keep the van going until it arrives at the destination, checking for traffic lights and junctions.")
+    return build_description(title_level105(), message)
+
+def hint_level105():
+    message = ugettext("For this you will have to use a combination of the <b>while</b> and <b>if</b> statements.")
+    return message
 
 
 def title_level106():
-    return ugettext("Why do you have to go and make things so complicated. ")
+    return ugettext("Spiral and add")
+
+def description_level106():
+    message = ugettext("For this level the van needs to travel in a spiral. The number of grid squares the van has to move keeps increasing by 1 on each turn. To do this you can have a loop that makes use of a variable to track the length of the road you need to travel after each turn.")
+    return build_description(title_level106(), message)
+
+def hint_level106():
+    message = ugettext("""To use a variable to store the number of grid squares the van has to move you can do something like the following:
+<pre>n = 1
+while not v.at_destination():
+    print n
+    n += 1</pre>
+Variables can be used in place of constants when calling functions. For example to repeat something n times you can do something like the following:
+<pre>for count in range(n):</pre>""")
+    return message.replace('\n','<br />')
 
 
 def title_level107():
-    return ugettext("Trouble in the city!!! ")
+    return ugettext("Spiral and double")
+
+def description_level107():
+    message = ugettext("For this level try something similar to what you have just learnt. This time the straight sections of road are doubling in length after each turn.")
+    return build_description(title_level107(), message)
+
+def hint_level107():
+    message = ugettext("To double the value of a variable you can do something like the following:<br /><pre>n *= 2</pre>")
+    return message
+
+
+def title_level108():
+    return ugettext("Think less")
+
+def description_level108():
+    message = ugettext("This time the straight sections of road decrease in length by 2 after each turn.")
+    return build_description(title_level108(), message)
+
+def hint_level108():
+    message = ugettext("To decrease the value of a variable by an amount you can do something like the following:<br /><pre>n -= 5</pre>")
+    return message
+
+
+def title_level109():
+    return ugettext("Final challenge!")
+
+def description_level109():
+    message = ugettext("For the last challenge, the road straight line sections of road start off increasing by 1 after each turn and then switch to dividing by 2 with a twist!")
+    return build_description(title_level109(), message)
+
+def hint_level109():
+    message = ugettext("To halve the value of a variable you can do something like the following:<br /><pre>n /= 2</pre>")
+    return message
