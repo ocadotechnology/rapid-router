@@ -258,17 +258,15 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			}
 			var otherMsg = "";
 			if (a.popupHint) {
-				var hintBtns = $("#hintPopupBtn");
-		        if (hintBtns.length === null || hintBtns.length === 0) {
-		        	leadMsg += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
-		            otherMsg = '<p id="hintBtnPara">' + '</p><p id="hintText">' + HINT + '</p>';
-    			}
+				leadMsg += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
+				otherMsg = '<p id="hintBtnPara">' + '</p><p id="hintText">' + HINT + '</p>';
 			}
 			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true);
 			if (a.popupHint) {
 				$("#hintPopupBtn").click( function(){
 	                    $("#hintText").show(500);
 	                    $("#hintBtnPara").hide();
+	                    $("#hintPopupBtn").hide();
 	                });
 	        }
 			break;
