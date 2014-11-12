@@ -193,8 +193,8 @@ def create_scoreboard(request):
 
         for episode in episodes:
             levels += episode.levels
-            for level in levels:
-                headers.append(str(level))
+            for level in episode.levels:
+                headers.append('Level {}'.format(level.name))
         return levels, headers
 
     def is_viewable(class_):
