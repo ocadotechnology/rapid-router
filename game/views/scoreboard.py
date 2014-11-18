@@ -3,7 +3,6 @@ import game.messages as messages
 import game.permissions as permissions
 
 from datetime import timedelta
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
@@ -98,30 +97,30 @@ def create_scoreboard(request):
         return student_data, headers
 
     def one_row(student, level):
-        row = []
-        row.append(student)
-        try:
-            attempt = Attempt.objects.get(level=level, student=student)
+        row = [student]
+
+        attempt = Attempt.objects.filter(level=level, student=student).first()
+        if attempt:
             row.append(attempt.score if attempt.score is not None else '')
             row.append(chop_miliseconds(attempt.finish_time - attempt.start_time))
             row.append(attempt.start_time)
             row.append(attempt.finish_time)
-        except ObjectDoesNotExist:
+        else:
             row.append("")
+
         return row
 
     def many_rows(student_data, levels):
         for row in student_data:
             for level in levels:
-
-                try:
-                    attempt = Attempt.objects.get(level=level, student=row[0])
+                student = row[0]
+                attempt = Attempt.objects.filter(level=level, student=student).first()
+                if attempt:
                     row[1] += attempt.score if attempt.score is not None else 0
                     row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
                     row.append(attempt.score)
                     row[3].append(attempt.score if attempt.score is not None else '')
-
-                except ObjectDoesNotExist:
+                else:
                     row[2].append(timedelta(0))
                     row.append("")
                     row[3].append("")
@@ -194,8 +193,8 @@ def create_scoreboard(request):
 
         for episode in episodes:
             levels += episode.levels
-            for level in levels:
-                headers.append(str(level))
+            for level in episode.levels:
+                headers.append('Level {}'.format(level.name))
         return levels, headers
 
     def is_viewable(class_):

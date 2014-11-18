@@ -466,6 +466,11 @@ ocargo.Game.prototype.setupTabs = function() {
         $('#clear_console').click(function (e) {
             $('#consoleOutput').text('');
         });
+        
+        $('#van_commands_help').click(function (e) {
+            var leadMsg = ocargo.messages.pythonCommands + ocargo.jsElements.closebutton("Close");
+            ocargo.Drawing.startPopup("Python Commands", leadMsg, null, true);
+        });
 
         $('#convert_from_blockly').click(function (e) {
             ocargo.pythonControl.appendCode(ocargo.blocklyCompiler.workspaceToPython());

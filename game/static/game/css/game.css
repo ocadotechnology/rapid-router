@@ -125,6 +125,16 @@
     margin-bottom: 0px
 }
 
+#pythonIntro {
+    width: 58%;
+    font-size: 1rem;
+    display:inline-block;
+    margin-bottom:10px;
+}
+
+#van_commands_help {
+    float: right;
+}
 
 /*************************/
 /* Loading & Saving tabs */
