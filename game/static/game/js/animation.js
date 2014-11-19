@@ -259,7 +259,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			var otherMsg = "";
 			if (a.popupHint) {
 				leadMsg += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
-				otherMsg = '<p id="hintBtnPara">' + '</p><p id="hintText">' + HINT + '</p>';
+				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}
 			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true);
 			if (a.popupHint) {
