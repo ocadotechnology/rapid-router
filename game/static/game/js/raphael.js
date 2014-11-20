@@ -6942,7 +6942,7 @@
     };
     R._engine.image = function (svg, src, x, y, w, h) {
         var el = $("image");
-        $(el, {x: x, y: y, width: w, height: h, preserveAspectRatio: "none"});
+        $(el, {x: x, y: y, width: w, height: h, preserveAspectRatio: "xMinYMin"});
         el.setAttributeNS(xlink, "href", src);
         svg.canvas && svg.canvas.appendChild(el);
         var res = new Element(el, svg);

@@ -45,21 +45,21 @@ def level_moderation(request):
 
     form = LevelModerationForm(request.POST or None, classes=classes_taught)
 
-    studentID = None
+    student_id = None
     student_dict = None
     level_data = None
     table_headers = None
 
     if request.method == 'POST':
         if form.is_valid():
-            studentID = form.data.get('students', False)
-            classID = form.data.get('classes', False)
+            student_id = form.data.get('students')
+            class_id = form.data.get('classes')
 
-            if not classID or not studentID:
+            if not class_id:
                 raise Http404
 
             # check user has permission to look at this class!
-            cl = get_object_or_404(Class, id=classID)
+            cl = get_object_or_404(Class, id=class_id)
             if not permissions.can_see_class(request.user, cl):
                 return renderError(request,
                                    messages.noPermissionLevelModerationTitle(),
@@ -68,35 +68,40 @@ def level_moderation(request):
             students = Student.objects.filter(class_field=cl)
             student_dict = {student.id: student.user.user.first_name for student in students}
 
-            # check student is in class
-            student = get_object_or_404(Student, id=studentID)
-            if student.class_field != cl:
-                return renderError(request,
-                                   messages.noPermissionLevelModerationTitle(),
-                                   messages.noPermissionLevelModerationStudent())
+            if student_id:
+                # check student is in class
+                student = get_object_or_404(Student, id=student_id)
+                if student.class_field != cl:
+                    return renderError(request,
+                                       messages.noPermissionLevelModerationTitle(),
+                                       messages.noPermissionLevelModerationStudent())
 
-            table_headers = ['Level name', 'Shared with', 'Play', 'Delete']
+                owners = [student.user]
+
+            else:
+                owners = [student.user for student in students]
+
+            table_headers = ['Student', 'Level name', 'Shared with', 'Play', 'Delete']
             level_data = []
 
-            for level in Level.objects.filter(owner=student.user):
-                users_shared_with = [user for user in level.shared_with.all()
-                                     if permissions.can_share_level_with(user, student.user.user)]
+            for owner in owners:
+                for level in Level.objects.filter(owner=owner):
+                    users_shared_with = [user for user in level.shared_with.all()
+                                         if permissions.can_share_level_with(user, owner.user)
+                                         and user != owner.user]
 
-                if len(users_shared_with) == 0:
-                    shared_str = "-"
-                else:
-                    shared_str = ""
-                    for user in users_shared_with:
-                        if user != student.user.user:
-                            shared_str += app_tags.make_into_username(user) + ", "
-                    shared_str = shared_str[:-2]
+                    if not users_shared_with:
+                        shared_str = "-"
+                    else:
+                        shared_str = ", ".join(app_tags.make_into_username(user) for user in users_shared_with)
 
-                level_data.append({'id': level.id,
-                                   'name': level.name,
-                                   'shared_with': shared_str})
+                    level_data.append({'student': app_tags.make_into_username(owner.user),
+                                       'id': level.id,
+                                       'name': level.name,
+                                       'shared_with': shared_str})
 
     context = RequestContext(request, {
-        'studentID': studentID,
+        'student_id': student_id,
         'students': student_dict,
         'form': form,
         'levelData': level_data,
