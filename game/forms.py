@@ -73,11 +73,10 @@ class LevelModerationForm(forms.Form):
                                                         required=True,
                                                         widget=forms.Select(
                                                             attrs={'class': 'wide'}))
-        self.fields['students'] = forms.CharField(required=True,
+        self.fields['students'] = forms.CharField(required=False,
                                                   widget=forms.Select(attrs={'class': 'wide'}))
 
         def validate(self):
             cleaned_data = super(LevelModerationForm, self).clean()
             classes = cleaned_data.get('classes')
-            students = cleaned_data.get('students')
-            return classes and students
+            return classes

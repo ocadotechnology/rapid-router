@@ -21,16 +21,24 @@
                 dataType: 'json',
                 success: function(studentData){
                     $('#id_students').empty();
-                    for(studentID in studentData) {
+
+                    var addStudentOption = function(value, text) {
                         var option = $('<option>');
                         option.attr({
-                          'value': studentID
+                            'value': value
                         });
-                        option.text(studentData[studentID]);
+                        option.text(text);
                         $('#id_students').append(option);
+                    };
+
+                    addStudentOption("", "---------")
+
+                    for (var student in studentData) {
+                        addStudentOption(student, studentData[student])
                     }
-                    {% if studentID %}
-                      $('#id_students').val({{studentID}});
+
+                    {% if student_id %}
+                      $('#id_students').val({{student_id}});
                     {% endif %}
                 }
             });
@@ -111,6 +119,7 @@
 
       {% for level in levelData %}
       <tr>
+          <td> {{level.student}} </td>
           <td> {{level.name}} </td>
           <td> {{level.shared_with}} </td>
           <td> <button value={{level.id}} class="btn btn-default btn-small play">Play</button> </td>
@@ -122,11 +131,10 @@
   </div>
 {% else %}
   {% if thead %}
-    <p>This student has not created any levels.</p>
+    <p>No levels found.</p>
   {% else %}
     <p>Select a class and student to view their created levels.</p>
   {% endif %}
 {% endif %}
 </div>
 {% endblock %}
- 

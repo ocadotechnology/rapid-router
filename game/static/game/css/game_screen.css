@@ -307,3 +307,7 @@ table th {
     float:right;
     width: 20%;
 }
+
+#myModal pre {
+    margin: 1em 2em 0.3em;
+}

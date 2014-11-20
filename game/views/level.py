@@ -128,7 +128,8 @@ def submit_attempt(request):
     if (not request.user.is_anonymous() and request.method == 'POST' and
             hasattr(request.user.userprofile, "student")):
         level = get_object_or_404(Level, id=request.POST.get('level', 1))
-        attempt = get_object_or_404(Attempt, level=level, student=request.user.userprofile.student)
+        student = request.user.userprofile.student
+        attempt = Attempt.objects.filter(level=level, student=student).first()
         attempt.score = request.POST.get('score')
         attempt.workspace = request.POST.get('workspace')
         attempt.python_workspace = request.POST.get('python_workspace')
