@@ -284,16 +284,18 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
     };
 };
 
-
 ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
+	Blockly.Python.variableDB_.reset();
+	
+	var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
+	var startBlocks = ocargo.blocklyControl.getStartBlocks();
+	
     var code = "";
     
-	var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
     for (var i = 0; i < procBlocks.length; i++) {
     	code += '\n' + Blockly.Python.blockToCode(procBlocks[i]);
     }
 	
-	var startBlocks = ocargo.blocklyControl.getStartBlocks();
 	for (var i = 0; i < startBlocks.length; i++) {
 		code += '\n' + Blockly.Python.blockToCode(startBlocks[i]);
 	}
