@@ -11,6 +11,7 @@ from django.utils.safestring import mark_safe
 from helper import renderError, getDecorElement
 from game.cache import cached_level, cached_episode
 from game.models import Level, Attempt, Workspace
+from game import beta
 
 
 def play_custom_level(request, levelID):
@@ -46,10 +47,7 @@ def play_level(request, levelID):
     """
     level = cached_level(levelID)
 
-    beta_mode = (not request.user.is_anonymous()) and request.get_host().startswith("beta")
-    developer = (not request.user.is_anonymous()) and request.user.userprofile.developer
-    early_access = beta_mode or developer
-    if not permissions.can_play_level(request.user, level, early_access):
+    if not permissions.can_play_level(request.user, level, beta.has_beta_access(request)):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     # Set default level description/hint lookups
