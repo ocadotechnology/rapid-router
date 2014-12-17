@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 from helper import renderError, getDecorElement
 from game.cache import cached_level, cached_episode
 from game.models import Level, Attempt, Workspace
-from game import beta
+from portal import beta
 
 
 def play_custom_level(request, levelID):

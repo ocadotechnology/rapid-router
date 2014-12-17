@@ -6,7 +6,8 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.db.models import Max
-from game import random_road, beta
+from game import random_road
+from portal import beta
 from game.cache import cached_episode
 from game.models import Attempt, Episode
 from level_editor import play_anonymous_level
