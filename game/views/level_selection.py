@@ -7,6 +7,7 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.db.models import Max
 from game import random_road
+from portal import beta
 from game.cache import cached_episode
 from game.models import Attempt, Episode
 from level_editor import play_anonymous_level
@@ -88,10 +89,7 @@ def levels(request):
     def with_scores(level):
         attach_attempts_to_level(attempts, level)
 
-    beta_mode = (not request.user.is_anonymous()) and request.get_host().startswith("beta")
-    developer = (not request.user.is_anonymous()) and request.user.userprofile.developer
-    early_access = developer or beta_mode
-    episode_data = fetch_episode_data(early_access)
+    episode_data = fetch_episode_data(beta.has_beta_access(request))
     for e in episode_data:
         for l in e["levels"]:
             with_scores(l)
