@@ -305,12 +305,12 @@ ocargo.LevelEditor = function() {
             });
 
             // Disable block numbers if not developer
-            if(!DEVELOPER) {
+            if(!BETA) {
                 $('.block_number').css('display', 'none');
             }
 
             // Language controls
-            if(!DEVELOPER) {
+            if(!BETA) {
                 $('#language_div').css('display', 'none');
             } else {
                 $('#language_select').change(function() {
@@ -1831,7 +1831,7 @@ ocargo.LevelEditor = function() {
         state.max_fuel = maxFuel;
         
         // Language data
-        if(DEVELOPER) {
+        if(BETA) {
             var language = $('#language_select').val();
             state.blocklyEnabled = language === 'blockly' || language === 'both' || language === 'blocklyWithPythonView';
             state.pythonViewEnabled = language === 'blocklyWithPythonView';
@@ -1922,7 +1922,7 @@ ocargo.LevelEditor = function() {
         }
         
         // Load in language data
-        if(DEVELOPER) {
+        if(BETA) {
             var languageSelect = $('#languageSelect');
             if(state.blocklyEnabled && state.pythonEnabled) {
                 languageSelect.val('both');

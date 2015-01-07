@@ -335,7 +335,7 @@
               <div class="tab_pane_content">
                 <div id="block_table">
 
-                  {% if user|is_developer %}
+                  {% if request|has_beta_access %}
                   <div id="language_div" class="input_div">
                     <span>Language:</span>
                     <select id="language_select">

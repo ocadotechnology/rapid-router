@@ -363,14 +363,14 @@ function initCustomBlocksPython() {
     Blockly.Python['controls_repeat_while'] = function(block) {
       var condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
       var subBlock = Blockly.Python.statementToCode(block, 'body');
-      var code = 'while (' + condition + '):\n' + subBlock;
+      var code = 'while ' + condition + ':\n' + subBlock;
       return code;
     };
 
     Blockly.Python['controls_repeat_until'] = function(block) {
       var condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
       var subBlock = Blockly.Python.statementToCode(block, 'body');
-      var code = 'while not (' + condition + '):\n' + subBlock;
+      var code = 'while not ' + condition + ':\n' + subBlock;
       return code;
     };
 }

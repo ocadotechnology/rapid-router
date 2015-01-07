@@ -148,7 +148,7 @@ ocargo.PythonControl = function () {
             text: outputText
         });
     }
-
+    
     /*************************/
     /** Initialisation code **/
     /*************************/
@@ -158,9 +158,11 @@ ocargo.PythonControl = function () {
     var codeView = createCodePanel('pythonView');
     codeView.setValue(DEFAULT_CODE);
     codeView.setOption("readOnly", "nocursor");
-    setInterval(function () {
-        appendCodeToPanel(ocargo.blocklyCompiler.workspaceToPython(), codeView);
-    }, 100);
+    function redrawPythonView(){
+    	appendCodeToPanel(ocargo.blocklyCompiler.workspaceToPython(), codeView);
+    	setTimeout(redrawPythonView, 100);
+    }
+    $(redrawPythonView);
 
     // Limit the code so that it stops after 2 seconds
     Sk.execLimit = 2000;
