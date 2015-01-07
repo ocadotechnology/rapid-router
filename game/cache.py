@@ -6,23 +6,14 @@ from models import Level, Episode
 
 LEVEL_PREFIX = "model_level"
 EPISODE_PREFIX = "model_episode"
-ALL_EPISODES_KEY = "model_episodes"
 
 
 def get_level(level):
     return get_object_or_404(Level, id=level)
 
 
-def all_levels():
-    return Level.objects.all()
-
-
 def get_episode(episode):
     return get_object_or_404(Episode, id=episode)
-
-
-def all_episodes():
-    return Episode.objects.order_by('id')
 
 
 @receiver(post_save, sender=Level)
@@ -49,7 +40,3 @@ def cached_episode(episode):
     key = EPISODE_PREFIX + episode
     func = lambda: get_episode(episode)
     return cache_or_func(key, func)
-
-
-def cached_all_episodes():
-    return cache_or_func(ALL_EPISODES_KEY, all_episodes)
