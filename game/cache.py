@@ -27,9 +27,8 @@ def all_episodes():
 
 @receiver(post_save, sender=Level)
 @receiver(post_delete, sender=Level)
-def clear_level_cache(sender, **kwargs):
-    for level in all_levels():
-        cache.delete(LEVEL_PREFIX + str(level.id))
+def clear_level_cache(sender, instance, **kwargs):
+    cache.delete(LEVEL_PREFIX + str(instance.id))
 
 
 def cache_or_func(key, func):
