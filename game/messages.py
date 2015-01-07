@@ -1368,7 +1368,7 @@ def hint_level74():
 
 
 def title_level75():
-    return ugettext("Kirstys maze time")
+    return ugettext("Kirsty's maze time")
 
 def description_level75():
     message = ugettext("Can you find the shortest route?")
