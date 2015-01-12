@@ -146,7 +146,7 @@ def save_level_for_editor(request, levelID=None):
         response = get_list_of_loadable_levels(request.user)
         response['levelID'] = level.id
     else:
-        response = ''
+        response = {}
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 

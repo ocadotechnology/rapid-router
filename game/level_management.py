@@ -8,6 +8,9 @@ from models import Level, Block, LevelBlock, LevelDecor, Decor, Theme, Character
 ##########
 
 def get_loadable_levels(user):
+    if user.is_anonymous():
+        return [], []
+
     owned_levels = user.userprofile.levels.iterator()
     shared_levels = (level for level in user.shared.iterator() if permissions.can_load_level(user, level))
     return owned_levels, shared_levels
