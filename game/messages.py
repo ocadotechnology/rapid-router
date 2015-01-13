@@ -1380,14 +1380,14 @@ def hint_level75():
 
 
 def title_level76():
-    return ugettext("")
+    return ugettext("Cannot turn left!")
 
 def description_level76():
-    message = ugettext("")
+    message = ugettext("Can you find the shortest route?")
     return build_description(title_level76(), message)
 
 def hint_level76():
-    message = ugettext("")
+    message = ugettext("What is that? A barn for ANTS!?")
     return message
 
 
