@@ -50,12 +50,8 @@ def play_anonymous_level(request, levelID, from_level_editor=True):
     if not level.anonymous:
         return redirect("/rapidrouter/level_editor", permanent=True)
 
-    lesson = 'description_level_default'
-    hint = 'hint_level_default'
-    lessonCall = getattr(messages, lesson)
-    hintCall = getattr(messages, hint)
-    lesson = mark_safe(lessonCall())
-    hint = mark_safe(hintCall())
+    lesson = mark_safe(messages.description_level_default())
+    hint = mark_safe(messages.hint_level_default())
 
     attempt = None
     house = getDecorElement('house', level.theme).url
