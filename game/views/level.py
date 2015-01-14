@@ -136,10 +136,7 @@ def submit_attempt(request):
 
 def load_list_of_workspaces(request):
     workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
-    workspaces = []
-    for workspace in workspaces_owned:
-        workspaces.append({'id': workspace.id, 'name': workspace.name})
-
+    workspaces = [{'id': workspace.id, 'name': workspace.name} for workspace in workspaces_owned]
     return HttpResponse(json.dumps(workspaces), content_type='application/json')
 
 
