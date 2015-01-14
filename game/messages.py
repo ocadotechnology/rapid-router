@@ -1404,14 +1404,14 @@ def hint_level77():
 
 
 def title_level78():
-    return ugettext("")
+    return ugettext("Wandering Phil")
 
 def description_level78():
-    message = ugettext("")
+    message = ugettext("Can you get Phil to the house?")
     return build_description(title_level78(), message)
 
 def hint_level78():
-    message = ugettext("")
+    message = ugettext("Repeat while not dead end... turn around...")
     return message
 
 
