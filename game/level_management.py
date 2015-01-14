@@ -90,9 +90,9 @@ def delete_level(level):
     level.delete()
 
 
-def share_level(level, user):
-    level.shared_with.add(user)
+def share_level(level, *users):
+    level.shared_with.add(*users)
 
 
-def unshare_level(level, user):
-    level.shared_with.remove(user)
+def unshare_level(level, *users):
+    level.shared_with.remove(*users)
