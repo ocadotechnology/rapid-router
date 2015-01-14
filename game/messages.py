@@ -1392,14 +1392,14 @@ def hint_level76():
 
 
 def title_level77():
-    return ugettext("")
+    return ugettext("G Force")
 
 def description_level77():
-    message = ugettext("")
+    message = ugettext("Can you get the van to the house?")
     return build_description(title_level77(), message)
 
 def hint_level77():
-    message = ugettext("")
+    message = ugettext("Heard of recursion?")
     return message
 
 
