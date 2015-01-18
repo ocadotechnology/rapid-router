@@ -50,12 +50,8 @@ def play_anonymous_level(request, levelID, from_level_editor=True):
     if not level.anonymous:
         return redirect("/rapidrouter/level_editor", permanent=True)
 
-    lesson = 'description_level_default'
-    hint = 'hint_level_default'
-    lessonCall = getattr(messages, lesson)
-    hintCall = getattr(messages, hint)
-    lesson = mark_safe(lessonCall())
-    hint = mark_safe(hintCall())
+    lesson = mark_safe(messages.description_level_default())
+    hint = mark_safe(messages.hint_level_default())
 
     attempt = None
     house = getDecorElement('house', level.theme).url
@@ -241,11 +237,14 @@ def share_level_for_editor(request, levelID):
     level = Level.objects.get(id=levelID)
     recipients = User.objects.filter(id__in=recipientIDs)
 
-    for recipient in recipients:
-        if permissions.can_share_level_with(recipient, level.owner.user):
-            if action == 'share':
-                level_management.share_level(level, recipient.userprofile.user)
-            elif action == 'unshare':
-                level_management.unshare_level(level, recipient.userprofile.user)
+    def can_share_level_with(r):
+        return permissions.can_share_level_with(r, level.owner.user)
+
+    users = [recipient.userprofile.user for recipient in recipients if can_share_level_with(recipient)]
+
+    if action == 'share':
+        level_management.share_level(level, *users)
+    elif action == 'unshare':
+        level_management.unshare_level(level, *users)
 
     return get_sharing_information_for_editor(request, levelID)

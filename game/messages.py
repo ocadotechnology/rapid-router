@@ -1380,38 +1380,38 @@ def hint_level75():
 
 
 def title_level76():
-    return ugettext("")
+    return ugettext("Cannot turn left!")
 
 def description_level76():
-    message = ugettext("")
+    message = ugettext("Can you find the shortest route?")
     return build_description(title_level76(), message)
 
 def hint_level76():
-    message = ugettext("")
+    message = ugettext("What is that? A barn for ANTS!?")
     return message
 
 
 def title_level77():
-    return ugettext("")
+    return ugettext("G Force")
 
 def description_level77():
-    message = ugettext("")
+    message = ugettext("Can you get the van to the house?")
     return build_description(title_level77(), message)
 
 def hint_level77():
-    message = ugettext("")
+    message = ugettext("Heard of recursion?")
     return message
 
 
 def title_level78():
-    return ugettext("")
+    return ugettext("Wandering Phil")
 
 def description_level78():
-    message = ugettext("")
+    message = ugettext("Can you get Phil to the house?")
     return build_description(title_level78(), message)
 
 def hint_level78():
-    message = ugettext("")
+    message = ugettext("Repeat while not dead end... turn around...")
     return message
 
 
