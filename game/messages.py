@@ -1347,7 +1347,7 @@ def title_level73():
     return ugettext("Traffic light freeze up!")
 
 def description_level73():
-    message = ugettext("Can you find the shortest route?")
+    message = ugettext("Can you find the shortest algorithm?")
     return build_description(title_level73(), message)
 
 def hint_level73():
