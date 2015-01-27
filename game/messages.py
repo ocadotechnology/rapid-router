@@ -1239,7 +1239,7 @@ def title_level64():
     return ugettext("Muddy Patterns with Phil")
 
 def description_level64():
-    message = ugettext("Can you spot a pattern here? Create several procedures, it can save time when writing a program. Dont forget to clearly names your procedures and then call them")
+    message = ugettext("Can you spot a pattern here? Create several procedures, it can save time when writing a program. Don't forget to clearly name your procedures and then call them.")
     return build_description(title_level64(), message)
 
 def hint_level64():
