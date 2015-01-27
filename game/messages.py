@@ -1107,7 +1107,7 @@ def title_level53():
     return ugettext("Choose your blocks wisely")
 
 def description_level53():
-    message = ugettext("Can you find the shortest route? Use your blocks carefully and dont forget the <b>repeat</b> loop.")
+    message = ugettext("Can you find the shortest route? Use your blocks carefully and don't forget the <b>repeat</b> loop.")
     return build_description(title_level53(), message)
 
 def hint_level53():
