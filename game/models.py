@@ -37,8 +37,49 @@ class Character(models.Model):
     height = models.IntegerField(default=20)
 
 
+class Episode (models.Model):
+    '''Variables prefixed with r_ signify they are parameters for random level generation'''
+
+    name = models.CharField(max_length=200)
+    first_level = models.ForeignKey('Level', related_name='episodeForFirstLevel')#TODO: remove
+    next_episode = models.ForeignKey("self", null=True, default=None)
+    in_development = models.BooleanField(default=False)
+
+    r_random_levels_enabled = models.BooleanField(default=False)
+    r_branchiness = models.FloatField(default=0, null=True)
+    r_loopiness = models.FloatField(default=0, null=True)
+    r_curviness = models.FloatField(default=0, null=True)
+    r_num_tiles = models.IntegerField(default=5, null=True)
+    r_blocks = models.ManyToManyField(Block, related_name='episodes', null=True)
+    r_blocklyEnabled = models.BooleanField(default=True)
+    r_pythonEnabled = models.BooleanField(default=False)
+    r_trafficLights = models.BooleanField(default=False)
+    
+    #TODO: reinstate
+#     @property
+#     def first_level(self):
+#         return self.levels[0]
+
+    @property
+    def levels(self):
+        return sorted(self.level_set.all(), key=lambda level: int(level.name))
+    
+    #TODO: remove
+    @property
+    def dodgy_levels_getter(self):
+        if self.first_level is not None:
+            level = self.first_level
+            while level is not None:
+                yield level
+                level = level.next_level
+                
+    def __unicode__(self):
+        return 'Episode: ' + self.name
+
+
 class Level (models.Model):
     name = models.CharField(max_length=100)
+    episode = models.ForeignKey(Episode)
     path = models.TextField(max_length=10000)
     traffic_lights = models.TextField(max_length=10000, default='[]')
     origin = models.CharField(max_length=50, default='[]')
@@ -62,11 +103,12 @@ class Level (models.Model):
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
-
+    
+    #TODO: remove
     @property
-    def episode(self):
+    def dodgy_episode_getter(self):
         for episode in Episode.objects.all():
-            if self in episode.levels:
+            if self in episode.dodgy_levels_getter:
                 return episode
         return None
 
@@ -82,37 +124,7 @@ class LevelDecor(models.Model):
     y = models.IntegerField()
     level = models.ForeignKey(Level)
     decorName = models.CharField(max_length=100, default='tree1')
-
-
-class Episode (models.Model):
-    '''Variables prefixed with r_ signify they are parameters for random level generation'''
-
-    name = models.CharField(max_length=200)
-    first_level = models.ForeignKey(Level)
-    next_episode = models.ForeignKey("self", null=True, default=None)
-    in_development = models.BooleanField(default=False)
-
-    r_random_levels_enabled = models.BooleanField(default=False)
-    r_branchiness = models.FloatField(default=0, null=True)
-    r_loopiness = models.FloatField(default=0, null=True)
-    r_curviness = models.FloatField(default=0, null=True)
-    r_num_tiles = models.IntegerField(default=5, null=True)
-    r_blocks = models.ManyToManyField(Block, related_name='episodes', null=True)
-    r_blocklyEnabled = models.BooleanField(default=True)
-    r_pythonEnabled = models.BooleanField(default=False)
-    r_trafficLights = models.BooleanField(default=False)
-
-    @property
-    def levels(self):
-        if self.first_level is not None:
-            level = self.first_level
-            while level is not None:
-                yield level
-                level = level.next_level
-                
-    def __unicode__(self):
-        return 'Episode: ' + self.name
-
+    
 
 class Workspace (models.Model):
     name = models.CharField(max_length=200)
