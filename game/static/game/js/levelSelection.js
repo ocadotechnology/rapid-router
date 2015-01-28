@@ -36,7 +36,7 @@ function setupCoins() {
         for(var j = 0; j < episode.levels.length; j++) {
             var level = episode.levels[j];
             
-            imageStr = getImageStr(level.score);
+            imageStr = getImageStr(level.score, level.maxScore);
             if(imageStr !== '') {
                 $('.level_image.coin_image[value=' + level.name + ']').attr('src', imageStr);
             }
@@ -64,7 +64,7 @@ function setupCoins() {
     for(var i = 0; i < OTHER_LEVELS.length; i++) {
         var level = OTHER_LEVELS[i];
 
-        imageStr = getImageStr(level.score*2);
+        imageStr = getImageStr(level.score, level.maxScore);
         if(imageStr !== '') {
             $('.level_image.coin_image[value=' + level.id + ']').attr('src', imageStr);
         }
@@ -77,18 +77,19 @@ function setupCoins() {
         $('#episode' + episodeToOpen.id).click();
     }
 
-    function getImageStr(score) {
+    function getImageStr(score, maxScore) {
         var imageStr = "/static/game/image/coins/coin_";
+        percentage = 100.0 * score / maxScore
         if(score == "None") {
             return "";
         }
-        else if(score == 20) {
+        else if(percentage >= 99.99999) {
             return imageStr + 'gold.svg';
         }
-        else if(score > 10) {
+        else if(percentage > 0.5) {
             return imageStr + 'silver.svg';
         }
-        else if(score >= 0) {
+        else if(percentage >= 0.0) {
             return imageStr + 'copper.svg';
         }
         return '';
