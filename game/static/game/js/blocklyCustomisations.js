@@ -22,15 +22,26 @@ ocargo.BlocklyCustomisations = function() {
 		}
 	};
 
-	/** 
+	/**
 	 * Sets up only having a limited number of blocks
 	 * Needs to be called BEFORE blockly is injected
 	 */
 	this.setupLimitedBlocks = function() {
+        var setQuantityText = function(element, blockType) {
+            element.textContent = "×" + blockCount[blockType];
+        };
+
+        var selectAndSetQuantityText = function(blockType) {
+            var element = $('.quantity_text[value="' + blockType + '"]')[0];
+            if (element) {
+                // Test needed for loading workspaces (when flyout doesn't exist apparently)
+                setQuantityText(element, blockType);
+            }
+        };
 
 	    // Setup the number of blocks
 	    var limitedBlocks = false;
-	    var blockCount = [];
+	    var blockCount = {};
 	    for (var i = 0; i < BLOCKS.length; i++) {
 	        var block = BLOCKS[i];
 	        blockCount[block.type] = block.number;
@@ -82,7 +93,7 @@ ocargo.BlocklyCustomisations = function() {
 			                              'value': block.type};
 
 		                var element = Blockly.createSvgElement('text', attributes, null);
-		                element.textContent = "x" + blockCount[block.type];
+		                setQuantityText(element, block.type);
 		                quantities.push(element);
 
 		                this.workspace_.getCanvas().insertBefore(element, block.getSvgRoot());
@@ -94,7 +105,7 @@ ocargo.BlocklyCustomisations = function() {
 		        oldShowFunction.call(this, xmlList);
 		    };
 
-		    // Override the blockly flyout's createBlockFunction to control block creation 
+		    // Override the blockly flyout's createBlockFunction to control block creation
 		    var oldCreateBlockFunction = Blockly.Flyout.prototype.createBlockFunc_;
 		    Blockly.Flyout.prototype.createBlockFunc_ = function(originBlock) {
 		        var func = oldCreateBlockFunction.call(this, originBlock);
@@ -106,42 +117,30 @@ ocargo.BlocklyCustomisations = function() {
 		        };
 		    };
 
+            var changeBlockCount = function(blockType, workspace, delta) {
+                if (blockType !== "start"  && workspace === Blockly.mainWorkspace && blockCount[blockType] !== undefined) {
+                    blockCount[blockType] += delta;
+                    selectAndSetQuantityText(blockType);
+                }
+            };
+
 		    // Override the initialize method to track blocks entering the  workspace
 		    var oldInitialize = Blockly.Block.prototype.initialize;
 		    Blockly.Block.prototype.initialize = function(workspace, prototypeName) {
 		        oldInitialize.call(this, workspace, prototypeName);
-		        if (this.type !== "start"  && this.workspace === Blockly.mainWorkspace &&
-		        		blockCount[this.type] !== undefined) {
-	        		blockCount[this.type] -= 1;
-
-		            var quantityText = $('.quantity_text[value="' + this.type + '"]')[0];
-		            if (quantityText) {
-		            	// Test needed for loading workspaces (when flyout doesn't exist apparently)
-		            	quantityText.textContent = "x" + blockCount[this.type];
-		            }
-		        }
+                changeBlockCount(this.type, this.workspace, -1);
 		    };
 
 		    // Override block dispose method to keep track of blocks leaving the workspace
 		    var oldDispose = Blockly.Block.prototype.dispose;
-		    Blockly.Block.prototype.dispose =
-		    	function(healStack, animate, opt_dontRemoveFromWorkspace) {
-		        if (this.workspace === Blockly.mainWorkspace &&
-		        		blockCount[this.type] !== undefined) {
-		            blockCount[this.type] += 1;
-
-		            var quantityText = $('.quantity_text[value="' + this.type + '"]')[0];
-		            if (quantityText) {
-		            	// Test needed for loading workspaces (when flyout doesn't exist apparently)
-		            	quantityText.textContent = "x" + blockCount[this.type];
-		            }
-		        }
-		        oldDispose.call(this, healStack, animate, opt_dontRemoveFromWorkspace);
-		    };
+		    Blockly.Block.prototype.dispose = function(healStack, animate, opt_dontRemoveFromWorkspace) {
+                changeBlockCount(this.type, this.workspace, 1);
+                oldDispose.call(this, healStack, animate, opt_dontRemoveFromWorkspace);
+            };
 	    }
 	};
 
-	/** 
+	/**
 	 * Sets up the ability to toggle the flyout
 	 * Needs to be called AFTER blockly is injected
 	 */
@@ -167,7 +166,7 @@ ocargo.BlocklyCustomisations = function() {
 		        image = 'show';
 		        $('#flyoutButton').css('left', '0px');
 		    }
-		    
+
 		    $('#flyoutButton img').attr('src', ocargo.Drawing.imageDir + 'icons/' + image + '.svg');
 		};
 
@@ -177,7 +176,7 @@ ocargo.BlocklyCustomisations = function() {
 		};
 	};
 
-	/** 
+	/**
 	 * Sets up big code mode (enlarges blockly)
 	 * Needs to be called BEFORE blockly is injected
 	 */
@@ -214,7 +213,7 @@ ocargo.BlocklyCustomisations = function() {
 		    Blockly.BlockSvg.SEP_SPACE_Y *= 2;
 		    Blockly.BlockSvg.INLINE_PADDING_Y *= 2;
 		    Blockly.Icon.RADIUS *= 2;
-		    
+
 		    /*Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l 12,8 6,0 12,-8';
 		    Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l 13,4 4,0 13,-8';
 		    Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l -12,4 -6,0 -12,-8';
@@ -222,10 +221,10 @@ ocargo.BlocklyCustomisations = function() {
 		    Blockly.BlockSvg.TAB_WIDTH *= 2;
 		    Blockly.BlockSvg.NOTCH_WIDTH *= 2;
 		    */
-		    
+
 		    ocargo.blocklyControl.IMAGE_WIDTH *= 2;
 		    ocargo.blocklyControl.BLOCK_CHARACTER_HEIGHT *= 2;
-		    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH *= 2;    
+		    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH *= 2;
 		    ocargo.blocklyControl.BLOCK_HEIGHT *= 2;
 
 			document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' +
@@ -245,17 +244,17 @@ ocargo.BlocklyCustomisations = function() {
 		    	jQueryElement.attr("width", widthNumber * 2 + "px");
 		    	jQueryElement.attr("y", -32);
 		    });
-		    
+
 		    resetWidthOnBlocks(blocks);
 		    Blockly.mainWorkspace.render();
 
 			Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
-			
+
 		    $(".blocklyIconShield").attr("width", 32).attr("height", 32)
 		    	.attr("rx", 8).attr("ry", 8);
 		    $(".blocklyIconMark").attr("x", 16).attr("y", 24);
 		    $(".blocklyEditableText > rect").attr("height", 32).attr("y", -24)
-		    	.attr("x", -5).attr("width", 85);  
+		    	.attr("x", -5).attr("width", 85);
 		};
 
 		this.disableBigCodeMode = function() {
@@ -267,7 +266,7 @@ ocargo.BlocklyCustomisations = function() {
 		    Blockly.BlockSvg.SEP_SPACE_Y /= 2;
 		    Blockly.BlockSvg.INLINE_PADDING_Y /= 2;
 		    Blockly.Icon.RADIUS /= 2;
-		    
+
 		    /*Blockly.BlockSvg.NOTCH_PATH_LEFT = 'l 12,8 6,0 12,-8';
 		    Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT = 'l 13,4 4,0 13,-8';
 		    Blockly.BlockSvg.NOTCH_PATH_RIGHT = 'l -12,4 -6,0 -12,-8';
@@ -275,10 +274,10 @@ ocargo.BlocklyCustomisations = function() {
 		    Blockly.BlockSvg.TAB_WIDTH /= 2;
 		    Blockly.BlockSvg.NOTCH_WIDTH /= 2;
 		    */
-		    
+
 		    ocargo.blocklyControl.IMAGE_WIDTH /= 2;
 		    ocargo.blocklyControl.BLOCK_CHARACTER_HEIGHT /= 2;
-		    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH /= 2;  
+		    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH /= 2;
 		    ocargo.blocklyControl.BLOCK_HEIGHT /= 2;
 
 		    var sheet = document.styleSheets[0];
@@ -287,7 +286,7 @@ ocargo.BlocklyCustomisations = function() {
 			}
 
 			var blocks = Blockly.mainWorkspace.getAllBlocks();
-		    
+
 		    $(".blocklyDraggable > g > image").each( function(index, element) {
 		    	var jQueryElement = $(element);
 		    	var heightStr = jQueryElement.attr("height");
@@ -298,7 +297,7 @@ ocargo.BlocklyCustomisations = function() {
 		    	jQueryElement.attr("width", widthNumber / 2 + "px");
 		    	jQueryElement.attr("y", -12);
 		    });
-		    
+
 		    resetWidthOnBlocks(blocks);
 		    Blockly.mainWorkspace.render();
 
