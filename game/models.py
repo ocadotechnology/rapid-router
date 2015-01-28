@@ -41,7 +41,6 @@ class Episode (models.Model):
     '''Variables prefixed with r_ signify they are parameters for random level generation'''
 
     name = models.CharField(max_length=200)
-    first_level = models.ForeignKey('Level', related_name='episodeForFirstLevel')#TODO: remove
     next_episode = models.ForeignKey("self", null=True, default=None)
     in_development = models.BooleanField(default=False)
 
@@ -55,24 +54,16 @@ class Episode (models.Model):
     r_pythonEnabled = models.BooleanField(default=False)
     r_trafficLights = models.BooleanField(default=False)
     
-    #TODO: reinstate
-#     @property
-#     def first_level(self):
-#         return self.levels[0]
+    @property
+    def first_level(self):
+        return self.levels[0]
 
     @property
     def levels(self):
+        '''Sorts the levels by integer conversion of "name" which should equate to the correct play order'''
+        
         return sorted(self.level_set.all(), key=lambda level: int(level.name))
     
-    #TODO: remove
-    @property
-    def dodgy_levels_getter(self):
-        if self.first_level is not None:
-            level = self.first_level
-            while level is not None:
-                yield level
-                level = level.next_level
-                
     def __unicode__(self):
         return 'Episode: ' + self.name
 
@@ -104,14 +95,6 @@ class Level (models.Model):
     def __unicode__(self):
         return 'Level ' + str(self.id)
     
-    #TODO: remove
-    @property
-    def dodgy_episode_getter(self):
-        for episode in Episode.objects.all():
-            if self in episode.dodgy_levels_getter:
-                return episode
-        return None
-
 
 class LevelBlock(models.Model):
     type = models.ForeignKey(Block)
