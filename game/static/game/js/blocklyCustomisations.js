@@ -400,17 +400,26 @@ function setupDoubleclick() {
 				this.blockMouseDown_(block)));
 		}
 		var block2 = block;
-		this.listeners_.push(root.addEventListener('dblclick',
-			function(block) {
-				return function() {
-					if (block.nextConnection) {
-						ocargo.blocklyControl.addBlockToEndOfProgram(block.type);
-					} else {
-						ocargo.blocklyControl.createBlock(block.type);
-					}
-				};
-			}(block2)
-		));
+        var isBlockAllowed = function(block) {
+            for (var i = 0; i < BLOCKS.length; i++) {
+                if (BLOCKS[i].type === block.type) {
+                    return true;
+                }
+            }
+            return false;
+        };
+        var blockAddingListener = function(block) {
+            return function() {
+                if (isBlockAllowed(block)) {
+                    if (block.previousConnection) {
+                        ocargo.blocklyControl.addBlockToEndOfProgram(block.type);
+                    } else {
+                        ocargo.blocklyControl.createBlock(block.type);
+                    }
+                }
+            };
+        }(block2);
+		this.listeners_.push(root.addEventListener('dblclick', blockAddingListener));
 		this.listeners_.push(Blockly.bindEvent_(root, 'mouseover', block.svg_,
 		    block.svg_.addSelect));
 		this.listeners_.push(Blockly.bindEvent_(root, 'mouseout', block.svg_,
@@ -421,17 +430,7 @@ function setupDoubleclick() {
 		    block.svg_.addSelect));
 		this.listeners_.push(Blockly.bindEvent_(rect, 'mouseout', block.svg_,
 		    block.svg_.removeSelect));
-		this.listeners_.push(rect.addEventListener('dblclick',
-			function(block) {
-				return function() {
-					if (block.nextConnection) {
-						ocargo.blocklyControl.addBlockToEndOfProgram(block.type);
-					} else {
-						ocargo.blocklyControl.createBlock(block.type);
-					}
-				};
-			}(block2)
-		));
+		this.listeners_.push(rect.addEventListener('dblclick', blockAddingListener));
 		}
 
 		// IE 11 is an incompetant browser that fails to fire mouseout events.
