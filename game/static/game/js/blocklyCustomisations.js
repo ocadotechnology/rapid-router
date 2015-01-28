@@ -30,7 +30,7 @@ ocargo.BlocklyCustomisations = function() {
 
 	    // Setup the number of blocks
 	    var limitedBlocks = false;
-	    var blockCount = [];
+	    var blockCount = {};
 	    for (var i = 0; i < BLOCKS.length; i++) {
 	        var block = BLOCKS[i];
 	        blockCount[block.type] = block.number;
