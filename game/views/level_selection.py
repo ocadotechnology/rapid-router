@@ -19,7 +19,6 @@ def max_score(level):
         score = score + 10
     if level.model_solution != "[]":
         score = score + 10
-    print level.name, level.disable_route_score, level.model_solution, score
     return score
 
 def fetch_episode_data_from_database(early_access):
