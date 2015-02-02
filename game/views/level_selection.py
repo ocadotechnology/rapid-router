@@ -13,6 +13,14 @@ from game.models import Attempt, Episode
 from level_editor import play_anonymous_level
 from django.core.cache import cache
 
+def max_score(level):
+    score = 0
+    if not level.disable_route_score:
+        score = score + 10
+    if level.model_solution != "[]":
+        score = score + 10
+    return score
+
 def fetch_episode_data_from_database(early_access):
     episode_data = []
     episode = Episode.objects.get(pk=1)
@@ -33,6 +41,7 @@ def fetch_episode_data_from_database(early_access):
             levels.append({
                 "id": level.id,
                 "name": level_name,
+                "maxScore": max_score(level),
                 "title": get_level_title(level_name)})
 
         e = {"id": episode.id,
@@ -103,7 +112,8 @@ def levels(request):
             owned_level_data.append({
                 "id": level.id,
                 "title": level.name,
-                "score": attempts.get(level.id)
+                "score": attempts.get(level.id),
+                "maxScore": 10
             })
 
         for level in shared_levels:
@@ -111,7 +121,8 @@ def levels(request):
                 "id": level.id,
                 "title": level.name,
                 "owner": level.owner.user,
-                "score": attempts.get(level.id)
+                "score": attempts.get(level.id),
+                "maxScore": 10
             })
 
     context = RequestContext(request, {
