@@ -12,7 +12,8 @@
     var levels = [];
     {% for level in episode.levels %}
       levels.push({'name': {{level.name}},
-            'score': '{{level.score}}'});
+                   'score': '{{level.score}}',
+                   'maxScore': {{level.maxScore}}});
     {% endfor %}
     EPISODES.push({'id' : {{episode.id}},
             'levels': levels});
@@ -63,7 +64,7 @@
           <p>
             <a href="{% url 'game.views.level.play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a> 
             {% if level.score != None %}
-            <span class="score_text">{{level.score|floatformat}}/20</span>
+              <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
             <img class="level_image coin_image" value="{{level.name}}">
             {% endif %}
           </p>

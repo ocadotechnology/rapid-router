@@ -1107,7 +1107,7 @@ def title_level53():
     return ugettext("Choose your blocks wisely")
 
 def description_level53():
-    message = ugettext("Can you find the shortest route? Use your blocks carefully and dont forget the <b>repeat</b> loop.")
+    message = ugettext("Can you find the shortest route? Use your blocks carefully and don't forget the <b>repeat</b> loop.")
     return build_description(title_level53(), message)
 
 def hint_level53():
@@ -1239,7 +1239,7 @@ def title_level64():
     return ugettext("Muddy Patterns with Phil")
 
 def description_level64():
-    message = ugettext("Can you spot a pattern here? Create several procedures, it can save time when writing a program. Dont forget to clearly names your procedures and then call them")
+    message = ugettext("Can you spot a pattern here? Create several procedures, it can save time when writing a program. Don't forget to clearly name your procedures and then call them.")
     return build_description(title_level64(), message)
 
 def hint_level64():
@@ -1347,7 +1347,7 @@ def title_level73():
     return ugettext("Traffic light freeze up!")
 
 def description_level73():
-    message = ugettext("Can you find the shortest route?")
+    message = ugettext("Can you find the shortest algorithm?")
     return build_description(title_level73(), message)
 
 def hint_level73():
