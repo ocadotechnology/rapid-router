@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='level',
             name='episode',
-            field=models.ForeignKey(default=-1, to='game.Episode'),
+            field=models.ForeignKey(default=None, blank=True, to='game.Episode', null=True),
             preserve_default=False,
         ),
     ]
