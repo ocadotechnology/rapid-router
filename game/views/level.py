@@ -65,10 +65,8 @@ def play_level(request, levelID):
         lessonCall = getattr(messages, lesson)
         hintCall = getattr(messages, hint)
     except AttributeError:
-        lesson = 'description_level_default'
-        hint = 'hint_level_default'
-        lessonCall = getattr(messages, lesson)
-        hintCall = getattr(messages, hint)
+        lessonCall = messages.description_level_default
+        hintCall = messages.hint_level_default
 
     lesson = mark_safe(lessonCall())
     hint = mark_safe(hintCall())
@@ -138,10 +136,7 @@ def submit_attempt(request):
 
 def load_list_of_workspaces(request):
     workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
-    workspaces = []
-    for workspace in workspaces_owned:
-        workspaces.append({'id': workspace.id, 'name': workspace.name})
-
+    workspaces = [{'id': workspace.id, 'name': workspace.name} for workspace in workspaces_owned]
     return HttpResponse(json.dumps(workspaces), content_type='application/json')
 
 

@@ -1107,7 +1107,7 @@ def title_level53():
     return ugettext("Choose your blocks wisely")
 
 def description_level53():
-    message = ugettext("Can you find the shortest route? Use your blocks carefully and dont forget the <b>repeat</b> loop.")
+    message = ugettext("Can you find the shortest route? Use your blocks carefully and don't forget the <b>repeat</b> loop.")
     return build_description(title_level53(), message)
 
 def hint_level53():
@@ -1239,7 +1239,7 @@ def title_level64():
     return ugettext("Muddy Patterns with Phil")
 
 def description_level64():
-    message = ugettext("Can you spot a pattern here? Create several procedures, it can save time when writing a program. Dont forget to clearly names your procedures and then call them")
+    message = ugettext("Can you spot a pattern here? Create several procedures, it can save time when writing a program. Don't forget to clearly name your procedures and then call them.")
     return build_description(title_level64(), message)
 
 def hint_level64():
@@ -1347,7 +1347,7 @@ def title_level73():
     return ugettext("Traffic light freeze up!")
 
 def description_level73():
-    message = ugettext("Can you find the shortest route?")
+    message = ugettext("Can you find the shortest algorithm?")
     return build_description(title_level73(), message)
 
 def hint_level73():
@@ -1368,7 +1368,7 @@ def hint_level74():
 
 
 def title_level75():
-    return ugettext("Kirstys maze time")
+    return ugettext("Kirsty's maze time")
 
 def description_level75():
     message = ugettext("Can you find the shortest route?")
@@ -1380,38 +1380,38 @@ def hint_level75():
 
 
 def title_level76():
-    return ugettext("")
+    return ugettext("Cannot turn left!")
 
 def description_level76():
-    message = ugettext("")
+    message = ugettext("Can you find the shortest route?")
     return build_description(title_level76(), message)
 
 def hint_level76():
-    message = ugettext("")
+    message = ugettext("What is that? A barn for ANTS!?")
     return message
 
 
 def title_level77():
-    return ugettext("")
+    return ugettext("G Force")
 
 def description_level77():
-    message = ugettext("")
+    message = ugettext("Can you get the van to the house?")
     return build_description(title_level77(), message)
 
 def hint_level77():
-    message = ugettext("")
+    message = ugettext("Heard of recursion?")
     return message
 
 
 def title_level78():
-    return ugettext("")
+    return ugettext("Wandering Phil")
 
 def description_level78():
-    message = ugettext("")
+    message = ugettext("Can you get Phil to the house?")
     return build_description(title_level78(), message)
 
 def hint_level78():
-    message = ugettext("")
+    message = ugettext("Repeat while not dead end... turn around...")
     return message
 
 
