@@ -7,14 +7,12 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0009_auto_20140905_1201'),
+        ('game', '0041_level_episode_refs'),
     ]
 
     operations = [
-        migrations.AddField(
+        migrations.RemoveField(
             model_name='episode',
-            name='in_development',
-            field=models.BooleanField(default=False),
-            preserve_default=True,
+            name='first_level',
         ),
     ]

@@ -1,9 +1,10 @@
 from django.db import migrations
-from game.models import Episode
-
 
 def set_python_view(apps, schema_editor):
-    for level in Episode.objects.get(id=10).levels:
+    Level = apps.get_model('game', 'Level')
+    levels = [63, 64, 65, 66, 67, 68, 69, 93, 94, 95, 96, 97]
+    for level_id in levels:
+        level = Level.objects.get(pk=level_id)
         level.pythonEnabled = False
         level.pythonViewEnabled = True
         level.blocklyEnabled = True

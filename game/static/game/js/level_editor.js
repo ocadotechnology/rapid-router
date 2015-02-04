@@ -304,21 +304,11 @@ ocargo.LevelEditor = function() {
                 });
             });
 
-            // Disable block numbers if not developer
-            if(!BETA) {
-                $('.block_number').css('display', 'none');
-            }
-
             // Language controls
-            if(!BETA) {
-                $('#language_div').css('display', 'none');
-            } else {
-                $('#language_select').change(function() {
-                    var value = $(this).val();
-                    $('#blockly_blocks_div').css('display', this.value === 'python' ? 'none' : 'block');
-                });
-            }
-
+            $('#language_select').change(function() {
+                var value = $(this).val();
+                $('#blockly_blocks_div').css('display', this.value === 'python' ? 'none' : 'block');
+            });
 
             function setupBlocks() {
                 function addListenerToImage(type) {
@@ -1831,15 +1821,10 @@ ocargo.LevelEditor = function() {
         state.max_fuel = maxFuel;
         
         // Language data
-        if(BETA) {
-            var language = $('#language_select').val();
-            state.blocklyEnabled = language === 'blockly' || language === 'both' || language === 'blocklyWithPythonView';
-            state.pythonViewEnabled = language === 'blocklyWithPythonView';
-            state.pythonEnabled = language === 'python' || language === 'both';
-        } else {
-            state.blocklyEnabled = true;
-            state.pythonEnabled = false;
-        }
+        var language = $('#language_select').val();
+        state.blocklyEnabled = language === 'blockly' || language === 'both' || language === 'blocklyWithPythonView';
+        state.pythonViewEnabled = language === 'blocklyWithPythonView';
+        state.pythonEnabled = language === 'python' || language === 'both';
         
         // Other data
         state.theme = currentTheme.id;
@@ -1922,17 +1907,15 @@ ocargo.LevelEditor = function() {
         }
         
         // Load in language data
-        if(BETA) {
-            var languageSelect = $('#languageSelect');
-            if(state.blocklyEnabled && state.pythonEnabled) {
-                languageSelect.val('both');
-            } else if(state.pythonEnabled) {
-                languageSelect.val('python');
-            } else {
-                languageSelect.val('blockly');
-            }
-            languageSelect.change();
+        var languageSelect = $('#languageSelect');
+        if(state.blocklyEnabled && state.pythonEnabled) {
+            languageSelect.val('both');
+        } else if(state.pythonEnabled) {
+            languageSelect.val('python');
+        } else {
+            languageSelect.val('blockly');
         }
+        languageSelect.change();
         
         // Other data
         if(state.max_fuel) {

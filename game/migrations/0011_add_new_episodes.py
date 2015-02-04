@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 
 
-
 def add_episodes(apps, schema_editor):
     Level = apps.get_model('game', 'Level')
     Episode = apps.get_model('game', 'Episode')
