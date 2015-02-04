@@ -135,7 +135,10 @@ def submit_attempt(request):
 
 
 def load_list_of_workspaces(request):
-    workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
+    workspaces_owned = []
+    if permissions.can_create_workspace(request.user):
+        workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
+
     workspaces = [{'id': workspace.id, 'name': workspace.name} for workspace in workspaces_owned]
     return HttpResponse(json.dumps(workspaces), content_type='application/json')
 
@@ -155,12 +158,13 @@ def save_workspace(request, workspaceID=None):
     contents = request.POST.get('contents')
     python_contents = request.POST.get('python_contents')
 
+    workspace = None
     if workspaceID:
         workspace = Workspace.objects.get(id=workspaceID)
     elif permissions.can_create_workspace(request.user):
         workspace = Workspace(owner=request.user.userprofile)
 
-    if permissions.can_save_workspace(request.user, workspace):
+    if workspace and permissions.can_save_workspace(request.user, workspace):
         workspace.name = name
         workspace.contents = contents
         workspace.python_contents = python_contents
