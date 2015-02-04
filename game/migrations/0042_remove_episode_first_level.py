@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0039_level_episode_refs'),
+        ('game', '0041_level_episode_refs'),
     ]
 
     operations = [

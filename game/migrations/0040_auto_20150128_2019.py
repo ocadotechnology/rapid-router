@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0037_level_score_79'),
+        ('game', '0039_second_episodes_release'),
     ]
 
     operations = [
@@ -16,10 +16,5 @@ class Migration(migrations.Migration):
             name='episode',
             field=models.ForeignKey(default=-1, to='game.Episode'),
             preserve_default=False,
-        ),
-        migrations.AlterField(
-            model_name='episode',
-            name='first_level',
-            field=models.ForeignKey(related_name=b'episodeForFirstLevel', to='game.Level'),
         ),
     ]
