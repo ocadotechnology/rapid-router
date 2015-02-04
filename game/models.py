@@ -70,7 +70,7 @@ class Episode (models.Model):
 
 class Level (models.Model):
     name = models.CharField(max_length=100)
-    episode = models.ForeignKey(Episode)
+    episode = models.ForeignKey(Episode, blank=True, null=True, default=None)
     path = models.TextField(max_length=10000)
     traffic_lights = models.TextField(max_length=10000, default='[]')
     origin = models.CharField(max_length=50, default='[]')
