@@ -28,6 +28,13 @@ ocargo.BlocklyCustomisations = function() {
 		}
 	};
 
+    // Override Scrollbar::set to call constrainKnob, in case value is negative
+    Blockly.Scrollbar.prototype.set = function(value) {
+        // Move the scrollbar slider.
+        this.svgKnob_.setAttribute(this.horizontal_ ? 'x' : 'y', this.constrainKnob_(value * this.ratio_));
+        this.onScroll_();
+    };
+
 	/**
 	 * Sets up only having a limited number of blocks
 	 * Needs to be called BEFORE blockly is injected
