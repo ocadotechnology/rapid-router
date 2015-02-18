@@ -2,7 +2,11 @@ var ocargo = ocargo || {};
 
 var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
 var appendCodeToPanel = function (code, panel) {
-    panel.setValue(DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n'));
+    var oldValue = panel.getValue();
+    var newValue = DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n');
+    if (newValue !== oldValue) {
+        panel.setValue(newValue);
+    }
 };
 
 ocargo.PythonControl = function () {
