@@ -5,7 +5,6 @@ from django.db import models, migrations
 
 
 class Migration(migrations.Migration):
-
     def transferBlockData(apps, schema_editor):
         Level = apps.get_model('game', 'Level')
         Block = apps.get_model('game', 'Block')

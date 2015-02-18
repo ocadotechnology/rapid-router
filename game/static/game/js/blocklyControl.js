@@ -266,7 +266,9 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
             n += count(nextBlock);
         } 
         else if (block.type === 'controls_if') {
-            for (var i = 0; i < block.inputList.length - block.elseCount_; i++) {
+            var elseCount = block.elseCount_ || 0;
+
+            for (var i = 0; i < block.inputList.length - elseCount; i++) {
                 var input = block.inputList[i];
                 if (input.name.indexOf('IF') === 0) {
                     var conditionBlock = input.connection.targetBlock();
@@ -277,7 +279,7 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
                 }
             }
 
-            if (block.elseCount_ === 1) {
+            if (elseCount === 1) {
                 var elseBlock = block.inputList[block.inputList.length - 1]
                                      .connection.targetBlock();
                 n += count(elseBlock);
