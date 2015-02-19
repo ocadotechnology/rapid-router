@@ -171,6 +171,12 @@ ocargo.Game.prototype.reset = function() {
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     this.reset();
 
+    ocargo.event.sendEvent("PlayButtonPressed", { levelName: LEVEL_NAME,
+                                                  defaultLevel: DEFAULT_LEVEL,
+                                                  workspace: ocargo.blocklyControl.serialize(),
+                                                  failures: this.failures,
+                                                  pythonWorkspace: ocargo.pythonControl.getCode() });
+
     var result = ocargo.controller.prepare();
     if (!result.success) {
         ocargo.sound.tension();
