@@ -4,26 +4,24 @@ var ocargo = ocargo || {};
 
 var ANIMATION_LENGTH = 500;
 
-ocargo.Animation = {
+ocargo.Animation = function(model, decor, numVans) {
+    this.model = model;
+    this.decor = decor;
+    this.numVans = numVans;
 
-    init : function(model, decor, numVans) {
-        this.model = model;
-        this.decor = decor;
-        this.numVans = numVans;
+    // timer identifier for pausing
+    this.playTimer = -1;
 
-        ocargo.drawing.clearPaper();
-        ocargo.drawing.renderMap(this.model.map);
-        ocargo.drawing.renderDecor(this.decor);
-        ocargo.drawing.renderVans(this.model.map.getStartingPosition(), this.numVans);
-        ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
-        ocargo.drawing.renderDestinations(this.model.map.getDestinations());
-        ocargo.drawing.renderTrafficLights(this.model.trafficLights);
+    ocargo.drawing.clearPaper();
+    ocargo.drawing.renderMap(this.model.map);
+    ocargo.drawing.renderDecor(this.decor);
+    ocargo.drawing.renderVans(this.model.map.getStartingPosition(), this.numVans);
+    ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
+    ocargo.drawing.renderDestinations(this.model.map.getDestinations());
+    ocargo.drawing.renderTrafficLights(this.model.trafficLights);
 
-        this.updateFuelGauge(100);
-    }
-
-}
-
+     this.updateFuelGauge(100);
+};
 
 ocargo.Animation.prototype.isFinished = function() {
 	return this.finished;
