@@ -100,7 +100,7 @@ ocargo.Game = function() {
 ocargo.Game.prototype.setup = function() {
     initCustomBlocks();
     ocargo.blocklyControl = new ocargo.BlocklyControl();
-    setupDoubleclick();
+    ocargo.blocklyControl.blocklyCustomisations.setupDoubleclick();
     ocargo.blocklyControl.blocklyCustomisations.setupLimitedBlocks();
     ocargo.pythonControl = new ocargo.PythonControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
@@ -170,6 +170,12 @@ ocargo.Game.prototype.reset = function() {
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     this.reset();
+
+    ocargo.event.sendEvent("PlayButtonPressed", { levelName: LEVEL_NAME,
+                                                  defaultLevel: DEFAULT_LEVEL,
+                                                  workspace: ocargo.blocklyControl.serialize(),
+                                                  failures: this.failures,
+                                                  pythonWorkspace: ocargo.pythonControl.getCode() });
 
     var result = ocargo.controller.prepare();
     if (!result.success) {

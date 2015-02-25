@@ -37,8 +37,40 @@ class Character(models.Model):
     height = models.IntegerField(default=20)
 
 
+class Episode (models.Model):
+    '''Variables prefixed with r_ signify they are parameters for random level generation'''
+
+    name = models.CharField(max_length=200)
+    next_episode = models.ForeignKey("self", null=True, default=None)
+    in_development = models.BooleanField(default=False)
+
+    r_random_levels_enabled = models.BooleanField(default=False)
+    r_branchiness = models.FloatField(default=0, null=True)
+    r_loopiness = models.FloatField(default=0, null=True)
+    r_curviness = models.FloatField(default=0, null=True)
+    r_num_tiles = models.IntegerField(default=5, null=True)
+    r_blocks = models.ManyToManyField(Block, related_name='episodes', null=True)
+    r_blocklyEnabled = models.BooleanField(default=True)
+    r_pythonEnabled = models.BooleanField(default=False)
+    r_trafficLights = models.BooleanField(default=False)
+    
+    @property
+    def first_level(self):
+        return self.levels[0]
+
+    @property
+    def levels(self):
+        '''Sorts the levels by integer conversion of "name" which should equate to the correct play order'''
+        
+        return sorted(self.level_set.all(), key=lambda level: int(level.name))
+    
+    def __unicode__(self):
+        return 'Episode: ' + self.name
+
+
 class Level (models.Model):
     name = models.CharField(max_length=100)
+    episode = models.ForeignKey(Episode, blank=True, null=True, default=None)
     path = models.TextField(max_length=10000)
     traffic_lights = models.TextField(max_length=10000, default='[]')
     origin = models.CharField(max_length=50, default='[]')
@@ -62,14 +94,7 @@ class Level (models.Model):
 
     def __unicode__(self):
         return 'Level ' + str(self.id)
-
-    @property
-    def episode(self):
-        for episode in Episode.objects.all():
-            if self in episode.levels:
-                return episode
-        return None
-
+    
 
 class LevelBlock(models.Model):
     type = models.ForeignKey(Block)
@@ -82,37 +107,7 @@ class LevelDecor(models.Model):
     y = models.IntegerField()
     level = models.ForeignKey(Level)
     decorName = models.CharField(max_length=100, default='tree1')
-
-
-class Episode (models.Model):
-    '''Variables prefixed with r_ signify they are parameters for random level generation'''
-
-    name = models.CharField(max_length=200)
-    first_level = models.ForeignKey(Level)
-    next_episode = models.ForeignKey("self", null=True, default=None)
-    in_development = models.BooleanField(default=False)
-
-    r_random_levels_enabled = models.BooleanField(default=False)
-    r_branchiness = models.FloatField(default=0, null=True)
-    r_loopiness = models.FloatField(default=0, null=True)
-    r_curviness = models.FloatField(default=0, null=True)
-    r_num_tiles = models.IntegerField(default=5, null=True)
-    r_blocks = models.ManyToManyField(Block, related_name='episodes', null=True)
-    r_blocklyEnabled = models.BooleanField(default=True)
-    r_pythonEnabled = models.BooleanField(default=False)
-    r_trafficLights = models.BooleanField(default=False)
-
-    @property
-    def levels(self):
-        if self.first_level is not None:
-            level = self.first_level
-            while level is not None:
-                yield level
-                level = level.next_level
-                
-    def __unicode__(self):
-        return 'Episode: ' + self.name
-
+    
 
 class Workspace (models.Model):
     name = models.CharField(max_length=200)
