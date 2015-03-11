@@ -63,14 +63,17 @@ ocargo.BlocklyCustomisations = function() {
 
 		    // Override blockly flyout's show function to add in the quantity text elements
 		    var oldShowFunction = Blockly.Flyout.prototype.show;
-		    var quantities = [];
 		    Blockly.Flyout.prototype.show = function(xmlList) {
 		        var margin = this.CORNER_RADIUS;
 
+                this.blockQuantities_ = this.blockQuantities_ || [];
+
 		        // Remove current quantity elements
-		        for (var i = quantities.length - 1; i >= 0; i--) {
+		        for (var i = this.blockQuantities_.length - 1; i >= 0; i--) {
 		            goog.dom.removeNode(quantities[i]);
 		        }
+
+                this.blockQuantities_ = [];
 
 		        // Creates the blocks that are shown (to calculate correct heights).
 		        var blocks = [];
@@ -98,7 +101,7 @@ ocargo.BlocklyCustomisations = function() {
 
 		                var element = Blockly.createSvgElement('text', attributes, null);
 		                setQuantityText(element, block.type);
-		                quantities.push(element);
+                        this.blockQuantities_.push(element);
 
 		                this.workspace_.getCanvas().insertBefore(element, block.getSvgRoot());
 		            }
