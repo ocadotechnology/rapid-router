@@ -70,7 +70,7 @@ ocargo.BlocklyCustomisations = function() {
 
 		        // Remove current quantity elements
 		        for (var i = this.blockQuantities_.length - 1; i >= 0; i--) {
-		            goog.dom.removeNode(quantities[i]);
+		            goog.dom.removeNode(this.blockQuantities_[i]);
 		        }
 
                 this.blockQuantities_ = [];
