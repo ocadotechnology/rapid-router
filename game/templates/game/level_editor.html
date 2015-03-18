@@ -54,15 +54,18 @@
                      "selected": "{{theme.selected}}"});
       {% endfor %}
 
-      var decor = [];
+      var decor = [
       {% for dec in decor %}
-        decor.push({"id":"{{dec.id}}",
-                    "name":"{{dec.name}}",
-                    "url": ocargo.Drawing.raphaelImageDir + "{{dec.url}}",
-                    "width":"{{dec.width}}",
-                    "height":"{{dec.height}}",
-                    "theme_name":themes[{{dec.theme_id}}-1].name});
+        {
+            "id":"{{dec.id}}",
+            "name":"{{dec.name}}",
+            "url": ocargo.Drawing.raphaelImageDir + "{{dec.url}}",
+            "width":"{{dec.width}}",
+            "height":"{{dec.height}}",
+            "theme_name":themes[{{dec.theme_id}}-1].name
+        }{% if not forloop.last %},{% endif %}
       {% endfor %}
+      ];
 
       
       for(var i = 0; i < themes.length; i++) {
