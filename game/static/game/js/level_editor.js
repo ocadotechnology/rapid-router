@@ -235,7 +235,11 @@ ocargo.LevelEditor = function() {
             });
 
             $('#theme_select').change(function() {
-                setTheme(THEMES[$(this).val()]);
+                var selectedValue = $(this).val();
+                var theme = THEMES[selectedValue];
+                if (theme) {
+                    setTheme(theme);
+                }
             });
 
             $('#bush').click(function() {
