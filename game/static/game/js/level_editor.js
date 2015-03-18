@@ -272,10 +272,14 @@ ocargo.LevelEditor = function() {
                 transitionTab(tabs.character);
             });
 
-            $("#character_select").change(function() { 
-                CHARACTER_NAME = CHARACTERS[$(this).val()].name;
-                $('#character_image').attr('src', CHARACTERS[$(this).val()].image);
-                redrawRoad();
+            $("#character_select").change(function() {
+                var selectedValue = $(this).val();
+                var character = CHARACTERS[selectedValue];
+                if (character) {
+                    CHARACTER_NAME = character.name;
+                    $('#character_image').attr('src', character.image);
+                    redrawRoad();
+                }
             });
 
             $("#character_select").change();
