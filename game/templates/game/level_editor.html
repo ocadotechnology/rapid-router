@@ -62,7 +62,8 @@
             "url": ocargo.Drawing.raphaelImageDir + "{{dec.url}}",
             "width":"{{dec.width}}",
             "height":"{{dec.height}}",
-            "theme_name":themes[{{dec.theme_id}}-1].name
+            "theme_name":themes[{{dec.theme_id}}-1].name,
+            "z_index":{{ dec.z_index }}
         }{% if not forloop.last %},{% endif %}
       {% endfor %}
       ];
