@@ -708,22 +708,18 @@ ocargo.Game.prototype.setupTabs = function() {
 
     // Helper method for load and save tabs
     function populateTable (tableName, workspaces) {
-        var table = $('#'+tableName);
+
+        var table = $('#'+tableName),
+            sortedWorkspaces = [];
         
         // Remove click listeners to avoid memory leak and remove all rows
         $('#'+tableName+' td').off('click');
         table.empty();
         
         // Order them alphabetically
-        workspaces.sort(function(a, b) {
-            if (a.name < b.name) {
-                return -1;
-            }
-            else if (a.name > b.name) {
-                return 1;
-            }
-            return 0;
-        });
+        sortedWorkspaces = ocargo.utils.sortObjects(workspaces,'name');
+
+        workspaces = sortedWorkspaces;
 
         // Add a row to the table for each workspace saved in the database
         for (var i = 0, ii = workspaces.length; i < ii; i++) {
