@@ -231,6 +231,7 @@ def create_scoreboard(request):
 
     form = ScoreboardForm(request.POST or None, classes=classes)
     student_data = None
+
     # Update the scoreboard if the class and or level were selected.
     if request.method == 'POST':
         if form.is_valid():

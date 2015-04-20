@@ -69,6 +69,7 @@ class Episode (models.Model):
 
 class LevelManager(models.Manager):
     def sorted_levels(self):
+        #Sorts all the levels by integer conversion of "name" which should equate to the correct play order
         return sorted(self.model.objects.all(), key=lambda level: int(level.name))
 
 class Level (models.Model):
