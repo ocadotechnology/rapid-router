@@ -1,6 +1,6 @@
 from django import forms
 from models import UserProfile, Level
-
+import itertools
 
 class AvatarUploadForm(forms.ModelForm):
     class Meta:
@@ -54,9 +54,11 @@ class ScoreboardForm(forms.Form):
                                                         required=False,
                                                         widget=forms.Select(
                                                             attrs={'class': 'wide'}))
-        self.fields['levels'] = forms.ModelChoiceField(queryset=Level.objects.filter(default=1),
-                                                       required=False,
-                                                       widget=forms.Select(attrs={'class': 'wide'}))
+        choice_list = ((level.id, str(level)) for level in Level.objects.sorted_levels())
+        self.fields['levels'] = forms.ChoiceField(choices=itertools.chain([("", "---------")], choice_list),
+                                                    required=False,
+                                                    widget=forms.Select(
+                                                        attrs={'class': 'wide'}))
 
         def validate(self):
             cleaned_data = super(ScoreboardForm, self).clean()
