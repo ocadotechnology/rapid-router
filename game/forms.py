@@ -53,14 +53,15 @@ class ScoreboardForm(forms.Form):
         self.fields['classes'] = forms.ModelChoiceField(queryset=classes,
                                                         required=False,
                                                         widget=forms.Select(
-                                                            attrs={'class': 'wide'}))
+                                                            attrs={'class': 'wide'}),
+                                                        empty_label="All classes")
 
         # Each tuple in choices has two elements, id and name of each level
         # First element is the actual value set on the model
         # Second element is the string displayed on the drop down menu
         # Insert an extra empty element as ChoiceField is required by default
         choice_list = ((level.id, str(level)) for level in Level.objects.sorted_levels())
-        self.fields['levels'] = forms.ChoiceField(choices=itertools.chain([("", "---------")], choice_list),
+        self.fields['levels'] = forms.ChoiceField(choices=itertools.chain([("", "All levels")], choice_list),
                                                     required=False,
                                                     widget=forms.Select(
                                                         attrs={'class': 'wide'}))
