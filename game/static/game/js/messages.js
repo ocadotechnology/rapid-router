@@ -7,7 +7,7 @@ ocargo.jsElements = {
         return "<img src='" + url + "'class='" + class_ + "'>";
     },
     redirectButton: function(location, label) {
-        return '<br><button class="navigation_button long_button" onclick="window.location.href=' + location + 
+        return '<br><button class="navigation_button long_button" onclick="window.location.href=' + location +
             '"><span>' + label + '</span></button>';
     },
     closebutton: function(label) {
@@ -24,7 +24,6 @@ ocargo.messages = {
     nextEpisode: function(episode, random) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
             "challenge? " + (random ? "Or try one of this episode's random levels!" : "") +
-            " <br><br>" + 
             ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "/'",
                                              'Next episode') + " " +
             (random ? randomocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "/'",
