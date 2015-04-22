@@ -217,7 +217,6 @@ ocargo.LevelEditor = function() {
                     ocargo.Drawing.startPopup('Django level migration', 
                         'Copy the text in the console into the Django migration file.',
                         'You will have to change the level name and fill in the model solution field.');
-                    console.log(getLevelTextForDjangoMigration(extractState()));
                 });
             }
         }
@@ -238,20 +237,8 @@ ocargo.LevelEditor = function() {
                 setTheme(THEMES[$(this).val()]);
             });
 
-            $('#bush').click(function() {
-                new InternalDecor('bush');
-            });
-
-            $('#tree1').click(function() {
-                new InternalDecor('tree1');
-            });
-
-            $('#tree2').click(function() {
-                new InternalDecor('tree2');
-            });
-
-            $('#pond').click(function() {
-                new InternalDecor('pond');
+            $('.decor_button').click(function(e){
+                new InternalDecor(e.target.id);
             });
 
             $('#trafficLightRed').click(function() {
@@ -1761,6 +1748,7 @@ ocargo.LevelEditor = function() {
     /**********************************/
 
     function extractState() {
+
         var state = {};
 
         // Create node data
@@ -1834,6 +1822,7 @@ ocargo.LevelEditor = function() {
     }
 
     function restoreState(state) {
+
         clear();
 
         // Load node data
@@ -1976,6 +1965,7 @@ ocargo.LevelEditor = function() {
         if (localStorage) {
             if (localStorage.levelEditorState) {
                 var state = JSON.parse(localStorage.levelEditorState);
+
                 if (state) {
                     restoreState(state);
                 }
@@ -2178,6 +2168,7 @@ ocargo.LevelEditor = function() {
             var data =  {
                             'x': Math.floor(bBox.x),
                             'y': PAPER_HEIGHT - bBox.height - Math.floor(bBox.y),
+                            'z': currentTheme.decor[this.decorName].z_index,
                             'decorName': this.decorName
                         };
             return data;
@@ -2219,6 +2210,7 @@ ocargo.LevelEditor = function() {
         this.setPosition(paper.scrollLeft(), paper.scrollTop());
 
         decor.push(this);
+
     }
 };
 
