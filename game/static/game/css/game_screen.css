@@ -294,7 +294,7 @@ table th {
     overflow: hidden;
 }
 
-#modal-text, #modal-buttons {
+#modal-content {
     float: left;
     width: 78%;
 }

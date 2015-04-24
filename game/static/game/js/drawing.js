@@ -866,7 +866,7 @@ ocargo.Drawing.translate = function(coordinate) {
 };
 
 // This is the function that starts the pop-up.
-ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay, buttons) {
+ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
@@ -890,7 +890,7 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay, bu
 // This is the function that starts the pop-up with a yes and a no button
 ocargo.Drawing.startYesNoPopup = function(title, subtitle, message, yesFunction, noFunction, mascot, delay) {
     var buttonHtml = '<button id="modal-yesBtn" class="navigation_button long_button">Yes</button> <button id="modal-noBtn" class="navigation_button long_button">No</button>';
-    ocargo.Drawing.startPopup(title, subtitle, message, mascot, delay, buttonHtml);
+    ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml, delay);
     $('#modal-yesBtn').click(yesFunction);
     $('#modal-noBtn').click(noFunction);
 };

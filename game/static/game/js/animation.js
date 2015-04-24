@@ -222,6 +222,8 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		case 'popup':
 			var title = "";
 			var leadMsg = a.popupMessage;
+			var buttons = a.button;
+
 			// sort popup...
 			switch (a.popupType) {
 				case 'WIN':
@@ -229,11 +231,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					var levelMsg = "";
 
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
-						levelMsg = ocargo.messages.nowTryPython + ocargo.jsElements.closebutton("Close");
+						levelMsg = ocargo.messages.nowTryPython;
+						buttons += ocargo.jsElements.closebutton("Close");
 					}
 					else {
 						if (NEXT_LEVEL) {
-					        levelMsg = ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "/'",
+							buttons = ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "/'",
 					        								     		'Next Level');
 					    } 
 					    else {
@@ -249,19 +252,18 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
-					leadMsg = leadMsg + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+					buttons = ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
 					break;
 				case 'WARNING':
-					title = ocargo.messages.ohNo;
-					leadMsg = leadMsg + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+					buttons = ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
 					break;
 			}
 			var otherMsg = "";
 			if (a.popupHint) {
-				leadMsg += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
+				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
 				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}
-			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true);
+			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons);
 			if (a.popupHint) {
 				$("#hintPopupBtn").click( function(){
 	                    $("#hintText").show(500);

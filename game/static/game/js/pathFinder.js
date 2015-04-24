@@ -20,6 +20,8 @@ ocargo.PathFinder = function(model) {
 
 ocargo.PathFinder.prototype.getScore = function() {
     var message = "";
+    var button = "";
+
     var pathLengthScore = 0;
     if(!this.pathScoreDisabled){
         pathLengthScore = Math.max(0, this.getTravelledPathScore());
@@ -50,19 +52,22 @@ ocargo.PathFinder.prototype.getScore = function() {
     message += ocargo.messages.totalScore(totalScore, this.maxScore);
 
     if (pathLengthScore < this.maxDistanceScore) {
-        message += "<br>" + ocargo.messages.pathLonger + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+        message += "<br>" + ocargo.messages.pathLonger
+        button += ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
     }
     else if (initInstrScore > this.maxInstrLengthScore) {
-        message += "<br>" + ocargo.messages.algorithmShorter + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+        message += "<br>" + ocargo.messages.algorithmShorter;
+        button += ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel)
     }
     else if (initInstrScore < this.maxInstrLengthScore) {
-        message += "<br>" + ocargo.messages.algorithmLonger + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+        message += "<br>" + ocargo.messages.algorithmLonger;
+        button += ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel)
     }
     else  if (totalScore === this.maxScore) {
         message += "<br>" + ocargo.messages.scorePerfect;
     }
 
-    return [totalScore, message];
+    return [totalScore, message, button];
 };
 
 
