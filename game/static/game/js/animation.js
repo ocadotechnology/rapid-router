@@ -242,6 +242,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					    else {
 					        if (NEXT_EPISODE) {
 					            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE);
+								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE);
 					        } 
 					        else if(MODEL_SOLUTION.length > 0) {
 					            levelMsg = ocargo.messages.lastLevel;

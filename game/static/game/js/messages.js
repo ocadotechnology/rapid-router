@@ -15,6 +15,13 @@ ocargo.jsElements = {
         ').click()"><span>' + label +'</span></button>';
 
     },
+    nextEpisodeButton: function(episode, random){
+        return ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "/'",
+                'Next episode') + (random ? randomocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "/'",
+            'Random level') : "") + " " +
+        ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
+    },
+
     buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>'
 };
 
@@ -23,12 +30,7 @@ ocargo.jsElements = {
 ocargo.messages = {
     nextEpisode: function(episode, random) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
-            "challenge? " + (random ? "Or try one of this episode's random levels!" : "") + "<br>" +
-            ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "/'",
-                                             'Next episode') + " " +
-            (random ? randomocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "/'",
-                                                            'Random level') : "") + " " +
-            ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
+            "challenge? " + (random ? "Or try one of this episode's random levels!" : "") ;
     },
 
     loggedOutWarning: "You are not logged in. Your progress won't be saved.",

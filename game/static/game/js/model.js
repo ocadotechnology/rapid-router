@@ -402,7 +402,8 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             id: this.vanId,
             popupType: 'WIN',
             popupMessage: scoreArray[1],
-            description: 'win popup'
+            description: 'win popup',
+            button: scoreArray[2]
         });
 
         // Winning sound
