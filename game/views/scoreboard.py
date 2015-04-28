@@ -191,10 +191,9 @@ def create_scoreboard(request):
         if not userprofile.developer:
             episodes = Episode.objects.filter(in_development=False)
 
-        for episode in episodes:
-            levels += episode.levels
-            for level in episode.levels:
-                headers.append('Level {}'.format(level.name))
+        levels = Level.objects.sorted_levels()
+        headers += Level.objects.sorted_levels()
+
         return levels, headers
 
     def is_viewable(class_):
