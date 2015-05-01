@@ -236,7 +236,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					}
 					else {
 						if (NEXT_LEVEL) {
-							buttons = ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "/'",
+							buttons += ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "/'",
 					        								     		'Next Level');
 					    } 
 					    else {
