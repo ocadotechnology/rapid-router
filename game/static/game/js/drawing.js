@@ -865,7 +865,12 @@ ocargo.Drawing.translate = function(coordinate) {
     return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
 };
 
-// This is the function that starts the pop-up.
+/*
+ This is the function that starts the pop-up.
+ Buttons should be passed in separately to the function instead of concatenating
+ to the message so as to keep the layout of the pop-up consistent.
+ Buttons will be displayed in one row underneath the text messages.
+ */
 ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
