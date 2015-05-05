@@ -91,11 +91,7 @@
                 </p>
               {% endfor %}
             {% else %}
-              {% if user|is_logged_in %}
               <p>No levels have been created by you yet.</p>
-              {% else %}
-              <p>You cannot save created levels as you are not logged in.</p>
-              {% endif %}
             {% endif %}
           </div>
 
@@ -113,11 +109,7 @@
                 </p>
               {% endfor %}
             {% else %}
-              {% if user|is_logged_in_as_school_user %}
               <p>No levels have been shared with you yet.</p>
-              {% else %}
-              <p>You cannot share levels as you are not registered to a school or club.</p>
-              {% endif %}
             {% endif %}
           </div>
         {% endif %}
