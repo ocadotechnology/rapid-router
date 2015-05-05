@@ -77,48 +77,42 @@
         </div>
         {% endfor %}
 
-        <h3 class='customLevelsEpisode'>Levels created by you</h3>
-        <div>
-          {% if owned_levels %}
-            {% for level in owned_levels %}
-              <p>
-                <a href="{% url 'game.views.level.play_custom_level' level.id %}">{{level.title}}</a>
-                {% if level.score != None %}
-                <span class="score_text">{{level.score|floatformat}}/10</span>
-                <img class="level_image coin_image" value="{{level.id}}">
-                {% endif %}
-              </p>
-            {% endfor %}
-          {% else %}
-            {% if user|is_logged_in %}
-            <p>No levels have been created by you yet.</p>
+        {% if user|is_logged_in %}
+          <h3 class='customLevelsEpisode'>Levels created by you</h3>
+          <div>
+            {% if owned_levels %}
+              {% for level in owned_levels %}
+                <p>
+                  <a href="{% url 'game.views.level.play_custom_level' level.id %}">{{level.title}}</a>
+                  {% if level.score != None %}
+                  <span class="score_text">{{level.score|floatformat}}/10</span>
+                  <img class="level_image coin_image" value="{{level.id}}">
+                  {% endif %}
+                </p>
+              {% endfor %}
             {% else %}
-            <p>You cannot save created levels as you are not logged in.</p>
+              <p>No levels have been created by you yet.</p>
             {% endif %}
-          {% endif %}
-        </div>
+          </div>
 
-        <h3 class='customLevelsEpisode'>Levels shared with you</h3>
-        <div>
-          {% if shared_levels %}
-            {% for level in shared_levels %}
-              <p>
-                <a href="{% url 'game.views.level.play_custom_level' level.id %}">
-                {{level.title}} ({{level.owner|make_into_username}})</a>
-                {% if level.score != None %}
-                <span class="score_text">{{level.score|floatformat}}/10</span>
-                <img class="level_image coin_image" value="{{level.id}}">
-                {% endif %}
-              </p>
-            {% endfor %}
-          {% else %}
-            {% if user|is_logged_in_as_school_user %}
-            <p>No levels have been shared with you yet.</p>
+          <h3 class='customLevelsEpisode'>Levels shared with you</h3>
+          <div>
+            {% if shared_levels %}
+              {% for level in shared_levels %}
+                <p>
+                  <a href="{% url 'game.views.level.play_custom_level' level.id %}">
+                  {{level.title}} ({{level.owner|make_into_username}})</a>
+                  {% if level.score != None %}
+                  <span class="score_text">{{level.score|floatformat}}/10</span>
+                  <img class="level_image coin_image" value="{{level.id}}">
+                  {% endif %}
+                </p>
+              {% endfor %}
             {% else %}
-            <p>You cannot share levels as you are not registered to a school or club.</p>
+              <p>No levels have been shared with you yet.</p>
             {% endif %}
-          {% endif %}
-        </div>
+          </div>
+        {% endif %}
       </div>
       <div id="container"></div>
     </div>
