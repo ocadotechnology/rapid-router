@@ -185,14 +185,8 @@ def create_scoreboard(request):
         return many_rows(student_data, levels)
 
     def get_levels(userprofile, headers):
-        episodes = Episode.objects.all()
-        levels = []
-
-        if not userprofile.developer:
-            episodes = Episode.objects.filter(in_development=False)
-
         levels = Level.objects.sorted_levels()
-        headers += Level.objects.sorted_levels()
+        headers += levels
 
         return levels, headers
 
