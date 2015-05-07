@@ -595,6 +595,8 @@ ocargo.Game.prototype.setupTabs = function() {
         $('#loadWorkspace').click(function() {
             if (selectedWorkspace) {
 
+                // Blockly or Python tab must be selected before domToWorkspace is called
+                // Otherwise blocks will be chopped off or python editor will not be updated
                 if (PYTHON_ENABLED) {
                     tabs.python.select();
                 }
