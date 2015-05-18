@@ -235,17 +235,28 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 						buttons += ocargo.button.addDismissButtonHtml('Close');
 					}
 					else {
+						// If there exists next level, add a button which redirects the user to that
 						if (NEXT_LEVEL) {
-							buttons += ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "/'",
+							buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/" + NEXT_LEVEL + "/'",
 					        								     		'Next Level');
 					    } 
 					    else {
+							/*
+							 This is the last level of the episode. If there exists a next episode, add button to
+							 redirect user to it or level selection page.
+							 If this is a default level and there isn't a next episode, user has reached the end of the
+							 game. Add button to encourage users to create their own levels or redirect to level
+							 selection page.
+							 */
+
 					        if (NEXT_EPISODE) {
-					            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE);
-								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE);
-					        } 
-					        else if(MODEL_SOLUTION.length > 0) {
+					            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM);
+								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
+					        }
+					        else if(DEFAULT_LEVEL) {
 					            levelMsg = ocargo.messages.lastLevel;
+								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/level_editor/'", "Create your own map!");
+								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
 					        }
 					    }
 					}

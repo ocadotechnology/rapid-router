@@ -36,10 +36,7 @@ ocargo.messages = {
     loggedOutWarning: "You are not logged in. Your progress won't be saved.",
     nowTryPython: "Looks like you've got a route sorted using Blockly.<br><br>" +
         "Now go to the Python tab and see if you can do the same in Python! ",
-    lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own " +
-        "challenges. <br><br>" +
-        ocargo.jsElements.redirectButton("'/rapidrouter/level_editor/'", "Create your own map!") +
-        " " + ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home"),
+    lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own challenges.",
 
     illegalBlocks: "Sorry, this workspace has blocks in it that aren't allowed in this level!",
     tooManyBlocks: "Whoops! You used too many blocks.",
