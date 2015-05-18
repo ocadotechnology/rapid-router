@@ -899,6 +899,7 @@ ocargo.Drawing.startYesNoPopup = function(title, subtitle, message, yesFunction,
     $('#modal-noBtn').click(noFunction);
 };
 
+// This is the function that starts the pop-up when there is no internet connection while playing the game
 ocargo.Drawing.startInternetDownPopup = function(){
     ocargo.Drawing.startPopup(ocargo.messages.errorTitle,"",ocargo.messages.internetDown);
 }
