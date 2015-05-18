@@ -153,8 +153,8 @@ ocargo.Game.prototype.setup = function() {
             title = LEVEL_NAME;
         }
     }
-    ocargo.Drawing.startPopup(title, "",
-        LESSON + loggedOutWarning, true, ocargo.button.getDismissButtonHtml('Play'));
+    ocargo.Drawing.startPopup(title, LESSON,
+         loggedOutWarning, true, ocargo.button.getDismissButtonHtml('Play'));
 };
 
 ocargo.Game.prototype.reset = function() {
