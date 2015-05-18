@@ -99,7 +99,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
 
         if (!legal) {
             ocargo.Drawing.startPopup("Loading workspace", "",
-                ocargo.messages.illegalBlocks, true, ocargo.jsElements.closebutton("Close"));
+                ocargo.messages.illegalBlocks, true);
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }

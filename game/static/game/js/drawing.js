@@ -884,6 +884,8 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, 
     
     if(buttons){
         $('#modal-buttons').html(buttons);
+    } else {
+        $('#modal-buttons').html(ocargo.jsElements.closebutton("Play"));
     }
 
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);

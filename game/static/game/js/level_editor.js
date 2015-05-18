@@ -228,7 +228,7 @@ ocargo.LevelEditor = function() {
             tabs.scenery.setOnChange(function() {
                 if (tabs.scenery.popup) {
                     tabs.scenery.popup = false;
-                    ocargo.Drawing.startPopup('', '', ocargo.messages.trafficLightsWarning, false, ocargo.jsElements.closebutton("Close"));
+                    ocargo.Drawing.startPopup('', '', ocargo.messages.trafficLightsWarning);
                 }
 
                 transitionTab(tabs.scenery);
@@ -395,7 +395,7 @@ ocargo.LevelEditor = function() {
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
                     if (error) {
                         console.error(error);
-                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown, false, ocargo.jsElements.closebutton("Close"));
+                        ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                         return;
                     }
 
@@ -474,7 +474,7 @@ ocargo.LevelEditor = function() {
                 if (err !== null) {
                     console.error(err);
                     currentTabSelected.select();
-                    ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown, false, ocargo.jsElements.closebutton("Close"));
+                    ocargo.Drawing.startPopup("Error","",ocargo.messages.internetDown);
                     return;
                 }
 
@@ -557,7 +557,7 @@ ocargo.LevelEditor = function() {
             function processListOfLevels(err, ownLevels, sharedLevels) {
                 if (err !== null) {
                     console.error(err);
-                    ocargo.Drawing.startPopup("Error", "", ocargo.messages.internetDown, false, ocargo.jsElements.closebutton("Close"));
+                    ocargo.Drawing.startPopup("Error", "", ocargo.messages.internetDown);
                     return;
                 }
 
@@ -665,7 +665,7 @@ ocargo.LevelEditor = function() {
             function processSharingInformation(error, validRecipients) {
                 if (error !== null) {
                     console.error(error);
-                    ocargo.Drawing.startPopup("Error", "", ocargo.messages.internetDown, false, ocargo.jsElements.closebutton("Close"));
+                    ocargo.Drawing.startPopup("Error", "", ocargo.messages.internetDown);
                     return;
                 }
 
@@ -791,7 +791,7 @@ ocargo.LevelEditor = function() {
 
             tabs.help.setOnChange(function() {
                 currentTabSelected.select();
-                ocargo.Drawing.startPopup('', '', message, false, ocargo.jsElements.closebutton("Close"));
+                ocargo.Drawing.startPopup('', '', message);
             });
         }
 
@@ -2002,7 +2002,7 @@ ocargo.LevelEditor = function() {
         if (!originNode || !destinationNode) {
              ocargo.Drawing.startPopup(ocargo.messages.ohNo,
                                        ocargo.messages.noStartOrEndSubtitle,
-                                       ocargo.messages.noStartOrEnd, false, ocargo.jsElements.closebutton("Close"));
+                                       ocargo.messages.noStartOrEnd);
              return false;
         }
 
@@ -2012,7 +2012,7 @@ ocargo.LevelEditor = function() {
         if (!pathToDestination) {
             ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
                                       ocargo.messages.noStartEndRouteSubtitle,
-                                      ocargo.messages.noStartEndRoute, false, ocargo.jsElements.closebutton("Close"));
+                                      ocargo.messages.noStartEndRoute);
             return false;
         }
 
@@ -2021,7 +2021,7 @@ ocargo.LevelEditor = function() {
         if($(".block_checkbox:checked").length == 0) {
             ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
                                       ocargo.messages.noBlocksSubtitle,
-                                      ocargo.messages.noBlocks, false, ocargo.jsElements.closebutton("Close"));
+                                      ocargo.messages.noBlocks);
             return false;
         }
 
@@ -2032,10 +2032,10 @@ ocargo.LevelEditor = function() {
         var currentState = JSON.stringify(extractState());
 
         if (!savedState) {
-            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notSaved, false, ocargo.jsElements.closebutton("Close"));
+            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notSaved);
             return false;
         } else if (currentState !== savedState) {
-            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.changesSinceLastSave, false, ocargo.jsElements.closebutton("Close"));
+            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.changesSinceLastSave);
             return false;
         }
         return true;
@@ -2043,7 +2043,7 @@ ocargo.LevelEditor = function() {
 
     function isLevelOwned() {
         if (!ownsSavedLevel) {
-            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notOwned, false, ocargo.jsElements.closebutton("Close"));
+            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notOwned);
             return false;
         }
         return true;
@@ -2053,7 +2053,7 @@ ocargo.LevelEditor = function() {
         if (USER_STATUS !== "SCHOOL_STUDENT" && USER_STATUS !== "TEACHER" && USER_STATUS !== "SOLO_STUDENT") {
             ocargo.Drawing.startPopup("Not logged in", 
                                       "", 
-                                      ocargo.messages.notLoggedIn(activity), false, ocargo.jsElements.closebutton("Close"));
+                                      ocargo.messages.notLoggedIn(activity));
             return false;
         }
         return true;
@@ -2063,7 +2063,7 @@ ocargo.LevelEditor = function() {
         if (USER_STATUS === "SOLO_STUDENT") {
             ocargo.Drawing.startPopup("Sharing as an independent student", 
                                       "", 
-                                      ocargo.messages.soloSharing, false, ocargo.jsElements.closebutton("Close"));
+                                      ocargo.messages.soloSharing);
             return false;
         }
         return true;
@@ -2236,5 +2236,5 @@ ocargo.LevelEditor = function() {
 
 $(function() {
     new ocargo.LevelEditor();
-    ocargo.Drawing.startPopup(ocargo.messages.levelEditorTitle, ocargo.messages.levelEditorSubtitle, "", false, ocargo.jsElements.closebutton("Close"));
+    ocargo.Drawing.startPopup(ocargo.messages.levelEditorTitle, ocargo.messages.levelEditorSubtitle, "");
 });

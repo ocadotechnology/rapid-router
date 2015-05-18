@@ -181,7 +181,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     if (!result.success) {
         ocargo.sound.tension();
         ocargo.Drawing.startPopup(ocargo.messages.failTitle, "",
-                                    result.error, false, ocargo.jsElements.closebutton("Close"));
+                                    result.error);
         return false;
     }
     var program = result.program;
@@ -476,7 +476,7 @@ ocargo.Game.prototype.setupTabs = function() {
         
         $('#van_commands_help').click(function (e) {
             var leadMsg = ocargo.messages.pythonCommands;
-            ocargo.Drawing.startPopup("Python Commands", leadMsg, "", true, ocargo.jsElements.closebutton("Close"));
+            ocargo.Drawing.startPopup("Python Commands", leadMsg, "", true);
         });
 
         $('#convert_from_blockly').click(function (e) {
@@ -585,9 +585,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     ocargo.Drawing.startPopup(
                         "Error",
                         "" ,
-                        ocargo.messages.internetDown,
-                        false,
-                        ocargo.jsElements.closebutton("Close"));
+                        ocargo.messages.internetDown);
                     console.error(err);
                     return;
                 }
@@ -602,8 +600,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     if (err !== null) {
                         ocargo.Drawing.startPopup(
                             "Error" , "" ,
-                            ocargo.messages.internetDown,
-                            false, ocargo.jsElements.closebutton("Close"));
+                            ocargo.messages.internetDown);
                         console.error(err);
                         return;
                     }
@@ -632,8 +629,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     if (err !== null) {
                         ocargo.Drawing.startPopup(
                             "Error", "",
-                            ocargo.messages.internetDown,
-                            false, ocargo.jsElements.closebutton("Close"));
+                            ocargo.messages.internetDown);
                         console.error(err);
                         return;
                     }
@@ -685,8 +681,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 if (err !== null) {
                     ocargo.Drawing.startPopup(
                         "Error", "",
-                        ocargo.messages.internetDown,
-                        false, ocargo.jsElements.closebutton("Close"));
+                        ocargo.messages.internetDown);
                     console.error(err);
                     return;
                 }
@@ -718,8 +713,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     if (err !== null) {
                         ocargo.Drawing.startPopup(
                             "Error", "",
-                            ocargo.messages.internetDown,
-                            false, ocargo.jsElements.closebutton("Close"));
+                            ocargo.messages.internetDown);
                         console.error(err);
                         return;
                     }
@@ -764,7 +758,7 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupHelpTab() {
         tabs.help.setOnChange(function() {
             ocargo.game.currentTabSelected.select();
-            ocargo.Drawing.startPopup('', '', HINT, false, ocargo.jsElements.closebutton("Close!"));
+            ocargo.Drawing.startPopup('', '', HINT, true);
         });
     }
 
