@@ -395,7 +395,7 @@ ocargo.LevelEditor = function() {
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
                     if (error) {
                         console.error(error);
-                        ocargo.Drawing.startPopup(ocargo.messages.errorTitle,"",ocargo.messages.internetDown);
+                        ocargo.Drawing.startInternetDownPopup();
                         return;
                     }
 
@@ -474,7 +474,7 @@ ocargo.LevelEditor = function() {
                 if (err !== null) {
                     console.error(err);
                     currentTabSelected.select();
-                    ocargo.Drawing.startPopup(ocargo.messages.errorTitle,"",ocargo.messages.internetDown);
+                    ocargo.Drawing.startInternetDownPopup();
                     return;
                 }
 
@@ -557,7 +557,7 @@ ocargo.LevelEditor = function() {
             function processListOfLevels(err, ownLevels, sharedLevels) {
                 if (err !== null) {
                     console.error(err);
-                    ocargo.Drawing.startPopup(ocargo.messages.errorTitle, "", ocargo.messages.internetDown);
+                    ocargo.Drawing.startInternetDownPopup();
                     return;
                 }
 
@@ -665,7 +665,7 @@ ocargo.LevelEditor = function() {
             function processSharingInformation(error, validRecipients) {
                 if (error !== null) {
                     console.error(error);
-                    ocargo.Drawing.startPopup(ocargo.messages.errorTitle, "", ocargo.messages.internetDown);
+                    ocargo.Drawing.startInternetDownPopup();
                     return;
                 }
 

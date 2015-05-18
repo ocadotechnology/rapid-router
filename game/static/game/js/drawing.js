@@ -899,6 +899,10 @@ ocargo.Drawing.startYesNoPopup = function(title, subtitle, message, yesFunction,
     $('#modal-noBtn').click(noFunction);
 };
 
+ocargo.Drawing.startInternetDownPopup = function(){
+    ocargo.Drawing.startPopup(ocargo.messages.errorTitle,"",ocargo.messages.internetDown);
+}
+
 ocargo.Drawing.showButtonHelp = function(){
     $('#myModal-lead').html('');
     $('#myModal-mainText').html('<p>' + ocargo.messages.buttonHelp + '</p>' +
