@@ -583,7 +583,7 @@ ocargo.Game.prototype.setupTabs = function() {
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
                     ocargo.Drawing.startPopup(
-                        "Error",
+                        ocargo.messages.errorTitle,
                         "" ,
                         ocargo.messages.internetDown);
                     console.error(err);
@@ -599,7 +599,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
                     if (err !== null) {
                         ocargo.Drawing.startPopup(
-                            "Error" , "" ,
+                            ocargo.messages.errorTitle , "" ,
                             ocargo.messages.internetDown);
                         console.error(err);
                         return;
@@ -628,7 +628,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 ocargo.saving.deleteWorkspace(selectedWorkspace, function(err, workspaces) {
                     if (err !== null) {
                         ocargo.Drawing.startPopup(
-                            "Error", "",
+                            ocargo.messages.errorTitle, "",
                             ocargo.messages.internetDown);
                         console.error(err);
                         return;
@@ -680,7 +680,7 @@ ocargo.Game.prototype.setupTabs = function() {
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
                     ocargo.Drawing.startPopup(
-                        "Error", "",
+                        ocargo.messages.errorTitle, "",
                         ocargo.messages.internetDown);
                     console.error(err);
                     return;
@@ -712,7 +712,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 ocargo.saving.saveWorkspace(workspace, existingID, function(err, workspaces) {
                     if (err !== null) {
                         ocargo.Drawing.startPopup(
-                            "Error", "",
+                            ocargo.messages.errorTitle, "",
                             ocargo.messages.internetDown);
                         console.error(err);
                         return;

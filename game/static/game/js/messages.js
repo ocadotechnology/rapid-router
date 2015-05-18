@@ -53,6 +53,7 @@ ocargo.messages = {
     queryInfiniteLoop: "It looks as though your program's been running a while. Check your repeat loops are okay.",
     compilationError: "Your program doesn't look quite right...",
     stoppingTitle: "Stopping...",
+    errorTitle: "Error",
 
     outOfFuel : "You ran out of fuel! Try to find a shorter route to the destination.",
     outOfInstructions: "The van ran out of instructions before it reached a destination.",
