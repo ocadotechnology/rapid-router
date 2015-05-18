@@ -232,7 +232,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
 						levelMsg = ocargo.messages.nowTryPython;
-						buttons += ocargo.jsElements.closebutton("Close");
+						buttons += ocargo.button.addDismissButtonHtml('Close');
 					}
 					else {
 						if (NEXT_LEVEL) {
@@ -253,10 +253,10 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
-					buttons = ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+					buttons = ocargo.button.getTryAgainButtonHtml();
 					break;
 				case 'WARNING':
-					buttons = ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+					buttons = ocargo.button.getTryAgainButtonHtml();
 					break;
 			}
 			var otherMsg = "";

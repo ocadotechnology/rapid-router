@@ -53,15 +53,15 @@ ocargo.PathFinder.prototype.getScore = function() {
 
     if (pathLengthScore < this.maxDistanceScore) {
         message += "<br>" + ocargo.messages.pathLonger
-        button += ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+        button += ocargo.button.getTryAgainButtonHtml();
     }
     else if (initInstrScore > this.maxInstrLengthScore) {
         message += "<br>" + ocargo.messages.algorithmShorter;
-        button += ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel)
+        button += ocargo.button.getTryAgainButtonHtml();
     }
     else if (initInstrScore < this.maxInstrLengthScore) {
         message += "<br>" + ocargo.messages.algorithmLonger;
-        button += ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel)
+        button += ocargo.button.getTryAgainButtonHtml();
     }
     else  if (totalScore === this.maxScore) {
         message += "<br>" + ocargo.messages.scorePerfect;

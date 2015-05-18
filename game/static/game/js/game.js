@@ -154,7 +154,7 @@ ocargo.Game.prototype.setup = function() {
         }
     }
     ocargo.Drawing.startPopup(title, "",
-        LESSON + loggedOutWarning, true, ocargo.jsElements.closebutton("Play"));
+        LESSON + loggedOutWarning, true, ocargo.button.getDismissButtonHtml('Play'));
 };
 
 ocargo.Game.prototype.reset = function() {
@@ -758,7 +758,7 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupHelpTab() {
         tabs.help.setOnChange(function() {
             ocargo.game.currentTabSelected.select();
-            ocargo.Drawing.startPopup('', '', HINT, true);
+            ocargo.Drawing.startPopup('', '', HINT);
         });
     }
 
