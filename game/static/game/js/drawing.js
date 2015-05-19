@@ -869,7 +869,12 @@ ocargo.Drawing.translate = function(coordinate) {
  This is the function that starts the pop-up.
  Buttons should be passed in separately to the function instead of concatenating
  to the message so as to keep the layout of the pop-up consistent.
- Buttons will be displayed in one row underneath the text messages.
+ The following elements will be displayed vertically from top to bottom in this order:
+ 1. title (bolded)
+ 2. subtitle (same font size as title)
+ 3. message (smaller font size than title and subtitle)
+ 4. buttons (in one row)
+ Mascot will be displayed on the right hand side of the popup
  */
 ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, delay) {
     $('#myModal-title').html(title);
@@ -885,7 +890,7 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, 
     if(buttons){
         $('#modal-buttons').html(buttons);
     } else {
-        $('#modal-buttons').html(ocargo.jsElements.closebutton("Close"));
+        $('#modal-buttons').html(ocargo.button.getDismissButtonHtml("Close"));
     }
 
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);

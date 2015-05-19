@@ -6,15 +6,6 @@ ocargo.jsElements = {
     image: function(url, class_) {
         return "<img src='" + url + "'class='" + class_ + "'>";
     },
-    redirectButton: function(location, label) {
-        return '<button class="navigation_button long_button" onclick="window.location.href=' + location +
-            '"><span>' + label + '</span></button>';
-    },
-    closebutton: function(label) {
-        return '<button class="navigation_button long_button" onclick="document.getElementById(' + "'close-modal'" +
-        ').click()"><span>' + label +'</span></button>';
-
-    },
     nextEpisodeButton: function(episode, random){
         return ocargo.button.getRedirectButtonHtml("'/rapidrouter/episode/" + episode + "/'",
                 'Next episode') + (random ? ocargo.button.getRedirectButtonHtml("'/rapidrouter/levels/random/" + (episode-1) + "/'",
