@@ -7,6 +7,7 @@
 
 {% block scripts %}
   <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
+  <script src="{% static 'game/js/pqselect.dev.js' %}"></script>
   <script>
     $(document).ready(function() {
       $("#scoreboardTable").tablesorter();
@@ -19,6 +20,7 @@
 {{block.super}}
   {% compress css %}
       <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
+      <link href="{% static 'game/css/pqselect.min.css' %}" rel="stylesheet" type="text/css">
   {% endcompress %}
 {% endblock %}
 

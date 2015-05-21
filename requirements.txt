@@ -3,6 +3,7 @@ django-foundation-icons==3.1
 django-bourbon==3.1.8
 django-autoconfig==0.1.2
 django-jquery==1.9.1
+django-jquery-ui==1.10.3.1
 django-compressor==1.4
 django-foundation-statics==5.1.1
 django-appconf==0.6
