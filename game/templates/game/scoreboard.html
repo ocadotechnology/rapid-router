@@ -20,8 +20,9 @@
 {{block.super}}
   {% compress css %}
       <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
-      <link href="{% static 'game/css/pqselect.min.css' %}" rel="stylesheet" type="text/css">
   {% endcompress %}
+  <link href="{% static 'game/css/pqselect.dev.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/pqselect.multiselect.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}

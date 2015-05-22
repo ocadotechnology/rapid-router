@@ -1,0 +1,13 @@
+div.pq-select-menu > .pq-select-option-label{
+    float: none;
+    text-align: left;
+    margin-right: 0px;
+    padding-top: 0px;
+}
+
+.pq-select-all{
+    float: none;
+    text-align: left;
+    margin-right: 0px;
+    padding-top: 0px;
+}
