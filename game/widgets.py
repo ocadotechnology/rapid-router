@@ -9,9 +9,9 @@ class DropDownMenuSelectMultiple(forms.SelectMultiple):
         css = {
             'all': ('game/css/pqselect.dev.css',)
         }
-    js = (
-        'game/js/pqselect.dev.js',
-    )
+        js = (
+            'game/js/pqselect.dev.js',
+        )
     def render(self, name, value, attrs, choices=()):
         print
         html = super(DropDownMenuSelectMultiple, self).render(name, value, attrs, choices)
@@ -20,11 +20,5 @@ class DropDownMenuSelectMultiple(forms.SelectMultiple):
             multiplePlaceholder: 'Select All',
             checkbox: true
             }).pqSelect( 'open' );</script>"""
-        print html
 
         return mark_safe(html)
-
-    def value_from_datadict(self, data, files, name):
-        if isinstance(data, (MultiValueDict, MergeDict)):
-            return data.getlist(name)
-        return data.get(name, None)

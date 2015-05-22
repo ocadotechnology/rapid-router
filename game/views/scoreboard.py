@@ -35,6 +35,7 @@ def scoreboard(request):
     if not permissions.can_see_scoreboard(request.user):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
+    print request
     form, student_data, headers, error_response = create_scoreboard(request)
 
     if error_response:
@@ -72,49 +73,78 @@ def create_scoreboard(request):
 
     def populate_scoreboard(request, form, school):
 
-        userprofile = request.user.userprofile
+        # Initialising variables
+        classes = []
         student_data = None
-        level_id = form.data.get('levels', False)
-        class_id = form.data.get('classes', False)
+        students = []
+        levels = []
 
-        if not level_id:
+        # Getting data from the request object
+        userprofile = request.user.userprofile
+        levels_id = request.POST.getlist('levels')
+        print levels_id
+        classes_id = request.POST.getlist('classes')
+        print classes_id
+        print len(levels_id)
+
+        # If there are more than one level to show, show the total score, total time and score of each level
+        # Otherwise, show the detail of each level, the score, total time, start time and end time
+        if len(levels_id) > 1:
             headers = ['Name', 'Total Score', 'Total Time']
         else:
             headers = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
 
-        if class_id:
+        # Get the list of students and levels to be displayed
+        for class_id in classes_id:
             cl = get_object_or_404(Class, id=class_id)
-            students = cl.students.all()
+            classes.append(cl)
+            students += cl.students.all()
+        for level_id in levels_id:
+            levels.append(get_object_or_404(Level, id=level_id))
 
-        if level_id:
-            level = get_object_or_404(Level, id=level_id)
+        print classes
+        print students
+        print levels
 
+        # Retrieve list of classes under this school, and check that all the classes selected are valid
         if is_teacher(userprofile):
             teachers = Teacher.objects.filter(school=userprofile.teacher.school)
             classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
-            if class_id and not int(class_id) in classes_list:
-                raise Http404
+            for class_id in classes_id:
+                if class_id and not int(class_id) in classes_list:
+                    raise Http404
 
+        # Retrieve the class that the student is in, check that the class selected in drop down menu is the same
+        # Each student can only be in one class at a time, so there will be only be one element in the list
         elif is_student(userprofile):
             class_ = userprofile.student.class_field
-            if class_id and int(class_id) != class_.id:
+            if class_id[0] and int(class_id[0]) != class_.id:
                 raise Http404
             students = class_.students.all()
+            # If student is not permitted to look at other students' score, it will only show the student's own data
             if not is_viewable(class_):
                 students = class_.students.filter(id=userprofile.student.id)
         else:
             raise Http404
 
-        if class_id and level_id:
-            student_data = one_class_one_level(students, level)
-        elif not class_id and level_id:
-            student_data = all_classes_one_level(request, level)
-        elif class_id and not level_id:
-            levels, headers = get_levels(userprofile, headers)
-            student_data = one_class_all_levels(students, levels)
-        elif not class_id and not level_id:
-            levels, headers = get_levels(userprofile, headers)
-            student_data = all_classes_all_levels(request, levels)
+        # Rows: Students from each class
+        # Cols: Total Score, Total Time, Level X, ... , Level Y
+        if len(levels_id) > 1:
+            student_data = all_classes_one_level(classes, levels)
+        # Rows: Students from each class
+        # Cols: Score, Total Time, Start Time, End Time
+        else:
+            student_data = all_classes_one_level(classes, levels[0])
+        # if classes_id and levels_id:
+        #     student_data = one_class_one_level(students, levels)
+        # elif not classes_id and levels_id:
+        #     student_data = all_classes_one_level(request, levels)
+        # elif classes_id and not levels_id:
+        #     levels, headers = get_levels(userprofile, headers)
+        #     student_data = one_class_all_levels(students, levels)
+        # elif not classes_id and not levels_id:
+        #     levels, headers = get_levels(userprofile, headers)
+        #     student_data = all_classes_all_levels(request, levels)
         return student_data, headers
 
     def one_row(student, level):
@@ -161,22 +191,11 @@ def create_scoreboard(request):
             student_data.append(row)
         return student_data
 
-    def all_classes_one_level(request, level):
-        userprofile = request.user.userprofile
+    def all_classes_one_level(classes, level):
         student_data = []
-        classes = []
-
-        if is_student(userprofile):
-            classes = [userprofile.student.class_field]
-        elif is_teacher(userprofile):
-            school = userprofile.teacher.school
-            teachers = Teacher.objects.filter(school=school)
-            classes = [c for c in Class.objects.all() if (c.teacher in teachers)]
 
         for cl in classes:
             students = cl.students.all()
-            if is_student(userprofile) and not is_viewable(userprofile.student.class_field):
-                students = students.filter(id=userprofile.student.id)
             for student in students:
                 row = one_row(student, level)
                 student_data.append(row)
@@ -207,6 +226,27 @@ def create_scoreboard(request):
             for student in students:
                 student_data.append([student, 0.0, [], []])
         return many_rows(student_data, levels)
+
+
+    def many_students_many_levels(request, students, levels):
+        userprofile = request.user.userprofile
+        student_data = []
+
+        # if is_student(userprofile):
+        #     classes = [userprofile.student.class_field]
+        # elif is_teacher(userprofile):
+        #     school = userprofile.teacher.school
+        #     teachers = Teacher.objects.filter(school=school)
+        #     classes = [c for c in Class.objects.all() if (c.teacher in teachers)]
+
+        # Only return the user's data if the user is not permitted to view others' data
+        if is_student(userprofile) and not is_viewable(userprofile.student.class_field):
+            students = students.filter(id=userprofile.student.id)
+        for student in students:
+            student_data.append([student, 0.0, [], []])
+
+        return many_rows(student_data, levels)
+
 
     def get_levels(userprofile, headers):
         levels = Level.objects.sorted_levels()
