@@ -62,10 +62,9 @@ class ScoreboardForm(forms.Form):
         # Each tuple in choices has two elements, id and name of each level
         # First element is the actual value set on the model
         # Second element is the string displayed on the drop down menu
-        # Insert an extra empty element as ChoiceField is required by default
         choice_list = ((level.id, str(level)) for level in Level.objects.sorted_levels())
         self.fields['levels'] = forms.MultipleChoiceField(
-            choices=itertools.chain([("", "All levels")], choice_list),
+            choices=itertools.chain(choice_list),
             widget=DropDownMenuSelectMultiple(
                 attrs={'class': 'wide'})
         )
@@ -73,7 +72,7 @@ class ScoreboardForm(forms.Form):
             cleaned_data = super(ScoreboardForm, self).clean()
             classes = cleaned_data.get('classes')
             levels = cleaned_data.get('levels')
-            return classes or levels
+            return classes and levels
 
 
 class LevelModerationForm(forms.Form):

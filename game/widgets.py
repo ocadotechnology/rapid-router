@@ -17,8 +17,8 @@ class DropDownMenuSelectMultiple(forms.SelectMultiple):
         html = super(DropDownMenuSelectMultiple, self).render(name, value, attrs, choices)
         html += """
             <script>$("#id_""" + name + """").pqSelect({
-            multiplePlaceholder: 'Select All',
+            multiplePlaceholder: 'Select """ + name + """',
             checkbox: true
-            }).pqSelect( 'open' );</script>"""
-
+            });</script>"""
+        print html
         return mark_safe(html)
