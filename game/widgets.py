@@ -20,5 +20,4 @@ class DropDownMenuSelectMultiple(forms.SelectMultiple):
             multiplePlaceholder: 'Select """ + name + """',
             checkbox: true
             });</script>"""
-        print html
         return mark_safe(html)
