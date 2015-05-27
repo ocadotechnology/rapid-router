@@ -6,11 +6,30 @@
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
 
 {% block scripts %}
-  <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
+  <script src="{% static 'game/js/jquery.tablesorter.js' %}"></script>
+  <script src="{% static 'game/js/widget-scroller.js' %}"></script>
   <script src="{% static 'game/js/pqselect.dev.js' %}"></script>
   <script>
     $(document).ready(function() {
-      $("#scoreboardTable").tablesorter();
+      /* Documentation for this tablesorter FORK can be found at
+       * http://mottie.github.io/tablesorter/docs/
+       */
+
+      $('table').tablesorter({
+              theme: 'blue',
+              // widthFixed: true, // <- now automatically set by the scroller widget
+              showProcessing: true,
+              widgets: ['zebra', 'scroller'],
+              widgetOptions: {
+                  scroller_fixedColumns: 1,
+                  scroller_height: 300,
+                  // scroll tbody to top after sorting
+                  scroller_upAfterSort: true,
+                  // pop table header into view while scrolling up the page
+                  scroller_jumpToHeader: true
+              }
+      });
+
     });
   </script>
 {{block.super}}
@@ -18,11 +37,10 @@
 
 {% block css %}
 {{block.super}}
-  {% compress css %}
-      <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
-  {% endcompress %}
+  <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
   <link href="{% static 'game/css/pqselect.dev.css' %}" rel="stylesheet" type="text/css">
   <link href="{% static 'game/css/pqselect.multiselect.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/theme.blue.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
@@ -74,7 +92,7 @@
 <div class="mainBody">
   <div class="tableWrapper">
     {% if student_data %}
-    <table id="scoreboardTable" class="tablesorter CSSTable wide alternate ">
+    <table id="scoreboardTable" class="tablesorter wide">
     <thead>
       <tr>
         {% for header in headers %}
