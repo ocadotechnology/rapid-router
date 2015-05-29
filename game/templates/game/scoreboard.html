@@ -15,20 +15,21 @@
     $(document).ready(function() {
 
       // Initialise progress values for each progress bar
-{#      $(".progressbar").progressbar({#}
-{#          value: 37,#}
-{#      });#}
+      {% for student in student_data %}
+          var id = {{ student.0.id }}
+          var attempted = {{ student.4.0 }}
+          var failed = {{ student.4.1 }}
+          var success = {{ student.4.2 }}
+          $('#progressbar' + id).multiprogressbar({
+              parts: [{value: attempted, barClass: 'started'},
+                      {value: failed, barClass: 'attempted'},
+                      {value: success, barClass: 'finished'}],
+          });
+      {% endfor %}
 
       /* Documentation for this tablesorter FORK can be found at
       * http://mottie.github.io/tablesorter/docs/
       */
-
-      // Initialize the multiprogressbar
-      $('.MultiProgressBarDiv').multiprogressbar({
-          parts: [{value: 10, barClass: 'started'},
-                  {value: 20, barClass: 'attempted'},
-                  {value: 40, barClass: 'finished'}],
-      });
 
       /* Auto resizing the table */
       var throttle,
@@ -147,11 +148,11 @@
           <td> {{student.0.user.user.first_name}} </td>
           <td> {{student.1}} </td>
           <td> {{student.2}}
-          <td> <div class="MultiProgressBarDiv"></div> </td>
           {% if headers.1 == 'Score' %}
             <td> {{student.3}} </td>
             <td> {{student.4}} </td>
           {% else %}
+            <td> <div class="MultiProgressBarDiv" id="progressbar{{ student.0.id }}"></div> </td>
             {% for levelScore in student.3 %}
               <td> {{levelScore}} </td>
             {% endfor %}
