@@ -34,3 +34,33 @@ table tbody td {
 	height: 25px;
 	font-size: 15px
 }
+
+.ui-progressbar {
+	height: 100%;
+}
+
+/* Colour for the portion of the bar which represents the percentage of levels players finished */
+.finished {
+	background: #74B06B;
+}
+/* Colour for the portion of the bar which represents the percentage of levels players finished but under a certain
+ * threshold
+ */
+.attempted {
+	background: #E1B377;
+}
+/* Colour for the portion of the bar which represents the percentage of levels players started but haven't submitted
+ * attempts yet
+ */
+.started {
+	background: #C24563;
+}
+
+/* Used for making the inside of the progress bar to fill up the entire outer container
+ * margin and border are set in jquery-ui.structure.css and jquery-ui.css
+ * we are overwriting the settings for the following two properties
+ */
+.ui-progressbar .ui-progressbar-value{
+	margin: 0px;
+	border: 0px;
+}

@@ -9,17 +9,28 @@
   <script src="{% static 'game/js/jquery.tablesorter.js' %}"></script>
   <script src="{% static 'game/js/widget-scroller.js' %}"></script>
   <script src="{% static 'game/js/pqselect.dev.js' %}"></script>
+  <script src="{% static 'game/js/jquery.outerhtml.js' %}"></script>
+  <script src="{% static 'game/js/jquery.ui.multiprogressbar.js' %}"></script>
   <script>
     $(document).ready(function() {
 
+      // Initialise progress values for each progress bar
+{#      $(".progressbar").progressbar({#}
+{#          value: 37,#}
+{#      });#}
 
-      $(".progressbar").progressbar({
-          value: 37,
-      }).height('100%');
+      /* Documentation for this tablesorter FORK can be found at
+      * http://mottie.github.io/tablesorter/docs/
+      */
 
-       /* Documentation for this tablesorter FORK can be found at
-       * http://mottie.github.io/tablesorter/docs/
-       */
+      // Initialize the multiprogressbar
+      $('.MultiProgressBarDiv').multiprogressbar({
+          parts: [{value: 10, barClass: 'started'},
+                  {value: 20, barClass: 'attempted'},
+                  {value: 40, barClass: 'finished'}],
+      });
+
+      /* Auto resizing the table */
       var throttle,
       $table = $('table'),
 
@@ -70,6 +81,8 @@
   <link href="{% static 'game/css/pqselect.dev.css' %}" rel="stylesheet" type="text/css">
   <link href="{% static 'game/css/pqselect.multiselect.css' %}" rel="stylesheet" type="text/css">
   <link href="{% static 'game/css/theme.blue.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/jquery.ui.multiprogressbar.css' %}" rel="stylesheet" type="text/css">
+
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
@@ -134,7 +147,7 @@
           <td> {{student.0.user.user.first_name}} </td>
           <td> {{student.1}} </td>
           <td> {{student.2}}
-          <td> <div class="progressbar"></div> </td>
+          <td> <div class="MultiProgressBarDiv"></div> </td>
           {% if headers.1 == 'Score' %}
             <td> {{student.3}} </td>
             <td> {{student.4}} </td>
