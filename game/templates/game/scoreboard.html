@@ -11,24 +11,53 @@
   <script src="{% static 'game/js/pqselect.dev.js' %}"></script>
   <script>
     $(document).ready(function() {
-      /* Documentation for this tablesorter FORK can be found at
+
+
+      $(".progressbar").progressbar({
+          value: 37,
+      }).height('100%');
+
+       /* Documentation for this tablesorter FORK can be found at
        * http://mottie.github.io/tablesorter/docs/
        */
+      var throttle,
+      $table = $('table'),
+
+      setHeight = function(init){
+          var windowHt = $(window).height(),
+              tableHt = $table.children('thead').height() +
+                  $table.children('tfoot').height() +
+                  25; // extra padding at the top of the table
+          if (init) {
+              return windowHt - tableHt;
+          } else {
+              // multiply tableHt x 2 because it works??
+              $table.parent().css('max-height', windowHt - tableHt * 2);
+              $table.trigger('setFixedColumnSize');
+          }
+      };
+      $(window).resize(function(){
+          clearTimeout(throttle);
+          throttle = setTimeout(function(){
+              setHeight();
+          }, 10);
+      });
 
       $('table').tablesorter({
-              theme: 'blue',
-              // widthFixed: true, // <- now automatically set by the scroller widget
-              showProcessing: true,
-              widgets: ['zebra', 'scroller'],
-              widgetOptions: {
-                  scroller_fixedColumns: 1,
-                  scroller_height: $(window).height() * 0.9,
-                  // scroll tbody to top after sorting
-                  scroller_upAfterSort: true,
-                  // pop table header into view while scrolling up the page
-                  scroller_jumpToHeader: true
-              }
+        theme: 'blue',
+        // widthFixed: true, // <- now automatically set by the scroller widget
+        showProcessing: true,
+        widgets: ['zebra', 'scroller'],
+        widgetOptions: {
+            scroller_fixedColumns: 1,
+            scroller_height: setHeight(true),//$(window).height() * 0.9,
+            // scroll tbody to top after sorting
+            scroller_upAfterSort: true,
+            // pop table header into view while scrolling up the page
+            scroller_jumpToHeader: true
+        }
       });
+
 
     });
   </script>
@@ -104,7 +133,8 @@
       <tr>
           <td> {{student.0.user.user.first_name}} </td>
           <td> {{student.1}} </td>
-          <td> {{student.2}}</td>
+          <td> {{student.2}}
+          <td> <div class="progressbar"></div> </td>
           {% if headers.1 == 'Score' %}
             <td> {{student.3}} </td>
             <td> {{student.4}} </td>

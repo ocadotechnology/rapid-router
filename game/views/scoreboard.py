@@ -116,7 +116,7 @@ def create_scoreboard(request):
         if len(levels_id) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
-            headers = get_levels_headers(['Name', 'Total Score', 'Total Time'], levels)
+            headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], levels)
             student_data = multiple_students_multiple_levels(students, levels)
         else:
             # Rows: Students from each class
