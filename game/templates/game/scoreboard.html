@@ -157,7 +157,8 @@
           {% else %}
             <td> <div class="MultiProgressBarDiv" id="progressbar{{ student.0.id }}"></div> </td>
             {% for levelScore in student.3 %}
-              <td> {{levelScore}} </td>
+              {# Levels that students have not started will be marked with grey colour #}
+              <td {% if levelScore == '' %} class="untouched" {% endif %}> {{levelScore}} </td>
             {% endfor %}
           {% endif %}
         </tr>

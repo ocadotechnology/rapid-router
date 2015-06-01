@@ -83,6 +83,11 @@ def create_scoreboard(request):
         classes_id = request.POST.getlist('classes')
 
         # Get the list of students and levels to be displayed
+        # As the list passed by the multiselect is in order, using a for loop will preserve the order and
+        # only get the default levels instead of the custom levels as well
+        # Django 1.7 does not support sorting queryset by converting strings to int
+        # Django 1.8 supports the use of expressios in order_by, should try using that to write cleaner codes
+        # https://docs.djangoproject.com/en/1.8/releases/1.8/#query-expressions-conditional-expressions-and-database-functions
         for class_id in classes_id:
             cl = get_object_or_404(Class, id=class_id)
             classes.append(cl)
@@ -152,8 +157,9 @@ def create_scoreboard(request):
                 if attempt:
                     row[1] += attempt.score if attempt.score is not None else 0
                     row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
-                    row.append(attempt.score if attempt.score is not None else '')
-                    row[3].append(attempt.score if attempt.score is not None else '')
+                    # '-' is used to show that the student has started the level but has not submitted any attempts
+                    row.append(attempt.score if attempt.score is not None else '-')
+                    row[3].append(attempt.score if attempt.score is not None else '-')
                 else:
                     row[2].append(timedelta(0))
                     row.append("")
