@@ -17,13 +17,13 @@
       // Initialise progress values for each progress bar
       {% for student in student_data %}
           var id = {{ student.0.id }}
-          var attempted = {{ student.4.0 }}
-          var failed = {{ student.4.1 }}
-          var success = {{ student.4.2 }}
+          var started = {{ student.4.0 }}
+          var attempted = {{ student.4.1 }}
+          var finished = {{ student.4.2 }}
           $('#progressbar' + id).multiprogressbar({
-              parts: [{value: attempted, barClass: 'started'},
-                      {value: failed, barClass: 'attempted'},
-                      {value: success, barClass: 'finished'}],
+              parts: [{value: started, barClass: 'started'},
+                      {value: attempted, barClass: 'attempted'},
+                      {value: finished, barClass: 'finished'}],
           });
       {% endfor %}
 
