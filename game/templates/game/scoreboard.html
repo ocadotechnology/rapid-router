@@ -15,17 +15,20 @@
     $(document).ready(function() {
 
       // Initialise progress values for each progress bar
-      {% for student in student_data %}
-          var id = {{ student.0.id }}
-          var started = {{ student.4.0 }}
-          var attempted = {{ student.4.1 }}
-          var finished = {{ student.4.2 }}
-          $('#progressbar' + id).multiprogressbar({
-              parts: [{value: started, barClass: 'started'},
-                      {value: attempted, barClass: 'attempted'},
-                      {value: finished, barClass: 'finished'}],
-          });
-      {% endfor %}
+      {# Only initialise progress bars if the column exists #}
+      {% if 'Progress' in headers %}
+          {% for student in student_data %}
+              var id = {{ student.0.id }}
+              var started = {{ student.4.0 }}
+              var attempted = {{ student.4.1 }}
+              var finished = {{ student.4.2 }}
+              $('#progressbar' + id).multiprogressbar({
+                  parts: [{value: started, barClass: 'started'},
+                          {value: attempted, barClass: 'attempted'},
+                          {value: finished, barClass: 'finished'}],
+              });
+          {% endfor %}
+      {% endif %}
 
       /* Documentation for this tablesorter FORK can be found at
       * http://mottie.github.io/tablesorter/docs/
