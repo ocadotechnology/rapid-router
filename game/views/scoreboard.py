@@ -92,8 +92,10 @@ def create_scoreboard(request):
             cl = get_object_or_404(Class, id=class_id)
             classes.append(cl)
             students += cl.students.all()
+
+        levels_dict = Level.objects.values('id', 'name')
         for level_id in levels_id:
-            levels.append(get_object_or_404(Level, id=level_id))
+            levels.append(levels_dict.get(id=level_id).get('name'))
 
         # Check that all the classes selected are valid
         if is_teacher(userprofile):
@@ -107,7 +109,7 @@ def create_scoreboard(request):
         # Each student can only be in one class at a time, so there will be only be one element in the list
         elif is_student(userprofile):
             class_ = userprofile.student.class_field
-            if class_id[0] and int(class_id[0]) != class_.id:
+            if classes_id[0] and int(classes_id[0]) != class_.id:
                 raise Http404
             students = class_.students.all()
             # If student is not permitted to look at other students' score, it will only show the student's own data
@@ -115,7 +117,6 @@ def create_scoreboard(request):
                 students = class_.students.filter(id=userprofile.student.id)
         else:
             raise Http404
-
         # If there are more than one level to show, show the total score, total time and score of each level
         # Otherwise, show the details of the level (the score, total time, start time and end time)
         if len(levels_id) > 1:
@@ -128,7 +129,6 @@ def create_scoreboard(request):
             # Cols: Score, Total Time, Start Time, End Time
             headers = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
             student_data = multiple_students_one_level(students, levels[0])
-
         return student_data, headers
 
     def one_row(student, level):
@@ -152,19 +152,19 @@ def create_scoreboard(request):
         for row in student_data:
             student = row[0]
             row[4] = student_statistics(student, levels_id)
-            for level in levels_id:
-                attempt = Attempt.objects.filter(level__id=level, student=student).first()
-                if attempt:
-                    row[1] += attempt.score if attempt.score is not None else 0
-                    row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
-                    # '-' is used to show that the student has started the level but has not submitted any attempts
-                    row.append(attempt.score if attempt.score is not None else '-')
-                    row[3].append(attempt.score if attempt.score is not None else '-')
-                else:
-                    row[2].append(timedelta(0))
-                    row.append("")
-                    row[3].append("")
-
+            if Attempt.objects.filter(student=student).exists():
+                for level in levels_id:
+                    attempt = Attempt.objects.filter(level__id=level, student=student).first()
+                    if attempt:
+                        row[1] += attempt.score if attempt.score is not None else 0
+                        row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
+                        # '-' is used to show that the student has started the level but has not submitted any attempts
+                        row.append(attempt.score if attempt.score is not None else '-')
+                        row[3].append(attempt.score if attempt.score is not None else '-')
+                    else:
+                        row[2].append(timedelta(0))
+                        row.append("")
+                        row[3].append("")
 
         for row in student_data:
             row[2] = sum(row[2], timedelta())
@@ -176,9 +176,9 @@ def create_scoreboard(request):
         all_attempts = Attempt.objects.filter(student=student, level__id__in=levels_id)
         finished_attempts = all_attempts.filter(score__gte=10.0)
         attempted_attempts = all_attempts.filter(score__lte=10.0)
-        num_all = len(all_attempts)
-        num_finished = len(finished_attempts)
-        num_attempted = len(attempted_attempts)
+        num_all = all_attempts.count()
+        num_finished = finished_attempts.count()
+        num_attempted = attempted_attempts.count()
         num_started = num_all - num_finished - num_attempted
         return (num_started/num_levels)*100, (num_attempted/num_levels)*100, (num_finished/num_levels)*100
 
