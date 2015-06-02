@@ -75,7 +75,7 @@ def create_scoreboard(request):
         # Initialising variables
         classes = []
         students = []
-        levels = []
+        levels_name = []
 
         # Getting data from the request object
         userprofile = request.user.userprofile
@@ -95,7 +95,7 @@ def create_scoreboard(request):
 
         levels_dict = Level.objects.values('id', 'name')
         for level_id in levels_id:
-            levels.append(levels_dict.get(id=level_id).get('name'))
+            levels_name.append('Level ' + levels_dict.get(id=level_id).get('name'))
 
         # Check that all the classes selected are valid
         if is_teacher(userprofile):
@@ -122,19 +122,19 @@ def create_scoreboard(request):
         if len(levels_id) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
-            headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], levels)
+            headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], levels_name)
             student_data = multiple_students_multiple_levels(students, levels_id)
         else:
             # Rows: Students from each class
             # Cols: Score, Total Time, Start Time, End Time
             headers = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
-            student_data = multiple_students_one_level(students, levels[0])
+            student_data = multiple_students_one_level(students, levels_id[0])
         return student_data, headers
 
-    def one_row(student, level):
+    def one_row(student, level_id):
         row = [student]
 
-        attempt = Attempt.objects.filter(level=level, student=student).first()
+        attempt = Attempt.objects.filter(level__id=level_id, student=student).first()
         if attempt:
             row.append(attempt.score if attempt.score is not None else '')
             row.append(chop_miliseconds(attempt.finish_time - attempt.start_time))
@@ -148,14 +148,28 @@ def create_scoreboard(request):
 
         return row
 
+    # many_rows return the
     def many_rows(student_data, levels_id):
+        threshold = 10.0
+
+        num_levels = len(levels_id)
         for row in student_data:
             student = row[0]
-            row[4] = student_statistics(student, levels_id)
+            num_all = num_finished = num_attempted = num_started = 0
+
             if Attempt.objects.filter(student=student).exists():
                 for level in levels_id:
                     attempt = Attempt.objects.filter(level__id=level, student=student).first()
                     if attempt:
+                        num_all += 1;
+                        if attempt.score:
+                            if attempt.score >= threshold:
+                                num_finished += 1
+                            else:
+                                num_attempted += 1
+                        else:
+                            num_started += 1
+
                         row[1] += attempt.score if attempt.score is not None else 0
                         row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
                         # '-' is used to show that the student has started the level but has not submitted any attempts
@@ -166,20 +180,15 @@ def create_scoreboard(request):
                         row.append("")
                         row[3].append("")
 
+                row[4] = compute_proportions(num_levels, num_started, num_attempted, num_finished)
+            else:
+                row[3].extend([''] * num_levels)
         for row in student_data:
             row[2] = sum(row[2], timedelta())
 
         return student_data
 
-    def student_statistics(student, levels_id):
-        num_levels = len(levels_id)
-        all_attempts = Attempt.objects.filter(student=student, level__id__in=levels_id)
-        finished_attempts = all_attempts.filter(score__gte=10.0)
-        attempted_attempts = all_attempts.filter(score__lte=10.0)
-        num_all = all_attempts.count()
-        num_finished = finished_attempts.count()
-        num_attempted = attempted_attempts.count()
-        num_started = num_all - num_finished - num_attempted
+    def compute_proportions(num_levels, num_started, num_attempted, num_finished):
         return (num_started/num_levels)*100, (num_attempted/num_levels)*100, (num_finished/num_levels)*100
 
     # Returns rows of student object with score, start time, end time of the level
@@ -191,7 +200,7 @@ def create_scoreboard(request):
 
         return student_data
 
-    # Return rows of student object with the score of each selected level
+    # Return rows of student object with values for progress bar and scores of each selected level
     def multiple_students_multiple_levels(students, levels_id):
         student_data = []
 
