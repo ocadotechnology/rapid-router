@@ -67,10 +67,13 @@ ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
             }
         });
 	}
+    //setTimeout is used here in order to ensure that these lines of code are executed after the correct tab is selected
     else if (localStorage) {
-		var json = JSON.parse(localStorage.getItem('blocklySavedWorkspaceXml-' + id));
-		callback(null, json.contents);
-	} 
+        setTimeout(function(){
+            var json = JSON.parse(localStorage.getItem('blocklySavedWorkspaceXml-' + id));
+            callback(null, json);
+        }, 0)
+	}
     else {
 		callback("Not logged in and no local storage available");
 	}
