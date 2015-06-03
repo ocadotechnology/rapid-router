@@ -95,7 +95,7 @@
 {% endblock %}
 
 {% block content %}
-
+{{ block.super }}
 <div>
   
 </div>
@@ -575,21 +575,6 @@
     <img id="trashcanLidClosed" src="/static/game/image/trashcan_lid_closed.svg">
     <img id="trashcanLidOpen" src="/static/game/image/trashcan_lid_open.svg">
     <img id="trashcan" src="/static/game/image/trashcan.svg">
-  </div>
-</div>
-
-<div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
-  <div id="modal-text">
-    <h2 id="myModal-title" class="ocargo-modal-title"></h2>
-    <p id="myModal-lead" class="ocargo-modal-lead"></p>
-    <p id="myModal-mainText" class="ocargo-modal-mainText"></p>
-    <a class="close-reveal-modal" id="close-modal">&#215;</a>
-  </div>
-  <div id="modal-buttons">
-    <button>OK</button>
-  </div>
-  <div id="modal-mascot">
-    <img src="/static/game/image/characters/front_view/Dee.svg">
   </div>
 </div>
 

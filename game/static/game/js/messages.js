@@ -6,15 +6,13 @@ ocargo.jsElements = {
     image: function(url, class_) {
         return "<img src='" + url + "'class='" + class_ + "'>";
     },
-    redirectButton: function(location, label) {
-        return '<br><button class="navigation_button long_button" onclick="window.location.href=' + location + 
-            '"><span>' + label + '</span></button>';
+    nextEpisodeButton: function(episode, random){
+        return ocargo.button.getRedirectButtonHtml("'/rapidrouter/episode/" + episode + "/'",
+                'Next episode') + (random ? ocargo.button.getRedirectButtonHtml("'/rapidrouter/levels/random/" + (episode-1) + "/'",
+            'Random level') : "") +
+            ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
     },
-    closebutton: function(label) {
-        return '<br><button class="navigation_button long_button" onclick="document.getElementById(' + "'close-modal'" +
-        ').click()"><span>' + label +'</span></button>';
 
-    },
     buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>'
 };
 
@@ -23,22 +21,13 @@ ocargo.jsElements = {
 ocargo.messages = {
     nextEpisode: function(episode, random) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
-            "challenge? " + (random ? "Or try one of this episode's random levels!" : "") +
-            " <br><br>" + 
-            ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "/'",
-                                             'Next episode') + " " +
-            (random ? randomocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "/'",
-                                                            'Random level') : "") + " " +
-            ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
+            "challenge? " + (random ? "Or try one of this episode's random levels!" : "") ;
     },
 
     loggedOutWarning: "You are not logged in. Your progress won't be saved.",
     nowTryPython: "Looks like you've got a route sorted using Blockly.<br><br>" +
         "Now go to the Python tab and see if you can do the same in Python! ",
-    lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own " +
-        "challenges. <br><br>" +
-        ocargo.jsElements.redirectButton("'/rapidrouter/level_editor/'", "Create your own map!") +
-        " " + ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home"),
+    lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own challenges.",
 
     illegalBlocks: "Sorry, this workspace has blocks in it that aren't allowed in this level!",
     tooManyBlocks: "Whoops! You used too many blocks.",
@@ -52,6 +41,7 @@ ocargo.messages = {
     queryInfiniteLoop: "It looks as though your program's been running a while. Check your repeat loops are okay.",
     compilationError: "Your program doesn't look quite right...",
     stoppingTitle: "Stopping...",
+    errorTitle: "Error",
 
     outOfFuel : "You ran out of fuel! Try to find a shorter route to the destination.",
     outOfInstructions: "The van ran out of instructions before it reached a destination.",

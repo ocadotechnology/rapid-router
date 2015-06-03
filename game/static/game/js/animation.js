@@ -222,6 +222,8 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		case 'popup':
 			var title = "";
 			var leadMsg = a.popupMessage;
+			var buttons = a.button;
+
 			// sort popup...
 			switch (a.popupType) {
 				case 'WIN':
@@ -229,19 +231,32 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					var levelMsg = "";
 
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
-						levelMsg = ocargo.messages.nowTryPython + ocargo.jsElements.closebutton("Close");
+						levelMsg = ocargo.messages.nowTryPython;
+						buttons += ocargo.button.addDismissButtonHtml('Close');
 					}
 					else {
+						// If there exists next level, add a button which redirects the user to that
 						if (NEXT_LEVEL) {
-					        levelMsg = ocargo.jsElements.redirectButton("'/rapidrouter/" + NEXT_LEVEL + "/'",
+							buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/" + NEXT_LEVEL + "/'",
 					        								     		'Next Level');
 					    } 
 					    else {
+							/*
+							 This is the last level of the episode. If there exists a next episode, add button to
+							 redirect user to it or level selection page.
+							 If this is a default level and there isn't a next episode, user has reached the end of the
+							 game. Add button to encourage users to create their own levels or redirect to level
+							 selection page.
+							 */
+
 					        if (NEXT_EPISODE) {
-					            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE);
-					        } 
-					        else if(MODEL_SOLUTION.length > 0) {
+					            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM);
+								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
+					        }
+					        else if(DEFAULT_LEVEL) {
 					            levelMsg = ocargo.messages.lastLevel;
+								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/level_editor/'", "Create your own map!");
+								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
 					        }
 					    }
 					}
@@ -249,19 +264,18 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
-					leadMsg = leadMsg + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+					buttons = ocargo.button.getTryAgainButtonHtml();
 					break;
 				case 'WARNING':
-					title = ocargo.messages.ohNo;
-					leadMsg = leadMsg + ocargo.jsElements.closebutton(ocargo.messages.tryagainLabel);
+					buttons = ocargo.button.getTryAgainButtonHtml();
 					break;
 			}
 			var otherMsg = "";
 			if (a.popupHint) {
-				leadMsg += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
+				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
 				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}
-			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true);
+			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons);
 			if (a.popupHint) {
 				$("#hintPopupBtn").click( function(){
 	                    $("#hintText").show(500);
