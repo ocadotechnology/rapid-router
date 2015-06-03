@@ -865,8 +865,18 @@ ocargo.Drawing.translate = function(coordinate) {
     return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
 };
 
-// This is the function that starts the pop-up.
-ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay, buttons) {
+/*
+ This is the function that starts the pop-up.
+ Buttons should be passed in separately to the function instead of concatenating
+ to the message so as to keep the layout of the pop-up consistent.
+ The following elements will be displayed vertically from top to bottom in this order:
+ 1. title (bolded)
+ 2. subtitle (same font size as title)
+ 3. message (smaller font size than title and subtitle)
+ 4. buttons (in one row)
+ Mascot will be displayed on the right hand side of the popup
+ */
+ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, delay) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
@@ -879,9 +889,8 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay, bu
     
     if(buttons){
         $('#modal-buttons').html(buttons);
-        $('#modal-buttons').show();
     } else {
-        $('#modal-buttons').hide();
+        $('#modal-buttons').html(ocargo.button.getDismissButtonHtml("Close"));
     }
 
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
@@ -890,10 +899,15 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, delay, bu
 // This is the function that starts the pop-up with a yes and a no button
 ocargo.Drawing.startYesNoPopup = function(title, subtitle, message, yesFunction, noFunction, mascot, delay) {
     var buttonHtml = '<button id="modal-yesBtn" class="navigation_button long_button">Yes</button> <button id="modal-noBtn" class="navigation_button long_button">No</button>';
-    ocargo.Drawing.startPopup(title, subtitle, message, mascot, delay, buttonHtml);
+    ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml, delay);
     $('#modal-yesBtn').click(yesFunction);
     $('#modal-noBtn').click(noFunction);
 };
+
+// This is the function that starts the pop-up when there is no internet connection while playing the game
+ocargo.Drawing.startInternetDownPopup = function(){
+    ocargo.Drawing.startPopup(ocargo.messages.errorTitle,"",ocargo.messages.internetDown);
+}
 
 ocargo.Drawing.showButtonHelp = function(){
     $('#myModal-lead').html('');

@@ -6,7 +6,7 @@ import json
 
 from django.contrib.auth.models import User
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
@@ -104,15 +104,16 @@ def get_loadable_levels_for_editor(request):
 
 
 def load_level_for_editor(request, levelID):
-    level = Level.objects.get(id=levelID)
+    level = get_object_or_404(Level, id=levelID)
 
-    response = ''
-    if permissions.can_load_level(request.user, level):
-        levelDict = model_to_dict(level)
-        levelDict['decor'] = level_management.get_decor(level)
-        levelDict['blocks'] = level_management.get_blocks(level)
+    if not permissions.can_load_level(request.user, level):
+        return HttpResponseUnauthorized()
 
-        response = {'owned': level.owner == request.user.userprofile, 'level': levelDict}
+    level_dict = model_to_dict(level)
+    level_dict['decor'] = level_management.get_decor(level)
+    level_dict['blocks'] = level_management.get_blocks(level)
+
+    response = {'owned': level.owner == request.user.userprofile, 'level': level_dict}
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
@@ -123,34 +124,37 @@ def save_level_for_editor(request, levelID=None):
     data = json.loads(request.POST['data'])
 
     if levelID is not None:
-        level = Level.objects.get(id=levelID)
+        level = get_object_or_404(Level, id=levelID)
     else:
         level = Level(default=False, anonymous=data['anonymous'])
 
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
 
-    if permissions.can_save_level(request.user, level):
-        level_management.save_level(level, data)
+    if not permissions.can_save_level(request.user, level):
+        return HttpResponseUnauthorized()
 
-        # Add the teacher automatically if it is a new level and the student is not independent
-        if ((levelID is None) and hasattr(level.owner, 'student') and
-                not level.owner.student.is_independent()):
-            level.shared_with.add(level.owner.student.class_field.teacher.user.user)
-            level.save()
+    level_management.save_level(level, data)
 
-        response = get_list_of_loadable_levels(request.user)
-        response['levelID'] = level.id
-    else:
-        response = {}
+    # Add the teacher automatically if it is a new level and the student is not independent
+    if ((levelID is None) and hasattr(level.owner, 'student') and
+            not level.owner.student.is_independent()):
+        level.shared_with.add(level.owner.student.class_field.teacher.user.user)
+        level.save()
+
+    response = get_list_of_loadable_levels(request.user)
+    response['levelID'] = level.id
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 
 def delete_level_for_editor(request, levelID):
-    level = Level.objects.get(id=levelID)
-    if permissions.can_delete_level(request.user, level):
-        level_management.delete_level(level)
+    level = get_object_or_404(Level, id=levelID)
+
+    if not permissions.can_delete_level(request.user, level):
+        return HttpResponseUnauthorized()
+
+    level_management.delete_level(level)
 
     response = get_list_of_loadable_levels(request.user)
 
@@ -175,7 +179,7 @@ def generate_random_map_for_editor(request):
 
 def get_sharing_information_for_editor(request, levelID):
     """ Returns a information about who the level can be and is shared with """
-    level = Level.objects.get(id=levelID)
+    level = get_object_or_404(Level, id=levelID)
     valid_recipients = {}
 
     if permissions.can_share_level(request.user, level):
@@ -234,7 +238,7 @@ def share_level_for_editor(request, levelID):
     recipientIDs = request.POST.getlist('recipientIDs[]')
     action = request.POST.get('action')
 
-    level = Level.objects.get(id=levelID)
+    level = get_object_or_404(Level, id=levelID)
     recipients = User.objects.filter(id__in=recipientIDs)
 
     def can_share_level_with(r):
@@ -248,3 +252,8 @@ def share_level_for_editor(request, levelID):
         level_management.unshare_level(level, *users)
 
     return get_sharing_information_for_editor(request, levelID)
+
+
+class HttpResponseUnauthorized(HttpResponse):
+    def __init__(self):
+        super(HttpResponseUnauthorized, self).__init__(content='Unauthorized', status=401)

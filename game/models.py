@@ -67,6 +67,12 @@ class Episode (models.Model):
     def __unicode__(self):
         return 'Episode: ' + self.name
 
+class LevelManager(models.Manager):
+    def sorted_levels(self):
+        # Sorts all the levels by integer conversion of "name" which should equate to the correct play order
+        # Custom levels do not have an episode
+
+        return sorted(self.model.objects.filter(episode__isnull=False), key=lambda level: int(level.name))
 
 class Level (models.Model):
     name = models.CharField(max_length=100)
@@ -91,9 +97,10 @@ class Level (models.Model):
     theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
     character = models.ForeignKey(Character, default=1)
     anonymous = models.BooleanField(default=False)
+    objects = LevelManager()
 
     def __unicode__(self):
-        return 'Level ' + str(self.id)
+        return 'Level ' + str(self.name)
     
 
 class LevelBlock(models.Model):

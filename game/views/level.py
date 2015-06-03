@@ -126,10 +126,11 @@ def submit_attempt(request):
         level = get_object_or_404(Level, id=request.POST.get('level', 1))
         student = request.user.userprofile.student
         attempt = Attempt.objects.filter(level=level, student=student).first()
-        attempt.score = request.POST.get('score')
-        attempt.workspace = request.POST.get('workspace')
-        attempt.python_workspace = request.POST.get('python_workspace')
-        attempt.save()
+        if attempt:
+            attempt.score = request.POST.get('score')
+            attempt.workspace = request.POST.get('workspace')
+            attempt.python_workspace = request.POST.get('python_workspace')
+            attempt.save()
 
     return HttpResponse('[]', content_type='application/json')
 
