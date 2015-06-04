@@ -153,8 +153,8 @@ ocargo.Game.prototype.setup = function() {
             title = LEVEL_NAME;
         }
     }
-    ocargo.Drawing.startPopup(title, "",
-        LESSON + ocargo.jsElements.closebutton("Play") + loggedOutWarning, true);
+    ocargo.Drawing.startPopup(title, LESSON,
+         loggedOutWarning, true, ocargo.button.getDismissButtonHtml('Play'));
 };
 
 ocargo.Game.prototype.reset = function() {
@@ -171,10 +171,17 @@ ocargo.Game.prototype.reset = function() {
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     this.reset();
 
+    ocargo.event.sendEvent("PlayButtonPressed", { levelName: LEVEL_NAME,
+                                                  defaultLevel: DEFAULT_LEVEL,
+                                                  workspace: ocargo.blocklyControl.serialize(),
+                                                  failures: this.failures,
+                                                  pythonWorkspace: ocargo.pythonControl.getCode() });
+
     var result = ocargo.controller.prepare();
     if (!result.success) {
         ocargo.sound.tension();
-        ocargo.Drawing.startPopup(ocargo.messages.failTitle, "", result.error, false);
+        ocargo.Drawing.startPopup(ocargo.messages.failTitle, "",
+                                    result.error);
         return false;
     }
     var program = result.program;
@@ -233,7 +240,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         if (LEVEL_ID) {
             var csrftoken = $.cookie('csrftoken');
             $.ajax({
-                url : '/rapidrouter/submit',
+                url : '/rapidrouter/submit/',
                 type : 'POST',
                 dataType: 'json',
                 beforeSend: function(xhr, settings) {
@@ -468,8 +475,8 @@ ocargo.Game.prototype.setupTabs = function() {
         });
         
         $('#van_commands_help').click(function (e) {
-            var leadMsg = ocargo.messages.pythonCommands + ocargo.jsElements.closebutton("Close");
-            ocargo.Drawing.startPopup("Python Commands", leadMsg, null, true);
+            var leadMsg = ocargo.messages.pythonCommands;
+            ocargo.Drawing.startPopup("Python Commands", leadMsg, "", true);
         });
 
         $('#convert_from_blockly').click(function (e) {
@@ -575,9 +582,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
-                    ocargo.Drawing.startPopup(
-                        "Error", "" , 
-                        ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
+                    ocargo.Drawing.startInternetDownPopup();
                     console.error(err);
                     return;
                 }
@@ -588,11 +593,19 @@ ocargo.Game.prototype.setupTabs = function() {
 
         $('#loadWorkspace').click(function() {
             if (selectedWorkspace) {
+
+                // Blockly or Python tab must be selected before domToWorkspace is called
+                // Otherwise blocks will be chopped off or python editor will not be updated
+                if (PYTHON_ENABLED) {
+                    tabs.python.select();
+                }
+                if (BLOCKLY_ENABLED) {
+                    tabs.blockly.select();
+                }
+
                 ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
                     if (err !== null) {
-                        ocargo.Drawing.startPopup(
-                            "Error" , "" ,
-                            ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
+                        ocargo.Drawing.startInternetDownPopup();
                         console.error(err);
                         return;
                     }
@@ -606,12 +619,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
                     $('#loadModal').foundation('reveal', 'close');
                 });
-                if (PYTHON_ENABLED) {
-                    tabs.python.select();
-                }
-                if (BLOCKLY_ENABLED) {
-                    tabs.blockly.select();
-                }
+
             }
         });
 
@@ -619,9 +627,7 @@ ocargo.Game.prototype.setupTabs = function() {
             if (selectedWorkspace) {
                 ocargo.saving.deleteWorkspace(selectedWorkspace, function(err, workspaces) {
                     if (err !== null) {
-                        ocargo.Drawing.startPopup(
-                            "Error", "",
-                            ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
+                        ocargo.Drawing.startInternetDownPopup();
                         console.error(err);
                         return;
                     }
@@ -671,9 +677,7 @@ ocargo.Game.prototype.setupTabs = function() {
             
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
-                    ocargo.Drawing.startPopup(
-                        "Error", "",
-                        ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
+                    ocargo.Drawing.startInternetDownPopup();
                     console.error(err);
                     return;
                 }
@@ -703,9 +707,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
                 ocargo.saving.saveWorkspace(workspace, existingID, function(err, workspaces) {
                     if (err !== null) {
-                        ocargo.Drawing.startPopup(
-                            "Error", "",
-                            ocargo.messages.internetDown + ocargo.jsElements.closebutton("Close"));
+                        ocargo.Drawing.startInternetDownPopup();
                         console.error(err);
                         return;
                     }
@@ -750,7 +752,7 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupHelpTab() {
         tabs.help.setOnChange(function() {
             ocargo.game.currentTabSelected.select();
-            ocargo.Drawing.startPopup('', '', HINT + ocargo.jsElements.closebutton("Close!"));
+            ocargo.Drawing.startPopup('', '', HINT);
         });
     }
 

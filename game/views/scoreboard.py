@@ -1,9 +1,10 @@
 from __future__ import division
 import game.messages as messages
 import game.permissions as permissions
+import csv
 
 from datetime import timedelta
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from helper import renderError
@@ -39,13 +40,33 @@ def scoreboard(request):
     if error_response:
         return error_response
 
+    if 'export' in request.POST:
+        return get_scoreboard_csv(student_data, headers)
+    else:
+        return get_scoreboard_view(request, form, student_data, headers)
+
+def get_scoreboard_view(request, form, student_data, headers):
     context = RequestContext(request, {
         'form': form,
         'student_data': student_data,
         'headers': headers,
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
+    
+def get_scoreboard_csv(student_data, headers):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="scoreboard.csv"'
+    
+    #remove list element with list of level scores (the following elements hold the same data separately)
+    if headers[1] != 'Score':
+        for row in student_data:
+            del row[3]
 
+    writer = csv.writer(response)
+    writer.writerow(headers)
+    writer.writerows(student_data)
+
+    return response
 
 def create_scoreboard(request):
 
@@ -107,6 +128,9 @@ def create_scoreboard(request):
             row.append(attempt.finish_time)
         else:
             row.append("")
+            row.append("")
+            row.append("")
+            row.append("")
 
         return row
 
@@ -118,7 +142,7 @@ def create_scoreboard(request):
                 if attempt:
                     row[1] += attempt.score if attempt.score is not None else 0
                     row[2].append(chop_miliseconds(attempt.finish_time - attempt.start_time))
-                    row.append(attempt.score)
+                    row.append(attempt.score if attempt.score is not None else '')
                     row[3].append(attempt.score if attempt.score is not None else '')
                 else:
                     row[2].append(timedelta(0))
@@ -185,16 +209,9 @@ def create_scoreboard(request):
         return many_rows(student_data, levels)
 
     def get_levels(userprofile, headers):
-        episodes = Episode.objects.all()
-        levels = []
+        levels = Level.objects.sorted_levels()
+        headers += levels
 
-        if not userprofile.developer:
-            episodes = Episode.objects.filter(in_development=False)
-
-        for episode in episodes:
-            levels += episode.levels
-            for level in episode.levels:
-                headers.append('Level {}'.format(level.name))
         return levels, headers
 
     def is_viewable(class_):
