@@ -156,7 +156,6 @@ def create_scoreboard(request):
 
         return row
 
-    # many_rows return the
     def many_rows(student_data, level_ids):
         threshold = 10.0
 
@@ -165,11 +164,11 @@ def create_scoreboard(request):
             student = row[0]
             num_all = num_finished = num_attempted = num_started = 0
 
-            attempts = Attempt.objects.filter(level__id__in=level_ids, student=student)
+            attempts = Attempt.objects.filter(level__id__in=level_ids, student=student).select_related('level')
             if attempts:
-                attempts_dict = {attempt.level.id : attempt for attempt in attempts}
-                for level in level_ids:
-                    attempt = attempts_dict.get(level)
+                attempts_dict = {attempt.level.id: attempt for attempt in attempts}
+                for level_id in level_ids:
+                    attempt = attempts_dict.get(level_id)
                     if attempt:
                         num_all += 1;
                         if attempt.score:
