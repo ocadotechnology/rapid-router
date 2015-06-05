@@ -70,12 +70,20 @@ def get_scoreboard_csv(student_data, headers):
 
 def create_scoreboard(request):
 
+    def are_classes_viewable_by_teacher(class_ids, userprofile):
+        teachers = Teacher.objects.filter(school=userprofile.teacher.school)
+        classes_list = Class.objects.filter(teacher__in=teachers).values_list('id', flat=True)
+        for class_id in class_ids:
+            if class_id and not class_id in classes_list:
+                return False
+        return True
+
     def populate_scoreboard(request):
 
         # Getting data from the request object
         userprofile = request.user.userprofile
         level_ids = map(int, request.POST.getlist('levels'))
-        classes_id = request.POST.getlist('classes')
+        class_ids = map(int, request.POST.getlist('classes'))
 
         # Get the list of students and levels to be displayed
         # As the list passed by the multiselect is in order, using a for loop will preserve the order and
@@ -84,23 +92,20 @@ def create_scoreboard(request):
         # Django 1.8 supports the use of expressios in order_by, should try using that to write cleaner codes
         # https://docs.djangoproject.com/en/1.8/releases/1.8/#query-expressions-conditional-expressions-and-database-functions
 
-        students = Student.objects.filter(class_field__id__in = classes_id)
+        students = Student.objects.filter(class_field__id__in = class_ids)
 
         levels = Level.objects.filter(id__in=level_ids)
 
         # Check that all the classes selected are valid
         if is_teacher(userprofile):
-            teachers = Teacher.objects.filter(school=userprofile.teacher.school)
-            classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
-            for class_id in classes_id:
-                if class_id and not int(class_id) in classes_list:
-                    raise Http404
+            if not are_classes_viewable_by_teacher(class_ids, userprofile):
+                raise Http404
 
         # Retrieve the class that the student is in, check that the class selected in drop down menu is the same
         # Each student can only be in one class at a time, so there will be only be one element in the list
         elif is_student(userprofile):
             class_ = userprofile.student.class_field
-            if classes_id[0] and int(classes_id[0]) != class_.id:
+            if class_ids[0] and int(class_ids[0]) != class_.id:
                 raise Http404
             students = class_.students.all()
             # If student is not permitted to look at other students' score, it will only show the student's own data
