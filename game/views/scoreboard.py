@@ -10,7 +10,7 @@ from django.template import RequestContext
 from helper import renderError
 from game.forms import ScoreboardForm
 from game.models import Level, Attempt, Episode
-from portal.models import Class, Teacher
+from portal.models import Class, Teacher, Student
 
 
 def scoreboard(request):
@@ -72,11 +72,6 @@ def create_scoreboard(request):
 
     def populate_scoreboard(request):
 
-        # Initialising variables
-        classes = []
-        students = []
-        levels = []
-
         # Getting data from the request object
         userprofile = request.user.userprofile
         level_ids = map(int, request.POST.getlist('levels'))
@@ -88,10 +83,8 @@ def create_scoreboard(request):
         # Django 1.7 does not support sorting queryset by converting strings to int
         # Django 1.8 supports the use of expressios in order_by, should try using that to write cleaner codes
         # https://docs.djangoproject.com/en/1.8/releases/1.8/#query-expressions-conditional-expressions-and-database-functions
-        for class_id in classes_id:
-            cl = get_object_or_404(Class, id=class_id)
-            classes.append(cl)
-            students += cl.students.all()
+
+        students = Student.objects.filter(class_field__id__in = classes_id)
 
         levels = Level.objects.filter(id__in=level_ids)
 
