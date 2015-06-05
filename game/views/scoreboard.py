@@ -75,11 +75,11 @@ def create_scoreboard(request):
         # Initialising variables
         classes = []
         students = []
-        levels_name = []
+        levels = []
 
         # Getting data from the request object
         userprofile = request.user.userprofile
-        levels_id = request.POST.getlist('levels')
+        levels_id = map(int, request.POST.getlist('levels'))
         classes_id = request.POST.getlist('classes')
 
         # Get the list of students and levels to be displayed
@@ -93,9 +93,7 @@ def create_scoreboard(request):
             classes.append(cl)
             students += cl.students.all()
 
-        levels_dict = Level.objects.values('id', 'name')
-        for level_id in levels_id:
-            levels_name.append('Level ' + levels_dict.get(id=level_id).get('name'))
+        levels = Level.objects.filter(id__in=level_ids)
 
         # Check that all the classes selected are valid
         if is_teacher(userprofile):
@@ -122,7 +120,7 @@ def create_scoreboard(request):
         if len(levels_id) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
-            headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], levels_name)
+            headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], levels)
             student_data = multiple_students_multiple_levels(students, levels_id)
         else:
             # Rows: Students from each class
@@ -149,17 +147,20 @@ def create_scoreboard(request):
         return row
 
     # many_rows return the
-    def many_rows(student_data, levels_id):
+    def many_rows(student_data, level_ids):
         threshold = 10.0
 
-        num_levels = len(levels_id)
+        num_levels = len(level_ids)
         for row in student_data:
             student = row[0]
             num_all = num_finished = num_attempted = num_started = 0
 
             if Attempt.objects.filter(student=student).exists():
-                for level in levels_id:
-                    attempt = Attempt.objects.filter(level__id=level, student=student).first()
+                attempts = Attempt.objects.filter(level__id__in=level_ids, student=student)
+
+                attempts_dict = {attempt.level.id : attempt for attempt in attempts}
+                for level in level_ids:
+                    attempt = attempts_dict.get(level)
                     if attempt:
                         num_all += 1;
                         if attempt.score:
