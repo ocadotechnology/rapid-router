@@ -165,9 +165,8 @@ def create_scoreboard(request):
             student = row[0]
             num_all = num_finished = num_attempted = num_started = 0
 
-            if Attempt.objects.filter(student=student).exists():
-                attempts = Attempt.objects.filter(level__id__in=level_ids, student=student)
-
+            attempts = Attempt.objects.filter(level__id__in=level_ids, student=student)
+            if attempts:
                 attempts_dict = {attempt.level.id : attempt for attempt in attempts}
                 for level in level_ids:
                     attempt = attempts_dict.get(level)
