@@ -5,11 +5,11 @@ import csv
 
 from datetime import timedelta
 from django.http import Http404, HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.template import RequestContext
 from helper import renderError
 from game.forms import ScoreboardForm
-from game.models import Level, Attempt, Episode
+from game.models import Level, Attempt
 from portal.models import Class, Teacher, Student
 
 
