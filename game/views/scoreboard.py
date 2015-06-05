@@ -72,9 +72,10 @@ def create_scoreboard(request):
 
     def are_classes_viewable_by_teacher(class_ids, userprofile):
         teachers = Teacher.objects.filter(school=userprofile.teacher.school)
-        classes_list = Class.objects.filter(teacher__in=teachers).values_list('id', flat=True)
+        classes_in_teachers_school = Class.objects.filter(teacher__in=teachers).values_list('id', flat=True)
         for class_id in class_ids:
-            if class_id and not class_id in classes_list:
+            is_authorised = class_id in classes_in_teachers_school
+            if not is_authorised:
                 return False
         return True
 
@@ -231,8 +232,7 @@ def create_scoreboard(request):
     def classes_for(userprofile):
         if is_teacher(userprofile):
             teachers = Teacher.objects.filter(school=userprofile.teacher.school)
-            classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
-            return Class.objects.filter(id__in=classes_list)
+            return Class.objects.filter(teacher__in=teachers)
         elif is_student(userprofile):
             class_ = userprofile.student.class_field
             return Class.objects.filter(id=class_.id)
