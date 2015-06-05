@@ -79,6 +79,32 @@ def create_scoreboard(request):
                 return False
         return True
 
+    def authorised_student_access(class_, class_ids):
+        return len(class_ids) == 1 and class_ids[0] == class_
+
+    def students_visible_to_student(student, class_):
+        if is_viewable(class_):
+            return class_.students.all()
+        else:
+            return [student]
+
+    def students_visible_to_user(userprofile, class_ids):
+        if is_teacher(userprofile):
+            return Student.objects.filter(class_field__id__in = class_ids)
+        elif is_student(userprofile):
+            student = userprofile.student
+            class_ = student.class_field
+            return students_visible_to_student(student, class_)
+
+    def is_valid_request(userprofile, class_ids):
+        if is_teacher(userprofile):
+            return are_classes_viewable_by_teacher(class_ids, userprofile)
+        elif is_student(userprofile):
+            return authorised_student_access(userprofile.student.class_field, class_ids)
+        else:
+            return False
+        return True
+
     def populate_scoreboard(request):
 
         # Getting data from the request object
@@ -93,27 +119,12 @@ def create_scoreboard(request):
         # Django 1.8 supports the use of expressios in order_by, should try using that to write cleaner codes
         # https://docs.djangoproject.com/en/1.8/releases/1.8/#query-expressions-conditional-expressions-and-database-functions
 
-        students = Student.objects.filter(class_field__id__in = class_ids)
+        if not is_valid_request(userprofile, class_ids):
+            raise Http404
 
+        students = students_visible_to_user(userprofile, class_ids)
         levels = Level.objects.filter(id__in=level_ids)
 
-        # Check that all the classes selected are valid
-        if is_teacher(userprofile):
-            if not are_classes_viewable_by_teacher(class_ids, userprofile):
-                raise Http404
-
-        # Retrieve the class that the student is in, check that the class selected in drop down menu is the same
-        # Each student can only be in one class at a time, so there will be only be one element in the list
-        elif is_student(userprofile):
-            class_ = userprofile.student.class_field
-            if class_ids[0] and int(class_ids[0]) != class_.id:
-                raise Http404
-            students = class_.students.all()
-            # If student is not permitted to look at other students' score, it will only show the student's own data
-            if not is_viewable(class_):
-                students = class_.students.filter(id=userprofile.student.id)
-        else:
-            raise Http404
         # If there are more than one level to show, show the total score, total time and score of each level
         # Otherwise, show the details of the level (the score, total time, start time and end time)
         if len(level_ids) > 1:
