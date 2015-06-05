@@ -70,7 +70,7 @@ def get_scoreboard_csv(student_data, headers):
 
 def create_scoreboard(request):
 
-    def populate_scoreboard(request, form, school):
+    def populate_scoreboard(request):
 
         # Initialising variables
         classes = []
@@ -79,7 +79,7 @@ def create_scoreboard(request):
 
         # Getting data from the request object
         userprofile = request.user.userprofile
-        levels_id = map(int, request.POST.getlist('levels'))
+        level_ids = map(int, request.POST.getlist('levels'))
         classes_id = request.POST.getlist('classes')
 
         # Get the list of students and levels to be displayed
@@ -117,16 +117,16 @@ def create_scoreboard(request):
             raise Http404
         # If there are more than one level to show, show the total score, total time and score of each level
         # Otherwise, show the details of the level (the score, total time, start time and end time)
-        if len(levels_id) > 1:
+        if len(level_ids) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
             headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], levels)
-            student_data = multiple_students_multiple_levels(students, levels_id)
+            student_data = multiple_students_multiple_levels(students, level_ids)
         else:
             # Rows: Students from each class
             # Cols: Score, Total Time, Start Time, End Time
             headers = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
-            student_data = multiple_students_one_level(students, levels_id[0])
+            student_data = multiple_students_one_level(students, level_ids[0])
         return student_data, headers
 
     def one_row(student, level_id):
@@ -202,13 +202,13 @@ def create_scoreboard(request):
         return student_data
 
     # Return rows of student object with values for progress bar and scores of each selected level
-    def multiple_students_multiple_levels(students, levels_id):
+    def multiple_students_multiple_levels(students, level_ids):
         student_data = []
 
         for student in students:
             student_data.append([student, 0.0, [], [], (0.0, 0.0, 0.0)])
 
-        return many_rows(student_data, levels_id)
+        return many_rows(student_data, level_ids)
 
 
     def get_levels_headers(headers, levels):
@@ -227,25 +227,30 @@ def create_scoreboard(request):
     def is_teacher(userprofile):
         return hasattr(userprofile, 'teacher')
 
+    def is_independent_student(userprofile):
+        return hasattr(userprofile, 'student') and userprofile.student.is_independent()
+
+    def classes_for(userprofile):
+        if is_teacher(userprofile):
+            teachers = Teacher.objects.filter(school=userprofile.teacher.school)
+            classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
+            return Class.objects.filter(id__in=classes_list)
+        elif is_student(userprofile):
+            class_ = userprofile.student.class_field
+            return Class.objects.filter(id=class_.id)
+
+    def error_response(message):
+        return None, None, None, renderError(request, messages.noPermissionTitle(), message)
+
     userprofile = request.user.userprofile
-    school = None
     headers = []
-    classes = []
+    classes = classes_for(userprofile)
 
-    if is_teacher(userprofile):
-        teachers = Teacher.objects.filter(school=userprofile.teacher.school)
-        classes_list = [c.id for c in Class.objects.all() if (c.teacher in teachers)]
-        classes = Class.objects.filter(id__in=classes_list)
-        if len(classes) <= 0:
-            return None, None, None, renderError(request, messages.noPermissionTitle(), messages.noDataToShow())
+    if is_independent_student(userprofile):
+        return error_response(messages.noPermissionScoreboard())
 
-    elif is_student(userprofile):
-        class_ = userprofile.student.class_field
-        classes = Class.objects.filter(id=class_.id)
-        school = class_.teacher.school
-
-    else:
-        return None, None, None, renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+    if is_teacher(userprofile) and len(classes) == 0:
+        return error_response(messages.noDataToShow())
 
     form = ScoreboardForm(request.POST or None, classes=classes)
     student_data = None
@@ -253,6 +258,6 @@ def create_scoreboard(request):
     # Update the scoreboard if the class and or level were selected.
     if request.method == 'POST':
         if form.is_valid():
-            student_data, headers = populate_scoreboard(request, form, school)
+            student_data, headers = populate_scoreboard(request)
 
     return form, student_data, headers, None
