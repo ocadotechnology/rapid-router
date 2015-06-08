@@ -12,6 +12,7 @@ class DropDownMenuSelectMultiple(forms.SelectMultiple):
         js = (
             'game/js/pqselect.dev.js',
         )
+
     def render(self, name, value, attrs, choices=()):
         print
         html = super(DropDownMenuSelectMultiple, self).render(name, value, attrs, choices)

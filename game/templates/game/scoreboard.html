@@ -32,7 +32,7 @@
         {% endif %}
 
         var table = $('#scoreboardTable').DataTable({
-            scrollY:        "300px",
+            scrollY:        ($(window).height() - 100) + "px",
             scrollX:        true,
             scrollCollapse: true,
             paging:         false,
@@ -42,7 +42,7 @@
             leftColumns: 1,
         } );
         $(".tableWrapper").css('visibility', 'visible');
-
+        document.getElementById("tableWrapper").scrollIntoView();
     });
   </script>
 {{block.super}}
@@ -105,7 +105,7 @@
 </div>
 <br>
 <div class="mainBody">
-  <div class="tableWrapper">
+  <div class="tableWrapper" id="tableWrapper">
     {% if student_data %}
     <table id="scoreboardTable" class="display cell-border wide">
     <thead>
