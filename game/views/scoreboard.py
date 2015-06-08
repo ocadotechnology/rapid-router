@@ -2,6 +2,7 @@ from __future__ import division
 import game.messages as messages
 import game.permissions as permissions
 import csv
+from sets import Set
 
 from datetime import timedelta
 from django.http import Http404, HttpResponse
@@ -109,7 +110,7 @@ def create_scoreboard(request):
 
         # Getting data from the request object
         userprofile = request.user.userprofile
-        level_ids = map(int, request.POST.getlist('levels'))
+        level_ids = Set(map(int, request.POST.getlist('levels')))
         class_ids = map(int, request.POST.getlist('classes'))
 
         # Get the list of students and levels to be displayed
@@ -123,20 +124,22 @@ def create_scoreboard(request):
             raise Http404
 
         students = students_visible_to_user(userprofile, class_ids)
-        levels = Level.objects.filter(id__in=level_ids)
+        levels = Level.objects.sorted_levels()
+
+        filtered_levels = filter(lambda x : x.id in level_ids, levels)
 
         # If there are more than one level to show, show the total score, total time and score of each level
         # Otherwise, show the details of the level (the score, total time, start time and end time)
         if len(level_ids) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
-            headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], levels)
+            headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], filtered_levels)
             student_data = multiple_students_multiple_levels(students, level_ids)
         else:
             # Rows: Students from each class
             # Cols: Score, Total Time, Start Time, End Time
             headers = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
-            student_data = multiple_students_one_level(students, level_ids[0])
+            student_data = multiple_students_one_level(students, next(iter(level_ids)))
         return student_data, headers
 
     def one_row(student, level_id):
