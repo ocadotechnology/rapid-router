@@ -56,6 +56,10 @@ table tbody td {
 	background: #C24563;
 }
 
+.tableWrapper {
+	visibility: hidden;
+}
+
 #scoreboardTable tr td.untouched {
 	background: #d9d9d9;
 }
