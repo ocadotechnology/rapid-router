@@ -14,7 +14,6 @@ class DropDownMenuSelectMultiple(forms.SelectMultiple):
         )
 
     def render(self, name, value, attrs, choices=()):
-        print
         html = super(DropDownMenuSelectMultiple, self).render(name, value, attrs, choices)
         html += """
             <script>$("#id_""" + name + """").pqSelect({
