@@ -19,10 +19,10 @@
         {# Only initialise progress bars if the column exists #}
         {% if 'Progress' in headers %}
           {% for student in student_data %}
-              var id = {{ student.0.id }}
-              var started = {{ student.4.0 }}
-              var attempted = {{ student.4.1 }}
-              var finished = {{ student.4.2 }}
+              var id = {{ student.id }}
+              var started = {{ student.progress.0 }}
+              var attempted = {{ student.progress.1 }}
+              var finished = {{ student.progress.2 }}
               $('#progressbar' + id).multiprogressbar({
                   parts: [{value: started, barClass: 'started'},
                           {value: attempted, barClass: 'attempted'},
@@ -119,16 +119,16 @@
       </thead>
       {% for student in student_data %}
       <tr>
-          <td> {{student.5}} </td>
-          <td> {{student.0.user.user.first_name}} </td>
-          <td> {{student.1}} </td>
-          <td> {{student.2}}
+          <td> {{student.class_field}} </td>
+          <td> {{student.name}} </td>
+          <td> {{student.total_score}} </td>
+          <td> {{student.total_time}}
           {% if headers.2 == 'Score' %}
-            <td> {{student.3}} </td>
-            <td> {{student.4}} </td>
+            <td> {{student.start_time}} </td>
+            <td> {{student.finish_time}} </td>
           {% else %}
-            <td> <div class="MultiProgressBarDiv" id="progressbar{{ student.0.id }}"></div> </td>
-            {% for levelScore in student.3 %}
+            <td> <div class="MultiProgressBarDiv" id="progressbar{{ student.id }}"></div> </td>
+            {% for levelScore in student.scores %}
               {# Levels that students have not started will be marked with grey colour #}
               <td > {{levelScore}} </td>
             {% endfor %}
