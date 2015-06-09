@@ -131,3 +131,6 @@ class Attempt (models.Model):
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")
     python_workspace = models.TextField(default="")
+
+    def elapsed_time(self):
+        return self.finish_time - self.start_time

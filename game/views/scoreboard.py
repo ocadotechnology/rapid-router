@@ -157,56 +157,55 @@ def create_scoreboard(request):
 
     # Return rows of student object with values for progress bar and scores of each selected level
     def multiple_students_multiple_levels(students, level_ids):
+        result = map(lambda student: student_row(level_ids, student), students)
+        return result
 
+    def student_row(level_ids_sorted, student):
         threshold = 10.0
 
-        num_levels = len(level_ids)
-        student_rows = []
-
-        for student in students:
-            num_all = num_finished = num_attempted = num_started = 0
-            total_score = 0.0
-            scores = []
-            times = []
-            progress = (0.0, 0.0, 0.0)
-            attempts = Attempt.objects.filter(level__id__in=level_ids, student=student).select_related('level')
-            if attempts:
-                attempts_dict = {attempt.level.id: attempt for attempt in attempts}
-                for level_id in level_ids:
-                    attempt = attempts_dict.get(level_id)
-                    if attempt:
-                        num_all += 1;
-                        if attempt.score:
-                            if attempt.score >= threshold:
-                                num_finished += 1
-                            else:
-                                num_attempted += 1
+        num_levels = len(level_ids_sorted)
+        num_all = num_finished = num_attempted = num_started = 0
+        total_score = 0.0
+        scores = []
+        times = []
+        progress = (0.0, 0.0, 0.0)
+        attempts = Attempt.objects.filter(level__id__in=level_ids_sorted, student=student).select_related('level')
+        if attempts:
+            attempts_dict = {attempt.level.id: attempt for attempt in attempts}
+            for level_id in level_ids_sorted:
+                attempt = attempts_dict.get(level_id)
+                if attempt:
+                    num_all += 1;
+                    if attempt.score:
+                        if attempt.score >= threshold:
+                            num_finished += 1
                         else:
-                            num_started += 1
-
-                        total_score += attempt.score if attempt.score is not None else 0
-                        times.append(chop_miliseconds(attempt.finish_time - attempt.start_time))
-                        # '-' is used to show that the student has started the level but has not submitted any attempts
-                        scores.append(attempt.score if attempt.score is not None else '-')
+                            num_attempted += 1
                     else:
-                        times.append(timedelta(0))
-                        scores.append("")
+                        num_started += 1
 
-                progress = compute_proportions(num_levels, num_started, num_attempted, num_finished)
-            else:
-                scores.extend([''] * num_levels)
+                    total_score += attempt.score if attempt.score is not None else 0
 
+                    times.append(chop_miliseconds(attempt.elapsed_time()))
+                    # '-' is used to show that the student has started the level but has not submitted any attempts
 
-            total_time = sum(times, timedelta())
-            row = StudentRow(student=student,
-                             total_time=total_time,
-                             total_score=total_score,
-                             progress=progress,
-                             scores=scores)
-            student_rows.append(row)
+                    scores.append(attempt.score if attempt.score is not None else '-')
+                else:
+                    times.append(timedelta(0))
+                    scores.append("")
 
+            progress = compute_proportions(num_levels, num_started, num_attempted, num_finished)
+        else:
+            scores.extend([''] * num_levels)
 
-        return student_rows
+        total_time = sum(times, timedelta())
+
+        row = StudentRow(student=student,
+                         total_time=total_time,
+                         total_score=total_score,
+                         progress=progress,
+                         scores=scores)
+        return row
 
     def compute_proportions(num_levels, num_started, num_attempted, num_finished):
         return (num_started/num_levels)*100, (num_attempted/num_levels)*100, (num_finished/num_levels)*100
@@ -283,3 +282,4 @@ class StudentRow:
         self.scores = kwargs.get('scores', [])
         self.start_time = kwargs.get('start_time', "")
         self.finish_time = kwargs.get('finish_time', "")
+
