@@ -31,20 +31,24 @@
           {% endfor %}
         {% endif %}
 
-        var table = $('#scoreboardTable').DataTable({
-            scrollY:        ($(window).height() - 100) + "px",
-            scrollX:        true,
-            scrollCollapse: true,
-            paging:         false,
-            deferRender:    true,
+        var scoreboardPresent = document.getElementById("scoreboardTable") !== null;
 
-        });
+        if (scoreboardPresent) {
+           var table = $('#scoreboardTable').DataTable({
+                scrollY: ($(window).height() - 100) + "px",
+                scrollX: true,
+                scrollCollapse: true,
+                paging: false,
+                deferRender: true,
 
-        new $.fn.dataTable.FixedColumns( table, {
-            leftColumns: 2
-        } );
-        $(".tableWrapper").css('visibility', 'visible');
-        document.getElementById("tableWrapper").scrollIntoView();
+            });
+
+            new $.fn.dataTable.FixedColumns(table, {
+                leftColumns: 2
+            });
+            $(".tableWrapper").css('visibility', 'visible');
+            document.getElementById("tableWrapper").scrollIntoView();
+        }
     });
   </script>
 {{block.super}}
