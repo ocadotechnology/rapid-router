@@ -85,13 +85,13 @@ def create_scoreboard(request):
 
     def students_visible_to_student(student, class_):
         if is_viewable(class_):
-            return class_.students.all()
+            return class_.students.all().select_related('class_field', 'user__user')
         else:
             return [student]
 
     def students_visible_to_user(userprofile, class_ids):
         if is_teacher(userprofile):
-            return Student.objects.filter(class_field__id__in = class_ids).select_related('class_field')
+            return Student.objects.filter(class_field__id__in = class_ids).select_related('class_field', 'user__user')
         elif is_student(userprofile):
             student = userprofile.student
             class_ = student.class_field
@@ -101,7 +101,7 @@ def create_scoreboard(request):
         if is_teacher(userprofile):
             return are_classes_viewable_by_teacher(class_ids, userprofile)
         elif is_student(userprofile):
-            return authorised_student_access(userprofile.student.class_field, class_ids)
+            return authorised_student_access(userprofile.student.class_field.id, class_ids)
         else:
             return False
         return True
