@@ -36,10 +36,12 @@
             scrollX:        true,
             scrollCollapse: true,
             paging:         false,
-            deferRender:    true
+            deferRender:    true,
+
         });
+
         new $.fn.dataTable.FixedColumns( table, {
-            leftColumns: 1,
+            leftColumns: 2
         } );
         $(".tableWrapper").css('visibility', 'visible');
         document.getElementById("tableWrapper").scrollIntoView();
@@ -117,10 +119,11 @@
       </thead>
       {% for student in student_data %}
       <tr>
+          <td> {{student.5}} </td>
           <td> {{student.0.user.user.first_name}} </td>
           <td> {{student.1}} </td>
           <td> {{student.2}}
-          {% if headers.1 == 'Score' %}
+          {% if headers.2 == 'Score' %}
             <td> {{student.3}} </td>
             <td> {{student.4}} </td>
           {% else %}

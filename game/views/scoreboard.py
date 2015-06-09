@@ -91,7 +91,7 @@ def create_scoreboard(request):
 
     def students_visible_to_user(userprofile, class_ids):
         if is_teacher(userprofile):
-            return Student.objects.filter(class_field__id__in = class_ids)
+            return Student.objects.filter(class_field__id__in = class_ids).select_related('class_field')
         elif is_student(userprofile):
             student = userprofile.student
             class_ = student.class_field
@@ -133,12 +133,12 @@ def create_scoreboard(request):
         if len(level_ids) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
-            headers = get_levels_headers(['Name', 'Total Score', 'Total Time', 'Progress'], filtered_levels)
+            headers = get_levels_headers(['Class', 'Name', 'Total Score', 'Total Time', 'Progress'], filtered_levels)
             student_data = multiple_students_multiple_levels(students, level_ids)
         else:
             # Rows: Students from each class
             # Cols: Score, Total Time, Start Time, End Time
-            headers = ['Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
+            headers = ['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
             student_data = multiple_students_one_level(students, next(iter(level_ids)))
         return student_data, headers
 
@@ -157,6 +157,8 @@ def create_scoreboard(request):
             row.append("")
             row.append("")
 
+        row.append(student.class_field)
+        
         return row
 
     def many_rows(student_data, level_ids):
@@ -217,7 +219,7 @@ def create_scoreboard(request):
         student_data = []
 
         for student in students:
-            student_data.append([student, 0.0, [], [], (0.0, 0.0, 0.0)])
+            student_data.append([student, 0.0, [], [], (0.0, 0.0, 0.0), student.class_field])
 
         return many_rows(student_data, level_ids)
 
