@@ -166,7 +166,7 @@ ocargo.LevelEditor = function() {
                             console.error(error);
                             return;
                         }
-                        window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID;
+                        window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID + '/';
                     });
                 } else {
                     currentTabSelected.select();

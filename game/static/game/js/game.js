@@ -150,7 +150,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         if (LEVEL_ID) {
             var csrftoken = $.cookie('csrftoken');
             $.ajax({
-                url : '/rapidrouter/submit',
+                url : '/rapidrouter/submit/',
                 type : 'POST',
                 dataType: 'json',
                 beforeSend: function(xhr, settings) {

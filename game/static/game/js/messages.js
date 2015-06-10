@@ -25,9 +25,9 @@ ocargo.messages = {
         return "Well done, you've completed the episode! <br> Are you ready for the next " + 
             "challenge? " + (random ? "Or try one of this episode's random levels!" : "") +
             " <br><br>" + 
-            ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "'",
+            ocargo.jsElements.redirectButton("'/rapidrouter/episode/" + episode + "/'",
                                              'Next episode') + " " +
-            (random ? randomocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "'",
+            (random ? randomocargo.jsElements.redirectButton("'/rapidrouter/levels/random/" + (episode-1) + "/'",
                                                             'Random level') : "") + " " +
             ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home");
     },
@@ -37,7 +37,7 @@ ocargo.messages = {
         "Now go to the Python tab and see if you can do the same in Python! ",
     lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own " +
         "challenges. <br><br>" +
-        ocargo.jsElements.redirectButton("'/rapidrouter/level_editor'", "Create your own map!") + 
+        ocargo.jsElements.redirectButton("'/rapidrouter/level_editor/'", "Create your own map!") +
         " " + ocargo.jsElements.redirectButton("'/rapidrouter/'", "Home"),
 
     illegalBlocks: "Sorry, this workspace has blocks in it that aren't allowed in this level!",
