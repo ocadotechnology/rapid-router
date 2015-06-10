@@ -1871,7 +1871,7 @@ ocargo.LevelEditor = function() {
         }
 
         // Load in the decor data
-        var decor = state.decor;
+        var decor = ocargo.utils.sortObjects(state.decor, "z");
         for (var i = 0; i < decor.length; i++) {
             var decorObject = new InternalDecor(decor[i].decorName);
             decorObject.setPosition(decor[i].x, 
