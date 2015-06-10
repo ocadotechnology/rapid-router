@@ -1,6 +1,5 @@
 from django.test import TestCase
 from database_objects import setup_decor, setup_themes
-from game.random_road import generate_random_map_data
 
 import json
 import random
@@ -38,6 +37,8 @@ class RandomRoadTestCase(TestCase):
         if curviness is None:
             curviness = random.randint(0, 10)
 
+        from game.random_road import generate_random_map_data
+
         return generate_random_map_data(num_tiles, branchiness, loopiness, curviness,
                                         traffic_lights_enabled, decor_enabled)
 
@@ -50,10 +51,6 @@ class RandomRoadTestCase(TestCase):
 
         # Check if any decor got generated
         self.assertTrue(decor)
-
-    def setUp(self):
-        setup_decor()
-        setup_themes()
 
     def test_branchiness_min(self):
         """ Test that if the branchiness is 0 we don't get branches. """
