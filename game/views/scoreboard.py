@@ -126,15 +126,16 @@ def create_scoreboard(request):
         students = students_visible_to_user(userprofile, class_ids)
         levels = Level.objects.sorted_levels()
 
-        filtered_levels = filter(lambda x : x.id in level_ids, levels)
+        requested_sorted_levels = filter(lambda x : x.id in level_ids, levels)
+        sorted_level_ids = map(lambda level: level.id, requested_sorted_levels)
 
         # If there are more than one level to show, show the total score, total time and score of each level
         # Otherwise, show the details of the level (the score, total time, start time and end time)
         if len(level_ids) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
-            headers = get_levels_headers(['Class', 'Name', 'Total Score', 'Total Time', 'Progress'], filtered_levels)
-            student_data = multiple_students_multiple_levels(students, level_ids)
+            headers = get_levels_headers(['Class', 'Name', 'Total Score', 'Total Time', 'Progress'], requested_sorted_levels)
+            student_data = multiple_students_multiple_levels(students, sorted_level_ids)
         else:
             # Rows: Students from each class
             # Cols: Score, Total Time, Start Time, End Time
@@ -156,8 +157,8 @@ def create_scoreboard(request):
             return StudentRow(student=student)
 
     # Return rows of student object with values for progress bar and scores of each selected level
-    def multiple_students_multiple_levels(students, level_ids):
-        result = map(lambda student: student_row(level_ids, student), students)
+    def multiple_students_multiple_levels(students, level_ids_sorted):
+        result = map(lambda student: student_row(level_ids_sorted, student), students)
         return result
 
     def student_row(level_ids_sorted, student):
