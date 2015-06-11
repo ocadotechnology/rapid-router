@@ -1,5 +1,4 @@
 from django.test import TestCase
-from database_objects import setup_decor, setup_themes
 
 import json
 import random
@@ -53,6 +52,7 @@ class RandomRoadTestCase(TestCase):
         self.assertTrue(decor)
 
     def test_branchiness_min(self):
+
         """ Test that if the branchiness is 0 we don't get branches. """
 
         data = self.create_test_data(branchiness=0, loopiness=0, traffic_lights_enabled=False)
