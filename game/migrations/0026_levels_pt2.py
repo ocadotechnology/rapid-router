@@ -2,16 +2,22 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-from game.level_management import set_decor, set_blocks
+from game.level_management import set_decor_inner, set_blocks_inner
 import json
 
 
 def change_levels(apps, schema_editor):
 
     Level = apps.get_model('game', 'Level')
+    LevelDecor = apps.get_model('game', 'LevelDecor')
     LevelBlock = apps.get_model('game', 'LevelBlock')
     Block = apps.get_model('game', 'Block')
-    LevelDecor = apps.get_model('game', 'LevelDecor')
+
+    def set_decor(level, decor):
+        set_decor_inner(level, decor, LevelDecor)
+
+    def set_blocks(level, blocks):
+        set_blocks_inner(level, blocks, LevelBlock, Block)
 
     level61 = Level.objects.get(name='61', default=1)
     level61.model_solution = '[9]'

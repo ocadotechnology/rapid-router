@@ -1,14 +1,20 @@
 from django.db import migrations
-from game.level_management import set_decor, set_blocks
+from game.level_management import set_decor_inner, set_blocks_inner
 import json
 
 def new_level(apps, schema_editor):
     Level = apps.get_model('game', 'Level')
     Character = apps.get_model('game', 'Character')
     Theme = apps.get_model('game', 'Theme')
-    Block = apps.get_model('game', 'Block')
+    LevelDecor = apps.get_model('game', 'LevelDecor')
     LevelBlock = apps.get_model('game', 'LevelBlock')
-    Episode = apps.get_model('game', 'Episode')
+    Block = apps.get_model('game', 'Block')
+
+    def set_decor(level, decor):
+        set_decor_inner(level, decor, LevelDecor)
+
+    def set_blocks(level, blocks):
+        set_blocks_inner(level, blocks, LevelBlock, Block)
 
     level79 = Level.objects.get(name='79', default=1)
     level78 = Level(
