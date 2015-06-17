@@ -24,6 +24,7 @@ def get_decor(level):
         decorData.append({
             'x': int(ld.x),
             'y': int(ld.y),
+            'z': int(decor.z_index),
             'decorName': str(ld.decorName),
             'width': int(decor.width),
             'height': int(decor.height),

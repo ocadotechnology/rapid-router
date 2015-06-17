@@ -27,6 +27,7 @@ class Decor(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     theme = models.ForeignKey(Theme, related_name='decor')
+    z_index = models.IntegerField()
 
 
 class Character(models.Model):
