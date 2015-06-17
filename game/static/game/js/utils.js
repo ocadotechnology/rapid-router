@@ -18,6 +18,30 @@ ocargo.utils = {
 
         return sortedArray;
 
+    },
+
+    /**
+     * Track JS error details in Universal Analytics
+     */
+
+    trackJavaScriptError : function(e) {
+        var ie = window.event || {},
+            errMsg = e.message || ie.errorMessage;
+        var errSrc = (e.filename || ie.errorUrl) + ': ' + (e.lineno || ie.errorLine);
+        ga('send', 'event', 'JavaScript Error', errMsg, errSrc, { 'nonInteraction': 1 });
     }
 
 };
+
+/**
+ * Cross-browser event listener
+ * from here: https://gist.github.com/KrisOlszewski/10287367
+ */
+
+if (window.addEventListener) {
+    window.addEventListener('error', ocargo.utils.trackJavaScriptError, false);
+} else if (window.attachEvent) {
+    window.attachEvent('onerror', ocargo.utils.trackJavaScriptError);
+} else {
+    window.onerror = ocargo.utils.trackJavaScriptError;
+}
