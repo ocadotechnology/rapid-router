@@ -11,7 +11,7 @@ def update(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('game', '0043_decor_z_index'),
+        ('game', '0045_decor_z_index'),
     ]
 
     operations = [
