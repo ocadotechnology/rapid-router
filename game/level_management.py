@@ -1,6 +1,6 @@
 import permissions
 
-from models import Level, Block, LevelBlock, LevelDecor, Decor, Theme, Character
+from models import Block, LevelBlock, LevelDecor, Decor, Theme, Character
 
 
 ##########
@@ -24,6 +24,7 @@ def get_decor(level):
         decorData.append({
             'x': int(ld.x),
             'y': int(ld.y),
+            'z': int(decor.z_index),
             'decorName': str(ld.decorName),
             'width': int(decor.width),
             'height': int(decor.height),
@@ -32,8 +33,10 @@ def get_decor(level):
 
     return decorData
 
-
 def set_decor(level, decor):
+    set_decor_inner(level, decor, LevelDecor)
+
+def set_decor_inner(level, decor, LevelDecor):
     """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
     LevelDecor.objects.filter(level=level).delete()
 
@@ -53,8 +56,10 @@ def get_blocks(level):
     levelBlocks = LevelBlock.objects.filter(level=level).order_by('type')
     return [{'type': lb.type.type, 'number': lb.number} for lb in levelBlocks]
 
-
 def set_blocks(level, blocks):
+    set_blocks_inner(level, blocks, LevelBlock, Block)
+
+def set_blocks_inner(level, blocks, LevelBlock, Block):
     """ Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
     LevelBlock.objects.filter(level=level).delete()
 

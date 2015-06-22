@@ -1,4 +1,4 @@
-from game.models import Block, Decor, Episode, Level, LevelDecor, Theme
+from game.models import Block, Decor, Theme
 
 
 def setup_themes():
