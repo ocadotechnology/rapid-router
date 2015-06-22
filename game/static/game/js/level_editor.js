@@ -1807,12 +1807,15 @@ ocargo.LevelEditor = function() {
             state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
         }
 
-        // Max fuel data
+        // Maximum fuel that can be set in a level
+        var MAX_FUEL = 99;
+
+        // Starting fuel of the level
         var maxFuel = $('#max_fuel').val();
-        if(isNaN(maxFuel) ||  maxFuel ===  '' || parseInt(maxFuel) <= 0 || parseInt(maxFuel) > 99)
+        if(isNaN(maxFuel) ||  maxFuel ===  '' || parseInt(maxFuel) <= 0 || parseInt(maxFuel) > MAX_FUEL)
         {
-            maxFuel = 50;
-            $('#max_fuel').val(50);
+            maxFuel = MAX_FUEL;
+            $('#max_fuel').val(MAX_FUEL);
         }
         state.max_fuel = maxFuel;
         
