@@ -1794,6 +1794,7 @@ ocargo.LevelEditor = function() {
         for (i = 0; i < decor.length; i++) {
             state.decor.push(decor[i].getData());
         }
+        state.decor = ocargo.utils.sortObjects(state.decor, "z");
 
         // Destination and origin data
         if (destinationNode) {
@@ -1882,7 +1883,7 @@ ocargo.LevelEditor = function() {
         }
 
         // Load in the decor data
-        var decor = ocargo.utils.sortObjects(state.decor, "z");
+        var decor = state.decor;
         for (var i = 0; i < decor.length; i++) {
             var decorObject = new InternalDecor(decor[i].decorName);
             decorObject.setPosition(decor[i].x, 
