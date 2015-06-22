@@ -6,10 +6,49 @@
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
 
 {% block scripts %}
-  <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
+  <script src="{% static 'game/js/jquery.dataTables.js' %}"></script>
+  <script src="{% static 'game/js/dataTables.fixedColumns.js' %}"></script>
+  <script src="{% static 'game/js/jquery.tablesorter.js' %}"></script>
+  <script src="{% static 'game/js/widget-scroller.js' %}"></script>
+  <script src="{% static 'game/js/pqselect.dev.js' %}"></script>
+  <script src="{% static 'game/js/jquery.outerhtml.js' %}"></script>
+  <script src="{% static 'game/js/jquery.ui.multiprogressbar.js' %}"></script>
   <script>
     $(document).ready(function() {
-      $("#scoreboardTable").tablesorter();
+        // Initialise progress values for each progress bar
+        {# Only initialise progress bars if the column exists #}
+        {% if 'Progress' in headers %}
+          {% for student in student_data %}
+              var id = {{ student.id }}
+              var started = {{ student.progress.0 }}
+              var attempted = {{ student.progress.1 }}
+              var finished = {{ student.progress.2 }}
+              $('#progressbar' + id).multiprogressbar({
+                  parts: [{value: started, barClass: 'started'},
+                          {value: attempted, barClass: 'attempted'},
+                          {value: finished, barClass: 'finished'}],
+              });
+          {% endfor %}
+        {% endif %}
+
+        var scoreboardPresent = document.getElementById("scoreboardTable") !== null;
+
+        if (scoreboardPresent) {
+           var table = $('#scoreboardTable').DataTable({
+                scrollY: ($(window).height() - 100) + "px",
+                scrollX: true,
+                scrollCollapse: true,
+                paging: false,
+                deferRender: true,
+
+            });
+
+            new $.fn.dataTable.FixedColumns(table, {
+                leftColumns: 2
+            });
+            $(".tableWrapper").css('visibility', 'visible');
+            document.getElementById("tableWrapper").scrollIntoView();
+        }
     });
   </script>
 {{block.super}}
@@ -17,9 +56,14 @@
 
 {% block css %}
 {{block.super}}
-  {% compress css %}
-      <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
-  {% endcompress %}
+  <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/pqselect.dev.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/pqselect.multiselect.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/theme.blue.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/jquery.ui.multiprogressbar.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/jquery.dataTables.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/dataTables.fixedColumns.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/dataTables.jqueryui.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
@@ -30,8 +74,6 @@
 <h1>Scoreboard</h1><br>
 <div class='span_3_of_3'>
   <div class='login-card'>
-    <h3>Filter Scoreboard</h3><br>
-    <p>Filter the scores by class and level, and click 'Submit' to see the scores!</p>
     <div id="form" class="form">
     <form action="" method="post" id="scoreboardForm">
       {% csrf_token %}
@@ -69,9 +111,9 @@
 </div>
 <br>
 <div class="mainBody">
-  <div class="tableWrapper">
+  <div class="tableWrapper" id="tableWrapper">
     {% if student_data %}
-    <table id="scoreboardTable" class="tablesorter CSSTable wide alternate ">
+    <table id="scoreboardTable" class="display cell-border wide">
     <thead>
       <tr>
         {% for header in headers %}
@@ -81,15 +123,18 @@
       </thead>
       {% for student in student_data %}
       <tr>
-          <td> {{student.0.user.user.first_name}} </td>
-          <td> {{student.1}} </td>
-          <td> {{student.2}}</td>
-          {% if headers.1 == 'Score' %}
-            <td> {{student.3}} </td>
-            <td> {{student.4}} </td>
+          <td> {{student.class_field}} </td>
+          <td> {{student.name}} </td>
+          <td> {{student.total_score}} </td>
+          <td> {{student.total_time}}
+          {% if headers.2 == 'Score' %}
+            <td> {{student.start_time}} </td>
+            <td> {{student.finish_time}} </td>
           {% else %}
-            {% for levelScore in student.3 %}
-              <td> {{levelScore}} </td>
+            <td> <div class="MultiProgressBarDiv" id="progressbar{{ student.id }}"></div> </td>
+            {% for levelScore in student.scores %}
+              {# Levels that students have not started will be marked with grey colour #}
+              <td > {{levelScore}} </td>
             {% endfor %}
           {% endif %}
         </tr>
