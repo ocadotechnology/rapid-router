@@ -162,7 +162,7 @@ def create_scoreboard(request):
         return result
 
     def student_row(level_ids_sorted, student):
-        threshold = 10.0
+        threshold = 0.5
 
         num_levels = len(level_ids_sorted)
         num_all = num_finished = num_attempted = num_started = 0
@@ -177,8 +177,9 @@ def create_scoreboard(request):
                 attempt = attempts_dict.get(level_id)
                 if attempt:
                     num_all += 1;
+                    max_score = 10 if attempt.level.disable_route_score else 20
                     if attempt.score:
-                        if attempt.score >= threshold:
+                        if attempt.score/max_score >= threshold:
                             num_finished += 1
                         else:
                             num_attempted += 1
