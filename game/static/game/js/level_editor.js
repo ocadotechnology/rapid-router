@@ -1847,16 +1847,8 @@ ocargo.LevelEditor = function() {
             state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
         }
 
-        var DEFAULT_FUEL = 50;
-
         // Starting fuel of the level
-        var maxFuel = $('#max_fuel').val();
-        if(isNaN(maxFuel) ||  maxFuel ===  '')
-        {
-            maxFuel = DEFAULT_FUEL;
-            $('#max_fuel').val(DEFAULT_FUEL);
-        }
-        state.max_fuel = maxFuel;
+        state.max_fuel = $('#max_fuel').val();
         
         // Language data
         var language = $('#language_select').val();
