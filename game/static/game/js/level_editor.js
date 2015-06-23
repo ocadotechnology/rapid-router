@@ -847,23 +847,41 @@ ocargo.LevelEditor = function() {
     /*  MaxFuel */
     /************/
 
+
     function setupMaxFuel(){
-        var MIN_FUEL = 0;
         var MAX_FUEL = 99;
+        var DEFAULT_FUEL = 50;
+        var lastCorrectFuel = $('#max_fuel').val();
+        if (!onlyContainsDigits(lastCorrectFuel)) {
+            $('#max_fuel').val(DEFAULT_FUEL);
+            lastCorrectFuel = DEFAULT_FUEL;
+        }
 
         $('#max_fuel').on('input', function () {
-
             var value = $(this).val();
-
-            if (value !== '') {
-                value = parseFloat(value);
-
-                if (value < MIN_FUEL)
-                    $(this).val(MIN_FUEL);
-                else if (value > MAX_FUEL)
-                    $(this).val(MAX_FUEL);
-            }
+            $(this).val(updatedValue(value));
         });
+
+        function restrictValue(value){
+            if (value > MAX_FUEL) {
+                return MAX_FUEL;
+            } else {
+                return value;
+            }
+        }
+        function updatedValue(value){
+            if (onlyContainsDigits(value)) {
+                value = parseInt(value);
+                var newValue = restrictValue(value);
+                lastCorrectFuel = newValue;
+                return newValue;
+            } else {
+                return lastCorrectFuel;
+            }
+        }
+        function onlyContainsDigits(n){
+            return n !== ''  && /^\d+$/.test(n);
+        }
     }
     /************/
     /* Trashcan */
@@ -1833,7 +1851,7 @@ ocargo.LevelEditor = function() {
             state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
         }
 
-        var DEFAULT_FUEL = 50
+        var DEFAULT_FUEL = 50;
 
         // Starting fuel of the level
         var maxFuel = $('#max_fuel').val();
@@ -1987,7 +2005,7 @@ ocargo.LevelEditor = function() {
     function storeStateInLocalStorage() {
         if (localStorage) {
             var state = extractState();
-            
+
             // Append additional non-level orientated editor state
             state.savedLevelID = savedLevelID;
             state.savedState = savedState;
