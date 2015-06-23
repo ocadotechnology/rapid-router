@@ -70,6 +70,9 @@ ocargo.LevelEditor = function() {
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
 
+    // Setup max_fuel
+    setupMaxFuel();
+
     // Initialise the grid
     initialiseGrid();
     setTheme(THEMES.grass);
@@ -225,11 +228,6 @@ ocargo.LevelEditor = function() {
             tabs.scenery.popup = true;
 
             tabs.scenery.setOnChange(function() {
-                if (tabs.scenery.popup) {
-                    tabs.scenery.popup = false;
-                    ocargo.Drawing.startPopup('', '', ocargo.messages.trafficLightsWarning);
-                }
-
                 transitionTab(tabs.scenery);
             });
 
@@ -256,6 +254,7 @@ ocargo.LevelEditor = function() {
                                           "startingState": ocargo.TrafficLight.GREEN,
                                           "sourceCoordinate": null,  "direction": null});
             });
+
         }
 
         function setupCharacterTab() {
@@ -267,7 +266,7 @@ ocargo.LevelEditor = function() {
                 var selectedValue = $(this).val();
                 var character = CHARACTERS[selectedValue];
                 if (character) {
-                    CHARACTER_NAME = character.name;
+                    var CHARACTER_NAME = character.name;
                     $('#character_image').attr('src', character.image);
                     redrawRoad();
                 }
@@ -840,6 +839,46 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    /************/
+    /*  MaxFuel */
+    /************/
+
+
+    function setupMaxFuel(){
+        var MAX_FUEL = 99;
+        var DEFAULT_FUEL = 50;
+        var lastCorrectFuel = $('#max_fuel').val();
+        if (!onlyContainsDigits(lastCorrectFuel)) {
+            $('#max_fuel').val(DEFAULT_FUEL);
+            lastCorrectFuel = DEFAULT_FUEL;
+        }
+
+        $('#max_fuel').on('input', function () {
+            var value = $(this).val();
+            $(this).val(updatedValue(value));
+        });
+
+        function restrictValue(value){
+            if (value > MAX_FUEL) {
+                return MAX_FUEL;
+            } else {
+                return value;
+            }
+        }
+        function updatedValue(value){
+            if (onlyContainsDigits(value)) {
+                value = parseInt(value);
+                var newValue = restrictValue(value);
+                lastCorrectFuel = newValue;
+                return newValue;
+            } else {
+                return lastCorrectFuel;
+            }
+        }
+        function onlyContainsDigits(n){
+            return n !== ''  && /^\d+$/.test(n);
+        }
+    }
     /************/
     /* Trashcan */
     /************/
@@ -1794,6 +1833,7 @@ ocargo.LevelEditor = function() {
         for (i = 0; i < decor.length; i++) {
             state.decor.push(decor[i].getData());
         }
+        state.decor = ocargo.utils.sortObjects(state.decor, "z");
 
         // Destination and origin data
         if (destinationNode) {
@@ -1807,17 +1847,8 @@ ocargo.LevelEditor = function() {
             state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
         }
 
-        // Maximum fuel that can be set in a level
-        var MAX_FUEL = 99;
-
         // Starting fuel of the level
-        var maxFuel = $('#max_fuel').val();
-        if(isNaN(maxFuel) ||  maxFuel ===  '' || parseInt(maxFuel) <= 0 || parseInt(maxFuel) > MAX_FUEL)
-        {
-            maxFuel = MAX_FUEL;
-            $('#max_fuel').val(MAX_FUEL);
-        }
-        state.max_fuel = maxFuel;
+        state.max_fuel = $('#max_fuel').val();
         
         // Language data
         var language = $('#language_select').val();
@@ -1882,7 +1913,7 @@ ocargo.LevelEditor = function() {
         }
 
         // Load in the decor data
-        var decor = ocargo.utils.sortObjects(state.decor, "z");
+        var decor = state.decor;
         for (var i = 0; i < decor.length; i++) {
             var decorObject = new InternalDecor(decor[i].decorName);
             decorObject.setPosition(decor[i].x, 
@@ -1962,7 +1993,7 @@ ocargo.LevelEditor = function() {
     function storeStateInLocalStorage() {
         if (localStorage) {
             var state = extractState();
-            
+
             // Append additional non-level orientated editor state
             state.savedLevelID = savedLevelID;
             state.savedState = savedState;
