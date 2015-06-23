@@ -70,6 +70,9 @@ ocargo.LevelEditor = function() {
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
 
+    // Setup max_fuel
+    setupMaxFuel();
+
     // Initialise the grid
     initialiseGrid();
     setTheme(THEMES.grass);
@@ -267,7 +270,7 @@ ocargo.LevelEditor = function() {
                 var selectedValue = $(this).val();
                 var character = CHARACTERS[selectedValue];
                 if (character) {
-                    CHARACTER_NAME = character.name;
+                    var CHARACTER_NAME = character.name;
                     $('#character_image').attr('src', character.image);
                     redrawRoad();
                 }
@@ -840,6 +843,28 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    /************/
+    /*  MaxFuel */
+    /************/
+
+    function setupMaxFuel(){
+        var MIN_FUEL = 0;
+        var MAX_FUEL = 99;
+
+        $('#max_fuel').on('input', function () {
+
+            var value = $(this).val();
+
+            if (value !== '') {
+                value = parseFloat(value);
+
+                if (value < MIN_FUEL)
+                    $(this).val(MIN_FUEL);
+                else if (value > MAX_FUEL)
+                    $(this).val(MAX_FUEL);
+            }
+        });
+    }
     /************/
     /* Trashcan */
     /************/
@@ -1808,15 +1833,14 @@ ocargo.LevelEditor = function() {
             state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
         }
 
-        // Maximum fuel that can be set in a level
-        var MAX_FUEL = 99;
+        var DEFAULT_FUEL = 50
 
         // Starting fuel of the level
         var maxFuel = $('#max_fuel').val();
-        if(isNaN(maxFuel) ||  maxFuel ===  '' || parseInt(maxFuel) <= 0 || parseInt(maxFuel) > MAX_FUEL)
+        if(isNaN(maxFuel) ||  maxFuel ===  '')
         {
-            maxFuel = MAX_FUEL;
-            $('#max_fuel').val(MAX_FUEL);
+            maxFuel = DEFAULT_FUEL;
+            $('#max_fuel').val(DEFAULT_FUEL);
         }
         state.max_fuel = maxFuel;
         
