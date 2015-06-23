@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
-from game.level_management import set_decor, set_blocks
+from game.level_management import set_decor_inner, set_blocks_inner
 
 import json
 
@@ -10,12 +10,18 @@ import json
 def fix_new_levels(apps, schema_editor):
 
     Level = apps.get_model('game', 'Level')
-    Block = apps.get_model('game', 'Block')
-    LevelBlock = apps.get_model('game', 'LevelBlock')
-    LevelDecor = apps.get_model('game', 'LevelDecor')
     Theme = apps.get_model('game', 'Theme')
 
-    left = Block.objects.get(type="turn_left")
+    LevelDecor = apps.get_model('game', 'LevelDecor')
+    LevelBlock = apps.get_model('game', 'LevelBlock')
+    Block = apps.get_model('game', 'Block')
+
+    def set_decor(level, decor):
+        set_decor_inner(level, decor, LevelDecor)
+
+    def set_blocks(level, blocks):
+        set_blocks_inner(level, blocks, LevelBlock, Block)
+
     right = Block.objects.get(type="turn_right")
     turn_around = Block.objects.get(type="turn_around")
     road_exists = Block.objects.get(type="road_exists")

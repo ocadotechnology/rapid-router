@@ -52,6 +52,9 @@ ocargo.messages = {
     undeliveredDestinations: "There are destinations that have not been delivered to! " + 
         "Ensure you visit all destinations and use the deliver command at each one.",
     offRoad : function(correctSteps){
+        if (correctSteps === 0) {
+            return "Your first move was a crash. What went wrong?";
+        }
         if (correctSteps === 1) {
             return "Your first move was right. What went wrong after that?";
         }

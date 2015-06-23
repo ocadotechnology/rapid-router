@@ -27,6 +27,7 @@ class Decor(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     theme = models.ForeignKey(Theme, related_name='decor')
+    z_index = models.IntegerField()
 
 
 class Character(models.Model):
@@ -49,7 +50,7 @@ class Episode (models.Model):
     r_loopiness = models.FloatField(default=0, null=True)
     r_curviness = models.FloatField(default=0, null=True)
     r_num_tiles = models.IntegerField(default=5, null=True)
-    r_blocks = models.ManyToManyField(Block, related_name='episodes', null=True)
+    r_blocks = models.ManyToManyField(Block, related_name='episodes')
     r_blocklyEnabled = models.BooleanField(default=True)
     r_pythonEnabled = models.BooleanField(default=False)
     r_trafficLights = models.BooleanField(default=False)
@@ -87,7 +88,7 @@ class Level (models.Model):
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey('self', null=True, default=None)
-    shared_with = models.ManyToManyField(User, related_name="shared", blank=True, null=True)
+    shared_with = models.ManyToManyField(User, related_name="shared", blank=True)
     model_solution = models.CharField(blank=True, max_length=20, default='[]')
     disable_route_score = models.BooleanField(default=False)
     threads = models.IntegerField(blank=False, default=1)
@@ -131,3 +132,6 @@ class Attempt (models.Model):
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")
     python_workspace = models.TextField(default="")
+
+    def elapsed_time(self):
+        return self.finish_time - self.start_time

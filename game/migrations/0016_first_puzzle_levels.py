@@ -1,18 +1,27 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations
 
 import json
 
-from game.level_management import set_decor, set_blocks
+from game.level_management import set_decor_inner, set_blocks_inner
 
 def add_levels(apps, schema_editor):
 
     Level = apps.get_model('game', 'Level')
+    LevelDecor = apps.get_model('game', 'LevelDecor')
+    LevelBlock = apps.get_model('game', 'LevelBlock')
+    Block = apps.get_model('game', 'Block')
     Episode = apps.get_model('game', 'Episode')
     Theme = apps.get_model('game', 'Theme')
     Character = apps.get_model('game', 'Character')
+
+    def set_decor(level, decor):
+        set_decor_inner(level, decor, LevelDecor)
+
+    def set_blocks(level, blocks):
+        set_blocks_inner(level, blocks, LevelBlock, Block)
 
     grass = Theme.objects.get(name='grass')
     snow = Theme.objects.get(name='snow')
@@ -104,7 +113,7 @@ def add_levels(apps, schema_editor):
     level63.save()
     set_decor(level63, json.loads('[{"x":658,"y":505,"decorName":"tree2"},{"x":619,"y":611,"decorName":"tree2"},{"x":687,"y":700,"decorName":"tree2"},{"x":636,"y":356,"decorName":"bush"},{"x":473,"y":54,"decorName":"bush"},{"x":337,"y":227,"decorName":"bush"},{"x":265,"y":159,"decorName":"bush"},{"x":411,"y":0,"decorName":"bush"},{"x":412,"y":127,"decorName":"bush"},{"x":354,"y":80,"decorName":"bush"},{"x":207,"y":85,"decorName":"bush"},{"x":297,"y":15,"decorName":"bush"}]'))
     set_blocks(level63, json.loads('[{"type":"move_forwards","number":1},{"type":"turn_left","number":1},{"type":"turn_right","number":1},{"type":"turn_around","number":1},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists","number":2}]'))
-    
+
 
     level60.next_level_id = level61.id
     level61.next_level_id = level62.id

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
-from game.level_management import set_decor, set_blocks
+from game.level_management import set_decor_inner, set_blocks_inner
 import json
 
 
@@ -40,9 +40,16 @@ def fix_levels(apps, schema_editor):
     Level = apps.get_model('game', 'Level')
     Character = apps.get_model('game', 'Character')
     Theme = apps.get_model('game', 'Theme')
-    Block = apps.get_model('game', 'Block')
-    LevelBlock = apps.get_model('game', 'LevelBlock')
     Episode = apps.get_model('game', 'Episode')
+    LevelDecor = apps.get_model('game', 'LevelDecor')
+    LevelBlock = apps.get_model('game', 'LevelBlock')
+    Block = apps.get_model('game', 'Block')
+
+    def set_decor(level, decor):
+        set_decor_inner(level, decor, LevelDecor)
+
+    def set_blocks(level, blocks):
+        set_blocks_inner(level, blocks, LevelBlock, Block)
 
     def level52():
         level52 = Level(

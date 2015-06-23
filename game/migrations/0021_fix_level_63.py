@@ -5,14 +5,20 @@ from django.db import models, migrations
 
 import json
 
-from game.level_management import set_decor, set_blocks
+from game.level_management import set_decor_inner, set_blocks_inner
 
 def fix_level_63(apps, schema_editor):
 
     Level = apps.get_model('game', 'Level')
-    Episode = apps.get_model('game', 'Episode')
-    Theme = apps.get_model('game', 'Theme')
-    Character = apps.get_model('game', 'Character')
+    LevelDecor = apps.get_model('game', 'LevelDecor')
+    LevelBlock = apps.get_model('game', 'LevelBlock')
+    Block = apps.get_model('game', 'Block')
+
+    def set_decor(level, decor):
+        set_decor_inner(level, decor, LevelDecor)
+
+    def set_blocks(level, blocks):
+        set_blocks_inner(level, blocks, LevelBlock, Block)
 
     level63 = Level.objects.get(name="63")
     level63.path=str('[{"coordinate":[1,2],"connectedNodes":[2]},{"coordinate":[2,4],"connectedNodes":[3,4,12]},{"coordinate":[1,3],"connectedNodes":[3,0]},{"coordinate":[1,4],"connectedNodes":[1,2]},{"coordinate":[2,5],"connectedNodes":[5,1]},{"coordinate":[2,6],"connectedNodes":[11,6,4]},{"coordinate":[3,6],"connectedNodes":[5,7]},{"coordinate":[4,6],"connectedNodes":[6,8]},{"coordinate":[4,5],"connectedNodes":[7,9]},{"coordinate":[4,4],"connectedNodes":[10,8]},{"coordinate":[3,4],"connectedNodes":[9]},{"coordinate":[1,6],"connectedNodes":[5]},{"coordinate":[2,3],"connectedNodes":[1]}]')

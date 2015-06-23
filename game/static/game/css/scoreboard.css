@@ -26,21 +26,48 @@ table {
 	width: 99%;
 }
 
-table.tablesorter thead tr th, table.tablesorter tfoot tr th {
-	padding: 15px;
-}
-table.tablesorter thead tr .header {
-	background-repeat: no-repeat;
-	background-position: center right;
-}
-
-table.tablesorter thead tr .header:hover {
-	background-image: url('/static/game/image/bg.gif') !important;
+/* Needed for keeping the rows aligned after freezing the first column */
+table tbody td {
+	/* To ensure all rows have the same height as wrapping may increases row height */
+	white-space: nowrap;
+	/* The height of the row has to be set in order for the progress bar to fit the row */
+	height: 25px;
+	font-size: 15px
 }
 
-table.tablesorter thead tr .headerSortUp {
-	background-image: url('/static/game/image/asc.gif') !important;
+.ui-progressbar {
+	height: 100%;
 }
-table.tablesorter thead tr .headerSortDown {
-	background-image: url('/static/game/image/desc.gif') !important;
+
+/* Colour for the portion of the bar which represents the percentage of levels players finished */
+.finished {
+	background: #74B06B;
+}
+/* Colour for the portion of the bar which represents the percentage of levels players finished but under a certain
+ * threshold
+ */
+.attempted {
+	background: #E1B377;
+}
+/* Colour for the portion of the bar which represents the percentage of levels players started but haven't submitted
+ * attempts yet
+ */
+.started {
+	background: #C24563;
+}
+
+.tableWrapper {
+	visibility: hidden;
+}
+
+#scoreboardTable tr td.untouched {
+	background: #d9d9d9;
+}
+/* Used for making the inside of the progress bar to fill up the entire outer container
+ * margin and border are set in jquery-ui.structure.css and jquery-ui.css
+ * we are overwriting the settings for the following two properties
+ */
+.ui-progressbar .ui-progressbar-value{
+	margin: 0px;
+	border: 0px;
 }

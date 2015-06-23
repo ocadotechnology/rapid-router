@@ -8,12 +8,12 @@ ocargo.PathFinder = function(model) {
     this.destinations = model.map.destinations;
     
     this.pathScoreDisabled = DISABLE_ROUTE_SCORE;
-    this.maxDistanceScore = DISABLE_ROUTE_SCORE ? 0 : 10;
+    this.modelSolution = MODEL_SOLUTION;
 
-    this.modelLength = MODEL_SOLUTION;
-    this.maxInstrLengthScore = (this.modelLength.length === 0 ? 0 : 10);
+    this.maxScoreForPathLength = 10;
+    this.maxScoreForNumberOfInstructions = 10;
 
-    this.maxScore = this.maxDistanceScore + this.maxInstrLengthScore;
+    this.maxScore = this.maxScoreForPathLength + this.maxScoreForNumberOfInstructions;
     
     this.optimalPath = getOptimalPath(this.nodes, this.destinations);
 };
@@ -25,41 +25,40 @@ ocargo.PathFinder.prototype.getScore = function() {
     var pathLengthScore = 0;
     if(!this.pathScoreDisabled){
         pathLengthScore = Math.max(0, this.getTravelledPathScore());
-        message = ocargo.messages.pathScore + 
-                    this.renderCoins(pathLengthScore, this.maxDistanceScore);
+        message = ocargo.messages.pathScore + this.renderCoins(pathLengthScore, this.maxScoreForPathLength);
     }
 
     var totalScore = pathLengthScore;
 
-    if (this.modelLength.length > 0) {
+    if (this.modelSolution.length > 0) {
         // Then we're on a default level
-        var initInstrScore = this.getInstrLengthScore();
+        var initInstrScore = this.getScoreForNumberOfInstructions();
         var instrScore = Math.max(0, initInstrScore);
 
-        if (initInstrScore >= 2 * this.maxInstrLengthScore) {
+        if (initInstrScore >= 2 * this.maxScoreForNumberOfInstructions) {
             instrScore = 0;
-        } else if (initInstrScore > this.maxInstrLengthScore) {
-            instrScore = this.maxInstrLengthScore - initInstrScore % this.maxInstrLengthScore;
+        } else if (initInstrScore > this.maxScoreForNumberOfInstructions) {
+            instrScore = this.maxScoreForNumberOfInstructions - initInstrScore % this.maxScoreForNumberOfInstructions;
         }
         instrScore = Math.max(0, instrScore);
 
         message +=  ocargo.messages.algorithmScore +
-                    this.renderCoins(instrScore, this.maxInstrLengthScore) + "<br>";
+                    this.renderCoins(instrScore, this.maxScoreForNumberOfInstructions) + "<br>";
         totalScore += instrScore;
     }
 
 
     message += ocargo.messages.totalScore(totalScore, this.maxScore);
 
-    if (pathLengthScore < this.maxDistanceScore) {
-        message += "<br>" + ocargo.messages.pathLonger
+    if (pathLengthScore < this.maxScoreForPathLength) {
+        message += "<br>" + ocargo.messages.pathLonger;
         button += ocargo.button.getTryAgainButtonHtml();
     }
-    else if (initInstrScore > this.maxInstrLengthScore) {
+    else if (initInstrScore > this.maxScoreForNumberOfInstructions) {
         message += "<br>" + ocargo.messages.algorithmShorter;
         button += ocargo.button.getTryAgainButtonHtml();
     }
-    else if (initInstrScore < this.maxInstrLengthScore) {
+    else if (initInstrScore < this.maxScoreForNumberOfInstructions) {
         message += "<br>" + ocargo.messages.algorithmLonger;
         button += ocargo.button.getTryAgainButtonHtml();
     }
@@ -92,25 +91,18 @@ ocargo.PathFinder.prototype.renderCoins = function(score, maxScore) {
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
     var travelled = this.van.travelled;
-    var travelledScore = this.maxDistanceScore -
-        (travelled - this.optimalPath.length + 2);
-    
-    return travelledScore;
+    return this.maxScoreForPathLength - (travelled - this.optimalPath.length + 2);
 };
 
-ocargo.PathFinder.prototype.getInstrLengthScore = function() {
-    if (this.modelLength.length === 0) {
-        return 0;
-    }
-
-    var userLength = ocargo.blocklyControl.getActiveBlocksCount();
+ocargo.PathFinder.prototype.getScoreForNumberOfInstructions = function() {
+    var blocksUsed = ocargo.blocklyControl.getActiveBlocksCount();
     var algorithmScore = 0;
-    var difference = this.maxInstrLengthScore;
-    for (var i = 0; i < this.modelLength.length; i++) {
-        var currDifference = userLength - this.modelLength[i];
+    var difference = this.maxScoreForNumberOfInstructions;
+    for (var i = 0; i < this.modelSolution.length; i++) {
+        var currDifference = blocksUsed - this.modelSolution[i];
         if (Math.abs(currDifference) < difference) {
             difference = Math.abs(currDifference);
-            algorithmScore = this.maxInstrLengthScore - currDifference;
+            algorithmScore = this.maxScoreForNumberOfInstructions - currDifference;
         }
     }
     return algorithmScore;
@@ -139,7 +131,7 @@ ocargo.PathFinder.prototype.getLength = function(stack) {
 
 
 function getOptimalPath(nodes, destinations) {
-    // Brute force Travelling Salesman implementation, using A* to determinee the connection lengths
+    // Brute force Travelling Salesman implementation, using A* to determine the connection lengths
     // If the map size increases or lots of destinations are required, it may need to be rethought
     var hash = {};
     function getPathBetweenNodes(node1, node2) {
