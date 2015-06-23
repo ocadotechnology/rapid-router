@@ -228,11 +228,6 @@ ocargo.LevelEditor = function() {
             tabs.scenery.popup = true;
 
             tabs.scenery.setOnChange(function() {
-                if (tabs.scenery.popup) {
-                    tabs.scenery.popup = false;
-                    ocargo.Drawing.startPopup('', '', ocargo.messages.trafficLightsWarning);
-                }
-
                 transitionTab(tabs.scenery);
             });
 
@@ -259,6 +254,7 @@ ocargo.LevelEditor = function() {
                                           "startingState": ocargo.TrafficLight.GREEN,
                                           "sourceCoordinate": null,  "direction": null});
             });
+
         }
 
         function setupCharacterTab() {
