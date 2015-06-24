@@ -69,6 +69,10 @@ def get_scoreboard_csv(student_data, headers):
 
     return response
 
+def get_levels_headers(headers, levels):
+    headers += levels
+    return headers
+
 def create_scoreboard(request):
 
     def are_classes_viewable_by_teacher(class_ids, userprofile):
@@ -221,10 +225,6 @@ def create_scoreboard(request):
 
         return student_data
 
-    def get_levels_headers(headers, levels):
-        headers += levels
-        return headers
-
     def is_viewable(class_):
         return class_.classmates_data_viewable
 
@@ -271,8 +271,8 @@ def create_scoreboard(request):
 
     return form, student_data, headers, None
 
-class StudentRow:
 
+class StudentRow:
     def __init__(self, *args, **kwargs):
         student = kwargs.get('student')
         self.class_field = student.class_field
