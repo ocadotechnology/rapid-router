@@ -1,19 +1,20 @@
+import datetime
+
 from django.test import TestCase
-from django.utils import unittest
+from unittest2 import skip
+
 from game.models import Level
 from game.views.scoreboard import StudentRow, get_scoreboard_csv, get_levels_headers
 from portal.models import Student
-
 from portal.tests.utils.student import generate_solo_details
 
-import datetime
 
 class ScoreboardTestCase(TestCase):
     def createTestData(self):
         # Create one student
         student = Student.objects.soloFactory(*generate_solo_details())
         start_time = datetime.datetime.now()
-        finish_time= datetime.datetime.now()
+        finish_time = datetime.datetime.now()
         total_time = finish_time-start_time
         scores = [x for x in range(20)]
         total_score = sum(scores)
@@ -30,7 +31,7 @@ class ScoreboardTestCase(TestCase):
         return row
 
 
-    @unittest.skip("Not passing yet")
+    @skip("Not passing yet")
     def testMultipleLevels(self):
         headers = get_levels_headers(['Class', 'Name', 'Total Score', 'Total Time', 'Progress'], Level.objects.sorted_levels())
         response = get_scoreboard_csv([self.createTestData()], headers)
