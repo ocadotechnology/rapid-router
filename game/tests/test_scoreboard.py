@@ -1,7 +1,7 @@
 import datetime
+from unittest import skip
 
 from django.test import TestCase
-from unittest2 import skip
 
 from game.models import Level
 from game.views.scoreboard import StudentRow, get_scoreboard_csv, get_levels_headers
@@ -30,9 +30,8 @@ class ScoreboardTestCase(TestCase):
         )
         return row
 
-
     @skip("Not passing yet")
-    def testMultipleLevels(self):
+    def multipleLevels(self):
         headers = get_levels_headers(['Class', 'Name', 'Total Score', 'Total Time', 'Progress'], Level.objects.sorted_levels())
         response = get_scoreboard_csv([self.createTestData()], headers)
         print response
