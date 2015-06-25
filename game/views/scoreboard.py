@@ -42,7 +42,7 @@ def scoreboard(request):
         return error_response
 
     if 'export' in request.POST:
-        return get_scoreboard_csv(student_data, headers)
+        return scoreboard_csv(student_data, headers)
     else:
         return get_scoreboard_view(request, form, student_data, headers)
 
@@ -54,20 +54,25 @@ def get_scoreboard_view(request, form, student_data, headers):
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
     
-def get_scoreboard_csv(student_data, headers):
+def scoreboard_csv(student_rows, headers):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="scoreboard.csv"'
-    
-    #remove list element with list of level scores (the following elements hold the same data separately)
-    if headers[2] != 'Score':
-        for row in student_data:
-            del row[3]
+
+    rows = map(to_array, student_rows)
 
     writer = csv.writer(response)
     writer.writerow(headers)
-    writer.writerows(student_data)
+    writer.writerows(rows)
 
     return response
+
+def to_array(student_row):
+    #'Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'Attempted levels %', 'Finished levels %'
+    started, attempted, finished = student_row.progress
+    result = [student_row.class_field.name, student_row.name, student_row.total_score, student_row.total_time,
+              started, attempted, finished]
+
+    return result + student_row.scores
 
 def get_levels_headers(headers, levels):
     headers += levels
