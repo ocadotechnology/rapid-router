@@ -10,9 +10,29 @@ from portal.tests.utils.classes import create_class_directly
 from portal.tests.utils.student import create_school_student_directly
 from portal.tests.utils.teacher import signup_teacher_directly
 
-HEADERS = ['Class', 'Name', 'Total Score', 'Total Time', 'Progress']
+HEADERS = ['Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'Attempted levels %', 'Finished levels %']
 
 class ScoreboardTestCase(TestCase):
+
+    def test_multiple_levels(self):
+        levels = Level.objects.sorted_levels()
+        headers = get_levels_headers(HEADERS, levels)
+        student_row = self.student_row()
+        student_row2 = self.student_row()
+
+        response = scoreboard_csv([student_row, student_row2], headers)
+
+        actual_header, actual_rows = self.actual_data(response.content)
+
+        expected_header = self.expected_header(levels)
+        expected_rows = self.expected_rows(student_row, student_row2)
+
+        assert_that(actual_header, equal_to(expected_header))
+
+        assert_that(actual_rows, equal_to(expected_rows))
+
+    def expected_rows(self, *student_rows):
+        return map(self.expected_row, student_rows) + [""]
 
     def student_row(self):
         # Create one student
@@ -34,22 +54,6 @@ class ScoreboardTestCase(TestCase):
                          scores=all_scores,
                          class_field=Class(name="MyClass"))
         return row
-
-    def test_multiple_levels(self):
-        levels = Level.objects.sorted_levels()
-        headers = get_levels_headers(HEADERS, levels)
-        student_row = self.student_row()
-        response = scoreboard_csv([student_row], headers)
-
-        actual_header, actual_rows = self.actual_data(response.content)
-
-        expected_header = self.expected_header(levels)
-
-        assert_that(actual_header, equal_to(expected_header))
-
-        expected_rows = [self.expected_row(student_row), ""]
-
-        assert_that(actual_rows, equal_to(expected_rows))
 
     def expected_row(self, student_row):
         beginning = "%s,%s,190,0:00:30,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19," \
