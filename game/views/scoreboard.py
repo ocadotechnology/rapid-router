@@ -67,7 +67,6 @@ def scoreboard_csv(student_rows, headers):
     return response
 
 def to_array(student_row):
-    #'Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'Attempted levels %', 'Finished levels %'
     started, attempted, finished = student_row.progress
     result = [student_row.class_field.name, student_row.name, student_row.total_score, student_row.total_time,
               started, attempted, finished]
@@ -75,8 +74,7 @@ def to_array(student_row):
     return result + student_row.scores
 
 def get_levels_headers(headers, levels):
-    headers += levels
-    return headers
+    return headers + levels
 
 def create_scoreboard(request):
 
