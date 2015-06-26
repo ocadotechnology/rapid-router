@@ -36,15 +36,27 @@ def scoreboard(request):
     if not permissions.can_see_scoreboard(request.user):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
-    form, student_data, headers, error_response = create_scoreboard(request)
+    level_ids = Set(map(int, request.POST.getlist('levels')))
+    levels = Level.objects.sorted_levels()
+
+    requested_sorted_levels = filter(lambda x : x.id in level_ids, levels)
+
+    form, student_data, headers, error_response = create_scoreboard(request, requested_sorted_levels)
 
     if error_response:
         return error_response
 
     if 'export' in request.POST:
-        return get_scoreboard_csv(student_data, headers)
+        return scoreboard_csv(student_data, requested_sorted_levels)
     else:
         return get_scoreboard_view(request, form, student_data, headers)
+
+
+def scoreboard_csv(student_data, requested_sorted_levels):
+    if (len(requested_sorted_levels) > 1):
+        return scoreboard_csv_multiple_levels(student_data, requested_sorted_levels)
+    else:
+        return scoreboard_csv_single_level(student_data)
 
 def get_scoreboard_view(request, form, student_data, headers):
     context = RequestContext(request, {
@@ -53,23 +65,57 @@ def get_scoreboard_view(request, form, student_data, headers):
         'headers': headers,
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
-    
-def get_scoreboard_csv(student_data, headers):
+
+Csv_Multiple_Levels_Header = ['Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'Attempted levels %', 'Finished levels %']
+
+def scoreboard_csv_multiple_levels(student_rows, levels):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="scoreboard.csv"'
-    
-    #remove list element with list of level scores (the following elements hold the same data separately)
-    if headers[2] != 'Score':
-        for row in student_data:
-            del row[3]
+
+    header = header_for(levels)
+    rows = map(to_array_multiple_levels, student_rows)
 
     writer = csv.writer(response)
-    writer.writerow(headers)
-    writer.writerows(student_data)
+    writer.writerow(header)
+    writer.writerows(rows)
 
     return response
 
-def create_scoreboard(request):
+Single_Level_Header = ['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
+
+def scoreboard_csv_single_level(student_rows):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="scoreboard.csv"'
+
+    rows = map(to_array_single_level, student_rows)
+
+    writer = csv.writer(response)
+    writer.writerow(Single_Level_Header)
+    writer.writerows(rows)
+
+    return response
+
+def header_for(levels):
+    level_names = map(str, levels)
+    return Csv_Multiple_Levels_Header + level_names
+
+def to_array_multiple_levels(student_row):
+    started, attempted, finished = student_row.progress
+    result = [student_row.class_field.name, student_row.name, student_row.total_score, student_row.total_time,
+              started, attempted, finished]
+
+    return result + student_row.scores
+
+def to_array_single_level(student_row):
+    result = [student_row.class_field.name, student_row.name, student_row.total_score, student_row.total_time,
+              student_row.start_time, student_row.finish_time]
+
+    return result
+
+def get_levels_headers(headers, levels):
+    return headers + levels
+
+def create_scoreboard(request, requested_sorted_levels):
 
     def are_classes_viewable_by_teacher(class_ids, userprofile):
         teachers = Teacher.objects.filter(school=userprofile.teacher.school)
@@ -110,7 +156,6 @@ def create_scoreboard(request):
 
         # Getting data from the request object
         userprofile = request.user.userprofile
-        level_ids = Set(map(int, request.POST.getlist('levels')))
         class_ids = map(int, request.POST.getlist('classes'))
 
         # Get the list of students and levels to be displayed
@@ -124,14 +169,12 @@ def create_scoreboard(request):
             raise Http404
 
         students = students_visible_to_user(userprofile, class_ids)
-        levels = Level.objects.sorted_levels()
 
-        requested_sorted_levels = filter(lambda x : x.id in level_ids, levels)
         sorted_level_ids = map(lambda level: level.id, requested_sorted_levels)
 
         # If there are more than one level to show, show the total score, total time and score of each level
         # Otherwise, show the details of the level (the score, total time, start time and end time)
-        if len(level_ids) > 1:
+        if len(requested_sorted_levels) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
             headers = get_levels_headers(['Class', 'Name', 'Total Score', 'Total Time', 'Progress'], requested_sorted_levels)
@@ -140,7 +183,7 @@ def create_scoreboard(request):
             # Rows: Students from each class
             # Cols: Score, Total Time, Start Time, End Time
             headers = ['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
-            student_data = multiple_students_one_level(students, next(iter(level_ids)))
+            student_data = multiple_students_one_level(students, next(iter(sorted_level_ids)))
         return student_data, headers
 
     def one_row(student, level_id):
@@ -213,17 +256,13 @@ def create_scoreboard(request):
         return (num_started/num_levels)*100, (num_attempted/num_levels)*100, (num_finished/num_levels)*100
 
     # Returns rows of student object with score, start time, end time of the level
-    def multiple_students_one_level(students, level):
+    def multiple_students_one_level(students, level_id):
         student_data = []
 
         for student in students:
-            student_data.append(one_row(student, level))
+            student_data.append(one_row(student, level_id))
 
         return student_data
-
-    def get_levels_headers(headers, levels):
-        headers += levels
-        return headers
 
     def is_viewable(class_):
         return class_.classmates_data_viewable
@@ -271,8 +310,8 @@ def create_scoreboard(request):
 
     return form, student_data, headers, None
 
-class StudentRow:
 
+class StudentRow:
     def __init__(self, *args, **kwargs):
         student = kwargs.get('student')
         self.class_field = student.class_field

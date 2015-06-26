@@ -166,7 +166,7 @@ def change_levels(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0025_levels_ordering_pt1'),
+        ('game', '0001_squashed_0025_levels_ordering_pt1'),
     ]
 
     operations = [
