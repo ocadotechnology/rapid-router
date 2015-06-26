@@ -36,15 +36,27 @@ def scoreboard(request):
     if not permissions.can_see_scoreboard(request.user):
         return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
-    form, student_data, headers, error_response = create_scoreboard(request)
+    level_ids = Set(map(int, request.POST.getlist('levels')))
+    levels = Level.objects.sorted_levels()
+
+    requested_sorted_levels = filter(lambda x : x.id in level_ids, levels)
+
+    form, student_data, headers, error_response = create_scoreboard(request, requested_sorted_levels)
 
     if error_response:
         return error_response
 
     if 'export' in request.POST:
-        return scoreboard_csv_multiple_levels(student_data, headers)
+        return scoreboard_csv(student_data, requested_sorted_levels)
     else:
         return get_scoreboard_view(request, form, student_data, headers)
+
+
+def scoreboard_csv(student_data, requested_sorted_levels):
+    if (len(requested_sorted_levels) > 1):
+        return scoreboard_csv_multiple_levels(student_data, requested_sorted_levels)
+    else:
+        return scoreboard_csv_single_level(student_data)
 
 def get_scoreboard_view(request, form, student_data, headers):
     context = RequestContext(request, {
@@ -103,7 +115,7 @@ def to_array_single_level(student_row):
 def get_levels_headers(headers, levels):
     return headers + levels
 
-def create_scoreboard(request):
+def create_scoreboard(request, requested_sorted_levels):
 
     def are_classes_viewable_by_teacher(class_ids, userprofile):
         teachers = Teacher.objects.filter(school=userprofile.teacher.school)
@@ -144,7 +156,6 @@ def create_scoreboard(request):
 
         # Getting data from the request object
         userprofile = request.user.userprofile
-        level_ids = Set(map(int, request.POST.getlist('levels')))
         class_ids = map(int, request.POST.getlist('classes'))
 
         # Get the list of students and levels to be displayed
@@ -158,14 +169,12 @@ def create_scoreboard(request):
             raise Http404
 
         students = students_visible_to_user(userprofile, class_ids)
-        levels = Level.objects.sorted_levels()
 
-        requested_sorted_levels = filter(lambda x : x.id in level_ids, levels)
         sorted_level_ids = map(lambda level: level.id, requested_sorted_levels)
 
         # If there are more than one level to show, show the total score, total time and score of each level
         # Otherwise, show the details of the level (the score, total time, start time and end time)
-        if len(level_ids) > 1:
+        if len(requested_sorted_levels) > 1:
             # Rows: Students from each class
             # Cols: Total Score, Total Time, Level X, ... , Level Y
             headers = get_levels_headers(['Class', 'Name', 'Total Score', 'Total Time', 'Progress'], requested_sorted_levels)
@@ -174,7 +183,7 @@ def create_scoreboard(request):
             # Rows: Students from each class
             # Cols: Score, Total Time, Start Time, End Time
             headers = ['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
-            student_data = multiple_students_one_level(students, next(iter(level_ids)))
+            student_data = multiple_students_one_level(students, next(iter(sorted_level_ids)))
         return student_data, headers
 
     def one_row(student, level_id):
@@ -247,11 +256,11 @@ def create_scoreboard(request):
         return (num_started/num_levels)*100, (num_attempted/num_levels)*100, (num_finished/num_levels)*100
 
     # Returns rows of student object with score, start time, end time of the level
-    def multiple_students_one_level(students, level):
+    def multiple_students_one_level(students, level_id):
         student_data = []
 
         for student in students:
-            student_data.append(one_row(student, level))
+            student_data.append(one_row(student, level_id))
 
         return student_data
 
