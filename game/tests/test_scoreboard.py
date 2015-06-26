@@ -1,26 +1,26 @@
 from datetime import timedelta
 
 from django.test import TestCase
+
 from hamcrest import *
 
 from game.models import Level
-from game.views.scoreboard import StudentRow, scoreboard_csv, get_levels_headers
+from game.views.scoreboard import StudentRow, scoreboard_csv_multiple_levels
 from portal.models import Class
 from portal.tests.utils.classes import create_class_directly
 from portal.tests.utils.student import create_school_student_directly
 from portal.tests.utils.teacher import signup_teacher_directly
 
-HEADERS = ['Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'Attempted levels %', 'Finished levels %']
+Headers = ['Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'Attempted levels %', 'Finished levels %']
 
 class ScoreboardTestCase(TestCase):
 
     def test_multiple_levels(self):
         levels = Level.objects.sorted_levels()
-        headers = get_levels_headers(HEADERS, levels)
         student_row = self.student_row()
         student_row2 = self.student_row()
 
-        response = scoreboard_csv([student_row, student_row2], headers)
+        response = scoreboard_csv_multiple_levels([student_row, student_row2], levels)
 
         actual_header, actual_rows = self.actual_data(response.content)
 
@@ -63,7 +63,7 @@ class ScoreboardTestCase(TestCase):
 
     def expected_header(self, levels):
         level_strings = map(str, levels)
-        all_header_strings = HEADERS + level_strings
+        all_header_strings = Headers + level_strings
         joined = ','.join(all_header_strings)
         return joined
 
