@@ -1,4 +1,5 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
+from game.views.api import level_list, level_detail, api_root, episode_list, episode_detail
 
 from game.views.level_editor import level_editor, get_loadable_levels_for_editor, \
     delete_level_for_editor, load_level_for_editor, save_level_for_editor, play_anonymous_level, \
@@ -54,4 +55,12 @@ urlpatterns = patterns(
         get_sharing_information_for_editor, name='get_sharing_information_for_editor'),
     url(r'^level_editor/level/share/(?P<levelID>[0-9]+)/$',
         share_level_for_editor, name='share_level_for_editor'),
+
+    # Routing for api related urls
+    url(r'^api/$', api_root),
+    url(r'^api/levels/$', level_list, name='level-list'),
+    url(r'^api/levels/(?P<pk>[0-9]+)$', level_detail, name='level-detail'),#
+    url(r'^api/episodes/$', episode_list, name='episode-list'),
+    url(r'^api/episodes/(?P<pk>[0-9]+)$', episode_detail, name='episode-detail'),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )
