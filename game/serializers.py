@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from models import Workspace, Level, Episode
+from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
@@ -7,26 +7,37 @@ class WorkspaceSerializer(serializers.ModelSerializer):
         model = Workspace
 
 
-class LevelListSerializer(serializers.HyperlinkedModelSerializer):
+class LevelListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Level
         fields = ('url', '__unicode__', 'name', 'episode', 'default', 'blocklyEnabled', 'pythonEnabled', )
 
 
-class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
+class LevelDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Level
-        fields = ('__unicode__', 'name', 'episode', 'default', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled')
+        depth = 2
+        fields = ('__unicode__', 'name', 'episode', 'default', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled', 'levelblock_set')
 
 
-class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
+class EpisodeListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Episode
         fields = ('url', '__unicode__', 'name')
 
 
-class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
-    levels = serializers.HyperlinkedRelatedField(view_name='level-detail', many=True, read_only=True)
+class EpisodeDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Episode
-        fields = ('url', '__unicode__', 'name', 'next_episode', 'levels')
+        depth = 1
+        fields = ('url', '__unicode__', 'name', 'next_episode', 'level_set')
+
+
+class LevelBlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LevelBlock
+
+
+class BlockSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Block

@@ -1,10 +1,13 @@
 from django.http import HttpResponse
-from game.models import Level, Episode
-from game.serializers import LevelListSerializer, EpisodeListSerializer, LevelDetailSerializer, EpisodeDetailSerializer
+from game.models import Level, Episode, LevelBlock, Block
+from game.serializers import LevelListSerializer, EpisodeListSerializer, LevelDetailSerializer, EpisodeDetailSerializer, \
+    LevelBlockSerializer, BlockSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import viewsets
+from rest_framework import generics
+
 
 @api_view(('GET',))
 def api_root(request, format=None):
@@ -28,7 +31,8 @@ def level_detail(request, pk, format=None):
     except Level.DoesNotExist:
         return HttpResponse(status=404)
 
-    serializer = LevelDetailSerializer(level, context={'request': request})
+
+    serializer = LevelDetailSerializer(levellevel, context={'request': request})
     return Response(serializer.data)
 
 
@@ -47,6 +51,36 @@ def episode_detail(request, pk, format=None):
         return HttpResponse(status=404)
 
     serializer = EpisodeDetailSerializer(episode, context={'request': request})
+    return Response(serializer.data)
+
+@api_view(('GET',))
+def levelblock_list(request, level, format=None):
+    print level
+    blocks = LevelBlock.objects.filter(level__id=level)
+
+    serializer = LevelBlockSerializer(blocks, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def levelblock_detail(request, pk, format=None):
+    try:
+        levelblock = LevelBlock.objects.get(pk=pk)
+    except LevelBlock.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = LevelBlockSerializer(levelblock, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def block_detail(request, pk, format=None):
+    try:
+        block = Block.objects.get(pk=pk)
+    except Block.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = BlockSerializer(block, context={'request': request})
     return Response(serializer.data)
 
 
