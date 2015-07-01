@@ -72,7 +72,7 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', '__unicode__', 'name', 'level_set')
 
     def get_level_set(self, obj):
-        levels = Level.objects.filter(level__episode=obj.id)
+        levels = Level.objects.filter(episode__id=obj.id)
         serializer = LevelListSerializer(levels, many=True, context={'request': self.context.get('request', None)})
         return serializer.data
 
