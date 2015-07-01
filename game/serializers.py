@@ -1,5 +1,7 @@
+from game import messages
+from game.messages import description_level_default, hint_level_default
 from rest_framework import serializers
-from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block
+from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block, Theme, Character
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
@@ -7,37 +9,79 @@ class WorkspaceSerializer(serializers.ModelSerializer):
         model = Workspace
 
 
-class LevelListSerializer(serializers.ModelSerializer):
+class LevelListSerializer(serializers.HyperlinkedModelSerializer):
+    title = serializers.SerializerMethodField()
+
     class Meta:
         model = Level
-        fields = ('url', '__unicode__', 'name', 'episode', 'default', 'blocklyEnabled', 'pythonEnabled', )
+        fields = ('url', '__unicode__', 'episode', 'name', 'title', 'default', 'blocklyEnabled', 'pythonEnabled')
 
+    def get_title(self, obj):
+        if obj.default:
+            title = getattr(messages, 'title_level' + obj.name)()
+            return title
+        else:
+            return "Custom Level"
 
-class LevelDetailSerializer(serializers.ModelSerializer):
+class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
+    title = serializers.SerializerMethodField()
+    description = serializers.SerializerMethodField()
+    hint = serializers.SerializerMethodField()
+
     class Meta:
         model = Level
-        depth = 2
-        fields = ('__unicode__', 'name', 'episode', 'default', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled', 'levelblock_set')
+        depth = 1
+        fields = ('__unicode__', 'episode', 'name', 'title', 'description', 'hint', 'default', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled', 'levelblock_set')
+
+    def get_title(self, obj):
+        if obj.default:
+            title = getattr(messages, 'title_level' + obj.name)()
+            return title
+        else:
+            return "Custom Level"
+
+    def get_description(self, obj):
+        if obj.default:
+            description = getattr(messages, 'description_level' + obj.name)()
+            return description
+        else:
+            return description_level_default()
+
+    def get_hint(self, obj):
+        if obj.default:
+            hint = getattr(messages, 'hint_level' + obj.name)()
+            return hint
+        else:
+            return hint_level_default()
 
 
-class EpisodeListSerializer(serializers.ModelSerializer):
+class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Episode
         fields = ('url', '__unicode__', 'name')
 
 
-class EpisodeDetailSerializer(serializers.ModelSerializer):
+class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Episode
         depth = 1
         fields = ('url', '__unicode__', 'name', 'next_episode', 'level_set')
 
 
-class LevelBlockSerializer(serializers.ModelSerializer):
+class LevelBlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LevelBlock
 
 
-class BlockSerializer(serializers.ModelSerializer):
+class BlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Block
+
+
+class ThemeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Theme
+
+class CharacterSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Character

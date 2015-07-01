@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url, include
 from game.views.api import level_list, level_detail, api_root, episode_list, episode_detail, levelblock_detail, \
-    block_detail
+    block_detail, theme_detail
 
 from game.views.level_editor import level_editor, get_loadable_levels_for_editor, \
     delete_level_for_editor, load_level_for_editor, save_level_for_editor, play_anonymous_level, \
@@ -65,5 +65,7 @@ urlpatterns = patterns(
     url(r'^api/episodes/(?P<pk>[0-9]+)$', episode_detail, name='episode-detail'),
     url(r'^api/levelblocks/(?P<pk>[0-9]+)$', levelblock_detail, name='levelblock-detail'),
     url(r'^api/blocks/(?P<pk>[0-9]+)$', block_detail, name='block-detail'),
+    url(r'^api/themes/(?P<pk>[0-9]+)$', theme_detail, name='theme-detail'),
+    url(r'^api/characters/(?P<pk>[0-9]+)$', theme_detail, name='character-detail'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )

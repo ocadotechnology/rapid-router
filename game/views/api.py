@@ -1,7 +1,7 @@
 from django.http import HttpResponse
-from game.models import Level, Episode, LevelBlock, Block
+from game.models import Level, Episode, LevelBlock, Block, Theme, Character
 from game.serializers import LevelListSerializer, EpisodeListSerializer, LevelDetailSerializer, EpisodeDetailSerializer, \
-    LevelBlockSerializer, BlockSerializer
+    LevelBlockSerializer, BlockSerializer, ThemeSerializer, CharacterSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -32,7 +32,7 @@ def level_detail(request, pk, format=None):
         return HttpResponse(status=404)
 
 
-    serializer = LevelDetailSerializer(levellevel, context={'request': request})
+    serializer = LevelDetailSerializer(level, context={'request': request})
     return Response(serializer.data)
 
 
@@ -81,6 +81,28 @@ def block_detail(request, pk, format=None):
         return HttpResponse(status=404)
 
     serializer = BlockSerializer(block, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def theme_detail(request, pk, format=None):
+    try:
+        theme = Theme.objects.get(pk=pk)
+    except Theme.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = ThemeSerializer(theme, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def character_detail(request, pk, format=None):
+    try:
+        character = Character.objects.get(pk=pk)
+    except Character.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = CharacterSerializer(character, context={'request': request})
     return Response(serializer.data)
 
 
