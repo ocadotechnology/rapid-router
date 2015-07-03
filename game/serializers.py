@@ -33,7 +33,8 @@ class LevelDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Level
         depth = 1
-        fields = ('__unicode__', 'episode', 'name', 'title', 'description', 'hint', 'default', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled', 'levelblock_set')
+        fields = ('__unicode__', 'episode', 'name', 'title', 'description', 'hint', 'default', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled', 'levelblock_set', 'path', 'origin',
+                  'destinations', 'traffic_lights', 'max_fuel', )
 
     def get_title(self, obj):
         if obj.default:
