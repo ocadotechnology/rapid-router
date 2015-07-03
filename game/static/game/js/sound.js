@@ -68,6 +68,10 @@ ocargo.sound.tensionSound = new Howl({
     urls: ['/static/game/sound/tension.mp3', '/static/game/sound/tension.ogg']
 });
 
+ocargo.sound.cowSound = new Howl({
+    urls: ['/static/game/sound/cow.mp3', '/static/game/sound/cow.ogg']
+});
+
 function safePlay(sound) {
     try {
         sound.play();
@@ -111,6 +115,10 @@ ocargo.sound.win = function() {
 
 ocargo.sound.failure = function() {
     safePlay(ocargo.sound.failureSound);
+};
+
+ocargo.sound.cow = function() {
+    safePlay(ocargo.sound.cowSound);
 };
 
 ocargo.sound.crash = function() {

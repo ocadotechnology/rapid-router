@@ -517,6 +517,19 @@ ocargo.Drawing = function() {
         }
     };
 
+    this.renderCow = function(id, coordinate) {
+        var COW_WIDTH = 16;
+        var COW_HEIGHT = 16;
+
+        var x = coordinate.x;
+        var y = coordinate.y;
+
+        var drawX = x * GRID_SPACE_SIZE + COW_HEIGHT;
+        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - COW_WIDTH;
+
+        paper.image(ocargo.Drawing.raphaelImageDir + 'cow.svg', drawX, drawY, COW_WIDTH, COW_HEIGHT);
+    };
+
     this.setVanImagePosition = function(position, vanID) {
         var vanImage = vanImages[vanID];
         var initialPosition = calculateInitialPosition(position.currentNode);

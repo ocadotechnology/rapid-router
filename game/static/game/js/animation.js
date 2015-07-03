@@ -295,6 +295,9 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		case 'trafficlight':
 			ocargo.drawing.transitionTrafficLight(a.id, a.colour, animationLength/2);
 			break;
+		case 'cow':
+			ocargo.drawing.renderCow(a.id, a.coordinate);
+			break;
 		case 'console':
 			ocargo.pythonControl.appendToConsole(a.text);
 			break;

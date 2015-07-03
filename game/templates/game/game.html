@@ -16,6 +16,7 @@
     var HOUSE_URL = "{{house}}";
     var CFC_URL = "{{cfc}}";
     var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
+    var COWS = {{level.cows|safe}};
     var EPISODE = "{{level.episode.id}}"
     var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : "";
     var LEVEL_NAME = "{{level.name}}";
@@ -86,6 +87,7 @@
   <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
+  <script type="text/javascript" src="{% static 'game/js/cow.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/destination.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>

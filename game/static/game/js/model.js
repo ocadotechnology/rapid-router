@@ -39,13 +39,18 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-ocargo.Model = function(nodeData, origin, destinations, trafficLightData, maxFuel, vanId) {
+ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowData, maxFuel, vanId) {
     this.map = new ocargo.Map(nodeData, origin, destinations);
     this.van = new ocargo.Van(this.map.getStartingPosition(), maxFuel);
 
     this.trafficLights = [];
     for(var i = 0; i < trafficLightData.length; i++) {
         this.trafficLights.push(new ocargo.TrafficLight(i, trafficLightData[i], this.map.nodes));
+    }
+
+    this.cows = [];
+    for(var i = 0; i < cowData.length; i++) {
+        this.cows.push(new ocargo.Cow(i, cowData[i], this.map.nodes));
     }
 
     this.timestamp = 0;
@@ -67,6 +72,10 @@ ocargo.Model.prototype.reset = function(vanId) {
 
     for (var j = 0; j < this.trafficLights.length; j++) {
         this.trafficLights[j].reset();
+    }
+
+        for (var j = 0; j < this.cows.length; j++) {
+        this.cows[j].reset();
     }
 
     this.timestamp = 0;

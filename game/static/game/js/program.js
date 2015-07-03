@@ -41,11 +41,14 @@ var ocargo = ocargo || {};
 
 var MAX_EXECUTION_STEPS = 10000;
 
+var shouldHighlight = true;
+
 /* Program */
 
-ocargo.Program = function() {
+ocargo.Program = function(events) {
 	this.threads = [];
 	this.procedures = {};
+	this.events = events;
 };
 
 ocargo.Program.prototype.run = function() {
@@ -57,9 +60,11 @@ ocargo.Program.prototype.run = function() {
 
 /* Thread */
 
-ocargo.Thread = function() {
+ocargo.Thread = function(i, program) {
 	this.stack = [];
 	this.noExecutionSteps = 0;
+	this.program = program;
+	this.eventsEnabled = true;
 };
 
 ocargo.Thread.prototype.run = function(model) {
@@ -73,6 +78,25 @@ ocargo.Thread.prototype.run = function(model) {
 };
 
 ocargo.Thread.prototype.step = function(model) {
+    if (this.eventsEnabled) {
+        // check if any event condition is true
+        for (var i=0; i<this.program.events.length; i++) {
+            var event = this.program.events[i];
+            shouldHighlight = false;
+            if (event.condition(model)) {
+                shouldHighlight = true;
+
+                // add event handler to stack (looping)
+                event.execute(this, model);
+
+                // only allow one event at a time
+                break;
+            } else {
+                shouldHighlight = true;
+            }
+        }
+    }
+
 	var stackLevel = this.stack[this.stack.length - 1];
 	var commandToProcess = stackLevel.shift();
 	this.noExecutionSteps ++;
@@ -242,6 +266,26 @@ function Procedure(name,body,block) {
 
 Procedure.prototype.execute = function(thread) {
 	thread.addNewStackLevel(this.body.slice());
+	return true;
+};
+
+function Event(condition,body,block) {
+	this.condition = condition;
+	this.body = body;
+	this.block = block;
+};
+
+Event.prototype.execute = function(thread, model) {
+    if (this.condition(model)) {
+        // only allow one event at a time
+        thread.eventsEnabled = false;
+
+        // loop within the event handler as long as condition is true
+        thread.addNewStackLevel([this]);
+        thread.addNewStackLevel(this.body.slice());
+    } else {
+        thread.eventsEnabled = true;
+    }
 	return true;
 };
 

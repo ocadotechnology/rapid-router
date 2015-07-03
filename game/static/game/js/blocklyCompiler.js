@@ -188,6 +188,8 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
     } else if (conditionBlock.type === 'traffic_light') {
     	return this.trafficLightCondition(
             conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
+    } else if (conditionBlock.type === 'cow_crossing') {
+        return this.cowCrossingCondition(conditionBlock);
     }
 };
 
@@ -297,6 +299,14 @@ ocargo.BlocklyCompiler.prototype.deadEndCondition = function(block) {
         return model.isDeadEnd();
     };
 };
+
+ocargo.BlocklyCompiler.prototype.cowCrossingCondition = function(block) {
+    return function(model) {
+        queueHighlight(model, block);
+        return model.isCowCrossing();
+    };
+};
+
 
 ocargo.BlocklyCompiler.prototype.negateCondition = function(otherCondition) {
     return function(model) {

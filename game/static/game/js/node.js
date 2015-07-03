@@ -43,6 +43,7 @@ ocargo.Node = function (coordinate) {
     this.coordinate = coordinate;
     this.connectedNodes = [];
     this.trafficLights = [];
+    this.cows = [];
     this.parent = null;
 };
 
@@ -68,6 +69,10 @@ ocargo.Node.prototype.removeDoublyConnectedNode = function(node) {
 
 ocargo.Node.prototype.addTrafficLight = function(trafficLight) {
 	this.trafficLights.push(trafficLight);
+};
+
+ocargo.Node.prototype.addCow = function(cow) {
+    this.cows.push(cow);
 };
 
 // Takes a list of node data which reference connected nodes

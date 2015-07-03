@@ -200,7 +200,19 @@ function initCustomBlocksDescription() {
         }
     };
 
-        Blockly.Blocks['dead_end'] = {
+    Blockly.Blocks['cow_crossing'] = {
+        init: function() {            
+            this.setColour(210);
+            this.setOutput(true, 'Boolean');
+            this.appendDummyInput()
+                .appendField('is cow crossing')
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
+                                                    ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
+                                                    ocargo.BlocklyControl.BLOCK_HEIGHT));
+        }
+    };
+
+    Blockly.Blocks['dead_end'] = {
         init: function() {
             this.setColour(210);
             this.setOutput(true, 'Boolean');
@@ -379,6 +391,11 @@ function initCustomBlocksPython() {
 
     Blockly.Python['dead_end'] = function(block) {
         return ['v.at_dead_end()', Blockly.Python.ORDER_NONE];
+        // TODO: figure out what this ordering relates to
+    };
+
+    Blockly.Python['cow_crossing'] = function(block) {
+        return ['v.cow_crossing()', Blockly.Python.ORDER_NONE];
         // TODO: figure out what this ordering relates to
     };
 
