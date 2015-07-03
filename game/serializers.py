@@ -40,12 +40,15 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
         view_name='map-for-level',
         read_only=True
     )
+    mode = serializers.HyperlinkedIdentityField(
+        view_name='mode-for-level',
+        read_only=True
+    )
 
     class Meta:
         model = Level
         fields = ('__unicode__', 'episode', 'name', 'title', 'description', 'hint', 'next_level', 'default',
-                  'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled', 'levelblock_set', 'leveldecor_set',
-                  'map')
+                  'levelblock_set', 'leveldecor_set', 'map', 'mode')
 
     def get_title(self, obj):
         if obj.default:
@@ -67,6 +70,12 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
             return hint
         else:
             return hint_level_default()
+
+
+class LevelModeSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Level
+        fields = ('blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled')
 
 
 class LevelMapSerializer(serializers.HyperlinkedModelSerializer):
