@@ -5,7 +5,8 @@ from django.test import TestCase
 from hamcrest import *
 
 from game.models import Level
-from game.views.scoreboard import StudentRow, scoreboard_csv_multiple_levels, scoreboard_csv_single_level
+from game.views.scoreboard import StudentRow
+from game.views.scoreboard_csv import scoreboard_csv_multiple_levels, scoreboard_csv_single_level
 from portal.models import Class
 from portal.tests.utils.classes import create_class_directly
 from portal.tests.utils.student import create_school_student_directly
