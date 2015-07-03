@@ -39,8 +39,8 @@ from django.utils.translation import ugettext
 
 def youtubeLink(width, height, url, border):
     return "<iframe width='" + str(width) + "' height='" + str(height) + "' src='" + str(url) \
-        + "?rel=0" + "' frameborder='" + str(border) \
-        + "' allowfullscreen class='video'></iframe><br>"
+           + "?rel=0" + "' frameborder='" + str(border) \
+           + "' allowfullscreen class='video'></iframe><br>"
 
 
 def noPermissionMessage():
@@ -94,6 +94,7 @@ def noPermissionLevelModerationStudent():
 def noDataToShowLevelModeration():
     return ugettext("You have not created any classes and therefore is no data to show. " +
                     "Please contact your administrator if this is unexpected.")
+
 
 """ String messages used on the settings page. """
 
@@ -1837,6 +1838,84 @@ while not v.at_destination():
 Variables can be used in place of constants when calling functions. For example to repeat something n times you can do something like the following:
 <pre>for count in range(n):</pre>""")
     return message.replace('\n','<br />')
+
+
+def title_level110():
+    return ugettext("Cows ")
+
+
+def description_level110():
+    message = ugettext(
+        "Watch out for cows that cross the road and find out how to use the new <b>cow crossing</b> block. ")
+    return build_description(title_level110(), message)
+
+
+def hint_level110():
+    return ""
+
+
+def title_level111():
+    return ugettext("More Cows ")
+
+
+def description_level111():
+    message = ugettext(
+        "Cows have their own will. They cross roads whenever and wherever they want! ")
+    return build_description(title_level111(), message)
+
+
+def hint_level111():
+    return ""
+
+
+def title_level112():
+    return ugettext("How to deal with all these cows? ")
+
+
+def description_level112():
+    message = ugettext("These cows are getting annoying, aren't they? There is another way "
+                       "to deal with them. You have a new <b>On...Define</b> block that you can "
+                       "use when you want to deal with situations that happen more than once and "
+                       "at unknown locations. Place it anywhere on the left side and attach the "
+                       "<b>cow crossing</b> block to it. Then use other blocks to say what you "
+                       "want to do if a cow appears on the road. ")
+    return build_description(title_level112(), message)
+
+
+def hint_level112():
+    return ""
+
+
+def title_level113():
+    return ugettext("Cows and traffic lights ")
+
+
+def description_level113():
+    message = ugettext(
+        "Well done! On this map, you will not only see cows all over the map, you will have to deal "
+        "with traffic lights as well! But don't worry. You have already found out how to deal with "
+        "cows. Try to handle traffic lights in the same way. ")
+    return build_description(title_level113(), message)
+
+
+def hint_level113():
+    return ""
+
+
+def title_level114():
+    return ugettext("More cows and traffic lights ")
+
+
+def description_level114():
+    message = ugettext(
+        "Well done! On this map, you will not only see cows all over the map. You will have to deal "
+        "with traffic lights as well! But don't worry. You have already found out how to deal with "
+        "cows. Try to handle traffic lights in the same way. ")
+    return build_description(title_level114(), message)
+
+
+def hint_level114():
+    return ""
 
 
 def title_level107():
