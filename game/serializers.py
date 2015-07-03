@@ -1,9 +1,7 @@
 from game import messages
 from game.messages import description_level_default, hint_level_default
-from requests import request
 from rest_framework import serializers
 from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block, Theme, Character, Decor
-from rest_framework.reverse import reverse
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
@@ -34,10 +32,20 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
         view_name='levelblock-for-level',
         read_only=True
     )
+    leveldecor_set = serializers.HyperlinkedIdentityField(
+        view_name='leveldecor-for-level',
+        read_only=True
+    )
+    map = serializers.HyperlinkedIdentityField(
+        view_name='map-for-level',
+        read_only=True
+    )
 
     class Meta:
         model = Level
-        fields = ('__unicode__', 'episode', 'name', 'title', 'description', 'hint', 'default', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled', 'levelblock_set')
+        fields = ('__unicode__', 'episode', 'name', 'title', 'description', 'hint', 'next_level', 'default',
+                  'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled', 'levelblock_set', 'leveldecor_set',
+                  'map')
 
     def get_title(self, obj):
         if obj.default:
@@ -61,6 +69,12 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
             return hint_level_default()
 
 
+class LevelMapSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Level
+        fields = ('origin', 'destinations', 'path', 'traffic_lights', 'max_fuel', 'theme')
+
+
 class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Episode
@@ -81,6 +95,11 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
 class LevelBlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = LevelBlock
+
+
+class LevelDecorSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = LevelDecor
 
 
 class BlockSerializer(serializers.HyperlinkedModelSerializer):
