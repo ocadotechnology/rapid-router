@@ -1,6 +1,8 @@
 from django.conf.urls import patterns, url, include
 from game.views.api import level_list, level_detail, api_root, episode_list, episode_detail, levelblock_detail, \
-    block_detail, theme_detail
+    block_detail, theme_detail, block_list, theme_list, character_list, character_detail, level_for_episode, \
+    levelblock_for_level, decor_list, decor_detail, map_for_level, leveldecor_detail, leveldecor_for_level, \
+    mode_for_level
 
 from game.views.level_editor import level_editor, get_loadable_levels_for_editor, \
     delete_level_for_editor, load_level_for_editor, save_level_for_editor, play_anonymous_level, \
@@ -59,13 +61,25 @@ urlpatterns = patterns(
 
     # Routing for api related urls
     url(r'^api/$', api_root),
-    url(r'^api/levels/$', level_list, name='level-list'),
-    url(r'^api/levels/(?P<pk>[0-9]+)$', level_detail, name='level-detail'),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/blocks/$', block_list, name='block-list'),
+    url(r'^api/blocks/(?P<pk>[0-9]+)/$', block_detail, name='block-detail'),
+    url(r'^api/characters/$', character_list, name='character-list'),
+    url(r'^api/characters/(?P<pk>[0-9]+)/$', character_detail, name='character-detail'),
+    url(r'^api/decors/$', decor_list, name='decor-list'),
+    url(r'^api/decors/(?P<pk>[0-9]+)/$', decor_detail, name='decor-detail'),
     url(r'^api/episodes/$', episode_list, name='episode-list'),
-    url(r'^api/episodes/(?P<pk>[0-9]+)$', episode_detail, name='episode-detail'),
-    url(r'^api/levelblocks/(?P<pk>[0-9]+)$', levelblock_detail, name='levelblock-detail'),
-    url(r'^api/blocks/(?P<pk>[0-9]+)$', block_detail, name='block-detail'),
-    url(r'^api/themes/(?P<pk>[0-9]+)$', theme_detail, name='theme-detail'),
-    url(r'^api/characters/(?P<pk>[0-9]+)$', theme_detail, name='character-detail'),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api/episodes/(?P<pk>[0-9]+)/$', episode_detail, name='episode-detail'),
+    url(r'^api/episodes/(?P<pk>[0-9]+)/levels/$', level_for_episode, name='level-for-episode'),
+    url(r'^api/levels/$', level_list, name='level-list'),
+    url(r'^api/levels/(?P<pk>[0-9]+)/$', level_detail, name='level-detail'),
+    url(r'^api/levels/(?P<pk>[0-9]+)/blocks/$', levelblock_for_level, name='levelblock-for-level'),
+    url(r'^api/levels/(?P<pk>[0-9]+)/decors/$', leveldecor_for_level, name='leveldecor-for-level'),
+    url(r'^api/levels/(?P<pk>[0-9]+)/map/$', map_for_level, name='map-for-level'),
+    url(r'^api/levels/(?P<pk>[0-9]+)/mode/$', mode_for_level, name='mode-for-level'),
+    url(r'^api/levelblocks/(?P<pk>[0-9]+)/$', levelblock_detail, name='levelblock-detail'),
+    url(r'^api/leveldecors/(?P<pk>[0-9]+)/$', leveldecor_detail, name='leveldecor-detail'),
+    url(r'^api/themes/$', theme_list, name='theme-list'),
+    url(r'^api/themes/(?P<pk>[0-9]+)/$', theme_detail, name='theme-detail'),
+
 )

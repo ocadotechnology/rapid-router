@@ -1,7 +1,8 @@
 from django.http import HttpResponse
-from game.models import Level, Episode, LevelBlock, Block, Theme, Character
+from game.models import Level, Episode, LevelBlock, Block, Theme, Character, Decor, LevelDecor
 from game.serializers import LevelListSerializer, EpisodeListSerializer, LevelDetailSerializer, EpisodeDetailSerializer, \
-    LevelBlockSerializer, BlockSerializer, ThemeSerializer, CharacterSerializer
+    LevelBlockSerializer, BlockSerializer, ThemeSerializer, CharacterSerializer, DecorSerializer, LevelMapSerializer, \
+    LevelDecorSerializer, LevelModeSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -12,14 +13,43 @@ from rest_framework import generics
 @api_view(('GET',))
 def api_root(request, format=None):
     return Response({
-        'levels': reverse('level-list', request=request, format=format),
+        'blocks': reverse('block-list', request=request, format=format),
+        'characters': reverse('character-list', request=request, format=format),
         'episodes': reverse('episode-list', request=request, format=format),
+        'levels': reverse('level-list', request=request, format=format),
+        'themes': reverse('theme-list', request=request, format=format),
     })
+
+
+@api_view(('GET',))
+def decor_list(request, format=None):
+    decors = Decor.objects.all()
+    serializer = DecorSerializer(decors, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def decor_detail(request, pk, format=None):
+    try:
+        decor = Decor.objects.get(pk=pk)
+    except Decor.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = DecorSerializer(decor, context={'request': request})
+    return Response(serializer.data)
 
 
 @api_view(('GET',))
 def level_list(request, format=None):
     levels = Level.objects.all()
+    serializer = LevelListSerializer(levels, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+# pk is the episode id
+@api_view(('GET',))
+def level_for_episode(request, pk, format=None):
+    levels = Level.objects.filter(episode__id=pk)
     serializer = LevelListSerializer(levels, many=True, context={'request': request})
     return Response(serializer.data)
 
@@ -31,8 +61,29 @@ def level_detail(request, pk, format=None):
     except Level.DoesNotExist:
         return HttpResponse(status=404)
 
-
     serializer = LevelDetailSerializer(level, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def map_for_level(request, pk, format=None):
+    try:
+        level = Level.objects.get(pk=pk)
+    except Level.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = LevelMapSerializer(level, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def mode_for_level(request, pk, format=None):
+    try:
+        level = Level.objects.get(pk=pk)
+    except Level.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = LevelModeSerializer(level, context={'request': request})
     return Response(serializer.data)
 
 
@@ -55,10 +106,16 @@ def episode_detail(request, pk, format=None):
 
 @api_view(('GET',))
 def levelblock_list(request, level, format=None):
-    print level
     blocks = LevelBlock.objects.filter(level__id=level)
 
     serializer = LevelBlockSerializer(blocks, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def levelblock_for_level(request, pk, format=None):
+    levelblocks = LevelBlock.objects.filter(level__id=pk)
+    serializer = LevelBlockSerializer(levelblocks, many=True, context={'request': request})
     return Response(serializer.data)
 
 
@@ -74,6 +131,39 @@ def levelblock_detail(request, pk, format=None):
 
 
 @api_view(('GET',))
+def leveldecor_list(request, level, format=None):
+    leveldecors = LevelDecor.objects.filter(level__id=level)
+
+    serializer = LevelDecorSerializer(leveldecors, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def leveldecor_for_level(request, pk, format=None):
+    leveldecors = LevelDecor.objects.filter(level__id=pk)
+    serializer = LevelDecorSerializer(leveldecors, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def leveldecor_detail(request, pk, format=None):
+    try:
+        leveldecor = LevelDecor.objects.get(pk=pk)
+    except LevelDecor.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = LevelDecorSerializer(leveldecor, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def block_list(request, format=None):
+    block = Block.objects.all()
+    serializer = BlockSerializer(block, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
 def block_detail(request, pk, format=None):
     try:
         block = Block.objects.get(pk=pk)
@@ -85,6 +175,13 @@ def block_detail(request, pk, format=None):
 
 
 @api_view(('GET',))
+def theme_list(request, format=None):
+    themes = Theme.objects.all()
+    serializer = ThemeSerializer(themes, many=True, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
 def theme_detail(request, pk, format=None):
     try:
         theme = Theme.objects.get(pk=pk)
@@ -92,6 +189,13 @@ def theme_detail(request, pk, format=None):
         return HttpResponse(status=404)
 
     serializer = ThemeSerializer(theme, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def character_list(request, format=None):
+    characters = Character.objects.all()
+    serializer = CharacterSerializer(characters, many=True, context={'request': request})
     return Response(serializer.data)
 
 
