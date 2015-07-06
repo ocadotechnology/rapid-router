@@ -48,7 +48,8 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Level
         fields = ('__unicode__', 'episode', 'name', 'title', 'description', 'hint', 'next_level', 'default',
-                  'levelblock_set', 'leveldecor_set', 'map', 'mode')
+                  'levelblock_set', 'leveldecor_set', 'map', 'origin', 'destinations', 'path', 'traffic_lights',
+                  'max_fuel', 'theme', 'mode', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled')
 
     def get_title(self, obj):
         if obj.default:
