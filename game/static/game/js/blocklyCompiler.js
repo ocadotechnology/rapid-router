@@ -56,13 +56,26 @@ ocargo.BlocklyCompiler.prototype.compile = function()
     return this.program;
 };
 
-ocargo.BlocklyCompiler.prototype.compile = function()
-{
-    this.compileProcedures();
-    this.compileProgram();
-    this.bindProcedureCalls();
+ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
+    this.procedures = {};
+    this.procedureBindings = [];
 
-    return this.program;
+    var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
+    for (var i = 0; i < procBlocks.length; i++) {
+        var block = procBlocks[i];
+        var name = block.inputList[0].fieldRow[1].text_;
+        if (name === "") {
+            throw ocargo.messages.procMissingNameError;
+        }
+
+        var bodyBlock = block.inputList[1].connection.targetBlock();
+
+        if (!(name in this.procedures)) {
+            this.procedures[name] = new Procedure(name, this.createSequence(bodyBlock),block);
+        } else {
+            throw ocargo.messages.procDupNameError;
+        }
+    }
 };
 
 ocargo.BlocklyCompiler.prototype.compileEvents = function() {
@@ -97,33 +110,11 @@ ocargo.BlocklyCompiler.prototype.compileEvents = function() {
     }
 };
 
-ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
-    this.procedures = {};
-    this.procedureBindings = [];
-
-    var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
-    for (var i = 0; i < procBlocks.length; i++) {
-        var block = procBlocks[i];
-        var name = block.inputList[0].fieldRow[1].text_;
-        if (name === "") {
-            throw ocargo.messages.procMissingNameError;
-        }
-
-        var bodyBlock = block.inputList[1].connection.targetBlock();
-
-        if (!(name in this.procedures)) {
-            this.procedures[name] = new Procedure(name, this.createSequence(bodyBlock),block);
-        } else {
-            throw ocargo.messages.procDupNameError;
-        }
-    }
-};
-
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {
-    this.program = new ocargo.Program();
+    this.program = new ocargo.Program(this.events);
     var startBlocks = ocargo.blocklyControl.getStartBlocks();
     for (var i = 0; i < THREADS; i++) {
-        var thread = new ocargo.Thread(i);
+        var thread = new ocargo.Thread(i, this.program);
         thread.startBlock = startBlocks[i];
         thread.stack.push(this.createSequence(thread.startBlock));
         this.program.threads.push(thread);

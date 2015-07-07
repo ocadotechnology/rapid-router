@@ -268,6 +268,21 @@ function initCustomBlocksDescription() {
         }
     };
 
+    Blockly.Blocks['declare_event'] = {
+        // Block for declaring an event handler
+        init: function() {
+            this.setColour(260);
+            this.appendValueInput("condition")
+                .setCheck("Boolean")
+                .appendField('On');
+            this.appendStatementInput('DO')
+                .setCheck("null")
+                .appendField('Do');
+            this.setTooltip('Declares the event handler');
+            this.statementConnection_ = null;
+        }
+    };
+
     Blockly.Blocks['controls_repeat_while'] = {
         // Block for repeat while
         init: function() {
@@ -412,6 +427,11 @@ function initCustomBlocksPython() {
         var branch = Blockly.Python.statementToCode(block, 'DO');
         return 'def ' + block.inputList[0].fieldRow[1].text_ + '():\n' + branch;
         // TODO: get code out of sub-blocks (there's a Blockly function for it)
+    };
+
+    Blockly.Python['declare_event'] = function(block) {
+        // TODO support events in python
+        throw 'events not supported in python';
     };
 
     Blockly.Python['controls_repeat_while'] = function(block) {

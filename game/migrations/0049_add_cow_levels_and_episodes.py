@@ -162,7 +162,7 @@ def add_levels(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('game', '0049_add_cows_to_levels'),
+        ('game', '0048_add_cows_crossing_blockly'),
     ]
 
     operations = [

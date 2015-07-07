@@ -52,6 +52,7 @@ ocargo.Program = function(events) {
 };
 
 ocargo.Program.prototype.run = function() {
+	ocargo.model.chooseNewCowPositions();
 	for (var i = 0; i < this.threads.length; i++) {
 		ocargo.model.reset(i);
 		this.threads[i].run(ocargo.model);
@@ -65,6 +66,7 @@ ocargo.Thread = function(i, program) {
 	this.noExecutionSteps = 0;
 	this.program = program;
 	this.eventsEnabled = true;
+	this.eventLevel = Event.MAX_LEVEL; // no event active
 };
 
 ocargo.Thread.prototype.run = function(model) {
@@ -78,24 +80,28 @@ ocargo.Thread.prototype.run = function(model) {
 };
 
 ocargo.Thread.prototype.step = function(model) {
-    //if (this.eventsEnabled) {
-    //    // check if any event condition is true
-    //    for (var i=0; i<this.program.events.length; i++) {
-    //        var event = this.program.events[i];
-    //        shouldHighlight = false;
-    //        if (event.condition(model)) {
-    //            shouldHighlight = true;
-    //
-    //            // add event handler to stack (looping)
-    //            event.execute(this, model);
-    //
-    //            // only allow one event at a time
-    //            break;
-    //        } else {
-    //            shouldHighlight = true;
-    //        }
-    //    }
-    //}
+
+	var activeEvent = null;
+
+	// check if any event condition is true
+	for (var i=0; i<this.program.events.length; i++) {
+		var event = this.program.events[i];
+		model.shouldObserve = false;
+		if (event.condition(model)) {
+			if (!activeEvent || event.level() < activeEvent.level()) {
+				activeEvent = event;
+			}
+		}
+		model.shouldObserve = true;
+	}
+
+	// only execute the event if it raises the event level
+	if (activeEvent && this.eventLevel > activeEvent.level()) {
+		// tell the event about the old event level
+		activeEvent.setOldLevel(this.eventLevel);
+		// add event handler to stack (looping)
+		activeEvent.execute(this, model);
+	}
 
 	var stackLevel = this.stack[this.stack.length - 1];
 	var commandToProcess = stackLevel.shift();
@@ -258,6 +264,51 @@ While.prototype.execute = function(thread, model) {
 
 
 
+function Event(condition,body,block,conditionType) {
+	this.condition = condition;
+	this.body = body;
+	this.block = block;
+	//this.conditionType = conditionType;
+	//this.oldLevel = null;
+};
+
+Event.prototype.execute = function(thread, model) {
+    if (this.condition(model)) {
+		// raise event level to our level
+		thread.eventLevel = this.level();
+
+        // loop within the event handler as long as condition is true
+        thread.addNewStackLevel([this]);
+        thread.addNewStackLevel(this.body.slice());
+    } else {
+		// lower event level to prior value
+		thread.eventLevel = this.oldLevel;
+    }
+	return true;
+};
+
+Event.prototype.setOldLevel = function(oldLevel) {
+	this.oldLevel = oldLevel;
+};
+
+Event.MAX_LEVEL = 1000; // level at which no event is active
+
+Event.prototype.level = function() {
+	if (this.conditionType === 'road_exists') {
+		return 31;
+	} else if (this.conditionType === 'dead_end') {
+		return 30;
+	} else if (this.conditionType === 'at_destination') {
+		return 20;
+	} else if (this.conditionType === 'traffic_light') {
+		return 11;
+	} else if (this.conditionType === 'cow_crossing') {
+		return 10;
+	} else {
+		return 100;
+	}
+};
+
 function Procedure(name,body,block) {
 	this.name = name;
 	this.body = body;
@@ -268,28 +319,6 @@ Procedure.prototype.execute = function(thread) {
 	thread.addNewStackLevel(this.body.slice());
 	return true;
 };
-
-function Event(condition,body,block) {
-	this.condition = condition;
-	this.body = body;
-	this.block = block;
-};
-
-Event.prototype.execute = function(thread, model) {
-    if (this.condition(model)) {
-        // only allow one event at a time
-        thread.eventsEnabled = false;
-
-        // loop within the event handler as long as condition is true
-        thread.addNewStackLevel([this]);
-        thread.addNewStackLevel(this.body.slice());
-    } else {
-        thread.eventsEnabled = true;
-    }
-	return true;
-};
-
-
 
 function ProcedureCall(block) {
 	this.block = block;

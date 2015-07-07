@@ -57,8 +57,8 @@ ocargo.Animation = function(model, decor, numVans) {
     ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
     ocargo.drawing.renderDestinations(this.model.map.getDestinations());
     ocargo.drawing.renderTrafficLights(this.model.trafficLights);
-
-     this.updateFuelGauge(100);
+	this.updateFuelGauge(100);
+	this.resetAnimation(); // make sure animation is initialized correctly
 };
 
 ocargo.Animation.prototype.isFinished = function() {

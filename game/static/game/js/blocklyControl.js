@@ -275,6 +275,16 @@ ocargo.BlocklyControl.prototype.getEventBlocks = function() {
     return startBlocks;
 };
 
+ocargo.BlocklyControl.prototype.getEventBlocks = function() {
+    var startBlocks = [];
+    Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
+        if (block.type === 'declare_event') {
+            startBlocks.push(block);
+        }
+    });
+    return startBlocks;
+};
+
 ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };
