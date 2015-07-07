@@ -43,7 +43,18 @@ ocargo.BlocklyCompiler = function() {};
 
 ocargo.BlocklyCompiler.prototype.procedureBindings = null;
 ocargo.BlocklyCompiler.prototype.procedures = null;
+ocargo.BlocklyCompiler.prototype.events = null;
 ocargo.BlocklyCompiler.prototype.program = null;
+
+ocargo.BlocklyCompiler.prototype.compile = function()
+{
+    this.compileProcedures();
+    this.compileEvents();
+    this.compileProgram();
+    this.bindProcedureCalls();
+
+    return this.program;
+};
 
 ocargo.BlocklyCompiler.prototype.compile = function()
 {
@@ -52,6 +63,38 @@ ocargo.BlocklyCompiler.prototype.compile = function()
     this.bindProcedureCalls();
 
     return this.program;
+};
+
+ocargo.BlocklyCompiler.prototype.compileEvents = function() {
+    this.events = [];
+
+    var eventBlocks = ocargo.blocklyControl.getEventBlocks();
+    for (var i = 0; i < eventBlocks.length; i++) {
+        var block = eventBlocks[i];
+        var conditionBlock = block.inputList[0].connection.targetBlock();
+        if (conditionBlock === null) {
+            throw ocargo.messages.eventConditionError;
+        }
+        var condition = this.getCondition(conditionBlock);
+
+        var bodyBlock = block.inputList[1].connection.targetBlock();
+        if (bodyBlock === null) {
+            throw ocargo.messages.eventBodyError;
+        }
+
+        // determine condition type from block
+        var curConditionBlock = conditionBlock;
+        while (curConditionBlock && (curConditionBlock.type === 'logic_negate')) {
+            // take the type from the innermost condition in negated conditions
+            curConditionBlock = curConditionBlock.inputList[0].connection.targetBlock();
+        }
+        var conditionType = "";
+        if (curConditionBlock) {
+            conditionType = curConditionBlock.type;
+        }
+
+        this.events.push(new Event(condition, this.createSequence(bodyBlock), block, conditionType));
+    }
 };
 
 ocargo.BlocklyCompiler.prototype.compileProcedures = function() {

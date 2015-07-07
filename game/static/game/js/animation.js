@@ -45,6 +45,7 @@ ocargo.Animation = function(model, decor, numVans) {
     this.model = model;
     this.decor = decor;
     this.numVans = numVans;
+	this.activeCows = []; // cows currently displayed on map
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -78,6 +79,11 @@ ocargo.Animation.prototype.resetAnimation = function() {
 		var tl = this.model.trafficLights[i];
 		ocargo.drawing.transitionTrafficLight(tl.id, tl.state, 0);
 	}
+
+	for(var i = 0; i < this.activeCows.length; i++){
+		ocargo.drawing.removeCow(this.activeCows[i]);
+	}
+	this.activeCows = [];
 
 	for(var i = 0; i < this.model.map.destinations.length; i++) {
 		var destination = this.model.map.destinations[i];
@@ -199,6 +205,11 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             			a.attemptedAction, a.startNode);
                     animationLength += 100;
             		break;
+				case 'COLLISION_WITH_COW':
+					ocargo.drawing.collisionWithCow(vanID, animationLength, a.previousNode, a.currentNode,
+						a.attemptedAction, a.startNode);
+					animationLength += 100; // does not correspond to the length of the actual crash/collision with cow animation
+					break;
             	case 'DELIVER':
             		ocargo.drawing.deliver(a.destinationID, animationLength);
             	case 'OBSERVE':
@@ -296,7 +307,17 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			ocargo.drawing.transitionTrafficLight(a.id, a.colour, animationLength/2);
 			break;
 		case 'cow':
-			ocargo.drawing.renderCow(a.id, a.coordinate);
+			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node);
+			this.activeCows.push(activeCow);
+			break;
+		case 'cow_leave':
+			for (var i=0; i<this.activeCows.length; i++) {
+				var cow = this.activeCows[i];
+				if (cow.coordinate == a.coordinate){
+					this.activeCows.splice(i, 1);   // remove cow from array
+					ocargo.drawing.removeCow(cow);  // remove it from drawing
+				}
+			}
 			break;
 		case 'console':
 			ocargo.pythonControl.appendToConsole(a.text);

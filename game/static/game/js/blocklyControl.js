@@ -265,6 +265,7 @@ ocargo.BlocklyControl.prototype.getProcedureBlocks = function() {
 };
 
 ocargo.BlocklyControl.prototype.getEventBlocks = function() {
+    // find and return all top blocks that are event handler blocks
     var startBlocks = [];
     Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
         if (block.type === 'declare_event') {

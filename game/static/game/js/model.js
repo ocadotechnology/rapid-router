@@ -59,6 +59,10 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
 
     this.pathFinder = new ocargo.PathFinder(this);
     this.reasonForTermination = null;
+
+    // false if evaluation of conditions etc. should be hidden from user.
+    // used for evaluation of event handlers before each statement.
+    this.shouldObserve = true;
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -74,8 +78,15 @@ ocargo.Model.prototype.reset = function(vanId) {
         this.trafficLights[j].reset();
     }
 
-        for (var j = 0; j < this.cows.length; j++) {
+    for (var j = 0; j < this.cows.length; j++) {
         this.cows[j].reset();
+    }
+
+    // Display cow on origin node if exists
+    var node = this.map.originCurrentNode;
+    var cow = this.getCowForNode(node, ocargo.Cow.READY);
+    if (cow) {
+        cow.setActive(this, node);
     }
 
     this.timestamp = 0;
@@ -86,18 +97,27 @@ ocargo.Model.prototype.reset = function(vanId) {
     }
 };
 
+// Randomly chooses the cow positions, called by program.js
+ocargo.Model.prototype.chooseNewCowPositions = function() {
+    for (var j = 0; j < this.cows.length; j++) {
+        this.cows[j].chooseNewCowPositions();
+    }
+};
+
 ///////////////////////
 // Begin observation function, each tests something about the model
 // and returns a boolean
 
 ocargo.Model.prototype.observe = function(desc) {
-    ocargo.animation.appendAnimation({
-        type: 'van',
-        id: this.vanId,
-        vanAction: 'OBSERVE',
-        fuel: this.van.getFuelPercentage(),
-        description: 'van observe: ' + desc
-    });
+    if (this.shouldObserve) {
+        ocargo.animation.appendAnimation({
+            type: 'van',
+            id: this.vanId,
+            vanAction: 'OBSERVE',
+            fuel: this.van.getFuelPercentage(),
+            description: 'van observe: ' + desc
+        });
+    }
 
     this.incrementTime();
 };
@@ -120,6 +140,11 @@ ocargo.Model.prototype.isRoadRight = function() {
 ocargo.Model.prototype.isDeadEnd = function() {
     this.observe('dead end');
     return (this.map.isDeadEnd(this.van.getPosition()) !== null);
+};
+
+ocargo.Model.prototype.isCowCrossing = function() {
+    this.observe('cow crossing');
+    return (this.getCowForNode(this.van.getPosition().currentNode, ocargo.Cow.ACTIVE) != null);
 };
 
 ocargo.Model.prototype.isTrafficLightRed = function() {
@@ -156,56 +181,18 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 // true if it was a valid action or false otherwise
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
+    //Crash?
+    var previousNodeCow = this.getCowForNode(this.van.currentNode, ocargo.Cow.ACTIVE);
+    var collisionWithCow = previousNodeCow && nextNode !== this.van.currentNode;
 
-    if (nextNode === null) {
-        // Crash
-        ocargo.animation.appendAnimation({
-            type: 'van',
-            id: this.vanId,
-            vanAction: 'CRASH',
-            previousNode: this.van.getPosition().previousNode,
-            currentNode: this.van.getPosition().currentNode,
-            attemptedAction: action,
-            startNode: this.van.currentNodeOriginal,
-            fuel: this.van.getFuelPercentage(),
-            description: 'crashing van move action: ' + action
-        });
+    if(collisionWithCow) {
+        handleCrash(this, ocargo.messages.collisionWithCow, 'COLLISION_WITH_COW', 'collision with cow van move action: ');
+        return false;
+    }
 
-        this.incrementTime();
-
-        ocargo.animation.appendAnimation({
-            type: 'callable',
-            functionType: 'playSound',
-            functionCall: ocargo.sound.stop_engine,
-            description: 'stopping engine'
-        });
-
-        ocargo.animation.appendAnimation({
-            type: 'callable',
-            functionType: 'playSound',
-            functionCall: ocargo.sound.crash,
-            description: 'crash sound'
-        });
-
-        this.incrementTime();
-
-        ocargo.animation.appendAnimation({
-            type: 'popup',
-            id: this.vanId,
-            popupType: 'FAIL',
-            failSubtype: 'CRASH',
-            popupMessage: ocargo.messages.offRoad(this.van.getDistanceTravelled()),
-            popupHint: ocargo.game.registerFailure(),
-            description: 'crash popup'
-        });
-
-        ocargo.event.sendEvent("LevelCrash", { levelName: LEVEL_NAME,
-                                               defaultLevel: DEFAULT_LEVEL,
-                                               workspace: ocargo.blocklyControl.serialize(),
-                                               failures: this.failures,
-                                               pythonWorkspace: ocargo.pythonControl.getCode() });
-
-        this.reasonForTermination = 'CRASH';
+    var offRoad = nextNode === null;
+    if (offRoad) {
+        handleCrash(this, ocargo.messages.offRoad(this.van.travelled), 'CRASH', 'crashing van move action: ');
         return false;
     }
 
@@ -293,10 +280,72 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         description: 'van move action: ' + action
     });
 
+    // Display cow on node if exists
+    var cow = this.getCowForNode(nextNode, ocargo.Cow.READY);
+    if (cow){
+        cow.setActive(this, nextNode);
+    }
+
     this.incrementTime();
 
     return true;
+
+
+    function handleCrash(model, popupMessage, vanAction, actionDescription) {
+        model.van.crashStatus = 'CRASHED'
+
+        ocargo.animation.appendAnimation({
+            type: 'van',
+            id: model.vanId,
+            vanAction: vanAction,
+            previousNode: model.van.previousNode,
+            currentNode: model.van.currentNode,
+            attemptedAction: action,
+            startNode: model.van.currentNodeOriginal,
+            fuel: model.van.getFuelPercentage(),
+            description: actionDescription + action
+        });
+
+        model.incrementTime();
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionCall: ocargo.sound.stop_engine,
+            description: 'stopping engine'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionCall: ocargo.sound.crash,
+            description: 'crash sound'
+        });
+
+        model.incrementTime();
+
+        ocargo.animation.appendAnimation({
+            type: 'popup',
+            id: model.vanId,
+            popupType: 'FAIL',
+            failSubtype: 'CRASH',
+            popupMessage: popupMessage,
+            popupHint: ocargo.game.registerFailure(),
+            description: 'crash popup'
+        });
+
+        model.reasonForTermination = 'CRASH'; // used to determine whether the play controls ('forward', 'left' and 'right' arrows) are still usable
+    }
 };
+
+ocargo.Model.prototype.getCowForNode = function(node, status) {
+    var jsonCoordinate = JSON.stringify(node.coordinate);
+    for(var i = 0; i < this.cows.length; i++) {
+        var cow = this.cows[i];
+        if (jsonCoordinate in cow.activeNodes && cow.activeNodes[jsonCoordinate] == status) {
+            return cow;
+        }
+    }
+    return null;
+}
 
 ocargo.Model.prototype.makeDelivery = function(destination) {
     // We're at a destination node and making a delivery!
@@ -556,5 +605,8 @@ ocargo.Model.prototype.incrementTime = function() {
 
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
+    }
+    for (var i = 0; i < this.cows.length; i++) {
+        this.cows[i].incrementTime(this);
     }
 };

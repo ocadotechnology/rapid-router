@@ -102,6 +102,8 @@ ocargo.messages = {
         }
     },
 
+    collisionWithCow: "You ran into a cow! Keep in mind that cows can appear anywhere on the map.",
+
     // Level editor.
     levelEditorTitle: "Welcome to the Level editor! ",
     levelEditorSubtitle: "Click  " +

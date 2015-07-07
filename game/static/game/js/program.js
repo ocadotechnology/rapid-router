@@ -78,24 +78,24 @@ ocargo.Thread.prototype.run = function(model) {
 };
 
 ocargo.Thread.prototype.step = function(model) {
-    if (this.eventsEnabled) {
-        // check if any event condition is true
-        for (var i=0; i<this.program.events.length; i++) {
-            var event = this.program.events[i];
-            shouldHighlight = false;
-            if (event.condition(model)) {
-                shouldHighlight = true;
-
-                // add event handler to stack (looping)
-                event.execute(this, model);
-
-                // only allow one event at a time
-                break;
-            } else {
-                shouldHighlight = true;
-            }
-        }
-    }
+    //if (this.eventsEnabled) {
+    //    // check if any event condition is true
+    //    for (var i=0; i<this.program.events.length; i++) {
+    //        var event = this.program.events[i];
+    //        shouldHighlight = false;
+    //        if (event.condition(model)) {
+    //            shouldHighlight = true;
+    //
+    //            // add event handler to stack (looping)
+    //            event.execute(this, model);
+    //
+    //            // only allow one event at a time
+    //            break;
+    //        } else {
+    //            shouldHighlight = true;
+    //        }
+    //    }
+    //}
 
 	var stackLevel = this.stack[this.stack.length - 1];
 	var commandToProcess = stackLevel.shift();

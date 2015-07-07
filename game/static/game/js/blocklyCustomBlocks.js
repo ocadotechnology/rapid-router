@@ -54,7 +54,7 @@ function initCustomBlocksDescription() {
             this.setColour(50);
             this.appendDummyInput()
                 .appendField('Start')
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL, 
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL,
                     ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
                     ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH));
             this.setNextStatement(true);
@@ -201,11 +201,11 @@ function initCustomBlocksDescription() {
     };
 
     Blockly.Blocks['cow_crossing'] = {
-        init: function() {            
+        init: function() {
             this.setColour(210);
             this.setOutput(true, 'Boolean');
             this.appendDummyInput()
-                .appendField('is cow crossing')
+                .appendField('cow crossing')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                                                     ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
@@ -340,7 +340,7 @@ function initCustomBlocksPython() {
     Blockly.Python['start'] = function(block) {
         return '';
     };
-    
+
     Blockly.Python['move_forwards'] = function(block) {
         return 'v.move_forwards()\n';
     };
@@ -373,7 +373,7 @@ function initCustomBlocksPython() {
         }else{
             var python = "v.is_road('RIGHT')";
         }
-        
+
         return [python, Blockly.Python.ORDER_NONE];
         // TODO: figure out what this ordering relates to
     };
@@ -385,7 +385,7 @@ function initCustomBlocksPython() {
         }else{
             python = "v.at_traffic_light('GREEN')";
         }
-        
+
         return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
     };
 
@@ -400,7 +400,7 @@ function initCustomBlocksPython() {
     };
 
     Blockly.Python['at_destination'] = function(block) {
-        return ['v.at_destination()', Blockly.Python.ORDER_NONE]; 
+        return ['v.at_destination()', Blockly.Python.ORDER_NONE];
         // TODO: figure out what this ordering relates to;
     };
 

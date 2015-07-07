@@ -53,6 +53,9 @@ var DEFAULT_CHARACTER_HEIGHT = 20;
 
 var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 
+var COW_WIDTH = 32;
+var COW_HEIGHT = 32;
+
 ocargo.Drawing = function() {
 
     /*************/
@@ -517,17 +520,93 @@ ocargo.Drawing = function() {
         }
     };
 
-    this.renderCow = function(id, coordinate) {
-        var COW_WIDTH = 16;
-        var COW_HEIGHT = 16;
+    this.createCowImage = function() {
+        return paper.image(ocargo.Drawing.raphaelImageDir + 'cow.svg', 0, 0, COW_WIDTH, COW_HEIGHT);
+    };
 
+    this.setCowImagePosition = function(coordinate, image, node) {
         var x = coordinate.x;
         var y = coordinate.y;
 
-        var drawX = x * GRID_SPACE_SIZE + COW_HEIGHT;
-        var drawY = PAPER_HEIGHT - (y * GRID_SPACE_SIZE) - COW_WIDTH;
+        var xOffset = 0;
+        var yOffset = 0;
 
-        paper.image(ocargo.Drawing.raphaelImageDir + 'cow.svg', drawX, drawY, COW_WIDTH, COW_HEIGHT);
+        // Only turns (not 3-way or 4-way crossings) have two connected nodes
+        if(node.connectedNodes.length === 2) {
+            var previousNode = node.connectedNodes[0];
+            var nextNode = node.connectedNodes[1];
+
+            var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+
+            if (roadLetters === 'UL') {
+                xOffset = - 0.2 * GRID_SPACE_SIZE;
+                yOffset = - 0.2 * GRID_SPACE_SIZE;
+            }
+            else if (roadLetters === 'UR') {
+                xOffset = + 0.2 * GRID_SPACE_SIZE;
+                yOffset = - 0.2 * GRID_SPACE_SIZE;
+            }
+            else if (roadLetters === 'DL') {
+                xOffset = - 0.2 * GRID_SPACE_SIZE;
+                yOffset = + 0.2 * GRID_SPACE_SIZE;
+            }
+            else if (roadLetters === 'DR') {
+                xOffset = + 0.2 * GRID_SPACE_SIZE;
+                yOffset = + 0.2 * GRID_SPACE_SIZE;
+            }
+        }
+
+        var drawX = (x+0.5) * GRID_SPACE_SIZE - COW_WIDTH/2 + xOffset;
+        var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT/2 + yOffset;
+
+        image.transform('t' + drawX + ',' + drawY);
+    };
+
+    this.renderCow = function(id, coordinate, node) {
+        var x = coordinate.x;
+        var y = coordinate.y;
+
+        var xOffset = 0;
+        var yOffset = 0;
+
+        // Only turns (not 3-way or 4-way crossings) have two connected nodes
+        if(node.connectedNodes.length === 2) {
+            var previousNode = node.connectedNodes[0];
+            var nextNode = node.connectedNodes[1];
+
+            var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+
+            if (roadLetters === 'UL') {
+                xOffset = - 0.2 * GRID_SPACE_SIZE;
+                yOffset = - 0.2 * GRID_SPACE_SIZE;
+            }
+            else if (roadLetters === 'UR') {
+                xOffset = + 0.2 * GRID_SPACE_SIZE;
+                yOffset = - 0.2 * GRID_SPACE_SIZE;
+            }
+            else if (roadLetters === 'DL') {
+                xOffset = - 0.2 * GRID_SPACE_SIZE;
+                yOffset = + 0.2 * GRID_SPACE_SIZE;
+            }
+            else if (roadLetters === 'DR') {
+                xOffset = + 0.2 * GRID_SPACE_SIZE;
+                yOffset = + 0.2 * GRID_SPACE_SIZE;
+            }
+        }
+
+        var drawX = (x+0.5) * GRID_SPACE_SIZE - COW_WIDTH/2 + xOffset;
+        var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT/2 + yOffset;
+
+        var image = paper.image(ocargo.Drawing.raphaelImageDir + 'cow.svg', drawX, drawY, COW_WIDTH, COW_HEIGHT);
+        image.transform("s0.01");
+        image.animate({transform : "s1"}, 100, 'linear');
+
+        return {'coordinate': coordinate,
+            'image': image};
+    };
+
+    this.removeCow = function(cow) {
+        cow.image.animate({transform : "s0.01"}, 100, 'linear', function(){cow.image.remove();});
     };
 
     this.setVanImagePosition = function(position, vanID) {
@@ -771,8 +850,79 @@ ocargo.Drawing = function() {
         vanImage.animate(attr, animationLength, 'linear', callback);
     }
 
+    this.collisionWithCow = function(vanID, animationLength, previousNode, currentNode, attemptedAction, startNode) {
+        var road = this.getLeftRightForwardRoad(previousNode, currentNode);
+        var roadLeft = road[0];
+        var roadForward = road[1];
+        var roadRight = road[2];
+        var vanImage = vanImages[vanID];
+
+        if(attemptedAction === "FORWARD") {
+            var distanceForwards = 0.5*GRID_SPACE_SIZE - 0.5*ROAD_WIDTH;
+            var transformation = "... t 0, " + (-distanceForwards);
+        }
+        else if(attemptedAction === "TURN_LEFT") {
+            var rotationAngle = 15;
+
+            var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
+            var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+            var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
+                rotationPointY);
+        }
+        else if(attemptedAction === "TURN_RIGHT") {
+            var rotationAngle = 15;
+
+            var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
+            var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+            var transformation = createRotationTransformation(rotationAngle, rotationPointX,
+                rotationPointY);
+        }
+
+        moveVanImage({
+            transform: transformation
+        }, vanID, animationLength*((GRID_SPACE_SIZE - ROAD_WIDTH)/(GRID_SPACE_SIZE + ROAD_WIDTH)), animateCollision);
+
+        function animateCollision() {
+            if (CHARACTER_NAME !== "Van") {
+                return;
+            }
+            var bbox = vanImage.getBBox();
+
+            var x = bbox.x + bbox.width/2;
+            var y = bbox.y + bbox.height/2;
+
+            var width = 25;
+            var height = 25;
+
+            var maxSize = 20;
+            var minSize = 15;
+
+            var smokeParts = 20;
+
+            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
+            wreckageImage.transform(vanImage.transform());
+            wreckageImage.attr({"opacity":0});
+            wreckageImages[vanID] = wreckageImage;
+
+            setTimeout(function() {
+                wreckageImage.animate({opacity: 1}, 1000);
+                vanImage.animate({opacity: 0}, 1000);
+                for(var i = 0; i < smokeParts; i++) {
+                    setTimeout(function() {
+                        var size = minSize + Math.random()*(maxSize-minSize);
+                        var xco = x + width*(Math.random()-0.5) - 0.5*size;
+                        var yco = y + height*(Math.random()-0.5) - 0.5*size;
+                        var imageStr = ocargo.Drawing.raphaelImageDir + 'smoke.svg';
+                        var img = paper.image(imageStr, xco, yco, size, size);
+                        img.animate({opacity: 0, transform: 's2'}, 1000, function () {img.remove()});
+                    },(i < 5 ? 0 :(i-5)*50));
+                }
+            }, 100);
+        }
+    }
+
     this.crash = function(vanID, animationLength, previousNode, currentNode, attemptedAction, startNode) {
-        var road = getLeftRightForwardRoad(previousNode, currentNode);
+        var road = this.getLeftRightForwardRoad(previousNode, currentNode);
         var roadLeft = road[0];
         var roadForward = road[1];
         var roadRight = road[2];
@@ -869,45 +1019,6 @@ ocargo.Drawing = function() {
                 }
             }, 100);
         }
-
-        function getLeftRightForwardRoad(previousNode, currentNode) {
-            var N = 0;
-            var E = 1;
-            var S = 2;
-            var W = 3;
-
-            function getOrientation(n1,n2) {
-                var c1 = n1.coordinate;
-                var c2 = n2.coordinate;
-
-                if(c1.y < c2.y) {
-                    return N;
-                }
-                else if(c1.x < c2.x) {
-                    return E;
-                }
-                else if(c1.y > c2.y) {
-                    return S;
-                }
-                else {
-                    return W;
-                }
-            }
-
-            var neighbours = [null,null,null,null];
-            for(var i = 0; i < currentNode.connectedNodes.length; i++) {
-                var neighbour = currentNode.connectedNodes[i];
-                neighbours[getOrientation(currentNode,neighbour)] = neighbour;
-            }
-
-            var vanOr = getOrientation(previousNode, currentNode);
-
-            var roadLeft = neighbours[(W+vanOr)%4];
-            var roadForward = neighbours[(N+vanOr)%4];
-            var roadRight = neighbours[(E+vanOr)%4];
-
-            return [roadLeft, roadForward, roadRight];
-        }
     };
 
     this.removeWreckageImages = function() {
@@ -915,6 +1026,45 @@ ocargo.Drawing = function() {
             wreckageImages[vanID].remove();
         }
         wreckageImages = {};
+    }
+
+    this.getLeftRightForwardRoad = function(previousNode, currentNode) {
+        var N = 0;
+        var E = 1;
+        var S = 2;
+        var W = 3;
+
+        function getOrientation(n1,n2) {
+            var c1 = n1.coordinate;
+            var c2 = n2.coordinate;
+
+            if(c1.y < c2.y) {
+                return N;
+            }
+            else if(c1.x < c2.x) {
+                return E;
+            }
+            else if(c1.y > c2.y) {
+                return S;
+            }
+            else {
+                return W;
+            }
+        }
+
+        var neighbours = [null,null,null,null];
+        for(var i = 0; i < currentNode.connectedNodes.length; i++) {
+            var neighbour = currentNode.connectedNodes[i];
+            neighbours[getOrientation(currentNode,neighbour)] = neighbour;
+        }
+
+        var vanOr = getOrientation(previousNode, currentNode);
+
+        var roadLeft = neighbours[(W+vanOr)%4];
+        var roadForward = neighbours[(N+vanOr)%4];
+        var roadRight = neighbours[(E+vanOr)%4];
+
+        return [roadLeft, roadForward, roadRight];
     }
 };
 
