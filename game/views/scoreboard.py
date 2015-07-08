@@ -10,7 +10,7 @@ import game.permissions as permissions
 from game.views.scoreboard_csv import scoreboard_csv
 from helper import renderError
 from game.forms import ScoreboardForm
-from game.models import Level, Attempt
+from game.models import Level, Attempt, sort_levels
 from portal.models import Class, Teacher, Student
 
 Single_Level_Header = ['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
@@ -22,25 +22,19 @@ def scoreboard(request):
         scoreboard for said class.
     """
     if not permissions.can_see_scoreboard(request.user):
-        return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+        return render_no_permission_error(request)
 
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
 
     class_ids = set(map(int, request.POST.getlist('classes')))
-    requested_classes = Class.objects.filter(id__in=class_ids)
     level_ids = set(map(int, request.POST.getlist('levels')))
-    sorted_levels = Level.objects.sorted_levels()
-
-    id_was_requested = lambda x: x.id in level_ids
-
-    requested_levels_sorted = filter(id_was_requested, sorted_levels)
 
     if user.is_independent_student():
-        return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+        return render_no_permission_error(request)
 
-    if user.is_teacher() and len(users_classes) == 0:
-        return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+    if is_teacher_with_no_classes_assigned(user, users_classes):
+        return render_no_permission_error(request)
 
     if not is_valid_request(user, class_ids):
         raise Http404
@@ -48,7 +42,7 @@ def scoreboard(request):
     form = ScoreboardForm(request.POST or None, classes=users_classes)
 
     if request.method == 'POST' and form.is_valid():
-        student_data, headers = scoreboard_data(user, requested_levels_sorted, requested_classes)
+        student_data, headers = scoreboard_data(user, level_ids, class_ids)
     else:
         student_data = []
         headers = []
@@ -56,9 +50,17 @@ def scoreboard(request):
     csv_export = 'export' in request.POST
 
     if csv_export:
-        return scoreboard_csv(student_data, requested_levels_sorted)
+        return scoreboard_csv(student_data, level_ids)
     else:
         return scoreboard_view(request, form, student_data, headers)
+
+
+def render_no_permission_error(request):
+    return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+
+
+def is_teacher_with_no_classes_assigned(user, users_classes):
+    return user.is_teacher() and len(users_classes) == 0
 
 def success_response(form, student_data, headers):
     return form, student_data, headers, None
@@ -79,26 +81,37 @@ def scoreboard_view(request, form, student_data, headers):
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
 
-def scoreboard_data(user, levels_sorted, classes):
+def scoreboard_data(user, level_ids, class_ids):
+    classes = Class.objects.filter(id__in=class_ids)
+
     students = students_visible_to_user(user, classes)
 
     # If there are more than one level to show, show the total score, total time and score of each level
     # Otherwise, show the details of the level (the score, total time, start time and end time)
-    return data_and_headers_for(students, levels_sorted)
+    return data_and_headers_for(students, level_ids)
 
-def data_and_headers_for(students, requested_levels_sorted):
-    score_for_multiple_levels_is_displayed = len(requested_levels_sorted) > 1
+def data_and_headers_for(students, level_ids):
+    levels_sorted = sort_levels(Level.objects.filter(id__in=level_ids))
 
-    level_names = map(lambda level: level.name, requested_levels_sorted)
+    score_for_multiple_levels_is_displayed = len(levels_sorted) > 1
+
+    level_names = map(lambda level: level.name, levels_sorted)
 
     if score_for_multiple_levels_is_displayed:
         headers = Multiple_Levels_Header + level_names
-        student_data = multiple_students_multiple_levels(students, requested_levels_sorted)
+        student_data = multiple_students_multiple_levels(students, levels_sorted)
     else:
         headers = Single_Level_Header
-        student_data = multiple_students_one_level(students, next(iter(requested_levels_sorted)))
+        student_data = multiple_students_one_level(students, first(levels_sorted))
 
     return student_data, headers
+
+
+def first(elements):
+    if len(elements) == 0:
+        raise ValueError("Collection is empty")
+    return next(iter(elements))
+
 
 def are_classes_viewable_by_teacher(class_ids, user):
     teachers = Teacher.objects.filter(school=user.teacher.school)
@@ -173,7 +186,7 @@ def student_row(levels_sorted, student):
         for level in levels_sorted:
             attempt = attempts_dict.get(level.id)
             if attempt:
-                num_all += 1;
+                num_all += 1
                 max_score = 10 if attempt.level.disable_route_score else 20
                 if attempt.score:
                     if attempt.score/max_score >= threshold:
