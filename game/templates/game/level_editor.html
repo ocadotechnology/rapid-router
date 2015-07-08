@@ -11,10 +11,17 @@
 
 {% block scripts %}
 {{block.super}}
+<<<<<<< HEAD
   <script src="{% static "game/js/utils.js" %}"></script>
   <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
   <script src="{% static "game/js/raphael.js" %}"></script>
   <script src="{% static "game/js/drawing.js" %}"></script>
+=======
+  <script src="/static/game/js/utils.js"></script>
+  <script src="/static/game/js/mobile-detect.min.js"></script>
+  <script src="/static/game/js/raphael.js"></script>
+  <script src="/static/game/js/drawing.js"></script>
+>>>>>>> Cows can be added in level editor now, however min and max for group of cow is always 1
 
   <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
@@ -307,6 +314,44 @@
                       <td>Traffic lights:</td>
                       <td><img id="trafficLightRed" src="{% static "game/image/trafficLight_red.svg" %}" width="80"></td>
                         <td><img id="trafficLightGreen" src="{% static "game/image/trafficLight_green.svg" %}" width="80"></td>
+                    </tr>
+                    <tr>
+                      <td>Cows:</td>
+                      <td><img id="cow" src="/static/game/image/cow.svg" width="50"></td>
+                      <td>
+                        <button class="navigation_button" id="advanced_cow_options_button">
+                              <img id="advanced_cow_options_button_icon" src="/static/game/image/icons/show.svg"/>
+                              Advanced
+                            </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td colspan="2">
+                        <div id="cow_advanced_div">
+                          <h3 id="cow_advanced_options_title">Advanced options</h3>
+                          <div id="cow_group_div">
+                            <!--<h4>Group:</h4>-->
+                            <div id="cow_group_buttons">
+                              <button class="mode_panel navigation_button" id="remove_cow_group_button">
+                                <img src="/static/game/image/icons/clear.svg"/>
+                              </button>
+                              <button class="mode_panel navigation_button" id="add_cow_group_button">
+                                <img src="/static/game/image/icons/add.svg"/>
+                              </button>
+                            </div>
+                            <div id="cow_group_select_div">
+                              <select id="cow_group_select"></select>
+                            </div>
+                            <div style="clear: both;"></div>
+                            <h4>How many cows should appear for this group?</h4>
+                            <div id="min_max_cow_div">
+                                <label for="min_cows_spinner">Min:</label><input name="Min" class="spinner" id="min_cows_spinner" readonly>
+                                <label for="max_cows_spinner">Max:</label><input name="Max" class="spinner" id="max_cows_spinner" readonly>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

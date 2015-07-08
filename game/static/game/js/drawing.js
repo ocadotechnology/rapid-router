@@ -597,7 +597,7 @@ ocargo.Drawing = function() {
         var drawX = (x+0.5) * GRID_SPACE_SIZE - COW_WIDTH/2 + xOffset + PAPER_PADDING;
         var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT/2 + yOffset + PAPER_PADDING;
 
-        var image = paper.image(ocargo.Drawing.raphaelImageDir + 'cow.svg', drawX, drawY, 100, 100);
+        var image = paper.image(ocargo.Drawing.raphaelImageDir + 'cow.svg', drawX, drawY, COW_WIDTH, COW_HEIGHT);
         image.transform("s0.01");
         image.animate({transform : "s1"}, 100, 'linear');
 

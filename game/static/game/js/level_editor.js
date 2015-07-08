@@ -48,6 +48,32 @@ ocargo.LevelEditor = function() {
     var LIGHT_RED_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg';
     var LIGHT_GREEN_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg';
 
+    var COW_URL = ocargo.Drawing.imageDir + "cow.svg";
+    var COW_GROUP_COLOR_PALETTE = [
+        // From https://en.wikipedia.org/wiki/Help:Distinguishable_colors
+        '#FFFFFF', // White
+        '#FFA405', // Orpiment
+        '#0075DC', // Blue
+        '#C20088', // Mallow
+        '#9DCC00', // Lime
+        '#FF5005', // Zinnia
+        '#808080', // Iron
+        '#F0A3FF', // Amethyst
+        '#993F00', // Caramel
+        '#740AFF', // Violet
+        '#FFFF00', // Wine
+        '#4C005C', // Damson
+        '#94FFB5', // Jade
+        '#FFCC99', // Honeydew
+        '#00998F', // Turqoise
+        '#E0FF66', // Uranium
+        '#005C31', // Forest
+        '#FFFF80', // Xanthin
+        '#5EF1F2', // Sky
+        '#003380', // Navy
+        '#8F7C00'  // Khaki
+    ];
+
     var ADD_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/add_road.svg";
     var DELETE_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_road.svg";
     var MARK_START_IMG_URL = ocargo.Drawing.imageDir + "icons/origin.svg";
@@ -77,6 +103,7 @@ ocargo.LevelEditor = function() {
     var nodes = [];
     var decor = [];
     var trafficLights = [];
+    var cows = [];
     var originNode = null;
     var destinationNode = null;
     var currentTheme = THEMES.grass;
@@ -103,6 +130,9 @@ ocargo.LevelEditor = function() {
     var trashcanOpen = false;
     var trashcanAbsolutePaperX;
     var trashcanAbsolutePaperY;
+
+    var cowGroups = {};
+    var currentCowGroupId = 1;
 
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
@@ -292,6 +322,77 @@ ocargo.LevelEditor = function() {
                                           "sourceCoordinate": null,  "direction": null});
             });
 
+            $('#cow').click(function() {
+                new InternalCow({group: cowGroups[$('#cow_group_select').val()]});
+            });
+
+            //"Advanced" button
+            $('#advanced_cow_options_button').on('click', function() {
+                $(this).toggleClass('cow_navigation_button_pressed');
+
+                var showIconSrc = "/static/game/image/icons/show.svg";
+                var hideIconSrc = "/static/game/image/icons/hide_button.svg";
+                var advancedButtonIcon = $('#advanced_cow_options_button_icon');
+                var iconSrc = (advancedButtonIcon.attr("src") === showIconSrc) ? hideIconSrc : showIconSrc;
+                advancedButtonIcon.attr("src", iconSrc);
+
+                var advancedDivHidden = $('#cow_advanced_div').css('display') === 'none';
+
+                $('#cow_advanced_div').slideToggle(1000);
+
+                //Only scroll down if advanced options were previously hidden
+                if(advancedDivHidden) {
+                    $('#tab_panes_wrapper').animate({scrollTop: $('#tab_panes_wrapper')[0].scrollHeight},
+                        1500,
+                        "swing");
+                }
+            });
+
+            //Min & max spinners
+            var minSpinner = $('#min_cows_spinner').spinner({ min:   1,
+                max:   1}).val(1);
+            minSpinner.on('spinstop', function() {
+                $('#max_cows_spinner').spinner('option', 'min', $('#min_cows_spinner').val());
+                cowGroups[$('#cow_group_select').val()].minCows = $('#min_cows_spinner').val();
+            });
+
+            var maxSpinner = $('#max_cows_spinner').spinner({ min:   1,
+                max:   1}).val(1);
+            maxSpinner.on('spinstop', function() {
+                $('#min_cows_spinner').spinner('option', 'max', $('#max_cows_spinner').val());
+                cowGroups[$('#cow_group_select').val()].maxCows = $('#max_cows_spinner').val();
+            });
+
+            //Group select element (has to be initialised after the min and max spinners are created)
+            $('#cow_group_select').on('change', function() {
+                $('#cow_group_select').css('background-color', cowGroups[this.value].color);
+
+                //Set max values of min & max spinners
+                var groupId = this.value;
+                var noOfValidCowsInGroup = 0;
+                for (var i=0; i < cows.length; i++) {
+                    if(cows[i].valid && cows[i].data.group.id === groupId) {
+                        noOfValidCowsInGroup++;
+                    }
+                }
+
+                var minMaxValue = Math.max(1, cowGroups[this.value].maxCows);
+                $('#min_cows_spinner').spinner('option', 'max', minMaxValue);
+                var maxMinValue = Math.max(1, cowGroups[this.value].minCows);
+                $('#max_cows_spinner').spinner('option', 'min', maxMinValue);
+                $('#max_cows_spinner').spinner('option', 'max', Math.max(1, noOfValidCowsInGroup));
+
+                //Set min & max values
+                $('#min_cows_spinner').val(cowGroups[this.value].minCows);
+                $('#max_cows_spinner').val(cowGroups[this.value].maxCows);
+            });
+
+            if(Object.keys(cowGroups).length == 0) {
+                addCowGroup();
+            }
+
+            $('#add_cow_group_button').click(addCowGroup);
+            $('#remove_cow_group_button').click(removeCowGroup);
         }
 
         function setupCharacterTab() {
@@ -877,6 +978,62 @@ ocargo.LevelEditor = function() {
     }
 
     /************/
+    /*   Cows   */
+    /************/
+
+    function addCowGroup() {
+        var color = COW_GROUP_COLOR_PALETTE[(currentCowGroupId - 1) % COW_GROUP_COLOR_PALETTE.length];
+        var style = 'background-color: ' + color;
+        var value = 'group' + currentCowGroupId++;
+
+        cowGroups[value] = {id : value,
+            color : color,
+            minCows: 1,
+            maxCows: 1};
+
+        var text = 'Group ' + Object.keys(cowGroups).length;
+        $('#cow_group_select').append($('<option>', { value : value, style : style })
+            .text(text));
+        $('#cow_group_select').val(value).change();
+    }
+
+    function removeCowGroup() {
+        if(Object.keys(cowGroups).length > 1) {
+            var selectedGroupId = $('#cow_group_select').val();
+
+            //Remove cows from map
+            for(var i = cows.length - 1; i >= 0; i--) {
+                if(cows[i].data.group.id === selectedGroupId) {
+                    cows[i].destroy();
+                }
+            }
+
+            //Remove group from group list
+            delete cowGroups[selectedGroupId];
+
+            // Select previous option select element if present
+            var selectedOption = $('#cow_group_select > option:selected');
+            if(selectedOption.prev('option').length > 0) {
+                selectedOption.prev('option').attr('selected', 'selected');
+            } else {
+                selectedOption.next('option').attr('selected', 'selected');
+            }
+
+            // Remove old option
+            selectedOption.remove();
+
+            // Trigger change event on select element
+            $('#cow_group_select').change();
+
+            //Renumber groups in select element
+            var groupNo = 1;
+            $('#cow_group_select').find('option').each(function() {
+                $(this).text('Group ' + groupNo++);
+            });
+        }
+    }
+
+    /************/
     /*  MaxFuel */
     /************/
 
@@ -1047,10 +1204,20 @@ ocargo.LevelEditor = function() {
             decor[i].destroy();
         }
 
+        for (var i = cows.length-1; i >= 0; i--) {
+            cows[i].destroy();
+        }
+
         nodes = [];
         strikeStart = null;
         originNode = null;
         destinationNode = null;
+
+        cowGroups = {};
+        currentCowGroupId = 1;
+        $('#cow_group_select').find('option').remove();
+        // Add initial cow group
+        addCowGroup();
     }
 
     function drawAll() {
@@ -1074,6 +1241,12 @@ ocargo.LevelEditor = function() {
     function bringTrafficLightsToFront() {
         for (var i = 0; i < trafficLights.length; i++) {
             trafficLights[i].image.toFront();
+        }
+    }
+
+    function bringCowsToFront() {
+        for (var i = 0; i < cows.length; i++) {
+            cows[i].image.toFront();
         }
     }
 
@@ -1108,6 +1281,17 @@ ocargo.LevelEditor = function() {
         mark(coordinate, currentTheme.selected, 0.3, true);
     }
 
+    function markCowNodes() {
+        if (cows) {
+            for (var i = 0; i < cows.length; i++) {
+                var internalCow = cows[i];
+                if (internalCow.controlledNode) {
+                    mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
+                }
+            }
+        }
+    }
+
     function clearMarkings() {
         for (var i = 0; i < GRID_WIDTH; i++) {
             for (var j = 0; j < GRID_HEIGHT; j++) {
@@ -1115,6 +1299,9 @@ ocargo.LevelEditor = function() {
                 grid[i][j].toFront();
             }
         }
+
+        markCowNodes();
+
         if (originNode) {
             markAsOrigin(originNode.coordinate);
         }
@@ -1123,6 +1310,7 @@ ocargo.LevelEditor = function() {
         }
 
         bringTrafficLightsToFront();
+        bringCowsToFront();
         bringDecorToFront();
     }
 
@@ -1272,10 +1460,12 @@ ocargo.LevelEditor = function() {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
                 if (node && destinationNode !== node && originNode !== node) {
                     markAsBackground(coordMap);
+                    markCowNodes();
                 }
             } else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap)) {
                     markAsBackground(coordMap);
+                    markCowNodes();
                 }
             }
         };
@@ -1395,6 +1585,199 @@ ocargo.LevelEditor = function() {
         addReleaseListeners(image.node);
     }
 
+    function setupCowListeners(cow) {
+        var image = cow.image;
+
+        // Position in map coordinates.
+        var controlledCoord;
+
+        // Current position of the element in paper coordinates
+        var paperX;
+        var paperY;
+
+        // Where the drag started in paper coordinates
+        var originX;
+        var originY;
+
+        // Size of the paper
+        var paperWidth;
+        var paperHeight;
+
+        // Size of the image
+        var imageWidth;
+        var imageHeight;
+
+        var moved = false;
+
+        function onDragMove(dx, dy) {
+            cow.valid = false;
+            image.attr({'cursor':'default'});
+            moved = dx !== 0 || dy !== 0;
+
+            // Update image's position
+            paperX = dx + originX;
+            paperY = dy + originY;
+
+
+            // Trashcan check
+            checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight);
+
+            // Stop it being dragged off the edge of the page
+            if (paperX < 0) {
+                paperX = 0;
+            } else if (paperX + imageWidth > paperWidth) {
+                paperX = paperWidth - imageWidth;
+            }
+            if (paperY < 0) {
+                paperY =  0;
+            } else if (paperY + imageHeight >  paperHeight) {
+                paperY = paperHeight - imageHeight;
+            }
+
+            // And perform the updatee
+            image.transform('t' + paperX + ',' + paperY );
+
+            //Unmark the squares the cow previously occupied
+            if (controlledCoord) {
+                markAsBackground(controlledCoord);
+            }
+            if(cows) {
+                for( var i = 0; i < cows.length; i++){
+                    var internalCow = cows[i];
+                    if(internalCow !== cow && internalCow.controlledNode) {
+                        mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
+                    }
+                }
+            }
+            if (originNode) {
+                markAsOrigin(originNode.coordinate);
+            }
+            if (destinationNode) {
+                markAsDestination(destinationNode.coordinate);
+            }
+
+            // Now calculate the source coordinate
+            var box = image.getBBox();
+            var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
+            var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
+
+            var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+            var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+            controlledCoord = new ocargo.Coordinate(x,y);
+
+            // If source node is not on grid remove it
+            if (!isCoordinateOnGrid(controlledCoord)) {
+                controlledCoord = null;
+            }
+
+            if (controlledCoord) {
+                var colour;
+                if(isValidPlacement(controlledCoord)) {
+                    colour = VALID_LIGHT_COLOUR;
+                } else {
+                    colour = INVALID_LIGHT_COLOUR;
+                }
+
+                mark(controlledCoord, colour, 0.7, false);
+            }
+
+            // Deal with trashcan
+            var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
+            var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
+            var trashcanWidth = $('#trashcanHolder').width();
+            var trashcanHeight = $('#trashcanHolder').height();
+
+            if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
+                paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
+                openTrashcan();
+            } else {
+                closeTrashcan();
+            }
+        }
+
+        function onDragStart(x, y) {
+            var bBox = image.getBBox();
+            imageWidth = bBox.width;
+            imageHeight = bBox.height;
+
+            var paperPosition = paper.position();
+            originX = x - paperPosition.left + paper.scrollLeft() - imageWidth/2;
+            originY = y - paperPosition.top + paper.scrollTop() - imageHeight/2;
+
+            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
+            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+
+            adjustCowGroupMinMaxFields(cow);
+        }
+
+        function onDragEnd() {
+            //Unmark previously occupied square
+            if(cow.controlledNode) {
+                markAsBackground(cow.controlledNode.coordinate);
+            }
+
+            // Mark squares currently occupied
+            if (controlledCoord) {
+                mark(controlledCoord, cow.data.group.color, 0.3, true);
+            }
+            if (originNode) {
+                markAsOrigin(originNode.coordinate);
+            }
+            if (destinationNode) {
+                markAsDestination(destinationNode.coordinate);
+            }
+
+            if(trashcanOpen) {
+                cow.destroy();
+            } else if(isValidPlacement(controlledCoord)) {
+                // Add back to the list of cows if on valid nodes
+                var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+                cow.controlledNode = controlledNode;
+                cow.valid = true;
+                ocargo.drawing.setCowImagePosition(controlledCoord, image, controlledNode);
+            } else {
+                cow.controlledNode = null;
+                cow.valid = false;
+            }
+            adjustCowGroupMinMaxFields(cow);
+
+            image.attr({'cursor':'pointer'});
+            closeTrashcan();
+        }
+
+        function isValidPlacement(controlledCoord){
+            var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+            if (!controlledNode)
+                return false;
+            for (var i=0; i < cows.length; i++) {
+                var otherCow = cows[i];
+                if (otherCow.controlledNode == controlledNode && cow != otherCow)
+                    return false;
+            }
+            return true;
+        }
+
+        image.drag(onDragMove, onDragStart, onDragEnd);
+        addReleaseListeners(image.node);
+    }
+
+    function adjustCowGroupMinMaxFields(draggedCow) {
+        var draggedCowGroupId = draggedCow.data.group.id;
+
+        var noOfValidCowsInGroup = 0;
+        for (var i=0; i < cows.length; i++) {
+            if(cows[i].valid && cows[i].data.group.id === draggedCowGroupId) {
+                noOfValidCowsInGroup++;
+            }
+        }
+
+        var draggedCowGroup = cowGroups[draggedCowGroupId];
+        draggedCowGroup.minCows = Math.max(1, Math.min(draggedCowGroup.minCows, noOfValidCowsInGroup));
+        draggedCowGroup.maxCows = Math.max(1, Math.min(draggedCowGroup.maxCows, noOfValidCowsInGroup));
+        $('#cow_group_select').val(draggedCowGroupId).change();
+    }
+
+
     function setupTrafficLightListeners(trafficLight) {
         var image = trafficLight.image;
 
@@ -1464,6 +1847,9 @@ ocargo.LevelEditor = function() {
             if (controlledCoord) {
                 markAsBackground(controlledCoord);
             }
+
+            markCowNodes();
+
             if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
@@ -1578,6 +1964,9 @@ ocargo.LevelEditor = function() {
             if (controlledCoord) {
                 markAsBackground(controlledCoord);
             }
+
+            markCowNodes();
+
             if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
@@ -1692,6 +2081,15 @@ ocargo.LevelEditor = function() {
                     if (node === trafficLight.sourceNode || node === trafficLight.controlledNode) {
                         trafficLights.splice(i, 1);
                         trafficLight.destroy();
+                    }
+                }
+
+                //  Check if any cows present
+                for (var i = cows.length-1; i >= 0;  i--) {
+                    var cow  =  cows[i];
+                    if (node === cow.controlledNode) {
+                        cows.splice(i, 1);
+                        cow.destroy();
                     }
                 }
             }
@@ -1850,6 +2248,30 @@ ocargo.LevelEditor = function() {
         }
         state.traffic_lights = JSON.stringify(trafficLightData);
 
+        var cowsData = [];
+
+        var cowGroupData = {}
+        for( var i = 0; i < cows.length; i++){
+            if(cows[i].valid) {
+                var groupId = cows[i].data.group.id;
+                if(!cowGroupData[groupId]) {
+                    cowGroupData[groupId] = {minCows : cowGroups[groupId].minCows,
+                        maxCows : cowGroups[groupId].maxCows,
+                        potentialCoordinates : []}
+                }
+
+                var coordinates = cows[i].controlledNode.coordinate;
+                var strCoordinates = {'x':coordinates.x, 'y':coordinates.y};
+                cowGroupData[groupId].potentialCoordinates.push(strCoordinates);
+            }
+        }
+
+        for(var groupId in cowGroupData) {
+            cowsData.push(cowGroupData[groupId]);
+        }
+
+        state.cows = JSON.stringify(cowsData);
+
         // Create block data
         state.blocks = [];
         for (i = 0; i < BLOCKS.length; i++) {
@@ -1864,11 +2286,6 @@ ocargo.LevelEditor = function() {
                 state.blocks.push(block);
             }
         }
-        state.max_fuel = maxFuel;
-
-        // Dummy cows to fix JSON break. Needs to be replaced with actual cows!
-        var cowsData = [];
-        state.cows = JSON.stringify(cowsData);
 
         // Create decor data
         state.decor = [];
@@ -1917,6 +2334,31 @@ ocargo.LevelEditor = function() {
         for (var i = 0; i < trafficLightData.length; i++) {
             new InternalTrafficLight(trafficLightData[i]);
         }
+
+        var cowGroupData = JSON.parse(state.cows);
+        for (var i = 0; i < cowGroupData.length; i++) {
+            // Add new group to group select element
+            if(i >= Object.keys(cowGroups).length) {
+                addCowGroup();
+            }
+            var cowGroupId = Object.keys(cowGroups)[i];
+            cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
+            cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
+
+            if(cowGroupData[i].potentialCoordinates != null) {
+                for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
+                    var cowData = { coordinates: [cowGroupData[i].potentialCoordinates[j]],
+                        group: cowGroups[cowGroupId]
+                    };
+                    new InternalCow(cowData);
+                }
+            }
+        }
+
+        // Trigger change listener on cow group select box to set initial min/max values
+        $('#cow_group_select').change();
+
+        markCowNodes();
 
         // Load in destination and origin nodes
         // TODO needs to be fixed in the long term with multiple destinations
@@ -2138,7 +2580,7 @@ ocargo.LevelEditor = function() {
         // you can copy and paste into a Django migration file
 
         var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge', 'direct_drive'];
-        var stringFields =  ['path', 'traffic_lights', 'origin', 'destinations'];
+        var stringFields =  ['path', 'traffic_lights', 'cows', 'origin', 'destinations'];
         var otherFields = ['max_fuel']
 
         var decor = null;
@@ -2174,6 +2616,64 @@ ocargo.LevelEditor = function() {
         string += "\tset_blocks(levelNUMBER, json.loads('" + blocks + "'))\n";
 
         return string;
+    }
+
+    /*****************************************/
+    /* Internal cow representation */
+    /*****************************************/
+
+    function InternalCow(data) {
+        this.data = data;
+
+        this.getData = function() {
+            if (!this.valid) {
+                throw "Error: cannot create actual cow from invalid internal cow!";
+            }
+
+            // Where the cow is placed.
+            var coordinates = this.controlledNode.coordinate;
+            var strCoordinates= {'x':coordinates.x, 'y':coordinates.y};
+
+            return { "coordinates": [strCoordinates],
+                "groupId" : this.data.group.id
+            };
+
+        };
+
+        this.setCoordinate = function(){
+
+        }
+
+        this.destroy = function() {
+            this.image.remove();
+            var index = cows.indexOf(this);
+            if (index !== -1) {
+                cows.splice(index, 1);
+            }
+
+            markAsBackground(this.controlledNode.coordinate);
+        };
+
+        this.image = ocargo.drawing.createCowImage();
+        this.valid = false;
+
+
+        if ( data.coordinates && data.coordinates.length > 0 ) {
+            var coordinates = new ocargo.Coordinate(data.coordinates[0].x, data.coordinates[0].y);
+            this.controlledNode = ocargo.Node.findNodeByCoordinate(coordinates, nodes);
+
+            if (this.controlledNode) {
+                this.valid = true;
+                ocargo.drawing.setCowImagePosition(coordinates, this.image, this.controlledNode);
+            }
+        } else {
+            this.image.transform('...t' + (-paper.scrollLeft())  +  ',' +  paper.scrollTop());
+        }
+
+        setupCowListeners(this);
+        this.image.attr({'cursor':'pointer'});
+        cows.push(this);
+
     }
 
     /*****************************************/
