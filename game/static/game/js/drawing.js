@@ -556,8 +556,8 @@ ocargo.Drawing = function() {
             }
         }
 
-        var drawX = (x+0.5) * GRID_SPACE_SIZE - COW_WIDTH/2 + xOffset;
-        var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT/2 + yOffset;
+        var drawX = (x+0.5) * GRID_SPACE_SIZE - COW_WIDTH/2 + xOffset + PAPER_PADDING;
+        var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT/2 + yOffset + PAPER_PADDING;
 
         image.transform('t' + drawX + ',' + drawY);
     };
