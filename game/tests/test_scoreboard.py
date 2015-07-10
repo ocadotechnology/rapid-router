@@ -1,11 +1,10 @@
 from datetime import timedelta, datetime
 
 from django.test import TestCase
-
 from hamcrest import *
 
-from game.models import Level
-from game.views.scoreboard import StudentRow
+from game.models import Level, Attempt
+from game.views.scoreboard import StudentRow, scoreboard_data
 from game.views.scoreboard_csv import scoreboard_csv_multiple_levels, scoreboard_csv_single_level
 from portal.models import Class
 from portal.tests.utils.classes import create_class_directly
@@ -16,6 +15,147 @@ Headers = ['Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'At
 
 class ScoreboardTestCase(TestCase):
 
+    def test_teacher_multiple_students_multiple_levels(self):
+        level_ids = ids_of_levels_named(["1", "2"])
+        level1 = Level.objects.get(name="1")
+        level2 = Level.objects.get(name="2")
+
+        clas, student, student2 = set_up_data()
+
+        create_attempt(student, level1, 10.5)
+        create_attempt(student2, level1, 2.3)
+        create_attempt(student2, level2, 16.7)
+
+        student_data, headers = scoreboard_data(Teacher(), level_ids, [clas.id])
+
+        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'1', u'2']))
+        assert_that(student_data, has_length(2))
+
+        assert_student_row(student_row=student_data[0],
+                           class_name=clas.name,
+                           student_name=student.user.user.first_name,
+                           total_score=10.5,
+                           total_time=timedelta(0),
+                           progress=(0.0, 0.0, 50.0),
+                           scores=[10.5, ''])
+
+        assert_student_row(student_row=student_data[1],
+                           class_name=clas.name,
+                           student_name=student2.user.user.first_name,
+                           total_score=19.0,
+                           total_time=timedelta(0),
+                           progress=(0.0, 50.0, 50.0),
+                           scores=[2.3, 16.7])
+
+    def test_teacher_multiple_students_single_level(self):
+        level_ids = ids_of_levels_named(["1"])
+        level1 = Level.objects.get(name="1")
+
+        clas, student, student2 = set_up_data()
+
+        create_attempt(student, level1, 10.5)
+        create_attempt(student2, level1, 2.3)
+
+        student_data, headers = scoreboard_data(Teacher(), level_ids, [clas.id])
+
+        assert_that(headers, equal_to(['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']))
+        assert_that(student_data, has_length(2))
+
+        assert_student_row_single_level(student_row=student_data[0],
+                                        class_name=clas.name,
+                                        student_name=student.user.user.first_name,
+                                        total_score=10.5,
+                                        total_time=timedelta(0))
+
+        assert_student_row_single_level(student_row=student_data[1],
+                                        class_name=clas.name,
+                                        student_name=student2.user.user.first_name,
+                                        total_score=2.3,
+                                        total_time=timedelta(0))
+
+    def test_student_multiple_students_multiple_levels(self):
+        level_ids = ids_of_levels_named(["1", "2"])
+        level1 = Level.objects.get(name="1")
+        level2 = Level.objects.get(name="2")
+
+        clas, student, student2 = set_up_data(True)
+
+        create_attempt(student, level1, 10.5)
+        create_attempt(student2, level1, 2.3)
+        create_attempt(student2, level2, 16.7)
+
+        student_data, headers = scoreboard_data(Student(student), level_ids, [clas.id])
+
+        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'1', u'2']))
+        assert_that(student_data, has_length(2))
+
+        assert_student_row(student_row=student_data[0],
+                           class_name=clas.name,
+                           student_name=student.user.user.first_name,
+                           total_score=10.5,
+                           total_time=timedelta(0),
+                           progress=(0.0, 0.0, 50.0),
+                           scores=[10.5, ''])
+
+        assert_student_row(student_row=student_data[1],
+                           class_name=clas.name,
+                           student_name=student2.user.user.first_name,
+                           total_score=19.0,
+                           total_time=timedelta(0),
+                           progress=(0.0, 50.0, 50.0),
+                           scores=[2.3, 16.7])
+
+    def test_student_multiple_students_single_level(self):
+        level_ids = ids_of_levels_named(["2"])
+        level2 = Level.objects.get(name="2")
+
+        clas, student, student2 = set_up_data(True)
+
+        create_attempt(student, level2, 10.5)
+        create_attempt(student2, level2, 16.7)
+
+        student_data, headers = scoreboard_data(Student(student), level_ids, [clas.id])
+
+        assert_that(headers, equal_to(['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']))
+        assert_that(student_data, has_length(2))
+
+        assert_student_row_single_level(student_row=student_data[0],
+                                        class_name=clas.name,
+                                        student_name=student.user.user.first_name,
+                                        total_score=10.5,
+                                        total_time=timedelta(0))
+
+        assert_student_row_single_level(student_row=student_data[1],
+                                        class_name=clas.name,
+                                        student_name=student2.user.user.first_name,
+                                        total_score=16.7,
+                                        total_time=timedelta(0))
+
+    def test_student_multiple_students_multiple_levels_cannot_see_classmates(self):
+        level_ids = ids_of_levels_named(["1", "2"])
+        level1 = Level.objects.get(name="1")
+        level2 = Level.objects.get(name="2")
+
+        clas, student, student2 = set_up_data()
+        create_attempt(student, level1, 10.5)
+        create_attempt(student2, level1, 2.3)
+        create_attempt(student2, level2, 16.7)
+
+        student_data, headers = scoreboard_data(Student(student), level_ids, [clas.id])
+
+        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'1', u'2']))
+        assert_that(student_data, has_length(1))
+
+        assert_student_row(student_row=student_data[0],
+                           class_name=clas.name,
+                           student_name=student.user.user.first_name,
+                           total_score=10.5,
+                           total_time=timedelta(0),
+                           progress=(0.0, 0.0, 50.0),
+                           scores=[10.5, ''])
+
+
+class ScoreboardCsvTestCase(TestCase):
     def test_multiple_levels(self):
         levels = Level.objects.sorted_levels()
         student_rows = [(self.student_row()), (self.student_row())]
@@ -51,9 +191,8 @@ class ScoreboardTestCase(TestCase):
         return map(self.expected_row_multiple_levels, student_rows) + [""]
 
     def student_row(self):
-        # Create one student
         email, password = signup_teacher_directly()
-        class_name, access_code = create_class_directly(email)
+        _, class_name, access_code = create_class_directly(email)
         _, _, student = create_school_student_directly(access_code)
 
         total_time = timedelta(0, 30)
@@ -80,7 +219,8 @@ class ScoreboardTestCase(TestCase):
         return beginning + padding
 
     def expected_row_single_level(self, student_row):
-        return "%s,%s,190,0:00:30,2015-06-26 08:51:12,2015-07-31 02:11:12" % (student_row.class_field.name, student_row.name)
+        return "%s,%s,190,0:00:30,2015-06-26 08:51:12,2015-07-31 02:11:12" % (
+            student_row.class_field.name, student_row.name)
 
     def expected_header(self, levels):
         level_strings = map(str, levels)
@@ -93,4 +233,72 @@ class ScoreboardTestCase(TestCase):
         header = split[0]
         rows = split[1:]
         return header, rows
+
+
+class Student:
+    def __init__(self, student):
+        self.student = student
+
+    def is_student(self): return True
+
+    def is_teacher(self): return False
+
+    def is_independent_student(self): return False
+
+
+class Teacher:
+    def is_student(self): return False
+
+    def is_teacher(self): return True
+
+    def is_independent_student(self): return False
+
+
+def assert_student_row(student_row, class_name, student_name, total_score, total_time, progress, scores):
+    assert_that(student_row.class_field.name, equal_to(class_name))
+    assert_that(student_row.name, equal_to(student_name))
+    assert_that(student_row.total_score, equal_to(total_score))
+    assert_that(student_row.total_time, equal_to(total_time))
+    assert_that(student_row.progress, equal_to(progress))
+    assert_that(student_row.scores, equal_to(scores))
+
+
+def assert_student_row_single_level(student_row, class_name, student_name, total_score, total_time):
+    assert_that(student_row.class_field.name, equal_to(class_name))
+    assert_that(student_row.name, equal_to(student_name))
+    assert_that(student_row.total_score, equal_to(total_score))
+    assert_that(student_row.total_time, equal_to(total_time))
+
+
+def create_attempt(student, level, score):
+    Attempt.objects.create(start_time=datetime.fromtimestamp(1435305072),
+                           finish_time=datetime.fromtimestamp(1435305072),
+                           level=level,
+                           student=student,
+                           score=score)
+
+
+def ids_of_levels_named(names):
+    levels = Level.objects.filter(name__in=names)
+    assert_that(len(levels), equal_to(len(names)))
+    level_ids = map(lambda x: x.id, levels)
+    return level_ids
+
+def set_up_data(classmates_data_viewable=False):
+    email, password = signup_teacher_directly()
+    clas, class_name, access_code = create_class_directly(email)
+    if classmates_data_viewable:
+        clas.classmates_data_viewable = True
+        clas.save()
+    _, _, student = create_school_student_directly(access_code)
+    _, _, student2 = create_school_student_directly(access_code)
+    create_random_school_data()
+    return clas, student, student2
+
+
+def create_random_school_data():
+    email, password = signup_teacher_directly()
+    clas, class_name, access_code = create_class_directly(email)
+    create_school_student_directly(access_code)
+    create_school_student_directly(access_code)
 
