@@ -15,6 +15,7 @@ def api_root(request, format=None):
     return Response({
         'blocks': reverse('block-list', request=request, format=format),
         'characters': reverse('character-list', request=request, format=format),
+        'decors': reverse('decor-list', request=request, format=format),
         'episodes': reverse('episode-list', request=request, format=format),
         'levels': reverse('level-list', request=request, format=format),
         'themes': reverse('theme-list', request=request, format=format),
