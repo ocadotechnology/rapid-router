@@ -125,6 +125,7 @@ class LevelDecorSerializer(serializers.HyperlinkedModelSerializer):
 class BlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Block
+        fields = ('url', 'id', 'type')
 
 
 class ThemeSerializer(serializers.HyperlinkedModelSerializer):
