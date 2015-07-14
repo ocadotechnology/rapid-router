@@ -124,28 +124,6 @@ ocargo.Animation.prototype.pauseAnimation = function() {
 	this.isPlaying = false;
 };
 
-ocargo.Animation.prototype.queueAnimation = function(a) {
-	if (a.timestamp && a.subTimestamp) {
-		if (!this.animationQueue[a.timestamp]) {
-			this.animationQueue[a.timestamp] = [];
-		}
-		if (!this.animationQueue[a.timestamp][a.subTimestamp]) {
-			this.animationQueue[a.timestamp][a.subTimestamp] = [];
-		}
-		this.animationQueue[a.timestamp][a.subTimestamp].push(a);
-
-		this.lastTimestamp = Math.max(this.lastTimestamp, a.timestamp);
-		this.lastSubTimestamp = Math.max(this.lastSubTimestamp, a.subTimestamp);
-	}
-	// Remove duplicate animations... or make any animations that could potentially appear twice idempotent... Undecided...
-};
-
-ocargo.Animation.prototype.queueAnimations = function(as) {
-	for (var i = 0; i < as.length; i++) {
-		this.queueAnimation(as[i]);
-	}
-};
-
 ocargo.Animation.prototype.appendAnimation = function(a) {
 	this.animationQueue[this.lastTimestamp][this.lastSubTimestamp].push(a);
 };
@@ -222,16 +200,29 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 		case 'popup':
 			var title = "";
 			var leadMsg = a.popupMessage;
-			var buttons = a.button;
+			var buttons = '';
 
 			// sort popup...
 			switch (a.popupType) {
 				case 'WIN':
 					title = ocargo.messages.winTitle;
-					var levelMsg = "";
+					var levelMsg = [];
+
+					levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins) + a.pathLengthScore + "/" + a.maxScoreForPathLength);
+
+					levelMsg.push(ocargo.messages.algorithmScore +
+					ocargo.Drawing.renderCoins(a.instrCoins) + a.instrScore + "/" + a.maxScoreForNumberOfInstructions);
+
+					levelMsg.push(ocargo.messages.totalScore(a.totalScore, a.maxScore));
+
+					levelMsg.push(ocargo.messages.endLevelMsg(a.performance));
+
+					if(a.performance != "scorePerfect"){
+						buttons += ocargo.button.getTryAgainButtonHtml();
+					}
 
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
-						levelMsg = ocargo.messages.nowTryPython;
+						levelMsg.push(ocargo.messages.nowTryPython);
 						buttons += ocargo.button.addDismissButtonHtml('Close');
 					}
 					else {
@@ -239,7 +230,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 						if (NEXT_LEVEL) {
 							buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/" + NEXT_LEVEL + "/'",
 					        								     		'Next Level');
-					    } 
+					    }
 					    else {
 							/*
 							 This is the last level of the episode. If there exists a next episode, add button to
@@ -260,7 +251,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					        }
 					    }
 					}
-					leadMsg = leadMsg + levelMsg;
+					leadMsg = leadMsg + ocargo.messages.addNewLine(levelMsg);
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
@@ -301,3 +292,35 @@ ocargo.Animation.prototype.updateFuelGauge = function(fuelPercentage) {
     document.getElementById('fuelGaugePointer').style.transform = rotation;
     document.getElementById('fuelGaugePointer').style.webkitTransform = rotation;
 };
+
+ocargo.Animation.prototype.serializeAnimationQueue = function(){
+	var replacer = function (key, val) {
+		function clone(obj) {
+			var target = {};
+			for (var i in obj) {
+				if (obj.hasOwnProperty(i)) {
+					target[i] = obj[i];
+				}
+			}
+			return target;
+		}
+
+		if (key == "previousNode" || key == "currentNode"){
+			/* Replaces array of nodes to array of coordinates as nodes have circular reference */
+			var result = [];
+			var modifiedVal = clone(val);
+			for(var i = 0 ; i < modifiedVal.connectedNodes.length ; i++){
+				result.push({coordinate: modifiedVal.connectedNodes[i].coordinate});
+			}
+			modifiedVal.connectedNodes = result;
+			return modifiedVal;
+		}
+		if (val instanceof ocargo.Node){
+			return val.coordinate;
+		}
+		return val;
+	}
+
+	ocargo.game.runProgramAndPrepareAnimation();
+	return JSON.stringify(ocargo.animation.animationQueue, replacer);
+}

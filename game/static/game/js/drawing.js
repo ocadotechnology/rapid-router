@@ -31,7 +31,7 @@ ocargo.Drawing = function() {
     var INITIAL_OFFSET_Y = 82;
     var ROTATION_OFFSET_X = 22;
     var ROTATION_OFFSET_Y = CHARACTER_WIDTH - 20;
-    
+
     var DESTINATION_NOT_VISITED_COLOUR = 'red';
     var DESTINATION_VISITED_COLOUR = 'green';
 
@@ -61,7 +61,7 @@ ocargo.Drawing = function() {
             tileImages.push(paper.image(path + 'road/' + tiles[i] + '.svg', 0, 0, GRID_SPACE_SIZE, GRID_SPACE_SIZE));
             tileImages.push(paper.image(path + 'path/' + tiles[i] + '.svg', 0, 0, GRID_SPACE_SIZE, GRID_SPACE_SIZE));
         }
-        
+
         for(var i = 0; i < tileImages.length; i++) {
             tileImages[i].remove()
         }
@@ -165,7 +165,7 @@ ocargo.Drawing = function() {
             var destination = destinations[i].node;
             var variation = getDestinationPosition(destination);
 
-            var destinationRect = paper.rect(destination.coordinate.x * GRID_SPACE_SIZE + PAPER_PADDING, 
+            var destinationRect = paper.rect(destination.coordinate.x * GRID_SPACE_SIZE + PAPER_PADDING,
                                     PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100 + PAPER_PADDING,
                                     100, 100).attr({'stroke': DESTINATION_NOT_VISITED_COLOUR});
 
@@ -174,7 +174,7 @@ ocargo.Drawing = function() {
                                     PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - variation[1] + PAPER_PADDING,
                                     50, 50).transform('r' + variation[2]);
 
-            destinationImages[destinations[i].id] = {rect: destinationRect, 
+            destinationImages[destinations[i].id] = {rect: destinationRect,
                                                     house: destinationHouse};
         }
 
@@ -269,7 +269,7 @@ ocargo.Drawing = function() {
 
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
         var transformation = getRotationTransformationAroundCentreOfGridSpace(cfc,
-                                                                              rotation, 
+                                                                              rotation,
                                                                               position.currentNode.coordinate.x,
                                                                               position.currentNode.coordinate.y);
         cfc.transform(transformation);
@@ -296,16 +296,16 @@ ocargo.Drawing = function() {
                 case 1:
                     roadImage = drawDeadEndRoad(node, path);
                     break;
-                
+
                 case 2:
                     roadImage = drawSingleRoadSegment(node.connectedNodes[0], node,
                                                       node.connectedNodes[1], path);
                     break;
-                
+
                 case 3:
                     roadImage = drawTJunction(node, path);
                     break;
-                
+
                 case 4:
                     roadImage = drawCrossRoads(node, path);
                     break;
@@ -443,7 +443,7 @@ ocargo.Drawing = function() {
         // get position based on nodes
         var x = (controlledCoordinate.x + sourceCoordinate.x) / 2.0;
         var y = (controlledCoordinate.y + sourceCoordinate.y) / 2.0;
-        
+
         // get rotation based on nodes (should face source)
         var angle = sourceCoordinate.angleTo(controlledCoordinate) * (180 / Math.PI);
         var rotation = 90 - angle;
@@ -466,11 +466,11 @@ ocargo.Drawing = function() {
 
             this.setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.greenLightEl);
             this.setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.redLightEl);
-            
+
             // hide light which isn't the starting state
             if(trafficLight.startingState === ocargo.TrafficLight.RED) {
                 trafficLight.greenLightEl.attr({'opacity': 0});
-            } 
+            }
             else {
                 trafficLight.redLightEl.attr({'opacity': 0});
             }
@@ -486,13 +486,13 @@ ocargo.Drawing = function() {
 
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
         var transformation = getRotationTransformationAroundCentreOfGridSpace(vanImage,
-                                                                              rotation, 
+                                                                              rotation,
                                                                               position.currentNode.coordinate.x,
                                                                               position.currentNode.coordinate.y);
         vanImage.transform(transformation);
         vanImage.transform('... r90');
         vanImage.attr({opacity: 1});
-    };    
+    };
 
     this.renderVans = function(position, numVans) {
         for (var i = 0; i < numVans; i++) {
@@ -771,7 +771,7 @@ ocargo.Drawing = function() {
         }, vanID, animationLength, animateExplosion);
 
         function animateExplosion() {
-            
+
             if (CHARACTER_NAME !== "Van") {
                 return;
             }
@@ -801,7 +801,7 @@ ocargo.Drawing = function() {
                         var size = minSize + Math.random()*(maxSize-minSize);
                         var xco = x + width*(Math.random()-0.5) - 0.5*size;
                         var yco = y + height*(Math.random()-0.5) - 0.5*size;
-                        var imageStr = ocargo.Drawing.raphaelImageDir + '' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg'; 
+                        var imageStr = ocargo.Drawing.raphaelImageDir + '' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg';
                         var img = paper.image(imageStr, xco, yco, size, size);
                         img.animate({opacity: 0, transform: 's2'}, 1000, function () {img.remove()});
                     },(i < 5 ? 0 :(i-5)*50));
@@ -886,7 +886,7 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, 
     } else {
         $('#modal-mascot').hide();
     }
-    
+
     if(buttons){
         $('#modal-buttons').html(buttons);
     } else {
@@ -923,6 +923,22 @@ ocargo.Drawing.isMobile = function() {
 
 ocargo.Drawing.isChrome = function() {
     return navigator.userAgent.indexOf('Chrome') > -1;
+};
+
+ocargo.Drawing.renderCoins = function(coins) {
+    var html = "<div>";
+    var i;
+    for (i = 0; i < coins.whole ; i++) {
+        html += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_gold.svg' width='50'>";
+    }
+    if (coins.half) {
+        html += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_5050_dots.svg' width='50'>";
+    }
+    for (i = 0; i < coins.zero; i++) {
+        html += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_empty_dots.svg' width='50'>";
+    }
+
+    return html;
 };
 
 ocargo.Drawing.imageDir = '/static/game/image/';

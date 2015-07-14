@@ -393,17 +393,25 @@ ocargo.Model.prototype.programExecutionEnded = function() {
     });
 
     if(success) {
-        var scoreArray = this.pathFinder.getScore();
-        ocargo.game.sendAttempt(scoreArray[0]);
+        var result = this.pathFinder.getScore();
+        ocargo.game.sendAttempt(result.totalScore);
 
         // Winning popup
         ocargo.animation.appendAnimation({
             type: 'popup',
             id: this.vanId,
             popupType: 'WIN',
-            popupMessage: scoreArray[1],
-            description: 'win popup',
-            button: scoreArray[2]
+            popupMessage:'',
+            totalScore: result.totalScore,
+            maxScore: result.maxScore,
+            routeCoins : result.routeCoins,
+            instrCoins : result.instrCoins,
+            pathLengthScore: result.pathLengthScore,
+            maxScoreForPathLength: result.maxScoreForPathLength,
+            instrScore: result.instrScore,
+            maxScoreForNumberOfInstructions: result.maxScoreForNumberOfInstructions,
+            performance: result.performance,
+            description: 'win popup'
         });
 
         // Winning sound
@@ -418,7 +426,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
                                                  workspace: ocargo.blocklyControl.serialize(),
                                                  failures: this.failures,
                                                  pythonWorkspace: ocargo.pythonControl.getCode(),
-                                                 score: scoreArray[0] });
+                                                 score: result.totalScore });
 
         this.reasonForTermination = 'SUCCESS';
     }

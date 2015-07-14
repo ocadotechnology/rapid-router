@@ -6,7 +6,7 @@ ocargo.PathFinder = function(model) {
     this.van = model.van;
     this.nodes = model.map.nodes;
     this.destinations = model.map.destinations;
-    
+
     this.pathScoreDisabled = DISABLE_ROUTE_SCORE;
     this.modelSolution = MODEL_SOLUTION;
 
@@ -14,18 +14,19 @@ ocargo.PathFinder = function(model) {
     this.maxScoreForNumberOfInstructions = 10;
 
     this.maxScore = this.maxScoreForPathLength + this.maxScoreForNumberOfInstructions;
-    
+
     this.optimalPath = getOptimalPath(this.nodes, this.destinations);
 };
 
 ocargo.PathFinder.prototype.getScore = function() {
-    var message = "";
-    var button = "";
+    var routeCoins = {};
+    var instrCoins = {};
+    var performance= "";
 
     var pathLengthScore = 0;
     if(!this.pathScoreDisabled){
         pathLengthScore = Math.max(0, this.getTravelledPathScore());
-        message = ocargo.messages.pathScore + this.renderCoins(pathLengthScore, this.maxScoreForPathLength);
+        routeCoins = this.getNumCoins(pathLengthScore, this.maxScoreForPathLength);
     }
 
     var totalScore = pathLengthScore;
@@ -42,51 +43,38 @@ ocargo.PathFinder.prototype.getScore = function() {
         }
         instrScore = Math.max(0, instrScore);
 
-        message +=  ocargo.messages.algorithmScore +
-                    this.renderCoins(instrScore, this.maxScoreForNumberOfInstructions) + "<br>";
         totalScore += instrScore;
+        instrCoins = this.getNumCoins(instrScore, this.maxScoreForNumberOfInstructions);
     }
 
-
-    message += ocargo.messages.totalScore(totalScore, this.maxScore);
 
     if (pathLengthScore < this.maxScoreForPathLength) {
-        message += "<br>" + ocargo.messages.pathLonger;
-        button += ocargo.button.getTryAgainButtonHtml();
+        performance = "pathLonger";
     }
     else if (initInstrScore > this.maxScoreForNumberOfInstructions) {
-        message += "<br>" + ocargo.messages.algorithmShorter;
-        button += ocargo.button.getTryAgainButtonHtml();
+        performance = "algorithmShorter";
     }
     else if (initInstrScore < this.maxScoreForNumberOfInstructions) {
-        message += "<br>" + ocargo.messages.algorithmLonger;
-        button += ocargo.button.getTryAgainButtonHtml();
+        performance = "algorithmLonger";
     }
     else  if (totalScore === this.maxScore) {
-        message += "<br>" + ocargo.messages.scorePerfect;
+        performance = "scorePerfect";
     }
 
-    return [totalScore, message, button];
+    return {totalScore: totalScore,
+            routeCoins: routeCoins,
+            instrCoins: instrCoins,
+            maxScore: this.maxScore,
+            performance: performance,
+            pathLengthScore: pathLengthScore,
+            maxScoreForPathLength: this.maxScoreForPathLength,
+            instrScore: instrScore,
+            maxScoreForNumberOfInstructions: this.maxScoreForNumberOfInstructions};
 };
 
-
-// Renders the gained score in coins.
-ocargo.PathFinder.prototype.renderCoins = function(score, maxScore) {
-    var coins = "<div>";
-    var i;
-    for (i = 0; i < Math.floor(score); i++) {
-        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_gold.svg' width='50'>";
-    }
-    if (score - Math.floor(score) > 0) {
-        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_5050_dots.svg' width='50'>";
-    }
-    for (i = Math.ceil(score); i < maxScore; i++) {
-        coins += "<img src='" + ocargo.Drawing.imageDir + "coins/coin_empty_dots.svg' width='50'>";
-    }
-    coins += "      " + score + "/" + maxScore;
-    coins += "</div>";
-
-    return coins;
+/* Return number of coins for each type*/
+ocargo.PathFinder.prototype.getNumCoins = function(score, maxScore) {
+    return {whole: Math.floor(score), half: score - Math.floor(score) > 0 ? 1 : 0, zero: maxScore - Math.ceil(score)};
 };
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
@@ -158,7 +146,7 @@ function getOptimalPath(nodes, destinations) {
         for (var i = 0; i < fragPath.length; i++) {
             if (!fragPath[i]) {
                 return null;
-            } 
+            }
             else {
                 fullPath = fullPath.concat(fragPath[i].slice(1));
             }
@@ -184,7 +172,7 @@ function getOptimalPath(nodes, destinations) {
             array.splice(i, 0, current);
         }
     }
-    
+
     var start = nodes[0];
     var bestScore = Number.POSITIVE_INFINITY;
     var bestPermutationPath = null;
@@ -194,7 +182,7 @@ function getOptimalPath(nodes, destinations) {
         destinationNodes.push(destinations[i].node);
     }
     permute(destinationNodes);
-    
+
     for (var i = 0; i < permutations.length; i++) {
         var permutation = permutations[i];
         var permutationPath = getPermutationPath(start, permutation, nodes);
@@ -230,7 +218,7 @@ function aStar(origin, destination, nodes) {
         for (var i = 0; i < openSet.lenght; i++) {
             if (reversePriority[nodes.indexOf(openSet[i])] < reversePriority[smallestInReverse]) {
                 smallestInOpen = i;
-                smallestInReverse = nodes.indexOf(openSet[i]); 
+                smallestInReverse = nodes.indexOf(openSet[i]);
             }
         }
         current = openSet[smallestInOpen];

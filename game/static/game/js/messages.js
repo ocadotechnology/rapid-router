@@ -1,4 +1,3 @@
-
 var ocargo = ocargo || {};
 
 // Object containing helper js objects (buttons etc).
@@ -20,7 +19,7 @@ ocargo.jsElements = {
 //FIXME: actually use Django's internationalisation framework.
 ocargo.messages = {
     nextEpisode: function(episode, random) {
-        return "Well done, you've completed the episode! <br> Are you ready for the next " + 
+        return "Well done, you've completed the episode! <br> Are you ready for the next " +
             "challenge? " + (random ? "Or try one of this episode's random levels!" : "") ;
     },
 
@@ -49,7 +48,7 @@ ocargo.messages = {
         "Code - the van must wait for green.",
     alreadyDelivered: "You have already delivered to that destination! You must only deliver " +
         "once to each destination.",
-    undeliveredDestinations: "There are destinations that have not been delivered to! " + 
+    undeliveredDestinations: "There are destinations that have not been delivered to! " +
         "Ensure you visit all destinations and use the deliver command at each one.",
     offRoad : function(correctSteps){
         if (correctSteps === 0) {
@@ -72,15 +71,15 @@ ocargo.messages = {
     noStartOrEnd: "In " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon') +
         "<b>Map</b> menu, click on  " +
-        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon') + 
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon') +
         "<b>Mark start</b> or " +
-        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') + 
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') +
         "<b>Mark end</b> then select the square where you want the road to start or end.",
-    somethingWrong: "Something is wrong...", 
+    somethingWrong: "Something is wrong...",
     noStartEndRouteSubtitle: "There is no way to get from the start to the destination.",
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
     noBlocksSubtitle: "You haven't selected any blocks to use in your level.",
-    noBlocks: "Go to " + 
+    noBlocks: "Go to " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/blockly.svg', 'popupIcon') +
         "<b>Blocks</b> and select some to use. Remember to include the move and turn commands!",
     levelEditorPCSubtitle: "To get started, draw a road. <br><br> Click on the square you want " +
@@ -91,21 +90,21 @@ ocargo.messages = {
     levelEditorHelpText: "In " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon') +
         "<b>Map</b> menu, click " +
-        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon') + 
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon') +
         "<b>Mark start</b> and select a square for your road to start from. The starting point " +
         "can only be placed on dead ends. <br> Make sure you use " +
-        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') + 
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') +
         "<b>Mark end</b> to select a final destination. <br><br> To remove road, click the " +
-        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/delete_road.svg', 'popupIcon') + 
-        "<b>Delete road</b> button and select a section to get rid of. <br><br> Click " + 
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/delete_road.svg', 'popupIcon') +
+        "<b>Delete road</b> button and select a section to get rid of. <br><br> Click " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/random.svg', 'popupIcon') +
         "<b>Random</b> if you want the computer to create a random route for you.<br><br> Select " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/decor.svg', 'popupIcon') +
         "<b>Scenery</b> and choose trees, bushes and more to place around your road. These will " +
-        "show in the top left corner - drag them into place. Delete items by dragging them into " + 
+        "show in the top left corner - drag them into place. Delete items by dragging them into " +
         "the bin in the bottom right. <br> To rotate a traffic light, " +
         "simply double click on it. <i>Remember, using the traffic lights is not covered until " +
-        "level 44.</i><br><br> Choose a character to play with from the " + 
+        "level 44.</i><br><br> Choose a character to play with from the " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/character.svg', 'popupIcon') +
         "<b>Character</b> menu. <br><br> Select which blocks of code you want to be used to " +
         "create a route for your character from the " +
@@ -140,6 +139,33 @@ ocargo.messages = {
     totalScore: function(score, maxScore) {
         return "Your total score: " + score + "/" + maxScore;
     },
+
+    // End level message
+    endLevelMsg: function(a) {
+        switch (a){
+            case 'pathLonger':
+                return this.pathLonger;
+                break;
+            case 'algorithmLonger':
+                return this.algorithmLonger;
+                break;
+            case 'algorithmShorter':
+                return this.algorithmShorter;
+                break;
+            case 'scorePerfect':
+                return this.scorePerfect;
+                break;
+            default:
+                return "";
+        }
+    },
+    addNewLine: function(arr){
+        var html = '';
+        for(var i = 0 ; i < arr.length ; i++ ){
+            html += arr[i] + '<br>';
+        }
+        return html;
+    },
     pathScore: "Route score: ",
     pathLonger: "Try finding a shorter route to the destination. ",
     algorithmScore: "Algorithm score: ",
@@ -155,7 +181,7 @@ ocargo.messages = {
     procMissingBodyError: "Perhaps try looking at your 'define' blocks? ",
     procDupNameError: "Perhaps try checking the names of your 'define' blocks? ",
     procCallNameError: "Perhaps try checking the names in your 'call' blocks? ",
-    
+
     pythonCommands: "<p>Run the following commands on the van object v, e.g. v.move_forwards()</p>" +
         	"<div class=\"row\">" +
             "<div class=\"large-4 columns\">" +
