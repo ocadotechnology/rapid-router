@@ -8,7 +8,7 @@ ocargo.BlocklyCompiler.prototype.procedureBindings = null;
 ocargo.BlocklyCompiler.prototype.procedures = null;
 ocargo.BlocklyCompiler.prototype.program = null;
 
-ocargo.BlocklyCompiler.prototype.compile = function() 
+ocargo.BlocklyCompiler.prototype.compile = function()
 {
     this.compileProcedures();
     this.compileProgram();
@@ -20,7 +20,7 @@ ocargo.BlocklyCompiler.prototype.compile = function()
 ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
     this.procedures = {};
     this.procedureBindings = [];
-    
+
     var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
     for (var i = 0; i < procBlocks.length; i++) {
         var block = procBlocks[i];
@@ -212,7 +212,7 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
         } else if (block.type === 'controls_whileUntil') {
         	commands.push(this.createWhileUntil(block));
         } else if (block.type === 'controls_if') {
-        	commands.push(this.createIf(block));            
+        	commands.push(this.createIf(block));
         } else if (block.type === 'call_proc') {
             commands.push(this.createProcedureCall(block));
         }
@@ -222,6 +222,10 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
 
     return commands;
 };
+
+ocargo.BlocklyCompiler.prototype.simplifyBlock = function(block){
+    return new Block(block.id, block.type);
+}
 
 /** Conditions **/
 
@@ -284,21 +288,199 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
     };
 };
 
+/** Mobile Code **/
+
+ocargo.BlocklyCompiler.prototype.mobileCompile = function(types) {
+    var blocks = []
+    for (var i = 0 ; i < types.length ; i++ ){
+        blocks.push(new Block(i+1, types[i]));
+    }
+
+    this.program = new ocargo.Program();
+    var thread = new ocargo.Thread(0);
+    thread.stack.push(this.mobileCreateSequence(blocks));
+    this.program.threads.push(thread);
+    return this.program;
+}
+
+ocargo.BlocklyCompiler.prototype.mobileCreateSequence = function(blocks) {
+    var commands = [];
+
+    var block = blocks.shift();
+    while (block) {
+        if (block.type === 'move_forwards') {
+            commands.push(new ForwardCommand(block));
+        } else if (block.type === 'turn_left') {
+            commands.push(new TurnLeftCommand(block));
+        } else if (block.type === 'turn_right') {
+            commands.push(new TurnRightCommand(block));
+        } else if (block.type === 'turn_around') {
+            commands.push(new TurnAroundCommand(block));
+        } else if (block.type === 'wait') {
+            commands.push(new WaitCommand(block));
+        } else if (block.type === 'deliver') {
+            commands.push(new DeliverCommand(block));
+        }
+        //} else if (block.type === 'controls_repeat_until') {
+        //    commands.push(this.mobileCreateRepeatUntil(block));
+        //} else if (block.type === 'controls_repeat_while') {
+        //    commands.push(this.mobileCreateRepeatWhile(block));
+        //} else if (block.type === 'controls_repeat') {
+        //    commands.push(this.mobileCreateRepeat(block));
+        //} else if (block.type === 'controls_whileUntil') {
+        //    commands.push(this.mobileCreateWhileUntil(block));
+        //} else if (block.type === 'controls_if') {
+        //    commands.push(this.mobileCreateIf(block));
+        //} else if (block.type === 'call_proc') {
+        //    commands.push(this.mobileCreateProcedureCall(block));
+        //}
+
+        block = blocks.shift();
+    }
+
+    return commands;
+};
+
+/** Instructions **/
+
+// New completely custom repeat until and repeat while blocks
+
+ocargo.BlocklyCompiler.prototype.mobileCreateRepeatUntil = function(block, conditionBlock) {
+    var condition;
+    if (conditionBlock === null || (condition = this.mobileGetCondition(conditionBlock)) === null) {
+        throw ocargo.messages.whileConditionError;
+    }
+
+    // negate condition for repeat until
+    condition = this.negateCondition(condition);
+
+    var bodyBlock = block.inputList[1].connection.targetBlock();
+    if (bodyBlock === null) {
+        throw ocargo.messages.whileBodyError;
+    }
+    return new While(condition, this.createSequence(bodyBlock), block);
+};
+
+ocargo.BlocklyCompiler.prototype.mobileCreateRepeatWhile = function(block) {
+    var conditionBlock = block.inputList[0].connection.targetBlock();
+    if (conditionBlock === null) {
+        throw ocargo.messages.whileConditionError;
+    }
+    var condition = this.getCondition(conditionBlock);
+
+    var bodyBlock = block.inputList[1].connection.targetBlock();
+    if (bodyBlock === null) {
+        throw ocargo.messages.whileBodyError;
+    }
+    return new While(condition, this.createSequence(bodyBlock), block);
+};
+
+ocargo.BlocklyCompiler.prototype.mobileCreateRepeat = function(block) {
+    var bodyBlock = block.inputList[1].connection.targetBlock();
+    if (bodyBlock === null) {
+        throw ocargo.messages.whileBodyError;
+    }
+    return new While(
+        this.counterCondition(block, parseInt(block.inputList[0].fieldRow[1].text_)),
+        this.createSequence(bodyBlock),
+        block);
+};
+
+ocargo.BlocklyCompiler.prototype.mobileCreateWhileUntil = function(block) {
+    var conditionBlock = block.inputList[0].connection.targetBlock();
+    if (conditionBlock === null) {
+        throw ocargo.messages.whileConditionError;
+    }
+    var condition = this.getCondition(conditionBlock);
+    if (block.inputList[0].fieldRow[1].value_ == 'UNTIL') {
+        condition = this.negateCondition(condition);
+    }
+
+    var bodyBlock = block.inputList[1].connection.targetBlock();
+    if (bodyBlock === null) {
+        throw ocargo.messages.whileBodyError;
+    }
+    return new While(condition,	this.createSequence(bodyBlock), block);
+};
+
+ocargo.BlocklyCompiler.prototype.mobileCreateIf = function(block) {
+    var conditionalCommandSets = [];
+
+    var elseCount = block.elseCount_ || 0;
+    var i = 0;
+    while (i < block.inputList.length - elseCount) {
+        var input = block.inputList[i];
+        var condition;
+
+        if (input.name.indexOf('IF') === 0) {
+            var conditionBlock = input.connection.targetBlock();
+            if (conditionBlock === null) {
+                throw ocargo.messages.ifConditionError;
+            }
+            condition = this.getCondition(conditionBlock);
+        } else if (input.name.indexOf('DO') === 0) {
+            var conditionalCommandSet = {};
+            conditionalCommandSet.condition = condition;
+            conditionalCommandSet.commands = this.createSequence(input.connection.targetBlock());
+            conditionalCommandSets.push(conditionalCommandSet);
+        }
+
+        i++;
+    }
+
+    if (elseCount === 1) {
+        var elseBody = this.createSequence(
+            block.inputList[block.inputList.length - 1].connection.targetBlock());
+    }
+
+    return new If(conditionalCommandSets, elseBody, block);
+};
+
+ocargo.BlocklyCompiler.prototype.mobileCreateProcedureCall = function(block) {
+    var name = block.inputList[0].fieldRow[2].text_;
+    if (name === "") {
+        throw ocargo.messages.procCallNameError;
+    }
+
+    var procCall = new ProcedureCall(block);
+    this.procedureBindings.push({call:procCall,name:name});
+    return procCall;
+};
+
+ocargo.BlocklyCompiler.prototype.mobileGetCondition = function(conditionBlock) {
+    if (conditionBlock.type === 'road_exists') {
+        var selection = conditionBlock.inputList[0].fieldRow[1].value_;
+        return this.roadCondition(conditionBlock, selection);
+    } else if (conditionBlock.type === 'dead_end') {
+        return this.deadEndCondition(conditionBlock);
+    } else if (conditionBlock.type === 'at_destination') {
+        return this.atDestinationCondition(conditionBlock);
+    } else if (conditionBlock.type === 'logic_negate') {
+        return this.negateCondition(
+            this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
+    } else if (conditionBlock.type === 'traffic_light') {
+        return this.trafficLightCondition(
+            conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
+    } else{
+        return null;
+    }
+};
+
 ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
 	Blockly.Python.variableDB_.reset();
-	
+
 	var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
 	var startBlocks = ocargo.blocklyControl.getStartBlocks();
-	
+
     var code = "";
-    
+
     for (var i = 0; i < procBlocks.length; i++) {
     	code += '\n' + Blockly.Python.blockToCode(procBlocks[i]);
     }
-	
+
 	for (var i = 0; i < startBlocks.length; i++) {
 		code += '\n' + Blockly.Python.blockToCode(startBlocks[i]);
 	}
-	
+
 	return code;
 };

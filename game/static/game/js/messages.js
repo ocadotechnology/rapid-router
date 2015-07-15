@@ -173,7 +173,7 @@ ocargo.messages = {
     algorithmShorter: "That solution isn't quite right. Read the level instructions or click Help.",
     scorePerfect: "Congratulations! You've aced it. ",
 
-    // Malormed program.
+    // Malformed program.
     whileConditionError: "Perhaps try looking at your 'repeat' blocks? ",
     whileBodyError: "Perhaps try looking at your 'repeat' blocks? ",
     ifConditionError: "Perhaps try looking at your 'if' blocks? ",

@@ -8,7 +8,7 @@ ocargo.BlocklyControl = function () {
     this.blocklyCustomisations = new ocargo.BlocklyCustomisations();
     this.blocklyCustomisations.widenFlyout();
     this.blocklyCustomisations.setupBigCodeMode();
-    
+
     this.blocklyDiv = document.getElementById('blockly_holder');
     this.toolbox = document.getElementById('blockly_toolbox');
     Blockly.inject(this.blocklyDiv, {
@@ -27,16 +27,17 @@ ocargo.BlocklyControl = function () {
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
 ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH = 1;
-ocargo.BlocklyControl.IMAGE_WIDTH = 20; 
+ocargo.BlocklyControl.IMAGE_WIDTH = 20;
 ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT = CHARACTER_HEIGHT;
 ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH = CHARACTER_WIDTH;
 
 ocargo.BlocklyControl.prototype.incorrectBlock = null;
 ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
 
-ocargo.BlocklyControl.prototype.prepare = function() {
+ocargo.BlocklyControl.prototype.prepare = function(blocks) {
     try {
-        return {success:true, program: ocargo.blocklyCompiler.compile()};
+        return {success:true,
+                program: blocks? ocargo.blocklyCompiler.mobileCompile(blocks) : ocargo.blocklyCompiler.compile()};
     } catch (error) {
         return {success:false, error: ocargo.messages.compilationError + "<br><br>" + error};
     }
@@ -125,7 +126,7 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
     blocks.sort(function(a, b) {
         return a.id - b.id;
     });
-    
+
     var startCount = this.numberOfStartBlocks;
     var clean = true;
 
@@ -258,13 +259,13 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
             n += count(bodyBlock);
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
-        } 
+        }
         else if (block.type === 'controls_repeat') {
             var bodyBlock = block.inputList[1].connection.targetBlock();
             n += count(bodyBlock);
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
-        } 
+        }
         else if (block.type === 'controls_if') {
             var elseCount = block.elseCount_ || 0;
 
@@ -287,19 +288,19 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
 
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
-        } 
+        }
         else if (block.type === 'call_proc' || block.type === 'move_forwards' ||
                  block.type === 'turn_left' || block.type === 'turn_right' ||
                  block.type === 'turn_around' || block.type === 'wait' ||
                  block.type === 'deliver') {
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
-        } 
+        }
         else if (block.type === 'logic_negate') {
             var conditionBlock = block.inputList[0].connection.targetBlock();
             n += count(conditionBlock);
         }
-        
+
         return n;
     }
 };

@@ -401,7 +401,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             type: 'popup',
             id: this.vanId,
             popupType: 'WIN',
-            popupMessage:'',
+            popupMessage:result.popupMessage,
             totalScore: result.totalScore,
             maxScore: result.maxScore,
             routeCoins : result.routeCoins,

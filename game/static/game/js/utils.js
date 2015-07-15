@@ -6,7 +6,7 @@ ocargo.utils = {
     sortObjects : function(arr,key){
 
         var sortedArray = arr.sort(function(a, b) {
-            
+
             if (a[key] < b[key]) {
                 return -1;
             }

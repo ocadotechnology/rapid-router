@@ -69,7 +69,8 @@ ocargo.PathFinder.prototype.getScore = function() {
             pathLengthScore: pathLengthScore,
             maxScoreForPathLength: this.maxScoreForPathLength,
             instrScore: instrScore,
-            maxScoreForNumberOfInstructions: this.maxScoreForNumberOfInstructions};
+            maxScoreForNumberOfInstructions: this.maxScoreForNumberOfInstructions,
+            popupMessage: ocargo.messages.endLevelMsg(performance)};
 };
 
 /* Return number of coins for each type*/

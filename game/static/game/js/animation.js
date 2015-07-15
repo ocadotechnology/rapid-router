@@ -215,7 +215,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 
 					levelMsg.push(ocargo.messages.totalScore(a.totalScore, a.maxScore));
 
-					levelMsg.push(ocargo.messages.endLevelMsg(a.performance));
+					levelMsg.push(leadMsg);
 
 					if(a.performance != "scorePerfect"){
 						buttons += ocargo.button.getTryAgainButtonHtml();
@@ -251,7 +251,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					        }
 					    }
 					}
-					leadMsg = leadMsg + ocargo.messages.addNewLine(levelMsg);
+					leadMsg = ocargo.messages.addNewLine(levelMsg);
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
@@ -293,7 +293,7 @@ ocargo.Animation.prototype.updateFuelGauge = function(fuelPercentage) {
     document.getElementById('fuelGaugePointer').style.webkitTransform = rotation;
 };
 
-ocargo.Animation.prototype.serializeAnimationQueue = function(){
+ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 	var replacer = function (key, val) {
 		function clone(obj) {
 			var target = {};
@@ -321,6 +321,6 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(){
 		return val;
 	}
 
-	ocargo.game.runProgramAndPrepareAnimation();
+	ocargo.game.runProgramAndPrepareAnimation(blocks);
 	return JSON.stringify(ocargo.animation.animationQueue, replacer);
 }
