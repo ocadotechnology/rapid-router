@@ -356,6 +356,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
     var failMessage = ocargo.messages.outOfInstructions;
 
     if(destinations.length === 1) {
+        // If there's only one destination, check that the car stopped on the destination node
         success = this.van.getPosition().currentNode === destinations[0].node;
 
         if(success) {
@@ -370,6 +371,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
         }
     }
     else {
+        // Checks whether all the destinations have been delivered
         success = true;
         for(var i = 0; i < destinations.length; i++) {
             success &= destinations[i].visited;
