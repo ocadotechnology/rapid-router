@@ -289,7 +289,9 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
 };
 
 /** Mobile Code **/
-
+/* Block types in the list passed in from mobile are converted to simplified Block objects
+   id is assigned to each block in the order it appears in the array
+ */
 ocargo.BlocklyCompiler.prototype.mobileCompile = function(types) {
     var blocks = []
     for (var i = 0 ; i < types.length ; i++ ){

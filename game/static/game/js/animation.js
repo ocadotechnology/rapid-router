@@ -321,6 +321,14 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 		return val;
 	}
 
+	/* Use for calculating algorithm score as blocks used by mobile are not added to Blockly workspace */
+	ocargo.game.mobileBlocks = blocks.length;
 	ocargo.game.runProgramAndPrepareAnimation(blocks);
-	return JSON.stringify(ocargo.animation.animationQueue, replacer);
+
+	/* Reducing one dimension of the animationQueue to facilitate decoding on mobile side */
+	var result = [];
+	for ( var i = 0 ; i < ocargo.animation.animationQueue.length ; i++) {
+		result = result.concat(ocargo.animation.animationQueue[i]);
+	}
+	return JSON.stringify(result, replacer);
 }
