@@ -131,12 +131,14 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.stop_engine,
             description: 'stopping engine'
         });
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.crash,
             description: 'crash sound'
         });
@@ -183,12 +185,14 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.failure,
             description: 'failure sound'
         });
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.stop_engine,
             description: 'stopping engine'
         });
@@ -218,12 +222,14 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.failure,
             description: 'failure sound'
         });
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.stop_engine,
             description: 'stopping engine'
         });
@@ -262,6 +268,7 @@ ocargo.Model.prototype.makeDelivery = function(destination) {
 
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.delivery,
         description: 'van sound: delivery'
     });
@@ -323,12 +330,14 @@ ocargo.Model.prototype.deliver = function() {
 
             ocargo.animation.appendAnimation({
                 type: 'callable',
+                functionType: 'playSound',
                 functionCall: ocargo.sound.failure,
                 description: 'failure sound'
             });
 
             ocargo.animation.appendAnimation({
                 type: 'callable',
+                functionType: 'playSound',
                 functionCall: ocargo.sound.stop_engine,
                 description: 'stopping engine'
             });
@@ -390,6 +399,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.stop_engine,
         description: 'stopping engine'
     });
@@ -419,6 +429,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
         // Winning sound
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.win,
             description: 'win sound'
         });
@@ -449,6 +460,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
         // Failure sound
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.failure,
             description: 'failure sound'
         });

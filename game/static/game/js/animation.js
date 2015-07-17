@@ -331,6 +331,16 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 		result = result.concat(ocargo.animation.animationQueue[i]);
 	}
 
+	/* Replaces type with functionType if the animation is callable as api cannot pass function to mobile app */
+	for (var i = 0 ; i < result.length ; i ++ ){
+		for (var j = 0 ; j < result[i].length ; j++){
+			if(result[i][j].functionType){
+				result[i][j]["type"] = result[i][j].functionType;
+				delete result[i][j]["functionType"];
+			}
+		}
+	}
+
 	var json = JSON.stringify(result, replacer)
 	webkit.messageHandlers.handler.postMessage(json)
 	return json;

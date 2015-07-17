@@ -102,6 +102,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     // Starting sound
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.starting,
         description: 'starting sound',
         animationLength: 820
@@ -110,6 +111,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
 
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.start_engine,
         description: 'starting engine',
     });
@@ -118,12 +120,14 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     // Set controls ready for user to reset
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'onStopControls',
         functionCall: function() {ocargo.game.onStopControls();},
         description: 'onStopControls'
     });
 
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.stop_engine,
         description: 'stopping engine'
     });

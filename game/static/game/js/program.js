@@ -230,6 +230,7 @@ ProcedureCall.prototype.execute = function(thread) {
 function queueHighlight(model, block) {
 	ocargo.animation.appendAnimation({
 		type: 'callable',
+		functionType: 'highlight',
 		functionCall: makeHighLightCallable(block.id),
 		description: 'Blockly highlight: ' + block.type,
 		blockId: block.id
@@ -239,6 +240,7 @@ function queueHighlight(model, block) {
 function queueHighlightIncorrect(block){
 	ocargo.animation.appendAnimation({
 		type: 'callable',
+		functionType: 'highlightIncorrect',
 		functionCall: makeHighLightIncorrectCallable(block.id),
 		description: 'Blockly highlight incorrect: ' + block.type,
 		blockId: block.id
