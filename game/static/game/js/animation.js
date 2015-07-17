@@ -330,5 +330,8 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 	for ( var i = 0 ; i < ocargo.animation.animationQueue.length ; i++) {
 		result = result.concat(ocargo.animation.animationQueue[i]);
 	}
-	return JSON.stringify(result, replacer);
+
+	var json = JSON.stringify(result, replacer)
+	webkit.messageHandlers.handler.postMessage(json)
+	return json;
 }
