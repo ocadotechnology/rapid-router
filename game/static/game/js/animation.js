@@ -312,7 +312,7 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 	}
 
 	var json = JSON.stringify(result, replacer);
-	if(ocargo.utils.getURLParameter('mode') == 'ios'){
+	if(ocargo.utils.isIOSMode()){
         webkit.messageHandlers.handler.postMessage(json);
     }
 	return json;

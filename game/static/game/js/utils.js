@@ -33,6 +33,9 @@ ocargo.utils = {
 
     getURLParameter : function (name) {
         return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
+    },
+    isIOSMode: function () {
+        return this.getURLParameter('mode') === 'ios';
     }
 
 };

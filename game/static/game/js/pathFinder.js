@@ -85,7 +85,7 @@ ocargo.PathFinder.prototype.getTravelledPathScore = function() {
 
 ocargo.PathFinder.prototype.getScoreForNumberOfInstructions = function() {
 
-    var blocksUsed = ocargo.game.mobileBlocks ? ocargo.game.mobileBlocks : ocargo.blocklyControl.getActiveBlocksCount();
+    var blocksUsed = ocargo.utils.isIOSMode() ? ocargo.game.mobileBlocks : ocargo.blocklyControl.getActiveBlocksCount();
     var algorithmScore = 0;
     var difference = this.maxScoreForNumberOfInstructions;
     for (var i = 0; i < this.modelSolution.length; i++) {
