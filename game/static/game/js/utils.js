@@ -29,6 +29,10 @@ ocargo.utils = {
             errMsg = e.message || ie.errorMessage;
         var errSrc = (e.filename || ie.errorUrl) + ': ' + (e.lineno || ie.errorLine);
         ga('send', 'event', 'JavaScript Error', errMsg, errSrc, { 'nonInteraction': 1 });
+    },
+
+    getURLParameter : function (name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
     }
 
 };

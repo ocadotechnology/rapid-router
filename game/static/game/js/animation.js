@@ -27,18 +27,11 @@ ocargo.Animation.prototype.isFinished = function() {
 	return this.finished;
 };
 
-ocargo.Animation.prototype.wasJustReset = function() {
-	return (!this.isFinished() && this.animationQueue.length === 1 &&
-			this.animationQueue[0].length === 1 && this.animationQueue[0][0].length === 0);
-};
-
 ocargo.Animation.prototype.resetAnimation = function() {
-	this.animationQueue = [[[]]];
+	this.animationQueue = [[]];
 
 	this.timestamp = 0;
-	this.subTimestamp = 0;
 	this.lastTimestamp = 0;
-	this.lastSubTimestamp = 0;
 	this.isPlaying = false;
 	this.currentlyAnimating = false;
 	this.finished = false;
@@ -74,24 +67,13 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 	var timestampQueue = this.animationQueue[this.timestamp];
 
 	if (timestampQueue) {
-		// Perform all events for this subTimestamp
-		var subTimestampQueue = timestampQueue[this.subTimestamp];
-		if (subTimestampQueue) {
-			while (subTimestampQueue.length > 0) {
-				var delay = this.performAnimation(subTimestampQueue.shift());
-				maxDelay = Math.max(maxDelay, delay);
-			}
+		// Perform all events for this timestamp
+		while (timestampQueue.length > 0) {
+			var delay = this.performAnimation(timestampQueue.shift());
+			maxDelay = Math.max(maxDelay, delay);
 		}
-
-		// And move onto the next subTimestamp
-		this.subTimestamp += 1;
-	}
-
-	// Go to the next timestamp if there are no events for this one
-	// or if we've performed them all already
-	if (!timestampQueue || this.subTimestamp >= timestampQueue.length) {
+		// And move onto the next timestamp
 		this.timestamp += 1;
-		this.subTimestamp = 0;
 	}
 
 	// Check if we've performed all events we have
@@ -125,26 +107,19 @@ ocargo.Animation.prototype.pauseAnimation = function() {
 };
 
 ocargo.Animation.prototype.appendAnimation = function(a) {
-	this.animationQueue[this.lastTimestamp][this.lastSubTimestamp].push(a);
-};
-
-ocargo.Animation.prototype.startNewSubTimestamp = function() {
-	this.lastSubTimestamp += 1;
-
-	this.animationQueue[this.lastTimestamp][this.lastSubTimestamp] = [];
+	this.animationQueue[this.lastTimestamp].push(a);
 };
 
 ocargo.Animation.prototype.startNewTimestamp = function() {
 	this.lastTimestamp += 1;
-	this.lastSubTimestamp = 0;
 
-	this.animationQueue[this.lastTimestamp] = [[]];
+	this.animationQueue[this.lastTimestamp] = [];
 };
 
 ocargo.Animation.prototype.performAnimation = function(a) {
 	// animation length is either default or may be custom set
 	var animationLength = a.animationLength || ANIMATION_LENGTH;
-
+	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
 			animationLength = a.animationLength || 0;
@@ -306,9 +281,9 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 		}
 
 		if (key == "previousNode" || key == "currentNode"){
-			/* Replaces array of nodes to array of coordinates as nodes have circular reference */
+			// Replaces array of nodes to array of coordinates as nodes have circular reference
 			var result = [];
-			var modifiedVal = clone(val);
+			var modifiedVal = clone(val); // val has to be cloned to avoid modifying the original nodes
 			for(var i = 0 ; i < modifiedVal.connectedNodes.length ; i++){
 				result.push({coordinate: modifiedVal.connectedNodes[i].coordinate});
 			}
@@ -319,18 +294,13 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 			return val.coordinate;
 		}
 		return val;
-	}
+	};
 
 	/* Use for calculating algorithm score as blocks used by mobile are not added to Blockly workspace */
 	ocargo.game.mobileBlocks = blocks.length;
 	ocargo.game.runProgramAndPrepareAnimation(blocks);
 
-	/* Reducing one dimension of the animationQueue to facilitate decoding on mobile side */
-	var result = [];
-	for ( var i = 0 ; i < ocargo.animation.animationQueue.length ; i++) {
-		result = result.concat(ocargo.animation.animationQueue[i]);
-	}
-
+	var result = ocargo.animation.animationQueue;
 	/* Replaces type with functionType if the animation is callable as api cannot pass function to mobile app */
 	for (var i = 0 ; i < result.length ; i ++ ){
 		for (var j = 0 ; j < result[i].length ; j++){
@@ -341,7 +311,9 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 		}
 	}
 
-	var json = JSON.stringify(result, replacer)
-	webkit.messageHandlers.handler.postMessage(json)
+	var json = JSON.stringify(result, replacer);
+	if(ocargo.utils.getURLParameter('mode') == 'ios'){
+        webkit.messageHandlers.handler.postMessage(json);
+    }
 	return json;
 }

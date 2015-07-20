@@ -12,7 +12,6 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, maxFue
     }
 
     this.timestamp = 0;
-    this.subTimestamp = 0;
 
     this.vanId = vanId || 0;
 
@@ -34,7 +33,6 @@ ocargo.Model.prototype.reset = function(vanId) {
     }
 
     this.timestamp = 0;
-    this.subTimestamp = 0;
     this.reasonForTermination  =  null;
 
     if (vanId !== null && vanId !== undefined) {
@@ -55,7 +53,7 @@ ocargo.Model.prototype.observe = function(desc) {
         description: 'van observe: ' + desc
     });
 
-    this.incrementSubTime();
+    this.incrementTime();
 };
 
 ocargo.Model.prototype.isRoadForward = function() {
@@ -502,17 +500,10 @@ ocargo.Model.prototype.getDestinationForNode = function(node) {
 // that time has incremented and they should generate events
 ocargo.Model.prototype.incrementTime = function() {
     this.timestamp += 1;
-    this.subTimestamp = 0;
 
     ocargo.animation.startNewTimestamp();
 
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
     }
-};
-
-ocargo.Model.prototype.incrementSubTime = function() {
-    this.subTimestamp += 1;
-
-    ocargo.animation.startNewSubTimestamp();
 };
