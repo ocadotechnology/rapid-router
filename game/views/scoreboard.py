@@ -50,7 +50,7 @@ def scoreboard(request):
     csv_export = 'export' in request.POST
 
     if csv_export:
-        return scoreboard_csv(student_data, level_ids)
+        return scoreboard_csv(student_data, sorted_levels_by(level_ids))
     else:
         return scoreboard_view(request, form, student_data, headers)
 
@@ -91,11 +91,11 @@ def scoreboard_data(user, level_ids, class_ids):
     return data_and_headers_for(students, level_ids)
 
 def data_and_headers_for(students, level_ids):
-    levels_sorted = sort_levels(Level.objects.filter(id__in=level_ids))
+    levels_sorted = sorted_levels_by(level_ids)
 
     score_for_multiple_levels_is_displayed = len(levels_sorted) > 1
 
-    level_names = map(lambda level: level.name, levels_sorted)
+    level_names = map(str, levels_sorted)
 
     if score_for_multiple_levels_is_displayed:
         headers = Multiple_Levels_Header + level_names
@@ -106,6 +106,9 @@ def data_and_headers_for(students, level_ids):
 
     return student_data, headers
 
+
+def sorted_levels_by(level_ids):
+    return sort_levels(Level.objects.filter(id__in=level_ids))
 
 def first(elements):
     if len(elements) == 0:

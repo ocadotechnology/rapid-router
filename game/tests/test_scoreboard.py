@@ -28,7 +28,7 @@ class ScoreboardTestCase(TestCase):
 
         student_data, headers = scoreboard_data(Teacher(), level_ids, [clas.id])
 
-        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'1', u'2']))
+        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'Level 1', u'Level 2']))
         assert_that(student_data, has_length(2))
 
         assert_student_row(student_row=student_data[0],
@@ -86,7 +86,7 @@ class ScoreboardTestCase(TestCase):
 
         student_data, headers = scoreboard_data(Student(student), level_ids, [clas.id])
 
-        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'1', u'2']))
+        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'Level 1', u'Level 2']))
         assert_that(student_data, has_length(2))
 
         assert_student_row(student_row=student_data[0],
@@ -143,7 +143,7 @@ class ScoreboardTestCase(TestCase):
 
         student_data, headers = scoreboard_data(Student(student), level_ids, [clas.id])
 
-        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'1', u'2']))
+        assert_that(headers, equal_to(['Class', 'Name', 'Total Score', 'Total Time', 'Progress', u'Level 1', u'Level 2']))
         assert_that(student_data, has_length(1))
 
         assert_student_row(student_row=student_data[0],
