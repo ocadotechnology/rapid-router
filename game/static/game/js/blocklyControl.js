@@ -177,8 +177,7 @@ ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     // Use the user's last attempt if available, else use whatever's in local storage
     if (WORKSPACE) {
         ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
-    }
-    else {
+    } else {
         ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
     }
 
@@ -259,14 +258,12 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
             n += count(bodyBlock);
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
-        }
-        else if (block.type === 'controls_repeat') {
+        } else if (block.type === 'controls_repeat') {
             var bodyBlock = block.inputList[1].connection.targetBlock();
             n += count(bodyBlock);
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
-        }
-        else if (block.type === 'controls_if') {
+        } else if (block.type === 'controls_if') {
             var elseCount = block.elseCount_ || 0;
 
             for (var i = 0; i < block.inputList.length - elseCount; i++) {
@@ -288,15 +285,13 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
 
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
-        }
-        else if (block.type === 'call_proc' || block.type === 'move_forwards' ||
+        } else if (block.type === 'call_proc' || block.type === 'move_forwards' ||
                  block.type === 'turn_left' || block.type === 'turn_right' ||
                  block.type === 'turn_around' || block.type === 'wait' ||
                  block.type === 'deliver') {
             var nextBlock = block.nextConnection.targetBlock();
             n += count(nextBlock);
-        }
-        else if (block.type === 'logic_negate') {
+        } else if (block.type === 'logic_negate') {
             var conditionBlock = block.inputList[0].connection.targetBlock();
             n += count(conditionBlock);
         }
