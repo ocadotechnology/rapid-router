@@ -79,7 +79,7 @@ ocargo.Game.prototype.reset = function() {
     ocargo.animation.resetAnimation();
 };
 
-ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
+ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     this.reset();
 
     ocargo.event.sendEvent("PlayButtonPressed", { levelName: LEVEL_NAME,
@@ -88,7 +88,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
                                                   failures: this.failures,
                                                   pythonWorkspace: ocargo.pythonControl.getCode() });
 
-    var result = ocargo.controller.prepare();
+    var result = ocargo.controller.prepare(blocks);
     if (!result.success) {
         ocargo.sound.tension();
         ocargo.Drawing.startPopup(ocargo.messages.failTitle, "",
@@ -102,6 +102,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     // Starting sound
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.starting,
         description: 'starting sound',
         animationLength: 820
@@ -110,6 +111,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
 
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.start_engine,
         description: 'starting engine',
     });
@@ -118,12 +120,14 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function() {
     // Set controls ready for user to reset
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'onStopControls',
         functionCall: function() {ocargo.game.onStopControls();},
         description: 'onStopControls'
     });
 
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.stop_engine,
         description: 'stopping engine'
     });
@@ -197,7 +201,7 @@ ocargo.Game.prototype.allowCodeChanges = function(changesAllowed) {
 ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
     if (FUEL_GAUGE) {
         document.getElementById('fuelGauge').style.visibility='visible';
-        
+
         for(var i = 0; i < blocks.length; i++) {
             if(blocks[i].type === "turn_around" || blocks[i].type === "wait") {
                 return;
@@ -289,7 +293,7 @@ ocargo.Game.prototype.setupSliderListeners = function() {
         $('#paper').css('width', (100 - consoleSliderPosition) + '%');
         $('#tab_panes').css('width', consoleSliderPosition + '%');
         $('#direct_drive').css('left', consoleSliderPosition + '%');
-        
+
         ocargo.blocklyControl.redrawBlockly();
     };
 
@@ -384,7 +388,7 @@ ocargo.Game.prototype.setupTabs = function() {
         $('#clear_console').click(function (e) {
             $('#consoleOutput').text('');
         });
-        
+
         $('#van_commands_help').click(function (e) {
             var leadMsg = ocargo.messages.pythonCommands;
             ocargo.Drawing.startPopup("Python Commands", leadMsg, "", true);
@@ -393,7 +397,7 @@ ocargo.Game.prototype.setupTabs = function() {
         $('#convert_from_blockly').click(function (e) {
             ocargo.pythonControl.appendCode(ocargo.blocklyCompiler.workspaceToPython());
         });
-        
+
         tabs.python.setOnChange(function() {
             var tab = tabs.python;
             // Only clear console when changing *to* python?
@@ -432,7 +436,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     ocargo.animation.playAnimation();
                     $('#clear_console').click();
                 }
-                
+
             }
             else if (existingHtml == 'Pause') {
                 ocargo.game.onPauseControls();
@@ -472,7 +476,7 @@ ocargo.Game.prototype.setupTabs = function() {
                     ocargo.game.onPauseControls();
                 }
             });
-            
+
             ocargo.game.onStepControls();
             ocargo.game.currentTabSelected.select();
         });
@@ -563,7 +567,7 @@ ocargo.Game.prototype.setupTabs = function() {
             var empty = workspaces.length === 0;
             $('#load_pane .scrolling-table-wrapper').css('display',  empty ? 'none' : 'block');
             $('#load_pane #does_not_exist').css('display',  empty ? 'block' : 'none');
-            
+
             // But disable all the modal buttons as nothing is selected yet
             selectedWorkspace = null;
             $('#loadWorkspace').attr('disabled', 'disabled');
@@ -585,14 +589,14 @@ ocargo.Game.prototype.setupTabs = function() {
             // TODO Disable the tab to stop users clicking it multiple times
             // whilst waiting for the table data to load
             // JQuery currently throwing errors :()
-            
+
             ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
                 if (err !== null) {
                     ocargo.Drawing.startInternetDownPopup();
                     console.error(err);
                     return;
                 }
-                
+
                 loadInWorkspaces(workspaces);
             });
         });
@@ -602,7 +606,7 @@ ocargo.Game.prototype.setupTabs = function() {
             if (newName && newName !== "") {
                 var table = $("#saveWorkspaceTable");
                 var existingID = null;
-                
+
                 for (var i = 0; i < table[0].rows.length; i++) {
                      var row = table[0].rows[i];
                      var existingName = row.cells[0].innerHTML;
@@ -707,11 +711,11 @@ ocargo.Game.prototype.setupTabs = function() {
 
         var table = $('#'+tableName),
             sortedWorkspaces = [];
-        
+
         // Remove click listeners to avoid memory leak and remove all rows
         $('#'+tableName+' td').off('click');
         table.empty();
-        
+
         // Order them alphabetically
         sortedWorkspaces = ocargo.utils.sortObjects(workspaces,'name');
 
@@ -734,7 +738,7 @@ ocargo.Game.prototype.onPlayControls = function() {
     this.allowCodeChanges(false);
 
     document.getElementById('direct_drive').style.visibility='hidden';
-    
+
     ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
     ocargo.game.tabs.step.setEnabled(false);
 
@@ -765,9 +769,9 @@ ocargo.Game.prototype.onStepControls = function() {
 ocargo.Game.prototype.onStopControls = function() {
     this.allowCodeChanges(true);
 
-    // TODO make this hidden unless blocks are clear or something... 
+    // TODO make this hidden unless blocks are clear or something...
     document.getElementById('direct_drive').style.visibility='visible';
-    
+
     ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Play');
     ocargo.game.tabs.step.setEnabled(true);
 

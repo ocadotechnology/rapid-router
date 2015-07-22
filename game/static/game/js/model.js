@@ -12,7 +12,6 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, maxFue
     }
 
     this.timestamp = 0;
-    this.subTimestamp = 0;
 
     this.vanId = vanId || 0;
 
@@ -34,7 +33,6 @@ ocargo.Model.prototype.reset = function(vanId) {
     }
 
     this.timestamp = 0;
-    this.subTimestamp = 0;
     this.reasonForTermination  =  null;
 
     if (vanId !== null && vanId !== undefined) {
@@ -55,7 +53,7 @@ ocargo.Model.prototype.observe = function(desc) {
         description: 'van observe: ' + desc
     });
 
-    this.incrementSubTime();
+    this.incrementTime();
 };
 
 ocargo.Model.prototype.isRoadForward = function() {
@@ -131,12 +129,14 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.stop_engine,
             description: 'stopping engine'
         });
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.crash,
             description: 'crash sound'
         });
@@ -183,12 +183,14 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.failure,
             description: 'failure sound'
         });
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.stop_engine,
             description: 'stopping engine'
         });
@@ -218,12 +220,14 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.failure,
             description: 'failure sound'
         });
 
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.stop_engine,
             description: 'stopping engine'
         });
@@ -262,6 +266,7 @@ ocargo.Model.prototype.makeDelivery = function(destination) {
 
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.delivery,
         description: 'van sound: delivery'
     });
@@ -323,12 +328,14 @@ ocargo.Model.prototype.deliver = function() {
 
             ocargo.animation.appendAnimation({
                 type: 'callable',
+                functionType: 'playSound',
                 functionCall: ocargo.sound.failure,
                 description: 'failure sound'
             });
 
             ocargo.animation.appendAnimation({
                 type: 'callable',
+                functionType: 'playSound',
                 functionCall: ocargo.sound.stop_engine,
                 description: 'stopping engine'
             });
@@ -356,6 +363,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
     var failMessage = ocargo.messages.outOfInstructions;
 
     if(destinations.length === 1) {
+        // If there's only one destination, check that the car stopped on the destination node
         success = this.van.getPosition().currentNode === destinations[0].node;
 
         if(success) {
@@ -370,6 +378,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
         }
     }
     else {
+        // Checks whether all the destinations have been delivered
         success = true;
         for(var i = 0; i < destinations.length; i++) {
             success &= destinations[i].visited;
@@ -388,27 +397,37 @@ ocargo.Model.prototype.programExecutionEnded = function() {
 
     ocargo.animation.appendAnimation({
         type: 'callable',
+        functionType: 'playSound',
         functionCall: ocargo.sound.stop_engine,
         description: 'stopping engine'
     });
 
     if(success) {
-        var scoreArray = this.pathFinder.getScore();
-        ocargo.game.sendAttempt(scoreArray[0]);
+        var result = this.pathFinder.getScore();
+        ocargo.game.sendAttempt(result.totalScore);
 
         // Winning popup
         ocargo.animation.appendAnimation({
             type: 'popup',
             id: this.vanId,
             popupType: 'WIN',
-            popupMessage: scoreArray[1],
-            description: 'win popup',
-            button: scoreArray[2]
+            popupMessage:result.popupMessage,
+            totalScore: result.totalScore,
+            maxScore: result.maxScore,
+            routeCoins : result.routeCoins,
+            instrCoins : result.instrCoins,
+            pathLengthScore: result.pathLengthScore,
+            maxScoreForPathLength: result.maxScoreForPathLength,
+            instrScore: result.instrScore,
+            maxScoreForNumberOfInstructions: result.maxScoreForNumberOfInstructions,
+            performance: result.performance,
+            description: 'win popup'
         });
 
         // Winning sound
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.win,
             description: 'win sound'
         });
@@ -418,7 +437,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
                                                  workspace: ocargo.blocklyControl.serialize(),
                                                  failures: this.failures,
                                                  pythonWorkspace: ocargo.pythonControl.getCode(),
-                                                 score: scoreArray[0] });
+                                                 score: result.totalScore });
 
         this.reasonForTermination = 'SUCCESS';
     }
@@ -439,6 +458,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
         // Failure sound
         ocargo.animation.appendAnimation({
             type: 'callable',
+            functionType: 'playSound',
             functionCall: ocargo.sound.failure,
             description: 'failure sound'
         });
@@ -480,17 +500,10 @@ ocargo.Model.prototype.getDestinationForNode = function(node) {
 // that time has incremented and they should generate events
 ocargo.Model.prototype.incrementTime = function() {
     this.timestamp += 1;
-    this.subTimestamp = 0;
 
     ocargo.animation.startNewTimestamp();
 
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
     }
-};
-
-ocargo.Model.prototype.incrementSubTime = function() {
-    this.subTimestamp += 1;
-
-    ocargo.animation.startNewSubTimestamp();
 };

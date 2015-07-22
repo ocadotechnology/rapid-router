@@ -65,13 +65,7 @@ ocargo.Thread.prototype.step = function(model) {
 	if (!successful) {
 		// Program crashed, queue a block highlight event
         var block = commandToProcess.block;
-		ocargo.animation.appendAnimation({
-			type: 'callable',
-			functionCall: function() {
-				ocargo.blocklyControl.highlightIncorrectBlock(block);
-			},
-            description: 'Blockly highlight incorrect: ' + block.type
-		});
+		queueHighlightIncorrect(block);
 		return false;
 	}
 
@@ -87,7 +81,12 @@ ocargo.Thread.prototype.addNewStackLevel = function(commands) {
 };
 
 
-
+/* Simplified blocks containing only id, type
+ * all methods after comile() uses simplified blocks */
+function Block(id, type) {
+	this.id = id;
+	this.type = type;
+}
 
 /* Instructions */
 
@@ -231,14 +230,32 @@ ProcedureCall.prototype.execute = function(thread) {
 function queueHighlight(model, block) {
 	ocargo.animation.appendAnimation({
 		type: 'callable',
-		functionCall: makeHighLightCallable(block),
-		description: 'Blockly highlight: ' + block.type
+		functionType: 'highlight',
+		functionCall: makeHighLightCallable(block.id),
+		description: 'Blockly highlight: ' + block.type,
+		blockId: block.id
 	});
 }
 
-function makeHighLightCallable(block) {
+function queueHighlightIncorrect(block){
+	ocargo.animation.appendAnimation({
+		type: 'callable',
+		functionType: 'highlightIncorrect',
+		functionCall: makeHighLightIncorrectCallable(block.id),
+		description: 'Blockly highlight incorrect: ' + block.type,
+		blockId: block.id
+	});
+}
+
+function makeHighLightCallable(id) {
 	return function() {
 		ocargo.blocklyControl.clearAllSelections();
-		ocargo.blocklyControl.setBlockSelected(block, true);
+		ocargo.blocklyControl.setBlockSelected(Blockly.Block.getById(id, Blockly.mainWorkspace), true);
 	};
+}
+
+function makeHighLightIncorrectCallable(id){
+	return function() {
+		ocargo.blocklyControl.highlightIncorrectBlock(Blockly.Block.getById(id, Blockly.mainWorkspace));
+	}
 }
