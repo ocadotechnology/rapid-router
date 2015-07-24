@@ -118,7 +118,7 @@ ocargo.Model.prototype.observe = function(desc) {
             description: 'van observe: ' + desc
         });
     }
-
+    
     this.incrementTime();
 };
 
@@ -292,7 +292,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
 
     function handleCrash(model, popupMessage, vanAction, actionDescription) {
-        model.van.crashStatus = 'CRASHED'
+        model.van.crashStatus = 'CRASHED';
 
         ocargo.animation.appendAnimation({
             type: 'van',
