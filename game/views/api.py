@@ -42,7 +42,7 @@ def decor_detail(request, pk, format=None):
 
 @api_view(('GET',))
 def level_list(request, format=None):
-    levels = Level.objects.all()
+    levels = Level.objects.sorted_levels()
     serializer = LevelListSerializer(levels, many=True, context={'request': request})
     return Response(serializer.data)
 
