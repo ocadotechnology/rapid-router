@@ -18,6 +18,7 @@ def api_root(request, format=None):
         'decors': reverse('decor-list', request=request, format=format),
         'episodes': reverse('episode-list', request=request, format=format),
         'levels': reverse('level-list', request=request, format=format),
+        'maps': reverse('map-list', request=request, format=format),
         'themes': reverse('theme-list', request=request, format=format),
     })
 
@@ -63,6 +64,14 @@ def level_detail(request, pk, format=None):
         return HttpResponse(status=404)
 
     serializer = LevelDetailSerializer(level, context={'request': request})
+    return Response(serializer.data)
+
+
+@api_view(('GET',))
+def map_list(request, format=None):
+    levels = Level.objects.sorted_levels()
+
+    serializer = LevelMapSerializer(levels, many=True, context={'request': request})
     return Response(serializer.data)
 
 

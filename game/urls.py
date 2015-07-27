@@ -2,7 +2,7 @@ from django.conf.urls import patterns, url, include
 from game.views.api import level_list, level_detail, api_root, episode_list, episode_detail, levelblock_detail, \
     block_detail, theme_detail, block_list, theme_list, character_list, character_detail, level_for_episode, \
     levelblock_for_level, decor_list, decor_detail, map_for_level, leveldecor_detail, leveldecor_for_level, \
-    mode_for_level
+    mode_for_level, map_list
 
 from game.views.level_editor import level_editor, get_loadable_levels_for_editor, \
     delete_level_for_editor, load_level_for_editor, save_level_for_editor, play_anonymous_level, \
@@ -79,6 +79,7 @@ urlpatterns = patterns(
     url(r'^api/levels/(?P<pk>[0-9]+)/mode/$', mode_for_level, name='mode-for-level'),
     url(r'^api/levelblocks/(?P<pk>[0-9]+)/$', levelblock_detail, name='levelblock-detail'),
     url(r'^api/leveldecors/(?P<pk>[0-9]+)/$', leveldecor_detail, name='leveldecor-detail'),
+    url(r'^api/maps/$', map_list, name='map-list'),
     url(r'^api/themes/$', theme_list, name='theme-list'),
     url(r'^api/themes/(?P<pk>[0-9]+)/$', theme_detail, name='theme-detail'),
 
