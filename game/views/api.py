@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from game.models import Level, Episode, LevelBlock, Block, Theme, Character, Decor, LevelDecor
 from game.serializers import LevelListSerializer, EpisodeListSerializer, LevelDetailSerializer, EpisodeDetailSerializer, \
-    LevelBlockSerializer, BlockSerializer, ThemeSerializer, CharacterSerializer, DecorSerializer, LevelMapSerializer, \
-    LevelDecorSerializer, LevelModeSerializer
+    LevelBlockSerializer, BlockSerializer, ThemeSerializer, CharacterSerializer, DecorSerializer, LevelMapDetailSerializer, \
+    LevelDecorSerializer, LevelModeSerializer, LevelMapListSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -71,7 +71,7 @@ def level_detail(request, pk, format=None):
 def map_list(request, format=None):
     levels = Level.objects.sorted_levels()
 
-    serializer = LevelMapSerializer(levels, many=True, context={'request': request})
+    serializer = LevelMapListSerializer(levels, many=True, context={'request': request})
     return Response(serializer.data)
 
 
@@ -82,7 +82,7 @@ def map_for_level(request, pk, format=None):
     except Level.DoesNotExist:
         return HttpResponse(status=404)
 
-    serializer = LevelMapSerializer(level, context={'request': request})
+    serializer = LevelMapDetailSerializer(level, context={'request': request})
     return Response(serializer.data)
 
 

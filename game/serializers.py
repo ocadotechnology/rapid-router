@@ -78,7 +78,18 @@ class LevelModeSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled')
 
 
-class LevelMapSerializer(serializers.HyperlinkedModelSerializer):
+class LevelMapListSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='map-for-level',
+        read_only=True
+    )
+
+    class Meta:
+        model = Level
+        fields = ('url',)
+
+
+class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
     leveldecor_set = serializers.SerializerMethodField()
 
     class Meta:
@@ -89,6 +100,7 @@ class LevelMapSerializer(serializers.HyperlinkedModelSerializer):
         leveldecors = LevelDecor.objects.filter(level__id=obj.id)
         serializer = LevelDecorSerializer(leveldecors, many=True, context={'request': self.context.get('request', None)})
         return serializer.data
+
 
 class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
