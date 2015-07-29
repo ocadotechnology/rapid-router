@@ -178,7 +178,7 @@ ocargo.BlocklyCustomisations = function() {
 
 		this.bringStartBlockFromUnderFlyout = function() {
 		    Blockly.mainWorkspace.scrollbar.hScroll.set(blocklyDiv.offsetWidth - 455);
-		    Blockly.mainWorkspace.scrollbar.vScroll.set(blocklyDiv.offsetWidth - 15);
+		    Blockly.mainWorkspace.scrollbar.vScroll.set(blocklyDiv.offsetHeight - 15);
 		};
 	};
 
