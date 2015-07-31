@@ -12,6 +12,11 @@ ocargo.BlocklyCustomisations = function() {
         limitedBlocks = limitedBlocks || (block.number !== undefined);
     }
 
+	//Make the flyout more transparent so that it is clearer when blocks have been created.
+	this.makeFlyoutTransparent = function() {
+        document.getElementsByClassName('blocklyFlyoutBackground')[0].style["fillOpacity"]="0.5";
+	};
+
     var canAddNewBlock = function(blockType) {
         return blockCount[blockType] === undefined || blockCount[blockType] > 0;
     };
