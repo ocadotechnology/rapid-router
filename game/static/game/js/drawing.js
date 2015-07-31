@@ -53,8 +53,8 @@ var DEFAULT_CHARACTER_HEIGHT = 20;
 
 var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 
-var COW_WIDTH = 32;
-var COW_HEIGHT = 32;
+var COW_WIDTH = 50;
+var COW_HEIGHT = 50;
 
 ocargo.Drawing = function() {
 
