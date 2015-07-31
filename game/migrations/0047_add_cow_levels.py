@@ -54,7 +54,7 @@ def add_levels(apps, schema_editor):
         pythonEnabled=False,
         theme=Theme.objects.get(id=1),
         character=Character.objects.get(id='1'),
-        model_solution='[10]',
+        model_solution='[6]',
     )
     level110.save()
     set_decor(level110, json.loads(
@@ -76,7 +76,7 @@ def add_levels(apps, schema_editor):
         pythonEnabled=False,
         theme=Theme.objects.get(id=1),
         character=Character.objects.get(id='1'),
-        model_solution='[10]',
+        model_solution='[6]',
     )
 
     level111.save()
@@ -99,7 +99,7 @@ def add_levels(apps, schema_editor):
         pythonEnabled=False,
         theme=Theme.objects.get(id=1),
         character=Character.objects.get(id='1'),
-        model_solution='[7]',
+        model_solution='[6]',
     )
     level112.save()
     set_decor(level112, json.loads(
@@ -121,7 +121,7 @@ def add_levels(apps, schema_editor):
         pythonEnabled=False,
         theme=Theme.objects.get(id=1),
         character=Character.objects.get(id='1'),
-        model_solution='[10]',
+        model_solution='[11]',
     )
     level113.save()
     set_decor(level113, json.loads(
@@ -143,7 +143,7 @@ def add_levels(apps, schema_editor):
         pythonEnabled=False,
         theme=Theme.objects.get(id=1),
         character=Character.objects.get(id='1'),
-        model_solution='[9]',
+        model_solution='[11]',
     )
 
     level114.save()
