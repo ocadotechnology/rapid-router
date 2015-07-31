@@ -17,3 +17,4 @@ Pillow==2.8.2
 django-casper==0.0.3
 unittest2==1.0.1
 pyhamcrest==1.8.3
+jasmine==2.3.0

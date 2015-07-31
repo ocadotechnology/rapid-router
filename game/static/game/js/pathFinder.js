@@ -183,6 +183,7 @@ function getOptimalPath(nodes, destinations) {
     for (var i = 0; i < destinations.length; i++) {
         destinationNodes.push(destinations[i].node);
     }
+    console.log(destinationNodes);
     permute(destinationNodes);
 
     for (var i = 0; i < permutations.length; i++) {
@@ -217,7 +218,7 @@ function aStar(origin, destination, nodes) {
 
         var smallestInOpen = 0;
         var smallestInReverse = 0;
-        for (var i = 0; i < openSet.lenght; i++) {
+        for (var i = 0; i < openSet.length; i++) {
             if (reversePriority[nodes.indexOf(openSet[i])] < reversePriority[smallestInReverse]) {
                 smallestInOpen = i;
                 smallestInReverse = nodes.indexOf(openSet[i]);
