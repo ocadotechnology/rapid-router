@@ -132,7 +132,7 @@ ocargo.Thread.prototype.step = function(model) {
 	if (!successful) {
 		// Program crashed, queue a block highlight event
         var block = commandToProcess.block;
-		queueHighlightIncorrect(block);
+		queueHighlightIncorrect(model, block);
 		return false;
 	}
 
@@ -338,23 +338,27 @@ ProcedureCall.prototype.execute = function(thread) {
 /* Highlighting of blocks */
 
 function queueHighlight(model, block) {
-	ocargo.animation.appendAnimation({
-		type: 'callable',
-		functionType: 'highlight',
-		functionCall: makeHighLightCallable(block.id),
-		description: 'Blockly highlight: ' + block.type,
-		blockId: block.id
-	});
+    if (model.shouldObserve) {
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+	    functionType: 'highlight',
+	    functionCall: makeHighLightCallable(block.id),
+	    description: 'Blockly highlight: ' + block.type,
+	    blockId: block.id
+        });
+	}
 }
 
-function queueHighlightIncorrect(block){
-	ocargo.animation.appendAnimation({
-		type: 'callable',
-		functionType: 'highlightIncorrect',
-		functionCall: makeHighLightIncorrectCallable(block.id),
-		description: 'Blockly highlight incorrect: ' + block.type,
-		blockId: block.id
-	});
+function queueHighlightIncorrect(model, block){
+    if (model.shouldObserve){
+		ocargo.animation.appendAnimation({
+			type: 'callable',
+			functionType: 'highlightIncorrect',
+			functionCall: makeHighLightIncorrectCallable(block.id),
+			description: 'Blockly highlight incorrect: ' + block.type,
+			blockId: block.id
+		});
+	}
 }
 
 function makeHighLightCallable(id) {

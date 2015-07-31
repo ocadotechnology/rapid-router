@@ -117,9 +117,9 @@ ocargo.Model.prototype.observe = function(desc) {
             fuel: this.van.getFuelPercentage(),
             description: 'van observe: ' + desc
         });
+
+        this.incrementTime();
     }
-    
-    this.incrementTime();
 };
 
 ocargo.Model.prototype.isRoadForward = function() {
