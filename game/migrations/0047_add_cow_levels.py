@@ -1,10 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-from django.db import migrations
 import json
 
-from game.level_management import set_decor_inner, set_blocks_inner
+from django.db import models, migrations
+from game.level_management import set_blocks_inner, set_decor_inner
+
+
+def add_cows_block(apps, schema_editor):
+
+    Block = apps.get_model('game', 'Block')
+
+    cow_crossing = Block.objects.create(type='cow_crossing')
+    cow_crossing.save()
+    declare_event = Block.objects.create(type='declare_event')
+    declare_event.save()
 
 
 def add_levels(apps, schema_editor):
@@ -30,7 +39,6 @@ def add_levels(apps, schema_editor):
     episode11 = Episode.objects.get(pk=11)
     episode11.next_episode = episode12
     episode11.save()
-
 
     level110 = Level(
         name='110',
@@ -158,13 +166,25 @@ def add_levels(apps, schema_editor):
     level113.save()
     level114.save()
 
-
-
 class Migration(migrations.Migration):
+
     dependencies = [
-        ('game', '0048_add_cows_crossing_blockly'),
+        ('game', '0046_set_img_order'),
     ]
 
     operations = [
-        migrations.RunPython(add_levels),
+        migrations.AddField(
+            model_name='episode',
+            name='r_cows',
+            field=models.BooleanField(default=False),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='level',
+            name='cows',
+            field=models.TextField(default=b'[]', max_length=10000),
+            preserve_default=True,
+        ),
+        migrations.RunPython(add_cows_block),
+        migrations.RunPython(add_levels)
     ]
