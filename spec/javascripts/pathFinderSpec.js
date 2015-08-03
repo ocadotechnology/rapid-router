@@ -91,3 +91,30 @@ describe("aStar", function() {
   });
 
 });
+
+describe("PriorityQueue", function() {
+  it("insert nodes and return them in the correct order", function() {
+    var queue = new PriorityQueue();
+    queue.push(5, 5);
+    queue.push(4, 4);
+    queue.push(9, 9);
+    queue.push(8, 8);
+    var result = [];
+    result.push(queue.pop())
+    result.push(queue.pop())
+    result.push(queue.pop())
+    result.push(queue.pop())
+    expect(result).toEqual([4, 5, 8, 9]);
+    expect(queue.pop()).toEqual(null);
+  });
+  it("returns null when empty pop", function() {
+    var queue = new PriorityQueue();
+    expect(queue.pop()).toEqual(null);
+  });
+
+  it("pushes and pops single item", function() {
+    var queue = new PriorityQueue();
+    queue.push(1, 1);
+    expect(queue.pop()).toEqual(1);
+  });
+});

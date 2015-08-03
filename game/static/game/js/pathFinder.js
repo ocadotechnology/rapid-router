@@ -199,6 +199,62 @@ function getOptimalPath(nodes, destinations) {
     return bestPermutationPath;
 }
 
+function QueueLink(value) {
+  this.value = value;
+  this.next = null;
+};
+
+function PriorityQueue() {
+  var node = null;
+  var score = null;
+
+  this.push = function(node, score) {
+    if (this.node == null) {
+      this.node = new QueueLink(node);
+      this.score = new QueueLink(node);
+    } else if (this.score.value > score) {
+      var tmpN = this.node;
+      var tmpS = this.score;
+      this.node = new QueueLink(node);
+      this.score = new QueueLink(score);
+      this.node.next = tmpN;
+      this.score.next = tmpS;
+    } else {
+      var n = this.node;
+      var s = this.score;
+      var found = false;
+      while (n.next != null && !found) {
+        if (s.next.value > score) {
+          var tmpN = n.next;
+          var tmpS = s.next;
+          n.next = new QueueLink(node);
+          s.next = new QueueLink(score);
+          n.next.next = tmpN;
+          s.next.next = tmpS;
+          found = true;
+        }
+        n = n.next;
+        s = s.next;
+      }
+      if (!found) {
+        n.next = new QueueLink(node);
+        s.next = new QueueLink(score);
+      };
+    }
+  }
+
+  this.pop = function() {
+    if (this.node == null) {
+      return null;
+    } else {
+      this.score = this.score.next;
+      var result = this.node.value;
+      this.node = this.node.next;
+      return result;
+    }
+  }
+}
+
 function aStar(origin, destination, nodes) {
 
     var end = destination;          // Nodes already visited.
@@ -206,6 +262,7 @@ function aStar(origin, destination, nodes) {
     var start = origin;
     var closedSet = [];             // The neightbours yet to be evaluated.
     var openSet = [start];          // All 3 lists are indexed the same way original nodes are.
+    var thing = new PriorityQueue();
     var costFromStart = [0];        // Costs from the starting point.
     var reversePriority = [0];      // The lower the value, the higher priority of the node.
     var heuristics = [0];            // Stores results of heuristic().
