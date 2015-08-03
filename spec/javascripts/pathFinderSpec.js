@@ -1,4 +1,4 @@
-describe("Path finder suite", function() {
+describe("getOptimalPath", function() {
   /*
    * a b
    * c d
@@ -53,4 +53,41 @@ describe("Path finder suite", function() {
 
     expect(path).toEqual(destinations);
   });*/
+});
+
+describe("aStar", function() {
+  /*
+   * a-b
+   * |
+   * c-d                                 e
+   */
+  var a = new ocargo.Node(new ocargo.Coordinate(1, 1));
+  var b = new ocargo.Node(new ocargo.Coordinate(1, 2));
+  var c = new ocargo.Node(new ocargo.Coordinate(2, 1));
+  var d = new ocargo.Node(new ocargo.Coordinate(2, 2));
+  var e = new ocargo.Node(new ocargo.Coordinate(20, 2));
+  a.addConnectedNodeWithBacklink(b)
+  a.addConnectedNodeWithBacklink(c)
+  c.addConnectedNodeWithBacklink(d)
+
+  it("works for origin equal to destination", function() {
+    var path = aStar(a, a, [a]);
+    expect(path).toEqual([a]);
+  });
+
+  it("works for single step", function() {
+    var path = aStar(a, b, [a, b]);
+    expect(path).toEqual([a, b]);
+  });
+
+  it("returns null for unconnected points", function () {
+    var path = aStar(a, e, [a, b, c, d, e]);
+    expect(path).toEqual(null);
+  });
+
+  it("works for more complicated graph", function () {
+    var path = aStar(a, d, [a, b, c, d, e]);
+    expect(path).toEqual([a, c, d]);
+  });
+
 });
