@@ -300,12 +300,14 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
         n += count(startBlocks[i].nextConnection.targetBlock());
     }
 
+    // 1 includes the procedure declaration block
     for (i = 0; i < procedureBlocks.length; i++) {
         n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
     }
 
+    // 2 includes the event block and the on-condition block
     for (i = 0; i < eventBlocks.length; i++) {
-        n += 1 + count(eventBlocks[i].inputList[1].connection.targetBlock());
+        n += 2 + count(eventBlocks[i].inputList[1].connection.targetBlock());
     }
 
     return n;
