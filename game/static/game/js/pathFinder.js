@@ -253,6 +253,10 @@ function PriorityQueue() {
       return result;
     }
   }
+
+  this.isEmpty = function () {
+    return this.node == null;
+  }
 }
 
 function aStar(origin, destination, nodes) {

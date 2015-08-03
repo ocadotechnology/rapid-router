@@ -107,6 +107,7 @@ describe("PriorityQueue", function() {
     expect(result).toEqual([4, 5, 8, 9]);
     expect(queue.pop()).toEqual(null);
   });
+
   it("returns null when empty pop", function() {
     var queue = new PriorityQueue();
     expect(queue.pop()).toEqual(null);
@@ -116,5 +117,14 @@ describe("PriorityQueue", function() {
     var queue = new PriorityQueue();
     queue.push(1, 1);
     expect(queue.pop()).toEqual(1);
+  });
+
+  it("returns whether or not it is empty", function() {
+    var queue = new PriorityQueue();
+    expect(queue.isEmpty()).toEqual(true);
+    queue.push(1, 1);
+    expect(queue.isEmpty()).toEqual(false);
+    queue.pop();
+    expect(queue.isEmpty()).toEqual(true);
   });
 });
