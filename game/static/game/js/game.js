@@ -43,7 +43,7 @@ ocargo.Game.prototype.setup = function() {
     }
 
     // Setup blockly to python
-    Blockly.Python.init();
+    Blockly.Python.init(Blockly.getMainWorkspace());
     window.addEventListener('unload', function(event) {
         ocargo.pythonControl.teardown();
         ocargo.blocklyControl.teardown();
@@ -366,7 +366,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
             ocargo.blocklyControl.redrawBlockly();
             // reset blockly to python converter
-            Blockly.Python.init();
+            Blockly.Python.init(Blockly.getMainWorkspace());
             ocargo.controller = ocargo.blocklyControl;
         });
 

@@ -156,16 +156,16 @@ ocargo.BlocklyCustomisations = function() {
 	 * Needs to be called AFTER blockly is injected
 	 */
 	this.setupFlyoutToggling = function(blocklyDiv) {
-		var flyoutOut = false;
+        var flyoutOut = false;
 
-		// Needed so that the size of the flyout is available
+        // Needed so that the size of the flyout is available
 	    // for when toggle flyout is first called
-	    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+	    Blockly.getMainWorkspace().toolbox_.tree_.firstChild_.onMouseDown();
 	    this.flyoutWidth = $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
-	    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+	    Blockly.getMainWorkspace().toolbox_.tree_.firstChild_.onMouseDown();
 
 		this.toggleFlyout = function() {
-		    Blockly.Toolbox.tree_.firstChild_.onMouseDown();
+		    Blockly.getMainWorkspace().toolbox_.tree_.firstChild_.onMouseDown();
 		    this.flyoutOut = !this.flyoutOut;
 
 		    var image;
@@ -182,8 +182,8 @@ ocargo.BlocklyCustomisations = function() {
 		};
 
 		this.bringStartBlockFromUnderFlyout = function() {
-			var distanceFromToolboxDiv = 455;
-			var distanceFromTopMargin = 15;
+            var distanceFromToolboxDiv = 455;
+            var distanceFromTopMargin = 15;
             Blockly.mainWorkspace.scrollbar.hScroll.set(blocklyDiv.offsetWidth - distanceFromToolboxDiv);
             Blockly.mainWorkspace.scrollbar.vScroll.set(blocklyDiv.offsetHeight - distanceFromTopMargin);
 		};
@@ -240,13 +240,13 @@ ocargo.BlocklyCustomisations = function() {
 		    ocargo.blocklyControl.BLOCK_CHARACTER_WIDTH *= 2;
 		    ocargo.blocklyControl.BLOCK_HEIGHT *= 2;
 
-			document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' +
+            document.styleSheets[0].insertRule(".blocklyText, .beaconClass" + ' { font-size' +
 											   ':'+'22pt !important'+'}',
 											   document.styleSheets[0].cssRules.length);
-			document.styleSheets[0].insertRule(".blocklyIconMark, .beaconClass" + ' { font-size' +
+            document.styleSheets[0].insertRule(".blocklyIconMark, .beaconClass" + ' { font-size' +
 											   ':'+'18pt !important'+'}',
 											   document.styleSheets[0].cssRules.length);
-			var blocks = Blockly.mainWorkspace.getAllBlocks();
+            var blocks = Blockly.mainWorkspace.getAllBlocks();
 		    $(".blocklyDraggable > g > image").each( function(index, element) {
 		    	var jQueryElement = $(element);
 		    	var heightStr = jQueryElement.attr("height");
@@ -261,7 +261,7 @@ ocargo.BlocklyCustomisations = function() {
 		    resetWidthOnBlocks(blocks);
 		    Blockly.mainWorkspace.render();
 
-			Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
+            Blockly.getMainWorkspace().toolbox_.flyout_.show(Blockly.languageTree.childNodes);
 
 		    $(".blocklyIconShield").attr("width", 32).attr("height", 32)
 		    	.attr("rx", 8).attr("ry", 8);
@@ -294,11 +294,11 @@ ocargo.BlocklyCustomisations = function() {
 		    ocargo.blocklyControl.BLOCK_HEIGHT /= 2;
 
 		    var sheet = document.styleSheets[0];
-			for (var i = 0; i < 2; i++) {
+            for (var i = 0; i < 2; i++) {
 			    sheet.deleteRule(sheet.cssRules.length-1);
-			}
+            }
 
-			var blocks = Blockly.mainWorkspace.getAllBlocks();
+            var blocks = Blockly.mainWorkspace.getAllBlocks();
 
 		    $(".blocklyDraggable > g > image").each( function(index, element) {
 		    	var jQueryElement = $(element);
@@ -314,7 +314,7 @@ ocargo.BlocklyCustomisations = function() {
 		    resetWidthOnBlocks(blocks);
 		    Blockly.mainWorkspace.render();
 
-			Blockly.Toolbox.flyout_.show(Blockly.languageTree.childNodes);
+            Blockly.getMainWorkspace().toolbox_.flyout_.show(Blockly.languageTree.childNodes);
 		    $(".blocklyIconShield").attr("width", 16).attr("height", 16)
 		    	.attr("rx", 4).attr("ry", 4);
 		    $(".blocklyIconMark").attr("x", 8).attr("y", 12);
@@ -393,8 +393,8 @@ ocargo.BlocklyCustomisations = function() {
                 block.moveBy(x, cursorY);
                 cursorY += blockHW.height + gaps[i];
 
-                // Create an invisible rectangle under the block to act as a button.  Just
-                // using the block as a button is poor, since blocks have holes in them.
+                 //Create an invisible rectangle under the block to act as a button.  Just
+                 //using the block as a button is poor, since blocks have holes in them.
                 var rect = Blockly.createSvgElement('rect', {'fill-opacity': 0}, null);
                 // Add the rectangles under the blocks, so that the blocks' tooltips work.
                 this.workspace_.getCanvas().insertBefore(rect, block.getSvgRoot());
@@ -429,25 +429,25 @@ ocargo.BlocklyCustomisations = function() {
                     };
                 }(block2);
                 this.listeners_.push(root.addEventListener('dblclick', blockAddingListener));
-                this.listeners_.push(Blockly.bindEvent_(root, 'mouseover', block.svg_,
-                    block.svg_.addSelect));
-                this.listeners_.push(Blockly.bindEvent_(root, 'mouseout', block.svg_,
-                    block.svg_.removeSelect));
+                this.listeners_.push(Blockly.bindEvent_(root, 'mouseover', block,
+                    block.addSelect));
+                this.listeners_.push(Blockly.bindEvent_(root, 'mouseout', block,
+                    block.removeSelect));
                 this.listeners_.push(Blockly.bindEvent_(rect, 'mousedown', null,
                     this.createBlockFunc_(block)));
-                this.listeners_.push(Blockly.bindEvent_(rect, 'mouseover', block.svg_,
-                    block.svg_.addSelect));
-                this.listeners_.push(Blockly.bindEvent_(rect, 'mouseout', block.svg_,
-                    block.svg_.removeSelect));
+                this.listeners_.push(Blockly.bindEvent_(rect, 'mouseover', block,
+                    block.addSelect));
+                this.listeners_.push(Blockly.bindEvent_(rect, 'mouseout', block,
+                    block.removeSelect));
                 this.listeners_.push(rect.addEventListener('dblclick', blockAddingListener));
             }
 
-            // IE 11 is an incompetant browser that fails to fire mouseout events.
-            // When the mouse is over the background, deselect all blocks.
+             //IE 11 is an incompetant browser that fails to fire mouseout events.
+             //When the mouse is over the background, deselect all blocks.
             var deselectAll = function(e) {
                 var blocks = this.workspace_.getTopBlocks(false);
                 for (var i = 0, block; block = blocks[i]; i++) {
-                    block.svg_.removeSelect();
+                    block.removeSelect();
                 }
             };
             this.listeners_.push(Blockly.bindEvent_(this.svgBackground_, 'mouseover',
