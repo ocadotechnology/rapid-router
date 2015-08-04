@@ -197,6 +197,22 @@ ocargo.Drawing = function() {
         return coord1 < coord2;
     }
 
+    function getTjunctionOrientation(middle, node1, node2, node3){
+        var res1 = getRoadLetters(node1, middle, node2);
+        var res2 = getRoadLetters(node2, middle, node3);
+
+        console.log("res1 = " + res1 + " res2 = " + res2);
+        if (res1 === 'H' && res2 === 'DR' ){
+            return 'down';
+        }else if (res1 === 'UR' && res2 === 'DR' ){
+            return 'right';
+        }else if (res1 === 'UL' && res2 === 'V' ){
+            return 'left';
+        }else {
+            return 'up';
+        }
+    };
+
     /***************/
     /** Rendering **/
     /***************/
@@ -530,29 +546,57 @@ ocargo.Drawing = function() {
 
         var xOffset = 0;
         var yOffset = 0;
+        var rotation = 0.;
+        var previousNode = node.connectedNodes[0];
+        var nextNode = node.connectedNodes[1];
 
+        var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
         // Only turns (not 3-way or 4-way crossings) have two connected nodes
-        if(node.connectedNodes.length === 2) {
-            var previousNode = node.connectedNodes[0];
-            var nextNode = node.connectedNodes[1];
-
-            var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
-
+        if(roadLetters === 'V'){
+            //console.log("Cow crossing V road");
+            rotation = 90;
+        }else if(node.connectedNodes.length === 2) {
             if (roadLetters === 'UL') {
+                //console.log("Cow crossing UL road");
                 xOffset = - 0.2 * GRID_SPACE_SIZE;
                 yOffset = - 0.2 * GRID_SPACE_SIZE;
+                rotation = -45;
             }
             else if (roadLetters === 'UR') {
+                //console.log("Cow crossing UR road");
                 xOffset = + 0.2 * GRID_SPACE_SIZE;
                 yOffset = - 0.2 * GRID_SPACE_SIZE;
+                rotation = 45;
             }
             else if (roadLetters === 'DL') {
+                //console.log("Cow crossing DL road");
                 xOffset = - 0.2 * GRID_SPACE_SIZE;
                 yOffset = + 0.2 * GRID_SPACE_SIZE;
+                rotation = 45;
             }
             else if (roadLetters === 'DR') {
+                //console.log("Cow crossing DR road");
                 xOffset = + 0.2 * GRID_SPACE_SIZE;
                 yOffset = + 0.2 * GRID_SPACE_SIZE;
+                rotation = -45;
+            }
+        }else if (node.connectedNodes.length === 3) {
+            var nextNextNode = node.connectedNodes[2];
+            var res = getTjunctionOrientation(node.coordinate, previousNode.coordinate, nextNode.coordinate, nextNextNode.coordinate);
+            console.log(node.coordinate + " " + res);
+            if (res === 'down') {
+                //console.log("Cow crossing T junction road facing down");
+            }
+            else if (res === 'right') {
+                //console.log("Cow crossing T junction road facing right");
+                rotation = 90;
+            }
+            else if (res === 'left') {
+                //console.log("Cow crossing T junction road facing left");
+                rotation = 90
+            }
+            else if (res === 'top') {
+                //console.log("Cow crossing T junction road facing top");
             }
         }
 
@@ -598,8 +642,10 @@ ocargo.Drawing = function() {
         var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT/2 + yOffset + PAPER_PADDING;
 
         var image = paper.image(ocargo.Drawing.raphaelImageDir + 'cow.svg', drawX, drawY, COW_WIDTH, COW_HEIGHT);
+        var rot = "r" + rotation;
+        image.transform(rot);
         image.transform("s0.01");
-        image.animate({transform : "s1"}, 100, 'linear');
+        image.animate({transform : "s1"+rot}, 100, 'linear');
 
         return {'coordinate': coordinate,
             'image': image};

@@ -561,6 +561,13 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
     	code += '\n' + Blockly.Python.blockToCode(procBlocks[i]);
     }
 
+    // TODO support events in python
+    //var eventBlocks = ocargo.blocklyControl.getEventBlocks();
+    //for (var i = 0; i < eventBlocks.length; i++) {
+    //	code += '\n' + Blockly.Python.blockToCode(eventBlocks[i]);
+    //}
+
+	var startBlocks = ocargo.blocklyControl.getStartBlocks();
 	for (var i = 0; i < startBlocks.length; i++) {
 		code += '\n' + Blockly.Python.blockToCode(startBlocks[i]);
 	}
