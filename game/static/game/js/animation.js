@@ -183,8 +183,9 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					title = ocargo.messages.winTitle;
 					var levelMsg = [];
 
-					levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins) + a.pathLengthScore + "/" + a.maxScoreForPathLength);
-
+					if (!a.pathScoreDisabled) {
+						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins) + a.pathLengthScore + "/" + a.maxScoreForPathLength);
+					}
 					levelMsg.push(ocargo.messages.algorithmScore +
 					ocargo.Drawing.renderCoins(a.instrCoins) + a.instrScore + "/" + a.maxScoreForNumberOfInstructions);
 

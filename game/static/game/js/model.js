@@ -421,6 +421,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             instrScore: result.instrScore,
             maxScoreForNumberOfInstructions: result.maxScoreForNumberOfInstructions,
             performance: result.performance,
+            pathScoreDisabled: result.pathScoreDisabled,
             description: 'win popup'
         });
 

@@ -10,7 +10,11 @@ ocargo.PathFinder = function(model) {
     this.pathScoreDisabled = DISABLE_ROUTE_SCORE;
     this.modelSolution = MODEL_SOLUTION;
 
-    this.maxScoreForPathLength = 10;
+    if (!this.pathScoreDisabled) {
+        this.maxScoreForPathLength = 10;
+    } else {
+        this.maxScoreForPathLength = 0;
+    }
     this.maxScoreForNumberOfInstructions = 10;
 
     this.maxScore = this.maxScoreForPathLength + this.maxScoreForNumberOfInstructions;
@@ -67,6 +71,7 @@ ocargo.PathFinder.prototype.getScore = function() {
             maxScore: this.maxScore,
             performance: performance,
             pathLengthScore: pathLengthScore,
+            pathScoreDisabled: this.pathScoreDisabled,
             maxScoreForPathLength: this.maxScoreForPathLength,
             instrScore: instrScore,
             maxScoreForNumberOfInstructions: this.maxScoreForNumberOfInstructions,
