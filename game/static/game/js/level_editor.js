@@ -2642,7 +2642,7 @@ ocargo.LevelEditor = function() {
 
         this.setCoordinate = function(){
 
-        }
+        };
 
         this.destroy = function() {
             this.image.remove();
