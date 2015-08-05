@@ -1840,6 +1840,42 @@ Variables can be used in place of constants when calling functions. For example 
     return message.replace('\n','<br />')
 
 
+def title_level107():
+    return ugettext("Spiral and double")
+
+def description_level107():
+    message = ugettext("For this level try something similar to what you have just learnt. This time the straight sections of road are doubling in length after each turn.")
+    return build_description(title_level107(), message)
+
+def hint_level107():
+    message = ugettext("To double the value of a variable you can do something like the following:<br /><pre>n *= 2</pre>")
+    return message
+
+
+def title_level108():
+    return ugettext("Think less")
+
+def description_level108():
+    message = ugettext("This time the straight sections of road decrease in length by 2 after each turn.")
+    return build_description(title_level108(), message)
+
+def hint_level108():
+    message = ugettext("To decrease the value of a variable by an amount you can do something like the following:<br /><pre>n -= 5</pre>")
+    return message
+
+
+def title_level109():
+    return ugettext("Final challenge!")
+
+def description_level109():
+    message = ugettext("For the last challenge, the road straight line sections of road start off increasing by 1 after each turn and then switch to dividing by 2 with a twist!")
+    return build_description(title_level109(), message)
+
+def hint_level109():
+    message = ugettext("To halve the value of a variable you can do something like the following:<br /><pre>n /= 2</pre>")
+    return message
+
+
 def title_level110():
     return ugettext("Cows ")
 
@@ -1916,39 +1952,3 @@ def description_level114():
 
 def hint_level114():
     return ""
-
-
-def title_level107():
-    return ugettext("Spiral and double")
-
-def description_level107():
-    message = ugettext("For this level try something similar to what you have just learnt. This time the straight sections of road are doubling in length after each turn.")
-    return build_description(title_level107(), message)
-
-def hint_level107():
-    message = ugettext("To double the value of a variable you can do something like the following:<br /><pre>n *= 2</pre>")
-    return message
-
-
-def title_level108():
-    return ugettext("Think less")
-
-def description_level108():
-    message = ugettext("This time the straight sections of road decrease in length by 2 after each turn.")
-    return build_description(title_level108(), message)
-
-def hint_level108():
-    message = ugettext("To decrease the value of a variable by an amount you can do something like the following:<br /><pre>n -= 5</pre>")
-    return message
-
-
-def title_level109():
-    return ugettext("Final challenge!")
-
-def description_level109():
-    message = ugettext("For the last challenge, the road straight line sections of road start off increasing by 1 after each turn and then switch to dividing by 2 with a twist!")
-    return build_description(title_level109(), message)
-
-def hint_level109():
-    message = ugettext("To halve the value of a variable you can do something like the following:<br /><pre>n /= 2</pre>")
-    return message
