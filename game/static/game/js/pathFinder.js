@@ -256,9 +256,9 @@ function aStar(origin, destination, nodes) {
     var closedSet = {};             // The neighbours yet to be evaluated.
     var openSet = new PriorityQueue();
     openSet.push(start, 0);
-    closedSet[start.id] = true;
 
     initialiseParents(nodes);
+    closedSet[start.id] = true;
 
     while (!openSet.isEmpty()) {
         current = openSet.pop();
@@ -315,4 +315,13 @@ function aStar(origin, destination, nodes) {
         ret.reverse();
         return ret;
     }
+}
+
+function areDestinationsReachable(start, destinations, nodes) {
+  for (var i = 0; i < destinations.length; i++) {
+    if (aStar(start, destinations[i], nodes) == null) {
+      return false;
+    }
+  }
+  return true;
 }
