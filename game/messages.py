@@ -1887,7 +1887,7 @@ def description_level110():
 
 
 def hint_level110():
-    return ""
+    return "Try using <b>cow crossing</b> with <b>repeat while</b>. Remember to <b>wait</b> for the cow to get out of the way! You'll also need to keep going forward until you get to the end. "
 
 
 def title_level111():
@@ -1901,7 +1901,7 @@ def description_level111():
 
 
 def hint_level111():
-    return ""
+    return "Try using <b>cow crossing</b> with <b>repeat while</b>. Remember to <b>wait</b> for the cow to get out of the way! You'll also need to keep going forward until you get to the end. "
 
 
 def title_level112():
@@ -1910,7 +1910,7 @@ def title_level112():
 
 def description_level112():
     message = ugettext("These cows are getting annoying, aren't they? There is another way "
-                       "to deal with them. You have a new <b>On...Define</b> block that you can "
+                       "to deal with them. You have a new <b>On...Do</b> block that you can "
                        "use when you want to deal with situations that happen more than once and "
                        "at unknown locations. Place it anywhere on the left side and attach the "
                        "<b>cow crossing</b> block to it. Then use other blocks to say what you "
@@ -1919,7 +1919,7 @@ def description_level112():
 
 
 def hint_level112():
-    return ""
+    return "Try to keep going forward until you get to the end without paying attention to cows. Then, separately define what to do when you encounter a cow using the <b>On...Do</b> block. "
 
 
 def title_level113():
@@ -1935,7 +1935,7 @@ def description_level113():
 
 
 def hint_level113():
-    return ""
+    return "Try to follow the path until you get to the end without paying attention to cows or traffic lights. Then, separately define what to do when you encounter a cow or traffic light using the <b>On...Do</b> block. "
 
 
 def title_level114():
@@ -1944,11 +1944,9 @@ def title_level114():
 
 def description_level114():
     message = ugettext(
-        "Well done! On this map, you will not only see cows all over the map. You will have to deal "
-        "with traffic lights as well! But don't worry. You have already found out how to deal with "
-        "cows. Try to handle traffic lights in the same way. ")
+        "Cows, traffic lights, and multiple ways of getting to the house! ")
     return build_description(title_level114(), message)
 
 
 def hint_level114():
-    return ""
+    return "Try to follow the path until you get to the end without paying attention to cows or traffic lights. Then, separately define what to do when you encounter a cow or traffic light using the <b>On...Do</b> block. "
