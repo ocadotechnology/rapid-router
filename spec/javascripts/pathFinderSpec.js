@@ -91,3 +91,82 @@ describe("aStar", function() {
   });
 
 });
+
+describe("PriorityQueue", function() {
+  it("insert nodes and return them in the correct order", function() {
+    var queue = new PriorityQueue();
+    queue.push(5, 5);
+    queue.push(4, 4);
+    queue.push(9, 9);
+    queue.push(8, 8);
+    var result = [];
+    result.push(queue.pop())
+    result.push(queue.pop())
+    result.push(queue.pop())
+    result.push(queue.pop())
+    expect(result).toEqual([4, 5, 8, 9]);
+    expect(queue.pop()).toEqual(null);
+  });
+
+  it("returns null when empty pop", function() {
+    var queue = new PriorityQueue();
+    expect(queue.pop()).toEqual(null);
+  });
+
+  it("pushes and pops single item", function() {
+    var queue = new PriorityQueue();
+    queue.push(1, 1);
+    expect(queue.pop()).toEqual(1);
+  });
+
+  it("returns whether or not it is empty", function() {
+    var queue = new PriorityQueue();
+    expect(queue.isEmpty()).toEqual(true);
+    queue.push(1, 1);
+    expect(queue.isEmpty()).toEqual(false);
+    queue.pop();
+    expect(queue.isEmpty()).toEqual(true);
+  });
+});
+
+
+describe("areDestinationsReachable", function() {
+  /*
+   * a-b
+   * |
+   * c-d                                 e
+   */
+  var a = new ocargo.Node(new ocargo.Coordinate(1, 1));
+  var b = new ocargo.Node(new ocargo.Coordinate(1, 2));
+  var c = new ocargo.Node(new ocargo.Coordinate(2, 1));
+  var d = new ocargo.Node(new ocargo.Coordinate(2, 2));
+  var e = new ocargo.Node(new ocargo.Coordinate(20, 2));
+  a.addConnectedNodeWithBacklink(b)
+  a.addConnectedNodeWithBacklink(c)
+  c.addConnectedNodeWithBacklink(d)
+  nodes = [a, b, c, d, e];
+
+  it("works for empty destinations", function() {
+    expect(areDestinationsReachable(a, [], nodes)).toEqual(true);
+  });
+
+  it("works for a single connected destination", function() {
+    expect(areDestinationsReachable(a, [d], nodes)).toEqual(true);
+  });
+
+  it("works for a single unconnected destination", function() {
+    expect(areDestinationsReachable(a, [e], nodes)).toEqual(false);
+  });
+
+  it("works for a multiple connected destination", function() {
+    expect(areDestinationsReachable(a, [a, b, c, d], nodes)).toEqual(true);
+  });
+
+  it("works for a multiple unconnected destination", function() {
+    expect(areDestinationsReachable(e, [a, b, c, d], nodes)).toEqual(false);
+  });
+
+  it("works for a destination the same as the start", function() {
+    expect(areDestinationsReachable(a, [a], nodes)).toEqual(true);
+  });
+});
