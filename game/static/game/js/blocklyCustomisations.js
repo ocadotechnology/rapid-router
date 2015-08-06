@@ -12,6 +12,11 @@ ocargo.BlocklyCustomisations = function() {
         limitedBlocks = limitedBlocks || (block.number !== undefined);
     }
 
+	//Make the flyout button more transparent so that it is clearer when blocks have been created.
+	this.makeFlyoutButtonTransparent = function() {
+		console.log(document.getElementById('flyoutButton').style['background']="rgba(255, 255, 255, 0.5)");
+	};
+
 	//Make the flyout more transparent so that it is clearer when blocks have been created.
 	this.makeFlyoutTransparent = function() {
         document.getElementsByClassName('blocklyFlyoutBackground')[0].style["fillOpacity"]="0.5";
@@ -31,6 +36,12 @@ ocargo.BlocklyCustomisations = function() {
 	this.shiftWorkspace = function() {
 		document.getElementById('blockly_holder').style["width"]="calc(100%)";
 	}
+
+	//Hide Blockly Toolbox to use our Flyout button instead
+	this.hideBlocklyToolbox = function() {
+		document.getElementsByClassName('blocklyToolboxDiv')[0].style['display']="none";
+	}
+
 
     var canAddNewBlock = function(blockType) {
         return blockCount[blockType] === undefined || blockCount[blockType] > 0;
@@ -175,38 +186,31 @@ ocargo.BlocklyCustomisations = function() {
 	this.setupFlyoutToggling = function(blocklyDiv) {
         var flyoutShown = false;
 
-        // Needed so that the size of the flyout is available
-	    // for when toggle flyout is first called
-	    this.flyoutWidth = $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
-
 		// So that the Delete area depends on whether the flyout is shown
-		var oldRecordDeleteAreas = Blockly.getMainWorkspace().recordDeleteAreas;
-		Blockly.WorkspaceSvg.prototype.recordDeleteAreas = function() {
-			oldRecordDeleteAreas.call(Blockly.getMainWorkspace());
-			if (!flyoutShown) {
-				this.deleteAreaToolbox_ = null;
-			}
-		}
+		//var oldRecordDeleteAreas = Blockly.getMainWorkspace().recordDeleteAreas;
+		//Blockly.WorkspaceSvg.prototype.recordDeleteAreas = function() {
+		//	oldRecordDeleteAreas.call(Blockly.getMainWorkspace());
+		//	if (!flyoutShown) {
+		//		this.deleteAreaToolbox_ = null;
+		//	}
+		//}
 
 		this.toggleFlyout = function() {
 		    flyoutShown = !flyoutShown;
+			var image;
 			if (flyoutShown) {
-				document.getElementsByClassName('blocklyFlyout')[0].style["display"]="block";
+				Blockly.getMainWorkspace().toolbox_.tree_.actualEventTarget_.firstChild_.onMouseDown(null);
+				this.flyoutWidth = $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
+				image = 'hide';
+		        $('#flyoutButton').css('left', (this.flyoutWidth - 1) +  'px');
 			} else {
-				document.getElementsByClassName('blocklyFlyout')[0].style["display"]="none";
+				Blockly.getMainWorkspace().toolbox_.tree_.actualEventTarget_.firstChild_.onMouseDown(null);
+				this.flyoutWidth = $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
+				image = 'show';
+		        $('#flyoutButton').css('left', '0px');
 			}
 
-		    var image;
-		    if (flyoutShown) {
-		        image = 'hide';
-		        $('#flyoutButton').css('left', (this.flyoutWidth - 4 ) +  'px');
-		    }
-		    else {
-		        image = 'show';
-		        $('#flyoutButton').css('left', '0px');
-		    }
-
-		    $('#flyoutButton img').attr('src', ocargo.Drawing.imageDir + 'icons/' + image + '.svg');
+			$('#flyoutButton img').attr('src', ocargo.Drawing.imageDir + 'icons/' + image + '.svg');
 		};
 
 		this.bringStartBlockFromUnderFlyout = function() {

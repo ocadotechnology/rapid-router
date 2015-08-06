@@ -23,10 +23,13 @@ ocargo.BlocklyControl = function () {
 
     // Stop the flyout from closing automatically
     Blockly.Flyout.autoClose = false;
+
     this.blocklyCustomisations.makeFlyoutTransparent();
     this.blocklyCustomisations.hideFlyoutButton();
     this.blocklyCustomisations.shiftBlockly();
     this.blocklyCustomisations.shiftWorkspace();
+    this.blocklyCustomisations.hideBlocklyToolbox();
+    this.blocklyCustomisations.makeFlyoutButtonTransparent();
 };
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;

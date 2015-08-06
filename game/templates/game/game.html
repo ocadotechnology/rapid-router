@@ -37,12 +37,12 @@
       BLOCKS.push({'type':"{{block.type}}"{% if block.number %}, 'number':{{block.number}} {% endif %}});
     {% endfor %}
 
-    var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none">';
+    var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none"><category name="+">';
     for (var i = 0; i < BLOCKS.length; i++) {
         BLOCKLY_XML += '<block type="' + BLOCKS[i].type + '"></block>';
     }
 
-    BLOCKLY_XML += '</xml>';
+    BLOCKLY_XML += '</category></xml>';
     var MAX_FUEL = {{level.max_fuel}};
     var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
     var NEXT_LEVEL = "{{level.next_level}}" !== "None" ? "{{level.next_level.name}}" : null;
