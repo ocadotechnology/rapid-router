@@ -41,8 +41,6 @@ var ocargo = ocargo || {};
 
 var MAX_EXECUTION_STEPS = 10000;
 
-var shouldHighlight = true;
-
 /* Program */
 
 ocargo.Program = function(events) {
@@ -268,20 +266,21 @@ function Event(condition,body,block,conditionType) {
 	this.condition = condition;
 	this.body = body;
 	this.block = block;
-	//this.conditionType = conditionType;
-	//this.oldLevel = null;
-};
+	this.conditionType = conditionType;
+	this.oldLevel = null;
+}
 
 Event.prototype.execute = function(thread, model) {
+	console.log(this.conditionType + " " + this.oldLevel);
     if (this.condition(model)) {
-		// raise event level to our level
+		// raise global event level to this event level
 		thread.eventLevel = this.level();
 
         // loop within the event handler as long as condition is true
         thread.addNewStackLevel([this]);
         thread.addNewStackLevel(this.body.slice());
     } else {
-		// lower event level to prior value
+		// lower event level back to prior value
 		thread.eventLevel = this.oldLevel;
     }
 	return true;
@@ -296,24 +295,24 @@ Event.MAX_LEVEL = 1000; // level at which no event is active
 Event.prototype.level = function() {
 	if (this.conditionType === 'road_exists') {
 		return 31;
-	} else if (this.conditionType === 'dead_end') {
-		return 30;
-	} else if (this.conditionType === 'at_destination') {
-		return 20;
-	} else if (this.conditionType === 'traffic_light') {
-		return 11;
-	} else if (this.conditionType === 'cow_crossing') {
-		return 10;
-	} else {
-		return 100;
-	}
+} else if (this.conditionType === 'dead_end') {
+	return 30;
+} else if (this.conditionType === 'at_destination') {
+	return 20;
+} else if (this.conditionType === 'traffic_light') {
+	return 11;
+} else if (this.conditionType === 'cow_crossing') {
+	return 10;
+} else {
+	return 100;
+}
 };
 
 function Procedure(name,body,block) {
 	this.name = name;
 	this.body = body;
 	this.block = block;
-};
+}
 
 Procedure.prototype.execute = function(thread) {
 	thread.addNewStackLevel(this.body.slice());
@@ -322,7 +321,7 @@ Procedure.prototype.execute = function(thread) {
 
 function ProcedureCall(block) {
 	this.block = block;
-};
+}
 
 ProcedureCall.prototype.bind = function(proc) {
 	this.proc = proc;
