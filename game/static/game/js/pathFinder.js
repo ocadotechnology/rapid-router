@@ -15,7 +15,8 @@ ocargo.PathFinder = function(model) {
     } else {
         this.maxScoreForPathLength = 0;
     }
-    this.maxScoreForNumberOfInstructions = 10;
+
+    this.maxScoreForNumberOfInstructions = this.modelSolution.length > 0 ? 10 : 0;
 
     this.maxScore = this.maxScoreForPathLength + this.maxScoreForNumberOfInstructions;
 
