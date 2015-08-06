@@ -14,7 +14,8 @@ ocargo.BlocklyControl = function () {
     Blockly.inject(this.blocklyDiv, {
         path: '/static/game/js/blockly/',
         toolbox: BLOCKLY_XML,
-        trashcan: true
+        trashcan: true,
+        scrollbars: true
     });
 
     this.blocklyCustomisations.setupFlyoutToggling(this.blocklyDiv);
@@ -23,6 +24,9 @@ ocargo.BlocklyControl = function () {
     // Stop the flyout from closing automatically
     Blockly.Flyout.autoClose = false;
     this.blocklyCustomisations.makeFlyoutTransparent();
+    this.blocklyCustomisations.hideFlyoutButton();
+    this.blocklyCustomisations.shiftBlockly();
+    this.blocklyCustomisations.shiftWorkspace();
 };
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;

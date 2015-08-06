@@ -373,7 +373,6 @@ ocargo.Game.prototype.setupTabs = function() {
         ocargo.game.currentTabSelected = tabs.blockly;
         tabs.blockly.select();
 
-        var flyoutOut = false;
         // Function wrapper needed
         $('#flyoutButton').click(function(){ocargo.blocklyControl.toggleFlyout();});
 

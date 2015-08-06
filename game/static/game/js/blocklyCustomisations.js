@@ -17,6 +17,21 @@ ocargo.BlocklyCustomisations = function() {
         document.getElementsByClassName('blocklyFlyoutBackground')[0].style["fillOpacity"]="0.5";
 	};
 
+	//Hide Flyout Button
+	this.hideFlyoutButton = function() {
+		//document.getElementById('flyoutButton').style['display']="none";
+	};
+
+	//Shift Blockly Div
+	this.shiftBlockly = function() {
+		document.getElementById('blockly_holder').style["marginLeft"]="0px";
+	};
+
+	//Make it such that the workspace and game do not overlap
+	this.shiftWorkspace = function() {
+		document.getElementById('blockly_holder').style["width"]="calc(100%)";
+	}
+
     var canAddNewBlock = function(blockType) {
         return blockCount[blockType] === undefined || blockCount[blockType] > 0;
     };
@@ -32,6 +47,8 @@ ocargo.BlocklyCustomisations = function() {
 		    };
 		}
 	};
+
+	Blockly.Flyout.prototype.autoClose = false;
 
     // Override Scrollbar::set to call constrainKnob, in case value is negative
     Blockly.Scrollbar.prototype.set = function(value) {
@@ -156,20 +173,31 @@ ocargo.BlocklyCustomisations = function() {
 	 * Needs to be called AFTER blockly is injected
 	 */
 	this.setupFlyoutToggling = function(blocklyDiv) {
-        var flyoutOut = false;
+        var flyoutShown = false;
 
         // Needed so that the size of the flyout is available
 	    // for when toggle flyout is first called
-	    Blockly.getMainWorkspace().toolbox_.tree_.firstChild_.onMouseDown();
 	    this.flyoutWidth = $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
-	    Blockly.getMainWorkspace().toolbox_.tree_.firstChild_.onMouseDown();
+
+		// So that the Delete area depends on whether the flyout is shown
+		var oldRecordDeleteAreas = Blockly.getMainWorkspace().recordDeleteAreas;
+		Blockly.WorkspaceSvg.prototype.recordDeleteAreas = function() {
+			oldRecordDeleteAreas.call(Blockly.getMainWorkspace());
+			if (!flyoutShown) {
+				this.deleteAreaToolbox_ = null;
+			}
+		}
 
 		this.toggleFlyout = function() {
-		    Blockly.getMainWorkspace().toolbox_.tree_.firstChild_.onMouseDown();
-		    this.flyoutOut = !this.flyoutOut;
+		    flyoutShown = !flyoutShown;
+			if (flyoutShown) {
+				document.getElementsByClassName('blocklyFlyout')[0].style["display"]="block";
+			} else {
+				document.getElementsByClassName('blocklyFlyout')[0].style["display"]="none";
+			}
 
 		    var image;
-		    if (this.flyoutOut) {
+		    if (flyoutShown) {
 		        image = 'hide';
 		        $('#flyoutButton').css('left', (this.flyoutWidth - 4 ) +  'px');
 		    }
@@ -184,10 +212,11 @@ ocargo.BlocklyCustomisations = function() {
 		this.bringStartBlockFromUnderFlyout = function() {
             var distanceFromToolboxDiv = 455;
             var distanceFromTopMargin = 15;
-            Blockly.mainWorkspace.scrollbar.hScroll.set(blocklyDiv.offsetWidth - distanceFromToolboxDiv);
-            Blockly.mainWorkspace.scrollbar.vScroll.set(blocklyDiv.offsetHeight - distanceFromTopMargin);
+            Blockly.getMainWorkspace().scrollbar.hScroll.set(blocklyDiv.offsetWidth - distanceFromToolboxDiv);
+            Blockly.getMainWorkspace().scrollbar.vScroll.set(blocklyDiv.offsetHeight - distanceFromTopMargin);
 		};
 	};
+
 
 	/**
 	 * Sets up big code mode (enlarges blockly)
