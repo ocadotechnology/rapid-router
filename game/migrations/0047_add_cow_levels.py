@@ -148,7 +148,7 @@ def add_levels(apps, schema_editor):
 
     level114.save()
     set_decor(level114, json.loads(
-        '[{"x":47,"y":439,"decorName":"tree2"},{"x":0,"y":527,"decorName":"tree2"},{"x":0,"y":579,"decorName":"tree2"},{"x":57,"y":548,"decorName":"tree2"},{"x":0,"y":457,"decorName":"tree2"},{"x":0,"y":348,"decorName":"tree2"},{"x":12,"y":400,"decorName":"tree2"},{"x":407,"y":593,"decorName":"tree1"},{"x":446,"y":572,"decorName":"tree1"},{"x":449,"y":611,"decorName":"tree1"},{"x":250,"y":544,"decorName":"tree1"},{"x":130,"y":610,"decorName":"pond"}]'))
+        '[{"x":47,"y":439,"decorName":"tree2"},{"x":0,"y":527,"decorName":"tree2"},{"x":0,"y":579,"decorName":"tree2"},{"x":57,"y":548,"decorName":"tree2"},{"x":0,"y":457,"decorName":"tree2"},{"x":0,"y":348,"decorName":"tree2"},{"x":12,"y":400,"decorName":"tree2"},{"x":382,"y":593,"decorName":"tree1"},{"x":421,"y":572,"decorName":"tree1"},{"x":424,"y":611,"decorName":"tree1"},{"x":250,"y":544,"decorName":"tree1"},{"x":130,"y":610,"decorName":"pond"}]'))
     set_blocks(level114, json.loads(
         '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"traffic_light"},{"type":"cow_crossing"},{"type":"declare_event"}]'))
 
