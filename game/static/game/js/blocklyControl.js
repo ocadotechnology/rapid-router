@@ -25,7 +25,6 @@ ocargo.BlocklyControl = function () {
     Blockly.Flyout.autoClose = false;
 
     this.blocklyCustomisations.makeFlyoutTransparent();
-    this.blocklyCustomisations.hideFlyoutButton();
     this.blocklyCustomisations.shiftBlockly();
     this.blocklyCustomisations.shiftWorkspace();
     this.blocklyCustomisations.hideBlocklyToolbox();
