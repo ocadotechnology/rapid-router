@@ -14,7 +14,7 @@ ocargo.BlocklyCustomisations = function () {
 
     //Make the flyout button more transparent so that it is clearer when blocks have been created.
     this.makeFlyoutButtonTransparent = function () {
-        console.log(document.getElementById('flyoutButton').style['background'] = "rgba(255, 255, 255, 0.5)");
+        document.getElementById('flyoutButton').style['background'] = "rgba(255, 255, 255, 0.5)";
     };
 
     //Make the flyout more transparent so that it is clearer when blocks have been created.
