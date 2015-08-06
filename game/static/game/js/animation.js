@@ -183,10 +183,14 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					title = ocargo.messages.winTitle;
 					var levelMsg = [];
 
-					levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins) + a.pathLengthScore + "/" + a.maxScoreForPathLength);
+					if (!a.pathScoreDisabled) {
+						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins) + a.pathLengthScore + "/" + a.maxScoreForPathLength);
+					}
 
-					levelMsg.push(ocargo.messages.algorithmScore +
-					ocargo.Drawing.renderCoins(a.instrCoins) + a.instrScore + "/" + a.maxScoreForNumberOfInstructions);
+					if (a.maxScoreForNumberOfInstructions != 0){
+						levelMsg.push(ocargo.messages.algorithmScore +
+							ocargo.Drawing.renderCoins(a.instrCoins) + a.instrScore + "/" + a.maxScoreForNumberOfInstructions);
+					}
 
 					levelMsg.push(ocargo.messages.totalScore(a.totalScore, a.maxScore));
 
@@ -216,11 +220,11 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 							 */
 
 					        if (NEXT_EPISODE) {
-					            levelMsg = '<br><br>' + ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM);
+					            levelMsg.push(ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM));
 								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
 					        }
 					        else if(DEFAULT_LEVEL) {
-					            levelMsg = ocargo.messages.lastLevel;
+					            levelMsg.push(ocargo.messages.lastLevel);
 								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/level_editor/'", "Create your own map!");
 								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
 					        }

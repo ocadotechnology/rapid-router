@@ -2031,9 +2031,7 @@ ocargo.LevelEditor = function() {
         }
 
         // Check to see if path exists from start to end
-        var destination = new ocargo.Destination(0, destinationNode);
-        var pathToDestination = getOptimalPath(nodes, [destination]);
-        if (!pathToDestination) {
+        if (!areDestinationsReachable(originNode, [destinationNode], nodes)) {
             ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
                                       ocargo.messages.noStartEndRouteSubtitle,
                                       ocargo.messages.noStartEndRoute);
