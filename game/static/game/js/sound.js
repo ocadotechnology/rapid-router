@@ -52,6 +52,11 @@ ocargo.sound.deliverySound = new Howl({
     urls: ['/static/game/sound/delivery.mp3', '/static/game/sound/delivery.ogg']
 });
 
+ocargo.sound.hornSound = new Howl({
+    urls: ['/static/game/sound/delivery.mp3', '/static/game/sound/delivery.ogg'],
+    loop: true
+});
+
 ocargo.sound.winSound = new Howl({
     urls: ['/static/game/sound/win.mp3', '/static/game/sound/win.ogg']
 });
@@ -121,6 +126,14 @@ ocargo.sound.cow = function() {
     safePlay(ocargo.sound.cowSound);
 };
 
+ocargo.sound.sound_horn = function() {
+    safePlay(ocargo.sound.deliverySound);
+};
+
+ocargo.sound.stop_horn = function() {
+    safeStop(ocargo.sound.deliverySound);
+};
+
 ocargo.sound.crash = function() {
     if (CHARACTER_NAME === 'Van') {
         safePlay(ocargo.sound.crashSound);
@@ -136,7 +149,7 @@ ocargo.sound.tension = function() {
 ocargo.sound.mute = function() {
     this.playAudioBackup = Blockly.SOUNDS_;
     Blockly.SOUNDS_ = {};
-    
+
     Howler.mute();
 };
 

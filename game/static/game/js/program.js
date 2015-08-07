@@ -219,7 +219,14 @@ DeliverCommand.prototype.execute = function(thread, model) {
 	return model.deliver();
 };
 
+function SoundHornCommand(block){
+	this.block = block;
+}
 
+SoundHornCommand.prototype.execute = function(thread, model){
+	queueHighlight(model, this.block);
+	return model.sound_horn();
+}
 
 function If(conditionalCommandSets, elseBody, block) {
 	this.conditionalCommandSets = conditionalCommandSets;
@@ -277,7 +284,7 @@ Event.prototype.execute = function(thread, model) {
 		thread.eventLevel = this.level();
 
         // loop within the event handler as long as condition is true
-        thread.addNewStackLevel([this]);
+        //thread.addNewStackLevel([this]);
         thread.addNewStackLevel(this.body.slice());
     } else {
 		// lower event level back to prior value
@@ -295,17 +302,17 @@ Event.MAX_LEVEL = 1000; // level at which no event is active
 Event.prototype.level = function() {
 	if (this.conditionType === 'road_exists') {
 		return 31;
-} else if (this.conditionType === 'dead_end') {
-	return 30;
-} else if (this.conditionType === 'at_destination') {
-	return 20;
-} else if (this.conditionType === 'traffic_light') {
-	return 11;
-} else if (this.conditionType === 'cow_crossing') {
-	return 10;
-} else {
-	return 100;
-}
+	} else if (this.conditionType === 'dead_end') {
+		return 30;
+	} else if (this.conditionType === 'at_destination') {
+		return 20;
+	} else if (this.conditionType === 'traffic_light') {
+		return 11;
+	} else if (this.conditionType === 'cow_crossing') {
+		return 10;
+	} else {
+		return 100;
+	}
 };
 
 function Procedure(name,body,block) {

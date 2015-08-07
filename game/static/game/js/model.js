@@ -449,6 +449,28 @@ ocargo.Model.prototype.deliver = function() {
     return destination;
 };
 
+ocargo.Model.prototype.sound_horn = function() {
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionType: 'playSound',
+        functionCall: ocargo.sound.sound_horn,
+        description: 'van sound: sounding the horn'
+    });
+
+    return true;
+};
+
+ocargo.Model.prototype.stop_horn = function() {
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionType: 'playSound',
+        functionCall: ocargo.sound.stop_horn,
+        description: 'van sound: stop sounding the horn'
+    });
+
+    return true;
+};
+
 // Signal that the program has ended and we should calculate whether
 // the play has won or not and send off those events
 ocargo.Model.prototype.programExecutionEnded = function() {

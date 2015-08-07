@@ -63,6 +63,10 @@ function initCustomBlocksDescription() {
         }
     };
 
+    /*****************/
+    /* Action Blocks */
+    /*****************/
+
     Blockly.Blocks['move_forwards'] = {
         // Block for moving forward
         init: function() {
@@ -169,6 +173,46 @@ function initCustomBlocksDescription() {
         }
     };
 
+    Blockly.Blocks['puff_up'] = {
+        // Block for puffing up the van
+        init: function() {
+            this.setColour(160);
+            this.appendDummyInput()
+                .appendField('puff up')
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
+                    43,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT))
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
+                    ocargo.BlocklyControl.IMAGE_WIDTH,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT));
+            this.setPreviousStatement(true);
+            this.setNextStatement(true);
+            this.setTooltip('Puff up the van to scare away the cows');
+        }
+    };
+
+    Blockly.Blocks['sound_horn'] = {
+        // Block for puffing up the van
+        init: function() {
+            this.setColour(160);
+            this.appendDummyInput()
+                .appendField('sound horn')
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
+                    43,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT))
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
+                    ocargo.BlocklyControl.IMAGE_WIDTH,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT));
+            this.setPreviousStatement(true);
+            this.setNextStatement(true);
+            this.setTooltip('Sound the horn to scare away the cows');
+        }
+    };
+
+    /*****************/
+    /*   Conditions  */
+    /*****************/
+
     Blockly.Blocks['road_exists'] = {
         init: function() {
             var BOOLEANS =
@@ -200,18 +244,6 @@ function initCustomBlocksDescription() {
         }
     };
 
-    Blockly.Blocks['cow_crossing'] = {
-        init: function() {
-            this.setColour(210);
-            this.setOutput(true, 'Boolean');
-            this.appendDummyInput()
-                .appendField('cow crossing')
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                                                    ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
-                                                    ocargo.BlocklyControl.BLOCK_HEIGHT));
-        }
-    };
-
     Blockly.Blocks['dead_end'] = {
         init: function() {
             this.setColour(210);
@@ -235,6 +267,26 @@ function initCustomBlocksDescription() {
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
         }
     };
+
+    /*****************/
+    /*     Events    */
+    /*****************/
+
+    Blockly.Blocks['cow_crossing'] = {
+        init: function() {
+            this.setColour(290);
+            this.setOutput(true, 'Event');
+            this.appendDummyInput()
+                .appendField('cow crossing')
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
+                    ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT));
+        }
+    };
+
+    /****************/
+    /*  Procedures  */
+    /****************/
 
     Blockly.Blocks['call_proc'] = {
         // Block for calling a defined procedure
@@ -268,12 +320,16 @@ function initCustomBlocksDescription() {
         }
     };
 
+    /****************/
+    /*    Events    */
+    /****************/
+
     Blockly.Blocks['declare_event'] = {
         // Block for declaring an event handler
         init: function() {
             this.setColour(260);
             this.appendValueInput("condition")
-                .setCheck("Boolean")
+                .setCheck("Event")
                 .appendField('On');
             this.appendStatementInput('DO')
                 .setCheck("null")
@@ -282,6 +338,10 @@ function initCustomBlocksDescription() {
             this.statementConnection_ = null;
         }
     };
+
+    /*******************/
+    /*  Control Flows  */
+    /*******************/
 
     Blockly.Blocks['controls_repeat_while'] = {
         // Block for repeat while

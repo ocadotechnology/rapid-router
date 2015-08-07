@@ -11,9 +11,9 @@ def add_cows_block(apps, schema_editor):
     Block = apps.get_model('game', 'Block')
 
     cow_crossing = Block.objects.create(type='cow_crossing')
-    cow_crossing.save()
     declare_event = Block.objects.create(type='declare_event')
-    declare_event.save()
+    puff_up = Block.objects.create(type='puff_up')
+    sound_horn = Block.objects.create(type='sound_horn')
 
 
 def add_levels(apps, schema_editor):
@@ -150,7 +150,7 @@ def add_levels(apps, schema_editor):
     set_decor(level114, json.loads(
         '[{"x":47,"y":439,"decorName":"tree2"},{"x":0,"y":527,"decorName":"tree2"},{"x":0,"y":579,"decorName":"tree2"},{"x":57,"y":548,"decorName":"tree2"},{"x":0,"y":457,"decorName":"tree2"},{"x":0,"y":348,"decorName":"tree2"},{"x":12,"y":400,"decorName":"tree2"},{"x":382,"y":593,"decorName":"tree1"},{"x":421,"y":572,"decorName":"tree1"},{"x":424,"y":611,"decorName":"tree1"},{"x":250,"y":544,"decorName":"tree1"},{"x":130,"y":610,"decorName":"pond"}]'))
     set_blocks(level114, json.loads(
-        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"traffic_light"},{"type":"cow_crossing"},{"type":"declare_event"}]'))
+        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"traffic_light"},{"type":"cow_crossing"},{"type":"declare_event"}, {"type": "puff_up"}, {"type": "sound_horn"}]'))
 
     level109 = Level.objects.get(name='109')
     level109.next_level=level110
