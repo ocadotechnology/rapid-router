@@ -6,7 +6,6 @@ ocargo.BlocklyControl = function () {
     this.numberOfStartBlocks = THREADS;
 
     this.blocklyCustomisations = new ocargo.BlocklyCustomisations();
-    this.blocklyCustomisations.widenFlyout();
     this.blocklyCustomisations.setupBigCodeMode();
 
     this.blocklyDiv = document.getElementById('blockly_holder');

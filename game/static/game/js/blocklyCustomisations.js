@@ -14,28 +14,29 @@ ocargo.BlocklyCustomisations = function () {
 
     //Make the flyout button more transparent so that it is clearer when blocks have been created.
     this.makeFlyoutButtonTransparent = function () {
-        document.getElementById('flyoutButton').style['background'] = "rgba(255, 255, 255, 0.5)";
+        $("#flyoutButton").css("background", "rgba(255, 255, 255, 0.5)");
     };
 
     //Make the flyout more transparent so that it is clearer when blocks have been created.
     this.makeFlyoutTransparent = function () {
-        document.getElementsByClassName('blocklyFlyoutBackground')[0].style["fillOpacity"] = "0.5";
+        $(".blocklyFlyoutBackground").css("fill-opacity", "0.5");
     };
 
     //Shift Blockly Div
     this.shiftBlockly = function () {
-        document.getElementById('blockly_holder').style["marginLeft"] = "0px";
+        $("#blockly_holder").css("marginLeft", "0px");
     };
 
     //Make it such that the workspace and game do not overlap
     this.shiftWorkspace = function () {
-        document.getElementById('blockly_holder').style["width"] = "calc(100%)";
+        $("#blockly_holder").css("width", "calc(100%)");
     }
 
     //Hide Blockly Toolbox to use our Flyout button instead
     this.hideBlocklyToolbox = function () {
-        document.getElementsByClassName('blocklyToolboxDiv')[0].style['display'] = "none";
+        $(".blocklyToolboxDiv").css("display", "none");
     }
+
 
 
     var canAddNewBlock = function (blockType) {
@@ -43,16 +44,15 @@ ocargo.BlocklyCustomisations = function () {
     };
 
     this.widenFlyout = function () {
-        if (limitedBlocks) {
-            // Override blockly flyout's position function to artificially widen it
-            var oldPositionFunction = Blockly.Flyout.prototype.position_;
-            Blockly.Flyout.prototype.position_ = function () {
+            //Override blockly flyout's position function to artificially widen it
+            var oldPositionFunction = Blockly.Flyout.prototype.position;
+
+            Blockly.Flyout.prototype.position = function () {
                 this.width_ += 50;
                 oldPositionFunction.call(this);
                 this.width_ -= 50;
-            };
-        }
-    };
+            }
+    }
 
     Blockly.Flyout.prototype.autoClose = false;
 
@@ -81,19 +81,20 @@ ocargo.BlocklyCustomisations = function () {
         };
 
         if (limitedBlocks) {
-            // Override blockly flyout's position function to artificially widen it
-            var oldPositionFunction = Blockly.Flyout.prototype.position_;
-            Blockly.Flyout.prototype.position_ = function () {
-                this.width_ += 50;
-                oldPositionFunction.call(this);
-                this.width_ -= 50;
-            };
+            this.widenFlyout();
 
             // Override blockly flyout's show function to add in the quantity text elements
             var oldShowFunction = Blockly.Flyout.prototype.show;
+            var firstCall = true;
             Blockly.Flyout.prototype.show = function (xmlList) {
-                var margin = this.CORNER_RADIUS;
+                if (firstCall) {
+                    // The first time this is called the flyout doesn't yet exist.
+                    // By calling show we give this.width_ a non-zero value.
+                    oldShowFunction.call(this, xmlList);
+                    firstCall = false;
+                }
 
+                var margin = this.CORNER_RADIUS;
                 this.blockQuantities_ = this.blockQuantities_ || [];
 
                 // Remove current quantity elements
@@ -128,7 +129,6 @@ ocargo.BlocklyCustomisations = function () {
                             'class': 'quantity_text',
                             'value': block.type
                         };
-
                         var element = Blockly.createSvgElement('text', attributes, null);
                         setQuantityText(element, block.type);
                         this.blockQuantities_.push(element);
