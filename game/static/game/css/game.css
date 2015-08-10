@@ -283,3 +283,7 @@
     bottom: 50px;
     background-image : url('/static/game/image/actions/forward.svg');
 }
+
+.blocklyWidgetDiv {
+    line-height: 1;
+}
