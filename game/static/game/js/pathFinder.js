@@ -188,8 +188,7 @@ function getOptimalPath(nodes, destinations) {
 
     for (var i = 0; i < destinations.length; i++) {
         destinationNodes.push(destinations[i].node);
-    }
-    console.log(destinationNodes);
+    };
     permute(destinationNodes);
 
     for (var i = 0; i < permutations.length; i++) {
