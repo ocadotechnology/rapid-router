@@ -200,6 +200,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             	case 'WAIT':
             		ocargo.drawing.wait(vanID, animationLength);
             		break;
+				case 'PUFFUP':
+					ocargo.drawing.puffUp(vanID, animationLength);
+					break;
+                case 'PUFFDOWN':
+                    ocargo.drawing.puffDown(vanID, animationLength);
+                    break;
             	case 'CRASH':
             		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode,
             			a.attemptedAction, a.startNode);

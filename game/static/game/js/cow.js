@@ -149,12 +149,13 @@ ocargo.Cow.prototype.incrementTime = function(model) {
     for (var jsonCoordinate in this.activeNodes) {
         if (this.activeNodes[jsonCoordinate] == ocargo.Cow.ACTIVE) {
             var coordinateTime = this.cowTime - this.activeNodeTimers[jsonCoordinate];
-            if (coordinateTime >= this.timeout || model.soundedHorn) {
+            if (coordinateTime >= this.timeout || model.soundedHorn || model.puffedUp) {
                 this.activeNodes[jsonCoordinate] = ocargo.Cow.INACTIVE;
                 this.activeNodeTimers[jsonCoordinate] = 0;
 
                 var node = ocargo.Node.findNodeByCoordinate(JSON.parse(jsonCoordinate), this.nodes);
                 model.soundedHorn = false;
+                model.puffedUp = false;
                 this.queueLeaveAnimation(model, node);
             }
         }
@@ -173,6 +174,6 @@ ocargo.Cow.READY = 'READY';
 ocargo.Cow.ACTIVE = 'ACTIVE';
 ocargo.Cow.INACTIVE = 'INACTIVE';
 ocargo.Cow.RANDOM_TIMEOUT = 'random';
-ocargo.Cow.MIN_RANDOM_TIMEOUT = 2;
+ocargo.Cow.MIN_RANDOM_TIMEOUT = 3;
 ocargo.Cow.MAX_RANDOM_TIMEOUT = 5;
 ocargo.Cow.DEFAULT_TIMEOUT = ocargo.Cow.RANDOM_TIMEOUT;

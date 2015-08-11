@@ -65,6 +65,7 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     this.shouldObserve = true;
 
     this.soundedHorn = false;
+    this.puffedUp = false;
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -86,14 +87,12 @@ ocargo.Model.prototype.reset = function(vanId) {
 
     // Display cow on origin node if exists
     var node = this.map.originCurrentNode;
-    var cow = this.getCowForNode(node, ocargo.Cow.READY);
-    if (cow) {
-        cow.setActive(this, node);
-    }
+    this.setCowsActive(node);
 
     this.timestamp = 0;
     this.reasonForTermination  =  null;
     this.soundedHorn = false;
+    this.puffedUp = false;
 
     if (vanId !== null && vanId !== undefined) {
         this.vanId = vanId;
@@ -147,7 +146,14 @@ ocargo.Model.prototype.isDeadEnd = function() {
 
 ocargo.Model.prototype.isCowCrossing = function() {
     this.observe('cow crossing');
-    return (this.getCowForNode(this.van.getPosition().currentNode, ocargo.Cow.ACTIVE) != null);
+    var node = this.van.getPosition().currentNode;
+    for (var i = 0 ; i < node.connectedNodes.length ; i++){
+        var nextNode = node.connectedNodes[i];
+        if(this.getCowForNode(nextNode, ocargo.Cow.ACTIVE) != null){
+            return true;
+        }
+    }
+    return false;
 };
 
 ocargo.Model.prototype.isTrafficLightRed = function() {
@@ -284,10 +290,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
     });
 
     // Display cow on node if exists
-    var cow = this.getCowForNode(nextNode, ocargo.Cow.READY);
-    if (cow){
-        cow.setActive(this, nextNode);
-    }
+    this.setCowsActive(nextNode);
 
     this.incrementTime();
 
@@ -336,6 +339,16 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         });
 
         model.reasonForTermination = 'CRASH'; // used to determine whether the play controls ('forward', 'left' and 'right' arrows) are still usable
+    }
+};
+
+ocargo.Model.prototype.setCowsActive = function(nextNode) {
+    for(var i = 0 ; i < nextNode.connectedNodes.length ; i++ ){
+        var node = nextNode.connectedNodes[i];
+        var cow = this.getCowForNode(node, ocargo.Cow.READY);
+        if (cow){
+            cow.setActive(this, node);
+        }
     }
 };
 
@@ -461,7 +474,7 @@ ocargo.Model.prototype.sound_horn = function() {
         description: 'van sound: sounding the horn'
     });
 
-    this.incrementTime();
+    this.incrementCowTime();
 
     return true;
 };
@@ -472,6 +485,38 @@ ocargo.Model.prototype.stop_horn = function() {
         functionType: 'playSound',
         functionCall: ocargo.sound.stop_horn,
         description: 'van sound: stop sounding the horn'
+    });
+
+    return true;
+};
+
+ocargo.Model.prototype.puff_up = function(){
+    this.puffedUp = true;
+    console.log("puff_up");
+
+    ocargo.animation.appendAnimation({
+        type: 'van',
+        id: this.vanId,
+        vanAction: 'PUFFUP',
+        fuel: this.van.getFuelPercentage(),
+        description: 'van move action: puff up',
+    });
+
+    this.incrementCowTime();
+
+    return this.puff_down();
+};
+
+ocargo.Model.prototype.puff_down = function(){
+    this.puffedUp = false;
+    console.log("puff_down");
+
+    ocargo.animation.appendAnimation({
+        type: 'van',
+        id: this.vanId,
+        vanAction: 'PUFFDOWN',
+        fuel: this.van.getFuelPercentage(),
+        description: 'van move action: puff down',
     });
 
     return true;
@@ -634,7 +679,11 @@ ocargo.Model.prototype.incrementTime = function() {
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
     }
+    this.incrementCowTime();
+};
+
+ocargo.Model.prototype.incrementCowTime = function() {
     for (var i = 0; i < this.cows.length; i++) {
         this.cows[i].incrementTime(this);
     }
-};
+}

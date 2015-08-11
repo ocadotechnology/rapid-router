@@ -638,14 +638,14 @@ ocargo.Drawing = function() {
         var image = paper.image(ocargo.Drawing.raphaelImageDir + 'FatClarice.svg', res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot+"s0.1");
-        image.animate({transform : rot+"s1"}, 100, 'linear');
+        image.animate({transform : rot+"s1"}, 50, 'linear');
 
         return {'coordinate': coordinate,
             'image': image};
     };
 
     this.removeCow = function(cow) {
-        cow.image.animate({transform : "s0.01"}, 100, 'linear', function(){cow.image.remove();});
+        cow.image.animate({transform : "s0.01"}, 500, 'linear', function(){cow.image.remove();});
     };
 
     this.setVanImagePosition = function(position, vanID) {
@@ -877,6 +877,20 @@ ocargo.Drawing = function() {
 
     this.deliver = function(destinationId, animationLength) {
         this.transitionDestination(destinationId, true, animationLength);
+    };
+
+    this.puffUp = function(vanId, animationLength, callback) {
+        console.log("DRAWING PUFF UP");
+        moveVanImage({
+            transform: '... s 1.5, 1.5, 0, 0'
+        }, vanId, animationLength, callback);
+    };
+
+    this.puffDown = function(vanId, animationLength, callback) {
+        console.log("DRAWING PUFF DOWN");
+        moveVanImage({
+            transform: '... s 0.66, 0.66, 0, 0'
+        }, vanId, animationLength, callback);
     };
 
     function moveVanImage(attr, vanId, animationLength, callback) {
