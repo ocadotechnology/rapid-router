@@ -63,6 +63,8 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     // false if evaluation of conditions etc. should be hidden from user.
     // used for evaluation of event handlers before each statement.
     this.shouldObserve = true;
+
+    this.soundedHorn = false;
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -91,6 +93,7 @@ ocargo.Model.prototype.reset = function(vanId) {
 
     this.timestamp = 0;
     this.reasonForTermination  =  null;
+    this.soundedHorn = false;
 
     if (vanId !== null && vanId !== undefined) {
         this.vanId = vanId;
@@ -450,12 +453,15 @@ ocargo.Model.prototype.deliver = function() {
 };
 
 ocargo.Model.prototype.sound_horn = function() {
+    this.soundedHorn = true;
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionType: 'playSound',
         functionCall: ocargo.sound.sound_horn,
         description: 'van sound: sounding the horn'
     });
+
+    this.incrementTime();
 
     return true;
 };

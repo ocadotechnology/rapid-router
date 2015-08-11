@@ -149,11 +149,12 @@ ocargo.Cow.prototype.incrementTime = function(model) {
     for (var jsonCoordinate in this.activeNodes) {
         if (this.activeNodes[jsonCoordinate] == ocargo.Cow.ACTIVE) {
             var coordinateTime = this.cowTime - this.activeNodeTimers[jsonCoordinate];
-            if (coordinateTime >= this.timeout) {
+            if (coordinateTime >= this.timeout || model.soundedHorn) {
                 this.activeNodes[jsonCoordinate] = ocargo.Cow.INACTIVE;
                 this.activeNodeTimers[jsonCoordinate] = 0;
 
                 var node = ocargo.Node.findNodeByCoordinate(JSON.parse(jsonCoordinate), this.nodes);
+                model.soundedHorn = false;
                 this.queueLeaveAnimation(model, node);
             }
         }

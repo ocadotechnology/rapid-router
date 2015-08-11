@@ -226,7 +226,7 @@ function SoundHornCommand(block){
 SoundHornCommand.prototype.execute = function(thread, model){
 	queueHighlight(model, this.block);
 	return model.sound_horn();
-}
+};
 
 function If(conditionalCommandSets, elseBody, block) {
 	this.conditionalCommandSets = conditionalCommandSets;
@@ -279,17 +279,17 @@ function Event(condition,body,block,conditionType) {
 
 Event.prototype.execute = function(thread, model) {
 	console.log(this.conditionType + " " + this.oldLevel);
-    if (this.condition(model)) {
+    //if (this.condition(model)) {
 		// raise global event level to this event level
-		thread.eventLevel = this.level();
+	//thread.eventLevel = this.level();
 
         // loop within the event handler as long as condition is true
         //thread.addNewStackLevel([this]);
-        thread.addNewStackLevel(this.body.slice());
-    } else {
+	thread.addNewStackLevel(this.body.slice());
+    //} else {
 		// lower event level back to prior value
-		thread.eventLevel = this.oldLevel;
-    }
+		//thread.eventLevel = this.oldLevel;
+    //}
 	return true;
 };
 
