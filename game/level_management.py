@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Code for Life
 #
 # Copyright (C) 2015, Ocado Limited

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Code for Life
 #
 # Copyright (C) 2015, Ocado Limited
@@ -33,7 +34,6 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
 from django.db import migrations
