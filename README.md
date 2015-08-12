@@ -6,9 +6,7 @@ Rapid Router is a 'Coding For Life' project, aimed at teaching children programm
 Go to the official [Code For Life website](https://www.codeforlife.education/).
 
 ## To run the app locally
-Follow the instruction at [codeforlife-deploy](http://github.com/ocadotechnology/codeforlife-deploy/), but in short:
-- Clone the deploy repository
-- Run ./local-setup.sh
+Follow the instruction at [codeforlife-deploy](http://github.com/ocadotechnology/codeforlife-deploy/).
 
 ## To contribute
 __Found an problem? Please check whether it has already been reported in our [issue tracker](https://github.com/ocadotechnology/ocargo/issues) first!__ if not, [Add it](https://github.com/ocadotechnology/ocargo/issues/new). Please make sure that you give us a suitable level of detail about the symptoms and how to reproduce it. Please label it as a "bug".
