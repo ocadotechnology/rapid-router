@@ -116,7 +116,7 @@ ocargo.BlocklyCompiler.prototype.compileProgram = function() {
     for (var i = 0; i < THREADS; i++) {
         var thread = new ocargo.Thread(i, this.program);
         thread.startBlock = startBlocks[i];
-        thread.stack.push(this.createSequence(thread.startBlock));
+        thread.stack = this.createSequence(thread.startBlock);
         this.program.threads.push(thread);
     }
 };

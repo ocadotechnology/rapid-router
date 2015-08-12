@@ -166,7 +166,7 @@ ocargo.Cow.prototype.setActive = function(model, node) {
     var jsonCoordinate = JSON.stringify(node.coordinate); //get node coordinates
     this.activeNodes[jsonCoordinate] = ocargo.Cow.ACTIVE; //set cow state to active
     this.activeNodeTimers[jsonCoordinate] = this.cowTime; //initialize cow timer.
-
+    this.justAppeared = true;
     this.queueAnimation(model, node);
 }
 

@@ -60,10 +60,9 @@ ocargo.Program.prototype.run = function() {
 /* Thread */
 
 ocargo.Thread = function(i, program) {
-	this.stack = [];
+	this.stack = []; //each element is an array of commands attached to each start block (currently we only have one start block)
 	this.noExecutionSteps = 0;
 	this.program = program;
-	this.eventsEnabled = true;
 	this.eventLevel = Event.MAX_LEVEL; // no event active
 };
 
@@ -99,10 +98,9 @@ ocargo.Thread.prototype.step = function(model) {
 		activeEvent.setOldLevel(this.eventLevel);
 		// add event handler to stack (looping)
 		activeEvent.execute(this, model);
-	}
+    }
 
-	var stackLevel = this.stack[this.stack.length - 1];
-	var commandToProcess = stackLevel.shift();
+	var commandToProcess = this.stack.shift();
 	this.noExecutionSteps ++;
 	if (this.noExecutionSteps > MAX_EXECUTION_STEPS) {
 		// alert user to likely infinite loop
@@ -116,10 +114,6 @@ ocargo.Thread.prototype.step = function(model) {
             description: 'failure popup'
         });
 		return false;
-	}
-
-	if (stackLevel.length === 0) {
-		this.stack.pop();
 	}
 
 	var successful = true;
@@ -138,11 +132,11 @@ ocargo.Thread.prototype.step = function(model) {
 };
 
 ocargo.Thread.prototype.canStep = function() {
-	return this.stack.length !== 0 && this.stack[0].length !== 0;
+	return this.stack.length !== 0;
 };
 
-ocargo.Thread.prototype.addNewStackLevel = function(commands) {
-	this.stack.push(commands);
+ocargo.Thread.prototype.pushToStack = function(commands) {
+    this.stack.unshift.apply(this.stack, commands);
 };
 
 
@@ -247,7 +241,7 @@ If.prototype.execute = function(thread, model) {
 	var i = 0;
 	while (i < this.conditionalCommandSets.length) {
 		if (this.conditionalCommandSets[i].condition(model)) {
-			thread.addNewStackLevel(this.conditionalCommandSets[i].commands.slice());
+			thread.pushToStack(this.conditionalCommandSets[i].commands.slice());
 			return true;
 		}
 
@@ -255,7 +249,7 @@ If.prototype.execute = function(thread, model) {
 	}
 
 	if(this.elseBody) {
-		thread.addNewStackLevel(this.elseBody.slice());
+		thread.pushToStack(this.elseBody.slice());
 	}
 	return true;
 };
@@ -270,8 +264,8 @@ function While(condition, body, block) {
 
 While.prototype.execute = function(thread, model) {
 	if (this.condition(model)) {
-		thread.addNewStackLevel([this]);
-		thread.addNewStackLevel(this.body.slice());
+		thread.pushToStack([this]);
+		thread.pushToStack(this.body.slice());
 	}
 	return true;
 };
@@ -287,18 +281,8 @@ function Event(condition,body,block,conditionType) {
 }
 
 Event.prototype.execute = function(thread, model) {
-	console.log(this.conditionType + " " + this.oldLevel);
-    //if (this.condition(model)) {
-		// raise global event level to this event level
-	//thread.eventLevel = this.level();
+	thread.pushToStack(this.body.slice());
 
-        // loop within the event handler as long as condition is true
-        //thread.addNewStackLevel([this]);
-	thread.addNewStackLevel(this.body.slice());
-    //} else {
-		// lower event level back to prior value
-		//thread.eventLevel = this.oldLevel;
-    //}
 	return true;
 };
 
@@ -331,7 +315,7 @@ function Procedure(name,body,block) {
 }
 
 Procedure.prototype.execute = function(thread) {
-	thread.addNewStackLevel(this.body.slice());
+	thread.pushToStack(this.body.slice());
 	return true;
 };
 
@@ -344,7 +328,7 @@ ProcedureCall.prototype.bind = function(proc) {
 };
 
 ProcedureCall.prototype.execute = function(thread) {
-	thread.addNewStackLevel([this.proc]);
+	thread.pushToStack([this.proc]);
 	return true;
 };
 

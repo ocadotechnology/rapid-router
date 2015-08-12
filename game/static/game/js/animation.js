@@ -313,10 +313,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			ocargo.drawing.transitionTrafficLight(a.id, a.colour, animationLength/2);
 			break;
 		case 'cow':
+			ANIMATION_LENGTH = 1000;
 			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node);
 			this.activeCows.push(activeCow);
 			break;
 		case 'cow_leave':
+			ANIMATION_LENGTH = 500;
 			for (var i=0; i<this.activeCows.length; i++) {
 				var cow = this.activeCows[i];
 				if (cow.coordinate == a.coordinate){

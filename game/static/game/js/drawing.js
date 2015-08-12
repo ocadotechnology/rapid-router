@@ -638,7 +638,7 @@ ocargo.Drawing = function() {
         var image = paper.image(ocargo.Drawing.raphaelImageDir + 'FatClarice.svg', res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot+"s0.1");
-        image.animate({transform : rot+"s1"}, 50, 'linear');
+        image.animate({transform : rot+"s1"}, 500, 'linear');
 
         return {'coordinate': coordinate,
             'image': image};

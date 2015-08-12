@@ -149,7 +149,10 @@ ocargo.Model.prototype.isCowCrossing = function() {
     var node = this.van.getPosition().currentNode;
     for (var i = 0 ; i < node.connectedNodes.length ; i++){
         var nextNode = node.connectedNodes[i];
-        if(this.getCowForNode(nextNode, ocargo.Cow.ACTIVE) != null){
+        var jsonCoordinate = JSON.stringify(nextNode.coordinate);
+        var cow = this.getCowForNode(nextNode, ocargo.Cow.ACTIVE);
+        if(cow != null && cow.justAppeared){
+            cow.justAppeared = false;
             return true;
         }
     }
@@ -466,6 +469,7 @@ ocargo.Model.prototype.deliver = function() {
 };
 
 ocargo.Model.prototype.sound_horn = function() {
+    console.log("Sound horn");
     this.soundedHorn = true;
     ocargo.animation.appendAnimation({
         type: 'callable',
@@ -474,7 +478,7 @@ ocargo.Model.prototype.sound_horn = function() {
         description: 'van sound: sounding the horn'
     });
 
-    this.incrementCowTime();
+    //this.incrementCowTime();
 
     return true;
 };
