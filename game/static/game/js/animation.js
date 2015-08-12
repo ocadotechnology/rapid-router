@@ -2,7 +2,7 @@
 
 var ocargo = ocargo || {};
 
-var ANIMATION_LENGTH = 500;
+var DEFAULT_ANIMATION_LENGTH = 500;
 
 ocargo.Animation = function(model, decor, numVans) {
     this.model = model;
@@ -55,21 +55,21 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	ocargo.drawing.removeWreckageImages();
 };
 
-ocargo.Animation.prototype.stepAnimation = function(callback) {
+ocargo.Animation.prototype.stepAnimation = function(callback, generalAnimationLength) {
 	if (this.currentlyAnimating) {
 		return;
 	}
 
 	this.currentlyAnimating = true;
 
-	var maxDelay = ANIMATION_LENGTH;
+	var maxDelay = DEFAULT_ANIMATION_LENGTH;
 
 	var timestampQueue = this.animationQueue[this.timestamp];
 
 	if (timestampQueue) {
 		// Perform all events for this timestamp
 		while (timestampQueue.length > 0) {
-			var delay = this.performAnimation(timestampQueue.shift());
+			var delay = this.performAnimation(timestampQueue.shift(), generalAnimationLength);
 			maxDelay = Math.max(maxDelay, delay);
 		}
 		// And move onto the next timestamp
@@ -90,7 +90,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		}
 		self.currentlyAnimating = false;
 		if (self.isPlaying) {
-			self.stepAnimation();
+			self.stepAnimation(undefined, generalAnimationLength);
 		}
 	}, maxDelay);
 };
@@ -116,9 +116,9 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 	this.animationQueue[this.lastTimestamp] = [];
 };
 
-ocargo.Animation.prototype.performAnimation = function(a) {
-	// animation length is either default or may be custom set
-	var animationLength = a.animationLength || ANIMATION_LENGTH;
+ocargo.Animation.prototype.performAnimation = function(a, generalAnimationLength) {
+	// animation length is either custom set (for each element), general (for the whole animation) or default
+	var animationLength = a.animationLength || generalAnimationLength || DEFAULT_ANIMATION_LENGTH;
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
