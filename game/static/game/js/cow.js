@@ -51,8 +51,6 @@ ocargo.Cow.prototype.pickRandom = function (count, arr) {
 };
 
 ocargo.Cow.prototype.reset = function() {
-    this.cowTime = 0;               // Keeps track of time, incremented in each incrementTime call.
-
     this.activeNodeTimers = {};     // Stores time of appearance of cows on each activeNode.
 
     if (this.randomTimeout) {
@@ -123,14 +121,19 @@ ocargo.Cow.prototype.queueAnimation = function(model, node) {
         description: 'Cow'
     });
 
-    ocargo.animation.appendAnimation({
-        type: 'callable',
-        functionCall: ocargo.sound.cow,
-        description: 'cow sound'
-    });
+    //ocargo.animation.appendAnimation({
+    //    type: 'callable',
+    //    functionCall: ocargo.sound.cow,
+    //    description: 'cow sound'
+    //});
 };
 
 ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
+    //ocargo.animation.appendAnimation({
+    //    type: 'callable',
+    //    functionCall: ocargo.sound.cow,
+    //    description: 'cow sound'
+    //});
     ocargo.animation.appendAnimation({
         type: 'cow_leave',
         id: this.id,
@@ -140,7 +143,6 @@ ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
 };
 
 ocargo.Cow.prototype.incrementTime = function(model) {
-    this.cowTime++;
     // Do not hide cow(s) if van has crashed
     if(model.van.crashStatus === 'CRASHED') {
         return;
@@ -148,32 +150,40 @@ ocargo.Cow.prototype.incrementTime = function(model) {
     // check if any active cows should be removed (i.e. if their timeout has been reached)
     for (var jsonCoordinate in this.activeNodes) {
         if (this.activeNodes[jsonCoordinate] == ocargo.Cow.ACTIVE) {
-            var coordinateTime = this.cowTime - this.activeNodeTimers[jsonCoordinate];
-            if (coordinateTime >= this.timeout || model.soundedHorn || model.puffedUp) {
+            var coordinate = JSON.parse(jsonCoordinate);
+            var cowTimestamp = this.activeNodeTimers[jsonCoordinate];
+            var timeOnRoad = model.timestamp - cowTimestamp;
+            if (timeOnRoad >= this.timeout || this.scaredAwayByHorn(model, cowTimestamp, coordinate) || model.puffedUp) {
                 this.activeNodes[jsonCoordinate] = ocargo.Cow.INACTIVE;
                 this.activeNodeTimers[jsonCoordinate] = 0;
-
-                var node = ocargo.Node.findNodeByCoordinate(JSON.parse(jsonCoordinate), this.nodes);
-                model.soundedHorn = false;
-                model.puffedUp = false;
+                var node = ocargo.Node.findNodeByCoordinate(coordinate, this.nodes);
                 this.queueLeaveAnimation(model, node);
             }
         }
     }
 };
 
+ocargo.Cow.prototype.scaredAwayByHorn = function(model, coordinateTime, coordinate){
+    return coordinateTime < model.soundedHorn.timestamp && this.withinRadius(coordinate, model.soundedHorn.coordinates) ;
+
+};
+
+ocargo.Cow.prototype.withinRadius = function(coordinate1, coordinate2){
+    return (Math.abs(coordinate1.x-coordinate2.x) <= 3) && (Math.abs(coordinate1.y-coordinate2.y) <= 3);
+};
+
 ocargo.Cow.prototype.setActive = function(model, node) {
     var jsonCoordinate = JSON.stringify(node.coordinate); //get node coordinates
     this.activeNodes[jsonCoordinate] = ocargo.Cow.ACTIVE; //set cow state to active
-    this.activeNodeTimers[jsonCoordinate] = this.cowTime; //initialize cow timer.
-    this.justAppeared = true;
+    this.activeNodeTimers[jsonCoordinate] = model.timestamp; //initialize cow timer.
+    this.triggerEvent = true;
     this.queueAnimation(model, node);
-}
+};
 
 ocargo.Cow.READY = 'READY';
 ocargo.Cow.ACTIVE = 'ACTIVE';
 ocargo.Cow.INACTIVE = 'INACTIVE';
 ocargo.Cow.RANDOM_TIMEOUT = 'random';
-ocargo.Cow.MIN_RANDOM_TIMEOUT = 3;
-ocargo.Cow.MAX_RANDOM_TIMEOUT = 5;
+ocargo.Cow.MIN_RANDOM_TIMEOUT = 4;
+ocargo.Cow.MAX_RANDOM_TIMEOUT = 7;
 ocargo.Cow.DEFAULT_TIMEOUT = ocargo.Cow.RANDOM_TIMEOUT;

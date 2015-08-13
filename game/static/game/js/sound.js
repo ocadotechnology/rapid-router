@@ -128,6 +128,8 @@ ocargo.sound.cow = function() {
 
 ocargo.sound.sound_horn = function() {
     safePlay(ocargo.sound.deliverySound);
+    //setTimeout(function(){safePlay(ocargo.sound.deliverySound);}, 400);
+
 };
 
 ocargo.sound.stop_horn = function() {

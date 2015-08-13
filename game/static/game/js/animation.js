@@ -39,7 +39,9 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-var ANIMATION_LENGTH = 500;
+var NORMAL_ANIMATION_LENGTH= 500;
+var SLOW_ANIMATION_LENGTH = 800;
+var defaultAnimationLength = NORMAL_ANIMATION_LENGTH;
 
 ocargo.Animation = function(model, decor, numVans) {
     this.model = model;
@@ -73,6 +75,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.isPlaying = false;
 	this.currentlyAnimating = false;
 	this.finished = false;
+    this.slowDownAnimation = false;
 
 	// Reset the display
 	for(var i = 0; i < this.model.trafficLights.length; i++) {
@@ -105,7 +108,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 
 	this.currentlyAnimating = true;
 
-	var maxDelay = ANIMATION_LENGTH;
+	var maxDelay = defaultAnimationLength;
 
 	var timestampQueue = this.animationQueue[this.timestamp];
 
@@ -117,6 +120,8 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		}
 		// And move onto the next timestamp
 		this.timestamp += 1;
+        // Update defaultAnimationLength at every increment to prevent sudden stop in animation
+        defaultAnimationLength = this.slowDownAnimation ? SLOW_ANIMATION_LENGTH : NORMAL_ANIMATION_LENGTH;
 	}
 
 	// Check if we've performed all events we have
@@ -161,7 +166,7 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 
 ocargo.Animation.prototype.performAnimation = function(a) {
 	// animation length is either default or may be custom set
-	var animationLength = a.animationLength || ANIMATION_LENGTH;
+	var animationLength = a.animationLength || defaultAnimationLength;
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
@@ -313,13 +318,13 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			ocargo.drawing.transitionTrafficLight(a.id, a.colour, animationLength/2);
 			break;
 		case 'cow':
-			ANIMATION_LENGTH = 1000;
+            this.slowDownAnimation = true;
 			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node);
 			this.activeCows.push(activeCow);
 			break;
-		case 'cow_leave':
-			ANIMATION_LENGTH = 500;
-			for (var i=0; i<this.activeCows.length; i++) {
+        case 'cow_leave':
+            this.slowDownAnimation = false;
+            for (var i=0; i<this.activeCows.length; i++) {
 				var cow = this.activeCows[i];
 				if (cow.coordinate == a.coordinate){
 					this.activeCows.splice(i, 1);   // remove cow from array
@@ -343,8 +348,8 @@ ocargo.Animation.prototype.updateFuelGauge = function(fuelPercentage) {
 };
 
 ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
-	var replacer = function (key, val) {
-		function clone(obj) {
+    var replacer = function (key, val) {
+        function clone(obj) {
 			var target = {};
 			for (var i in obj) {
 				if (obj.hasOwnProperty(i)) {

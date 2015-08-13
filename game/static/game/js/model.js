@@ -64,7 +64,7 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     // used for evaluation of event handlers before each statement.
     this.shouldObserve = true;
 
-    this.soundedHorn = false;
+    this.soundedHorn = {};
     this.puffedUp = false;
 };
 
@@ -91,7 +91,7 @@ ocargo.Model.prototype.reset = function(vanId) {
 
     this.timestamp = 0;
     this.reasonForTermination  =  null;
-    this.soundedHorn = false;
+    this.soundedHorn = {};
     this.puffedUp = false;
 
     if (vanId !== null && vanId !== undefined) {
@@ -145,18 +145,19 @@ ocargo.Model.prototype.isDeadEnd = function() {
 };
 
 ocargo.Model.prototype.isCowCrossing = function() {
+    var result = false;
     this.observe('cow crossing');
     var node = this.van.getPosition().currentNode;
-    for (var i = 0 ; i < node.connectedNodes.length ; i++){
-        var nextNode = node.connectedNodes[i];
-        var jsonCoordinate = JSON.stringify(nextNode.coordinate);
-        var cow = this.getCowForNode(nextNode, ocargo.Cow.ACTIVE);
-        if(cow != null && cow.justAppeared){
-            cow.justAppeared = false;
-            return true;
+
+    var nodes = this.getNodesAhead(node);
+    for (var i = 0 ; i < nodes.length ; i++) {
+        var cow = this.getCowForNode(nodes[i], ocargo.Cow.ACTIVE);
+        if (cow != null && cow.triggerEvent) {
+            cow.triggerEvent = false;
+            result = true;
         }
     }
-    return false;
+    return result;
 };
 
 ocargo.Model.prototype.isTrafficLightRed = function() {
@@ -177,7 +178,6 @@ ocargo.Model.prototype.isAtADestination = function() {
 };
 
 ocargo.Model.prototype.getCurrentCoordinate = function() {
-    this.observe('current coordinate');
     var node = this.van.getPosition().currentNode;
     return node.coordinate;
 };
@@ -281,6 +281,9 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         return false;
     }
 
+    // Display cow on node if exists
+    this.setCowsActive(nextNode);
+
     this.van.move(nextNode);
 
     // Van movement animation
@@ -291,9 +294,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         fuel: this.van.getFuelPercentage(),
         description: 'van move action: ' + action
     });
-
-    // Display cow on node if exists
-    this.setCowsActive(nextNode);
 
     this.incrementTime();
 
@@ -346,25 +346,14 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 };
 
 ocargo.Model.prototype.setCowsActive = function(nextNode) {
-    for(var i = 0 ; i < nextNode.connectedNodes.length ; i++ ){
-        var node = nextNode.connectedNodes[i];
-        var cow = this.getCowForNode(node, ocargo.Cow.READY);
+    var nodes = this.getNodesAhead(nextNode);
+    for (var i = 0 ; i < nodes.length ; i++){
+        var cow = this.getCowForNode(nodes[i], ocargo.Cow.READY);
         if (cow){
-            cow.setActive(this, node);
+            cow.setActive(this, nodes[i]);
         }
     }
 };
-
-ocargo.Model.prototype.getCowForNode = function(node, status) {
-    var jsonCoordinate = JSON.stringify(node.coordinate);
-    for(var i = 0; i < this.cows.length; i++) {
-        var cow = this.cows[i];
-        if (jsonCoordinate in cow.activeNodes && cow.activeNodes[jsonCoordinate] == status) {
-            return cow;
-        }
-    }
-    return null;
-}
 
 ocargo.Model.prototype.makeDelivery = function(destination) {
     // We're at a destination node and making a delivery!
@@ -470,15 +459,13 @@ ocargo.Model.prototype.deliver = function() {
 
 ocargo.Model.prototype.sound_horn = function() {
     console.log("Sound horn");
-    this.soundedHorn = true;
+    this.soundedHorn = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate()};
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionType: 'playSound',
         functionCall: ocargo.sound.sound_horn,
         description: 'van sound: sounding the horn'
     });
-
-    //this.incrementCowTime();
 
     return true;
 };
@@ -673,6 +660,17 @@ ocargo.Model.prototype.getDestinationForNode = function(node) {
     return null;
 };
 
+ocargo.Model.prototype.getCowForNode = function(node, status) {
+    var jsonCoordinate = JSON.stringify(node.coordinate);
+    for(var i = 0; i < this.cows.length; i++) {
+        var cow = this.cows[i];
+        if (jsonCoordinate in cow.activeNodes && cow.activeNodes[jsonCoordinate] == status) {
+            return cow;
+        }
+    }
+    return null;
+};
+
 // Helper functions which handles telling all parts of the model
 // that time has incremented and they should generate events
 ocargo.Model.prototype.incrementTime = function() {
@@ -690,4 +688,16 @@ ocargo.Model.prototype.incrementCowTime = function() {
     for (var i = 0; i < this.cows.length; i++) {
         this.cows[i].incrementTime(this);
     }
-}
+    this.soundedHorn = {};
+    this.puffedUp = false;
+};
+
+ocargo.Model.prototype.getNodesAhead = function(node) {
+    var nodes = [];
+    for (var i = 0 ; i < node.connectedNodes.length ; i++){
+        for (var j = 0 ; j < node.connectedNodes[i].connectedNodes.length ; j++ ) {
+            nodes.push(node.connectedNodes[i].connectedNodes[j]);
+        }
+    }
+    return nodes;
+};
