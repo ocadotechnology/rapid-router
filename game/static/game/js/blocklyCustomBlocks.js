@@ -57,7 +57,7 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL,
                     ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
                     ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH));
-            this.setNextStatement(true);
+            this.setNextStatement(true, 'Action');
             this.setTooltip('The beginning of the program');
             this.setDeletable(false);
         }
@@ -76,8 +76,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/forward.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'Action');
+            this.setNextStatement(true, 'Action');
             this.setTooltip('Move the van forwards');
         }
     };
@@ -94,8 +94,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/left.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'Action');
+            this.setNextStatement(true, 'Action');
             this.setTooltip('Turn the van left');
         }
     };
@@ -112,8 +112,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/right.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'Action');
+            this.setNextStatement(true, 'Action');
             this.setTooltip('Turn the van right');
         }
     };
@@ -131,8 +131,8 @@ function initCustomBlocksDescription() {
                                                     'actions/turn_around.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'Action');
+            this.setNextStatement(true, 'Action');
             this.setTooltip('Turn the van around');
         }
     };
@@ -149,8 +149,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/wait.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'Action');
+            this.setNextStatement(true, 'Action');
             this.setTooltip('Keep the van stationary');
         }
     };
@@ -167,8 +167,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'actions/deliver.svg',
                                                     ocargo.BlocklyControl.IMAGE_WIDTH,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'Action');
+            this.setNextStatement(true, 'Action');
             this.setTooltip('Deliver the goods from the van');
         }
     };
@@ -176,7 +176,7 @@ function initCustomBlocksDescription() {
     Blockly.Blocks['puff_up'] = {
         // Block for puffing up the van
         init: function() {
-            this.setColour(160);
+            this.setColour(330);
             this.appendDummyInput()
                 .appendField('puff up')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
@@ -185,8 +185,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                     ocargo.BlocklyControl.IMAGE_WIDTH,
                     ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'EventAction');
+            this.setNextStatement(false);
             this.setTooltip('Puff up the van to scare away the cows');
         }
     };
@@ -194,7 +194,7 @@ function initCustomBlocksDescription() {
     Blockly.Blocks['sound_horn'] = {
         // Block for puffing up the van
         init: function() {
-            this.setColour(160);
+            this.setColour(330);
             this.appendDummyInput()
                 .appendField('sound horn')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
@@ -203,8 +203,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                     ocargo.BlocklyControl.IMAGE_WIDTH,
                     ocargo.BlocklyControl.BLOCK_HEIGHT));
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'EventAction');
+            this.setNextStatement(false);
             this.setTooltip('Sound the horn to scare away the cows');
         }
     };
@@ -298,8 +298,8 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg', 7,
                                                     ocargo.BlocklyControl.BLOCK_HEIGHT))
                 .appendField(new Blockly.FieldTextInput(name),'NAME');
-            this.setPreviousStatement(true);
-            this.setNextStatement(true);
+            this.setPreviousStatement(true, 'Action');
+            this.setNextStatement(true, 'Action');
             this.setTooltip('Call');
         }
 
@@ -314,6 +314,7 @@ function initCustomBlocksDescription() {
                 .appendField('Define')
                 .appendField(new Blockly.FieldTextInput(name),'NAME');
             this.appendStatementInput('DO')
+                .setCheck('Action')
                 .appendField('Do');
             this.setTooltip('Declares the procedure');
             this.statementConnection_ = null;
@@ -332,7 +333,7 @@ function initCustomBlocksDescription() {
                 .setCheck("Event")
                 .appendField('On');
             this.appendStatementInput('DO')
-                .setCheck("null")
+                .setCheck('EventAction')
                 .appendField('Do');
             this.setTooltip('Declares the event handler');
             this.statementConnection_ = null;
@@ -351,10 +352,10 @@ function initCustomBlocksDescription() {
               .setCheck("Boolean")
               .appendField("repeat while");
           this.appendStatementInput("body")
-              .setCheck("null")
+              .setCheck("Action")
               .appendField("do");
-          this.setPreviousStatement(true, "null");
-          this.setNextStatement(true, "null");
+          this.setPreviousStatement(true, 'Action');
+          this.setNextStatement(true, 'Action');
           this.setTooltip('While a value is true, do some statements');
         }
     };
@@ -367,10 +368,10 @@ function initCustomBlocksDescription() {
               .setCheck("Boolean")
               .appendField("repeat until");
           this.appendStatementInput("body")
-              .setCheck("null")
+              .setCheck("Action")
               .appendField("do");
-          this.setPreviousStatement(true, "null");
-          this.setNextStatement(true, "null");
+          this.setPreviousStatement(true, 'Action');
+          this.setNextStatement(true, 'Action');
           this.setTooltip('Until a value is true, do some statements');
         }
     };
@@ -388,6 +389,10 @@ function initCustomBlocksDescription() {
     var originalInit = controlsRepeatBlock.init;
     controlsRepeatBlock.init = function () {
         originalInit.call(this);
+
+        this.setPreviousStatement(!0, 'Action');
+        this.setNextStatement(!0, 'Action');
+        this.inputList[1].setCheck('Action'); //Disallow event action blocks to be in body
 
         var input = this.inputList[0];
         var field = input.fieldRow[1];

@@ -294,7 +294,7 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
             commands.push(this.createProcedureCall(block));
         }
 
-		block = block.nextConnection.targetBlock();
+		block = block.nextConnection ? block.nextConnection.targetBlock() : null;
 	}
 
     return commands;
