@@ -53,8 +53,7 @@ ocargo.sound.deliverySound = new Howl({
 });
 
 ocargo.sound.hornSound = new Howl({
-    urls: ['/static/game/sound/delivery.mp3', '/static/game/sound/delivery.ogg'],
-    loop: true
+    urls: ['/static/game/sound/horn.mp3', '/static/game/sound/horn.ogg']
 });
 
 ocargo.sound.winSound = new Howl({
@@ -127,9 +126,7 @@ ocargo.sound.cow = function() {
 };
 
 ocargo.sound.sound_horn = function() {
-    safePlay(ocargo.sound.deliverySound);
-    //setTimeout(function(){safePlay(ocargo.sound.deliverySound);}, 400);
-
+    safePlay(ocargo.sound.hornSound);
 };
 
 ocargo.sound.stop_horn = function() {

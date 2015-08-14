@@ -129,11 +129,11 @@ ocargo.Cow.prototype.queueAnimation = function(model, node) {
 };
 
 ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
-    //ocargo.animation.appendAnimation({
-    //    type: 'callable',
-    //    functionCall: ocargo.sound.cow,
-    //    description: 'cow sound'
-    //});
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionCall: ocargo.sound.cow,
+        description: 'cow sound'
+    });
     ocargo.animation.appendAnimation({
         type: 'cow_leave',
         id: this.id,
