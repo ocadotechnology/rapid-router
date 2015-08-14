@@ -9,6 +9,7 @@ ocargo.Game = function() {
 };
 
 ocargo.Game.prototype.setup = function() {
+    restoreCmsLogin();
     initCustomBlocks();
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyControl.blocklyCustomisations.setupDoubleclick();
@@ -805,6 +806,11 @@ ocargo.Game.prototype.mute = function(mute) {
         $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/unmuted.svg');
     }
 };
+
+function restoreCmsLogin() {
+    $("#id_cms-password").css("height", "20px").css("display", "inline");
+    $("#id_cms-username").css("height", "20px").css("display", "inline");
+}
 
 $(document).ready(function() {
     ocargo.game = new ocargo.Game();
