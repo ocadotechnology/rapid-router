@@ -120,12 +120,6 @@ ocargo.Cow.prototype.queueAnimation = function(model, node) {
         coordinate: node.coordinate,
         description: 'Cow'
     });
-
-    //ocargo.animation.appendAnimation({
-    //    type: 'callable',
-    //    functionCall: ocargo.sound.cow,
-    //    description: 'cow sound'
-    //});
 };
 
 ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
@@ -153,7 +147,7 @@ ocargo.Cow.prototype.incrementTime = function(model) {
             var coordinate = JSON.parse(jsonCoordinate);
             var cowTimestamp = this.activeNodeTimers[jsonCoordinate];
             var timeOnRoad = model.timestamp - cowTimestamp;
-            if (timeOnRoad >= this.timeout || this.scaredAwayByHorn(model, cowTimestamp, coordinate) || model.puffedUp) {
+            if (timeOnRoad >= this.timeout || this.scaredAwayByHorn(model, cowTimestamp, coordinate) || this.scaredAwayByPuffUp(model, cowTimestamp, coordinate)) {
                 this.activeNodes[jsonCoordinate] = ocargo.Cow.INACTIVE;
                 this.activeNodeTimers[jsonCoordinate] = 0;
                 var node = ocargo.Node.findNodeByCoordinate(coordinate, this.nodes);
@@ -165,6 +159,11 @@ ocargo.Cow.prototype.incrementTime = function(model) {
 
 ocargo.Cow.prototype.scaredAwayByHorn = function(model, coordinateTime, coordinate){
     return coordinateTime < model.soundedHorn.timestamp && this.withinRadius(coordinate, model.soundedHorn.coordinates) ;
+
+};
+
+ocargo.Cow.prototype.scaredAwayByPuffUp = function(model, coordinateTime, coordinate){
+    return coordinateTime < model.puffedUp.timestamp && this.withinRadius(coordinate, model.puffedUp.coordinates) ;
 
 };
 

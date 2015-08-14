@@ -65,7 +65,7 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     this.shouldObserve = true;
 
     this.soundedHorn = {};
-    this.puffedUp = false;
+    this.puffedUp = {};
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -92,7 +92,7 @@ ocargo.Model.prototype.reset = function(vanId) {
     this.timestamp = 0;
     this.reasonForTermination  =  null;
     this.soundedHorn = {};
-    this.puffedUp = false;
+    this.puffedUp = {};
 
     if (vanId !== null && vanId !== undefined) {
         this.vanId = vanId;
@@ -482,7 +482,7 @@ ocargo.Model.prototype.stop_horn = function() {
 };
 
 ocargo.Model.prototype.puff_up = function(){
-    this.puffedUp = true;
+    this.puffedUp = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate()};
     console.log("puff_up");
 
     ocargo.animation.appendAnimation({
@@ -490,16 +490,14 @@ ocargo.Model.prototype.puff_up = function(){
         id: this.vanId,
         vanAction: 'PUFFUP',
         fuel: this.van.getFuelPercentage(),
-        description: 'van move action: puff up',
+        description: 'van move action: puff up'
     });
 
-    this.incrementCowTime();
-
-    return this.puff_down();
+    this.incrementTime();
+    return true;
 };
 
 ocargo.Model.prototype.puff_down = function(){
-    this.puffedUp = false;
     console.log("puff_down");
 
     ocargo.animation.appendAnimation({
@@ -507,9 +505,10 @@ ocargo.Model.prototype.puff_down = function(){
         id: this.vanId,
         vanAction: 'PUFFDOWN',
         fuel: this.van.getFuelPercentage(),
-        description: 'van move action: puff down',
+        description: 'van move action: puff down'
     });
 
+    this.incrementTime();
     return true;
 };
 
@@ -689,7 +688,7 @@ ocargo.Model.prototype.incrementCowTime = function() {
         this.cows[i].incrementTime(this);
     }
     this.soundedHorn = {};
-    this.puffedUp = false;
+    this.puffedUp = {};
 };
 
 ocargo.Model.prototype.getNodesAhead = function(node) {

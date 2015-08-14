@@ -201,7 +201,6 @@ ocargo.Drawing = function() {
         var res1 = getRoadLetters(node1, middle, node2);
         var res2 = getRoadLetters(node2, middle, node3);
 
-        console.log("res1 = " + res1 + " res2 = " + res2);
         if (res1 === 'H' && res2 === 'DR' ){
             return 'down';
         }else if (res1 === 'UR' && res2 === 'DR' ){
@@ -596,7 +595,6 @@ ocargo.Drawing = function() {
             var nextNode = node.connectedNodes[1];
             var nextNextNode = node.connectedNodes[2];
             var res = getTjunctionOrientation(node.coordinate, previousNode.coordinate, nextNode.coordinate, nextNextNode.coordinate)
-            console.log("Tjunction");
             if (res === 'down') {
                 //console.log("Cow crossing T junction road facing down");
                 rotation = 180;
@@ -631,21 +629,21 @@ ocargo.Drawing = function() {
         image.transform('t' + res.drawX + ',' + res.drawY + 'r' + res.rotation);
     };
 
-    this.renderCow = function(id, coordinate, node) {
+    this.renderCow = function(id, coordinate, node, animationLength) {
 
         var res = this.determineCowOrientation(coordinate, node);
 
         var image = paper.image(ocargo.Drawing.raphaelImageDir + 'FatClarice.svg', res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot+"s0.1");
-        image.animate({transform : rot+"s1"}, 500, 'linear');
+        image.animate({transform : rot+"s1"}, animationLength, 'linear');
 
         return {'coordinate': coordinate,
             'image': image};
     };
 
-    this.removeCow = function(cow) {
-        cow.image.animate({transform : "s0.01"}, 500, 'linear', function(){cow.image.remove();});
+    this.removeCow = function(cow, animationLength) {
+        cow.image.animate({transform : "s0.01"}, animationLength, 'linear', function(){cow.image.remove();});
     };
 
     this.setVanImagePosition = function(position, vanID) {
@@ -880,14 +878,17 @@ ocargo.Drawing = function() {
     };
 
     this.puffUp = function(vanId, animationLength, callback) {
-        console.log("DRAWING PUFF UP");
+        var puffDown = function(){
+                        moveVanImage({
+                            transform: '... s 0.66666666666'
+                        }, vanId, animationLength/2, callback);}
         moveVanImage({
-            transform: '... s 1.5, 1.5, 0, 0'
-        }, vanId, animationLength, callback);
+            transform: '... s 1.5'
+        }, vanId, animationLength/2, puffDown);
+
     };
 
     this.puffDown = function(vanId, animationLength, callback) {
-        console.log("DRAWING PUFF DOWN");
         moveVanImage({
             transform: '... s 0.66, 0.66, 0, 0'
         }, vanId, animationLength, callback);

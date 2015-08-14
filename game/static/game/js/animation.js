@@ -319,7 +319,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			break;
 		case 'cow':
             this.slowDownAnimation = true;
-			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node);
+			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node, animationLength);
 			this.activeCows.push(activeCow);
 			break;
         case 'cow_leave':
@@ -328,7 +328,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 				var cow = this.activeCows[i];
 				if (cow.coordinate == a.coordinate){
 					this.activeCows.splice(i, 1);   // remove cow from array
-					ocargo.drawing.removeCow(cow);  // remove it from drawing
+					ocargo.drawing.removeCow(cow, animationLength);  // remove it from drawing
 				}
 			}
 			break;
