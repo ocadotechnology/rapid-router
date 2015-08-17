@@ -182,6 +182,7 @@ ocargo.BlocklyCustomisations = function () {
      */
     this.setupFlyoutToggling = function (blocklyDiv) {
         var flyoutShown = false;
+        var blocklyToggle = Blockly.getMainWorkspace().toolbox_.tree_.actualEventTarget_.firstChild_;
 
         var flyoutWidth = function() {
             return $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
@@ -240,7 +241,7 @@ ocargo.BlocklyCustomisations = function () {
         }
 
         function clickButton() {
-            Blockly.getMainWorkspace().toolbox_.tree_.actualEventTarget_.firstChild_.onMouseDown(null);
+            blocklyToggle.onMouseDown(null);
         }
 
         this.bringStartBlockFromUnderFlyout = function () {
@@ -253,8 +254,8 @@ ocargo.BlocklyCustomisations = function () {
         this.toggleFlyout = function () {
             flyoutShown = !flyoutShown;
             clickButton();
-            moveButton();
             changeButtonImage();
+            moveButton();
         };
     };
 
