@@ -112,8 +112,8 @@ ocargo.Drawing = function() {
     /* Geometry helper methods */
     /***************************/
 
-    function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
-        var transformation = '... r' + degrees;
+    function createRotationTransformation(degrees, rotationPointX, rotationPointY, extraTransformation) {
+        var transformation = "..." + (extraTransformation < 1? "s" + extraTransformation : "") + "r" + degrees + (extraTransformation > 1? "s" + extraTransformation : "");
         if (rotationPointX !== undefined && rotationPointY !== undefined) {
             transformation += ',' + rotationPointX;
             transformation += ',' + rotationPointY;
@@ -764,28 +764,31 @@ ocargo.Drawing = function() {
         return centreY;
     };
 
-    this.moveForward = function(vanId, animationLength, callback) {
+    this.moveForward = function(vanId, animationLength, callback, extraTransformation) {
         var moveDistance = -MOVE_DISTANCE;
-        var transformation = "... t 0, " + moveDistance;
-        moveVanImage({
-            transform: transformation
-        }, vanId, animationLength, callback);
-    };
-
-    this.moveLeft = function(vanId, animationLength,callback) {
-        var rotationPointX = this.getRotationPointX('LEFT');
-        var rotationPointY = this.getRotationPointY();
-        var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
+        var transformation =  "..." + (extraTransformation < 1? "s" + extraTransformation : "") + "t 0, " + moveDistance + (extraTransformation > 1? "s" + extraTransformation : "");
         console.log(transformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
     };
 
-    this.moveRight = function(vanId, animationLength, callback) {
+    this.moveLeft = function(vanId, animationLength, callback, extraTransformation) {
+        var vanImage = vanImages[vanId];
+        var rotationPointX = this.getRotationPointX('LEFT');
+        var rotationPointY = this.getRotationPointY();
+        var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY, extraTransformation);
+        console.log(transformation);
+        moveVanImage({
+            transform: transformation
+        }, vanId, animationLength, callback);
+    };
+
+    this.moveRight = function(vanId, animationLength, callback, extraTransformation) {
+        var vanImage = vanImages[vanId];
         var rotationPointX = this.getRotationPointX('RIGHT');
         var rotationPointY = this.getRotationPointY();
-        var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
+        var transformation = createRotationTransformation(90, rotationPointX, rotationPointY, extraTransformation);
         console.log(transformation);
         moveVanImage({
             transform: transformation
@@ -847,6 +850,7 @@ ocargo.Drawing = function() {
                 var rotationPointX = this.getRotationPointX('LEFT');
                 var rotationPointY = this.getRotationPointY();
                 var transformation = createRotationTransformation(-45, rotationPointX, rotationPointY);
+                console.log("transformation");
                 vanImage.animate({
                     transform: transformation
                 }, timePerState, easing, performNextAction);
@@ -859,6 +863,7 @@ ocargo.Drawing = function() {
                 var rotationPointX = this.getRotationPointX('RIGHT');
                 var rotationPointY = this.getRotationPointY();
                 var transformation = createRotationTransformation(45, rotationPointX, rotationPointY);
+                console.log("transformation");
                 vanImage.animate({
                     transform: transformation
                 }, timePerState, easing, performNextAction);
@@ -881,7 +886,7 @@ ocargo.Drawing = function() {
         var puffDown = function(){
                         moveVanImage({
                             transform: '... s 0.66666666666'
-                        }, vanId, animationLength/2, callback);}
+                        }, vanId, animationLength/2, callback);};
         moveVanImage({
             transform: '... s 1.5'
         }, vanId, animationLength/2, puffDown);

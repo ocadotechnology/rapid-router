@@ -151,7 +151,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
         type: 'callable',
         functionType: 'playSound',
         functionCall: ocargo.sound.start_engine,
-        description: 'starting engine',
+        description: 'starting engine'
     });
 
     program.run(ocargo.model);

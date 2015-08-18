@@ -48,6 +48,7 @@ ocargo.Animation = function(model, decor, numVans) {
     this.decor = decor;
     this.numVans = numVans;
 	this.activeCows = []; // cows currently displayed on map
+	this.effects = [];
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -76,6 +77,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.currentlyAnimating = false;
 	this.finished = false;
     this.slowDownAnimation = false;
+	this.effects = [];
 
 	// Reset the display
 	for(var i = 0; i < this.model.trafficLights.length; i++) {
@@ -182,13 +184,13 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             // move van
             switch (a.vanAction) {
             	case 'FORWARD':
-            		ocargo.drawing.moveForward(vanID, animationLength);
+            		ocargo.drawing.moveForward(vanID, animationLength, null, this.effects.shift());
             		break;
             	case 'TURN_LEFT':
-            		ocargo.drawing.moveLeft(vanID, animationLength);
+            		ocargo.drawing.moveLeft(vanID, animationLength, null, this.effects.shift());
             		break;
             	case 'TURN_RIGHT':
-            		ocargo.drawing.moveRight(vanID, animationLength);
+            		ocargo.drawing.moveRight(vanID, animationLength, null, this.effects.shift());
             		break;
             	case 'TURN_AROUND_FORWARD':
             		animationLength *= 3;
@@ -206,10 +208,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             		ocargo.drawing.wait(vanID, animationLength);
             		break;
 				case 'PUFFUP':
-					ocargo.drawing.puffUp(vanID, animationLength);
+					//ocargo.drawing.puffUp(vanID, animationLength);
+					this.effects.push(1.5);
+					this.effects.push(0.666666666);
 					break;
                 case 'PUFFDOWN':
-                    ocargo.drawing.puffDown(vanID, animationLength);
+                    //ocargo.drawing.puffDown(vanID, animationLength);
                     break;
             	case 'CRASH':
             		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode,

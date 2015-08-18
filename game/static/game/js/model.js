@@ -493,7 +493,7 @@ ocargo.Model.prototype.puff_up = function(){
         description: 'van move action: puff up'
     });
 
-    this.incrementTime();
+    //this.incrementTime();
     return true;
 };
 
