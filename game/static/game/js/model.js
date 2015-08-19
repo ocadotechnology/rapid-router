@@ -375,6 +375,10 @@ ocargo.Model.prototype.programExecutionEnded = function() {
                 fuel: this.van.getFuelPercentage(),
                 description: 'van delivering'
             });
+        } else {
+            if($.inArray(destinations[0].node, this.van.visitedNodes)) {
+                failMessage = ocargo.messages.passedDestination;
+            }
         }
     }
     else {

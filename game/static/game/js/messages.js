@@ -44,6 +44,7 @@ ocargo.messages = {
 
     outOfFuel : "You ran out of fuel! Try to find a shorter route to the destination.",
     outOfInstructions: "The van ran out of instructions before it reached a destination.",
+    passedDestination: "The van visited the destination, but didn't stop there!",
     throughRedLight: "Uh oh, you just sent the van through a red light! Stick to the Highway " +
         "Code - the van must wait for green.",
     alreadyDelivered: "You have already delivered to that destination! You must only deliver " +

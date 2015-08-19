@@ -8,6 +8,7 @@ ocargo.Van = function(position, maxFuel) {
 
     this.previousNode = position.previousNode;
     this.currentNode = position.currentNode;
+    this.visitedNodes = [position.currentNode]
     this.maxFuel = maxFuel;
     this.fuel = maxFuel;
     this.travelled = 0;
@@ -16,6 +17,7 @@ ocargo.Van = function(position, maxFuel) {
 ocargo.Van.prototype.reset = function() {
     this.currentNode = this.currentNodeOriginal;
     this.previousNode = this.previousNodeOriginal;
+    this.visitedNodes = [this.currentNode]
     this.fuel = this.maxFuel;
     this.travelled = 0;
 };
@@ -24,6 +26,7 @@ ocargo.Van.prototype.move = function(nextNode) {
     if (nextNode !== this.currentNode) {
         this.previousNode = this.currentNode;
         this.currentNode = nextNode;
+        this.visitedNodes.push(nextNode)
 
         this.travelled += 1;
     }
