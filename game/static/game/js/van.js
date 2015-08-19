@@ -43,4 +43,4 @@ ocargo.Van.prototype.getFuelPercentage = function() {
 
 ocargo.Van.prototype.getDistanceTravelled = function() {
     return this.visitedNodes.length - 2; // Don't count starting position, or previous position at start
-}
+};
