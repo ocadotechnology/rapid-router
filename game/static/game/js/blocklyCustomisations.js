@@ -219,6 +219,8 @@ ocargo.BlocklyCustomisations = function () {
      */
     this.setupFlyoutToggling = function (blocklyDiv) {
         var flyoutShown = false;
+        var blocklyToggle = Blockly.getMainWorkspace().toolbox_.tree_.actualEventTarget_.firstChild_;
+
         var flyoutWidth = function() {
             return $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
         }
@@ -238,26 +240,59 @@ ocargo.BlocklyCustomisations = function () {
             }
         }
 
-        this.toggleFlyout = function () {
-            flyoutShown = !flyoutShown;
-            var image;
-            Blockly.getMainWorkspace().toolbox_.tree_.actualEventTarget_.firstChild_.onMouseDown(null);
-            if (flyoutShown) {
-                image = 'hide';
-                $('#flyoutButton').css('left', (flyoutWidth() - 1) + 'px');
+        var firstCall = true;
+        var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+        function getToggleSrc(image) {
+            var originalSrc = ocargo.Drawing.imageDir + 'icons/' + image + '.svg';
+            if (isSafari && !firstCall) {
+                return originalSrc + '?SafariFix';
             } else {
-                image = 'show';
-                $('#flyoutButton').css('left', '0px');
+                firstCall = false;
+                return originalSrc;
             }
-
-            $('#flyoutButton img').attr('src', ocargo.Drawing.imageDir + 'icons/' + image + '.svg');
         };
+
+        function image() {
+            if (flyoutShown) {
+                return 'hide';
+            } else {
+                return 'show';
+            }
+        }
+
+        function buttonOffset() {
+            if (flyoutShown) {
+               return (flyoutWidth() - 1);
+            } else {
+               return 0;
+            }
+        }
+
+        function moveButton() {
+            var width = buttonOffset();
+            $('#flyoutButton').css('left', width + 'px');
+        }
+
+        function changeButtonImage() {
+            $('#flyoutButton img').attr("src", getToggleSrc(image()));
+        }
+
+        function clickButton() {
+            blocklyToggle.onMouseDown(null);
+        }
 
         this.bringStartBlockFromUnderFlyout = function () {
             var distanceFromToolboxDiv = 455;
             var distanceFromTopMargin = 15;
             Blockly.getMainWorkspace().scrollbar.hScroll.set(blocklyDiv.offsetWidth - distanceFromToolboxDiv);
             Blockly.getMainWorkspace().scrollbar.vScroll.set(blocklyDiv.offsetHeight - distanceFromTopMargin);
+        };
+
+        this.toggleFlyout = function () {
+            flyoutShown = !flyoutShown;
+            clickButton();
+            changeButtonImage();
+            moveButton();
         };
     };
 
