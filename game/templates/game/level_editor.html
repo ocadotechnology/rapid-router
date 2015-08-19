@@ -11,10 +11,10 @@
 
 {% block scripts %}
 {{block.super}}
-  <script src="/static/game/js/utils.js"></script>
-  <script src="/static/game/js/mobile-detect.min.js"></script>
-  <script src="/static/game/js/raphael.js"></script>
-  <script src="/static/game/js/drawing.js"></script> 
+  <script src="{% static "game/js/utils.js" %}"></script>
+  <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
+  <script src="{% static "game/js/raphael.js" %}"></script>
+  <script src="{% static "game/js/drawing.js" %}"></script> 
 
   <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
@@ -24,16 +24,16 @@
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
 
-  <script src="/static/game/js/tab.js"></script>
-  <script src="/static/game/js/messages.js"></script>
-  <script src="/static/game/js/saving.js"></script>
-  <script src="/static/game/js/level_editor.js"></script>
-  <script src="/static/game/js/coordinate.js"></script>
-  <script src="/static/game/js/node.js"></script>
-  <script src="/static/game/js/map.js"></script>
-  <script src="/static/game/js/pathFinder.js"></script>
-  <script src="/static/game/js/trafficLight.js"></script>
-  <script src="/static/game/js/destination.js"></script>
+  <script src="{% static "game/js/tab.js" %}"></script>
+  <script src="{% static "game/js/messages.js" %}"></script>
+  <script src="{% static "game/js/saving.js" %}"></script>
+  <script src="{% static "game/js/level_editor.js" %}"></script>
+  <script src="{% static "game/js/coordinate.js" %}"></script>
+  <script src="{% static "game/js/node.js" %}"></script>
+  <script src="{% static "game/js/map.js" %}"></script>
+  <script src="{% static "game/js/pathFinder.js" %}"></script>
+  <script src="{% static "game/js/trafficLight.js" %}"></script>
+  <script src="{% static "game/js/destination.js" %}"></script>
 
   <script>
     var BLOCKS = [];
@@ -85,7 +85,7 @@
       {% for char in characters %}
           CHARACTERS['{{char.id}}'] =   {id:    '{{char.id}}',
                                         name:  '{{char.name}}',
-                                        image: '/static/game/image/{{char.en_face}}'}
+                                        image: '{% static "game/image/{{char.en_face}}" %}'}
       {% endfor %}
     }
     
@@ -95,8 +95,8 @@
 
 {% block css %}
 {{ block.super }}
-  <link href="/static/game/css/game_screen.css" rel="stylesheet" type="text/css">
-  <link href="/static/game/css/level_editor.css" rel="stylesheet" type="text/css">
+  <link href="{% static "game/css/game_screen.css" %}" rel="stylesheet" type="text/css">
+  <link href="{% static "game/css/level_editor.css" %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
@@ -112,7 +112,7 @@
       <div id="tabs">
 
         <div id="currentTool" class="mode_panel">
-          <img id="currentToolIcon" src="/static/game/image/icons/delete_road.svg" >
+          <img id="currentToolIcon" src="{% static "game/image/icons/delete_road.svg" %}" >
           <br>
           <span id="currentToolText">Delete Road</span>
         </div>
@@ -122,7 +122,7 @@
         <div class="tab">
           <input type="radio" name="tabs" id="play_radio">
           <label for="play_radio">
-            <img src='/static/game/image/icons/play.svg'>
+            <img src='{% static "game/image/icons/play.svg" %}'>
             <span>Play</span>
           </label>
         </div>
@@ -132,7 +132,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="map_radio">
           <label for="map_radio">
-            <img src='/static/game/image/icons/map.svg'>
+            <img src='{% static "game/image/icons/map.svg" %}'>
             <span>Map</span>
           </label>
         </div>
@@ -140,7 +140,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="scenery_radio">
           <label for="scenery_radio">
-            <img src='/static/game/image/icons/decor.svg'>
+            <img src='{% static "game/image/icons/decor.svg" %}'>
             <span>Scenery</span>
           </label>
         </div>
@@ -148,7 +148,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="character_radio">
           <label for="character_radio">
-            <img src='/static/game/image/icons/character.svg'>
+            <img src='{% static "game/image/icons/character.svg" %}'>
             <span>Character</span>
           </label>
         </div>
@@ -156,7 +156,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="blocks_radio">
           <label for="blocks_radio">
-            <img src='/static/game/image/icons/blockly.svg'>
+            <img src='{% static "game/image/icons/blockly.svg" %}'>
             <span>Code</span>
           </label>
         </div>
@@ -164,7 +164,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="random_radio">
           <label for="random_radio">
-            <img src='/static/game/image/icons/random.svg'>
+            <img src='{% static "game/image/icons/random.svg" %}'>
             <span>Random</span>
           </label>
         </div>
@@ -174,7 +174,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="load_radio">
           <label for="load_radio">
-            <img src='/static/game/image/icons/load.svg'>
+            <img src='{% static "game/image/icons/load.svg" %}'>
             <span>Load</span>
           </label>
         </div>
@@ -182,7 +182,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="save_radio">
           <label for="save_radio">
-            <img src='/static/game/image/icons/save.svg'>
+            <img src='{% static "game/image/icons/save.svg" %}'>
             <span>Save</span>
           </label>
         </div>
@@ -190,7 +190,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="share_radio">
           <label for="share_radio">
-            <img src='/static/game/image/icons/share.svg'>
+            <img src='{% static "game/image/icons/share.svg" %}'>
             <span>Share</span>
           </label>
         </div>
@@ -200,7 +200,7 @@
         <div class="tab selectable">
           <input type="radio" name="tabs" id="help_radio">
           <label for="help_radio">
-            <img src='/static/game/image/icons/help.svg'>
+            <img src='{% static "game/image/icons/help.svg" %}'>
             <span>Help</span>
           </label>
         </div>
@@ -208,7 +208,7 @@
         <div class="tab">
           <input type="radio" name="tabs" id="quit_radio">
           <label for="quit_radio">
-            <img src='/static/game/image/icons/quit.svg'>
+            <img src='{% static "game/image/icons/quit.svg" %}'>
             <span>Quit</span>
           </label>
         </div>
@@ -218,7 +218,7 @@
       <div id='tab_panes_wrapper'>
         <div id="tab_panes">
           <div id="map_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/map.svg'>Map</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/map.svg" %}'>Map</h2>
             <p> Here you can design your level! What sort of road will you make?</p>
             
             <div class="tab_pane_content_holder">
@@ -233,13 +233,13 @@
                   <div class="table_row">
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="add_road">
-                        <img src="/static/game/image/icons/add_road.svg"/>
+                        <img src="{% static "game/image/icons/add_road.svg" %}"/>
                         <span>Add road</span>
                       </button>
                     </div>
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="delete_road">
-                        <img src="/static/game/image/icons/delete_road.svg"/>
+                        <img src="{% static "game/image/icons/delete_road.svg" %}"/>
                         <span>Delete road</span>
                       </button>
                     </div>
@@ -247,13 +247,13 @@
                   <div class="table_row">
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="start">
-                        <img src="/static/game/image/icons/origin.svg"/>
+                        <img src="{% static "game/image/icons/origin.svg" %}"/>
                         <span>Mark start</span>
                       </button>
                     </div>
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="end">
-                        <img src="/static/game/image/icons/destination.svg"/>
+                        <img src="{% static "game/image/icons/destination.svg" %}"/>
                         <span>Mark end</span>
                       </button>
                     </div>
@@ -261,7 +261,7 @@
                 </div>
 
                 <button class="navigation_button long_button" id="clear">
-                  <img src="/static/game/image/icons/clear.svg"/>
+                  <img src="{% static "game/image/icons/clear.svg" %}"/>
                   <span>Clear all</span>
                 </button>
 
@@ -275,7 +275,7 @@
           </div>
 
           <div id="scenery_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/decor.svg'>Scenery</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/decor.svg" %}'>Scenery</h2>
             <p> Here you can liven up your level by choosing the theme and adding scenery! Will you create beautiful countryside or a bustling city?</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
@@ -304,8 +304,8 @@
                     </tr>
                     <tr>
                       <td>Traffic lights:</td>
-                      <td><img id="trafficLightRed" src="/static/game/image/trafficLight_red.svg" width="80"></td>
-                      <td><img id="trafficLightGreen" src="/static/game/image/trafficLight_green.svg" width="80"></td>
+                      <td><img id="trafficLightRed" src="{% static "game/image/trafficLight_red.svg" %}" width="80"></td>
+                        <td><img id="trafficLightGreen" src="{% static "game/image/trafficLight_green.svg" %}" width="80"></td>
                     </tr>
                   </tbody>
                 </table>
@@ -317,7 +317,7 @@
           </div>
 
           <div id="character_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/character.svg'>Character</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/character.svg" %}'>Character</h2>
             <p> Here you can choose your character. Who will you play as?</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
@@ -334,7 +334,7 @@
           </div>
 
           <div id="blocks_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/blockly.svg'>Code</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/blockly.svg" %}'>Code</h2>
             <p> Here you can select the code you can use while playing your new level! </p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
@@ -387,7 +387,7 @@
           </div>
 
           <div id="random_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/random.svg'>Random</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/random.svg" %}'>Random</h2>
             <p> Here you can generate a random map. Try changing some of the parameters below and see what you get! </p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
@@ -428,7 +428,7 @@
                   </div>
                 </div>
                 <button class="navigation_button long_button" id="generate">
-                  <img src="/static/game/image/icons/random.svg">
+                  <img src="{% static "game/image/icons/random.svg" %}">
                   <span>Generate</span>
                 </button>
               </div>
@@ -436,7 +436,7 @@
           </div>
 
           <div id="load_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/load.svg'>Load</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/load.svg" %}'>Load</h2>
             <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
 
             <div class="table_control_div">
@@ -476,19 +476,19 @@
             
             <div>
               <button class="navigation_button long_button" id="deleteLevel">
-                <img src="/static/game/image/icons/clear.svg">
+                <img src="{% static "game/image/icons/clear.svg" %}">
                 <span>Delete</span>
               </button>
 
               <button class="navigation_button long_button" id="loadLevel">
-                <img src="/static/game/image/icons/load.svg">
+                <img src="{% static "game/image/icons/load.svg" %}">
                 <span>Load</span>
               </button>
             </div>
           </div>
 
           <div id="save_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/save.svg'>Save</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/save.svg" %}'>Save</h2>
             <p>Here you can save your new level. Enter a name below and hit save. Alternatively click on an existing level to update it.</p>
             <p>To play your level and be tracked, first <b>Quit</b> the Level Editor and select your level from the 'Levels created by you' section.</p>
             
@@ -517,13 +517,13 @@
             <br>
             <br>
             <button class="navigation_button long_button" id="saveLevel">
-              <img src="/static/game/image/icons/save.svg">
+              <img src="{% static "game/image/icons/save.svg" %}">
               <span>Save</span>
             </button>
           </div>
 
           <div id="share_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='/static/game/image/icons/share.svg'>Share</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/share.svg" %}'>Share</h2>
             
             {% if user|get_user_status == 'TEACHER' %}
               <p>Here you can share your level with your classes or your fellow teachers.</p>
@@ -564,7 +564,7 @@
             </div>
 
             <button class="navigation_button long_button" id="shareWithAll">
-              <img src="/static/game/image/icons/share.svg">
+              <img src="{% static "game/image/icons/share.svg" %}">
               <span>Share with all</span>
             </button>
           </div>
@@ -577,9 +577,9 @@
   <div id="paper"></div>
 
   <div id="trashcanHolder">
-    <img id="trashcanLidClosed" src="/static/game/image/trashcan_lid_closed.svg">
-    <img id="trashcanLidOpen" src="/static/game/image/trashcan_lid_open.svg">
-    <img id="trashcan" src="/static/game/image/trashcan.svg">
+    <img id="trashcanLidClosed" src="{% static "game/image/trashcan_lid_closed.svg" %}">
+    <img id="trashcanLidOpen" src="{% static "game/image/trashcan_lid_open.svg" %}">
+    <img id="trashcan" src="{% static "game/image/trashcan.svg" %}">
   </div>
 </div>
 
