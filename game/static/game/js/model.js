@@ -118,7 +118,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             id: this.vanId,
             vanAction: 'CRASH',
             previousNode: this.van.previousNode,
-            currentNode: this.van.currentNode,
+            currentNode: this.van.getPosition().currentNode,
             attemptedAction: action,
             startNode: this.van.currentNodeOriginal,
             fuel: this.van.getFuelPercentage(),
