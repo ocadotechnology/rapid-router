@@ -31,6 +31,7 @@
     var CHAR_WIDTH = {{character.width}};
     var CHAR_HEIGHT = {{character.height}};
     var RANDOM = "{{episode.random_levels_enabled}}" === "True";
+    var IS_RANDOM_LEVEL = "{{random_level}}" === "True";
 
     var BLOCKS =  [];
     {% for block in blocks %}
@@ -128,7 +129,7 @@
     <div class="tab selectable {% if level.blocklyEnabled %}{% else %}hidden{% endif %}">
       <input type="radio" name="tabs" id="blockly_radio" checked>
       <label for="blockly_radio">
-        <img src='/static/game/image/icons/blockly.svg'>
+        <img src="{% static "game/image/icons/blockly.svg" %}">
         <span>Blockly</span>
       </label>
     </div>
@@ -136,7 +137,7 @@
     <div class="tab selectable {% if level.pythonEnabled %}{% else %}hidden{% endif %}">
       <input type="radio" name="tabs" id="python_radio">
       <label for="python_radio">
-        <img src='/static/game/image/icons/python.svg'>
+        <img src='{% static "game/image/icons/python.svg" %}'>
         <span>Python</span>
       </label>
     </div>
@@ -144,7 +145,7 @@
     <div class="tab">
       <input type="radio" name="tabs" id="clear_program_radio">
       <label for="clear_program_radio">
-        <img src='/static/game/image/icons/clear.svg'>
+        <img src='{% static "game/image/icons/clear.svg" %}'>
         <span>Clear</span>
       </label>
     </div>
@@ -154,7 +155,7 @@
     <div class="tab">
       <input type="radio" name="tabs" id="play_radio">
       <label for="play_radio">
-        <img src='/static/game/image/icons/play.svg'>
+        <img src='{% static "game/image/icons/play.svg" %}'>
         <span>Play</span>
         {% csrf_token %}
       </label>
@@ -163,7 +164,7 @@
     <div class="tab">
       <input type="radio" name="tabs" id="stop_radio">
       <label for="stop_radio">
-        <img src='/static/game/image/icons/stop.svg'>
+        <img src='{% static "game/image/icons/stop.svg" %}'>
         <span>Stop</span>
       </label>
     </div>
@@ -171,7 +172,7 @@
     <div class="tab">
       <input type="radio" name="tabs" id="step_radio">
       <label for="step_radio">
-        <img src='/static/game/image/icons/step.svg'>
+        <img src='{% static "game/image/icons/step.svg" %}'>
         <span>Step</span>
       </label>
     </div>
@@ -181,7 +182,7 @@
     <div class="tab selectable">
       <input type="radio" name="tabs" id="load_radio">
       <label for="load_radio">
-        <img src='/static/game/image/icons/load.svg'>
+        <img src='{% static "game/image/icons/load.svg" %}'>
         <span>Load</span>
       </label>
     </div>
@@ -189,7 +190,7 @@
     <div class="tab selectable">
       <input type="radio" name="tabs" id="save_radio">
       <label for="save_radio">
-        <img src='/static/game/image/icons/save.svg'>
+        <img src='{% static "game/image/icons/save.svg" %}'>
         <span>Save</span>
       </label>
     </div>
@@ -197,7 +198,7 @@
     <!-- <div class="tab">
       <input type="radio" name="tabs" id="print_radio">
       <label for="print_radio">
-        <img src='/static/game/image/icons/print.svg'>
+        <img src='{% static "game/image/icons/print.svg" %}'>
         <span>Print</span>
       </label>
     </div> -->
@@ -207,7 +208,7 @@
     <div class="tab selectable">
       <input type="radio" name="tabs" id="help_radio">
       <label for="help_radio">
-        <img src='/static/game/image/icons/help.svg'>
+        <img src='{% static "game/image/icons/help.svg" %}'>
         <span>Help</span>
       </label>
     </div>
@@ -215,7 +216,7 @@
     <!--div class="tab">
       <input type="radio" name="tabs" id="big_code_mode_radio">
       <label for="big_code_mode_radio">
-        <img src='/static/game/image/icons/big_code_mode.svg'>
+        <img src='{% static "game/image/icons/big_code_mode.svg" %}'>
         <span>Enlarge</span>
       </label>
     </div-->
@@ -223,7 +224,7 @@
     <div class="tab">
       <input type="radio" name="tabs" id="mute_radio">
       <label for="mute_radio">
-        <img id="mute_img" src='/static/game/image/icons/muted.svg'>
+        <img id="mute_img" src='{% static "game/image/icons/muted.svg" %}'>
         <span id="mute_text">Mute</span>
       </label>
     </div>
@@ -231,7 +232,7 @@
     <div class="tab">
       <input type="radio" name="tabs" id="quit_radio">
       <label for="quit_radio">
-        <img src='/static/game/image/icons/quit.svg'>
+        <img src='{% static "game/image/icons/quit.svg" %}'>
         <span>Quit</span>
       </label>
     </div>
@@ -268,7 +269,7 @@
               <div>
                 <div id="pythonIntro">Use the Python editor below to design your program, and then click play to try it out!</div>
                 <button class="navigation_button long_button" id="van_commands_help">
-                  <img src="/static/game/image/icons/python.svg">
+                  <img src="{% static "game/image/icons/python.svg" %}">
                   <span>Commands</span>
                 </button>
               </div>
@@ -279,7 +280,7 @@
               <h4 style="height:50px; line-height: 50px;">
                 Console Output
                 <button class="navigation_button long_button" id="clear_console">
-                  <img src="/static/game/image/icons/clear.svg">
+                  <img src="{% static "game/image/icons/clear.svg" %}">
                   <span>Clear console</span>
                 </button>
               </h4>
@@ -289,7 +290,7 @@
       </div>
 
       <div id="load_pane" class="tab_pane">
-        <h2 class="title"><img class="modal_image" src='/static/game/image/icons/load.svg'>Load</h2>
+        <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/load.svg" %}'>Load</h2>
           <p>Here you can load a program you've previously saved!</p>
           <div style="width:auto">
             <div id="does_not_exist">
@@ -312,12 +313,12 @@
             <br>
             <div>
               <button class="navigation_button long_button" id="deleteWorkspace">
-                <img src="/static/game/image/icons/clear.svg"/>
+                <img src="{% static "game/image/icons/clear.svg" %}"/>
                 <span>Delete</span>
               </button>
 
               <button class="navigation_button long_button" id="loadWorkspace">
-                <img src="/static/game/image/icons/load.svg"/>
+                <img src="{% static "game/image/icons/load.svg" %}"/>
                 <span>Load</span>
               </button>
             </div>
@@ -325,7 +326,7 @@
       </div>
 
       <div id="save_pane" class="tab_pane">
-        <h2 class="title"><img class="modal_image" src='/static/game/image/icons/save.svg'>Save</h2>
+        <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/save.svg" %}'>Save</h2>
         <p>Here you can save your program so you can retrieve it later!</p>
         <div class="scrolling-table-wrapper">
           <table id="saveWorkspaceTableHeader">
@@ -345,7 +346,7 @@
         <div>
           <input type="text" id="workspaceNameInput">
           <button class="navigation_button long_button" id="saveWorkspace">
-            <img src="/static/game/image/icons/save.svg">
+            <img src="{% static "game/image/icons/save.svg" %}">
             <span>Save</span>
           </button>
         </div>
@@ -362,9 +363,9 @@
     </div>
 
     <div id="fuelGauge" class="no-print unselectable">
-      <img src="/static/game/image/fuelGauge.svg"/>
+      <img src="{% static "game/image/fuelGauge.svg" %}"/>
       <div id="fuelGaugePointer">
-        <img src="/static/game/image/fuelGaugePointer.svg"/>
+        <img src="{% static "game/image/fuelGaugePointer.svg" %}"/>
       </div>
     </div>
 
