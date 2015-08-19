@@ -177,4 +177,4 @@ def random_level_for_episode(request, episodeID):
     """
     episode = cached_episode(episodeID)
     level = random_road.create(episode)
-    return play_anonymous_level(request, level.id, False)
+    return play_anonymous_level(request, level.id, False, random_level=True)

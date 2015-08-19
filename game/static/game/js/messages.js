@@ -43,9 +43,8 @@ ocargo.jsElements = {
         return "<img src='" + url + "'class='" + class_ + "'>";
     },
     nextEpisodeButton: function(episode, random){
-        return ocargo.button.getRedirectButtonHtml("'/rapidrouter/episode/" + episode + "/'",
-                'Next episode') + (random ? ocargo.button.getRedirectButtonHtml("'/rapidrouter/levels/random/" + (episode-1) + "/'",
-            'Random level') : "") +
+        return ocargo.button.getRedirectButtonHtml("'/rapidrouter/episode/" + episode + "/'", 'Next episode') +
+          (random ? ocargo.button.getRedirectButtonHtml("'/rapidrouter/levels/random/" + (episode-1) + "/'", 'Random level') : "") +
             ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
     },
 
@@ -60,6 +59,7 @@ ocargo.messages = {
             "challenge? " + (random ? "Or try one of this episode's random levels!" : "") ;
     },
 
+    anotherRandomLevel: "Do you want to try another random level?",
     loggedOutWarning: "You are not logged in. Your progress won't be saved.",
     nowTryPython: "Looks like you've got a route sorted using Blockly.<br><br>" +
         "Now go to the Python tab and see if you can do the same in Python! ",

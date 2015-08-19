@@ -75,7 +75,7 @@ def level_editor(request):
     return render(request, 'game/level_editor.html', context_instance=context)
 
 
-def play_anonymous_level(request, levelID, from_level_editor=True):
+def play_anonymous_level(request, levelID, from_level_editor=True, random_level=False):
     level = Level.objects.filter(id=levelID)
 
     if not level.exists():
@@ -109,6 +109,7 @@ def play_anonymous_level(request, levelID, from_level_editor=True):
         'cfc': cfc,
         'hint': hint,
         'attempt': attempt,
+        'random_level': random_level,
         'return_url': '/rapidrouter/' + ('level_editor' if from_level_editor else ''),
     })
 

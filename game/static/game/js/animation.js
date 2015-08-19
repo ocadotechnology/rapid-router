@@ -265,6 +265,11 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/level_editor/'", "Create your own map!");
 								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
 					        }
+                                                else if (IS_RANDOM_LEVEL) {
+					            levelMsg.push(ocargo.messages.anotherRandomLevel);
+                                                    buttons += ocargo.button.getRedirectButtonHtml("'" + window.location.href + "'", 'Random level');
+                                                    buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
+                                                }
 					    }
 					}
 					leadMsg = ocargo.messages.addNewLine(levelMsg);
