@@ -376,7 +376,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
                 description: 'van delivering'
             });
         } else {
-            if($.inArray(destinations[0].node, this.van.visitedNodes)) {
+            if($.inArray(destinations[0].node, this.van.visitedNodes) != -1 ) {
                 failMessage = ocargo.messages.passedDestination;
             }
         }
