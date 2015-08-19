@@ -117,7 +117,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             type: 'van',
             id: this.vanId,
             vanAction: 'CRASH',
-            previousNode: this.van.previousNode,
+            previousNode: this.van.getPosition().previousNode,
             currentNode: this.van.getPosition().currentNode,
             attemptedAction: action,
             startNode: this.van.currentNodeOriginal,
@@ -148,7 +148,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             id: this.vanId,
             popupType: 'FAIL',
             failSubtype: 'CRASH',
-            popupMessage: ocargo.messages.offRoad(this.van.travelled),
+            popupMessage: ocargo.messages.offRoad(this.van.getDistanceTravelled()),
             popupHint: ocargo.game.registerFailure(),
             description: 'crash popup'
         });
