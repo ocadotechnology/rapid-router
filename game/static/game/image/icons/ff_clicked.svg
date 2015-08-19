@@ -11,7 +11,7 @@
    version="1.1"
    id="svg3486"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="ff.svg">
+   sodipodi:docname="ff_clicked.svg">
   <metadata
      id="metadata3496">
     <rdf:RDF>
@@ -20,7 +20,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -48,18 +48,20 @@
      inkscape:current-layer="svg3486" />
   <g
      transform="matrix(0.44726828,0,0,0.58976058,5.051607,-541.1733)"
-     id="g3488">
+     id="g3488"
+     style="fill:#e6e6e6">
     <path
        d="m 9.9651,1039.6 0,-74.562 84.07,38.058 z"
        id="path3490"
        inkscape:connector-curvature="0"
-       style="stroke:#000000;stroke-width:1.52690005px" />
+       style="stroke:#000000;stroke-width:1.52690005px;fill:#e6e6e6" />
   </g>
   <g
      id="g3625"
-     transform="matrix(0.44726828,0,0,0.58976058,49.051607,-541.1733)">
+     transform="matrix(0.44726828,0,0,0.58976058,49.051607,-541.1733)"
+     style="fill:#e6e6e6">
     <path
-       style="stroke:#000000;stroke-width:1.52690005px"
+       style="stroke:#000000;stroke-width:1.52690005px;fill:#e6e6e6"
        inkscape:connector-curvature="0"
        id="path3627"
        d="m 9.9651,1039.6 0,-74.562 84.07,38.058 z" />

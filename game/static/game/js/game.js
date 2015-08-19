@@ -222,7 +222,7 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
             ocargo.drawing.moveForward(
-                0, DEFAULT_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+                0, ocargo.animation.DEFAULT_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
         }
     });
     $('#turnLeft').click(function() {
@@ -230,7 +230,7 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
             ocargo.drawing.moveLeft(
-                0, DEFAULT_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+                0, ocargo.animation.DEFAULT_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
         }
     });
     $('#turnRight').click(function() {
@@ -238,12 +238,21 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
             ocargo.drawing.moveRight(
-                0, DEFAULT_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+                0, ocargo.animation.DEFAULT_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
         }
     });
     $('#go').click(function() {
         $('#play_radio').trigger('click');
     });
+    $('#ff_button').click(function() {
+        if ($(this).hasClass('clicked')) {
+            ocargo.animation.DEFAULT_ANIMATION_LENGTH = ocargo.animation.DEFAULT_ANIMATION_LENGTH * 4;
+            $(this).toggleClass('clicked')
+        } else {
+            ocargo.animation.DEFAULT_ANIMATION_LENGTH = ocargo.animation.DEFAULT_ANIMATION_LENGTH / 4;
+            $(this).toggleClass('clicked')
+        }
+    })
 };
 
 ocargo.Game.prototype.setupSliderListeners = function() {
@@ -466,7 +475,7 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.ff.setOnChange(function() {
             if (ocargo.game.runProgramAndPrepareAnimation()) {
                 ocargo.game.onFFControls();
-                ocargo.animation.playAnimation(ocargo.animation.DEFAULT_ANIMATION_LENGTH / 4);
+                ocargo.animation.playAnimation(125);
                 $('#clear_console').click();
             }
 

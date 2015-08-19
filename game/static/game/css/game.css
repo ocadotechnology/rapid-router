@@ -284,6 +284,28 @@
     background-image : url('/static/game/image/actions/forward.svg');
 }
 
+#ff_toggle {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    bottom: 30px;
+    right: 17%;
+    border-radius: 25px;
+    background-color: lightgrey;
+}
+
+#ff_button {
+    width: 80px;
+    height: 80px;
+    left: 10%;
+    top: 10%;
+    background: transparent url('/static/game/image/icons/ff.svg') no-repeat;
+}
+
+#ff_button.clicked {
+    background-image: url('/static/game/image/icons/ff_clicked.svg');
+}
+
 .blocklyWidgetDiv {
     line-height: 1;
 }
