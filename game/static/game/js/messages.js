@@ -80,7 +80,9 @@ ocargo.messages = {
     errorTitle: "Error",
 
     outOfFuel : "You ran out of fuel! Try to find a shorter route to the destination.",
-    outOfInstructions: "The van ran out of instructions before it reached a destination.",
+    outOfInstructions: "The van ran out of instructions before it reached a destination. " +
+      "Make sure your blocks are connected to the Start block, and " +
+      "there are enough instructions to complete the delivery.",
     throughRedLight: "Uh oh, you just sent the van through a red light! Stick to the Highway " +
         "Code - the van must wait for green.",
     alreadyDelivered: "You have already delivered to that destination! You must only deliver " +
