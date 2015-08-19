@@ -2,12 +2,12 @@
 
 var ocargo = ocargo || {};
 
-var DEFAULT_ANIMATION_LENGTH = 500;
-
 ocargo.Animation = function(model, decor, numVans) {
     this.model = model;
     this.decor = decor;
     this.numVans = numVans;
+
+    this.DEFAULT_ANIMATION_LENGTH = 500;
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -62,15 +62,14 @@ ocargo.Animation.prototype.stepAnimation = function(callback, generalAnimationLe
 
 	this.currentlyAnimating = true;
 
-	var maxDelay = DEFAULT_ANIMATION_LENGTH;
+	var timestampDelay = this.DEFAULT_ANIMATION_LENGTH;
 
 	var timestampQueue = this.animationQueue[this.timestamp];
 
 	if (timestampQueue) {
 		// Perform all events for this timestamp
 		while (timestampQueue.length > 0) {
-			var delay = this.performAnimation(timestampQueue.shift(), generalAnimationLength);
-			maxDelay = Math.max(maxDelay, delay);
+			timestampDelay = this.performAnimation(timestampQueue.shift(), generalAnimationLength);
 		}
 		// And move onto the next timestamp
 		this.timestamp += 1;
@@ -92,13 +91,13 @@ ocargo.Animation.prototype.stepAnimation = function(callback, generalAnimationLe
 		if (self.isPlaying) {
 			self.stepAnimation(undefined, generalAnimationLength);
 		}
-	}, maxDelay);
+	}, timestampDelay);
 };
 
-ocargo.Animation.prototype.playAnimation = function() {
+ocargo.Animation.prototype.playAnimation = function(generalAnimationLength) {
 	if (!this.currentlyAnimating && !this.isPlaying && this.animationQueue.length > 0) {
 		this.isPlaying = true;
-		this.stepAnimation();
+		this.stepAnimation(undefined, generalAnimationLength);
 	}
 };
 
@@ -118,7 +117,7 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 
 ocargo.Animation.prototype.performAnimation = function(a, generalAnimationLength) {
 	// animation length is either custom set (for each element), general (for the whole animation) or default
-	var animationLength = a.animationLength || generalAnimationLength || DEFAULT_ANIMATION_LENGTH;
+	var animationLength = a.animationLength || generalAnimationLength || this.DEFAULT_ANIMATION_LENGTH;
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':

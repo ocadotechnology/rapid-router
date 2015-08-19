@@ -325,6 +325,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
     tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
     tabs.stop = new ocargo.Tab($('#stop_radio'), $('#stop_radio + label'));
+    tabs.ff = new ocargo.Tab($('#ff_radio'), $('#ff_radio + label'));
     tabs.step = new ocargo.Tab($('#step_radio'), $('#step_radio + label'));
 
     tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
@@ -342,6 +343,7 @@ ocargo.Game.prototype.setupTabs = function() {
     setupClearTab();
     setupPlayTab();
     setupStopTab();
+    setupFFTab();
     setupStepTab();
     setupLoadTab();
     setupSaveTab();
@@ -455,6 +457,18 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.stop.setOnChange(function() {
             ocargo.game.reset();
             ocargo.game.onStopControls();
+
+            ocargo.game.currentTabSelected.select();
+        });
+    }
+
+    function setupFFTab() {
+        tabs.ff.setOnChange(function() {
+            if (ocargo.game.runProgramAndPrepareAnimation()) {
+                ocargo.game.onFFControls();
+                ocargo.animation.playAnimation(ocargo.animation.DEFAULT_ANIMATION_LENGTH / 4);
+                $('#clear_console').click();
+            }
 
             ocargo.game.currentTabSelected.select();
         });
@@ -764,6 +778,19 @@ ocargo.Game.prototype.onStepControls = function() {
     // ocargo.game.tabs.print.setEnabled(false);
     ocargo.game.tabs.help.setEnabled(false);
 };
+
+ocargo.Game.prototype.onFFControls = function() {
+    this.allowCodeChanges(false);
+
+    document.getElementById('direct_drive').style.visibility='hidden';
+
+    ocargo.game.tabs.step.setEnabled(false);
+
+    ocargo.game.tabs.load.setEnabled(false);
+    ocargo.game.tabs.save.setEnabled(false);
+    ocargo.game.tabs.clear_program.setEnabled(false);
+    ocargo.game.tabs.help.setEnabled(false);
+}
 
 ocargo.Game.prototype.onStopControls = function() {
     this.allowCodeChanges(true);
