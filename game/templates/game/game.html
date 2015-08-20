@@ -107,7 +107,7 @@
       //FPSMeter.run(0.5);
     });
   </script>
-  
+
 {% endblock %}
 
 {% block css %}
@@ -135,7 +135,7 @@
         <span>Blockly</span>
       </label>
     </div>
-    
+
     <div class="tab selectable {% if level.pythonEnabled %}{% else %}hidden{% endif %}">
       <input type="radio" name="tabs" id="python_radio">
       <label for="python_radio">
@@ -152,7 +152,7 @@
       </label>
     </div>
 
-    <div class="tab_break"></div>  
+    <div class="tab_break"></div>
 
     <div class="tab">
       <input type="radio" name="tabs" id="play_radio">
@@ -179,7 +179,7 @@
       </label>
     </div>
 
-    <div class="tab_break"></div> 
+    <div class="tab_break"></div>
 
     <div class="tab selectable">
       <input type="radio" name="tabs" id="load_radio">
@@ -205,7 +205,7 @@
       </label>
     </div> -->
 
-    <div class="tab_break"></div> 
+    <div class="tab_break"></div>
 
     <div class="tab selectable">
       <input type="radio" name="tabs" id="help_radio">
@@ -251,7 +251,7 @@
         <div id="blockCountDiv"></div>
 
         <div id="blockly_holder" style='width: calc(100% + 55px); margin-left: -55px; {% if level.pythonViewEnabled %} height: 50%{% endif %}'></div>
-        
+
         <div {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
           <p>This is what your program would look like in Python:</p>
           <textarea id="pythonView" cols="85" rows="25"></textarea>
@@ -301,7 +301,7 @@
             <div class="scrolling-table-wrapper">
               <table id="loadWorkspaceTableHeader">
                 <thead>
-                  <tr>  
+                  <tr>
                     <th>Name</th>
                   </tr>
                 </thead>
@@ -333,7 +333,7 @@
         <div class="scrolling-table-wrapper">
           <table id="saveWorkspaceTableHeader">
             <thead>
-              <tr>  
+              <tr>
                 <th>Name</th>
               </tr>
             </thead>
@@ -356,7 +356,7 @@
     </div>
 
     <div id="paper" class="col" style="background-color:{{level.theme.background}}"></div>
-    
+
     <div id="direct_drive" class="unselectable no-print">
       <button class="direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>

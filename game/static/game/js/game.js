@@ -112,6 +112,7 @@ ocargo.Game.prototype.reset = function() {
     // Needed so animation can reset with the right information
     ocargo.model.reset(0);
 
+    ocargo.drawing.reset();
     // clear animations and sound
     ocargo.sound.stop_engine();
     ocargo.animation.resetAnimation();

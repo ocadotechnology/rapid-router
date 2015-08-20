@@ -158,17 +158,24 @@ ocargo.Cow.prototype.incrementTime = function(model) {
 };
 
 ocargo.Cow.prototype.scaredAwayByHorn = function(model, coordinateTime, coordinate){
+    if(jQuery.isEmptyObject(model.soundedHorn)){
+        return false;
+    }
     return coordinateTime < model.soundedHorn.timestamp && this.withinRadius(coordinate, model.soundedHorn.coordinates) ;
 
 };
 
 ocargo.Cow.prototype.scaredAwayByPuffUp = function(model, coordinateTime, coordinate){
-    return coordinateTime < model.puffedUp.timestamp && this.withinRadius(coordinate, model.puffedUp.coordinates) ;
+    if(jQuery.isEmptyObject(model.puffedUp)){
+        return false;
+    }
+    console.log(model.puffedUp);
+    return this.withinRadius(coordinate, model.puffedUp.coordinates) ;
 
 };
 
 ocargo.Cow.prototype.withinRadius = function(coordinate1, coordinate2){
-    return (Math.abs(coordinate1.x-coordinate2.x) <= 3) && (Math.abs(coordinate1.y-coordinate2.y) <= 3);
+    return Math.abs(coordinate1.x-coordinate2.x)+ Math.abs(coordinate1.y-coordinate2.y) <= 2;
 };
 
 ocargo.Cow.prototype.setActive = function(model, node) {

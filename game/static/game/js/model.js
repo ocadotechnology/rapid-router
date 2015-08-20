@@ -458,7 +458,6 @@ ocargo.Model.prototype.deliver = function() {
 };
 
 ocargo.Model.prototype.sound_horn = function() {
-    console.log("Sound horn");
     this.soundedHorn = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate()};
     ocargo.animation.appendAnimation({
         type: 'callable',
@@ -482,23 +481,39 @@ ocargo.Model.prototype.stop_horn = function() {
 };
 
 ocargo.Model.prototype.puff_up = function(){
-    this.puffedUp = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate()};
-    console.log("puff_up");
+    if(!jQuery.isEmptyObject(this.puffedUp)){
+        return this.remain_puff_up();
+    }else{
+        this.puffedUp = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate(), timeout:1};
+
+        ocargo.animation.appendAnimation({
+            type: 'van',
+            id: this.vanId,
+            vanAction: 'PUFFUP',
+            fuel: this.van.getFuelPercentage(),
+            description: 'van move action: puff up'
+        });
+        return this.puff_down();
+    }
+
+};
+
+ocargo.Model.prototype.remain_puff_up = function(){
+    this.puffedUp.coordinates = this.getCurrentCoordinate();
+    this.puffedUp.timeout++;
 
     ocargo.animation.appendAnimation({
         type: 'van',
         id: this.vanId,
-        vanAction: 'PUFFUP',
+        vanAction: 'REMAINPUFFUP',
         fuel: this.van.getFuelPercentage(),
-        description: 'van move action: puff up'
+        description: 'van move action: remain puff up'
     });
 
-    //this.incrementTime();
     return true;
 };
 
 ocargo.Model.prototype.puff_down = function(){
-    console.log("puff_down");
 
     ocargo.animation.appendAnimation({
         type: 'van',
@@ -508,7 +523,7 @@ ocargo.Model.prototype.puff_down = function(){
         description: 'van move action: puff down'
     });
 
-    this.incrementTime();
+    //this.incrementTime();
     return true;
 };
 
@@ -688,7 +703,9 @@ ocargo.Model.prototype.incrementCowTime = function() {
         this.cows[i].incrementTime(this);
     }
     this.soundedHorn = {};
-    this.puffedUp = {};
+    if(this.timestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
+        this.puffedUp = {};
+    };
 };
 
 ocargo.Model.prototype.getNodesAhead = function(node) {

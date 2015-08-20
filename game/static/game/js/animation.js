@@ -209,11 +209,14 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             		break;
 				case 'PUFFUP':
 					//ocargo.drawing.puffUp(vanID, animationLength);
-					this.effects.push(1.5);
-					this.effects.push(0.666666666);
+					this.effects.push(2);
 					break;
+                case 'REMAINPUFFUP':
+                    this.effects.unshift(1);
+                    break;
                 case 'PUFFDOWN':
                     //ocargo.drawing.puffDown(vanID, animationLength);
+					this.effects.push(0.5);
                     break;
             	case 'CRASH':
             		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode,
