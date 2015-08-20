@@ -40,38 +40,44 @@ identified as the original program.
 var ocargo = ocargo || {};
 
 ocargo.Van = function(position, maxFuel) {
-    this.previousNodeOriginal = position.previousNode;
-    this.currentNodeOriginal = position.currentNode;
+    this.startingPosition = position;
 
-    this.previousNode = position.previousNode;
-    this.currentNode = position.currentNode;
+    /**
+     * Keeps track of where the van has been
+     *
+     * Position at index 0 is the previous position at the start of the run, so
+     * this array is effectively indexed from 1 onwards. It's guaranteed to have
+     * at least two elements in it (the starting node and previous node at the
+     * start).
+     *
+     * @type {ocargo.Node[]}
+     */
+    this.visitedNodes = [position.previousNode, position.currentNode];
     this.maxFuel = maxFuel;
     this.fuel = maxFuel;
-    this.travelled = 0;
 };
 
 ocargo.Van.prototype.reset = function() {
-    this.currentNode = this.currentNodeOriginal;
-    this.previousNode = this.previousNodeOriginal;
+    this.visitedNodes = [this.startingPosition.previousNode, this.startingPosition.currentNode];
     this.fuel = this.maxFuel;
-    this.travelled = 0;
 };
 
 ocargo.Van.prototype.move = function(nextNode) {
-    if (nextNode !== this.currentNode) {
-        this.previousNode = this.currentNode;
-        this.currentNode = nextNode;
-
-        this.travelled += 1;
+    if (nextNode !== this.visitedNodes[this.visitedNodes.length - 1]) {
+        this.visitedNodes.push(nextNode);
     }
 
     this.fuel -= 1;
 };
 
 ocargo.Van.prototype.getPosition = function() {
-    return { previousNode: this.previousNode, currentNode: this.currentNode };
+    return { previousNode: this.visitedNodes[this.visitedNodes.length - 2], currentNode: this.visitedNodes[this.visitedNodes.length - 1] };
 };
 
 ocargo.Van.prototype.getFuelPercentage = function() {
     return 100 * this.fuel / this.maxFuel;
+};
+
+ocargo.Van.prototype.getDistanceTravelled = function() {
+    return this.visitedNodes.length - 2; // Don't count starting position, or previous position at start
 };

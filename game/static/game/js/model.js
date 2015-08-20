@@ -154,8 +154,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             type: 'van',
             id: this.vanId,
             vanAction: 'CRASH',
-            previousNode: this.van.previousNode,
-            currentNode: this.van.currentNode,
+            previousNode: this.van.getPosition().previousNode,
+            currentNode: this.van.getPosition().currentNode,
             attemptedAction: action,
             startNode: this.van.currentNodeOriginal,
             fuel: this.van.getFuelPercentage(),
@@ -185,7 +185,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             id: this.vanId,
             popupType: 'FAIL',
             failSubtype: 'CRASH',
-            popupMessage: ocargo.messages.offRoad(this.van.travelled),
+            popupMessage: ocargo.messages.offRoad(this.van.getDistanceTravelled()),
             popupHint: ocargo.game.registerFailure(),
             description: 'crash popup'
         });
@@ -412,6 +412,10 @@ ocargo.Model.prototype.programExecutionEnded = function() {
                 fuel: this.van.getFuelPercentage(),
                 description: 'van delivering'
             });
+        } else {
+            if($.inArray(destinations[0].node, this.van.visitedNodes) != -1 ) {
+                failMessage = ocargo.messages.passedDestination;
+            }
         }
     }
     else {

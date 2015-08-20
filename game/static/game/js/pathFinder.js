@@ -122,7 +122,7 @@ ocargo.PathFinder.prototype.getNumCoins = function(score, maxScore) {
 };
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
-    var travelled = this.van.travelled;
+    var travelled = this.van.getDistanceTravelled();
     return this.maxScoreForPathLength - (travelled - this.optimalPath.length + 2);
 };
 
