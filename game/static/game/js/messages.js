@@ -88,7 +88,7 @@ ocargo.messages = {
         "Code - the van must wait for green.",
     alreadyDelivered: "You have already delivered to that destination! You must only deliver " +
         "once to each destination.",
-    undeliveredDestinations: "There are destinations that have not been delivered to! " +
+    undeliveredDestinations: "There are destinations that have not been delivered to. " +
         "Ensure you visit all destinations and use the deliver command at each one.",
     offRoad : function(correctSteps){
         if (correctSteps === 0) {
