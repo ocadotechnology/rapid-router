@@ -240,14 +240,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
 						levelMsg.push(ocargo.messages.nowTryPython);
 						buttons += ocargo.button.addDismissButtonHtml('Close');
-					}
-					else {
+					} else {
 						// If there exists next level, add a button which redirects the user to that
 						if (NEXT_LEVEL) {
 							buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/" + NEXT_LEVEL + "/'",
 					        								     		'Next Level');
-					    }
-					    else {
+					    } else {
 							/*
 							 This is the last level of the episode. If there exists a next episode, add button to
 							 redirect user to it or level selection page.
@@ -259,17 +257,15 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					        if (NEXT_EPISODE) {
 					            levelMsg.push(ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM));
 								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
-					        }
-					        else if(DEFAULT_LEVEL) {
+					        } else if(DEFAULT_LEVEL) {
 					            levelMsg.push(ocargo.messages.lastLevel);
 								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/level_editor/'", "Create your own map!");
 								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
-					        }
-                                                else if (IS_RANDOM_LEVEL) {
+					        } else if (IS_RANDOM_LEVEL) {
 					            levelMsg.push(ocargo.messages.anotherRandomLevel);
-                                                    buttons += ocargo.button.getRedirectButtonHtml("'" + window.location.href + "'", 'Random level');
-                                                    buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
-                                                }
+								buttons += ocargo.button.getRedirectButtonHtml("'" + window.location.href + "'", 'Have more fun!');
+								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
+							}
 					    }
 					}
 					leadMsg = ocargo.messages.addNewLine(levelMsg);
