@@ -59,8 +59,6 @@ SECRET_KEY = 'xbq1u1w_zknl4t=wlem!)!)j*8=n9(2*wcxj$r6!b5#1uxgsv2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -176,9 +174,20 @@ LOCALE_PATHS = (
     'conf/locale',
 )
 
-from django.conf import global_settings
-TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + \
-     ('django.core.context_processors.i18n',)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+            os.path.join(BASE_DIR, "templates"),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'debug': True,
+        },
+    },
+]
+
 
 
 # Keep this at the bottom

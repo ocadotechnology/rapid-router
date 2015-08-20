@@ -35,6 +35,8 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 '''Game autoconfig'''
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SETTINGS = {
     'INSTALLED_APPS': [
@@ -61,7 +63,20 @@ SETTINGS = {
     'STATICFILES_FINDERS': [
         'compressor.finders.CompressorFinder',
     ],
-    'TEMPLATE_CONTEXT_PROCESSORS': [
-        'django.core.context_processors.request',
+    'TEMPLATES': [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'NAME': 'Ocargo',
+            'DIRS': [
+                os.path.join(BASE_DIR, "templates"),
+            ],
+            'APP_DIRS': True,
+            'OPTIONS': {
+                'context_processors': [
+                    'django.template.context_processors.request'
+                ]
+            }
+        }
     ],
 }
+
