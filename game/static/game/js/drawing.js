@@ -626,11 +626,13 @@ ocargo.Drawing = function() {
     };
 
     this.getRotationPointX = function(direction){
-        return characterHeight/2 + (direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS);
+        var centreX = characterHeight/2;    // x coordinate of the canvas of the character svg
+        return  centreX+ (direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS);
     };
 
     this.getRotationPointY = function(){
-        return characterWidth/2;
+        var centreY = characterWidth/2;     // y coordinate of the canvas of the character svg
+        return centreY;
     };
 
     this.moveForward = function(vanId, animationLength, callback) {
