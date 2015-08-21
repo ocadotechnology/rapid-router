@@ -48,8 +48,8 @@ var PAPER_PADDING = 30;
 var EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 2 * PAPER_PADDING;
 var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING;
 
-var CHARACTER_WIDTH = 40;
-var CHARACTER_HEIGHT = 20;
+var DEFAULT_CHARACTER_WIDTH = 40;
+var DEFAULT_CHARACTER_HEIGHT = 20;
 
 var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 
@@ -63,11 +63,10 @@ ocargo.Drawing = function() {
     var TRAFFIC_LIGHT_HEIGHT = 22;
 
     var MOVE_DISTANCE = GRID_SPACE_SIZE;
-    var TURN_DISTANCE = MOVE_DISTANCE / 2;
     var INITIAL_OFFSET_X = 10;
     var INITIAL_OFFSET_Y = 82;
-    var ROTATION_OFFSET_X = 22;
-    var ROTATION_OFFSET_Y = CHARACTER_WIDTH - 20;
+    var TURN_LEFT_RADIUS = -38;
+    var TURN_RIGHT_RADIUS = 62;
 
     var DESTINATION_NOT_VISITED_COLOUR = 'red';
     var DESTINATION_VISITED_COLOUR = 'green';
@@ -83,6 +82,8 @@ ocargo.Drawing = function() {
     var lightImages = {};
     var destinationImages = {};
     var wreckageImages = {};
+    var characterWidth = DEFAULT_CHARACTER_WIDTH;
+    var characterHeight = DEFAULT_CHARACTER_HEIGHT;
 
     /*********************/
     /* Preloading images */
@@ -624,6 +625,14 @@ ocargo.Drawing = function() {
         element.scrollTop = point[1] - element.offsetHeight/2;
     };
 
+    this.getRotationPointX = function(direction){
+        return characterHeight/2 + (direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS);
+    };
+
+    this.getRotationPointY = function(){
+        return characterWidth/2;
+    };
+
     this.moveForward = function(vanId, animationLength, callback) {
         var moveDistance = -MOVE_DISTANCE;
         var transformation = "... t 0, " + moveDistance;
@@ -633,20 +642,20 @@ ocargo.Drawing = function() {
     };
 
     this.moveLeft = function(vanId, animationLength,callback) {
-        var vanImage = vanImages[vanId];
-        var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-        var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+        var rotationPointX = this.getRotationPointX('LEFT');
+        var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
+        console.log(transformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
     };
 
     this.moveRight = function(vanId, animationLength, callback) {
-        var vanImage = vanImages[vanId];
-        var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-        var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+        var rotationPointX = this.getRotationPointX('RIGHT');
+        var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
+        console.log(transformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
@@ -704,8 +713,8 @@ ocargo.Drawing = function() {
         function turnLeft(easing) {
             return function() {
                 var vanImage = vanImages[vanId];
-                var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-                var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+                var rotationPointX = this.getRotationPointX('LEFT');
+                var rotationPointY = this.getRotationPointY();
                 var transformation = createRotationTransformation(-45, rotationPointX, rotationPointY);
                 vanImage.animate({
                     transform: transformation
@@ -716,8 +725,8 @@ ocargo.Drawing = function() {
         function turnRight(easing) {
             return function() {
                 var vanImage = vanImages[vanId];
-                var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-                var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+                var rotationPointX = this.getRotationPointX('RIGHT');
+                var rotationPointY = this.getRotationPointY();
                 var transformation = createRotationTransformation(45, rotationPointX, rotationPointY);
                 vanImage.animate({
                     transform: transformation
@@ -781,8 +790,8 @@ ocargo.Drawing = function() {
             else {
                 rotationAngle = 75;
             }
-            var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-            var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+            var rotationPointX = this.getRotationPointX('LEFT');
+            var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
                                                               rotationPointY);
         }
@@ -797,8 +806,8 @@ ocargo.Drawing = function() {
             else {
                 rotationAngle = 75;
             }
-            var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-            var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+            var rotationPointX = this.getRotationPointX('RIGHT');
+            var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(rotationAngle, rotationPointX,
                                                               rotationPointY);
         }
@@ -825,7 +834,7 @@ ocargo.Drawing = function() {
 
             var explosionParts = 20;
 
-            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
+            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
             wreckageImage.transform(vanImage.transform());
             wreckageImage.attr({"opacity":0});
             wreckageImages[vanID] = wreckageImage;
