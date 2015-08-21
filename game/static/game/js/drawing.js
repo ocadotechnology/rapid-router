@@ -763,7 +763,7 @@ ocargo.Drawing = function() {
 
     this.getRotationPointX = function(direction){
         var centreX = characterHeight/2;    // x coordinate of the canvas of the character svg
-        return  centreX+ (direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS);
+        return  centreX + (direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS);
     };
 
     this.getRotationPointY = function(){
@@ -963,16 +963,16 @@ ocargo.Drawing = function() {
         else if(attemptedAction === "TURN_LEFT") {
             var rotationAngle = 15;
 
-            var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-            var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+            var rotationPointX = this.getRotationPointX('LEFT');
+            var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
                 rotationPointY);
         }
         else if(attemptedAction === "TURN_RIGHT") {
             var rotationAngle = 15;
 
-            var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-            var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+            var rotationPointX = this.getRotationPointX('RIGHT');
+            var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(rotationAngle, rotationPointX,
                 rotationPointY);
         }
@@ -998,7 +998,7 @@ ocargo.Drawing = function() {
 
             var smokeParts = 20;
 
-            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
+            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
             wreckageImage.transform(vanImage.transform());
             wreckageImage.attr({"opacity":0});
             wreckageImages[vanID] = wreckageImage;

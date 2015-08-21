@@ -49,6 +49,7 @@ ocargo.Animation = function(model, decor, numVans) {
     this.numVans = numVans;
 	this.activeCows = []; // cows currently displayed on map
 	this.effects = [];
+	this.crashed = false;
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -76,7 +77,8 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.isPlaying = false;
 	this.currentlyAnimating = false;
 	this.finished = false;
-    this.slowDownAnimation = false;
+	this.numberOfCowsOnMap = 0;
+	this.crashed = false;
 	this.effects = [];
 
 	// Reset the display
@@ -169,6 +171,7 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 ocargo.Animation.prototype.performAnimation = function(a) {
 	// animation length is either default or may be custom set
 	var animationLength = a.animationLength || defaultAnimationLength;
+	console.log(animationLength);
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
@@ -219,11 +222,13 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					this.effects.push(0.5);
                     break;
             	case 'CRASH':
+					this.crashed = true;
             		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode,
             			a.attemptedAction, a.startNode);
                     animationLength += 100;
             		break;
 				case 'COLLISION_WITH_COW':
+					this.crashed = true;
 					ocargo.drawing.collisionWithCow(vanID, animationLength, a.previousNode, a.currentNode,
 						a.attemptedAction, a.startNode);
 					animationLength += 100; // does not correspond to the length of the actual crash/collision with cow animation
@@ -325,12 +330,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			ocargo.drawing.transitionTrafficLight(a.id, a.colour, animationLength/2);
 			break;
 		case 'cow':
-            this.slowDownAnimation = true;
+            this.numberOfCowsOnMap++;
 			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node, animationLength);
 			this.activeCows.push(activeCow);
 			break;
         case 'cow_leave':
-            this.slowDownAnimation = false;
+            this.numberOfCowsOnMap--;
             for (var i=0; i<this.activeCows.length; i++) {
 				var cow = this.activeCows[i];
 				if (cow.coordinate == a.coordinate){
