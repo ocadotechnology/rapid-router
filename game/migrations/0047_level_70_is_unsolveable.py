@@ -34,49 +34,27 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-'''Game autoconfig'''
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+from django.db import migrations
 
-SETTINGS = {
-    'INSTALLED_APPS': [
-        'game',
-        'portal',
-        'django.contrib.admin',
-        'django.contrib.admindocs',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        'foundation_scss',
-        'foundation_icons',
-        'bourbon',
-        'compressor',
-        'rest_framework',
-    ],
-    'COMPRESS_ENABLED': True,
-    'COMPRESS_PRECOMPILERS': [
-        ('text/x-sass', 'sass {infile} {outfile}'),
-        ('text/x-scss', 'sass {infile} {outfile}'),
-    ],
-    'STATICFILES_FINDERS': [
-        'compressor.finders.CompressorFinder',
-    ],
-    'TEMPLATES': [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'NAME': 'Ocargo',
-            'DIRS': [
-                os.path.join(BASE_DIR, "templates"),
-            ],
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.request'
-                ]
-            }
-        }
-    ],
-}
+
+def update_level(apps, schema_editor):
+    Level = apps.get_model('game', 'Level')
+    level70 = Level.objects.get(name='70', default=1)
+    level70.traffic_lights='[{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":4,"y":4},"direction":"N","startTime":0,"startingState":"GREEN"},' \
+                           '{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":4,"y":2},"direction":"S","startTime":0,"startingState":"GREEN"},' \
+                           '{"redDuration":1,"greenDuration":2,"sourceCoordinate":{"x":4,"y":3},"direction":"E","startTime":0,"startingState":"RED"},' \
+                           '{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":2,"y":3},"direction":"E","startTime":0,"startingState":"RED"}]'
+    level70.save()
+
+
+class Migration(migrations.Migration):
+    dependencies = [
+        ('game', '0046_set_img_order'),
+    ]
+
+    operations = [
+        migrations.RunPython(update_level)
+    ]
+
+
 
