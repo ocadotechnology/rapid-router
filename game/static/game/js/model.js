@@ -194,8 +194,8 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
     //Crash?
-    var previousNodeCow = this.getCowForNode(this.van.currentNode, ocargo.Cow.ACTIVE);
-    var collisionWithCow = previousNodeCow && nextNode !== this.van.currentNode;
+    var previousNodeCow = this.getCowForNode(this.van.getPosition().currentNode, ocargo.Cow.ACTIVE);
+    var collisionWithCow = previousNodeCow && nextNode !== this.van.getPosition().currentNode;
 
     if(collisionWithCow) {
         handleCrash(this, ocargo.messages.collisionWithCow, 'COLLISION_WITH_COW', 'collision with cow van move action: ');
@@ -204,7 +204,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
     var offRoad = nextNode === null;
     if (offRoad) {
-        handleCrash(this, ocargo.messages.offRoad(this.van.travelled), 'CRASH', 'crashing van move action: ');
+        handleCrash(this, ocargo.messages.offRoad(this.van.getDistanceTravelled()), 'CRASH', 'crashing van move action: ');
         return false;
     }
 
@@ -307,8 +307,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             type: 'van',
             id: model.vanId,
             vanAction: vanAction,
-            previousNode: model.van.previousNode,
-            currentNode: model.van.currentNode,
+            previousNode: model.van.getPosition().previousNode,
+            currentNode: model.van.getPosition().currentNode,
             attemptedAction: action,
             startNode: model.van.currentNodeOriginal,
             fuel: model.van.getFuelPercentage(),
