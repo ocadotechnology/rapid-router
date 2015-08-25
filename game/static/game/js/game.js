@@ -103,7 +103,7 @@ ocargo.Game.prototype.setup = function() {
         }
     }
     ocargo.Drawing.startPopup(title, LESSON,
-         loggedOutWarning, true, ocargo.button.getDismissButtonHtml('play_button', 'Play'));
+        loggedOutWarning, true, ocargo.button.dismissButtonHtml('play_button', 'Play'));
 };
 
 ocargo.Game.prototype.reset = function() {

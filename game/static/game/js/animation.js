@@ -221,12 +221,14 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					var levelMsg = [];
 
 					if (!a.pathScoreDisabled) {
-						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins) + a.pathLengthScore + "/" + a.maxScoreForPathLength);
+						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins)
+							+ "<span id=\"routeScore\">" + a.pathLengthScore + "/" + a.maxScoreForPathLength + "</span>");
 					}
 
 					if (a.maxScoreForNumberOfInstructions != 0){
 						levelMsg.push(ocargo.messages.algorithmScore +
-							ocargo.Drawing.renderCoins(a.instrCoins) + a.instrScore + "/" + a.maxScoreForNumberOfInstructions);
+							ocargo.Drawing.renderCoins(a.instrCoins)
+                            + "<span id=\"algorithmScore\">" + a.instrScore + "/" + a.maxScoreForNumberOfInstructions + "</span>");
 					}
 
 					levelMsg.push(ocargo.messages.totalScore(a.totalScore, a.maxScore));
@@ -234,7 +236,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					levelMsg.push(leadMsg);
 
 					if(a.performance != "scorePerfect"){
-						buttons += ocargo.button.getTryAgainButtonHtml();
+						buttons += ocargo.button.tryAgainButtonHtml();
 					}
 
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
@@ -243,7 +245,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					} else {
 						// If there exists next level, add a button which redirects the user to that
 						if (NEXT_LEVEL) {
-							buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/" + NEXT_LEVEL + "/'",
+							buttons += ocargo.button.redirectButtonHtml('next_level_button', '/rapidrouter/" + NEXT_LEVEL + "/',
 					        								     		'Next Level');
 					    } else {
 							/*
@@ -259,12 +261,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
 					        } else if(DEFAULT_LEVEL) {
 					            levelMsg.push(ocargo.messages.lastLevel);
-								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/level_editor/'", "Create your own map!");
-								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
+								buttons += ocargo.button.redirectButtonHtml('next_level_button', "'/rapidrouter/level_editor/'", "Create your own map!");
+								buttons += ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
 					        } else if (IS_RANDOM_LEVEL) {
 					            levelMsg.push(ocargo.messages.anotherRandomLevel);
-								buttons += ocargo.button.getRedirectButtonHtml("'" + window.location.href + "'", 'Have more fun!');
-								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
+								buttons += ocargo.button.redirectButtonHtml('retry_button', "'" + window.location.href + "'", 'Have more fun!');
+								buttons += ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
 							}
 					    }
 					}
@@ -272,10 +274,10 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
-					buttons = ocargo.button.getTryAgainButtonHtml();
+					buttons = ocargo.button.tryAgainButtonHtml();
 					break;
 				case 'WARNING':
-					buttons = ocargo.button.getTryAgainButtonHtml();
+					buttons = ocargo.button.tryAgainButtonHtml();
 					break;
 			}
 			var otherMsg = "";
