@@ -1,3 +1,40 @@
+/*
+Code for Life
+
+Copyright (C) 2015, Ocado Limited
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ADDITIONAL TERMS – Section 7 GNU General Public Licence
+
+This licence does not grant any right, title or interest in any “Ocado” logos,
+trade names or the trademark “Ocado” or any other trademarks or domain names
+owned by Ocado Innovation Limited or the Ocado group of companies or any other
+distinctive brand features of “Ocado” as may be secured from time to time. You
+must not distribute any modification of this program using the trademark
+“Ocado” or claim any affiliation or association with Ocado or its employees.
+
+You are not authorised to use the name Ocado (or any of its trade names) or
+the names of any author or contributor in advertising or for publicity purposes
+pertaining to the distribution of this program, without the prior written
+authorisation of Ocado.
+
+Any propagation, distribution or conveyance of this program must include this
+copyright notice and these terms. You must not misrepresent the origins of this
+program; modified versions of the program must be marked as such and not
+identified as the original program.
+*/
 'use strict';
 
 var ocargo = ocargo || {};
@@ -189,12 +226,14 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					var levelMsg = [];
 
 					if (!a.pathScoreDisabled) {
-						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins) + a.pathLengthScore + "/" + a.maxScoreForPathLength);
+						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins)
+							+ "<span id=\"routeScore\">" + a.pathLengthScore + "/" + a.maxScoreForPathLength + "</span>");
 					}
 
 					if (a.maxScoreForNumberOfInstructions != 0){
 						levelMsg.push(ocargo.messages.algorithmScore +
-							ocargo.Drawing.renderCoins(a.instrCoins) + a.instrScore + "/" + a.maxScoreForNumberOfInstructions);
+							ocargo.Drawing.renderCoins(a.instrCoins)
+                            + "<span id=\"algorithmScore\">" + a.instrScore + "/" + a.maxScoreForNumberOfInstructions + "</span>");
 					}
 
 					levelMsg.push(ocargo.messages.totalScore(a.totalScore, a.maxScore));
@@ -202,20 +241,18 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					levelMsg.push(leadMsg);
 
 					if(a.performance != "scorePerfect"){
-						buttons += ocargo.button.getTryAgainButtonHtml();
+						buttons += ocargo.button.tryAgainButtonHtml();
 					}
 
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
 						levelMsg.push(ocargo.messages.nowTryPython);
 						buttons += ocargo.button.addDismissButtonHtml('Close');
-					}
-					else {
+					} else {
 						// If there exists next level, add a button which redirects the user to that
 						if (NEXT_LEVEL) {
-							buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/" + NEXT_LEVEL + "/'",
+							buttons += ocargo.button.redirectButtonHtml('next_level_button', '/rapidrouter/' + NEXT_LEVEL + '/',
 					        								     		'Next Level');
-					    }
-					    else {
+					    } else {
 							/*
 							 This is the last level of the episode. If there exists a next episode, add button to
 							 redirect user to it or level selection page.
@@ -227,22 +264,25 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					        if (NEXT_EPISODE) {
 					            levelMsg.push(ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM));
 								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
-					        }
-					        else if(DEFAULT_LEVEL) {
+					        } else if(DEFAULT_LEVEL) {
 					            levelMsg.push(ocargo.messages.lastLevel);
-								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/level_editor/'", "Create your own map!");
-								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
-					        }
+								buttons += ocargo.button.redirectButtonHtml('next_level_button', "'/rapidrouter/level_editor/'", "Create your own map!");
+								buttons += ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
+					        } else if (IS_RANDOM_LEVEL) {
+					            levelMsg.push(ocargo.messages.anotherRandomLevel);
+								buttons += ocargo.button.redirectButtonHtml('retry_button', "'" + window.location.href + "'", 'Have more fun!');
+								buttons += ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
+							}
 					    }
 					}
 					leadMsg = ocargo.messages.addNewLine(levelMsg);
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
-					buttons = ocargo.button.getTryAgainButtonHtml();
+					buttons = ocargo.button.tryAgainButtonHtml();
 					break;
 				case 'WARNING':
-					buttons = ocargo.button.getTryAgainButtonHtml();
+					buttons = ocargo.button.tryAgainButtonHtml();
 					break;
 			}
 			var otherMsg = "";

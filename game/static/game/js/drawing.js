@@ -1,3 +1,40 @@
+/*
+Code for Life
+
+Copyright (C) 2015, Ocado Limited
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ADDITIONAL TERMS – Section 7 GNU General Public Licence
+
+This licence does not grant any right, title or interest in any “Ocado” logos,
+trade names or the trademark “Ocado” or any other trademarks or domain names
+owned by Ocado Innovation Limited or the Ocado group of companies or any other
+distinctive brand features of “Ocado” as may be secured from time to time. You
+must not distribute any modification of this program using the trademark
+“Ocado” or claim any affiliation or association with Ocado or its employees.
+
+You are not authorised to use the name Ocado (or any of its trade names) or
+the names of any author or contributor in advertising or for publicity purposes
+pertaining to the distribution of this program, without the prior written
+authorisation of Ocado.
+
+Any propagation, distribution or conveyance of this program must include this
+copyright notice and these terms. You must not misrepresent the origins of this
+program; modified versions of the program must be marked as such and not
+identified as the original program.
+*/
 'use strict';
 
 var ocargo = ocargo || {};
@@ -11,8 +48,8 @@ var PAPER_PADDING = 30;
 var EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 2 * PAPER_PADDING;
 var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING;
 
-var CHARACTER_WIDTH = 40;
-var CHARACTER_HEIGHT = 20;
+var DEFAULT_CHARACTER_WIDTH = 40;
+var DEFAULT_CHARACTER_HEIGHT = 20;
 
 var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 
@@ -26,11 +63,10 @@ ocargo.Drawing = function() {
     var TRAFFIC_LIGHT_HEIGHT = 22;
 
     var MOVE_DISTANCE = GRID_SPACE_SIZE;
-    var TURN_DISTANCE = MOVE_DISTANCE / 2;
     var INITIAL_OFFSET_X = 10;
     var INITIAL_OFFSET_Y = 82;
-    var ROTATION_OFFSET_X = 22;
-    var ROTATION_OFFSET_Y = CHARACTER_WIDTH - 20;
+    var TURN_LEFT_RADIUS = -38;
+    var TURN_RIGHT_RADIUS = 62;
 
     var DESTINATION_NOT_VISITED_COLOUR = 'red';
     var DESTINATION_VISITED_COLOUR = 'green';
@@ -46,6 +82,8 @@ ocargo.Drawing = function() {
     var lightImages = {};
     var destinationImages = {};
     var wreckageImages = {};
+    var characterWidth = DEFAULT_CHARACTER_WIDTH;
+    var characterHeight = DEFAULT_CHARACTER_HEIGHT;
 
     /*********************/
     /* Preloading images */
@@ -587,6 +625,16 @@ ocargo.Drawing = function() {
         element.scrollTop = point[1] - element.offsetHeight/2;
     };
 
+    this.getRotationPointX = function(direction){
+        var centreX = characterHeight/2;    // x coordinate of the canvas of the character svg
+        return  centreX+ (direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS);
+    };
+
+    this.getRotationPointY = function(){
+        var centreY = characterWidth/2;     // y coordinate of the canvas of the character svg
+        return centreY;
+    };
+
     this.moveForward = function(vanId, animationLength, callback) {
         var moveDistance = -MOVE_DISTANCE;
         var transformation = "... t 0, " + moveDistance;
@@ -596,9 +644,8 @@ ocargo.Drawing = function() {
     };
 
     this.moveLeft = function(vanId, animationLength,callback) {
-        var vanImage = vanImages[vanId];
-        var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-        var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+        var rotationPointX = this.getRotationPointX('LEFT');
+        var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
         moveVanImage({
             transform: transformation
@@ -606,9 +653,8 @@ ocargo.Drawing = function() {
     };
 
     this.moveRight = function(vanId, animationLength, callback) {
-        var vanImage = vanImages[vanId];
-        var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-        var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+        var rotationPointX = this.getRotationPointX('RIGHT');
+        var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
         moveVanImage({
             transform: transformation
@@ -667,8 +713,8 @@ ocargo.Drawing = function() {
         function turnLeft(easing) {
             return function() {
                 var vanImage = vanImages[vanId];
-                var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-                var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+                var rotationPointX = this.getRotationPointX('LEFT');
+                var rotationPointY = this.getRotationPointY();
                 var transformation = createRotationTransformation(-45, rotationPointX, rotationPointY);
                 vanImage.animate({
                     transform: transformation
@@ -679,8 +725,8 @@ ocargo.Drawing = function() {
         function turnRight(easing) {
             return function() {
                 var vanImage = vanImages[vanId];
-                var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-                var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+                var rotationPointX = this.getRotationPointX('RIGHT');
+                var rotationPointY = this.getRotationPointY();
                 var transformation = createRotationTransformation(45, rotationPointX, rotationPointY);
                 vanImage.animate({
                     transform: transformation
@@ -744,8 +790,8 @@ ocargo.Drawing = function() {
             else {
                 rotationAngle = 75;
             }
-            var rotationPointX = vanImage.attrs.x - TURN_DISTANCE + ROTATION_OFFSET_X;
-            var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+            var rotationPointX = this.getRotationPointX('LEFT');
+            var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
                                                               rotationPointY);
         }
@@ -760,8 +806,8 @@ ocargo.Drawing = function() {
             else {
                 rotationAngle = 75;
             }
-            var rotationPointX = vanImage.attrs.x + TURN_DISTANCE + ROTATION_OFFSET_X;
-            var rotationPointY = vanImage.attrs.y + ROTATION_OFFSET_Y;
+            var rotationPointX = this.getRotationPointX('RIGHT');
+            var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(rotationAngle, rotationPointX,
                                                               rotationPointY);
         }
@@ -788,7 +834,7 @@ ocargo.Drawing = function() {
 
             var explosionParts = 20;
 
-            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
+            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
             wreckageImage.transform(vanImage.transform());
             wreckageImage.attr({"opacity":0});
             wreckageImages[vanID] = wreckageImage;
@@ -890,7 +936,7 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, 
     if(buttons){
         $('#modal-buttons').html(buttons);
     } else {
-        $('#modal-buttons').html(ocargo.button.getDismissButtonHtml("Close"));
+        $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', 'Close'));
     }
 
     setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);

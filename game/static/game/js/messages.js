@@ -1,3 +1,40 @@
+/*
+Code for Life
+
+Copyright (C) 2015, Ocado Limited
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ADDITIONAL TERMS – Section 7 GNU General Public Licence
+
+This licence does not grant any right, title or interest in any “Ocado” logos,
+trade names or the trademark “Ocado” or any other trademarks or domain names
+owned by Ocado Innovation Limited or the Ocado group of companies or any other
+distinctive brand features of “Ocado” as may be secured from time to time. You
+must not distribute any modification of this program using the trademark
+“Ocado” or claim any affiliation or association with Ocado or its employees.
+
+You are not authorised to use the name Ocado (or any of its trade names) or
+the names of any author or contributor in advertising or for publicity purposes
+pertaining to the distribution of this program, without the prior written
+authorisation of Ocado.
+
+Any propagation, distribution or conveyance of this program must include this
+copyright notice and these terms. You must not misrepresent the origins of this
+program; modified versions of the program must be marked as such and not
+identified as the original program.
+*/
 var ocargo = ocargo || {};
 
 // Object containing helper js objects (buttons etc).
@@ -6,10 +43,9 @@ ocargo.jsElements = {
         return "<img src='" + url + "'class='" + class_ + "'>";
     },
     nextEpisodeButton: function(episode, random){
-        return ocargo.button.getRedirectButtonHtml("'/rapidrouter/episode/" + episode + "/'",
-                'Next episode') + (random ? ocargo.button.getRedirectButtonHtml("'/rapidrouter/levels/random/" + (episode-1) + "/'",
-            'Random level') : "") +
-            ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
+        return ocargo.button.redirectButtonHtml('next_episode_button', "'/rapidrouter/episode/" + episode + "/'", 'Next episode') +
+          (random ? ocargo.button.redirectButtonHtml('random_level_button', "'/rapidrouter/levels/random/" + (episode-1) + "/'", 'Random level') : "") +
+            ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
     },
 
     buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>'
@@ -23,6 +59,7 @@ ocargo.messages = {
             "challenge? " + (random ? "Or try one of this episode's random levels!" : "") ;
     },
 
+    anotherRandomLevel: "Do you want to try another random level?",
     loggedOutWarning: "You are not logged in. Your progress won't be saved.",
     nowTryPython: "Looks like you've got a route sorted using Blockly.<br><br>" +
         "Now go to the Python tab and see if you can do the same in Python! ",
@@ -43,12 +80,15 @@ ocargo.messages = {
     errorTitle: "Error",
 
     outOfFuel : "You ran out of fuel! Try to find a shorter route to the destination.",
-    outOfInstructions: "The van ran out of instructions before it reached a destination.",
+    outOfInstructions: "The van ran out of instructions before it reached a destination. <br><br>" +
+      "Make sure your blocks are connected to the Start block, and that " +
+      "there are enough instructions to complete the delivery.",
+    passedDestination: "The van visited the destination, but didn't stop there!",
     throughRedLight: "Uh oh, you just sent the van through a red light! Stick to the Highway " +
         "Code - the van must wait for green.",
     alreadyDelivered: "You have already delivered to that destination! You must only deliver " +
         "once to each destination.",
-    undeliveredDestinations: "There are destinations that have not been delivered to! " +
+    undeliveredDestinations: "There are destinations that have not been delivered to. " +
         "Ensure you visit all destinations and use the deliver command at each one.",
     offRoad : function(correctSteps){
         if (correctSteps === 0) {
