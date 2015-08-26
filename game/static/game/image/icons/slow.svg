@@ -11,7 +11,7 @@
    version="1.1"
    id="svg3486"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="ff_clicked.svg">
+   sodipodi:docname="slow.svg">
   <metadata
      id="metadata3496">
     <rdf:RDF>
@@ -47,21 +47,19 @@
      inkscape:window-maximized="0"
      inkscape:current-layer="svg3486" />
   <g
-     transform="matrix(0.44726828,0,0,0.58976058,5.051607,-541.1733)"
-     id="g3488"
-     style="fill:#e6e6e6">
+     transform="matrix(-0.44726828,0,0,-0.58976058,51.567601,641.08317)"
+     id="g3488">
     <path
        d="m 9.9651,1039.6 0,-74.562 84.07,38.058 z"
        id="path3490"
        inkscape:connector-curvature="0"
-       style="stroke:#000000;stroke-width:1.52690005px;fill:#e6e6e6" />
+       style="stroke:#000000;stroke-width:1.52690005px" />
   </g>
   <g
      id="g3625"
-     transform="matrix(0.44726828,0,0,0.58976058,49.051607,-541.1733)"
-     style="fill:#e6e6e6">
+     transform="matrix(-0.44726828,0,0,-0.58976058,95.567601,641.08317)">
     <path
-       style="stroke:#000000;stroke-width:1.52690005px;fill:#e6e6e6"
+       style="stroke:#000000;stroke-width:1.52690005px"
        inkscape:connector-curvature="0"
        id="path3627"
        d="m 9.9651,1039.6 0,-74.562 84.07,38.058 z" />

@@ -7,7 +7,9 @@ ocargo.Animation = function(model, decor, numVans) {
     this.decor = decor;
     this.numVans = numVans;
 
-    this.DEFAULT_ANIMATION_LENGTH = 500;
+    this.genericAnimationLength = 500;
+	this.FAST_ANIMATION_LENGTH = 125;
+	this.SLOW_ANIMATION_LENGTH = this.genericAnimationLength;
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -55,21 +57,25 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	ocargo.drawing.removeWreckageImages();
 };
 
-ocargo.Animation.prototype.stepAnimation = function(callback, generalAnimationLength) {
+ocargo.Animation.prototype.resetAnimationLength = function() {
+	this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
+};
+
+ocargo.Animation.prototype.stepAnimation = function(callback) {
 	if (this.currentlyAnimating) {
 		return;
 	}
 
 	this.currentlyAnimating = true;
 
-	var timestampDelay = this.DEFAULT_ANIMATION_LENGTH;
+	var timestampDelay = this.genericAnimationLength;
 
 	var timestampQueue = this.animationQueue[this.timestamp];
 
 	if (timestampQueue) {
 		// Perform all events for this timestamp
 		while (timestampQueue.length > 0) {
-			timestampDelay = this.performAnimation(timestampQueue.shift(), generalAnimationLength);
+			timestampDelay = this.performAnimation(timestampQueue.shift());
 		}
 		// And move onto the next timestamp
 		this.timestamp += 1;
@@ -89,15 +95,15 @@ ocargo.Animation.prototype.stepAnimation = function(callback, generalAnimationLe
 		}
 		self.currentlyAnimating = false;
 		if (self.isPlaying) {
-			self.stepAnimation(undefined, generalAnimationLength);
+			self.stepAnimation(undefined);
 		}
 	}, timestampDelay);
 };
 
-ocargo.Animation.prototype.playAnimation = function(generalAnimationLength) {
+ocargo.Animation.prototype.playAnimation = function() {
 	if (!this.currentlyAnimating && !this.isPlaying && this.animationQueue.length > 0) {
 		this.isPlaying = true;
-		this.stepAnimation(undefined, generalAnimationLength);
+		this.stepAnimation(undefined);
 	}
 };
 
@@ -115,9 +121,9 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 	this.animationQueue[this.lastTimestamp] = [];
 };
 
-ocargo.Animation.prototype.performAnimation = function(a, generalAnimationLength) {
-	// animation length is either custom set (for each element), general (for the whole animation) or default
-	var animationLength = a.animationLength || generalAnimationLength || this.DEFAULT_ANIMATION_LENGTH;
+ocargo.Animation.prototype.performAnimation = function(a) {
+	// animation length is either custom set (for each element) or generic
+	var animationLength = a.animationLength || this.genericAnimationLength;
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
