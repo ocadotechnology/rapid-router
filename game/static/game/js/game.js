@@ -244,15 +244,6 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
     $('#go').click(function() {
         $('#play_radio').trigger('click');
     });
-    $('#ff_button').click(function() {
-        if ($(this).hasClass('clicked')) {
-            ocargo.animation.DEFAULT_ANIMATION_LENGTH = ocargo.animation.DEFAULT_ANIMATION_LENGTH * 4;
-            $(this).toggleClass('clicked')
-        } else {
-            ocargo.animation.DEFAULT_ANIMATION_LENGTH = ocargo.animation.DEFAULT_ANIMATION_LENGTH / 4;
-            $(this).toggleClass('clicked')
-        }
-    })
 };
 
 ocargo.Game.prototype.setupSliderListeners = function() {
