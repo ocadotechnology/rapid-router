@@ -647,7 +647,6 @@ ocargo.Drawing = function() {
         var rotationPointX = this.getRotationPointX('LEFT');
         var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
-        console.log(transformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
@@ -657,7 +656,6 @@ ocargo.Drawing = function() {
         var rotationPointX = this.getRotationPointX('RIGHT');
         var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
-        console.log(transformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
