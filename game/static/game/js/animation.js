@@ -245,7 +245,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					} else {
 						// If there exists next level, add a button which redirects the user to that
 						if (NEXT_LEVEL) {
-							buttons += ocargo.button.redirectButtonHtml('next_level_button', '/rapidrouter/" + NEXT_LEVEL + "/',
+							buttons += ocargo.button.redirectButtonHtml('next_level_button', '/rapidrouter/' + NEXT_LEVEL + '/',
 					        								     		'Next Level');
 					    } else {
 							/*
