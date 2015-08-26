@@ -348,7 +348,7 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
 
 // Define custom select methods that select a block and its inputs
 ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
-    if (!block.svg_) {
+    if (!block instanceof Blockly.BlockSvg) {
         return;
     }
 
@@ -362,9 +362,9 @@ ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
     });
 
     if (selected) {
-        block.svg_.addSelect();
+        block.addSelect();
     } else {
-        block.svg_.removeSelect();
+        block.removeSelect();
     }
 };
 
