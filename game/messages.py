@@ -978,10 +978,13 @@ def title_level44():
 
 
 def description_level44():
-    message = ugettext("The light varies from red to green. The van must check which colour the "
-                       + "traffic light is when it reaches them - if it goes past a red light it "
-                       + "will break the Highway Code. <br> When the van gets to the traffic "
-                       + "light, make it wait while it is red. Use a Wait block. ")
+    message = youtubeLink(600, 400, "//www.youtube.com/embed/EDwc80X_LQI", 0)
+    message += ugettext("The light varies from red to green. <br>"
+                        + "The van must check which colour the traffic light is when it reaches them "
+                                            + "- if it goes past a red light it will break the Highway Code."
+                        + "<br> Here, you want the van to repeat the wait instruction while the traffic light is red. "
+                        + "Drag a block inside a <b>Repeat while</b> block to make the van repeat an instruction. "
+                        + "<br> Attach a 'condition' so the van knows when to repeat the instruction. ")
     return build_description(title_level44(), message)
 
 
