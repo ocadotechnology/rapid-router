@@ -95,15 +95,23 @@ ocargo.Game.prototype.setup = function() {
     // Start the popup
     var title = "Try solving this one...";
     if (LEVEL_ID) {
-        if (DEFAULT_LEVEL) {
+        if (NIGHT_MODE) {
+            title = "Night Level " + LEVEL_NAME;
+        } else if (DEFAULT_LEVEL) {
             title = "Level " + LEVEL_NAME;
         }
         else {
             title = LEVEL_NAME;
         }
     }
-    ocargo.Drawing.startPopup(title, LESSON,
-        loggedOutWarning, true, ocargo.button.dismissButtonHtml('play_button', 'Play'));
+
+    var message;
+    if (NIGHT_MODE) {
+        message = '<br>' + ocargo.messages.nightMode;
+    } else {
+        message = loggedOutWarning;
+    }
+    ocargo.Drawing.startPopup(title, LESSON, message, true, ocargo.button.dismissButtonHtml('play_button', 'Play'));
 };
 
 ocargo.Game.prototype.reset = function() {
@@ -203,6 +211,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
                     }
                 },
                 data : {
+                    nightmode: (NIGHT_MODE) ? "True" : "False",
                     level: parseInt(LEVEL_ID),
                     score: score,
                     workspace: ocargo.blocklyControl.serialize(),
@@ -376,6 +385,7 @@ ocargo.Game.prototype.setupTabs = function() {
     tabs.mute = new ocargo.Tab($('#mute_radio'), $('#mute_radio + label'));
     tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'));
     tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));
+    tabs.nightmode = new ocargo.Tab($('#nightmode_radio'), $('#nightmode_radio + label'));
 
     setupBlocklyTab();
     setupPythonTab();
@@ -391,6 +401,7 @@ ocargo.Game.prototype.setupTabs = function() {
     // setupBigCodeModeTab();
     setupMuteTab();
     setupQuitTab();
+    setupNightModeTab();
 
     ocargo.game.tabs = tabs;
 
@@ -779,6 +790,18 @@ ocargo.Game.prototype.setupTabs = function() {
         });
     }
 
+    function setupNightModeTab() {
+        tabs.nightmode.setOnChange(function() {
+            if (NIGHT_MODE) {
+                var str = window.location.pathname
+                var newstr = str.replace('night','')
+                window.location.assign(newstr)
+            } else {
+                window.location.href = 'night';
+            }
+        });
+    }
+
 
     // Helper method for load and save tabs
     function populateTable (tableName, workspaces) {
@@ -822,6 +845,7 @@ ocargo.Game.prototype.onPlayControls = function() {
     ocargo.game.tabs.clear_program.setEnabled(false);
     ocargo.game.tabs.help.setEnabled(false);
 };
+
 
 ocargo.Game.prototype.onStepControls = function() {
     this.allowCodeChanges(false);
@@ -907,6 +931,7 @@ ocargo.Game.prototype.mute = function(mute) {
         $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/unmuted.svg');
     }
 };
+
 
 function restoreCmsLogin() {
     $("#id_cms-password").css("height", "20px").css("display", "inline");

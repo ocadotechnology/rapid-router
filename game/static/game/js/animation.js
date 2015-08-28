@@ -58,12 +58,12 @@ ocargo.Animation = function(model, decor, numVans) {
     ocargo.drawing.clearPaper();
     ocargo.drawing.renderMap(this.model.map);
     ocargo.drawing.renderDecor(this.decor);
-    ocargo.drawing.renderVans(this.model.map.getStartingPosition(), this.numVans);
     ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
     ocargo.drawing.renderDestinations(this.model.map.getDestinations());
     ocargo.drawing.renderTrafficLights(this.model.trafficLights);
-	this.updateFuelGauge(100);
-	this.resetAnimation(); // make sure animation is initialized correctly
+	ocargo.drawing.renderVans(this.model.map.getStartingPosition(), this.numVans);
+
+     this.updateFuelGauge(100);
 };
 
 ocargo.Animation.prototype.isFinished = function() {
@@ -317,9 +317,9 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 					} else {
 						// If there exists next level, add animation button which redirects the user to that
 						if (NEXT_LEVEL) {
-							buttons += ocargo.button.redirectButtonHtml('next_level_button', '/rapidrouter/' + NEXT_LEVEL + '/',
-					        								     		'Next Level');
-					    } else {
+							buttons += ocargo.button.redirectButtonHtml('next_level_button', "/rapidrouter/" + NEXT_LEVEL + "/",
+								'Next Level');
+						} else {
 							/*
 							 This is the last level of the episode. If there exists animation next episode, add button to
 							 redirect user to it or level selection page.
@@ -328,8 +328,8 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 							 selection page.
 							 */
 
-					        if (NEXT_EPISODE) {
-					            levelMsg.push(ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM));
+							if (NEXT_EPISODE) {
+								levelMsg.push(ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM));
 								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
 					        } else if(DEFAULT_LEVEL) {
 					            levelMsg.push(ocargo.messages.lastLevel);

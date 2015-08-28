@@ -54,12 +54,15 @@ ocargo.jsElements = {
 
 //FIXME: actually use Django's internationalisation framework.
 ocargo.messages = {
+
     nextEpisode: function(episode, random) {
         return "Well done, you've completed the episode! <br> Are you ready for the next " +
             "challenge? " + (random ? "Or try one of this episode's random levels!" : "") ;
     },
 
     anotherRandomLevel: "Do you want to try another random level?",
+    nightMode: "In Night Mode you can only see a very short distance. " +
+            "We've given you more blocks to help you find your way!",
     loggedOutWarning: "You are not logged in. Your progress won't be saved.",
     nowTryPython: "Looks like you've got a route sorted using Blockly.<br><br>" +
         "Now go to the Python tab and see if you can do the same in Python! ",

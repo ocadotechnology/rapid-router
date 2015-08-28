@@ -50,7 +50,7 @@ from game.views.level_selection import levels, random_level_for_episode
 
 from game.views.level import submit_attempt, play_default_level, play_custom_level, \
     start_episode, load_workspace, load_list_of_workspaces, save_workspace, delete_workspace, \
-    delete_level
+    delete_level, play_night_level
 
 
 from game.views.scoreboard import scoreboard
@@ -60,6 +60,7 @@ urlpatterns = patterns(
     url(r'^$', levels, name='levels'),
     url(r'^submit/$', submit_attempt, name='submit_attempt'),
     url(r'^(?P<levelName>[A-Z0-9]+)/$', play_default_level, name='play_default_level'),
+    url(r'^(?P<levelName>[A-Z0-9]+)/night', play_night_level, name='play_night_level'),
     url(r'^custom/(?P<levelID>[0-9]+)/$', play_custom_level, name='play_custom_level'),
     url(r'^episode/(?P<episode>[0-9]+)/$', start_episode, name='start_episode'),
     url(r'^levels/random/([0-9]+)/$', random_level_for_episode, name='random_level_for_episode'),

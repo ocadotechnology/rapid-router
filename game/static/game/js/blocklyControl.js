@@ -125,8 +125,11 @@ ocargo.BlocklyControl.prototype.teardown = function() {
     if (localStorage && !ANONYMOUS) {
         var text = ocargo.blocklyControl.serialize();
         try {
-            localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
-
+            if (NIGHT_MODE) {
+                localStorage.setItem('blocklyNightModeWorkspaceXml-' + LEVEL_ID, text);
+            } else {
+                localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
+            }
         } catch (e) {
             // No point in even logging, as page is unloading
         }
@@ -222,7 +225,11 @@ ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     if (WORKSPACE) {
         ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
     } else {
-        ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
+        if (NIGHT_MODE) {
+            ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyNightModeWorkspaceXml-' + LEVEL_ID));
+        } else {
+            ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
+        }
     }
 
     ocargo.blocklyControl.redrawBlockly();

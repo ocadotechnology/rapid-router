@@ -20,17 +20,20 @@
     var EPISODE = "{{level.episode.id}}"
     var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : "";
     var LEVEL_NAME = "{{level.name}}";
-    var MODEL_SOLUTION = {{level.model_solution}};
+    var MODEL_SOLUTION = {{model_solution}};
     var DISABLE_ROUTE_SCORE = "{{level.disable_route_score}}" === "True";
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";
     var DEFAULT_LEVEL = "{{level.default}}" === "True";
     var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
     var CHARACTER_NAME = "{{character.name}}";
-    var CHARACTER_URL = "{{character.top_down}}";
-    var CHARACTER_EN_FACE_URL = "{{character.en_face}}"
-    var CHAR_WIDTH = {{character.width}};
-    var CHAR_HEIGHT = {{character.height}};
+    var CHARACTER_EN_FACE_URL = "{{character.en_face}}";
+    var CHARACTER_URL = "{{character_url}}";
+    var CHARACTER_HEIGHT = "{{character_height}}";
+    var CHARACTER_WIDTH = "{{character_width}}";
+    var WRECKAGE_URL = "{{wreckage_url}}";
+    var NIGHT_MODE = {{night_mode}};
+
     var RANDOM = "{{episode.random_levels_enabled}}" === "True";
     var IS_RANDOM_LEVEL = "{{random_level}}" === "True";
 
@@ -240,14 +243,29 @@
       </label>
     </div>
 
-    <div id="quit_tab" class="tab">
+  <div id="nightmode_tab" class="tab">
+      <input type="radio" name="tabs" id="nightmode_radio">
+      <label for="nightmode_radio">
+          {% if night_mode == "true" %}
+        <img src='/static/game/image/icons/day.svg'>
+        <span>Day</span>
+          {% else %}
+          <img src='/static/game/image/icons/night.svg'>
+        <span>Night</span>
+          {% endif %}
+      </label>
+    </div>
+
+    <div  id="quit_tab"class="tab">
       <input type="radio" name="tabs" id="quit_radio">
       <label for="quit_radio">
         <img src='{% static "game/image/icons/quit.svg" %}'>
         <span>Quit</span>
       </label>
     </div>
+
   </div>
+
 
   <div id="right">
     <div id="tab_panes" class='no-print'>

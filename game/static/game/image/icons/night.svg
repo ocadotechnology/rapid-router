@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg5073"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="night.svg">
+  <metadata
+     id="metadata5091">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs5089">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 50 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="100 : 50 : 1"
+       inkscape:persp3d-origin="50 : 33.333333 : 1"
+       id="perspective5097" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1388"
+     inkscape:window-height="782"
+     id="namedview5087"
+     showgrid="false"
+     inkscape:zoom="5.93"
+     inkscape:cx="50"
+     inkscape:cy="46.152024"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg5073" />
+  <g
+     id="g5336"
+     transform="matrix(1.403294,0,0,1.403294,-21.864949,-16.25879)">
+    <path
+       id="path5320"
+       d="M 45.863281,13.921875 A 33.14819,33.033089 0 0 0 33.519531,16.316406 32.687798,30.385839 0 0 1 58,45.689453 32.687798,30.385839 0 0 1 29.679688,75.767578 33.14819,33.033089 0 0 0 45.863281,79.988281 33.14819,33.033089 0 0 0 79.011719,46.955078 33.14819,33.033089 0 0 0 45.863281,13.921875 Z"
+       style="fill:#2c0101;fill-opacity:1"
+       inkscape:connector-curvature="0" />
+    <path
+       inkscape:transform-center-y="-0.47397802"
+       inkscape:transform-center-x="0.077387683"
+       d="m 35.650215,64.80068 -4.706644,-2.217955 -4.495366,2.619829 0.654967,-5.16167 -3.880749,-3.465776 5.111436,-0.972133 2.096931,-4.761796 2.504074,4.560859 5.176724,0.522824 -3.563833,3.790899 z"
+       inkscape:randomized="0"
+       inkscape:rounded="0"
+       inkscape:flatsided="false"
+       sodipodi:arg2="1.5271517"
+       sodipodi:arg1="0.89883316"
+       sodipodi:r2="3.9175794"
+       sodipodi:r1="7.8351588"
+       sodipodi:cy="58.668877"
+       sodipodi:cx="30.772644"
+       sodipodi:sides="5"
+       id="path5324"
+       style="fill:#000000;fill-opacity:1"
+       sodipodi:type="star" />
+  </g>
+</svg>

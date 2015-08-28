@@ -56,13 +56,16 @@ def play_custom_level(request, levelID):
         raise Http404
     return play_level(request, levelID)
 
+def play_night_level(request, levelName):
+    level = get_object_or_404(Level, name=levelName, default=True)
+    return play_level(request, level.id, True)
 
 def play_default_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)
-    return play_level(request, level.id)
+    return play_level(request, level.id, False)
 
 
-def play_level(request, levelID):
+def play_level(request, levelID, night_mode):
     """ Loads a level for rendering in the game.
 
     **Context**
@@ -116,7 +119,10 @@ def play_level(request, levelID):
     python_workspace = None
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
-        attempt = Attempt.objects.filter(level=level, student=student).first()
+        if (night_mode):
+            attempt = Attempt.objects.filter(level=level, student=student, night_mode=True).first()
+        else:
+            attempt = Attempt.objects.filter(level=level, student=student, night_mode=False).first()
         if not attempt:
             attempt = Attempt(level=level, student=student, score=None)
             attempt.save()
@@ -125,7 +131,24 @@ def play_level(request, levelID):
         python_workspace = attempt.python_workspace
 
     decorData = level_management.get_decor(level)
-    blockData = level_management.get_blocks(level)
+
+    if (night_mode):
+        blockData = level_management.get_night_blocks(level)
+        character_url = 'characters/top_view/NightModeVan.svg'
+        character_width = 4240
+        character_height = 3440
+        wreckage_url = 'NightModeVan_wreckage.svg'
+        night_mode = "true"
+        lesson = 'Can you find your way in the dark?'
+        model_solution = 0
+    else:
+        blockData = level_management.get_blocks(level)
+        character_url = character.top_down
+        character_width = character.width
+        character_height = character.height
+        wreckage_url = 'van_wreckage.svg'
+        night_mode = "false"
+        model_solution = level.model_solution
 
     context = RequestContext(request, {
         'level': level,
@@ -140,6 +163,12 @@ def play_level(request, levelID):
         'workspace': workspace,
         'python_workspace': python_workspace,
         'return_url': '/rapidrouter/',
+        'character_url': character_url,
+        'character_width': character_width,
+        'character_height': character_height,
+        'wreckage_url': wreckage_url,
+        'night_mode': night_mode,
+        'model_solution': model_solution,
     })
 
     return render(request, 'game/game.html', context_instance=context)

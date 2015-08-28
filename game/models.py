@@ -172,6 +172,7 @@ class Attempt (models.Model):
     finish_time = models.DateTimeField(auto_now=True)
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")
+    night_mode = models.BooleanField(default=False)
     python_workspace = models.TextField(default="")
 
     def elapsed_time(self):
