@@ -118,13 +118,14 @@ ocargo.Drawing = function() {
     /***************************/
 
     function createRotationTransformation(degrees, rotationPointX, rotationPointY, extraTransformation) {
-
-        var transformation = "..." + (extraTransformation && extraTransformation < 1? "s" + extraTransformation : "") + "r" + degrees;
+        //+ (extraTransformation && extraTransformation < 1? "s" + extraTransformation : "") +
+        var transformation = "..." + "r" + degrees;
         if (rotationPointX !== undefined && rotationPointY !== undefined) {
             transformation += ',' + rotationPointX;
             transformation += ',' + rotationPointY;
         }
-        transformation += (extraTransformation && extraTransformation > 1? "s" + extraTransformation : "");
+        transformation += "s" + extraTransformation;
+        console.log("Rotation transformation: " + transformation);
         return transformation;
     }
 
@@ -561,7 +562,6 @@ ocargo.Drawing = function() {
             var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
 
             if(roadLetters === 'V') {
-                //console.log("Cow crossing V road");
                 rotation = 90;
             }
         } else if(node.connectedNodes.length === 2) {
@@ -571,28 +571,23 @@ ocargo.Drawing = function() {
             var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
 
             if(roadLetters === 'V') {
-                //console.log("Cow crossing V road");
                 rotation = 90;
             } else if (roadLetters === 'UL') {
-                //console.log("Cow crossing UL road");
                 xOffset = - 0.15 * GRID_SPACE_SIZE;
                 yOffset = - 0.15 * GRID_SPACE_SIZE;
                 rotation = -45;
             }
             else if (roadLetters === 'UR') {
-                //console.log("Cow crossing UR road");
                 xOffset = + 0.15 * GRID_SPACE_SIZE;
                 yOffset = - 0.15 * GRID_SPACE_SIZE;
                 rotation = 45;
             }
             else if (roadLetters === 'DL') {
-                //console.log("Cow crossing DL road");
                 xOffset = - 0.15 * GRID_SPACE_SIZE;
                 yOffset = + 0.15 * GRID_SPACE_SIZE;
                 rotation = -135;
             }
             else if (roadLetters === 'DR') {
-                //console.log("Cow crossing DR road");
                 xOffset = + 0.15 * GRID_SPACE_SIZE;
                 yOffset = + 0.15 * GRID_SPACE_SIZE;
                 rotation = 135;
@@ -603,19 +598,15 @@ ocargo.Drawing = function() {
             var nextNextNode = node.connectedNodes[2];
             var res = getTjunctionOrientation(node.coordinate, previousNode.coordinate, nextNode.coordinate, nextNextNode.coordinate)
             if (res === 'down') {
-                //console.log("Cow crossing T junction road facing down");
                 rotation = 180;
             }
             else if (res === 'right') {
-                //console.log("Cow crossing T junction road facing right");
                 rotation = 90;
             }
             else if (res === 'left') {
-                //console.log("Cow crossing T junction road facing left");
                 rotation = -90
             }
             else if (res === 'top') {
-                //console.log("Cow crossing T junction road facing top");
             }
         }
 
@@ -763,7 +754,9 @@ ocargo.Drawing = function() {
 
     this.getRotationPointX = function(direction){
         var centreX = characterHeight/2;    // x coordinate of the canvas of the character svg
-        return  centreX + (direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS);
+        console.log("Rotation point x scale: " + currentScale);
+        console.log("Rotation point x: " + (centreX + ((direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS)/currentScale)));
+        return  centreX + ((direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS)/currentScale);
     };
 
     this.getRotationPointY = function(){
@@ -784,13 +777,10 @@ ocargo.Drawing = function() {
         }else{
             var moveDistance = -MOVE_DISTANCE/currentScale;
         }
-        console.log(moveDistance);
         var transformation =  "..." + (extraTransformation && extraTransformation < 1? "s" + extraTransformation : "") + "t 0, " + moveDistance + (extraTransformation && extraTransformation > 1? "s" + extraTransformation : "");
-        console.log(transformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
-        console.log(vanImages[vanId].transform());
 
     };
 
@@ -798,43 +788,24 @@ ocargo.Drawing = function() {
         var rotationPointX = this.getRotationPointX('LEFT');
         var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY, extraTransformation);
-        console.log(transformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
-        console.log(currentScale);
         if(extraTransformation){
             currentScale *= extraTransformation;
         }
-        console.log(currentScale);
-        console.log(vanImages[vanId].transform());
     };
 
     this.moveRight = function(vanId, animationLength, callback, extraTransformation) {
         var rotationPointX = this.getRotationPointX('RIGHT');
         var rotationPointY = this.getRotationPointY();
-        if(extraTransformation){
-            if(extraTransformation < 1){
-                currentScale *= extraTransformation;
-                rotationPointX /= currentScale;
-                rotationPointY /= currentScale;
-            }else{
-                rotationPointX /= currentScale;
-                rotationPointY /= currentScale;
-                currentScale *= extraTransformation;
-            }
-
-        }else{
-            rotationPointX /= currentScale;
-            rotationPointY /= currentScale;
-        }
-        console.log("rotationPointX = " + rotationPointX + " rotationY = " + rotationPointY);
         var transformation = createRotationTransformation(90, rotationPointX, rotationPointY, extraTransformation);
-        console.log(transformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
-        console.log(vanImages[vanId].transform());
+        if(extraTransformation){
+            currentScale *= extraTransformation;
+        }
     };
 
     this.turnAround = function(vanId, direction, animationLength) {

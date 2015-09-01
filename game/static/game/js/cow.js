@@ -169,7 +169,6 @@ ocargo.Cow.prototype.scaredAwayByPuffUp = function(model, coordinateTime, coordi
     if(jQuery.isEmptyObject(model.puffedUp)){
         return false;
     }
-    console.log(model.puffedUp);
     return this.withinRadius(coordinate, model.puffedUp.coordinates) ;
 
 };

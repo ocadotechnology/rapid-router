@@ -125,7 +125,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		// And move onto the next timestamp
 		this.timestamp += 1;
         // Update defaultAnimationLength at every increment to prevent sudden stop in animation
-        defaultAnimationLength = this.slowDownAnimation ? SLOW_ANIMATION_LENGTH : NORMAL_ANIMATION_LENGTH;
+        defaultAnimationLength = this.numberOfCowsOnMap>0 ? SLOW_ANIMATION_LENGTH : NORMAL_ANIMATION_LENGTH;
 	}
 
 	// Check if we've performed all events we have
