@@ -948,9 +948,11 @@ ocargo.Drawing = function() {
                 rotationPointY);
         }
 
+        var newAnimationLength = animationLength*((GRID_SPACE_SIZE - ROAD_WIDTH)/(GRID_SPACE_SIZE + ROAD_WIDTH));
         moveVanImage({
             transform: transformation
-        }, vanID, animationLength*((GRID_SPACE_SIZE - ROAD_WIDTH)/(GRID_SPACE_SIZE + ROAD_WIDTH)), animateCollision);
+        }, vanID, newAnimationLength, animateCollision);
+        return newAnimationLength;
 
         function animateCollision() {
             if (CHARACTER_NAME !== "Van") {

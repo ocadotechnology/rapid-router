@@ -120,12 +120,17 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		// Perform all events for this timestamp
 		while (timestampQueue.length > 0) {
 			var delay = this.performAnimation(timestampQueue.shift());
-			maxDelay = Math.max(maxDelay, delay);
+			if(this.crashed && delay!=0){
+				//Special case for crashing into cow as the van travel less before crashing
+				maxDelay = delay;
+			}else{
+				maxDelay = Math.max(maxDelay, delay);
+			}
 		}
 		// And move onto the next timestamp
 		this.timestamp += 1;
         // Update defaultAnimationLength at every increment to prevent sudden stop in animation
-        defaultAnimationLength = this.numberOfCowsOnMap>0 ? SLOW_ANIMATION_LENGTH : NORMAL_ANIMATION_LENGTH;
+        defaultAnimationLength = !this.crashed && this.numberOfCowsOnMap>0 ? SLOW_ANIMATION_LENGTH : NORMAL_ANIMATION_LENGTH;
 	}
 
 	// Check if we've performed all events we have
@@ -171,7 +176,7 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 ocargo.Animation.prototype.performAnimation = function(a) {
 	// animation length is either default or may be custom set
 	var animationLength = a.animationLength || defaultAnimationLength;
-	console.log(animationLength);
+
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
@@ -229,12 +234,13 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             		break;
 				case 'COLLISION_WITH_COW':
 					this.crashed = true;
-					ocargo.drawing.collisionWithCow(vanID, animationLength, a.previousNode, a.currentNode,
+					//Update animationLength with time van moves before crashing
+					animationLength = ocargo.drawing.collisionWithCow(vanID, animationLength, a.previousNode, a.currentNode,
 						a.attemptedAction, a.startNode);
-					animationLength += 100; // does not correspond to the length of the actual crash/collision with cow animation
 					break;
             	case 'DELIVER':
             		ocargo.drawing.deliver(a.destinationID, animationLength);
+					break;
             	case 'OBSERVE':
             		break;
             }
@@ -348,7 +354,6 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			ocargo.pythonControl.appendToConsole(a.text);
 			break;
 	}
-
 	return animationLength;
 };
 

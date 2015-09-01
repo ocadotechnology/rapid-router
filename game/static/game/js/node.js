@@ -94,7 +94,7 @@ ocargo.Node.parsePathData = function(nodeData) {
             node.addConnectedNode(nodes[connectedNodes[j]]);
         }
     }
-    
+
     return nodes;
 };
 
@@ -115,7 +115,7 @@ ocargo.Node.composePathData = function(nodes) {
         newPath.push(node);
     }
     return newPath;
-}
+};
 
 // Helper method that returns the index of the first node at the given coordinate
 ocargo.Node.findNodeIndexByCoordinate = function(coordinate, nodes) {
