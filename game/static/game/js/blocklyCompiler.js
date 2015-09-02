@@ -341,7 +341,7 @@ ocargo.BlocklyCompiler.prototype.deadEndCondition = function(block) {
 ocargo.BlocklyCompiler.prototype.cowCrossingCondition = function(block) {
     return function(model) {
         queueHighlight(model, block);
-        return model.isCowCrossing();
+        return model.isCowCrossing(block.getFieldValue('TYPE'));
     };
 };
 

@@ -48,7 +48,7 @@ ocargo.LevelEditor = function() {
     var LIGHT_RED_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg';
     var LIGHT_GREEN_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg';
 
-    var COW_URL = ocargo.Drawing.imageDir + "cow.svg";
+    var COW_URL = ocargo.Drawing.imageDir + "FatClarice.svg";
     var COW_GROUP_COLOR_PALETTE = [
         // From https://en.wikipedia.org/wiki/Help:Distinguishable_colors
         '#FFFFFF', // White
@@ -628,6 +628,7 @@ ocargo.LevelEditor = function() {
             var selectedLevel = null;
 
             tabs.save.setOnChange(function () {
+                getLevelTextForDjangoMigration();
                 if (!isLoggedIn("save") || !isLevelValid()) {
                     currentTabSelected.select();
                     return;
@@ -2575,9 +2576,10 @@ ocargo.LevelEditor = function() {
         return true;
     }
 
-    function getLevelTextForDjangoMigration(state) {
+    function getLevelTextForDjangoMigration() {
         // Put a call to this function in restoreState and you should get a string
         // you can copy and paste into a Django migration file
+        var state = extractState();
 
         var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge', 'direct_drive'];
         var stringFields =  ['path', 'traffic_lights', 'cows', 'origin', 'destinations'];
@@ -2615,6 +2617,7 @@ ocargo.LevelEditor = function() {
         string += "\tset_decor(levelNUMBER, json.loads('" + decor + "'))\n";
         string += "\tset_blocks(levelNUMBER, json.loads('" + blocks + "'))\n";
 
+        console.log("Copy this to a Django Migration file:\n" + string);
         return string;
     }
 

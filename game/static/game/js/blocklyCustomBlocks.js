@@ -276,7 +276,9 @@ function initCustomBlocksDescription() {
         init: function() {
             this.setColour(290);
             this.setOutput(true, 'Event');
+            var dropdown = new Blockly.FieldDropdown([['white', 'white'], ['brown', 'brown']]);
             this.appendDummyInput()
+                .appendField(dropdown, 'TYPE')
                 .appendField('cow crossing')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                     ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,

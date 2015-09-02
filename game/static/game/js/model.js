@@ -144,7 +144,7 @@ ocargo.Model.prototype.isDeadEnd = function() {
     return (this.map.isDeadEnd(this.van.getPosition()) !== null);
 };
 
-ocargo.Model.prototype.isCowCrossing = function() {
+ocargo.Model.prototype.isCowCrossing = function(type) {
     var result = false;
     this.observe('cow crossing');
     var node = this.van.getPosition().currentNode;
@@ -152,7 +152,7 @@ ocargo.Model.prototype.isCowCrossing = function() {
     var nodes = this.getNodesAhead(node);
     for (var i = 0 ; i < nodes.length ; i++) {
         var cow = this.getCowForNode(nodes[i], ocargo.Cow.ACTIVE);
-        if (cow != null && cow.triggerEvent) {
+        if (cow != null && cow.type == type && cow.triggerEvent) {
             cow.triggerEvent = false;
             result = true;
         }

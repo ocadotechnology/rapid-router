@@ -133,7 +133,7 @@ def add_levels(apps, schema_editor):
         episode=episode12,
         default=True,
         path='[{"coordinate":[0,7],"connectedNodes":[1]},{"coordinate":[1,7],"connectedNodes":[0,2]},{"coordinate":[2,7],"connectedNodes":[1,3]},{"coordinate":[3,7],"connectedNodes":[2,4,11]},{"coordinate":[4,7],"connectedNodes":[3,5]},{"coordinate":[5,7],"connectedNodes":[4,6]},{"coordinate":[5,6],"connectedNodes":[5,7]},{"coordinate":[5,5],"connectedNodes":[9,6,8]},{"coordinate":[5,4],"connectedNodes":[7,12]},{"coordinate":[4,5],"connectedNodes":[10,7]},{"coordinate":[3,5],"connectedNodes":[13,11,9]},{"coordinate":[3,6],"connectedNodes":[3,10]},{"coordinate":[5,3],"connectedNodes":[8]},{"coordinate":[2,5],"connectedNodes":[14,10]},{"coordinate":[1,5],"connectedNodes":[15,13]},{"coordinate":[0,5],"connectedNodes":[14]}]',
-        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":6},{"x":5,"y":7},{"x":4,"y":7}],"type":"white"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":6},{"x":3,"y":5}],"type":"white"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":4},{"x":5,"y":5}],"type":"white"}]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":6},{"x":5,"y":7},{"x":4,"y":7}],"type":"white"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":6},{"x":3,"y":5}],"type":"white"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":4},{"x":5,"y":5}],"type":"brown"}]',
         destinations='[[5,3]]',
         origin='{"coordinate":[0,7],"direction":"E"}',
         max_fuel=50,
