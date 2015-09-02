@@ -513,9 +513,13 @@ ocargo.Game.prototype.setupTabs = function() {
             }
 
             if (playTextPreSpeedControl == "Play") {
-                ocargo.game.runProgramAndPrepareAnimation();
-                $('#clear_console').click();
-                ocargo.animation.playAnimation();
+                if (ocargo.game.runProgramAndPrepareAnimation()) {
+                    ocargo.animation.playAnimation();
+                    $('#clear_console').click();
+                }else{
+                    // When error occurs during the compilation of the program
+                    ocargo.game.onStopControls();
+                }
             } else if (playTextPreSpeedControl == "Resume") {
                 ocargo.animation.playAnimation();
             }
