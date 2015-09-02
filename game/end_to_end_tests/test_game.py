@@ -92,10 +92,13 @@ class TestGame(BaseTest):
         self.run_level_test(15)
 
     def test_level16(self):
-        self.run_level_test(16);
+        self.run_level_test(16)
 
     def test_level17(self):
-        self.run_level_test(17);
+        self.run_level_test(17)
+
+    def test_level18(self):
+        self.run_level_test(18)
 
     def run_level_test(self, level):
         user_profile = self.login_once()
