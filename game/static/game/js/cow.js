@@ -13,20 +13,6 @@ ocargo.Cow = function(id, data, nodes) {
         this.potentialNodes.push(ocargo.Node.findNodeByCoordinate(coordinate, nodes));
     }
 
-    this.randomTimeout = false; // designates if timeout should be chosen randomly for each run
-    if ('timeout' in data) {
-        this.timeout = data.timeout;
-    } else {
-        this.timeout = ocargo.Cow.DEFAULT_TIMEOUT;
-    }
-
-    this.randomTimeout = false;
-    if (this.timeout === ocargo.Cow.RANDOM_TIMEOUT) {
-        // set timeout to a random value and re-randomize on cow reset
-        this.randomTimeout = true;
-        this.timeout = this.newRandomTimeout();
-    }
-
     if ('minCows' in data) {
         this.minCows = data.minCows; // Minimum number of cows to appear on the potential nodes during a run
     }
@@ -53,21 +39,10 @@ ocargo.Cow.prototype.pickRandom = function (count, arr) {
 ocargo.Cow.prototype.reset = function() {
     this.activeNodeTimers = {};     // Stores time of appearance of cows on each activeNode.
 
-    if (this.randomTimeout) {
-        this.timeout = this.newRandomTimeout();
-    }
-
     for (var jsonCoordinate in this.activeNodes) {
         this.activeNodes[jsonCoordinate] = ocargo.Cow.READY;
         this.activeNodeTimers[jsonCoordinate] = 0;
     }
-};
-
-ocargo.Cow.prototype.newRandomTimeout = function() {
-    return Math.round(ocargo.Cow.MIN_RANDOM_TIMEOUT+
-    Math.random()*(
-    ocargo.Cow.MAX_RANDOM_TIMEOUT -
-    ocargo.Cow.MIN_RANDOM_TIMEOUT));
 };
 
 function arraysIdentical(a, b) {
@@ -146,8 +121,7 @@ ocargo.Cow.prototype.incrementTime = function(model) {
         if (this.activeNodes[jsonCoordinate] == ocargo.Cow.ACTIVE) {
             var coordinate = JSON.parse(jsonCoordinate);
             var cowTimestamp = this.activeNodeTimers[jsonCoordinate];
-            var timeOnRoad = model.timestamp - cowTimestamp;
-            if (timeOnRoad >= this.timeout || this.scaredAwayByHorn(model, cowTimestamp, coordinate) || this.scaredAwayByPuffUp(model, cowTimestamp, coordinate)) {
+            if (this.scaredAwayByHorn(model, cowTimestamp, coordinate) || this.scaredAwayByPuffUp(model, cowTimestamp, coordinate)) {
                 this.activeNodes[jsonCoordinate] = ocargo.Cow.INACTIVE;
                 this.activeNodeTimers[jsonCoordinate] = 0;
                 var node = ocargo.Node.findNodeByCoordinate(coordinate, this.nodes);
@@ -188,7 +162,3 @@ ocargo.Cow.prototype.setActive = function(model, node) {
 ocargo.Cow.READY = 'READY';
 ocargo.Cow.ACTIVE = 'ACTIVE';
 ocargo.Cow.INACTIVE = 'INACTIVE';
-ocargo.Cow.RANDOM_TIMEOUT = 'random';
-ocargo.Cow.MIN_RANDOM_TIMEOUT = 4;
-ocargo.Cow.MAX_RANDOM_TIMEOUT = 7;
-ocargo.Cow.DEFAULT_TIMEOUT = ocargo.Cow.RANDOM_TIMEOUT;

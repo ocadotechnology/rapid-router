@@ -118,14 +118,14 @@ ocargo.Drawing = function() {
     /***************************/
 
     function createRotationTransformation(degrees, rotationPointX, rotationPointY, extraTransformation) {
-        //+ (extraTransformation && extraTransformation < 1? "s" + extraTransformation : "") +
         var transformation = "..." + "r" + degrees;
         if (rotationPointX !== undefined && rotationPointY !== undefined) {
             transformation += ',' + rotationPointX;
             transformation += ',' + rotationPointY;
         }
-        transformation += "s" + extraTransformation;
-        console.log("Rotation transformation: " + transformation);
+        if (extraTransformation){
+            transformation += "s" + extraTransformation;
+        }
         return transformation;
     }
 
@@ -754,8 +754,6 @@ ocargo.Drawing = function() {
 
     this.getRotationPointX = function(direction){
         var centreX = characterHeight/2;    // x coordinate of the canvas of the character svg
-        console.log("Rotation point x scale: " + currentScale);
-        console.log("Rotation point x: " + (centreX + ((direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS)/currentScale)));
         return  centreX + ((direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS)/currentScale);
     };
 
