@@ -39,12 +39,14 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-var ANIMATION_LENGTH = 500;
-
 ocargo.Animation = function(model, decor, numVans) {
     this.model = model;
     this.decor = decor;
     this.numVans = numVans;
+
+    this.genericAnimationLength = 500;
+	this.FAST_ANIMATION_LENGTH = 125;
+	this.SLOW_ANIMATION_LENGTH = this.genericAnimationLength;
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -92,6 +94,10 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	ocargo.drawing.removeWreckageImages();
 };
 
+ocargo.Animation.prototype.resetAnimationLength = function() {
+	this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
+};
+
 ocargo.Animation.prototype.stepAnimation = function(callback) {
 	if (this.currentlyAnimating) {
 		return;
@@ -99,15 +105,14 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 
 	this.currentlyAnimating = true;
 
-	var maxDelay = ANIMATION_LENGTH;
+	var timestampDelay = this.genericAnimationLength;
 
 	var timestampQueue = this.animationQueue[this.timestamp];
 
 	if (timestampQueue) {
 		// Perform all events for this timestamp
 		while (timestampQueue.length > 0) {
-			var delay = this.performAnimation(timestampQueue.shift());
-			maxDelay = Math.max(maxDelay, delay);
+			timestampDelay = this.performAnimation(timestampQueue.shift());
 		}
 		// And move onto the next timestamp
 		this.timestamp += 1;
@@ -127,15 +132,15 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		}
 		self.currentlyAnimating = false;
 		if (self.isPlaying) {
-			self.stepAnimation();
+			self.stepAnimation(undefined);
 		}
-	}, maxDelay);
+	}, timestampDelay);
 };
 
 ocargo.Animation.prototype.playAnimation = function() {
 	if (!this.currentlyAnimating && !this.isPlaying && this.animationQueue.length > 0) {
 		this.isPlaying = true;
-		this.stepAnimation();
+		this.stepAnimation(undefined);
 	}
 };
 
@@ -154,8 +159,8 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 };
 
 ocargo.Animation.prototype.performAnimation = function(a) {
-	// animation length is either default or may be custom set
-	var animationLength = a.animationLength || ANIMATION_LENGTH;
+	// animation length is either custom set (for each element) or generic
+	var animationLength = a.animationLength || this.genericAnimationLength;
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
