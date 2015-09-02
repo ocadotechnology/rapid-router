@@ -337,7 +337,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 			break;
 		case 'cow':
             this.numberOfCowsOnMap++;
-			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node, animationLength);
+			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node, animationLength, a.cowType);
 			this.activeCows.push(activeCow);
 			break;
         case 'cow_leave':

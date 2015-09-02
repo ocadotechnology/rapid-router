@@ -5,7 +5,7 @@ var ocargo = ocargo || {};
 ocargo.Cow = function(id, data, nodes) {
     this.id = id;
     this.nodes = nodes;
-
+    this.type = data.type;
     this.potentialNodes = [];    // Potential nodes at which a cow could appear
     this.activeNodes = {};       // Actual nodes at which cows will appear during a run.
     for(var i = 0; i < data.potentialCoordinates.length; i++) {
@@ -92,6 +92,7 @@ ocargo.Cow.prototype.queueAnimation = function(model, node) {
         type: 'cow',
         id: this.id,
         node: node,
+        cowType: this.type,
         coordinate: node.coordinate,
         description: 'Cow'
     });

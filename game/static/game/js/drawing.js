@@ -627,11 +627,11 @@ ocargo.Drawing = function() {
         image.transform('t' + res.drawX + ',' + res.drawY + 'r' + res.rotation);
     };
 
-    this.renderCow = function(id, coordinate, node, animationLength) {
+    this.renderCow = function(id, coordinate, node, animationLength, type) {
 
         var res = this.determineCowOrientation(coordinate, node);
-
-        var image = paper.image(ocargo.Drawing.raphaelImageDir + 'FatClarice.svg', res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
+        var cowUrl = type == 'white'? ocargo.Drawing.whiteCowUrl : ocargo.Drawing.brownCowUrl;
+        var image = paper.image(ocargo.Drawing.raphaelImageDir + cowUrl, res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot+"s0.1");
         image.animate({transform : rot+"s1"}, animationLength, 'linear');
@@ -1227,3 +1227,6 @@ ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/';
 
 ocargo.Drawing.FRONT_VIEW  = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
+
+ocargo.Drawing.whiteCowUrl = 'FatClarice.svg';
+ocargo.Drawing.brownCowUrl = 'Clarice_Jersey.svg';

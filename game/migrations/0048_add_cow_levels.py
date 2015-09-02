@@ -10,8 +10,8 @@ def add_cows_block(apps, schema_editor):
 
     Block = apps.get_model('game', 'Block')
 
-    cow_crossing = Block.objects.create(type='cow_crossing')
     declare_event = Block.objects.create(type='declare_event')
+    cow_crossing = Block.objects.create(type='cow_crossing')
     puff_up = Block.objects.create(type='puff_up')
     sound_horn = Block.objects.create(type='sound_horn')
 
@@ -46,7 +46,7 @@ def add_levels(apps, schema_editor):
         default=True,
         path='[{"coordinate":[0,5],"connectedNodes":[1]},{"coordinate":[1,5],"connectedNodes":[0,2]},{"coordinate":[2,5],"connectedNodes":[1,3]},{"coordinate":[3,5],"connectedNodes":[2,4]},{"coordinate":[4,5],"connectedNodes":[3,5]},{"coordinate":[5,5],"connectedNodes":[4]}]',
         traffic_lights='[]',
-        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":5}]}]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":5}],"type":"white"}]',
         destinations='[[5,5]]',
         origin='{"coordinate":[0,5],"direction":"E"}',
         max_fuel=50,
@@ -66,10 +66,10 @@ def add_levels(apps, schema_editor):
         name='111',
         episode=episode12,
         default=True,
-        path='[{"coordinate":[0,5],"connectedNodes":[1]},{"coordinate":[1,5],"connectedNodes":[0,2]},{"coordinate":[2,5],"connectedNodes":[1,3]},{"coordinate":[3,5],"connectedNodes":[2,4]},{"coordinate":[4,5],"connectedNodes":[3,5]},{"coordinate":[5,5],"connectedNodes":[4]}]',
+        path='[{"coordinate":[0,5],"connectedNodes":[1]},{"coordinate":[1,5],"connectedNodes":[0,2]},{"coordinate":[2,5],"connectedNodes":[1,3]},{"coordinate":[3,5],"connectedNodes":[2,4]},{"coordinate":[4,5],"connectedNodes":[3,5]},{"coordinate":[5,5],"connectedNodes":[4,6]},{"coordinate":[5,4],"connectedNodes":[5,7]},{"coordinate":[5,3],"connectedNodes":[6,8]},{"coordinate":[4,3],"connectedNodes":[7]}]',
         traffic_lights='[]',
-        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":5},{"x":2,"y":5},{"x":4,"y":5}]}]',
-        destinations='[[5,5]]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":5},{"x":2,"y":5},{"x":4,"y":5}],"type":"white"}]',
+        destinations='[[4,3]]',
         origin='{"coordinate":[0,5],"direction":"E"}',
         max_fuel=50,
         blocklyEnabled=True,
@@ -91,7 +91,7 @@ def add_levels(apps, schema_editor):
         default=True,
         path='[{"coordinate":[0,5],"connectedNodes":[1]},{"coordinate":[1,5],"connectedNodes":[0,2]},{"coordinate":[2,5],"connectedNodes":[1,3]},{"coordinate":[3,5],"connectedNodes":[2,4]},{"coordinate":[4,5],"connectedNodes":[3,5]},{"coordinate":[5,5],"connectedNodes":[4]}]',
         traffic_lights='[]',
-        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":5},{"x":2,"y":5},{"x":4,"y":5}]}]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":5},{"x":4,"y":5}],"type":"white"}]',
         destinations='[[5,5]]',
         origin='{"coordinate":[0,5],"direction":"E"}',
         max_fuel=50,
@@ -112,7 +112,7 @@ def add_levels(apps, schema_editor):
         episode=episode12,
         default=True,
         path='[{"coordinate":[0,5],"connectedNodes":[1]},{"coordinate":[1,5],"connectedNodes":[0,2]},{"coordinate":[2,5],"connectedNodes":[1,3]},{"coordinate":[3,5],"connectedNodes":[2,4]},{"coordinate":[4,5],"connectedNodes":[3,5]},{"coordinate":[5,5],"connectedNodes":[4,6]},{"coordinate":[5,6],"connectedNodes":[7,5]},{"coordinate":[5,7],"connectedNodes":[8,6]},{"coordinate":[6,7],"connectedNodes":[7]}]',
-        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":5},{"x":5,"y":6}]}]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":5},{"x":5,"y":6}],"type":"white"}]',
         destinations='[[6,7]]',
         origin='{"coordinate":[0,5],"direction":"E"}',
         max_fuel=50,
@@ -133,7 +133,7 @@ def add_levels(apps, schema_editor):
         episode=episode12,
         default=True,
         path='[{"coordinate":[0,7],"connectedNodes":[1]},{"coordinate":[1,7],"connectedNodes":[0,2]},{"coordinate":[2,7],"connectedNodes":[1,3]},{"coordinate":[3,7],"connectedNodes":[2,4,11]},{"coordinate":[4,7],"connectedNodes":[3,5]},{"coordinate":[5,7],"connectedNodes":[4,6]},{"coordinate":[5,6],"connectedNodes":[5,7]},{"coordinate":[5,5],"connectedNodes":[9,6,8]},{"coordinate":[5,4],"connectedNodes":[7,12]},{"coordinate":[4,5],"connectedNodes":[10,7]},{"coordinate":[3,5],"connectedNodes":[13,11,9]},{"coordinate":[3,6],"connectedNodes":[3,10]},{"coordinate":[5,3],"connectedNodes":[8]},{"coordinate":[2,5],"connectedNodes":[14,10]},{"coordinate":[1,5],"connectedNodes":[15,13]},{"coordinate":[0,5],"connectedNodes":[14]}]',
-        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":6},{"x":5,"y":7},{"x":4,"y":7}]},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":6},{"x":3,"y":5}]},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":4},{"x":5,"y":5}]}]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":6},{"x":5,"y":7},{"x":4,"y":7}],"type":"white"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":6},{"x":3,"y":5}],"type":"white"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":4},{"x":5,"y":5}],"type":"white"}]',
         destinations='[[5,3]]',
         origin='{"coordinate":[0,7],"direction":"E"}',
         max_fuel=50,
@@ -150,6 +150,48 @@ def add_levels(apps, schema_editor):
     set_blocks(level114, json.loads(
         '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"cow_crossing"},{"type":"declare_event"}, {"type": "puff_up"}, {"type": "sound_horn"}]'))
 
+    level115 = Level(
+        name='115',
+        episode=episode12,
+        default=True,
+        path='[{"coordinate":[1,5],"connectedNodes":[1]},{"coordinate":[2,5],"connectedNodes":[0,2]},{"coordinate":[3,5],"connectedNodes":[1,3]},{"coordinate":[4,5],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[3,5]},{"coordinate":[5,4],"connectedNodes":[4,6]},{"coordinate":[6,4],"connectedNodes":[5,7]},{"coordinate":[7,4],"connectedNodes":[6,8]},{"coordinate":[7,3],"connectedNodes":[7,9]},{"coordinate":[8,3],"connectedNodes":[8]}]',
+        traffic_lights='[]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":4},{"x":6,"y":4},{"x":4,"y":4}],"type":"white"}]',
+        destinations='[[8,3]]',
+        origin='{"coordinate":[1,5],"direction":"E"}',
+        max_fuel=50,
+        blocklyEnabled=True,
+        pythonEnabled=False,
+        theme=Theme.objects.get(id=1),
+        character=Character.objects.get(id='1'),
+        model_solution=[],
+    )
+    level115.save()
+
+    set_decor(level115, json.loads('[{"x":319,"y":283,"z":2,"decorName":"pond"},{"x":404,"y":150,"z":4,"decorName":"tree1"},{"x":299,"y":162,"z":4,"decorName":"tree1"},{"x":218,"y":223,"z":4,"decorName":"tree1"},{"x":643,"y":479,"z":4,"decorName":"tree1"},{"x":514,"y":487,"z":4,"decorName":"tree1"}]'))
+    set_blocks(level115, json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat"},{"type":"declare_event"},{"type":"cow_crossing"},{"type":"sound_horn"}]'))
+
+
+    level116 = Level(
+        name='116',
+        episode=episode12,
+        default=True,
+        path='[{"coordinate":[1,4],"connectedNodes":[1]},{"coordinate":[2,4],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[3,4],"connectedNodes":[5,3]},{"coordinate":[4,4],"connectedNodes":[4,6]},{"coordinate":[4,5],"connectedNodes":[7,5]},{"coordinate":[5,5],"connectedNodes":[6,8]},{"coordinate":[5,4],"connectedNodes":[7,9]},{"coordinate":[6,4],"connectedNodes":[8,10]},{"coordinate":[6,3],"connectedNodes":[11,9]},{"coordinate":[5,3],"connectedNodes":[10,12]},{"coordinate":[5,2],"connectedNodes":[11,13]},{"coordinate":[6,2],"connectedNodes":[12]}]',
+        traffic_lights='[]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":5},{"x":4,"y":5},{"x":4,"y":4}],"type":"white"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":2},{"x":5,"y":3}],"type":"brown"}]',
+        destinations='[[6,2]]',
+        origin='{"coordinate":[1,4],"direction":"E"}',
+        max_fuel=50,
+        blocklyEnabled=True,
+        pythonEnabled=False,
+        theme=Theme.objects.get(id=1),
+        character=Character.objects.get(id='1'),
+        model_solution=[],
+    )
+    level116.save()
+    set_decor(level116, json.loads('[{"x":593,"y":477,"z":4,"decorName":"tree1"},{"x":254,"y":441,"z":4,"decorName":"tree1"},{"x":370,"y":548,"z":4,"decorName":"tree1"},{"x":442,"y":318,"z":4,"decorName":"tree1"},{"x":681,"y":258,"z":4,"decorName":"tree1"}]'))
+    set_blocks(level116, json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"deliver"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"logic_negate"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"traffic_light"},{"type":"call_proc"},{"type":"declare_proc"},{"type":"cow_crossing"},{"type":"declare_event"},{"type":"sound_horn"}]'))
+
     level109 = Level.objects.get(name='109')
     level109.next_level = level110
     level110.next_level = level111
@@ -163,6 +205,7 @@ def add_levels(apps, schema_editor):
     level112.save()
     level113.save()
     level114.save()
+    level115.save()
 
 class Migration(migrations.Migration):
 
