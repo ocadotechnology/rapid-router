@@ -266,12 +266,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
 					        } else if(DEFAULT_LEVEL) {
 					            levelMsg.push(ocargo.messages.lastLevel);
-								buttons += ocargo.button.redirectButtonHtml('next_level_button', "'/rapidrouter/level_editor/'", "Create your own map!");
-								buttons += ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
+								buttons += ocargo.button.redirectButtonHtml('next_level_button', "/rapidrouter/level_editor/", "Create your own map!");
+								buttons += ocargo.button.redirectButtonHtml('home_button', "/rapidrouter/", "Home");
 					        } else if (IS_RANDOM_LEVEL) {
 					            levelMsg.push(ocargo.messages.anotherRandomLevel);
-								buttons += ocargo.button.redirectButtonHtml('retry_button', "'" + window.location.href + "'", 'Have more fun!');
-								buttons += ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
+								buttons += ocargo.button.redirectButtonHtml('retry_button', window.location.href, 'Have more fun!');
+								buttons += ocargo.button.redirectButtonHtml('home_button', "/rapidrouter/", "Home");
 							}
 					    }
 					}

@@ -43,9 +43,9 @@ ocargo.jsElements = {
         return "<img src='" + url + "'class='" + class_ + "'>";
     },
     nextEpisodeButton: function(episode, random){
-        return ocargo.button.redirectButtonHtml('next_episode_button', "'/rapidrouter/episode/" + episode + "/'", 'Next episode') +
-          (random ? ocargo.button.redirectButtonHtml('random_level_button', "'/rapidrouter/levels/random/" + (episode-1) + "/'", 'Random level') : "") +
-            ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
+        return ocargo.button.redirectButtonHtml('next_episode_button', "/rapidrouter/episode/" + episode + "/", 'Next episode') +
+          (random ? ocargo.button.redirectButtonHtml('random_level_button', "/rapidrouter/levels/random/" + (episode-1) + "/", 'Random level') : "") +
+            ocargo.button.redirectButtonHtml('home_button', "/rapidrouter/", "Home");
     },
 
     buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>'
