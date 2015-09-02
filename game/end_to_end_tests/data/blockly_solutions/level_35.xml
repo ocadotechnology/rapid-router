@@ -1,0 +1,47 @@
+<xml>
+    <block type="start" id="1" deletable="false" x="30" y="30">
+        <next>
+            <block type="controls_repeat_until" id="2">
+                <value name="condition">
+                    <block type="at_destination" id="3"></block>
+                </value>
+                <statement name="body">
+                    <block type="controls_if" id="4">
+                        <value name="IF0">
+                            <block type="road_exists" id="5">
+                                <field name="CHOICE">FORWARD</field>
+                            </block>
+                        </value>
+                        <statement name="DO0">
+                            <block type="move_forwards" id="6"></block>
+                        </statement>
+                        <next>
+                            <block type="controls_if" id="22">
+                                <value name="IF0">
+                                    <block type="road_exists" id="7">
+                                        <field name="CHOICE">LEFT</field>
+                                    </block>
+                                </value>
+                                <statement name="DO0">
+                                    <block type="turn_left" id="8"></block>
+                                </statement>
+                                <next>
+                                    <block type="controls_if" id="23">
+                                        <value name="IF0">
+                                            <block type="road_exists" id="24">
+                                                <field name="CHOICE">RIGHT</field>
+                                            </block>
+                                        </value>
+                                        <statement name="DO0">
+                                            <block type="turn_right" id="9"></block>
+                                        </statement>
+                                    </block>
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+        </next>
+    </block>
+</xml>
