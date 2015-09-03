@@ -939,7 +939,11 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, 
         $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', 'Close'));
     }
 
-    setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
+    setTimeout(function () {
+        $('#myModal').foundation('reveal', 'open', {
+            animation: 'none'
+        });
+    }, delay);
 };
 
 // This is the function that starts the pop-up with a yes and a no button

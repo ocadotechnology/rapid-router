@@ -49,7 +49,6 @@ SETTINGS = {
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-        'foundation_scss',
         'foundation_icons',
         'bourbon',
         'compressor',
