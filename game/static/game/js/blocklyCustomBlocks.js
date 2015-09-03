@@ -333,7 +333,16 @@ function initCustomBlocksDescription() {
         init: function() {
             this.setColour(260);
             var dropdown = new Blockly.FieldDropdown([['white', ocargo.Cow.WHITE], ['brown', ocargo.Cow.BROWN]], function(option) {
-                this.sourceBlock_.updateImage_(option);
+                var imageUrl = ocargo.Drawing.imageDir;
+                switch(option) {
+                    case ocargo.Cow.WHITE:
+                        imageUrl += ocargo.Drawing.whiteCowUrl;
+                        break;
+                    case ocargo.Cow.BROWN:
+                        imageUrl += ocargo.Drawing.brownCowUrl;
+                        break;
+                }
+                this.sourceBlock_.getField('IMAGE').setValue(imageUrl);
             });
             this.appendDummyInput('Event')
                 .appendField('On ')
@@ -341,28 +350,13 @@ function initCustomBlocksDescription() {
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
                     ocargo.BlocklyControl.IMAGE_WIDTH,
                     ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
+            this.getField('IMAGE').EDITABLE = true; //saves the image path as well in the XML
             this.appendStatementInput('DO')
                 .setCheck('EventAction')
                 .appendField('Do');
             this.setTooltip('Declares the event handler');
             this.statementConnection_ = null;
         },
-        updateImage_: function(cowType) {
-            // Add or remove a Value Input.
-            console.log(cowType);
-            this.getInput('Event').removeField('IMAGE');
-            if (cowType == ocargo.Cow.WHITE) {
-                this.getInput('Event')
-                    .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
-                    ocargo.BlocklyControl.IMAGE_WIDTH,
-                    ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
-            } else if (cowType == ocargo.Cow.BROWN) {
-                this.getInput('Event')
-                    .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.brownCowUrl,
-                        ocargo.BlocklyControl.IMAGE_WIDTH,
-                        ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
-            }
-        }
     };
 
     /*******************/
