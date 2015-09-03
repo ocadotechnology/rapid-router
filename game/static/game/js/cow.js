@@ -136,7 +136,7 @@ ocargo.Cow.prototype.scaredAwayByHorn = function(model, coordinateTime, coordina
     if(jQuery.isEmptyObject(model.soundedHorn)){
         return false;
     }
-    return this.type == 'white' && coordinateTime < model.soundedHorn.timestamp && this.withinRadius(coordinate, model.soundedHorn.coordinates) ;
+    return this.type == ocargo.Cow.WHITE && coordinateTime < model.soundedHorn.timestamp && this.withinRadius(coordinate, model.soundedHorn.coordinates) ;
 
 };
 
@@ -144,7 +144,7 @@ ocargo.Cow.prototype.scaredAwayByPuffUp = function(model, coordinateTime, coordi
     if(jQuery.isEmptyObject(model.puffedUp)){
         return false;
     }
-    return this.type == 'brown' && this.withinRadius(coordinate, model.puffedUp.coordinates) ;
+    return this.type == ocargo.Cow.BROWN && this.withinRadius(coordinate, model.puffedUp.coordinates) ;
 
 };
 
