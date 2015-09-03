@@ -51,6 +51,10 @@ ocargo.Animation = function(model, decor, numVans) {
 	this.effects = [];
 	this.crashed = false;
 
+    this.genericAnimationLength = 500;
+	this.FAST_ANIMATION_LENGTH = 125;
+	this.SLOW_ANIMATION_LENGTH = this.genericAnimationLength;
+
     // timer identifier for pausing
     this.playTimer = -1;
 
@@ -105,6 +109,10 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	ocargo.drawing.removeWreckageImages();
 };
 
+ocargo.Animation.prototype.resetAnimationLength = function() {
+	this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
+};
+
 ocargo.Animation.prototype.stepAnimation = function(callback) {
 	if (this.currentlyAnimating) {
 		return;
@@ -112,20 +120,22 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 
 	this.currentlyAnimating = true;
 
-	var maxDelay = defaultAnimationLength;
+	var maxDelay = this.genericAnimationLength;
+	var timestampDelay = this.genericAnimationLength;
 
 	var timestampQueue = this.animationQueue[this.timestamp];
 
 	if (timestampQueue) {
 		// Perform all events for this timestamp
 		while (timestampQueue.length > 0) {
-			var delay = this.performAnimation(timestampQueue.shift());
-			if(this.crashed && delay!=0){
-				//Special case for crashing into cow as the van travel less before crashing
-				maxDelay = delay;
-			}else{
-				maxDelay = Math.max(maxDelay, delay);
-			}
+			//todo: speed stuff
+			timestampDelay = this.performAnimation(timestampQueue.shift());
+			//if(this.crashed && delay!=0){
+			//	//Special case for crashing into cow as the van travel less before crashing
+			//	maxDelay = delay;
+			//}else{
+			//	maxDelay = Math.max(maxDelay, delay);
+			//}
 		}
 		// And move onto the next timestamp
 		this.timestamp += 1;
@@ -147,15 +157,15 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		}
 		self.currentlyAnimating = false;
 		if (self.isPlaying) {
-			self.stepAnimation();
+			self.stepAnimation(undefined);
 		}
-	}, maxDelay);
+	}, timestampDelay);
 };
 
 ocargo.Animation.prototype.playAnimation = function() {
 	if (!this.currentlyAnimating && !this.isPlaying && this.animationQueue.length > 0) {
 		this.isPlaying = true;
-		this.stepAnimation();
+		this.stepAnimation(undefined);
 	}
 };
 
@@ -174,9 +184,9 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 };
 
 ocargo.Animation.prototype.performAnimation = function(a) {
-	// animation length is either default or may be custom set
-	var animationLength = a.animationLength || defaultAnimationLength;
-
+	// animation length is either custom set (for each element) or generic
+	//todo: speed stuff
+	var animationLength = a.animationLength || this.genericAnimationLength;
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
@@ -261,12 +271,14 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					var levelMsg = [];
 
 					if (!a.pathScoreDisabled) {
-						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins) + a.pathLengthScore + "/" + a.maxScoreForPathLength);
+						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins)
+							+ "<span id=\"routeScore\">" + a.pathLengthScore + "/" + a.maxScoreForPathLength + "</span>");
 					}
 
 					if (a.maxScoreForNumberOfInstructions != 0){
 						levelMsg.push(ocargo.messages.algorithmScore +
-							ocargo.Drawing.renderCoins(a.instrCoins) + a.instrScore + "/" + a.maxScoreForNumberOfInstructions);
+							ocargo.Drawing.renderCoins(a.instrCoins)
+                            + "<span id=\"algorithmScore\">" + a.instrScore + "/" + a.maxScoreForNumberOfInstructions + "</span>");
 					}
 
 					levelMsg.push(ocargo.messages.totalScore(a.totalScore, a.maxScore));
@@ -274,7 +286,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					levelMsg.push(leadMsg);
 
 					if(a.performance != "scorePerfect"){
-						buttons += ocargo.button.getTryAgainButtonHtml();
+						buttons += ocargo.button.tryAgainButtonHtml();
 					}
 
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
@@ -283,7 +295,7 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					} else {
 						// If there exists next level, add a button which redirects the user to that
 						if (NEXT_LEVEL) {
-							buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/" + NEXT_LEVEL + "/'",
+							buttons += ocargo.button.redirectButtonHtml('next_level_button', '/rapidrouter/' + NEXT_LEVEL + '/',
 					        								     		'Next Level');
 					    } else {
 							/*
@@ -299,12 +311,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
 					        } else if(DEFAULT_LEVEL) {
 					            levelMsg.push(ocargo.messages.lastLevel);
-								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/level_editor/'", "Create your own map!");
-								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
+								buttons += ocargo.button.redirectButtonHtml('next_level_button', "/rapidrouter/level_editor/", "Create your own map!");
+								buttons += ocargo.button.redirectButtonHtml('home_button', "/rapidrouter/", "Home");
 					        } else if (IS_RANDOM_LEVEL) {
 					            levelMsg.push(ocargo.messages.anotherRandomLevel);
-								buttons += ocargo.button.getRedirectButtonHtml("'" + window.location.href + "'", 'Have more fun!');
-								buttons += ocargo.button.getRedirectButtonHtml("'/rapidrouter/'", "Home");
+								buttons += ocargo.button.redirectButtonHtml('retry_button', window.location.href, 'Have more fun!');
+								buttons += ocargo.button.redirectButtonHtml('home_button', "/rapidrouter/", "Home");
 							}
 					    }
 					}
@@ -312,10 +324,10 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					break;
 				case 'FAIL':
 					title = ocargo.messages.failTitle;
-					buttons = ocargo.button.getTryAgainButtonHtml();
+					buttons = ocargo.button.tryAgainButtonHtml();
 					break;
 				case 'WARNING':
-					buttons = ocargo.button.getTryAgainButtonHtml();
+					buttons = ocargo.button.tryAgainButtonHtml();
 					break;
 			}
 			var otherMsg = "";

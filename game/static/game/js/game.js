@@ -103,7 +103,7 @@ ocargo.Game.prototype.setup = function() {
         }
     }
     ocargo.Drawing.startPopup(title, LESSON,
-         loggedOutWarning, true, ocargo.button.getDismissButtonHtml('Play'));
+        loggedOutWarning, true, ocargo.button.dismissButtonHtml('play_button', 'Play'));
 };
 
 ocargo.Game.prototype.reset = function() {
@@ -261,7 +261,8 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
             ocargo.drawing.moveForward(
-                0, NORMAL_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+                //todo: speed stuff
+                0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
         }
     });
     $('#turnLeft').click(function() {
@@ -269,7 +270,8 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
             ocargo.drawing.moveLeft(
-                0, NORMAL_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+                //todo: speed stuff
+                0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
         }
     });
     $('#turnRight').click(function() {
@@ -277,7 +279,8 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
             ocargo.drawing.moveRight(
-                0, NORMAL_ANIMATION_LENGTH, function() {ocargo.game.onStopControls();});
+                //todo: speed stuff
+                0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
         }
     });
     $('#go').click(function() {
@@ -364,6 +367,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
     tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
     tabs.stop = new ocargo.Tab($('#stop_radio'), $('#stop_radio + label'));
+    tabs.fast = new ocargo.Tab($('#fast_radio'), $('#fast_radio + label'));
     tabs.step = new ocargo.Tab($('#step_radio'), $('#step_radio + label'));
 
     tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
@@ -381,6 +385,7 @@ ocargo.Game.prototype.setupTabs = function() {
     setupClearTab();
     setupPlayTab();
     setupStopTab();
+    setupFastTab();
     setupStepTab();
     setupLoadTab();
     setupSaveTab();
@@ -494,6 +499,34 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.stop.setOnChange(function() {
             ocargo.game.reset();
             ocargo.game.onStopControls();
+
+            ocargo.game.currentTabSelected.select();
+        });
+    }
+
+    function setupFastTab() {
+        tabs.fast.setOnChange(function() {
+            var playTextPreSpeedControl = tabs.play.getText();
+
+            if (tabs.fast.getText() == "Fast") {
+                ocargo.game.onFastControls();
+                ocargo.animation.genericAnimationLength = ocargo.animation.FAST_ANIMATION_LENGTH;
+            } else {
+                ocargo.game.onSlowControls();
+                ocargo.animation.genericAnimationLength = ocargo.animation.SLOW_ANIMATION_LENGTH;
+            }
+
+            if (playTextPreSpeedControl == "Play") {
+                if (ocargo.game.runProgramAndPrepareAnimation()) {
+                    ocargo.animation.playAnimation();
+                    $('#clear_console').click();
+                }else{
+                    // When error occurs during the compilation of the program
+                    ocargo.game.onStopControls();
+                }
+            } else if (playTextPreSpeedControl == "Resume") {
+                ocargo.animation.playAnimation();
+            }
 
             ocargo.game.currentTabSelected.select();
         });
@@ -779,12 +812,11 @@ ocargo.Game.prototype.onPlayControls = function() {
 
     ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
     ocargo.game.tabs.step.setEnabled(false);
+    ocargo.game.tabs.fast.setEnabled(true);
 
     ocargo.game.tabs.load.setEnabled(false);
     ocargo.game.tabs.save.setEnabled(false);
     ocargo.game.tabs.clear_program.setEnabled(false);
-    // ocargo.game.tabs.big_code_mode.setEnabled(false);
-    // ocargo.game.tabs.print.setEnabled(false);
     ocargo.game.tabs.help.setEnabled(false);
 };
 
@@ -799,8 +831,36 @@ ocargo.Game.prototype.onStepControls = function() {
     ocargo.game.tabs.load.setEnabled(false);
     ocargo.game.tabs.save.setEnabled(false);
     ocargo.game.tabs.clear_program.setEnabled(false);
-    // ocargo.game.tabs.big_code_mode.setEnabled(false);
-    // ocargo.game.tabs.print.setEnabled(false);
+    ocargo.game.tabs.help.setEnabled(false);
+};
+
+ocargo.Game.prototype.onFastControls = function() {
+    this.allowCodeChanges(false);
+
+    document.getElementById('direct_drive').style.visibility='hidden';
+
+    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
+    ocargo.game.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/slow.svg', 'Slow');
+    ocargo.game.tabs.step.setEnabled(false);
+
+    ocargo.game.tabs.load.setEnabled(false);
+    ocargo.game.tabs.save.setEnabled(false);
+    ocargo.game.tabs.clear_program.setEnabled(false);
+    ocargo.game.tabs.help.setEnabled(false);
+};
+
+ocargo.Game.prototype.onSlowControls = function() {
+    this.allowCodeChanges(false);
+
+    document.getElementById('direct_drive').style.visibility='hidden';
+
+    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
+    ocargo.game.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
+    ocargo.game.tabs.step.setEnabled(false);
+
+    ocargo.game.tabs.load.setEnabled(false);
+    ocargo.game.tabs.save.setEnabled(false);
+    ocargo.game.tabs.clear_program.setEnabled(false);
     ocargo.game.tabs.help.setEnabled(false);
 };
 
@@ -811,13 +871,13 @@ ocargo.Game.prototype.onStopControls = function() {
     document.getElementById('direct_drive').style.visibility='visible';
 
     ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Play');
+    ocargo.game.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
+    ocargo.animation.resetAnimationLength();
     ocargo.game.tabs.step.setEnabled(true);
 
     ocargo.game.tabs.load.setEnabled(true);
     ocargo.game.tabs.save.setEnabled(true);
     ocargo.game.tabs.clear_program.setEnabled(true);
-    // ocargo.game.tabs.big_code_mode.setEnabled(true);
-    // ocargo.game.tabs.print.setEnabled(true);
     ocargo.game.tabs.help.setEnabled(true);
 };
 

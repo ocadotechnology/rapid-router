@@ -1171,10 +1171,15 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, 
     if(buttons){
         $('#modal-buttons').html(buttons);
     } else {
-        $('#modal-buttons').html(ocargo.button.getDismissButtonHtml("Close"));
+        $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', 'Close'));
     }
 
-    setTimeout( function() { $('#myModal').foundation('reveal', 'open'); }, delay);
+    setTimeout(function () {
+        $('#myModal').foundation('reveal', 'open', {
+            animation: 'fadeAndPop',
+            animation_speed: 200
+        });
+    }, delay);
 };
 
 // This is the function that starts the pop-up with a yes and a no button
