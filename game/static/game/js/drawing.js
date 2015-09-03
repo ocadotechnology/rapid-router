@@ -941,7 +941,8 @@ ocargo.Drawing.startPopup = function(title, subtitle, message, mascot, buttons, 
 
     setTimeout(function () {
         $('#myModal').foundation('reveal', 'open', {
-            animation: 'none'
+            animation: 'fadeAndPop',
+            animation_speed: 200
         });
     }, delay);
 };
