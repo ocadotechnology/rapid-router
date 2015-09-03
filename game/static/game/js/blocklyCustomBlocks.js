@@ -282,7 +282,7 @@ function initCustomBlocksDescription() {
                 .appendField('cow crossing')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
                     ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
-                    ocargo.BlocklyControl.BLOCK_HEIGHT));
+                    ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
         }
     };
 
@@ -327,7 +327,7 @@ function initCustomBlocksDescription() {
     /*    Events    */
     /****************/
 
-    Blockly.Blocks['declare_event'] = {
+    Blockly.Blocks['declare_event2'] = {
         // Block for declaring an event handler
         init: function() {
             this.setColour(260);
@@ -342,6 +342,60 @@ function initCustomBlocksDescription() {
         }
     };
 
+    Blockly.Blocks['declare_event'] = {
+
+        // Block for declaring an event handler
+        init: function() {
+            this.setColour(260);
+            var dropdown = new Blockly.FieldDropdown([['white', 'white'], ['brown', 'brown']], function(option) {
+                this.sourceBlock_.updateImage_(option);
+            });
+            this.appendDummyInput('Event')
+                .appendField('On ')
+                .appendField(dropdown, 'TYPE')
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
+                    ocargo.BlocklyControl.IMAGE_WIDTH,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
+            this.appendStatementInput('DO')
+                .setCheck('EventAction')
+                .appendField('Do');
+            this.setTooltip('Declares the event handler');
+            this.statementConnection_ = null;
+        },
+        updateImage_: function(cowType) {
+            // Add or remove a Value Input.
+            console.log(cowType);
+            this.getInput('Event').removeField('IMAGE');
+            if (cowType == 'white') {
+                this.getInput('Event')
+                    .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
+                    ocargo.BlocklyControl.IMAGE_WIDTH,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
+            } else if (cowType == 'brown') {
+                this.getInput('Event')
+                    .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.brownCowUrl,
+                        ocargo.BlocklyControl.IMAGE_WIDTH,
+                        ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
+            }
+        }
+    };
+
+    Blockly.Blocks['declare_brown_cow_event'] = {
+        // Block for declaring an event handler
+        init: function() {
+            this.setColour(260);
+            this.appendDummyInput()
+                .appendField('On ')
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.brownCowUrl,
+                    ocargo.BlocklyControl.IMAGE_WIDTH,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT));
+            this.appendStatementInput('DO')
+                .setCheck('EventAction')
+                .appendField('Do');
+            this.setTooltip('Declares the event handler');
+            this.statementConnection_ = null;
+        }
+    };
     /*******************/
     /*  Control Flows  */
     /*******************/

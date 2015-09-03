@@ -148,10 +148,13 @@ ocargo.Model.prototype.isCowCrossing = function(type) {
     var result = false;
     this.observe('cow crossing');
     var node = this.van.getPosition().currentNode;
-
+    console.log("apparent type: " + type);
     var nodes = this.getNodesAhead(node);
     for (var i = 0 ; i < nodes.length ; i++) {
         var cow = this.getCowForNode(nodes[i], ocargo.Cow.ACTIVE);
+        if(cow){
+            console.log(cow.type);
+        }
         if (cow != null && cow.type == type && cow.triggerEvent) {
             cow.triggerEvent = false;
             result = true;

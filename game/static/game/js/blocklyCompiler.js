@@ -84,11 +84,11 @@ ocargo.BlocklyCompiler.prototype.compileEvents = function() {
     var eventBlocks = ocargo.blocklyControl.getEventBlocks();
     for (var i = 0; i < eventBlocks.length; i++) {
         var block = eventBlocks[i];
-        var conditionBlock = block.inputList[0].connection.targetBlock();
-        if (conditionBlock === null) {
-            throw ocargo.messages.eventConditionError;
-        }
-        var condition = this.getCondition(conditionBlock);
+        //var conditionBlock = block.inputList[0].connection.targetBlock();
+        //if (conditionBlock === null) {
+        //    throw ocargo.messages.eventConditionError;
+        //}
+        var condition = this.getCondition(block);
 
         var bodyBlock = block.inputList[1].connection.targetBlock();
         if (bodyBlock === null) {
@@ -96,15 +96,15 @@ ocargo.BlocklyCompiler.prototype.compileEvents = function() {
         }
 
         // determine condition type from block
-        var curConditionBlock = conditionBlock;
-        while (curConditionBlock && (curConditionBlock.type === 'logic_negate')) {
-            // take the type from the innermost condition in negated conditions
-            curConditionBlock = curConditionBlock.inputList[0].connection.targetBlock();
-        }
-        var conditionType = "";
-        if (curConditionBlock) {
-            conditionType = curConditionBlock.type;
-        }
+        //var curConditionBlock = conditionBlock;
+        //while (curConditionBlock && (curConditionBlock.type === 'logic_negate')) {
+        //    // take the type from the innermost condition in negated conditions
+        //    curConditionBlock = curConditionBlock.inputList[0].connection.targetBlock();
+        //}
+        var conditionType = block.type;
+        //if (curConditionBlock) {
+        //    conditionType = curConditionBlock.type;
+        //}
 
         this.events.push(new Event(condition, this.createSequence(bodyBlock), block, conditionType));
     }
@@ -222,7 +222,7 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
     } else if (conditionBlock.type === 'traffic_light') {
     	return this.trafficLightCondition(
             conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
-    } else if (conditionBlock.type === 'cow_crossing') {
+    } else if (conditionBlock.type === 'declare_event') {
         return this.cowCrossingCondition(conditionBlock);
     }
 };
