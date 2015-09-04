@@ -66,7 +66,7 @@ def level_editor(request):
 
     :template:`game/level_editor.html`
     """
-    cow_level_enabled = True
+    cow_level_enabled = False
 
     context = RequestContext(request, {
         'blocks': Block.objects.all() if cow_level_enabled else Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn']),
