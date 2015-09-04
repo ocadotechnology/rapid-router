@@ -129,10 +129,6 @@ ocargo.sound.sound_horn = function() {
     safePlay(ocargo.sound.hornSound);
 };
 
-ocargo.sound.stop_horn = function() {
-    safeStop(ocargo.sound.deliverySound);
-};
-
 ocargo.sound.crash = function() {
     if (CHARACTER_NAME === 'Van') {
         safePlay(ocargo.sound.crashSound);

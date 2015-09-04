@@ -617,7 +617,7 @@ ocargo.Drawing = function() {
     };
 
     this.createCowImage = function() {
-        return paper.image(ocargo.Drawing.raphaelImageDir + 'FatClarice.svg', 0, 0, COW_WIDTH, COW_HEIGHT);
+        return paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.whiteCowUrl, 0, 0, COW_WIDTH, COW_HEIGHT);
     };
 
     this.setCowImagePosition = function(coordinate, image, node) {
@@ -630,9 +630,7 @@ ocargo.Drawing = function() {
     this.renderCow = function(id, coordinate, node, animationLength, type) {
 
         var res = this.determineCowOrientation(coordinate, node);
-        console.log(type);
         var cowUrl = type == ocargo.Cow.WHITE ? ocargo.Drawing.whiteCowUrl : ocargo.Drawing.brownCowUrl;
-        console.log(type == ocargo.Cow.WHITE);
         var image = paper.image(ocargo.Drawing.raphaelImageDir + cowUrl, res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot+"s0.1");
@@ -891,23 +889,6 @@ ocargo.Drawing = function() {
 
     this.deliver = function(destinationId, animationLength) {
         this.transitionDestination(destinationId, true, animationLength);
-    };
-
-    this.puffUp = function(vanId, animationLength, callback) {
-        var puffDown = function(){
-                        moveVanImage({
-                            transform: '... s 0.66666666666'
-                        }, vanId, animationLength/2, callback);};
-        moveVanImage({
-            transform: '... s 1.5'
-        }, vanId, animationLength/2, puffDown);
-
-    };
-
-    this.puffDown = function(vanId, animationLength, callback) {
-        moveVanImage({
-            transform: '... s 0.66, 0.66, 0, 0'
-        }, vanId, animationLength, callback);
     };
 
     function moveVanImage(attr, vanId, animationLength, callback) {
@@ -1235,5 +1216,5 @@ ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/';
 ocargo.Drawing.FRONT_VIEW  = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
 
-ocargo.Drawing.whiteCowUrl = 'FatClarice.svg';
+ocargo.Drawing.whiteCowUrl = 'Clarice.svg';
 ocargo.Drawing.brownCowUrl = 'Clarice_Jersey.svg';

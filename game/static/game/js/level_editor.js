@@ -2257,7 +2257,8 @@ ocargo.LevelEditor = function() {
                 if(!cowGroupData[groupId]) {
                     cowGroupData[groupId] = {minCows : cowGroups[groupId].minCows,
                         maxCows : cowGroups[groupId].maxCows,
-                        potentialCoordinates : []}
+                        potentialCoordinates : [],
+                        type: ocargo.Cow.WHITE} //editor can only add white cow for now
                 }
 
                 var coordinates = cows[i].controlledNode.coordinate;
@@ -2344,6 +2345,7 @@ ocargo.LevelEditor = function() {
             var cowGroupId = Object.keys(cowGroups)[i];
             cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
             cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
+            cowGroups[cowGroupId].type = cowGroupData[i].type;
 
             if(cowGroupData[i].potentialCoordinates != null) {
                 for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
