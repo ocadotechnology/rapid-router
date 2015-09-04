@@ -33,7 +33,7 @@
   <script src="/static/game/js/map.js"></script>
   <script src="/static/game/js/pathFinder.js"></script>
   <script src="/static/game/js/trafficLight.js"></script>
-  <script src="/static/game/js/cow.js"></script>
+  {% if cow_level_enabled %}<script src="/static/game/js/cow.js"></script>{% endif %}
   <script src="/static/game/js/destination.js"></script>
 
   <script>
@@ -308,6 +308,7 @@
                       <td><img id="trafficLightRed" src="{% static "game/image/trafficLight_red.svg" %}" width="80"></td>
                         <td><img id="trafficLightGreen" src="{% static "game/image/trafficLight_green.svg" %}" width="80"></td>
                     </tr>
+                    {% if cow_level_enabled %}
                     <tr>
                       <td>Cows:</td>
                       <td><img id="cow" src="/static/game/image/FatClarice.svg" width="50"></td>
@@ -346,6 +347,7 @@
                         </div>
                       </td>
                     </tr>
+                    {% endif %}
                   </tbody>
                 </table>
 

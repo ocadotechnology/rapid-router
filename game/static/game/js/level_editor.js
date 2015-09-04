@@ -48,7 +48,6 @@ ocargo.LevelEditor = function() {
     var LIGHT_RED_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg';
     var LIGHT_GREEN_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg';
 
-    var COW_URL = ocargo.Drawing.imageDir + "FatClarice.svg";
     var COW_GROUP_COLOR_PALETTE = [
         // From https://en.wikipedia.org/wiki/Help:Distinguishable_colors
         '#FFFFFF', // White

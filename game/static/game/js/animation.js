@@ -143,7 +143,6 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 				maxDelay = Math.max(maxDelay, delay);
 			}
 		}
-		console.log(maxDelay);
 		// And move onto the next timestamp
 		this.timestamp += 1;
         // Update defaultAnimationLength at every increment to prevent sudden stop in animation
@@ -201,7 +200,6 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 	switch (a.type) {
 		case 'callable':
 			animationLength = a.animationLength || 0;
-			console.log(a.type);
 			a.functionCall();
 			break;
 		case 'van':
