@@ -60,7 +60,7 @@ def add_levels(apps, schema_editor):
     set_decor(level110, json.loads(
         '[{"x":401,"y":397,"decorName":"tree1"},{"x":250,"y":397,"decorName":"tree1"},{"x":100,"y":397,"decorName":"tree1"},{"x":400,"y":596,"decorName":"tree1"},{"x":247,"y":596,"decorName":"tree1"},{"x":100,"y":596,"decorName":"tree1"}]'))
     set_blocks(level110, json.loads(
-        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"wait"},{"type":"controls_repeat_while"},{"type":"controls_if"},{"type":"road_exists"},{"type":"cow_crossing"}]'))
+        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"wait"},{"type":"controls_repeat_while"},{"type":"controls_if"},{"type":"road_exists"}]'))
 
     level111 = Level(
         name='111',
@@ -83,7 +83,7 @@ def add_levels(apps, schema_editor):
     set_decor(level111, json.loads(
         '[{"x":401,"y":397,"decorName":"tree1"},{"x":250,"y":397,"decorName":"tree1"},{"x":100,"y":397,"decorName":"tree1"},{"x":400,"y":596,"decorName":"tree1"},{"x":247,"y":596,"decorName":"tree1"},{"x":100,"y":596,"decorName":"tree1"}]'))
     set_blocks(level111, json.loads(
-        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"wait"},{"type":"controls_if"},{"type":"controls_repeat_while"},{"type":"road_exists"},{"type":"cow_crossing"}]'))
+        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"wait"},{"type":"controls_if"},{"type":"controls_repeat_while"},{"type":"road_exists"}]'))
 
     level112 = Level(
         name='112',
@@ -105,7 +105,7 @@ def add_levels(apps, schema_editor):
     set_decor(level112, json.loads(
         '[{"x":401,"y":397,"decorName":"tree1"},{"x":250,"y":397,"decorName":"tree1"},{"x":100,"y":397,"decorName":"tree1"},{"x":400,"y":596,"decorName":"tree1"},{"x":247,"y":596,"decorName":"tree1"},{"x":100,"y":596,"decorName":"tree1"}]'))
     set_blocks(level112, json.loads(
-        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"traffic_light"},{"type":"cow_crossing"},{"type":"declare_event"}, {"type": "puff_up"}, {"type": "sound_horn"}]'))
+        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"traffic_light"},{"type":"declare_event"}, {"type": "puff_up"}, {"type": "sound_horn"}]'))
 
     level113 = Level(
         name='113',
@@ -126,7 +126,7 @@ def add_levels(apps, schema_editor):
     set_decor(level113, json.loads(
         '[{"x":335,"y":471,"decorName":"bush"},{"x":286,"y":470,"decorName":"bush"},{"x":237,"y":470,"decorName":"bush"},{"x":188,"y":470,"decorName":"bush"},{"x":138,"y":470,"decorName":"bush"},{"x":335,"y":582,"decorName":"bush"},{"x":286,"y":582,"decorName":"bush"},{"x":237,"y":583,"decorName":"bush"},{"x":187,"y":582,"decorName":"bush"},{"x":138,"y":582,"decorName":"bush"},{"x":432,"y":568,"decorName":"tree1"},{"x":527,"y":463,"decorName":"tree1"},{"x":565,"y":606,"decorName":"tree1"}]'))
     set_blocks(level113, json.loads(
-        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"at_destination"},{"type":"road_exists"},{"type":"cow_crossing"},{"type":"declare_event"}, {"type": "puff_up"}, {"type": "sound_horn"}]'))
+        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"at_destination"},{"type":"road_exists"},{"type":"declare_event"}, {"type": "puff_up"}, {"type": "sound_horn"}]'))
 
     level114 = Level(
         name='114',
@@ -148,7 +148,7 @@ def add_levels(apps, schema_editor):
     set_decor(level114, json.loads(
         '[{"x":47,"y":439,"decorName":"tree2"},{"x":0,"y":527,"decorName":"tree2"},{"x":0,"y":579,"decorName":"tree2"},{"x":57,"y":548,"decorName":"tree2"},{"x":0,"y":457,"decorName":"tree2"},{"x":0,"y":348,"decorName":"tree2"},{"x":12,"y":400,"decorName":"tree2"},{"x":382,"y":593,"decorName":"tree1"},{"x":421,"y":572,"decorName":"tree1"},{"x":424,"y":611,"decorName":"tree1"},{"x":250,"y":544,"decorName":"tree1"},{"x":130,"y":610,"decorName":"pond"}]'))
     set_blocks(level114, json.loads(
-        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"cow_crossing"},{"type":"declare_event"}, {"type": "puff_up"}, {"type": "sound_horn"}]'))
+        '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"declare_event"}, {"type": "puff_up"}, {"type": "sound_horn"}]'))
 
     level115 = Level(
         name='115',
@@ -169,7 +169,7 @@ def add_levels(apps, schema_editor):
     level115.save()
 
     set_decor(level115, json.loads('[{"x":319,"y":283,"z":2,"decorName":"pond"},{"x":404,"y":150,"z":4,"decorName":"tree1"},{"x":299,"y":162,"z":4,"decorName":"tree1"},{"x":218,"y":223,"z":4,"decorName":"tree1"},{"x":643,"y":479,"z":4,"decorName":"tree1"},{"x":514,"y":487,"z":4,"decorName":"tree1"}]'))
-    set_blocks(level115, json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat"},{"type":"declare_event"},{"type":"cow_crossing"},{"type":"sound_horn"}]'))
+    set_blocks(level115, json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat"},{"type":"declare_event"},{"type":"sound_horn"}]'))
 
 
     level116 = Level(
@@ -178,7 +178,7 @@ def add_levels(apps, schema_editor):
         default=True,
         path='[{"coordinate":[1,4],"connectedNodes":[1]},{"coordinate":[2,4],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[3,4],"connectedNodes":[5,3]},{"coordinate":[4,4],"connectedNodes":[4,6]},{"coordinate":[4,5],"connectedNodes":[7,5]},{"coordinate":[5,5],"connectedNodes":[6,8]},{"coordinate":[5,4],"connectedNodes":[7,9]},{"coordinate":[6,4],"connectedNodes":[8,10]},{"coordinate":[6,3],"connectedNodes":[11,9]},{"coordinate":[5,3],"connectedNodes":[10,12]},{"coordinate":[5,2],"connectedNodes":[11,13]},{"coordinate":[6,2],"connectedNodes":[12]}]',
         traffic_lights='[]',
-        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":5},{"x":4,"y":5},{"x":4,"y":4}],"type":"WHITE"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":2},{"x":5,"y":3}],"type":"BROWN"}]',
+        cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":5},{"x":4,"y":5},{"x":4,"y":4}],"type":"BROWN"},{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":5,"y":2},{"x":5,"y":3}],"type":"BROWN"}]',
         destinations='[[6,2]]',
         origin='{"coordinate":[1,4],"direction":"E"}',
         max_fuel=50,
@@ -190,7 +190,7 @@ def add_levels(apps, schema_editor):
     )
     level116.save()
     set_decor(level116, json.loads('[{"x":593,"y":477,"z":4,"decorName":"tree1"},{"x":254,"y":441,"z":4,"decorName":"tree1"},{"x":370,"y":548,"z":4,"decorName":"tree1"},{"x":442,"y":318,"z":4,"decorName":"tree1"},{"x":681,"y":258,"z":4,"decorName":"tree1"}]'))
-    set_blocks(level116, json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"deliver"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"logic_negate"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"traffic_light"},{"type":"call_proc"},{"type":"declare_proc"},{"type":"cow_crossing"},{"type":"declare_event"},{"type":"sound_horn"}]'))
+    set_blocks(level116, json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"turn_around"},{"type":"wait"},{"type":"deliver"},{"type":"controls_repeat"},{"type":"controls_repeat_while"},{"type":"controls_repeat_until"},{"type":"controls_if"},{"type":"logic_negate"},{"type":"at_destination"},{"type":"road_exists"},{"type":"dead_end"},{"type":"traffic_light"},{"type":"call_proc"},{"type":"declare_proc"},{"type":"declare_event"},{"type":"sound_horn"},{"type":"puff_up"}]'))
 
     level109 = Level.objects.get(name='109')
     level109.next_level = level110

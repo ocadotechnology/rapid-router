@@ -39,10 +39,6 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-var NORMAL_ANIMATION_LENGTH= 500;
-var SLOW_ANIMATION_LENGTH = 800;
-var defaultAnimationLength = NORMAL_ANIMATION_LENGTH;
-
 ocargo.Animation = function(model, decor, numVans) {
     this.model = model;
     this.decor = decor;
@@ -50,10 +46,11 @@ ocargo.Animation = function(model, decor, numVans) {
 	this.activeCows = []; // cows currently displayed on map
 	this.effects = [];
 	this.crashed = false;
+	this.speedUp = false;
 
-    this.genericAnimationLength = 500;
+    this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
 	this.FAST_ANIMATION_LENGTH = 125;
-	this.SLOW_ANIMATION_LENGTH = this.genericAnimationLength;
+	this.SLOW_ANIMATION_LENGTH = 500;
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -111,6 +108,16 @@ ocargo.Animation.prototype.resetAnimation = function() {
 
 ocargo.Animation.prototype.resetAnimationLength = function() {
 	this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
+	this.speedUp = false;
+};
+
+ocargo.Animation.prototype.speedUpAnimation = function(){
+	this.genericAnimationLength = ocargo.animation.FAST_ANIMATION_LENGTH;
+	this.speedUp = true;
+};
+
+ocargo.Animation.prototype.currentBaseAnimationLength = function(){
+	return this.speedUp? this.FAST_ANIMATION_LENGTH : this.SLOW_ANIMATION_LENGTH;
 };
 
 ocargo.Animation.prototype.stepAnimation = function(callback) {
@@ -120,7 +127,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 
 	this.currentlyAnimating = true;
 
-	var maxDelay = this.genericAnimationLength;
+	var maxDelay = 0;
 	var timestampDelay = this.genericAnimationLength;
 
 	var timestampQueue = this.animationQueue[this.timestamp];
@@ -128,19 +135,23 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 	if (timestampQueue) {
 		// Perform all events for this timestamp
 		while (timestampQueue.length > 0) {
-			//todo: speed stuff
-			timestampDelay = this.performAnimation(timestampQueue.shift());
-			//if(this.crashed && delay!=0){
-			//	//Special case for crashing into cow as the van travel less before crashing
-			//	maxDelay = delay;
-			//}else{
-			//	maxDelay = Math.max(maxDelay, delay);
-			//}
+			var delay = this.performAnimation(timestampQueue.shift());
+			if(this.crashed && delay!=0){
+				//Special case for crashing into cow as the van travel less before crashing
+				maxDelay = delay;
+			}else{
+				maxDelay = Math.max(maxDelay, delay);
+			}
 		}
+		console.log(maxDelay);
 		// And move onto the next timestamp
 		this.timestamp += 1;
         // Update defaultAnimationLength at every increment to prevent sudden stop in animation
-        defaultAnimationLength = !this.crashed && this.numberOfCowsOnMap>0 ? SLOW_ANIMATION_LENGTH : NORMAL_ANIMATION_LENGTH;
+        if(!this.crashed && this.numberOfCowsOnMap>0){
+			this.genericAnimationLength = this.currentBaseAnimationLength() * 1.5;
+		}else{
+			this.genericAnimationLength = this.currentBaseAnimationLength();
+		}
 	}
 
 	// Check if we've performed all events we have
@@ -185,12 +196,12 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 
 ocargo.Animation.prototype.performAnimation = function(a) {
 	// animation length is either custom set (for each element) or generic
-	//todo: speed stuff
 	var animationLength = a.animationLength || this.genericAnimationLength;
 	//console.log("Type: " + a.type + " Description: " + a.description);
 	switch (a.type) {
 		case 'callable':
 			animationLength = a.animationLength || 0;
+			console.log(a.type);
 			a.functionCall();
 			break;
 		case 'van':
@@ -226,14 +237,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
             		ocargo.drawing.wait(vanID, animationLength);
             		break;
 				case 'PUFFUP':
-					//ocargo.drawing.puffUp(vanID, animationLength);
 					this.effects.push(2);
 					break;
                 case 'REMAINPUFFUP':
                     this.effects.unshift(1);
                     break;
                 case 'PUFFDOWN':
-                    //ocargo.drawing.puffDown(vanID, animationLength);
 					this.effects.push(0.5);
                     break;
             	case 'CRASH':

@@ -630,7 +630,9 @@ ocargo.Drawing = function() {
     this.renderCow = function(id, coordinate, node, animationLength, type) {
 
         var res = this.determineCowOrientation(coordinate, node);
+        console.log(type);
         var cowUrl = type == ocargo.Cow.WHITE ? ocargo.Drawing.whiteCowUrl : ocargo.Drawing.brownCowUrl;
+        console.log(type == ocargo.Cow.WHITE);
         var image = paper.image(ocargo.Drawing.raphaelImageDir + cowUrl, res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot+"s0.1");

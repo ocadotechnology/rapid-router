@@ -318,14 +318,14 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             description: actionDescription + action
         });
 
-        model.incrementTime();
+
 
         ocargo.animation.appendAnimation({
             type: 'callable',
             functionCall: ocargo.sound.stop_engine,
             description: 'stopping engine'
         });
-
+        model.incrementTime();
         ocargo.animation.appendAnimation({
             type: 'callable',
             functionCall: ocargo.sound.crash,

@@ -261,7 +261,6 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
             ocargo.drawing.moveForward(
-                //todo: speed stuff
                 0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
         }
     });
@@ -270,7 +269,6 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
             ocargo.drawing.moveLeft(
-                //todo: speed stuff
                 0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
         }
     });
@@ -279,7 +277,6 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
             ocargo.drawing.moveRight(
-                //todo: speed stuff
                 0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
         }
     });
@@ -510,10 +507,10 @@ ocargo.Game.prototype.setupTabs = function() {
 
             if (tabs.fast.getText() == "Fast") {
                 ocargo.game.onFastControls();
-                ocargo.animation.genericAnimationLength = ocargo.animation.FAST_ANIMATION_LENGTH;
+                ocargo.animation.speedUpAnimation();
             } else {
                 ocargo.game.onSlowControls();
-                ocargo.animation.genericAnimationLength = ocargo.animation.SLOW_ANIMATION_LENGTH;
+                ocargo.animation.resetAnimationLength();
             }
 
             if (playTextPreSpeedControl == "Play") {
