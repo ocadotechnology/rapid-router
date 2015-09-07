@@ -428,6 +428,7 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 
 	var json = JSON.stringify(result, replacer);
 	if(ocargo.utils.isIOSMode()){
+		console.log(json);
         webkit.messageHandlers.handler.postMessage(json);
     }
 	return json;

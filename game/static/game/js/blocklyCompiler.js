@@ -370,9 +370,9 @@ ocargo.BlocklyCompiler.prototype.mobileCompile = function(types) {
         blocks.push(new Block(i+1, types[i]));
     }
 
-    this.program = new ocargo.Program();
-    var thread = new ocargo.Thread(0);
-    thread.stack.push(this.mobileCreateSequence(blocks));
+    this.program = new ocargo.Program([]);
+    var thread = new ocargo.Thread(0, this.program);
+    thread.stack = this.mobileCreateSequence(blocks);
     this.program.threads.push(thread);
     return this.program;
 }
