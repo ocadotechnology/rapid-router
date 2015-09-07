@@ -106,8 +106,8 @@ def create(episode=None):
     return level
 
 
-def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled, cows_enabled,
-                             decor_enabled):
+def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled, decor_enabled,
+                             cows_enabled):
     path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
     cows = generate_cows(path) if cows_enabled else []
