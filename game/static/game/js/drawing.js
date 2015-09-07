@@ -616,8 +616,8 @@ ocargo.Drawing = function() {
         return {drawX: drawX, drawY: drawY, rotation: rotation};
     };
 
-    this.createCowImage = function() {
-        return paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.whiteCowUrl, 0, 0, COW_WIDTH, COW_HEIGHT);
+    this.createCowImage = function(type) {
+        return paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), 0, 0, COW_WIDTH, COW_HEIGHT);
     };
 
     this.setCowImagePosition = function(coordinate, image, node) {
@@ -630,8 +630,7 @@ ocargo.Drawing = function() {
     this.renderCow = function(id, coordinate, node, animationLength, type) {
 
         var res = this.determineCowOrientation(coordinate, node);
-        var cowUrl = type == ocargo.Cow.WHITE ? ocargo.Drawing.whiteCowUrl : ocargo.Drawing.brownCowUrl;
-        var image = paper.image(ocargo.Drawing.raphaelImageDir + cowUrl, res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
+        var image = paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot+"s0.1");
         image.animate({transform : rot+"s1"}, animationLength, 'linear');
@@ -1208,6 +1207,18 @@ ocargo.Drawing.renderCoins = function(coins) {
     }
 
     return html;
+};
+
+
+ocargo.Drawing.cowUrl = function(type){
+    switch(type){
+        case ocargo.Cow.WHITE:
+            return ocargo.Drawing.whiteCowUrl;
+        case ocargo.Cow.BROWN:
+            return ocargo.Drawing.brownCowUrl;
+        default:
+            return ocargo.Drawing.whiteCowUrl;
+    }
 };
 
 ocargo.Drawing.imageDir = '/static/game/image/';

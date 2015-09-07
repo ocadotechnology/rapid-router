@@ -333,15 +333,7 @@ function initCustomBlocksDescription() {
         init: function() {
             this.setColour(260);
             var dropdown = new Blockly.FieldDropdown([['white', ocargo.Cow.WHITE], ['brown', ocargo.Cow.BROWN]], function(option) {
-                var imageUrl = ocargo.Drawing.imageDir;
-                switch(option) {
-                    case ocargo.Cow.WHITE:
-                        imageUrl += ocargo.Drawing.whiteCowUrl;
-                        break;
-                    case ocargo.Cow.BROWN:
-                        imageUrl += ocargo.Drawing.brownCowUrl;
-                        break;
-                }
+                var imageUrl = ocargo.Drawing.imageDir + ocargo.Drawing.cowUrl(option);
                 this.sourceBlock_.getField('IMAGE').setValue(imageUrl);
             });
             this.appendDummyInput('Event')
