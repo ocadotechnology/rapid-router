@@ -53,6 +53,9 @@ var DEFAULT_CHARACTER_HEIGHT = 20;
 
 var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 
+var COW_WIDTH = 50;
+var COW_HEIGHT = 50;
+
 ocargo.Drawing = function() {
 
     /*************/
@@ -84,6 +87,11 @@ ocargo.Drawing = function() {
     var wreckageImages = {};
     var characterWidth = DEFAULT_CHARACTER_WIDTH;
     var characterHeight = DEFAULT_CHARACTER_HEIGHT;
+    var currentScale = 1;
+
+    this.reset = function(){
+        currentScale = 1;
+    };
 
     /*********************/
     /* Preloading images */
@@ -109,11 +117,14 @@ ocargo.Drawing = function() {
     /* Geometry helper methods */
     /***************************/
 
-    function createRotationTransformation(degrees, rotationPointX, rotationPointY) {
-        var transformation = '... r' + degrees;
+    function createRotationTransformation(degrees, rotationPointX, rotationPointY, extraTransformation) {
+        var transformation = "..." + "r" + degrees;
         if (rotationPointX !== undefined && rotationPointY !== undefined) {
             transformation += ',' + rotationPointX;
             transformation += ',' + rotationPointY;
+        }
+        if (extraTransformation){
+            transformation += "s" + extraTransformation;
         }
         return transformation;
     }
@@ -193,6 +204,21 @@ ocargo.Drawing = function() {
     function isProgressive(coord1, coord2) {
         return coord1 < coord2;
     }
+
+    function getTjunctionOrientation(middle, node1, node2, node3){
+        var res1 = getRoadLetters(node1, middle, node2);
+        var res2 = getRoadLetters(node2, middle, node3);
+
+        if (res1 === 'H' && res2 === 'DR' ){
+            return 'down';
+        }else if (res1 === 'UR' && res2 === 'DR' ){
+            return 'right';
+        }else if (res1 === 'UL' && res2 === 'V' ){
+            return 'left';
+        }else {
+            return 'up';
+        }
+    };
 
     /***************/
     /** Rendering **/
@@ -517,6 +543,107 @@ ocargo.Drawing = function() {
         }
     };
 
+    this.determineCowOrientation = function(coordinate, node) {
+        var x = coordinate.x;
+        var y = coordinate.y;
+
+        var xOffset = 0;
+        var yOffset = 0;
+        var rotation = 0;
+
+        // Only turns (not 3-way or 4-way crossings) have two connected nodes
+        if (node.connectedNodes.length === 1){
+            var previousNode = node.connectedNodes[0];
+            var nextNode = {};
+            nextNode.coordinate = new ocargo.Coordinate(
+                node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
+                node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y));
+
+            var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+
+            if(roadLetters === 'V') {
+                rotation = 90;
+            }
+        } else if(node.connectedNodes.length === 2) {
+            var previousNode = node.connectedNodes[0];
+            var nextNode = node.connectedNodes[1];
+
+            var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
+
+            if(roadLetters === 'V') {
+                rotation = 90;
+            } else if (roadLetters === 'UL') {
+                xOffset = - 0.15 * GRID_SPACE_SIZE;
+                yOffset = - 0.15 * GRID_SPACE_SIZE;
+                rotation = -45;
+            }
+            else if (roadLetters === 'UR') {
+                xOffset = + 0.15 * GRID_SPACE_SIZE;
+                yOffset = - 0.15 * GRID_SPACE_SIZE;
+                rotation = 45;
+            }
+            else if (roadLetters === 'DL') {
+                xOffset = - 0.15 * GRID_SPACE_SIZE;
+                yOffset = + 0.15 * GRID_SPACE_SIZE;
+                rotation = -135;
+            }
+            else if (roadLetters === 'DR') {
+                xOffset = + 0.15 * GRID_SPACE_SIZE;
+                yOffset = + 0.15 * GRID_SPACE_SIZE;
+                rotation = 135;
+            }
+        }else if (node.connectedNodes.length === 3) {
+            var previousNode = node.connectedNodes[0];
+            var nextNode = node.connectedNodes[1];
+            var nextNextNode = node.connectedNodes[2];
+            var res = getTjunctionOrientation(node.coordinate, previousNode.coordinate, nextNode.coordinate, nextNextNode.coordinate)
+            if (res === 'down') {
+                rotation = 180;
+            }
+            else if (res === 'right') {
+                rotation = 90;
+            }
+            else if (res === 'left') {
+                rotation = -90
+            }
+            else if (res === 'top') {
+            }
+        }
+
+        var drawX = (x+0.5) * GRID_SPACE_SIZE - COW_WIDTH/2 + xOffset + PAPER_PADDING;
+        var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT/2 + yOffset + PAPER_PADDING;
+
+        return {drawX: drawX, drawY: drawY, rotation: rotation};
+    };
+
+    this.createCowImage = function() {
+        return paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.whiteCowUrl, 0, 0, COW_WIDTH, COW_HEIGHT);
+    };
+
+    this.setCowImagePosition = function(coordinate, image, node) {
+
+        var res = this.determineCowOrientation(coordinate, node);
+
+        image.transform('t' + res.drawX + ',' + res.drawY + 'r' + res.rotation);
+    };
+
+    this.renderCow = function(id, coordinate, node, animationLength, type) {
+
+        var res = this.determineCowOrientation(coordinate, node);
+        var cowUrl = type == ocargo.Cow.WHITE ? ocargo.Drawing.whiteCowUrl : ocargo.Drawing.brownCowUrl;
+        var image = paper.image(ocargo.Drawing.raphaelImageDir + cowUrl, res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
+        var rot = "r" + res.rotation;
+        image.transform(rot+"s0.1");
+        image.animate({transform : rot+"s1"}, animationLength, 'linear');
+
+        return {'coordinate': coordinate,
+            'image': image};
+    };
+
+    this.removeCow = function(cow, animationLength) {
+        cow.image.animate({transform : "s0.01"}, animationLength, 'linear', function(){cow.image.remove();});
+    };
+
     this.setVanImagePosition = function(position, vanID) {
         var vanImage = vanImages[vanID];
         var initialPosition = calculateInitialPosition(position.currentNode);
@@ -627,7 +754,7 @@ ocargo.Drawing = function() {
 
     this.getRotationPointX = function(direction){
         var centreX = characterHeight/2;    // x coordinate of the canvas of the character svg
-        return  centreX+ (direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS);
+        return  centreX + ((direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS)/currentScale);
     };
 
     this.getRotationPointY = function(){
@@ -635,30 +762,48 @@ ocargo.Drawing = function() {
         return centreY;
     };
 
-    this.moveForward = function(vanId, animationLength, callback) {
-        var moveDistance = -MOVE_DISTANCE;
-        var transformation = "... t 0, " + moveDistance;
+    this.moveForward = function(vanId, animationLength, callback, extraTransformation) {
+        if(extraTransformation){
+            if(extraTransformation < 1){
+                currentScale *= extraTransformation;
+                var moveDistance = -MOVE_DISTANCE/currentScale;
+            }else{
+                var moveDistance = -MOVE_DISTANCE/currentScale;
+                currentScale *= extraTransformation;
+            }
+
+        }else{
+            var moveDistance = -MOVE_DISTANCE/currentScale;
+        }
+        var transformation =  "..." + (extraTransformation && extraTransformation < 1? "s" + extraTransformation : "") + "t 0, " + moveDistance + (extraTransformation && extraTransformation > 1? "s" + extraTransformation : "");
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
+
     };
 
-    this.moveLeft = function(vanId, animationLength,callback) {
+    this.moveLeft = function(vanId, animationLength, callback, extraTransformation) {
         var rotationPointX = this.getRotationPointX('LEFT');
         var rotationPointY = this.getRotationPointY();
-        var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY);
+        var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY, extraTransformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
+        if(extraTransformation){
+            currentScale *= extraTransformation;
+        }
     };
 
-    this.moveRight = function(vanId, animationLength, callback) {
+    this.moveRight = function(vanId, animationLength, callback, extraTransformation) {
         var rotationPointX = this.getRotationPointX('RIGHT');
         var rotationPointY = this.getRotationPointY();
-        var transformation = createRotationTransformation(90, rotationPointX, rotationPointY);
+        var transformation = createRotationTransformation(90, rotationPointX, rotationPointY, extraTransformation);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
+        if(extraTransformation){
+            currentScale *= extraTransformation;
+        }
     };
 
     this.turnAround = function(vanId, direction, animationLength) {
@@ -756,8 +901,81 @@ ocargo.Drawing = function() {
         vanImage.animate(attr, animationLength, 'linear', callback);
     }
 
+    this.collisionWithCow = function(vanID, animationLength, previousNode, currentNode, attemptedAction, startNode) {
+        var road = this.getLeftRightForwardRoad(previousNode, currentNode);
+        var roadLeft = road[0];
+        var roadForward = road[1];
+        var roadRight = road[2];
+        var vanImage = vanImages[vanID];
+
+        if(attemptedAction === "FORWARD") {
+            var distanceForwards = 0.5*GRID_SPACE_SIZE - 0.5*ROAD_WIDTH;
+            var transformation = "... t 0, " + (-distanceForwards);
+        }
+        else if(attemptedAction === "TURN_LEFT") {
+            var rotationAngle = 15;
+
+            var rotationPointX = this.getRotationPointX('LEFT');
+            var rotationPointY = this.getRotationPointY();
+            var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
+                rotationPointY);
+        }
+        else if(attemptedAction === "TURN_RIGHT") {
+            var rotationAngle = 15;
+
+            var rotationPointX = this.getRotationPointX('RIGHT');
+            var rotationPointY = this.getRotationPointY();
+            var transformation = createRotationTransformation(rotationAngle, rotationPointX,
+                rotationPointY);
+        }
+
+        var newAnimationLength = animationLength*((GRID_SPACE_SIZE - ROAD_WIDTH)/(GRID_SPACE_SIZE + ROAD_WIDTH));
+        moveVanImage({
+            transform: transformation
+        }, vanID, newAnimationLength, animateCollision);
+        return newAnimationLength;
+
+        function animateCollision() {
+            if (CHARACTER_NAME !== "Van") {
+                return;
+            }
+            var bbox = vanImage.getBBox();
+
+            var x = bbox.x + bbox.width/2;
+            var y = bbox.y + bbox.height/2;
+
+            var width = 25;
+            var height = 25;
+
+            var maxSize = 20;
+            var minSize = 15;
+
+            var smokeParts = 20;
+
+            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
+            wreckageImage.transform(vanImage.transform());
+            wreckageImage.attr({"opacity":0});
+            wreckageImages[vanID] = wreckageImage;
+
+            setTimeout(function() {
+                wreckageImage.animate({opacity: 1}, 1000);
+                vanImage.animate({opacity: 0}, 1000);
+                for(var i = 0; i < smokeParts; i++) {
+                    setTimeout(function() {
+                        var size = minSize + Math.random()*(maxSize-minSize);
+                        var xco = x + width*(Math.random()-0.5) - 0.5*size;
+                        var yco = y + height*(Math.random()-0.5) - 0.5*size;
+                        var imageStr = ocargo.Drawing.raphaelImageDir + 'smoke.svg';
+                        var img = paper.image(imageStr, xco, yco, size, size);
+                        img.animate({opacity: 0, transform: 's2'}, 1000, function () {img.remove()});
+                    },(i < 5 ? 0 :(i-5)*50));
+                }
+            }, 100);
+        }
+    }
+
     this.crash = function(vanID, animationLength, previousNode, currentNode, attemptedAction, startNode) {
-        var road = getLeftRightForwardRoad(previousNode, currentNode);
+        var road = this.getLeftRightForwardRoad(previousNode, currentNode);
         var roadLeft = road[0];
         var roadForward = road[1];
         var roadRight = road[2];
@@ -854,45 +1072,6 @@ ocargo.Drawing = function() {
                 }
             }, 100);
         }
-
-        function getLeftRightForwardRoad(previousNode, currentNode) {
-            var N = 0;
-            var E = 1;
-            var S = 2;
-            var W = 3;
-
-            function getOrientation(n1,n2) {
-                var c1 = n1.coordinate;
-                var c2 = n2.coordinate;
-
-                if(c1.y < c2.y) {
-                    return N;
-                }
-                else if(c1.x < c2.x) {
-                    return E;
-                }
-                else if(c1.y > c2.y) {
-                    return S;
-                }
-                else {
-                    return W;
-                }
-            }
-
-            var neighbours = [null,null,null,null];
-            for(var i = 0; i < currentNode.connectedNodes.length; i++) {
-                var neighbour = currentNode.connectedNodes[i];
-                neighbours[getOrientation(currentNode,neighbour)] = neighbour;
-            }
-
-            var vanOr = getOrientation(previousNode, currentNode);
-
-            var roadLeft = neighbours[(W+vanOr)%4];
-            var roadForward = neighbours[(N+vanOr)%4];
-            var roadRight = neighbours[(E+vanOr)%4];
-
-            return [roadLeft, roadForward, roadRight];
-        }
     };
 
     this.removeWreckageImages = function() {
@@ -900,6 +1079,45 @@ ocargo.Drawing = function() {
             wreckageImages[vanID].remove();
         }
         wreckageImages = {};
+    }
+
+    this.getLeftRightForwardRoad = function(previousNode, currentNode) {
+        var N = 0;
+        var E = 1;
+        var S = 2;
+        var W = 3;
+
+        function getOrientation(n1,n2) {
+            var c1 = n1.coordinate;
+            var c2 = n2.coordinate;
+
+            if(c1.y < c2.y) {
+                return N;
+            }
+            else if(c1.x < c2.x) {
+                return E;
+            }
+            else if(c1.y > c2.y) {
+                return S;
+            }
+            else {
+                return W;
+            }
+        }
+
+        var neighbours = [null,null,null,null];
+        for(var i = 0; i < currentNode.connectedNodes.length; i++) {
+            var neighbour = currentNode.connectedNodes[i];
+            neighbours[getOrientation(currentNode,neighbour)] = neighbour;
+        }
+
+        var vanOr = getOrientation(previousNode, currentNode);
+
+        var roadLeft = neighbours[(W+vanOr)%4];
+        var roadForward = neighbours[(N+vanOr)%4];
+        var roadRight = neighbours[(E+vanOr)%4];
+
+        return [roadLeft, roadForward, roadRight];
     }
 };
 
@@ -997,3 +1215,6 @@ ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/';
 
 ocargo.Drawing.FRONT_VIEW  = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
+
+ocargo.Drawing.whiteCowUrl = 'Clarice.svg';
+ocargo.Drawing.brownCowUrl = 'Clarice_Jersey.svg';

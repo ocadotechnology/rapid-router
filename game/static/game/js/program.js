@@ -43,12 +43,14 @@ var MAX_EXECUTION_STEPS = 10000;
 
 /* Program */
 
-ocargo.Program = function() {
+ocargo.Program = function(events) {
 	this.threads = [];
 	this.procedures = {};
+	this.events = events;
 };
 
 ocargo.Program.prototype.run = function() {
+	ocargo.model.chooseNewCowPositions();
 	for (var i = 0; i < this.threads.length; i++) {
 		ocargo.model.reset(i);
 		this.threads[i].run(ocargo.model);
@@ -57,9 +59,11 @@ ocargo.Program.prototype.run = function() {
 
 /* Thread */
 
-ocargo.Thread = function() {
-	this.stack = [];
+ocargo.Thread = function(i, program) {
+	this.stack = []; //each element is an array of commands attached to each start block (currently we only have one start block)
 	this.noExecutionSteps = 0;
+	this.program = program;
+	this.eventLevel = Event.MAX_LEVEL; // no event active
 };
 
 ocargo.Thread.prototype.run = function(model) {
@@ -73,8 +77,30 @@ ocargo.Thread.prototype.run = function(model) {
 };
 
 ocargo.Thread.prototype.step = function(model) {
-	var stackLevel = this.stack[this.stack.length - 1];
-	var commandToProcess = stackLevel.shift();
+
+	var activeEvent = null;
+
+	// check if any event condition is true
+	for (var i=0; i<this.program.events.length; i++) {
+		var event = this.program.events[i];
+		model.shouldObserve = false;
+		if (event.condition(model)) {
+			if (!activeEvent || event.level() < activeEvent.level()) {
+				activeEvent = event;
+			}
+		}
+		model.shouldObserve = true;
+	}
+
+	// only execute the event if it raises the event level
+	if (activeEvent && this.eventLevel > activeEvent.level()) {
+		// tell the event about the old event level
+		activeEvent.setOldLevel(this.eventLevel);
+		// add event handler to stack (looping)
+		activeEvent.execute(this, model);
+    }
+
+	var commandToProcess = this.stack.shift();
 	this.noExecutionSteps ++;
 	if (this.noExecutionSteps > MAX_EXECUTION_STEPS) {
 		// alert user to likely infinite loop
@@ -90,10 +116,6 @@ ocargo.Thread.prototype.step = function(model) {
 		return false;
 	}
 
-	if (stackLevel.length === 0) {
-		this.stack.pop();
-	}
-
 	var successful = true;
 	if (commandToProcess) {
 		successful = commandToProcess.execute(this, model);
@@ -102,7 +124,7 @@ ocargo.Thread.prototype.step = function(model) {
 	if (!successful) {
 		// Program crashed, queue a block highlight event
         var block = commandToProcess.block;
-		queueHighlightIncorrect(block);
+		queueHighlightIncorrect(model, block);
 		return false;
 	}
 
@@ -110,11 +132,11 @@ ocargo.Thread.prototype.step = function(model) {
 };
 
 ocargo.Thread.prototype.canStep = function() {
-	return this.stack.length !== 0 && this.stack[0].length !== 0;
+	return this.stack.length !== 0;
 };
 
-ocargo.Thread.prototype.addNewStackLevel = function(commands) {
-	this.stack.push(commands);
+ocargo.Thread.prototype.pushToStack = function(commands) {
+    this.stack.unshift.apply(this.stack, commands);
 };
 
 
@@ -191,7 +213,23 @@ DeliverCommand.prototype.execute = function(thread, model) {
 	return model.deliver();
 };
 
+function SoundHornCommand(block){
+	this.block = block;
+}
 
+SoundHornCommand.prototype.execute = function(thread, model){
+	queueHighlight(model, this.block);
+	return model.sound_horn();
+};
+
+function PuffUpCommand(block){
+	this.block = block;
+}
+
+PuffUpCommand.prototype.execute = function(thread, model){
+	queueHighlight(model, this.block);
+	return model.puff_up();
+}
 
 function If(conditionalCommandSets, elseBody, block) {
 	this.conditionalCommandSets = conditionalCommandSets;
@@ -203,7 +241,7 @@ If.prototype.execute = function(thread, model) {
 	var i = 0;
 	while (i < this.conditionalCommandSets.length) {
 		if (this.conditionalCommandSets[i].condition(model)) {
-			thread.addNewStackLevel(this.conditionalCommandSets[i].commands.slice());
+			thread.pushToStack(this.conditionalCommandSets[i].commands.slice());
 			return true;
 		}
 
@@ -211,7 +249,7 @@ If.prototype.execute = function(thread, model) {
 	}
 
 	if(this.elseBody) {
-		thread.addNewStackLevel(this.elseBody.slice());
+		thread.pushToStack(this.elseBody.slice());
 	}
 	return true;
 };
@@ -226,37 +264,71 @@ function While(condition, body, block) {
 
 While.prototype.execute = function(thread, model) {
 	if (this.condition(model)) {
-		thread.addNewStackLevel([this]);
-		thread.addNewStackLevel(this.body.slice());
+		thread.pushToStack([this]);
+		thread.pushToStack(this.body.slice());
 	}
 	return true;
 };
 
 
 
+function Event(condition,body,block,conditionType) {
+	this.condition = condition;
+	this.body = body;
+	this.block = block;
+	this.conditionType = conditionType;
+	this.oldLevel = null;
+}
+
+Event.prototype.execute = function(thread, model) {
+	thread.pushToStack(this.body.slice());
+
+	return true;
+};
+
+Event.prototype.setOldLevel = function(oldLevel) {
+	this.oldLevel = oldLevel;
+};
+
+Event.MAX_LEVEL = 1000; // level at which no event is active
+
+Event.prototype.level = function() {
+	if (this.conditionType === 'road_exists') {
+		return 31;
+	} else if (this.conditionType === 'dead_end') {
+		return 30;
+	} else if (this.conditionType === 'at_destination') {
+		return 20;
+	} else if (this.conditionType === 'traffic_light') {
+		return 11;
+	} else if (this.conditionType === 'cow_crossing') {
+		return 10;
+	} else {
+		return 100;
+	}
+};
+
 function Procedure(name,body,block) {
 	this.name = name;
 	this.body = body;
 	this.block = block;
-};
+}
 
 Procedure.prototype.execute = function(thread) {
-	thread.addNewStackLevel(this.body.slice());
+	thread.pushToStack(this.body.slice());
 	return true;
 };
 
-
-
 function ProcedureCall(block) {
 	this.block = block;
-};
+}
 
 ProcedureCall.prototype.bind = function(proc) {
 	this.proc = proc;
 };
 
 ProcedureCall.prototype.execute = function(thread) {
-	thread.addNewStackLevel([this.proc]);
+	thread.pushToStack([this.proc]);
 	return true;
 };
 
@@ -265,23 +337,27 @@ ProcedureCall.prototype.execute = function(thread) {
 /* Highlighting of blocks */
 
 function queueHighlight(model, block) {
-	ocargo.animation.appendAnimation({
-		type: 'callable',
-		functionType: 'highlight',
-		functionCall: makeHighLightCallable(block.id),
-		description: 'Blockly highlight: ' + block.type,
-		blockId: block.id
-	});
+    if (model.shouldObserve) {
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+	    functionType: 'highlight',
+	    functionCall: makeHighLightCallable(block.id),
+	    description: 'Blockly highlight: ' + block.type,
+	    blockId: block.id
+        });
+	}
 }
 
-function queueHighlightIncorrect(block){
-	ocargo.animation.appendAnimation({
-		type: 'callable',
-		functionType: 'highlightIncorrect',
-		functionCall: makeHighLightIncorrectCallable(block.id),
-		description: 'Blockly highlight incorrect: ' + block.type,
-		blockId: block.id
-	});
+function queueHighlightIncorrect(model, block){
+    if (model.shouldObserve){
+		ocargo.animation.appendAnimation({
+			type: 'callable',
+			functionType: 'highlightIncorrect',
+			functionCall: makeHighLightIncorrectCallable(block.id),
+			description: 'Blockly highlight incorrect: ' + block.type,
+			blockId: block.id
+		});
+	}
 }
 
 function makeHighLightCallable(id) {

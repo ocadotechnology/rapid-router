@@ -90,6 +90,7 @@ class Episode (models.Model):
     r_blocklyEnabled = models.BooleanField(default=True)
     r_pythonEnabled = models.BooleanField(default=False)
     r_trafficLights = models.BooleanField(default=False)
+    r_cows = models.BooleanField(default=False)
     
     @property
     def first_level(self):
@@ -119,6 +120,7 @@ class Level (models.Model):
     episode = models.ForeignKey(Episode, blank=True, null=True, default=None)
     path = models.TextField(max_length=10000)
     traffic_lights = models.TextField(max_length=10000, default='[]')
+    cows = models.TextField(max_length=10000, default='[]')
     origin = models.CharField(max_length=50, default='[]')
     destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)

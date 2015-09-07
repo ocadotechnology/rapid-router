@@ -40,14 +40,39 @@ identified as the original program.
 var ocargo = ocargo || {};
 
 ocargo.LevelEditor = function() {
-    
+
     /*************/
     /* Constants */
     /*************/
 
     var LIGHT_RED_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg';
     var LIGHT_GREEN_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg';
-    
+
+    var COW_GROUP_COLOR_PALETTE = [
+        // From https://en.wikipedia.org/wiki/Help:Distinguishable_colors
+        '#FFFFFF', // White
+        '#FFA405', // Orpiment
+        '#0075DC', // Blue
+        '#C20088', // Mallow
+        '#9DCC00', // Lime
+        '#FF5005', // Zinnia
+        '#808080', // Iron
+        '#F0A3FF', // Amethyst
+        '#993F00', // Caramel
+        '#740AFF', // Violet
+        '#FFFF00', // Wine
+        '#4C005C', // Damson
+        '#94FFB5', // Jade
+        '#FFCC99', // Honeydew
+        '#00998F', // Turqoise
+        '#E0FF66', // Uranium
+        '#005C31', // Forest
+        '#FFFF80', // Xanthin
+        '#5EF1F2', // Sky
+        '#003380', // Navy
+        '#8F7C00'  // Khaki
+    ];
+
     var ADD_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/add_road.svg";
     var DELETE_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_road.svg";
     var MARK_START_IMG_URL = ocargo.Drawing.imageDir + "icons/origin.svg";
@@ -77,6 +102,7 @@ ocargo.LevelEditor = function() {
     var nodes = [];
     var decor = [];
     var trafficLights = [];
+    var cows = [];
     var originNode = null;
     var destinationNode = null;
     var currentTheme = THEMES.grass;
@@ -103,6 +129,9 @@ ocargo.LevelEditor = function() {
     var trashcanOpen = false;
     var trashcanAbsolutePaperX;
     var trashcanAbsolutePaperY;
+
+    var cowGroups = {};
+    var currentCowGroupId = 1;
 
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
@@ -178,7 +207,7 @@ ocargo.LevelEditor = function() {
         tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
         tabs.share = new ocargo.Tab($('#share_radio'), $('#share_radio + label'), $('#share_pane'));
         tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'));
-        tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));  
+        tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));
 
         setupPlayTab();
         setupMapTab();
@@ -216,9 +245,9 @@ ocargo.LevelEditor = function() {
 
         function changeCurrentToolDisplay(mode){
             $('#currentToolText').text(mode.name);
-            $('#currentToolIcon').attr("src", mode.url);            
+            $('#currentToolIcon').attr("src", mode.url);
         }
-        
+
         function setupMapTab() {
             tabs.map.setOnChange(function() {
                 transitionTab(tabs.map);
@@ -228,7 +257,7 @@ ocargo.LevelEditor = function() {
 
             $('#clear').click(function() {
                 clear();
-                localStorage.removeItem('levelEditorState'); 
+                localStorage.removeItem('levelEditorState');
                 drawAll();
             });
 
@@ -254,7 +283,7 @@ ocargo.LevelEditor = function() {
 
             if(DEVELOPER) {
                 $('#djangoText').click(function() {
-                    ocargo.Drawing.startPopup('Django level migration', 
+                    ocargo.Drawing.startPopup('Django level migration',
                         'Copy the text in the console into the Django migration file.',
                         'You will have to change the level name and fill in the model solution field.');
                 });
@@ -292,6 +321,77 @@ ocargo.LevelEditor = function() {
                                           "sourceCoordinate": null,  "direction": null});
             });
 
+            $('#cow').click(function() {
+                new InternalCow({group: cowGroups[$('#cow_group_select').val()]});
+            });
+
+            //"Advanced" button
+            $('#advanced_cow_options_button').on('click', function() {
+                $(this).toggleClass('cow_navigation_button_pressed');
+
+                var showIconSrc = "/static/game/image/icons/show.svg";
+                var hideIconSrc = "/static/game/image/icons/hide_button.svg";
+                var advancedButtonIcon = $('#advanced_cow_options_button_icon');
+                var iconSrc = (advancedButtonIcon.attr("src") === showIconSrc) ? hideIconSrc : showIconSrc;
+                advancedButtonIcon.attr("src", iconSrc);
+
+                var advancedDivHidden = $('#cow_advanced_div').css('display') === 'none';
+
+                $('#cow_advanced_div').slideToggle(1000);
+
+                //Only scroll down if advanced options were previously hidden
+                if(advancedDivHidden) {
+                    $('#tab_panes_wrapper').animate({scrollTop: $('#tab_panes_wrapper')[0].scrollHeight},
+                        1500,
+                        "swing");
+                }
+            });
+
+            //Min & max spinners
+            var minSpinner = $('#min_cows_spinner').spinner({ min:   1,
+                max:   1}).val(1);
+            minSpinner.on('spinstop', function() {
+                $('#max_cows_spinner').spinner('option', 'min', $('#min_cows_spinner').val());
+                cowGroups[$('#cow_group_select').val()].minCows = $('#min_cows_spinner').val();
+            });
+
+            var maxSpinner = $('#max_cows_spinner').spinner({ min:   1,
+                max:   1}).val(1);
+            maxSpinner.on('spinstop', function() {
+                $('#min_cows_spinner').spinner('option', 'max', $('#max_cows_spinner').val());
+                cowGroups[$('#cow_group_select').val()].maxCows = $('#max_cows_spinner').val();
+            });
+
+            //Group select element (has to be initialised after the min and max spinners are created)
+            $('#cow_group_select').on('change', function() {
+                $('#cow_group_select').css('background-color', cowGroups[this.value].color);
+
+                //Set max values of min & max spinners
+                var groupId = this.value;
+                var noOfValidCowsInGroup = 0;
+                for (var i=0; i < cows.length; i++) {
+                    if(cows[i].valid && cows[i].data.group.id === groupId) {
+                        noOfValidCowsInGroup++;
+                    }
+                }
+
+                var minMaxValue = Math.max(1, cowGroups[this.value].maxCows);
+                $('#min_cows_spinner').spinner('option', 'max', minMaxValue);
+                var maxMinValue = Math.max(1, cowGroups[this.value].minCows);
+                $('#max_cows_spinner').spinner('option', 'min', maxMinValue);
+                $('#max_cows_spinner').spinner('option', 'max', Math.max(1, noOfValidCowsInGroup));
+
+                //Set min & max values
+                $('#min_cows_spinner').val(cowGroups[this.value].minCows);
+                $('#max_cows_spinner').val(cowGroups[this.value].maxCows);
+            });
+
+            if(Object.keys(cowGroups).length == 0) {
+                addCowGroup();
+            }
+
+            $('#add_cow_group_button').click(addCowGroup);
+            $('#remove_cow_group_button').click(removeCowGroup);
         }
 
         function setupCharacterTab() {
@@ -310,7 +410,7 @@ ocargo.LevelEditor = function() {
             });
 
             $("#character_select").change();
-        }  
+        }
 
         function setupBlocksTab() {
             tabs.blocks.setOnChange(function() {
@@ -347,7 +447,7 @@ ocargo.LevelEditor = function() {
                         $('#' + type + '_checkbox').click();
                     });
                 }
-                
+
                 // Setup the block images
                 initCustomBlocksDescription();
 
@@ -367,7 +467,7 @@ ocargo.LevelEditor = function() {
                     block.render();
 
                     var svg = block.getSvgRoot();
-                    var large = type === "controls_whileUntil" || 
+                    var large = type === "controls_whileUntil" ||
                                 type === "controls_repeat" ||
                                 type === "controls_if" ||
                                 type === "declare_proc" ||
@@ -397,9 +497,9 @@ ocargo.LevelEditor = function() {
             $('#generate').click(function() {
                 var numberOfTiles = Math.max(Math.min($('#size').val(), 40), 2);
                 var branchiness = Math.max(Math.min($('#branchiness').val(), 10), 0);
-                var loopiness = Math.max(Math.min($('#loopiness').val(), 10), 0); 
+                var loopiness = Math.max(Math.min($('#loopiness').val(), 10), 0);
                 var curviness = Math.max(Math.min($('#curviness').val(), 10), 0);
-               
+
                 $('#size').val(numberOfTiles);
                 $('#branchiness').val(branchiness);
                 $('#loopiness').val(loopiness);
@@ -412,7 +512,7 @@ ocargo.LevelEditor = function() {
                             trafficLights: $('#trafficLightsEnabled').val() == "yes",
                             scenery: $('#sceneryEnabled').val() == "yes",
                             csrfmiddlewaretoken: $.cookie('csrftoken')};
-                
+
                 $('#generate').attr('disabled', true);
 
                 ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
@@ -468,7 +568,7 @@ ocargo.LevelEditor = function() {
 
             $('#loadLevel').click(function() {
                 if (selectedLevel) {
-                    loadLevel(selectedLevel); 
+                    loadLevel(selectedLevel);
                 }
             });
 
@@ -527,6 +627,7 @@ ocargo.LevelEditor = function() {
             var selectedLevel = null;
 
             tabs.save.setOnChange(function () {
+                getLevelTextForDjangoMigration();
                 if (!isLoggedIn("save") || !isLevelValid()) {
                     currentTabSelected.select();
                     return;
@@ -534,7 +635,7 @@ ocargo.LevelEditor = function() {
 
                 ocargo.saving.retrieveListOfLevels(processListOfLevels);
             });
-            
+
             $('#saveLevel').click(function() {
                 if(!isLevelValid()) {
                     return;
@@ -622,7 +723,7 @@ ocargo.LevelEditor = function() {
                     currentTabSelected.select();
                     return;
                 }
-                
+
                 ocargo.saving.getSharingInformation(savedLevelID, function(error, validRecipients) {
                     if(error) {
                         console.error(error);
@@ -654,7 +755,7 @@ ocargo.LevelEditor = function() {
             // Setup the class dropdown menu for the teacher panel
             $('#class_select').change(function() {
                 var classID = $('#class_select').val();
-                
+
                 for (var i = 0; i < classesTaught.length; i++) {
                     if (classesTaught[i].id == classID) {
                         populateSharingTable(classesTaught[i].students);
@@ -678,7 +779,7 @@ ocargo.LevelEditor = function() {
                     recipientIDs.push(this.getAttribute('value'));
                 });
 
-                var recipientData = {recipientIDs: recipientIDs, 
+                var recipientData = {recipientIDs: recipientIDs,
                                      action: actionDesired};
 
                 ocargo.saving.shareLevel(savedLevelID, recipientData, processSharingInformation);
@@ -751,7 +852,7 @@ ocargo.LevelEditor = function() {
                 for (var i = 0; i < recipients.length; i++) {
                     var recipient = recipients[i];
                     var status = recipient.shared ? 'shared' : 'unshared';
-                    
+
                     if (recipient.shared) {
                         status = 'shared';
                     } else {
@@ -791,7 +892,7 @@ ocargo.LevelEditor = function() {
                     if (isLevelSaved() && isLevelOwned()) {
                         var status = this.getAttribute('status');
 
-                        var recipientData = {recipientIDs: [this.getAttribute('value')], 
+                        var recipientData = {recipientIDs: [this.getAttribute('value')],
                                              action: (status === 'shared' ? 'unshare' : 'share')};
 
                         ocargo.saving.shareLevel(savedLevelID, recipientData, processSharingInformation);
@@ -824,7 +925,7 @@ ocargo.LevelEditor = function() {
             });
         }
 
-                
+
         // Helper methods
         function transitionTab(newTab) {
             currentTabSelected.setPaneEnabled(false);
@@ -873,6 +974,62 @@ ocargo.LevelEditor = function() {
                 var td2 = $('#' + tableName + 'Header th:eq(' + i + ')');
                 td2.width(td.width());
             }
+        }
+    }
+
+    /************/
+    /*   Cows   */
+    /************/
+
+    function addCowGroup() {
+        var color = COW_GROUP_COLOR_PALETTE[(currentCowGroupId - 1) % COW_GROUP_COLOR_PALETTE.length];
+        var style = 'background-color: ' + color;
+        var value = 'group' + currentCowGroupId++;
+
+        cowGroups[value] = {id : value,
+            color : color,
+            minCows: 1,
+            maxCows: 1};
+
+        var text = 'Group ' + Object.keys(cowGroups).length;
+        $('#cow_group_select').append($('<option>', { value : value, style : style })
+            .text(text));
+        $('#cow_group_select').val(value).change();
+    }
+
+    function removeCowGroup() {
+        if(Object.keys(cowGroups).length > 1) {
+            var selectedGroupId = $('#cow_group_select').val();
+
+            //Remove cows from map
+            for(var i = cows.length - 1; i >= 0; i--) {
+                if(cows[i].data.group.id === selectedGroupId) {
+                    cows[i].destroy();
+                }
+            }
+
+            //Remove group from group list
+            delete cowGroups[selectedGroupId];
+
+            // Select previous option select element if present
+            var selectedOption = $('#cow_group_select > option:selected');
+            if(selectedOption.prev('option').length > 0) {
+                selectedOption.prev('option').attr('selected', 'selected');
+            } else {
+                selectedOption.next('option').attr('selected', 'selected');
+            }
+
+            // Remove old option
+            selectedOption.remove();
+
+            // Trigger change event on select element
+            $('#cow_group_select').change();
+
+            //Renumber groups in select element
+            var groupNo = 1;
+            $('#cow_group_select').find('option').each(function() {
+                $(this).text('Group ' + groupNo++);
+            });
         }
     }
 
@@ -941,7 +1098,7 @@ ocargo.LevelEditor = function() {
             var right = 50;
             if(windowWidth > paperRightEdge) {
                 right += windowWidth - paperRightEdge;
-            } 
+            }
 
             trashcan.css('right', right);
             trashcan.css('bottom', bottom);
@@ -987,7 +1144,7 @@ ocargo.LevelEditor = function() {
     /** Current state tests */
     /************************/
     // Functions simply to improve readability of complex conditional code
-    
+
     function isOriginCoordinate(coordinate) {
         return originNode && originNode.coordinate.equals(coordinate);
     }
@@ -1047,10 +1204,20 @@ ocargo.LevelEditor = function() {
             decor[i].destroy();
         }
 
+        for (var i = cows.length-1; i >= 0; i--) {
+            cows[i].destroy();
+        }
+
         nodes = [];
         strikeStart = null;
         originNode = null;
         destinationNode = null;
+
+        cowGroups = {};
+        currentCowGroupId = 1;
+        $('#cow_group_select').find('option').remove();
+        // Add initial cow group
+        addCowGroup();
     }
 
     function drawAll() {
@@ -1074,6 +1241,12 @@ ocargo.LevelEditor = function() {
     function bringTrafficLightsToFront() {
         for (var i = 0; i < trafficLights.length; i++) {
             trafficLights[i].image.toFront();
+        }
+    }
+
+    function bringCowsToFront() {
+        for (var i = 0; i < cows.length; i++) {
+            cows[i].image.toFront();
         }
     }
 
@@ -1108,6 +1281,17 @@ ocargo.LevelEditor = function() {
         mark(coordinate, currentTheme.selected, 0.3, true);
     }
 
+    function markCowNodes() {
+        if (cows) {
+            for (var i = 0; i < cows.length; i++) {
+                var internalCow = cows[i];
+                if (internalCow.controlledNode) {
+                    mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
+                }
+            }
+        }
+    }
+
     function clearMarkings() {
         for (var i = 0; i < GRID_WIDTH; i++) {
             for (var j = 0; j < GRID_HEIGHT; j++) {
@@ -1115,6 +1299,9 @@ ocargo.LevelEditor = function() {
                 grid[i][j].toFront();
             }
         }
+
+        markCowNodes();
+
         if (originNode) {
             markAsOrigin(originNode.coordinate);
         }
@@ -1123,6 +1310,7 @@ ocargo.LevelEditor = function() {
         }
 
         bringTrafficLightsToFront();
+        bringCowsToFront();
         bringDecorToFront();
     }
 
@@ -1151,7 +1339,7 @@ ocargo.LevelEditor = function() {
     function addReleaseListeners(element) {
         var lastGridItem;
 
-        element.onmouseover = 
+        element.onmouseover =
             function(e) {
                 lastGridItem = getGridItem(e.pageX, e.pageY);
                 if(strikeStart) {
@@ -1159,7 +1347,7 @@ ocargo.LevelEditor = function() {
                 }
             };
 
-        element.onmousemove = 
+        element.onmousemove =
             function(e) {
                 var item = getGridItem(e.pageX, e.pageY);
                 if(item != lastGridItem) {
@@ -1173,7 +1361,7 @@ ocargo.LevelEditor = function() {
                 }
             };
 
-        element.onmouseup = 
+        element.onmouseup =
             function(e) {
                 if(strikeStart) {
                     handleMouseUp(getGridItem(e.pageX, e.pageY))(e);
@@ -1209,7 +1397,7 @@ ocargo.LevelEditor = function() {
                 nodes[newStartIndex] = nodes[0];
                 nodes[0] = temp;
                 originNode = nodes[0];
-            } else if (mode === modes.MARK_DESTINATION_MODE && existingNode) {    
+            } else if (mode === modes.MARK_DESTINATION_MODE && existingNode) {
                 if (destinationNode) {
                     var prevEnd = destinationNode.coordinate;
                     markAsBackground(prevEnd);
@@ -1232,7 +1420,7 @@ ocargo.LevelEditor = function() {
     function getCoordinateFromBBox(bBox){
         return new ocargo.Coordinate((bBox.x - PAPER_PADDING) / GRID_SPACE_SIZE, (bBox.y - PAPER_PADDING) / GRID_SPACE_SIZE);
     }
-    
+
     function handleMouseOver(this_rect) {
         return function(ev) {
             ev.preventDefault();
@@ -1251,7 +1439,7 @@ ocargo.LevelEditor = function() {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
                 if (node && destinationNode !== node && originNode !== node) {
                     if (mode === modes.MARK_DESTINATION_MODE) {
-                        mark(coordMap, 'blue', 0.3, true); 
+                        mark(coordMap, 'blue', 0.3, true);
                     } else if (canPlaceCFC(node)) {
                         mark(coordMap, 'red', 0.5, true);
                     }
@@ -1272,10 +1460,12 @@ ocargo.LevelEditor = function() {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
                 if (node && destinationNode !== node && originNode !== node) {
                     markAsBackground(coordMap);
+                    markCowNodes();
                 }
             } else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap)) {
                     markAsBackground(coordMap);
+                    markCowNodes();
                 }
             }
         };
@@ -1338,7 +1528,7 @@ ocargo.LevelEditor = function() {
         var paperX;
         var paperY;
 
-        var paperWidth; 
+        var paperWidth;
         var paperHeight;
 
         var imageWidth;
@@ -1395,19 +1585,212 @@ ocargo.LevelEditor = function() {
         addReleaseListeners(image.node);
     }
 
+    function setupCowListeners(cow) {
+        var image = cow.image;
+
+        // Position in map coordinates.
+        var controlledCoord;
+
+        // Current position of the element in paper coordinates
+        var paperX;
+        var paperY;
+
+        // Where the drag started in paper coordinates
+        var originX;
+        var originY;
+
+        // Size of the paper
+        var paperWidth;
+        var paperHeight;
+
+        // Size of the image
+        var imageWidth;
+        var imageHeight;
+
+        var moved = false;
+
+        function onDragMove(dx, dy) {
+            cow.valid = false;
+            image.attr({'cursor':'default'});
+            moved = dx !== 0 || dy !== 0;
+
+            // Update image's position
+            paperX = dx + originX;
+            paperY = dy + originY;
+
+
+            // Trashcan check
+            checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight);
+
+            // Stop it being dragged off the edge of the page
+            if (paperX < 0) {
+                paperX = 0;
+            } else if (paperX + imageWidth > paperWidth) {
+                paperX = paperWidth - imageWidth;
+            }
+            if (paperY < 0) {
+                paperY =  0;
+            } else if (paperY + imageHeight >  paperHeight) {
+                paperY = paperHeight - imageHeight;
+            }
+
+            // And perform the updatee
+            image.transform('t' + paperX + ',' + paperY );
+
+            //Unmark the squares the cow previously occupied
+            if (controlledCoord) {
+                markAsBackground(controlledCoord);
+            }
+            if(cows) {
+                for( var i = 0; i < cows.length; i++){
+                    var internalCow = cows[i];
+                    if(internalCow !== cow && internalCow.controlledNode) {
+                        mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
+                    }
+                }
+            }
+            if (originNode) {
+                markAsOrigin(originNode.coordinate);
+            }
+            if (destinationNode) {
+                markAsDestination(destinationNode.coordinate);
+            }
+
+            // Now calculate the source coordinate
+            var box = image.getBBox();
+            var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
+            var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
+
+            var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+            var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+            controlledCoord = new ocargo.Coordinate(x,y);
+
+            // If source node is not on grid remove it
+            if (!isCoordinateOnGrid(controlledCoord)) {
+                controlledCoord = null;
+            }
+
+            if (controlledCoord) {
+                var colour;
+                if(isValidPlacement(controlledCoord)) {
+                    colour = VALID_LIGHT_COLOUR;
+                } else {
+                    colour = INVALID_LIGHT_COLOUR;
+                }
+
+                mark(controlledCoord, colour, 0.7, false);
+            }
+
+            // Deal with trashcan
+            var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
+            var paperAbsY = paperY - paper.scrollTop() + imageHeight/2;
+            var trashcanWidth = $('#trashcanHolder').width();
+            var trashcanHeight = $('#trashcanHolder').height();
+
+            if(paperAbsX > trashcanAbsolutePaperX && paperAbsX <= trashcanAbsolutePaperX + trashcanWidth  &&
+                paperAbsY > trashcanAbsolutePaperY - 20 && paperAbsY <= trashcanAbsolutePaperY + trashcanHeight) {
+                openTrashcan();
+            } else {
+                closeTrashcan();
+            }
+        }
+
+        function onDragStart(x, y) {
+            var bBox = image.getBBox();
+            imageWidth = bBox.width;
+            imageHeight = bBox.height;
+
+            var paperPosition = paper.position();
+            originX = x - paperPosition.left + paper.scrollLeft() - imageWidth/2;
+            originY = y - paperPosition.top + paper.scrollTop() - imageHeight/2;
+
+            paperWidth = GRID_WIDTH * GRID_SPACE_SIZE;
+            paperHeight = GRID_HEIGHT * GRID_SPACE_SIZE;
+
+            adjustCowGroupMinMaxFields(cow);
+        }
+
+        function onDragEnd() {
+            //Unmark previously occupied square
+            if(cow.controlledNode) {
+                markAsBackground(cow.controlledNode.coordinate);
+            }
+
+            // Mark squares currently occupied
+            if (controlledCoord) {
+                mark(controlledCoord, cow.data.group.color, 0.3, true);
+            }
+            if (originNode) {
+                markAsOrigin(originNode.coordinate);
+            }
+            if (destinationNode) {
+                markAsDestination(destinationNode.coordinate);
+            }
+
+            if(trashcanOpen) {
+                cow.destroy();
+            } else if(isValidPlacement(controlledCoord)) {
+                // Add back to the list of cows if on valid nodes
+                var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+                cow.controlledNode = controlledNode;
+                cow.valid = true;
+                ocargo.drawing.setCowImagePosition(controlledCoord, image, controlledNode);
+            } else {
+                cow.controlledNode = null;
+                cow.valid = false;
+            }
+            adjustCowGroupMinMaxFields(cow);
+
+            image.attr({'cursor':'pointer'});
+            closeTrashcan();
+        }
+
+        function isValidPlacement(controlledCoord){
+            var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+            if (!controlledNode)
+                return false;
+            for (var i=0; i < cows.length; i++) {
+                var otherCow = cows[i];
+                if (otherCow.controlledNode == controlledNode && cow != otherCow)
+                    return false;
+            }
+            return true;
+        }
+
+        image.drag(onDragMove, onDragStart, onDragEnd);
+        addReleaseListeners(image.node);
+    }
+
+    function adjustCowGroupMinMaxFields(draggedCow) {
+        var draggedCowGroupId = draggedCow.data.group.id;
+
+        var noOfValidCowsInGroup = 0;
+        for (var i=0; i < cows.length; i++) {
+            if(cows[i].valid && cows[i].data.group.id === draggedCowGroupId) {
+                noOfValidCowsInGroup++;
+            }
+        }
+
+        var draggedCowGroup = cowGroups[draggedCowGroupId];
+        draggedCowGroup.minCows = Math.max(1, Math.min(draggedCowGroup.minCows, noOfValidCowsInGroup));
+        draggedCowGroup.maxCows = Math.max(1, Math.min(draggedCowGroup.maxCows, noOfValidCowsInGroup));
+        $('#cow_group_select').val(draggedCowGroupId).change();
+    }
+
+
     function setupTrafficLightListeners(trafficLight) {
         var image = trafficLight.image;
 
         // Position in map coordinates.
-        var sourceCoord;                        
+        var sourceCoord;
         var controlledCoord;
 
         // Current position of the element in paper coordinates
-        var paperX;                                 
+        var paperX;
         var paperY;
 
         // Where the drag started in paper coordinates
-        var originX;                                 
+        var originX;
         var originY;
 
         // Size of the paper
@@ -1453,7 +1836,7 @@ ocargo.LevelEditor = function() {
             } else if (paperY + imageHeight >  paperHeight) {
                 paperY = paperHeight - imageHeight;
             }
-            
+
             // And perform the updatee
             image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
 
@@ -1464,6 +1847,9 @@ ocargo.LevelEditor = function() {
             if (controlledCoord) {
                 markAsBackground(controlledCoord);
             }
+
+            markCowNodes();
+
             if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
@@ -1553,7 +1939,7 @@ ocargo.LevelEditor = function() {
 
             scaling = getScaling(image);
             rotation = (image.matrix.split().rotate + 360) % 360;
-            
+
             var bBox = image.getBBox();
             imageWidth = bBox.width;
             imageHeight = bBox.height;
@@ -1578,6 +1964,9 @@ ocargo.LevelEditor = function() {
             if (controlledCoord) {
                 markAsBackground(controlledCoord);
             }
+
+            markCowNodes();
+
             if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
@@ -1603,7 +1992,7 @@ ocargo.LevelEditor = function() {
         image.drag(onDragMove, onDragStart, onDragEnd);
 
         addReleaseListeners(image.node);
-        
+
         var myLatestTap;
         $(image.node).on('click touchstart', function() {
            var now = new Date().getTime();
@@ -1646,7 +2035,7 @@ ocargo.LevelEditor = function() {
             // Test it's not already occupied
             for(var i = 0; i < trafficLights.length; i++) {
                 var tl = trafficLights[i];
-                if(tl.valid && 
+                if(tl.valid &&
                     ((tl.sourceNode === sourceNode && tl.controlledNode === controlledNode) ||
                     (tl.sourceNode === controlledNode && tl.controlledNode === sourceNode))) {
                     return false;
@@ -1656,7 +2045,7 @@ ocargo.LevelEditor = function() {
         }
 
         function occupied(sourceCoord, controlledCoord) {
-            
+
         }
     }
 
@@ -1676,7 +2065,7 @@ ocargo.LevelEditor = function() {
                 }
                 nodes.splice(nodes.indexOf(node), 1);
 
-                // Check if start or destination node        
+                // Check if start or destination node
                 if (isOriginCoordinate(coord)) {
                     markAsBackground(originNode.coordinate);
                     originNode = null;
@@ -1692,6 +2081,15 @@ ocargo.LevelEditor = function() {
                     if (node === trafficLight.sourceNode || node === trafficLight.controlledNode) {
                         trafficLights.splice(i, 1);
                         trafficLight.destroy();
+                    }
+                }
+
+                //  Check if any cows present
+                for (var i = cows.length-1; i >= 0;  i--) {
+                    var cow  =  cows[i];
+                    if (node === cow.controlledNode) {
+                        cows.splice(i, 1);
+                        cow.destroy();
                     }
                 }
             }
@@ -1724,7 +2122,7 @@ ocargo.LevelEditor = function() {
             if (previousNode && node.connectedNodes.indexOf(previousNode) === -1) {
                 node.addConnectedNodeWithBacklink(previousNode);
 
-                // If we've overwritten the origin node remove it as 
+                // If we've overwritten the origin node remove it as
                 // we can no longer place the CFC there
                 if (node === originNode || previousNode == originNode) {
                     markAsBackground(originNode.coordinate);
@@ -1765,7 +2163,7 @@ ocargo.LevelEditor = function() {
             for (y = strikeStart.y - 1; y >= strikeEnd.y; y--) {
                 func(strikeEnd.x, y);
             }
-        }    
+        }
     }
 
     function findTrafficLight(firstIndex, secondIndex) {
@@ -1850,6 +2248,31 @@ ocargo.LevelEditor = function() {
         }
         state.traffic_lights = JSON.stringify(trafficLightData);
 
+        var cowsData = [];
+
+        var cowGroupData = {}
+        for( var i = 0; i < cows.length; i++){
+            if(cows[i].valid) {
+                var groupId = cows[i].data.group.id;
+                if(!cowGroupData[groupId]) {
+                    cowGroupData[groupId] = {minCows : cowGroups[groupId].minCows,
+                        maxCows : cowGroups[groupId].maxCows,
+                        potentialCoordinates : [],
+                        type: ocargo.Cow.WHITE} //editor can only add white cow for now
+                }
+
+                var coordinates = cows[i].controlledNode.coordinate;
+                var strCoordinates = {'x':coordinates.x, 'y':coordinates.y};
+                cowGroupData[groupId].potentialCoordinates.push(strCoordinates);
+            }
+        }
+
+        for(var groupId in cowGroupData) {
+            cowsData.push(cowGroupData[groupId]);
+        }
+
+        state.cows = JSON.stringify(cowsData);
+
         // Create block data
         state.blocks = [];
         for (i = 0; i < BLOCKS.length; i++) {
@@ -1886,13 +2309,13 @@ ocargo.LevelEditor = function() {
 
         // Starting fuel of the level
         state.max_fuel = $('#max_fuel').val();
-        
+
         // Language data
         var language = $('#language_select').val();
         state.blocklyEnabled = language === 'blockly' || language === 'both' || language === 'blocklyWithPythonView';
         state.pythonViewEnabled = language === 'blocklyWithPythonView';
         state.pythonEnabled = language === 'python' || language === 'both';
-        
+
         // Other data
         state.theme = currentTheme.id;
         state.character = $('#character_select').val();
@@ -1913,6 +2336,32 @@ ocargo.LevelEditor = function() {
             new InternalTrafficLight(trafficLightData[i]);
         }
 
+        var cowGroupData = JSON.parse(state.cows);
+        for (var i = 0; i < cowGroupData.length; i++) {
+            // Add new group to group select element
+            if(i >= Object.keys(cowGroups).length) {
+                addCowGroup();
+            }
+            var cowGroupId = Object.keys(cowGroups)[i];
+            cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
+            cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
+            cowGroups[cowGroupId].type = cowGroupData[i].type;
+
+            if(cowGroupData[i].potentialCoordinates != null) {
+                for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
+                    var cowData = { coordinates: [cowGroupData[i].potentialCoordinates[j]],
+                        group: cowGroups[cowGroupId]
+                    };
+                    new InternalCow(cowData);
+                }
+            }
+        }
+
+        // Trigger change listener on cow group select box to set initial min/max values
+        $('#cow_group_select').change();
+
+        markCowNodes();
+
         // Load in destination and origin nodes
         // TODO needs to be fixed in the long term with multiple destinations
         if (state.destinations) {
@@ -1926,7 +2375,7 @@ ocargo.LevelEditor = function() {
             var originCoordinate = new ocargo.Coordinate(origin.coordinate[0], origin.coordinate[1]);
             originNode = ocargo.Node.findNodeByCoordinate(originCoordinate, nodes);
         }
-        
+
         // Load in character
         $('#character_select').val(state.character);
         $('#character_select').change();
@@ -1953,7 +2402,7 @@ ocargo.LevelEditor = function() {
         var decor = state.decor;
         for (var i = 0; i < decor.length; i++) {
             var decorObject = new InternalDecor(decor[i].decorName);
-            decorObject.setPosition(decor[i].x, 
+            decorObject.setPosition(decor[i].x,
                                     PAPER_HEIGHT - currentTheme.decor[decor[i].decorName].height - decor[i].y);
         }
 
@@ -1973,7 +2422,7 @@ ocargo.LevelEditor = function() {
                 }
             }
         }
-        
+
         // Load in language data
         var languageSelect = $('#languageSelect');
         if(state.blocklyEnabled && state.pythonEnabled) {
@@ -1984,14 +2433,14 @@ ocargo.LevelEditor = function() {
             languageSelect.val('blockly');
         }
         languageSelect.change();
-        
+
         // Other data
         if(state.max_fuel) {
             $('#max_fuel').val(state.max_fuel);
         }
     }
 
-    function loadLevel(levelID) { 
+    function loadLevel(levelID) {
         ocargo.saving.retrieveLevel(levelID, function(err, level, owned) {
             if (err !== null) {
                 console.error(err);
@@ -2040,7 +2489,7 @@ ocargo.LevelEditor = function() {
         }
     }
 
-    function retrieveStateFromLocalStorage() { 
+    function retrieveStateFromLocalStorage() {
         if (localStorage) {
             if (localStorage.levelEditorState) {
                 var state = JSON.parse(localStorage.levelEditorState);
@@ -2110,8 +2559,8 @@ ocargo.LevelEditor = function() {
 
     function isLoggedIn(activity) {
         if (USER_STATUS !== "SCHOOL_STUDENT" && USER_STATUS !== "TEACHER" && USER_STATUS !== "SOLO_STUDENT") {
-            ocargo.Drawing.startPopup("Not logged in", 
-                                      "", 
+            ocargo.Drawing.startPopup("Not logged in",
+                                      "",
                                       ocargo.messages.notLoggedIn(activity));
             return false;
         }
@@ -2120,22 +2569,23 @@ ocargo.LevelEditor = function() {
 
     function isSoloStudent() {
         if (USER_STATUS === "SOLO_STUDENT") {
-            ocargo.Drawing.startPopup("Sharing as an independent student", 
-                                      "", 
+            ocargo.Drawing.startPopup("Sharing as an independent student",
+                                      "",
                                       ocargo.messages.soloSharing);
             return false;
         }
         return true;
     }
 
-    function getLevelTextForDjangoMigration(state) {
-        // Put a call to this function in restoreState and you should get a string 
+    function getLevelTextForDjangoMigration() {
+        // Put a call to this function in restoreState and you should get a string
         // you can copy and paste into a Django migration file
+        var state = extractState();
 
         var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge', 'direct_drive'];
-        var stringFields =  ['path', 'traffic_lights', 'origin', 'destinations'];
+        var stringFields =  ['path', 'traffic_lights', 'cows', 'origin', 'destinations'];
         var otherFields = ['max_fuel']
-        
+
         var decor = null;
         var blocks = null;
 
@@ -2168,7 +2618,66 @@ ocargo.LevelEditor = function() {
         string += "\tset_decor(levelNUMBER, json.loads('" + decor + "'))\n";
         string += "\tset_blocks(levelNUMBER, json.loads('" + blocks + "'))\n";
 
+        console.log("Copy this to a Django Migration file:\n" + string);
         return string;
+    }
+
+    /*****************************************/
+    /* Internal cow representation */
+    /*****************************************/
+
+    function InternalCow(data) {
+        this.data = data;
+
+        this.getData = function() {
+            if (!this.valid) {
+                throw "Error: cannot create actual cow from invalid internal cow!";
+            }
+
+            // Where the cow is placed.
+            var coordinates = this.controlledNode.coordinate;
+            var strCoordinates= {'x':coordinates.x, 'y':coordinates.y};
+
+            return { "coordinates": [strCoordinates],
+                "groupId" : this.data.group.id
+            };
+
+        };
+
+        this.setCoordinate = function(){
+
+        };
+
+        this.destroy = function() {
+            this.image.remove();
+            var index = cows.indexOf(this);
+            if (index !== -1) {
+                cows.splice(index, 1);
+            }
+
+            markAsBackground(this.controlledNode.coordinate);
+        };
+
+        this.image = ocargo.drawing.createCowImage();
+        this.valid = false;
+
+
+        if ( data.coordinates && data.coordinates.length > 0 ) {
+            var coordinates = new ocargo.Coordinate(data.coordinates[0].x, data.coordinates[0].y);
+            this.controlledNode = ocargo.Node.findNodeByCoordinate(coordinates, nodes);
+
+            if (this.controlledNode) {
+                this.valid = true;
+                ocargo.drawing.setCowImagePosition(coordinates, this.image, this.controlledNode);
+            }
+        } else {
+            this.image.transform('...t' + (-paper.scrollLeft())  +  ',' +  paper.scrollTop());
+        }
+
+        setupCowListeners(this);
+        this.image.attr({'cursor':'pointer'});
+        cows.push(this);
+
     }
 
     /*****************************************/
@@ -2196,7 +2705,7 @@ ocargo.LevelEditor = function() {
             this.image.remove();
             var index = trafficLights.indexOf(this);
             if (index !== -1) {
-                trafficLights.splice(index, 1);       
+                trafficLights.splice(index, 1);
             }
         };
 
@@ -2274,7 +2783,7 @@ ocargo.LevelEditor = function() {
             this.image.remove();
             var index = decor.indexOf(this);
             if (index !== -1) {
-                decor.splice(index, 1);       
+                decor.splice(index, 1);
             }
         };
 

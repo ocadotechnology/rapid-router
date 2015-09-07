@@ -62,7 +62,7 @@ def check_direction(node, neighbour):
 class RandomRoadTestCase(TestCase):
 
     def create_test_data(self, num_tiles=None, branchiness=None, loopiness=None, curviness=None,
-                         traffic_lights_enabled=False, decor_enabled=True):
+                         traffic_lights_enabled=False, decor_enabled=True, cows_enabled=False):
         if num_tiles is None:
             num_tiles = random.randint(3, 30)
         if branchiness is None:
@@ -75,7 +75,7 @@ class RandomRoadTestCase(TestCase):
         from game.random_road import generate_random_map_data
 
         return generate_random_map_data(num_tiles, branchiness, loopiness, curviness,
-                                        traffic_lights_enabled, decor_enabled)
+                                        traffic_lights_enabled, decor_enabled, cows_enabled)
 
     def check_if_valid(self, origin, destinations, path, decor):
         check = find_node(origin['coordinate'][0], origin['coordinate'][1], path)

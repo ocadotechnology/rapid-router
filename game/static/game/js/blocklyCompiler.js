@@ -43,11 +43,13 @@ ocargo.BlocklyCompiler = function() {};
 
 ocargo.BlocklyCompiler.prototype.procedureBindings = null;
 ocargo.BlocklyCompiler.prototype.procedures = null;
+ocargo.BlocklyCompiler.prototype.events = null;
 ocargo.BlocklyCompiler.prototype.program = null;
 
 ocargo.BlocklyCompiler.prototype.compile = function()
 {
     this.compileProcedures();
+    this.compileEvents();
     this.compileProgram();
     this.bindProcedureCalls();
 
@@ -76,13 +78,32 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
     }
 };
 
+ocargo.BlocklyCompiler.prototype.compileEvents = function() {
+    this.events = [];
+
+    var eventBlocks = ocargo.blocklyControl.getEventBlocks();
+    for (var i = 0; i < eventBlocks.length; i++) {
+        var block = eventBlocks[i];
+        var condition = this.getCondition(block);
+
+        var bodyBlock = block.inputList[1].connection.targetBlock();
+        if (bodyBlock === null) {
+            throw ocargo.messages.eventBodyError;
+        }
+
+        var conditionType = block.type;
+
+        this.events.push(new Event(condition, this.createSequence(bodyBlock), block, conditionType));
+    }
+};
+
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {
-    this.program = new ocargo.Program();
+    this.program = new ocargo.Program(this.events);
     var startBlocks = ocargo.blocklyControl.getStartBlocks();
     for (var i = 0; i < THREADS; i++) {
-        var thread = new ocargo.Thread(i);
+        var thread = new ocargo.Thread(i, this.program);
         thread.startBlock = startBlocks[i];
-        thread.stack.push(this.createSequence(thread.startBlock));
+        thread.stack = this.createSequence(thread.startBlock);
         this.program.threads.push(thread);
     }
 };
@@ -188,6 +209,8 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
     } else if (conditionBlock.type === 'traffic_light') {
     	return this.trafficLightCondition(
             conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
+    } else if (conditionBlock.type === 'declare_event') {
+        return this.cowCrossingCondition(conditionBlock);
     }
 };
 
@@ -240,6 +263,10 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
             commands.push(new WaitCommand(block));
         } else if (block.type === 'deliver') {
             commands.push(new DeliverCommand(block));
+        } else if (block.type === 'sound_horn') {
+            commands.push(new SoundHornCommand(block));
+        } else if (block.type === 'puff_up') {
+            commands.push(new PuffUpCommand(block));
         } else if (block.type === 'controls_repeat_until') {
             commands.push(this.createRepeatUntil(block));
         } else if (block.type === 'controls_repeat_while') {
@@ -254,7 +281,7 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
             commands.push(this.createProcedureCall(block));
         }
 
-		block = block.nextConnection.targetBlock();
+		block = block.nextConnection ? block.nextConnection.targetBlock() : null;
 	}
 
     return commands;
@@ -297,6 +324,14 @@ ocargo.BlocklyCompiler.prototype.deadEndCondition = function(block) {
         return model.isDeadEnd();
     };
 };
+
+ocargo.BlocklyCompiler.prototype.cowCrossingCondition = function(block) {
+    return function(model) {
+        queueHighlight(model, block);
+        return model.isCowCrossing(block.getFieldValue('TYPE'));
+    };
+};
+
 
 ocargo.BlocklyCompiler.prototype.negateCondition = function(otherCondition) {
     return function(model) {
@@ -517,6 +552,13 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
     	code += '\n' + Blockly.Python.blockToCode(procBlocks[i]);
     }
 
+    // TODO support events in python
+    //var eventBlocks = ocargo.blocklyControl.getEventBlocks();
+    //for (var i = 0; i < eventBlocks.length; i++) {
+    //	code += '\n' + Blockly.Python.blockToCode(eventBlocks[i]);
+    //}
+
+	var startBlocks = ocargo.blocklyControl.getStartBlocks();
 	for (var i = 0; i < startBlocks.length; i++) {
 		code += '\n' + Blockly.Python.blockToCode(startBlocks[i]);
 	}

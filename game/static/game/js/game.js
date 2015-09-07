@@ -55,7 +55,7 @@ ocargo.Game.prototype.setup = function() {
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.drawing = new ocargo.Drawing();
     ocargo.drawing.preloadRoadTiles();
-    ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
+    ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, COWS, MAX_FUEL);
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
     ocargo.saving = new ocargo.Saving();
 
@@ -112,6 +112,7 @@ ocargo.Game.prototype.reset = function() {
     // Needed so animation can reset with the right information
     ocargo.model.reset(0);
 
+    ocargo.drawing.reset();
     // clear animations and sound
     ocargo.sound.stop_engine();
     ocargo.animation.resetAnimation();
@@ -151,7 +152,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
         type: 'callable',
         functionType: 'playSound',
         functionCall: ocargo.sound.start_engine,
-        description: 'starting engine',
+        description: 'starting engine'
     });
 
     program.run(ocargo.model);
@@ -506,10 +507,10 @@ ocargo.Game.prototype.setupTabs = function() {
 
             if (tabs.fast.getText() == "Fast") {
                 ocargo.game.onFastControls();
-                ocargo.animation.genericAnimationLength = ocargo.animation.FAST_ANIMATION_LENGTH;
+                ocargo.animation.speedUpAnimation();
             } else {
                 ocargo.game.onSlowControls();
-                ocargo.animation.genericAnimationLength = ocargo.animation.SLOW_ANIMATION_LENGTH;
+                ocargo.animation.resetAnimationLength();
             }
 
             if (playTextPreSpeedControl == "Play") {

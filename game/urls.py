@@ -85,7 +85,7 @@ urlpatterns = patterns(
         load_level_for_editor, name='load_level_for_editor'),
     url(r'^level_editor/level/delete/(?P<levelID>[0-9]+)/$',
         delete_level_for_editor, name='delete_level_for_editor'),
-    url(r'^level_editor/level/save/$', 'game.views.level_editor.save_level_for_editor'),
+    url(r'^level_editor/level/save/$', save_level_for_editor),
     url(r'^level_editor/level/save/(?P<levelID>[0-9]+)/$',
         save_level_for_editor, name='save_level_for_editor'),
     url(r'^level_editor/level/random/$',

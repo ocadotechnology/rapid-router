@@ -102,6 +102,8 @@ ocargo.messages = {
         }
     },
 
+    collisionWithCow: "You ran into a cow! Keep in mind that cows can appear anywhere on the map.",
+
     // Level editor.
     levelEditorTitle: "Welcome to the Level editor! ",
     levelEditorSubtitle: "Click  " +
@@ -216,6 +218,8 @@ ocargo.messages = {
     // Malformed program.
     whileConditionError: "Perhaps try looking at your 'repeat' blocks? ",
     whileBodyError: "Perhaps try looking at your 'repeat' blocks? ",
+    eventConditionError: "Perhaps try looking at your 'event' blocks? ",
+    eventBodyError: "Perhaps try looking at your 'event' blocks? ",
     ifConditionError: "Perhaps try looking at your 'if' blocks? ",
     procMissingNameError: "Perhaps try looking at your 'define' blocks? ",
     procMissingBodyError: "Perhaps try looking at your 'define' blocks? ",

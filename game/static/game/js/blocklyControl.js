@@ -264,6 +264,17 @@ ocargo.BlocklyControl.prototype.getProcedureBlocks = function() {
     return startBlocks;
 };
 
+ocargo.BlocklyControl.prototype.getEventBlocks = function() {
+    // find and return all top blocks that are event handler blocks
+    var startBlocks = [];
+    Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
+        if (block.type === 'declare_event') {
+            startBlocks.push(block);
+        }
+    });
+    return startBlocks;
+};
+
 ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };
@@ -271,6 +282,7 @@ ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
 ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
     var startBlocks = this.getStartBlocks();
     var procedureBlocks = this.getProcedureBlocks();
+    var eventBlocks = this.getEventBlocks();
     var n = 0;
     var i;
 
@@ -278,8 +290,14 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
         n += count(startBlocks[i].nextConnection.targetBlock());
     }
 
+    // 1 includes the procedure declaration block
     for (i = 0; i < procedureBlocks.length; i++) {
         n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
+    }
+
+    // 2 includes the event block and the on-condition block
+    for (i = 0; i < eventBlocks.length; i++) {
+        n += 2 + count(eventBlocks[i].inputList[1].connection.targetBlock());
     }
 
     return n;
