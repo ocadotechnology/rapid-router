@@ -627,7 +627,6 @@ ocargo.LevelEditor = function() {
             var selectedLevel = null;
 
             tabs.save.setOnChange(function () {
-                getLevelTextForDjangoMigration();
                 if (!isLoggedIn("save") || !isLevelValid()) {
                     currentTabSelected.select();
                     return;
