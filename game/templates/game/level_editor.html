@@ -11,6 +11,9 @@
 
 {% block scripts %}
 {{block.super}}
+  <script>
+    var COW_LEVELS_ENABLED = '{{ cow_level_enabled }}' === 'True';
+  </script>
   <script src="{% static "game/js/utils.js" %}"></script>
   <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
   <script src="{% static "game/js/raphael.js" %}"></script>

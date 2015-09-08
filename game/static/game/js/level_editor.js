@@ -321,89 +321,96 @@ ocargo.LevelEditor = function() {
                                           "sourceCoordinate": null,  "direction": null});
             });
 
-            $('#cow').click(function() {
-                new InternalCow({group: cowGroups[$('#cow_group_select').val()]});
-            });
+            if(COW_LEVELS_ENABLED) {
+                $('#cow').click(function () {
+                    new InternalCow({group: cowGroups[$('#cow_group_select').val()]});
+                });
 
-            //"Advanced" button
-            $('#advanced_cow_options_button').on('click', function() {
-                $(this).toggleClass('cow_navigation_button_pressed');
+                //"Advanced" button
+                $('#advanced_cow_options_button').on('click', function () {
+                    $(this).toggleClass('cow_navigation_button_pressed');
 
-                var showIconSrc = "/static/game/image/icons/show.svg";
-                var hideIconSrc = "/static/game/image/icons/hide_button.svg";
-                var advancedButtonIcon = $('#advanced_cow_options_button_icon');
-                var iconSrc = (advancedButtonIcon.attr("src") === showIconSrc) ? hideIconSrc : showIconSrc;
-                advancedButtonIcon.attr("src", iconSrc);
+                    var showIconSrc = "/static/game/image/icons/show.svg";
+                    var hideIconSrc = "/static/game/image/icons/hide_button.svg";
+                    var advancedButtonIcon = $('#advanced_cow_options_button_icon');
+                    var iconSrc = (advancedButtonIcon.attr("src") === showIconSrc) ? hideIconSrc : showIconSrc;
+                    advancedButtonIcon.attr("src", iconSrc);
 
-                var advancedDivHidden = $('#cow_advanced_div').css('display') === 'none';
+                    var advancedDivHidden = $('#cow_advanced_div').css('display') === 'none';
 
-                $('#cow_advanced_div').slideToggle(1000);
+                    $('#cow_advanced_div').slideToggle(1000);
 
-                //Only scroll down if advanced options were previously hidden
-                if(advancedDivHidden) {
-                    $('#tab_panes_wrapper').animate({scrollTop: $('#tab_panes_wrapper')[0].scrollHeight},
-                        1500,
-                        "swing");
-                }
-            });
-
-            // Set up cow type selector and listener
-            $('#cow_type_select').append($('<option>', { value : ocargo.Cow.WHITE})
-                .text('White'));
-            $('#cow_type_select').append($('<option>', { value : ocargo.Cow.BROWN})
-                .text('Brown'));
-            $('#cow_type_select').on('change', function() {
-                $('#cow').attr('src', ocargo.Drawing.imageDir + ocargo.Drawing.cowUrl($('#cow_type_select').val()));
-                cowGroups[$('#cow_group_select').val()].type = $('#cow_type_select').val();
-            });
-
-            //Min & max spinners
-            var minSpinner = $('#min_cows_spinner').spinner({ min:   1,
-                max:   1}).val(1);
-            minSpinner.on('spinstop', function() {
-                $('#max_cows_spinner').spinner('option', 'min', $('#min_cows_spinner').val());
-                cowGroups[$('#cow_group_select').val()].minCows = $('#min_cows_spinner').val();
-            });
-
-            var maxSpinner = $('#max_cows_spinner').spinner({ min:   1,
-                max:   1}).val(1);
-            maxSpinner.on('spinstop', function() {
-                $('#min_cows_spinner').spinner('option', 'max', $('#max_cows_spinner').val());
-                cowGroups[$('#cow_group_select').val()].maxCows = $('#max_cows_spinner').val();
-            });
-
-            //Group select element (has to be initialised after the min and max spinners are created)
-            $('#cow_group_select').on('change', function() {
-                $('#cow_group_select').css('background-color', cowGroups[this.value].color);
-                //Set max values of min & max spinners
-                var groupId = this.value;
-                var noOfValidCowsInGroup = 0;
-                for (var i=0; i < cows.length; i++) {
-                    if(cows[i].valid && cows[i].data.group.id === groupId) {
-                        noOfValidCowsInGroup++;
+                    //Only scroll down if advanced options were previously hidden
+                    if (advancedDivHidden) {
+                        $('#tab_panes_wrapper').animate({scrollTop: $('#tab_panes_wrapper')[0].scrollHeight},
+                            1500,
+                            "swing");
                     }
+                });
+
+                // Set up cow type selector and listener
+                $('#cow_type_select').append($('<option>', {value: ocargo.Cow.WHITE})
+                    .text('White'));
+                $('#cow_type_select').append($('<option>', {value: ocargo.Cow.BROWN})
+                    .text('Brown'));
+                $('#cow_type_select').on('change', function () {
+                    $('#cow').attr('src', ocargo.Drawing.imageDir + ocargo.Drawing.cowUrl($('#cow_type_select').val()));
+                    cowGroups[$('#cow_group_select').val()].type = $('#cow_type_select').val();
+                });
+
+                //Min & max spinners
+                var minSpinner = $('#min_cows_spinner').spinner({
+                    min: 1,
+                    max: 1
+                }).val(1);
+                minSpinner.on('spinstop', function () {
+                    $('#max_cows_spinner').spinner('option', 'min', $('#min_cows_spinner').val());
+                    cowGroups[$('#cow_group_select').val()].minCows = $('#min_cows_spinner').val();
+                });
+
+                var maxSpinner = $('#max_cows_spinner').spinner({
+                    min: 1,
+                    max: 1
+                }).val(1);
+                maxSpinner.on('spinstop', function () {
+                    $('#min_cows_spinner').spinner('option', 'max', $('#max_cows_spinner').val());
+                    cowGroups[$('#cow_group_select').val()].maxCows = $('#max_cows_spinner').val();
+                });
+
+                //Group select element (has to be initialised after the min and max spinners are created)
+                $('#cow_group_select').on('change', function () {
+                    $('#cow_group_select').css('background-color', cowGroups[this.value].color);
+                    //Set max values of min & max spinners
+                    var groupId = this.value;
+                    var noOfValidCowsInGroup = 0;
+                    for (var i = 0; i < cows.length; i++) {
+                        if (cows[i].valid && cows[i].data.group.id === groupId) {
+                            noOfValidCowsInGroup++;
+                        }
+                    }
+
+                    // Set cow type
+                    $('#cow_type_select').val(cowGroups[this.value].type).change();
+
+                    var minMaxValue = Math.max(1, cowGroups[this.value].maxCows);
+                    $('#min_cows_spinner').spinner('option', 'max', minMaxValue);
+                    var maxMinValue = Math.max(1, cowGroups[this.value].minCows);
+                    $('#max_cows_spinner').spinner('option', 'min', maxMinValue);
+                    $('#max_cows_spinner').spinner('option', 'max', Math.max(1, noOfValidCowsInGroup));
+
+                    //Set min & max values
+                    $('#min_cows_spinner').val(cowGroups[this.value].minCows);
+                    $('#max_cows_spinner').val(cowGroups[this.value].maxCows);
+                });
+
+                if (Object.keys(cowGroups).length == 0) {
+                    addCowGroup();
                 }
 
-                // Set cow type
-                $('#cow_type_select').val(cowGroups[this.value].type).change();
-
-                var minMaxValue = Math.max(1, cowGroups[this.value].maxCows);
-                $('#min_cows_spinner').spinner('option', 'max', minMaxValue);
-                var maxMinValue = Math.max(1, cowGroups[this.value].minCows);
-                $('#max_cows_spinner').spinner('option', 'min', maxMinValue);
-                $('#max_cows_spinner').spinner('option', 'max', Math.max(1, noOfValidCowsInGroup));
-
-                //Set min & max values
-                $('#min_cows_spinner').val(cowGroups[this.value].minCows);
-                $('#max_cows_spinner').val(cowGroups[this.value].maxCows);
-            });
-
-            if(Object.keys(cowGroups).length == 0) {
-                addCowGroup();
+                $('#add_cow_group_button').click(addCowGroup);
+                $('#remove_cow_group_button').click(removeCowGroup);
             }
 
-            $('#add_cow_group_button').click(addCowGroup);
-            $('#remove_cow_group_button').click(removeCowGroup);
         }
 
         function setupCharacterTab() {
@@ -993,21 +1000,25 @@ ocargo.LevelEditor = function() {
     /************/
 
     function addCowGroup() {
-        var color = COW_GROUP_COLOR_PALETTE[(currentCowGroupId - 1) % COW_GROUP_COLOR_PALETTE.length];
-        var style = 'background-color: ' + color;
-        var value = 'group' + currentCowGroupId++;
-        var type = ocargo.Cow.WHITE;
+        if(COW_LEVELS_ENABLED) {
+            var color = COW_GROUP_COLOR_PALETTE[(currentCowGroupId - 1) % COW_GROUP_COLOR_PALETTE.length];
+            var style = 'background-color: ' + color;
+            var value = 'group' + currentCowGroupId++;
+            var type = ocargo.Cow.WHITE;
 
-        cowGroups[value] = {id : value,
-            color : color,
-            minCows: 1,
-            maxCows: 1,
-            type: type};
+            cowGroups[value] = {
+                id: value,
+                color: color,
+                minCows: 1,
+                maxCows: 1,
+                type: type
+            };
 
-        var text = 'Group ' + Object.keys(cowGroups).length;
-        $('#cow_group_select').append($('<option>', { value : value, style : style })
-            .text(text));
-        $('#cow_group_select').val(value).change();
+            var text = 'Group ' + Object.keys(cowGroups).length;
+            $('#cow_group_select').append($('<option>', {value: value, style: style})
+                .text(text));
+            $('#cow_group_select').val(value).change();
+        }
     }
 
     function removeCowGroup() {
@@ -2349,31 +2360,34 @@ ocargo.LevelEditor = function() {
             new InternalTrafficLight(trafficLightData[i]);
         }
 
-        var cowGroupData = JSON.parse(state.cows);
-        for (var i = 0; i < cowGroupData.length; i++) {
-            // Add new group to group select element
-            if(i >= Object.keys(cowGroups).length) {
-                addCowGroup();
-            }
-            var cowGroupId = Object.keys(cowGroups)[i];
-            cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
-            cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
-            cowGroups[cowGroupId].type = cowGroupData[i].type;
+        if(COW_LEVELS_ENABLED) {
+            var cowGroupData = JSON.parse(state.cows);
+            for (var i = 0; i < cowGroupData.length; i++) {
+                // Add new group to group select element
+                if (i >= Object.keys(cowGroups).length) {
+                    addCowGroup();
+                }
+                var cowGroupId = Object.keys(cowGroups)[i];
+                cowGroups[cowGroupId].minCows = cowGroupData[i].minCows;
+                cowGroups[cowGroupId].maxCows = cowGroupData[i].maxCows;
+                cowGroups[cowGroupId].type = cowGroupData[i].type;
 
-            if(cowGroupData[i].potentialCoordinates != null) {
-                for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
-                    var cowData = { coordinates: [cowGroupData[i].potentialCoordinates[j]],
-                        group: cowGroups[cowGroupId]
-                    };
-                    new InternalCow(cowData);
+                if (cowGroupData[i].potentialCoordinates != null) {
+                    for (var j = 0; j < cowGroupData[i].potentialCoordinates.length; j++) {
+                        var cowData = {
+                            coordinates: [cowGroupData[i].potentialCoordinates[j]],
+                            group: cowGroups[cowGroupId]
+                        };
+                        new InternalCow(cowData);
+                    }
                 }
             }
+
+            // Trigger change listener on cow group select box to set initial min/max values
+            $('#cow_group_select').change();
+
+            markCowNodes();
         }
-
-        // Trigger change listener on cow group select box to set initial min/max values
-        $('#cow_group_select').change();
-
-        markCowNodes();
 
         // Load in destination and origin nodes
         // TODO needs to be fixed in the long term with multiple destinations
