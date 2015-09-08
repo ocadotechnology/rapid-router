@@ -79,7 +79,7 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
 };
 
 ocargo.BlocklyCompiler.prototype.compileEvents = function() {
-    this.events = [];
+    var newEvents = [];
 
     var eventBlocks = ocargo.blocklyControl.getEventBlocks();
     for (var i = 0; i < eventBlocks.length; i++) {
@@ -93,8 +93,10 @@ ocargo.BlocklyCompiler.prototype.compileEvents = function() {
 
         var conditionType = block.type;
 
-        this.events.push(new Event(condition, this.createSequence(bodyBlock), block, conditionType));
+        newEvents.push(new Event(condition, this.createSequence(bodyBlock), block, conditionType));
     }
+
+    this.events = newEvents;
 };
 
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {

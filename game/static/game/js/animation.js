@@ -70,6 +70,13 @@ ocargo.Animation.prototype.isFinished = function() {
 	return this.finished;
 };
 
+ocargo.Animation.prototype.removeCows = function() {
+	for (var i = 0; i < this.activeCows.length; i++) {
+		ocargo.drawing.removeCow(this.activeCows[i]);
+	}
+	this.activeCows = [];
+}
+
 ocargo.Animation.prototype.resetAnimation = function() {
 	this.animationQueue = [[]];
 
@@ -88,10 +95,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 		ocargo.drawing.transitionTrafficLight(tl.id, tl.state, 0);
 	}
 
-	for(var i = 0; i < this.activeCows.length; i++){
-		ocargo.drawing.removeCow(this.activeCows[i]);
-	}
-	this.activeCows = [];
+	this.removeCows();
 
 	for(var i = 0; i < this.model.map.destinations.length; i++) {
 		var destination = this.model.map.destinations[i];
@@ -136,19 +140,19 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		// Perform all events for this timestamp
 		while (timestampQueue.length > 0) {
 			var delay = this.performAnimation(timestampQueue.shift());
-			if(this.crashed && delay!=0){
+			if (this.crashed && delay != 0) {
 				//Special case for crashing into cow as the van travel less before crashing
 				maxDelay = delay;
-			}else{
+			} else {
 				maxDelay = Math.max(maxDelay, delay);
 			}
 		}
 		// And move onto the next timestamp
 		this.timestamp += 1;
-        // Update defaultAnimationLength at every increment to prevent sudden stop in animation
-        if(!this.crashed && this.numberOfCowsOnMap>0){
+		// Update defaultAnimationLength at every increment to prevent sudden stop in animation
+		if (!this.crashed && this.numberOfCowsOnMap > 0) {
 			this.genericAnimationLength = this.currentBaseAnimationLength() * 1.5;
-		}else{
+		} else {
 			this.genericAnimationLength = this.currentBaseAnimationLength();
 		}
 	}
@@ -193,23 +197,23 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 	this.animationQueue[this.lastTimestamp] = [];
 };
 
-ocargo.Animation.prototype.performAnimation = function(a) {
+ocargo.Animation.prototype.performAnimation = function(animation) {
 	// animation length is either custom set (for each element) or generic
-	var animationLength = a.animationLength || this.genericAnimationLength;
-	//console.log("Type: " + a.type + " Description: " + a.description);
-	switch (a.type) {
+	var animationLength = animation.animationLength || this.genericAnimationLength;
+	//console.log("Type: " + animation.type + " Description: " + animation.description);
+    switch (animation.type) {
 		case 'callable':
-			animationLength = a.animationLength || 0;
-			a.functionCall();
+			animationLength = animation.animationLength || 0;
+			animation.functionCall();
 			break;
 		case 'van':
 			// Set all current animations to the final position, so we don't get out of sync
-			var vanID = a.id;
+			var vanID = animation.id;
 			ocargo.drawing.skipOutstandingVanAnimationsToEnd(vanID);
             ocargo.drawing.scrollToShowVan(vanID);
 
             // move van
-            switch (a.vanAction) {
+            switch (animation.vanAction) {
             	case 'FORWARD':
             		ocargo.drawing.moveForward(vanID, animationLength, null, this.effects.shift());
             		break;
@@ -245,54 +249,54 @@ ocargo.Animation.prototype.performAnimation = function(a) {
                     break;
             	case 'CRASH':
 					this.crashed = true;
-            		ocargo.drawing.crash(vanID, animationLength, a.previousNode, a.currentNode,
-            			a.attemptedAction, a.startNode);
+            		ocargo.drawing.crash(vanID, animationLength, animation.previousNode, animation.currentNode,
+            			animation.attemptedAction, animation.startNode);
                     animationLength += 100;
             		break;
 				case 'COLLISION_WITH_COW':
 					this.crashed = true;
 					//Update animationLength with time van moves before crashing
-					animationLength = ocargo.drawing.collisionWithCow(vanID, animationLength, a.previousNode, a.currentNode,
-						a.attemptedAction, a.startNode);
+					animationLength = ocargo.drawing.collisionWithCow(vanID, animationLength, animation.previousNode, animation.currentNode,
+						animation.attemptedAction, animation.startNode);
 					break;
             	case 'DELIVER':
-            		ocargo.drawing.deliver(a.destinationID, animationLength);
+            		ocargo.drawing.deliver(animation.destinationID, animationLength);
 					break;
             	case 'OBSERVE':
             		break;
             }
             // Check if fuel update present
-            if (typeof a.fuel != 'undefined') {
-                this.updateFuelGauge(a.fuel);
+            if (typeof animation.fuel != 'undefined') {
+                this.updateFuelGauge(animation.fuel);
             }
 			break;
 		case 'popup':
 			var title = "";
-			var leadMsg = a.popupMessage;
+			var leadMsg = animation.popupMessage;
 			var buttons = '';
 
 			// sort popup...
-			switch (a.popupType) {
+			switch (animation.popupType) {
 				case 'WIN':
 					title = ocargo.messages.winTitle;
 					var levelMsg = [];
 
-					if (!a.pathScoreDisabled) {
-						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(a.routeCoins)
-							+ "<span id=\"routeScore\">" + a.pathLengthScore + "/" + a.maxScoreForPathLength + "</span>");
+					if (!animation.pathScoreDisabled) {
+						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(animation.routeCoins)
+							+ "<span id=\"routeScore\">" + animation.pathLengthScore + "/" + animation.maxScoreForPathLength + "</span>");
 					}
 
-					if (a.maxScoreForNumberOfInstructions != 0){
+					if (animation.maxScoreForNumberOfInstructions != 0){
 						levelMsg.push(ocargo.messages.algorithmScore +
-							ocargo.Drawing.renderCoins(a.instrCoins)
-                            + "<span id=\"algorithmScore\">" + a.instrScore + "/" + a.maxScoreForNumberOfInstructions + "</span>");
+							ocargo.Drawing.renderCoins(animation.instrCoins)
+                            + "<span id=\"algorithmScore\">" + animation.instrScore + "/" + animation.maxScoreForNumberOfInstructions + "</span>");
 					}
 
-					levelMsg.push(ocargo.messages.totalScore(a.totalScore, a.maxScore));
+					levelMsg.push(ocargo.messages.totalScore(animation.totalScore, animation.maxScore));
 
 					levelMsg.push(leadMsg);
 
-					if(a.performance != "scorePerfect"){
+					if (animation.performance != "scorePerfect") {
 						buttons += ocargo.button.tryAgainButtonHtml();
 					}
 
@@ -300,15 +304,15 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 						levelMsg.push(ocargo.messages.nowTryPython);
 						buttons += ocargo.button.addDismissButtonHtml('Close');
 					} else {
-						// If there exists next level, add a button which redirects the user to that
+						// If there exists next level, add animation button which redirects the user to that
 						if (NEXT_LEVEL) {
 							buttons += ocargo.button.redirectButtonHtml('next_level_button', '/rapidrouter/' + NEXT_LEVEL + '/',
 					        								     		'Next Level');
 					    } else {
 							/*
-							 This is the last level of the episode. If there exists a next episode, add button to
+							 This is the last level of the episode. If there exists animation next episode, add button to
 							 redirect user to it or level selection page.
-							 If this is a default level and there isn't a next episode, user has reached the end of the
+							 If this is animation default level and there isn't animation next episode, user has reached the end of the
 							 game. Add button to encourage users to create their own levels or redirect to level
 							 selection page.
 							 */
@@ -338,12 +342,12 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 					break;
 			}
 			var otherMsg = "";
-			if (a.popupHint) {
+			if (animation.popupHint) {
 				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
 				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}
 			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons);
-			if (a.popupHint) {
+			if (animation.popupHint) {
 				$("#hintPopupBtn").click( function(){
 	                    $("#hintText").show(500);
 	                    $("#hintBtnPara").hide();
@@ -352,29 +356,34 @@ ocargo.Animation.prototype.performAnimation = function(a) {
 	        }
 			break;
 		case 'trafficlight':
-			ocargo.drawing.transitionTrafficLight(a.id, a.colour, animationLength/2);
+			ocargo.drawing.transitionTrafficLight(animation.id, animation.colour, animationLength/2);
 			break;
 		case 'cow':
             this.numberOfCowsOnMap++;
-			var activeCow = ocargo.drawing.renderCow(a.id, a.coordinate, a.node, animationLength, a.cowType);
+			var activeCow = ocargo.drawing.renderCow(animation.id, animation.coordinate, animation.node, animationLength, animation.cowType);
 			this.activeCows.push(activeCow);
 			break;
         case 'cow_leave':
             this.numberOfCowsOnMap--;
-            for (var i=0; i<this.activeCows.length; i++) {
-				var cow = this.activeCows[i];
-				if (cow.coordinate == a.coordinate){
-					this.activeCows.splice(i, 1);   // remove cow from array
-					ocargo.drawing.removeCow(cow, animationLength);  // remove it from drawing
-				}
-			}
+			var cow = this._extractCowAt(animation.coordinate);
+            ocargo.drawing.removeCow(cow, animationLength);  // remove it from drawing
 			break;
 		case 'console':
-			ocargo.pythonControl.appendToConsole(a.text);
+			ocargo.pythonControl.appendToConsole(animation.text);
 			break;
 	}
 	return animationLength;
 };
+
+ocargo.Animation.prototype._extractCowAt = function() {
+    for (var i = 0; i < this.activeCows.length; i++) {
+        var cow = this.activeCows[i];
+        if (cow.coordinate == coordinate) {
+            this.activeCows.splice(i, 1);   // remove cow from array
+            return cow;
+        }
+    }
+}
 
 ocargo.Animation.prototype.updateFuelGauge = function(fuelPercentage) {
     var degrees = ((fuelPercentage / 100) * 240) - 120;
