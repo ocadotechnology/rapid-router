@@ -81,7 +81,7 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
 ocargo.BlocklyCompiler.prototype.compileEvents = function() {
     var newEvents = [];
 
-    var eventBlocks = ocargo.blocklyControl.getEventBlocks();
+    var eventBlocks = ocargo.blocklyControl.onEventDoBlocks();
     for (var i = 0; i < eventBlocks.length; i++) {
         var block = eventBlocks[i];
         var condition = this.getCondition(block);
@@ -555,7 +555,7 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
     }
 
     // TODO support events in python
-    //var eventBlocks = ocargo.blocklyControl.getEventBlocks();
+    //var eventBlocks = ocargo.blocklyControl.onEventDoBlocks();
     //for (var i = 0; i < eventBlocks.length; i++) {
     //	code += '\n' + Blockly.Python.blockToCode(eventBlocks[i]);
     //}

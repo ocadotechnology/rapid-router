@@ -265,7 +265,7 @@ ocargo.BlocklyControl.prototype.getProcedureBlocks = function() {
     return startBlocks;
 };
 
-ocargo.BlocklyControl.prototype.getEventBlocks = function() {
+ocargo.BlocklyControl.prototype.onEventDoBlocks = function() {
     // find and return all top blocks that are event handler blocks
     var startBlocks = [];
     Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
@@ -283,7 +283,7 @@ ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
 ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
     var startBlocks = this.getStartBlocks();
     var procedureBlocks = this.getProcedureBlocks();
-    var eventBlocks = this.getEventBlocks();
+    var eventBlocks = this.onEventDoBlocks();
     var n = 0;
     var i;
 
