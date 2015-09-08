@@ -623,7 +623,7 @@ ocargo.Drawing = function () {
         return {drawX: drawX, drawY: drawY, rotation: rotation};
     };
 
-    this.createCowImage = function() {
+    this.createCowImage = function(type) {
         return paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), 0, 0, COW_WIDTH, COW_HEIGHT);
     };
 
