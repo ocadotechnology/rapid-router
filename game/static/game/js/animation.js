@@ -375,7 +375,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 	return animationLength;
 };
 
-ocargo.Animation.prototype._extractCowAt = function() {
+ocargo.Animation.prototype._extractCowAt = function(coordinate) {
     for (var i = 0; i < this.activeCows.length; i++) {
         var cow = this.activeCows[i];
         if (cow.coordinate == coordinate) {
