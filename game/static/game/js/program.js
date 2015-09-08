@@ -78,27 +78,15 @@ ocargo.Thread.prototype.run = function(model) {
 
 ocargo.Thread.prototype.step = function(model) {
 
-	var activeEvent = null;
-
 	// check if any event condition is true
 	for (var i=0; i<this.program.events.length; i++) {
 		var event = this.program.events[i];
 		model.shouldObserve = false;
 		if (event.condition(model)) {
-			if (!activeEvent || event.level() < activeEvent.level()) {
-				activeEvent = event;
-			}
+			event.execute(this, model);
 		}
 		model.shouldObserve = true;
 	}
-
-	// only execute the event if it raises the event level
-	if (activeEvent && this.eventLevel > activeEvent.level()) {
-		// tell the event about the old event level
-		activeEvent.setOldLevel(this.eventLevel);
-		// add event handler to stack (looping)
-		activeEvent.execute(this, model);
-    }
 
 	var commandToProcess = this.stack.shift();
 	this.noExecutionSteps ++;
