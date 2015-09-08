@@ -68,7 +68,7 @@ function csrfSafeMethod(method) {
 /************************/
 
 ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
-	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
+	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
 		$.ajax({
 	        url: '/rapidrouter/workspace/load_list/',
 	        type: 'GET',
@@ -91,7 +91,7 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function(callback) {
 };
 
 ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
-	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
+	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
 		$.ajax({
             url: '/rapidrouter/workspace/load/' + id + '/',
             type: 'GET',
@@ -118,7 +118,7 @@ ocargo.Saving.prototype.retrieveWorkspace = function(id, callback) {
 
 ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
     csrftoken = $.cookie('csrftoken');
-	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
+	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
 		$.ajax({
             url: '/rapidrouter/workspace/delete/' + id + '/',
             type: 'POST',
@@ -146,7 +146,7 @@ ocargo.Saving.prototype.deleteWorkspace = function(id, callback) {
 
 ocargo.Saving.prototype.saveWorkspace = function(workspace, id, callback) {
     csrftoken = $.cookie('csrftoken');
-	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT') {
+	if (USER_STATUS === 'TEACHER' ||  USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
 		$.ajax({
             url: '/rapidrouter/workspace/save/' + (id ? (id + '/') : ''),
             type: 'POST',

@@ -110,7 +110,7 @@ function setupCoins() {
         }
     }
 
-    if(episodeToOpen && (USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'SOLO_STUDENT')) {
+    if(episodeToOpen && (USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT')) {
         $('#episode' + episodeToOpen.id).click();
     }
 

@@ -737,7 +737,7 @@ ocargo.LevelEditor = function() {
 
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
-                if (!isSoloStudent() ||  !isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
+                if (!isIndependentStudent() ||  !isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
                     currentTabSelected.select();
                     return;
                 }
@@ -2585,7 +2585,7 @@ ocargo.LevelEditor = function() {
     }
 
     function isLoggedIn(activity) {
-        if (USER_STATUS !== "SCHOOL_STUDENT" && USER_STATUS !== "TEACHER" && USER_STATUS !== "SOLO_STUDENT") {
+        if (USER_STATUS !== "SCHOOL_STUDENT" && USER_STATUS !== "TEACHER" && USER_STATUS !== "INDEPENDENT_STUDENT") {
             ocargo.Drawing.startPopup("Not logged in",
                                       "",
                                       ocargo.messages.notLoggedIn(activity));
@@ -2594,11 +2594,11 @@ ocargo.LevelEditor = function() {
         return true;
     }
 
-    function isSoloStudent() {
-        if (USER_STATUS === "SOLO_STUDENT") {
+    function isIndependentStudent() {
+        if (USER_STATUS === "INDEPENDENT_STUDENT") {
             ocargo.Drawing.startPopup("Sharing as an independent student",
                                       "",
-                                      ocargo.messages.soloSharing);
+                                      ocargo.messages.independentStudentSharing);
             return false;
         }
         return true;

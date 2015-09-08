@@ -165,7 +165,7 @@ ocargo.messages = {
         return "Unfortunately you need to be logged in to " + activity +
             " levels. You can log on <a href='/play/'>here</a>.";
     },
-    soloSharing:  "Sorry but as an independent student you'll need to join a school or club to " +
+    independentStudentSharing:  "Sorry but as an independent student you'll need to join a school or club to " +
         "share your levels with others.",
     internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
