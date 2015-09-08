@@ -347,6 +347,16 @@ ocargo.LevelEditor = function() {
                 }
             });
 
+            // Set up cow type selector and listener
+            $('#cow_type_select').append($('<option>', { value : ocargo.Cow.WHITE})
+                .text('White'));
+            $('#cow_type_select').append($('<option>', { value : ocargo.Cow.BROWN})
+                .text('Brown'));
+            $('#cow_type_select').on('change', function() {
+                $('#cow').attr('src', ocargo.Drawing.imageDir + ocargo.Drawing.cowUrl($('#cow_type_select').val()));
+                cowGroups[$('#cow_group_select').val()].type = $('#cow_type_select').val();
+            });
+
             //Min & max spinners
             var minSpinner = $('#min_cows_spinner').spinner({ min:   1,
                 max:   1}).val(1);
@@ -365,7 +375,6 @@ ocargo.LevelEditor = function() {
             //Group select element (has to be initialised after the min and max spinners are created)
             $('#cow_group_select').on('change', function() {
                 $('#cow_group_select').css('background-color', cowGroups[this.value].color);
-
                 //Set max values of min & max spinners
                 var groupId = this.value;
                 var noOfValidCowsInGroup = 0;
@@ -374,6 +383,9 @@ ocargo.LevelEditor = function() {
                         noOfValidCowsInGroup++;
                     }
                 }
+
+                // Set cow type
+                $('#cow_type_select').val(cowGroups[this.value].type).change();
 
                 var minMaxValue = Math.max(1, cowGroups[this.value].maxCows);
                 $('#min_cows_spinner').spinner('option', 'max', minMaxValue);
@@ -984,11 +996,13 @@ ocargo.LevelEditor = function() {
         var color = COW_GROUP_COLOR_PALETTE[(currentCowGroupId - 1) % COW_GROUP_COLOR_PALETTE.length];
         var style = 'background-color: ' + color;
         var value = 'group' + currentCowGroupId++;
+        var type = ocargo.Cow.WHITE;
 
         cowGroups[value] = {id : value,
             color : color,
             minCows: 1,
-            maxCows: 1};
+            maxCows: 1,
+            type: type};
 
         var text = 'Group ' + Object.keys(cowGroups).length;
         $('#cow_group_select').append($('<option>', { value : value, style : style })
@@ -2257,7 +2271,7 @@ ocargo.LevelEditor = function() {
                     cowGroupData[groupId] = {minCows : cowGroups[groupId].minCows,
                         maxCows : cowGroups[groupId].maxCows,
                         potentialCoordinates : [],
-                        type: ocargo.Cow.WHITE} //editor can only add white cow for now
+                        type: cowGroups[groupId].type} //editor can only add white cow for now
                 }
 
                 var coordinates = cows[i].controlledNode.coordinate;
@@ -2657,7 +2671,7 @@ ocargo.LevelEditor = function() {
             markAsBackground(this.controlledNode.coordinate);
         };
 
-        this.image = ocargo.drawing.createCowImage();
+        this.image = ocargo.drawing.createCowImage(data.group.type);
         this.valid = false;
 
 

@@ -268,24 +268,6 @@ function initCustomBlocksDescription() {
         }
     };
 
-    /*****************/
-    /*     Events    */
-    /*****************/
-
-    Blockly.Blocks['cow_crossing'] = {
-        init: function() {
-            this.setColour(290);
-            this.setOutput(true, 'Event');
-            var dropdown = new Blockly.FieldDropdown([['white', ocargo.Cow.WHITE], ['brown', ocargo.Cow.BROWN]]);
-            this.appendDummyInput()
-                .appendField(dropdown, 'TYPE')
-                .appendField('cow crossing')
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
-                    ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH,
-                    ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
-        }
-    };
-
     /****************/
     /*  Procedures  */
     /****************/
@@ -333,22 +315,14 @@ function initCustomBlocksDescription() {
         init: function() {
             this.setColour(260);
             var dropdown = new Blockly.FieldDropdown([['white', ocargo.Cow.WHITE], ['brown', ocargo.Cow.BROWN]], function(option) {
-                var imageUrl = ocargo.Drawing.imageDir;
-                switch(option) {
-                    case ocargo.Cow.WHITE:
-                        imageUrl += ocargo.Drawing.whiteCowUrl;
-                        break;
-                    case ocargo.Cow.BROWN:
-                        imageUrl += ocargo.Drawing.brownCowUrl;
-                        break;
-                }
+                var imageUrl = ocargo.Drawing.imageDir + ocargo.Drawing.cowUrl(option);
                 this.sourceBlock_.getField('IMAGE').setValue(imageUrl);
             });
             this.appendDummyInput('Event')
                 .appendField('On ')
                 .appendField(dropdown, 'TYPE')
                 .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
-                    ocargo.BlocklyControl.IMAGE_WIDTH,
+                    ocargo.BlocklyControl.COW_WIDTH,
                     ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
             this.getField('IMAGE').EDITABLE = true; //saves the image path as well in the XML
             this.appendStatementInput('DO')
