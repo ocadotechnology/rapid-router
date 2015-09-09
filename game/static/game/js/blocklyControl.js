@@ -40,7 +40,7 @@ identified as the original program.
 var ocargo = ocargo || {};
 
 ocargo.BlocklyControl = function () {
-    this.numberOfStartBlocks = THREADS;
+    this.numberOfStartBlocks = (typeof THREADS !== "undefined") && THREADS || 1;
 
     this.blocklyCustomisations = new ocargo.BlocklyCustomisations();
     this.blocklyCustomisations.setupBigCodeMode();
@@ -242,6 +242,19 @@ ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(blockType) {
     }
 
     block.nextConnection.connect(blockToAdd.previousConnection);
+};
+
+ocargo.BlocklyControl.prototype.disconnectedStartBlock = function() {
+  var emptyStart = this.getStartBlocks()[0].getChildren().length == 0;
+  if (emptyStart) {
+    if (this.getTotalBlocksCount() > 1) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
 };
 
 ocargo.BlocklyControl.prototype.getStartBlocks = function() {
