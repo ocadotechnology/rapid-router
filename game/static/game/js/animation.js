@@ -132,7 +132,6 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 	this.currentlyAnimating = true;
 
 	var maxDelay = 0;
-	var timestampDelay = this.genericAnimationLength;
 
 	var timestampQueue = this.animationQueue[this.timestamp];
 
@@ -173,7 +172,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		if (self.isPlaying) {
 			self.stepAnimation(undefined);
 		}
-	}, timestampDelay);
+	}, maxDelay);
 };
 
 ocargo.Animation.prototype.playAnimation = function() {
@@ -346,7 +345,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
 				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}
-			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons);
+			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons, 100);
 			if (animation.popupHint) {
 				$("#hintPopupBtn").click( function(){
 	                    $("#hintText").show(500);

@@ -921,7 +921,7 @@ ocargo.Drawing = function () {
         var vanImage = vanImages[vanID];
 
         if (attemptedAction === "FORWARD") {
-            var distanceForwards = 0.5 * GRID_SPACE_SIZE - 0.5 * ROAD_WIDTH;
+            var distanceForwards = (0.5 * GRID_SPACE_SIZE - 0.5 * ROAD_WIDTH)/currentScale;
             var transformation = "... t 0, " + (-distanceForwards);
         }
         else if (attemptedAction === "TURN_LEFT") {
