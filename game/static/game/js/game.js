@@ -574,7 +574,7 @@ ocargo.Game.prototype.setupTabs = function() {
             });
         });
 
-        $('#loadWorkspace').click(function() {
+        function loadSelectedWorkspace() {
             if (selectedWorkspace) {
 
                 // Blockly or Python tab must be selected before domToWorkspace is called
@@ -604,7 +604,9 @@ ocargo.Game.prototype.setupTabs = function() {
                 });
 
             }
-        });
+        }
+
+        $('#loadWorkspace').click(loadSelectedWorkspace);
 
         $('#deleteWorkspace').click(function() {
             if (selectedWorkspace) {
@@ -624,13 +626,17 @@ ocargo.Game.prototype.setupTabs = function() {
             populateTable("loadWorkspaceTable", workspaces);
 
             // Add click listeners to all rows
-            $('#loadWorkspaceTable tr').on('click', function(event) {
-                $('#loadWorkspaceTable tr').attr('selected', false);
+            var rows = $('#loadWorkspaceTable tr');
+            rows.on('click', function() {
+                rows.attr('selected', false);
                 $(this).attr('selected', true);
                 selectedWorkspace = $(this).attr('value');
                 $('#loadWorkspace').removeAttr('disabled');
                 $('#deleteWorkspace').removeAttr('disabled');
             });
+
+            // Add double click listener to load the workspace selected by the first click
+            rows.on('dblclick', loadSelectedWorkspace);
 
             var empty = workspaces.length === 0;
             $('#load_pane .scrolling-table-wrapper').css('display',  empty ? 'none' : 'block');
