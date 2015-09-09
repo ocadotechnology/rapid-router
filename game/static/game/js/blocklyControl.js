@@ -390,7 +390,9 @@ ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
 ocargo.BlocklyControl.prototype.clearAllSelections = function() {
     Blockly.mainWorkspace.getAllBlocks().forEach(
         function (block) {
-            ocargo.blocklyControl.setBlockSelected(block, false);
+            if(!block.keepHighlighting){
+                ocargo.blocklyControl.setBlockSelected(block, false);
+            }
         }
     );
 };

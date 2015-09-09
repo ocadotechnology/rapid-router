@@ -125,9 +125,21 @@ ocargo.Animation.prototype.currentBaseAnimationLength = function(){
 };
 
 ocargo.Animation.prototype.stepAnimation = function(callback) {
+	function removeBlockSelection () {
+		Blockly.mainWorkspace.getAllBlocks().forEach(
+			function (block) {
+				if(block.keepHighlighting){
+					delete (block.keepHighlighting);
+				}
+			}
+		);
+	};
+
 	if (this.currentlyAnimating) {
 		return;
 	}
+
+	removeBlockSelection();
 
 	this.currentlyAnimating = true;
 
