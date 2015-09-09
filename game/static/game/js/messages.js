@@ -43,9 +43,9 @@ ocargo.jsElements = {
         return "<img src='" + url + "'class='" + class_ + "'>";
     },
     nextEpisodeButton: function(episode, random){
-        return ocargo.button.redirectButtonHtml('next_episode_button', "'/rapidrouter/episode/" + episode + "/'", 'Next episode') +
-          (random ? ocargo.button.redirectButtonHtml('random_level_button', "'/rapidrouter/levels/random/" + (episode-1) + "/'", 'Random level') : "") +
-            ocargo.button.redirectButtonHtml('home_button', "'/rapidrouter/'", "Home");
+        return ocargo.button.redirectButtonHtml('next_episode_button', "/rapidrouter/episode/" + episode + "/", 'Next episode') +
+          (random ? ocargo.button.redirectButtonHtml('random_level_button', "/rapidrouter/levels/random/" + (episode-1) + "/", 'Random level') : "") +
+            ocargo.button.redirectButtonHtml('home_button', "/rapidrouter/", "Home");
     },
 
     buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>'
@@ -102,6 +102,8 @@ ocargo.messages = {
         }
     },
 
+    collisionWithCow: "You ran into a cow! Keep in mind that cows can appear anywhere on the map.",
+
     // Level editor.
     levelEditorTitle: "Welcome to the Level editor! ",
     levelEditorSubtitle: "Click  " +
@@ -121,7 +123,7 @@ ocargo.messages = {
     noBlocksSubtitle: "You haven't selected any blocks to use in your level.",
     noBlocks: "Go to " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/blockly.svg', 'popupIcon') +
-        "<b>Blocks</b> and select some to use. Remember to include the move and turn commands!",
+        "<b>Code</b> and select some to use. Remember to include the move and turn commands!",
     levelEditorPCSubtitle: "To get started, draw a road. <br><br> Click on the square you want " +
         "the road to start from. Then, without letting go of the mouse button, drag to the " +
         "square you’d like the road to end on. <br> Do this as many times as you like to add " +
@@ -163,7 +165,7 @@ ocargo.messages = {
         return "Unfortunately you need to be logged in to " + activity +
             " levels. You can log on <a href='/play/'>here</a>.";
     },
-    soloSharing:  "Sorry but as an independent student you'll need to join a school or club to " +
+    independentStudentSharing:  "Sorry but as an independent student you'll need to join a school or club to " +
         "share your levels with others.",
     internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
@@ -216,6 +218,8 @@ ocargo.messages = {
     // Malformed program.
     whileConditionError: "Perhaps try looking at your 'repeat' blocks? ",
     whileBodyError: "Perhaps try looking at your 'repeat' blocks? ",
+    eventConditionError: "Perhaps try looking at your 'event' blocks? ",
+    eventBodyError: "Perhaps try looking at your 'event' blocks? ",
     ifConditionError: "Perhaps try looking at your 'if' blocks? ",
     procMissingNameError: "Perhaps try looking at your 'define' blocks? ",
     procMissingBodyError: "Perhaps try looking at your 'define' blocks? ",

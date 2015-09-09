@@ -91,6 +91,66 @@ class TestGame(BaseTest):
     def test_level15(self):
         self.run_level_test(15)
 
+    def test_level16(self):
+        self.run_level_test(16)
+
+    def test_level17(self):
+        self.run_level_test(17)
+
+    def test_level18(self):
+        self.run_level_test(18)
+
+    def test_level19(self):
+        self.run_level_test(19)
+
+    def test_level20(self):
+        self.run_level_test(20)
+
+    def test_level21(self):
+        self.run_level_test(21)
+
+    def test_level22(self):
+        self.run_level_test(22)
+
+    def test_level23(self):
+        self.run_level_test(23)
+
+    def test_level24(self):
+        self.run_level_test(24)
+
+    def test_level25(self):
+        self.run_level_test(25)
+
+    def test_level26(self):
+        self.run_level_test(26)
+
+    def test_level27(self):
+        self.run_level_test(27)
+
+    def test_level28(self):
+        self.run_level_test(28)
+
+    def test_level29(self):
+        self.run_level_test(29)
+
+    def test_level30(self):
+        self.run_level_test(30)
+
+    def test_level31(self):
+        self.run_level_test(31)
+
+    def test_level32(self):
+        self.run_level_test(32)
+
+    def test_level33(self):
+        self.run_level_test(33)
+
+    def test_level34(self):
+        self.run_level_test(34)
+
+    def test_level35(self):
+        self.run_level_test(35)
+
     def run_level_test(self, level):
         user_profile = self.login_once()
 

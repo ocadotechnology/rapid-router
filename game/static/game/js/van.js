@@ -55,11 +55,15 @@ ocargo.Van = function(position, maxFuel) {
     this.visitedNodes = [position.previousNode, position.currentNode];
     this.maxFuel = maxFuel;
     this.fuel = maxFuel;
+    this.travelled = 0;
+    this.crashStatus = 'NOT_CRASHED';
 };
 
 ocargo.Van.prototype.reset = function() {
     this.visitedNodes = [this.startingPosition.previousNode, this.startingPosition.currentNode];
     this.fuel = this.maxFuel;
+    this.travelled = 0;
+    this.crashStatus = 'NOT_CRASHED';
 };
 
 ocargo.Van.prototype.move = function(nextNode) {

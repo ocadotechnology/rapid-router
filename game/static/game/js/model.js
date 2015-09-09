@@ -39,7 +39,7 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-ocargo.Model = function(nodeData, origin, destinations, trafficLightData, maxFuel, vanId) {
+ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowData, maxFuel, vanId) {
     this.map = new ocargo.Map(nodeData, origin, destinations);
     this.van = new ocargo.Van(this.map.getStartingPosition(), maxFuel);
 
@@ -48,12 +48,24 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, maxFue
         this.trafficLights.push(new ocargo.TrafficLight(i, trafficLightData[i], this.map.nodes));
     }
 
+    this.cows = [];
+    for(var i = 0; i < cowData.length; i++) {
+        this.cows.push(new ocargo.Cow(i, cowData[i], this.map.nodes));
+    }
+
     this.timestamp = 0;
 
     this.vanId = vanId || 0;
 
     this.pathFinder = new ocargo.PathFinder(this);
     this.reasonForTermination = null;
+
+    // false if evaluation of conditions etc. should be hidden from user.
+    // used for evaluation of event handlers before each statement.
+    this.shouldObserve = true;
+
+    this.soundedHorn = {};
+    this.puffedUp = {};
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -69,11 +81,28 @@ ocargo.Model.prototype.reset = function(vanId) {
         this.trafficLights[j].reset();
     }
 
+    for (var j = 0; j < this.cows.length; j++) {
+        this.cows[j].reset();
+    }
+
+    // Display cow on origin node if exists
+    var node = this.map.originCurrentNode;
+    this.setCowsActive(node);
+
     this.timestamp = 0;
     this.reasonForTermination  =  null;
+    this.soundedHorn = {};
+    this.puffedUp = {};
 
     if (vanId !== null && vanId !== undefined) {
         this.vanId = vanId;
+    }
+};
+
+// Randomly chooses the cow positions, called by program.js
+ocargo.Model.prototype.chooseNewCowPositions = function() {
+    for (var j = 0; j < this.cows.length; j++) {
+        this.cows[j].chooseNewCowPositions();
     }
 };
 
@@ -82,15 +111,17 @@ ocargo.Model.prototype.reset = function(vanId) {
 // and returns a boolean
 
 ocargo.Model.prototype.observe = function(desc) {
-    ocargo.animation.appendAnimation({
-        type: 'van',
-        id: this.vanId,
-        vanAction: 'OBSERVE',
-        fuel: this.van.getFuelPercentage(),
-        description: 'van observe: ' + desc
-    });
+    if (this.shouldObserve) {
+        ocargo.animation.appendAnimation({
+            type: 'van',
+            id: this.vanId,
+            vanAction: 'OBSERVE',
+            fuel: this.van.getFuelPercentage(),
+            description: 'van observe: ' + desc
+        });
 
-    this.incrementTime();
+        this.incrementTime();
+    }
 };
 
 ocargo.Model.prototype.isRoadForward = function() {
@@ -113,6 +144,21 @@ ocargo.Model.prototype.isDeadEnd = function() {
     return (this.map.isDeadEnd(this.van.getPosition()) !== null);
 };
 
+ocargo.Model.prototype.isCowCrossing = function(type) {
+    var result = false;
+    this.observe('cow crossing');
+    var node = this.van.getPosition().currentNode;
+    var nodes = this.getNodesAhead(node);
+    for (var i = 0 ; i < nodes.length ; i++) {
+        var cow = this.getCowForNode(nodes[i], ocargo.Cow.ACTIVE);
+        if (cow != null && cow.type == type && cow.triggerEvent) {
+            cow.triggerEvent = false;
+            result = true;
+        }
+    }
+    return result;
+};
+
 ocargo.Model.prototype.isTrafficLightRed = function() {
     this.observe('traffic light red');
     var light = this.getTrafficLightForNode(this.van.getPosition());
@@ -131,7 +177,6 @@ ocargo.Model.prototype.isAtADestination = function() {
 };
 
 ocargo.Model.prototype.getCurrentCoordinate = function() {
-    this.observe('current coordinate');
     var node = this.van.getPosition().currentNode;
     return node.coordinate;
 };
@@ -147,56 +192,18 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 // true if it was a valid action or false otherwise
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
+    //Crash?
+    var previousNodeCow = this.getCowForNode(this.van.getPosition().currentNode, ocargo.Cow.ACTIVE);
+    var collisionWithCow = previousNodeCow && nextNode !== this.van.getPosition().currentNode;
 
-    if (nextNode === null) {
-        // Crash
-        ocargo.animation.appendAnimation({
-            type: 'van',
-            id: this.vanId,
-            vanAction: 'CRASH',
-            previousNode: this.van.getPosition().previousNode,
-            currentNode: this.van.getPosition().currentNode,
-            attemptedAction: action,
-            startNode: this.van.currentNodeOriginal,
-            fuel: this.van.getFuelPercentage(),
-            description: 'crashing van move action: ' + action
-        });
+    if(collisionWithCow) {
+        handleCrash(this, ocargo.messages.collisionWithCow, 'COLLISION_WITH_COW', 'collision with cow van move action: ');
+        return false;
+    }
 
-        this.incrementTime();
-
-        ocargo.animation.appendAnimation({
-            type: 'callable',
-            functionType: 'playSound',
-            functionCall: ocargo.sound.stop_engine,
-            description: 'stopping engine'
-        });
-
-        ocargo.animation.appendAnimation({
-            type: 'callable',
-            functionType: 'playSound',
-            functionCall: ocargo.sound.crash,
-            description: 'crash sound'
-        });
-
-        this.incrementTime();
-
-        ocargo.animation.appendAnimation({
-            type: 'popup',
-            id: this.vanId,
-            popupType: 'FAIL',
-            failSubtype: 'CRASH',
-            popupMessage: ocargo.messages.offRoad(this.van.getDistanceTravelled()),
-            popupHint: ocargo.game.registerFailure(),
-            description: 'crash popup'
-        });
-
-        ocargo.event.sendEvent("LevelCrash", { levelName: LEVEL_NAME,
-                                               defaultLevel: DEFAULT_LEVEL,
-                                               workspace: ocargo.blocklyControl.serialize(),
-                                               failures: this.failures,
-                                               pythonWorkspace: ocargo.pythonControl.getCode() });
-
-        this.reasonForTermination = 'CRASH';
+    var offRoad = nextNode === null;
+    if (offRoad) {
+        handleCrash(this, ocargo.messages.offRoad(this.van.getDistanceTravelled()), 'CRASH', 'crashing van move action: ');
         return false;
     }
 
@@ -273,6 +280,9 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         return false;
     }
 
+    // Display cow on node if exists
+    this.setCowsActive(nextNode);
+
     this.van.move(nextNode);
 
     // Van movement animation
@@ -287,6 +297,63 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
     this.incrementTime();
 
     return true;
+
+
+    function handleCrash(model, popupMessage, vanAction, actionDescription) {
+        model.van.crashStatus = 'CRASHED';
+
+        ocargo.animation.appendAnimation({
+            type: 'van',
+            id: model.vanId,
+            vanAction: vanAction,
+            previousNode: model.van.getPosition().previousNode,
+            currentNode: model.van.getPosition().currentNode,
+            attemptedAction: action,
+            startNode: model.van.currentNodeOriginal,
+            fuel: model.van.getFuelPercentage(),
+            description: actionDescription + action
+        });
+
+        model.incrementTime();
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionType: 'playSound',
+            functionCall: ocargo.sound.stop_engine,
+            description: 'stopping engine'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionType: 'playSound',
+            functionCall: ocargo.sound.crash,
+            description: 'crash sound'
+        });
+
+        model.incrementTime();
+
+        ocargo.animation.appendAnimation({
+            type: 'popup',
+            id: model.vanId,
+            popupType: 'FAIL',
+            failSubtype: 'CRASH',
+            popupMessage: popupMessage,
+            popupHint: ocargo.game.registerFailure(),
+            description: 'crash popup'
+        });
+
+        model.reasonForTermination = 'CRASH'; // used to determine whether the play controls ('forward', 'left' and 'right' arrows) are still usable
+    }
+};
+
+ocargo.Model.prototype.setCowsActive = function(nextNode) {
+    var nodes = this.getNodesAhead(nextNode);
+    for (var i = 0 ; i < nodes.length ; i++){
+        var cow = this.getCowForNode(nodes[i], ocargo.Cow.READY);
+        if (cow){
+            cow.setActive(this, nodes[i]);
+        }
+    }
 };
 
 ocargo.Model.prototype.makeDelivery = function(destination) {
@@ -389,6 +456,76 @@ ocargo.Model.prototype.deliver = function() {
         this.makeDelivery(destination, 'DELIVER');
     }
     return destination;
+};
+
+ocargo.Model.prototype.sound_horn = function() {
+    this.soundedHorn = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate()};
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionType: 'playSound',
+        functionCall: ocargo.sound.sound_horn,
+        description: 'van sound: sounding the horn'
+    });
+
+    return true;
+};
+
+ocargo.Model.prototype.stop_horn = function() {
+    ocargo.animation.appendAnimation({
+        type: 'callable',
+        functionType: 'playSound',
+        functionCall: ocargo.sound.stop_horn,
+        description: 'van sound: stop sounding the horn'
+    });
+
+    return true;
+};
+
+ocargo.Model.prototype.puff_up = function(){
+    if(!jQuery.isEmptyObject(this.puffedUp)){
+        return this.remain_puff_up();
+    }else{
+        this.puffedUp = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate(), timeout:1};
+
+        ocargo.animation.appendAnimation({
+            type: 'van',
+            id: this.vanId,
+            vanAction: 'PUFFUP',
+            fuel: this.van.getFuelPercentage(),
+            description: 'van move action: puff up'
+        });
+        return this.puff_down();
+    }
+
+};
+
+ocargo.Model.prototype.remain_puff_up = function(){
+    this.puffedUp.coordinates = this.getCurrentCoordinate();
+    this.puffedUp.timeout++;
+
+    ocargo.animation.appendAnimation({
+        type: 'van',
+        id: this.vanId,
+        vanAction: 'REMAINPUFFUP',
+        fuel: this.van.getFuelPercentage(),
+        description: 'van move action: remain puff up'
+    });
+
+    return true;
+};
+
+ocargo.Model.prototype.puff_down = function(){
+
+    ocargo.animation.appendAnimation({
+        type: 'van',
+        id: this.vanId,
+        vanAction: 'PUFFDOWN',
+        fuel: this.van.getFuelPercentage(),
+        description: 'van move action: puff down'
+    });
+
+    //this.incrementTime();
+    return true;
 };
 
 // Signal that the program has ended and we should calculate whether
@@ -538,6 +675,17 @@ ocargo.Model.prototype.getDestinationForNode = function(node) {
     return null;
 };
 
+ocargo.Model.prototype.getCowForNode = function(node, status) {
+    var jsonCoordinate = JSON.stringify(node.coordinate);
+    for(var i = 0; i < this.cows.length; i++) {
+        var cow = this.cows[i];
+        if (jsonCoordinate in cow.activeNodes && cow.activeNodes[jsonCoordinate] == status) {
+            return cow;
+        }
+    }
+    return null;
+};
+
 // Helper functions which handles telling all parts of the model
 // that time has incremented and they should generate events
 ocargo.Model.prototype.incrementTime = function() {
@@ -548,4 +696,25 @@ ocargo.Model.prototype.incrementTime = function() {
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
     }
+    this.incrementCowTime();
+};
+
+ocargo.Model.prototype.incrementCowTime = function() {
+    for (var i = 0; i < this.cows.length; i++) {
+        this.cows[i].incrementTime(this);
+    }
+    this.soundedHorn = {};
+    if(this.timestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
+        this.puffedUp = {};
+    };
+};
+
+ocargo.Model.prototype.getNodesAhead = function(node) {
+    var nodes = [];
+    for (var i = 0 ; i < node.connectedNodes.length ; i++){
+        for (var j = 0 ; j < node.connectedNodes[i].connectedNodes.length ; j++ ) {
+            nodes.push(node.connectedNodes[i].connectedNodes[j]);
+        }
+    }
+    return nodes;
 };

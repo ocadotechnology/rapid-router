@@ -87,7 +87,7 @@ ocargo.Map.prototype.isRoadForward = function(position) {
         var node = nodes[i];
         var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, node);
         var deviation = Math.abs(forwardAngle - angle);
-        if (angle >= leftCutoffAngle && angle <= rightCutoffAngle && 
+        if (angle >= leftCutoffAngle && angle <= rightCutoffAngle &&
             (nextNode === null || deviation < nextNodeDeviation)) {
             nextNode = node;
             nextNodeDeviation = deviation;
@@ -115,7 +115,7 @@ ocargo.Map.prototype.isRoadLeft = function(position) {
 ocargo.Map.prototype.isRoadRight = function(position) {
 	var previousNode = position.previousNode;
 	var currentNode = position.currentNode;
-	
+
 	var index = currentNode.connectedNodes.indexOf(previousNode) - 1;
     var nextNode;
     if (index === -1) {

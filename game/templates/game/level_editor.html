@@ -11,29 +11,33 @@
 
 {% block scripts %}
 {{block.super}}
+  <script>
+    var COW_LEVELS_ENABLED = '{{ cow_level_enabled }}' === 'True';
+  </script>
   <script src="{% static "game/js/utils.js" %}"></script>
   <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
   <script src="{% static "game/js/raphael.js" %}"></script>
-  <script src="{% static "game/js/drawing.js" %}"></script> 
+  <script src="{% static "game/js/drawing.js" %}"></script>
 
   <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
-  
+
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
 
-  <script src="{% static "game/js/tab.js" %}"></script>
-  <script src="{% static "game/js/messages.js" %}"></script>
-  <script src="{% static "game/js/saving.js" %}"></script>
-  <script src="{% static "game/js/level_editor.js" %}"></script>
-  <script src="{% static "game/js/coordinate.js" %}"></script>
-  <script src="{% static "game/js/node.js" %}"></script>
-  <script src="{% static "game/js/map.js" %}"></script>
-  <script src="{% static "game/js/pathFinder.js" %}"></script>
-  <script src="{% static "game/js/trafficLight.js" %}"></script>
-  <script src="{% static "game/js/destination.js" %}"></script>
+  <script src="/static/game/js/tab.js"></script>
+  <script src="/static/game/js/messages.js"></script>
+  <script src="/static/game/js/saving.js"></script>
+  <script src="/static/game/js/level_editor.js"></script>
+  <script src="/static/game/js/coordinate.js"></script>
+  <script src="/static/game/js/node.js"></script>
+  <script src="/static/game/js/map.js"></script>
+  <script src="/static/game/js/pathFinder.js"></script>
+  <script src="/static/game/js/trafficLight.js"></script>
+  {% if cow_level_enabled %}<script src="/static/game/js/cow.js"></script>{% endif %}
+  <script src="/static/game/js/destination.js"></script>
 
   <script>
     var BLOCKS = [];
@@ -69,7 +73,7 @@
       {% endfor %}
       ];
 
-      
+
       for(var i = 0; i < themes.length; i++) {
         var theme = themes[i];
         THEMES[theme.name] = theme;
@@ -85,10 +89,10 @@
       {% for char in characters %}
           CHARACTERS['{{char.id}}'] =   {id:    '{{char.id}}',
                                         name:  '{{char.name}}',
-                                        image: '{% static "game/image/{{char.en_face}}" %}'}
+                                        image: '{% static "game/image/"|add:char.en_face %}'}
       {% endfor %}
     }
-    
+
     initGlobals();
   </script>
 {% endblock %}
@@ -102,7 +106,7 @@
 {% block content %}
 {{ block.super }}
 <div>
-  
+
 </div>
 
 <div id="wrapper" class="unselectable">
@@ -118,7 +122,7 @@
         </div>
 
         <br style="clear:both">
-        
+
         <div class="tab">
           <input type="radio" name="tabs" id="play_radio">
           <label for="play_radio">
@@ -220,10 +224,10 @@
           <div id="map_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/map.svg" %}'>Map</h2>
             <p> Here you can design your level! What sort of road will you make?</p>
-            
+
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                <div class="input_div"> 
+                <div class="input_div">
                   <span>Max fuel:</span>
                   <input type="number" id="max_fuel">
                 </div>
@@ -279,12 +283,12 @@
             <p> Here you can liven up your level by choosing the theme and adding scenery! Will you create beautiful countryside or a bustling city?</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                
+
                 <table>
                   <tbody>
                     <tr>
                       <td>Theme:</td>
-                      <td colspan=2> 
+                      <td colspan=2>
                         <select id="theme_select">
                           {% for theme in themes %}
                           <option value="{{theme.name}}">{{theme.name|make_title_caps}}</option>
@@ -307,6 +311,49 @@
                       <td><img id="trafficLightRed" src="{% static "game/image/trafficLight_red.svg" %}" width="80"></td>
                         <td><img id="trafficLightGreen" src="{% static "game/image/trafficLight_green.svg" %}" width="80"></td>
                     </tr>
+                    {% if cow_level_enabled %}
+                    <tr>
+                      <td>Cows:</td>
+                      <td><img id="cow" src="/static/game/image/Clarice.svg" width="80"></td>
+                      <td>
+                        <button class="navigation_button" id="advanced_cow_options_button">
+                              <img id="advanced_cow_options_button_icon" src="/static/game/image/icons/show.svg"/>
+                              Advanced
+                            </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td></td>
+                      <td colspan="2">
+                        <div id="cow_advanced_div">
+                          <h3 id="cow_advanced_options_title">Advanced options</h3>
+                          <div id="cow_group_div">
+                            <!--<h4>Group:</h4>-->
+                            <div id="cow_group_buttons">
+                              <button class="mode_panel navigation_button" id="remove_cow_group_button">
+                                <img src="/static/game/image/icons/clear.svg"/>
+                              </button>
+                              <button class="mode_panel navigation_button" id="add_cow_group_button">
+                                <img src="/static/game/image/icons/add.svg"/>
+                              </button>
+                            </div>
+                            <div id="cow_group_select_div">
+                              <select id="cow_group_select"></select>
+                            </div>
+                            <div id="cow_type_select_div">
+                              <select id="cow_type_select"></select>
+                            </div>
+                            <div style="clear: both;"></div>
+                            <h4>How many cows should appear for this group?</h4>
+                            <div id="min_max_cow_div">
+                                <label for="min_cows_spinner">Min:</label><input name="Min" class="spinner" id="min_cows_spinner" readonly>
+                                <label for="max_cows_spinner">Max:</label><input name="Max" class="spinner" id="max_cows_spinner" readonly>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endif %}
                   </tbody>
                 </table>
 
@@ -321,7 +368,7 @@
             <p> Here you can choose your character. Who will you play as?</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                <p>Character: 
+                <p>Character:
                   <select id="character_select">
                   {% for char in characters %}
                     <option value='{{char.id}}'> {{char.name}} </option>
@@ -379,7 +426,7 @@
                           <option value="9">9</option>
                         </select>
                       </div>
-                    {% endfor %}  
+                    {% endfor %}
                   </div>
                 </div>
               </div>
@@ -446,7 +493,7 @@
               </div>
 
               <div id="does_exist">
-                <p> 
+                <p>
                   Load:
                   <select id="load_type_select">
                     <option value="ownLevels" selected>your own levels</option>
@@ -457,7 +504,7 @@
                 <div class="scrolling-table-wrapper">
                   <table width='100%' id="loadLevelTableHeader">
                     <thead>
-                      <tr>  
+                      <tr>
                         <th>Name</th>
                         <th>Owner</th>
                       </tr>
@@ -473,7 +520,7 @@
             </div>
 
             <br style="clear:both">
-            
+
             <div>
               <button class="navigation_button long_button" id="deleteLevel">
                 <img src="{% static "game/image/icons/clear.svg" %}">
@@ -491,12 +538,12 @@
             <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/save.svg" %}'>Save</h2>
             <p>Here you can save your new level. Enter a name below and hit save. Alternatively click on an existing level to update it.</p>
             <p>To play your level and be tracked, first <b>Quit</b> the Level Editor and select your level from the 'Levels created by you' section.</p>
-            
+
             <div class="table_control_div">
               <div class="scrolling-table-wrapper">
                 <table width='100%' id="saveLevelTableHeader">
                   <thead>
-                    <tr>  
+                    <tr>
                       <th>Name</th>
                       <th>Owner</th>
                     </tr>
@@ -524,7 +571,7 @@
 
           <div id="share_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/share.svg" %}'>Share</h2>
-            
+
             {% if user|get_user_status == 'TEACHER' %}
               <p>Here you can share your level with your classes or your fellow teachers.</p>
             {% elif user|get_user_status == 'SCHOOL_STUDENT' %}
@@ -545,11 +592,11 @@
                   Class: <select id="class_select"></select>
                 </p>
               {% endif %}
-              
+
               <div id="shared_levels" class="scrolling-table-wrapper">
                 <table width='100%' id="shareLevelTableHeader">
                   <thead>
-                    <tr>  
+                    <tr>
                       <th>Name</th>
                       <th>Shared</th>
                     </tr>

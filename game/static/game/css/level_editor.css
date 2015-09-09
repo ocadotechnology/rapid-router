@@ -468,3 +468,25 @@ tr[status='unshared'] .share_cell {
 tr[status='pending'] .share_cell {
     color: gray;
 }
+
+/* Cow-specific elements in the level editor */
+
+#cow_group_select, #cow_type_select {
+    width: 80px;
+    display: inline;
+    padding: 0.1rem;
+}
+
+#remove_cow_group_button, #add_cow_group_button {
+    width: 30px;
+    height: 30px;
+
+    border-width: 2px;
+    border-radius: 8px;
+}
+
+#remove_cow_group_button img, #add_cow_group_button img {
+    width: 22px;
+    height: 22px;
+    margin: 2px;
+}

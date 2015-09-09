@@ -70,6 +70,7 @@ ocargo.BlocklyControl = function () {
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
 ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH = 1;
 ocargo.BlocklyControl.IMAGE_WIDTH = 20;
+ocargo.BlocklyControl.COW_WIDTH = 30;
 ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT = 20;
 ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH = 40;
 
@@ -277,6 +278,17 @@ ocargo.BlocklyControl.prototype.getProcedureBlocks = function() {
     return startBlocks;
 };
 
+ocargo.BlocklyControl.prototype.onEventDoBlocks = function() {
+    // find and return all top blocks that are event handler blocks
+    var startBlocks = [];
+    Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
+        if (block.type === 'declare_event') {
+            startBlocks.push(block);
+        }
+    });
+    return startBlocks;
+};
+
 ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };
@@ -284,6 +296,7 @@ ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
 ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
     var startBlocks = this.getStartBlocks();
     var procedureBlocks = this.getProcedureBlocks();
+    var eventBlocks = this.onEventDoBlocks();
     var n = 0;
     var i;
 
@@ -291,8 +304,14 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
         n += count(startBlocks[i].nextConnection.targetBlock());
     }
 
+    // 1 includes the procedure declaration block
     for (i = 0; i < procedureBlocks.length; i++) {
         n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
+    }
+
+    // 2 includes the event block and the on-condition block
+    for (i = 0; i < eventBlocks.length; i++) {
+        n += 2 + count(eventBlocks[i].inputList[1].connection.targetBlock());
     }
 
     return n;
@@ -361,7 +380,7 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
 
 // Define custom select methods that select a block and its inputs
 ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
-    if (!block.svg_) {
+    if (!block instanceof Blockly.BlockSvg) {
         return;
     }
 
@@ -375,9 +394,9 @@ ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
     });
 
     if (selected) {
-        block.svg_.addSelect();
+        block.addSelect();
     } else {
-        block.svg_.removeSelect();
+        block.removeSelect();
     }
 };
 

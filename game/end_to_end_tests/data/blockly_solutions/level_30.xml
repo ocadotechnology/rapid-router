@@ -1,0 +1,18 @@
+<xml>
+    <block type="start" id="1" deletable="false" x="30" y="30">
+        <next>
+            <block type="controls_repeat_until" id="7">
+                <value name="condition">
+                    <block type="at_destination" id="8"></block>
+                </value>
+                <statement name="body">
+                    <block type="turn_left" id="9">
+                        <next>
+                            <block type="turn_right" id="10"></block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+        </next>
+    </block>
+</xml>
