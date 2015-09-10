@@ -700,13 +700,15 @@ ocargo.Model.prototype.incrementTime = function() {
 };
 
 ocargo.Model.prototype.incrementCowTime = function() {
+    if(this.timestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
+        this.puffedUp = {};
+    };
+
     for (var i = 0; i < this.cows.length; i++) {
         this.cows[i].incrementTime(this);
     }
     this.soundedHorn = {};
-    if(this.timestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
-        this.puffedUp = {};
-    };
+
 };
 
 ocargo.Model.prototype.getNodesAhead = function(node) {

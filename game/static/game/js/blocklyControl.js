@@ -296,9 +296,9 @@ ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
         n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
     }
 
-    // 2 includes the event block and the on-condition block
+    // 1 includes the on-event-do block
     for (i = 0; i < eventBlocks.length; i++) {
-        n += 2 + count(eventBlocks[i].inputList[1].connection.targetBlock());
+        n += 1 + count(eventBlocks[i].inputList[1].connection.targetBlock());
     }
 
     return n;
@@ -390,7 +390,9 @@ ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
 ocargo.BlocklyControl.prototype.clearAllSelections = function() {
     Blockly.mainWorkspace.getAllBlocks().forEach(
         function (block) {
-            ocargo.blocklyControl.setBlockSelected(block, false);
+            if(!block.keepHighlighting){
+                ocargo.blocklyControl.setBlockSelected(block, false);
+            }
         }
     );
 };

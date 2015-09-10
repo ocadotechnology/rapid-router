@@ -354,8 +354,18 @@ ocargo.LevelEditor = function() {
                 $('#cow_type_select').append($('<option>', {value: ocargo.Cow.BROWN})
                     .text('Brown'));
                 $('#cow_type_select').on('change', function () {
-                    $('#cow').attr('src', ocargo.Drawing.imageDir + ocargo.Drawing.cowUrl($('#cow_type_select').val()));
-                    cowGroups[$('#cow_group_select').val()].type = $('#cow_type_select').val();
+                    var selectedGroupId = $('#cow_group_select').val();
+                    var selectedType = $('#cow_type_select').val();
+                    cowGroups[selectedGroupId].type = selectedType;
+                    var newUrl = ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(selectedType);
+                    $('#cow').attr('src', newUrl);
+
+                    for(var i = cows.length - 1; i >= 0; i--) {
+                        if(cows[i].data.group.id === selectedGroupId) {
+                            cows[i].image.attr({src: newUrl})
+                        }
+                    }
+
                 });
 
                 //Min & max spinners
@@ -646,6 +656,7 @@ ocargo.LevelEditor = function() {
             var selectedLevel = null;
 
             tabs.save.setOnChange(function () {
+                //getLevelTextForDjangoMigration();
                 if (!isLoggedIn("save") || !isLevelValid()) {
                     currentTabSelected.select();
                     return;
