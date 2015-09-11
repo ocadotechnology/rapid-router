@@ -117,12 +117,13 @@ ocargo.Cow.prototype.incrementTime = function(model) {
     if(model.van.crashStatus === 'CRASHED') {
         return;
     }
-    // check if any active cows should be removed (i.e. if their timeout has been reached)
+    // check if any active cows should be removed (if van has taken any action to scare them away)
     for (var jsonCoordinate in this.activeNodes) {
         if (this.activeNodes[jsonCoordinate] == ocargo.Cow.ACTIVE) {
             var coordinate = JSON.parse(jsonCoordinate);
             var cowTimestamp = this.activeNodeTimers[jsonCoordinate];
             if (this.scaredAwayByHorn(model, cowTimestamp, coordinate) || this.scaredAwayByPuffUp(model, cowTimestamp, coordinate)) {
+                // Deactivate and remove cow from map
                 this.activeNodes[jsonCoordinate] = ocargo.Cow.INACTIVE;
                 this.activeNodeTimers[jsonCoordinate] = 0;
                 var node = ocargo.Node.findNodeByCoordinate(coordinate, this.nodes);
@@ -132,6 +133,7 @@ ocargo.Cow.prototype.incrementTime = function(model) {
     }
 };
 
+// White cows are scared away if horn was sounded after the cow appeared and within hearing distance
 ocargo.Cow.prototype.scaredAwayByHorn = function(model, coordinateTime, coordinate){
     if(jQuery.isEmptyObject(model.soundedHorn)){
         return false;
@@ -140,6 +142,7 @@ ocargo.Cow.prototype.scaredAwayByHorn = function(model, coordinateTime, coordina
 
 };
 
+// Brown cows are scared away if the van was puffed up at the time of checking
 ocargo.Cow.prototype.scaredAwayByPuffUp = function(model, coordinateTime, coordinate){
     if(jQuery.isEmptyObject(model.puffedUp)){
         return false;

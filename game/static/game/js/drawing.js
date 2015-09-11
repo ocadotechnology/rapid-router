@@ -131,6 +131,7 @@ ocargo.Drawing = function () {
             transformation += ',' + rotationPointY;
         }
         if (extraTransformation) {
+            // extra scaling is done after rotation as scaling was taken into acocunt in getRotationPoints
             transformation += "s" + extraTransformation;
         }
         return transformation;
@@ -173,6 +174,10 @@ ocargo.Drawing = function () {
         return -nodeAngleDegrees; // Calculation is counterclockwise, transformations are clockwise
     }
 
+    // Return a pair of letters which represent the orientation of the turn
+    // Directions are relative to the centre point of the turn
+    // E.g. an L-shape turn will be described as 'UR'
+    // D: Down, U: Up, L: Left, R:Right
     function getRoadLetters(previous, node1, node2) {
         previous = ocargo.Drawing.translate(previous);
         node1 = ocargo.Drawing.translate(node1);
@@ -222,6 +227,8 @@ ocargo.Drawing = function () {
         return coord1 < coord2;
     }
 
+    // Returns the direction of the middle branch
+    // E.g. T-shaped junction will be described as 'down'
     function tJunctionOrientation(middle, node1, node2, node3) {
         var res1 = getRoadLetters(node1, middle, node2);
         var res2 = getRoadLetters(node2, middle, node3);
@@ -571,8 +578,8 @@ ocargo.Drawing = function () {
         var yOffset = 0;
         var rotation = 0;
 
-        // Only turns (not 3-way or 4-way crossings) have two connected nodes
         if (node.connectedNodes.length === 1) {
+            // Deadends
             var previousNode = node.connectedNodes[0];
             var nextNode = {};
             nextNode.coordinate = new ocargo.Coordinate(
@@ -585,6 +592,7 @@ ocargo.Drawing = function () {
                 rotation = 90;
             }
         } else if (node.connectedNodes.length === 2) {
+            // Turns
             var previousNode = node.connectedNodes[0];
             var nextNode = node.connectedNodes[1];
 
@@ -613,6 +621,7 @@ ocargo.Drawing = function () {
                 rotation = 135;
             }
         } else if (node.connectedNodes.length === 3) {
+            // T-junctions
             var previousNode = node.connectedNodes[0];
             var nextNode = node.connectedNodes[1];
             var nextNextNode = node.connectedNodes[2];
@@ -795,25 +804,22 @@ ocargo.Drawing = function () {
         return rotationPointX(TURN_AROUND_RADIUS);
     };
 
+    // Returns the y coordinate of the centre of rotation
     this.getRotationPointY = function () {
-        var centreY = characterWidth / 2;     // y coordinate of the canvas of the character svg
+        var centreY = characterWidth / 2;     // y coordinate of the centre of the character svg
         return centreY;
     };
 
     this.moveForward = function (vanId, animationLength, callback, extraTransformation) {
-        if (extraTransformation) {
-            if (extraTransformation < 1) {
-                currentScale *= extraTransformation;
-                var moveDistance = -MOVE_DISTANCE / currentScale;
-            } else {
-                var moveDistance = -MOVE_DISTANCE / currentScale;
-                currentScale *= extraTransformation;
-            }
 
-        } else {
-            var moveDistance = -MOVE_DISTANCE / currentScale;
+        var moveDistance = -MOVE_DISTANCE / currentScale;
+        var transformation = "..." + "t 0, " + moveDistance;
+
+        if (extraTransformation) {
+            currentScale *= extraTransformation;
+            transformation +=  "s" + extraTransformation;
         }
-        var transformation = "..." + (extraTransformation && extraTransformation < 1 ? "s" + extraTransformation : "") + "t 0, " + moveDistance + (extraTransformation && extraTransformation > 1 ? "s" + extraTransformation : "");
+
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
@@ -1167,6 +1173,7 @@ ocargo.Drawing = function () {
 /* Static methods and constants */
 /********************************/
 
+// Flips the y coordinate upside down to match the raphael coordinate system
 ocargo.Drawing.translate = function (coordinate) {
     return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y);
 };
