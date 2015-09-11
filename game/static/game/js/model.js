@@ -476,8 +476,8 @@ ocargo.Model.prototype.puff_up = function(){
     if(!jQuery.isEmptyObject(this.puffedUp)){
         return this.remain_puff_up();
     }else{
+        this.van.puffUp();
         this.puffedUp = {timestamp:this.movementTimestamp, coordinates:this.getCurrentCoordinate(), timeout:1};
-        console.log("puff up at " + this.puffedUp.timestamp) + "real time " + this.timestamp;
         ocargo.animation.appendAnimation({
             type: 'van',
             id: this.vanId,
@@ -706,6 +706,7 @@ ocargo.Model.prototype.incrementTime = function() {
 ocargo.Model.prototype.incrementCowTime = function() {
     if(this.movementTimestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
         this.puffedUp = {};
+        this.van.puffDown();
     };
 
     for (var i = 0; i < this.cows.length; i++) {

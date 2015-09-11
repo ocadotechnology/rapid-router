@@ -55,15 +55,15 @@ ocargo.Van = function(position, maxFuel) {
     this.visitedNodes = [position.previousNode, position.currentNode];
     this.maxFuel = maxFuel;
     this.fuel = maxFuel;
-    this.travelled = 0;
     this.crashStatus = 'NOT_CRASHED';
+    this.sizeOfVan = 1;
 };
 
 ocargo.Van.prototype.reset = function() {
     this.visitedNodes = [this.startingPosition.previousNode, this.startingPosition.currentNode];
     this.fuel = this.maxFuel;
-    this.travelled = 0;
     this.crashStatus = 'NOT_CRASHED';
+    this.sizeOfVan = 1;
 };
 
 ocargo.Van.prototype.move = function(nextNode) {
@@ -71,7 +71,7 @@ ocargo.Van.prototype.move = function(nextNode) {
         this.visitedNodes.push(nextNode);
     }
 
-    this.fuel -= 1;
+    this.fuel -= 1 * this.sizeOfVan;
 };
 
 ocargo.Van.prototype.getPosition = function() {
@@ -84,4 +84,12 @@ ocargo.Van.prototype.getFuelPercentage = function() {
 
 ocargo.Van.prototype.getDistanceTravelled = function() {
     return this.visitedNodes.length - 2; // Don't count starting position, or previous position at start
+};
+
+ocargo.Van.prototype.puffUp = function(){
+    this.sizeOfVan = 3;
+};
+
+ocargo.Van.prototype.puffDown = function(){
+    this.sizeOfVan = 1;
 };

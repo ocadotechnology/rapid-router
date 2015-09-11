@@ -394,7 +394,7 @@ ocargo.Animation.prototype._extractCowAt = function(coordinate) {
             return cow;
         }
     }
-}
+};
 
 ocargo.Animation.prototype.updateFuelGauge = function(fuelPercentage) {
     var degrees = ((fuelPercentage / 100) * 240) - 120;
@@ -452,4 +452,4 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
         webkit.messageHandlers.handler.postMessage(json);
     }
 	return json;
-}
+};
