@@ -54,6 +54,7 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     }
 
     this.timestamp = 0;
+    this.movementTimestamp = 0;
 
     this.vanId = vanId || 0;
 
@@ -90,6 +91,7 @@ ocargo.Model.prototype.reset = function(vanId) {
     this.setCowsActive(node);
 
     this.timestamp = 0;
+    this.movementTimestamp = 0;
     this.reasonForTermination  =  null;
     this.soundedHorn = {};
     this.puffedUp = {};
@@ -294,7 +296,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         description: 'van move action: ' + action
     });
 
-    this.incrementTime();
+    this.incrementMovementTime();
 
     return true;
 
@@ -314,7 +316,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             description: actionDescription + action
         });
 
-        model.incrementTime();
+        model.incrementMovementTime();
 
         ocargo.animation.appendAnimation({
             type: 'callable',
@@ -375,7 +377,7 @@ ocargo.Model.prototype.makeDelivery = function(destination) {
         description: 'van sound: delivery'
     });
 
-    this.incrementTime();
+    this.incrementMovementTime();
 };
 
 ocargo.Model.prototype.moveForwards = function() {
@@ -459,7 +461,7 @@ ocargo.Model.prototype.deliver = function() {
 };
 
 ocargo.Model.prototype.sound_horn = function() {
-    this.soundedHorn = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate()};
+    this.soundedHorn = {timestamp:this.movementTimestamp, coordinates:this.getCurrentCoordinate()};
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionType: 'playSound',
@@ -470,23 +472,12 @@ ocargo.Model.prototype.sound_horn = function() {
     return true;
 };
 
-ocargo.Model.prototype.stop_horn = function() {
-    ocargo.animation.appendAnimation({
-        type: 'callable',
-        functionType: 'playSound',
-        functionCall: ocargo.sound.stop_horn,
-        description: 'van sound: stop sounding the horn'
-    });
-
-    return true;
-};
-
 ocargo.Model.prototype.puff_up = function(){
     if(!jQuery.isEmptyObject(this.puffedUp)){
         return this.remain_puff_up();
     }else{
-        this.puffedUp = {timestamp:this.timestamp, coordinates:this.getCurrentCoordinate(), timeout:1};
-
+        this.puffedUp = {timestamp:this.movementTimestamp, coordinates:this.getCurrentCoordinate(), timeout:1};
+        console.log("puff up at " + this.puffedUp.timestamp) + "real time " + this.timestamp;
         ocargo.animation.appendAnimation({
             type: 'van',
             id: this.vanId,
@@ -524,7 +515,6 @@ ocargo.Model.prototype.puff_down = function(){
         description: 'van move action: puff down'
     });
 
-    //this.incrementTime();
     return true;
 };
 
@@ -695,6 +685,11 @@ ocargo.Model.prototype.getCowForNode = function(node, status) {
     return null;
 };
 
+ocargo.Model.prototype.incrementMovementTime = function(){
+    this.movementTimestamp ++;
+    this.incrementTime();
+};
+
 // Helper functions which handles telling all parts of the model
 // that time has incremented and they should generate events
 ocargo.Model.prototype.incrementTime = function() {
@@ -709,7 +704,7 @@ ocargo.Model.prototype.incrementTime = function() {
 };
 
 ocargo.Model.prototype.incrementCowTime = function() {
-    if(this.timestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
+    if(this.movementTimestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
         this.puffedUp = {};
     };
 

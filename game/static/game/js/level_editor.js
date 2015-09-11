@@ -2693,7 +2693,6 @@ ocargo.LevelEditor = function() {
                 cows.splice(index, 1);
             }
 
-            markAsBackground(this.controlledNode.coordinate);
         };
 
         this.image = ocargo.drawing.createCowImage(data.group.type);
