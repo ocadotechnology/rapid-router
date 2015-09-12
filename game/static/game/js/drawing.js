@@ -47,7 +47,6 @@ var PAPER_HEIGHT = GRID_SPACE_SIZE * GRID_HEIGHT;
 var PAPER_PADDING = 30;
 var EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 2 * PAPER_PADDING;
 var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING;
-
 var DEFAULT_CHARACTER_WIDTH = 40;
 var DEFAULT_CHARACTER_HEIGHT = 20;
 
@@ -68,6 +67,8 @@ ocargo.Drawing = function () {
     var MOVE_DISTANCE = GRID_SPACE_SIZE;
     var INITIAL_OFFSET_X = 10;
     var INITIAL_OFFSET_Y = 82;
+    var HEIGHT_DIFFERENCE_FROM_VAN = CHAR_HEIGHT - DEFAULT_CHARACTER_HEIGHT;
+    var WIDTH_DIFFERENCE_FROM_VAN = CHAR_WIDTH - DEFAULT_CHARACTER_WIDTH;
     var TURN_LEFT_RADIUS = -38;
     var TURN_RIGHT_RADIUS = 62;
 
@@ -85,8 +86,6 @@ ocargo.Drawing = function () {
     var lightImages = {};
     var destinationImages = {};
     var wreckageImages = {};
-    var characterWidth = DEFAULT_CHARACTER_WIDTH;
-    var characterHeight = DEFAULT_CHARACTER_HEIGHT;
     var currentScale = 1;
 
     this.reset = function () {
@@ -654,9 +653,29 @@ ocargo.Drawing = function () {
         });
     };
 
+    // Move the character so they start on the line, also move them to the center of the track.
+    this.adaptStartPositionForNonVanCharacters = function (initialPosition) {
+        var returnValue = initialPosition;
+        if (CHARACTER_NAME != 'Van') {
+            returnValue.y -= 2; // The van doesn't start in the middle of it's lane, fix this.
+
+            // Center character to be in the middle of it's 'lane' in the road
+            returnValue.x = initialPosition.x - (HEIGHT_DIFFERENCE_FROM_VAN/2);
+            returnValue.y = initialPosition.y - (WIDTH_DIFFERENCE_FROM_VAN/2);
+
+            // Move character to the center of the track/road
+            returnValue.y = initialPosition.y + ROAD_WIDTH/8;
+        }
+        if (CHARACTER_NAME == 'Kirsty') {
+            returnValue.x -= 4;
+        }
+        return returnValue;
+    }
+
     this.setVanImagePosition = function (position, vanID) {
         var vanImage = vanImages[vanID];
         var initialPosition = calculateInitialPosition(position.currentNode);
+        initialPosition = this.adaptStartPositionForNonVanCharacters(initialPosition);
         vanImage.transform('t' + initialPosition.x + ',' + initialPosition.y);
 
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
@@ -765,12 +784,23 @@ ocargo.Drawing = function () {
     };
 
     this.getRotationPointX = function (direction) {
-        var centreX = characterHeight / 2;    // x coordinate of the canvas of the character svg
-        return centreX + ((direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS) / currentScale);
+        var centreX = DEFAULT_CHARACTER_HEIGHT / 2;    // x coordinate of the canvas of the character svg
+        var rotationPointX =  centreX + ((direction == 'LEFT' ? TURN_LEFT_RADIUS : TURN_RIGHT_RADIUS) / currentScale);
+        if (CHARACTER_NAME == 'Dee') {
+            rotationPointX -= 9;
+        } else if (CHARACTER_NAME == 'Wes') {
+            rotationPointX -= 12;
+        } else if (CHARACTER_NAME == 'Kirsty') {
+            rotationPointX -= 6;
+        }
+        return rotationPointX;
     };
 
     this.getRotationPointY = function () {
-        var centreY = characterWidth / 2;     // y coordinate of the canvas of the character svg
+        var centreY = CHAR_WIDTH / 2;     // y coordinate of the canvas of the character svg
+        if (CHARACTER_NAME == 'Kirsty') {
+            centreY -= 7;
+        }
         return centreY;
     };
 
@@ -964,7 +994,7 @@ ocargo.Drawing = function () {
 
             var smokeParts = 20;
 
-            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
+            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, CHAR_HEIGHT, CHAR_WIDTH);
             wreckageImage.transform(vanImage.transform());
             wreckageImage.attr({"opacity": 0});
             wreckageImages[vanID] = wreckageImage;
@@ -1066,7 +1096,7 @@ ocargo.Drawing = function () {
 
             var explosionParts = 20;
 
-            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
+            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, CHAR_HEIGHT, CHAR_WIDTH);
             wreckageImage.transform(vanImage.transform());
             wreckageImage.attr({"opacity": 0});
             wreckageImages[vanID] = wreckageImage;
