@@ -7,7 +7,7 @@ game.
 Go to the official [Code For Life website][c4l].
 
 ## To run the app locally
-Follow the instructions in the [codeforlife-deploy project][c4l-deploy].
+Follow the instructions in the [codeforlife-portal project][c4l-portal].
 
 ## To contribute
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
@@ -28,7 +28,7 @@ looks good, we'll merge it. If we find issues with it, we'll let you know and ho
 it and get it re-submitted. If it is a change that we just don't want, we'll reject it.
 
 [c4l]: https://www.codeforlife.education/
-[c4l-deploy]: http://github.com/ocadotechnology/codeforlife-deploy/
+[c4l-portal]: http://github.com/ocadotechnology/codeforlife-portal/
 [issues]: https://github.com/ocadotechnology/ocargo/issues
 [add-issue]: https://github.com/ocadotechnology/ocargo/issues/new
 [ready-for-pickup]: https://github.com/ocadotechnology/ocargo/labels/ready%20for%20pickup
