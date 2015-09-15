@@ -851,6 +851,7 @@ ocargo.Drawing = function () {
     this.turnAround = function (vanId, direction, animationLength) {
         var vanImage = vanImages[vanId];
         var timePerState = (animationLength - 50) / 3;
+        var that = this;
 
         var actions = [];
         var index = 0;
@@ -888,9 +889,8 @@ ocargo.Drawing = function () {
 
         function rotate(easing) {
             return function () {
-                var rotationPointX = vanImage.attrs.x + 22;
-                var rotationPointY = vanImage.attrs.y + 20;
-
+                var rotationPointX = 22;
+                var rotationPointY = 20;
                 vanImage.animate({
                     transform: createRotationTransformation(180, rotationPointX, rotationPointY)
                 }, timePerState, easing, performNextAction);
@@ -900,8 +900,8 @@ ocargo.Drawing = function () {
         function turnLeft(easing) {
             return function () {
                 var vanImage = vanImages[vanId];
-                var rotationPointX = this.getRotationPointX('LEFT');
-                var rotationPointY = this.getRotationPointY();
+                var rotationPointX = that.getRotationPointX('LEFT');
+                var rotationPointY = that.getRotationPointY();
                 var transformation = createRotationTransformation(-45, rotationPointX, rotationPointY);
                 vanImage.animate({
                     transform: transformation
@@ -912,8 +912,8 @@ ocargo.Drawing = function () {
         function turnRight(easing) {
             return function () {
                 var vanImage = vanImages[vanId];
-                var rotationPointX = this.getRotationPointX('RIGHT');
-                var rotationPointY = this.getRotationPointY();
+                var rotationPointX = that.getRotationPointX('RIGHT');
+                var rotationPointY = that.getRotationPointY();
                 var transformation = createRotationTransformation(45, rotationPointX, rotationPointY);
                 vanImage.animate({
                     transform: transformation
