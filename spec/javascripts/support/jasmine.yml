@@ -63,10 +63,21 @@ spec_files:
 # src_dir: public
 #
 src_files:
+  - "game/static/game/js/blockly/blockly_compressed.js"
+  - "game/static/game/js/blockly/blocks_compressed.js"
+  - "game/static/game/js/blockly/javascript_compressed.js"
+  - "game/static/game/js/blockly/python_compressed.js"
+  - "game/static/game/js/blockly/msg/js/en.js"
+  - "game/static/game/js/jquery.js"
   - "game/static/game/js/coordinate.js"
   - "game/static/game/js/node.js"
   - "game/static/game/js/destination.js"
   - "game/static/game/js/pathFinder.js"
+  - "game/static/game/js/drawing.js"
+  - "game/static/game/js/blocklyControl.js"
+  - "game/static/game/js/blocklyCompiler.js"
+  - "game/static/game/js/blocklyCustomBlocks.js"
+  - "game/static/game/js/blocklyCustomisations.js"
 
 # spec_dir
 #
