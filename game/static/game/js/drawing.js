@@ -62,8 +62,8 @@ ocargo.Drawing = function () {
     /* Constants */
     /*************/
 
-    var characterWidth = CHAR_WIDTH || DEFAULT_CHARACTER_WIDTH;
-    var characterHeight = CHAR_HEIGHT || DEFAULT_CHARACTER_HEIGHT;
+    var characterWidth = typeof CHAR_WIDTH !== 'undefined'? CHAR_WIDTH : DEFAULT_CHARACTER_WIDTH;
+    var characterHeight =  typeof CHAR_HEIGHT !== 'undefined'? CHAR_HEIGHT : DEFAULT_CHARACTER_HEIGHT;
 
     var TRAFFIC_LIGHT_WIDTH = 60;
     var TRAFFIC_LIGHT_HEIGHT = 22;
