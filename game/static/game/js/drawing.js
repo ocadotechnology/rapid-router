@@ -394,7 +394,6 @@ ocargo.Drawing = function () {
                 default:
                     break;
             }
-            //roadImage.glow({width:1});
             roadImages.push(roadImage);
         }
 
@@ -681,7 +680,6 @@ ocargo.Drawing = function () {
         vanImage.transform(transformation);
         vanImage.transform('... r90'); // all characters face up by default
         vanImage.attr({opacity: 1});
-        //vanImage.glow({width:1});
     };
 
     this.renderVans = function (position, numVans) {
