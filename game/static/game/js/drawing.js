@@ -73,7 +73,8 @@ ocargo.Drawing = function () {
     var INITIAL_CFC_OFFSET_X = -105;
     var INITIAL_CFC_OFFSET_Y = -7;
     var INITIAL_CHARACTER_OFFSET_X = -characterHeight/2;
-    var INITIAL_CHARACTER_OFFSET_Y = 38-characterWidth/2;
+    var DISTANCE_BETWEEN_THE_EDGE_AND_MIDDLE_OF_LEFT_LANE = 38;
+    var INITIAL_CHARACTER_OFFSET_Y = DISTANCE_BETWEEN_THE_EDGE_AND_MIDDLE_OF_LEFT_LANE-characterWidth/2;
 
     var TURN_LEFT_RADIUS = -38;
     var TURN_RIGHT_RADIUS = 62;
@@ -796,6 +797,23 @@ ocargo.Drawing = function () {
         return centreX + (radius/currentScale);
     };
 
+    function rotationPointX(radius) {
+        var centreX = characterHeight / 2;    // x coordinate of the canvas of the character svg
+        return centreX + (radius / currentScale);
+    }
+
+    this.getRotationPointXForLeftTurn = function(){
+        return rotationPointX(TURN_LEFT_RADIUS);
+    };
+
+    this.getRotationPointXForRightTurn = function(){
+        return rotationPointX(TURN_RIGHT_RADIUS);
+    };
+
+    this.getRotationPointXForTurnAround = function(){
+        return rotationPointX(TURN_AROUND_RADIUS);
+    };
+
     this.getRotationPointY = function () {
         var centreY = characterWidth / 2;     // y coordinate of the canvas of the character svg
         return centreY;
@@ -822,7 +840,7 @@ ocargo.Drawing = function () {
     };
 
     this.moveLeft = function (vanId, animationLength, callback, extraTransformation) {
-        var rotationPointX = this.getRotationPointX('LEFT');
+        var rotationPointX = this.getRotationPointXForLeftTurn();
         var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY, extraTransformation);
         moveVanImage({
@@ -834,7 +852,7 @@ ocargo.Drawing = function () {
     };
 
     this.moveRight = function (vanId, animationLength, callback, extraTransformation) {
-        var rotationPointX = this.getRotationPointX('RIGHT');
+        var rotationPointX = this.getRotationPointXForRightTurn();
         var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(90, rotationPointX, rotationPointY, extraTransformation);
         moveVanImage({
@@ -886,7 +904,7 @@ ocargo.Drawing = function () {
 
         function rotate(easing) {
             return function () {
-                var rotationPointX = that.getRotationPointX('TURN_AROUND');
+                var rotationPointX = that.getRotationPointXForTurnAround();
                 var rotationPointY = that.getRotationPointY();
                 vanImage.animate({
                     transform: createRotationTransformation(180, rotationPointX, rotationPointY)
@@ -897,7 +915,7 @@ ocargo.Drawing = function () {
         function turnLeft(easing) {
             return function () {
                 var vanImage = vanImages[vanId];
-                var rotationPointX = that.getRotationPointX('LEFT');
+                var rotationPointX = that.getRotationPointXForLeftTurn();
                 var rotationPointY = that.getRotationPointY();
                 var transformation = createRotationTransformation(-45, rotationPointX, rotationPointY);
                 vanImage.animate({
@@ -909,7 +927,7 @@ ocargo.Drawing = function () {
         function turnRight(easing) {
             return function () {
                 var vanImage = vanImages[vanId];
-                var rotationPointX = that.getRotationPointX('RIGHT');
+                var rotationPointX = that.getRotationPointXForRightTurn();
                 var rotationPointY = that.getRotationPointY();
                 var transformation = createRotationTransformation(45, rotationPointX, rotationPointY);
                 vanImage.animate({
@@ -954,7 +972,7 @@ ocargo.Drawing = function () {
         else if (attemptedAction === "TURN_LEFT") {
             var rotationAngle = 15;
 
-            var rotationPointX = this.getRotationPointX('LEFT');
+            var rotationPointX = this.getRotationPointXForLeftTurn();
             var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
                 rotationPointY);
@@ -962,7 +980,7 @@ ocargo.Drawing = function () {
         else if (attemptedAction === "TURN_RIGHT") {
             var rotationAngle = 15;
 
-            var rotationPointX = this.getRotationPointX('RIGHT');
+            var rotationPointX = this.getRotationPointXForRightTurn();
             var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(rotationAngle, rotationPointX,
                 rotationPointY);
@@ -1049,7 +1067,7 @@ ocargo.Drawing = function () {
             else {
                 rotationAngle = 75;
             }
-            var rotationPointX = this.getRotationPointX('LEFT');
+            var rotationPointX = this.getRotationPointXForLeftTurn();
             var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
                 rotationPointY);
@@ -1065,7 +1083,7 @@ ocargo.Drawing = function () {
             else {
                 rotationAngle = 75;
             }
-            var rotationPointX = this.getRotationPointX('RIGHT');
+            var rotationPointX = this.getRotationPointXForRightTurn();
             var rotationPointY = this.getRotationPointY();
             var transformation = createRotationTransformation(rotationAngle, rotationPointX,
                 rotationPointY);
