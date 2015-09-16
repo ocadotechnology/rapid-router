@@ -573,6 +573,11 @@ ocargo.Model.prototype.programExecutionEnded = function() {
         }
     }
 
+    // check for disconnected start block
+    if (ocargo.blocklyControl.disconnectedStartBlock()) {
+        failMessage = failMessage + ocargo.messages.disconnectedStartBlock;
+    }
+
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionType: 'playSound',
