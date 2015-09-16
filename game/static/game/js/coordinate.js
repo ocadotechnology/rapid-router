@@ -87,7 +87,7 @@ ocargo.Coordinate.prototype.getNextInDirection = function(direction) {
         case "S":   return new ocargo.Coordinate(this.x, this.y-1);
         case "W":   return new ocargo.Coordinate(this.x-1, this.y);
     }
-}
+};
 
 ocargo.Coordinate.prototype.angleTo = function(coord) {
     return Math.atan2(coord.y - this.y, coord.x - this.x);
