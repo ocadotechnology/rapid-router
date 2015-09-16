@@ -69,8 +69,11 @@ ocargo.Drawing = function () {
     var TRAFFIC_LIGHT_HEIGHT = 22;
 
     var MOVE_DISTANCE = GRID_SPACE_SIZE;
-    var INITIAL_OFFSET_X = -characterHeight/2;
-    var INITIAL_OFFSET_Y = 38;
+
+    var INITIAL_CFC_OFFSET_X = -105;
+    var INITIAL_CFC_OFFSET_Y = -7;
+    var INITIAL_CHARACTER_OFFSET_X = -characterHeight/2;
+    var INITIAL_CHARACTER_OFFSET_Y = 38-characterWidth/2;
 
     var TURN_LEFT_RADIUS = -38;
     var TURN_RIGHT_RADIUS = 62;
@@ -147,11 +150,19 @@ ocargo.Drawing = function () {
         return createAbsoluteRotationTransformation(degrees, rotationPointX, rotationPointY);
     }
 
-    function calculateInitialPosition(startNode) {
+    function calculateCFCInitialPosition(startNode) {
         var coord = ocargo.Drawing.translate(startNode.coordinate);
         return {
-            x: coord.x * GRID_SPACE_SIZE + INITIAL_OFFSET_X + PAPER_PADDING,
-            y: coord.y * GRID_SPACE_SIZE + INITIAL_OFFSET_Y + PAPER_PADDING - characterWidth/2
+            x: coord.x * GRID_SPACE_SIZE + INITIAL_CFC_OFFSET_X + PAPER_PADDING,
+            y: coord.y * GRID_SPACE_SIZE + INITIAL_CFC_OFFSET_Y + PAPER_PADDING
+        }
+    }
+
+    function calculateCharacterInitialPosition(startNode) {
+        var coord = ocargo.Drawing.translate(startNode.coordinate);
+        return {
+            x: coord.x * GRID_SPACE_SIZE + INITIAL_CHARACTER_OFFSET_X + PAPER_PADDING,
+            y: coord.y * GRID_SPACE_SIZE + INITIAL_CHARACTER_OFFSET_Y + PAPER_PADDING
         }
     }
 
@@ -335,9 +346,8 @@ ocargo.Drawing = function () {
     };
 
     this.renderOrigin = function (position) {
-        var initialPosition = calculateInitialPosition(position.currentNode);
-        var cfc = paper.image(ocargo.Drawing.raphaelImageDir + CFC_URL, initialPosition.x - 95, initialPosition.y - 25, 100, 107);
-
+        var initialPosition = calculateCFCInitialPosition(position.currentNode);
+        var cfc = paper.image(ocargo.Drawing.raphaelImageDir + CFC_URL, initialPosition.x, initialPosition.y, 100, 107);
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
         var transformation = getRotationTransformationAroundCentreOfGridSpace(cfc,
             rotation,
@@ -660,7 +670,7 @@ ocargo.Drawing = function () {
 
     this.setVanImagePosition = function (position, vanID) {
         var vanImage = vanImages[vanID];
-        var initialPosition = calculateInitialPosition(position.currentNode);
+        var initialPosition = calculateCharacterInitialPosition(position.currentNode);
         vanImage.transform('t' + initialPosition.x + ',' + initialPosition.y);
 
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
