@@ -78,27 +78,15 @@ ocargo.Thread.prototype.run = function(model) {
 
 ocargo.Thread.prototype.step = function(model) {
 
-	var activeEvent = null;
-
 	// check if any event condition is true
 	for (var i=0; i<this.program.events.length; i++) {
 		var event = this.program.events[i];
 		model.shouldObserve = false;
 		if (event.condition(model)) {
-			if (!activeEvent || event.level() < activeEvent.level()) {
-				activeEvent = event;
-			}
+			event.execute(this, model);
 		}
 		model.shouldObserve = true;
 	}
-
-	// only execute the event if it raises the event level
-	if (activeEvent && this.eventLevel > activeEvent.level()) {
-		// tell the event about the old event level
-		activeEvent.setOldLevel(this.eventLevel);
-		// add event handler to stack (looping)
-		activeEvent.execute(this, model);
-    }
 
 	var commandToProcess = this.stack.shift();
 	this.noExecutionSteps ++;
@@ -218,7 +206,7 @@ function SoundHornCommand(block){
 }
 
 SoundHornCommand.prototype.execute = function(thread, model){
-	queueHighlight(model, this.block);
+	queueHighlight(model, this.block, true);
 	return model.sound_horn();
 };
 
@@ -227,7 +215,7 @@ function PuffUpCommand(block){
 }
 
 PuffUpCommand.prototype.execute = function(thread, model){
-	queueHighlight(model, this.block);
+	queueHighlight(model, this.block, true);
 	return model.puff_up();
 }
 
@@ -276,36 +264,12 @@ function Event(condition,body,block,conditionType) {
 	this.condition = condition;
 	this.body = body;
 	this.block = block;
-	this.conditionType = conditionType;
-	this.oldLevel = null;
 }
 
 Event.prototype.execute = function(thread, model) {
 	thread.pushToStack(this.body.slice());
 
 	return true;
-};
-
-Event.prototype.setOldLevel = function(oldLevel) {
-	this.oldLevel = oldLevel;
-};
-
-Event.MAX_LEVEL = 1000; // level at which no event is active
-
-Event.prototype.level = function() {
-	if (this.conditionType === 'road_exists') {
-		return 31;
-	} else if (this.conditionType === 'dead_end') {
-		return 30;
-	} else if (this.conditionType === 'at_destination') {
-		return 20;
-	} else if (this.conditionType === 'traffic_light') {
-		return 11;
-	} else if (this.conditionType === 'cow_crossing') {
-		return 10;
-	} else {
-		return 100;
-	}
 };
 
 function Procedure(name,body,block) {
@@ -336,15 +300,16 @@ ProcedureCall.prototype.execute = function(thread) {
 
 /* Highlighting of blocks */
 
-function queueHighlight(model, block) {
+function queueHighlight(model, block, keepHighlighting) {
     if (model.shouldObserve) {
         ocargo.animation.appendAnimation({
             type: 'callable',
 	    functionType: 'highlight',
-	    functionCall: makeHighLightCallable(block.id),
+	    functionCall: makeHighLightCallable(block.id, keepHighlighting),
 	    description: 'Blockly highlight: ' + block.type,
 	    blockId: block.id
         });
+
 	}
 }
 
@@ -360,10 +325,13 @@ function queueHighlightIncorrect(model, block){
 	}
 }
 
-function makeHighLightCallable(id) {
+function makeHighLightCallable(id, keepHighlighting) {
 	return function() {
 		ocargo.blocklyControl.clearAllSelections();
-		ocargo.blocklyControl.setBlockSelected(Blockly.Block.getById(id, Blockly.mainWorkspace), true);
+		var block = Blockly.Block.getById(id, Blockly.mainWorkspace);
+		block.keepHighlighting = keepHighlighting;
+		ocargo.blocklyControl.setBlockSelected(block, true);
+
 	};
 }
 
