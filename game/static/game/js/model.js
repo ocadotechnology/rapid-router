@@ -554,8 +554,7 @@ ocargo.Model.prototype.programExecutionEnded = function () {
                 failMessage = ocargo.messages.passedDestination;
             }
         }
-    }
-    else {
+    } else {
         // Checks whether all the destinations have been delivered
         success = true;
         for (var i = 0; i < destinations.length; i++) {
@@ -577,7 +576,7 @@ ocargo.Model.prototype.programExecutionEnded = function () {
 
     // check for disconnected start block
     if (ocargo.blocklyControl.disconnectedStartBlock()) {
-        failMessage = failMessage + ocargo.messages.disconnectedStartBlock;
+        failMessage = ocargo.messages.disconnectedStartBlock;
     }
 
     ocargo.animation.appendAnimation({
@@ -628,8 +627,7 @@ ocargo.Model.prototype.programExecutionEnded = function () {
         });
 
         this.reasonForTermination = 'SUCCESS';
-    }
-    else {
+    } else {
         ocargo.game.sendAttempt(0);
 
         // Failure popup
