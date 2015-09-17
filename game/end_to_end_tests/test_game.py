@@ -181,16 +181,23 @@ class TestGame(BaseTest):
     def test_level45(self):
         self.run_level_test(45)
 
-    def run_level_test(self, level):
+    def run_level_test(self, level, suffix=None, route_score="10/10", algorithm_score="10/10"):
         user_profile = self.login_once()
 
-        workspace_id = self.persist_workspace(level, user_profile)
+        level_with_suffix = str(level)
+        if suffix:
+            level_with_suffix += "-%d" % suffix
 
-        self .go_to_level(level) \
+        workspace_id = self.persist_workspace(level_with_suffix, user_profile)
+
+        page = self.go_to_level(level) \
             .load_solution(workspace_id) \
-            .run_program() \
-            .assert_route_score("10/10") \
-            .assert_algorithm_score("10/10")
+            .run_program()
+
+        if route_score:
+            page = page.assert_route_score("10/10")
+        if algorithm_score:
+            page = page.assert_algorithm_score("10/10")
 
     def persist_workspace(self, level, user_profile):
         solution = self.read_solution(level)
