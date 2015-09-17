@@ -530,17 +530,17 @@ ocargo.Model.prototype.puff_down = function(){
 
 // Signal that the program has ended and we should calculate whether
 // the play has won or not and send off those events
-ocargo.Model.prototype.programExecutionEnded = function() {
+ocargo.Model.prototype.programExecutionEnded = function () {
     var success;
     var destinations = this.map.getDestinations();
     var failType = 'OUT_OF_INSTRUCTIONS';
     var failMessage = ocargo.messages.outOfInstructions;
 
-    if(destinations.length === 1) {
+    if (destinations.length === 1) {
         // If there's only one destination, check that the car stopped on the destination node
         success = this.van.getPosition().currentNode === destinations[0].node;
 
-        if(success) {
+        if (success) {
             ocargo.animation.appendAnimation({
                 type: 'van',
                 id: this.vanId,
@@ -550,7 +550,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
                 description: 'van delivering'
             });
         } else {
-            if($.inArray(destinations[0].node, this.van.visitedNodes) != -1 ) {
+            if ($.inArray(destinations[0].node, this.van.visitedNodes) != -1) {
                 failMessage = ocargo.messages.passedDestination;
             }
         }
@@ -558,18 +558,20 @@ ocargo.Model.prototype.programExecutionEnded = function() {
     else {
         // Checks whether all the destinations have been delivered
         success = true;
-        for(var i = 0; i < destinations.length; i++) {
+        for (var i = 0; i < destinations.length; i++) {
             success &= destinations[i].visited;
         }
-        if(!success){
+        if (!success) {
             failType = 'UNDELIVERED_DESTINATIONS';
             failMessage = ocargo.messages.undeliveredDestinations;
 
-            ocargo.event.sendEvent("LevelUndeliveredDestinations", { levelName: LEVEL_NAME,
-                                                                     defaultLevel: DEFAULT_LEVEL,
-                                                                     workspace: ocargo.blocklyControl.serialize(),
-                                                                     failures: this.failures,
-                                                                     pythonWorkspace: ocargo.pythonControl.getCode() });
+            ocargo.event.sendEvent("LevelUndeliveredDestinations", {
+                levelName: LEVEL_NAME,
+                defaultLevel: DEFAULT_LEVEL,
+                workspace: ocargo.blocklyControl.serialize(),
+                failures: this.failures,
+                pythonWorkspace: ocargo.pythonControl.getCode()
+            });
         }
     }
 
@@ -585,7 +587,7 @@ ocargo.Model.prototype.programExecutionEnded = function() {
         description: 'stopping engine'
     });
 
-    if(success) {
+    if (success) {
         var result = this.pathFinder.getScore();
         ocargo.game.sendAttempt(result.totalScore);
 
@@ -594,11 +596,11 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             type: 'popup',
             id: this.vanId,
             popupType: 'WIN',
-            popupMessage:result.popupMessage,
+            popupMessage: result.popupMessage,
             totalScore: result.totalScore,
             maxScore: result.maxScore,
-            routeCoins : result.routeCoins,
-            instrCoins : result.instrCoins,
+            routeCoins: result.routeCoins,
+            instrCoins: result.instrCoins,
             pathLengthScore: result.pathLengthScore,
             maxScoreForPathLength: result.maxScoreForPathLength,
             instrScore: result.instrScore,
@@ -616,12 +618,14 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             description: 'win sound'
         });
 
-        ocargo.event.sendEvent("LevelSuccess", { levelName: LEVEL_NAME,
-                                                 defaultLevel: DEFAULT_LEVEL,
-                                                 workspace: ocargo.blocklyControl.serialize(),
-                                                 failures: this.failures,
-                                                 pythonWorkspace: ocargo.pythonControl.getCode(),
-                                                 score: result.totalScore });
+        ocargo.event.sendEvent("LevelSuccess", {
+            levelName: LEVEL_NAME,
+            defaultLevel: DEFAULT_LEVEL,
+            workspace: ocargo.blocklyControl.serialize(),
+            failures: this.failures,
+            pythonWorkspace: ocargo.pythonControl.getCode(),
+            score: result.totalScore
+        });
 
         this.reasonForTermination = 'SUCCESS';
     }
@@ -647,11 +651,13 @@ ocargo.Model.prototype.programExecutionEnded = function() {
             description: 'failure sound'
         });
 
-        ocargo.event.sendEvent("LevelFailure", { levelName: LEVEL_NAME,
-                                                 defaultLevel: DEFAULT_LEVEL,
-                                                 workspace: ocargo.blocklyControl.serialize(),
-                                                 failures: this.failures,
-                                                 pythonWorkspace: ocargo.pythonControl.getCode() });
+        ocargo.event.sendEvent("LevelFailure", {
+            levelName: LEVEL_NAME,
+            defaultLevel: DEFAULT_LEVEL,
+            workspace: ocargo.blocklyControl.serialize(),
+            failures: this.failures,
+            pythonWorkspace: ocargo.pythonControl.getCode()
+        });
 
         this.reasonForTermination = failType;
     }
