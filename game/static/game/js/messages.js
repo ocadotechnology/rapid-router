@@ -66,21 +66,21 @@ ocargo.messages = {
     lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own challenges.",
 
     illegalBlocks: "Sorry, this workspace has blocks in it that aren't allowed in this level!",
-    tooManyBlocks: "Whoops! You used too many blocks.",
+    tooManyBlocks: "Whoops. You used too many blocks.",
     ohNo: "Oh no!",
     winTitle: "You win!",
     failTitle: "Oh dear! ",
     tryagainLabel: "Try again",
     needHint: "Are you stuck? Do you need help?",
-    terminated: "Program terminated!",
-    crashed: "Your program crashed!",
+    terminated: "Program terminated.",
+    crashed: "Your program crashed.",
     queryInfiniteLoop: "It looks as though your program's been running a while. Check your repeat loops are okay.",
     compilationError: "Your program doesn't look quite right...",
     stoppingTitle: "Stopping...",
     errorTitle: "Error",
 
     outOfFuel : "You ran out of fuel! Try to find a shorter route to the destination.",
-    outOfInstructions: "The van ran out of instructions before it reached a destination."  +
+    outOfInstructions: "The van ran out of instructions before it reached a destination. "  +
       "Make sure there are enough instructions to complete the delivery.",
     disconnectedStartBlock: "<br><br>Make sure your blocks are connected to the Start block.",
     passedDestination: "The van visited the destination, but didn't stop there!",
