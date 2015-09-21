@@ -10,8 +10,8 @@ local_settings.py
 .project
 .pydevproject
 .idea
-dbfile
-testdbfile
+*dbfile
+db.sqlite3
 *.orig
 .sass-cache
 *.DS_Store
