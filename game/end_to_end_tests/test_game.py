@@ -181,6 +181,14 @@ class TestGame(BaseTest):
     def test_level45(self):
         self.run_level_test(45)
 
+    def wait_for_score_element_id(self, route_score, algorithm_score):
+        if route_score:
+            return "routeScore"
+        elif algorithm_score:
+            return "algorithmScore"
+        else:
+            raise Exception
+
     def run_level_test(self, level, suffix=None, route_score="10/10", algorithm_score="10/10"):
         user_profile = self.login_once()
 
@@ -190,9 +198,11 @@ class TestGame(BaseTest):
 
         workspace_id = self.persist_workspace(level_with_suffix, user_profile)
 
+        score_element_id = self.wait_for_score_element_id(route_score, algorithm_score)
+
         page = self.go_to_level(level) \
             .load_solution(workspace_id) \
-            .run_program()
+            .run_program(score_element_id)
 
         if route_score:
             page = page.assert_route_score("10/10")

@@ -778,25 +778,6 @@ ocargo.Drawing = function () {
         element.scrollTop = point[1] - element.offsetHeight / 2;
     };
 
-    this.getRotationPointX = function (direction) {
-        var centreX = characterHeight / 2;    // x coordinate of the canvas of the character svg
-        var radius;
-        switch (direction){
-            case 'LEFT':
-                radius = TURN_LEFT_RADIUS;
-                break;
-            case 'RIGHT':
-                radius = TURN_RIGHT_RADIUS;
-                break;
-            case 'TURN_AROUND':
-                radius = TURN_AROUND_RADIUS;
-                break;
-            default:
-                radius = TURN_AROUND_RADIUS;
-        }
-        return centreX + (radius/currentScale);
-    };
-
     function rotationPointX(radius) {
         var centreX = characterHeight / 2;    // x coordinate of the canvas of the character svg
         return centreX + (radius / currentScale);
