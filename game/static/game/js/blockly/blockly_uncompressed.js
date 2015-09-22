@@ -27,7 +27,7 @@ if (!this.goog) {
 var dir = this.BLOCKLY_DIR.match(/[^\/]+$/)[0];
 goog.addDependency("../../../" + dir + "/core/block.js", ['Blockly.Block'], ['Blockly.Blocks', 'Blockly.Comment', 'Blockly.Connection', 'Blockly.Input', 'Blockly.Mutator', 'Blockly.Warning', 'Blockly.Workspace', 'Blockly.Xml', 'goog.array', 'goog.asserts', 'goog.math.Coordinate', 'goog.string']);
 goog.addDependency("../../../" + dir + "/core/block_svg.js", ['Blockly.BlockSvg'], ['Blockly.Block', 'Blockly.ContextMenu', 'goog.Timer', 'goog.asserts', 'goog.dom', 'goog.math.Coordinate']);
-goog.addDependency("../../../" + dir + "/core/blockly.js", ['Blockly'], ['Blockly.BlockSvg', 'Blockly.FieldAngle', 'Blockly.FieldCheckbox', 'Blockly.FieldColour', 'Blockly.FieldDropdown', 'Blockly.FieldImage', 'Blockly.FieldTextInput', 'Blockly.FieldVariable', 'Blockly.Generator', 'Blockly.Msg', 'Blockly.Procedures', 'Blockly.Realtime', 'Blockly.Toolbox', 'Blockly.WidgetDiv', 'Blockly.WorkspaceSvg', 'Blockly.inject', 'Blockly.utils', 'goog.color', 'goog.userAgent']);
+goog.addDependency("../../../" + dir + "/core/blockly.js", ['Blockly'], ['Blockly.BlockSvg', 'Blockly.FieldAngle', 'Blockly.FieldCheckbox', 'Blockly.FieldColour', 'Blockly.FieldDropdown', 'Blockly.FieldImage', 'Blockly.FieldTextInput', 'Blockly.FieldVariable', 'Blockly.Generator', 'Blockly.Msg', 'Blockly.Procedures', 'Blockly.Toolbox', 'Blockly.WidgetDiv', 'Blockly.WorkspaceSvg', 'Blockly.inject', 'Blockly.utils', 'goog.color', 'goog.userAgent']);
 goog.addDependency("../../../" + dir + "/core/blocks.js", ['Blockly.Blocks'], ['goog.asserts']);
 goog.addDependency("../../../" + dir + "/core/bubble.js", ['Blockly.Bubble'], ['Blockly.Workspace', 'goog.dom', 'goog.math', 'goog.userAgent']);
 goog.addDependency("../../../" + dir + "/core/comment.js", ['Blockly.Comment'], ['Blockly.Bubble', 'Blockly.Icon', 'goog.userAgent']);
@@ -68,6 +68,7 @@ goog.addDependency("../../../" + dir + "/core/workspace_svg.js", ['Blockly.Works
 goog.addDependency("../../../" + dir + "/core/xml.js", ['Blockly.Xml'], ['goog.dom']);
 goog.addDependency("../../../" + dir + "/core/zoom_controls.js", ['Blockly.ZoomControls'], ['goog.dom']);
 goog.addDependency("../../alltests.js", [], []);
+goog.addDependency("../../browser_capabilities.js", [], []);
 goog.addDependency("../../protractor.conf.js", [], []);
 goog.addDependency("../../protractor_spec.js", [], []);
 goog.addDependency("base.js", [], []);
@@ -300,7 +301,7 @@ goog.addDependency("dom/vendor.js", ['goog.dom.vendor'], ['goog.string', 'goog.u
 goog.addDependency("dom/vendor_test.js", ['goog.dom.vendorTest'], ['goog.array', 'goog.dom.vendor', 'goog.labs.userAgent.util', 'goog.testing.MockUserAgent', 'goog.testing.PropertyReplacer', 'goog.testing.jsunit', 'goog.userAgent', 'goog.userAgentTestUtil']);
 goog.addDependency("dom/viewportsizemonitor.js", ['goog.dom.ViewportSizeMonitor'], ['goog.dom', 'goog.events', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.math.Size']);
 goog.addDependency("dom/viewportsizemonitor_test.js", ['goog.dom.ViewportSizeMonitorTest'], ['goog.dom.ViewportSizeMonitor', 'goog.events', 'goog.events.Event', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.math.Size', 'goog.testing.MockClock', 'goog.testing.PropertyReplacer', 'goog.testing.jsunit']);
-goog.addDependency("dom/xml.js", ['goog.dom.xml'], ['goog.dom', 'goog.dom.NodeType']);
+goog.addDependency("dom/xml.js", ['goog.dom.xml'], ['goog.dom', 'goog.dom.NodeType', 'goog.userAgent']);
 goog.addDependency("dom/xml_test.js", ['goog.dom.xmlTest'], ['goog.dom.TagName', 'goog.dom.xml', 'goog.testing.jsunit', 'goog.userAgent']);
 goog.addDependency("dom/animationframe/animationframe.js", ['goog.dom.animationFrame', 'goog.dom.animationFrame.Spec', 'goog.dom.animationFrame.State'], ['goog.dom.animationFrame.polyfill']);
 goog.addDependency("dom/animationframe/animationframe_test.js", [], ['goog.dom.animationFrame', 'goog.testing.MockClock', 'goog.testing.jsunit']);
@@ -843,7 +844,7 @@ goog.addDependency("net/filedownloader.js", ['goog.net.FileDownloader', 'goog.ne
 goog.addDependency("net/filedownloader_test.js", ['goog.net.FileDownloaderTest'], ['goog.fs.Error', 'goog.net.ErrorCode', 'goog.net.FileDownloader', 'goog.net.XhrIo', 'goog.testing.PropertyReplacer', 'goog.testing.TestCase', 'goog.testing.fs', 'goog.testing.fs.FileSystem', 'goog.testing.jsunit', 'goog.testing.net.XhrIoPool']);
 goog.addDependency("net/httpstatus.js", ['goog.net.HttpStatus'], []);
 goog.addDependency("net/iframe_xhr_test.js", ['goog.net.iframeXhrTest'], ['goog.Timer', 'goog.debug.Console', 'goog.debug.LogManager', 'goog.debug.Logger', 'goog.dom.TagName', 'goog.events', 'goog.net.IframeIo', 'goog.net.XhrIo', 'goog.testing.AsyncTestCase', 'goog.testing.jsunit', 'goog.userAgent']);
-goog.addDependency("net/iframeio.js", ['goog.net.IframeIo', 'goog.net.IframeIo.IncrementalDataEvent'], ['goog.Timer', 'goog.Uri', 'goog.asserts', 'goog.debug', 'goog.dom', 'goog.dom.InputType', 'goog.dom.TagName', 'goog.dom.safe', 'goog.events', 'goog.events.Event', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.html.uncheckedconversions', 'goog.json', 'goog.log', 'goog.log.Level', 'goog.net.ErrorCode', 'goog.net.EventType', 'goog.reflect', 'goog.string', 'goog.string.Const', 'goog.structs', 'goog.userAgent']);
+goog.addDependency("net/iframeio.js", ['goog.net.IframeIo', 'goog.net.IframeIo.IncrementalDataEvent'], ['goog.Timer', 'goog.Uri', 'goog.array', 'goog.asserts', 'goog.debug', 'goog.dom', 'goog.dom.InputType', 'goog.dom.TagName', 'goog.dom.safe', 'goog.events', 'goog.events.Event', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.html.uncheckedconversions', 'goog.json', 'goog.log', 'goog.log.Level', 'goog.net.ErrorCode', 'goog.net.EventType', 'goog.reflect', 'goog.string', 'goog.string.Const', 'goog.structs', 'goog.userAgent']);
 goog.addDependency("net/iframeio_different_base_test.js", ['goog.net.iframeIoDifferentBaseTest'], ['goog.Promise', 'goog.events', 'goog.net.EventType', 'goog.net.IframeIo', 'goog.testing.TestCase', 'goog.testing.jsunit']);
 goog.addDependency("net/iframeio_test.js", ['goog.net.IframeIoTest'], ['goog.debug', 'goog.debug.DivConsole', 'goog.debug.LogManager', 'goog.dom', 'goog.dom.TagName', 'goog.events', 'goog.events.EventType', 'goog.log', 'goog.log.Level', 'goog.net.IframeIo', 'goog.testing.events', 'goog.testing.events.Event', 'goog.testing.jsunit', 'goog.userAgent']);
 goog.addDependency("net/iframeloadmonitor.js", ['goog.net.IframeLoadMonitor'], ['goog.dom', 'goog.events', 'goog.events.EventTarget', 'goog.events.EventType', 'goog.userAgent']);
@@ -950,7 +951,7 @@ goog.addDependency("result/dependentresult.js", ['goog.result.DependentResult'],
 goog.addDependency("result/result_interface.js", ['goog.result.Result'], ['goog.Thenable']);
 goog.addDependency("result/resultutil.js", ['goog.result'], ['goog.array', 'goog.result.DependentResult', 'goog.result.Result', 'goog.result.SimpleResult']);
 goog.addDependency("result/simpleresult.js", ['goog.result.SimpleResult', 'goog.result.SimpleResult.StateError'], ['goog.Promise', 'goog.Thenable', 'goog.debug.Error', 'goog.result.Result']);
-goog.addDependency("soy/data.js", ['goog.soy.data.SanitizedContent', 'goog.soy.data.SanitizedContentKind'], ['goog.html.SafeHtml', 'goog.html.uncheckedconversions', 'goog.string.Const']);
+goog.addDependency("soy/data.js", ['goog.soy.data.SanitizedContent', 'goog.soy.data.SanitizedContentKind', 'goog.soy.data.UnsanitizedText'], ['goog.html.SafeHtml', 'goog.html.uncheckedconversions', 'goog.string.Const']);
 goog.addDependency("soy/data_test.js", ['goog.soy.dataTest'], ['goog.html.SafeHtml', 'goog.soy.testHelper', 'goog.testing.jsunit']);
 goog.addDependency("soy/renderer.js", ['goog.soy.InjectedDataSupplier', 'goog.soy.Renderer'], ['goog.asserts', 'goog.dom', 'goog.soy', 'goog.soy.data.SanitizedContent', 'goog.soy.data.SanitizedContentKind']);
 goog.addDependency("soy/renderer_test.js", ['goog.soy.RendererTest'], ['goog.dom', 'goog.dom.NodeType', 'goog.dom.TagName', 'goog.html.SafeHtml', 'goog.i18n.bidi.Dir', 'goog.soy.Renderer', 'goog.soy.data.SanitizedContentKind', 'goog.soy.testHelper', 'goog.testing.jsunit', 'goog.testing.recordFunction']);
