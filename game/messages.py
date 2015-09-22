@@ -1171,7 +1171,7 @@ def title_level55():
     return ugettext("Wonky Fish!")
 
 def description_level55():
-    message = ugettext("Use <b>repeat until</b> and the <b>if</b> statment to find your way around the Wonky Fish.")
+    message = ugettext("Use <b>repeat until</b> and the <b>if</b> statement to find your way around the Wonky Fish.")
     return build_description(title_level55(), message)
 
 def hint_level55():
