@@ -575,4 +575,28 @@ ocargo.BlocklyCustomisations = function () {
             this.workspace_.fireChangeEvent();
         };
     }
+
+    this.addClickListenerToStartBlock = function(startBlock){
+        if(startBlock){
+            var svgRoot = startBlock.getSvgRoot();
+            if(svgRoot){
+                if(!svgRoot.id || svgRoot.id == ""){
+                    svgRoot.id = "startBlockSvg"
+                }
+                var downX = 0;
+                var downY = 0;
+                var maxMove = 5;
+                $('#' + svgRoot.id).on({
+                    mousedown: function(e) {
+                        downX  = e.pageX;
+                        downY   = e.pageY;
+                    },
+                    mouseup: function(e) {
+                        if ( Math.abs(downX - e.pageX) < maxMove && Math.abs(downY - e.pageY) < maxMove) {
+                            $('#play_radio').trigger('click');
+                        }
+                    },});
+            }
+        }
+    };
 };
