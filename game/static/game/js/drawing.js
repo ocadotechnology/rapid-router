@@ -124,15 +124,15 @@ ocargo.Drawing = function () {
     /* Geometry helper methods */
     /***************************/
 
-    function createRotationTransformation(degrees, rotationPointX, rotationPointY, extraTransformation) {
+    function createRotationTransformation(degrees, rotationPointX, rotationPointY, scalingFactor) {
         var transformation = "..." + "r" + degrees;
         if (rotationPointX !== undefined && rotationPointY !== undefined) {
             transformation += ',' + rotationPointX;
             transformation += ',' + rotationPointY;
         }
-        if (extraTransformation) {
+        if (scalingFactor) {
             // extra scaling is done after rotation as scaling was taken into acocunt in getRotationPoints
-            transformation += "s" + extraTransformation;
+            transformation += "s" + scalingFactor;
         }
         return transformation;
     }
@@ -810,14 +810,14 @@ ocargo.Drawing = function () {
         return centreY;
     };
 
-    this.moveForward = function (vanId, animationLength, callback, extraTransformation) {
+    this.moveForward = function (vanId, animationLength, callback, scalingFactor) {
 
         var moveDistance = -MOVE_DISTANCE / currentScale;
         var transformation = "..." + "t 0, " + moveDistance;
 
-        if (extraTransformation) {
-            currentScale *= extraTransformation;
-            transformation +=  "s" + extraTransformation;
+        if (scalingFactor) {
+            currentScale *= scalingFactor;
+            transformation +=  "s" + scalingFactor;
         }
 
         moveVanImage({
@@ -826,27 +826,27 @@ ocargo.Drawing = function () {
 
     };
 
-    this.moveLeft = function (vanId, animationLength, callback, extraTransformation) {
+    this.moveLeft = function (vanId, animationLength, callback, scalingFactor) {
         var rotationPointX = this.getRotationPointXForLeftTurn();
         var rotationPointY = this.getRotationPointY();
-        var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY, extraTransformation);
+        var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY, scalingFactor);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
-        if (extraTransformation) {
-            currentScale *= extraTransformation;
+        if (scalingFactor) {
+            currentScale *= scalingFactor;
         }
     };
 
-    this.moveRight = function (vanId, animationLength, callback, extraTransformation) {
+    this.moveRight = function (vanId, animationLength, callback, scalingFactor) {
         var rotationPointX = this.getRotationPointXForRightTurn();
         var rotationPointY = this.getRotationPointY();
-        var transformation = createRotationTransformation(90, rotationPointX, rotationPointY, extraTransformation);
+        var transformation = createRotationTransformation(90, rotationPointX, rotationPointY, scalingFactor);
         moveVanImage({
             transform: transformation
         }, vanId, animationLength, callback);
-        if (extraTransformation) {
-            currentScale *= extraTransformation;
+        if (scalingFactor) {
+            currentScale *= scalingFactor;
         }
     };
 

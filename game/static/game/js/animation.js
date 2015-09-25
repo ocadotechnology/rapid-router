@@ -44,7 +44,7 @@ ocargo.Animation = function(model, decor, numVans) {
     this.decor = decor;
     this.numVans = numVans;
 	this.activeCows = []; // cows currently displayed on map
-	this.effects = [];
+	this.scalingModifier = [];
 	this.crashed = false;
 	this.speedUp = false;
 
@@ -87,7 +87,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.finished = false;
 	this.numberOfCowsOnMap = 0;
 	this.crashed = false;
-	this.effects = [];
+	this.scalingModifier = [];
 
 	// Reset the display
 	for(var i = 0; i < this.model.trafficLights.length; i++) {
@@ -226,13 +226,13 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
             // move van
             switch (animation.vanAction) {
             	case 'FORWARD':
-            		ocargo.drawing.moveForward(vanID, animationLength, null, this.effects.shift());
+            		ocargo.drawing.moveForward(vanID, animationLength, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_LEFT':
-            		ocargo.drawing.moveLeft(vanID, animationLength, null, this.effects.shift());
+            		ocargo.drawing.moveLeft(vanID, animationLength, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_RIGHT':
-            		ocargo.drawing.moveRight(vanID, animationLength, null, this.effects.shift());
+            		ocargo.drawing.moveRight(vanID, animationLength, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_AROUND_FORWARD':
             		animationLength *= 3;
@@ -250,13 +250,13 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
             		ocargo.drawing.wait(vanID, animationLength);
             		break;
 				case 'PUFFUP':
-					this.effects.push(2);
+					this.scalingModifier.push(2);
 					break;
                 case 'REMAINPUFFUP':
-                    this.effects.unshift(1);
+                    this.scalingModifier.unshift(1);
                     break;
                 case 'PUFFDOWN':
-					this.effects.push(0.5);
+					this.scalingModifier.push(0.5);
                     break;
             	case 'CRASH':
 					this.crashed = true;
