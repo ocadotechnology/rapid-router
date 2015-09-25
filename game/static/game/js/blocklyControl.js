@@ -98,6 +98,7 @@ ocargo.BlocklyControl.prototype.reset = function() {
     for (var i = 0; i < THREADS; i++) {
         var startBlock = this.createBlock('start');
         startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
+        this.blocklyCustomisations.addClickListenerToStartBlock(startBlock);
     }
 };
 
@@ -147,7 +148,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }
-
+        this.getStartBlocks().map(this.blocklyCustomisations.addClickListenerToStartBlock);
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
