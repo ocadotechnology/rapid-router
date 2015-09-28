@@ -1,3 +1,3 @@
-25/09/2015: Commit on Ocado Blockly Github: b55d7c840ce02926654b82472eb384de1c6e91a3
+22/09/2015: Commit on Blockly Github: f23702f2c724be16b3b56ec61094a4883e795ceb
 
-Diff from current master: https://github.com/ocadotechnology/blockly/compare/b55d7c840ce02926654b82472eb384de1c6e91a3...master
+Diff from current master: https://github.com/google/blockly/compare/f23702f2c724be16b3b56ec61094a4883e795ceb...master
