@@ -181,6 +181,21 @@ class TestGame(BaseTest):
     def test_level45(self):
         self.run_level_test(45)
 
+    def test_level46(self):
+        self.run_level_test(46)
+
+    def test_level47(self):
+        self.run_level_test(47)
+
+    def test_level48(self):
+        self.run_level_test(48)
+
+    def test_level49(self):
+        self.run_level_test(49)
+
+    def test_level50(self):
+        self.run_level_test(50)
+
     def wait_for_score_element_id(self, route_score, algorithm_score):
         if route_score:
             return "routeScore"

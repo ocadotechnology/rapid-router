@@ -1,0 +1,71 @@
+<xml>
+    <block type="start" deletable="false" x="30" y="30">
+        <next>
+            <block type="turn_left">
+                <next>
+                    <block type="move_forwards">
+                        <next>
+                            <block type="move_forwards">
+                                <next>
+                                    <block type="turn_right">
+                                        <next>
+                                            <block type="turn_right">
+                                                <next>
+                                                    <block type="turn_left">
+                                                        <next>
+                                                            <block type="move_forwards">
+                                                                <next>
+                                                                    <block type="controls_repeat_while">
+                                                                        <value name="condition">
+                                                                            <block type="traffic_light">
+                                                                                <field name="CHOICE">RED</field>
+                                                                            </block>
+                                                                        </value>
+                                                                        <statement name="body">
+                                                                            <block type="wait"></block>
+                                                                        </statement>
+                                                                        <next>
+                                                                            <block type="turn_left">
+                                                                                <next>
+                                                                                    <block type="turn_right">
+                                                                                        <next>
+                                                                                            <block type="move_forwards">
+                                                                                                <next>
+                                                                                                    <block type="controls_repeat">
+                                                                                                        <field name="TIMES">
+                                                                                                            2
+                                                                                                        </field>
+                                                                                                        <statement
+                                                                                                                name="DO">
+                                                                                                            <block type="move_forwards">
+                                                                                                                <next>
+                                                                                                                    <block type="turn_right"></block>
+                                                                                                                </next>
+                                                                                                            </block>
+                                                                                                        </statement>
+                                                                                                    </block>
+                                                                                                </next>
+                                                                                            </block>
+                                                                                        </next>
+                                                                                    </block>
+                                                                                </next>
+                                                                            </block>
+                                                                        </next>
+                                                                    </block>
+                                                                </next>
+                                                            </block>
+                                                        </next>
+                                                    </block>
+                                                </next>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </next>
+            </block>
+        </next>
+    </block>
+</xml>
