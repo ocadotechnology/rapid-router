@@ -687,6 +687,7 @@ ocargo.Model.prototype.getCowForNode = function(node, status) {
 
 ocargo.Model.prototype.incrementMovementTime = function(){
     this.movementTimestamp ++;
+    this.incrementTrafficLightsTime();
     this.incrementTime();
 };
 
@@ -697,11 +698,14 @@ ocargo.Model.prototype.incrementTime = function() {
 
     ocargo.animation.startNewTimestamp();
 
+    this.incrementCowTime();
+};
+
+ocargo.Model.prototype.incrementTrafficLightsTime = function() {
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
     }
-    this.incrementCowTime();
-};
+}
 
 ocargo.Model.prototype.incrementCowTime = function() {
     if(this.movementTimestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
