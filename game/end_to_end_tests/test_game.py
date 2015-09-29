@@ -196,6 +196,43 @@ class TestGame(BaseTest):
     def test_level50(self):
         self.run_level_test(50)
 
+    #
+    # Add levels 51-52
+    #
+
+    def test_level53(self):
+        self.run_level_test(53)
+
+    #
+    # Add levels 54-68
+    #
+
+    def test_level69(self):
+        self.run_level_test(69, route_score=None)
+
+    def test_level70(self):
+        self.run_level_test(70, route_score=None)
+
+    #
+    # Add levels 71-72
+    #
+
+    def test_level73(self):
+        self.run_level_test(73)
+
+    def test_level74(self):
+        self.run_level_test(74, route_score=None)
+
+    #
+    # Add level 75
+    #
+
+    def test_level76(self):
+        self.run_level_test(76, route_score=None)
+
+    def test_level77(self):
+        self.run_level_test(77, route_score=None)
+
     def wait_for_score_element_id(self, route_score, algorithm_score):
         if route_score:
             return "routeScore"
@@ -220,9 +257,9 @@ class TestGame(BaseTest):
             .run_program(score_element_id)
 
         if route_score:
-            page = page.assert_route_score("10/10")
+            page = page.assert_route_score(route_score)
         if algorithm_score:
-            page = page.assert_algorithm_score("10/10")
+            page = page.assert_algorithm_score(algorithm_score)
 
     def persist_workspace(self, level, user_profile):
         solution = self.read_solution(level)

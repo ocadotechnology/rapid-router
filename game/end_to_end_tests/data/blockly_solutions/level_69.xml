@@ -1,0 +1,28 @@
+<xml>
+    <block type="start" deletable="false" x="30" y="30">
+        <next>
+            <block type="controls_repeat_while">
+                <value name="condition">
+                    <block type="road_exists">
+                        <field name="CHOICE">FORWARD</field>
+                    </block>
+                </value>
+                <statement name="body">
+                    <block type="controls_repeat_while">
+                        <value name="condition">
+                            <block type="road_exists">
+                                <field name="CHOICE">FORWARD</field>
+                            </block>
+                        </value>
+                        <statement name="body">
+                            <block type="move_forwards"></block>
+                        </statement>
+                        <next>
+                            <block type="turn_left"></block>
+                        </next>
+                    </block>
+                </statement>
+            </block>
+        </next>
+    </block>
+</xml>

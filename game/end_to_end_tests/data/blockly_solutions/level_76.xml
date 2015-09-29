@@ -1,0 +1,39 @@
+<xml>
+    <block type="start" deletable="false" x="30" y="30">
+        <next>
+            <block type="controls_repeat_while">
+                <value name="condition">
+                    <block type="logic_negate">
+                        <value name="BOOL">
+                            <block type="at_destination"></block>
+                        </value>
+                    </block>
+                </value>
+                <statement name="body">
+                    <block type="controls_if">
+                        <mutation else="1"></mutation>
+                        <value name="IF0">
+                            <block type="road_exists">
+                                <field name="CHOICE">FORWARD</field>
+                            </block>
+                        </value>
+                        <statement name="DO0">
+                            <block type="move_forwards"></block>
+                        </statement>
+                        <statement name="ELSE">
+                            <block type="turn_right">
+                                <next>
+                                    <block type="turn_right">
+                                        <next>
+                                            <block type="turn_right"></block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </statement>
+                    </block>
+                </statement>
+            </block>
+        </next>
+    </block>
+</xml>
