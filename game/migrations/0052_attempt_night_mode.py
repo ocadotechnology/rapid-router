@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0046_set_img_order'),
+        ('game', '0051_level_score_49'),
     ]
 
     operations = [
