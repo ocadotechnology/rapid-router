@@ -46,6 +46,9 @@ ocargo.Game = function() {
 };
 
 ocargo.Game.prototype.setup = function() {
+    if (NIGHT_MODE_FEATURE_ENABLED) {
+        $('#nightmode_tab').show()
+    }
     restoreCmsLogin();
     initCustomBlocks();
     ocargo.blocklyControl = new ocargo.BlocklyControl();

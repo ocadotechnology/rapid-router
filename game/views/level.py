@@ -150,6 +150,8 @@ def play_level(request, levelID, night_mode):
         night_mode = "false"
         model_solution = level.model_solution
 
+    from game.urls import NIGHT_MODE_FEATURE_ENABLED
+
     context = RequestContext(request, {
         'level': level,
         'lesson': lesson,
@@ -168,6 +170,7 @@ def play_level(request, levelID, night_mode):
         'character_height': character_height,
         'wreckage_url': wreckage_url,
         'night_mode': night_mode,
+        'night_mode_feature_enabled': str(NIGHT_MODE_FEATURE_ENABLED).lower(),
         'model_solution': model_solution,
     })
 

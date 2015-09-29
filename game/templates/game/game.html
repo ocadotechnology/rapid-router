@@ -32,6 +32,7 @@
     var CHARACTER_HEIGHT = "{{character_height}}";
     var CHARACTER_WIDTH = "{{character_width}}";
     var WRECKAGE_URL = "{{wreckage_url}}";
+    var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
     var NIGHT_MODE = {{night_mode}};
 
     var RANDOM = "{{episode.random_levels_enabled}}" === "True";
@@ -243,7 +244,7 @@
       </label>
     </div>
 
-  <div id="nightmode_tab" class="tab">
+  <div id="nightmode_tab" class="tab hidden">
       <input type="radio" name="tabs" id="nightmode_radio">
       <label for="nightmode_radio">
           {% if night_mode == "true" %}
