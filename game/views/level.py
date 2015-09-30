@@ -54,7 +54,7 @@ def play_custom_level(request, levelID):
     level = cached_level(levelID)
     if level.default:
         raise Http404
-    return play_level(request, levelID)
+    return play_level(request, levelID, False)
 
 def play_night_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)
@@ -243,7 +243,7 @@ def save_workspace(request, workspaceID=None):
 
 def start_episode(request, episode):
     episode = cached_episode(episode)
-    return play_level(request, episode.first_level.id)
+    return play_level(request, episode.first_level.id, False)
 
 
 def delete_workspace(request, workspaceID):
