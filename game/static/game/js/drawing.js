@@ -56,7 +56,7 @@ var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 var COW_WIDTH = 50;
 var COW_HEIGHT = 50;
 
-ocargo.Drawing = function () {
+ocargo.Drawing = function() {
 
     /*************/
     /* Constants */
@@ -92,10 +92,10 @@ ocargo.Drawing = function () {
     var paper = new Raphael('paper', EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
     var roadImages = [];
 
-    var vanImages = {};
+    var vanImage;
     var lightImages = {};
     var destinationImages = {};
-    var wreckageImages = {};
+    var wreckageImage;
     var currentScale = 1;
 
     this.reset = function () {
@@ -679,8 +679,7 @@ ocargo.Drawing = function () {
         });
     };
 
-    this.setVanImagePosition = function (position, vanID) {
-        var vanImage = vanImages[vanID];
+    this.setVanImagePosition = function (position) {
         var initialPosition = calculateCharactersInitialPosition(position.currentNode);
         vanImage.transform('t' + initialPosition.x + ',' + initialPosition.y);
 
@@ -694,12 +693,10 @@ ocargo.Drawing = function () {
         vanImage.attr({opacity: 1});
     };
 
-    this.renderVans = function (position, numVans) {
-        for (var i = 0; i < numVans; i++) {
-            vanImages[i] = this.createVanImage();
-            this.setVanImagePosition(position, i);
-        }
-        this.scrollToShowVan(0);
+    this.renderVans = function (position) {
+        vanImage = this.createVanImage();
+        this.setVanImagePosition(position);
+        this.scrollToShowVan();
     };
 
     this.createVanImage = function () {
@@ -768,10 +765,10 @@ ocargo.Drawing = function () {
         destinationRect.animate({'stroke': colour}, animationLength, 'linear');
     };
 
-    this.skipOutstandingVanAnimationsToEnd = function (vanID) {
-        var anims = vanImages[vanID].status();
+    this.skipOutstandingVanAnimationsToEnd = function() {
+        var anims = vanImage.status();
         for (var i = 0, ii = anims.length; i < ii; i++) {
-            vanImages[vanID].status(anims[i].anim, 1);
+            vanImage.status(anims[i].anim, 1);
         }
     };
 
@@ -780,8 +777,7 @@ ocargo.Drawing = function () {
         return [box.x, box.y];
     }
 
-    this.scrollToShowVan = function(vanID) {
-        var vanImage = vanImages[vanID];
+    this.scrollToShowVan = function() {
         var point = getVanImagePosition(vanImage);
         var element = document.getElementById('paper');
 
@@ -812,7 +808,7 @@ ocargo.Drawing = function () {
         return centreY;
     };
 
-    this.moveForward = function (vanId, animationLength, callback, scalingFactor) {
+    this.moveForward = function (animationLength, callback, scalingFactor) {
 
         var moveDistance = -MOVE_DISTANCE / currentScale;
         var transformation = "..." + "t 0, " + moveDistance;
@@ -824,36 +820,35 @@ ocargo.Drawing = function () {
 
         moveVanImage({
             transform: transformation
-        }, vanId, animationLength, callback);
+        }, animationLength, callback);
 
     };
 
-    this.moveLeft = function (vanId, animationLength, callback, scalingFactor) {
+    this.moveLeft = function (animationLength, callback, scalingFactor) {
         var rotationPointX = this.getRotationPointXForLeftTurn();
         var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY, scalingFactor);
         moveVanImage({
             transform: transformation
-        }, vanId, animationLength, callback);
+        }, animationLength, callback);
         if (scalingFactor) {
             currentScale *= scalingFactor;
         }
     };
 
-    this.moveRight = function (vanId, animationLength, callback, scalingFactor) {
+    this.moveRight = function (animationLength, callback, scalingFactor) {
         var rotationPointX = this.getRotationPointXForRightTurn();
         var rotationPointY = this.getRotationPointY();
         var transformation = createRotationTransformation(90, rotationPointX, rotationPointY, scalingFactor);
         moveVanImage({
             transform: transformation
-        }, vanId, animationLength, callback);
+        }, animationLength, callback);
         if (scalingFactor) {
             currentScale *= scalingFactor;
         }
     };
 
-    this.turnAround = function (vanId, direction, animationLength) {
-        var vanImage = vanImages[vanId];
+    this.turnAround = function (direction, animationLength) {
         var timePerState = (animationLength - 50) / 3;
         var that = this;
 
@@ -903,7 +898,6 @@ ocargo.Drawing = function () {
 
         function turnLeft(easing) {
             return function () {
-                var vanImage = vanImages[vanId];
                 var rotationPointX = that.getRotationPointXForLeftTurn();
                 var rotationPointY = that.getRotationPointY();
                 var transformation = createRotationTransformation(-45, rotationPointX, rotationPointY);
@@ -915,7 +909,6 @@ ocargo.Drawing = function () {
 
         function turnRight(easing) {
             return function () {
-                var vanImage = vanImages[vanId];
                 var rotationPointX = that.getRotationPointXForRightTurn();
                 var rotationPointY = that.getRotationPointY();
                 var transformation = createRotationTransformation(45, rotationPointX, rotationPointY);
@@ -926,20 +919,18 @@ ocargo.Drawing = function () {
         }
     };
 
-    this.wait = function (vanId, animationLength, callback) {
+    this.wait = function (animationLength, callback) {
         //no movement for now
         moveVanImage({
             transform: '... t 0,0'
-        }, vanId, animationLength, callback);
+        }, animationLength, callback);
     };
 
     this.deliver = function (destinationId, animationLength) {
         this.transitionDestination(destinationId, true, animationLength);
     };
 
-    function moveVanImage(attr, vanId, animationLength, callback) {
-        var vanImage = vanImages[vanId];
-
+    function moveVanImage(attr, animationLength, callback) {
         // Compress all current transformations into one
         vanImage.transform(vanImage.matrix.toTransformString());
 
@@ -947,12 +938,11 @@ ocargo.Drawing = function () {
         vanImage.animate(attr, animationLength, 'linear', callback);
     }
 
-    this.collisionWithCow = function (vanID, animationLength, previousNode, currentNode, attemptedAction, startNode) {
+    this.collisionWithCow = function (animationLength, previousNode, currentNode, attemptedAction) {
         var road = this.getLeftRightForwardRoad(previousNode, currentNode);
         var roadLeft = road[0];
         var roadForward = road[1];
         var roadRight = road[2];
-        var vanImage = vanImages[vanID];
 
         if (attemptedAction === "FORWARD") {
             var distanceForwards = (0.5 * GRID_SPACE_SIZE - 0.5 * ROAD_WIDTH)/currentScale;
@@ -978,7 +968,7 @@ ocargo.Drawing = function () {
         var newAnimationLength = animationLength * ((GRID_SPACE_SIZE - ROAD_WIDTH) / (GRID_SPACE_SIZE + ROAD_WIDTH));
         moveVanImage({
             transform: transformation
-        }, vanID, newAnimationLength, animateCollision);
+        }, newAnimationLength, animateCollision);
         return newAnimationLength;
 
         function animateCollision() {
@@ -998,10 +988,9 @@ ocargo.Drawing = function () {
 
             var smokeParts = 20;
 
-            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
+            wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
             wreckageImage.transform(vanImage.transform());
             wreckageImage.attr({"opacity": 0});
-            wreckageImages[vanID] = wreckageImage;
 
             setTimeout(function () {
                 wreckageImage.animate({opacity: 1}, 1000);
@@ -1022,12 +1011,11 @@ ocargo.Drawing = function () {
         }
     }
 
-    this.crash = function (vanID, animationLength, previousNode, currentNode, attemptedAction, startNode) {
+    this.crash = function (animationLength, previousNode, currentNode, attemptedAction) {
         var road = this.getLeftRightForwardRoad(previousNode, currentNode);
         var roadLeft = road[0];
         var roadForward = road[1];
         var roadRight = road[2];
-        var vanImage = vanImages[vanID];
 
         if (attemptedAction === "FORWARD") {
             var distanceForwards;
@@ -1080,7 +1068,7 @@ ocargo.Drawing = function () {
 
         moveVanImage({
             transform: transformation
-        }, vanID, animationLength, animateExplosion);
+        }, animationLength, animateExplosion);
 
         function animateExplosion() {
 
@@ -1100,10 +1088,9 @@ ocargo.Drawing = function () {
 
             var explosionParts = 20;
 
-            var wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + WRECKAGE_URL, 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
+            wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + WRECKAGE_URL, 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
             wreckageImage.transform(vanImage.transform());
             wreckageImage.attr({"opacity": 0});
-            wreckageImages[vanID] = wreckageImage;
 
             setTimeout(function () {
                 wreckageImage.animate({opacity: 1}, 1000);
@@ -1127,10 +1114,9 @@ ocargo.Drawing = function () {
     };
 
     this.removeWreckageImages = function () {
-        for (var vanID in wreckageImages) {
-            wreckageImages[vanID].remove();
+        if (wreckageImage) {
+            wreckageImage.remove();
         }
-        wreckageImages = {};
     }
 
     this.getLeftRightForwardRoad = function (previousNode, currentNode) {

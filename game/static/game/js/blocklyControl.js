@@ -40,8 +40,6 @@ identified as the original program.
 var ocargo = ocargo || {};
 
 ocargo.BlocklyControl = function () {
-    this.numberOfStartBlocks = (typeof THREADS !== "undefined") && THREADS || 1;
-
     this.blocklyCustomisations = new ocargo.BlocklyCustomisations();
     this.blocklyCustomisations.setupBigCodeMode();
 
@@ -93,13 +91,9 @@ ocargo.BlocklyControl.prototype.redrawBlockly = function() {
 ocargo.BlocklyControl.prototype.reset = function() {
     Blockly.mainWorkspace.clear();
 
-    this.numberOfStartBlocks = THREADS;
-
-    for (var i = 0; i < THREADS; i++) {
-        var startBlock = this.createBlock('start');
-        startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
-        this.blocklyCustomisations.addClickListenerToStartBlock(startBlock);
-    }
+    var startBlock = this.createBlock('start');
+    startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
+    this.blocklyCustomisations.addClickListenerToStartBlock(startBlock);
 };
 
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
@@ -151,7 +145,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }
-        this.getStartBlocks().map(this.blocklyCustomisations.addClickListenerToStartBlock);
+        this.blocklyCustomisations.addClickListenerToStartBlock(this.getStartBlock());
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
@@ -245,7 +239,7 @@ ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(blockType) {
     var blockToAdd = this.createBlock(blockType);
 
-    var block = this.getStartBlocks()[0];
+    var block = this.getStartBlock();
     while (block.nextConnection.targetBlock()) {
         block = block.nextConnection.targetBlock();
     }
@@ -254,7 +248,7 @@ ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(blockType) {
 };
 
 ocargo.BlocklyControl.prototype.disconnectedStartBlock = function() {
-  var emptyStart = this.getStartBlocks()[0].getChildren().length == 0;
+  var emptyStart = this.getStartBlock().getChildren().length == 0;
   if (emptyStart) {
     if (this.getTotalBlocksCount() > 1) {
       return true;
@@ -266,24 +260,16 @@ ocargo.BlocklyControl.prototype.disconnectedStartBlock = function() {
   }
 };
 
-ocargo.BlocklyControl.prototype.getStartBlocks = function() {
-    var startBlocks = [];
-    Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
-        if (block.type === 'start') {
-            startBlocks.push(block);
-        }
+ocargo.BlocklyControl.prototype.getStartBlock = function() {
+    return Blockly.mainWorkspace.getTopBlocks().find(function (block) {
+        return block.type === 'start';
     });
-    return startBlocks;
 };
 
 ocargo.BlocklyControl.prototype.getProcedureBlocks = function() {
-    var startBlocks = [];
-    Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
-        if (block.type === 'declare_proc') {
-            startBlocks.push(block);
-        }
+    return Blockly.mainWorkspace.getTopBlocks().filter(function (block) {
+        return block.type === 'declare_proc';
     });
-    return startBlocks;
 };
 
 ocargo.BlocklyControl.prototype.onEventDoBlocks = function() {
@@ -302,15 +288,13 @@ ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
 };
 
 ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
-    var startBlocks = this.getStartBlocks();
+    var startBlock = this.getStartBlock();
     var procedureBlocks = this.getProcedureBlocks();
     var eventBlocks = this.onEventDoBlocks();
     var n = 0;
     var i;
 
-    for (i = 0; i < startBlocks.length; i++) {
-        n += count(startBlocks[i].nextConnection.targetBlock());
-    }
+    n += count(startBlock.nextConnection.targetBlock());
 
     // 1 includes the procedure declaration block
     for (i = 0; i < procedureBlocks.length; i++) {

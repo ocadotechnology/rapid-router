@@ -39,7 +39,7 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowData, maxFuel, vanId) {
+ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowData, maxFuel) {
     this.map = new ocargo.Map(nodeData, origin, destinations);
     this.van = new ocargo.Van(this.map.getStartingPosition(), maxFuel);
 
@@ -56,8 +56,6 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     this.timestamp = 0;
     this.movementTimestamp = 0;
 
-    this.vanId = vanId || 0;
-
     this.pathFinder = new ocargo.PathFinder(this);
     this.reasonForTermination = null;
 
@@ -70,7 +68,7 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
 };
 
 // Resets the entire model to how it was when it was just constructed
-ocargo.Model.prototype.reset = function(vanId) {
+ocargo.Model.prototype.reset = function() {
     this.van.reset();
 
     var destinations = this.map.getDestinations();
@@ -95,10 +93,6 @@ ocargo.Model.prototype.reset = function(vanId) {
     this.reasonForTermination  =  null;
     this.soundedHorn = {};
     this.puffedUp = {};
-
-    if (vanId !== null && vanId !== undefined) {
-        this.vanId = vanId;
-    }
 };
 
 // Randomly chooses the cow positions, called by program.js
@@ -116,7 +110,6 @@ ocargo.Model.prototype.observe = function(desc) {
     if (this.shouldObserve) {
         ocargo.animation.appendAnimation({
             type: 'van',
-            id: this.vanId,
             vanAction: 'OBSERVE',
             fuel: this.van.getFuelPercentage(),
             description: 'van observe: ' + desc
@@ -219,7 +212,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'popup',
-            id: this.vanId,
             popupType: 'FAIL',
             failSubtype: 'OUT_OF_FUEL',
             popupMessage: ocargo.messages.outOfFuel,
@@ -256,7 +248,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'popup',
-            id: this.vanId,
             popupType: 'FAIL',
             failSubtype: 'THROUGH_RED_LIGHT',
             popupMessage: ocargo.messages.throughRedLight,
@@ -290,7 +281,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
     // Van movement animation
     ocargo.animation.appendAnimation({
         type: 'van',
-        id: this.vanId,
         vanAction: action,
         fuel: this.van.getFuelPercentage(),
         description: 'van move action: ' + action
@@ -306,7 +296,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'van',
-            id: model.vanId,
             vanAction: vanAction,
             previousNode: model.van.getPosition().previousNode,
             currentNode: model.van.getPosition().currentNode,
@@ -336,7 +325,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.animation.appendAnimation({
             type: 'popup',
-            id: model.vanId,
             popupType: 'FAIL',
             failSubtype: 'CRASH',
             popupMessage: popupMessage,
@@ -363,7 +351,6 @@ ocargo.Model.prototype.makeDelivery = function(destination) {
     destination.visited = true;
     ocargo.animation.appendAnimation({
         type: 'van',
-        id: this.vanId,
         destinationID: destination.id,
         vanAction: 'DELIVER',
         fuel: this.van.getFuelPercentage(),
@@ -424,7 +411,6 @@ ocargo.Model.prototype.deliver = function() {
             //fail if already visited
             ocargo.animation.appendAnimation({
                 type: 'popup',
-                id: this.vanId,
                 popupType: 'FAIL',
                 failSubtype: 'ALREADY_DELIVERED',
                 popupMessage: ocargo.messages.alreadyDelivered,
@@ -480,7 +466,6 @@ ocargo.Model.prototype.puff_up = function(){
         this.puffedUp = {timestamp:this.movementTimestamp, coordinates:this.getCurrentCoordinate(), timeout:1};
         ocargo.animation.appendAnimation({
             type: 'van',
-            id: this.vanId,
             vanAction: 'PUFFUP',
             fuel: this.van.getFuelPercentage(),
             description: 'van move action: puff up'
@@ -496,7 +481,6 @@ ocargo.Model.prototype.remain_puff_up = function(){
 
     ocargo.animation.appendAnimation({
         type: 'van',
-        id: this.vanId,
         vanAction: 'REMAINPUFFUP',
         fuel: this.van.getFuelPercentage(),
         description: 'van move action: remain puff up'
@@ -509,7 +493,6 @@ ocargo.Model.prototype.puff_down = function(){
 
     ocargo.animation.appendAnimation({
         type: 'van',
-        id: this.vanId,
         vanAction: 'PUFFDOWN',
         fuel: this.van.getFuelPercentage(),
         description: 'van move action: puff down'
@@ -533,7 +516,6 @@ ocargo.Model.prototype.programExecutionEnded = function () {
         if (success) {
             ocargo.animation.appendAnimation({
                 type: 'van',
-                id: this.vanId,
                 destinationID: destinations[0].id,
                 vanAction: 'DELIVER',
                 fuel: this.van.getFuelPercentage(),
@@ -583,7 +565,6 @@ ocargo.Model.prototype.programExecutionEnded = function () {
         // Winning popup
         ocargo.animation.appendAnimation({
             type: 'popup',
-            id: this.vanId,
             popupType: 'WIN',
             popupMessage: result.popupMessage,
             totalScore: result.totalScore,
@@ -623,7 +604,6 @@ ocargo.Model.prototype.programExecutionEnded = function () {
         // Failure popup
         ocargo.animation.appendAnimation({
             type: 'popup',
-            id: this.vanId,
             popupType: 'FAIL',
             failSubtype: failType,
             popupMessage: failMessage,

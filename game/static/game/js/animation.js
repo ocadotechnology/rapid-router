@@ -61,7 +61,7 @@ ocargo.Animation = function(model, decor, numVans) {
     ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
     ocargo.drawing.renderDestinations(this.model.map.getDestinations());
     ocargo.drawing.renderTrafficLights(this.model.trafficLights);
-	ocargo.drawing.renderVans(this.model.map.getStartingPosition(), this.numVans);
+	ocargo.drawing.renderVans(this.model.map.getStartingPosition());
 
      this.updateFuelGauge(100);
 };
@@ -102,10 +102,8 @@ ocargo.Animation.prototype.resetAnimation = function() {
 		ocargo.drawing.transitionDestination(destination.id, false, 0);
 	}
 
-	for(var i = 0; i < THREADS; i++) {
-		ocargo.drawing.skipOutstandingVanAnimationsToEnd(i);
-		ocargo.drawing.setVanImagePosition(this.model.map.getStartingPosition(), i);
-	}
+	ocargo.drawing.skipOutstandingVanAnimationsToEnd();
+	ocargo.drawing.setVanImagePosition(this.model.map.getStartingPosition());
 
 	ocargo.drawing.removeWreckageImages();
 };
@@ -218,36 +216,34 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			animation.functionCall();
 			break;
 		case 'van':
-			// Set all current animations to the final position, so we don't get out of sync
-			var vanID = animation.id;
-			ocargo.drawing.skipOutstandingVanAnimationsToEnd(vanID);
-            ocargo.drawing.scrollToShowVan(vanID);
+			ocargo.drawing.skipOutstandingVanAnimationsToEnd();
+            ocargo.drawing.scrollToShowVan();
 
             // move van
             switch (animation.vanAction) {
             	case 'FORWARD':
-            		ocargo.drawing.moveForward(vanID, animationLength, null, this.scalingModifier.shift());
+            		ocargo.drawing.moveForward(animationLength, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_LEFT':
-            		ocargo.drawing.moveLeft(vanID, animationLength, null, this.scalingModifier.shift());
+            		ocargo.drawing.moveLeft(animationLength, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_RIGHT':
-            		ocargo.drawing.moveRight(vanID, animationLength, null, this.scalingModifier.shift());
+            		ocargo.drawing.moveRight(animationLength, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_AROUND_FORWARD':
             		animationLength *= 3;
-            		ocargo.drawing.turnAround(vanID, 'FORWARD', animationLength);
+            		ocargo.drawing.turnAround('FORWARD', animationLength);
             		break;
             	case 'TURN_AROUND_RIGHT':
             		animationLength *= 3;
-            		ocargo.drawing.turnAround(vanID, 'RIGHT', animationLength);
+            		ocargo.drawing.turnAround('RIGHT', animationLength);
             		break;
             	case 'TURN_AROUND_LEFT':
             		animationLength *= 3;
-            		ocargo.drawing.turnAround(vanID, 'LEFT', animationLength);
+            		ocargo.drawing.turnAround('LEFT', animationLength);
             		break;
             	case 'WAIT':
-            		ocargo.drawing.wait(vanID, animationLength);
+            		ocargo.drawing.wait(animationLength);
             		break;
 				case 'PUFFUP':
 					this.scalingModifier.push(2);
@@ -260,15 +256,14 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
                     break;
             	case 'CRASH':
 					this.crashed = true;
-            		ocargo.drawing.crash(vanID, animationLength, animation.previousNode, animation.currentNode,
+            		ocargo.drawing.crash(animationLength, animation.previousNode, animation.currentNode,
             			animation.attemptedAction, animation.startNode);
                     animationLength += 100;
             		break;
 				case 'COLLISION_WITH_COW':
 					this.crashed = true;
 					//Update animationLength with time van moves before crashing
-					animationLength = ocargo.drawing.collisionWithCow(vanID, animationLength, animation.previousNode, animation.currentNode,
-						animation.attemptedAction, animation.startNode);
+					animationLength = ocargo.drawing.collisionWithCow(animationLength, animation.previousNode, animation.currentNode, animation.attemptedAction, animation.startNode);
 					break;
             	case 'DELIVER':
             		ocargo.drawing.deliver(animation.destinationID, animationLength);

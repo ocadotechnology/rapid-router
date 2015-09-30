@@ -37,7 +37,6 @@ identified as the original program.
 */
 describe("disconnectedStartBlock", function() {
   // XXX: This should probably be a fixture
-  THREADS = 1;
   BLOCKS = [];
   BLOCKS.push({'type':"move_forwards"});
   BLOCKS.push({'type':"turn_left"});

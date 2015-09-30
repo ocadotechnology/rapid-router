@@ -59,7 +59,7 @@ ocargo.Game.prototype.setup = function() {
     ocargo.drawing = new ocargo.Drawing();
     ocargo.drawing.preloadRoadTiles();
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, COWS, MAX_FUEL);
-    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, THREADS);
+    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR);
     ocargo.saving = new ocargo.Saving();
 
     // Setup the blockly workspace
@@ -272,24 +272,27 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-            ocargo.drawing.moveForward(
-                0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
+            ocargo.drawing.moveForward(ocargo.animation.genericAnimationLength, function () {
+                ocargo.game.onStopControls();
+            });
         }
     });
     $('#turnLeft').click(function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-            ocargo.drawing.moveLeft(
-                0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
+            ocargo.drawing.moveLeft(ocargo.animation.genericAnimationLength, function () {
+                ocargo.game.onStopControls();
+            });
         }
     });
     $('#turnRight').click(function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-            ocargo.drawing.moveRight(
-                0, ocargo.animation.genericAnimationLength, function() {ocargo.game.onStopControls();});
+            ocargo.drawing.moveRight(ocargo.animation.genericAnimationLength, function () {
+                ocargo.game.onStopControls();
+            });
         }
     });
     $('#go').click(function() {

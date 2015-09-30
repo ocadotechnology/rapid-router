@@ -101,13 +101,11 @@ ocargo.BlocklyCompiler.prototype.compileEvents = function() {
 
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {
     this.program = new ocargo.Program(this.events);
-    var startBlocks = ocargo.blocklyControl.getStartBlocks();
-    for (var i = 0; i < THREADS; i++) {
-        var thread = new ocargo.Thread(i, this.program);
-        thread.startBlock = startBlocks[i];
-        thread.stack = this.createSequence(thread.startBlock);
-        this.program.threads.push(thread);
-    }
+    var startBlock = ocargo.blocklyControl.getStartBlock();
+    var thread = new ocargo.Thread(this.program);
+    thread.startBlock = startBlock;
+    thread.stack = this.createSequence(thread.startBlock);
+    this.program.thread = thread;
 };
 
 ocargo.BlocklyCompiler.prototype.bindProcedureCalls = function() {
@@ -373,9 +371,9 @@ ocargo.BlocklyCompiler.prototype.mobileCompile = function(types) {
     }
 
     this.program = new ocargo.Program([]);
-    var thread = new ocargo.Thread(0, this.program);
+    var thread = new ocargo.Thread(this.program);
     thread.stack = this.mobileCreateSequence(blocks);
-    this.program.threads.push(thread);
+    this.program.thread = thread;
     return this.program;
 }
 
@@ -546,7 +544,6 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
 	Blockly.Python.variableDB_.reset();
 
 	var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
-	var startBlocks = ocargo.blocklyControl.getStartBlocks();
 
     var code = "";
 
@@ -560,10 +557,8 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
     //	code += '\n' + Blockly.Python.blockToCode(eventBlocks[i]);
     //}
 
-	var startBlocks = ocargo.blocklyControl.getStartBlocks();
-	for (var i = 0; i < startBlocks.length; i++) {
-		code += '\n' + Blockly.Python.blockToCode(startBlocks[i]);
-	}
+	var startBlock = ocargo.blocklyControl.getStartBlock();
+    code += '\n' + Blockly.Python.blockToCode(startBlock);
 
 	return code;
 };

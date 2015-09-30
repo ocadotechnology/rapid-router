@@ -44,22 +44,20 @@ var MAX_EXECUTION_STEPS = 10000;
 /* Program */
 
 ocargo.Program = function(events) {
-	this.threads = [];
+	this.thread = null;
 	this.procedures = {};
 	this.events = events;
 };
 
 ocargo.Program.prototype.run = function() {
 	ocargo.model.chooseNewCowPositions();
-	for (var i = 0; i < this.threads.length; i++) {
-		ocargo.model.reset(i);
-		this.threads[i].run(ocargo.model);
-	}
+	ocargo.model.reset();
+	this.thread.run(ocargo.model);
 };
 
 /* Thread */
 
-ocargo.Thread = function(i, program) {
+ocargo.Thread = function(program) {
 	this.stack = []; //each element is an array of commands attached to each start block (currently we only have one start block)
 	this.noExecutionSteps = 0;
 	this.program = program;
@@ -94,7 +92,6 @@ ocargo.Thread.prototype.step = function(model) {
 		// alert user to likely infinite loop
 		ocargo.animation.appendAnimation({
             type: 'popup',
-            id: this.vanId,
             popupType: 'FAIL',
             failSubtype: 'QUERY_INFINITE_LOOP',
             popupMessage: ocargo.messages.queryInfiniteLoop,
