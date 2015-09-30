@@ -250,7 +250,7 @@ ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(blockType) {
 ocargo.BlocklyControl.prototype.disconnectedStartBlock = function() {
   var emptyStart = this.startBlock().getChildren().length == 0;
   if (emptyStart) {
-    if (this.getTotalBlocksCount() > 1) {
+    if (this.totalBlocksCount() > 1) {
       return true;
     } else {
       return false;
@@ -283,11 +283,11 @@ ocargo.BlocklyControl.prototype.onEventDoBlocks = function() {
     return startBlocks;
 };
 
-ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
+ocargo.BlocklyControl.prototype.totalBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };
 
-ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
+ocargo.BlocklyControl.prototype.activeBlocksCount = function() {
     var startBlock = this.startBlock();
     var procedureBlocks = this.procedureBlocks();
     var eventBlocks = this.onEventDoBlocks();
