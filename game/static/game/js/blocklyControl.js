@@ -261,9 +261,10 @@ ocargo.BlocklyControl.prototype.disconnectedStartBlock = function() {
 };
 
 ocargo.BlocklyControl.prototype.startBlock = function() {
-    return Blockly.mainWorkspace.getTopBlocks().find(function (block) {
+    var filtered = Blockly.mainWorkspace.getTopBlocks().filter(function (block) {
         return block.type === 'start';
     });
+    return filtered[0];
 };
 
 ocargo.BlocklyControl.prototype.procedureBlocks = function() {
