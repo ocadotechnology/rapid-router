@@ -193,7 +193,7 @@ def is_valid_request(user, class_ids):
     return True
 
 def one_row(student, level):
-
+    ## TODO JC: Fetch attempt with the highest score (display stats of that attempt only)
     attempt = Attempt.objects.filter(level=level, student=student).first()
     if attempt:
         total_score = attempt.score if attempt.score is not None else ''
@@ -219,6 +219,7 @@ def student_row(levels_sorted, student):
     scores = []
     times = []
     progress = (0.0, 0.0, 0.0)
+    ## TODO JC: Code below assumes we only have 1 attempt per student. Check scoreboard requirements to know what to do.
     attempts = Attempt.objects.filter(level__in=levels_sorted, student=student).select_related('level')
     if attempts:
         attempts_dict = {attempt.level.id: attempt for attempt in attempts}

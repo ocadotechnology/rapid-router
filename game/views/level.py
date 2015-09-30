@@ -46,7 +46,7 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from helper import renderError, getDecorElement
 from game.cache import cached_level, cached_episode
-from game.models import Level, Attempt, Workspace
+from game.models import Level, Attempt, BestAttempt, Workspace
 from portal import beta
 
 
@@ -119,6 +119,7 @@ def play_level(request, levelID, night_mode):
     python_workspace = None
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
+        ## TODO JC: Retrieve the highest scored attempt (or the latest attempt?)
         if (night_mode):
             attempt = Attempt.objects.filter(level=level, student=student, night_mode=True).first()
         else:
@@ -192,12 +193,24 @@ def submit_attempt(request):
             hasattr(request.user.userprofile, "student")):
         level = get_object_or_404(Level, id=request.POST.get('level', 1))
         student = request.user.userprofile.student
+        ## TODO JC: Store all attempts in DB, instead of updating the existing one (finish_time__is_null=True)
         attempt = Attempt.objects.filter(level=level, student=student).first()
         if attempt:
             attempt.score = request.POST.get('score')
             attempt.workspace = request.POST.get('workspace')
             attempt.python_workspace = request.POST.get('python_workspace')
             attempt.save()
+
+            bestAttempt = BestAttempt.objects.filter(level=level, student=student, night_mode=attempt.night_mode).first()
+            if bestAttempt and bestAttempt.attempt.score < attempt.score:
+                bestAttempt.attempt = attempt
+                bestAttempt.save()
+            elif not bestAttempt:
+                bestAttempt = BestAttempt(level=attempt.level,
+                                          student=attempt.student,
+                                          attempt=attempt,
+                                          night_mode=attempt.night_mode)
+                bestAttempt.save()
 
     return HttpResponse('[]', content_type='application/json')
 

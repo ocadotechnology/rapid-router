@@ -177,3 +177,11 @@ class Attempt (models.Model):
 
     def elapsed_time(self):
         return self.finish_time - self.start_time
+
+
+class BestAttempt (models.Model):
+    level = models.ForeignKey(Level)
+    student = models.ForeignKey(Student)
+    attempt = models.ForeignKey(Attempt)
+    night_mode = models.BooleanField(default=False)
+
