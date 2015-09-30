@@ -20,7 +20,7 @@
     var EPISODE = "{{level.episode.id}}"
     var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : "";
     var LEVEL_NAME = "{{level.name}}";
-    var MODEL_SOLUTION = {{model_solution}};
+    var MODEL_SOLUTION = {% if model_solution %}{{model_solution}}{% else %}[]{% endif %};
     var DISABLE_ROUTE_SCORE = "{{level.disable_route_score}}" === "True";
     var LESSON = "{{lesson}}";
     var HINT = "{{hint}}";

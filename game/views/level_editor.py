@@ -114,6 +114,8 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
         'attempt': attempt,
         'random_level': random_level,
         'return_url': '/rapidrouter/' + ('level_editor' if from_level_editor else ''),
+        'night_mode': 'false',
+        'night_mode_feature_enabled': 'false',
     })
 
     level.delete()

@@ -140,7 +140,6 @@ def play_level(request, levelID, night_mode):
         wreckage_url = 'NightModeVan_wreckage.svg'
         night_mode = "true"
         lesson = 'Can you find your way in the dark?'
-        model_solution = 0
     else:
         blockData = level_management.get_blocks(level)
         character_url = character.top_down
