@@ -145,7 +145,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }
-        this.blocklyCustomisations.addClickListenerToStartBlock(this.getStartBlock());
+        this.blocklyCustomisations.addClickListenerToStartBlock(this.startBlock());
     } catch (e) {
         ocargo.blocklyControl.reset();
     }
@@ -239,7 +239,7 @@ ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
 ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(blockType) {
     var blockToAdd = this.createBlock(blockType);
 
-    var block = this.getStartBlock();
+    var block = this.startBlock();
     while (block.nextConnection.targetBlock()) {
         block = block.nextConnection.targetBlock();
     }
@@ -248,7 +248,7 @@ ocargo.BlocklyControl.prototype.addBlockToEndOfProgram = function(blockType) {
 };
 
 ocargo.BlocklyControl.prototype.disconnectedStartBlock = function() {
-  var emptyStart = this.getStartBlock().getChildren().length == 0;
+  var emptyStart = this.startBlock().getChildren().length == 0;
   if (emptyStart) {
     if (this.getTotalBlocksCount() > 1) {
       return true;
@@ -260,13 +260,13 @@ ocargo.BlocklyControl.prototype.disconnectedStartBlock = function() {
   }
 };
 
-ocargo.BlocklyControl.prototype.getStartBlock = function() {
+ocargo.BlocklyControl.prototype.startBlock = function() {
     return Blockly.mainWorkspace.getTopBlocks().find(function (block) {
         return block.type === 'start';
     });
 };
 
-ocargo.BlocklyControl.prototype.getProcedureBlocks = function() {
+ocargo.BlocklyControl.prototype.procedureBlocks = function() {
     return Blockly.mainWorkspace.getTopBlocks().filter(function (block) {
         return block.type === 'declare_proc';
     });
@@ -288,8 +288,8 @@ ocargo.BlocklyControl.prototype.getTotalBlocksCount = function() {
 };
 
 ocargo.BlocklyControl.prototype.getActiveBlocksCount = function() {
-    var startBlock = this.getStartBlock();
-    var procedureBlocks = this.getProcedureBlocks();
+    var startBlock = this.startBlock();
+    var procedureBlocks = this.procedureBlocks();
     var eventBlocks = this.onEventDoBlocks();
     var n = 0;
     var i;

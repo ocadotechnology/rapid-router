@@ -60,7 +60,7 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
     this.procedures = {};
     this.procedureBindings = [];
 
-    var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
+    var procBlocks = ocargo.blocklyControl.procedureBlocks();
     for (var i = 0; i < procBlocks.length; i++) {
         var block = procBlocks[i];
         var name = block.inputList[0].fieldRow[1].text_;
@@ -101,7 +101,7 @@ ocargo.BlocklyCompiler.prototype.compileEvents = function() {
 
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {
     this.program = new ocargo.Program(this.events);
-    var startBlock = ocargo.blocklyControl.getStartBlock();
+    var startBlock = ocargo.blocklyControl.startBlock();
     var thread = new ocargo.Thread(this.program);
     thread.startBlock = startBlock;
     thread.stack = this.createSequence(thread.startBlock);
@@ -543,7 +543,7 @@ ocargo.BlocklyCompiler.prototype.mobileGetCondition = function(conditionBlock) {
 ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
 	Blockly.Python.variableDB_.reset();
 
-	var procBlocks = ocargo.blocklyControl.getProcedureBlocks();
+	var procBlocks = ocargo.blocklyControl.procedureBlocks();
 
     var code = "";
 
@@ -557,7 +557,7 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
     //	code += '\n' + Blockly.Python.blockToCode(eventBlocks[i]);
     //}
 
-	var startBlock = ocargo.blocklyControl.getStartBlock();
+	var startBlock = ocargo.blocklyControl.startBlock();
     code += '\n' + Blockly.Python.blockToCode(startBlock);
 
 	return code;
