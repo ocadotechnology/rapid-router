@@ -56,9 +56,9 @@ ocargo.Game.prototype.setup = function() {
     ocargo.blocklyControl.blocklyCustomisations.setupLimitedBlocks();
     ocargo.pythonControl = new ocargo.PythonControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
-    ocargo.drawing = new ocargo.Drawing();
-    ocargo.drawing.preloadRoadTiles();
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, COWS, MAX_FUEL);
+    ocargo.drawing = new ocargo.Drawing(ocargo.model.startingPosition());
+    ocargo.drawing.preloadRoadTiles();
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR);
     ocargo.saving = new ocargo.Saving();
 
@@ -123,7 +123,6 @@ ocargo.Game.prototype.reset = function() {
     // Needed so animation can reset with the right information
     ocargo.model.reset(0);
 
-    ocargo.drawing.reset();
     // clear animations and sound
     ocargo.sound.stop_engine();
     ocargo.animation.resetAnimation();

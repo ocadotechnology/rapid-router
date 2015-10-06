@@ -41,7 +41,7 @@ var ocargo = ocargo || {};
 
 ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowData, maxFuel) {
     this.map = new ocargo.Map(nodeData, origin, destinations);
-    this.van = new ocargo.Van(this.map.getStartingPosition(), maxFuel);
+    this.van = new ocargo.Van(this.map.startingPosition(), maxFuel);
 
     this.trafficLights = [];
     for(var i = 0; i < trafficLightData.length; i++) {
@@ -709,3 +709,8 @@ ocargo.Model.prototype.getNodesAhead = function(node) {
     }
     return nodes;
 };
+
+ocargo.Model.prototype.startingPosition = function() {
+    return this.map.startingPosition();
+}
+
