@@ -37,21 +37,17 @@
 from game.end_to_end_tests.base_game_test import BaseGameTest
 
 
-class TestGameFailures(BaseGameTest):
-    def test_crash_turning_left_on_straight_road(self):
-        self.run_crashing_test(6, 'crash_turning_left_on_straight_road')
+class TestTurningAround(BaseGameTest):
 
-    def test_crash_turning_left_on_right_turn(self):
-        self.run_crashing_test(6, 'crash_turning_left_on_right_turn')
+    def test_turn_around_on_straight_road(self):
+        self.running_out_of_instructions_test(level=40, workspace='turn_around_on_straight_road')
 
-    def test_crash_turning_right(self):
-        self.run_crashing_test(6, 'crash_turning_right_on_straight_road')
+    def test_turn_around_on_left_turn(self):
+        self.running_out_of_instructions_test(level=40, workspace='turn_around_on_left_turn')
 
-    def test_crash_turning_right_on_left_turn(self):
-        self.run_crashing_test(6, 'crash_turning_right_on_left_turn')
+    def test_turn_around_on_right_turn(self):
+        self.running_out_of_instructions_test(level=40, workspace='turn_around_on_right_turn')
 
-    def test_crash_going_forward_on_t_junction(self):
-        self.run_crashing_test(13, 'crash_going_forward_on_t_junction')
 
 
 

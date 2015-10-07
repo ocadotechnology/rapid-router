@@ -86,13 +86,22 @@ class BaseGameTest(BaseTest):
             .load_solution(workspace_id) \
             .run_crashing_program()
 
+    def running_out_of_instructions_test(self, level, workspace):
+        user_profile = self.login_once()
+
+        workspace_id = self.use_workspace(workspace, user_profile)
+
+        self.go_to_level(level) \
+            .load_solution(workspace_id) \
+            .run_program_that_runs_out_of_instructions()
+
     def use_workspace_of_level(self, level, user_profile):
         workspace_filename = self.solution_filename_for_level(level)
         return self.use_workspace(workspace_filename, user_profile)
 
-    def use_workspace(self, filename, user_profile):
-        solution = self.read_solution(filename)
-        workspace_id = Workspace.objects.create(name=filename, owner=user_profile, contents=solution).id
+    def use_workspace(self, workspace_file, user_profile):
+        solution = self.read_solution(workspace_file)
+        workspace_id = Workspace.objects.create(name=workspace_file, owner=user_profile, contents=solution).id
         return workspace_id
 
     def login_once(self):
