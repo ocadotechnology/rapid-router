@@ -120,12 +120,13 @@ ocargo.Game.prototype.setup = function() {
 ocargo.Game.prototype.reset = function() {
     ocargo.blocklyControl.clearAllSelections();
 
+    ocargo.animation.resetAnimation();
+
     // Needed so animation can reset with the right information
-    ocargo.model.reset(0);
+    ocargo.model.reset();
 
     // clear animations and sound
     ocargo.sound.stop_engine();
-    ocargo.animation.resetAnimation();
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
