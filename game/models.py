@@ -169,7 +169,7 @@ class Attempt (models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name='attempts')
     student = models.ForeignKey(Student, related_name='attempts', blank=True, null=True)
-    finish_time = models.DateTimeField(auto_now=True)
+    finish_time = models.DateTimeField(null=True, blank=True)
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")
     night_mode = models.BooleanField(default=False)

@@ -43,6 +43,7 @@ import json
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from helper import renderError, getDecorElement
 from game.cache import cached_level, cached_episode
@@ -56,9 +57,11 @@ def play_custom_level(request, levelID):
         raise Http404
     return play_level(request, levelID, False)
 
+
 def play_night_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)
     return play_level(request, level.id, True)
+
 
 def play_default_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)
@@ -119,13 +122,20 @@ def play_level(request, levelID, night_mode):
     python_workspace = None
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
         student = request.user.userprofile.student
-        ## TODO JC: Retrieve the highest scored attempt (or the latest attempt?)
-        if (night_mode):
-            attempt = Attempt.objects.filter(level=level, student=student, night_mode=True).first()
-        else:
-            attempt = Attempt.objects.filter(level=level, student=student, night_mode=False).first()
+        attempt = Attempt.objects \
+            .filter(level=level, student=student, finish_time__isnull=True, night_mode=night_mode) \
+            .order_by('-start_time') \
+            .first()
         if not attempt:
+            latest_completed_attempt = Attempt.objects \
+                .filter(level=level, student=student, night_mode=night_mode) \
+                .order_by('-start_time') \
+                .first()
             attempt = Attempt(level=level, student=student, score=None)
+            if latest_completed_attempt:
+                attempt.workspace = latest_completed_attempt.workspace
+                attempt.python_workspace = latest_completed_attempt.python_workspace
+
             attempt.save()
 
         workspace = attempt.workspace
@@ -193,24 +203,34 @@ def submit_attempt(request):
             hasattr(request.user.userprofile, "student")):
         level = get_object_or_404(Level, id=request.POST.get('level', 1))
         student = request.user.userprofile.student
-        ## TODO JC: Store all attempts in DB, instead of updating the existing one (finish_time__is_null=True)
-        attempt = Attempt.objects.filter(level=level, student=student).first()
+        attempt = Attempt.objects.filter(level=level, student=student, finish_time__isnull=True).first()
         if attempt:
-            attempt.score = request.POST.get('score')
+            attempt.score = float(request.POST.get('score'))
             attempt.workspace = request.POST.get('workspace')
             attempt.python_workspace = request.POST.get('python_workspace')
+            attempt.finish_time = timezone.now()
             attempt.save()
 
-            bestAttempt = BestAttempt.objects.filter(level=level, student=student, night_mode=attempt.night_mode).first()
-            if bestAttempt and bestAttempt.attempt.score < attempt.score:
-                bestAttempt.attempt = attempt
-                bestAttempt.save()
-            elif not bestAttempt:
-                bestAttempt = BestAttempt(level=attempt.level,
-                                          student=attempt.student,
-                                          attempt=attempt,
-                                          night_mode=attempt.night_mode)
-                bestAttempt.save()
+            best_attempt = BestAttempt.objects \
+                .filter(level=level, student=student, night_mode=attempt.night_mode) \
+                .select_related('attempt') \
+                .first()
+            if best_attempt and (best_attempt.attempt.score <= attempt.score):
+                best_attempt.attempt = attempt
+                best_attempt.save()
+            elif not best_attempt:
+                best_attempt = BestAttempt(level=attempt.level,
+                                           student=attempt.student,
+                                           attempt=attempt,
+                                           night_mode=attempt.night_mode)
+                best_attempt.save()
+
+            new_attempt = Attempt(level=level,
+                                  student=student,
+                                  score=None,
+                                  workspace=attempt.workspace,
+                                  python_workspace=attempt.python_workspace)
+            new_attempt.save()
 
     return HttpResponse('[]', content_type='application/json')
 
