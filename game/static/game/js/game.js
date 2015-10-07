@@ -692,19 +692,19 @@ ocargo.Game.prototype.setupTabs = function() {
             });
         });
 
-        $('#saveWorkspace').click(function() {
+        var saveWorkspace = function() {
             var newName = $('#workspaceNameInput').val();
             if (newName && newName !== "") {
                 var table = $("#saveWorkspaceTable");
                 var existingID = null;
 
                 for (var i = 0; i < table[0].rows.length; i++) {
-                     var row = table[0].rows[i];
-                     var existingName = row.cells[0].innerHTML;
-                     if (existingName === newName) {
+                    var row = table[0].rows[i];
+                    var existingName = row.cells[0].innerHTML;
+                    if (existingName === newName) {
                         existingID = row.getAttribute('value');
                         break;
-                     }
+                    }
                 }
 
                 var workspace = {name: newName,
@@ -720,7 +720,9 @@ ocargo.Game.prototype.setupTabs = function() {
                     loadInWorkspaces(workspaces);
                 });
             }
-        });
+        };
+
+        $('#saveWorkspace').click(saveWorkspace);
 
         // If the user pressed the enter key in the textbox, should be the same as clicking the button
         $('#newWorkspaceName').on('keypress', function(e) {
@@ -733,13 +735,17 @@ ocargo.Game.prototype.setupTabs = function() {
             populateTable("saveWorkspaceTable", workspaces);
 
             // Add click listeners to all rows
-            $('#saveWorkspaceTable tr').on('click', function(event) {
-                $('#saveWorkspaceTable tr').attr('selected', false);
+            var rows = $('#saveWorkspaceTable tr');
+            rows.on('click', function(event) {
+                rows.attr('selected', false);
                 $(this).attr('selected', true);
                 selectedWorkspace = $(event.target).attr('value');
                 var workspaceName = $(event.target)[0].innerHTML;
                 document.getElementById("workspaceNameInput").value = workspaceName;
             });
+
+            // Add double click listener to save the workspace selected by the first click
+            rows.on('dblclick', saveWorkspace);
 
             $('#save_pane .scrolling-table-wrapper').css(
                 'display',  workspaces.length === 0 ? 'none' : 'block');
