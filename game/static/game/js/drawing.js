@@ -84,8 +84,12 @@ ocargo.Drawing = function(startingPosition) {
     var lightImages = {};
     var destinationImages = {};
 
-    var character = new ocargo.Character(paper, CHARACTER_URL, WRECKAGE_URL,
-        characterWidth, characterHeight, startingPosition, NIGHT_MODE);
+    var character;
+
+    if (!ocargo.Drawing.inLevelEditor()) {
+        character = new ocargo.Character(paper, CHARACTER_URL, WRECKAGE_URL,
+            characterWidth, characterHeight, startingPosition, NIGHT_MODE);
+    }
 
     this.reset = function() {
         character.reset();
@@ -856,6 +860,10 @@ ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace = function(degrees,
     var result = ocargo.Drawing.createAbsoluteRotationTransformation(degrees, rotationPointX, rotationPointY);
     return result;
 };
+
+ocargo.Drawing.inLevelEditor = function() {
+    return typeof CHARACTER_URL === 'undefined';
+}
 
 ocargo.Drawing.FRONT_VIEW = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
