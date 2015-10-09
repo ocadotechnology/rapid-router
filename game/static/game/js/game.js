@@ -715,9 +715,17 @@ ocargo.Game.prototype.setupTabs = function() {
                     if (err !== null) {
                         ocargo.Drawing.startInternetDownPopup();
                         console.error(err);
-                        return;
+                        loadInWorkspaces(workspaces);
+                    } else {
+                        // Blockly or Python tab must be selected before domToWorkspace is called
+                        // Otherwise blocks will be chopped off or python editor will not be updated
+                        if (PYTHON_ENABLED) {
+                            tabs.python.select();
+                        }
+                        if (BLOCKLY_ENABLED) {
+                            tabs.blockly.select();
+                        }
                     }
-                    loadInWorkspaces(workspaces);
                 });
             }
         };
