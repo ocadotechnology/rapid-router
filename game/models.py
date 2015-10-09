@@ -40,7 +40,7 @@ from django.db import models
 from portal.models import UserProfile, Student
 
 
-class Block (models.Model):
+class Block(models.Model):
     type = models.CharField(max_length=200)
 
     def __unicode__(self):
@@ -74,7 +74,7 @@ class Character(models.Model):
     height = models.IntegerField(default=20)
 
 
-class Episode (models.Model):
+class Episode(models.Model):
     '''Variables prefixed with r_ signify they are parameters for random level generation'''
 
     name = models.CharField(max_length=200)
@@ -91,7 +91,7 @@ class Episode (models.Model):
     r_pythonEnabled = models.BooleanField(default=False)
     r_trafficLights = models.BooleanField(default=False)
     r_cows = models.BooleanField(default=False)
-    
+
     @property
     def first_level(self):
         return self.levels[0]
@@ -99,11 +99,12 @@ class Episode (models.Model):
     @property
     def levels(self):
         '''Sorts the levels by integer conversion of "name" which should equate to the correct play order'''
-        
+
         return sorted(self.level_set.all(), key=lambda level: int(level.name))
-    
+
     def __unicode__(self):
         return 'Episode: ' + self.name
+
 
 class LevelManager(models.Manager):
     def sorted_levels(self):
@@ -112,10 +113,12 @@ class LevelManager(models.Manager):
 
         return sort_levels(self.model.objects.filter(episode__isnull=False))
 
+
 def sort_levels(levels):
     return sorted(levels, key=lambda level: int(level.name))
 
-class Level (models.Model):
+
+class Level(models.Model):
     name = models.CharField(max_length=100)
     episode = models.ForeignKey(Episode, blank=True, null=True, default=None)
     path = models.TextField(max_length=10000)
@@ -143,7 +146,7 @@ class Level (models.Model):
 
     def __unicode__(self):
         return 'Level ' + str(self.name)
-    
+
 
 class LevelBlock(models.Model):
     type = models.ForeignKey(Block)
@@ -156,16 +159,16 @@ class LevelDecor(models.Model):
     y = models.IntegerField()
     level = models.ForeignKey(Level)
     decorName = models.CharField(max_length=100, default='tree1')
-    
 
-class Workspace (models.Model):
+
+class Workspace(models.Model):
     name = models.CharField(max_length=200)
     owner = models.ForeignKey(UserProfile, related_name='workspaces', blank=True, null=True)
     contents = models.TextField(default="")
     python_contents = models.TextField(default="")
 
 
-class Attempt (models.Model):
+class Attempt(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name='attempts')
     student = models.ForeignKey(Student, related_name='attempts', blank=True, null=True)
