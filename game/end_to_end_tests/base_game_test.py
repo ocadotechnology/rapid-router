@@ -57,7 +57,7 @@ class BaseGameTest(BaseTest):
         else:
             raise Exception
 
-    def run_level_test(self, level, suffix=None, route_score="10/10", algorithm_score="10/10"):
+    def run_level_test(self, level, suffix=None, route_score="10/10", algorithm_score="10/10", page=None):
         level_with_suffix = str(level)
         if suffix:
             level_with_suffix += "-%d" % suffix
@@ -68,8 +68,10 @@ class BaseGameTest(BaseTest):
 
         score_element_id = self.score_element_id(route_score, algorithm_score)
 
-        page = self.go_to_level(level) \
-            .load_solution(workspace_id) \
+        if not page:
+            page = self.go_to_level(level)
+
+        page.load_solution(workspace_id) \
             .run_program(score_element_id)
 
         if route_score:
@@ -82,7 +84,7 @@ class BaseGameTest(BaseTest):
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        self.go_to_level(level) \
+        return self.go_to_level(level) \
             .load_solution(workspace_id) \
             .run_crashing_program()
 
@@ -91,7 +93,7 @@ class BaseGameTest(BaseTest):
 
         workspace_id = self.use_workspace(workspace, user_profile)
 
-        self.go_to_level(level) \
+        return self.go_to_level(level) \
             .load_solution(workspace_id) \
             .run_program_that_runs_out_of_instructions()
 

@@ -44,7 +44,7 @@ class TestCrashes(BaseGameTest):
     def test_crash_turning_left_on_right_turn(self):
         self.run_crashing_test(level=6, workspace_file='crash_turning_left_on_right_turn')
 
-    def test_crash_turning_right(self):
+    def test_crash_turning_right_on_straight_road(self):
         self.run_crashing_test(level=6, workspace_file='crash_turning_right_on_straight_road')
 
     def test_crash_turning_right_on_left_turn(self):
@@ -58,6 +58,15 @@ class TestCrashes(BaseGameTest):
 
     def test_crash_going_right_on_t_junction(self):
         self.run_crashing_test(level=40, workspace_file='crash_going_right_on_t_junction')
+
+    def test_crash_turning_left_clear_and_pass_level(self):
+        page = self\
+            .run_crashing_test(level=6, workspace_file='crash_turning_left_on_straight_road')\
+            .try_again()\
+            .clear()
+
+        self.run_level_test(6, page=page)
+
 
 
 
