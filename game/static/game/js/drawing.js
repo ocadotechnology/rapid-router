@@ -631,10 +631,6 @@ ocargo.Drawing = function(startingPosition) {
         });
     };
 
-    this.setCharacterPosition = function(position) {
-        character.setPosition(position);
-    };
-
     this.renderCharacter = function() {
         character.render();
     };
@@ -736,10 +732,6 @@ ocargo.Drawing = function(startingPosition) {
     this.crash = function (animationLength, previousNode, currentNode, attemptedAction) {
         character.crash(animationLength, previousNode, currentNode, attemptedAction)
     };
-
-    this.removeWreckage = function () {
-        character.removeWreckage();
-    }
 };
 
 /********************************/

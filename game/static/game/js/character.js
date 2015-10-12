@@ -66,22 +66,22 @@ ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, s
     this.initialOffsetY = DISTANCE_BETWEEN_THE_EDGE_AND_MIDDLE_OF_LEFT_LANE - (this.width / 2);
 };
 
-ocargo.Character.prototype.createCharacterImage = function() {
+ocargo.Character.prototype._createCharacterImage = function() {
     return this.paper.image(ocargo.Drawing.raphaelImageDir + this.imageUrl, 0, 0,
         this.height, this.width);
 };
 
 ocargo.Character.prototype.render = function () {
-    this.image = this.createCharacterImage();
-    this.resetPosition();
+    this.image = this._createCharacterImage();
+    this._resetPosition();
     this.scrollToShow();
 };
 
-ocargo.Character.prototype.setPosition = function (position) {
-    var initialPosition = this.calculateCharactersInitialPosition(position.currentNode);
+ocargo.Character.prototype._setPosition = function (position) {
+    var initialPosition = this._calculateCharactersInitialPosition(position.currentNode);
     this.image.transform('t' + initialPosition.x + ',' + initialPosition.y);
 
-    var rotation = this.calculateInitialRotation(position.previousNode, position.currentNode);
+    var rotation = this._calculateInitialRotation(position.previousNode, position.currentNode);
     var transformation = ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace(
         rotation,
         position.currentNode.coordinate.x,
@@ -91,11 +91,11 @@ ocargo.Character.prototype.setPosition = function (position) {
     this.image.attr({opacity: 1});
 };
 
-ocargo.Character.prototype.resetPosition = function () {
-    this.setPosition(this.startingPosition);
+ocargo.Character.prototype._resetPosition = function () {
+    this._setPosition(this.startingPosition);
 };
 
-ocargo.Character.prototype.calculateCharactersInitialPosition = function (startNode) {
+ocargo.Character.prototype._calculateCharactersInitialPosition = function (startNode) {
     var coord = ocargo.Drawing.translate(startNode.coordinate);
     var result = {
         x: coord.x * GRID_SPACE_SIZE + this.initialOffsetX + PAPER_PADDING,
@@ -104,20 +104,20 @@ ocargo.Character.prototype.calculateCharactersInitialPosition = function (startN
     return result
 };
 
-ocargo.Character.prototype.calculateInitialRotation = function (previousNode, startNode) {
+ocargo.Character.prototype._calculateInitialRotation = function (previousNode, startNode) {
     var nodeAngleRadians = ocargo.calculateNodeAngle(previousNode, startNode);
     var nodeAngleDegrees = nodeAngleRadians * (180 / Math.PI);
     return -nodeAngleDegrees; // Calculation is counterclockwise, transformations are clockwise
 };
 
-ocargo.Character.prototype.imagePosition = function () {
+ocargo.Character.prototype._imagePosition = function () {
     var box = this.image.getBBox();
     return [box.x, box.y];
 };
 
 ocargo.Character.prototype.scrollToShow = function () {
     this.skipOutstandingAnimations();
-    var point = this.imagePosition();
+    var point = this._imagePosition();
     var element = document.getElementById('paper');
 
     element.scrollLeft = point[0] - element.offsetWidth / 2;
@@ -135,25 +135,25 @@ ocargo.Character.prototype.skipOutstandingAnimations = function () {
     }
 };
 
-ocargo.Character.prototype.rotationPointX = function (radius) {
+ocargo.Character.prototype._rotationPointX = function (radius) {
     var centreX = this.height / 2;    // x coordinate of the canvas of the character svg
     return centreX + (radius / this.currentScale);
 };
 
-ocargo.Character.prototype.rotationPointXForLeftTurn = function () {
-    return this.rotationPointX(TURN_LEFT_RADIUS);
+ocargo.Character.prototype._rotationPointXForLeftTurn = function () {
+    return this._rotationPointX(TURN_LEFT_RADIUS);
 };
 
-ocargo.Character.prototype.rotationPointXForRightTurn = function () {
-    return this.rotationPointX(TURN_RIGHT_RADIUS);
+ocargo.Character.prototype._rotationPointXForRightTurn = function () {
+    return this._rotationPointX(TURN_RIGHT_RADIUS);
 };
 
-ocargo.Character.prototype.rotationPointXForTurnAround = function () {
-    return this.rotationPointX(TURN_AROUND_RADIUS);
+ocargo.Character.prototype._rotationPointXForTurnAround = function () {
+    return this._rotationPointX(TURN_AROUND_RADIUS);
 };
 
 // Returns the y coordinate of the centre of rotation
-ocargo.Character.prototype.rotationPointY = function () {
+ocargo.Character.prototype._rotationPointY = function () {
     var centreY = this.width / 2;     // y coordinate of the centre of the character svg
     return centreY;
 };
@@ -168,14 +168,14 @@ ocargo.Character.prototype.moveForward = function (animationLength, callback, sc
         transformation += "s" + scalingFactor;
     }
 
-    this.moveVanImage({
+    this._moveVanImage({
         transform: transformation
     }, animationLength, callback);
 };
 
 ocargo.Character.prototype.moveLeft = function (animationLength, callback, scalingFactor) {
-    var transformation = this.turnLeftTransformation(90, scalingFactor);
-    this.moveVanImage({
+    var transformation = this._turnLeftTransformation(90, scalingFactor);
+    this._moveVanImage({
         transform: transformation
     }, animationLength, callback);
     if (scalingFactor) {
@@ -184,8 +184,8 @@ ocargo.Character.prototype.moveLeft = function (animationLength, callback, scali
 };
 
 ocargo.Character.prototype.moveRight = function (animationLength, callback, scalingFactor) {
-    var transformation = this.turnRightTransformation(90, scalingFactor);
-    this.moveVanImage({
+    var transformation = this._turnRightTransformation(90, scalingFactor);
+    this._moveVanImage({
         transform: transformation
     }, animationLength, callback);
     if (scalingFactor) {
@@ -233,7 +233,7 @@ ocargo.Character.prototype.turnAround = function (direction, animationLength) {
 
     function rotate(easing) {
         return function () {
-            var transformation = that.turnAroundTransformation();
+            var transformation = that._turnAroundTransformation();
             that.image.animate({
                 transform: transformation
             }, timePerState, easing, performNextAction);
@@ -242,7 +242,7 @@ ocargo.Character.prototype.turnAround = function (direction, animationLength) {
 
     function turnLeft(easing) {
         return function () {
-            var transformation = that.turnLeftTransformation(45);
+            var transformation = that._turnLeftTransformation(45);
             that.image.animate({
                 transform: transformation
             }, timePerState, easing, performNextAction);
@@ -251,7 +251,7 @@ ocargo.Character.prototype.turnAround = function (direction, animationLength) {
 
     function turnRight(easing) {
         return function () {
-            var transformation = that.turnRightTransformation(45);
+            var transformation = that._turnRightTransformation(45);
             that.image.animate({
                 transform: transformation
             }, timePerState, easing, performNextAction);
@@ -261,12 +261,12 @@ ocargo.Character.prototype.turnAround = function (direction, animationLength) {
 
 ocargo.Character.prototype.wait = function (animationLength, callback) {
     //no movement for now
-    this.moveVanImage({
+    this._moveVanImage({
         transform: '... t 0,0'
     }, animationLength, callback);
 };
 
-ocargo.Character.prototype.moveVanImage = function (attr, animationLength, callback) {
+ocargo.Character.prototype._moveVanImage = function (attr, animationLength, callback) {
     // Compress all current transformations into one
     this.image.transform(this.image.matrix.toTransformString());
 
@@ -274,7 +274,7 @@ ocargo.Character.prototype.moveVanImage = function (attr, animationLength, callb
     this.image.animate(attr, animationLength, 'linear', callback);
 };
 
-ocargo.Character.prototype.collisionImage = function (withFire) {
+ocargo.Character.prototype._collisionImage = function (withFire) {
     if (withFire) {
         return Math.random() < 0.5 ? 'smoke.svg' : 'fire.svg';
     } else {
@@ -282,7 +282,7 @@ ocargo.Character.prototype.collisionImage = function (withFire) {
     }
 };
 
-ocargo.Character.prototype.animateCollision = function (withFire) {
+ocargo.Character.prototype._animateCollision = function (withFire) {
     var that = this;
     if (CHARACTER_NAME !== "Van") {
         return;
@@ -316,7 +316,7 @@ ocargo.Character.prototype.animateCollision = function (withFire) {
                 var size = minSize + Math.random() * (maxSize - minSize);
                 var xco = x + width * (Math.random() - 0.5) - 0.5 * size;
                 var yco = y + height * (Math.random() - 0.5) - 0.5 * size;
-                var imageUrl = ocargo.Drawing.raphaelImageDir + that.collisionImage(withFire);
+                var imageUrl = ocargo.Drawing.raphaelImageDir + that._collisionImage(withFire);
                 var img = that.paper.image(imageUrl, xco, yco, size, size);
                 img.animate({opacity: 0, transform: 's2'}, 1000, function () {
                     img.remove()
@@ -326,38 +326,38 @@ ocargo.Character.prototype.animateCollision = function (withFire) {
     }, 100);
 };
 
-ocargo.Character.prototype.animateCollisionWithFire = function() {
+ocargo.Character.prototype._animateCollisionWithFire = function() {
     var that = this;
     return function() {
-        that.animateCollision(true);
+        that._animateCollision(true);
     }
 };
 
-ocargo.Character.prototype.animateCollisionNoFire = function() {
+ocargo.Character.prototype._animateCollisionNoFire = function() {
     var that = this;
     return function() {
-        that.animateCollision(false);
+        that._animateCollision(false);
     }
 };
 
-ocargo.Character.prototype.turnLeftTransformation = function (rotationAngle, scalingFactor) {
-    var rotationPointX = this.rotationPointXForLeftTurn();
-    var rotationPointY = this.rotationPointY();
-    var transformation = this.createRotationTransformation(-rotationAngle, rotationPointX, rotationPointY, scalingFactor);
+ocargo.Character.prototype._turnLeftTransformation = function (rotationAngle, scalingFactor) {
+    var rotationPointX = this._rotationPointXForLeftTurn();
+    var rotationPointY = this._rotationPointY();
+    var transformation = this._createRotationTransformation(-rotationAngle, rotationPointX, rotationPointY, scalingFactor);
     return transformation;
 };
 
-ocargo.Character.prototype.turnRightTransformation = function (rotationAngle, scalingFactor) {
-    var rotationPointX = this.rotationPointXForRightTurn();
-    var rotationPointY = this.rotationPointY();
-    var transformation = this.createRotationTransformation(rotationAngle, rotationPointX, rotationPointY, scalingFactor);
+ocargo.Character.prototype._turnRightTransformation = function (rotationAngle, scalingFactor) {
+    var rotationPointX = this._rotationPointXForRightTurn();
+    var rotationPointY = this._rotationPointY();
+    var transformation = this._createRotationTransformation(rotationAngle, rotationPointX, rotationPointY, scalingFactor);
     return transformation;
 };
 
-ocargo.Character.prototype.turnAroundTransformation = function () {
-    var rotationPointX = this.rotationPointXForTurnAround();
-    var rotationPointY = this.rotationPointY();
-    var transformation = this.createRotationTransformation(180, rotationPointX, rotationPointY);
+ocargo.Character.prototype._turnAroundTransformation = function () {
+    var rotationPointX = this._rotationPointXForTurnAround();
+    var rotationPointY = this._rotationPointY();
+    var transformation = this._createRotationTransformation(180, rotationPointX, rotationPointY);
     return transformation;
 };
 
@@ -368,14 +368,14 @@ ocargo.Character.prototype.crash = function (animationLength, previousNode, curr
 
         var transformation = "... t 0, " + (-distanceForwards);
     } else if (attemptedAction === "TURN_LEFT") {
-        var transformation = this.turnLeftTransformation(75);
+        var transformation = this._turnLeftTransformation(75);
     } else if (attemptedAction === "TURN_RIGHT") {
-        var transformation = this.turnRightTransformation(75);
+        var transformation = this._turnRightTransformation(75);
     }
 
-    this.moveVanImage({
+    this._moveVanImage({
         transform: transformation
-    }, animationLength, this.animateCollisionWithFire());
+    }, animationLength, this._animateCollisionWithFire());
 };
 
 ocargo.Character.prototype.collisionWithCow = function (animationLength, previousNode, currentNode, attemptedAction) {
@@ -383,20 +383,20 @@ ocargo.Character.prototype.collisionWithCow = function (animationLength, previou
         var distanceForwards = (0.5 * GRID_SPACE_SIZE - 0.5 * ROAD_WIDTH) / this.currentScale;
         var transformation = "... t 0, " + (-distanceForwards);
     } else if (attemptedAction === "TURN_LEFT") {
-        var transformation = this.turnLeftTransformation(15);
+        var transformation = this._turnLeftTransformation(15);
     } else if (attemptedAction === "TURN_RIGHT") {
-        var transformation = this.turnRightTransformation(15);
+        var transformation = this._turnRightTransformation(15);
     }
 
     var newAnimationLength = animationLength * ((GRID_SPACE_SIZE - ROAD_WIDTH) / (GRID_SPACE_SIZE + ROAD_WIDTH));
-    this.moveVanImage({
+    this._moveVanImage({
         transform: transformation
-    }, newAnimationLength, this.animateCollisionNoFire());
+    }, newAnimationLength, this._animateCollisionNoFire());
 
     return newAnimationLength;
 };
 
-ocargo.Character.prototype.createRotationTransformation = function (degrees, rotationPointX, rotationPointY, scalingFactor) {
+ocargo.Character.prototype._createRotationTransformation = function (degrees, rotationPointX, rotationPointY, scalingFactor) {
     var transformation = "..." + "r" + degrees;
     if (rotationPointX !== undefined && rotationPointY !== undefined) {
         transformation += ',' + rotationPointX;
@@ -409,7 +409,7 @@ ocargo.Character.prototype.createRotationTransformation = function (degrees, rot
     return transformation;
 };
 
-ocargo.Character.prototype.removeWreckage = function () {
+ocargo.Character.prototype._removeWreckage = function () {
     if (this.wreckageImage) {
         this.wreckageImage.remove();
     }
@@ -417,7 +417,7 @@ ocargo.Character.prototype.removeWreckage = function () {
 
 ocargo.Character.prototype.reset = function () {
     this.skipOutstandingAnimations();
-    this.resetPosition();
-    this.removeWreckage();
+    this._resetPosition();
+    this._removeWreckage();
     this.currentScale = 1;
 };
