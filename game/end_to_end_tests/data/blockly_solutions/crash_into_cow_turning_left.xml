@@ -1,0 +1,15 @@
+<xml>
+    <block type="start" deletable="false" x="230" y="130">
+        <next>
+            <block type="turn_left">
+                <next>
+                    <block type="turn_right">
+                        <next>
+                            <block type="turn_left"></block>
+                        </next>
+                    </block>
+                </next>
+            </block>
+        </next>
+    </block>
+</xml>
