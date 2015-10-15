@@ -49,6 +49,7 @@ from game.models import Attempt, Episode
 from level_editor import play_anonymous_level
 from django.core.cache import cache
 
+
 def max_score(level):
     score = 0
     if not level.disable_route_score:
@@ -56,6 +57,7 @@ def max_score(level):
     if level.model_solution != "[]":
         score = score + 10
     return score
+
 
 def fetch_episode_data_from_database(early_access):
     episode_data = []
@@ -91,6 +93,7 @@ def fetch_episode_data_from_database(early_access):
         episode = episode.next_episode
     return episode_data
 
+
 def fetch_episode_data(early_access):
     key = "episode_data"
     if early_access:
@@ -101,6 +104,7 @@ def fetch_episode_data(early_access):
         cache.set(key, data)
     return data
 
+
 def get_level_title(i):
     title = 'title_level' + str(i)
     try:
@@ -109,8 +113,14 @@ def get_level_title(i):
     except AttributeError:
         return ""
 
+
 def attach_attempts_to_level(attempts, level):
     level["score"] = attempts.get(level["id"])
+
+
+def is_student(user):
+    return hasattr(user.userprofile, 'student')
+
 
 def levels(request):
     """ Loads a page with all levels listed.
@@ -125,11 +135,11 @@ def levels(request):
     :template:`game/level_selection.html`
     """
     user = request.user
-    if not user.is_anonymous() and hasattr(user.userprofile, 'student'):
-        best_attempts = Attempt.objects\
-            .filter(student=user.userprofile.student)\
-            .values("level_id")\
-            .annotate(best_score=Max("score"))\
+    if user.is_authenticated() and is_student(user):
+        best_attempts = Attempt.objects \
+            .filter(student=user.userprofile.student) \
+            .values("level_id") \
+            .annotate(best_score=Max("score")) \
             .all()
 
         attempts = {a["level_id"]: a["best_score"] for a in best_attempts}
@@ -140,9 +150,9 @@ def levels(request):
         attach_attempts_to_level(attempts, level)
 
     episode_data = fetch_episode_data(beta.has_beta_access(request))
-    for e in episode_data:
-        for l in e["levels"]:
-            with_scores(l)
+    for episode in episode_data:
+        for level in episode["levels"]:
+            with_scores(level)
 
     owned_level_data = []
     shared_level_data = []
