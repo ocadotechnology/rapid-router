@@ -35,5 +35,5 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 
-NIGHT_MODE_FEATURE_ENABLED = True
+NIGHT_MODE_FEATURE_ENABLED = False
 COW_FEATURE_ENABLED = False
