@@ -730,7 +730,7 @@ ocargo.Drawing = function(startingPosition) {
     };
 
     this.crash = function (animationLength, previousNode, currentNode, attemptedAction) {
-        character.crash(animationLength, previousNode, currentNode, attemptedAction)
+        character.crash(animationLength, attemptedAction)
     };
 };
 

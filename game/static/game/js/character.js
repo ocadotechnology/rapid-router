@@ -47,7 +47,9 @@ var TURN_LEFT_RADIUS = -38;
 var TURN_RIGHT_RADIUS = 62;
 var TURN_AROUND_RADIUS = 12;
 
-ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, startingPosition, nightMode) {
+var VEIL_OF_NIGHT_URL = 'characters/top_view/VeilOfNight.svg';
+
+ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, startingPosition, nightMode, isVeilOfNight) {
     this.currentScale = 1;
 
     this.imageUrl = imageUrl;
@@ -61,6 +63,11 @@ ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, s
     this.height = height;
     this.startingPosition = startingPosition;
     this.nightMode = nightMode;
+    this.isVeilOfNight = isVeilOfNight;
+
+    if (this.nightMode) {
+        this.veilOfNight = new ocargo.Character(paper, VEIL_OF_NIGHT_URL, null, 4240, 3440, startingPosition, false, true);
+    }
 
     this.initialOffsetX = -this.height / 2;
     this.initialOffsetY = DISTANCE_BETWEEN_THE_EDGE_AND_MIDDLE_OF_LEFT_LANE - (this.width / 2);
@@ -71,10 +78,23 @@ ocargo.Character.prototype._createCharacterImage = function() {
         this.height, this.width);
 };
 
+ocargo.Character.prototype._createWreckageImage = function() {
+    var wreckageImage = this.paper.image(ocargo.Drawing.raphaelImageDir + this.wreckageImageUrl, 0, 0, this.height, this.width);
+    wreckageImage.attr({"opacity": 0});
+    return wreckageImage;
+
+};
+
 ocargo.Character.prototype.render = function () {
     this.image = this._createCharacterImage();
     this._resetPosition();
-    this.scrollToShow();
+    if (!this.isVeilOfNight) {
+        this.wreckageImage = this._createWreckageImage();
+        this.scrollToShow();
+    }
+    if (this.nightMode) {
+        this.veilOfNight.render();
+    }
 };
 
 ocargo.Character.prototype._setPosition = function (position) {
@@ -133,6 +153,10 @@ ocargo.Character.prototype.skipOutstandingAnimations = function () {
     for (var i = 0, ii = anims.length; i < ii; i++) {
         this.image.status(anims[i].anim, 1);
     }
+
+    if (this.veilOfNight) {
+        this.veilOfNight.skipOutstandingAnimations();
+    }
 };
 
 ocargo.Character.prototype._rotationPointX = function (radius) {
@@ -159,7 +183,6 @@ ocargo.Character.prototype._rotationPointY = function () {
 };
 
 ocargo.Character.prototype.moveForward = function (animationLength, callback, scalingFactor) {
-
     var moveDistance = -MOVE_DISTANCE / this.currentScale;
     var transformation = "..." + "t 0, " + moveDistance;
 
@@ -168,28 +191,40 @@ ocargo.Character.prototype.moveForward = function (animationLength, callback, sc
         transformation += "s" + scalingFactor;
     }
 
-    this._moveVanImage({
+    this._moveImage({
         transform: transformation
     }, animationLength, callback);
+
+    if (this.veilOfNight) {
+        this.veilOfNight.moveForward(animationLength, null, scalingFactor);
+    }
 };
 
 ocargo.Character.prototype.moveLeft = function (animationLength, callback, scalingFactor) {
     var transformation = this._turnLeftTransformation(90, scalingFactor);
-    this._moveVanImage({
+    this._moveImage({
         transform: transformation
     }, animationLength, callback);
     if (scalingFactor) {
         this.currentScale *= scalingFactor;
     }
+
+    if (this.veilOfNight) {
+        this.veilOfNight.moveLeft(animationLength, null, scalingFactor);
+    }
 };
 
 ocargo.Character.prototype.moveRight = function (animationLength, callback, scalingFactor) {
     var transformation = this._turnRightTransformation(90, scalingFactor);
-    this._moveVanImage({
+    this._moveImage({
         transform: transformation
     }, animationLength, callback);
     if (scalingFactor) {
         this.currentScale *= scalingFactor;
+    }
+
+    if (this.veilOfNight) {
+        this.veilOfNight.moveRight(animationLength, null, scalingFactor);
     }
 };
 
@@ -257,16 +292,20 @@ ocargo.Character.prototype.turnAround = function (direction, animationLength) {
             }, timePerState, easing, performNextAction);
         }
     }
+
+    if (this.veilOfNight) {
+        this.veilOfNight.turnAround(direction, animationLength);
+    }
 };
 
 ocargo.Character.prototype.wait = function (animationLength, callback) {
     //no movement for now
-    this._moveVanImage({
+    this._moveImage({
         transform: '... t 0,0'
     }, animationLength, callback);
 };
 
-ocargo.Character.prototype._moveVanImage = function (attr, animationLength, callback) {
+ocargo.Character.prototype._moveImage = function (attr, animationLength, callback) {
     // Compress all current transformations into one
     this.image.transform(this.image.matrix.toTransformString());
 
@@ -283,6 +322,10 @@ ocargo.Character.prototype._collisionImage = function (withFire) {
 };
 
 ocargo.Character.prototype._animateCollision = function (withFire) {
+    if (this.isVeilOfNight) {
+        return function() {};
+    }
+
     var that = this;
     if (CHARACTER_NAME !== "Van") {
         return;
@@ -300,10 +343,7 @@ ocargo.Character.prototype._animateCollision = function (withFire) {
 
     var explosionParts = 20;
 
-    this.wreckageImage = this.paper.image(ocargo.Drawing.raphaelImageDir + this.wreckageImageUrl, 0, 0,
-        this.height, this.width);
     this.wreckageImage.transform(this.image.transform());
-    this.wreckageImage.attr({"opacity": 0});
 
     setTimeout(function () {
         that.wreckageImage.animate({opacity: 1}, 1000);
@@ -328,6 +368,7 @@ ocargo.Character.prototype._animateCollision = function (withFire) {
 
 ocargo.Character.prototype._animateCollisionWithFire = function() {
     var that = this;
+
     return function() {
         that._animateCollision(true);
     }
@@ -361,11 +402,11 @@ ocargo.Character.prototype._turnAroundTransformation = function () {
     return transformation;
 };
 
-ocargo.Character.prototype.crash = function (animationLength, previousNode, currentNode, attemptedAction) {
+ocargo.Character.prototype._animateCrash = function (animationLength, attemptedAction, callback) {
     if (attemptedAction === "FORWARD") {
         var distanceForwards;
-        distanceForwards = 0.8 * GRID_SPACE_SIZE;
 
+        distanceForwards = 0.8 * GRID_SPACE_SIZE;
         var transformation = "... t 0, " + (-distanceForwards);
     } else if (attemptedAction === "TURN_LEFT") {
         var transformation = this._turnLeftTransformation(75);
@@ -373,9 +414,19 @@ ocargo.Character.prototype.crash = function (animationLength, previousNode, curr
         var transformation = this._turnRightTransformation(75);
     }
 
-    this._moveVanImage({
+    this._moveImage({
         transform: transformation
-    }, animationLength, this._animateCollisionWithFire());
+    }, animationLength, callback);
+}
+
+ocargo.Character.prototype.crash = function (animationLength, attemptedAction) {
+    var crashAnimation = this._animateCollisionWithFire();
+
+    this._animateCrash(animationLength, attemptedAction, crashAnimation);
+
+    if (this.veilOfNight) {
+        this.veilOfNight.crash(animationLength, attemptedAction);
+    }
 };
 
 ocargo.Character.prototype.collisionWithCow = function (animationLength, previousNode, currentNode, attemptedAction) {
@@ -389,9 +440,13 @@ ocargo.Character.prototype.collisionWithCow = function (animationLength, previou
     }
 
     var newAnimationLength = animationLength * ((GRID_SPACE_SIZE - ROAD_WIDTH) / (GRID_SPACE_SIZE + ROAD_WIDTH));
-    this._moveVanImage({
+    this._moveImage({
         transform: transformation
     }, newAnimationLength, this._animateCollisionNoFire());
+
+    if (this.veilOfNight) {
+        this.veilOfNight.collisionWithCow(animationLength, previousNode, currentNode, attemptedAction);
+    }
 
     return newAnimationLength;
 };
@@ -410,14 +465,19 @@ ocargo.Character.prototype._createRotationTransformation = function (degrees, ro
 };
 
 ocargo.Character.prototype._removeWreckage = function () {
-    if (this.wreckageImage) {
-        this.wreckageImage.remove();
-    }
+    this.wreckageImage.attr({"opacity": 0});
 };
 
 ocargo.Character.prototype.reset = function () {
     this.skipOutstandingAnimations();
     this._resetPosition();
-    this._removeWreckage();
-    this.currentScale = 1;
+    if (!this.isVeilOfNight) {
+        this._removeWreckage();
+        this.currentScale = 1;
+        this.scrollToShow();
+    }
+
+    if (this.veilOfNight) {
+        this.veilOfNight.reset();
+    }
 };

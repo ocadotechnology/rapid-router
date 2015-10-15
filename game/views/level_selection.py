@@ -126,8 +126,13 @@ def levels(request):
     """
     user = request.user
     if not user.is_anonymous() and hasattr(user.userprofile, 'student'):
-        attempts = {a["level_id"]: a["best_score"] for a in \
-                Attempt.objects.filter(student=user.userprofile.student).values("level_id").annotate(best_score=Max("score")).all()}
+        best_attempts = Attempt.objects\
+            .filter(student=user.userprofile.student)\
+            .values("level_id")\
+            .annotate(best_score=Max("score"))\
+            .all()
+
+        attempts = {a["level_id"]: a["best_score"] for a in best_attempts}
     else:
         attempts = {}
 

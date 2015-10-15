@@ -132,20 +132,18 @@ def play_level(request, levelID, night_mode):
 
     decorData = level_management.get_decor(level)
 
+    character_url = character.top_down
+    character_width = character.width
+    character_height = character.height
+    wreckage_url = 'van_wreckage.svg'
+
     if (night_mode):
         blockData = level_management.get_night_blocks(level)
-        character_url = 'characters/top_view/NightModeVan.svg'
-        character_width = 4240
-        character_height = 3440
-        wreckage_url = 'NightModeVan_wreckage.svg'
         night_mode = "true"
-        lesson = 'Can you find your way in the dark?'
+        lesson = messages.title_night_mode()
+        model_solution = '[]'
     else:
         blockData = level_management.get_blocks(level)
-        character_url = character.top_down
-        character_width = character.width
-        character_height = character.height
-        wreckage_url = 'van_wreckage.svg'
         night_mode = "false"
         model_solution = level.model_solution
 

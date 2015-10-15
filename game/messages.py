@@ -167,6 +167,8 @@ def noPermission():
 """
 """
 
+def title_night_mode():
+    return 'Can you find your way in the dark?'
 
 def build_description(title, message):
     return "<b>" + title + "</b><br><br>" + message
