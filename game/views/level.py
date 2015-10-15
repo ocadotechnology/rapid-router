@@ -50,11 +50,19 @@ from game.models import Level, Attempt, Workspace
 from portal import beta
 
 
-def play_custom_level(request, levelID):
+def play_custom_level_day(request, levelID):
+    return play_custom_level(request, levelID, False)
+
+
+def play_custom_level_night(request, levelID):
+    return play_custom_level(request, levelID, True)
+
+
+def play_custom_level(request, levelID, night_mode):
     level = cached_level(levelID)
     if level.default:
         raise Http404
-    return play_level(request, levelID, False)
+    return play_level(request, levelID, night_mode)
 
 
 def play_night_level(request, levelName):
@@ -139,13 +147,13 @@ def play_level(request, levelID, night_mode):
     character_height = character.height
     wreckage_url = 'van_wreckage.svg'
 
-    if (night_mode):
-        blockData = level_management.get_night_blocks(level)
+    if night_mode:
+        block_data = level_management.get_night_blocks(level)
         night_mode = "true"
         lesson = messages.title_night_mode()
         model_solution = '[]'
     else:
-        blockData = level_management.get_blocks(level)
+        block_data = level_management.get_blocks(level)
         night_mode = "false"
         model_solution = level.model_solution
 
@@ -154,7 +162,7 @@ def play_level(request, levelID, night_mode):
     context = RequestContext(request, {
         'level': level,
         'lesson': lesson,
-        'blocks': blockData,
+        'blocks': block_data,
         'decor': decorData,
         'character': character,
         'background': background,

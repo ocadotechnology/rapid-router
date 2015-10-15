@@ -43,7 +43,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
-from game.features import COW_FEATURE_ENABLED
+from game.features import COW_FEATURE_ENABLED, NIGHT_MODE_FEATURE_ENABLED
 
 import game.messages as messages
 import game.level_management as level_management
@@ -86,7 +86,15 @@ def available_blocks():
         return Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn'])
 
 
-def play_anonymous_level(request, levelID, from_level_editor=True, random_level=False):
+def play_anonymous_level_day(request, levelID, from_level_editor=True, random_level=False):
+    return play_anonymous_level(request, levelID, from_level_editor, random_level, False)
+
+
+def play_anonymous_level_night(request, levelID, from_level_editor=True, random_level=False):
+    return play_anonymous_level(request, levelID, from_level_editor, random_level, True)
+
+
+def play_anonymous_level(request, levelID, from_level_editor=True, random_level=False, night_mode = False):
     level = Level.objects.filter(id=levelID)
 
     if not level.exists():
@@ -112,7 +120,16 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
     wreckage_url = 'van_wreckage.svg'
 
     decor_data = level_management.get_decor(level)
-    block_data = level_management.get_blocks(level)
+
+    if night_mode:
+        block_data = level_management.get_night_blocks(level)
+        night_mode = "true"
+        lesson = messages.title_night_mode()
+        model_solution = '[]'
+    else:
+        block_data = level_management.get_blocks(level)
+        night_mode = "false"
+        model_solution = level.model_solution
 
     context = RequestContext(request, {
         'level': level,
@@ -131,8 +148,9 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
         'character_width': character_width,
         'character_height': character_height,
         'wreckage_url': wreckage_url,
-        'night_mode': 'false',
-        'night_mode_feature_enabled': 'false',
+        'night_mode': night_mode,
+        'night_mode_feature_enabled': str(NIGHT_MODE_FEATURE_ENABLED).lower(),
+        'model_solution': model_solution,
     })
 
     level.delete()

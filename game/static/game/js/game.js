@@ -46,9 +46,10 @@ ocargo.Game = function() {
 };
 
 ocargo.Game.prototype.setup = function() {
-    if (NIGHT_MODE_FEATURE_ENABLED) {
+    if (NIGHT_MODE_FEATURE_ENABLED && !ANONYMOUS) {
         $('#nightmode_tab').show()
     }
+
     restoreCmsLogin();
     initCustomBlocks();
     ocargo.blocklyControl = new ocargo.BlocklyControl();
@@ -814,7 +815,7 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.nightmode.setOnChange(function() {
             if (NIGHT_MODE) {
                 var str = window.location.pathname
-                var newstr = str.replace('night','')
+                var newstr = str.replace('night/','')
                 window.location.assign(newstr)
             } else {
                 window.location.href = 'night';

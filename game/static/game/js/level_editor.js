@@ -198,6 +198,7 @@ ocargo.LevelEditor = function() {
         var currentTabSelected = null;
 
         tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
+        tabs.playNight = new ocargo.Tab($('#play_night_radio'), $('#play_night_radio + label'));
         tabs.map = new ocargo.Tab($('#map_radio'), $('#map_radio + label'), $('#map_pane'));
         tabs.scenery = new ocargo.Tab($('#scenery_radio'), $('#scenery_radio + label'), $('#scenery_pane'));
         tabs.character = new ocargo.Tab($('#character_radio'), $('#character_radio + label'), $('#character_pane'));
@@ -210,6 +211,7 @@ ocargo.LevelEditor = function() {
         tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));
 
         setupPlayTab();
+        setupPlayNightTab();
         setupMapTab();
         setupSceneryTab();
         setupCharacterTab();
@@ -225,8 +227,8 @@ ocargo.LevelEditor = function() {
         currentTabSelected = tabs.map;
         tabs.map.select();
 
-        function setupPlayTab() {
-            tabs.play.setOnChange(function() {
+        function playFunction(night) {
+            return function() {
                 if (isLevelValid()) {
                     var state = extractState();
                     state.name = "Custom level";
@@ -235,12 +237,22 @@ ocargo.LevelEditor = function() {
                             console.error(error);
                             return;
                         }
-                        window.location.href = '/rapidrouter/level_editor/level/play_anonymous/' + levelID + '/';
+                        var nightSuffix = (night ? 'night/' : '');
+                        window.location.href = '/rapidrouter/level_editor/level/play_anonymous/'
+                            + levelID + '/' + nightSuffix;
                     });
                 } else {
                     currentTabSelected.select();
                 }
-            });
+            };
+        }
+
+        function setupPlayTab() {
+            tabs.playFunction.setOnChange(playFunction(false));
+        }
+
+        function setupPlayNightTab() {
+            tabs.playNight.setOnChange(playFunction(true));
         }
 
         function changeCurrentToolDisplay(mode){

@@ -35,25 +35,21 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django.conf.urls import patterns, url, include
+
 from game.features import NIGHT_MODE_FEATURE_ENABLED
 from game.views.api import level_list, level_detail, api_root, episode_list, episode_detail, levelblock_detail, \
     block_detail, theme_detail, block_list, theme_list, character_list, character_detail, level_for_episode, \
     levelblock_for_level, decor_list, decor_detail, map_for_level, leveldecor_detail, leveldecor_for_level, \
     mode_for_level, map_list
-
 from game.views.level_editor import level_editor, get_loadable_levels_for_editor, \
-    delete_level_for_editor, load_level_for_editor, save_level_for_editor, play_anonymous_level, \
-    generate_random_map_for_editor, get_sharing_information_for_editor, share_level_for_editor
-
+    delete_level_for_editor, load_level_for_editor, save_level_for_editor, generate_random_map_for_editor, \
+    get_sharing_information_for_editor, share_level_for_editor, \
+    play_anonymous_level_night, play_anonymous_level_day
 from game.views.level_moderation import level_moderation, get_students_for_level_moderation
-
 from game.views.level_selection import levels, random_level_for_episode
-
-from game.views.level import submit_attempt, play_default_level, play_custom_level, \
-    start_episode, load_workspace, load_list_of_workspaces, save_workspace, delete_workspace, \
-    delete_level, play_night_level
-
-
+from game.views.level import submit_attempt, play_default_level, start_episode, load_workspace, \
+    load_list_of_workspaces, save_workspace, delete_workspace, \
+    delete_level, play_night_level, play_custom_level_day, play_custom_level_night
 from game.views.scoreboard import scoreboard
 
 
@@ -64,13 +60,28 @@ def night_mode_handler():
         return play_default_level
 
 
+def anonymous_level_night_mode_handler():
+    if NIGHT_MODE_FEATURE_ENABLED:
+        return play_anonymous_level_night
+    else:
+        return play_anonymous_level_day
+
+
+def custom_level_night_mode_handler():
+    if NIGHT_MODE_FEATURE_ENABLED:
+        return play_custom_level_night
+    else:
+        return play_custom_level_day
+
+
 urlpatterns = patterns(
     '',
     url(r'^$', levels, name='levels'),
     url(r'^submit/$', submit_attempt, name='submit_attempt'),
     url(r'^(?P<levelName>[A-Z0-9]+)/$', play_default_level, name='play_default_level'),
-    url(r'^(?P<levelName>[A-Z0-9]+)/night', night_mode_handler(), name='play_night_level'),
-    url(r'^custom/(?P<levelID>[0-9]+)/$', play_custom_level, name='play_custom_level'),
+    url(r'^(?P<levelName>[A-Z0-9]+)/night/', night_mode_handler(), name='play_night_level'),
+    url(r'^custom/(?P<levelID>[0-9]+)/$', play_custom_level_day, name='play_custom_level'),
+    url(r'^custom/(?P<levelID>[0-9]+)/night/$', custom_level_night_mode_handler(), name='play_custom_level_night'),
     url(r'^episode/(?P<episode>[0-9]+)/$', start_episode, name='start_episode'),
     url(r'^levels/random/([0-9]+)/$', random_level_for_episode, name='random_level_for_episode'),
     url(r'^scoreboard/$', scoreboard, name='scoreboard'),
@@ -87,19 +98,17 @@ urlpatterns = patterns(
     url(r'^level_moderation/delete/(?P<levelID>[0-9]+)/$', delete_level, name='delete_level'),
 
     url(r'^level_editor/$', level_editor, name='level_editor'),
-    url(r'^level_editor/level/play_anonymous/(?P<levelID>[0-9]+)/$', play_anonymous_level, name='play_anonymous_level'),
-    url(r'^level_editor/level/play_anonymous/(?P<levelID>[0-9]+)/night/$', play_anonymous_level, name='play_anonymous_level_night'),
+    url(r'^level_editor/level/play_anonymous/(?P<levelID>[0-9]+)/$',
+        play_anonymous_level_day, name='play_anonymous_level'),
+    url(r'^level_editor/level/play_anonymous/(?P<levelID>[0-9]+)/night/$',
+        anonymous_level_night_mode_handler(), name='play_anonymous_level_night'),
     url(r'^level_editor/level/get_all/$',
         get_loadable_levels_for_editor, name='get_loadable_levels_for_editor'),
-    url(r'^level_editor/level/get/(?P<levelID>[0-9]+)/$',
-        load_level_for_editor, name='load_level_for_editor'),
-    url(r'^level_editor/level/delete/(?P<levelID>[0-9]+)/$',
-        delete_level_for_editor, name='delete_level_for_editor'),
+    url(r'^level_editor/level/get/(?P<levelID>[0-9]+)/$', load_level_for_editor, name='load_level_for_editor'),
+    url(r'^level_editor/level/delete/(?P<levelID>[0-9]+)/$', delete_level_for_editor, name='delete_level_for_editor'),
     url(r'^level_editor/level/save/$', save_level_for_editor),
-    url(r'^level_editor/level/save/(?P<levelID>[0-9]+)/$',
-        save_level_for_editor, name='save_level_for_editor'),
-    url(r'^level_editor/level/random/$',
-        generate_random_map_for_editor, name='generate_random_map_for_editor'),
+    url(r'^level_editor/level/save/(?P<levelID>[0-9]+)/$', save_level_for_editor, name='save_level_for_editor'),
+    url(r'^level_editor/level/random/$', generate_random_map_for_editor, name='generate_random_map_for_editor'),
     url(r'^level_editor/level/get_sharing_information/(?P<levelID>[0-9]+)/$',
         get_sharing_information_for_editor, name='get_sharing_information_for_editor'),
     url(r'^level_editor/level/share/(?P<levelID>[0-9]+)/$',
