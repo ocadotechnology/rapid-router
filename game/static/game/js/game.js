@@ -46,9 +46,14 @@ ocargo.Game = function() {
 };
 
 ocargo.Game.prototype.setup = function() {
-    if (NIGHT_MODE_FEATURE_ENABLED && !ANONYMOUS) {
-        $('#nightmode_tab').show()
+    if (NIGHT_MODE_FEATURE_ENABLED) {
+        $('#paper').css("background-color", "black");
+
+        if (!ANONYMOUS) {
+            $('#nightmode_tab').show()
+        }
     }
+
 
     restoreCmsLogin();
     initCustomBlocks();
