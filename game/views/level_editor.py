@@ -35,9 +35,6 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
-import game.messages as messages
-import game.level_management as level_management
-import game.permissions as permissions
 import json
 
 from django.contrib.auth.models import User
@@ -46,6 +43,11 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
+from game.features import COW_FEATURE_ENABLED
+
+import game.messages as messages
+import game.level_management as level_management
+import game.permissions as permissions
 from game import random_road
 from helper import getDecorElement
 from game.models import Level, Block, Decor, Theme, Character
@@ -66,16 +68,22 @@ def level_editor(request):
 
     :template:`game/level_editor.html`
     """
-    cow_level_enabled = False
 
     context = RequestContext(request, {
-        'blocks': Block.objects.all() if cow_level_enabled else Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn']),
+        'blocks': available_blocks(),
         'decor': Decor.objects.all(),
         'characters': Character.objects.all(),
         'themes': Theme.objects.all(),
-        'cow_level_enabled': cow_level_enabled
+        'cow_level_enabled': COW_FEATURE_ENABLED
     })
     return render(request, 'game/level_editor.html', context_instance=context)
+
+
+def available_blocks():
+    if COW_FEATURE_ENABLED:
+        return Block.objects.all()
+    else:
+        return Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn'])
 
 
 def play_anonymous_level(request, levelID, from_level_editor=True, random_level=False):

@@ -56,9 +56,11 @@ def play_custom_level(request, levelID):
         raise Http404
     return play_level(request, levelID, False)
 
+
 def play_night_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)
     return play_level(request, level.id, True)
+
 
 def play_default_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)

@@ -35,6 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django.conf.urls import patterns, url, include
+from game.features import NIGHT_MODE_FEATURE_ENABLED
 from game.views.api import level_list, level_detail, api_root, episode_list, episode_detail, levelblock_detail, \
     block_detail, theme_detail, block_list, theme_list, character_list, character_detail, level_for_episode, \
     levelblock_for_level, decor_list, decor_detail, map_for_level, leveldecor_detail, leveldecor_for_level, \
@@ -54,8 +55,6 @@ from game.views.level import submit_attempt, play_default_level, play_custom_lev
 
 
 from game.views.scoreboard import scoreboard
-
-NIGHT_MODE_FEATURE_ENABLED = False
 
 
 def night_mode_handler():
@@ -88,8 +87,8 @@ urlpatterns = patterns(
     url(r'^level_moderation/delete/(?P<levelID>[0-9]+)/$', delete_level, name='delete_level'),
 
     url(r'^level_editor/$', level_editor, name='level_editor'),
-    url(r'^level_editor/level/play_anonymous/(?P<levelID>[0-9]+)/$',
-        play_anonymous_level, name='play_anonymous_level'),
+    url(r'^level_editor/level/play_anonymous/(?P<levelID>[0-9]+)/$', play_anonymous_level, name='play_anonymous_level'),
+    url(r'^level_editor/level/play_anonymous/(?P<levelID>[0-9]+)/night/$', play_anonymous_level, name='play_anonymous_level_night'),
     url(r'^level_editor/level/get_all/$',
         get_loadable_levels_for_editor, name='get_loadable_levels_for_editor'),
     url(r'^level_editor/level/get/(?P<levelID>[0-9]+)/$',
