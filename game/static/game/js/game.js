@@ -47,7 +47,9 @@ ocargo.Game = function() {
 
 ocargo.Game.prototype.setup = function() {
     if (NIGHT_MODE_FEATURE_ENABLED) {
-        $('#paper').css("background-color", "black");
+        if (NIGHT_MODE) {
+            $('#paper').css("background-color", "black");
+        }
 
         if (!ANONYMOUS) {
             $('#nightmode_tab').show()
