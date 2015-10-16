@@ -248,7 +248,7 @@ ocargo.LevelEditor = function() {
         }
 
         function setupPlayTab() {
-            tabs.playFunction.setOnChange(playFunction(false));
+            tabs.play.setOnChange(playFunction(false));
         }
 
         function setupPlayNightTab() {
