@@ -1,87 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   id="Layer_1"
-   xml:space="preserve"
-   x="0px"
-   y="0px"
-   width="4240"
-   height="3440"
-   viewBox="0 0 4240.0001 3440"
-   version="1.1"
-   enable-background="new 0 0 63.134 121.823"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="VeilOfNight.svg"><sodipodi:namedview
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1"
-     objecttolerance="10"
-     gridtolerance="10"
-     guidetolerance="10"
-     inkscape:pageopacity="0"
-     inkscape:pageshadow="2"
-     inkscape:window-width="1412"
-     inkscape:window-height="732"
-     id="namedview5040"
-     showgrid="false"
-     inkscape:zoom="10.46247"
-     inkscape:cx="2109.6283"
-     inkscape:cy="1737.9309"
-     inkscape:window-x="0"
-     inkscape:window-y="180"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="g5968" /><metadata
-     id="metadata3451"><rdf:RDF><cc:Work
-         rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
-     id="defs3449"><linearGradient
-       id="linearGradient4862"
-       y2="111.5"
-       gradientUnits="userSpaceOnUse"
-       y1="63.147999"
-       x2="29.584"
-       x1="29.584"
-       gradientTransform="matrix(0.33759066,0,0,0.33759066,-0.00724255,82.173574)"><stop
-         id="stop3379"
-         stop-color="#DF0000"
-         offset="0" /><stop
-         id="stop3381"
-         stop-color="#A00404"
-         offset="1" /></linearGradient><linearGradient
-       id="linearGradient14621"
-       y2="29.846001"
-       gradientUnits="userSpaceOnUse"
-       x2="50.723999"
-       y1="29.846001"
-       x1="8.441"
-       gradientTransform="matrix(0.33759066,0,0,0.33759066,-0.00724255,82.173574)"><stop
-         id="stop3063"
-         offset="0" /><stop
-         id="stop3065"
-         stop-color="#505050"
-         offset=".1426" /><stop
-         id="stop3067"
-         stop-color="#505050"
-         offset=".834" /><stop
-         id="stop3069"
-         offset="1" /></linearGradient></defs><g
-     id="g5968"
-     transform="translate(2088.4336,1659.0898)"><path
-       id="rect5907"
-       d="m -2088.4336,-1659.0898 0,3440 4240,0 0,-3440 -4240,0 z M 31.566406,33.019531 A 27.890104,27.890104 0 0 1 59.457031,60.910156 27.890104,27.890104 0 0 1 31.566406,88.800781 27.890104,27.890104 0 0 1 3.6777344,60.910156 27.890104,27.890104 0 0 1 31.566406,33.019531 Z"
-       style="fill:#000000;fill-opacity:1.0"
-       inkscape:connector-curvature="0" /><ellipse
-       ry="27.880661"
-       rx="27.988327"
-       cy="60.910275"
-       cx="31.611462"
-       id="path5966"
-       style="fill:#e8e800;fill-opacity:0.63461537" /></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg"
+    width="4240"
+    height="3440"
+    viewBox="0 0 4240 3440"
+  >
+  <g transform="translate(2120, 1720)">
+    <path d="m -2120 -1720
+            0 3440
+            4240 0
+            0 -3440
+            -4240 0
+            Z
+            M 40 0
+            A 40 40 0 1 1 40 -0.000001 Z       
+           "
+           style="
+           fill:#000000; 
+           fill-opacity:1.0" />
+    <circle
+           r="40"
+           cy="0"
+           cx="0"
+           style="
+           fill:#e8e800; 
+           fill-opacity:0.63" />
+  </g>
+</svg>
