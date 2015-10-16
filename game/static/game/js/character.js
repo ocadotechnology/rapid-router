@@ -47,6 +47,9 @@ var TURN_LEFT_RADIUS = -38;
 var TURN_RIGHT_RADIUS = 62;
 var TURN_AROUND_RADIUS = 12;
 
+var VEIL_OF_NIGHT_WIDTH = 4240;
+var VEIL_OF_NIGHT_HEIGHT = 3440;
+
 var VEIL_OF_NIGHT_URL = 'characters/top_view/VeilOfNight.svg';
 
 ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, startingPosition, nightMode, isVeilOfNight) {
@@ -66,7 +69,8 @@ ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, s
     this.isVeilOfNight = isVeilOfNight;
 
     if (this.nightMode) {
-        this.veilOfNight = new ocargo.Character(paper, VEIL_OF_NIGHT_URL, null, 4240, 3440, startingPosition, false, true);
+        this.veilOfNight = new ocargo.Character(paper, VEIL_OF_NIGHT_URL, null,
+            VEIL_OF_NIGHT_WIDTH, VEIL_OF_NIGHT_HEIGHT, startingPosition, false, true);
     }
 
     this.initialOffsetX = -this.height / 2;
