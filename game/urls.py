@@ -45,7 +45,7 @@ from game.views.level_editor import level_editor, get_loadable_levels_for_editor
     delete_level_for_editor, load_level_for_editor, save_level_for_editor, generate_random_map_for_editor, \
     get_sharing_information_for_editor, share_level_for_editor, \
     play_anonymous_level_night, play_anonymous_level_day
-from game.views.level_moderation import level_moderation, get_students_for_level_moderation
+from game.views.level_moderation import level_moderation, students_for_level_moderation
 from game.views.level_selection import levels, random_level_for_episode
 from game.views.level import submit_attempt, play_default_level, start_episode, load_workspace, \
     load_list_of_workspaces, save_workspace, delete_workspace, \
@@ -94,7 +94,7 @@ urlpatterns = patterns(
 
     url(r'^level_moderation/$', level_moderation, name='level_moderation'),
     url(r'^level_moderation/class/(?P<class_id>[0-9]+)/$',
-        get_students_for_level_moderation, name='get_students_for_level_moderation'),
+        students_for_level_moderation, name='get_students_for_level_moderation'),
     url(r'^level_moderation/delete/(?P<levelID>[0-9]+)/$', delete_level, name='delete_level'),
 
     url(r'^level_editor/$', level_editor, name='level_editor'),
