@@ -52,9 +52,9 @@ class LevelModerationTestCase(TestCase):
 
     def test_moderation_teachers_class(self):
         email, password = signup_teacher_directly()
-        klass, name, accesss_code = create_class_directly(email)
+        klass, name, access_code = create_class_directly(email)
 
-        student_name, _, student = create_school_student_directly(accesss_code)
+        student_name, _, student = create_school_student_directly(access_code)
 
         self.login(email, password)
         response = self.students_of_class(klass)
@@ -65,7 +65,10 @@ class LevelModerationTestCase(TestCase):
         email, password = signup_teacher_directly()
 
         email2, _ = signup_teacher_directly()
-        klass2, _, _ = create_class_directly(email2)
+        klass2, _, access_code = create_class_directly(email2)
+
+        student_name, _, student = create_school_student_directly(access_code)
+
 
         self.login(email, password)
         response = self.students_of_class(klass2)
