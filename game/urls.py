@@ -94,7 +94,7 @@ urlpatterns = patterns(
 
     url(r'^level_moderation/$', level_moderation, name='level_moderation'),
     url(r'^level_moderation/class/(?P<class_id>[0-9]+)/$',
-        students_for_level_moderation, name='get_students_for_level_moderation'),
+        students_for_level_moderation, name='students_for_level_moderation'),
     url(r'^level_moderation/delete/(?P<levelID>[0-9]+)/$', delete_level, name='delete_level'),
 
     url(r'^level_editor/$', level_editor, name='level_editor'),
