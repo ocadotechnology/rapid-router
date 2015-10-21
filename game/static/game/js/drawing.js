@@ -56,7 +56,7 @@ var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
 var COW_WIDTH = 50;
 var COW_HEIGHT = 50;
 
-ocargo.Drawing = function() {
+ocargo.Drawing = function(startingPosition) {
 
     /*************/
     /* Constants */
@@ -68,19 +68,8 @@ ocargo.Drawing = function() {
     var TRAFFIC_LIGHT_WIDTH = 60;
     var TRAFFIC_LIGHT_HEIGHT = 22;
 
-    var MOVE_DISTANCE = GRID_SPACE_SIZE;
-
     var INITIAL_CFC_OFFSET_X = -105;
     var INITIAL_CFC_OFFSET_Y = -7;
-
-    var DISTANCE_BETWEEN_THE_EDGE_AND_MIDDLE_OF_LEFT_LANE = 38;
-
-    var INITIAL_CHARACTER_OFFSET_X = -characterHeight / 2;
-    var INITIAL_CHARACTER_OFFSET_Y = DISTANCE_BETWEEN_THE_EDGE_AND_MIDDLE_OF_LEFT_LANE - (characterWidth / 2);
-
-    var TURN_LEFT_RADIUS = -38;
-    var TURN_RIGHT_RADIUS = 62;
-    var TURN_AROUND_RADIUS = 12;
 
     var DESTINATION_NOT_VISITED_COLOUR = 'red';
     var DESTINATION_VISITED_COLOUR = 'green';
@@ -92,14 +81,18 @@ ocargo.Drawing = function() {
     var paper = new Raphael('paper', EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
     var roadImages = [];
 
-    var vanImage;
     var lightImages = {};
     var destinationImages = {};
-    var wreckageImage;
-    var currentScale = 1;
 
-    this.reset = function () {
-        currentScale = 1;
+    var character;
+
+    if (!ocargo.Drawing.inLevelEditor()) {
+        character = new ocargo.Character(paper, CHARACTER_URL, WRECKAGE_URL,
+            characterWidth, characterHeight, startingPosition, NIGHT_MODE);
+    }
+
+    this.reset = function() {
+        character.reset();
     };
 
     /*********************/
@@ -122,51 +115,11 @@ ocargo.Drawing = function() {
         }
     };
 
-    /***************************/
-    /* Geometry helper methods */
-    /***************************/
-
-    function createRotationTransformation(degrees, rotationPointX, rotationPointY, scalingFactor) {
-        var transformation = "..." + "r" + degrees;
-        if (rotationPointX !== undefined && rotationPointY !== undefined) {
-            transformation += ',' + rotationPointX;
-            transformation += ',' + rotationPointY;
-        }
-        if (scalingFactor) {
-            // extra scaling is done after rotation as scaling was taken into acocunt in getRotationPoints
-            transformation += "s" + scalingFactor;
-        }
-        return transformation;
-    }
-
-    function createAbsoluteRotationTransformation(degrees, rotationPointX, rotationPointY) {
-        var transformation = '... R' + degrees;
-        if (rotationPointX !== undefined && rotationPointY !== undefined) {
-            transformation += ',' + rotationPointX;
-            transformation += ',' + rotationPointY;
-        }
-        return transformation;
-    }
-
-    function getRotationTransformationAroundCentreOfGridSpace(element, degrees, x, y) {
-        var rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE + PAPER_PADDING;
-        var rotationPointY = (GRID_HEIGHT - (y + 1 / 2)) * GRID_SPACE_SIZE + PAPER_PADDING; //flipping y
-        return createAbsoluteRotationTransformation(degrees, rotationPointX, rotationPointY);
-    }
-
     function calculateCFCInitialPosition(startNode) {
         var coord = ocargo.Drawing.translate(startNode.coordinate);
         return {
             x: coord.x * GRID_SPACE_SIZE + INITIAL_CFC_OFFSET_X + PAPER_PADDING,
             y: coord.y * GRID_SPACE_SIZE + INITIAL_CFC_OFFSET_Y + PAPER_PADDING
-        }
-    }
-
-    function calculateCharactersInitialPosition(startNode) {
-        var coord = ocargo.Drawing.translate(startNode.coordinate);
-        return {
-            x: coord.x * GRID_SPACE_SIZE + INITIAL_CHARACTER_OFFSET_X + PAPER_PADDING,
-            y: coord.y * GRID_SPACE_SIZE + INITIAL_CHARACTER_OFFSET_Y + PAPER_PADDING
         }
     }
 
@@ -244,8 +197,7 @@ ocargo.Drawing = function() {
         } else {
             return 'up';
         }
-    };
-
+    }
     /***************/
     /** Rendering **/
     /***************/
@@ -359,7 +311,7 @@ ocargo.Drawing = function() {
         var initialPosition = calculateCFCInitialPosition(position.currentNode);
         var cfc = paper.image(ocargo.Drawing.raphaelImageDir + CFC_URL, initialPosition.x, initialPosition.y, 100, 107);
         var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
-        var transformation = getRotationTransformationAroundCentreOfGridSpace(cfc,
+        var transformation = ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace(
             rotation,
             position.currentNode.coordinate.x,
             position.currentNode.coordinate.y);
@@ -628,7 +580,7 @@ ocargo.Drawing = function() {
             var nextNode = node.connectedNodes[1];
             var nextNextNode = node.connectedNodes[2];
             var res = tJunctionOrientation(node.coordinate, previousNode.coordinate,
-                nextNode.coordinate, nextNextNode.coordinate)
+                nextNode.coordinate, nextNextNode.coordinate);
             if (res === 'down') {
                 rotation = 180;
             }
@@ -679,28 +631,8 @@ ocargo.Drawing = function() {
         });
     };
 
-    this.setVanImagePosition = function (position) {
-        var initialPosition = calculateCharactersInitialPosition(position.currentNode);
-        vanImage.transform('t' + initialPosition.x + ',' + initialPosition.y);
-
-        var rotation = calculateInitialRotation(position.previousNode, position.currentNode);
-        var transformation = getRotationTransformationAroundCentreOfGridSpace(vanImage,
-            rotation,
-            position.currentNode.coordinate.x,
-            position.currentNode.coordinate.y);
-        vanImage.transform(transformation);
-        vanImage.transform('... r90'); // all characters face up by default
-        vanImage.attr({opacity: 1});
-    };
-
-    this.renderVans = function (position) {
-        vanImage = this.createVanImage();
-        this.setVanImagePosition(position);
-        this.scrollToShowVan();
-    };
-
-    this.createVanImage = function () {
-        return paper.image(ocargo.Drawing.raphaelImageDir + CHARACTER_URL, 0, 0, characterHeight, characterWidth);
+    this.renderCharacter = function() {
+        character.render();
     };
 
     this.createGrid = function () {
@@ -765,398 +697,41 @@ ocargo.Drawing = function() {
         destinationRect.animate({'stroke': colour}, animationLength, 'linear');
     };
 
-    this.skipOutstandingVanAnimationsToEnd = function() {
-        var anims = vanImage.status();
-        for (var i = 0, ii = anims.length; i < ii; i++) {
-            vanImage.status(anims[i].anim, 1);
-        }
-    };
-
-    function getVanImagePosition(vanImage) {
-        var box = vanImage.getBBox();
-        return [box.x, box.y];
-    }
-
-    this.scrollToShowVan = function() {
-        var point = getVanImagePosition(vanImage);
-        var element = document.getElementById('paper');
-
-        element.scrollLeft = point[0] - element.offsetWidth / 2;
-        element.scrollTop = point[1] - element.offsetHeight / 2;
-    };
-
-    function rotationPointX(radius) {
-        var centreX = characterHeight / 2;    // x coordinate of the canvas of the character svg
-        return centreX + (radius / currentScale);
-    }
-
-    this.getRotationPointXForLeftTurn = function(){
-        return rotationPointX(TURN_LEFT_RADIUS);
-    };
-
-    this.getRotationPointXForRightTurn = function(){
-        return rotationPointX(TURN_RIGHT_RADIUS);
-    };
-
-    this.getRotationPointXForTurnAround = function(){
-        return rotationPointX(TURN_AROUND_RADIUS);
-    };
-
-    // Returns the y coordinate of the centre of rotation
-    this.getRotationPointY = function () {
-        var centreY = characterWidth / 2;     // y coordinate of the centre of the character svg
-        return centreY;
+    this.scrollToShowCharacter = function() {
+        character.scrollToShow();
     };
 
     this.moveForward = function (animationLength, callback, scalingFactor) {
-
-        var moveDistance = -MOVE_DISTANCE / currentScale;
-        var transformation = "..." + "t 0, " + moveDistance;
-
-        if (scalingFactor) {
-            currentScale *= scalingFactor;
-            transformation +=  "s" + scalingFactor;
-        }
-
-        moveVanImage({
-            transform: transformation
-        }, animationLength, callback);
-
+        character.moveForward(animationLength, callback, scalingFactor);
     };
 
     this.moveLeft = function (animationLength, callback, scalingFactor) {
-        var rotationPointX = this.getRotationPointXForLeftTurn();
-        var rotationPointY = this.getRotationPointY();
-        var transformation = createRotationTransformation(-90, rotationPointX, rotationPointY, scalingFactor);
-        moveVanImage({
-            transform: transformation
-        }, animationLength, callback);
-        if (scalingFactor) {
-            currentScale *= scalingFactor;
-        }
+        character.moveLeft(animationLength, callback, scalingFactor);
     };
 
     this.moveRight = function (animationLength, callback, scalingFactor) {
-        var rotationPointX = this.getRotationPointXForRightTurn();
-        var rotationPointY = this.getRotationPointY();
-        var transformation = createRotationTransformation(90, rotationPointX, rotationPointY, scalingFactor);
-        moveVanImage({
-            transform: transformation
-        }, animationLength, callback);
-        if (scalingFactor) {
-            currentScale *= scalingFactor;
-        }
+        character.moveRight(animationLength, callback, scalingFactor);
     };
 
     this.turnAround = function (direction, animationLength) {
-        var timePerState = (animationLength - 50) / 3;
-        var that = this;
-
-        var actions = [];
-        var index = 0;
-
-        switch (direction) {
-            case 'FORWARD':
-                actions = [moveForward('easeIn'), rotate('linear'), moveForward('easeOut')];
-                break;
-            case 'RIGHT':
-                actions = [turnRight('easeIn'), rotate('linear'), turnLeft('easeOut')];
-                break;
-            case 'LEFT':
-                actions = [turnLeft('easeIn'), rotate('linear'), turnRight('easeOut')];
-                break;
-        }
-
-        performNextAction();
-
-        function performNextAction() {
-            if (index < actions.length) {
-                actions[index]();
-                index++;
-            }
-        }
-
-        function moveForward(easing) {
-            return function () {
-                var moveDistance = -GRID_SPACE_SIZE / 2;
-                var moveTransformation = "... t 0, " + moveDistance;
-                vanImage.animate({
-                    transform: moveTransformation
-                }, timePerState, easing, performNextAction);
-            }
-        }
-
-        function rotate(easing) {
-            return function () {
-                var rotationPointX = that.getRotationPointXForTurnAround();
-                var rotationPointY = that.getRotationPointY();
-                vanImage.animate({
-                    transform: createRotationTransformation(180, rotationPointX, rotationPointY)
-                }, timePerState, easing, performNextAction);
-            }
-        }
-
-        function turnLeft(easing) {
-            return function () {
-                var rotationPointX = that.getRotationPointXForLeftTurn();
-                var rotationPointY = that.getRotationPointY();
-                var transformation = createRotationTransformation(-45, rotationPointX, rotationPointY);
-                vanImage.animate({
-                    transform: transformation
-                }, timePerState, easing, performNextAction);
-            }
-        }
-
-        function turnRight(easing) {
-            return function () {
-                var rotationPointX = that.getRotationPointXForRightTurn();
-                var rotationPointY = that.getRotationPointY();
-                var transformation = createRotationTransformation(45, rotationPointX, rotationPointY);
-                vanImage.animate({
-                    transform: transformation
-                }, timePerState, easing, performNextAction);
-            }
-        }
+        character.turnAround(direction, animationLength);
     };
 
     this.wait = function (animationLength, callback) {
-        //no movement for now
-        moveVanImage({
-            transform: '... t 0,0'
-        }, animationLength, callback);
+        character.wait(animationLength, callback);
     };
 
     this.deliver = function (destinationId, animationLength) {
         this.transitionDestination(destinationId, true, animationLength);
     };
 
-    function moveVanImage(attr, animationLength, callback) {
-        // Compress all current transformations into one
-        vanImage.transform(vanImage.matrix.toTransformString());
-
-        // Perform the next animation
-        vanImage.animate(attr, animationLength, 'linear', callback);
-    }
-
     this.collisionWithCow = function (animationLength, previousNode, currentNode, attemptedAction) {
-        var road = this.getLeftRightForwardRoad(previousNode, currentNode);
-        var roadLeft = road[0];
-        var roadForward = road[1];
-        var roadRight = road[2];
-
-        if (attemptedAction === "FORWARD") {
-            var distanceForwards = (0.5 * GRID_SPACE_SIZE - 0.5 * ROAD_WIDTH)/currentScale;
-            var transformation = "... t 0, " + (-distanceForwards);
-        }
-        else if (attemptedAction === "TURN_LEFT") {
-            var rotationAngle = 15;
-
-            var rotationPointX = this.getRotationPointXForLeftTurn();
-            var rotationPointY = this.getRotationPointY();
-            var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
-                rotationPointY);
-        }
-        else if (attemptedAction === "TURN_RIGHT") {
-            var rotationAngle = 15;
-
-            var rotationPointX = this.getRotationPointXForRightTurn();
-            var rotationPointY = this.getRotationPointY();
-            var transformation = createRotationTransformation(rotationAngle, rotationPointX,
-                rotationPointY);
-        }
-
-        var newAnimationLength = animationLength * ((GRID_SPACE_SIZE - ROAD_WIDTH) / (GRID_SPACE_SIZE + ROAD_WIDTH));
-        moveVanImage({
-            transform: transformation
-        }, newAnimationLength, animateCollision);
-        return newAnimationLength;
-
-        function animateCollision() {
-            if (CHARACTER_NAME !== "Van") {
-                return;
-            }
-            var bbox = vanImage.getBBox();
-
-            var x = bbox.x + bbox.width / 2;
-            var y = bbox.y + bbox.height / 2;
-
-            var width = 25;
-            var height = 25;
-
-            var maxSize = 20;
-            var minSize = 15;
-
-            var smokeParts = 20;
-
-            wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + 'van_wreckage.svg', 0, 0, characterHeight, characterWidth);
-            wreckageImage.transform(vanImage.transform());
-            wreckageImage.attr({"opacity": 0});
-
-            setTimeout(function () {
-                wreckageImage.animate({opacity: 1}, 1000);
-                vanImage.animate({opacity: 0}, 1000);
-                for (var i = 0; i < smokeParts; i++) {
-                    setTimeout(function () {
-                        var size = minSize + Math.random() * (maxSize - minSize);
-                        var xco = x + width * (Math.random() - 0.5) - 0.5 * size;
-                        var yco = y + height * (Math.random() - 0.5) - 0.5 * size;
-                        var imageStr = ocargo.Drawing.raphaelImageDir + 'smoke.svg';
-                        var img = paper.image(imageStr, xco, yco, size, size);
-                        img.animate({opacity: 0, transform: 's2'}, 1000, function () {
-                            img.remove()
-                        });
-                    }, (i < 5 ? 0 : (i - 5) * 50));
-                }
-            }, 100);
-        }
-    }
-
-    this.crash = function (animationLength, previousNode, currentNode, attemptedAction) {
-        var road = this.getLeftRightForwardRoad(previousNode, currentNode);
-        var roadLeft = road[0];
-        var roadForward = road[1];
-        var roadRight = road[2];
-
-        if (attemptedAction === "FORWARD") {
-            var distanceForwards;
-            if (roadLeft && roadRight) {
-                distanceForwards = 0.5 * GRID_SPACE_SIZE + 0.5 * ROAD_WIDTH;
-            }
-            else if (roadLeft) {
-                distanceForwards = 0.5 * GRID_SPACE_SIZE + 0.3 * ROAD_WIDTH;
-            }
-            else if (roadRight) {
-                distanceForwards = 0.5 * GRID_SPACE_SIZE + 0.2 * ROAD_WIDTH;
-            }
-            else {
-                distanceForwards = 0.5 * GRID_SPACE_SIZE + 0.5 * ROAD_WIDTH;
-            }
-            var transformation = "... t 0, " + (-distanceForwards);
-        }
-        else if (attemptedAction === "TURN_LEFT") {
-            var rotationAngle;
-            if (roadForward) {
-                rotationAngle = 75;
-            }
-            else if (roadRight) {
-                rotationAngle = 75;
-            }
-            else {
-                rotationAngle = 75;
-            }
-            var rotationPointX = this.getRotationPointXForLeftTurn();
-            var rotationPointY = this.getRotationPointY();
-            var transformation = createRotationTransformation(-rotationAngle, rotationPointX,
-                rotationPointY);
-        }
-        else if (attemptedAction === "TURN_RIGHT") {
-            var rotationAngle;
-            if (roadForward) {
-                rotationAngle = 75;
-            }
-            else if (roadLeft) {
-                rotationAngle = 75;
-            }
-            else {
-                rotationAngle = 75;
-            }
-            var rotationPointX = this.getRotationPointXForRightTurn();
-            var rotationPointY = this.getRotationPointY();
-            var transformation = createRotationTransformation(rotationAngle, rotationPointX,
-                rotationPointY);
-        }
-
-        moveVanImage({
-            transform: transformation
-        }, animationLength, animateExplosion);
-
-        function animateExplosion() {
-
-            if (CHARACTER_NAME !== "Van") {
-                return;
-            }
-            var bbox = vanImage.getBBox();
-
-            var x = bbox.x + bbox.width / 2;
-            var y = bbox.y + bbox.height / 2;
-
-            var width = 20;
-            var height = 20;
-
-            var maxSize = 20;
-            var minSize = 10;
-
-            var explosionParts = 20;
-
-            wreckageImage = paper.image(ocargo.Drawing.raphaelImageDir + WRECKAGE_URL, 0, 0, CHARACTER_HEIGHT, CHARACTER_WIDTH);
-            wreckageImage.transform(vanImage.transform());
-            wreckageImage.attr({"opacity": 0});
-
-            setTimeout(function () {
-                wreckageImage.animate({opacity: 1}, 1000);
-                if (!NIGHT_MODE) {
-                    vanImage.animate({opacity: 0}, 1000);
-                }
-                for (var i = 0; i < explosionParts; i++) {
-                    setTimeout(function () {
-                        var size = minSize + Math.random() * (maxSize - minSize);
-                        var xco = x + width * (Math.random() - 0.5) - 0.5 * size;
-                        var yco = y + height * (Math.random() - 0.5) - 0.5 * size;
-                        var imageStr = ocargo.Drawing.raphaelImageDir + '' + (Math.random() < 0.5 ? 'smoke' : 'fire') + '.svg';
-                        var img = paper.image(imageStr, xco, yco, size, size);
-                        img.animate({opacity: 0, transform: 's2'}, 1000, function () {
-                            img.remove()
-                        });
-                    }, (i < 5 ? 0 : (i - 5) * 50));
-                }
-            }, 100);
-        }
+        character.collisionWithCow(animationLength, previousNode, currentNode, attemptedAction)
     };
 
-    this.removeWreckageImages = function () {
-        if (wreckageImage) {
-            wreckageImage.remove();
-        }
-    }
-
-    this.getLeftRightForwardRoad = function (previousNode, currentNode) {
-        var N = 0;
-        var E = 1;
-        var S = 2;
-        var W = 3;
-
-        function getOrientation(n1, n2) {
-            var c1 = n1.coordinate;
-            var c2 = n2.coordinate;
-
-            if (c1.y < c2.y) {
-                return N;
-            }
-            else if (c1.x < c2.x) {
-                return E;
-            }
-            else if (c1.y > c2.y) {
-                return S;
-            }
-            else {
-                return W;
-            }
-        }
-
-        var neighbours = [null, null, null, null];
-        for (var i = 0; i < currentNode.connectedNodes.length; i++) {
-            var neighbour = currentNode.connectedNodes[i];
-            neighbours[getOrientation(currentNode, neighbour)] = neighbour;
-        }
-
-        var vanOr = getOrientation(previousNode, currentNode);
-
-        var roadLeft = neighbours[(W + vanOr) % 4];
-        var roadForward = neighbours[(N + vanOr) % 4];
-        var roadRight = neighbours[(E + vanOr) % 4];
-
-        return [roadLeft, roadForward, roadRight];
-    }
+    this.crash = function (animationLength, previousNode, currentNode, attemptedAction) {
+        character.crash(animationLength, attemptedAction)
+    };
 };
 
 /********************************/
@@ -1215,7 +790,7 @@ ocargo.Drawing.startYesNoPopup = function (title, subtitle, message, yesFunction
 // This is the function that starts the pop-up when there is no internet connection while playing the game
 ocargo.Drawing.startInternetDownPopup = function () {
     ocargo.Drawing.startPopup(ocargo.messages.errorTitle, "", ocargo.messages.internetDown);
-}
+};
 
 ocargo.Drawing.showButtonHelp = function () {
     $('#myModal-lead').html('');
@@ -1261,11 +836,32 @@ ocargo.Drawing.cowUrl = function(type){
     }
 };
 
-ocargo.Drawing.imageDir = '/static/game/image/';
-ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/';
+
+ocargo.Drawing.createAbsoluteRotationTransformation = function(degrees, rotationPointX, rotationPointY) {
+    var transformation = '... R' + degrees;
+    if (rotationPointX !== undefined && rotationPointY !== undefined) {
+        transformation += ',' + rotationPointX;
+        transformation += ',' + rotationPointY;
+    }
+    return transformation;
+};
+
+ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace = function(degrees, x, y) {
+    var rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE + PAPER_PADDING;
+    var rotationPointY = (GRID_HEIGHT - (y + 1 / 2)) * GRID_SPACE_SIZE + PAPER_PADDING; //flipping y
+    var result = ocargo.Drawing.createAbsoluteRotationTransformation(degrees, rotationPointX, rotationPointY);
+    return result;
+};
+
+ocargo.Drawing.inLevelEditor = function() {
+    return typeof CHARACTER_URL === 'undefined';
+}
 
 ocargo.Drawing.FRONT_VIEW = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
 
 ocargo.Drawing.whiteCowUrl = 'Clarice.svg';
 ocargo.Drawing.brownCowUrl = 'Clarice_Jersey.svg';
+
+ocargo.Drawing.imageDir = '/static/game/image/';
+ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/';

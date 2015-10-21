@@ -62,7 +62,7 @@ ocargo.Map = function(nodeData, origin, destinationCoordinates) {
     this.originCurrentNode = ocargo.Node.findNodeByCoordinate(originCurrentCoord, this.nodes);
 };
 
-ocargo.Map.prototype.getStartingPosition = function() {
+ocargo.Map.prototype.startingPosition = function() {
     return {previousNode: this.originPreviousNode,
             currentNode: this.originCurrentNode};
 };

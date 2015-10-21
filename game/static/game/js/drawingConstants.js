@@ -1,0 +1,1 @@
+var GRID_SPACE_SIZE = 100;

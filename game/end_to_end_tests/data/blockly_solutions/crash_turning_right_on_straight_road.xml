@@ -1,0 +1,7 @@
+<xml>
+    <block type="start" deletable="false" x="230" y="130">
+        <next>
+            <block type="turn_right"></block>
+        </next>
+    </block>
+</xml>

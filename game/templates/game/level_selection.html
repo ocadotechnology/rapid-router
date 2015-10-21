@@ -62,7 +62,7 @@
           {% for level in episode.levels %}
           <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
           <p>
-            <a href="{% url 'game.views.level.play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a> 
+            <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
             {% if level.score != None %}
               <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
             <img class="level_image coin_image" value="{{level.name}}">
@@ -83,7 +83,7 @@
             {% if owned_levels %}
               {% for level in owned_levels %}
                 <p>
-                  <a href="{% url 'game.views.level.play_custom_level' level.id %}">{{level.title}}</a>
+                  <a href="{% url 'play_custom_level' level.id %}">{{level.title}}</a>
                   {% if level.score != None %}
                   <span class="score_text">{{level.score|floatformat}}/10</span>
                   <img class="level_image coin_image" value="{{level.id}}">
@@ -100,7 +100,7 @@
             {% if shared_levels %}
               {% for level in shared_levels %}
                 <p>
-                  <a href="{% url 'game.views.level.play_custom_level' level.id %}">
+                  <a href="{% url 'play_custom_level' level.id %}">
                   {{level.title}} ({{level.owner|make_into_username}})</a>
                   {% if level.score != None %}
                   <span class="score_text">{{level.score|floatformat}}/10</span>

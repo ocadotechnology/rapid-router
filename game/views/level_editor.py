@@ -35,9 +35,6 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
-import game.messages as messages
-import game.level_management as level_management
-import game.permissions as permissions
 import json
 
 from django.contrib.auth.models import User
@@ -46,11 +43,16 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
+
+import game.messages as messages
+import game.level_management as level_management
+import game.permissions as permissions
 from game import random_road
 from helper import getDecorElement
 from game.models import Level, Block, Decor, Theme, Character
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
+from game import settings
 
 
 def level_editor(request):
@@ -66,19 +68,34 @@ def level_editor(request):
 
     :template:`game/level_editor.html`
     """
-    cow_level_enabled = False
 
     context = RequestContext(request, {
-        'blocks': Block.objects.all() if cow_level_enabled else Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn']),
+        'blocks': available_blocks(),
         'decor': Decor.objects.all(),
         'characters': Character.objects.all(),
         'themes': Theme.objects.all(),
-        'cow_level_enabled': cow_level_enabled
+        'cow_level_enabled': settings.COW_FEATURE_ENABLED,
+        'night_mode_feature_enabled': str(settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
 
-def play_anonymous_level(request, levelID, from_level_editor=True, random_level=False):
+def available_blocks():
+    if settings.COW_FEATURE_ENABLED:
+        return Block.objects.all()
+    else:
+        return Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn'])
+
+
+def play_anonymous_level_day(request, levelID, from_level_editor=True, random_level=False):
+    return play_anonymous_level(request, levelID, from_level_editor, random_level, False)
+
+
+def play_anonymous_level_night(request, levelID, from_level_editor=True, random_level=False):
+    return play_anonymous_level(request, levelID, from_level_editor, random_level, True)
+
+
+def play_anonymous_level(request, levelID, from_level_editor=True, random_level=False, night_mode = False):
     level = Level.objects.filter(id=levelID)
 
     if not level.exists():
@@ -104,7 +121,16 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
     wreckage_url = 'van_wreckage.svg'
 
     decor_data = level_management.get_decor(level)
-    block_data = level_management.get_blocks(level)
+
+    if night_mode:
+        block_data = level_management.get_night_blocks(level)
+        night_mode = "true"
+        lesson = messages.title_night_mode()
+        model_solution = '[]'
+    else:
+        block_data = level_management.get_blocks(level)
+        night_mode = "false"
+        model_solution = level.model_solution
 
     context = RequestContext(request, {
         'level': level,
@@ -123,8 +149,9 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
         'character_width': character_width,
         'character_height': character_height,
         'wreckage_url': wreckage_url,
-        'night_mode': 'false',
-        'night_mode_feature_enabled': 'false',
+        'night_mode': night_mode,
+        'night_mode_feature_enabled': str(settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
+        'model_solution': model_solution,
     })
 
     level.delete()

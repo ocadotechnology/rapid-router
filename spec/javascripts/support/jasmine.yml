@@ -73,6 +73,8 @@ src_files:
   - "game/static/game/js/node.js"
   - "game/static/game/js/destination.js"
   - "game/static/game/js/pathFinder.js"
+  - "game/static/game/js/drawingConstants.js"
+  - "game/static/game/js/character.js"
   - "game/static/game/js/drawing.js"
   - "game/static/game/js/blocklyControl.js"
   - "game/static/game/js/blocklyCompiler.js"

@@ -34,18 +34,10 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-import os
+from game.end_to_end_tests.base_game_test import BaseGameTest
 
-from portal.models import UserProfile
-from game.models import Workspace
-from portal.tests.base_test import BaseTest
-from portal.tests.utils.organisation import create_organisation_directly
-from portal.tests.utils.teacher import signup_teacher_directly
 
-class TestGame(BaseTest):
-
-    already_logged_on = False
-
+class TestGame(BaseGameTest):
     def test_level1(self):
         self.run_level_test(1)
 
@@ -232,66 +224,3 @@ class TestGame(BaseTest):
 
     def test_level77(self):
         self.run_level_test(77, route_score=None)
-
-    def wait_for_score_element_id(self, route_score, algorithm_score):
-        if route_score:
-            return "routeScore"
-        elif algorithm_score:
-            return "algorithmScore"
-        else:
-            raise Exception
-
-    def run_level_test(self, level, suffix=None, route_score="10/10", algorithm_score="10/10"):
-        user_profile = self.login_once()
-
-        level_with_suffix = str(level)
-        if suffix:
-            level_with_suffix += "-%d" % suffix
-
-        workspace_id = self.persist_workspace(level_with_suffix, user_profile)
-
-        score_element_id = self.wait_for_score_element_id(route_score, algorithm_score)
-
-        page = self.go_to_level(level) \
-            .load_solution(workspace_id) \
-            .run_program(score_element_id)
-
-        if route_score:
-            page = page.assert_route_score(route_score)
-        if algorithm_score:
-            page = page.assert_algorithm_score(algorithm_score)
-
-    def persist_workspace(self, level, user_profile):
-        solution = self.read_solution(level)
-        workspace_name = "Level " + str(level)
-        workspace_id = Workspace.objects.create(name=workspace_name, owner=user_profile, contents=solution).id
-        return workspace_id
-
-    def login_once(self):
-        if not TestGame.already_logged_on:
-            email, password = signup_teacher_directly()
-            create_organisation_directly(email)
-            self.go_to_homepage().go_to_teach_page().login(email, password)
-            email = email
-            TestGame.user_profile = UserProfile.objects.get(user__email=email)
-
-            TestGame.already_logged_on = True
-
-        return TestGame.user_profile
-
-    BLOCKLY_SOLUTIONS_DIR = os.path.join(os.path.dirname(__file__), 'data/blockly_solutions')
-
-    def datafile(self, filename):
-        return os.path.join(TestGame.BLOCKLY_SOLUTIONS_DIR, filename)
-
-    def read_solution(self, level):
-        filename = self.datafile("level_" + str(level) + ".xml")
-        if filename:
-            f = open(filename, 'r')
-            data = f.read()
-            f.close()
-
-        return data
-
-    def _fixture_teardown(self):
-        pass

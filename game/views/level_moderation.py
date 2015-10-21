@@ -146,8 +146,13 @@ def level_moderation(request):
     return render(request, 'game/level_moderation.html', context_instance=context)
 
 
-def get_students_for_level_moderation(request, class_id):
+def students_for_level_moderation(request, class_id):
+    userprofile = request.user.userprofile
     class_ = Class.objects.get(id=class_id)
+
+    if userprofile.teacher != class_.teacher:
+        raise Http404
+
     students = Student.objects.filter(class_field=class_)
     student_dict = {student.id: student.user.user.first_name for student in students}
 

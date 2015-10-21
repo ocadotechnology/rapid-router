@@ -39,10 +39,9 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-ocargo.Animation = function(model, decor, numVans) {
+ocargo.Animation = function(model, decor) {
     this.model = model;
     this.decor = decor;
-    this.numVans = numVans;
 	this.activeCows = []; // cows currently displayed on map
 	this.scalingModifier = [];
 	this.crashed = false;
@@ -58,10 +57,10 @@ ocargo.Animation = function(model, decor, numVans) {
     ocargo.drawing.clearPaper();
     ocargo.drawing.renderMap(this.model.map);
     ocargo.drawing.renderDecor(this.decor);
-    ocargo.drawing.renderOrigin(this.model.map.getStartingPosition());
+    ocargo.drawing.renderOrigin(this.model.map.startingPosition());
     ocargo.drawing.renderDestinations(this.model.map.getDestinations());
     ocargo.drawing.renderTrafficLights(this.model.trafficLights);
-	ocargo.drawing.renderVans(this.model.map.getStartingPosition());
+	ocargo.drawing.renderCharacter();
 
      this.updateFuelGauge(100);
 };
@@ -102,10 +101,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 		ocargo.drawing.transitionDestination(destination.id, false, 0);
 	}
 
-	ocargo.drawing.skipOutstandingVanAnimationsToEnd();
-	ocargo.drawing.setVanImagePosition(this.model.map.getStartingPosition());
-
-	ocargo.drawing.removeWreckageImages();
+	ocargo.drawing.reset();
 };
 
 ocargo.Animation.prototype.resetAnimationLength = function() {
@@ -216,8 +212,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			animation.functionCall();
 			break;
 		case 'van':
-			ocargo.drawing.skipOutstandingVanAnimationsToEnd();
-            ocargo.drawing.scrollToShowVan();
+            ocargo.drawing.scrollToShowCharacter();
 
             // move van
             switch (animation.vanAction) {
@@ -311,9 +306,8 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 						buttons += ocargo.button.addDismissButtonHtml('Close');
 					} else {
 						// If there exists next level, add animation button which redirects the user to that
-						if (NEXT_LEVEL) {
-							buttons += ocargo.button.redirectButtonHtml('next_level_button', "/rapidrouter/" + NEXT_LEVEL + "/",
-								'Next Level');
+						if (NEXT_LEVEL_URL) {
+							buttons += ocargo.button.redirectButtonHtml('next_level_button', NEXT_LEVEL_URL, 'Next Level');
 						} else {
 							/*
 							 This is the last level of the episode. If there exists animation next episode, add button to

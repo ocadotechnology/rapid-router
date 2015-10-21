@@ -35,6 +35,8 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
+from django.core.urlresolvers import reverse
+from game import settings
 import game.messages as messages
 import game.level_management as level_management
 import game.permissions as permissions
@@ -51,11 +53,20 @@ from game.models import Level, Attempt, BestAttempt, Workspace
 from portal import beta
 
 
-def play_custom_level(request, levelID):
+def play_custom_level_day(request, levelID):
+    return play_custom_level(request, levelID, False)
+
+
+def play_custom_level_night(request, levelID):
+    return play_custom_level(request, levelID, True)
+
+
+def play_custom_level(request, levelID, night_mode):
     level = cached_level(levelID)
     if level.default:
         raise Http404
-    return play_level(request, levelID, False)
+    return play_level(request, levelID, night_mode)
+
 
 
 def play_night_level(request, levelName):
@@ -66,6 +77,20 @@ def play_night_level(request, levelName):
 def play_default_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)
     return play_level(request, level.id, False)
+
+
+def _next_level_url(level, night_mode):
+    if not level.next_level:
+        return ''
+
+    return _level_url(level.next_level, night_mode)
+
+
+def _level_url(level, night_mode):
+    if night_mode:
+        return reverse('play_night_level', args=[level.name])
+    else:
+        return reverse('play_default_level', args=[level.name])
 
 
 def play_level(request, levelID, night_mode):
@@ -138,29 +163,25 @@ def play_level(request, levelID, night_mode):
 
     decorData = level_management.get_decor(level)
 
-    if (night_mode):
-        blockData = level_management.get_night_blocks(level)
-        character_url = 'characters/top_view/NightModeVan.svg'
-        character_width = 4240
-        character_height = 3440
-        wreckage_url = 'NightModeVan_wreckage.svg'
-        night_mode = "true"
-        lesson = 'Can you find your way in the dark?'
-    else:
-        blockData = level_management.get_blocks(level)
-        character_url = character.top_down
-        character_width = character.width
-        character_height = character.height
-        wreckage_url = 'van_wreckage.svg'
-        night_mode = "false"
-        model_solution = level.model_solution
+    character_url = character.top_down
+    character_width = character.width
+    character_height = character.height
+    wreckage_url = 'van_wreckage.svg'
 
-    from game.urls import NIGHT_MODE_FEATURE_ENABLED
+    if night_mode:
+        block_data = level_management.get_night_blocks(level)
+        night_mode_javascript = "true"
+        lesson = messages.title_night_mode()
+        model_solution = '[]'
+    else:
+        block_data = level_management.get_blocks(level)
+        night_mode_javascript = "false"
+        model_solution = level.model_solution
 
     context = RequestContext(request, {
         'level': level,
         'lesson': lesson,
-        'blocks': blockData,
+        'blocks': block_data,
         'decor': decorData,
         'character': character,
         'background': background,
@@ -174,9 +195,11 @@ def play_level(request, levelID, night_mode):
         'character_width': character_width,
         'character_height': character_height,
         'wreckage_url': wreckage_url,
-        'night_mode': night_mode,
-        'night_mode_feature_enabled': str(NIGHT_MODE_FEATURE_ENABLED).lower(),
+        'night_mode': night_mode_javascript,
+        'night_mode_feature_enabled': str(settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
         'model_solution': model_solution,
+        'next_level_url': _next_level_url(level, night_mode),
+        'flip_night_mode_url': _level_url(level, not night_mode),
     })
 
     return render(request, 'game/game.html', context_instance=context)

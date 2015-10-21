@@ -13,10 +13,13 @@
 {{block.super}}
   <script>
     var COW_LEVELS_ENABLED = '{{ cow_level_enabled }}' === 'True';
+    var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
   </script>
   <script src="{% static "game/js/utils.js" %}"></script>
   <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
   <script src="{% static "game/js/raphael.js" %}"></script>
+  <script src="{% static 'game/js/drawingConstants.js' %}"></script>
+  <script src="{% static 'game/js/character.js' %}"></script>
   <script src="{% static "game/js/drawing.js" %}"></script>
 
   <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
@@ -128,6 +131,14 @@
           <label for="play_radio">
             <img src='{% static "game/image/icons/play.svg" %}'>
             <span>Play</span>
+          </label>
+        </div>
+
+        <div id="play_night_tab" class="tab hidden">
+          <input type="radio" name="tabs" id="play_night_radio">
+          <label for="play_night_radio">
+            <img src='{% static "game/image/icons/play.svg" %}'>
+            <span>Play Night</span>
           </label>
         </div>
 
