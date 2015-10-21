@@ -74,7 +74,8 @@ def level_editor(request):
         'decor': Decor.objects.all(),
         'characters': Character.objects.all(),
         'themes': Theme.objects.all(),
-        'cow_level_enabled': settings.COW_FEATURE_ENABLED
+        'cow_level_enabled': settings.COW_FEATURE_ENABLED,
+        'night_mode_feature_enabled': str(settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 

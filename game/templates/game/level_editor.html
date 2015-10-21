@@ -13,6 +13,7 @@
 {{block.super}}
   <script>
     var COW_LEVELS_ENABLED = '{{ cow_level_enabled }}' === 'True';
+    var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
   </script>
   <script src="{% static "game/js/utils.js" %}"></script>
   <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
@@ -133,7 +134,7 @@
           </label>
         </div>
 
-        <div class="tab">
+        <div id="play_night_tab" class="tab hidden">
           <input type="radio" name="tabs" id="play_night_radio">
           <label for="play_night_radio">
             <img src='{% static "game/image/icons/play.svg" %}'>

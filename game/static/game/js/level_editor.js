@@ -133,6 +133,10 @@ ocargo.LevelEditor = function() {
     var cowGroups = {};
     var currentCowGroupId = 1;
 
+    if (NIGHT_MODE_FEATURE_ENABLED) {
+        $('#play_night_tab').show()
+    }
+
     // So that we store the current state when the page unloads
     window.addEventListener('unload', storeStateInLocalStorage);
 
