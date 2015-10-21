@@ -20,6 +20,7 @@
     var EPISODE = "{{level.episode.id}}"
     var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : "";
     var LEVEL_NAME = "{{level.name}}";
+    var NEXT_LEVEL_URL = "{% if next_level_url %}{{next_level_url}}{% else %}{% endif %}";
     var MODEL_SOLUTION = {% if model_solution %}{{model_solution}}{% else %}[]{% endif %};
     var DISABLE_ROUTE_SCORE = "{{level.disable_route_score}}" === "True";
     var LESSON = "{{lesson}}";
@@ -34,6 +35,7 @@
     var WRECKAGE_URL = "{{wreckage_url}}";
     var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
     var NIGHT_MODE = {{night_mode}};
+    var FLIP_NIGHT_MODE_URL = "{% if flip_night_mode_url %}{{flip_night_mode_url}}{% else %}{% endif %}";
 
     var RANDOM = "{{episode.random_levels_enabled}}" === "True";
     var IS_RANDOM_LEVEL = "{{random_level}}" === "True";
@@ -51,7 +53,6 @@
     BLOCKLY_XML += '</category></xml>';
     var MAX_FUEL = {{level.max_fuel}};
     var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
-    var NEXT_LEVEL_URL = "{{next_level_url}}";
     var NEXT_EPISODE = "{{level.episode.next_episode}}" !== "None" ? "{{level.episode.next_episode.id}}" : null;
     var WORKSPACE = "{{workspace}}" !== "None" ? "{{workspace}}" : null;
     var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";

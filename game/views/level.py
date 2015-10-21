@@ -80,10 +80,14 @@ def _next_level_url(level, night_mode):
     if not level.next_level:
         return ''
 
+    return _level_url(level.next_level, night_mode)
+
+
+def _level_url(level, night_mode):
     if night_mode:
-        return reverse('play_night_level', args=[level.next_level.name])
+        return reverse('play_night_level', args=[level.name])
     else:
-        return reverse('play_default_level', args=[level.next_level.name])
+        return reverse('play_default_level', args=[level.name])
 
 
 def play_level(request, levelID, night_mode):
@@ -191,6 +195,7 @@ def play_level(request, levelID, night_mode):
         'night_mode_feature_enabled': str(NIGHT_MODE_FEATURE_ENABLED).lower(),
         'model_solution': model_solution,
         'next_level_url': _next_level_url(level, night_mode),
+        'flip_night_mode_url': _level_url(level, not night_mode),
     })
 
     return render(request, 'game/game.html', context_instance=context)

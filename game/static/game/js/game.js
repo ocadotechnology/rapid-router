@@ -820,13 +820,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupNightModeTab() {
         tabs.nightmode.setOnChange(function() {
-            if (NIGHT_MODE) {
-                var str = window.location.pathname
-                var newstr = str.replace('night/','')
-                window.location.assign(newstr)
-            } else {
-                window.location.href = 'night';
-            }
+            window.location.href = FLIP_NIGHT_MODE_URL;
         });
     }
 
