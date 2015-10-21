@@ -51,7 +51,7 @@
     BLOCKLY_XML += '</category></xml>';
     var MAX_FUEL = {{level.max_fuel}};
     var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
-    var NEXT_LEVEL = "{{level.next_level}}" !== "None" ? "{{level.next_level.name}}" : null;
+    var NEXT_LEVEL_URL = "{{next_level_url}}";
     var NEXT_EPISODE = "{{level.episode.next_episode}}" !== "None" ? "{{level.episode.next_episode.id}}" : null;
     var WORKSPACE = "{{workspace}}" !== "None" ? "{{workspace}}" : null;
     var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";

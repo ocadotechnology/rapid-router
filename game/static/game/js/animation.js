@@ -306,9 +306,8 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 						buttons += ocargo.button.addDismissButtonHtml('Close');
 					} else {
 						// If there exists next level, add animation button which redirects the user to that
-						if (NEXT_LEVEL) {
-							buttons += ocargo.button.redirectButtonHtml('next_level_button', "/rapidrouter/" + NEXT_LEVEL + "/",
-								'Next Level');
+						if (NEXT_LEVEL_URL) {
+							buttons += ocargo.button.redirectButtonHtml('next_level_button', NEXT_LEVEL_URL, 'Next Level');
 						} else {
 							/*
 							 This is the last level of the episode. If there exists animation next episode, add button to

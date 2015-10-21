@@ -35,6 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
+from django.core.urlresolvers import reverse
 import game.messages as messages
 import game.level_management as level_management
 import game.permissions as permissions
@@ -73,6 +74,16 @@ def play_night_level(request, levelName):
 def play_default_level(request, levelName):
     level = get_object_or_404(Level, name=levelName, default=True)
     return play_level(request, level.id, False)
+
+
+def _next_level_url(level, night_mode):
+    if not level.next_level:
+        return ''
+
+    if night_mode:
+        return reverse('play_night_level', args=[level.next_level.name])
+    else:
+        return reverse('play_default_level', args=[level.next_level.name])
 
 
 def play_level(request, levelID, night_mode):
@@ -149,12 +160,12 @@ def play_level(request, levelID, night_mode):
 
     if night_mode:
         block_data = level_management.get_night_blocks(level)
-        night_mode = "true"
+        night_mode_javascript = "true"
         lesson = messages.title_night_mode()
         model_solution = '[]'
     else:
         block_data = level_management.get_blocks(level)
-        night_mode = "false"
+        night_mode_javascript = "false"
         model_solution = level.model_solution
 
     from game.urls import NIGHT_MODE_FEATURE_ENABLED
@@ -176,9 +187,10 @@ def play_level(request, levelID, night_mode):
         'character_width': character_width,
         'character_height': character_height,
         'wreckage_url': wreckage_url,
-        'night_mode': night_mode,
+        'night_mode': night_mode_javascript,
         'night_mode_feature_enabled': str(NIGHT_MODE_FEATURE_ENABLED).lower(),
         'model_solution': model_solution,
+        'next_level_url': _next_level_url(level, night_mode),
     })
 
     return render(request, 'game/game.html', context_instance=context)
