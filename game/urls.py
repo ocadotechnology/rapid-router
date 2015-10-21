@@ -35,8 +35,8 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django.conf.urls import patterns, url, include
+from game import settings
 
-from game.features import NIGHT_MODE_FEATURE_ENABLED
 from game.views.api import level_list, level_detail, api_root, episode_list, episode_detail, levelblock_detail, \
     block_detail, theme_detail, block_list, theme_list, character_list, character_detail, level_for_episode, \
     levelblock_for_level, decor_list, decor_detail, map_for_level, leveldecor_detail, leveldecor_for_level, \
@@ -54,21 +54,21 @@ from game.views.scoreboard import scoreboard
 
 
 def night_mode_handler():
-    if NIGHT_MODE_FEATURE_ENABLED:
+    if settings.NIGHT_MODE_FEATURE_ENABLED:
         return play_night_level
     else:
         return play_default_level
 
 
 def anonymous_level_night_mode_handler():
-    if NIGHT_MODE_FEATURE_ENABLED:
+    if settings.NIGHT_MODE_FEATURE_ENABLED:
         return play_anonymous_level_night
     else:
         return play_anonymous_level_day
 
 
 def custom_level_night_mode_handler():
-    if NIGHT_MODE_FEATURE_ENABLED:
+    if settings.NIGHT_MODE_FEATURE_ENABLED:
         return play_custom_level_night
     else:
         return play_custom_level_day

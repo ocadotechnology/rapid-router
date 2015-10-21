@@ -188,7 +188,8 @@ TEMPLATES = [
     },
 ]
 
-
+NIGHT_MODE_FEATURE_ENABLED = False
+COW_FEATURE_ENABLED = False
 
 # Keep this at the bottom
 from django_autoconfig.autoconfig import configure_settings

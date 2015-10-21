@@ -43,7 +43,6 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
-from game.features import COW_FEATURE_ENABLED, NIGHT_MODE_FEATURE_ENABLED
 
 import game.messages as messages
 import game.level_management as level_management
@@ -53,6 +52,7 @@ from helper import getDecorElement
 from game.models import Level, Block, Decor, Theme, Character
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
+from game import settings
 
 
 def level_editor(request):
@@ -74,13 +74,13 @@ def level_editor(request):
         'decor': Decor.objects.all(),
         'characters': Character.objects.all(),
         'themes': Theme.objects.all(),
-        'cow_level_enabled': COW_FEATURE_ENABLED
+        'cow_level_enabled': settings.COW_FEATURE_ENABLED
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
 
 def available_blocks():
-    if COW_FEATURE_ENABLED:
+    if settings.COW_FEATURE_ENABLED:
         return Block.objects.all()
     else:
         return Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn'])
@@ -149,7 +149,7 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
         'character_height': character_height,
         'wreckage_url': wreckage_url,
         'night_mode': night_mode,
-        'night_mode_feature_enabled': str(NIGHT_MODE_FEATURE_ENABLED).lower(),
+        'night_mode_feature_enabled': str(settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
         'model_solution': model_solution,
     })
 
