@@ -127,16 +127,11 @@ def play_level(request, levelID, night_mode):
             .order_by('-start_time') \
             .first()
         if not attempt:
-            latest_completed_attempt = Attempt.objects \
-                .filter(level=level, student=student, night_mode=night_mode) \
-                .order_by('-start_time') \
-                .first()
-            attempt = Attempt(level=level, student=student, score=None)
-            if latest_completed_attempt:
-                attempt.workspace = latest_completed_attempt.workspace
-                attempt.python_workspace = latest_completed_attempt.python_workspace
-
+            attempt = Attempt(level=level, student=student, score=None, night_mode=night_mode)
+            fetch_workspace_from_last_attempt(attempt)
             attempt.save()
+        else:
+            attempt = close_and_reset(attempt)
 
         workspace = attempt.workspace
         python_workspace = attempt.python_workspace
@@ -187,6 +182,16 @@ def play_level(request, levelID, night_mode):
     return render(request, 'game/game.html', context_instance=context)
 
 
+def fetch_workspace_from_last_attempt(attempt):
+    latest_attempt = Attempt.objects \
+        .filter(level=attempt.level, student=attempt.student, night_mode=attempt.night_mode) \
+        .order_by('-start_time') \
+        .first()
+    if latest_attempt:
+        attempt.workspace = latest_attempt.workspace
+        attempt.python_workspace = latest_attempt.python_workspace
+
+
 def delete_level(request, levelID):
     success = False
     level = Level.objects.get(id=levelID)
@@ -208,31 +213,40 @@ def submit_attempt(request):
             attempt.score = float(request.POST.get('score'))
             attempt.workspace = request.POST.get('workspace')
             attempt.python_workspace = request.POST.get('python_workspace')
-            attempt.finish_time = timezone.now()
-            attempt.save()
 
-            best_attempt = BestAttempt.objects \
-                .filter(level=level, student=student, night_mode=attempt.night_mode) \
-                .select_related('attempt') \
-                .first()
-            if best_attempt and (best_attempt.attempt.score <= attempt.score):
-                best_attempt.attempt = attempt
-                best_attempt.save()
-            elif not best_attempt:
-                best_attempt = BestAttempt(level=attempt.level,
-                                           student=attempt.student,
-                                           attempt=attempt,
-                                           night_mode=attempt.night_mode)
-                best_attempt.save()
-
-            new_attempt = Attempt(level=level,
-                                  student=student,
-                                  score=None,
-                                  workspace=attempt.workspace,
-                                  python_workspace=attempt.python_workspace)
-            new_attempt.save()
+            close_and_reset(attempt)
+            record_best_attempt(attempt)
 
     return HttpResponse('[]', content_type='application/json')
+
+
+def close_and_reset(attempt):
+    attempt.finish_time = timezone.now()
+    attempt.save()
+    new_attempt = Attempt(level=attempt.level,
+                          student=attempt.student,
+                          score=None,
+                          night_mode=attempt.night_mode,
+                          workspace=attempt.workspace,
+                          python_workspace=attempt.python_workspace)
+    new_attempt.save()
+    return new_attempt
+
+
+def record_best_attempt(attempt):
+    best_attempt = BestAttempt.objects \
+        .filter(level=attempt.level, student=attempt.student, night_mode=attempt.night_mode) \
+        .select_related('attempt') \
+        .first()
+    if best_attempt and (best_attempt.attempt.score <= attempt.score):
+        best_attempt.attempt = attempt
+        best_attempt.save()
+    elif not best_attempt:
+        best_attempt = BestAttempt(level=attempt.level,
+                                   student=attempt.student,
+                                   attempt=attempt,
+                                   night_mode=attempt.night_mode)
+        best_attempt.save()
 
 
 def load_list_of_workspaces(request):
