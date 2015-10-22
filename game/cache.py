@@ -45,6 +45,10 @@ EPISODE_PREFIX = "model_episode"
 
 
 def get_level(level):
+    return get_object_or_404(Level, name=level)
+
+
+def get_custom_level(level):
     return get_object_or_404(Level, id=level)
 
 
@@ -66,9 +70,15 @@ def cache_or_func(key, func):
     return result
 
 
-def cached_level(level):
-    key = LEVEL_PREFIX + str(level)
-    func = lambda: get_level(level)
+def cached_default_level(name):
+    key = LEVEL_PREFIX + str(name)
+    func = lambda: get_level(name)
+    return cache_or_func(key, func)
+
+
+def cached_custom_level(level_id):
+    key = LEVEL_PREFIX + str(level_id)
+    func = lambda: get_custom_level(level_id)
     return cache_or_func(key, func)
 
 

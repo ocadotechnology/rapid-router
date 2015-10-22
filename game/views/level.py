@@ -47,7 +47,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from helper import renderError, getDecorElement
-from game.cache import cached_level, cached_episode
+from game.cache import cached_default_level, cached_episode, cached_custom_level
 from game.models import Level, Attempt, Workspace
 from portal import beta
 
@@ -61,20 +61,20 @@ def play_custom_level_night(request, levelID):
 
 
 def play_custom_level(request, levelID, night_mode):
-    level = cached_level(levelID)
+    level = cached_custom_level(levelID)
     if level.default:
         raise Http404
-    return play_level(request, levelID, night_mode)
+    return play_level(request, level, night_mode)
 
 
 def play_night_level(request, levelName):
-    level = get_object_or_404(Level, name=levelName, default=True)
-    return play_level(request, level.id, True)
+    level = cached_default_level(levelName)
+    return play_level(request, level, True)
 
 
 def play_default_level(request, levelName):
-    level = get_object_or_404(Level, name=levelName, default=True)
-    return play_level(request, level.id, False)
+    level = cached_default_level(levelName)
+    return play_level(request, level, False)
 
 
 def _next_level_url(level, night_mode):
@@ -85,13 +85,27 @@ def _next_level_url(level, night_mode):
 
 
 def _level_url(level, night_mode):
+    if level.default:
+        return _default_level_url(level, night_mode)
+    else:
+        return _custom_level_url(level, night_mode)
+
+
+def _default_level_url(level, night_mode):
     if night_mode:
         return reverse('play_night_level', args=[level.name])
     else:
         return reverse('play_default_level', args=[level.name])
 
 
-def play_level(request, levelID, night_mode):
+def _custom_level_url(level, night_mode):
+    if night_mode:
+        return reverse('play_custom_level_night', args=[level.id])
+    else:
+        return reverse('play_custom_level_day', args=[level.id])
+
+
+def play_level(request, level, night_mode):
     """ Loads a level for rendering in the game.
 
     **Context**
@@ -110,7 +124,6 @@ def play_level(request, levelID, night_mode):
 
     :template:`game/game.html`
     """
-    level = cached_level(levelID)
 
     if not permissions.can_play_level(request.user, level, beta.has_beta_access(request)):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
