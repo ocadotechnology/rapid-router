@@ -45,7 +45,7 @@ EPISODE_PREFIX = "model_episode"
 
 
 def get_level(level):
-    return get_object_or_404(Level, name=level)
+    return get_object_or_404(Level, name=level, default=True)
 
 
 def get_custom_level(level):
