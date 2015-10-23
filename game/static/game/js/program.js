@@ -75,7 +75,6 @@ ocargo.Thread.prototype.run = function(model) {
 };
 
 ocargo.Thread.prototype.step = function(model) {
-
 	// check if any event condition is true
 	for (var i=0; i<this.program.events.length; i++) {
 		var event = this.program.events[i];
