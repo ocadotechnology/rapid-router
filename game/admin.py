@@ -36,7 +36,7 @@
 # identified as the original program.
 from django.contrib import admin
 from game.models import Level, Block, Episode
-from portal.models import Class, Student, Guardian, Teacher, School, UserProfile
+from portal.models import Class, Student, Guardian, Teacher, School, UserProfile, FrontPageNews
 
 admin.site.register(Class)
 admin.site.register(Student)
@@ -48,3 +48,4 @@ admin.site.register(UserProfile)
 admin.site.register(Level)
 admin.site.register(Episode)
 admin.site.register(Block)
+admin.site.register(FrontPageNews)
