@@ -46,8 +46,7 @@ ocargo.BlocklyCompiler.prototype.procedures = null;
 ocargo.BlocklyCompiler.prototype.events = null;
 ocargo.BlocklyCompiler.prototype.program = null;
 
-ocargo.BlocklyCompiler.prototype.compile = function()
-{
+ocargo.BlocklyCompiler.prototype.compile = function() {
     this.compileProcedures();
     this.compileEvents();
     this.compileProgram();
@@ -289,7 +288,7 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
 
 ocargo.BlocklyCompiler.prototype.simplifyBlock = function(block){
     return new Block(block.id, block.type);
-}
+};
 
 /** Conditions **/
 

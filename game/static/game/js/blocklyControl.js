@@ -153,9 +153,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
 
 ocargo.BlocklyControl.prototype.serialize = function() {
     var xml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
-    var text = Blockly.Xml.domToText(xml);
-    return text;
-
+    return Blockly.Xml.domToText(xml);
 };
 
 ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
@@ -261,10 +259,9 @@ ocargo.BlocklyControl.prototype.disconnectedStartBlock = function() {
 };
 
 ocargo.BlocklyControl.prototype.startBlock = function() {
-    var filtered = Blockly.mainWorkspace.getTopBlocks().filter(function (block) {
+    return Blockly.mainWorkspace.getTopBlocks().filter(function (block) {
         return block.type === 'start';
-    });
-    return filtered[0];
+    })[0];
 };
 
 ocargo.BlocklyControl.prototype.procedureBlocks = function() {
