@@ -241,13 +241,13 @@ ocargo.Character.prototype.turnAround = function (direction, animationLength) {
 
     switch (direction) {
         case 'FORWARD':
-            actions = [moveForward('easeIn'), rotate('linear'), moveForward('easeOut')];
+            actions = [moveForward('easeIn'), rotate('linear'), moveForward('linear')];
             break;
         case 'RIGHT':
-            actions = [turnRight('easeIn'), rotate('linear'), turnLeft('easeOut')];
+            actions = [turnRight('easeIn'), rotate('linear'), turnLeft('linear')];
             break;
         case 'LEFT':
-            actions = [turnLeft('easeIn'), rotate('linear'), turnRight('easeOut')];
+            actions = [turnLeft('easeIn'), rotate('linear'), turnRight('linear')];
             break;
     }
 
