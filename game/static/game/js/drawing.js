@@ -754,7 +754,7 @@ ocargo.Drawing.translate = function (coordinate) {
  4. buttons (in one row)
  Mascot will be displayed on the right hand side of the popup
  */
-ocargo.Drawing.startPopup = function (title, subtitle, message, mascot, buttons, delay) {
+ocargo.Drawing.startPopup = function (title, subtitle, message, mascot, buttons) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
@@ -771,18 +771,17 @@ ocargo.Drawing.startPopup = function (title, subtitle, message, mascot, buttons,
         $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', 'Close'));
     }
 
-    setTimeout(function () {
-        $('#myModal').foundation('reveal', 'open', {
-            animation: 'fadeAndPop',
-            animation_speed: 200
-        });
-    }, delay);
+
+    $('#myModal').foundation('reveal', 'open', {
+        animation: 'fadeAndPop',
+        animation_speed: 200
+    });
 };
 
 // This is the function that starts the pop-up with a yes and a no button
-ocargo.Drawing.startYesNoPopup = function (title, subtitle, message, yesFunction, noFunction, mascot, delay) {
+ocargo.Drawing.startYesNoPopup = function (title, subtitle, message, yesFunction, noFunction, mascot) {
     var buttonHtml = '<button id="modal-yesBtn" class="navigation_button long_button">Yes</button> <button id="modal-noBtn" class="navigation_button long_button">No</button>';
-    ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml, delay);
+    ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml);
     $('#modal-yesBtn').click(yesFunction);
     $('#modal-noBtn').click(noFunction);
 };

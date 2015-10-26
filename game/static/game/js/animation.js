@@ -346,7 +346,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
 				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}
-			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons, 100);
+			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons);
 			if (animation.popupHint) {
 				$("#hintPopupBtn").click( function(){
 	                    $("#hintText").show(500);

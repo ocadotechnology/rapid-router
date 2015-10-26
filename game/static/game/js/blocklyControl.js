@@ -147,6 +147,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         }
         this.blocklyCustomisations.addClickListenerToStartBlock(this.startBlock());
     } catch (e) {
+        console.log(e);
         ocargo.blocklyControl.reset();
     }
 };
@@ -166,7 +167,7 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
         return a.id - b.id;
     });
 
-    var startCount = this.numberOfStartBlocks;
+    var startCount = 1;
     var clean = true;
 
     for (var i = 0; i < blocks.length; i++) {

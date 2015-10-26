@@ -71,7 +71,7 @@ ocargo.Game.prototype.setup = function() {
     ocargo.saving = new ocargo.Saving();
 
     // Setup the blockly workspace
-    //ocargo.blocklyControl.reset();
+    ocargo.blocklyControl.reset();
     ocargo.blocklyControl.loadPreviousAttempt();
     ocargo.pythonControl.loadPreviousAttempt();
 
