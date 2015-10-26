@@ -225,7 +225,7 @@ function getOptimalPath(nodes, destinations) {
 
     for (var i = 0; i < destinations.length; i++) {
         destinationNodes.push(destinations[i].node);
-    };
+    }
     permute(destinationNodes);
 
     for (var i = 0; i < permutations.length; i++) {
@@ -245,7 +245,7 @@ function QueueLink(node, score) {
   this.node = node;
   this.score = score;
   this.next = null;
-};
+}
 
 function PriorityQueue() {
   var head = null;
@@ -271,9 +271,9 @@ function PriorityQueue() {
       }
       if (!found) {
         i.next = new QueueLink(node, score);
-      };
+      }
     }
-  }
+  };
 
   this.pop = function() {
     if (this.head == null) {
@@ -283,7 +283,7 @@ function PriorityQueue() {
       this.head = this.head.next;
       return result;
     }
-  }
+  };
 
   this.isEmpty = function () {
     return this.head == null;

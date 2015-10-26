@@ -74,7 +74,7 @@ ocargo.Animation.prototype.removeCows = function() {
 		ocargo.drawing.removeCow(this.activeCows[i]);
 	}
 	this.activeCows = [];
-}
+};
 
 ocargo.Animation.prototype.resetAnimation = function() {
 	this.animationQueue = [[]];
@@ -127,7 +127,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 				}
 			}
 		);
-	};
+	}
 
 	if (this.currentlyAnimating) {
 		return;

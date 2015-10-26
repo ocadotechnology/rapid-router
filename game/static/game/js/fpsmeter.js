@@ -188,7 +188,7 @@ var self = window.FPSMeter = {
         bodyRef.removeChild(ref);
         ref = null;
     }
-}
+};
 
 function GetFloatValueOfAttr (element,attr) {
     var floatValue = null;

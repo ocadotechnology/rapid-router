@@ -1420,7 +1420,7 @@ ocargo.LevelEditor = function() {
             };
 
         // Touch events seem to have this behaviour automatically
-    };
+    }
 
     function handleMouseDown(this_rect) {
         return function (ev) {
@@ -1590,7 +1590,7 @@ ocargo.LevelEditor = function() {
             paperY = dy + originY;
 
             // Deal with trashcan
-            checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight);;
+            checkImageOverTrashcan(paperX, paperY, imageWidth, imageHeight);
 
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
@@ -2301,7 +2301,7 @@ ocargo.LevelEditor = function() {
 
         var cowsData = [];
 
-        var cowGroupData = {}
+        var cowGroupData = {};
         for( var i = 0; i < cows.length; i++){
             if(cows[i].valid) {
                 var groupId = cows[i].data.group.id;
@@ -2309,7 +2309,7 @@ ocargo.LevelEditor = function() {
                     cowGroupData[groupId] = {minCows : cowGroups[groupId].minCows,
                         maxCows : cowGroups[groupId].maxCows,
                         potentialCoordinates : [],
-                        type: cowGroups[groupId].type} //editor can only add white cow for now
+                        type: cowGroups[groupId].type}; //editor can only add white cow for now
                 }
 
                 var coordinates = cows[i].controlledNode.coordinate;
@@ -2329,7 +2329,7 @@ ocargo.LevelEditor = function() {
         for (i = 0; i < BLOCKS.length; i++) {
             var type = BLOCKS[i];
             if ($('#' + type + "_checkbox").is(':checked')) {
-                var block = {'type': type}
+                var block = {'type': type};
                 var number = $('#' + type + "_number").val();
                 if(number !== "infinity") {
                     block.number = parseInt(number);
@@ -2638,7 +2638,7 @@ ocargo.LevelEditor = function() {
 
         var boolFields = ["pythonEnabled", "blocklyEnabled", 'fuel_gauge', 'direct_drive'];
         var stringFields =  ['path', 'traffic_lights', 'cows', 'origin', 'destinations'];
-        var otherFields = ['max_fuel']
+        var otherFields = ['max_fuel'];
 
         var decor = null;
         var blocks = null;
@@ -2666,8 +2666,8 @@ ocargo.LevelEditor = function() {
                 console.log("DISCARDING " + propertyName)
             }
         }
-        string += "\t\tmodel_solution=FILL_IN,\n"
-        string += "\t)\n";;
+        string += "\t\tmodel_solution=FILL_IN,\n";
+        string += "\t)\n";
         string += "\tlevelNUMBER.save()\n";
         string += "\tset_decor(levelNUMBER, json.loads('" + decor + "'))\n";
         string += "\tset_blocks(levelNUMBER, json.loads('" + blocks + "'))\n";

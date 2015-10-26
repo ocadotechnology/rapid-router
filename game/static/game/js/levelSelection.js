@@ -40,7 +40,7 @@ $(function() {
     normalEpisodes = $('#episodes').children('h3').not('.customLevelsEpisode');
     minOpacity = 0.1;
     maxOpacity = 0.7;
-    numEpisodes = normalEpisodes.length
+    numEpisodes = normalEpisodes.length;
     background = $('body').css('background-color');
     bg = {'r':236, 'g':234, 'b':238};
     baseColor = {'r': 99, 'g':119, 'b': 0};
@@ -116,7 +116,7 @@ function setupCoins() {
 
     function getImageStr(score, maxScore) {
         var imageStr = "/static/game/image/coins/coin_";
-        percentage = 100.0 * score / maxScore
+        percentage = 100.0 * score / maxScore;
         if(score == "None") {
             return "";
         }

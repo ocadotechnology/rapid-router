@@ -364,7 +364,7 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function(block, count) {
    id is assigned to each block in the order it appears in the array
  */
 ocargo.BlocklyCompiler.prototype.mobileCompile = function(types) {
-    var blocks = []
+    var blocks = [];
     for (var i = 0 ; i < types.length ; i++ ){
         blocks.push(new Block(i+1, types[i]));
     }
@@ -374,7 +374,7 @@ ocargo.BlocklyCompiler.prototype.mobileCompile = function(types) {
     thread.stack = this.mobileCreateSequence(blocks);
     this.program.thread = thread;
     return this.program;
-}
+};
 
 ocargo.BlocklyCompiler.prototype.mobileCreateSequence = function(blocks) {
     var commands = [];

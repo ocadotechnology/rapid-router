@@ -854,7 +854,7 @@ ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace = function(degrees,
 
 ocargo.Drawing.inLevelEditor = function() {
     return typeof CHARACTER_URL === 'undefined';
-}
+};
 
 ocargo.Drawing.FRONT_VIEW = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";

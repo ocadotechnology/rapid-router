@@ -67,12 +67,12 @@ ocargo.BlocklyCustomisations = function () {
     //Make it such that the workspace and game do not overlap
     this.shiftWorkspace = function () {
         $("#blockly_holder").css("width", "calc(100%)");
-    }
+    };
 
     //Hide Blockly Toolbox to use our Flyout button instead
     this.hideBlocklyToolbox = function () {
         $(".blocklyToolboxDiv").css("display", "none");
-    }
+    };
 
 
 
@@ -89,7 +89,7 @@ ocargo.BlocklyCustomisations = function () {
                 oldPositionFunction.call(this);
                 this.width_ -= 50;
             }
-    }
+    };
 
     Blockly.Flyout.prototype.autoClose = false;
 
@@ -223,12 +223,12 @@ ocargo.BlocklyCustomisations = function () {
 
         var flyoutWidth = function() {
             return $('.blocklyFlyoutBackground')[0].getBoundingClientRect().width;
-        }
+        };
 
         var flyoutRectangle = function() {
             var BIG_NUM = 10000000;
             return new goog.math.Rect(-BIG_NUM, -BIG_NUM, BIG_NUM + flyoutWidth(), 2 * BIG_NUM);
-        }
+        };
 
         // So that the Delete area depends on whether the flyout is shown
         var oldRecordDeleteAreas = Blockly.getMainWorkspace().recordDeleteAreas;
@@ -238,7 +238,7 @@ ocargo.BlocklyCustomisations = function () {
             if (flyoutShown) {
                 this.deleteAreaToolbox_ = flyoutRectangle();
             }
-        }
+        };
 
         var firstCall = true;
         var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
@@ -250,7 +250,7 @@ ocargo.BlocklyCustomisations = function () {
                 firstCall = false;
                 return originalSrc;
             }
-        };
+        }
 
         function image() {
             if (flyoutShown) {
@@ -302,7 +302,6 @@ ocargo.BlocklyCustomisations = function () {
      * Needs to be called BEFORE blockly is injected
      */
     this.setupBigCodeMode = function (blocks) {
-
         //so that image fields render properly when their size_ variable is broken above
         Blockly.FieldImage.prototype.render_ = function () {
             this.size_ = {height: this.height_ + 10, width: this.width_};
@@ -574,7 +573,7 @@ ocargo.BlocklyCustomisations = function () {
                 'blocklyWorkspaceChange', this, this.reflow);
             this.workspace_.fireChangeEvent();
         };
-    }
+    };
 
     this.addClickListenerToStartBlock = function(startBlock){
         if(startBlock){

@@ -456,7 +456,7 @@ ocargo.Character.prototype._animateCrash = function (animationLength, attemptedA
     this._moveImage({
         transform: transformation
     }, animationLength, callback);
-}
+};
 
 ocargo.Character.prototype.crash = function (animationLength, attemptedAction) {
     var crashAnimation = this._animateCollisionWithFire();

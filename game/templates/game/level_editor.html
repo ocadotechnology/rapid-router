@@ -92,7 +92,7 @@
       {% for char in characters %}
           CHARACTERS['{{char.id}}'] =   {id:    '{{char.id}}',
                                         name:  '{{char.name}}',
-                                        image: '{% static "game/image/"|add:char.en_face %}'}
+                                        image: '{% static "game/image/"|add:char.en_face %}'};
       {% endfor %}
     }
 

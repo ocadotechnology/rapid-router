@@ -53,7 +53,7 @@ ocargo.Event.prototype.sendEvent = function(eventType, details) {
   //   },
   //   data: JSON.stringify({ app: "RapidRouter", eventType: eventType, details: details }),
   // });
-}
+};
 
 $(document).ready(function() {
   ocargo.event = new ocargo.Event();

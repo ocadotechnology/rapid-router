@@ -46,17 +46,17 @@ describe("getOptimalPath", function() {
   var d = new ocargo.Node(new ocargo.Coordinate(2, 2));
 
   it("finds the optimal path along a super simple graph", function() {
-    a.addConnectedNodeWithBacklink(b)
+    a.addConnectedNodeWithBacklink(b);
     var path = getOptimalPath([a, b], [new ocargo.Destination(0, b)]);
 
     expect(path).toEqual([a, b]);
   });
 
   it("finds the optimal path along a little more complicated graph", function() {
-    a.addConnectedNodeWithBacklink(b)
-    a.addConnectedNodeWithBacklink(c)
-    c.addConnectedNodeWithBacklink(d)
-    b.addConnectedNodeWithBacklink(d)
+    a.addConnectedNodeWithBacklink(b);
+    a.addConnectedNodeWithBacklink(c);
+    c.addConnectedNodeWithBacklink(d);
+    b.addConnectedNodeWithBacklink(d);
     var path = getOptimalPath([a, b, c, d], [new ocargo.Destination(0, b)]);
 
     expect(path).toEqual([a, b]);
@@ -103,9 +103,9 @@ describe("aStar", function() {
   var c = new ocargo.Node(new ocargo.Coordinate(2, 1));
   var d = new ocargo.Node(new ocargo.Coordinate(2, 2));
   var e = new ocargo.Node(new ocargo.Coordinate(20, 2));
-  a.addConnectedNodeWithBacklink(b)
-  a.addConnectedNodeWithBacklink(c)
-  c.addConnectedNodeWithBacklink(d)
+  a.addConnectedNodeWithBacklink(b);
+  a.addConnectedNodeWithBacklink(c);
+  c.addConnectedNodeWithBacklink(d);
 
   it("works for origin equal to destination", function() {
     var path = aStar(a, a, [a]);
@@ -137,10 +137,10 @@ describe("PriorityQueue", function() {
     queue.push(9, 9);
     queue.push(8, 8);
     var result = [];
-    result.push(queue.pop())
-    result.push(queue.pop())
-    result.push(queue.pop())
-    result.push(queue.pop())
+    result.push(queue.pop());
+    result.push(queue.pop());
+    result.push(queue.pop());
+    result.push(queue.pop());
     expect(result).toEqual([4, 5, 8, 9]);
     expect(queue.pop()).toEqual(null);
   });
@@ -178,9 +178,9 @@ describe("areDestinationsReachable", function() {
   var c = new ocargo.Node(new ocargo.Coordinate(2, 1));
   var d = new ocargo.Node(new ocargo.Coordinate(2, 2));
   var e = new ocargo.Node(new ocargo.Coordinate(20, 2));
-  a.addConnectedNodeWithBacklink(b)
-  a.addConnectedNodeWithBacklink(c)
-  c.addConnectedNodeWithBacklink(d)
+  a.addConnectedNodeWithBacklink(b);
+  a.addConnectedNodeWithBacklink(c);
+  c.addConnectedNodeWithBacklink(d);
   nodes = [a, b, c, d, e];
 
   it("works for empty destinations", function() {

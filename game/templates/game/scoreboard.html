@@ -19,10 +19,10 @@
         {# Only initialise progress bars if the column exists #}
         {% if 'Progress' in headers %}
           {% for student in student_data %}
-              var id = {{ student.id }}
-              var started = {{ student.progress.0 }}
-              var attempted = {{ student.progress.1 }}
-              var finished = {{ student.progress.2 }}
+              var id = {{ student.id }};
+              var started = {{ student.progress.0 }};
+              var attempted = {{ student.progress.1 }};
+              var finished = {{ student.progress.2 }};
               $('#progressbar' + id).multiprogressbar({
                   parts: [{value: started, barClass: 'started'},
                           {value: attempted, barClass: 'attempted'},

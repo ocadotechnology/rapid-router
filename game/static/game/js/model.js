@@ -685,13 +685,13 @@ ocargo.Model.prototype.incrementTrafficLightsTime = function() {
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
     }
-}
+};
 
 ocargo.Model.prototype.incrementCowTime = function() {
     if(this.movementTimestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
         this.puffedUp = {};
         this.van.puffDown();
-    };
+    }
 
     for (var i = 0; i < this.cows.length; i++) {
         this.cows[i].incrementTime(this);
@@ -712,5 +712,5 @@ ocargo.Model.prototype.getNodesAhead = function(node) {
 
 ocargo.Model.prototype.startingPosition = function() {
     return this.map.startingPosition();
-}
+};
 

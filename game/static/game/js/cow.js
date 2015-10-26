@@ -52,7 +52,7 @@ function arraysIdentical(a, b) {
         if (a[i] !== b[i]) return false;
     }
     return true;
-};
+}
 
 ocargo.Cow.prototype.chooseNewCowPositions = function() {
     var numCows = Math.round(this.minCows+Math.random()*(this.maxCows-this.minCows));

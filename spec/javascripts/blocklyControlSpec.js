@@ -54,7 +54,7 @@ describe("disconnectedStartBlock", function() {
     BLOCKLY_XML += '<block type="' + BLOCKS[i].type + '"></block>';
   }
   BLOCKLY_XML += '</category></xml>';
-  CHARACTER_EN_FACE_URL = "characters/front_view/Phil.svg"
+  CHARACTER_EN_FACE_URL = "characters/front_view/Phil.svg";
 
   beforeEach(function() {
     var blocklyHolder = document.createElement('div');
@@ -101,5 +101,4 @@ describe("disconnectedStartBlock", function() {
     disconnected = control.disconnectedStartBlock();
     expect(disconnected).toEqual(false);
   });
-
 });

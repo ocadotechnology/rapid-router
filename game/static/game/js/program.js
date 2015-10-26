@@ -213,7 +213,7 @@ function PuffUpCommand(block){
 PuffUpCommand.prototype.execute = function(thread, model){
 	queueHighlight(model, this.block, true);
 	return model.puff_up();
-}
+};
 
 function If(conditionalCommandSets, elseBody, block) {
 	this.conditionalCommandSets = conditionalCommandSets;
