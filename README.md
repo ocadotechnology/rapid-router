@@ -29,6 +29,6 @@ it and get it re-submitted. If it is a change that we just don't want, we'll rej
 
 [c4l]: https://www.codeforlife.education/
 [c4l-portal]: http://github.com/ocadotechnology/codeforlife-portal/
-[issues]: https://github.com/ocadotechnology/ocargo/issues
-[add-issue]: https://github.com/ocadotechnology/ocargo/issues/new
-[ready-for-pickup]: https://github.com/ocadotechnology/ocargo/labels/ready%20for%20pickup
+[issues]: https://github.com/ocadotechnology/rapid-router/issues
+[add-issue]: https://github.com/ocadotechnology/rapid-router/issues/new
+[ready-for-pickup]: https://github.com/ocadotechnology/rapid-router/labels/ready%20for%20pickup
