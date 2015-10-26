@@ -77,12 +77,12 @@ ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, s
     this.initialOffsetY = DISTANCE_BETWEEN_THE_EDGE_AND_MIDDLE_OF_LEFT_LANE - (this.width / 2);
 };
 
-ocargo.Character.prototype._createCharacterImage = function() {
+ocargo.Character.prototype._createCharacterImage = function () {
     return this.paper.image(ocargo.Drawing.raphaelImageDir + this.imageUrl, 0, 0,
         this.height, this.width);
 };
 
-ocargo.Character.prototype._createWreckageImage = function() {
+ocargo.Character.prototype._createWreckageImage = function () {
     var wreckageImage = this.paper.image(ocargo.Drawing.raphaelImageDir + this.wreckageImageUrl, 0, 0, this.height, this.width);
     wreckageImage.attr({"opacity": 0});
     return wreckageImage;
@@ -140,12 +140,46 @@ ocargo.Character.prototype._imagePosition = function () {
 };
 
 ocargo.Character.prototype.scrollToShow = function () {
+    var dx = 150;
+    var dy = 150;
+
     this.skipOutstandingAnimations();
     var point = this._imagePosition();
     var element = document.getElementById('paper');
 
-    element.scrollLeft = point[0] - element.offsetWidth / 2;
-    element.scrollTop = point[1] - element.offsetHeight / 2;
+    var characterPositionX = point[0];
+    var characterPositionY = point[1];
+    var top = element.scrollTop ;
+    var left = element.scrollLeft;
+    var width = element.offsetWidth;
+    var height = element.offsetHeight;
+
+    function scrollHorizontally(dx) {
+        if (!(characterPositionX + dx <= left + width &&        // not too far right
+            characterPositionX - dx >= left)) {
+            element.scrollLeft = characterPositionX - (width / 2);
+            return true;
+        }
+        return false;
+    }
+
+    function scrollVertically(dy) {
+        if (!(characterPositionY + dy <= top + height &&       // and not too far down
+            characterPositionY - dy >= top)) {
+            element.scrollTop = characterPositionY - (height) / 2;
+            return true;
+        }
+        return false;
+    }
+
+    if (scrollHorizontally(dx)) {
+        scrollVertically(dy * 3);
+    }
+
+    if (scrollVertically(dy)) {
+        scrollHorizontally(dx * 3);
+    }
+
 };
 
 
@@ -327,7 +361,8 @@ ocargo.Character.prototype._collisionImage = function (withFire) {
 
 ocargo.Character.prototype._animateCollision = function (withFire) {
     if (this.isVeilOfNight) {
-        return function() {};
+        return function () {
+        };
     }
 
     var that = this;
@@ -370,17 +405,17 @@ ocargo.Character.prototype._animateCollision = function (withFire) {
     }, 100);
 };
 
-ocargo.Character.prototype._animateCollisionWithFire = function() {
+ocargo.Character.prototype._animateCollisionWithFire = function () {
     var that = this;
 
-    return function() {
+    return function () {
         that._animateCollision(true);
     }
 };
 
-ocargo.Character.prototype._animateCollisionNoFire = function() {
+ocargo.Character.prototype._animateCollisionNoFire = function () {
     var that = this;
-    return function() {
+    return function () {
         that._animateCollision(false);
     }
 };
