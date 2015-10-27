@@ -284,7 +284,7 @@ ocargo.Character.prototype.turnAround = function (direction, animationLength) {
             actions = [turnRight(oneSixteenth * 5), rotate(oneSixteenth * 7), turnLeft(adjustedAnimationLength / 4)];
             break;
         case 'LEFT':
-            actions = [turnLeft(oneSixteenth * 5), rotate(oneSixteenth * 7), turnRight(adjustedAnimationLength / 4)];
+            actions = [turnLeft(adjustedAnimationLength / 4), rotate(oneSixteenth * 7), turnRight(oneSixteenth * 5)];
             break;
     }
 
