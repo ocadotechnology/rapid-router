@@ -57,23 +57,29 @@ class BaseGameTest(BaseTest):
         else:
             raise Exception
 
+    def run_episode_test(self, episode_id, level, suffix=None, route_score="10/10", algorithm_score="10/10", page=None):
+        def go_to_episode():
+            return self.go_to_episode(episode_id)
+
+        self._run_level_test(go_to_episode, level, suffix, route_score, algorithm_score, page)
+
     def run_level_test(self, level, suffix=None, route_score="10/10", algorithm_score="10/10", page=None):
+        def go_to_level():
+            return self.go_to_level(level)
+
+        self._run_level_test(go_to_level, level, suffix, route_score, algorithm_score, page)
+
+    def _run_level_test(self, go_to_level_function, level, suffix, route_score, algorithm_score, page):
         level_with_suffix = str(level)
         if suffix:
             level_with_suffix += "-%d" % suffix
-
         user_profile = self.login_once()
-
         workspace_id = self.use_workspace_of_level(level_with_suffix, user_profile)
-
         score_element_id = self.score_element_id(route_score, algorithm_score)
-
         if not page:
-            page = self.go_to_level(level)
-
+            page = go_to_level_function()
         page.load_solution(workspace_id) \
             .run_program(score_element_id)
-
         if route_score:
             page.assert_route_score(route_score)
         if algorithm_score:

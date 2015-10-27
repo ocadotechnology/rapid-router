@@ -52,16 +52,16 @@ from game.models import Level, Attempt, Workspace
 from portal import beta
 
 
-def play_custom_level_day(request, levelID):
-    return play_custom_level(request, levelID, False)
+def play_custom_level_day(request, levelId):
+    return play_custom_level(request, levelId, False)
 
 
-def play_custom_level_night(request, levelID):
-    return play_custom_level(request, levelID, True)
+def play_custom_level_night(request, levelId):
+    return play_custom_level(request, levelId, True)
 
 
-def play_custom_level(request, levelID, night_mode):
-    level = cached_custom_level(levelID)
+def play_custom_level(request, levelId, night_mode):
+    level = cached_custom_level(levelId)
     if level.default:
         raise Http404
     return play_level(request, level, night_mode)
@@ -278,9 +278,9 @@ def save_workspace(request, workspaceID=None):
     return load_list_of_workspaces(request)
 
 
-def start_episode(request, episode):
-    episode = cached_episode(episode)
-    return play_level(request, episode.first_level.id, False)
+def start_episode(request, episodeId):
+    episode = cached_episode(episodeId)
+    return play_level(request, episode.first_level, False)
 
 
 def delete_workspace(request, workspaceID):

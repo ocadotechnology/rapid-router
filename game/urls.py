@@ -80,9 +80,9 @@ urlpatterns = patterns(
     url(r'^submit/$', submit_attempt, name='submit_attempt'),
     url(r'^(?P<levelName>[A-Z0-9]+)/$', play_default_level, name='play_default_level'),
     url(r'^(?P<levelName>[A-Z0-9]+)/night/', night_mode_handler(), name='play_night_level'),
-    url(r'^custom/(?P<levelID>[0-9]+)/$', play_custom_level_day, name='play_custom_level'),
-    url(r'^custom/(?P<levelID>[0-9]+)/night/$', custom_level_night_mode_handler(), name='play_custom_level_night'),
-    url(r'^episode/(?P<episode>[0-9]+)/$', start_episode, name='start_episode'),
+    url(r'^custom/(?P<levelId>[0-9]+)/$', play_custom_level_day, name='play_custom_level'),
+    url(r'^custom/(?P<levelId>[0-9]+)/night/$', custom_level_night_mode_handler(), name='play_custom_level_night'),
+    url(r'^episode/(?P<episodeId>[0-9]+)/$', start_episode, name='start_episode'),
     url(r'^levels/random/([0-9]+)/$', random_level_for_episode, name='random_level_for_episode'),
     url(r'^scoreboard/$', scoreboard, name='scoreboard'),
 
