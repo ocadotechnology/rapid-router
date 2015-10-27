@@ -226,15 +226,15 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
             		ocargo.drawing.moveRight(animationLength, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_AROUND_FORWARD':
-            		animationLength *= 3;
+					animationLength *= 1.5;
             		ocargo.drawing.turnAround('FORWARD', animationLength);
             		break;
             	case 'TURN_AROUND_RIGHT':
-            		animationLength *= 3;
+					animationLength *= 1.6;
             		ocargo.drawing.turnAround('RIGHT', animationLength);
             		break;
             	case 'TURN_AROUND_LEFT':
-            		animationLength *= 3;
+					animationLength *= 1.6;
             		ocargo.drawing.turnAround('LEFT', animationLength);
             		break;
             	case 'WAIT':

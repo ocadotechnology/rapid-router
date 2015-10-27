@@ -268,20 +268,23 @@ ocargo.Character.prototype.moveRight = function (animationLength, callback, scal
 
 ocargo.Character.prototype.turnAround = function (direction, animationLength) {
     var that = this;
-    var timePerState = (animationLength - 50) / 3;
+
+    var adjustedAnimationLength = animationLength - 45;
+    var oneSixteenth = adjustedAnimationLength / 16;
 
     var actions = [];
     var index = 0;
 
     switch (direction) {
         case 'FORWARD':
-            actions = [moveForward('easeIn'), rotate('linear'), moveForward('linear')];
+            var timePerState = adjustedAnimationLength / 3;
+            actions = [moveForward(timePerState), rotate(timePerState), moveForward(timePerState)];
             break;
         case 'RIGHT':
-            actions = [turnRight('easeIn'), rotate('linear'), turnLeft('linear')];
+            actions = [turnRight(oneSixteenth * 5), rotate(oneSixteenth * 7), turnLeft(adjustedAnimationLength / 4)];
             break;
         case 'LEFT':
-            actions = [turnLeft('easeIn'), rotate('linear'), turnRight('linear')];
+            actions = [turnLeft(oneSixteenth * 5), rotate(oneSixteenth * 7), turnRight(adjustedAnimationLength / 4)];
             break;
     }
 
@@ -294,40 +297,40 @@ ocargo.Character.prototype.turnAround = function (direction, animationLength) {
         }
     }
 
-    function moveForward(easing) {
+    function moveForward(animationLength) {
         return function () {
             var moveDistance = -GRID_SPACE_SIZE / 2;
             var moveTransformation = "... t 0, " + moveDistance;
             that.image.animate({
                 transform: moveTransformation
-            }, timePerState, easing, performNextAction);
+            }, animationLength, 'linear', performNextAction);
         }
     }
 
-    function rotate(easing) {
+    function rotate(animationLength) {
         return function () {
             var transformation = that._turnAroundTransformation();
             that.image.animate({
                 transform: transformation
-            }, timePerState, easing, performNextAction);
+            }, animationLength, 'linear', performNextAction);
         }
     }
 
-    function turnLeft(easing) {
+    function turnLeft(animationLength) {
         return function () {
             var transformation = that._turnLeftTransformation(45);
             that.image.animate({
                 transform: transformation
-            }, timePerState, easing, performNextAction);
+            }, animationLength, 'linear', performNextAction);
         }
     }
 
-    function turnRight(easing) {
+    function turnRight(animationLength) {
         return function () {
             var transformation = that._turnRightTransformation(45);
             that.image.animate({
                 transform: transformation
-            }, timePerState, easing, performNextAction);
+            }, animationLength, 'linear', performNextAction);
         }
     }
 
