@@ -193,15 +193,14 @@ def is_valid_request(user, class_ids):
     return True
 
 def one_row(student, level):
-
-    attempt = Attempt.objects.filter(level=level, student=student).first()
-    if attempt:
-        total_score = attempt.score if attempt.score is not None else ''
+    best_attempt = Attempt.objects.filter(level=level, student=student, is_best_attempt=True).first()
+    if best_attempt:
+        total_score = best_attempt.score if best_attempt.score is not None else ''
         return StudentRow(student=student,
                           total_score=total_score,
-                          start_time=attempt.start_time,
-                          finish_time=attempt.finish_time,
-                          total_time=chop_miliseconds(attempt.finish_time - attempt.start_time))
+                          start_time=best_attempt.start_time,
+                          finish_time=best_attempt.finish_time,
+                          total_time=chop_miliseconds(best_attempt.finish_time - best_attempt.start_time))
     else:
         return StudentRow(student=student)
 
@@ -219,9 +218,9 @@ def student_row(levels_sorted, student):
     scores = []
     times = []
     progress = (0.0, 0.0, 0.0)
-    attempts = Attempt.objects.filter(level__in=levels_sorted, student=student).select_related('level')
-    if attempts:
-        attempts_dict = {attempt.level.id: attempt for attempt in attempts}
+    best_attempts = Attempt.objects.filter(level__in=levels_sorted, student=student, is_best_attempt=True).select_related('level')
+    if best_attempts:
+        attempts_dict = {best_attempt.level.id: best_attempt for best_attempt in best_attempts}
         for level in levels_sorted:
             attempt = attempts_dict.get(level.id)
             if attempt:
