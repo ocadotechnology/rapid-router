@@ -68,7 +68,6 @@ def play_custom_level(request, levelId, night_mode):
     return play_level(request, level, night_mode)
 
 
-
 def play_night_level(request, levelName):
     level = cached_default_level(levelName)
     return play_level(request, level, True)
