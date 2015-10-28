@@ -146,7 +146,7 @@ def level_moderation(request):
     return render(request, 'game/level_moderation.html', context_instance=context)
 
 
-def students_for_level_moderation(request, class_id):
+def get_students_for_level_moderation(request, class_id):
     userprofile = request.user.userprofile
     class_ = Class.objects.get(id=class_id)
 
