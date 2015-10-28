@@ -701,16 +701,16 @@ ocargo.Drawing = function(startingPosition) {
         character.scrollToShow();
     };
 
-    this.moveForward = function (speed, callback, scalingFactor) {
-        return character.moveForward(speed, callback, scalingFactor);
+    this.moveForward = function (callback, scalingFactor) {
+        return character.moveForward(callback, scalingFactor);
     };
 
-    this.turnLeft = function (speed, callback, scalingFactor) {
-        return character.turnLeft(speed, callback, scalingFactor);
+    this.turnLeft = function (callback, scalingFactor) {
+        return character.turnLeft(callback, scalingFactor);
     };
 
-    this.turnRight = function (speed, callback, scalingFactor) {
-        return character.turnRight(speed, callback, scalingFactor);
+    this.turnRight = function (callback, scalingFactor) {
+        return character.turnRight(callback, scalingFactor);
     };
 
     this.turnAround = function (direction, animationLength) {
@@ -731,6 +731,10 @@ ocargo.Drawing = function(startingPosition) {
 
     this.crash = function (animationLength, previousNode, currentNode, attemptedAction) {
         character.crash(animationLength, attemptedAction)
+    };
+
+    this.setMovementSpeed = function (speed) {
+        character.setSpeed(speed);
     };
 };
 

@@ -47,11 +47,10 @@ ocargo.Animation = function(model, decor) {
 	this.crashed = false;
 	this.speedUp = false;
 
-	this.FAST_ANIMATION_LENGTH = 125;
-	this.SLOW_ANIMATION_LENGTH = 500;
+	this.FAST_ANIMATION_DURATION = 125;
+	this.REGULAR_ANIMATION_DURATION = 500;
 
-    this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
-    this.genericSpeed = GRID_SPACE_SIZE / this.SLOW_ANIMATION_LENGTH;
+	this.setAnimationDuration(this.REGULAR_ANIMATION_DURATION);
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -106,18 +105,18 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	ocargo.drawing.reset();
 };
 
-ocargo.Animation.prototype.resetAnimationLength = function() {
-	this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
+ocargo.Animation.prototype.setRegularSpeed = function() {
+	this.setAnimationDuration(this.REGULAR_ANIMATION_DURATION);
 	this.speedUp = false;
 };
 
-ocargo.Animation.prototype.speedUpAnimation = function(){
-	this.genericAnimationLength = ocargo.animation.FAST_ANIMATION_LENGTH;
+ocargo.Animation.prototype.setHighSpeed = function(){
+	this.setAnimationDuration(this.FAST_ANIMATION_DURATION);
 	this.speedUp = true;
 };
 
-ocargo.Animation.prototype.currentBaseAnimationLength = function(){
-	return this.speedUp? this.FAST_ANIMATION_LENGTH : this.SLOW_ANIMATION_LENGTH;
+ocargo.Animation.prototype.baseAnimationDuration = function(){
+	return this.speedUp ? this.FAST_ANIMATION_DURATION : this.REGULAR_ANIMATION_DURATION;
 };
 
 ocargo.Animation.prototype.stepAnimation = function(callback) {
@@ -158,9 +157,9 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		this.timestamp += 1;
 		// Update defaultAnimationLength at every increment to prevent sudden stop in animation
 		if (!this.crashed && this.numberOfCowsOnMap > 0) {
-			this.genericAnimationLength = this.currentBaseAnimationLength() * 1.5;
+			this.setAnimationDuration(this.baseAnimationDuration() * 1.5);
 		} else {
-			this.genericAnimationLength = this.currentBaseAnimationLength();
+			this.setAnimationDuration(this.baseAnimationDuration());
 		}
 	}
 
@@ -206,7 +205,7 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 
 ocargo.Animation.prototype.performAnimation = function(animation) {
 	// animation length is either custom set (for each element) or generic
-	var animationLength = animation.animationLength || this.genericAnimationLength;
+	var animationLength = animation.animationLength || this.animationDuration;
 	//console.log("Type: " + animation.type + " Description: " + animation.description);
 	var speed = GRID_SPACE_SIZE / animationLength;
 
@@ -446,3 +445,9 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
     }
 	return json;
 };
+
+ocargo.Animation.prototype.setAnimationDuration = function(duration) {
+	this.animationDuration = duration;
+    var movementSpeed = GRID_SPACE_SIZE / this.animationDuration;
+	ocargo.drawing.setMovementSpeed(movementSpeed);
+}

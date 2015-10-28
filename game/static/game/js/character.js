@@ -60,7 +60,7 @@ var VEIL_OF_NIGHT_HEIGHT = 3440;
 
 var VEIL_OF_NIGHT_URL = 'characters/top_view/VeilOfNight.svg';
 
-ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, startingPosition, nightMode, isVeilOfNight) {
+ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, startingPosition, speed, nightMode, isVeilOfNight) {
     this.currentScale = 1;
 
     this.imageUrl = imageUrl;
@@ -75,6 +75,7 @@ ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, s
     this.startingPosition = startingPosition;
     this.nightMode = nightMode;
     this.isVeilOfNight = isVeilOfNight;
+    this.speed = speed;
 
     if (this.nightMode) {
         this.veilOfNight = new ocargo.Character(paper, VEIL_OF_NIGHT_URL, null,
@@ -228,7 +229,7 @@ ocargo.Character.prototype._rotationPointY = function () {
     return centreY;
 };
 
-ocargo.Character.prototype.moveForward = function (speed, callback, scalingFactor) {
+ocargo.Character.prototype.moveForward = function (callback, scalingFactor) {
     var moveDistance = -MOVE_DISTANCE / this.currentScale;
     var transformation = "..." + "t 0, " + moveDistance;
 
@@ -237,21 +238,21 @@ ocargo.Character.prototype.moveForward = function (speed, callback, scalingFacto
         transformation += "s" + scalingFactor;
     }
 
-    var duration = MOVE_DISTANCE / speed;
+    var duration = MOVE_DISTANCE / this.speed;
     this._moveImage({
         transform: transformation
     }, duration, callback);
 
     if (this.veilOfNight) {
-        this.veilOfNight.moveForward(speed, null, scalingFactor);
+        this.veilOfNight.moveForward(null, scalingFactor);
     }
     return duration;
 };
 
-ocargo.Character.prototype.turnLeft = function (speed, callback, scalingFactor) {
+ocargo.Character.prototype.turnLeft = function (callback, scalingFactor) {
     var transformation = this._turnLeftTransformation(90, scalingFactor);
 
-    var duration = TURN_LEFT_DISTANCE / speed;
+    var duration = TURN_LEFT_DISTANCE / this.speed;
 
     this._moveImage({
         transform: transformation
@@ -261,16 +262,16 @@ ocargo.Character.prototype.turnLeft = function (speed, callback, scalingFactor) 
     }
 
     if (this.veilOfNight) {
-        this.veilOfNight.turnLeft(speed, null, scalingFactor);
+        this.veilOfNight.turnLeft(null, scalingFactor);
     }
 
     return duration;
 };
 
-ocargo.Character.prototype.turnRight = function (speed, callback, scalingFactor) {
+ocargo.Character.prototype.turnRight = function (callback, scalingFactor) {
     var transformation = this._turnRightTransformation(90, scalingFactor);
 
-    var duration = TURN_RIGHT_DISTANCE / speed;
+    var duration = TURN_RIGHT_DISTANCE / this.speed;
 
     this._moveImage({
         transform: transformation
@@ -280,7 +281,7 @@ ocargo.Character.prototype.turnRight = function (speed, callback, scalingFactor)
     }
 
     if (this.veilOfNight) {
-        this.veilOfNight.turnRight(speed, null, scalingFactor);
+        this.veilOfNight.turnRight(null, scalingFactor);
     }
 
     return duration;
@@ -542,4 +543,8 @@ ocargo.Character.prototype.reset = function () {
     if (this.veilOfNight) {
         this.veilOfNight.reset();
     }
+};
+
+ocargo.Character.prototype.setSpeed = function (speed) {
+    this.speed = speed;
 };

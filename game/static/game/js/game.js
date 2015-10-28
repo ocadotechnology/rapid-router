@@ -280,7 +280,7 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-            ocargo.drawing.moveForward(ocargo.animation.genericSpeed, function () {
+            ocargo.drawing.moveForward(function () {
                 ocargo.game.onStopControls();
             });
         }
@@ -289,7 +289,7 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-            ocargo.drawing.turnLeft(ocargo.animation.genericSpeed, function () {
+            ocargo.drawing.turnLeft(function () {
                 ocargo.game.onStopControls();
             });
         }
@@ -298,7 +298,7 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-            ocargo.drawing.turnRight(ocargo.animation.genericSpeed, function () {
+            ocargo.drawing.turnRight(function () {
                 ocargo.game.onStopControls();
             });
         }
@@ -532,10 +532,10 @@ ocargo.Game.prototype.setupTabs = function() {
 
             if (tabs.fast.getText() == "Fast") {
                 ocargo.game.onFastControls();
-                ocargo.animation.speedUpAnimation();
+                ocargo.animation.setHighSpeed();
             } else {
                 ocargo.game.onSlowControls();
-                ocargo.animation.resetAnimationLength();
+                ocargo.animation.setRegularSpeed();
             }
 
             if (playTextPreSpeedControl == "Play") {
@@ -921,7 +921,7 @@ ocargo.Game.prototype.onStopControls = function() {
 
     ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Play');
     ocargo.game.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
-    ocargo.animation.resetAnimationLength();
+    ocargo.animation.setRegularSpeed();
     ocargo.game.tabs.step.setEnabled(true);
 
     ocargo.game.tabs.load.setEnabled(true);
