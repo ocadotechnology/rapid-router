@@ -53,7 +53,11 @@ var TURN_AROUND_RADIUS = 12;
 
 var TURN_LEFT_DISTANCE = ocargo.circumference(TURN_LEFT_RADIUS) / 4;
 var TURN_RIGHT_DISTANCE = ocargo.circumference(TURN_RIGHT_RADIUS) / 4;
-var TURN_AROUND_DISTANCE = ocargo.circumference(TURN_AROUND_RADIUS) / 2;
+
+var TURN_AROUND_TURN_LEFT_DISTANCE = TURN_LEFT_DISTANCE / 2;
+var TURN_AROUND_TURN_RIGHT_DISTANCE = TURN_RIGHT_DISTANCE / 2;
+var TURN_AROUND_MOVE_FORWARD_DISTANCE = MOVE_DISTANCE / 2;
+var TURN_AROUND_TURN_AROUND_DISTANCE = ocargo.circumference(TURN_AROUND_RADIUS) / 2;
 
 var VEIL_OF_NIGHT_WIDTH = 4240;
 var VEIL_OF_NIGHT_HEIGHT = 3440;
@@ -158,7 +162,7 @@ ocargo.Character.prototype.scrollToShow = function () {
 
     var characterPositionX = point[0];
     var characterPositionY = point[1];
-    var top = element.scrollTop ;
+    var top = element.scrollTop;
     var left = element.scrollLeft;
     var width = element.offsetWidth;
     var height = element.offsetHeight;
@@ -239,6 +243,7 @@ ocargo.Character.prototype.moveForward = function (callback, scalingFactor) {
     }
 
     var duration = MOVE_DISTANCE / this.speed;
+
     this._moveImage({
         transform: transformation
     }, duration, callback);
@@ -257,6 +262,7 @@ ocargo.Character.prototype.turnLeft = function (callback, scalingFactor) {
     this._moveImage({
         transform: transformation
     }, duration, callback);
+
     if (scalingFactor) {
         this.currentScale *= scalingFactor;
     }
@@ -287,77 +293,118 @@ ocargo.Character.prototype.turnRight = function (callback, scalingFactor) {
     return duration;
 };
 
-ocargo.Character.prototype.turnAround = function (direction, animationLength) {
+ocargo.Character.prototype.turnAround = function (direction) {
     var that = this;
-
-    var adjustedAnimationLength = animationLength - 45;
-    var oneSixteenth = adjustedAnimationLength / 16;
 
     var actions = [];
     var index = 0;
 
     switch (direction) {
         case 'FORWARD':
-            var timePerState = adjustedAnimationLength / 3;
-            actions = [moveForward(timePerState), rotate(timePerState), moveForward(timePerState)];
+            actions = [moveForward(), rotate(), moveForward()];
             break;
         case 'RIGHT':
-            actions = [turnRight(oneSixteenth * 5), rotate(oneSixteenth * 7), turnLeft(adjustedAnimationLength / 4)];
+            actions = [turnRight(), rotate(), turnLeft()];
             break;
         case 'LEFT':
-            actions = [turnLeft(adjustedAnimationLength / 4), rotate(oneSixteenth * 7), turnRight(oneSixteenth * 5)];
+            actions = [turnLeft(), rotate(), turnRight()];
             break;
     }
+
+
+    var duration = 0.0;
+    actions.forEach(function(action) {
+        duration += action.duration;
+    });
+
+    var functions = actions.map(function (action) {
+        return action.function;
+    });
 
     performNextAction();
 
     function performNextAction() {
-        if (index < actions.length) {
-            actions[index]();
+        if (index < functions.length) {
+            functions[index]();
             index++;
         }
     }
 
-    function moveForward(animationLength) {
-        return function () {
-            var moveDistance = -GRID_SPACE_SIZE / 2;
-            var moveTransformation = "... t 0, " + moveDistance;
+    function moveForward() {
+        var moveDistance = TURN_AROUND_MOVE_FORWARD_DISTANCE;
+        var moveTransformation = "... t 0, -" + moveDistance;
+
+        var duration = moveDistance / that.speed;
+
+        var animate = function () {
             that.image.animate({
                 transform: moveTransformation
-            }, animationLength, 'linear', performNextAction);
-        }
+            }, duration, 'linear', performNextAction);
+        };
+
+        return {
+            'duration': duration,
+            'function': animate
+        };
     }
 
-    function rotate(animationLength) {
-        return function () {
-            var transformation = that._turnAroundTransformation();
+    function rotate() {
+        var transformation = that._turnAroundTransformation();
+
+        var duration = TURN_AROUND_TURN_AROUND_DISTANCE / that.speed;
+        duration *= 2;
+
+        var animate = function () {
             that.image.animate({
                 transform: transformation
-            }, animationLength, 'linear', performNextAction);
-        }
+            }, duration, 'linear', performNextAction);
+        };
+
+        return {
+            'duration': duration,
+            'function': animate
+        };
     }
 
-    function turnLeft(animationLength) {
-        return function () {
-            var transformation = that._turnLeftTransformation(45);
+    function turnLeft() {
+        var transformation = that._turnLeftTransformation(45);
+
+        var duration = TURN_AROUND_TURN_LEFT_DISTANCE / that.speed;
+
+        var animate = function () {
             that.image.animate({
                 transform: transformation
-            }, animationLength, 'linear', performNextAction);
-        }
+            }, duration, 'linear', performNextAction);
+        };
+
+        return {
+            'duration': duration,
+            'function': animate
+        };
     }
 
-    function turnRight(animationLength) {
-        return function () {
-            var transformation = that._turnRightTransformation(45);
+    function turnRight() {
+        var transformation = that._turnRightTransformation(45);
+
+        var duration = TURN_AROUND_TURN_RIGHT_DISTANCE / that.speed;
+
+        var animate = function () {
             that.image.animate({
                 transform: transformation
-            }, animationLength, 'linear', performNextAction);
-        }
+            }, duration, 'linear', performNextAction);
+        };
+
+        return {
+            'duration': duration,
+            'function': animate
+        };
     }
 
     if (this.veilOfNight) {
-        this.veilOfNight.turnAround(direction, animationLength);
+        this.veilOfNight.turnAround(direction);
     }
+
+    return duration() + 45;
 };
 
 ocargo.Character.prototype.wait = function (animationLength, callback) {

@@ -713,8 +713,8 @@ ocargo.Drawing = function(startingPosition) {
         return character.turnRight(callback, scalingFactor);
     };
 
-    this.turnAround = function (direction, animationLength) {
-        character.turnAround(direction, animationLength);
+    this.turnAround = function (direction) {
+        return character.turnAround(direction);
     };
 
     this.wait = function (animationLength, callback) {
