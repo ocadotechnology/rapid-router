@@ -47,9 +47,11 @@ ocargo.Animation = function(model, decor) {
 	this.crashed = false;
 	this.speedUp = false;
 
-    this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
 	this.FAST_ANIMATION_LENGTH = 125;
 	this.SLOW_ANIMATION_LENGTH = 500;
+
+    this.genericAnimationLength = this.SLOW_ANIMATION_LENGTH;
+    this.genericSpeed = GRID_SPACE_SIZE / this.SLOW_ANIMATION_LENGTH;
 
     // timer identifier for pausing
     this.playTimer = -1;
@@ -206,6 +208,8 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 	// animation length is either custom set (for each element) or generic
 	var animationLength = animation.animationLength || this.genericAnimationLength;
 	//console.log("Type: " + animation.type + " Description: " + animation.description);
+	var speed = GRID_SPACE_SIZE / animationLength;
+
     switch (animation.type) {
 		case 'callable':
 			animationLength = animation.animationLength || 0;
@@ -217,13 +221,13 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
             // move van
             switch (animation.vanAction) {
             	case 'FORWARD':
-            		ocargo.drawing.moveForward(animationLength, null, this.scalingModifier.shift());
+            		animationLength = ocargo.drawing.moveForward(speed, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_LEFT':
-            		ocargo.drawing.moveLeft(animationLength, null, this.scalingModifier.shift());
+					animationLength = ocargo.drawing.turnLeft(speed, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_RIGHT':
-            		ocargo.drawing.moveRight(animationLength, null, this.scalingModifier.shift());
+					animationLength = ocargo.drawing.turnRight(speed, null, this.scalingModifier.shift());
             		break;
             	case 'TURN_AROUND_FORWARD':
 					animationLength *= 1.5;

@@ -280,7 +280,7 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-            ocargo.drawing.moveForward(ocargo.animation.genericAnimationLength, function () {
+            ocargo.drawing.moveForward(ocargo.animation.genericSpeed, function () {
                 ocargo.game.onStopControls();
             });
         }
@@ -289,7 +289,7 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-            ocargo.drawing.moveLeft(ocargo.animation.genericAnimationLength, function () {
+            ocargo.drawing.turnLeft(ocargo.animation.genericSpeed, function () {
                 ocargo.game.onStopControls();
             });
         }
@@ -298,7 +298,7 @@ ocargo.Game.prototype.setupDirectDriveListeners = function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             ocargo.game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-            ocargo.drawing.moveRight(ocargo.animation.genericAnimationLength, function () {
+            ocargo.drawing.turnRight(ocargo.animation.genericSpeed, function () {
                 ocargo.game.onStopControls();
             });
         }

@@ -701,16 +701,16 @@ ocargo.Drawing = function(startingPosition) {
         character.scrollToShow();
     };
 
-    this.moveForward = function (animationLength, callback, scalingFactor) {
-        character.moveForward(animationLength, callback, scalingFactor);
+    this.moveForward = function (speed, callback, scalingFactor) {
+        return character.moveForward(speed, callback, scalingFactor);
     };
 
-    this.moveLeft = function (animationLength, callback, scalingFactor) {
-        character.moveLeft(animationLength, callback, scalingFactor);
+    this.turnLeft = function (speed, callback, scalingFactor) {
+        return character.turnLeft(speed, callback, scalingFactor);
     };
 
-    this.moveRight = function (animationLength, callback, scalingFactor) {
-        character.moveRight(animationLength, callback, scalingFactor);
+    this.turnRight = function (speed, callback, scalingFactor) {
+        return character.turnRight(speed, callback, scalingFactor);
     };
 
     this.turnAround = function (direction, animationLength) {
