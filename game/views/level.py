@@ -49,7 +49,7 @@ from django.utils import timezone
 from django.utils.safestring import mark_safe
 from helper import renderError, getDecorElement
 from game.cache import cached_level, cached_episode
-from game.models import Level, Attempt, BestAttempt, Workspace
+from game.models import Level, Attempt, Workspace
 from portal import beta
 
 
@@ -237,10 +237,22 @@ def submit_attempt(request):
             attempt.workspace = request.POST.get('workspace')
             attempt.python_workspace = request.POST.get('python_workspace')
 
-            close_and_reset(attempt)
             record_best_attempt(attempt)
+            close_and_reset(attempt)
 
     return HttpResponse('[]', content_type='application/json')
+
+
+def record_best_attempt(attempt):
+    best_attempt = Attempt.objects \
+        .filter(level=attempt.level, student=attempt.student, night_mode=attempt.night_mode, is_best_attempt=True) \
+        .first()
+    if best_attempt and (best_attempt.score <= attempt.score):
+        best_attempt.is_best_attempt = False
+        best_attempt.save()
+        attempt.is_best_attempt = True
+    elif not best_attempt:
+        attempt.is_best_attempt = True
 
 
 def close_and_reset(attempt):
@@ -254,22 +266,6 @@ def close_and_reset(attempt):
                           python_workspace=attempt.python_workspace)
     new_attempt.save()
     return new_attempt
-
-
-def record_best_attempt(attempt):
-    best_attempt = BestAttempt.objects \
-        .filter(level=attempt.level, student=attempt.student, night_mode=attempt.night_mode) \
-        .select_related('attempt') \
-        .first()
-    if best_attempt and (best_attempt.attempt.score <= attempt.score):
-        best_attempt.attempt = attempt
-        best_attempt.save()
-    elif not best_attempt:
-        best_attempt = BestAttempt(level=attempt.level,
-                                   student=attempt.student,
-                                   attempt=attempt,
-                                   night_mode=attempt.night_mode)
-        best_attempt.save()
 
 
 def load_list_of_workspaces(request):

@@ -42,19 +42,18 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('portal', '0046_auto_20150723_1101'),
         ('game', '0054_disable_route_score_for_levels_69_and_74'),
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='BestAttempt',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('night_mode', models.BooleanField(default=False)),
-                ('attempt', models.ForeignKey(to='game.Attempt')),
-                ('level', models.ForeignKey(to='game.Level')),
-                ('student', models.ForeignKey(to='portal.Student')),
-            ],
+        migrations.AddField(
+            model_name='attempt',
+            name='is_best_attempt',
+            field=models.BooleanField(default=False, db_index=True),
+        ),
+        migrations.AlterField(
+            model_name='attempt',
+            name='finish_time',
+            field=models.DateTimeField(null=True, blank=True),
         ),
     ]

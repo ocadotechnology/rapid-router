@@ -177,14 +177,8 @@ class Attempt(models.Model):
     workspace = models.TextField(default="")
     night_mode = models.BooleanField(default=False)
     python_workspace = models.TextField(default="")
+    is_best_attempt = models.BooleanField(db_index=True, default=False)
 
     def elapsed_time(self):
         return self.finish_time - self.start_time
-
-
-class BestAttempt (models.Model):
-    level = models.ForeignKey(Level)
-    student = models.ForeignKey(Student)
-    attempt = models.ForeignKey(Attempt)
-    night_mode = models.BooleanField(default=False)
 
