@@ -52,6 +52,7 @@ from portal.models import Class, Teacher, Student
 Single_Level_Header = ['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
 Multiple_Levels_Header = ['Class', 'Name', 'Total Score', 'Total Time', 'Progress']
 
+
 def scoreboard(request):
     """ Renders a page with students' scores. A teacher can see the the visible classes in their
         school. Student's view is restricted to their class if their teacher enabled the
@@ -98,8 +99,10 @@ def render_no_permission_error(request):
 def is_teacher_with_no_classes_assigned(user, users_classes):
     return user.is_teacher() and len(users_classes) == 0
 
+
 def success_response(form, student_data, headers):
     return form, student_data, headers, None
+
 
 def classes_for(user):
     if user.is_teacher():
@@ -109,6 +112,7 @@ def classes_for(user):
         class_ = user.student.class_field
         return Class.objects.filter(id=class_.id)
 
+
 def scoreboard_view(request, form, student_data, headers):
     context = RequestContext(request, {
         'form': form,
@@ -116,6 +120,7 @@ def scoreboard_view(request, form, student_data, headers):
         'headers': headers,
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
+
 
 def scoreboard_data(user, level_ids, class_ids):
     classes = Class.objects.filter(id__in=class_ids)
@@ -125,6 +130,7 @@ def scoreboard_data(user, level_ids, class_ids):
     # If there are more than one level to show, show the total score, total time and score of each level
     # Otherwise, show the details of the level (the score, total time, start time and end time)
     return data_and_headers_for(students, level_ids)
+
 
 def data_and_headers_for(students, level_ids):
     levels_sorted = sorted_levels_by(level_ids)
@@ -146,6 +152,7 @@ def data_and_headers_for(students, level_ids):
 def sorted_levels_by(level_ids):
     return sort_levels(Level.objects.filter(id__in=level_ids))
 
+
 def first(elements):
     if len(elements) == 0:
         raise ValueError("Collection is empty")
@@ -161,8 +168,10 @@ def are_classes_viewable_by_teacher(class_ids, user):
             return False
     return True
 
+
 def authorised_student_access(class_, class_ids):
     return len(class_ids) == 1 and next(iter(class_ids)) == class_
+
 
 def students_visible_to_student(student):
     class_ = student.class_field
@@ -171,6 +180,7 @@ def students_visible_to_student(student):
     else:
         return [student]
 
+
 def students_visible_to_user(user, classes):
     if user.is_teacher():
         return students_of_classes(classes)
@@ -178,8 +188,10 @@ def students_visible_to_user(user, classes):
         student = user.student
         return students_visible_to_student(student)
 
+
 def students_of_classes(classes):
     return Student.objects.filter(class_field__in=classes).select_related('class_field', 'user__user')
+
 
 def is_valid_request(user, class_ids):
     if len(class_ids) == 0:
@@ -191,6 +203,7 @@ def is_valid_request(user, class_ids):
     else:
         return False
     return True
+
 
 def one_row(student, level):
     best_attempt = Attempt.objects.filter(level=level, student=student, is_best_attempt=True).first()
@@ -204,10 +217,12 @@ def one_row(student, level):
     else:
         return StudentRow(student=student)
 
+
 # Return rows of student object with values for progress bar and scores of each selected level
 def multiple_students_multiple_levels(students, levels_sorted):
     result = map(lambda student: student_row(levels_sorted, student), students)
     return result
+
 
 def student_row(levels_sorted, student):
     threshold = 0.5
@@ -218,7 +233,9 @@ def student_row(levels_sorted, student):
     scores = []
     times = []
     progress = (0.0, 0.0, 0.0)
-    best_attempts = Attempt.objects.filter(level__in=levels_sorted, student=student, is_best_attempt=True).select_related('level')
+    best_attempts = Attempt.objects.filter(level__in=levels_sorted,
+                                           student=student,
+                                           is_best_attempt=True).select_related('level')
     if best_attempts:
         attempts_dict = {best_attempt.level.id: best_attempt for best_attempt in best_attempts}
         for level in levels_sorted:
@@ -227,7 +244,7 @@ def student_row(levels_sorted, student):
                 num_all += 1
                 max_score = 10 if attempt.level.disable_route_score else 20
                 if attempt.score:
-                    if attempt.score/max_score >= threshold:
+                    if attempt.score / max_score >= threshold:
                         num_finished += 1
                     else:
                         num_attempted += 1
@@ -258,8 +275,10 @@ def student_row(levels_sorted, student):
                      scores=scores)
     return row
 
+
 def compute_proportions(num_levels, num_started, num_attempted, num_finished):
-    return (num_started/num_levels)*100, (num_attempted/num_levels)*100, (num_finished/num_levels)*100
+    return (num_started / num_levels) * 100, (num_attempted / num_levels) * 100, (num_finished / num_levels) * 100
+
 
 # Returns rows of student object with score, start time, end time of the level
 def multiple_students_one_level(students, level):
@@ -270,11 +289,14 @@ def multiple_students_one_level(students, level):
 
     return student_data
 
+
 def is_viewable(class_):
     return class_.classmates_data_viewable
 
+
 def chop_miliseconds(delta):
     return delta - timedelta(microseconds=delta.microseconds)
+
 
 class StudentRow:
     def __init__(self, *args, **kwargs):
@@ -284,10 +306,11 @@ class StudentRow:
         self.id = student.id
         self.total_time = kwargs.get('total_time', timedelta(0))
         self.total_score = kwargs.get('total_score', 0.0)
-        self.progress = kwargs.get('progress', (0.0,0.0,0.0))
+        self.progress = kwargs.get('progress', (0.0, 0.0, 0.0))
         self.scores = kwargs.get('scores', [])
         self.start_time = kwargs.get('start_time', "")
         self.finish_time = kwargs.get('finish_time', "")
+
 
 class User:
     def __init__(self, profile):
@@ -306,4 +329,3 @@ class User:
 
     def is_independent_student(self):
         return hasattr(self.profile, 'student') and self.student.is_independent()
-
