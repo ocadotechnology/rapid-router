@@ -54,22 +54,31 @@ var TURN_AROUND_RADIUS = 12;
 var TURN_LEFT_DISTANCE = ocargo.circumference(TURN_LEFT_RADIUS) / 4;
 var TURN_RIGHT_DISTANCE = ocargo.circumference(TURN_RIGHT_RADIUS) / 4;
 
-var TURN_AROUND_TURN_LEFT_DISTANCE = TURN_LEFT_DISTANCE / 2;
-var TURN_AROUND_TURN_RIGHT_DISTANCE = TURN_RIGHT_DISTANCE / 2;
+var FULL_TURN_ANGLE = 90;
+var CRASH_TURN_ANGLE = 75;
+var TURN_AROUND_TURN_ANGLE = 45;
+var CRASH_INTO_COW_TURN_ANGLE = 15;
+
+ocargo.fractionOfTurnLeftDistance = function (angle) {
+    return TURN_LEFT_DISTANCE * (angle / FULL_TURN_ANGLE);
+};
+
+ocargo.fractionOfTurnRightDistance = function (angle) {
+    return TURN_RIGHT_DISTANCE * (angle / FULL_TURN_ANGLE);
+};
+
+var TURN_AROUND_TURN_LEFT_DISTANCE = ocargo.fractionOfTurnLeftDistance(TURN_AROUND_TURN_ANGLE);
+var TURN_AROUND_TURN_RIGHT_DISTANCE = ocargo.fractionOfTurnRightDistance(TURN_AROUND_TURN_ANGLE);
 var TURN_AROUND_MOVE_FORWARD_DISTANCE = MOVE_DISTANCE / 2;
 var TURN_AROUND_TURN_AROUND_DISTANCE = ocargo.circumference(TURN_AROUND_RADIUS) / 2;
 
-var FULL_TURN_ANGLE = 90;
-var CRASH_TURN_ANGLE = 75;
-var CRASH_INTO_COW_TURN_ANGLE = 15;
-
 var CRASH_MOVE_FORWARD_DISTANCE = 0.8 * MOVE_DISTANCE;
-var CRASH_TURN_LEFT_DISTANCE = TURN_LEFT_DISTANCE * (CRASH_TURN_ANGLE / FULL_TURN_ANGLE);
-var CRASH_TURN_RIGHT_DISTANCE = TURN_RIGHT_DISTANCE * (CRASH_TURN_ANGLE / FULL_TURN_ANGLE);
+var CRASH_TURN_LEFT_DISTANCE = ocargo.fractionOfTurnLeftDistance(CRASH_TURN_ANGLE);
+var CRASH_TURN_RIGHT_DISTANCE = ocargo.fractionOfTurnRightDistance(CRASH_TURN_ANGLE);
 
 var CRASH_INTO_COW_MOVE_FORWARDS_DISTANCE = (MOVE_DISTANCE - ROAD_WIDTH) / 2;
-var CRASH_INTO_COW_TURN_LEFT_DISTANCE = TURN_LEFT_DISTANCE * (CRASH_INTO_COW_TURN_ANGLE / FULL_TURN_ANGLE);
-var CRASH_INTO_COW_TURN_RIGHT_DISTANCE = TURN_RIGHT_DISTANCE * (CRASH_INTO_COW_TURN_ANGLE / FULL_TURN_ANGLE);
+var CRASH_INTO_COW_TURN_LEFT_DISTANCE = ocargo.fractionOfTurnLeftDistance(CRASH_INTO_COW_TURN_ANGLE);
+var CRASH_INTO_COW_TURN_RIGHT_DISTANCE = ocargo.fractionOfTurnRightDistance(CRASH_INTO_COW_TURN_ANGLE);
 
 var VEIL_OF_NIGHT_WIDTH = 4240;
 var VEIL_OF_NIGHT_HEIGHT = 3440;
@@ -379,7 +388,7 @@ ocargo.Character.prototype.turnAround = function (direction) {
     }
 
     function turnLeft(easing) {
-        var transformation = that._turnLeftTransformation(45);
+        var transformation = that._turnLeftTransformation(TURN_AROUND_TURN_ANGLE);
 
         var duration = that._durationOf(TURN_AROUND_TURN_LEFT_DISTANCE);
 
@@ -396,7 +405,7 @@ ocargo.Character.prototype.turnAround = function (direction) {
     }
 
     function turnRight(easing) {
-        var transformation = that._turnRightTransformation(45);
+        var transformation = that._turnRightTransformation(TURN_AROUND_TURN_ANGLE);
 
         var duration = that._durationOf(TURN_AROUND_TURN_RIGHT_DISTANCE);
 
