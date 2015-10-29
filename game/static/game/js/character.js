@@ -404,7 +404,7 @@ ocargo.Character.prototype.turnAround = function (direction) {
         this.veilOfNight.turnAround(direction);
     }
 
-    return duration() + 45;
+    return duration + 45;
 };
 
 ocargo.Character.prototype.wait = function (animationLength, callback) {
