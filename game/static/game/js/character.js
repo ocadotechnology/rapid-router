@@ -346,7 +346,7 @@ ocargo.Character.prototype.turnAround = function (direction) {
         var moveDistance = TURN_AROUND_MOVE_FORWARD_DISTANCE;
         var moveTransformation = "... t 0, -" + moveDistance;
 
-        var duration = moveDistance / that.speed;
+        var duration = that._durationOf(moveDistance);
 
         var animate = function () {
             that.image.animate({
@@ -355,15 +355,15 @@ ocargo.Character.prototype.turnAround = function (direction) {
         };
 
         return {
-            'duration': duration,
-            'function': animate
+            duration: duration,
+            function: animate
         };
     }
 
     function rotate() {
         var transformation = that._turnAroundTransformation();
 
-        var duration = TURN_AROUND_TURN_AROUND_DISTANCE / that.speed;
+        var duration = that._durationOf(TURN_AROUND_TURN_AROUND_DISTANCE);
         duration *= 2;
 
         var animate = function () {
@@ -373,15 +373,15 @@ ocargo.Character.prototype.turnAround = function (direction) {
         };
 
         return {
-            'duration': duration,
-            'function': animate
+            duration: duration,
+            function: animate
         };
     }
 
     function turnLeft(easing) {
         var transformation = that._turnLeftTransformation(45);
 
-        var duration = TURN_AROUND_TURN_LEFT_DISTANCE / that.speed;
+        var duration = that._durationOf(TURN_AROUND_TURN_LEFT_DISTANCE);
 
         var animate = function () {
             that.image.animate({
@@ -390,15 +390,15 @@ ocargo.Character.prototype.turnAround = function (direction) {
         };
 
         return {
-            'duration': duration,
-            'function': animate
+            duration: duration,
+            function: animate
         };
     }
 
     function turnRight(easing) {
         var transformation = that._turnRightTransformation(45);
 
-        var duration = TURN_AROUND_TURN_RIGHT_DISTANCE / that.speed;
+        var duration = that._durationOf(TURN_AROUND_TURN_RIGHT_DISTANCE);
 
         var animate = function () {
             that.image.animate({
@@ -407,8 +407,8 @@ ocargo.Character.prototype.turnAround = function (direction) {
         };
 
         return {
-            'duration': duration,
-            'function': animate
+            duration: duration,
+            function: animate
         };
     }
 
