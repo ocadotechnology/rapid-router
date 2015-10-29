@@ -688,11 +688,11 @@ ocargo.Drawing = function(startingPosition) {
         }
     };
 
-    this.transitionDestination = function (destinationID, visited, animationLength) {
+    this.transitionDestination = function (destinationID, visited, duration) {
         var destinationRect = destinationImages[destinationID].rect;
         var colour = visited ? DESTINATION_VISITED_COLOUR : DESTINATION_NOT_VISITED_COLOUR;
 
-        destinationRect.animate({'stroke': colour}, animationLength, 'linear');
+        destinationRect.animate({'stroke': colour}, duration, 'linear');
     };
 
     this.scrollToShowCharacter = function() {
@@ -715,12 +715,12 @@ ocargo.Drawing = function(startingPosition) {
         return character.turnAround(direction);
     };
 
-    this.wait = function (animationLength, callback) {
-        character.wait(animationLength, callback);
+    this.wait = function (duration, callback) {
+        character.wait(duration, callback);
     };
 
-    this.deliver = function (destinationId, animationLength) {
-        this.transitionDestination(destinationId, true, animationLength);
+    this.deliver = function (destinationId, duration) {
+        this.transitionDestination(destinationId, true, duration);
     };
 
     this.collisionWithCow = function (previousNode, currentNode, attemptedAction) {

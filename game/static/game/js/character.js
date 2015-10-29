@@ -419,11 +419,11 @@ ocargo.Character.prototype.turnAround = function (direction) {
     return duration;
 };
 
-ocargo.Character.prototype.wait = function (animationLength, callback) {
+ocargo.Character.prototype.wait = function (callback) {
     //no movement for now
     this._moveImage({
         transform: '... t 0,0'
-    }, animationLength, callback);
+    }, this._moveForwardsDuration(), callback);
 };
 
 ocargo.Character.prototype._moveImage = function (attr, animationLength, callback) {

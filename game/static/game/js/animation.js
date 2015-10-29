@@ -63,7 +63,7 @@ ocargo.Animation = function(model, decor) {
     ocargo.drawing.renderTrafficLights(this.model.trafficLights);
 	ocargo.drawing.renderCharacter();
 
-     this.updateFuelGauge(100);
+     this._updateFuelGauge(100);
 };
 
 ocargo.Animation.prototype.isFinished = function() {
@@ -222,7 +222,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			duration = 0;
 			animation.functionCall(this.animationDuration / 2);
 			break;
-		case 'vanMovement':
+		case 'van':
 			ocargo.drawing.scrollToShowCharacter();
 
 			// move van
@@ -245,16 +245,8 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 				case 'TURN_AROUND_LEFT':
 					duration = ocargo.drawing.turnAround('LEFT');
 					break;
-			}
-			duration = this._addPause(duration);
-			break;
-		case 'van':
-			ocargo.drawing.scrollToShowCharacter();
-
-			// move van
-			switch (animation.vanAction) {
-            	case 'WAIT':
-            		ocargo.drawing.wait(duration);
+				case 'WAIT':
+            		ocargo.drawing.wait();
             		break;
 				case 'PUFFUP':
 					this.scalingModifier.push(2);
@@ -281,11 +273,14 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 					break;
             	case 'OBSERVE':
             		break;
-            }
-            // Check if fuel update present
-            if (typeof animation.fuel != 'undefined') {
-                this.updateFuelGauge(animation.fuel);
-            }
+			}
+
+			if (animation.pause) {
+				duration = this._addPause(duration);
+			}
+
+			this._updateFuelIfPresent(animation);
+
 			break;
 		case 'popup':
 			var title = "";
@@ -401,7 +396,13 @@ ocargo.Animation.prototype._extractCowAt = function(coordinate) {
     }
 };
 
-ocargo.Animation.prototype.updateFuelGauge = function(fuelPercentage) {
+ocargo.Animation.prototype._updateFuelIfPresent = function(animation) {
+	if (typeof animation.fuel != 'undefined') {
+		this._updateFuelGauge(animation.fuel);
+	}
+};
+
+ocargo.Animation.prototype._updateFuelGauge = function(fuelPercentage) {
     var degrees = ((fuelPercentage / 100) * 240) - 120;
     var rotation = 'rotate(' + degrees + 'deg)';
     document.getElementById('fuelGaugePointer').style.transform = rotation;
