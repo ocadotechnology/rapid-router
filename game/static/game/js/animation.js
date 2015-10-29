@@ -209,17 +209,17 @@ ocargo.Animation.prototype._addPause = function(duration) {
 };
 
 ocargo.Animation.prototype.performAnimation = function(animation) {
-	// animation length is either custom set (for each element) or generic
-	var animationDuration = animation.animationLength || this.animationDuration;
+	// Duration is either custom set (for each element) or generic
+	var duration = animation.animationLength || this.animationDuration;
 	//console.log("Type: " + animation.type + " Description: " + animation.description);
 
     switch (animation.type) {
 		case 'callable':
-			animationDuration = animation.animationLength || 0;
+			duration = animation.animationLength || 0;
 			animation.functionCall();
 			break;
 		case 'crashSound':
-			animationDuration = 0;
+			duration = 0;
 			animation.functionCall(this.animationDuration / 2);
 			break;
 		case 'van':
@@ -228,31 +228,31 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
             // move van
             switch (animation.vanAction) {
             	case 'FORWARD':
-            		animationDuration = ocargo.drawing.moveForward(null, this.scalingModifier.shift());
-					animationDuration = this._addPause(animationDuration);
+            		duration = ocargo.drawing.moveForward(null, this.scalingModifier.shift());
+					duration = this._addPause(duration);
 					break;
             	case 'TURN_LEFT':
-					animationDuration = ocargo.drawing.turnLeft(null, this.scalingModifier.shift());
-					animationDuration = this._addPause(animationDuration);
+					duration = ocargo.drawing.turnLeft(null, this.scalingModifier.shift());
+					duration = this._addPause(duration);
             		break;
             	case 'TURN_RIGHT':
-					animationDuration = ocargo.drawing.turnRight(null, this.scalingModifier.shift());
-					animationDuration = this._addPause(animationDuration);
+					duration = ocargo.drawing.turnRight(null, this.scalingModifier.shift());
+					duration = this._addPause(duration);
             		break;
             	case 'TURN_AROUND_FORWARD':
-            		animationDuration = ocargo.drawing.turnAround('FORWARD');
-					animationDuration = this._addPause(animationDuration);
+            		duration = ocargo.drawing.turnAround('FORWARD');
+					duration = this._addPause(duration);
             		break;
             	case 'TURN_AROUND_RIGHT':
-					animationDuration = ocargo.drawing.turnAround('RIGHT');
-					animationDuration = this._addPause(animationDuration);
+					duration = ocargo.drawing.turnAround('RIGHT');
+					duration = this._addPause(duration);
             		break;
             	case 'TURN_AROUND_LEFT':
-            		animationDuration = ocargo.drawing.turnAround('LEFT');
-					animationDuration = this._addPause(animationDuration);
+            		duration = ocargo.drawing.turnAround('LEFT');
+					duration = this._addPause(duration);
             		break;
             	case 'WAIT':
-            		ocargo.drawing.wait(animationDuration);
+            		ocargo.drawing.wait(duration);
             		break;
 				case 'PUFFUP':
 					this.scalingModifier.push(2);
@@ -265,17 +265,17 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
                     break;
             	case 'CRASH':
 					this.crashed = true;
-            		animationDuration = ocargo.drawing.crash(animation.previousNode, animation.currentNode,
+            		duration = ocargo.drawing.crash(animation.previousNode, animation.currentNode,
             			animation.attemptedAction, animation.startNode);
             		break;
 				case 'COLLISION_WITH_COW':
 					this.crashed = true;
 					//Update animationLength with time van moves before crashing
-					animationDuration = ocargo.drawing.collisionWithCow(animation.previousNode, animation.currentNode,
+					duration = ocargo.drawing.collisionWithCow(animation.previousNode, animation.currentNode,
 						animation.attemptedAction, animation.startNode);
 					break;
             	case 'DELIVER':
-            		ocargo.drawing.deliver(animation.destinationID, animationDuration);
+            		ocargo.drawing.deliver(animation.destinationID, duration);
 					break;
             	case 'OBSERVE':
             		break;
@@ -370,23 +370,23 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 	        }
 			break;
 		case 'trafficlight':
-			ocargo.drawing.transitionTrafficLight(animation.id, animation.colour, animationDuration/2);
+			ocargo.drawing.transitionTrafficLight(animation.id, animation.colour, duration/2);
 			break;
 		case 'cow':
             this.numberOfCowsOnMap++;
-			var activeCow = ocargo.drawing.renderCow(animation.id, animation.coordinate, animation.node, animationDuration, animation.cowType);
+			var activeCow = ocargo.drawing.renderCow(animation.id, animation.coordinate, animation.node, duration, animation.cowType);
 			this.activeCows.push(activeCow);
 			break;
         case 'cow_leave':
             this.numberOfCowsOnMap--;
 			var cow = this._extractCowAt(animation.coordinate);
-            ocargo.drawing.removeCow(cow, animationDuration);  // remove it from drawing
+            ocargo.drawing.removeCow(cow, duration);  // remove it from drawing
 			break;
 		case 'console':
 			ocargo.pythonControl.appendToConsole(animation.text);
 			break;
 	}
-	return animationDuration;
+	return duration;
 };
 
 ocargo.Animation.prototype._extractCowAt = function(coordinate) {
