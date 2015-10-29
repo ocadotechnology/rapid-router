@@ -49,6 +49,7 @@ from portal.tests.utils.teacher import signup_teacher_directly
 
 Headers = ['Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'Attempted levels %', 'Finished levels %']
 
+
 class ScoreboardTestCase(TestCase):
 
     def test_teacher_multiple_students_multiple_levels(self):
@@ -307,18 +308,20 @@ def assert_student_row_single_level(student_row, class_name, student_name, total
 
 
 def create_attempt(student, level, score):
-    Attempt.objects.create(start_time=datetime.fromtimestamp(1435305072),
-                           finish_time=datetime.fromtimestamp(1435305072),
-                           level=level,
-                           student=student,
-                           score=score)
-
+    attempt = Attempt.objects.create(finish_time=datetime.fromtimestamp(1435305072),
+                                     level=level,
+                                     student=student,
+                                     score=score,
+                                     is_best_attempt=True)
+    attempt.start_time=datetime.fromtimestamp(1435305072)
+    attempt.save()
 
 def ids_of_levels_named(names):
     levels = Level.objects.filter(name__in=names)
     assert_that(len(levels), equal_to(len(names)))
     level_ids = map(lambda x: x.id, levels)
     return level_ids
+
 
 def set_up_data(classmates_data_viewable=False):
     email, password = signup_teacher_directly()

@@ -236,7 +236,8 @@ def student_row(levels_sorted, student):
 
                 total_score += attempt.score if attempt.score is not None else 0
 
-                times.append(chop_miliseconds(attempt.elapsed_time()))
+                elapsed_time = attempt.elapsed_time()
+                times.append(chop_miliseconds(elapsed_time))
                 # '-' is used to show that the student has started the level but has not submitted any attempts
 
                 scores.append(attempt.score if attempt.score is not None else '-')
