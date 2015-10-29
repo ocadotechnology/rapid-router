@@ -73,19 +73,15 @@ var TURN_AROUND_MOVE_FORWARD_DISTANCE = MOVE_DISTANCE / 2;
 var TURN_AROUND_TURN_AROUND_DISTANCE = ocargo.circumference(TURN_AROUND_RADIUS) / 2;
 
 var CRASH_MOVE_FORWARD_DISTANCE = 0.8 * MOVE_DISTANCE;
-var CRASH_TURN_LEFT_DISTANCE = ocargo.fractionOfTurnLeftDistance(CRASH_TURN_ANGLE);
-var CRASH_TURN_RIGHT_DISTANCE = ocargo.fractionOfTurnRightDistance(CRASH_TURN_ANGLE);
 
 var CRASH_INTO_COW_MOVE_FORWARDS_DISTANCE = (MOVE_DISTANCE - ROAD_WIDTH) / 2;
-var CRASH_INTO_COW_TURN_LEFT_DISTANCE = ocargo.fractionOfTurnLeftDistance(CRASH_INTO_COW_TURN_ANGLE);
-var CRASH_INTO_COW_TURN_RIGHT_DISTANCE = ocargo.fractionOfTurnRightDistance(CRASH_INTO_COW_TURN_ANGLE);
 
 var VEIL_OF_NIGHT_WIDTH = 4240;
 var VEIL_OF_NIGHT_HEIGHT = 3440;
 
 var VEIL_OF_NIGHT_URL = 'characters/top_view/VeilOfNight.svg';
 
-ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, startingPosition, speed, nightMode, isVeilOfNight) {
+ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, startingPosition, nightMode, isVeilOfNight) {
     this.currentScale = 1;
 
     this.imageUrl = imageUrl;
@@ -100,7 +96,6 @@ ocargo.Character = function (paper, imageUrl, wreckageImageUrl, width, height, s
     this.startingPosition = startingPosition;
     this.nightMode = nightMode;
     this.isVeilOfNight = isVeilOfNight;
-    this.speed = speed;
 
     if (this.nightMode) {
         this.veilOfNight = new ocargo.Character(paper, VEIL_OF_NIGHT_URL, null,
@@ -263,26 +258,22 @@ ocargo.Character.prototype.moveForward = function (callback, scalingFactor) {
         transformation += "s" + scalingFactor;
     }
 
-    var duration = this._durationOf(MOVE_DISTANCE);
-
     this._moveImage({
         transform: transformation
-    }, duration, callback);
+    }, this.manoeuvreDuration, callback);
 
     if (this.veilOfNight) {
         this.veilOfNight.moveForward(null, scalingFactor);
     }
-    return duration;
+    return this.manoeuvreDuration;
 };
 
 ocargo.Character.prototype.turnLeft = function (callback, scalingFactor) {
     var transformation = this._turnLeftTransformation(FULL_TURN_ANGLE, scalingFactor);
 
-    var duration = this._durationOf(TURN_LEFT_DISTANCE);
-
     this._moveImage({
         transform: transformation
-    }, duration, callback);
+    }, this.manoeuvreDuration, callback);
 
     if (scalingFactor) {
         this.currentScale *= scalingFactor;
@@ -292,17 +283,15 @@ ocargo.Character.prototype.turnLeft = function (callback, scalingFactor) {
         this.veilOfNight.turnLeft(null, scalingFactor);
     }
 
-    return duration;
+    return this.manoeuvreDuration;
 };
 
 ocargo.Character.prototype.turnRight = function (callback, scalingFactor) {
     var transformation = this._turnRightTransformation(FULL_TURN_ANGLE, scalingFactor);
 
-    var duration = this._durationOf(TURN_RIGHT_DISTANCE);
-
     this._moveImage({
         transform: transformation
-    }, duration, callback);
+    }, this.manoeuvreDuration, callback);
     if (scalingFactor) {
         this.currentScale *= scalingFactor;
     }
@@ -311,7 +300,7 @@ ocargo.Character.prototype.turnRight = function (callback, scalingFactor) {
         this.veilOfNight.turnRight(null, scalingFactor);
     }
 
-    return duration;
+    return this.manoeuvreDuration;
 };
 
 ocargo.Character.prototype.turnAround = function (direction) {
@@ -386,7 +375,6 @@ ocargo.Character.prototype.turnAround = function (direction) {
             function: animate
         };
     }
-
     function turnLeft(easing) {
         var transformation = that._turnLeftTransformation(TURN_AROUND_TURN_ANGLE);
 
@@ -535,30 +523,23 @@ ocargo.Character.prototype._turnAroundTransformation = function () {
 };
 
 ocargo.Character.prototype.crash = function (attemptedAction) {
-    var distance = 0;
-
     if (attemptedAction === "FORWARD") {
-        distance = CRASH_MOVE_FORWARD_DISTANCE;
-        var transformation = "... t 0, " + (-distance);
+        var transformation = "... t 0, " + (-CRASH_MOVE_FORWARD_DISTANCE);
     } else if (attemptedAction === "TURN_LEFT") {
-        distance = CRASH_TURN_LEFT_DISTANCE;
         var transformation = this._turnLeftTransformation(CRASH_TURN_ANGLE);
     } else if (attemptedAction === "TURN_RIGHT") {
-        distance = CRASH_TURN_RIGHT_DISTANCE;
         var transformation = this._turnRightTransformation(CRASH_TURN_ANGLE);
     }
 
-    var duration = this._durationOf(distance);
-
     this._moveImage({
         transform: transformation
-    }, duration, this._animateCollisionWithFire());
+    }, this.manoeuvreDuration, this._animateCollisionWithFire());
 
     if (this.veilOfNight) {
         this.veilOfNight.crash(attemptedAction);
     }
 
-    return duration + this._collisionDuration() + this._collisionDelay();
+    return this.manoeuvreDuration + this._collisionDuration() + this._collisionDelay();
 };
 
 ocargo.Character.prototype.collisionWithCow = function (previousNode, currentNode, attemptedAction) {
@@ -568,23 +549,20 @@ ocargo.Character.prototype.collisionWithCow = function (previousNode, currentNod
         var scaledDistance = distance / this.currentScale;
         var transformation = "... t 0, " + (-scaledDistance);
     } else if (attemptedAction === "TURN_LEFT") {
-        distance = CRASH_INTO_COW_TURN_LEFT_DISTANCE;
         var transformation = this._turnLeftTransformation(CRASH_INTO_COW_TURN_ANGLE);
     } else if (attemptedAction === "TURN_RIGHT") {
-        distance = CRASH_INTO_COW_TURN_RIGHT_DISTANCE;
         var transformation = this._turnRightTransformation(CRASH_INTO_COW_TURN_ANGLE);
     }
-    var duration = this._durationOf(distance);
 
     this._moveImage({
         transform: transformation
-    }, duration, this._animateCollisionNoFire());
+    }, this.manoeuvreDuration, this._animateCollisionNoFire());
 
     if (this.veilOfNight) {
         this.veilOfNight.collisionWithCow(previousNode, currentNode, attemptedAction);
     }
 
-    return duration + this._collisionDuration() + this._collisionDelay();
+    return this.manoeuvreDuration + this._collisionDuration() + this._collisionDelay();
 };
 
 ocargo.Character.prototype._moveForwardsDuration = function () {
@@ -630,10 +608,14 @@ ocargo.Character.prototype.reset = function () {
     }
 };
 
-ocargo.Character.prototype.setSpeed = function (speed) {
-    this.speed = speed;
+ocargo.Character.prototype.setManoeuvreDuration = function (duration) {
+    this.manoeuvreDuration = duration;
+};
+
+ocargo.Character.prototype._speed = function () {
+    return MOVE_DISTANCE / this.manoeuvreDuration
 };
 
 ocargo.Character.prototype._durationOf = function (distance) {
-    return distance / this.speed;
+    return distance / this._speed();
 };

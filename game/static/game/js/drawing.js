@@ -731,8 +731,8 @@ ocargo.Drawing = function(startingPosition) {
         return character.crash(attemptedAction)
     };
 
-    this.setMovementSpeed = function (speed) {
-        character.setSpeed(speed);
+    this.setCharacterManoeuvreDuration = function (speed) {
+        character.setManoeuvreDuration(speed);
     };
 };
 

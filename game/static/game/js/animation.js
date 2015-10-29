@@ -205,7 +205,7 @@ ocargo.Animation.prototype.startNewTimestamp = function() {
 };
 
 ocargo.Animation.prototype._addPause = function(duration) {
-	return duration + this.animationDuration;
+	return duration + (this.animationDuration * 0.8);
 };
 
 ocargo.Animation.prototype.performAnimation = function(animation) {
@@ -462,6 +462,5 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 
 ocargo.Animation.prototype.setAnimationDuration = function(duration) {
 	this.animationDuration = duration;
-    var movementSpeed = GRID_SPACE_SIZE / this.animationDuration;
-	ocargo.drawing.setMovementSpeed(movementSpeed);
-}
+	ocargo.drawing.setCharacterManoeuvreDuration(this.animationDuration);
+};
