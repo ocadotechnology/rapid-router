@@ -295,6 +295,20 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         model.van.crashStatus = 'CRASHED';
 
         ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionType: 'playSound',
+            functionCall: ocargo.sound.stop_engine,
+            description: 'stopping engine'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'crashSound',
+            functionType: 'playSound',
+            functionCall: ocargo.sound.crash,
+            description: 'crash sound'
+        });
+
+        ocargo.animation.appendAnimation({
             type: 'van',
             vanAction: vanAction,
             previousNode: model.van.getPosition().previousNode,
@@ -306,20 +320,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         });
 
         model.incrementMovementTime();
-
-        ocargo.animation.appendAnimation({
-            type: 'callable',
-            functionType: 'playSound',
-            functionCall: ocargo.sound.stop_engine,
-            description: 'stopping engine'
-        });
-
-        ocargo.animation.appendAnimation({
-            type: 'callable',
-            functionType: 'playSound',
-            functionCall: ocargo.sound.crash,
-            description: 'crash sound'
-        });
 
         model.incrementTime();
 

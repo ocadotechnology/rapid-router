@@ -51,8 +51,6 @@ var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING;
 var DEFAULT_CHARACTER_WIDTH = 40;
 var DEFAULT_CHARACTER_HEIGHT = 20;
 
-var ROAD_WIDTH = GRID_SPACE_SIZE * 0.7;
-
 var COW_WIDTH = 50;
 var COW_HEIGHT = 50;
 
@@ -725,12 +723,12 @@ ocargo.Drawing = function(startingPosition) {
         this.transitionDestination(destinationId, true, animationLength);
     };
 
-    this.collisionWithCow = function (animationLength, previousNode, currentNode, attemptedAction) {
-        character.collisionWithCow(animationLength, previousNode, currentNode, attemptedAction)
+    this.collisionWithCow = function (previousNode, currentNode, attemptedAction) {
+        return character.collisionWithCow(previousNode, currentNode, attemptedAction)
     };
 
-    this.crash = function (animationLength, previousNode, currentNode, attemptedAction) {
-        character.crash(animationLength, attemptedAction)
+    this.crash = function (previousNode, currentNode, attemptedAction) {
+        return character.crash(attemptedAction)
     };
 
     this.setMovementSpeed = function (speed) {

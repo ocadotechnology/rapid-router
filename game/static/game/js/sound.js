@@ -129,7 +129,15 @@ ocargo.sound.sound_horn = function() {
     safePlay(ocargo.sound.hornSound);
 };
 
-ocargo.sound.crash = function() {
+ocargo.sound.crash = function (animationDuration) {
+    setTimeout(ocargo.sound._crashSound, animationDuration);
+};
+
+ocargo.sound.crashIntoCow = function (animationDuration) {
+    ocargo.sound._crashSound();
+};
+
+ocargo.sound._crashSound = function () {
     if (CHARACTER_NAME === 'Van') {
         safePlay(ocargo.sound.crashSound);
     } else {

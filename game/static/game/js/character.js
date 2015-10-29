@@ -59,6 +59,18 @@ var TURN_AROUND_TURN_RIGHT_DISTANCE = TURN_RIGHT_DISTANCE / 2;
 var TURN_AROUND_MOVE_FORWARD_DISTANCE = MOVE_DISTANCE / 2;
 var TURN_AROUND_TURN_AROUND_DISTANCE = ocargo.circumference(TURN_AROUND_RADIUS) / 2;
 
+var FULL_TURN_ANGLE = 90;
+var CRASH_TURN_ANGLE = 75;
+var CRASH_INTO_COW_TURN_ANGLE = 15;
+
+var CRASH_MOVE_FORWARD_DISTANCE = 0.8 * MOVE_DISTANCE;
+var CRASH_TURN_LEFT_DISTANCE = TURN_LEFT_DISTANCE * (CRASH_TURN_ANGLE / FULL_TURN_ANGLE);
+var CRASH_TURN_RIGHT_DISTANCE = TURN_RIGHT_DISTANCE * (CRASH_TURN_ANGLE / FULL_TURN_ANGLE);
+
+var CRASH_INTO_COW_MOVE_FORWARDS_DISTANCE = (MOVE_DISTANCE - ROAD_WIDTH) / 2;
+var CRASH_INTO_COW_TURN_LEFT_DISTANCE = TURN_LEFT_DISTANCE * (CRASH_INTO_COW_TURN_ANGLE / FULL_TURN_ANGLE);
+var CRASH_INTO_COW_TURN_RIGHT_DISTANCE = TURN_RIGHT_DISTANCE * (CRASH_INTO_COW_TURN_ANGLE / FULL_TURN_ANGLE);
+
 var VEIL_OF_NIGHT_WIDTH = 4240;
 var VEIL_OF_NIGHT_HEIGHT = 3440;
 
@@ -242,7 +254,7 @@ ocargo.Character.prototype.moveForward = function (callback, scalingFactor) {
         transformation += "s" + scalingFactor;
     }
 
-    var duration = MOVE_DISTANCE / this.speed;
+    var duration = this._durationOf(MOVE_DISTANCE);
 
     this._moveImage({
         transform: transformation
@@ -255,9 +267,9 @@ ocargo.Character.prototype.moveForward = function (callback, scalingFactor) {
 };
 
 ocargo.Character.prototype.turnLeft = function (callback, scalingFactor) {
-    var transformation = this._turnLeftTransformation(90, scalingFactor);
+    var transformation = this._turnLeftTransformation(FULL_TURN_ANGLE, scalingFactor);
 
-    var duration = TURN_LEFT_DISTANCE / this.speed;
+    var duration = this._durationOf(TURN_LEFT_DISTANCE);
 
     this._moveImage({
         transform: transformation
@@ -275,9 +287,9 @@ ocargo.Character.prototype.turnLeft = function (callback, scalingFactor) {
 };
 
 ocargo.Character.prototype.turnRight = function (callback, scalingFactor) {
-    var transformation = this._turnRightTransformation(90, scalingFactor);
+    var transformation = this._turnRightTransformation(FULL_TURN_ANGLE, scalingFactor);
 
-    var duration = TURN_RIGHT_DISTANCE / this.speed;
+    var duration = this._durationOf(TURN_RIGHT_DISTANCE);
 
     this._moveImage({
         transform: transformation
@@ -456,9 +468,10 @@ ocargo.Character.prototype._animateCollision = function (withFire) {
     this.wreckageImage.transform(this.image.transform());
 
     setTimeout(function () {
-        that.wreckageImage.animate({opacity: 1}, 1000);
+        var duration = that._collisionDuration();
+        that.wreckageImage.animate({opacity: 1}, duration);
         if (!this.nightMode) {
-            that.image.animate({opacity: 0}, 1000);
+            that.image.animate({opacity: 0}, duration);
         }
 
         for (var i = 0; i < explosionParts; i++) {
@@ -468,12 +481,12 @@ ocargo.Character.prototype._animateCollision = function (withFire) {
                 var yco = y + height * (Math.random() - 0.5) - 0.5 * size;
                 var imageUrl = ocargo.Drawing.raphaelImageDir + that._collisionImage(withFire);
                 var img = that.paper.image(imageUrl, xco, yco, size, size);
-                img.animate({opacity: 0, transform: 's2'}, 1000, function () {
+                img.animate({opacity: 0, transform: 's2'}, duration, function () {
                     img.remove()
                 });
-            }, (i < 5 ? 0 : (i - 5) * 50));
+            }, (i < 5 ? 0 : (i - 5) * (duration / 20)));
         }
-    }, 100);
+    }, that._collisionDelay());
 };
 
 ocargo.Character.prototype._animateCollisionWithFire = function () {
@@ -512,53 +525,69 @@ ocargo.Character.prototype._turnAroundTransformation = function () {
     return transformation;
 };
 
-ocargo.Character.prototype._animateCrash = function (animationLength, attemptedAction, callback) {
-    if (attemptedAction === "FORWARD") {
-        var distanceForwards;
+ocargo.Character.prototype.crash = function (attemptedAction) {
+    var distance = 0;
 
-        distanceForwards = 0.8 * GRID_SPACE_SIZE;
-        var transformation = "... t 0, " + (-distanceForwards);
+    if (attemptedAction === "FORWARD") {
+        distance = CRASH_MOVE_FORWARD_DISTANCE;
+        var transformation = "... t 0, " + (-distance);
     } else if (attemptedAction === "TURN_LEFT") {
-        var transformation = this._turnLeftTransformation(75);
+        distance = CRASH_TURN_LEFT_DISTANCE;
+        var transformation = this._turnLeftTransformation(CRASH_TURN_ANGLE);
     } else if (attemptedAction === "TURN_RIGHT") {
-        var transformation = this._turnRightTransformation(75);
+        distance = CRASH_TURN_RIGHT_DISTANCE;
+        var transformation = this._turnRightTransformation(CRASH_TURN_ANGLE);
     }
+
+    var duration = this._durationOf(distance);
 
     this._moveImage({
         transform: transformation
-    }, animationLength, callback);
-};
-
-ocargo.Character.prototype.crash = function (animationLength, attemptedAction) {
-    var crashAnimation = this._animateCollisionWithFire();
-
-    this._animateCrash(animationLength, attemptedAction, crashAnimation);
+    }, duration, this._animateCollisionWithFire());
 
     if (this.veilOfNight) {
-        this.veilOfNight.crash(animationLength, attemptedAction);
+        this.veilOfNight.crash(attemptedAction);
     }
+
+    return duration + this._collisionDuration() + this._collisionDelay() + 1000;
 };
 
-ocargo.Character.prototype.collisionWithCow = function (animationLength, previousNode, currentNode, attemptedAction) {
+ocargo.Character.prototype.collisionWithCow = function (previousNode, currentNode, attemptedAction) {
+     var distance = 0;
     if (attemptedAction === "FORWARD") {
-        var distanceForwards = (0.5 * GRID_SPACE_SIZE - 0.5 * ROAD_WIDTH) / this.currentScale;
-        var transformation = "... t 0, " + (-distanceForwards);
+        distance = CRASH_INTO_COW_MOVE_FORWARDS_DISTANCE;
+        var scaledDistance = distance / this.currentScale;
+        var transformation = "... t 0, " + (-scaledDistance);
     } else if (attemptedAction === "TURN_LEFT") {
-        var transformation = this._turnLeftTransformation(15);
+        distance = CRASH_INTO_COW_TURN_LEFT_DISTANCE;
+        var transformation = this._turnLeftTransformation(CRASH_INTO_COW_TURN_ANGLE);
     } else if (attemptedAction === "TURN_RIGHT") {
-        var transformation = this._turnRightTransformation(15);
+        distance = CRASH_INTO_COW_TURN_RIGHT_DISTANCE;
+        var transformation = this._turnRightTransformation(CRASH_INTO_COW_TURN_ANGLE);
     }
+    var duration = this._durationOf(distance);
 
-    var newAnimationLength = animationLength * ((GRID_SPACE_SIZE - ROAD_WIDTH) / (GRID_SPACE_SIZE + ROAD_WIDTH));
     this._moveImage({
         transform: transformation
-    }, newAnimationLength, this._animateCollisionNoFire());
+    }, duration, this._animateCollisionNoFire());
 
     if (this.veilOfNight) {
-        this.veilOfNight.collisionWithCow(animationLength, previousNode, currentNode, attemptedAction);
+        this.veilOfNight.collisionWithCow(previousNode, currentNode, attemptedAction);
     }
 
-    return newAnimationLength;
+    return duration + this._collisionDuration() + this._collisionDelay();
+};
+
+ocargo.Character.prototype._moveForwardsDuration = function () {
+    return this._durationOf(MOVE_DISTANCE);
+};
+
+ocargo.Character.prototype._collisionDuration = function () {
+    return this._moveForwardsDuration() * 2;
+};
+
+ocargo.Character.prototype._collisionDelay = function () {
+    return this._moveForwardsDuration() / 5;
 };
 
 ocargo.Character.prototype._createRotationTransformation = function (degrees, rotationPointX, rotationPointY, scalingFactor) {
@@ -594,4 +623,8 @@ ocargo.Character.prototype.reset = function () {
 
 ocargo.Character.prototype.setSpeed = function (speed) {
     this.speed = speed;
+};
+
+ocargo.Character.prototype._durationOf = function (distance) {
+    return distance / this.speed;
 };
