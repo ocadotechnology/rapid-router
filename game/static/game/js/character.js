@@ -431,7 +431,7 @@ ocargo.Character.prototype._moveImage = function (attr, animationLength, callbac
     this.image.transform(this.image.matrix.toTransformString());
 
     // Perform the next animation
-    this.image.animate(attr, animationLength, 'linear', callback);
+    this.image.animate(attr, animationLength, 'easeInOut', callback);
 };
 
 ocargo.Character.prototype._collisionImage = function (withFire) {
@@ -549,7 +549,7 @@ ocargo.Character.prototype.crash = function (attemptedAction) {
         this.veilOfNight.crash(attemptedAction);
     }
 
-    return duration + this._collisionDuration() + this._collisionDelay() + 1000;
+    return duration + this._collisionDuration() + this._collisionDelay();
 };
 
 ocargo.Character.prototype.collisionWithCow = function (previousNode, currentNode, attemptedAction) {
