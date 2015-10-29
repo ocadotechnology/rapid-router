@@ -222,35 +222,37 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			duration = 0;
 			animation.functionCall(this.animationDuration / 2);
 			break;
-		case 'van':
-            ocargo.drawing.scrollToShowCharacter();
+		case 'vanMovement':
+			ocargo.drawing.scrollToShowCharacter();
 
-            // move van
-            switch (animation.vanAction) {
-            	case 'FORWARD':
-            		duration = ocargo.drawing.moveForward(null, this.scalingModifier.shift());
-					duration = this._addPause(duration);
+			// move van
+			switch (animation.vanAction) {
+				case 'FORWARD':
+					duration = ocargo.drawing.moveForward(null, this.scalingModifier.shift());
 					break;
-            	case 'TURN_LEFT':
+				case 'TURN_LEFT':
 					duration = ocargo.drawing.turnLeft(null, this.scalingModifier.shift());
-					duration = this._addPause(duration);
-            		break;
-            	case 'TURN_RIGHT':
+					break;
+				case 'TURN_RIGHT':
 					duration = ocargo.drawing.turnRight(null, this.scalingModifier.shift());
-					duration = this._addPause(duration);
-            		break;
-            	case 'TURN_AROUND_FORWARD':
-            		duration = ocargo.drawing.turnAround('FORWARD');
-					duration = this._addPause(duration);
-            		break;
-            	case 'TURN_AROUND_RIGHT':
+					break;
+				case 'TURN_AROUND_FORWARD':
+					duration = ocargo.drawing.turnAround('FORWARD');
+					break;
+				case 'TURN_AROUND_RIGHT':
 					duration = ocargo.drawing.turnAround('RIGHT');
-					duration = this._addPause(duration);
-            		break;
-            	case 'TURN_AROUND_LEFT':
-            		duration = ocargo.drawing.turnAround('LEFT');
-					duration = this._addPause(duration);
-            		break;
+					break;
+				case 'TURN_AROUND_LEFT':
+					duration = ocargo.drawing.turnAround('LEFT');
+					break;
+			}
+			duration = this._addPause(duration);
+			break;
+		case 'van':
+			ocargo.drawing.scrollToShowCharacter();
+
+			// move van
+			switch (animation.vanAction) {
             	case 'WAIT':
             		ocargo.drawing.wait(duration);
             		break;

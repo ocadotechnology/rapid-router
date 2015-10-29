@@ -280,7 +280,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
     // Van movement animation
     ocargo.animation.appendAnimation({
-        type: 'van',
+        type: 'vanMovement',
         vanAction: action,
         fuel: this.van.getFuelPercentage(),
         description: 'van move action: ' + action
