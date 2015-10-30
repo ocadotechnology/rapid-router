@@ -183,19 +183,29 @@ ocargo.Character.prototype.scrollToShow = function () {
     var width = element.offsetWidth;
     var height = element.offsetHeight;
 
+    function closeToTheEdge(characterPositionCoordinate, delta, lowBoundary, size) {
+        var highBoundary = lowBoundary + size;
+        var closeToOrBelowLowBoundary = characterPositionCoordinate - delta < lowBoundary;
+        var closeToAboveHighBoundary = characterPositionCoordinate + delta > highBoundary;
+
+        return closeToOrBelowLowBoundary || closeToAboveHighBoundary;
+    }
+
+    function centerPosition(characterPositionCoordinate, size) {
+        return characterPositionCoordinate - (size / 2);
+    }
+
     function scrollHorizontally(dx) {
-        if (!(characterPositionX + dx <= left + width &&        // not too far right
-            characterPositionX - dx >= left)) {
-            element.scrollLeft = characterPositionX - (width / 2);
+        if (closeToTheEdge(characterPositionX, dx, left, width)) {
+            element.scrollLeft = centerPosition(characterPositionX, width);
             return true;
         }
         return false;
     }
 
     function scrollVertically(dy) {
-        if (!(characterPositionY + dy <= top + height &&       // and not too far down
-            characterPositionY - dy >= top)) {
-            element.scrollTop = characterPositionY - (height) / 2;
+        if (closeToTheEdge(characterPositionY, dy, top, height)) {
+            element.scrollTop = centerPosition(characterPositionY, height);
             return true;
         }
         return false;

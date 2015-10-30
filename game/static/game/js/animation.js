@@ -211,7 +211,6 @@ ocargo.Animation.prototype._addPause = function(duration) {
 ocargo.Animation.prototype.performAnimation = function(animation) {
 	// Duration is either custom set (for each element) or generic
 	var duration = animation.animationLength || this.animationDuration;
-	//console.log("Type: " + animation.type + " Description: " + animation.description);
 
     switch (animation.type) {
 		case 'callable':
