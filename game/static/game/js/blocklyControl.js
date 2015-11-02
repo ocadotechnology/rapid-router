@@ -411,11 +411,26 @@ ocargo.BlocklyControl.prototype.highlightIncorrectBlock = function(incorrectBloc
 
     incorrectBlock.setColour(0);
     for (var i = 0; i < repeats; i++) {
-        window.setTimeout(function() {blocklyControl.setBlockSelected(incorrectBlock, true);},
-                          2 * i * frequency);
-        window.setTimeout(function() {blocklyControl.setBlockSelected(incorrectBlock, false);},
-                          (2 * i + 1) * frequency);
+        window.setTimeout(ocargo.BlocklyControl.tryCatchSilently(
+                function () {
+                    blocklyControl.setBlockSelected(incorrectBlock, true);
+                }),
+            2 * i * frequency);
+        window.setTimeout(ocargo.BlocklyControl.tryCatchSilently(function () {
+                blocklyControl.setBlockSelected(incorrectBlock, false);
+            }),
+            (2 * i + 1) * frequency);
     }
+};
+
+ocargo.BlocklyControl.tryCatchSilently = function (f) {
+    return function() {
+        try {
+            f();
+        } catch (e) {
+            // Nothing
+        }
+    };
 };
 
 ocargo.BlocklyControl.prototype.resetIncorrectBlock = function() {
