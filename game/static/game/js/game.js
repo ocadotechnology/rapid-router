@@ -174,12 +174,14 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
         description: 'starting engine'
     });
 
+    var game = this;
+
     program.run(ocargo.model);
     // Set controls ready for user to reset
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionType: 'onStopControls',
-        functionCall: function() {ocargo.game.onStopControls();},
+        functionCall: function() {game.onStopControls();},
         description: 'onStopControls'
     });
 
@@ -205,10 +207,12 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         score *= 2;
     }
 
+    var game = this;
+
     // Check that we should actually be sending an attempt - either if only blockly's enabled
     // or if python's enabled and we're on the python tab (assumes they don't change tab quickly...)
     if ((BLOCKLY_ENABLED && !PYTHON_ENABLED) ||
-        (PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.python)) {
+        (PYTHON_ENABLED && this.currentTabSelected == this.tabs.python)) {
         // Send out the submitted data.
         if (LEVEL_ID) {
             var csrftoken = $.cookie('csrftoken');
@@ -276,30 +280,31 @@ ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
 };
 
 ocargo.Game.prototype.setupDirectDriveListeners = function() {
+    var game = this;
     $('#moveForward').click(function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
-            ocargo.game.onPlayControls();
+            game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
             ocargo.drawing.moveForward(function () {
-                ocargo.game.onStopControls();
+                game.onStopControls();
             });
         }
     });
     $('#turnLeft').click(function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
-            ocargo.game.onPlayControls();
+            game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
             ocargo.drawing.turnLeft(function () {
-                ocargo.game.onStopControls();
+                game.onStopControls();
             });
         }
     });
     $('#turnRight').click(function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
-            ocargo.game.onPlayControls();
+            game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
             ocargo.drawing.turnRight(function () {
-                ocargo.game.onStopControls();
+                game.onStopControls();
             });
         }
     });
@@ -380,6 +385,7 @@ ocargo.Game.prototype.setupSliderListeners = function() {
 };
 
 ocargo.Game.prototype.setupTabs = function() {
+    var game = this;
     var tabs = [];
 
     tabs.blockly = new ocargo.Tab($('#blockly_radio'), $('#blockly_radio + label'), $('#blockly_pane'));
@@ -417,7 +423,7 @@ ocargo.Game.prototype.setupTabs = function() {
     setupQuitTab();
     setupNightModeTab();
 
-    ocargo.game.tabs = tabs;
+    game.tabs = tabs;
 
     if (!BLOCKLY_ENABLED) {
         $('#python_radio').click();
@@ -426,9 +432,9 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupBlocklyTab() {
         tabs.blockly.setOnChange(function () {
             var tab = tabs.blockly;
-            ocargo.game.currentTabSelected.setPaneEnabled(false);
+            game.currentTabSelected.setPaneEnabled(false);
             tab.setPaneEnabled(true);
-            ocargo.game.currentTabSelected = tab;
+            game.currentTabSelected = tab;
 
             ocargo.blocklyControl.redrawBlockly();
             // reset blockly to python converter
@@ -436,7 +442,7 @@ ocargo.Game.prototype.setupTabs = function() {
             ocargo.controller = ocargo.blocklyControl;
         });
 
-        ocargo.game.currentTabSelected = tabs.blockly;
+        game.currentTabSelected = tabs.blockly;
         tabs.blockly.select();
 
         // Function wrapper needed
@@ -466,12 +472,12 @@ ocargo.Game.prototype.setupTabs = function() {
         tabs.python.setOnChange(function() {
             var tab = tabs.python;
             // Only clear console when changing *to* python?
-            if (ocargo.game.currentTabSelected !== tab) {
+            if (game.currentTabSelected !== tab) {
                 $('#clear_console').click();
             }
-            ocargo.game.currentTabSelected.setPaneEnabled(false);
+            game.currentTabSelected.setPaneEnabled(false);
             tab.setPaneEnabled(true);
-            ocargo.game.currentTabSelected = tab;
+            game.currentTabSelected = tab;
 
             ocargo.controller = ocargo.pythonControl;
         });
@@ -479,15 +485,15 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupClearTab() {
         tabs.clear_program.setOnChange(function() {
-            if (ocargo.game.currentTabSelected == tabs.blockly) {
+            if (game.currentTabSelected == tabs.blockly) {
                 ocargo.blocklyControl.reset();
             }
-            if (ocargo.game.currentTabSelected == tabs.python) {
+            if (game.currentTabSelected == tabs.python) {
                 ocargo.pythonControl.reset();
             }
-            ocargo.game.reset();
+            game.reset();
 
-            ocargo.game.currentTabSelected.select();
+            selectPreviousTab();
         });
     }
 
@@ -496,33 +502,33 @@ ocargo.Game.prototype.setupTabs = function() {
             var existingHtml = tabs.play.getText();
 
             if (existingHtml == "Play") {
-                if (ocargo.game.runProgramAndPrepareAnimation()) {
-                    ocargo.game.onPlayControls();
+                if (game.runProgramAndPrepareAnimation()) {
+                    game.onPlayControls();
                     ocargo.animation.playAnimation();
                     $('#clear_console').click();
                 }
 
             }
             else if (existingHtml == 'Pause') {
-                ocargo.game.onPauseControls();
+                game.onPauseControls();
                 ocargo.animation.pauseAnimation();
             }
             else if (existingHtml == 'Resume') {
                 // Important ordering
-                ocargo.game.onResumeControls();
+                game.onResumeControls();
                 ocargo.animation.playAnimation();
             }
 
-            ocargo.game.currentTabSelected.select();
+            selectPreviousTab();
         });
     }
 
     function setupStopTab() {
         tabs.stop.setOnChange(function() {
-            ocargo.game.reset();
-            ocargo.game.onStopControls();
+            game.reset();
+            game.onStopControls();
 
-            ocargo.game.currentTabSelected.select();
+            selectPreviousTab();
         });
     }
 
@@ -531,47 +537,47 @@ ocargo.Game.prototype.setupTabs = function() {
             var playTextPreSpeedControl = tabs.play.getText();
 
             if (tabs.fast.getText() == "Fast") {
-                ocargo.game.onFastControls();
+                game.onFastControls();
                 ocargo.animation.setHighSpeed();
             } else {
-                ocargo.game.onSlowControls();
+                game.onSlowControls();
                 ocargo.animation.setRegularSpeed();
             }
 
             if (playTextPreSpeedControl == "Play") {
-                if (ocargo.game.runProgramAndPrepareAnimation()) {
+                if (game.runProgramAndPrepareAnimation()) {
                     ocargo.animation.playAnimation();
                     $('#clear_console').click();
                 }else{
                     // When error occurs during the compilation of the program
-                    ocargo.game.onStopControls();
+                    game.onStopControls();
                 }
             } else if (playTextPreSpeedControl == "Resume") {
                 ocargo.animation.playAnimation();
             }
 
-            ocargo.game.currentTabSelected.select();
+            game.currentTabSelected.select();
         });
     }
 
     function setupStepTab() {
         tabs.step.setOnChange(function() {
             if (tabs.play.getText() == "Play") {
-                ocargo.game.runProgramAndPrepareAnimation();
+                game.runProgramAndPrepareAnimation();
                 $('#clear_console').click();
             }
 
             ocargo.animation.stepAnimation(function() {
                 if (ocargo.animation.isFinished()) {
-                    ocargo.game.onStopControls();
+                    game.onStopControls();
                 }
                 else {
-                    ocargo.game.onPauseControls();
+                    game.onPauseControls();
                 }
             });
 
-            ocargo.game.onStepControls();
-            ocargo.game.currentTabSelected.select();
+            game.onStepControls();
+            selectPreviousTab();
         });
     }
 
@@ -579,9 +585,9 @@ ocargo.Game.prototype.setupTabs = function() {
         var selectedWorkspace = null;
         tabs.load.setOnChange(function() {
             var tab = tabs.load;
-            ocargo.game.currentTabSelected.setPaneEnabled(false);
+            game.currentTabSelected.setPaneEnabled(false);
             tab.setPaneEnabled(true);
-            ocargo.game.currentTabSelected = tab;
+            game.currentTabSelected = tab;
 
             selectedWorkspace = null;
             // TODO Disable the tab to stop users clicking it multiple times
@@ -679,9 +685,9 @@ ocargo.Game.prototype.setupTabs = function() {
 
         tabs.save.setOnChange(function() {
             var tab = tabs.save;
-            ocargo.game.currentTabSelected.setPaneEnabled(false);
+            game.currentTabSelected.setPaneEnabled(false);
             tab.setPaneEnabled(true);
-            ocargo.game.currentTabSelected = tab;
+            game.currentTabSelected = tab;
 
             selectedWorkspace = null;
 
@@ -772,14 +778,14 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupPrintTab() {
         tabs.print.setOnChange(function() {
-            ocargo.game.currentTabSelected.select();
+            selectPreviousTab();
             window.print();
         });
     }
 
     function setupHelpTab() {
         tabs.help.setOnChange(function() {
-            ocargo.game.currentTabSelected.select();
+            selectPreviousTab();
             ocargo.Drawing.startPopup('', '', HINT);
         });
     }
@@ -807,8 +813,8 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupMuteTab() {
         tabs.mute.setOnChange(function() {
-            ocargo.game.mute($.cookie('muted') !== 'true');
-            ocargo.game.currentTabSelected.select();
+            game.mute($.cookie('muted') !== 'true');
+            selectPreviousTab();
         });
     }
 
@@ -851,6 +857,10 @@ ocargo.Game.prototype.setupTabs = function() {
             table.append(tableRow);
         }
     }
+
+    function selectPreviousTab() {
+        game.currentTabSelected.select();
+    }
 };
 
 ocargo.Game.prototype.onPlayControls = function() {
@@ -858,14 +868,14 @@ ocargo.Game.prototype.onPlayControls = function() {
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
-    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
-    ocargo.game.tabs.step.setEnabled(false);
-    ocargo.game.tabs.fast.setEnabled(true);
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
+    this.tabs.step.setEnabled(false);
+    this.tabs.fast.setEnabled(true);
 
-    ocargo.game.tabs.load.setEnabled(false);
-    ocargo.game.tabs.save.setEnabled(false);
-    ocargo.game.tabs.clear_program.setEnabled(false);
-    ocargo.game.tabs.help.setEnabled(false);
+    this.tabs.load.setEnabled(false);
+    this.tabs.save.setEnabled(false);
+    this.tabs.clear_program.setEnabled(false);
+    this.tabs.help.setEnabled(false);
 };
 
 
@@ -874,13 +884,13 @@ ocargo.Game.prototype.onStepControls = function() {
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
-    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
-    ocargo.game.tabs.step.setEnabled(false);
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
+    this.tabs.step.setEnabled(false);
 
-    ocargo.game.tabs.load.setEnabled(false);
-    ocargo.game.tabs.save.setEnabled(false);
-    ocargo.game.tabs.clear_program.setEnabled(false);
-    ocargo.game.tabs.help.setEnabled(false);
+    this.tabs.load.setEnabled(false);
+    this.tabs.save.setEnabled(false);
+    this.tabs.clear_program.setEnabled(false);
+    this.tabs.help.setEnabled(false);
 };
 
 ocargo.Game.prototype.onFastControls = function() {
@@ -888,14 +898,14 @@ ocargo.Game.prototype.onFastControls = function() {
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
-    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
-    ocargo.game.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/slow.svg', 'Slow');
-    ocargo.game.tabs.step.setEnabled(false);
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
+    this.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/slow.svg', 'Slow');
+    this.tabs.step.setEnabled(false);
 
-    ocargo.game.tabs.load.setEnabled(false);
-    ocargo.game.tabs.save.setEnabled(false);
-    ocargo.game.tabs.clear_program.setEnabled(false);
-    ocargo.game.tabs.help.setEnabled(false);
+    this.tabs.load.setEnabled(false);
+    this.tabs.save.setEnabled(false);
+    this.tabs.clear_program.setEnabled(false);
+    this.tabs.help.setEnabled(false);
 };
 
 ocargo.Game.prototype.onSlowControls = function() {
@@ -903,14 +913,14 @@ ocargo.Game.prototype.onSlowControls = function() {
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
-    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
-    ocargo.game.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
-    ocargo.game.tabs.step.setEnabled(false);
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
+    this.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
+    this.tabs.step.setEnabled(false);
 
-    ocargo.game.tabs.load.setEnabled(false);
-    ocargo.game.tabs.save.setEnabled(false);
-    ocargo.game.tabs.clear_program.setEnabled(false);
-    ocargo.game.tabs.help.setEnabled(false);
+    this.tabs.load.setEnabled(false);
+    this.tabs.save.setEnabled(false);
+    this.tabs.clear_program.setEnabled(false);
+    this.tabs.help.setEnabled(false);
 };
 
 ocargo.Game.prototype.onStopControls = function() {
@@ -919,25 +929,25 @@ ocargo.Game.prototype.onStopControls = function() {
     // TODO make this hidden unless blocks are clear or something...
     document.getElementById('direct_drive').style.visibility='visible';
 
-    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Play');
-    ocargo.game.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Play');
+    this.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
     ocargo.animation.setRegularSpeed();
-    ocargo.game.tabs.step.setEnabled(true);
+    this.tabs.step.setEnabled(true);
 
-    ocargo.game.tabs.load.setEnabled(true);
-    ocargo.game.tabs.save.setEnabled(true);
-    ocargo.game.tabs.clear_program.setEnabled(true);
-    ocargo.game.tabs.help.setEnabled(true);
+    this.tabs.load.setEnabled(true);
+    this.tabs.save.setEnabled(true);
+    this.tabs.clear_program.setEnabled(true);
+    this.tabs.help.setEnabled(true);
 };
 
 ocargo.Game.prototype.onPauseControls = function() {
-    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
-    ocargo.game.tabs.step.setEnabled(true);
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
+    this.tabs.step.setEnabled(true);
 };
 
 ocargo.Game.prototype.onResumeControls = function() {
-    ocargo.game.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
-    ocargo.game.tabs.step.setEnabled(false);
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
+    this.tabs.step.setEnabled(false);
 };
 
 ocargo.Game.prototype.mute = function(mute) {
@@ -953,7 +963,6 @@ ocargo.Game.prototype.mute = function(mute) {
         $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/unmuted.svg');
     }
 };
-
 
 function restoreCmsLogin() {
     $("#id_cms-password").css("height", "20px").css("display", "inline");
