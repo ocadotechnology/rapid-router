@@ -867,13 +867,13 @@ ocargo.Game.prototype.onPlayControls = function() {
     document.getElementById('direct_drive').style.visibility='hidden';
 
     this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
-    this.tabs.step.setEnabled(false);
-    this.tabs.fast.setEnabled(true);
+    this.tabs.step.disable();
+    this.tabs.fast.enable();
 
-    this.tabs.load.setEnabled(false);
-    this.tabs.save.setEnabled(false);
-    this.tabs.clear_program.setEnabled(false);
-    this.tabs.help.setEnabled(false);
+    this.tabs.load.disable();
+    this.tabs.save.disable();
+    this.tabs.clear_program.disable();
+    this.tabs.help.disable();
 };
 
 
@@ -883,12 +883,12 @@ ocargo.Game.prototype.onStepControls = function() {
     document.getElementById('direct_drive').style.visibility='hidden';
 
     this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
-    this.tabs.step.setEnabled(false);
+    this.tabs.step.disable();
 
-    this.tabs.load.setEnabled(false);
-    this.tabs.save.setEnabled(false);
-    this.tabs.clear_program.setEnabled(false);
-    this.tabs.help.setEnabled(false);
+    this.tabs.load.disable();
+    this.tabs.save.disable();
+    this.tabs.clear_program.disable();
+    this.tabs.help.disable();
 };
 
 ocargo.Game.prototype.onFastControls = function() {
@@ -898,12 +898,12 @@ ocargo.Game.prototype.onFastControls = function() {
 
     this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
     this.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/slow.svg', 'Slow');
-    this.tabs.step.setEnabled(false);
+    this.tabs.step.disable();
 
-    this.tabs.load.setEnabled(false);
-    this.tabs.save.setEnabled(false);
-    this.tabs.clear_program.setEnabled(false);
-    this.tabs.help.setEnabled(false);
+    this.tabs.load.disable();
+    this.tabs.save.disable();
+    this.tabs.clear_program.disable();
+    this.tabs.help.disable();
 };
 
 ocargo.Game.prototype.onSlowControls = function() {
@@ -913,12 +913,12 @@ ocargo.Game.prototype.onSlowControls = function() {
 
     this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
     this.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
-    this.tabs.step.setEnabled(false);
+    this.tabs.step.disable();
 
-    this.tabs.load.setEnabled(false);
-    this.tabs.save.setEnabled(false);
-    this.tabs.clear_program.setEnabled(false);
-    this.tabs.help.setEnabled(false);
+    this.tabs.load.disable();
+    this.tabs.save.disable();
+    this.tabs.clear_program.disable();
+    this.tabs.help.disable();
 };
 
 ocargo.Game.prototype.onStopControls = function() {
@@ -930,22 +930,22 @@ ocargo.Game.prototype.onStopControls = function() {
     this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Play');
     this.tabs.fast.setContents(ocargo.Drawing.imageDir + 'icons/fast.svg', 'Fast');
     ocargo.animation.setRegularSpeed();
-    this.tabs.step.setEnabled(true);
+    this.tabs.step.enable();
 
-    this.tabs.load.setEnabled(true);
-    this.tabs.save.setEnabled(true);
-    this.tabs.clear_program.setEnabled(true);
-    this.tabs.help.setEnabled(true);
+    this.tabs.load.enable();
+    this.tabs.save.enable();
+    this.tabs.clear_program.enable();
+    this.tabs.help.enable();
 };
 
 ocargo.Game.prototype.onPauseControls = function() {
     this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
-    this.tabs.step.setEnabled(true);
+    this.tabs.step.enable();
 };
 
 ocargo.Game.prototype.onResumeControls = function() {
     this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
-    this.tabs.step.setEnabled(false);
+    this.tabs.step.disable();
 };
 
 ocargo.Game.prototype.mute = function(mute) {
@@ -968,6 +968,14 @@ ocargo.Game.prototype.isInBlocklyWorkspace = function () {
 
 ocargo.Game.prototype.isInPythonWorkspace = function () {
     return this.currentlySelectedTab == this.tabs.python;
+};
+
+ocargo.Game.prototype.isLoadTabSelected = function () {
+    return this.currentlySelectedTab == this.tabs.load;
+};
+
+ocargo.Game.prototype.isSaveTabSelected = function () {
+    return this.currentlySelectedTab == this.tabs.save;
 };
 
 function restoreCmsLogin() {

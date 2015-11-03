@@ -38,6 +38,7 @@ identified as the original program.
 var ocargo = ocargo || {};
 
 ocargo.Tab = function(radioElement, labelElement, paneElement) {
+
     this.getText = function() {
         return labelElement[0].children[1].innerHTML;
     };
@@ -56,24 +57,25 @@ ocargo.Tab = function(radioElement, labelElement, paneElement) {
         radioElement.prop('checked', true);
     };
 
-    this.setOnChange = function(onChangeCall) {
-        this.setEnabled = function(enabled) {
-            if(enabled) {
-                radioElement.off('change');
-                radioElement.change(onChangeCall);
-                radioElement.attr('disabled', false);
-            }
-            else {
-                radioElement.off('change');
-                radioElement.attr('disabled', true);
-            }
-        };
-
-        this.setEnabled(true);
+    this.setOnChange = function(onChangeCallback) {
+        this.onChangeCallback = onChangeCallback;
+        this.enable();
     };
 
-    if(paneElement) {
-        this.setPaneEnabled = function(enabled) {
+    this.enable = function() {
+        radioElement.off('change');
+        radioElement.attr('disabled', false);
+
+        radioElement.change(this.onChangeCallback);
+    };
+
+    this.disable = function() {
+        radioElement.off('change');
+        radioElement.attr('disabled', true);
+    };
+
+    if (paneElement) {
+        this.setPaneEnabled = function (enabled) {
             paneElement.css('display', enabled ? 'block' : 'none');
         };
         this.setPaneEnabled(false);
