@@ -43,11 +43,11 @@ from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.db.models import Max
 from game import random_road
-from portal import beta
 from game.cache import cached_episode
 from game.models import Attempt, Episode
 from level_editor import play_anonymous_level
 from django.core.cache import cache
+from game import app_settings
 
 
 def max_score(level):
@@ -149,7 +149,7 @@ def levels(request):
     def with_scores(level):
         attach_attempts_to_level(attempts, level)
 
-    episode_data = fetch_episode_data(beta.has_beta_access(request))
+    episode_data = fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request))
     for episode in episode_data:
         for level in episode["levels"]:
             with_scores(level)
