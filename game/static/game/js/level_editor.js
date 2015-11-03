@@ -231,6 +231,10 @@ ocargo.LevelEditor = function() {
         currentTabSelected = tabs.map;
         tabs.map.select();
 
+        function restorePreviousTab() {
+            currentTabSelected.select();
+        }
+
         function playFunction(night) {
             return function() {
                 if (isLevelValid()) {
@@ -246,7 +250,7 @@ ocargo.LevelEditor = function() {
                             + levelID + '/' + nightSuffix;
                     });
                 } else {
-                    currentTabSelected.select();
+                    restorePreviousTab();
                 }
             };
         }
@@ -574,14 +578,25 @@ ocargo.LevelEditor = function() {
             });
         }
 
+        function isLoadTabSelected() {
+            return currentTabSelected == tabs.load;
+        }
+
+        function isSaveTabSelected() {
+            return currentTabSelected == tabs.save;
+        }
+
         function setupLoadTab() {
             var selectedLevel = null;
             var ownLevels = null;
             var sharedLevels = null;
+            var previousTab = null;
+
+            ocargo.Tab.addToggle('#load_tab', isLoadTabSelected, function() { previousTab.select(); });
 
             tabs.load.setOnChange(function() {
                 if(!isLoggedIn("load")) {
-                    currentTabSelected.select();
+                    restorePreviousTab();
                     return;
                 }
 
@@ -641,7 +656,7 @@ ocargo.LevelEditor = function() {
             function processListOfLevels(err, listOfOwnLevels, listOfSharedLevels) {
                 if (err !== null) {
                     console.error(err);
-                    currentTabSelected.select();
+                    restorePreviousTab();
                     ocargo.Drawing.startInternetDownPopup();
                     return;
                 }
@@ -651,7 +666,7 @@ ocargo.LevelEditor = function() {
 
                 // Important: done before change() call
                 // Table cells need to have rendered to match th with td widths
-                transitionTab(tabs.load);
+                previousTab = transitionTab(tabs.load);
 
                 $('#load_type_select').change();
 
@@ -670,11 +685,14 @@ ocargo.LevelEditor = function() {
 
         function setupSaveTab() {
             var selectedLevel = null;
+            var previousTab = null;
+
+            ocargo.Tab.addToggle('#save_tab', isSaveTabSelected, function() { previousTab.select(); });
 
             tabs.save.setOnChange(function () {
                 //getLevelTextForDjangoMigration();
                 if (!isLoggedIn("save") || !isLevelValid()) {
-                    currentTabSelected.select();
+                    restorePreviousTab();
                     return;
                 }
 
@@ -732,7 +750,7 @@ ocargo.LevelEditor = function() {
 
                 // Important: done before change() call
                 // Table cells need to have rendered to match th with td widths
-                transitionTab(tabs.save);
+                previousTab = transitionTab(tabs.save);
 
                 populateLoadSaveTable("saveLevelTable", ownLevels);
 
@@ -765,7 +783,7 @@ ocargo.LevelEditor = function() {
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
                 if (!isIndependentStudent() ||  !isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
-                    currentTabSelected.select();
+                    restorePreviousTab();
                     return;
                 }
 
@@ -959,7 +977,7 @@ ocargo.LevelEditor = function() {
             message += "<br><br>" + ocargo.messages.levelEditorHelpText;
 
             tabs.help.setOnChange(function() {
-                currentTabSelected.select();
+                restorePreviousTab();
                 ocargo.Drawing.startPopup('', '', message);
             });
         }
@@ -973,9 +991,11 @@ ocargo.LevelEditor = function() {
 
         // Helper methods
         function transitionTab(newTab) {
-            currentTabSelected.setPaneEnabled(false);
+            var previousTab = currentTabSelected;
+            previousTab.setPaneEnabled(false);
             newTab.setPaneEnabled(true);
             currentTabSelected = newTab;
+            return previousTab;
         }
 
         function populateLoadSaveTable(tableName, levels) {
