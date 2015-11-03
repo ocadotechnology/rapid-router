@@ -586,12 +586,7 @@ ocargo.Game.prototype.setupTabs = function() {
     }
 
     function addTabToggle(tabElementId, isSelected) {
-        $(tabElementId).click(function (event) {
-            if (isSelected()) {
-                goToWorkspace();
-                event.preventDefault();
-            }
-        });
+        ocargo.Tab.addToggle(tabElementId, isSelected, goToWorkspace);
     }
 
     function setupLoadTab() {

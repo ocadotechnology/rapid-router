@@ -81,3 +81,12 @@ ocargo.Tab = function(radioElement, labelElement, paneElement) {
         this.setPaneEnabled(false);
     }
 };
+
+ocargo.Tab.addToggle = function (tabElementId, isSelected, goBack) {
+    $(tabElementId).click(function (event) {
+        if (isSelected()) {
+            goBack();
+            event.preventDefault();
+        }
+    });
+};
