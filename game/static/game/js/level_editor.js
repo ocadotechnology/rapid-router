@@ -713,7 +713,8 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                var newName = $('#levelNameInput').val();
+                var levelNameInput = $('#levelNameInput');
+                var newName = levelNameInput.val();
                 if (!newName || newName === "") {
                     // TODO error message?
                     return;
@@ -726,6 +727,7 @@ ocargo.LevelEditor = function() {
 
                 function saveLevelLocal(existingID) {
                     saveLevel(newName, existingID, processLevelsAndGoToMap);
+                    levelNameInput.val('');
                 }
 
                 // Test to see if we already have the level saved
