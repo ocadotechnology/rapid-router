@@ -585,8 +585,19 @@ ocargo.Game.prototype.setupTabs = function() {
         }
     }
 
+    function addTabToggle(tabElementId, isSelected) {
+        $(tabElementId).click(function (event) {
+            if (isSelected()) {
+                goToWorkspace();
+                event.preventDefault();
+            }
+        });
+    }
+
     function setupLoadTab() {
         var selectedWorkspace = null;
+        addTabToggle('#load_tab', game.isLoadTabSelected.bind(game));
+
         tabs.load.setOnChange(function() {
             game.changeTabSelectionTo(tabs.load);
 
@@ -679,6 +690,8 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupSaveTab() {
         var workspaceNameInput = $('#workspaceNameInput');
         var selectedWorkspace = null;
+
+        addTabToggle('#save_tab', game.isSaveTabSelected.bind(game));
 
         tabs.save.setOnChange(function() {
             game.changeTabSelectionTo(tabs.save);
