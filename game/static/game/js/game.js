@@ -42,7 +42,7 @@ var ocargo = ocargo || {};
 ocargo.Game = function() {
     this.tabs = [];
     this.failures = 0;
-    this.currentTabSelected;
+    this.currentlySelectedTab;
 };
 
 ocargo.Game.prototype.setup = function() {
@@ -55,7 +55,6 @@ ocargo.Game.prototype.setup = function() {
             $('#nightmode_tab').show()
         }
     }
-
 
     restoreCmsLogin();
     initCustomBlocks();
@@ -212,7 +211,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
     // Check that we should actually be sending an attempt - either if only blockly's enabled
     // or if python's enabled and we're on the python tab (assumes they don't change tab quickly...)
     if ((BLOCKLY_ENABLED && !PYTHON_ENABLED) ||
-        (PYTHON_ENABLED && this.currentTabSelected == this.tabs.python)) {
+        (PYTHON_ENABLED && this.isInPythonWorkspace())) {
         // Send out the submitted data.
         if (LEVEL_ID) {
             var csrftoken = $.cookie('csrftoken');
@@ -432,9 +431,8 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupBlocklyTab() {
         tabs.blockly.setOnChange(function () {
             var tab = tabs.blockly;
-            game.currentTabSelected.setPaneEnabled(false);
-            tab.setPaneEnabled(true);
-            game.currentTabSelected = tab;
+
+            game.changeTabSelectionTo(tab);
 
             ocargo.blocklyControl.redrawBlockly();
             // reset blockly to python converter
@@ -442,7 +440,7 @@ ocargo.Game.prototype.setupTabs = function() {
             ocargo.controller = ocargo.blocklyControl;
         });
 
-        game.currentTabSelected = tabs.blockly;
+        game.currentlySelectedTab = tabs.blockly;
         tabs.blockly.select();
 
         // Function wrapper needed
@@ -470,14 +468,11 @@ ocargo.Game.prototype.setupTabs = function() {
         });
 
         tabs.python.setOnChange(function() {
-            var tab = tabs.python;
             // Only clear console when changing *to* python?
-            if (game.currentTabSelected !== tab) {
+            if (!game.isInPythonWorkspace()) {
                 $('#clear_console').click();
             }
-            game.currentTabSelected.setPaneEnabled(false);
-            tab.setPaneEnabled(true);
-            game.currentTabSelected = tab;
+            game.changeTabSelectionTo(tabs.python);
 
             ocargo.controller = ocargo.pythonControl;
         });
@@ -485,10 +480,10 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupClearTab() {
         tabs.clear_program.setOnChange(function() {
-            if (game.currentTabSelected == tabs.blockly) {
+            if (game.isInBlocklyWorkspace()) {
                 ocargo.blocklyControl.reset();
             }
-            if (game.currentTabSelected == tabs.python) {
+            if (game.isInPythonWorkspace()) {
                 ocargo.pythonControl.reset();
             }
             game.reset();
@@ -556,7 +551,7 @@ ocargo.Game.prototype.setupTabs = function() {
                 ocargo.animation.playAnimation();
             }
 
-            game.currentTabSelected.select();
+            selectPreviousTab();
         });
     }
 
@@ -581,13 +576,19 @@ ocargo.Game.prototype.setupTabs = function() {
         });
     }
 
+    function goToWorkspace() {
+        if (PYTHON_ENABLED) {
+            tabs.python.select();
+        }
+        if (BLOCKLY_ENABLED) {
+            tabs.blockly.select();
+        }
+    }
+
     function setupLoadTab() {
         var selectedWorkspace = null;
         tabs.load.setOnChange(function() {
-            var tab = tabs.load;
-            game.currentTabSelected.setPaneEnabled(false);
-            tab.setPaneEnabled(true);
-            game.currentTabSelected = tab;
+            game.changeTabSelectionTo(tabs.load);
 
             selectedWorkspace = null;
             // TODO Disable the tab to stop users clicking it multiple times
@@ -610,12 +611,7 @@ ocargo.Game.prototype.setupTabs = function() {
 
                 // Blockly or Python tab must be selected before domToWorkspace is called
                 // Otherwise blocks will be chopped off or python editor will not be updated
-                if (PYTHON_ENABLED) {
-                    tabs.python.select();
-                }
-                if (BLOCKLY_ENABLED) {
-                    tabs.blockly.select();
-                }
+                goToWorkspace();
 
                 ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
                     if (err !== null) {
@@ -681,13 +677,11 @@ ocargo.Game.prototype.setupTabs = function() {
     }
 
     function setupSaveTab() {
+        var workspaceNameInput = $('#workspaceNameInput');
         var selectedWorkspace = null;
 
         tabs.save.setOnChange(function() {
-            var tab = tabs.save;
-            game.currentTabSelected.setPaneEnabled(false);
-            tab.setPaneEnabled(true);
-            game.currentTabSelected = tab;
+            game.changeTabSelectionTo(tabs.save);
 
             selectedWorkspace = null;
 
@@ -707,7 +701,7 @@ ocargo.Game.prototype.setupTabs = function() {
         });
 
         var saveWorkspace = function() {
-            var newName = $('#workspaceNameInput').val();
+            var newName = workspaceNameInput.val();
             if (newName && newName !== "") {
                 var table = $("#saveWorkspaceTable");
                 var existingID = null;
@@ -733,12 +727,8 @@ ocargo.Game.prototype.setupTabs = function() {
                     } else {
                         // Blockly or Python tab must be selected before domToWorkspace is called
                         // Otherwise blocks will be chopped off or python editor will not be updated
-                        if (PYTHON_ENABLED) {
-                            tabs.python.select();
-                        }
-                        if (BLOCKLY_ENABLED) {
-                            tabs.blockly.select();
-                        }
+                        goToWorkspace();
+                        workspaceNameInput.val('');
                     }
                 });
             }
@@ -859,8 +849,16 @@ ocargo.Game.prototype.setupTabs = function() {
     }
 
     function selectPreviousTab() {
-        game.currentTabSelected.select();
+        game.currentlySelectedTab.select();
     }
+};
+
+ocargo.Game.prototype.changeTabSelectionTo = function (tab) {
+    var previouslySelected = this.currentlySelectedTab;
+    previouslySelected.setPaneEnabled(false);
+    tab.setPaneEnabled(true);
+    this.currentlySelectedTab = tab;
+    return previouslySelected;
 };
 
 ocargo.Game.prototype.onPlayControls = function() {
@@ -962,6 +960,14 @@ ocargo.Game.prototype.mute = function(mute) {
         $('#mute_text').text('Mute');
         $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/unmuted.svg');
     }
+};
+
+ocargo.Game.prototype.isInBlocklyWorkspace = function () {
+    return this.currentlySelectedTab == this.tabs.blockly;
+};
+
+ocargo.Game.prototype.isInPythonWorkspace = function () {
+    return this.currentlySelectedTab == this.tabs.python;
 };
 
 function restoreCmsLogin() {

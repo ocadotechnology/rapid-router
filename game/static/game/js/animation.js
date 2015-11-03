@@ -311,7 +311,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 						buttons += ocargo.button.tryAgainButtonHtml();
 					}
 
-					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.currentTabSelected == ocargo.game.tabs.blockly) {
+					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.isInBlocklyWorkspace()) {
 						levelMsg.push(ocargo.messages.nowTryPython);
 						buttons += ocargo.button.addDismissButtonHtml('Close');
 					} else {
