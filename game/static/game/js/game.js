@@ -280,31 +280,30 @@ ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
 
 ocargo.Game.prototype.setupDirectDriveListeners = function() {
     var game = this;
+    function manoeuvreCallback() {
+        ocargo.drawing.scrollToShowCharacter();
+        game.onStopControls();
+    }
+
     $('#moveForward').click(function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-            ocargo.drawing.moveForward(function () {
-                game.onStopControls();
-            });
+            ocargo.drawing.moveForward(manoeuvreCallback);
         }
     });
     $('#turnLeft').click(function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-            ocargo.drawing.turnLeft(function () {
-                game.onStopControls();
-            });
+            ocargo.drawing.turnLeft(manoeuvreCallback);
         }
     });
     $('#turnRight').click(function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             game.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-            ocargo.drawing.turnRight(function () {
-                game.onStopControls();
-            });
+            ocargo.drawing.turnRight(manoeuvreCallback);
         }
     });
     $('#go').click(function() {
