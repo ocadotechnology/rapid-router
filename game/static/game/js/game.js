@@ -124,6 +124,10 @@ ocargo.Game.prototype.setup = function() {
     ocargo.Drawing.startPopup(title, LESSON, message, true, ocargo.button.dismissButtonHtml('play_button', 'Play'));
 };
 
+ocargo.Game.prototype.clearWorkspaceNameInputInSaveTab = function () {
+    $('#workspaceNameInput').val('');
+};
+
 ocargo.Game.prototype.reset = function() {
     ocargo.blocklyControl.clearAllSelections();
 
@@ -134,6 +138,8 @@ ocargo.Game.prototype.reset = function() {
 
     // clear animations and sound
     ocargo.sound.stop_engine();
+
+    this.clearWorkspaceNameInputInSaveTab();
 };
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
@@ -684,7 +690,6 @@ ocargo.Game.prototype.setupTabs = function() {
     }
 
     function setupSaveTab() {
-        var workspaceNameInput = $('#workspaceNameInput');
         var selectedWorkspace = null;
 
         tabs.save.setOnChange(function() {
@@ -708,7 +713,7 @@ ocargo.Game.prototype.setupTabs = function() {
         });
 
         var saveWorkspace = function() {
-            var newName = workspaceNameInput.val();
+            var newName = $('#workspaceNameInput').val();
             if (newName && newName !== "") {
                 var table = $("#saveWorkspaceTable");
                 var existingID = null;
@@ -735,7 +740,6 @@ ocargo.Game.prototype.setupTabs = function() {
                         // Blockly or Python tab must be selected before domToWorkspace is called
                         // Otherwise blocks will be chopped off or python editor will not be updated
                         goToWorkspace();
-                        workspaceNameInput.val('');
                     }
                 });
             }

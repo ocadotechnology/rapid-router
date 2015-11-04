@@ -699,8 +699,7 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                var levelNameInput = $('#levelNameInput');
-                var newName = levelNameInput.val();
+                var newName = $('#levelNameInput').val();
                 if (!newName || newName === "") {
                     // TODO error message?
                     return;
@@ -713,7 +712,6 @@ ocargo.LevelEditor = function() {
 
                 function saveLevelLocal(existingID) {
                     saveLevel(newName, existingID, processLevelsAndGoToMap);
-                    levelNameInput.val('');
                 }
 
                 // Test to see if we already have the level saved
@@ -1277,6 +1275,10 @@ ocargo.LevelEditor = function() {
         }
     }
 
+    function clearLevelNameInputInSaveTab() {
+        $('#levelNameInput').val('');
+    }
+
     function clear() {
         for (var i = trafficLights.length-1; i >= 0; i--) {
             trafficLights[i].destroy();
@@ -1299,6 +1301,8 @@ ocargo.LevelEditor = function() {
         $('#cow_group_select').find('option').remove();
         // Add initial cow group
         addCowGroup();
+
+        clearLevelNameInputInSaveTab();
     }
 
     function drawAll() {
