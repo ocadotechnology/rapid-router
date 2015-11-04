@@ -40,9 +40,9 @@ identified as the original program.
 var ocargo = ocargo || {};
 
 ocargo.Game = function() {
-    this.tabs = [];
+    this.tabs = null;
     this.failures = 0;
-    this.currentlySelectedTab;
+    this.currentlySelectedTab = null;
 };
 
 ocargo.Game.prototype.setup = function() {
@@ -75,10 +75,10 @@ ocargo.Game.prototype.setup = function() {
     ocargo.pythonControl.loadPreviousAttempt();
 
     // Setup the ui
-    this.setupSliderListeners();
-    this.setupDirectDriveListeners();
-    this.setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
-    this.setupTabs();
+    this._setupSliderListeners();
+    this._setupDirectDriveListeners();
+    this._setupFuelGauge(ocargo.model.map.nodes, BLOCKS);
+    this._setupTabs();
 
     this.onStopControls();
 
@@ -95,7 +95,7 @@ ocargo.Game.prototype.setup = function() {
     window.addEventListener('unload', function(event) {
         ocargo.pythonControl.teardown();
         ocargo.blocklyControl.teardown();
-    });
+    }.bind(this));
 
     var loggedOutWarning = '';
     // Check if logged on
@@ -186,7 +186,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionType: 'onStopControls',
-        functionCall: function() {game.onStopControls();},
+        functionCall: this.onStopControls.bind(this),
         description: 'onStopControls'
     });
 
@@ -212,8 +212,6 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         score *= 2;
     }
 
-    var game = this;
-
     // Check that we should actually be sending an attempt - either if only blockly's enabled
     // or if python's enabled and we're on the python tab (assumes they don't change tab quickly...)
     if ((BLOCKLY_ENABLED && !PYTHON_ENABLED) ||
@@ -229,7 +227,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
                     if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                         xhr.setRequestHeader("X-CSRFToken", csrftoken);
                     }
-                },
+                }.bind(this),
                 data : {
                     nightmode: (NIGHT_MODE) ? "True" : "False",
                     level: parseInt(LEVEL_ID),
@@ -239,7 +237,7 @@ ocargo.Game.prototype.sendAttempt = function(score) {
                 },
                 error : function(xhr, errmsg, err) {
                     console.error(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-                }
+                }.bind(this)
             });
         }
     }
@@ -250,27 +248,7 @@ ocargo.Game.prototype.registerFailure = function() {
     return (this.failures >= 3);
 };
 
-ocargo.Game.prototype.allowCodeChanges = function() {
-    this._setCodeChangesAllowed(true);
-};
-
-ocargo.Game.prototype.disallowCodeChanges = function() {
-    this._setCodeChangesAllowed(false);
-};
-
-// function to enable or disable pointerEvents on running python or blockly code
-ocargo.Game.prototype._setCodeChangesAllowed = function(changesAllowed) {
-    ocargo.blocklyControl.setCodeChangesAllowed(changesAllowed);
-
-    var pointerEvents = changesAllowed ? "" : "none";
-
-    var codeMirrors = document.getElementsByClassName('CodeMirror');
-    for (i = 0; i < codeMirrors.length; i++) {
-        codeMirrors[i].style.pointerEvents = pointerEvents;
-    }
-};
-
-ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
+ocargo.Game.prototype._setupFuelGauge = function(nodes, blocks) {
     if (FUEL_GAUGE) {
         document.getElementById('fuelGauge').style.visibility='visible';
 
@@ -288,40 +266,39 @@ ocargo.Game.prototype.setupFuelGauge = function(nodes, blocks) {
     }
 };
 
-ocargo.Game.prototype.setupDirectDriveListeners = function() {
-    var game = this;
-    function manoeuvreCallback() {
+ocargo.Game.prototype._setupDirectDriveListeners = function() {
+    var manoeuvreCallback = function () {
         ocargo.drawing.scrollToShowCharacter();
-        game.onStopControls();
-    }
+        this.onStopControls();
+    }.bind(this);
 
-    $('#moveForward').click(function() {
+    $('#moveForward').click(function () {
         if(ocargo.model.reasonForTermination != 'CRASH') {
-            game.onPlayControls();
+            this.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
             ocargo.drawing.moveForward(manoeuvreCallback);
         }
-    });
-    $('#turnLeft').click(function() {
+    }.bind(this));
+    $('#turnLeft').click(function () {
         if(ocargo.model.reasonForTermination != 'CRASH') {
-            game.onPlayControls();
+            this.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
             ocargo.drawing.turnLeft(manoeuvreCallback);
         }
-    });
-    $('#turnRight').click(function() {
+    }.bind(this));
+    $('#turnRight').click(function () {
         if(ocargo.model.reasonForTermination != 'CRASH') {
-            game.onPlayControls();
+            this.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
             ocargo.drawing.turnRight(manoeuvreCallback);
         }
-    });
+    }.bind(this));
     $('#go').click(function() {
         $('#play_radio').trigger('click');
     });
 };
 
-ocargo.Game.prototype.setupSliderListeners = function() {
+ocargo.Game.prototype._setupSliderListeners = function () {
     var tabsWidth = $('#tabs').width();
 
     var startEvents = ['mousedown', 'touchstart'];
@@ -347,7 +324,7 @@ ocargo.Game.prototype.setupSliderListeners = function() {
         ocargo.blocklyControl.redrawBlockly();
     };
 
-    var moveFunc = function(e) {
+    var moveFunc = function (e) {
         if (e.type == 'touchmove') {
             e = e.originalEvent.touches[0];
         }
@@ -372,7 +349,7 @@ ocargo.Game.prototype.setupSliderListeners = function() {
         ocargo.blocklyControl.redrawBlockly();
     };
 
-    var startFunc = function(e) {
+    var startFunc = function (e) {
         halfSliderWidth = slider.width()/2;
 
         for (var i = 0; i < moveEvents.length; i++) {
@@ -392,487 +369,7 @@ ocargo.Game.prototype.setupSliderListeners = function() {
     }
 };
 
-ocargo.Game.prototype.setupTabs = function() {
-    var game = this;
-    var tabs = [];
-
-    tabs.blockly = new ocargo.Tab($('#blockly_radio'), $('#blockly_radio + label'), $('#blockly_pane'));
-    tabs.python = new ocargo.Tab($('#python_radio'), $('#python_radio + label'), $('#python_pane'));
-
-    tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
-    tabs.stop = new ocargo.Tab($('#stop_radio'), $('#stop_radio + label'));
-    tabs.fast = new ocargo.Tab($('#fast_radio'), $('#fast_radio + label'));
-    tabs.step = new ocargo.Tab($('#step_radio'), $('#step_radio + label'));
-
-    tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
-    tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
-    tabs.clear_program = new ocargo.Tab($('#clear_program_radio'), $('#clear_program_radio + label'));
-
-    // tabs.big_code_mode = new ocargo.Tab($('#big_code_mode_radio'), $('#big_code_mode_radio + label'));
-    // tabs.print = new ocargo.Tab($('#print_radio'), $('#print_radio + label'));
-    tabs.mute = new ocargo.Tab($('#mute_radio'), $('#mute_radio + label'));
-    tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'));
-    tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));
-    tabs.nightmode = new ocargo.Tab($('#nightmode_radio'), $('#nightmode_radio + label'));
-
-    setupBlocklyTab();
-    setupPythonTab();
-    setupClearTab();
-    setupPlayTab();
-    setupStopTab();
-    setupFastTab();
-    setupStepTab();
-    setupLoadTab();
-    setupSaveTab();
-    // setupPrintTab();
-    setupHelpTab();
-    // setupBigCodeModeTab();
-    setupMuteTab();
-    setupQuitTab();
-    setupNightModeTab();
-
-    game.tabs = tabs;
-
-    if (!BLOCKLY_ENABLED) {
-        $('#python_radio').click();
-    }
-
-    function setupBlocklyTab() {
-        tabs.blockly.setOnChange(function () {
-            var tab = tabs.blockly;
-
-            game.changeTabSelectionTo(tab);
-
-            ocargo.blocklyControl.redrawBlockly();
-            // reset blockly to python converter
-            Blockly.Python.init(Blockly.getMainWorkspace());
-            ocargo.controller = ocargo.blocklyControl;
-        });
-
-        game.currentlySelectedTab = tabs.blockly;
-        tabs.blockly.select();
-
-        // Function wrapper needed
-        $('#flyoutButton').click(function(){ocargo.blocklyControl.toggleFlyout();});
-
-        // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
-        setTimeout(function() {
-            $('#flyoutButton').click();
-            ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-        }, 100);
-    }
-
-    function setupPythonTab() {
-        $('#clear_console').click(function (e) {
-            $('#consoleOutput').text('');
-        });
-
-        $('#van_commands_help').click(function (e) {
-            var leadMsg = ocargo.messages.pythonCommands;
-            ocargo.Drawing.startPopup("Python Commands", leadMsg, "", true);
-        });
-
-        $('#convert_from_blockly').click(function (e) {
-            ocargo.pythonControl.appendCode(ocargo.blocklyCompiler.workspaceToPython());
-        });
-
-        tabs.python.setOnChange(function() {
-            // Only clear console when changing *to* python?
-            if (!game.isInPythonWorkspace()) {
-                $('#clear_console').click();
-            }
-            game.changeTabSelectionTo(tabs.python);
-
-            ocargo.controller = ocargo.pythonControl;
-        });
-    }
-
-    function setupClearTab() {
-        tabs.clear_program.setOnChange(function() {
-            if (game.isInBlocklyWorkspace()) {
-                ocargo.blocklyControl.reset();
-            }
-            if (game.isInPythonWorkspace()) {
-                ocargo.pythonControl.reset();
-            }
-            game.reset();
-
-            selectPreviousTab();
-        });
-    }
-
-    function setupPlayTab() {
-        tabs.play.setOnChange(function() {
-            var existingHtml = tabs.play.getText();
-
-            if (existingHtml == "Play") {
-                if (game.runProgramAndPrepareAnimation()) {
-                    game.onPlayControls();
-                    ocargo.animation.playAnimation();
-                    $('#clear_console').click();
-                }
-
-            }
-            else if (existingHtml == 'Pause') {
-                game.onPauseControls();
-                ocargo.animation.pauseAnimation();
-            }
-            else if (existingHtml == 'Resume') {
-                // Important ordering
-                game.onResumeControls();
-                ocargo.animation.playAnimation();
-            }
-
-            selectPreviousTab();
-        });
-    }
-
-    function setupStopTab() {
-        tabs.stop.setOnChange(function() {
-            game.reset();
-            game.onStopControls();
-
-            selectPreviousTab();
-        });
-    }
-
-    function setupFastTab() {
-        tabs.fast.setOnChange(function() {
-            var playTextPreSpeedControl = tabs.play.getText();
-
-            if (tabs.fast.getText() == "Fast") {
-                game.onFastControls();
-                ocargo.animation.setHighSpeed();
-            } else {
-                game.onSlowControls();
-                ocargo.animation.setRegularSpeed();
-            }
-
-            if (playTextPreSpeedControl == "Play") {
-                if (game.runProgramAndPrepareAnimation()) {
-                    ocargo.animation.playAnimation();
-                    $('#clear_console').click();
-                }else{
-                    // When error occurs during the compilation of the program
-                    game.onStopControls();
-                }
-            } else if (playTextPreSpeedControl == "Resume") {
-                ocargo.animation.playAnimation();
-            }
-
-            selectPreviousTab();
-        });
-    }
-
-    function setupStepTab() {
-        tabs.step.setOnChange(function() {
-            if (tabs.play.getText() == "Play") {
-                game.runProgramAndPrepareAnimation();
-                $('#clear_console').click();
-            }
-
-            ocargo.animation.stepAnimation(function() {
-                if (ocargo.animation.isFinished()) {
-                    game.onStopControls();
-                }
-                else {
-                    game.onPauseControls();
-                }
-            });
-
-            game.onStepControls();
-            selectPreviousTab();
-        });
-    }
-
-    function goToWorkspace() {
-        if (PYTHON_ENABLED) {
-            tabs.python.select();
-        }
-        if (BLOCKLY_ENABLED) {
-            tabs.blockly.select();
-        }
-    }
-
-    function addTabToggle(tabElementId, isSelected) {
-        ocargo.Tab.addToggle(tabElementId, isSelected, goToWorkspace);
-    }
-
-    function setupLoadTab() {
-        var selectedWorkspace = null;
-        tabs.load.setOnChange(function() {
-            game.changeTabSelectionTo(tabs.load);
-
-            selectedWorkspace = null;
-            // TODO Disable the tab to stop users clicking it multiple times
-            // whilst waiting for the table data to load
-            // JQuery currently throwing errors :(
-
-            ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
-                if (err !== null) {
-                    ocargo.Drawing.startInternetDownPopup();
-                    console.error(err);
-                    return;
-                }
-
-                loadInWorkspaces(workspaces);
-            });
-        });
-
-        function loadSelectedWorkspace() {
-            if (selectedWorkspace) {
-
-                // Blockly or Python tab must be selected before domToWorkspace is called
-                // Otherwise blocks will be chopped off or python editor will not be updated
-                goToWorkspace();
-
-                ocargo.saving.retrieveWorkspace(selectedWorkspace, function(err, workspace) {
-                    if (err !== null) {
-                        ocargo.Drawing.startInternetDownPopup();
-                        console.error(err);
-                        return;
-                    }
-                    if (BLOCKLY_ENABLED) {
-                        ocargo.blocklyControl.deserialize(workspace.contents);
-                        ocargo.blocklyControl.redrawBlockly();
-                    }
-                    if (PYTHON_ENABLED) {
-                        ocargo.pythonControl.setCode(workspace.python_contents);
-                    }
-
-                    $('#loadModal').foundation('reveal', 'close');
-                });
-
-            }
-        }
-
-        $('#loadWorkspace').click(loadSelectedWorkspace);
-
-        $('#deleteWorkspace').click(function() {
-            if (selectedWorkspace) {
-                ocargo.saving.deleteWorkspace(selectedWorkspace, function(err, workspaces) {
-                    if (err !== null) {
-                        ocargo.Drawing.startInternetDownPopup();
-                        console.error(err);
-                        return;
-                    }
-
-                    loadInWorkspaces(workspaces);
-                });
-            }
-        });
-
-        function loadInWorkspaces(workspaces) {
-            populateTable("loadWorkspaceTable", workspaces);
-
-            // Add click listeners to all rows
-            var rows = $('#loadWorkspaceTable tr');
-            rows.on('click', function() {
-                rows.attr('selected', false);
-                $(this).attr('selected', true);
-                selectedWorkspace = $(this).attr('value');
-                $('#loadWorkspace').removeAttr('disabled');
-                $('#deleteWorkspace').removeAttr('disabled');
-            });
-
-            // Add double click listener to load the workspace selected by the first click
-            rows.on('dblclick', loadSelectedWorkspace);
-
-            var empty = workspaces.length === 0;
-            $('#load_pane .scrolling-table-wrapper').css('display',  empty ? 'none' : 'block');
-            $('#load_pane #does_not_exist').css('display',  empty ? 'block' : 'none');
-
-            // But disable all the modal buttons as nothing is selected yet
-            selectedWorkspace = null;
-            $('#loadWorkspace').attr('disabled', 'disabled');
-            $('#deleteWorkspace').attr('disabled', 'disabled');
-        }
-    }
-
-    function setupSaveTab() {
-        var selectedWorkspace = null;
-
-        tabs.save.setOnChange(function() {
-            game.changeTabSelectionTo(tabs.save);
-
-            selectedWorkspace = null;
-
-            // TODO Disable the tab to stop users clicking it multiple times
-            // whilst waiting for the table data to load
-            // JQuery currently throwing errors :()
-
-            ocargo.saving.retrieveListOfWorkspaces(function(err, workspaces) {
-                if (err !== null) {
-                    ocargo.Drawing.startInternetDownPopup();
-                    console.error(err);
-                    return;
-                }
-
-                loadInWorkspaces(workspaces);
-            });
-        });
-
-        var saveWorkspace = function() {
-            var newName = $('#workspaceNameInput').val();
-            if (newName && newName !== "") {
-                var table = $("#saveWorkspaceTable");
-                var existingID = null;
-
-                for (var i = 0; i < table[0].rows.length; i++) {
-                    var row = table[0].rows[i];
-                    var existingName = row.cells[0].innerHTML;
-                    if (existingName === newName) {
-                        existingID = row.getAttribute('value');
-                        break;
-                    }
-                }
-
-                var workspace = {name: newName,
-                                 contents: ocargo.blocklyControl.serialize(),
-                                 python_contents: ocargo.pythonControl.getCode()};
-
-                ocargo.saving.saveWorkspace(workspace, existingID, function(err, workspaces) {
-                    if (err !== null) {
-                        ocargo.Drawing.startInternetDownPopup();
-                        console.error(err);
-                        loadInWorkspaces(workspaces);
-                    } else {
-                        // Blockly or Python tab must be selected before domToWorkspace is called
-                        // Otherwise blocks will be chopped off or python editor will not be updated
-                        goToWorkspace();
-                    }
-                });
-            }
-        };
-
-        $('#saveWorkspace').click(saveWorkspace);
-
-        // If the user pressed the enter key in the textbox, should be the same as clicking the button
-        $('#newWorkspaceName').on('keypress', function(e) {
-            if (e.which == 13) {
-                $('#saveWorkspace').trigger('click');
-            }
-        });
-
-        function loadInWorkspaces(workspaces) {
-            populateTable("saveWorkspaceTable", workspaces);
-
-            // Add click listeners to all rows
-            var rows = $('#saveWorkspaceTable tr');
-            rows.on('click', function(event) {
-                rows.attr('selected', false);
-                $(this).attr('selected', true);
-                selectedWorkspace = $(event.target).attr('value');
-                var workspaceName = $(event.target)[0].innerHTML;
-                document.getElementById("workspaceNameInput").value = workspaceName;
-            });
-
-            // Add double click listener to save the workspace selected by the first click
-            rows.on('dblclick', saveWorkspace);
-
-            $('#save_pane .scrolling-table-wrapper').css(
-                'display',  workspaces.length === 0 ? 'none' : 'block');
-            // But disable all the modal buttons as nothing is selected yet
-            selectedWorkspace = null;
-        }
-    }
-
-    function setupPrintTab() {
-        tabs.print.setOnChange(function() {
-            selectPreviousTab();
-            window.print();
-        });
-    }
-
-    function setupHelpTab() {
-        tabs.help.setOnChange(function() {
-            selectPreviousTab();
-            ocargo.Drawing.startPopup('', '', HINT);
-        });
-    }
-
-    function setupBigCodeModeTab() {
-        tabs.big_code_mode.setOnChange(function() {
-            tabs.blockly.select();
-
-            if (ocargo.blocklyControl.bigCodeMode){
-                tabs.big_code_mode.setContents(
-                    ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Enlarge");
-                ocargo.blocklyControl.disableBigCodeMode();
-            } else {
-                tabs.big_code_mode.setContents(
-                    ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Shrink");
-                ocargo.blocklyControl.enableBigCodeMode();
-            }
-
-            ocargo.blocklyControl.toggleFlyout();
-            ocargo.blocklyControl.toggleFlyout();
-
-            ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-        });
-    }
-
-    function setupMuteTab() {
-        tabs.mute.setOnChange(function() {
-            game.mute($.cookie('muted') !== 'true');
-            selectPreviousTab();
-        });
-    }
-
-    function setupQuitTab() {
-        tabs.quit.setOnChange(function() {
-            window.location.href = RETURN_URL;
-        });
-    }
-
-    function setupNightModeTab() {
-        tabs.nightmode.setOnChange(function() {
-            window.location.href = FLIP_NIGHT_MODE_URL;
-        });
-    }
-
-
-    // Helper method for load and save tabs
-    function populateTable (tableName, workspaces) {
-
-        var table = $('#'+tableName),
-            sortedWorkspaces = [];
-
-        // Remove click listeners to avoid memory leak and remove all rows
-        $('#'+tableName+' td').off('click');
-        table.empty();
-
-        // Order them alphabetically
-        sortedWorkspaces = ocargo.utils.sortObjects(workspaces,'name');
-
-        workspaces = sortedWorkspaces;
-
-        // Add a row to the table for each workspace saved in the database
-        for (var i = 0, ii = workspaces.length; i < ii; i++) {
-            var workspace = workspaces[i];
-            var tableRow = $('<tr>');
-            tableRow.attr('value', workspace.id);
-            var workspaceEntry = $('<td>');
-            workspaceEntry.text(workspace.name);
-            tableRow.append(workspaceEntry);
-            table.append(tableRow);
-        }
-    }
-
-    function selectPreviousTab() {
-        game.currentlySelectedTab.select();
-    }
-};
-
-ocargo.Game.prototype.changeTabSelectionTo = function (tab) {
-    var previouslySelected = this.currentlySelectedTab;
-    previouslySelected.setPaneEnabled(false);
-    tab.setPaneEnabled(true);
-    this.currentlySelectedTab = tab;
-    return previouslySelected;
-};
-
-ocargo.Game.prototype.onPlayControls = function() {
+ocargo.Game.prototype.onPlayControls = function () {
     this.disallowCodeChanges();
 
     document.getElementById('direct_drive').style.visibility='hidden';
@@ -888,7 +385,7 @@ ocargo.Game.prototype.onPlayControls = function() {
 };
 
 
-ocargo.Game.prototype.onStepControls = function() {
+ocargo.Game.prototype.onStepControls = function () {
     this.disallowCodeChanges();
 
     document.getElementById('direct_drive').style.visibility='hidden';
@@ -902,7 +399,7 @@ ocargo.Game.prototype.onStepControls = function() {
     this.tabs.help.disable();
 };
 
-ocargo.Game.prototype.onFastControls = function() {
+ocargo.Game.prototype.onFastControls = function () {
     this.disallowCodeChanges();
 
     document.getElementById('direct_drive').style.visibility='hidden';
@@ -917,7 +414,7 @@ ocargo.Game.prototype.onFastControls = function() {
     this.tabs.help.disable();
 };
 
-ocargo.Game.prototype.onSlowControls = function() {
+ocargo.Game.prototype.onSlowControls = function () {
     this.disallowCodeChanges();
 
     document.getElementById('direct_drive').style.visibility='hidden';
@@ -930,6 +427,97 @@ ocargo.Game.prototype.onSlowControls = function() {
     this.tabs.save.disable();
     this.tabs.clear_program.disable();
     this.tabs.help.disable();
+};
+
+ocargo.Game.prototype.mute = function (mute) {
+    if (mute) {
+        ocargo.sound.mute();
+        $.cookie("muted", 'true');
+        $('#mute_text').text('Unmute');
+        $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/muted.svg');
+    } else {
+        ocargo.sound.unmute();
+        $.cookie("muted", 'false');
+        $('#mute_text').text('Mute');
+        $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/unmuted.svg');
+    }
+};
+
+ocargo.Game.prototype.isInBlocklyWorkspace = function () {
+    return this.isInBlocklyWorkspace();
+};
+
+ocargo.Game.prototype.isInPythonWorkspace = function () {
+    return this.isInPythonWorkspace();
+};
+
+ocargo.Game.prototype._setupTabs = function () {
+    this.tabs = [];
+
+    this.tabs.blockly = new ocargo.Tab($('#blockly_radio'), $('#blockly_radio + label'), $('#blockly_pane'));
+    this.tabs.python = new ocargo.Tab($('#python_radio'), $('#python_radio + label'), $('#python_pane'));
+
+    this.tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
+    this.tabs.stop = new ocargo.Tab($('#stop_radio'), $('#stop_radio + label'));
+    this.tabs.fast = new ocargo.Tab($('#fast_radio'), $('#fast_radio + label'));
+    this.tabs.step = new ocargo.Tab($('#step_radio'), $('#step_radio + label'));
+
+    this.tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
+    this.tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
+    this.tabs.clear_program = new ocargo.Tab($('#clear_program_radio'), $('#clear_program_radio + label'));
+
+    // this.tabs.big_code_mode = new ocargo.Tab($('#big_code_mode_radio'), $('#big_code_mode_radio + label'));
+    // this.tabs.print = new ocargo.Tab($('#print_radio'), $('#print_radio + label'));
+    this.tabs.mute = new ocargo.Tab($('#mute_radio'), $('#mute_radio + label'));
+    this.tabs.help = new ocargo.Tab($('#help_radio'), $('#help_radio + label'));
+    this.tabs.quit = new ocargo.Tab($('#quit_radio'), $('#quit_radio + label'));
+    this.tabs.nightmode = new ocargo.Tab($('#nightmode_radio'), $('#nightmode_radio + label'));
+
+    this._setupBlocklyTab();
+    this._setupPythonTab();
+    this._setupClearTab();
+    this._setupPlayTab();
+    this._setupStopTab();
+    this._setupFastTab();
+    this._setupStepTab();
+    this._setupLoadTab();
+    this._setupSaveTab();
+    //this._setupPrintTab();
+    this._setupHelpTab();
+    //this._setupBigCodeModeTab();
+    this._setupMuteTab();
+    this._setupQuitTab();
+    this._setupNightModeTab();
+
+    if (!BLOCKLY_ENABLED) {
+        $('#python_radio').click();
+    }
+};
+
+ocargo.Game.prototype.changeTabSelectionTo = function (tab) {
+    var previouslySelected = this.currentlySelectedTab;
+    previouslySelected.setPaneEnabled(false);
+    tab.setPaneEnabled(true);
+    this.currentlySelectedTab = tab;
+    return previouslySelected;
+};
+
+ocargo.Game.prototype.isInBlocklyWorkspace = function () {
+    return this.currentlySelectedTab == this.tabs.blockly;
+};
+
+ocargo.Game.prototype.isInPythonWorkspace = function () {
+    return this.currentlySelectedTab == this.tabs.python;
+};
+
+ocargo.Game.prototype.onResumeControls = function() {
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
+    this.tabs.step.disable();
+};
+
+ocargo.Game.prototype.onPauseControls = function() {
+    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
+    this.tabs.step.enable();
 };
 
 ocargo.Game.prototype.onStopControls = function() {
@@ -949,44 +537,451 @@ ocargo.Game.prototype.onStopControls = function() {
     this.tabs.help.enable();
 };
 
-ocargo.Game.prototype.onPauseControls = function() {
-    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/play.svg', 'Resume');
-    this.tabs.step.enable();
+ocargo.Game.prototype._setupBlocklyTab = function () {
+    this.tabs.blockly.setOnChange(function () {
+        var tab = this.tabs.blockly;
+
+        this.changeTabSelectionTo(tab);
+
+        ocargo.blocklyControl.redrawBlockly();
+        // reset blockly to python converter
+        Blockly.Python.init(Blockly.getMainWorkspace());
+        ocargo.controller = ocargo.blocklyControl;
+    }.bind(this));
+
+    this.currentlySelectedTab = this.tabs.blockly;
+    this.tabs.blockly.select();
+
+    // Function wrapper needed
+    $('#flyoutButton').click(function () {
+        ocargo.blocklyControl.toggleFlyout();
+    }.bind(this));
+
+    // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
+    setTimeout(function () {
+        $('#flyoutButton').click();
+        ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
+    }.bind(this), 100);
 };
 
-ocargo.Game.prototype.onResumeControls = function() {
-    this.tabs.play.setContents(ocargo.Drawing.imageDir + 'icons/pause.svg', 'Pause');
-    this.tabs.step.disable();
+
+
+ocargo.Game.prototype.allowCodeChanges = function () {
+    this._setCodeChangesAllowed(true);
 };
 
-ocargo.Game.prototype.mute = function(mute) {
-    if (mute) {
-        ocargo.sound.mute();
-        $.cookie("muted", 'true');
-        $('#mute_text').text('Unmute');
-        $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/muted.svg');
-    } else {
-        ocargo.sound.unmute();
-        $.cookie("muted", 'false');
-        $('#mute_text').text('Mute');
-        $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/unmuted.svg');
+ocargo.Game.prototype.disallowCodeChanges = function () {
+    this._setCodeChangesAllowed(false);
+};
+
+// function to enable or disable pointerEvents on running python or blockly code
+ocargo.Game.prototype._setCodeChangesAllowed = function (changesAllowed) {
+    ocargo.blocklyControl.setCodeChangesAllowed(changesAllowed);
+
+    var pointerEvents = changesAllowed ? "" : "none";
+
+    var codeMirrors = document.getElementsByClassName('CodeMirror');
+    for (i = 0; i < codeMirrors.length; i++) {
+        codeMirrors[i].style.pointerEvents = pointerEvents;
     }
 };
 
-ocargo.Game.prototype.isInBlocklyWorkspace = function () {
-    return this.currentlySelectedTab == this.tabs.blockly;
+ocargo.Game.prototype._setupPythonTab = function () {
+    $('#clear_console').click(function (e) {
+        $('#consoleOutput').text('');
+    }.bind(this));
+
+    $('#van_commands_help').click(function (e) {
+        var leadMsg = ocargo.messages.pythonCommands;
+        ocargo.Drawing.startPopup("Python Commands", leadMsg, "", true);
+    }.bind(this));
+
+    $('#convert_from_blockly').click(function (e) {
+        ocargo.pythonControl.appendCode(ocargo.blocklyCompiler.workspaceToPython());
+    }.bind(this));
+
+    this.tabs.python.setOnChange(function () {
+        // Only clear console when changing *to* python?
+        if (!this.isInPythonWorkspace()) {
+            $('#clear_console').click();
+        }
+        this.changeTabSelectionTo(this.tabs.python);
+
+        ocargo.controller = ocargo.pythonControl;
+    }.bind(this));
 };
 
-ocargo.Game.prototype.isInPythonWorkspace = function () {
-    return this.currentlySelectedTab == this.tabs.python;
+ocargo.Game.prototype._setupClearTab = function () {
+    this.tabs.clear_program.setOnChange(function () {
+        if (this.isInBlocklyWorkspace()) {
+            ocargo.blocklyControl.reset();
+        }
+        if (this.isInPythonWorkspace()) {
+            ocargo.pythonControl.reset();
+        }
+        this.reset();
+
+        this.selectPreviousTab();
+    }.bind(this));
 };
 
-ocargo.Game.prototype.isLoadTabSelected = function () {
-    return this.currentlySelectedTab == this.tabs.load;
+
+ocargo.Game.prototype._setupPlayTab = function () {
+    this.tabs.play.setOnChange(function () {
+        var existingHtml = this.tabs.play.getText();
+
+        if (existingHtml == "Play") {
+            if (this.runProgramAndPrepareAnimation()) {
+                this.onPlayControls();
+                ocargo.animation.playAnimation();
+                $('#clear_console').click();
+            }
+
+        }
+        else if (existingHtml == 'Pause') {
+            this.onPauseControls();
+            ocargo.animation.pauseAnimation();
+        }
+        else if (existingHtml == 'Resume') {
+            // Important ordering
+            this.onResumeControls();
+            ocargo.animation.playAnimation();
+        }
+
+        this.selectPreviousTab();
+    }.bind(this));
 };
 
-ocargo.Game.prototype.isSaveTabSelected = function () {
-    return this.currentlySelectedTab == this.tabs.save;
+ocargo.Game.prototype._setupStopTab = function () {
+    this.tabs.stop.setOnChange(function () {
+        this.reset();
+        this.onStopControls();
+
+        this.selectPreviousTab();
+    }.bind(this));
+};
+
+ocargo.Game.prototype._setupFastTab = function () {
+    this.tabs.fast.setOnChange(function () {
+        var playTextPreSpeedControl = this.tabs.play.getText();
+
+        if (this.tabs.fast.getText() == "Fast") {
+            this.onFastControls();
+            ocargo.animation.setHighSpeed();
+        } else {
+            this.onSlowControls();
+            ocargo.animation.setRegularSpeed();
+        }
+
+        if (playTextPreSpeedControl == "Play") {
+            if (this.runProgramAndPrepareAnimation()) {
+                ocargo.animation.playAnimation();
+                $('#clear_console').click();
+            } else {
+                // When error occurs during the compilation of the program
+                this.onStopControls();
+            }
+        } else if (playTextPreSpeedControl == "Resume") {
+            ocargo.animation.playAnimation();
+        }
+
+        this.selectPreviousTab();
+    }.bind(this));
+};
+
+ocargo.Game.prototype._setupStepTab = function () {
+    this.tabs.step.setOnChange(function () {
+        if (this.tabs.play.getText() == "Play") {
+            this.runProgramAndPrepareAnimation();
+            $('#clear_console').click();
+        }
+
+        ocargo.animation.stepAnimation(function () {
+            if (ocargo.animation.isFinished()) {
+                this.onStopControls();
+            }
+            else {
+                this.onPauseControls();
+            }
+        }.bind(this));
+
+        this.onStepControls();
+        this.selectPreviousTab();
+    }.bind(this));
+};
+
+ocargo.Game.prototype.selectPreviousTab = function () {
+    this.currentlySelectedTab.select();
+};
+
+ocargo.Game.prototype._setupLoadTab = function () {
+    var selectedWorkspace = null;
+    this.tabs.load.setOnChange(function () {
+        this.changeTabSelectionTo(this.tabs.load);
+
+        selectedWorkspace = null;
+        // TODO Disable the tab to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        // JQuery currently throwing errors :(
+
+        ocargo.saving.retrieveListOfWorkspaces(function (err, workspaces) {
+            if (err !== null) {
+                ocargo.Drawing.startInternetDownPopup();
+                console.error(err);
+                return;
+            }
+
+            loadInWorkspaces.call(this, workspaces);
+        }.bind(this));
+    }.bind(this));
+
+    function loadSelectedWorkspace() {
+        if (selectedWorkspace) {
+
+            // Blockly or Python tab must be selected before domToWorkspace is called
+            // Otherwise blocks will be chopped off or python editor will not be updated
+            this._goToWorkspace();
+
+            ocargo.saving.retrieveWorkspace(selectedWorkspace, function (err, workspace) {
+                if (err !== null) {
+                    ocargo.Drawing.startInternetDownPopup();
+                    console.error(err);
+                    return;
+                }
+                if (BLOCKLY_ENABLED) {
+                    ocargo.blocklyControl.deserialize(workspace.contents);
+                    ocargo.blocklyControl.redrawBlockly();
+                }
+                if (PYTHON_ENABLED) {
+                    ocargo.pythonControl.setCode(workspace.python_contents);
+                }
+
+                $('#loadModal').foundation('reveal', 'close');
+            }.bind(this));
+        }
+    }
+
+    $('#loadWorkspace').click(loadSelectedWorkspace.bind(this));
+
+    $('#deleteWorkspace').click(function () {
+        if (selectedWorkspace) {
+            ocargo.saving.deleteWorkspace(selectedWorkspace, function (err, workspaces) {
+                if (err !== null) {
+                    ocargo.Drawing.startInternetDownPopup();
+                    console.error(err);
+                    return;
+                }
+
+                loadInWorkspaces.call(this, workspaces);
+            });
+        }
+    }.bind(this));
+
+    function loadInWorkspaces(workspaces) {
+        this._populateTable("loadWorkspaceTable", workspaces);
+
+        // Add click listeners to all rows
+        var rows = $('#loadWorkspaceTable tr');
+        rows.on('click', function () {
+            rows.attr('selected', false);
+            $(this).attr('selected', true);
+            selectedWorkspace = $(this).attr('value');
+            $('#loadWorkspace').removeAttr('disabled');
+            $('#deleteWorkspace').removeAttr('disabled');
+        });
+
+        // Add double click listener to load the workspace selected by the first click
+        rows.on('dblclick', loadSelectedWorkspace.bind(this));
+
+        var empty = workspaces.length === 0;
+        $('#load_pane .scrolling-table-wrapper').css('display', empty ? 'none' : 'block');
+        $('#load_pane #does_not_exist').css('display', empty ? 'block' : 'none');
+
+        // But disable all the modal buttons as nothing is selected yet
+        selectedWorkspace = null;
+        $('#loadWorkspace').attr('disabled', 'disabled');
+        $('#deleteWorkspace').attr('disabled', 'disabled');
+    }
+};
+
+ocargo.Game.prototype._setupSaveTab = function () {
+    var selectedWorkspace = null;
+
+    this.tabs.save.setOnChange(function () {
+        this.changeTabSelectionTo(this.tabs.save);
+
+        selectedWorkspace = null;
+
+        // TODO Disable the tab to stop users clicking it multiple times
+        // whilst waiting for the table data to load
+        // JQuery currently throwing errors :()
+
+        ocargo.saving.retrieveListOfWorkspaces(function (err, workspaces) {
+            if (err !== null) {
+                ocargo.Drawing.startInternetDownPopup();
+                console.error(err);
+                return;
+            }
+
+            loadInWorkspaces.call(this, workspaces);
+        }.bind(this));
+    }.bind(this));
+
+    var saveWorkspace = function () {
+        var newName = $('#workspaceNameInput').val();
+        if (newName && newName !== "") {
+            var table = $("#saveWorkspaceTable");
+            var existingID = null;
+
+            for (var i = 0; i < table[0].rows.length; i++) {
+                var row = table[0].rows[i];
+                var existingName = row.cells[0].innerHTML;
+                if (existingName === newName) {
+                    existingID = row.getAttribute('value');
+                    break;
+                }
+            }
+
+            var workspace = {
+                name: newName,
+                contents: ocargo.blocklyControl.serialize(),
+                python_contents: ocargo.pythonControl.getCode()
+            };
+
+            ocargo.saving.saveWorkspace(workspace, existingID, function (err, workspaces) {
+                if (err !== null) {
+                    ocargo.Drawing.startInternetDownPopup();
+                    console.error(err);
+                    loadInWorkspaces.call(this, workspaces);
+                } else {
+                    // Blockly or Python tab must be selected before domToWorkspace is called
+                    // Otherwise blocks will be chopped off or python editor will not be updated
+                    this._goToWorkspace();
+                }
+            }.bind(this));
+        }
+    };
+
+    $('#saveWorkspace').click(saveWorkspace.bind(this));
+
+    // If the user pressed the enter key in the textbox, should be the same as clicking the button
+    $('#newWorkspaceName').on('keypress', function (e) {
+        if (e.which == 13) {
+            $('#saveWorkspace').trigger('click');
+        }
+    });
+
+    function loadInWorkspaces(workspaces) {
+        this._populateTable("saveWorkspaceTable", workspaces);
+
+        // Add click listeners to all rows
+        var rows = $('#saveWorkspaceTable tr');
+        rows.on('click', function (event) {
+            rows.attr('selected', false);
+            $(this).attr('selected', true);
+            selectedWorkspace = $(event.target).attr('value');
+            var workspaceName = $(event.target)[0].innerHTML;
+            document.getElementById("workspaceNameInput").value = workspaceName;
+        });
+
+        // Add double click listener to save the workspace selected by the first click
+        rows.on('dblclick', saveWorkspace.bind(this));
+
+        $('#save_pane .scrolling-table-wrapper').css(
+            'display', workspaces.length === 0 ? 'none' : 'block');
+        // But disable all the modal buttons as nothing is selected yet
+        selectedWorkspace = null;
+    }
+};
+
+ocargo.Game.prototype._setupPrintTab = function () {
+    this.tabs.print.setOnChange(function () {
+        this.selectPreviousTab();
+        window.print();
+    }.bind(this));
+};
+
+ocargo.Game.prototype._setupHelpTab = function () {
+    this.tabs.help.setOnChange(function () {
+        this.selectPreviousTab();
+        ocargo.Drawing.startPopup('', '', HINT);
+    }.bind(this));
+};
+
+ocargo.Game.prototype._setupBigCodeModeTab = function () {
+    this.tabs.big_code_mode.setOnChange(function () {
+        this.tabs.blockly.select();
+
+        if (ocargo.blocklyControl.bigCodeMode) {
+            this.tabs.big_code_mode.setContents(
+                ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Enlarge");
+            ocargo.blocklyControl.disableBigCodeMode();
+        } else {
+            this.tabs.big_code_mode.setContents(
+                ocargo.Drawing.imageDir + 'icons/big_code_mode.svg', "Shrink");
+            ocargo.blocklyControl.enableBigCodeMode();
+        }
+
+        ocargo.blocklyControl.toggleFlyout();
+        ocargo.blocklyControl.toggleFlyout();
+
+        ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
+    }.bind(this));
+};
+
+ocargo.Game.prototype._setupMuteTab = function () {
+    this.tabs.mute.setOnChange(function () {
+        this.mute($.cookie('muted') !== 'true');
+        this.selectPreviousTab();
+    }.bind(this));
+};
+
+ocargo.Game.prototype._setupQuitTab = function () {
+    this.tabs.quit.setOnChange(function () {
+        window.location.href = RETURN_URL;
+    }.bind(this));
+};
+
+ocargo.Game.prototype._setupNightModeTab = function() {
+    this.tabs.nightmode.setOnChange(function () {
+        window.location.href = FLIP_NIGHT_MODE_URL;
+    }.bind(this));
+};
+
+
+    // Helper method for load and save tabs
+ocargo.Game.prototype._populateTable = function (tableName, workspaces) {
+
+    var table = $('#' + tableName), sortedWorkspaces = [];
+
+    // Remove click listeners to avoid memory leak and remove all rows
+    $('#' + tableName + ' td').off('click');
+    table.empty();
+
+    // Order them alphabetically
+    sortedWorkspaces = ocargo.utils.sortObjects(workspaces, 'name');
+
+    workspaces = sortedWorkspaces;
+
+    // Add a row to the table for each workspace saved in the database
+    for (var i = 0, ii = workspaces.length; i < ii; i++) {
+        var workspace = workspaces[i];
+        var tableRow = $('<tr>');
+        tableRow.attr('value', workspace.id);
+        var workspaceEntry = $('<td>');
+        workspaceEntry.text(workspace.name);
+        tableRow.append(workspaceEntry);
+        table.append(tableRow);
+    }
+};
+
+ocargo.Game.prototype._goToWorkspace = function () {
+    if (PYTHON_ENABLED) {
+        this.tabs.python.select();
+    }
+    if (BLOCKLY_ENABLED) {
+        this.tabs.blockly.select();
+    }
 };
 
 function restoreCmsLogin() {
