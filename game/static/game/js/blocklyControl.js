@@ -105,19 +105,19 @@ ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
 };
 
 ocargo.BlocklyControl.prototype.enableBigCodeMode = function() {
-    ocargo.blocklyControl.bigCodeMode = true;
+    this.bigCodeMode = true;
     this.blocklyCustomisations.enableBigCodeMode();
 };
 
 ocargo.BlocklyControl.prototype.disableBigCodeMode =  function() {
-    ocargo.blocklyControl.bigCodeMode = false;
+    this.bigCodeMode = false;
     this.blocklyCustomisations.disableBigCodeMode();
 };
 
 
 ocargo.BlocklyControl.prototype.teardown = function() {
     if (localStorage && !ANONYMOUS) {
-        var text = ocargo.blocklyControl.serialize();
+        var text = this.serialize();
         try {
             if (NIGHT_MODE) {
                 localStorage.setItem('blocklyNightModeWorkspaceXml-' + LEVEL_ID, text);
@@ -137,7 +137,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         var newXml = Blockly.Xml.textToDom(text);
         Blockly.mainWorkspace.clear();
         Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, newXml);
-        var legal = ocargo.blocklyControl.removeIllegalBlocks();
+        var legal = this.removeIllegalBlocks();
 
         if (!legal) {
             ocargo.Drawing.startPopup("Loading workspace", "",
@@ -148,7 +148,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         this.blocklyCustomisations.addClickListenerToStartBlock(this.startBlock());
     } catch (e) {
         console.log(e);
-        ocargo.blocklyControl.reset();
+        this.reset();
     }
 };
 
@@ -214,16 +214,16 @@ ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
     }
     // Use the user's last attempt if available, else use whatever's in local storage
     if (WORKSPACE) {
-        ocargo.blocklyControl.deserialize(decodeHTML(WORKSPACE));
+        this.deserialize(decodeHTML(WORKSPACE));
     } else {
         if (NIGHT_MODE) {
-            ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyNightModeWorkspaceXml-' + LEVEL_ID));
+            this.deserialize(localStorage.getItem('blocklyNightModeWorkspaceXml-' + LEVEL_ID));
         } else {
-            ocargo.blocklyControl.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
+            this.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
         }
     }
 
-    ocargo.blocklyControl.redrawBlockly();
+    this.redrawBlockly();
 };
 
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
@@ -377,10 +377,10 @@ ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
         if (input.connection && input.type !== Blockly.NEXT_STATEMENT) {
             var targetBlock = input.connection.targetBlock();
             if (targetBlock) {
-                ocargo.blocklyControl.setBlockSelected(targetBlock, selected);
+                this.setBlockSelected(targetBlock, selected);
             }
         }
-    });
+    }.bind(this));
 
     if (selected) {
         block.addSelect();
@@ -390,13 +390,11 @@ ocargo.BlocklyControl.prototype.setBlockSelected = function(block, selected) {
 };
 
 ocargo.BlocklyControl.prototype.clearAllSelections = function() {
-    Blockly.mainWorkspace.getAllBlocks().forEach(
-        function (block) {
+    Blockly.mainWorkspace.getAllBlocks().forEach(function (block) {
             if(!block.keepHighlighting){
-                ocargo.blocklyControl.setBlockSelected(block, false);
+                this.setBlockSelected(block, false);
             }
-        }
-    );
+        }.bind(this));
 };
 
 ocargo.BlocklyControl.prototype.highlightIncorrectBlock = function(incorrectBlock) {
@@ -433,7 +431,7 @@ ocargo.BlocklyControl.tryCatchSilently = function (f) {
 
 ocargo.BlocklyControl.prototype.resetIncorrectBlock = function() {
     if (this.incorrectBlock) {
-        this.incorrectBlock.setColour(ocargo.blocklyControl.incorrectBlockColour);
+        this.incorrectBlock.setColour(this.incorrectBlockColour);
     }
 };
 
@@ -446,14 +444,14 @@ ocargo.BlockHandler = function(id) {
 ocargo.BlockHandler.prototype.selectBlock = function(block) {
     if (block) {
         this.deselectCurrent();
-        ocargo.blocklyControl.setBlockSelected(block, true);
+        this.setBlockSelected(block, true);
         this.selectedBlock = block;
     }
 };
 
 ocargo.BlockHandler.prototype.deselectCurrent = function() {
     if (this.selectedBlock) {
-        ocargo.blocklyControl.setBlockSelected(this.selectedBlock, false);
+        this.setBlockSelected(this.selectedBlock, false);
         this.selectedBlock = null;
     }
 };
