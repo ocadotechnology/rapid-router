@@ -64,9 +64,9 @@ ocargo.Game.prototype.setup = function() {
     ocargo.pythonControl = new ocargo.PythonControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, COWS, MAX_FUEL);
-    ocargo.drawing = new ocargo.Drawing(ocargo.model.startingPosition());
-    ocargo.drawing.preloadRoadTiles();
-    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, ocargo.drawing);
+    this.drawing = new ocargo.Drawing(ocargo.model.startingPosition());
+    this.drawing.preloadRoadTiles();
+    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, this.drawing);
     ocargo.saving = new ocargo.Saving();
 
     // Setup the blockly workspace
@@ -266,7 +266,7 @@ ocargo.Game.prototype._setupFuelGauge = function(nodes, blocks) {
 
 ocargo.Game.prototype._setupDirectDriveListeners = function() {
     var manoeuvreCallback = function () {
-        ocargo.drawing.scrollToShowCharacter();
+        this.drawing.scrollToShowCharacter();
         this.onStopControls();
     }.bind(this);
 
@@ -274,21 +274,21 @@ ocargo.Game.prototype._setupDirectDriveListeners = function() {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             this.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('move_forwards');
-            ocargo.drawing.moveForward(manoeuvreCallback);
+            this.drawing.moveForward(manoeuvreCallback);
         }
     }.bind(this));
     $('#turnLeft').click(function () {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             this.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_left');
-            ocargo.drawing.turnLeft(manoeuvreCallback);
+            this.drawing.turnLeft(manoeuvreCallback);
         }
     }.bind(this));
     $('#turnRight').click(function () {
         if(ocargo.model.reasonForTermination != 'CRASH') {
             this.onPlayControls();
             ocargo.blocklyControl.addBlockToEndOfProgram('turn_right');
-            ocargo.drawing.turnRight(manoeuvreCallback);
+            this.drawing.turnRight(manoeuvreCallback);
         }
     }.bind(this));
     $('#go').click(function() {

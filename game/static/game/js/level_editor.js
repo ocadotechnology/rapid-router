@@ -95,8 +95,8 @@ ocargo.LevelEditor = function() {
     /*********/
 
     ocargo.saving = new ocargo.Saving();
-    ocargo.drawing = new ocargo.Drawing();
-    ocargo.drawing.preloadRoadTiles();
+    var drawing = new ocargo.Drawing();
+    drawing.preloadRoadTiles();
 
     // Level information
     var nodes = [];
@@ -1260,7 +1260,7 @@ ocargo.LevelEditor = function() {
     /*************/
 
     function initialiseGrid() {
-        grid = ocargo.drawing.createGrid();
+        grid = drawing.createGrid();
         for (var i = 0; i < grid.length; i++) {
             for (var j = 0; j < grid[i].length; j++) {
                 grid[i][j].node.onmousedown = handleMouseDown(grid[i][j]);
@@ -1306,12 +1306,12 @@ ocargo.LevelEditor = function() {
     }
 
     function drawAll() {
-        ocargo.drawing.renderGrid(grid, currentTheme);
+        drawing.renderGrid(grid, currentTheme);
         redrawRoad();
     }
 
     function redrawRoad() {
-        ocargo.drawing.renderRoad(nodes);
+        drawing.renderRoad(nodes);
         clearMarkings();
         bringTrafficLightsToFront();
         bringDecorToFront();
@@ -1819,7 +1819,7 @@ ocargo.LevelEditor = function() {
                 var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
                 cow.controlledNode = controlledNode;
                 cow.valid = true;
-                ocargo.drawing.setCowImagePosition(controlledCoord, image, controlledNode);
+                drawing.setCowImagePosition(controlledCoord, image, controlledNode);
             } else {
                 cow.controlledNode = null;
                 cow.valid = false;
@@ -1996,7 +1996,7 @@ ocargo.LevelEditor = function() {
                 var colour;
                 if(isValidPlacement(sourceCoord, controlledCoord)) {
                     colour = VALID_LIGHT_COLOUR;
-                    ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                    drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
                 } else {
                     colour = INVALID_LIGHT_COLOUR;
                 }
@@ -2067,7 +2067,7 @@ ocargo.LevelEditor = function() {
                 trafficLight.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
                 trafficLight.valid = true;
 
-                ocargo.drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
             }
 
             image.attr({'cursor':'pointer'});
@@ -2745,7 +2745,7 @@ ocargo.LevelEditor = function() {
 
         };
 
-        this.image = ocargo.drawing.createCowImage(data.group.type);
+        this.image = drawing.createCowImage(data.group.type);
         this.valid = false;
 
 
@@ -2755,7 +2755,7 @@ ocargo.LevelEditor = function() {
 
             if (this.controlledNode) {
                 this.valid = true;
-                ocargo.drawing.setCowImagePosition(coordinates, this.image, this.controlledNode);
+                drawing.setCowImagePosition(coordinates, this.image, this.controlledNode);
             }
         } else {
             this.image.transform('...t' + (-paper.scrollLeft())  +  ',' +  paper.scrollTop());
@@ -2803,7 +2803,7 @@ ocargo.LevelEditor = function() {
         this.startingState = data.startingState;
 
         var imgStr = this.startingState === ocargo.TrafficLight.RED ? LIGHT_RED_URL : LIGHT_GREEN_URL;
-        this.image = ocargo.drawing.createTrafficLightImage(imgStr);
+        this.image = drawing.createTrafficLightImage(imgStr);
         this.image.transform('...s-1,1');
 
         this.valid = false;
@@ -2817,7 +2817,7 @@ ocargo.LevelEditor = function() {
 
             if (this.controlledNode && this.sourceNode) {
                 this.valid = true;
-                ocargo.drawing.setTrafficLightImagePosition(this.sourceNode.coordinate, this.controlledNode.coordinate, this.image);
+                drawing.setTrafficLightImagePosition(this.sourceNode.coordinate, this.controlledNode.coordinate, this.image);
             }
         } else {
             this.image.transform('...t' + (-paper.scrollLeft())  +  ',' +  paper.scrollTop());
@@ -2853,7 +2853,7 @@ ocargo.LevelEditor = function() {
 
         this.updateTheme = function() {
             var description = currentTheme.decor[this.decorName];
-            var newImage = ocargo.drawing.createImage(description.url, 0, 0, description.width,
+            var newImage = drawing.createImage(description.url, 0, 0, description.width,
                                                       description.height);
 
             if (this.image) {
