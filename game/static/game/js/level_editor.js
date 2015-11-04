@@ -594,9 +594,6 @@ ocargo.LevelEditor = function() {
             var selectedLevel = null;
             var ownLevels = null;
             var sharedLevels = null;
-            var previousTab = null;
-
-            ocargo.Tab.addToggle('#load_tab', isLoadTabSelected, function() { previousTab.select(); });
 
             tabs.load.setOnChange(function() {
                 if(!isLoggedIn("load")) {
@@ -675,7 +672,7 @@ ocargo.LevelEditor = function() {
 
                 // Important: done before change() call
                 // Table cells need to have rendered to match th with td widths
-                previousTab = transitionTab(tabs.load);
+                transitionTab(tabs.load);
 
                 $('#load_type_select').change();
 
@@ -694,9 +691,6 @@ ocargo.LevelEditor = function() {
 
         function setupSaveTab() {
             var selectedLevel = null;
-            var previousTab = null;
-
-            ocargo.Tab.addToggle('#save_tab', isSaveTabSelected, function() { previousTab.select(); });
 
             tabs.save.setOnChange(function () {
                 //getLevelTextForDjangoMigration();
@@ -772,7 +766,7 @@ ocargo.LevelEditor = function() {
 
                 // Important: done before change() call
                 // Table cells need to have rendered to match th with td widths
-                previousTab = transitionTab(tabs.save);
+                transitionTab(tabs.save);
 
                 populateLoadSaveTable("saveLevelTable", ownLevels);
 
