@@ -73,15 +73,20 @@ class BaseGameTest(BaseTest):
         level_with_suffix = str(level)
         if suffix:
             level_with_suffix += "-%d" % suffix
+
         user_profile = self.login_once()
         workspace_id = self.use_workspace_of_level(level_with_suffix, user_profile)
         score_element_id = self.score_element_id(route_score, algorithm_score)
+
         if not page:
             page = go_to_level_function()
+
         page.load_solution(workspace_id) \
             .run_program(score_element_id)
+
         if route_score:
             page.assert_route_score(route_score)
+
         if algorithm_score:
             page.assert_algorithm_score(algorithm_score)
 
