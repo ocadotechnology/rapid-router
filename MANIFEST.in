@@ -3,3 +3,5 @@ recursive-include game/static *
 recursive-include game/templates *
 recursive-include nuit/static *
 recursive-include nuit/templates *
+include game/_version.py
+include versioneer.py
