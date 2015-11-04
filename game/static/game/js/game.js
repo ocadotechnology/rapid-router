@@ -66,7 +66,7 @@ ocargo.Game.prototype.setup = function() {
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, COWS, MAX_FUEL);
     ocargo.drawing = new ocargo.Drawing(ocargo.model.startingPosition());
     ocargo.drawing.preloadRoadTiles();
-    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR);
+    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, ocargo.drawing);
     ocargo.saving = new ocargo.Saving();
 
     // Setup the blockly workspace

@@ -39,9 +39,10 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-ocargo.Animation = function(model, decor) {
+ocargo.Animation = function(model, decor, drawing) {
     this.model = model;
     this.decor = decor;
+	this.drawing = drawing;
 	this.activeCows = []; // cows currently displayed on map
 	this.scalingModifier = [];
 	this.crashed = false;
@@ -55,13 +56,13 @@ ocargo.Animation = function(model, decor) {
     // timer identifier for pausing
     this.playTimer = -1;
 
-    ocargo.drawing.clearPaper();
-    ocargo.drawing.renderMap(this.model.map);
-    ocargo.drawing.renderDecor(this.decor);
-    ocargo.drawing.renderOrigin(this.model.map.startingPosition());
-    ocargo.drawing.renderDestinations(this.model.map.getDestinations());
-    ocargo.drawing.renderTrafficLights(this.model.trafficLights);
-	ocargo.drawing.renderCharacter();
+    this.drawing.clearPaper();
+    this.drawing.renderMap(this.model.map);
+    this.drawing.renderDecor(this.decor);
+    this.drawing.renderOrigin(this.model.map.startingPosition());
+    this.drawing.renderDestinations(this.model.map.getDestinations());
+    this.drawing.renderTrafficLights(this.model.trafficLights);
+	this.drawing.renderCharacter();
 
      this._updateFuelGauge(100);
 };
@@ -72,7 +73,7 @@ ocargo.Animation.prototype.isFinished = function() {
 
 ocargo.Animation.prototype.removeCows = function() {
 	for (var i = 0; i < this.activeCows.length; i++) {
-		ocargo.drawing.removeCow(this.activeCows[i]);
+		this.drawing.removeCow(this.activeCows[i]);
 	}
 	this.activeCows = [];
 };
@@ -92,17 +93,17 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	// Reset the display
 	for(var i = 0; i < this.model.trafficLights.length; i++) {
 		var tl = this.model.trafficLights[i];
-		ocargo.drawing.transitionTrafficLight(tl.id, tl.state, 0);
+		this.drawing.transitionTrafficLight(tl.id, tl.state, 0);
 	}
 
 	this.removeCows();
 
 	for(var i = 0; i < this.model.map.destinations.length; i++) {
 		var destination = this.model.map.destinations[i];
-		ocargo.drawing.transitionDestination(destination.id, false, 0);
+		this.drawing.transitionDestination(destination.id, false, 0);
 	}
 
-	ocargo.drawing.reset();
+	this.drawing.reset();
 };
 
 ocargo.Animation.prototype.setRegularSpeed = function() {
@@ -222,30 +223,30 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			animation.functionCall(this.animationDuration / 2);
 			break;
 		case 'van':
-			ocargo.drawing.scrollToShowCharacter();
+			this.drawing.scrollToShowCharacter();
 
 			// move van
 			switch (animation.vanAction) {
 				case 'FORWARD':
-					duration = ocargo.drawing.moveForward(null, this.scalingModifier.shift());
+					duration = this.drawing.moveForward(null, this.scalingModifier.shift());
 					break;
 				case 'TURN_LEFT':
-					duration = ocargo.drawing.turnLeft(null, this.scalingModifier.shift());
+					duration = this.drawing.turnLeft(null, this.scalingModifier.shift());
 					break;
 				case 'TURN_RIGHT':
-					duration = ocargo.drawing.turnRight(null, this.scalingModifier.shift());
+					duration = this.drawing.turnRight(null, this.scalingModifier.shift());
 					break;
 				case 'TURN_AROUND_FORWARD':
-					duration = ocargo.drawing.turnAround('FORWARD');
+					duration = this.drawing.turnAround('FORWARD');
 					break;
 				case 'TURN_AROUND_RIGHT':
-					duration = ocargo.drawing.turnAround('RIGHT');
+					duration = this.drawing.turnAround('RIGHT');
 					break;
 				case 'TURN_AROUND_LEFT':
-					duration = ocargo.drawing.turnAround('LEFT');
+					duration = this.drawing.turnAround('LEFT');
 					break;
 				case 'WAIT':
-            		ocargo.drawing.wait();
+            		this.drawing.wait();
             		break;
 				case 'PUFFUP':
 					this.scalingModifier.push(2);
@@ -258,17 +259,17 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
                     break;
             	case 'CRASH':
 					this.crashed = true;
-            		duration = ocargo.drawing.crash(animation.previousNode, animation.currentNode,
+            		duration = this.drawing.crash(animation.previousNode, animation.currentNode,
             			animation.attemptedAction, animation.startNode);
             		break;
 				case 'COLLISION_WITH_COW':
 					this.crashed = true;
 					//Update animationLength with time van moves before crashing
-					duration = ocargo.drawing.collisionWithCow(animation.previousNode, animation.currentNode,
+					duration = this.drawing.collisionWithCow(animation.previousNode, animation.currentNode,
 						animation.attemptedAction, animation.startNode);
 					break;
             	case 'DELIVER':
-            		ocargo.drawing.deliver(animation.destinationID, duration);
+            		this.drawing.deliver(animation.destinationID, duration);
 					break;
             	case 'OBSERVE':
             		break;
@@ -366,17 +367,17 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 	        }
 			break;
 		case 'trafficlight':
-			ocargo.drawing.transitionTrafficLight(animation.id, animation.colour, duration/2);
+			this.drawing.transitionTrafficLight(animation.id, animation.colour, duration/2);
 			break;
 		case 'cow':
             this.numberOfCowsOnMap++;
-			var activeCow = ocargo.drawing.renderCow(animation.id, animation.coordinate, animation.node, duration, animation.cowType);
+			var activeCow = this.drawing.renderCow(animation.id, animation.coordinate, animation.node, duration, animation.cowType);
 			this.activeCows.push(activeCow);
 			break;
         case 'cow_leave':
             this.numberOfCowsOnMap--;
 			var cow = this._extractCowAt(animation.coordinate);
-            ocargo.drawing.removeCow(cow, duration);  // remove it from drawing
+            this.drawing.removeCow(cow, duration);  // remove it from drawing
 			break;
 		case 'console':
 			ocargo.pythonControl.appendToConsole(animation.text);
@@ -461,5 +462,5 @@ ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
 
 ocargo.Animation.prototype.setAnimationDuration = function(duration) {
 	this.animationDuration = duration;
-	ocargo.drawing.setCharacterManoeuvreDuration(this.animationDuration);
+	this.drawing.setCharacterManoeuvreDuration(this.animationDuration);
 };
