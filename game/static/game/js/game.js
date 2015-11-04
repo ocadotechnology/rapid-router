@@ -594,8 +594,6 @@ ocargo.Game.prototype.setupTabs = function() {
 
     function setupLoadTab() {
         var selectedWorkspace = null;
-        addTabToggle('#load_tab', game.isLoadTabSelected.bind(game));
-
         tabs.load.setOnChange(function() {
             game.changeTabSelectionTo(tabs.load);
 
@@ -688,8 +686,6 @@ ocargo.Game.prototype.setupTabs = function() {
     function setupSaveTab() {
         var workspaceNameInput = $('#workspaceNameInput');
         var selectedWorkspace = null;
-
-        addTabToggle('#save_tab', game.isSaveTabSelected.bind(game));
 
         tabs.save.setOnChange(function() {
             game.changeTabSelectionTo(tabs.save);
