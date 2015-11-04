@@ -244,19 +244,23 @@ ocargo.Game.prototype.registerFailure = function() {
     return (this.failures >= 3);
 };
 
+ocargo.Game.prototype.allowCodeChanges = function() {
+    this._setCodeChangesAllowed(true);
+};
+
+ocargo.Game.prototype.disallowCodeChanges = function() {
+    this._setCodeChangesAllowed(false);
+};
+
 // function to enable or disable pointerEvents on running python or blockly code
-ocargo.Game.prototype.allowCodeChanges = function(changesAllowed) {
+ocargo.Game.prototype._setCodeChangesAllowed = function(changesAllowed) {
     ocargo.blocklyControl.setCodeChangesAllowed(changesAllowed);
 
-    var setting = "";
-    if (!changesAllowed) {
-        setting = "none";
-    }
+    var pointerEvents = changesAllowed ? "" : "none";
 
     var codeMirrors = document.getElementsByClassName('CodeMirror');
-    var i;
     for (i = 0; i < codeMirrors.length; i++) {
-        codeMirrors[i].style.pointerEvents = setting;
+        codeMirrors[i].style.pointerEvents = pointerEvents;
     }
 };
 
@@ -865,7 +869,7 @@ ocargo.Game.prototype.changeTabSelectionTo = function (tab) {
 };
 
 ocargo.Game.prototype.onPlayControls = function() {
-    this.allowCodeChanges(false);
+    this.disallowCodeChanges();
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
@@ -881,7 +885,7 @@ ocargo.Game.prototype.onPlayControls = function() {
 
 
 ocargo.Game.prototype.onStepControls = function() {
-    this.allowCodeChanges(false);
+    this.disallowCodeChanges();
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
@@ -895,7 +899,7 @@ ocargo.Game.prototype.onStepControls = function() {
 };
 
 ocargo.Game.prototype.onFastControls = function() {
-    this.allowCodeChanges(false);
+    this.disallowCodeChanges();
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
@@ -910,7 +914,7 @@ ocargo.Game.prototype.onFastControls = function() {
 };
 
 ocargo.Game.prototype.onSlowControls = function() {
-    this.allowCodeChanges(false);
+    this.disallowCodeChanges();
 
     document.getElementById('direct_drive').style.visibility='hidden';
 
@@ -925,7 +929,7 @@ ocargo.Game.prototype.onSlowControls = function() {
 };
 
 ocargo.Game.prototype.onStopControls = function() {
-    this.allowCodeChanges(true);
+    this.allowCodeChanges();
 
     // TODO make this hidden unless blocks are clear or something...
     document.getElementById('direct_drive').style.visibility='visible';
