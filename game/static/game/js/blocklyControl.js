@@ -88,12 +88,18 @@ ocargo.BlocklyControl.prototype.redrawBlockly = function() {
     Blockly.fireUiEvent(window, 'resize');
 };
 
+ocargo.BlocklyControl.prototype.clearIncorrectBlock = function () {
+    this.incorrectBlock = null;
+}
+
 ocargo.BlocklyControl.prototype.reset = function() {
     Blockly.mainWorkspace.clear();
 
     var startBlock = this.createBlock('start');
     startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
     this.blocklyCustomisations.addClickListenerToStartBlock(startBlock);
+
+    this.clearIncorrectBlock();
 };
 
 ocargo.BlocklyControl.prototype.toggleFlyout = function() {
@@ -398,24 +404,24 @@ ocargo.BlocklyControl.prototype.clearAllSelections = function() {
 };
 
 ocargo.BlocklyControl.prototype.highlightIncorrectBlock = function(incorrectBlock) {
-    var blocklyControl = this;
     var frequency = 300;
     var repeats = 3;
 
     this.incorrectBlock = incorrectBlock;
     this.incorrectBlockColour = incorrectBlock.getColour();
 
-    incorrectBlock.setColour(0);
+    this.incorrectBlock.setColour(0);
     for (var i = 0; i < repeats; i++) {
-        window.setTimeout(ocargo.BlocklyControl.tryCatchSilently(
-                function () {
-                    blocklyControl.setBlockSelected(incorrectBlock, true);
-                }),
-            2 * i * frequency);
-        window.setTimeout(ocargo.BlocklyControl.tryCatchSilently(function () {
-                blocklyControl.setBlockSelected(incorrectBlock, false);
-            }),
-            (2 * i + 1) * frequency);
+        window.setTimeout(function () {
+            if (this.incorrectBlock) {
+                this.setBlockSelected(incorrectBlock, true);
+            }
+        }.bind(this), 2 * i * frequency);
+        window.setTimeout(function () {
+            if (this.incorrectBlock) {
+                this.setBlockSelected(incorrectBlock, false);
+            }
+        }.bind(this), (2 * i + 1) * frequency);
     }
 };
 
