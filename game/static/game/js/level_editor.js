@@ -578,14 +578,6 @@ ocargo.LevelEditor = function() {
             });
         }
 
-        function isLoadTabSelected() {
-            return currentTabSelected == tabs.load;
-        }
-
-        function isSaveTabSelected() {
-            return currentTabSelected == tabs.save;
-        }
-
         function goToMapTab() {
             tabs.map.select();
         }
