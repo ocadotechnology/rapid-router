@@ -179,8 +179,6 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
         description: 'starting engine'
     });
 
-    var game = this;
-
     program.run(ocargo.model);
     // Set controls ready for user to reset
     ocargo.animation.appendAnimation({
