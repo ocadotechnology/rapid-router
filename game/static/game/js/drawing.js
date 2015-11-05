@@ -506,6 +506,8 @@ ocargo.Drawing = function(startingPosition) {
 
             trafficLight.greenLightEl = this.createTrafficLightImage(ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg');
             trafficLight.redLightEl = this.createTrafficLightImage(ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg');
+            trafficLight.greenLightEl.node.id = 'trafficLight_' + i + '_green';
+            trafficLight.redLightEl.node.id = 'trafficLight_' + i + '_red';
 
             this.setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.greenLightEl);
             this.setTrafficLightImagePosition(sourceCoordinate, controlledCoordinate, trafficLight.redLightEl);

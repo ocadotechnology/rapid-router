@@ -1,0 +1,11 @@
+<xml>
+    <block type="start" id="1" deletable="false" x="30" y="30">
+        <next>
+            <block type="move_forwards" id="2">
+                <next>
+                    <block type="move_forwards" id="3"></block>
+                </next>
+            </block>
+        </next>
+    </block>
+</xml>

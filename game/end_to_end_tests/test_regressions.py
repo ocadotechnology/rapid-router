@@ -37,16 +37,16 @@
 from game.end_to_end_tests.base_game_test import BaseGameTest
 
 
-class TestTurningAround(BaseGameTest):
+class TestRegressions(BaseGameTest):
 
-    def test_turn_around_on_straight_road(self):
-        self.running_out_of_instructions_test(level=40, workspace_file='turn_around_on_straight_road')
+    def test_crash_turning_left_clear_and_pass_level(self):
+        page = self \
+            .running_out_of_instructions_test(level=45, workspace_file='double_forwards') \
+            .try_again()
 
-    def test_turn_around_on_left_turn(self):
-        self.running_out_of_instructions_test(level=40, workspace_file='turn_around_on_left_turn')
+        page.step()
 
-    def test_turn_around_on_right_turn(self):
-        self.running_out_of_instructions_test(level=40, workspace_file='turn_around_on_right_turn')
+        page.assert_is_green_light(0)
 
 
 

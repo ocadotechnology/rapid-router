@@ -99,10 +99,10 @@ class BaseGameTest(BaseTest):
             .load_solution(workspace_id) \
             .run_crashing_program()
 
-    def running_out_of_instructions_test(self, level, workspace):
+    def running_out_of_instructions_test(self, level, workspace_file):
         user_profile = self.login_once()
 
-        workspace_id = self.use_workspace(workspace, user_profile)
+        workspace_id = self.use_workspace(workspace_file, user_profile)
 
         return self.go_to_level(level) \
             .load_solution(workspace_id) \
