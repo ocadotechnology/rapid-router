@@ -189,6 +189,11 @@ def owned_levels(request):
     return HttpResponse(json.dumps(level_data), content_type='application/javascript')
 
 
+def shared_levels(request):
+    level_data = levels_shared_with(request.user)
+    return HttpResponse(json.dumps(level_data), content_type='application/javascript')
+
+
 def get_loadable_levels_for_editor(request):
     response = get_list_of_loadable_levels(request.user)
     return HttpResponse(json.dumps(response), content_type='application/javascript')

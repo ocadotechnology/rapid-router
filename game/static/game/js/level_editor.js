@@ -584,7 +584,7 @@ ocargo.LevelEditor = function() {
 
         function setupLoadTab() {
             var selectedLevel = null;
-            var ownLevels = null;
+            var ownedLevels = null;
             var sharedLevels = null;
 
             tabs.load.setOnChange(function() {
@@ -593,14 +593,15 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                ocargo.saving.retrieveListOfLevels(processListOfLevels);
+                ocargo.saving.retrieveOwnedLevels(processListOfOwnedLevels, processError);
+                ocargo.saving.retrieveSharedLevels(processListOfSharedLevels, processError);
             });
 
             // Setup own/shared levels radio
             $('#load_type_select').change(function() {
                 var value = this.value;
 
-                var levels = value === "ownLevels" ? ownLevels : sharedLevels;
+                var levels = value === "ownLevels" ? ownedLevels : sharedLevels;
                 populateLoadSaveTable("loadLevelTable", levels);
 
                 // Add click listeners to all rows
@@ -651,33 +652,50 @@ ocargo.LevelEditor = function() {
                 });
             });
 
-            function processListOfLevels(err, listOfOwnLevels, listOfSharedLevels) {
-                if (err !== null) {
-                    console.error(err);
-                    restorePreviousTab();
-                    ocargo.Drawing.startInternetDownPopup();
-                    return;
-                }
+            function processError(err) {
+                console.error(err);
+                restorePreviousTab();
+                ocargo.Drawing.startInternetDownPopup();
+                return;
+            }
 
-                ownLevels = listOfOwnLevels;
-                sharedLevels = listOfSharedLevels;
-
-                // Important: done before change() call
-                // Table cells need to have rendered to match th with td widths
-                transitionTab(tabs.load);
-
-                $('#load_type_select').change();
-
-                // But disable all the modal buttons as nothing is selected yet
-                selectedLevel = null;
-
-                if(ownLevels.length == 0 && sharedLevels.length == 0) {
+            function adjustPaneDisplay() {
+                if (ownedLevels.length == 0 && sharedLevels.length == 0) {
                     $('#load_pane #does_exist').css('display', 'none');
                     $('#load_pane #does_not_exist').css('display', 'block');
                 } else {
                     $('#load_pane #does_exist').css('display', 'block');
                     $('#load_pane #does_not_exist').css('display', 'none');
                 }
+            }
+
+            function reloadList() {
+                $('#load_type_select').change();
+            }
+
+            function processListOfOwnedLevels(listOfOwnedLevels) {
+                ownedLevels = listOfOwnedLevels;
+
+                // Important: done before change() call
+                // Table cells need to have rendered to match th with td widths
+                transitionTab(tabs.load);
+
+                reloadList();
+
+                // But disable all the modal buttons as nothing is selected yet
+                selectedLevel = null;
+                adjustPaneDisplay();
+            }
+
+            function processListOfSharedLevels(listOfSharedLevels) {
+                sharedLevels = listOfSharedLevels;
+
+                reloadList();
+
+                // But disable all the modal buttons as nothing is selected yet
+                selectedLevel = null;
+
+                adjustPaneDisplay();
             }
         }
 
@@ -1008,17 +1026,17 @@ ocargo.LevelEditor = function() {
         }
 
         function populateLoadSaveTable(tableName, levels) {
-            var table = $('#'+tableName + ' tbody');
+            var table = $('#' + tableName + ' tbody');
 
-            $('#'+tableName).css('display', levels.length == 0 ? 'none' : 'table');
-            $('#'+tableName + 'Header').css('display', levels.length == 0 ? 'none' : 'table');
+            $('#' + tableName).css('display', levels.length == 0 ? 'none' : 'table');
+            $('#' + tableName + 'Header').css('display', levels.length == 0 ? 'none' : 'table');
 
             // Remove click listeners to avoid memory leak and remove all rows
-            $('#'+tableName+' tr').off('click');
+            $('#' + tableName + ' tr').off('click');
             table.empty();
 
             // Order them alphabetically
-            levels.sort(function(a, b) {
+            levels.sort(function (a, b) {
                 if (a.name < b.name) {
                     return -1;
                 } else if (a.name > b.name) {
@@ -1031,8 +1049,8 @@ ocargo.LevelEditor = function() {
             for (var i = 0, ii = levels.length; i < ii; i++) {
                 var level = levels[i];
                 var tableRow = $('<tr>');
-                tableRow.attr( {
-                    'value' : level.id
+                tableRow.attr({
+                    'value': level.id
                 });
                 var rowName = $('<td>');
                 rowName.text(level.name);
@@ -1043,7 +1061,7 @@ ocargo.LevelEditor = function() {
                 table.append(tableRow);
             }
 
-            for(var i = 0; i < 2; i++){
+            for (var i = 0; i < 2; i++) {
                 var td = $('#' + tableName + ' td:eq(' + i + ')');
                 var td2 = $('#' + tableName + 'Header th:eq(' + i + ')');
                 td2.width(td.width());
