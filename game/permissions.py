@@ -74,7 +74,7 @@ def can_play_level(user, level, early_access):
         return level.default and not level.episode.in_development
     elif user.userprofile == level.owner:
         return True
-    elif level.shared_with.filter(id=user.id).exists():
+    elif level.shared_with.filter(id=user.id):
         return can_share_level_with(user, level.owner.user)
     else:
         return (hasattr(user.userprofile, 'teacher') and
@@ -86,7 +86,7 @@ def can_load_level(user, level):
         return False
     elif user.userprofile == level.owner:
         return True
-    elif level.shared_with.filter(id=user.id).exists():
+    elif level.shared_with.filter(id=user.id):
         return can_share_level_with(user, level.owner.user)
     else:
         return (hasattr(user.userprofile, 'teacher') and

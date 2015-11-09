@@ -44,20 +44,34 @@ from models import Block, LevelBlock, LevelDecor, Decor, Theme, Character
 ##########
 
 def get_loadable_levels(user):
+    levels_owned_by_user = levels_owned_by(user)
+    shared_levels = levels_shared_with(user)
+
+    return levels_owned_by_user, shared_levels
+
+
+def levels_shared_with(user):
     if user.is_anonymous():
-        return [], []
+        return []
 
-    owned_levels = user.userprofile\
-        .levels\
-        .select_related("owner", "owner__user", "owner__teacher")
-
-    shared = user\
-        .shared\
+    shared = user \
+        .shared \
         .select_related("owner__user", "owner__teacher",
                         "owner__student__class_field__teacher")
 
     shared_levels = (level for level in shared if permissions.can_load_level(user, level))
-    return owned_levels, shared_levels
+    return shared_levels
+
+
+def levels_owned_by(user):
+    if user.is_anonymous():
+        return []
+
+    levels = user.userprofile \
+        .levels \
+        .select_related("owner", "owner__user", "owner__teacher")
+
+    return levels
 
 
 def get_decor(level):

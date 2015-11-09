@@ -159,21 +159,34 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
     return render(request, 'game/game.html', context_instance=context)
 
 
-def get_list_of_loadable_levels(user):
-    owned_levels, shared_levels = level_management.get_loadable_levels(user)
+def level_data_for(level):
+    return {'name': level.name,
+            'owner': app_tags.make_into_username(level.owner.user),
+            'id': level.id}
 
-    owned_data = []
-    shared_data = []
-    for level in owned_levels:
-        owned_data.append({'name': level.name,
-                           'owner': app_tags.make_into_username(level.owner.user),
-                           'id': level.id})
-    for level in shared_levels:
-        shared_data.append({'name': level.name,
-                            'owner': app_tags.make_into_username(level.owner.user),
-                            'id': level.id})
+
+def levels_shared_with(user):
+    shared_levels = level_management.levels_shared_with(user)
+    shared_data = map(level_data_for, shared_levels)
+    return shared_data
+
+
+def levels_owned_by(user):
+    levels_owned_by_user = level_management.levels_owned_by(user)
+    owned_data = map(level_data_for, levels_owned_by_user)
+    return owned_data
+
+
+def get_list_of_loadable_levels(user):
+    owned_data = levels_owned_by(user)
+    shared_data = levels_shared_with(user)
 
     return {'ownedLevels': owned_data, 'sharedLevels': shared_data}
+
+
+def owned_levels(request):
+    level_data = levels_owned_by(request.user)
+    return HttpResponse(json.dumps(level_data), content_type='application/javascript')
 
 
 def get_loadable_levels_for_editor(request):
