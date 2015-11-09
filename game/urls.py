@@ -44,7 +44,7 @@ from game.views.api import level_list, level_detail, api_root, episode_list, epi
 from game.views.level_editor import level_editor, get_loadable_levels_for_editor, \
     delete_level_for_editor, load_level_for_editor, save_level_for_editor, generate_random_map_for_editor, \
     get_sharing_information_for_editor, share_level_for_editor, \
-    play_anonymous_level_night, play_anonymous_level_day
+    play_anonymous_level_night, play_anonymous_level_day, owned_levels
 from game.views.level_moderation import level_moderation, get_students_for_level_moderation
 from game.views.level_selection import levels, random_level_for_episode
 from game.views.level import submit_attempt, play_default_level, start_episode, load_workspace, \
@@ -104,6 +104,8 @@ urlpatterns = patterns(
         anonymous_level_night_mode_handler(), name='play_anonymous_level_night'),
     url(r'^level_editor/level/get_all/$',
         get_loadable_levels_for_editor, name='get_loadable_levels_for_editor'),
+    url(r'^level_editor/level/owned/$', owned_levels, name='owned_levels'),
+
     url(r'^level_editor/level/get/(?P<levelID>[0-9]+)/$', load_level_for_editor, name='load_level_for_editor'),
     url(r'^level_editor/level/delete/(?P<levelID>[0-9]+)/$', delete_level_for_editor, name='delete_level_for_editor'),
     url(r'^level_editor/level/save/$', save_level_for_editor),

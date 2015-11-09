@@ -206,6 +206,26 @@ ocargo.Saving.prototype.retrieveListOfLevels = function(callback) {
     });
 };
 
+ocargo.Saving.prototype.retrieveOwnedLevels = function(callback, errorCallback) {
+    csrftoken = $.cookie('csrftoken');
+	$.ajax({
+        url: '/rapidrouter/level_editor/level/owned/',
+        type: 'GET',
+        dataType: 'json',
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        },
+        success: function(json) {
+        	callback(json);
+        },
+        error: function(xhr, errmsg, err) {
+        	errorCallback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+};
+
 ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
     csrftoken = $.cookie('csrftoken');
 	$.ajax({

@@ -691,7 +691,7 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                ocargo.saving.retrieveListOfLevels(processListOfLevels);
+                ocargo.saving.retrieveOwnedLevels(processListOfLevels, processError);
             });
 
             function save() {
@@ -705,8 +705,8 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                function processLevelsAndGoToMap(err, ownedLevels, sharedLevels) {
-                    processListOfLevels(err, ownedLevels, sharedLevels);
+                function processLevelsAndGoToMap(ownedLevels) {
+                    processListOfLevels(ownedLevels);
                     goToMapTab();
                 }
 
@@ -747,18 +747,19 @@ ocargo.LevelEditor = function() {
 
             $('#saveLevel').click(save);
 
-            function processListOfLevels(err, ownLevels, sharedLevels) {
-                if (err !== null) {
-                    console.error(err);
-                    ocargo.Drawing.startInternetDownPopup();
-                    return;
-                }
+            function processError(err) {
+                console.error(err);
+                ocargo.Drawing.startInternetDownPopup();
+                return;
+            }
+
+            function processListOfLevels(ownedLevels) {
 
                 // Important: done before change() call
                 // Table cells need to have rendered to match th with td widths
                 transitionTab(tabs.save);
 
-                populateLoadSaveTable("saveLevelTable", ownLevels);
+                populateLoadSaveTable("saveLevelTable", ownedLevels);
 
                 // Add click listeners to all rows
                 var rows = $('#saveLevelTable tr[value]');
@@ -769,15 +770,15 @@ ocargo.LevelEditor = function() {
                     $('#saveLevel').removeAttr('disabled');
                     selectedLevel = parseInt(rowSelected.attr('value'));
 
-                    for (var i = 0; i < ownLevels.length; i++) {
-                        if (ownLevels[i].id === selectedLevel) {
-                            $("#levelNameInput").val(ownLevels[i].name);
+                    for (var i = 0; i < ownedLevels.length; i++) {
+                        if (ownedLevels[i].id === selectedLevel) {
+                            $("#levelNameInput").val(ownedLevels[i].name);
                         }
                     }
                 });
                 rows.on('dblclick', save);
 
-                $('#save_pane .scrolling-table-wrapper').css('display', ownLevels.length === 0 ? 'none' : 'block');
+                $('#save_pane .scrolling-table-wrapper').css('display', ownedLevels.length === 0 ? 'none' : 'block');
                 selectedLevel = null;
             }
         }
@@ -2560,7 +2561,7 @@ ocargo.LevelEditor = function() {
             savedState = JSON.stringify(level);
             savedLevelID = newLevelID;
 
-            callback(null, ownedLevels, sharedLevels);
+            callback(ownedLevels);
         });
     }
 
