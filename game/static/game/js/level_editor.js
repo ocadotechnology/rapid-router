@@ -117,10 +117,8 @@ ocargo.LevelEditor = function() {
     // Holds the state for when the user is drawing or deleting roads
     var strikeStart = null;
 
-    // Holds the state to do with saving
-    var savedState = null;
-    var ownsSavedLevel = null;
-    var savedLevelID = -1;
+    var saveState = new ocargo.LevelSaveState();
+    var ownedLevels = new ocargo.OwnedLevels(saveState);
 
     // Whether the user is scrolling on a tablet
     var isScrolling = false;
@@ -226,6 +224,7 @@ ocargo.LevelEditor = function() {
         setupShareTab();
         setupHelpTab();
         setupQuitTab();
+        ownedLevels.update();
 
         // enable the map tab by default
         currentTabSelected = tabs.map;
@@ -584,8 +583,10 @@ ocargo.LevelEditor = function() {
 
         function setupLoadTab() {
             var selectedLevel = null;
-            var ownedLevels = null;
-            var sharedLevels = null;
+            var listOfOwnedLevels = null;
+            var sharedLevels = [];
+
+            ownedLevels.addListener(processListOfOwnedLevels);
 
             tabs.load.setOnChange(function() {
                 if(!isLoggedIn("load")) {
@@ -593,7 +594,8 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                ocargo.saving.retrieveOwnedLevels(processListOfOwnedLevels, processError);
+                transitionTab(tabs.load);
+
                 ocargo.saving.retrieveSharedLevels(processListOfSharedLevels, processError);
             });
 
@@ -601,7 +603,7 @@ ocargo.LevelEditor = function() {
             $('#load_type_select').change(function() {
                 var value = this.value;
 
-                var levels = value === "ownLevels" ? ownedLevels : sharedLevels;
+                var levels = value === "ownLevels" ? listOfOwnedLevels : sharedLevels;
                 populateLoadSaveTable("loadLevelTable", levels);
 
                 // Add click listeners to all rows
@@ -635,21 +637,9 @@ ocargo.LevelEditor = function() {
                 if (!selectedLevel) {
                     return;
                 }
+                var levelId = selectedLevel;
 
-                ocargo.saving.deleteLevel(selectedLevel, function(err, ownedLevels, sharedLevels) {
-                    if (err !== null) {
-                        console.error(err);
-                        return;
-                    }
-
-                    if (selectedLevel == savedLevelID) {
-                        savedLevelID = -1;
-                        savedState = null;
-                        ownsSavedLevel = false;
-                    }
-
-                    processListOfLevels(err, ownedLevels, sharedLevels);
-                });
+                ownedLevels.deleteLevel(levelId);
             });
 
             function processError(err) {
@@ -660,7 +650,7 @@ ocargo.LevelEditor = function() {
             }
 
             function adjustPaneDisplay() {
-                if (ownedLevels.length == 0 && sharedLevels.length == 0) {
+                if (listOfOwnedLevels.length == 0 && sharedLevels.length == 0) {
                     $('#load_pane #does_exist').css('display', 'none');
                     $('#load_pane #does_not_exist').css('display', 'block');
                 } else {
@@ -669,16 +659,15 @@ ocargo.LevelEditor = function() {
                 }
             }
 
-            function reloadList() {
+            function reloadList(value) {
                 $('#load_type_select').change();
             }
 
-            function processListOfOwnedLevels(listOfOwnedLevels) {
-                ownedLevels = listOfOwnedLevels;
+            function processListOfOwnedLevels(newOwnedLevels) {
+                listOfOwnedLevels = newOwnedLevels;
 
                 // Important: done before change() call
                 // Table cells need to have rendered to match th with td widths
-                transitionTab(tabs.load);
 
                 reloadList();
 
@@ -702,6 +691,8 @@ ocargo.LevelEditor = function() {
         function setupSaveTab() {
             var selectedLevel = null;
 
+            ownedLevels.addListener(processListOfLevels);
+
             tabs.save.setOnChange(function () {
                 //getLevelTextForDjangoMigration();
                 if (!isLoggedIn("save") || !isLevelValid()) {
@@ -709,7 +700,7 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                ocargo.saving.retrieveOwnedLevels(processListOfLevels, processError);
+                transitionTab(tabs.save);
             });
 
             function save() {
@@ -723,13 +714,8 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                function processLevelsAndGoToMap(ownedLevels) {
-                    processListOfLevels(ownedLevels);
-                    goToMapTab();
-                }
-
-                function saveLevelLocal(existingID) {
-                    saveLevel(newName, existingID, processLevelsAndGoToMap);
+                function saveLevelLocal(existingId) {
+                    saveLevel(newName, existingId, goToMapTab);
                 }
 
                 // Test to see if we already have the level saved
@@ -746,7 +732,7 @@ ocargo.LevelEditor = function() {
                 }
 
                 if (existingId != -1) {
-                    if (existingId != savedLevelID) {
+                    if (!saveState.isCurrentLevel(existingId)) {
                         var onYes = function(){
                             saveLevelLocal(existingId);
                             $("#close-modal").click();
@@ -765,17 +751,10 @@ ocargo.LevelEditor = function() {
 
             $('#saveLevel').click(save);
 
-            function processError(err) {
-                console.error(err);
-                ocargo.Drawing.startInternetDownPopup();
-                return;
-            }
-
             function processListOfLevels(ownedLevels) {
 
                 // Important: done before change() call
                 // Table cells need to have rendered to match th with td widths
-                transitionTab(tabs.save);
 
                 populateLoadSaveTable("saveLevelTable", ownedLevels);
 
@@ -814,7 +793,7 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                ocargo.saving.getSharingInformation(savedLevelID, function(error, validRecipients) {
+                ocargo.saving.getSharingInformation(saveState.id, function(error, validRecipients) {
                     if(error) {
                         console.error(error);
                         return;
@@ -872,7 +851,7 @@ ocargo.LevelEditor = function() {
                 var recipientData = {recipientIDs: recipientIDs,
                                      action: actionDesired};
 
-                ocargo.saving.shareLevel(savedLevelID, recipientData, processSharingInformation);
+                ocargo.saving.shareLevel(saveState.id, recipientData, processSharingInformation);
             });
 
             // Method to call when we get an update on the level's sharing information
@@ -985,7 +964,7 @@ ocargo.LevelEditor = function() {
                         var recipientData = {recipientIDs: [this.getAttribute('value')],
                                              action: (status === 'shared' ? 'unshare' : 'share')};
 
-                        ocargo.saving.shareLevel(savedLevelID, recipientData, processSharingInformation);
+                        ocargo.saving.shareLevel(saveState.id, recipientData, processSharingInformation);
                     }
                 });
 
@@ -2556,31 +2535,15 @@ ocargo.LevelEditor = function() {
 
             restoreState(level, true);
 
-            ownsSavedLevel = owned;
-            savedState = JSON.stringify(extractState());
-            savedLevelID = level.id;
+            saveState.loaded(owned, extractState(), level.id);
         });
     }
 
-    function saveLevel(name, levelID, callback) {
+    function saveLevel(name, levelId, callback) {
         var level = extractState();
         level.name = name;
 
-        ocargo.saving.saveLevel(level, levelID, false, function(error, newLevelID, ownedLevels, sharedLevels) {
-            if (error !== null) {
-                console.error(error);
-                return;
-            }
-
-            // Delete name so that we can use if for comparison purposes
-            // to see if changes have been made to the level later on
-            delete level.name;
-            ownsSavedLevel = true;
-            savedState = JSON.stringify(level);
-            savedLevelID = newLevelID;
-
-            callback(ownedLevels);
-        });
+        ownedLevels.save(level, levelId, callback);
     }
 
     function storeStateInLocalStorage() {
@@ -2588,9 +2551,9 @@ ocargo.LevelEditor = function() {
             var state = extractState();
 
             // Append additional non-level orientated editor state
-            state.savedLevelID = savedLevelID;
-            state.savedState = savedState;
-            state.ownsSavedLevel = ownsSavedLevel;
+            state.id = saveState.id;
+            state.savedState = saveState.savedState;
+            state.owned = saveState.owned;
 
             localStorage.levelEditorState = JSON.stringify(state);
         }
@@ -2606,9 +2569,9 @@ ocargo.LevelEditor = function() {
                 }
 
                 // Restore additional non-level orientated editor state
-                savedLevelID = state.savedLevelID;
-                savedState = state.savedState;
-                ownsSavedLevel = state.ownsSavedLevel;
+                saveState.id = state.id;
+                saveState.savedState = state.savedState;
+                saveState.owned = state.owned;
             }
 
         }
@@ -2646,10 +2609,10 @@ ocargo.LevelEditor = function() {
     function isLevelSaved() {
         var currentState = JSON.stringify(extractState());
 
-        if (!savedState) {
+        if (!saveState.isSaved()) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notSaved);
             return false;
-        } else if (currentState !== savedState) {
+        } else if (saveState.hasChanged(currentState)) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.changesSinceLastSave);
             return false;
         }
@@ -2657,7 +2620,7 @@ ocargo.LevelEditor = function() {
     }
 
     function isLevelOwned() {
-        if (!ownsSavedLevel) {
+        if (!saveState.isOwned()) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notOwned);
             return false;
         }
