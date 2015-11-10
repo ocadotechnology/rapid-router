@@ -214,13 +214,13 @@ def load_level_for_editor(request, levelID):
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 
-def save_level_for_editor(request, levelID=None):
+def save_level_for_editor(request, levelId=None):
     """ Processes a request on creation of the map in the level editor """
 
     data = json.loads(request.POST['data'])
 
-    if levelID is not None:
-        level = get_object_or_404(Level, id=levelID)
+    if levelId is not None:
+        level = get_object_or_404(Level, id=levelId)
     else:
         level = Level(default=False, anonymous=data['anonymous'])
 
@@ -233,28 +233,25 @@ def save_level_for_editor(request, levelID=None):
     level_management.save_level(level, data)
 
     # Add the teacher automatically if it is a new level and the student is not independent
-    if ((levelID is None) and hasattr(level.owner, 'student') and
+    if ((levelId is None) and hasattr(level.owner, 'student') and
             not level.owner.student.is_independent()):
         level.shared_with.add(level.owner.student.class_field.teacher.user.user)
         level.save()
 
-    response = get_list_of_loadable_levels(request.user)
-    response['levelID'] = level.id
+    response = {'id': level.id}
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 
-def delete_level_for_editor(request, levelID):
-    level = get_object_or_404(Level, id=levelID)
+def delete_level_for_editor(request, levelId):
+    level = get_object_or_404(Level, id=levelId)
 
     if not permissions.can_delete_level(request.user, level):
         return HttpResponseUnauthorized()
 
     level_management.delete_level(level)
 
-    response = get_list_of_loadable_levels(request.user)
-
-    return HttpResponse(json.dumps(response), content_type='application/javascript')
+    return HttpResponse(json.dumps({'success': 'true'}), content_type='application/javascript')
 
 
 def generate_random_map_for_editor(request):

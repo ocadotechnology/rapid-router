@@ -107,9 +107,9 @@ urlpatterns = patterns(
     url(r'^level_editor/levels/shared/$', shared_levels, name='owned_levels'),
 
     url(r'^level_editor/level/get/(?P<levelID>[0-9]+)/$', load_level_for_editor, name='load_level_for_editor'),
-    url(r'^level_editor/level/delete/(?P<levelID>[0-9]+)/$', delete_level_for_editor, name='delete_level_for_editor'),
+    url(r'^level_editor/level/delete/(?P<levelId>[0-9]+)/$', delete_level_for_editor, name='delete_level_for_editor'),
     url(r'^level_editor/level/save/$', save_level_for_editor),
-    url(r'^level_editor/level/save/(?P<levelID>[0-9]+)/$', save_level_for_editor, name='save_level_for_editor'),
+    url(r'^level_editor/level/save/(?P<levelId>[0-9]+)/$', save_level_for_editor, name='save_level_for_editor'),
     url(r'^level_editor/level/random/$', generate_random_map_for_editor, name='generate_random_map_for_editor'),
     url(r'^level_editor/level/get_sharing_information/(?P<levelID>[0-9]+)/$',
         get_sharing_information_for_editor, name='get_sharing_information_for_editor'),

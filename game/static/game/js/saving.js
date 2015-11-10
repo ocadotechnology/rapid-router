@@ -255,7 +255,7 @@ ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
     });
 };
 
-ocargo.Saving.prototype.deleteLevel = function (id, callback) {
+ocargo.Saving.prototype.deleteLevel = function (id, callback, errorCallback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
         url: '/rapidrouter/level_editor/level/delete/' + id + '/',
@@ -268,19 +268,20 @@ ocargo.Saving.prototype.deleteLevel = function (id, callback) {
             }
         },
         success: function (json) {
-            callback(null, json.ownedLevels, json.sharedLevels);
+            callback();
         },
         error: function (xhr, errmsg, err) {
-            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            errorCallback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
 };
 
-ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback) {
+ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, errorCallback) {
     csrftoken = $.cookie('csrftoken');
     level.anonymous = anonymous;
+    var idSuffix = id ? id + '/' : '';
     $.ajax({
-        url: '/rapidrouter/level_editor/level/save/' + (id ? (id + '/') : ''),
+        url: '/rapidrouter/level_editor/level/save/' + idSuffix,
         type: 'POST',
         dataType: 'json',
         data: {data: JSON.stringify(level)},
@@ -290,10 +291,10 @@ ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback) {
             }
         },
         success: function (json) {
-            callback(null, json.levelID, json.ownedLevels, json.sharedLevels);
+            callback(json.id);
         },
         error: function (xhr, errmsg, err) {
-            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            errorCallback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
     delete level.anonymous;

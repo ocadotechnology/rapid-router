@@ -49,7 +49,7 @@ ocargo.OwnedLevels.prototype.addListener = function(listener) {
     this.listeners.push(listener);
 };
 
-ocargo.OwnedLevels.prototype.updateListeners = function() {
+ocargo.OwnedLevels.prototype._updateListeners = function() {
     this.listeners.forEach(function (listener) {
         listener(this.levels);
     }.bind(this))
@@ -57,7 +57,7 @@ ocargo.OwnedLevels.prototype.updateListeners = function() {
 
 ocargo.OwnedLevels.prototype._updateLevels = function(levels) {
     this.levels = levels;
-    this.updateListeners();
+    this._updateListeners();
 };
 
 ocargo.OwnedLevels.prototype.update = function() {
@@ -70,35 +70,34 @@ ocargo.OwnedLevels.prototype.update = function() {
 };
 
 ocargo.OwnedLevels.prototype.save = function(level, id, finishedCallback) {
-    ocargo.saving.saveLevel(level, id, false, function(error, newId, ownedLevels, sharedLevels) {
-        if (error !== null) {
-            console.error(error);
-            ocargo.Drawing.startInternetDownPopup();
-            return;
-        }
+    function handleError(error) {
+        console.error(error);
+        ocargo.Drawing.startInternetDownPopup();
+    }
 
+    ocargo.saving.saveLevel(level, id, false, function(newId) {
         delete level.name;
 
         this.saveState.saved(level, newId);
 
-        this._updateLevels(ownedLevels);
+        this.update();
 
         if (finishedCallback) {
             finishedCallback();
         }
-    }.bind(this));
+    }.bind(this), handleError.bind(this));
 };
 
 ocargo.OwnedLevels.prototype.deleteLevel = function(levelId) {
-    ocargo.saving.deleteLevel(levelId, function (err, ownedLevels, sharedLevels) {
-        if (err !== null) {
-            console.error(err);
-            ocargo.Drawing.startInternetDownPopup();
-            return;
-        }
+    function handleError(error) {
+        console.error(error);
+        ocargo.Drawing.startInternetDownPopup();
+    }
+
+    ocargo.saving.deleteLevel(levelId, function () {
 
         this.saveState.deleted(levelId);
 
-        this._updateLevels(ownedLevels);
-    }.bind(this));
+        this.update();
+    }.bind(this), handleError.bind(this));
 };

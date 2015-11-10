@@ -239,15 +239,11 @@ ocargo.LevelEditor = function() {
                 if (isLevelValid()) {
                     var state = extractState();
                     state.name = "Custom level";
-                    ocargo.saving.saveLevel(state, null, true, function(error, levelID) {
-                        if(error) {
-                            console.error(error);
-                            return;
-                        }
+                    ocargo.saving.saveLevel(state, null, true, function(levelId) {
                         var nightSuffix = (night ? 'night/' : '');
                         window.location.href = '/rapidrouter/level_editor/level/play_anonymous/'
-                            + levelID + '/' + nightSuffix;
-                    });
+                            + levelId + '/' + nightSuffix;
+                    }, console.error);
                 } else {
                     restorePreviousTab();
                 }
@@ -588,6 +584,10 @@ ocargo.LevelEditor = function() {
 
             ownedLevels.addListener(processListOfOwnedLevels);
 
+            function updateSharedLevels() {
+                ocargo.saving.retrieveSharedLevels(processListOfSharedLevels, processError);
+            }
+
             tabs.load.setOnChange(function() {
                 if(!isLoggedIn("load")) {
                     restorePreviousTab();
@@ -596,14 +596,15 @@ ocargo.LevelEditor = function() {
 
                 transitionTab(tabs.load);
 
-                ocargo.saving.retrieveSharedLevels(processListOfSharedLevels, processError);
+                updateSharedLevels();
             });
 
             // Setup own/shared levels radio
             $('#load_type_select').change(function() {
-                var value = this.value;
+                var ownLevelsSelected = this.value === "ownLevels";
+                var sharedLevelsSelected = this.value === "sharedLevels";
 
-                var levels = value === "ownLevels" ? listOfOwnedLevels : sharedLevels;
+                var levels = ownLevelsSelected ? listOfOwnedLevels : sharedLevels;
                 populateLoadSaveTable("loadLevelTable", levels);
 
                 // Add click listeners to all rows
@@ -613,12 +614,13 @@ ocargo.LevelEditor = function() {
                     $('#loadLevelTable tr').css('selected', false);
                     $(this).attr('selected', true);
                     $('#loadLevel').removeAttr('disabled');
-                    $('#deleteLevel').removeAttr('disabled');
+                    $('#deleteLevel').attr('disabled', sharedLevelsSelected);
+
                     selectedLevel = $(this).attr('value');
                 });
                 rows.on('dblclick', loadSelectedLevel);
 
-                $('#deleteLevel').attr('disabled', value === "sharedLevels" || !selectedLevel);
+                $('#deleteLevel').attr('disabled', sharedLevelsSelected || !selectedLevel);
                 $('#loadLevel').attr('disabled', !selectedLevel);
 
                 $('#load_pane .scrolling-table-wrapper').css('display', levels.length === 0 ? 'none' : 'block');
@@ -659,7 +661,7 @@ ocargo.LevelEditor = function() {
                 }
             }
 
-            function reloadList(value) {
+            function reloadList() {
                 $('#load_type_select').change();
             }
 
