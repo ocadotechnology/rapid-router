@@ -36,7 +36,7 @@
 # identified as the original program.
 from __future__ import division
 from django.core.urlresolvers import reverse
-from game import settings
+from game import app_settings
 import game.messages as messages
 import game.level_management as level_management
 import game.permissions as permissions
@@ -120,7 +120,7 @@ def play_level(request, level, from_editor=False):
     :template:`game/game.html`
     """
 
-    night_mode = False if not settings.NIGHT_MODE_FEATURE_ENABLED else 'night' in request.GET
+    night_mode = False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else 'night' in request.GET
 
     if not permissions.can_play_level(request.user, level, beta.has_beta_access(request)):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
@@ -206,7 +206,7 @@ def play_level(request, level, from_editor=False):
         'character_height': character_height,
         'wreckage_url': wreckage_url,
         'night_mode': night_mode_javascript,
-        'night_mode_feature_enabled': str(settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
+        'night_mode_feature_enabled': str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
         'model_solution': model_solution,
         'next_level_url': _next_level_url(level, night_mode),
         'flip_night_mode_url': _level_url(level, not night_mode),
