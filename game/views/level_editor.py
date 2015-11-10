@@ -39,11 +39,12 @@ import json
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
+
 
 import game.messages as messages
 import game.level_management as level_management
@@ -212,7 +213,6 @@ def load_level_for_editor(request, levelID):
 
 def save_level_for_editor(request, levelId=None):
     """ Processes a request on creation of the map in the level editor """
-
     data = json.loads(request.POST['data'])
 
     if levelId is not None:
@@ -223,19 +223,17 @@ def save_level_for_editor(request, levelId=None):
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
 
+    level.is_new = levelId is None
+
     if not permissions.can_save_level(request.user, level):
         return HttpResponseUnauthorized()
-
     level_management.save_level(level, data)
-
     # Add the teacher automatically if it is a new level and the student is not independent
     if ((levelId is None) and hasattr(level.owner, 'student') and
             not level.owner.student.is_independent()):
         level.shared_with.add(level.owner.student.class_field.teacher.user.user)
         level.save()
-
     response = {'id': level.id}
-
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 

@@ -43,6 +43,9 @@ from models import Block, LevelBlock, LevelDecor, Decor, Theme, Character
 # Levels #
 ##########
 
+themes = {theme.id: theme for theme in Theme.objects.all()}
+characters = {str(character.id): character for character in Character.objects.all()}
+
 def get_loadable_levels(user):
     levels_owned_by_user = levels_owned_by(user)
     shared_levels = levels_shared_with(user)
@@ -96,7 +99,8 @@ def set_decor(level, decor):
 
 def set_decor_inner(level, decor, LevelDecor):
     """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
-    LevelDecor.objects.filter(level=level).delete()
+    if not level.is_new:
+        LevelDecor.objects.filter(level=level).delete()
 
     level_decors = []
     for data in decor:
@@ -119,26 +123,39 @@ def get_night_blocks (level):
 
     return [{'type': lb.type.type, 'number': lb.number} for lb in levelBlocks]
 
+
 def get_blocks(level):
     """ Helper method parsing blocks into a dictionary format 'sendable' to javascript. """
     levelBlocks = LevelBlock.objects.filter(level=level).order_by('type')
     return [{'type': lb.type.type, 'number': lb.number} for lb in levelBlocks]
 
+
 def set_blocks(level, blocks):
     set_blocks_inner(level, blocks, LevelBlock, Block)
 
+
 def set_blocks_inner(level, blocks, LevelBlock, Block):
     """ Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
-    LevelBlock.objects.filter(level=level).delete()
+    if not level.is_new:
+        LevelBlock.objects.filter(level=level).delete()
 
     level_blocks = []
+    dictionary = blocks_dictionary(blocks, Block)
+
     for data in blocks:
         level_blocks.append(LevelBlock(
             level_id=level.id,
-            type=Block.objects.get(type=data['type']),
+            type=dictionary[data['type']],
             number=data['number'] if 'number' in data else None
         ))
     LevelBlock.objects.bulk_create(level_blocks)
+
+
+def blocks_dictionary(blocks, Block):
+    types = map(lambda data: data['type'], blocks)
+    block_objects = Block.objects.filter(type__in=types)
+    result = {block.type: block for block in block_objects}
+    return result
 
 
 def save_level(level, data):
@@ -152,8 +169,8 @@ def save_level(level, data):
     level.blocklyEnabled = data.get('blocklyEnabled', True)
     level.pythonEnabled = data.get('pythonEnabled', False)
     level.pythonViewEnabled = data.get('pythonViewEnabled', False)
-    level.theme = Theme.objects.get(id=data['theme'])
-    level.character = Character.objects.get(id=data['character'])
+    level.theme = themes[data['theme']]
+    level.character = characters[data['character']]
     level.save()
 
     set_decor(level, data['decor'])
