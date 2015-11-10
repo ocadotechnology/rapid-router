@@ -94,7 +94,7 @@ ocargo.LevelEditor = function() {
     /* State */
     /*********/
 
-    ocargo.saving = new ocargo.Saving();
+    var saving = new ocargo.Saving();
     var drawing = new ocargo.Drawing();
     drawing.preloadRoadTiles();
 
@@ -239,7 +239,7 @@ ocargo.LevelEditor = function() {
                 if (isLevelValid()) {
                     var state = extractState();
                     state.name = "Custom level";
-                    ocargo.saving.saveLevel(state, null, true, function(levelId) {
+                    saving.saveLevel(state, null, true, function(levelId) {
                         var nightSuffix = (night ? 'night/' : '');
                         window.location.href = '/rapidrouter/level_editor/level/play_anonymous/'
                             + levelId + '/' + nightSuffix;
@@ -559,7 +559,7 @@ ocargo.LevelEditor = function() {
 
                 $('#generate').attr('disabled', true);
 
-                ocargo.saving.retrieveRandomLevel(data, function(error, mapData) {
+                saving.retrieveRandomLevel(data, function(error, mapData) {
                     if (error) {
                         console.error(error);
                         ocargo.Drawing.startInternetDownPopup();
@@ -585,7 +585,7 @@ ocargo.LevelEditor = function() {
             ownedLevels.addListener(processListOfOwnedLevels);
 
             function updateSharedLevels() {
-                ocargo.saving.retrieveSharedLevels(processListOfSharedLevels, processError);
+                saving.retrieveSharedLevels(processListOfSharedLevels, processError);
             }
 
             tabs.load.setOnChange(function() {
@@ -795,7 +795,7 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
-                ocargo.saving.getSharingInformation(saveState.id, function(error, validRecipients) {
+                saving.getSharingInformation(saveState.id, function(error, validRecipients) {
                     if(error) {
                         console.error(error);
                         return;
@@ -853,7 +853,7 @@ ocargo.LevelEditor = function() {
                 var recipientData = {recipientIDs: recipientIDs,
                                      action: actionDesired};
 
-                ocargo.saving.shareLevel(saveState.id, recipientData, processSharingInformation);
+                saving.shareLevel(saveState.id, recipientData, processSharingInformation);
             });
 
             // Method to call when we get an update on the level's sharing information
@@ -966,7 +966,7 @@ ocargo.LevelEditor = function() {
                         var recipientData = {recipientIDs: [this.getAttribute('value')],
                                              action: (status === 'shared' ? 'unshare' : 'share')};
 
-                        ocargo.saving.shareLevel(saveState.id, recipientData, processSharingInformation);
+                        saving.shareLevel(saveState.id, recipientData, processSharingInformation);
                     }
                 });
 
@@ -2529,7 +2529,7 @@ ocargo.LevelEditor = function() {
     }
 
     function loadLevel(levelID) {
-        ocargo.saving.retrieveLevel(levelID, function(err, level, owned) {
+        saving.retrieveLevel(levelID, function(err, level, owned) {
             if (err !== null) {
                 console.error(err);
                 return;

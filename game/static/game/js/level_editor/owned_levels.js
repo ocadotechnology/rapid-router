@@ -43,6 +43,7 @@ ocargo.OwnedLevels = function(saveState) {
     this.listeners = [];
     this.levels = [];
     this.saveState = saveState;
+    this.saving = new ocargo.Saving();
 };
 
 ocargo.OwnedLevels.prototype.addListener = function(listener) {
@@ -66,7 +67,7 @@ ocargo.OwnedLevels.prototype.update = function() {
         ocargo.Drawing.startInternetDownPopup();
     }
 
-    ocargo.saving.retrieveOwnedLevels(this._updateLevels.bind(this), processError);
+    this.saving.retrieveOwnedLevels(this._updateLevels.bind(this), processError);
 };
 
 ocargo.OwnedLevels.prototype.save = function(level, id, finishedCallback) {
@@ -75,7 +76,7 @@ ocargo.OwnedLevels.prototype.save = function(level, id, finishedCallback) {
         ocargo.Drawing.startInternetDownPopup();
     }
 
-    ocargo.saving.saveLevel(level, id, false, function(newId) {
+    this.saving.saveLevel(level, id, false, function(newId) {
         delete level.name;
 
         this.saveState.saved(level, newId);
@@ -94,8 +95,7 @@ ocargo.OwnedLevels.prototype.deleteLevel = function(levelId) {
         ocargo.Drawing.startInternetDownPopup();
     }
 
-    ocargo.saving.deleteLevel(levelId, function () {
-
+    this.saving.deleteLevel(levelId, function () {
         this.saveState.deleted(levelId);
 
         this.update();

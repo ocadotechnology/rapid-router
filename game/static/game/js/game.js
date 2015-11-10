@@ -67,7 +67,7 @@ ocargo.Game.prototype.setup = function() {
     this.drawing = new ocargo.Drawing(ocargo.model.startingPosition());
     this.drawing.preloadRoadTiles();
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, this.drawing);
-    ocargo.saving = new ocargo.Saving();
+    this.saving = new ocargo.Saving();
 
     // Setup the blockly workspace
     ocargo.blocklyControl.reset();
@@ -722,7 +722,7 @@ ocargo.Game.prototype._setupLoadTab = function () {
         // whilst waiting for the table data to load
         // JQuery currently throwing errors :(
 
-        ocargo.saving.retrieveListOfWorkspaces(function (err, workspaces) {
+        this.saving.retrieveListOfWorkspaces(function (err, workspaces) {
             if (err !== null) {
                 ocargo.Drawing.startInternetDownPopup();
                 console.error(err);
@@ -740,7 +740,7 @@ ocargo.Game.prototype._setupLoadTab = function () {
             // Otherwise blocks will be chopped off or python editor will not be updated
             this._goToWorkspace();
 
-            ocargo.saving.retrieveWorkspace(selectedWorkspace, function (err, workspace) {
+            this.saving.retrieveWorkspace(selectedWorkspace, function (err, workspace) {
                 if (err !== null) {
                     ocargo.Drawing.startInternetDownPopup();
                     console.error(err);
@@ -763,7 +763,7 @@ ocargo.Game.prototype._setupLoadTab = function () {
 
     $('#deleteWorkspace').click(function () {
         if (selectedWorkspace) {
-            ocargo.saving.deleteWorkspace(selectedWorkspace, function (err, workspaces) {
+            this.saving.deleteWorkspace(selectedWorkspace, function (err, workspaces) {
                 if (err !== null) {
                     ocargo.Drawing.startInternetDownPopup();
                     console.error(err);
@@ -814,7 +814,7 @@ ocargo.Game.prototype._setupSaveTab = function () {
         // whilst waiting for the table data to load
         // JQuery currently throwing errors :()
 
-        ocargo.saving.retrieveListOfWorkspaces(function (err, workspaces) {
+        this.saving.retrieveListOfWorkspaces(function (err, workspaces) {
             if (err !== null) {
                 ocargo.Drawing.startInternetDownPopup();
                 console.error(err);
@@ -825,7 +825,7 @@ ocargo.Game.prototype._setupSaveTab = function () {
         }.bind(this));
     }.bind(this));
 
-    var saveWorkspace = function () {
+    function saveWorkspace() {
         var newName = $('#workspaceNameInput').val();
         if (newName && newName !== "") {
             var table = $("#saveWorkspaceTable");
@@ -846,7 +846,7 @@ ocargo.Game.prototype._setupSaveTab = function () {
                 python_contents: ocargo.pythonControl.getCode()
             };
 
-            ocargo.saving.saveWorkspace(workspace, existingID, function (err, workspaces) {
+            this.saving.saveWorkspace(workspace, existingID, function (err, workspaces) {
                 if (err !== null) {
                     ocargo.Drawing.startInternetDownPopup();
                     console.error(err);
