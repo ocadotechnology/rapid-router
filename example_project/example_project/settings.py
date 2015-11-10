@@ -34,17 +34,43 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-"""
-WSGI config for website project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/1.6/howto/deployment/wsgi/
-"""
-
+'''Django settings for example_project project.'''
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "game.settings")
 
-from django.core.wsgi import get_wsgi_application
-application = get_wsgi_application()
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(os.path.abspath(os.path.dirname(__file__)),'db.sqlite3'),# Or path to database file if using sqlite3.
+    }
+}
+
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
+
+TIME_ZONE = 'Europe/London'
+LANGUAGE_CODE = 'en-gb'
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
+STATIC_URL = '/static/'
+SECRET_KEY = 'not-a-secret'
+
+ROOT_URLCONF = 'django_autoconfig.autourlconf'
+
+WSGI_APPLICATION = 'example_project.wsgi.application'
+
+INSTALLED_APPS = (
+    'game',
+)
+
+SITE_ID = 1
+
+try:
+    from example_project.local_settings import * # pylint: disable=E0611
+except ImportError:
+    pass
+
+from django_autoconfig import autoconfig
+autoconfig.configure_settings(globals())
