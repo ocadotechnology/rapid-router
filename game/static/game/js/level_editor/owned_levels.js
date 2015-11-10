@@ -44,7 +44,6 @@ ocargo.LevelSaveState = function() {
     this.savedState = null;
     this.owned = null;
     this.id = -1;
-    this.saving = false;
 };
 
 ocargo.LevelSaveState.prototype.loaded = function(owned, level, id) {
