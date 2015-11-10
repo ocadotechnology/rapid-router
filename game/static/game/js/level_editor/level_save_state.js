@@ -37,68 +37,47 @@ identified as the original program.
 */
 'use strict';
 
+
 var ocargo = ocargo || {};
 
-ocargo.OwnedLevels = function(saveState) {
-    this.listeners = [];
-    this.levels = [];
-    this.saveState = saveState;
+ocargo.LevelSaveState = function() {
+    this.savedState = null;
+    this.owned = null;
+    this.id = -1;
 };
 
-ocargo.OwnedLevels.prototype.addListener = function(listener) {
-    this.listeners.push(listener);
+ocargo.LevelSaveState.prototype.loaded = function(owned, level, id) {
+    this.owned = owned;
+    this.savedState = JSON.stringify(level);
+    this.id = id;
 };
 
-ocargo.OwnedLevels.prototype.updateListeners = function() {
-    this.listeners.forEach(function (listener) {
-        listener(this.levels);
-    }.bind(this))
+ocargo.LevelSaveState.prototype.saved = function(level, id) {
+    this.owned = true;
+    this.savedState = JSON.stringify(level);
+    this.id = id;
 };
 
-ocargo.OwnedLevels.prototype._updateLevels = function(levels) {
-    this.levels = levels;
-    this.updateListeners();
-};
-
-ocargo.OwnedLevels.prototype.update = function() {
-    function processError(error) {
-        console.error(error);
-        ocargo.Drawing.startInternetDownPopup();
+ocargo.LevelSaveState.prototype.deleted = function (id) {
+    if (id == this.id) {
+        this.id = -1;
+        this.savedState = null;
+        this.owned = false;
     }
-
-    ocargo.saving.retrieveOwnedLevels(this._updateLevels.bind(this), processError);
 };
 
-ocargo.OwnedLevels.prototype.save = function(level, id, finishedCallback) {
-    ocargo.saving.saveLevel(level, id, false, function(error, newId, ownedLevels, sharedLevels) {
-        if (error !== null) {
-            console.error(error);
-            ocargo.Drawing.startInternetDownPopup();
-            return;
-        }
-
-        delete level.name;
-
-        this.saveState.saved(level, newId);
-
-        this._updateLevels(ownedLevels);
-
-        if (finishedCallback) {
-            finishedCallback();
-        }
-    }.bind(this));
+ocargo.LevelSaveState.prototype.isOwned = function () {
+    return this.owned;
 };
 
-ocargo.OwnedLevels.prototype.deleteLevel = function(levelId) {
-    ocargo.saving.deleteLevel(levelId, function (err, ownedLevels, sharedLevels) {
-        if (err !== null) {
-            console.error(err);
-            ocargo.Drawing.startInternetDownPopup();
-            return;
-        }
+ocargo.LevelSaveState.prototype.isCurrentLevel = function (levelId) {
+    return levelId == this.id;
+};
 
-        this.saveState.deleted(levelId);
+ocargo.LevelSaveState.prototype.isSaved = function () {
+    return this.savedState;
+};
 
-        this._updateLevels(ownedLevels);
-    }.bind(this));
+ocargo.LevelSaveState.prototype.hasChanged = function (currentState) {
+    return currentState !== this.savedState;
 };
