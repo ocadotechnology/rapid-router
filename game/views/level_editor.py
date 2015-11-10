@@ -38,6 +38,7 @@ from __future__ import division
 import json
 
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
@@ -87,16 +88,9 @@ def available_blocks():
         return Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn'])
 
 
-def play_anonymous_level_day(request, levelID, from_level_editor=True, random_level=False):
-    return play_anonymous_level(request, levelID, from_level_editor, random_level, False)
-
-
-def play_anonymous_level_night(request, levelID, from_level_editor=True, random_level=False):
-    return play_anonymous_level(request, levelID, from_level_editor, random_level, True)
-
-
-def play_anonymous_level(request, levelID, from_level_editor=True, random_level=False, night_mode = False):
-    level = Level.objects.filter(id=levelID)
+def play_anonymous_level(request, levelId, from_level_editor=True, random_level=False):
+    night_mode = False if not settings.NIGHT_MODE_FEATURE_ENABLED else 'night' in request.GET
+    level = Level.objects.filter(id=levelId)
 
     if not level.exists():
         return redirect("/rapidrouter/level_editor", permanent=True)
@@ -132,6 +126,8 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
         night_mode = "false"
         model_solution = level.model_solution
 
+    return_view_name = 'level_editor' if from_level_editor else 'levels'
+
     context = RequestContext(request, {
         'level': level,
         'decor': decor_data,
@@ -144,7 +140,7 @@ def play_anonymous_level(request, levelID, from_level_editor=True, random_level=
         'hint': hint,
         'attempt': attempt,
         'random_level': random_level,
-        'return_url': '/rapidrouter/' + ('level_editor' if from_level_editor else ''),
+        'return_url': reverse(return_view_name),
         'character_url': character_url,
         'character_width': character_width,
         'character_height': character_height,

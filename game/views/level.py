@@ -53,29 +53,21 @@ from game.models import Level, Attempt, Workspace
 from portal import beta
 
 
-def play_custom_level_day(request, levelId):
-    return play_custom_level(request, levelId, False)
+def play_custom_level_from_editor(request, levelId):
+    return play_custom_level(request, levelId, from_editor=True)
 
 
-def play_custom_level_night(request, levelId):
-    return play_custom_level(request, levelId, True)
-
-
-def play_custom_level(request, levelId, night_mode):
+def play_custom_level(request, levelId, from_editor=False):
     level = cached_custom_level(levelId)
     if level.default:
         raise Http404
-    return play_level(request, level, night_mode)
 
-
-def play_night_level(request, levelName):
-    level = cached_default_level(levelName)
-    return play_level(request, level, True)
+    return play_level(request, level, from_editor)
 
 
 def play_default_level(request, levelName):
     level = cached_default_level(levelName)
-    return play_level(request, level, False)
+    return play_level(request, level)
 
 
 def _next_level_url(level, night_mode):
@@ -85,28 +77,30 @@ def _next_level_url(level, night_mode):
     return _level_url(level.next_level, night_mode)
 
 
+def add_night(url, night_mode):
+    if night_mode:
+        return url + "?night=1"
+    return url
+
+
 def _level_url(level, night_mode):
     if level.default:
-        return _default_level_url(level, night_mode)
+        result = _default_level_url(level)
     else:
-        return _custom_level_url(level, night_mode)
+        result = _custom_level_url(level)
+
+    return add_night(result, night_mode)
 
 
-def _default_level_url(level, night_mode):
-    if night_mode:
-        return reverse('play_night_level', args=[level.name])
-    else:
-        return reverse('play_default_level', args=[level.name])
+def _default_level_url(level):
+    return reverse('play_default_level', args=[level.name])
 
 
-def _custom_level_url(level, night_mode):
-    if night_mode:
-        return reverse('play_custom_level_night', args=[level.id])
-    else:
-        return reverse('play_custom_level_day', args=[level.id])
+def _custom_level_url(level):
+    return reverse('play_custom_level', args=[level.id])
 
 
-def play_level(request, level, night_mode):
+def play_level(request, level, from_editor=False):
     """ Loads a level for rendering in the game.
 
     **Context**
@@ -125,6 +119,8 @@ def play_level(request, level, night_mode):
 
     :template:`game/game.html`
     """
+
+    night_mode = False if not settings.NIGHT_MODE_FEATURE_ENABLED else 'night' in request.GET
 
     if not permissions.can_play_level(request.user, level, beta.has_beta_access(request)):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
@@ -190,6 +186,8 @@ def play_level(request, level, night_mode):
         night_mode_javascript = "false"
         model_solution = level.model_solution
 
+    return_view = 'level_editor' if from_editor else 'levels'
+
     context = RequestContext(request, {
         'level': level,
         'lesson': lesson,
@@ -202,7 +200,7 @@ def play_level(request, level, night_mode):
         'hint': hint,
         'workspace': workspace,
         'python_workspace': python_workspace,
-        'return_url': '/rapidrouter/',
+        'return_url': reverse(return_view),
         'character_url': character_url,
         'character_width': character_width,
         'character_height': character_height,

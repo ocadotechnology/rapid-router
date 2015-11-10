@@ -235,15 +235,23 @@ ocargo.LevelEditor = function() {
         }
 
         function playFunction(night) {
+            function playLevel(action, levelId) {
+                var prefix = '/rapidrouter/level_editor/level';
+                var nightSuffix = night ? '?night=1' : '';
+                window.location.href = prefix + '/' + action + '/' + levelId + '/' + nightSuffix;
+            }
             return function() {
                 if (isLevelValid()) {
                     var state = extractState();
                     state.name = "Custom level";
-                    saving.saveLevel(state, null, true, function(levelId) {
-                        var nightSuffix = (night ? 'night/' : '');
-                        window.location.href = '/rapidrouter/level_editor/level/play_anonymous/'
-                            + levelId + '/' + nightSuffix;
-                    }, console.error);
+
+                    if (hasLevelChangedSinceSave()) {
+                        saving.saveLevel(state, null, true, function (levelId) {
+                            playLevel('play_anonymous', levelId);
+                        }, console.error);
+                    } else {
+                        playLevel('play_custom', saveState.id);
+                    }
                 } else {
                     restorePreviousTab();
                 }
@@ -2608,13 +2616,17 @@ ocargo.LevelEditor = function() {
         return true;
     }
 
-    function isLevelSaved() {
+    function hasLevelChangedSinceSave() {
         var currentState = JSON.stringify(extractState());
+        return saveState.hasChanged(currentState)
+    }
+
+    function isLevelSaved() {
 
         if (!saveState.isSaved()) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notSaved);
             return false;
-        } else if (saveState.hasChanged(currentState)) {
+        } else if (hasLevelChangedSinceSave()) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.changesSinceLastSave);
             return false;
         }
