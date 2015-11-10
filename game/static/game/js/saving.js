@@ -186,44 +186,32 @@ ocargo.Saving.prototype.saveWorkspace = function(workspace, id, callback) {
 /* Levels (level_editor.js) */
 /****************************/
 
-ocargo.Saving.prototype.retrieveOwnedLevels = function(callback, errorCallback) {
+ocargo.Saving.prototype._retrieveLevels = function(suffix, callback, errorCallback) {
     csrftoken = $.cookie('csrftoken');
-	$.ajax({
-        url: '/rapidrouter/level_editor/levels/owned/',
+    $.ajax({
+        url: '/rapidrouter/level_editor/levels/' + suffix + '/',
         type: 'GET',
         dataType: 'json',
-        beforeSend: function(xhr, settings) {
+        beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
             }
         },
-        success: function(json) {
-        	callback(json);
+        success: function (json) {
+            callback(json);
         },
-        error: function(xhr, errmsg, err) {
-        	errorCallback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        error: function (xhr, errmsg, err) {
+            errorCallback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
 };
 
+ocargo.Saving.prototype.retrieveOwnedLevels = function(callback, errorCallback) {
+    this._retrieveLevels('owned', callback, errorCallback);
+};
+
 ocargo.Saving.prototype.retrieveSharedLevels = function(callback, errorCallback) {
-    csrftoken = $.cookie('csrftoken');
-	$.ajax({
-        url: '/rapidrouter/level_editor/levels/shared/',
-        type: 'GET',
-        dataType: 'json',
-        beforeSend: function(xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-        success: function(json) {
-        	callback(json);
-        },
-        error: function(xhr, errmsg, err) {
-        	errorCallback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-        }
-    });
+    this._retrieveLevels('shared', callback, errorCallback);
 };
 
 ocargo.Saving.prototype.retrieveLevel = function(id, callback) {
