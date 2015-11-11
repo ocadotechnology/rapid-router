@@ -619,7 +619,7 @@ ocargo.Game.prototype._setupClearTab = function () {
         }
         this.reset();
 
-        this.selectPreviousTab();
+        this._selectPreviousTab();
     }.bind(this));
 };
 
@@ -646,7 +646,7 @@ ocargo.Game.prototype._setupPlayTab = function () {
             ocargo.animation.playAnimation();
         }
 
-        this.selectPreviousTab();
+        this._selectPreviousTab();
     }.bind(this));
 };
 
@@ -655,7 +655,7 @@ ocargo.Game.prototype._setupStopTab = function () {
         this.reset();
         this.onStopControls();
 
-        this.selectPreviousTab();
+        this._selectPreviousTab();
     }.bind(this));
 };
 
@@ -683,7 +683,7 @@ ocargo.Game.prototype._setupFastTab = function () {
             ocargo.animation.playAnimation();
         }
 
-        this.selectPreviousTab();
+        this._selectPreviousTab();
     }.bind(this));
 };
 
@@ -704,11 +704,11 @@ ocargo.Game.prototype._setupStepTab = function () {
         }.bind(this));
 
         this.onStepControls();
-        this.selectPreviousTab();
+        this._selectPreviousTab();
     }.bind(this));
 };
 
-ocargo.Game.prototype.selectPreviousTab = function () {
+ocargo.Game.prototype._selectPreviousTab = function () {
     this.currentlySelectedTab.select();
 };
 
@@ -894,14 +894,14 @@ ocargo.Game.prototype._setupSaveTab = function () {
 
 ocargo.Game.prototype._setupPrintTab = function () {
     this.tabs.print.setOnChange(function () {
-        this.selectPreviousTab();
+        this._selectPreviousTab();
         window.print();
     }.bind(this));
 };
 
 ocargo.Game.prototype._setupHelpTab = function () {
     this.tabs.help.setOnChange(function () {
-        this.selectPreviousTab();
+        this._selectPreviousTab();
         ocargo.Drawing.startPopup('', '', HINT);
     }.bind(this));
 };
@@ -930,7 +930,7 @@ ocargo.Game.prototype._setupBigCodeModeTab = function () {
 ocargo.Game.prototype._setupMuteTab = function () {
     this.tabs.mute.setOnChange(function () {
         this.mute($.cookie('muted') !== 'true');
-        this.selectPreviousTab();
+        this._selectPreviousTab();
     }.bind(this));
 };
 
