@@ -176,8 +176,8 @@ def save_level(level, data):
     level.blocklyEnabled = data.get('blocklyEnabled', True)
     level.pythonEnabled = data.get('pythonEnabled', False)
     level.pythonViewEnabled = data.get('pythonViewEnabled', False)
-    level.theme = theme_by_id[data['theme']]
-    level.character = character_by_id[data['character']]
+    level.theme = theme_by_id(data['theme'])
+    level.character = character_by_id(data['character'])
     level.save()
 
     set_decor(level, data['decor'])
