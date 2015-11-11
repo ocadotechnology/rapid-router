@@ -36,9 +36,8 @@
 # identified as the original program.
 from itertools import chain
 
-from game.cache import theme_by_id, character_by_id
 import permissions
-from models import Block, LevelBlock, LevelDecor, Decor
+from models import Block, LevelBlock, LevelDecor, Decor, Theme, Character
 
 
 ##########
@@ -170,8 +169,8 @@ def save_level(level, data):
     level.blocklyEnabled = data.get('blocklyEnabled', True)
     level.pythonEnabled = data.get('pythonEnabled', False)
     level.pythonViewEnabled = data.get('pythonViewEnabled', False)
-    level.theme = theme_by_id(data['theme'])
-    level.character = character_by_id(data['character'])
+    level.theme = Theme.objects.get(id=data['theme'])
+    level.character = Character.objects.get(id=data['character'])
     level.save()
 
     set_decor(level, data['decor'])
