@@ -93,12 +93,14 @@ def get_decor(level):
 
     return decorData
 
+
 def set_decor(level, decor):
     set_decor_inner(level, decor, LevelDecor)
 
+
 def set_decor_inner(level, decor, LevelDecor):
     """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
-    if not level.is_new:
+    if not is_new(level):
         LevelDecor.objects.filter(level=level).delete()
 
     level_decors = []
@@ -133,9 +135,13 @@ def set_blocks(level, blocks):
     set_blocks_inner(level, blocks, LevelBlock, Block)
 
 
+def is_new(level):
+    hasattr(level, 'is_new') and level.is_new
+
+
 def set_blocks_inner(level, blocks, LevelBlock, Block):
     """ Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
-    if not level.is_new:
+    if not is_new(level):
         LevelBlock.objects.filter(level=level).delete()
 
     level_blocks = []
