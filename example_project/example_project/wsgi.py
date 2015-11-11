@@ -34,44 +34,24 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-'''Game autoconfig'''
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+"""
+WSGI config for example_project project.
 
-SETTINGS = {
-    'INSTALLED_APPS': [
-        'game',
-        'portal',
-        'django.contrib.admin',
-        'django.contrib.admindocs',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        'foundation_scss',
-        'foundation_icons',
-        'bourbon',
-        'compressor',
-        'rest_framework',
-    ],
-    'COMPRESS_ENABLED': True,
-    'COMPRESS_PRECOMPILERS': [
-        ('text/x-sass', 'sass {infile} {outfile}'),
-        ('text/x-scss', 'sass {infile} {outfile}'),
-    ],
-    'STATICFILES_FINDERS': [
-        'compressor.finders.CompressorFinder',
-    ],
-    'TEMPLATES': [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.request'
-                ]
-            }
-        }
-    ],
-}
+This module contains the WSGI application used by Django's development server
+and any production WSGI deployments. It should expose a module-level variable
+named ``application``. Django's ``runserver`` and ``runfcgi`` commands discover
+this application via the ``WSGI_APPLICATION`` setting.
+
+Usually you will have the standard Django WSGI application here, but it also
+might make sense to replace the whole Django WSGI application with a custom one
+that later delegates to the Django one. For example, you could introduce WSGI
+middleware here, or combine a Django application with an application of another
+framework.
+
+"""
+import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "example_project.settings")
+
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
