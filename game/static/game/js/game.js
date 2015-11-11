@@ -624,23 +624,44 @@ ocargo.Game.prototype._setupClearTab = function () {
 };
 
 
+ocargo.Game.prototype._resetAndPrepareAnimation = function (onSuccess, onFailure) {
+    this.reset();
+    if (this.runProgramAndPrepareAnimation()) {
+        $('#clear_console').click();
+        if (onSuccess) {
+            onSuccess();
+        }
+    } else if (onFailure) {
+        onFailure();
+    }
+
+};
+
+ocargo.Game.prototype._readyToPlay = function() {
+    return this.tabs.play.getText() == "Play";
+};
+
+ocargo.Game.prototype._isRunning = function() {
+    return this.tabs.play.getText() == "Pause";
+};
+
+ocargo.Game.prototype._isPaused = function() {
+    return this.tabs.play.getText() == "Resume";
+};
+
 ocargo.Game.prototype._setupPlayTab = function () {
     this.tabs.play.setOnChange(function () {
-        var existingHtml = this.tabs.play.getText();
-
-        if (existingHtml == "Play") {
-            if (this.runProgramAndPrepareAnimation()) {
+        if (this._readyToPlay()) {
+            this._resetAndPrepareAnimation(function() {
                 this.onPlayControls();
                 ocargo.animation.playAnimation();
-                $('#clear_console').click();
-            }
-
+            }.bind(this));
         }
-        else if (existingHtml == 'Pause') {
+        else if (this._isRunning()) {
             this.onPauseControls();
             ocargo.animation.pauseAnimation();
         }
-        else if (existingHtml == 'Resume') {
+        else if (this._isPaused()) {
             // Important ordering
             this.onResumeControls();
             ocargo.animation.playAnimation();
@@ -661,26 +682,26 @@ ocargo.Game.prototype._setupStopTab = function () {
 
 ocargo.Game.prototype._setupFastTab = function () {
     this.tabs.fast.setOnChange(function () {
-        var playTextPreSpeedControl = this.tabs.play.getText();
 
-        if (this.tabs.fast.getText() == "Fast") {
-            this.onFastControls();
-            ocargo.animation.setHighSpeed();
-        } else {
-            this.onSlowControls();
-            ocargo.animation.setRegularSpeed();
-        }
-
-        if (playTextPreSpeedControl == "Play") {
-            if (this.runProgramAndPrepareAnimation()) {
-                ocargo.animation.playAnimation();
-                $('#clear_console').click();
+        var flipFastSlow = function () {
+            if (this.tabs.fast.getText() == "Fast") {
+                this.onFastControls();
+                ocargo.animation.setHighSpeed();
             } else {
-                // When error occurs during the compilation of the program
-                this.onStopControls();
+                this.onSlowControls();
+                ocargo.animation.setRegularSpeed();
             }
-        } else if (playTextPreSpeedControl == "Resume") {
+        }.bind(this);
+
+        if (this._readyToPlay()) {
+            flipFastSlow();
+            this._resetAndPrepareAnimation(function() {
+                ocargo.animation.playAnimation();
+            }.bind(this));
+        } else if (this._isPaused()) {
             ocargo.animation.playAnimation();
+        } else if (this._isRunning) {
+            flipFastSlow();
         }
 
         this._selectPreviousTab();
@@ -689,9 +710,8 @@ ocargo.Game.prototype._setupFastTab = function () {
 
 ocargo.Game.prototype._setupStepTab = function () {
     this.tabs.step.setOnChange(function () {
-        if (this.tabs.play.getText() == "Play") {
-            this.runProgramAndPrepareAnimation();
-            $('#clear_console').click();
+        if (this._readyToPlay()) {
+            this._resetAndPrepareAnimation();
         }
 
         ocargo.animation.stepAnimation(function () {
