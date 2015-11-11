@@ -100,8 +100,7 @@ def set_decor(level, decor):
 
 def set_decor_inner(level, decor, LevelDecor):
     """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
-    if not is_new(level):
-        LevelDecor.objects.filter(level=level).delete()
+    LevelDecor.objects.filter(level=level).delete()
 
     level_decors = []
     for data in decor:
@@ -137,14 +136,9 @@ def set_blocks(level, blocks):
     set_blocks_inner(level, blocks, LevelBlock, Block)
 
 
-def is_new(level):
-    hasattr(level, 'is_new') and level.is_new
-
-
 def set_blocks_inner(level, blocks, LevelBlock, Block):
     """ Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
-    if not is_new(level):
-        LevelBlock.objects.filter(level=level).delete()
+    LevelBlock.objects.filter(level=level).delete()
 
     level_blocks = []
     dictionary = blocks_dictionary(blocks, Block)

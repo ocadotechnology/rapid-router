@@ -223,8 +223,6 @@ def save_level_for_editor(request, levelId=None):
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
 
-    level.is_new = levelId is None
-
     if not permissions.can_save_level(request.user, level):
         return HttpResponseUnauthorized()
     level_management.save_level(level, data)
