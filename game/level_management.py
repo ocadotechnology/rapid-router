@@ -113,14 +113,16 @@ def set_decor_inner(level, decor, LevelDecor):
         ))
     LevelDecor.objects.bulk_create(level_decors)
 
-def get_night_blocks (level):
+
+def get_night_blocks(level):
     """ Helper method parsing blocks into a dictionary format 'sendable' to javascript. """
-    coreBlockTypes = ['move_forwards', 'turn_left', 'turn_right', 'turn_around', 'controls_repeat', 'controls_repeat_until', 'controls_if', 'at_destination', 'road_exists', 'dead_end']
+    coreBlockTypes = ['move_forwards', 'turn_left', 'turn_right', 'turn_around', 'controls_repeat',
+                      'controls_repeat_until', 'controls_if', 'at_destination', 'road_exists', 'dead_end']
     coreNightBlocks = Block.objects.filter(type__in=coreBlockTypes)
     coreNightLevelBlocks = map(lambda block: LevelBlock(level=level, type=block), coreNightBlocks)
     existingLevelBlocks = LevelBlock.objects.filter(level=level)
     remainingBlocks = existingLevelBlocks.exclude(type__type__in=coreBlockTypes).order_by('type')
-    levelBlocks = sorted(list(chain(coreNightLevelBlocks, remainingBlocks)), key= lambda levelBlock: levelBlock.type.id)
+    levelBlocks = sorted(list(chain(coreNightLevelBlocks, remainingBlocks)), key=lambda levelBlock: levelBlock.type.id)
 
     return [{'type': lb.type.type, 'number': lb.number} for lb in levelBlocks]
 
