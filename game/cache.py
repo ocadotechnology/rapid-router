@@ -38,10 +38,16 @@ from django.core.cache import cache
 from django.db.models.signals import post_save, post_delete
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
-from models import Level, Episode
+from models import Level, Episode, Theme, Character
 
 LEVEL_PREFIX = "model_level"
 EPISODE_PREFIX = "model_episode"
+
+all_themes = Theme.objects.all()
+themes_cache = {theme.id: theme for theme in all_themes}
+
+all_characters = Character.objects.all()
+characters_cache = {str(character.id): character for character in all_characters}
 
 
 def get_level(level):
@@ -54,6 +60,14 @@ def get_custom_level(level):
 
 def get_episode(episode):
     return get_object_or_404(Episode, id=episode)
+
+
+def theme_by_id(id):
+    return themes_cache[id]
+
+
+def character_by_id(id):
+    return characters_cache[id]
 
 
 @receiver(post_save, sender=Level)

@@ -34,17 +34,16 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-import permissions
 from itertools import chain
-from models import Block, LevelBlock, LevelDecor, Decor, Theme, Character
+
+from game.cache import theme_by_id, character_by_id
+import permissions
+from models import Block, LevelBlock, LevelDecor, Decor
 
 
 ##########
 # Levels #
 ##########
-
-themes = {theme.id: theme for theme in Theme.objects.all()}
-characters = {str(character.id): character for character in Character.objects.all()}
 
 def get_loadable_levels(user):
     levels_owned_by_user = levels_owned_by(user)
@@ -169,8 +168,8 @@ def save_level(level, data):
     level.blocklyEnabled = data.get('blocklyEnabled', True)
     level.pythonEnabled = data.get('pythonEnabled', False)
     level.pythonViewEnabled = data.get('pythonViewEnabled', False)
-    level.theme = themes[data['theme']]
-    level.character = characters[data['character']]
+    level.theme = theme_by_id[data['theme']]
+    level.character = character_by_id[data['character']]
     level.save()
 
     set_decor(level, data['decor'])
