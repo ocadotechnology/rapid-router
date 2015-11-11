@@ -34,44 +34,9 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-'''Game autoconfig'''
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+from django.conf import settings
 
-SETTINGS = {
-    'INSTALLED_APPS': [
-        'game',
-        'portal',
-        'django.contrib.admin',
-        'django.contrib.admindocs',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        'foundation_scss',
-        'foundation_icons',
-        'bourbon',
-        'compressor',
-        'rest_framework',
-    ],
-    'COMPRESS_ENABLED': True,
-    'COMPRESS_PRECOMPILERS': [
-        ('text/x-sass', 'sass {infile} {outfile}'),
-        ('text/x-scss', 'sass {infile} {outfile}'),
-    ],
-    'STATICFILES_FINDERS': [
-        'compressor.finders.CompressorFinder',
-    ],
-    'TEMPLATES': [
-        {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.request'
-                ]
-            }
-        }
-    ],
-}
+NIGHT_MODE_FEATURE_ENABLED = getattr(settings, 'NIGHT_MODE_FEATURE_ENABLED', False)
+
+COW_FEATURE_ENABLED = getattr(settings, 'COW_FEATURE_ENABLED', False)
+

@@ -16,3 +16,4 @@ db.sqlite3
 .sass-cache
 *.DS_Store
 *.jshintrc
+example_project/example_project/static/
