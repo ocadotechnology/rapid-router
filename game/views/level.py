@@ -36,7 +36,6 @@
 # identified as the original program.
 from __future__ import division
 from django.core.urlresolvers import reverse
-from django.db import transaction
 from game import settings
 import game.messages as messages
 import game.level_management as level_management
@@ -226,7 +225,6 @@ def fetch_workspace_from_last_attempt(attempt):
         attempt.python_workspace = latest_attempt.python_workspace
 
 
-@transaction.atomic
 def delete_level(request, levelID):
     success = False
     level = Level.objects.get(id=levelID)
@@ -237,7 +235,6 @@ def delete_level(request, levelID):
     return HttpResponse(json.dumps({'success': success}), content_type='application/javascript')
 
 
-@transaction.atomic
 def submit_attempt(request):
     """ Processes a request on submission of the program solving the current level. """
     if (not request.user.is_anonymous() and request.method == 'POST' and
@@ -300,7 +297,6 @@ def load_workspace(request, workspaceID):
     return HttpResponse(json.dumps(''), content_type='application/json')
 
 
-@transaction.atomic
 def save_workspace(request, workspaceID=None):
     name = request.POST.get('name')
     contents = request.POST.get('contents')
@@ -326,7 +322,6 @@ def start_episode(request, episodeId):
     return play_level(request, episode.first_level, False)
 
 
-@transaction.atomic
 def delete_workspace(request, workspaceID):
     workspace = Workspace.objects.get(id=workspaceID)
     if permissions.can_delete_workspace(request.user, workspace):
