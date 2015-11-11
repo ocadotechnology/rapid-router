@@ -34,6 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from contextlib import contextmanager
+from datetime import datetime
 from itertools import chain
 
 from game.cache import theme_by_id, character_by_id
@@ -165,23 +167,41 @@ def blocks_dictionary(blocks, Block):
     return result
 
 
-def save_level(level, data):
-    level.name = data['name']
-    level.path = data['path']
-    level.origin = data['origin']
-    level.destinations = data['destinations']
-    level.max_fuel = data['max_fuel']
-    level.traffic_lights = data['traffic_lights']
-    level.cows = data['cows']
-    level.blocklyEnabled = data.get('blocklyEnabled', True)
-    level.pythonEnabled = data.get('pythonEnabled', False)
-    level.pythonViewEnabled = data.get('pythonViewEnabled', False)
-    level.theme = theme_by_id(data['theme'])
-    level.character = character_by_id(data['character'])
-    level.save()
+@contextmanager
+def elapsed_timer():
+    start = datetime.now()
+    elapser = lambda: datetime.now() - start
+    yield lambda: elapser()
+    end = datetime.now()
+    elapser = lambda: end-start
 
-    set_decor(level, data['decor'])
-    set_blocks(level, data['blocks'])
+
+
+def save_level(level, data):
+    with elapsed_timer() as elapsed:
+        print("Started saving %s" % elapsed().microseconds)
+        level.name = data['name']
+        level.path = data['path']
+        level.origin = data['origin']
+        level.destinations = data['destinations']
+        level.max_fuel = data['max_fuel']
+        level.traffic_lights = data['traffic_lights']
+        level.cows = data['cows']
+        level.blocklyEnabled = data.get('blocklyEnabled', True)
+        level.pythonEnabled = data.get('pythonEnabled', False)
+        level.pythonViewEnabled = data.get('pythonViewEnabled', False)
+        print("Before theme %s" % elapsed().microseconds)
+        level.theme = theme_by_id(data['theme'])
+        print("After theme %s" % elapsed().microseconds)
+        level.character = character_by_id(data['character'])
+        print("After character %s" % elapsed().microseconds)
+        level.save()
+        print("Saved %s" % elapsed().microseconds)
+
+        set_decor(level, data['decor'])
+        print("Decor set %s" % elapsed().microseconds)
+        set_blocks(level, data['blocks'])
+        print("Blocks set %s" % elapsed().microseconds)
 
 
 def delete_level(level):
