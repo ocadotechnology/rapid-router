@@ -519,7 +519,6 @@ ocargo.Game.prototype.onPauseControls = function() {
 };
 
 ocargo.Game.prototype.onStopControls = function() {
-    this.reset();
     this.allowCodeChanges();
 
     // TODO make this hidden unless blocks are clear or something...
@@ -653,6 +652,7 @@ ocargo.Game.prototype._setupPlayTab = function () {
 
 ocargo.Game.prototype._setupStopTab = function () {
     this.tabs.stop.setOnChange(function () {
+        this.reset();
         this.onStopControls();
 
         this.selectPreviousTab();
