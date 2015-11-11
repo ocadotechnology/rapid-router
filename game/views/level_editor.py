@@ -39,12 +39,12 @@ import json
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import Http404, HttpResponse
+from django.db import transaction
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.template import RequestContext
 from django.utils.safestring import mark_safe
 from django.forms.models import model_to_dict
-
 
 import game.messages as messages
 import game.level_management as level_management
@@ -211,6 +211,7 @@ def load_level_for_editor(request, levelID):
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 
+@transaction.atomic
 def save_level_for_editor(request, levelId=None):
     """ Processes a request on creation of the map in the level editor """
     data = json.loads(request.POST['data'])
@@ -235,6 +236,7 @@ def save_level_for_editor(request, levelId=None):
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
 
+@transaction.atomic
 def delete_level_for_editor(request, levelId):
     level = get_object_or_404(Level, id=levelId)
 
