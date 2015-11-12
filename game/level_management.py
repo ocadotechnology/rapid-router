@@ -51,28 +51,26 @@ def get_loadable_levels(user):
     return levels_owned_by_user, shared_levels
 
 
+def add_related_fields(levels):
+    return levels.select_related("owner__user", "owner__teacher", "owner__student")
+
+
 def levels_shared_with(user):
     if user.is_anonymous():
         return []
 
-    shared = user \
-        .shared \
-        .select_related("owner__user", "owner__teacher",
-                        "owner__student__class_field__teacher")
+    shared_levels = user.shared
 
-    shared_levels = (level for level in shared if permissions.can_load_level(user, level))
-    return shared_levels
+    return add_related_fields(shared_levels)
 
 
 def levels_owned_by(user):
     if user.is_anonymous():
         return []
 
-    levels = user.userprofile \
-        .levels \
-        .select_related("owner", "owner__user", "owner__teacher")
+    levels = user.userprofile.levels
 
-    return levels
+    return add_related_fields(levels)
 
 
 def get_decor(level):
