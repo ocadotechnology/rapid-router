@@ -207,9 +207,7 @@ ocargo.BlocklyControl.prototype.removeIllegalBlocks = function() {
 };
 
 ocargo.BlocklyControl.prototype.setCodeChangesAllowed = function(changesAllowed) {
-    var pointerEvents = changesAllowed ? "" : "none";
-
-    this.blocklyDiv.style.pointerEvents = pointerEvents;
+    this.blocklyDiv.style.pointerEvents = changesAllowed ? "" : "none";
 };
 
 ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {

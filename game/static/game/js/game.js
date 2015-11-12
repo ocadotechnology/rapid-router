@@ -576,11 +576,9 @@ ocargo.Game.prototype.disallowCodeChanges = function () {
 ocargo.Game.prototype._setCodeChangesAllowed = function (changesAllowed) {
     ocargo.blocklyControl.setCodeChangesAllowed(changesAllowed);
 
-    var pointerEvents = changesAllowed ? "" : "none";
-
     var codeMirrors = document.getElementsByClassName('CodeMirror');
     for (i = 0; i < codeMirrors.length; i++) {
-        codeMirrors[i].style.pointerEvents = pointerEvents;
+        codeMirrors[i].style.pointerEvents = changesAllowed ? "" : "none";
     }
 };
 
