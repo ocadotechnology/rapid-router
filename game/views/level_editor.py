@@ -245,7 +245,7 @@ def delete_level_for_editor(request, levelId):
 
     level_management.delete_level(level)
 
-    return HttpResponse(json.dumps({'success': 'true'}), content_type='application/javascript')
+    return HttpResponse(json.dumps({}), content_type='application/javascript')
 
 
 def generate_random_map_for_editor(request):
