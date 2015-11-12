@@ -798,7 +798,7 @@ ocargo.LevelEditor = function() {
 
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
-                if (!isIndependentStudent() ||  !isLoggedIn("share") || !isLevelSaved() || !isLevelOwned()) {
+                if (!isIndependentStudent() ||  !isLoggedIn("share") || !canShare() || !isLevelOwned()) {
                     restorePreviousTab();
                     return;
                 }
@@ -846,7 +846,7 @@ ocargo.LevelEditor = function() {
 
             // Setup the select all button
             $('#shareWithAll').click(function() {
-                if (!isLevelSaved() || !isLevelOwned()) {
+                if (!canShare() || !isLevelOwned()) {
                     return;
                 }
 
@@ -968,7 +968,7 @@ ocargo.LevelEditor = function() {
 
                 // update click listeners in the new rows
                 $('#shareLevelTable tr[value]').on('click', function(event) {
-                    if (isLevelSaved() && isLevelOwned()) {
+                    if (canShare() && isLevelOwned()) {
                         var status = this.getAttribute('status');
 
                         var recipientData = {recipientIDs: [this.getAttribute('value')],
@@ -2621,8 +2621,7 @@ ocargo.LevelEditor = function() {
         return saveState.hasChanged(currentState)
     }
 
-    function isLevelSaved() {
-
+    function canShare() {
         if (!saveState.isSaved()) {
             ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notSaved);
             return false;
