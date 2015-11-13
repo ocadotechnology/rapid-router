@@ -217,7 +217,7 @@ ocargo.Saving.prototype.retrieveSharedLevels = function (callback, errorCallback
 ocargo.Saving.prototype.retrieveLevel = function (id, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/level/get/' + id + '/',
+        url: '/rapidrouter/level_editor/get/' + id + '/',
         type: 'GET',
         dataType: 'json',
         beforeSend: function (xhr, settings) {
@@ -237,7 +237,7 @@ ocargo.Saving.prototype.retrieveLevel = function (id, callback) {
 ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: "/rapidrouter/level_editor/level/random/",
+        url: "/rapidrouter/level_editor/random/",
         type: "GET",
         dataType: 'json',
         data: data,
@@ -258,7 +258,7 @@ ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
 ocargo.Saving.prototype.deleteLevel = function (id, callback, errorCallback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/level/delete/' + id + '/',
+        url: '/rapidrouter/level_editor/delete/' + id + '/',
         type: 'POST',
         dataType: 'json',
         data: {csrfmiddlewaretoken: $.cookie('csrftoken')},
@@ -281,7 +281,7 @@ ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, er
     level.anonymous = anonymous;
     var idSuffix = id ? id + '/' : '';
     $.ajax({
-        url: '/rapidrouter/level_editor/level/save/' + idSuffix,
+        url: '/rapidrouter/level_editor/save/' + idSuffix,
         type: 'POST',
         dataType: 'json',
         data: {data: JSON.stringify(level)},
@@ -303,7 +303,7 @@ ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, er
 ocargo.Saving.prototype.getSharingInformation = function (levelID, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/level/get_sharing_information/' + levelID + '/',
+        url: '/rapidrouter/level_editor/get_sharing_information/' + levelID + '/',
         type: 'GET',
         dataType: 'json',
         beforeSend: function (xhr, settings) {
@@ -323,7 +323,7 @@ ocargo.Saving.prototype.getSharingInformation = function (levelID, callback) {
 ocargo.Saving.prototype.shareLevel = function (levelID, recipientData, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/level/share/' + levelID + '/',
+        url: '/rapidrouter/level_editor/share/' + levelID + '/',
         type: 'POST',
         dataType: 'json',
         data: recipientData,

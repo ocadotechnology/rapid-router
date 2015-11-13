@@ -236,7 +236,7 @@ ocargo.LevelEditor = function() {
 
         function playFunction(night) {
             function playLevel(action, levelId) {
-                var prefix = '/rapidrouter/level_editor/level';
+                var prefix = '/rapidrouter/level_editor';
                 var nightSuffix = night ? '?night=1' : '';
                 window.location.href = prefix + '/' + action + '/' + levelId + '/' + nightSuffix;
             }
