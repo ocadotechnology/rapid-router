@@ -49,6 +49,7 @@ SETTINGS = {
         'django.contrib.sessions',
         'django.contrib.messages',
         'django.contrib.staticfiles',
+        'django_js_reverse',
         'foundation_scss',
         'foundation_icons',
         'bourbon',

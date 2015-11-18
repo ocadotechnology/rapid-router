@@ -62,12 +62,12 @@ var CONFIRMATION_DATA = {
 
 $(document).ready(function() {
 	$(".delete").click(function() {
-        
+
 	  	levelID = this.getAttribute('value');
 	  	openConfirmationBox('deleteLevel');
 	});
 
 	$('.play').click(function() {
-		window.location.href = '/rapidrouter/custom/' + this.getAttribute('value') + '/';
+		window.location.href = Urls.play_custom_level(this.getAttribute('value'));
 	});
 });

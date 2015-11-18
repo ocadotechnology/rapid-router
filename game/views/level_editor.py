@@ -94,12 +94,12 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
     level = Level.objects.filter(id=levelId)
 
     if not level.exists():
-        return redirect("/rapidrouter/level_editor", permanent=True)
+        return redirect(reverse('level_editor'), permanent=True)
 
     level = level[:1].get()
 
     if not level.anonymous:
-        return redirect("/rapidrouter/level_editor", permanent=True)
+        return redirect(reverse('level_editor'), permanent=True)
 
     lesson = mark_safe(messages.description_level_default())
     hint = mark_safe(messages.hint_level_default())
