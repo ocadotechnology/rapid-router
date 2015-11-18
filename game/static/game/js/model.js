@@ -322,8 +322,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         model.incrementMovementTime();
 
-        model.incrementTime();
-
         ocargo.animation.appendAnimation({
             type: 'popup',
             popupType: 'FAIL',
