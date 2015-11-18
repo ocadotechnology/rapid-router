@@ -236,7 +236,7 @@ ocargo.LevelEditor = function() {
 
         function playFunction(night) {
             function playLevel(action, levelId) {
-                var prefix = '/rapidrouter/level_editor';
+                var prefix = Urls.level_editor();
                 var nightSuffix = night ? '?night=1' : '';
                 window.location.href = prefix + '/' + action + '/' + levelId + '/' + nightSuffix;
             }
@@ -1000,7 +1000,7 @@ ocargo.LevelEditor = function() {
 
         function setupQuitTab() {
             tabs.quit.setOnChange(function() {
-                window.location.href = "/rapidrouter/";
+                window.location.href = Urls.levels();
             });
         }
 

@@ -35,6 +35,9 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django.conf.urls import patterns, url, include
+from django.views.decorators.cache import cache_page
+
+from django_js_reverse.views import urls_js
 
 from game.views.api import level_list, level_detail, api_root, episode_list, episode_detail, levelblock_detail, \
     block_detail, theme_detail, block_list, theme_list, character_list, character_detail, level_for_episode, \
@@ -91,7 +94,7 @@ urlpatterns = patterns(
             share_level_for_editor, name='share_level_for_editor'),
 
         url(r'^levels/owned/$', owned_levels, name='owned_levels'),
-        url(r'^levels/shared/$', shared_levels, name='owned_levels'),
+        url(r'^levels/shared/$', shared_levels, name='shared_levels'),
     ])),
 
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
@@ -118,5 +121,6 @@ urlpatterns = patterns(
         url(r'^themes/$', theme_list, name='theme-list'),
         url(r'^themes/(?P<pk>[0-9]+)/$', theme_detail, name='theme-detail'),
     ])),
-)
 
+    url(r'^js-reverse/$', cache_page(60*60*24)(urls_js), name='js-reverse'),
+)

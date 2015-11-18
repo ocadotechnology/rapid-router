@@ -17,7 +17,7 @@
         $('#id_classes').change(function(){
             class_id = $(this).val();
             $.ajax({
-                url: '/rapidrouter/level_moderation/class/' + class_id + '/',
+                url: Urls.students_for_level_moderation(class_id),
                 type: 'GET',
                 dataType: 'json',
                 success: function(studentData){

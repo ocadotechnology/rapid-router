@@ -70,7 +70,7 @@ function csrfSafeMethod(method) {
 ocargo.Saving.prototype.retrieveListOfWorkspaces = function (callback) {
     if (USER_STATUS === 'TEACHER' || USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
         $.ajax({
-            url: '/rapidrouter/workspace/load_list/',
+            url: Urls.load_list_of_workspaces(),
             type: 'GET',
             dataType: 'json',
             success: function (json) {
@@ -93,7 +93,7 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function (callback) {
 ocargo.Saving.prototype.retrieveWorkspace = function (id, callback) {
     if (USER_STATUS === 'TEACHER' || USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
         $.ajax({
-            url: '/rapidrouter/workspace/load/' + id + '/',
+            url: Urls.load_workspace(id),
             type: 'GET',
             dataType: 'json',
             success: function (json) {
@@ -120,7 +120,7 @@ ocargo.Saving.prototype.deleteWorkspace = function (id, callback) {
     csrftoken = $.cookie('csrftoken');
     if (USER_STATUS === 'TEACHER' || USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
         $.ajax({
-            url: '/rapidrouter/workspace/delete/' + id + '/',
+            url: Urls.delete_workspace(id),
             type: 'POST',
             dataType: 'json',
             beforeSend: function (xhr, settings) {
@@ -148,7 +148,7 @@ ocargo.Saving.prototype.saveWorkspace = function (workspace, id, callback) {
     csrftoken = $.cookie('csrftoken');
     if (USER_STATUS === 'TEACHER' || USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
         $.ajax({
-            url: '/rapidrouter/workspace/save/' + (id ? (id + '/') : ''),
+            url: (id ? Urls.save_workspace(id) : Urls.save_workspace()),
             type: 'POST',
             dataType: 'json',
             data: workspace,
@@ -186,10 +186,10 @@ ocargo.Saving.prototype.saveWorkspace = function (workspace, id, callback) {
 /* Levels (level_editor.js) */
 /****************************/
 
-ocargo.Saving.prototype._retrieveLevels = function (suffix, callback, errorCallback) {
+ocargo.Saving.prototype._retrieveLevels = function (url, callback, errorCallback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/levels/' + suffix + '/',
+        url: url,
         type: 'GET',
         dataType: 'json',
         beforeSend: function (xhr, settings) {
@@ -207,17 +207,17 @@ ocargo.Saving.prototype._retrieveLevels = function (suffix, callback, errorCallb
 };
 
 ocargo.Saving.prototype.retrieveOwnedLevels = function (callback, errorCallback) {
-    this._retrieveLevels('owned', callback, errorCallback);
+    this._retrieveLevels(Urls.owned_levels(), callback, errorCallback);
 };
 
 ocargo.Saving.prototype.retrieveSharedLevels = function (callback, errorCallback) {
-    this._retrieveLevels('shared', callback, errorCallback);
+    this._retrieveLevels(Urls.shared_levels(), callback, errorCallback);
 };
 
 ocargo.Saving.prototype.retrieveLevel = function (id, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/get/' + id + '/',
+        url: Urls.load_level_for_editor(id),
         type: 'GET',
         dataType: 'json',
         beforeSend: function (xhr, settings) {
@@ -237,7 +237,7 @@ ocargo.Saving.prototype.retrieveLevel = function (id, callback) {
 ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: "/rapidrouter/level_editor/random/",
+        url: Urls.generate_random_map_for_editor(),
         type: "GET",
         dataType: 'json',
         data: data,
@@ -258,7 +258,7 @@ ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
 ocargo.Saving.prototype.deleteLevel = function (id, callback, errorCallback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/delete/' + id + '/',
+        url: Urls.delete_level_for_editor(id),
         type: 'POST',
         dataType: 'json',
         data: {csrfmiddlewaretoken: $.cookie('csrftoken')},
@@ -279,9 +279,8 @@ ocargo.Saving.prototype.deleteLevel = function (id, callback, errorCallback) {
 ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, errorCallback) {
     csrftoken = $.cookie('csrftoken');
     level.anonymous = anonymous;
-    var idSuffix = id ? id + '/' : '';
     $.ajax({
-        url: '/rapidrouter/level_editor/save/' + idSuffix,
+        url: (id ? Urls.save_level_for_editor(id) : Urls.save_level_for_editor()),
         type: 'POST',
         dataType: 'json',
         data: {data: JSON.stringify(level)},
@@ -303,7 +302,7 @@ ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, er
 ocargo.Saving.prototype.getSharingInformation = function (levelID, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/get_sharing_information/' + levelID + '/',
+        url: Urls.get_sharing_information_for_editor(levelID),
         type: 'GET',
         dataType: 'json',
         beforeSend: function (xhr, settings) {
@@ -323,7 +322,7 @@ ocargo.Saving.prototype.getSharingInformation = function (levelID, callback) {
 ocargo.Saving.prototype.shareLevel = function (levelID, recipientData, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
-        url: '/rapidrouter/level_editor/share/' + levelID + '/',
+        url: Urls.share_level_for_editor(levelID),
         type: 'POST',
         dataType: 'json',
         data: recipientData,

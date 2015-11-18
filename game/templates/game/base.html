@@ -59,4 +59,5 @@
 {% block scripts %}
   {{block.super}}
   <script type='text/javascript' src='{% static 'game/js/foundation/vendor/jquery.cookie.js' %}'></script>
+  <script type='text/javascript' src='{% url 'js-reverse' %}'></script>
 {% endblock %}
