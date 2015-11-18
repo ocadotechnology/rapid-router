@@ -235,10 +235,9 @@ ocargo.LevelEditor = function() {
         }
 
         function playFunction(night) {
-            function playLevel(action, levelId) {
-                var prefix = Urls.level_editor();
+            function playLevel(url) {
                 var nightSuffix = night ? '?night=1' : '';
-                window.location.href = prefix + '/' + action + '/' + levelId + '/' + nightSuffix;
+                window.location.href = url + nightSuffix;
             }
             return function() {
                 if (isLevelValid()) {
@@ -247,10 +246,10 @@ ocargo.LevelEditor = function() {
 
                     if (hasLevelChangedSinceSave()) {
                         saving.saveLevel(state, null, true, function (levelId) {
-                            playLevel('play_anonymous', levelId);
+                            playLevel(Urls.play_anonymous_level(levelId));
                         }, console.error);
                     } else {
-                        playLevel('play_custom', saveState.id);
+                        playLevel(Urls.play_custom_level_from_editor(saveState.id));
                     }
                 } else {
                     restorePreviousTab();
