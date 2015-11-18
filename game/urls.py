@@ -84,7 +84,7 @@ urlpatterns = patterns(
 
         url(r'^get/(?P<levelID>[0-9]+)/$', load_level_for_editor, name='load_level_for_editor'),
         url(r'^delete/(?P<levelId>[0-9]+)/$', delete_level_for_editor, name='delete_level_for_editor'),
-        url(r'^save/$', save_level_for_editor),
+        url(r'^save/$', save_level_for_editor, name='save_level_for_editor'),
         url(r'^save/(?P<levelId>[0-9]+)/$', save_level_for_editor, name='save_level_for_editor'),
         url(r'^random/$', generate_random_map_for_editor, name='generate_random_map_for_editor'),
 
