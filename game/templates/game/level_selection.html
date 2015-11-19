@@ -1,6 +1,5 @@
 {% extends 'game/base.html' %}
 
-{% load compress %}
 {% load static %}
 {% load app_tags %}
 
@@ -69,7 +68,7 @@
             {% endif %}
           </p>
           {% endfor %}
-          
+
           {% if episode.random_levels_enabled %}
           <p><a href="{% url 'game.views.level_selection.random_level_for_episode' episode.id %}">
             Random: Try your hand at a random level.</a></p>

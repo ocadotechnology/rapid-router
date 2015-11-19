@@ -1,7 +1,6 @@
 {% extends 'game/basenonav.html' %}
 
 {% load static %}
-{% load compress %}
 {% load i18n %}
 
 {% block scripts %}
@@ -118,12 +117,10 @@
 
 {% block css %}
 {{block.super}}
-  {% compress css %}
     <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/game_screen.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/codemirror.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/eclipse.css' %}" rel="stylesheet" type="text/css">
-  {% endcompress %}
 {% endblock %}
 
 {% block content %}

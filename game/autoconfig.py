@@ -39,8 +39,21 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 SETTINGS = {
+    'PIPELINE_COMPILERS': (
+        'pipeline.compilers.sass.SASSCompiler',
+    ),
+    'PIPELINE_CSS': {
+        'game-scss': {
+            'source_filenames': (
+              'game.scss',
+            ),
+            'output_filename': 'game.css',
+        },
+    },
+    'PIPELINE_CSS_COMPRESSOR': None,
     'INSTALLED_APPS': [
         'game',
+        'pipeline',
         'portal',
         'django.contrib.admin',
         'django.contrib.admindocs',
@@ -53,17 +66,13 @@ SETTINGS = {
         'foundation_scss',
         'foundation_icons',
         'bourbon',
-        'compressor',
         'rest_framework',
     ],
-    'COMPRESS_ENABLED': True,
-    'COMPRESS_PRECOMPILERS': [
-        ('text/x-sass', 'sass {infile} {outfile}'),
-        ('text/x-scss', 'sass {infile} {outfile}'),
-    ],
+    'PIPELINE_SASS_ARGUMENTS': '--quiet',
     'STATICFILES_FINDERS': [
-        'compressor.finders.CompressorFinder',
+        'pipeline.finders.PipelineFinder',
     ],
+    'STATICFILES_STORAGE': 'pipeline.storage.PipelineStorage',
     'TEMPLATES': [
         {
             'BACKEND': 'django.template.backends.django.DjangoTemplates',

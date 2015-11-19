@@ -1,6 +1,6 @@
 {% extends 'portal/base.html' %}
 {% load staticfiles %}
-{% load compress %}
+{% load pipeline %}
 
 {% block head %}
 <!-- <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -9,9 +9,7 @@
 {% endblock head %}
 
 {% block css %}
-{% compress css %}
-<link rel='stylesheet' type='text/x-scss' href='{% static 'game.scss' %}' />
-{% endcompress %}
+{% stylesheet 'game-scss' %}
 {% endblock css %}
 
 {% block title %}Code for Life - Rapid Router{% endblock %}

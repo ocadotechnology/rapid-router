@@ -65,7 +65,7 @@ INSTALLED_APPS = (
     'game',
 )
 
-SITE_ID = 1
+PIPELINE_ENABLED = False
 
 try:
     from example_project.local_settings import * # pylint: disable=E0611
