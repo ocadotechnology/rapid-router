@@ -38,6 +38,10 @@
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+DEFAULT_SETTINGS = {
+    'STATIC_URL': '/static/',
+}
+
 SETTINGS = {
     'PIPELINE_COMPILERS': (
         'pipeline.compilers.sass.SASSCompiler',

@@ -25,5 +25,9 @@ setup(name='rapid-router',
         'Pillow==2.8.2',
         'pyhamcrest==1.8.3',
     ],
+    tests_require=[
+        'django-setuptest',
+    ],
+    test_suite='setuptest.setuptest.SetupTestSuite',
     version=versioneer.get_version(),
 )
