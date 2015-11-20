@@ -36,18 +36,49 @@
 # identified as the original program.
 import os
 
+from django.core.urlresolvers import reverse
+from django_selenium_clean import selenium, SeleniumTestCase
+from unittest import skipUnless
+
 from portal.models import UserProfile
 from game.models import Workspace
-from portal.tests.base_test import BaseTest
+from portal.tests.pageObjects.portal.game_page import GamePage
+from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
 from portal.tests.utils.teacher import signup_teacher_directly
 
-
-class BaseGameTest(BaseTest):
+@skipUnless(selenium, "Selenium is unconfigured")
+class BaseGameTest(SeleniumTestCase):
     BLOCKLY_SOLUTIONS_DIR = os.path.join(os.path.dirname(__file__), 'data/blockly_solutions')
 
     already_logged_on = False
     user_profile = None
+
+    def _go_to_path(self, path):
+        selenium.get(self.live_server_url + path)
+
+    def go_to_homepage(self):
+        path = reverse('home')
+        self._go_to_path(path)
+        return HomePage(selenium)
+
+    def go_to_level(self, level_name):
+        path = reverse('play_default_level', kwargs={'levelName': str(level_name)})
+        self._go_to_path(path)
+
+        return GamePage(selenium)
+
+    def go_to_custom_level(self, level):
+        path = reverse('play_custom_level', kwargs={'levelId': str(level.id)})
+        self._go_to_path(path)
+
+        return GamePage(selenium)
+
+    def go_to_episode(self, episodeId):
+        path = reverse('start_episode', kwargs={'episodeId': str(episodeId)})
+        self._go_to_path(path)
+
+        return GamePage(selenium)
 
     def score_element_id(self, route_score, algorithm_score):
         if route_score:

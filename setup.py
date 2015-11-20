@@ -24,6 +24,8 @@ setup(name='rapid-router',
     ],
     tests_require=[
         'django-setuptest',
+        'django-selenium-clean==0.2.1',
+        'selenium==2.48.0',
     ],
     test_suite='setuptest.setuptest.SetupTestSuite',
     version=versioneer.get_version(),
