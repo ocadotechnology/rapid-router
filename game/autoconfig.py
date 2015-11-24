@@ -88,4 +88,5 @@ SETTINGS = {
             }
         }
     ],
+    'USE_TZ': True,
 }

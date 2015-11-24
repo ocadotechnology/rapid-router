@@ -35,6 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from datetime import timedelta, datetime
+from django.utils.timezone import utc
 
 from django.test import TestCase
 from hamcrest import *
@@ -242,8 +243,8 @@ class ScoreboardCsvTestCase(TestCase):
         row = StudentRow(student=student,
                          total_time=total_time,
                          total_score=total_score,
-                         start_time=datetime.fromtimestamp(1435305072),
-                         finish_time=datetime.fromtimestamp(1438305072),
+                         start_time=datetime.fromtimestamp(1435305072, tz=utc),
+                         finish_time=datetime.fromtimestamp(1438305072, tz=utc),
                          progress=progress,
                          scores=all_scores,
                          class_field=Class(name="MyClass"))
@@ -256,7 +257,7 @@ class ScoreboardCsvTestCase(TestCase):
         return beginning + padding
 
     def expected_row_single_level(self, student_row):
-        return "%s,%s,190,0:00:30,2015-06-26 08:51:12,2015-07-31 02:11:12" % (
+        return "%s,%s,190,0:00:30,2015-06-26 07:51:12+00:00,2015-07-31 01:11:12+00:00" % (
             student_row.class_field.name, student_row.name)
 
     def expected_header(self, levels):
@@ -340,4 +341,3 @@ def create_random_school_data():
     clas, class_name, access_code = create_class_directly(email)
     create_school_student_directly(access_code)
     create_school_student_directly(access_code)
-
