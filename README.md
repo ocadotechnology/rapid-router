@@ -1,5 +1,8 @@
 # Rapid Router (codename: ocargo)
 
+[![Build Status](https://travis-ci.org/ocadotechnology/rapid-router.svg?branch=master)](https://travis-ci.org/ocadotechnology/rapid-router)
+[![Coverage Status](https://coveralls.io/repos/ocadotechnology/rapid-router/badge.svg?branch=master&service=github)](https://coveralls.io/github/ocadotechnology/rapid-router?branch=master)
+
 Rapid Router is a 'Coding For Life' project, aimed at teaching children programming concepts through a vehicle routing
 game.
 
