@@ -42,3 +42,11 @@ script:
   - python setup.py test
 after_success:
   - coveralls
+deploy:
+  provider: pypi
+  user: ocadotechnology
+  password:
+    secure: fdj/8MbEPE8EDIyYE33JstFuQrjDMclcajcRiOmGfwciZo7sLVxhReS2Uj1X52cs7gpIWnzzzLO+DL3oDfDXegCa7fTe8pJwG31XysPF2xIHndbQknH51Ps7Jbyt4HanEasYZT/GA5b36LigI0x7n675SR4eR0VX3fcLwka3SCqN5aVj72wlyOgCLm0syPk636vuK79zlIM/XyTma6X9xFRb6h37IBie3qaT/XEZ154n8yC0bvYEc2NeMg7mBeAFeu8rKPGQZDODMkvl28dtJm5kXsk+LmJ2guI3fe5mueHO3NIEbJEd5iVBvq/2KpMMj06YI7KFdQvBNak0k5TQ+ibSe9+T1m7RYrFHtHsK1S5Zp9AJDH8C53pSIGus4UZQyZvgWQoazuAsz135iAxoTKmdJu7UT6eiEIDxnZfR39hBbuEHMTWUMS07oouJRyVGLPXewxofQbLHX9AHUeg02BwQ1xFh9WRYDlYejmSmErkQlwEwOfXyFYpFlan3rx5nPg3+8Ylws0M2EIXQnBn+yDmnu+Z0JRFPAE76RmdX+ZkGNjX1x8U3yXHDaB9zh76069JFSa442tWYfB7lXE/Xo6ePTNxsXIN8lcxGZXgUgScSqzEBblDkhiUqFyRch1LAMY5rYlazKzqKEmdIBb3RezuT0xt8gIbdoZB548RUT4Q=
+  distributions: "bdist_wheel sdist"
+  on:
+    repo: ocadotechnology/rapid-router
