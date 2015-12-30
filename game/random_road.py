@@ -51,16 +51,6 @@ WIDTH = 10
 HEIGHT = 8
 GRID_SIZE = 100
 
-THEME = Theme.objects.get(name='grass')
-
-DECOR_DATA = {'bush': {'ratio': 5, 'decor': Decor.objects.get(theme=THEME, name='bush')},
-              'tree1': {'ratio': 4, 'decor': Decor.objects.get(theme=THEME, name='tree1')},
-              'tree2': {'ratio': 3, 'decor': Decor.objects.get(theme=THEME, name='tree2')},
-              'pond': {'ratio': 1, 'decor': Decor.objects.get(theme=THEME, name='pond')}
-              }
-
-DECOR_SUM = (DECOR_DATA['bush']['ratio'] + DECOR_DATA['pond']['ratio'] +
-             DECOR_DATA['tree1']['ratio'] + DECOR_DATA['tree2']['ratio'])
 
 DEFAULT_MAX_FUEL = 30
 DEFAULT_START_NODE = Node(0, 3)
@@ -76,6 +66,22 @@ DEFAULT_LOOPINESS = 0.1
 DEFAULT_CURVINESS = 0.5
 
 PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
+
+
+def decor_data():
+    theme = Theme.objects.get(name='grass')
+
+    return {'bush': {'ratio': 5, 'decor': Decor.objects.get(theme=theme, name='bush')},
+              'tree1': {'ratio': 4, 'decor': Decor.objects.get(theme=theme, name='tree1')},
+              'tree2': {'ratio': 3, 'decor': Decor.objects.get(theme=theme, name='tree2')},
+              'pond': {'ratio': 1, 'decor': Decor.objects.get(theme=theme, name='pond')}
+              }
+
+
+def decor_sum():
+    data = decor_data()
+    return (data['bush']['ratio'] + data['pond']['ratio'] +
+             data['tree1']['ratio'] + data['tree2']['ratio'])
 
 
 def create(episode=None):
@@ -345,6 +351,8 @@ def get_direction(node, neighbour):
 
 
 def generate_decor(path, num_tiles):
+    DECOR_DATA = decor_data()
+    DECOR_SUM = decor_sum()
 
     def find_node_by_coordinate(x, y, dec, nodes):
         for node in nodes:
