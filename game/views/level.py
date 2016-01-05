@@ -50,7 +50,7 @@ from django.utils.safestring import mark_safe
 from helper import renderError, getDecorElement
 from game.cache import cached_default_level, cached_episode, cached_custom_level
 from game.models import Level, Attempt, Workspace
-from portal import beta
+from game import app_settings
 
 
 def play_custom_level_from_editor(request, levelId):
@@ -122,7 +122,7 @@ def play_level(request, level, from_editor=False):
 
     night_mode = False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else 'night' in request.GET
 
-    if not permissions.can_play_level(request.user, level, beta.has_beta_access(request)):
+    if not permissions.can_play_level(request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)):
         return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
 
     # Set default level description/hint lookups
