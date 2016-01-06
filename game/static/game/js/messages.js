@@ -121,6 +121,12 @@ ocargo.messages = {
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') +
         "<b>Mark end</b> then select the square where you want the road to start or end.",
     somethingWrong: "Something is wrong...",
+    noRoadSubtitle: "You forgot to create a road. ",
+    noRoad: "In " +
+        ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon') +
+        "<b>Map</b> menu, click on  " +
+	ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/add_road.svg', 'popupIcon') +
+	"<b>Add road</b>. Draw a road by clicking on a square then dragging to another square.", 
     noStartEndRouteSubtitle: "There is no way to get from the start to the destination.",
     noStartEndRoute: "Edit your level to allow the driver to get to the end.",
     noBlocksSubtitle: "You haven't selected any blocks to use in your level.",
@@ -137,7 +143,7 @@ ocargo.messages = {
         "<b>Map</b> menu, click " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon') +
         "<b>Mark start</b> and select a square for your road to start from. The starting point " +
-        "can only be placed on dead ends. <br> Make sure you use " +
+        "can only be placed on dead ends. You need a road first before adding a starting point.<br> Make sure you use " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon') +
         "<b>Mark end</b> to select a final destination. <br><br> To remove road, click the " +
         ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/delete_road.svg', 'popupIcon') +
