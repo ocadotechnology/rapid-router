@@ -2587,7 +2587,14 @@ ocargo.LevelEditor = function() {
     }
 
     function isLevelValid() {
-        // Check to see if start and end nodes have been marked
+        // Check to see if a road has been created
+	if (nodes === undefined || nodes.length == 0) {
+	    ocargo.Drawing.startPopup(ocargo.messages.ohNo,
+                                       ocargo.messages.noRoadSubtitle,
+                                       ocargo.messages.noRoad);
+             return false;
+	}
+	// Check to see if start and end nodes have been marked
         if (!originNode || !destinationNode) {
              ocargo.Drawing.startPopup(ocargo.messages.ohNo,
                                        ocargo.messages.noStartOrEndSubtitle,
