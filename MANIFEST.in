@@ -1,7 +1,5 @@
 include README.md
-recursive-include game/static *
-recursive-include game/templates *
-recursive-include nuit/static *
-recursive-include nuit/templates *
+graft game/static
+graft game/templates
 include game/_version.py
 include versioneer.py
