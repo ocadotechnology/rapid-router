@@ -29,4 +29,5 @@ setup(name='rapid-router',
     ],
     test_suite='setuptest.setuptest.SetupTestSuite',
     version=versioneer.get_version(),
+    zip_safe=False,
 )
