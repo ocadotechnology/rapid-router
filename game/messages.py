@@ -122,14 +122,6 @@ def shareUnsuccessfulClass(className):
                     % {'class': className})
 
 
-def chooseAvatar():
-    return ugettext("Choose your avatar. ")
-
-
-def uploadAvatar():
-    return ugettext("...Or upload your own ")
-
-
 def noLevelsToShow():
     return ugettext("It seems that you have not created any levels. How about creating one "
                     + "now? ")

@@ -34,7 +34,7 @@
       <tbody>
       {% for row in studentData %}
         <tr>
-          <td> <img style="vertical-align:middle" src="/{{row.0.user.avatar.url}}"> </td>
+          <td> <img style="vertical-align:middle" src="{% static 'game/image/avatars/default-avatar.jpeg' %}"> </td>
           <td> {{row.0.user.user.first_name}} </td>
           <td> {{row.0.user.user.last_name}} </td>
           <td> {{row.1}} </td>

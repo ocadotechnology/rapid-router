@@ -76,17 +76,6 @@ identified as the original program.
     float: left;
 }
 
-.avatar_container {
-    margin-bottom: 2%;
-    overflow: hidden;
-}
-
-.avatar_container img {
-    width: 110px;
-    height: 110px;
-    margin: 20px 50px 20px 20px;
-}
-
 #wrapper > ul {
     width: 100%;
 }
@@ -108,28 +97,4 @@ identified as the original program.
 
 .shareButton {
     float: right;
-}
-
-.avatar_container input[type=submit] {
-    cursor: pointer;
-    font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
-    font-weight: normal !important;
-    line-height: normal;
-    margin: 0 10px 1.25rem 0;
-    position: relative;
-    text-decoration: none;
-    text-align: center;
-    display: inline-block;
-    padding: 1.0625rem 2rem 1rem;
-    font-size: 1rem;
-    background-color: #008cba;
-    color: white;
-    -webkit-transition: background-color 300ms ease-out;
-    -moz-transition: background-color 300ms ease-out;
-    -o-transition: background-color 300ms ease-out;
-    transition: background-color 300ms ease-out;
-    -webkit-appearance: none;
-    border: none;
-    float: left;
-    overflow: hidden;
 }
