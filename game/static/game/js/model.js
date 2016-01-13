@@ -441,6 +441,22 @@ ocargo.Model.prototype.deliver = function() {
             return false;
         }
         this.makeDelivery(destination, 'DELIVER');
+    } else {
+        ocargo.animation.appendAnimation({
+            type: 'popup',
+            popupType: 'FAIL',
+            failSubtype: 'CANT_DELIVER_HERE',
+            popupMessage: ocargo.messages.cantDeliverHere,
+            popupHint: ocargo.game.registerFailure(),
+            description: 'can\'t deliver here'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionType: 'playSound',
+            functionCall: ocargo.sound.failure,
+            description: 'failure sound'
+        });
     }
     return destination;
 };
