@@ -34,6 +34,7 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from django.core.cache import cache
 import json
 import math
 import random
@@ -68,7 +69,7 @@ DEFAULT_CURVINESS = 0.5
 PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
 
 
-def decor_data():
+def _decor_data():
     theme = Theme.objects.get(name='grass')
 
     return {'bush': {'ratio': 5, 'decor': Decor.objects.get(theme=theme, name='bush')},
@@ -76,6 +77,15 @@ def decor_data():
               'tree2': {'ratio': 3, 'decor': Decor.objects.get(theme=theme, name='tree2')},
               'pond': {'ratio': 1, 'decor': Decor.objects.get(theme=theme, name='pond')}
               }
+
+def decor_data():
+    '''Cached decor data.'''
+    # TODO: Use get_or_set from Django 1.9
+    data = cache.get('decor-data')
+    if not data:
+        data = _decor_data()
+        cache.set('decor-data', data, 3600)
+    return data
 
 
 def decor_sum():
