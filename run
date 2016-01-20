@@ -3,6 +3,7 @@ set -e
 cd "${BASH_SOURCE%/*}"
 
 pip install -e .
+pip install codeforlife-portal # TODO: Remove this requirement (#688)
 ./example_project/manage.py migrate --noinput
 ./example_project/manage.py collectstatic --noinput
 ./example_project/manage.py runserver "$@"

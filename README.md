@@ -11,7 +11,15 @@ game.
 Go to the official [Code For Life website][c4l].
 
 ## To run the app locally
-Follow the instructions in the [codeforlife-portal project][c4l-portal].
+* Clone the repo
+* Make and activate a virtualenv (We recommend [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/index.html))
+    * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
+    * and thereafter `workon rapid-router`
+* `./run` - This will:
+    * install all of the dependencies using pip
+    * sync the database
+    * collect the static files
+    * run the server
 
 ## To contribute
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
