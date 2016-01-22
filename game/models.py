@@ -167,6 +167,8 @@ class Workspace(models.Model):
     contents = models.TextField(default="")
     python_contents = models.TextField(default="")
 
+    def __unicode__(self):
+        return str(self.name)
 
 class Attempt(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)

@@ -35,17 +35,9 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django.contrib import admin
-from game.models import Level, Block, Episode
-from portal.models import Class, Student, Guardian, Teacher, School, UserProfile, FrontPageNews
-
-admin.site.register(Class)
-admin.site.register(Student)
-admin.site.register(Guardian)
-admin.site.register(Teacher)
-admin.site.register(School)
-admin.site.register(UserProfile)
-
+from game.models import Level, Block, Episode, Workspace
+  
 admin.site.register(Level)
+admin.site.register(Workspace)
 admin.site.register(Episode)
 admin.site.register(Block)
-admin.site.register(FrontPageNews)
