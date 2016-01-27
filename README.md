@@ -16,7 +16,7 @@ Go to the official [Code For Life website][c4l].
  useful if you're using a Mac)
     * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
     * and thereafter `workon rapid-router`
-* `./run` - This will:
+* `./run` in your rapid-router dir - This will:
     * install all of the dependencies using pip
     * sync the database
     * collect the static files
