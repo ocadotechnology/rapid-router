@@ -861,7 +861,9 @@ ocargo.Game.prototype._setupSaveTab = function () {
             var workspace = {
                 name: newName,
                 contents: ocargo.blocklyControl.serialize(),
-                python_contents: ocargo.pythonControl.getCode()
+                python_contents: ocargo.pythonControl.getCode(),
+                blockly_enabled: BLOCKLY_ENABLED,
+                python_enabled: PYTHON_ENABLED
             };
 
             this.saving.saveWorkspace(workspace, existingID, function (err, workspaces) {
@@ -976,18 +978,16 @@ ocargo.Game.prototype._populateTable = function (tableName, workspaces) {
 
     // Order them alphabetically
     sortedWorkspaces = ocargo.utils.sortObjects(workspaces, 'name');
-
     workspaces = sortedWorkspaces;
 
     // Add a row to the table for each workspace saved in the database
     for (var i = 0, ii = workspaces.length; i < ii; i++) {
         var workspace = workspaces[i];
-        var tableRow = $('<tr>');
-        tableRow.attr('value', workspace.id);
-        var workspaceEntry = $('<td>');
-        workspaceEntry.text(workspace.name);
-        tableRow.append(workspaceEntry);
-        table.append(tableRow);
+	var languages = [];
+	if (!workspace.blockly_enabled && !workspace.python_enabled || workspace.blockly_enabled && BLOCKLY_ENABLED || workspace.python_enabled && PYTHON_ENABLED) {
+		table.append("<tr value=\""+workspace.id +"\"> <td>" + workspace.name+  "</td></tr>");
+		}
+	// Add a function to make it work for old levels with defaults to false. 
     }
 };
 

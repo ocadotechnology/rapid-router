@@ -166,6 +166,8 @@ class Workspace(models.Model):
     owner = models.ForeignKey(UserProfile, related_name='workspaces', blank=True, null=True)
     contents = models.TextField(default="")
     python_contents = models.TextField(default="")
+    blockly_enabled = models.BooleanField(default=False)
+    python_enabled = models.BooleanField(default=False)
 
     def __unicode__(self):
         return str(self.name)

@@ -35,22 +35,22 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
-from django.core.urlresolvers import reverse
-from game import app_settings
-import game.messages as messages
-import game.level_management as level_management
-import game.permissions as permissions
-import json
 
+import json
+from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.utils import timezone
 from django.utils.safestring import mark_safe
-from helper import renderError, getDecorElement
+
+import game.level_management as level_management
+import game.messages as messages
+import game.permissions as permissions
+from game import app_settings
 from game.cache import cached_default_level, cached_episode, cached_custom_level
 from game.models import Level, Attempt, Workspace
-from game import app_settings
+from helper import renderError, getDecorElement
 
 
 def play_custom_level_from_editor(request, levelId):
@@ -245,6 +245,7 @@ def submit_attempt(request):
         if attempt:
             attempt.score = float(request.POST.get('score'))
             attempt.workspace = request.POST.get('workspace')
+            attempt.workspace = request.POST.get('workspace')
             attempt.python_workspace = request.POST.get('python_workspace')
 
             record_best_attempt(attempt)
@@ -283,7 +284,8 @@ def load_list_of_workspaces(request):
     if permissions.can_create_workspace(request.user):
         workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
 
-    workspaces = [{'id': workspace.id, 'name': workspace.name} for workspace in workspaces_owned]
+    workspaces = [{'id': workspace.id, 'name': workspace.name, 'blockly_enabled': workspace.blockly_enabled, 'python_enabled': workspace.python_enabled}
+                  for workspace in workspaces_owned]
     return HttpResponse(json.dumps(workspaces), content_type='application/json')
 
 
@@ -301,6 +303,8 @@ def save_workspace(request, workspaceID=None):
     name = request.POST.get('name')
     contents = request.POST.get('contents')
     python_contents = request.POST.get('python_contents')
+    blockly_enabled = json.loads(request.POST.get('blockly_enabled'))
+    python_enabled = json.loads(request.POST.get('python_enabled'))
 
     workspace = None
     if workspaceID:
@@ -312,6 +316,8 @@ def save_workspace(request, workspaceID=None):
         workspace.name = name
         workspace.contents = contents
         workspace.python_contents = python_contents
+        workspace.blockly_enabled = blockly_enabled
+        workspace.python_enabled = python_enabled
         workspace.save()
 
     return load_list_of_workspaces(request)

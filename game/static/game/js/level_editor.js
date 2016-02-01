@@ -937,23 +937,7 @@ ocargo.LevelEditor = function() {
                         status = 'unshared';
                         allShared = false;
                     }
-
-                    var tableRow = $('<tr>');
-                    tableRow.attr( {
-                        'value': recipient.id,
-                        'status': status,
-                    });
-                    var rowName = $('<td>').text(recipient.name);
-
-                    var rowStatus = $('<td>');
-                    rowStatus.attr( {
-                        'class': 'share_cell'
-                    });
-                    rowStatus.text(text[status]);
-                    tableRow.append(rowName);
-                    tableRow.append(rowStatus);
-
-                    table.append(tableRow);
+                    table.append("<tr value=\""+recipient.id+"\" status=\""+status+"\"><td>"+ recipient.name +"</td><td class=\"share_cell\">"+ text[status] + "</td></tr>");
                 }
 
                 // Update the shareWithAll button
@@ -1033,22 +1017,11 @@ ocargo.LevelEditor = function() {
                 return 0;
             });
 
-            // Add a row to the table for each workspace saved in the database
+            // Add a row to the table for each level saved in the database
             for (var i = 0, ii = levels.length; i < ii; i++) {
                 var level = levels[i];
-                var tableRow = $('<tr>');
-                tableRow.attr({
-                    'value': level.id
-                });
-                var rowName = $('<td>');
-                rowName.text(level.name);
-                var rowOwner = $('<td>');
-                rowOwner.text(level.owner);
-                tableRow.append(rowName);
-                tableRow.append(rowOwner);
-                table.append(tableRow);
+                table.append("<tr value=\""+level.id+"\"><td>"+ level.name +"</td><td>"+ level.owner + "</td></tr>");
             }
-
             for (var i = 0; i < 2; i++) {
                 var td = $('#' + tableName + ' td:eq(' + i + ')');
                 var td2 = $('#' + tableName + 'Header th:eq(' + i + ')');
