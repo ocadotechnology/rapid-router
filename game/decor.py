@@ -34,32 +34,25 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from __future__ import division
 
-import os
+'''
+    Decor data
+'''
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
-from django.template import RequestContext
+from game.models import Decor
 
 
-def renderError(request, title, message):
-    """ Renders an error page with passed title and message.
+def get_decor_element(name, theme):
+    """ Helper method to get a decor element corresponding to the theme or a default one."""
+    try:
+        return Decor.objects.get(name=name, theme=theme)
+    except ObjectDoesNotExist:
+        return Decor.objects.filter(name=name)[0]
 
-    **Context**
 
-    ``RequestContext``
-    ``title``
-        Title that is to be used as a title and header of the page. String.
-    ``message``
-        Message that will be shown on the error page. String.
+def get_all_decor():
+    return Decor.objects.all()
 
-    **Template:**
 
-    :template:`game/error.html`
-    """
-    context = RequestContext(request, {
-        'title': title,
-        'message': message
-    })
-    return render(request, 'game/error.html', context_instance=context)
+def get_decor_element_by_pk(pk):
+    return Decor.objects.get(pk=pk)

@@ -37,7 +37,9 @@
 from itertools import chain
 
 import permissions
-from models import Block, LevelBlock, LevelDecor, Decor, Theme, Character
+from models import Block, LevelBlock, LevelDecor, Theme, Character
+
+from game.decor import get_decor_element
 
 
 ##########
@@ -77,7 +79,7 @@ def get_decor(level):
     """ Helper method parsing decor into a dictionary format 'sendable' to javascript. """
     decorData = []
     for ld in LevelDecor.objects.filter(level=level):
-        decor = Decor.objects.get(name=ld.decorName, theme=level.theme)
+        decor = get_decor_element(name=ld.decorName, theme=level.theme)
         decorData.append({
             'x': int(ld.x),
             'y': int(ld.y),

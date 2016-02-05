@@ -50,7 +50,8 @@ import game.permissions as permissions
 from game import app_settings
 from game.cache import cached_default_level, cached_episode, cached_custom_level
 from game.models import Level, Attempt, Workspace
-from helper import renderError, getDecorElement
+from helper import renderError
+from game.decor import get_decor_element
 
 
 def play_custom_level_from_editor(request, levelId):
@@ -146,9 +147,9 @@ def play_level(request, level, from_editor=False):
     lesson = mark_safe(lessonCall())
     hint = mark_safe(hintCall())
 
-    house = getDecorElement('house', level.theme).url
-    cfc = getDecorElement('cfc', level.theme).url
-    background = getDecorElement('tile1', level.theme).url
+    house = get_decor_element('house', level.theme).url
+    cfc = get_decor_element('cfc', level.theme).url
+    background = get_decor_element('tile1', level.theme).url
     character = level.character
 
     workspace = None

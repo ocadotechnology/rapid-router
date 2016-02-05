@@ -42,7 +42,9 @@ import random
 import level_management
 
 from collections import defaultdict, namedtuple
-from models import Level, Block, Theme, Decor
+from models import Level, Block, Theme
+
+from game.decor import get_decor_element
 
 
 Node = namedtuple('Node', ['x', 'y'])
@@ -72,10 +74,10 @@ PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
 def _decor_data():
     theme = Theme.objects.get(name='grass')
 
-    return {'bush': {'ratio': 5, 'decor': Decor.objects.get(theme=theme, name='bush')},
-              'tree1': {'ratio': 4, 'decor': Decor.objects.get(theme=theme, name='tree1')},
-              'tree2': {'ratio': 3, 'decor': Decor.objects.get(theme=theme, name='tree2')},
-              'pond': {'ratio': 1, 'decor': Decor.objects.get(theme=theme, name='pond')}
+    return {'bush': {'ratio': 5, 'decor': get_decor_element(theme=theme, name='bush')},
+              'tree1': {'ratio': 4, 'decor': get_decor_element(theme=theme, name='tree1')},
+              'tree2': {'ratio': 3, 'decor': get_decor_element(theme=theme, name='tree2')},
+              'pond': {'ratio': 1, 'decor': get_decor_element(theme=theme, name='pond')}
               }
 
 def decor_data():
