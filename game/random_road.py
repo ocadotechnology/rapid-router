@@ -42,9 +42,10 @@ import random
 import level_management
 
 from collections import defaultdict, namedtuple
-from models import Level, Block, Theme
+from models import Level, Block
 
 from game.decor import get_decor_element
+from game.theme import get_theme
 
 
 Node = namedtuple('Node', ['x', 'y'])
@@ -71,23 +72,14 @@ DEFAULT_CURVINESS = 0.5
 PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS = 30
 
 
-def _decor_data():
-    theme = Theme.objects.get(name='grass')
+def decor_data():
+    theme = get_theme(name='grass')
 
     return {'bush': {'ratio': 5, 'decor': get_decor_element(theme=theme, name='bush')},
               'tree1': {'ratio': 4, 'decor': get_decor_element(theme=theme, name='tree1')},
               'tree2': {'ratio': 3, 'decor': get_decor_element(theme=theme, name='tree2')},
               'pond': {'ratio': 1, 'decor': get_decor_element(theme=theme, name='pond')}
               }
-
-def decor_data():
-    '''Cached decor data.'''
-    # TODO: Use get_or_set from Django 1.9
-    data = cache.get('decor-data')
-    if not data:
-        data = _decor_data()
-        cache.set('decor-data', data, 3600)
-    return data
 
 
 def decor_sum():

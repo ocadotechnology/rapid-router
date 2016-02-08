@@ -46,7 +46,8 @@ from rest_framework.reverse import reverse
 from rest_framework import viewsets
 from rest_framework import generics
 
-from game.decor import get_all_decor, get_decor_element, get_decor_element_by_pk
+from game.decor import get_all_decor, get_decor_element_by_pk
+from game.theme import get_all_themes, get_theme_by_pk
 
 
 @api_view(('GET',))
@@ -225,7 +226,7 @@ def block_detail(request, pk, format=None):
 
 @api_view(('GET',))
 def theme_list(request, format=None):
-    themes = Theme.objects.all()
+    themes = get_all_themes()
     serializer = ThemeSerializer(themes, many=True, context={'request': request})
     return Response(serializer.data)
 
@@ -233,7 +234,7 @@ def theme_list(request, format=None):
 @api_view(('GET',))
 def theme_detail(request, pk, format=None):
     try:
-        theme = Theme.objects.get(pk=pk)
+        theme = get_theme_by_pk(pk)
     except Theme.DoesNotExist:
         return HttpResponse(status=404)
 
