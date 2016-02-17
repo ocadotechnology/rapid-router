@@ -311,7 +311,7 @@ def assert_student_row_single_level(student_row, class_name, student_name, total
 def create_attempt(student, level, score):
     attempt = Attempt.objects.create(finish_time=datetime.fromtimestamp(1435305072),
                                      level=level,
-                                     student=student,
+                                     user=student.user.user,
                                      score=score,
                                      is_best_attempt=True)
     attempt.start_time=datetime.fromtimestamp(1435305072)

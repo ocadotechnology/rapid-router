@@ -37,8 +37,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from portal.models import UserProfile, Student
-
 
 class Block(models.Model):
     type = models.CharField(max_length=200)
@@ -127,7 +125,7 @@ class Level(models.Model):
     origin = models.CharField(max_length=50, default='[]')
     destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)
-    owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
+    owner = models.ForeignKey(User, related_name='levels', blank=True, null=True)
     fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
@@ -163,7 +161,7 @@ class LevelDecor(models.Model):
 
 class Workspace(models.Model):
     name = models.CharField(max_length=200)
-    owner = models.ForeignKey(UserProfile, related_name='workspaces', blank=True, null=True)
+    owner = models.ForeignKey(User, related_name='workspaces', blank=True, null=True)
     contents = models.TextField(default="")
     python_contents = models.TextField(default="")
     blockly_enabled = models.BooleanField(default=False)
@@ -175,7 +173,7 @@ class Workspace(models.Model):
 class Attempt(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     level = models.ForeignKey(Level, related_name='attempts')
-    student = models.ForeignKey(Student, related_name='attempts', blank=True, null=True)
+    user = models.ForeignKey(User, related_name='attempts', blank=True, null=True)
     finish_time = models.DateTimeField(null=True, blank=True)
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")
