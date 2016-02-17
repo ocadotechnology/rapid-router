@@ -154,13 +154,13 @@ def play_level(request, level, from_editor=False):
     workspace = None
     python_workspace = None
     if not request.user.is_anonymous() and hasattr(request.user.userprofile, 'student'):
-        student = request.user.userprofile.student
+        user = request.user
         attempt = Attempt.objects \
-            .filter(level=level, student=student, finish_time__isnull=True, night_mode=night_mode) \
+            .filter(level=level, user=user, finish_time__isnull=True, night_mode=night_mode) \
             .order_by('-start_time') \
             .first()
         if not attempt:
-            attempt = Attempt(level=level, student=student, score=None, night_mode=night_mode)
+            attempt = Attempt(level=level, user=user, score=None, night_mode=night_mode)
             fetch_workspace_from_last_attempt(attempt)
             attempt.save()
         else:
@@ -217,7 +217,7 @@ def play_level(request, level, from_editor=False):
 
 def fetch_workspace_from_last_attempt(attempt):
     latest_attempt = Attempt.objects \
-        .filter(level=attempt.level, student=attempt.student, night_mode=attempt.night_mode) \
+        .filter(level=attempt.level, user=attempt.user, night_mode=attempt.night_mode) \
         .order_by('-start_time') \
         .first()
     if latest_attempt:
@@ -240,8 +240,8 @@ def submit_attempt(request):
     if (not request.user.is_anonymous() and request.method == 'POST' and
             hasattr(request.user.userprofile, "student")):
         level = get_object_or_404(Level, id=request.POST.get('level', 1))
-        student = request.user.userprofile.student
-        attempt = Attempt.objects.filter(level=level, student=student, finish_time__isnull=True).first()
+        user = request.user
+        attempt = Attempt.objects.filter(level=level, user=user, finish_time__isnull=True).first()
         if attempt:
             attempt.score = float(request.POST.get('score'))
             attempt.workspace = request.POST.get('workspace')
@@ -256,7 +256,7 @@ def submit_attempt(request):
 
 def record_best_attempt(attempt):
     best_attempt = Attempt.objects \
-        .filter(level=attempt.level, student=attempt.student, night_mode=attempt.night_mode, is_best_attempt=True) \
+        .filter(level=attempt.level, user=attempt.user, night_mode=attempt.night_mode, is_best_attempt=True) \
         .first()
     if best_attempt and (best_attempt.score <= attempt.score):
         best_attempt.is_best_attempt = False
@@ -270,7 +270,7 @@ def close_and_reset(attempt):
     attempt.finish_time = timezone.now()
     attempt.save()
     new_attempt = Attempt(level=attempt.level,
-                          student=attempt.student,
+                          user=attempt.user,
                           score=None,
                           night_mode=attempt.night_mode,
                           workspace=attempt.workspace,
