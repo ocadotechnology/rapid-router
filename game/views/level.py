@@ -48,7 +48,8 @@ import game.level_management as level_management
 import game.messages as messages
 import game.permissions as permissions
 from game import app_settings
-from game.cache import cached_default_level, cached_episode, cached_custom_level
+from game.cache import cached_default_level, cached_episode, \
+        cached_custom_level, cached_level_decor
 from game.models import Level, Attempt, Workspace
 from helper import renderError, getDecorElement
 
@@ -169,7 +170,7 @@ def play_level(request, level, from_editor=False):
         workspace = attempt.workspace
         python_workspace = attempt.python_workspace
 
-    decorData = level_management.get_decor(level)
+    decorData = cached_level_decor(level)
 
     character_url = character.top_down
     character_width = character.width

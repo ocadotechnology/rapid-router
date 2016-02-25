@@ -38,10 +38,12 @@ from django.core.cache import cache
 from django.db.models.signals import post_save, post_delete
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
-from models import Level, Episode, Theme, Character
+from models import Level, Episode, Theme, Character, LevelDecor
+from level_management import get_decor
 
 LEVEL_PREFIX = "model_level"
 EPISODE_PREFIX = "model_episode"
+LEVEL_DECOR_PREFIX = "level_decor"
 
 
 def get_level(level):
@@ -60,6 +62,12 @@ def get_episode(episode):
 @receiver(post_delete, sender=Level)
 def clear_level_cache(sender, instance, **kwargs):
     cache.delete(LEVEL_PREFIX + str(instance.id))
+
+
+@receiver(post_save, sender=LevelDecor)
+@receiver(post_delete, sender=LevelDecor)
+def clear_level_decor_cache(sender, instance, **kwargs):
+    cache.delete(LEVEL_DECOR_PREFIX + str(instance.level.id))
 
 
 def cache_or_func(key, func):
@@ -85,4 +93,10 @@ def cached_custom_level(level_id):
 def cached_episode(episode):
     key = EPISODE_PREFIX + episode
     func = lambda: get_episode(episode)
+    return cache_or_func(key, func)
+
+
+def cached_level_decor(level):
+    key = LEVEL_DECOR_PREFIX + str(level.id)
+    func = lambda: get_decor(level)
     return cache_or_func(key, func)

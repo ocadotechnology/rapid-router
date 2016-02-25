@@ -55,6 +55,7 @@ from game.models import Level, Block, Decor, Theme, Character
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
 from game import app_settings
+from game.cache import cached_level_decor
 
 
 def level_editor(request):
@@ -115,7 +116,7 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
     character_height = character.height
     wreckage_url = 'van_wreckage.svg'
 
-    decor_data = level_management.get_decor(level)
+    decor_data = cached_level_decor(level)
 
     if night_mode:
         block_data = level_management.get_night_blocks(level)
@@ -203,7 +204,7 @@ def load_level_for_editor(request, levelID):
         return HttpResponseUnauthorized()
 
     level_dict = model_to_dict(level)
-    level_dict['decor'] = level_management.get_decor(level)
+    level_dict['decor'] = cached_level_decor(level)
     level_dict['blocks'] = level_management.get_blocks(level)
 
     response = {'owned': level.owner == request.user.userprofile, 'level': level_dict}
