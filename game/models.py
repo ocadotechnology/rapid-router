@@ -143,7 +143,7 @@ class Level(models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     pythonViewEnabled = models.BooleanField(default=False)
-    theme_old = models.ForeignKey(Theme, blank=True, null=True, default=None, db_column='theme')
+    theme_old = models.ForeignKey(Theme, blank=True, null=True, default=None, db_column='theme_id')
     theme_name = models.CharField(max_length=10, choices=theme_choices(), blank=True, null=True, default=None)
     character = models.ForeignKey(Character, default=1)
     anonymous = models.BooleanField(default=False)
@@ -154,6 +154,11 @@ class Level(models.Model):
 
     @property
     def theme(self):
+        if not self.theme_name:
+            if self.theme_old:
+                self.theme_name = self.theme_old.name
+            else:
+                return None
         from game.theme import get_theme
         return get_theme(self.theme_name)
 
