@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='level',
             name='theme',
-            field=models.ForeignKey(db_column=b'theme', default=None, blank=True, to='game.Theme', null=True),
+            field=models.ForeignKey(db_column=b'theme_id', default=None, blank=True, to='game.Theme', null=True),
         ),
     ]
