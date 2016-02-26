@@ -44,7 +44,7 @@ from game.models import Theme as OldTheme
 
 class Theme(object):
     def __init__(self, pk, name, background, border, selected):
-        self.pk = pk
+        self.id = self.pk = pk
         self.name = name
         self.background = background
         self.border = border
