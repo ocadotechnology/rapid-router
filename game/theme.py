@@ -34,55 +34,45 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from django.core.cache import cache
-from django.db.models.signals import post_save, post_delete
-from django.shortcuts import get_object_or_404
-from django.dispatch import receiver
-from models import Level, Episode, Character
 
-LEVEL_PREFIX = "model_level"
-EPISODE_PREFIX = "model_episode"
+'''
+    Theme data
+'''
+
+from game.models import Theme as OldTheme
 
 
-def get_level(level):
-    return get_object_or_404(Level, name=level, default=True)
+class Theme(object):
+    def __init__(self, pk, name, background, border, selected):
+        self.pk = pk
+        self.name = name
+        self.background = background
+        self.border = border
+        self.selected = selected
 
 
-def get_custom_level(level):
-    return get_object_or_404(Level, id=level)
+THEME_DATA = {
+    'grass': Theme(name=u'grass', selected=u'#bce369', background=u'#a0c53a', border=u'#70961f', pk=1),
+    'snow': Theme(name=u'snow', selected=u'#b3deff', background=u'#eef7ff', border=u'#83c9fe', pk=2),
+    'farm': Theme(name=u'farm', selected=u'#bce369', background=u'#a0c53a', border=u'#70961f', pk=3),
+    'city': Theme(name=u'city', selected=u'#C1C1C1', background=u'#969696', border=u'#686868', pk=4),
+}
 
 
-def get_episode(episode):
-    return get_object_or_404(Episode, id=episode)
+def get_theme(name):
+    """ Helper method to get a theme."""
+    try:
+        return THEME_DATA[name]
+    except KeyError:
+        return OldTheme.DoesNotExist
 
 
-@receiver(post_save, sender=Level)
-@receiver(post_delete, sender=Level)
-def clear_level_cache(sender, instance, **kwargs):
-    cache.delete(LEVEL_PREFIX + str(instance.id))
+def get_all_themes():
+    return THEME_DATA.values()
 
 
-def cache_or_func(key, func):
-    result = cache.get(key)
-    if result is None:
-        result = func()
-        cache.set(key, result)
-    return result
-
-
-def cached_default_level(name):
-    key = LEVEL_PREFIX + str(name)
-    func = lambda: get_level(name)
-    return cache_or_func(key, func)
-
-
-def cached_custom_level(level_id):
-    key = LEVEL_PREFIX + str(level_id)
-    func = lambda: get_custom_level(level_id)
-    return cache_or_func(key, func)
-
-
-def cached_episode(episode):
-    key = EPISODE_PREFIX + episode
-    func = lambda: get_episode(episode)
-    return cache_or_func(key, func)
+def get_theme_by_pk(pk):
+    for theme in THEME_DATA.values():
+        if theme.pk == pk:
+            return theme
+    raise OldTheme.DoesNotExist

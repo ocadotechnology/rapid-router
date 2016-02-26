@@ -42,7 +42,7 @@ from rest_framework.test import APITestCase
 from hamcrest import *
 from hamcrest.core.base_matcher import BaseMatcher
 
-from game.models import Decor
+from game.decor import get_all_decor
 
 
 class APITests(APITestCase):
@@ -50,7 +50,7 @@ class APITests(APITestCase):
         url = reverse('decor-list')
         response = self.client.get(url)
         assert_that(response, has_status_code(status.HTTP_200_OK))
-        assert_that(response.data, has_length(len(Decor.objects.all())))
+        assert_that(response.data, has_length(len(get_all_decor())))
 
     def test_known_decor_detail(self):
         decor_id = 1

@@ -41,7 +41,6 @@ import os
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
 from django.template import RequestContext
-from game.models import Decor
 
 
 def renderError(request, title, message):
@@ -64,11 +63,3 @@ def renderError(request, title, message):
         'message': message
     })
     return render(request, 'game/error.html', context_instance=context)
-
-
-def getDecorElement(name, theme):
-    """ Helper method to get a decor element corresponding to the theme or a default one."""
-    try:
-        return Decor.objects.get(name=name, theme=theme)
-    except ObjectDoesNotExist:
-        return Decor.objects.filter(name=name)[0]

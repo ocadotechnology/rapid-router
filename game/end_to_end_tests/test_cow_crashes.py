@@ -35,7 +35,9 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from game.end_to_end_tests.base_game_test import BaseGameTest
-from game.models import Level, Theme, Character, Block, LevelBlock
+from game.models import Level, Character, Block, LevelBlock
+
+from game.theme import get_theme
 
 
 class TestCowCrashes(BaseGameTest):
@@ -74,7 +76,7 @@ class TestCowCrashes(BaseGameTest):
     @classmethod
     def setUpClass(cls):
         BaseGameTest.setUpClass()
-        grass = Theme.objects.get(name='grass')
+        grass = get_theme(name='grass')
 
         van = Character.objects.get(name='Van')
 
