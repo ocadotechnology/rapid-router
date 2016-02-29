@@ -89,7 +89,7 @@ DECOR_DATA = {
 def get_decor_element(name, theme):
     """ Helper method to get a decor element corresponding to the theme or a default one."""
     try:
-        return DECOR_DATA[(name, theme)]
+        return DECOR_DATA[(name, theme.name)]
     except KeyError:
         for theme_object in get_all_themes():
             try:

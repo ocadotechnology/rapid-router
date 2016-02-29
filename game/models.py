@@ -163,7 +163,7 @@ class Level(models.Model):
         return get_theme(self.theme_name)
 
     @theme.setter
-    def theme_setter(self, val):
+    def theme(self, val):
         self.theme_old = Theme.objects.get(pk=val.pk)
         self.theme_name = self.theme_old.name
 
