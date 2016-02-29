@@ -204,6 +204,7 @@ def load_level_for_editor(request, levelID):
         return HttpResponseUnauthorized()
 
     level_dict = model_to_dict(level)
+    level_dict['theme'] = level.theme.id
     level_dict['decor'] = level_management.get_decor(level)
     level_dict['blocks'] = level_management.get_blocks(level)
 
