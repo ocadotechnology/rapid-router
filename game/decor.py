@@ -83,6 +83,10 @@ DECOR_DATA = {
     (u'tree1', u'city'): Decor(z_index=4, name=u'tree1', url=u'decor/city/shop.svg', height=70, width=70, theme=get_theme('city'), pk=26),
     (u'tree2', u'city'): Decor(z_index=4, name=u'tree2', url=u'decor/city/school.svg', height=100, width=100, theme=get_theme('city'), pk=27),
     (u'pond', u'city'): Decor(z_index=2, name=u'pond', url=u'decor/city/hospital.svg', height=157, width=140, theme=get_theme('city'), pk=28),
+    (u'cfc', u'city'): Decor(z_index=1, name=u'cfc', url=u'decor/grass/cfc.svg', height=107, width=100, theme=get_theme('city'), pk=29),
+    (u'tile2', u'grass'): Decor(z_index=0, name=u'tile2', url=u'decor/snow/tile2.svg', height=100, width=100, theme=get_theme('grass'), pk=30),
+    (u'tile2', u'farm'): Decor(z_index=0, name=u'tile2', url=u'decor/snow/tile2.svg', height=100, width=100, theme=get_theme('farm'), pk=31),
+    (u'tile2', u'city'): Decor(z_index=0, name=u'tile2', url=u'decor/snow/tile2.svg', height=100, width=100, theme=get_theme('city'), pk=32),
 }
 
 
