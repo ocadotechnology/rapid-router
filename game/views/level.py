@@ -48,7 +48,8 @@ import game.level_management as level_management
 import game.messages as messages
 import game.permissions as permissions
 from game import app_settings
-from game.cache import cached_default_level, cached_episode, cached_custom_level
+from game.cache import cached_default_level, cached_episode, \
+        cached_custom_level, cached_level_decor, cached_level_blocks
 from game.models import Level, Attempt, Workspace
 from helper import renderError
 from game.decor import get_decor_element
@@ -170,7 +171,7 @@ def play_level(request, level, from_editor=False):
         workspace = attempt.workspace
         python_workspace = attempt.python_workspace
 
-    decorData = level_management.get_decor(level)
+    decor_data = cached_level_decor(level)
 
     character_url = character.top_down
     character_width = character.width
@@ -183,7 +184,7 @@ def play_level(request, level, from_editor=False):
         lesson = messages.title_night_mode()
         model_solution = '[]'
     else:
-        block_data = level_management.get_blocks(level)
+        block_data = cached_level_blocks(level)
         night_mode_javascript = "false"
         model_solution = level.model_solution
 
@@ -193,7 +194,7 @@ def play_level(request, level, from_editor=False):
         'level': level,
         'lesson': lesson,
         'blocks': block_data,
-        'decor': decorData,
+        'decor': decor_data,
         'character': character,
         'background': background,
         'house': house,
