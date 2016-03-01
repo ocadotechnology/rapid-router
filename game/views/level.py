@@ -49,7 +49,7 @@ import game.messages as messages
 import game.permissions as permissions
 from game import app_settings
 from game.cache import cached_default_level, cached_episode, \
-        cached_custom_level, cached_level_decor
+        cached_custom_level, cached_level_decor, cached_level_blocks
 from game.models import Level, Attempt, Workspace
 from helper import renderError
 from game.decor import get_decor_element
@@ -184,7 +184,7 @@ def play_level(request, level, from_editor=False):
         lesson = messages.title_night_mode()
         model_solution = '[]'
     else:
-        block_data = level_management.get_blocks(level)
+        block_data = cached_level_blocks(level)
         night_mode_javascript = "false"
         model_solution = level.model_solution
 

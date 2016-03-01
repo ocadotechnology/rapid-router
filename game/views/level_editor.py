@@ -55,7 +55,7 @@ from game.models import Level, Block, Character
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
 from game import app_settings
-from game.cache import cached_level_decor
+from game.cache import cached_level_decor, cached_level_blocks
 from game.theme import get_all_themes
 
 
@@ -125,7 +125,7 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
         lesson = messages.title_night_mode()
         model_solution = '[]'
     else:
-        block_data = level_management.get_blocks(level)
+        block_data = cached_level_blocks(level)
         night_mode = "false"
         model_solution = level.model_solution
 
@@ -207,7 +207,7 @@ def load_level_for_editor(request, levelID):
     level_dict = model_to_dict(level)
     level_dict['theme'] = level.theme.id
     level_dict['decor'] = cached_level_decor(level)
-    level_dict['blocks'] = level_management.get_blocks(level)
+    level_dict['blocks'] = cached_level_blocks(level)
 
     response = {'owned': level.owner == request.user.userprofile, 'level': level_dict}
 
