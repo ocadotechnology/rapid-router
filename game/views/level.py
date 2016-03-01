@@ -171,7 +171,7 @@ def play_level(request, level, from_editor=False):
         workspace = attempt.workspace
         python_workspace = attempt.python_workspace
 
-    decorData = cached_level_decor(level)
+    decor_data = cached_level_decor(level)
 
     character_url = character.top_down
     character_width = character.width
@@ -194,7 +194,7 @@ def play_level(request, level, from_editor=False):
         'level': level,
         'lesson': lesson,
         'blocks': block_data,
-        'decor': decorData,
+        'decor': decor_data,
         'character': character,
         'background': background,
         'house': house,
