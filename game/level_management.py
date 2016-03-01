@@ -37,7 +37,10 @@
 from itertools import chain
 
 import permissions
-from models import Block, LevelBlock, LevelDecor, Decor, Theme, Character
+from models import Block, LevelBlock, LevelDecor, Character
+
+from game.decor import get_decor_element
+from game.theme import get_theme_by_pk
 
 
 ##########
@@ -77,7 +80,7 @@ def get_decor(level):
     """ Helper method parsing decor into a dictionary format 'sendable' to javascript. """
     decorData = []
     for ld in LevelDecor.objects.filter(level=level):
-        decor = Decor.objects.get(name=ld.decorName, theme=level.theme)
+        decor = get_decor_element(name=ld.decorName, theme=level.theme)
         decorData.append({
             'x': int(ld.x),
             'y': int(ld.y),
@@ -167,7 +170,7 @@ def save_level(level, data):
     level.blocklyEnabled = data.get('blocklyEnabled', True)
     level.pythonEnabled = data.get('pythonEnabled', False)
     level.pythonViewEnabled = data.get('pythonViewEnabled', False)
-    level.theme = Theme.objects.get(id=data['theme'])
+    level.theme = get_theme_by_pk(pk=data['theme'])
     level.character = Character.objects.get(id=data['character'])
     level.save()
 

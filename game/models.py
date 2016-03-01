@@ -39,6 +39,10 @@ from django.db import models
 
 from portal.models import UserProfile, Student
 
+def theme_choices():
+    from game.theme import get_all_themes
+    return [(theme.name, theme.name) for theme in get_all_themes()]
+
 
 class Block(models.Model):
     type = models.CharField(max_length=200)
@@ -139,13 +143,29 @@ class Level(models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     pythonViewEnabled = models.BooleanField(default=False)
-    theme = models.ForeignKey(Theme, blank=True, null=True, default=None)
+    theme_old = models.ForeignKey(Theme, blank=True, null=True, default=None, db_column='theme_id')
+    theme_name = models.CharField(max_length=10, choices=theme_choices(), blank=True, null=True, default=None)
     character = models.ForeignKey(Character, default=1)
     anonymous = models.BooleanField(default=False)
     objects = LevelManager()
 
     def __unicode__(self):
         return 'Level ' + str(self.name)
+
+    @property
+    def theme(self):
+        if not self.theme_name:
+            if self.theme_old:
+                self.theme_name = self.theme_old.name
+            else:
+                return None
+        from game.theme import get_theme
+        return get_theme(self.theme_name)
+
+    @theme.setter
+    def theme(self, val):
+        self.theme_old = Theme.objects.get(pk=val.pk)
+        self.theme_name = self.theme_old.name
 
 
 class LevelBlock(models.Model):
@@ -185,4 +205,3 @@ class Attempt(models.Model):
 
     def elapsed_time(self):
         return self.finish_time - self.start_time
-

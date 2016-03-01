@@ -50,12 +50,13 @@ import game.messages as messages
 import game.level_management as level_management
 import game.permissions as permissions
 from game import random_road
-from helper import getDecorElement
-from game.models import Level, Block, Decor, Theme, Character
+from game.decor import get_all_decor, get_decor_element
+from game.models import Level, Block, Character
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
 from game import app_settings
 from game.cache import cached_level_decor
+from game.theme import get_all_themes
 
 
 def level_editor(request):
@@ -74,9 +75,9 @@ def level_editor(request):
 
     context = RequestContext(request, {
         'blocks': available_blocks(),
-        'decor': Decor.objects.all(),
+        'decor': get_all_decor(),
         'characters': Character.objects.all(),
-        'themes': Theme.objects.all(),
+        'themes': get_all_themes(),
         'cow_level_enabled': app_settings.COW_FEATURE_ENABLED,
         'night_mode_feature_enabled': str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
     })
@@ -106,9 +107,9 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
     hint = mark_safe(messages.hint_level_default())
 
     attempt = None
-    house = getDecorElement('house', level.theme).url
-    cfc = getDecorElement('cfc', level.theme).url
-    background = getDecorElement('tile1', level.theme).url
+    house = get_decor_element('house', level.theme).url
+    cfc = get_decor_element('cfc', level.theme).url
+    background = get_decor_element('tile1', level.theme).url
     character = level.character
 
     character_url = character.top_down
@@ -204,6 +205,7 @@ def load_level_for_editor(request, levelID):
         return HttpResponseUnauthorized()
 
     level_dict = model_to_dict(level)
+    level_dict['theme'] = level.theme.id
     level_dict['decor'] = cached_level_decor(level)
     level_dict['blocks'] = level_management.get_blocks(level)
 
