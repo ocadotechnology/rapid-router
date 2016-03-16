@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/ocadotechnology/rapid-router/badge.svg?branch=master&service=github)](https://coveralls.io/github/ocadotechnology/rapid-router?branch=master)
 [![Code Climate](https://codeclimate.com/github/ocadotechnology/rapid-router/badges/gpa.svg)](https://codeclimate.com/github/ocadotechnology/rapid-router)
 
-Rapid Router is a 'Coding For Life' project, aimed at teaching children programming concepts through a vehicle routing
+Rapid Router is a 'Code For Life' project, aimed at teaching children programming concepts through a vehicle routing
 game.
 
 ## To use the app
