@@ -36,6 +36,7 @@ install:
   - pip install -e .
   - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
   - pip install coveralls
+  - pip install crowdin-cli-py
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
@@ -44,6 +45,16 @@ script:
   - python setup.py test
 after_success:
   - coveralls
+  - pwd
+  - mkdir -p game/locale/en-PT
+  - cd game && django-admin makemessages -l en-PT && cd -
+  - crowdin-cli-py -c ./crowdin.yaml upload sources
+  - for TRANSLATION_FILE in $(crowdin-cli-py -c ./crowdin.yaml list translations); do mkdir -p game/`dirname $TRANSLATION_FILE`; done
+  - crowdin-cli-py -c ./crowdin.yaml download
+  - cd game && django-admin compilemessages
+  - pwd
+  - ls -l ./locale
+
 git:
   depth: 9999999 # Building untagged builds needs enough depth to get the latest tag
 deploy:

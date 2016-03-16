@@ -4,6 +4,14 @@
 
 {% block title %}Code for Life - Rapid Router{% endblock %}
 
+{% block head %}
+  <script type="text/javascript">
+    var _jipt = [];
+    _jipt.push(['project', 'code-for-life']);
+  </script>
+  <script type="text/javascript" src="//cdn.crowdin.com/jipt/jipt.js"></script>
+{% endblock head %}
+
 {% block nav_teach %}
 {% if user|is_logged_in_as_teacher %}
   <b>[ <a href="{% url 'teach' %}">TEACH</a> ]</b>
