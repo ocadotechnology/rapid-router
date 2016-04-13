@@ -5,11 +5,7 @@
 {% block title %}Code for Life - Rapid Router{% endblock %}
 
 {% block head %}
-  <script type="text/javascript">
-    var _jipt = [];
-    _jipt.push(['project', 'code-for-life']);
-  </script>
-  <script type="text/javascript" src="//cdn.crowdin.com/jipt/jipt.js"></script>
+  {% include 'game/crowdin.html' %}
 {% endblock head %}
 
 {% block nav_teach %}

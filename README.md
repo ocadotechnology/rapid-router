@@ -22,6 +22,10 @@ Go to the official [Code For Life website][c4l].
     * collect the static files
     * run the server
 
+## Localisation
+* You will need your crowdin api key locally in the `CROWDIN_API_KEY` environment variable, e.g. `export CROWDIN_API_KEY=<key>`. This can be obtained from [the settings page](https://crowdin.com/project/code-for-life/settings#integration)
+* Set your `django_language` cookie to `en-pt` to enable in-context localisation
+
 ## To contribute
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
 [add it][add-issue]. Please make sure that you give us a suitable level of detail about the symptoms and how to
