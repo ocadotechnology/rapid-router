@@ -2089,6 +2089,7 @@ ocargo.LevelEditor = function() {
                 for (var i = 0; i < sourceNode.connectedNodes.length; i++) {
                     if (sourceNode.connectedNodes[i] === controlledNode) {
                         connected = true;
+                        break;
                     }
                 }
             }
