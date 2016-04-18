@@ -31,7 +31,7 @@ matrix:
       env: SELENIUM_WEBDRIVER=default
   fast_finish: true
 before_install:
-  - gem install sass
+  - gem install sass -v 3.3.4
 install:
   - pip install -e .
   - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
