@@ -61,5 +61,6 @@ deploy:
   distributions: "bdist_wheel sdist"
   on:
     repo: ocadotechnology/rapid-router
+  skip_cleanup: true
 after_deploy:
   - "curl -u ${SNAP_API_AUTH} -X POST -H 'Accept: application/vnd.snap-ci.com.v1+json' -H 'Content-type: application/json' https://api.snap-ci.com/project/ocadotechnology/codeforlife-deploy-appengine/branch/master/trigger"
