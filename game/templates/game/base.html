@@ -4,6 +4,10 @@
 
 {% block title %}Code for Life - Rapid Router{% endblock %}
 
+{% block head %}
+  {% include 'game/crowdin.html' %}
+{% endblock head %}
+
 {% block nav_teach %}
 {% if user|is_logged_in_as_teacher %}
   <b>[ <a href="{% url 'teach' %}">TEACH</a> ]</b>

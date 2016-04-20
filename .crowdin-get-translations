@@ -1,0 +1,4 @@
+#!/bin/bash
+for TRANSLATION_FILE in $(crowdin-cli-py list translations); do mkdir -p `dirname $TRANSLATION_FILE`; done
+crowdin-cli-py download
+cd game && django-admin compilemessages && cd -

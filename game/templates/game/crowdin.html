@@ -1,0 +1,9 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% if LANGUAGE_CODE == 'en-pt' %}
+  <script type="text/javascript">
+    var _jipt = [];
+    _jipt.push(['project', 'code-for-life']);
+  </script>
+  <script type="text/javascript" src="//cdn.crowdin.com/jipt/jipt.js"></script>
+{% endif %}

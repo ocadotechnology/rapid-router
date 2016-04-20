@@ -1,10 +1,13 @@
 *.log
+*.po
+*.mo
 *.pyc
 local_settings.py
 /static/
 /env/
 *.iml
 *~
+*.egg-info
 
 .settings
 .project

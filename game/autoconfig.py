@@ -72,6 +72,9 @@ SETTINGS = {
         'bourbon',
         'rest_framework',
     ],
+    'LANGUAGES': [
+        ('en-pt', 'Localisation'),
+    ],
     'PIPELINE_SASS_ARGUMENTS': '--quiet',
     'STATICFILES_FINDERS': [
         'pipeline.finders.PipelineFinder',
