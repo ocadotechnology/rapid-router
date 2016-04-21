@@ -50,7 +50,7 @@ after_success:
   - coveralls
 before_deploy:
   - mkdir -p game/locale
-  - cd game && django-admin makemessages -l en_GB && cd -
+  - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
   - crowdin-cli-py upload sources
   - ./.crowdin-get-translations
 deploy:
