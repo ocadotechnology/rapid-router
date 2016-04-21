@@ -10,7 +10,7 @@ pip install 'codeforlife-portal >= 1.0.0.post.dev1' # TODO: Remove this requirem
 pip install 'crowdin-cli-py'
 cd game
 mkdir -p locale
-django-admin makemessages -l en_GB
+django-admin makemessages -l en_GB --no-wrap
 cd -
 ./.crowdin-get-translations
 
