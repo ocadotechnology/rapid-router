@@ -930,7 +930,7 @@ def hint_level41():
                        + "If you make the van check for turns before it checks the road exists "
                        + "forwards, you will come up with the perfect solution. <br><br>"
                        + "Notice that here it doesn't matter which turn you check for first - it "
-                       + "will change the the route but provide you with the same score. ")
+                       + "will change the route but provide you with the same score. ")
     return message
 
 
@@ -1755,7 +1755,7 @@ def title_level102():
     return ugettext("Watch for the patterns")
 
 def description_level102():
-    message = ugettext("For this level try defining more than one function. Try to look look for a repeating pattern to simplify your program.")
+    message = ugettext("For this level try defining more than one function. Try to look for a repeating pattern to simplify your program.")
     return build_description(title_level102(), message)
 
 def hint_level102():

@@ -54,7 +54,7 @@ Multiple_Levels_Header = ['Class', 'Name', 'Total Score', 'Total Time', 'Progres
 
 
 def scoreboard(request):
-    """ Renders a page with students' scores. A teacher can see the the visible classes in their
+    """ Renders a page with students' scores. A teacher can see the visible classes in their
         school. Student's view is restricted to their class if their teacher enabled the
         scoreboard for said class.
     """
