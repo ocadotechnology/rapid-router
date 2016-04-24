@@ -1,6 +1,7 @@
 {% extends 'game/base.html' %}
 
 {% load static %}
+{% load i18n %}
 {% load app_tags %}
 
 {% block scripts %}
@@ -53,7 +54,9 @@
         <h3 id='episode{{episode.id}}'>
           <div>
             {{episode.name}}
-            <span class="episode_range_text">Levels {{episode.first_level}}-{{episode.last_level}}</span>
+            <span class="episode_range_text">
+              {% blocktrans with first_level=episode.first_level last_level=episode.last_level %}Levels {{first_level}}-{{last_level}}{% endblocktrans %}
+            </span>
             <img class="episode_image coin_image" value="{{episode.id}}">
           <div>
         </h3>
@@ -70,14 +73,17 @@
           {% endfor %}
 
           {% if episode.random_levels_enabled %}
-          <p><a href="{% url 'game.views.level_selection.random_level_for_episode' episode.id %}">
-            Random: Try your hand at a random level.</a></p>
+          <p>
+            <a href="{% url 'game.views.level_selection.random_level_for_episode' episode.id %}">
+            {% trans "Random: Try your hand at a random level." %}
+            </a>
+          </p>
           {% endif %}
         </div>
         {% endfor %}
 
         {% if user|is_logged_in %}
-          <h3 class='customLevelsEpisode'>Levels created by you</h3>
+          <h3 class='customLevelsEpisode'>{% trans "Levels created by you" %}</h3>
           <div>
             {% if owned_levels %}
               {% for level in owned_levels %}
@@ -90,11 +96,11 @@
                 </p>
               {% endfor %}
             {% else %}
-              <p>No levels have been created by you yet.</p>
+              <p>{% trans "No levels have been created by you yet." %}</p>
             {% endif %}
           </div>
 
-          <h3 class='customLevelsEpisode'>Levels shared with you</h3>
+          <h3 class='customLevelsEpisode'>{% trans "Levels shared with you" %}</h3>
           <div>
             {% if shared_levels %}
               {% for level in shared_levels %}
@@ -108,7 +114,7 @@
                 </p>
               {% endfor %}
             {% else %}
-              <p>No levels have been shared with you yet.</p>
+              <p>{% trans "No levels have been shared with you yet." %}</p>
             {% endif %}
           </div>
         {% endif %}
