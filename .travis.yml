@@ -45,6 +45,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
 script:
+  - xgettext -V
   - mkdir -p game/locale
   - ls -lR game/locale/
   - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
