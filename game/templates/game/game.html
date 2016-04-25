@@ -137,14 +137,14 @@
       <input type="radio" name="tabs" id="blockly_radio" checked>
       <label for="blockly_radio">
         <img src="{% static "game/image/icons/blockly.svg" %}">
-        <span>Blockly</span>
+        <span>{% trans "Blockly" %}</span>
       </label>
     </div>
     <div id="python_tab" class="tab selectable {% if level.pythonEnabled %}{% else %}hidden{% endif %}">
       <input type="radio" name="tabs" id="python_radio">
       <label for="python_radio">
         <img src='{% static "game/image/icons/python.svg" %}'>
-        <span>Python</span>
+        <span>{% trans "Python" %}</span>
       </label>
     </div>
 
@@ -152,7 +152,7 @@
       <input type="radio" name="tabs" id="clear_program_radio">
       <label for="clear_program_radio">
         <img src='{% static "game/image/icons/clear.svg" %}'>
-        <span>Clear</span>
+        <span>{% trans "Clear" %}</span>
       </label>
     </div>
 
@@ -162,7 +162,7 @@
       <input type="radio" name="tabs" id="play_radio">
       <label for="play_radio">
         <img src='{% static "game/image/icons/play.svg" %}'>
-        <span>Play</span>
+        <span>{% trans "Play" %}</span>
         {% csrf_token %}
       </label>
     </div>
@@ -171,7 +171,7 @@
       <input type="radio" name="tabs" id="fast_radio">
       <label for="fast_radio">
           <img src='{% static "game/image/icons/fast.svg" %}'>
-          <span>Fast</span>
+          <span>{% trans "Fast" %}</span>
       </label>
     </div>
 
@@ -179,7 +179,7 @@
       <input type="radio" name="tabs" id="stop_radio">
       <label for="stop_radio">
         <img src='{% static "game/image/icons/stop.svg" %}'>
-        <span>Stop</span>
+        <span>{% trans "Stop" %}</span>
       </label>
     </div>
 
@@ -187,7 +187,7 @@
       <input type="radio" name="tabs" id="step_radio">
       <label for="step_radio">
         <img src='{% static "game/image/icons/step.svg" %}'>
-        <span>Step</span>
+        <span>{% trans "Step" %}</span>
       </label>
     </div>
 
@@ -197,7 +197,7 @@
       <input type="radio" name="tabs" id="load_radio">
       <label for="load_radio">
         <img src='{% static "game/image/icons/load.svg" %}'>
-        <span>Load</span>
+        <span>{% trans "Load" %}</span>
       </label>
     </div>
 
@@ -205,7 +205,7 @@
       <input type="radio" name="tabs" id="save_radio">
       <label for="save_radio">
         <img src='{% static "game/image/icons/save.svg" %}'>
-        <span>Save</span>
+        <span>{% trans "Save" %}</span>
       </label>
     </div>
 
@@ -223,7 +223,7 @@
       <input type="radio" name="tabs" id="help_radio">
       <label for="help_radio">
         <img src='{% static "game/image/icons/help.svg" %}'>
-        <span>Help</span>
+        <span>{% trans "Help" %}</span>
       </label>
     </div>
 
@@ -239,7 +239,7 @@
       <input type="radio" name="tabs" id="mute_radio">
       <label for="mute_radio">
         <img id="mute_img" src='{% static "game/image/icons/muted.svg" %}'>
-        <span id="mute_text">Mute</span>
+        <span id="mute_text">{% trans "Mute" %}</span>
       </label>
     </div>
 
@@ -248,10 +248,10 @@
       <label for="nightmode_radio">
           {% if night_mode == "true" %}
         <img src='/static/game/image/icons/day.svg'>
-        <span>Day</span>
+        <span>{% trans "Day" %}</span>
           {% else %}
           <img src='/static/game/image/icons/night.svg'>
-        <span>Night</span>
+        <span>{% trans "Night" %}</span>
           {% endif %}
       </label>
     </div>
@@ -260,7 +260,7 @@
       <input type="radio" name="tabs" id="quit_radio">
       <label for="quit_radio">
         <img src='{% static "game/image/icons/quit.svg" %}'>
-        <span>Quit</span>
+        <span>{% trans "Quit" %}</span>
       </label>
     </div>
 
@@ -280,26 +280,26 @@
         <div id="blockly_holder" style='width: calc(100% + 55px); margin-left: -55px; {% if level.pythonViewEnabled %} height: 50%{% endif %}'></div>
 
         <div {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
-          <p>This is what your program would look like in Python:</p>
+          <p>{% trans "This is what your program would look like in Python:" %}</p>
           <textarea id="pythonView" cols="85" rows="25"></textarea>
         </div>
       </div>
 
       <div id="python_pane" class="tab_pane">
         <div id="pythonCode" {% if not level.pythonEnabled %} style="visibility: hidden" {% endif %}>
-          <h3>Python Program
+          <h3>{% trans "Python Program" %}
             {% if level.blocklyEnabled %}
             <button class="navigation_button long_button" id="convert_from_blockly">
-              <span>Convert from Blockly</span>
+              <span>{% trans "Convert from Blockly" %}</span>
             </button>
             {% endif %}
           </h3>
             <div id="editor">
               <div>
-                <div id="pythonIntro">Use the Python editor below to design your program, and then click play to try it out!</div>
+                <div id="pythonIntro">{% trans "Use the Python editor below to design your program, and then click play to try it out!" %}</div>
                 <button class="navigation_button long_button" id="van_commands_help">
                   <img src="{% static "game/image/icons/python.svg" %}">
-                  <span>Commands</span>
+                  <span>{% trans "Commands" %}</span>
                 </button>
               </div>
               <textarea id="code" cols="85" rows="25"></textarea>
@@ -307,10 +307,10 @@
 
             <div id="console">
               <h4 style="height:50px; line-height: 50px;">
-                Console Output
+                {% trans "Console Output" %}
                 <button class="navigation_button long_button" id="clear_console">
                   <img src="{% static "game/image/icons/clear.svg" %}">
-                  <span>Clear console</span>
+                  <span>{% trans "Clear console" %}</span>
                 </button>
               </h4>
               <textarea disabled="" id="consoleOutput"></textarea>
@@ -320,16 +320,16 @@
 
       <div id="load_pane" class="tab_pane">
         <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/load.svg" %}'>Load</h2>
-          <p>Here you can load a program you've previously saved!</p>
+          <p>{% trans "Here you can load a program you've previously saved!" %}</p>
           <div style="width:auto">
             <div id="does_not_exist">
-              <p> You don't have any programs to load yet. Try saving one! </p>
+              <p> {% trans "You don't have any programs to load yet. Try saving one!" %} </p>
             </div>
             <div class="scrolling-table-wrapper">
               <table id="loadWorkspaceTableHeader">
                 <thead>
                   <tr>
-                    <th>Name</th>
+                    <th>{% trans "Name" %}</th>
                   </tr>
                 </thead>
               </table>
@@ -343,12 +343,12 @@
             <div>
               <button class="navigation_button long_button" id="deleteWorkspace">
                 <img src="{% static "game/image/icons/clear.svg" %}"/>
-                <span>Delete</span>
+                <span>{% trans "Delete" %}</span>
               </button>
 
               <button class="navigation_button long_button" id="loadWorkspace">
                 <img src="{% static "game/image/icons/load.svg" %}"/>
-                <span>Load</span>
+                <span>{% trans "Load" %}</span>
               </button>
             </div>
           </div>
@@ -356,12 +356,12 @@
 
       <div id="save_pane" class="tab_pane">
         <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/save.svg" %}'>Save</h2>
-        <p>Here you can save your program so you can retrieve it later!</p>
+        <p>{% trans "Here you can save your program so you can retrieve it later!" %}</p>
         <div class="scrolling-table-wrapper">
           <table id="saveWorkspaceTableHeader">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>{% trans "Name" %}</th>
               </tr>
             </thead>
           </table>
@@ -376,7 +376,7 @@
           <input type="text" id="workspaceNameInput">
           <button class="navigation_button long_button" id="saveWorkspace">
             <img src="{% static "game/image/icons/save.svg" %}">
-            <span>Save</span>
+            <span>{% trans "Save" %}</span>
           </button>
         </div>
       </div>
