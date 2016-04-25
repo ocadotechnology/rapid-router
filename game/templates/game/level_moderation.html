@@ -1,6 +1,7 @@
 {% extends 'game/base.html' %}
 
 {% load static %}
+{% load i18n %}
 
 {% block title %}Code for Life - Rapid Router - Level moderation{% endblock %}
 
@@ -62,22 +63,22 @@
 {% endblock %}
 
 {% block nav_ocargo_moderate %}
-<b><a href="{% url 'game.views.level_moderation.level_moderation' %}">Moderate</a></b>
+<b><a href="{% url 'game.views.level_moderation.level_moderation' %}">{% trans "Moderate" %}</a></b>
 {% endblock nav_ocargo_moderate %}
 
 {% block content %}
-<h1>Level moderation</h1><br>
+<h1>{% trans "Level moderation" %}</h1><br>
 <div class='span_3_of_3'>
   <div class='login-card'>
-    <h3>Filter levels</h3><br>
-    <p>Filter the levels by class and student, and click 'Submit' to see the student's levels.</p>
+    <h3>{% trans "Filter levels" %}</h3><br>
+    <p>{% trans "Filter the levels by class and student, and click 'Submit' to see the student's levels." %}</p>
     <div id="form" class="form">
     <form action="" method="post" id="levelModerationForm">
       {% csrf_token %}
       <div class='section group'>
         <div class='col span_1_of_3_strict'>
           <div class='section group'>
-            <label> Class: </label>
+            <label> {% trans "Class:" %} </label>
             <span>
               {{form.classes.errors}}
               {{form.classes}}
@@ -87,7 +88,7 @@
         <div class='col span_1_of_3_strict'>
           <div class='section group'>
             <div class='label'>
-              <label> Student: </label>
+              <label> {% trans "Student:" %} </label>
               <span>
                 {{form.students.errors}}
                 {{form.students}}
@@ -96,7 +97,7 @@
           </div>
         </div>
         <div class='col span_1_of_3_strict'>
-          <button class='btn btn-primary wide' type="submit">Submit</button>
+          <button class='btn btn-primary wide' type="submit">{% trans "Submit" %}</button>
         </div>
       </div>
     </form>
@@ -122,8 +123,8 @@
           <td> {{level.student}} </td>
           <td> {{level.name}} </td>
           <td> {{level.shared_with}} </td>
-          <td> <button value={{level.id}} class="btn btn-default btn-small play">Play</button> </td>
-          <td> <button value={{level.id}} class="btn btn-danger btn-small delete">Delete</button> </td>
+          <td> <button value={{level.id}} class="btn btn-default btn-small play">{% trans "Play" %}</button> </td>
+          <td> <button value={{level.id}} class="btn btn-danger btn-small delete">{% trans "Delete" %}</button> </td>
         </tr>
       {% endfor %}
     </table>
@@ -131,9 +132,9 @@
   </div>
 {% else %}
   {% if thead %}
-    <p>No levels found.</p>
+    <p>{% trans "No levels found." %}</p>
   {% else %}
-    <p>Select a class and student to view their created levels.</p>
+    <p>{% trans "Select a class and student to view their created levels." %}</p>
   {% endif %}
 {% endif %}
 </div>
