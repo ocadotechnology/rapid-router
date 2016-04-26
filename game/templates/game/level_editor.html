@@ -124,7 +124,7 @@
         <div id="currentTool" class="mode_panel">
           <img id="currentToolIcon" src="{% static "game/image/icons/delete_road.svg" %}" >
           <br>
-          <span id="currentToolText">Delete Road</span>
+          <span id="currentToolText">{% trans "Delete Road" %}</span>
         </div>
 
         <br style="clear:both">
@@ -133,7 +133,7 @@
           <input type="radio" name="tabs" id="play_radio">
           <label for="play_radio">
             <img src='{% static "game/image/icons/play.svg" %}'>
-            <span>Play</span>
+            <span>{% trans "Play" %}</span>
           </label>
         </div>
 
@@ -141,7 +141,7 @@
           <input type="radio" name="tabs" id="play_night_radio">
           <label for="play_night_radio">
             <img src='{% static "game/image/icons/play.svg" %}'>
-            <span>Play Night</span>
+            <span>{% trans "Play Night" %}</span>
           </label>
         </div>
 
@@ -151,7 +151,7 @@
           <input type="radio" name="tabs" id="map_radio">
           <label for="map_radio">
             <img src='{% static "game/image/icons/map.svg" %}'>
-            <span>Map</span>
+            <span>{% trans "Map" %}</span>
           </label>
         </div>
 
@@ -159,7 +159,7 @@
           <input type="radio" name="tabs" id="scenery_radio">
           <label for="scenery_radio">
             <img src='{% static "game/image/icons/decor.svg" %}'>
-            <span>Scenery</span>
+            <span>{% trans "Scenery" %}</span>
           </label>
         </div>
 
@@ -167,7 +167,7 @@
           <input type="radio" name="tabs" id="character_radio">
           <label for="character_radio">
             <img src='{% static "game/image/icons/character.svg" %}'>
-            <span>Character</span>
+            <span>{% trans "Character" %}</span>
           </label>
         </div>
 
@@ -175,7 +175,7 @@
           <input type="radio" name="tabs" id="blocks_radio">
           <label for="blocks_radio">
             <img src='{% static "game/image/icons/blockly.svg" %}'>
-            <span>Code</span>
+            <span>{% trans "Code" %}</span>
           </label>
         </div>
 
@@ -183,7 +183,7 @@
           <input type="radio" name="tabs" id="random_radio">
           <label for="random_radio">
             <img src='{% static "game/image/icons/random.svg" %}'>
-            <span>Random</span>
+            <span>{% trans "Random" %}</span>
           </label>
         </div>
 
@@ -193,7 +193,7 @@
           <input type="radio" name="tabs" id="load_radio">
           <label for="load_radio">
             <img src='{% static "game/image/icons/load.svg" %}'>
-            <span>Load</span>
+            <span>{% trans "Load" %}</span>
           </label>
         </div>
 
@@ -201,7 +201,7 @@
           <input type="radio" name="tabs" id="save_radio">
           <label for="save_radio">
             <img src='{% static "game/image/icons/save.svg" %}'>
-            <span>Save</span>
+            <span>{% trans "Save" %}</span>
           </label>
         </div>
 
@@ -209,7 +209,7 @@
           <input type="radio" name="tabs" id="share_radio">
           <label for="share_radio">
             <img src='{% static "game/image/icons/share.svg" %}'>
-            <span>Share</span>
+            <span>{% trans "Share" %}</span>
           </label>
         </div>
 
@@ -219,7 +219,7 @@
           <input type="radio" name="tabs" id="help_radio">
           <label for="help_radio">
             <img src='{% static "game/image/icons/help.svg" %}'>
-            <span>Help</span>
+            <span>{% trans "Help" %}</span>
           </label>
         </div>
 
@@ -227,7 +227,7 @@
           <input type="radio" name="tabs" id="quit_radio">
           <label for="quit_radio">
             <img src='{% static "game/image/icons/quit.svg" %}'>
-            <span>Quit</span>
+            <span>{% trans "Quit" %}</span>
           </label>
         </div>
 
@@ -236,13 +236,13 @@
       <div id='tab_panes_wrapper'>
         <div id="tab_panes">
           <div id="map_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/map.svg" %}'>Map</h2>
-            <p> Here you can design your level! What sort of road will you make?</p>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/map.svg" %}'>{% trans "Map" %}</h2>
+            <p> {% trans "Here you can design your level! What sort of road will you make?" %}</p>
 
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
                 <div class="input_div">
-                  <span>Max fuel:</span>
+                  <span>{% trans "Max fuel:" %}</span>
                   <input type="number" id="max_fuel">
                 </div>
                 <br style="clear:both">
@@ -252,13 +252,13 @@
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="add_road">
                         <img src="{% static "game/image/icons/add_road.svg" %}"/>
-                        <span>Add road</span>
+                        <span>{% trans "Add road" %}</span>
                       </button>
                     </div>
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="delete_road">
                         <img src="{% static "game/image/icons/delete_road.svg" %}"/>
-                        <span>Delete road</span>
+                        <span>{% trans "Delete road" %}</span>
                       </button>
                     </div>
                   </div>
@@ -266,13 +266,13 @@
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="start">
                         <img src="{% static "game/image/icons/origin.svg" %}"/>
-                        <span>Mark start</span>
+                        <span>{% trans "Mark start" %}</span>
                       </button>
                     </div>
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="end">
                         <img src="{% static "game/image/icons/destination.svg" %}"/>
-                        <span>Mark end</span>
+                        <span>{% trans "Mark end" %}</span>
                       </button>
                     </div>
                   </div>
@@ -280,7 +280,7 @@
 
                 <button class="navigation_button long_button" id="clear">
                   <img src="{% static "game/image/icons/clear.svg" %}"/>
-                  <span>Clear all</span>
+                  <span>{% trans "Clear all" %}</span>
                 </button>
 
                 {% if user|is_developer %}
@@ -293,15 +293,15 @@
           </div>
 
           <div id="scenery_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/decor.svg" %}'>Scenery</h2>
-            <p> Here you can liven up your level by choosing the theme and adding scenery! Will you create beautiful countryside or a bustling city?</p>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/decor.svg" %}'>{% trans "Scenery" %}</h2>
+            <p> {% trans "Here you can liven up your level by choosing the theme and adding scenery! Will you create beautiful countryside or a bustling city?" %}</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
 
                 <table>
                   <tbody>
                     <tr>
-                      <td>Theme:</td>
+                      <td>{% trans "Theme:" %}</td>
                       <td colspan=2>
                         <select id="theme_select">
                           {% for theme in themes %}
@@ -311,7 +311,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td>Scenery:</td>
+                      <td>{% trans "Scenery:" %}</td>
                       <td><div class="decor_div"><img id="tree1" class="decor_button" src="{{tree1.url}}" width="70"></td>
                       <td><div class="decor_div"><img id="tree2" class="decor_button" src="{{tree2.url}}" width="70"></div></td>
                     </tr>
@@ -321,18 +321,18 @@
                       <td><div class="decor_div"><img id="pond" class="decor_button" src="{{pond.url}}" width="100"></div></td>
                     </tr>
                     <tr>
-                      <td>Traffic lights:</td>
+                      <td>{% trans "Traffic lights:" %}</td>
                       <td><img id="trafficLightRed" src="{% static "game/image/trafficLight_red.svg" %}" width="80"></td>
                         <td><img id="trafficLightGreen" src="{% static "game/image/trafficLight_green.svg" %}" width="80"></td>
                     </tr>
                     {% if cow_level_enabled %}
                     <tr>
-                      <td>Cows:</td>
+                      <td>{% trans "Cows:" %}</td>
                       <td><img id="cow" src="/static/game/image/Clarice.svg" width="80"></td>
                       <td>
                         <button class="navigation_button" id="advanced_cow_options_button">
                               <img id="advanced_cow_options_button_icon" src="/static/game/image/icons/show.svg"/>
-                              Advanced
+                              {% trans "Advanced" %}
                             </button>
                       </td>
                     </tr>
@@ -340,7 +340,7 @@
                       <td></td>
                       <td colspan="2">
                         <div id="cow_advanced_div">
-                          <h3 id="cow_advanced_options_title">Advanced options</h3>
+                          <h3 id="cow_advanced_options_title">{% trans "Advanced options" %}</h3>
                           <div id="cow_group_div">
                             <!--<h4>Group:</h4>-->
                             <div id="cow_group_buttons">
@@ -358,7 +358,7 @@
                               <select id="cow_type_select"></select>
                             </div>
                             <div style="clear: both;"></div>
-                            <h4>How many cows should appear for this group?</h4>
+                            <h4>{% trans "How many cows should appear for this group?" %}</h4>
                             <div id="min_max_cow_div">
                                 <label for="min_cows_spinner">Min:</label><input name="Min" class="spinner" id="min_cows_spinner" readonly>
                                 <label for="max_cows_spinner">Max:</label><input name="Max" class="spinner" id="max_cows_spinner" readonly>
@@ -378,11 +378,11 @@
           </div>
 
           <div id="character_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/character.svg" %}'>Character</h2>
-            <p> Here you can choose your character. Who will you play as?</p>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/character.svg" %}'>{% trans "Character" %}</h2>
+            <p> {% trans "Here you can choose your character. Who will you play as?" %}</p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                <p>Character:
+                <p>{% trans "Character:" %}
                   <select id="character_select">
                   {% for char in characters %}
                     <option value='{{char.id}}'> {{char.name}} </option>
@@ -395,19 +395,19 @@
           </div>
 
           <div id="blocks_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/blockly.svg" %}'>Code</h2>
-            <p> Here you can select the code you can use while playing your new level! </p>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/blockly.svg" %}'>{% trans "Code" %}</h2>
+            <p> {% trans "Here you can select the code you can use while playing your new level!" %} </p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
                 <div id="block_table">
 
                   <div id="language_div" class="input_div">
-                    <span>Language:</span>
+                    <span>{% trans "Language:" %}</span>
                     <select id="language_select">
-                      <option value="blockly">Blockly</option>
-                      <option value="blocklyWithPythonView">Blockly With Python View</option>
-                      <option value="python">Python</option>
-                      <option value="both">Both</option>
+                      <option value="blockly">{% trans "Blockly" %}</option>
+                      <option value="blocklyWithPythonView">{% trans "Blockly With Python View" %}</option>
+                      <option value="python">{% trans "Python" %}</option>
+                      <option value="both">{% trans "Both" %}</option>
                     </select>
                   </div>
 
@@ -417,7 +417,7 @@
                         <input type="checkbox" id="select_all_checkbox" class="block_checkbox">
                       </div>
                       <div>
-                        <label id="select_all_label" for="select_all_checkbox"> Select all</label>
+                        <label id="select_all_label" for="select_all_checkbox"> {% trans "Select all" %}</label>
                       </div>
                     </div>
 
@@ -448,70 +448,70 @@
           </div>
 
           <div id="random_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/random.svg" %}'>Random</h2>
-            <p> Here you can generate a random map. Try changing some of the parameters below and see what you get! </p>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/random.svg" %}'>{% trans "Random" %}</h2>
+            <p> {% trans "Here you can generate a random map. Try changing some of the parameters below and see what you get!" %} </p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
                 <div class="table">
                   <div class="table_row">
-                    <div class="table_cell field_label"><p>Size:</p></div>
+                    <div class="table_cell field_label"><p>{% trans "Size:" %}</p></div>
                     <div class="table_cell field_value"><input type="number" id="size" value="20" size="4" min="2" max="40"></div>
                   </div>
                   <div class="table_row">
-                    <div class="table_cell field_label"><p>Branchiness:</p></div>
+                    <div class="table_cell field_label"><p>{% trans "Branchiness:" %}</p></div>
                     <div class="table_cell field_value"><input type="number" id="branchiness" value="1" size="4" min="0" max="10"></div>
                   </div>
                   <div class="table_row">
-                    <div class="table_cell field_label"><p>Loopiness:</p></div>
+                    <div class="table_cell field_label"><p>{% trans "Loopiness:" %}</p></div>
                     <div class="table_cell field_value"><input type="number" id="loopiness" value="1" size="4" min="0" max="10"></div>
                   </div>
                   <div class="table_row">
-                    <div class="table_cell field_label"><p>Curviness:</p></div>
+                    <div class="table_cell field_label"><p>{% trans "Curviness:" %}</p></div>
                     <div class="table_cell field_value"><input type="number" id="curviness" value="5" size="4" min="0" max="10"></div>
                   </div>
                   <div class="table_row">
-                    <div class="table_cell field_label"><p>Traffic Lights:</p></div>
+                    <div class="table_cell field_label"><p>{% trans "Traffic Lights:" %}</p></div>
                     <div class="table_cell field_value">
                       <select id="trafficLightsEnabled">
-                        <option value="yes">Yes</option>
-                        <option value="no" selected>No</option>
+                        <option value="yes">{% trans "Yes" %}</option>
+                        <option value="no" selected>{% trans "No" %}</option>
                       </select>
                     </div>
                   </div>
                   <div class="table_row">
-                    <div class="table_cell field_label"><p>Scenery:</p></div>
+                    <div class="table_cell field_label"><p>{% trans "Scenery:" %}</p></div>
                     <div class="table_cell field_value">
                       <select id="sceneryEnabled">
-                        <option value="yes">Yes</option>
-                        <option value="no" selected>No</option>
+                        <option value="yes">{% trans "Yes" %}</option>
+                        <option value="no" selected>{% trans "No" %}</option>
                       </select>
                     </div>
                   </div>
                 </div>
                 <button class="navigation_button long_button" id="generate">
                   <img src="{% static "game/image/icons/random.svg" %}">
-                  <span>Generate</span>
+                  <span>{% trans "Generate" %}</span>
                 </button>
               </div>
             </div>
           </div>
 
           <div id="load_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/load.svg" %}'>Load</h2>
-            <p>Here you can load in levels created by you and your friends! Select a level in the table and press load.</p>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/load.svg" %}'>{% trans "Load" %}</h2>
+            <p>{% trans "Here you can load in levels created by you and your friends! Select a level in the table and press load." %}</p>
 
             <div class="table_control_div">
 
               <div id="does_not_exist">
-                <p> You don't have any levels to load yet. Try saving one! </p>
+                <p> {% trans "You don't have any levels to load yet. Try saving one!" %} </p>
               </div>
 
               <div id="does_exist">
                 <p>
-                  Load:
+                  {% trans "Load:" %}
                   <select id="load_type_select">
-                    <option value="ownLevels" selected>your own levels</option>
-                    <option value="sharedLevels">shared levels</option>
+                    <option value="ownLevels" selected>{% trans "your own levels" %}</option>
+                    <option value="sharedLevels">{% trans "shared levels" %}</option>
                   </select>
                 </p>
 
@@ -519,8 +519,8 @@
                   <table width='100%' id="loadLevelTableHeader">
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th>Owner</th>
+                        <th>{% trans "Name" %}</th>
+                        <th>{% trans "Owner" %}</th>
                       </tr>
                     </thead>
                   </table>
@@ -538,28 +538,28 @@
             <div>
               <button class="navigation_button long_button" id="deleteLevel">
                 <img src="{% static "game/image/icons/clear.svg" %}">
-                <span>Delete</span>
+                <span>{% trans "Delete" %}</span>
               </button>
 
               <button class="navigation_button long_button" id="loadLevel">
                 <img src="{% static "game/image/icons/load.svg" %}">
-                <span>Load</span>
+                <span>{% trans "Load" %}</span>
               </button>
             </div>
           </div>
 
           <div id="save_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/save.svg" %}'>Save</h2>
-            <p>Here you can save your new level. Enter a name below and hit save. Alternatively click on an existing level to update it.</p>
-            <p>To play your level and be tracked, first <b>Quit</b> the Level Editor and select your level from the 'Levels created by you' section.</p>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/save.svg" %}'>{% trans "Save" %}</h2>
+            <p>{% trans "Here you can save your new level. Enter a name below and hit save. Alternatively click on an existing level to update it." %}</p>
+            <p>{% trans "To play your level and be tracked, first <b>Quit</b> the Level Editor and select your level from the 'Levels created by you' section." %}</p>
 
             <div class="table_control_div">
               <div class="scrolling-table-wrapper">
                 <table width='100%' id="saveLevelTableHeader">
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Owner</th>
+                      <th>{% trans "Name" %}</th>
+                      <th>{% trans "Owner" %}</th>
                     </tr>
                   </thead>
                 </table>
@@ -571,7 +571,7 @@
               </div>
               <br style="clear:both">
               <div>
-                <label>Name:</label>
+                <label>{% trans "Name:" %}</label>
                 <input type="text" id="levelNameInput">
               </div>
             </div>
@@ -579,31 +579,31 @@
             <br>
             <button class="navigation_button long_button" id="saveLevel">
               <img src="{% static "game/image/icons/save.svg" %}">
-              <span>Save</span>
+              <span>{% trans "Save" %}</span>
             </button>
           </div>
 
           <div id="share_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/share.svg" %}'>Share</h2>
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/share.svg" %}'>{% trans "Share" %}</h2>
 
             {% if user|get_user_status == 'TEACHER' %}
-              <p>Here you can share your level with your classes or your fellow teachers.</p>
+              <p>{% trans "Here you can share your level with your classes or your fellow teachers." %}</p>
             {% elif user|get_user_status == 'SCHOOL_STUDENT' %}
-              <p>Here you can share your level with your classmates. Try clicking in the Shared column!</p>
+              <p>{% trans "Here you can share your level with your classmates. Try clicking in the Shared column!" %}</p>
             {% endif %}
 
             <div class="table_control_div">
               {% if user|get_user_status == 'TEACHER' %}
                 <p>
-                  Share with:
+                  {% trans "Share with:" %}
                   <select id="share_type_select">
-                    <option value="classes" selected>Classes</option>
-                    <option value="teachers">Teachers</option>
+                    <option value="classes" selected>{% trans "Classes" %}</option>
+                    <option value="teachers">{% trans "Teachers" %}</option>
                   </select>
                 </p>
 
                 <p id="class_selection">
-                  Class: <select id="class_select"></select>
+                  {% trans "Class:" %} <select id="class_select"></select>
                 </p>
               {% endif %}
 
@@ -611,8 +611,8 @@
                 <table width='100%' id="shareLevelTableHeader">
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Shared</th>
+                      <th>{% trans "Name" %}</th>
+                      <th>{% trans "Shared" %}</th>
                     </tr>
                   </thead>
                 </table>
@@ -626,7 +626,7 @@
 
             <button class="navigation_button long_button" id="shareWithAll">
               <img src="{% static "game/image/icons/share.svg" %}">
-              <span>Share with all</span>
+              <span>{% trans "Share with all" %}</span>
             </button>
           </div>
 

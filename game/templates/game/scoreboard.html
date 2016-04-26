@@ -1,6 +1,7 @@
 {% extends 'game/base.html' %}
 
 {% load static %}
+{% load i18n %}
 
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
 
@@ -66,7 +67,7 @@
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
-<b><a href="{% url 'game.views.scoreboard.scoreboard' %}">Scoreboard</a></b>
+<b><a href="{% url 'game.views.scoreboard.scoreboard' %}">{% trans "Scoreboard" %}</a></b>
 {% endblock nav_ocargo_scoreboard %}
 
 {% block content %}
@@ -80,7 +81,7 @@
         <div class='col span_1_of_3_strict'>
           <div class='section group'>
             <div class='col span_1_of_3'>
-              Classes:
+              {% trans "Classes:" %}
             </div>
             <div class='col span_2_of_3'>
               {{form.classes.errors}}
@@ -91,7 +92,7 @@
         <div class='col span_1_of_3_strict'>
           <div class='section group'>
             <div class='col span_1_of_3'>
-              Levels:
+              {% trans "Levels:" %}
             </div>
             <div class='col span_2_of_3'>
               {{form.levels.errors}}
@@ -100,8 +101,8 @@
           </div>
         </div>
         <div class='col span_1_of_3_strict'>
-          <button class='col span_1_of_2 btn btn-primary' type="submit" name="view">View</button>
-          <button class='col span_1_of_2 btn btn-primary' type="submit" name="export">Export</button>
+          <button class='col span_1_of_2 btn btn-primary' type="submit" name="view">{% trans "View" %}</button>
+          <button class='col span_1_of_2 btn btn-primary' type="submit" name="export">{% trans "Export" %}</button>
         </div>
       </div>
     </form>
