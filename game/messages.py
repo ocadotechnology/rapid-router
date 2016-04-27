@@ -930,7 +930,7 @@ def hint_level41():
                        + "If you make the van check for turns before it checks the road exists "
                        + "forwards, you will come up with the perfect solution. <br><br>"
                        + "Notice that here it doesn't matter which turn you check for first - it "
-                       + "will change the the route but provide you with the same score. ")
+                       + "will change the route but provide you with the same score. ")
     return message
 
 
@@ -1133,7 +1133,7 @@ def description_level52():
     return build_description(title_level52(), message)
 
 def hint_level52():
-    message = ugettext("Dont forget to use the repeat loop.")
+    message = ugettext("Don't forget to use the repeat loop.")
     return message
 
 
@@ -1484,7 +1484,7 @@ def hint_level81():
 
 
 def title_level82():
-    return ugettext("Dont forget to find the shortest route")
+    return ugettext("Don't forget to find the shortest route")
 
 def description_level82():
     message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Can you tell which Python statement matches which block?")
@@ -1517,7 +1517,7 @@ def hint_level84():
 
 
 def title_level85():
-    return ugettext("Looks easy but use repeat until and and see what happens?")
+    return ugettext("Looks easy but use repeat until and see what happens?")
 
 def description_level85():
     message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding a <b>repeat</b> until block and watch what happens in Python.")
@@ -1539,7 +1539,7 @@ def hint_level86():
 
 
 def title_level87():
-    return ugettext("Dont forget to use else if")
+    return ugettext("Don't forget to use else if")
 
 def description_level87():
     message = ugettext("As you create your program using Blockly see what it looks like in the Python programming language. Try adding an <b>if</b> block and watch what happens in Python particularly with <b>else if</b> and <b>else</b> statements.")
@@ -1755,7 +1755,7 @@ def title_level102():
     return ugettext("Watch for the patterns")
 
 def description_level102():
-    message = ugettext("For this level try defining more than one function. Try to look look for a repeating pattern to simplify your program.")
+    message = ugettext("For this level try defining more than one function. Try to look for a repeating pattern to simplify your program.")
     return build_description(title_level102(), message)
 
 def hint_level102():
