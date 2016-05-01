@@ -40,6 +40,7 @@ from datetime import timedelta
 from django.http import Http404
 from django.shortcuts import render
 from django.template import RequestContext
+from django.utils.translation import ugettext
 
 import game.messages as messages
 import game.permissions as permissions
@@ -49,8 +50,10 @@ from game.forms import ScoreboardForm
 from game.models import Level, Attempt, sort_levels
 from portal.models import Class, Teacher, Student
 
-Single_Level_Header = ['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
-Multiple_Levels_Header = ['Class', 'Name', 'Total Score', 'Total Time', 'Progress']
+Single_Level_Header = [ugettext('Class'), ugettext('Name'), ugettext('Score'), ugettext('Total Time'),
+                       ugettext('Start Time'), ugettext('Finish Time')]
+Multiple_Levels_Header = [ugettext('Class'), ugettext('Name'), ugettext('Total Score'), ugettext('Total Time'),
+                          ugettext('Progress')]
 
 
 def scoreboard(request):
