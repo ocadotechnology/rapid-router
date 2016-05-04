@@ -37,9 +37,12 @@
 import csv
 
 from django.http import HttpResponse
+from django.utils.translation import ugettext
 
-Single_Level_Header = ['Class', 'Name', 'Score', 'Total Time', 'Start Time', 'Finish Time']
-Multiple_Levels_Header = ['Class', 'Name', 'Total Score', 'Total Time', 'Started Levels %', 'Attempted levels %', 'Finished levels %']
+Single_Level_Header = [ugettext('Class'), ugettext('Name'), ugettext('Score'), ugettext('Total Time'),
+                       ugettext('Start Time'), ugettext('Finish Time')]
+Multiple_Levels_Header = [ugettext('Class'), ugettext('Name'), ugettext('Total Score'), ugettext('Total Time'),
+                          ugettext('Started Levels %'), ugettext('Attempted levels %'), ugettext('Finished levels %')]
 
 def scoreboard_csv(student_data, requested_sorted_levels):
     if (len(requested_sorted_levels) > 1):
