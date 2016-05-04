@@ -37,12 +37,13 @@
 import csv
 
 from django.http import HttpResponse
-from django.utils.translation import ugettext
+from django.utils.translation import ugettext_lazy
 
-Single_Level_Header = [ugettext('Class'), ugettext('Name'), ugettext('Score'), ugettext('Total Time'),
-                       ugettext('Start Time'), ugettext('Finish Time')]
-Multiple_Levels_Header = [ugettext('Class'), ugettext('Name'), ugettext('Total Score'), ugettext('Total Time'),
-                          ugettext('Started Levels %'), ugettext('Attempted levels %'), ugettext('Finished levels %')]
+Single_Level_Header = [ugettext_lazy('Class'), ugettext_lazy('Name'), ugettext_lazy('Score'),
+                       ugettext_lazy('Total Time'), ugettext_lazy('Start Time'), ugettext_lazy('Finish Time')]
+Multiple_Levels_Header = [ugettext_lazy('Class'), ugettext_lazy('Name'), ugettext_lazy('Total Score'),
+                          ugettext_lazy('Total Time'), ugettext_lazy('Started Levels %'),
+                          ugettext_lazy('Attempted levels %'), ugettext_lazy('Finished levels %')]
 
 def scoreboard_csv(student_data, requested_sorted_levels):
     if (len(requested_sorted_levels) > 1):
