@@ -646,16 +646,13 @@ ocargo.LevelEditor = function() {
                 if (!selectedLevel) {
                     return;
                 }
-                var levelId = selectedLevel;
-
-                ownedLevels.deleteLevel(levelId);
+                ownedLevels.deleteLevel(selectedLevel);
             });
 
             function processError(err) {
                 console.error(err);
                 restorePreviousTab();
                 ocargo.Drawing.startInternetDownPopup();
-                return;
             }
 
             function adjustPaneDisplay() {
@@ -2094,24 +2091,19 @@ ocargo.LevelEditor = function() {
                 }
             }
 
-            if(!connected) {
-                return false;
-            }
+            return !connected && notAlreadyOccupied(sourceNode, controlledNode);
+        }
 
-            // Test it's not already occupied
-            for(var i = 0; i < trafficLights.length; i++) {
+        function notAlreadyOccupied(sourceNode, controlledNode) {
+            for (var i = 0; i < trafficLights.length; i++) {
                 var tl = trafficLights[i];
-                if(tl.valid &&
+                if (tl.valid &&
                     ((tl.sourceNode === sourceNode && tl.controlledNode === controlledNode) ||
                     (tl.sourceNode === controlledNode && tl.controlledNode === sourceNode))) {
                     return false;
                 }
             }
             return true;
-        }
-
-        function occupied(sourceCoord, controlledCoord) {
-
         }
     }
 
@@ -2811,15 +2803,14 @@ ocargo.LevelEditor = function() {
     function InternalDecor(decorName) {
 
         // public methods
-        this.getData = function() {
+        this.getData = function () {
             var bBox = this.image.getBBox();
-            var data =  {
-                            'x': Math.floor(bBox.x) - PAPER_PADDING,
-                            'y': PAPER_HEIGHT - bBox.height - Math.floor(bBox.y) + PAPER_PADDING,
-                            'z': currentTheme.decor[this.decorName].z_index,
-                            'decorName': this.decorName
-                        };
-            return data;
+            return {
+                'x': Math.floor(bBox.x) - PAPER_PADDING,
+                'y': PAPER_HEIGHT - bBox.height - Math.floor(bBox.y) + PAPER_PADDING,
+                'z': currentTheme.decor[this.decorName].z_index,
+                'decorName': this.decorName
+            };
         };
 
         this.setPosition = function(x, y) {
