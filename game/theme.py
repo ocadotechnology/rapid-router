@@ -40,6 +40,7 @@
 '''
 
 from game.models import Theme as OldTheme
+from rest_framework.reverse import reverse
 
 
 class Theme(object):
@@ -73,6 +74,10 @@ def get_all_themes():
 
 def get_theme_by_pk(pk):
     for theme in THEME_DATA.values():
-        if theme.pk == pk:
+        if theme.pk == int(pk):
             return theme
     raise OldTheme.DoesNotExist
+
+
+def get_url(pk, request):
+    return reverse('theme-detail', args={pk}, request=request)

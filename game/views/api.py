@@ -38,16 +38,15 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from game.models import Level, Episode, LevelBlock, Block, Theme, Character, LevelDecor
 from game.serializers import LevelListSerializer, EpisodeListSerializer, LevelDetailSerializer, EpisodeDetailSerializer, \
-    LevelBlockSerializer, BlockSerializer, ThemeSerializer, CharacterSerializer, DecorSerializer, LevelMapDetailSerializer, \
+    LevelBlockSerializer, BlockSerializer, CharacterSerializer, DecorSerializer, LevelMapDetailSerializer, \
     LevelDecorSerializer, LevelModeSerializer, LevelMapListSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import viewsets
-from rest_framework import generics
 
 from game.decor import get_all_decor, get_decor_element_by_pk
-from game.theme import get_all_themes, get_theme_by_pk
+from game.theme import get_all_themes, get_theme_by_pk, get_url
 
 
 @api_view(('GET',))
@@ -227,8 +226,8 @@ def block_detail(request, pk, format=None):
 @api_view(('GET',))
 def theme_list(request, format=None):
     themes = get_all_themes()
-    serializer = ThemeSerializer(themes, many=True, context={'request': request})
-    return Response(serializer.data)
+    data = [{get_url(i.pk, request)} for i in themes]
+    return Response(data)
 
 
 @api_view(('GET',))
@@ -237,9 +236,7 @@ def theme_detail(request, pk, format=None):
         theme = get_theme_by_pk(pk)
     except Theme.DoesNotExist:
         return HttpResponse(status=404)
-
-    serializer = ThemeSerializer(theme, context={'request': request})
-    return Response(serializer.data)
+    return Response(theme.__dict__)
 
 
 @api_view(('GET',))
