@@ -159,7 +159,7 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Episode
         depth = 1
-        fields = ('url', '__unicode__', 'name', 'level_set', 'level_set_urls')
+        fields = ('url', '__unicode__', 'name', 'level_set', 'level_set_url')
 
     def get_level_set(self, obj):
         levels = Level.objects.filter(episode__id=obj.id)
