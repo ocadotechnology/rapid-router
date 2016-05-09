@@ -36,6 +36,7 @@
 # identified as the original program.
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.translation import ugettext
 
 from portal.models import UserProfile, Student
 
@@ -107,7 +108,7 @@ class Episode(models.Model):
         return sorted(self.level_set.all(), key=lambda level: int(level.name))
 
     def __unicode__(self):
-        return 'Episode: ' + self.name
+        return ugettext('Episode: %(episode_name)s') % {'episode_name': self.name}
 
 
 class LevelManager(models.Manager):
@@ -150,7 +151,7 @@ class Level(models.Model):
     objects = LevelManager()
 
     def __unicode__(self):
-        return 'Level ' + str(self.name)
+        return ugettext('Level %(level_name)s') % {'level_name': self.name}
 
     @property
     def theme(self):
