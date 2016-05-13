@@ -36,6 +36,7 @@
 # identified as the original program.
 from django.conf.urls import patterns, url, include
 from django.views.decorators.cache import cache_page
+from django.views.i18n import javascript_catalog
 
 from django_js_reverse.views import urls_js
 
@@ -123,4 +124,6 @@ urlpatterns = patterns(
     ])),
 
     url(r'^js-reverse/$', cache_page(60*60*24)(urls_js), name='js-reverse'),
+
+    url(r'^js-i18n/$', cache_page(60*60*24)(javascript_catalog), {'packages': ('game',), }, name='rapid-router/javascript-catalog'),
 )

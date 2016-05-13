@@ -121,7 +121,7 @@ ocargo.Game.prototype.setup = function() {
     } else {
         message = loggedOutWarning;
     }
-    ocargo.Drawing.startPopup(title, LESSON, message, true, ocargo.button.dismissButtonHtml('play_button', 'Play'));
+    ocargo.Drawing.startPopup(title, LESSON, message, true, ocargo.button.dismissButtonHtml('play_button', gettext('Play')));
 };
 
 ocargo.Game.prototype.clearWorkspaceNameInputInSaveTab = function () {

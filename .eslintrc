@@ -251,3 +251,12 @@ env:
   jquery: true
   amd: true
   commonjs: true
+globals:
+  pluralidx: false
+  gettext: false
+  ngettext: false
+  gettext_noop: false
+  pgettext: false
+  npgettext: false
+  interpolate: false
+  get_format: false
