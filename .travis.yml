@@ -53,6 +53,7 @@ after_success:
 before_deploy:
   - mkdir -p game/locale
   - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
+  - cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
   - crowdin-cli-py upload sources
   - ./.crowdin-get-translations
 deploy:
