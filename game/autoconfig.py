@@ -73,7 +73,13 @@ SETTINGS = {
         'rest_framework',
     ],
     'LANGUAGES': [
-        ('en-pt', 'Localisation'),
+        ('lol-us', 'Localisation'),
+    ],
+    'LOCALE_PATHS': [
+        # This shouldn't be needed, but it looks like there's an issue with
+        # using a language code that's not in `django/conf/locale` - the
+        # check_for_language function doesn't recognise it.
+        os.path.join(os.path.dirname(__file__), 'locale'),
     ],
     'PIPELINE_SASS_ARGUMENTS': '--quiet',
     'STATICFILES_FINDERS': [
