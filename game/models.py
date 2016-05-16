@@ -38,6 +38,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext
 
+
 from portal.models import UserProfile, Student
 
 def theme_choices():
@@ -50,25 +51,6 @@ class Block(models.Model):
 
     def __unicode__(self):
         return self.type
-
-
-class Theme(models.Model):
-    name = models.CharField(max_length=100)
-    background = models.CharField(max_length=7, default='#eff8ff')
-    border = models.CharField(max_length=7, default='#bce369')
-    selected = models.CharField(max_length=7, default='#70961f')
-
-    def __unicode__(self):
-        return self.name
-
-
-class Decor(models.Model):
-    name = models.CharField(max_length=100)
-    url = models.CharField(max_length=500)
-    width = models.IntegerField()
-    height = models.IntegerField()
-    theme = models.ForeignKey(Theme, related_name='decor')
-    z_index = models.IntegerField()
 
 
 class Character(models.Model):
@@ -144,7 +126,6 @@ class Level(models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     pythonViewEnabled = models.BooleanField(default=False)
-    theme_old = models.ForeignKey(Theme, blank=True, null=True, default=None, db_column='theme_id')
     theme_name = models.CharField(max_length=10, choices=theme_choices(), blank=True, null=True, default=None)
     character = models.ForeignKey(Character, default=1)
     anonymous = models.BooleanField(default=False)
@@ -155,18 +136,16 @@ class Level(models.Model):
 
     @property
     def theme(self):
-        if not self.theme_name:
-            if self.theme_old:
-                self.theme_name = self.theme_old.name
-            else:
-                return None
         from game.theme import get_theme
-        return get_theme(self.theme_name)
+        try:
+            return get_theme(self.theme_name)
+        except KeyError:
+            return None
 
     @theme.setter
     def theme(self, val):
-        self.theme_old = Theme.objects.get(pk=val.pk)
-        self.theme_name = self.theme_old.name
+        from game.theme import get_theme_by_pk
+        self.theme_name = get_theme_by_pk(val.pk).name
 
 
 class LevelBlock(models.Model):

@@ -36,9 +36,9 @@
 # identified as the original program.
 from game import messages
 from game.messages import description_level_default, hint_level_default
-from game.theme import get_theme, get_url
+from game.theme import get_theme, get_themes_url
 from rest_framework import serializers
-from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block, Character, Decor
+from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block, Character
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
@@ -142,7 +142,7 @@ class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_theme(self, obj):
         pk = get_theme(obj.theme_name).pk
-        return get_url(pk, self.context.get('request', None))
+        return get_themes_url(pk, self.context.get('request', None))
 
 
 class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
@@ -186,8 +186,3 @@ class BlockSerializer(serializers.HyperlinkedModelSerializer):
 class CharacterSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Character
-
-
-class DecorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Decor
