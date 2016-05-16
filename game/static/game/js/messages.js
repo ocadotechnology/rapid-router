@@ -61,9 +61,6 @@ ocargo.messages = {
     },
 
     anotherRandomLevel: "Do you want to try another random level?",
-    nightMode: "In Night Mode you can only see a very short distance. " +
-            "We've given you more blocks to help you find your way!",
-    loggedOutWarning: "You are not logged in. Your progress won't be saved.",
     nowTryPython: "Looks like you've got a route sorted using Blockly.<br><br>" +
         "Now go to the Python tab and see if you can do the same in Python! ",
     lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own challenges.",
