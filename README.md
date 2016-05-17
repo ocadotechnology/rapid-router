@@ -28,6 +28,26 @@ Go to the official [Code For Life website][c4l].
 * You will need your crowdin api key locally in the `CROWDIN_API_KEY` environment variable, e.g. `export CROWDIN_API_KEY=<key>`. This can be obtained from [the settings page](https://crowdin.com/project/code-for-life/settings#integration)
 * Set your `django_language` cookie to `lol-us` to enable in-context localisation
 
+## Run the app locally from scratch (instructions for Linux Mint)
+These step by step instructions were tested on vanilla Linux Mint. Will probably work on other Linuxes as well, maybe with minor tweaks.
+
+* Prerequisites:
+    * `sudo apt-get install git`
+    * `sudo apt-get install virtualenvwrapper`
+    * `sudo apt-get install python-dev`
+    * `sudo apt-get install ruby2.0` - although for some reason it's still Ruby 1.9 that's hiding under `ruby` command...
+    * `sudo gem install sass -v 3.3.4` - because newest version (3.5) is incompatible with Ruby 1.9 (see above).
+* Now start a brand new terminal.
+    * `cd` to whatever path you want to clone to.
+    * `git clone https://github.com/ocadotechnology/rapid-router.git`
+    * `cd rapid-router`
+    * The first time: `mkvirtualenv -a . rapid-router`, on subsequent times you'll only need `workon rapid-router`.
+    * `./run` - this will download and setup a lot of stuff, so go grab a coffee.
+* Once you see `Quit the server with CONTROL-C`, you can open the Code For Life portal in your browser, by going to `localhost:8000`.
+* If you have problems seeing the portal on machines with different locale (e.g. Polish), check the terminal for errors mentioning `ValueError: unknown locale: UTF-8`. If you see them, you need to have environment variables `LANG` and `LC_ALL` both set to `en_US.UTF-8`.
+    * Either export them in your `.bashrc` or `.bash_profile`
+    * or restart the portal with command `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 ./run`.
+
 ## To contribute
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
 [add it][add-issue]. Please make sure that you give us a suitable level of detail about the symptoms and how to
