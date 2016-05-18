@@ -10,10 +10,11 @@ pip install 'codeforlife-portal >= 1.0.0.post.dev1' # TODO: Remove this requirem
 pip install 'crowdin-cli-py'
 cd game
 mkdir -p locale
-django-admin makemessages -l en_GB --no-wrap
-django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" # some files from foundation use '_' for their own purpose
+django-admin makemessages -l en_GB --no-wrap || true
+# some files from foundation use '_' for their own purpose
+django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" || true
 cd -
-./.crowdin-get-translations
+./.crowdin-get-translations || true
 
 ./example_project/manage.py collectstatic --noinput
 ./example_project/manage.py runserver "$@"
