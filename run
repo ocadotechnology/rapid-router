@@ -11,6 +11,7 @@ pip install 'crowdin-cli-py'
 cd game
 mkdir -p locale
 django-admin makemessages -l en_GB --no-wrap
+django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" # some files from foundation use '_' for their own purpose
 cd -
 ./.crowdin-get-translations
 

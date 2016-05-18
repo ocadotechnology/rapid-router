@@ -47,9 +47,9 @@ var saving = new ocargo.Saving();
 var CONFIRMATION_DATA = {
     'deleteLevel': {
         options: {
-            title: 'Delete level',
+            title: gettext('Delete level'),
         },
-        html: "<p>This student's level will be permanently deleted. Are you sure?</p>",
+        html: '<p>' + gettext("This student's level will be permanently deleted. Are you sure?") + '</p>',
         confirm: function() {
             saving.deleteLevel(levelID,
                 function () {
