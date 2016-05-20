@@ -1020,7 +1020,9 @@ ocargo.LevelEditor = function() {
             // Add a row to the table for each level saved in the database
             for (var i = 0, ii = levels.length; i < ii; i++) {
                 var level = levels[i];
-                table.append("<tr value=\""+level.id+"\"><td>"+ level.name +"</td><td>"+ level.owner + "</td></tr>");
+                var row = $('<tr></tr>').attr({ value: level.id }).appendTo(table);
+                $('<td></td>').text(level.name).appendTo(row);
+                $('<td></td>').text(level.owner).appendTo(row);
             }
             for (var i = 0; i < 2; i++) {
                 var td = $('#' + tableName + ' td:eq(' + i + ')');
