@@ -158,8 +158,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     var result = ocargo.controller.prepare(blocks);
     if (!result.success) {
         ocargo.sound.tension();
-        ocargo.Drawing.startPopup(ocargo.messages.failTitle, "",
-                                    result.error);
+        ocargo.Drawing.startPopup(gettext('Oh dear!'), "", result.error);
         return false;
     }
     var program = result.program;
