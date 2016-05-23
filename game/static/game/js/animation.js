@@ -290,21 +290,25 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			// sort popup...
 			switch (animation.popupType) {
 				case 'WIN':
-					title = ocargo.messages.winTitle;
+					title = gettext('You win!');
 					var levelMsg = [];
 
 					if (!animation.pathScoreDisabled) {
-						levelMsg.push(ocargo.messages.pathScore + ocargo.Drawing.renderCoins(animation.routeCoins)
+						levelMsg.push(gettext('Route score: ') + ocargo.Drawing.renderCoins(animation.routeCoins)
 							+ "<span id=\"routeScore\">" + animation.pathLengthScore + "/" + animation.maxScoreForPathLength + "</span>");
 					}
 
 					if (animation.maxScoreForNumberOfInstructions != 0){
-						levelMsg.push(ocargo.messages.algorithmScore +
+						levelMsg.push(gettext('Algorithm score: ') +
 							ocargo.Drawing.renderCoins(animation.instrCoins)
                             + "<span id=\"algorithmScore\">" + animation.instrScore + "/" + animation.maxScoreForNumberOfInstructions + "</span>");
 					}
 
-					levelMsg.push(ocargo.messages.totalScore(animation.totalScore, animation.maxScore));
+					levelMsg.push(interpolate(
+						gettext('Your total score: %(totalScore)s/%(maxScore)s'),
+						{totalScore: animation.totalScore, maxScore: animation.maxScore},
+						true
+					));
 
 					levelMsg.push(leadMsg);
 
@@ -313,12 +317,14 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 					}
 
 					if (BLOCKLY_ENABLED && PYTHON_ENABLED && ocargo.game.isInBlocklyWorkspace()) {
-						levelMsg.push(ocargo.messages.nowTryPython);
-						buttons += ocargo.button.addDismissButtonHtml('Close');
+						levelMsg.push(gettext(
+							'Looks like you\'ve got a route sorted using Blockly.<br><br>Now go to the Python tab and see if you can do the same in Python! '
+						));
+						buttons += ocargo.button.dismissButtonHtml('close_button', gettext('Close'));
 					} else {
 						// If there exists next level, add animation button which redirects the user to that
 						if (NEXT_LEVEL_URL) {
-							buttons += ocargo.button.redirectButtonHtml('next_level_button', NEXT_LEVEL_URL, 'Next Level');
+							buttons += ocargo.button.redirectButtonHtml('next_level_button', NEXT_LEVEL_URL, gettext('Next Level'));
 						} else {
 							/*
 							 This is the last level of the episode. If there exists animation next episode, add button to
@@ -329,23 +335,31 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 							 */
 
 							if (NEXT_EPISODE) {
-								levelMsg.push(ocargo.messages.nextEpisode(NEXT_EPISODE, RANDOM));
-								buttons += ocargo.jsElements.nextEpisodeButton(NEXT_EPISODE, RANDOM);
+								var nextEpisodeMessages = [gettext('Well done, you\'ve completed the episode! <br> Are you ready for the next challenge? ')];
+								if (RANDOM) {
+									nextEpisodeMessages.push(gettext('Or try one of this episode\'s random levels!'));
+								}
+								levelMsg.push(nextEpisodeMessages.join(' '));
+								buttons += ocargo.button.redirectButtonHtml('next_episode_button', Urls.start_episode(NEXT_EPISODE), gettext('Next episode'));
+								if (RANDOM) {
+									buttons += ocargo.button.redirectButtonHtml('random_level_button', Urls.random_level_for_episode(NEXT_EPISODE-1), gettext('Random level'));
+								}
+								buttons += ocargo.button.redirectButtonHtml('home_button', Urls.levels(), gettext('Home'));
 					        } else if(DEFAULT_LEVEL) {
-					            levelMsg.push(ocargo.messages.lastLevel);
-								buttons += ocargo.button.redirectButtonHtml('next_level_button', Urls.level_editor(), "Create your own map!");
-								buttons += ocargo.button.redirectButtonHtml('home_button', Urls.levels(), "Home");
+					            levelMsg.push(gettext('That\'s all we\'ve got for you right now. Carry on the fun by creating your own challenges.'));
+								buttons += ocargo.button.redirectButtonHtml('next_level_button', Urls.level_editor(), gettext('Create your own map!'));
+								buttons += ocargo.button.redirectButtonHtml('home_button', Urls.levels(), gettext('Home'));
 					        } else if (IS_RANDOM_LEVEL) {
-					            levelMsg.push(ocargo.messages.anotherRandomLevel);
-								buttons += ocargo.button.redirectButtonHtml('retry_button', window.location.href, 'Have more fun!');
-								buttons += ocargo.button.redirectButtonHtml('home_button', Urls.levels(), "Home");
+					            levelMsg.push(gettext('Do you want to try another random level?'));
+								buttons += ocargo.button.redirectButtonHtml('retry_button', window.location.href, gettext('Have more fun!'));
+								buttons += ocargo.button.redirectButtonHtml('home_button', Urls.levels(), gettext('Home'));
 							}
 					    }
 					}
 					leadMsg = ocargo.messages.addNewLine(levelMsg);
 					break;
 				case 'FAIL':
-					title = ocargo.messages.failTitle;
+					title = gettext('Oh dear!');
 					buttons = ocargo.button.tryAgainButtonHtml();
 					break;
 				case 'WARNING':
@@ -354,7 +368,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			}
 			var otherMsg = "";
 			if (animation.popupHint) {
-				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + ocargo.messages.needHint + '</span></button>';
+				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + gettext('Are you stuck? Do you need help?') + '</span></button>';
 				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}
 			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons);

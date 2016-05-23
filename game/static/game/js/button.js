@@ -53,5 +53,5 @@ ocargo.button.redirectButtonHtml = function(id, location, label){
 
 // Returns the html code for a button which shows the try again message and closes the popup
 ocargo.button.tryAgainButtonHtml = function(){
-    return ocargo.button.dismissButtonHtml('try_again_button', ocargo.messages.tryagainLabel)
+    return ocargo.button.dismissButtonHtml('try_again_button', gettext('Try again'));
 };
