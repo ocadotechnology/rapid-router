@@ -38,18 +38,23 @@ identified as the original program.
 var ocargo = ocargo || {};
 
 ocargo.Tab = function(radioElement, labelElement, paneElement) {
+    var _currentStateId;
 
-    this.getText = function() {
-        return labelElement[0].children[1].innerHTML;
+    var _states = {};
+
+    this.addState = function(stateId, imageUrl, text) {
+        _states[stateId] = {imageUrl: imageUrl, text: text};
+        return this;
     };
 
-    this.setContents = function(newImageURL, newText) {
-        labelElement[0].children[0].src = newImageURL;
-        labelElement[0].children[1].innerHTML = newText;
+    this.transitTo = function(stateId) {
+        labelElement[0].children[0].src = _states[stateId].imageUrl;
+        labelElement[0].children[1].innerHTML = _states[stateId].text;
+        _currentStateId = stateId;
     };
 
-    this.getContents = function() {
-        return labelElement[0].children[1].innerHTML;
+    this.isInState = function(stateId) {
+        return _currentStateId === stateId;
     };
 
     this.select = function() {
