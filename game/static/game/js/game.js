@@ -983,9 +983,9 @@ ocargo.Game.prototype._populateTable = function (tableName, workspaces) {
     // Add a row to the table for each workspace saved in the database
     for (var i = 0, ii = workspaces.length; i < ii; i++) {
         var workspace = workspaces[i];
-	var languages = [];
 	if (!workspace.blockly_enabled && !workspace.python_enabled || workspace.blockly_enabled && BLOCKLY_ENABLED || workspace.python_enabled && PYTHON_ENABLED) {
-		table.append("<tr value=\""+workspace.id +"\"> <td>" + workspace.name+  "</td></tr>");
+        var row = $('<tr></tr>').attr({ value: workspace.id }).appendTo(table);
+        $('<td></td>').text(workspace.name).appendTo(row);
 		}
 	// Add a function to make it work for old levels with defaults to false. 
     }
