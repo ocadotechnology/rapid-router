@@ -41,40 +41,16 @@ var ocargo = ocargo || {};
 ocargo.jsElements = {
     image: function(url, class_) {
         return "<img src='" + url + "'class='" + class_ + "'>";
-    },
-    nextEpisodeButton: function(episode, random){
-        return ocargo.button.redirectButtonHtml('next_episode_button', Urls.start_episode(episode), 'Next episode') +
-          (random ? ocargo.button.redirectButtonHtml('random_level_button', Urls.random_level_for_episode(episode-1), 'Random level') : "") +
-            ocargo.button.redirectButtonHtml('home_button', Urls.levels(), "Home");
-    },
-
-    buttonHelpButton: '<button onclick="ocargo.Drawing.showButtonHelp();">Button help</button>'
+    }
 };
 
 
 //FIXME: actually use Django's internationalisation framework.
 ocargo.messages = {
 
-    nextEpisode: function(episode, random) {
-        return "Well done, you've completed the episode! <br> Are you ready for the next " +
-            "challenge? " + (random ? "Or try one of this episode's random levels!" : "") ;
-    },
-
-    anotherRandomLevel: "Do you want to try another random level?",
-    nightMode: "In Night Mode you can only see a very short distance. " +
-            "We've given you more blocks to help you find your way!",
-    loggedOutWarning: "You are not logged in. Your progress won't be saved.",
-    nowTryPython: "Looks like you've got a route sorted using Blockly.<br><br>" +
-        "Now go to the Python tab and see if you can do the same in Python! ",
-    lastLevel: "That's all we've got for you right now. Carry on the fun by creating your own challenges.",
-
     illegalBlocks: "Sorry, this workspace has blocks in it that aren't allowed in this level!",
     tooManyBlocks: "Whoops. You used too many blocks.",
     ohNo: "Oh no!",
-    winTitle: "You win!",
-    failTitle: "Oh dear! ",
-    tryagainLabel: "Try again",
-    needHint: "Are you stuck? Do you need help?",
     terminated: "Program terminated.",
     crashed: "Your program crashed.",
     queryInfiniteLoop: "It looks as though your program's been running a while. Check your repeat loops are okay.",
@@ -186,11 +162,6 @@ ocargo.messages = {
     },
     shareSuccessful: "Your level has been successfully shared! ",
 
-    // Scoring.
-    totalScore: function(score, maxScore) {
-        return "Your total score: " + score + "/" + maxScore;
-    },
-
     // End level message
     endLevelMsg: function(a) {
         switch (a){
@@ -217,9 +188,7 @@ ocargo.messages = {
         }
         return html;
     },
-    pathScore: "Route score: ",
     pathLonger: "Try finding a shorter route to the destination. ",
-    algorithmScore: "Algorithm score: ",
     algorithmLonger: "Try creating a simpler program. ",
     algorithmShorter: "That solution isn't quite right. Read the level instructions or click Help.",
     scorePerfect: "Congratulations! You've aced it. ",

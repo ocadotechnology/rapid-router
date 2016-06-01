@@ -100,24 +100,28 @@ ocargo.Game.prototype.setup = function() {
     var loggedOutWarning = '';
     // Check if logged on
     if (USER_STATUS == 'UNTRACKED') {
-        loggedOutWarning = '<br>' + ocargo.messages.loggedOutWarning;
+        loggedOutWarning = '<br>' + gettext('You are not logged in. Your progress won\'t be saved.');
     }
     // Start the popup
-    var title = "Try solving this one...";
+    var title = gettext('Try solving this one...');
     if (LEVEL_ID) {
+        var titlePrefix = '';
         if (NIGHT_MODE) {
-            title = "Night Level " + LEVEL_NAME;
+            titlePrefix = gettext('Night Level %(level_name)s');
         } else if (DEFAULT_LEVEL) {
-            title = "Level " + LEVEL_NAME;
+            titlePrefix = gettext('Level %(level_name)s');
         }
-        else {
+        if (titlePrefix) {
+            title = interpolate(titlePrefix, {level_name: LEVEL_NAME}, true);
+        } else {
             title = LEVEL_NAME;
         }
     }
 
     var message;
     if (NIGHT_MODE) {
-        message = '<br>' + ocargo.messages.nightMode;
+        message = '<br>' + gettext('In Night Mode you can only see a very short distance. ' +
+                                   'We\'ve given you more blocks to help you find your way!');
     } else {
         message = loggedOutWarning;
     }
@@ -154,8 +158,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     var result = ocargo.controller.prepare(blocks);
     if (!result.success) {
         ocargo.sound.tension();
-        ocargo.Drawing.startPopup(ocargo.messages.failTitle, "",
-                                    result.error);
+        ocargo.Drawing.startPopup(gettext('Oh dear!'), "", result.error);
         return false;
     }
     var program = result.program;
@@ -431,13 +434,11 @@ ocargo.Game.prototype.mute = function (mute) {
     if (mute) {
         ocargo.sound.mute();
         $.cookie("muted", 'true');
-        $('#mute_text').text('Unmute');
-        $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/muted.svg');
+        this.tabs.mute.setContents(ocargo.Drawing.imageDir + 'icons/muted.svg', gettext('Unmute'));
     } else {
         ocargo.sound.unmute();
         $.cookie("muted", 'false');
-        $('#mute_text').text('Mute');
-        $('#mute_img').attr('src', ocargo.Drawing.imageDir + 'icons/unmuted.svg');
+        this.tabs.mute.setContents(ocargo.Drawing.imageDir + 'icons/unmuted.svg', gettext('Mute'));
     }
 };
 
