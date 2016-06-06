@@ -38,7 +38,7 @@ from django.core.cache import cache
 from django.db.models.signals import post_save, post_delete
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
-from models import Level, Episode, Character, LevelDecor, LevelBlock
+from models import Level, Episode, LevelDecor, LevelBlock
 import level_management
 
 
