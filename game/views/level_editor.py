@@ -51,12 +51,13 @@ import game.level_management as level_management
 import game.permissions as permissions
 from game import random_road
 from game.decor import get_all_decor, get_decor_element
-from game.models import Level, Block, Character
+from game.models import Level, Block
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
 from game import app_settings
 from game.cache import cached_level_decor, cached_level_blocks
 from game.theme import get_all_themes
+from game.character import get_all_character
 
 
 def level_editor(request):
@@ -76,7 +77,7 @@ def level_editor(request):
     context = RequestContext(request, {
         'blocks': available_blocks(),
         'decor': get_all_decor(),
-        'characters': Character.objects.all(),
+        'characters': get_all_character(),
         'themes': get_all_themes(),
         'cow_level_enabled': app_settings.COW_FEATURE_ENABLED,
         'night_mode_feature_enabled': str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
