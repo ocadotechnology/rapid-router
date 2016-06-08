@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2015, Ocado Innovation Limited
+# Copyright (C) 2016, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -35,9 +35,9 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django.http import HttpResponse
-from game.models import Level, Episode, LevelBlock, Block, Character, LevelDecor
+from game.models import Level, Episode, LevelBlock, Block, LevelDecor
 from game.serializers import LevelListSerializer, EpisodeListSerializer, LevelDetailSerializer, EpisodeDetailSerializer, \
-    LevelBlockSerializer, BlockSerializer, CharacterSerializer, LevelMapDetailSerializer, \
+    LevelBlockSerializer, BlockSerializer, LevelMapDetailSerializer, \
     LevelDecorSerializer, LevelModeSerializer, LevelMapListSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -46,6 +46,7 @@ from rest_framework import viewsets
 
 from game.decor import get_all_decor, get_decor_element_by_pk, get_decors_url
 from game.theme import get_all_themes, get_theme_by_pk, get_themes_url
+from game.character import get_all_character, get_character_by_pk, get_characters_url
 
 
 @api_view(('GET',))
@@ -240,20 +241,18 @@ def theme_detail(request, pk, format=None):
 
 @api_view(('GET',))
 def character_list(request, format=None):
-    characters = Character.objects.all()
-    serializer = CharacterSerializer(characters, many=True, context={'request': request})
-    return Response(serializer.data)
+    characters = get_all_character()
+    data = [{get_characters_url(i.pk, request)} for i in characters]
+    return Response(data)
 
 
 @api_view(('GET',))
 def character_detail(request, pk, format=None):
     try:
-        character = Character.objects.get(pk=pk)
-    except Character.DoesNotExist:
+        character = get_character_by_pk(pk)
+    except KeyError:
         return HttpResponse(status=404)
-
-    serializer = CharacterSerializer(character, context={'request': request})
-    return Response(serializer.data)
+    return Response(character.__dict__)
 
 
 # Maybe used later for when we use a viewset which requires multiple serializer

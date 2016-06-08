@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2015, Ocado Innovation Limited
+# Copyright (C) 2016, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -37,10 +37,11 @@
 from itertools import chain
 
 import permissions
-from models import Block, LevelBlock, LevelDecor, Character
+from models import Block, LevelBlock, LevelDecor
 
 from game.decor import get_decor_element
 from game.theme import get_theme_by_pk
+from game.character import get_character_by_pk
 
 
 ##########
@@ -171,7 +172,7 @@ def save_level(level, data):
     level.pythonEnabled = data.get('pythonEnabled', False)
     level.pythonViewEnabled = data.get('pythonViewEnabled', False)
     level.theme = get_theme_by_pk(pk=data['theme'])
-    level.character = Character.objects.get(id=data['character'])
+    level.character = get_character_by_pk(pk=data['character'])
     level.save()
 
     set_decor(level, data['decor'])

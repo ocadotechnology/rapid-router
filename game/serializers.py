@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2015, Ocado Innovation Limited
+# Copyright (C) 2016, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -38,7 +38,7 @@ from game import messages
 from game.messages import description_level_default, hint_level_default
 from game.theme import get_theme, get_themes_url
 from rest_framework import serializers
-from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block, Character
+from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
@@ -181,8 +181,3 @@ class BlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Block
         fields = ('url', 'id', 'type')
-
-
-class CharacterSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Character

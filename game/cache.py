@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2015, Ocado Innovation Limited
+# Copyright (C) 2016, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -38,7 +38,7 @@ from django.core.cache import cache
 from django.db.models.signals import post_save, post_delete
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
-from models import Level, Episode, Character, LevelDecor, LevelBlock
+from models import Level, Episode, LevelDecor, LevelBlock
 import level_management
 
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2015, Ocado Innovation Limited
+# Copyright (C) 2016, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -44,6 +44,11 @@ from portal.models import UserProfile, Student
 def theme_choices():
     from game.theme import get_all_themes
     return [(theme.name, theme.name) for theme in get_all_themes()]
+
+
+def character_choices():
+    from game.character import get_all_character
+    return [(character.name, character.name) for character in get_all_character()]
 
 
 class Block(models.Model):
@@ -127,7 +132,8 @@ class Level(models.Model):
     pythonEnabled = models.BooleanField(default=True)
     pythonViewEnabled = models.BooleanField(default=False)
     theme_name = models.CharField(max_length=10, choices=theme_choices(), blank=True, null=True, default=None)
-    character = models.ForeignKey(Character, default=1)
+    character_name = models.CharField(max_length=20, choices=character_choices(), blank=True, null=True, default=None)
+    character_old = models.ForeignKey(Character, default=1)
     anonymous = models.BooleanField(default=False)
     objects = LevelManager()
 
@@ -146,6 +152,25 @@ class Level(models.Model):
     def theme(self, val):
         from game.theme import get_theme_by_pk
         self.theme_name = get_theme_by_pk(val.pk).name
+
+    @property
+    def character(self):
+        if not self.character_name:
+            if self.character_old:
+                self.character_name = self.character_old.name
+            else:
+                return None
+        from game.character import get_character
+        return get_character(self.character_name)
+
+    @character.setter
+    def character(self, val):
+        from game.character import get_character_by_pk
+        self.character_old = Character.objects.get(pk=val.pk)
+        try:
+            self.character_name = get_character_by_pk(val.pk).name
+        except KeyError:
+            self.character_name = self.character_old.name
 
 
 class LevelBlock(models.Model):

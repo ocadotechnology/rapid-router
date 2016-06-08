@@ -1,7 +1,7 @@
 /*
 Code for Life
 
-Copyright (C) 2015, Ocado Innovation Limited
+Copyright (C) 2016, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -202,35 +202,5 @@ ocargo.messages = {
     procMissingNameError: "Perhaps try looking at your 'define' blocks? ",
     procMissingBodyError: "Perhaps try looking at your 'define' blocks? ",
     procDupNameError: "Perhaps try checking the names of your 'define' blocks? ",
-    procCallNameError: "Perhaps try checking the names in your 'call' blocks? ",
-
-    pythonCommands: "<p>Run the following commands on the van object v, e.g. v.move_forwards()</p>" +
-        	"<div class=\"row\">" +
-            "<div class=\"large-4 columns\">" +
-                  "<p><b>Movement</b>" +
-                  "<br>v.move_forwards()" +
-                  "<br>v.turn_left()" +
-                  "<br>v.turn_right()" +
-                  "<br>v.turn_around()" +
-                  "<br>v.wait()</p>" +
-                "</div>" +
-                "<div class=\"large-4 columns\">" +
-                  "<p><b>Position</b>" +
-                  "<br>v.at_dead_end()" +
-                  "<br>v.at_destination()" +
-                  "<br>v.at_red_traffic_light()" +
-                  "<br>v.at_green_traffic_light()" +
-                  "<br>v.at_traffic_light(c)" +
-                  "<br><i>where c is 'RED' or 'GREEN'</i></p>" +
-                "</div>" +
-                "<div class=\"large-4 columns\">" +
-                  "<p>" +
-                  "<br>v.is_road_forward()" +
-                  "<br>v.is_road_left()" +
-                  "<br>v.is_road_right()" +
-                  "<br>v.is_road(d)" +
-                  "<br><i>where d is 'FORWARD'," +
-                  "<br>'LEFT', or 'RIGHT'</i></p>" +
-                "</div>" +
-              "</div>"
+    procCallNameError: "Perhaps try checking the names in your 'call' blocks? "
 };
