@@ -12,47 +12,34 @@ game.
 Go to the official [Code For Life website][c4l].
 
 ## To run the app locally
-* Clone the repo
-* Make and activate a virtualenv (We recommend [virtualenvwrapper](http://virtualenvwrapper.readthedocs.org/en/latest/index.html) - [this blog post](http://mkelsey.com/2013/04/30/how-i-setup-virtualenv-and-virtualenvwrapper-on-my-mac/) may also be
- useful if you're using a Mac)
-    * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
-    * and thereafter `workon rapid-router`
-* `./run` in your rapid-router dir - This will:
-    * install all of the dependencies using pip
-    * sync the database
-    * collect the static files
-    * run the server
 
-## Localisation
-* `./run --with-translation-tools` in your rapid-router dir to include the translation/localisation libraries
-* You will need your crowdin api key locally in the `CROWDIN_API_KEY` environment variable, e.g. `export CROWDIN_API_KEY=<key>`. This can be obtained from [the settings page](https://crowdin.com/project/code-for-life/settings#integration)
-* Set your `django_language` cookie to `lol-us` to enable in-context localisation
-
-## Run the app locally from scratch
-(Tested on Linux Mint, Ubuntu 16.04...)
-
-* Prerequisites:
+* Install prerequisites. E.g. on Ubuntu / Linux Mint:
     * `sudo apt-get install git`
     * `sudo apt-get install virtualenvwrapper`
     * `sudo apt-get install python-dev`
     * `sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev`
     * `sudo apt-get install ruby2.0` - still Ruby 1.9 hiding under `ruby` command.
     * `sudo gem install sass -v 3.3.4` - later versions incompatible with Ruby 1.9 (see above).
-* To run:
-    * Clone the repo: `https://github.com/ocadotechnology/rapid-router.git`
-    * Make and activate a virtualenv
-        * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
-        * and thereafter `workon rapid-router`
-    * `./run` in your rapid-router directory - This will:
-        * install all of the dependencies using pip
-        * sync the database
-        * collect the static files
-        * run the server
-    * Once you see `Quit the server with CONTROL-C`, you can open the portal in your browser at `localhost:8000`.
+
+* Clone the repo: `https://github.com/ocadotechnology/rapid-router.git`
+* Make and activate a virtualenv
+    * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
+    * and thereafter `workon rapid-router`
+* `./run` in your rapid-router directory - This will:
+    * install all of the dependencies using pip
+    * sync the database
+    * collect the static files
+    * run the server
+* Once you see `Quit the server with CONTROL-C`, you can open the portal in your browser at `localhost:8000`.
 
 * If you have problems seeing the portal on machines with different locale (e.g. Polish), check the terminal for errors mentioning `ValueError: unknown locale: UTF-8`. If you see them, you need to have environment variables `LANG` and `LC_ALL` both set to `en_US.UTF-8`.
     * Either export them in your `.bashrc` or `.bash_profile`
     * or restart the portal with command `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 ./run`.
+
+## Localisation
+* `./run --with-translation-tools` in your rapid-router dir to include the translation/localisation libraries
+* You will need your crowdin api key locally in the `CROWDIN_API_KEY` environment variable, e.g. `export CROWDIN_API_KEY=<key>`. This can be obtained from [the settings page](https://crowdin.com/project/code-for-life/settings#integration)
+* Set your `django_language` cookie to `lol-us` to enable in-context localisation
 
 ## To contribute
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
