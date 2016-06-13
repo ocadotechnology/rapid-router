@@ -77,10 +77,15 @@ ocargo.BlocklyControl.prototype.incorrectBlockColour = null;
 
 ocargo.BlocklyControl.prototype.prepare = function(blocks) {
     try {
-        return {success:true,
-                program: blocks? ocargo.blocklyCompiler.mobileCompile(blocks) : ocargo.blocklyCompiler.compile()};
+        return {
+            success:true,
+            program: blocks? ocargo.blocklyCompiler.mobileCompile(blocks) : ocargo.blocklyCompiler.compile()
+        };
     } catch (error) {
-        return {success:false, error: ocargo.messages.compilationError + "<br><br>" + error};
+        return {
+            success:false,
+            error: gettext('Your program doesn\'t look quite right...') + "<br><br>" + gettext(error)
+        };
     }
 };
 
