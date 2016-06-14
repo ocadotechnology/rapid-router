@@ -103,6 +103,21 @@ ocargo.PathFinder.prototype.getScore = function() {
         performance = "scorePerfect";
     }
 
+    var endLevelMsg = function(performance) {
+        switch (performance){
+            case 'pathLonger':
+                return gettext('Try finding a shorter route to the destination.');
+            case 'algorithmLonger':
+                return gettext('Try creating a simpler program.');
+            case 'algorithmShorter':
+                return gettext('That solution isn\'t quite right. Read the level instructions or click Help.');
+            case 'scorePerfect':
+                return gettext('Congratulations! You\'ve aced it.');
+            default:
+                return '';
+        }
+    };
+
     return {totalScore: totalScore,
             routeCoins: routeCoins,
             instrCoins: instrCoins,
@@ -113,7 +128,7 @@ ocargo.PathFinder.prototype.getScore = function() {
             maxScoreForPathLength: this.maxScoreForPathLength,
             instrScore: instrScore,
             maxScoreForNumberOfInstructions: this.maxScoreForNumberOfInstructions,
-            popupMessage: ocargo.messages.endLevelMsg(performance)};
+            popupMessage: endLevelMsg(performance)};
 };
 
 /* Return number of coins for each type*/

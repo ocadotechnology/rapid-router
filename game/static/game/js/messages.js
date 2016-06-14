@@ -54,9 +54,7 @@ ocargo.messages = {
     terminated: "Program terminated.",
     crashed: "Your program crashed.",
     queryInfiniteLoop: "It looks as though your program's been running a while. Check your repeat loops are okay.",
-    compilationError: "Your program doesn't look quite right...",
     stoppingTitle: "Stopping...",
-    errorTitle: "Error",
 
     outOfFuel : "You ran out of fuel! Try to find a shorter route to the destination.",
     outOfInstructions: "The van ran out of instructions before it reached a destination. "  +
@@ -152,7 +150,6 @@ ocargo.messages = {
     },
     independentStudentSharing:  "Sorry but as an independent student you'll need to join a school or club to " +
         "share your levels with others.",
-    internetDown: "Could not connect to server. Your internet might not be working properly.",
     notSaved: "Please save your level before continuing!",
     notOwned: "You do not own this level. If you would like to share it you will first have to " +
         "save your own copy! ",
@@ -162,45 +159,11 @@ ocargo.messages = {
     },
     shareSuccessful: "Your level has been successfully shared! ",
 
-    // End level message
-    endLevelMsg: function(a) {
-        switch (a){
-            case 'pathLonger':
-                return this.pathLonger;
-                break;
-            case 'algorithmLonger':
-                return this.algorithmLonger;
-                break;
-            case 'algorithmShorter':
-                return this.algorithmShorter;
-                break;
-            case 'scorePerfect':
-                return this.scorePerfect;
-                break;
-            default:
-                return "";
-        }
-    },
     addNewLine: function(arr){
         var html = '';
         for(var i = 0 ; i < arr.length ; i++ ){
             html += arr[i] + '<br>';
         }
         return html;
-    },
-    pathLonger: "Try finding a shorter route to the destination. ",
-    algorithmLonger: "Try creating a simpler program. ",
-    algorithmShorter: "That solution isn't quite right. Read the level instructions or click Help.",
-    scorePerfect: "Congratulations! You've aced it. ",
-
-    // Malformed program.
-    whileConditionError: "Perhaps try looking at your 'repeat' blocks? ",
-    whileBodyError: "Perhaps try looking at your 'repeat' blocks? ",
-    eventConditionError: "Perhaps try looking at your 'event' blocks? ",
-    eventBodyError: "Perhaps try looking at your 'event' blocks? ",
-    ifConditionError: "Perhaps try looking at your 'if' blocks? ",
-    procMissingNameError: "Perhaps try looking at your 'define' blocks? ",
-    procMissingBodyError: "Perhaps try looking at your 'define' blocks? ",
-    procDupNameError: "Perhaps try checking the names of your 'define' blocks? ",
-    procCallNameError: "Perhaps try checking the names in your 'call' blocks? "
+    }
 };

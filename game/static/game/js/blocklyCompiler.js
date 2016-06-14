@@ -64,15 +64,18 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
         var block = procBlocks[i];
         var name = block.inputList[0].fieldRow[1].text_;
         if (name === "") {
-            throw ocargo.messages.procMissingNameError;
+            throw gettext_noop('Perhaps try looking at your \'define\' blocks?');
         }
 
         var bodyBlock = block.inputList[1].connection.targetBlock();
+        if (bodyBlock === null) {
+            throw gettext_noop('Perhaps try looking at your \'define\' blocks?');
+        }
 
         if (!(name in this.procedures)) {
             this.procedures[name] = new Procedure(name, this.createSequence(bodyBlock),block);
         } else {
-            throw ocargo.messages.procDupNameError;
+            throw gettext_noop('Perhaps try checking the names of your \'define\' blocks?');
         }
     }
 };
@@ -87,7 +90,7 @@ ocargo.BlocklyCompiler.prototype.compileEvents = function() {
 
         var bodyBlock = block.inputList[1].connection.targetBlock();
         if (bodyBlock === null) {
-            throw ocargo.messages.eventBodyError;
+            throw gettext_noop('Perhaps try looking at your \'event\' blocks?');
         }
 
         var conditionType = block.type;
@@ -116,7 +119,7 @@ ocargo.BlocklyCompiler.prototype.bindProcedureCalls = function() {
         if (name in this.procedures) {
             call.bind(this.procedures[name]);
         } else {
-            throw ocargo.messages.procCallNameError;
+            throw gettext_noop('Perhaps try checking the names in your \'call\' blocks?');
         }
     }
 };
@@ -128,7 +131,7 @@ ocargo.BlocklyCompiler.prototype.bindProcedureCalls = function() {
 ocargo.BlocklyCompiler.prototype.createRepeatUntil = function(block) {
     var conditionBlock = block.inputList[0].connection.targetBlock();
     if (conditionBlock === null) {
-        throw ocargo.messages.whileConditionError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     var condition = this.getCondition(conditionBlock);
     // negate condition for repeat until
@@ -136,7 +139,7 @@ ocargo.BlocklyCompiler.prototype.createRepeatUntil = function(block) {
 
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
-        throw ocargo.messages.whileBodyError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     return new While(condition, this.createSequence(bodyBlock), block);
 };
@@ -144,13 +147,13 @@ ocargo.BlocklyCompiler.prototype.createRepeatUntil = function(block) {
 ocargo.BlocklyCompiler.prototype.createRepeatWhile = function(block) {
     var conditionBlock = block.inputList[0].connection.targetBlock();
     if (conditionBlock === null) {
-        throw ocargo.messages.whileConditionError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     var condition = this.getCondition(conditionBlock);
 
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
-        throw ocargo.messages.whileBodyError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     return new While(condition, this.createSequence(bodyBlock), block);
 };
@@ -158,7 +161,7 @@ ocargo.BlocklyCompiler.prototype.createRepeatWhile = function(block) {
 ocargo.BlocklyCompiler.prototype.createProcedureCall = function(block) {
     var name = block.inputList[0].fieldRow[2].text_;
     if (name === "") {
-        throw ocargo.messages.procCallNameError;
+        throw gettext_noop('Perhaps try checking the names in your \'call\' blocks?');
     }
 
     var procCall = new ProcedureCall(block);
@@ -169,7 +172,7 @@ ocargo.BlocklyCompiler.prototype.createProcedureCall = function(block) {
 ocargo.BlocklyCompiler.prototype.createRepeat = function(block) {
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
-        throw ocargo.messages.whileBodyError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
 	return new While(
 		this.counterCondition(block, parseInt(block.inputList[0].fieldRow[1].text_)),
@@ -180,7 +183,7 @@ ocargo.BlocklyCompiler.prototype.createRepeat = function(block) {
 ocargo.BlocklyCompiler.prototype.createWhileUntil = function(block) {
     var conditionBlock = block.inputList[0].connection.targetBlock();
     if (conditionBlock === null) {
-        throw ocargo.messages.whileConditionError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
 	var condition = this.getCondition(conditionBlock);
 	if (block.inputList[0].fieldRow[1].value_ == 'UNTIL') {
@@ -189,7 +192,7 @@ ocargo.BlocklyCompiler.prototype.createWhileUntil = function(block) {
 
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
-        throw ocargo.messages.whileBodyError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
 	return new While(condition,	this.createSequence(bodyBlock), block);
 };
@@ -225,7 +228,7 @@ ocargo.BlocklyCompiler.prototype.createIf = function(block) {
 		if (input.name.indexOf('IF') === 0) {
             var conditionBlock = input.connection.targetBlock();
             if (conditionBlock === null) {
-                throw ocargo.messages.ifConditionError;
+                throw gettext_noop('Perhaps try looking at your \'if\' blocks?');
             }
 			condition = this.getCondition(conditionBlock);
 		} else if (input.name.indexOf('DO') === 0) {
@@ -421,7 +424,7 @@ ocargo.BlocklyCompiler.prototype.mobileCreateSequence = function(blocks) {
 ocargo.BlocklyCompiler.prototype.mobileCreateRepeatUntil = function(block, conditionBlock) {
     var condition;
     if (conditionBlock === null || (condition = this.mobileGetCondition(conditionBlock)) === null) {
-        throw ocargo.messages.whileConditionError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
 
     // negate condition for repeat until
@@ -429,7 +432,7 @@ ocargo.BlocklyCompiler.prototype.mobileCreateRepeatUntil = function(block, condi
 
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
-        throw ocargo.messages.whileBodyError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     return new While(condition, this.createSequence(bodyBlock), block);
 };
@@ -437,13 +440,13 @@ ocargo.BlocklyCompiler.prototype.mobileCreateRepeatUntil = function(block, condi
 ocargo.BlocklyCompiler.prototype.mobileCreateRepeatWhile = function(block) {
     var conditionBlock = block.inputList[0].connection.targetBlock();
     if (conditionBlock === null) {
-        throw ocargo.messages.whileConditionError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     var condition = this.getCondition(conditionBlock);
 
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
-        throw ocargo.messages.whileBodyError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     return new While(condition, this.createSequence(bodyBlock), block);
 };
@@ -451,7 +454,7 @@ ocargo.BlocklyCompiler.prototype.mobileCreateRepeatWhile = function(block) {
 ocargo.BlocklyCompiler.prototype.mobileCreateRepeat = function(block) {
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
-        throw ocargo.messages.whileBodyError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     return new While(
         this.counterCondition(block, parseInt(block.inputList[0].fieldRow[1].text_)),
@@ -462,7 +465,7 @@ ocargo.BlocklyCompiler.prototype.mobileCreateRepeat = function(block) {
 ocargo.BlocklyCompiler.prototype.mobileCreateWhileUntil = function(block) {
     var conditionBlock = block.inputList[0].connection.targetBlock();
     if (conditionBlock === null) {
-        throw ocargo.messages.whileConditionError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     var condition = this.getCondition(conditionBlock);
     if (block.inputList[0].fieldRow[1].value_ == 'UNTIL') {
@@ -471,7 +474,7 @@ ocargo.BlocklyCompiler.prototype.mobileCreateWhileUntil = function(block) {
 
     var bodyBlock = block.inputList[1].connection.targetBlock();
     if (bodyBlock === null) {
-        throw ocargo.messages.whileBodyError;
+        throw gettext_noop('Perhaps try looking at your \'repeat\' blocks?');
     }
     return new While(condition,	this.createSequence(bodyBlock), block);
 };
@@ -488,7 +491,7 @@ ocargo.BlocklyCompiler.prototype.mobileCreateIf = function(block) {
         if (input.name.indexOf('IF') === 0) {
             var conditionBlock = input.connection.targetBlock();
             if (conditionBlock === null) {
-                throw ocargo.messages.ifConditionError;
+                throw gettext_noop('Perhaps try looking at your \'if\' blocks?');
             }
             condition = this.getCondition(conditionBlock);
         } else if (input.name.indexOf('DO') === 0) {
@@ -512,7 +515,7 @@ ocargo.BlocklyCompiler.prototype.mobileCreateIf = function(block) {
 ocargo.BlocklyCompiler.prototype.mobileCreateProcedureCall = function(block) {
     var name = block.inputList[0].fieldRow[2].text_;
     if (name === "") {
-        throw ocargo.messages.procCallNameError;
+        throw gettext_noop('Perhaps try checking the names in your \'call\' blocks?');
     }
 
     var procCall = new ProcedureCall(block);

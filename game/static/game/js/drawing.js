@@ -772,7 +772,7 @@ ocargo.Drawing.startPopup = function (title, subtitle, message, mascot, buttons)
     if (buttons) {
         $('#modal-buttons').html(buttons);
     } else {
-        $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', 'Close'));
+        $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', gettext('Close')));
     }
 
 
@@ -792,14 +792,7 @@ ocargo.Drawing.startYesNoPopup = function (title, subtitle, message, yesFunction
 
 // This is the function that starts the pop-up when there is no internet connection while playing the game
 ocargo.Drawing.startInternetDownPopup = function () {
-    ocargo.Drawing.startPopup(ocargo.messages.errorTitle, "", ocargo.messages.internetDown);
-};
-
-ocargo.Drawing.showButtonHelp = function () {
-    $('#myModal-lead').html('');
-    $('#myModal-mainText').html('<p>' + ocargo.messages.buttonHelp + '</p>' +
-        '<p><button onclick="document.getElementById(' + "'close-modal'" +
-        ').click()">Close</button></p>');
+    ocargo.Drawing.startPopup(gettext('Error'), '', gettext('Could not connect to server. Your internet might not be working properly.'));
 };
 
 ocargo.Drawing.isMobile = function () {
