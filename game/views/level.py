@@ -49,7 +49,7 @@ import game.messages as messages
 import game.permissions as permissions
 from game import app_settings
 from game.cache import cached_default_level, cached_episode, \
-        cached_custom_level, cached_level_decor, cached_level_blocks
+    cached_custom_level, cached_level_decor, cached_level_blocks
 from game.models import Level, Attempt, Workspace
 from helper import renderError
 from game.decor import get_decor_element
@@ -284,7 +284,7 @@ def close_and_reset(attempt):
 def load_list_of_workspaces(request):
     workspaces_owned = []
     if permissions.can_create_workspace(request.user):
-        workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
+        workspaces_owned = Workspace.objects.filter(owner=request.user)
 
     workspaces = [{'id': workspace.id, 'name': workspace.name, 'blockly_enabled': workspace.blockly_enabled, 'python_enabled': workspace.python_enabled}
                   for workspace in workspaces_owned]
@@ -312,7 +312,7 @@ def save_workspace(request, workspaceID=None):
     if workspaceID:
         workspace = Workspace.objects.get(id=workspaceID)
     elif permissions.can_create_workspace(request.user):
-        workspace = Workspace(owner=request.user.userprofile)
+        workspace = Workspace(owner=request.user)
 
     if workspace and permissions.can_save_workspace(request.user, workspace):
         workspace.name = name

@@ -73,6 +73,7 @@ def level_moderation(request):
         return renderError(request, messages.noPermissionLevelModerationTitle(),
                            messages.noPermissionLevelModerationPage())
 
+    # TODO: remove userprofile after portal models updated.
     teacher = request.user.userprofile.teacher
     classes_taught = Class.objects.filter(teacher=teacher)
 
@@ -149,10 +150,10 @@ def level_moderation(request):
 
 
 def get_students_for_level_moderation(request, class_id):
-    userprofile = request.user.userprofile
     class_ = Class.objects.get(id=class_id)
 
-    if userprofile.teacher != class_.teacher:
+    # TODO: remove userprofile after portal models updated.
+    if request.user.userprofile.teacher != class_.teacher:
         raise Http404
 
     students = Student.objects.filter(class_field=class_)

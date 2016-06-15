@@ -65,6 +65,7 @@ def scoreboard(request):
     if not permissions.can_see_scoreboard(request.user):
         return render_no_permission_error(request)
 
+    # TODO: remove userprofile after portal models updated.
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
 
