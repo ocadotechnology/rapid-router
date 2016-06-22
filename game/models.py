@@ -58,14 +58,6 @@ class Block(models.Model):
         return self.type
 
 
-class Character(models.Model):
-    name = models.CharField(max_length=100)
-    en_face = models.CharField(max_length=500)
-    top_down = models.CharField(max_length=500)
-    width = models.IntegerField(default=40)
-    height = models.IntegerField(default=20)
-
-
 class Episode(models.Model):
     '''Variables prefixed with r_ signify they are parameters for random level generation'''
 
@@ -133,7 +125,6 @@ class Level(models.Model):
     pythonViewEnabled = models.BooleanField(default=False)
     theme_name = models.CharField(max_length=10, choices=theme_choices(), blank=True, null=True, default=None)
     character_name = models.CharField(max_length=20, choices=character_choices(), blank=True, null=True, default=None)
-    character_old = models.ForeignKey(Character, default=1)
     anonymous = models.BooleanField(default=False)
     objects = LevelManager()
 
@@ -155,22 +146,16 @@ class Level(models.Model):
 
     @property
     def character(self):
-        if not self.character_name:
-            if self.character_old:
-                self.character_name = self.character_old.name
-            else:
-                return None
         from game.character import get_character
-        return get_character(self.character_name)
+        try:
+            return get_character(self.character_name)
+        except KeyError:
+            return None
 
     @character.setter
     def character(self, val):
         from game.character import get_character_by_pk
-        self.character_old = Character.objects.get(pk=val.pk)
-        try:
-            self.character_name = get_character_by_pk(val.pk).name
-        except KeyError:
-            self.character_name = self.character_old.name
+        self.character_name = get_character_by_pk(val.pk).name
 
 
 class LevelBlock(models.Model):
