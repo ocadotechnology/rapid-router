@@ -151,8 +151,12 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
         var legal = this.removeIllegalBlocks();
 
         if (!legal) {
-            ocargo.Drawing.startPopup("Loading workspace", "",
-                ocargo.messages.illegalBlocks, true);
+            ocargo.Drawing.startPopup(
+                gettext('Loading workspace'),
+                "",
+                gettext('Sorry, this workspace has blocks in it that aren\'t allowed in this level!'),
+                true
+            );
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
         }
