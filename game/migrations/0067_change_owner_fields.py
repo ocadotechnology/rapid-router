@@ -28,7 +28,7 @@ def restore_owners(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0065_rename_old_character_field'),
+        ('game', '0066_rm_character_model'),
     ]
 
     operations = [
