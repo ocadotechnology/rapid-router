@@ -146,7 +146,7 @@ ocargo.messages = {
         "<b>Quit</b> will take you back to the Rapid Router homepage.",
     notLoggedIn: function(activity) {
         return "Unfortunately you need to be logged in to " + activity +
-            " levels. You can log on <a href='/play/'>here</a>.";
+            " levels. You can log on <a href='"+Urls.play()+"'>here</a>.";
     },
     independentStudentSharing:  "Sorry but as an independent student you'll need to join a school or club to " +
         "share your levels with others.",
