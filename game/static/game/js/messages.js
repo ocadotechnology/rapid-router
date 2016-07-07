@@ -48,38 +48,11 @@ ocargo.jsElements = {
 //FIXME: actually use Django's internationalisation framework.
 ocargo.messages = {
 
-    illegalBlocks: "Sorry, this workspace has blocks in it that aren't allowed in this level!",
     tooManyBlocks: "Whoops. You used too many blocks.",
     ohNo: "Oh no!",
     terminated: "Program terminated.",
     crashed: "Your program crashed.",
-    queryInfiniteLoop: "It looks as though your program's been running a while. Check your repeat loops are okay.",
     stoppingTitle: "Stopping...",
-
-    outOfFuel : "You ran out of fuel! Try to find a shorter route to the destination.",
-    outOfInstructions: "The van ran out of instructions before it reached a destination. "  +
-      "Make sure there are enough instructions to complete the delivery.",
-    disconnectedStartBlock: "Make sure your blocks are connected to the Start block.",
-    passedDestination: "The van visited the destination, but didn't stop there!",
-    throughRedLight: "Uh oh, you just sent the van through a red light! Stick to the Highway " +
-        "Code - the van must wait for green.",
-    alreadyDelivered: "You have already delivered to that destination! You must only deliver " +
-        "once to each destination.",
-    undeliveredDestinations: "There are destinations that have not been delivered to. " +
-        "Ensure you visit all destinations and use the deliver command at each one.",
-    offRoad : function(correctSteps){
-        if (correctSteps === 0) {
-            return "Your first move was a crash. What went wrong?";
-        }
-        if (correctSteps === 1) {
-            return "Your first move was right. What went wrong after that?";
-        }
-        else {
-            return "Your first " + correctSteps + " moves worked. What went wrong after that?";
-        }
-    },
-
-    collisionWithCow: "You ran into a cow! Keep in mind that cows can appear anywhere on the map.",
 
     // Level editor.
     levelEditorTitle: "Welcome to the Level editor! ",

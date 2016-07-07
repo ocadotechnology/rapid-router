@@ -93,7 +93,7 @@ ocargo.Thread.prototype.step = function(model) {
             type: 'popup',
             popupType: 'FAIL',
             failSubtype: 'QUERY_INFINITE_LOOP',
-            popupMessage: ocargo.messages.queryInfiniteLoop,
+            popupMessage: gettext('It looks as though your program\'s been running a while. Check your repeat loops are okay.'),
             popupHint: ocargo.game.registerFailure(),
             description: 'failure popup'
         });

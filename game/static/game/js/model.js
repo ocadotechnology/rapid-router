@@ -192,13 +192,24 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
     var collisionWithCow = previousNodeCow && nextNode !== this.van.getPosition().currentNode;
 
     if(collisionWithCow) {
-        handleCrash(this, ocargo.messages.collisionWithCow, 'COLLISION_WITH_COW', 'collision with cow van move action: ');
+        handleCrash(this, gettext('You ran into a cow! Keep in mind that cows can appear anywhere on the map.'),
+            'COLLISION_WITH_COW', 'collision with cow van move action: ');
         return false;
     }
 
     var offRoad = nextNode === null;
+    var offRoadPopupMessage = function(correctSteps){
+        if (correctSteps === 0) {
+            return gettext('Your first move was a crash. What went wrong?');
+        }
+        return interpolate(ngettext(
+            'Your first move was right. What went wrong after that?',
+            'Your first %(correct_steps)s moves worked. What went wrong after that?',
+            correctSteps
+        ), {correct_steps: correctSteps}, true);
+    };
     if (offRoad) {
-        handleCrash(this, ocargo.messages.offRoad(this.van.getDistanceTravelled()), 'CRASH', 'crashing van move action: ');
+        handleCrash(this, offRoadPopupMessage(this.van.getDistanceTravelled()), 'CRASH', 'crashing van move action: ');
         return false;
     }
 
@@ -214,7 +225,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             type: 'popup',
             popupType: 'FAIL',
             failSubtype: 'OUT_OF_FUEL',
-            popupMessage: ocargo.messages.outOfFuel,
+            popupMessage: gettext('You ran out of fuel! Try to find a shorter route to the destination.'),
             popupHint: ocargo.game.registerFailure(),
             description: 'no fuel popup'
         });
@@ -250,7 +261,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
             type: 'popup',
             popupType: 'FAIL',
             failSubtype: 'THROUGH_RED_LIGHT',
-            popupMessage: ocargo.messages.throughRedLight,
+            popupMessage: gettext('Uh oh, you just sent the van through a red light! Stick to the Highway ' +
+                'Code - the van must wait for green.'),
             popupHint: ocargo.game.registerFailure(),
             description: 'ran red traffic light popup'
         });
@@ -412,7 +424,8 @@ ocargo.Model.prototype.deliver = function() {
                 type: 'popup',
                 popupType: 'FAIL',
                 failSubtype: 'ALREADY_DELIVERED',
-                popupMessage: ocargo.messages.alreadyDelivered,
+                popupMessage: gettext('You have already delivered to that destination! You must only deliver ' +
+                    'once to each destination.'),
                 popupHint: ocargo.game.registerFailure(),
                 description: 'already delivered to destination popup'
             });
@@ -506,7 +519,8 @@ ocargo.Model.prototype.programExecutionEnded = function () {
     var success;
     var destinations = this.map.getDestinations();
     var failType = 'OUT_OF_INSTRUCTIONS';
-    var failMessage = ocargo.messages.outOfInstructions;
+    var failMessage = gettext('The van ran out of instructions before it reached a destination. '  +
+        'Make sure there are enough instructions to complete the delivery.');
 
     if (destinations.length === 1) {
         // If there's only one destination, check that the car stopped on the destination node
@@ -522,7 +536,7 @@ ocargo.Model.prototype.programExecutionEnded = function () {
             });
         } else {
             if ($.inArray(destinations[0].node, this.van.visitedNodes) != -1) {
-                failMessage = ocargo.messages.passedDestination;
+                failMessage = gettext('The van visited the destination, but didn\'t stop there!');
             }
         }
     } else {
@@ -533,7 +547,8 @@ ocargo.Model.prototype.programExecutionEnded = function () {
         }
         if (!success) {
             failType = 'UNDELIVERED_DESTINATIONS';
-            failMessage = ocargo.messages.undeliveredDestinations;
+            failMessage = gettext('There are destinations that have not been delivered to. ' +
+                'Ensure you visit all destinations and use the deliver command at each one.');
 
             ocargo.event.sendEvent("LevelUndeliveredDestinations", {
                 levelName: LEVEL_NAME,
@@ -547,7 +562,7 @@ ocargo.Model.prototype.programExecutionEnded = function () {
 
     // check for disconnected start block
     if (ocargo.blocklyControl.disconnectedStartBlock()) {
-        failMessage = ocargo.messages.disconnectedStartBlock;
+        failMessage = gettext('Make sure your blocks are connected to the Start block.');
     }
 
     ocargo.animation.appendAnimation({
