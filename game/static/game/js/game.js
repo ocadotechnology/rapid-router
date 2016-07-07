@@ -433,11 +433,11 @@ ocargo.Game.prototype.onSlowControls = function () {
 ocargo.Game.prototype.mute = function (mute) {
     if (mute) {
         ocargo.sound.mute();
-        $.cookie("muted", 'true');
+        $.cookie("muted", 'true', { path : Urls.levels() });
         this.tabs.mute.transitTo('muted');
     } else {
         ocargo.sound.unmute();
-        $.cookie("muted", 'false');
+        $.cookie("muted", 'false', { path : Urls.levels() });
         this.tabs.mute.transitTo('unmuted');
     }
 };
