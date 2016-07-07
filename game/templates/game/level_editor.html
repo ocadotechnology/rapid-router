@@ -2,6 +2,7 @@
 {% load i18n %}
 {% load static %}
 {% load app_tags %}
+{% load game.utils %}
 
 {% block title %}Code for Life - Rapid Router - Create{% endblock %}
 
@@ -13,7 +14,7 @@
 {% block scripts %}
 {{block.super}}
   <script>
-    var COW_LEVELS_ENABLED = '{{ cow_level_enabled }}' === 'True';
+    var COW_LEVELS_ENABLED = {{cow_level_enabled|booltojs}};
     var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
   </script>
   <script src="{% static "game/js/utils.js" %}"></script>
