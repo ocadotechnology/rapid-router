@@ -1623,7 +1623,7 @@ v.turn_right()</pre>""")
 
 
 def title_level94():
-    return ugettext("Watch out for the ice!")
+    return ugettext("Take the shortest route.")
 
 def description_level94():
     message = ugettext("You're getting good at this! Can you drive the van along this road using the correct Python statements.")
