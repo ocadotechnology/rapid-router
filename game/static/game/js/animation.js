@@ -356,7 +356,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 							}
 					    }
 					}
-					leadMsg = ocargo.messages.addNewLine(levelMsg);
+					leadMsg = levelMsg.join('<br>') + '<br>';
 					break;
 				case 'FAIL':
 					title = gettext('Oh dear!');
