@@ -84,10 +84,10 @@ ocargo.LevelEditor = function() {
     var paper = $('#paper'); // May as well cache this
 
     var modes = {
-        ADD_ROAD_MODE: {name: 'Add road', url: ocargo.Drawing.imageDir + "icons/add_road.svg"},
-        DELETE_ROAD_MODE: {name: 'Delete road', url: ocargo.Drawing.imageDir + "icons/delete_road.svg"},
-        MARK_DESTINATION_MODE: {name: 'Mark end', url: ocargo.Drawing.imageDir + "icons/destination.svg"},
-        MARK_ORIGIN_MODE: {name: 'Mark start', url: ocargo.Drawing.imageDir + "icons/origin.svg"}
+        ADD_ROAD_MODE: {name: gettext('Add road'), url: ocargo.Drawing.imageDir + "icons/add_road.svg"},
+        DELETE_ROAD_MODE: {name: gettext('Delete road'), url: ocargo.Drawing.imageDir + "icons/delete_road.svg"},
+        MARK_DESTINATION_MODE: {name: gettext('Mark end'), url: ocargo.Drawing.imageDir + "icons/destination.svg"},
+        MARK_ORIGIN_MODE: {name: gettext('Mark start'), url: ocargo.Drawing.imageDir + "icons/origin.svg"}
     };
 
     /*********/
@@ -372,9 +372,9 @@ ocargo.LevelEditor = function() {
 
                 // Set up cow type selector and listener
                 $('#cow_type_select').append($('<option>', {value: ocargo.Cow.WHITE})
-                    .text('White'));
+                    .text(gettext('White')));
                 $('#cow_type_select').append($('<option>', {value: ocargo.Cow.BROWN})
-                    .text('Brown'));
+                    .text(gettext('Brown')));
                 $('#cow_type_select').on('change', function () {
                     var selectedGroupId = $('#cow_group_select').val();
                     var selectedType = $('#cow_type_select').val();
@@ -749,7 +749,10 @@ ocargo.LevelEditor = function() {
                         var onNo = function(){
                             $("#close-modal").click();
                         };
-                        ocargo.Drawing.startYesNoPopup("Overwriting","Warning",ocargo.messages.saveOverwriteWarning(newName), onYes, onNo);
+                        ocargo.Drawing.startYesNoPopup(gettext('Overwriting'), gettext('Warning'),
+                            interpolate(gettext('Level %(level_name)s already exists. Are you sure you want to overwrite it?'), {
+                              level_name: newName
+                            }, true), onYes, onNo);
                     } else {
                         saveLevelLocal(existingId);
                     }
@@ -791,9 +794,9 @@ ocargo.LevelEditor = function() {
 
         function setupShareTab() {
             var text = [];
-            text.shared = "Yes";
-            text.unshared = "No";
-            text.pending = "...";
+            text.shared = gettext('Yes');
+            text.unshared = gettext('No');
+            text.pending = '...';
 
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
@@ -942,10 +945,10 @@ ocargo.LevelEditor = function() {
 
                 // Update the shareWithAll button
                 if (allShared) {
-                    $('#shareWithAll span').html('Unshare with all');
+                    $('#shareWithAll span').html(gettext('Unshare with all'));
                     $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/quit.svg');
                 } else {
-                    $('#shareWithAll span').html('Share with all');
+                    $('#shareWithAll span').html(gettext('Share with all'));
                     $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/share.svg');
                 }
 
@@ -971,13 +974,96 @@ ocargo.LevelEditor = function() {
         }
 
         function setupHelpTab() {
-            var message = ocargo.messages.levelEditorPCSubtitle;
-
-            message += "<br><br>" + ocargo.messages.levelEditorHelpText;
+            var helpMessages = [
+                gettext('To get started, draw a road.'),
+                gettext('Click on the square you want the road to start from. Then, without letting go of the mouse button, ' +
+                    'drag to the square you’d like the road to end on. Do this as many times as you like to add new sections ' +
+                    'of road.'),
+                interpolate(
+                    gettext('In %(map_icon)s%(map_label)s menu, click %(mark_start_icon)s%(mark_start_label)s and select a ' +
+                        'square for your road to start from. The starting point can only be placed on dead ends. You need a ' +
+                        'road first before adding a starting point. Make sure you use %(mark_end_icon)s%(mark_end_label)s to ' +
+                        'select a final destination. Setting a fuel level means the route will need to be short enough for the ' +
+                        'fuel not to run out.'
+                    ), {
+                        map_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon'),
+                        map_label: '<b>' + gettext('Map') + '</b>',
+                        mark_start_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon'),
+                        mark_start_label: '<b>' + gettext('Mark start') + '</b>',
+                        mark_end_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon'),
+                        mark_end_label: '<b>' + gettext('Mark end') + '</b>'
+                    },
+                    true
+                ),
+                interpolate(
+                    gettext('To remove road, click the %(delete_road_icon)s%(delete_road_label)s button and select a section ' +
+                        'to get rid of.'
+                    ), {
+                        delete_road_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/delete_road.svg', 'popupIcon'),
+                        delete_road_label: '<b>' + gettext('Delete road') + '</b>'
+                    },
+                    true
+                ),
+                interpolate(
+                    gettext('Click %(random_icon)s%(random_label)s if you want the computer to create a random route for you.'), {
+                        random_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/random.svg', 'popupIcon'),
+                        random_label: '<b>' + gettext('Random') + '</b>'
+                    },
+                    true
+                ),
+                interpolate(
+                    gettext('Select %(scenery_icon)s%(scenery_label)s and choose trees, bushes and more to place around your ' +
+                        'road. These will show in the top left corner - drag them into place. Delete items by dragging them ' +
+                        'into the bin in the bottom right. To rotate a traffic light, simply double click on it. Remember, ' +
+                        'using the traffic lights is not covered until level 44.'
+                    ), {
+                        scenery_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/decor.svg', 'popupIcon'),
+                        scenery_label: '<b>' + gettext('Scenery') + '</b>'
+                    },
+                    true
+                ),
+                interpolate(
+                    gettext('Choose a character to play with from the %(character_icon)s%(character_label)s menu.'), {
+                        character_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/character.svg', 'popupIcon'),
+                        character_label: '<b>' + gettext('Character') + '</b>'
+                    },
+                    true
+                ),
+                interpolate(
+                    gettext('Select which blocks of code you want to be used to create a route for your character from the ' +
+                        '%(blocks_icon)s%(blocks_label)s menu.'
+                    ), {
+                        blocks_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/blockly.svg', 'popupIcon'),
+                        blocks_label: '<b>' + gettext('Blocks') + '</b>'
+                    },
+                    true
+                ),
+                interpolate(
+                    gettext('When you\'re ready click %(play_icon)s%(play_label)s, or %(save_icon)s%(save_label)s your road or ' +
+                        '%(share_icon)s%(share_label)s it with a friend. Don\'t forget to choose a good name for it!'
+                    ), {
+                        play_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/play.svg', 'popupIcon'),
+                        play_label: '<b>' + gettext('Play') + '</b>',
+                        save_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/save.svg', 'popupIcon'),
+                        save_label: '<b>' + gettext('Save') + '</b>',
+                        share_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/share.svg', 'popupIcon'),
+                        share_label: '<b>' + gettext('Share') + '</b>'
+                    },
+                    true
+                ),
+                interpolate(
+                    gettext('%(quit_icon)s%(quit_label)s will take you back to the Rapid Router homepage.'
+                    ), {
+                        quit_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/quit.svg', 'popupIcon'),
+                        quit_label: '<b>' + gettext('Quit') + '</b>'
+                    },
+                    true
+                )
+            ];
 
             tabs.help.setOnChange(function() {
                 restorePreviousTab();
-                ocargo.Drawing.startPopup('', '', message);
+                ocargo.Drawing.startPopup('', '', helpMessages.join('<br><br>'));
             });
         }
 
@@ -1051,7 +1137,7 @@ ocargo.LevelEditor = function() {
                 type: type
             };
 
-            var text = 'Group ' + Object.keys(cowGroups).length;
+            var text = interpolate(gettext('Group %(cow_group)s'), {cow_group: Object.keys(cowGroups).length}, true);
             $('#cow_group_select').append($('<option>', {value: value, style: style})
                 .text(text));
             $('#cow_group_select').val(value).change();
@@ -1089,7 +1175,7 @@ ocargo.LevelEditor = function() {
             //Renumber groups in select element
             var groupNo = 1;
             $('#cow_group_select').find('option').each(function() {
-                $(this).text('Group ' + groupNo++);
+                $(this).text(interpolate(gettext('Group %(cow_group)s'), {cow_group: groupNo++}, true));
             });
         }
     }
@@ -2565,33 +2651,62 @@ ocargo.LevelEditor = function() {
     function isLevelValid() {
         // Check to see if a road has been created
 	if (nodes === undefined || nodes.length == 0) {
-	    ocargo.Drawing.startPopup(ocargo.messages.ohNo,
-                                       ocargo.messages.noRoadSubtitle,
-                                       ocargo.messages.noRoad);
+        var noRoad = interpolate(
+            gettext('In %(map_icon)s%(map_label)s menu, click on %(add_road_icon)s%(add_road_label)s. Draw a road by clicking ' +
+                'on a square then dragging to another square.'
+            ), {
+                map_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon'),
+                map_label: '<b>' + gettext('Map') + '</b>',
+                add_road_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/add_road.svg', 'popupIcon'),
+                add_road_label: '<b>' + gettext('Add road') + '</b>'
+            },
+            true
+        );
+	    ocargo.Drawing.startPopup(gettext('Oh no!'), gettext('You forgot to create a road.'), noRoad);
              return false;
 	}
 	// Check to see if start and end nodes have been marked
         if (!originNode || !destinationNode) {
-             ocargo.Drawing.startPopup(ocargo.messages.ohNo,
-                                       ocargo.messages.noStartOrEndSubtitle,
-                                       ocargo.messages.noStartOrEnd);
+            var noStartOrEnd = interpolate(
+                gettext('In %(map_icon)s %(map_label)s menu, click on %(mark_start_icon)%(mark_start_label) or ' +
+                    '%(mark_end_icon)s%(mark_end_label)s then select the square where you want the road to start or end.'
+                ), {
+                    map_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon'),
+                    map_label: '<b>' + gettext('Map') + '</b>',
+                    mark_start_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon'),
+                    mark_start_label: '<b>' + gettext('Mark start') + '</b>',
+                    mark_end_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon'),
+                    mark_end_label: '<b>' + gettext('Mark end') + '</b>'
+                },
+                true
+            );
+             ocargo.Drawing.startPopup(gettext('Oh no!'), gettext('You forgot to mark the start and end points.'), noStartOrEnd);
              return false;
         }
 
         // Check to see if path exists from start to end
         if (!areDestinationsReachable(originNode, [destinationNode], nodes)) {
-            ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
-                                      ocargo.messages.noStartEndRouteSubtitle,
-                                      ocargo.messages.noStartEndRoute);
+            ocargo.Drawing.startPopup(gettext('Something is wrong...'),
+                                      gettext('There is no way to get from the start to the destination.'),
+                                      gettext('Edit your level to allow the driver to get to the end.'));
             return false;
         }
 
         // Check to see if at least one block selected
         // (not perfect but ensures that they don't think the blockly toolbar is broken)
         if($(".block_checkbox:checked").length == 0) {
-            ocargo.Drawing.startPopup(ocargo.messages.somethingWrong,
-                                      ocargo.messages.noBlocksSubtitle,
-                                      ocargo.messages.noBlocks);
+            var noBlocks = interpolate(
+                gettext('Go to %(code_icon)s%(code_label)s and select some to use. Remember to include the move and turn ' +
+                    'commands!'
+                ), {
+                    code_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/blockly.svg', 'popupIcon'),
+                    code_label: '<b>' + gettext('Code') + '</b>'
+                },
+                true
+            );
+            ocargo.Drawing.startPopup(gettext('Something is wrong...'),
+                                      gettext('You haven\'t selected any blocks to use in your level'),
+                                      noBlocks);
             return false;
         }
 
@@ -2605,10 +2720,10 @@ ocargo.LevelEditor = function() {
 
     function canShare() {
         if (!saveState.isSaved()) {
-            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notSaved);
+            ocargo.Drawing.startPopup(gettext('Sharing'), '', gettext('Please save your level before continuing!'));
             return false;
         } else if (hasLevelChangedSinceSave()) {
-            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.changesSinceLastSave);
+            ocargo.Drawing.startPopup(gettext('Sharing'), '', gettext('Please save your latest changes!'));
             return false;
         }
         return true;
@@ -2616,7 +2731,9 @@ ocargo.LevelEditor = function() {
 
     function isLevelOwned() {
         if (!saveState.isOwned()) {
-            ocargo.Drawing.startPopup("Sharing", "", ocargo.messages.notOwned);
+            ocargo.Drawing.startPopup(gettext('Sharing'), '',
+                gettext('You do not own this level. If you would like to share it you will first have to save your own copy!')
+            );
             return false;
         }
         return true;
@@ -2624,9 +2741,27 @@ ocargo.LevelEditor = function() {
 
     function isLoggedIn(activity) {
         if (USER_STATUS !== "SCHOOL_STUDENT" && USER_STATUS !== "TEACHER" && USER_STATUS !== "INDEPENDENT_STUDENT") {
-            ocargo.Drawing.startPopup("Not logged in",
-                                      "",
-                                      ocargo.messages.notLoggedIn(activity));
+            var getNotLoggedInMessage = function() {
+                var notLoggedInMessages = [];
+                switch (activity) {
+                    case 'save':
+                        notLoggedInMessages.push(gettext('Unfortunately you need to be logged in to save levels.'));
+                        break;
+                    case 'load':
+                        notLoggedInMessages.push(gettext('Unfortunately you need to be logged in to load levels.'));
+                        break;
+                    case 'share':
+                        notLoggedInMessages.push(gettext('Unfortunately you need to be logged in to share levels.'));
+                        break;
+                }
+
+                notLoggedInMessages.push(interpolate(gettext('You can log on %(login_url)s.'), {
+                    login_url: '<a href="' + Urls.play() + '">' + pgettext('login_url', 'here') + '</a>'
+                }, true));
+                return notLoggedInMessages.join(' ');
+            };
+
+            ocargo.Drawing.startPopup(gettext('Not logged in'), '', getNotLoggedInMessage());
             return false;
         }
         return true;
@@ -2634,9 +2769,9 @@ ocargo.LevelEditor = function() {
 
     function isIndependentStudent() {
         if (USER_STATUS === "INDEPENDENT_STUDENT") {
-            ocargo.Drawing.startPopup("Sharing as an independent student",
-                                      "",
-                                      ocargo.messages.independentStudentSharing);
+            ocargo.Drawing.startPopup(gettext('Sharing as an independent student'), '', gettext(
+              'Sorry but as an independent student you\'ll need to join a school or club to share your levels with others.'
+            ));
             return false;
         }
         return true;
@@ -2870,5 +3005,12 @@ ocargo.LevelEditor = function() {
 
 $(function() {
     new ocargo.LevelEditor();
-    ocargo.Drawing.startPopup(ocargo.messages.levelEditorTitle, ocargo.messages.levelEditorSubtitle, "");
+    var subtitle = interpolate(
+        gettext('Click %(help_icon)s%(help_label)s for clues on getting started.'), {
+            help_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/help.svg', 'popupHelp'),
+            help_label: '<b>' + gettext('Help') + '</b>'
+        },
+        true
+    );
+    ocargo.Drawing.startPopup(gettext('Welcome to the Level editor!'), subtitle, '');
 });
