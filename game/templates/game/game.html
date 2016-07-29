@@ -2,30 +2,40 @@
 
 {% load static %}
 {% load i18n %}
+{% load game.utils %}
 
 {% block scripts %}
 {{block.super}}
-  <script>
-    var ANONYMOUS = '{{level.anonymous}}' === 'True';
-    var PATH = {{level.path|safe}};
-    var ORIGIN = {{level.origin|safe}};
-    var DESTINATIONS = {{level.destinations|safe}};
+<script id ="data"
+	data-path="{{level.path|trim}}"
+	data-origin="{{level.origin|trim}}"
+	data-destinations="{{level.destinations|trim}}"
+	data-traffic-lights="{{level.traffic_lights|trim}}"
+	data-cows="{{level.cows|trim}}"
+	data-episode="{{level.episode.id|trim}}"
+	data-level-id="{{level.id|default_if_none:""|trim}}"
+        data-level-name="{{level.name|trim}}"
+  >
+    var ANONYMOUS = {{level.anonymous|booltojs}};
+    var PATH = $('#data').data('path');
+    var ORIGIN = $('#data').data('origin');
+    var DESTINATIONS = $('#data').data('destinations');
     var DECOR = {{decor|safe}};
     var BACKGROUND_URL = "{{background}}";
     var HOUSE_URL = "{{house}}";
     var CFC_URL = "{{cfc}}";
-    var TRAFFIC_LIGHTS = {{level.traffic_lights|safe}};
-    var COWS = {{level.cows|safe}};
-    var EPISODE = "{{level.episode.id}}";
-    var LEVEL_ID = "{{level.id}}" !== "None" ? "{{level.id}}" : "";
-    var LEVEL_NAME = "{{level.name}}";
+    var TRAFFIC_LIGHTS = $('#data').data('trafficLights');
+    var COWS = $('#data').data('cows');
+    var EPISODE = $('#data').data('episode');
+    var LEVEL_ID = $('#data').data('levelId');
+    var LEVEL_NAME = $('#data').data('levelName');
     var NEXT_LEVEL_URL = "{% if next_level_url %}{{next_level_url}}{% else %}{% endif %}";
-    var MODEL_SOLUTION = {% if model_solution %}{{model_solution}}{% else %}[]{% endif %};
-    var DISABLE_ROUTE_SCORE = "{{level.disable_route_score}}" === "True";
+    var MODEL_SOLUTION = {{model_solution|default:"[]"}};
+    var DISABLE_ROUTE_SCORE = {{level.disable_route_score|booltojs}};
     var LESSON = "{{lesson|escapejs}}";
     var HINT = "{{hint}}";
-    var DEFAULT_LEVEL = "{{level.default}}" === "True";
-    var FUEL_GAUGE = "{{level.fuel_gauge}}" === "True";
+    var DEFAULT_LEVEL = {{level.default_level|booltojs}};
+    var FUEL_GAUGE =  {{level.fuel_gauge|booltojs}};
     var CHARACTER_NAME = "{{character.name}}";
     var CHARACTER_EN_FACE_URL = "{{character.en_face}}";
     var CHARACTER_URL = "{{character_url}}";
@@ -34,10 +44,10 @@
     var WRECKAGE_URL = "{{wreckage_url}}";
     var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
     var NIGHT_MODE = {{night_mode}};
-    var FLIP_NIGHT_MODE_URL = "{% if flip_night_mode_url %}{{flip_night_mode_url}}{% else %}{% endif %}";
+    var FLIP_NIGHT_MODE_URL = "{{flip_night_mode_url|default:""}}";
 
-    var RANDOM = "{{episode.random_levels_enabled}}" === "True";
-    var IS_RANDOM_LEVEL = "{{random_level}}" === "True";
+    var RANDOM = {{episode.random_levels_enabled|booltojs}};
+    var IS_RANDOM_LEVEL = {{random_level|booltojs}};
 
     var BLOCKS =  [];
     {% for block in blocks %}
@@ -51,14 +61,14 @@
 
     BLOCKLY_XML += '</category></xml>';
     var MAX_FUEL = {{level.max_fuel}};
-    var DIRECT_DRIVE = "{{level.direct_drive}}" === "True";
-    var NEXT_EPISODE = "{{level.episode.next_episode}}" !== "None" ? "{{level.episode.next_episode.id}}" : null;
-    var WORKSPACE = "{{workspace}}" !== "None" ? "{{workspace}}" : null;
-    var BLOCKLY_ENABLED = "{{level.blocklyEnabled}}" === "True";
-    var PYTHON_ENABLED = "{{level.pythonEnabled}}" === "True";
-    var PYTHON_VIEW_ENABLED = "{{level.pythonViewEnabled}}" === "True";
+    var DIRECT_DRIVE = {{level.direct_drive|booltojs}};
+    var NEXT_EPISODE = {% if level.episode.next_episode == None %}null{% else %}"{{level.episode.next_episode}}"{% endif %};
+    var WORKSPACE = {% if workspace == None %}null{% else %}"{{workspace}}"{% endif %};
+    var BLOCKLY_ENABLED = {{level.blocklyEnabled|booltojs}};
+    var PYTHON_ENABLED = {{level.pythonEnabled|booltojs}};
+    var PYTHON_VIEW_ENABLED = {{level.pythonViewEnabled|booltojs}};
     var RETURN_URL = "{{return_url}}";
-    var PYTHON_WORKSPACE= "{{python_workspace|linebreaksbr}}" !== "None" ? "{{python_workspace|linebreaksbr}}" : null;
+    var PYTHON_WORKSPACE = {% if python_workspace == None %}null{% else %}"{{python_workspace|linebreaksbr}}"{% endif %};
   </script>
 
 
