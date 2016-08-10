@@ -51,7 +51,7 @@ from game.views.level_moderation import level_moderation, get_students_for_level
 from game.views.level_selection import levels, random_level_for_episode
 from game.views.level import submit_attempt, play_default_level, start_episode, load_workspace, \
     load_list_of_workspaces, save_workspace, delete_workspace, \
-    delete_level, play_custom_level, play_custom_level_from_editor
+    delete_level, play_custom_level, play_custom_level_from_editor, load_workspace_solution
 from game.views.scoreboard import scoreboard
 urlpatterns = patterns(
     '',
@@ -69,6 +69,7 @@ urlpatterns = patterns(
         url(r'^save/$', save_workspace, name='save_workspace'),
         url(r'^save/(?P<workspaceID>[0-9]+)/$', save_workspace, name='save_workspace'),
         url(r'^delete/(?P<workspaceID>[0-9]+)/$', delete_workspace, name='delete_workspace'),
+        url(r'^solution/(?P<levelName>[0-9]+)/$', load_workspace_solution, name='load_workspace_solution'),
     ])),
 
     url(r'^level_moderation/', include([

@@ -248,7 +248,8 @@ ocargo.Saving.prototype.loadSolution = function (levelID, callback) {
             }
         });
     } else {
-        callback("Level solution not available");
+        //add message saying you need to be a teacher!
+        callback("Error retrieving solution");
     }
 };
 
