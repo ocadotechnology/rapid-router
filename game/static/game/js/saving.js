@@ -234,6 +234,24 @@ ocargo.Saving.prototype.retrieveLevel = function (id, callback) {
     });
 };
 
+ocargo.Saving.prototype.loadSolution = function (levelID, callback) {
+    if (USER_STATUS === 'TEACHER' || USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
+        $.ajax({
+            url: Urls.load_workspace_solution(levelID),
+            type: 'GET',
+            dataType: 'json',
+            success: function (json) {
+                callback(null, json);
+            },
+            error: function (xhr, errmsg, err) {
+                callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+            }
+        });
+    } else {
+        callback("Level solution not available");
+    }
+};
+
 ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({

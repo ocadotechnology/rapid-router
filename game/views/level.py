@@ -54,7 +54,6 @@ from game.models import Level, Attempt, Workspace
 from helper import renderError
 from game.decor import get_decor_element
 
-
 def play_custom_level_from_editor(request, levelId):
     return play_custom_level(request, levelId, from_editor=True)
 
@@ -286,8 +285,13 @@ def load_list_of_workspaces(request):
     if permissions.can_create_workspace(request.user):
         workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
 
+
+    solution = [{'id': '10101010', 'name': 'SOLUTION', 'blockly_enabled': True, 'python_enabled': False}]
     workspaces = [{'id': workspace.id, 'name': workspace.name, 'blockly_enabled': workspace.blockly_enabled, 'python_enabled': workspace.python_enabled}
                   for workspace in workspaces_owned]
+
+    workspaces = solution + workspaces
+
     return HttpResponse(json.dumps(workspaces), content_type='application/json')
 
 
@@ -299,7 +303,6 @@ def load_workspace(request, workspaceID):
                             content_type='application/json')
 
     return HttpResponse(json.dumps(''), content_type='application/json')
-
 
 def save_workspace(request, workspaceID=None):
     name = request.POST.get('name')
