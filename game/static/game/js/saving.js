@@ -235,22 +235,17 @@ ocargo.Saving.prototype.retrieveLevel = function (id, callback) {
 };
 
 ocargo.Saving.prototype.loadSolution = function (levelID, callback) {
-    if (USER_STATUS === 'TEACHER' || USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
-        $.ajax({
-            url: Urls.load_workspace_solution(levelID),
-            type: 'GET',
-            dataType: 'json',
-            success: function (json) {
-                callback(null, json);
-            },
-            error: function (xhr, errmsg, err) {
-                callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-            }
-        });
-    } else {
-        //add message saying you need to be a teacher!
-        callback("Error retrieving solution");
-    }
+    $.ajax({
+        url: Urls.load_workspace_solution(levelID),
+        type: 'GET',
+        dataType: 'json',
+        success: function (json) {
+            callback(null, json);
+        },
+        error: function (xhr, errmsg, err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
 };
 
 ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {

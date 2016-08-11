@@ -467,7 +467,7 @@ ocargo.Game.prototype._setupTabs = function () {
                   .addState('fast', ocargo.Drawing.imageDir + 'icons/slow.svg', gettext('Slow'));
     this.tabs.step = new ocargo.Tab($('#step_radio'), $('#step_radio + label'));
 
-    this.tabs.solution = new ocargo.Tab($('#solution_radio'), $('#solution_radio + label'));
+
     this.tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
     this.tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
     this.tabs.clear_program = new ocargo.Tab($('#clear_program_radio'), $('#clear_program_radio + label'));
@@ -491,8 +491,6 @@ ocargo.Game.prototype._setupTabs = function () {
     this._setupFastTab();
     this._setupStepTab();
 
-    this._setupSolutionTab();
-
     this._setupLoadTab();
     this._setupSaveTab();
     //this._setupPrintTab();
@@ -501,6 +499,12 @@ ocargo.Game.prototype._setupTabs = function () {
     this._setupMuteTab();
     this._setupQuitTab();
     this._setupNightModeTab();
+
+    if (USER_STATUS === 'TEACHER'){
+        this.tabs.solution = new ocargo.Tab($('#solution_radio'), $('#solution_radio + label'));
+        this._setupSolutionTab();
+        $('#solution_tab').show()
+    }
 
     if (!BLOCKLY_ENABLED) {
         $('#python_radio').click();
