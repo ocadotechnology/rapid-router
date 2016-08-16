@@ -55,6 +55,7 @@ from helper import renderError
 from game.decor import get_decor_element
 from game.views.level_solutions import solutions
 
+
 def play_custom_level_from_editor(request, levelId):
     return play_custom_level(request, levelId, from_editor=True)
 
@@ -286,7 +287,6 @@ def load_list_of_workspaces(request):
     if permissions.can_create_workspace(request.user):
         workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
 
-
     workspaces = [{'id': workspace.id, 'name': workspace.name, 'blockly_enabled': workspace.blockly_enabled, 'python_enabled': workspace.python_enabled}
                   for workspace in workspaces_owned]
 
@@ -301,6 +301,7 @@ def load_workspace(request, workspaceID):
                             content_type='application/json')
 
     return HttpResponse(json.dumps(''), content_type='application/json')
+
 
 def save_workspace(request, workspaceID=None):
     name = request.POST.get('name')
@@ -325,6 +326,7 @@ def save_workspace(request, workspaceID=None):
 
     return load_list_of_workspaces(request)
 
+
 def load_workspace_solution(request, levelName):
 
     if levelName in solutions:
@@ -343,12 +345,12 @@ def load_workspace_solution(request, levelName):
             workspace.blockly_enabled = False
             workspace.python_enabled = True
 
-
         return HttpResponse(json.dumps({'contents': workspace.contents,
                                         'python_contents': workspace.python_contents}),
                             content_type='application/json')
 
     return HttpResponse(json.dumps(''), content_type='application/json')
+
 
 def start_episode(request, episodeId):
     episode = cached_episode(episodeId)

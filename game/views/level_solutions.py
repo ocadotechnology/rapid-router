@@ -2,13 +2,14 @@
 blockly_default = '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="30" y="30"></block></xml>'
 
 python_default = (
-"""import van
+    """import van
 
 v = van.Van()
-""" )
+"""
+)
 
 lvl_92 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -19,11 +20,11 @@ v.move_forwards()"""
 )
 
 lvl_93 = (
-"""import van
+    """import van
 v = van.Van()
 v.turn_left()
 v.move_forwards()
-v.move_forwards()
+v.move_forwards()http://localhost:8000/game/35/
 v.turn_right()
 v.turn_right()
 v.turn_left()
@@ -36,7 +37,7 @@ v.turn_right()"""
 )
 
 lvl_94 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -50,7 +51,7 @@ v.turn_left()"""
 )
 
 lvl_95 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -61,7 +62,7 @@ for i in range(3):
 )
 
 lvl_96 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -75,7 +76,7 @@ for count in range(3):
 )
 
 lvl_97 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -91,7 +92,7 @@ for count in range(3):
 )
 
 lvl_98 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -103,7 +104,7 @@ while not v.at_destination():
 )
 
 lvl_99 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -117,7 +118,7 @@ while not v.at_destination():
 )
 
 lvl_100 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -131,7 +132,7 @@ while not v.at_destination():
 )
 
 lvl_101 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -151,7 +152,7 @@ v.move_forwards()"""
 )
 
 lvl_102 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -178,7 +179,7 @@ v.move_forwards()"""
 )
 
 lvl_103 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -206,7 +207,7 @@ forward_left()"""
 )
 
 lvl_104 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -238,7 +239,7 @@ v.move_forwards()"""
 )
 
 lvl_105 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -254,7 +255,7 @@ while not v.at_destination():
 )
 
 lvl_106 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -268,7 +269,7 @@ while not v.at_destination():
 )
 
 lvl_107 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -281,7 +282,7 @@ while not v.at_destination():
 )
 
 lvl_108 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -294,7 +295,7 @@ while not v.at_destination():
 )
 
 lvl_109 = (
-"""import van
+    """import van
 
 v = van.Van()
 
@@ -428,6 +429,3 @@ solutions = {
             '108': lvl_108,
             '109': lvl_109
 }
-
-
-
