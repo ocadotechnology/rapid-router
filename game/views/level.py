@@ -349,7 +349,7 @@ def load_workspace_solution(request, levelName):
                                         'python_contents': workspace.python_contents}),
                             content_type='application/json')
 
-    return HttpResponse(json.dumps(''), content_type='application/json')
+    raise Http404
 
 
 def start_episode(request, episodeId):
