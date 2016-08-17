@@ -5,8 +5,15 @@
 [![Code Climate](https://codeclimate.com/github/ocadotechnology/rapid-router/badges/gpa.svg)](https://codeclimate.com/github/ocadotechnology/rapid-router)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/code-for-life/localized.svg)](https://crowdin.com/project/code-for-life)
 
-Rapid Router is a 'Code For Life' project, aimed at teaching children programming concepts through a vehicle routing
-game.
+## A  [Code for Life](https://www.codeforlife.education/) project
+* Rapid Router is a [Code for Life](https://www.codeforlife.education/) project, aimed at teaching primary-school children programming concepts through a vehicle routing
+  game. 
+  Ocado Technology's [Code for Life initiative](https://www.codeforlife.education/) has been developed to inspire the next generation of computer scientists and to help teachers deliver the computing curriculum.
+* This repository hosts the source code of the **Rapid Router game**.
+* The other repos for Code For Life:
+    * the main portal (as well as registration, dashboards, materials...), [Code For Life Portal](https://github.com/ocadotechnology/codeforlife-portal)
+    * the new game for teenagers, [currently at a very early stage](https://github.com/ocadotechnology/aimmo)
+    * the [deployment code for Google App Engine](https://github.com/ocadotechnology/codeforlife-deploy-appengine)
 
 ## To use the app
 Go to the official [Code For Life website][c4l].
