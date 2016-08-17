@@ -34,19 +34,18 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+
 from itertools import chain
 
-import permissions
-from models import Block, LevelBlock, LevelDecor
-
+from game.models import Block, LevelBlock, LevelDecor
 from game.decor import get_decor_element
 from game.theme import get_theme_by_pk
 from game.character import get_character_by_pk
 
-
 ##########
 # Levels #
 ##########
+
 
 def get_loadable_levels(user):
     levels_owned_by_user = levels_owned_by(user)
@@ -72,7 +71,7 @@ def levels_owned_by(user):
     if user.is_anonymous():
         return []
 
-    levels = user.userprofile.levels
+    levels = user.levels
 
     return add_related_fields(levels)
 

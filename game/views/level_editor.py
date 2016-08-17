@@ -210,7 +210,7 @@ def load_level_for_editor(request, levelID):
     level_dict['decor'] = cached_level_decor(level)
     level_dict['blocks'] = cached_level_blocks(level)
 
-    response = {'owned': level.owner == request.user.userprofile, 'level': level_dict}
+    response = {'owned': level.owner == request.user, 'level': level_dict}
 
     return HttpResponse(json.dumps(response), content_type='application/javascript')
 
@@ -226,7 +226,7 @@ def save_level_for_editor(request, levelId=None):
         level = Level(default=False, anonymous=data['anonymous'])
 
         if permissions.can_create_level(request.user):
-            level.owner = request.user.userprofile
+            level.owner = request.user
 
     if not permissions.can_save_level(request.user, level):
         return HttpResponseUnauthorized()
@@ -275,6 +275,7 @@ def get_sharing_information_for_editor(request, levelID):
     valid_recipients = {}
 
     if permissions.can_share_level(request.user, level):
+        # remove userprofile after portal models updated.
         userprofile = request.user.userprofile
         valid_recipients = {}
 
@@ -333,10 +334,9 @@ def share_level_for_editor(request, levelID):
     level = get_object_or_404(Level, id=levelID)
     recipients = User.objects.filter(id__in=recipientIDs)
 
-    def can_share_level_with(r):
-        return permissions.can_share_level_with(r, level.owner.user)
+    can_share = permissions.can_share_level_with
 
-    users = [recipient.userprofile.user for recipient in recipients if can_share_level_with(recipient)]
+    users = [r for r in recipients if can_share(r, level.owner)]
 
     if action == 'share':
         level_management.share_level(level, *users)
