@@ -314,9 +314,7 @@ def get_sharing_information_for_editor(request, levelID):
                         'shared': level.shared_with.filter(id=student.user.user.id).exists()}
                         for student in students]})
 
-            # Then add all the teachers at the same organisation
-
-            if teacher.school is None:
+            if not teacher.school:
                 valid_recipients['teachers'] = []
             else:
                 fellow_teachers = Teacher.objects.filter(school=teacher.school)
