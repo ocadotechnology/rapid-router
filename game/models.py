@@ -39,7 +39,7 @@ from django.db import models
 from django.utils.translation import ugettext
 
 
-from portal.models import UserProfile, Student
+from portal.models import Student
 
 def theme_choices():
     from game.theme import get_all_themes
@@ -111,7 +111,7 @@ class Level(models.Model):
     origin = models.CharField(max_length=50, default='[]')
     destinations = models.CharField(max_length=50, default='[[]]')
     default = models.BooleanField(default=False)
-    owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
+    owner = models.ForeignKey(User, related_name='levels', blank=True, null=True)
     fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
@@ -173,7 +173,7 @@ class LevelDecor(models.Model):
 
 class Workspace(models.Model):
     name = models.CharField(max_length=200)
-    owner = models.ForeignKey(UserProfile, related_name='workspaces', blank=True, null=True)
+    owner = models.ForeignKey(User, related_name='workspaces', blank=True, null=True)
     contents = models.TextField(default="")
     python_contents = models.TextField(default="")
     blockly_enabled = models.BooleanField(default=False)

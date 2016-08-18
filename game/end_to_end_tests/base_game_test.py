@@ -37,15 +37,16 @@
 import os
 
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from django_selenium_clean import selenium, SeleniumTestCase
 from unittest import skipUnless
 
-from portal.models import UserProfile
 from game.models import Workspace
 from portal.tests.pageObjects.portal.game_page import GamePage
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
 from portal.tests.utils.teacher import signup_teacher_directly
+
 
 @skipUnless(selenium, "Selenium is unconfigured")
 class BaseGameTest(SeleniumTestCase):
@@ -105,8 +106,8 @@ class BaseGameTest(SeleniumTestCase):
         if suffix:
             level_with_suffix += "-%d" % suffix
 
-        user_profile = self.login_once()
-        workspace_id = self.use_workspace_of_level(level_with_suffix, user_profile)
+        user = self.login_once()
+        workspace_id = self.use_workspace_of_level(level_with_suffix, user)
         score_element_id = self.score_element_id(route_score, algorithm_score)
 
         if not page:
@@ -122,30 +123,30 @@ class BaseGameTest(SeleniumTestCase):
             page.assert_algorithm_score(algorithm_score)
 
     def run_crashing_test(self, level, workspace_file):
-        user_profile = self.login_once()
+        user = self.login_once()
 
-        workspace_id = self.use_workspace(workspace_file, user_profile)
+        workspace_id = self.use_workspace(workspace_file, user)
 
         return self.go_to_level(level) \
             .load_solution(workspace_id) \
             .run_crashing_program()
 
     def running_out_of_instructions_test(self, level, workspace_file):
-        user_profile = self.login_once()
+        user = self.login_once()
 
-        workspace_id = self.use_workspace(workspace_file, user_profile)
+        workspace_id = self.use_workspace(workspace_file, user)
 
         return self.go_to_level(level) \
             .load_solution(workspace_id) \
             .run_program_that_runs_out_of_instructions()
 
-    def use_workspace_of_level(self, level, user_profile):
+    def use_workspace_of_level(self, level, user):
         workspace_filename = self.solution_filename_for_level(level)
-        return self.use_workspace(workspace_filename, user_profile)
+        return self.use_workspace(workspace_filename, user)
 
-    def use_workspace(self, workspace_file, user_profile):
+    def use_workspace(self, workspace_file, user):
         solution = self.read_solution(workspace_file)
-        workspace_id = Workspace.objects.create(name=workspace_file, owner=user_profile, contents=solution).id
+        workspace_id = Workspace.objects.create(name=workspace_file, owner=user, contents=solution).id
         return workspace_id
 
     def login_once(self):
@@ -154,7 +155,7 @@ class BaseGameTest(SeleniumTestCase):
             create_organisation_directly(email)
             self.go_to_homepage().go_to_teach_page().login(email, password)
             email = email
-            BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
+            BaseGameTest.user_profile = User.objects.get(email=email)
 
             BaseGameTest.already_logged_on = True
 
