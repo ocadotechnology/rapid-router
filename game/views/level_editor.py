@@ -275,7 +275,7 @@ def get_sharing_information_for_editor(request, levelID):
     valid_recipients = {}
 
     if permissions.can_share_level(request.user, level):
-        # remove userprofile after portal models updated.
+        # TODO: remove userprofile after portal models updated.
         userprofile = request.user.userprofile
         valid_recipients = {}
 
