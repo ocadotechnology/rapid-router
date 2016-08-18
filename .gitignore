@@ -20,3 +20,5 @@ db.sqlite3
 *.DS_Store
 *.jshintrc
 example_project/example_project/static/
+models2.dot
+models2.png
