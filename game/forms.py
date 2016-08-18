@@ -35,7 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django import forms
-from models import Level
+from models import UserProfile, Level
 from widgets import DropDownMenuSelectMultiple
 import itertools
 
