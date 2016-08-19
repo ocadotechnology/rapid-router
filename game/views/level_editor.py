@@ -314,13 +314,15 @@ def get_sharing_information_for_editor(request, levelID):
                         'shared': level.shared_with.filter(id=student.user.user.id).exists()}
                         for student in students]})
 
-            # Then add all the teachers at the same organisation
-            fellow_teachers = Teacher.objects.filter(school=teacher.school)
-            valid_recipients['teachers'] = [{
-                'id': fellow_teacher.user.user.id,
-                'name': app_tags.make_into_username(fellow_teacher.user.user),
-                'shared': level.shared_with.filter(id=fellow_teacher.user.user.id).exists()}
-                for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
+            if not teacher.school:
+                valid_recipients['teachers'] = []
+            else:
+                fellow_teachers = Teacher.objects.filter(school=teacher.school)
+                valid_recipients['teachers'] = [{
+                    'id': fellow_teacher.user.user.id,
+                    'name': app_tags.make_into_username(fellow_teacher.user.user),
+                    'shared': level.shared_with.filter(id=fellow_teacher.user.user.id).exists()}
+                    for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
 
     return HttpResponse(json.dumps(valid_recipients), content_type='application/javascript')
 
