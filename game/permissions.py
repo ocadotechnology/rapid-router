@@ -44,15 +44,15 @@ def can_create_workspace(user):
 
 
 def can_load_workspace(user, workspace):
-    return not user.is_anonymous() and workspace.owner == user
+    return not user.is_anonymous() and workspace.owner == user.userprofile
 
 
 def can_save_workspace(user, workspace):
-    return not user.is_anonymous() and workspace.owner == user
+    return not user.is_anonymous() and workspace.owner == user.userprofile
 
 
 def can_delete_workspace(user, workspace):
-    return not user.is_anonymous() and workspace.owner == user
+    return not user.is_anonymous() and workspace.owner == user.userprofile
 
 #####################
 # Level permissions #
@@ -72,25 +72,25 @@ def can_play_level(user, level, early_access):
         return True
     elif user.is_anonymous():
         return level.default and not level.episode.in_development
-    elif user == level.owner:
+    elif user.userprofile == level.owner:
         return True
     elif level.shared_with.filter(id=user.id):
-        return can_share_level_with(user, level.owner)
+        return can_share_level_with(user, level.owner.user)
     else:
         return (hasattr(user.userprofile, 'teacher') and
-                user.userprofile.teacher.teaches(level.owner.userprofile))
+                user.userprofile.teacher.teaches(level.owner))
 
 
 def can_load_level(user, level):
     if user.is_anonymous():
         return False
-    elif user == level.owner:
+    elif user.userprofile == level.owner:
         return True
     elif level.shared_with.filter(id=user.id):
-        return can_share_level_with(user, level.owner)
+        return can_share_level_with(user, level.owner.user)
     else:
         return (hasattr(user.userprofile, 'teacher') and
-                user.userprofile.teacher.teaches(level.owner.userprofile))
+                user.userprofile.teacher.teaches(level.owner))
 
 
 def can_save_level(user, level):
@@ -99,17 +99,17 @@ def can_save_level(user, level):
     elif user.is_anonymous():
         return False
     else:
-        return user == level.owner
+        return user.userprofile == level.owner
 
 
 def can_delete_level(user, level):
     if user.is_anonymous():
         return False
-    elif level.owner == user:
+    elif level.owner == user.userprofile:
         return True
     else:
         return (hasattr(user.userprofile, 'teacher') and
-                user.userprofile.teacher.teaches(level.owner.userprofile))
+                user.userprofile.teacher.teaches(level.owner))
 
 
 def can_share_level(user, level):
@@ -118,7 +118,7 @@ def can_share_level(user, level):
     elif hasattr(user.userprofile, 'student') and user.userprofile.student.is_independent():
         return False
     else:
-        return level.owner == user
+        return level.owner == user.userprofile
 
 
 def can_share_level_with(recipient, sharer):
