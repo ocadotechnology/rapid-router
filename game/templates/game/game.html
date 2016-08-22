@@ -6,7 +6,7 @@
 
 {% block scripts %}
 {{block.super}}
-<script id ="data"
+<script id="data"
 	data-path="{{level.path|trim}}"
 	data-origin="{{level.origin|trim}}"
 	data-destinations="{{level.destinations|trim}}"
@@ -33,8 +33,8 @@
     var MODEL_SOLUTION = {{model_solution|default:"[]"}};
     var DISABLE_ROUTE_SCORE = {{level.disable_route_score|booltojs}};
     var LESSON = "{{lesson|escapejs}}";
-    var HINT = "{{hint}}";
-    var DEFAULT_LEVEL = {{level.default_level|booltojs}};
+    var HINT = "{{hint|escapejs}}";
+    var DEFAULT_LEVEL = {{level.default|booltojs}};
     var FUEL_GAUGE =  {{level.fuel_gauge|booltojs}};
     var CHARACTER_NAME = "{{character.name}}";
     var CHARACTER_EN_FACE_URL = "{{character.en_face}}";
