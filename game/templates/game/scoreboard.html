@@ -6,6 +6,7 @@
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
 
 {% block scripts %}
+  {{block.super}}
   <script src="{% static 'game/js/jquery.dataTables.min.js' %}"></script>
   <script src="{% static 'game/js/dataTables.fixedColumns.js' %}"></script>
   <script src="{% static 'game/js/jquery.tablesorter.js' %}"></script>
@@ -52,7 +53,6 @@
         }
     });
   </script>
-{{block.super}}
 {% endblock %}
 
 {% block css %}
