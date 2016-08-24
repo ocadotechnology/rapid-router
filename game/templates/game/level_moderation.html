@@ -6,6 +6,7 @@
 {% block title %}Code for Life - Rapid Router - Level moderation{% endblock %}
 
 {% block scripts %}
+  {{block.super}}
   <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/level_moderation.js' %}"></script>
@@ -51,10 +52,6 @@
         {% endif %}
     });
   </script>
-
-  <script>
-  </script>
-{{block.super}}
 {% endblock %}
 
 {% block css %}
