@@ -62,7 +62,7 @@
     BLOCKLY_XML += '</category></xml>';
     var MAX_FUEL = {{level.max_fuel}};
     var DIRECT_DRIVE = {{level.direct_drive|booltojs}};
-    var NEXT_EPISODE = {% if level.episode.next_episode == None %}null{% else %}"{{level.episode.next_episode}}"{% endif %};
+    var NEXT_EPISODE = {% if level.episode.next_episode == None %}null{% else %}"{{level.episode.next_episode.id}}"{% endif %};
     var WORKSPACE = {% if workspace == None %}null{% else %}"{{workspace}}"{% endif %};
     var BLOCKLY_ENABLED = {{level.blocklyEnabled|booltojs}};
     var PYTHON_ENABLED = {{level.pythonEnabled|booltojs}};
