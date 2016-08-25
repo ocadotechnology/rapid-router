@@ -234,6 +234,20 @@ ocargo.Saving.prototype.retrieveLevel = function (id, callback) {
     });
 };
 
+ocargo.Saving.prototype.loadSolution = function (levelID, callback) {
+    $.ajax({
+        url: Urls.load_workspace_solution(levelID),
+        type: 'GET',
+        dataType: 'json',
+        success: function (json) {
+            callback(null, json);
+        },
+        error: function (xhr, errmsg, err) {
+            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
+        }
+    });
+};
+
 ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({

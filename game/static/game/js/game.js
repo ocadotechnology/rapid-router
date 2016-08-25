@@ -467,6 +467,7 @@ ocargo.Game.prototype._setupTabs = function () {
                   .addState('fast', ocargo.Drawing.imageDir + 'icons/slow.svg', gettext('Slow'));
     this.tabs.step = new ocargo.Tab($('#step_radio'), $('#step_radio + label'));
 
+
     this.tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
     this.tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
     this.tabs.clear_program = new ocargo.Tab($('#clear_program_radio'), $('#clear_program_radio + label'));
@@ -489,6 +490,7 @@ ocargo.Game.prototype._setupTabs = function () {
     this._setupStopTab();
     this._setupFastTab();
     this._setupStepTab();
+
     this._setupLoadTab();
     this._setupSaveTab();
     //this._setupPrintTab();
@@ -497,6 +499,12 @@ ocargo.Game.prototype._setupTabs = function () {
     this._setupMuteTab();
     this._setupQuitTab();
     this._setupNightModeTab();
+
+    if (USER_STATUS === 'TEACHER'){
+        this.tabs.solution = new ocargo.Tab($('#solution_radio'), $('#solution_radio + label'));
+        this._setupSolutionTab();
+        $('#solution_tab').show()
+    }
 
     if (!BLOCKLY_ENABLED) {
         $('#python_radio').click();
@@ -759,6 +767,29 @@ ocargo.Game.prototype._setupStepTab = function () {
 
 ocargo.Game.prototype._selectPreviousTab = function () {
     this.currentlySelectedTab.select();
+};
+
+ocargo.Game.prototype._setupSolutionTab = function() {
+    this.tabs.solution.setOnChange(function () {
+
+        this._goToWorkspace();
+
+        this.saving.loadSolution(LEVEL_NAME, function (err, workspace) {
+            if (err !== null) {
+                ocargo.Drawing.startInternetDownPopup();
+                console.error(err);
+                return;
+            }
+            if (BLOCKLY_ENABLED) {
+                ocargo.blocklyControl.deserialize(workspace.contents);
+                ocargo.blocklyControl.redrawBlockly();
+            }
+            if (PYTHON_ENABLED) {
+                ocargo.pythonControl.setCode(workspace.python_contents);
+            }
+            $('#loadModal').foundation('reveal', 'close');
+        }.bind(this));
+    }.bind(this));
 };
 
 ocargo.Game.prototype._setupLoadTab = function () {

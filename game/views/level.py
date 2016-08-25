@@ -53,6 +53,7 @@ from game.cache import cached_default_level, cached_episode, \
 from game.models import Level, Attempt, Workspace
 from helper import renderError
 from game.decor import get_decor_element
+from game.views.level_solutions import solutions
 
 
 def play_custom_level_from_editor(request, levelId):
@@ -288,6 +289,7 @@ def load_list_of_workspaces(request):
 
     workspaces = [{'id': workspace.id, 'name': workspace.name, 'blockly_enabled': workspace.blockly_enabled, 'python_enabled': workspace.python_enabled}
                   for workspace in workspaces_owned]
+
     return HttpResponse(json.dumps(workspaces), content_type='application/json')
 
 
@@ -323,6 +325,31 @@ def save_workspace(request, workspaceID=None):
         workspace.save()
 
     return load_list_of_workspaces(request)
+
+
+def load_workspace_solution(request, levelName):
+
+    if levelName in solutions:
+        workspace = Workspace(owner=request.user.userprofile)
+        workspace.id = levelName
+        workspace.name = levelName
+        workspace.contents = solutions['blockly_default']
+        workspace.python_contents = solutions['python_default']
+
+        if int(levelName) <= 91:
+            workspace.contents = solutions[levelName]
+            workspace.blockly_enabled = True
+            workspace.python_enabled = False
+        else:
+            workspace.python_contents = solutions[levelName]
+            workspace.blockly_enabled = False
+            workspace.python_enabled = True
+
+        return HttpResponse(json.dumps({'contents': workspace.contents,
+                                        'python_contents': workspace.python_contents}),
+                            content_type='application/json')
+
+    raise Http404
 
 
 def start_episode(request, episodeId):
