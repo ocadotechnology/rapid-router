@@ -20,3 +20,10 @@ db.sqlite3
 *.DS_Store
 *.jshintrc
 example_project/example_project/static/
+
+.coverage
+.eggs/**
+.tests_static/**
+build/**
+coverage.xml
+pep8.txt
