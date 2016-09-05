@@ -35,10 +35,12 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 import os
+import socket
+import time
+from unittest import skipUnless
 
 from django.core.urlresolvers import reverse
 from django_selenium_clean import selenium, SeleniumTestCase
-from unittest import skipUnless
 
 from . import custom_handler
 from portal.models import UserProfile
@@ -60,7 +62,18 @@ class BaseGameTest(SeleniumTestCase):
     user_profile = None
 
     def _go_to_path(self, path):
-        selenium.get(self.live_server_url + path)
+        socket.setdefaulttimeout(5)
+        attempts = 0
+        while True:
+            try:
+                selenium.get(self.live_server_url + path)
+            except socket.timeout:
+                attempts += 1
+                if attempts > 2:
+                    raise
+                time.sleep(10)
+            else:
+                break
 
     def go_to_homepage(self):
         path = reverse('home')
