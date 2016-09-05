@@ -40,12 +40,16 @@ from django.core.urlresolvers import reverse
 from django_selenium_clean import selenium, SeleniumTestCase
 from unittest import skipUnless
 
+from . import custom_handler
 from portal.models import UserProfile
 from game.models import Workspace
 from portal.tests.pageObjects.portal.game_page import GamePage
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
 from portal.tests.utils.teacher import signup_teacher_directly
+
+
+custom_handler.monkey_patch()
 
 
 @skipUnless(selenium, "Selenium is unconfigured")
