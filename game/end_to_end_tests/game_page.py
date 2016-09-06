@@ -37,7 +37,8 @@
 import os
 import time
 
-from hamcrest import assert_that, equal_to, contains_string, starts_with
+from django.core.urlresolvers import reverse
+from hamcrest import assert_that, equal_to, contains_string, starts_with, ends_with
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import presence_of_all_elements_located
@@ -87,6 +88,14 @@ class GamePage(BasePage):
         self.browser.find_element_by_id("solution_tab").click()
         time.sleep(1)
         return self
+
+    def assert_level_number(self, level_number):
+        path = reverse('play_default_level', kwargs={'levelName': str(level_number)})
+        assert_that(self.browser.current_url, ends_with(path))
+
+    def assert_episode_number(self, episode_number):
+        path = reverse('start_episode', kwargs={'episodeId': str(episode_number)})
+        assert_that(self.browser.current_url, ends_with(path))
 
     def assert_is_green_light(self, traffic_light_index):
         self._assert_light_is_on(traffic_light_index, "green")
