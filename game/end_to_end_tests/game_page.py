@@ -38,9 +38,11 @@ import os
 import time
 
 from hamcrest import assert_that, equal_to, contains_string, starts_with
-from selenium.webdriver.common.by import By
-from portal.tests.pageObjects.portal.base_page import BasePage
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.expected_conditions import presence_of_all_elements_located
+from selenium.webdriver.support.ui import WebDriverWait
+from portal.tests.pageObjects.portal.base_page import BasePage
 
 
 class GamePage(BasePage):
@@ -120,6 +122,22 @@ class GamePage(BasePage):
 
     def run_program_that_runs_out_of_instructions(self):
         return self._run_failing_program("The van ran out of instructions before it reached a destination.")
+
+    def next_episode(self):
+        self.assert_success()
+        self.browser.find_element_by_id("next_episode_button").click()
+        WebDriverWait(self.browser, 10).until(
+            presence_of_all_elements_located((By.ID, "blockly_tab"))
+        )
+        return self
+
+    def next_level(self):
+        self.assert_success()
+        self.browser.find_element_by_id("next_level_button").click()
+        WebDriverWait(self.browser, 10).until(
+            presence_of_all_elements_located((By.ID, "blockly_tab"))
+        )
+        return self
 
     def _run_failing_program(self, text):
         self.run_program('try_again_button')
