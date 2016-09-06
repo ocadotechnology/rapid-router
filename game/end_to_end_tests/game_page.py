@@ -132,6 +132,11 @@ class GamePage(BasePage):
         assert_that(route_score, starts_with(str(score)))
         return self
 
+    def assert_success(self):
+        modal_content = self.browser.find_element_by_id("modal-content").text
+        assert_that(modal_content, contains_string("Congratulations"))
+        return self
+
     def assert_route_score(self, score):
         return self._assert_score("routeScore", score)
 
