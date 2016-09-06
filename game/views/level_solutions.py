@@ -24,7 +24,7 @@ lvl_93 = (
 v = van.Van()
 v.turn_left()
 v.move_forwards()
-v.move_forwards()http://localhost:8000/game/35/
+v.move_forwards()
 v.turn_right()
 v.turn_right()
 v.turn_left()
