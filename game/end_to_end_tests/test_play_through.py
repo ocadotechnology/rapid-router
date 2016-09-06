@@ -338,6 +338,7 @@ class TestPlayThrough(BaseGameTest):
     def test_level_092(self):
         self._complete_level(92, check_algorithm_score=False)
 
+    @expectedFailure  # TODO: remove after #835 merged
     def test_level_093(self):
         self._complete_level(93, check_algorithm_score=False)
 
