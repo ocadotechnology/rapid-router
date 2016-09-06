@@ -34,19 +34,17 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+import json
+
 from django.core.urlresolvers import reverse
 from django.test.testcases import TestCase
 from django.test.client import Client
 
-
 from hamcrest import *
 
+from game.tests.utils.teacher import signup_teacher_directly, create_school, add_teacher_to_school
+from game.tests.utils.level import create_save_level
 
-from game.tests.utils.teacher import signup_teacher_directly
-# from portal.models import Teacher
-
-import game.level_management as level_management
-from game.models import Level
 
 class LevelEditorTestCase(TestCase):
 
@@ -56,40 +54,30 @@ class LevelEditorTestCase(TestCase):
     def login(self, email, password):
         self.client.post(reverse('teach'), {'login-email': email, 'login-password': password, 'login': ''}, follow=True)
 
-    def create_save_level(self,teacher):
-
-        data = {u'origin': u'{"coordinate":[3,5],"direction":"S"}', u'pythonEnabled': False, u'decor': [], u'blocklyEnabled': True, u'blocks': [{u'type': u'move_forwards'}, {u'type': u'turn_left'}, {u'type': u'turn_right'}], u'max_fuel': u'50', u'pythonViewEnabled': False, u'character': u'3', u'name': u'abc', u'theme': 1, u'anonymous': False, u'cows': u'[]', u'path': u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],"connectedNodes":[0]}]', u'traffic_lights': u'[]', u'destinations': u'[[3,4]]'}
-
-        level = Level(default=False, anonymous=data['anonymous'])
-
-        level.owner = teacher.user.userprofile
-
-        level_management.save_level(level, data)
-
-        level.shared_with.add(level.owner.student.class_field.teacher.user.user)
-        level.save()
-
-        response = {'id': level.id}
-
-        return HttpResponse(json.dumps(response), content_type='application/javascript')
-
-    # def get_sharing_info(self):
-    #     url = reverse('get_sharing_information_for_editor', )
-
-    def students_of_class(self, klass):
-        url = reverse('students_for_level_moderation', args=[klass.i])
+    def get_sharing_information(self, level_id):
+        url = reverse('get_sharing_information_for_editor', args=[level_id])
         response = self.client.get(url)
         return response
 
-
     def test_level_sharing(self):
-        teacher1 = signup_teacher_directly()
-        teacher2 = signup_teacher_directly()
-        teacher3 = signup_teacher_directly()
-        teacher4 = signup_teacher_directly()
+        teacher1, email1, password1 = signup_teacher_directly()
+        teacher2, _, _ = signup_teacher_directly()
+        teacher3, _, _ = signup_teacher_directly()
 
-        print(teacher1.user)
-        # self.login(teacher1[0],teacher1[1])
-        # response = self.create_save_level(teacher1)
+        self.login(email1,password1)
+        level_id = create_save_level(teacher1)
 
-        assert_that(0, equal_to(1))
+        sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
+        assert_that(len(sharing_info1['teachers']), equal_to(0))
+
+        school1 = create_school()
+        add_teacher_to_school(teacher1, school1)
+        add_teacher_to_school(teacher2, school1)
+
+        sharing_info2 = json.loads(self.get_sharing_information(level_id).getvalue())
+        assert_that(len(sharing_info2['teachers']), equal_to(1))
+
+        school2 = create_school()
+        add_teacher_to_school(teacher3, school2)
+        sharing_info3 = json.loads(self.get_sharing_information(level_id).getvalue())
+        assert_that(len(sharing_info3['teachers']), equal_to(1))

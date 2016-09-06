@@ -35,16 +35,17 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 import random
+import string
 from django.core import mail
 import sys
 import email
 
-from portal.models import Teacher
+from portal.models import Teacher, School
 from portal.helpers.email import generate_token
 
 
 def generate_details(**kwargs):
-    title = kwargs.get('title','Mr')
+    title = kwargs.get('title', 'Mr')
     first_name = kwargs.get('first_name', 'Test')
     last_name = kwargs.get('last_name', 'Teacher')
     email_address = kwargs.get('email_address', 'testteacher%d@codeforlife.com' % random.randint(1, sys.maxint))
@@ -58,7 +59,7 @@ def signup_teacher_directly(**kwargs):
     teacher = Teacher.objects.factory(title, first_name, last_name, email_address, password)
     generate_token(teacher.user.user, preverified=True)
     teacher.user.save()
-    return teacher
+    return teacher, email_address, password
 
 
 def signup_teacher(page):
@@ -74,3 +75,19 @@ def signup_teacher(page):
 
     return page, email_address, password
 
+
+def create_school():
+
+    school = School()
+    school.name = ''.join(random.SystemRandom().choice(string.ascii_uppercase) for _ in range(10))
+    school.postcode = ''.join(random.SystemRandom().choice(string.ascii_uppercase) for _ in range(7))
+    school.country = 'United Kingdom'
+    school.save()
+
+    return school
+
+
+def add_teacher_to_school(teacher, school):
+
+    teacher.user.teacher.school = school
+    teacher.user.teacher.save()
