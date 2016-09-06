@@ -97,7 +97,7 @@ class GamePage(BasePage):
 
         assert_that(image.get_attribute("opacity"), equal_to("1"))
 
-    def run_program(self, wait_for_element_id="algorithmScore"):
+    def run_program(self, wait_for_element_id="modal-content"):
         self.browser.find_element_by_id("fast_tab").click()
 
         try:
