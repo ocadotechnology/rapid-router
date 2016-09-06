@@ -42,7 +42,7 @@ from unittest import skipUnless
 
 from portal.models import UserProfile
 from game.models import Workspace
-from portal.tests.pageObjects.portal.game_page import GamePage
+from .game_page import GamePage
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
 from portal.tests.utils.teacher import signup_teacher_directly
