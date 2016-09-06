@@ -35,7 +35,7 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from unittest import expectedFailure
+from unittest import expectedFailure, skip
 
 from .base_game_test import BaseGameTest
 
@@ -371,6 +371,7 @@ class TestPlayThrough(BaseGameTest):
     def test_level_103(self):
         self._complete_level(103, check_algorithm_score=False)
 
+    @skip('TODO: remove after #834 fixed')
     def test_level_104(self):
         self._complete_level(104, check_algorithm_score=False)
 
