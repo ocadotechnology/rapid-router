@@ -40,33 +40,34 @@ from unittest import expectedFailure, skip
 from .base_game_test import BaseGameTest
 
 
+def complete_and_check_level(level_number, page, next_episode=None, check_algorithm_score=True, check_route_score=True, final_level=False):
+    page.solution_button().run_program().assert_success()
+    if check_algorithm_score:
+        page.assert_algorithm_score(10)
+    if check_route_score:
+        page.assert_route_score(10)
+    if final_level:
+        return page
+    if next_episode is None:
+        page.next_level()
+        page.assert_level_number(level_number + 1)
+    else:
+        page.next_episode()
+        page.assert_episode_number(next_episode)
+    return page
+
+
 class TestPlayThrough(BaseGameTest):
     def setUp(self):
         self.login_once()
 
     def _complete_episode(self, episode_number, level_number, **kwargs):
         page = self.go_to_episode(episode_number)
-        self._complete_and_check_current_level(level_number, page, **kwargs)
+        complete_and_check_level(level_number, page, **kwargs)
 
     def _complete_level(self, level_number, **kwargs):
         page = self.go_to_level(level_number)
-        self._complete_and_check_current_level(level_number, page, **kwargs)
-
-    def _complete_and_check_current_level(self, level_number, page, next_episode=None, check_algorithm_score=True, check_route_score=True, final_level=False):
-        page.solution_button().run_program().assert_success()
-        if check_algorithm_score:
-            page.assert_algorithm_score(10)
-        if check_route_score:
-            page.assert_route_score(10)
-        if final_level:
-            return page
-        if next_episode is None:
-            page.next_level()
-            page.assert_level_number(level_number + 1)
-        else:
-            page.next_episode()
-            page.assert_episode_number(next_episode)
-        return page
+        complete_and_check_level(level_number, page, **kwargs)
 
     def test_episode_01(self):
         self._complete_episode(1, 1)
