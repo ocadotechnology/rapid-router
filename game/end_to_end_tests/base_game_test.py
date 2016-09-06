@@ -89,13 +89,13 @@ class BaseGameTest(SeleniumTestCase):
         else:
             raise Exception
 
-    def run_episode_test(self, episode_id, level, suffix=None, route_score="10/10", algorithm_score="10/10", page=None):
+    def run_episode_test(self, episode_id, level, suffix=None, route_score="10", algorithm_score="10", page=None):
         def go_to_episode():
             return self.go_to_episode(episode_id)
 
         self._run_level_test(go_to_episode, level, suffix, route_score, algorithm_score, page)
 
-    def run_level_test(self, level, suffix=None, route_score="10/10", algorithm_score="10/10", page=None):
+    def run_level_test(self, level, suffix=None, route_score="10", algorithm_score="10", page=None):
         def go_to_level():
             return self.go_to_level(level)
 

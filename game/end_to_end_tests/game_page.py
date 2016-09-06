@@ -37,9 +37,8 @@
 import os
 import time
 
-from hamcrest import assert_that, equal_to, contains_string
+from hamcrest import assert_that, equal_to, contains_string, starts_with
 from selenium.webdriver.common.by import By
-
 from portal.tests.pageObjects.portal.base_page import BasePage
 from selenium.common.exceptions import TimeoutException
 
@@ -130,7 +129,7 @@ class GamePage(BasePage):
 
     def _assert_score(self, element_id, score):
         route_score = self.browser.find_element_by_id(element_id).text
-        assert_that(route_score, equal_to(score))
+        assert_that(route_score, starts_with(str(score)))
         return self
 
     def assert_route_score(self, score):
