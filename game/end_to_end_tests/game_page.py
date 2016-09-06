@@ -35,13 +35,13 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 import os
+import time
 
 from hamcrest import assert_that, equal_to, contains_string
 from selenium.webdriver.common.by import By
 
 from portal.tests.pageObjects.portal.base_page import BasePage
 from selenium.common.exceptions import TimeoutException
-import time
 
 
 class GamePage(BasePage):
@@ -80,6 +80,11 @@ class GamePage(BasePage):
 
     def step(self):
         self.browser.find_element_by_id("step_tab").click()
+        return self
+
+    def solution_button(self):
+        self.browser.find_element_by_id("solution_tab").click()
+        time.sleep(1)
         return self
 
     def assert_is_green_light(self, traffic_light_index):
