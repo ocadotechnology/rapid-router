@@ -35,6 +35,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from unittest import expectedFailure
+
 from .base_game_test import BaseGameTest
 
 
@@ -275,6 +277,7 @@ class TestPlayThrough(BaseGameTest):
     def test_level_072(self):
         self._complete_level(72)
 
+    @expectedFailure  # TODO: remove after #836 fixed
     def test_level_073(self):
         self._complete_level(73)
 
