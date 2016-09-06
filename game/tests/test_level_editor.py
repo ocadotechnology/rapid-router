@@ -64,7 +64,7 @@ class LevelEditorTestCase(TestCase):
         teacher2, _, _ = signup_teacher_directly()
         teacher3, _, _ = signup_teacher_directly()
 
-        self.login(email1,password1)
+        self.login(email1, password1)
         level_id = create_save_level(teacher1)
 
         sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
