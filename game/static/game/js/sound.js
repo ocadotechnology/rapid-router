@@ -150,14 +150,14 @@ ocargo.sound.tension = function() {
 };
 
 ocargo.sound.mute = function() {
-    this.playAudioBackup = Blockly.SOUNDS_;
-    Blockly.SOUNDS_ = {};
+    this.playAudioBackup = Blockly.mainWorkspace.SOUNDS_;
+    Blockly.mainWorkspace.SOUNDS_ = {};
 
     Howler.mute();
 };
 
 ocargo.sound.unmute = function() {
-    Blockly.SOUNDS_ = this.playAudioBackup || Blockly.SOUNDS_;
+    Blockly.mainWorkspace.SOUNDS_ = this.playAudioBackup || Blockly.mainWorkspace.SOUNDS_;
 
     Howler.unmute();
 };
