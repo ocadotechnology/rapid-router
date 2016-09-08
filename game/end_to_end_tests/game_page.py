@@ -117,7 +117,7 @@ class GamePage(BasePage):
             import time
             millis = int(round(time.time() * 1000))
             screenshot_filename = '/tmp/game_tests_%s-%s.png' % (os.getenv("BUILD_NUMBER", "nonumber"), str(millis))
-            print "Saved screenshot to " + screenshot_filename
+            print("Saved screenshot to " + screenshot_filename)
             self.browser.get_screenshot_as_file(screenshot_filename)
             raise e
 
