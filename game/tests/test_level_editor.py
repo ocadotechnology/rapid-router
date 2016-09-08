@@ -59,10 +59,9 @@ class LevelEditorTestCase(TestCase):
         response = self.client.get(url)
         return response
 
-    def test_level_sharing(self):
+    def test_level_sharing_with_no_school(self):
         teacher1, email1, password1 = signup_teacher_directly()
         teacher2, _, _ = signup_teacher_directly()
-        teacher3, _, _ = signup_teacher_directly()
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
@@ -70,14 +69,29 @@ class LevelEditorTestCase(TestCase):
         sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
         assert_that(len(sharing_info1['teachers']), equal_to(0))
 
+    def test_level_sharing_with_school(self):
+        teacher1, email1, password1 = signup_teacher_directly()
+        teacher2, _, _ = signup_teacher_directly()
+
+        self.login(email1, password1)
+        level_id = create_save_level(teacher1)
+
         school1 = create_school()
         add_teacher_to_school(teacher1, school1)
         add_teacher_to_school(teacher2, school1)
 
-        sharing_info2 = json.loads(self.get_sharing_information(level_id).getvalue())
-        assert_that(len(sharing_info2['teachers']), equal_to(1))
+        sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
+        assert_that(len(sharing_info1['teachers']), equal_to(1))
 
-        school2 = create_school()
-        add_teacher_to_school(teacher3, school2)
-        sharing_info3 = json.loads(self.get_sharing_information(level_id).getvalue())
-        assert_that(len(sharing_info3['teachers']), equal_to(1))
+    def test_level_sharing_with_empty_school(self):
+        teacher1, email1, password1 = signup_teacher_directly()
+        teacher2, _, _ = signup_teacher_directly()
+
+        self.login(email1, password1)
+        level_id = create_save_level(teacher1)
+
+        school1 = create_school()
+        add_teacher_to_school(teacher1, school1)
+
+        sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
+        assert_that(len(sharing_info1['teachers']), equal_to(0))

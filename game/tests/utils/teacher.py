@@ -44,18 +44,13 @@ from portal.models import Teacher, School
 from portal.helpers.email import generate_token
 
 
-def generate_details(**kwargs):
-    title = kwargs.get('title', 'Mr')
-    first_name = kwargs.get('first_name', 'Test')
-    last_name = kwargs.get('last_name', 'Teacher')
-    email_address = kwargs.get('email_address', 'testteacher%d@codeforlife.com' % random.randint(1, sys.maxint))
-    password = kwargs.get('password', 'Password1')
-
+def generate_details(title='Mr', first_name='Test', last_name='Teacher', password='Password1'):
+    email_address = 'testteacher%d@codeforlife.com' % random.randint(1, sys.maxint)
     return title, first_name, last_name, email_address, password
 
 
-def signup_teacher_directly(**kwargs):
-    title, first_name, last_name, email_address, password = generate_details(**kwargs)
+def signup_teacher_directly():
+    title, first_name, last_name, email_address, password = generate_details()
     teacher = Teacher.objects.factory(title, first_name, last_name, email_address, password)
     generate_token(teacher.user.user, preverified=True)
     teacher.user.save()
@@ -79,8 +74,8 @@ def signup_teacher(page):
 def create_school():
 
     school = School()
-    school.name = ''.join(random.SystemRandom().choice(string.ascii_uppercase) for _ in range(10))
-    school.postcode = ''.join(random.SystemRandom().choice(string.ascii_uppercase) for _ in range(7))
+    school.name = ''.join(random.choice(string.ascii_uppercase) for _ in range(10))
+    school.postcode = ''.join(random.choice(string.ascii_uppercase) for _ in range(7))
     school.country = 'United Kingdom'
     school.save()
 
