@@ -90,12 +90,14 @@ class BaseGameTest(SeleniumTestCase):
     def go_to_custom_level(self, level):
         path = reverse('play_custom_level', kwargs={'levelId': str(level.id)})
         self._go_to_path(path)
+        selenium.execute_script('ocargo.animation.FAST_ANIMATION_DURATION = 1;')
 
         return GamePage(selenium)
 
     def go_to_episode(self, episodeId):
         path = reverse('start_episode', kwargs={'episodeId': str(episodeId)})
         self._go_to_path(path)
+        selenium.execute_script('ocargo.animation.FAST_ANIMATION_DURATION = 1;')
 
         return GamePage(selenium)
 
