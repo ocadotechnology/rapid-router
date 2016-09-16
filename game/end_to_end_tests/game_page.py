@@ -86,7 +86,10 @@ class GamePage(BasePage):
 
     def solution_button(self):
         self.browser.find_element_by_id("solution_tab").click()
-        time.sleep(1)
+        popup_message = self.browser.find_element_by_id("myModal-title").text
+        while not popup_message == "View solution":
+            popup_message = self.browser.find_element_by_id("myModal-title").text
+        self.dismiss_dialog("close_button")
         return self
 
     def assert_level_number(self, level_number):

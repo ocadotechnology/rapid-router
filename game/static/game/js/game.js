@@ -788,6 +788,7 @@ ocargo.Game.prototype._setupSolutionTab = function() {
                 ocargo.pythonControl.setCode(workspace.python_contents);
             }
             $('#loadModal').foundation('reveal', 'close');
+            ocargo.Drawing.startPopup('View solution','','',false, null, 'Okay');
         }.bind(this));
     }.bind(this));
 };
