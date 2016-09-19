@@ -413,7 +413,6 @@ class TestPlayThrough(BaseGameTest):
     def test_level_103(self):
         self._complete_level(103, check_algorithm_score=False)
 
-    @skip('TODO: remove after #834 fixed')
     def test_level_104(self):
         self._complete_level(104, check_algorithm_score=False)
 
