@@ -104,8 +104,6 @@ class RandomRoadTestCase(TestCase):
         # Test if number of tiles = size
         node_count = len(path)
 
-        print "Nodes: " + str(node_count)
-
         self.assertTrue(node_count == number_of_tiles)
 
     def test_branchiness_min(self):
@@ -143,7 +141,6 @@ class RandomRoadTestCase(TestCase):
                 branch_count += 1
 
         self.assertTrue(branch_count)
-        print "Branches: " + str(branch_count)
 
     def test_curviness_max(self):
         """ Test that the path is curving significantly if the curviness is set to max value. """
@@ -164,7 +161,6 @@ class RandomRoadTestCase(TestCase):
                     not (check_direction(node, path[int(node['connectedNodes'][0])])
                          == check_direction(node, path[int(node['connectedNodes'][1])]))
                 )
-        print "Turns: " + str(turn_count)
 
         # Check if there are any turns.
         self.assertTrue(turn_count)
