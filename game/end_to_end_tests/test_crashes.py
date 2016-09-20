@@ -51,6 +51,12 @@ class TestCrashes(BaseGameTest):
     def test_crash_turning_right_on_left_turn(self):
         self.run_crashing_test(level=6, workspace_file='crash_turning_right_on_left_turn')
 
+    def test_crash_going_forward_on_right_turn(self):
+        self.run_crashing_test(level=6, workspace_file='crash_going_forward_on_right_turn')
+
+    def test_crash_going_forward_on_left_turn(self):
+        self.run_crashing_test(level=6, workspace_file='crash_going_forward_on_left_turn')
+
     def test_crash_going_forward_on_t_junction(self):
         self.run_crashing_test(level=13, workspace_file='crash_going_forward_on_t_junction')
 
