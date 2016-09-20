@@ -64,7 +64,7 @@ class RandomRoadTestCase(TestCase):
     def create_test_data(self, num_tiles=None, branchiness=None, loopiness=None, curviness=None,
                          traffic_lights_enabled=False, decor_enabled=True, cows_enabled=False):
         if num_tiles is None:
-            num_tiles = random.randint(3, 30)
+            num_tiles = random.randint(3, 40)
         if branchiness is None:
             branchiness = random.randint(0, 10)
         if loopiness is None:
@@ -91,7 +91,7 @@ class RandomRoadTestCase(TestCase):
     def test_size_equals_num_of_tiles(self):
         """ Test that size parameter corresponds to the actual number of tiles"""
 
-        number_of_tiles = 20
+        number_of_tiles = 10
         data = self.create_test_data(num_tiles=number_of_tiles)
 
         path = json.loads(data['path'])
@@ -102,9 +102,7 @@ class RandomRoadTestCase(TestCase):
         self.check_if_valid(origin, destinations, path, decor)
 
         # Test if number of tiles = size
-        node_count = len(path)
-
-        self.assertTrue(node_count == number_of_tiles)
+        self.assertTrue(len(path) == number_of_tiles)
 
     def test_branchiness_min(self):
         """ Test that if the branchiness is 0 we don't get branches. """
