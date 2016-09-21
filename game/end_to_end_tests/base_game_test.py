@@ -45,7 +45,7 @@ from django_selenium_clean import selenium, SeleniumTestCase
 from . import custom_handler
 from portal.models import UserProfile
 from game.models import Workspace
-from portal.tests.pageObjects.portal.game_page import GamePage
+from .game_page import GamePage
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
 from portal.tests.utils.teacher import signup_teacher_directly
@@ -83,6 +83,7 @@ class BaseGameTest(SeleniumTestCase):
     def go_to_level(self, level_name):
         path = reverse('play_default_level', kwargs={'levelName': str(level_name)})
         self._go_to_path(path)
+        selenium.execute_script('ocargo.animation.FAST_ANIMATION_DURATION = 1;')
 
         return GamePage(selenium)
 
@@ -97,47 +98,6 @@ class BaseGameTest(SeleniumTestCase):
         self._go_to_path(path)
 
         return GamePage(selenium)
-
-    def score_element_id(self, route_score, algorithm_score):
-        if route_score:
-            return "routeScore"
-        elif algorithm_score:
-            return "algorithmScore"
-        else:
-            raise Exception
-
-    def run_episode_test(self, episode_id, level, suffix=None, route_score="10/10", algorithm_score="10/10", page=None):
-        def go_to_episode():
-            return self.go_to_episode(episode_id)
-
-        self._run_level_test(go_to_episode, level, suffix, route_score, algorithm_score, page)
-
-    def run_level_test(self, level, suffix=None, route_score="10/10", algorithm_score="10/10", page=None):
-        def go_to_level():
-            return self.go_to_level(level)
-
-        self._run_level_test(go_to_level, level, suffix, route_score, algorithm_score, page)
-
-    def _run_level_test(self, go_to_level_function, level, suffix, route_score, algorithm_score, page):
-        level_with_suffix = str(level)
-        if suffix:
-            level_with_suffix += "-%d" % suffix
-
-        user_profile = self.login_once()
-        workspace_id = self.use_workspace_of_level(level_with_suffix, user_profile)
-        score_element_id = self.score_element_id(route_score, algorithm_score)
-
-        if not page:
-            page = go_to_level_function()
-
-        page.load_solution(workspace_id) \
-            .run_program(score_element_id)
-
-        if route_score:
-            page.assert_route_score(route_score)
-
-        if algorithm_score:
-            page.assert_algorithm_score(algorithm_score)
 
     def run_crashing_test(self, level, workspace_file):
         user_profile = self.login_once()
@@ -156,10 +116,6 @@ class BaseGameTest(SeleniumTestCase):
         return self.go_to_level(level) \
             .load_solution(workspace_id) \
             .run_program_that_runs_out_of_instructions()
-
-    def use_workspace_of_level(self, level, user_profile):
-        workspace_filename = self.solution_filename_for_level(level)
-        return self.use_workspace(workspace_filename, user_profile)
 
     def use_workspace(self, workspace_file, user_profile):
         solution = self.read_solution(workspace_file)
@@ -180,9 +136,6 @@ class BaseGameTest(SeleniumTestCase):
 
     def solution_file_path(self, filename):
         return os.path.join(BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml")
-
-    def solution_filename_for_level(self, level):
-        return "level_" + str(level)
 
     def read_solution(self, filename):
         path = self.solution_file_path(filename)
