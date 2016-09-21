@@ -88,10 +88,10 @@ class RandomRoadTestCase(TestCase):
             # Check if any decor got generated
             self.assertTrue(decor)
 
-    def test_size_equals_num_of_tiles(self):
-        """ Test that size parameter corresponds to the actual number of tiles"""
+    def test_tiles_less_or_equal_size(self):
+        """ Test that the number of tiles is less or equal to the size parameter"""
 
-        number_of_tiles = 10
+        number_of_tiles = 30
         data = self.create_test_data(num_tiles=number_of_tiles)
 
         path = json.loads(data['path'])
@@ -102,7 +102,7 @@ class RandomRoadTestCase(TestCase):
         self.check_if_valid(origin, destinations, path, decor)
 
         # Test if number of tiles = size
-        self.assertTrue(len(path) == number_of_tiles)
+        self.assertTrue(len(path) <= number_of_tiles)
 
     def test_branchiness_min(self):
         """ Test that if the branchiness is 0 we don't get branches. """
