@@ -45,7 +45,6 @@ from selenium.webdriver.support.expected_conditions import presence_of_all_eleme
 from selenium.webdriver.support.ui import WebDriverWait
 from portal.tests.pageObjects.portal.base_page import BasePage
 
-
 class GamePage(BasePage):
     def __init__(self, browser):
         super(GamePage, self).__init__(browser)
@@ -86,10 +85,13 @@ class GamePage(BasePage):
 
     def solution_button(self):
         self.browser.find_element_by_id("solution_tab").click()
-        popup_message = self.browser.find_element_by_id("myModal-title").text
-        while not popup_message == "View solution":
-            popup_message = self.browser.find_element_by_id("myModal-title").text
-        self.dismiss_dialog("close_button")
+        solution_loaded = self.browser.execute_script("return ocargo.solutionLoaded;")
+        timeout = time.time() + 30
+
+        while not solution_loaded:
+            solution_loaded = self.browser.execute_script("return ocargo.solutionLoaded;")
+            if time.time() > timeout:
+                break
         return self
 
     def assert_level_number(self, level_number):

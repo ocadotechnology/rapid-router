@@ -758,7 +758,7 @@ ocargo.Drawing.translate = function (coordinate) {
  4. buttons (in one row)
  Mascot will be displayed on the right hand side of the popup
  */
-ocargo.Drawing.startPopup = function (title, subtitle, message, mascot, buttons, buttonText) {
+ocargo.Drawing.startPopup = function (title, subtitle, message, mascot, buttons) {
     $('#myModal-title').html(title);
     $('#myModal-lead').html(subtitle);
     $('#myModal-mainText').html(message);
@@ -772,13 +772,8 @@ ocargo.Drawing.startPopup = function (title, subtitle, message, mascot, buttons,
     if (buttons) {
         $('#modal-buttons').html(buttons);
     } else {
-        if (buttonText) {
-            $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', gettext(buttonText)));
-        } else {
-            $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', gettext('Close')));
-        }
+        $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', gettext('Close')));
     }
-
 
     $('#myModal').foundation('reveal', 'open', {
         animation: 'fadeAndPop',
