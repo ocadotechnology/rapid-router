@@ -85,7 +85,3 @@ class TestCrashes(BaseGameTest):
             .clear()
 
         complete_and_check_level(6, page)
-
-
-
-
