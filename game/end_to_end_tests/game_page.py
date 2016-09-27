@@ -45,6 +45,7 @@ from selenium.webdriver.support.expected_conditions import presence_of_all_eleme
 from selenium.webdriver.support.ui import WebDriverWait
 from portal.tests.pageObjects.portal.base_page import BasePage
 
+
 class GamePage(BasePage):
     def __init__(self, browser):
         super(GamePage, self).__init__(browser)
