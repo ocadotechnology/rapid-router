@@ -72,7 +72,7 @@ class TestCrashes(BaseGameTest):
     def test_running_out_of_fuel(self):
         self.running_out_of_fuel_test(level=68, workspace_file='running_out_of_fuel')
 
-    def test_not_delivered_everywhere_test(self):
+    def test_not_delivered_everywhere(self):
         self.not_delivered_everywhere_test(level=16, workspace_file='not_delivered_everywhere')
 
     def test_procedure_undefined(self):
