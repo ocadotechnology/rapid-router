@@ -163,6 +163,7 @@ class GamePage(BasePage):
         console = self.browser.find_element_by_id("consoleOutput")
         self.clear_console_button()
         assert_that(console.text == "")
+        return self
 
     def next_episode(self):
         self.assert_success()
@@ -192,9 +193,11 @@ class GamePage(BasePage):
         time.sleep(1)
         console = self.browser.find_element_by_id("consoleOutput")
         assert_that(console.text, contains_string(console_message))
+        return self
 
     def _write_code(self, code):
         self.browser.execute_script("ocargo.pythonControl.appendCode(arguments[0])", code)
+        return self
 
     def _assert_score(self, element_id, score):
         route_score = self.browser.find_element_by_id(element_id).text
