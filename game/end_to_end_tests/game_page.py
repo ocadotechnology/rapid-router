@@ -157,6 +157,9 @@ class GamePage(BasePage):
     def run_out_of_fuel_program(self):
         return self._run_failing_program("You ran out of fuel!")
 
+    def run_a_red_light_program(self):
+        return self._run_failing_program("Uh oh, you just sent the van through a red light!")
+
     def run_program_that_does_not_deliver_everywhere(self):
         return self._run_failing_program("There are destinations that have not been delivered to.")
 

@@ -72,6 +72,9 @@ class TestCrashes(BaseGameTest):
     def test_running_out_of_fuel(self):
         self.running_out_of_fuel_test(level=68, workspace_file='running_out_of_fuel')
 
+    def test_running_a_red_light(self):
+        self.running_a_red_light_test(level=44, workspace_file='running_a_red_light')
+
     def test_not_delivered_everywhere(self):
         self.not_delivered_everywhere_test(level=16, workspace_file='not_delivered_everywhere')
 

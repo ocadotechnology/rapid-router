@@ -165,6 +165,15 @@ class BaseGameTest(SeleniumTestCase):
             .load_solution(workspace_id) \
             .run_out_of_fuel_program()
 
+    def running_a_red_light_test(self, level, workspace_file):
+        user_profile = self.login_once()
+
+        workspace_id = self.use_workspace(workspace_file, user_profile)
+
+        return self.go_to_level(level) \
+            .load_solution(workspace_id) \
+            .run_a_red_light_program()
+
     def not_delivered_everywhere_test(self, level, workspace_file):
         user_profile = self.login_once()
 
