@@ -83,7 +83,7 @@ class BaseGameTest(SeleniumTestCase):
     def go_to_level(self, level_name):
         path = reverse('play_default_level', kwargs={'levelName': str(level_name)})
         self._go_to_path(path)
-        selenium.execute_script('ocargo.animation.FAST_ANIMATION_DURATION = 1;')
+        selenium.execute_script('ocargo.animation.FAST_ANIMATION_DURATION = 100;')
 
         return GamePage(selenium)
 
@@ -98,6 +98,22 @@ class BaseGameTest(SeleniumTestCase):
         self._go_to_path(path)
 
         return GamePage(selenium)
+
+    def deliver_everywhere_test(self, level):
+        self.login_once()
+
+        return self.go_to_level(level) \
+            .solution_button() \
+            .run_program()
+
+    def try_again_if_not_full_score_test(self, level, workspace_file):
+        user_profile = self.login_once()
+
+        workspace_id = self.use_workspace(workspace_file, user_profile)
+
+        return self.go_to_level(level) \
+            .load_solution(workspace_id) \
+            .run_retry_program()
 
     def run_crashing_test(self, level, workspace_file):
         user_profile = self.login_once()

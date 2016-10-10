@@ -123,6 +123,14 @@ class GamePage(BasePage):
 
         return self
 
+    def run_retry_program(self):
+        self.run_program("try_again_button")
+        modal_content = self.browser.find_element_by_id("modal-content").text
+        assert_that(modal_content, contains_string("Try creating a simpler program."))
+        self.browser.find_element_by_id("try_again_button").click()
+        time.sleep(1)
+        return self.solution_button().run_program()
+
     def run_crashing_program(self):
         return self._run_failing_program("What went wrong")
 
