@@ -35,6 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from game.end_to_end_tests.base_game_test import BaseGameTest
+from .test_play_through import complete_and_check_level
 
 
 class TestLevelWin(BaseGameTest):
@@ -42,4 +43,6 @@ class TestLevelWin(BaseGameTest):
         self.deliver_everywhere_test(level=16)
 
     def test_try_again_if_not_full_score(self):
-        self.try_again_if_not_full_score_test(level=19, workspace_file='complete_level_not_with_full_score')
+        page = self \
+                .try_again_if_not_full_score_test(level=19, workspace_file='complete_level_not_with_full_score')
+        complete_and_check_level(19, page)
