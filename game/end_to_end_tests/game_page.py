@@ -86,7 +86,13 @@ class GamePage(BasePage):
 
     def solution_button(self):
         self.browser.find_element_by_id("solution_tab").click()
-        time.sleep(1)
+        solution_loaded = self.browser.execute_script("return ocargo.solutionLoaded;")
+        timeout = time.time() + 30
+
+        while not solution_loaded:
+            solution_loaded = self.browser.execute_script("return ocargo.solutionLoaded;")
+            if time.time() > timeout:
+                break
         return self
 
     def assert_level_number(self, level_number):

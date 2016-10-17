@@ -775,7 +775,6 @@ ocargo.Drawing.startPopup = function (title, subtitle, message, mascot, buttons)
         $('#modal-buttons').html(ocargo.button.dismissButtonHtml('close_button', gettext('Close')));
     }
 
-
     $('#myModal').foundation('reveal', 'open', {
         animation: 'fadeAndPop',
         animation_speed: 200

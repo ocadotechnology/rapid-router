@@ -312,7 +312,6 @@ class TestPlayThrough(BaseGameTest):
     def test_level_072(self):
         self._complete_level(72)
 
-    @expectedFailure  # TODO: remove after #836 fixed
     def test_level_073(self):
         self._complete_level(73)
 
@@ -379,7 +378,6 @@ class TestPlayThrough(BaseGameTest):
     def test_level_092(self):
         self._complete_level(92, check_algorithm_score=False)
 
-    @expectedFailure  # TODO: remove after #835 merged
     def test_level_093(self):
         self._complete_level(93, check_algorithm_score=False)
 
@@ -413,7 +411,6 @@ class TestPlayThrough(BaseGameTest):
     def test_level_103(self):
         self._complete_level(103, check_algorithm_score=False)
 
-    @skip('TODO: remove after #834 fixed')
     def test_level_104(self):
         self._complete_level(104, check_algorithm_score=False)
 

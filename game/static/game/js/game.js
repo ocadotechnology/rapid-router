@@ -58,6 +58,7 @@ ocargo.Game.prototype.setup = function() {
 
     restoreCmsLogin();
     initCustomBlocks();
+    ocargo.solutionLoaded = false;
     ocargo.blocklyControl = new ocargo.BlocklyControl();
     ocargo.blocklyControl.blocklyCustomisations.setupDoubleclick();
     ocargo.blocklyControl.blocklyCustomisations.setupLimitedBlocks();
@@ -771,7 +772,6 @@ ocargo.Game.prototype._selectPreviousTab = function () {
 
 ocargo.Game.prototype._setupSolutionTab = function() {
     this.tabs.solution.setOnChange(function () {
-
         this._goToWorkspace();
 
         this.saving.loadSolution(LEVEL_NAME, function (err, workspace) {
@@ -788,6 +788,7 @@ ocargo.Game.prototype._setupSolutionTab = function() {
                 ocargo.pythonControl.setCode(workspace.python_contents);
             }
             $('#loadModal').foundation('reveal', 'close');
+            ocargo.solutionLoaded = true;
         }.bind(this));
     }.bind(this));
 };
