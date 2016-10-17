@@ -155,8 +155,9 @@ class GamePage(BasePage):
         return self
 
     def _assert_score(self, element_id, score):
-        route_score = self.browser.find_element_by_id(element_id).text
-        assert_that(route_score, starts_with(str(score)))
+        score_text = self.browser.find_element_by_id(element_id).text
+        score_number = score_text.split("/")[0]
+        assert_that(score_number, equal_to(str(score)))
         return self
 
     def assert_success(self):
