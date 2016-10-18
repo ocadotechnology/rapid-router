@@ -64,7 +64,7 @@ class RandomRoadTestCase(TestCase):
     def create_test_data(self, num_tiles=None, branchiness=None, loopiness=None, curviness=None,
                          traffic_lights_enabled=False, decor_enabled=True, cows_enabled=False):
         if num_tiles is None:
-            num_tiles = random.randint(3, 30)
+            num_tiles = random.randint(3, 40)
         if branchiness is None:
             branchiness = random.randint(0, 10)
         if loopiness is None:
@@ -84,18 +84,33 @@ class RandomRoadTestCase(TestCase):
         for node in destinations:
             self.assertTrue(find_node(node[0], node[1], path))
 
-        # Check if any decor got generated
-        self.assertTrue(decor)
+        if decor:
+            # Check if any decor got generated
+            self.assertTrue(decor)
 
-    def test_branchiness_min(self):
+    def test_tiles_less_or_equal_size(self):
+        """ Test that the number of tiles is less or equal to the size parameter"""
 
-        """ Test that if the branchiness is 0 we don't get branches. """
-
-        data = self.create_test_data(branchiness=0, loopiness=0, traffic_lights_enabled=False)
+        number_of_tiles = 30
+        data = self.create_test_data(num_tiles=number_of_tiles)
 
         path = json.loads(data['path'])
         destinations = json.loads(data['destinations'])
-        traffic_lights = json.loads(data['traffic_lights'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
+        # Test if number of tiles = size
+        self.assertTrue(len(path) <= number_of_tiles)
+
+    def test_branchiness_min(self):
+        """ Test that if the branchiness is 0 we don't get branches. """
+
+        data = self.create_test_data(branchiness=0, loopiness=0)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
         origin = json.loads(data['origin'])
         decor = data['decor']
 
@@ -105,17 +120,33 @@ class RandomRoadTestCase(TestCase):
         for node in path:
             self.assertTrue(len(node['connectedNodes']) <= 2)
 
-        # Assert no traffic lights got generated.
-        self.assertFalse(traffic_lights)
+    def test_branchiness_max(self):
+        """ Test that if the branchiness > 0 we get branches. """
+
+        data = self.create_test_data(branchiness=2, loopiness=0)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
+        # Test if some branches
+        branch_count = 0
+        for node in path:
+            if len(node['connectedNodes']) > 2:
+                branch_count += 1
+
+        self.assertTrue(branch_count)
 
     def test_curviness_max(self):
         """ Test that the path is curving significantly if the curviness is set to max value. """
 
-        data = self.create_test_data(curviness=1, traffic_lights_enabled=False)
+        data = self.create_test_data(curviness=1)
 
         path = json.loads(data['path'])
         destinations = json.loads(data['destinations'])
-        traffic_lights = json.loads(data['traffic_lights'])
         origin = json.loads(data['origin'])
         decor = data['decor']
 
@@ -132,5 +163,64 @@ class RandomRoadTestCase(TestCase):
         # Check if there are any turns.
         self.assertTrue(turn_count)
 
+    def test_traffic_light_no(self):
+        """ Test that traffic lights don't get generated """
+
+        data = self.create_test_data(traffic_lights_enabled=False)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
+        traffic_lights = json.loads(data['traffic_lights'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
         # Assert no traffic lights got generated.
         self.assertFalse(traffic_lights)
+
+    def test_traffic_light_yes(self):
+        """ Test that traffic lights get generated """
+
+        data = self.create_test_data(traffic_lights_enabled=True)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
+        traffic_lights = json.loads(data['traffic_lights'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
+        # Assert no traffic lights got generated.
+        self.assertTrue(traffic_lights)
+
+    def test_decor_no(self):
+        """ Test that scenery doesn't get generated """
+
+        data = self.create_test_data(decor_enabled=False)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
+        # Assert no scenery got generated.
+        self.assertFalse(decor)
+
+    def test_decor_yes(self):
+        """ Test that scenery does get generated """
+
+        data = self.create_test_data(decor_enabled=True)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
+        # Assert scenery got generated.
+        self.assertTrue(decor)
