@@ -500,7 +500,7 @@ ocargo.Game.prototype._setupTabs = function () {
     this._setupQuitTab();
     this._setupNightModeTab();
 
-    if (USER_STATUS === 'TEACHER' && LEVEL_NAME <= 109){
+    if (USER_STATUS === 'TEACHER' && DEFAULT_LEVEL){
         this.tabs.solution = new ocargo.Tab($('#solution_radio'), $('#solution_radio + label'));
         this._setupSolutionTab();
         $('#solution_tab').show()
