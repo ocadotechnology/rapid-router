@@ -95,6 +95,14 @@ class GamePage(BasePage):
                 break
         return self
 
+    def python_commands_button(self):
+        self.browser.find_element_by_id("van_commands_help").click()
+        return self
+
+    def clear_console_button(self):
+        self.browser.find_element_by_id("clear_console").click()
+        return self
+
     def assert_level_number(self, level_number):
         path = reverse('play_default_level', kwargs={'levelName': str(level_number)})
         assert_that(self.browser.current_url, ends_with(path))
@@ -138,6 +146,31 @@ class GamePage(BasePage):
     def run_program_that_runs_out_of_instructions(self):
         return self._run_failing_program("The van ran out of instructions before it reached a destination.")
 
+    def run_parse_error_program(self):
+        return self._run_python_failing_program("v.", "ParseError: bad input on line")
+
+    def run_attribute_error_program(self):
+        return self._run_python_failing_program("v.go()", "AttributeError: 'Van' object has no attribute")
+
+    def run_print_program(self):
+        return self._run_python_failing_program("print(\"hello world\")", "hello world")
+
+    def check_python_commands(self):
+        self.python_commands_button()
+        time.sleep(1)
+        python_commands = self.browser.find_element_by_id("myModal-lead").text
+        assert_that(python_commands, contains_string("Run the following commands on the van object v"))
+        return self
+
+    def write_to_then_clear_console(self):
+        self._write_code("v.")
+        self.browser.find_element_by_id("fast_tab").click()
+        time.sleep(1)
+        console = self.browser.find_element_by_id("consoleOutput")
+        self.clear_console_button()
+        assert_that(console.text == "")
+        return self
+
     def next_episode(self):
         self.assert_success()
         self.browser.find_element_by_id("next_episode_button").click()
@@ -158,6 +191,18 @@ class GamePage(BasePage):
         self.run_program('try_again_button')
         error_message = self.browser.find_element_by_id('myModal-lead').text
         assert_that(error_message, contains_string(text))
+        return self
+
+    def _run_python_failing_program(self, code, console_message):
+        self._write_code(code)
+        self.browser.find_element_by_id("fast_tab").click()
+        time.sleep(1)
+        console = self.browser.find_element_by_id("consoleOutput")
+        assert_that(console.text, contains_string(console_message))
+        return self
+
+    def _write_code(self, code):
+        self.browser.execute_script("ocargo.pythonControl.appendCode(arguments[0])", code)
         return self
 
     def _assert_score(self, element_id, score):

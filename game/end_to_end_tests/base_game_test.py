@@ -110,6 +110,26 @@ class BaseGameTest(SeleniumTestCase):
             .load_solution(workspace_id) \
             .run_crashing_program()
 
+    def run_python_commands_test(self, level):
+        return self.go_to_level(level) \
+            .check_python_commands()
+
+    def run_clear_console_test(self, level):
+        return self.go_to_level(level) \
+            .write_to_then_clear_console()
+
+    def run_console_parse_error_test(self, level):
+        return self.go_to_level(level) \
+            .run_parse_error_program()
+
+    def run_console_attribute_error_test(self, level):
+        return self.go_to_level(level) \
+            .run_attribute_error_program()
+
+    def run_console_print_test(self, level):
+        return self.go_to_level(level) \
+            .run_print_program()
+
     def running_out_of_instructions_test(self, level, workspace_file):
         user_profile = self.login_once()
 
