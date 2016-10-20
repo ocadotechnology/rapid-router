@@ -1,0 +1,24 @@
+<xml>
+    <block type="start" deletable="false" x="230" y="130">
+        <next>
+            <block type="move_forwards">
+                <next>
+                    <block type="controls_repeat_while">
+                        <value name="condition">
+                            <block type="road_exists">
+                                <field name="CHOICE">FORWARD</field>
+                            </block>
+                        </value>
+                        <statement name="body">
+                            <block type="turn_around">
+                                <next>
+                                    <block type="turn_around"></block>
+                                </next>
+                            </block>
+                        </statement>
+                    </block>
+                </next>
+            </block>
+        </next>
+    </block>
+</xml>

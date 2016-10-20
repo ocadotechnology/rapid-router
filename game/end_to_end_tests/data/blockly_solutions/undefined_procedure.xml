@@ -1,0 +1,15 @@
+<xml>
+    <block type="start" deletable="false" x="230" y="130">
+        <next>
+            <block type="call_proc">
+                <field name="NAME">waggle</field>
+            </block>
+        </next>
+    </block>
+    <block type="declare_proc" x="380" y="630">
+        <field name="NAME">wiggle</field>
+        <statement name="DO">
+            <block type="move_forwards"></block>
+        </statement>
+    </block>
+</xml>
