@@ -1,0 +1,64 @@
+<xml>
+    <block type="start" deletable="false" x="393" y="296">
+        <next>
+            <block type="turn_right">
+                <next>
+                    <block type="turn_left">
+                        <next>
+                            <block type="move_forwards">
+                                <next>
+                                    <block type="move_forwards">
+                                        <next>
+                                            <block type="move_forwards">
+                                                <next>
+                                                    <block type="turn_left">
+                                                        <next>
+                                                            <block type="move_forwards">
+                                                                <next>
+                                                                    <block type="move_forwards">
+                                                                        <next>
+                                                                            <block type="move_forwards">
+                                                                                <next>
+                                                                                    <block type="turn_right">
+                                                                                        <next>
+                                                                                            <block type="deliver">
+                                                                                                <next>
+                                                                                                    <block type="move_forwards">
+                                                                                                        <next>
+                                                                                                            <block type="turn_left">
+                                                                                                                <next>
+                                                                                                                    <block type="move_forwards">
+                                                                                                                        <next>
+                                                                                                                            <block type="deliver"></block>
+                                                                                                                        </next>
+                                                                                                                    </block>
+                                                                                                                </next>
+                                                                                                            </block>
+                                                                                                        </next>
+                                                                                                    </block>
+                                                                                                </next>
+                                                                                            </block>
+                                                                                        </next>
+                                                                                    </block>
+                                                                                </next>
+                                                                            </block>
+                                                                        </next>
+                                                                    </block>
+                                                                </next>
+                                                            </block>
+                                                        </next>
+                                                    </block>
+                                                </next>
+                                            </block>
+                                        </next>
+                                    </block>
+                                </next>
+                            </block>
+                        </next>
+                    </block>
+                </next>
+            </block>
+        </next>
+    </block>
+</xml>
+            

@@ -45,6 +45,7 @@ from django_selenium_clean import selenium, SeleniumTestCase
 from . import custom_handler
 from portal.models import UserProfile
 from game.models import Workspace
+from game.views.level import load_workspace_solution
 from .game_page import GamePage
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
@@ -153,7 +154,34 @@ class BaseGameTest(SeleniumTestCase):
 
         return self.go_to_level(level) \
             .load_solution(workspace_id) \
-            .run_program_that_runs_out_of_instructions()
+            .run_out_of_instructions_program()
+
+    def running_out_of_fuel_test(self, level, workspace_file):
+        user_profile = self.login_once()
+
+        workspace_id = self.use_workspace(workspace_file, user_profile)
+
+        return self.go_to_level(level) \
+            .load_solution(workspace_id) \
+            .run_out_of_fuel_program()
+
+    def not_delivered_everywhere_test(self, level, workspace_file):
+        user_profile = self.login_once()
+
+        workspace_id = self.use_workspace(workspace_file, user_profile)
+
+        return self.go_to_level(level) \
+            .load_solution(workspace_id) \
+            .run_program_that_does_not_deliver_everywhere()
+
+    def undefined_procedure_test(self, level, workspace_file):
+        user_profile = self.login_once()
+
+        workspace_id = self.use_workspace(workspace_file, user_profile)
+
+        return self.go_to_level(level) \
+            .load_solution(workspace_id) \
+            .run_undefined_procedure_program()
 
     def use_workspace(self, workspace_file, user_profile):
         solution = self.read_solution(workspace_file)

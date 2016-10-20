@@ -151,8 +151,17 @@ class GamePage(BasePage):
     def run_cow_crashing_program(self):
         return self._run_failing_program("You ran into a cow!")
 
-    def run_program_that_runs_out_of_instructions(self):
+    def run_out_of_instructions_program(self):
         return self._run_failing_program("The van ran out of instructions before it reached a destination.")
+
+    def run_out_of_fuel_program(self):
+        return self._run_failing_program("You ran out of fuel!")
+
+    def run_program_that_does_not_deliver_everywhere(self):
+        return self._run_failing_program("There are destinations that have not been delivered to.")
+
+    def run_undefined_procedure_program(self):
+        return self._run_procedure_error_program("Your program doesn't look quite right...")
 
     def run_parse_error_program(self):
         return self._run_python_failing_program("v.", "ParseError: bad input on line")
@@ -212,6 +221,11 @@ class GamePage(BasePage):
     def _write_code(self, code):
         self.browser.execute_script("ocargo.pythonControl.appendCode(arguments[0])", code)
         return self
+
+    def _run_procedure_error_program(self, text):
+        self.run_program('close_button')
+        error_message = self.browser.find_element_by_id('myModal-mainText').text
+        assert_that(error_message, contains_string(text))
 
     def _assert_score(self, element_id, score):
         score_text = self.browser.find_element_by_id(element_id).text
