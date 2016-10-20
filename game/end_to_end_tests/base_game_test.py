@@ -181,7 +181,7 @@ class BaseGameTest(SeleniumTestCase):
 
         return self.go_to_level(level) \
             .load_solution(workspace_id) \
-            .run_program_that_does_not_deliver_everywhere()
+            .run_not_delivered_everywhere_program()
 
     def undefined_procedure_test(self, level, workspace_file):
         user_profile = self.login_once()
