@@ -3,12 +3,12 @@ from selenium import webdriver
 
 SELENIUM_WEBDRIVERS = {
     'default': {
-        'callable': webdriver.Firefox,
+        'callable': webdriver.Chrome,
         'args': (),
         'kwargs': {},
     },
     'chrome': {
-        'callable': webdriver.Chrome,
+        'callable': webdriver.Firefox,
         'args': (),
         'kwargs': {},
     },
