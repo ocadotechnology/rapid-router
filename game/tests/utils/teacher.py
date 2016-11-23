@@ -41,7 +41,7 @@ import sys
 import email
 
 from portal.models import Teacher, School
-from portal.helpers.email import generate_token
+from portal.helpers.emails import generate_token
 
 
 def generate_details(title='Mr', first_name='Test', last_name='Teacher', password='Password1'):
