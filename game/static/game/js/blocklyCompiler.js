@@ -209,8 +209,7 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
     	return this.negateCondition(
             this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
     } else if (conditionBlock.type === 'traffic_light') {
-    	return this.trafficLightCondition(
-            conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
+    	return this.trafficLightCondition(conditionBlock);
     } else if (conditionBlock.type === 'declare_event') {
         return this.cowCrossingCondition(conditionBlock);
     }
@@ -295,7 +294,8 @@ ocargo.BlocklyCompiler.prototype.simplifyBlock = function(block){
 
 /** Conditions **/
 
-ocargo.BlocklyCompiler.prototype.trafficLightCondition = function(block, lightColour) {
+ocargo.BlocklyCompiler.prototype.trafficLightCondition = function(block) {
+    var lightColour = block.getFieldValue('CHOICE');
     return function(model) {
         queueHighlight(model, block);
         if (lightColour === ocargo.TrafficLight.RED) {
@@ -535,8 +535,7 @@ ocargo.BlocklyCompiler.prototype.mobileGetCondition = function(conditionBlock) {
         return this.negateCondition(
             this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
     } else if (conditionBlock.type === 'traffic_light') {
-        return this.trafficLightCondition(
-            conditionBlock, conditionBlock.inputList[0].fieldRow[1].value_);
+        return this.trafficLightCondition(conditionBlock);
     } else{
         return null;
     }
