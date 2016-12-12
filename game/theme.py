@@ -52,10 +52,10 @@ class Theme(object):
 
 
 THEME_DATA = {
-    'grass': Theme(name=u'grass', selected=u'#bce369', background=u'#a0c53a', border=u'#70961f', pk=1),
+    'grass': Theme(name=u'grass', selected=u'#bce369', background=u'#eef7ff', border=u'#70961f', pk=1),
     'snow': Theme(name=u'snow', selected=u'#b3deff', background=u'#eef7ff', border=u'#83c9fe', pk=2),
-    'farm': Theme(name=u'farm', selected=u'#bce369', background=u'#a0c53a', border=u'#70961f', pk=3),
-    'city': Theme(name=u'city', selected=u'#C1C1C1', background=u'#969696', border=u'#686868', pk=4),
+    'farm': Theme(name=u'farm', selected=u'#bce369', background=u'#eef7ff', border=u'#70961f', pk=3),
+    'city': Theme(name=u'city', selected=u'#C1C1C1', background=u'#eef7ff', border=u'#686868', pk=4),
 }
 
 
