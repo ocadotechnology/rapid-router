@@ -21,7 +21,6 @@ setup(name='rapid-router',
         'six==1.9.0',
         'docutils==0.12',
         'pyhamcrest==1.8.3',
-        'pytz',
     ],
     tests_require=[
         'django-setuptest',
