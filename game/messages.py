@@ -43,6 +43,10 @@ def youtubeLink(width, height, url, border):
            + "' allowfullscreen class='video'></iframe><br>"
 
 
+def play_button_icon_url():
+    return '<img src="/static/game/image/actions/go.svg" alt="' + ugettext('Play button') + '" style="width: 4%;">'
+
+
 def noPermissionMessage():
     return ugettext("You have no permission to see this.")
 
@@ -188,11 +192,31 @@ def description_level1():
     message = ugettext("Choose the right blocks to tell the van where to go. <br> Drag the "
                        + "blocks under the <b>Start</b> block to attach them. <br> To remove a "
                        + "block, drag it into the bin in the bottom right of the screen. "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level1(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level1_deprecated():
+    message = ugettext("Choose the right blocks to tell the van where to go. <br> Drag the "
+                       + "blocks under the <b>Start</b> block to attach them. <br> To remove a "
+                       + "block, drag it into the bin in the bottom right of the screen. "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level1(), message)
 
 
 def hint_level1():
+    message = ugettext("Drag the <b>Move forwards</b> block so that it is under the <b>Start</b> "
+                       + "block - close enough to be touching. <br><br>"
+                       + "Clicking on the arrows next to the %(play_button)s button will also drag the "
+                       + "blocks into a sequence for you. <br><br>"
+                       + "Don't forget to press %(play_button)s when you are done. ") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level1_deprecated():
     message = ugettext("Drag the <b>Move forwards</b> block so that it is under the <b>Start</b> "
                        + "block - close enough to be touching. <br><br>"
                        + "Clicking on the arrows next to the <b>Go</b> button will also drag the "
@@ -210,11 +234,30 @@ def description_level2():
                        + "<b>Move forwards</b> block can be placed under the first <b>Move "
                        + "forwards</b> block. <br> To remove a block, drag it back to the "
                        + "left of the screen or drop it in the bin. <br> When you are happy with "
+                       + "your sequence, press %(play_button)s! ") % {'play_button': play_button_icon_url()}
+    return build_description(title_level2(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level2_deprecated():
+    message = ugettext("A block can be placed next to or under another, like a jigsaw. A second "
+                       + "<b>Move forwards</b> block can be placed under the first <b>Move "
+                       + "forwards</b> block. <br> To remove a block, drag it back to the "
+                       + "left of the screen or drop it in the bin. <br> When you are happy with "
                        + "your sequence, press <b>Go</b>! ")
     return build_description(title_level2(), message)
 
 
 def hint_level2():
+    message = ugettext("A second <b>Move forwards</b> block can be placed under the first <b>Move "
+                       + "forwards</b> block. <br><br>"
+                       + "The arrows next to the <b>%(play_button)s</b> button will drag the blocks into a "
+                       + "sequence for you. ") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level2_deprecated():
     message = ugettext("A second <b>Move forwards</b> block can be placed under the first <b>Move "
                        + "forwards</b> block. <br><br>"
                        + "The arrows next to the <b>Go</b> button will drag the blocks into a "
@@ -231,11 +274,30 @@ def description_level3():
                        + "the <b>Turn right</b> block in your sequence. <br> Drag the blocks "
                        + "and attach them under the <b>Start</b> block like before. To remove a "
                        + "block, drag it back to the left of the screen or drop it in the bin. "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level3(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level3_deprecated():
+    message = ugettext("This time, the van has to turn right to reach the house. Make sure you use "
+                       + "the <b>Turn right</b> block in your sequence. <br> Drag the blocks "
+                       + "and attach them under the <b>Start</b> block like before. To remove a "
+                       + "block, drag it back to the left of the screen or drop it in the bin. "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level3(), message)
 
 
 def hint_level3():
+    message = ugettext("A <b>Turn right</b> block can be placed under the first <b>Move "
+                       + "forwards</b> block. <br><br> The arrows next to the %(play_button)s button "
+                       + "will drag the blocks into a sequence for you. ") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level3_deprecated():
     message = ugettext("A <b>Turn right</b> block can be placed under the first <b>Move "
                        + "forwards</b> block. <br><br> The arrows next to the <b>Go</b> button "
                        + "will drag the blocks into a sequence for you. ")
@@ -249,11 +311,28 @@ def title_level4():
 def description_level4():
     message = ugettext("This time the van has to go left. Make sure you use the <b>Turn left</b> "
                        + "block in your sequence. <br> Drag and attach the blocks like before. "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level4(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level4_deprecated():
+    message = ugettext("This time the van has to go left. Make sure you use the <b>Turn left</b> "
+                       + "block in your sequence. <br> Drag and attach the blocks like before. "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level4(), message)
 
 
 def hint_level4():
+    message = ugettext("A <b>Turn left</b> block can be placed under a series of <b>Move "
+                       + "forwards</b> blocks. <br> The arrows next to the %(play_button)s button will "
+                       + "drag the blocks into a sequence for you. ") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level4_deprecated():
     message = ugettext("A <b>Turn left</b> block can be placed under a series of <b>Move "
                        + "forwards</b> blocks. <br> The arrows next to the <b>Go</b> button will "
                        + "drag the blocks into a sequence for you. ")
@@ -268,11 +347,29 @@ def description_level5():
     message = ugettext("You already know how to make the van turn left or right. This time "
                        + "the van has to make lots of turns to reach the house. <br> Drag and "
                        + "attach the blocks to make your sequence."
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level5(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level5_deprecated():
+    message = ugettext("You already know how to make the van turn left or right. This time "
+                       + "the van has to make lots of turns to reach the house. <br> Drag and "
+                       + "attach the blocks to make your sequence."
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level5(), message)
 
 
 def hint_level5():
+    message = ugettext("This road starts by curving to the <b>left</b>. Then it curves to the "
+                       + "<b>right</b>. <br><br> The arrows next to the %(play_button)s button will drag "
+                       + "the blocks into a sequence for you. ") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level5_deprecated():
     message = ugettext("This road starts by curving to the <b>left</b>. Then it curves to the "
                        + "<b>right</b>. <br><br> The arrows next to the <b>Go</b> button will drag "
                        + "the blocks into a sequence for you. ")
@@ -286,11 +383,28 @@ def title_level6():
 def description_level6():
     message = ugettext("This time the van has to <b>Move forwards</b>, <b>Turn left</b> and "
                        + "<b>Turn right</b>. <br><br> Drag and attach the blocks like before. "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level6(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level6_deprecated():
+    message = ugettext("This time the van has to <b>Move forwards</b>, <b>Turn left</b> and "
+                       + "<b>Turn right</b>. <br><br> Drag and attach the blocks like before. "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level6(), message)
 
 
 def hint_level6():
+    message = ugettext("Follow the road around. How many <b>Move forwards</b> do you need? <br><br>"
+                       + "The arrows next to the %(play_button)s button will drag the blocks into a "
+                       + "sequence for you. ") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level6_deprecated():
     message = ugettext("Follow the road around. How many <b>Move forwards</b> do you need? <br><br>"
                        + "The arrows next to the <b>Go</b> button will drag the blocks into a "
                        + "sequence for you. ")
@@ -303,11 +417,27 @@ def title_level7():
 
 def description_level7():
     message = ugettext("Practise your new skills on this road by helping the driver to arrive at "
+                       + "the house. <br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level7(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level7_deprecated():
+    message = ugettext("Practise your new skills on this road by helping the driver to arrive at "
                        + "the house. <br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level7(), message)
 
 
 def hint_level7():
+    message = ugettext("Follow the road around. Don't forget to <b>Turn left</b> first. <br><br>"
+                       + "The arrows next to the %(play_button)s button will drag the blocks into a "
+                       + "sequence for you.") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level7_deprecated():
     message = ugettext("Follow the road around. Don't forget to <b>Turn left</b> first. <br><br>"
                        + "The arrows next to the <b>Go</b> button will drag the blocks into a "
                        + "sequence for you.")
@@ -319,6 +449,17 @@ def title_level8():
 
 
 def description_level8():
+    message = ugettext("This time the warehouse is somewhere else on the screen but you still need "
+                       + "to use the <b>Move forwards</b> block. <br> Can you use the <b>Move "
+                       + "forwards</b> block correctly even when it looks like the van goes in a "
+                       + "different direction? "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level8(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level8_deprecated():
     message = ugettext("This time the warehouse is somewhere else on the screen but you still need "
                        + "to use the <b>Move forwards</b> block. <br> Can you use the <b>Move "
                        + "forwards</b> block correctly even when it looks like the van goes in a "
@@ -341,6 +482,15 @@ def title_level9():
 def description_level9():
     message = ugettext("Practise your new skills on this road by helping the driver to arrive "
                        + "at the house. "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level9(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level9_deprecated():
+    message = ugettext("Practise your new skills on this road by helping the driver to arrive "
+                       + "at the house. "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level9(), message)
 
@@ -357,11 +507,29 @@ def title_level10():
 
 def description_level10():
     message = ugettext("You've done really well so far. Try to get the van to the house. "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level10(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level10_deprecated():
+    message = ugettext("You've done really well so far. Try to get the van to the house. "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level10(), message)
 
 
 def hint_level10():
+    message = ugettext("This map is not so hard. Notice that to you it looks like the road goes "
+                       + "up, but if you were in the in the van, you would see the road goes "
+                       + "right. <br><br> Do you know which turn the van will take next? <br><br> "
+                       + "The arrows next to the %(play_button)s button will drag the blocks into a "
+                       + "sequence for you. ") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level10_deprecated():
     message = ugettext("This map is not so hard. Notice that to you it looks like the road goes "
                        + "up, but if you were in the in the van, you would see the road goes "
                        + "right. <br><br> Do you know which turn the van will take next? <br><br> "
@@ -376,11 +544,28 @@ def title_level11():
 
 def description_level11():
     message = ugettext("Uh oh, a tricky snail maze! Can you take the van through it? "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level11(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level11_deprecated():
+    message = ugettext("Uh oh, a tricky snail maze! Can you take the van through it? "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
     return build_description(title_level11(), message)
 
 
 def hint_level11():
+    message = ugettext("The maze looks a bit like a snail, doesn't it? That means that for most of "
+                       + "the time the van should only <b>Move forwards</b> and <b>Turn right</b>. "
+                       + "<br><br> The arrows next to the %(play_button)s button will drag the blocks "
+                       + "into a sequence for you. ") % {'play_button': play_button_icon_url()}
+    return message
+
+
+# Deprecated - leaved until translators migrate to the new version
+def hint_level11_deprecated():
     message = ugettext("The maze looks a bit like a snail, doesn't it? That means that for most of "
                        + "the time the van should only <b>Move forwards</b> and <b>Turn right</b>. "
                        + "<br><br> The arrows next to the <b>Go</b> button will drag the blocks "
@@ -393,6 +578,15 @@ def title_level12():
 
 
 def description_level12():
+    message = ugettext("Good work, by now you are able to solve quite complicated levels. Prove "
+                       + "your skills! "
+                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
+              % {'play_button': play_button_icon_url()}
+    return build_description(title_level12(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level12_deprecated():
     message = ugettext("Good work, by now you are able to solve quite complicated levels. Prove "
                        + "your skills! "
                        + "<br> When you are happy with your sequence, press <b>Go</b>! ")
@@ -411,6 +605,15 @@ def title_level13():
 
 
 def description_level13():
+    message = ugettext("Often there is more than one way to get to the house. The route that needs "
+                       + "the fewest directions is usually best. <br> Help the van find the "
+                       + "shortest route to the house. <br> You can press the %(play_button)s or "
+                       + "<b>Play</b> buttons to start the van. ") % {'play_button': play_button_icon_url()}
+    return build_description(title_level13(), message)
+
+
+# Deprecated - leaved until translators migrate to the new version
+def description_level13_deprecated():
     message = ugettext("Often there is more than one way to get to the house. The route that needs "
                        + "the fewest directions is usually best. <br> Help the van find the "
                        + "shortest route to the house. <br> You can press the <b>Go</b> or "
