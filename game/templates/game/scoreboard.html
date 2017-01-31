@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load i18n %}
+{% load l10n %}
 
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
 
@@ -21,9 +22,11 @@
         {% if 'Progress' in headers %}
           {% for student in student_data %}
               var id = {{ student.id }};
-              var started = {{ student.progress.0 }};
-              var attempted = {{ student.progress.1 }};
-              var finished = {{ student.progress.2 }};
+              {% localize off %}
+                  var started = {{ student.progress.0 }};
+                  var attempted = {{ student.progress.1 }};
+                  var finished = {{ student.progress.2 }};
+              {% endlocalize %}
               $('#progressbar' + id).multiprogressbar({
                   parts: [{value: started, barClass: 'started'},
                           {value: attempted, barClass: 'attempted'},
