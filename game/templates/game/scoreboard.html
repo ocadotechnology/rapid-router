@@ -45,7 +45,16 @@
                 scrollCollapse: true,
                 paging: false,
                 deferRender: true,
-
+                language: {
+                    emptyTable: '{% trans 'No data available in table' %}',
+                    info: '{% blocktrans with start='_START_' end='_END_' total='_TOTAL_' %}Showing {{ start }} to {{ end }} of {{ total }} entries{% endblocktrans %}',
+                    infoEmpty: '{% blocktrans with start='0' end='0' total='0' %}Showing {{ start }} to {{ end }} of {{ total }} entries{% endblocktrans %}',
+                    infoFiltered: '{% blocktrans with max='_MAX_' %}(filtered from {{ max }} total entries){% endblocktrans %}',
+                    loadingRecords: '{% trans 'Loading...' %}',
+                    processing: '{% trans 'Processing...' %}',
+                    search: '{% trans 'Search:' %}',
+                    zeroRecords: '{% trans 'No matching records found' %}'
+                }
             });
 
             new $.fn.dataTable.FixedColumns(table, {
