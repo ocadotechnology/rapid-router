@@ -22,8 +22,8 @@ Go to the official [Code For Life website][c4l].
 
 * Install prerequisites. E.g. on Ubuntu / Linux Mint:
     * `sudo apt-get install git`
-    * `sudo apt-get install virtualenvwrapper`
     * `sudo apt-get install python-dev`
+    * `sudo pip install virtualenvwrapper`
     * `sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev`
     * `sudo apt-get install ruby2.0` - still Ruby 1.9 hiding under `ruby` command.
     * `sudo gem install sass -v 3.3.4` - later versions incompatible with Ruby 1.9 (see above).
@@ -32,6 +32,7 @@ Go to the official [Code For Life website][c4l].
 * Make and activate a virtualenv
     * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
     * and thereafter `workon rapid-router`
+    * **NOTE:** If you have trouble running these commands (e.g. `Command not found: workon`), refer to [this article][virtualenv], the top answer should help you resolve them. 
 * `./run` in your rapid-router directory - This will:
     * install all of the dependencies using pip
     * sync the database
@@ -67,6 +68,7 @@ looks good, we'll merge it. If we find issues with it, we'll let you know and ho
 it and get it re-submitted. If it is a change that we just don't want, we'll reject it.
 
 [c4l]: https://www.codeforlife.education/
+[virtualenv]: http://stackoverflow.com/questions/13855463/bash-mkvirtualenv-command-not-found
 [c4l-portal]: http://github.com/ocadotechnology/codeforlife-portal/
 [issues]: https://github.com/ocadotechnology/rapid-router/issues
 [add-issue]: https://github.com/ocadotechnology/rapid-router/issues/new
