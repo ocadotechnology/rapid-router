@@ -59,7 +59,7 @@ not, [add it][add-issue]. Please make sure that you give us a suitable level of 
 it as a "suggestion". Please note that we may not act upon all suggestions, if they are not in line with the direction
 we want to take the project, or if we don't have the development resources to get it done.
 
-__Want to help develop?__ You can contact us using this [contact form][c4l-contact-form] and we'll get in touch as soon as possible. To know whats going on, check out the [issue tracker][issues]. The
+__Want to help develop?__ You can contact us using this [contact form][c4l-contact-form] and we'll get in touch as soon as possible. To know what's going on, check out the [issue tracker][issues]. The
 [issues with the 'ready for pickup' label][ready-for-pickup] are tasks we think are ready to be picked up. Once you have
 chosen an issue, make sure you assign it to yourself so others don't also pick it up. Develop it on your fork of the
 project. Please ensure all files have the license at the top (see another source file for an example). Once you are
