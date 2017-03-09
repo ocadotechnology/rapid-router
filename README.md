@@ -59,7 +59,7 @@ not, [add it][add-issue]. Please make sure that you give us a suitable level of 
 it as a "suggestion". Please note that we may not act upon all suggestions, if they are not in line with the direction
 we want to take the project, or if we don't have the development resources to get it done.
 
-__Want to help develop?__ Check out the [issue tracker][issues] for the tasks we'd like to implement. The
+__Want to help develop?__ You can contact us using this form: [c4l-contact-form] and we'll get in touch as soon as possible. To know whats going on, check out the [issue tracker][issues]. The
 [issues with the 'ready for pickup' label][ready-for-pickup] are tasks we think are ready to be picked up. Once you have
 chosen an issue, make sure you assign it to yourself so others don't also pick it up. Develop it on your fork of the
 project. Please ensure all files have the license at the top (see another source file for an example). Once you are
@@ -70,6 +70,7 @@ it and get it re-submitted. If it is a change that we just don't want, we'll rej
 [c4l]: https://www.codeforlife.education/
 [virtualenv]: http://stackoverflow.com/questions/13855463/bash-mkvirtualenv-command-not-found
 [c4l-portal]: http://github.com/ocadotechnology/codeforlife-portal/
+[c4l-contact-form]: https://www.codeforlife.education/contact/
 [issues]: https://github.com/ocadotechnology/rapid-router/issues
 [add-issue]: https://github.com/ocadotechnology/rapid-router/issues/new
 [ready-for-pickup]: https://github.com/ocadotechnology/rapid-router/labels/ready%20for%20pickup
