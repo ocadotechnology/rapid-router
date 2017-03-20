@@ -36,6 +36,7 @@
 # identified as the original program.
 from __future__ import division
 import json
+import re
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -230,14 +231,19 @@ def save_level_for_editor(request, levelId=None):
 
     if not permissions.can_save_level(request.user, level):
         return HttpResponseUnauthorized()
-    level_management.save_level(level, data)
-    # Add the teacher automatically if it is a new level and the student is not independent
-    if ((levelId is None) and hasattr(level.owner, 'student') and
-            not level.owner.student.is_independent()):
-        level.shared_with.add(level.owner.student.class_field.teacher.user.user)
-        level.save()
-    response = {'id': level.id}
-    return HttpResponse(json.dumps(response), content_type='application/javascript')
+
+    pattern = re.compile("^(\w?[ ]?)*$")
+    if pattern.match(data['name']):
+        level_management.save_level(level, data)
+        # Add the teacher automatically if it is a new level and the student is not independent
+        if ((levelId is None) and hasattr(level.owner, 'student') and
+                not level.owner.student.is_independent()):
+            level.shared_with.add(level.owner.student.class_field.teacher.user.user)
+            level.save()
+        response = {'id': level.id}
+        return HttpResponse(json.dumps(response), content_type='application/javascript')
+    else:
+        return HttpResponseUnauthorized()
 
 
 @transaction.atomic
