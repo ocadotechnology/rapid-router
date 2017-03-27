@@ -36,6 +36,7 @@
 # identified as the original program.
 from django import forms
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext
 
 class DropDownMenuSelectMultiple(forms.SelectMultiple):
     """
@@ -53,7 +54,9 @@ class DropDownMenuSelectMultiple(forms.SelectMultiple):
         html = super(DropDownMenuSelectMultiple, self).render(name, value, attrs, choices)
         html += """
             <script>$("#id_""" + name + """").pqSelect({
-            multiplePlaceholder: 'Select """ + name + """',
+            displayText: '""" + (ugettext('%(selected)s of %(total)s selected') % {'selected': '{0}', 'total': '{1}'}) + """',
+            multiplePlaceholder: '""" + self.attrs['multiplePlaceholder'] + """',
+            selectallText: '""" + ugettext('Select All') + """',
             checkbox: true
             });</script>"""
         return mark_safe(html)

@@ -35,6 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django import forms
+from django.utils.translation import ugettext
 from models import UserProfile, Level
 from widgets import DropDownMenuSelectMultiple
 import itertools
@@ -76,7 +77,7 @@ class ScoreboardForm(forms.Form):
         self.fields['classes'] = forms.MultipleChoiceField(
             choices=classes_choices,
             widget=DropDownMenuSelectMultiple(
-                attrs={'class': 'wide'}
+                attrs={'class': 'wide', 'multiplePlaceholder': ugettext('Select classes')}
             ),
         )
         # Each tuple in choices has two elements, id and name of each level
@@ -86,7 +87,7 @@ class ScoreboardForm(forms.Form):
         self.fields['levels'] = forms.MultipleChoiceField(
             choices=itertools.chain(choice_list),
             widget=DropDownMenuSelectMultiple(
-                attrs={'class': 'wide'})
+                attrs={'class': 'wide', 'multiplePlaceholder': ugettext('Select levels')})
         )
         def validate(self):
             cleaned_data = super(ScoreboardForm, self).clean()
