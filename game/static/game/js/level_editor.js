@@ -723,6 +723,14 @@ ocargo.LevelEditor = function() {
                     return;
                 }
 
+                var regex = /^(\w?[ ]?)*$/;
+                var validString = regex.exec($('#levelNameInput').val());
+                if (!validString) {
+                    ocargo.Drawing.startPopup(gettext('Oh no!'), gettext('You used some invalid characters.'),
+                        gettext('Try saving your level again using only letters and numbers.'));
+                    return;
+                }
+
                 function saveLevelLocal(existingId) {
                     saveLevel(newName, existingId, goToMapTab);
                 }
