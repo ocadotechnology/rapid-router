@@ -63,7 +63,7 @@ class BaseGameTest(SeleniumTestCase):
     user_profile = None
 
     def _go_to_path(self, path):
-        socket.setdefaulttimeout(5)
+        socket.setdefaulttimeout(20)
         attempts = 0
         while True:
             try:
