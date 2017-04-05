@@ -36,8 +36,13 @@
 # identified as the original program.
 from django.contrib import admin
 from game.models import Level, Block, Episode, Workspace
+
+
+class LevelAdmin(admin.ModelAdmin):
+    readonly_fields = ['owner']
+
   
-admin.site.register(Level)
+admin.site.register(Level, LevelAdmin)
 admin.site.register(Workspace)
 admin.site.register(Episode)
 admin.site.register(Block)
