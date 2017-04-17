@@ -54,6 +54,7 @@ def can_save_workspace(user, workspace):
 def can_delete_workspace(user, workspace):
     return not user.is_anonymous() and workspace.owner == user.userprofile
 
+
 #####################
 # Level permissions #
 #####################
@@ -64,12 +65,10 @@ def can_create_level(user):
 
 
 def can_play_level(user, level, early_access):
-    if level.default and not level.episode.in_development:
-        return True
-    elif level.anonymous:
+    if level.anonymous:
         return False
-    elif (level.default and level.episode.in_development and early_access):
-        return True
+    elif level.default:
+        return early_access or not level.episode.in_development
     elif user.is_anonymous():
         return level.default and not level.episode.in_development
     elif user.userprofile == level.owner:
@@ -94,22 +93,15 @@ def can_load_level(user, level):
 
 
 def can_save_level(user, level):
-    if level.anonymous:
-        return True
-    elif user.is_anonymous():
-        return False
-    else:
-        return user.userprofile == level.owner
+    return level.anonymous or (not user.is_anonymous()) or user.profile == level.owner
 
 
 def can_delete_level(user, level):
-    if user.is_anonymous():
-        return False
-    elif level.owner == user.userprofile:
-        return True
-    else:
-        return (hasattr(user.userprofile, 'teacher') and
-                user.userprofile.teacher.teaches(level.owner))
+    return (
+        not user.is_anonymous or
+        level.owner == user.userprofile or
+        is_teacher_of_student(user.userprofile, level.owner)
+    )
 
 
 def can_share_level(user, level):
@@ -125,26 +117,14 @@ def can_share_level_with(recipient, sharer):
     if recipient.is_anonymous() or sharer.is_anonymous():
         return False
 
-    recipient_profile = recipient.userprofile
-    sharer_profile = sharer.userprofile
-
-    if (hasattr(sharer_profile, 'student') and not(sharer_profile.student.is_independent()) and
-            hasattr(recipient_profile, 'student') and
-            not(recipient_profile.student.is_independent())):
-        # Are they in the same class?
-        return sharer_profile.student.class_field == recipient_profile.student.class_field
-    elif hasattr(sharer_profile, 'teacher') and sharer_profile.teacher.teaches(recipient_profile):
-        # Is the recipient taught by the sharer?
-        return True
-    elif (hasattr(recipient_profile, 'teacher') and
-            recipient_profile.teacher.teaches(sharer_profile)):
-        # Is the sharer taught by the recipient?
-        return True
-    elif hasattr(sharer_profile, 'teacher') and hasattr(recipient_profile, 'teacher'):
-        # Are they in the same organisation?
-        return recipient_profile.teacher.school == sharer_profile.teacher.school
+    if is_non_independent_student(sharer.userprofile) and is_non_independent_student(recipient.userprofile):
+        return sharer.userprofile.student.class_field == recipient.userprofile.student.class_field
     else:
-        return False
+        return (
+            is_teacher_of_student(sharer.userprofile, recipient.userprofile) or
+            is_teacher_of_student(recipient.userprofile, sharer.userprofile) or
+            are_teachers_at_same_school(sharer.userprofile, recipient.userprofile)
+        )
 
 
 #####################
@@ -167,3 +147,19 @@ def can_see_level_moderation(user):
 
 def can_see_scoreboard(user):
     return not user.is_anonymous()
+
+
+def is_non_independent_student(user):
+    return hasattr(user, 'student') and not user.student.is_independent()
+
+
+def are_teachers_at_same_school(user_1, user_2):
+    return (
+        hasattr(user_1, 'teacher') and
+        hasattr(user_2, 'teacher') and
+        user_1.teacher.school == user_2.teacher.school
+    )
+
+
+def is_teacher_of_student(teacher_profile, student_profile):
+    return hasattr(teacher_profile, 'teacher') and teacher_profile.teacher.teaches(student_profile)
