@@ -81,5 +81,5 @@ class LevelModerationTestCase(TestCase):
         return response
 
     def login(self, email, password):
-        self.client.post(reverse('teach'), {'login-teacher_email': email, 'login-teacher_password': password, 'login': ''}, follow=True)
+        self.client.post(reverse('teach'), {'login-email': email, 'login-password': password, 'login': ''}, follow=True)
 
