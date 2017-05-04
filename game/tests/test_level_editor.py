@@ -52,7 +52,7 @@ class LevelEditorTestCase(TestCase):
         self.client = Client()
 
     def login(self, email, password):
-        self.client.post(reverse('teach'), {'login-email': email, 'login-password': password, 'login': ''}, follow=True)
+        self.client.post(reverse('teach'), {'login-teacher_email': email, 'login-teacher_password': password, 'login': ''}, follow=True)
 
     def get_sharing_information(self, level_id):
         url = reverse('get_sharing_information_for_editor', args=[level_id])
