@@ -252,7 +252,7 @@ ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
     csrftoken = $.cookie('csrftoken');
     $.ajax({
         url: Urls.generate_random_map_for_editor(),
-        type: "GET",
+        type: "POST",
         dataType: 'json',
         data: data,
         beforeSend: function (xhr, settings) {
