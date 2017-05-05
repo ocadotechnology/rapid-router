@@ -42,6 +42,9 @@ from models import Block, LevelBlock, LevelDecor
 from game.decor import get_decor_element
 from game.theme import get_theme_by_pk
 from game.character import get_character_by_pk
+from game.messages import level_creation_email_subject, level_creation_email_text_content
+
+from portal.helpers.emails import NOTIFICATION_EMAIL, send_email
 
 
 ##########
@@ -189,3 +192,11 @@ def share_level(level, *users):
 
 def unshare_level(level, *users):
     level.shared_with.remove(*users)
+
+
+def email_new_custom_level(teacher_email, moderate_url, level_url, home_url, student_name, class_name):
+    # email teacher when a new custom level is created by a pupil, so it can be moderated ASAP
+    send_email(NOTIFICATION_EMAIL, [teacher_email], level_creation_email_subject(),
+               level_creation_email_text_content().format(moderate_url=moderate_url, level_url=level_url,
+                                                          student_name=student_name, class_name=class_name,
+                                                          home_url=home_url))
