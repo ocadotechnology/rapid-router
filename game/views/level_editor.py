@@ -263,17 +263,17 @@ def delete_level_for_editor(request, levelId):
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
+    data = dict(request.POST)
 
-    size = int(request.GET['numberOfTiles'])
-    branchiness = float(request.GET['branchiness'])
-    loopiness = float(request.GET['loopiness'])
-    curviness = float(request.GET['curviness'])
-    traffic_lights = request.GET.get('trafficLights', 'false') == 'true'
-    scenery = request.GET.get('scenery', 'false') == 'true'
-    cows = request.GET.get('cows', 'false') == 'true'
+    size = int(data['numberOfTiles'][0])
+    branchiness = float(data['branchiness'][0])
+    loopiness = float(data['loopiness'][0])
+    curviness = float(data['curviness'][0])
+    traffic_lights = data['trafficLights'][0] == 'true'
+    scenery = data['scenery'][0] == 'true'
 
     data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
-                                                traffic_lights, scenery, cows)
+                                                traffic_lights, scenery, False)
 
     return HttpResponse(json.dumps(data), content_type='application/javascript')
 
