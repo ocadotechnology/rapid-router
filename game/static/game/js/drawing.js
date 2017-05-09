@@ -51,8 +51,6 @@ var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING;
 var DEFAULT_CHARACTER_WIDTH = 40;
 var DEFAULT_CHARACTER_HEIGHT = 20;
 
-var COW_WIDTH = 50;
-var COW_HEIGHT = 50;
 
 ocargo.Drawing = function(startingPosition) {
 
@@ -180,22 +178,6 @@ ocargo.Drawing = function(startingPosition) {
         return coord1 < coord2;
     }
 
-    // Returns the direction of the middle branch
-    // E.g. T-shaped junction will be described as 'down'
-    function tJunctionOrientation(middle, node1, node2, node3) {
-        var res1 = getRoadLetters(node1, middle, node2);
-        var res2 = getRoadLetters(node2, middle, node3);
-
-        if (res1 === 'H' && res2 === 'DR') {
-            return 'down';
-        } else if (res1 === 'UR' && res2 === 'DR') {
-            return 'right';
-        } else if (res1 === 'UL' && res2 === 'V') {
-            return 'left';
-        } else {
-            return 'up';
-        }
-    }
     /***************/
     /** Rendering **/
     /***************/
@@ -524,112 +506,6 @@ ocargo.Drawing = function(startingPosition) {
         }
     };
 
-    this.determineCowOrientation = function (coordinate, node) {
-        var x = coordinate.x;
-        var y = coordinate.y;
-
-        var xOffset = 0;
-        var yOffset = 0;
-        var rotation = 0;
-
-        if (node.connectedNodes.length === 1) {
-            // Deadends
-            var previousNode = node.connectedNodes[0];
-            var nextNode = {};
-            nextNode.coordinate = new ocargo.Coordinate(
-                node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
-                node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y));
-
-            var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
-
-            if (roadLetters === 'V') {
-                rotation = 90;
-            }
-        } else if (node.connectedNodes.length === 2) {
-            // Turns
-            var previousNode = node.connectedNodes[0];
-            var nextNode = node.connectedNodes[1];
-
-            var roadLetters = getRoadLetters(previousNode.coordinate, node.coordinate, nextNode.coordinate);
-
-            if (roadLetters === 'V') {
-                rotation = 90;
-            } else if (roadLetters === 'UL') {
-                xOffset = -0.15 * GRID_SPACE_SIZE;
-                yOffset = -0.15 * GRID_SPACE_SIZE;
-                rotation = -45;
-            }
-            else if (roadLetters === 'UR') {
-                xOffset = +0.15 * GRID_SPACE_SIZE;
-                yOffset = -0.15 * GRID_SPACE_SIZE;
-                rotation = 45;
-            }
-            else if (roadLetters === 'DL') {
-                xOffset = -0.15 * GRID_SPACE_SIZE;
-                yOffset = +0.15 * GRID_SPACE_SIZE;
-                rotation = -135;
-            }
-            else if (roadLetters === 'DR') {
-                xOffset = +0.15 * GRID_SPACE_SIZE;
-                yOffset = +0.15 * GRID_SPACE_SIZE;
-                rotation = 135;
-            }
-        } else if (node.connectedNodes.length === 3) {
-            // T-junctions
-            var previousNode = node.connectedNodes[0];
-            var nextNode = node.connectedNodes[1];
-            var nextNextNode = node.connectedNodes[2];
-            var res = tJunctionOrientation(node.coordinate, previousNode.coordinate,
-                nextNode.coordinate, nextNextNode.coordinate);
-            if (res === 'down') {
-                rotation = 180;
-            }
-            else if (res === 'right') {
-                rotation = 90;
-            }
-            else if (res === 'left') {
-                rotation = -90
-            }
-            else if (res === 'top') {
-            }
-        }
-
-        var drawX = (x + 0.5) * GRID_SPACE_SIZE - COW_WIDTH / 2 + xOffset + PAPER_PADDING;
-        var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT / 2 + yOffset + PAPER_PADDING;
-
-        return {drawX: drawX, drawY: drawY, rotation: rotation};
-    };
-
-    this.createCowImage = function(type) {
-        return paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), 0, 0, COW_WIDTH, COW_HEIGHT);
-    };
-
-    this.setCowImagePosition = function (coordinate, image, node) {
-
-        var res = this.determineCowOrientation(coordinate, node);
-
-        image.transform('t' + res.drawX + ',' + res.drawY + 'r' + res.rotation);
-    };
-
-    this.renderCow = function (id, coordinate, node, animationLength, type) {
-
-        var res = this.determineCowOrientation(coordinate, node);
-        var image = paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
-        var rot = "r" + res.rotation;
-        image.transform(rot + "s0.1");
-        image.animate({transform: rot + "s1"}, animationLength, 'linear');
-
-        return {
-            'coordinate': coordinate,
-            'image': image
-        };
-    };
-
-    this.removeCow = function (cow, animationLength) {
-        cow.image.animate({transform: "s0.01"}, animationLength, 'linear', function () {
-            cow.image.remove();
-        });
-    };
 
     this.renderCharacter = function() {
         character.render();
@@ -725,10 +601,6 @@ ocargo.Drawing = function(startingPosition) {
         this.transitionDestination(destinationId, true, duration);
     };
 
-    this.collisionWithCow = function (previousNode, currentNode, attemptedAction) {
-        return character.collisionWithCow(previousNode, currentNode, attemptedAction)
-    };
-
     this.crash = function (previousNode, currentNode, attemptedAction) {
         return character.crash(attemptedAction)
     };
@@ -820,18 +692,6 @@ ocargo.Drawing.renderCoins = function (coins) {
 };
 
 
-ocargo.Drawing.cowUrl = function(type){
-    switch(type){
-        case ocargo.Cow.WHITE:
-            return ocargo.Drawing.whiteCowUrl;
-        case ocargo.Cow.BROWN:
-            return ocargo.Drawing.brownCowUrl;
-        default:
-            return ocargo.Drawing.whiteCowUrl;
-    }
-};
-
-
 ocargo.Drawing.createAbsoluteRotationTransformation = function(degrees, rotationPointX, rotationPointY) {
     var transformation = '... R' + degrees;
     if (rotationPointX !== undefined && rotationPointY !== undefined) {
@@ -854,9 +714,6 @@ ocargo.Drawing.inLevelEditor = function() {
 
 ocargo.Drawing.FRONT_VIEW = "front_view";
 ocargo.Drawing.TOP_VIEW = "top_view";
-
-ocargo.Drawing.whiteCowUrl = 'Clarice.svg';
-ocargo.Drawing.brownCowUrl = 'Clarice_Jersey.svg';
 
 ocargo.Drawing.imageDir = '/static/game/image/';
 ocargo.Drawing.raphaelImageDir = '/static/game/raphael_image/';

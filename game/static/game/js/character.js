@@ -57,7 +57,6 @@ var TURN_RIGHT_DISTANCE = ocargo.circumference(TURN_RIGHT_RADIUS) / 4;
 var FULL_TURN_ANGLE = 90;
 var CRASH_TURN_ANGLE = 75;
 var TURN_AROUND_TURN_ANGLE = 45;
-var CRASH_INTO_COW_TURN_ANGLE = 15;
 
 ocargo.fractionOfTurnLeftDistance = function (angle) {
     return TURN_LEFT_DISTANCE * (angle / FULL_TURN_ANGLE);
@@ -73,8 +72,6 @@ var TURN_AROUND_MOVE_FORWARD_DISTANCE = MOVE_DISTANCE / 2;
 var TURN_AROUND_TURN_AROUND_DISTANCE = ocargo.circumference(TURN_AROUND_RADIUS) / 2;
 
 var CRASH_MOVE_FORWARD_DISTANCE = 0.8 * MOVE_DISTANCE;
-
-var CRASH_INTO_COW_MOVE_FORWARDS_DISTANCE = (MOVE_DISTANCE - ROAD_WIDTH) / 2;
 
 var VEIL_OF_NIGHT_WIDTH = 4240;
 var VEIL_OF_NIGHT_HEIGHT = 3440;
@@ -547,29 +544,6 @@ ocargo.Character.prototype.crash = function (attemptedAction) {
 
     if (this.veilOfNight) {
         this.veilOfNight.crash(attemptedAction);
-    }
-
-    return this.manoeuvreDuration + this._collisionDuration() + this._collisionDelay();
-};
-
-ocargo.Character.prototype.collisionWithCow = function (previousNode, currentNode, attemptedAction) {
-     var distance = 0;
-    if (attemptedAction === "FORWARD") {
-        distance = CRASH_INTO_COW_MOVE_FORWARDS_DISTANCE;
-        var scaledDistance = distance / this.currentScale;
-        var transformation = "... t 0, " + (-scaledDistance);
-    } else if (attemptedAction === "TURN_LEFT") {
-        var transformation = this._turnLeftTransformation(CRASH_INTO_COW_TURN_ANGLE);
-    } else if (attemptedAction === "TURN_RIGHT") {
-        var transformation = this._turnRightTransformation(CRASH_INTO_COW_TURN_ANGLE);
-    }
-
-    this._moveImage({
-        transform: transformation
-    }, this.manoeuvreDuration, this._animateCollisionNoFire());
-
-    if (this.veilOfNight) {
-        this.veilOfNight.collisionWithCow(previousNode, currentNode, attemptedAction);
     }
 
     return this.manoeuvreDuration + this._collisionDuration() + this._collisionDelay();

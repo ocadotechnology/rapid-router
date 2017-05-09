@@ -61,7 +61,6 @@ DEFAULT_START_NODE = Node(0, 3)
 DEFAULT_NUM_TILES = 20
 
 DEFAULT_TRAFFIC_LIGHTS = True
-DEFAULT_COWS = False
 DEFAULT_DECOR = True
 
 # Max parameter value: 1
@@ -96,11 +95,10 @@ def create(episode=None):
     curviness = episode.r_curviness if episode else DEFAULT_CURVINESS
     blocks = episode.r_blocks.all() if episode else Block.objects.all()
     traffic_lights = episode.r_trafficLights if episode else DEFAULT_TRAFFIC_LIGHTS
-    cows = episode.r_cows if episode else DEFAULT_TRAFFIC_LIGHTS
     decor = DEFAULT_DECOR
 
     level_data = generate_random_map_data(num_tiles, branchiness, loopiness, curviness,
-                                          traffic_lights, cows, decor)
+                                          traffic_lights, decor)
 
     level_data['max_fuel'] = DEFAULT_MAX_FUEL
     level_data['theme'] = 1
@@ -116,17 +114,14 @@ def create(episode=None):
     return level
 
 
-def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled, decor_enabled,
-                             cows_enabled):
+def generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled, decor_enabled):
     path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
-    cows = generate_cows(path) if cows_enabled else []
     destinations = [[path[-1]['coordinate'].x, path[-1]['coordinate'].y]]
     origin = get_origin(path)
     decor = generate_decor(path, num_tiles) if decor_enabled else []
 
     return {'path': json.dumps(path), 'traffic_lights': json.dumps(traffic_lights),
-            'cows': json.dumps(cows),
             'origin': json.dumps(origin), 'destinations': json.dumps(destinations),
             'decor': decor}
 
@@ -336,10 +331,6 @@ def generate_traffic_lights(path):
             counter += 1
 
     return trafficLights
-
-def generate_cows(path):
-    #TODO Cows
-    return []
 
 
 def get_direction(node, neighbour):

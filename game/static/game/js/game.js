@@ -64,7 +64,7 @@ ocargo.Game.prototype.setup = function() {
     ocargo.blocklyControl.blocklyCustomisations.setupLimitedBlocks();
     ocargo.pythonControl = new ocargo.PythonControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
-    ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, COWS, MAX_FUEL);
+    ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, MAX_FUEL);
     this.drawing = new ocargo.Drawing(ocargo.model.startingPosition());
     this.drawing.preloadRoadTiles();
     ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, this.drawing);

@@ -80,17 +80,13 @@ def level_editor(request):
         'decor': get_all_decor(),
         'characters': get_all_character(),
         'themes': get_all_themes(),
-        'cow_level_enabled': app_settings.COW_FEATURE_ENABLED,
         'night_mode_feature_enabled': str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
     })
     return render(request, 'game/level_editor.html', context_instance=context)
 
 
 def available_blocks():
-    if app_settings.COW_FEATURE_ENABLED:
-        return Block.objects.all()
-    else:
-        return Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn'])
+    return Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn'])
 
 
 def play_anonymous_level(request, levelId, from_level_editor=True, random_level=False):
@@ -273,7 +269,7 @@ def generate_random_map_for_editor(request):
     scenery = data['scenery'][0] == 'true'
 
     data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
-                                                traffic_lights, scenery, False)
+                                                traffic_lights, scenery)
 
     return HttpResponse(json.dumps(data), content_type='application/javascript')
 

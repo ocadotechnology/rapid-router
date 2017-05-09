@@ -305,33 +305,6 @@ function initCustomBlocksDescription() {
         }
     };
 
-    /****************/
-    /*    Events    */
-    /****************/
-
-    Blockly.Blocks['declare_event'] = {
-
-        // Block for declaring an event handler
-        init: function() {
-            this.setColour(260);
-            var dropdown = new Blockly.FieldDropdown([[gettext('white'), ocargo.Cow.WHITE], [gettext('brown'), ocargo.Cow.BROWN]], function(option) {
-                var imageUrl = ocargo.Drawing.imageDir + ocargo.Drawing.cowUrl(option);
-                this.sourceBlock_.getField('IMAGE').setValue(imageUrl);
-            });
-            this.appendDummyInput('Event')
-                .appendField(gettext('On '))
-                .appendField(dropdown, 'TYPE')
-                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
-                    ocargo.BlocklyControl.COW_WIDTH,
-                    ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
-            this.getField('IMAGE').EDITABLE = true; //saves the image path as well in the XML
-            this.appendStatementInput('DO')
-                .setCheck('EventAction')
-                .appendField(gettext('Do'));
-            this.setTooltip(gettext('Declares the event handler'));
-            this.statementConnection_ = null;
-        }
-    };
 
     /*******************/
     /*  Control Flows  */

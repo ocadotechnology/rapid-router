@@ -68,7 +68,6 @@ ocargo.BlocklyControl = function () {
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
 ocargo.BlocklyControl.EXTRA_BLOCK_WIDTH = 1;
 ocargo.BlocklyControl.IMAGE_WIDTH = 20;
-ocargo.BlocklyControl.COW_WIDTH = 30;
 ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT = 20;
 ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH = 40;
 

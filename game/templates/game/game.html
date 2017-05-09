@@ -11,7 +11,6 @@
 	data-origin="{{level.origin|trim}}"
 	data-destinations="{{level.destinations|trim}}"
 	data-traffic-lights="{{level.traffic_lights|trim}}"
-	data-cows="{{level.cows|trim}}"
 	data-episode="{{level.episode.id|trim}}"
 	data-level-id="{{level.id|default_if_none:""|trim}}"
         data-level-name="{{level.name|trim}}"
@@ -25,7 +24,6 @@
     var HOUSE_URL = "{{house}}";
     var CFC_URL = "{{cfc}}";
     var TRAFFIC_LIGHTS = $('#data').data('trafficLights');
-    var COWS = $('#data').data('cows');
     var EPISODE = $('#data').data('episode');
     var LEVEL_ID = $('#data').data('levelId');
     var LEVEL_NAME = $('#data').data('levelName');

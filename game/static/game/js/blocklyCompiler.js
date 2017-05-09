@@ -210,8 +210,6 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
             this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
     } else if (conditionBlock.type === 'traffic_light') {
     	return this.trafficLightCondition(conditionBlock);
-    } else if (conditionBlock.type === 'declare_event') {
-        return this.cowCrossingCondition(conditionBlock);
     }
 };
 
@@ -326,14 +324,6 @@ ocargo.BlocklyCompiler.prototype.deadEndCondition = function(block) {
         return model.isDeadEnd();
     };
 };
-
-ocargo.BlocklyCompiler.prototype.cowCrossingCondition = function(block) {
-    return function(model) {
-        queueHighlight(model, block);
-        return model.isCowCrossing(block.getFieldValue('TYPE'));
-    };
-};
-
 
 ocargo.BlocklyCompiler.prototype.negateCondition = function(otherCondition) {
     return function(model) {

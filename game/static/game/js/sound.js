@@ -72,10 +72,6 @@ ocargo.sound.tensionSound = new Howl({
     urls: ['/static/game/sound/tension.mp3', '/static/game/sound/tension.ogg']
 });
 
-ocargo.sound.cowSound = new Howl({
-    urls: ['/static/game/sound/cow.mp3', '/static/game/sound/cow.ogg']
-});
-
 function safePlay(sound) {
     try {
         sound.play();
@@ -121,20 +117,12 @@ ocargo.sound.failure = function() {
     safePlay(ocargo.sound.failureSound);
 };
 
-ocargo.sound.cow = function() {
-    safePlay(ocargo.sound.cowSound);
-};
-
 ocargo.sound.sound_horn = function() {
     safePlay(ocargo.sound.hornSound);
 };
 
 ocargo.sound.crash = function (animationDuration) {
     setTimeout(ocargo.sound._crashSound, animationDuration);
-};
-
-ocargo.sound.crashIntoCow = function (animationDuration) {
-    ocargo.sound._crashSound();
 };
 
 ocargo.sound._crashSound = function () {

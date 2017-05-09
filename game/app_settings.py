@@ -39,8 +39,6 @@ from django.utils.module_loading import import_string
 
 NIGHT_MODE_FEATURE_ENABLED = getattr(settings, 'NIGHT_MODE_FEATURE_ENABLED', False)
 
-COW_FEATURE_ENABLED = getattr(settings, 'COW_FEATURE_ENABLED', False)
-
 #: Name of a function that determines if a request qualifies for early access
 EARLY_ACCESS_FUNCTION_NAME = getattr(
     settings,

@@ -39,18 +39,13 @@ identified as the original program.
 
 var ocargo = ocargo || {};
 
-ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowData, maxFuel) {
+ocargo.Model = function(nodeData, origin, destinations, trafficLightData, maxFuel) {
     this.map = new ocargo.Map(nodeData, origin, destinations);
     this.van = new ocargo.Van(this.map.startingPosition(), maxFuel);
 
     this.trafficLights = [];
     for(var i = 0; i < trafficLightData.length; i++) {
         this.trafficLights.push(new ocargo.TrafficLight(i, trafficLightData[i], this.map.nodes));
-    }
-
-    this.cows = [];
-    for(var i = 0; i < cowData.length; i++) {
-        this.cows.push(new ocargo.Cow(i, cowData[i], this.map.nodes));
     }
 
     this.timestamp = 0;
@@ -80,26 +75,11 @@ ocargo.Model.prototype.reset = function() {
         this.trafficLights[j].reset();
     }
 
-    for (var j = 0; j < this.cows.length; j++) {
-        this.cows[j].reset();
-    }
-
-    // Display cow on origin node if exists
-    var node = this.map.originCurrentNode;
-    this.setCowsActive(node);
-
     this.timestamp = 0;
     this.movementTimestamp = 0;
     this.reasonForTermination  =  null;
     this.soundedHorn = {};
     this.puffedUp = {};
-};
-
-// Randomly chooses the cow positions, called by program.js
-ocargo.Model.prototype.chooseNewCowPositions = function() {
-    for (var j = 0; j < this.cows.length; j++) {
-        this.cows[j].chooseNewCowPositions();
-    }
 };
 
 ///////////////////////
@@ -139,21 +119,6 @@ ocargo.Model.prototype.isDeadEnd = function() {
     return (this.map.isDeadEnd(this.van.getPosition()) !== null);
 };
 
-ocargo.Model.prototype.isCowCrossing = function(type) {
-    var result = false;
-    this.observe('cow crossing');
-    var node = this.van.getPosition().currentNode;
-    var nodes = this.getNodesAhead(node);
-    for (var i = 0 ; i < nodes.length ; i++) {
-        var cow = this.getCowForNode(nodes[i], ocargo.Cow.ACTIVE);
-        if (cow != null && cow.type == type && cow.triggerEvent) {
-            cow.triggerEvent = false;
-            result = true;
-        }
-    }
-    return result;
-};
-
 ocargo.Model.prototype.isTrafficLightRed = function() {
     this.observe('traffic light red');
     var light = this.getTrafficLightForNode(this.van.getPosition());
@@ -188,15 +153,6 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
     //Crash?
-    var previousNodeCow = this.getCowForNode(this.van.getPosition().currentNode, ocargo.Cow.ACTIVE);
-    var collisionWithCow = previousNodeCow && nextNode !== this.van.getPosition().currentNode;
-
-    if(collisionWithCow) {
-        handleCrash(this, gettext('You ran into a cow! Keep in mind that cows can appear anywhere on the map.'),
-            'COLLISION_WITH_COW', 'collision with cow van move action: ');
-        return false;
-    }
-
     var offRoad = nextNode === null;
     var offRoadPopupMessage = function(correctSteps){
         if (correctSteps === 0) {
@@ -285,9 +241,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         return false;
     }
 
-    // Display cow on node if exists
-    this.setCowsActive(nextNode);
-
     this.van.move(nextNode);
 
     // Van movement animation
@@ -344,16 +297,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         });
 
         model.reasonForTermination = 'CRASH'; // used to determine whether the play controls ('forward', 'left' and 'right' arrows) are still usable
-    }
-};
-
-ocargo.Model.prototype.setCowsActive = function(nextNode) {
-    var nodes = this.getNodesAhead(nextNode);
-    for (var i = 0 ; i < nodes.length ; i++){
-        var cow = this.getCowForNode(nodes[i], ocargo.Cow.READY);
-        if (cow){
-            cow.setActive(this, nodes[i]);
-        }
     }
 };
 
@@ -668,17 +611,6 @@ ocargo.Model.prototype.getDestinationForNode = function(node) {
     return null;
 };
 
-ocargo.Model.prototype.getCowForNode = function(node, status) {
-    var jsonCoordinate = JSON.stringify(node.coordinate);
-    for(var i = 0; i < this.cows.length; i++) {
-        var cow = this.cows[i];
-        if (jsonCoordinate in cow.activeNodes && cow.activeNodes[jsonCoordinate] == status) {
-            return cow;
-        }
-    }
-    return null;
-};
-
 ocargo.Model.prototype.incrementMovementTime = function(){
     this.movementTimestamp ++;
     this.incrementTrafficLightsTime();
@@ -691,27 +623,12 @@ ocargo.Model.prototype.incrementTime = function() {
     this.timestamp += 1;
 
     ocargo.animation.startNewTimestamp();
-
-    this.incrementCowTime();
 };
 
 ocargo.Model.prototype.incrementTrafficLightsTime = function() {
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
     }
-};
-
-ocargo.Model.prototype.incrementCowTime = function() {
-    if(this.movementTimestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
-        this.puffedUp = {};
-        this.van.puffDown();
-    }
-
-    for (var i = 0; i < this.cows.length; i++) {
-        this.cows[i].incrementTime(this);
-    }
-    this.soundedHorn = {};
-
 };
 
 ocargo.Model.prototype.getNodesAhead = function(node) {

@@ -170,7 +170,6 @@ def save_level(level, data):
     level.destinations = data['destinations']
     level.max_fuel = data['max_fuel']
     level.traffic_lights = data['traffic_lights']
-    level.cows = data['cows']
     level.blocklyEnabled = data.get('blocklyEnabled', True)
     level.pythonEnabled = data.get('pythonEnabled', False)
     level.pythonViewEnabled = data.get('pythonViewEnabled', False)

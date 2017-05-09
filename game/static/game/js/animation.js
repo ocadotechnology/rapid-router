@@ -43,7 +43,6 @@ ocargo.Animation = function(model, decor, drawing) {
     this.model = model;
     this.decor = decor;
 	this.drawing = drawing;
-	this.activeCows = []; // cows currently displayed on map
 	this.scalingModifier = [];
 	this.crashed = false;
 	this.speedUp = false;
@@ -71,13 +70,6 @@ ocargo.Animation.prototype.isFinished = function() {
 	return this.finished;
 };
 
-ocargo.Animation.prototype.removeCows = function() {
-	for (var i = 0; i < this.activeCows.length; i++) {
-		this.drawing.removeCow(this.activeCows[i]);
-	}
-	this.activeCows = [];
-};
-
 ocargo.Animation.prototype.resetAnimation = function() {
 	this.animationQueue = [[]];
 
@@ -86,7 +78,6 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	this.isPlaying = false;
 	this.currentlyAnimating = false;
 	this.finished = false;
-	this.numberOfCowsOnMap = 0;
 	this.crashed = false;
 	this.scalingModifier = [];
 
@@ -95,8 +86,6 @@ ocargo.Animation.prototype.resetAnimation = function() {
 		var tl = this.model.trafficLights[i];
 		this.drawing.transitionTrafficLight(tl.id, tl.state, 0);
 	}
-
-	this.removeCows();
 
 	for(var i = 0; i < this.model.map.destinations.length; i++) {
 		var destination = this.model.map.destinations[i];
@@ -158,11 +147,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 		// And move onto the next timestamp
 		this.timestamp += 1;
 		// Update defaultAnimationLength at every increment to prevent sudden stop in animation
-		if (!this.crashed && this.numberOfCowsOnMap > 0) {
-			this.setAnimationDuration(this.baseAnimationDuration() * 1.5);
-		} else {
-			this.setAnimationDuration(this.baseAnimationDuration());
-		}
+		this.setAnimationDuration(this.baseAnimationDuration())
 	}
 
 	// Check if we've performed all events we have
@@ -262,12 +247,6 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
             		duration = this.drawing.crash(animation.previousNode, animation.currentNode,
             			animation.attemptedAction, animation.startNode);
             		break;
-				case 'COLLISION_WITH_COW':
-					this.crashed = true;
-					//Update animationLength with time van moves before crashing
-					duration = this.drawing.collisionWithCow(animation.previousNode, animation.currentNode,
-						animation.attemptedAction, animation.startNode);
-					break;
             	case 'DELIVER':
             		this.drawing.deliver(animation.destinationID, duration);
 					break;
@@ -383,31 +362,11 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 		case 'trafficlight':
 			this.drawing.transitionTrafficLight(animation.id, animation.colour, duration/2);
 			break;
-		case 'cow':
-            this.numberOfCowsOnMap++;
-			var activeCow = this.drawing.renderCow(animation.id, animation.coordinate, animation.node, duration, animation.cowType);
-			this.activeCows.push(activeCow);
-			break;
-        case 'cow_leave':
-            this.numberOfCowsOnMap--;
-			var cow = this._extractCowAt(animation.coordinate);
-            this.drawing.removeCow(cow, duration);  // remove it from drawing
-			break;
 		case 'console':
 			ocargo.pythonControl.appendToConsole(animation.text);
 			break;
 	}
 	return duration;
-};
-
-ocargo.Animation.prototype._extractCowAt = function(coordinate) {
-    for (var i = 0; i < this.activeCows.length; i++) {
-        var cow = this.activeCows[i];
-        if (cow.coordinate == coordinate) {
-            this.activeCows.splice(i, 1);   // remove cow from array
-            return cow;
-        }
-    }
 };
 
 ocargo.Animation.prototype._updateFuelIfPresent = function(animation) {

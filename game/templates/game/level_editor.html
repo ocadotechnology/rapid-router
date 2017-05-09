@@ -14,7 +14,6 @@
 {% block scripts %}
 {{block.super}}
   <script>
-    var COW_LEVELS_ENABLED = {{cow_level_enabled|booltojs}};
     var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
   </script>
   <script src="{% static "game/js/utils.js" %}"></script>
@@ -44,7 +43,6 @@
   <script src="/static/game/js/map.js"></script>
   <script src="/static/game/js/pathFinder.js"></script>
   <script src="/static/game/js/trafficLight.js"></script>
-  {% if cow_level_enabled %}<script src="/static/game/js/cow.js"></script>{% endif %}
   <script src="/static/game/js/destination.js"></script>
 
   <script>
@@ -327,49 +325,6 @@
                       <td><img id="trafficLightRed" src="{% static "game/image/trafficLight_red.svg" %}" width="80"></td>
                         <td><img id="trafficLightGreen" src="{% static "game/image/trafficLight_green.svg" %}" width="80"></td>
                     </tr>
-                    {% if cow_level_enabled %}
-                    <tr>
-                      <td>{% trans "Cows:" %}</td>
-                      <td><img id="cow" src="/static/game/image/Clarice.svg" width="80"></td>
-                      <td>
-                        <button class="navigation_button" id="advanced_cow_options_button">
-                              <img id="advanced_cow_options_button_icon" src="/static/game/image/icons/show.svg"/>
-                              {% trans "Advanced" %}
-                            </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td colspan="2">
-                        <div id="cow_advanced_div">
-                          <h3 id="cow_advanced_options_title">{% trans "Advanced options" %}</h3>
-                          <div id="cow_group_div">
-                            <!--<h4>Group:</h4>-->
-                            <div id="cow_group_buttons">
-                              <button class="mode_panel navigation_button" id="remove_cow_group_button">
-                                <img src="/static/game/image/icons/clear.svg"/>
-                              </button>
-                              <button class="mode_panel navigation_button" id="add_cow_group_button">
-                                <img src="/static/game/image/icons/add.svg"/>
-                              </button>
-                            </div>
-                            <div id="cow_group_select_div">
-                              <select id="cow_group_select"></select>
-                            </div>
-                            <div id="cow_type_select_div">
-                              <select id="cow_type_select"></select>
-                            </div>
-                            <div style="clear: both;"></div>
-                            <h4>{% trans "How many cows should appear for this group?" %}</h4>
-                            <div id="min_max_cow_div">
-                                <label for="min_cows_spinner">{% trans "Min:" %}</label><input name="Min" class="spinner" id="min_cows_spinner" readonly>
-                                <label for="max_cows_spinner">{% trans "Max:" %}</label><input name="Max" class="spinner" id="max_cows_spinner" readonly>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    {% endif %}
                   </tbody>
                 </table>
 
