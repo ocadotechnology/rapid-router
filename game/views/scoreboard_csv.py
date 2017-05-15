@@ -45,18 +45,20 @@ Multiple_Levels_Header = [ugettext_lazy('Class'), ugettext_lazy('Name'), ugettex
                           ugettext_lazy('Total Time'), ugettext_lazy('Started Levels %'),
                           ugettext_lazy('Attempted levels %'), ugettext_lazy('Finished levels %')]
 
+
 def scoreboard_csv(student_data, requested_sorted_levels):
-    if (len(requested_sorted_levels) > 1):
+    if len(requested_sorted_levels) > 1:
         return scoreboard_csv_multiple_levels(student_data, requested_sorted_levels)
     else:
         return scoreboard_csv_single_level(student_data)
+
 
 def scoreboard_csv_multiple_levels(student_rows, levels):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="scoreboard.csv"'
 
     header = header_for(levels)
-    rows = map(to_array_multiple_levels, student_rows)
+    rows = map(create_to_array_multiple_levels(response), student_rows)
 
     writer = csv.writer(response)
     writer.writerow(header)
@@ -64,11 +66,12 @@ def scoreboard_csv_multiple_levels(student_rows, levels):
 
     return response
 
+
 def scoreboard_csv_single_level(student_rows):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="scoreboard.csv"'
 
-    rows = map(to_array_single_level, student_rows)
+    rows = map(create_to_array_single_level(response), student_rows)
 
     writer = csv.writer(response)
     writer.writerow(Single_Level_Header)
@@ -76,20 +79,27 @@ def scoreboard_csv_single_level(student_rows):
 
     return response
 
+
 def header_for(levels):
     level_names = map(str, levels)
     return Multiple_Levels_Header + level_names
 
-def to_array_multiple_levels(student_row):
-    started, attempted, finished = student_row.progress
-    result = [student_row.class_field.name, student_row.name, student_row.total_score, student_row.total_time,
-              started, attempted, finished]
 
-    return result + student_row.scores
+def create_to_array_multiple_levels(response):
+    def to_array_multiple_levels(student_row):
+        started, attempted, finished = student_row.progress
+        result = [student_row.class_field.name.encode(response.charset), student_row.name, student_row.total_score,
+                  student_row.total_time, started, attempted, finished]
 
-def to_array_single_level(student_row):
-    result = [student_row.class_field.name, student_row.name, student_row.total_score, student_row.total_time,
-              student_row.start_time, student_row.finish_time]
+        return result + student_row.scores
+    return to_array_multiple_levels
 
-    return result
+
+def create_to_array_single_level(response):
+    def to_array_single_level(student_row):
+        result = [student_row.class_field.name.encode(response.charset), student_row.name, student_row.total_score,
+                  student_row.total_time, student_row.start_time, student_row.finish_time]
+
+        return result
+    return to_array_single_level
 
