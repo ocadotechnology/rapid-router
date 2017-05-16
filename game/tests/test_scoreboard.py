@@ -196,7 +196,7 @@ class ScoreboardTestCase(TestCase):
 class ScoreboardCsvTestCase(TestCase):
     def test_multiple_levels(self):
         levels = Level.objects.sorted_levels()
-        student_rows = [(self.student_row()), (self.student_row())]
+        student_rows = [(self.student_row('secrète')), (self.student_row())]
 
         response = scoreboard_csv_multiple_levels(student_rows, levels)
 
@@ -210,7 +210,7 @@ class ScoreboardCsvTestCase(TestCase):
         assert_that(actual_rows, equal_to(expected_rows))
 
     def test_single_level(self):
-        student_rows = [(self.student_row()), (self.student_row())]
+        student_rows = [(self.student_row('secrète')), (self.student_row())]
         response = scoreboard_csv_single_level(student_rows)
 
         actual_header, actual_rows = self.actual_data(response.content)
@@ -228,9 +228,9 @@ class ScoreboardCsvTestCase(TestCase):
     def expected_rows_multiple_levels(self, student_rows):
         return map(self.expected_row_multiple_levels, student_rows) + [""]
 
-    def student_row(self):
+    def student_row(self, class_name=None):
         email, password = signup_teacher_directly()
-        _, class_name, access_code = create_class_directly(email)
+        _, class_name, access_code = create_class_directly(email, class_name)
         _, _, student = create_school_student_directly(access_code)
 
         total_time = timedelta(0, 30)
@@ -252,13 +252,13 @@ class ScoreboardCsvTestCase(TestCase):
 
     def expected_row_multiple_levels(self, student_row):
         beginning = "%s,%s,190,0:00:30,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19," \
-                    % (student_row.class_field.name, student_row.name)
+                    % (student_row.class_field.name.encode('utf-8'), student_row.name)
         padding = ','.join([""] * 89)
         return beginning + padding
 
     def expected_row_single_level(self, student_row):
         return "%s,%s,190,0:00:30,2015-06-26 07:51:12+00:00,2015-07-31 01:11:12+00:00" % (
-            student_row.class_field.name, student_row.name)
+            student_row.class_field.name.encode('utf-8'), student_row.name)
 
     def expected_header(self, levels):
         level_strings = map(str, levels)
