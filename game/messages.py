@@ -2089,3 +2089,48 @@ def description_level109():
 def hint_level109():
     message = ugettext("To halve the value of a variable you can do something like the following:<br><pre>n /= 2</pre>")
     return message
+
+
+def title_episode1():
+    return ugettext('Getting Started')
+
+
+def title_episode2():
+    return ugettext('Shortest Route')
+
+
+def title_episode3():
+    return ugettext('Loops and Repetitions')
+
+
+def title_episode4():
+    return ugettext('Loops with Conditions')
+
+
+def title_episode5():
+    return ugettext('If... Only')
+
+
+def title_episode6():
+    return ugettext('Traffic Lights')
+
+
+def title_episode7():
+    return ugettext('Limited Blocks')
+
+
+def title_episode8():
+    return ugettext('Procedures')
+
+
+def title_episode9():
+    return ugettext('Blockly Brain Teasers')
+
+
+def title_episode10():
+    return ugettext('Introduction to Python')
+
+
+def title_episode11():
+    return ugettext('Python')
+
