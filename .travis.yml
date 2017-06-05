@@ -24,6 +24,8 @@ matrix:
     - python: pypy3
       env: SELENIUM_WEBDRIVER=default
   include:
+    - python: 2.7.12
+      env: SELENIUM_WEBDRIVER=default
     - python: 3.3
       env: SELENIUM_WEBDRIVER=default
     - python: 3.4
