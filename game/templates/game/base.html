@@ -1,4 +1,4 @@
-{% extends 'portal/base.html' %}
+{% extends 'portal/base_old.html' %}
 {% load static %}
 {% load i18n %}
 {% load app_tags %}
@@ -9,22 +9,11 @@
   {% include 'game/crowdin.html' %}
 {% endblock head %}
 
-{% block nav_teach %}
-{% if user|is_logged_in_as_teacher %}
-  <b>[ <a href="{% url 'teach' %}">TEACH</a> ]</b>
-{% else %}
-  {{ block.super }}
-{% endif %}
-{% endblock nav_teach %}
-
-{% block nav_play %}
-{% if user|is_logged_in_as_teacher %}
-  {{ block.super }}
-{% else %}
-  <b>[ <a href="{% url 'play' %}">PLAY</a> ]</b>
-{% endif %}
-{% endblock nav_play %}
-
+{% block secondaryButtons %}
+{% block dashboard %}<a href="{% url 'dashboard' %}" class="button--menu button--menu--secondary button--menu--enabled">School / Club</a>{% endblock dashboard %}
+<a href="{% url 'game.views.level_selection.levels' %}" class="button--menu button--menu--secondary button--menu--enabled button--menu--teacher--active">Rapid Router</a>
+{% block materials %}<a id="resources_button" href="{% url 'teaching_resources' %}" class="button--menu button--menu--secondary button--menu--enabled">Teaching Resources</a>{% endblock materials %}
+{% endblock secondaryButtons %}
 
 {% block subNav %}
 <div class="subnavBar">

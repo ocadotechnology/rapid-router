@@ -69,7 +69,6 @@ class LevelModerationTestCase(TestCase):
 
         student_name, _, student = create_school_student_directly(access_code)
 
-
         self.login(email, password)
         response = self.students_of_class(klass2)
         assert_that(response.status_code, equal_to(404))
@@ -81,5 +80,5 @@ class LevelModerationTestCase(TestCase):
         return response
 
     def login(self, email, password):
-        self.client.post(reverse('teach'), {'login-teacher_email': email, 'login-teacher_password': password, 'login': ''}, follow=True)
+        self.client.post(reverse('login_view'), {'login-teacher_email': email, 'login-teacher_password': password, 'login': ''}, follow=True)
 

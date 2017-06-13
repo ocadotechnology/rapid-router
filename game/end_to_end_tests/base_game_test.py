@@ -50,6 +50,8 @@ from .game_page import GamePage
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
 from portal.tests.utils.teacher import signup_teacher_directly
+from portal.tests.utils.classes import create_class_directly
+from portal.tests.utils.student import create_school_student_directly
 
 
 custom_handler.monkey_patch()
@@ -201,7 +203,9 @@ class BaseGameTest(SeleniumTestCase):
         if not BaseGameTest.already_logged_on:
             email, password = signup_teacher_directly()
             create_organisation_directly(email)
-            self.go_to_homepage().go_to_teach_page().login(email, password)
+            klass, name, access_code = create_class_directly(email)
+            create_school_student_directly(access_code)
+            self.go_to_homepage().go_to_login_page().login(email, password)
             email = email
             BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
 
