@@ -56,12 +56,12 @@ class LevelEditorTestCase(TestCase):
         self.client = Client()
 
     def login(self, email, password):
-        self.client.post(reverse('teach'), {'login-teacher_email': email, 'login-teacher_password': password,
-                                            'login': ''}, follow=True)
+        self.client.post(reverse('login_view'), {'login-teacher_email': email, 'login-teacher_password': password,
+                                                 'login': ''}, follow=True)
 
     def student_login(self, name, access_code, password):
-        self.client.post(reverse('play'), {'login-name': name, 'login-access_code': access_code,
-                                           'login-password': password, 'school_login': ''}, follow=True)
+        self.client.post(reverse('login_view'), {'login-name': name, 'login-access_code': access_code,
+                                                 'login-password': password, 'school_login': ''}, follow=True)
 
     def get_sharing_information(self, level_id):
         url = reverse('get_sharing_information_for_editor', args=[level_id])
