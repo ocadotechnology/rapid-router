@@ -2763,7 +2763,7 @@ ocargo.LevelEditor = function() {
                 }
 
                 notLoggedInMessages.push(interpolate(gettext('You can log on %(login_url)s.'), {
-                    login_url: '<a href="' + Urls.play() + '">' + pgettext('login_url', 'here') + '</a>'
+                    login_url: '<a href="' + Urls.login_view() + '">' + pgettext('login_url', 'here') + '</a>'
                 }, true));
                 return notLoggedInMessages.join(' ');
             };
