@@ -28,7 +28,7 @@ Go to the official [Code For Life website][c4l].
     * `sudo apt-get install ruby2.0` - still Ruby 1.9 hiding under `ruby` command.
     * `sudo gem install sass -v 3.3.4` - later versions incompatible with Ruby 1.9 (see above).
 
-* Clone the repo: `https://github.com/ocadotechnology/rapid-router.git`
+* Clone the repo: `https://github.com/ocadotechnology/rapid-router.git`. Fork it first if you want to contribute, or work on a separate branch.
 * Make and activate a virtualenv
     * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
     * and thereafter `workon rapid-router`
@@ -45,11 +45,13 @@ Go to the official [Code For Life website][c4l].
     * or restart the portal with command `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 ./run`.
 
 ## Localisation
-* `./run --with-translation-tools` in your rapid-router dir to include the translation/localisation libraries
-* You will need your crowdin api key locally in the `CROWDIN_API_KEY` environment variable, e.g. `export CROWDIN_API_KEY=<key>`. This can be obtained from [the settings page](https://crowdin.com/project/code-for-life/settings#integration)
+* For localisation admins: 
+    * `./run --with-translation-tools` in your rapid-router dir to include the translation/localisation libraries
+    * You will need your crowdin api key locally in the `CROWDIN_API_KEY` environment variable, e.g. `export CROWDIN_API_KEY=<key>`. This can be obtained from [the settings page](https://crowdin.com/project/code-for-life/settings#integration)
 * Set your `django_language` cookie to `lol-us` to enable in-context localisation
 
 ## To contribute
+__Guidelines__ Please read the [contributing guidelines](CONTRIBUTING.md) first, thank you.
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
 [add it][add-issue]. Please make sure that you give us a suitable level of detail about the symptoms and how to
 reproduce it. Please label it as a "bug".
