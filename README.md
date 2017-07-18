@@ -28,7 +28,7 @@ Go to the official [Code For Life website][c4l].
     * `sudo apt-get install ruby2.0` - still Ruby 1.9 hiding under `ruby` command.
     * `sudo gem install sass -v 3.3.4` - later versions incompatible with Ruby 1.9 (see above).
 
-* Clone the repo: `https://github.com/ocadotechnology/rapid-router.git`. Fork it first if you want to contribute, or work on a separate branch.
+* Clone the repo: `https://github.com/ocadotechnology/rapid-router.git`. Fork it first if you want to contribute, and work on a separate branch for your work.
 * Make and activate a virtualenv
     * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
     * and thereafter `workon rapid-router`
