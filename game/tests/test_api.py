@@ -34,6 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+import os
+
 from django.core.urlresolvers import reverse
 
 from rest_framework import status
@@ -118,6 +120,16 @@ class APITests(APITestCase):
         url = reverse('character-detail', kwargs={'pk': character_id})
         response = self.client.get(url)
         assert_that(response, has_status_code(status.HTTP_404_NOT_FOUND))
+
+    def test_list_episodes_with_translated_episode_names(self):
+        with self.modify_settings(
+                LANGUAGES={'append': [('foo-br', 'Test locale')]},
+                LOCALE_PATHS={'append': os.path.join(os.path.dirname(__file__), 'locale')}
+        ):
+            url = reverse('episode-list')
+            response = self.client.get(url, **{'HTTP_ACCEPT_LANGUAGE': 'foo-br'})
+            assert_that(response, has_status_code(status.HTTP_200_OK))
+            assert_that(response.data[0]['name'], equal_to(u'crwdns4197:0crwdne4197:0'))
 
 
 def has_status_code(status_code):

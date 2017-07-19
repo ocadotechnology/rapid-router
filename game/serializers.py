@@ -34,6 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from django.utils.safestring import mark_safe
+
 from game import messages
 from game.messages import description_level_default, hint_level_default
 from game.theme import get_theme, get_themes_url
@@ -146,9 +148,19 @@ class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = Episode
         fields = ('url', '__unicode__', 'name')
+
+    def get_name(self, obj):
+        episode_title_method_name = 'title_episode' + str(obj.id)
+        try:
+            episode_title_method = getattr(messages, episode_title_method_name)
+            return mark_safe(episode_title_method())
+        except AttributeError:
+            return ''
 
 
 class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
