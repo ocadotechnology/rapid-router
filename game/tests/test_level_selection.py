@@ -68,4 +68,3 @@ class LevelSelectionTestCase(TestCase):
 
         assert_that(response.status_code, equal_to(200))
         assert_that(response.context['episodeData'][0]['name'], equal_to('Getting Started'))
-
