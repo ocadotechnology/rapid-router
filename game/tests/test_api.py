@@ -129,8 +129,25 @@ class APITests(APITestCase):
             url = reverse('episode-list')
             response = self.client.get(url, **{'HTTP_ACCEPT_LANGUAGE': 'foo-br'})
             assert_that(response, has_status_code(status.HTTP_200_OK))
-            assert_that(response.data[0]['name'], equal_to(u'crwdns4197:0crwdne4197:0'))
+            assert_that(response.data[0]['name'], equal_to('crwdns4197:0crwdne4197:0'))
 
+    def test_episode_details(self):
+        episode_id = 1
+        url = reverse('episode-detail', kwargs={'pk': episode_id})
+        response = self.client.get(url)
+        assert_that(response, has_status_code(status.HTTP_200_OK))
+        assert_that(response.data['name'], equal_to('Getting Started'))
+
+    def test_episode_details_with_translated_episode_name(self):
+        with self.modify_settings(
+                LANGUAGES={'append': [('foo-br', 'Test locale')]},
+                LOCALE_PATHS={'append': os.path.join(os.path.dirname(__file__), 'locale')}
+        ):
+            episode_id = 1
+            url = reverse('episode-detail', kwargs={'pk': episode_id})
+            response = self.client.get(url, **{'HTTP_ACCEPT_LANGUAGE': 'foo-br'})
+            assert_that(response, has_status_code(status.HTTP_200_OK))
+            assert_that(response.data['name'], equal_to('crwdns4197:0crwdne4197:0'))
 
 def has_status_code(status_code):
     return HasStatusCode(status_code)

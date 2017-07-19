@@ -34,6 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+import sys
+
 from django.utils.translation import ugettext
 
 
@@ -2091,45 +2093,51 @@ def hint_level109():
     return message
 
 
-def title_episode1():
+def _title_episode1():
     return ugettext('Getting Started')
 
 
-def title_episode2():
+def _title_episode2():
     return ugettext('Shortest Route')
 
 
-def title_episode3():
+def _title_episode3():
     return ugettext('Loops and Repetitions')
 
 
-def title_episode4():
+def _title_episode4():
     return ugettext('Loops with Conditions')
 
 
-def title_episode5():
+def _title_episode5():
     return ugettext('If... Only')
 
 
-def title_episode6():
+def _title_episode6():
     return ugettext('Traffic Lights')
 
 
-def title_episode7():
+def _title_episode7():
     return ugettext('Limited Blocks')
 
 
-def title_episode8():
+def _title_episode8():
     return ugettext('Procedures')
 
 
-def title_episode9():
+def _title_episode9():
     return ugettext('Blockly Brain Teasers')
 
 
-def title_episode10():
+def _title_episode10():
     return ugettext('Introduction to Python')
 
 
-def title_episode11():
+def _title_episode11():
     return ugettext('Python')
+
+
+def get_episode_title(episode):
+    episode_title_method_name = '_title_episode' + str(episode.id)
+    episode_title_method = getattr(sys.modules[__name__], episode_title_method_name)
+    return episode_title_method()

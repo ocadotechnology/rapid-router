@@ -83,7 +83,7 @@ def fetch_episode_data_from_database(early_access):
                 "title": get_level_title(level_name)})
 
         e = {"id": episode.id,
-             "name": get_episode_title(episode.id),
+             "name": messages.get_episode_title(episode),
              "levels": levels,
              "first_level": minName,
              "last_level": maxName,
@@ -103,15 +103,6 @@ def fetch_episode_data(early_access):
         data = fetch_episode_data_from_database(early_access)
         cache.set(key, data)
     return data
-
-
-def get_episode_title(i):
-    episode_title_method_name = 'title_episode' + str(i)
-    try:
-        episode_title_method = getattr(messages, episode_title_method_name)
-        return mark_safe(episode_title_method())
-    except AttributeError:
-        return ''
 
 
 def get_level_title(i):

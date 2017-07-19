@@ -155,18 +155,14 @@ class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', '__unicode__', 'name')
 
     def get_name(self, obj):
-        episode_title_method_name = 'title_episode' + str(obj.id)
-        try:
-            episode_title_method = getattr(messages, episode_title_method_name)
-            return mark_safe(episode_title_method())
-        except AttributeError:
-            return ''
+        return messages.get_episode_title(obj)
 
 
 class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
     level_set = serializers.SerializerMethodField()
     level_set_url = serializers.HyperlinkedIdentityField(view_name='level-for-episode',
                                                           read_only=True)
+    name = serializers.SerializerMethodField()
 
     class Meta:
         model = Episode
@@ -177,6 +173,9 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
         levels = Level.objects.filter(episode__id=obj.id)
         serializer = LevelListSerializer(levels, many=True, context={'request': self.context.get('request', None)})
         return serializer.data
+
+    def get_name(self, obj):
+        return messages.get_episode_title(obj)
 
 
 class LevelBlockSerializer(serializers.ModelSerializer):
