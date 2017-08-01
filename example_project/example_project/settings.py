@@ -54,6 +54,7 @@ USE_L10N = True
 
 TIME_ZONE = 'Europe/London'
 LANGUAGE_CODE = 'en-gb'
+LANGUAGES = (('en-gb', 'English'),)
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 STATIC_URL = '/static/'
 SECRET_KEY = 'not-a-secret'
