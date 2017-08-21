@@ -49,7 +49,7 @@ SETTINGS = {
     'PIPELINE_CSS': {
         'game-scss': {
             'source_filenames': (
-              'game.scss',
+              'game/sass/game.scss',
             ),
             'output_filename': 'game.css',
         },
