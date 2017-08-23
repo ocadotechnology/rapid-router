@@ -53,6 +53,8 @@ from game.views.level import submit_attempt, play_default_level, start_episode, 
     load_list_of_workspaces, save_workspace, delete_workspace, \
     delete_level, play_custom_level, play_custom_level_from_editor, load_workspace_solution
 from game.views.scoreboard import scoreboard
+from game.views.level_view_solutions import default_solution, levels_solutions
+
 urlpatterns = patterns(
     '',
     url(r'^$', levels, name='levels'),
@@ -62,6 +64,8 @@ urlpatterns = patterns(
     url(r'^episode/(?P<episodeId>[0-9]+)/$', start_episode, name='start_episode'),
     url(r'^levels/random/([0-9]+)/$', random_level_for_episode, name='random_level_for_episode'),
     url(r'^scoreboard/$', scoreboard, name='scoreboard'),
+    url(r'^solutions_navigation/$', levels_solutions, name='teacher_level_solutions'),
+    url(r'^solutions_navigation/(?P<levelName>[A-Z0-9]+)/$', default_solution, name='default_solution'),
 
     url(r'^workspace/', include([
         url(r'^load/(?P<workspaceID>[0-9]+)/$', load_workspace, name='load_workspace'),

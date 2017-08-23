@@ -1,0 +1,68 @@
+{% extends 'game/base.html' %}
+{% block resources %}
+<a href="{% url 'teaching_resources' %}" class="button--menu button--menu--secondary button--menu--enabled button--menu--teacher--active">Teaching Resources</a>
+{% endblock resources %}
+
+{% load static %}
+{% load i18n %}
+{% load app_tags %}
+
+{% block scripts %}
+{{block.super}}
+<script>
+    var EPISODES = [];
+    {% for episode in episodeData %}
+    var levels = [];
+    {% for level in episode.levels %}
+    levels.push({'name': {{level.name}}});
+    {% endfor %}
+    EPISODES.push({'id' : {{episode.id}},
+    'levels': levels});
+    {% endfor %}
+
+</script>
+<script src="{% static 'game/js/solutionSelection.js' %}"></script>
+
+{% endblock %}
+
+{% block css %}
+{{block.super}}
+<link href="{% static 'game/css/solution_selection.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block nav_ocargo_solutions %}
+    <b><a href="{% url 'teacher_level_solutions' %}">{% trans "Solutions" %}</a></b>
+{% endblock nav_ocargo_solutions %}
+
+{% block content %}
+<div class="section group">
+    <div class="col span_1_of_3_strict">
+    <img class="wide rounded" src="{% static 'game/image/RRlogo_on_less_green_small.png' %}" />
+    </div>
+    <div class="col span_2_of_3_strict">
+        <h1>Level Solutions</h1>
+    <div id="episodes" class="episodes">
+        {% for episode in episodeData %}
+            <h3 id='episode{{episode.id}}'>
+            <div>
+                {{episode.name}}
+                <span class="episode_range_text">
+                    {% blocktrans with first_level=episode.first_level last_level=episode.last_level %}Levels {{first_level}}-{{last_level}}{% endblocktrans %}
+                </span>
+            </div>
+            </h3>
+            <div>
+                {% for level in episode.levels %}
+                <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+                <p>
+                    <a href="{% url 'default_solution' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                </p>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <div id="container"></div>
+    </div>
+</div>
+
+{% endblock %}

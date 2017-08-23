@@ -1,0 +1,60 @@
+{% extends 'game/base.html' %}
+{% block resources %}
+    <a href="{% url 'teaching_resources' %}" class="button--menu button--menu--secondary button--menu--enabled button--menu--teacher--active">Teaching Resources</a>
+{% endblock resources %}
+{% load static %}
+{% load i18n %}
+{% load app_tags %}
+
+{% block nav_ocargo_solutions %}
+    <b><a href="{% url 'teacher_level_solutions' %}">{% trans "Solutions" %}</a></b>
+{% endblock nav_ocargo_solutions %}
+
+{% block content %}
+
+<style>
+    .imgs{
+        max-width: 100%;
+        height: auto;
+    }
+
+    table, td{
+        border: 1px dashed black;
+        align: top;
+        border-collapse: collapse;
+        padding: 5px;
+    }
+
+</style>
+
+<div id="teach_dashboard_page"></div>
+{% with levelName|add:0|stringformat:"03d" as level_number %}
+
+<table width="100%">
+    <tr>
+        <td width="55%">
+            <h1 id="lvl_header">Level {{levelName}}</h1>
+            <a id="lvl_link" href="{% url 'play_default_level' levelName %}">Go to Level</a>
+        </td>
+        <td width="22.5%" >
+        </td>
+        <td width="22.5%" >
+        </td>
+    </tr>
+    <tr>
+        <td width="55%">
+            <img id='lvl_img' src="{% static 'game/image/levels/level_'|add:level_number|add:'.png' %}" class="imgs"/>
+        </td>
+        <td width="22.5%">
+            <img id='sol_img' src="{% static 'game/image/solutions/solution_'|add:level_number|add:'.png' %}" class="imgs"/>
+        </td>
+        <td width="22.5%">
+            <img id='sol_imgPY' src="{% static 'game/image/solutions/solutionPY_'|add:level_number|add:'.png' %}" class="imgs"/>
+        </td>
+    </tr>
+</table>
+{% endwith %}
+
+{% endblock %}
+
+	

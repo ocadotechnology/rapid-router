@@ -41,6 +41,13 @@
           {% endblock nav_ocargo_moderate %}
         </li>
       {% endif %}
+        {% if user|is_logged_in_as_teacher %}
+            <li>
+                {% block nav_ocargo_solutions %}
+                    <a href="{% url 'teacher_level_solutions' %}">{% trans "Solutions" %}</a>
+                {% endblock nav_ocargo_solutions %}
+            </li>
+        {% endif %}
     </ul>
   </div>
 </div>
