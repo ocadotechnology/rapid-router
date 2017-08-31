@@ -34,6 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from django.utils.safestring import mark_safe
+
 from game import messages
 from game.messages import description_level_default, hint_level_default
 from game.theme import get_theme, get_themes_url
@@ -146,15 +148,21 @@ class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = Episode
         fields = ('url', '__unicode__', 'name')
+
+    def get_name(self, obj):
+        return messages.get_episode_title(obj)
 
 
 class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
     level_set = serializers.SerializerMethodField()
     level_set_url = serializers.HyperlinkedIdentityField(view_name='level-for-episode',
                                                           read_only=True)
+    name = serializers.SerializerMethodField()
 
     class Meta:
         model = Episode
@@ -165,6 +173,9 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
         levels = Level.objects.filter(episode__id=obj.id)
         serializer = LevelListSerializer(levels, many=True, context={'request': self.context.get('request', None)})
         return serializer.data
+
+    def get_name(self, obj):
+        return messages.get_episode_title(obj)
 
 
 class LevelBlockSerializer(serializers.ModelSerializer):

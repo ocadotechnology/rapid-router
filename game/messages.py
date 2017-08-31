@@ -34,6 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+import sys
+
 from django.utils.translation import ugettext
 
 
@@ -2089,3 +2091,53 @@ def description_level109():
 def hint_level109():
     message = ugettext("To halve the value of a variable you can do something like the following:<br><pre>n /= 2</pre>")
     return message
+
+
+def _title_episode1():
+    return ugettext('Getting Started')
+
+
+def _title_episode2():
+    return ugettext('Shortest Route')
+
+
+def _title_episode3():
+    return ugettext('Loops and Repetitions')
+
+
+def _title_episode4():
+    return ugettext('Loops with Conditions')
+
+
+def _title_episode5():
+    return ugettext('If... Only')
+
+
+def _title_episode6():
+    return ugettext('Traffic Lights')
+
+
+def _title_episode7():
+    return ugettext('Limited Blocks')
+
+
+def _title_episode8():
+    return ugettext('Procedures')
+
+
+def _title_episode9():
+    return ugettext('Blockly Brain Teasers')
+
+
+def _title_episode10():
+    return ugettext('Introduction to Python')
+
+
+def _title_episode11():
+    return ugettext('Python')
+
+
+def get_episode_title(episode):
+    episode_title_method_name = '_title_episode' + str(episode.id)
+    episode_title_method = getattr(sys.modules[__name__], episode_title_method_name)
+    return episode_title_method()
