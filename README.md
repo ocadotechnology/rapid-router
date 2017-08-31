@@ -57,7 +57,8 @@ Go to the official [Code For Life website][c4l].
 __Guidelines__ Please read the [contributing guidelines](CONTRIBUTING.md) first, thank you.
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
 [add it][add-issue]. Please make sure that you give us a suitable level of detail about the symptoms and how to
-reproduce it. Please label it as a "bug".
+reproduce it. Please label it as a "bug".<br>
+One word of caution: please do not add any issues related to security. Evil hackers are everywhere nowadays... If you do find a security issue, let us know using our [contact form][c4l-contact-form].
 
 __Want to suggest a feature? Please check whether it has already been added to our [issue tracker][issues] first!__ if
 not, [add it][add-issue]. Please make sure that you give us a suitable level of detail about the feature. Please label

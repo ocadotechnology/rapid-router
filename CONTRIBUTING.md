@@ -6,7 +6,8 @@
     * Need help with [git](https://git-scm.com/docs/gittutorial)?
     Anyway you can't use Ocado Technology's master.
 * The [issues are listed on ocadotechnology/rapid-router](https://github.com/ocadotechnology/rapid-router/issues). 
-It's even better if you're using [ZenHub](https://www.zenhub.com/) because it will allow you to look at a [Kanban-ish board](https://github.com/ocadotechnology/rapid-router/issues#boards) for the project.
+It's even better if you're using [ZenHub](https://www.zenhub.com/) because it will allow you to look at a [Kanban-ish board](https://github.com/ocadotechnology/rapid-router/issues#boards) for the project.<br>
+One word of caution: please do not add any issues related to security. Evil hackers are everywhere nowadays... If you do find a security issue, let us know using our [contact form][c4l-contact-form].
 
 ## Now you want to **test** your changes and **run** the project locally... (UNIX)
 * To work on the project, you can use whichever editor you like. Lots here like [IntelliJ or PyCharm](https://www.jetbrains.com/), for instance.
@@ -25,3 +26,5 @@ It's even better if you're using [ZenHub](https://www.zenhub.com/) because it wi
 * Do not accept a PR yourself - at least one other person should review your code and approve it first.
 * Some old PRs will need to see the branch rebased on the current master
 * When a PR is accepted, **congrats!** It will be merged on master.
+
+[c4l-contact-form]: https://www.codeforlife.education/help/#contact
