@@ -155,6 +155,7 @@ class APITests(APITestCase):
             assert_that(response, has_status_code(status.HTTP_200_OK))
             assert_that(response.data['name'], equal_to('crwdns4197:0crwdne4197:0'))
 
+
 def has_status_code(status_code):
     return HasStatusCode(status_code)
 
