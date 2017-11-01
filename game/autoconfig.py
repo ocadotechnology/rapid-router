@@ -43,18 +43,21 @@ DEFAULT_SETTINGS = {
 }
 
 SETTINGS = {
-    'PIPELINE_COMPILERS': (
-        'pipeline.compilers.sass.SASSCompiler',
-    ),
-    'PIPELINE_CSS': {
-        'game-scss': {
-            'source_filenames': (
-              'game/sass/game.scss',
-            ),
-            'output_filename': 'game.css',
+    'PIPELINE': {
+        'PIPELINE_ENABLED': True,
+        'COMPILERS': (
+            'pipeline.compilers.sass.SASSCompiler',
+        ),
+        'STYLESHEETS': {
+            'game-scss': {
+                'source_filenames': (
+                  'game.scss',
+                ),
+                'output_filename': 'game.css',
+            },
         },
+        'CSS_COMPRESSOR': None,
     },
-    'PIPELINE_CSS_COMPRESSOR': None,
     'INSTALLED_APPS': [
         'game',
         'pipeline',
@@ -81,7 +84,6 @@ SETTINGS = {
         # check_for_language function doesn't recognise it.
         os.path.join(os.path.dirname(__file__), 'locale'),
     ],
-    'PIPELINE_SASS_ARGUMENTS': '--quiet',
     'STATICFILES_FINDERS': [
         'pipeline.finders.PipelineFinder',
     ],
