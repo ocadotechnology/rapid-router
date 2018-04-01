@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  app:
+    build: .
+    command: sh run
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"

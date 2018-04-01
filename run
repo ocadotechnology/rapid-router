@@ -32,4 +32,4 @@ if [ "$translation" = "1" ]; then
 fi
 
 ./example_project/manage.py collectstatic --noinput
-./example_project/manage.py runserver "$@"
+./example_project/manage.py runserver 0.0.0.0:8000
