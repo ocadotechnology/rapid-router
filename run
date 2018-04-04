@@ -32,4 +32,10 @@ if [ "$translation" = "1" ]; then
 fi
 
 ./example_project/manage.py collectstatic --noinput
-./example_project/manage.py runserver 0.0.0.0:8000
+
+if [ -n "${DJANGO_IP_PORT}" ]; then
+  echo "Open http://$DJANGO_IP_PORT"
+  ./example_project/manage.py runserver $DJANGO_IP_PORT
+else
+  ./example_project/manage.py runserver "$@"
+fi

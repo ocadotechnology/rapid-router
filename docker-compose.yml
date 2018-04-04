@@ -3,8 +3,10 @@ version: '2'
 services:
   app:
     build: .
+    env_file: .env
     command: sh run
     volumes:
       - .:/usr/src/app
     ports:
       - "8000:8000"
+      - "7000:7000"
