@@ -54,14 +54,16 @@ var DEFAULT_CHARACTER_HEIGHT = 20;
 var COW_WIDTH = 50;
 var COW_HEIGHT = 50;
 
-ocargo.Drawing = function(startingPosition) {
+var zoom = 0;
+
+ocargo.Drawing = function (startingPosition) {
 
     /*************/
     /* Constants */
     /*************/
 
-    var characterWidth = typeof CHARACTER_WIDTH !== 'undefined'? CHARACTER_WIDTH : DEFAULT_CHARACTER_WIDTH;
-    var characterHeight =  typeof CHARACTER_HEIGHT !== 'undefined'? CHARACTER_HEIGHT : DEFAULT_CHARACTER_HEIGHT;
+    var characterWidth = typeof CHARACTER_WIDTH !== 'undefined' ? CHARACTER_WIDTH : DEFAULT_CHARACTER_WIDTH;
+    var characterHeight = typeof CHARACTER_HEIGHT !== 'undefined' ? CHARACTER_HEIGHT : DEFAULT_CHARACTER_HEIGHT;
 
     var TRAFFIC_LIGHT_WIDTH = 60;
     var TRAFFIC_LIGHT_HEIGHT = 22;
@@ -89,7 +91,102 @@ ocargo.Drawing = function(startingPosition) {
             characterWidth, characterHeight, startingPosition, NIGHT_MODE);
     }
 
-    this.reset = function() {
+
+    paper.setViewBox(0, 0, EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
+
+    function wheel(event) {
+        console.log('making it smaller');
+        let value = 5;
+
+        paper.setViewBox(0, 0, EXTENDED_PAPER_WIDTH - zoom, EXTENDED_PAPER_HEIGHT - zoom);
+        if (event.deltaY < 0) {
+            zoom += value;
+        }
+        else {
+            zoom -= value;  
+        }
+    }
+
+    if (window.addEventListener)
+        /** DOMMouseScroll is for mozilla. */
+        window.addEventListener('DOMMouseScroll', wheel, false);
+
+    window.onmousewheel = document.onmousewheel = wheel;
+
+
+    // var viewBoxWidth = paper.width;
+    // var viewBoxHeight = paper.height;
+    // var canvasID = "#paper";
+    // var startX, startY;
+    // var mousedown = false;
+    // var dX, dY;
+    // var oX = 0, oY = 0, oWidth = viewBoxWidth, oHeight = viewBoxHeight;
+    // var viewBox = paper.setViewBox(oX, oY, viewBoxWidth, viewBoxHeight);
+    // viewBox.X = oX;
+    // viewBox.Y = oY;
+    // var vB = paper.rect(viewBox.X, viewBox.Y, viewBoxWidth, viewBoxHeight);
+
+    // function handle(delta) {
+    //     vBHo = viewBoxHeight;
+    //     vBWo = viewBoxWidth;
+    //     if (delta < 0) {
+    //         viewBoxWidth *= 0.95;
+    //         viewBoxHeight *= 0.95;
+    //     } else {
+    //         viewBoxWidth *= 1.05;
+    //         viewBoxHeight *= 1.05;
+    //     }
+    //     /*
+    //       vB.attr({
+    //         x: viewBox.X,
+    //         y: viewBox.Y,
+    //         width: viewBoxWidth,
+    //         height: viewBoxHeight
+    //       });
+    //     */
+    //     viewBox.X -= (viewBoxWidth - vBWo) / 2;
+    //     viewBox.Y -= (viewBoxHeight - vBHo) / 2;
+    //     paper.setViewBox(viewBox.X, viewBox.Y, viewBoxWidth, viewBoxHeight);
+    // }
+
+    // function wheel(event) {
+    //     var delta = 0;
+    //     if (!event) { /* For IE. */
+    //         event = window.event;
+    //     }
+    //     if (event.wheelDelta) { /* IE/Opera. */
+    //         delta = event.wheelDelta / 120;
+    //     } else if (event.detail) { /** Mozilla case. */
+    //         /** In Mozilla, sign of delta is different than in IE.
+    //          * Also, delta is multiple of 3.
+    //          */
+    //         delta = -event.detail / 3;
+    //     }
+    //     /** If delta is nonzero, handle it.
+    //      * Basically, delta is now positive if wheel was scrolled up,
+    //      * and negative, if wheel was scrolled down.
+    //      */
+    //     if (delta) {
+    //         handle(delta);
+    //     }
+    //     /** Prevent default actions caused by mouse wheel.
+    //      * That might be ugly, but we handle scrolls somehow
+    //      * anyway, so don't bother here..
+    //      */
+    //     if (event.preventDefault) {
+    //         event.preventDefault();
+    //     }
+    //     event.returnValue = false;
+    // }
+
+    // if (window.addEventListener)
+    //     /** DOMMouseScroll is for mozilla. */
+    //     window.addEventListener('DOMMouseScroll', wheel, false);
+    // /** IE/Opera. */
+    // window.onmousewheel = document.onmousewheel = wheel;
+
+
+    this.reset = function () {
         character.reset();
     };
 
@@ -207,7 +304,7 @@ ocargo.Drawing = function(startingPosition) {
 
             var destinationRect = paper.rect(destination.coordinate.x * GRID_SPACE_SIZE + PAPER_PADDING,
                 PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100 + PAPER_PADDING,
-                100, 100).attr({'stroke': DESTINATION_NOT_VISITED_COLOUR});
+                100, 100).attr({ 'stroke': DESTINATION_NOT_VISITED_COLOUR });
 
             var destinationHouse = paper.image(ocargo.Drawing.raphaelImageDir + HOUSE_URL,
                 destination.coordinate.x * GRID_SPACE_SIZE + variation[0] + PAPER_PADDING,
@@ -421,23 +518,23 @@ ocargo.Drawing = function(startingPosition) {
 
             var rotation = 0;
             if ((letters12 === 'V' && (letters13 === 'UL' || letters13 === 'DL')) ||
-                (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V' )) ||
-                (letters12 === 'DL' && (letters13 === 'UL' || letters13 === 'V' ))) {
+                (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V')) ||
+                (letters12 === 'DL' && (letters13 === 'UL' || letters13 === 'V'))) {
                 rotation = 0;
             }
             else if ((letters12 === 'H' && (letters13 === 'UL' || letters13 === 'UR')) ||
-                (letters12 === 'UL' && (letters13 === 'UR' || letters13 === 'H' )) ||
-                (letters12 === 'UR' && (letters13 === 'UL' || letters13 === 'H' ))) {
+                (letters12 === 'UL' && (letters13 === 'UR' || letters13 === 'H')) ||
+                (letters12 === 'UR' && (letters13 === 'UL' || letters13 === 'H'))) {
                 rotation = 90;
             }
             else if ((letters12 === 'V' && (letters13 === 'UR' || letters13 === 'DR')) ||
-                (letters12 === 'UR' && (letters13 === 'DR' || letters13 === 'V' )) ||
-                (letters12 === 'DR' && (letters13 === 'UR' || letters13 === 'V' ))) {
+                (letters12 === 'UR' && (letters13 === 'DR' || letters13 === 'V')) ||
+                (letters12 === 'DR' && (letters13 === 'UR' || letters13 === 'V'))) {
                 rotation = 180;
             }
             else if ((letters12 === 'H' && (letters13 === 'DL' || letters13 === 'DR')) ||
-                (letters12 === 'DL' && (letters13 === 'DR' || letters13 === 'H' )) ||
-                (letters12 === 'DR' && (letters13 === 'DL' || letters13 === 'H' ))) {
+                (letters12 === 'DL' && (letters13 === 'DR' || letters13 === 'H')) ||
+                (letters12 === 'DR' && (letters13 === 'DL' || letters13 === 'H'))) {
                 rotation = 270;
             }
 
@@ -514,10 +611,10 @@ ocargo.Drawing = function(startingPosition) {
 
             // hide light which isn't the starting state
             if (trafficLight.startingState === ocargo.TrafficLight.RED) {
-                trafficLight.greenLightEl.attr({'opacity': 0});
+                trafficLight.greenLightEl.attr({ 'opacity': 0 });
             }
             else {
-                trafficLight.redLightEl.attr({'opacity': 0});
+                trafficLight.redLightEl.attr({ 'opacity': 0 });
             }
 
             lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
@@ -597,10 +694,10 @@ ocargo.Drawing = function(startingPosition) {
         var drawX = (x + 0.5) * GRID_SPACE_SIZE - COW_WIDTH / 2 + xOffset + PAPER_PADDING;
         var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT / 2 + yOffset + PAPER_PADDING;
 
-        return {drawX: drawX, drawY: drawY, rotation: rotation};
+        return { drawX: drawX, drawY: drawY, rotation: rotation };
     };
 
-    this.createCowImage = function(type) {
+    this.createCowImage = function (type) {
         return paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), 0, 0, COW_WIDTH, COW_HEIGHT);
     };
 
@@ -617,7 +714,7 @@ ocargo.Drawing = function(startingPosition) {
         var image = paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot + "s0.1");
-        image.animate({transform: rot + "s1"}, animationLength, 'linear');
+        image.animate({ transform: rot + "s1" }, animationLength, 'linear');
 
         return {
             'coordinate': coordinate,
@@ -626,12 +723,12 @@ ocargo.Drawing = function(startingPosition) {
     };
 
     this.removeCow = function (cow, animationLength) {
-        cow.image.animate({transform: "s0.01"}, animationLength, 'linear', function () {
+        cow.image.animate({ transform: "s0.01" }, animationLength, 'linear', function () {
             cow.image.remove();
         });
     };
 
-    this.renderCharacter = function() {
+    this.renderCharacter = function () {
         character.render();
     };
 
@@ -681,12 +778,12 @@ ocargo.Drawing = function(startingPosition) {
 
     this.transitionTrafficLight = function (lightID, endState, animationLength) {
         if (endState === ocargo.TrafficLight.GREEN) {
-            lightImages[lightID][0].animate({opacity: 1}, animationLength / 2, 'linear');
-            lightImages[lightID][1].animate({opacity: 0}, animationLength, 'linear');
+            lightImages[lightID][0].animate({ opacity: 1 }, animationLength / 2, 'linear');
+            lightImages[lightID][1].animate({ opacity: 0 }, animationLength, 'linear');
         }
         else {
-            lightImages[lightID][0].animate({opacity: 0}, animationLength / 2, 'linear');
-            lightImages[lightID][1].animate({opacity: 1}, animationLength, 'linear');
+            lightImages[lightID][0].animate({ opacity: 0 }, animationLength / 2, 'linear');
+            lightImages[lightID][1].animate({ opacity: 1 }, animationLength, 'linear');
         }
     };
 
@@ -694,10 +791,10 @@ ocargo.Drawing = function(startingPosition) {
         var destinationRect = destinationImages[destinationID].rect;
         var colour = visited ? DESTINATION_VISITED_COLOUR : DESTINATION_NOT_VISITED_COLOUR;
 
-        destinationRect.animate({'stroke': colour}, duration, 'linear');
+        destinationRect.animate({ 'stroke': colour }, duration, 'linear');
     };
 
-    this.scrollToShowCharacter = function() {
+    this.scrollToShowCharacter = function () {
         character.scrollToShow();
     };
 
@@ -820,8 +917,8 @@ ocargo.Drawing.renderCoins = function (coins) {
 };
 
 
-ocargo.Drawing.cowUrl = function(type){
-    switch(type){
+ocargo.Drawing.cowUrl = function (type) {
+    switch (type) {
         case ocargo.Cow.WHITE:
             return ocargo.Drawing.whiteCowUrl;
         case ocargo.Cow.BROWN:
@@ -832,7 +929,7 @@ ocargo.Drawing.cowUrl = function(type){
 };
 
 
-ocargo.Drawing.createAbsoluteRotationTransformation = function(degrees, rotationPointX, rotationPointY) {
+ocargo.Drawing.createAbsoluteRotationTransformation = function (degrees, rotationPointX, rotationPointY) {
     var transformation = '... R' + degrees;
     if (rotationPointX !== undefined && rotationPointY !== undefined) {
         transformation += ',' + rotationPointX;
@@ -841,14 +938,14 @@ ocargo.Drawing.createAbsoluteRotationTransformation = function(degrees, rotation
     return transformation;
 };
 
-ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace = function(degrees, x, y) {
+ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace = function (degrees, x, y) {
     var rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE + PAPER_PADDING;
     var rotationPointY = (GRID_HEIGHT - (y + 1 / 2)) * GRID_SPACE_SIZE + PAPER_PADDING; //flipping y
     var result = ocargo.Drawing.createAbsoluteRotationTransformation(degrees, rotationPointX, rotationPointY);
     return result;
 };
 
-ocargo.Drawing.inLevelEditor = function() {
+ocargo.Drawing.inLevelEditor = function () {
     return typeof CHARACTER_URL === 'undefined';
 };
 
