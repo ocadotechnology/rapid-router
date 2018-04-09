@@ -103,3 +103,28 @@ table tbody td {
 	margin: 0px;
 	border: 0px;
 }
+
+#scoreboardForm {
+	text-align: center;
+}
+
+#scoreboardForm .select-list {
+	text-align: left;
+	overflow: scroll;
+	height: 200px;
+}
+
+#scoreboardForm .select-list label {
+	float: none;
+}
+
+#scoreboardForm .select-list ul {
+	list-style-type: none;
+}
+
+#scoreboardForm .select-list li {
+	margin: 1rem;
+	padding: 1rem;
+	vertical-align: center;
+	background-color: #ccc;
+}
