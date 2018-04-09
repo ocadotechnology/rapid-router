@@ -121,9 +121,10 @@ class RandomRoadTestCase(TestCase):
             self.assertTrue(len(node['connectedNodes']) <= 2)
 
     def test_branchiness_max(self):
-        """ Test that if the branchiness > 0 we get branches. """
+        """ Test that if the branchiness = 1 we get branches. """
 
-        data = self.create_test_data(branchiness=2, loopiness=0)
+        number_of_tiles = (random.randint(10, 40))
+        data = self.create_test_data(num_tiles=number_of_tiles, branchiness=1, loopiness=0)
 
         path = json.loads(data['path'])
         destinations = json.loads(data['destinations'])
@@ -140,10 +141,11 @@ class RandomRoadTestCase(TestCase):
 
         self.assertTrue(branch_count)
 
-    def test_curviness_max(self):
-        """ Test that the path is curving significantly if the curviness is set to max value. """
+    def test_curviness_min(self):
+        """ Test that the path is barely curving if the curviness = 0. """
 
-        data = self.create_test_data(curviness=1)
+        number_of_tiles = float(random.randint(10, 40))
+        data = self.create_test_data(num_tiles=int(number_of_tiles), branchiness=0, curviness=0, loopiness=0)
 
         path = json.loads(data['path'])
         destinations = json.loads(data['destinations'])
@@ -152,16 +154,99 @@ class RandomRoadTestCase(TestCase):
 
         self.check_if_valid(origin, destinations, path, decor)
 
-        turn_count = 0
+        turn_count = 0.0
         for node in path:
+
             if len(node['connectedNodes']) > 1:
-                turn_count += int(
-                    not (check_direction(node, path[int(node['connectedNodes'][0])])
-                         == check_direction(node, path[int(node['connectedNodes'][1])]))
+
+                turn_count += float(
+                    check_direction(path[int(node['connectedNodes'][0])], node) != check_direction(node, path[int(node['connectedNodes'][1])])
+
                 )
 
-        # Check if there are any turns.
-        self.assertTrue(turn_count)
+        turn_ratio = float(turn_count/len(path))
+
+        # Check if turn ratio is low.
+        self.assertTrue(turn_ratio <= 0.5)
+
+    def test_curviness_max(self):
+        """ Test that the path is curving significantly if the curviness = 1. """
+
+        number_of_tiles = float(random.randint(10, 40))
+        data = self.create_test_data(num_tiles=int(number_of_tiles), branchiness=0, curviness=1, loopiness=0)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
+        turn_count = 0.0
+        for node in path:
+
+            if len(node['connectedNodes']) > 1:
+
+                turn_count += float(
+                    check_direction(path[int(node['connectedNodes'][0])], node) != check_direction(node, path[int(node['connectedNodes'][1])])
+
+                )
+
+        turn_ratio = float(turn_count/len(path))
+
+        # Check if turn ratio is low.
+        self.assertTrue(turn_ratio >= 0.5)
+
+    def test_loopiness_min(self):
+        """ Test that if loopiness = 0, we don't get loops. """
+
+        data = self.create_test_data(branchiness=1, curviness=1, loopiness=0)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
+        end_node_count = 0
+        t_junction_node_count = 0
+
+        for node in path:
+            if len(node['connectedNodes']) == 1:
+                end_node_count += 1
+
+            if len(node['connectedNodes']) > 2:
+                t_junction_node_count += 1
+
+        # Test if no loops
+        self.assertTrue(end_node_count > t_junction_node_count)
+
+    def test_loopiness_max(self):
+        """ Test that if loopiness = 1, we don't get loops. """
+
+        number_of_tiles = random.randint(10, 40)
+        data = self.create_test_data(num_tiles=number_of_tiles, branchiness=1, curviness=1, loopiness=1)
+
+        path = json.loads(data['path'])
+        destinations = json.loads(data['destinations'])
+        origin = json.loads(data['origin'])
+        decor = data['decor']
+
+        self.check_if_valid(origin, destinations, path, decor)
+
+        end_node_count = 0
+        t_junction_node_count = 0
+
+        for node in path:
+            if len(node['connectedNodes']) == 1:
+                end_node_count += 1
+
+            if len(node['connectedNodes']) > 2:
+                t_junction_node_count += 1
+
+        # Test if some loops
+        self.assertTrue(end_node_count <= t_junction_node_count)
 
     def test_traffic_light_no(self):
         """ Test that traffic lights don't get generated """
