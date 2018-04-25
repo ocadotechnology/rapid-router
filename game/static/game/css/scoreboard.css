@@ -123,8 +123,14 @@ table tbody td {
 }
 
 #scoreboardForm .select-list li {
-	margin: 1rem;
+	display: flex;
+}
+
+#scoreboardForm .select-list li label {
+	margin: 0.1rem 0;
 	padding: 1rem;
 	vertical-align: center;
 	background-color: #ccc;
+	width: 100%;
+	text-align: left;
 }

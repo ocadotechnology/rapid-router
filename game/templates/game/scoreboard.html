@@ -3,6 +3,7 @@
 {% load static %}
 {% load i18n %}
 {% load l10n %}
+{% load game.utils %}
 
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
 
@@ -15,6 +16,7 @@
   <script src="{% static 'game/js/pqselect.min.js' %}"></script>
   <script src="{% static 'game/js/jquery.outerhtml.js' %}"></script>
   <script src="{% static 'game/js/jquery.ui.multiprogressbar.js' %}"></script>
+  <script src="{% static 'game/js/scoreboard.js' %}"></script>
   <script>
     $(document).ready(function() {
         // Initialise progress values for each progress bar
@@ -96,17 +98,45 @@
             <div class="col-sm-6">
                 <h4>Select Classes</h4>
                 <div class="select-list">
-                    <div class="">
-                        {{form.classes}}
-                    </div>
+                    <ul class="">
+                        <li>
+                            <label for="id_classes_select_all">
+                                <input id="id_classes_select_all" type="checkbox">
+                                Select all Classes
+                            </label>
+                        </li>
+                        {% for c in form.classes %}
+                        <li>
+                            {{ c }}
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
             <div class="col-sm-6">
                 <h4>Select Levels</h4>
                 <div class="select-list">
-                    <div class="">
-                        {{form.levels}}
-                    </div>
+                    <ul class="">
+                        <li>
+                            <label for="id_levels_select_all">
+                                <input id="id_levels_select_all" type="checkbox">
+                                Select all Levels
+                            </label>
+                        </li>
+                        {% for c in form.levels %}
+                        {% if forloop.counter in ep %}
+                        <li>
+                            <label for="ep_{{ forloop.counter }}">
+                                <input id="ep_{{ forloop.counter }}" type="checkbox">
+                                {{ ep|get_item:forloop.counter }}
+                            </label>
+                        </li>
+                        {% endif %}
+                        <li>
+                            {{ c }}
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>
