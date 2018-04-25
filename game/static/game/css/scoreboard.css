@@ -128,9 +128,33 @@ table tbody td {
 
 #scoreboardForm .select-list li label {
 	margin: 0.1rem 0;
-	padding: 1rem;
 	vertical-align: center;
-	background-color: #ccc;
 	width: 100%;
 	text-align: left;
+}
+
+#scoreboardForm .level {
+	margin-left: 5rem;
+	background-color: #ccc;
+	padding: 1rem;
+}
+
+#scoreboardForm .all-level {
+	background-color: #6c696c;
+	padding: 1rem;
+}
+
+#scoreboardForm .class {
+	background-color: #ccc;
+	padding: 1rem;
+}
+
+#scoreboardForm .all-class {
+	background-color: #6c696c;
+	padding: 1rem;
+}
+
+#scoreboardForm .episode {
+	background-color: #d2e6ed;
+	padding: 1rem;
 }

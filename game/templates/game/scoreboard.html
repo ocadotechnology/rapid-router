@@ -98,15 +98,15 @@
             <div class="col-sm-6">
                 <h4>Select Classes</h4>
                 <div class="select-list">
-                    <ul class="">
-                        <li>
+                    <ul class="scoreboard-list-class">
+                        <li class="all-class">
                             <label for="id_classes_select_all">
                                 <input id="id_classes_select_all" type="checkbox">
                                 Select all Classes
                             </label>
                         </li>
                         {% for c in form.classes %}
-                        <li>
+                        <li class="class">
                             {{ c }}
                         </li>
                         {% endfor %}
@@ -116,8 +116,8 @@
             <div class="col-sm-6">
                 <h4>Select Levels</h4>
                 <div class="select-list">
-                    <ul class="">
-                        <li>
+                    <ul class="scoreboard-list-level">
+                        <li class="all-level">
                             <label for="id_levels_select_all">
                                 <input id="id_levels_select_all" type="checkbox">
                                 Select all Levels
@@ -125,14 +125,17 @@
                         </li>
                         {% for c in form.levels %}
                         {% if forloop.counter in ep %}
-                        <li>
+                        {% with e=ep|get_item:forloop.counter %}
+                        <li class="episode" data-first="{{ e.first_level }}" data-last="{{ e.last_level }}">
                             <label for="ep_{{ forloop.counter }}">
                                 <input id="ep_{{ forloop.counter }}" type="checkbox">
-                                {{ ep|get_item:forloop.counter }}
+                                {{ e.name }}
                             </label>
+                            <span class="expender">V</span>
                         </li>
+                        {% endwith %}
                         {% endif %}
-                        <li>
+                        <li class="level level-{{ forloop.counter }}">
                             {{ c }}
                         </li>
                         {% endfor %}

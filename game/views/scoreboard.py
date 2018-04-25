@@ -122,7 +122,11 @@ def scoreboard_view(request, form, student_data, headers):
     episodes = level_selection.fetch_episode_data_from_database(False)
     ep = {}
     for e in episodes:
-        ep[e['first_level']] = e['name'] + ' -- Levels ' + str(e['first_level']) + ' - ' + str(e['last_level'])
+        ep[e['first_level']] = {
+            'name': e['name'] + ' -- Levels ' + str(e['first_level']) + ' - ' + str(e['last_level']),
+            'first_level': str(e['first_level']),
+            'last_level': str(e['last_level']),
+            }
     context = RequestContext(request, {
         'form': form,
         'student_data': student_data,
