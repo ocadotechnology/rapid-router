@@ -18,6 +18,14 @@
 ## To use the app
 Go to the official [Code For Life website][c4l].
 
+## To run localy with Docker
+
+* Install Docker https://www.docker.com/
+
+* Run `docker-compose up`
+
+* Navigate to http://localhost:8000
+
 ## To run the app locally
 
 * Install prerequisites. E.g. on Ubuntu / Linux Mint:
