@@ -54,9 +54,12 @@ var DEFAULT_CHARACTER_HEIGHT = 20;
 var COW_WIDTH = 50;
 var COW_HEIGHT = 50;
 
-var zoom = 0;
+let zoom = 2;
 
-ocargo.Drawing = function (startingPosition) {
+var gameElement = document.getElementById('paper');
+
+
+ocargo.Drawing = function(startingPosition) {
 
     /*************/
     /* Constants */
@@ -92,20 +95,51 @@ ocargo.Drawing = function (startingPosition) {
     }
 
 
-    paper.setViewBox(0, 0, EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
+    var currentWidth = PAPER_WIDTH;
+    var currentHeight = PAPER_HEIGHT;
+    var currentStartX = 0;
+    var currentStartY = 0;
+
+    var translateX = 0;
+    var translateY = 0;
+
+    paper.setViewBox(currentStartX, currentStartY, EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
 
     function wheel(event) {
-        console.log('making it smaller');
-        let value = 5;
+      //  let value = 5;
 
-        paper.setViewBox(0, 0, EXTENDED_PAPER_WIDTH - zoom, EXTENDED_PAPER_HEIGHT - zoom);
         if (event.deltaY < 0) {
-            zoom += value;
+            let newX = currentStartX - zoom;
+            let newY = currentStartY - zoom;
+    
+            currentHeight = currentHeight + zoom * 2;
+            currentWidth = currentWidth + zoom * 2;
+    
+            paper.setViewBox(newX, newY, currentWidth, currentHeight);
+    
+    
+            currentStartX = newX;
+            currentStartY = newY
         }
         else {
-            zoom -= value;  
+            let newX = currentStartX + zoom;
+            let newY = currentStartY + zoom;
+    
+            currentHeight = currentHeight - zoom * 2;
+            currentWidth = currentWidth - zoom * 2;
+    
+            paper.setViewBox(newX, newY, currentWidth, currentHeight);
+    
+    
+            currentStartX = newX;
+            currentStartY = newY
         }
+        
+       
+       
     }
+    
+    var flag = 0;
 
     if (window.addEventListener)
         /** DOMMouseScroll is for mozilla. */
@@ -113,78 +147,39 @@ ocargo.Drawing = function (startingPosition) {
 
     window.onmousewheel = document.onmousewheel = wheel;
 
+    var currentMousePos = { x: -1, y: -1 };
 
-    // var viewBoxWidth = paper.width;
-    // var viewBoxHeight = paper.height;
-    // var canvasID = "#paper";
-    // var startX, startY;
-    // var mousedown = false;
-    // var dX, dY;
-    // var oX = 0, oY = 0, oWidth = viewBoxWidth, oHeight = viewBoxHeight;
-    // var viewBox = paper.setViewBox(oX, oY, viewBoxWidth, viewBoxHeight);
-    // viewBox.X = oX;
-    // viewBox.Y = oY;
-    // var vB = paper.rect(viewBox.X, viewBox.Y, viewBoxWidth, viewBoxHeight);
+    var isMouseDown = false;
+    var prevX = 0;
+    var prevY = 0;
 
-    // function handle(delta) {
-    //     vBHo = viewBoxHeight;
-    //     vBWo = viewBoxWidth;
-    //     if (delta < 0) {
-    //         viewBoxWidth *= 0.95;
-    //         viewBoxHeight *= 0.95;
-    //     } else {
-    //         viewBoxWidth *= 1.05;
-    //         viewBoxHeight *= 1.05;
-    //     }
-    //     /*
-    //       vB.attr({
-    //         x: viewBox.X,
-    //         y: viewBox.Y,
-    //         width: viewBoxWidth,
-    //         height: viewBoxHeight
-    //       });
-    //     */
-    //     viewBox.X -= (viewBoxWidth - vBWo) / 2;
-    //     viewBox.Y -= (viewBoxHeight - vBHo) / 2;
-    //     paper.setViewBox(viewBox.X, viewBox.Y, viewBoxWidth, viewBoxHeight);
-    // }
+    var curX = 0;
+    var curY = 0;
 
-    // function wheel(event) {
-    //     var delta = 0;
-    //     if (!event) { /* For IE. */
-    //         event = window.event;
-    //     }
-    //     if (event.wheelDelta) { /* IE/Opera. */
-    //         delta = event.wheelDelta / 120;
-    //     } else if (event.detail) { /** Mozilla case. */
-    //         /** In Mozilla, sign of delta is different than in IE.
-    //          * Also, delta is multiple of 3.
-    //          */
-    //         delta = -event.detail / 3;
-    //     }
-    //     /** If delta is nonzero, handle it.
-    //      * Basically, delta is now positive if wheel was scrolled up,
-    //      * and negative, if wheel was scrolled down.
-    //      */
-    //     if (delta) {
-    //         handle(delta);
-    //     }
-    //     /** Prevent default actions caused by mouse wheel.
-    //      * That might be ugly, but we handle scrolls somehow
-    //      * anyway, so don't bother here..
-    //      */
-    //     if (event.preventDefault) {
-    //         event.preventDefault();
-    //     }
-    //     event.returnValue = false;
-    // }
 
-    // if (window.addEventListener)
-    //     /** DOMMouseScroll is for mozilla. */
-    //     window.addEventListener('DOMMouseScroll', wheel, false);
-    // /** IE/Opera. */
-    // window.onmousewheel = document.onmousewheel = wheel;
+    $(document).mousedown(function(event) {
+        isMouseDown = true;
+    });
 
+    $(document).mouseup(function(event) {
+        isMouseDown = false;
+    });
+
+    $(document).mousemove(function(event) {
+        prevX = currentMousePos.x;
+        prevY = currentMousePos.y;
+        currentMousePos.x = event.pageX;
+        currentMousePos.y = event.pageY;
+
+
+        if(isMouseDown) {
+            var deltaX = prevX - currentMousePos.x
+            var deltaY = prevY - currentMousePos.y
+            currentStartX = currentStartX + deltaX;
+            currentStartY = currentStartY + deltaY;
+            paper.setViewBox(currentStartX, currentStartY, currentWidth, currentHeight);
+        }
+    });
 
     this.reset = function () {
         character.reset();
