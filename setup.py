@@ -3,6 +3,7 @@ from setuptools import find_packages, setup
 import versioneer
 
 setup(name='rapid-router',
+    version='1.1'
     cmdclass=versioneer.get_cmdclass(),
     packages=find_packages(),
     include_package_data=True,
