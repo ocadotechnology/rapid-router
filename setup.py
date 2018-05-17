@@ -29,6 +29,6 @@ setup(name='rapid-router',
         'selenium==3.7.0',
     ],
     test_suite='setuptest.setuptest.SetupTestSuite',
-    version=versioneer.get_version(),
+    # version=versioneer.get_version(),
     zip_safe=False,
 )
