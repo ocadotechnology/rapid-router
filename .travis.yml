@@ -41,8 +41,9 @@ matrix:
 before_install:
   - gem install sass -v 3.3.4
 install:
+  - pip install -U setuptools
   - pip install -e .
-  - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
+  - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git@beta_users#egg=codeforlife-portal #TODO: Remove as part of #688
   - pip install coveralls
   - pip install crowdin-cli-py
 before_script:
