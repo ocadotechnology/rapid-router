@@ -54,12 +54,14 @@ var DEFAULT_CHARACTER_HEIGHT = 20;
 var COW_WIDTH = 50;
 var COW_HEIGHT = 50;
 
-let zoom = 2;
+let zoom = 15;
 
 var gameElement = document.getElementById('paper');
 
+var evCache = new Array();
+var prevDiff = -1;
 
-ocargo.Drawing = function(startingPosition) {
+ocargo.Drawing = function (startingPosition) {
 
     /*************/
     /* Constants */
@@ -105,47 +107,55 @@ ocargo.Drawing = function(startingPosition) {
 
     paper.setViewBox(currentStartX, currentStartY, EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
 
-    function wheel(event) {
-      //  let value = 5;
+    // function wheel(event) {
+    function wheel(zoomIn) {
+        //  let value = 5;
 
-        if (event.deltaY < 0) {
+        if (zoomIn) {
             let newX = currentStartX - zoom;
             let newY = currentStartY - zoom;
-    
+
             currentHeight = currentHeight + zoom * 2;
             currentWidth = currentWidth + zoom * 2;
-    
+
             paper.setViewBox(newX, newY, currentWidth, currentHeight);
-    
-    
+
+
             currentStartX = newX;
             currentStartY = newY
         }
         else {
             let newX = currentStartX + zoom;
             let newY = currentStartY + zoom;
-    
+
             currentHeight = currentHeight - zoom * 2;
             currentWidth = currentWidth - zoom * 2;
-    
+
             paper.setViewBox(newX, newY, currentWidth, currentHeight);
-    
-    
+
+
             currentStartX = newX;
             currentStartY = newY
         }
-        
-       
-       
+
+
+
     }
-    
+
     var flag = 0;
 
-    if (window.addEventListener)
-        /** DOMMouseScroll is for mozilla. */
-        window.addEventListener('DOMMouseScroll', wheel, false);
+    // if (window.addEventListener)
+    //     /** DOMMouseScroll is for mozilla. */
+    //     window.addEventListener('DOMMouseScroll', wheel, false);
 
-    window.onmousewheel = document.onmousewheel = wheel;
+    // window.onmousewheel = document.onmousewheel = wheel;
+    
+    $('#zoomIn').click(function (){
+        wheel(false);
+    });
+    $('#zoomOut').click(function (){
+        wheel(true);
+    });
 
     var currentMousePos = { x: -1, y: -1 };
 
@@ -157,22 +167,22 @@ ocargo.Drawing = function(startingPosition) {
     var curY = 0;
 
 
-    $(document).mousedown(function(event) {
+    $(document).mousedown(function (event) {
         isMouseDown = true;
     });
 
-    $(document).mouseup(function(event) {
+    $(document).mouseup(function (event) {
         isMouseDown = false;
     });
 
-    $(document).mousemove(function(event) {
+    $(document).mousemove(function (event) {
         prevX = currentMousePos.x;
         prevY = currentMousePos.y;
         currentMousePos.x = event.pageX;
         currentMousePos.y = event.pageY;
 
 
-        if(isMouseDown) {
+        if (isMouseDown) {
             var deltaX = prevX - currentMousePos.x
             var deltaY = prevY - currentMousePos.y
             currentStartX = currentStartX + deltaX;

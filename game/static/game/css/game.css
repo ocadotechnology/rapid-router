@@ -324,3 +324,23 @@ identified as the original program.
 .blocklyWidgetDiv {
     line-height: 1;
 }
+
+#zoom_pan {
+    right: 10%;
+    position: absolute;
+    height: 100px;
+    z-index: 7;
+    bottom: 10px;
+}
+
+#zoomOut {
+    left: 10px;
+    bottom: 0px;
+    background-image : url('/static/game/image/actions/left.svg');
+}
+
+#zoomIn {
+    left: 70px;
+    bottom: 0px;
+    background-image : url('/static/game/image/actions/right.svg');
+}
