@@ -18,6 +18,14 @@
 ## To use the app
 Go to the official [Code For Life website][c4l].
 
+## To run localy with Docker
+
+* Install Docker https://www.docker.com/
+
+* Run `docker-compose up`
+
+* Navigate to http://localhost:8000
+
 ## To run the app locally
 
 * Install prerequisites. E.g. on Ubuntu / Linux Mint:
@@ -25,8 +33,8 @@ Go to the official [Code For Life website][c4l].
     * `sudo apt-get install python-dev python-pip`
     * `sudo pip install virtualenvwrapper`
     * `sudo apt-get install libxml2-dev libxslt1-dev zlib1g-dev gettext`
-    * `sudo apt-get install ruby2.0` - still Ruby 1.9 hiding under `ruby` command.
-    * `sudo gem install sass -v 3.3.4` - later versions incompatible with Ruby 1.9 (see above).
+    * `sudo apt-get install ruby2.0`
+    * `sudo gem install sass -v 3.3.4` - tested to work with Ruby >1.9 and <2.3.6
 
 * Clone the repo: `https://github.com/ocadotechnology/rapid-router.git`. Fork it first if you want to contribute, and work on a separate branch for your work.
 * Make and activate a virtualenv
