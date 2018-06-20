@@ -336,11 +336,11 @@ identified as the original program.
 #zoomOut {
     left: 10px;
     bottom: 0px;
-    background-image : url('/static/game/image/actions/left.svg');
+    background-image : url('/static/game/image/actions/btn_zoom_out.svg');
 }
 
 #zoomIn {
     left: 70px;
     bottom: 0px;
-    background-image : url('/static/game/image/actions/right.svg');
+    background-image : url('/static/game/image/actions/btn_zoom_in.svg');
 }
