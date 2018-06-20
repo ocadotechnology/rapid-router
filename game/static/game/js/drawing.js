@@ -103,6 +103,9 @@ ocargo.Drawing = function (startingPosition) {
 
     paper.setViewBox(currentStartX, currentStartY, EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
 
+    /**
+     * Zooming
+     */
     function zoomMap(shouldZoomOut) {
 
         if (shouldZoomOut) {
@@ -140,6 +143,9 @@ ocargo.Drawing = function (startingPosition) {
         zoomMap(true);
     });
 
+    /**
+     * Map moving
+     */
     var currentMousePos = { x: -1, y: -1 };
 
     var isMouseDown = false;
