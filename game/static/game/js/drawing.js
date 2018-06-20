@@ -61,6 +61,11 @@ var gameElement = document.getElementById('paper');
 var evCache = new Array();
 var prevDiff = -1;
 
+var currentWidth = PAPER_WIDTH;
+var currentHeight = PAPER_HEIGHT;
+var currentStartX = 0;
+var currentStartY = 0;
+
 ocargo.Drawing = function (startingPosition) {
 
     /*************/
@@ -96,22 +101,11 @@ ocargo.Drawing = function (startingPosition) {
             characterWidth, characterHeight, startingPosition, NIGHT_MODE);
     }
 
-
-    var currentWidth = PAPER_WIDTH;
-    var currentHeight = PAPER_HEIGHT;
-    var currentStartX = 0;
-    var currentStartY = 0;
-
-    var translateX = 0;
-    var translateY = 0;
-
     paper.setViewBox(currentStartX, currentStartY, EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
 
-    // function wheel(event) {
-    function wheel(zoomIn) {
-        //  let value = 5;
+    function zoomMap(shouldZoomOut) {
 
-        if (zoomIn) {
+        if (shouldZoomOut) {
             let newX = currentStartX - zoom;
             let newY = currentStartY - zoom;
 
@@ -119,7 +113,6 @@ ocargo.Drawing = function (startingPosition) {
             currentWidth = currentWidth + zoom * 2;
 
             paper.setViewBox(newX, newY, currentWidth, currentHeight);
-
 
             currentStartX = newX;
             currentStartY = newY
@@ -133,28 +126,18 @@ ocargo.Drawing = function (startingPosition) {
 
             paper.setViewBox(newX, newY, currentWidth, currentHeight);
 
-
             currentStartX = newX;
             currentStartY = newY
         }
-
-
-
     }
 
     var flag = 0;
 
-    // if (window.addEventListener)
-    //     /** DOMMouseScroll is for mozilla. */
-    //     window.addEventListener('DOMMouseScroll', wheel, false);
-
-    // window.onmousewheel = document.onmousewheel = wheel;
-    
-    $('#zoomIn').click(function (){
-        wheel(false);
+    $('#zoomIn').click(function () {
+        zoomMap(false);
     });
-    $('#zoomOut').click(function (){
-        wheel(true);
+    $('#zoomOut').click(function () {
+        zoomMap(true);
     });
 
     var currentMousePos = { x: -1, y: -1 };
