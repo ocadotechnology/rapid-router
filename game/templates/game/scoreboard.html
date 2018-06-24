@@ -81,28 +81,24 @@
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
-<b><a href="{% url 'game.views.scoreboard.scoreboard' %}">{% trans "Scoreboard" %}</a></b>
+<a class="button button--regular button--secondary button--secondary" style="background-color: white; color: #0c52a3;" href="{% url 'game.views.scoreboard.scoreboard' %}">{% trans "Scoreboard" %}</a>
 {% endblock nav_ocargo_scoreboard %}
 
 {% block content %}
 <div class="container">
+    <h1 class="text-center">{% trans "Scoreboard" %}</h1>
 
     <form action="" method="post" id="scoreboardForm">
         {% csrf_token %}
         <div class="row">
-            <div class="col-sm-12">
-                <h3>{% trans "Scoreboard" %}</h3>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-sm-6">
-                <h4>Select Classes</h4>
+                <h4>{% trans "Select Classes" %}</h4>
                 <div class="select-list">
                     <ul class="scoreboard-list-class">
                         <li class="all-class">
-                            <label for="id_classes_select_all">
+                            <label for="id_classes_select_all" class="inverse">
                                 <input id="id_classes_select_all" type="checkbox">
-                                Select all Classes
+                                {% trans "Select all Classes" %}
                             </label>
                         </li>
                         {% for c in form.classes %}
@@ -114,13 +110,13 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <h4>Select Levels</h4>
+                <h4>{% trans "Select Levels" %}</h4>
                 <div class="select-list">
                     <ul class="scoreboard-list-level">
                         <li class="all-level">
                             <label for="id_levels_select_all">
                                 <input id="id_levels_select_all" type="checkbox">
-                                Select all Levels
+                                {% trans "Select all Levels" %}
                             </label>
                         </li>
                         {% for c in form.levels %}
@@ -144,9 +140,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-cm-12">
-              <button class="btn btn-primary" type="submit" name="view">{% trans "View" %}</button>
-              <button class="btn btn-primary" type="submit" name="export">{% trans "Export" %}</button>
+            <div class="col-sm-6 text-right">
+                <button class="button--regular button--primary--general-play" type="submit" name="export">{% trans "Export results" %}</button>
+            </div>
+            <div class="col-sm-6 text-left">
+                <button class="button--regular button--primary--general-educate" type="submit" name="view">{% trans "View results" %}</button>
             </div>
         </div>
     </form>
