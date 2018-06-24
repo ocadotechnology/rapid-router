@@ -103,9 +103,9 @@ class LevelModerationForm(forms.Form):
         self.fields['classes'] = forms.ModelChoiceField(queryset=classes,
                                                         required=True,
                                                         widget=forms.Select(
-                                                            attrs={'class': 'wide'}))
+                                                            attrs={'class': 'form-control'}))
         self.fields['students'] = forms.CharField(required=False,
-                                                  widget=forms.Select(attrs={'class': 'wide'}))
+                                                  widget=forms.Select(attrs={'class': 'form-control'}))
 
         def validate(self):
             cleaned_data = super(LevelModerationForm, self).clean()

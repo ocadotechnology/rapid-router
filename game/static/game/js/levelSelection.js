@@ -41,16 +41,6 @@ $(function() {
     minOpacity = 0.1;
     maxOpacity = 0.7;
     numEpisodes = normalEpisodes.length;
-    background = $('body').css('background-color');
-    bg = {'r':236, 'g':234, 'b':238};
-    baseColor = {'r': 99, 'g':119, 'b': 0};
-    for (var i=0; i < numEpisodes; i++) {
-      	opacity = minOpacity + i*(maxOpacity - minOpacity)/numEpisodes;
-      	var color = {'r':baseColor.r, 'g':baseColor.g, 'b':baseColor.b, 'a':opacity};
-      	combinedColor = combineColors(bg, color);
-      	var newRGB = 'rgb('+Math.floor(combinedColor.r).toString()+', '+Math.floor(combinedColor.g).toString()+', '+Math.floor(combinedColor.b).toString()+')';
-      	normalEpisodes[i].style.background = newRGB;
-    }
 
     setupCoins();
 });
@@ -72,7 +62,7 @@ function setupCoins() {
         var episodeToOpen;
         for(var j = 0; j < episode.levels.length; j++) {
             var level = episode.levels[j];
-            
+
             imageStr = getImageStr(level.score, level.maxScore);
             if(imageStr !== '') {
                 $('.level_image.coin_image[value=' + level.name + ']').attr('src', imageStr);
