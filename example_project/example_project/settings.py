@@ -38,7 +38,15 @@
 import os
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'OPTIONS': {
+            'debug': DEBUG,
+        },
+    },
+]
 
 DATABASES = {
     'default': {
