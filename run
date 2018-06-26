@@ -16,7 +16,8 @@ while [ "$1" != "" ]; do
 done
 
 pip install -e .
-pip install 'codeforlife-portal >= 1.0.0.post.dev1' # TODO: Remove this requirement (#688)
+pip install git+https://github.com/mrniket/codeforlife-portal.git@pipenv # TODO: remove once portal is upgraded to 1.9
+# pip install 'codeforlife-portal >= 1.0.0.post.dev1' # TODO: Remove this requirement (#688)
 ./example_project/manage.py migrate --noinput
 
 # Translation/Localisation
