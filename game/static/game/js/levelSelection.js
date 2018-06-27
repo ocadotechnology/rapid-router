@@ -45,15 +45,6 @@ $(function() {
     setupCoins();
 });
 
-function combineColors(bg, color)
-{
-    var a = color.a;
-
-    return {'r': (1 - a) * bg.r + a * color.r,
-	        'g': (1 - a) * bg.g + a * color.g,
-		    'b': (1 - a) * bg.b + a * color.b};
-}
-
 function setupCoins() {
     for(var i = 0; i < EPISODES.length; i++) {
         var episode = EPISODES[i];
