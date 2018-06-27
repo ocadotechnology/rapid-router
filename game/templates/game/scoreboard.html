@@ -127,7 +127,7 @@
                                 <input id="ep_{{ forloop.counter }}" type="checkbox">
                                 {{ e.name }}
                             </label>
-                            <span class="expender">V</span>
+                            <span class="expender glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
                         </li>
                         {% endwith %}
                         {% endif %}
@@ -151,7 +151,7 @@
 
 </div>
 
-<div class="mainBody">
+<div class="container mainBody">
   <div class="tableWrapper" id="tableWrapper">
     {% if student_data %}
     <table id="scoreboardTable" class="display cell-border wide">

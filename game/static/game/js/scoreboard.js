@@ -35,14 +35,18 @@
  program; modified versions of the program must be marked as such and not
  identified as the original program.
  */
+$(':checkbox').on('change', function() {
+    $(this).closest('li').toggleClass('checked', $(this).is(':checked'))
+})
+
 $('.all-class > label').on('change', function() {
     var check = $(this).find('input').is(':checked')
-    $(this).closest('ul').find(':checkbox').prop('checked', check)
+    $(this).closest('ul').find(':checkbox').prop('checked', check).closest('li').toggleClass('checked', check)
 })
 
 $('.all-level').on('change', function(e) {
     var check = $(this).find('input').is(':checked')
-    $(this).closest('ul').find(':checkbox').prop('checked', check)
+    $(this).closest('ul').find(':checkbox').prop('checked', check).closest('li').toggleClass('checked', check)
 })
 
 $('.episode').on('change', function(e) {
@@ -50,6 +54,20 @@ $('.episode').on('change', function(e) {
     var first = $(this).attr('data-first')
     var last = $(this).attr('data-last')
     for (var i = first; i <= last; i++) {
-        $('.level-'+i).find(':checkbox').prop('checked', check)
+        $('.level-'+i).find(':checkbox').prop('checked', check).closest('li').toggleClass('checked', check)
+    }
+})
+
+$('.expender').on('click', function(e) {
+    var el = $(this).closest('li')
+    var first = el.attr('data-first')
+    var last = el.attr('data-last')
+    if ($('.level-'+first).is(':visible')) {
+        el.find('span').switchClass('glyphicon-triangle-bottom', 'glyphicon-triangle-left')
+    } else {
+        el.find('span').switchClass('glyphicon-triangle-left', 'glyphicon-triangle-bottom')
+    }
+    for (var i = first; i <= last; i++) {
+        $('.level-'+i).toggle('blind')
     }
 })

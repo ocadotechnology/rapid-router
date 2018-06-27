@@ -190,3 +190,7 @@ table tbody td {
 #scoreboardForm .level.checked {
 	background-color: #ccc;
 }
+
+#scoreboardForm .expender {
+	color: #000;
+}
