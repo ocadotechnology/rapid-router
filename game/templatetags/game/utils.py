@@ -52,3 +52,8 @@ def booltojs(var):
         return "true"
     else:
         return "false"
+
+
+@register.filter
+def get_item(value, arg):
+    return value.get(arg)
