@@ -1,27 +1,26 @@
 {% extends 'game/base.html' %}
-
 {% load static %}
 {% load i18n %}
 
 {% block title %}Code for Life - Rapid Router - Level moderation{% endblock %}
 
 {% block scripts %}
-  {{block.super}}
-  <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/level_moderation.js' %}"></script>
-  <script type='text/javascript' src='{% static 'game/js/foundation/vendor/jquery.cookie.js' %}'></script>
-  <script>
+{{block.super}}
+<script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
+<script type="text/javascript" src="{% static 'game/js/level_moderation.js' %}"></script>
+<script type="text/javascript" src="{% static 'game/js/foundation/vendor/jquery.cookie.js' %}"></script>
+<script>
     $(document).ready(function() {
         $("#table").tablesorter();
 
-        $('#id_classes').change(function(){
+        $('#id_classes').change(function() {
             class_id = $(this).val();
             $.ajax({
                 url: Urls.students_for_level_moderation(class_id),
                 type: 'GET',
                 dataType: 'json',
-                success: function(studentData){
+                success: function(studentData) {
                     $('#id_students').empty();
 
                     var addStudentOption = function(value, text) {
@@ -39,100 +38,99 @@
                         addStudentOption(student, studentData[student])
                     }
 
-                    {% if student_id %}
-                      $('#id_students').val({{student_id}});
-                    {% endif %}
+                    { %
+                        if student_id %
+                    }
+                    $('#id_students').val({
+                        {
+                            student_id
+                        }
+                    }); { % endif %
+                    }
                 }
             });
             return false;
         });
 
-        {% if students %}
-          $('#id_classes').change();
-        {% endif %}
+        { %
+            if students %
+        }
+        $('#id_classes').change(); { % endif %
+        }
     });
-  </script>
+</script>
 {% endblock %}
 
 {% block css %}
 {{block.super}}
-    <link href="{% static 'game/css/level_moderation.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'game/css/level_moderation.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block nav_ocargo_moderate %}
-<b><a href="{% url 'game.views.level_moderation.level_moderation' %}">{% trans "Moderate" %}</a></b>
+<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #0c52a3;" href="{% url 'game.views.level_moderation.level_moderation' %}">{% trans "Moderate" %}</a>
 {% endblock nav_ocargo_moderate %}
 
 {% block content %}
-<h1>{% trans "Level moderation" %}</h1><br>
-<div class='span_3_of_3'>
-  <div class='login-card'>
-    <h3>{% trans "Filter levels" %}</h3><br>
-    <p>{% trans "Filter the levels by class and student, and click 'Submit' to see the student's levels." %}</p>
-    <div id="form" class="form">
-    <form action="" method="post" id="levelModerationForm">
-      {% csrf_token %}
-      <div class='section group'>
-        <div class='col span_1_of_3_strict'>
-          <div class='section group'>
-            <label> {% trans "Class:" %} </label>
-            <span>
-              {{form.classes.errors}}
-              {{form.classes}}
-            </span>
-          </div>
-        </div>
-        <div class='col span_1_of_3_strict'>
-          <div class='section group'>
-            <div class='label'>
-              <label> {% trans "Student:" %} </label>
-              <span>
-                {{form.students.errors}}
-                {{form.students}}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class='col span_1_of_3_strict'>
-          <button class='btn btn-primary wide' type="submit">{% trans "Submit" %}</button>
-        </div>
-      </div>
-    </form>
-    </div>
-  </div>
+<div class="container">
+    <h1 class="text-center">{% trans "Level moderation" %}</h1>
 </div>
-<br>
+<div class="background background--primary">
+    <div class="container">
+        <div class="login-card">
+            <h3>{% trans "Filter levels" %}</h3>
+            <p>{% trans "Filter the levels by class and student, and click 'Submit' to see the student's levels." %}</p>
+            <div id="form" class="form">
+                <form action="" method="post" id="levelModerationForm" class="form-row">
+                    {% csrf_token %}
+                    <div class="form-group col-md-6">
+                        <label> {% trans "Class:" %} </label>
+                        {{form.classes}}
+                        {{form.classes.errors}}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label> {% trans "Student:" %} </label>
+                        {{form.students}}
+                        {{form.students.errors}}
+                    </div>
+                    <div class="form-group col-md-12 text-right">
+                        <button class="btn btn-primary" type="submit">{% trans "Submit" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-<div class="mainBody">
+    <div class="mainBody container">
 
-{% if levelData %}
-  <div class="tableWrapper">
-    {% if thead %}
-    <table id="" class="CSSTable wide alternate smaller">
-      <tr>
-      {% for header in thead %}
-        <th> {{header}} </th>
-      {% endfor %}
-      </tr>
+        {% if levelData %}
+        <div class="tableWrapper">
+            {% if thead %}
+            <table id="" class="CSSTable wide alternate smaller">
+                <tr>
+                    {% for header in thead %}
+                    <th> {{header}} </th>
+                    {% endfor %}
+                </tr>
 
-      {% for level in levelData %}
-      <tr>
-          <td> {{level.student}} </td>
-          <td> {{level.name}} </td>
-          <td> {{level.shared_with}} </td>
-          <td> <button value={{level.id}} class="btn btn-default btn-small play">{% trans "Play" %}</button> </td>
-          <td> <button value={{level.id}} class="btn btn-danger btn-small delete">{% trans "Delete" %}</button> </td>
-        </tr>
-      {% endfor %}
-    </table>
-    {% endif %}
-  </div>
-{% else %}
-  {% if thead %}
-    <p>{% trans "No levels found." %}</p>
-  {% else %}
-    <p>{% trans "Select a class and student to view their created levels." %}</p>
-  {% endif %}
-{% endif %}
+                {% for level in levelData %}
+                <tr>
+                    <td> {{level.student}} </td>
+                    <td> {{level.name}} </td>
+                    <td> {{level.shared_with}} </td>
+                    <td> <button value={{level.id}} class="btn btn-default btn-small play">{% trans "Play" %}</button> </td>
+                    <td> <button value={{level.id}} class="btn btn-danger btn-small delete">{% trans "Delete" %}</button> </td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        {% else %}
+            {% if thead %}
+            <p>{% trans "No levels found." %}</p>
+            {% else %}
+            <p>{% trans "Select a class and student to view their created levels." %}</p>
+            {% endif %}
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

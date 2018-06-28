@@ -6,52 +6,47 @@
 
 {% block scripts %}
 {{block.super}}
-  <script>
-  var EPISODES = [];
-  {% for episode in episodeData %}
-    var levels = [];
-    {% for level in episode.levels %}
-      levels.push({'name': {{level.name}},
-                   'score': '{{level.score}}',
-                   'maxScore': {{level.maxScore}}});
+<script>
+    var EPISODES = [];
+    {% for episode in episodeData %}
+        var levels = [];
+        {% for level in episode.levels %}
+        levels.push({
+            'name': {{level.name}},
+            'score': '{{level.score}}',
+            'maxScore': {{level.maxScore}}
+        });
+        {% endfor %}
+        EPISODES.push({'id' : {{episode.id}}, 'levels': levels});
     {% endfor %}
-    EPISODES.push({'id' : {{episode.id}},
-            'levels': levels});
-  {% endfor %}
 
-  var OTHER_LEVELS = [];
-  {% for level in owned_levels %}
-    OTHER_LEVELS.push({'id': {{level.id}},
-                      'score': '{{level.score}}'});
-  {% endfor %}
-  {% for level in shared_levels %}
-    OTHER_LEVELS.push({'id': {{level.id}},
-                      'score': '{{level.score}}'});
-  {% endfor %}
+    var OTHER_LEVELS = [];
+    {% for level in owned_levels %}
+    OTHER_LEVELS.push({'id': {{level.id}}, 'score': '{{level.score}}'});
+    {% endfor %}
+    {% for level in shared_levels %}
+    OTHER_LEVELS.push({'id': {{level.id}}, 'score': '{{level.score}}'});
+    {% endfor %}
+</script>
 
-  </script>
-
-  <script src="{% static "game/js/levelSelection.js" %}"></script>
+<script src="{% static "game/js/levelSelection.js" %}"></script>
 {% endblock %}
 
 {% block css %}
 {{block.super}}
-  <link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block nav_ocargo_levels %}
-  <b><a href="{% url 'game.views.level_selection.levels' %}">{% trans "Levels" %}</a></b>
+<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #0c52a3;" href="{% url 'game.views.level_selection.levels' %}">{% trans "Levels" %}</a>
 {% endblock nav_ocargo_levels %}
 
 {% block content %}
-  <div class="section group">
-    <div class="col span_1_of_3_strict">
-      <img class="wide rounded" src="{% static 'portal/img/RRlogo_on_less_green_small.png' %}" />
-    </div>
-    <div class="col span_2_of_3_strict">
+  <div class="container">
+      <h1 class="text-center">{% trans "Levels" %}</h1>
       <div id="episodes">
         {% for episode in episodeData %}
-        <h3 id='episode{{episode.id}}'>
+        <h3 id="episode{{episode.id}}">
           <div>
             {{episode.name}}
             <span class="episode_range_text">
@@ -66,7 +61,7 @@
           <p>
             <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
             {% if level.score != None %}
-              <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+            <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
             <img class="level_image coin_image" value="{{level.name}}">
             {% endif %}
           </p>
@@ -119,7 +114,6 @@
           </div>
         {% endif %}
       </div>
-      <div id="container"></div>
-    </div>
   </div>
+  <br>
 {% endblock content %}
