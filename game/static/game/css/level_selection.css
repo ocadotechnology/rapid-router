@@ -40,18 +40,17 @@ identified as the original program.
 	background: #0c52a3;
 	margin-bottom: 0;
 	text-align: left;
-	padding: 1rem;
+	padding-left: 10px;
 }
 
 #episodes .customLevelsEpisode {
 	background: #4a4a4a;
-	color: white;
+	color: #fff;
 }
 
 #episodes .episode_range_text {
-	font-size: 10pt;
 	text-align: right;
-	margin-right: 2.2em;
+	margin-right: 1.5em;
 	float: right;
 	width: 98px;
 }

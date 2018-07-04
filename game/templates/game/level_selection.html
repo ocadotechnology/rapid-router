@@ -48,13 +48,15 @@
         {% for episode in episodeData %}
         <div class="panel">
             <div class="panel-header" id="episode-{{episode.id}}">
-                <h4 class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
                     <span class="episode_range_text">
-                        {% blocktrans with first_level=episode.first_level last_level=episode.last_level %}Levels {{first_level}}-{{last_level}}{% endblocktrans %}
+                        <small>
+                            {% blocktrans with first_level=episode.first_level last_level=episode.last_level %}Levels {{first_level}}-{{last_level}}{% endblocktrans %}
+                        </small>
                     </span>
                     <img class="episode_image coin_image" value="{{episode.id}}">
-                </h4>
+                </p>
             </div>
 
             <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
@@ -86,9 +88,9 @@
 
         <div class="panel">
             <div class="panel-header customLevelsEpisode" id="episode-levels-created-by-you">
-                <h4 class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
+                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
                     {% trans "Levels created by you" %}
-                </h4>
+                </p>
             </div>
             <div id="collapse-levels-created-by-you" aria-labelledby="episode-levels-created-by-you" class="collapse">
                 <div class="panel-body">
@@ -111,9 +113,9 @@
 
         <div class="panel">
             <div class="panel-header customLevelsEpisode" id="episode-levels-shared-with-you">
-                <h4 class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
+                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
                     {% trans "Levels shared with you" %}
-                </h4>
+                </p>
             </div>
             <div id="collapse-levels-shared-with-you" aria-labelledby="episode-levels-shared-with-you" class="collapse">
                 <div class="panel-body">
