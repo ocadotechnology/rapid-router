@@ -128,7 +128,7 @@ table tbody td {
 
 #scoreboardForm .select-list li label {
 	margin: 0.1rem 0;
-	vertical-align: center;
+	vertical-align: middle;
 	width: 100%;
 	text-align: left;
 	font-weight: normal;
