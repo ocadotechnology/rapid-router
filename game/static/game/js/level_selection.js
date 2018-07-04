@@ -36,12 +36,6 @@ program; modified versions of the program must be marked as such and not
 identified as the original program.
 */
 $(function() {
-    $('#episodes').accordion({ collapsible: true, heightStyle: "content", active: false });
-    normalEpisodes = $('#episodes').children('h3').not('.customLevelsEpisode');
-    minOpacity = 0.1;
-    maxOpacity = 0.7;
-    numEpisodes = normalEpisodes.length;
-
     setupCoins();
 });
 

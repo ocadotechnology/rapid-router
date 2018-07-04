@@ -29,7 +29,7 @@
     {% endfor %}
 </script>
 
-<script src="{% static "game/js/levelSelection.js" %}"></script>
+<script src="{% static "game/js/level_selection.js" %}"></script>
 {% endblock %}
 
 {% block css %}
@@ -42,78 +42,102 @@
 {% endblock nav_ocargo_levels %}
 
 {% block content %}
-  <div class="container">
-      <h1 class="text-center">{% trans "Levels" %}</h1>
-      <div id="episodes">
+<div class="container">
+    <h1 class="text-center">{% trans "Levels" %}</h1>
+    <div id="episodes">
         {% for episode in episodeData %}
-        <h3 id="episode{{episode.id}}">
-          <div>
-            {{episode.name}}
-            <span class="episode_range_text">
-              {% blocktrans with first_level=episode.first_level last_level=episode.last_level %}Levels {{first_level}}-{{last_level}}{% endblocktrans %}
-            </span>
-            <img class="episode_image coin_image" value="{{episode.id}}">
-          <div>
-        </h3>
-        <div>
-          {% for level in episode.levels %}
-          <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-          <p>
-            <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
-            {% if level.score != None %}
-            <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-            <img class="level_image coin_image" value="{{level.name}}">
-            {% endif %}
-          </p>
-          {% endfor %}
+        <div class="panel">
+            <div class="panel-header" id="episode-{{episode.id}}">
+                <h4 class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                    {{episode.name}}
+                    <span class="episode_range_text">
+                        {% blocktrans with first_level=episode.first_level last_level=episode.last_level %}Levels {{first_level}}-{{last_level}}{% endblocktrans %}
+                    </span>
+                    <img class="episode_image coin_image" value="{{episode.id}}">
+                </h4>
+            </div>
 
-          {% if episode.random_levels_enabled %}
-          <p>
-            <a href="{% url 'game.views.level_selection.random_level_for_episode' episode.id %}">
-            {% trans "Random: Try your hand at a random level." %}
-            </a>
-          </p>
-          {% endif %}
+            <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
+                <div class="panel-body">
+                    {% for level in episode.levels %}
+                    <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+                    <p>
+                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                        {% if level.score != None %}
+                        <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                        <img class="level_image coin_image" value="{{level.name}}">
+                        {% endif %}
+                    </p>
+                    {% endfor %}
+
+                    {% if episode.random_levels_enabled %}
+                    <p>
+                        <a href="{% url 'game.views.level_selection.random_level_for_episode' episode.id %}">
+                        {% trans "Random: Try your hand at a random level." %}
+                        </a>
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
         {% endfor %}
 
         {% if user|is_logged_in %}
-          <h3 class='customLevelsEpisode'>{% trans "Levels created by you" %}</h3>
-          <div>
-            {% if owned_levels %}
-              {% for level in owned_levels %}
-                <p>
-                  <a href="{% url 'play_custom_level' level.id %}">{{level.title}}</a>
-                  {% if level.score != None %}
-                  <span class="score_text">{{level.score|floatformat}}/10</span>
-                  <img class="level_image coin_image" value="{{level.id}}">
-                  {% endif %}
-                </p>
-              {% endfor %}
-            {% else %}
-              <p>{% trans "No levels have been created by you yet." %}</p>
-            {% endif %}
-          </div>
 
-          <h3 class='customLevelsEpisode'>{% trans "Levels shared with you" %}</h3>
-          <div>
-            {% if shared_levels %}
-              {% for level in shared_levels %}
-                <p>
-                  <a href="{% url 'play_custom_level' level.id %}">
-                  {{level.title}} ({{level.owner|make_into_username}})</a>
-                  {% if level.score != None %}
-                  <span class="score_text">{{level.score|floatformat}}/10</span>
-                  <img class="level_image coin_image" value="{{level.id}}">
-                  {% endif %}
-                </p>
-              {% endfor %}
-            {% else %}
-              <p>{% trans "No levels have been shared with you yet." %}</p>
-            {% endif %}
-          </div>
+        <div class="panel">
+            <div class="panel-header customLevelsEpisode" id="episode-levels-created-by-you">
+                <h4 class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
+                    {% trans "Levels created by you" %}
+                </h4>
+            </div>
+            <div id="collapse-levels-created-by-you" aria-labelledby="episode-levels-created-by-you" class="collapse">
+                <div class="panel-body">
+                    {% if owned_levels %}
+                        {% for level in owned_levels %}
+                        <p>
+                            <a href="{% url 'play_custom_level' level.id %}">{{level.title}}</a>
+                            {% if level.score != None %}
+                            <span class="score_text">{{level.score|floatformat}}/10</span>
+                            <img class="level_image coin_image" value="{{level.id}}">
+                            {% endif %}
+                        </p>
+                        {% endfor %}
+                    {% else %}
+                        <p>{% trans "No levels have been created by you yet." %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header customLevelsEpisode" id="episode-levels-shared-with-you">
+                <h4 class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
+                    {% trans "Levels shared with you" %}
+                </h4>
+            </div>
+            <div id="collapse-levels-shared-with-you" aria-labelledby="episode-levels-shared-with-you" class="collapse">
+                <div class="panel-body">
+                    {% if shared_levels %}
+                        {% for level in shared_levels %}
+                        <p>
+                            <a href="{% url 'play_custom_level' level.id %}">
+                            {{level.title}} ({{level.owner|make_into_username}})</a>
+                            {% if level.score != None %}
+                            <span class="score_text">{{level.score|floatformat}}/10</span>
+                            <img class="level_image coin_image" value="{{level.id}}">
+                            {% endif %}
+                        </p>
+                        {% endfor %}
+                    {% else %}
+                        <p>{% trans "No levels have been shared with you yet." %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
         {% endif %}
-      </div>
-  </div>
-  <br>
+
+    </div>
+</div>
+<br>
 {% endblock content %}
