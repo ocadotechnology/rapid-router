@@ -53,7 +53,7 @@ $('.episode').on('change', function() {
     }
 })
 
-$('.expender').on('click', function() {
+$('.expander').on('click', function() {
     var el = $(this).closest('li')
     var first = el.attr('data-first')
     var last = el.attr('data-last')
