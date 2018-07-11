@@ -120,8 +120,8 @@
                             </label>
                         </li>
                         {% for c in form.levels %}
-                        {% if forloop.counter in ep %}
-                        {% with e=ep|get_item:forloop.counter %}
+                        {% if forloop.counter in episodes %}
+                        {% with e=episodes|get_item:forloop.counter %}
                         <li class="episode" data-first="{{ e.first_level }}" data-last="{{ e.last_level }}">
                             <label for="ep_{{ forloop.counter }}">
                                 <input id="ep_{{ forloop.counter }}" type="checkbox">

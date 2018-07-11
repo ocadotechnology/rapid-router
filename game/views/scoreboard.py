@@ -119,20 +119,20 @@ def classes_for(user):
 
 
 def scoreboard_view(request, form, student_data, headers):
-    episodes = level_selection.fetch_episode_data_from_database(False)
-    ep = {}
-    for e in episodes:
-        ep[e['first_level']] = {
-            'name': e['name'] + ' -- Levels ' + str(e['first_level']) + ' - ' + str(e['last_level']),
-            'first_level': str(e['first_level']),
-            'last_level': str(e['last_level']),
+    database_episodes = level_selection.fetch_episode_data_from_database(False)
+    context_episodes = {}
+    for episode in database_episodes:
+        context_episodes[episode['first_level']] = {
+            'name': episode['name'] + ' -- Levels ' + str(episode['first_level']) + ' - ' + str(episode['last_level']),
+            'first_level': str(episode['first_level']),
+            'last_level': str(episode['last_level']),
             }
     context = RequestContext(request, {
         'form': form,
         'student_data': student_data,
         'headers': headers,
         'progress_header': Progress_Header,
-        'ep': ep,
+        'episodes': context_episodes,
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
 
