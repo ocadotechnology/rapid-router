@@ -46,6 +46,14 @@
         {% endblock nav_ocargo_moderate %}
     {% endif %}
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        if($(window).width() > 760) {
+            toggleStickySubnav($('.banner').outerHeight() + $('.menu').outerHeight());
+        }
+    });
+</script>
 {% endblock subNav %}
 
 {% block content %}{% endblock %}

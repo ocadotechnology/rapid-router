@@ -49,6 +49,7 @@ from helper import renderError
 from game.forms import ScoreboardForm
 from game.models import Level, Attempt, sort_levels
 from portal.models import Class, Teacher, Student
+import level_selection
 
 Single_Level_Header = [ugettext_lazy('Class'), ugettext_lazy('Name'), ugettext_lazy('Score'),
                        ugettext_lazy('Total Time'), ugettext_lazy('Start Time'), ugettext_lazy('Finish Time')]
@@ -118,11 +119,20 @@ def classes_for(user):
 
 
 def scoreboard_view(request, form, student_data, headers):
+    database_episodes = level_selection.fetch_episode_data_from_database(False)
+    context_episodes = {}
+    for episode in database_episodes:
+        context_episodes[episode['first_level']] = {
+            'name': episode['name'] + ' -- Levels ' + str(episode['first_level']) + ' - ' + str(episode['last_level']),
+            'first_level': str(episode['first_level']),
+            'last_level': str(episode['last_level']),
+            }
     context = RequestContext(request, {
         'form': form,
         'student_data': student_data,
         'headers': headers,
         'progress_header': Progress_Header,
+        'episodes': context_episodes,
     })
     return render(request, 'game/scoreboard.html', context_instance=context)
 
