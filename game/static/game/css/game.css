@@ -330,7 +330,6 @@ identified as the original program.
     position: absolute;
     height: 100px;
     z-index: 7;
-    bottom: 10px;
 }
 
 #zoomOut {
