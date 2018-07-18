@@ -1,4 +1,4 @@
-{% extends 'portal/base_old.html' %}
+{% extends 'portal/base.html' %}
 {% load static %}
 {% load i18n %}
 {% load app_tags %}
@@ -7,6 +7,7 @@
 
 {% block head %}
   {% include 'game/crowdin.html' %}
+  <link rel="manifest" href="{% static "manifest.json" %}">
 {% endblock head %}
 
 {% block secondaryButtons %}
@@ -16,34 +17,43 @@
 {% endblock secondaryButtons %}
 
 {% block subNav %}
-<div class="subnavBar">
-  <div class="subnav">
-    <ul>
-      <li><img height=40 src="{% static 'game/image/RR-title.png' %}"/>
-      <li>{% block nav_ocargo_levels %}
-        <a href="{% url 'game.views.level_selection.levels' %}">{% trans "Levels" %}</a>
-        {% endblock nav_ocargo_levels %}
-      </li>
-      <li>{% block nav_ocargo_create %}
-        <a href="{% url 'game.views.level_editor.level_editor' %}">{% trans "Create" %}</a>
-        {% endblock nav_ocargo_create %}
-      </li>
-      {% if user|is_logged_in_as_school_user %}
-        <li>{% block nav_ocargo_scoreboard %}
-          <a href="{% url 'game.views.scoreboard.scoreboard' %}">{% trans "Scoreboard" %}</a>
-          {% endblock nav_ocargo_scoreboard %}
-        </li>
-      {% endif %}
-      {% if user|is_logged_in_as_teacher %}
-        <li>
-          {% block nav_ocargo_moderate %}
-          <a href="{% url 'game.views.level_moderation.level_moderation' %}">{% trans "Moderate" %}</a>
-          {% endblock nav_ocargo_moderate %}
-        </li>
-      {% endif %}
-    </ul>
-  </div>
+{{ block.super }}
+<div class="banner banner--teacher row">
+    <div class="col-sm-4 col-sm-offset-2">
+        <h1 class="banner__text--primary">Rapid Router</h1>
+        <h4>Rapid router has been created to teach the first principles of computer programming that are covered in the National Computing curriculum.</h4>
+    </div>
+    <div class="col-sm-6">
+        <div class="banner--picture"><div class="banner--picture__inside1"><div class="banner--picture__inside2 banner--picture--play"></div></div></div>
+    </div>
 </div>
+<div class="sticky-subnav sub-nav sub-nav--teacher">
+    <img src="/static/game/image/RR-title.png" height="70">
+    {% block nav_ocargo_levels %}
+        <a class="button button--regular button--secondary button--secondary--light" href="{% url 'game.views.level_selection.levels' %}">{% trans "Levels" %}</a>
+    {% endblock nav_ocargo_levels %}
+    {% block nav_ocargo_create %}
+        <a class="button button--regular button--secondary button--secondary--light" href="{% url 'game.views.level_editor.level_editor' %}">{% trans "Create" %}</a>
+    {% endblock nav_ocargo_create %}
+    {% if user|is_logged_in_as_school_user %}
+        {% block nav_ocargo_scoreboard %}
+            <a class="button button--regular button--secondary button--secondary--light" href="{% url 'game.views.scoreboard.scoreboard' %}">{% trans "Scoreboard" %}</a>
+        {% endblock nav_ocargo_scoreboard %}
+    {% endif %}
+    {% if user|is_logged_in_as_teacher %}
+        {% block nav_ocargo_moderate %}
+            <a class="button button--regular button--secondary button--secondary--light" href="{% url 'game.views.level_moderation.level_moderation' %}">{% trans "Moderate" %}</a>
+        {% endblock nav_ocargo_moderate %}
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        if($(window).width() > 760) {
+            toggleStickySubnav($('.banner').outerHeight() + $('.menu').outerHeight());
+        }
+    });
+</script>
 {% endblock subNav %}
 
 {% block content %}{% endblock %}

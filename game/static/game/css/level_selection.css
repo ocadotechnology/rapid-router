@@ -35,65 +35,72 @@ copyright notice and these terms. You must not misrepresent the origins of this
 program; modified versions of the program must be marked as such and not
 identified as the original program.
 */
-#episodes .ui-accordion-header {
-	color: #000;
-	background: rgba(99, 119, 0, 0.5);
-	margin-bottom: 5px;
+#episodes .panel-header {
+	color: #fff;
+	background: #0c52a3;
+	margin-bottom: 0;
 	text-align: left;
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
-
-#episodes .ui-state-default {
-	border: none;
-	text-shadow: none;
-	box-shadow: none;
-	font-weight: normal;
-	filter: none;
+	padding-left: 10px;
 }
 
 #episodes .customLevelsEpisode {
-	background: #8EAECA;
+	background: #4a4a4a;
+	color: #fff;
 }
 
-.episode_range_text {
-	font-size: 10pt;
+#episodes .episode_range_text {
 	text-align: right;
-	margin-right: 2.2em;
+	margin-right: 1.5em;
 	float: right;
 	width: 98px;
 }
 
-.ui-widget-content p {
-	padding-bottom: 15px;
+#episodes .panel-body {
+	border: 1px solid #dddddd;
+	background: #d6e7ed;
+	color: #333333;
+	padding: 2rem 5rem;
 }
 
-.ui-widget-content a {
+#episodes .panel-body p {
+	padding-bottom: 5px;
+}
+
+#episodes .panel-body a {
 	line-height: 25px;
+	text-decoration: none;
 }
 
-.score_text {
+#episodes .score_text {
 	float: right;
 	text-align: right;
 	width: 100px;
 	line-height: 25px;
 }
 
-.coin_image {
+#episodes .coin_image {
 	float: right;
 	right: 30px;
 }
 
-.episode_image.coin_image {
+#episodes .episode_image.coin_image {
 	width: 30px;
 	height: 30px;
 	margin-top: -6px;
 }
 
-.level_image.coin_image {
+#episodes .level_image.coin_image {
 	width: 25px;
 	height: 25px;
 	margin-right: 2.5px;
 }
 
+#episodes .episode-title::before {
+	content: "\e252";
+	font-family: 'Glyphicons Halflings';
+}
 
+#episodes .collapsed.episode-title::before {
+	content: "\e250";
+	font-family: 'Glyphicons Halflings';
+}

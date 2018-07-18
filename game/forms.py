@@ -76,9 +76,7 @@ class ScoreboardForm(forms.Form):
 
         self.fields['classes'] = forms.MultipleChoiceField(
             choices=classes_choices,
-            widget=DropDownMenuSelectMultiple(
-                attrs={'class': 'wide', 'multiplePlaceholder': ugettext('Select classes')}
-            ),
+            widget=forms.CheckboxSelectMultiple(),
         )
         # Each tuple in choices has two elements, id and name of each level
         # First element is the actual value set on the model
@@ -86,8 +84,7 @@ class ScoreboardForm(forms.Form):
         choice_list = ((level.id, str(level)) for level in Level.objects.sorted_levels())
         self.fields['levels'] = forms.MultipleChoiceField(
             choices=itertools.chain(choice_list),
-            widget=DropDownMenuSelectMultiple(
-                attrs={'class': 'wide', 'multiplePlaceholder': ugettext('Select levels')})
+            widget=forms.CheckboxSelectMultiple(),
         )
         def validate(self):
             cleaned_data = super(ScoreboardForm, self).clean()
@@ -103,9 +100,9 @@ class LevelModerationForm(forms.Form):
         self.fields['classes'] = forms.ModelChoiceField(queryset=classes,
                                                         required=True,
                                                         widget=forms.Select(
-                                                            attrs={'class': 'wide'}))
+                                                            attrs={'class': 'form-control'}))
         self.fields['students'] = forms.CharField(required=False,
-                                                  widget=forms.Select(attrs={'class': 'wide'}))
+                                                  widget=forms.Select(attrs={'class': 'form-control'}))
 
         def validate(self):
             cleaned_data = super(LevelModerationForm, self).clean()

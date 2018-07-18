@@ -3,6 +3,7 @@
 {% load static %}
 {% load i18n %}
 {% load l10n %}
+{% load game.utils %}
 
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
 
@@ -15,6 +16,7 @@
   <script src="{% static 'game/js/pqselect.min.js' %}"></script>
   <script src="{% static 'game/js/jquery.outerhtml.js' %}"></script>
   <script src="{% static 'game/js/jquery.ui.multiprogressbar.js' %}"></script>
+  <script src="{% static 'game/js/scoreboard.js' %}"></script>
   <script>
     $(document).ready(function() {
         // Initialise progress values for each progress bar
@@ -79,57 +81,84 @@
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
-<b><a href="{% url 'game.views.scoreboard.scoreboard' %}">{% trans "Scoreboard" %}</a></b>
+<a class="button button--regular button--secondary button--secondary" style="background-color: white; color: #0c52a3;" href="{% url 'game.views.scoreboard.scoreboard' %}">{% trans "Scoreboard" %}</a>
 {% endblock nav_ocargo_scoreboard %}
 
 {% block content %}
-<h1>{% trans "Scoreboard" %}</h1><br>
-<div class='span_3_of_3'>
-  <div class='login-card'>
-    <div id="form" class="form">
+<div class="container">
+    <h1 class="text-center">{% trans "Scoreboard" %}</h1>
+
     <form action="" method="post" id="scoreboardForm">
-      {% csrf_token %}
-      <div class='section group'>
-        <div class='col span_1_of_3_strict'>
-          <div class='section group'>
-            <div class='col span_1_of_3'>
-              {% trans "Classes:" %}
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-sm-6">
+                <h4>{% trans "Select Classes" %}</h4>
+                <div class="select-list">
+                    <ul class="scoreboard-list-class">
+                        <li class="all-class">
+                            <label for="id_classes_select_all" class="inverse">
+                                <input id="id_classes_select_all" type="checkbox">
+                                {% trans "Select all Classes" %}
+                            </label>
+                        </li>
+                        {% for c in form.classes %}
+                        <li class="class">
+                            {{ c }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-            <div class='col span_2_of_3'>
-              {{form.classes.errors}}
-              {{form.classes}}
+            <div class="col-sm-6">
+                <h4>{% trans "Select Levels" %}</h4>
+                <div class="select-list">
+                    <ul class="scoreboard-list-level">
+                        <li class="all-level">
+                            <label for="id_levels_select_all">
+                                <input id="id_levels_select_all" type="checkbox">
+                                {% trans "Select all Levels" %}
+                            </label>
+                        </li>
+                        {% for c in form.levels %}
+                        {% if forloop.counter in episodes %}
+                        {% with e=episodes|get_item:forloop.counter %}
+                        <li class="episode" data-first="{{ e.first_level }}" data-last="{{ e.last_level }}">
+                            <label for="ep_{{ forloop.counter }}">
+                                <input id="ep_{{ forloop.counter }}" type="checkbox">
+                                {{ e.name }}
+                            </label>
+                            <span class="expander glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                        </li>
+                        {% endwith %}
+                        {% endif %}
+                        <li class="level level-{{ forloop.counter }}">
+                            {{ c }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-          </div>
         </div>
-        <div class='col span_1_of_3_strict'>
-          <div class='section group'>
-            <div class='col span_1_of_3'>
-              {% trans "Levels:" %}
+        <div class="row">
+            <div class="col-sm-6 text-right">
+                <button class="button--regular button--primary--general-play" type="submit" name="export">{% trans "Export results" %}</button>
             </div>
-            <div class='col span_2_of_3'>
-              {{form.levels.errors}}
-              {{form.levels}}
+            <div class="col-sm-6 text-left">
+                <button class="button--regular button--primary--general-educate" type="submit" name="view">{% trans "View results" %}</button>
             </div>
-          </div>
         </div>
-        <div class='col span_1_of_3_strict'>
-          <button class='col span_1_of_2 btn btn-primary' type="submit" name="view">{% trans "View" %}</button>
-          <button class='col span_1_of_2 btn btn-primary' type="submit" name="export">{% trans "Export" %}</button>
-        </div>
-      </div>
     </form>
-    </div>
-  </div>
+
 </div>
-<br>
-<div class="mainBody">
+
+<div class="container mainBody">
   <div class="tableWrapper" id="tableWrapper">
     {% if student_data %}
     <table id="scoreboardTable" class="display cell-border wide">
     <thead>
       <tr>
         {% for header in headers %}
-          <th {% if header == progress_header %} title='{% trans "Colours explained:&#013;Red: Number of levels which student has started but not submitted a working solution &#013;Orange: Number of levels which student has scored below 50% &#013;Green: Number of levels which student has scored above 50%" %}'{% endif %}> {{header}} </th>
+          <th {% if header == progress_header %} title="{% trans 'Colours explained:&#013;Red: Number of levels which student has started but not submitted a working solution &#013;Orange: Number of levels which student has scored below 50% &#013;Green: Number of levels which student has scored above 50%' %}"{% endif %}> {{header}} </th>
         {% endfor %}
       </tr>
       </thead>
