@@ -56,7 +56,7 @@ before_script:
 script:
   - python setup.py test
 after_success:
-  - coveralls
+  #- coveralls
 before_deploy:
   - mkdir -p game/locale
   - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
