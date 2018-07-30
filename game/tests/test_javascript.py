@@ -36,7 +36,12 @@
 # identified as the original program.
 from casper.tests import CasperTestCase
 import os.path
-from django.utils import unittest
+
+from django import VERSION
+if VERSION >= (1, 7):
+    import unittest
+else:
+    from django.utils import unittest
 
 
 class JavascriptTest(CasperTestCase):
