@@ -54,9 +54,9 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
 script:
-  - python setup.py test
+  - python setup.py test --quiet
 after_success:
-  #- coveralls
+  - coveralls
 before_deploy:
   - mkdir -p game/locale
   - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
