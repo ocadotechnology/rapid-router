@@ -23,11 +23,10 @@ setup(name='rapid-router',
         'pyhamcrest==1.8.3',
     ],
     tests_require=[
-        'django-setuptest==0.2.1',
         'django-selenium-clean==0.2.1',
         'selenium==3.7.0',
     ],
-    test_suite='setuptest.setuptest.SetupTestSuite',
+    test_suite='test_utils.test_suite.DjangoAutoTestSuite',
     version=versioneer.get_version(),
     zip_safe=False,
 )
