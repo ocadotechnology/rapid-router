@@ -34,7 +34,7 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.views.decorators.cache import cache_page
 from django.views.i18n import javascript_catalog
 
@@ -53,8 +53,7 @@ from game.views.level import submit_attempt, play_default_level, start_episode, 
     load_list_of_workspaces, save_workspace, delete_workspace, \
     delete_level, play_custom_level, play_custom_level_from_editor, load_workspace_solution
 from game.views.scoreboard import scoreboard
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', levels, name='levels'),
     url(r'^submit/$', submit_attempt, name='submit_attempt'),
     url(r'^(?P<levelName>[A-Z0-9]+)/$', play_default_level, name='play_default_level'),
@@ -127,4 +126,4 @@ urlpatterns = patterns(
     url(r'^js-reverse/$', cache_page(60*60*24)(urls_js), name='js-reverse'),
 
     url(r'^js-i18n/$', cache_page(60*60*24)(javascript_catalog), {'packages': ('game',), }, name='rapid-router/javascript-catalog'),
-)
+]
