@@ -54,14 +54,26 @@ var DEFAULT_CHARACTER_HEIGHT = 20;
 var COW_WIDTH = 50;
 var COW_HEIGHT = 50;
 
-ocargo.Drawing = function(startingPosition) {
+let zoom = 15;
+
+var gameElement = document.getElementById('paper');
+
+var evCache = new Array();
+var prevDiff = -1;
+
+var currentWidth = PAPER_WIDTH;
+var currentHeight = PAPER_HEIGHT;
+var currentStartX = 0;
+var currentStartY = 0;
+
+ocargo.Drawing = function (startingPosition) {
 
     /*************/
     /* Constants */
     /*************/
 
-    var characterWidth = typeof CHARACTER_WIDTH !== 'undefined'? CHARACTER_WIDTH : DEFAULT_CHARACTER_WIDTH;
-    var characterHeight =  typeof CHARACTER_HEIGHT !== 'undefined'? CHARACTER_HEIGHT : DEFAULT_CHARACTER_HEIGHT;
+    var characterWidth = typeof CHARACTER_WIDTH !== 'undefined' ? CHARACTER_WIDTH : DEFAULT_CHARACTER_WIDTH;
+    var characterHeight = typeof CHARACTER_HEIGHT !== 'undefined' ? CHARACTER_HEIGHT : DEFAULT_CHARACTER_HEIGHT;
 
     var TRAFFIC_LIGHT_WIDTH = 60;
     var TRAFFIC_LIGHT_HEIGHT = 22;
@@ -89,7 +101,86 @@ ocargo.Drawing = function(startingPosition) {
             characterWidth, characterHeight, startingPosition, NIGHT_MODE);
     }
 
-    this.reset = function() {
+    paper.setViewBox(currentStartX, currentStartY, EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT);
+
+    /**
+     * Zooming
+     */
+    function zoomMap(shouldZoomOut) {
+
+        if (shouldZoomOut) {
+            let newX = currentStartX - zoom;
+            let newY = currentStartY - zoom;
+
+            currentHeight = currentHeight + zoom * 2;
+            currentWidth = currentWidth + zoom * 2;
+
+            paper.setViewBox(newX, newY, currentWidth, currentHeight);
+
+            currentStartX = newX;
+            currentStartY = newY
+        }
+        else {
+            let newX = currentStartX + zoom;
+            let newY = currentStartY + zoom;
+
+            currentHeight = currentHeight - zoom * 2;
+            currentWidth = currentWidth - zoom * 2;
+
+            paper.setViewBox(newX, newY, currentWidth, currentHeight);
+
+            currentStartX = newX;
+            currentStartY = newY
+        }
+    }
+
+    var flag = 0;
+
+    $('#zoomIn').click(function () {
+        zoomMap(false);
+    });
+    $('#zoomOut').click(function () {
+        zoomMap(true);
+    });
+
+    /**
+     * Map moving
+     */
+    var currentMousePos = { x: -1, y: -1 };
+
+    var isMouseDown = false;
+    var prevX = 0;
+    var prevY = 0;
+
+    var curX = 0;
+    var curY = 0;
+
+
+    $(document).mousedown(function (event) {
+        isMouseDown = true;
+    });
+
+    $(document).mouseup(function (event) {
+        isMouseDown = false;
+    });
+
+    $(document).mousemove(function (event) {
+        prevX = currentMousePos.x;
+        prevY = currentMousePos.y;
+        currentMousePos.x = event.pageX;
+        currentMousePos.y = event.pageY;
+
+
+        if (isMouseDown) {
+            var deltaX = prevX - currentMousePos.x
+            var deltaY = prevY - currentMousePos.y
+            currentStartX = currentStartX + deltaX;
+            currentStartY = currentStartY + deltaY;
+            paper.setViewBox(currentStartX, currentStartY, currentWidth, currentHeight);
+        }
+    });
+
+    this.reset = function () {
         character.reset();
     };
 
@@ -207,7 +298,7 @@ ocargo.Drawing = function(startingPosition) {
 
             var destinationRect = paper.rect(destination.coordinate.x * GRID_SPACE_SIZE + PAPER_PADDING,
                 PAPER_HEIGHT - (destination.coordinate.y * GRID_SPACE_SIZE) - 100 + PAPER_PADDING,
-                100, 100).attr({'stroke': DESTINATION_NOT_VISITED_COLOUR});
+                100, 100).attr({ 'stroke': DESTINATION_NOT_VISITED_COLOUR });
 
             var destinationHouse = paper.image(ocargo.Drawing.raphaelImageDir + HOUSE_URL,
                 destination.coordinate.x * GRID_SPACE_SIZE + variation[0] + PAPER_PADDING,
@@ -421,23 +512,23 @@ ocargo.Drawing = function(startingPosition) {
 
             var rotation = 0;
             if ((letters12 === 'V' && (letters13 === 'UL' || letters13 === 'DL')) ||
-                (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V' )) ||
-                (letters12 === 'DL' && (letters13 === 'UL' || letters13 === 'V' ))) {
+                (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V')) ||
+                (letters12 === 'DL' && (letters13 === 'UL' || letters13 === 'V'))) {
                 rotation = 0;
             }
             else if ((letters12 === 'H' && (letters13 === 'UL' || letters13 === 'UR')) ||
-                (letters12 === 'UL' && (letters13 === 'UR' || letters13 === 'H' )) ||
-                (letters12 === 'UR' && (letters13 === 'UL' || letters13 === 'H' ))) {
+                (letters12 === 'UL' && (letters13 === 'UR' || letters13 === 'H')) ||
+                (letters12 === 'UR' && (letters13 === 'UL' || letters13 === 'H'))) {
                 rotation = 90;
             }
             else if ((letters12 === 'V' && (letters13 === 'UR' || letters13 === 'DR')) ||
-                (letters12 === 'UR' && (letters13 === 'DR' || letters13 === 'V' )) ||
-                (letters12 === 'DR' && (letters13 === 'UR' || letters13 === 'V' ))) {
+                (letters12 === 'UR' && (letters13 === 'DR' || letters13 === 'V')) ||
+                (letters12 === 'DR' && (letters13 === 'UR' || letters13 === 'V'))) {
                 rotation = 180;
             }
             else if ((letters12 === 'H' && (letters13 === 'DL' || letters13 === 'DR')) ||
-                (letters12 === 'DL' && (letters13 === 'DR' || letters13 === 'H' )) ||
-                (letters12 === 'DR' && (letters13 === 'DL' || letters13 === 'H' ))) {
+                (letters12 === 'DL' && (letters13 === 'DR' || letters13 === 'H')) ||
+                (letters12 === 'DR' && (letters13 === 'DL' || letters13 === 'H'))) {
                 rotation = 270;
             }
 
@@ -514,10 +605,10 @@ ocargo.Drawing = function(startingPosition) {
 
             // hide light which isn't the starting state
             if (trafficLight.startingState === ocargo.TrafficLight.RED) {
-                trafficLight.greenLightEl.attr({'opacity': 0});
+                trafficLight.greenLightEl.attr({ 'opacity': 0 });
             }
             else {
-                trafficLight.redLightEl.attr({'opacity': 0});
+                trafficLight.redLightEl.attr({ 'opacity': 0 });
             }
 
             lightImages[trafficLight.id] = [trafficLight.greenLightEl, trafficLight.redLightEl];
@@ -597,10 +688,10 @@ ocargo.Drawing = function(startingPosition) {
         var drawX = (x + 0.5) * GRID_SPACE_SIZE - COW_WIDTH / 2 + xOffset + PAPER_PADDING;
         var drawY = PAPER_HEIGHT - ((y + 0.5) * GRID_SPACE_SIZE) - COW_HEIGHT / 2 + yOffset + PAPER_PADDING;
 
-        return {drawX: drawX, drawY: drawY, rotation: rotation};
+        return { drawX: drawX, drawY: drawY, rotation: rotation };
     };
 
-    this.createCowImage = function(type) {
+    this.createCowImage = function (type) {
         return paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), 0, 0, COW_WIDTH, COW_HEIGHT);
     };
 
@@ -617,7 +708,7 @@ ocargo.Drawing = function(startingPosition) {
         var image = paper.image(ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type), res.drawX, res.drawY, COW_WIDTH, COW_HEIGHT);
         var rot = "r" + res.rotation;
         image.transform(rot + "s0.1");
-        image.animate({transform: rot + "s1"}, animationLength, 'linear');
+        image.animate({ transform: rot + "s1" }, animationLength, 'linear');
 
         return {
             'coordinate': coordinate,
@@ -626,12 +717,12 @@ ocargo.Drawing = function(startingPosition) {
     };
 
     this.removeCow = function (cow, animationLength) {
-        cow.image.animate({transform: "s0.01"}, animationLength, 'linear', function () {
+        cow.image.animate({ transform: "s0.01" }, animationLength, 'linear', function () {
             cow.image.remove();
         });
     };
 
-    this.renderCharacter = function() {
+    this.renderCharacter = function () {
         character.render();
     };
 
@@ -681,12 +772,12 @@ ocargo.Drawing = function(startingPosition) {
 
     this.transitionTrafficLight = function (lightID, endState, animationLength) {
         if (endState === ocargo.TrafficLight.GREEN) {
-            lightImages[lightID][0].animate({opacity: 1}, animationLength / 2, 'linear');
-            lightImages[lightID][1].animate({opacity: 0}, animationLength, 'linear');
+            lightImages[lightID][0].animate({ opacity: 1 }, animationLength / 2, 'linear');
+            lightImages[lightID][1].animate({ opacity: 0 }, animationLength, 'linear');
         }
         else {
-            lightImages[lightID][0].animate({opacity: 0}, animationLength / 2, 'linear');
-            lightImages[lightID][1].animate({opacity: 1}, animationLength, 'linear');
+            lightImages[lightID][0].animate({ opacity: 0 }, animationLength / 2, 'linear');
+            lightImages[lightID][1].animate({ opacity: 1 }, animationLength, 'linear');
         }
     };
 
@@ -694,10 +785,10 @@ ocargo.Drawing = function(startingPosition) {
         var destinationRect = destinationImages[destinationID].rect;
         var colour = visited ? DESTINATION_VISITED_COLOUR : DESTINATION_NOT_VISITED_COLOUR;
 
-        destinationRect.animate({'stroke': colour}, duration, 'linear');
+        destinationRect.animate({ 'stroke': colour }, duration, 'linear');
     };
 
-    this.scrollToShowCharacter = function() {
+    this.scrollToShowCharacter = function () {
         character.scrollToShow();
     };
 
@@ -820,8 +911,8 @@ ocargo.Drawing.renderCoins = function (coins) {
 };
 
 
-ocargo.Drawing.cowUrl = function(type){
-    switch(type){
+ocargo.Drawing.cowUrl = function (type) {
+    switch (type) {
         case ocargo.Cow.WHITE:
             return ocargo.Drawing.whiteCowUrl;
         case ocargo.Cow.BROWN:
@@ -832,7 +923,7 @@ ocargo.Drawing.cowUrl = function(type){
 };
 
 
-ocargo.Drawing.createAbsoluteRotationTransformation = function(degrees, rotationPointX, rotationPointY) {
+ocargo.Drawing.createAbsoluteRotationTransformation = function (degrees, rotationPointX, rotationPointY) {
     var transformation = '... R' + degrees;
     if (rotationPointX !== undefined && rotationPointY !== undefined) {
         transformation += ',' + rotationPointX;
@@ -841,14 +932,14 @@ ocargo.Drawing.createAbsoluteRotationTransformation = function(degrees, rotation
     return transformation;
 };
 
-ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace = function(degrees, x, y) {
+ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace = function (degrees, x, y) {
     var rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE + PAPER_PADDING;
     var rotationPointY = (GRID_HEIGHT - (y + 1 / 2)) * GRID_SPACE_SIZE + PAPER_PADDING; //flipping y
     var result = ocargo.Drawing.createAbsoluteRotationTransformation(degrees, rotationPointX, rotationPointY);
     return result;
 };
 
-ocargo.Drawing.inLevelEditor = function() {
+ocargo.Drawing.inLevelEditor = function () {
     return typeof CHARACTER_URL === 'undefined';
 };
 
