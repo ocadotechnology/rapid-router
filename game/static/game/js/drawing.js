@@ -54,7 +54,7 @@ var DEFAULT_CHARACTER_HEIGHT = 20;
 var COW_WIDTH = 50;
 var COW_HEIGHT = 50;
 
-let zoom = 15;
+var zoom = 15;
 
 var gameElement = document.getElementById('paper');
 
@@ -134,8 +134,6 @@ ocargo.Drawing = function (startingPosition) {
         }
     }
 
-    var flag = 0;
-
     $('#zoomIn').click(function () {
         zoomMap(false);
     });
@@ -152,33 +150,31 @@ ocargo.Drawing = function (startingPosition) {
     var prevX = 0;
     var prevY = 0;
 
-    var curX = 0;
-    var curY = 0;
-
-
-    $(document).mousedown(function (event) {
-        isMouseDown = true;
-    });
-
-    $(document).mouseup(function (event) {
-        isMouseDown = false;
-    });
-
-    $(document).mousemove(function (event) {
-        prevX = currentMousePos.x;
-        prevY = currentMousePos.y;
-        currentMousePos.x = event.pageX;
-        currentMousePos.y = event.pageY;
-
-
-        if (isMouseDown) {
-            var deltaX = prevX - currentMousePos.x
-            var deltaY = prevY - currentMousePos.y
-            currentStartX = currentStartX + deltaX;
-            currentStartY = currentStartY + deltaY;
-            paper.setViewBox(currentStartX, currentStartY, currentWidth, currentHeight);
-        }
-    });
+    this.enablePanning = function () {
+        $(document).mousedown(function (event) {
+            isMouseDown = true;
+        });
+    
+        $(document).mouseup(function (event) {
+            isMouseDown = false;
+        });
+    
+        $(document).mousemove(function (event) {
+            prevX = currentMousePos.x;
+            prevY = currentMousePos.y;
+            currentMousePos.x = event.pageX;
+            currentMousePos.y = event.pageY;
+    
+    
+            if (isMouseDown) {
+                var deltaX = prevX - currentMousePos.x
+                var deltaY = prevY - currentMousePos.y
+                currentStartX = currentStartX + deltaX;
+                currentStartY = currentStartY + deltaY;
+                paper.setViewBox(currentStartX, currentStartY, currentWidth, currentHeight);
+            }
+        });
+    };
 
     this.reset = function () {
         character.reset();

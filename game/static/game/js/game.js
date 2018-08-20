@@ -126,6 +126,9 @@ ocargo.Game.prototype.setup = function() {
     } else {
         message = loggedOutWarning;
     }
+
+    this.drawing.enablePanning();
+
     ocargo.Drawing.startPopup(title, LESSON, message, true, ocargo.button.dismissButtonHtml('play_button', gettext('Play')));
 };
 
