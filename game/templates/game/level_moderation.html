@@ -11,54 +11,10 @@
 <script type="text/javascript" src="{% static 'game/js/level_moderation.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/foundation/vendor/jquery.cookie.js' %}"></script>
 <script>
-    $(document).ready(function() {
-        $("#table").tablesorter();
-
-        $('#id_classes').change(function() {
-            class_id = $(this).val();
-            $.ajax({
-                url: Urls.students_for_level_moderation(class_id),
-                type: 'GET',
-                dataType: 'json',
-                success: function(studentData) {
-                    $('#id_students').empty();
-
-                    var addStudentOption = function(value, text) {
-                        var option = $('<option>');
-                        option.attr({
-                            'value': value
-                        });
-                        option.text(text);
-                        $('#id_students').append(option);
-                    };
-
-                    addStudentOption("", "---------");
-
-                    for (var student in studentData) {
-                        addStudentOption(student, studentData[student])
-                    }
-
-                    { %
-                        if student_id %
-                    }
-                    $('#id_students').val({
-                        {
-                            student_id
-                        }
-                    }); { % endif %
-                    }
-                }
-            });
-            return false;
-        });
-
-        { %
-            if students %
-        }
-        $('#id_classes').change(); { % endif %
-        }
-    });
+    var studentID = {% if student_id %} true {% else %} false {% endif %};
+    var students = {% if students %} true {% else %} false {% endif %};
 </script>
+
 {% endblock %}
 
 {% block css %}
@@ -133,4 +89,5 @@
         {% endif %}
     </div>
 </div>
+
 {% endblock %}
