@@ -37,6 +37,7 @@ identified as the original program.
 */
 var levelID;
 var studentID;
+var classID;
 var students;
 
 function csrfSafeMethod(method) {
@@ -76,9 +77,9 @@ $(document).ready(function() {
     $("#table").tablesorter();
 
     $('#id_classes').change(function() {
-        class_id = $(this).val();
+        classID = $(this).val();
         $.ajax({
-            url: Urls.students_for_level_moderation(class_id),
+            url: Urls.students_for_level_moderation(classID),
             type: 'GET',
             dataType: 'json',
             success: function(studentData) {
