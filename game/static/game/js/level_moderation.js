@@ -36,7 +36,6 @@ program; modified versions of the program must be marked as such and not
 identified as the original program.
 */
 var levelID;
-var studentID;
 var classID;
 var students;
 
@@ -98,12 +97,6 @@ $(document).ready(function() {
 
                 for (var student in studentData) {
                     addStudentOption(student, studentData[student])
-                }
-
-                if (studentID) {
-                    $('#id_students').val({
-                        STUDENT_ID: studentID
-                    });
                 }
             }
         });
