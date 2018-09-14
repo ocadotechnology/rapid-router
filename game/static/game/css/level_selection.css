@@ -95,6 +95,10 @@ identified as the original program.
 	margin-right: 2.5px;
 }
 
+#episodes .episode-title {
+	cursor: pointer;
+}
+
 #episodes .episode-title::before {
 	content: "\e252";
 	font-family: 'Glyphicons Halflings';
