@@ -128,10 +128,7 @@ class APITests(APITestCase):
         assert_that(response.data[0]['name'], equal_to('Getting Started'))
 
     def test_list_episodes_with_translated_episode_names(self):
-        with self.modify_settings(
-                LANGUAGES={'append': [('foo-br', 'Test locale')]},
-                LOCALE_PATHS={'append': os.path.join(os.path.dirname(__file__), 'locale')}
-        ):
+        with self._add_new_language():
             url = reverse('episode-list')
             response = self.client.get(url, **{'HTTP_ACCEPT_LANGUAGE': 'foo-br'})
             assert_that(response, has_status_code(status.HTTP_200_OK))
@@ -145,15 +142,18 @@ class APITests(APITestCase):
         assert_that(response.data['name'], equal_to('Getting Started'))
 
     def test_episode_details_with_translated_episode_name(self):
-        with self.modify_settings(
-                LANGUAGES={'append': [('foo-br', 'Test locale')]},
-                LOCALE_PATHS={'append': os.path.join(os.path.dirname(__file__), 'locale')}
-        ):
+        with self._add_new_language():
             episode_id = 1
             url = reverse('episode-detail', kwargs={'pk': episode_id})
             response = self.client.get(url, **{'HTTP_ACCEPT_LANGUAGE': 'foo-br'})
             assert_that(response, has_status_code(status.HTTP_200_OK))
             assert_that(response.data['name'], equal_to('crwdns4197:0crwdne4197:0'))
+
+    def _add_new_language(self):
+        return self.modify_settings(
+            LANGUAGES={'append': [('foo-br', 'Test locale')]},
+            LOCALE_PATHS={'append': os.path.join(os.path.dirname(__file__), 'locale')}
+        )
 
 
 def has_status_code(status_code):
