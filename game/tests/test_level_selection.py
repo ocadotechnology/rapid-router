@@ -60,11 +60,14 @@ class LevelSelectionTestCase(TestCase):
             response = self.client.get(url, **{'HTTP_ACCEPT_LANGUAGE': 'foo-br'})
 
             assert_that(response.status_code, equal_to(200))
-            assert_that(response.context['episodeData'][0]['name'], equal_to('crwdns4197:0crwdne4197:0'))
+            self._assert_that_response_contains_episode_name(response, 'crwdns4197:0crwdne4197:0')
 
     def test_list_episodes(self):
         url = reverse('levels')
         response = self.client.get(url)
 
         assert_that(response.status_code, equal_to(200))
-        assert_that(response.context['episodeData'][0]['name'], equal_to('Getting Started'))
+        self._assert_that_response_contains_episode_name(response, 'Getting Started')
+
+    def _assert_that_response_contains_episode_name(self, response, expected):
+        assert_that(response.context['episodeData'][0]['name'], equal_to(expected))
