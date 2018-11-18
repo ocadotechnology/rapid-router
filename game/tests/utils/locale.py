@@ -45,4 +45,3 @@ def add_new_language():
         LANGUAGES={'append': [('foo-br', 'Test locale')]},
         LOCALE_PATHS={'append': os.path.join(os.path.dirname(__file__), '..', 'locale')}
     )
-
