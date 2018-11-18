@@ -34,36 +34,15 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from django.core.cache import cache
-from django.core.urlresolvers import reverse
-from django.test.testcases import TestCase
-from django.test.client import Client
 
-from hamcrest import *
+import os
 
-from game.tests.utils.locale import add_new_language
+from django.test import modify_settings
 
 
-class LevelSelectionTestCase(TestCase):
+def add_new_language():
+    return modify_settings(
+        LANGUAGES={'append': [('foo-br', 'Test locale')]},
+        LOCALE_PATHS={'append': os.path.join(os.path.dirname(__file__), '..', 'locale')}
+    )
 
-    def setUp(self):
-        self.client = Client()
-
-    def test_list_episodes_with_translated_episode_names(self):
-        cache.clear()
-        with add_new_language():
-            url = reverse('levels')
-            response = self.client.get(url, **{'HTTP_ACCEPT_LANGUAGE': 'foo-br'})
-
-            assert_that(response.status_code, equal_to(200))
-            self._assert_that_response_contains_episode_name(response, 'crwdns4197:0crwdne4197:0')
-
-    def test_list_episodes(self):
-        url = reverse('levels')
-        response = self.client.get(url)
-
-        assert_that(response.status_code, equal_to(200))
-        self._assert_that_response_contains_episode_name(response, 'Getting Started')
-
-    def _assert_that_response_contains_episode_name(self, response, expected):
-        assert_that(response.context['episodeData'][0]['name'], equal_to(expected))
