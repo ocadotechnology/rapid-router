@@ -2093,51 +2093,19 @@ def hint_level109():
     return message
 
 
-def _title_episode1():
-    return ugettext('Getting Started')
-
-
-def _title_episode2():
-    return ugettext('Shortest Route')
-
-
-def _title_episode3():
-    return ugettext('Loops and Repetitions')
-
-
-def _title_episode4():
-    return ugettext('Loops with Conditions')
-
-
-def _title_episode5():
-    return ugettext('If... Only')
-
-
-def _title_episode6():
-    return ugettext('Traffic Lights')
-
-
-def _title_episode7():
-    return ugettext('Limited Blocks')
-
-
-def _title_episode8():
-    return ugettext('Procedures')
-
-
-def _title_episode9():
-    return ugettext('Blockly Brain Teasers')
-
-
-def _title_episode10():
-    return ugettext('Introduction to Python')
-
-
-def _title_episode11():
-    return ugettext('Python')
-
-
 def get_episode_title(episode):
-    episode_title_method_name = '_title_episode' + str(episode.id)
-    episode_title_method = getattr(sys.modules[__name__], episode_title_method_name)
-    return episode_title_method()
+    episode_titles = {
+        1: ugettext('Getting Started'),
+        2: ugettext('Shortest Route'),
+        3: ugettext('Loops and Repetitions'),
+        4: ugettext('Loops with Conditions'),
+        5: ugettext('If... Only'),
+        6: ugettext('Traffic Lights'),
+        7: ugettext('Limited Blocks'),
+        8: ugettext('Procedures'),
+        9: ugettext('Blockly Brain Teasers'),
+        10: ugettext('Introduction to Python'),
+        11: ugettext('Python')
+    }
+
+    return episode_titles[episode.id]
