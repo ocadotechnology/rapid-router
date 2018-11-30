@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2018, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -83,7 +83,7 @@ def fetch_episode_data_from_database(early_access):
                 "title": get_level_title(level_name)})
 
         e = {"id": episode.id,
-             "name": episode.name,
+             "name": messages.get_episode_title(episode),
              "levels": levels,
              "first_level": minName,
              "last_level": maxName,

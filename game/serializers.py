@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2018, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -146,15 +146,21 @@ class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
+    name = serializers.SerializerMethodField()
+
     class Meta:
         model = Episode
         fields = ('url', '__unicode__', 'name')
+
+    def get_name(self, obj):
+        return messages.get_episode_title(obj)
 
 
 class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
     level_set = serializers.SerializerMethodField()
     level_set_url = serializers.HyperlinkedIdentityField(view_name='level-for-episode',
                                                           read_only=True)
+    name = serializers.SerializerMethodField()
 
     class Meta:
         model = Episode
@@ -165,6 +171,9 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
         levels = Level.objects.filter(episode__id=obj.id)
         serializer = LevelListSerializer(levels, many=True, context={'request': self.context.get('request', None)})
         return serializer.data
+
+    def get_name(self, obj):
+        return messages.get_episode_title(obj)
 
 
 class LevelBlockSerializer(serializers.ModelSerializer):
