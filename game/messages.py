@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2018, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -34,6 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+import sys
+
 from django.utils.translation import ugettext
 
 
@@ -2089,3 +2091,21 @@ def description_level109():
 def hint_level109():
     message = ugettext("To halve the value of a variable you can do something like the following:<br><pre>n /= 2</pre>")
     return message
+
+
+def get_episode_title(episode):
+    episode_titles = {
+        1: ugettext('Getting Started'),
+        2: ugettext('Shortest Route'),
+        3: ugettext('Loops and Repetitions'),
+        4: ugettext('Loops with Conditions'),
+        5: ugettext('If... Only'),
+        6: ugettext('Traffic Lights'),
+        7: ugettext('Limited Blocks'),
+        8: ugettext('Procedures'),
+        9: ugettext('Blockly Brain Teasers'),
+        10: ugettext('Introduction to Python'),
+        11: ugettext('Python')
+    }
+
+    return episode_titles[episode.id]
