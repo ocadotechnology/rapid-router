@@ -153,7 +153,7 @@ class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', '__unicode__', 'name')
 
     def get_name(self, obj):
-        return messages.get_episode_title(obj)
+        return messages.get_episode_title(obj.id)
 
 
 class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
@@ -173,7 +173,7 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
         return serializer.data
 
     def get_name(self, obj):
-        return messages.get_episode_title(obj)
+        return messages.get_episode_title(obj.id)
 
 
 class LevelBlockSerializer(serializers.ModelSerializer):

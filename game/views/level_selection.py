@@ -83,7 +83,6 @@ def fetch_episode_data_from_database(early_access):
                 "title": get_level_title(level_name)})
 
         e = {"id": episode.id,
-             "name": messages.get_episode_title(episode),
              "levels": levels,
              "first_level": minName,
              "last_level": maxName,
@@ -102,7 +101,11 @@ def fetch_episode_data(early_access):
     if data is None:
         data = fetch_episode_data_from_database(early_access)
         cache.set(key, data)
-    return data
+    return [
+        dict(episode, name=messages.get_episode_title(episode['id']), levels=[
+            dict(level, title=get_level_title(level['name'])) for level in episode['levels']
+        ]) for episode in data
+    ]
 
 
 def get_level_title(i):

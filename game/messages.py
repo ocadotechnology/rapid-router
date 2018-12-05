@@ -2093,7 +2093,7 @@ def hint_level109():
     return message
 
 
-def get_episode_title(episode):
+def get_episode_title(episode_id):
     episode_titles = {
         1: ugettext('Getting Started'),
         2: ugettext('Shortest Route'),
@@ -2108,4 +2108,4 @@ def get_episode_title(episode):
         11: ugettext('Python')
     }
 
-    return episode_titles[episode.id]
+    return episode_titles[episode_id]
