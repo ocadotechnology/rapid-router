@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2018, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -37,7 +37,8 @@
 from datetime import timedelta, datetime
 from django.utils.timezone import utc
 
-from django.test import TestCase
+from django.core.urlresolvers import reverse
+from django.test import TestCase, Client
 from hamcrest import *
 
 from game.models import Level, Attempt
@@ -45,6 +46,7 @@ from game.views.scoreboard import StudentRow, scoreboard_data
 from game.views.scoreboard_csv import scoreboard_csv_multiple_levels, scoreboard_csv_single_level
 from portal.models import Class
 from portal.tests.utils.classes import create_class_directly
+from portal.tests.utils.organisation import create_organisation_directly
 from portal.tests.utils.student import create_school_student_directly
 from portal.tests.utils.teacher import signup_teacher_directly
 
@@ -191,6 +193,17 @@ class ScoreboardTestCase(TestCase):
                            total_time=timedelta(0),
                            progress=(0.0, 0.0, 50.0),
                            scores=[10.5, ''])
+
+    def test_scoreboard_loads(self):
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        klass, name, access_code = create_class_directly(email)
+        create_school_student_directly(access_code)
+        url = reverse('scoreboard')
+        c = Client()
+        c.login(username=email, password=password)
+        response = c.get(url)
+        self.assertEqual(200, response.status_code)
 
 
 class ScoreboardCsvTestCase(TestCase):
