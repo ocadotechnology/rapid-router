@@ -83,7 +83,6 @@ def fetch_episode_data_from_database(early_access):
                 "title": get_level_title(level_name)})
 
         e = {"id": episode.id,
-             "name": messages.get_episode_title(episode.id),
              "levels": levels,
              "first_level": minName,
              "last_level": maxName,
