@@ -119,7 +119,7 @@ def classes_for(user):
 
 
 def scoreboard_view(request, form, student_data, headers):
-    database_episodes = level_selection.fetch_episode_data_from_database(False)
+    database_episodes = level_selection.fetch_episode_data(False)
     context_episodes = {}
     for episode in database_episodes:
         context_episodes[episode['first_level']] = {
