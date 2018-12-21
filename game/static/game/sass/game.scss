@@ -1,7 +1,6 @@
-/*
-Code for Life
+/* Code for Life
 
-Copyright (C) 2017, Ocado Innovation Limited
+Copyright (C) 2018, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -76,12 +75,12 @@ identified as the original program.
     position: absolute;
 
     @media #{$large-up} {
-      & ~ .main {
+      ~ .main {
         margin-left: $sidebar-left-large-width + $sidebar-gutter-spacing;
       }
     }
     @media #{$medium-only} {
-      & ~ .main {
+      ~ .main {
         margin-left: $sidebar-left-medium-width + $sidebar-gutter-spacing;
       }
     }
@@ -184,7 +183,7 @@ identified as the original program.
     }
 
     &.active {
-      & > a:first-child {
+      > a:first-child {
         margin: 0 -20px;
         padding-left: 20px;
         padding-right: 20px;
@@ -195,7 +194,7 @@ identified as the original program.
     }
 
     &:hover {
-      & > a:first-child {
+      > a:first-child {
         margin: 0 -20px;
         padding-left: 20px;
         padding-right: 20px;
@@ -397,12 +396,6 @@ identified as the original program.
 
 .nuit-breadcrumbs {
   margin-bottom: 0.5em;
-}
-
-.alert-box.debug {
-  @include alert(
-    $bg: #cccccc
-  );
 }
 
 .alert-box {
