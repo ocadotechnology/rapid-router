@@ -39,7 +39,7 @@ identified as the original program.
 @import '../../scss/foundation';
 @import 'variables';
 @import '../../bourbon/bourbon';
-@import '../../foundation-icons.scss';
+@import '../../foundation-icons';
 
 .size-12 { font-size: 12px; }
 
@@ -297,7 +297,7 @@ identified as the original program.
 
   @for $i from 1 through length($loader-colors) {
     .dotwrap:nth-child(#{length($loader-colors)}n+#{$i}) {
-      @include transform(rotate(#{360/length($loader-colors)*$i}deg));
+      @include transform(rotate(#{360 / length($loader-colors) * $i}deg));
       .dot {
         display: block;
         color: nth($loader-colors, $i);
@@ -309,14 +309,14 @@ identified as the original program.
 
 @include keyframes(rotate) {
   0% { @include transform(rotate(0)); }
-  100%{ @include transform(rotate(360deg)); }
+  100% { @include transform(rotate(360deg)); }
 }
 @include keyframes(smallbig) {
   50% { height: 40%;  margin-top: -20%; }
 }
 @include keyframes(dots) {
-  50% { opacity: .1; }
-  100%{ opacity: .9; }
+  50% { opacity: 0.1; }
+  100% { opacity: 0.9; }
 }
 
 .nuit-loader-size16 {
@@ -343,7 +343,7 @@ identified as the original program.
   @media #{$medium-up} {
     width: $fixed-modal-width;
     margin-top: 5rem;
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
   }
 
   margin: 0 auto;
