@@ -51,7 +51,12 @@ identified as the original program.
     border: none;
   }
 
-  &, thead, tbody, th, td, tr {
+  &,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
     display: block;
   }
 
@@ -62,13 +67,13 @@ identified as the original program.
   }
 
   tr {
-    border: 1px solid #ccc;
+    border: 1px solid #cccccc;
     margin-bottom: 1em;
   }
 
   td {
     border: none;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eeeeee;
     position: relative;
     padding-left: 45%;
     min-height: 2.4rem;
@@ -98,7 +103,7 @@ identified as the original program.
 
   &.headers-20 {
     td {
-        padding-left: 25%;
+      padding-left: 25%;
     }
     td:before {
       width: 20%;
