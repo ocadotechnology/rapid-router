@@ -1,7 +1,6 @@
-/*
-Code for Life
+/* Code for Life
 
-Copyright (C) 2017, Ocado Innovation Limited
+Copyright (C) 2018, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -47,9 +46,7 @@ identified as the original program.
 
 @mixin grouped-responsive-table {
 
-  & {
-    border: none;
-  }
+  border: none;
 
   &,
   thead,
@@ -67,13 +64,13 @@ identified as the original program.
   }
 
   tr {
-    border: 1px solid #cccccc;
+    border: 1px solid $iron;
     margin-bottom: 1em;
   }
 
   td {
     border: none;
-    border-bottom: 1px solid #eeeeee;
+    border-bottom: 1px solid $smoke;
     position: relative;
     padding-left: 45%;
     min-height: 2.4rem;

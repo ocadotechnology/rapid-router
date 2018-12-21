@@ -1,7 +1,6 @@
-/*
-Code for Life
+/* Code for Life
 
-Copyright (C) 2017, Ocado Innovation Limited
+Copyright (C) 2018, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -50,10 +49,10 @@ $sidebar-link-hover-color: $anchor-font-color-hover !default;
 $sidebar-link-active-bg: rgba(0, 64, 84, 0.05) !default;
 $sidebar-link-hover-bg: rgba(0, 64, 84, 0.03) !default;
 
+// scss-lint:disable ColorVariable
 $loader-colors: rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2) !default;
+// scss-lint:enable ColorVariable
+
 $loader-subicon: '\0025CF' !default;
 
 $fixed-modal-width: 400px !default;
-$fixed-modal-border-color: #cccccc;
-
-$alert-box-bg: #cccccc;
