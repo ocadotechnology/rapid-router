@@ -99,7 +99,8 @@ identified as the original program.
     padding-top: 0;
   }
 
-  h5, dt {
+  h5,
+  dt {
     margin: 0;
     padding: 2px 0;
     text-transform: uppercase;
@@ -111,15 +112,19 @@ identified as the original program.
     margin-top: 0;
   }
 
-  p, table, dd {
+  p,
+  table,
+  dd {
     font-size: 0.8rem;
   }
 
-  p, table {
+  p,
+  table {
     margin-top: 0.8rem;
   }
 
-  table tr td, table tr th {
+  table tr td,
+  table tr th {
     font-size: 0.8rem;
   }
 
@@ -132,11 +137,17 @@ identified as the original program.
     margin-top: 0.8rem;
     margin-bottom: 0.8rem;
 
-    label, input, select, button, .postfix.button {
+    label,
+    input,
+    select,
+    button,
+    .postfix.button {
       font-size: 0.8rem;
     }
 
-    select, input[type=text], .postfix.button {
+    select,
+    input[type=text],
+    .postfix.button {
       height: 2rem;
       line-height: 2rem;
     }
