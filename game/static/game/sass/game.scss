@@ -342,7 +342,7 @@ identified as the original program.
   @media #{$medium-up} {
     width: $fixed-modal-width;
     margin-top: 5rem;
-    border: 1px solid #cccccc;
+    border: 1px solid $fixed-modal-border-color;
   }
 
   margin: 0 auto;
@@ -404,7 +404,7 @@ identified as the original program.
   }
   &.debug {
     @include alert(
-      $bg: #cccccc
+      $bg: $alert-box-bg
     );
     &:before {
       @extend .fi-widget:before;
