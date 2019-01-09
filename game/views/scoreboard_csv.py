@@ -88,7 +88,7 @@ def header_for(levels):
 def create_to_array_multiple_levels(response):
     def to_array_multiple_levels(student_row):
         started, attempted, finished = student_row.progress
-        result = [student_row.class_field.name.encode(response.charset), student_row.name, student_row.total_score,
+        result = [student_row.class_field.name.encode(response.charset), student_row.name.encode(response.charset), student_row.total_score,
                   student_row.total_time, started, attempted, finished]
 
         return result + student_row.scores
@@ -97,7 +97,7 @@ def create_to_array_multiple_levels(response):
 
 def create_to_array_single_level(response):
     def to_array_single_level(student_row):
-        result = [student_row.class_field.name.encode(response.charset), student_row.name, student_row.total_score,
+        result = [student_row.class_field.name.encode(response.charset), student_row.name.encode(response.charset), student_row.total_score,
                   student_row.total_time, student_row.start_time, student_row.finish_time]
 
         return result

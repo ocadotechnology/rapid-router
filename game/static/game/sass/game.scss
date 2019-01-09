@@ -1,7 +1,6 @@
-/*
-Code for Life
+/* Code for Life
 
-Copyright (C) 2017, Ocado Innovation Limited
+Copyright (C) 2018, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -35,11 +34,11 @@ copyright notice and these terms. You must not misrepresent the origins of this
 program; modified versions of the program must be marked as such and not
 identified as the original program.
 */
-@import "foundation_overrides";
-@import "../../scss/foundation";
-@import "variables";
-@import "../../bourbon/bourbon";
-@import "../../foundation-icons.scss";
+@import 'foundation_overrides';
+@import '../../scss/foundation';
+@import 'variables';
+@import '../../bourbon/bourbon';
+@import '../../foundation-icons.scss';
 
 .size-12 { font-size: 12px; }
 
@@ -62,185 +61,194 @@ identified as the original program.
 .size-72 { font-size: 72px; }
 
 .container {
-    position: relative;
+  position: relative;
 }
 
 .sidebar {
+  background-color: $sidebar-bg;
+  padding: 20px;
+  margin-bottom: $sidebar-gutter-spacing;
 
-    background-color: $sidebar-bg;
-    padding: 20px;
-    margin-bottom: $sidebar-gutter-spacing;
-
-    &.on-left {
-        top: 0;
-        left: $sidebar-gutter-spacing;
-        position: absolute;
-
-        @media #{$large-up} {
-            & ~ .main {
-                margin-left: $sidebar-left-large-width + $sidebar-gutter-spacing;
-            }
-        }
-        @media #{$medium-only} {
-            & ~ .main {
-                margin-left: $sidebar-left-medium-width + $sidebar-gutter-spacing;
-            }
-        }
-
-    }
-
-    &.on-right {
-        max-width: $sidebar-right-max-width;
-        top: 0;
-        right: $sidebar-gutter-spacing;
-        position: absolute;
-    }
-
-    .side-nav {
-        padding-top: 0;
-    }
-
-    h5, dt {
-        margin: 0;
-        padding: 2px 0;
-        text-transform: uppercase;
-        font-size: 0.78rem;
-        font-weight: normal;
-    }
-
-    hr {
-        margin-top: 0;
-    }
-
-    p, table, dd {
-        font-size: 0.8rem;
-    }
-
-    p, table {
-        margin-top: 0.8rem;
-    }
-
-    table tr td, table tr th {
-        font-size: 0.8rem;
-    }
-
-    .panel {
-        padding: 0.8rem;
-        margin-top: 0.8rem;
-    }
-
-    form {
-
-        margin-top: 0.8rem;
-        margin-bottom: 0.8rem;
-
-        label, input, select, button, .postfix.button {
-            font-size: 0.8rem;
-        }
-
-        select, input[type=text], .postfix.button {
-            height: 2rem;
-            line-height: 2rem;
-        }
-
-        button {
-            padding: 0.5rem 0.8rem;
-            width: 100%;
-            margin: 0 0 1rem;
-        }
-
-    }
-
-    li {
-
-        margin: 0;
-        padding: 0;
-
-        &.divider {
-            margin: 16px 0;
-        }
-
-        &.heading {
-            padding: 2px 0;
-            text-transform: uppercase;
-            font-size: 0.78rem;
-        }
-
-        a {
-            padding: 0.33333rem 0;
-        }
-
-        p {
-            margin-bottom: 0;
-        }
-
-        &.active {
-            & > a:first-child {
-                margin: 0 -20px;
-                padding-left: 20px;
-                padding-right: 20px;
-                background: $sidebar-link-active-bg;
-                font-weight: bold;
-                color: $sidebar-link-active-color;
-            }
-        }
-
-        &:hover {
-            & > a:first-child {
-                margin: 0 -20px;
-                padding-left: 20px;
-                padding-right: 20px;
-                color: $sidebar-link-hover-color;
-                background: $sidebar-link-hover-bg;
-            }
-        }
-    }
-
-    section:last-child hr {
-        display: none;
-    }
+  &.on-left {
+    top: 0;
+    left: $sidebar-gutter-spacing;
+    position: absolute;
 
     @media #{$large-up} {
-        width: $sidebar-left-large-width;
-        &.on-right + .main {
-            padding-right: $sidebar-right-max-width + $sidebar-gutter-spacing;
-        }
+      ~ .main {
+        margin-left: $sidebar-left-large-width + $sidebar-gutter-spacing;
+      }
+    }
+    @media #{$medium-only} {
+      ~ .main {
+        margin-left: $sidebar-left-medium-width + $sidebar-gutter-spacing;
+      }
     }
 
-    @media #{$medium-down} {
-        width: $sidebar-left-medium-width;
+  }
+
+  &.on-right {
+    max-width: $sidebar-right-max-width;
+    top: 0;
+    right: $sidebar-gutter-spacing;
+    position: absolute;
+  }
+
+  .side-nav {
+    padding-top: 0;
+  }
+
+  h5,
+  dt {
+    margin: 0;
+    padding: 2px 0;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: normal;
+  }
+
+  hr {
+    margin-top: 0;
+  }
+
+  p,
+  table,
+  dd {
+    font-size: 0.8rem;
+  }
+
+  p,
+  table {
+    margin-top: 0.8rem;
+  }
+
+  table tr td,
+  table tr th {
+    font-size: 0.8rem;
+  }
+
+  .panel {
+    padding: 0.8rem;
+    margin-top: 0.8rem;
+  }
+
+  form {
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+
+    label,
+    input,
+    select,
+    button,
+    .postfix.button {
+      font-size: 0.8rem;
     }
+
+    select,
+    input[type=text],
+    .postfix.button {
+      height: 2rem;
+      line-height: 2rem;
+    }
+
+    button {
+      padding: 0.5rem 0.8rem;
+      width: 100%;
+      margin: 0 0 1rem;
+    }
+
+  }
+
+  li {
+
+    margin: 0;
+    padding: 0;
+
+    &.divider {
+      margin: 16px 0;
+    }
+
+    &.heading {
+      padding: 2px 0;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+    }
+
+    a {
+      padding: 0.33333rem 0;
+    }
+
+    p {
+      margin-bottom: 0;
+    }
+
+    &.active {
+      > a:first-child {
+        margin: 0 -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background: $sidebar-link-active-bg;
+        font-weight: bold;
+        color: $sidebar-link-active-color;
+      }
+    }
+
+    &:hover {
+      > a:first-child {
+        margin: 0 -20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        color: $sidebar-link-hover-color;
+        background: $sidebar-link-hover-bg;
+      }
+    }
+  }
+
+  section:last-child hr {
+    display: none;
+  }
+
+  @media #{$large-up} {
+    width: $sidebar-left-large-width;
+    &.on-right + .main {
+      padding-right: $sidebar-right-max-width + $sidebar-gutter-spacing;
+    }
+  }
+
+  @media #{$medium-down} {
+    width: $sidebar-left-medium-width;
+  }
 
 }
 
 @media #{$medium-down} {
-    .right-menu-reveal {
-        @include reveal-bg;
-        @include reveal-modal-base;
-        @include reveal-modal-style;
-        hr:last-child {
-            display: none;
-        }
+  .right-menu-reveal {
+    @include reveal-bg;
+    @include reveal-modal-base;
+    @include reveal-modal-style;
+    hr:last-child {
+      display: none;
     }
+  }
 }
 
 .main {
 
-    margin-top: 1rem;
+  margin-top: 1rem;
 
-    .actions.button.dropdown {
-        padding: 0.5rem 0.8rem;
-    }
+  .actions.button.dropdown {
+    padding: 0.5rem 0.8rem;
+  }
 
-    .actions:before {
-        display: none;
-    }
+  .actions:before {
+    display: none;
+  }
 
 }
 
 .pagination-totals {
-    font-size: 0.8rem;
-    color: $pagination-link-font-color;
+  font-size: 0.8rem;
+  color: $pagination-link-font-color;
 }
 
 .nuit-loader {
@@ -288,7 +296,7 @@ identified as the original program.
 
   @for $i from 1 through length($loader-colors) {
     .dotwrap:nth-child(#{length($loader-colors)}n+#{$i}) {
-      @include transform(rotate(#{360/length($loader-colors)*$i}deg));
+      @include transform(rotate(#{360 / length($loader-colors) * $i}deg));
       .dot {
         display: block;
         color: nth($loader-colors, $i);
@@ -300,14 +308,14 @@ identified as the original program.
 
 @include keyframes(rotate) {
   0% { @include transform(rotate(0)); }
-  100%{ @include transform(rotate(360deg)); }
+  100% { @include transform(rotate(360deg)); }
 }
 @include keyframes(smallbig) {
-  50% {  height: 40%;  margin-top: -20%; }
+  50% { height: 40%;  margin-top: -20%; }
 }
 @include keyframes(dots) {
-  50% { opacity: .1; }
-  100%{ opacity: .9; }
+  50% { opacity: 0.1; }
+  100% { opacity: 0.9; }
 }
 
 .nuit-loader-size16 {
@@ -331,116 +339,110 @@ identified as the original program.
 
 .fixed-modal {
 
+  @media #{$medium-up} {
+    width: $fixed-modal-width;
+    margin-top: 5rem;
+    border: 1px solid $iron;
+  }
+
+  margin: 0 auto;
+
+  header {
+
+    background-color: $topbar-bg;
+    padding: 1em;
+    text-align: center;
+
+    h1 {
+      color: $topbar-link-color;
+      font-size: 1.6em;
+      margin: 0;
+    }
+
+  }
+
+  section {
+
     @media #{$medium-up} {
-        width: $fixed-modal-width;
-        margin-top: 5rem;
-        border: 1px solid #ccc;
+      padding: 1rem;
+      padding-bottom: 0;
     }
 
-    margin: 0 auto;
-
-    header {
-
-        background-color: $topbar-bg;
-        padding: 1em;
-        text-align: center;
-
-        h1 {
-            color: $topbar-link-color;
-            font-size: 1.6em;
-            margin: 0;
-        }
-
+    .full {
+      margin-left: -1rem;
+      margin-right: -1rem;
     }
 
-    section {
-
-        @media #{$medium-up} {
-            padding: 1rem;
-            padding-bottom: 0;
-        }
-
-        .full {
-            margin-left: -1rem;
-            margin-right: -1rem;
-        }
-
-        .submit {
-            text-align: center;
-        }
-
-        .nuit-loader {
-            margin-bottom: 1em;
-        }
-
-        .errorcode {
-            @include pricing-table-price;
-            margin-bottom: 1rem;
-        }
-
+    .submit {
+      text-align: center;
     }
+
+    .nuit-loader {
+      margin-bottom: 1em;
+    }
+
+    .errorcode {
+      @include pricing-table-price;
+      margin-bottom: 1rem;
+    }
+
+  }
 
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 .nuit-breadcrumbs {
-    margin-bottom: 0.5em;
-}
-
-.alert-box.debug {
-  @include alert(
-    $bg: #cccccc
-  );
+  margin-bottom: 0.5em;
 }
 
 .alert-box {
+  &:before {
+    padding-right: 0.5em;
+  }
+  &.debug {
+    @include alert(
+      $bg: $iron
+    );
     &:before {
-        padding-right: 0.5em;
+      @extend .fi-widget:before;
     }
-    &.debug {
-        @include alert(
-            $bg: #cccccc
-        );
-        &:before {
-            @extend .fi-widget:before;
-        }
-    }
-    &.info:before {
-        @extend .fi-star:before;
-    }
-    &.success:before {
-        @extend .fi-check:before;
-    }
-    &.warning:before {
-        @extend .fi-alert:before;
-    }
-    &.alert:before {
-        @extend .fi-prohibited:before;
-    }
+  }
+  &.info:before {
+    @extend .fi-star:before;
+  }
+  &.success:before {
+    @extend .fi-check:before;
+  }
+  &.warning:before {
+    @extend .fi-alert:before;
+  }
+  &.alert:before {
+    @extend .fi-prohibited:before;
+  }
 }
 
 .responsive {
-    &.grouped {
-        @media #{$small-only} {
-            @include grouped-responsive-table;
-        }
-        &.medium-down {
-            @media #{$medium-down} {
-                @include grouped-responsive-table;
-            }
-        }
+  &.grouped {
+    @media #{$small-only} {
+      @include grouped-responsive-table;
     }
-    &.scroll {
-        @media #{$small-only} {
-            @include scroll-responsive-table(#{upper-bound($small-range)});
-        }
-        &.medium-down {
-            @media #{$medium-down} {
-                @include scroll-responsive-table(#{upper-bound($medium-range)});
-            }
-        }
+    &.medium-down {
+      @media #{$medium-down} {
+        @include grouped-responsive-table;
+      }
     }
+  }
+  &.scroll {
+    @media #{$small-only} {
+      @include scroll-responsive-table(#{upper-bound($small-range)});
+    }
+    &.medium-down {
+      @media #{$medium-down} {
+        @include scroll-responsive-table(#{upper-bound($medium-range)});
+      }
+    }
+  }
 }
