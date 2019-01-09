@@ -14,7 +14,7 @@ engines:
   radon:
     enabled: true
   scss-lint:
-    enabled: false
+    enabled: true
 exclude_paths:
   - "game/_version.py"
   - "versioneer.py"
