@@ -72,19 +72,19 @@ table tbody td {
 }
 
 /* Colour for the portion of the bar which represents the percentage of levels players finished */
-.finished {
+.ui-progressbar .finished {
 	background: #74B06B;
 }
 /* Colour for the portion of the bar which represents the percentage of levels players finished but under a certain
  * threshold
  */
-.attempted {
+.ui-progressbar .attempted {
 	background: #E1B377;
 }
 /* Colour for the portion of the bar which represents the percentage of levels players started but haven't submitted
  * attempts yet
  */
-.started {
+.ui-progressbar .started {
 	background: #C24563;
 }
 
