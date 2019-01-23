@@ -1,11 +1,15 @@
 import os
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+chrome_options = Options()
+chrome_options.add_argument('--start-maximized')
 
 SELENIUM_WEBDRIVERS = {
     'default': {
         'callable': webdriver.Chrome,
         'args': (),
-        'kwargs': {},
+        'kwargs': {'chrome_options': chrome_options},
     },
     'chrome': {
         'callable': webdriver.Firefox,
