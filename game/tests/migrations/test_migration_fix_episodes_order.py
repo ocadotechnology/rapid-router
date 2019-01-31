@@ -34,47 +34,31 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from django.db import migrations
+from base_test_migration import MigrationTestCase
 
 
-def update_episodes(apps, schema_editor):
-    Level = apps.get_model('game', 'Level')
-    episode7_levels = list(Level.objects.filter(name__range=(51, 60)))
-    del episode7_levels[0]
-    episode8_levels = list(Level.objects.filter(name__range=(61, 67)))
+class TestMigrationReorderEpisodes(MigrationTestCase):
 
-    Episode = apps.get_model('game', 'Episode')
-    episode6 = Episode.objects.get(id=6)
-    episode7 = Episode.objects.get(id=7)
-    episode8 = Episode.objects.get(id=8)
-    episode9 = Episode.objects.get(id=9)
+    start_migration = '0067_level_score_27'
+    dest_migration = '0069_fix_episodes_order_part_2'
 
-    episode7.name = "Limited Blocks"
-    episode8.name = "Procedures"
+    def test_episodes_renamed_properly(self):
+        Episode = self.django_application.get_model('game', 'Episode')
 
-    episode7.save()
-    episode8.save()
+        episode7 = Episode.objects.get(id=7)
+        episode8 = Episode.objects.get(id=8)
 
-    episode6.next_episode = episode7
-    episode7.next_episode = episode8
-    episode8.next_episode = episode9
+        self.assertEquals(episode7.name, 'Limited Blocks')
+        self.assertEquals(episode8.name, 'Procedures')
 
-    episode6.save()
-    episode7.save()
-    episode8.save()
+    def test_episodes_reordered_properly(self):
+        Episode = self.django_application.get_model('game', 'Episode')
 
-    episode7.level_set = episode7_levels
-    episode8.level_set = episode8_levels
+        episode6 = Episode.objects.get(id=6)
+        episode7 = Episode.objects.get(id=7)
+        episode8 = Episode.objects.get(id=8)
+        episode9 = Episode.objects.get(id=9)
 
-    episode7.save()
-    episode8.save()
-
-
-class Migration(migrations.Migration):
-    dependencies = [
-        ('game', '0067_level_score_27'),
-    ]
-
-    operations = [
-        migrations.RunPython(update_episodes, reverse_code=migrations.RunPython.noop)
-    ]
+        self.assertEquals(episode6.next_episode, episode7)
+        self.assertEquals(episode7.next_episode, episode8)
+        self.assertEquals(episode8.next_episode, episode9)

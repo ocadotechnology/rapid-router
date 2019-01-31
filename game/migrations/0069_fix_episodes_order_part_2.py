@@ -37,31 +37,20 @@
 from django.db import migrations
 
 
-def update_episodes(apps, schema_editor):
+def update_episodes_level_order(apps, schema_editor):
     Level = apps.get_model('game', 'Level')
-    episode7_levels = list(Level.objects.filter(name__range=(51, 60)))
-    del episode7_levels[0]
-    episode8_levels = list(Level.objects.filter(name__range=(61, 67)))
+    episode7_levels = []
+    episode8_levels = []
+
+    for episode7_level_name in range(51, 61):
+        episode7_levels.append(Level.objects.get(name=episode7_level_name))
+
+    for episode8_level_name in range(61, 68):
+        episode8_levels.append(Level.objects.get(name=episode8_level_name))
 
     Episode = apps.get_model('game', 'Episode')
-    episode6 = Episode.objects.get(id=6)
     episode7 = Episode.objects.get(id=7)
     episode8 = Episode.objects.get(id=8)
-    episode9 = Episode.objects.get(id=9)
-
-    episode7.name = "Limited Blocks"
-    episode8.name = "Procedures"
-
-    episode7.save()
-    episode8.save()
-
-    episode6.next_episode = episode7
-    episode7.next_episode = episode8
-    episode8.next_episode = episode9
-
-    episode6.save()
-    episode7.save()
-    episode8.save()
 
     episode7.level_set = episode7_levels
     episode8.level_set = episode8_levels
@@ -72,9 +61,9 @@ def update_episodes(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('game', '0067_level_score_27'),
+        ('game', '0068_fix_episodes_order'),
     ]
 
     operations = [
-        migrations.RunPython(update_episodes, reverse_code=migrations.RunPython.noop)
+        migrations.RunPython(update_episodes_level_order, reverse_code=migrations.RunPython.noop)
     ]
