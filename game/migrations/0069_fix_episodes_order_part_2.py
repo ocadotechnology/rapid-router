@@ -34,31 +34,36 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from base_test_migration import MigrationTestCase
+from django.db import migrations
 
 
-class TestMigrationPreviewUsers(MigrationTestCase):
+def update_episodes_level_order(apps, schema_editor):
+    Level = apps.get_model('game', 'Level')
+    episode7_levels = []
+    episode8_levels = []
 
-    start_migration = '0067_level_score_27'
-    dest_migration = '0069_fix_episodes_order_part_2'
+    for episode7_level_name in range(51, 61):
+        episode7_levels.append(Level.objects.get(name=episode7_level_name))
 
-    def test_episodes_renamed_properly(self):
-        Episode = self.django_application.get_model('game', 'Episode')
+    for episode8_level_name in range(61, 68):
+        episode8_levels.append(Level.objects.get(name=episode8_level_name))
 
-        episode7 = Episode.objects.get(id=7)
-        episode8 = Episode.objects.get(id=8)
+    Episode = apps.get_model('game', 'Episode')
+    episode7 = Episode.objects.get(id=7)
+    episode8 = Episode.objects.get(id=8)
 
-        self.assertEquals(episode7.name, 'Limited Blocks')
-        self.assertEquals(episode8.name, 'Procedures')
+    episode7.level_set = episode7_levels
+    episode8.level_set = episode8_levels
 
-    def test_episodes_reordered_properly(self):
-        Episode = self.django_application.get_model('game', 'Episode')
+    episode7.save()
+    episode8.save()
 
-        episode6 = Episode.objects.get(id=6)
-        episode7 = Episode.objects.get(id=7)
-        episode8 = Episode.objects.get(id=8)
-        episode9 = Episode.objects.get(id=9)
 
-        self.assertEquals(episode6.next_episode, episode7)
-        self.assertEquals(episode7.next_episode, episode8)
-        self.assertEquals(episode8.next_episode, episode9)
+class Migration(migrations.Migration):
+    dependencies = [
+        ('game', '0068_fix_episodes_order'),
+    ]
+
+    operations = [
+        migrations.RunPython(update_episodes_level_order, reverse_code=migrations.RunPython.noop)
+    ]
