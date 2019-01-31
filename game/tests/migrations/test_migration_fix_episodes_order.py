@@ -37,7 +37,7 @@
 from base_test_migration import MigrationTestCase
 
 
-class TestMigrationPreviewUsers(MigrationTestCase):
+class TestMigrationReorderEpisodes(MigrationTestCase):
 
     start_migration = '0067_level_score_27'
     dest_migration = '0069_fix_episodes_order_part_2'
