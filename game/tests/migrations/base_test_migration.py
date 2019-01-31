@@ -34,47 +34,35 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from django.db import migrations
+from django.db.migrations.executor import MigrationExecutor
+from django.test import TestCase
+from django.db import connection
+from django.apps import apps
 
 
-def update_episodes(apps, schema_editor):
-    Level = apps.get_model('game', 'Level')
-    episode7_levels = list(Level.objects.filter(name__range=(51, 60)))
-    del episode7_levels[0]
-    episode8_levels = list(Level.objects.filter(name__range=(61, 67)))
+class MigrationTestCase(TestCase):
+    """A Test case for testing migrations."""
 
-    Episode = apps.get_model('game', 'Episode')
-    episode6 = Episode.objects.get(id=6)
-    episode7 = Episode.objects.get(id=7)
-    episode8 = Episode.objects.get(id=8)
-    episode9 = Episode.objects.get(id=9)
+    # These must be defined by subclasses.
+    start_migration = None
+    dest_migration = None
 
-    episode7.name = "Limited Blocks"
-    episode8.name = "Procedures"
+    django_application = None
 
-    episode7.save()
-    episode8.save()
+    @property
+    def app_name(self):
+        return apps.get_containing_app_config(type(self).__module__).name
 
-    episode6.next_episode = episode7
-    episode7.next_episode = episode8
-    episode8.next_episode = episode9
+    def setUp(self):
+        executor = MigrationExecutor(connection)
+        # Migrate to start_migration (the migration before the one you want to test)
+        executor.migrate([(self.app_name, self.start_migration)])
 
-    episode6.save()
-    episode7.save()
-    episode8.save()
+        # Rebuild graph. Done between invocations of migrate()
+        executor.loader.build_graph()
 
-    episode7.level_set = episode7_levels
-    episode8.level_set = episode8_levels
+        # Run the migration you want to test
+        executor.migrate([(self.app_name, self.dest_migration)])
 
-    episode7.save()
-    episode8.save()
-
-
-class Migration(migrations.Migration):
-    dependencies = [
-        ('game', '0067_level_score_27'),
-    ]
-
-    operations = [
-        migrations.RunPython(update_episodes, reverse_code=migrations.RunPython.noop)
-    ]
+        # This application can now be used to get the latest models for testing
+        self.django_application = executor.loader.project_state([(self.app_name, self.dest_migration)]).apps

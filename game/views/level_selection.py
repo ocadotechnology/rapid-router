@@ -70,7 +70,7 @@ def fetch_episode_data_from_database(early_access):
         minName = None
         maxName = None
         for level in episode.levels:
-            level_name = int(level.name)
+            level_name = int(level.name)[:2]
             if not maxName or level_name > maxName:
                 maxName = level_name
             if not minName or level_name < minName:
