@@ -38,22 +38,17 @@ from django.db import migrations
 
 
 def update_episodes_level_order(apps, schema_editor):
-    Level = apps.get_model('game', 'Level')
-    episode7_levels = []
-    episode8_levels = []
-
-    for episode7_level_name in range(51, 61):
-        episode7_levels.append(Level.objects.get(name=episode7_level_name))
-
-    for episode8_level_name in range(61, 68):
-        episode8_levels.append(Level.objects.get(name=episode8_level_name))
-
     Episode = apps.get_model('game', 'Episode')
+    Level = apps.get_model('game', 'Level')
+
     episode7 = Episode.objects.get(id=7)
     episode8 = Episode.objects.get(id=8)
 
-    episode7.level_set = episode7_levels
-    episode8.level_set = episode8_levels
+    episode7_new_levels = Level.objects.filter(episode=episode7, owner=None)
+    episode8_new_levels = Level.objects.filter(episode=episode8, owner=None)
+
+    episode7.level_set = episode7_new_levels
+    episode8.level_set = episode8_new_levels
 
     episode7.save()
     episode8.save()
