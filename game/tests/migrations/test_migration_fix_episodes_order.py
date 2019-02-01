@@ -40,7 +40,7 @@ from base_test_migration import MigrationTestCase
 class TestMigrationReorderEpisodes(MigrationTestCase):
 
     start_migration = '0067_level_score_27'
-    dest_migration = '0069_fix_episodes_order_part_2'
+    dest_migration = '0069_remove_user_levels_from_episodes'
 
     def test_episodes_renamed_properly(self):
         Episode = self.django_application.get_model('game', 'Episode')
