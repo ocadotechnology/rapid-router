@@ -18,6 +18,7 @@ engines:
 exclude_paths:
   - "game/_version.py"
   - "versioneer.py"
+  - "game/static/game/css/jquery**"
 ratings:
   paths:
   - "**.css"
