@@ -18,32 +18,34 @@ matrix:
       env: SELENIUM_WEBDRIVER=default
   fast_finish: true
 stages:
-  # - test
+  - test
   - name: deploy
     # if: branch = master
 jobs:
   include:
-    # - stage: test
-    #   before_install:
-    #     - gem install sass -v 3.3.4
-    #   install:
-    #     - pip install -U setuptools
-    #     - pip install -e .
-    #     - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
-    #     - pip install coveralls
-    #     - pip install crowdin-cli-py
-    #   before_script:
-    #     - wget http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
-    #     - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
-    #     - export CHROME_BIN=chromium-browser
-    #     - "export DISPLAY=:99.0"
-    #     - "sh -e /etc/init.d/xvfb start"
-    #     - sleep 3
-    #   script:
-    #     - python setup.py test
-    #   after_success:
-    #     - coveralls
-    - stage: deploy      
+    - stage: test
+      # before_install:
+      #   - gem install sass -v 3.3.4
+      # install:
+      #   - pip install -U setuptools
+      #   - pip install -e .
+      #   - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
+      #   - pip install coveralls
+      #   - pip install crowdin-cli-py
+      # before_script:
+      #   - wget http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+      #   - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+      #   - export CHROME_BIN=chromium-browser
+      #   - "export DISPLAY=:99.0"
+      #   - "sh -e /etc/init.d/xvfb start"
+      #   - sleep 3
+      script: skip
+        # - python setup.py test
+      # after_success:
+        # - coveralls
+    - stage: deploy
+      install:
+        - pip install -e .      
       script:
         - mkdir -p game/locale
         - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
