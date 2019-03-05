@@ -3,7 +3,7 @@ dist: trusty
 group: edge
 language: python
 python:
-  - 2.7
+  - '2.7'
 env:
   global:
     - secure: eg6Lo+RHK3gizOAnNjgOuvvlsjCnVhpFsh30udQkXj6OBWywZly2Owj6QHCYhAuVRQfRnWr5UvLgLgqUxn0sTHs+h1t4naYaFHpMEhVpLPL3cItlal0pFBsp8lwY6UAM5uk1HqA1Iyn9NVpDHyAVkfsZjCq4+Bc0xlzGfR6bejjutzLy0nK5aaDU/j2NGdEI7d9DE6OicvCELUFcvryNmSVb1IYrC9QFj9dBDRszTnQT5Pf4O+3LIcQCYdBSIhEL16CDOnOUbO4xnU5Q6UvqKeiy5ZYgYHatKW2ChLVWBDhkXFhDagB6wAI0nizqmLDviB/6RrgpRPMiqP+RnDQD+/GM8yWEXwKgh51bFGcUsQK/A9nQNIaD3UNNMHUDZ6sHgubsHM3OT1sSkjsiuRpBFDhJ0T3IyzgwPv2ndir4Oq/8GHRc5A4MwkBK+PcXEXK0fVUUxIAhXT7WDTNHBhSuPiLTlPYfB9e8v4Y+5kSo9MCgVVb+1MOQVfhPhVZ4gjaivZpvMJyzdKD+q2PNL4/K8ha8Q4Y8ymKeU4it5MfuLS2de/eESOahP+THcXWSKGE+5etZ5fNAkMF40AnBwWHx88JDLlLNY3xwe0M0e7raGKkMwV3cXU7Ea+gz8ZApqaXIttnUj2Q20BkTyOGtRg2GjeZBRNcLcdk5EK/XBWTHzIo= # SNAP_API_AUTH
@@ -13,64 +13,56 @@ env:
 git:
   depth: 9999999 # Building untagged builds needs enough depth to get the latest tag
 matrix:
-  allow_failures:
-    - python: 3.3
-      env: SELENIUM_WEBDRIVER=default
-    - python: 3.4
-      env: SELENIUM_WEBDRIVER=default
-    - python: 3.5
-      env: SELENIUM_WEBDRIVER=default
-    - python: pypy
-      env: SELENIUM_WEBDRIVER=default
-    - python: pypy3
-      env: SELENIUM_WEBDRIVER=default
   include:
     - python: 2.7.12
       env: SELENIUM_WEBDRIVER=default
-    - python: 3.3
-      env: SELENIUM_WEBDRIVER=default
-    - python: 3.4
-      env: SELENIUM_WEBDRIVER=default
-    - python: 3.5
-      env: SELENIUM_WEBDRIVER=default
-    - python: pypy
-      env: SELENIUM_WEBDRIVER=default
-    - python: pypy3
-      env: SELENIUM_WEBDRIVER=default
   fast_finish: true
-before_install:
-  - gem install sass -v 3.3.4
-install:
-  - pip install -U setuptools
-  - pip install -e .
-  - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
-  - pip install coveralls
-  - pip install crowdin-cli-py
-before_script:
-  - wget http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
-  - export CHROME_BIN=chromium-browser
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3
-script:
-  - python setup.py test
-after_success:
-  - coveralls
-before_deploy:
-  - mkdir -p game/locale
-  - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
-  - cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
-  - crowdin-cli-py upload sources
-  - ./.crowdin-get-translations
-deploy:
-  provider: pypi
-  user: ocadotechnology
-  password:
-    secure: "fdj/8MbEPE8EDIyYE33JstFuQrjDMclcajcRiOmGfwciZo7sLVxhReS2Uj1X52cs7gpIWnzzzLO+DL3oDfDXegCa7fTe8pJwG31XysPF2xIHndbQknH51Ps7Jbyt4HanEasYZT/GA5b36LigI0x7n675SR4eR0VX3fcLwka3SCqN5aVj72wlyOgCLm0syPk636vuK79zlIM/XyTma6X9xFRb6h37IBie3qaT/XEZ154n8yC0bvYEc2NeMg7mBeAFeu8rKPGQZDODMkvl28dtJm5kXsk+LmJ2guI3fe5mueHO3NIEbJEd5iVBvq/2KpMMj06YI7KFdQvBNak0k5TQ+ibSe9+T1m7RYrFHtHsK1S5Zp9AJDH8C53pSIGus4UZQyZvgWQoazuAsz135iAxoTKmdJu7UT6eiEIDxnZfR39hBbuEHMTWUMS07oouJRyVGLPXewxofQbLHX9AHUeg02BwQ1xFh9WRYDlYejmSmErkQlwEwOfXyFYpFlan3rx5nPg3+8Ylws0M2EIXQnBn+yDmnu+Z0JRFPAE76RmdX+ZkGNjX1x8U3yXHDaB9zh76069JFSa442tWYfB7lXE/Xo6ePTNxsXIN8lcxGZXgUgScSqzEBblDkhiUqFyRch1LAMY5rYlazKzqKEmdIBb3RezuT0xt8gIbdoZB548RUT4Q="
-  distributions: "bdist_wheel sdist"
-  on:
-    repo: ocadotechnology/rapid-router
-  skip_cleanup: true
-after_deploy:
-  - "curl -d POST -v https://semaphoreci.com/api/v1/projects/${SEMAPHORE_PROJECT_ID}/master/build?auth_token=${SEMAPHORE_API_AUTH}"
+stages:
+  # - test
+  - name: deploy
+    # if: branch = master
+jobs:
+  include:
+    # - stage: test
+    #   before_install:
+    #     - gem install sass -v 3.3.4
+    #   install:
+    #     - pip install -U setuptools
+    #     - pip install -e .
+    #     - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
+    #     - pip install coveralls
+    #     - pip install crowdin-cli-py
+    #   before_script:
+    #     - wget http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
+    #     - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+    #     - export CHROME_BIN=chromium-browser
+    #     - "export DISPLAY=:99.0"
+    #     - "sh -e /etc/init.d/xvfb start"
+    #     - sleep 3
+    #   script:
+    #     - python setup.py test
+    #   after_success:
+    #     - coveralls
+    - stage: deploy      
+      script:
+        - mkdir -p game/locale
+        - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
+        - cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
+        - crowdin-cli-py upload sources
+        - ./.crowdin-get-translations
+      after_success:
+        - git config --global user.name "semantic-release (via TravisCI)"
+        - git config --global user.email "semantic-release@travis"
+        - pip install python-semantic-release
+        - semantic-release version
+# deploy:
+#   provider: pypi
+#   user: ocadotechnology
+#   password:
+#     secure: "fdj/8MbEPE8EDIyYE33JstFuQrjDMclcajcRiOmGfwciZo7sLVxhReS2Uj1X52cs7gpIWnzzzLO+DL3oDfDXegCa7fTe8pJwG31XysPF2xIHndbQknH51Ps7Jbyt4HanEasYZT/GA5b36LigI0x7n675SR4eR0VX3fcLwka3SCqN5aVj72wlyOgCLm0syPk636vuK79zlIM/XyTma6X9xFRb6h37IBie3qaT/XEZ154n8yC0bvYEc2NeMg7mBeAFeu8rKPGQZDODMkvl28dtJm5kXsk+LmJ2guI3fe5mueHO3NIEbJEd5iVBvq/2KpMMj06YI7KFdQvBNak0k5TQ+ibSe9+T1m7RYrFHtHsK1S5Zp9AJDH8C53pSIGus4UZQyZvgWQoazuAsz135iAxoTKmdJu7UT6eiEIDxnZfR39hBbuEHMTWUMS07oouJRyVGLPXewxofQbLHX9AHUeg02BwQ1xFh9WRYDlYejmSmErkQlwEwOfXyFYpFlan3rx5nPg3+8Ylws0M2EIXQnBn+yDmnu+Z0JRFPAE76RmdX+ZkGNjX1x8U3yXHDaB9zh76069JFSa442tWYfB7lXE/Xo6ePTNxsXIN8lcxGZXgUgScSqzEBblDkhiUqFyRch1LAMY5rYlazKzqKEmdIBb3RezuT0xt8gIbdoZB548RUT4Q="
+#   distributions: "bdist_wheel sdist"
+#   on:
+#     repo: ocadotechnology/rapid-router
+#   skip_cleanup: true
+# after_deploy:
+#   - "curl -d POST -v https://semaphoreci.com/api/v1/projects/${SEMAPHORE_PROJECT_ID}/master/build?auth_token=${SEMAPHORE_API_AUTH}"
