@@ -49,6 +49,7 @@ jobs:
         - pip install -e .
         - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
         - python setup.py install
+        - pip install crowdin-cli-py
       script:
         - mkdir -p game/locale
         - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
