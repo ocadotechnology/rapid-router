@@ -51,15 +51,15 @@ jobs:
         - python setup.py install
         - pip install crowdin-cli-py
       script:
-        - mkdir -p game/locale
-        - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
-        - cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
-        - crowdin-cli-py upload sources
-        - ./.crowdin-get-translations
+        # - mkdir -p game/locale
+        # - cd game && django-admin makemessages -l en_GB --no-wrap && cd -
+        # - cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
+        # - crowdin-cli-py upload sources
+        # - ./.crowdin-get-translations
       after_success:
         - git config --global user.name "semantic-release (via TravisCI)"
         - git config --global user.email "semantic-release@travis"
-        - pip install python-semantic-release
+        - pip install python-semantic-release==3.11.2
         - semantic-release version
 # deploy:
 #   provider: pypi
