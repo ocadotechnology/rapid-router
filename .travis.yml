@@ -11,7 +11,7 @@ env:
   matrix:
     - SELENIUM_WEBDRIVER=default
 git:
-  depth: 9999999 # Building untagged builds needs enough depth to get the latest tag
+  depth: 30
 matrix:
   include:
     - python: 2.7.12
