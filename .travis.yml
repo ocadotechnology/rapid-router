@@ -56,7 +56,7 @@ jobs:
         # - cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
         # - crowdin-cli-py upload sources
         # - ./.crowdin-get-translations
-      after_success:
+      # after_success:
         - git config --global user.name "semantic-release (via TravisCI)"
         - git config --global user.email "semantic-release@travis"
         - pip install python-semantic-release==3.11.2
