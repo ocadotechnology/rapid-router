@@ -36,5 +36,5 @@
 # identified as the original program.
 
 #  from ._version import get_versions
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 # del get_versions
