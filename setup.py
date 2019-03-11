@@ -4,8 +4,6 @@ import sys
 
 from setuptools import find_packages, setup
 
-# import versioneer
-
 with open('game/__init__.py', 'r') as fd:
     version = re.search(
         r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
@@ -21,7 +19,6 @@ except ImportError:
     pass
 
 setup(name='rapid-router',
-    # cmdclass=versioneer.get_cmdclass(),
     packages=find_packages(),
     include_package_data=True,
     install_requires = [
@@ -46,6 +43,5 @@ setup(name='rapid-router',
     ],
     test_suite='test_utils.test_suite.DjangoAutoTestSuite',
     version=version,
-    # version=versioneer.get_version(),
     zip_safe=False,
 )
