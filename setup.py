@@ -34,7 +34,7 @@ setup(name='rapid-router',
         'django-casper==0.0.3',
         'djangorestframework>=3.1.3, <=3.2.3',
         'six==1.11.0',
-        'docutils==0.12',
+        'docutils==0.12', 
         'pyhamcrest==1.8.3',
     ],
     tests_require=[
