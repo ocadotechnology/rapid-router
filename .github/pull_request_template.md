@@ -1,7 +1,6 @@
 <!--- Follow the spec: https://www.conventionalcommits.org/en/v1.0.0-beta.3/#specification for the PR title and description -->
 <!--- List any breaking changes here with the prefix BREAKING CHANGE: -->
 
-<!--- Provide a general summary of your changes in the Title above -->
 <!--- This template can be modified slighty to the needs of the pull request -->
 
 ## Description
