@@ -35,6 +35,4 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
+__version__ = '1.0.2'
