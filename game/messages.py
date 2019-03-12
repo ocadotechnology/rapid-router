@@ -221,7 +221,7 @@ def hint_level1():
 
 
 def title_level2():
-    return ugettext("This time the house is further away. ")
+    return ugettext("This time the house is further away ")
 
 
 def description_level2():
@@ -263,7 +263,7 @@ def hint_level3():
 
 
 def title_level4():
-    return ugettext("You are getting good at this! Let's try turning left. ")
+    return ugettext("You are getting good at this! Let's try turning left ")
 
 
 def description_level4():
@@ -282,7 +282,7 @@ def hint_level4():
 
 
 def title_level5():
-    return ugettext("Good work! You are ready for something harder. ")
+    return ugettext("Good work! You are ready for something harder ")
 
 
 def description_level5():
@@ -302,7 +302,7 @@ def hint_level5():
 
 
 def title_level6():
-    return ugettext("Well done! Let's use all three blocks. ")
+    return ugettext("Well done! Let's use all three blocks ")
 
 
 def description_level6():
@@ -321,7 +321,7 @@ def hint_level6():
 
 
 def title_level7():
-    return ugettext("This road is more complicated. ")
+    return ugettext("This road is more complicated ")
 
 
 def description_level7():
@@ -339,7 +339,7 @@ def hint_level7():
 
 
 def title_level8():
-    return ugettext("The warehouse is not always in the same place. ")
+    return ugettext("The warehouse is not always in the same place ")
 
 
 def description_level8():
@@ -417,7 +417,7 @@ def hint_level11():
 
 
 def title_level12():
-    return ugettext("This road is more complicated. ")
+    return ugettext("This road is more complicated ")
 
 
 def description_level12():
@@ -436,7 +436,7 @@ def hint_level12():
 
 
 def title_level13():
-    return ugettext("Multiple routes")
+    return ugettext("Multiple routes ")
 
 
 def description_level13():
@@ -490,7 +490,7 @@ def hint_level15():
 
 
 def title_level16():
-    return ugettext("This time there are even more houses. ")
+    return ugettext("This time there are even more houses ")
 
 
 def description_level16():
@@ -526,7 +526,7 @@ def hint_level17():
 
 
 def title_level18():
-    return ugettext("This one is quite a tangle. ")
+    return ugettext("This one is quite a tangle ")
 
 
 def description_level18():
@@ -542,7 +542,7 @@ def hint_level18():
 
 
 def title_level19():
-    return ugettext("Repeating yourself is boring.")
+    return ugettext("Repeating yourself is boring ")
 
 
 def description_level19():
@@ -564,7 +564,7 @@ def hint_level19():
 
 
 def title_level20():
-    return ugettext("Use the <b>Repeat</b> block to make your sequence shorter and simpler. ")
+    return ugettext("Use the <b>Repeat</b> block to make your sequence shorter and simpler ")
 
 
 def description_level20():
@@ -582,7 +582,7 @@ def hint_level20():
 
 
 def title_level21():
-    return ugettext("Four leaf clover.")
+    return ugettext("Four leaf clover ")
 
 
 def description_level21():
@@ -598,7 +598,7 @@ def hint_level21():
 
 
 def title_level22():
-    return ugettext("Now things are getting quite long and complicated. ")
+    return ugettext("Now things are getting quite long and complicated ")
 
 
 def description_level22():
@@ -617,7 +617,7 @@ def hint_level22():
 
 
 def title_level23():
-    return ugettext("Sssssssssnake!")
+    return ugettext("Sssssssssnake! ")
 
 
 def description_level23():
@@ -637,7 +637,7 @@ def hint_level23():
 
 
 def title_level24():
-    return ugettext("The road is very long and very bendy.")
+    return ugettext("The road is very long and very bendy ")
 
 
 def description_level24():
@@ -652,7 +652,7 @@ def hint_level24():
 
 
 def title_level25():
-    return ugettext("Waterfall level. ")
+    return ugettext("Waterfall level ")
 
 
 def description_level25():
@@ -667,7 +667,7 @@ def hint_level25():
 
 
 def title_level26():
-    return ugettext("Winter wonderland!")
+    return ugettext("Winter wonderland! ")
 
 
 def description_level26():
@@ -684,7 +684,7 @@ def hint_level26():
 
 
 def title_level27():
-    return ugettext("Farmyard")
+    return ugettext("Farmyard ")
 
 
 def description_level27():
@@ -699,7 +699,7 @@ def hint_level27():
 
 
 def title_level28():
-    return ugettext("The big city")
+    return ugettext("The big city ")
 
 
 def description_level28():
@@ -714,7 +714,7 @@ def hint_level28():
 
 
 def title_level29():
-    return ugettext("No need for numbers. ")
+    return ugettext("No need for numbers ")
 
 
 def description_level29():
@@ -751,7 +751,7 @@ def hint_level30():
 
 
 def title_level31():
-    return ugettext("Practice makes perfect. ")
+    return ugettext("Practice makes perfect ")
 
 
 def description_level31():
@@ -781,7 +781,7 @@ def hint_level32():
 
 
 def title_level33():
-    return ugettext("Now it's time to try the <b>If</b> block. ")
+    return ugettext("Now it's time to try the <b>If</b> block ")
 
 
 def description_level33():
@@ -804,7 +804,7 @@ def hint_level33():
 
 
 def title_level34():
-    return ugettext("Multiple <b>If</b>s")
+    return ugettext("Multiple <b>If</b>s ")
 
 
 def description_level34():
@@ -827,7 +827,7 @@ def hint_level34():
 
 
 def title_level35():
-    return ugettext("Let's put it all together!")
+    return ugettext("Let's put it all together! ")
 
 
 def description_level35():
@@ -877,7 +877,7 @@ def hint_level36():
 
 
 def title_level37():
-    return ugettext("A bit longer.")
+    return ugettext("A bit longer ")
 
 
 def description_level37():
@@ -926,7 +926,7 @@ def hint_level39():
 
 
 def title_level40():
-    return ugettext("Adjust your previous solution.")
+    return ugettext("Adjust your previous solution ")
 
 
 def description_level40():
@@ -944,7 +944,7 @@ def hint_level40():
 
 
 def title_level41():
-    return ugettext("Decision time. ")
+    return ugettext("Decision time ")
 
 
 def description_level41():
@@ -1020,7 +1020,7 @@ def hint_level44():
 
 
 def title_level45():
-    return ugettext("Green for go, red for wait. ")
+    return ugettext("Green for go, red for wait ")
 
 
 def description_level45():
@@ -1073,7 +1073,7 @@ def hint_level47():
 
 
 def title_level48():
-    return ugettext("Put all that hard work to the test. ")
+    return ugettext("Put all that hard work to the test ")
 
 
 def description_level48():
@@ -1116,7 +1116,7 @@ def hint_level49():
 
 
 def title_level50():
-    return ugettext("Light maze. ")
+    return ugettext("Light maze ")
 
 
 def description_level50():
@@ -1135,7 +1135,7 @@ def hint_level50():
 
 
 def title_level51():
-    return ugettext("Back to basics with a twist")
+    return ugettext("Back to basics with a twist ")
 
 
 def description_level51():
@@ -1150,7 +1150,7 @@ def hint_level51():
 
 
 def title_level52():
-    return ugettext("A Bit more Tricky")
+    return ugettext("A Bit more Tricky ")
 
 
 def description_level52():
@@ -1166,7 +1166,7 @@ def hint_level52():
 
 
 def title_level53():
-    return ugettext("Choose your blocks wisely")
+    return ugettext("Choose your blocks wisely ")
 
 
 def description_level53():
@@ -1181,7 +1181,7 @@ def hint_level53():
 
 
 def title_level54():
-    return ugettext("Round and Round")
+    return ugettext("Round and Round ")
 
 
 def description_level54():
@@ -1196,7 +1196,7 @@ def hint_level54():
 
 
 def title_level55():
-    return ugettext("Wonky Fish!")
+    return ugettext("Wonky Fish! ")
 
 
 def description_level55():
@@ -1210,7 +1210,7 @@ def hint_level55():
 
 
 def title_level56():
-    return ugettext("Concrete Wasteland")
+    return ugettext("Concrete Wasteland ")
 
 
 def description_level56():
@@ -1225,7 +1225,7 @@ def hint_level56():
 
 
 def title_level57():
-    return ugettext("This is <b>not...</b> the same")
+    return ugettext("This is <b>not...</b> the same ")
 
 
 def description_level57():
@@ -1243,7 +1243,7 @@ def hint_level57():
 
 
 def title_level58():
-    return ugettext("Snow snake")
+    return ugettext("Snow snake ")
 
 
 def description_level58():
@@ -1259,7 +1259,7 @@ def hint_level58():
 
 
 def title_level59():
-    return ugettext("Tricky turnaround")
+    return ugettext("Tricky turnaround ")
 
 
 def description_level59():
@@ -1274,7 +1274,7 @@ def hint_level59():
 
 
 def title_level60():
-    return ugettext("Right around the block")
+    return ugettext("Right around the block ")
 
 
 def description_level60():
@@ -1288,7 +1288,7 @@ def hint_level60():
 
 
 def title_level61():
-    return ugettext("Can you create the 'Wiggle' procedure?")
+    return ugettext("Can you create the 'Wiggle' procedure? ")
 
 
 def description_level61():
@@ -1311,7 +1311,7 @@ def hint_level61():
 
 
 def title_level62():
-    return ugettext("Lots of Traffic Lights!")
+    return ugettext("Lots of Traffic Lights! ")
 
 
 def description_level62():
@@ -1326,7 +1326,7 @@ def hint_level62():
 
 
 def title_level63():
-    return ugettext("Wiggle Wiggle")
+    return ugettext("Wiggle Wiggle ")
 
 
 def description_level63():
@@ -1345,7 +1345,7 @@ def hint_level63():
 
 
 def title_level64():
-    return ugettext("Muddy Patterns with Phil")
+    return ugettext("Muddy Patterns with Phil ")
 
 
 def description_level64():
@@ -1362,7 +1362,7 @@ def hint_level64():
 
 
 def title_level65():
-    return ugettext("Complicated roads.")
+    return ugettext("Complicated roads ")
 
 
 def description_level65():
@@ -1378,7 +1378,7 @@ def hint_level65():
 
 
 def title_level66():
-    return ugettext("Dee's snowy walk")
+    return ugettext("Dee's snowy walk ")
 
 
 def description_level66():
@@ -1394,7 +1394,7 @@ def hint_level66():
 
 
 def title_level67():
-    return ugettext("Crazy Farm")
+    return ugettext("Crazy Farm ")
 
 
 def description_level67():
@@ -1409,7 +1409,7 @@ def hint_level67():
 
 
 def title_level68():
-    return ugettext("T - time")
+    return ugettext("T - time ")
 
 
 def description_level68():
@@ -1423,7 +1423,7 @@ def hint_level68():
 
 
 def title_level69():
-    return ugettext("Duck pond dodge")
+    return ugettext("Duck pond dodge ")
 
 
 def description_level69():
@@ -1437,7 +1437,7 @@ def hint_level69():
 
 
 def title_level70():
-    return ugettext("Winter wonderland")
+    return ugettext("Winter wonderland ")
 
 
 def description_level70():
@@ -1451,7 +1451,7 @@ def hint_level70():
 
 
 def title_level71():
-    return ugettext("Frozen challenge")
+    return ugettext("Frozen challenge ")
 
 
 def description_level71():
@@ -1465,7 +1465,7 @@ def hint_level71():
 
 
 def title_level72():
-    return ugettext("Can Wes Find his lunch?")
+    return ugettext("Can Wes Find his lunch? ")
 
 
 def description_level72():
@@ -1479,7 +1479,7 @@ def hint_level72():
 
 
 def title_level73():
-    return ugettext("Traffic light freeze up!")
+    return ugettext("Traffic light freeze up! ")
 
 
 def description_level73():
@@ -1493,7 +1493,7 @@ def hint_level73():
 
 
 def title_level74():
-    return ugettext("Pandemonium")
+    return ugettext("Pandemonium ")
 
 
 def description_level74():
@@ -1507,7 +1507,7 @@ def hint_level74():
 
 
 def title_level75():
-    return ugettext("Kirsty's maze time")
+    return ugettext("Kirsty's maze time ")
 
 
 def description_level75():
@@ -1521,7 +1521,7 @@ def hint_level75():
 
 
 def title_level76():
-    return ugettext("Cannot turn left!")
+    return ugettext("Cannot turn left! ")
 
 
 def description_level76():
@@ -1535,7 +1535,7 @@ def hint_level76():
 
 
 def title_level77():
-    return ugettext("G Force")
+    return ugettext("G Force ")
 
 
 def description_level77():
@@ -1549,7 +1549,7 @@ def hint_level77():
 
 
 def title_level78():
-    return ugettext("Wandering Phil")
+    return ugettext("Wandering Phil ")
 
 
 def description_level78():
@@ -1563,7 +1563,7 @@ def hint_level78():
 
 
 def title_level79():
-    return ugettext("Muddy Mayhem")
+    return ugettext("Muddy Mayhem ")
 
 
 def description_level79():
@@ -1577,7 +1577,7 @@ def hint_level79():
 
 
 def title_level80():
-    return ugettext("Here's Python!")
+    return ugettext("Here's Python! ")
 
 
 def description_level80():
@@ -1591,7 +1591,7 @@ def hint_level80():
 
 
 def title_level81():
-    return ugettext("Matching Blockly")
+    return ugettext("Matching Blockly ")
 
 
 def description_level81():
@@ -1605,7 +1605,7 @@ def hint_level81():
 
 
 def title_level82():
-    return ugettext("Don't forget to find the shortest route")
+    return ugettext("Don't forget to find the shortest route ")
 
 
 def description_level82():
@@ -1619,7 +1619,7 @@ def hint_level82():
 
 
 def title_level83():
-    return ugettext("Repeating yourself in Python looks different")
+    return ugettext("Repeating yourself in Python looks different ")
 
 
 def description_level83():
@@ -1633,7 +1633,7 @@ def hint_level83():
 
 
 def title_level84():
-    return ugettext("Repeat and watch.")
+    return ugettext("Repeat and watch ")
 
 
 def description_level84():
@@ -1647,7 +1647,7 @@ def hint_level84():
 
 
 def title_level85():
-    return ugettext("Looks easy but use repeat until and see what happens?")
+    return ugettext("Looks easy but use repeat until and see what happens? ")
 
 
 def description_level85():
@@ -1662,7 +1662,7 @@ def hint_level85():
 
 
 def title_level86():
-    return ugettext("See what the if blocks looks like in Python")
+    return ugettext("See what the if blocks looks like in Python ")
 
 
 def description_level86():
@@ -1676,7 +1676,7 @@ def hint_level86():
 
 
 def title_level87():
-    return ugettext("Don't forget to use else if")
+    return ugettext("Don't forget to use else if ")
 
 
 def description_level87():
@@ -1691,7 +1691,7 @@ def hint_level87():
 
 
 def title_level88():
-    return ugettext("See what happens when you add Traffic lights")
+    return ugettext("See what happens when you add Traffic lights ")
 
 
 def description_level88():
@@ -1706,7 +1706,7 @@ def hint_level88():
 
 
 def title_level89():
-    return ugettext("Watch carefully as you have another go")
+    return ugettext("Watch carefully as you have another go ")
 
 
 def description_level89():
@@ -1721,7 +1721,7 @@ def hint_level89():
 
 
 def title_level90():
-    return ugettext("Have a go at procedures - what do they look like in Python?")
+    return ugettext("Have a go at procedures - what do they look like in Python? ")
 
 
 def description_level90():
@@ -1736,7 +1736,7 @@ def hint_level90():
 
 
 def title_level91():
-    return ugettext("Put it all together")
+    return ugettext("Put it all together ")
 
 
 def description_level91():
@@ -1751,7 +1751,7 @@ def hint_level91():
 
 
 def title_level92():
-    return ugettext("Start with the basics, <b>forward</b>, <b>left</b> and <b>right</b>")
+    return ugettext("Start with the basics, <b>forward</b>, <b>left</b> and <b>right</b> ")
 
 
 def description_level92():
@@ -1770,7 +1770,7 @@ def hint_level92():
 
 
 def title_level93():
-    return ugettext("Keep it simple")
+    return ugettext("Keep it simple ")
 
 
 def description_level93():
@@ -1788,7 +1788,7 @@ v.turn_right()</pre>""")
 
 
 def title_level94():
-    return ugettext("Take the shortest route.")
+    return ugettext("Take the shortest route ")
 
 
 def description_level94():
@@ -1806,7 +1806,7 @@ v.turn_right()</pre>""")
 
 
 def title_level95():
-    return ugettext("Count and repeat")
+    return ugettext("Count and repeat ")
 
 
 def description_level95():
@@ -1825,7 +1825,7 @@ The print statement will output the value of count to the console.""")
 
 
 def title_level96():
-    return ugettext("Count and repeat is easy")
+    return ugettext("Count and repeat is easy ")
 
 
 def description_level96():
@@ -1845,7 +1845,7 @@ The print statement will output the value of count to the console.""")
 
 
 def title_level97():
-    return ugettext("Loop the loop")
+    return ugettext("Loop the loop ")
 
 
 def description_level97():
@@ -1865,7 +1865,7 @@ The print statement will output the value of count to the console.""")
 
 
 def title_level98():
-    return ugettext("Repeat and check")
+    return ugettext("Repeat and check ")
 
 
 def description_level98():
@@ -1888,7 +1888,7 @@ You may also need to use the <b>else</b> statement.""")
 
 
 def title_level99():
-    return ugettext("Find a general solution")
+    return ugettext("Find a general solution ")
 
 
 def description_level99():
@@ -1910,7 +1910,7 @@ You may also need to use the <b>elif</b> and <b>else</b> statements.""")
 
 
 def title_level100():
-    return ugettext("Watch out for the dead end!")
+    return ugettext("Watch out for the dead end! ")
 
 
 def description_level100():
@@ -1925,7 +1925,7 @@ def hint_level100():
 
 
 def title_level101():
-    return ugettext("Function or Junction?")
+    return ugettext("Function or Junction? ")
 
 
 def description_level101():
@@ -1946,7 +1946,7 @@ Remember, you must define a function before you call it.""")
 
 
 def title_level102():
-    return ugettext("Watch for the patterns")
+    return ugettext("Watch for the patterns ")
 
 
 def description_level102():
@@ -1965,7 +1965,7 @@ To call a defined function you could do something like:
 
 
 def title_level103():
-    return ugettext("Patterns within patterns.")
+    return ugettext("Patterns within patterns ")
 
 
 def description_level103():
@@ -1988,7 +1988,7 @@ my_other_function()</pre>""")
 
 
 def title_level104():
-    return ugettext("Can you see the repeating pattern?")
+    return ugettext("Can you see the repeating pattern? ")
 
 
 def description_level104():
@@ -2011,7 +2011,7 @@ my_other_function()</pre>""")
 
 
 def title_level105():
-    return ugettext("Find the shortest route.")
+    return ugettext("Find the shortest route ")
 
 
 def description_level105():
@@ -2026,7 +2026,7 @@ def hint_level105():
 
 
 def title_level106():
-    return ugettext("Spiral and add")
+    return ugettext("Spiral and add ")
 
 
 def description_level106():
@@ -2049,7 +2049,7 @@ Variables can be used in place of constants when calling functions. For example 
 
 
 def title_level107():
-    return ugettext("Spiral and double")
+    return ugettext("Spiral and double ")
 
 
 def description_level107():
@@ -2064,7 +2064,7 @@ def hint_level107():
 
 
 def title_level108():
-    return ugettext("Think less")
+    return ugettext("Think less ")
 
 
 def description_level108():
@@ -2079,7 +2079,7 @@ def hint_level108():
 
 
 def title_level109():
-    return ugettext("Final challenge!")
+    return ugettext("Final challenge! ")
 
 
 def description_level109():
