@@ -14,7 +14,7 @@ git:
   depth: 30
 matrix:
   include:
-    - python: 2.7.12
+    - python: 2.7.14
       env: SELENIUM_WEBDRIVER=default
   fast_finish: true
 stages:
@@ -35,7 +35,7 @@ jobs:
         - pip install crowdin-cli-py
       before_script:
         - wget http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
-        - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.12/bin/
+        - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.14/bin/
         - export CHROME_BIN=chromium-browser
         - "export DISPLAY=:99.0"
         - "sh -e /etc/init.d/xvfb start"
