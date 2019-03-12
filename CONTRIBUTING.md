@@ -1,30 +1,30 @@
-## So you want to **clone** the project and figure out **what** to do...
-* The good practice is to: 
-    * Fork the project on your account
-    * Clone your repo using HTTPS
-    * Work on a new git branch.
-    * Need help with [git](https://git-scm.com/docs/gittutorial)?
-    Anyway you can't use Ocado Technology's master.
-* The [issues are listed on ocadotechnology/rapid-router](https://github.com/ocadotechnology/rapid-router/issues). 
-It's even better if you're using [ZenHub](https://www.zenhub.com/) because it will allow you to look at a [Kanban-ish board](https://github.com/ocadotechnology/rapid-router/issues#boards) for the project.<br>
-One word of caution: please do not add any issues related to security. Evil hackers are everywhere nowadays... If you do find a security issue, let us know using our [contact form][c4l-contact-form].
 
-## Now you want to **test** your changes and **run** the project locally... (UNIX)
-* To work on the project, you can use whichever editor you like. Lots here like [IntelliJ or PyCharm](https://www.jetbrains.com/), for instance.
-* There are some more [guidelines here](https://github.com/ocadotechnology/rapid-router#to-contribute)
-* As said in the [readme](https://github.com/ocadotechnology/rapid-router), you should set up a virtual environment. 
-    * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
-    * and thereafter: `workon rapid-router`
-* You can test your change by running the test suite - you can go to the root of the project and type: `python example_project/manage.py test` ; but Travis uses `python setup.py test` (will also install stuff in your virtualenv needed for the tests)
-* To manually test things and run the project, `./run` in the root.
+# Contributing Guidelines
 
-## Great, you can **commit**, open a **Pull Request**, and we'll **review** it...
-* Then you can commit! On a new branch for a new Pull Request please.
-* If your commit resolves a GitHub issue, please include “fixes #123” in the commit message.
-* Then you can push to your forked repo, and create a pull request from your branch to ocadotechnology's master branch.
-* Some tests will run automatically: Travis will run the automated tests, coverage will test the test coverage and codeclimate will test the code quality. Please fix found issues, then repush on your branch - it will rerun the tests.
-* Do not accept a PR yourself - at least one other person should review your code and approve it first.
-* Some old PRs will need to see the branch rebased on the current master
-* When a PR is accepted, **congrats!** It will be merged on master.
+Thanks for helping out Code For life's Rapid Router! Here are a few guildeines to help your contributions to be accepted :)
+
+## Prerequisites
+
+We use Zenhub to track our issues, you can find our workspace [here](https://app.zenhub.com/workspaces/code-for-life-team-56f2afba6e54555c586f6db3/boards?repos=18399425,49142916,22154147,39072690,96999382)
+
+## Submitting an issue
+
+If you find a bug, want to suggest feature request or improvement, please open an issue for it using one of the issue templates.
+
+> One word of caution: please do not add any issues related to security. Evil hackers are everywhere nowadays... If you do find a security issue, let us know using our [contact form][c4l-contact-form].
+
+## Pull Request Guidelines
+
+Once you submit a PR, we will review it via [Reviewable](https://reviewable.io/). To make the review go smoothly we recommend following the guidelines below:
+
+* Include unit tests when you contribute new features, as they help to a) prove that your code works correctly, and b) guard against future breaking changes to lower the maintenance cost.
+
+* Bug fixes also generally require unit tests, because the presence of bugs usually indicates insufficient test coverage.
+
+* Follow the PEP8 guidelines.
+
+* When you respond to changes based on comments from a code review, please reply with "Done." so that we get a notification.
+
+We follow [Semantic Versioning](https://semver.org/) in this project. The version automatically gets bumped up based on the content of the PR title and description. For this we follow the [Conventional Commits Specification](https://www.conventionalcommits.org). Please make sure the PR title and description follows this specification.
 
 [c4l-contact-form]: https://www.codeforlife.education/help/#contact
