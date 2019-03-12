@@ -10,8 +10,6 @@ env:
     - secure: E73S8LZCrN808GyA6tOo8YVhY9DUxEX08lb3Riwx7vrDCvNiCMD/IYnuFH5f0JAtRjZheJDyamq0QZvb0OHl8euhpnL/XyMd2PiKcYNHkBODOsrvq63SAqh6GVVRSHFZdb5HZF7kzfZvpDMpC3pv+uUef3OwSNSeVOf9FaeM0VWvK5U67SXpW+Tln17Yp1hHBjVdP2Qs505dIa5TnLEdQbPJyBrw+7XJbEsXcHKoXgx/nlHhUn3K7EZk8zQnTSYeLdTdh7DblNk9PZVhygiXTFNcRUn6L/6Ioog7Q0Q23+l0H/Sfh8+TGj3pJlrC7xz5srSiDfwup4+GkNH9mL+lSneUbagKLEqEvCY6/5zH3kaqnnZBaBsAFwyD2nozDjMlbWWQ/FaM86rARjdgBOT4mK81xHc1KaJ08NQt9OUg8G737AViY/OsTUorLqpod4edK2dv2z6kDiWg4wBbamouygEy+2nzHbC1F3wOUrxBo5IdB+fdf0zjfp8wZSFlrhjL9vIWay5jpWtFoRYuUH6qtW19XqpEHlIZldrIjYn3p4Ow/L3fYG+vli5kgz6s8AS7AmEHeO1bid0f+OecnE+YBq9irgnReniYAGaDPTcuBemmjcARvhOcU3a7NRvuPCEbqPU41oTxcocdwZa0Dfy97kvgQNsD/aT2qE/kLPxbFjo= # CROWDIN_API_KEY
   matrix:
     - SELENIUM_WEBDRIVER=default
-git:
-  depth: 30
 matrix:
   include:
     - python: 2.7.14
