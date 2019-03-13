@@ -239,11 +239,11 @@ def save_level_for_editor(request, levelId=None):
             level.save()
             if not data['anonymous']:
                 level_management.email_new_custom_level(level.owner.student.class_field.teacher.new_user.email,
-                                                    request.build_absolute_uri(reverse('level_moderation')),
-                                                    request.build_absolute_uri(reverse('play_custom_level',
-                                                                                       kwargs={'levelId': level.id})),
-                                                    request.build_absolute_uri(reverse('home')),
-                                                    str(level.owner.student), level.owner.student.class_field.name)
+                                                        request.build_absolute_uri(reverse('level_moderation')),
+                                                        request.build_absolute_uri(reverse('play_custom_level',
+                                                                                           kwargs={'levelId': level.id})),
+                                                        request.build_absolute_uri(reverse('home')),
+                                                        str(level.owner.student), level.owner.student.class_field.name)
         response = {'id': level.id}
         return HttpResponse(json.dumps(response), content_type='application/javascript')
     else:
