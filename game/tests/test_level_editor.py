@@ -92,6 +92,30 @@ class LevelEditorTestCase(TestCase):
         assert_that(sharing_info1['teacher']['shared'], equal_to(True))
         assert_that(len(mail.outbox), equal_to(1))
 
+    def test_anonymous_level_saving_school_student(self):
+        _, email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        _, class_name, access_code = create_class_directly(email)
+        student_name, student_password, _ = create_school_student_directly(access_code)
+
+        self.student_login(student_name, access_code, student_password)
+        url = reverse('save_level_for_editor')
+        data1 = {
+            u'origin': u'{"coordinate":[3,5],"direction":"S"}',
+            u'pythonEnabled': False, u'decor': [], u'blocklyEnabled': True,
+            u'blocks': [{u'type': u'move_forwards'}, {u'type': u'turn_left'}, {u'type': u'turn_right'}],
+            u'max_fuel': u'50', u'pythonViewEnabled': False, u'character': u'3', u'name': u'abc', u'theme': 1,
+            u'anonymous': True, u'cows': u'[]',
+            u'path': u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'u'"connectedNodes":[0]}]',
+            u'traffic_lights': u'[]', u'destinations': u'[[3,4]]'
+        }
+        response = self.client.post(url, {'data': json.dumps(data1)})
+
+        assert_that(response.status_code, equal_to(200))
+        sharing_info1 = json.loads(self.get_sharing_information(json.loads(response.content)['id']).getvalue())
+        assert_that(sharing_info1['teacher']['shared'], equal_to(True))
+        assert_that(len(mail.outbox), equal_to(0))
+
     def test_level_sharing_with_no_school(self):
         teacher1, email1, password1 = signup_teacher_directly()
         teacher2, _, _ = signup_teacher_directly()
