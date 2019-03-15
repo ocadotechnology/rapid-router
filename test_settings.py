@@ -23,7 +23,7 @@ INSTALLED_APPS = ['game']
 PIPELINE_ENABLED = False
 ROOT_URLCONF = 'django_autoconfig.autourlconf'
 SECRET_KEY = 'test'
-STATIC_ROOT = '.tests_static/'
+STATIC_ROOT = 'example_project/example_project/static/'
 
 from django_autoconfig.autoconfig import configure_settings
 configure_settings(globals())
