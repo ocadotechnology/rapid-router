@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -34,7 +34,7 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-'''Django settings for example_project project.'''
+"""Django settings for example_project project."""
 import os
 
 DEBUG = True
@@ -50,8 +50,8 @@ TEMPLATES = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(os.path.abspath(os.path.dirname(__file__)),'db.sqlite3'),# Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(os.path.abspath(os.path.dirname(__file__)),'db.sqlite3'),  # Or path to database file if using sqlite3.
     }
 }
 
@@ -67,7 +67,7 @@ STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 STATIC_URL = '/static/'
 SECRET_KEY = 'not-a-secret'
 
-ROOT_URLCONF = 'django_autoconfig.autourlconf'
+ROOT_URLCONF = 'example_project.urls'
 
 WSGI_APPLICATION = 'example_project.wsgi.application'
 
@@ -78,7 +78,7 @@ INSTALLED_APPS = (
 PIPELINE_ENABLED = False
 
 try:
-    from example_project.local_settings import * # pylint: disable=E0611
+    from example_project.local_settings import *  # pylint: disable=E0611
 except ImportError:
     pass
 
