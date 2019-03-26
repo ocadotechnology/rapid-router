@@ -21,7 +21,7 @@ Once you submit a PR, we will review it via [Reviewable](https://reviewable.io/)
 
 * Bug fixes also generally require unit tests, because the presence of bugs usually indicates insufficient test coverage.
 
-* Follow the PEP8 guidelines.
+* Use the [black formatter](https://black.readthedocs.io/en/stable/installation_and_usage.html) on your code.
 
 * When you respond to changes based on comments from a code review, please reply with "Done." so that we get a notification.
 

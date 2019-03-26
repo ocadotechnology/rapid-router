@@ -51,11 +51,22 @@ from game.models import Level, Attempt, sort_levels
 from portal.models import Class, Teacher, Student
 import level_selection
 
-Single_Level_Header = [ugettext_lazy('Class'), ugettext_lazy('Name'), ugettext_lazy('Score'),
-                       ugettext_lazy('Total Time'), ugettext_lazy('Start Time'), ugettext_lazy('Finish Time')]
-Progress_Header = ugettext_lazy('Progress')
-Multiple_Levels_Header = [ugettext_lazy('Class'), ugettext_lazy('Name'), ugettext_lazy('Total Score'),
-                          ugettext_lazy('Total Time'), Progress_Header]
+Single_Level_Header = [
+    ugettext_lazy("Class"),
+    ugettext_lazy("Name"),
+    ugettext_lazy("Score"),
+    ugettext_lazy("Total Time"),
+    ugettext_lazy("Start Time"),
+    ugettext_lazy("Finish Time"),
+]
+Progress_Header = ugettext_lazy("Progress")
+Multiple_Levels_Header = [
+    ugettext_lazy("Class"),
+    ugettext_lazy("Name"),
+    ugettext_lazy("Total Score"),
+    ugettext_lazy("Total Time"),
+    Progress_Header,
+]
 
 
 def scoreboard(request):
@@ -69,8 +80,8 @@ def scoreboard(request):
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
 
-    class_ids = set(map(int, request.POST.getlist('classes')))
-    level_ids = set(map(int, request.POST.getlist('levels')))
+    class_ids = set(map(int, request.POST.getlist("classes")))
+    level_ids = set(map(int, request.POST.getlist("levels")))
 
     if user.is_independent_student():
         return render_no_permission_error(request)
@@ -83,13 +94,13 @@ def scoreboard(request):
 
     form = ScoreboardForm(request.POST or None, classes=users_classes)
 
-    if request.method == 'POST' and form.is_valid():
+    if request.method == "POST" and form.is_valid():
         student_data, headers = scoreboard_data(user, level_ids, class_ids)
     else:
         student_data = []
         headers = []
 
-    csv_export = 'export' in request.POST
+    csv_export = "export" in request.POST
 
     if csv_export:
         return scoreboard_csv(student_data, sorted_levels_by(level_ids))
@@ -98,7 +109,9 @@ def scoreboard(request):
 
 
 def render_no_permission_error(request):
-    return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+    return renderError(
+        request, messages.noPermissionTitle(), messages.noPermissionScoreboard()
+    )
 
 
 def is_teacher_with_no_classes_assigned(user, users_classes):
@@ -122,19 +135,26 @@ def scoreboard_view(request, form, student_data, headers):
     database_episodes = level_selection.fetch_episode_data(False)
     context_episodes = {}
     for episode in database_episodes:
-        context_episodes[episode['first_level']] = {
-            'name': episode['name'] + ' -- Levels ' + str(episode['first_level']) + ' - ' + str(episode['last_level']),
-            'first_level': str(episode['first_level']),
-            'last_level': str(episode['last_level']),
-            }
-    context = RequestContext(request, {
-        'form': form,
-        'student_data': student_data,
-        'headers': headers,
-        'progress_header': Progress_Header,
-        'episodes': context_episodes,
-    })
-    return render(request, 'game/scoreboard.html', context_instance=context)
+        context_episodes[episode["first_level"]] = {
+            "name": episode["name"]
+            + " -- Levels "
+            + str(episode["first_level"])
+            + " - "
+            + str(episode["last_level"]),
+            "first_level": str(episode["first_level"]),
+            "last_level": str(episode["last_level"]),
+        }
+    context = RequestContext(
+        request,
+        {
+            "form": form,
+            "student_data": student_data,
+            "headers": headers,
+            "progress_header": Progress_Header,
+            "episodes": context_episodes,
+        },
+    )
+    return render(request, "game/scoreboard.html", context_instance=context)
 
 
 def scoreboard_data(user, level_ids, class_ids):
@@ -176,7 +196,9 @@ def first(elements):
 
 def are_classes_viewable_by_teacher(class_ids, user):
     teachers = Teacher.objects.filter(school=user.teacher.school)
-    classes_in_teachers_school = Class.objects.filter(teacher__in=teachers).values_list('id', flat=True)
+    classes_in_teachers_school = Class.objects.filter(teacher__in=teachers).values_list(
+        "id", flat=True
+    )
     for class_id in class_ids:
         is_authorised = class_id in classes_in_teachers_school
         if not is_authorised:
@@ -191,7 +213,7 @@ def authorised_student_access(class_, class_ids):
 def students_visible_to_student(student):
     class_ = student.class_field
     if is_viewable(class_):
-        return class_.students.all().select_related('class_field', 'user__user')
+        return class_.students.all().select_related("class_field", "user__user")
     else:
         return [student]
 
@@ -205,7 +227,9 @@ def students_visible_to_user(user, classes):
 
 
 def students_of_classes(classes):
-    return Student.objects.filter(class_field__in=classes).select_related('class_field', 'user__user')
+    return Student.objects.filter(class_field__in=classes).select_related(
+        "class_field", "user__user"
+    )
 
 
 def is_valid_request(user, class_ids):
@@ -221,14 +245,20 @@ def is_valid_request(user, class_ids):
 
 
 def one_row(student, level):
-    best_attempt = Attempt.objects.filter(level=level, student=student, is_best_attempt=True).first()
+    best_attempt = Attempt.objects.filter(
+        level=level, student=student, is_best_attempt=True
+    ).first()
     if best_attempt:
-        total_score = best_attempt.score if best_attempt.score is not None else ''
-        return StudentRow(student=student,
-                          total_score=total_score,
-                          start_time=best_attempt.start_time,
-                          finish_time=best_attempt.finish_time,
-                          total_time=chop_miliseconds(best_attempt.finish_time - best_attempt.start_time))
+        total_score = best_attempt.score if best_attempt.score is not None else ""
+        return StudentRow(
+            student=student,
+            total_score=total_score,
+            start_time=best_attempt.start_time,
+            finish_time=best_attempt.finish_time,
+            total_time=chop_miliseconds(
+                best_attempt.finish_time - best_attempt.start_time
+            ),
+        )
     else:
         return StudentRow(student=student)
 
@@ -248,11 +278,13 @@ def student_row(levels_sorted, student):
     scores = []
     times = []
     progress = (0.0, 0.0, 0.0)
-    best_attempts = Attempt.objects.filter(level__in=levels_sorted,
-                                           student=student,
-                                           is_best_attempt=True).select_related('level')
+    best_attempts = Attempt.objects.filter(
+        level__in=levels_sorted, student=student, is_best_attempt=True
+    ).select_related("level")
     if best_attempts:
-        attempts_dict = {best_attempt.level.id: best_attempt for best_attempt in best_attempts}
+        attempts_dict = {
+            best_attempt.level.id: best_attempt for best_attempt in best_attempts
+        }
         for level in levels_sorted:
             attempt = attempts_dict.get(level.id)
             if attempt:
@@ -272,27 +304,35 @@ def student_row(levels_sorted, student):
                 times.append(chop_miliseconds(elapsed_time))
                 # '-' is used to show that the student has started the level but has not submitted any attempts
 
-                scores.append(attempt.score if attempt.score is not None else '-')
+                scores.append(attempt.score if attempt.score is not None else "-")
             else:
                 times.append(timedelta(0))
                 scores.append("")
 
-        progress = compute_proportions(num_levels, num_started, num_attempted, num_finished)
+        progress = compute_proportions(
+            num_levels, num_started, num_attempted, num_finished
+        )
     else:
-        scores.extend([''] * num_levels)
+        scores.extend([""] * num_levels)
 
     total_time = sum(times, timedelta())
 
-    row = StudentRow(student=student,
-                     total_time=total_time,
-                     total_score=total_score,
-                     progress=progress,
-                     scores=scores)
+    row = StudentRow(
+        student=student,
+        total_time=total_time,
+        total_score=total_score,
+        progress=progress,
+        scores=scores,
+    )
     return row
 
 
 def compute_proportions(num_levels, num_started, num_attempted, num_finished):
-    return (num_started / num_levels) * 100, (num_attempted / num_levels) * 100, (num_finished / num_levels) * 100
+    return (
+        (num_started / num_levels) * 100,
+        (num_attempted / num_levels) * 100,
+        (num_finished / num_levels) * 100,
+    )
 
 
 # Returns rows of student object with score, start time, end time of the level
@@ -315,16 +355,16 @@ def chop_miliseconds(delta):
 
 class StudentRow:
     def __init__(self, *args, **kwargs):
-        student = kwargs.get('student')
+        student = kwargs.get("student")
         self.class_field = student.class_field
         self.name = student.user.user.first_name
         self.id = student.id
-        self.total_time = kwargs.get('total_time', timedelta(0))
-        self.total_score = kwargs.get('total_score', 0.0)
-        self.progress = kwargs.get('progress', (0.0, 0.0, 0.0))
-        self.scores = kwargs.get('scores', [])
-        self.start_time = kwargs.get('start_time', "")
-        self.finish_time = kwargs.get('finish_time', "")
+        self.total_time = kwargs.get("total_time", timedelta(0))
+        self.total_score = kwargs.get("total_score", 0.0)
+        self.progress = kwargs.get("progress", (0.0, 0.0, 0.0))
+        self.scores = kwargs.get("scores", [])
+        self.start_time = kwargs.get("start_time", "")
+        self.finish_time = kwargs.get("finish_time", "")
 
 
 class User:
@@ -337,10 +377,13 @@ class User:
             self.student = profile.student
 
     def is_student(self):
-        return hasattr(self.profile, 'student') and not self.profile.student.is_independent()
+        return (
+            hasattr(self.profile, "student")
+            and not self.profile.student.is_independent()
+        )
 
     def is_teacher(self):
-        return hasattr(self.profile, 'teacher')
+        return hasattr(self.profile, "teacher")
 
     def is_independent_student(self):
-        return hasattr(self.profile, 'student') and self.student.is_independent()
+        return hasattr(self.profile, "student") and self.student.is_independent()

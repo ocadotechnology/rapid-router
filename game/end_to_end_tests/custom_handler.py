@@ -8,10 +8,10 @@ class RequestHandler(testcases.QuietWSGIRequestHandler):
         try:
             super(RequestHandler, self).handle()
         except socket.timeout:
-            print('timed out')
-            self.requestline = ''
-            self.request_version = ''
-            self.command = ''
+            print("timed out")
+            self.requestline = ""
+            self.request_version = ""
+            self.command = ""
             self.send_error(408)
             return
 

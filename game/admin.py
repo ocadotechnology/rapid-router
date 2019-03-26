@@ -39,9 +39,9 @@ from game.models import Level, Block, Episode, Workspace
 
 
 class LevelAdmin(admin.ModelAdmin):
-    readonly_fields = ['owner']
+    readonly_fields = ["owner"]
 
-  
+
 admin.site.register(Level, LevelAdmin)
 admin.site.register(Workspace)
 admin.site.register(Episode)

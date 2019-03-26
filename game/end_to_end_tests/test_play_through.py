@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 # Code for Life
 #
@@ -40,7 +39,14 @@ from unittest import expectedFailure, skip
 from .base_game_test import BaseGameTest
 
 
-def complete_and_check_level(level_number, page, next_episode=None, check_algorithm_score=True, check_route_score=True, final_level=False):
+def complete_and_check_level(
+    level_number,
+    page,
+    next_episode=None,
+    check_algorithm_score=True,
+    check_route_score=True,
+    final_level=False,
+):
     page.solution_button().run_program().assert_success()
     if check_algorithm_score:
         page.assert_algorithm_score(10)

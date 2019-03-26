@@ -34,68 +34,57 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-'''Game autoconfig'''
+"""Game autoconfig"""
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-DEFAULT_SETTINGS = {
-    'STATIC_URL': '/static/',
-}
+DEFAULT_SETTINGS = {"STATIC_URL": "/static/"}
 
 SETTINGS = {
-    'PIPELINE_COMPILERS': (
-        'pipeline.compilers.sass.SASSCompiler',
-    ),
-    'PIPELINE_CSS': {
-        'game-scss': {
-            'source_filenames': (
-              'game/sass/game.scss',
-            ),
-            'output_filename': 'game.css',
-        },
+    "PIPELINE_COMPILERS": ("pipeline.compilers.sass.SASSCompiler",),
+    "PIPELINE_CSS": {
+        "game-scss": {
+            "source_filenames": ("game/sass/game.scss",),
+            "output_filename": "game.css",
+        }
     },
-    'PIPELINE_CSS_COMPRESSOR': None,
-    'INSTALLED_APPS': [
-        'game',
-        'pipeline',
-        'portal',
-        'django.contrib.admin',
-        'django.contrib.admindocs',
-        'django.contrib.auth',
-        'django.contrib.contenttypes',
-        'django.contrib.sessions',
-        'django.contrib.messages',
-        'django.contrib.staticfiles',
-        'django_js_reverse',
-        'foundation_scss',
-        'foundation_icons',
-        'bourbon',
-        'rest_framework',
+    "PIPELINE_CSS_COMPRESSOR": None,
+    "INSTALLED_APPS": [
+        "game",
+        "pipeline",
+        "portal",
+        "django.contrib.admin",
+        "django.contrib.admindocs",
+        "django.contrib.auth",
+        "django.contrib.contenttypes",
+        "django.contrib.sessions",
+        "django.contrib.messages",
+        "django.contrib.staticfiles",
+        "django_js_reverse",
+        "foundation_scss",
+        "foundation_icons",
+        "bourbon",
+        "rest_framework",
     ],
-    'LANGUAGES': [
-        ('lol-us', 'Localisation'),
-    ],
-    'LOCALE_PATHS': [
+    "LANGUAGES": [("lol-us", "Localisation")],
+    "LOCALE_PATHS": [
         # This shouldn't be needed, but it looks like there's an issue with
         # using a language code that's not in `django/conf/locale` - the
         # check_for_language function doesn't recognise it.
-        os.path.join(os.path.dirname(__file__), 'locale'),
+        os.path.join(os.path.dirname(__file__), "locale")
     ],
-    'PIPELINE_SASS_ARGUMENTS': '--quiet',
-    'STATICFILES_FINDERS': [
-        'pipeline.finders.PipelineFinder',
-    ],
-    'STATICFILES_STORAGE': 'pipeline.storage.PipelineStorage',
-    'TEMPLATES': [
+    "PIPELINE_SASS_ARGUMENTS": "--quiet",
+    "STATICFILES_FINDERS": ["pipeline.finders.PipelineFinder"],
+    "STATICFILES_STORAGE": "pipeline.storage.PipelineStorage",
+    "TEMPLATES": [
         {
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'APP_DIRS': True,
-            'OPTIONS': {
-                'context_processors': [
-                    'django.template.context_processors.request'
-                ]
-            }
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "APP_DIRS": True,
+            "OPTIONS": {
+                "context_processors": ["django.template.context_processors.request"]
+            },
         }
     ],
-    'USE_TZ': True,
+    "USE_TZ": True,
 }

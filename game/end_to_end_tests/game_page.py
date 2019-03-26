@@ -41,7 +41,9 @@ from django.core.urlresolvers import reverse
 from hamcrest import assert_that, equal_to, contains_string, starts_with, ends_with
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.expected_conditions import presence_of_all_elements_located
+from selenium.webdriver.support.expected_conditions import (
+    presence_of_all_elements_located,
+)
 from selenium.webdriver.support.ui import WebDriverWait
 from portal.tests.pageObjects.portal.base_page import BasePage
 
@@ -50,7 +52,7 @@ class GamePage(BasePage):
     def __init__(self, browser):
         super(GamePage, self).__init__(browser)
 
-        assert self.on_correct_page('game_page')
+        assert self.on_correct_page("game_page")
 
         self._dismiss_initial_dialog()
 
@@ -65,7 +67,7 @@ class GamePage(BasePage):
 
     def load_solution(self, workspace_id):
         self.browser.find_element_by_id("load_tab").click()
-        selector = "#loadWorkspaceTable tr[value=\'" + str(workspace_id) + "\']"
+        selector = "#loadWorkspaceTable tr[value='" + str(workspace_id) + "']"
         self.wait_for_element_to_be_clickable((By.CSS_SELECTOR, selector))
         self.browser.find_element_by_css_selector(selector).click()
         self.browser.find_element_by_id("loadWorkspace").click()
@@ -90,7 +92,9 @@ class GamePage(BasePage):
         timeout = time.time() + 30
 
         while not solution_loaded:
-            solution_loaded = self.browser.execute_script("return ocargo.solutionLoaded;")
+            solution_loaded = self.browser.execute_script(
+                "return ocargo.solutionLoaded;"
+            )
             if time.time() > timeout:
                 break
         return self
@@ -104,11 +108,11 @@ class GamePage(BasePage):
         return self
 
     def assert_level_number(self, level_number):
-        path = reverse('play_default_level', kwargs={'levelName': str(level_number)})
+        path = reverse("play_default_level", kwargs={"levelName": str(level_number)})
         assert_that(self.browser.current_url, ends_with(path))
 
     def assert_episode_number(self, episode_number):
-        path = reverse('start_episode', kwargs={'episodeId': str(episode_number)})
+        path = reverse("start_episode", kwargs={"episodeId": str(episode_number)})
         assert_that(self.browser.current_url, ends_with(path))
 
     def assert_is_green_light(self, traffic_light_index):
@@ -118,7 +122,9 @@ class GamePage(BasePage):
         self._assert_light_is_on(traffic_light_index, "red")
 
     def _assert_light_is_on(self, traffic_light_index, colour):
-        image = self.browser.find_element_by_id("trafficLight_%s_%s" % (traffic_light_index, colour))
+        image = self.browser.find_element_by_id(
+            "trafficLight_%s_%s" % (traffic_light_index, colour)
+        )
 
         assert_that(image.get_attribute("opacity"), equal_to("1"))
 
@@ -129,8 +135,12 @@ class GamePage(BasePage):
             self.wait_for_element_to_be_clickable((By.ID, wait_for_element_id), 45)
         except TimeoutException as e:
             import time
+
             millis = int(round(time.time() * 1000))
-            screenshot_filename = '/tmp/game_tests_%s-%s.png' % (os.getenv("BUILD_NUMBER", "nonumber"), str(millis))
+            screenshot_filename = "/tmp/game_tests_%s-%s.png" % (
+                os.getenv("BUILD_NUMBER", "nonumber"),
+                str(millis),
+            )
             print("Saved screenshot to " + screenshot_filename)
             self.browser.get_screenshot_as_file(screenshot_filename)
             raise e
@@ -152,34 +162,47 @@ class GamePage(BasePage):
         return self._run_failing_program("You ran into a cow!")
 
     def run_out_of_instructions_program(self):
-        return self._run_failing_program("The van ran out of instructions before it reached a destination.")
+        return self._run_failing_program(
+            "The van ran out of instructions before it reached a destination."
+        )
 
     def run_out_of_fuel_program(self):
         return self._run_failing_program("You ran out of fuel!")
 
     def run_a_red_light_program(self):
-        return self._run_failing_program("Uh oh, you just sent the van through a red light!")
+        return self._run_failing_program(
+            "Uh oh, you just sent the van through a red light!"
+        )
 
     def run_not_delivered_everywhere_program(self):
-        return self._run_failing_program("There are destinations that have not been delivered to.")
+        return self._run_failing_program(
+            "There are destinations that have not been delivered to."
+        )
 
     def run_undefined_procedure_program(self):
-        return self._run_procedure_error_program("Your program doesn't look quite right...")
+        return self._run_procedure_error_program(
+            "Your program doesn't look quite right..."
+        )
 
     def run_parse_error_program(self):
         return self._run_python_failing_program("v.", "ParseError: bad input on line")
 
     def run_attribute_error_program(self):
-        return self._run_python_failing_program("v.go()", "AttributeError: 'Van' object has no attribute")
+        return self._run_python_failing_program(
+            "v.go()", "AttributeError: 'Van' object has no attribute"
+        )
 
     def run_print_program(self):
-        return self._run_python_failing_program("print(\"hello world\")", "hello world")
+        return self._run_python_failing_program('print("hello world")', "hello world")
 
     def check_python_commands(self):
         self.python_commands_button()
         time.sleep(1)
         python_commands = self.browser.find_element_by_id("myModal-lead").text
-        assert_that(python_commands, contains_string("Run the following commands on the van object v"))
+        assert_that(
+            python_commands,
+            contains_string("Run the following commands on the van object v"),
+        )
         return self
 
     def write_to_then_clear_console(self):
@@ -208,8 +231,8 @@ class GamePage(BasePage):
         return self
 
     def _run_failing_program(self, text):
-        self.run_program('try_again_button')
-        error_message = self.browser.find_element_by_id('myModal-lead').text
+        self.run_program("try_again_button")
+        error_message = self.browser.find_element_by_id("myModal-lead").text
         assert_that(error_message, contains_string(text))
         return self
 
@@ -222,12 +245,14 @@ class GamePage(BasePage):
         return self
 
     def _write_code(self, code):
-        self.browser.execute_script("ocargo.pythonControl.appendCode(arguments[0])", code)
+        self.browser.execute_script(
+            "ocargo.pythonControl.appendCode(arguments[0])", code
+        )
         return self
 
     def _run_procedure_error_program(self, text):
-        self.run_program('close_button')
-        error_message = self.browser.find_element_by_id('myModal-mainText').text
+        self.run_program("close_button")
+        error_message = self.browser.find_element_by_id("myModal-mainText").text
         assert_that(error_message, contains_string(text))
 
     def _assert_score(self, element_id, score):

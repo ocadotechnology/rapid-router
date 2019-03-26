@@ -39,20 +39,20 @@ from base_test_migration import MigrationTestCase
 
 class TestMigrationReorderEpisodes(MigrationTestCase):
 
-    start_migration = '0067_level_score_27'
-    dest_migration = '0069_remove_user_levels_from_episodes'
+    start_migration = "0067_level_score_27"
+    dest_migration = "0069_remove_user_levels_from_episodes"
 
     def test_episodes_renamed_properly(self):
-        Episode = self.django_application.get_model('game', 'Episode')
+        Episode = self.django_application.get_model("game", "Episode")
 
         episode7 = Episode.objects.get(id=7)
         episode8 = Episode.objects.get(id=8)
 
-        self.assertEquals(episode7.name, 'Limited Blocks')
-        self.assertEquals(episode8.name, 'Procedures')
+        self.assertEquals(episode7.name, "Limited Blocks")
+        self.assertEquals(episode8.name, "Procedures")
 
     def test_episodes_reordered_properly(self):
-        Episode = self.django_application.get_model('game', 'Episode')
+        Episode = self.django_application.get_model("game", "Episode")
 
         episode6 = Episode.objects.get(id=6)
         episode7 = Episode.objects.get(id=7)

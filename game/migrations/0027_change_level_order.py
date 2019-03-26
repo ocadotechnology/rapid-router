@@ -41,20 +41,20 @@ from django.db import migrations
 
 def change_level_order(apps, schema_editor):
 
-    Level = apps.get_model('game', 'Level')
+    Level = apps.get_model("game", "Level")
 
-    level93 = Level.objects.get(name='93', default=1)
-    level96 = Level.objects.get(name='94', default=1)
-    level94 = Level.objects.get(name='95', default=1)
-    level95 = Level.objects.get(name='96', default=1)
-    level97 = Level.objects.get(name='97', default=1)
-    level98 = Level.objects.get(name='98', default=1)
+    level93 = Level.objects.get(name="93", default=1)
+    level96 = Level.objects.get(name="94", default=1)
+    level94 = Level.objects.get(name="95", default=1)
+    level95 = Level.objects.get(name="96", default=1)
+    level97 = Level.objects.get(name="97", default=1)
+    level98 = Level.objects.get(name="98", default=1)
 
-    level93.name = '93'
-    level94.name = '94'
-    level95.name = '95'
-    level96.name = '96'
-    level97.name = '97'
+    level93.name = "93"
+    level94.name = "94"
+    level95.name = "95"
+    level96.name = "96"
+    level97.name = "97"
 
     level93.next_level = level94
     level94.next_level = level95
@@ -71,10 +71,6 @@ def change_level_order(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('game', '0026_levels_pt2'),
-    ]
+    dependencies = [("game", "0026_levels_pt2")]
 
-    operations = [
-        migrations.RunPython(change_level_order)
-    ]
+    operations = [migrations.RunPython(change_level_order)]

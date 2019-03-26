@@ -39,8 +39,28 @@ import game.level_management as level_management
 
 
 def create_save_level(teacher):
-    data = {u'origin': u'{"coordinate":[3,5],"direction":"S"}', u'pythonEnabled': False, u'decor': [], u'blocklyEnabled': True, u'blocks': [{u'type': u'move_forwards'}, {u'type': u'turn_left'}, {u'type': u'turn_right'}], u'max_fuel': u'50', u'pythonViewEnabled': False, u'character': u'3', u'name': u'abc', u'theme': 1, u'anonymous': False, u'cows': u'[]', u'path': u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],"connectedNodes":[0]}]', u'traffic_lights': u'[]', u'destinations': u'[[3,4]]'}
-    level = Level(default=False, anonymous=data['anonymous'])
+    data = {
+        u"origin": u'{"coordinate":[3,5],"direction":"S"}',
+        u"pythonEnabled": False,
+        u"decor": [],
+        u"blocklyEnabled": True,
+        u"blocks": [
+            {u"type": u"move_forwards"},
+            {u"type": u"turn_left"},
+            {u"type": u"turn_right"},
+        ],
+        u"max_fuel": u"50",
+        u"pythonViewEnabled": False,
+        u"character": u"3",
+        u"name": u"abc",
+        u"theme": 1,
+        u"anonymous": False,
+        u"cows": u"[]",
+        u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],"connectedNodes":[0]}]',
+        u"traffic_lights": u"[]",
+        u"destinations": u"[[3,4]]",
+    }
+    level = Level(default=False, anonymous=data["anonymous"])
     level.owner = teacher.user.user.userprofile
     level_management.save_level(level, data)
     level.save()

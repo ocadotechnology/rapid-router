@@ -46,7 +46,6 @@ from portal.tests.utils.teacher import signup_teacher_directly
 
 
 class LevelModerationTestCase(TestCase):
-
     def setUp(self):
         self.client = Client()
 
@@ -59,7 +58,9 @@ class LevelModerationTestCase(TestCase):
         self.login(email, password)
         response = self.students_of_class(klass)
         assert_that(response.status_code, equal_to(200))
-        assert_that(response.content, equal_to('{"%s": "%s"}' % (student.id, student_name)))
+        assert_that(
+            response.content, equal_to('{"%s": "%s"}' % (student.id, student_name))
+        )
 
     def test_moderation_another_class(self):
         email, password = signup_teacher_directly()
@@ -75,10 +76,17 @@ class LevelModerationTestCase(TestCase):
         assert_that(response.content, empty)
 
     def students_of_class(self, klass):
-        url = reverse('students_for_level_moderation', args=[klass.id])
+        url = reverse("students_for_level_moderation", args=[klass.id])
         response = self.client.get(url)
         return response
 
     def login(self, email, password):
-        self.client.post(reverse('login_view'), {'login-teacher_email': email, 'login-teacher_password': password, 'login': ''}, follow=True)
-
+        self.client.post(
+            reverse("login_view"),
+            {
+                "login-teacher_email": email,
+                "login-teacher_password": password,
+                "login": "",
+            },
+            follow=True,
+        )

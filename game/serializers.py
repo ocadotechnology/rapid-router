@@ -51,11 +51,20 @@ class LevelListSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Level
-        fields = ('url', '__unicode__', 'episode', 'name', 'title', 'default', 'blocklyEnabled', 'pythonEnabled')
+        fields = (
+            "url",
+            "__unicode__",
+            "episode",
+            "name",
+            "title",
+            "default",
+            "blocklyEnabled",
+            "pythonEnabled",
+        )
 
     def get_title(self, obj):
         if obj.default:
-            title = getattr(messages, 'title_level' + obj.name)()
+            title = getattr(messages, "title_level" + obj.name)()
             return title
         else:
             return "Custom Level"
@@ -66,65 +75,79 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
     description = serializers.SerializerMethodField()
     hint = serializers.SerializerMethodField()
     levelblock_set = serializers.HyperlinkedIdentityField(
-        view_name='levelblock-for-level',
-        read_only=True
+        view_name="levelblock-for-level", read_only=True
     )
     map = serializers.HyperlinkedIdentityField(
-        view_name='map-for-level',
-        read_only=True
+        view_name="map-for-level", read_only=True
     )
     mode = serializers.HyperlinkedIdentityField(
-        view_name='mode-for-level',
-        read_only=True
+        view_name="mode-for-level", read_only=True
     )
 
     class Meta:
         model = Level
-        fields = ('__unicode__', 'episode', 'name', 'title', 'description', 'hint', 'next_level', 'default',
-                  'levelblock_set', 'map', 'mode', 'blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled')
+        fields = (
+            "__unicode__",
+            "episode",
+            "name",
+            "title",
+            "description",
+            "hint",
+            "next_level",
+            "default",
+            "levelblock_set",
+            "map",
+            "mode",
+            "blocklyEnabled",
+            "pythonEnabled",
+            "pythonViewEnabled",
+        )
 
     def get_title(self, obj):
         if obj.default:
-            title = getattr(messages, 'title_level' + obj.name)()
+            title = getattr(messages, "title_level" + obj.name)()
             return title
         else:
             return "Custom Level"
 
     def get_description(self, obj):
         if obj.default:
-            description = getattr(messages, 'description_level' + obj.name)()
+            description = getattr(messages, "description_level" + obj.name)()
             return description
         else:
             return description_level_default()
 
     def get_hint(self, obj):
         if obj.default:
-            hint = getattr(messages, 'hint_level' + obj.name)()
+            hint = getattr(messages, "hint_level" + obj.name)()
             return hint
         else:
             return hint_level_default()
 
     def get_leveldecor_set(self, obj):
         leveldecors = LevelDecor.objects.filter(level__id=obj.id)
-        serializer = LevelDecorSerializer(leveldecors, many=True, context={'request': self.context.get('request', None)})
+        serializer = LevelDecorSerializer(
+            leveldecors,
+            many=True,
+            context={"request": self.context.get("request", None)},
+        )
         return serializer.data
 
 
 class LevelModeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Level
-        fields = ('blocklyEnabled', 'pythonEnabled', 'pythonViewEnabled')
+        fields = ("blocklyEnabled", "pythonEnabled", "pythonViewEnabled")
 
 
 class LevelMapListSerializer(serializers.HyperlinkedModelSerializer):
     url = serializers.HyperlinkedIdentityField(
-        view_name='map-for-level',
-        read_only=True
+        view_name="map-for-level", read_only=True
     )
 
     class Meta:
         model = Level
-        fields = ('url',)
+        fields = ("url",)
 
 
 class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
@@ -133,16 +156,28 @@ class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Level
-        fields = ('origin', 'destinations', 'path', 'traffic_lights', 'max_fuel', 'theme', 'leveldecor_set')
+        fields = (
+            "origin",
+            "destinations",
+            "path",
+            "traffic_lights",
+            "max_fuel",
+            "theme",
+            "leveldecor_set",
+        )
 
     def get_leveldecor_set(self, obj):
         leveldecors = LevelDecor.objects.filter(level__id=obj.id)
-        serializer = LevelDecorSerializer(leveldecors, many=True, context={'request': self.context.get('request', None)})
+        serializer = LevelDecorSerializer(
+            leveldecors,
+            many=True,
+            context={"request": self.context.get("request", None)},
+        )
         return serializer.data
 
     def get_theme(self, obj):
         pk = get_theme(obj.theme_name).pk
-        return get_themes_url(pk, self.context.get('request', None))
+        return get_themes_url(pk, self.context.get("request", None))
 
 
 class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
@@ -150,7 +185,7 @@ class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Episode
-        fields = ('url', '__unicode__', 'name')
+        fields = ("url", "__unicode__", "name")
 
     def get_name(self, obj):
         return messages.get_episode_title(obj.id)
@@ -158,18 +193,21 @@ class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
 
 class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
     level_set = serializers.SerializerMethodField()
-    level_set_url = serializers.HyperlinkedIdentityField(view_name='level-for-episode',
-                                                          read_only=True)
+    level_set_url = serializers.HyperlinkedIdentityField(
+        view_name="level-for-episode", read_only=True
+    )
     name = serializers.SerializerMethodField()
 
     class Meta:
         model = Episode
         depth = 1
-        fields = ('url', '__unicode__', 'name', 'level_set', 'level_set_url')
+        fields = ("url", "__unicode__", "name", "level_set", "level_set_url")
 
     def get_level_set(self, obj):
         levels = Level.objects.filter(episode__id=obj.id)
-        serializer = LevelListSerializer(levels, many=True, context={'request': self.context.get('request', None)})
+        serializer = LevelListSerializer(
+            levels, many=True, context={"request": self.context.get("request", None)}
+        )
         return serializer.data
 
     def get_name(self, obj):
@@ -189,4 +227,4 @@ class LevelDecorSerializer(serializers.HyperlinkedModelSerializer):
 class BlockSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Block
-        fields = ('url', 'id', 'type')
+        fields = ("url", "id", "type")

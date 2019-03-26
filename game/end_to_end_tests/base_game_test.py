@@ -59,7 +59,9 @@ custom_handler.monkey_patch()
 
 @skipUnless(selenium, "Selenium is unconfigured")
 class BaseGameTest(SeleniumTestCase):
-    BLOCKLY_SOLUTIONS_DIR = os.path.join(os.path.dirname(__file__), 'data/blockly_solutions')
+    BLOCKLY_SOLUTIONS_DIR = os.path.join(
+        os.path.dirname(__file__), "data/blockly_solutions"
+    )
 
     already_logged_on = False
     user_profile = None
@@ -79,124 +81,127 @@ class BaseGameTest(SeleniumTestCase):
                 break
 
     def go_to_homepage(self):
-        path = reverse('home')
+        path = reverse("home")
         self._go_to_path(path)
         return HomePage(selenium)
 
     def go_to_level(self, level_name):
-        path = reverse('play_default_level', kwargs={'levelName': str(level_name)})
+        path = reverse("play_default_level", kwargs={"levelName": str(level_name)})
         self._go_to_path(path)
-        selenium.execute_script('ocargo.animation.FAST_ANIMATION_DURATION = 1;')
+        selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         return GamePage(selenium)
 
     def go_to_custom_level(self, level):
-        path = reverse('play_custom_level', kwargs={'levelId': str(level.id)})
+        path = reverse("play_custom_level", kwargs={"levelId": str(level.id)})
         self._go_to_path(path)
-        selenium.execute_script('ocargo.animation.FAST_ANIMATION_DURATION = 1;')
+        selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         return GamePage(selenium)
 
     def go_to_episode(self, episodeId):
-        path = reverse('start_episode', kwargs={'episodeId': str(episodeId)})
+        path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
         self._go_to_path(path)
-        selenium.execute_script('ocargo.animation.FAST_ANIMATION_DURATION = 1;')
+        selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         return GamePage(selenium)
 
     def deliver_everywhere_test(self, level):
         self.login_once()
 
-        return self.go_to_level(level) \
-            .solution_button() \
-            .run_program()
+        return self.go_to_level(level).solution_button().run_program()
 
     def try_again_if_not_full_score_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level) \
-            .load_solution(workspace_id) \
-            .run_retry_program()
+        return self.go_to_level(level).load_solution(workspace_id).run_retry_program()
 
     def run_crashing_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level) \
-            .load_solution(workspace_id) \
-            .run_crashing_program()
+        return (
+            self.go_to_level(level).load_solution(workspace_id).run_crashing_program()
+        )
 
     def run_python_commands_test(self, level):
-        return self.go_to_level(level) \
-            .check_python_commands()
+        return self.go_to_level(level).check_python_commands()
 
     def run_clear_console_test(self, level):
-        return self.go_to_level(level) \
-            .write_to_then_clear_console()
+        return self.go_to_level(level).write_to_then_clear_console()
 
     def run_console_parse_error_test(self, level):
-        return self.go_to_level(level) \
-            .run_parse_error_program()
+        return self.go_to_level(level).run_parse_error_program()
 
     def run_console_attribute_error_test(self, level):
-        return self.go_to_level(level) \
-            .run_attribute_error_program()
+        return self.go_to_level(level).run_attribute_error_program()
 
     def run_console_print_test(self, level):
-        return self.go_to_level(level) \
-            .run_print_program()
+        return self.go_to_level(level).run_print_program()
 
     def running_out_of_instructions_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level) \
-            .load_solution(workspace_id) \
+        return (
+            self.go_to_level(level)
+            .load_solution(workspace_id)
             .run_out_of_instructions_program()
+        )
 
     def running_out_of_fuel_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level) \
-            .load_solution(workspace_id) \
+        return (
+            self.go_to_level(level)
+            .load_solution(workspace_id)
             .run_out_of_fuel_program()
+        )
 
     def running_a_red_light_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level) \
-            .load_solution(workspace_id) \
+        return (
+            self.go_to_level(level)
+            .load_solution(workspace_id)
             .run_a_red_light_program()
+        )
 
     def not_delivered_everywhere_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level) \
-            .load_solution(workspace_id) \
+        return (
+            self.go_to_level(level)
+            .load_solution(workspace_id)
             .run_not_delivered_everywhere_program()
+        )
 
     def undefined_procedure_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level) \
-            .load_solution(workspace_id) \
+        return (
+            self.go_to_level(level)
+            .load_solution(workspace_id)
             .run_undefined_procedure_program()
+        )
 
     def use_workspace(self, workspace_file, user_profile):
         solution = self.read_solution(workspace_file)
-        workspace_id = Workspace.objects.create(name=workspace_file, owner=user_profile, contents=solution).id
+        workspace_id = Workspace.objects.create(
+            name=workspace_file, owner=user_profile, contents=solution
+        ).id
         return workspace_id
 
     def login_once(self):
@@ -219,7 +224,7 @@ class BaseGameTest(SeleniumTestCase):
     def read_solution(self, filename):
         path = self.solution_file_path(filename)
         if path:
-            f = open(path, 'r')
+            f = open(path, "r")
             data = f.read()
             f.close()
         return data
