@@ -43,6 +43,7 @@ class TestLevelWin(BaseGameTest):
         self.deliver_everywhere_test(level=16)
 
     def test_try_again_if_not_full_score(self):
-        page = self \
-                .try_again_if_not_full_score_test(level=19, workspace_file='complete_level_not_with_full_score')
+        page = self.try_again_if_not_full_score_test(
+            level=19, workspace_file="complete_level_not_with_full_score"
+        )
         complete_and_check_level(19, page)

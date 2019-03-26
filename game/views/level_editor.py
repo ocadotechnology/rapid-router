@@ -75,49 +75,58 @@ def level_editor(request):
     :template:`game/level_editor.html`
     """
 
-    context = RequestContext(request, {
-        'blocks': available_blocks(),
-        'decor': get_all_decor(),
-        'characters': get_all_character(),
-        'themes': get_all_themes(),
-        'cow_level_enabled': app_settings.COW_FEATURE_ENABLED,
-        'night_mode_feature_enabled': str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
-    })
-    return render(request, 'game/level_editor.html', context_instance=context)
+    context = RequestContext(
+        request,
+        {
+            "blocks": available_blocks(),
+            "decor": get_all_decor(),
+            "characters": get_all_character(),
+            "themes": get_all_themes(),
+            "cow_level_enabled": app_settings.COW_FEATURE_ENABLED,
+            "night_mode_feature_enabled": str(
+                app_settings.NIGHT_MODE_FEATURE_ENABLED
+            ).lower(),
+        },
+    )
+    return render(request, "game/level_editor.html", context_instance=context)
 
 
 def available_blocks():
     if app_settings.COW_FEATURE_ENABLED:
         return Block.objects.all()
     else:
-        return Block.objects.all().exclude(type__in=['declare_event', 'puff_up', 'sound_horn'])
+        return Block.objects.all().exclude(
+            type__in=["declare_event", "puff_up", "sound_horn"]
+        )
 
 
 def play_anonymous_level(request, levelId, from_level_editor=True, random_level=False):
-    night_mode = False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else 'night' in request.GET
+    night_mode = (
+        False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
+    )
     level = Level.objects.filter(id=levelId)
 
     if not level.exists():
-        return redirect(reverse('level_editor'), permanent=True)
+        return redirect(reverse("level_editor"), permanent=True)
 
     level = level[:1].get()
 
     if not level.anonymous:
-        return redirect(reverse('level_editor'), permanent=True)
+        return redirect(reverse("level_editor"), permanent=True)
 
     lesson = mark_safe(messages.description_level_default())
     hint = mark_safe(messages.hint_level_default())
 
     attempt = None
-    house = get_decor_element('house', level.theme).url
-    cfc = get_decor_element('cfc', level.theme).url
-    background = get_decor_element('tile1', level.theme).url
+    house = get_decor_element("house", level.theme).url
+    cfc = get_decor_element("cfc", level.theme).url
+    background = get_decor_element("tile1", level.theme).url
     character = level.character
 
     character_url = character.top_down
     character_width = character.width
     character_height = character.height
-    wreckage_url = 'van_wreckage.svg'
+    wreckage_url = "van_wreckage.svg"
 
     decor_data = cached_level_decor(level)
 
@@ -125,45 +134,52 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
         block_data = level_management.get_night_blocks(level)
         night_mode = "true"
         lesson = messages.title_night_mode()
-        model_solution = '[]'
+        model_solution = "[]"
     else:
         block_data = cached_level_blocks(level)
         night_mode = "false"
         model_solution = level.model_solution
 
-    return_view_name = 'level_editor' if from_level_editor else 'levels'
+    return_view_name = "level_editor" if from_level_editor else "levels"
 
-    context = RequestContext(request, {
-        'level': level,
-        'decor': decor_data,
-        'blocks': block_data,
-        'lesson': lesson,
-        'character': character,
-        'background': background,
-        'house': house,
-        'cfc': cfc,
-        'hint': hint,
-        'attempt': attempt,
-        'random_level': random_level,
-        'return_url': reverse(return_view_name),
-        'character_url': character_url,
-        'character_width': character_width,
-        'character_height': character_height,
-        'wreckage_url': wreckage_url,
-        'night_mode': night_mode,
-        'night_mode_feature_enabled': str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
-        'model_solution': model_solution,
-    })
+    context = RequestContext(
+        request,
+        {
+            "level": level,
+            "decor": decor_data,
+            "blocks": block_data,
+            "lesson": lesson,
+            "character": character,
+            "background": background,
+            "house": house,
+            "cfc": cfc,
+            "hint": hint,
+            "attempt": attempt,
+            "random_level": random_level,
+            "return_url": reverse(return_view_name),
+            "character_url": character_url,
+            "character_width": character_width,
+            "character_height": character_height,
+            "wreckage_url": wreckage_url,
+            "night_mode": night_mode,
+            "night_mode_feature_enabled": str(
+                app_settings.NIGHT_MODE_FEATURE_ENABLED
+            ).lower(),
+            "model_solution": model_solution,
+        },
+    )
 
     level.delete()
 
-    return render(request, 'game/game.html', context_instance=context)
+    return render(request, "game/game.html", context_instance=context)
 
 
 def level_data_for(level):
-    return {'name': level.name,
-            'owner': app_tags.make_into_username(level.owner.user),
-            'id': level.id}
+    return {
+        "name": level.name,
+        "owner": app_tags.make_into_username(level.owner.user),
+        "id": level.id,
+    }
 
 
 def levels_shared_with(user):
@@ -182,22 +198,22 @@ def get_list_of_loadable_levels(user):
     owned_data = levels_owned_by(user)
     shared_data = levels_shared_with(user)
 
-    return {'ownedLevels': owned_data, 'sharedLevels': shared_data}
+    return {"ownedLevels": owned_data, "sharedLevels": shared_data}
 
 
 def owned_levels(request):
     level_data = levels_owned_by(request.user)
-    return HttpResponse(json.dumps(level_data), content_type='application/javascript')
+    return HttpResponse(json.dumps(level_data), content_type="application/javascript")
 
 
 def shared_levels(request):
     level_data = levels_shared_with(request.user)
-    return HttpResponse(json.dumps(level_data), content_type='application/javascript')
+    return HttpResponse(json.dumps(level_data), content_type="application/javascript")
 
 
 def get_loadable_levels_for_editor(request):
     response = get_list_of_loadable_levels(request.user)
-    return HttpResponse(json.dumps(response), content_type='application/javascript')
+    return HttpResponse(json.dumps(response), content_type="application/javascript")
 
 
 def load_level_for_editor(request, levelID):
@@ -207,45 +223,52 @@ def load_level_for_editor(request, levelID):
         return HttpResponseUnauthorized()
 
     level_dict = model_to_dict(level)
-    level_dict['theme'] = level.theme.id
-    level_dict['decor'] = cached_level_decor(level)
-    level_dict['blocks'] = cached_level_blocks(level)
+    level_dict["theme"] = level.theme.id
+    level_dict["decor"] = cached_level_decor(level)
+    level_dict["blocks"] = cached_level_blocks(level)
 
-    response = {'owned': level.owner == request.user.userprofile, 'level': level_dict}
+    response = {"owned": level.owner == request.user.userprofile, "level": level_dict}
 
-    return HttpResponse(json.dumps(response), content_type='application/javascript')
+    return HttpResponse(json.dumps(response), content_type="application/javascript")
 
 
 @transaction.atomic
 def save_level_for_editor(request, levelId=None):
     """ Processes a request on creation of the map in the level editor """
-    data = json.loads(request.POST['data'])
+    data = json.loads(request.POST["data"])
     if levelId is not None:
         level = get_object_or_404(Level, id=levelId)
     else:
-        level = Level(default=False, anonymous=data['anonymous'])
+        level = Level(default=False, anonymous=data["anonymous"])
         if permissions.can_create_level(request.user):
             level.owner = request.user.userprofile
     if not permissions.can_save_level(request.user, level):
         return HttpResponseUnauthorized()
 
     pattern = re.compile("^(\w?[ ]?)*$")
-    if pattern.match(data['name']):
+    if pattern.match(data["name"]):
         level_management.save_level(level, data)
         # Add the teacher automatically if it is a new level and the student is not independent
-        if ((levelId is None) and hasattr(level.owner, 'student') and
-                not level.owner.student.is_independent()):
+        if (
+            (levelId is None)
+            and hasattr(level.owner, "student")
+            and not level.owner.student.is_independent()
+        ):
             level.shared_with.add(level.owner.student.class_field.teacher.user.user)
             level.save()
-            if not data['anonymous']:
-                level_management.email_new_custom_level(level.owner.student.class_field.teacher.new_user.email,
-                                                        request.build_absolute_uri(reverse('level_moderation')),
-                                                        request.build_absolute_uri(reverse('play_custom_level',
-                                                                                           kwargs={'levelId': level.id})),
-                                                        request.build_absolute_uri(reverse('home')),
-                                                        str(level.owner.student), level.owner.student.class_field.name)
-        response = {'id': level.id}
-        return HttpResponse(json.dumps(response), content_type='application/javascript')
+            if not data["anonymous"]:
+                level_management.email_new_custom_level(
+                    level.owner.student.class_field.teacher.new_user.email,
+                    request.build_absolute_uri(reverse("level_moderation")),
+                    request.build_absolute_uri(
+                        reverse("play_custom_level", kwargs={"levelId": level.id})
+                    ),
+                    request.build_absolute_uri(reverse("home")),
+                    str(level.owner.student),
+                    level.owner.student.class_field.name,
+                )
+        response = {"id": level.id}
+        return HttpResponse(json.dumps(response), content_type="application/javascript")
     else:
         return HttpResponseUnauthorized()
 
@@ -259,24 +282,25 @@ def delete_level_for_editor(request, levelId):
 
     level_management.delete_level(level)
 
-    return HttpResponse(json.dumps({}), content_type='application/javascript')
+    return HttpResponse(json.dumps({}), content_type="application/javascript")
 
 
 def generate_random_map_for_editor(request):
     """Generates a new random path suitable for a random level with the parameters provided"""
     data = dict(request.POST)
 
-    size = int(data['numberOfTiles'][0])
-    branchiness = float(data['branchiness'][0])
-    loopiness = float(data['loopiness'][0])
-    curviness = float(data['curviness'][0])
-    traffic_lights = data['trafficLights'][0] == 'true'
-    scenery = data['scenery'][0] == 'true'
+    size = int(data["numberOfTiles"][0])
+    branchiness = float(data["branchiness"][0])
+    loopiness = float(data["loopiness"][0])
+    curviness = float(data["curviness"][0])
+    traffic_lights = data["trafficLights"][0] == "true"
+    scenery = data["scenery"][0] == "true"
 
-    data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness,
-                                                traffic_lights, scenery, False)
+    data = random_road.generate_random_map_data(
+        size, branchiness, loopiness, curviness, traffic_lights, scenery, False
+    )
 
-    return HttpResponse(json.dumps(data), content_type='application/javascript')
+    return HttpResponse(json.dumps(data), content_type="application/javascript")
 
 
 def get_sharing_information_for_editor(request, levelID):
@@ -289,58 +313,83 @@ def get_sharing_information_for_editor(request, levelID):
         valid_recipients = {}
 
         # Note: independent users can't share levels so no need to check
-        if hasattr(userprofile, 'student'):
+        if hasattr(userprofile, "student"):
             student = userprofile.student
 
             # First get all the student's classmates
             class_ = student.class_field
-            classmates = Student.objects.filter(class_field=class_).exclude(id=student.id)
-            valid_recipients['classmates'] = [
-                {'id': classmate.user.user.id,
-                 'name': app_tags.make_into_username(classmate.user.user),
-                 'shared': level.shared_with.filter(id=classmate.user.user.id).exists()}
-                for classmate in classmates]
+            classmates = Student.objects.filter(class_field=class_).exclude(
+                id=student.id
+            )
+            valid_recipients["classmates"] = [
+                {
+                    "id": classmate.user.user.id,
+                    "name": app_tags.make_into_username(classmate.user.user),
+                    "shared": level.shared_with.filter(
+                        id=classmate.user.user.id
+                    ).exists(),
+                }
+                for classmate in classmates
+            ]
 
             # Then add their teacher as well
             teacher = class_.teacher
-            valid_recipients['teacher'] = {
-                'id': teacher.user.user.id,
-                'name': app_tags.make_into_username(teacher.user.user),
-                'shared': level.shared_with.filter(id=teacher.user.user.id).exists()}
+            valid_recipients["teacher"] = {
+                "id": teacher.user.user.id,
+                "name": app_tags.make_into_username(teacher.user.user),
+                "shared": level.shared_with.filter(id=teacher.user.user.id).exists(),
+            }
 
-        elif hasattr(userprofile, 'teacher'):
+        elif hasattr(userprofile, "teacher"):
             teacher = userprofile.teacher
 
             # First get all the students they teach
-            valid_recipients['classes'] = []
+            valid_recipients["classes"] = []
             classes_taught = Class.objects.filter(teacher=teacher)
             for class_ in classes_taught:
                 students = Student.objects.filter(class_field=class_)
-                valid_recipients['classes'].append({
-                    'name': class_.name, 'id': class_.id,
-                    'students': [{
-                        'id': student.user.user.id,
-                        'name': app_tags.make_into_username(student.user.user),
-                        'shared': level.shared_with.filter(id=student.user.user.id).exists()}
-                        for student in students]})
+                valid_recipients["classes"].append(
+                    {
+                        "name": class_.name,
+                        "id": class_.id,
+                        "students": [
+                            {
+                                "id": student.user.user.id,
+                                "name": app_tags.make_into_username(student.user.user),
+                                "shared": level.shared_with.filter(
+                                    id=student.user.user.id
+                                ).exists(),
+                            }
+                            for student in students
+                        ],
+                    }
+                )
 
             if not teacher.school:
-                valid_recipients['teachers'] = []
+                valid_recipients["teachers"] = []
             else:
                 fellow_teachers = Teacher.objects.filter(school=teacher.school)
-                valid_recipients['teachers'] = [{
-                    'id': fellow_teacher.user.user.id,
-                    'name': app_tags.make_into_username(fellow_teacher.user.user),
-                    'shared': level.shared_with.filter(id=fellow_teacher.user.user.id).exists()}
-                    for fellow_teacher in fellow_teachers if teacher != fellow_teacher]
+                valid_recipients["teachers"] = [
+                    {
+                        "id": fellow_teacher.user.user.id,
+                        "name": app_tags.make_into_username(fellow_teacher.user.user),
+                        "shared": level.shared_with.filter(
+                            id=fellow_teacher.user.user.id
+                        ).exists(),
+                    }
+                    for fellow_teacher in fellow_teachers
+                    if teacher != fellow_teacher
+                ]
 
-    return HttpResponse(json.dumps(valid_recipients), content_type='application/javascript')
+    return HttpResponse(
+        json.dumps(valid_recipients), content_type="application/javascript"
+    )
 
 
 def share_level_for_editor(request, levelID):
     """ Shares a level with the provided list of recipients """
-    recipientIDs = request.POST.getlist('recipientIDs[]')
-    action = request.POST.get('action')
+    recipientIDs = request.POST.getlist("recipientIDs[]")
+    action = request.POST.get("action")
 
     level = get_object_or_404(Level, id=levelID)
     recipients = User.objects.filter(id__in=recipientIDs)
@@ -348,11 +397,15 @@ def share_level_for_editor(request, levelID):
     def can_share_level_with(r):
         return permissions.can_share_level_with(r, level.owner.user)
 
-    users = [recipient.userprofile.user for recipient in recipients if can_share_level_with(recipient)]
+    users = [
+        recipient.userprofile.user
+        for recipient in recipients
+        if can_share_level_with(recipient)
+    ]
 
-    if action == 'share':
+    if action == "share":
         level_management.share_level(level, *users)
-    elif action == 'unshare':
+    elif action == "unshare":
         level_management.unshare_level(level, *users)
 
     return get_sharing_information_for_editor(request, levelID)
@@ -360,4 +413,6 @@ def share_level_for_editor(request, levelID):
 
 class HttpResponseUnauthorized(HttpResponse):
     def __init__(self):
-        super(HttpResponseUnauthorized, self).__init__(content='Unauthorized', status=401)
+        super(HttpResponseUnauthorized, self).__init__(
+            content="Unauthorized", status=401
+        )

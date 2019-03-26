@@ -20,10 +20,6 @@ def reverse_func(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('game', '0058_level_theme_name'),
-    ]
+    dependencies = [("game", "0058_level_theme_name")]
 
-    operations = [
-        migrations.RunPython(forwards_func, reverse_func),
-    ]
+    operations = [migrations.RunPython(forwards_func, reverse_func)]

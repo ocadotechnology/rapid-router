@@ -58,8 +58,5 @@ def renderError(request, title, message):
 
     :template:`game/error.html`
     """
-    context = RequestContext(request, {
-        'title': title,
-        'message': message
-    })
-    return render(request, 'game/error.html', context_instance=context)
+    context = RequestContext(request, {"title": title, "message": message})
+    return render(request, "game/error.html", context_instance=context)

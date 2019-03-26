@@ -35,9 +35,9 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 
-'''
+"""
     Theme data
-'''
+"""
 
 from rest_framework.reverse import reverse
 from django.utils.translation import ugettext
@@ -54,10 +54,38 @@ class Theme(object):
 
 
 THEME_DATA = {
-    'grass': Theme(name=u'grass', text=ugettext(u'Grass'), selected=u'#bce369', background=u'#a0c53a', border=u'#70961f', pk=1),
-    'snow': Theme(name=u'snow', text=ugettext(u'Snow'), selected=u'#b3deff', background=u'#eef7ff', border=u'#83c9fe', pk=2),
-    'farm': Theme(name=u'farm', text=ugettext(u'Farm'), selected=u'#bce369', background=u'#a0c53a', border=u'#70961f', pk=3),
-    'city': Theme(name=u'city', text=ugettext(u'City'), selected=u'#C1C1C1', background=u'#969696', border=u'#686868', pk=4),
+    "grass": Theme(
+        name=u"grass",
+        text=ugettext(u"Grass"),
+        selected=u"#bce369",
+        background=u"#a0c53a",
+        border=u"#70961f",
+        pk=1,
+    ),
+    "snow": Theme(
+        name=u"snow",
+        text=ugettext(u"Snow"),
+        selected=u"#b3deff",
+        background=u"#eef7ff",
+        border=u"#83c9fe",
+        pk=2,
+    ),
+    "farm": Theme(
+        name=u"farm",
+        text=ugettext(u"Farm"),
+        selected=u"#bce369",
+        background=u"#a0c53a",
+        border=u"#70961f",
+        pk=3,
+    ),
+    "city": Theme(
+        name=u"city",
+        text=ugettext(u"City"),
+        selected=u"#C1C1C1",
+        background=u"#969696",
+        border=u"#686868",
+        pk=4,
+    ),
 }
 
 
@@ -78,4 +106,4 @@ def get_theme_by_pk(pk):
 
 
 def get_themes_url(pk, request):
-    return reverse('theme-detail', args={pk}, request=request)
+    return reverse("theme-detail", args={pk}, request=request)

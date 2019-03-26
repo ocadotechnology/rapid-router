@@ -6,20 +6,23 @@ from django.db import models, migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('game', '0057_workspace_language_enabled'),
-    ]
+    dependencies = [("game", "0057_workspace_language_enabled")]
 
     operations = [
         migrations.AddField(
-            model_name='level',
-            name='theme_name',
+            model_name="level",
+            name="theme_name",
             field=models.CharField(
                 default=None,
                 max_length=10,
                 null=True,
                 blank=True,
-                choices=[('farm', 'farm'), ('city', 'city'), ('grass', 'grass'), ('snow', 'snow')],
+                choices=[
+                    ("farm", "farm"),
+                    ("city", "city"),
+                    ("grass", "grass"),
+                    ("snow", "snow"),
+                ],
             ),
-        ),
+        )
     ]

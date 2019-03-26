@@ -76,17 +76,22 @@ def fetch_episode_data_from_database(early_access):
             if not minName or level_name < minName:
                 minName = level_name
 
-            levels.append({
-                "id": level.id,
-                "name": level_name,
-                "maxScore": max_score(level),
-                "title": get_level_title(level_name)})
+            levels.append(
+                {
+                    "id": level.id,
+                    "name": level_name,
+                    "maxScore": max_score(level),
+                    "title": get_level_title(level_name),
+                }
+            )
 
-        e = {"id": episode.id,
-             "levels": levels,
-             "first_level": minName,
-             "last_level": maxName,
-             "random_levels_enabled": episode.r_random_levels_enabled}
+        e = {
+            "id": episode.id,
+            "levels": levels,
+            "first_level": minName,
+            "last_level": maxName,
+            "random_levels_enabled": episode.r_random_levels_enabled,
+        }
 
         episode_data.append(e)
         episode = episode.next_episode
@@ -102,14 +107,20 @@ def fetch_episode_data(early_access):
         data = fetch_episode_data_from_database(early_access)
         cache.set(key, data)
     return [
-        dict(episode, name=messages.get_episode_title(episode['id']), levels=[
-            dict(level, title=get_level_title(level['name'])) for level in episode['levels']
-        ]) for episode in data
+        dict(
+            episode,
+            name=messages.get_episode_title(episode["id"]),
+            levels=[
+                dict(level, title=get_level_title(level["name"]))
+                for level in episode["levels"]
+            ],
+        )
+        for episode in data
     ]
 
 
 def get_level_title(i):
-    title = 'title_level' + str(i)
+    title = "title_level" + str(i)
     try:
         titleCall = getattr(messages, title)
         return mark_safe(titleCall())
@@ -122,7 +133,7 @@ def attach_attempts_to_level(attempts, level):
 
 
 def is_student(user):
-    return hasattr(user.userprofile, 'student')
+    return hasattr(user.userprofile, "student")
 
 
 def levels(request):
@@ -139,11 +150,12 @@ def levels(request):
     """
     user = request.user
     if user.is_authenticated() and is_student(user):
-        best_attempts = Attempt.objects \
-            .filter(student=user.userprofile.student) \
-            .values("level_id") \
-            .annotate(best_score=Max("score")) \
+        best_attempts = (
+            Attempt.objects.filter(student=user.userprofile.student)
+            .values("level_id")
+            .annotate(best_score=Max("score"))
             .all()
+        )
 
         attempts = {a["level_id"]: a["best_score"] for a in best_attempts}
     else:
@@ -163,29 +175,36 @@ def levels(request):
         owned_levels, shared_levels = level_management.get_loadable_levels(request.user)
 
         for level in owned_levels:
-            owned_level_data.append({
-                "id": level.id,
-                "title": level.name,
-                "score": attempts.get(level.id),
-                "maxScore": 10
-            })
+            owned_level_data.append(
+                {
+                    "id": level.id,
+                    "title": level.name,
+                    "score": attempts.get(level.id),
+                    "maxScore": 10,
+                }
+            )
 
         for level in shared_levels:
-            shared_level_data.append({
-                "id": level.id,
-                "title": level.name,
-                "owner": level.owner.user,
-                "score": attempts.get(level.id),
-                "maxScore": 10
-            })
+            shared_level_data.append(
+                {
+                    "id": level.id,
+                    "title": level.name,
+                    "owner": level.owner.user,
+                    "score": attempts.get(level.id),
+                    "maxScore": 10,
+                }
+            )
 
-    context = RequestContext(request, {
-        'episodeData': episode_data,
-        'owned_levels': owned_level_data,
-        'shared_levels': shared_level_data,
-        'scores': attempts
-    })
-    return render(request, 'game/level_selection.html', context_instance=context)
+    context = RequestContext(
+        request,
+        {
+            "episodeData": episode_data,
+            "owned_levels": owned_level_data,
+            "shared_levels": shared_level_data,
+            "scores": attempts,
+        },
+    )
+    return render(request, "game/level_selection.html", context_instance=context)
 
 
 def random_level_for_episode(request, episodeID):

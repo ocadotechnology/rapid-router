@@ -40,23 +40,38 @@ from django.utils.translation import ugettext
 
 
 def level_creation_email_subject():
-    return ugettext('Code For Life : Custom level to moderate')
+    return ugettext("Code For Life : Custom level to moderate")
 
 
 def level_creation_email_text_content():
-    return ugettext('Your student {student_name} from your class {class_name} has created this level: {level_url}. '
-                    'If you want to moderate it, you can do it on the moderation board: {moderate_url}.'
-                    '\n\nThanks,\n\nThe Code for Life team.\n{home_url}')
+    return ugettext(
+        "Your student {student_name} from your class {class_name} has created this level: {level_url}. "
+        "If you want to moderate it, you can do it on the moderation board: {moderate_url}."
+        "\n\nThanks,\n\nThe Code for Life team.\n{home_url}"
+    )
 
 
 def youtubeLink(width, height, url, border):
-    return "<iframe width='" + str(width) + "' height='" + str(height) + "' src='" + str(url) \
-           + "?rel=0" + "' frameborder='" + str(border) \
-           + "' allowfullscreen class='video'></iframe><br>"
+    return (
+        "<iframe width='"
+        + str(width)
+        + "' height='"
+        + str(height)
+        + "' src='"
+        + str(url)
+        + "?rel=0"
+        + "' frameborder='"
+        + str(border)
+        + "' allowfullscreen class='video'></iframe><br>"
+    )
 
 
 def play_button_icon_url():
-    return '<img src="/static/game/image/actions/go.svg" alt="' + ugettext('Play button') + '" style="width: 4%;">'
+    return (
+        '<img src="/static/game/image/actions/go.svg" alt="'
+        + ugettext("Play button")
+        + '" style="width: 4%;">'
+    )
 
 
 def noPermissionMessage():
@@ -64,8 +79,10 @@ def noPermissionMessage():
 
 
 def notSharedLevel():
-    return ugettext("This level is private. You can only see the public levels and the ones "
-                    + "created by other users only if they share them with you.")
+    return ugettext(
+        "This level is private. You can only see the public levels and the ones "
+        + "created by other users only if they share them with you."
+    )
 
 
 """ Strings used in the scoreboard. """
@@ -76,13 +93,17 @@ def noPermissionTitle():
 
 
 def noPermissionScoreboard():
-    return ugettext("Scoreboard is only visible to school students and teachers. Log in if you "
-                    + "think you should be able to see it. ")
+    return ugettext(
+        "Scoreboard is only visible to school students and teachers. Log in if you "
+        + "think you should be able to see it. "
+    )
 
 
 def noDataToShow():
-    return ugettext("There is no data to show. Please contact your administrator if this is "
-                    + "unexpected. ")
+    return ugettext(
+        "There is no data to show. Please contact your administrator if this is "
+        + "unexpected. "
+    )
 
 
 """ Strings used on the level moderation page. """
@@ -93,23 +114,31 @@ def noPermissionLevelModerationTitle():
 
 
 def noPermissionLevelModerationPage():
-    return ugettext("Level moderation is only visible to teachers. Log in if you "
-                    + "think you should be able to see it. ")
+    return ugettext(
+        "Level moderation is only visible to teachers. Log in if you "
+        + "think you should be able to see it. "
+    )
 
 
 def noPermissionLevelModerationClass():
-    return ugettext("You do not teach this class. Please contact your administrator if this "
-                    + "is unexpected.")
+    return ugettext(
+        "You do not teach this class. Please contact your administrator if this "
+        + "is unexpected."
+    )
 
 
 def noPermissionLevelModerationStudent():
-    return ugettext("You do not teach this student. Please contact your administrator if this "
-                    + "is unexpected.")
+    return ugettext(
+        "You do not teach this student. Please contact your administrator if this "
+        + "is unexpected."
+    )
 
 
 def noDataToShowLevelModeration():
-    return ugettext("You have not created any classes and therefore is no data to show. " +
-                    "Please contact your administrator if this is unexpected.")
+    return ugettext(
+        "You have not created any classes and therefore is no data to show. "
+        + "Please contact your administrator if this is unexpected."
+    )
 
 
 """ String messages used on the settings page. """
@@ -120,37 +149,51 @@ def shareTitle():
 
 
 def shareSuccessfulPerson(name, surname):
-    return ugettext("You shared your level with {0} {1} successfully! ".format(name, surname))
+    return ugettext(
+        "You shared your level with {0} {1} successfully! ".format(name, surname)
+    )
 
 
 def shareSuccessfulClass(className):
-    return ugettext("You shared your level with class {0} successfully! ".format(className))
+    return ugettext(
+        "You shared your level with class {0} successfully! ".format(className)
+    )
 
 
 def shareUnsuccessfulPerson(first_name, last_name):
-    return ugettext("We were unable to find %(name)s %(surname)s. "
-                    % {'name': first_name, 'surname': last_name}
-                    + "Are you sure you got their name right?")
+    return ugettext(
+        "We were unable to find %(name)s %(surname)s. "
+        % {"name": first_name, "surname": last_name}
+        + "Are you sure you got their name right?"
+    )
 
 
 def shareUnsuccessfulClass(className):
-    return ugettext("We were unable to find class %(class)s. Are you sure you got it right?"
-                    % {'class': className})
+    return ugettext(
+        "We were unable to find class %(class)s. Are you sure you got it right?"
+        % {"class": className}
+    )
 
 
 def noLevelsToShow():
-    return ugettext("It seems that you have not created any levels. How about creating one "
-                    + "now? ")
+    return ugettext(
+        "It seems that you have not created any levels. How about creating one "
+        + "now? "
+    )
 
 
 def levelsMessage():
-    return ugettext("All the levels you have created so far. Click on them to play them or "
-                    + "share them with your friends. ")
+    return ugettext(
+        "All the levels you have created so far. Click on them to play them or "
+        + "share them with your friends. "
+    )
 
 
 def sharedLevelsMessage():
-    return ugettext("All the levels created by others that were shared with you. Click on "
-                    + "them to play them")
+    return ugettext(
+        "All the levels created by others that were shared with you. Click on "
+        + "them to play them"
+    )
 
 
 def noSharedLevels():
@@ -177,7 +220,7 @@ def noPermission():
 
 
 def title_night_mode():
-    return 'Can you find your way in the dark?'
+    return "Can you find your way in the dark?"
 
 
 def build_description(title, message):
@@ -203,20 +246,23 @@ def title_level1():
 
 
 def description_level1():
-    message = ugettext("Choose the right blocks to tell the van where to go. <br> Drag the "
-                       + "blocks under the <b>Start</b> block to attach them. <br> To remove a "
-                       + "block, drag it into the bin in the bottom right of the screen. "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Choose the right blocks to tell the van where to go. <br> Drag the "
+        + "blocks under the <b>Start</b> block to attach them. <br> To remove a "
+        + "block, drag it into the bin in the bottom right of the screen. "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level1(), message)
 
 
 def hint_level1():
-    message = ugettext("Drag the <b>Move forwards</b> block so that it is under the <b>Start</b> "
-                       + "block - close enough to be touching. <br><br>"
-                       + "Clicking on the arrows next to the %(play_button)s button will also drag the "
-                       + "blocks into a sequence for you. <br><br>"
-                       + "Don't forget to press %(play_button)s when you are done. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Drag the <b>Move forwards</b> block so that it is under the <b>Start</b> "
+        + "block - close enough to be touching. <br><br>"
+        + "Clicking on the arrows next to the %(play_button)s button will also drag the "
+        + "blocks into a sequence for you. <br><br>"
+        + "Don't forget to press %(play_button)s when you are done. "
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -225,19 +271,23 @@ def title_level2():
 
 
 def description_level2():
-    message = ugettext("A block can be placed next to or under another, like a jigsaw. A second "
-                       + "<b>Move forwards</b> block can be placed under the first <b>Move "
-                       + "forwards</b> block. <br> To remove a block, drag it back to the "
-                       + "left of the screen or drop it in the bin. <br> When you are happy with "
-                       + "your sequence, press %(play_button)s! ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "A block can be placed next to or under another, like a jigsaw. A second "
+        + "<b>Move forwards</b> block can be placed under the first <b>Move "
+        + "forwards</b> block. <br> To remove a block, drag it back to the "
+        + "left of the screen or drop it in the bin. <br> When you are happy with "
+        + "your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level2(), message)
 
 
 def hint_level2():
-    message = ugettext("A second <b>Move forwards</b> block can be placed under the first <b>Move "
-                       + "forwards</b> block. <br><br>"
-                       + "The arrows next to the <b>%(play_button)s</b> button will drag the blocks into a "
-                       + "sequence for you. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "A second <b>Move forwards</b> block can be placed under the first <b>Move "
+        + "forwards</b> block. <br><br>"
+        + "The arrows next to the <b>%(play_button)s</b> button will drag the blocks into a "
+        + "sequence for you. "
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -246,19 +296,22 @@ def title_level3():
 
 
 def description_level3():
-    message = ugettext("This time, the van has to turn right to reach the house. Make sure you use "
-                       + "the <b>Turn right</b> block in your sequence. <br> Drag the blocks "
-                       + "and attach them under the <b>Start</b> block like before. To remove a "
-                       + "block, drag it back to the left of the screen or drop it in the bin. "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "This time, the van has to turn right to reach the house. Make sure you use "
+        + "the <b>Turn right</b> block in your sequence. <br> Drag the blocks "
+        + "and attach them under the <b>Start</b> block like before. To remove a "
+        + "block, drag it back to the left of the screen or drop it in the bin. "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level3(), message)
 
 
 def hint_level3():
-    message = ugettext("A <b>Turn right</b> block can be placed under the first <b>Move "
-                       + "forwards</b> block. <br><br> The arrows next to the %(play_button)s button "
-                       + "will drag the blocks into a sequence for you. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "A <b>Turn right</b> block can be placed under the first <b>Move "
+        + "forwards</b> block. <br><br> The arrows next to the %(play_button)s button "
+        + "will drag the blocks into a sequence for you. "
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -267,17 +320,20 @@ def title_level4():
 
 
 def description_level4():
-    message = ugettext("This time the van has to go left. Make sure you use the <b>Turn left</b> "
-                       + "block in your sequence. <br> Drag and attach the blocks like before. "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "This time the van has to go left. Make sure you use the <b>Turn left</b> "
+        + "block in your sequence. <br> Drag and attach the blocks like before. "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level4(), message)
 
 
 def hint_level4():
-    message = ugettext("A <b>Turn left</b> block can be placed under a series of <b>Move "
-                       + "forwards</b> blocks. <br> The arrows next to the %(play_button)s button will "
-                       + "drag the blocks into a sequence for you. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "A <b>Turn left</b> block can be placed under a series of <b>Move "
+        + "forwards</b> blocks. <br> The arrows next to the %(play_button)s button will "
+        + "drag the blocks into a sequence for you. "
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -286,18 +342,21 @@ def title_level5():
 
 
 def description_level5():
-    message = ugettext("You already know how to make the van turn left or right. This time "
-                       + "the van has to make lots of turns to reach the house. <br> Drag and "
-                       + "attach the blocks to make your sequence."
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "You already know how to make the van turn left or right. This time "
+        + "the van has to make lots of turns to reach the house. <br> Drag and "
+        + "attach the blocks to make your sequence."
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level5(), message)
 
 
 def hint_level5():
-    message = ugettext("This road starts by curving to the <b>left</b>. Then it curves to the "
-                       + "<b>right</b>. <br><br> The arrows next to the %(play_button)s button will drag "
-                       + "the blocks into a sequence for you. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "This road starts by curving to the <b>left</b>. Then it curves to the "
+        + "<b>right</b>. <br><br> The arrows next to the %(play_button)s button will drag "
+        + "the blocks into a sequence for you. "
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -306,17 +365,20 @@ def title_level6():
 
 
 def description_level6():
-    message = ugettext("This time the van has to <b>Move forwards</b>, <b>Turn left</b> and "
-                       + "<b>Turn right</b>. <br><br> Drag and attach the blocks like before. "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "This time the van has to <b>Move forwards</b>, <b>Turn left</b> and "
+        + "<b>Turn right</b>. <br><br> Drag and attach the blocks like before. "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level6(), message)
 
 
 def hint_level6():
-    message = ugettext("Follow the road around. How many <b>Move forwards</b> do you need? <br><br>"
-                       + "The arrows next to the %(play_button)s button will drag the blocks into a "
-                       + "sequence for you. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Follow the road around. How many <b>Move forwards</b> do you need? <br><br>"
+        + "The arrows next to the %(play_button)s button will drag the blocks into a "
+        + "sequence for you. "
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -325,16 +387,19 @@ def title_level7():
 
 
 def description_level7():
-    message = ugettext("Practise your new skills on this road by helping the driver to arrive at "
-                       + "the house. <br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Practise your new skills on this road by helping the driver to arrive at "
+        + "the house. <br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level7(), message)
 
 
 def hint_level7():
-    message = ugettext("Follow the road around. Don't forget to <b>Turn left</b> first. <br><br>"
-                       + "The arrows next to the %(play_button)s button will drag the blocks into a "
-                       + "sequence for you.") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Follow the road around. Don't forget to <b>Turn left</b> first. <br><br>"
+        + "The arrows next to the %(play_button)s button will drag the blocks into a "
+        + "sequence for you."
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -343,19 +408,22 @@ def title_level8():
 
 
 def description_level8():
-    message = ugettext("This time the warehouse is somewhere else on the screen but you still need "
-                       + "to use the <b>Move forwards</b> block. <br> Can you use the <b>Move "
-                       + "forwards</b> block correctly even when it looks like the van goes in a "
-                       + "different direction? "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "This time the warehouse is somewhere else on the screen but you still need "
+        + "to use the <b>Move forwards</b> block. <br> Can you use the <b>Move "
+        + "forwards</b> block correctly even when it looks like the van goes in a "
+        + "different direction? "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level8(), message)
 
 
 def hint_level8():
-    message = ugettext("On screen, the van looks like it follows the road down. If you were in the "
-                       + "van, it would look like you should <b>Move forwards</b>, then <b>Turn "
-                       + "right</b>. ")
+    message = ugettext(
+        "On screen, the van looks like it follows the road down. If you were in the "
+        + "van, it would look like you should <b>Move forwards</b>, then <b>Turn "
+        + "right</b>. "
+    )
     return message
 
 
@@ -364,16 +432,19 @@ def title_level9():
 
 
 def description_level9():
-    message = ugettext("Practise your new skills on this road by helping the driver to arrive "
-                       + "at the house. "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Practise your new skills on this road by helping the driver to arrive "
+        + "at the house. "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level9(), message)
 
 
 def hint_level9():
-    message = ugettext("How many times do you have to <b>Move forwards</b> before you "
-                       + "<b>Turn left</b>? ")
+    message = ugettext(
+        "How many times do you have to <b>Move forwards</b> before you "
+        + "<b>Turn left</b>? "
+    )
     return message
 
 
@@ -382,18 +453,21 @@ def title_level10():
 
 
 def description_level10():
-    message = ugettext("You've done really well so far. Try to get the van to the house. "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "You've done really well so far. Try to get the van to the house. "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level10(), message)
 
 
 def hint_level10():
-    message = ugettext("This map is not so hard. Notice that to you it looks like the road goes "
-                       + "up, but if you were in the in the van, you would see the road goes "
-                       + "right. <br><br> Do you know which turn the van will take next? <br><br> "
-                       + "The arrows next to the %(play_button)s button will drag the blocks into a "
-                       + "sequence for you. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "This map is not so hard. Notice that to you it looks like the road goes "
+        + "up, but if you were in the in the van, you would see the road goes "
+        + "right. <br><br> Do you know which turn the van will take next? <br><br> "
+        + "The arrows next to the %(play_button)s button will drag the blocks into a "
+        + "sequence for you. "
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -402,17 +476,20 @@ def title_level11():
 
 
 def description_level11():
-    message = ugettext("Uh oh, a tricky snail maze! Can you take the van through it? "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Uh oh, a tricky snail maze! Can you take the van through it? "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level11(), message)
 
 
 def hint_level11():
-    message = ugettext("The maze looks a bit like a snail, doesn't it? That means that for most of "
-                       + "the time the van should only <b>Move forwards</b> and <b>Turn right</b>. "
-                       + "<br><br> The arrows next to the %(play_button)s button will drag the blocks "
-                       + "into a sequence for you. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "The maze looks a bit like a snail, doesn't it? That means that for most of "
+        + "the time the van should only <b>Move forwards</b> and <b>Turn right</b>. "
+        + "<br><br> The arrows next to the %(play_button)s button will drag the blocks "
+        + "into a sequence for you. "
+    ) % {"play_button": play_button_icon_url()}
     return message
 
 
@@ -421,17 +498,20 @@ def title_level12():
 
 
 def description_level12():
-    message = ugettext("Good work, by now you are able to solve quite complicated levels. Prove "
-                       + "your skills! "
-                       + "<br> When you are happy with your sequence, press %(play_button)s! ")\
-              % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Good work, by now you are able to solve quite complicated levels. Prove "
+        + "your skills! "
+        + "<br> When you are happy with your sequence, press %(play_button)s! "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level12(), message)
 
 
 def hint_level12():
-    message = ugettext("This road might look much longer and more complicated, but it's not that "
-                       + "hard. <br> Start by using <b>Move forwards</b> a few steps and <b>Move "
-                       + "left</b>. ")
+    message = ugettext(
+        "This road might look much longer and more complicated, but it's not that "
+        + "hard. <br> Start by using <b>Move forwards</b> a few steps and <b>Move "
+        + "left</b>. "
+    )
     return message
 
 
@@ -440,16 +520,20 @@ def title_level13():
 
 
 def description_level13():
-    message = ugettext("Often there is more than one way to get to the house. The route that needs "
-                       + "the fewest directions is usually best. <br> Help the van find the "
-                       + "shortest route to the house. <br> You can press the %(play_button)s or "
-                       + "<b>Play</b> buttons to start the van. ") % {'play_button': play_button_icon_url()}
+    message = ugettext(
+        "Often there is more than one way to get to the house. The route that needs "
+        + "the fewest directions is usually best. <br> Help the van find the "
+        + "shortest route to the house. <br> You can press the %(play_button)s or "
+        + "<b>Play</b> buttons to start the van. "
+    ) % {"play_button": play_button_icon_url()}
     return build_description(title_level13(), message)
 
 
 def hint_level13():
-    message = ugettext("Try taking the route that starts by turning left then turns right. Do you "
-                       + "know what follows next? ")
+    message = ugettext(
+        "Try taking the route that starts by turning left then turns right. Do you "
+        + "know what follows next? "
+    )
     return message
 
 
@@ -458,14 +542,18 @@ def title_level14():
 
 
 def description_level14():
-    message = ugettext("So many options to choose from! <br> Do you know which is the shortest "
-                       + "route to get the van to house? ")
+    message = ugettext(
+        "So many options to choose from! <br> Do you know which is the shortest "
+        + "route to get the van to house? "
+    )
     return build_description(title_level14(), message)
 
 
 def hint_level14():
-    message = ugettext("The middle route seems to be shortest. Do you know what sequence of "
-                       + "instructions will make the van follow it?")
+    message = ugettext(
+        "The middle route seems to be shortest. Do you know what sequence of "
+        + "instructions will make the van follow it?"
+    )
     return message
 
 
@@ -474,18 +562,22 @@ def title_level15():
 
 
 def description_level15():
-    message = ugettext("Our vans often need to go to more than one house. To make the van deliver "
-                       + "to a house use the <b>Deliver</b> block. <br> Make sure your sequence "
-                       + "gets the van to travel the shortest route! ")
+    message = ugettext(
+        "Our vans often need to go to more than one house. To make the van deliver "
+        + "to a house use the <b>Deliver</b> block. <br> Make sure your sequence "
+        + "gets the van to travel the shortest route! "
+    )
     return build_description(title_level15(), message)
 
 
 def hint_level15():
-    message = ugettext("Make the van turn left and go directly to the closest house first. This is "
-                       + "the shortest route. <br><br> The <b>Deliver</b> block is not needed when "
-                       + "the van is only going to one house, but you need it when the van is "
-                       + "going to two or more houses. <br><br> Use the <b>Deliver</b> block every "
-                       + "time the van gets to a house. ")
+    message = ugettext(
+        "Make the van turn left and go directly to the closest house first. This is "
+        + "the shortest route. <br><br> The <b>Deliver</b> block is not needed when "
+        + "the van is only going to one house, but you need it when the van is "
+        + "going to two or more houses. <br><br> Use the <b>Deliver</b> block every "
+        + "time the van gets to a house. "
+    )
     return message
 
 
@@ -494,17 +586,21 @@ def title_level16():
 
 
 def description_level16():
-    message = ugettext("Well done! You have done really well to get so far - let's take it to the "
-                       + "next level and add another house. <br> Can you work out the shortest, "
-                       + "most efficient route to each house? ")
+    message = ugettext(
+        "Well done! You have done really well to get so far - let's take it to the "
+        + "next level and add another house. <br> Can you work out the shortest, "
+        + "most efficient route to each house? "
+    )
     return build_description(title_level16(), message)
 
 
 def hint_level16():
-    message = ugettext("Although the <b>Deliver</b> block is not needed when there is only one "
-                       + "house, you need it when there are more houses, like now. <br><br>"
-                       + "Once the van is at a house, make sure you use the <b>Deliver</b> block. "
-                       + "Do that for each house. ")
+    message = ugettext(
+        "Although the <b>Deliver</b> block is not needed when there is only one "
+        + "house, you need it when there are more houses, like now. <br><br>"
+        + "Once the van is at a house, make sure you use the <b>Deliver</b> block. "
+        + "Do that for each house. "
+    )
     return message
 
 
@@ -513,15 +609,19 @@ def title_level17():
 
 
 def description_level17():
-    message = ugettext("Well done, you're getting a hang of it! Can you do the same for even more "
-                       + "houses?<br> Don't forget to use the <b>Deliver</b> block at each house. ")
+    message = ugettext(
+        "Well done, you're getting a hang of it! Can you do the same for even more "
+        + "houses?<br> Don't forget to use the <b>Deliver</b> block at each house. "
+    )
     return build_description(title_level17(), message)
 
 
 def hint_level17():
-    message = ugettext("Test your sequence to make sure that the van takes the shortest route to "
-                       + "visit all the houses on the way. <br><br> Use the <b>Deliver</b> block "
-                       + "every time the van gets to a house. ")
+    message = ugettext(
+        "Test your sequence to make sure that the van takes the shortest route to "
+        + "visit all the houses on the way. <br><br> Use the <b>Deliver</b> block "
+        + "every time the van gets to a house. "
+    )
     return message
 
 
@@ -530,14 +630,18 @@ def title_level18():
 
 
 def description_level18():
-    message = ugettext("Practise your new skills on this road by getting the van to <b>Deliver</b> "
-                       + "to each of the houses. ")
+    message = ugettext(
+        "Practise your new skills on this road by getting the van to <b>Deliver</b> "
+        + "to each of the houses. "
+    )
     return build_description(title_level18(), message)
 
 
 def hint_level18():
-    message = ugettext("To make sure the van takes the shortest route, first turn left. <br><br> "
-                       + "Use the <b>Deliver</b> block every time the van gets to a house. ")
+    message = ugettext(
+        "To make sure the van takes the shortest route, first turn left. <br><br> "
+        + "Use the <b>Deliver</b> block every time the van gets to a house. "
+    )
     return message
 
 
@@ -547,37 +651,47 @@ def title_level19():
 
 def description_level19():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/vFGd0v3msRE", 0)
-    message += ugettext("Attach a block inside the <b>Repeat</b> block to make the van repeat "
-                        + "that instruction. <br> This means you can use one block instead of lots "
-                        + "of blocks to do the same thing over and over again. <br> How many times "
-                        + "do you want the instruction repeated? Type the number into the "
-                        + "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'.  "
-                        + "<br><br> When you are ready, press <b>Play</b>! ")
+    message += ugettext(
+        "Attach a block inside the <b>Repeat</b> block to make the van repeat "
+        + "that instruction. <br> This means you can use one block instead of lots "
+        + "of blocks to do the same thing over and over again. <br> How many times "
+        + "do you want the instruction repeated? Type the number into the "
+        + "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'.  "
+        + "<br><br> When you are ready, press <b>Play</b>! "
+    )
     return build_description(title_level19(), message)
 
 
 def hint_level19():
-    message = ugettext("A <b>Move forwards</b> block can be placed inside a <b>Repeat</b> block "
-                       + "(to the right of the word 'Do'). <br><br> Don't forget to change the "
-                       + "number of times you need to repeat the instruction. ")
+    message = ugettext(
+        "A <b>Move forwards</b> block can be placed inside a <b>Repeat</b> block "
+        + "(to the right of the word 'Do'). <br><br> Don't forget to change the "
+        + "number of times you need to repeat the instruction. "
+    )
     return message
 
 
 def title_level20():
-    return ugettext("Use the <b>Repeat</b> block to make your sequence shorter and simpler ")
+    return ugettext(
+        "Use the <b>Repeat</b> block to make your sequence shorter and simpler "
+    )
 
 
 def description_level20():
-    message = ugettext("You drove the van down this road on Level 5. This time, use the "
-                       + "<b>Repeat</b> block to get the van to the house. <br> This will make "
-                       + "your sequence shorter and simpler than last time.")
+    message = ugettext(
+        "You drove the van down this road on Level 5. This time, use the "
+        + "<b>Repeat</b> block to get the van to the house. <br> This will make "
+        + "your sequence shorter and simpler than last time."
+    )
     return build_description(title_level20(), message)
 
 
 def hint_level20():
-    message = ugettext("This level can be broken down into three repeated sets of: <b>Turn "
-                       + "left</b>, then <b>Turn right</b>. <br><br> These repeated steps make a "
-                       + "'loop'. ")
+    message = ugettext(
+        "This level can be broken down into three repeated sets of: <b>Turn "
+        + "left</b>, then <b>Turn right</b>. <br><br> These repeated steps make a "
+        + "'loop'. "
+    )
     return message
 
 
@@ -586,14 +700,18 @@ def title_level21():
 
 
 def description_level21():
-    message = ugettext("This path looks a bit like a four leaf clover. Can you take the driver "
-                       + "through it? ")
+    message = ugettext(
+        "This path looks a bit like a four leaf clover. Can you take the driver "
+        + "through it? "
+    )
     return build_description(title_level21(), message)
 
 
 def hint_level21():
-    message = ugettext("This level can be broken down into repeated sets of: <b>Move forwards</b>, "
-                       + "<b>Turn left</b>, <b>Turn right</b>, <b>Turn left</b>. ")
+    message = ugettext(
+        "This level can be broken down into repeated sets of: <b>Move forwards</b>, "
+        + "<b>Turn left</b>, <b>Turn right</b>, <b>Turn left</b>. "
+    )
     return message
 
 
@@ -602,17 +720,21 @@ def title_level22():
 
 
 def description_level22():
-    message = ugettext("An algorithm (a set of instructions in a particular order) to get the van "
-                       + "to the house might not be very simple, but it can be made shorter by "
-                       + "using the <b>Repeat</b> blocks. <br> Are you up for this challenge? ")
+    message = ugettext(
+        "An algorithm (a set of instructions in a particular order) to get the van "
+        + "to the house might not be very simple, but it can be made shorter by "
+        + "using the <b>Repeat</b> blocks. <br> Are you up for this challenge? "
+    )
     return build_description(title_level22(), message)
 
 
 def hint_level22():
-    message = ugettext("Look to see where you have used <b>Move forwards</b>, <b>Turn "
-                       + "left</b> and <b>Turn right</b> blocks. Are any blocks next to them the "
-                       + "same? Put them into one <b>Repeat</b> block. Don't forget to change the "
-                       + "number of times you need to repeat the instruction. ")
+    message = ugettext(
+        "Look to see where you have used <b>Move forwards</b>, <b>Turn "
+        + "left</b> and <b>Turn right</b> blocks. Are any blocks next to them the "
+        + "same? Put them into one <b>Repeat</b> block. Don't forget to change the "
+        + "number of times you need to repeat the instruction. "
+    )
     return message
 
 
@@ -621,18 +743,22 @@ def title_level23():
 
 
 def description_level23():
-    message = ugettext("This road seems to be winding just like a snake! Can you find a nice and "
-                       + "simple route to get the van to the house? ")
+    message = ugettext(
+        "This road seems to be winding just like a snake! Can you find a nice and "
+        + "simple route to get the van to the house? "
+    )
     return build_description(title_level23(), message)
 
 
 def hint_level23():
-    message = ugettext("How about using <b>Repeat</b> inside another <b>Repeat</b>? <br><br> This "
-                       + "level can be broken down into sets of: "
-                       + "<ul><li> a set (nested loop) of <b>Move forwards</b>, </li> "
-                       + "<li> two <b>Turn left</b>s, </li> "
-                       + "<li> a set (nested loop) of <b>Move forwards</b>, </li> "
-                       + "<li> two <b>Turn right</b>s. </li></ul>")
+    message = ugettext(
+        "How about using <b>Repeat</b> inside another <b>Repeat</b>? <br><br> This "
+        + "level can be broken down into sets of: "
+        + "<ul><li> a set (nested loop) of <b>Move forwards</b>, </li> "
+        + "<li> two <b>Turn left</b>s, </li> "
+        + "<li> a set (nested loop) of <b>Move forwards</b>, </li> "
+        + "<li> two <b>Turn right</b>s. </li></ul>"
+    )
     return message
 
 
@@ -641,13 +767,17 @@ def title_level24():
 
 
 def description_level24():
-    message = ugettext("Wow! Look at that! It won't get more complicated than this, we promise.")
+    message = ugettext(
+        "Wow! Look at that! It won't get more complicated than this, we promise."
+    )
     return build_description(title_level24(), message)
 
 
 def hint_level24():
-    message = ugettext("With all these twists and turns, you will have to think hard about what "
-                       + "sets of repeated instructions to use. <br><br>")
+    message = ugettext(
+        "With all these twists and turns, you will have to think hard about what "
+        + "sets of repeated instructions to use. <br><br>"
+    )
     return message
 
 
@@ -656,13 +786,17 @@ def title_level25():
 
 
 def description_level25():
-    message = ugettext("Since you did so well with the repeat loops, have a go at this level. ")
+    message = ugettext(
+        "Since you did so well with the repeat loops, have a go at this level. "
+    )
     return build_description(title_level25(), message)
 
 
 def hint_level25():
-    message = ugettext("Most of the program will consist of repeated sets of <b>Move forwards</b> "
-                       + "and a set of <b>Turn right</b> and <b>Turn left</b>. ")
+    message = ugettext(
+        "Most of the program will consist of repeated sets of <b>Move forwards</b> "
+        + "and a set of <b>Turn right</b> and <b>Turn left</b>. "
+    )
     return message
 
 
@@ -671,15 +805,19 @@ def title_level26():
 
 
 def description_level26():
-    message = ugettext("Notice the snow! You can create new levels with different 'themes' of "
-                       + "backgrounds and decorations in the Level Editor. But first, try getting "
-                       + "the van to the house! ")
+    message = ugettext(
+        "Notice the snow! You can create new levels with different 'themes' of "
+        + "backgrounds and decorations in the Level Editor. But first, try getting "
+        + "the van to the house! "
+    )
     return build_description(title_level26(), message)
 
 
 def hint_level26():
-    message = ugettext("Break the program into two <b>Repeat</b>s with a <b>Turn left</b> in "
-                       + "between them. ")
+    message = ugettext(
+        "Break the program into two <b>Repeat</b>s with a <b>Turn left</b> in "
+        + "between them. "
+    )
     return message
 
 
@@ -688,13 +826,17 @@ def title_level27():
 
 
 def description_level27():
-    message = ugettext("What a muddy road! Can you help Dee find her way from the barn to the "
-                       + "house? ")
+    message = ugettext(
+        "What a muddy road! Can you help Dee find her way from the barn to the "
+        + "house? "
+    )
     return build_description(title_level27(), message)
 
 
 def hint_level27():
-    message = ugettext("Make sure you drag the correct turns into your <b>Repeat</b> block. ")
+    message = ugettext(
+        "Make sure you drag the correct turns into your <b>Repeat</b> block. "
+    )
     return message
 
 
@@ -703,13 +845,17 @@ def title_level28():
 
 
 def description_level28():
-    message = ugettext("Can you get the van from the warehouse to the house? Don't stop at any "
-                       + "shops on the way! ")
+    message = ugettext(
+        "Can you get the van from the warehouse to the house? Don't stop at any "
+        + "shops on the way! "
+    )
     return build_description(title_level28(), message)
 
 
 def hint_level28():
-    message = ugettext("Make sure you drag the correct turns into your <b>Repeat</b> block.")
+    message = ugettext(
+        "Make sure you drag the correct turns into your <b>Repeat</b> block."
+    )
     return message
 
 
@@ -719,18 +865,22 @@ def title_level29():
 
 def description_level29():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/EDwc80X_LQI", 0)
-    message += ugettext("Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
-                        + "instruction. <br> Attach a 'condition' so the van knows when to stop "
-                        + "repeating the instruction. <br> Here, you want the van to repeat your "
-                        + "instruction until it is at the destination. <br> Doing this means "
-                        + "you don't have to work out how many times the van should repeat your "
-                        + "instruction. ")
+    message += ugettext(
+        "Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
+        + "instruction. <br> Attach a 'condition' so the van knows when to stop "
+        + "repeating the instruction. <br> Here, you want the van to repeat your "
+        + "instruction until it is at the destination. <br> Doing this means "
+        + "you don't have to work out how many times the van should repeat your "
+        + "instruction. "
+    )
     return build_description(title_level29(), message)
 
 
 def hint_level29():
-    message = ugettext("The blocks should read like a sentence: '<b>Repeat until at "
-                       + "destination do</b>: <b>Move forwards</b>'. ")
+    message = ugettext(
+        "The blocks should read like a sentence: '<b>Repeat until at "
+        + "destination do</b>: <b>Move forwards</b>'. "
+    )
     return message
 
 
@@ -739,14 +889,18 @@ def title_level30():
 
 
 def description_level30():
-    message = ugettext("Well done, you did it! Now have a go at using the <b>Repeat until</b> block "
-                       + "on a road with lots of turns. ")
+    message = ugettext(
+        "Well done, you did it! Now have a go at using the <b>Repeat until</b> block "
+        + "on a road with lots of turns. "
+    )
     return build_description(title_level30(), message)
 
 
 def hint_level30():
-    message = ugettext("The blocks should read like a sentence: '<b>Repeat until at "
-                       + "destination do</b>: <b>Turn left</b>, <b>Turn right</b>'. ")
+    message = ugettext(
+        "The blocks should read like a sentence: '<b>Repeat until at "
+        + "destination do</b>: <b>Turn left</b>, <b>Turn right</b>'. "
+    )
     return message
 
 
@@ -760,8 +914,10 @@ def description_level31():
 
 
 def hint_level31():
-    message = ugettext("This program can be broken into repeated sets of <b>Turn left</b>, <b>Turn "
-                       + "right</b> and two <b>Move forwards</b>. ")
+    message = ugettext(
+        "This program can be broken into repeated sets of <b>Turn left</b>, <b>Turn "
+        + "right</b> and two <b>Move forwards</b>. "
+    )
     return message
 
 
@@ -770,13 +926,17 @@ def title_level32():
 
 
 def description_level32():
-    message = ugettext("Good job! Can you help the driver reach the destination again? ")
+    message = ugettext(
+        "Good job! Can you help the driver reach the destination again? "
+    )
     return build_description(title_level32(), message)
 
 
 def hint_level32():
-    message = ugettext("This program is quite similar to the one you just solved. Do you remember "
-                       + "the solution you came up with back then? ")
+    message = ugettext(
+        "This program is quite similar to the one you just solved. Do you remember "
+        + "the solution you came up with back then? "
+    )
     return message
 
 
@@ -786,20 +946,24 @@ def title_level33():
 
 def description_level33():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/O0RXbJyYq8o", 0)
-    message += ugettext("Another way of telling the van what to do is to use the <b>If</b> block. "
-                        + "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
-                        + "forwards</b>. <br> This is called an 'if statement'. <br> Try "
-                        + "using the <b>If</b> block and the <b>Repeat</b> block together. <br> "
-                        + "The <b>Repeat</b> block will stretch if you attach the <b>If</b> block "
-                        + "inside it. ")
+    message += ugettext(
+        "Another way of telling the van what to do is to use the <b>If</b> block. "
+        + "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
+        + "forwards</b>. <br> This is called an 'if statement'. <br> Try "
+        + "using the <b>If</b> block and the <b>Repeat</b> block together. <br> "
+        + "The <b>Repeat</b> block will stretch if you attach the <b>If</b> block "
+        + "inside it. "
+    )
     return build_description(title_level33(), message)
 
 
 def hint_level33():
-    message = ugettext("We say that the road 'exists' in a direction. For example, if the road "
-                       + "goes forwards we say that it 'exists forwards'. <br><br> "
-                       + "<b>If</b> a <b>road exists forwards</b> then <b>do Move forwards</b>."
-                       + "<br><br>Repeat this set to get the van to the house. ")
+    message = ugettext(
+        "We say that the road 'exists' in a direction. For example, if the road "
+        + "goes forwards we say that it 'exists forwards'. <br><br> "
+        + "<b>If</b> a <b>road exists forwards</b> then <b>do Move forwards</b>."
+        + "<br><br>Repeat this set to get the van to the house. "
+    )
     return message
 
 
@@ -808,21 +972,25 @@ def title_level34():
 
 
 def description_level34():
-    message = ugettext("It can be handy to use <b>If</b> to give your van choices, so you don't "
-                       + "have to give the van new instructions at every step. <br> For "
-                       + "example: Tell the van <b>If</b> the <b>road exists forwards do Move "
-                       + "forwards,</b> but <b>If</b> the <b>road exists left do Turn left</b>. "
-                       + "<br> The van will choose correctly from the <b>Move forwards</b> and "
-                       + "<b>Turn left</b> instructions depending on the road. <br> Use an 'if "
-                       + "statement' in a 'loop' to drive the van down this bendy road. ")
+    message = ugettext(
+        "It can be handy to use <b>If</b> to give your van choices, so you don't "
+        + "have to give the van new instructions at every step. <br> For "
+        + "example: Tell the van <b>If</b> the <b>road exists forwards do Move "
+        + "forwards,</b> but <b>If</b> the <b>road exists left do Turn left</b>. "
+        + "<br> The van will choose correctly from the <b>Move forwards</b> and "
+        + "<b>Turn left</b> instructions depending on the road. <br> Use an 'if "
+        + "statement' in a 'loop' to drive the van down this bendy road. "
+    )
     return build_description(title_level34(), message)
 
 
 def hint_level34():
-    message = ugettext("At each bend the van can either <b>Move forwards</b> or <b>Turn left</b>. "
-                       + "Create a loop so it can make the correct choice. <br><br> We say that "
-                       + "the road 'exists' in a direction. For example, if the road goes forwards "
-                       + "we say that it 'exists forwards'. ")
+    message = ugettext(
+        "At each bend the van can either <b>Move forwards</b> or <b>Turn left</b>. "
+        + "Create a loop so it can make the correct choice. <br><br> We say that "
+        + "the road 'exists' in a direction. For example, if the road goes forwards "
+        + "we say that it 'exists forwards'. "
+    )
     return message
 
 
@@ -831,17 +999,21 @@ def title_level35():
 
 
 def description_level35():
-    message = ugettext("You have discovered the magic of 'if statements'. Can you make a program "
-                       + "that uses <b>Move forwards</b>, <b>Turn left</b> and <b>Turn right</b> "
-                       + "to get the van to the house. ")
+    message = ugettext(
+        "You have discovered the magic of 'if statements'. Can you make a program "
+        + "that uses <b>Move forwards</b>, <b>Turn left</b> and <b>Turn right</b> "
+        + "to get the van to the house. "
+    )
     return build_description(title_level35(), message)
 
 
 def hint_level35():
-    message = ugettext("At each bend the van can either <b>Move forwards</b> or <b>Turn left</b>. "
-                       + "Create a loop so it can make the correct choice. <br><br> We say that "
-                       + "the road 'exists' in a direction. For example, if the road goes forwards "
-                       + "we say that it 'exists forwards'. ")
+    message = ugettext(
+        "At each bend the van can either <b>Move forwards</b> or <b>Turn left</b>. "
+        + "Create a loop so it can make the correct choice. <br><br> We say that "
+        + "the road 'exists' in a direction. For example, if the road goes forwards "
+        + "we say that it 'exists forwards'. "
+    )
     return message
 
 
@@ -851,28 +1023,32 @@ def title_level36():
 
 def description_level36():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/GUUJSRuAyU0", 0)
-    message += ugettext("You can change the <b>If</b> block to make more choices. Click on the "
-                        + "star in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
-                        + "the van what to do if the first <b>If</b> direction can't be done. "
-                        + "<br> For example, tell the van to <b>Turn left</b> <b>If</b> the "
-                        + "<b>road exists left</b>. Add <b>Else if</b> the <b>road exists right"
-                        + "</b>, <b>Turn right</b>. <br> This uses fewer blocks and makes sure "
-                        + "that only one step is taken in each loop. <br> This type of "
-                        + "algorithm is called a 'general algorithm' as it can be used with most "
-                        + "simple routes. ")
+    message += ugettext(
+        "You can change the <b>If</b> block to make more choices. Click on the "
+        + "star in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
+        + "the van what to do if the first <b>If</b> direction can't be done. "
+        + "<br> For example, tell the van to <b>Turn left</b> <b>If</b> the "
+        + "<b>road exists left</b>. Add <b>Else if</b> the <b>road exists right"
+        + "</b>, <b>Turn right</b>. <br> This uses fewer blocks and makes sure "
+        + "that only one step is taken in each loop. <br> This type of "
+        + "algorithm is called a 'general algorithm' as it can be used with most "
+        + "simple routes. "
+    )
     return build_description(title_level36(), message)
 
 
 def hint_level36():
-    message = ugettext("The program should be a simple set of: <b>If road exists forwards do</b> "
-                       + "<b>Move forwards</b>, <b>Else if road exists left do Turn left</b>, "
-                       + "<b>Else if road exists right do Turn right</b>. <br><br> You can find "
-                       + "<b>Else if</b> by clicking the star on the <b>If</b> block and adding "
-                       + "the <b>Else if</b>.<br><br> If the first 'condition' is true (this means "
-                       + "if the road exists in the direction you put first) the van will follow "
-                       + "the blocks after <b>If</b>. <br><br> If not, the van will check to see "
-                       + "if it can follow the direction you put after <b>Else if</b>. It will "
-                       + "keep checking until it has a direction it can take. ")
+    message = ugettext(
+        "The program should be a simple set of: <b>If road exists forwards do</b> "
+        + "<b>Move forwards</b>, <b>Else if road exists left do Turn left</b>, "
+        + "<b>Else if road exists right do Turn right</b>. <br><br> You can find "
+        + "<b>Else if</b> by clicking the star on the <b>If</b> block and adding "
+        + "the <b>Else if</b>.<br><br> If the first 'condition' is true (this means "
+        + "if the road exists in the direction you put first) the van will follow "
+        + "the blocks after <b>If</b>. <br><br> If not, the van will check to see "
+        + "if it can follow the direction you put after <b>Else if</b>. It will "
+        + "keep checking until it has a direction it can take. "
+    )
     return message
 
 
@@ -881,13 +1057,17 @@ def title_level37():
 
 
 def description_level37():
-    message = ugettext("Let's see if we can go further - this road is longer. Notice that the "
-                       + "length of the road does not change the length of your program! ")
+    message = ugettext(
+        "Let's see if we can go further - this road is longer. Notice that the "
+        + "length of the road does not change the length of your program! "
+    )
     return build_description(title_level37(), message)
 
 
 def hint_level37():
-    message = ugettext("Think back to the solutions you produced using 'if statements' before. ")
+    message = ugettext(
+        "Think back to the solutions you produced using 'if statements' before. "
+    )
     return message
 
 
@@ -896,13 +1076,17 @@ def title_level38():
 
 
 def description_level38():
-    message = ugettext("Well done! You've got so far. <br> Can you apply the knowledge you "
-                       + "gained going through this part of the game to this level? ")
+    message = ugettext(
+        "Well done! You've got so far. <br> Can you apply the knowledge you "
+        + "gained going through this part of the game to this level? "
+    )
     return build_description(title_level38(), message)
 
 
 def hint_level38():
-    message = ugettext("Think back to the solutions you produced using 'if statements' before. ")
+    message = ugettext(
+        "Think back to the solutions you produced using 'if statements' before. "
+    )
     return message
 
 
@@ -911,17 +1095,21 @@ def title_level39():
 
 
 def description_level39():
-    message = ugettext("Can you change the 'general algorithm' so that the van takes a shorter "
-                       + "route? <br> What if you change the order the van checks for "
-                       + "directions? <br> Keep an eye on the fuel level - try to use as "
-                       + "little as possible. ")
+    message = ugettext(
+        "Can you change the 'general algorithm' so that the van takes a shorter "
+        + "route? <br> What if you change the order the van checks for "
+        + "directions? <br> Keep an eye on the fuel level - try to use as "
+        + "little as possible. "
+    )
     return build_description(title_level39(), message)
 
 
 def hint_level39():
-    message = ugettext("Make the van check if the road exists right before it checks if the road "
-                       + "exists left. <br><br> Then it will be able to reach the destination "
-                       + "using the 'general algorithm'. Can you see why? ")
+    message = ugettext(
+        "Make the van check if the road exists right before it checks if the road "
+        + "exists left. <br><br> Then it will be able to reach the destination "
+        + "using the 'general algorithm'. Can you see why? "
+    )
     return message
 
 
@@ -930,16 +1118,20 @@ def title_level40():
 
 
 def description_level40():
-    message = ugettext("Can you think of a way you could change the 'general algorithm' you have "
-                       + "implemented earlier to make sure the van driver reaches the house having "
-                       + "travelled the shortest route? ")
+    message = ugettext(
+        "Can you think of a way you could change the 'general algorithm' you have "
+        + "implemented earlier to make sure the van driver reaches the house having "
+        + "travelled the shortest route? "
+    )
     return build_description(title_level40(), message)
 
 
 def hint_level40():
-    message = ugettext("The 'general algorithm' will work here. <br><br> Make sure you change the "
-                       + "order the van checks for directions to take the shortest route to the "
-                       + "destination. ")
+    message = ugettext(
+        "The 'general algorithm' will work here. <br><br> Make sure you change the "
+        + "order the van checks for directions to take the shortest route to the "
+        + "destination. "
+    )
     return message
 
 
@@ -948,18 +1140,22 @@ def title_level41():
 
 
 def description_level41():
-    message = ugettext("Do you think changes to the 'general algorithm' will help the van find the "
-                       + "shortest route? <br> Or do you have to come up with a different "
-                       + "solution? <br> Time to make a decision... ")
+    message = ugettext(
+        "Do you think changes to the 'general algorithm' will help the van find the "
+        + "shortest route? <br> Or do you have to come up with a different "
+        + "solution? <br> Time to make a decision... "
+    )
     return build_description(title_level41(), message)
 
 
 def hint_level41():
-    message = ugettext("Psst! You can simply make a change to the 'general algorithm'. <br><br> "
-                       + "If you make the van check for turns before it checks the road exists "
-                       + "forwards, you will come up with the perfect solution. <br><br>"
-                       + "Notice that here it doesn't matter which turn you check for first - it "
-                       + "will change the route but provide you with the same score. ")
+    message = ugettext(
+        "Psst! You can simply make a change to the 'general algorithm'. <br><br> "
+        + "If you make the van check for turns before it checks the road exists "
+        + "forwards, you will come up with the perfect solution. <br><br>"
+        + "Notice that here it doesn't matter which turn you check for first - it "
+        + "will change the route but provide you with the same score. "
+    )
     return message
 
 
@@ -968,15 +1164,19 @@ def title_level42():
 
 
 def description_level42():
-    message = ugettext("Can you use the 'general algorithm' here? <br> Can it be changed so that "
-                       + "it finds a shorter route, or will you need a new solution? ")
+    message = ugettext(
+        "Can you use the 'general algorithm' here? <br> Can it be changed so that "
+        + "it finds a shorter route, or will you need a new solution? "
+    )
     return build_description(title_level42(), message)
 
 
 def hint_level42():
-    message = ugettext("Uh oh, moving around the blocks in your 'general algorithm' won't help. "
-                       + "<br> How about creating a simple solution without 'if statements' that "
-                       + "will help the van reach the house? ")
+    message = ugettext(
+        "Uh oh, moving around the blocks in your 'general algorithm' won't help. "
+        + "<br> How about creating a simple solution without 'if statements' that "
+        + "will help the van reach the house? "
+    )
     return message
 
 
@@ -985,15 +1185,19 @@ def title_level43():
 
 
 def description_level43():
-    message = ugettext("You should be really good at this by now. Can you manage this complicated "
-                       + "road? ")
+    message = ugettext(
+        "You should be really good at this by now. Can you manage this complicated "
+        + "road? "
+    )
     return build_description(title_level43(), message)
 
 
 def hint_level43():
-    message = ugettext("This road cannot be solved by a 'general algorithm'. Can you solve it "
-                       + "without 'if statements'? <br><br> Remember to choose the shortest route "
-                       + "and an algorithm which is as short as possible.  ")
+    message = ugettext(
+        "This road cannot be solved by a 'general algorithm'. Can you solve it "
+        + "without 'if statements'? <br><br> Remember to choose the shortest route "
+        + "and an algorithm which is as short as possible.  "
+    )
     return message
 
 
@@ -1003,19 +1207,23 @@ def title_level44():
 
 def description_level44():
     message = youtubeLink(600, 400, "//www.youtube.com/embed/EDwc80X_LQI", 0)
-    message += ugettext("The light varies from red to green. <br>"
-                        + "The van must check which colour the traffic light is when it reaches them "
-                        + "- if it goes past a red light it will break the Highway Code."
-                        + "<br> Here, you want the van to repeat the wait instruction while the traffic light is red. "
-                        + "Drag a block inside a <b>Repeat while</b> block to make the van repeat an instruction. "
-                        + "<br> Attach a 'condition' so the van knows when to repeat the instruction. ")
+    message += ugettext(
+        "The light varies from red to green. <br>"
+        + "The van must check which colour the traffic light is when it reaches them "
+        + "- if it goes past a red light it will break the Highway Code."
+        + "<br> Here, you want the van to repeat the wait instruction while the traffic light is red. "
+        + "Drag a block inside a <b>Repeat while</b> block to make the van repeat an instruction. "
+        + "<br> Attach a 'condition' so the van knows when to repeat the instruction. "
+    )
     return build_description(title_level44(), message)
 
 
 def hint_level44():
-    message = ugettext("Don't worry about the 'general algorithm' here. Just go forwards. <br><br>"
-                       + "Once the van is right under the traffic light, make it wait for a green "
-                       + "light by adding a <b>Wait</b> block. ")
+    message = ugettext(
+        "Don't worry about the 'general algorithm' here. Just go forwards. <br><br>"
+        + "Once the van is right under the traffic light, make it wait for a green "
+        + "light by adding a <b>Wait</b> block. "
+    )
     return message
 
 
@@ -1024,15 +1232,19 @@ def title_level45():
 
 
 def description_level45():
-    message = ugettext("Can you write a program so the van moves forwards on a green light but "
-                       + "waits at a red light? ")
+    message = ugettext(
+        "Can you write a program so the van moves forwards on a green light but "
+        + "waits at a red light? "
+    )
     return build_description(title_level45(), message)
 
 
 def hint_level45():
-    message = ugettext("Use an 'if statement' to tell the van <b>If traffic light is red, Wait, "
-                       + "Else Move forwards</b>. <br><br> Remember to repeat that until you get "
-                       + "to the destination. ")
+    message = ugettext(
+        "Use an 'if statement' to tell the van <b>If traffic light is red, Wait, "
+        + "Else Move forwards</b>. <br><br> Remember to repeat that until you get "
+        + "to the destination. "
+    )
     return message
 
 
@@ -1041,15 +1253,19 @@ def title_level46():
 
 
 def description_level46():
-    message = ugettext("Let's practise what you've learnt so far. <br> Don't forget to add a "
-                       + "turn and to make the van wait at a traffic light. ")
+    message = ugettext(
+        "Let's practise what you've learnt so far. <br> Don't forget to add a "
+        + "turn and to make the van wait at a traffic light. "
+    )
     return build_description(title_level46(), message)
 
 
 def hint_level46():
-    message = ugettext("Be careful about the order you put your <b>If</b> blocks in. <br><br>"
-                       + "If you make the van check the road exists forwards before checking for a "
-                       + "light, it might break the Highway Code. ")
+    message = ugettext(
+        "Be careful about the order you put your <b>If</b> blocks in. <br><br>"
+        + "If you make the van check the road exists forwards before checking for a "
+        + "light, it might break the Highway Code. "
+    )
     return message
 
 
@@ -1058,17 +1274,21 @@ def title_level47():
 
 
 def description_level47():
-    message = ugettext("Put your knowledge to test. Create an algorithm to lead the van to the "
-                       + "house. <br> Don't forget to add a turn and to make the van wait at a "
-                       + "traffic light. ")
+    message = ugettext(
+        "Put your knowledge to test. Create an algorithm to lead the van to the "
+        + "house. <br> Don't forget to add a turn and to make the van wait at a "
+        + "traffic light. "
+    )
     return build_description(title_level47(), message)
 
 
 def hint_level47():
-    message = ugettext("Use an 'if statement' and check if the light is red. <br><br> "
-                       + "<b>If traffic light is red, wait, Else if road exists forwards, Move "
-                       + "forwards, Else Turn left</b>. <br><br> Remember to repeat that until you "
-                       + "get to the destination! ")
+    message = ugettext(
+        "Use an 'if statement' and check if the light is red. <br><br> "
+        + "<b>If traffic light is red, wait, Else if road exists forwards, Move "
+        + "forwards, Else Turn left</b>. <br><br> Remember to repeat that until you "
+        + "get to the destination! "
+    )
     return message
 
 
@@ -1077,20 +1297,24 @@ def title_level48():
 
 
 def description_level48():
-    message = ugettext("Congratulations - you've made it really far! <br> Can you create a "
-                       + "'general algorithm' that will help the van reach the destination in the "
-                       + "shortest way but stop at a traffic light? ")
+    message = ugettext(
+        "Congratulations - you've made it really far! <br> Can you create a "
+        + "'general algorithm' that will help the van reach the destination in the "
+        + "shortest way but stop at a traffic light? "
+    )
     return build_description(title_level48(), message)
 
 
 def hint_level48():
-    message = ugettext("You need to check: "
-                       + "<ul><li> if the lights are red </li>"
-                       + "<li> if the road exists right </li>"
-                       + "<li> if the road exists forwards </li> "
-                       + "<li> if the road exists left </li>"
-                       + "<li> if it is a dead end </li></ul>"
-                       + "Make sure you put the checks in the right order. ")
+    message = ugettext(
+        "You need to check: "
+        + "<ul><li> if the lights are red </li>"
+        + "<li> if the road exists right </li>"
+        + "<li> if the road exists forwards </li> "
+        + "<li> if the road exists left </li>"
+        + "<li> if it is a dead end </li></ul>"
+        + "Make sure you put the checks in the right order. "
+    )
     return message
 
 
@@ -1099,19 +1323,23 @@ def title_level49():
 
 
 def description_level49():
-    message = ugettext("Can you change the 'general algorithm' you created before to make the van "
-                       + "take the shortest route to the destination? ")
+    message = ugettext(
+        "Can you change the 'general algorithm' you created before to make the van "
+        + "take the shortest route to the destination? "
+    )
     return build_description(title_level49(), message)
 
 
 def hint_level49():
-    message = ugettext("You need to check: "
-                       + "<ul><li> if the light is red </li>"
-                       + "<li> if the road exists left </li>"
-                       + "<li> if the road exists forwards </li>"
-                       + "<li> or if the road exists right </li></ul>"
-                       + "Do you think you need to check for a dead end? <br> Make sure you put "
-                       + "the checks in the right order. ")
+    message = ugettext(
+        "You need to check: "
+        + "<ul><li> if the light is red </li>"
+        + "<li> if the road exists left </li>"
+        + "<li> if the road exists forwards </li>"
+        + "<li> or if the road exists right </li></ul>"
+        + "Do you think you need to check for a dead end? <br> Make sure you put "
+        + "the checks in the right order. "
+    )
     return message
 
 
@@ -1120,17 +1348,21 @@ def title_level50():
 
 
 def description_level50():
-    message = ugettext("Well this is tricky. Look at all those lights! <br> Can you find the "
-                       + "shortest route to the destination? It would be good if the van doesn't "
-                       + "have to wait at too many lights. ")
+    message = ugettext(
+        "Well this is tricky. Look at all those lights! <br> Can you find the "
+        + "shortest route to the destination? It would be good if the van doesn't "
+        + "have to wait at too many lights. "
+    )
     return build_description(title_level50(), message)
 
 
 def hint_level50():
-    message = ugettext("Don't worry about the algorithm you've already come up with. Take the "
-                       + "first turn left which has fewer traffic lights. <br><br> Once your van "
-                       + "is right under the traffic lights, make sure it waits for a green "
-                       + "light. ")
+    message = ugettext(
+        "Don't worry about the algorithm you've already come up with. Take the "
+        + "first turn left which has fewer traffic lights. <br><br> Once your van "
+        + "is right under the traffic lights, make sure it waits for a green "
+        + "light. "
+    )
     return message
 
 
@@ -1139,8 +1371,10 @@ def title_level51():
 
 
 def description_level51():
-    message = ugettext("Can you come up with a solution to this level using the limited number of blocks "
-                       + "we provide at the start?")
+    message = ugettext(
+        "Can you come up with a solution to this level using the limited number of blocks "
+        + "we provide at the start?"
+    )
     return build_description(title_level51(), message)
 
 
@@ -1154,9 +1388,11 @@ def title_level52():
 
 
 def description_level52():
-    message = ugettext("Well done so far! Can you find a solution to this road? You have to move forward, "
-                       + "but you have no forward block to use. Do you know how to help the van get to "
-                       + "the destination?")
+    message = ugettext(
+        "Well done so far! Can you find a solution to this road? You have to move forward, "
+        + "but you have no forward block to use. Do you know how to help the van get to "
+        + "the destination?"
+    )
     return build_description(title_level52(), message)
 
 
@@ -1170,8 +1406,10 @@ def title_level53():
 
 
 def description_level53():
-    message = ugettext("Can you find the shortest route? Use your blocks carefully and don't forget "
-                       + "the <b>repeat</b> loop.")
+    message = ugettext(
+        "Can you find the shortest route? Use your blocks carefully and don't forget "
+        + "the <b>repeat</b> loop."
+    )
     return build_description(title_level53(), message)
 
 
@@ -1185,8 +1423,10 @@ def title_level54():
 
 
 def description_level54():
-    message = ugettext("Can you find the shortest route? Use your blocks carefully and don't forget "
-                       + "the <b>repeat</b> loop.")
+    message = ugettext(
+        "Can you find the shortest route? Use your blocks carefully and don't forget "
+        + "the <b>repeat</b> loop."
+    )
     return build_description(title_level54(), message)
 
 
@@ -1200,7 +1440,9 @@ def title_level55():
 
 
 def description_level55():
-    message = ugettext("Use <b>repeat until</b> and the <b>if</b> statement to find your way around the Wonky Fish.")
+    message = ugettext(
+        "Use <b>repeat until</b> and the <b>if</b> statement to find your way around the Wonky Fish."
+    )
     return build_description(title_level55(), message)
 
 
@@ -1214,8 +1456,10 @@ def title_level56():
 
 
 def description_level56():
-    message = ugettext("Use <b>repeat until</b> and the <b>if</b> statement to find your way around "
-                       + "the Concrete Wasteland")
+    message = ugettext(
+        "Use <b>repeat until</b> and the <b>if</b> statement to find your way around "
+        + "the Concrete Wasteland"
+    )
     return build_description(title_level56(), message)
 
 
@@ -1229,16 +1473,20 @@ def title_level57():
 
 
 def description_level57():
-    message = ugettext("Like <b>repeat until</b>, <b>repeat while</b> is the opposite. Here, you want "
-                       + "the van to repeat your instructions while it is not at the destination.<br>"
-                       + "Doing this means you don't have to work out how many times the van should "
-                       + "repeat your instructions.")
+    message = ugettext(
+        "Like <b>repeat until</b>, <b>repeat while</b> is the opposite. Here, you want "
+        + "the van to repeat your instructions while it is not at the destination.<br>"
+        + "Doing this means you don't have to work out how many times the van should "
+        + "repeat your instructions."
+    )
     return build_description(title_level57(), message)
 
 
 def hint_level57():
-    message = ugettext("The blocks should read like a sentence. Repeat while not at destination then "
-                       + "add your instructions using the blocks provided.")
+    message = ugettext(
+        "The blocks should read like a sentence. Repeat while not at destination then "
+        + "add your instructions using the blocks provided."
+    )
     return message
 
 
@@ -1247,14 +1495,18 @@ def title_level58():
 
 
 def description_level58():
-    message = ugettext("Combining what you have just learnt using <b>repeat while</b> with the repeat "
-                       + "loop, can you find your way around the snow snake?")
+    message = ugettext(
+        "Combining what you have just learnt using <b>repeat while</b> with the repeat "
+        + "loop, can you find your way around the snow snake?"
+    )
     return build_description(title_level58(), message)
 
 
 def hint_level58():
-    message = ugettext("The blocks should read like a sentence: <b>repeat while not at destination</b> "
-                       + "then using the <b>repeat</b> add your instructions")
+    message = ugettext(
+        "The blocks should read like a sentence: <b>repeat while not at destination</b> "
+        + "then using the <b>repeat</b> add your instructions"
+    )
     return message
 
 
@@ -1263,13 +1515,17 @@ def title_level59():
 
 
 def description_level59():
-    message = ugettext("Use your blocks carefully not forgetting the <b>turnaround</b>.")
+    message = ugettext(
+        "Use your blocks carefully not forgetting the <b>turnaround</b>."
+    )
     return build_description(title_level59(), message)
 
 
 def hint_level59():
-    message = ugettext("Inside the repeat <b>repeat until</b> block, <b>turn left</b>, <b>turn around</b> "
-                       + "and <b>turn left</b> again should do it.")
+    message = ugettext(
+        "Inside the repeat <b>repeat until</b> block, <b>turn left</b>, <b>turn around</b> "
+        + "and <b>turn left</b> again should do it."
+    )
     return message
 
 
@@ -1283,7 +1539,9 @@ def description_level60():
 
 
 def hint_level60():
-    message = ugettext("The trick to this level is to <b>turn right</b> then <b>turn around</b>.")
+    message = ugettext(
+        "The trick to this level is to <b>turn right</b> then <b>turn around</b>."
+    )
     return message
 
 
@@ -1292,21 +1550,25 @@ def title_level61():
 
 
 def description_level61():
-    message = ugettext("Procedures are groups of instructions that can be executed multiple times "
-                       + "without being rewritten. For example, if you want to instruct the van to "
-                       + "follow a repeated pattern in the road, you can create a specific procedure. "
-                       + "To create a procedure, simply choose the correct blocks and put them in the "
-                       + "right order inside the <b>Define do</b> block. Once you have done that, give "
-                       + "it a name eg wiggle.<br>Now you're ready! Attach the <b>Call</b> block where "
-                       + "you want your 'wiggle' procedure to be executed. Don't forget to put the name in it!")
+    message = ugettext(
+        "Procedures are groups of instructions that can be executed multiple times "
+        + "without being rewritten. For example, if you want to instruct the van to "
+        + "follow a repeated pattern in the road, you can create a specific procedure. "
+        + "To create a procedure, simply choose the correct blocks and put them in the "
+        + "right order inside the <b>Define do</b> block. Once you have done that, give "
+        + "it a name eg wiggle.<br>Now you're ready! Attach the <b>Call</b> block where "
+        + "you want your 'wiggle' procedure to be executed. Don't forget to put the name in it!"
+    )
     return build_description(title_level61(), message)
 
 
 def hint_level61():
-    message = ugettext("Don't forget to use <b>Define</b>. Name your procedure and attach the blocks in "
-                       + "the right order. Start with <b>move forwards</b>, <b>turn left</b>, you can "
-                       + "add repeat loops to a procedure and ending with <b>turn left</b>. Call your "
-                       + "procedure under your start block and off you go...")
+    message = ugettext(
+        "Don't forget to use <b>Define</b>. Name your procedure and attach the blocks in "
+        + "the right order. Start with <b>move forwards</b>, <b>turn left</b>, you can "
+        + "add repeat loops to a procedure and ending with <b>turn left</b>. Call your "
+        + "procedure under your start block and off you go..."
+    )
     return message
 
 
@@ -1315,13 +1577,17 @@ def title_level62():
 
 
 def description_level62():
-    message = ugettext("Create a procedure which tells the van to wait until the traffic lights are green.")
+    message = ugettext(
+        "Create a procedure which tells the van to wait until the traffic lights are green."
+    )
     return build_description(title_level62(), message)
 
 
 def hint_level62():
-    message = ugettext("Don't forget to name your procedure eg 'lights' and every time you want the van "
-                       + "to check the traffic lights you need to '<b>call</b>' it.")
+    message = ugettext(
+        "Don't forget to name your procedure eg 'lights' and every time you want the van "
+        + "to check the traffic lights you need to '<b>call</b>' it."
+    )
     return message
 
 
@@ -1330,17 +1596,21 @@ def title_level63():
 
 
 def description_level63():
-    message = ugettext("Can you find the repeating pattern here and create a new 'wiggle' procedure? "
-                       + "And do the Wiggle Wiggle!")
+    message = ugettext(
+        "Can you find the repeating pattern here and create a new 'wiggle' procedure? "
+        + "And do the Wiggle Wiggle!"
+    )
     return build_description(title_level63(), message)
 
 
 def hint_level63():
-    message = ugettext("Can you see the repeating pattern in the path? The 'wiggle' consisting of a "
-                       + "<b>turn left</b>, <b>move forwards</b>, <b>turn right</b>, <b>turn right</b>, "
-                       + "<b>turn left</b> can be put in a <b>Define</b> block to create a procedure. "
-                       + "Once you have named it, attach the <b>Call</b> block with the procedure's name "
-                       + "in the text box to execute it.")
+    message = ugettext(
+        "Can you see the repeating pattern in the path? The 'wiggle' consisting of a "
+        + "<b>turn left</b>, <b>move forwards</b>, <b>turn right</b>, <b>turn right</b>, "
+        + "<b>turn left</b> can be put in a <b>Define</b> block to create a procedure. "
+        + "Once you have named it, attach the <b>Call</b> block with the procedure's name "
+        + "in the text box to execute it."
+    )
     return message
 
 
@@ -1349,15 +1619,19 @@ def title_level64():
 
 
 def description_level64():
-    message = ugettext("Can you spot a pattern here? Create several procedures, it can save time when "
-                       + "writing a program. Don't forget to clearly name your procedures and then call them.")
+    message = ugettext(
+        "Can you spot a pattern here? Create several procedures, it can save time when "
+        + "writing a program. Don't forget to clearly name your procedures and then call them."
+    )
     return build_description(title_level64(), message)
 
 
 def hint_level64():
-    message = ugettext("One procedure could be <b>turn left</b>, <b>turn right</b>, <b>move forwards</b>, "
-                       + "<b>turn right</b> and <b>turn left</b>. Don't forget you can create a repeat "
-                       + "loop in your procedures.")
+    message = ugettext(
+        "One procedure could be <b>turn left</b>, <b>turn right</b>, <b>move forwards</b>, "
+        + "<b>turn right</b> and <b>turn left</b>. Don't forget you can create a repeat "
+        + "loop in your procedures."
+    )
     return message
 
 
@@ -1366,14 +1640,18 @@ def title_level65():
 
 
 def description_level65():
-    message = ugettext("This road might be a bit more complicated, but the procedures you could come up "
-                       + "with are quite simple. Have a go and find out yourself!")
+    message = ugettext(
+        "This road might be a bit more complicated, but the procedures you could come up "
+        + "with are quite simple. Have a go and find out yourself!"
+    )
     return build_description(title_level65(), message)
 
 
 def hint_level65():
-    message = ugettext("Your first procedure could be <b>turn left</b> and <b>turn right</b> 'left-right' "
-                       + "The second procedure could be <b>turn right</b> <b>turn left</b>, 'right-left'.")
+    message = ugettext(
+        "Your first procedure could be <b>turn left</b> and <b>turn right</b> 'left-right' "
+        + "The second procedure could be <b>turn right</b> <b>turn left</b>, 'right-left'."
+    )
     return message
 
 
@@ -1387,9 +1665,11 @@ def description_level66():
 
 
 def hint_level66():
-    message = ugettext("Create 2 procedures. The first one should read <b>move forwards</b>, "
-                       + "<b>move forwards</b>, <b>turn right</b>. The second <b>move forwards</b> "
-                       + "then <b>call</b> your first procedure")
+    message = ugettext(
+        "Create 2 procedures. The first one should read <b>move forwards</b>, "
+        + "<b>move forwards</b>, <b>turn right</b>. The second <b>move forwards</b> "
+        + "then <b>call</b> your first procedure"
+    )
     return message
 
 
@@ -1403,8 +1683,10 @@ def description_level67():
 
 
 def hint_level67():
-    message = ugettext("It might be easier to write the program without repeats or procedures then "
-                       + "create 3 separate procedures from the patterns that your see.")
+    message = ugettext(
+        "It might be easier to write the program without repeats or procedures then "
+        + "create 3 separate procedures from the patterns that your see."
+    )
     return message
 
 
@@ -1581,8 +1863,10 @@ def title_level80():
 
 
 def description_level80():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Can you tell which Python statement matches which block?")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Can you tell which Python statement matches which block?"
+    )
     return build_description(title_level80(), message)
 
 
@@ -1595,8 +1879,10 @@ def title_level81():
 
 
 def description_level81():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Can you tell which Python statement matches which block?")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Can you tell which Python statement matches which block?"
+    )
     return build_description(title_level81(), message)
 
 
@@ -1609,8 +1895,10 @@ def title_level82():
 
 
 def description_level82():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Can you tell which Python statement matches which block?")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Can you tell which Python statement matches which block?"
+    )
     return build_description(title_level82(), message)
 
 
@@ -1623,8 +1911,10 @@ def title_level83():
 
 
 def description_level83():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Try adding a <b>repeat</b> block and watch what happens in Python.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Try adding a <b>repeat</b> block and watch what happens in Python."
+    )
     return build_description(title_level83(), message)
 
 
@@ -1637,8 +1927,10 @@ def title_level84():
 
 
 def description_level84():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Try adding a <b>repeat</b> block and watch what happens in Python.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Try adding a <b>repeat</b> block and watch what happens in Python."
+    )
     return build_description(title_level84(), message)
 
 
@@ -1651,9 +1943,11 @@ def title_level85():
 
 
 def description_level85():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Try adding a <b>repeat</b> until block and watch what "
-                       + "happens in Python.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Try adding a <b>repeat</b> until block and watch what "
+        + "happens in Python."
+    )
     return build_description(title_level85(), message)
 
 
@@ -1666,8 +1960,10 @@ def title_level86():
 
 
 def description_level86():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Try adding an <b>if</b> block and watch what happens in Python.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Try adding an <b>if</b> block and watch what happens in Python."
+    )
     return build_description(title_level86(), message)
 
 
@@ -1680,9 +1976,11 @@ def title_level87():
 
 
 def description_level87():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Try adding an <b>if</b> block and watch what happens in "
-                       + "Python particularly with <b>else if</b> and <b>else</b> statements.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Try adding an <b>if</b> block and watch what happens in "
+        + "Python particularly with <b>else if</b> and <b>else</b> statements."
+    )
     return build_description(title_level87(), message)
 
 
@@ -1695,9 +1993,11 @@ def title_level88():
 
 
 def description_level88():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Try adding an <b>if</b> block and watch what happens in "
-                       + "Python particularly with <b>else if</b> and <b>else</b> statements.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Try adding an <b>if</b> block and watch what happens in "
+        + "Python particularly with <b>else if</b> and <b>else</b> statements."
+    )
     return build_description(title_level88(), message)
 
 
@@ -1710,9 +2010,11 @@ def title_level89():
 
 
 def description_level89():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "programming language. Try adding an <b>if</b> block and watch what happens in "
-                       + "Python particularly with <b>else if</b> and <b>else</b> statements.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "programming language. Try adding an <b>if</b> block and watch what happens in "
+        + "Python particularly with <b>else if</b> and <b>else</b> statements."
+    )
     return build_description(title_level89(), message)
 
 
@@ -1725,13 +2027,17 @@ def title_level90():
 
 
 def description_level90():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "language. Try adding a procedure and watch what happens in Python.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "language. Try adding a procedure and watch what happens in Python."
+    )
     return build_description(title_level90(), message)
 
 
 def hint_level90():
-    message = ugettext("Don't forget to name your procedure and see what happens in Python.")
+    message = ugettext(
+        "Don't forget to name your procedure and see what happens in Python."
+    )
     return message
 
 
@@ -1740,32 +2046,42 @@ def title_level91():
 
 
 def description_level91():
-    message = ugettext("As you create your program using Blockly see what it looks like in the Python "
-                       + "language. Try adding a procedure and watch what happens in Python.")
+    message = ugettext(
+        "As you create your program using Blockly see what it looks like in the Python "
+        + "language. Try adding a procedure and watch what happens in Python."
+    )
     return build_description(title_level91(), message)
 
 
 def hint_level91():
-    message = ugettext("Don't forget to name your procedure and see what happens in Python.")
+    message = ugettext(
+        "Don't forget to name your procedure and see what happens in Python."
+    )
     return message
 
 
 def title_level92():
-    return ugettext("Start with the basics, <b>forward</b>, <b>left</b> and <b>right</b> ")
+    return ugettext(
+        "Start with the basics, <b>forward</b>, <b>left</b> and <b>right</b> "
+    )
 
 
 def description_level92():
-    message = ugettext("Now you are coding in Python! This is what real developers do!! To start you off, "
-                       + "the van object has been created for you already. Under this you need to add the "
-                       + "correct Python statements to instruct the van to drive to the destination.<br>"
-                       + "For more information about coding in Python refer to "
-                       + "<a href='http://www.diveintopython.net/' target='_blank'>www.diveintopython.net</a>.")
+    message = ugettext(
+        "Now you are coding in Python! This is what real developers do!! To start you off, "
+        + "the van object has been created for you already. Under this you need to add the "
+        + "correct Python statements to instruct the van to drive to the destination.<br>"
+        + "For more information about coding in Python refer to "
+        + "<a href='http://www.diveintopython.net/' target='_blank'>www.diveintopython.net</a>."
+    )
     return build_description(title_level92(), message)
 
 
 def hint_level92():
-    message = ugettext("Try using the following commands:<br><pre>v.move_forwards()<br>v.turn_left()"
-                       + "<br>v.turn_right()</pre>")
+    message = ugettext(
+        "Try using the following commands:<br><pre>v.move_forwards()<br>v.turn_left()"
+        + "<br>v.turn_right()</pre>"
+    )
     return message
 
 
@@ -1774,17 +2090,21 @@ def title_level93():
 
 
 def description_level93():
-    message = ugettext("Try this road. Under the van object you need to add the correct Python statements "
-                       + "to instruct the van to drive to the destination.")
+    message = ugettext(
+        "Try this road. Under the van object you need to add the correct Python statements "
+        + "to instruct the van to drive to the destination."
+    )
     return build_description(title_level93(), message)
 
 
 def hint_level93():
-    message = ugettext("""Try using the following commands:
+    message = ugettext(
+        """Try using the following commands:
 <pre>v.move_forwards()
 v.turn_left()
-v.turn_right()</pre>""")
-    return message.replace('\n', '<br>')
+v.turn_right()</pre>"""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level94():
@@ -1792,17 +2112,21 @@ def title_level94():
 
 
 def description_level94():
-    message = ugettext("You're getting good at this! Can you drive the van along this road using the "
-                       + "correct Python statements.")
+    message = ugettext(
+        "You're getting good at this! Can you drive the van along this road using the "
+        + "correct Python statements."
+    )
     return build_description(title_level94(), message)
 
 
 def hint_level94():
-    message = ugettext("""Try using the following commands:
+    message = ugettext(
+        """Try using the following commands:
 <pre>v.move_forwards()
 v.turn_left()
-v.turn_right()</pre>""")
-    return message.replace('\n', '<br>')
+v.turn_right()</pre>"""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level95():
@@ -1810,18 +2134,22 @@ def title_level95():
 
 
 def description_level95():
-    message = ugettext("Now try to use a <b>repeat</b> loop to solve this level. Look back at level 83 "
-                       + "to see what this could look like in Python.")
+    message = ugettext(
+        "Now try to use a <b>repeat</b> loop to solve this level. Look back at level 83 "
+        + "to see what this could look like in Python."
+    )
     return build_description(title_level95(), message)
 
 
 def hint_level95():
-    message = ugettext("""To repeat some statements a set number of times you can use something like the following:
+    message = ugettext(
+        """To repeat some statements a set number of times you can use something like the following:
 <pre>for count in range(3):
     v.turn left
     print count</pre>
-The print statement will output the value of count to the console.""")
-    return message.replace('\n', '<br>')
+The print statement will output the value of count to the console."""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level96():
@@ -1829,19 +2157,23 @@ def title_level96():
 
 
 def description_level96():
-    message = ugettext("Now try to use a <b>repeat loop</b> to solve this level. Look back at level 83 "
-                       + "to see what this could look like in Python. This time you could use 2 loops, "
-                       + "1 for each straight piece of road.")
+    message = ugettext(
+        "Now try to use a <b>repeat loop</b> to solve this level. Look back at level 83 "
+        + "to see what this could look like in Python. This time you could use 2 loops, "
+        + "1 for each straight piece of road."
+    )
     return build_description(title_level96(), message)
 
 
 def hint_level96():
-    message = ugettext("""To repeat some statements a set number of times you can use something like the following:
+    message = ugettext(
+        """To repeat some statements a set number of times you can use something like the following:
 <pre>for count in range(3):
     v.turn left
     print count</pre>
-The print statement will output the value of count to the console.""")
-    return message.replace('\n', '<br>')
+The print statement will output the value of count to the console."""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level97():
@@ -1849,19 +2181,23 @@ def title_level97():
 
 
 def description_level97():
-    message = ugettext("Now try to use a loop within a loop, known as a 'nested loop'. Look back at level "
-                       + "84 to see what this could look like in Python.")
+    message = ugettext(
+        "Now try to use a loop within a loop, known as a 'nested loop'. Look back at level "
+        + "84 to see what this could look like in Python."
+    )
     return build_description(title_level97(), message)
 
 
 def hint_level97():
-    message = ugettext("""To repeat within a repeats a set number of times you can use something like the following:
+    message = ugettext(
+        """To repeat within a repeats a set number of times you can use something like the following:
 <pre>for i in range(3):
     for j in range(5):
         v.turn left
         print count</pre>
-The print statement will output the value of count to the console.""")
-    return message.replace('\n', '<br>')
+The print statement will output the value of count to the console."""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level98():
@@ -1869,22 +2205,26 @@ def title_level98():
 
 
 def description_level98():
-    message = ugettext("Try to solve this level by repeatedly moving until the van is at the destination. "
-                       + "Also, check whether the van can move forward or else must turn left. Now try and "
-                       + "write the Python code. Look back at level 86 to give you an idea of what this "
-                       + "could look like.")
+    message = ugettext(
+        "Try to solve this level by repeatedly moving until the van is at the destination. "
+        + "Also, check whether the van can move forward or else must turn left. Now try and "
+        + "write the Python code. Look back at level 86 to give you an idea of what this "
+        + "could look like."
+    )
     return build_description(title_level98(), message)
 
 
 def hint_level98():
-    message = ugettext("""To repeat while a condition is met you can use something like the following:
+    message = ugettext(
+        """To repeat while a condition is met you can use something like the following:
 <pre>while not v.at_destination():
     v.move_forwards()</pre>
 To check whether a condition is met you can use something like the following:
 <pre>if v.is_road_forward():
     v.move_forwards()</pre>
-You may also need to use the <b>else</b> statement.""")
-    return message.replace('\n', '<br>')
+You may also need to use the <b>else</b> statement."""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level99():
@@ -1892,21 +2232,25 @@ def title_level99():
 
 
 def description_level99():
-    message = ugettext("Now try using what you have just learnt to solve this level. You could also try "
-                       + "using the <b>if</b>, <b>elif</b> and <b>else</b> statements. Look back at level "
-                       + "86 to give you an idea of what this could look like.")
+    message = ugettext(
+        "Now try using what you have just learnt to solve this level. You could also try "
+        + "using the <b>if</b>, <b>elif</b> and <b>else</b> statements. Look back at level "
+        + "86 to give you an idea of what this could look like."
+    )
     return build_description(title_level99(), message)
 
 
 def hint_level99():
-    message = ugettext("""To repeat while a condition is met you can use something like the following:
+    message = ugettext(
+        """To repeat while a condition is met you can use something like the following:
 <pre>while not v.at_destination():
     v.move_forwards()</pre>
 To check whether a condition is met you can use something like the following:
 <pre>if v.is_road_forward():
     v.move_forwards()</pre>
-You may also need to use the <b>elif</b> and <b>else</b> statements.""")
-    return message.replace('\n', '<br>')
+You may also need to use the <b>elif</b> and <b>else</b> statements."""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level100():
@@ -1914,13 +2258,17 @@ def title_level100():
 
 
 def description_level100():
-    message = ugettext("Practice your new Python skills on this road to get the van to the destination. "
-                       + "Look back at level 88 for a dead end check.")
+    message = ugettext(
+        "Practice your new Python skills on this road to get the van to the destination. "
+        + "Look back at level 88 for a dead end check."
+    )
     return build_description(title_level100(), message)
 
 
 def hint_level100():
-    message = ugettext("Try using<br><pre>if v.at_dead_end():</pre><br>to check if the van is at a dead end.")
+    message = ugettext(
+        "Try using<br><pre>if v.at_dead_end():</pre><br>to check if the van is at a dead end."
+    )
     return message
 
 
@@ -1929,20 +2277,24 @@ def title_level101():
 
 
 def description_level101():
-    message = ugettext("Try defining your own procedure to solve this level. In Python procedures are "
-                       + "generally called functions. Look back at level 90 for an example of how to "
-                       + "define a function in Python.")
+    message = ugettext(
+        "Try defining your own procedure to solve this level. In Python procedures are "
+        + "generally called functions. Look back at level 90 for an example of how to "
+        + "define a function in Python."
+    )
     return build_description(title_level101(), message)
 
 
 def hint_level101():
-    message = ugettext("""To define a function in Python you could do something like:
+    message = ugettext(
+        """To define a function in Python you could do something like:
 <pre>def my_function():
     print 'test'</pre>
 To call a defined function you could do something like:
 <pre>my_function()</pre>
-Remember, you must define a function before you call it.""")
-    return message.replace('\n', '<br>')
+Remember, you must define a function before you call it."""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level102():
@@ -1950,18 +2302,22 @@ def title_level102():
 
 
 def description_level102():
-    message = ugettext("For this level try defining more than one function. Try to look for a repeating "
-                       + "pattern to simplify your program.")
+    message = ugettext(
+        "For this level try defining more than one function. Try to look for a repeating "
+        + "pattern to simplify your program."
+    )
     return build_description(title_level102(), message)
 
 
 def hint_level102():
-    message = ugettext("""To define a function in Python you could do something like:
+    message = ugettext(
+        """To define a function in Python you could do something like:
 <pre>def my_function():
     print 'test'</pre>
 To call a defined function you could do something like:
-<pre>my_function()</pre>""")
-    return message.replace('\n', '<br>')
+<pre>my_function()</pre>"""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level103():
@@ -1969,13 +2325,16 @@ def title_level103():
 
 
 def description_level103():
-    message = ugettext("For this level try to define 2 or more functions where inside one function you "
-                       + "call another function.")
+    message = ugettext(
+        "For this level try to define 2 or more functions where inside one function you "
+        + "call another function."
+    )
     return build_description(title_level103(), message)
 
 
 def hint_level103():
-    message = ugettext("""To define a function that calls another function you could do something like:
+    message = ugettext(
+        """To define a function that calls another function you could do something like:
 <pre>def my_function():
     print 'test'
 
@@ -1983,8 +2342,9 @@ def my_other_function():
     for i in range(3):
         my_function()
 
-my_other_function()</pre>""")
-    return message.replace('\n', '<br>')
+my_other_function()</pre>"""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level104():
@@ -1992,13 +2352,16 @@ def title_level104():
 
 
 def description_level104():
-    message = ugettext("For this level try to define 2 or more functions where inside one function you "
-                       + "call another function.")
+    message = ugettext(
+        "For this level try to define 2 or more functions where inside one function you "
+        + "call another function."
+    )
     return build_description(title_level104(), message)
 
 
 def hint_level104():
-    message = ugettext("""To define a function that calls another function you could do something like:
+    message = ugettext(
+        """To define a function that calls another function you could do something like:
 <pre>def my_function():
     print 'test'
 
@@ -2006,8 +2369,9 @@ def my_other_function():
     for i in range(3):
         my_function()
 
-my_other_function()</pre>""")
-    return message.replace('\n', '<br>')
+my_other_function()</pre>"""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level105():
@@ -2015,13 +2379,17 @@ def title_level105():
 
 
 def description_level105():
-    message = ugettext("For this level try to implement a general algorithm. Keep the van going until it "
-                       + "arrives at the destination, checking for traffic lights and junctions.")
+    message = ugettext(
+        "For this level try to implement a general algorithm. Keep the van going until it "
+        + "arrives at the destination, checking for traffic lights and junctions."
+    )
     return build_description(title_level105(), message)
 
 
 def hint_level105():
-    message = ugettext("For this you will have to use a combination of the <b>while</b> and <b>if</b> statements.")
+    message = ugettext(
+        "For this you will have to use a combination of the <b>while</b> and <b>if</b> statements."
+    )
     return message
 
 
@@ -2030,22 +2398,26 @@ def title_level106():
 
 
 def description_level106():
-    message = ugettext("For this level the van needs to travel in a spiral. The number of grid squares the "
-                       + "van has to move keeps increasing by 1 on each turn. To do this you can have a loop "
-                       + "that makes use of a variable to track the length of the road you need to travel "
-                       + "after each turn.")
+    message = ugettext(
+        "For this level the van needs to travel in a spiral. The number of grid squares the "
+        + "van has to move keeps increasing by 1 on each turn. To do this you can have a loop "
+        + "that makes use of a variable to track the length of the road you need to travel "
+        + "after each turn."
+    )
     return build_description(title_level106(), message)
 
 
 def hint_level106():
-    message = ugettext("""To use a variable to store the number of grid squares the van has to move you can do something like the following:
+    message = ugettext(
+        """To use a variable to store the number of grid squares the van has to move you can do something like the following:
 <pre>n = 1
 while not v.at_destination():
     print n
     n += 1</pre>
 Variables can be used in place of constants when calling functions. For example to repeat something n times you can do something like the following:
-<pre>for count in range(n):</pre>""")
-    return message.replace('\n', '<br>')
+<pre>for count in range(n):</pre>"""
+    )
+    return message.replace("\n", "<br>")
 
 
 def title_level107():
@@ -2053,13 +2425,17 @@ def title_level107():
 
 
 def description_level107():
-    message = ugettext("For this level try something similar to what you have just learnt. This time "
-                       + "the straight sections of road are doubling in length after each turn.")
+    message = ugettext(
+        "For this level try something similar to what you have just learnt. This time "
+        + "the straight sections of road are doubling in length after each turn."
+    )
     return build_description(title_level107(), message)
 
 
 def hint_level107():
-    message = ugettext("To double the value of a variable you can do something like the following:<br><pre>n *= 2</pre>")
+    message = ugettext(
+        "To double the value of a variable you can do something like the following:<br><pre>n *= 2</pre>"
+    )
     return message
 
 
@@ -2068,13 +2444,17 @@ def title_level108():
 
 
 def description_level108():
-    message = ugettext("This time the straight sections of road decrease in length by 2 after each turn.")
+    message = ugettext(
+        "This time the straight sections of road decrease in length by 2 after each turn."
+    )
     return build_description(title_level108(), message)
 
 
 def hint_level108():
-    message = ugettext("To decrease the value of a variable by an amount you can do something like the "
-                       + "following:<br><pre>n -= 5</pre>")
+    message = ugettext(
+        "To decrease the value of a variable by an amount you can do something like the "
+        + "following:<br><pre>n -= 5</pre>"
+    )
     return message
 
 
@@ -2083,29 +2463,33 @@ def title_level109():
 
 
 def description_level109():
-    message = ugettext("For the last challenge, the road straight line sections of road start off increasing "
-                       + "by 1 after each turn and then switch to dividing by 2 with a twist!")
+    message = ugettext(
+        "For the last challenge, the road straight line sections of road start off increasing "
+        + "by 1 after each turn and then switch to dividing by 2 with a twist!"
+    )
     return build_description(title_level109(), message)
 
 
 def hint_level109():
-    message = ugettext("To halve the value of a variable you can do something like the following:<br><pre>n /= 2</pre>")
+    message = ugettext(
+        "To halve the value of a variable you can do something like the following:<br><pre>n /= 2</pre>"
+    )
     return message
 
 
 def get_episode_title(episode_id):
     episode_titles = {
-        1: ugettext('Getting Started'),
-        2: ugettext('Shortest Route'),
-        3: ugettext('Loops and Repetitions'),
-        4: ugettext('Loops with Conditions'),
-        5: ugettext('If... Only'),
-        6: ugettext('Traffic Lights'),
-        7: ugettext('Limited Blocks'),
-        8: ugettext('Procedures'),
-        9: ugettext('Blockly Brain Teasers'),
-        10: ugettext('Introduction to Python'),
-        11: ugettext('Python')
+        1: ugettext("Getting Started"),
+        2: ugettext("Shortest Route"),
+        3: ugettext("Loops and Repetitions"),
+        4: ugettext("Loops with Conditions"),
+        5: ugettext("If... Only"),
+        6: ugettext("Traffic Lights"),
+        7: ugettext("Limited Blocks"),
+        8: ugettext("Procedures"),
+        9: ugettext("Blockly Brain Teasers"),
+        10: ugettext("Introduction to Python"),
+        11: ugettext("Python"),
     }
 
     return episode_titles[episode_id]

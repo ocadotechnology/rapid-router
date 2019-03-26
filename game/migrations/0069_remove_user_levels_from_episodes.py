@@ -38,8 +38,8 @@ from django.db import migrations
 
 
 def update_episodes_level_order(apps, schema_editor):
-    Episode = apps.get_model('game', 'Episode')
-    Level = apps.get_model('game', 'Level')
+    Episode = apps.get_model("game", "Episode")
+    Level = apps.get_model("game", "Level")
 
     episode7 = Episode.objects.get(id=7)
     episode8 = Episode.objects.get(id=8)
@@ -55,10 +55,10 @@ def update_episodes_level_order(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ('game', '0068_fix_episodes_order'),
-    ]
+    dependencies = [("game", "0068_fix_episodes_order")]
 
     operations = [
-        migrations.RunPython(update_episodes_level_order, reverse_code=migrations.RunPython.noop)
+        migrations.RunPython(
+            update_episodes_level_order, reverse_code=migrations.RunPython.noop
+        )
     ]
