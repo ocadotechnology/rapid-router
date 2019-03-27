@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -5120,10 +5120,6 @@ class Migration(migrations.Migration):
                 ("finish_time", models.DateTimeField(auto_now=True)),
                 ("score", models.FloatField(default=0, null=True)),
                 ("workspace", models.TextField(default=b"")),
-                (
-                    "student",
-                    models.ForeignKey(blank=True, to="portal.Student", null=True),
-                ),
                 ("python_workspace", models.TextField(default=b"")),
                 ("level", models.ForeignKey(related_name=b"attempts", to="game.Level")),
                 (
