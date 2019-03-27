@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2019, Ocado Innovation Limited
+# Copyright (C) 2016, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -54,5 +54,4 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "example_project.settings")
 
 from django.core.wsgi import get_wsgi_application
-
 application = get_wsgi_application()
