@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block nav_ocargo_levels %}
-<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #0c52a3;" href="{% url 'game.views.level_selection.levels' %}">{% trans "Levels" %}</a>
+<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #0c52a3;" href="{% url 'levels' %}">{% trans "Levels" %}</a>
 {% endblock nav_ocargo_levels %}
 
 {% block content %}
@@ -74,7 +74,7 @@
 
                     {% if episode.random_levels_enabled %}
                     <p>
-                        <a href="{% url 'game.views.level_selection.random_level_for_episode' episode.id %}">
+                        <a href="{% url 'random_level_for_episode' episode.id %}">
                         {% trans "Random: Try your hand at a random level." %}
                         </a>
                     </p>
