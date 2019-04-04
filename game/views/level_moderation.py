@@ -35,19 +35,20 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
-import game.messages as messages
-import game.permissions as permissions
+
 import json
 
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.template import RequestContext
 from django.utils.translation import ugettext
-from helper import renderError
-from game.forms import LevelModerationForm
-from game.models import Level
 from portal.models import Student, Class
 from portal.templatetags import app_tags
+
+import game.messages as messages
+import game.permissions as permissions
+from game.forms import LevelModerationForm
+from game.models import Level
+from helper import renderError
 
 
 def level_moderation(request):
@@ -164,10 +165,10 @@ def level_moderation(request):
                             "shared_with": shared_str,
                         }
                     )
-
-    context = RequestContext(
+    return render(
         request,
-        {
+        "game/level_moderation.html",
+        context={
             "student_id": student_id,
             "students": student_dict,
             "form": form,
@@ -175,7 +176,6 @@ def level_moderation(request):
             "thead": table_headers,
         },
     )
-    return render(request, "game/level_moderation.html", context_instance=context)
 
 
 def get_students_for_level_moderation(request, class_id):
