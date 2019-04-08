@@ -39,7 +39,7 @@ jobs:
         - "sh -e /etc/init.d/xvfb start"
         - sleep 3
       script:
-        - python example_project/manage.py test
+        - python setup.py test
       after_success:
         - coveralls
     - stage: deploy
