@@ -36,6 +36,7 @@
 # identified as the original program.
 """Django settings for example_project project."""
 import os
+from selenium import webdriver
 
 DEBUG = True
 
@@ -47,6 +48,19 @@ TEMPLATES = [
         },
     },
 ]
+
+SELENIUM_WEBDRIVERS = {
+    'default': {
+        'callable': webdriver.Chrome,
+        'args': (),
+        'kwargs': {},
+    },
+    'chrome': {
+        'callable': webdriver.Firefox,
+        'args': (),
+        'kwargs': {},
+    },
+}
 
 DATABASES = {
     'default': {
