@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django>=1.9.13, <=1.10.8",
+        "django>=1.10.8, < 1.11",
         "django-foundation-icons==3.1",
         "django-bourbon==3.1.8",
         "django-autoconfig >= 0.3.6, < 1.0.0",
