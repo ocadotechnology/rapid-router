@@ -1,17 +1,17 @@
-import unittest
 import importlib
 import logging
+import unittest
 
-from django.test.runner import DiscoverRunner
 import django.conf
-
+from django.test.runner import DiscoverRunner
 
 LOGGER = logging.getLogger(__name__)
 
 
 class DjangoAutoTestSuite(unittest.TestSuite):
     """
-    This test suite configures django settings (which should be in test_settings.py), and starts a test runner.
+    This test suite configures django settings (which should be in test_settings.py),
+    and starts a test runner.
     It allows us to run the django tests with setup.py test.
     """
 
@@ -25,8 +25,12 @@ class DjangoAutoTestSuite(unittest.TestSuite):
         self.test_dbs = self.test_runner.setup_databases()
 
     def _configure(self):
-        test_settings = importlib.import_module('test_settings')
-        setting_attrs = {attr: getattr(test_settings, attr) for attr in dir(test_settings) if '__' not in attr}
+        test_settings = importlib.import_module("test_settings")
+        setting_attrs = {
+            attr: getattr(test_settings, attr)
+            for attr in dir(test_settings)
+            if "__" not in attr
+        }
 
         if not django.conf.settings.configured:
             django.conf.settings.configure(**setting_attrs)
