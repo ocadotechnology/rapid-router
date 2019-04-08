@@ -31,7 +31,7 @@ setup(
         "django-pipeline==1.5.4",
         "django-appconf==1.0.1",
         "django-casper==0.0.3",
-        "djangorestframework>=3.8.2, <=3.9.0",
+        "djangorestframework>=3.8.2, <3.9.0",
         "six==1.11.0",
         "docutils==0.12",
         "pyhamcrest==1.8.3",
