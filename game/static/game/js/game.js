@@ -153,7 +153,7 @@ ocargo.Game.prototype.reset = function() {
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     this.reset();
 
-    ocargo.event.sendEvent("PlayButtonPressed", { levelName: LEVEL_NAME,
+    ocargo.event.sendEvent('PlayButtonPressed', { levelName: LEVEL_NAME,
                                                   defaultLevel: DEFAULT_LEVEL,
                                                   workspace: ocargo.blocklyControl.serialize(),
                                                   failures: this.failures,
