@@ -35,19 +35,19 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
-import game.messages as messages
-import game.level_management as level_management
 
-from django.shortcuts import render
-from django.template import RequestContext
-from django.utils.safestring import mark_safe
+from django.core.cache import cache
 from django.db.models import Max
+from django.shortcuts import render
+from django.utils.safestring import mark_safe
+
+import game.level_management as level_management
+import game.messages as messages
+from game import app_settings
 from game import random_road
 from game.cache import cached_episode
 from game.models import Attempt, Episode
 from level_editor import play_anonymous_level
-from django.core.cache import cache
-from game import app_settings
 
 
 def max_score(level):
@@ -195,16 +195,16 @@ def levels(request):
                 }
             )
 
-    context = RequestContext(
+    return render(
         request,
-        {
+        "game/level_selection.html",
+        context={
             "episodeData": episode_data,
             "owned_levels": owned_level_data,
             "shared_levels": shared_level_data,
             "scores": attempts,
         },
     )
-    return render(request, "game/level_selection.html", context_instance=context)
 
 
 def random_level_for_episode(request, episodeID):

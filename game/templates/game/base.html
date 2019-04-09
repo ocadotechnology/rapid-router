@@ -12,7 +12,7 @@
 
 {% block secondaryButtons %}
     {% block dashboard %}<a href="{% url 'dashboard' %}" class="button--menu button--menu--secondary button--menu--enabled">School / Club</a>{% endblock dashboard %}
-    {% block rapidrouter %}<a href="{% url 'game.views.level_selection.levels' %}" class="button--menu button--menu--secondary button--menu--enabled button--menu--teacher--active">Rapid Router</a>{% endblock rapidrouter %}
+    {% block rapidrouter %}<a href="{% url 'levels' %}" class="button--menu button--menu--secondary button--menu--enabled button--menu--teacher--active">Rapid Router</a>{% endblock rapidrouter %}
     {% block aimmo %}<a href="{% url 'play_aimmo' %}" class="button--menu button--menu--secondary button--menu--enabled">AI:MMO</a>{% endblock aimmo %}
     {% block materials %}<a id="resources_button" href="{% url 'teaching_resources' %}" class="button--menu button--menu--secondary button--menu--enabled">Teaching Resources</a>{% endblock materials %}
 {% endblock secondaryButtons %}
@@ -31,19 +31,19 @@
 <div class="sticky-subnav sub-nav sub-nav--teacher">
     <img src="/static/game/image/RR-title.png" height="70">
     {% block nav_ocargo_levels %}
-        <a class="button button--regular button--secondary button--secondary--light" href="{% url 'game.views.level_selection.levels' %}">{% trans "Levels" %}</a>
+        <a class="button button--regular button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
     {% endblock nav_ocargo_levels %}
     {% block nav_ocargo_create %}
-        <a class="button button--regular button--secondary button--secondary--light" href="{% url 'game.views.level_editor.level_editor' %}">{% trans "Create" %}</a>
+        <a class="button button--regular button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
     {% endblock nav_ocargo_create %}
     {% if user|is_logged_in_as_school_user %}
         {% block nav_ocargo_scoreboard %}
-            <a class="button button--regular button--secondary button--secondary--light" href="{% url 'game.views.scoreboard.scoreboard' %}">{% trans "Scoreboard" %}</a>
+            <a class="button button--regular button--secondary button--secondary--light" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
         {% endblock nav_ocargo_scoreboard %}
     {% endif %}
     {% if user|is_logged_in_as_teacher %}
         {% block nav_ocargo_moderate %}
-            <a class="button button--regular button--secondary button--secondary--light" href="{% url 'game.views.level_moderation.level_moderation' %}">{% trans "Moderate" %}</a>
+            <a class="button button--regular button--secondary button--secondary--light" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
         {% endblock nav_ocargo_moderate %}
     {% endif %}
 </div>

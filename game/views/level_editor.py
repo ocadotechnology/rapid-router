@@ -35,30 +35,28 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
+
 import json
 import re
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import transaction
+from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from django.template import RequestContext
 from django.utils.safestring import mark_safe
-from django.forms.models import model_to_dict
-
-import game.messages as messages
-import game.level_management as level_management
-import game.permissions as permissions
-from game import random_road
-from game.decor import get_all_decor, get_decor_element
-from game.models import Level, Block
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
+
+import game.level_management as level_management
+import game.messages as messages
+import game.permissions as permissions
 from game import app_settings
+from game import random_road
 from game.cache import cached_level_decor, cached_level_blocks
-from game.theme import get_all_themes
-from game.character import get_all_character
+from game.decor import get_decor_element
+from game.models import Level, Block
 
 
 def level_editor(request):
@@ -75,20 +73,7 @@ def level_editor(request):
     :template:`game/level_editor.html`
     """
 
-    context = RequestContext(
-        request,
-        {
-            "blocks": available_blocks(),
-            "decor": get_all_decor(),
-            "characters": get_all_character(),
-            "themes": get_all_themes(),
-            "cow_level_enabled": app_settings.COW_FEATURE_ENABLED,
-            "night_mode_feature_enabled": str(
-                app_settings.NIGHT_MODE_FEATURE_ENABLED
-            ).lower(),
-        },
-    )
-    return render(request, "game/level_editor.html", context_instance=context)
+    return render(request, "game/level_editor.html")
 
 
 def available_blocks():
@@ -142,9 +127,12 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
 
     return_view_name = "level_editor" if from_level_editor else "levels"
 
-    context = RequestContext(
+    level.delete()
+
+    return render(
         request,
-        {
+        "game/game.html",
+        context={
             "level": level,
             "decor": decor_data,
             "blocks": block_data,
@@ -168,10 +156,6 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
             "model_solution": model_solution,
         },
     )
-
-    level.delete()
-
-    return render(request, "game/game.html", context_instance=context)
 
 
 def level_data_for(level):

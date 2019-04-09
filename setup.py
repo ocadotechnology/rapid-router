@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django>=1.8.3, <=1.9.13",
+        "django>=1.10.8, < 1.11",
         "django-foundation-icons==3.1",
         "django-bourbon==3.1.8",
         "django-autoconfig >= 0.3.6, < 1.0.0",
@@ -31,7 +31,7 @@ setup(
         "django-pipeline==1.5.4",
         "django-appconf==1.0.1",
         "django-casper==0.0.3",
-        "djangorestframework>=3.6, <=3.7",
+        "djangorestframework>=3.8.2, <3.9.0",
         "six==1.11.0",
         "docutils==0.12",
         "pyhamcrest==1.8.3",

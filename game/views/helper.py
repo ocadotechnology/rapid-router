@@ -36,11 +36,7 @@
 # identified as the original program.
 from __future__ import division
 
-import os
-
-from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render
-from django.template import RequestContext
 
 
 def renderError(request, title, message):
@@ -58,5 +54,6 @@ def renderError(request, title, message):
 
     :template:`game/error.html`
     """
-    context = RequestContext(request, {"title": title, "message": message})
-    return render(request, "game/error.html", context_instance=context)
+    return render(
+        request, "game/error.html", context={"title": title, "message": message}
+    )

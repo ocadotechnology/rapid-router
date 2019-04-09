@@ -37,10 +37,10 @@
 from __future__ import division
 
 import json
+
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.template import RequestContext
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 
@@ -55,10 +55,10 @@ from game.cache import (
     cached_level_decor,
     cached_level_blocks,
 )
-from game.models import Level, Attempt, Workspace
-from helper import renderError
 from game.decor import get_decor_element
+from game.models import Level, Attempt, Workspace
 from game.views.level_solutions import solutions
+from helper import renderError
 
 
 def play_custom_level_from_editor(request, levelId):
@@ -210,9 +210,10 @@ def play_level(request, level, from_editor=False):
 
     return_view = "level_editor" if from_editor else "levels"
 
-    context = RequestContext(
+    return render(
         request,
-        {
+        "game/game.html",
+        context={
             "level": level,
             "lesson": lesson,
             "blocks": block_data,
@@ -238,8 +239,6 @@ def play_level(request, level, from_editor=False):
             "flip_night_mode_url": _level_url(level, not night_mode),
         },
     )
-
-    return render(request, "game/game.html", context_instance=context)
 
 
 def fetch_workspace_from_last_attempt(attempt):

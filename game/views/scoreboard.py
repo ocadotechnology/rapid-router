@@ -35,21 +35,21 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
+
 from datetime import timedelta
 
 from django.http import Http404
 from django.shortcuts import render
-from django.template import RequestContext
 from django.utils.translation import ugettext_lazy
+from portal.models import Class, Teacher, Student
 
 import game.messages as messages
 import game.permissions as permissions
-from game.views.scoreboard_csv import scoreboard_csv
-from helper import renderError
+import level_selection
 from game.forms import ScoreboardForm
 from game.models import Level, Attempt, sort_levels
-from portal.models import Class, Teacher, Student
-import level_selection
+from game.views.scoreboard_csv import scoreboard_csv
+from helper import renderError
 
 Single_Level_Header = [
     ugettext_lazy("Class"),
@@ -144,9 +144,11 @@ def scoreboard_view(request, form, student_data, headers):
             "first_level": str(episode["first_level"]),
             "last_level": str(episode["last_level"]),
         }
-    context = RequestContext(
+
+    return render(
         request,
-        {
+        "game/scoreboard.html",
+        context={
             "form": form,
             "student_data": student_data,
             "headers": headers,
@@ -154,7 +156,6 @@ def scoreboard_view(request, form, student_data, headers):
             "episodes": context_episodes,
         },
     )
-    return render(request, "game/scoreboard.html", context_instance=context)
 
 
 def scoreboard_data(user, level_ids, class_ids):
