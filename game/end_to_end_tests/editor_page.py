@@ -34,18 +34,9 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-import os
-import time
 
-from django.core.urlresolvers import reverse
-from hamcrest import assert_that, equal_to, contains_string, starts_with, ends_with
-from selenium.common.exceptions import TimeoutException
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.expected_conditions import (
-    presence_of_all_elements_located,
-)
-from selenium.webdriver.support.ui import WebDriverWait
 from portal.tests.pageObjects.portal.base_page import BasePage
+from selenium.webdriver.common.by import By
 
 
 class EditorPage(BasePage):
@@ -64,13 +55,3 @@ class EditorPage(BasePage):
         self.wait_for_element_to_be_clickable((By.ID, button_id), wait_seconds=15)
         self.browser.find_element_by_id(button_id).click()
         self.wait_for_element_to_be_invisible((By.ID, button_id))
-
-    def element_exists(self, locator):
-        try:
-            self.wait_for_presence(locator)
-            return True
-        except TimeoutException:
-            return False
-
-    def element_exists_by_id(self, name):
-        return self.element_exists((By.ID, name))
