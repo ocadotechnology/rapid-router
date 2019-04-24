@@ -55,8 +55,10 @@ import game.permissions as permissions
 from game import app_settings
 from game import random_road
 from game.cache import cached_level_decor, cached_level_blocks
-from game.decor import get_decor_element
+from game.character import get_all_character
+from game.decor import get_all_decor, get_decor_element
 from game.models import Level, Block
+from game.theme import get_all_themes
 
 
 def level_editor(request):
@@ -73,7 +75,20 @@ def level_editor(request):
     :template:`game/level_editor.html`
     """
 
-    return render(request, "game/level_editor.html")
+    return render(
+        request,
+        "game/level_editor.html",
+        context={
+            "blocks": available_blocks(),
+            "decor": get_all_decor(),
+            "characters": get_all_character(),
+            "themes": get_all_themes(),
+            "cow_level_enabled": app_settings.COW_FEATURE_ENABLED,
+            "night_mode_feature_enabled": str(
+                app_settings.NIGHT_MODE_FEATURE_ENABLED
+            ).lower(),
+        },
+    )
 
 
 def available_blocks():
