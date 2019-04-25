@@ -45,7 +45,7 @@ from django_selenium_clean import selenium, SeleniumTestCase
 from . import custom_handler
 from portal.models import UserProfile
 from game.models import Workspace
-from game.views.level import load_workspace_solution
+from .editor_page import EditorPage
 from .game_page import GamePage
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
@@ -98,6 +98,11 @@ class BaseGameTest(SeleniumTestCase):
         selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         return GamePage(selenium)
+
+    def go_to_level_editor(self):
+        path = reverse("level_editor")
+        self._go_to_path(path)
+        return EditorPage(selenium)
 
     def go_to_episode(self, episodeId):
         path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
