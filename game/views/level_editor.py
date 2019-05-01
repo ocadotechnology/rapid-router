@@ -42,7 +42,6 @@ import re
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import transaction
-from django.forms.models import model_to_dict
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.safestring import mark_safe
@@ -59,6 +58,7 @@ from game.character import get_all_character
 from game.decor import get_all_decor, get_decor_element
 from game.models import Level, Block
 from game.theme import get_all_themes
+from game.views.level import LevelSerializer
 
 
 def level_editor(request):
@@ -68,7 +68,8 @@ def level_editor(request):
 
     ``RequestContext``
     ``blocks``
-        Blocks that can be chosen to be played with later on. List of :model:`game.Block`.
+        Blocks that can be chosen to be played with later on.
+        List of :model:`game.Block`.
 
     **Template:**
 
@@ -221,7 +222,7 @@ def load_level_for_editor(request, levelID):
     if not permissions.can_load_level(request.user, level):
         return HttpResponseUnauthorized()
 
-    level_dict = model_to_dict(level)
+    level_dict = LevelSerializer(level).data
     level_dict["theme"] = level.theme.id
     level_dict["decor"] = cached_level_decor(level)
     level_dict["blocks"] = cached_level_blocks(level)
@@ -247,7 +248,8 @@ def save_level_for_editor(request, levelId=None):
     pattern = re.compile("^(\w?[ ]?)*$")
     if pattern.match(data["name"]):
         level_management.save_level(level, data)
-        # Add the teacher automatically if it is a new level and the student is not independent
+        # Add the teacher automatically if it is a new level and the student is not
+        # independent
         if (
             (levelId is None)
             and hasattr(level.owner, "student")
@@ -285,7 +287,9 @@ def delete_level_for_editor(request, levelId):
 
 
 def generate_random_map_for_editor(request):
-    """Generates a new random path suitable for a random level with the parameters provided"""
+    """
+    Generates a new random path suitable for a random level with the parameters provided
+    """
     data = dict(request.POST)
 
     size = int(data["numberOfTiles"][0])

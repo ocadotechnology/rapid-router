@@ -200,3 +200,13 @@ class LevelEditorTestCase(TestCase):
 
         sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
         assert_that(len(sharing_info1["teachers"]), equal_to(0))
+
+    def test_level_loading(self):
+        teacher1, email1, password1 = signup_teacher_directly()
+
+        self.login(email1, password1)
+        level_id = create_save_level(teacher1)
+        url = reverse("load_level_for_editor", kwargs={"levelID": level_id})
+        response = self.client.get(url)
+
+        assert_that(response.status_code, equal_to(200))

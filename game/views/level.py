@@ -43,6 +43,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.utils.safestring import mark_safe
+from rest_framework import serializers
 
 import game.level_management as level_management
 import game.messages as messages
@@ -420,3 +421,9 @@ def delete_workspace(request, workspaceID):
         workspace.delete()
 
     return load_list_of_workspaces(request)
+
+
+class LevelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Level
+        fields = "__all__"
