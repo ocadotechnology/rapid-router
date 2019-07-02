@@ -9,7 +9,7 @@ comment:
   require_changes: false
   require_base: no
   require_head: yes
-  branches: !master, !development
+  branches: !master
 
 ignore:
   - "game/tests/*"
