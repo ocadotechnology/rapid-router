@@ -41,7 +41,7 @@ jobs:
       script:
         - python setup.py test
       after_success:
-        - bash <(curl -s https://codecov.io/bash)
+        - bash <(curl -s https://codecov.io/bash) -t 0615637a-04cd-4377-a45d-d044415c7f5f
     - stage: deploy
       install:
         - pip install -U setuptools
