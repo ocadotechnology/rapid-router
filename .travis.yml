@@ -29,8 +29,8 @@ jobs:
         - pip install -U setuptools
         - pip install -e .
         - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
-        - pip install coveralls
         - pip install crowdin-cli-py
+        - pip install coverage
       before_script:
         - wget http://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
         - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.14/bin/
@@ -39,9 +39,9 @@ jobs:
         - "sh -e /etc/init.d/xvfb start"
         - sleep 3
       script:
-        - python setup.py test
+        - coverage run setup.py test
       after_success:
-        - coveralls
+        - bash <(curl -s https://codecov.io/bash)
     - stage: deploy
       install:
         - pip install -U setuptools
