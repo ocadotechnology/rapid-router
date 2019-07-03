@@ -29,7 +29,6 @@ jobs:
         - pip install -U setuptools
         - pip install -e .
         - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
-        - pip install codecov
         - pip install crowdin-cli-py
         - pip install coverage
       before_script:
