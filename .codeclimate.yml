@@ -1,4 +1,6 @@
 ---
+exclude_patterns:
+  - "game/static/js/blockly/**/*"
 engines:
   csslint:
     enabled: true
