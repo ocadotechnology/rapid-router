@@ -101,24 +101,6 @@ ocargo.BlocklyControl.prototype.reset = function() {
     this.clearIncorrectBlock();
 };
 
-ocargo.BlocklyControl.prototype.toggleFlyout = function() {
-    // this.blocklyCustomisations.toggleFlyout();
-};
-
-ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
-    // this.blocklyCustomisations.bringStartBlockFromUnderFlyout();
-};
-
-ocargo.BlocklyControl.prototype.enableBigCodeMode = function() {
-    this.bigCodeMode = true;
-    // this.blocklyCustomisations.enableBigCodeMode();
-};
-
-ocargo.BlocklyControl.prototype.disableBigCodeMode =  function() {
-    this.bigCodeMode = false;
-    // this.blocklyCustomisations.disableBigCodeMode();
-};
-
 
 ocargo.BlocklyControl.prototype.teardown = function() {
     if (localStorage && !ANONYMOUS) {

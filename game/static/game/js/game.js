@@ -499,7 +499,6 @@ ocargo.Game.prototype._setupTabs = function () {
     this._setupSaveTab();
     //this._setupPrintTab();
     this._setupHelpTab();
-    //this._setupBigCodeModeTab();
     this._setupMuteTab();
     this._setupQuitTab();
     this._setupNightModeTab();
@@ -572,17 +571,6 @@ ocargo.Game.prototype._setupBlocklyTab = function () {
 
     this.currentlySelectedTab = this.tabs.blockly;
     this.tabs.blockly.select();
-
-    // Function wrapper needed
-    $('#flyoutButton').click(function () {
-        ocargo.blocklyControl.toggleFlyout();
-    }.bind(this));
-
-    // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
-    setTimeout(function () {
-        $('#flyoutButton').click();
-        ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-    }.bind(this), 100);
 };
 
 
@@ -978,36 +966,10 @@ ocargo.Game.prototype._setupSaveTab = function () {
     }
 };
 
-ocargo.Game.prototype._setupPrintTab = function () {
-    this.tabs.print.setOnChange(function () {
-        this._selectPreviousTab();
-        window.print();
-    }.bind(this));
-};
-
 ocargo.Game.prototype._setupHelpTab = function () {
     this.tabs.help.setOnChange(function () {
         this._selectPreviousTab();
         ocargo.Drawing.startPopup('', '', HINT);
-    }.bind(this));
-};
-
-ocargo.Game.prototype._setupBigCodeModeTab = function () {
-    this.tabs.big_code_mode.setOnChange(function () {
-        this.tabs.blockly.select();
-
-        if (ocargo.blocklyControl.bigCodeMode) {
-            this.tabs.big_code_mode.transitTo('normal_code_mode');
-            ocargo.blocklyControl.disableBigCodeMode();
-        } else {
-            this.tabs.big_code_mode.transitTo('big_code_mode');
-            ocargo.blocklyControl.enableBigCodeMode();
-        }
-
-        ocargo.blocklyControl.toggleFlyout();
-        ocargo.blocklyControl.toggleFlyout();
-
-        ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
     }.bind(this));
 };
 
