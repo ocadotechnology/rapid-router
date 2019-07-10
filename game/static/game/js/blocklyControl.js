@@ -51,22 +51,11 @@ ocargo.BlocklyControl = function () {
         trashcan: true,
         scrollbars: true,
         maxInstances: maxInstances
-        // collapse: false
     });
-
-    // this.blocklyCustomisations.setupFlyoutToggling(this.blocklyDiv);
-    // this.blocklyCustomisations.disableContextMenus();
 
     // Stop the flyout from closing automatically
     Blockly.Flyout.autoClose = false;
 
-    // this.blocklyCustomisations.makeFlyoutTransparent();
-    // this.blocklyCustomisations.shiftBlockly();
-    // this.blocklyCustomisations.shiftWorkspace();
-    // this.blocklyCustomisations.hideBlocklyToolbox();
-    // this.blocklyCustomisations.makeFlyoutButtonTransparent();
-
-    // Blockly.mainWorkspace.addChangeListener(console.log);
     this.blocklyCustomisations.addLimitedBlockListeners(Blockly.mainWorkspace);
 };
 
