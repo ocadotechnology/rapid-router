@@ -1,3 +1,6 @@
-12/11/2015: Commit on Ocado Blockly Github: bc65ad4c12d9f91ce9d100113e8b23f8d78eddde
+10/07/2019: Commit on Ocado Blockly Github: 9c4f9d6c1693c3c25160f008d3eaa2539127c9e8
+Version: 1.20190419.0
+Release: April 2019
 
-Diff from current master: https://github.com/ocadotechnology/blockly/compare/bc65ad4c12d9f91ce9d100113e8b23f8d78eddde...master
+
+Diff from current master: https://github.com/google/blockly/compare/9c4f9d6c1693c3c25160f008d3eaa2539127c9e8...master

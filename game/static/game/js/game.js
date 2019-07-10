@@ -60,8 +60,8 @@ ocargo.Game.prototype.setup = function() {
     initCustomBlocks();
     ocargo.solutionLoaded = false;
     ocargo.blocklyControl = new ocargo.BlocklyControl();
-    ocargo.blocklyControl.blocklyCustomisations.setupDoubleclick();
-    ocargo.blocklyControl.blocklyCustomisations.setupLimitedBlocks();
+    // ocargo.blocklyControl.blocklyCustomisations.setupDoubleclick();
+    // ocargo.blocklyControl.blocklyCustomisations.setupLimitedBlocks();
     ocargo.pythonControl = new ocargo.PythonControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, COWS, MAX_FUEL);
