@@ -277,7 +277,6 @@ ocargo.BlocklyCustomisations = function () {
                 block.addSelect));
             this.listeners_.push(Blockly.bindEvent_(rect, 'mouseout', block,
                 block.removeSelect));
-            // this.listeners_.push(Blockly.bindEvent_(rect, 'click', bloc k, this.addBlockToEnd));
             this.listeners_.push(Blockly.bindEvent_(root, 'dblclick', block, blockAddingListener));
         };
     };
