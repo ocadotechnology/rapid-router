@@ -41,28 +41,22 @@ var ocargo = ocargo || {};
 
 ocargo.BlocklyControl = function () {
     this.blocklyCustomisations = new ocargo.BlocklyCustomisations();
-    this.blocklyCustomisations.setupBigCodeMode();
-
+    this.blocklyCustomisations.setupDoubleclick();
+    this.blocklyCustomisations.setupLimitedBlocks();
     this.blocklyDiv = document.getElementById('blockly_holder');
     this.toolbox = document.getElementById('blockly_toolbox');
     Blockly.inject(this.blocklyDiv, {
         path: '/static/game/js/blockly/',
         toolbox: BLOCKLY_XML,
         trashcan: true,
-        scrollbars: true
+        scrollbars: true,
+        maxInstances: maxInstances
     });
-
-    this.blocklyCustomisations.setupFlyoutToggling(this.blocklyDiv);
-    this.blocklyCustomisations.disableContextMenus();
 
     // Stop the flyout from closing automatically
     Blockly.Flyout.autoClose = false;
 
-    this.blocklyCustomisations.makeFlyoutTransparent();
-    this.blocklyCustomisations.shiftBlockly();
-    this.blocklyCustomisations.shiftWorkspace();
-    this.blocklyCustomisations.hideBlocklyToolbox();
-    this.blocklyCustomisations.makeFlyoutButtonTransparent();
+    this.blocklyCustomisations.addLimitedBlockListeners(Blockly.mainWorkspace);
 };
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
@@ -90,7 +84,7 @@ ocargo.BlocklyControl.prototype.prepare = function(blocks) {
 };
 
 ocargo.BlocklyControl.prototype.redrawBlockly = function() {
-    Blockly.fireUiEvent(window, 'resize');
+    Blockly.svgResize(Blockly.mainWorkspace);
 };
 
 ocargo.BlocklyControl.prototype.clearIncorrectBlock = function () {
@@ -105,24 +99,6 @@ ocargo.BlocklyControl.prototype.reset = function() {
     this.blocklyCustomisations.addClickListenerToStartBlock(startBlock);
 
     this.clearIncorrectBlock();
-};
-
-ocargo.BlocklyControl.prototype.toggleFlyout = function() {
-    this.blocklyCustomisations.toggleFlyout();
-};
-
-ocargo.BlocklyControl.prototype.bringStartBlockFromUnderFlyout = function() {
-    this.blocklyCustomisations.bringStartBlockFromUnderFlyout();
-};
-
-ocargo.BlocklyControl.prototype.enableBigCodeMode = function() {
-    this.bigCodeMode = true;
-    this.blocklyCustomisations.enableBigCodeMode();
-};
-
-ocargo.BlocklyControl.prototype.disableBigCodeMode =  function() {
-    this.bigCodeMode = false;
-    this.blocklyCustomisations.disableBigCodeMode();
 };
 
 
@@ -147,7 +123,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
 
         var newXml = Blockly.Xml.textToDom(text);
         Blockly.mainWorkspace.clear();
-        Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, newXml);
+        Blockly.Xml.domToWorkspace(newXml, Blockly.mainWorkspace);
         var legal = this.removeIllegalBlocks();
 
         if (!legal) {
@@ -158,7 +134,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
                 true
             );
             Blockly.mainWorkspace.clear();
-            Blockly.Xml.domToWorkspace(Blockly.mainWorkspace, oldXml);
+            Blockly.Xml.domToWorkspace(oldXml, Blockly.mainWorkspace);
         }
         this.blocklyCustomisations.addClickListenerToStartBlock(this.startBlock());
     } catch (e) {
@@ -240,7 +216,8 @@ ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
 };
 
 ocargo.BlocklyControl.prototype.createBlock = function(blockType) {
-    var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
+    var block = Blockly.mainWorkspace.newBlock(blockType)
+    // var block = Blockly.Block.obtain(Blockly.mainWorkspace, blockType);
     block.initSvg();
     block.render();
     return block;
