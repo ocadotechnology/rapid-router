@@ -96,7 +96,6 @@ ocargo.BlocklyControl.prototype.reset = function() {
 
     var startBlock = this.createBlock('start');
     startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
-    this.blocklyCustomisations.addClickListenerToStartBlock(startBlock);
 
     this.clearIncorrectBlock();
 };
@@ -136,7 +135,7 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(oldXml, Blockly.mainWorkspace);
         }
-        this.blocklyCustomisations.addClickListenerToStartBlock(this.startBlock());
+        this.blocklyCustomisations.addClickListenerToStartBlock();
     } catch (e) {
         console.log(e);
         this.reset();
