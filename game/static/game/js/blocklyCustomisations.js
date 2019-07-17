@@ -281,16 +281,14 @@ ocargo.BlocklyCustomisations = function () {
         };
     };
 
-    this.addClickListenerToStartBlock = function(){
+    this.addClickListenerToStartBlock = function() {
         const play_button = $('#play_radio');
-        Blockly.mainWorkspace.addChangeListener(onStartBlockClick);
+        Blockly.mainWorkspace.addChangeListener(function(event) {
+            const startBlockID = Blockly.mainWorkspace.getBlocksByType('start')[0]['id'];
 
-        function onStartBlockClick(event) {
-            const startBlockID = Blockly.mainWorkspace.getBlocksByType("start")[0]["id"];
-
-            if (event.type == Blockly.Events.UI && event.element == "click" && event.blockId == startBlockID) {
+            if (event.type == Blockly.Events.UI && event.element == 'click' && event.blockId == startBlockID) {
                 play_button.trigger('click');
             }
-        }
+        });
     };
 };

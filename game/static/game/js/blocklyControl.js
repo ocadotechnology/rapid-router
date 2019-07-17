@@ -57,6 +57,7 @@ ocargo.BlocklyControl = function () {
     Blockly.Flyout.autoClose = false;
 
     this.blocklyCustomisations.addLimitedBlockListeners(Blockly.mainWorkspace);
+    this.blocklyCustomisations.addClickListenerToStartBlock();
 };
 
 ocargo.BlocklyControl.BLOCK_HEIGHT = 20;
@@ -135,7 +136,6 @@ ocargo.BlocklyControl.prototype.deserialize = function(text) {
             Blockly.mainWorkspace.clear();
             Blockly.Xml.domToWorkspace(oldXml, Blockly.mainWorkspace);
         }
-        this.blocklyCustomisations.addClickListenerToStartBlock();
     } catch (e) {
         console.log(e);
         this.reset();
