@@ -67,7 +67,7 @@ Go to the official [Code For Life website][c4l].
     * `xcode-select --install`
     * `pyenv install 2.7.14`
 
-* Finally, go to the project root run the following commands
+* Finally, go to the project root and run the following commands
   * `pyenv local 2.7.14`
   * `rbenv local 2.2.9`   
 
