@@ -67,7 +67,32 @@ Go to the official [Code For Life website][c4l].
     * `xcode-select --install`
     * `pyenv install 2.7.14`
 
-Finall, go to the project root and create `.ruby-version` and `.python-version`, containing the versions you installed above.
+* Finally, go to the project root and run the following commands
+  * `pyenv local 2.7.14`
+  * `rbenv local 2.2.9`   
+
+#### Mac OS Mojave
+
+##### Pillow
+On MacOS Mojave there is an error when installing `Pillow`.
+To fix this issue you need to run the following command:
+```
+sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+``` 
+cf: https://github.com/python-pillow/Pillow/issues/3438#issuecomment-435169249
+
+##### Pyexpat
+If you have the following error: `ImportError: No module named pyexpat` when installing `pyenv 2.7.14`, then you can try using the following command:
+```
+SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk MACOSX_DEPLOYMENT_TARGET=10.14 pyenv install 2.7.14
+```
+cf: https://github.com/pyenv/pyenv/issues/1066#issuecomment-504710495
+
+##### Missing sass
+If you have the following error: `pipeline.exceptions.CompilerError: env: sass: No such file or directory`, then you need to install sass:
+```
+gem install sass
+```
 
 ### Running the Portal
 * `./run` in your rapid-router directory - This will:
