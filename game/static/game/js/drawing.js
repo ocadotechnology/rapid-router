@@ -151,24 +151,25 @@ ocargo.Drawing = function (startingPosition) {
     var prevY = 0;
 
     this.enablePanning = function () {
-        $(document).mousedown(function (event) {
+        var $paper = $("#paper");
+
+        $paper.mousedown(function (event) {
             isMouseDown = true;
         });
     
-        $(document).mouseup(function (event) {
+        $paper.mouseup(function (event) {
             isMouseDown = false;
         });
     
-        $(document).mousemove(function (event) {
+        $paper.mousemove(function (event) {
             prevX = currentMousePos.x;
             prevY = currentMousePos.y;
             currentMousePos.x = event.pageX;
             currentMousePos.y = event.pageY;
-    
-    
+
             if (isMouseDown) {
-                var deltaX = prevX - currentMousePos.x
-                var deltaY = prevY - currentMousePos.y
+                var deltaX = prevX - currentMousePos.x;
+                var deltaY = prevY - currentMousePos.y;
                 currentStartX = currentStartX + deltaX;
                 currentStartY = currentStartY + deltaY;
                 paper.setViewBox(currentStartX, currentStartY, currentWidth, currentHeight);
