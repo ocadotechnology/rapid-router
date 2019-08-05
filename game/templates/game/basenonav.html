@@ -4,9 +4,6 @@
 
 {% block head %}
 <link rel="manifest" href="{% static "manifest.json" %}">
-<!-- <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-touch-fullscreen" content="yes" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" /> -->
   {% include 'game/crowdin.html' %}
 {% endblock head %}
 
@@ -18,13 +15,6 @@
 
 {% block topBar %}
 {% endblock topBar %}
-
-{% block secondaryButtons %}
-    {% block dashboard %}<a href="{% url 'dashboard' %}" class="button--menu button--menu--secondary button--menu--enabled">School / Club</a>{% endblock dashboard %}
-    {% block rapidrouter %}<a href="{% url 'levels' %}" class="button--menu button--menu--secondary button--menu--enabled button--menu--teacher--active">Rapid Router</a>{% endblock rapidrouter %}
-    {% block aimmo %}<a href="{% url 'play_aimmo' %}" class="button--menu button--menu--secondary button--menu--enabled">AI:MMO</a>{% endblock aimmo %}
-    {% block materials %}<a id="resources_button" href="{% url 'teaching_resources' %}" class="button--menu button--menu--secondary button--menu--enabled">Teaching Resources</a>{% endblock materials %}
-{% endblock secondaryButtons %}
 
 {% block subNav %}
 {% endblock subNav %}
@@ -61,24 +51,11 @@
     </section>
 {% endblock contentWrapper %}
 
-
-
 {% block footer %}
 {% endblock footer %}
 
 {% block scripts %}
     <script type='text/javascript' src="{% static 'game/js/svginnerhtml.js' %}"></script>
-
-    <!--<script>
-    // Disable rubber banding on ios tablets
-    $(function() {
-        document.body.addEventListener('touchmove', function(ev) {
-            ev.preventDefault();
-        }, false);
-
-        $(document.body).width(window.innerWidth).height(window.innerHeight);
-    });
-    </script>-->
 
     <script>
       $(function() {

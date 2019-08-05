@@ -10,13 +10,6 @@
   <link rel="manifest" href="{% static "manifest.json" %}">
 {% endblock head %}
 
-{% block secondaryButtons %}
-    {% block dashboard %}<a href="{% url 'dashboard' %}" class="button--menu button--menu--secondary button--menu--enabled">School / Club</a>{% endblock dashboard %}
-    {% block rapidrouter %}<a href="{% url 'levels' %}" class="button--menu button--menu--secondary button--menu--enabled button--menu--teacher--active">Rapid Router</a>{% endblock rapidrouter %}
-    {% block aimmo %}<a href="{% url 'play_aimmo' %}" class="button--menu button--menu--secondary button--menu--enabled">AI:MMO</a>{% endblock aimmo %}
-    {% block materials %}<a id="resources_button" href="{% url 'teaching_resources' %}" class="button--menu button--menu--secondary button--menu--enabled">Teaching Resources</a>{% endblock materials %}
-{% endblock secondaryButtons %}
-
 {% block subNav %}
 {{ block.super }}
 <div class="banner banner--teacher row">
