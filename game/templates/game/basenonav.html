@@ -56,7 +56,6 @@
 
 {% block scripts %}
     <script type='text/javascript' src="{% static 'game/js/svginnerhtml.js' %}"></script>
-
     <script>
       $(function() {
         $(document).foundation();
@@ -69,5 +68,4 @@
     <script type='text/javascript' src='{% static 'game/js/button.js' %}'></script>
     <script type='text/javascript' src='{% url 'js-reverse' %}'></script>
     <script type='text/javascript' src='{% url 'rapid-router/javascript-catalog' %}'></script>
-
 {% endblock %}
