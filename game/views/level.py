@@ -60,7 +60,7 @@ from game.decor import get_decor_element
 from game.models import Level, Attempt, Workspace
 from game.views.level_solutions import solutions
 from helper import renderError
-
+from ratelimit.decorators import ratelimit
 
 def play_custom_level_from_editor(request, levelId):
     return play_custom_level(request, levelId, from_editor=True)
@@ -73,7 +73,9 @@ def play_custom_level(request, levelId, from_editor=False):
 
     return play_level(request, level, from_editor)
 
-
+@ratelimit(
+    "ip", periods=["1m"], increment=lambda req, res: hasattr(res, "count") and res.count
+)
 def play_default_level(request, levelName):
     level = cached_default_level(levelName)
     return play_level(request, level)

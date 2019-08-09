@@ -42,7 +42,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DEFAULT_SETTINGS = {"STATIC_URL": "/static/"}
 
 SETTINGS = {
-    "PIPELINE_COMPILERS": ("pipeline.compilers.sass.SASSCompiler",),
+    "PIPELINE_COMPILERS": ("portal.pipeline_compilers.LibSassCompiler",),
     "PIPELINE_CSS": {
         "game-scss": {
             "source_filenames": ("game/sass/game.scss",),
