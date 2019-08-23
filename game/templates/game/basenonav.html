@@ -1,6 +1,7 @@
 {% extends 'portal/base_old.html' %}
 {% load staticfiles %}
 {% load pipeline %}
+{% load compress %}
 
 {% block head %}
 <link rel="manifest" href="{% static "manifest.json" %}">
@@ -55,17 +56,19 @@
 {% endblock footer %}
 
 {% block scripts %}
-    <script type='text/javascript' src="{% static 'game/js/svginnerhtml.js' %}"></script>
-    <script>
+{% compress js %}
+    <script defer type='text/javascript' src="{% static 'game/js/svginnerhtml.js' %}"></script>
+    <script defer>
       $(function() {
         $(document).foundation();
       });
     </script>
-    <script type='text/javascript' src='{% static 'game/js/foundation/vendor/jquery.cookie.js' %}'></script>
-    <script type='text/javascript' src='{% static 'game/js/foundation/foundation.min.js' %}'></script>
-    <script type='text/javascript' src='{% static 'game/js/handlebars.runtime-v3.0.3.js' %}'></script>
-    <script type='text/javascript' src='{% static 'game/js/templates.js' %}'></script>
-    <script type='text/javascript' src='{% static 'game/js/button.js' %}'></script>
-    <script type='text/javascript' src='{% url 'js-reverse' %}'></script>
-    <script type='text/javascript' src='{% url 'rapid-router/javascript-catalog' %}'></script>
+    <script defer type='text/javascript' src='{% static 'game/js/foundation/vendor/jquery.cookie.js' %}'></script>
+    <script defer type='text/javascript' src='{% static 'game/js/foundation/foundation.min.js' %}'></script>
+    <script defer type='text/javascript' src='{% static 'game/js/handlebars.runtime-v3.0.3.js' %}'></script>
+    <script defer type='text/javascript' src='{% static 'game/js/templates.js' %}'></script>
+    <script defer type='text/javascript' src='{% static 'game/js/button.js' %}'></script>
+{% endcompress %}
+    <script defer type='text/javascript' src='{% url 'js-reverse' %}'></script>
+    <script defer type='text/javascript' src='{% url 'rapid-router/javascript-catalog' %}'></script>
 {% endblock %}

@@ -3,6 +3,7 @@
 {% load static %}
 {% load i18n %}
 {% load game.utils %}
+{% load compress %}
 
 {% block scripts %}
 {{block.super}}
@@ -75,7 +76,7 @@
     var PYTHON_WORKSPACE = {% if python_workspace == None %}null{% else %}"{{python_workspace|linebreaksbr}}"{% endif %};
   </script>
 
-
+{% compress js file game %}
   <script defer type="text/javascript" src="{% static 'game/js/utils.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
@@ -125,15 +126,17 @@
       //FPSMeter.run(0.5);
     });
   </script>
-
+{% endcompress %}
 {% endblock %}
 
 {% block css %}
+{% compress css file game %}
 {{block.super}}
     <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/game_screen.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/codemirror.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/eclipse.css' %}" rel="stylesheet" type="text/css">
+{% endcompress %}
 {% endblock %}
 
 {% block content %}
@@ -239,14 +242,6 @@
         <span>{% trans "Help" %}</span>
       </label>
     </div>
-
-    <!--div class="tab">
-      <input type="radio" name="tabs" id="big_code_mode_radio">
-      <label for="big_code_mode_radio">
-        <img src='{% static "game/image/icons/big_code_mode.svg" %}'>
-        <span>Enlarge</span>
-      </label>
-    </div-->
 
     <div id="mute_tab" class="tab">
       <input type="radio" name="tabs" id="mute_radio">

@@ -65,6 +65,9 @@ LANGUAGE_CODE = 'en-gb'
 LANGUAGES = (('en-gb', 'English'),)
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 STATIC_URL = '/static/'
+STATICFILES_FINDERS = (
+    'compressor.finders.CompressorFinder',
+)
 SECRET_KEY = 'not-a-secret'
 
 ROOT_URLCONF = 'example_project.urls'
@@ -73,9 +76,12 @@ WSGI_APPLICATION = 'example_project.wsgi.application'
 
 INSTALLED_APPS = (
     'game',
+    'compressor',
 )
 
 PIPELINE_ENABLED = False
+
+COMPRESS_ENABLED = True
 
 try:
     from example_project.local_settings import *  # pylint: disable=E0611

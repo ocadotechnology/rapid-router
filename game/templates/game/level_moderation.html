@@ -1,15 +1,18 @@
 {% extends 'game/base.html' %}
 {% load static %}
 {% load i18n %}
+{% load compress %}
 
 {% block title %}Code for Life - Rapid Router - Level moderation{% endblock %}
 
 {% block scripts %}
 {{block.super}}
+{% compress js %}
 <script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/level_moderation.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/foundation/vendor/jquery.cookie.js' %}"></script>
+{% endcompress %}
 <script>
     var students = {% if students %} true {% else %} false {% endif %};
 </script>

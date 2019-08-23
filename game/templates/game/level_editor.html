@@ -3,6 +3,7 @@
 {% load static %}
 {% load app_tags %}
 {% load game.utils %}
+{% load compress %}
 
 {% block title %}Code for Life - Rapid Router - Create{% endblock %}
 
@@ -17,6 +18,7 @@
     var COW_LEVELS_ENABLED = {{cow_level_enabled|booltojs}};
     var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
   </script>
+{% compress js %}
   <script src="{% static "game/js/utils.js" %}"></script>
   <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
   <script src="{% static "game/js/raphael.js" %}"></script>
@@ -28,24 +30,26 @@
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
-
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyMessages.js' %}"></script>
+{% endcompress %}
 
-  <script src="/static/game/js/tab.js"></script>
-  <script src="/static/game/js/messages.js"></script>
-  <script src="/static/game/js/saving.js"></script>
-  <script src="/static/game/js/level_editor/level_save_state.js"></script>
-  <script src="/static/game/js/level_editor/owned_levels.js"></script>
-  <script src="/static/game/js/level_editor.js"></script>
-  <script src="/static/game/js/coordinate.js"></script>
-  <script src="/static/game/js/node.js"></script>
-  <script src="/static/game/js/map.js"></script>
-  <script src="/static/game/js/pathFinder.js"></script>
-  <script src="/static/game/js/trafficLight.js"></script>
-  {% if cow_level_enabled %}<script src="/static/game/js/cow.js"></script>{% endif %}
-  <script src="/static/game/js/destination.js"></script>
+{% compress js %}
+  <script src="{% static 'game/js/tab.js' %}"></script>
+  <script src="{% static 'game/js/messages.js' %}"></script>
+  <script src="{% static 'game/js/saving.js' %}"></script>
+  <script src="{% static 'game/js/level_editor/level_save_state.js' %}"></script>
+  <script src="{% static 'game/js/level_editor/owned_levels.js' %}"></script>
+  <script src="{% static 'game/js/level_editor.js' %}"></script>
+  <script src="{% static 'game/js/coordinate.js' %}"></script>
+  <script src="{% static 'game/js/node.js' %}"></script>
+  <script src="{% static 'game/js/map.js' %}"></script>
+  <script src="{% static 'game/js/pathFinder.js' %}"></script>
+  <script src="{% static 'game/js/trafficLight.js' %}"></script>
+  <script src="{% static 'game/js/destination.js' %}"></script>
+{% endcompress %}
+  {% if cow_level_enabled %}<script src="{% static 'game/js/cow.js' %}"></script>{% endif %}
 
   <script>
     var BLOCKS = [];
@@ -106,9 +110,11 @@
 {% endblock %}
 
 {% block css %}
+{% compress css %}
 {{ block.super }}
   <link href="{% static "game/css/game_screen.css" %}" rel="stylesheet" type="text/css">
   <link href="{% static "game/css/level_editor.css" %}" rel="stylesheet" type="text/css">
+{% endcompress %}
 {% endblock %}
 
 {% block content %}
