@@ -45,7 +45,7 @@ SETTINGS = {
     "PIPELINE": {
         "SASS_ARGUMENTS": "--quiet",
         "COMPILERS": ("pipeline.compilers.sass.SASSCompiler",),
-        "CSS": {
+        "STYLESHEETS": {
             "game-scss": {
                 "source_filenames": ("game/sass/game.scss",),
                 "output_filename": "game.css",
