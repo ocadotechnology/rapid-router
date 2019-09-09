@@ -28,7 +28,7 @@ jobs:
       install:
         - pip install -U setuptools
         - pip install -e .
-        - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
+        - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git@upgrade_to_django_1_11#egg=codeforlife-portal #TODO: Remove as part of #688
         - pip install crowdin-cli-py
         - pip install coverage
       before_script:
@@ -46,7 +46,7 @@ jobs:
       install:
         - pip install -U setuptools
         - pip install -e .
-        - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
+        - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git@upgrade_to_django_1_11#egg=codeforlife-portal #TODO: Remove as part of #688
         - python setup.py install
         - pip install crowdin-cli-py
       script:
