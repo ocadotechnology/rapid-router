@@ -44,7 +44,7 @@ DEFAULT_SETTINGS = {"STATIC_URL": "/static/"}
 SETTINGS = {
     "PIPELINE": {
         "SASS_ARGUMENTS": "--quiet",
-        "COMPILERS": ("pipeline.compilers.sass.SASSCompiler",),
+        "COMPILERS": ("portal.pipeline_compilers.LibSassCompiler",),
         "STYLESHEETS": {
             "game-scss": {
                 "source_filenames": ("game/sass/game.scss",),
@@ -53,15 +53,8 @@ SETTINGS = {
         },
         "CSS_COMPRESSOR": None,
     },
-    "PIPELINE_SASS_ARGUMENTS": "--quiet",
-    "PIPELINE_COMPILERS": ("pipeline.compilers.sass.SASSCompiler",),
-    "PIPELINE_CSS": {
-        "game-scss": {
-            "source_filenames": ("game/sass/game.scss",),
-            "output_filename": "game.css",
-        }
-    },
-    "PIPELINE_CSS_COMPRESSOR": None,
+    "STATICFILES_FINDERS": ["pipeline.finders.PipelineFinder"],
+    "STATICFILES_STORAGE": "pipeline.storage.PipelineStorage",
     "INSTALLED_APPS": [
         "game",
         "pipeline",
@@ -86,8 +79,6 @@ SETTINGS = {
         # check_for_language function doesn't recognise it.
         os.path.join(os.path.dirname(__file__), "locale")
     ],
-    "STATICFILES_FINDERS": ["pipeline.finders.PipelineFinder"],
-    "STATICFILES_STORAGE": "pipeline.storage.PipelineStorage",
     "TEMPLATES": [
         {
             "BACKEND": "django.template.backends.django.DjangoTemplates",
