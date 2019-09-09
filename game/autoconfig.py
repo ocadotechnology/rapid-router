@@ -42,7 +42,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DEFAULT_SETTINGS = {"STATIC_URL": "/static/"}
 
 SETTINGS = {
-    "PIPLINE": {
+    "PIPELINE": {
         "SASS_ARGUMENTS": "--quiet",
         "COMPILERS": ("pipeline.compilers.sass.SASSCompiler",),
         "CSS": {
