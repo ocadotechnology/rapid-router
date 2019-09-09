@@ -37,6 +37,8 @@
 import os
 import socket
 import time
+
+from urllib import urlopen
 from unittest import skipUnless
 
 from django.core.urlresolvers import reverse
@@ -88,6 +90,9 @@ class BaseGameTest(SeleniumTestCase):
     def go_to_level(self, level_name):
         path = reverse("play_default_level", kwargs={"levelName": str(level_name)})
         self._go_to_path(path)
+
+        print urlopen(self.live_server_url + path).read()
+
         selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         return GamePage(selenium)
@@ -107,6 +112,9 @@ class BaseGameTest(SeleniumTestCase):
     def go_to_episode(self, episodeId):
         path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
         self._go_to_path(path)
+
+        print urlopen(self.live_server_url + path).read()
+
         selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         return GamePage(selenium)
