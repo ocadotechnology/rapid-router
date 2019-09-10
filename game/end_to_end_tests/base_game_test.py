@@ -40,13 +40,14 @@ import time
 from unittest import skipUnless
 
 from django.core.urlresolvers import reverse
-from django_selenium_clean import selenium, SeleniumTestCase
+from django_selenium_clean import selenium
 
 from . import custom_handler
 from portal.models import UserProfile
 from game.models import Workspace
 from .editor_page import EditorPage
 from .game_page import GamePage
+from .selenium_test_case import SeleniumTestCase
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.organisation import create_organisation_directly
 from portal.tests.utils.teacher import signup_teacher_directly
