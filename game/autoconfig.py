@@ -44,7 +44,7 @@ DEFAULT_SETTINGS = {"STATIC_URL": "/static/"}
 SETTINGS = {
     "PIPELINE": {
         "SASS_ARGUMENTS": "--quiet",
-        "COMPILERS": ("portal.pipeline_compilers.LibSassCompiler",),
+        "COMPILERS": ("game.pipeline_compilers.LibSassCompiler",),
         "STYLESHEETS": {
             "game-scss": {
                 "source_filenames": ("game/sass/game.scss",),
