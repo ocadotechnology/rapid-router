@@ -4,6 +4,7 @@ import unittest
 
 import django.conf
 from django.test.runner import DiscoverRunner
+from django.core.management import call_command
 
 LOGGER = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ class DjangoAutoTestSuite(unittest.TestSuite):
         tests = self.test_runner.build_suite()
         super(DjangoAutoTestSuite, self).__init__(tests=tests, *args, **kwargs)
         self.test_runner.setup_test_environment()
+        call_command('collectstatic', interactive=False)
 
         self.test_dbs = self.test_runner.setup_databases()
 
