@@ -27,6 +27,8 @@ class SeleniumTestCase(LiveServerTestCase):
             cls.server_thread.host, cls.server_thread.port)
 
     def __call__(self, result=None):
+        self.selenium = selenium
+
         if not selenium:
             return super(SeleniumTestCase, self).__call__(result)
         for width in getattr(settings, 'SELENIUM_WIDTHS', [1024]):
