@@ -148,6 +148,9 @@ class BaseGameTest(SeleniumTestCase):
     def run_console_print_test(self, level):
         return self.go_to_level(level).run_print_program()
 
+    def run_invalid_import_test(self, level):
+        return self.go_to_level(level).run_invalid_import_program()
+
     def running_out_of_instructions_test(self, level, workspace_file):
         user_profile = self.login_once()
 

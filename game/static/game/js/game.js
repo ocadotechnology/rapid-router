@@ -151,11 +151,19 @@ ocargo.Game.prototype.reset = function() {
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     this.reset();
 
+    let code = ocargo.pythonControl.getCode()
+
     ocargo.event.sendEvent('PlayButtonPressed', { levelName: LEVEL_NAME,
                                                   defaultLevel: DEFAULT_LEVEL,
                                                   workspace: ocargo.blocklyControl.serialize(),
                                                   failures: this.failures,
-                                                  pythonWorkspace: ocargo.pythonControl.getCode() });
+                                                  pythonWorkspace: code, });
+
+    if (code.match(/import (?!(van))/))
+    {
+        ocargo.Drawing.startPopup(gettext('Oh dear!'), "", "You're not allowed to import anything other than 'van'.");
+        return false;
+    }
 
     var result = ocargo.controller.prepare(blocks);
     if (!result.success) {
