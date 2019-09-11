@@ -161,7 +161,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
 
     if (code.match(/import (?!(van))/))
     {
-        ocargo.Drawing.startPopup(gettext('Oh dear!'), "", "You're not allowed to import anything other than 'van'.");
+        ocargo.Drawing.startPopup(gettext('Oh dear!'), "You're not allowed to import anything other than 'van'.", "");
         return false;
     }
 
