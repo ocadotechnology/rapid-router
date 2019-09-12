@@ -52,3 +52,6 @@ class TestPythonLevels(BaseGameTest):
 
     def test_console_print(self):
         self.run_console_print_test(level=92)
+
+    def test_invalid_import(self):
+        self.run_invalid_import_test(level=109)
