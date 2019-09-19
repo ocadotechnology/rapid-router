@@ -2,7 +2,6 @@
 {% load static %}
 {% load i18n %}
 {% load app_tags %}
-{% load compress %}
 
 {% block title %}Code for Life - Rapid Router{% endblock %}
 
@@ -55,10 +54,8 @@
 
 {% block scripts %}
   {{block.super}}
-{% compress js %}
   <script defer type='text/javascript' src='{% static 'game/js/foundation/vendor/jquery.cookie.js' %}'></script>
-  <script defer type='text/javascript' src='{% static 'game/js/jquery.touchy.min.js' %}'></script>
-{% endcompress %}
   <script defer type='text/javascript' src='{% url 'js-reverse' %}'></script>
   <script defer type='text/javascript' src='{% url 'rapid-router/javascript-catalog' %}'></script>
+  <script defer type='text/javascript' src='{% static 'game/js/jquery.touchy.min.js' %}'></script>
 {% endblock %}

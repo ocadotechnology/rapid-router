@@ -30,6 +30,7 @@
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+
   <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blocklyMessages.js' %}"></script>
@@ -47,9 +48,9 @@
   <script src="{% static 'game/js/map.js' %}"></script>
   <script src="{% static 'game/js/pathFinder.js' %}"></script>
   <script src="{% static 'game/js/trafficLight.js' %}"></script>
-  <script src="{% static 'game/js/destination.js' %}"></script>
 {% endcompress %}
   {% if cow_level_enabled %}<script src="{% static 'game/js/cow.js' %}"></script>{% endif %}
+  <script src="{% static 'game/js/destination.js' %}"></script>
 
   <script>
     var BLOCKS = [];
@@ -110,8 +111,8 @@
 {% endblock %}
 
 {% block css %}
-{% compress css %}
 {{ block.super }}
+{% compress css %}
   <link href="{% static "game/css/game_screen.css" %}" rel="stylesheet" type="text/css">
   <link href="{% static "game/css/level_editor.css" %}" rel="stylesheet" type="text/css">
 {% endcompress %}
