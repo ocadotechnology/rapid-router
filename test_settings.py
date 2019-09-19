@@ -8,8 +8,17 @@ SELENIUM_WEBDRIVERS = {
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
 
-INSTALLED_APPS = ["game"]
+STATICFILES_FINDERS = (
+    'compressor.finders.CompressorFinder',
+)
+
+INSTALLED_APPS = [
+    "game",
+    "compressor"
+]
 PIPELINE_ENABLED = False
+
+COMPRESS_ENABLED = True
 
 ROOT_URLCONF = "example_project.example_project.urls"
 STATIC_ROOT = os.path.join(
