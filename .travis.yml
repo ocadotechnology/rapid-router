@@ -29,8 +29,8 @@ jobs:
         - gem install sass -v 3.3.4
       install:
         - pip install -U setuptools
-        - pip install pytest-cov
         - pip install pipenv
+        - pipenv install --dev --system
         - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git@upgrade_to_django_1_11#egg=codeforlife-portal #TODO: Remove as part of #688
         - pip install crowdin-cli-py
       before_script:
@@ -47,9 +47,9 @@ jobs:
     - stage: deploy
       install:
         - pip install -U setuptools
-        - pip install -e .
-        - pip install -e git+https://github.com/ocadotechnology/codeforlife-portal.git@upgrade_to_django_1_11#egg=codeforlife-portal #TODO: Remove as part of #688
-        - python setup.py install
+        - pip install pipenv
+        - pipenv install --dev --system
+        - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git@upgrade_to_django_1_11#egg=codeforlife-portal #TODO: Remove as part of #688
         - pip install crowdin-cli-py
       script:
         - mkdir -p game/locale
