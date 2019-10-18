@@ -38,6 +38,7 @@ import os
 import socket
 import time
 
+from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from portal.models import UserProfile
 from portal.tests.pageObjects.portal.home_page import HomePage
@@ -62,6 +63,11 @@ class BaseGameTest(SeleniumTestCase):
 
     already_logged_on = False
     user_profile = None
+
+    @classmethod
+    def setUpClass(cls):
+        super(BaseGameTest, cls).setUpClass()
+        call_command('collectstatic', '--noinput')
 
     def _go_to_path(self, path):
         socket.setdefaulttimeout(20)
