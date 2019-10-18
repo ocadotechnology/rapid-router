@@ -7,7 +7,7 @@ name = "pypi"
 rapid-router = {path = ".",editable = true}
 
 [dev-packages]
-django-selenium-clean = "==0.2.1"
+django-selenium-clean = "==0.3.2"
 responses = "==0.4.0"
 selenium = "==2.53.6"
 snapshottest = ">=0.5.1<0.6.0"
