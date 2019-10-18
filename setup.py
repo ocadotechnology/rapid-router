@@ -37,8 +37,6 @@ setup(
         "pyhamcrest==1.8.3",
         "libsass",
     ],
-    tests_require=["django-selenium-clean==0.2.1", "selenium==3.7.0"],
-    test_suite="test_utils.test_suite.DjangoAutoTestSuite",
     version=version,
     zip_safe=False,
 )
