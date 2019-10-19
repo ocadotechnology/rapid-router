@@ -9,12 +9,15 @@ see more information here: https://github.com/jazzband/django-pipeline/issues/59
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django_selenium_clean import SeleniumWrapper, PageElement
+from django.core.management import call_command
 
 
-class SeleniumTestCase(StaticLiveServerTestCase):
+class SeleniumTestCase(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
+        # this line is not part of django-selenium-clean
+        call_command('collectstatic', '--noinput')
 
         super(SeleniumTestCase, cls).setUpClass()
         cls.selenium = SeleniumWrapper()
