@@ -7,7 +7,7 @@ see more information here: https://github.com/jazzband/django-pipeline/issues/59
 """
 
 from django.conf import settings
-from django.contrib.staticfiles.testing import StaticLiveServerTestCase
+from django.contrib.staticfiles.testing import LiveServerTestCase
 from django_selenium_clean import SeleniumWrapper, PageElement
 from django.core.management import call_command
 
