@@ -64,10 +64,10 @@ class BaseGameTest(SeleniumTestCase):
     already_logged_on = False
     user_profile = None
 
-    # @classmethod
-    # def setUpClass(cls):
-    #     super(BaseGameTest, cls).setUpClass()
-    #     call_command('collectstatic', '--noinput')
+    @classmethod
+    def setUpClass(cls):
+        super(BaseGameTest, cls).setUpClass()
+        call_command('collectstatic', '--noinput')
 
     def _go_to_path(self, path):
         socket.setdefaulttimeout(20)
