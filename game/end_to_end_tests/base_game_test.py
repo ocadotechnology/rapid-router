@@ -64,10 +64,10 @@ class BaseGameTest(SeleniumTestCase):
     already_logged_on = False
     user_profile = None
 
-    @classmethod
-    def setUpClass(cls):
-        super(BaseGameTest, cls).setUpClass()
-        call_command('collectstatic', '--noinput')
+    # @classmethod
+    # def setUpClass(cls):
+    #     super(BaseGameTest, cls).setUpClass()
+    #     call_command('collectstatic', '--noinput')
 
     def _go_to_path(self, path):
         socket.setdefaulttimeout(20)
@@ -132,7 +132,9 @@ class BaseGameTest(SeleniumTestCase):
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
         return (
-            self.go_to_level(level).load_solution(workspace_id).run_crashing_program()
+            self.go_to_level(level)
+                .load_solution(workspace_id)
+                .run_crashing_program()
         )
 
     def run_python_commands_test(self, level):
