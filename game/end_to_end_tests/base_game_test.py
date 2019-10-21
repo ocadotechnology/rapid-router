@@ -121,16 +121,22 @@ class BaseGameTest(SeleniumTestCase):
         return self.go_to_level(level).load_solution(workspace_id).run_retry_program()
 
     def run_crashing_test(self, level, workspace_file):
-        user_profile = self.login_once()
+        user_profile = self.login_once(the_test=True)
         print(self.selenium.page_source)
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return (
-            self.go_to_level(level)
-                .load_solution(workspace_id)
-                .run_crashing_program()
-        )
+        level_page = self.go_to_level(level)
+
+        print(self.selenium.page_source)
+
+        return level_page.load_solution(workspace_id).run_crashing_program()
+
+        # return (
+        #     self.go_to_level(level)
+        #         .load_solution(workspace_id)
+        #         .run_crashing_program()
+        # )
 
     def run_python_commands_test(self, level):
         return self.go_to_level(level).check_python_commands()
@@ -207,6 +213,7 @@ class BaseGameTest(SeleniumTestCase):
         workspace_id = Workspace.objects.create(
             name=workspace_file, owner=user_profile, contents=solution
         ).id
+        print("Workspace id: {}".format(workspace_id))
         return workspace_id
 
     def login_once(self, the_test=False):
