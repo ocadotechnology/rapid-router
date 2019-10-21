@@ -209,13 +209,22 @@ class BaseGameTest(SeleniumTestCase):
         ).id
         return workspace_id
 
-    def login_once(self):
+    def login_once(self, the_test=False):
         if not BaseGameTest.already_logged_on:
+            if the_test:
+                print("got inside of I need to log on part")
             email, password = signup_teacher_directly()
             create_organisation_directly(email)
             klass, name, access_code = create_class_directly(email)
             create_school_student_directly(access_code)
-            self.go_to_homepage().go_to_login_page().login(email, password)
+            self.go_to_homepage().go_to_login_page()
+            if the_test:
+                print("BEFORE LOGIN PAGE")
+                print(self.selenium.page_source)
+            self.login(email, password)
+            if the_test:
+                print("AFTER LOGIN PAGE")
+                print(self.selenium.page_source)
             email = email
             BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
 
