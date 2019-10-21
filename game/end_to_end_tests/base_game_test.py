@@ -217,11 +217,11 @@ class BaseGameTest(SeleniumTestCase):
             create_organisation_directly(email)
             klass, name, access_code = create_class_directly(email)
             create_school_student_directly(access_code)
-            self.go_to_homepage().go_to_login_page()
+            login_page = self.go_to_homepage().go_to_login_page()
             if the_test:
                 print("BEFORE LOGIN PAGE")
                 print(self.selenium.page_source)
-            self.login(email, password)
+            login_page.login(email, password)
             if the_test:
                 print("AFTER LOGIN PAGE")
                 print(self.selenium.page_source)
