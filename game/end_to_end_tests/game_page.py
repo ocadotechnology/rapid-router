@@ -65,8 +65,11 @@ class GamePage(BasePage):
         self.browser.find_element_by_id(button_id).click()
         self.wait_for_element_to_be_invisible((By.ID, button_id))
 
-    def load_solution(self, workspace_id):
+    def load_solution(self, workspace_id, the_test=False):
         self.browser.find_element_by_id("load_tab").click()
+        if the_test:
+            print("THIS IS THE LOAD TAB PAGE SECTION")
+            print(self.browser.page_source)
         selector = "#loadWorkspaceTable tr[value='" + str(workspace_id) + "']"
         # print(self.browser.page_source)
         self.wait_for_element_to_be_clickable((By.CSS_SELECTOR, selector))

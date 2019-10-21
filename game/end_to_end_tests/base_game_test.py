@@ -130,7 +130,7 @@ class BaseGameTest(SeleniumTestCase):
 
         print(self.selenium.page_source)
 
-        return level_page.load_solution(workspace_id).run_crashing_program()
+        return level_page.load_solution(workspace_id, the_test=True).run_crashing_program()
 
         # return (
         #     self.go_to_level(level)
