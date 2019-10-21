@@ -68,7 +68,7 @@ class GamePage(BasePage):
     def load_solution(self, workspace_id):
         self.browser.find_element_by_id("load_tab").click()
         selector = "#loadWorkspaceTable tr[value='" + str(workspace_id) + "']"
-        print(self.browser.page_source)
+        # print(self.browser.page_source)
         self.wait_for_element_to_be_clickable((By.CSS_SELECTOR, selector))
         self.browser.find_element_by_css_selector(selector).click()
         self.browser.find_element_by_id("loadWorkspace").click()
