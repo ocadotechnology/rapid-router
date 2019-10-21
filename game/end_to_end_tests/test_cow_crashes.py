@@ -67,7 +67,6 @@ class TestCowCrashes(BaseGameTest):
 
     def run_cow_crashing_test(self, workspace_file):
         user_profile = self.login_once()
-        print(self.browser.page_source)
         TestCowCrashes.cow_level.owner = user_profile
         TestCowCrashes.cow_level.save()
         workspace_id = self.use_workspace(workspace_file, user_profile)

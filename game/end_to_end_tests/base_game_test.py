@@ -122,6 +122,7 @@ class BaseGameTest(SeleniumTestCase):
 
     def run_crashing_test(self, level, workspace_file):
         user_profile = self.login_once()
+        print(self.selenium.page_source)
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
