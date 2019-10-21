@@ -229,6 +229,8 @@ class BaseGameTest(SeleniumTestCase):
             BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
 
             BaseGameTest.already_logged_on = True
+        else:
+            print("I am already logged in with {}".format(BaseGameTest.user_profile))
 
         return BaseGameTest.user_profile
 
