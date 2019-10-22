@@ -185,15 +185,18 @@ class GamePage(BasePage):
         )
 
     def run_parse_error_program(self):
-        return self._run_python_failing_program("v.", "ParseError: bad input on line")
+        return self._run_failing_python_program_console("v.", "ParseError: bad input on line")
 
     def run_attribute_error_program(self):
-        return self._run_python_failing_program(
+        return self._run_failing_python_program_console(
             "v.go()", "AttributeError: 'Van' object has no attribute"
         )
 
     def run_print_program(self):
-        return self._run_python_failing_program('print("hello world")', "hello world")
+        return self._run_failing_python_program_console('print("hello world")', "hello world")
+
+    def run_invalid_import_program(self):
+        return self._run_failing_python_program_popup("import va", "You're not allowed to import anything other than 'van'.")
 
     def check_python_commands(self):
         self.python_commands_button()
@@ -236,12 +239,20 @@ class GamePage(BasePage):
         assert_that(error_message, contains_string(text))
         return self
 
-    def _run_python_failing_program(self, code, console_message):
+    def _run_failing_python_program_console(self, code, console_message):
         self._write_code(code)
         self.browser.find_element_by_id("fast_tab").click()
         time.sleep(1)
         console = self.browser.find_element_by_id("consoleOutput")
         assert_that(console.text, contains_string(console_message))
+        return self
+
+    def _run_failing_python_program_popup(self, code, text):
+        self._write_code(code)
+        self.browser.find_element_by_id("fast_tab").click()
+        time.sleep(1)
+        error_message = self.browser.find_element_by_id("myModal-lead").text
+        assert_that(error_message, contains_string(text))
         return self
 
     def _write_code(self, code):
