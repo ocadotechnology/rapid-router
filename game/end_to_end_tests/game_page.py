@@ -38,14 +38,14 @@ import os
 import time
 
 from django.core.urlresolvers import reverse
-from hamcrest import assert_that, equal_to, contains_string, starts_with, ends_with
+from hamcrest import assert_that, equal_to, contains_string, ends_with
+from portal.tests.pageObjects.portal.base_page import BasePage
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import (
     presence_of_all_elements_located,
 )
 from selenium.webdriver.support.ui import WebDriverWait
-from portal.tests.pageObjects.portal.base_page import BasePage
 
 
 class GamePage(BasePage):
@@ -65,13 +65,9 @@ class GamePage(BasePage):
         self.browser.find_element_by_id(button_id).click()
         self.wait_for_element_to_be_invisible((By.ID, button_id))
 
-    def load_solution(self, workspace_id, the_test=False):
+    def load_solution(self, workspace_id):
         self.browser.find_element_by_id("load_tab").click()
-        if the_test:
-            print("THIS IS THE LOAD TAB PAGE SECTION")
-            print(self.browser.page_source)
         selector = "#loadWorkspaceTable tr[value='" + str(workspace_id) + "']"
-        # print(self.browser.page_source)
         self.wait_for_element_to_be_clickable((By.CSS_SELECTOR, selector))
         self.browser.find_element_by_css_selector(selector).click()
         self.browser.find_element_by_id("loadWorkspace").click()

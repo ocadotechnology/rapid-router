@@ -121,22 +121,13 @@ class BaseGameTest(SeleniumTestCase):
         return self.go_to_level(level).load_solution(workspace_id).run_retry_program()
 
     def run_crashing_test(self, level, workspace_file):
-        user_profile = self.login_once(the_test=True)
-        print(self.selenium.page_source)
+        user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        level_page = self.go_to_level(level)
-
-        print(self.selenium.page_source)
-
-        return level_page.load_solution(workspace_id, the_test=True).run_crashing_program()
-
-        # return (
-        #     self.go_to_level(level)
-        #         .load_solution(workspace_id)
-        #         .run_crashing_program()
-        # )
+        return (
+            self.go_to_level(level).load_solution(workspace_id).run_crashing_program()
+        )
 
     def run_python_commands_test(self, level):
         return self.go_to_level(level).check_python_commands()
@@ -216,30 +207,26 @@ class BaseGameTest(SeleniumTestCase):
         print("Workspace id: {}".format(workspace_id))
         return workspace_id
 
-    def login_once(self, the_test=False):
+    def login_once(self):
         if not BaseGameTest.already_logged_on:
-            if the_test:
-                print("got inside of I need to log on part")
             email, password = signup_teacher_directly()
             create_organisation_directly(email)
             klass, name, access_code = create_class_directly(email)
             create_school_student_directly(access_code)
             login_page = self.go_to_homepage().go_to_login_page()
-            if the_test:
-                print("BEFORE LOGIN PAGE")
-                print(self.selenium.page_source)
             login_page.login(email, password)
-            if the_test:
-                print("AFTER LOGIN PAGE")
-                print(self.selenium.page_source)
             email = email
             BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
 
             BaseGameTest.already_logged_on = True
-        else:
-            print("I am already logged in with {}".format(BaseGameTest.user_profile))
 
         return BaseGameTest.user_profile
+
+    @classmethod
+    def tearDownClass(cls):
+        super(BaseGameTest, cls).tearDownClass()
+        BaseGameTest.user_profile = None
+        BaseGameTest.already_logged_on = False
 
     def solution_file_path(self, filename):
         return os.path.join(BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml")
