@@ -26,7 +26,7 @@ setup(
         "django-bourbon==3.1.8",
         "django-autoconfig >= 0.3.6, < 1.0.0",
         "django-jquery==1.9.1",
-        "django-js-reverse==0.6.1",
+        "django-js-reverse==0.9.1",
         "django-foundation-statics==5.4.7",
         "django-pipeline==1.6.14",
         "django-appconf==1.0.1",
