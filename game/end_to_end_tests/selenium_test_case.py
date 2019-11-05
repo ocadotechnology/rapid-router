@@ -16,6 +16,9 @@ class SeleniumTestCase(LiveServerTestCase):
 
     @classmethod
     def setUpClass(cls):
+        # this line is not part of django-selenium-clean
+        call_command('collectstatic', '--noinput')
+
         super(SeleniumTestCase, cls).setUpClass()
         cls.selenium = SeleniumWrapper()
         PageElement.selenium = cls.selenium
