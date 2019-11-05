@@ -207,7 +207,6 @@ class BaseGameTest(SeleniumTestCase):
         workspace_id = Workspace.objects.create(
             name=workspace_file, owner=user_profile, contents=solution
         ).id
-        print("Workspace id: {}".format(workspace_id))
         return workspace_id
 
     def login_once(self):

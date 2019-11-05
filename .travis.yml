@@ -42,7 +42,7 @@ jobs:
         - "sh -e /etc/init.d/xvfb start"
         - sleep 3
       script:
-        - pytest
+        - pytest --cov=. --cov-report=xml
       after_success:
         - bash <(curl -s https://codecov.io/bash)
     - stage: deploy
