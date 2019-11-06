@@ -34,6 +34,7 @@ jobs:
         - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git@upgrade_to_django_1_11#egg=codeforlife-portal #TODO: Remove as part of #688
         - pip install crowdin-cli-py
         - pip install selenium==3.14.0
+        - pip install pytest-cov
       before_script:
         - wget https://chromedriver.storage.googleapis.com/77.0.3865.40/chromedriver_linux64.zip
         - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.14/bin/
