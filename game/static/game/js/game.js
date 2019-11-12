@@ -223,8 +223,8 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         score *= 2;
     }
 
-    // Check that we should actually be sending an attempt - either if only blockly's enabled
-    // or if python's enabled and we're on the python tab (assumes they don't change tab quickly...)
+    // Check that we should actually be sending an attempt - either if only blockly is enabled
+    // or if python is enabled and we're on the python tab (assumes they don't change tab quickly...)
     if ((BLOCKLY_ENABLED && !PYTHON_ENABLED) ||
         (PYTHON_ENABLED && this.isInPythonWorkspace())) {
         // Send out the submitted data.

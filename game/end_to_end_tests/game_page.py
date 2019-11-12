@@ -38,14 +38,14 @@ import os
 import time
 
 from django.core.urlresolvers import reverse
-from hamcrest import assert_that, equal_to, contains_string, starts_with, ends_with
+from hamcrest import assert_that, equal_to, contains_string, ends_with
+from portal.tests.pageObjects.portal.base_page import BasePage
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.expected_conditions import (
     presence_of_all_elements_located,
 )
 from selenium.webdriver.support.ui import WebDriverWait
-from portal.tests.pageObjects.portal.base_page import BasePage
 
 
 class GamePage(BasePage):

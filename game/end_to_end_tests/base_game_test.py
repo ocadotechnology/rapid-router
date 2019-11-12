@@ -37,28 +37,24 @@
 import os
 import socket
 import time
-from unittest import skipUnless
 
 from django.core.urlresolvers import reverse
-from django_selenium_clean import selenium
-
-from . import custom_handler
 from portal.models import UserProfile
+from portal.tests.pageObjects.portal.home_page import HomePage
+from portal.tests.utils.classes import create_class_directly
+from portal.tests.utils.organisation import create_organisation_directly
+from portal.tests.utils.student import create_school_student_directly
+from portal.tests.utils.teacher import signup_teacher_directly
+
 from game.models import Workspace
+from . import custom_handler
 from .editor_page import EditorPage
 from .game_page import GamePage
 from .selenium_test_case import SeleniumTestCase
-from portal.tests.pageObjects.portal.home_page import HomePage
-from portal.tests.utils.organisation import create_organisation_directly
-from portal.tests.utils.teacher import signup_teacher_directly
-from portal.tests.utils.classes import create_class_directly
-from portal.tests.utils.student import create_school_student_directly
-
 
 custom_handler.monkey_patch()
 
 
-@skipUnless(selenium, "Selenium is unconfigured")
 class BaseGameTest(SeleniumTestCase):
     BLOCKLY_SOLUTIONS_DIR = os.path.join(
         os.path.dirname(__file__), "data/blockly_solutions"
@@ -72,7 +68,7 @@ class BaseGameTest(SeleniumTestCase):
         attempts = 0
         while True:
             try:
-                selenium.get(self.live_server_url + path)
+                self.selenium.get(self.live_server_url + path)
             except socket.timeout:
                 attempts += 1
                 if attempts > 2:
@@ -84,33 +80,33 @@ class BaseGameTest(SeleniumTestCase):
     def go_to_homepage(self):
         path = reverse("home")
         self._go_to_path(path)
-        return HomePage(selenium)
+        return HomePage(self.selenium)
 
     def go_to_level(self, level_name):
         path = reverse("play_default_level", kwargs={"levelName": str(level_name)})
         self._go_to_path(path)
-        selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
+        self.selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
-        return GamePage(selenium)
+        return GamePage(self.selenium)
 
     def go_to_custom_level(self, level):
         path = reverse("play_custom_level", kwargs={"levelId": str(level.id)})
         self._go_to_path(path)
-        selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
+        self.selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
-        return GamePage(selenium)
+        return GamePage(self.selenium)
 
     def go_to_level_editor(self):
         path = reverse("level_editor")
         self._go_to_path(path)
-        return EditorPage(selenium)
+        return EditorPage(self.selenium)
 
     def go_to_episode(self, episodeId):
         path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
         self._go_to_path(path)
-        selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
+        self.selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
-        return GamePage(selenium)
+        return GamePage(self.selenium)
 
     def deliver_everywhere_test(self, level):
         self.login_once()
@@ -219,13 +215,20 @@ class BaseGameTest(SeleniumTestCase):
             create_organisation_directly(email)
             klass, name, access_code = create_class_directly(email)
             create_school_student_directly(access_code)
-            self.go_to_homepage().go_to_login_page().login(email, password)
+            login_page = self.go_to_homepage().go_to_login_page()
+            login_page.login(email, password)
             email = email
             BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
 
             BaseGameTest.already_logged_on = True
 
         return BaseGameTest.user_profile
+
+    @classmethod
+    def tearDownClass(cls):
+        super(BaseGameTest, cls).tearDownClass()
+        BaseGameTest.user_profile = None
+        BaseGameTest.already_logged_on = False
 
     def solution_file_path(self, filename):
         return os.path.join(BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml")

@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django>=1.10.8, < 1.11",
+        "django>=1.10.8, <= 1.11.24",
         "django-foundation-icons==3.1",
         "django-bourbon==3.1.8",
         "django-autoconfig >= 0.3.6, < 1.0.0",
@@ -37,8 +37,6 @@ setup(
         "pyhamcrest==1.8.3",
         "libsass",
     ],
-    tests_require=["django-selenium-clean==0.2.1", "selenium==3.7.0"],
-    test_suite="test_utils.test_suite.DjangoAutoTestSuite",
     version=version,
     zip_safe=False,
 )
