@@ -35,6 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
+from __future__ import absolute_import
 
 from datetime import timedelta
 
@@ -45,11 +46,11 @@ from portal.models import Class, Teacher, Student
 
 import game.messages as messages
 import game.permissions as permissions
-import level_selection
+from . import level_selection
 from game.forms import ScoreboardForm
 from game.models import Level, Attempt, sort_levels
 from game.views.scoreboard_csv import scoreboard_csv
-from helper import renderError
+from .helper import renderError
 
 Single_Level_Header = [
     ugettext_lazy("Class"),
