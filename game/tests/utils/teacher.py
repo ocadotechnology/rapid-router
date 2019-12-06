@@ -47,7 +47,7 @@ from portal.helpers.emails import generate_token
 def generate_details(
     title="Mr", first_name="Test", last_name="Teacher", password="Password1"
 ):
-    email_address = "testteacher%d@codeforlife.com" % random.randint(1, sys.maxint)
+    email_address = "testteacher%d@codeforlife.com" % random.randint(1, sys.maxsize)
     return title, first_name, last_name, email_address, password
 
 
