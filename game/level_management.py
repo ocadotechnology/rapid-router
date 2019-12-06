@@ -34,10 +34,11 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import absolute_import
 from itertools import chain
 
-import permissions
-from models import Block, LevelBlock, LevelDecor
+from . import permissions
+from .models import Block, LevelBlock, LevelDecor
 
 from game.decor import get_decor_element
 from game.theme import get_theme_by_pk

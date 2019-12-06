@@ -34,11 +34,12 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import absolute_import
 from game import messages
 from game.messages import description_level_default, hint_level_default
 from game.theme import get_theme, get_themes_url
 from rest_framework import serializers
-from models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block
+from .models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):

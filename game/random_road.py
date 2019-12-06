@@ -34,15 +34,16 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import absolute_import
 from django.core.cache import cache
 import json
 import math
 import random
 
-import level_management
+from . import level_management
 
 from collections import defaultdict, namedtuple
-from models import Level, Block
+from .models import Level, Block
 
 from game.decor import get_decor_element
 from game.theme import get_theme

@@ -34,12 +34,13 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import absolute_import
 from django.core.cache import cache
 from django.db.models.signals import post_save, post_delete
 from django.shortcuts import get_object_or_404
 from django.dispatch import receiver
-from models import Level, Episode, LevelDecor, LevelBlock
-import level_management
+from .models import Level, Episode, LevelDecor, LevelBlock
+from . import level_management
 
 
 LEVEL_PREFIX = "model_level"
