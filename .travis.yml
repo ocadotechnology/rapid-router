@@ -31,7 +31,7 @@ jobs:
         - pip install -U setuptools
         - pip install pipenv
         - pipenv install --dev --system
-        - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git@upgrade_to_django_1_11#egg=codeforlife-portal #TODO: Remove as part of #688
+        - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
         - pip install crowdin-cli-py
         - pip install selenium==3.14.0
         - pip install pytest-cov
@@ -51,7 +51,7 @@ jobs:
         - pip install -U setuptools
         - pip install pipenv
         - pipenv install --dev --system
-        - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git@upgrade_to_django_1_11#egg=codeforlife-portal #TODO: Remove as part of #688
+        - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
         - pip install crowdin-cli-py
       script:
         - mkdir -p game/locale
