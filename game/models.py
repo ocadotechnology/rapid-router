@@ -34,6 +34,7 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from builtins import str
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext

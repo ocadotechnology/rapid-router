@@ -39,6 +39,7 @@
     Theme data
 """
 
+from builtins import object
 from rest_framework.reverse import reverse
 from django.utils.translation import ugettext
 
@@ -95,11 +96,11 @@ def get_theme(name):
 
 
 def get_all_themes():
-    return THEME_DATA.values()
+    return list(THEME_DATA.values())
 
 
 def get_theme_by_pk(pk):
-    for theme in THEME_DATA.values():
+    for theme in list(THEME_DATA.values()):
         if theme.pk == int(pk):
             return theme
     raise KeyError
