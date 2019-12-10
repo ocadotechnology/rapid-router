@@ -34,6 +34,7 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.test.testcases import TestCase
 from django.test.client import Client

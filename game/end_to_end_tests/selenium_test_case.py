@@ -5,6 +5,7 @@ Instead of inheriting from StaticLiveServerTestCase, we inherit from LiveServerT
 This solves a bug introduced when upgrading to Django 1.11,
 see more information here: https://github.com/jazzband/django-pipeline/issues/593
 """
+from __future__ import unicode_literals
 
 from django.conf import settings
 from django.contrib.staticfiles.testing import LiveServerTestCase

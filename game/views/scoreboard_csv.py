@@ -34,6 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import unicode_literals
+from builtins import map
 import csv
 
 from django.http import HttpResponse
@@ -70,7 +72,7 @@ def scoreboard_csv_multiple_levels(student_rows, levels):
     response["Content-Disposition"] = 'attachment; filename="scoreboard.csv"'
 
     header = header_for(levels)
-    rows = map(create_to_array_multiple_levels(response), student_rows)
+    rows = list(map(create_to_array_multiple_levels(response), student_rows))
 
     writer = csv.writer(response)
     writer.writerow(header)
@@ -83,7 +85,7 @@ def scoreboard_csv_single_level(student_rows):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="scoreboard.csv"'
 
-    rows = map(create_to_array_single_level(response), student_rows)
+    rows = list(map(create_to_array_single_level(response), student_rows))
 
     writer = csv.writer(response)
     writer.writerow(Single_Level_Header)
@@ -93,7 +95,7 @@ def scoreboard_csv_single_level(student_rows):
 
 
 def header_for(levels):
-    level_names = map(str, levels)
+    level_names = list(map(str, levels))
     return Multiple_Levels_Header + level_names
 
 

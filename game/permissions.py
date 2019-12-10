@@ -39,6 +39,7 @@
 #########################
 
 
+from __future__ import unicode_literals
 def can_create_workspace(user):
     return not user.is_anonymous()
 

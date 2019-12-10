@@ -36,6 +36,7 @@
 # identified as the original program.
 from __future__ import unicode_literals
 
+from builtins import range
 from django.db import models, migrations
 from django.conf import settings
 import json
@@ -1455,7 +1456,7 @@ def setup_blocks(apps, schema_editor):
         if not blocks:
             raise LookupError
 
-        levels = Level.objects.filter(pk__in=range(start, end))
+        levels = Level.objects.filter(pk__in=list(range(start, end)))
         if not levels:
             raise LookupError
 
@@ -4844,31 +4845,31 @@ def add_and_reorder_levels(apps, schema_editor):
 class Migration(migrations.Migration):
 
     replaces = [
-        (b"game", "0001_initial"),
-        (b"game", "0002_characters_theme_decor_block"),
-        (b"game", "0003_levels_and_episodes"),
-        (b"game", "0004_leveldecor"),
-        (b"game", "0005_auto_20140903_1456"),
-        (b"game", "0006_change_27_solution"),
-        (b"game", "0007_added_block__limits"),
-        (b"game", "0008_fix_dee"),
-        (b"game", "0009_auto_20140905_1201"),
-        (b"game", "0010_episode_in_development"),
-        (b"game", "0011_add_new_episodes"),
-        (b"game", "0012_remove_level_blocks"),
-        (b"game", "0013_delete_orig_limit_level"),
-        (b"game", "0014_correct_old_episode_link"),
-        (b"game", "0015_remove_level_decor"),
-        (b"game", "0016_first_puzzle_levels"),
-        (b"game", "0017_change_episode_names"),
-        (b"game", "0018_method_levels"),
-        (b"game", "0019_sort_scores_and_add_initial_python_episodes"),
-        (b"game", "0020_auto_20140912_1021"),
-        (b"game", "0021_fix_level_63"),
-        (b"game", "0022_add_python_contents_and_python_workspace"),
-        (b"game", "0023_add_solutions_to_level_43"),
-        (b"game", "0024_fix_levels_54_63"),
-        (b"game", "0025_levels_ordering_pt1"),
+        ("game", "0001_initial"),
+        ("game", "0002_characters_theme_decor_block"),
+        ("game", "0003_levels_and_episodes"),
+        ("game", "0004_leveldecor"),
+        ("game", "0005_auto_20140903_1456"),
+        ("game", "0006_change_27_solution"),
+        ("game", "0007_added_block__limits"),
+        ("game", "0008_fix_dee"),
+        ("game", "0009_auto_20140905_1201"),
+        ("game", "0010_episode_in_development"),
+        ("game", "0011_add_new_episodes"),
+        ("game", "0012_remove_level_blocks"),
+        ("game", "0013_delete_orig_limit_level"),
+        ("game", "0014_correct_old_episode_link"),
+        ("game", "0015_remove_level_decor"),
+        ("game", "0016_first_puzzle_levels"),
+        ("game", "0017_change_episode_names"),
+        ("game", "0018_method_levels"),
+        ("game", "0019_sort_scores_and_add_initial_python_episodes"),
+        ("game", "0020_auto_20140912_1021"),
+        ("game", "0021_fix_level_63"),
+        ("game", "0022_add_python_contents_and_python_workspace"),
+        ("game", "0023_add_solutions_to_level_43"),
+        ("game", "0024_fix_levels_54_63"),
+        ("game", "0025_levels_ordering_pt1"),
     ]
 
     dependencies = [
@@ -4924,9 +4925,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("name", models.CharField(max_length=100)),
-                ("background", models.CharField(default=b"#eff8ff", max_length=7)),
-                ("border", models.CharField(default=b"#bce369", max_length=7)),
-                ("selected", models.CharField(default=b"#70961f", max_length=7)),
+                ("background", models.CharField(default="#eff8ff", max_length=7)),
+                ("border", models.CharField(default="#bce369", max_length=7)),
+                ("selected", models.CharField(default="#70961f", max_length=7)),
             ],
         ),
         migrations.CreateModel(
@@ -4945,7 +4946,7 @@ class Migration(migrations.Migration):
                 ("url", models.CharField(max_length=500)),
                 ("width", models.IntegerField()),
                 ("height", models.IntegerField()),
-                ("theme", models.ForeignKey(related_name=b"decor", to="game.Theme")),
+                ("theme", models.ForeignKey(related_name="decor", to="game.Theme")),
             ],
         ),
         migrations.CreateModel(
@@ -4962,16 +4963,16 @@ class Migration(migrations.Migration):
                 ),
                 ("name", models.CharField(max_length=100)),
                 ("path", models.TextField(max_length=10000)),
-                ("traffic_lights", models.TextField(default=b"[]", max_length=10000)),
-                ("origin", models.CharField(default=b"[]", max_length=50)),
-                ("destinations", models.CharField(default=b"[[]]", max_length=50)),
+                ("traffic_lights", models.TextField(default="[]", max_length=10000)),
+                ("origin", models.CharField(default="[]", max_length=50)),
+                ("destinations", models.CharField(default="[[]]", max_length=50)),
                 ("default", models.BooleanField(default=False)),
                 ("fuel_gauge", models.BooleanField(default=True)),
                 ("max_fuel", models.IntegerField(default=50)),
                 ("direct_drive", models.BooleanField(default=False)),
                 (
                     "model_solution",
-                    models.CharField(default=b"[]", max_length=20, blank=True),
+                    models.CharField(default="[]", max_length=20, blank=True),
                 ),
                 ("threads", models.IntegerField(default=1)),
                 ("blocklyEnabled", models.BooleanField(default=True)),
@@ -4985,7 +4986,7 @@ class Migration(migrations.Migration):
                 (
                     "owner",
                     models.ForeignKey(
-                        related_name=b"levels",
+                        related_name="levels",
                         blank=True,
                         to="portal.UserProfile",
                         null=True,
@@ -5035,7 +5036,7 @@ class Migration(migrations.Migration):
                 (
                     "r_blocks",
                     models.ManyToManyField(
-                        related_name=b"episodes", null=True, to=b"game.Block"
+                        related_name="episodes", null=True, to="game.Block"
                     ),
                 ),
                 ("in_development", models.BooleanField(default=False)),
@@ -5057,7 +5058,7 @@ class Migration(migrations.Migration):
                 ),
                 ("x", models.IntegerField()),
                 ("y", models.IntegerField()),
-                ("decorName", models.CharField(default=b"tree1", max_length=100)),
+                ("decorName", models.CharField(default="tree1", max_length=100)),
                 ("level", models.ForeignKey(to="game.Level")),
             ],
         ),
@@ -5074,17 +5075,17 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("name", models.CharField(max_length=200)),
-                ("contents", models.TextField(default=b"")),
+                ("contents", models.TextField(default="")),
                 (
                     "owner",
                     models.ForeignKey(
-                        related_name=b"workspaces",
+                        related_name="workspaces",
                         blank=True,
                         to="portal.UserProfile",
                         null=True,
                     ),
                 ),
-                ("python_contents", models.TextField(default=b"")),
+                ("python_contents", models.TextField(default="")),
             ],
         ),
         migrations.CreateModel(
@@ -5119,13 +5120,13 @@ class Migration(migrations.Migration):
                 ("start_time", models.DateTimeField(auto_now_add=True)),
                 ("finish_time", models.DateTimeField(auto_now=True)),
                 ("score", models.FloatField(default=0, null=True)),
-                ("workspace", models.TextField(default=b"")),
-                ("python_workspace", models.TextField(default=b"")),
-                ("level", models.ForeignKey(related_name=b"attempts", to="game.Level")),
+                ("workspace", models.TextField(default="")),
+                ("python_workspace", models.TextField(default="")),
+                ("level", models.ForeignKey(related_name="attempts", to="game.Level")),
                 (
                     "student",
                     models.ForeignKey(
-                        related_name=b"attempts",
+                        related_name="attempts",
                         blank=True,
                         to="portal.Student",
                         null=True,
