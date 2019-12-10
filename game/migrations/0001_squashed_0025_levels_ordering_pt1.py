@@ -36,6 +36,7 @@
 # identified as the original program.
 from __future__ import unicode_literals
 
+from builtins import range
 from django.db import models, migrations
 from django.conf import settings
 import json
@@ -1455,7 +1456,7 @@ def setup_blocks(apps, schema_editor):
         if not blocks:
             raise LookupError
 
-        levels = Level.objects.filter(pk__in=range(start, end))
+        levels = Level.objects.filter(pk__in=list(range(start, end)))
         if not levels:
             raise LookupError
 

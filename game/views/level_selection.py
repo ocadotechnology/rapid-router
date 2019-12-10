@@ -35,7 +35,9 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
+from __future__ import absolute_import
 
+from builtins import str
 from django.core.cache import cache
 from django.db.models import Max
 from django.shortcuts import render
@@ -47,7 +49,7 @@ from game import app_settings
 from game import random_road
 from game.cache import cached_episode
 from game.models import Attempt, Episode
-from level_editor import play_anonymous_level
+from .level_editor import play_anonymous_level
 
 
 def max_score(level):

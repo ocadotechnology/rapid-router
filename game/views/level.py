@@ -35,7 +35,10 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
+from __future__ import absolute_import
 
+from builtins import str
+from builtins import object
 import json
 
 from django.core.urlresolvers import reverse
@@ -59,7 +62,7 @@ from game.cache import (
 from game.decor import get_decor_element
 from game.models import Level, Attempt, Workspace
 from game.views.level_solutions import solutions
-from helper import renderError
+from .helper import renderError
 
 
 def play_custom_level_from_editor(request, levelId):
@@ -424,6 +427,6 @@ def delete_workspace(request, workspaceID):
 
 
 class LevelSerializer(serializers.ModelSerializer):
-    class Meta:
+    class Meta(object):
         model = Level
         fields = "__all__"

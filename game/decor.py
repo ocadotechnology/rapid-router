@@ -39,6 +39,7 @@
     Decor data
 """
 
+from builtins import object
 from rest_framework.reverse import reverse
 from game.theme import get_theme, get_all_themes
 
@@ -360,11 +361,11 @@ def get_decor_element(name, theme):
 
 
 def get_all_decor():
-    return DECOR_DATA.values()
+    return list(DECOR_DATA.values())
 
 
 def get_decor_element_by_pk(pk):
-    for decor in DECOR_DATA.values():
+    for decor in list(DECOR_DATA.values()):
         if decor.pk == int(pk):
             return decor
     raise KeyError

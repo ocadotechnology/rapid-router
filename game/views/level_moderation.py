@@ -35,6 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
+from __future__ import absolute_import
 
 import json
 
@@ -48,7 +49,7 @@ import game.messages as messages
 import game.permissions as permissions
 from game.forms import LevelModerationForm
 from game.models import Level
-from helper import renderError
+from .helper import renderError
 
 
 def level_moderation(request):

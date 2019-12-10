@@ -34,15 +34,19 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import absolute_import
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 from django.core.cache import cache
 import json
 import math
 import random
 
-import level_management
+from . import level_management
 
 from collections import defaultdict, namedtuple
-from models import Level, Block
+from .models import Level, Block
 
 from game.decor import get_decor_element
 from game.theme import get_theme
@@ -154,7 +158,7 @@ def generate_random_path(
     num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor
 ):
     def pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor):
-        for attempts in xrange(5):
+        for attempts in range(5):
             origin = pick_origin_node(nodes, connections, branchiness_factor)
             possibles = []
 
@@ -259,7 +263,7 @@ def generate_random_path(
         # Now join up loops (does not dynamically update distances, but still get required effect)
         max_loop_distance = max([distances[s][d] for s, d in possible_loops])
         for origin, destination in possible_loops:
-            distance_factor = distances[origin][destination] / max_loop_distance
+            distance_factor = old_div(distances[origin][destination], max_loop_distance)
             adjusted_loopiness_factor = loopiness_factor * (
                 (1 - loopiness_deviation) + loopiness_deviation * distance_factor
             )
@@ -301,7 +305,7 @@ def generate_random_path(
     index_by_node = {nodes[0]: 0}
     connections = defaultdict(list)
 
-    for _ in xrange(num_road_tiles - 1):
+    for _ in range(num_road_tiles - 1):
         (previous_node, new_node) = pick_adjacent_node(
             nodes, connections, branchiness_factor, curviness_factor
         )
@@ -434,20 +438,20 @@ def generate_decor(path, num_tiles):
 
             # if there is a decor occupying this grid or neighbouring one in case of the pond
             if (
-                coord["x"] / GRID_SIZE == x
-                and coord["y"] / GRID_SIZE == y
+                old_div(coord["x"], GRID_SIZE) == x
+                and old_div(coord["y"], GRID_SIZE) == y
                 or (
                     elem == "pond"
                     and (
-                        coord["x"] / GRID_SIZE == x + 1
-                        and coord["y"] / GRID_SIZE == y
+                        old_div(coord["x"], GRID_SIZE) == x + 1
+                        and old_div(coord["y"], GRID_SIZE) == y
                         or x + 1 < WIDTH
                     )
                 )
                 or (
                     dec["decorName"] == "pond"
-                    and coord["x"] / GRID_SIZE + 1 == x
-                    and coord["y"] / GRID_SIZE == y
+                    and old_div(coord["x"], GRID_SIZE) + 1 == x
+                    and old_div(coord["y"], GRID_SIZE) == y
                 )
             ):
                 return True
@@ -507,8 +511,8 @@ def generate_decor(path, num_tiles):
             if dec["decorName"] == elem:
                 bush_exists = True
                 for (dx, dy) in DIRECTIONS:
-                    x = dec["coordinate"]["x"] / GRID_SIZE + dx
-                    y = dec["coordinate"]["y"] / GRID_SIZE + dy
+                    x = old_div(dec["coordinate"]["x"], GRID_SIZE) + dx
+                    y = old_div(dec["coordinate"]["y"], GRID_SIZE) + dy
                     if near_road(x, y, nodes) and not find_decor_by_coordinate(
                         x, y, elem, decor
                     ):
@@ -520,7 +524,7 @@ def generate_decor(path, num_tiles):
     decor = []
     decor_count = 0
     for dec in DECOR_DATA:
-        for i in range(0, DECOR_DATA[dec]["ratio"] * num_tiles / DECOR_SUM):
+        for i in range(0, old_div(DECOR_DATA[dec]["ratio"] * num_tiles, DECOR_SUM)):
             if decor_count + num_tiles < WIDTH * HEIGHT:
                 if dec == "bush":
                     place_bush(dec, decor, path)

@@ -34,6 +34,7 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from builtins import object
 from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext
@@ -44,7 +45,7 @@ class DropDownMenuSelectMultiple(forms.SelectMultiple):
     A SelectMultiple wich will use checkboxes to select individual items
     """
 
-    class Media:
+    class Media(object):
         css = {"all": ("game/css/pqselect.dev.css",)}
         js = ("game/js/pqselect.dev.js",)
 

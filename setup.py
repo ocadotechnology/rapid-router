@@ -36,6 +36,7 @@ setup(
         "docutils==0.12",
         "pyhamcrest==1.8.3",
         "libsass",
+        "future"
     ],
     version=version,
     zip_safe=False,

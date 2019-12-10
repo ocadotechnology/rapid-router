@@ -34,10 +34,12 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import absolute_import
+from builtins import str
 from itertools import chain
 
-import permissions
-from models import Block, LevelBlock, LevelDecor
+from . import permissions
+from .models import Block, LevelBlock, LevelDecor
 
 from game.decor import get_decor_element
 from game.theme import get_theme_by_pk
@@ -137,9 +139,7 @@ def get_night_blocks(level):
         "dead_end",
     ]
     coreNightBlocks = Block.objects.filter(type__in=coreBlockTypes)
-    coreNightLevelBlocks = map(
-        lambda block: LevelBlock(level=level, type=block), coreNightBlocks
-    )
+    coreNightLevelBlocks = [LevelBlock(level=level, type=block) for block in coreNightBlocks]
     existingLevelBlocks = LevelBlock.objects.filter(level=level)
     remainingBlocks = existingLevelBlocks.exclude(
         type__type__in=coreBlockTypes
@@ -181,7 +181,7 @@ def set_blocks_inner(level, blocks, LevelBlock, Block):
 
 
 def blocks_dictionary(blocks, Block):
-    types = map(lambda data: data["type"], blocks)
+    types = [data["type"] for data in blocks]
     block_objects = Block.objects.filter(type__in=types)
     result = {block.type: block for block in block_objects}
     return result

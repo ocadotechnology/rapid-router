@@ -34,10 +34,12 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from __future__ import absolute_import
+from builtins import str
 from django import forms
 from django.utils.translation import ugettext
-from models import UserProfile, Level
-from widgets import DropDownMenuSelectMultiple
+from .models import UserProfile, Level
+from .widgets import DropDownMenuSelectMultiple
 import itertools
 
 
