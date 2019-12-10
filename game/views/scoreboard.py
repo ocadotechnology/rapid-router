@@ -36,12 +36,7 @@
 # identified as the original program.
 from __future__ import division
 from __future__ import absolute_import
-from __future__ import unicode_literals
 
-from builtins import next
-from builtins import map
-from builtins import str
-from builtins import object
 from datetime import timedelta
 
 from django.http import Http404
@@ -179,7 +174,7 @@ def data_and_headers_for(students, level_ids):
 
     score_for_multiple_levels_is_displayed = len(levels_sorted) > 1
 
-    level_names = list(map(str, levels_sorted))
+    level_names = map(str, levels_sorted)
 
     if score_for_multiple_levels_is_displayed:
         headers = Multiple_Levels_Header + level_names
@@ -272,7 +267,7 @@ def one_row(student, level):
 
 # Return rows of student object with values for progress bar and scores of each selected level
 def multiple_students_multiple_levels(students, levels_sorted):
-    result = [student_row(levels_sorted, student) for student in students]
+    result = map(lambda student: student_row(levels_sorted, student), students)
     return result
 
 
@@ -360,7 +355,7 @@ def chop_miliseconds(delta):
     return delta - timedelta(microseconds=delta.microseconds)
 
 
-class StudentRow(object):
+class StudentRow:
     def __init__(self, *args, **kwargs):
         student = kwargs.get("student")
         self.class_field = student.class_field
@@ -374,7 +369,7 @@ class StudentRow(object):
         self.finish_time = kwargs.get("finish_time", "")
 
 
-class User(object):
+class User:
     def __init__(self, profile):
         self.profile = profile
         if self.is_teacher():

@@ -35,7 +35,6 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 """Game autoconfig"""
-from __future__ import unicode_literals
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))

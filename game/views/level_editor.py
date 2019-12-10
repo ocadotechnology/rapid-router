@@ -35,10 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import division
-from __future__ import unicode_literals
 
-from builtins import map
-from builtins import str
 import json
 import re
 
@@ -187,13 +184,13 @@ def level_data_for(level):
 
 def levels_shared_with(user):
     shared_levels = level_management.levels_shared_with(user)
-    shared_data = list(map(level_data_for, shared_levels))
+    shared_data = map(level_data_for, shared_levels)
     return shared_data
 
 
 def levels_owned_by(user):
     levels_owned_by_user = level_management.levels_owned_by(user)
-    owned_data = list(map(level_data_for, levels_owned_by_user))
+    owned_data = map(level_data_for, levels_owned_by_user)
     return owned_data
 
 

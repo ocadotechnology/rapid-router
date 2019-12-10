@@ -38,9 +38,7 @@
 """
     Character data
 """
-from __future__ import unicode_literals
 
-from builtins import object
 from rest_framework.reverse import reverse
 
 
@@ -112,11 +110,11 @@ def get_character(name):
 
 
 def get_all_character():
-    return list(CHARACTER_DATA.values())
+    return CHARACTER_DATA.values()
 
 
 def get_character_by_pk(pk):
-    for character in list(CHARACTER_DATA.values()):
+    for character in CHARACTER_DATA.values():
         if character.pk == int(pk):
             return character
     raise KeyError

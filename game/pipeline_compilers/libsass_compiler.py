@@ -2,7 +2,6 @@
 Speedups development and/or production when compiling sass assets. No need of
 ruby sass anymore.
 """
-from __future__ import unicode_literals
 
 import sass
 import codecs

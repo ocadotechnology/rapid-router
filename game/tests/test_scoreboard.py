@@ -34,10 +34,6 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from __future__ import unicode_literals
-from builtins import map
-from builtins import range
-from builtins import object
 from datetime import timedelta, datetime
 from django.utils.timezone import utc
 
@@ -317,10 +313,10 @@ class ScoreboardCsvTestCase(TestCase):
         assert_that(actual_rows, equal_to(expected_rows))
 
     def expected_rows_single_level(self, student_rows):
-        return list(map(self.expected_row_single_level, student_rows)) + [""]
+        return map(self.expected_row_single_level, student_rows) + [""]
 
     def expected_rows_multiple_levels(self, student_rows):
-        return list(map(self.expected_row_multiple_levels, student_rows)) + [""]
+        return map(self.expected_row_multiple_levels, student_rows) + [""]
 
     def student_row(self, class_name=None):
         email, password = signup_teacher_directly()
@@ -361,7 +357,7 @@ class ScoreboardCsvTestCase(TestCase):
         )
 
     def expected_header(self, levels):
-        level_strings = list(map(str, levels))
+        level_strings = map(str, levels)
         all_header_strings = Headers + level_strings
         joined = ",".join(all_header_strings)
         return joined
@@ -373,7 +369,7 @@ class ScoreboardCsvTestCase(TestCase):
         return header, rows
 
 
-class Student(object):
+class Student:
     def __init__(self, student):
         self.student = student
 
@@ -387,7 +383,7 @@ class Student(object):
         return False
 
 
-class Teacher(object):
+class Teacher:
     def is_student(self):
         return False
 
@@ -433,7 +429,7 @@ def create_attempt(student, level, score):
 def ids_of_levels_named(names):
     levels = Level.objects.filter(name__in=names)
     assert_that(len(levels), equal_to(len(names)))
-    level_ids = [x.id for x in levels]
+    level_ids = map(lambda x: x.id, levels)
     return level_ids
 
 

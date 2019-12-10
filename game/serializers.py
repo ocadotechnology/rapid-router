@@ -35,8 +35,6 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import absolute_import
-from __future__ import unicode_literals
-from builtins import object
 from game import messages
 from game.messages import description_level_default, hint_level_default
 from game.theme import get_theme, get_themes_url
@@ -45,14 +43,14 @@ from .models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
-    class Meta(object):
+    class Meta:
         model = Workspace
 
 
 class LevelListSerializer(serializers.HyperlinkedModelSerializer):
     title = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         model = Level
         fields = (
             "url",
@@ -87,7 +85,7 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
         view_name="mode-for-level", read_only=True
     )
 
-    class Meta(object):
+    class Meta:
         model = Level
         fields = (
             "__unicode__",
@@ -138,7 +136,7 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LevelModeSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta(object):
+    class Meta:
         model = Level
         fields = ("blocklyEnabled", "pythonEnabled", "pythonViewEnabled")
 
@@ -148,7 +146,7 @@ class LevelMapListSerializer(serializers.HyperlinkedModelSerializer):
         view_name="map-for-level", read_only=True
     )
 
-    class Meta(object):
+    class Meta:
         model = Level
         fields = ("url",)
 
@@ -157,7 +155,7 @@ class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
     leveldecor_set = serializers.SerializerMethodField()
     theme = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         model = Level
         fields = (
             "origin",
@@ -186,7 +184,7 @@ class LevelMapDetailSerializer(serializers.HyperlinkedModelSerializer):
 class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
     name = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         model = Episode
         fields = ("url", "__unicode__", "name")
 
@@ -201,7 +199,7 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
     )
     name = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         model = Episode
         depth = 1
         fields = ("url", "__unicode__", "name", "level_set", "level_set_url")
@@ -218,16 +216,16 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LevelBlockSerializer(serializers.ModelSerializer):
-    class Meta(object):
+    class Meta:
         model = LevelBlock
 
 
 class LevelDecorSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta(object):
+    class Meta:
         model = LevelDecor
 
 
 class BlockSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta(object):
+    class Meta:
         model = Block
         fields = ("url", "id", "type")

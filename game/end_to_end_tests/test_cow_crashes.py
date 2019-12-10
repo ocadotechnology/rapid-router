@@ -34,7 +34,6 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from __future__ import unicode_literals
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.models import Level, Block, LevelBlock
 

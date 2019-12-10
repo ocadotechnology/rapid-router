@@ -36,10 +36,7 @@
 # identified as the original program.
 from __future__ import division
 from __future__ import absolute_import
-from __future__ import unicode_literals
 
-from builtins import str
-from builtins import object
 import json
 
 from django.core.urlresolvers import reverse
@@ -428,6 +425,6 @@ def delete_workspace(request, workspaceID):
 
 
 class LevelSerializer(serializers.ModelSerializer):
-    class Meta(object):
+    class Meta:
         model = Level
         fields = "__all__"

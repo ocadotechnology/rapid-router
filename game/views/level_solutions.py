@@ -1,4 +1,3 @@
-from __future__ import unicode_literals
 blockly_default = '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="30" y="30"></block></xml>'
 
 python_default = """import van
