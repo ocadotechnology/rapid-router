@@ -33,9 +33,9 @@ setup(
         "django-casper==0.0.3",
         "djangorestframework>=3.8.2, <3.9.0",
         "six==1.11.0",
-        "docutils==0.12",
         "pyhamcrest==1.8.3",
         "libsass",
+        "more-itertools==5.0.0",  # 8.0.2 doesn't support Python <=3.4
         "future"
     ],
     version=version,
