@@ -36,7 +36,7 @@ jobs:
         - pip install selenium==3.14.0
         - pip install pytest-cov
       before_script:
-        - wget https://chromedriver.storage.googleapis.com/79.0.3945.36/chromedriver_linux64.zip
+        - wget https://chromedriver.storage.googleapis.com/78.0.3904.105/chromedriver_linux64.zip
         - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.14/bin/
         - export CHROME_BIN=chromium-browser
         - "export DISPLAY=:99.0"
