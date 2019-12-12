@@ -65,7 +65,7 @@ class GamePage(BasePage):
     def dismiss_dialog(self, button_id):
         self.wait_for_element_to_be_clickable((By.ID, button_id), wait_seconds=15)
         self.browser.find_element_by_id(button_id).click()
-        self.wait_for_element_to_be_invisible((By.ID, button_id), wait_seconds=10)
+        self.wait_for_element_to_be_invisible((By.ID, button_id), wait_seconds=15)
 
     def load_solution(self, workspace_id):
         self.browser.find_element_by_id("load_tab").click()
