@@ -52,6 +52,6 @@ class EditorPage(BasePage):
         return self
 
     def dismiss_dialog(self, button_id):
-        self.wait_for_element_to_be_clickable((By.ID, button_id), wait_seconds=18)
+        self.wait_for_element_to_be_clickable((By.ID, button_id), wait_seconds=10)
         self.browser.find_element_by_id(button_id).click()
         self.wait_for_element_to_be_invisible((By.ID, button_id))
