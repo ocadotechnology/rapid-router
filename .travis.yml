@@ -33,7 +33,7 @@ jobs:
         - pipenv install --dev --system
         - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
         - pip install crowdin-cli-py
-        - pip install selenium==3.14.0
+        - pip install selenium==3.141.59
         - pip install pytest-cov
       before_script:
         - wget https://chromedriver.storage.googleapis.com/79.0.3945.36/chromedriver_linux64.zip
