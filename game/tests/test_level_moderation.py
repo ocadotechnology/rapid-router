@@ -40,12 +40,25 @@ from django.test.client import Client
 
 from hamcrest import *
 
+from deploy import captcha
+
 from portal.tests.utils.classes import create_class_directly
 from portal.tests.utils.student import create_school_student_directly
 from portal.tests.utils.teacher import signup_teacher_directly
 
 
 class LevelModerationTestCase(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED
+        captcha.CAPTCHA_ENABLED = False
+        super(LevelModerationTestCase, cls).setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        captcha.CAPTCHA_ENABLED = cls.orig_captcha_enabled
+        super(LevelModerationTestCase, cls).tearDownClass()
+
     def setUp(self):
         self.client = Client()
 
