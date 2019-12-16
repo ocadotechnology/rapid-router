@@ -41,6 +41,8 @@ from django.core.urlresolvers import reverse
 from django.test.testcases import TestCase
 from django.test.client import Client
 
+from deploy import captcha
+
 from hamcrest import *
 
 from game.tests.utils.teacher import (
@@ -55,6 +57,17 @@ from game.tests.utils.level import create_save_level
 
 
 class LevelEditorTestCase(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED
+        captcha.CAPTCHA_ENABLED = False
+        super(LevelEditorTestCase, cls).setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        captcha.CAPTCHA_ENABLED = cls.orig_captcha_enabled
+        super(LevelEditorTestCase, cls).tearDownClass()
+
     def setUp(self):
         self.client = Client()
 
