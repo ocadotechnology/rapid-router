@@ -23,6 +23,13 @@
             ],
             "version": "==1.11.24"
         },
+        "django-appconf": {
+            "hashes": [
+                "sha256:3d9bc963d8008ae151d6c664f9fd55442705ea9b9e6d7ce77cdd40bf92d91f3a",
+                "sha256:ba1375fb1024e8e91547504d4392321795c989fde500b96ebc7c93884f786e60"
+            ],
+            "version": "==1.0.1"
+        },
         "django-autoconfig": {
             "hashes": [
                 "sha256:5f28cfb7d848d9d99eadba62848732931c799cd9c98dc9792875e16ffcb1f700",
