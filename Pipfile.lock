@@ -64,12 +64,6 @@
             ],
             "version": "==5.4.7"
         },
-        "django-jquery": {
-            "hashes": [
-                "sha256:70df837586a69607acb82a1d35a10d11e0dc11403949e4a2f3c2fcc726036abb"
-            ],
-            "version": "==1.9.1"
-        },
         "django-js-reverse": {
             "hashes": [
                 "sha256:2a392d169f44e30b883c30dfcfd917a14167ce8fe196c99d2385b31c90d77aa0",
@@ -136,7 +130,12 @@
         },
         "pyhamcrest": {
             "hashes": [
-                "sha256:118c48351451ec027cceed781841c19b836739e21f71a26649fe97fca0d346d5"
+                "sha256:0f88c8e7d8855853f8d6b7bf685478676f03049787ec1c31cf39764be0675450",
+                "sha256:118c48351451ec027cceed781841c19b836739e21f71a26649fe97fca0d346d5",
+                "sha256:6774ba8cdb0e98ed236368be47d20b123bd901aa0353275ff15f0d544aed1a45",
+                "sha256:83e00ee20b5cbd08c73faafc9e260bdd9dee5f69f9d59d6da5b9893c76187f38",
+                "sha256:97e2bc4499ed05eb29a4566338848227dcf1430e82d278bebe318565f6819189",
+                "sha256:bfe2e3154ec206ac7b6d36c0a4332879aba3f8637ca8b7005df83ffc22c20925"
             ],
             "version": "==1.8.3"
         },
@@ -241,7 +240,7 @@
                 "sha256:0ec8205a157c80d7acc301c0b18fbd5d44fe655968f5d947b6ecef5290fc35db",
                 "sha256:6cd9a47b597b37cc57de1c05e56fb1a1c9cc9fab04fe78c29acd090418529868"
             ],
-            "markers": "python_version < '3.6'",
+            "markers": "python_version < '3.4'",
             "version": "==2.3.5"
         },
         "pluggy": {
@@ -319,6 +318,13 @@
                 "sha256:832dc0e10feb1aa2c68dcc57dbb658f1c7e65b9b61af69048abc87a2db00a0eb"
             ],
             "version": "==1.11.0"
+        },
+        "sqlparse": {
+            "hashes": [
+                "sha256:40afe6b8d4b1117e7dff5504d7a8ce07d9a1b15aeeade8a2d10f130a834f8177",
+                "sha256:7c3dca29c022744e95b547e867cee89f4fce4373f3549ccd8797d8eb52cdb873"
+            ],
+            "version": "==0.3.0"
         },
         "urllib3": {
             "hashes": [
