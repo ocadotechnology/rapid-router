@@ -37,7 +37,6 @@ identified as the original program.
 @import 'foundation_overrides';
 @import '../../scss/foundation';
 @import 'variables';
-@import '../../foundation-icons.scss';
 
 .size-12 { font-size: 12px; }
 
@@ -305,32 +304,6 @@ identified as the original program.
 
 .nuit-breadcrumbs {
   margin-bottom: 0.5em;
-}
-
-.alert-box {
-  &:before {
-    padding-right: 0.5em;
-  }
-  &.debug {
-    @include alert(
-      $bg: $iron
-    );
-    &:before {
-      @extend .fi-widget:before;
-    }
-  }
-  &.info:before {
-    @extend .fi-star:before;
-  }
-  &.success:before {
-    @extend .fi-check:before;
-  }
-  &.warning:before {
-    @extend .fi-alert:before;
-  }
-  &.alert:before {
-    @extend .fi-prohibited:before;
-  }
 }
 
 .responsive {
