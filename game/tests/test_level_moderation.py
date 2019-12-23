@@ -100,6 +100,7 @@ class LevelModerationTestCase(TestCase):
                 "login-teacher_email": email,
                 "login-teacher_password": password,
                 "login": "",
+                "g-recaptcha-response": "something",
             },
             follow=True,
         )
