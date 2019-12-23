@@ -69,7 +69,6 @@ SETTINGS = {
         "django_js_reverse",
         "foundation_scss",
         "foundation_icons",
-        "bourbon",
         "rest_framework",
     ],
     "LANGUAGES": [("lol-us", "Localisation")],
