@@ -78,6 +78,7 @@ class LevelEditorTestCase(TestCase):
                 "login-teacher_email": email,
                 "login-teacher_password": password,
                 "login": "",
+                "g-recaptcha-response": "something",
             },
             follow=True,
         )
@@ -90,6 +91,7 @@ class LevelEditorTestCase(TestCase):
                 "login-access_code": access_code,
                 "login-password": password,
                 "school_login": "",
+                "g-recaptcha-response": "something",
             },
             follow=True,
         )
