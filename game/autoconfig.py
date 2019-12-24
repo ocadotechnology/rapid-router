@@ -68,7 +68,6 @@ SETTINGS = {
         "django.contrib.staticfiles",
         "django_js_reverse",
         "foundation_scss",
-        "foundation_icons",
         "rest_framework",
     ],
     "LANGUAGES": [("lol-us", "Localisation")],

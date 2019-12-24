@@ -22,7 +22,6 @@ setup(
     include_package_data=True,
     install_requires=[
         "django>=1.10.8, <= 1.11.24",
-        "django-foundation-icons==3.1",
         "django-autoconfig >= 0.3.6, < 1.0.0",
         "django-js-reverse==0.9.1",
         "django-foundation-statics==5.4.7",
