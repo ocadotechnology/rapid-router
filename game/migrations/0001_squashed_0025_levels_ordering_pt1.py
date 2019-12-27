@@ -5036,7 +5036,7 @@ class Migration(migrations.Migration):
                 (
                     "r_blocks",
                     models.ManyToManyField(
-                        related_name="episodes", null=True, to=b"game.Block"
+                        related_name="episodes", null=True, to="game.Block"
                     ),
                 ),
                 ("in_development", models.BooleanField(default=False)),
