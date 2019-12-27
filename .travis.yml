@@ -51,7 +51,7 @@ jobs:
       python: 2.7
       <<: *test_script
 
-    - python: 3.6.10
+    - python: 3.6.7
       <<: *test_script
 
     - stage: deploy
