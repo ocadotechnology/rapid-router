@@ -90,8 +90,8 @@ class ScoreboardTestCase(TestCase):
                     "Total Score",
                     "Total Time",
                     "Progress",
-                    u"Level 1",
-                    u"Level 2",
+                    "Level 1",
+                    "Level 2",
                 ]
             ),
         )
@@ -174,8 +174,8 @@ class ScoreboardTestCase(TestCase):
                     "Total Score",
                     "Total Time",
                     "Progress",
-                    u"Level 1",
-                    u"Level 2",
+                    "Level 1",
+                    "Level 2",
                 ]
             ),
         )
@@ -257,8 +257,8 @@ class ScoreboardTestCase(TestCase):
                     "Total Score",
                     "Total Time",
                     "Progress",
-                    u"Level 1",
-                    u"Level 2",
+                    "Level 1",
+                    "Level 2",
                 ]
             ),
         )
@@ -293,7 +293,7 @@ class ScoreboardCsvTestCase(TestCase):
 
         response = scoreboard_csv_multiple_levels(student_rows, levels)
 
-        actual_header, actual_rows = self.actual_data(response.content)
+        actual_header, actual_rows = self.actual_data(response.content.decode())
 
         expected_header = self.expected_header(levels)
         expected_rows = self.expected_rows_multiple_levels(student_rows)
@@ -306,7 +306,7 @@ class ScoreboardCsvTestCase(TestCase):
         student_rows = [(self.student_row("secrète")), (self.student_row())]
         response = scoreboard_csv_single_level(student_rows)
 
-        actual_header, actual_rows = self.actual_data(response.content)
+        actual_header, actual_rows = self.actual_data(response.content.decode())
 
         expected_header = "Class,Name,Score,Total Time,Start Time,Finish Time"
         expected_rows = self.expected_rows_single_level(student_rows)
@@ -348,7 +348,7 @@ class ScoreboardCsvTestCase(TestCase):
     def expected_row_multiple_levels(self, student_row):
         beginning = (
             "%s,%s,190,0:00:30,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,"
-            % (student_row.class_field.name.encode("utf-8"), student_row.name)
+            % (student_row.class_field.name.encode("utf-8"), student_row.name.encode("utf-8"))
         )
         padding = ",".join([""] * 89)
         return beginning + padding
@@ -356,7 +356,7 @@ class ScoreboardCsvTestCase(TestCase):
     def expected_row_single_level(self, student_row):
         return (
             "%s,%s,190,0:00:30,2015-06-26 07:51:12+00:00,2015-07-31 01:11:12+00:00"
-            % (student_row.class_field.name.encode("utf-8"), student_row.name)
+            % (student_row.class_field.name.encode("utf-8"), student_row.name.encode("utf-8"))
         )
 
     def expected_header(self, levels):

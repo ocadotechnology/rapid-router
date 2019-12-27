@@ -72,7 +72,7 @@ class LevelModerationTestCase(TestCase):
         response = self.students_of_class(klass)
         assert_that(response.status_code, equal_to(200))
         assert_that(
-            response.content, equal_to('{"%s": "%s"}' % (student.id, student_name))
+            response.content.decode(), equal_to('{"%s": "%s"}' % (student.id, student_name))
         )
 
     def test_moderation_another_class(self):

@@ -178,7 +178,7 @@ def data_and_headers_for(students, level_ids):
 
     score_for_multiple_levels_is_displayed = len(levels_sorted) > 1
 
-    level_names = list(map(str, levels_sorted))
+    level_names = list(map(to_name, levels_sorted))
 
     if score_for_multiple_levels_is_displayed:
         headers = Multiple_Levels_Header + level_names
@@ -188,6 +188,10 @@ def data_and_headers_for(students, level_ids):
         student_data = multiple_students_one_level(students, first(levels_sorted))
 
     return student_data, headers
+
+
+def to_name(level):
+    return level.__unicode__()
 
 
 def sorted_levels_by(level_ids):
