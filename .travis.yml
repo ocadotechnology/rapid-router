@@ -47,12 +47,11 @@ test_script: &test_script
 jobs:
   fail_fast: true
   include:
-    - stage: test (2.7)
+    - stage: test
       python: 2.7
       <<: *test_script
     
-    - stage: test (3.6)
-      python: 3.6
+    - python: 3.6
       <<: *test_script
       
     - stage: deploy
