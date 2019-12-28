@@ -47,6 +47,7 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.safestring import mark_safe
+from django.core import serializers
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
 
@@ -78,20 +79,18 @@ def level_editor(request):
     :template:`game/level_editor.html`
     """
 
-    return render(
-        request,
-        "game/level_editor.html",
-        context={
-            "blocks": available_blocks(),
-            "decor": get_all_decor(),
-            "characters": get_all_character(),
-            "themes": get_all_themes(),
-            "cow_level_enabled": app_settings.COW_FEATURE_ENABLED,
-            "night_mode_feature_enabled": str(
-                app_settings.NIGHT_MODE_FEATURE_ENABLED
-            ).lower(),
-        },
-    )
+    context = {
+        "blocks": serializers.serialize("json", available_blocks(), fields=("type",)),
+        "decor": get_all_decor(),
+        "characters": get_all_character(),
+        "themes": get_all_themes(),
+        "cow_level_enabled": app_settings.COW_FEATURE_ENABLED,
+        "night_mode_feature_enabled": str(
+            app_settings.NIGHT_MODE_FEATURE_ENABLED
+        ).lower(),
+    }
+
+    return render(request, "game/level_editor.html", context=context,)
 
 
 def available_blocks():

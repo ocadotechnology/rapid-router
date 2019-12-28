@@ -139,7 +139,9 @@ def get_night_blocks(level):
         "dead_end",
     ]
     coreNightBlocks = Block.objects.filter(type__in=coreBlockTypes)
-    coreNightLevelBlocks = [LevelBlock(level=level, type=block) for block in coreNightBlocks]
+    coreNightLevelBlocks = [
+        LevelBlock(level=level, type=block) for block in coreNightBlocks
+    ]
     existingLevelBlocks = LevelBlock.objects.filter(level=level)
     remainingBlocks = existingLevelBlocks.exclude(
         type__type__in=coreBlockTypes
