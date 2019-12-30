@@ -187,7 +187,9 @@ class GamePage(BasePage):
         )
 
     def run_parse_error_program(self):
-        return self._run_failing_python_program_console("v.", "ParseError: bad input on line")
+        return self._run_failing_python_program_console(
+            "v.", "ParseError: bad input on line"
+        )
 
     def run_attribute_error_program(self):
         return self._run_failing_python_program_console(
@@ -195,10 +197,14 @@ class GamePage(BasePage):
         )
 
     def run_print_program(self):
-        return self._run_failing_python_program_console('print("hello world")', "hello world")
+        return self._run_failing_python_program_console(
+            'print("hello world")', "hello world"
+        )
 
     def run_invalid_import_program(self):
-        return self._run_failing_python_program_popup("import va", "You're not allowed to import anything other than 'van'.")
+        return self._run_failing_python_program_popup(
+            "import va", "You're not allowed to import anything other than 'van'."
+        )
 
     def check_python_commands(self):
         self.python_commands_button()

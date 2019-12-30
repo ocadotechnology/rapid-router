@@ -31,7 +31,12 @@ setup(
         "more-itertools==5.0.0",
         "pyhamcrest==1.8.3",
         "libsass",
-        "future"
+        "future",
+    ],
+    classifiers=[
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.6",
+        "Framework :: Django",
     ],
     version=version,
     zip_safe=False,

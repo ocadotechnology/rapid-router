@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="level",
             name="cows",
-            field=models.TextField(default=b"[]", max_length=10000),
+            field=models.TextField(default="[]", max_length=10000),
             preserve_default=True,
         ),
         migrations.RunPython(add_cows_block),

@@ -513,7 +513,7 @@ ocargo.LevelEditor = function() {
 
                 for (var i = 0; i < BLOCKS.length; i++) {
                     var type = BLOCKS[i];
-                    var block = Blockly.Block.obtain(Blockly.mainWorkspace, type);
+                    var block = Blockly.mainWorkspace.newBlock(type);
                     block.initSvg();
                     block.render();
 

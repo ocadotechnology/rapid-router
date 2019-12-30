@@ -53,9 +53,9 @@
     var CHARACTER_NAME = 'Van';
 
     function initGlobals() {
-      {% for block in blocks %}
-        BLOCKS.push("{{block}}");
-      {% endfor %}
+      BLOCKS = JSON.parse('{{blocks | escapejs}}').map(function(block) {
+        return block.fields.type;
+      });
 
       var themes = [];
       {% for theme in themes %}

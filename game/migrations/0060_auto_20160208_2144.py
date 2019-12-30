@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             model_name="level",
             name="theme",
             field=models.ForeignKey(
-                db_column=b"theme_id",
+                db_column="theme_id",
                 default=None,
                 blank=True,
                 to="game.Theme",
