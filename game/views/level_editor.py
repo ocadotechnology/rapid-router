@@ -90,7 +90,7 @@ def level_editor(request):
         ).lower(),
     }
 
-    return render(request, "game/level_editor.html", context=context,)
+    return render(request, "game/level_editor.html", context=context)
 
 
 def available_blocks():
