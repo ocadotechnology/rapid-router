@@ -2,7 +2,7 @@ sudo: required
 dist: trusty
 group: edge
 language: python
-
+python: 3.6.7
 addons:
   chrome: stable
 
@@ -20,39 +20,21 @@ stages:
   - name: deploy
     if: branch = master AND (NOT type IN (pull_request))
 
-test_script: &test_script
-  before_install:
-    - gem install sass -v 3.3.4
-  install:
-    - pip install -U setuptools
-    - pip install pipenv
-    - pipenv install --dev --system
-    - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git@remove_bytestrings#egg=codeforlife-portal #TODO: Remove as part of #688
-    - pip install crowdin-cli-py
-    - pip install selenium==3.141.0
-    - pip install pytest-cov
-  script:
-    - pytest --cov=. --cov-report=xml
-  after_success:
-    - bash <(curl -s https://codecov.io/bash)
-
 
 jobs:
   fail_fast: true
   include:
     - stage: test
-      python: 2.7
-      <<: *test_script
-      before_script:
-        - wget https://chromedriver.storage.googleapis.com/79.0.3945.36/chromedriver_linux64.zip
-        - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python2.7.14/bin/
-        - export CHROME_BIN=chromium-browser
-        - "export DISPLAY=:99.0"
-        - "sh -e /etc/init.d/xvfb start"
-        - sleep 3
-
-    - python: 3.6.7
-      <<: *test_script
+      before_install:
+        - gem install sass -v 3.3.4
+      install:
+        - pip install -U setuptools
+        - pip install pipenv
+        - pipenv install --dev --system
+        - pip install git+https://github.com/ocadotechnology/codeforlife-portal.git@remove_bytestrings#egg=codeforlife-portal #TODO: Remove as part of #688
+        - pip install crowdin-cli-py
+        - pip install selenium==3.141.0
+        - pip install pytest-cov
       before_script:
         - wget https://chromedriver.storage.googleapis.com/79.0.3945.36/chromedriver_linux64.zip
         - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python3.6.7/bin/
@@ -60,6 +42,10 @@ jobs:
         - "export DISPLAY=:99.0"
         - "sh -e /etc/init.d/xvfb start"
         - sleep 3
+      script:
+        - pytest --cov=. --cov-report=xml
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
 
     - stage: deploy
       install:

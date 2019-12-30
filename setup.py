@@ -33,6 +33,11 @@ setup(
         "libsass",
         "future"
     ],
+    classifiers=[
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.6',
+        'Framework :: Django',
+    ]
     version=version,
     zip_safe=False,
 )
