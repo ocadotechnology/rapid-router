@@ -34,7 +34,15 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from rest_framework import viewsets
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse, reverse_lazy
+
+from game.character import get_all_character, get_character_by_pk, get_characters_url
+from game.decor import get_all_decor, get_decor_element_by_pk, get_decors_url
 from game.models import Level, Episode, LevelBlock, Block, LevelDecor
 from game.serializers import (
     LevelListSerializer,
@@ -48,17 +56,11 @@ from game.serializers import (
     LevelModeSerializer,
     LevelMapListSerializer,
 )
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.reverse import reverse
-from rest_framework import viewsets
-
-from game.decor import get_all_decor, get_decor_element_by_pk, get_decors_url
 from game.theme import get_all_themes, get_theme_by_pk, get_themes_url
-from game.character import get_all_character, get_character_by_pk, get_characters_url
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def api_root(request, format=None):
     return Response(
         {
@@ -74,6 +76,7 @@ def api_root(request, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def decor_list(request, format=None):
     decors = get_all_decor()
     data = [{get_decors_url(i.pk, request)} for i in decors]
@@ -81,6 +84,7 @@ def decor_list(request, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def decor_detail(request, pk, format=None):
     try:
         decor = get_decor_element_by_pk(pk=pk)
@@ -92,6 +96,7 @@ def decor_detail(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def level_list(request, format=None):
     levels = Level.objects.sorted_levels()
     serializer = LevelListSerializer(levels, many=True, context={"request": request})
@@ -100,6 +105,7 @@ def level_list(request, format=None):
 
 # pk is the episode id
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def level_for_episode(request, pk, format=None):
     levels = Level.objects.filter(episode__id=pk)
     serializer = LevelListSerializer(levels, many=True, context={"request": request})
@@ -107,6 +113,7 @@ def level_for_episode(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def level_detail(request, pk, format=None):
     try:
         level = Level.objects.get(pk=pk)
@@ -118,6 +125,7 @@ def level_detail(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def map_list(request, format=None):
     levels = Level.objects.sorted_levels()
 
@@ -126,6 +134,7 @@ def map_list(request, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def map_for_level(request, pk, format=None):
     try:
         level = Level.objects.get(pk=pk)
@@ -137,6 +146,7 @@ def map_for_level(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def mode_for_level(request, pk, format=None):
     try:
         level = Level.objects.get(pk=pk)
@@ -148,6 +158,7 @@ def mode_for_level(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def episode_list(request, format=None):
     episodes = Episode.objects.all()
     serializer = EpisodeListSerializer(
@@ -157,6 +168,7 @@ def episode_list(request, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def episode_detail(request, pk, format=None):
     try:
         episode = Episode.objects.get(pk=pk)
@@ -168,6 +180,7 @@ def episode_detail(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def levelblock_list(request, level, format=None):
     blocks = LevelBlock.objects.filter(level__id=level)
 
@@ -176,6 +189,7 @@ def levelblock_list(request, level, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def levelblock_for_level(request, pk, format=None):
     levelblocks = LevelBlock.objects.filter(level__id=pk)
     serializer = LevelBlockSerializer(
@@ -185,6 +199,7 @@ def levelblock_for_level(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def levelblock_detail(request, pk, format=None):
     try:
         levelblock = LevelBlock.objects.get(pk=pk)
@@ -196,6 +211,7 @@ def levelblock_detail(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def leveldecor_list(request, level, format=None):
     leveldecors = LevelDecor.objects.filter(level__id=level)
 
@@ -206,6 +222,7 @@ def leveldecor_list(request, level, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def leveldecor_for_level(request, pk, format=None):
     leveldecors = LevelDecor.objects.filter(level__id=pk)
     serializer = LevelDecorSerializer(
@@ -215,6 +232,7 @@ def leveldecor_for_level(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def leveldecor_detail(request, pk, format=None):
     try:
         leveldecor = LevelDecor.objects.get(pk=pk)
@@ -226,6 +244,7 @@ def leveldecor_detail(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def block_list(request, format=None):
     block = Block.objects.all()
     serializer = BlockSerializer(block, many=True, context={"request": request})
@@ -233,6 +252,7 @@ def block_list(request, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def block_detail(request, pk, format=None):
     try:
         block = Block.objects.get(pk=pk)
@@ -244,6 +264,7 @@ def block_detail(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def theme_list(request, format=None):
     themes = get_all_themes()
     data = [{get_themes_url(i.pk, request)} for i in themes]
@@ -251,6 +272,7 @@ def theme_list(request, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def theme_detail(request, pk, format=None):
     try:
         theme = get_theme_by_pk(pk)
@@ -260,6 +282,7 @@ def theme_detail(request, pk, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def character_list(request, format=None):
     characters = get_all_character()
     data = [{get_characters_url(i.pk, request)} for i in characters]
@@ -267,6 +290,7 @@ def character_list(request, format=None):
 
 
 @api_view(("GET",))
+@login_required(login_url=reverse_lazy("administration_login"))
 def character_detail(request, pk, format=None):
     try:
         character = get_character_by_pk(pk)
