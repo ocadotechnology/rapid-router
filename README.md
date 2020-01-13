@@ -1,7 +1,7 @@
 # Rapid Router (codename: ocargo)
 
 [![Build Status](https://travis-ci.org/ocadotechnology/rapid-router.svg?branch=master)](https://travis-ci.org/ocadotechnology/rapid-router)
-[![Coverage Status](https://coveralls.io/repos/ocadotechnology/rapid-router/badge.svg?branch=master&service=github)](https://coveralls.io/github/ocadotechnology/rapid-router?branch=master)
+[![Coverage Status](https://codecov.io/gh/ocadotechnology/rapid-router/branch/master/graph/badge.svg)](https://codecov.io/gh/ocadotechnology/rapid-router)
 [![Code Climate](https://codeclimate.com/github/ocadotechnology/rapid-router/badges/gpa.svg)](https://codeclimate.com/github/ocadotechnology/rapid-router)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/code-for-life/localized.svg)](https://crowdin.com/project/code-for-life)
 
@@ -113,10 +113,13 @@ gem install sass
 * Set your `django_language` cookie to `lol-us` to enable in-context localisation
 
 ## To contribute
-__Guidelines__ Please read the [contributing guidelines](CONTRIBUTING.md) first, thank you.
+__Guidelines__ Please read the [contributing guidelines](CONTRIBUTING.md) first, thank you.<br>
+You can also read about the [life cycle of a code change](docs/life-cycle-of-a-code-change.md).<br>
+
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
 [add it][add-issue]. Please make sure that you give us a suitable level of detail about the symptoms and how to
-reproduce it. Please label it as a "bug".<br>
+reproduce it. Please label it as a "bug".
+
 One word of caution: please do not add any issues related to security. Evil hackers are everywhere nowadays... If you do find a security issue, let us know using our [contact form][c4l-contact-form].
 
 __Want to suggest a feature? Please check whether it has already been added to our [issue tracker][issues] first!__ if
