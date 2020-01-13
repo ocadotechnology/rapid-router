@@ -5,7 +5,7 @@ More details about pull request submissions can be found [here](../CONTRIBUTING.
 
 ## Development to Staging
 * The branch is ready to be merged into the `master` branch when all changes are reviewed and there are no conflicts or blocking errors. 
-* The `master` build creates and pushes a rapid-router `Pypi` package
+* Commits to master trigger a build on `Travis CI` , which pushes the [rapid-router package](https://pypi.org/project/rapid-router/) to `Pypi`.
 * Semaphore CI is notified and deploys it to our staging server, where the code changes will be tested further. 
 
 ## Staging to Production
