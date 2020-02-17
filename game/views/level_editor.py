@@ -36,10 +36,10 @@
 # identified as the original program.
 from __future__ import division
 
-from builtins import map
-from builtins import str
 import json
 import re
+from builtins import map
+from builtins import str
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -47,7 +47,6 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.safestring import mark_safe
-from django.core import serializers
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
 
@@ -80,7 +79,7 @@ def level_editor(request):
     """
 
     context = {
-        "blocks": serializers.serialize("json", available_blocks(), fields=("type",)),
+        "blocks": [block.type for block in available_blocks()],
         "decor": get_all_decor(),
         "characters": get_all_character(),
         "themes": get_all_themes(),
