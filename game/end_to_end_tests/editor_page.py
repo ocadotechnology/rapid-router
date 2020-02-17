@@ -55,3 +55,6 @@ class EditorPage(BasePage):
         self.wait_for_element_to_be_clickable((By.ID, button_id), wait_seconds=15)
         self.browser.find_element_by_id(button_id).click()
         self.wait_for_element_to_be_invisible((By.ID, button_id), wait_seconds=15)
+
+    def go_to_code_tab(self):
+        self.browser.find_element_by_id("blocks_tab").click()
