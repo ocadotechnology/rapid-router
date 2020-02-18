@@ -62,7 +62,7 @@ jobs:
         - ./.crowdin-get-translations
         - git config --global user.name "semantic-release (via TravisCI)"
         - git config --global user.email "semantic-release@travis"
-        - pip install python-semantic-release==3.11.2
+        - pip install python-semantic-release==4.*
         - semantic-release publish
       after_success:
         - "curl -d POST -v https://semaphoreci.com/api/v1/projects/${SEMAPHORE_PROJECT_ID}/master/build?auth_token=${SEMAPHORE_API_AUTH}"
