@@ -495,15 +495,14 @@ def generate_decor(path, num_tiles):
                     return append_decor(decor, x, y, elem, dx, dy)
 
     def place_randomly(dec, decor):
-        while True:
-            x = random.randint(0, 9)
-            y = random.randint(0, 7)
+        x = random.randint(0, 9)
+        y = random.randint(0, 7)
 
-            if not (
-                find_decor_by_coordinate(x, y, dec, decor)
-                or find_node_by_coordinate(x, y, dec, path)
-            ):
-                return append_decor(decor, x, y, dec)
+        if not (
+            find_decor_by_coordinate(x, y, dec, decor)
+            or find_node_by_coordinate(x, y, dec, path)
+        ):
+            return append_decor(decor, x, y, dec)
 
     def place_bush(elem, decor, nodes):
         bush_exists = False

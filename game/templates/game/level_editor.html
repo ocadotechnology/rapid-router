@@ -48,39 +48,35 @@
   <script src="/static/game/js/destination.js"></script>
 
   <script>
-    var BLOCKS = [];
+    var BLOCKS = {{ blocks | safe}};
     var THEMES =  [];
     var CHARACTER_NAME = 'Van';
 
     function initGlobals() {
-      BLOCKS = JSON.parse('{{blocks | escapejs}}').map(function(block) {
-        return block.fields.type;
-      });
-
       var themes = [];
       {% for theme in themes %}
         var name = "{{theme.name}}";
-        themes.push({"name": name,
-                     "id": {{theme.id}},
-                     "border": "{{theme.border}}",
-                     "background": "{{theme.background}}",
-                     "selected": "{{theme.selected}}"});
+        themes.push({
+            "name": name,
+            "id": {{theme.id}},
+            "border": "{{theme.border}}",
+            "background": "{{theme.background}}",
+            "selected": "{{theme.selected}}"
+        });
       {% endfor %}
 
-      var decor = [
+      var decor = [];
       {% for dec in decor %}
-        {
+        decor.push({
             "id":"{{dec.id}}",
             "name":"{{dec.name}}",
             "url": ocargo.Drawing.raphaelImageDir + "{{dec.url}}",
             "width":"{{dec.width}}",
             "height":"{{dec.height}}",
             "theme_name":"{{dec.theme.name}}",
-            "z_index":{{ dec.z_index }}
-        }{% if not forloop.last %},{% endif %}
+            "z_index":"{{ dec.z_index }}"
+        });
       {% endfor %}
-      ];
-
 
       for(var i = 0; i < themes.length; i++) {
         var theme = themes[i];
@@ -95,9 +91,11 @@
 
       CHARACTERS = [];
       {% for char in characters %}
-          CHARACTERS['{{char.id}}'] =   {id:    '{{char.id}}',
-                                        name:  '{{char.name}}',
-                                        image: '{% static "game/image/"|add:char.en_face %}'};
+        CHARACTERS['{{char.id}}'] = {
+            id: '{{char.id}}',
+            name: '{{char.name}}',
+            image: '{% static "game/image/"|add:char.en_face %}'
+        };
       {% endfor %}
     }
 
@@ -427,10 +425,10 @@
                     {% for block in blocks %}
                       <div class="table_row">
                         <div class="table_cell">
-                          <input type="checkbox" id="{{block.type}}_checkbox" class="block_checkbox" unchecked>
+                          <input type="checkbox" id="{{block}}_checkbox" class="block_checkbox" unchecked>
                         </div>
-                        <div id="{{block.type}}_image" class="table_cell unselectable"></div>
-                        <select id="{{block.type}}_number" class="block_number" class="table_cell unselectable">
+                        <div id="{{block}}_image" class="table_cell unselectable"></div>
+                        <select id="{{block}}_number" class="block_number" class="table_cell unselectable">
                           <option value="infinity">&infin;</option>
                           <option value="1">1</option>
                           <option value="2">2</option>

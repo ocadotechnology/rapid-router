@@ -34,10 +34,12 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from django.test import TestCase
-
 import json
 import random
+
+from django.test import TestCase
+
+from game.random_road import generate_random_map_data
 
 
 def find_node(x, y, nodes):
@@ -78,8 +80,6 @@ class RandomRoadTestCase(TestCase):
             loopiness = random.randint(0, 10)
         if curviness is None:
             curviness = random.randint(0, 10)
-
-        from game.random_road import generate_random_map_data
 
         return generate_random_map_data(
             num_tiles,
