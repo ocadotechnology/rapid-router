@@ -48,7 +48,7 @@
         {% for episode in episodeData %}
         <div class="panel">
             <div class="panel-header" id="episode-{{episode.id}}">
-                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                <p class="episode-title collapsed" data-cy="episode{{episode.id}}-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
                     <span class="episode_range_text">
                         <small>
@@ -64,7 +64,7 @@
                     {% for level in episode.levels %}
                     <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
                     <p>
-                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                        <a data-cy="level{{level.id}}-title" href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
                         {% if level.score != None %}
                         <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
                         <img class="level_image coin_image" value="{{level.name}}">

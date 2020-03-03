@@ -173,7 +173,7 @@
 
     <div id="play_tab" class="tab">
       <input type="radio" name="tabs" id="play_radio">
-      <label for="play_radio">
+      <label for="play_radio" data-cy="play-level-button">
         <img src='{% static "game/image/icons/play.svg" %}'>
         <span>{% trans "Play" %}</span>
         {% csrf_token %}
@@ -397,7 +397,7 @@
     <div id="paper" class="col" style="background-color:{{level.theme.background}}"></div>
 
     <div id="direct_drive" class="unselectable no-print">
-      <button class="direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
+      <button class="direct_drive_button" id="moveForward" data-cy="move-forward-arrow" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="turnLeft" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="go" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
       <button class="direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>

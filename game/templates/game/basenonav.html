@@ -26,13 +26,13 @@
             <div class='row'>
                 <div class='small-12 columns'>
                     {% block content %}
-                        <div id="myModal" class="ocargo-modal reveal-modal no-print" data-reveal>
+                        <div id="myModal" class="ocargo-modal reveal-modal no-print" data-cy="popup" data-reveal>
                           <div id="modal-content">
-                            <h2 id="myModal-title" class="ocargo-modal-title"></h2>
+                            <h2 id="myModal-title" class="ocargo-modal-title" data-cy="popup-title"></h2>
                             <div id="myModal-lead" class="ocargo-modal-lead"></div>
                             <div id="myModal-mainText" class="ocargo-modal-mainText"></div>
                             <div id="modal-buttons">
-                              <button class="navigation_button long_button" onclick="document.getElementById('close-modal').click()">
+                              <button class="navigation_button long_button" data-cy="popup-button" onclick="document.getElementById('close-modal').click()">
                                 <span>Close</span>
                               </button>
                             </div>
