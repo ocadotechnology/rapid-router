@@ -35,11 +35,14 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from __future__ import absolute_import
+
 from builtins import object
+
+from rest_framework import serializers
+
 from game import messages
 from game.messages import description_level_default, hint_level_default
 from game.theme import get_theme, get_themes_url
-from rest_framework import serializers
 from .models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block
 
 
@@ -55,7 +58,7 @@ class LevelListSerializer(serializers.HyperlinkedModelSerializer):
         model = Level
         fields = (
             "url",
-            "__unicode__",
+            "__str__",
             "episode",
             "name",
             "title",
@@ -89,7 +92,7 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
     class Meta(object):
         model = Level
         fields = (
-            "__unicode__",
+            "__str__",
             "episode",
             "name",
             "title",
@@ -187,7 +190,7 @@ class EpisodeListSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta(object):
         model = Episode
-        fields = ("url", "__unicode__", "name")
+        fields = ("url", "__str__", "name")
 
     def get_name(self, obj):
         return messages.get_episode_title(obj.id)
@@ -203,7 +206,7 @@ class EpisodeDetailSerializer(serializers.HyperlinkedModelSerializer):
     class Meta(object):
         model = Episode
         depth = 1
-        fields = ("url", "__unicode__", "name", "level_set", "level_set_url")
+        fields = ("url", "__str__", "name", "level_set", "level_set_url")
 
     def get_level_set(self, obj):
         levels = Level.objects.filter(episode__id=obj.id)

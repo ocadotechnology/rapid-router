@@ -35,11 +35,9 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from builtins import str
+
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.translation import ugettext
-
-
 from portal.models import UserProfile, Student
 
 
@@ -58,7 +56,7 @@ def character_choices():
 class Block(models.Model):
     type = models.CharField(max_length=200)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.type
 
 
@@ -90,8 +88,8 @@ class Episode(models.Model):
 
         return sorted(self.level_set.all(), key=lambda level: int(level.name))
 
-    def __unicode__(self):
-        return ugettext("Episode: %(episode_name)s") % {"episode_name": self.name}
+    def __str__(self):
+        return f"Episode: {self.name}"
 
 
 class LevelManager(models.Manager):
@@ -136,8 +134,8 @@ class Level(models.Model):
     anonymous = models.BooleanField(default=False)
     objects = LevelManager()
 
-    def __unicode__(self):
-        return ugettext("Level %(level_name)s") % {"level_name": self.name}
+    def __str__(self):
+        return f"Level {self.name}"
 
     @property
     def theme(self):
@@ -193,7 +191,7 @@ class Workspace(models.Model):
     blockly_enabled = models.BooleanField(default=False)
     python_enabled = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.name)
 
 
