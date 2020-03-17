@@ -2,3 +2,4 @@ include README.md
 graft game/locale
 graft game/static
 graft game/templates
+graft game/tests
