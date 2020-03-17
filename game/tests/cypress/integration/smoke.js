@@ -5,7 +5,7 @@
  * trying to do almost everything a typical user would do.
  */
 export const smokeTest = () => {
-  cy.visit('localhost:8000/rapidrouter')
+  cy.visit('/rapidrouter')
 
   cy.log('open Level 1')
   cy.get('[data-cy=episode1-title]').click()
