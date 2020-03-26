@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -36,16 +36,14 @@
 # identified as the original program.
 from django.db import migrations
 
+
 def mark_all_attempts_as_best(apps, schema_editor):
-    Attempt = apps.get_model('game', 'Attempt')
+    Attempt = apps.get_model("game", "Attempt")
     Attempt.objects.all().update(is_best_attempt=True)
+
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('game', '0055_support_multiple_attempts'),
-    ]
+    dependencies = [("game", "0055_support_multiple_attempts")]
 
-    operations = [
-        migrations.RunPython(mark_all_attempts_as_best),
-    ]
+    operations = [migrations.RunPython(mark_all_attempts_as_best)]

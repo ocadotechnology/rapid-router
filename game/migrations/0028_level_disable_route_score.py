@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -41,15 +41,13 @@ from django.db import models, migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('game', '0027_change_level_order'),
-    ]
+    dependencies = [("game", "0027_change_level_order")]
 
     operations = [
         migrations.AddField(
-            model_name='level',
-            name='disable_route_score',
+            model_name="level",
+            name="disable_route_score",
             field=models.BooleanField(default=False),
             preserve_default=True,
-        ),
+        )
     ]

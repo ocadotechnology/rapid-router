@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -41,15 +41,13 @@ from django.db import models, migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('game', '0044_auto_20150615_1156'),
-    ]
+    dependencies = [("game", "0044_auto_20150615_1156")]
 
     operations = [
         migrations.AddField(
-            model_name='decor',
-            name='z_index',
+            model_name="decor",
+            name="z_index",
             field=models.IntegerField(default=0),
             preserve_default=False,
-        ),
+        )
     ]

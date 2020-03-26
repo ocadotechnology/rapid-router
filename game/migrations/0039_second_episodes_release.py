@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -36,18 +36,15 @@
 # identified as the original program.
 from django.db import migrations
 
+
 def release_levels(apps, schema_editor):
-    Episode = apps.get_model('game', 'Episode')
+    Episode = apps.get_model("game", "Episode")
     for episode in Episode.objects.all():
         episode.in_development = False
         episode.save()
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ('game', '0038_level_score_40'),
-    ]
+    dependencies = [("game", "0038_level_score_40")]
 
-    operations = [
-        migrations.RunPython(release_levels)
-    ]
+    operations = [migrations.RunPython(release_levels)]

@@ -13,7 +13,6 @@
 <script>
     var students = {% if students %} true {% else %} false {% endif %};
 </script>
-
 {% endblock %}
 
 {% block css %}
@@ -22,7 +21,7 @@
 {% endblock %}
 
 {% block nav_ocargo_moderate %}
-<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #0c52a3;" href="{% url 'game.views.level_moderation.level_moderation' %}">{% trans "Moderate" %}</a>
+<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #0c52a3;" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
 {% endblock nav_ocargo_moderate %}
 
 {% block content %}
@@ -56,7 +55,6 @@
     </div>
 
     <div class="mainBody container">
-
         {% if levelData %}
         <div class="tableWrapper">
             {% if thead %}
@@ -88,5 +86,4 @@
         {% endif %}
     </div>
 </div>
-
 {% endblock %}

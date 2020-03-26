@@ -1,7 +1,7 @@
 /*
 Code for Life
 
-Copyright (C) 2016, Ocado Innovation Limited
+Copyright (C) 2019, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -60,8 +60,6 @@ ocargo.Game.prototype.setup = function() {
     initCustomBlocks();
     ocargo.solutionLoaded = false;
     ocargo.blocklyControl = new ocargo.BlocklyControl();
-    ocargo.blocklyControl.blocklyCustomisations.setupDoubleclick();
-    ocargo.blocklyControl.blocklyCustomisations.setupLimitedBlocks();
     ocargo.pythonControl = new ocargo.PythonControl();
     ocargo.blocklyCompiler = new ocargo.BlocklyCompiler();
     ocargo.model = new ocargo.Model(PATH, ORIGIN, DESTINATIONS, TRAFFIC_LIGHTS, COWS, MAX_FUEL);
@@ -153,11 +151,19 @@ ocargo.Game.prototype.reset = function() {
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function(blocks) {
     this.reset();
 
-    ocargo.event.sendEvent("PlayButtonPressed", { levelName: LEVEL_NAME,
+    let code = ocargo.pythonControl.getCode()
+
+    ocargo.event.sendEvent('PlayButtonPressed', { levelName: LEVEL_NAME,
                                                   defaultLevel: DEFAULT_LEVEL,
                                                   workspace: ocargo.blocklyControl.serialize(),
                                                   failures: this.failures,
-                                                  pythonWorkspace: ocargo.pythonControl.getCode() });
+                                                  pythonWorkspace: code, });
+
+    if (code.match(/import (?!(van))/))
+    {
+        ocargo.Drawing.startPopup(gettext('Oh dear!'), "You're not allowed to import anything other than 'van'.", "");
+        return false;
+    }
 
     var result = ocargo.controller.prepare(blocks);
     if (!result.success) {
@@ -217,8 +223,8 @@ ocargo.Game.prototype.sendAttempt = function(score) {
         score *= 2;
     }
 
-    // Check that we should actually be sending an attempt - either if only blockly's enabled
-    // or if python's enabled and we're on the python tab (assumes they don't change tab quickly...)
+    // Check that we should actually be sending an attempt - either if only blockly is enabled
+    // or if python is enabled and we're on the python tab (assumes they don't change tab quickly...)
     if ((BLOCKLY_ENABLED && !PYTHON_ENABLED) ||
         (PYTHON_ENABLED && this.isInPythonWorkspace())) {
         // Send out the submitted data.
@@ -499,7 +505,6 @@ ocargo.Game.prototype._setupTabs = function () {
     this._setupSaveTab();
     //this._setupPrintTab();
     this._setupHelpTab();
-    //this._setupBigCodeModeTab();
     this._setupMuteTab();
     this._setupQuitTab();
     this._setupNightModeTab();
@@ -572,17 +577,6 @@ ocargo.Game.prototype._setupBlocklyTab = function () {
 
     this.currentlySelectedTab = this.tabs.blockly;
     this.tabs.blockly.select();
-
-    // Function wrapper needed
-    $('#flyoutButton').click(function () {
-        ocargo.blocklyControl.toggleFlyout();
-    }.bind(this));
-
-    // TODO solve why we need to do this to prevent Firefox from not having the Toolbox fully initialised...
-    setTimeout(function () {
-        $('#flyoutButton').click();
-        ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
-    }.bind(this), 100);
 };
 
 
@@ -978,36 +972,10 @@ ocargo.Game.prototype._setupSaveTab = function () {
     }
 };
 
-ocargo.Game.prototype._setupPrintTab = function () {
-    this.tabs.print.setOnChange(function () {
-        this._selectPreviousTab();
-        window.print();
-    }.bind(this));
-};
-
 ocargo.Game.prototype._setupHelpTab = function () {
     this.tabs.help.setOnChange(function () {
         this._selectPreviousTab();
         ocargo.Drawing.startPopup('', '', HINT);
-    }.bind(this));
-};
-
-ocargo.Game.prototype._setupBigCodeModeTab = function () {
-    this.tabs.big_code_mode.setOnChange(function () {
-        this.tabs.blockly.select();
-
-        if (ocargo.blocklyControl.bigCodeMode) {
-            this.tabs.big_code_mode.transitTo('normal_code_mode');
-            ocargo.blocklyControl.disableBigCodeMode();
-        } else {
-            this.tabs.big_code_mode.transitTo('big_code_mode');
-            ocargo.blocklyControl.enableBigCodeMode();
-        }
-
-        ocargo.blocklyControl.toggleFlyout();
-        ocargo.blocklyControl.toggleFlyout();
-
-        ocargo.blocklyControl.bringStartBlockFromUnderFlyout();
     }.bind(this));
 };
 

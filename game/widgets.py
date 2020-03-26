@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -34,29 +34,43 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from builtins import object
 from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext
+
 
 class DropDownMenuSelectMultiple(forms.SelectMultiple):
     """
     A SelectMultiple wich will use checkboxes to select individual items
     """
-    class Media:
-        css = {
-            'all': ('game/css/pqselect.dev.css',)
-        }
-        js = (
-            'game/js/pqselect.dev.js',
-        )
+
+    class Media(object):
+        css = {"all": ("game/css/pqselect.dev.css",)}
+        js = ("game/js/pqselect.dev.js",)
 
     def render(self, name, value, attrs, choices=()):
-        html = super(DropDownMenuSelectMultiple, self).render(name, value, attrs, choices)
-        html += """
-            <script>$("#id_""" + name + """").pqSelect({
-            displayText: '""" + (ugettext('%(selected)s of %(total)s selected') % {'selected': '{0}', 'total': '{1}'}) + """',
-            multiplePlaceholder: '""" + self.attrs['multiplePlaceholder'] + """',
-            selectallText: '""" + ugettext('Select All') + """',
+        html = super(DropDownMenuSelectMultiple, self).render(
+            name, value, attrs, choices
+        )
+        html += (
+            """
+            <script>$("#id_"""
+            + name
+            + """").pqSelect({
+            displayText: '"""
+            + (
+                ugettext("%(selected)s of %(total)s selected")
+                % {"selected": "{0}", "total": "{1}"}
+            )
+            + """',
+            multiplePlaceholder: '"""
+            + self.attrs["multiplePlaceholder"]
+            + """',
+            selectallText: '"""
+            + ugettext("Select All")
+            + """',
             checkbox: true
             });</script>"""
+        )
         return mark_safe(html)

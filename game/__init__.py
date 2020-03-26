@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -35,6 +35,4 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 
-from ._version import get_versions
-__version__ = get_versions()['version']
-del get_versions
+__version__ = '2.3.11'

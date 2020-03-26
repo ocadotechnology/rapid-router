@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2018, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -42,6 +42,8 @@ from django.test import modify_settings
 
 def add_new_language():
     return modify_settings(
-        LANGUAGES={'append': [('foo-br', 'Test locale')]},
-        LOCALE_PATHS={'append': os.path.join(os.path.dirname(__file__), '..', 'locale')}
+        LANGUAGES={"append": [("foo-br", "Test locale")]},
+        LOCALE_PATHS={
+            "append": os.path.join(os.path.dirname(__file__), "..", "locale")
+        },
     )

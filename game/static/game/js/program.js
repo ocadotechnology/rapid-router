@@ -1,7 +1,7 @@
 /*
 Code for Life
 
-Copyright (C) 2016, Ocado Innovation Limited
+Copyright (C) 2019, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -324,7 +324,7 @@ function queueHighlightIncorrect(model, block){
 function makeHighLightCallable(id, keepHighlighting) {
 	return function() {
 		ocargo.blocklyControl.clearAllSelections();
-		var block = Blockly.Block.getById(id, Blockly.mainWorkspace);
+		var block = Blockly.mainWorkspace.getBlockById(id);
 		block.keepHighlighting = keepHighlighting;
 		ocargo.blocklyControl.setBlockSelected(block, true);
 
@@ -333,6 +333,6 @@ function makeHighLightCallable(id, keepHighlighting) {
 
 function makeHighLightIncorrectCallable(id){
 	return function() {
-		ocargo.blocklyControl.highlightIncorrectBlock(Blockly.Block.getById(id, Blockly.mainWorkspace));
+		ocargo.blocklyControl.highlightIncorrectBlock(Blockly.mainWorkspace.getBlockById(id));
 	}
 }

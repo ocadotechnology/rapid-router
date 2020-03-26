@@ -6,7 +6,7 @@
 
 {% block scripts %}
 {{block.super}}
-<script id="data"
+<script defer id="data"
 	data-path="{{level.path|trim}}"
 	data-origin="{{level.origin|trim}}"
 	data-destinations="{{level.destinations|trim}}"
@@ -50,16 +50,20 @@
     var IS_RANDOM_LEVEL = {{random_level|booltojs}};
 
     var BLOCKS =  [];
+    var maxInstances = {};
     {% for block in blocks %}
       BLOCKS.push({'type':"{{block.type}}"{% if block.number %}, 'number':{{block.number}} {% endif %}});
+      {% if block.number %}
+        maxInstances["{{block.type}}"] = {{block.number}};
+      {% endif %}
     {% endfor %}
 
-    var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none"><category name="+">';
+    var BLOCKLY_XML = '<xml id="blockly_toolbox" style="display: none">';
     for (var i = 0; i < BLOCKS.length; i++) {
         BLOCKLY_XML += '<block type="' + BLOCKS[i].type + '"></block>';
     }
 
-    BLOCKLY_XML += '</category></xml>';
+    BLOCKLY_XML += '</xml>';
     var MAX_FUEL = {{level.max_fuel}};
     var DIRECT_DRIVE = {{level.direct_drive|booltojs}};
     var NEXT_EPISODE = {% if level.episode.next_episode == None %}null{% else %}"{{level.episode.next_episode.id}}"{% endif %};
@@ -72,50 +76,48 @@
   </script>
 
 
-  <script type="text/javascript" src="{% static 'game/js/utils.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/skulpt/python.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/python_compressed.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/howler.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/utils.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/skulpt/codemirror.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/skulpt/python.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blockly/javascript_compressed.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blockly/python_compressed.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blockly/msg/js/en.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/raphael.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/howler.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/fpsmeter.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/drawingConstants.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/character.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/tab.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/pythonControl.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blocklyCustomisations.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/blocklyMessages.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/cow.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/destination.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/event.js' %}"></script>
 
-  <script type="text/javascript" src="{% static 'game/js/fpsmeter.js' %}"></script>
-
-  <script type="text/javascript" src="{% static 'game/js/drawingConstants.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/character.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/drawing.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/tab.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/messages.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/animation.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/pythonControl.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyControl.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyCustomisations.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/blocklyMessages.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/map.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/cow.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/trafficLight.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/destination.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/van.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/node.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/coordinate.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
-  <script type="text/javascript" src="{% static 'game/js/event.js' %}"></script>
-
-  <script type="text/javascript">
+  <script defer type="text/javascript">
     $(function() {
       document.addEventListener('fps', function(e) {
         document.getElementById('fps').innerHTML = e.fps + ' fps';
@@ -228,14 +230,6 @@
       </label>
     </div>
 
-    <!-- <div class="tab">
-      <input type="radio" name="tabs" id="print_radio">
-      <label for="print_radio">
-        <img src='{% static "game/image/icons/print.svg" %}'>
-        <span>Print</span>
-      </label>
-    </div> -->
-
     <div class="tab_break"></div>
 
     <div id="help_tab" class="tab selectable">
@@ -285,7 +279,6 @@
 
   </div>
 
-
   <div id="right">
     <div id="tab_panes" class='no-print'>
 
@@ -296,7 +289,7 @@
 
         <div id="blockCountDiv"></div>
 
-        <div id="blockly_holder" style='width: calc(100% + 55px); margin-left: -55px; {% if level.pythonViewEnabled %} height: 50%{% endif %}'></div>
+        <div id="blockly_holder" style='width: calc(100%); {% if level.pythonViewEnabled %} height: 50%{% endif %}'></div>
 
         <div {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
           <p>{% trans "This is what your program would look like in Python:" %}</p>

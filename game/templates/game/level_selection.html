@@ -38,7 +38,7 @@
 {% endblock %}
 
 {% block nav_ocargo_levels %}
-<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #0c52a3;" href="{% url 'game.views.level_selection.levels' %}">{% trans "Levels" %}</a>
+<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #0c52a3;" href="{% url 'levels' %}">{% trans "Levels" %}</a>
 {% endblock nav_ocargo_levels %}
 
 {% block content %}
@@ -74,7 +74,7 @@
 
                     {% if episode.random_levels_enabled %}
                     <p>
-                        <a href="{% url 'game.views.level_selection.random_level_for_episode' episode.id %}">
+                        <a href="{% url 'random_level_for_episode' episode.id %}">
                         {% trans "Random: Try your hand at a random level." %}
                         </a>
                     </p>
@@ -85,7 +85,6 @@
         {% endfor %}
 
         {% if user|is_logged_in %}
-
         <div class="panel">
             <div class="panel-header customLevelsEpisode" id="episode-levels-created-by-you">
                 <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
@@ -136,9 +135,7 @@
                 </div>
             </div>
         </div>
-
         {% endif %}
-
     </div>
 </div>
 <br>

@@ -1,7 +1,7 @@
 /*
 Code for Life
 
-Copyright (C) 2016, Ocado Innovation Limited
+Copyright (C) 2019, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -513,7 +513,7 @@ ocargo.LevelEditor = function() {
 
                 for (var i = 0; i < BLOCKS.length; i++) {
                     var type = BLOCKS[i];
-                    var block = Blockly.Block.obtain(Blockly.mainWorkspace, type);
+                    var block = Blockly.mainWorkspace.newBlock(type);
                     block.initSvg();
                     block.render();
 

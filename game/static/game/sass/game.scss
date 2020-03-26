@@ -1,6 +1,6 @@
 /* Code for Life
 
-Copyright (C) 2018, Ocado Innovation Limited
+Copyright (C) 2019, Ocado Innovation Limited
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as
@@ -37,8 +37,6 @@ identified as the original program.
 @import 'foundation_overrides';
 @import '../../scss/foundation';
 @import 'variables';
-@import '../../bourbon/bourbon';
-@import '../../foundation-icons.scss';
 
 .size-12 { font-size: 12px; }
 
@@ -251,92 +249,6 @@ identified as the original program.
   color: $pagination-link-font-color;
 }
 
-.nuit-loader {
-
-  display: inline-block;
-  position: relative;
-
-  .nuit-loader-text {
-    display: inline-block;
-    margin-top: 0.5em;
-  }
-
-  .container {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    @include animation(rotate 2.4s linear infinite);
-  }
-
-  .dotwrap {
-    width: 40%;
-    height: 100%;
-    position: absolute;
-    left: 50%;
-    margin-left: -20%;
-    top: 50%;
-    margin-top: -47%;
-    @include animation(smallbig 2.4s linear infinite);
-  }
-
-  .dot {
-    display: none;
-    width: 100%;
-    height: 100%;
-    @include transition(all 1s ease);
-    position: relative;
-    font-size: 1.2em;
-    line-height: 1;
-    @include animation(dots 2.4s linear infinite);
-
-    &:after {
-      content: $loader-subicon;
-    }
-  }
-
-  @for $i from 1 through length($loader-colors) {
-    .dotwrap:nth-child(#{length($loader-colors)}n+#{$i}) {
-      @include transform(rotate(#{360 / length($loader-colors) * $i}deg));
-      .dot {
-        display: block;
-        color: nth($loader-colors, $i);
-      }
-    }
-  }
-
-}
-
-@include keyframes(rotate) {
-  0% { @include transform(rotate(0)); }
-  100% { @include transform(rotate(360deg)); }
-}
-@include keyframes(smallbig) {
-  50% { height: 40%;  margin-top: -20%; }
-}
-@include keyframes(dots) {
-  50% { opacity: 0.1; }
-  100% { opacity: 0.9; }
-}
-
-.nuit-loader-size16 {
-  @include nuit-loader(16px);
-}
-.nuit-loader-size32 {
-  @include nuit-loader(32px);
-}
-.nuit-loader-size48 {
-  @include nuit-loader(48px);
-}
-.nuit-loader-size64 {
-  @include nuit-loader(64px);
-}
-.nuit-loader-size80 {
-  @include nuit-loader(80px);
-}
-.nuit-loader-size96 {
-  @include nuit-loader(96px);
-}
-
 .fixed-modal {
 
   @media #{$medium-up} {
@@ -377,10 +289,6 @@ identified as the original program.
       text-align: center;
     }
 
-    .nuit-loader {
-      margin-bottom: 1em;
-    }
-
     .errorcode {
       @include pricing-table-price;
       margin-bottom: 1rem;
@@ -396,32 +304,6 @@ identified as the original program.
 
 .nuit-breadcrumbs {
   margin-bottom: 0.5em;
-}
-
-.alert-box {
-  &:before {
-    padding-right: 0.5em;
-  }
-  &.debug {
-    @include alert(
-      $bg: $iron
-    );
-    &:before {
-      @extend .fi-widget:before;
-    }
-  }
-  &.info:before {
-    @extend .fi-star:before;
-  }
-  &.success:before {
-    @extend .fi-check:before;
-  }
-  &.warning:before {
-    @extend .fi-alert:before;
-  }
-  &.alert:before {
-    @extend .fi-prohibited:before;
-  }
 }
 
 .responsive {

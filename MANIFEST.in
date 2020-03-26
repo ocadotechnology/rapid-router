@@ -2,5 +2,3 @@ include README.md
 graft game/locale
 graft game/static
 graft game/templates
-include game/_version.py
-include versioneer.py

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -41,9 +41,15 @@ from django.core.urlresolvers import reverse
 from django.test.testcases import TestCase
 from django.test.client import Client
 
+from deploy import captcha
+
 from hamcrest import *
 
-from game.tests.utils.teacher import signup_teacher_directly, create_school, add_teacher_to_school
+from game.tests.utils.teacher import (
+    signup_teacher_directly,
+    create_school,
+    add_teacher_to_school,
+)
 from portal.tests.utils.student import create_school_student_directly
 from portal.tests.utils.classes import create_class_directly
 from portal.tests.utils.organisation import create_organisation_directly
@@ -51,20 +57,47 @@ from game.tests.utils.level import create_save_level
 
 
 class LevelEditorTestCase(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED
+        captcha.CAPTCHA_ENABLED = False
+        super(LevelEditorTestCase, cls).setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        captcha.CAPTCHA_ENABLED = cls.orig_captcha_enabled
+        super(LevelEditorTestCase, cls).tearDownClass()
 
     def setUp(self):
         self.client = Client()
 
     def login(self, email, password):
-        self.client.post(reverse('login_view'), {'login-teacher_email': email, 'login-teacher_password': password,
-                                                 'login': ''}, follow=True)
+        self.client.post(
+            reverse("login_view"),
+            {
+                "login-teacher_email": email,
+                "login-teacher_password": password,
+                "login": "",
+                "g-recaptcha-response": "something",
+            },
+            follow=True,
+        )
 
     def student_login(self, name, access_code, password):
-        self.client.post(reverse('login_view'), {'login-name': name, 'login-access_code': access_code,
-                                                 'login-password': password, 'school_login': ''}, follow=True)
+        self.client.post(
+            reverse("login_view"),
+            {
+                "login-name": name,
+                "login-access_code": access_code,
+                "login-password": password,
+                "school_login": "",
+                "g-recaptcha-response": "something",
+            },
+            follow=True,
+        )
 
     def get_sharing_information(self, level_id):
-        url = reverse('get_sharing_information_for_editor', args=[level_id])
+        url = reverse("get_sharing_information_for_editor", args=[level_id])
         response = self.client.get(url)
         return response
 
@@ -75,22 +108,76 @@ class LevelEditorTestCase(TestCase):
         student_name, student_password, _ = create_school_student_directly(access_code)
 
         self.student_login(student_name, access_code, student_password)
-        url = reverse('save_level_for_editor')
+        url = reverse("save_level_for_editor")
         data1 = {
-            u'origin': u'{"coordinate":[3,5],"direction":"S"}',
-            u'pythonEnabled': False, u'decor': [], u'blocklyEnabled': True,
-            u'blocks': [{u'type': u'move_forwards'}, {u'type': u'turn_left'}, {u'type': u'turn_right'}],
-            u'max_fuel': u'50', u'pythonViewEnabled': False, u'character': u'3', u'name': u'abc', u'theme': 1,
-            u'anonymous': False, u'cows': u'[]',
-            u'path': u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'u'"connectedNodes":[0]}]',
-            u'traffic_lights': u'[]', u'destinations': u'[[3,4]]'
+            u"origin": u'{"coordinate":[3,5],"direction":"S"}',
+            u"pythonEnabled": False,
+            u"decor": [],
+            u"blocklyEnabled": True,
+            u"blocks": [
+                {u"type": u"move_forwards"},
+                {u"type": u"turn_left"},
+                {u"type": u"turn_right"},
+            ],
+            u"max_fuel": u"50",
+            u"pythonViewEnabled": False,
+            u"character": u"3",
+            u"name": u"abc",
+            u"theme": 1,
+            u"anonymous": False,
+            u"cows": u"[]",
+            u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
+            u'"connectedNodes":[0]}]',
+            u"traffic_lights": u"[]",
+            u"destinations": u"[[3,4]]",
         }
-        response = self.client.post(url, {'data': json.dumps(data1)})
+        response = self.client.post(url, {"data": json.dumps(data1)})
 
         assert_that(response.status_code, equal_to(200))
-        sharing_info1 = json.loads(self.get_sharing_information(json.loads(response.content)['id']).getvalue())
-        assert_that(sharing_info1['teacher']['shared'], equal_to(True))
+        sharing_info1 = json.loads(
+            self.get_sharing_information(json.loads(response.content)["id"]).getvalue()
+        )
+        assert_that(sharing_info1["teacher"]["shared"], equal_to(True))
         assert_that(len(mail.outbox), equal_to(1))
+
+    def test_anonymous_level_saving_school_student(self):
+        _, email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        _, class_name, access_code = create_class_directly(email)
+        student_name, student_password, _ = create_school_student_directly(access_code)
+
+        self.student_login(student_name, access_code, student_password)
+        url = reverse("save_level_for_editor")
+        data1 = {
+            u"origin": u'{"coordinate":[3,5],"direction":"S"}',
+            u"pythonEnabled": False,
+            u"decor": [],
+            u"blocklyEnabled": True,
+            u"blocks": [
+                {u"type": u"move_forwards"},
+                {u"type": u"turn_left"},
+                {u"type": u"turn_right"},
+            ],
+            u"max_fuel": u"50",
+            u"pythonViewEnabled": False,
+            u"character": u"3",
+            u"name": u"abc",
+            u"theme": 1,
+            u"anonymous": True,
+            u"cows": u"[]",
+            u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
+            u'"connectedNodes":[0]}]',
+            u"traffic_lights": u"[]",
+            u"destinations": u"[[3,4]]",
+        }
+        response = self.client.post(url, {"data": json.dumps(data1)})
+
+        assert_that(response.status_code, equal_to(200))
+        sharing_info1 = json.loads(
+            self.get_sharing_information(json.loads(response.content)["id"]).getvalue()
+        )
+        assert_that(sharing_info1["teacher"]["shared"], equal_to(True))
+        assert_that(len(mail.outbox), equal_to(0))
 
     def test_level_sharing_with_no_school(self):
         teacher1, email1, password1 = signup_teacher_directly()
@@ -100,7 +187,7 @@ class LevelEditorTestCase(TestCase):
         level_id = create_save_level(teacher1)
 
         sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
-        assert_that(len(sharing_info1['teachers']), equal_to(0))
+        assert_that(len(sharing_info1["teachers"]), equal_to(0))
 
     def test_level_sharing_with_school(self):
         teacher1, email1, password1 = signup_teacher_directly()
@@ -114,7 +201,7 @@ class LevelEditorTestCase(TestCase):
         add_teacher_to_school(teacher2, school1)
 
         sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
-        assert_that(len(sharing_info1['teachers']), equal_to(1))
+        assert_that(len(sharing_info1["teachers"]), equal_to(1))
 
     def test_level_sharing_with_empty_school(self):
         teacher1, email1, password1 = signup_teacher_directly()
@@ -127,4 +214,14 @@ class LevelEditorTestCase(TestCase):
         add_teacher_to_school(teacher1, school1)
 
         sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
-        assert_that(len(sharing_info1['teachers']), equal_to(0))
+        assert_that(len(sharing_info1["teachers"]), equal_to(0))
+
+    def test_level_loading(self):
+        teacher1, email1, password1 = signup_teacher_directly()
+
+        self.login(email1, password1)
+        level_id = create_save_level(teacher1)
+        url = reverse("load_level_for_editor", kwargs={"levelID": level_id})
+        response = self.client.get(url)
+
+        assert_that(response.status_code, equal_to(200))

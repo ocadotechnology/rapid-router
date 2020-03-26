@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -38,16 +38,17 @@ from game.end_to_end_tests.base_game_test import BaseGameTest
 
 
 class TestTurningAround(BaseGameTest):
-
     def test_turn_around_on_straight_road(self):
-        self.running_out_of_instructions_test(level=40, workspace_file='turn_around_on_straight_road')
+        self.running_out_of_instructions_test(
+            level=40, workspace_file="turn_around_on_straight_road"
+        )
 
     def test_turn_around_on_left_turn(self):
-        self.running_out_of_instructions_test(level=40, workspace_file='turn_around_on_left_turn')
+        self.running_out_of_instructions_test(
+            level=40, workspace_file="turn_around_on_left_turn"
+        )
 
     def test_turn_around_on_right_turn(self):
-        self.running_out_of_instructions_test(level=40, workspace_file='turn_around_on_right_turn')
-
-
-
-
+        self.running_out_of_instructions_test(
+            level=40, workspace_file="turn_around_on_right_turn"
+        )

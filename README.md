@@ -1,7 +1,7 @@
 # Rapid Router (codename: ocargo)
 
 [![Build Status](https://travis-ci.org/ocadotechnology/rapid-router.svg?branch=master)](https://travis-ci.org/ocadotechnology/rapid-router)
-[![Coverage Status](https://coveralls.io/repos/ocadotechnology/rapid-router/badge.svg?branch=master&service=github)](https://coveralls.io/github/ocadotechnology/rapid-router?branch=master)
+[![Coverage Status](https://codecov.io/gh/ocadotechnology/rapid-router/branch/master/graph/badge.svg)](https://codecov.io/gh/ocadotechnology/rapid-router)
 [![Code Climate](https://codeclimate.com/github/ocadotechnology/rapid-router/badges/gpa.svg)](https://codeclimate.com/github/ocadotechnology/rapid-router)
 [![Crowdin](https://d322cqt584bo4o.cloudfront.net/code-for-life/localized.svg)](https://crowdin.com/project/code-for-life)
 
@@ -67,7 +67,32 @@ Go to the official [Code For Life website][c4l].
     * `xcode-select --install`
     * `pyenv install 2.7.14`
 
-Finall, go to the project root and create `.ruby-version` and `.python-version`, containing the versions you installed above.
+* Finally, go to the project root and run the following commands
+  * `pyenv local 2.7.14`
+  * `rbenv local 2.2.9`   
+
+#### Mac OS Mojave
+
+##### Pillow
+On MacOS Mojave there is an error when installing `Pillow`.
+To fix this issue you need to run the following command:
+```
+sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
+``` 
+cf: https://github.com/python-pillow/Pillow/issues/3438#issuecomment-435169249
+
+##### Pyexpat
+If you have the following error: `ImportError: No module named pyexpat` when installing `pyenv 2.7.14`, then you can try using the following command:
+```
+SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk MACOSX_DEPLOYMENT_TARGET=10.14 pyenv install 2.7.14
+```
+cf: https://github.com/pyenv/pyenv/issues/1066#issuecomment-504710495
+
+##### Missing sass
+If you have the following error: `pipeline.exceptions.CompilerError: env: sass: No such file or directory`, then you need to install sass:
+```
+gem install sass
+```
 
 ### Running the Portal
 * `./run` in your rapid-router directory - This will:
@@ -88,10 +113,13 @@ Finall, go to the project root and create `.ruby-version` and `.python-version`,
 * Set your `django_language` cookie to `lol-us` to enable in-context localisation
 
 ## To contribute
-__Guidelines__ Please read the [contributing guidelines](CONTRIBUTING.md) first, thank you.
+__Guidelines__ Please read the [contributing guidelines](CONTRIBUTING.md) first, thank you.<br>
+You can also read about the [life cycle of a code change](docs/life-cycle-of-a-code-change.md).<br>
+
 __Found a problem? Please check whether it has already been reported in our [issue tracker][issues] first!__ If not,
 [add it][add-issue]. Please make sure that you give us a suitable level of detail about the symptoms and how to
-reproduce it. Please label it as a "bug".<br>
+reproduce it. Please label it as a "bug".
+
 One word of caution: please do not add any issues related to security. Evil hackers are everywhere nowadays... If you do find a security issue, let us know using our [contact form][c4l-contact-form].
 
 __Want to suggest a feature? Please check whether it has already been added to our [issue tracker][issues] first!__ if

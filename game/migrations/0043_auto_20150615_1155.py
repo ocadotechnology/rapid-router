@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -42,18 +42,15 @@ from django.conf import settings
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('game', '0042_level_score_73'),
-    ]
+    dependencies = [("game", "0042_level_score_73")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='episode',
-            name='first_level',
-        ),
+        migrations.RemoveField(model_name="episode", name="first_level"),
         migrations.AlterField(
-            model_name='level',
-            name='episode',
-            field=models.ForeignKey(default=None, blank=True, to='game.Episode', null=True),
+            model_name="level",
+            name="episode",
+            field=models.ForeignKey(
+                default=None, blank=True, to="game.Episode", null=True
+            ),
         ),
     ]

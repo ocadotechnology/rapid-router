@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -34,32 +34,34 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from builtins import str
+
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.translation import ugettext
-
-
 from portal.models import UserProfile, Student
+
 
 def theme_choices():
     from game.theme import get_all_themes
+
     return [(theme.name, theme.name) for theme in get_all_themes()]
 
 
 def character_choices():
     from game.character import get_all_character
+
     return [(character.name, character.name) for character in get_all_character()]
 
 
 class Block(models.Model):
     type = models.CharField(max_length=200)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.type
 
 
 class Episode(models.Model):
-    '''Variables prefixed with r_ signify they are parameters for random level generation'''
+    """Variables prefixed with r_ signify they are parameters for random level generation"""
 
     name = models.CharField(max_length=200)
     next_episode = models.ForeignKey("self", null=True, default=None)
@@ -70,7 +72,7 @@ class Episode(models.Model):
     r_loopiness = models.FloatField(default=0, null=True)
     r_curviness = models.FloatField(default=0, null=True)
     r_num_tiles = models.IntegerField(default=5, null=True)
-    r_blocks = models.ManyToManyField(Block, related_name='episodes')
+    r_blocks = models.ManyToManyField(Block, related_name="episodes")
     r_blocklyEnabled = models.BooleanField(default=True)
     r_pythonEnabled = models.BooleanField(default=False)
     r_trafficLights = models.BooleanField(default=False)
@@ -82,12 +84,12 @@ class Episode(models.Model):
 
     @property
     def levels(self):
-        '''Sorts the levels by integer conversion of "name" which should equate to the correct play order'''
+        """Sorts the levels by integer conversion of "name" which should equate to the correct play order"""
 
         return sorted(self.level_set.all(), key=lambda level: int(level.name))
 
-    def __unicode__(self):
-        return ugettext('Episode: %(episode_name)s') % {'episode_name': self.name}
+    def __str__(self):
+        return f"Episode: {self.name}"
 
 
 class LevelManager(models.Manager):
@@ -106,34 +108,39 @@ class Level(models.Model):
     name = models.CharField(max_length=100)
     episode = models.ForeignKey(Episode, blank=True, null=True, default=None)
     path = models.TextField(max_length=10000)
-    traffic_lights = models.TextField(max_length=10000, default='[]')
-    cows = models.TextField(max_length=10000, default='[]')
-    origin = models.CharField(max_length=50, default='[]')
-    destinations = models.CharField(max_length=50, default='[[]]')
+    traffic_lights = models.TextField(max_length=10000, default="[]")
+    cows = models.TextField(max_length=10000, default="[]")
+    origin = models.CharField(max_length=50, default="[]")
+    destinations = models.CharField(max_length=50, default="[[]]")
     default = models.BooleanField(default=False)
-    owner = models.ForeignKey(UserProfile, related_name='levels', blank=True, null=True)
+    owner = models.ForeignKey(UserProfile, related_name="levels", blank=True, null=True)
     fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
-    next_level = models.ForeignKey('self', null=True, default=None)
+    next_level = models.ForeignKey("self", null=True, default=None)
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True)
-    model_solution = models.CharField(blank=True, max_length=20, default='[]')
+    model_solution = models.CharField(blank=True, max_length=20, default="[]")
     disable_route_score = models.BooleanField(default=False)
     threads = models.IntegerField(blank=False, default=1)
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     pythonViewEnabled = models.BooleanField(default=False)
-    theme_name = models.CharField(max_length=10, choices=theme_choices(), blank=True, null=True, default=None)
-    character_name = models.CharField(max_length=20, choices=character_choices(), blank=True, null=True, default=None)
+    theme_name = models.CharField(
+        max_length=10, choices=theme_choices(), blank=True, null=True, default=None
+    )
+    character_name = models.CharField(
+        max_length=20, choices=character_choices(), blank=True, null=True, default=None
+    )
     anonymous = models.BooleanField(default=False)
     objects = LevelManager()
 
-    def __unicode__(self):
-        return ugettext('Level %(level_name)s') % {'level_name': self.name}
+    def __str__(self):
+        return f"Level {self.name}"
 
     @property
     def theme(self):
         from game.theme import get_theme
+
         try:
             return get_theme(self.theme_name)
         except KeyError:
@@ -142,11 +149,13 @@ class Level(models.Model):
     @theme.setter
     def theme(self, val):
         from game.theme import get_theme_by_pk
+
         self.theme_name = get_theme_by_pk(val.pk).name
 
     @property
     def character(self):
         from game.character import get_character
+
         try:
             return get_character(self.character_name)
         except KeyError:
@@ -155,6 +164,7 @@ class Level(models.Model):
     @character.setter
     def character(self, val):
         from game.character import get_character_by_pk
+
         self.character_name = get_character_by_pk(val.pk).name
 
 
@@ -168,24 +178,27 @@ class LevelDecor(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
     level = models.ForeignKey(Level)
-    decorName = models.CharField(max_length=100, default='tree1')
+    decorName = models.CharField(max_length=100, default="tree1")
 
 
 class Workspace(models.Model):
     name = models.CharField(max_length=200)
-    owner = models.ForeignKey(UserProfile, related_name='workspaces', blank=True, null=True)
+    owner = models.ForeignKey(
+        UserProfile, related_name="workspaces", blank=True, null=True
+    )
     contents = models.TextField(default="")
     python_contents = models.TextField(default="")
     blockly_enabled = models.BooleanField(default=False)
     python_enabled = models.BooleanField(default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.name)
+
 
 class Attempt(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
-    level = models.ForeignKey(Level, related_name='attempts')
-    student = models.ForeignKey(Student, related_name='attempts', blank=True, null=True)
+    level = models.ForeignKey(Level, related_name="attempts")
+    student = models.ForeignKey(Student, related_name="attempts", blank=True, null=True)
     finish_time = models.DateTimeField(null=True, blank=True)
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")

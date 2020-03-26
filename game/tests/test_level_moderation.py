@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2016, Ocado Innovation Limited
+# Copyright (C) 2019, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -40,12 +40,24 @@ from django.test.client import Client
 
 from hamcrest import *
 
+from deploy import captcha
+
 from portal.tests.utils.classes import create_class_directly
 from portal.tests.utils.student import create_school_student_directly
 from portal.tests.utils.teacher import signup_teacher_directly
 
 
 class LevelModerationTestCase(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED
+        captcha.CAPTCHA_ENABLED = False
+        super(LevelModerationTestCase, cls).setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        captcha.CAPTCHA_ENABLED = cls.orig_captcha_enabled
+        super(LevelModerationTestCase, cls).tearDownClass()
 
     def setUp(self):
         self.client = Client()
@@ -59,7 +71,10 @@ class LevelModerationTestCase(TestCase):
         self.login(email, password)
         response = self.students_of_class(klass)
         assert_that(response.status_code, equal_to(200))
-        assert_that(response.content, equal_to('{"%s": "%s"}' % (student.id, student_name)))
+        assert_that(
+            response.content.decode(),
+            equal_to('{"%s": "%s"}' % (student.id, student_name)),
+        )
 
     def test_moderation_another_class(self):
         email, password = signup_teacher_directly()
@@ -75,10 +90,18 @@ class LevelModerationTestCase(TestCase):
         assert_that(response.content, empty)
 
     def students_of_class(self, klass):
-        url = reverse('students_for_level_moderation', args=[klass.id])
+        url = reverse("students_for_level_moderation", args=[klass.id])
         response = self.client.get(url)
         return response
 
     def login(self, email, password):
-        self.client.post(reverse('login_view'), {'login-teacher_email': email, 'login-teacher_password': password, 'login': ''}, follow=True)
-
+        self.client.post(
+            reverse("login_view"),
+            {
+                "login-teacher_email": email,
+                "login-teacher_password": password,
+                "login": "",
+                "g-recaptcha-response": "something",
+            },
+            follow=True,
+        )
