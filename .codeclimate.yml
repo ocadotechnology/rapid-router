@@ -15,8 +15,6 @@ engines:
     enabled: true
   scss-lint:
     enabled: true
-exclude_paths:
-  - "game/static/game/css/jquery**"
 ratings:
   paths:
   - "**.css"
