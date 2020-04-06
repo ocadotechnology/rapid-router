@@ -309,6 +309,10 @@ def generate_random_map_for_editor(request):
 def get_sharing_information_for_editor(request, levelID):
     """ Returns a information about who the level can be and is shared with """
     level = get_object_or_404(Level, id=levelID)
+
+    if not level.owner == request.user.userprofile:
+        return HttpResponseUnauthorized()
+
     valid_recipients = {}
 
     if permissions.can_share_level(request.user, level):
@@ -395,6 +399,10 @@ def share_level_for_editor(request, levelID):
     action = request.POST.get("action")
 
     level = get_object_or_404(Level, id=levelID)
+
+    if not level.owner == request.user.userprofile:
+        return HttpResponseUnauthorized()
+
     recipients = User.objects.filter(id__in=recipientIDs)
 
     def can_share_level_with(r):
