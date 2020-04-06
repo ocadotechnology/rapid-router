@@ -393,6 +393,18 @@ def get_sharing_information_for_editor(request, levelID):
     )
 
 
+def _get_users_to_share_level_with(recipients, level):
+    return [
+        recipient.userprofile.user
+        for recipient in recipients
+        if _can_share_level_with(recipient, level)
+    ]
+
+
+def _can_share_level_with(recipient, level):
+    return permissions.can_share_level_with(recipient, level.owner.user)
+
+
 def share_level_for_editor(request, levelID):
     """ Shares a level with the provided list of recipients """
     recipientIDs = request.POST.getlist("recipientIDs[]")
@@ -405,14 +417,7 @@ def share_level_for_editor(request, levelID):
 
     recipients = User.objects.filter(id__in=recipientIDs)
 
-    def can_share_level_with(r):
-        return permissions.can_share_level_with(r, level.owner.user)
-
-    users = [
-        recipient.userprofile.user
-        for recipient in recipients
-        if can_share_level_with(recipient)
-    ]
+    users = _get_users_to_share_level_with(recipients, level)
 
     if action == "share":
         level_management.share_level(level, *users)
