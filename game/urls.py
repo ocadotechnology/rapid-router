@@ -69,7 +69,7 @@ from game.views.level_editor import (
     load_level_for_editor,
     save_level_for_editor,
     generate_random_map_for_editor,
-    GetSharingInformationForEditor,
+    SharingInformationForEditor,
     ShareLevelView,
     play_anonymous_level,
     owned_levels,
@@ -194,7 +194,7 @@ urlpatterns = [
                 ),
                 url(
                     r"^get_sharing_information/(?P<levelID>[0-9]+)/$",
-                    GetSharingInformationForEditor.as_view(),
+                    SharingInformationForEditor.as_view(),
                     name="get_sharing_information_for_editor",
                 ),
                 url(

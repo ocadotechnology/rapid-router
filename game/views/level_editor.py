@@ -310,7 +310,7 @@ def generate_random_map_for_editor(request):
     return HttpResponse(json.dumps(data), content_type="application/javascript")
 
 
-class GetSharingInformationForEditor(APIView):
+class SharingInformationForEditor(APIView):
     """Returns a information about who the level can be and is shared with. This uses
     the CanShareLevel permission."""
 
@@ -417,7 +417,7 @@ class ShareLevelView(APIView):
         Gets the level id and recipient ids from the request, and shares or
         unshares the level according to the action from the request.
         :param request: the post request sent to the view.
-        :return a call to the GetSharingInformationForEditor class to update the
+        :return a call to the SharingInformationForEditor class to return the new
         sharing information of the level.
         """
         levelID = kwargs["levelID"]
@@ -434,7 +434,7 @@ class ShareLevelView(APIView):
         elif action == "unshare":
             level_management.unshare_level(level, *users)
 
-        return GetSharingInformationForEditor().get(request, levelID=levelID)
+        return SharingInformationForEditor().get(request, levelID=levelID)
 
     def _get_users_to_share_level_with(self, recipients):
         """
