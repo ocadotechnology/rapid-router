@@ -36,24 +36,22 @@
 # identified as the original program.
 import json
 
+from deploy import captcha
 from django.core import mail
 from django.core.urlresolvers import reverse
-from django.test.testcases import TestCase
 from django.test.client import Client
-
-from deploy import captcha
-
+from django.test.testcases import TestCase
 from hamcrest import *
+from portal.tests.utils.classes import create_class_directly
+from portal.tests.utils.organisation import create_organisation_directly
+from portal.tests.utils.student import create_school_student_directly
 
+from game.tests.utils.level import create_save_level
 from game.tests.utils.teacher import (
     signup_teacher_directly,
     create_school,
     add_teacher_to_school,
 )
-from portal.tests.utils.student import create_school_student_directly
-from portal.tests.utils.classes import create_class_directly
-from portal.tests.utils.organisation import create_organisation_directly
-from game.tests.utils.level import create_save_level
 
 
 class LevelEditorTestCase(TestCase):
@@ -106,7 +104,7 @@ class LevelEditorTestCase(TestCase):
 
     def share_level_for_editor(self, level_id):
         url = reverse("share_level_for_editor", args=[level_id])
-        response = self.client.get(url)
+        response = self.client.post(url)
         return response
 
     def test_level_saving_school_student(self):
@@ -237,13 +235,11 @@ class LevelEditorTestCase(TestCase):
         self.logout()
         self.login(email2, password2)
 
-        response = self.share_level_for_editor(level_id)
+        url = reverse("share_level_for_editor", args=[level_id])
+        data = {u"recipientIDs[]": [teacher2.id], u"action": ["share"]}
+        response = self.client.post(url, {"data": data})
 
-        assert_that(response.status_code, equal_to(401))
-
-        response = self.get_sharing_information(level_id)
-
-        assert_that(response.status_code, equal_to(401))
+        assert_that(response.status_code, equal_to(403))
 
     def test_level_loading(self):
         teacher1, email1, password1 = signup_teacher_directly()
