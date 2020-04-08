@@ -156,9 +156,9 @@ class CanShareLevelWith(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         sharer = request.user
-        return self.can_share_level_with(sharer, obj)
+        return self.can_share_level_with(obj, sharer)
 
-    def can_share_level_with(self, sharer, recipient):
+    def can_share_level_with(self, recipient, sharer):
         if recipient.is_anonymous() or sharer.is_anonymous():
             return False
 
