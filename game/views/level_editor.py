@@ -314,6 +314,7 @@ def generate_random_map_for_editor(request):
 class SharingInformationForEditor(APIView):
     """Returns a information about who the level can be and is shared with. This uses
     the CanShareLevel permission."""
+
     authentication_classes = (SessionAuthentication,)
     permission_classes = (permissions.CanShareLevel,)
 
@@ -410,6 +411,7 @@ class SharingInformationForEditor(APIView):
 
 class ShareLevelView(APIView):
     """Handles the sharing request of a level."""
+
     authentication_classes = (SessionAuthentication,)
     permission_classes = [permissions.CanShareLevel, permissions.CanShareLevelWith]
 
