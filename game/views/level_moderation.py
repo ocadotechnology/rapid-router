@@ -146,7 +146,9 @@ def level_moderation(request):
                     users_shared_with = [
                         user
                         for user in level.shared_with.all()
-                        if permissions.can_share_level_with(user, owner.user)
+                        if permissions.CanShareLevelWith().can_share_level_with(
+                            user, owner.user
+                        )
                         and user != owner.user
                     ]
 
