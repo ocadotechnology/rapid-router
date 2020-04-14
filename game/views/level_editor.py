@@ -50,6 +50,7 @@ from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_POST
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 
 import game.level_management as level_management
@@ -314,6 +315,7 @@ class SharingInformationForEditor(APIView):
     """Returns a information about who the level can be and is shared with. This uses
     the CanShareLevel permission."""
 
+    authentication_classes = (SessionAuthentication,)
     permission_classes = (permissions.CanShareLevel,)
 
     def get(self, request, **kwargs):
@@ -410,6 +412,7 @@ class SharingInformationForEditor(APIView):
 class ShareLevelView(APIView):
     """Handles the sharing request of a level."""
 
+    authentication_classes = (SessionAuthentication,)
     permission_classes = [permissions.CanShareLevel, permissions.CanShareLevelWith]
 
     def post(self, request, **kwargs):
