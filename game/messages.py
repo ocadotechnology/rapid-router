@@ -2071,9 +2071,7 @@ def description_level92():
     message = ugettext(
         "Now you are coding in Python! This is what real developers do!! To start you off, "
         + "the van object has been created for you already. Under this you need to add the "
-        + "correct Python statements to instruct the van to drive to the destination.<br>"
-        + "For more information about coding in Python refer to "
-        + "<a href='http://www.diveintopython.net/' target='_blank'>www.diveintopython.net</a>."
+        + "correct Python statements to instruct the van to drive to the destination."
     )
     return build_description(title_level92(), message)
 
