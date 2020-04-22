@@ -47,8 +47,11 @@ from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.safestring import mark_safe
+from django.views.decorators.http import require_POST
 from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.views import APIView
 
 import game.level_management as level_management
 import game.messages as messages
@@ -233,6 +236,7 @@ def load_level_for_editor(request, levelID):
 
 
 @transaction.atomic
+@require_POST
 def save_level_for_editor(request, levelId=None):
     """ Processes a request on creation of the map in the level editor """
     data = json.loads(request.POST["data"])
@@ -286,6 +290,7 @@ def delete_level_for_editor(request, levelId):
     return HttpResponse(json.dumps({}), content_type="application/javascript")
 
 
+@require_POST
 def generate_random_map_for_editor(request):
     """
     Generates a new random path suitable for a random level with the parameters provided
@@ -306,12 +311,27 @@ def generate_random_map_for_editor(request):
     return HttpResponse(json.dumps(data), content_type="application/javascript")
 
 
-def get_sharing_information_for_editor(request, levelID):
-    """ Returns a information about who the level can be and is shared with """
-    level = get_object_or_404(Level, id=levelID)
-    valid_recipients = {}
+class SharingInformationForEditor(APIView):
+    """Returns a information about who the level can be and is shared with. This uses
+    the CanShareLevel permission."""
 
-    if permissions.can_share_level(request.user, level):
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.CanShareLevel,)
+
+    def get(self, request, **kwargs):
+        """
+        Gets a level's information of who it is and can be shared with. How it works:
+        - if the requester is a student, get all their classmates and their teacher.
+        - if the requester is a teacher, get all their students and their colleagues.
+        :param request: GET request made by user.
+        :param kwargs: In this case, houses the level ID.
+        :return: A HttpResponse with the data in JSON format.
+        """
+        levelID = kwargs["levelID"]
+        level = get_object_or_404(Level, id=levelID)
+
+        self.check_object_permissions(request, level)
+
         userprofile = request.user.userprofile
         valid_recipients = {}
 
@@ -384,34 +404,65 @@ def get_sharing_information_for_editor(request, levelID):
                     if teacher != fellow_teacher
                 ]
 
-    return HttpResponse(
-        json.dumps(valid_recipients), content_type="application/javascript"
-    )
+        return HttpResponse(
+            json.dumps(valid_recipients), content_type="application/javascript"
+        )
 
 
-def share_level_for_editor(request, levelID):
-    """ Shares a level with the provided list of recipients """
-    recipientIDs = request.POST.getlist("recipientIDs[]")
-    action = request.POST.get("action")
+class ShareLevelView(APIView):
+    """Handles the sharing request of a level."""
 
-    level = get_object_or_404(Level, id=levelID)
-    recipients = User.objects.filter(id__in=recipientIDs)
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = [permissions.CanShareLevel, permissions.CanShareLevelWith]
 
-    def can_share_level_with(r):
-        return permissions.can_share_level_with(r, level.owner.user)
+    def post(self, request, **kwargs):
+        """
+        Gets the level id and recipient ids from the request, and shares or
+        unshares the level according to the action from the request.
+        :param request: the post request sent to the view.
+        :return a call to the SharingInformationForEditor class to return the new
+        sharing information of the level.
+        """
+        levelID = kwargs["levelID"]
+        recipientIDs = request.POST.getlist("recipientIDs[]")
+        action = request.POST.get("action")
 
-    users = [
-        recipient.userprofile.user
-        for recipient in recipients
-        if can_share_level_with(recipient)
-    ]
+        level = get_object_or_404(Level, id=levelID)
 
-    if action == "share":
-        level_management.share_level(level, *users)
-    elif action == "unshare":
-        level_management.unshare_level(level, *users)
+        recipients = User.objects.filter(id__in=recipientIDs)
+        users = self._get_users_to_share_level_with(recipients)
 
-    return get_sharing_information_for_editor(request, levelID)
+        if action == "share":
+            level_management.share_level(level, *users)
+        elif action == "unshare":
+            level_management.unshare_level(level, *users)
+
+        return SharingInformationForEditor().get(request, levelID=levelID)
+
+    def _get_users_to_share_level_with(self, recipients):
+        """
+        Gets a list of users that the level can be shared with - this is done by
+        checking the list of requested users against the sharing permission.
+        :param recipients: List of recipients the user wants to share the level with.
+        :return: A list of users which the requester is authorised to share the level
+        with.
+        """
+        return [
+            recipient.userprofile.user
+            for recipient in recipients
+            if self._can_share_level_with(recipient)
+        ]
+
+    def _can_share_level_with(self, recipient):
+        """
+        Checks whether the requester can share a level with a specific user. Calls the
+        CanShareLevelWith permission.
+        :param recipient: User that the requester wants to share a level with.
+        :return: A boolean of whether the requester has permission.
+        """
+        return permissions.CanShareLevelWith().has_object_permission(
+            self.request, self, recipient
+        )
 
 
 class HttpResponseUnauthorized(HttpResponse):

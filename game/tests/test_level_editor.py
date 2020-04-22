@@ -36,24 +36,22 @@
 # identified as the original program.
 import json
 
+from deploy import captcha
 from django.core import mail
 from django.core.urlresolvers import reverse
-from django.test.testcases import TestCase
 from django.test.client import Client
-
-from deploy import captcha
-
+from django.test.testcases import TestCase
 from hamcrest import *
+from portal.tests.utils.classes import create_class_directly
+from portal.tests.utils.organisation import create_organisation_directly
+from portal.tests.utils.student import create_school_student_directly
 
+from game.tests.utils.level import create_save_level
 from game.tests.utils.teacher import (
     signup_teacher_directly,
     create_school,
     add_teacher_to_school,
 )
-from portal.tests.utils.student import create_school_student_directly
-from portal.tests.utils.classes import create_class_directly
-from portal.tests.utils.organisation import create_organisation_directly
-from game.tests.utils.level import create_save_level
 
 
 class LevelEditorTestCase(TestCase):
@@ -83,6 +81,9 @@ class LevelEditorTestCase(TestCase):
             follow=True,
         )
 
+    def logout(self):
+        self.client.post(reverse("logout_view"), follow=True)
+
     def student_login(self, name, access_code, password):
         self.client.post(
             reverse("login_view"),
@@ -99,6 +100,11 @@ class LevelEditorTestCase(TestCase):
     def get_sharing_information(self, level_id):
         url = reverse("get_sharing_information_for_editor", args=[level_id])
         response = self.client.get(url)
+        return response
+
+    def share_level_for_editor(self, level_id):
+        url = reverse("share_level_for_editor", args=[level_id])
+        response = self.client.post(url)
         return response
 
     def test_level_saving_school_student(self):
@@ -215,6 +221,25 @@ class LevelEditorTestCase(TestCase):
 
         sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
         assert_that(len(sharing_info1["teachers"]), equal_to(0))
+
+    def test_level_can_only_be_shared_by_owner(self):
+        teacher1, email1, password1 = signup_teacher_directly()
+        teacher2, email2, password2 = signup_teacher_directly()
+
+        self.login(email1, password1)
+        level_id = create_save_level(teacher1)
+
+        school1 = create_school()
+        add_teacher_to_school(teacher1, school1)
+
+        self.logout()
+        self.login(email2, password2)
+
+        url = reverse("share_level_for_editor", args=[level_id])
+        data = {u"recipientIDs[]": [teacher2.id], u"action": ["share"]}
+        response = self.client.post(url, {"data": data})
+
+        assert_that(response.status_code, equal_to(403))
 
     def test_level_loading(self):
         teacher1, email1, password1 = signup_teacher_directly()

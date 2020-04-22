@@ -34,13 +34,13 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
 
-from builtins import next
 from builtins import map
-from builtins import str
+from builtins import next
 from builtins import object
+from builtins import str
 from datetime import timedelta
 
 from django.http import Http404
@@ -50,10 +50,10 @@ from portal.models import Class, Teacher, Student
 
 import game.messages as messages
 import game.permissions as permissions
-from . import level_selection
 from game.forms import ScoreboardForm
 from game.models import Level, Attempt, sort_levels
 from game.views.scoreboard_csv import scoreboard_csv
+from . import level_selection
 from .helper import renderError
 
 Single_Level_Header = [
@@ -191,7 +191,7 @@ def data_and_headers_for(students, level_ids):
 
 
 def to_name(level):
-    return level.__unicode__()
+    return level.__str__()
 
 
 def sorted_levels_by(level_ids):
