@@ -216,7 +216,7 @@ class BaseGameTest(SeleniumTestCase):
             create_organisation_directly(email)
             klass, name, access_code = create_class_directly(email)
             create_school_student_directly(access_code)
-            login_page = self.go_to_homepage().go_to_login_page()
+            login_page = self.go_to_homepage().go_to_teacher_login_page()
             login_page.login(email, password)
             email = email
             BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
