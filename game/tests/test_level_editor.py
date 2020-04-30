@@ -88,10 +88,9 @@ class LevelEditorTestCase(TestCase):
         self.client.post(
             reverse("student_login"),
             {
-                "login-name": name,
-                "login-access_code": access_code,
-                "login-password": password,
-                "school_login": "",
+                "username": name,
+                "access_code": access_code,
+                "password": password,
                 "g-recaptcha-response": "something",
             },
             follow=True,
