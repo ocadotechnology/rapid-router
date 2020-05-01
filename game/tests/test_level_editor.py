@@ -71,11 +71,11 @@ class LevelEditorTestCase(TestCase):
 
     def login(self, email, password):
         self.client.post(
-            reverse("login_view"),
+            reverse("teacher_login"),
             {
-                "login-teacher_email": email,
-                "login-teacher_password": password,
-                "login": "",
+                "auth-username": email,
+                "auth-password": password,
+                "teacher_login_view-current_step": "auth",
                 "g-recaptcha-response": "something",
             },
             follow=True,
@@ -86,12 +86,11 @@ class LevelEditorTestCase(TestCase):
 
     def student_login(self, name, access_code, password):
         self.client.post(
-            reverse("login_view"),
+            reverse("student_login"),
             {
-                "login-name": name,
-                "login-access_code": access_code,
-                "login-password": password,
-                "school_login": "",
+                "username": name,
+                "access_code": access_code,
+                "password": password,
                 "g-recaptcha-response": "something",
             },
             follow=True,

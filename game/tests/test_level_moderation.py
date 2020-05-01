@@ -96,11 +96,11 @@ class LevelModerationTestCase(TestCase):
 
     def login(self, email, password):
         self.client.post(
-            reverse("login_view"),
+            reverse("teacher_login"),
             {
-                "login-teacher_email": email,
-                "login-teacher_password": password,
-                "login": "",
+                "auth-username": email,
+                "auth-password": password,
+                "teacher_login_view-current_step": "auth",
                 "g-recaptcha-response": "something",
             },
             follow=True,
