@@ -2767,7 +2767,7 @@ ocargo.LevelEditor = function() {
                     student_login_url: '<a href="' + Urls.student_login() + '">' + pgettext('login_url', 'student') + '</a>',
                     teacher_login_url: '<a href="' + Urls.teacher_login() + '">' + pgettext('login_url', 'teacher') + '</a>',
                     independent_login_url: '<a href="' + Urls.independent_student_login() + '">'
-                        + pgettext('login_url', 'independent user') + '</a>'
+                        + pgettext('login_url', 'independent student') + '</a>'
                 }, true));
                 return notLoggedInMessages.join(' ');
             };
