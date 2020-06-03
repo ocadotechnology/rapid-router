@@ -1,4 +1,4 @@
-FROM python:2.7.14-stretch
+FROM python:3.7-slim-stretch@sha256:fdded80ae770ada550d33964ea383696c44548f76cbf4b07c4b4743a8e4a1045
 
 
 # install python 2.7
