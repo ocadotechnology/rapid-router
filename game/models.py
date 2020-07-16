@@ -38,7 +38,7 @@ from builtins import str
 
 from django.contrib.auth.models import User
 from django.db import models
-from portal.models import UserProfile, Student
+from common.models import UserProfile, Student
 
 
 def theme_choices():
