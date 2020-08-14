@@ -39,7 +39,7 @@ jobs:
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
         - python example_project/manage.py collectstatic --noinput --settings test_settings
       script:
-        - SELENIUM_HEADLESS=True pytest --cov=. --cov-report=xml
+        - pytest --cov=. --cov-report=xml
       after_success:
         - bash <(curl -s https://codecov.io/bash)
 
