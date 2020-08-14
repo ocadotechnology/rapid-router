@@ -37,7 +37,7 @@ jobs:
         - wget https://chromedriver.storage.googleapis.com/83.0.4103.39/chromedriver_linux64.zip
         - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python3.6.7/bin/
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-        - python example_project/manage.py collectstatic --noinput --settings test_settings
+        - python example_project/manage.py collectstatic --noinput
       script:
         - pytest --cov=. --cov-report=xml
       after_success:
