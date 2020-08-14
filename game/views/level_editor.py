@@ -41,6 +41,7 @@ import re
 from builtins import map
 from builtins import str
 
+from common.models import Student, Class, Teacher
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import transaction
@@ -48,7 +49,6 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_POST
-from portal.models import Student, Class, Teacher
 from portal.templatetags import app_tags
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
