@@ -34,13 +34,13 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from builtins import str
 import os
 import socket
-import time
+from builtins import str
 
+import time
+from common.models import UserProfile
 from django.core.urlresolvers import reverse
-from portal.models import UserProfile
 from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.utils.classes import create_class_directly
 from portal.tests.utils.organisation import create_organisation_directly

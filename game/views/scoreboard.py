@@ -43,10 +43,10 @@ from builtins import object
 from builtins import str
 from datetime import timedelta
 
+from common.models import Class, Teacher, Student
 from django.http import Http404
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy
-from portal.models import Class, Teacher, Student
 
 import game.messages as messages
 import game.permissions as permissions

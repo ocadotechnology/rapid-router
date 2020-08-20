@@ -34,15 +34,15 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
 
 import json
 
+from common.models import Student, Class
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext
-from portal.models import Student, Class
 from portal.templatetags import app_tags
 
 import game.messages as messages

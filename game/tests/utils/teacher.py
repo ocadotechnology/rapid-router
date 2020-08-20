@@ -34,14 +34,14 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from builtins import range
+import email
 import random
 import string
-from django.core import mail
-import sys
-import email
+from builtins import range
 
-from portal.models import Teacher, School
+import sys
+from common.models import Teacher, School
+from django.core import mail
 from portal.helpers.emails import generate_token
 
 
