@@ -49,7 +49,7 @@ from game.messages import (
     level_creation_email_text_content,
 )
 
-from portal.helpers.emails import NOTIFICATION_EMAIL, send_email
+from common.helpers.emails import NOTIFICATION_EMAIL, send_email
 
 
 ##########

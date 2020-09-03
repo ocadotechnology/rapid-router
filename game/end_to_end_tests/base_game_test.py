@@ -36,18 +36,19 @@
 # identified as the original program.
 import os
 import socket
+import time
 from builtins import str
 
-import time
 from common.models import UserProfile
+from common.tests.utils.classes import create_class_directly
+from common.tests.utils.student import create_school_student_directly
 from django.core.urlresolvers import reverse
-from portal.tests.pageObjects.portal.home_page import HomePage
-from portal.tests.utils.classes import create_class_directly
-from portal.tests.utils.organisation import create_organisation_directly
-from portal.tests.utils.student import create_school_student_directly
-from portal.tests.utils.teacher import signup_teacher_directly
 
 from game.models import Workspace
+from portal.tests.pageObjects.portal.home_page import HomePage
+from portal.tests.utils.organisation import create_organisation_directly
+from portal.tests.utils.teacher import signup_teacher_directly
+
 from . import custom_handler
 from .editor_page import EditorPage
 from .game_page import GamePage

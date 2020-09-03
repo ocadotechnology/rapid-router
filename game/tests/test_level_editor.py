@@ -36,22 +36,19 @@
 # identified as the original program.
 import json
 
-from deploy import captcha
+from common.tests.utils.classes import create_class_directly
+from common.tests.utils.student import create_school_student_directly
 from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 from django.test.testcases import TestCase
 from hamcrest import *
-from portal.tests.utils.classes import create_class_directly
-from portal.tests.utils.organisation import create_organisation_directly
-from portal.tests.utils.student import create_school_student_directly
 
+from deploy import captcha
 from game.tests.utils.level import create_save_level
-from game.tests.utils.teacher import (
-    signup_teacher_directly,
-    create_school,
-    add_teacher_to_school,
-)
+from game.tests.utils.teacher import (add_teacher_to_school, create_school,
+                                      signup_teacher_directly)
+from portal.tests.utils.organisation import create_organisation_directly
 
 
 class LevelEditorTestCase(TestCase):

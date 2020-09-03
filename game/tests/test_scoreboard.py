@@ -36,27 +36,23 @@
 # identified as the original program.
 from __future__ import unicode_literals
 
-from builtins import map
-from builtins import object
-from builtins import range
-from datetime import timedelta, datetime
+from builtins import map, object, range
+from datetime import datetime, timedelta
 
 from common.models import Class
+from common.tests.utils.classes import create_class_directly
+from common.tests.utils.student import create_school_student_directly
 from django.core.urlresolvers import reverse
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.utils.timezone import utc
 from hamcrest import *
-from portal.tests.utils.classes import create_class_directly
-from portal.tests.utils.organisation import create_organisation_directly
-from portal.tests.utils.student import create_school_student_directly
-from portal.tests.utils.teacher import signup_teacher_directly
 
-from game.models import Level, Attempt
+from game.models import Attempt, Level
 from game.views.scoreboard import StudentRow, scoreboard_data
-from game.views.scoreboard_csv import (
-    scoreboard_csv_multiple_levels,
-    scoreboard_csv_single_level,
-)
+from game.views.scoreboard_csv import (scoreboard_csv_multiple_levels,
+                                       scoreboard_csv_single_level)
+from portal.tests.utils.organisation import create_organisation_directly
+from portal.tests.utils.teacher import signup_teacher_directly
 
 Headers = [
     "Class",

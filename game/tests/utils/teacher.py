@@ -42,7 +42,7 @@ from builtins import range
 import sys
 from common.models import Teacher, School
 from django.core import mail
-from portal.helpers.emails import generate_token
+from common.helpers.emails import generate_token
 
 
 def generate_details(
