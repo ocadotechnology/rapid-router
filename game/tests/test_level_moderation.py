@@ -34,17 +34,15 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from common.tests.utils.classes import create_class_directly
+from common.tests.utils.student import create_school_student_directly
+from common.tests.utils.teacher import signup_teacher_directly
 from django.core.urlresolvers import reverse
-from django.test.testcases import TestCase
 from django.test.client import Client
-
+from django.test.testcases import TestCase
 from hamcrest import *
 
 from deploy import captcha
-
-from portal.tests.utils.classes import create_class_directly
-from portal.tests.utils.student import create_school_student_directly
-from portal.tests.utils.teacher import signup_teacher_directly
 
 
 class LevelModerationTestCase(TestCase):

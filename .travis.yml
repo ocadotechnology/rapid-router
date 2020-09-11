@@ -29,12 +29,12 @@ jobs:
         - pip install -U setuptools
         - pip install pipenv
         - pipenv install --dev --system
-        - pip install -U git+https://github.com/ocadotechnology/codeforlife-portal@common-models-test #TODO: Remove as part of #688
+        - pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
         - pip install crowdin-cli-py
         - pip install selenium==3.141.0
         - pip install pytest-cov
       before_script:
-        - wget https://chromedriver.storage.googleapis.com/83.0.4103.39/chromedriver_linux64.zip
+        - wget https://chromedriver.storage.googleapis.com/85.0.4183.87/chromedriver_linux64.zip
         - unzip chromedriver_linux64.zip -d /home/travis/virtualenv/python3.6.7/bin/
         - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
         - python example_project/manage.py collectstatic --noinput
