@@ -183,7 +183,7 @@ class LevelEditorTestCase(TestCase):
 
     def test_level_sharing_with_no_school(self):
         email1, password1 = signup_teacher_directly()
-        teacher1 = Teacher.objects.get(user__email=email1)
+        teacher1 = Teacher.objects.get(new_user__email=email1)
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
 
@@ -194,8 +194,8 @@ class LevelEditorTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, _ = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(user__email=email1)
-        teacher2 = Teacher.objects.get(user__email=email2)
+        teacher1 = Teacher.objects.get(new_user__email=email1)
+        teacher2 = Teacher.objects.get(new_user__email=email2)
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
@@ -208,8 +208,8 @@ class LevelEditorTestCase(TestCase):
         assert_that(len(sharing_info1["teachers"]), equal_to(1))
 
     def test_level_sharing_with_empty_school(self):
-        teacher1, email1, password1 = signup_teacher_directly()
-        teacher1 = Teacher.objects.get(user__email=email1)
+        email1, password1 = signup_teacher_directly()
+        teacher1 = Teacher.objects.get(new_user__email=email1)
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
@@ -224,8 +224,8 @@ class LevelEditorTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(user__email=email1)
-        teacher2 = Teacher.objects.get(user__email=email2)
+        teacher1 = Teacher.objects.get(new_user__email=email1)
+        teacher2 = Teacher.objects.get(new_user__email=email2)
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
@@ -245,7 +245,7 @@ class LevelEditorTestCase(TestCase):
     def test_level_loading(self):
         email1, password1 = signup_teacher_directly()
 
-        teacher1 = Teacher.objects.get(user__email=email1)
+        teacher1 = Teacher.objects.get(new_user__email=email1)
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
