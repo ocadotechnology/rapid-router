@@ -36,13 +36,13 @@
 # identified as the original program.
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.student import create_school_student_directly
+from common.tests.utils.teacher import signup_teacher_directly
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 from django.test.testcases import TestCase
 from hamcrest import *
 
 from deploy import captcha
-from portal.tests.utils.teacher import signup_teacher_directly
 
 
 class LevelModerationTestCase(TestCase):

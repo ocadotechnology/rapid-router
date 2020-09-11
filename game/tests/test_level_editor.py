@@ -38,6 +38,11 @@ import json
 
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.student import create_school_student_directly
+from common.tests.utils.teacher import (
+    add_teacher_to_school,
+    create_school,
+    signup_teacher_directly,
+)
 from django.core import mail
 from django.core.urlresolvers import reverse
 from django.test.client import Client
@@ -46,8 +51,6 @@ from hamcrest import *
 
 from deploy import captcha
 from game.tests.utils.level import create_save_level
-from game.tests.utils.teacher import (add_teacher_to_school, create_school,
-                                      signup_teacher_directly)
 from portal.tests.utils.organisation import create_organisation_directly
 
 
