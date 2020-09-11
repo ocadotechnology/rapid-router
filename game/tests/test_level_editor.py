@@ -36,6 +36,7 @@
 # identified as the original program.
 import json
 
+from common.models import Teacher
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
@@ -48,7 +49,7 @@ from hamcrest import *
 from portal.tests.utils.organisation import create_organisation_directly
 
 from game.tests.utils.level import create_save_level
-from game.tests.utils.teacher import create_school, add_teacher_to_school
+from game.tests.utils.teacher import add_teacher_to_school, create_school
 
 
 class LevelEditorTestCase(TestCase):
@@ -103,7 +104,7 @@ class LevelEditorTestCase(TestCase):
         return response
 
     def test_level_saving_school_student(self):
-        _, email, password = signup_teacher_directly()
+        email, password = signup_teacher_directly()
         create_organisation_directly(email)
         _, class_name, access_code = create_class_directly(email)
         student_name, student_password, _ = create_school_student_directly(access_code)
@@ -142,7 +143,7 @@ class LevelEditorTestCase(TestCase):
         assert_that(len(mail.outbox), equal_to(1))
 
     def test_anonymous_level_saving_school_student(self):
-        _, email, password = signup_teacher_directly()
+        email, password = signup_teacher_directly()
         create_organisation_directly(email)
         _, class_name, access_code = create_class_directly(email)
         student_name, student_password, _ = create_school_student_directly(access_code)
@@ -181,9 +182,8 @@ class LevelEditorTestCase(TestCase):
         assert_that(len(mail.outbox), equal_to(0))
 
     def test_level_sharing_with_no_school(self):
-        teacher1, email1, password1 = signup_teacher_directly()
-        teacher2, _, _ = signup_teacher_directly()
-
+        email1, password1 = signup_teacher_directly()
+        teacher1 = Teacher.objects.get(user__email=email1)
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
 
@@ -191,8 +191,11 @@ class LevelEditorTestCase(TestCase):
         assert_that(len(sharing_info1["teachers"]), equal_to(0))
 
     def test_level_sharing_with_school(self):
-        teacher1, email1, password1 = signup_teacher_directly()
-        teacher2, _, _ = signup_teacher_directly()
+        email1, password1 = signup_teacher_directly()
+        email2, _ = signup_teacher_directly()
+
+        teacher1 = Teacher.objects.get(user__email=email1)
+        teacher2 = Teacher.objects.get(user__email=email2)
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
@@ -206,7 +209,7 @@ class LevelEditorTestCase(TestCase):
 
     def test_level_sharing_with_empty_school(self):
         teacher1, email1, password1 = signup_teacher_directly()
-        teacher2, _, _ = signup_teacher_directly()
+        teacher1 = Teacher.objects.get(user__email=email1)
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
@@ -218,8 +221,11 @@ class LevelEditorTestCase(TestCase):
         assert_that(len(sharing_info1["teachers"]), equal_to(0))
 
     def test_level_can_only_be_shared_by_owner(self):
-        teacher1, email1, password1 = signup_teacher_directly()
-        teacher2, email2, password2 = signup_teacher_directly()
+        email1, password1 = signup_teacher_directly()
+        email2, password2 = signup_teacher_directly()
+
+        teacher1 = Teacher.objects.get(user__email=email1)
+        teacher2 = Teacher.objects.get(user__email=email2)
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
@@ -237,7 +243,9 @@ class LevelEditorTestCase(TestCase):
         assert_that(response.status_code, equal_to(403))
 
     def test_level_loading(self):
-        teacher1, email1, password1 = signup_teacher_directly()
+        email1, password1 = signup_teacher_directly()
+
+        teacher1 = Teacher.objects.get(user__email=email1)
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
