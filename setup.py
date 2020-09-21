@@ -27,7 +27,7 @@ setup(
         "django-foundation-statics==5.4.7",
         "django-pipeline==1.6.14",
         "djangorestframework>=3.8.2, <3.9.0",
-        "six==1.11.0",
+        "six==1.*",
         "more-itertools==5.0.0",
         "pyhamcrest==1.8.3",
         "libsass",
