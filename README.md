@@ -103,12 +103,6 @@ gem install sass
     * Either export them in your `.bashrc` or `.bash_profile`
     * or restart the portal with command `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 ./run`.
 
-#### Running the Tests
-* Install selenium: `pip install selenium`
-* Install the [web driver](https://selenium-python.readthedocs.io/installation.html) for your browser
-* `pipenv install pytest-django`
-* `pytest`
-
 ## Localisation
 * For localisation admins:
     * `./run --with-translation-tools` in your rapid-router dir to include the translation/localisation libraries
