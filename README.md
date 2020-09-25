@@ -7,7 +7,7 @@
 
 ## A  [Code for Life](https://www.codeforlife.education/) project
 * Rapid Router is a [Code for Life](https://www.codeforlife.education/) project, aimed at teaching primary-school children programming concepts through a vehicle routing
-  game. 
+  game.
   Ocado Technology's [Code for Life initiative](https://www.codeforlife.education/) has been developed to inspire the next generation of computer scientists and to help teachers deliver the computing curriculum.
 * This repository hosts the source code of the **Rapid Router game**.
 * The other repos for Code For Life:
@@ -39,13 +39,10 @@ Go to the official [Code For Life website][c4l].
     * `sudo apt-get install ruby2.0`
     * `sudo gem install sass -v 3.3.4` - tested to work with Ruby >1.9 and <2.3.6
 
-* Make and activate a virtualenv
-    * e.g. the first time, `mkvirtualenv -a path/to/rapid-router rapid-router`
-    * and thereafter `workon rapid-router`
-    * **NOTE:** If you have trouble running these commands (e.g. `Command not found: workon`), refer to [this article][virtualenv], the top answer should help you resolve them. You may need to run:
+* Make and activate a virtualenv using [pipenv](https://pypi.org/project/pipenv/)
 
-          export WORKON_HOME=~/Envs
-          source /usr/local/bin/virtualenvwrapper.sh
+    * `pip install pipenv`
+    * `pipenv shell`
 
 ### Mac OS
 * Install prerequisites
@@ -78,7 +75,7 @@ On MacOS Mojave there is an error when installing `Pillow`.
 To fix this issue you need to run the following command:
 ```
 sudo installer -pkg /Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg -target /
-``` 
+```
 cf: https://github.com/python-pillow/Pillow/issues/3438#issuecomment-435169249
 
 ##### Pyexpat
@@ -107,7 +104,7 @@ gem install sass
     * or restart the portal with command `LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 ./run`.
 
 ## Localisation
-* For localisation admins: 
+* For localisation admins:
     * `./run --with-translation-tools` in your rapid-router dir to include the translation/localisation libraries
     * You will need your crowdin api key locally in the `CROWDIN_API_KEY` environment variable, e.g. `export CROWDIN_API_KEY=<key>`. This can be obtained from [the settings page](https://crowdin.com/project/code-for-life/settings#integration)
 * Set your `django_language` cookie to `lol-us` to enable in-context localisation
