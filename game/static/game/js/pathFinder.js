@@ -144,16 +144,15 @@ ocargo.PathFinder.prototype.getTravelledPathScore = function() {
 ocargo.PathFinder.prototype.getScoreForNumberOfInstructions = function() {
 
     var blocksUsed = ocargo.utils.isIOSMode() ? ocargo.game.mobileBlocks : ocargo.blocklyControl.activeBlocksCount();
-    var algorithmScore = 0;
-    var difference = this.maxScoreForNumberOfInstructions;
-    for (var i = 0; i < this.modelSolution.length; i++) {
-        var currDifference = blocksUsed - this.modelSolution[i];
-        if (Math.abs(currDifference) < difference) {
-            difference = Math.abs(currDifference);
-            algorithmScore = this.maxScoreForNumberOfInstructions - currDifference;
-        }
+    var algorithmScore = this.maxScoreForNumberOfInstructions;
+
+    var longestOfModelSolns = Math.max(...this.modelSolution);
+    var difference = blocksUsed - longestOfModelSolns;
+    if (difference > 0) {
+      algorithmScore = algorithmScore - difference;
     }
     return algorithmScore;
+    // return 10;
 };
 
 ocargo.PathFinder.prototype.getLength = function(stack) {
