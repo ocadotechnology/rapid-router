@@ -152,7 +152,6 @@ ocargo.PathFinder.prototype.getScoreForNumberOfInstructions = function() {
       algorithmScore = algorithmScore - difference;
     }
     return algorithmScore;
-    // return 10;
 };
 
 ocargo.PathFinder.prototype.getLength = function(stack) {
