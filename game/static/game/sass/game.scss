@@ -371,13 +371,13 @@ identified as the original program.
 #myModal:not(:target) {
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: opacity 0.4s ease, visibility 0.4s ease-in-out;
 }
 
 #myModal:target {
   opacity: 1;
   visibility: visible;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
+  transition: opacity 0.4s ease, visibility 0.4s ease-in-out;
 }
 
 .popup__text--warning {
@@ -390,8 +390,6 @@ identified as the original program.
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  opacity: 0;
-  transition: opacity 0.1s ease-in-out;
+  background-color: $background-overlay-color;
   z-index: $level-1;
 }

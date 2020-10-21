@@ -49,6 +49,8 @@ $sidebar-link-hover-color: $anchor-font-color-hover !default;
 $sidebar-link-active-bg: rgba(0, 64, 84, 0.05) !default;
 $sidebar-link-hover-bg: rgba(0, 64, 84, 0.03) !default;
 
+$background-overlay-color: rgba(0, 0, 0, 0.7);
+
 // scss-lint:disable ColorVariable
 $loader-colors: rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6),
   rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2) !default;
