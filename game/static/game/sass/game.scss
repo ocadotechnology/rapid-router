@@ -349,12 +349,15 @@ identified as the original program.
 .ocargo-modal {
   position: fixed;
   width: 80%;
-  top: 10%;
+  top: 5%;
   left: 10%;
+  height: fit-content;
+  max-height: 90vh;
+  margin-bottom: 10%;
   background-color: white;
   border-radius: 15px;
-  height: fit-content;
   padding: 30px;
+  overflow-y: auto;
 }
 
 .close-reveal-modal {
