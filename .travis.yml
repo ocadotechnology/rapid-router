@@ -15,7 +15,7 @@ env:
 
 stages:
   - name: test
-    if: tag IS blank AND (NOT branch = master)
+    if: tag IS blank
   - name: deploy
     if: branch = master AND (NOT type IN (pull_request))
 
