@@ -171,7 +171,7 @@ def play_level(request, level, from_editor=False):
 
     workspace = None
     python_workspace = None
-    if not request.user.is_anonymous() and hasattr(request.user.userprofile, "student"):
+    if not request.user.is_anonymous and hasattr(request.user.userprofile, "student"):
         student = request.user.userprofile.student
         attempt = (
             Attempt.objects.filter(
@@ -273,7 +273,7 @@ def delete_level(request, levelID):
 def submit_attempt(request):
     """ Processes a request on submission of the program solving the current level. """
     if (
-        not request.user.is_anonymous()
+        not request.user.is_anonymous
         and request.method == "POST"
         and hasattr(request.user.userprofile, "student")
     ):

@@ -151,7 +151,7 @@ def levels(request):
     :template:`game/level_selection.html`
     """
     user = request.user
-    if user.is_authenticated() and is_student(user):
+    if user.is_authenticated and is_student(user):
         best_attempts = (
             Attempt.objects.filter(student=user.userprofile.student)
             .values("level_id")
@@ -173,7 +173,7 @@ def levels(request):
 
     owned_level_data = []
     shared_level_data = []
-    if not request.user.is_anonymous():
+    if not request.user.is_anonymous:
         owned_levels, shared_levels = level_management.get_loadable_levels(request.user)
 
         for level in owned_levels:
