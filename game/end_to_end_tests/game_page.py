@@ -111,11 +111,11 @@ class GamePage(BasePage):
 
     def assert_level_number(self, level_number):
         path = reverse("play_default_level", kwargs={"levelName": str(level_number)})
-        assert_that(self.browser.current_url, ends_with(path))
+        assert_that(self.browser.current_url.replace("#myModal", ""), ends_with(path))
 
     def assert_episode_number(self, episode_number):
         path = reverse("start_episode", kwargs={"episodeId": str(episode_number)})
-        assert_that(self.browser.current_url, ends_with(path))
+        assert_that(self.browser.current_url.replace("#myModal", ""), ends_with(path))
 
     def assert_is_green_light(self, traffic_light_index):
         self._assert_light_is_on(traffic_light_index, "green")
