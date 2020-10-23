@@ -38,25 +38,45 @@ identified as the original program.
 @import '../../scss/foundation';
 @import 'variables';
 
-.size-12 { font-size: 12px; }
+.size-12 {
+  font-size: 12px;
+}
 
-.size-14 { font-size: 14px; }
+.size-14 {
+  font-size: 14px;
+}
 
-.size-16 { font-size: 16px; }
+.size-16 {
+  font-size: 16px;
+}
 
-.size-18 { font-size: 18px; }
+.size-18 {
+  font-size: 18px;
+}
 
-.size-21 { font-size: 21px; }
+.size-21 {
+  font-size: 21px;
+}
 
-.size-24 { font-size: 24px; }
+.size-24 {
+  font-size: 24px;
+}
 
-.size-36 { font-size: 36px; }
+.size-36 {
+  font-size: 36px;
+}
 
-.size-48 { font-size: 48px; }
+.size-48 {
+  font-size: 48px;
+}
 
-.size-60 { font-size: 60px; }
+.size-60 {
+  font-size: 60px;
+}
 
-.size-72 { font-size: 72px; }
+.size-72 {
+  font-size: 72px;
+}
 
 .container {
   position: relative;
@@ -82,7 +102,6 @@ identified as the original program.
         margin-left: $sidebar-left-medium-width + $sidebar-gutter-spacing;
       }
     }
-
   }
 
   &.on-right {
@@ -143,7 +162,7 @@ identified as the original program.
     }
 
     select,
-    input[type=text],
+    input[type='text'],
     .postfix.button {
       height: 2rem;
       line-height: 2rem;
@@ -154,11 +173,9 @@ identified as the original program.
       width: 100%;
       margin: 0 0 1rem;
     }
-
   }
 
   li {
-
     margin: 0;
     padding: 0;
 
@@ -216,7 +233,6 @@ identified as the original program.
   @media #{$medium-down} {
     width: $sidebar-left-medium-width;
   }
-
 }
 
 @media #{$medium-down} {
@@ -231,7 +247,6 @@ identified as the original program.
 }
 
 .main {
-
   margin-top: 1rem;
 
   .actions.button.dropdown {
@@ -241,7 +256,6 @@ identified as the original program.
   .actions:before {
     display: none;
   }
-
 }
 
 .pagination-totals {
@@ -250,7 +264,6 @@ identified as the original program.
 }
 
 .fixed-modal {
-
   @media #{$medium-up} {
     width: $fixed-modal-width;
     margin-top: 5rem;
@@ -260,7 +273,6 @@ identified as the original program.
   margin: 0 auto;
 
   header {
-
     background-color: $topbar-bg;
     padding: 1em;
     text-align: center;
@@ -270,11 +282,9 @@ identified as the original program.
       font-size: 1.6em;
       margin: 0;
     }
-
   }
 
   section {
-
     @media #{$medium-up} {
       padding: 1rem;
       padding-bottom: 0;
@@ -293,9 +303,7 @@ identified as the original program.
       @include pricing-table-price;
       margin-bottom: 1rem;
     }
-
   }
-
 }
 
 .center {
@@ -327,4 +335,64 @@ identified as the original program.
       }
     }
   }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.ocargo-modal {
+  position: fixed;
+  width: 80%;
+  top: 5%;
+  left: 10%;
+  height: fit-content;
+  max-height: 90vh;
+  margin-bottom: 10%;
+  background-color: white;
+  border-radius: 15px;
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.close-reveal-modal {
+  font-size: 2.5rem;
+  line-height: 1;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #aaa;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#myModal:not(:target) {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease-in-out;
+}
+
+#myModal:target {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease, visibility 0.4s ease-in-out;
+}
+
+.popup__text--warning {
+  color: $color-error;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: $background-overlay-color;
+  z-index: $level-1;
 }
