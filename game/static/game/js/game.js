@@ -924,7 +924,6 @@ ocargo.Game.prototype._setupSolutionTab = function () {
           if (PYTHON_ENABLED) {
             ocargo.pythonControl.setCode(workspace.python_contents)
           }
-          $('#loadModal').foundation('reveal', 'close')
           ocargo.solutionLoaded = true
         }.bind(this)
       )
@@ -978,8 +977,6 @@ ocargo.Game.prototype._setupLoadTab = function () {
           if (PYTHON_ENABLED) {
             ocargo.pythonControl.setCode(workspace.python_contents)
           }
-
-          $('#loadModal').foundation('reveal', 'close')
         }.bind(this)
       )
     }
