@@ -41,7 +41,7 @@ from builtins import str
 from builtins import object
 import json
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
