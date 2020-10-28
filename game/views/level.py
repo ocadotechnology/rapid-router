@@ -113,7 +113,7 @@ def _custom_level_url(level):
 
 
 def play_level(request, level, from_editor=False):
-    """ Loads a level for rendering in the game.
+    """Loads a level for rendering in the game.
 
     **Context**
 

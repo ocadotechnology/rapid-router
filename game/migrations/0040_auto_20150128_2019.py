@@ -48,7 +48,11 @@ class Migration(migrations.Migration):
             model_name="level",
             name="episode",
             field=models.ForeignKey(
-                default=None, blank=True, to="game.Episode", null=True
+                default=None,
+                blank=True,
+                to="game.Episode",
+                null=True,
+                on_delete=models.PROTECT,
             ),
             preserve_default=False,
         )

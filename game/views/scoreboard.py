@@ -75,9 +75,9 @@ Multiple_Levels_Header = [
 
 
 def scoreboard(request):
-    """ Renders a page with students' scores. A teacher can see the visible classes in their
-        school. Student's view is restricted to their class if their teacher enabled the
-        scoreboard for said class.
+    """Renders a page with students' scores. A teacher can see the visible classes in their
+    school. Student's view is restricted to their class if their teacher enabled the
+    scoreboard for said class.
     """
     if not permissions.can_see_scoreboard(request.user):
         return render_no_permission_error(request)

@@ -139,7 +139,7 @@ def is_student(user):
 
 
 def levels(request):
-    """ Loads a page with all levels listed.
+    """Loads a page with all levels listed.
 
     **Context**
 
@@ -210,7 +210,7 @@ def levels(request):
 
 
 def random_level_for_episode(request, episodeID):
-    """ Generates a new random level based on the episodeID
+    """Generates a new random level based on the episodeID
 
     Redirects to :view:`game.views.play_level` with the id of the newly created :model:`game.Level`.
     """

@@ -1713,60 +1713,70 @@ def add_episodes_1_to_6(apps, schema_editor):
     )
     episode6.save()
 
-    episode1.r_blocks = Block.objects.filter(
-        type__in=["turn_left", "turn_right", "move_forwards"]
+    episode1.r_blocks.set(
+        Block.objects.filter(type__in=["turn_left", "turn_right", "move_forwards"])
     )
 
-    episode2.r_blocks = Block.objects.filter(
-        type__in=["turn_left", "turn_right", "move_forwards", "deliver"]
+    episode2.r_blocks.set(
+        Block.objects.filter(
+            type__in=["turn_left", "turn_right", "move_forwards", "deliver"]
+        )
     )
 
-    episode3.r_blocks = Block.objects.filter(
-        type__in=["turn_left", "turn_right", "move_forwards", "controls_repeat"]
+    episode3.r_blocks.set(
+        Block.objects.filter(
+            type__in=["turn_left", "turn_right", "move_forwards", "controls_repeat"]
+        )
     )
 
-    episode4.r_blocks = Block.objects.filter(
-        type__in=[
-            "turn_left",
-            "turn_right",
-            "move_forwards",
-            "controls_repeat_until",
-            "at_destination",
-            "controls_repeat",
-        ]
+    episode4.r_blocks.set(
+        Block.objects.filter(
+            type__in=[
+                "turn_left",
+                "turn_right",
+                "move_forwards",
+                "controls_repeat_until",
+                "at_destination",
+                "controls_repeat",
+            ]
+        )
     )
 
-    episode5.r_blocks = Block.objects.filter(
-        type__in=[
-            "turn_left",
-            "turn_right",
-            "move_forwards",
-            "controls_repeat_until",
-            "at_destination",
-            "controls_if",
-            "road_exists",
-            "dead_end",
-            "controls_repeat",
-            "turn_around",
-        ]
+    episode5.r_blocks.set(
+        Block.objects.filter(
+            type__in=[
+                "turn_left",
+                "turn_right",
+                "move_forwards",
+                "controls_repeat_until",
+                "at_destination",
+                "controls_if",
+                "road_exists",
+                "dead_end",
+                "controls_repeat",
+                "turn_around",
+            ]
+        )
     )
 
-    episode6.r_blocks = Block.objects.filter(
-        type__in=[
-            "turn_left",
-            "turn_right",
-            "move_forwards",
-            "controls_repeat_until",
-            "controls_if",
-            "road_exists",
-            "at_destination",
-            "wait",
-            "controls_repeat",
-            "dead_end",
-            "turn_around",
-            "controls_repeat_while",
-            "traffic_light",
-        ]
+    episode6.r_blocks.set(
+        Block.objects.filter(
+            type__in=[
+                "turn_left",
+                "turn_right",
+                "move_forwards",
+                "controls_repeat_until",
+                "controls_if",
+                "road_exists",
+                "at_destination",
+                "wait",
+                "controls_repeat",
+                "dead_end",
+                "turn_around",
+                "controls_repeat_while",
+                "traffic_light",
+            ]
+        )
     )
 
     episode1.save()
@@ -4946,7 +4956,12 @@ class Migration(migrations.Migration):
                 ("url", models.CharField(max_length=500)),
                 ("width", models.IntegerField()),
                 ("height", models.IntegerField()),
-                ("theme", models.ForeignKey(related_name="decor", to="game.Theme")),
+                (
+                    "theme",
+                    models.ForeignKey(
+                        related_name="decor", to="game.Theme", on_delete=models.CASCADE
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -4978,10 +4993,20 @@ class Migration(migrations.Migration):
                 ("blocklyEnabled", models.BooleanField(default=True)),
                 ("pythonEnabled", models.BooleanField(default=True)),
                 ("anonymous", models.BooleanField(default=False)),
-                ("character", models.ForeignKey(default=1, to="game.Character")),
+                (
+                    "character",
+                    models.ForeignKey(
+                        default=1, to="game.Character", on_delete=models.CASCADE
+                    ),
+                ),
                 (
                     "next_level",
-                    models.ForeignKey(default=None, to="game.Level", null=True),
+                    models.ForeignKey(
+                        default=None,
+                        to="game.Level",
+                        null=True,
+                        on_delete=models.SET_NULL,
+                    ),
                 ),
                 (
                     "owner",
@@ -4990,6 +5015,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         to="portal.UserProfile",
                         null=True,
+                        on_delete=models.CASCADE,
                     ),
                 ),
                 (
@@ -5004,7 +5030,11 @@ class Migration(migrations.Migration):
                 (
                     "theme",
                     models.ForeignKey(
-                        default=None, blank=True, to="game.Theme", null=True
+                        default=None,
+                        blank=True,
+                        to="game.Theme",
+                        null=True,
+                        on_delete=models.CASCADE,
                     ),
                 ),
             ],
@@ -5031,7 +5061,12 @@ class Migration(migrations.Migration):
                 ("r_trafficLights", models.BooleanField(default=False)),
                 (
                     "next_episode",
-                    models.ForeignKey(default=None, to="game.Episode", null=True),
+                    models.ForeignKey(
+                        default=None,
+                        to="game.Episode",
+                        null=True,
+                        on_delete=models.SET_NULL,
+                    ),
                 ),
                 (
                     "r_blocks",
@@ -5041,7 +5076,10 @@ class Migration(migrations.Migration):
                 ),
                 ("in_development", models.BooleanField(default=False)),
                 ("r_random_levels_enabled", models.BooleanField(default=False)),
-                ("first_level", models.ForeignKey(to="game.Level")),
+                (
+                    "first_level",
+                    models.ForeignKey(to="game.Level", on_delete=models.SET_NULL),
+                ),
             ],
         ),
         migrations.CreateModel(
@@ -5059,7 +5097,7 @@ class Migration(migrations.Migration):
                 ("x", models.IntegerField()),
                 ("y", models.IntegerField()),
                 ("decorName", models.CharField(default="tree1", max_length=100)),
-                ("level", models.ForeignKey(to="game.Level")),
+                ("level", models.ForeignKey(to="game.Level", on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -5083,6 +5121,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         to="portal.UserProfile",
                         null=True,
+                        on_delete=models.CASCADE,
                     ),
                 ),
                 ("python_contents", models.TextField(default="")),
@@ -5101,8 +5140,8 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("number", models.PositiveIntegerField(default=None, null=True)),
-                ("level", models.ForeignKey(to="game.Level")),
-                ("type", models.ForeignKey(to="game.Block")),
+                ("level", models.ForeignKey(to="game.Level", on_delete=models.CASCADE)),
+                ("type", models.ForeignKey(to="game.Block", on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -5122,7 +5161,14 @@ class Migration(migrations.Migration):
                 ("score", models.FloatField(default=0, null=True)),
                 ("workspace", models.TextField(default="")),
                 ("python_workspace", models.TextField(default="")),
-                ("level", models.ForeignKey(related_name="attempts", to="game.Level")),
+                (
+                    "level",
+                    models.ForeignKey(
+                        related_name="attempts",
+                        to="game.Level",
+                        on_delete=models.CASCADE,
+                    ),
+                ),
                 (
                     "student",
                     models.ForeignKey(
@@ -5130,6 +5176,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         to="portal.Student",
                         null=True,
+                        on_delete=models.CASCADE,
                     ),
                 ),
             ],

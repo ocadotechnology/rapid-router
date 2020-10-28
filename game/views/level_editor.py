@@ -67,7 +67,7 @@ from game.views.level import LevelSerializer
 
 
 def level_editor(request):
-    """ Renders the level editor page.
+    """Renders the level editor page.
 
     **Context**
 

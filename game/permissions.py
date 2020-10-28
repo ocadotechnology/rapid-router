@@ -35,6 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from rest_framework import permissions
+
 #########################
 # Workspace permissions #
 #########################
@@ -130,8 +131,8 @@ class CanShareLevel(permissions.BasePermission):
         if request.user.is_anonymous:
             return False
         elif (
-                hasattr(request.user.userprofile, "student")
-                and request.user.userprofile.student.is_independent()
+            hasattr(request.user.userprofile, "student")
+            and request.user.userprofile.student.is_independent()
         ):
             return False
         else:
@@ -166,26 +167,29 @@ class CanShareLevelWith(permissions.BasePermission):
         sharer_profile = sharer.userprofile
 
         if (
-                hasattr(sharer_profile, "student")
-                and not (sharer_profile.student.is_independent())
-                and hasattr(recipient_profile, "student")
-                and not (recipient_profile.student.is_independent())
+            hasattr(sharer_profile, "student")
+            and not (sharer_profile.student.is_independent())
+            and hasattr(recipient_profile, "student")
+            and not (recipient_profile.student.is_independent())
         ):
             # Are they in the same class?
             return (
-                    sharer_profile.student.class_field == recipient_profile.student.class_field
+                sharer_profile.student.class_field
+                == recipient_profile.student.class_field
             )
         elif hasattr(sharer_profile, "teacher") and sharer_profile.teacher.teaches(
-                recipient_profile
+            recipient_profile
         ):
             # Is the recipient taught by the sharer?
             return True
-        elif hasattr(recipient_profile, "teacher") and recipient_profile.teacher.teaches(
-                sharer_profile
-        ):
+        elif hasattr(
+            recipient_profile, "teacher"
+        ) and recipient_profile.teacher.teaches(sharer_profile):
             # Is the sharer taught by the recipient?
             return True
-        elif hasattr(sharer_profile, "teacher") and hasattr(recipient_profile, "teacher"):
+        elif hasattr(sharer_profile, "teacher") and hasattr(
+            recipient_profile, "teacher"
+        ):
             # Are they in the same organisation?
             return recipient_profile.teacher.school == sharer_profile.teacher.school
         else:

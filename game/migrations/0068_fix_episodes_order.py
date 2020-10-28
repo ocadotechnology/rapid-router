@@ -63,8 +63,8 @@ def update_episodes(apps, schema_editor):
     episode7.save()
     episode8.save()
 
-    episode7.level_set = episode7_levels
-    episode8.level_set = episode8_levels
+    episode7.level_set.set(episode7_levels)
+    episode8.level_set.set(episode8_levels)
 
     episode7.save()
     episode8.save()

@@ -47,8 +47,8 @@ def update_episodes_level_order(apps, schema_editor):
     episode7_new_levels = Level.objects.filter(episode=episode7, owner=None)
     episode8_new_levels = Level.objects.filter(episode=episode8, owner=None)
 
-    episode7.level_set = episode7_new_levels
-    episode8.level_set = episode8_new_levels
+    episode7.level_set.set(episode7_new_levels)
+    episode8.level_set.set(episode8_new_levels)
 
     episode7.save()
     episode8.save()
