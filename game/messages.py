@@ -1097,19 +1097,18 @@ def title_level39():
 
 def description_level39():
     message = ugettext(
-        "Can you change the 'general algorithm' so that the van takes a shorter "
-        + "route? <br> What if you change the order the van checks for "
-        + "directions? <br> Keep an eye on the fuel level - try to use as "
-        + "little as possible. "
+        "Can you use the 'general algorithm' here so that the van takes a "
+        + "shorter route? Or maybe there's a more efficient way? <br><br>Keep "
+        + "an eye on the fuel level - try to use as little as possible."
     )
     return build_description(title_level39(), message)
 
 
 def hint_level39():
     message = ugettext(
-        "Make the van check if the road exists right before it checks if the road "
-        + "exists left. <br><br> Then it will be able to reach the destination "
-        + "using the 'general algorithm'. Can you see why? "
+        "Uh oh, moving around the blocks in your 'general algorithm' might not "
+        + "be the most efficient solution. How about creating a simple solution "
+        + "without 'if statements' that will help the van reach the house? "
     )
     return message
 
