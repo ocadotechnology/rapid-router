@@ -75,6 +75,7 @@ INSTALLED_APPS = (
     'game',
 )
 
+ALLOWED_HOSTS = ['*']
 PIPELINE_ENABLED = False
 
 try:
