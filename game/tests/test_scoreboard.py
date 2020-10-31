@@ -348,7 +348,6 @@ class ScoreboardTestCase(TestCase):
         choices_in_form = [
             v for (k, v) in response.context["form"]["classes"].field.choices
         ]
-        print(choices_in_form)
         assert_that(
             choices_in_form, contains_inanyorder("Class 1", "Class 2", "Class 3")
         )
