@@ -39,7 +39,7 @@ from __future__ import unicode_literals
 from builtins import map, object, range
 from datetime import datetime, timedelta
 
-from common.models import Class, Teacher, UserProfile, School, Student
+from common.models import Class, Teacher, Student
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
@@ -367,7 +367,6 @@ class ScoreboardTestCase(TestCase):
         klass2, name2, access_code2 = create_class_directly(
             teacher2.user.user.email, class_name="Class 2"
         )
-
         klass3, name3, access_code3 = create_class_directly(
             teacher1.user.user.email, class_name="Class 3"
         )
@@ -385,8 +384,7 @@ class ScoreboardTestCase(TestCase):
 
         assert_that(choices_in_form, contains("Class 3"))
         assert_that(choices_in_form, not_(contains_inanyorder("Class 1", "Class 2")))
-
-        self.assertEqual(1, len(choices_in_form))
+        assert_that(choices_in_form, has_length(1))
 
         # Other teacher logs in.  Should see Class 1 and Class 2
         c.login(username="admin@school.edu", password="secretpa$sword2")
@@ -398,6 +396,7 @@ class ScoreboardTestCase(TestCase):
 
         assert_that(choices_in_form, not_(contains("Class 3")))
         assert_that(choices_in_form, contains_inanyorder("Class 1", "Class 2"))
+        assert_that(choices_in_form, has_length(1))
 
 
 class ScoreboardCsvTestCase(TestCase):
