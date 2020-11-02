@@ -396,7 +396,7 @@ class ScoreboardTestCase(TestCase):
 
         assert_that(choices_in_form, not_(contains("Class 3")))
         assert_that(choices_in_form, contains_inanyorder("Class 1", "Class 2"))
-        assert_that(choices_in_form, has_length(1))
+        assert_that(choices_in_form, has_length(2))
 
 
 class ScoreboardCsvTestCase(TestCase):
