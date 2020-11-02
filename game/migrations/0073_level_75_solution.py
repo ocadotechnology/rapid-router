@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2019, Ocado Innovation Limited
+# Copyright (C) 2020, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -34,5 +34,24 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
+from django.db import migrations
 
-__version__ = '2.4.7'
+
+def update_level(apps, schema_editor):
+
+    Level = apps.get_model("game", "Level")
+    level75 = Level.objects.get(name="75", default=1)
+    level75.model_solution = "[9]"
+    level75.save()
+
+
+def dummy_reverse(apps, schema_editor):
+    """It's not possible to reverse this data migration
+    but we want to allow Django to reverse previous migrations.
+    """
+    pass
+
+
+class Migration(migrations.Migration):
+    dependencies = [("game", "0072_level_50_solution")]
+    operations = [migrations.RunPython(update_level, reverse_code=dummy_reverse)]
