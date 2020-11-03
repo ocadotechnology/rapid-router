@@ -39,7 +39,7 @@ from __future__ import unicode_literals
 from builtins import map, object, range
 from datetime import datetime, timedelta
 
-from common.models import Class
+from common.models import Class, Teacher, Student
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
@@ -79,7 +79,7 @@ class ScoreboardTestCase(TestCase):
         create_attempt(student2, level1, 2.3)
         create_attempt(student2, level2, 16.7)
 
-        student_data, headers = scoreboard_data(Teacher(), level_ids, [clas.id])
+        student_data, headers = scoreboard_data(MockTeacher(), level_ids, [clas.id])
 
         assert_that(
             headers,
@@ -126,7 +126,7 @@ class ScoreboardTestCase(TestCase):
         create_attempt(student, level1, 10.5)
         create_attempt(student2, level1, 2.3)
 
-        student_data, headers = scoreboard_data(Teacher(), level_ids, [clas.id])
+        student_data, headers = scoreboard_data(MockTeacher(), level_ids, [clas.id])
 
         assert_that(
             headers,
@@ -163,7 +163,9 @@ class ScoreboardTestCase(TestCase):
         create_attempt(student2, level1, 2.3)
         create_attempt(student2, level2, 16.7)
 
-        student_data, headers = scoreboard_data(Student(student), level_ids, [clas.id])
+        student_data, headers = scoreboard_data(
+            MockStudent(student), level_ids, [clas.id]
+        )
 
         assert_that(
             headers,
@@ -210,7 +212,9 @@ class ScoreboardTestCase(TestCase):
         create_attempt(student, level2, 10.5)
         create_attempt(student2, level2, 16.7)
 
-        student_data, headers = scoreboard_data(Student(student), level_ids, [clas.id])
+        student_data, headers = scoreboard_data(
+            MockStudent(student), level_ids, [clas.id]
+        )
 
         assert_that(
             headers,
@@ -246,7 +250,9 @@ class ScoreboardTestCase(TestCase):
         create_attempt(student2, level1, 2.3)
         create_attempt(student2, level2, 16.7)
 
-        student_data, headers = scoreboard_data(Student(student), level_ids, [clas.id])
+        student_data, headers = scoreboard_data(
+            MockStudent(student), level_ids, [clas.id]
+        )
 
         assert_that(
             headers,
@@ -284,6 +290,113 @@ class ScoreboardTestCase(TestCase):
         c.login(username=email, password=password)
         response = c.get(url)
         self.assertEqual(200, response.status_code)
+
+    def test_student_can_see_classes(self):
+        """A student should be able to see the classes they are in"""
+        mr_teacher = Teacher.objects.factory(
+            "Mr", "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
+        )
+        klass1, name1, access_code1 = create_class_directly(
+            mr_teacher.user.user.email, class_name="Class 1"
+        )
+        klass2, name2, access_code2 = create_class_directly(
+            mr_teacher.user.user.email, class_name="Class 2"
+        )
+        student = Student.objects.schoolFactory(klass1, "some student", "secret")
+
+        c = Client()
+        c.force_login(student.user.user)
+
+        url = reverse("scoreboard")
+        response = c.get(url)
+
+        choices_in_form = [
+            v for (k, v) in response.context["form"]["classes"].field.choices
+        ]
+        assert_that(choices_in_form, contains("Class 1"))
+        assert_that(choices_in_form, not_(contains("Class 2")))
+        assert_that(choices_in_form, has_length(1))
+
+    def test_admin_teacher_can_see_all_classes(self):
+        """An admin should be able to see all classes, not just the ones they teach"""
+        normal_teacher = Teacher.objects.factory(
+            "Mr", "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
+        )
+        admin_teacher = Teacher.objects.factory(
+            "Mrs", "Admin", "Admin", "admin@school.edu", "secretpa$sword2"
+        )
+
+        admin_teacher.is_admin = True
+        admin_teacher.save()
+
+        klass1, name1, access_code1 = create_class_directly(
+            admin_teacher.user.user.email, class_name="Class 1"
+        )
+        klass2, name2, access_code2 = create_class_directly(
+            admin_teacher.user.user.email, class_name="Class 2"
+        )
+        klass3, name3, access_code3 = create_class_directly(
+            normal_teacher.user.user.email, class_name="Class 3"
+        )
+
+        c = Client()
+        c.login(username=admin_teacher.user.user.email, password="secretpa$sword2")
+
+        url = reverse("scoreboard")
+        response = c.get(url)
+
+        choices_in_form = [
+            v for (k, v) in response.context["form"]["classes"].field.choices
+        ]
+        assert_that(
+            choices_in_form, contains_inanyorder("Class 1", "Class 2", "Class 3")
+        )
+
+    def test_non_admin_teacher_can_only_see_their_own_classes(self):
+        """A teacher who is not an admin should only be able to see their classes, not ones taught by others"""
+        teacher1 = Teacher.objects.factory(
+            "Mr", "First", "Teacher", "normal@school.edu", "secretpa$sword"
+        )
+        teacher2 = Teacher.objects.factory(
+            "Mrs", "Second", "Teacher", "admin@school.edu", "secretpa$sword2"
+        )
+
+        klass1, name1, access_code1 = create_class_directly(
+            teacher2.user.user.email, class_name="Class 1"
+        )
+        klass2, name2, access_code2 = create_class_directly(
+            teacher2.user.user.email, class_name="Class 2"
+        )
+        klass3, name3, access_code3 = create_class_directly(
+            teacher1.user.user.email, class_name="Class 3"
+        )
+
+        c = Client()
+        # First teacher logs in.  Should see only Class 3
+        c.login(username="normal@school.edu", password="secretpa$sword")
+
+        url = reverse("scoreboard")
+        response = c.get(url)
+
+        choices_in_form = [
+            v for (k, v) in response.context["form"]["classes"].field.choices
+        ]
+
+        assert_that(choices_in_form, contains("Class 3"))
+        assert_that(choices_in_form, not_(contains_inanyorder("Class 1", "Class 2")))
+        assert_that(choices_in_form, has_length(1))
+
+        # Other teacher logs in.  Should see Class 1 and Class 2
+        c.login(username="admin@school.edu", password="secretpa$sword2")
+
+        response = c.get(url)
+        choices_in_form = [
+            v for (k, v) in response.context["form"]["classes"].field.choices
+        ]
+
+        assert_that(choices_in_form, not_(contains("Class 3")))
+        assert_that(choices_in_form, contains_inanyorder("Class 1", "Class 2"))
+        assert_that(choices_in_form, has_length(2))
 
 
 class ScoreboardCsvTestCase(TestCase):
@@ -378,7 +491,7 @@ class ScoreboardCsvTestCase(TestCase):
         return header, rows
 
 
-class Student(object):
+class MockStudent(object):
     def __init__(self, student):
         self.student = student
 
@@ -392,7 +505,7 @@ class Student(object):
         return False
 
 
-class Teacher(object):
+class MockTeacher(object):
     def is_student(self):
         return False
 

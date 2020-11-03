@@ -75,9 +75,9 @@ Multiple_Levels_Header = [
 
 
 def scoreboard(request):
-    """ Renders a page with students' scores. A teacher can see the visible classes in their
-        school. Student's view is restricted to their class if their teacher enabled the
-        scoreboard for said class.
+    """Renders a page with students' scores. A teacher can see the visible classes in their
+    school. Student's view is restricted to their class if their teacher enabled the
+    scoreboard for said class.
     """
     if not permissions.can_see_scoreboard(request.user):
         return render_no_permission_error(request)
@@ -129,8 +129,12 @@ def success_response(form, student_data, headers):
 
 def classes_for(user):
     if user.is_teacher():
-        teachers = Teacher.objects.filter(school=user.teacher.school)
-        return Class.objects.filter(teacher__in=teachers)
+        if user.teacher.is_admin:
+            teachers = Teacher.objects.filter(school=user.teacher.school)
+            return Class.objects.filter(teacher__in=teachers)
+        else:
+            return Class.objects.filter(teacher=user.teacher)
+
     elif user.is_student():
         class_ = user.student.class_field
         return Class.objects.filter(id=class_.id)
