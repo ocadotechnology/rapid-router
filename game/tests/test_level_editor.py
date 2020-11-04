@@ -42,9 +42,9 @@ from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
 from deploy import captcha
 from django.core import mail
-from django.core.urlresolvers import reverse
 from django.test.client import Client
 from django.test.testcases import TestCase
+from django.urls import reverse
 from hamcrest import *
 from portal.tests.utils.organisation import create_organisation_directly
 

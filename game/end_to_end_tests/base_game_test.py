@@ -43,7 +43,7 @@ from common.models import UserProfile
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from game.models import Workspace
 from portal.tests.pageObjects.portal.home_page import HomePage
