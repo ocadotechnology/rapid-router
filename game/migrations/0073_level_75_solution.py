@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2019, Ocado Innovation Limited
+# Copyright (C) 2020, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -34,54 +34,24 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-"""Django settings for example_project project."""
-import os
+from django.db import migrations
 
-DEBUG = True
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'OPTIONS': {
-            'debug': DEBUG,
-        },
-    },
-]
+def update_level(apps, schema_editor):
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(os.path.abspath(os.path.dirname(__file__)),'db.sqlite3'),  # Or path to database file if using sqlite3.
-    }
-}
+    Level = apps.get_model("game", "Level")
+    level75 = Level.objects.get(name="75", default=1)
+    level75.model_solution = "[9]"
+    level75.save()
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-USE_I18N = True
-USE_L10N = True
-
-TIME_ZONE = 'Europe/London'
-LANGUAGE_CODE = 'en-gb'
-LANGUAGES = (('en-gb', 'English'),)
-STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
-STATIC_URL = '/static/'
-SECRET_KEY = 'not-a-secret'
-
-ROOT_URLCONF = 'example_project.urls'
-
-WSGI_APPLICATION = 'example_project.wsgi.application'
-
-INSTALLED_APPS = (
-    'game',
-)
-
-ALLOWED_HOSTS = ['*']
-PIPELINE_ENABLED = False
-
-try:
-    from example_project.local_settings import *  # pylint: disable=E0611
-except ImportError:
+def dummy_reverse(apps, schema_editor):
+    """It's not possible to reverse this data migration
+    but we want to allow Django to reverse previous migrations.
+    """
     pass
 
-from django_autoconfig import autoconfig
-autoconfig.configure_settings(globals())
+
+class Migration(migrations.Migration):
+    dependencies = [("game", "0072_level_50_solution")]
+    operations = [migrations.RunPython(update_level, reverse_code=dummy_reverse)]
