@@ -35,12 +35,12 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from django.db.migrations.executor import MigrationExecutor
-from django.test import TestCase
+from django.test import TransactionTestCase
 from django.db import connection
 from django.apps import apps
 
 
-class MigrationTestCase(TestCase):
+class MigrationTestCase(TransactionTestCase):
     """A Test case for testing migrations."""
 
     # These must be defined by subclasses.

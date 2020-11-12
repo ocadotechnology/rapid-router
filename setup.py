@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django==2.0.*",
+        "django==2.2.*",
         "django-autoconfig >= 0.3.6, < 1.0.0",
         "django-js-reverse==0.9.1",
         "django-foundation-statics==5.4.7",
