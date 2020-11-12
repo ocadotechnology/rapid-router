@@ -10,7 +10,7 @@ admin.autodiscover()
 
 urlpatterns = [
     url(r"^", include(portal_urls)),
-    path("admin/", admin.site.urls),
+    path("administration/", admin.site.urls),
     url(r"^rapidrouter/", include(game_urls)),
     url(r"^aimmo/", include(aimmo_urls)),
 ]
