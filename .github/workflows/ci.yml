@@ -22,6 +22,8 @@ jobs:
     - name: Collect static
       run: python example_project/manage.py collectstatic --noinput
     - name: Run tests
+      env:
+        SELENIUM_WEBDRIVER: chrome-headless
       run: pytest --cov=. --cov-report=xml
     # - name: Upload coverage to Codecov
     #   uses: codecov/codecov-action@v1
