@@ -38,6 +38,7 @@ import json
 
 from common.models import Teacher
 from common.tests.utils.classes import create_class_directly
+from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
 from deploy import captcha
@@ -46,7 +47,6 @@ from django.test.client import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
 from hamcrest import *
-from portal.tests.utils.organisation import create_organisation_directly
 
 from game.tests.utils.level import create_save_level
 from game.tests.utils.teacher import add_teacher_to_school, create_school
