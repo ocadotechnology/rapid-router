@@ -34,31 +34,31 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from game.models import Level
 import game.level_management as level_management
+from game.models import Level
 
 
 def create_save_level(teacher):
     data = {
-        u"origin": u'{"coordinate":[3,5],"direction":"S"}',
-        u"pythonEnabled": False,
-        u"decor": [],
-        u"blocklyEnabled": True,
-        u"blocks": [
-            {u"type": u"move_forwards"},
-            {u"type": u"turn_left"},
-            {u"type": u"turn_right"},
+        "origin": '{"coordinate":[3,5],"direction":"S"}',
+        "pythonEnabled": False,
+        "decor": [],
+        "blocklyEnabled": True,
+        "blocks": [
+            {"type": "move_forwards"},
+            {"type": "turn_left"},
+            {"type": "turn_right"},
         ],
-        u"max_fuel": u"50",
-        u"pythonViewEnabled": False,
-        u"character": u"3",
-        u"name": u"abc",
-        u"theme": 1,
-        u"anonymous": False,
-        u"cows": u"[]",
-        u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],"connectedNodes":[0]}]',
-        u"traffic_lights": u"[]",
-        u"destinations": u"[[3,4]]",
+        "max_fuel": "50",
+        "pythonViewEnabled": False,
+        "character": "3",
+        "name": "1",
+        "theme": 1,
+        "anonymous": False,
+        "cows": "[]",
+        "path": '[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],"connectedNodes":[0]}]',
+        "traffic_lights": "[]",
+        "destinations": "[[3,4]]",
     }
     level = Level(default=False, anonymous=data["anonymous"])
     level.owner = teacher.user.user.userprofile
