@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2019, Ocado Innovation Limited
+# Copyright (C) 2020, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -34,32 +34,37 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from __future__ import absolute_import
-from .base_test_migration import MigrationTestCase
+import pytest
 
 
-class TestMigrationReorderEpisodes(MigrationTestCase):
+@pytest.mark.django_db
+def test_episodes_renamed_properly(migrator):
+    old_state = migrator.apply_initial_migration(("game", "0067_level_score_27"))
+    new_state = migrator.apply_tested_migration(
+        ("game", "0069_remove_user_levels_from_episodes")
+    )
 
-    start_migration = "0067_level_score_27"
-    dest_migration = "0069_remove_user_levels_from_episodes"
+    Episode = new_state.apps.get_model("game", "Episode")
+    episode7 = Episode.objects.get(id=7)
+    episode8 = Episode.objects.get(id=8)
 
-    def test_episodes_renamed_properly(self):
-        Episode = self.django_application.get_model("game", "Episode")
+    assert episode7.name == "Limited Blocks"
+    assert episode8.name == "Procedures"
 
-        episode7 = Episode.objects.get(id=7)
-        episode8 = Episode.objects.get(id=8)
 
-        self.assertEquals(episode7.name, "Limited Blocks")
-        self.assertEquals(episode8.name, "Procedures")
+@pytest.mark.django_db
+def test_episodes_reordered_properly(migrator):
+    old_state = migrator.apply_initial_migration(("game", "0067_level_score_27"))
+    new_state = migrator.apply_tested_migration(
+        ("game", "0069_remove_user_levels_from_episodes")
+    )
 
-    def test_episodes_reordered_properly(self):
-        Episode = self.django_application.get_model("game", "Episode")
+    Episode = new_state.apps.get_model("game", "Episode")
+    episode6 = Episode.objects.get(id=6)
+    episode7 = Episode.objects.get(id=7)
+    episode8 = Episode.objects.get(id=8)
+    episode9 = Episode.objects.get(id=9)
 
-        episode6 = Episode.objects.get(id=6)
-        episode7 = Episode.objects.get(id=7)
-        episode8 = Episode.objects.get(id=8)
-        episode9 = Episode.objects.get(id=9)
-
-        self.assertEquals(episode6.next_episode, episode7)
-        self.assertEquals(episode7.next_episode, episode8)
-        self.assertEquals(episode8.next_episode, episode9)
+    assert episode7.next_episode == episode8
+    assert episode8.next_episode == episode9
+    assert episode6.next_episode == episode7

@@ -8,6 +8,7 @@ rapid-router = {path = ".",editable = true}
 
 [dev-packages]
 django-selenium-clean = "==0.3.2"
+django-test-migrations = "==1.0.0"
 selenium = "==3.141.0"
 pytest-django = "==4.1.0"
 pytest = "==6.*"
