@@ -35,7 +35,7 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from hamcrest import *
 from hamcrest.core.base_matcher import BaseMatcher
 from rest_framework import status

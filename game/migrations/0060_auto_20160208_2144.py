@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
                 blank=True,
                 to="game.Theme",
                 null=True,
+                on_delete=models.CASCADE,
             ),
         )
     ]

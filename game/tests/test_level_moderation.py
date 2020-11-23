@@ -37,12 +37,11 @@
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
-from django.core.urlresolvers import reverse
+from deploy import captcha
 from django.test.client import Client
 from django.test.testcases import TestCase
+from django.urls import reverse
 from hamcrest import *
-
-from deploy import captcha
 
 
 class LevelModerationTestCase(TestCase):

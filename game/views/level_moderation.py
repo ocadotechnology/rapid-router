@@ -53,7 +53,7 @@ from .helper import renderError
 
 
 def level_moderation(request):
-    """ Renders a page with students' scores.
+    """Renders a page with students' scores.
 
     **Context**
 

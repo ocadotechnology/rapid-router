@@ -40,7 +40,7 @@ from django.shortcuts import render
 
 
 def renderError(request, title, message):
-    """ Renders an error page with passed title and message.
+    """Renders an error page with passed title and message.
 
     **Context**
 

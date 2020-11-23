@@ -35,25 +35,26 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from rest_framework import permissions
+
 #########################
 # Workspace permissions #
 #########################
 
 
 def can_create_workspace(user):
-    return not user.is_anonymous()
+    return not user.is_anonymous
 
 
 def can_load_workspace(user, workspace):
-    return not user.is_anonymous() and workspace.owner == user.userprofile
+    return not user.is_anonymous and workspace.owner == user.userprofile
 
 
 def can_save_workspace(user, workspace):
-    return not user.is_anonymous() and workspace.owner == user.userprofile
+    return not user.is_anonymous and workspace.owner == user.userprofile
 
 
 def can_delete_workspace(user, workspace):
-    return not user.is_anonymous() and workspace.owner == user.userprofile
+    return not user.is_anonymous and workspace.owner == user.userprofile
 
 
 #####################
@@ -62,7 +63,7 @@ def can_delete_workspace(user, workspace):
 
 
 def can_create_level(user):
-    return not user.is_anonymous()
+    return not user.is_anonymous
 
 
 def can_play_level(user, level, early_access):
@@ -72,7 +73,7 @@ def can_play_level(user, level, early_access):
         return False
     elif level.default and level.episode.in_development and early_access:
         return True
-    elif user.is_anonymous():
+    elif user.is_anonymous:
         return level.default and not level.episode.in_development
     elif user.userprofile == level.owner:
         return True
@@ -85,7 +86,7 @@ def can_play_level(user, level, early_access):
 
 
 def can_load_level(user, level):
-    if user.is_anonymous():
+    if user.is_anonymous:
         return False
     elif user.userprofile == level.owner:
         return True
@@ -100,14 +101,14 @@ def can_load_level(user, level):
 def can_save_level(user, level):
     if level.anonymous:
         return True
-    elif user.is_anonymous():
+    elif user.is_anonymous:
         return False
     else:
         return user.userprofile == level.owner
 
 
 def can_delete_level(user, level):
-    if user.is_anonymous():
+    if user.is_anonymous:
         return False
     elif level.owner == user.userprofile:
         return True
@@ -127,11 +128,11 @@ class CanShareLevel(permissions.BasePermission):
         return True
 
     def has_object_permission(self, request, view, obj):
-        if request.user.is_anonymous():
+        if request.user.is_anonymous:
             return False
         elif (
-                hasattr(request.user.userprofile, "student")
-                and request.user.userprofile.student.is_independent()
+            hasattr(request.user.userprofile, "student")
+            and request.user.userprofile.student.is_independent()
         ):
             return False
         else:
@@ -159,33 +160,36 @@ class CanShareLevelWith(permissions.BasePermission):
         return self.can_share_level_with(obj, sharer)
 
     def can_share_level_with(self, recipient, sharer):
-        if recipient.is_anonymous() or sharer.is_anonymous():
+        if recipient.is_anonymous or sharer.is_anonymous:
             return False
 
         recipient_profile = recipient.userprofile
         sharer_profile = sharer.userprofile
 
         if (
-                hasattr(sharer_profile, "student")
-                and not (sharer_profile.student.is_independent())
-                and hasattr(recipient_profile, "student")
-                and not (recipient_profile.student.is_independent())
+            hasattr(sharer_profile, "student")
+            and not (sharer_profile.student.is_independent())
+            and hasattr(recipient_profile, "student")
+            and not (recipient_profile.student.is_independent())
         ):
             # Are they in the same class?
             return (
-                    sharer_profile.student.class_field == recipient_profile.student.class_field
+                sharer_profile.student.class_field
+                == recipient_profile.student.class_field
             )
         elif hasattr(sharer_profile, "teacher") and sharer_profile.teacher.teaches(
-                recipient_profile
+            recipient_profile
         ):
             # Is the recipient taught by the sharer?
             return True
-        elif hasattr(recipient_profile, "teacher") and recipient_profile.teacher.teaches(
-                sharer_profile
-        ):
+        elif hasattr(
+            recipient_profile, "teacher"
+        ) and recipient_profile.teacher.teaches(sharer_profile):
             # Is the sharer taught by the recipient?
             return True
-        elif hasattr(sharer_profile, "teacher") and hasattr(recipient_profile, "teacher"):
+        elif hasattr(sharer_profile, "teacher") and hasattr(
+            recipient_profile, "teacher"
+        ):
             # Are they in the same organisation?
             return recipient_profile.teacher.school == sharer_profile.teacher.school
         else:
@@ -198,18 +202,18 @@ class CanShareLevelWith(permissions.BasePermission):
 
 
 def can_see_class(user, class_):
-    if user.is_anonymous():
+    if user.is_anonymous:
         return False
     elif hasattr(user.userprofile, "teacher"):
         return class_.teacher == user.userprofile.teacher
 
 
 def can_see_level_moderation(user):
-    if user.is_anonymous():
+    if user.is_anonymous:
         return False
     else:
         return hasattr(user.userprofile, "teacher")
 
 
 def can_see_scoreboard(user):
-    return not user.is_anonymous()
+    return not user.is_anonymous

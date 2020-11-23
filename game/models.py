@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2019, Ocado Innovation Limited
+# Copyright (C) 2020, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -36,9 +36,9 @@
 # identified as the original program.
 from builtins import str
 
+from common.models import UserProfile, Student
 from django.contrib.auth.models import User
 from django.db import models
-from common.models import UserProfile, Student
 
 
 def theme_choices():
@@ -64,7 +64,9 @@ class Episode(models.Model):
     """Variables prefixed with r_ signify they are parameters for random level generation"""
 
     name = models.CharField(max_length=200)
-    next_episode = models.ForeignKey("self", null=True, default=None)
+    next_episode = models.ForeignKey(
+        "self", null=True, default=None, on_delete=models.SET_NULL
+    )
     in_development = models.BooleanField(default=False)
 
     r_random_levels_enabled = models.BooleanField(default=False)
@@ -106,18 +108,28 @@ def sort_levels(levels):
 
 class Level(models.Model):
     name = models.CharField(max_length=100)
-    episode = models.ForeignKey(Episode, blank=True, null=True, default=None)
+    episode = models.ForeignKey(
+        Episode, blank=True, null=True, default=None, on_delete=models.PROTECT
+    )
     path = models.TextField(max_length=10000)
     traffic_lights = models.TextField(max_length=10000, default="[]")
     cows = models.TextField(max_length=10000, default="[]")
     origin = models.CharField(max_length=50, default="[]")
     destinations = models.CharField(max_length=50, default="[[]]")
     default = models.BooleanField(default=False)
-    owner = models.ForeignKey(UserProfile, related_name="levels", blank=True, null=True)
+    owner = models.ForeignKey(
+        UserProfile,
+        related_name="levels",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
     fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
-    next_level = models.ForeignKey("self", null=True, default=None)
+    next_level = models.ForeignKey(
+        "self", null=True, default=None, on_delete=models.SET_NULL
+    )
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True)
     model_solution = models.CharField(blank=True, max_length=20, default="[]")
     disable_route_score = models.BooleanField(default=False)
@@ -169,22 +181,26 @@ class Level(models.Model):
 
 
 class LevelBlock(models.Model):
-    type = models.ForeignKey(Block)
-    level = models.ForeignKey(Level)
+    type = models.ForeignKey(Block, on_delete=models.CASCADE)
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
     number = models.PositiveIntegerField(default=None, null=True)
 
 
 class LevelDecor(models.Model):
     x = models.IntegerField()
     y = models.IntegerField()
-    level = models.ForeignKey(Level)
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
     decorName = models.CharField(max_length=100, default="tree1")
 
 
 class Workspace(models.Model):
     name = models.CharField(max_length=200)
     owner = models.ForeignKey(
-        UserProfile, related_name="workspaces", blank=True, null=True
+        UserProfile,
+        related_name="workspaces",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
     )
     contents = models.TextField(default="")
     python_contents = models.TextField(default="")
@@ -197,8 +213,14 @@ class Workspace(models.Model):
 
 class Attempt(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
-    level = models.ForeignKey(Level, related_name="attempts")
-    student = models.ForeignKey(Student, related_name="attempts", blank=True, null=True)
+    level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
+    student = models.ForeignKey(
+        Student,
+        related_name="attempts",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
     finish_time = models.DateTimeField(null=True, blank=True)
     score = models.FloatField(default=0, null=True)
     workspace = models.TextField(default="")

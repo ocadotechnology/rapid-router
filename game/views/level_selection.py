@@ -139,7 +139,7 @@ def is_student(user):
 
 
 def levels(request):
-    """ Loads a page with all levels listed.
+    """Loads a page with all levels listed.
 
     **Context**
 
@@ -151,7 +151,7 @@ def levels(request):
     :template:`game/level_selection.html`
     """
     user = request.user
-    if user.is_authenticated() and is_student(user):
+    if user.is_authenticated and is_student(user):
         best_attempts = (
             Attempt.objects.filter(student=user.userprofile.student)
             .values("level_id")
@@ -173,7 +173,7 @@ def levels(request):
 
     owned_level_data = []
     shared_level_data = []
-    if not request.user.is_anonymous():
+    if not request.user.is_anonymous:
         owned_levels, shared_levels = level_management.get_loadable_levels(request.user)
 
         for level in owned_levels:
@@ -210,7 +210,7 @@ def levels(request):
 
 
 def random_level_for_episode(request, episodeID):
-    """ Generates a new random level based on the episodeID
+    """Generates a new random level based on the episodeID
 
     Redirects to :view:`game.views.play_level` with the id of the newly created :model:`game.Level`.
     """

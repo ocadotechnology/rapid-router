@@ -39,7 +39,7 @@ from builtins import str
 import os
 import time
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from hamcrest import assert_that, equal_to, contains_string, ends_with
 from portal.tests.pageObjects.portal.base_page import BasePage
 from selenium.common.exceptions import TimeoutException
