@@ -29,6 +29,7 @@ jobs:
           pip install crowdin-cli-py
       - name: Run Crowdin
         run: |
+          ls -a
           mkdir -p game/locale
           cd game && django-admin makemessages -l en_GB --no-wrap && cd -
           cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
