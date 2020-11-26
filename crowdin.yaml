@@ -1,4 +1,4 @@
-project_identifier: code-for-life
+project_id_env: CROWDIN_PROJECT_ID
 api_key_env: CROWDIN_API_KEY
 
 base_url: https://api.crowdin.com
@@ -6,6 +6,5 @@ base_path: .
 preserve_hierarchy: true
 
 files:
-  -
-    source: /game/locale/en_GB/LC_MESSAGES/*.po
+  - source: /game/locale/en_GB/LC_MESSAGES/*.po
     translation: /game/locale/%locale_with_underscore%/LC_MESSAGES/%original_file_name%
