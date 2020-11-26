@@ -36,6 +36,8 @@ jobs:
           cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
           crowdin-cli-py upload sources
           ./.crowdin-get-translations
+        env:
+          CROWDIN_API_KEY: ${{ secrets.CROWDIN_API_KEY }}
       - name: Release rapid-router
         uses: relekang/python-semantic-release@master
         with:
