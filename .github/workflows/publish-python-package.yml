@@ -1,13 +1,15 @@
 name: Publish Python Package
 on:
-  workflow_run:
-    workflows: ['CI']
-    branches: [master]
-    types:
-      - completed
+  pull_request:
+  # workflow_run:
+  #   workflows: ['CI']
+  #   branches: [master]
+  #   types:
+  #     - completed
 jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,10 +34,6 @@ jobs:
           cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
           crowdin-cli-py upload sources
           ./.crowdin-get-translations
-      - name: Setup git username
-        run: |
-          git config --global user.name "semantic-release (via Github Actions)"
-          git config --global user.email "semantic-release@github-actions"
       - name: Release rapid-router
         uses: relekang/python-semantic-release@master
         with:
