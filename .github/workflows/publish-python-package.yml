@@ -18,6 +18,7 @@ jobs:
           fetch-depth: 0
       - name: Setup Python
         uses: actions/setup-python@v2
+        run: ls
         with:
           python-version: '3.6.7'
           architecture: 'x64'
