@@ -27,6 +27,7 @@ jobs:
           pipenv install --dev --system
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
           pip install crowdin-cli-py
+          sudo apt-get install gettext
       - name: Run Crowdin
         run: |
           ls -a
