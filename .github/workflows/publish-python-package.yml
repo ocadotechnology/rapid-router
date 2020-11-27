@@ -40,17 +40,16 @@ jobs:
         uses: crowdin/github-action@1.0.13
         with:
           upload_sources: true
-          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
           download_translations: true
           create_pull_request: false
+          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
           token: ${{ secrets.CROWDIN_API_KEY }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # env:
+        # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Compile messages
         run: |
-          ls -a
           pushd game
-          ls -a
+          django-admin compilemessages
           popd
       # - name: Release rapid-router
       #   uses: relekang/python-semantic-release@master
