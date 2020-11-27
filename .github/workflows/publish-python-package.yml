@@ -49,6 +49,7 @@ jobs:
       - name: Compile messages
         run: |
           pushd game
+          tree -d locale/
           django-admin compilemessages
           popd
       # - name: Release rapid-router
