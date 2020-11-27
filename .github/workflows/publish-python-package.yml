@@ -39,12 +39,13 @@ jobs:
         # ./.crowdin-get-translations
         uses: crowdin/github-action@1.0.13
         with:
-          upload_translations: true
+          upload_sources: true
+          dryrun_action: true
+          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
           download_translations: true
+          token: ${{ secrets.CROWDIN_API_KEY }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_API_KEY }}
       # - name: Release rapid-router
       #   uses: relekang/python-semantic-release@master
       #   with:
