@@ -1,13 +1,15 @@
 name: Publish Python Package
 on:
-  workflow_run:
-    workflows: ['CI']
-    branches: [master]
-    types:
-      - completed
+  pull_request:
+  # workflow_run:
+  #   workflows: ['CI']
+  #   branches: [master]
+  #   types:
+  #     - completed
 jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,25 +26,39 @@ jobs:
           pip install pipenv
           pipenv install --dev --system
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
-          pip install crowdin-cli-py
-      - name: Run Crowdin
+          sudo apt-get install gettext
+      - name:
+          Run Crowdin
+          # pip install crowdin-cli-py
         run: |
           mkdir -p game/locale
           cd game && django-admin makemessages -l en_GB --no-wrap && cd -
           cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
-          crowdin-cli-py upload sources
-          ./.crowdin-get-translations
-      - name: Setup git username
-        run: |
-          git config --global user.name "semantic-release (via Github Actions)"
-          git config --global user.email "semantic-release@github-actions"
-      - name: Release rapid-router
-        uses: relekang/python-semantic-release@master
+      - name: crowdin action
+        # crowdin-cli-py upload sources
+        # ./.crowdin-get-translations
+        uses: crowdin/github-action@1.0.13
         with:
-          github_token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
-      - name: Trigger build on Semaphore
-        run: curl -d POST -v https://semaphoreci.com/api/v1/projects/${SEMAPHORE_PROJECT_ID}/master/build?auth_token=${SEMAPHORE_API_AUTH}
+          upload_sources: true
+          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+          download_translations: true
+          create_pull_request: false
+          token: ${{ secrets.CROWDIN_API_KEY }}
         env:
-          SEMAPHORE_PROJECT_ID: ${{ secrets.SEMAPHORE_PROJECT_ID }}
-          SEMAPHORE_API_AUTH: ${{ secrets.SEMAPHORE_API_AUTH }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compile messages
+        run: |
+          ls -a
+          pushd game
+          ls -a
+          popd
+      # - name: Release rapid-router
+      #   uses: relekang/python-semantic-release@master
+      #   with:
+      #     github_token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+      #     pypi_token: ${{ secrets.PYPI_TOKEN }}
+      # - name: Trigger build on Semaphore
+      #   run: curl -d POST -v https://semaphoreci.com/api/v1/projects/${SEMAPHORE_PROJECT_ID}/master/build?auth_token=${SEMAPHORE_API_AUTH}
+      #   env:
+      #     SEMAPHORE_PROJECT_ID: ${{ secrets.SEMAPHORE_PROJECT_ID }}
+      #     SEMAPHORE_API_AUTH: ${{ secrets.SEMAPHORE_API_AUTH }}
