@@ -2,32 +2,34 @@ name: CI
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
 jobs:
-  build:
+  tests:
+    name: Run tests
+    if: ${{ github.event.pusher.name != 'actions-user' }}
     runs-on: ubuntu-18.04
     env:
       LANG: C.UTF-8
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.6.7'
-        architecture: 'x64'
-    - name: Install pip requirements
-      run: |
-        pip install pipenv
-        pip install pytest-cov
-        pipenv install --dev --system
-        pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
-    - name: Collect static
-      run: python example_project/manage.py collectstatic --noinput
-    - name: Run tests
-      env:
-        SELENIUM_WEBDRIVER: chrome-headless
-      run: pytest --cov=. --cov-report=xml
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.6.7'
+          architecture: 'x64'
+      - name: Install pip requirements
+        run: |
+          pip install pipenv
+          pip install pytest-cov
+          pipenv install --dev --system
+          pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
+      - name: Collect static
+        run: python example_project/manage.py collectstatic --noinput
+      - name: Run tests
+        env:
+          SELENIUM_WEBDRIVER: chrome-headless
+        run: pytest --cov=. --cov-report=xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
