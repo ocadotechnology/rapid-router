@@ -10,7 +10,7 @@ on:
 jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
