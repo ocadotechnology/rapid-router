@@ -27,12 +27,12 @@ jobs:
           pipenv install --dev --system
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
           sudo apt-get install gettext
-      - name: Run Crowdin
+      - name: Prepare files for Crowdin
         run: |
           mkdir -p game/locale
           cd game && django-admin makemessages -l en_GB --no-wrap && cd -
           cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
-      - name: crowdin action
+      - name: Run Crowdin (Upload sources and download translations)
         uses: crowdin/github-action@1.0.13
         with:
           upload_sources: true
