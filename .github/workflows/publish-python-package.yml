@@ -41,7 +41,7 @@ jobs:
         with:
           upload_sources: true
           download_translations: true
-          create_pull_request: false
+          push_translations: false
           project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
           token: ${{ secrets.CROWDIN_API_KEY }}
         # env:
