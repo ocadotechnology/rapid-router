@@ -1,5 +1,6 @@
 name: Publish Python Package
 on:
+  pull_request:
   workflow_run:
     workflows: ['CI']
     branches: [master]
@@ -8,7 +9,8 @@ on:
 jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
-    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -24,18 +26,25 @@ jobs:
           pip install pipenv
           pipenv install --dev --system
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
-          pip install crowdin-cli-py
-      - name: Run Crowdin
+          sudo apt-get install gettext
+      - name: Prepare files for Crowdin
         run: |
           mkdir -p game/locale
           cd game && django-admin makemessages -l en_GB --no-wrap && cd -
           cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
-          crowdin-cli-py upload sources
-          ./.crowdin-get-translations
-      - name: Setup git username
+      - name: Run Crowdin (Upload sources and download translations)
+        uses: crowdin/github-action@1.0.13
+        with:
+          upload_sources: true
+          download_translations: true
+          push_translations: false
+          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+          token: ${{ secrets.CROWDIN_API_KEY }}
+      - name: Compile messages
         run: |
-          git config --global user.name "semantic-release (via Github Actions)"
-          git config --global user.email "semantic-release@github-actions"
+          pushd game
+          django-admin compilemessages
+          popd
       - name: Release rapid-router
         uses: relekang/python-semantic-release@master
         with:
