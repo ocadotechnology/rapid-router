@@ -18,10 +18,9 @@ jobs:
         pip install pipenv
         pip install pytest-cov
         pipenv install --dev --system
-        pip install django-autoconfig
-        pip install -U git+https://github.com/ocadotechnology/codeforlife-portal@django_2_upgrade #TODO: Remove as part of #688
+        pip install -U git+https://github.com/ocadotechnology/codeforlife-portal@upgrade_dependencies #TODO: Remove as part of #688
         pip install -U git+https://github.com/ocadotechnology/aimmo@django_2_upgrade
-        pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal@django_2_upgrade#egg=cfl-common&subdirectory=cfl_common"
+        pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal@upgrade_dependencies#egg=cfl-common&subdirectory=cfl_common"
     - name: Collect static
       run: python example_project/manage.py collectstatic --noinput
     - name: Run tests
