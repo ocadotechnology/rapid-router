@@ -43,10 +43,10 @@
         },
         "django-pipeline": {
             "hashes": [
-                "sha256:6c7bd5c2a922ddb7e989a1c5a6852f3a8bffcf6e14d9f228261c8ba04b5b79a7",
-                "sha256:7bf3d304c655ca20f77d66a4f4f3511a7b2f317768110967828aa5088806d4ce"
+                "sha256:b56f2cfdb113dc1cb05257d8eb8d145fc0ade6f0d1236fb425df15bd059dce15",
+                "sha256:ef67aaf58959a2959e13fc114001cee5beec05ac18a81cc700ea9f1c8e3f40a8"
             ],
-            "version": "==2.0.5"
+            "version": "==1.6.14"
         },
         "djangorestframework": {
             "hashes": [
