@@ -26,7 +26,7 @@ setup(
         "django-foundation-statics==5.4.7",
         "django-pipeline==2.0.5",
         "djangorestframework==3.12.2",
-        "django-autoconfig @ git+https://github.com/ocadotechnology/django-autoconfig@master#egg=django-autoconfig"
+        "django-autoconfig @ git+https://github.com/ocadotechnology/django-autoconfig@master#egg=django-autoconfig",
         "more-itertools==8.6.0",
         "pyhamcrest==2.0.2",
         "libsass==0.20.1",
