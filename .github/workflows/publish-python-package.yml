@@ -1,6 +1,5 @@
 name: Publish Python Package
 on:
-  pull_request:
   workflow_run:
     workflows: ['CI']
     branches: [master]
