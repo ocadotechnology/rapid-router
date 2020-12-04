@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.4.12 (2020-12-04)
+### Fix
+* Stop retriggering of CI job on release (#1141) ([`ae07c53`](https://github.com/ocadotechnology/rapid-router/commit/ae07c5310673108a1ce107ab33818c129c4f68c4))
+
 ## v2.4.11 (2020-12-04)
 ### Fix
 * Bring back Rapid Rudolph (#1144) ([`dc20b48`](https://github.com/ocadotechnology/rapid-router/commit/dc20b486824ca1d5316b7e96577329594511e366))
