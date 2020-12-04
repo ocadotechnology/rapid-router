@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.4.11 (2020-12-04)
+### Fix
+* Bring back Rapid Rudolph (#1144) ([`dc20b48`](https://github.com/ocadotechnology/rapid-router/commit/dc20b486824ca1d5316b7e96577329594511e366))
+
 ## v2.4.10 (2020-11-27)
 ### Fix
 * Use correct token for publishing packages (#1139) ([`af711cc`](https://github.com/ocadotechnology/rapid-router/commit/af711ccdb6492430c13e629c76958b12cf100892))
