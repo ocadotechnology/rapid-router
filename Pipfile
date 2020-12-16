@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 rapid-router = {path = ".",editable = true}
-django-autoconfig = { git = 'https://github.com/ocadotechnology/django-autoconfig.git', ref = 'master', editable = true }
 
 [dev-packages]
 django-selenium-clean = "==0.3.2"
