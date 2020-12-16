@@ -31,7 +31,7 @@ setup(
         "pyhamcrest==2.0.2",
         "libsass==0.20.1",
         "future==0.18.2",
-        # "cfl-common",
+        "cfl-common",
     ],
     classifiers=[
         "Programming Language :: Python",
