@@ -41,7 +41,7 @@ from builtins import str
 from builtins import object
 import json
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
@@ -113,7 +113,7 @@ def _custom_level_url(level):
 
 
 def play_level(request, level, from_editor=False):
-    """ Loads a level for rendering in the game.
+    """Loads a level for rendering in the game.
 
     **Context**
 
@@ -171,7 +171,7 @@ def play_level(request, level, from_editor=False):
 
     workspace = None
     python_workspace = None
-    if not request.user.is_anonymous() and hasattr(request.user.userprofile, "student"):
+    if not request.user.is_anonymous and hasattr(request.user.userprofile, "student"):
         student = request.user.userprofile.student
         attempt = (
             Attempt.objects.filter(
@@ -273,7 +273,7 @@ def delete_level(request, levelID):
 def submit_attempt(request):
     """ Processes a request on submission of the program solving the current level. """
     if (
-        not request.user.is_anonymous()
+        not request.user.is_anonymous
         and request.method == "POST"
         and hasattr(request.user.userprofile, "student")
     ):

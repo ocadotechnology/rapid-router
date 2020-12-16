@@ -69,7 +69,7 @@ def add_related_fields(levels):
 
 
 def levels_shared_with(user):
-    if user.is_anonymous():
+    if user.is_anonymous:
         return []
 
     shared_levels = user.shared
@@ -78,7 +78,7 @@ def levels_shared_with(user):
 
 
 def levels_owned_by(user):
-    if user.is_anonymous():
+    if user.is_anonymous:
         return []
 
     levels = user.userprofile.levels

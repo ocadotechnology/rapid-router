@@ -34,11 +34,9 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from django.core.cache import cache
-from django.core.urlresolvers import reverse
-from django.test.testcases import TestCase
 from django.test.client import Client
-
+from django.test.testcases import TestCase
+from django.urls import reverse
 from hamcrest import *
 
 from game.tests.utils.locale import add_new_language
