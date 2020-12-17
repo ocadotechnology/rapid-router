@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v2.5.1 (2020-12-17)
+### Fix
+* Lock file ([`2fc0a3f`](https://github.com/ocadotechnology/rapid-router/commit/2fc0a3fc44013226e86bfee46632f98dbee85964))
+* Install autoconfig not editable ([`78a7d8c`](https://github.com/ocadotechnology/rapid-router/commit/78a7d8c367b3ee4830cef73f7555afb18df37886))
+* Try not installing with system ([`13cfe38`](https://github.com/ocadotechnology/rapid-router/commit/13cfe386212f5013b26e704ca22cd4bd397a5954))
+* Revert autoconfig move ([`3aecff2`](https://github.com/ocadotechnology/rapid-router/commit/3aecff2cca08c6c00fcdebcdb6c04662edb5dec4))
+* Move autoconfig installation to Pipfile ([`f422f54`](https://github.com/ocadotechnology/rapid-router/commit/f422f54be00b4a11d601f264748f61502d394102))
+
 ## v2.5.0 (2020-12-16)
 ### Feature
 * Upgrade to Django 2.2 ([#1132](https://github.com/ocadotechnology/rapid-router/pull/1132)) ([`aacebbc`](https://github.com/ocadotechnology/rapid-router/commit/aacebbccf4aceba55ebb4d733d3a05d8e2e899ba))
