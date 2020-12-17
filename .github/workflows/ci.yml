@@ -25,7 +25,7 @@ jobs:
         run: |
           pip install pipenv
           pip install pytest-cov
-          pipenv install --dev --system
+          pipenv install --dev
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal@django_2_upgrade #TODO: Remove as part of #688
           pip install -U git+https://github.com/ocadotechnology/aimmo@django_2_upgrade
           pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal@django_2_upgrade#egg=cfl-common&subdirectory=cfl_common"
