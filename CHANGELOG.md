@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v2.5.2 (2020-12-21)
+### Fix
+* Fix translation files owner ([#1149](https://github.com/ocadotechnology/rapid-router/issues/1149)) ([`7617f4a`](https://github.com/ocadotechnology/rapid-router/commit/7617f4abafc98e4ca1993277b9a843aa66d5f87d))
+* Remove build dependencies ([#1148](https://github.com/ocadotechnology/rapid-router/issues/1148)) ([`b533301`](https://github.com/ocadotechnology/rapid-router/commit/b53330182a2bf618d05533962eaaaa67b0c658b8))
+
 ## v2.5.1 (2020-12-17)
 ### Fix
 * Lock file ([`2fc0a3f`](https://github.com/ocadotechnology/rapid-router/commit/2fc0a3fc44013226e86bfee46632f98dbee85964))
