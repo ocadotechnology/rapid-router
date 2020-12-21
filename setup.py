@@ -25,7 +25,6 @@ setup(
         "django-js-reverse==0.9.1",
         "django-foundation-statics==5.4.7",
         "django-pipeline==1.6.14",  # Setting this to 1.6.14 as 1.7 causes issue with compiling SCSS files
-        "django-autoconfig",
         "djangorestframework==3.12.2",
         "more-itertools==8.6.0",
         "pyhamcrest==2.0.2",
