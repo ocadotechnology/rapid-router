@@ -40,6 +40,8 @@ jobs:
           push_translations: false
           project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
           token: ${{ secrets.CROWDIN_API_KEY }}
+      - name: Fix translation files owner
+        run: sudo chown -R $USER game/locale
       - name: Compile messages
         run: |
           pushd game
