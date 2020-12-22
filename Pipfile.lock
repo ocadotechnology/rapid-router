@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0565d61c1e85d479ab389faa17efd3352a28184f98af3bde6398619ebd78d5c7"
+            "sha256": "6873b87d589cbd9947cdb37f4ee9ddccd8c56a88d1b60d0d69f2afb0115e5d23"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -71,11 +71,8 @@
             "version": "==2.2.17"
         },
         "django-autoconfig": {
-            "file": "https://api.github.com/repos/ocadotechnology/django-autoconfig/tarball",
-            "hashes": [
-                "sha256:1e9366da2133eb05064ef67240ee9403ac30f5fba5133b0e728c788997e292c3"
-            ],
-            "version": "==0.9.0"
+            "git": "https://github.com/ocadotechnology/django-autoconfig.git",
+            "ref": "f4a6d48b92f1ee9149a56af566b3806e2bd8fec0"
         },
         "django-countries": {
             "hashes": [
