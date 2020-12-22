@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.5.3 (2020-12-22)
+### Fix
+* Move autoconfig back to Pipfile ([#1150](https://github.com/ocadotechnology/rapid-router/issues/1150)) ([`8e8c8aa`](https://github.com/ocadotechnology/rapid-router/commit/8e8c8aaa9ab995627d8d7b72200bf6f8e343a9a7))
+
 ## v2.5.2 (2020-12-21)
 ### Fix
 * Fix translation files owner ([#1149](https://github.com/ocadotechnology/rapid-router/issues/1149)) ([`7617f4a`](https://github.com/ocadotechnology/rapid-router/commit/7617f4abafc98e4ca1993277b9a843aa66d5f87d))
