@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.5.4 (2020-12-24)
+### Fix
+* Replace youtube embeds with youtube-nocookie ([#1151](https://github.com/ocadotechnology/rapid-router/issues/1151)) ([`f7157eb`](https://github.com/ocadotechnology/rapid-router/commit/f7157eb8b0bd06081d35be895a3cc51ca821ef95))
+
 ## v2.5.3 (2020-12-22)
 ### Fix
 * Move autoconfig back to Pipfile ([#1150](https://github.com/ocadotechnology/rapid-router/issues/1150)) ([`8e8c8aa`](https://github.com/ocadotechnology/rapid-router/commit/8e8c8aaa9ab995627d8d7b72200bf6f8e343a9a7))
