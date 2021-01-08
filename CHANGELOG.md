@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.5.5 (2021-01-08)
+### Fix
+* Revert Rapid Rudolph changes ([#1156](https://github.com/ocadotechnology/rapid-router/issues/1156)) ([`02507f5`](https://github.com/ocadotechnology/rapid-router/commit/02507f5deefbe49116f5d78425023ada77250740))
+
 ## v2.5.4 (2020-12-24)
 ### Fix
 * Replace youtube embeds with youtube-nocookie ([#1151](https://github.com/ocadotechnology/rapid-router/issues/1151)) ([`f7157eb`](https://github.com/ocadotechnology/rapid-router/commit/f7157eb8b0bd06081d35be895a3cc51ca821ef95))
