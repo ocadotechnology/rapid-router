@@ -478,17 +478,12 @@ ocargo.Game.prototype.onSlowControls = function () {
 
 ocargo.Game.prototype.mute = function (mute) {
   this.isMuted = mute
+  setMutedCookie(mute)
   if (mute) {
     ocargo.sound.mute()
-    if (hasFunctionalCookiesConsent()) {
-      $.cookie('muted', 'true', { path: Urls.levels() })
-    }
     this.tabs.mute.transitTo('muted')
   } else {
     ocargo.sound.unmute()
-    if (hasFunctionalCookiesConsent()) {
-      $.cookie('muted', 'false', { path: Urls.levels() })
-    }
     this.tabs.mute.transitTo('unmuted')
   }
 }
@@ -1227,6 +1222,12 @@ function restoreCmsLogin () {
 
 function hasFunctionalCookiesConsent() {
   return OnetrustActiveGroups && OnetrustActiveGroups.split(',').includes('C0003')
+}
+
+function setMutedCookie(mute) {
+  if (hasFunctionalCookiesConsent()) {
+    $.cookie('muted', mute.toString(), { path: Urls.levels() })
+  }
 }
 
 $(document).ready(function () {
