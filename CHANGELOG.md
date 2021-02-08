@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.5.6 (2021-02-08)
+### Fix
+* Set location of trash can on first render ([#1160](https://github.com/ocadotechnology/rapid-router/issues/1160)) ([`a879d5c`](https://github.com/ocadotechnology/rapid-router/commit/a879d5c88ea3629a9cb5401477c2e9dbe50ec9b3))
+
 ## v2.5.5 (2021-01-08)
 ### Fix
 * Revert Rapid Rudolph changes ([#1156](https://github.com/ocadotechnology/rapid-router/issues/1156)) ([`02507f5`](https://github.com/ocadotechnology/rapid-router/commit/02507f5deefbe49116f5d78425023ada77250740))
