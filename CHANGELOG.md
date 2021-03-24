@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.5.7 (2021-03-24)
+### Fix
+* **deps:** Bump django from 2.2.17 to 2.2.18 ([#1169](https://github.com/ocadotechnology/rapid-router/issues/1169)) ([`c19e29e`](https://github.com/ocadotechnology/rapid-router/commit/c19e29e9a76e9675b9338a2f9c592cc63e71f9f8))
+
 ## v2.5.6 (2021-02-08)
 ### Fix
 * Set location of trash can on first render ([#1160](https://github.com/ocadotechnology/rapid-router/issues/1160)) ([`a879d5c`](https://github.com/ocadotechnology/rapid-router/commit/a879d5c88ea3629a9cb5401477c2e9dbe50ec9b3))
