@@ -162,6 +162,11 @@ urlpatterns = [
             [
                 url(r"^$", level_editor, name="level_editor"),
                 url(
+                    r"^(?P<levelId>[0-9]+)/$",
+                    level_editor,
+                    name="level_editor_chosen_level",
+                ),
+                url(
                     r"^play_anonymous/(?P<levelId>[0-9]+)/$",
                     play_anonymous_level,
                     name="play_anonymous_level",

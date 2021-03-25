@@ -86,6 +86,7 @@ ocargo.OwnedLevels.prototype.save = function(level, id, finishedCallback) {
         if (finishedCallback) {
             finishedCallback();
         }
+        window.location.replace("/rapidrouter/level_editor/" + newId +"/");
     }.bind(this), handleError.bind(this));
 };
 

@@ -16,6 +16,11 @@
   <script>
     var COW_LEVELS_ENABLED = {{cow_level_enabled|booltojs}};
     var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
+    {% if level %}
+    var LEVEL = {{level}};
+    {% else %}
+    var LEVEL = null;
+    {% endif %}
   </script>
   <script src="{% static "game/js/utils.js" %}"></script>
   <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
