@@ -947,7 +947,7 @@ ocargo.LevelEditor = function() {
                         status = 'unshared';
                         allShared = false;
                     }
-                    table.append("<tr value=\""+recipient.id+"\" status=\""+status+"\"><td>"+ recipient.name +"</td><td class=\"share_cell\">"+ text[status] + "</td></tr>");
+                    table.append("<tr value=\""+recipient.id+"\" status=\""+status+"\"><td>"+ $("<div>").text(recipient.name).html() +"</td><td class=\"share_cell\">"+ text[status] + "</td></tr>");
                 }
 
                 // Update the shareWithAll button
