@@ -947,7 +947,7 @@ ocargo.LevelEditor = function() {
                         status = 'unshared';
                         allShared = false;
                     }
-                    table.append("<tr value=\""+recipient.id+"\" status=\""+status+"\"><td>"+ recipient.name +"</td><td class=\"share_cell\">"+ text[status] + "</td></tr>");
+                    table.append("<tr value=\""+recipient.id+"\" status=\""+status+"\"><td>"+ $("<div>").text(recipient.name).html() +"</td><td class=\"share_cell\">"+ text[status] + "</td></tr>");
                 }
 
                 // Update the shareWithAll button
@@ -1231,37 +1231,42 @@ ocargo.LevelEditor = function() {
     /* Trashcan */
     /************/
 
+    function placeTrashcan(trashcan) {
+        // Iffy way of making sure the trashcan stays inside the grid
+        // when window bigger than grid
+        var windowWidth = $(window).width();
+        var windowHeight = $(window).height();
+
+        var paperRightEdge = PAPER_WIDTH + $('#tools').width();
+        var paperBottomEdge = PAPER_HEIGHT;
+
+        var bottom = 50;
+        if(windowHeight > paperBottomEdge) {
+            bottom += windowHeight - paperBottomEdge
+        }
+
+        var right = 50;
+        if(windowWidth > paperRightEdge) {
+            right += windowWidth - paperRightEdge;
+        }
+
+        trashcan.css('right', right);
+        trashcan.css('bottom', bottom);
+
+        var trashcanOffset = trashcan.offset();
+        var paperOffset = paper.offset();
+        trashcanAbsolutePaperX = trashcanOffset.left - paperOffset.left;
+        trashcanAbsolutePaperY = trashcanOffset.top - paperOffset.top;
+    }
+
     function setupTrashcan() {
 
         var trashcan = $('#trashcanHolder');
 
-        // Iffy way of making sure the trashcan stays inside the grid
-        // when window bigger than grid
+        placeTrashcan(trashcan);
+
         $(window).resize(function() {
-            var windowWidth = $(window).width();
-            var windowHeight = $(window).height();
-
-            var paperRightEdge = PAPER_WIDTH + $('#tools').width();
-            var paperBottomEdge = PAPER_HEIGHT;
-
-            var bottom = 50;
-            if(windowHeight > paperBottomEdge) {
-                bottom += windowHeight - paperBottomEdge
-            }
-
-            var right = 50;
-            if(windowWidth > paperRightEdge) {
-                right += windowWidth - paperRightEdge;
-            }
-
-            trashcan.css('right', right);
-            trashcan.css('bottom', bottom);
-
-
-            var trashcanOffset = trashcan.offset();
-            var paperOffset = paper.offset();
-            trashcanAbsolutePaperX = trashcanOffset.left - paperOffset.left;
-            trashcanAbsolutePaperY = trashcanOffset.top - paperOffset.top;
+            placeTrashcan(trashcan);
         });
 
         addReleaseListeners(trashcan[0]);
