@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-rapid-router = {path = ".",editable = true}
 django-autoconfig = { git = 'https://github.com/ocadotechnology/django-autoconfig.git', ref = 'master' }
+rapid-router = {editable = true, path = "."}
 
 [dev-packages]
 django-selenium-clean = "==0.3.2"

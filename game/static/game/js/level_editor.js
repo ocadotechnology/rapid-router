@@ -148,7 +148,7 @@ ocargo.LevelEditor = function(levelId) {
     // Setup the toolbox
     setupToolbox();
 
-    if (levelId != null) {
+    if (levelId !== null) {
         loadLevel(levelId);
     }
 
@@ -3033,7 +3033,7 @@ $(function() {
         },
         true
     );
-    if (LEVEL == null){
+    if (LEVEL === null){
         ocargo.Drawing.startPopup(gettext('Welcome to the Level editor!'), subtitle, '');
     } else {
         var optionAFunc = function(){
