@@ -19,8 +19,8 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.6.7'
-          architecture: 'x64'
+          python-version: "3.6.7"
+          architecture: "x64"
       - name: Install pip requirements
         run: |
           pip install pipenv
@@ -33,5 +33,7 @@ jobs:
         env:
           SELENIUM_WEBDRIVER: chrome-headless
         run: pytest --cov=. --cov-report=xml
+      - name: Test env vars
+        run: env
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
