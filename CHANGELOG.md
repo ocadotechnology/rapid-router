@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.6.0 (2021-04-16)
+### Feature
+* Check cookie consent when muting game ([#1157](https://github.com/ocadotechnology/rapid-router/issues/1157)) ([`85b5279`](https://github.com/ocadotechnology/rapid-router/commit/85b5279f14a4eb413fa7f5ff58daa3f12da441c2))
+
 ## v2.5.8 (2021-03-26)
 ### Fix
 * Improve sharing table generation ([#1171](https://github.com/ocadotechnology/rapid-router/issues/1171)) ([`ea7aa41`](https://github.com/ocadotechnology/rapid-router/commit/ea7aa4136a89f000d6a973f1c1d2100e1fd653ed))
