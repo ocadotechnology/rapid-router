@@ -78,6 +78,9 @@ INSTALLED_APPS = (
 ALLOWED_HOSTS = ['*']
 PIPELINE_ENABLED = False
 
+# This is used in common to enable/disable the OneTrust cookie management script
+COOKIE_MANAGEMENT_ENABLED = False
+
 try:
     from example_project.local_settings import *  # pylint: disable=E0611
 except ImportError:
