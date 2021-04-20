@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.6.1 (2021-04-20)
+### Fix
+* **deps:** Bump django from 2.2.18 to 2.2.20 ([#1172](https://github.com/ocadotechnology/rapid-router/issues/1172)) ([`e59277d`](https://github.com/ocadotechnology/rapid-router/commit/e59277d6d56d51476bc56a4fa05c0bfa599f9f2c))
+
 ## v2.6.0 (2021-04-16)
 ### Feature
 * Check cookie consent when muting game ([#1157](https://github.com/ocadotechnology/rapid-router/issues/1157)) ([`85b5279`](https://github.com/ocadotechnology/rapid-router/commit/85b5279f14a4eb413fa7f5ff58daa3f12da441c2))
