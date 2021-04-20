@@ -43,6 +43,7 @@ ocargo.Game = function () {
   this.tabs = null
   this.failures = 0
   this.currentlySelectedTab = null
+  this.isMuted = $.cookie('muted') === 'true'
 }
 
 ocargo.Game.prototype.setup = function () {
@@ -476,13 +477,13 @@ ocargo.Game.prototype.onSlowControls = function () {
 }
 
 ocargo.Game.prototype.mute = function (mute) {
+  this.isMuted = mute
+  setMutedCookie(mute)
   if (mute) {
     ocargo.sound.mute()
-    $.cookie('muted', 'true', { path: Urls.levels() })
     this.tabs.mute.transitTo('muted')
   } else {
     ocargo.sound.unmute()
-    $.cookie('muted', 'false', { path: Urls.levels() })
     this.tabs.mute.transitTo('unmuted')
   }
 }
@@ -1147,7 +1148,7 @@ ocargo.Game.prototype._setupHelpTab = function () {
 ocargo.Game.prototype._setupMuteTab = function () {
   this.tabs.mute.setOnChange(
     function () {
-      this.mute($.cookie('muted') !== 'true')
+      this.mute(!this.isMuted)
       this._selectPreviousTab()
     }.bind(this)
   )
@@ -1219,8 +1220,18 @@ function restoreCmsLogin () {
     .css('display', 'inline')
 }
 
+function hasFunctionalCookiesConsent() {
+  return OnetrustActiveGroups && OnetrustActiveGroups.split(',').includes('C0003')
+}
+
+function setMutedCookie(mute) {
+  if (hasFunctionalCookiesConsent()) {
+    $.cookie('muted', mute.toString(), { path: Urls.levels() })
+  }
+}
+
 $(document).ready(function () {
   ocargo.game = new ocargo.Game()
   ocargo.game.setup()
-  ocargo.game.mute($.cookie('muted') === 'true')
+  ocargo.game.mute(ocargo.game.isMuted)
 })
