@@ -46,6 +46,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.utils.safestring import mark_safe
+from django.views.decorators.http import require_POST
 from rest_framework import serializers
 
 import game.level_management as level_management
@@ -418,6 +419,7 @@ def start_episode(request, episodeId):
     return play_level(request, episode.first_level, False)
 
 
+@require_POST
 def delete_workspace(request, workspaceID):
     workspace = Workspace.objects.get(id=workspaceID)
     if permissions.can_delete_workspace(request.user, workspace):
