@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.0 (2021-04-30)
+### Feature
+* Update python to 3.7 and handlebars js to 4.7.7 ([#1176](https://github.com/ocadotechnology/rapid-router/issues/1176)) ([`811a928`](https://github.com/ocadotechnology/rapid-router/commit/811a9280d52d044eb70abfc491282ed9bdfb62e0))
+
 ## v2.6.2 (2021-04-21)
 ### Fix
 * Require post ([#1174](https://github.com/ocadotechnology/rapid-router/issues/1174)) ([`22d5933`](https://github.com/ocadotechnology/rapid-router/commit/22d5933c85f995e507b04a9dc3d25726dfd50119))
