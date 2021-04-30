@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6873b87d589cbd9947cdb37f4ee9ddccd8c56a88d1b60d0d69f2afb0115e5d23"
+            "sha256": "b79e8bd64758561174adb65a30446333a714c950acaec1bf539901b9ef26cde3"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.6.7"
+            "python_version": "3.7"
         },
         "sources": [
             {
@@ -26,11 +26,11 @@
         },
         "babel": {
             "hashes": [
-                "sha256:9d35c22fcc79893c3ecc85ac4a56cde1ecf3f19c540bba0922308a6c06ca6fa5",
-                "sha256:da031ab54472314f210b0adcff1588ee5d1d1d0ba4dbd07b94dba82bde791e05"
+                "sha256:ab49e12b91d937cd11f0b67cb259a57ab4ad2b59ac7a3b41d6c06c0ac5b0def9",
+                "sha256:bc0c176f9f6a994582230df350aa6e05ba2ebe4b3ac317eab29d9be5d2768da0"
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==2.9.0"
+            "version": "==2.9.1"
         },
         "beautifulsoup4": {
             "hashes": [
@@ -49,10 +49,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:1df576efa7524927d31cba0593f365b6fd72688ab91cbedd2874b5da42572938",
-                "sha256:c06d879b7295ce6d75ba931438fa4ce5ebb246677aee3afeee894ee4489e9c61"
+                "sha256:09fe9c37fb7ed9a6682ffa2384bee350d0b1ffa37b1f1c301883948fe871096e",
+                "sha256:6e26a6bf235755e1639e64c36b76c416c497de5d29d48ed863712309b4112fa8"
             ],
-            "version": "==4.28.4"
+            "version": "==4.29.2"
         },
         "chardet": {
             "hashes": [
@@ -120,10 +120,10 @@
         },
         "django-otp": {
             "hashes": [
-                "sha256:381a15e65293b8b06d47b7d6b306e0b7af2e104137ac92f6c566d3b9b90b6244",
-                "sha256:f4ab096b424c33ffe69453620356e1b7517f30dfb9ba13bfeaa1d1f20faddc13"
+                "sha256:04852c5301befb02d1d8ba4a31d375eb08d7c2cb6fe86b5f840867435ab1309c",
+                "sha256:3916fc7652c2f934b1cf3807dd8ed257ce7605c10dfefa27fadda5628d9a9c9e"
             ],
-            "version": "==1.0.3"
+            "version": "==1.0.4"
         },
         "django-phonenumber-field": {
             "hashes": [
@@ -180,9 +180,11 @@
         },
         "et-xmlfile": {
             "hashes": [
-                "sha256:614d9722d572f6246302c4491846d2c393c199cfa4edc9af593437691683335b"
+                "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c",
+                "sha256:a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada"
             ],
-            "version": "==1.0.1"
+            "markers": "python_version >= '3.6'",
+            "version": "==1.1.0"
         },
         "future": {
             "hashes": [
@@ -401,10 +403,10 @@
         },
         "xlsxwriter": {
             "hashes": [
-                "sha256:e74dca4f2e946a117a541ca3153c06466190a88bb67fcdbd1cba2c1ea7f1fd76",
-                "sha256:eca2e737d0b8df3cd72520fadcda9f48c3581282639965125a86ea8cd04620cf"
+                "sha256:1a6dd98892e8010d3e089d1cb61385baa8f76fa547598df2c221cc37238c72d3",
+                "sha256:82be5a58c09bdc2ff8afc25acc815c465275239ddfc56d6e7b2a7e6c5d2e213b"
             ],
-            "version": "==1.3.9"
+            "version": "==1.4.0"
         },
         "xlwt": {
             "hashes": [
@@ -449,11 +451,11 @@
         },
         "importlib-metadata": {
             "hashes": [
-                "sha256:19192b88d959336bfa6bdaaaef99aeafec179eca19c47c804e555703ee5f07ef",
-                "sha256:2e881981c9748d7282b374b68e759c87745c25427b67ecf0cc67fb6637a1bff9"
+                "sha256:8c501196e49fb9df5df43833bdb1e4328f64847763ec8a50703148b73784d581",
+                "sha256:d7eb1dea6d6a6086f8be21784cc9e3bcfa55872b52309bc5fad53a8ea444465d"
             ],
             "markers": "python_version < '3.8'",
-            "version": "==4.0.0"
+            "version": "==4.0.1"
         },
         "iniconfig": {
             "hashes": [
