@@ -43,7 +43,7 @@ ocargo.Game = function () {
   this.tabs = null
   this.failures = 0
   this.currentlySelectedTab = null
-  this.isMuted = $.cookie('muted') === 'true'
+  this.isMuted = Cookies.get('muted') === 'true'
 }
 
 ocargo.Game.prototype.setup = function () {
@@ -258,7 +258,7 @@ ocargo.Game.prototype.sendAttempt = function (score) {
   ) {
     // Send out the submitted data.
     if (LEVEL_ID) {
-      var csrftoken = $.cookie('csrftoken')
+      var csrftoken = Cookies.get('csrftoken')
       $.ajax({
         url: Urls.submit_attempt(),
         type: 'POST',
@@ -1226,7 +1226,7 @@ function hasFunctionalCookiesConsent() {
 
 function setMutedCookie(mute) {
   if (hasFunctionalCookiesConsent()) {
-    $.cookie('muted', mute.toString(), { path: Urls.levels() })
+    Cookies.set('muted', mute.toString(), { path: Urls.levels() })
   }
 }
 
