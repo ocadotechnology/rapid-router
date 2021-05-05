@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.1 (2021-05-05)
+### Fix
+* Update jquery.cookie to js.cookie ([#1177](https://github.com/ocadotechnology/rapid-router/issues/1177)) ([`3679491`](https://github.com/ocadotechnology/rapid-router/commit/36794916c2cd58a3de09fb1a64a416416e3cc4d9))
+
 ## v2.7.0 (2021-04-30)
 ### Feature
 * Update python to 3.7 and handlebars js to 4.7.7 ([#1176](https://github.com/ocadotechnology/rapid-router/issues/1176)) ([`811a928`](https://github.com/ocadotechnology/rapid-router/commit/811a9280d52d044eb70abfc491282ed9bdfb62e0))
