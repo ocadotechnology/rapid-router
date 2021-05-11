@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.2 (2021-05-11)
+### Fix
+* Update tests with new teacher login form ([#1179](https://github.com/ocadotechnology/rapid-router/issues/1179)) ([`076c327`](https://github.com/ocadotechnology/rapid-router/commit/076c3277c2b0a99448a98d29b5dd67c5be8bbf0b))
+
 ## v2.7.1 (2021-05-05)
 ### Fix
 * Update jquery.cookie to js.cookie ([#1177](https://github.com/ocadotechnology/rapid-router/issues/1177)) ([`3679491`](https://github.com/ocadotechnology/rapid-router/commit/36794916c2cd58a3de09fb1a64a416416e3cc4d9))
