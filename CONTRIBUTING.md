@@ -1,10 +1,11 @@
 # Contributing Guidelines
 
-Thanks for helping out Code For life's Rapid Router! Here are a few guidelines to help your contributions to be accepted :)
+Thanks for helping out Code For Life's Rapid Router! Here are a few guidelines to help your contributions to be accepted :)
 
-## Prerequisites
+## Tracking Issues
 
 We use Zenhub to track our issues, you can find [our workspace here](https://github.com/ocadotechnology/rapid-router#workspaces/code-for-life-development-56f2afba6e54555c586f6db3/board?repos=39072690,22154147,18399425,49142916,219226351).
+We recommend to add [Zenhub chrome extension](https://www.zenhub.com/extension) to integrate directly into Github's user interface.
 
 ## Submitting a bug report or a feature request
 
