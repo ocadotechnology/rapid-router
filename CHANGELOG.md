@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.3 (2021-05-17)
+### Fix
+* Trigger staging deployment using actions ([#1181](https://github.com/ocadotechnology/rapid-router/issues/1181)) ([`3550450`](https://github.com/ocadotechnology/rapid-router/commit/355045035427782ecb5d97353c39afdc0ac833fa))
+
+### Documentation
+* Delete COPYRIGHT.txt ([#1182](https://github.com/ocadotechnology/rapid-router/issues/1182)) ([`d9b6672`](https://github.com/ocadotechnology/rapid-router/commit/d9b66728a3ea9f1f47930c686aea8bcd4e1af91e))
+* Update license file ([#1180](https://github.com/ocadotechnology/rapid-router/issues/1180)) ([`0d46591`](https://github.com/ocadotechnology/rapid-router/commit/0d4659139df2fb3dc1fc7cc456cc0f419247ad8b))
+* Update readme, remove docker files and references ([#1178](https://github.com/ocadotechnology/rapid-router/issues/1178)) ([`11b645d`](https://github.com/ocadotechnology/rapid-router/commit/11b645da38352a395d951d15eba4bdddccc9b010))
+
 ## v2.7.2 (2021-05-11)
 ### Fix
 * Update tests with new teacher login form ([#1179](https://github.com/ocadotechnology/rapid-router/issues/1179)) ([`076c327`](https://github.com/ocadotechnology/rapid-router/commit/076c3277c2b0a99448a98d29b5dd67c5be8bbf0b))
