@@ -15,9 +15,13 @@ engines:
     enabled: true
   scss-lint:
     enabled: true
+exclude_patterns:
+  - "example_project/"
+  - "game/static/game/js/"
+  - "game/migrations/"
 ratings:
   paths:
-  - "**.css"
-  - "**.js"
-  - "**.py"
-  - "**.scss"
+    - "**.css"
+    - "**.js"
+    - "**.py"
+    - "**.scss"

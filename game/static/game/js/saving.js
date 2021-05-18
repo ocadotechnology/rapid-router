@@ -117,7 +117,7 @@ ocargo.Saving.prototype.retrieveWorkspace = function (id, callback) {
 };
 
 ocargo.Saving.prototype.deleteWorkspace = function (id, callback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     if (USER_STATUS === 'TEACHER' || USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
         $.ajax({
             url: Urls.delete_workspace(id),
@@ -145,7 +145,7 @@ ocargo.Saving.prototype.deleteWorkspace = function (id, callback) {
 };
 
 ocargo.Saving.prototype.saveWorkspace = function (workspace, id, callback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     if (USER_STATUS === 'TEACHER' || USER_STATUS === 'SCHOOL_STUDENT' || USER_STATUS === 'INDEPENDENT_STUDENT') {
         $.ajax({
             url: (id ? Urls.save_workspace(id) : Urls.save_workspace()),
@@ -187,7 +187,7 @@ ocargo.Saving.prototype.saveWorkspace = function (workspace, id, callback) {
 /****************************/
 
 ocargo.Saving.prototype._retrieveLevels = function (url, callback, errorCallback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     $.ajax({
         url: url,
         type: 'GET',
@@ -215,7 +215,7 @@ ocargo.Saving.prototype.retrieveSharedLevels = function (callback, errorCallback
 };
 
 ocargo.Saving.prototype.retrieveLevel = function (id, callback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     $.ajax({
         url: Urls.load_level_for_editor(id),
         type: 'GET',
@@ -249,7 +249,7 @@ ocargo.Saving.prototype.loadSolution = function (levelID, callback) {
 };
 
 ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     $.ajax({
         url: Urls.generate_random_map_for_editor(),
         type: "POST",
@@ -270,12 +270,12 @@ ocargo.Saving.prototype.retrieveRandomLevel = function (data, callback) {
 };
 
 ocargo.Saving.prototype.deleteLevel = function (id, callback, errorCallback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     $.ajax({
         url: Urls.delete_level_for_editor(id),
         type: 'POST',
         dataType: 'json',
-        data: {csrfmiddlewaretoken: $.cookie('csrftoken')},
+        data: {csrfmiddlewaretoken: Cookies.get('csrftoken')},
         beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                 xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -291,7 +291,7 @@ ocargo.Saving.prototype.deleteLevel = function (id, callback, errorCallback) {
 };
 
 ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, errorCallback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     level.anonymous = anonymous;
     $.ajax({
         url: (id ? Urls.save_level_for_editor(id) : Urls.save_level_for_editor()),
@@ -314,7 +314,7 @@ ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, er
 };
 
 ocargo.Saving.prototype.getSharingInformation = function (levelID, callback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     $.ajax({
         url: Urls.get_sharing_information_for_editor(levelID),
         type: 'GET',
@@ -334,7 +334,7 @@ ocargo.Saving.prototype.getSharingInformation = function (levelID, callback) {
 };
 
 ocargo.Saving.prototype.shareLevel = function (levelID, recipientData, callback) {
-    csrftoken = $.cookie('csrftoken');
+    csrftoken = Cookies.get('csrftoken');
     $.ajax({
         url: Urls.share_level_for_editor(levelID),
         type: 'POST',

@@ -2,6 +2,39 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.3 (2021-05-17)
+### Fix
+* Trigger staging deployment using actions ([#1181](https://github.com/ocadotechnology/rapid-router/issues/1181)) ([`3550450`](https://github.com/ocadotechnology/rapid-router/commit/355045035427782ecb5d97353c39afdc0ac833fa))
+
+### Documentation
+* Delete COPYRIGHT.txt ([#1182](https://github.com/ocadotechnology/rapid-router/issues/1182)) ([`d9b6672`](https://github.com/ocadotechnology/rapid-router/commit/d9b66728a3ea9f1f47930c686aea8bcd4e1af91e))
+* Update license file ([#1180](https://github.com/ocadotechnology/rapid-router/issues/1180)) ([`0d46591`](https://github.com/ocadotechnology/rapid-router/commit/0d4659139df2fb3dc1fc7cc456cc0f419247ad8b))
+* Update readme, remove docker files and references ([#1178](https://github.com/ocadotechnology/rapid-router/issues/1178)) ([`11b645d`](https://github.com/ocadotechnology/rapid-router/commit/11b645da38352a395d951d15eba4bdddccc9b010))
+
+## v2.7.2 (2021-05-11)
+### Fix
+* Update tests with new teacher login form ([#1179](https://github.com/ocadotechnology/rapid-router/issues/1179)) ([`076c327`](https://github.com/ocadotechnology/rapid-router/commit/076c3277c2b0a99448a98d29b5dd67c5be8bbf0b))
+
+## v2.7.1 (2021-05-05)
+### Fix
+* Update jquery.cookie to js.cookie ([#1177](https://github.com/ocadotechnology/rapid-router/issues/1177)) ([`3679491`](https://github.com/ocadotechnology/rapid-router/commit/36794916c2cd58a3de09fb1a64a416416e3cc4d9))
+
+## v2.7.0 (2021-04-30)
+### Feature
+* Update python to 3.7 and handlebars js to 4.7.7 ([#1176](https://github.com/ocadotechnology/rapid-router/issues/1176)) ([`811a928`](https://github.com/ocadotechnology/rapid-router/commit/811a9280d52d044eb70abfc491282ed9bdfb62e0))
+
+## v2.6.2 (2021-04-21)
+### Fix
+* Require post ([#1174](https://github.com/ocadotechnology/rapid-router/issues/1174)) ([`22d5933`](https://github.com/ocadotechnology/rapid-router/commit/22d5933c85f995e507b04a9dc3d25726dfd50119))
+
+## v2.6.1 (2021-04-20)
+### Fix
+* **deps:** Bump django from 2.2.18 to 2.2.20 ([#1172](https://github.com/ocadotechnology/rapid-router/issues/1172)) ([`e59277d`](https://github.com/ocadotechnology/rapid-router/commit/e59277d6d56d51476bc56a4fa05c0bfa599f9f2c))
+
+## v2.6.0 (2021-04-16)
+### Feature
+* Check cookie consent when muting game ([#1157](https://github.com/ocadotechnology/rapid-router/issues/1157)) ([`85b5279`](https://github.com/ocadotechnology/rapid-router/commit/85b5279f14a4eb413fa7f5ff58daa3f12da441c2))
+
 ## v2.5.8 (2021-03-26)
 ### Fix
 * Improve sharing table generation ([#1171](https://github.com/ocadotechnology/rapid-router/issues/1171)) ([`ea7aa41`](https://github.com/ocadotechnology/rapid-router/commit/ea7aa4136a89f000d6a973f1c1d2100e1fd653ed))

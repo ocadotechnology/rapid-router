@@ -15,4 +15,4 @@ pytest-django = "==4.1.0"
 pytest = "==6.*"
 
 [requires]
-python_version = "3.6.7"
+python_version = "3.7"
