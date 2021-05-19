@@ -61,12 +61,12 @@ from game import random_road
 from game.cache import cached_level_decor, cached_level_blocks
 from game.character import get_all_character
 from game.decor import get_all_decor, get_decor_element
-from game.models import Level, Block
+from game.models import Level, Block, UserProfile
 from game.theme import get_all_themes
 from game.views.level import LevelSerializer
 
 
-def level_editor(request):
+def level_editor(request, levelId=None):
     """Renders the level editor page.
 
     **Context**
@@ -91,6 +91,12 @@ def level_editor(request):
             app_settings.NIGHT_MODE_FEATURE_ENABLED
         ).lower(),
     }
+    if levelId:
+        level = Level.objects.get(id=levelId)
+        user_profile = UserProfile.objects.get(id=level.owner_id)
+
+        if request.user.id == user_profile.user_id:
+            context["level"] = levelId
 
     return render(request, "game/level_editor.html", context=context)
 
@@ -240,6 +246,9 @@ def load_level_for_editor(request, levelID):
 def save_level_for_editor(request, levelId=None):
     """ Processes a request on creation of the map in the level editor """
     data = json.loads(request.POST["data"])
+    if ("character" not in data) or (not data["character"]):
+        # Set a default, to deal with issue #1158 "Cannot save custom level"
+        data["character"] = 1
     if levelId is not None:
         level = get_object_or_404(Level, id=levelId)
     else:
@@ -250,6 +259,7 @@ def save_level_for_editor(request, levelId=None):
         return HttpResponseUnauthorized()
 
     pattern = re.compile("^(\w?[ ]?)*$")
+
     if pattern.match(data["name"]):
         level_management.save_level(level, data)
         # Add the teacher automatically if it is a new level and the student is not

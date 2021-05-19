@@ -1087,6 +1087,8 @@ ocargo.Drawing.startPopup = function (
     )
   }
   // Show popup
+  $("#myModal").show()
+  $("#ocargo-modal").show()
   window.location.hash = 'myModal'
 }
 
@@ -1104,6 +1106,24 @@ ocargo.Drawing.startYesNoPopup = function (
   ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
   $('#modal-yesBtn').click(yesFunction)
   $('#modal-noBtn').click(noFunction)
+}
+
+// This provides a pop-up with 2 options
+ocargo.Drawing.startOptionsPopup = function (
+  title,
+  subtitle,
+  message,
+  optionAFunction,
+  optionBFunction,
+  optionAText,
+  optionBText,
+  mascot
+) {
+  var buttonHtml =
+    '<button id="modal-optionABtn" class="navigation_button long_button">' + optionAText + '</button> <button id="modal-optionBBtn" class="navigation_button long_button">' + optionBText + '</button>'
+  ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
+  $('#modal-optionABtn').click(optionAFunction)
+  $('#modal-optionBBtn').click(optionBFunction)
 }
 
 // This is the function that starts the pop-up when there is no internet connection while playing the game

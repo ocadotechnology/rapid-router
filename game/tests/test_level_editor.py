@@ -41,12 +41,13 @@ from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
+from game.models import Level
 from deploy import captcha
 from django.core import mail
 from django.test.client import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
-from hamcrest import *
+from hamcrest import assert_that, equal_to
 
 from game.tests.utils.level import create_save_level
 from game.tests.utils.teacher import add_teacher_to_school, create_school
@@ -242,6 +243,73 @@ class LevelEditorTestCase(TestCase):
         response = self.client.post(url, {"data": data})
 
         assert_that(response.status_code, equal_to(403))
+
+    def test_level_can_only_be_edited_by_owner(self):
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        _, _, access_code = create_class_directly(email)
+        student_name, student_password, student = create_school_student_directly(
+            access_code
+        )
+        hacker_name, hacker_password, hacker = create_school_student_directly(
+            access_code
+        )
+
+        new_level = Level.objects.create(
+            owner_id=student.user_id, name="my_custom_level"
+        )
+
+        self.student_login(hacker_name, access_code, hacker_password)
+        resp = self.client.get(
+            reverse("level_editor_chosen_level", kwargs={"levelId": new_level.id})
+        )
+
+        self.assertNotIn("level", resp.context)
+
+        self.logout()
+
+        self.student_login(student_name, access_code, student_password)
+        resp = self.client.get(
+            reverse("level_editor_chosen_level", kwargs={"levelId": new_level.id})
+        )
+
+        self.assertIn("level", resp.context)
+
+    def test_no_character_set_defaults_to_van(self):
+
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        _, class_name, access_code = create_class_directly(email)
+        student_name, student_password, _ = create_school_student_directly(access_code)
+
+        self.student_login(student_name, access_code, student_password)
+        url = reverse("save_level_for_editor")
+        data_with_no_character = {
+            u"origin": u'{"coordinate":[3,5],"direction":"S"}',
+            u"pythonEnabled": False,
+            u"decor": [],
+            u"blocklyEnabled": True,
+            u"blocks": [
+                {u"type": u"move_forwards"},
+                {u"type": u"turn_left"},
+                {u"type": u"turn_right"},
+            ],
+            u"max_fuel": u"50",
+            u"pythonViewEnabled": False,
+            u"name": u"abc",
+            u"theme": 1,
+            u"anonymous": True,
+            u"cows": u"[]",
+            u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
+            u'"connectedNodes":[0]}]',
+            u"traffic_lights": u"[]",
+            u"destinations": u"[[3,4]]",
+        }
+        response = self.client.post(url, {"data": json.dumps(data_with_no_character)})
+
+        assert_that(response.status_code, equal_to(200))
+        new_level = Level.objects.get(name="abc")
+        assert_that(new_level.character.name, equal_to("Van"))
 
     def test_level_loading(self):
         email1, password1 = signup_teacher_directly()
