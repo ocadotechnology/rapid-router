@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.4 (2021-05-19)
+### Fix
+* Allow a teacher who has prepared a level to do something el… ([#1170](https://github.com/ocadotechnology/rapid-router/issues/1170)) ([`fd26353`](https://github.com/ocadotechnology/rapid-router/commit/fd26353fcd500e46d446f7a0329159bb7f6a441e))
+
 ## v2.7.3 (2021-05-17)
 ### Fix
 * Trigger staging deployment using actions ([#1181](https://github.com/ocadotechnology/rapid-router/issues/1181)) ([`3550450`](https://github.com/ocadotechnology/rapid-router/commit/355045035427782ecb5d97353c39afdc0ac833fa))
