@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django==2.2.20",
+        "django==2.2.21",
         "django-js-reverse==0.9.1",
         "django-foundation-statics==5.4.7",
         "django-pipeline==1.6.14",  # Setting this to 1.6.14 as 1.7 causes issue with compiling SCSS files
