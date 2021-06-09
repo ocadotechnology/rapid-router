@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.5 (2021-06-09)
+### Fix
+* Bump django from 2.2.20 to 2.2.21 ([#1187](https://github.com/ocadotechnology/rapid-router/issues/1187)) ([`e5039bf`](https://github.com/ocadotechnology/rapid-router/commit/e5039bfab09365d88f4557957e767b6dc6407daf))
+
+### Documentation
+* Refer contributing to the new location ([`d176566`](https://github.com/ocadotechnology/rapid-router/commit/d1765663809135476e43d51fed4520c0fb0b10a8))
+
 ## v2.7.4 (2021-05-19)
 ### Fix
 * Allow a teacher who has prepared a level to do something el… ([#1170](https://github.com/ocadotechnology/rapid-router/issues/1170)) ([`fd26353`](https://github.com/ocadotechnology/rapid-router/commit/fd26353fcd500e46d446f7a0329159bb7f6a441e))
