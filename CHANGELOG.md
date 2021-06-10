@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.6 (2021-06-10)
+### Fix
+* **deps:** Bump django from 2.2.21 to 2.2.22 ([#1190](https://github.com/ocadotechnology/rapid-router/issues/1190)) ([`5be814c`](https://github.com/ocadotechnology/rapid-router/commit/5be814c5304326ae3d81301636b12fdd73bb5fe6))
+
 ## v2.7.5 (2021-06-09)
 ### Fix
 * Bump django from 2.2.20 to 2.2.21 ([#1187](https://github.com/ocadotechnology/rapid-router/issues/1187)) ([`e5039bf`](https://github.com/ocadotechnology/rapid-router/commit/e5039bfab09365d88f4557957e767b6dc6407daf))
