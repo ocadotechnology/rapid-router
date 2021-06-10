@@ -49,10 +49,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:8799723219e5a685693603727ef754b1253ea5a1fa98ae53a84cc7764a9ccbaa",
-                "sha256:c343216d9502024e9b5140b5c0de191759ec2245876009d2e5812f145ca402ef"
+                "sha256:269f63c33c93f8624f2eede7bbdfb877c2405d15cc0acd9196b4c8b9e8b42fed",
+                "sha256:3ff377885c225879b0d037674d1c83553729b0b690456a132ad1a4d315cf7343"
             ],
-            "version": "==4.30.7"
+            "version": "==4.30.9"
         },
         "chardet": {
             "hashes": [
@@ -64,11 +64,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:7460cfe3781d36d1625230267dad255deb33e9229e41f21e32b33b9d536d20cd",
-                "sha256:7d8b61b6e7031a3c1a4aef29e2701849af0837f4f2062bc203077a0b46d51c2c"
+                "sha256:db2214db1c99017cbd971e58824e6f424375154fe358afc30e976f5b99fc6060",
+                "sha256:e831105edb153af1324de44d06091ca75520a227456387dda4a47d2f1cc2731a"
             ],
             "markers": "python_version >= '3.5'",
-            "version": "==2.2.21"
+            "version": "==2.2.22"
         },
         "django-autoconfig": {
             "git": "https://github.com/ocadotechnology/django-autoconfig.git",
@@ -428,11 +428,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:7460cfe3781d36d1625230267dad255deb33e9229e41f21e32b33b9d536d20cd",
-                "sha256:7d8b61b6e7031a3c1a4aef29e2701849af0837f4f2062bc203077a0b46d51c2c"
+                "sha256:db2214db1c99017cbd971e58824e6f424375154fe358afc30e976f5b99fc6060",
+                "sha256:e831105edb153af1324de44d06091ca75520a227456387dda4a47d2f1cc2731a"
             ],
             "markers": "python_version >= '3.5'",
-            "version": "==2.2.21"
+            "version": "==2.2.22"
         },
         "django-selenium-clean": {
             "hashes": [
