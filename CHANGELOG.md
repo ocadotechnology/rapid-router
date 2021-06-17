@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.9 (2021-06-17)
+### Fix
+* Update if else tooltips ([#1199](https://github.com/ocadotechnology/rapid-router/issues/1199)) ([`fd86639`](https://github.com/ocadotechnology/rapid-router/commit/fd86639e6c12eb0415b09f80c3539999fa2e0db5))
+
 ## v2.7.8 (2021-06-17)
 ### Fix
 * Update the if else tooltips ([`3454397`](https://github.com/ocadotechnology/rapid-router/commit/3454397cff0a4219c63313d7efbd08daaa0a17ef))
