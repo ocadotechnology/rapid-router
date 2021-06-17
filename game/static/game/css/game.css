@@ -94,8 +94,7 @@ identified as the original program.
 }
 
 #blockly_pane .blocklyFlyoutBackground {
-    fill: #FFFFFF;
-    fill-opacity: 0.87;
+    fill-opacity: 0.7;
 }
 
 #blockly_pane .blocklySvg {
