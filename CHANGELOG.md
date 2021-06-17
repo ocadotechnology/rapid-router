@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.8 (2021-06-17)
+### Fix
+* Update the if else tooltips ([`3454397`](https://github.com/ocadotechnology/rapid-router/commit/3454397cff0a4219c63313d7efbd08daaa0a17ef))
+* Put back the grey panels ([`d5c02e5`](https://github.com/ocadotechnology/rapid-router/commit/d5c02e565dea8ac7837979e5de7456d5734690e4))
+
+### Documentation
+* Add additional terms on Ocado back ([`acbd037`](https://github.com/ocadotechnology/rapid-router/commit/acbd0375398a1531d981d8c4101fa9a381979b96))
+
 ## v2.7.7 (2021-06-11)
 ### Fix
 * **deps:** Bump django from 2.2.22 to 2.2.24 ([#1191](https://github.com/ocadotechnology/rapid-router/issues/1191)) ([`0259ce2`](https://github.com/ocadotechnology/rapid-router/commit/0259ce241d9330f0adce8b08d6f879ed0456bd43))
