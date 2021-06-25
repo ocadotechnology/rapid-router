@@ -1858,6 +1858,16 @@ def hint_level79():
     return message
 
 
+# --- Introduction to Python levels ---
+
+INTRO_HINT = (
+    "If you're stuck, you can learn more about the use of Blockly and Python on "
+    "<a href='https://docs.codeforlife.education/rapid-router' target='_blank'>our documentation site</a>."
+    "<br /><br />To learn more about Python in general, check this "
+    "<a href='https://wiki.python.org/moin/BeginnersGuide' target='_blank'>Beginner's Guide to Python</a>."
+)
+
+
 def title_level80():
     return ugettext("Here's Python! ")
 
@@ -1871,7 +1881,7 @@ def description_level80():
 
 
 def hint_level80():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level81():
@@ -1887,7 +1897,7 @@ def description_level81():
 
 
 def hint_level81():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level82():
@@ -1903,7 +1913,7 @@ def description_level82():
 
 
 def hint_level82():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level83():
@@ -1919,7 +1929,7 @@ def description_level83():
 
 
 def hint_level83():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level84():
@@ -1935,7 +1945,7 @@ def description_level84():
 
 
 def hint_level84():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level85():
@@ -1952,7 +1962,7 @@ def description_level85():
 
 
 def hint_level85():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level86():
@@ -1968,7 +1978,7 @@ def description_level86():
 
 
 def hint_level86():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level87():
@@ -1985,7 +1995,7 @@ def description_level87():
 
 
 def hint_level87():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level88():
@@ -2002,7 +2012,7 @@ def description_level88():
 
 
 def hint_level88():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level89():
@@ -2019,7 +2029,7 @@ def description_level89():
 
 
 def hint_level89():
-    return ""
+    return ugettext(INTRO_HINT)
 
 
 def title_level90():
@@ -2036,7 +2046,8 @@ def description_level90():
 
 def hint_level90():
     message = ugettext(
-        "Don't forget to name your procedure and see what happens in Python."
+        "Don't forget to name your procedure and see what happens in Python. "
+        + INTRO_HINT
     )
     return message
 
@@ -2055,9 +2066,20 @@ def description_level91():
 
 def hint_level91():
     message = ugettext(
-        "Don't forget to name your procedure and see what happens in Python."
+        "Don't forget to name your procedure and see what happens in Python. "
+        + INTRO_HINT
     )
     return message
+
+
+# --- Start of Python levels ---
+
+PYTHON_HINT = (
+    "<br /><br />Check our documentation site, to see "
+    "<a href='https://docs.codeforlife.education/rapid-router/python-commands' target='_blank'>the full list of commands</a>."
+    "<br /><br />To learn more about Python in general, check this "
+    "<a href='https://wiki.python.org/moin/BeginnersGuide' target='_blank'>Beginner's Guide to Python</a>."
+)
 
 
 def title_level92():
@@ -2079,6 +2101,7 @@ def hint_level92():
     message = ugettext(
         "Try using the following commands:<br><pre>v.move_forwards()<br>v.turn_left()"
         + "<br>v.turn_right()</pre>"
+        + PYTHON_HINT
     )
     return message
 
@@ -2101,8 +2124,9 @@ def hint_level93():
 <pre>v.move_forwards()
 v.turn_left()
 v.turn_right()</pre>"""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level94():
@@ -2123,8 +2147,9 @@ def hint_level94():
 <pre>v.move_forwards()
 v.turn_left()
 v.turn_right()</pre>"""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level95():
@@ -2146,8 +2171,9 @@ def hint_level95():
     v.turn left
     print count</pre>
 The print statement will output the value of count to the console."""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level96():
@@ -2170,8 +2196,9 @@ def hint_level96():
     v.turn left
     print count</pre>
 The print statement will output the value of count to the console."""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level97():
@@ -2194,8 +2221,9 @@ def hint_level97():
         v.turn left
         print count</pre>
 The print statement will output the value of count to the console."""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level98():
@@ -2221,8 +2249,9 @@ To check whether a condition is met you can use something like the following:
 <pre>if v.is_road_forward():
     v.move_forwards()</pre>
 You may also need to use the <b>else</b> statement."""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level99():
@@ -2247,8 +2276,9 @@ To check whether a condition is met you can use something like the following:
 <pre>if v.is_road_forward():
     v.move_forwards()</pre>
 You may also need to use the <b>elif</b> and <b>else</b> statements."""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level100():
@@ -2266,6 +2296,7 @@ def description_level100():
 def hint_level100():
     message = ugettext(
         "Try using<br><pre>if v.at_dead_end():</pre><br>to check if the van is at a dead end."
+        + PYTHON_HINT
     )
     return message
 
@@ -2291,8 +2322,9 @@ def hint_level101():
 To call a defined function you could do something like:
 <pre>my_function()</pre>
 Remember, you must define a function before you call it."""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level102():
@@ -2314,8 +2346,9 @@ def hint_level102():
     print 'test'</pre>
 To call a defined function you could do something like:
 <pre>my_function()</pre>"""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level103():
@@ -2341,8 +2374,9 @@ def my_other_function():
         my_function()
 
 my_other_function()</pre>"""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level104():
@@ -2368,8 +2402,9 @@ def my_other_function():
         my_function()
 
 my_other_function()</pre>"""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level105():
@@ -2387,6 +2422,7 @@ def description_level105():
 def hint_level105():
     message = ugettext(
         "For this you will have to use a combination of the <b>while</b> and <b>if</b> statements."
+        + PYTHON_HINT
     )
     return message
 
@@ -2414,8 +2450,9 @@ while not v.at_destination():
     n += 1</pre>
 Variables can be used in place of constants when calling functions. For example to repeat something n times you can do something like the following:
 <pre>for count in range(n):</pre>"""
+        + PYTHON_HINT
     )
-    return message.replace("\n", "<br>")
+    return message
 
 
 def title_level107():
@@ -2433,6 +2470,7 @@ def description_level107():
 def hint_level107():
     message = ugettext(
         "To double the value of a variable you can do something like the following:<br><pre>n *= 2</pre>"
+        + PYTHON_HINT
     )
     return message
 
@@ -2452,6 +2490,7 @@ def hint_level108():
     message = ugettext(
         "To decrease the value of a variable by an amount you can do something like the "
         + "following:<br><pre>n -= 5</pre>"
+        + PYTHON_HINT
     )
     return message
 
@@ -2471,6 +2510,7 @@ def description_level109():
 def hint_level109():
     message = ugettext(
         "To halve the value of a variable you can do something like the following:<br><pre>n /= 2</pre>"
+        + PYTHON_HINT
     )
     return message
 
