@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.11 (2021-06-25)
+### Fix
+* Add hint text for RR lv 80 onwards ([#1203](https://github.com/ocadotechnology/rapid-router/issues/1203)) ([`0c4e944`](https://github.com/ocadotechnology/rapid-router/commit/0c4e9442249c90f650a702388d4b4ab525b34109))
+
 ## v2.7.10 (2021-06-22)
 ### Fix
 * Update 'if else' tooltips ([#1201](https://github.com/ocadotechnology/rapid-router/issues/1201)) ([`59cd8c7`](https://github.com/ocadotechnology/rapid-router/commit/59cd8c74ceb6049e665ac52f573d7f478844476e))
