@@ -2075,8 +2075,8 @@ def hint_level91():
 # --- Start of Python levels ---
 
 PYTHONHINT = (
-    "<br /><br />To see the full list of the commands, check "
-    "<a href='https://docs.codeforlife.education/rapid-router/python-commands' target='_blank'>our documentation site</a>."
+    "<br /><br />Check our documentation site, to see "
+    "<a href='https://docs.codeforlife.education/rapid-router/python-commands' target='_blank'>the full list of the commands</a>."
     "<br /><br />To learn more about Python in general, check this "
     "<a href='https://wiki.python.org/moin/BeginnersGuide' target='_blank'>Beginner's Guide to Python</a>."
 )
