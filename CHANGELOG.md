@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.12 (2021-07-01)
+### Fix
+* Try ci.yml with single quotes ([`f1a4f7d`](https://github.com/ocadotechnology/rapid-router/commit/f1a4f7daa804e7e1db14175f95008f91a5ccecb4))
+
+### Documentation
+* Update CI to ignore docs ([`33cbce7`](https://github.com/ocadotechnology/rapid-router/commit/33cbce79c64736fbc8c8f60c6c7939d50c44c17d))
+
 ## v2.7.11 (2021-06-25)
 ### Fix
 * Add hint text for RR lv 80 onwards ([#1203](https://github.com/ocadotechnology/rapid-router/issues/1203)) ([`0c4e944`](https://github.com/ocadotechnology/rapid-router/commit/0c4e9442249c90f650a702388d4b4ab525b34109))
