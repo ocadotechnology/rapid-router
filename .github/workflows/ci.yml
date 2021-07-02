@@ -3,11 +3,7 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - '**.md' # Matches all .md files in the repository.
   pull_request:
-    paths-ignore:
-      - '**.md' # Matches all .md files in the repository.
 jobs:
   tests:
     name: Run tests
