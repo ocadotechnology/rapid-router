@@ -16,7 +16,7 @@ We are open to contributors from anywhere around the world. Please read ahead if
 
 - [Developer Guide](https://docs.codeforlife.education/developer-guide)
 
-- [Good First Issues](https://github.com/ocadotechnology/codeforlife-portal/contribute)
+- [Good First Issues](https://github.com/ocadotechnology/rapid-router/contribute)
 
 - [How to set up your work environment](https://docs.codeforlife.education/git/common-setup)
 
