@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-import re
+import site
 import sys
+
+site.ENABLE_USER_SITE = "--user" in sys.argv[1:]
+import re
 
 from setuptools import find_packages, setup
 
