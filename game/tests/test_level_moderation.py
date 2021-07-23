@@ -97,7 +97,6 @@ class LevelModerationTestCase(TestCase):
             {
                 "auth-username": email,
                 "auth-password": password,
-                "g-recaptcha-response": "something",
                 "teacher_login_view-current_step": "auth",
             },
             follow=True,

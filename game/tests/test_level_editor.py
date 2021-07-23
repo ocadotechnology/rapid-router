@@ -74,7 +74,6 @@ class LevelEditorTestCase(TestCase):
             {
                 "auth-username": email,
                 "auth-password": password,
-                "g-recaptcha-response": "something",
                 "teacher_login_view-current_step": "auth",
             },
             follow=True,
@@ -90,7 +89,6 @@ class LevelEditorTestCase(TestCase):
                 "username": name,
                 "access_code": access_code,
                 "password": password,
-                "g-recaptcha-response": "something",
             },
             follow=True,
         )
