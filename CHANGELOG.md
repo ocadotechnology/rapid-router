@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.13 (2021-07-23)
+### Fix
+* Remove captha from tests ([#1215](https://github.com/ocadotechnology/rapid-router/issues/1215)) ([`538809b`](https://github.com/ocadotechnology/rapid-router/commit/538809ba40aefabbb92179dbce576549027a3d25))
+
+### Documentation
+* A small readme fix ([#1214](https://github.com/ocadotechnology/rapid-router/issues/1214)) ([`7881cb7`](https://github.com/ocadotechnology/rapid-router/commit/7881cb7d9a60d26a9de72002b71a6fd8ed03ffea))
+* Update and clean readme ([#1209](https://github.com/ocadotechnology/rapid-router/issues/1209)) ([`8bc927b`](https://github.com/ocadotechnology/rapid-router/commit/8bc927bac818f30baaf39d9e9bc2741b871cda02))
+
 ## v2.7.12 (2021-07-01)
 ### Fix
 * Try ci.yml with single quotes ([`f1a4f7d`](https://github.com/ocadotechnology/rapid-router/commit/f1a4f7daa804e7e1db14175f95008f91a5ccecb4))
