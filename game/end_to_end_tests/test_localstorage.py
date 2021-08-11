@@ -54,11 +54,7 @@ class LocalStorage:
         return items
 
     def clear(self):
-        try:
-            self.driver.execute_script("window.localStorage.clear();")
-        except Exception as e:
-            print(e)
-
+        self.driver.execute_script("window.localStorage.clear();")
 
 class TestLocalStorage(BaseGameTest):
     def level_in_localstorage(self, level_number):
