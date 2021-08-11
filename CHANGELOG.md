@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.7.14 (2021-08-11)
+### Fix
+* Disable saving and loading of workspace when user is not logged in ([#1216](https://github.com/ocadotechnology/rapid-router/issues/1216)) ([`1ff83ea`](https://github.com/ocadotechnology/rapid-router/commit/1ff83eaba39bdd28636227b6c3947333860e72c8))
+
 ## v2.7.13 (2021-07-23)
 ### Fix
 * Remove captha from tests ([#1215](https://github.com/ocadotechnology/rapid-router/issues/1215)) ([`538809b`](https://github.com/ocadotechnology/rapid-router/commit/538809ba40aefabbb92179dbce576549027a3d25))
