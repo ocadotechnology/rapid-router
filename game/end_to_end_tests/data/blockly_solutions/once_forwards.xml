@@ -1,0 +1,8 @@
+<xml>
+    <block type="start" id="1" deletable="false" x="30" y="30">
+        <next>
+            <block type="move_forwards" id="2">
+            </block>
+        </next>
+    </block>
+</xml>

@@ -45,6 +45,7 @@
     var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
     var NIGHT_MODE = {{night_mode}};
     var FLIP_NIGHT_MODE_URL = "{{flip_night_mode_url|default:""}}";
+    var USER_LOGGED_IN = {{request.user.is_authenticated|booltojs}};
 
     var RANDOM = {{episode.random_levels_enabled|booltojs}};
     var IS_RANDOM_LEVEL = {{random_level|booltojs}};
@@ -213,7 +214,7 @@
               <span>{% trans "Solve" %}</span>
           </label>
       </div>
-
+{% if request.user.is_authenticated %}
     <div id="load_tab"class="tab selectable">
       <input type="radio" name="tabs" id="load_radio">
       <label for="load_radio">
@@ -229,7 +230,7 @@
         <span>{% trans "Save" %}</span>
       </label>
     </div>
-
+{% endif %}
     <div class="tab_break"></div>
 
     <div id="help_tab" class="tab selectable">

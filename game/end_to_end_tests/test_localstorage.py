@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Code for Life
 #
-# Copyright (C) 2019, Ocado Innovation Limited
+# Copyright (C) 2021, Ocado Innovation Limited
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as
@@ -34,15 +34,57 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from game.end_to_end_tests.base_game_test import BaseGameTest
+
+from django.urls.base import reverse
+from .base_game_test import BaseGameTest
+from selenium.webdriver.common.by import By
 
 
-class TestLevelWin(BaseGameTest):
-    def test_deliver_everywhere(self):
-        self.deliver_everywhere_test(level=16)
+class LocalStorage:
+    def __init__(self, driver):
+        self.driver = driver
 
-    def test_try_again_if_not_full_score(self):
-        page = self.try_again_if_not_full_score_test(
-            level=19, workspace_file="complete_level_not_with_full_score"
+    def items(self):
+        items = self.driver.execute_script(
+            "var ls = window.localStorage, items = {}; "
+            "for (var i = 0, k; i < ls.length; ++i) "
+            "  items[k = ls.key(i)] = ls.getItem(k); "
+            "return items; "
         )
-        self.complete_and_check_level(19, page)
+        return items
+
+    def clear(self):
+        self.driver.execute_script("window.localStorage.clear();")
+
+class TestLocalStorage(BaseGameTest):
+    def level_in_localstorage(self, level_number):
+        items = LocalStorage(self.selenium).items()
+        return (f"blocklyWorkspaceXml-{level_number}" in items) and (
+            f"pythonWorkspace-{level_number}" in items
+        )
+
+    def test_localstorage_if_logged_in(self):
+        self.login_once()
+        self._complete_level(1)
+        self.assertTrue(self.level_in_localstorage(1))
+
+    def test_nothing_in_localstorage_if_not_logged_in(self):
+        page = self.go_to_homepage()
+        page.teacher_logout()
+
+        level1 = self.go_to_level(1)
+
+        ls = LocalStorage(self.selenium)
+        ls.clear()
+
+        solution = self.read_solution("once_forwards")
+        script = f"""
+            const xml = `{solution}`;
+            Blockly.Xml.clearWorkspaceAndLoadFromXml(Blockly.Xml.textToDom(xml), Blockly.mainWorkspace);
+            """
+        self.selenium.execute_script(script)
+        self.selenium.find_element_by_id("fast_tab").click()
+
+        level1.wait_for_element_to_be_clickable((By.CSS_SELECTOR, "#next_level_button"))
+        level1.next_level()
+        self.assertFalse(self.level_in_localstorage(1))
