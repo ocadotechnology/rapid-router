@@ -214,7 +214,7 @@
               <span>{% trans "Solve" %}</span>
           </label>
       </div>
-
+{% if request.user.is_authenticated %}
     <div id="load_tab"class="tab selectable">
       <input type="radio" name="tabs" id="load_radio">
       <label for="load_radio">
@@ -230,7 +230,7 @@
         <span>{% trans "Save" %}</span>
       </label>
     </div>
-
+{% endif %}
     <div class="tab_break"></div>
 
     <div id="help_tab" class="tab selectable">
