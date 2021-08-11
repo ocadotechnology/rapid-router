@@ -59,7 +59,6 @@ class LocalStorage:
 class TestLocalStorage(BaseGameTest):
     def level_in_localstorage(self, level_number):
         items = LocalStorage(self.selenium).items()
-        print(items)
         return (f"blocklyWorkspaceXml-{level_number}" in items) and (
             f"pythonWorkspace-{level_number}" in items
         )
@@ -76,11 +75,7 @@ class TestLocalStorage(BaseGameTest):
         level1 = self.go_to_level(1)
 
         ls = LocalStorage(self.selenium)
-        print("before clear")
-        print(ls.items())
         ls.clear()
-        print("after clear")
-        print(ls.items())
 
         solution = self.read_solution("once_forwards")
         script = f"""
@@ -91,9 +86,5 @@ class TestLocalStorage(BaseGameTest):
         self.selenium.find_element_by_id("fast_tab").click()
 
         level1.wait_for_element_to_be_clickable((By.CSS_SELECTOR, "#next_level_button"))
-        print("before change page")
-        print(ls.items())
         level1.next_level()
-        print("after change page")
-        print(ls.items())
         self.assertFalse(self.level_in_localstorage(1))
