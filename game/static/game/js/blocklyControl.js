@@ -103,7 +103,7 @@ ocargo.BlocklyControl.prototype.reset = function() {
 
 
 ocargo.BlocklyControl.prototype.teardown = function() {
-    if (localStorage && !ANONYMOUS) {
+    if (localStorage && !ANONYMOUS && USER_LOGGED_IN) {
         var text = this.serialize();
         try {
             if (NIGHT_MODE) {

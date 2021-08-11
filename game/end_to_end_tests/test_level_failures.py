@@ -35,7 +35,6 @@
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
 from game.end_to_end_tests.base_game_test import BaseGameTest
-from .test_play_through import complete_and_check_level
 
 
 class TestCrashes(BaseGameTest):
@@ -112,4 +111,4 @@ class TestCrashes(BaseGameTest):
             .clear()
         )
 
-        complete_and_check_level(6, page)
+        self.complete_and_check_level(6, page)

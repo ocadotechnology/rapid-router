@@ -45,6 +45,7 @@
     var NIGHT_MODE_FEATURE_ENABLED = {{night_mode_feature_enabled}};
     var NIGHT_MODE = {{night_mode}};
     var FLIP_NIGHT_MODE_URL = "{{flip_night_mode_url|default:""}}";
+    var USER_LOGGED_IN = {{request.user.is_authenticated|booltojs}};
 
     var RANDOM = {{episode.random_levels_enabled|booltojs}};
     var IS_RANDOM_LEVEL = {{random_level|booltojs}};

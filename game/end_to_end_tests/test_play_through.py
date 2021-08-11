@@ -34,33 +34,8 @@
 # copyright notice and these terms. You must not misrepresent the origins of this
 # program; modified versions of the program must be marked as such and not
 # identified as the original program.
-from unittest import expectedFailure, skip
 
 from .base_game_test import BaseGameTest
-
-
-def complete_and_check_level(
-    level_number,
-    page,
-    next_episode=None,
-    check_algorithm_score=True,
-    check_route_score=True,
-    final_level=False,
-):
-    page.solution_button().run_program().assert_success()
-    if check_algorithm_score:
-        page.assert_algorithm_score(10)
-    if check_route_score:
-        page.assert_route_score(10)
-    if final_level:
-        return page
-    if next_episode is None:
-        page.next_level()
-        page.assert_level_number(level_number + 1)
-    else:
-        page.next_episode()
-        page.assert_episode_number(next_episode)
-    return page
 
 
 class TestPlayThrough(BaseGameTest):
@@ -69,11 +44,11 @@ class TestPlayThrough(BaseGameTest):
 
     def _complete_episode(self, episode_number, level_number, **kwargs):
         page = self.go_to_episode(episode_number)
-        complete_and_check_level(level_number, page, **kwargs)
+        self.complete_and_check_level(level_number, page, **kwargs)
 
     def _complete_level(self, level_number, **kwargs):
         page = self.go_to_level(level_number)
-        complete_and_check_level(level_number, page, **kwargs)
+        self.complete_and_check_level(level_number, page, **kwargs)
 
     def test_episode_01(self):
         self._complete_episode(1, 1)

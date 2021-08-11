@@ -128,7 +128,7 @@ ocargo.PythonControl = function () {
     };
 
     this.teardown = function () {
-        if (localStorage && !ANONYMOUS) {
+        if (localStorage && !ANONYMOUS && USER_LOGGED_IN) {
             var text = this.getCode();
             try {
                 localStorage.setItem('pythonWorkspace-' + LEVEL_ID, text);
