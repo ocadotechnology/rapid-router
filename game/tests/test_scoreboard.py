@@ -294,7 +294,7 @@ class ScoreboardTestCase(TestCase):
     def test_student_can_see_classes(self):
         """A student should be able to see the classes they are in"""
         mr_teacher = Teacher.objects.factory(
-            "Mr", "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
+            "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
         )
         klass1, name1, access_code1 = create_class_directly(
             mr_teacher.user.user.email, class_name="Class 1"
@@ -320,10 +320,10 @@ class ScoreboardTestCase(TestCase):
     def test_admin_teacher_can_see_all_classes(self):
         """An admin should be able to see all classes, not just the ones they teach"""
         normal_teacher = Teacher.objects.factory(
-            "Mr", "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
+            "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
         )
         admin_teacher = Teacher.objects.factory(
-            "Mrs", "Admin", "Admin", "admin@school.edu", "secretpa$sword2"
+            "Admin", "Admin", "admin@school.edu", "secretpa$sword2"
         )
 
         admin_teacher.is_admin = True
@@ -355,10 +355,10 @@ class ScoreboardTestCase(TestCase):
     def test_non_admin_teacher_can_only_see_their_own_classes(self):
         """A teacher who is not an admin should only be able to see their classes, not ones taught by others"""
         teacher1 = Teacher.objects.factory(
-            "Mr", "First", "Teacher", "normal@school.edu", "secretpa$sword"
+            "First", "Teacher", "normal@school.edu", "secretpa$sword"
         )
         teacher2 = Teacher.objects.factory(
-            "Mrs", "Second", "Teacher", "admin@school.edu", "secretpa$sword2"
+            "Second", "Teacher", "admin@school.edu", "secretpa$sword2"
         )
 
         klass1, name1, access_code1 = create_class_directly(
