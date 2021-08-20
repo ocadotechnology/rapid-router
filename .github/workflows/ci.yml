@@ -27,8 +27,8 @@ jobs:
           pip install pytest-cov
           pipenv install --dev --system
           pip install -U codeforlife-portal #TODO: Remove as part of #688
-          pip install -Ue "git+https://github.com/ocadotechnology/codeforlife-portal@rebranding-p1#egg=codeforlife-portal"  #TODO delete this after merging the portal branch
-          pip install -Ue "git+https://github.com/ocadotechnology/codeforlife-portal@rebranding-p1#egg=cfl-common&subdirectory=cfl_common"  #TODO delete this after merging the portal branch
+          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal@rebranding-p1#egg=codeforlife-portal"  #TODO delete this after merging the portal branch
+          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal@rebranding-p1#egg=cfl-common&subdirectory=cfl_common"  #TODO delete this after merging the portal branch
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
       - name: Run tests
