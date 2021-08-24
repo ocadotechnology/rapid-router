@@ -81,7 +81,7 @@
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
-<a class="button button--regular button--secondary button--secondary" style="background-color: white; color: #0c52a3;" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
+<a class="button button--regular button--secondary button--secondary" style="background-color: white; color: #fa1664;" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
 {% endblock nav_ocargo_scoreboard %}
 
 {% block content %}
@@ -127,7 +127,7 @@
                                 <input id="ep_{{ forloop.counter }}" type="checkbox">
                                 {{ e.name }}
                             </label>
-                            <span class="expander glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                            <span class="expander material-icons-outlined md-32" aria-hidden="true">arrow_drop_down</span>
                         </li>
                         {% endwith %}
                         {% endif %}

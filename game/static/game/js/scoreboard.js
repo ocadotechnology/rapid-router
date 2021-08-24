@@ -58,9 +58,9 @@ $('.expander').on('click', function() {
     var first = el.attr('data-first')
     var last = el.attr('data-last')
     if ($('.level-'+first).is(':visible')) {
-        el.find('span').switchClass('glyphicon-triangle-bottom', 'glyphicon-triangle-left')
+        el.find('span').text('arrow_left')
     } else {
-        el.find('span').switchClass('glyphicon-triangle-left', 'glyphicon-triangle-bottom')
+        el.find('span').text('arrow_drop_down')
     }
     for (var i = first; i <= last; i++) {
         $('.level-'+i).toggle('blind')
