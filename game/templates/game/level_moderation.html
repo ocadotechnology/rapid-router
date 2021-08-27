@@ -26,12 +26,12 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="text-center">{% trans "Level moderation" %}</h1>
+    <h4 class="text-center">{% trans "Level moderation" %}</h4>
 </div>
 <div class="background background--primary">
     <div class="container">
         <div>
-            <h3>{% trans "Filter levels" %}</h3>
+            <h5>{% trans "Filter levels" %}</h5>
             <p>{% trans "Filter the levels by class and student, and click 'Submit' to see the student's levels." %}</p>
             <div id="form" class="form">
                 <form action="" method="post" id="levelModerationForm" class="form-row">
@@ -46,7 +46,7 @@
                         {{form.students}}
                         {{form.students.errors}}
                     </div>
-                    <div class="form-group col-md-12 text-right">
+                    <div class="col-md-12 text-right">
                         <button class="button button--primary" type="submit">{% trans "Submit" %}</button>
                     </div>
                 </form>
@@ -70,8 +70,8 @@
                     <td> {{level.student}} </td>
                     <td> {{level.name}} </td>
                     <td> {{level.shared_with}} </td>
-                    <td> <button value={{level.id}} class="btn btn-default btn-small play">{% trans "Play" %}</button> </td>
-                    <td> <button value={{level.id}} class="btn btn-danger btn-small delete">{% trans "Delete" %}</button> </td>
+                    <td> <button class="button button--small button--primary play" value={{level.id}}>{% trans "Play" %}</button> </td>
+                    <td> <button class="button button--small button--primary--danger delete" value={{level.id}}>{% trans "Delete" %}</button> </td>
                 </tr>
                 {% endfor %}
             </table>

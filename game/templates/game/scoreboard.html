@@ -86,13 +86,13 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="text-center">{% trans "Scoreboard" %}</h1>
+    <h4 class="text-center">{% trans "Scoreboard" %}</h4>
 
     <form action="" method="post" id="scoreboardForm">
         {% csrf_token %}
         <div class="row">
             <div class="col-sm-6">
-                <h4>{% trans "Select Classes" %}</h4>
+                <h5>{% trans "Select Classes" %}</h5>
                 <div class="select-list">
                     <ul class="scoreboard-list-class">
                         <li class="all-class">
@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <h4>{% trans "Select Levels" %}</h4>
+                <h5>{% trans "Select Levels" %}</h5>
                 <div class="select-list">
                     <ul class="scoreboard-list-level">
                         <li class="all-level">
@@ -151,10 +151,10 @@
 
 </div>
 
-<div class="container mainBody">
+<div class="background container mainBody">
   <div class="tableWrapper" id="tableWrapper">
     {% if student_data %}
-    <table id="scoreboardTable" class="display cell-border wide">
+    <table id="scoreboardTable" class="display cell-border wide header-primary data-primary">
     <thead>
       <tr>
         {% for header in headers %}
