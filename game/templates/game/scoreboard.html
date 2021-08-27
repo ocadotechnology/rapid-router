@@ -155,7 +155,7 @@
   <div class="tableWrapper" id="tableWrapper">
     {% if student_data %}
     <table id="scoreboardTable" class="display cell-border wide">
-    <thead>
+    <thead class="header-primary">
       <tr>
         {% for header in headers %}
           <th {% if header == progress_header %} title="{% trans 'Colours explained:&#013;Red: Number of levels which student has started but not submitted a working solution &#013;Orange: Number of levels which student has scored below 50% &#013;Green: Number of levels which student has scored above 50%' %}"{% endif %}> {{header}} </th>
