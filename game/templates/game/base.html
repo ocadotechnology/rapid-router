@@ -23,19 +23,19 @@
 </div>
 <div class="sticky-subnav sub-nav sub-nav--teacher">
     {% block nav_ocargo_levels %}
-        <a class="button button--regular button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
+        <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
     {% endblock nav_ocargo_levels %}
     {% block nav_ocargo_create %}
-        <a class="button button--regular button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
+        <a class="button button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
     {% endblock nav_ocargo_create %}
     {% if user|is_logged_in_as_school_user %}
         {% block nav_ocargo_scoreboard %}
-            <a class="button button--regular button--secondary button--secondary--light" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
+            <a class="button button--secondary button--secondary--light" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
         {% endblock nav_ocargo_scoreboard %}
     {% endif %}
     {% if user|is_logged_in_as_teacher %}
         {% block nav_ocargo_moderate %}
-            <a class="button button--regular button--secondary button--secondary--light" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
+            <a class="button button--secondary button--secondary--light" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
         {% endblock nav_ocargo_moderate %}
     {% endif %}
 </div>

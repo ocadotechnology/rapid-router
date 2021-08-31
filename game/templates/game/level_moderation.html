@@ -21,14 +21,15 @@
 {% endblock %}
 
 {% block nav_ocargo_moderate %}
-<a class="button button--regular button--secondary button--secondary--light" style="background-color: white; color: #fa1664;" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
+<a class="button button--secondary button--secondary--light" style="background-color: white; color: #fa1664;" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
 {% endblock nav_ocargo_moderate %}
 
 {% block content %}
 <div class="container">
-    <h4 class="text-center">{% trans "Level moderation" %}</h4>
+    
 </div>
-<div class="background background--primary">
+<div class="background">
+    <h4 class="text-center">{% trans "Level moderation" %}</h4>
     <div class="container">
         <div>
             <h5>{% trans "Filter levels" %}</h5>
@@ -58,7 +59,7 @@
         {% if levelData %}
         <div class="tableWrapper">
             {% if thead %}
-            <table id="" class="CSSTable wide alternate smaller">
+            <table id="" class="header-primary data-primary">
                 <tr>
                     {% for header in thead %}
                     <th> {{header}} </th>
