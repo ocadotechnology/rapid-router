@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v2.8.0 (2021-09-03)
+### Feature
+* Rebranding changes ([#1217](https://github.com/ocadotechnology/rapid-router/issues/1217)) ([`39522a8`](https://github.com/ocadotechnology/rapid-router/commit/39522a8d46b049b1b630943a581d14e26f26a87f))
+
+### Fix
+* Make selects follow styles ([#1224](https://github.com/ocadotechnology/rapid-router/issues/1224)) ([`ec26ea5`](https://github.com/ocadotechnology/rapid-router/commit/ec26ea55f7e8412abe4f3b5cf35d06066bbc0ca7))
+* Extend base.html instead of old base ([#1223](https://github.com/ocadotechnology/rapid-router/issues/1223)) ([`817fd01`](https://github.com/ocadotechnology/rapid-router/commit/817fd012677616089fc88dee0da4395fe735bfa7))
+* Table and button updates ([#1222](https://github.com/ocadotechnology/rapid-router/issues/1222)) ([`44c2e46`](https://github.com/ocadotechnology/rapid-router/commit/44c2e464e98ea16c78e822a0c6d37d046b575f03))
+* Rebranding amends ([#1221](https://github.com/ocadotechnology/rapid-router/issues/1221)) ([`872970e`](https://github.com/ocadotechnology/rapid-router/commit/872970ed3f55618f12b3562c8f42ea81312ea398))
+* Rebranding updates ([#1220](https://github.com/ocadotechnology/rapid-router/issues/1220)) ([`c94a065`](https://github.com/ocadotechnology/rapid-router/commit/c94a06531f8c0bd3feb56e3ad5f869b0253e769d))
+
 ## v2.7.14 (2021-08-11)
 ### Fix
 * Disable saving and loading of workspace when user is not logged in ([#1216](https://github.com/ocadotechnology/rapid-router/issues/1216)) ([`1ff83ea`](https://github.com/ocadotechnology/rapid-router/commit/1ff83eaba39bdd28636227b6c3947333860e72c8))
