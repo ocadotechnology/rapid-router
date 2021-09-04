@@ -81,18 +81,18 @@
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
-<a class="button button--regular button--secondary button--secondary" style="background-color: white; color: #0c52a3;" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
+<a class="button button--secondary button--secondary" style="background-color: white; color: #fa1664;" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
 {% endblock nav_ocargo_scoreboard %}
 
 {% block content %}
 <div class="container">
-    <h1 class="text-center">{% trans "Scoreboard" %}</h1>
+    <h4 class="text-center">{% trans "Scoreboard" %}</h4>
 
     <form action="" method="post" id="scoreboardForm">
         {% csrf_token %}
         <div class="row">
             <div class="col-sm-6">
-                <h4>{% trans "Select Classes" %}</h4>
+                <h5>{% trans "Select Classes" %}</h5>
                 <div class="select-list">
                     <ul class="scoreboard-list-class">
                         <li class="all-class">
@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class="col-sm-6">
-                <h4>{% trans "Select Levels" %}</h4>
+                <h5>{% trans "Select Levels" %}</h5>
                 <div class="select-list">
                     <ul class="scoreboard-list-level">
                         <li class="all-level">
@@ -127,7 +127,7 @@
                                 <input id="ep_{{ forloop.counter }}" type="checkbox">
                                 {{ e.name }}
                             </label>
-                            <span class="expander glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                            <span class="expander material-icons-outlined md-32" aria-hidden="true">arrow_drop_down</span>
                         </li>
                         {% endwith %}
                         {% endif %}
@@ -141,20 +141,20 @@
         </div>
         <div class="row">
             <div class="col-sm-6 text-right">
-                <button class="button--regular button--primary--general-play" type="submit" name="export">{% trans "Export results" %}</button>
+                <button class="button button--primary" type="submit" name="export">{% trans "Export results" %}</button>
             </div>
             <div class="col-sm-6 text-left">
-                <button class="button--regular button--primary--general-educate" type="submit" name="view">{% trans "View results" %}</button>
+                <button class="button button--primary" type="submit" name="view">{% trans "View results" %}</button>
             </div>
         </div>
     </form>
 
 </div>
 
-<div class="container mainBody">
+<div class="background container mainBody">
   <div class="tableWrapper" id="tableWrapper">
     {% if student_data %}
-    <table id="scoreboardTable" class="display cell-border wide">
+    <table id="scoreboardTable" class="display cell-border wide header-primary data-primary">
     <thead>
       <tr>
         {% for header in headers %}

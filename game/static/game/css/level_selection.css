@@ -36,75 +36,75 @@ program; modified versions of the program must be marked as such and not
 identified as the original program.
 */
 #episodes .panel-header {
-	color: #fff;
-	background: #0c52a3;
-	margin-bottom: 0;
-	text-align: left;
-	padding-left: 10px;
+  color: #fff;
+  background: #6e7171;
+  margin-bottom: 0;
+  text-align: left;
+  padding-left: 10px;
 }
 
 #episodes .customLevelsEpisode {
-	background: #4a4a4a;
-	color: #fff;
+  background: #4a4a4a;
+  color: #fff;
 }
 
 #episodes .episode_range_text {
-	text-align: right;
-	margin-right: 1.5em;
-	float: right;
-	width: 98px;
+  text-align: right;
+  margin-right: 1.5em;
+  float: right;
+  width: 98px;
 }
 
 #episodes .panel-body {
-	border: 1px solid #dddddd;
-	background: #d6e7ed;
-	color: #333333;
-	padding: 2rem 5rem;
+  border: 1px solid #dddddd;
+  background: #f1ecec;
+  color: #333333;
+  padding: 2rem 5rem;
 }
 
 #episodes .panel-body p {
-	padding-bottom: 5px;
+  padding-bottom: 5px;
 }
 
 #episodes .panel-body a {
-	line-height: 25px;
-	text-decoration: none;
+  line-height: 25px;
+  text-decoration: none;
 }
 
 #episodes .score_text {
-	float: right;
-	text-align: right;
-	width: 100px;
-	line-height: 25px;
+  float: right;
+  text-align: right;
+  width: 100px;
+  line-height: 25px;
 }
 
 #episodes .coin_image {
-	float: right;
-	right: 30px;
+  float: right;
+  right: 30px;
 }
 
 #episodes .episode_image.coin_image {
-	width: 30px;
-	height: 30px;
-	margin-top: -6px;
+  width: 30px;
+  height: 30px;
+  margin-top: -6px;
 }
 
 #episodes .level_image.coin_image {
-	width: 25px;
-	height: 25px;
-	margin-right: 2.5px;
+  width: 25px;
+  height: 25px;
+  margin-right: 2.5px;
 }
 
 #episodes .episode-title {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 #episodes .episode-title::before {
-	content: "\e252";
-	font-family: 'Glyphicons Halflings';
+  content: "\e252";
+  font-family: "Glyphicons Halflings";
 }
 
 #episodes .collapsed.episode-title::before {
-	content: "\e250";
-	font-family: 'Glyphicons Halflings';
+  content: "\e250";
+  font-family: "Glyphicons Halflings";
 }
