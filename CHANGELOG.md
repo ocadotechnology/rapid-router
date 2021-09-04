@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v2.9.0 (2021-09-04)
+### Feature
+* Remove teacher title ([#1218](https://github.com/ocadotechnology/rapid-router/issues/1218)) ([`b038625`](https://github.com/ocadotechnology/rapid-router/commit/b03862592a9ecafb60e45f0c00f41a395b391840))
+
 ## v2.8.0 (2021-09-03)
 ### Feature
 * Rebranding changes ([#1217](https://github.com/ocadotechnology/rapid-router/issues/1217)) ([`39522a8`](https://github.com/ocadotechnology/rapid-router/commit/39522a8d46b049b1b630943a581d14e26f26a87f))
