@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v3.0.0 (2021-09-06)
+### Feature
+* Major version bump for rebranding phase 1 ([#1225](https://github.com/ocadotechnology/rapid-router/issues/1225)) ([`5856ed5`](https://github.com/ocadotechnology/rapid-router/commit/5856ed508d08240b196b6f14174a9971d254dabb))
+
+### Breaking
+* major version bump for rebranding phase 1 ([#1225](https://github.com/ocadotechnology/rapid-router/issues/1225)) ([`5856ed5`](https://github.com/ocadotechnology/rapid-router/commit/5856ed508d08240b196b6f14174a9971d254dabb))
+
 ## v2.9.0 (2021-09-04)
 ### Feature
 * Remove teacher title ([#1218](https://github.com/ocadotechnology/rapid-router/issues/1218)) ([`b038625`](https://github.com/ocadotechnology/rapid-router/commit/b03862592a9ecafb60e45f0c00f41a395b391840))
