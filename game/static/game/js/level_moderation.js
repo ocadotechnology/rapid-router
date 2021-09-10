@@ -62,6 +62,34 @@ var CONFIRMATION_DATA = {
     }
 };
 
+function deleteLevel(e) {
+    saving.deleteLevel(levelID,
+        function () {
+            document.forms["levelModerationForm"].submit();
+        },
+        console.error);
+}
+
+function showPopupConfirmation(title, text, confirm_handler) {
+    var popup = $(".popup-wrapper");
+    $(".popup-box__title").text('Delete level');
+    $(".popup-box__msg").append('<p>' + gettext("This student's level will be permanently deleted. Are you sure?") + '</p>');
+    console.log($("#confirm_button"));
+    $("#confirm_button").click(deleteLevel);
+
+    popup.addClass("popup--fade");
+}
+
+function openConfirmationBox(type) {
+    var data = CONFIRMATION_DATA[type];
+
+    var title = data.options.title;
+    var text = data.html;
+    var confirm_handler = data.confirm;
+
+    showPopupConfirmation(title, text, data.confirm);
+
+}
 $(document).ready(function() {
 	$(".delete").click(function() {
 
