@@ -103,7 +103,7 @@ class RandomRoadTestCase(TestCase):
             self.assertTrue(decor)
 
     def test_tiles_less_or_equal_size(self):
-        """Test that the number of tiles is less or equal to the size parameter"""
+        """ Test that the number of tiles is less or equal to the size parameter"""
 
         number_of_tiles = 30
         data = self.create_test_data(num_tiles=number_of_tiles)
@@ -135,7 +135,7 @@ class RandomRoadTestCase(TestCase):
             self.assertTrue(len(node["connectedNodes"]) <= 2)
 
     def test_branchiness_max(self):
-        """Test that if the branchiness > 0 we get branches."""
+        """ Test that if the branchiness > 0 we get branches. """
 
         data = self.create_test_data(branchiness=2, loopiness=0)
 
@@ -155,9 +155,8 @@ class RandomRoadTestCase(TestCase):
         self.assertTrue(branch_count)
 
     def test_curviness_max(self):
-        """Test that the path is curving significantly if the curviness is set to max value."""
+        """ Test that the path is curving significantly if the curviness is set to max value. """
 
-        path = []
         data = self.create_test_data(curviness=1.0)
         path = json.loads(data["path"])
 
@@ -204,7 +203,7 @@ class RandomRoadTestCase(TestCase):
             self.assertGreaterEqual(num_curves, 2)
 
     def test_traffic_light_no(self):
-        """Test that traffic lights don't get generated"""
+        """ Test that traffic lights don't get generated """
 
         data = self.create_test_data(traffic_lights_enabled=False)
 
@@ -220,7 +219,7 @@ class RandomRoadTestCase(TestCase):
         self.assertFalse(traffic_lights)
 
     def test_traffic_light_yes(self):
-        """Test that traffic lights get generated"""
+        """ Test that traffic lights get generated """
 
         data = self.create_test_data(traffic_lights_enabled=True)
 
@@ -236,7 +235,7 @@ class RandomRoadTestCase(TestCase):
         self.assertTrue(traffic_lights)
 
     def test_decor_no(self):
-        """Test that scenery doesn't get generated"""
+        """ Test that scenery doesn't get generated """
 
         data = self.create_test_data(decor_enabled=False)
 
@@ -251,7 +250,7 @@ class RandomRoadTestCase(TestCase):
         self.assertFalse(decor)
 
     def test_decor_yes(self):
-        """Test that scenery does get generated"""
+        """ Test that scenery does get generated """
 
         data = self.create_test_data(decor_enabled=True)
 
