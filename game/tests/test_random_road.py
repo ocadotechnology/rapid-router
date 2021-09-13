@@ -36,7 +36,7 @@
 # identified as the original program.
 import json
 import random
-
+import itertools
 from django.test import TestCase
 
 from game.random_road import generate_random_map_data
@@ -75,11 +75,11 @@ class RandomRoadTestCase(TestCase):
         if num_tiles is None:
             num_tiles = random.randint(3, 40)
         if branchiness is None:
-            branchiness = random.randint(0, 10)
+            branchiness = random.random()
         if loopiness is None:
-            loopiness = random.randint(0, 10)
+            loopiness = random.random()
         if curviness is None:
-            curviness = random.randint(0, 10)
+            curviness = random.random()
 
         return generate_random_map_data(
             num_tiles,
@@ -119,7 +119,7 @@ class RandomRoadTestCase(TestCase):
         self.assertTrue(len(path) <= number_of_tiles)
 
     def test_branchiness_min(self):
-        """ Test that if the branchiness is 0 we don't get branches. """
+        """Test that if the branchiness is 0 we don't get branches."""
 
         data = self.create_test_data(branchiness=0, loopiness=0)
 
@@ -157,27 +157,50 @@ class RandomRoadTestCase(TestCase):
     def test_curviness_max(self):
         """ Test that the path is curving significantly if the curviness is set to max value. """
 
-        data = self.create_test_data(curviness=1)
-
+        data = self.create_test_data(curviness=1.0)
         path = json.loads(data["path"])
+
         destinations = json.loads(data["destinations"])
         origin = json.loads(data["origin"])
         decor = data["decor"]
 
         self.check_if_valid(origin, destinations, path, decor)
 
-        turn_count = 0
+        num_curves = 0
         for node in path:
+            already_checked_for_curves = (
+                []
+            )  # So that A->B->C and C->B->A don't count as two separate curves
             if len(node["connectedNodes"]) > 1:
-                turn_count += int(
-                    not (
-                        check_direction(node, path[int(node["connectedNodes"][0])])
-                        == check_direction(node, path[int(node["connectedNodes"][1])])
-                    )
-                )
+                for (one_way, other_way) in itertools.combinations(
+                    node["connectedNodes"], 2
+                ):
+                    if (
+                        one_way,
+                        other_way,
+                    ) not in already_checked_for_curves:
+                        already_checked_for_curves.append(
+                            (
+                                one_way,
+                                other_way,
+                            )
+                        )
+                        already_checked_for_curves.append(
+                            (
+                                other_way,
+                                one_way,
+                            )
+                        )
 
-        # Check if there are any turns.
-        self.assertTrue(turn_count)
+                        previous_to_this = check_direction(path[one_way], node)
+                        this_to_next = check_direction(node, path[other_way])
+
+                        num_curves += int(not (previous_to_this == this_to_next))
+
+        if len(path) == 3:
+            self.assertEqual(num_curves, 1)
+        else:
+            self.assertGreaterEqual(num_curves, 2)
 
     def test_traffic_light_no(self):
         """ Test that traffic lights don't get generated """
