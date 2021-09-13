@@ -46,27 +46,36 @@ function csrfSafeMethod(method) {
 
 var saving = new ocargo.Saving();
 
-var CONFIRMATION_DATA = {
-    'deleteLevel': {
-        options: {
-            title: gettext('Delete level'),
+function deleteLevel() {
+    saving.deleteLevel(levelID,
+        function () {
+            document.forms["levelModerationForm"].submit();
         },
-        html: '<p>' + gettext("This student's level will be permanently deleted. Are you sure?") + '</p>',
-        confirm: function() {
-            saving.deleteLevel(levelID,
-                function () {
-                    document.forms["levelModerationForm"].submit();
-                },
-                console.error);
-        }
-    }
-};
+        console.error);
+}
+
+function showPopupConfirmation(title, text, confirm_handler) {
+    var popup = $(".popup-wrapper");
+    $(".popup-box__title").text(title);
+    $(".popup-box__msg").append(text);
+    $("#confirm_button").click(confirm_handler);
+
+    popup.addClass("popup--fade");
+}
+
+function confirmDelete() {
+    console.log(levelID);
+    var title = 'Delete level';
+    var text = '<p>' + gettext("This student's level will be permanently deleted. Are you sure?") + '</p>';
+
+    showPopupConfirmation(title, text, deleteLevel);
+}
 
 $(document).ready(function() {
 	$(".delete").click(function() {
 
 	  	levelID = this.getAttribute('value');
-	  	openConfirmationBox('deleteLevel');
+	  	confirmDelete();
 	});
 
 	$('.play').click(function() {
