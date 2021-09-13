@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.0.1 (2021-09-13)
+### Fix
+* 1099 cannot delete custom levels in level moderation page ([#1229](https://github.com/ocadotechnology/rapid-router/issues/1229)) ([`813585c`](https://github.com/ocadotechnology/rapid-router/commit/813585c6198cc8fefb4242a796427534e2a08368))
+
 ## v3.0.0 (2021-09-06)
 ### Feature
 * Major version bump for rebranding phase 1 ([#1225](https://github.com/ocadotechnology/rapid-router/issues/1225)) ([`5856ed5`](https://github.com/ocadotechnology/rapid-router/commit/5856ed508d08240b196b6f14174a9971d254dabb))
