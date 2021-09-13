@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.0.2 (2021-09-13)
+### Fix
+* 852 curviness test ([#1227](https://github.com/ocadotechnology/rapid-router/issues/1227)) ([`f0bbe6a`](https://github.com/ocadotechnology/rapid-router/commit/f0bbe6a74edb43330d886ebc3496e1af91a2c976))
+
 ## v3.0.1 (2021-09-13)
 ### Fix
 * 1099 cannot delete custom levels in level moderation page ([#1229](https://github.com/ocadotechnology/rapid-router/issues/1229)) ([`813585c`](https://github.com/ocadotechnology/rapid-router/commit/813585c6198cc8fefb4242a796427534e2a08368))
