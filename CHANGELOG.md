@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.0.3 (2021-09-14)
+### Fix
+* Header updates ([#1231](https://github.com/ocadotechnology/rapid-router/issues/1231)) ([`2ae6c24`](https://github.com/ocadotechnology/rapid-router/commit/2ae6c24e8e9cb21a3cb9e30669d0eaeba01c9118))
+
 ## v3.0.2 (2021-09-13)
 ### Fix
 * 852 curviness test ([#1227](https://github.com/ocadotechnology/rapid-router/issues/1227)) ([`f0bbe6a`](https://github.com/ocadotechnology/rapid-router/commit/f0bbe6a74edb43330d886ebc3496e1af91a2c976))
