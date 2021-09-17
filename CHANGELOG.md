@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.0.4 (2021-09-17)
+### Fix
+* RR level header fix ([#1232](https://github.com/ocadotechnology/rapid-router/issues/1232)) ([`5fb70a4`](https://github.com/ocadotechnology/rapid-router/commit/5fb70a4fc2e9ac83e8127c861cb5f66316457778))
+
 ## v3.0.3 (2021-09-14)
 ### Fix
 * Header updates ([#1231](https://github.com/ocadotechnology/rapid-router/issues/1231)) ([`2ae6c24`](https://github.com/ocadotechnology/rapid-router/commit/2ae6c24e8e9cb21a3cb9e30669d0eaeba01c9118))
