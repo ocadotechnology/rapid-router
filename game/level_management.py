@@ -1,39 +1,3 @@
-# -*- coding: utf-8 -*-
-# Code for Life
-#
-# Copyright (C) 2019, Ocado Innovation Limited
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-# ADDITIONAL TERMS – Section 7 GNU General Public Licence
-#
-# This licence does not grant any right, title or interest in any “Ocado” logos,
-# trade names or the trademark “Ocado” or any other trademarks or domain names
-# owned by Ocado Innovation Limited or the Ocado group of companies or any other
-# distinctive brand features of “Ocado” as may be secured from time to time. You
-# must not distribute any modification of this program using the trademark
-# “Ocado” or claim any affiliation or association with Ocado or its employees.
-#
-# You are not authorised to use the name Ocado (or any of its trade names) or
-# the names of any author or contributor in advertising or for publicity purposes
-# pertaining to the distribution of this program, without the prior written
-# authorisation of Ocado.
-#
-# Any propagation, distribution or conveyance of this program must include this
-# copyright notice and these terms. You must not misrepresent the origins of this
-# program; modified versions of the program must be marked as such and not
-# identified as the original program.
 from __future__ import absolute_import
 from builtins import str
 from itertools import chain
@@ -87,7 +51,7 @@ def levels_owned_by(user):
 
 
 def get_decor(level):
-    """ Helper method parsing decor into a dictionary format 'sendable' to javascript. """
+    """Helper method parsing decor into a dictionary format 'sendable' to javascript."""
     decorData = []
     for ld in LevelDecor.objects.filter(level=level):
         decor = get_decor_element(name=ld.decorName, theme=level.theme)
@@ -111,7 +75,7 @@ def set_decor(level, decor):
 
 
 def set_decor_inner(level, decor, LevelDecor):
-    """ Helper method creating LevelDecor objects given a list of decor in dictionary form."""
+    """Helper method creating LevelDecor objects given a list of decor in dictionary form."""
     LevelDecor.objects.filter(level=level).delete()
 
     level_decors = []
@@ -125,7 +89,7 @@ def set_decor_inner(level, decor, LevelDecor):
 
 
 def get_night_blocks(level):
-    """ Helper method parsing blocks into a dictionary format 'sendable' to javascript. """
+    """Helper method parsing blocks into a dictionary format 'sendable' to javascript."""
     coreBlockTypes = [
         "move_forwards",
         "turn_left",
@@ -155,7 +119,7 @@ def get_night_blocks(level):
 
 
 def get_blocks(level):
-    """ Helper method parsing blocks into a dictionary format 'sendable' to javascript. """
+    """Helper method parsing blocks into a dictionary format 'sendable' to javascript."""
     levelBlocks = LevelBlock.objects.filter(level=level).order_by("type")
     return [{"type": lb.type.type, "number": lb.number} for lb in levelBlocks]
 
@@ -165,7 +129,7 @@ def set_blocks(level, blocks):
 
 
 def set_blocks_inner(level, blocks, LevelBlock, Block):
-    """ Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
+    """Helper method creating LevelBlock objects given a list of blocks in dictionary form."""
     LevelBlock.objects.filter(level=level).delete()
 
     level_blocks = []
