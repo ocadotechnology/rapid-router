@@ -13,3 +13,4 @@ comment:
 
 ignore:
   - "game/tests/*"
+  - "game/autoconfig.py"
