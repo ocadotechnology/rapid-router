@@ -28,6 +28,7 @@ jobs:
           pipenv install --dev --system
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header#egg=cfl_common&subdirectory=cfl_common
+          pip freeze
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
       - name: Run tests
