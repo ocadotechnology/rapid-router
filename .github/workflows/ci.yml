@@ -27,8 +27,8 @@ jobs:
           pip install pytest-cov
           pipenv install --dev --system
           pip uninstall -y cfl-common
-          pip install "git+https://github.com/ocadotechnology/codeforlife-portal.git@8cb2168aa57cfbb074367202baea127fa5967f8c#egg=codeforlife-portal"
-          pip install "git+https://github.com/ocadotechnology/codeforlife-portal.git@8cb2168aa57cfbb074367202baea127fa5967f8c#egg=cfl-common&subdirectory=cfl_common"
+          pip install "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header#egg=codeforlife-portal"
+          pip install "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header#egg=cfl-common&subdirectory=cfl_common"
           pip freeze
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
