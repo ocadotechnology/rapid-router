@@ -48,10 +48,9 @@ class LevelEditorTestCase(TestCase):
 
     def student_login(self, name, access_code, password):
         self.client.post(
-            reverse("student_login"),
+            reverse("student_login", kwargs={"access_code": access_code}),
             {
                 "username": name,
-                "access_code": access_code,
                 "password": password,
             },
             follow=True,
