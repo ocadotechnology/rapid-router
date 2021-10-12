@@ -28,9 +28,11 @@ jobs:
       - name: Install dependencies
         run: pipenv install --dev --system
       - name: Install CSP portal
-        run: pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header
+        run: pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header"
+      - name: Uninstall common
+        run: pip uninstall -y cfl-common
       - name: Install CSP common
-        run: pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header&subdirectory=cfl_common
+        run: pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header#egg=cfl-common&subdirectory=cfl_common"
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
       - name: Run tests
