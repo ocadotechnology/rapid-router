@@ -21,38 +21,16 @@ jobs:
         with:
           python-version: '3.6.7'
           architecture: 'x64'
-      - name: Install pip requirements
-        run: |
-          pip install pipenv
-          pip install pytest-cov
-          echo "-------------------------------------------------------------------------------------------------------"
-          echo "INSTALLING DEPENDENCIES"
-          echo "-------------------------------------------------------------------------------------------------------"
-          pipenv install --dev --system
-          echo "-------------------------------------------------------------------------------------------------------"
-          echo "UNINSTALLING COMMON"
-          echo "-------------------------------------------------------------------------------------------------------"
-          pip uninstall -y cfl-common
-          echo "-------------------------------------------------------------------------------------------------------"
-          echo "FIRST FREEZE"
-          echo "-------------------------------------------------------------------------------------------------------"
-          pip freeze
-          echo "-------------------------------------------------------------------------------------------------------"
-          echo "INSTALLING CSP PORTAL"
-          echo "-------------------------------------------------------------------------------------------------------"
-          pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header
-          echo "-------------------------------------------------------------------------------------------------------"
-          echo "SECOND FREEZE"
-          echo "-------------------------------------------------------------------------------------------------------"
-          pip freeze
-          echo "-------------------------------------------------------------------------------------------------------"
-          echo "INSTALLING CSP COMMON"
-          echo "-------------------------------------------------------------------------------------------------------"
-          pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header&subdirectory=cfl_common
-          echo "-------------------------------------------------------------------------------------------------------"
-          echo "THIRD FREEZE"
-          echo "-------------------------------------------------------------------------------------------------------"
-          pip freeze
+      - name: Install pipenv
+        run: pip install pipenv
+      - name: Install pytest-cov
+        run: pip install pytest-cov
+      - name: Install dependencies
+        run: pipenv install --dev --system
+      - name: Install CSP portal
+        run: pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header
+      - name: Install CSP common
+        run: pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header&subdirectory=cfl_common
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
       - name: Run tests
