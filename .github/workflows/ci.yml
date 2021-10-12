@@ -26,8 +26,8 @@ jobs:
           pip install pipenv
           pip install pytest-cov
           pipenv install --dev --system
-          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header"
-          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header&subdirectory=cfl_common"
+          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@8cb2168aa57cfbb074367202baea127fa5967f8c#egg=codeforlife-portal"
+          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@8cb2168aa57cfbb074367202baea127fa5967f8c#egg=cfl-common&subdirectory=cfl_common"
           pip freeze
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
