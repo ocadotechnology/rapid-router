@@ -26,8 +26,7 @@ jobs:
           pip install pipenv
           pip install pytest-cov
           pipenv install --dev --system
-          pip uninstall --no-input codeforlife-portal
-          pip uninstall --no-input cfl-common
+          pip uninstall -y cfl-common
           pip install "git+https://github.com/ocadotechnology/codeforlife-portal.git@8cb2168aa57cfbb074367202baea127fa5967f8c#egg=codeforlife-portal"
           pip install "git+https://github.com/ocadotechnology/codeforlife-portal.git@8cb2168aa57cfbb074367202baea127fa5967f8c#egg=cfl-common&subdirectory=cfl_common"
           pip freeze
