@@ -1,5 +1,4 @@
 from builtins import str
-import sys
 
 from django.utils.translation import ugettext
 
@@ -36,6 +35,14 @@ def play_button_icon_url():
         '<img src="/static/game/image/actions/go.svg" alt="'
         + ugettext("Play button")
         + '" style="width: 4%;">'
+    )
+
+
+def step_button_icon_url():
+    return (
+            '<img src="/static/game/image/icons/step.svg" alt="'
+            + ugettext("Step button")
+            + '" style="width: 4%;">'
     )
 
 
@@ -176,12 +183,7 @@ def noPermission():
     return ugettext("You don't have permissions to see this. ")
 
 
-"""
-"""
-""" String messages used as level tips in the game view.
-"""
-"""
-"""
+""" String messages used as level tips in the game view. """
 
 
 def title_night_mode():
@@ -222,12 +224,9 @@ def description_level1():
 
 def hint_level1():
     message = ugettext(
-        "Drag the <b>Move forwards</b> block so that it is under the <b>Start</b> "
-        + "block - close enough to be touching. <br><br>"
-        + "Clicking on the arrows next to the %(play_button)s button will also drag the "
-        + "blocks into a sequence for you. <br><br>"
-        + "Don't forget to press %(play_button)s when you are done. "
-    ) % {"play_button": play_button_icon_url()}
+        "Try dragging a move forwards block onto the <b>Start</b> block. Then click "
+        + "the <b>Start</b> block."
+    )
     return message
 
 
@@ -248,11 +247,9 @@ def description_level2():
 
 def hint_level2():
     message = ugettext(
-        "A second <b>Move forwards</b> block can be placed under the first <b>Move "
-        + "forwards</b> block. <br><br>"
-        + "The arrows next to the <b>%(play_button)s</b> button will drag the blocks into a "
-        + "sequence for you. "
-    ) % {"play_button": play_button_icon_url()}
+        "Now there is further to go. How many times do you need to move forwards this "
+        + "time?"
+    )
     return message
 
 
@@ -272,11 +269,7 @@ def description_level3():
 
 
 def hint_level3():
-    message = ugettext(
-        "A <b>Turn right</b> block can be placed under the first <b>Move "
-        + "forwards</b> block. <br><br> The arrows next to the %(play_button)s button "
-        + "will drag the blocks into a sequence for you. "
-    ) % {"play_button": play_button_icon_url()}
+    message = ugettext("Now you need to make a turn. Which way do you need to go?")
     return message
 
 
@@ -295,10 +288,9 @@ def description_level4():
 
 def hint_level4():
     message = ugettext(
-        "A <b>Turn left</b> block can be placed under a series of <b>Move "
-        + "forwards</b> blocks. <br> The arrows next to the %(play_button)s button will "
-        + "drag the blocks into a sequence for you. "
-    ) % {"play_button": play_button_icon_url()}
+        "You’re doing really well! This time you need to go a bit further and turn the "
+        + "other way. Count the number of blocks you need to move."
+    )
     return message
 
 
@@ -318,10 +310,9 @@ def description_level5():
 
 def hint_level5():
     message = ugettext(
-        "This road starts by curving to the <b>left</b>. Then it curves to the "
-        + "<b>right</b>. <br><br> The arrows next to the %(play_button)s button will drag "
-        + "the blocks into a sequence for you. "
-    ) % {"play_button": play_button_icon_url()}
+        "There are more turns to make this time. Try building your solution up block "
+        + "by block. Which way do you need to turn first?"
+    )
     return message
 
 
@@ -340,10 +331,10 @@ def description_level6():
 
 def hint_level6():
     message = ugettext(
-        "Follow the road around. How many <b>Move forwards</b> do you need? <br><br>"
-        + "The arrows next to the %(play_button)s button will drag the blocks into a "
-        + "sequence for you. "
-    ) % {"play_button": play_button_icon_url()}
+        "You’ve done really well to get this far! Now you need to travel further but "
+        + "include some turns. Check which direction you need to turn and count the "
+        + "number of blocks you need to travel."
+    )
     return message
 
 
@@ -361,10 +352,9 @@ def description_level7():
 
 def hint_level7():
     message = ugettext(
-        "Follow the road around. Don't forget to <b>Turn left</b> first. <br><br>"
-        + "The arrows next to the %(play_button)s button will drag the blocks into a "
-        + "sequence for you."
-    ) % {"play_button": play_button_icon_url()}
+        "This road is more complicated but you can do this! Start with just a few "
+        + "blocks and try that, then add more blocks and check it again. "
+    )
     return message
 
 
@@ -385,9 +375,8 @@ def description_level8():
 
 def hint_level8():
     message = ugettext(
-        "On screen, the van looks like it follows the road down. If you were in the "
-        + "van, it would look like you should <b>Move forwards</b>, then <b>Turn "
-        + "right</b>. "
+        "The warehouse is in a different place now but don’t let that confuse you! "
+        + "Which way do you need to go first? Imagine you are driving the van."
     )
     return message
 
@@ -407,8 +396,7 @@ def description_level9():
 
 def hint_level9():
     message = ugettext(
-        "How many times do you have to <b>Move forwards</b> before you "
-        + "<b>Turn left</b>? "
+        "Try counting the blocks before the turn. Which way do you need to go?"
     )
     return message
 
@@ -427,12 +415,10 @@ def description_level10():
 
 def hint_level10():
     message = ugettext(
-        "This map is not so hard. Notice that to you it looks like the road goes "
-        + "up, but if you were in the in the van, you would see the road goes "
-        + "right. <br><br> Do you know which turn the van will take next? <br><br> "
-        + "The arrows next to the %(play_button)s button will drag the blocks into a "
-        + "sequence for you. "
-    ) % {"play_button": play_button_icon_url()}
+        "You need to make a turn as soon as you leave the warehouse. Which way do you "
+        + "need to go? If you get stuck, don’t forget to count the blocks and check "
+        + "which way you need to turn each time."
+    )
     return message
 
 
@@ -450,11 +436,10 @@ def description_level11():
 
 def hint_level11():
     message = ugettext(
-        "The maze looks a bit like a snail, doesn't it? That means that for most of "
-        + "the time the van should only <b>Move forwards</b> and <b>Turn right</b>. "
-        + "<br><br> The arrows next to the %(play_button)s button will drag the blocks "
-        + "into a sequence for you. "
-    ) % {"play_button": play_button_icon_url()}
+        "The warehouse is in a different place again so check which way you need to "
+        + "go. If you get stuck, remember that you can just add a few blocks and run "
+        + "the program and then add a few more and try again."
+    )
     return message
 
 
@@ -473,9 +458,10 @@ def description_level12():
 
 def hint_level12():
     message = ugettext(
-        "This road might look much longer and more complicated, but it's not that "
-        + "hard. <br> Start by using <b>Move forwards</b> a few steps and <b>Move "
-        + "left</b>. "
+        "You have learned a lot in these levels. Here’s a route to really test your "
+        + "skills. Try counting the number of straight sections and then add the "
+        + "curves in slowly. You can run the program before it is complete and then "
+        + "add to it. That can be easier than adding lots of blocks at once. Good luck!"
     )
     return message
 
@@ -496,8 +482,9 @@ def description_level13():
 
 def hint_level13():
     message = ugettext(
-        "Try taking the route that starts by turning left then turns right. Do you "
-        + "know what follows next? "
+        "There are a few different ways of getting to the house in these levels. Can "
+        + "you find the shortest route? Try counting the blocks if you’re not sure. "
+        + "That’s the way to get the best score on these levels. "
     )
     return message
 
@@ -516,8 +503,9 @@ def description_level14():
 
 def hint_level14():
     message = ugettext(
-        "The middle route seems to be shortest. Do you know what sequence of "
-        + "instructions will make the van follow it?"
+        "This one is a bit trickier. There are lots of different ways you could go but "
+        + "there is no point wasting fuel! If you take one of the longer routes, you "
+        + "won’t get such a good algorithm score."
     )
     return message
 
@@ -537,11 +525,9 @@ def description_level15():
 
 def hint_level15():
     message = ugettext(
-        "Make the van turn left and go directly to the closest house first. This is "
-        + "the shortest route. <br><br> The <b>Deliver</b> block is not needed when "
-        + "the van is only going to one house, but you need it when the van is "
-        + "going to two or more houses. <br><br> Use the <b>Deliver</b> block every "
-        + "time the van gets to a house. "
+        "On this level, there are two houses to deliver to. Which one are you going to "
+        + "go to first? Make sure you add a <b>Deliver</b> block for each house, you "
+        + "don’t want to forget anyone’s shopping!"
     )
     return message
 
@@ -561,10 +547,11 @@ def description_level16():
 
 def hint_level16():
     message = ugettext(
-        "Although the <b>Deliver</b> block is not needed when there is only one "
-        + "house, you need it when there are more houses, like now. <br><br>"
-        + "Once the van is at a house, make sure you use the <b>Deliver</b> block. "
-        + "Do that for each house. "
+        f"Now there is another house to deliver to! Make sure you take the shortest "
+        f"route and add a <b>Deliver</b> block for each house. You might find it "
+        f"easier to add a small amount of code at a time and test it. You can even "
+        f"use the <b>Step</b> button {step_button_icon_url()} to try each block in "
+        f"your program."
     )
     return message
 
@@ -583,9 +570,10 @@ def description_level17():
 
 def hint_level17():
     message = ugettext(
-        "Test your sequence to make sure that the van takes the shortest route to "
-        + "visit all the houses on the way. <br><br> Use the <b>Deliver</b> block "
-        + "every time the van gets to a house. "
+        "You have four houses to deliver to now. Have you noticed that the red box "
+        + "turns green when you have delivered the shopping? Your programs are "
+        + "starting to get quite long now. Add a few blocks and then test your code. "
+        + "It is easier to spot errors that way. Good luck!"
     )
     return message
 
@@ -604,8 +592,10 @@ def description_level18():
 
 def hint_level18():
     message = ugettext(
-        "To make sure the van takes the shortest route, first turn left. <br><br> "
-        + "Use the <b>Deliver</b> block every time the van gets to a house. "
+        "You have reached the last route in this section, and it is quite complicated! "
+        + "Check which direction you need to turn and build up your code slowly. Maybe "
+        + "try to get to one house at a time and then add more code for the next one. "
+        + "Don’t miss a house off!"
     )
     return message
 
@@ -629,9 +619,9 @@ def description_level19():
 
 def hint_level19():
     message = ugettext(
-        "A <b>Move forwards</b> block can be placed inside a <b>Repeat</b> block "
-        + "(to the right of the word 'Do'). <br><br> Don't forget to change the "
-        + "number of times you need to repeat the instruction. "
+        "You have seen this route before! This time you are going to use a "
+        + "<b>Repeat</b> block so that you don’t need to have several "
+        + "<b>Move forwards</b> blocks. How many do you need?"
     )
     return message
 
@@ -653,9 +643,9 @@ def description_level20():
 
 def hint_level20():
     message = ugettext(
-        "This level can be broken down into three repeated sets of: <b>Turn "
-        + "left</b>, then <b>Turn right</b>. <br><br> These repeated steps make a "
-        + "'loop'. "
+        "This is another route you have seen before. Instead of having lots of left "
+        + "and right blocks, can you find a pattern and put them inside a "
+        + "<b>Repeat</b> block? How many times do you need to repeat them?"
     )
     return message
 
@@ -674,8 +664,10 @@ def description_level21():
 
 def hint_level21():
     message = ugettext(
-        "This level can be broken down into repeated sets of: <b>Move forwards</b>, "
-        + "<b>Turn left</b>, <b>Turn right</b>, <b>Turn left</b>. "
+        "Here is a challenge for you! Can you find a pattern to put in the "
+        + "<b>Repeat</b> block? If you’re not sure, try doing your program without the "
+        + "repeat and then looking for the pattern. You could use a piece of paper to "
+        + "write the route down if that helps."
     )
     return message
 
@@ -695,10 +687,10 @@ def description_level22():
 
 def hint_level22():
     message = ugettext(
-        "Look to see where you have used <b>Move forwards</b>, <b>Turn "
-        + "left</b> and <b>Turn right</b> blocks. Are any blocks next to them the "
-        + "same? Put them into one <b>Repeat</b> block. Don't forget to change the "
-        + "number of times you need to repeat the instruction. "
+        "Instead of having lots of<b>Move forwards</b> blocks, try putting them in "
+        + "<b>Repeat</b> blocks when you can. This is quite a complicated route so try "
+        + "building up your solution slowly. If you get in a muddle, try starting "
+        + "again and just doing a bit of the route at a time."
     )
     return message
 
@@ -717,12 +709,9 @@ def description_level23():
 
 def hint_level23():
     message = ugettext(
-        "How about using <b>Repeat</b> inside another <b>Repeat</b>? <br><br> This "
-        + "level can be broken down into sets of: "
-        + "<ul><li> a set (nested loop) of <b>Move forwards</b>, </li> "
-        + "<li> two <b>Turn left</b>s, </li> "
-        + "<li> a set (nested loop) of <b>Move forwards</b>, </li> "
-        + "<li> two <b>Turn right</b>s. </li></ul>"
+        "Don’t rush into this one. Try counting the straights and using a"
+        + "<b>Repeat</b> block for those. Then make the turn and do the same. Run the "
+        + "code each time."
     )
     return message
 
@@ -740,8 +729,8 @@ def description_level24():
 
 def hint_level24():
     message = ugettext(
-        "With all these twists and turns, you will have to think hard about what "
-        + "sets of repeated instructions to use. <br><br>"
+        "This is as complicated as they get so don’t worry! Try writing down the turns "
+        + "to get you up to the straight bit. Can you see a pattern?"
     )
     return message
 
@@ -759,8 +748,9 @@ def description_level25():
 
 def hint_level25():
     message = ugettext(
-        "Most of the program will consist of repeated sets of <b>Move forwards</b> "
-        + "and a set of <b>Turn right</b> and <b>Turn left</b>. "
+        "The solution to this route is quite short but you will need to find the "
+        + "pattern! Try solving it without loops or writing down the steps on paper. "
+        + "Then look for a pattern to repeat. You can do this!"
     )
     return message
 
@@ -780,8 +770,8 @@ def description_level26():
 
 def hint_level26():
     message = ugettext(
-        "Break the program into two <b>Repeat</b>s with a <b>Turn left</b> in "
-        + "between them. "
+        "This route is much simpler, don’t let the snow distract you! How many "
+        + "straights are there before the turn? How many straights after the turn?"
     )
     return message
 
@@ -800,7 +790,10 @@ def description_level27():
 
 def hint_level27():
     message = ugettext(
-        "Make sure you drag the correct turns into your <b>Repeat</b> block. "
+        "Here is another type of route. This time you have a muddy road and some "
+        + "farmland. The pattern is not that easy to find straightaway. Try writing "
+        + "out the instructions without the <b>Repeat</b> block and then try to find "
+        + "the best pattern you can."
     )
     return message
 
@@ -819,7 +812,11 @@ def description_level28():
 
 def hint_level28():
     message = ugettext(
-        "Make sure you drag the correct turns into your <b>Repeat</b> block."
+        "This time you’re in a town and you need to deliver to the blue house at the "
+        + "end of the route. Don’t get distracted along the way. To get the best "
+        + "route, you need to put a <b>Repeat</b> block inside another <b>Repeat</b> "
+        + "block. These levels are not so simple so write down the route and then look "
+        + "for patterns."
     )
     return message
 
@@ -843,8 +840,9 @@ def description_level29():
 
 def hint_level29():
     message = ugettext(
-        "The blocks should read like a sentence: '<b>Repeat until at "
-        + "destination do</b>: <b>Move forwards</b>'. "
+        "You’ve seen this route before! This time you are not counting repetitions, "
+        + "your loop is going to repeat the <b>Move forwards</b> block until you reach "
+        + "your destination."
     )
     return message
 
@@ -863,8 +861,10 @@ def description_level30():
 
 def hint_level30():
     message = ugettext(
-        "The blocks should read like a sentence: '<b>Repeat until at "
-        + "destination do</b>: <b>Turn left</b>, <b>Turn right</b>'. "
+        "This is another route you have seen before. Last time you counted how many "
+        + "times your instructions were repeated. This time, your program is going to "
+        + "repeat your commands until you reach the destination. What do you need to "
+        + "repeat?"
     )
     return message
 
@@ -880,8 +880,8 @@ def description_level31():
 
 def hint_level31():
     message = ugettext(
-        "This program can be broken into repeated sets of <b>Turn left</b>, <b>Turn "
-        + "right</b> and two <b>Move forwards</b>. "
+        "If you look at this route, do you notice that the shape of the road repeats? "
+        + "Can you put the instructions in a loop?"
     )
     return message
 
@@ -899,8 +899,9 @@ def description_level32():
 
 def hint_level32():
     message = ugettext(
-        "This program is quite similar to the one you just solved. Do you remember "
-        + "the solution you came up with back then? "
+        "What about this road, can you see a repeating pattern? Maybe write down the "
+        + "instructions without a loop to solve this route and then look for the "
+        + "pattern."
     )
     return message
 
@@ -924,10 +925,9 @@ def description_level33():
 
 def hint_level33():
     message = ugettext(
-        "We say that the road 'exists' in a direction. For example, if the road "
-        + "goes forwards we say that it 'exists forwards'. <br><br> "
-        + "<b>If</b> a <b>road exists forwards</b> then <b>do Move forwards</b>."
-        + "<br><br>Repeat this set to get the van to the house. "
+        "You could solve this with the same code you used on level 29 but the "
+        + "instructions for this level introduced the <b>If</b> block. To get full "
+        + "marks on this level, you will need to use an <b>If</b> block."
     )
     return message
 
@@ -951,10 +951,10 @@ def description_level34():
 
 def hint_level34():
     message = ugettext(
-        "At each bend the van can either <b>Move forwards</b> or <b>Turn left</b>. "
-        + "Create a loop so it can make the correct choice. <br><br> We say that "
-        + "the road 'exists' in a direction. For example, if the road goes forwards "
-        + "we say that it 'exists forwards'. "
+        "This route looks complicated, but you can solve it without counting blocks. "
+        + "You are going to use a <b>Repeat until</b> block again and <b>If</b> blocks "
+        + "to help the driver check the road ahead so they can decide which way to go. "
+        + "What are the possible directions on this route?"
     )
     return message
 
@@ -974,10 +974,11 @@ def description_level35():
 
 def hint_level35():
     message = ugettext(
-        "At each bend the van can either <b>Move forwards</b> or <b>Turn left</b>. "
-        + "Create a loop so it can make the correct choice. <br><br> We say that "
-        + "the road 'exists' in a direction. For example, if the road goes forwards "
-        + "we say that it 'exists forwards'. "
+        "For this route you need to go straight, turn left and turn right so you will "
+        + "need to make your <b>if</b> statement more complex. To make your code as "
+        + "fast as possible, think about which you need to do most. It is less "
+        + "efficient to ask if you need to turn left first if most of the time you "
+        + "want to go straight, for example."
     )
     return message
 
@@ -1004,15 +1005,8 @@ def description_level36():
 
 def hint_level36():
     message = ugettext(
-        "The program should be a simple set of: <b>If road exists forwards do</b> "
-        + "<b>Move forwards</b>, <b>Else if road exists left do Turn left</b>, "
-        + "<b>Else if road exists right do Turn right</b>. <br><br> You can find "
-        + "<b>Else if</b> by clicking the star on the <b>If</b> block and adding "
-        + "the <b>Else if</b>.<br><br> If the first 'condition' is true (this means "
-        + "if the road exists in the direction you put first) the van will follow "
-        + "the blocks after <b>If</b>. <br><br> If not, the van will check to see "
-        + "if it can follow the direction you put after <b>Else if</b>. It will "
-        + "keep checking until it has a direction it can take. "
+        "This route is quite different from the last one but is the solution very "
+        + "similar?"
     )
     return message
 
@@ -1031,7 +1025,8 @@ def description_level37():
 
 def hint_level37():
     message = ugettext(
-        "Think back to the solutions you produced using 'if statements' before. "
+        "This route is longer and a different shape again but does your last solution "
+        + "help? Are you noticing a pattern here?"
     )
     return message
 
@@ -1050,7 +1045,9 @@ def description_level38():
 
 def hint_level38():
     message = ugettext(
-        "Think back to the solutions you produced using 'if statements' before. "
+        "This is a really long route. With a counted loop, your program would be quite "
+        + "long but is this program going to be any longer than your solution to the "
+        + "last level?"
     )
     return message
 
@@ -1068,6 +1065,7 @@ def description_level39():
     return build_description(title_level39(), message)
 
 
+# TODO: Update when we update this level
 def hint_level39():
     message = ugettext(
         "Uh oh, moving around the blocks in your 'general algorithm' might not "
@@ -1092,9 +1090,8 @@ def description_level40():
 
 def hint_level40():
     message = ugettext(
-        "The 'general algorithm' will work here. <br><br> Make sure you change the "
-        + "order the van checks for directions to take the shortest route to the "
-        + "destination. "
+        "With this route, only ask questions about the directions you actually need to "
+        + "go."
     )
     return message
 
@@ -1114,11 +1111,8 @@ def description_level41():
 
 def hint_level41():
     message = ugettext(
-        "Psst! You can simply make a change to the 'general algorithm'. <br><br> "
-        + "If you make the van check for turns before it checks the road exists "
-        + "forwards, you will come up with the perfect solution. <br><br>"
-        + "Notice that here it doesn't matter which turn you check for first - it "
-        + "will change the route but provide you with the same score. "
+        "This is a short route and you can choose either route. Can you use an "
+        + "algorithm you have used before?"
     )
     return message
 
@@ -1137,9 +1131,9 @@ def description_level42():
 
 def hint_level42():
     message = ugettext(
-        "Uh oh, moving around the blocks in your 'general algorithm' won't help. "
-        + "<br> How about creating a simple solution without 'if statements' that "
-        + "will help the van reach the house? "
+        "You have been using a similar solution to lots of levels in this section, but "
+        + "does that help you now? Can you use a general set of instructions or do you "
+        + "need to write a specific solution for this one?"
     )
     return message
 
@@ -1158,9 +1152,8 @@ def description_level43():
 
 def hint_level43():
     message = ugettext(
-        "This road cannot be solved by a 'general algorithm'. Can you solve it "
-        + "without 'if statements'? <br><br> Remember to choose the shortest route "
-        + "and an algorithm which is as short as possible.  "
+        "Your general solution might not help you here. See if you need to use some "
+        + "counted loops for this one."
     )
     return message
 
@@ -1184,9 +1177,8 @@ def description_level44():
 
 def hint_level44():
     message = ugettext(
-        "Don't worry about the 'general algorithm' here. Just go forwards. <br><br>"
-        + "Once the van is right under the traffic light, make it wait for a green "
-        + "light by adding a <b>Wait</b> block. "
+        "This route is very similar to one you’ve seen before but do you notice the "
+        + "traffic light? If the traffic light is red, you will need to wait."
     )
     return message
 
@@ -1205,9 +1197,8 @@ def description_level45():
 
 def hint_level45():
     message = ugettext(
-        "Use an 'if statement' to tell the van <b>If traffic light is red, Wait, "
-        + "Else Move forwards</b>. <br><br> Remember to repeat that until you get "
-        + "to the destination. "
+        "This route is longer and there are two sets of traffic lights. Does it make "
+        + "any difference to your solution?"
     )
     return message
 
@@ -1226,9 +1217,8 @@ def description_level46():
 
 def hint_level46():
     message = ugettext(
-        "Be careful about the order you put your <b>If</b> blocks in. <br><br>"
-        + "If you make the van check the road exists forwards before checking for a "
-        + "light, it might break the Highway Code. "
+        "In this level there is a left turn as well. Can you extend your solution to "
+        + "the last level to allow for that?"
     )
     return message
 
@@ -1248,10 +1238,8 @@ def description_level47():
 
 def hint_level47():
     message = ugettext(
-        "Use an 'if statement' and check if the light is red. <br><br> "
-        + "<b>If traffic light is red, wait, Else if road exists forwards, Move "
-        + "forwards, Else Turn left</b>. <br><br> Remember to repeat that until you "
-        + "get to the destination! "
+        "This route is similar to the last one but the turn is in the other direction. "
+        + "Can you adapt your program?"
     )
     return message
 
@@ -1269,6 +1257,7 @@ def description_level48():
     return build_description(title_level48(), message)
 
 
+# TODO: Update when new text is provided
 def hint_level48():
     message = ugettext(
         "You need to check: "
@@ -1296,13 +1285,10 @@ def description_level49():
 
 def hint_level49():
     message = ugettext(
-        "You need to check: "
-        + "<ul><li> if the light is red </li>"
-        + "<li> if the road exists left </li>"
-        + "<li> if the road exists forwards </li>"
-        + "<li> or if the road exists right </li></ul>"
-        + "Do you think you need to check for a dead end? <br> Make sure you put "
-        + "the checks in the right order. "
+        "Can you use your general algorithm to get to the house? What if you think "
+        + "about the order of the instructions? Of course you must obey the traffic "
+        + "lights but if you come to a junction, do you want to prioritise turning "
+        + "left, right or going straight?"
     )
     return message
 
@@ -1320,6 +1306,7 @@ def description_level50():
     return build_description(title_level50(), message)
 
 
+# TODO: Update when we update the solution and new text is provided
 def hint_level50():
     message = ugettext(
         "Don't worry about the algorithm you've already come up with. Take the "
@@ -1343,7 +1330,11 @@ def description_level51():
 
 
 def hint_level51():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "In these levels, the blocks you can use are limited. Can you use the provided "
+        + "blocks to get to the house? If you run out blocks, check that you are "
+        + "taking the shortest route."
+    )
     return message
 
 
@@ -1361,7 +1352,10 @@ def description_level52():
 
 
 def hint_level52():
-    message = ugettext("Don't forget to use the repeat loop.")
+    message = ugettext(
+        "You can’t use the shortest route here because you don’t have a "
+        + "<b>Move forwards</b> block. What can you do instead?"
+    )
     return message
 
 
@@ -1378,7 +1372,10 @@ def description_level53():
 
 
 def hint_level53():
-    message = ugettext("Think back to earlier levels - what did you learn")
+    message = ugettext(
+        "You must take the shortest route here otherwise you will run out of blocks. "
+        + "You must also use the loops to help you."
+    )
     return message
 
 
@@ -1395,7 +1392,10 @@ def description_level54():
 
 
 def hint_level54():
-    message = ugettext("Think back to earlier levels - what did you learn")
+    message = ugettext(
+        "You don’t have a <b>Move forwards</b> block. Can you use the loops to get to "
+        + "the house? You might need to put one loop inside another loop..."
+    )
     return message
 
 
@@ -1411,7 +1411,10 @@ def description_level55():
 
 
 def hint_level55():
-    message = ugettext("Think back to earlier levels - what did you learn.")
+    message = ugettext(
+        "In this level, you need to combine a <b>Repeat</b> block with an <b>If</b> "
+        + "block. Can you find the pattern that will get you to the house?"
+    )
     return message
 
 
@@ -1428,7 +1431,10 @@ def description_level56():
 
 
 def hint_level56():
-    message = ugettext("Think back to earlier levels - what did you learn.")
+    message = ugettext(
+        "Think about which turns you need to make to get to the destination. Which way "
+        + "do you go most often?"
+    )
     return message
 
 
@@ -1448,8 +1454,8 @@ def description_level57():
 
 def hint_level57():
     message = ugettext(
-        "The blocks should read like a sentence. Repeat while not at destination then "
-        + "add your instructions using the blocks provided."
+        "This time you have a <b>Repeat while</b> block. This is different from the "
+        + "<b>Repeat until</b> you have used before. What needs to change in your code?"
     )
     return message
 
@@ -1468,8 +1474,8 @@ def description_level58():
 
 def hint_level58():
     message = ugettext(
-        "The blocks should read like a sentence: <b>repeat while not at destination</b> "
-        + "then using the <b>repeat</b> add your instructions"
+        "In this example, you only have four counted loop blocks. How can you use them "
+        + "to get to the destination?"
     )
     return message
 
@@ -1487,8 +1493,10 @@ def description_level59():
 
 def hint_level59():
     message = ugettext(
-        "Inside the repeat <b>repeat until</b> block, <b>turn left</b>, <b>turn around</b> "
-        + "and <b>turn left</b> again should do it."
+        "In this level, there is no <b>Move forwards</b> block. How can you use the "
+        + "loop, <b>Turn left</b> and <b>Turn around</b> blocks to get to the house? "
+        + "Try using the blocks without the loop and see where that takes you. Would "
+        + "repeating that help?"
     )
     return message
 
@@ -1504,7 +1512,8 @@ def description_level60():
 
 def hint_level60():
     message = ugettext(
-        "The trick to this level is to <b>turn right</b> then <b>turn around</b>."
+        "Can you see a pattern in this route? Use that to create a loop. When you have "
+        + "done that, what is left to do?"
     )
     return message
 
@@ -1528,10 +1537,9 @@ def description_level61():
 
 def hint_level61():
     message = ugettext(
-        "Don't forget to use <b>Define</b>. Name your procedure and attach the blocks in "
-        + "the right order. Start with <b>move forwards</b>, <b>turn left</b>, you can "
-        + "add repeat loops to a procedure and ending with <b>turn left</b>. Call your "
-        + "procedure under your start block and off you go..."
+        "The instructions asked you to create a procedure called ‘wiggle’. This "
+        + "procedure should make the moves to manage the bends in the road. You will "
+        + "need to call this procedure from the main program."
     )
     return message
 
@@ -1549,8 +1557,9 @@ def description_level62():
 
 def hint_level62():
     message = ugettext(
-        "Don't forget to name your procedure eg 'lights' and every time you want the van "
-        + "to check the traffic lights you need to '<b>call</b>' it."
+        "Can you create a procedure that just deals with traffic lights? Call it "
+        + "‘lights’ and call it from the main program whenever you need it. Don’t "
+        + "worry if you don’t use the <b>Repeat block</b> in the program."
     )
     return message
 
@@ -1569,11 +1578,10 @@ def description_level63():
 
 def hint_level63():
     message = ugettext(
-        "Can you see the repeating pattern in the path? The 'wiggle' consisting of a "
-        + "<b>turn left</b>, <b>move forwards</b>, <b>turn right</b>, <b>turn right</b>, "
-        + "<b>turn left</b> can be put in a <b>Define</b> block to create a procedure. "
-        + "Once you have named it, attach the <b>Call</b> block with the procedure's name "
-        + "in the text box to execute it."
+        "In this level, you should notice a repeated turn in the road. Can you create "
+        + "a ‘wiggle’ procedure and call it whenever you need it from the main "
+        + "program? If you can’t find the repeated pattern, try writing the route out "
+        + "in full and looking at your instructions."
     )
     return message
 
@@ -1592,9 +1600,9 @@ def description_level64():
 
 def hint_level64():
     message = ugettext(
-        "One procedure could be <b>turn left</b>, <b>turn right</b>, <b>move forwards</b>, "
-        + "<b>turn right</b> and <b>turn left</b>. Don't forget you can create a repeat "
-        + "loop in your procedures."
+        "Try to create two procedures to help you here. Then call them as you need "
+        + "them from the main procedure. You could use one procedure to deal with each "
+        + "of the turn patterns in the route."
     )
     return message
 
@@ -1613,8 +1621,10 @@ def description_level65():
 
 def hint_level65():
     message = ugettext(
-        "Your first procedure could be <b>turn left</b> and <b>turn right</b> 'left-right' "
-        + "The second procedure could be <b>turn right</b> <b>turn left</b>, 'right-left'."
+        "This route involves using the main program to deal with the main route and "
+        + "using procedures to deal with the turns in the road. You could try creating "
+        + "the route without procedures and then looking for a pattern to move into a "
+        + "procedure."
     )
     return message
 
@@ -1630,9 +1640,8 @@ def description_level66():
 
 def hint_level66():
     message = ugettext(
-        "Create 2 procedures. The first one should read <b>move forwards</b>, "
-        + "<b>move forwards</b>, <b>turn right</b>. The second <b>move forwards</b> "
-        + "then <b>call</b> your first procedure"
+        "In this example, you can write a procedure that calls another procedure. Look "
+        + "for certain actions that are repeated and try to put them in procedures."
     )
     return message
 
@@ -1648,8 +1657,8 @@ def description_level67():
 
 def hint_level67():
     message = ugettext(
-        "It might be easier to write the program without repeats or procedures then "
-        + "create 3 separate procedures from the patterns that your see."
+        "In this level, try to find several patterns and put them in procedures. How "
+        + "about starting with a wiggle?"
     )
     return message
 
@@ -1664,7 +1673,9 @@ def description_level68():
 
 
 def hint_level68():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "You have limited blocks again here. How can you get to the house without a "
+        + "counted loop?")
     return message
 
 
@@ -1678,7 +1689,11 @@ def description_level69():
 
 
 def hint_level69():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "In this level, you need a loop inside another loop. When you are able to go "
+        + "forwards, you should keep going. When you can no longer go forwards, you "
+        + "need to turn and then try to go forwards again.<br><br>Hint: The traffic "
+        + "lights are a bit of a distraction and you don’t need to worry about them!")
     return message
 
 
@@ -1692,7 +1707,9 @@ def description_level70():
 
 
 def hint_level70():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "You don’t have any <b>Move forwards</b> blocks here. How can you use a loop "
+        + "and the turn blocks to get to the house?")
     return message
 
 
@@ -1706,7 +1723,10 @@ def description_level71():
 
 
 def hint_level71():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "In this level, most of the time you want to <b>Move forwards</b> and then "
+        + "<b>turn right</b>. However, there is an occasion when you don’t want to do "
+        + "that.")
     return message
 
 
@@ -1720,7 +1740,9 @@ def description_level72():
 
 
 def hint_level72():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "In this level, you want to <b>Move forwards</b> most of the time. When do you "
+        + "need to turn?")
     return message
 
 
@@ -1734,7 +1756,9 @@ def description_level73():
 
 
 def hint_level73():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "You don’t have the blocks to check if you are at the destination. What can "
+        + "you use instead?  Don’t forget to deal with the traffic lights!")
     return message
 
 
@@ -1748,7 +1772,9 @@ def description_level74():
 
 
 def hint_level74():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "You only have one <b>Repeat</b> block here so make the most of it! You can "
+        + "use procedures to repeat code by just calling the procedure again.")
     return message
 
 
@@ -1762,7 +1788,9 @@ def description_level75():
 
 
 def hint_level75():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "You need to look for the shortest route here and then use loops inside loops "
+        + "to get you there. Good luck!")
     return message
 
 
@@ -1776,7 +1804,9 @@ def description_level76():
 
 
 def hint_level76():
-    message = ugettext("What is that? A barn for ANTS!?")
+    message = ugettext(
+        "This van driver is going to have to take quite a circuitous route to make "
+        + "their delivery. You don’t have any left turns!")
     return message
 
 
@@ -1790,7 +1820,10 @@ def description_level77():
 
 
 def hint_level77():
-    message = ugettext("Heard of recursion?")
+    message = ugettext(
+        "You don’t have any loops here but you can make a subroutine. You know that a "
+        + "subroutine can call another subroutine but did you know that a subroutine "
+        + "can call itself?")
     return message
 
 
@@ -1804,7 +1837,10 @@ def description_level78():
 
 
 def hint_level78():
-    message = ugettext("Repeat while not dead end... turn around...")
+    message = ugettext(
+        "You really need to put together everything you have learned for this tricky "
+        + "level. You need to combine checking for being at the destination with "
+        + "checking for a dead end and which roads are available. Good luck!")
     return message
 
 
@@ -1818,7 +1854,11 @@ def description_level79():
 
 
 def hint_level79():
-    message = ugettext("Think back to earlier levels - what did you learn?")
+    message = ugettext(
+        "This is the last of the levels in this section and you will have to put "
+        + "together everything you have learned! You don’t have any <b>Repeat</b> "
+        + "blocks so you need to use a procedure that calls itself and also checks "
+        + "which roads are available.")
     return message
 
 
