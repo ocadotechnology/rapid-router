@@ -40,9 +40,9 @@ def play_button_icon_url():
 
 def step_button_icon_url():
     return (
-            '<img src="/static/game/image/icons/step.svg" alt="'
-            + ugettext("Step button")
-            + '" style="width: 4%;">'
+        '<img src="/static/game/image/icons/step.svg" alt="'
+        + ugettext("Step button")
+        + '" style="width: 4%;">'
     )
 
 
@@ -1675,7 +1675,8 @@ def description_level68():
 def hint_level68():
     message = ugettext(
         "You have limited blocks again here. How can you get to the house without a "
-        + "counted loop?")
+        + "counted loop?"
+    )
     return message
 
 
@@ -1693,7 +1694,8 @@ def hint_level69():
         "In this level, you need a loop inside another loop. When you are able to go "
         + "forwards, you should keep going. When you can no longer go forwards, you "
         + "need to turn and then try to go forwards again.<br><br>Hint: The traffic "
-        + "lights are a bit of a distraction and you don’t need to worry about them!")
+        + "lights are a bit of a distraction and you don’t need to worry about them!"
+    )
     return message
 
 
@@ -1709,7 +1711,8 @@ def description_level70():
 def hint_level70():
     message = ugettext(
         "You don’t have any <b>Move forwards</b> blocks here. How can you use a loop "
-        + "and the turn blocks to get to the house?")
+        + "and the turn blocks to get to the house?"
+    )
     return message
 
 
@@ -1726,7 +1729,8 @@ def hint_level71():
     message = ugettext(
         "In this level, most of the time you want to <b>Move forwards</b> and then "
         + "<b>turn right</b>. However, there is an occasion when you don’t want to do "
-        + "that.")
+        + "that."
+    )
     return message
 
 
@@ -1742,7 +1746,8 @@ def description_level72():
 def hint_level72():
     message = ugettext(
         "In this level, you want to <b>Move forwards</b> most of the time. When do you "
-        + "need to turn?")
+        + "need to turn?"
+    )
     return message
 
 
@@ -1758,7 +1763,8 @@ def description_level73():
 def hint_level73():
     message = ugettext(
         "You don’t have the blocks to check if you are at the destination. What can "
-        + "you use instead?  Don’t forget to deal with the traffic lights!")
+        + "you use instead?  Don’t forget to deal with the traffic lights!"
+    )
     return message
 
 
@@ -1774,7 +1780,8 @@ def description_level74():
 def hint_level74():
     message = ugettext(
         "You only have one <b>Repeat</b> block here so make the most of it! You can "
-        + "use procedures to repeat code by just calling the procedure again.")
+        + "use procedures to repeat code by just calling the procedure again."
+    )
     return message
 
 
@@ -1790,7 +1797,8 @@ def description_level75():
 def hint_level75():
     message = ugettext(
         "You need to look for the shortest route here and then use loops inside loops "
-        + "to get you there. Good luck!")
+        + "to get you there. Good luck!"
+    )
     return message
 
 
@@ -1806,7 +1814,8 @@ def description_level76():
 def hint_level76():
     message = ugettext(
         "This van driver is going to have to take quite a circuitous route to make "
-        + "their delivery. You don’t have any left turns!")
+        + "their delivery. You don’t have any left turns!"
+    )
     return message
 
 
@@ -1823,7 +1832,8 @@ def hint_level77():
     message = ugettext(
         "You don’t have any loops here but you can make a subroutine. You know that a "
         + "subroutine can call another subroutine but did you know that a subroutine "
-        + "can call itself?")
+        + "can call itself?"
+    )
     return message
 
 
@@ -1840,7 +1850,8 @@ def hint_level78():
     message = ugettext(
         "You really need to put together everything you have learned for this tricky "
         + "level. You need to combine checking for being at the destination with "
-        + "checking for a dead end and which roads are available. Good luck!")
+        + "checking for a dead end and which roads are available. Good luck!"
+    )
     return message
 
 
@@ -1858,7 +1869,8 @@ def hint_level79():
         "This is the last of the levels in this section and you will have to put "
         + "together everything you have learned! You don’t have any <b>Repeat</b> "
         + "blocks so you need to use a procedure that calls itself and also checks "
-        + "which roads are available.")
+        + "which roads are available."
+    )
     return message
 
 
