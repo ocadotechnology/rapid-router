@@ -6,7 +6,6 @@ from rest_framework.test import APITestCase
 
 from game.character import get_all_character
 from game.decor import get_all_decor
-from game.tests.utils.locale import add_new_language
 from game.theme import get_all_themes
 from .utils.user import get_superuser
 
@@ -113,15 +112,6 @@ class APITests(APITestCase):
         assert_that(response, has_status_code(status.HTTP_200_OK))
         assert_that(response.data[0]["name"], equal_to("Getting Started"))
 
-    def test_list_episodes_with_translated_episode_names(self):
-        with add_new_language():
-            url = reverse("episode-list")
-            superuser = get_superuser()
-            self.client.force_authenticate(user=superuser)
-            response = self.client.get(url, **{"HTTP_ACCEPT_LANGUAGE": "foo-br"})
-            assert_that(response, has_status_code(status.HTTP_200_OK))
-            assert_that(response.data[0]["name"], equal_to("crwdns4197:0crwdne4197:0"))
-
     def test_episode_details(self):
         episode_id = 1
         url = reverse("episode-detail", kwargs={"pk": episode_id})
@@ -130,16 +120,6 @@ class APITests(APITestCase):
         response = self.client.get(url)
         assert_that(response, has_status_code(status.HTTP_200_OK))
         assert_that(response.data["name"], equal_to("Getting Started"))
-
-    def test_episode_details_with_translated_episode_name(self):
-        with add_new_language():
-            episode_id = 1
-            url = reverse("episode-detail", kwargs={"pk": episode_id})
-            superuser = get_superuser()
-            self.client.force_authenticate(user=superuser)
-            response = self.client.get(url, **{"HTTP_ACCEPT_LANGUAGE": "foo-br"})
-            assert_that(response, has_status_code(status.HTTP_200_OK))
-            assert_that(response.data["name"], equal_to("crwdns4197:0crwdne4197:0"))
 
 
 def has_status_code(status_code):
