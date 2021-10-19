@@ -1885,7 +1885,10 @@ def description_level80():
 
 
 def hint_level80():
-    return ugettext(INTRO_HINT)
+    return ugettext(
+        "This route is quite simple and you have seen it before. Just drag the blocks "
+        + "as you normally would but notice what is happening in the Python code…"
+    )
 
 
 def title_level81():
@@ -1900,6 +1903,7 @@ def description_level81():
     return build_description(title_level81(), message)
 
 
+# TODO: Update once we've renamed v to my_van
 def hint_level81():
     return ugettext(INTRO_HINT)
 
@@ -1917,7 +1921,12 @@ def description_level82():
 
 
 def hint_level82():
-    return ugettext(INTRO_HINT)
+    return ugettext(
+        "You can’t edit the Python program yet but have a look at it as you add new "
+        + "blocks to your code. Notice that each command to the van ends with round "
+        + "brackets (). These are important, they tell Python that you are giving a "
+        + "command."
+    )
 
 
 def title_level83():
@@ -1932,6 +1941,7 @@ def description_level83():
     return build_description(title_level83(), message)
 
 
+# TODO: Update once we change the solution for this level
 def hint_level83():
     return ugettext(INTRO_HINT)
 
@@ -1948,6 +1958,7 @@ def description_level84():
     return build_description(title_level84(), message)
 
 
+# TODO: Update once we change the solution for this level
 def hint_level84():
     return ugettext(INTRO_HINT)
 
@@ -1965,6 +1976,7 @@ def description_level85():
     return build_description(title_level85(), message)
 
 
+# TODO: For levels 85 - 109: the new hint text has not yet been provided.
 def hint_level85():
     return ugettext(INTRO_HINT)
 
