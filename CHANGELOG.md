@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.1.0 (2021-10-19)
+### Feature
+* Update level help texts ([#1240](https://github.com/ocadotechnology/rapid-router/issues/1240)) ([`d2610cc`](https://github.com/ocadotechnology/rapid-router/commit/d2610cc4540e5ded8473ef352f0a4b210223f049))
+
 ## v3.0.5 (2021-10-01)
 ### Fix
 * Update license ([#1235](https://github.com/ocadotechnology/rapid-router/issues/1235)) ([`ff368fe`](https://github.com/ocadotechnology/rapid-router/commit/ff368fe1003bcb0bd6127300ca25f5090abee42b))
