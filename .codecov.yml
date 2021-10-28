@@ -12,4 +12,5 @@ comment:
   branches: !master
 
 ignore:
-  - "game/tests/*"
+  - "game/tests/*.py"
+  - "game/tests/**/*.py"
