@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.1.1 (2021-10-29)
+### Fix
+* Add attempt creation test util ([#1241](https://github.com/ocadotechnology/rapid-router/issues/1241)) ([`60573ea`](https://github.com/ocadotechnology/rapid-router/commit/60573eaa04898b893155d9dd44aa1459acd142b8))
+
 ## v3.1.0 (2021-10-19)
 ### Feature
 * Update level help texts ([#1240](https://github.com/ocadotechnology/rapid-router/issues/1240)) ([`d2610cc`](https://github.com/ocadotechnology/rapid-router/commit/d2610cc4540e5ded8473ef352f0a4b210223f049))
