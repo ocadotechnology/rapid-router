@@ -20,6 +20,7 @@ CHARACTER_DATA = {
     "Van": Character(
         pk=1,
         name=u"Van",
+        # FUTURE: add external branding option
         en_face=u"characters/front_view/Van.svg",
         top_down=u"characters/top_view/Van.svg",
         height="20",
@@ -28,6 +29,7 @@ CHARACTER_DATA = {
     "Dee": Character(
         pk=2,
         name=u"Dee",
+        # FUTURE: add external branding option
         en_face=u"characters/front_view/Dee.svg",
         top_down=u"characters/top_view/Dee.svg",
         height="28",
