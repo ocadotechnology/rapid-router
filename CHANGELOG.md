@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.2.0 (2021-11-03)
+### Feature
+* Remove ocado logo from the game ([#1242](https://github.com/ocadotechnology/rapid-router/issues/1242)) ([`a930fd0`](https://github.com/ocadotechnology/rapid-router/commit/a930fd04617cdf30af5249b1e5b29b7307df911d))
+
 ## v3.1.1 (2021-10-29)
 ### Fix
 * Add attempt creation test util ([#1241](https://github.com/ocadotechnology/rapid-router/issues/1241)) ([`60573ea`](https://github.com/ocadotechnology/rapid-router/commit/60573eaa04898b893155d9dd44aa1459acd142b8))
