@@ -92,6 +92,7 @@ ocargo.Saving.prototype.deleteWorkspace = function (id, callback) {
                 }
             },
             success: function (json) {
+                $("#loadWorkspaceTable > tr[selected]").remove();
                 callback(null, json);
             },
             error: function (xhr, errmsg, err) {
