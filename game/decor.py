@@ -58,6 +58,7 @@ DECOR_DATA = {
     (u"cfc", u"grass"): Decor(
         z_index=1,
         name=u"cfc",
+        # FUTURE: add external branding option
         url=u"decor/grass/cfc.svg",
         height=107,
         width=100,
@@ -112,6 +113,7 @@ DECOR_DATA = {
     (u"cfc", u"snow"): Decor(
         z_index=1,
         name=u"cfc",
+        # FUTURE: add external branding option
         url=u"decor/snow/cfc.svg",
         height=107,
         width=100,
@@ -274,6 +276,7 @@ DECOR_DATA = {
     (u"cfc", u"city"): Decor(
         z_index=1,
         name=u"cfc",
+        # FUTURE: add external branding option
         url=u"decor/grass/cfc.svg",
         height=107,
         width=100,

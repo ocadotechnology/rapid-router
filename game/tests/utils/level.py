@@ -25,7 +25,7 @@ def create_save_level(teacher):
         "destinations": "[[3,4]]",
     }
     level = Level(default=False, anonymous=data["anonymous"])
-    level.owner = teacher.user.user.userprofile
+    level.owner = teacher.user
     level_management.save_level(level, data)
     level.save()
 
