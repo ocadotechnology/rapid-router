@@ -21,18 +21,14 @@ jobs:
         with:
           python-version: '3.6.7'
           architecture: 'x64'
-      - name: Install pipenv
-        run: pip install pipenv
-      - name: Install pytest-cov
-        run: pip install pytest-cov
-      - name: Install dependencies
-        run: pipenv install --dev --system
-      - name: Install CSP portal
-        run: pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header"
-      - name: Uninstall common
-        run: pip uninstall -y cfl-common
-      - name: Install CSP common
-        run: pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header#egg=cfl-common&subdirectory=cfl_common"
+      - name: Install pip requirements
+        run: |
+          pip install pipenv
+          pip install pytest-cov
+          pipenv install --dev --system
+          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header"
+          pip uninstall -y cfl-common
+          pip install -U "git+https://github.com/ocadotechnology/codeforlife-portal.git@csp_header#egg=cfl-common&subdirectory=cfl_common"
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
       - name: Run tests
