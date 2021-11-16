@@ -2,7 +2,6 @@
 
 [![Workflow Status](https://github.com/ocadotechnology/rapid-router/actions/workflows/ci.yml/badge.svg)](https://github.com/ocadotechnology/rapid-router/actions/workflows/ci.yml)
 [![Coverage Status](https://codecov.io/gh/ocadotechnology/rapid-router/branch/master/graph/badge.svg)](https://codecov.io/gh/ocadotechnology/rapid-router)
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/code-for-life/localized.svg)](https://crowdin.com/project/code-for-life)
 
 [Code for Life](https://www.codeforlife.education/) has been developed by Ocado Technology as a **free, open-source** project to inspire the next generation of computer scientists and to help teachers deliver the computing curriculum.
 
