@@ -8,7 +8,19 @@
 {{block.super}}
 <script>
     var EPISODES = [];
-    {% for episode in episodeData %}
+    {% for episode in blocklyEpisodes %}
+        var levels = [];
+        {% for level in episode.levels %}
+        levels.push({
+            'name': {{level.name}},
+            'score': '{{level.score}}',
+            'maxScore': {{level.maxScore}}
+        });
+        {% endfor %}
+        EPISODES.push({'id' : {{episode.id}}, 'levels': levels});
+    {% endfor %}
+
+    {% for episode in pythonEpisodes %}
         var levels = [];
         {% for level in episode.levels %}
         levels.push({
