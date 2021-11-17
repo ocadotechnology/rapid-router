@@ -65,9 +65,9 @@
 <div class="container background">
     <div id="episodes">
         <div class="panel-intro">
-            <h4>Blocky Levels</h4>
+            <h4>Blocky levels</h4>
             The first set of levels use Blockly to slowly introduce you to Python. You can read more about Blockly
-            <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" target="_blank">here</a>
+            <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" target="_blank">here</a>.
         </div>
         {% for episode in blocklyEpisodes %}
         <div class="panel">
@@ -78,9 +78,9 @@
             {% else %}
             <div class="panel-header bg-tertiary-dark" id="episode-{{episode.id}}">
             {% endif %}
-                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
-                    <span class="episode_range_text">
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                         Levels {{episode.first_level}}-{{episode.last_level}}
                     </span>
                     <img class="episode_image coin_image" value="{{episode.id}}">
@@ -113,16 +113,16 @@
         {% endfor %}
 
         <div class="panel-intro">
-            <h4>Python Levels</h4>
+            <h4>Python levels</h4>
             The next set of levels introduce you to coding directly with Python. You can read more about Python
-            <a href="https://docs.codeforlife.education/rapid-router/python-guide" target="_blank">here</a>
+            <a href="https://docs.codeforlife.education/rapid-router/python-guide" target="_blank">here</a>.
         </div>
         {% for episode in pythonEpisodes %}
-        <div class="panel">            
+        <div class="panel">
             <div class="panel-header" id="episode-{{episode.id}}">
-                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
-                    <span class="episode_range_text">
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                         Levels {{episode.first_level}}-{{episode.last_level}}
                     </span>
                     <img class="episode_image coin_image" value="{{episode.id}}">
@@ -148,13 +148,15 @@
 
         {% if user|is_logged_in %}
         <div class="panel-intro">
-            <h4>Created Levels</h4>
+            <h4>Created levels</h4>
             This is where you will find levels you created or those have been been shared with you.
         </div>
         <div class="panel">
             <div class="panel-header bg-secondary" id="episode-levels-created-by-you">
-                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
                     Levels created by you
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
+                    </span>
                 </p>
             </div>
             <div id="collapse-levels-created-by-you" aria-labelledby="episode-levels-created-by-you" class="collapse">
@@ -178,8 +180,10 @@
 
         <div class="panel">
             <div class="panel-header bg-secondary" id="episode-levels-shared-with-you">
-                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
                     Levels shared with you
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
+                    </span>
                 </p>
             </div>
             <div id="collapse-levels-shared-with-you" aria-labelledby="episode-levels-shared-with-you" class="collapse">

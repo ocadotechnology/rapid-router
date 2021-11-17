@@ -71,9 +71,9 @@ def fetch_episode_data_from_database(early_access, start, end):
 
 
 def fetch_episode_data(early_access, start=1, end=12):
-    key = "episode_data_%s_%s" % (start, end)
+    key = f"episode_data_{start}_{end}"
     if early_access:
-        key = "episode_data_early_access_%s_%s" % (start, end)
+        key = f"episode_data_early_access_{start}_{end}"
 
     data = cache.get(key)
     if data is None:

@@ -35,7 +35,7 @@
   text-align: right;
   margin-right: 1.5em;
   float: right;
-  width: 150px;
+  width: 170px;
 }
 
 #episodes .panel-body {
@@ -80,16 +80,19 @@
 
 #episodes .episode-title {
   cursor: pointer;
+  margin-left: 15px;
 }
 
-#episodes .episode-title::before {
-  content: "\e252";
-  font-family: "Glyphicons Halflings";
-}
-
-#episodes .collapsed.episode-title::before {
+#episodes .collapsed.episode_range_text::after {
   content: "\e250";
   font-family: "Glyphicons Halflings";
+  margin-left: 10px;
+}
+
+#episodes .episode_range_text::after {
+  content: "\e252";
+  font-family: "Glyphicons Halflings";
+  margin-left: 10px;
 }
 
 .level_rr_logo {
