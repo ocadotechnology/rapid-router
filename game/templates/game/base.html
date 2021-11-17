@@ -12,6 +12,7 @@
 
 {% block subNav %}
 {{ block.super }}
+{% block header %}
 <div class="banner banner--teacher row">
     <div class="col-sm-5 col-sm-offset-2">
         <h1 class="banner__text--primary">Rapid Router</h1>
@@ -21,6 +22,8 @@
         <div class="banner--picture"><div class="banner--picture__inside1"><div class="banner--picture__inside2 banner--picture--play"></div></div></div>
     </div>
 </div>
+{% endblock header %}
+
 <div class="sticky-subnav sub-nav sub-nav--teacher">
     {% block nav_ocargo_levels %}
         <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
