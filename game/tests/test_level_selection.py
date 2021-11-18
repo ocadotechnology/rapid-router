@@ -19,9 +19,10 @@ class LevelSelectionTestCase(TestCase):
         )
 
     def _assert_that_response_contains_episode_name(self, response, expected):
-        assert_that(response.context["episodeData"][0]["name"], equal_to(expected))
+        assert_that(response.context["blocklyEpisodes"][0]["name"], equal_to(expected))
 
     def _assert_that_response_contains_level_with_title(self, response, expected):
         assert_that(
-            response.context["episodeData"][0]["levels"][0]["title"], equal_to(expected)
+            response.context["blocklyEpisodes"][0]["levels"][0]["title"],
+            equal_to(expected),
         )

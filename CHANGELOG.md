@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.3.0 (2021-11-17)
+### Feature
+* RR level selection update ([#1252](https://github.com/ocadotechnology/rapid-router/issues/1252)) ([`1d31684`](https://github.com/ocadotechnology/rapid-router/commit/1d3168452819858e07629efe657a65d4c1420a73))
+
 ## v3.2.0 (2021-11-03)
 ### Feature
 * Remove ocado logo from the game ([#1242](https://github.com/ocadotechnology/rapid-router/issues/1242)) ([`a930fd0`](https://github.com/ocadotechnology/rapid-router/commit/a930fd04617cdf30af5249b1e5b29b7307df911d))

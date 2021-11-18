@@ -25,9 +25,10 @@ def max_score(level):
     return score
 
 
-def fetch_episode_data_from_database(early_access):
+def fetch_episode_data_from_database(early_access, start, end):
     episode_data = []
-    episode = Episode.objects.get(pk=1)
+    episode = Episode.objects.get(pk=start)
+    current = start
     while episode is not None:
         if episode.in_development and not early_access:
             break
@@ -61,16 +62,22 @@ def fetch_episode_data_from_database(early_access):
 
         episode_data.append(e)
         episode = episode.next_episode
+
+        current += 1
+        if current > end:
+            break
+
     return episode_data
 
 
-def fetch_episode_data(early_access):
-    key = "episode_data"
+def fetch_episode_data(early_access, start=1, end=12):
+    key = f"episode_data_{start}_{end}"
     if early_access:
-        key = "episode_data_early_access"
+        key = f"episode_data_early_access_{start}_{end}"
+
     data = cache.get(key)
     if data is None:
-        data = fetch_episode_data_from_database(early_access)
+        data = fetch_episode_data_from_database(early_access, start, end)
         cache.set(key, data)
     return [
         dict(
@@ -127,13 +134,19 @@ def levels(request):
     else:
         attempts = {}
 
-    def with_scores(level):
-        attach_attempts_to_level(attempts, level)
-
-    episode_data = fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request))
-    for episode in episode_data:
+    blockly_episodes = fetch_episode_data(
+        app_settings.EARLY_ACCESS_FUNCTION(request), 1, 9
+    )
+    for episode in blockly_episodes:
         for level in episode["levels"]:
-            with_scores(level)
+            attach_attempts_to_level(attempts, level)
+
+    python_episodes = fetch_episode_data(
+        app_settings.EARLY_ACCESS_FUNCTION(request), 10, 11
+    )
+    for episode in python_episodes:
+        for level in episode["levels"]:
+            attach_attempts_to_level(attempts, level)
 
     owned_level_data = []
     shared_level_data = []
@@ -165,7 +178,8 @@ def levels(request):
         request,
         "game/level_selection.html",
         context={
-            "episodeData": episode_data,
+            "blocklyEpisodes": blockly_episodes,
+            "pythonEpisodes": python_episodes,
             "owned_levels": owned_level_data,
             "shared_levels": shared_level_data,
             "scores": attempts,
