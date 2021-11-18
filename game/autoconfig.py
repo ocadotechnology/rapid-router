@@ -74,5 +74,4 @@ SETTINGS = {
     "CSP_OBJECT_SRC": (
         f"{domain()}/static/game/image/",
     ),
-    "CSP_REPORT_ONLY": False,
 }
