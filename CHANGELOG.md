@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.3.1 (2021-11-19)
+### Fix
+* Remove sticky subnav from RR ([#1254](https://github.com/ocadotechnology/rapid-router/issues/1254)) ([`37668df`](https://github.com/ocadotechnology/rapid-router/commit/37668dfdad10288ca888f2dcb0615e689164e6e5))
+
 ## v3.3.0 (2021-11-17)
 ### Feature
 * RR level selection update ([#1252](https://github.com/ocadotechnology/rapid-router/issues/1252)) ([`1d31684`](https://github.com/ocadotechnology/rapid-router/commit/1d3168452819858e07629efe657a65d4c1420a73))
