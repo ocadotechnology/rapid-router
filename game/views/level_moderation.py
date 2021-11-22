@@ -76,7 +76,7 @@ def level_moderation(request):
                     messages.noPermissionLevelModerationClass(),
                 )
 
-            students = Student.objects.filter(class_field=cl)
+            students = Student.objects.filter(class_field=cl, new_user__is_active=True)
             student_dict = {
                 student.id: student.user.user.first_name for student in students
             }
@@ -152,7 +152,7 @@ def get_students_for_level_moderation(request, class_id):
     if userprofile.teacher != class_.teacher:
         raise Http404
 
-    students = Student.objects.filter(class_field=class_)
+    students = Student.objects.filter(class_field=class_, new_user__is_active=True)
     student_dict = {student.id: student.user.user.first_name for student in students}
 
     return HttpResponse(json.dumps(student_dict), content_type="application/javascript")
