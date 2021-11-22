@@ -191,7 +191,9 @@ def authorised_student_access(class_, class_ids):
 def students_visible_to_student(student):
     class_ = student.class_field
     if is_viewable(class_):
-        return class_.students.all().select_related("class_field", "user__user")
+        return class_.students.filter(new_user__is_active=True).select_related(
+            "class_field", "user__user"
+        )
     else:
         return [student]
 
@@ -205,9 +207,9 @@ def students_visible_to_user(user, classes):
 
 
 def students_of_classes(classes):
-    return Student.objects.filter(class_field__in=classes).select_related(
-        "class_field", "user__user"
-    )
+    return Student.objects.filter(
+        class_field__in=classes, new_user__is_active=True
+    ).select_related("class_field", "user__user")
 
 
 def is_valid_request(user, class_ids):
