@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.4.0 (2021-11-23)
+### Feature
+* Implement CSP header ([#1239](https://github.com/ocadotechnology/rapid-router/issues/1239)) ([`231210a`](https://github.com/ocadotechnology/rapid-router/commit/231210aaae588ec4d78a64ffa03288dc222809f5))
+
 ## v3.3.2 (2021-11-22)
 ### Fix
 * Fix issue with deleted students appearing ([#1256](https://github.com/ocadotechnology/rapid-router/issues/1256)) ([`38fc3ca`](https://github.com/ocadotechnology/rapid-router/commit/38fc3ca914de80d2ab098deaac288906985f0335))
