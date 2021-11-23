@@ -1,7 +1,7 @@
 """Game autoconfig"""
 import os
 
-from common.app_settings import domain
+from .csp_config import CSP_CONFIG
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -54,24 +54,6 @@ SETTINGS = {
         }
     ],
     "USE_TZ": True,
-    # ----------------------------------------------------------------------------------
-    # CSP CONFIG
-    # ----------------------------------------------------------------------------------
-    "CSP_DEFAULT_SRC": ("'self'",),
-    "CSP_IMG_SRC": (
-        f"{domain()}/static/game/image/",
-        f"{domain()}/static/game/raphael_image/",
-        f"{domain()}/static/game/js/blockly/media/",
-        f"{domain()}/static/icons/",
-    ),
-    "CSP_SCRIPT_SRC": (
-        "'unsafe-eval'",
-    ),
-    "CSP_FRAME_SRC": (
-        f"{domain()}/static/game/image/",
-        "http://www.youtube-nocookie.com/",
-    ),
-    "CSP_OBJECT_SRC": (
-        f"{domain()}/static/game/image/",
-    ),
 }
+
+SETTINGS.update(CSP_CONFIG)

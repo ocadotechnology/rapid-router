@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django-autoconfig = { git = 'https://github.com/ocadotechnology/django-autoconfig.git', ref = 'master' }
 rapid-router = {editable = true, path = "."}
+cfl-common = "==5.21.0"
 
 [dev-packages]
 django-selenium-clean = "==0.3.2"
