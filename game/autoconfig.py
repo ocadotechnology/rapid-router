@@ -1,6 +1,8 @@
 """Game autoconfig"""
 import os
 
+from .csp_config import CSP_CONFIG
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEFAULT_SETTINGS = {"STATIC_URL": "/static/"}
@@ -53,3 +55,5 @@ SETTINGS = {
     ],
     "USE_TZ": True,
 }
+
+SETTINGS.update(CSP_CONFIG)
