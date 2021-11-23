@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.3.2 (2021-11-22)
+### Fix
+* Fix issue with deleted students appearing ([#1256](https://github.com/ocadotechnology/rapid-router/issues/1256)) ([`38fc3ca`](https://github.com/ocadotechnology/rapid-router/commit/38fc3ca914de80d2ab098deaac288906985f0335))
+
 ## v3.3.1 (2021-11-19)
 ### Fix
 * Remove sticky subnav from RR ([#1254](https://github.com/ocadotechnology/rapid-router/issues/1254)) ([`37668df`](https://github.com/ocadotechnology/rapid-router/commit/37668dfdad10288ca888f2dcb0615e689164e6e5))
