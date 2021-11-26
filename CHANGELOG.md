@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.4.1 (2021-11-26)
+### Fix
+* Add progress bar stylesheet to CSP config ([#1258](https://github.com/ocadotechnology/rapid-router/issues/1258)) ([`6b4dc41`](https://github.com/ocadotechnology/rapid-router/commit/6b4dc412541f8d003899b0aefc2942a78e335b3c))
+
 ## v3.4.0 (2021-11-23)
 ### Feature
 * Implement CSP header ([#1239](https://github.com/ocadotechnology/rapid-router/issues/1239)) ([`231210a`](https://github.com/ocadotechnology/rapid-router/commit/231210aaae588ec4d78a64ffa03288dc222809f5))
