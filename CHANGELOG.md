@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.4.2 (2021-11-29)
+### Fix
+* Rapid Rudolph the red-nosed reindeer had a very big Ocado order ([#1259](https://github.com/ocadotechnology/rapid-router/issues/1259)) ([`a5aa3dc`](https://github.com/ocadotechnology/rapid-router/commit/a5aa3dc51bb6aa62c47166e62f3d328e05231a2a))
+
 ## v3.4.1 (2021-11-26)
 ### Fix
 * Add progress bar stylesheet to CSP config ([#1258](https://github.com/ocadotechnology/rapid-router/issues/1258)) ([`6b4dc41`](https://github.com/ocadotechnology/rapid-router/commit/6b4dc412541f8d003899b0aefc2942a78e335b3c))
