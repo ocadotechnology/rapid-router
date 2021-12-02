@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.4.3 (2021-12-02)
+### Fix
+* Align header ([#1265](https://github.com/ocadotechnology/rapid-router/issues/1265)) ([`56caf78`](https://github.com/ocadotechnology/rapid-router/commit/56caf7835a5671801c1ad6e943e2b4069ecf42f4))
+
 ## v3.4.2 (2021-11-29)
 ### Fix
 * Rapid Rudolph the red-nosed reindeer had a very big Ocado order ([#1259](https://github.com/ocadotechnology/rapid-router/issues/1259)) ([`a5aa3dc`](https://github.com/ocadotechnology/rapid-router/commit/a5aa3dc51bb6aa62c47166e62f3d328e05231a2a))
