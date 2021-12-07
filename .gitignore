@@ -27,3 +27,5 @@ example_project/example_project/static/
 build/**
 coverage.xml
 pep8.txt
+
+pyproject.toml
