@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v3.4.4 (2021-12-08)
+### Fix
+* Dummy commit ([#1267](https://github.com/ocadotechnology/rapid-router/issues/1267)) ([`27df081`](https://github.com/ocadotechnology/rapid-router/commit/27df081dd727078c2634c9e40f10f28579d6a0ca))
+* Fixed the typo ([`5a30448`](https://github.com/ocadotechnology/rapid-router/commit/5a30448b5f1e1b6cd6c16d366be5ae81e3d3578e))
+* Fixed blocks overlapping and refined rest of namings ([`afb3192`](https://github.com/ocadotechnology/rapid-router/commit/afb3192810f67640f899bfe03079856e91c2820d))
+* Fixed the naming of function solutions ([`010a335`](https://github.com/ocadotechnology/rapid-router/commit/010a335714094eeaa6532add69edab7ac5982ed2))
+
 ## v3.4.3 (2021-12-02)
 ### Fix
 * Align header ([#1265](https://github.com/ocadotechnology/rapid-router/issues/1265)) ([`56caf78`](https://github.com/ocadotechnology/rapid-router/commit/56caf7835a5671801c1ad6e943e2b4069ecf42f4))
