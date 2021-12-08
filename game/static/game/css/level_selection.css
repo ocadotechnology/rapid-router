@@ -1,21 +1,41 @@
+#episodes .panel-intro {
+  margin: 30px 0 20px 0;
+}
+
 #episodes .panel-header {
   color: #fff;
   background: #6e7171;
   margin-bottom: 0;
   text-align: left;
   padding-left: 10px;
+  letter-spacing: 1.5px;
+  font-size: 17px;
 }
 
-#episodes .customLevelsEpisode {
-  background: #4a4a4a;
-  color: #fff;
+#episodes .bg-tertiary {
+  background: #00a3e0; /* color-tertiary-500 */
+}
+
+#episodes .bg-tertiary-dark {
+  background: #008cc1; /* color-tertiary-700 */
+}
+
+#episodes .bg-primary {
+  background: #e0004d; /* color-primary-500 */
+}
+
+#episodes .bg-secondary {
+  background: #f6be00; /* color-secondary-500 */
+  color: #000;
+  font-weight: 500;
 }
 
 #episodes .episode_range_text {
+  font-size: 15px;
   text-align: right;
   margin-right: 1.5em;
   float: right;
-  width: 98px;
+  width: 170px;
 }
 
 #episodes .panel-body {
@@ -60,14 +80,25 @@
 
 #episodes .episode-title {
   cursor: pointer;
+  margin-left: 15px;
 }
 
-#episodes .episode-title::before {
-  content: "\e252";
-  font-family: "Glyphicons Halflings";
-}
-
-#episodes .collapsed.episode-title::before {
+#episodes .collapsed.episode_range_text::after {
   content: "\e250";
   font-family: "Glyphicons Halflings";
+  margin-left: 10px;
+}
+
+#episodes .episode_range_text::after {
+  content: "\e252";
+  font-family: "Glyphicons Halflings";
+  margin-left: 10px;
+}
+
+.level_rr_logo {
+  text-align: center;
+}
+
+.level_rr_logo img {
+  width: 25%;
 }

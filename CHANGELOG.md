@@ -2,6 +2,34 @@
 
 <!--next-version-placeholder-->
 
+## v3.4.3 (2021-12-02)
+### Fix
+* Align header ([#1265](https://github.com/ocadotechnology/rapid-router/issues/1265)) ([`56caf78`](https://github.com/ocadotechnology/rapid-router/commit/56caf7835a5671801c1ad6e943e2b4069ecf42f4))
+
+## v3.4.2 (2021-11-29)
+### Fix
+* Rapid Rudolph the red-nosed reindeer had a very big Ocado order ([#1259](https://github.com/ocadotechnology/rapid-router/issues/1259)) ([`a5aa3dc`](https://github.com/ocadotechnology/rapid-router/commit/a5aa3dc51bb6aa62c47166e62f3d328e05231a2a))
+
+## v3.4.1 (2021-11-26)
+### Fix
+* Add progress bar stylesheet to CSP config ([#1258](https://github.com/ocadotechnology/rapid-router/issues/1258)) ([`6b4dc41`](https://github.com/ocadotechnology/rapid-router/commit/6b4dc412541f8d003899b0aefc2942a78e335b3c))
+
+## v3.4.0 (2021-11-23)
+### Feature
+* Implement CSP header ([#1239](https://github.com/ocadotechnology/rapid-router/issues/1239)) ([`231210a`](https://github.com/ocadotechnology/rapid-router/commit/231210aaae588ec4d78a64ffa03288dc222809f5))
+
+## v3.3.2 (2021-11-22)
+### Fix
+* Fix issue with deleted students appearing ([#1256](https://github.com/ocadotechnology/rapid-router/issues/1256)) ([`38fc3ca`](https://github.com/ocadotechnology/rapid-router/commit/38fc3ca914de80d2ab098deaac288906985f0335))
+
+## v3.3.1 (2021-11-19)
+### Fix
+* Remove sticky subnav from RR ([#1254](https://github.com/ocadotechnology/rapid-router/issues/1254)) ([`37668df`](https://github.com/ocadotechnology/rapid-router/commit/37668dfdad10288ca888f2dcb0615e689164e6e5))
+
+## v3.3.0 (2021-11-17)
+### Feature
+* RR level selection update ([#1252](https://github.com/ocadotechnology/rapid-router/issues/1252)) ([`1d31684`](https://github.com/ocadotechnology/rapid-router/commit/1d3168452819858e07629efe657a65d4c1420a73))
+
 ## v3.2.0 (2021-11-03)
 ### Feature
 * Remove ocado logo from the game ([#1242](https://github.com/ocadotechnology/rapid-router/issues/1242)) ([`a930fd0`](https://github.com/ocadotechnology/rapid-router/commit/a930fd04617cdf30af5249b1e5b29b7307df911d))
