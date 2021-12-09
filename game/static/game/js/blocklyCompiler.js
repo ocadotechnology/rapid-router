@@ -142,6 +142,24 @@ ocargo.BlocklyCompiler.prototype.createProcedureCall = function (block) {
   return procCall;
 };
 
+ocargo.BlocklyCompiler.prototype.createVariableNumeric = function (block) {
+  let variableName = block.inputList[0].fieldRow[1].text_;
+  if (variableName === "") {
+    throw gettext_noop(
+      "Perhaps try checking the names in your 'set variable' blocks?"
+    );
+  }
+
+  let variableValue = block.getFieldValue("VALUE");
+  if (variableValue === "") {
+    throw gettext_noop(
+      "Perhaps try checking the values in your 'set variable' blocks?"
+    );
+  }
+
+  return new SetVariableCommand(block, variableName, variableValue);
+};
+
 ocargo.BlocklyCompiler.prototype.createRepeat = function (block) {
   var bodyBlock = block.inputList[1].connection.targetBlock();
   if (bodyBlock === null) {
@@ -197,9 +215,8 @@ ocargo.BlocklyCompiler.prototype.getCondition = function (conditionBlock) {
 
 ocargo.BlocklyCompiler.prototype.getValue = function (block) {
   if (block.type === "variables_get") {
-    var variable_name = block.getFieldValue("NAME");
-    // TODO: store variables somewhere
-    return 0;
+    var variableName = block.inputList[0].fieldRow[0].text_;
+    return parseInt(this.program.variables[variableName]);
   } else if (block.type === "math_number") {
     return parseInt(block.getFieldValue("NUM"));
   }
@@ -273,8 +290,9 @@ ocargo.BlocklyCompiler.prototype.createSequence = function (block) {
       commands.push(this.createIf(block));
     } else if (block.type === "call_proc") {
       commands.push(this.createProcedureCall(block));
+    } else if (block.type === "variables_numeric_set") {
+      commands.push(this.createVariableNumeric(block));
     }
-    // TODO: prob more to add here
 
     block = block.nextConnection ? block.nextConnection.targetBlock() : null;
   }
@@ -355,19 +373,22 @@ ocargo.BlocklyCompiler.prototype.counterCondition = function (block, count) {
 };
 
 ocargo.BlocklyCompiler.prototype.logicCompareCondition = function (block) {
-  var operator = block.getFieldValue("OP");
-
-  // check left and right blocks and get values
+  // check left and right blocks
   var leftBlock = block.inputList[0].connection.targetBlock();
   var rightBlock = block.inputList[1].connection.targetBlock();
   if (leftBlock === null || rightBlock === null) {
     throw gettext_noop("Perhaps try looking at your 'compare' blocks?");
   }
-  var leftValue = this.getValue(leftBlock);
-  var rightValue = this.getValue(rightBlock);
+
+  var operator = block.getFieldValue("OP");
+  var self = this;
 
   return function (model) {
     queueHighlight(model, block);
+
+    // get values of left and right blocks - must be evaluated on each step because of variables
+    var leftValue = self.getValue(leftBlock);
+    var rightValue = self.getValue(rightBlock);
 
     if (operator == "EQ") {
       return leftValue === rightValue;

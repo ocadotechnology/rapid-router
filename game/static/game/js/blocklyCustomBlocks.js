@@ -427,6 +427,10 @@ function initCustomBlocksDescription() {
     },
   };
 
+  /*****************/
+  /*   Variables   */
+  /*****************/
+
   Blockly.Blocks["variables_get"] = {
     init: function () {
       this.appendDummyInput().appendField(
@@ -435,6 +439,21 @@ function initCustomBlocksDescription() {
       );
       this.setOutput(true, null);
       this.setColour(330);
+      this.setTooltip(gettext("TODO"));
+    },
+  };
+
+  Blockly.Blocks["variables_numeric_set"] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("set")
+        .appendField(new Blockly.FieldVariable("count"), "NAME")
+        .appendField("to")
+        .appendField(new Blockly.FieldNumber(0), "VALUE");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(330);
+      this.setTooltip(gettext("TODO"));
     },
   };
 
@@ -589,15 +608,21 @@ function initCustomBlocksPython() {
 
   Blockly.Python["variables_get"] = function (block) {
     Blockly.Python.init(Blockly.getMainWorkspace()); // needed to get the variable name correctly - see https://groups.google.com/g/blockly/c/qnbvKczWhYA
-    var variable_name = Blockly.Python.variableDB_.getName(
+    var variableName = Blockly.Python.variableDB_.getName(
       block.getFieldValue("NAME"),
       Blockly.Variables.NAME_TYPE
     );
-    // var variable = Blockly.Python.variableDB_.getName(
-    //   block.getFieldValue("count"),
-    //   Blockly.Variables.NAME_TYPE
-    // );
-    console.log(variable_name);
-    return [variable_name, Blockly.Python.ORDER_NONE];
+    return [variableName, Blockly.Python.ORDER_ATOMIC];
+  };
+
+  Blockly.Python["variables_numeric_set"] = function (block) {
+    Blockly.Python.init(Blockly.getMainWorkspace());
+    var variableName = Blockly.Python.variableDB_.getName(
+      block.getFieldValue("NAME"),
+      Blockly.Variables.NAME_TYPE
+    );
+    var numberValue = block.getFieldValue("VALUE");
+    var code = `${variableName} = ${numberValue}\n`;
+    return code;
   };
 }
