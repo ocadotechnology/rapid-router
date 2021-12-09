@@ -182,6 +182,18 @@ SetVariableCommand.prototype.execute = function (thread, model) {
   return model.wait(); // TODO - need to change this if we don't want it to use fuel
 };
 
+function IncrementVariableCommand(block, name, incrValue) {
+  this.block = block;
+  this.name = name;
+  this.incrValue = incrValue;
+}
+
+IncrementVariableCommand.prototype.execute = function (thread, model) {
+  queueHighlight(model, this.block);
+  thread.program.variables[this.name] += this.incrValue;
+  return model.wait(); // TODO - need to change this if we don't want it to use fuel
+};
+
 function If(conditionalCommandSets, elseBody, block) {
   this.conditionalCommandSets = conditionalCommandSets;
   this.elseBody = elseBody;

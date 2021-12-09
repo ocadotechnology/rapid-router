@@ -457,6 +457,20 @@ function initCustomBlocksDescription() {
     },
   };
 
+  Blockly.Blocks["variables_increment"] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("increment")
+        .appendField(new Blockly.FieldVariable("count"), "NAME")
+        .appendField("by")
+        .appendField(new Blockly.FieldNumber(0), "VALUE");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(330);
+      this.setTooltip(gettext("TODO"));
+    },
+  };
+
   // Set text colour to red
   var textBlock = Blockly.Blocks["text"];
   var originalTextInit = textBlock.init;
@@ -623,6 +637,17 @@ function initCustomBlocksPython() {
     );
     var numberValue = block.getFieldValue("VALUE");
     var code = `${variableName} = ${numberValue}\n`;
+    return code;
+  };
+
+  Blockly.Python["variables_increment"] = function (block) {
+    Blockly.Python.init(Blockly.getMainWorkspace());
+    var variableName = Blockly.Python.variableDB_.getName(
+      block.getFieldValue("NAME"),
+      Blockly.Variables.NAME_TYPE
+    );
+    var numberValue = block.getFieldValue("VALUE");
+    var code = `${variableName} += ${numberValue}\n`;
     return code;
   };
 }
