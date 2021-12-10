@@ -439,7 +439,7 @@ function initCustomBlocksDescription() {
       );
       this.setOutput(true, null);
       this.setColour(330);
-      this.setTooltip(gettext("TODO"));
+      this.setTooltip(gettext("A variable"));
     },
   };
 
@@ -453,7 +453,7 @@ function initCustomBlocksDescription() {
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(330);
-      this.setTooltip(gettext("TODO"));
+      this.setTooltip(gettext("Set a variable"));
     },
   };
 
@@ -467,7 +467,22 @@ function initCustomBlocksDescription() {
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(330);
-      this.setTooltip(gettext("TODO"));
+      this.setTooltip(gettext("Increment a variable"));
+    },
+  };
+
+  /***************/
+  /*   Numbers   */
+  /***************/
+
+  Blockly.Blocks["math_number"] = {
+    init: function () {
+      this.appendDummyInput()
+        .appendField("number")
+        .appendField(new Blockly.FieldNumber(0), "NUM");
+      this.setOutput(true, null);
+      this.setColour(230);
+      this.setTooltip(gettext("A number"));
     },
   };
 
