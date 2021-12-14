@@ -434,7 +434,7 @@ function initCustomBlocksDescription() {
   Blockly.Blocks["variables_get"] = {
     init: function () {
       this.appendDummyInput().appendField(
-        new Blockly.FieldVariable("count"),
+        new Blockly.FieldTextInput(""),
         "NAME"
       );
       this.setOutput(true, null);
@@ -448,7 +448,7 @@ function initCustomBlocksDescription() {
       this.appendValueInput("VALUE")
         .setCheck(null)
         .appendField("set")
-        .appendField(new Blockly.FieldVariable("count"), "VAR")
+        .appendField(new Blockly.FieldTextInput(""), "VAR")
         .appendField("to");
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
@@ -461,7 +461,7 @@ function initCustomBlocksDescription() {
     init: function () {
       this.appendDummyInput()
         .appendField("set")
-        .appendField(new Blockly.FieldVariable("count"), "NAME")
+        .appendField(new Blockly.FieldTextInput(""), "NAME")
         .appendField("to")
         .appendField(new Blockly.FieldNumber(0), "VALUE");
       this.setPreviousStatement(true, null);
@@ -475,7 +475,7 @@ function initCustomBlocksDescription() {
     init: function () {
       this.appendDummyInput()
         .appendField("increment")
-        .appendField(new Blockly.FieldVariable("count"), "NAME")
+        .appendField(new Blockly.FieldTextInput(""), "NAME")
         .appendField("by")
         .appendField(new Blockly.FieldNumber(0), "VALUE");
       this.setPreviousStatement(true, null);
@@ -650,20 +650,12 @@ function initCustomBlocksPython() {
   };
 
   Blockly.Python["variables_get"] = function (block) {
-    Blockly.Python.init(Blockly.getMainWorkspace()); // needed to get the variable name correctly - see https://groups.google.com/g/blockly/c/qnbvKczWhYA
-    var variableName = Blockly.Python.variableDB_.getName(
-      block.getFieldValue("NAME"),
-      Blockly.Variables.NAME_TYPE
-    );
+    var variableName = block.getFieldValue("NAME");
     return [variableName, Blockly.Python.ORDER_ATOMIC];
   };
 
   Blockly.Python["variables_set"] = function (block) {
-    Blockly.Python.init(Blockly.getMainWorkspace());
-    var variableName = Blockly.Python.variableDB_.getName(
-      block.getFieldValue("VAR"),
-      Blockly.Variables.NAME_TYPE
-    );
+    var variableName = block.getFieldValue("VAR");
     var value = Blockly.Python.valueToCode(
       block,
       "VALUE",
@@ -674,22 +666,14 @@ function initCustomBlocksPython() {
   };
 
   Blockly.Python["variables_numeric_set"] = function (block) {
-    Blockly.Python.init(Blockly.getMainWorkspace());
-    var variableName = Blockly.Python.variableDB_.getName(
-      block.getFieldValue("NAME"),
-      Blockly.Variables.NAME_TYPE
-    );
+    var variableName = block.getFieldValue("NAME");
     var numberValue = block.getFieldValue("VALUE");
     var code = `${variableName} = ${numberValue}\n`;
     return code;
   };
 
   Blockly.Python["variables_increment"] = function (block) {
-    Blockly.Python.init(Blockly.getMainWorkspace());
-    var variableName = Blockly.Python.variableDB_.getName(
-      block.getFieldValue("NAME"),
-      Blockly.Variables.NAME_TYPE
-    );
+    var variableName = block.getFieldValue("NAME");
     var numberValue = block.getFieldValue("VALUE");
     var code = `${variableName} = ${variableName} + ${numberValue}\n`;
     return code;
