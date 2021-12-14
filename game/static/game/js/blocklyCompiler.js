@@ -142,33 +142,52 @@ ocargo.BlocklyCompiler.prototype.createProcedureCall = function (block) {
   return procCall;
 };
 
-ocargo.BlocklyCompiler.prototype.createVariableNumeric = function (block) {
-  let variableName = block.inputList[0].fieldRow[1].text_;
+ocargo.BlocklyCompiler.prototype.createVariable = function (block) {
+  var variableName = block.inputList[0].fieldRow[1].text_;
   if (variableName === "") {
     throw gettext_noop(
       "Perhaps try checking the names in your 'set variable' blocks?"
     );
   }
 
-  let variableValue = parseInt(block.getFieldValue("VALUE"));
-  if (variableValue === "") {
+  var self = this;
+  var variableValueFunction = function () {
+    return self.getValue(block.inputList[0].connection.targetBlock());
+  };
+
+  return new SetVariableCommand(block, variableName, variableValueFunction);
+};
+
+ocargo.BlocklyCompiler.prototype.createVariableNumeric = function (block) {
+  var variableName = block.inputList[0].fieldRow[1].text_;
+  if (variableName === "") {
     throw gettext_noop(
-      "Perhaps try checking the values in your 'set variable' blocks?"
+      "Perhaps try checking the names in your 'set variable' blocks?"
     );
   }
 
-  return new SetVariableCommand(block, variableName, variableValue);
+  var variableValueFunction = function () {
+    var variableValue = parseInt(block.getFieldValue("VALUE"));
+    if (variableValue === "") {
+      throw gettext_noop(
+        "Perhaps try checking the values in your 'set variable' blocks?"
+      );
+    }
+    return variableValue;
+  };
+
+  return new SetVariableCommand(block, variableName, variableValueFunction);
 };
 
 ocargo.BlocklyCompiler.prototype.incrementVariable = function (block) {
-  let variableName = block.inputList[0].fieldRow[1].text_;
+  var variableName = block.inputList[0].fieldRow[1].text_;
   if (variableName === "") {
     throw gettext_noop(
       "Perhaps try checking the names in your 'increment variable' blocks?"
     );
   }
 
-  let variableIncrValue = parseInt(block.getFieldValue("VALUE"));
+  var variableIncrValue = parseInt(block.getFieldValue("VALUE"));
   if (variableIncrValue === "") {
     throw gettext_noop(
       "Perhaps try checking the values in your 'increment variable' blocks?"
@@ -237,6 +256,30 @@ ocargo.BlocklyCompiler.prototype.getValue = function (block) {
     return parseInt(this.program.variables[variableName]);
   } else if (block.type === "math_number") {
     return parseInt(block.getFieldValue("NUM"));
+  } else if (block.type === "math_arithmetic") {
+    var leftBlock = block.inputList[0].connection.targetBlock();
+    var rightBlock = block.inputList[1].connection.targetBlock();
+    if (leftBlock === null || rightBlock === null) {
+      throw gettext_noop(
+        "Perhaps try looking at your 'math arithmetic' blocks?"
+      );
+    }
+
+    var operator = block.getFieldValue("OP");
+    var leftValue = this.getValue(leftBlock);
+    var rightValue = this.getValue(rightBlock);
+
+    if (operator == "ADD") {
+      return leftValue + rightValue;
+    } else if (operator == "MINUS") {
+      return leftValue - rightValue;
+    } else if (operator == "MULTIPLY") {
+      return leftValue * rightValue;
+    } else if (operator == "DIVIDE") {
+      return leftValue / rightValue;
+    } else if (operator == "POWER") {
+      return leftValue ** rightValue;
+    }
   }
 };
 
@@ -308,6 +351,8 @@ ocargo.BlocklyCompiler.prototype.createSequence = function (block) {
       commands.push(this.createIf(block));
     } else if (block.type === "call_proc") {
       commands.push(this.createProcedureCall(block));
+    } else if (block.type === "variables_set") {
+      commands.push(this.createVariable(block));
     } else if (block.type === "variables_numeric_set") {
       commands.push(this.createVariableNumeric(block));
     } else if (block.type === "variables_increment") {

@@ -443,6 +443,20 @@ function initCustomBlocksDescription() {
     },
   };
 
+  Blockly.Blocks["variables_set"] = {
+    init: function () {
+      this.appendValueInput("VALUE")
+        .setCheck(null)
+        .appendField("set")
+        .appendField(new Blockly.FieldVariable("count"), "VAR")
+        .appendField("to");
+      this.setPreviousStatement(true, null);
+      this.setNextStatement(true, null);
+      this.setColour(330);
+      this.setTooltip(gettext("Set a variable"));
+    },
+  };
+
   Blockly.Blocks["variables_numeric_set"] = {
     init: function () {
       this.appendDummyInput()
@@ -453,7 +467,7 @@ function initCustomBlocksDescription() {
       this.setPreviousStatement(true, null);
       this.setNextStatement(true, null);
       this.setColour(330);
-      this.setTooltip(gettext("Set a variable"));
+      this.setTooltip(gettext("Set a variable to a number"));
     },
   };
 
@@ -644,6 +658,21 @@ function initCustomBlocksPython() {
     return [variableName, Blockly.Python.ORDER_ATOMIC];
   };
 
+  Blockly.Python["variables_set"] = function (block) {
+    Blockly.Python.init(Blockly.getMainWorkspace());
+    var variableName = Blockly.Python.variableDB_.getName(
+      block.getFieldValue("VAR"),
+      Blockly.Variables.NAME_TYPE
+    );
+    var value = Blockly.Python.valueToCode(
+      block,
+      "VALUE",
+      Blockly.Python.ORDER_NONE
+    );
+    var code = `${variableName} = ${value}\n`;
+    return code;
+  };
+
   Blockly.Python["variables_numeric_set"] = function (block) {
     Blockly.Python.init(Blockly.getMainWorkspace());
     var variableName = Blockly.Python.variableDB_.getName(
@@ -662,7 +691,7 @@ function initCustomBlocksPython() {
       Blockly.Variables.NAME_TYPE
     );
     var numberValue = block.getFieldValue("VALUE");
-    var code = `${variableName} += ${numberValue}\n`;
+    var code = `${variableName} = ${variableName} + ${numberValue}\n`;
     return code;
   };
 }

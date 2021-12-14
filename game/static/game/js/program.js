@@ -170,15 +170,15 @@ PuffUpCommand.prototype.execute = function (thread, model) {
   return model.puff_up();
 };
 
-function SetVariableCommand(block, name, value) {
+function SetVariableCommand(block, name, valueFunction) {
   this.block = block;
   this.name = name;
-  this.value = value;
+  this.valueFunction = valueFunction;
 }
 
 SetVariableCommand.prototype.execute = function (thread, model) {
   queueHighlight(model, this.block);
-  thread.program.variables[this.name] = this.value;
+  thread.program.variables[this.name] = this.valueFunction();
   return model.wait(); // TODO - need to change this if we don't want it to use fuel
 };
 
