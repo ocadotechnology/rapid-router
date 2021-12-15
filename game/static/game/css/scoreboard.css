@@ -10,6 +10,10 @@
 	padding: 5px;
 }
 
+.dropdown > .button--secondary {
+	margin: 0;
+}
+
 .input--icon > input[type="text"],
 .input--icon > input[type="text"]:hover,
 .input--icon > input[type="text"]:focus {
@@ -27,6 +31,7 @@ input[type="checkbox"] {
 
 .dropdown-menu {
 	overflow-x: hidden;
+	font-style: normal;
 }
 
 .dropdown-menu > .row {
