@@ -1,8 +1,6 @@
 {% extends 'game/base.html' %}
 
 {% load static %}
-{% load i18n %}
-{% load l10n %}
 {% load game.utils %}
 
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
@@ -15,28 +13,9 @@
     <script src="{% static 'game/js/widget-scroller.js' %}"></script>
     <script src="{% static 'game/js/pqselect.min.js' %}"></script>
     <script src="{% static 'game/js/jquery.outerhtml.js' %}"></script>
-    <script src="{% static 'game/js/jquery.ui.multiprogressbar.js' %}"></script>
     <script src="{% static 'game/js/scoreboard.js' %}"></script>
     <script>
         $(document).ready(function() {
-            // Initialise progress values for each progress bar
-            {# Only initialise progress bars if the column exists #}
-            {% if 'Progress' in headers %}
-                {% for student in student_data %}
-                    let id = {{ student.id }};
-                    {% localize off %}
-                        let started = {{ student.progress.0 }};
-                        let attempted = {{ student.progress.1 }};
-                        let finished = {{ student.progress.2 }};
-                    {% endlocalize %}
-                    $('#progressbar' + id).multiprogressbar({
-                        parts: [{value: started, barClass: 'started'},
-                            {value: attempted, barClass: 'attempted'},
-                            {value: finished, barClass: 'finished'}],
-                    });
-                {% endfor %}
-            {% endif %}
-
             let scoreboardPresent = document.getElementById("scoreboardTable") !== null;
 
             if (scoreboardPresent) {
@@ -47,19 +26,22 @@
                     paging: true,
                     deferRender: true,
                     language: {
-                        emptyTable: '{% trans 'No data available in table' %}',
-                        info: '{% blocktrans with start='_START_' end='_END_' total='_TOTAL_' %}Showing {{ start }} to {{ end }} of {{ total }} entries{% endblocktrans %}',
-                        infoEmpty: '{% blocktrans with start='0' end='0' total='0' %}Showing {{ start }} to {{ end }} of {{ total }} entries{% endblocktrans %}',
-                        infoFiltered: '{% blocktrans with max='_MAX_' %}(filtered from {{ max }} total entries){% endblocktrans %}',
-                        loadingRecords: '{% trans 'Loading...' %}',
-                        processing: '{% trans 'Processing...' %}',
-                        search: '{% trans 'Search:' %}',
-                        zeroRecords: '{% trans 'No matching records found' %}'
+                        emptyTable: 'No data available in table',
+                        loadingRecords: 'Loading...',
+                        processing: 'Processing...',
+                        search: 'Search:',
+                        zeroRecords: 'No matching records found',
                     },
-                    columnDefs: [{
-                        orderable: false,
-                        targets: "no-sort"
-                    }],
+                    columnDefs: [
+                        {
+                            width: 140,
+                            targets: 3,
+                        },
+                        {
+                            orderable: false,
+                            targets: "no-sort",
+                        },
+                    ],
                 });
 
                 new $.fn.dataTable.FixedColumns(table, {
@@ -92,19 +74,18 @@
     <link href="{% static 'game/css/scoreboard.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/pqselect.min.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/pqselect.multiselect.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'game/css/jquery.ui.multiprogressbar.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/jquery.dataTables.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/dataTables.fixedColumns.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/dataTables.jqueryui.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block nav_ocargo_scoreboard %}
-<a class="button button--secondary button--secondary" style="background-color: white; color: #fa1664;" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
+<a class="button button--secondary button--secondary" style="background-color: white; color: #fa1664;" href="{% url 'scoreboard' %}">Scoreboard</a>
 {% endblock nav_ocargo_scoreboard %}
 
 {% block content %}
 <div class="container">
-    <h4 class="text-center">{% trans "Scoreboard" %}</h4>
+    <h4 class="text-center">Scoreboard</h4>
     <p>The table below shows progress your students are making. The traffic light system is designed to highlight peaks
         and troughs in level performance.</p>
 
@@ -131,7 +112,7 @@
                         {% endfor %}
                         <div class="row">
                             <div class="col-sm-6 text-right">
-                                <button class="button button--secondary button--secondary--dark">Clear</button>
+                                <a class="button button--secondary button--secondary--dark" id="clear-classes">Clear</a>
                             </div>
                             <div class="col-sm-6 text-left">
                                 <button class="button button--primary" type="submit" name="view">Save</button>
@@ -155,7 +136,7 @@
                         {% endfor %}
                         <div class="row">
                             <div class="col-sm-offset-4 col-sm-4">
-                                <button class="button button--secondary button--secondary--dark">Clear</button>
+                                <a class="button button--secondary button--secondary--dark" id="clear-levels">Clear</a>
                             </div>
                             <div class="col-sm-4">
                                 <button class="button button--primary" type="submit" name="view">Save</button>
@@ -176,12 +157,12 @@
         <thead>
             <tr>
                 {% for header in headers %}
-                    <th>{{ header }}</th>
+                    <th style="width: 140px;">{{ header }}</th>
                 {% endfor %}
                 {% for level_header in level_headers %}
                     <th class="no-sort text-center">{{ level_header }}</th>
                 {% endfor %}
-                <th>{{ total_points_header }}</th>
+                <th style="width: 160px;">{{ total_points_header }}</th>
             </tr>
         </thead>
         {% for student in student_data %}
@@ -191,7 +172,6 @@
                 <td>{{ student.completed }}</td>
                 <td>{{ student.total_time }}</td>
                 {% for levelScore in student.scores %}
-                    {# Levels that students have not started will be marked with grey colour #}
                     {% if levelScore == 20 %}
                         <td class="text-center scoreboard--completed"><span class="iconify" data-icon="mdi:star"></span></td>
                     {% elif levelScore < 10 %}
@@ -210,6 +190,13 @@
             </tr>
         {% endfor %}
         </table>
+        <form method="post" action="" class="p-0">
+            {% csrf_token %}
+            <button class="button button--primary button--icon m-0" type="submit" name="export">
+                Export results
+                <span class="iconify" data-icon="mdi:tray-arrow-down"></span>
+            </button>
+        </form>
     {% endif %}
     </div>
 </div>

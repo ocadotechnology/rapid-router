@@ -10,7 +10,9 @@
 	padding: 5px;
 }
 
-.dropdown > .button--secondary {
+.dropdown > .button--secondary,
+.row > div > .button--secondary,
+.row > div > .button--primary {
 	margin: 0;
 }
 
@@ -109,126 +111,93 @@ table tbody td {
 	background: #b1bA1d !important;
 }
 
-.ui-progressbar {
-	height: 100%;
-}
+/*#scoreboardForm {*/
+/*	text-align: center;*/
+/*}*/
 
-/* Colour for the portion of the bar which represents the percentage of levels players finished */
-.ui-progressbar .finished {
-	background: #74B06B;
-}
-/* Colour for the portion of the bar which represents the percentage of levels players finished but under a certain
- * threshold
- */
-.ui-progressbar .attempted {
-	background: #E1B377;
-}
-/* Colour for the portion of the bar which represents the percentage of levels players started but haven't submitted
- * attempts yet
- */
-.ui-progressbar .started {
-	background: #C24563;
-}
+/*#scoreboardForm .select-list {*/
+/*	text-align: left;*/
+/*	overflow: scroll;*/
+/*	height: 300px;*/
+/*}*/
 
-#scoreboardTable tr td.untouched {
-	background: #d9d9d9;
-}
-/* Used for making the inside of the progress bar to fill up the entire outer container
- * margin and border are set in jquery-ui.structure.css and jquery-ui.css
- * we are overwriting the settings for the following two properties
- */
-.ui-progressbar .ui-progressbar-value{
-	margin: 0px;
-	border: 0px;
-}
+/*#scoreboardForm .select-list label {*/
+/*	float: none;*/
+/*}*/
 
-#scoreboardForm {
-	text-align: center;
-}
+/*#scoreboardForm .select-list ul {*/
+/*	list-style-type: none;*/
+/*}*/
 
-#scoreboardForm .select-list {
-	text-align: left;
-	overflow: scroll;
-	height: 300px;
-}
+/*#scoreboardForm .select-list li {*/
+/*	display: flex;*/
+/*}*/
 
-#scoreboardForm .select-list label {
-	float: none;
-}
+/*#scoreboardForm .select-list li label {*/
+/*	margin: 0.1rem 0;*/
+/*	vertical-align: middle;*/
+/*	width: 100%;*/
+/*	text-align: left;*/
+/*	font-weight: normal;*/
+/*	text-decoration: none;*/
+/*	font-style: normal;*/
+/*	color: #000;*/
+/*}*/
 
-#scoreboardForm .select-list ul {
-	list-style-type: none;
-}
+/*#scoreboardForm .all-class {*/
+/*	background-color: #ccc;*/
+/*	padding: 1rem;*/
+/*	margin: 1rem;*/
+/*}*/
 
-#scoreboardForm .select-list li {
-	display: flex;
-}
+/*#scoreboardForm .all-class.checked {*/
+/*	background-color: #6c696c;*/
+/*	color: #fff;*/
+/*}*/
 
-#scoreboardForm .select-list li label {
-	margin: 0.1rem 0;
-	vertical-align: middle;
-	width: 100%;
-	text-align: left;
-	font-weight: normal;
-	text-decoration: none;
-	font-style: normal;
-	color: #000;
-}
+/*#scoreboardForm .class {*/
+/*	background-color: #fff;*/
+/*	padding: 1rem;*/
+/*	margin: 0 1rem;*/
+/*	border-bottom: 1px solid #aaa;*/
+/*}*/
 
-#scoreboardForm .all-class {
-	background-color: #ccc;
-	padding: 1rem;
-	margin: 1rem;
-}
+/*#scoreboardForm .class.checked {*/
+/*	background-color: #ccc;*/
+/*}*/
 
-#scoreboardForm .all-class.checked {
-	background-color: #6c696c;
-	color: #fff;
-}
+/*#scoreboardForm .all-level {*/
+/*	background-color: #ccc;*/
+/*	padding: 1rem;*/
+/*	margin: 1rem;*/
+/*}*/
 
-#scoreboardForm .class {
-	background-color: #fff;
-	padding: 1rem;
-	margin: 0 1rem;
-	border-bottom: 1px solid #aaa;
-}
+/*#scoreboardForm .all-level.checked {*/
+/*	background-color: #6c696c;*/
+/*	color: #fff;*/
+/*}*/
 
-#scoreboardForm .class.checked {
-	background-color: #ccc;
-}
+/*#scoreboardForm .episode {*/
+/*	background-color: #d2e6ed;*/
+/*	padding: 1rem;*/
+/*	margin: 0.5rem 1rem;*/
+/*}*/
 
-#scoreboardForm .all-level {
-	background-color: #ccc;
-	padding: 1rem;
-	margin: 1rem;
-}
+/*#scoreboardForm .episode.checked {*/
+/*	background-color: #0c52a3;*/
+/*}*/
 
-#scoreboardForm .all-level.checked {
-	background-color: #6c696c;
-	color: #fff;
-}
+/*#scoreboardForm .level {*/
+/*	background-color: #fff;*/
+/*	padding: 1rem;*/
+/*	margin: 0 1rem 0 5rem;*/
+/*	border-bottom: 1px solid #aaa;*/
+/*}*/
 
-#scoreboardForm .episode {
-	background-color: #d2e6ed;
-	padding: 1rem;
-	margin: 0.5rem 1rem;
-}
+/*#scoreboardForm .level.checked {*/
+/*	background-color: #ccc;*/
+/*}*/
 
-#scoreboardForm .episode.checked {
-	background-color: #0c52a3;
-}
-
-#scoreboardForm .level {
-	background-color: #fff;
-	padding: 1rem;
-	margin: 0 1rem 0 5rem;
-	border-bottom: 1px solid #aaa;
-}
-
-#scoreboardForm .level.checked {
-	background-color: #ccc;
-}
-
-#scoreboardForm .expander {
-	color: #000;
-}
+/*#scoreboardForm .expander {*/
+/*	color: #000;*/
+/*}*/

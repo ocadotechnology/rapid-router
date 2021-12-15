@@ -4,13 +4,11 @@ from __future__ import division
 from builtins import map
 from builtins import next
 from builtins import object
-from builtins import str
 from datetime import timedelta
 
 from common.models import Class, Teacher, Student
 from django.http import Http404
 from django.shortcuts import render
-from django.utils.translation import ugettext_lazy
 
 import game.messages as messages
 import game.permissions as permissions
@@ -20,17 +18,13 @@ from game.views.scoreboard_csv import scoreboard_csv
 from . import level_selection
 from .helper import renderError
 
-Headers = [
-    ugettext_lazy("Class"),
-    ugettext_lazy("Student"),
-    ugettext_lazy("Completed"),
-    ugettext_lazy("Total time"),
-]
-TotalPointsHeader = ugettext_lazy("Total points")
+Headers = ["Class", "Student", "Completed", "Total time"]
+TotalPointsHeader = "Total points"
 
 
 def scoreboard(request):
-    """Renders a page with students' scores. A teacher can see the visible classes in
+    """
+    Renders a page with students' scores. A teacher can see the visible classes in
     their school. Student's view is restricted to their class if their teacher enabled
     the scoreboard for said class.
     """
@@ -42,6 +36,7 @@ def scoreboard(request):
 
     class_ids = set(map(int, request.POST.getlist("classes")))
     episode_ids = set(map(int, request.POST.getlist("episodes")))
+    levels_sorted = []
 
     if user.is_independent_student():
         return render_no_permission_error(request)
@@ -55,7 +50,13 @@ def scoreboard(request):
     form = ScoreboardForm(request.POST or None, classes=users_classes)
 
     if request.method == "POST" and form.is_valid():
-        student_data, headers, level_headers = scoreboard_data(user, episode_ids, class_ids)
+        for episode_id in episode_ids:
+            episode = Episode.objects.get(id=episode_id)
+            levels_sorted += episode.levels
+
+        student_data, headers, level_headers = scoreboard_data(
+            user, levels_sorted, class_ids
+        )
     else:
         student_data = []
         headers = []
@@ -64,7 +65,14 @@ def scoreboard(request):
     csv_export = "export" in request.POST
 
     if csv_export:
-        return scoreboard_csv(student_data, sorted_levels_by(level_ids))
+        for episode_id in episode_ids:
+            episode = Episode.objects.get(id=episode_id)
+            levels_sorted += episode.levels
+
+        student_data, headers, level_headers = scoreboard_data(
+            user, levels_sorted, class_ids
+        )
+        return scoreboard_csv(student_data, levels_sorted)
     else:
         return scoreboard_view(request, form, student_data, headers, level_headers)
 
@@ -98,17 +106,6 @@ def classes_for(user):
 
 def scoreboard_view(request, form, student_data, headers, level_headers):
     database_episodes = level_selection.fetch_episode_data(False)
-    # context_episodes = {}
-    # for episode in database_episodes:
-    #     context_episodes[episode["first_level"]] = {
-    #         "name": episode["name"]
-    #         + " -- Levels "
-    #         + str(episode["first_level"])
-    #         + " - "
-    #         + str(episode["last_level"]),
-    #         "first_level": str(episode["first_level"]),
-    #         "last_level": str(episode["last_level"]),
-    #     }
 
     return render(
         request,
@@ -133,15 +130,9 @@ def scoreboard_data(user, episode_ids, class_ids):
     return data_and_headers_for(students, episode_ids)
 
 
-def data_and_headers_for(students, episode_ids):
-    levels_sorted = []
-
-    for episode_id in episode_ids:
-        episode = Episode.objects.get(id=episode_id)
-        levels_sorted += episode.levels
-
+def data_and_headers_for(students, levels_sorted):
     level_headers = list(map(to_name, levels_sorted))
-    student_data = multiple_students_multiple_levels(students, levels_sorted)
+    student_data = students_level_data(students, levels_sorted)
 
     return student_data, Headers, level_headers
 
@@ -209,30 +200,10 @@ def is_valid_request(user, class_ids):
         return authorised_student_access(user.student.class_field.id, class_ids)
     else:
         return False
-    return True
-
-
-def one_row(student, level):
-    best_attempt = Attempt.objects.filter(
-        level=level, student=student, is_best_attempt=True
-    ).first()
-    if best_attempt:
-        total_score = best_attempt.score if best_attempt.score is not None else ""
-        return StudentRow(
-            student=student,
-            total_score=total_score,
-            start_time=best_attempt.start_time,
-            finish_time=best_attempt.finish_time,
-            total_time=chop_miliseconds(
-                best_attempt.finish_time - best_attempt.start_time
-            ),
-        )
-    else:
-        return StudentRow(student=student)
 
 
 # Return rows of student object with values and scores of each selected level
-def multiple_students_multiple_levels(students, levels_sorted):
+def students_level_data(students, levels_sorted):
     result = [student_row(levels_sorted, student) for student in students]
     return result
 
@@ -292,7 +263,7 @@ def student_row(levels_sorted, student):
         progress=progress,
         scores=scores,
         completed=num_finished,
-        average=total_score/num_finished if num_finished > 0 else 0,
+        average=total_score / num_finished if num_finished > 0 else 0,
     )
     return row
 
