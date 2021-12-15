@@ -86,6 +86,20 @@ table tbody td {
 	font-size: 15px
 }
 
+.scoreboard--started {
+	background: #e0004d !important;
+	color: white;
+}
+
+.scoreboard--completed {
+	color: #eab502;
+	font-size: 24px;
+}
+
+.scoreboard--top-performer {
+	background: #b1bA1d !important;
+}
+
 .ui-progressbar {
 	height: 100%;
 }

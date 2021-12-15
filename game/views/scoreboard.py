@@ -55,17 +55,18 @@ def scoreboard(request):
     form = ScoreboardForm(request.POST or None, classes=users_classes)
 
     if request.method == "POST" and form.is_valid():
-        student_data, headers = scoreboard_data(user, episode_ids, class_ids)
+        student_data, headers, level_headers = scoreboard_data(user, episode_ids, class_ids)
     else:
         student_data = []
         headers = []
+        level_headers = []
 
     csv_export = "export" in request.POST
 
     if csv_export:
         return scoreboard_csv(student_data, sorted_levels_by(level_ids))
     else:
-        return scoreboard_view(request, form, student_data, headers)
+        return scoreboard_view(request, form, student_data, headers, level_headers)
 
 
 def render_no_permission_error(request):
@@ -95,7 +96,7 @@ def classes_for(user):
         return Class.objects.filter(id=class_.id)
 
 
-def scoreboard_view(request, form, student_data, headers):
+def scoreboard_view(request, form, student_data, headers, level_headers):
     database_episodes = level_selection.fetch_episode_data(False)
     # context_episodes = {}
     # for episode in database_episodes:
@@ -116,6 +117,7 @@ def scoreboard_view(request, form, student_data, headers):
             "form": form,
             "student_data": student_data,
             "headers": headers,
+            "level_headers": level_headers,
             "total_points_header": TotalPointsHeader,
             "episodes": database_episodes,
         },
@@ -138,12 +140,10 @@ def data_and_headers_for(students, episode_ids):
         episode = Episode.objects.get(id=episode_id)
         levels_sorted += episode.levels
 
-    level_names = list(map(to_name, levels_sorted))
-
-    headers = Headers + level_names
+    level_headers = list(map(to_name, levels_sorted))
     student_data = multiple_students_multiple_levels(students, levels_sorted)
 
-    return student_data, headers
+    return student_data, Headers, level_headers
 
 
 def to_name(level):
@@ -292,6 +292,7 @@ def student_row(levels_sorted, student):
         progress=progress,
         scores=scores,
         completed=num_finished,
+        average=total_score/num_finished if num_finished > 0 else 0,
     )
     return row
 
@@ -323,6 +324,7 @@ class StudentRow(object):
         self.progress = kwargs.get("progress", (0.0, 0.0, 0.0))
         self.scores = kwargs.get("scores", [])
         self.completed = kwargs.get("completed", 0)
+        self.average = kwargs.get("average", 0.0)
 
 
 class User(object):

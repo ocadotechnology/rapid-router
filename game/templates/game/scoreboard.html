@@ -56,6 +56,10 @@
                         search: '{% trans 'Search:' %}',
                         zeroRecords: '{% trans 'No matching records found' %}'
                     },
+                    columnDefs: [{
+                        orderable: false,
+                        targets: "no-sort"
+                    }],
                 });
 
                 new $.fn.dataTable.FixedColumns(table, {
@@ -172,22 +176,37 @@
         <thead>
             <tr>
                 {% for header in headers %}
-                    <th {% if header == progress_header %} title="{% trans 'Colours explained:&#013;Red: Number of levels which student has started but not submitted a working solution &#013;Orange: Number of levels which student has scored below 50% &#013;Green: Number of levels which student has scored above 50%' %}"{% endif %}> {{header}} </th>
+                    <th>{{ header }}</th>
+                {% endfor %}
+                {% for level_header in level_headers %}
+                    <th class="no-sort text-center">{{ level_header }}</th>
                 {% endfor %}
                 <th>{{ total_points_header }}</th>
             </tr>
         </thead>
         {% for student in student_data %}
             <tr>
-                <td> {{student.class_field}} </td>
-                <td> {{student.name}} </td>
-                <td> {{student.completed }}</td>
-                <td> {{student.total_time}}
+                <td>{{ student.class_field }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.completed }}</td>
+                <td>{{ student.total_time }}</td>
                 {% for levelScore in student.scores %}
                     {# Levels that students have not started will be marked with grey colour #}
-                    <td > {{levelScore}} </td>
+                    {% if levelScore == 20 %}
+                        <td class="text-center scoreboard--completed"><span class="iconify" data-icon="mdi:star"></span></td>
+                    {% elif levelScore < 10 %}
+                        <td class="text-center scoreboard--started">{{ levelScore }}</td>
+                    {% else %}
+                        <td class="text-center">{{ levelScore }}</td>
+                    {% endif %}
                 {% endfor %}
-                <td> {{student.total_score}} </td>
+                {% if student.average > 15 %}
+                    <td class="scoreboard--top-performer">{{ student.total_score }}</td>
+                {% elif student.average < 10 %}
+                    <td class="scoreboard--started">{{ student.total_score }}</td>
+                {% else %}
+                    <td>{{ student.total_score }}</td>
+                {% endif %}
             </tr>
         {% endfor %}
         </table>
