@@ -5,7 +5,7 @@ from builtins import str
 
 from django import forms
 
-from .models import Level
+from .models import Episode
 
 
 class ShareLevelPerson(forms.Form):
@@ -47,18 +47,18 @@ class ScoreboardForm(forms.Form):
         # Each tuple in choices has two elements, id and name of each level
         # First element is the actual value set on the model
         # Second element is the string displayed on the drop down menu
-        choice_list = (
-            (level.id, str(level)) for level in Level.objects.sorted_levels()
+        episodes_choices = (
+            (episode.id, episode.name) for episode in Episode.objects.all()
         )
-        self.fields["levels"] = forms.MultipleChoiceField(
-            choices=itertools.chain(choice_list), widget=forms.CheckboxSelectMultiple()
+        self.fields["episodes"] = forms.MultipleChoiceField(
+            choices=itertools.chain(episodes_choices), widget=forms.CheckboxSelectMultiple()
         )
 
         def validate(self):
             cleaned_data = super(ScoreboardForm, self).clean()
             classes = cleaned_data.get("classes")
-            levels = cleaned_data.get("levels")
-            return classes and levels
+            episodes = cleaned_data.get("episodes")
+            return classes and episodes
 
 
 class LevelModerationForm(forms.Form):

@@ -10,9 +10,65 @@
 	padding: 5px;
 }
 
-.tableWrapper {
-	overflow: auto;
+.input--icon > input[type="text"],
+.input--icon > input[type="text"]:hover,
+.input--icon > input[type="text"]:focus {
+	border: 2px solid #eab502;
+}
+
+.button--dropdown,
+.dropdown-menu {
 	width: 100%;
+}
+
+.dropdown-menu {
+	overflow-x: hidden;
+}
+
+.dropdown-menu > .row {
+	padding: 15px 0 15px 0;
+}
+
+.dropdown-menu__option__text {
+	width: 100%;
+}
+
+.dropdown-menu__option__text label {
+	align-items: center;
+	display: flex;
+	flex-direction: row-reverse;
+	font-weight: normal;
+	justify-content: space-between;
+	margin: 0;
+}
+
+
+.tableWrapper {
+	width: 100%;
+}
+
+.DTFC_LeftBodyLiner,
+.DTFC_RightBodyLiner {
+	overflow: hidden !important;
+}
+
+.dataTables_length,
+.dataTables_filter,
+.dataTables_paginate span,
+.dataTables_paginate > .disabled {
+	display: none !important;
+}
+
+.next:focus,
+.previous:focus {
+	outline: none !important;
+}
+
+#scoreboardTable_wrapper table,
+#scoreboardTable_wrapper th,
+#scoreboardTable_wrapper td {
+	border: none;
+	border-right: 1px solid white;
 }
 
 /* tables */

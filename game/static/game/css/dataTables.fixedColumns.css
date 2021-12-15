@@ -23,3 +23,32 @@ div.DTFC_LeftWrapper table.dataTable.no-footer,
 div.DTFC_RightWrapper table.dataTable.no-footer {
 	border-bottom: none;
 }
+
+.DTFC_LeftBodyLiner {
+	padding-right: 0 !important;
+	width: inherit !important;
+}
+
+#scoreboardTable tbody td,
+#scoreboardTable_wrapper tbody td {
+	border-right: 1px solid white;
+	border-top: 1px solid white;
+}
+
+.DTFC_ScrollWrapper th,
+.DTFC_ScrollWrapper td,
+#scoreboardTable th,
+#scoreboardTable td {
+	height: 50px;
+	min-width: 50px;
+}
+
+.DTFC_LeftHeadWrapper,
+.DTFC_LeftBodyWrapper {
+	box-shadow: 4px 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.DTFC_RightHeadWrapper,
+.DTFC_RightBodyWrapper {
+	box-shadow: -4px 0 10px 0 rgba(0, 0, 0, 0.5);
+}
