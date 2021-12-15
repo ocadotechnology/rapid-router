@@ -16,6 +16,10 @@
 	border: 2px solid #eab502;
 }
 
+input[type="checkbox"] {
+	width: 20px;
+}
+
 .button--dropdown,
 .dropdown-menu {
 	width: 100%;
