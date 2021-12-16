@@ -59,6 +59,10 @@
                     $(".previous").prepend("< ");
                     $(".previous").removeClass("paginate_button");
                 });
+
+                $(window).on('load', function() {
+                    table.columns.adjust();
+                });
             }
         });
     </script>

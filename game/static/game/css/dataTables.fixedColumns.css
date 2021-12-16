@@ -24,9 +24,9 @@ div.DTFC_RightWrapper table.dataTable.no-footer {
 	border-bottom: none;
 }
 
-.DTFC_LeftBodyLiner {
-	padding-right: 0 !important;
-	width: inherit !important;
+div.DTFC_LeftBodyLiner {
+	padding-right: 0;
+	width: inherit;
 }
 
 #scoreboardTable tbody td,
