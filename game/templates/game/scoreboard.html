@@ -79,13 +79,62 @@
     <link href="{% static 'game/css/dataTables.jqueryui.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
+{% block header %}
+<div class="banner banner--rapid-router--background row">
+    <div class="level_rr_logo">
+        <img title="Rapid Router logo" alt="Rapid Router logo" src="{% static 'game/image/RR_logo.svg' %}"></section>
+    </div>
+</div>
+{% endblock header %}
+
 {% block nav_ocargo_scoreboard %}
 <a class="button button--secondary button--secondary" style="background-color: white; color: #fa1664;" href="{% url 'scoreboard' %}">Scoreboard</a>
 {% endblock nav_ocargo_scoreboard %}
 
 {% block content %}
-<div class="container">
-    <h4 class="text-center">Scoreboard</h4>
+<div class="background--primary">
+    <div class="container background">
+        <h4 class="text-center">Scoreboard</h4>
+        <p>The table below shows areas that could need improvement.</p>
+
+        <form action="" method="post" id="scoreboardForm">
+        {% csrf_token %}
+        <div class="row form--row">
+            <div class="form--row__input col-sm-2 col-md-2">
+                <div class="input--icon">
+                    <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="dropdown">
+                    <button class="button--secondary button--secondary--dark button--dropdown" data-toggle="dropdown" aria-expanded="false">
+                        <div class="dropdown__text">Filter classes</div>
+                    </button>
+                    <ul class="dropdown-menu">
+                        {% for class in form.classes %}
+                            <li class="dropdown-menu__option">
+                                <a class="button button--regular">
+                                    <p class="dropdown-menu__option__text">{{ class }}</p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                        <div class="row">
+                            <div class="col-sm-6 text-right">
+                                <a class="button button--secondary button--secondary--dark" id="clear-classes">Clear</a>
+                            </div>
+                            <div class="col-sm-6 text-left">
+                                <button class="button button--primary" type="submit" name="view">Save</button>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
+
+<div class="container background">
     <p>The table below shows progress your students are making. The traffic light system is designed to highlight peaks
         and troughs in level performance.</p>
 

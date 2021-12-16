@@ -1,114 +1,122 @@
+.level_rr_logo {
+  text-align: center;
+}
+
+.level_rr_logo img {
+  width: 25%;
+}
+
 .form label {
-	width: 200px;
-	float: left;
-	margin: 0 20px 0 0;
+  width: 200px;
+  float: left;
+  margin: 0 20px 0 0;
 }
 
 .form input {
-	width: 200px;
-	border: 1px solid #000;
-	padding: 5px;
+  width: 200px;
+  border: 1px solid #000;
+  padding: 5px;
 }
 
 .dropdown > .button--secondary,
 .row > div > .button--secondary,
 .row > div > .button--primary {
-	margin: 0;
+  margin: 0;
 }
 
 .input--icon > input[type="text"],
 .input--icon > input[type="text"]:hover,
 .input--icon > input[type="text"]:focus {
-	border: 2px solid #eab502;
+  border: 2px solid #eab502;
 }
 
 input[type="checkbox"] {
-	width: 20px;
+  width: 20px;
 }
 
 .button--dropdown,
 .dropdown-menu {
-	width: 100%;
+  width: 100%;
+  background-color: #fff;
 }
 
 .dropdown-menu {
-	overflow-x: hidden;
-	font-style: normal;
+  overflow-x: hidden;
+  font-style: normal;
 }
 
 .dropdown-menu > .row {
-	padding: 15px 0 15px 0;
+  padding: 15px 0 15px 0;
 }
 
 .dropdown-menu__option__text {
-	width: 100%;
+  width: 100%;
 }
 
 .dropdown-menu__option__text label {
-	align-items: center;
-	display: flex;
-	flex-direction: row-reverse;
-	font-weight: normal;
-	justify-content: space-between;
-	margin: 0;
+  align-items: center;
+  display: flex;
+  flex-direction: row-reverse;
+  font-weight: normal;
+  justify-content: space-between;
+  margin: 0;
 }
 
-
 .tableWrapper {
-	width: 100%;
+  width: 100%;
 }
 
 .DTFC_LeftBodyLiner,
 .DTFC_RightBodyLiner {
-	overflow: hidden !important;
+  overflow: hidden !important;
 }
 
 .dataTables_length,
 .dataTables_filter,
 .dataTables_paginate span,
 .dataTables_paginate > .disabled {
-	display: none !important;
+  display: none !important;
 }
 
 .next:focus,
 .previous:focus {
-	outline: none !important;
+  outline: none !important;
 }
 
 #scoreboardTable_wrapper table,
 #scoreboardTable_wrapper th,
 #scoreboardTable_wrapper td {
-	border: none;
-	border-right: 1px solid white;
+  border: none;
+  border-right: 1px solid white;
 }
 
 /* tables */
 
 table {
-	width: 99%;
+  width: 99%;
 }
 
 /* Needed for keeping the rows aligned after freezing the first column */
 table tbody td {
-	/* To ensure all rows have the same height as wrapping may increases row height */
-	white-space: nowrap;
-	/* The height of the row has to be set in order for the progress bar to fit the row */
-	height: 25px;
-	font-size: 15px
+  /* To ensure all rows have the same height as wrapping may increases row height */
+  white-space: nowrap;
+  /* The height of the row has to be set in order for the progress bar to fit the row */
+  height: 25px;
+  font-size: 15px;
 }
 
 .scoreboard--started {
-	background: #e0004d !important;
-	color: white;
+  background: #e0004d !important;
+  color: white;
 }
 
 .scoreboard--completed {
-	color: #eab502;
-	font-size: 24px;
+  color: #eab502;
+  font-size: 24px;
 }
 
 .scoreboard--top-performer {
-	background: #b1bA1d !important;
+  background: #b1ba1d !important;
 }
 
 /*#scoreboardForm {*/
