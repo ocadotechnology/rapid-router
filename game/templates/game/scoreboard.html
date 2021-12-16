@@ -228,9 +228,9 @@
                                     <td class="text-center">{{ levelScore }}</td>
                                 {% endif %}
                             {% endfor %}
-                            {% if student.average > 15 %}
+                            {% if student.percentage_complete > 75 %}
                                 <td class="scoreboard--top-performer">{{ student.total_score }}</td>
-                            {% elif student.average < 7 %}
+                            {% elif student.percentage_complete < 33 %}
                                 <td class="scoreboard--started">{{ student.total_score }}</td>
                             {% else %}
                                 <td class="scoreboard--medium-performer">{{ student.total_score }}</td>

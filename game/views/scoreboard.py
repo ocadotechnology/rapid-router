@@ -195,7 +195,8 @@ def student_row(levels_sorted, student):
 
     num_levels = len(levels_sorted)
     num_all = num_finished = num_attempted = num_started = 0
-    total_score = 0.0
+    total_score = 0
+    total_possible_score = 0
     scores = []
     times = []
     best_attempts = Attempt.objects.filter(
@@ -219,6 +220,7 @@ def student_row(levels_sorted, student):
                     num_started += 1
 
                 total_score += attempt.score if attempt.score is not None else 0
+                total_possible_score += max_score
 
                 elapsed_time = attempt.elapsed_time()
                 times.append(chop_miliseconds(elapsed_time))
@@ -232,6 +234,9 @@ def student_row(levels_sorted, student):
         scores.extend([""] * num_levels)
 
     total_time = sum(times, timedelta())
+    percentage_complete = (
+        total_score / total_possible_score * 100 if total_possible_score > 0 else 0
+    )
 
     row = StudentRow(
         student=student,
@@ -239,7 +244,7 @@ def student_row(levels_sorted, student):
         total_score=int(total_score),
         scores=scores,
         completed=num_finished,
-        average=int(total_score) / num_all if num_all > 0 else 0,
+        percentage_complete=percentage_complete,
     )
     return row
 
@@ -262,7 +267,7 @@ class StudentRow(object):
         self.total_score = kwargs.get("total_score", 0)
         self.scores = kwargs.get("scores", [])
         self.completed = kwargs.get("completed", 0)
-        self.average = kwargs.get("average", 0.0)
+        self.percentage_complete = kwargs.get("percentage_complete", 0)
 
 
 class User(object):
