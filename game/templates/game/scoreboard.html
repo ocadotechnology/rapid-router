@@ -146,58 +146,54 @@
                 </div>
             </div>
         </div>
+        <div class="background tableWrapper" id="tableWrapper">
+            {% if student_data %}
+                <div class="dataTables_info" id="scoreboardTable_info" role="status" aria-live="polite"></div>
+                <table id="scoreboardTable" class="display cell-border wide header-primary data-primary">
+                    <thead>
+                    <tr>
+                        {% for header in headers %}
+                            <th style="width: 140px;">{{ header }}</th>
+                        {% endfor %}
+                        {% for level_header in level_headers %}
+                            <th class="no-sort text-center">{{ level_header }}</th>
+                        {% endfor %}
+                        <th style="width: 160px;">{{ total_points_header }}</th>
+                    </tr>
+                    </thead>
+                    {% for student in student_data %}
+                        <tr>
+                            <td>{{ student.class_field }}</td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.completed }}</td>
+                            <td>{{ student.total_time }}</td>
+                            {% for levelScore in student.scores %}
+                                {% if levelScore == 20 %}
+                                    <td class="text-center scoreboard--completed"><span class="iconify" data-icon="mdi:star"></span></td>
+                                {% elif levelScore < 10 %}
+                                    <td class="text-center scoreboard--started">{{ levelScore }}</td>
+                                {% else %}
+                                    <td class="text-center">{{ levelScore }}</td>
+                                {% endif %}
+                            {% endfor %}
+                            {% if student.average > 15 %}
+                                <td class="scoreboard--top-performer">{{ student.total_score }}</td>
+                            {% elif student.average < 10 %}
+                                <td class="scoreboard--started">{{ student.total_score }}</td>
+                            {% else %}
+                                <td>{{ student.total_score }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div class="text-right">
+                    <button class="button button--primary button--icon m-0" type="submit" name="export">
+                        Export results
+                        <span class="iconify" data-icon="mdi:tray-arrow-down"></span>
+                    </button>
+                </div>
+            {% endif %}
+        </div>
     </form>
-</div>
-
-<div class="background container mainBody">
-    <div class="tableWrapper" id="tableWrapper">
-    {% if student_data %}
-        <div class="dataTables_info" id="scoreboardTable_info" role="status" aria-live="polite"></div>
-        <table id="scoreboardTable" class="display cell-border wide header-primary data-primary">
-        <thead>
-            <tr>
-                {% for header in headers %}
-                    <th style="width: 140px;">{{ header }}</th>
-                {% endfor %}
-                {% for level_header in level_headers %}
-                    <th class="no-sort text-center">{{ level_header }}</th>
-                {% endfor %}
-                <th style="width: 160px;">{{ total_points_header }}</th>
-            </tr>
-        </thead>
-        {% for student in student_data %}
-            <tr>
-                <td>{{ student.class_field }}</td>
-                <td>{{ student.name }}</td>
-                <td>{{ student.completed }}</td>
-                <td>{{ student.total_time }}</td>
-                {% for levelScore in student.scores %}
-                    {% if levelScore == 20 %}
-                        <td class="text-center scoreboard--completed"><span class="iconify" data-icon="mdi:star"></span></td>
-                    {% elif levelScore < 10 %}
-                        <td class="text-center scoreboard--started">{{ levelScore }}</td>
-                    {% else %}
-                        <td class="text-center">{{ levelScore }}</td>
-                    {% endif %}
-                {% endfor %}
-                {% if student.average > 15 %}
-                    <td class="scoreboard--top-performer">{{ student.total_score }}</td>
-                {% elif student.average < 10 %}
-                    <td class="scoreboard--started">{{ student.total_score }}</td>
-                {% else %}
-                    <td>{{ student.total_score }}</td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-        </table>
-        <form method="post" action="" class="p-0">
-            {% csrf_token %}
-            <button class="button button--primary button--icon m-0" type="submit" name="export">
-                Export results
-                <span class="iconify" data-icon="mdi:tray-arrow-down"></span>
-            </button>
-        </form>
-    {% endif %}
-    </div>
 </div>
 {% endblock %}

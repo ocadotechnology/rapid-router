@@ -65,13 +65,6 @@ def scoreboard(request):
     csv_export = "export" in request.POST
 
     if csv_export:
-        for episode_id in episode_ids:
-            episode = Episode.objects.get(id=episode_id)
-            levels_sorted += episode.levels
-
-        student_data, headers, level_headers = scoreboard_data(
-            user, levels_sorted, class_ids
-        )
         return scoreboard_csv(student_data, levels_sorted)
     else:
         return scoreboard_view(request, form, student_data, headers, level_headers)
