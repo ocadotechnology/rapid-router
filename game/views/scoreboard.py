@@ -125,7 +125,7 @@ def scoreboard_data(user, episode_ids, class_ids):
 
 def data_and_headers_for(students, levels_sorted):
     level_headers = list(map(to_name, levels_sorted))
-    student_data = students_level_data(students, levels_sorted)
+    student_data = [student_row(levels_sorted, student) for student in students]
 
     return student_data, Headers, level_headers
 
@@ -136,12 +136,6 @@ def to_name(level):
 
 def sorted_levels_by(level_ids):
     return sort_levels(Level.objects.filter(id__in=level_ids))
-
-
-def first(elements):
-    if len(elements) == 0:
-        raise ValueError("Collection is empty")
-    return next(iter(elements))
 
 
 def are_classes_viewable_by_teacher(class_ids, user):
@@ -195,12 +189,7 @@ def is_valid_request(user, class_ids):
         return False
 
 
-# Return rows of student object with values and scores of each selected level
-def students_level_data(students, levels_sorted):
-    result = [student_row(levels_sorted, student) for student in students]
-    return result
-
-
+# Returns row of student object with values and scores of each selected level
 def student_row(levels_sorted, student):
     threshold = 0.5
 
@@ -209,7 +198,6 @@ def student_row(levels_sorted, student):
     total_score = 0.0
     scores = []
     times = []
-    progress = (0.0, 0.0, 0.0)
     best_attempts = Attempt.objects.filter(
         level__in=levels_sorted, student=student, is_best_attempt=True
     ).select_related("level")
@@ -236,14 +224,10 @@ def student_row(levels_sorted, student):
                 times.append(chop_miliseconds(elapsed_time))
                 # '-' is used to show that the student has started the level but has not submitted any attempts
 
-                scores.append(attempt.score if attempt.score is not None else "-")
+                scores.append(int(attempt.score) if attempt.score is not None else "-")
             else:
                 times.append(timedelta(0))
                 scores.append("")
-
-        progress = compute_proportions(
-            num_levels, num_started, num_attempted, num_finished
-        )
     else:
         scores.extend([""] * num_levels)
 
@@ -252,21 +236,12 @@ def student_row(levels_sorted, student):
     row = StudentRow(
         student=student,
         total_time=total_time,
-        total_score=total_score,
-        progress=progress,
+        total_score=int(total_score),
         scores=scores,
         completed=num_finished,
-        average=total_score / num_finished if num_finished > 0 else 0,
+        average=int(total_score) / num_all if num_all > 0 else 0,
     )
     return row
-
-
-def compute_proportions(num_levels, num_started, num_attempted, num_finished):
-    return (
-        (num_started / num_levels) * 100,
-        (num_attempted / num_levels) * 100,
-        (num_finished / num_levels) * 100,
-    )
 
 
 def is_viewable(class_):
@@ -284,8 +259,7 @@ class StudentRow(object):
         self.name = student.user.user.first_name
         self.id = student.id
         self.total_time = kwargs.get("total_time", timedelta(0))
-        self.total_score = kwargs.get("total_score", 0.0)
-        self.progress = kwargs.get("progress", (0.0, 0.0, 0.0))
+        self.total_score = kwargs.get("total_score", 0)
         self.scores = kwargs.get("scores", [])
         self.completed = kwargs.get("completed", 0)
         self.average = kwargs.get("average", 0.0)

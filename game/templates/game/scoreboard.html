@@ -34,10 +34,6 @@
                     },
                     columnDefs: [
                         {
-                            width: 140,
-                            targets: 3,
-                        },
-                        {
                             orderable: false,
                             targets: "no-sort",
                         },
@@ -136,7 +132,8 @@
     </div>
 </div>
 
-<div class="container background">
+<div class="container">
+    <h5>Progress</h5>
     <p>The table below shows progress your students are making. The traffic light system is designed to highlight peaks
         and troughs in level performance.</p>
 
@@ -204,18 +201,18 @@
                     <thead>
                     <tr>
                         {% for header in headers %}
-                            <th style="width: 140px;">{{ header }}</th>
+                            <th class="fixed-width">{{ header }}</th>
                         {% endfor %}
                         {% for level_header in level_headers %}
                             <th class="no-sort text-center">{{ level_header }}</th>
                         {% endfor %}
-                        <th style="width: 160px;">{{ total_points_header }}</th>
+                        <th class="fixed-width">{{ total_points_header }}</th>
                     </tr>
                     </thead>
                     {% for student in student_data %}
                         <tr>
-                            <td>{{ student.class_field }}</td>
-                            <td>{{ student.name }}</td>
+                            <td class="fixed-width">{{ student.class_field }}</td>
+                            <td class="fixed-width">{{ student.name }}</td>
                             <td>{{ student.completed }}</td>
                             <td>{{ student.total_time }}</td>
                             {% for levelScore in student.scores %}
@@ -229,15 +226,15 @@
                             {% endfor %}
                             {% if student.average > 15 %}
                                 <td class="scoreboard--top-performer">{{ student.total_score }}</td>
-                            {% elif student.average < 10 %}
+                            {% elif student.average < 7 %}
                                 <td class="scoreboard--started">{{ student.total_score }}</td>
                             {% else %}
-                                <td>{{ student.total_score }}</td>
+                                <td class="scoreboard--medium-performer">{{ student.total_score }}</td>
                             {% endif %}
                         </tr>
                     {% endfor %}
                 </table>
-                <div class="text-right">
+                <div class="text-right mt-4">
                     <button class="button button--primary button--icon m-0" type="submit" name="export">
                         Export results
                         <span class="iconify" data-icon="mdi:tray-arrow-down"></span>

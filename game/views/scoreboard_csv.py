@@ -6,17 +6,13 @@ from django.http import HttpResponse
 Headers = [
     "Class",
     "Name",
-    "Total Score",
+    "Completed Levels",
     "Total Time",
-    "Started Levels",
-    "Attempted levels",
-    "Finished levels",
+    "Total Score",
 ]
 
 
 def scoreboard_csv(student_data, requested_sorted_levels):
-    print(student_data)
-    print(requested_sorted_levels)
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="scoreboard.csv"'
 
@@ -37,15 +33,12 @@ def header_for(levels):
 
 def create_to_array_multiple_levels(response):
     def to_array_multiple_levels(student_row):
-        started, attempted, finished = student_row.progress
         result = [
             student_row.class_field.name,
             student_row.name,
-            student_row.total_score,
+            student_row.completed,
             student_row.total_time,
-            started,
-            attempted,
-            finished,
+            student_row.total_score,
         ]
 
         return result + student_row.scores
