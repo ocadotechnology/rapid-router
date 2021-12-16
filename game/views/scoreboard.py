@@ -193,12 +193,16 @@ def is_valid_request(user, class_ids):
 def student_row(levels_sorted, student):
     threshold = 0.5
 
-    num_levels = len(levels_sorted)
     num_all = num_finished = num_attempted = num_started = 0
     total_score = 0
     total_possible_score = 0
-    scores = []
+    level_scores = {}
     times = []
+
+    for level in levels_sorted:
+        level_scores[level.id] = {}
+        level_scores[level.id]["score"] = ""
+
     best_attempts = Attempt.objects.filter(
         level__in=levels_sorted, student=student, is_best_attempt=True
     ).select_related("level")
@@ -207,6 +211,7 @@ def student_row(levels_sorted, student):
             best_attempt.level.id: best_attempt for best_attempt in best_attempts
         }
         for level in levels_sorted:
+
             attempt = attempts_dict.get(level.id)
             if attempt:
                 num_all += 1
@@ -226,12 +231,15 @@ def student_row(levels_sorted, student):
                 times.append(chop_miliseconds(elapsed_time))
                 # '-' is used to show that the student has started the level but has not submitted any attempts
 
-                scores.append(int(attempt.score) if attempt.score is not None else "-")
+                level_scores[level.id]["score"] = (
+                    int(attempt.score) if attempt.score is not None else "-"
+                )
+                level_scores[level.id]["full_score"] = attempt.score == max_score
+                level_scores[level.id]["is_low_attempt"] = (
+                    attempt.score == 0 or max_score / attempt.score < threshold
+                )
             else:
                 times.append(timedelta(0))
-                scores.append("")
-    else:
-        scores.extend([""] * num_levels)
 
     total_time = sum(times, timedelta())
     percentage_complete = (
@@ -242,7 +250,7 @@ def student_row(levels_sorted, student):
         student=student,
         total_time=total_time,
         total_score=int(total_score),
-        scores=scores,
+        level_scores=level_scores,
         completed=num_finished,
         percentage_complete=percentage_complete,
     )
@@ -265,7 +273,7 @@ class StudentRow(object):
         self.id = student.id
         self.total_time = kwargs.get("total_time", timedelta(0))
         self.total_score = kwargs.get("total_score", 0)
-        self.scores = kwargs.get("scores", [])
+        self.level_scores = kwargs.get("level_scores", {})
         self.completed = kwargs.get("completed", 0)
         self.percentage_complete = kwargs.get("percentage_complete", 0)
 

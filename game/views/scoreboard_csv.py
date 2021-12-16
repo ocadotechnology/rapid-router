@@ -41,6 +41,10 @@ def create_to_array_multiple_levels(response):
             student_row.total_score,
         ]
 
-        return result + student_row.scores
+        scores = []
+        for level_id, level_score in student_row.level_scores.items():
+            scores.append(level_score["score"])
+
+        return result + scores
 
     return to_array_multiple_levels

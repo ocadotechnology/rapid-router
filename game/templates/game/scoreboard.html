@@ -219,17 +219,17 @@
                             <td class="fixed-width">{{ student.name }}</td>
                             <td>{{ student.completed }}</td>
                             <td>{{ student.total_time }}</td>
-                            {% for level_score in student.scores %}
-                                {% if level_score == 20 %}
+                            {% for level_id, level_score in student.level_scores.items %}
+                                {% if level_score.full_score %}
                                     <td class="text-center scoreboard--completed">
                                         <div class="d-flex justify-content-center">
                                             <span class="iconify" data-icon="mdi:star"></span>
                                         </div>
                                     </td>
-                                {% elif level_score < 10 %}
-                                    <td class="text-center scoreboard--started">{{ level_score }}</td>
+                                {% elif level_score.is_low_attempt %}
+                                    <td class="text-center scoreboard--started">{{ level_score.score }}</td>
                                 {% else %}
-                                    <td class="text-center">{{ level_score }}</td>
+                                    <td class="text-center">{{ level_score.score }}</td>
                                 {% endif %}
                             {% endfor %}
                             {% if student.percentage_complete > 75 %}
