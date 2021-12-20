@@ -92,55 +92,9 @@
 {% endblock nav_ocargo_scoreboard %}
 
 {% block content %}
-<div class="background--primary">
-    <div class="container background">
-        <h4 class="text-center">Scoreboard</h4>
 
-        <h5>Areas for improvement</h5>
-        <p>The table below shows areas that could need improvement.</p>
-
-        <form action="" method="post" id="improvementForm">
-        {% csrf_token %}
-        <div class="row form--row">
-            <div class="form--row__input col-sm-2 col-md-2">
-                <div class="input--icon">
-                    <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="dropdown">
-                    <button class="button--secondary button--secondary--dark button--dropdown" data-toggle="dropdown" aria-expanded="false">
-                        <div class="dropdown__text">Filter classes</div>
-                    </button>
-                    <ul class="dropdown-menu">
-                        {% for class in form.classes %}
-                            <li class="dropdown-menu__option">
-                                <a class="button button--regular">
-                                    <p class="dropdown-menu__option__text">{{ class }}</p>
-                                </a>
-                            </li>
-                        {% endfor %}
-                        <div class="row">
-                            <div class="col-sm-6 text-right">
-                                <a class="button button--secondary button--secondary--dark" id="clear-classes">Clear</a>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                <button class="button button--primary" type="submit" name="view">Save</button>
-                            </div>
-                        </div>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </form>
-    </div>
-</div>
-
-<div class="container">
-    <h5>Progress</h5>
-    <p>The table below shows progress your students are making. The traffic light system is designed to highlight peaks
-        and troughs in level performance.</p>
-
+<div class="container background">
+    <h4 class="text-center">Scoreboard</h4>
     <form action="" method="post" id="scoreboardForm">
         {% csrf_token %}
         <div class="row form--row">
@@ -198,6 +152,10 @@
                 </div>
             </div>
         </div>
+        <h5>Progress</h5>
+        <p>The table below shows progress your students are making. The traffic light system is designed to highlight peaks
+            and troughs in level performance.
+        </p>
         <div class="background tableWrapper" id="tableWrapper">
             {% if student_data %}
                 <div class="dataTables_info" id="scoreboardTable_info" role="status" aria-live="polite"></div>
@@ -252,4 +210,59 @@
         </div>
     </form>
 </div>
+
+<div class="container background alternative-section">
+    <h5>Areas for improvement</h5>
+    <p>The table below shows areas that could need improvement.</p>
+
+    <div class="background tableWrapper" id="tableWrapper">
+        {% if student_data %}
+            <div class="dataTables_info" id="scoreboardTable_info" role="status" aria-live="polite"></div>
+            <table id="scoreboardTable" class="display cell-border wide header-primary data-primary">
+                <thead>
+                <tr>
+                    {% for header in headers %}
+                        <th class="fixed-width">{{ header }}</th>
+                    {% endfor %}
+                    {% for level_header in level_headers %}
+                        <th class="no-sort text-center">{{ level_header }}</th>
+                    {% endfor %}
+                    <th class="fixed-width">{{ total_points_header }}</th>
+                </tr>
+                </thead>
+                {% for student in student_data %}
+                    <tr>
+                        <td class="fixed-width">{{ student.class_field }}</td>
+                        <td class="fixed-width">{{ student.name }}</td>
+                        <td>{{ student.completed }}</td>
+                        <td>{{ student.total_time }}</td>
+                        {% for levelScore in student.scores %}
+                            {% if levelScore == 20 %}
+                                <td class="text-center scoreboard--completed"><span class="iconify" data-icon="mdi:star"></span></td>
+                            {% elif levelScore < 10 %}
+                                <td class="text-center scoreboard--started">{{ levelScore }}</td>
+                            {% else %}
+                                <td class="text-center">{{ levelScore }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        {% if student.average > 15 %}
+                            <td class="scoreboard--top-performer">{{ student.total_score }}</td>
+                        {% elif student.average < 7 %}
+                            <td class="scoreboard--started">{{ student.total_score }}</td>
+                        {% else %}
+                            <td class="scoreboard--medium-performer">{{ student.total_score }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+            <div class="text-right mt-4">
+                <button class="button button--primary button--icon m-0" type="submit" name="export">
+                    Export results
+                    <span class="iconify" data-icon="mdi:tray-arrow-down"></span>
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}

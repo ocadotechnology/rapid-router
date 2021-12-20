@@ -1,3 +1,11 @@
+.level_rr_logo {
+  text-align: center;
+}
+
+.level_rr_logo img {
+  width: 25%;
+}
+
 .dropdown > .button--secondary,
 .row > div > .button--secondary,
 .row > div > .button--primary {
