@@ -74,7 +74,10 @@ a.previous:focus {
 
 #scoreboardTable_wrapper table,
 #scoreboardTable_wrapper th,
-#scoreboardTable_wrapper td {
+#scoreboardTable_wrapper td,
+#improvementTable_wrapper table,
+#improvementTable_wrapper th,
+#improvementTable_wrapper td {
   border: none;
   border-right: 1px solid white;
 }

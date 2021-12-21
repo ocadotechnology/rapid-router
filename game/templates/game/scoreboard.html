@@ -17,6 +17,7 @@
     <script>
         $(document).ready(function() {
             let scoreboardPresent = document.getElementById("scoreboardTable") !== null;
+            let improvementPresent = document.getElementById("improvementTable") !== null;
 
             if (scoreboardPresent) {
                 let table = $('#scoreboardTable').DataTable({
@@ -62,6 +63,19 @@
 
                 $(window).on('load', function() {
                     table.columns.adjust();
+                });
+            }
+
+            if (improvementPresent) {
+                const impTable = $('#improvementTable').DataTable({
+                    pageLength: 5
+                });
+
+                impTable.on("draw", () => {
+                    $(".next").append(" >");
+                    $(".next").removeClass("paginate_button");
+                    $(".previous").prepend("< ");
+                    $(".previous").removeClass("paginate_button");
                 });
             }
         });
@@ -200,12 +214,6 @@
                         </tr>
                     {% endfor %}
                 </table>
-                <div class="text-right mt-4">
-                    <button class="button button--primary button--icon m-0" type="submit" name="export">
-                        Export results
-                        <span class="iconify" data-icon="mdi:tray-arrow-down"></span>
-                    </button>
-                </div>
             {% endif %}
         </div>
     </form>
@@ -217,41 +225,20 @@
 
     <div class="background tableWrapper" id="tableWrapper">
         {% if student_data %}
-            <div class="dataTables_info" id="scoreboardTable_info" role="status" aria-live="polite"></div>
-            <table id="scoreboardTable" class="display cell-border wide header-primary data-primary">
+            <div class="dataTables_info" role="status" aria-live="polite"></div>
+            <table id="improvementTable" class="display cell-border wide header-primary data-primary">
                 <thead>
                 <tr>
-                    {% for header in headers %}
-                        <th class="fixed-width">{{ header }}</th>
-                    {% endfor %}
-                    {% for level_header in level_headers %}
-                        <th class="no-sort text-center">{{ level_header }}</th>
-                    {% endfor %}
-                    <th class="fixed-width">{{ total_points_header }}</th>
+                    <th class="fixed-width">Class</th>
+                    <th class="fixed-width">Student</th>
+                    <th>Areas of concern</th>
                 </tr>
                 </thead>
-                {% for student in student_data %}
+                {% for student in improvement_data %}
                     <tr>
                         <td class="fixed-width">{{ student.class_field }}</td>
                         <td class="fixed-width">{{ student.name }}</td>
-                        <td>{{ student.completed }}</td>
-                        <td>{{ student.total_time }}</td>
-                        {% for levelScore in student.scores %}
-                            {% if levelScore == 20 %}
-                                <td class="text-center scoreboard--completed"><span class="iconify" data-icon="mdi:star"></span></td>
-                            {% elif levelScore < 10 %}
-                                <td class="text-center scoreboard--started">{{ levelScore }}</td>
-                            {% else %}
-                                <td class="text-center">{{ levelScore }}</td>
-                            {% endif %}
-                        {% endfor %}
-                        {% if student.average > 15 %}
-                            <td class="scoreboard--top-performer">{{ student.total_score }}</td>
-                        {% elif student.average < 7 %}
-                            <td class="scoreboard--started">{{ student.total_score }}</td>
-                        {% else %}
-                            <td class="scoreboard--medium-performer">{{ student.total_score }}</td>
-                        {% endif %}
+                        <td>{{ student.areas }}</td>
                     </tr>
                 {% endfor %}
             </table>
