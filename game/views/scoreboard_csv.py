@@ -12,39 +12,42 @@ Headers = [
 ]
 
 
-def scoreboard_csv(student_data, requested_sorted_levels):
+def scoreboard_csv(student_data, requested_sorted_levels, improvement_data):
     response = HttpResponse(content_type="text/csv")
     response["Content-Disposition"] = 'attachment; filename="scoreboard.csv"'
 
-    header = header_for(requested_sorted_levels)
-    rows = list(map(create_to_array_multiple_levels(response), student_data))
+    improvement_dict = {}
+    for student in improvement_data:
+        idx = f"{student.class_field.name}_{student.name}"
+        improvement_dict[idx] = student.areas
+    print(improvement_dict)
 
-    writer = csv.writer(response)
-    writer.writerow(header)
-    writer.writerows(rows)
+    headers = Headers + requested_sorted_levels + ["Areas for improvement"]
 
-    return response
-
-
-def header_for(levels):
-    level_names = list(map(str, levels))
-    return Headers + level_names
-
-
-def create_to_array_multiple_levels(response):
-    def to_array_multiple_levels(student_row):
+    rows = []
+    for student in student_data:
         result = [
-            student_row.class_field.name,
-            student_row.name,
-            student_row.completed,
-            student_row.total_time,
-            student_row.total_score,
+            student.class_field.name,
+            student.name,
+            student.completed,
+            student.total_time,
+            student.total_score,
         ]
 
         scores = []
-        for level_id, level_score in student_row.level_scores.items():
+        for level_id, level_score in student.level_scores.items():
             scores.append(level_score["score"])
 
-        return result + scores
+        row = result + scores
 
-    return to_array_multiple_levels
+        # add the areas to improve, if there's any
+        idx = f"{student.class_field.name}_{student.name}"
+        row.append(improvement_dict.get(idx))
+
+        rows.append(row)
+
+    writer = csv.writer(response)
+    writer.writerow(headers)
+    writer.writerows(rows)
+
+    return response

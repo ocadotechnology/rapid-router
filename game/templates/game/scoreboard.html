@@ -47,17 +47,17 @@
                 });
                 document.getElementById("tableWrapper").scrollIntoView();
 
-                $(".next").append(" >");
-                $(".next").removeClass("paginate_button");
-
                 $('#scoreboardSearch').on("keyup", function() {
                     table.search(this.value).draw();
                 });
 
+                $("#scoreboardTable_next").append(" >");
+                $(".next").removeClass("paginate_button");
+
                 table.on("draw", () => {
-                    $(".next").append(" >");
+                    $("#scoreboardTable_next").append(" >");
+                    $("#scoreboardTable_previous").prepend("< ");
                     $(".next").removeClass("paginate_button");
-                    $(".previous").prepend("< ");
                     $(".previous").removeClass("paginate_button");
                 });
 
@@ -76,10 +76,17 @@
                     pageLength: 5
                 });
 
+                $('#scoreboardSearch').on("keyup", function() {
+                    impTable.search(this.value).draw();
+                });
+
+                $("#improvementTable_next").append(" >");
+                $(".next").removeClass("paginate_button");
+
                 impTable.on("draw", () => {
-                    $(".next").append(" >");
+                    $("#improvementTable_next").append(" >");
+                    $("#improvementTable_previous").prepend("< ");
                     $(".next").removeClass("paginate_button");
-                    $(".previous").prepend("< ");
                     $(".previous").removeClass("paginate_button");
                 });
             }
@@ -112,134 +119,133 @@
 
 {% block content %}
 
+<form action="" method="post" id="scoreboardForm">
 <div class="container background">
     <h4 class="text-center">Scoreboard</h4>
-    <form action="" method="post" id="scoreboardForm">
-        {% csrf_token %}
-        <div class="row form--row">
-            <div class="form--row__input col-sm-2 col-md-2">
-                <div class="input--icon">
-                    <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="dropdown">
-                    <button class="button--secondary button--secondary--dark button--dropdown" data-toggle="dropdown" aria-expanded="false">
-                        <div class="dropdown__text">Filter classes</div>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-menu__option">
-                            <a class="button button--regular">
-                                <p class="dropdown-menu__option__text">
-                                    <label for="select-all-classes">
-                                        <input type="checkbox" id="select-all-classes"><strong>Select all</strong>
-                                    </label>
-                                </p>
-                            </a>
-                        </li>
-                        {% for class in form.classes %}
-                            <li class="dropdown-menu__option">
-                                <a class="button button--regular">
-                                    <p class="dropdown-menu__option__text">{{ class }}</p>
-                                </a>
-                            </li>
-                        {% endfor %}
-                        <div class="row">
-                            <div class="col-sm-6 text-right">
-                                <a class="button button--secondary button--secondary--dark" id="clear-classes">Clear</a>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                <button class="button button--primary" type="submit" name="view">Save</button>
-                            </div>
-                        </div>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="dropdown">
-                    <button class="button--secondary button--secondary--dark button--dropdown" data-toggle="dropdown" aria-expanded="false">
-                        <div class="dropdown__text">Filter levels</div>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-menu__option">
-                            <a class="button button--regular">
-                                <p class="dropdown-menu__option__text">
-                                    <label for="select-all-levels">
-                                        <input type="checkbox" id="select-all-levels"><strong>Select all</strong>
-                                    </label>
-                                </p>
-                            </a>
-                        </li>
-                        {% for episode in form.episodes %}
-                            <li class="dropdown-menu__option">
-                                <a class="button button--regular">
-                                    <p class="dropdown-menu__option__text">{{ episode }}</p>
-                                </a>
-                            </li>
-                        {% endfor %}
-                        <div class="row">
-                            <div class="col-sm-offset-4 col-sm-4">
-                                <a class="button button--secondary button--secondary--dark" id="clear-levels">Clear</a>
-                            </div>
-                            <div class="col-sm-4">
-                                <button class="button button--primary" type="submit" name="view">Save</button>
-                            </div>
-                        </div>
-                    </ul>
-                </div>
+    {% csrf_token %}
+    <div class="row form--row">
+        <div class="form--row__input col-sm-2 col-md-2">
+            <div class="input--icon">
+                <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
             </div>
         </div>
-        <h5>Progress</h5>
-        <p>The table below shows progress your students are making. The traffic light system is designed to highlight peaks
-            and troughs in level performance.
-        </p>
-        <div class="background tableWrapper" id="tableWrapper">
-            {% if student_data %}
-                <div class="dataTables_info" id="scoreboardTable_info" role="status" aria-live="polite"></div>
-                <table id="scoreboardTable" class="display cell-border wide header-primary data-primary">
-                    <thead>
-                    <tr>
-                        {% for header in headers %}
-                            <th class="fixed-width">{{ header }}</th>
-                        {% endfor %}
-                        {% for level_header in level_headers %}
-                            <th class="no-sort text-center">{{ level_header }}</th>
-                        {% endfor %}
-                        <th class="fixed-width">{{ total_points_header }}</th>
-                    </tr>
-                    </thead>
-                    {% for student in student_data %}
-                        <tr>
-                            <td class="fixed-width">{{ student.class_field }}</td>
-                            <td class="fixed-width">{{ student.name }}</td>
-                            <td>{{ student.completed }}</td>
-                            <td>{{ student.total_time }}</td>
-                            {% for level_id, level_score in student.level_scores.items %}
-                                {% if level_score.full_score %}
-                                    <td class="text-center scoreboard--completed">
-                                        <div class="d-flex justify-content-center">
-                                            <span class="iconify" data-icon="mdi:star"></span>
-                                        </div>
-                                    </td>
-                                {% elif level_score.is_low_attempt %}
-                                    <td class="text-center scoreboard--started">{{ level_score.score }}</td>
-                                {% else %}
-                                    <td class="text-center">{{ level_score.score }}</td>
-                                {% endif %}
-                            {% endfor %}
-                            {% if student.percentage_complete > 75 %}
-                                <td class="scoreboard--top-performer">{{ student.total_score }}</td>
-                            {% elif student.percentage_complete < 33 %}
-                                <td class="scoreboard--started">{{ student.total_score }}</td>
-                            {% else %}
-                                <td class="scoreboard--medium-performer">{{ student.total_score }}</td>
-                            {% endif %}
-                        </tr>
+        <div class="col-sm-4">
+            <div class="dropdown">
+                <button class="button--secondary button--secondary--dark button--dropdown" data-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown__text">Filter classes</div>
+                </button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-menu__option">
+                        <a class="button button--regular">
+                            <p class="dropdown-menu__option__text">
+                                <label for="select-all-classes">
+                                    <input type="checkbox" id="select-all-classes"><strong>Select all</strong>
+                                </label>
+                            </p>
+                        </a>
+                    </li>
+                    {% for class in form.classes %}
+                        <li class="dropdown-menu__option">
+                            <a class="button button--regular">
+                                <p class="dropdown-menu__option__text">{{ class }}</p>
+                            </a>
+                        </li>
                     {% endfor %}
-                </table>
-            {% endif %}
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <a class="button button--secondary button--secondary--dark" id="clear-classes">Clear</a>
+                        </div>
+                        <div class="col-sm-6 text-left">
+                            <button class="button button--primary" type="submit" name="view">Save</button>
+                        </div>
+                    </div>
+                </ul>
+            </div>
         </div>
-    </form>
+        <div class="col-sm-6">
+            <div class="dropdown">
+                <button class="button--secondary button--secondary--dark button--dropdown" data-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown__text">Filter levels</div>
+                </button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-menu__option">
+                        <a class="button button--regular">
+                            <p class="dropdown-menu__option__text">
+                                <label for="select-all-levels">
+                                    <input type="checkbox" id="select-all-levels"><strong>Select all</strong>
+                                </label>
+                            </p>
+                        </a>
+                    </li>
+                    {% for episode in form.episodes %}
+                        <li class="dropdown-menu__option">
+                            <a class="button button--regular">
+                                <p class="dropdown-menu__option__text">{{ episode }}</p>
+                            </a>
+                        </li>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-sm-offset-4 col-sm-4">
+                            <a class="button button--secondary button--secondary--dark" id="clear-levels">Clear</a>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="button button--primary" type="submit" name="view">Save</button>
+                        </div>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <h5>Progress</h5>
+    <p>The table below shows progress your students are making. The traffic light system is designed to highlight peaks
+        and troughs in level performance.
+    </p>
+    <div class="background tableWrapper" id="tableWrapper">
+        {% if student_data %}
+            <div class="dataTables_info" id="scoreboardTable_info" role="status" aria-live="polite"></div>
+            <table id="scoreboardTable" class="display cell-border wide header-primary data-primary">
+                <thead>
+                <tr>
+                    {% for header in headers %}
+                        <th class="fixed-width">{{ header }}</th>
+                    {% endfor %}
+                    {% for level_header in level_headers %}
+                        <th class="no-sort text-center">{{ level_header }}</th>
+                    {% endfor %}
+                    <th class="fixed-width">{{ total_points_header }}</th>
+                </tr>
+                </thead>
+                {% for student in student_data %}
+                    <tr>
+                        <td class="fixed-width">{{ student.class_field }}</td>
+                        <td class="fixed-width">{{ student.name }}</td>
+                        <td>{{ student.completed }}</td>
+                        <td>{{ student.total_time }}</td>
+                        {% for level_id, level_score in student.level_scores.items %}
+                            {% if level_score.full_score %}
+                                <td class="text-center scoreboard--completed">
+                                    <div class="d-flex justify-content-center">
+                                        <span class="iconify" data-icon="mdi:star"></span>
+                                    </div>
+                                </td>
+                            {% elif level_score.is_low_attempt %}
+                                <td class="text-center scoreboard--started">{{ level_score.score }}</td>
+                            {% else %}
+                                <td class="text-center">{{ level_score.score }}</td>
+                            {% endif %}
+                        {% endfor %}
+                        {% if student.percentage_complete > 75 %}
+                            <td class="scoreboard--top-performer">{{ student.total_score }}</td>
+                        {% elif student.percentage_complete < 33 %}
+                            <td class="scoreboard--started">{{ student.total_score }}</td>
+                        {% else %}
+                            <td class="scoreboard--medium-performer">{{ student.total_score }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
 </div>
 
 <div class="container background alternative-section">
@@ -247,7 +253,7 @@
     <p>The table below shows areas that could need improvement.</p>
 
     <div class="background tableWrapper" id="tableWrapper">
-        {% if student_data %}
+        {% if improvement_data %}
             <div class="dataTables_info" role="status" aria-live="polite"></div>
             <table id="improvementTable" class="display cell-border wide header-primary data-primary">
                 <thead>
@@ -265,14 +271,19 @@
                     </tr>
                 {% endfor %}
             </table>
-            <div class="text-right mt-4">
-                <button class="button button--primary button--icon m-0" type="submit" name="export">
-                    Export results
-                    <span class="iconify" data-icon="mdi:tray-arrow-down"></span>
-                </button>
-            </div>
         {% endif %}
     </div>
 </div>
+
+<div class="container background alternative-section">
+    <div class="text-right mt-4">
+        <button class="button button--primary button--icon m-0" type="submit" name="export">
+            Export results
+            <span class="iconify" data-icon="mdi:tray-arrow-down"></span>
+        </button>
+    </div>
+</div>
+
+</form>
 
 {% endblock %}
