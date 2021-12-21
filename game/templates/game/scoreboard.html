@@ -66,6 +66,11 @@
                 });
             }
 
+            // Stops closing the dropdowns when selecting items within it or when pressing the confirmation buttons
+            $(document).on('click', '.dropdown .dropdown-menu', function (e) {
+                e.stopPropagation();
+            });
+
             if (improvementPresent) {
                 const impTable = $('#improvementTable').DataTable({
                     pageLength: 5
@@ -123,6 +128,15 @@
                         <div class="dropdown__text">Filter classes</div>
                     </button>
                     <ul class="dropdown-menu">
+                        <li class="dropdown-menu__option">
+                            <a class="button button--regular">
+                                <p class="dropdown-menu__option__text">
+                                    <label for="select-all-classes">
+                                        <input type="checkbox" id="select-all-classes"><strong>Select all</strong>
+                                    </label>
+                                </p>
+                            </a>
+                        </li>
                         {% for class in form.classes %}
                             <li class="dropdown-menu__option">
                                 <a class="button button--regular">
@@ -147,6 +161,15 @@
                         <div class="dropdown__text">Filter levels</div>
                     </button>
                     <ul class="dropdown-menu">
+                        <li class="dropdown-menu__option">
+                            <a class="button button--regular">
+                                <p class="dropdown-menu__option__text">
+                                    <label for="select-all-levels">
+                                        <input type="checkbox" id="select-all-levels"><strong>Select all</strong>
+                                    </label>
+                                </p>
+                            </a>
+                        </li>
                         {% for episode in form.episodes %}
                             <li class="dropdown-menu__option">
                                 <a class="button button--regular">

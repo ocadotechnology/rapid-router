@@ -209,6 +209,15 @@ def scoreboard(request):
 
     class_ids = set(map(int, request.POST.getlist("classes")))
     episode_ids = set(map(int, request.POST.getlist("episodes")))
+
+    # Get default data if sets above are empty. Also allows to load scoreboard using
+    # either the class filter or the levels filter (instead of needing both)
+    if class_ids == set():
+        class_ids = {users_classes[0].id}
+
+    if episode_ids == set():
+        episode_ids = {1}
+
     levels_sorted = []
 
     if user.is_independent_student():
@@ -222,21 +231,16 @@ def scoreboard(request):
 
     form = ScoreboardForm(request.POST or None, classes=users_classes)
 
-    if request.method == "POST" and form.is_valid():
-        for episode_id in episode_ids:
-            episode = Episode.objects.get(id=episode_id)
-            levels_sorted += episode.levels
+    # Moved these out of if since the GET/POST check is already performed above and
+    # now the logic for both cases is the same, only the data differs.
+    for episode_id in episode_ids:
+        episode = Episode.objects.get(id=episode_id)
+        levels_sorted += episode.levels
 
-        student_data, headers, level_headers = scoreboard_data(
-            user, levels_sorted, class_ids
-        )
-
-        improvement_data = get_improvement_data(class_ids)
-    else:
-        student_data = []
-        headers = []
-        level_headers = []
-        improvement_data = []
+    student_data, headers, level_headers = scoreboard_data(
+        user, levels_sorted, class_ids
+    )
+    improvement_data = get_improvement_data(class_ids)
 
     csv_export = "export" in request.POST
 
