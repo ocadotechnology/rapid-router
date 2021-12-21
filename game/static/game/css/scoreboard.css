@@ -31,6 +31,7 @@ input[type="checkbox"] {
 .dropdown-menu {
   overflow-x: hidden;
   font-style: normal;
+  max-height: 660px; /* Allows for the whole levels dropdown to show without needing to scroll */
 }
 
 .dropdown-menu > .row {
