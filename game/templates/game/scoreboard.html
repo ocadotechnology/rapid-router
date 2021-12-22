@@ -124,7 +124,7 @@
     <h4 class="text-center">Scoreboard</h4>
     {% csrf_token %}
     <div class="row form--row">
-        <div class="form--row__input col-sm-2 col-md-2">
+        <div class="form--row__input col-sm-3 col-md-3">
             <div class="input--icon">
                 <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
             </div>
@@ -162,7 +162,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <div class="dropdown">
                 <button class="button--secondary button--secondary--dark button--dropdown" data-toggle="dropdown" aria-expanded="false">
                     <div class="dropdown__text">Filter levels</div>
@@ -185,7 +185,7 @@
                         </li>
                     {% endfor %}
                     <div class="row">
-                        <div class="col-sm-offset-4 col-sm-4">
+                        <div class="col-sm-offset-3 col-sm-4">
                             <a class="button button--secondary button--secondary--dark" id="clear-levels">Clear</a>
                         </div>
                         <div class="col-sm-4">
@@ -197,8 +197,8 @@
         </div>
     </div>
     <h5>Progress</h5>
-    <p>The table below shows progress your students are making. The traffic light system is designed to highlight peaks
-        and troughs in level performance.
+    <p>The table below shows progress your students are making based on your search. The monitoring system is
+        designed to highlight peaks and troughs in level performance.
     </p>
     <div class="background tableWrapper" id="tableWrapper">
         {% if student_data %}
@@ -250,7 +250,7 @@
 
 <div class="container background alternative-section">
     <h5>Areas for improvement</h5>
-    <p>The table below shows areas that could need improvement.</p>
+    <p>The table below shows areas that could need improvement based on your filters.</p>
 
     <div class="background tableWrapper" id="tableWrapper">
         {% if improvement_data %}
@@ -260,7 +260,7 @@
                 <tr>
                     <th class="fixed-width">Class</th>
                     <th class="fixed-width">Student</th>
-                    <th>Areas of concern</th>
+                    <th>Areas for improvement</th>
                 </tr>
                 </thead>
                 {% for student in improvement_data %}
