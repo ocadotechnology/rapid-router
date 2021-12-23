@@ -22,6 +22,11 @@ input[type="checkbox"] {
   width: 20px;
 }
 
+.open > .dropdown-menu {
+  display: flex;
+  flex-direction: column;
+}
+
 .button--dropdown,
 .dropdown-menu {
   width: 100%;
@@ -31,7 +36,12 @@ input[type="checkbox"] {
 .dropdown-menu {
   overflow-x: hidden;
   font-style: normal;
-  max-height: 660px; /* Allows for the whole levels dropdown to show without needing to scroll */
+  max-height: 380px;
+}
+
+.dropdown-menu > ul {
+  font-style: normal;
+  overflow-y: auto;
 }
 
 .dropdown-menu > .row {
