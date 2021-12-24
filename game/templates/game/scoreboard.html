@@ -14,84 +14,6 @@
     <script src="{% static 'game/js/pqselect.min.js' %}"></script>
     <script src="{% static 'game/js/jquery.outerhtml.js' %}"></script>
     <script src="{% static 'game/js/scoreboard.js' %}"></script>
-    <script>
-        $(document).ready(function() {
-            let scoreboardPresent = document.getElementById("scoreboardTable") !== null;
-            let improvementPresent = document.getElementById("improvementTable") !== null;
-
-            if (scoreboardPresent) {
-                let table = $('#scoreboardTable').DataTable({
-                    scrollY: false,
-                    scrollX: true,
-                    scrollCollapse: false,
-                    paging: true,
-                    deferRender: true,
-                    language: {
-                        emptyTable: 'No data available in table',
-                        loadingRecords: 'Loading...',
-                        processing: 'Processing...',
-                        search: 'Search:',
-                        zeroRecords: 'No matching records found',
-                    },
-                    columnDefs: [
-                        {
-                            orderable: false,
-                            targets: "no-sort",
-                        },
-                    ],
-                });
-
-                new $.fn.dataTable.FixedColumns(table, {
-                    leftColumns: 3,
-                    rightColumns: 1,
-                });
-                document.getElementById("tableWrapper").scrollIntoView();
-
-                $('#scoreboardSearch').on("keyup", function() {
-                    table.search(this.value).draw();
-                });
-
-                $("#scoreboardTable_next").append(" >");
-                $(".next").removeClass("paginate_button");
-
-                table.on("draw", () => {
-                    $("#scoreboardTable_next").append(" >");
-                    $("#scoreboardTable_previous").prepend("< ");
-                    $(".next").removeClass("paginate_button");
-                    $(".previous").removeClass("paginate_button");
-                });
-
-                $(window).on('load', function() {
-                    table.columns.adjust();
-                });
-            }
-
-            // Stops closing the dropdowns when selecting items within it or when pressing the confirmation buttons
-            $(document).on('click', '.dropdown .dropdown-menu', function (e) {
-                e.stopPropagation();
-            });
-
-            if (improvementPresent) {
-                const impTable = $('#improvementTable').DataTable({
-                    pageLength: 5
-                });
-
-                $('#scoreboardSearch').on("keyup", function() {
-                    impTable.search(this.value).draw();
-                });
-
-                $("#improvementTable_next").append(" >");
-                $(".next").removeClass("paginate_button");
-
-                impTable.on("draw", () => {
-                    $("#improvementTable_next").append(" >");
-                    $("#improvementTable_previous").prepend("< ");
-                    $(".next").removeClass("paginate_button");
-                    $(".previous").removeClass("paginate_button");
-                });
-            }
-        });
-    </script>
 {% endblock %}
 
 {% block css %}
@@ -230,13 +152,20 @@
                 {% for student in student_data %}
                     {% ifnotequal student.name user.first_name %}
                     <tr>
+                    {% else %}
+                    <tr class="current-student">
+                    {% endifnotequal %}
                         <td class="fixed-width">{{ student.class_field }}</td>
                         <td class="fixed-width">{{ student.name }}</td>
                         <td>{{ student.completed }}</td>
                         <td>{{ student.total_time }}</td>
                         {% for level_id, level_score in student.level_scores.items %}
                             {% if level_score.full_score %}
+                                {% ifnotequal student.name user.first_name %}
                                 <td class="text-center scoreboard--completed">
+                                {% else %}
+                                <td class="text-center scoreboard--completed-secondary">
+                                {% endifnotequal %}
                                     <div class="d-flex justify-content-center">
                                         <span class="iconify" data-icon="mdi:star"></span>
                                     </div>
@@ -264,26 +193,6 @@
                         {% endif %}
                             {{ student.total_score }}</td>
                     </tr>
-                    {% else %}
-                    <tr>
-                        <td class="fixed-width current-student">{{ student.class_field }}</td>
-                        <td class="fixed-width current-student">{{ student.name }}</td>
-                        <td class="current-student">{{ student.completed }}</td>
-                        <td class="current-student">{{ student.total_time }}</td>
-                        {% for level_id, level_score in student.level_scores.items %}
-                            {% if level_score.full_score %}
-                                <td class="text-center current-student scoreboard--completed-secondary">
-                                    <div class="d-flex justify-content-center">
-                                        <span class="iconify" data-icon="mdi:star"></span>
-                                    </div>
-                                </td>
-                            {% else %}
-                                <td class="text-center current-student">{{ level_score.score }}</td>
-                            {% endif %}
-                        {% endfor %}
-                        <td class="current-student">{{ student.total_score }}</td>
-                    </tr>
-                    {% endifnotequal %}
                 {% endfor %}
             </table>
         {% endif %}

@@ -133,6 +133,6 @@ table td.fixed-width {
   background: #b1ba1d;
 }
 
-#scoreboardTable_wrapper td.current-student {
+#scoreboardTable_wrapper tr.current-student > td {
   background: #85ddff; /* $color-tertiary-50 */
 }

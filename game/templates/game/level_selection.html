@@ -59,12 +59,16 @@
 
 
 {% block nav_ocargo_levels %}
-{% if user|is_logged_in_as_teacher %}
-    <a class="button button--secondary button--secondary--light" style="background-color: white; color: #fa1664;">Levels</a>
-{% elif user|is_independent_student %}
-    <a class="button button--secondary button--secondary--light" style="background-color: white; color: #eab502;">Levels</a>
+{% if user|is_logged_in %}
+    {% if user|is_logged_in_as_teacher %}
+        <a class="button button--secondary button--secondary--light" style="background-color: white; color: #fa1664;">Levels</a>
+    {% elif user|is_logged_in_as_school_user %}
+        <a class="button button--secondary button--secondary--light" style="background-color: white; color: #00a3e0;">Levels</a>
+    {% else %}
+        <a class="button button--secondary button--secondary--light" style="background-color: white; color: #eab502;">Levels</a>
+    {% endif %}
 {% else %}
-    <a class="button button--secondary button--secondary--light" style="background-color: white; color: #00a3e0;">Levels</a>
+    <a class="button button--secondary button--secondary--light" style="background-color: white; color: #fa1664;">Levels</a>
 {% endif %}
 {% endblock nav_ocargo_levels %}
 
