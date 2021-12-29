@@ -104,7 +104,7 @@ def student_row(levels_sorted, student):
 
 
 def to_name(level):
-    return f"L{level.id}"
+    return f"L{level.name}"
 
 
 def data_and_headers_for(students, levels_sorted):
