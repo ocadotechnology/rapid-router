@@ -146,7 +146,6 @@ def _check_attempts(student):
 
         total_score = 0
         total_possible_score = 0
-        total_max_scores = 0
         for attempt in best_attempts:
             max_score = 10 if attempt.level.disable_route_score else 20
 
