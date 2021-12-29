@@ -90,16 +90,3 @@ $(document).ready(function () {
     });
   }
 });
-
-$(window).on('load', function () {
-  tableText = $("#tableWrapper").html()
-  firstClassName = $('label[for="id_classes_0"]').text().trimStart()
-
-  if (tableText.includes(firstClassName)) {
-    $("#id_classes_0").prop("checked", true);
-  }
-
-  if (tableText.includes("L1")) {
-    $("#id_episodes_0").prop("checked", true);
-  }
-});

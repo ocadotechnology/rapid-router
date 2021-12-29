@@ -206,15 +206,11 @@ def scoreboard(request):
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
 
-    class_ids = set(map(int, request.POST.getlist("classes")))
-    episode_ids = set(map(int, request.POST.getlist("episodes")))
-
-    # Get default data if sets above are empty. Also allows to load scoreboard using
-    # either the class filter or the levels filter (instead of needing both)
-    if class_ids == set():
+    if request.POST:
+        class_ids = set(map(int, request.POST.getlist("classes")))
+        episode_ids = set(map(int, request.POST.getlist("episodes")))
+    else:
         class_ids = {users_classes[0].id}
-
-    if episode_ids == set():
         episode_ids = {1}
 
     levels_sorted = []
@@ -228,10 +224,12 @@ def scoreboard(request):
     if not is_valid_request(user, class_ids):
         raise Http404
 
-    form = ScoreboardForm(request.POST or None, classes=users_classes)
+    form = ScoreboardForm(
+        request.POST or None,
+        classes=users_classes,
+        initial={"classes": ["1"], "episodes": ["1"]},
+    )
 
-    # Moved these out of if since the GET/POST check is already performed above and
-    # now the logic for both cases is the same, only the data differs.
     for episode_id in episode_ids:
         episode = Episode.objects.get(id=episode_id)
         levels_sorted += episode.levels
