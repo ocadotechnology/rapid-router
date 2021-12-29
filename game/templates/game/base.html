@@ -30,16 +30,12 @@
 </div>
 {% endblock header %}
 
-{% if user|is_logged_in %}
-    {% if user|is_logged_in_as_teacher %}
-    <div class="sub-nav sub-nav--teacher">
-    {% elif user|is_logged_in_as_school_user %}
-    <div class="sub-nav sub-nav--student">
-    {% else %}
-    <div class="sub-nav" style="background-color: #f6be00">
-    {% endif %}
+{% if user|is_logged_in_as_student %}
+<div class="sub-nav sub-nav--student">
+{% elif user|is_independent_student %}
+<div class="sub-nav sub-nav--independent">
 {% else %}
-    <div class="sub-nav sub-nav--teacher">
+<div class="sub-nav sub-nav--teacher">
 {% endif %}
     {% block nav_ocargo_levels %}
         <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>

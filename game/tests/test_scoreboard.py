@@ -18,29 +18,6 @@ from game.views.scoreboard import StudentRow, scoreboard_data, Headers
 from game.views.scoreboard_csv import scoreboard_csv, Headers as CSVHeaders
 
 
-def assert_student_row(
-    student_row,
-    class_name,
-    student_name,
-    total_score,
-    total_time,
-    level_scores,
-    completed,
-    percentage_complete,
-):
-    # print("**** check student row")
-    # print(student_row.total_time)
-    # print(student_row.total_score)
-    # print(student_row.level_scores)
-    print(student_row.completed)
-    print(student_row.percentage_complete)
-    assert student_row.class_field.name == class_name
-    assert student_row.name == student_name
-    assert student_row.total_score == total_score
-    assert student_row.total_time == total_time
-    assert student_row.level_scores[1]["score"] == level_scores[1]
-
-
 class ScoreboardTestCase(TestCase):
     def test_teacher_multiple_students_multiple_levels(self):
         level_ids = ["1", "2"]

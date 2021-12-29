@@ -20,7 +20,6 @@ def scoreboard_csv(student_data, requested_sorted_levels, improvement_data):
     for student in improvement_data:
         idx = f"{student.class_field.name}_{student.name}"
         improvement_dict[idx] = student.areas
-    print(improvement_dict)
 
     headers = Headers + requested_sorted_levels + ["Areas for improvement"]
 

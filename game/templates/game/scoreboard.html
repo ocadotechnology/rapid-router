@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load game.utils %}
+{% load app_tags %}
 
 {% block title %}Code for Life - Rapid Router - Scoreboard{% endblock %}
 
@@ -37,9 +38,9 @@
 
 {% block nav_ocargo_scoreboard %}
 {% if user|is_logged_in_as_teacher %}
-    <a class="button button--secondary button--secondary--light" style="background-color: white; color: #fa1664;">Scoreboard</a>
+    <a class="button button--secondary button--secondary--light sub-nav--teacher-active">Scoreboard</a>
 {% else %}
-    <a class="button button--secondary button--secondary--light" style="background-color: white; color: #00a3e0;">Scoreboard</a>
+    <a class="button button--secondary button--secondary--light sub-nav--student-active">Scoreboard</a>
 {% endif %}
 {% endblock nav_ocargo_scoreboard %}
 
@@ -195,6 +196,8 @@
                     </tr>
                 {% endfor %}
             </table>
+        {% else %}
+        No data.
         {% endif %}
     </div>
 </div>
@@ -223,6 +226,8 @@
                     </tr>
                 {% endfor %}
             </table>
+        {% else %}
+        No data.
         {% endif %}
     </div>
 </div>
