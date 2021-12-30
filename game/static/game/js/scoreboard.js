@@ -44,7 +44,6 @@ $(document).ready(function () {
       leftColumns: 3,
       rightColumns: 1
     });
-    // document.getElementById("tableWrapper").scrollIntoView();
 
     $("#scoreboardSearch").on("keyup", function () {
       table.search(this.value).draw();
