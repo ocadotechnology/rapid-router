@@ -202,16 +202,34 @@ class ScoreboardCsvTestCase(TestCase):
         assert len(actual_rows) == len(student_rows)
 
         # check first row
-        class_name, name, completed_levels, total_time, total_scores, l1, l2, improvement = actual_rows[0].split(",")        
+        (
+            class_name,
+            name,
+            completed_levels,
+            total_time,
+            total_scores,
+            l1,
+            l2,
+            improvement,
+        ) = actual_rows[0].split(",")
         assert student_rows[0].class_field.name == class_name
         assert student_rows[0].name == name
-        assert student_rows[0].level_scores[0]['score'] == int(l1)
-        assert student_rows[0].level_scores[1]['score'] == int(l2)
+        assert student_rows[0].level_scores[0]["score"] == int(l1)
+        assert student_rows[0].level_scores[1]["score"] == int(l2)
         assert improvement == "Getting started"
 
         # check last row
         last = len(actual_rows) - 1
-        class_name, name, completed_levels, total_time, total_scores, l1, l2, improvement = actual_rows[last].split(",")
+        (
+            class_name,
+            name,
+            completed_levels,
+            total_time,
+            total_scores,
+            l1,
+            l2,
+            improvement,
+        ) = actual_rows[last].split(",")
         assert student_rows[last].class_field.name == class_name
         assert student_rows[last].name == name
         assert str(student_rows[last].total_time) == total_time
@@ -239,7 +257,7 @@ class ScoreboardCsvTestCase(TestCase):
             total_score=total_score,
             level_scores=level_scores,
             completed=2,
-            percentage_complete=45
+            percentage_complete=45,
         )
 
         return row, student
