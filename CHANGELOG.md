@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.0 (2021-12-30)
+### Feature
+* Scoreboard top,  bottom, teacher, student ([#1272](https://github.com/ocadotechnology/rapid-router/issues/1272)) ([`3bda166`](https://github.com/ocadotechnology/rapid-router/commit/3bda16605ae34d90c9bbd71fcee95fa9150806d8))
+
 ## v3.4.5 (2021-12-13)
 ### Fix
 * Upgrade Django to 2.2.25 ([#1268](https://github.com/ocadotechnology/rapid-router/issues/1268)) ([`d6dcdf9`](https://github.com/ocadotechnology/rapid-router/commit/d6dcdf9b23e47f53ad5e29edc96dc75780e5f9c9))
