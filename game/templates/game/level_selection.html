@@ -50,15 +50,22 @@
 {% endblock %}
 
 {% block header %}
-<div class="banner banner--rapid-router--background row">
+<div class="banner banner--rapid-router--background">
     <div class="level_rr_logo">
         <img title="Rapid Router logo" alt="Rapid Router logo" src="{% static 'game/image/RR_logo.svg' %}"></section>
     </div>
 </div>
 {% endblock header %}
 
+
 {% block nav_ocargo_levels %}
-<a class="button button--secondary button--secondary--light" style="background-color: white; color: #fa1664;" href="{% url 'levels' %}">Levels</a>
+    {% if user|is_logged_in_as_student %}
+    <a class="button button--secondary button--secondary--light sub-nav--student-active">Levels</a>
+    {% elif user|is_independent_student %}
+    <a class="button button--secondary button--secondary--light sub-nav--independent-active">Levels</a>
+    {% else %}
+    <a class="button button--secondary button--secondary--light sub-nav--teacher-active">Levels</a>
+    {% endif %}
 {% endblock nav_ocargo_levels %}
 
 {% block content %}
