@@ -14,7 +14,7 @@ from django.utils.timezone import utc
 from hamcrest import *
 
 from game.models import Attempt, Level
-from game.views.scoreboard import StudentRow, scoreboard_data, Headers
+from game.views.scoreboard import StudentRow, scoreboard_data, Headers, StudentInTrouble
 from game.views.scoreboard_csv import scoreboard_csv, Headers as CSVHeaders
 
 
@@ -180,9 +180,17 @@ class ScoreboardTestCase(TestCase):
 
 class ScoreboardCsvTestCase(TestCase):
     def test_scoreboard_csv(self):
-        levels = Level.objects.sorted_levels()
-        student_rows = [(self.student_row("secrète")), (self.student_row())]
+        levels = Level.objects.sorted_levels()[0:2]
+
+        student_rows = [None, None]
+        students = [None, None]
+        student_rows[0], students[0] = self.student_row("secrète")
+        student_rows[1], students[1] = self.student_row()
+
         improvement_data = []
+        for student in students:
+            stud = StudentInTrouble(student=student, areas="Getting started")
+            improvement_data.append(stud)
 
         response = scoreboard_csv(student_rows, levels, improvement_data)
 
@@ -194,39 +202,47 @@ class ScoreboardCsvTestCase(TestCase):
         assert len(actual_rows) == len(student_rows)
 
         # check first row
-        class_name, name, _, _, _, _ = actual_rows[0].split(",")
+        class_name, name, completed_levels, total_time, total_scores, l1, l2, improvement = actual_rows[0].split(",")        
         assert student_rows[0].class_field.name == class_name
         assert student_rows[0].name == name
+        assert student_rows[0].level_scores[0]['score'] == int(l1)
+        assert student_rows[0].level_scores[1]['score'] == int(l2)
+        assert improvement == "Getting started"
 
         # check last row
         last = len(actual_rows) - 1
-        class_name, name, _, _, _, _ = actual_rows[last].split(",")
+        class_name, name, completed_levels, total_time, total_scores, l1, l2, improvement = actual_rows[last].split(",")
         assert student_rows[last].class_field.name == class_name
         assert student_rows[last].name == name
+        assert str(student_rows[last].total_time) == total_time
 
     def student_row(self, class_name=None):
         email, password = signup_teacher_directly()
         _, class_name, access_code = create_class_directly(email, class_name)
         _, _, student = create_school_student_directly(access_code)
 
-        total_time = timedelta(0, 30)
+        total_time = timedelta(seconds=30)
         scores = [x for x in range(20)]
         total_score = sum(scores)
-        progress = (0, 0, 0)
 
-        all_scores = scores + [""] * 89
+        level_scores = {}
+        for i in range(2):
+            level_scores[i] = {}
+            level_scores[i]["score"] = 5
+            level_scores[i]["full_score"] = 20
+            level_scores[i]["is_low_attempt"] = True
 
         row = StudentRow(
             student=student,
+            class_field=Class(name="MyClass"),
             total_time=total_time,
             total_score=total_score,
-            start_time=datetime.fromtimestamp(1435305072, tz=utc),
-            finish_time=datetime.fromtimestamp(1438305072, tz=utc),
-            progress=progress,
-            scores=all_scores,
-            class_field=Class(name="MyClass"),
+            level_scores=level_scores,
+            completed=2,
+            percentage_complete=45
         )
-        return row
+
+        return row, student
 
     def expected_header(self, levels):
         level_strings = list(map(str, levels))
