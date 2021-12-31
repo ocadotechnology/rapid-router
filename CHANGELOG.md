@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.1 (2021-12-31)
+### Fix
+* Student scoreboard see all levels ([#1273](https://github.com/ocadotechnology/rapid-router/issues/1273)) ([`03551c2`](https://github.com/ocadotechnology/rapid-router/commit/03551c2a01d8e674d857f0df6072e0ffab4cf955))
+
 ## v3.5.0 (2021-12-30)
 ### Feature
 * Scoreboard top,  bottom, teacher, student ([#1272](https://github.com/ocadotechnology/rapid-router/issues/1272)) ([`3bda166`](https://github.com/ocadotechnology/rapid-router/commit/3bda16605ae34d90c9bbd71fcee95fa9150806d8))
