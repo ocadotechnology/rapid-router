@@ -183,6 +183,7 @@ def scoreboard_view(
         request,
         "game/scoreboard.html",
         context={
+            "anchor": request.POST,  # Scroll to top of scoreboard section only if request is POST
             "form": form,
             "student_data": student_data,
             "headers": headers,
@@ -205,13 +206,14 @@ def scoreboard(request):
 
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
+    first_class_id = users_classes[0].id
 
     if request.POST:
         class_ids = set(map(int, request.POST.getlist("classes")))
         episode_ids = set(map(int, request.POST.getlist("episodes")))
     else:
         # Get default data on normal page load - teacher's first class and the first episode
-        class_ids = {users_classes[0].id}
+        class_ids = {first_class_id}
         # student sees all episodes by default, otherwise defaults to ep 1
         episode_ids = {1}
         if user.is_student():
@@ -232,7 +234,7 @@ def scoreboard(request):
         request.POST or None,
         classes=users_classes,
         initial={
-            "classes": ["1"],
+            "classes": [f"{first_class_id}"],
             "episodes": ["1"],
         },  # Select the first checkbox of each dropdown to cater for first page load
     )
