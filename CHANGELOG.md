@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.2 (2021-12-31)
+### Fix
+* Scoreboard default checkbox and scroll fixes ([#1274](https://github.com/ocadotechnology/rapid-router/issues/1274)) ([`b43ba46`](https://github.com/ocadotechnology/rapid-router/commit/b43ba468c47e08455430327bab57c765d41c17ba))
+
 ## v3.5.1 (2021-12-31)
 ### Fix
 * Student scoreboard see all levels ([#1273](https://github.com/ocadotechnology/rapid-router/issues/1273)) ([`03551c2`](https://github.com/ocadotechnology/rapid-router/commit/03551c2a01d8e674d857f0df6072e0ffab4cf955))
