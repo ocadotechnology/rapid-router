@@ -212,7 +212,7 @@ def scoreboard(request):
         class_ids = set(map(int, request.POST.getlist("classes")))
         episode_ids = set(map(int, request.POST.getlist("episodes")))
     else:
-        # Get default data on normal page load - teacher's first class and
+        # Get default data on normal page load - teacher's first class and the first episode
         class_ids = {first_class_id}
         # student sees all episodes by default, otherwise defaults to ep 1
         episode_ids = {1}
