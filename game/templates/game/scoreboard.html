@@ -48,7 +48,7 @@
 
 <form action="" method="post" id="scoreboardForm">
 <div class="container">
-    <h4 class="text-center">Scoreboard</h4>
+    <h4 class="text-center" id="scoreboardTitle">Scoreboard</h4>
     {% csrf_token %}
     {% if user|is_logged_in_as_teacher %}
     <div class="row form--row">
@@ -243,5 +243,13 @@
 {% endif %}
 
 </form>
+
+{% if anchor %}
+    <script type='text/javascript'>
+        $(document).ready(function(){
+            animate($('#scoreboardTitle').offset().top - $('.menu').height())
+        });
+    </script>
+{% endif %}
 
 {% endblock %}
