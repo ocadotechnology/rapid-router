@@ -210,10 +210,12 @@ def scoreboard(request):
         class_ids = set(map(int, request.POST.getlist("classes")))
         episode_ids = set(map(int, request.POST.getlist("episodes")))
     else:
-        # Get default data on normal page load - teacher's first class and the first
-        # Rapid Router episode
+        # Get default data on normal page load - teacher's first class and the first episode
         class_ids = {users_classes[0].id}
+        # student sees all episodes by default, otherwise defaults to ep 1
         episode_ids = {1}
+        if user.is_student():
+            episode_ids = {x for x in range(1, 12)}
 
     levels_sorted = []
 
@@ -229,7 +231,10 @@ def scoreboard(request):
     form = ScoreboardForm(
         request.POST or None,
         classes=users_classes,
-        initial={"classes": ["1"], "episodes": ["1"]},  # Select the first checkbox of each dropdown to cater for first page load
+        initial={
+            "classes": ["1"],
+            "episodes": ["1"],
+        },  # Select the first checkbox of each dropdown to cater for first page load
     )
 
     for episode_id in episode_ids:
