@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.3 (2021-12-31)
+### Fix
+* Fix indep sub nav after portal CSS update ([#1275](https://github.com/ocadotechnology/rapid-router/issues/1275)) ([`b5267f8`](https://github.com/ocadotechnology/rapid-router/commit/b5267f89bc25d1648c5467f47a5db7f3bbde3839))
+
 ## v3.5.2 (2021-12-31)
 ### Fix
 * Scoreboard default checkbox and scroll fixes ([#1274](https://github.com/ocadotechnology/rapid-router/issues/1274)) ([`b43ba46`](https://github.com/ocadotechnology/rapid-router/commit/b43ba468c47e08455430327bab57c765d41c17ba))
