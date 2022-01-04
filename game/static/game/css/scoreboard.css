@@ -89,7 +89,7 @@ div.DTFC_RightBodyLiner {
 }
 
 a.next {
-  padding-left: 10px;
+  margin-left: 10px;
 }
 
 a.next:focus,
