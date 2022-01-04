@@ -19,6 +19,7 @@
 }
 
 input[type="checkbox"] {
+  cursor: pointer;
   width: 20px;
 }
 
@@ -61,6 +62,15 @@ input[type="checkbox"] {
   margin: 0;
 }
 
+.dropdown-menu .dropdown-menu__option .button--regular {
+  cursor: default;
+}
+
+.dropdown-menu .dropdown-menu__option .button--regular:hover .dropdown-menu__option__text {
+  cursor: default;
+  text-decoration: none;
+}
+
 .tableWrapper {
   width: 100%;
 }
@@ -76,6 +86,10 @@ div.DTFC_RightBodyLiner {
 .dataTables_wrapper .dataTables_paginate .disabled,
 .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
   display: none;
+}
+
+a.next {
+  padding-left: 10px;
 }
 
 a.next:focus,
