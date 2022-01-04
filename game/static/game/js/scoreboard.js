@@ -15,6 +15,13 @@ $(document).ready(function () {
     $('[id^="id_episodes_"]').prop("checked", $("#select-all-levels").is(":checked"));
   });
 
+  // Checks the select all checkboxes on page load if all their sub boxes are already checked
+  $("#select-all-classes").prop("checked",
+      $('[id^="id_classes_"]:checked').length === $('[id^="id_classes_"]').length);
+
+  $("#select-all-levels").prop("checked",
+      $('[id^="id_episodes_"]:checked').length === $('[id^="id_episodes_"]').length);
+
   let scoreboardPresent = document.getElementById("scoreboardTable") !== null;
   let improvementPresent = document.getElementById("improvementTable") !== null;
 
@@ -63,6 +70,14 @@ $(document).ready(function () {
       table.columns.adjust();
     });
   }
+
+  // Prevents reloading the page by submitting the form by pressing the Enter key
+  $(window).on("keydown", function(event) {
+    if(event.keyCode === 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
 
   // Stops closing the dropdowns when selecting items within it or when pressing the confirmation buttons
   $(document).on("click", ".dropdown .dropdown-menu", function (e) {
