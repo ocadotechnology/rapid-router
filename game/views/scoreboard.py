@@ -133,10 +133,10 @@ def _check_attempts(best_attempts):
 
     # episode ids with low attempts (below 50%)
     low_episode_ids = set()
-    total_score = 0
-    total_possible_score = 0
 
     for episode_id in range(1, 12):
+        total_score = 0
+        total_possible_score = 0
         # Get the best attempts for the specific Episode
         attempts_dict = [
             best_attempt
