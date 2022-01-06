@@ -138,12 +138,12 @@ def _check_attempts(best_attempts):
         total_score = 0
         total_possible_score = 0
         # Get the best attempts for the specific Episode
-        attempts_dict = [
+        attempts = [
             best_attempt
             for best_attempt in best_attempts
             if best_attempt.level.episode.id == episode_id
         ]
-        for attempt in attempts_dict:
+        for attempt in attempts:
             max_score = 10 if attempt.level.disable_route_score else 20
 
             total_score += attempt.score if attempt.score is not None else 0
