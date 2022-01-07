@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.5 (2022-01-07)
+### Fix
+* Make Scoreboard logic more efficient ([#1279](https://github.com/ocadotechnology/rapid-router/issues/1279)) ([`a49414b`](https://github.com/ocadotechnology/rapid-router/commit/a49414b26b766ebf83704ed0425c5a16c4e3f8dd))
+
 ## v3.5.4 (2022-01-04)
 ### Fix
 * Scoreboard select all boxes, dropdown styles and text spacing ([#1277](https://github.com/ocadotechnology/rapid-router/issues/1277)) ([`89c1a10`](https://github.com/ocadotechnology/rapid-router/commit/89c1a102e97de9e625c1b5cd4d5838a09a8fc517))
