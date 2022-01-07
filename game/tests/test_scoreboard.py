@@ -10,18 +10,18 @@ from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
 from django.test import Client, TestCase
 from django.urls import reverse
-from django.utils.timezone import utc
 from hamcrest import *
 
-from game.models import Attempt, Level
+from game.models import Attempt, Level, Episode
 from game.views.scoreboard import StudentRow, scoreboard_data, Headers, StudentInTrouble
 from game.views.scoreboard_csv import scoreboard_csv, Headers as CSVHeaders
 
 
 class ScoreboardTestCase(TestCase):
     def test_teacher_multiple_students_multiple_levels(self):
-        level_ids = ["1", "2"]
-        level_names = ids_of_levels_named(level_ids)
+        episode_ids = [1]
+        episode1 = Episode.objects.get(id=1)
+        level_ids = [f"{x}" for x in range(1, len(episode1.levels)+1)]
         level1 = Level.objects.get(name="1")
         level2 = Level.objects.get(name="2")
 
@@ -31,8 +31,19 @@ class ScoreboardTestCase(TestCase):
         create_attempt(student2, level1, 2)
         create_attempt(student2, level2, 16)
 
-        student_data, headers, level_headers = scoreboard_data(
-            MockTeacher(), level_names, [clas.id]
+        all_levels = [level1, level2]
+
+        attempts_per_student = {
+            student: Attempt.objects.filter(
+                level__in=all_levels, student=student, is_best_attempt=True
+            ).select_related("level"),
+            student2: Attempt.objects.filter(
+                level__in=all_levels, student=student2, is_best_attempt=True
+            ).select_related("level"),
+        }
+
+        student_data, headers, level_headers, levels_sorted = scoreboard_data(
+            episode_ids, attempts_per_student
         )
 
         assert headers == Headers

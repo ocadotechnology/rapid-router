@@ -1,5 +1,4 @@
 import csv
-from builtins import map
 
 from django.http import HttpResponse
 

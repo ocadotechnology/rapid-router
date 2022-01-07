@@ -36,7 +36,7 @@ class StudentRow:
 
 
 # Returns row of student object with values and scores of each selected level
-def student_row(levels_sorted, student):
+def student_row(levels_sorted, student, best_attempts):
     threshold = 0.5
 
     num_all = num_finished = num_attempted = num_started = 0
@@ -49,9 +49,6 @@ def student_row(levels_sorted, student):
         level_scores[level.id] = {}
         level_scores[level.id]["score"] = ""
 
-    best_attempts = Attempt.objects.filter(
-        level__in=levels_sorted, student=student, is_best_attempt=True
-    ).select_related("level")
     if best_attempts:
         attempts_dict = {
             best_attempt.level.id: best_attempt for best_attempt in best_attempts
@@ -107,20 +104,20 @@ def to_name(level):
     return f"L{level.name}"
 
 
-def data_and_headers_for(students, levels_sorted):
-    level_headers = list(map(to_name, levels_sorted))
-    student_data = [student_row(levels_sorted, student) for student in students]
-
-    return student_data, Headers, level_headers
-
-
-def scoreboard_data(user, levels_sorted, class_ids):
-    classes = Class.objects.filter(id__in=class_ids)
-
-    students = students_visible_to_user(user, classes)
-
+def scoreboard_data(episode_ids, attempts_per_students):
     # Show the total score, total time and score of each level
-    return data_and_headers_for(students, levels_sorted)
+    levels_sorted = []
+    for episode_id in episode_ids:
+        episode = Episode.objects.get(id=episode_id)
+        levels_sorted += episode.levels
+
+    level_headers = list(map(to_name, levels_sorted))
+    student_data = [
+        student_row(levels_sorted, student, best_attempts)
+        for student, best_attempts in attempts_per_students.items()
+    ]
+
+    return student_data, Headers, level_headers, levels_sorted
 
 
 class StudentInTrouble:
@@ -131,22 +128,22 @@ class StudentInTrouble:
         self.areas = kwargs.get("areas")
 
 
-def _check_attempts(student):
+def _check_attempts(best_attempts):
     threshold = 0.5
 
     # episode ids with low attempts (below 50%)
     low_episode_ids = set()
+
     for episode_id in range(1, 12):
-        episode = Episode.objects.get(id=episode_id)
-        levels = episode.levels
-
-        best_attempts = Attempt.objects.filter(
-            level__in=levels, student=student, is_best_attempt=True
-        ).select_related("level")
-
         total_score = 0
         total_possible_score = 0
-        for attempt in best_attempts:
+        # Get the best attempts for the specific Episode
+        attempts = [
+            best_attempt
+            for best_attempt in best_attempts
+            if best_attempt.level.episode.id == episode_id
+        ]
+        for attempt in attempts:
             max_score = 10 if attempt.level.disable_route_score else 20
 
             total_score += attempt.score if attempt.score is not None else 0
@@ -160,13 +157,10 @@ def _check_attempts(student):
 
 
 # Returns students that need improvement
-def get_improvement_data(class_ids):
-    classes = Class.objects.filter(id__in=class_ids)
-    all_students = students_of_classes(classes)
-
+def get_improvement_data(attempts_per_student):
     the_students = []  # that need improvement
-    for student in all_students:
-        episodes_of_concern = _check_attempts(student)
+    for student, best_attempts in attempts_per_student.items():
+        episodes_of_concern = _check_attempts(best_attempts)
         if episodes_of_concern:
             areas = [messages.get_episode_title(ep_id) for ep_id in episodes_of_concern]
             areas_summary = ", ".join(areas)
@@ -219,8 +213,6 @@ def scoreboard(request):
         if user.is_student():
             episode_ids = {x for x in range(1, 12)}
 
-    levels_sorted = []
-
     if user.is_independent_student():
         return render_no_permission_error(request)
 
@@ -239,14 +231,27 @@ def scoreboard(request):
         },  # Select the first checkbox of each dropdown to cater for first page load
     )
 
-    for episode_id in episode_ids:
-        episode = Episode.objects.get(id=episode_id)
-        levels_sorted += episode.levels
+    classes = Class.objects.filter(id__in=class_ids)
+    students = students_visible_to_user(user, classes)
 
-    student_data, headers, level_headers = scoreboard_data(
-        user, levels_sorted, class_ids
+    all_levels = []
+
+    for episode_id in range(1, 12):
+        episode = Episode.objects.get(id=episode_id)
+        all_levels += episode.levels
+
+    attempts_per_student = {}
+
+    for student in students:
+        best_attempts = Attempt.objects.filter(
+            level__in=all_levels, student=student, is_best_attempt=True
+        ).select_related("level")
+        attempts_per_student[student] = best_attempts
+
+    student_data, headers, level_headers, levels_sorted = scoreboard_data(
+        episode_ids, attempts_per_student
     )
-    improvement_data = get_improvement_data(class_ids)
+    improvement_data = get_improvement_data(attempts_per_student)
 
     csv_export = "export" in request.POST
 
