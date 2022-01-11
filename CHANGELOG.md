@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.6 (2022-01-11)
+### Fix
+* Create failed attempt on crash, out of fuel and red light events ([#1280](https://github.com/ocadotechnology/rapid-router/issues/1280)) ([`04ce387`](https://github.com/ocadotechnology/rapid-router/commit/04ce387993c7b2ec23e7e9b1bd1b6a77a2f85bef))
+
 ## v3.5.5 (2022-01-07)
 ### Fix
 * Make Scoreboard logic more efficient ([#1279](https://github.com/ocadotechnology/rapid-router/issues/1279)) ([`a49414b`](https://github.com/ocadotechnology/rapid-router/commit/a49414b26b766ebf83704ed0425c5a16c4e3f8dd))
