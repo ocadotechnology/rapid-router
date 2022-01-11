@@ -58,12 +58,13 @@ input[type="checkbox"] {
   margin: 0;
 }
 
-.dropdown-menu .dropdown-menu__option .button--regular {
-  cursor: default;
+#scoreboardForm .button--regular,
+#scoreboardForm label {
+  cursor: pointer;
 }
 
-.dropdown-menu .dropdown-menu__option .button--regular:hover .dropdown-menu__option__text {
-  cursor: default;
+#scoreboardForm .dropdown-menu__option__text {
+  cursor: pointer;
   text-decoration: none;
 }
 
