@@ -151,17 +151,17 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
     //Crash?
-    var previousNodeCow = this.getCowForNode(this.van.getPosition().currentNode, ocargo.Cow.ACTIVE);
-    var collisionWithCow = previousNodeCow && nextNode !== this.van.getPosition().currentNode;
+    let previousNodeCow = this.getCowForNode(this.van.getPosition().currentNode, ocargo.Cow.ACTIVE);
+    let collisionWithCow = previousNodeCow && nextNode !== this.van.getPosition().currentNode;
 
-    if(collisionWithCow) {
+    if (collisionWithCow) {
         handleCrash(this, gettext('You ran into a cow! Keep in mind that cows can appear anywhere on the map.'),
             'COLLISION_WITH_COW', 'collision with cow van move action: ');
         return false;
     }
 
-    var offRoad = nextNode === null;
-    var offRoadPopupMessage = function(correctSteps){
+    let offRoad = nextNode === null;
+    let offRoadPopupMessage = function(correctSteps){
         if (correctSteps === 0) {
             return gettext('Your first move was a crash. What went wrong?');
         }
@@ -183,6 +183,8 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
                                                       workspace: ocargo.blocklyControl.serialize(),
                                                       failures: this.failures,
                                                       pythonWorkspace: ocargo.pythonControl.getCode() });
+
+        ocargo.game.sendAttempt(0);
 
         ocargo.animation.appendAnimation({
             type: 'popup',
@@ -211,8 +213,10 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         return false;
     }
 
-    var light = this.getTrafficLightForNode(this.van.getPosition());
+    let light = this.getTrafficLightForNode(this.van.getPosition());
     if (light !== null && light.getState() === ocargo.TrafficLight.RED && nextNode !== light.controlledNode) {
+        ocargo.game.sendAttempt(0);
+
         // Ran a red light
         ocargo.event.sendEvent("LevelThroughRedLight", { levelName: LEVEL_NAME,
                                                          defaultLevel: DEFAULT_LEVEL,
@@ -269,6 +273,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
     function handleCrash(model, popupMessage, vanAction, actionDescription) {
         model.van.crashStatus = 'CRASHED';
+        ocargo.game.sendAttempt(0);
 
         ocargo.animation.appendAnimation({
             type: 'callable',
