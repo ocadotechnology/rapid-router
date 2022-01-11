@@ -41,6 +41,6 @@ class SeleniumTestCase(LiveServerTestCase):
 
     def __call__(self, result=None):
         if hasattr(self, "selenium"):
-            for width in getattr(settings, "SELENIUM_WIDTHS", [1024]):
+            for width in getattr(settings, "SELENIUM_WIDTHS", [1624]):
                 self.selenium.set_window_size(width, 1024)
         return super(SeleniumTestCase, self).__call__(result)
