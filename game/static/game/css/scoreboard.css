@@ -58,7 +58,10 @@ input[type="checkbox"] {
   margin: 0;
 }
 
-#scoreboardForm .button--regular,
+#scoreboardForm .button--regular {
+  cursor: default;
+}
+
 #scoreboardForm label {
   cursor: pointer;
 }
