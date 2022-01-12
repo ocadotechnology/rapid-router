@@ -31,9 +31,9 @@ class LevelModerationForm(forms.Form):
     def __init__(self, *args, **kwargs):
         classes = kwargs.pop("classes")
         super(LevelModerationForm, self).__init__(*args, **kwargs)
-        self.fields["classes"] = forms.ModelChoiceField(
-            queryset=classes,
-            required=True,
-            widget=forms.Select(),
+        classes_choices = [(c.id, c.name) for c in classes]
+
+        self.fields["classes"] = forms.MultipleChoiceField(
+            choices=classes_choices, widget=forms.CheckboxSelectMultiple()
         )
         self.fields["students"] = forms.CharField(required=False, widget=forms.Select())

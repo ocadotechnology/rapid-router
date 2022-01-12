@@ -54,54 +54,30 @@ def level_moderation(request):
 
     form = LevelModerationForm(request.POST or None, classes=classes_taught)
 
-    student_id = None
-    student_dict = None
     level_data = None
     table_headers = None
 
     if request.method == "POST":
         if form.is_valid():
-            student_id = form.data.get("students")
-            class_id = form.data.get("classes")
+            class_ids = set(map(int, request.POST.getlist("classes")))
+            classes_taught_ids = [class_.id for class_ in classes_taught]
 
-            if not class_id:
-                raise Http404
-
-            # check user has permission to look at this class!
-            cl = get_object_or_404(Class, id=class_id)
-            if not permissions.can_see_class(request.user, cl):
+            # check user has permission to look at the classes
+            if not all(class_id in classes_taught_ids for class_id in class_ids):
                 return renderError(
                     request,
                     messages.noPermissionLevelModerationTitle(),
                     messages.noPermissionLevelModerationClass(),
                 )
 
-            students = Student.objects.filter(class_field=cl, new_user__is_active=True)
-            student_dict = {
-                student.id: student.user.user.first_name for student in students
-            }
-
-            if student_id:
-                # check student is in class
-                student = get_object_or_404(Student, id=student_id)
-                if student.class_field != cl:
-                    return renderError(
-                        request,
-                        messages.noPermissionLevelModerationTitle(),
-                        messages.noPermissionLevelModerationStudent(),
-                    )
-
-                owners = [student.user]
-
-            else:
-                owners = [student.user for student in students]
+            students = Student.objects.filter(class_field_id__in=class_ids, new_user__is_active=True)
+            owners = [student.user for student in students]
 
             table_headers = [
                 ugettext("Student"),
                 ugettext("Level name"),
                 ugettext("Shared with"),
-                ugettext("Play"),
-                ugettext("Delete"),
+                ugettext("Actions"),
             ]
             level_data = []
 
@@ -136,8 +112,6 @@ def level_moderation(request):
         request,
         "game/level_moderation.html",
         context={
-            "student_id": student_id,
-            "students": student_dict,
             "form": form,
             "levelData": level_data,
             "thead": table_headers,

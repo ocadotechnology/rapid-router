@@ -10,9 +10,6 @@
 <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/level_moderation.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/foundation/vendor/js.cookie.min.js' %}"></script>
-<script>
-    var students = {% if students %} true {% else %} false {% endif %};
-</script>
 {% endblock %}
 
 {% block css %}
@@ -20,18 +17,23 @@
 <link href="{% static 'game/css/level_moderation.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
+{% block header %}
+<section class="banner banner--rapid-router">
+    <img title="Rapid Router logo" alt="Rapid Router logo" src="{% static 'game/image/RR_logo.svg' %}">
+</section>
+{% endblock header %}
+
 {% block nav_ocargo_moderate %}
 <a class="button button--secondary button--secondary--light sub-nav--teacher-active" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
 {% endblock nav_ocargo_moderate %}
 
 {% block content %}
 <div class="background">
-    <h4 class="text-center">{% trans "Level moderation" %}</h4>
     <div class="container">
         <div>
-            <h5>{% trans "Filter levels" %}</h5>
-            <p>{% trans "Filter the levels by class and student, and click 'Submit' to see the student's levels." %}</p>
-            <div id="form" class="form">
+            <h4>Level moderation</h5>
+            <p>Filter the levels by class, or class and student, and click 'Play' to see the created levels.</p>
+            <!-- <div id="form" class="form">
                 <form action="" method="post" id="levelModerationForm" class="form-row">
                     {% csrf_token %}
                     <div class="form-group col-md-6">
@@ -48,7 +50,54 @@
                         <button class="button button--primary" type="submit">{% trans "Submit" %}</button>
                     </div>
                 </form>
-            </div>
+            </div> -->
+
+            <form action="" method="post" id="scoreboardForm">
+                {% csrf_token %}
+                <div class="row form--row">
+                    <div class="col-sm-4">
+                        <div class="dropdown">
+                            <button class="button--secondary button--secondary--dark button--dropdown" type="button" data-toggle="dropdown" aria-expanded="false">
+                                <div class="dropdown__text">Filter classes</div>
+                            </button>
+                            <div class="dropdown-menu">
+                                <ul>
+                                    <li class="dropdown-menu__option">
+                                        <a class="button button--regular">
+                                            <p class="dropdown-menu__option__text">
+                                                <label for="select-all-classes">
+                                                    <input type="checkbox" id="select-all-classes"><strong>Select all</strong>
+                                                </label>
+                                            </p>
+                                        </a>
+                                    </li>
+                                    {% for class in form.classes %}
+                                        <li class="dropdown-menu__option">
+                                            <a class="button button--regular">
+                                                <p class="dropdown-menu__option__text">{{ class }}</p>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+            
+                                <div class="row">
+                                    <div class="col-sm-6 text-right">
+                                        <a class="button button--secondary button--secondary--dark" id="clear-classes">Clear</a>
+                                    </div>
+                                    <div class="col-sm-6 text-left">
+                                        <button class="button button--primary" type="submit" name="view">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form--row__input col-sm-4">
+                        <div class="input--icon">
+                            <input type="text" name="Search" placeholder="Search" id="moderateSearch"><span class="iconify" data-icon="mdi:search"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -59,18 +108,25 @@
             {% if thead %}
             <table class="header-primary data-primary">
                 <tr>
-                    {% for header in thead %}
-                    <th> {{header}} </th>
-                    {% endfor %}
+                    <th><p>Student</p></th>
+                    <th><p>Level name</p></th>
+                    <th><p>Shared with</p></th>
+                    <th colspan="2"><p>Actions</p></th>
                 </tr>
 
                 {% for level in levelData %}
                 <tr>
-                    <td> {{level.student}} </td>
-                    <td> {{level.name}} </td>
-                    <td> {{level.shared_with}} </td>
-                    <td> <button class="button button--small button--primary play" value={{level.id}}>{% trans "Play" %}</button> </td>
-                    <td> <button class="button button--small button--primary--danger delete" value={{level.id}}>{% trans "Delete" %}</button> </td>
+                    <td>{{level.student}}</td>
+                    <td>{{level.name}}</td>
+                    <td>{{level.shared_with}}</td>
+                    <td class="text-center">
+                        <button class="button button--small button--primary play" value={{level.id}}>{% trans "Play" %}</button>
+                    </td>
+                    <td class="text-center">
+                        <button class="button button--small button--primary--danger button--icon delete" value={{level.id}}>
+                            {% trans "Delete" %}<span class="iconify" data-icon="mdi:delete-outline"></span>
+                        </button>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
