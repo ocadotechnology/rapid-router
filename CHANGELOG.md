@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.7 (2022-01-12)
+### Fix
+* Set cursor to pointer on scoreboard dropdowns ([#1281](https://github.com/ocadotechnology/rapid-router/issues/1281)) ([`e7f28ac`](https://github.com/ocadotechnology/rapid-router/commit/e7f28ac66c71a88b17fd436894f6b2fdb5691353))
+
 ## v3.5.6 (2022-01-11)
 ### Fix
 * Create failed attempt on crash, out of fuel and red light events ([#1280](https://github.com/ocadotechnology/rapid-router/issues/1280)) ([`04ce387`](https://github.com/ocadotechnology/rapid-router/commit/04ce387993c7b2ec23e7e9b1bd1b6a77a2f85bef))
