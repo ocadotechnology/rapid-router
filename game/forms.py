@@ -36,4 +36,3 @@ class LevelModerationForm(forms.Form):
         self.fields["classes"] = forms.MultipleChoiceField(
             choices=classes_choices, widget=forms.CheckboxSelectMultiple()
         )
-        self.fields["students"] = forms.CharField(required=False, widget=forms.Select())

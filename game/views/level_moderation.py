@@ -52,15 +52,16 @@ def level_moderation(request):
             messages.noDataToShowLevelModeration(),
         )
 
-    form = LevelModerationForm(request.POST or None, classes=classes_taught)
-
-    level_data = None
-    table_headers = None
+    classes_taught_ids = [class_.id for class_ in classes_taught]
+    form = LevelModerationForm(
+        request.POST or None,
+        classes=classes_taught,
+        initial={"classes": classes_taught_ids},
+    )
 
     if request.method == "POST":
         if form.is_valid():
             class_ids = set(map(int, request.POST.getlist("classes")))
-            classes_taught_ids = [class_.id for class_ in classes_taught]
 
             # check user has permission to look at the classes
             if not all(class_id in classes_taught_ids for class_id in class_ids):
@@ -69,45 +70,51 @@ def level_moderation(request):
                     messages.noPermissionLevelModerationTitle(),
                     messages.noPermissionLevelModerationClass(),
                 )
+        else:
+            class_ids = []
+    else:
+        class_ids = [class_id for class_id in classes_taught_ids]
 
-            students = Student.objects.filter(class_field_id__in=class_ids, new_user__is_active=True)
-            owners = [student.user for student in students]
+    students = Student.objects.filter(
+        class_field_id__in=class_ids, new_user__is_active=True
+    )
+    owners = [student.user for student in students]
 
-            table_headers = [
-                ugettext("Student"),
-                ugettext("Level name"),
-                ugettext("Shared with"),
-                ugettext("Actions"),
+    table_headers = [
+        ugettext("Student"),
+        ugettext("Level name"),
+        ugettext("Shared with"),
+        ugettext("Actions"),
+    ]
+    level_data = []
+
+    for owner in owners:
+        for level in Level.objects.filter(owner=owner):
+            users_shared_with = [
+                user
+                for user in level.shared_with.all()
+                if permissions.CanShareLevelWith().can_share_level_with(
+                    user, owner.user
+                )
+                and user != owner.user
             ]
-            level_data = []
 
-            for owner in owners:
-                for level in Level.objects.filter(owner=owner):
-                    users_shared_with = [
-                        user
-                        for user in level.shared_with.all()
-                        if permissions.CanShareLevelWith().can_share_level_with(
-                            user, owner.user
-                        )
-                        and user != owner.user
-                    ]
+            if not users_shared_with:
+                shared_str = "-"
+            else:
+                shared_str = ", ".join(
+                    app_tags.make_into_username(user) for user in users_shared_with
+                )
 
-                    if not users_shared_with:
-                        shared_str = "-"
-                    else:
-                        shared_str = ", ".join(
-                            app_tags.make_into_username(user)
-                            for user in users_shared_with
-                        )
+            level_data.append(
+                {
+                    "student": app_tags.make_into_username(owner.user),
+                    "id": level.id,
+                    "name": level.name,
+                    "shared_with": shared_str,
+                }
+            )
 
-                    level_data.append(
-                        {
-                            "student": app_tags.make_into_username(owner.user),
-                            "id": level.id,
-                            "name": level.name,
-                            "shared_with": shared_str,
-                        }
-                    )
     return render(
         request,
         "game/level_moderation.html",
@@ -117,16 +124,3 @@ def level_moderation(request):
             "thead": table_headers,
         },
     )
-
-
-def get_students_for_level_moderation(request, class_id):
-    userprofile = request.user.userprofile
-    class_ = Class.objects.get(id=class_id)
-
-    if userprofile.teacher != class_.teacher:
-        raise Http404
-
-    students = Student.objects.filter(class_field=class_, new_user__is_active=True)
-    student_dict = {student.id: student.user.user.first_name for student in students}
-
-    return HttpResponse(json.dumps(student_dict), content_type="application/javascript")

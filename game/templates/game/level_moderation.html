@@ -6,7 +6,7 @@
 
 {% block scripts %}
 {{block.super}}
-<script src="{% static 'game/js/jquery.tablesorter.min.js' %}"></script>
+<script src="{% static 'game/js/jquery.dataTables.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/level_moderation.js' %}"></script>
 <script type="text/javascript" src="{% static 'game/js/foundation/vendor/js.cookie.min.js' %}"></script>
@@ -14,6 +14,10 @@
 
 {% block css %}
 {{block.super}}
+<link href="{% static 'game/css/jquery.dataTables.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'game/css/dataTables.custom.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'game/css/dropdown.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'game/css/input.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'game/css/level_moderation.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
@@ -32,27 +36,9 @@
     <div class="container">
         <div>
             <h4>Level moderation</h5>
-            <p>Filter the levels by class, or class and student, and click 'Play' to see the created levels.</p>
-            <!-- <div id="form" class="form">
-                <form action="" method="post" id="levelModerationForm" class="form-row">
-                    {% csrf_token %}
-                    <div class="form-group col-md-6">
-                        <label> {% trans "Class:" %} </label>
-                        {{form.classes}}
-                        {{form.classes.errors}}
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label> {% trans "Student:" %} </label>
-                        {{form.students}}
-                        {{form.students.errors}}
-                    </div>
-                    <div class="col-md-12 text-right">
-                        <button class="button button--primary" type="submit">{% trans "Submit" %}</button>
-                    </div>
-                </form>
-            </div> -->
+            <p>Search or filter the levels to find specific details, and click 'Play' to view the games.</p>
 
-            <form action="" method="post" id="scoreboardForm">
+            <form action="" method="post" id="moderateForm">
                 {% csrf_token %}
                 <div class="row form--row">
                     <div class="col-sm-4">
@@ -106,29 +92,38 @@
         {% if levelData %}
         <div class="tableWrapper">
             {% if thead %}
-            <table class="header-primary data-primary">
-                <tr>
-                    <th><p>Student</p></th>
-                    <th><p>Level name</p></th>
-                    <th><p>Shared with</p></th>
-                    <th colspan="2"><p>Actions</p></th>
-                </tr>
+            <table id="moderateTable" class="header-primary data-primary">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Student</th>
+                        <th rowspan="2">Level name</th>
+                        <th rowspan="2">Shared with</th>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                    <!-- Extra header only needed for DataTables - should be hidden to the user -->
+                    <tr class="d-none">
+                        <th>Play</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
 
-                {% for level in levelData %}
-                <tr>
-                    <td>{{level.student}}</td>
-                    <td>{{level.name}}</td>
-                    <td>{{level.shared_with}}</td>
-                    <td class="text-center">
-                        <button class="button button--small button--primary play" value={{level.id}}>{% trans "Play" %}</button>
-                    </td>
-                    <td class="text-center">
-                        <button class="button button--small button--primary--danger button--icon delete" value={{level.id}}>
-                            {% trans "Delete" %}<span class="iconify" data-icon="mdi:delete-outline"></span>
-                        </button>
-                    </td>
-                </tr>
-                {% endfor %}
+                <tbody>
+                    {% for level in levelData %}
+                    <tr>
+                        <td><small>{{level.student}}</small></td>
+                        <td><small>{{level.name}}</small></td>
+                        <td><small>{{level.shared_with}}</small></td>
+                        <td class="text-center">
+                            <button class="button button--small button--primary play" value={{level.id}}>{% trans "Play" %}</button>
+                        </td>
+                        <td class="text-center">
+                            <button class="button button--small button--primary--danger button--icon delete" value={{level.id}}>
+                                {% trans "Delete" %}<span class="iconify" data-icon="mdi:delete-outline"></span>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
             {% endif %}
         </div>
@@ -136,7 +131,7 @@
             {% if thead %}
             <p>{% trans "No levels found." %}</p>
             {% else %}
-            <p>{% trans "Select a class and student to view their created levels." %}</p>
+            <p>{% trans "Select a class to view the levels created by students." %}</p>
             {% endif %}
         {% endif %}
     </div>

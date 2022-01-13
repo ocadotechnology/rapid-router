@@ -50,11 +50,6 @@ class LevelModerationTestCase(TestCase):
         assert_that(response.status_code, equal_to(404))
         assert_that(response.content, empty)
 
-    def students_of_class(self, klass):
-        url = reverse("students_for_level_moderation", args=[klass.id])
-        response = self.client.get(url)
-        return response
-
     def login(self, email, password):
         self.client.post(
             reverse("teacher_login"),
