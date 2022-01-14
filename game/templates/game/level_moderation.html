@@ -1,6 +1,5 @@
 {% extends 'game/base.html' %}
 {% load static %}
-{% load i18n %}
 
 {% block title %}Code for Life - Rapid Router - Level moderation{% endblock %}
 
@@ -28,7 +27,7 @@
 {% endblock header %}
 
 {% block nav_ocargo_moderate %}
-<a class="button button--secondary button--secondary--light sub-nav--teacher-active" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
+<a class="button button--secondary button--secondary--light sub-nav--teacher-active" href="{% url 'level_moderation' %}">Moderate</a>
 {% endblock nav_ocargo_moderate %}
 
 {% block content %}
@@ -65,7 +64,7 @@
                                         </li>
                                     {% endfor %}
                                 </ul>
-            
+
                                 <div class="row">
                                     <div class="col-sm-6 text-right">
                                         <a class="button button--secondary button--secondary--dark" id="clear-classes">Clear</a>
@@ -114,11 +113,11 @@
                         <td><small>{{level.name}}</small></td>
                         <td><small>{{level.shared_with}}</small></td>
                         <td class="text-center">
-                            <button class="button button--small button--primary play" value={{level.id}}>{% trans "Play" %}</button>
+                            <button class="button button--small button--primary play" value={{level.id}}>Play</button>
                         </td>
                         <td class="text-center">
                             <button class="button button--small button--primary--danger button--icon delete" value={{level.id}}>
-                                {% trans "Delete" %}<span class="iconify" data-icon="mdi:delete-outline"></span>
+                                Delete<span class="iconify" data-icon="mdi:delete-outline"></span>
                             </button>
                         </td>
                     </tr>
@@ -129,9 +128,9 @@
         </div>
         {% else %}
             {% if thead %}
-            <p>{% trans "No levels found." %}</p>
+            <p>No levels found.</p>
             {% else %}
-            <p>{% trans "Select a class to view the levels created by students." %}</p>
+            <p>Select a class to view the levels created by students.</p>
             {% endif %}
         {% endif %}
     </div>

@@ -24,7 +24,6 @@ function showPopupConfirmation(title, text, confirm_handler) {
 }
 
 function confirmDelete() {
-  console.log(levelID);
   var title = "Delete level";
   var text =
     "<p>" +

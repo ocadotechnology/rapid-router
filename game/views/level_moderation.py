@@ -1,12 +1,8 @@
 from __future__ import absolute_import
 from __future__ import division
 
-import json
-
 from common.models import Student, Class
-from django.http import Http404, HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django.utils.translation import ugettext
+from django.shortcuts import render
 from portal.templatetags import app_tags
 
 import game.messages as messages
@@ -81,10 +77,10 @@ def level_moderation(request):
     owners = [student.user for student in students]
 
     table_headers = [
-        ugettext("Student"),
-        ugettext("Level name"),
-        ugettext("Shared with"),
-        ugettext("Actions"),
+        "Student",
+        "Level name",
+        "Shared with",
+        "Actions",
     ]
     level_data = []
 
