@@ -62,6 +62,23 @@ class LevelModerationTestCase(TestCase):
         assert class_name not in response.content.decode()
         assert level_name not in response.content.decode()
 
+    def test_moderation_empty_class_filter(self):
+        level_name = "test_level1"
+        email, password = signup_teacher_directly()
+        _, class_name, access_code = create_class_directly(email)
+
+        _, _, student = create_school_student_directly(access_code)
+
+        create_save_level(student, level_name)
+
+        self.teacher_login(email, password)
+
+        url = reverse("level_moderation")
+        response = self.client.post(url, {"classes": []})
+        assert class_name in response.content.decode()
+        assert level_name not in response.content.decode()
+        assert "No levels found." in response.content.decode()
+
     def teacher_login(self, email, password):
         self.client.post(
             reverse("teacher_login"),
