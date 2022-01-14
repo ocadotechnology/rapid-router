@@ -52,11 +52,6 @@
     {% csrf_token %}
     {% if user|is_logged_in_as_teacher %}
     <div class="row form--row">
-        <div class="form--row__input col-sm-3 col-md-3">
-            <div class="input--icon">
-                <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
-            </div>
-        </div>
         <div class="col-sm-4">
             <div class="dropdown">
                 <button class="button--secondary button--secondary--dark button--dropdown" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -127,6 +122,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="form--row__input col-sm-3 col-md-3">
+            <div class="input--icon">
+                <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
             </div>
         </div>
     </div>
