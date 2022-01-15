@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.5.8 (2022-01-15)
+### Fix
+* Upgrade Django to 2.2.26 ([#1283](https://github.com/ocadotechnology/rapid-router/issues/1283)) ([`f28dee2`](https://github.com/ocadotechnology/rapid-router/commit/f28dee262d3a2020950fad6c40b8961149f26843))
+
 ## v3.5.7 (2022-01-12)
 ### Fix
 * Set cursor to pointer on scoreboard dropdowns ([#1281](https://github.com/ocadotechnology/rapid-router/issues/1281)) ([`e7f28ac`](https://github.com/ocadotechnology/rapid-router/commit/e7f28ac66c71a88b17fd436894f6b2fdb5691353))
