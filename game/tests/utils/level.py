@@ -2,7 +2,7 @@ import game.level_management as level_management
 from game.models import Level
 
 
-def create_save_level(teacher_or_student, level_name="1"):
+def create_save_level(teacher_or_student, level_name="1", shared_with=None):
     data = {
         "origin": '{"coordinate":[3,5],"direction":"S"}',
         "pythonEnabled": False,
@@ -28,5 +28,10 @@ def create_save_level(teacher_or_student, level_name="1"):
     level.owner = teacher_or_student.user
     level_management.save_level(level, data)
     level.save()
+
+    if shared_with is not None:
+        for user in shared_with:
+            level.shared_with.add(user)
+        level.save()
 
     return level.id
