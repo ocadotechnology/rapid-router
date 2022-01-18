@@ -15,6 +15,10 @@ div.DTFC_RightBodyLiner {
   display: none;
 }
 
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+  border-bottom: 0;
+}
+
 .dataTables_wrapper a.next {
   margin-left: 10px;
 }
@@ -31,4 +35,8 @@ table.dataTable {
 table.dataTable thead th,
 table.dataTable tfoot th {
   font-weight: 500;
+}
+
+table.dataTable.no-footer {
+  border-bottom: 0;
 }
