@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.6.0 (2022-01-18)
+### Feature
+* Level moderation ([#1282](https://github.com/ocadotechnology/rapid-router/issues/1282)) ([`cd3757f`](https://github.com/ocadotechnology/rapid-router/commit/cd3757f077089588633f03433bd8ae66b71ec362))
+
 ## v3.5.8 (2022-01-15)
 ### Fix
 * Upgrade Django to 2.2.26 ([#1283](https://github.com/ocadotechnology/rapid-router/issues/1283)) ([`f28dee2`](https://github.com/ocadotechnology/rapid-router/commit/f28dee262d3a2020950fad6c40b8961149f26843))
