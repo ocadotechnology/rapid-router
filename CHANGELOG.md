@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.6.1 (2022-01-18)
+### Fix
+* Remove black borders from level moderation and scoreboard ([#1285](https://github.com/ocadotechnology/rapid-router/issues/1285)) ([`06bda5d`](https://github.com/ocadotechnology/rapid-router/commit/06bda5d4bec31d36ad586a1d97900c8cb0a99967))
+
 ## v3.6.0 (2022-01-18)
 ### Feature
 * Level moderation ([#1282](https://github.com/ocadotechnology/rapid-router/issues/1282)) ([`cd3757f`](https://github.com/ocadotechnology/rapid-router/commit/cd3757f077089588633f03433bd8ae66b71ec362))
