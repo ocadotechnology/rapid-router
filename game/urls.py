@@ -39,10 +39,7 @@ from game.views.level_editor import (
     owned_levels,
     shared_levels,
 )
-from game.views.level_moderation import (
-    level_moderation,
-    get_students_for_level_moderation,
-)
+from game.views.level_moderation import level_moderation
 from game.views.level_selection import levels, random_level_for_episode
 from game.views.level import (
     submit_attempt,
@@ -109,11 +106,6 @@ urlpatterns = [
         include(
             [
                 url(r"^$", level_moderation, name="level_moderation"),
-                url(
-                    r"^class/(?P<class_id>[0-9]+)/$",
-                    get_students_for_level_moderation,
-                    name="students_for_level_moderation",
-                ),
                 url(
                     r"^delete/(?P<levelID>[0-9]+)/$", delete_level, name="delete_level"
                 ),

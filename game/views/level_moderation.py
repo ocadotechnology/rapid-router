@@ -1,12 +1,8 @@
 from __future__ import absolute_import
 from __future__ import division
 
-import json
-
 from common.models import Student, Class
-from django.http import Http404, HttpResponse
-from django.shortcuts import render, get_object_or_404
-from django.utils.translation import ugettext
+from django.shortcuts import render
 from portal.templatetags import app_tags
 
 import game.messages as messages
@@ -52,107 +48,75 @@ def level_moderation(request):
             messages.noDataToShowLevelModeration(),
         )
 
-    form = LevelModerationForm(request.POST or None, classes=classes_taught)
-
-    student_id = None
-    student_dict = None
-    level_data = None
-    table_headers = None
+    classes_taught_ids = [class_.id for class_ in classes_taught]
+    form = LevelModerationForm(
+        request.POST or None,
+        classes=classes_taught,
+        initial={"classes": classes_taught_ids},
+    )
 
     if request.method == "POST":
         if form.is_valid():
-            student_id = form.data.get("students")
-            class_id = form.data.get("classes")
+            class_ids = set(map(int, request.POST.getlist("classes")))
 
-            if not class_id:
-                raise Http404
-
-            # check user has permission to look at this class!
-            cl = get_object_or_404(Class, id=class_id)
-            if not permissions.can_see_class(request.user, cl):
+            # check user has permission to look at the classes
+            if not all(class_id in classes_taught_ids for class_id in class_ids):
                 return renderError(
                     request,
                     messages.noPermissionLevelModerationTitle(),
                     messages.noPermissionLevelModerationClass(),
                 )
+        else:
+            class_ids = []
+    else:
+        class_ids = [class_id for class_id in classes_taught_ids]
 
-            students = Student.objects.filter(class_field=cl, new_user__is_active=True)
-            student_dict = {
-                student.id: student.user.user.first_name for student in students
-            }
+    students = Student.objects.filter(
+        class_field_id__in=class_ids, new_user__is_active=True
+    )
+    owners = [student.user for student in students]
 
-            if student_id:
-                # check student is in class
-                student = get_object_or_404(Student, id=student_id)
-                if student.class_field != cl:
-                    return renderError(
-                        request,
-                        messages.noPermissionLevelModerationTitle(),
-                        messages.noPermissionLevelModerationStudent(),
-                    )
+    table_headers = [
+        "Student",
+        "Level name",
+        "Shared with",
+        "Actions",
+    ]
+    level_data = []
 
-                owners = [student.user]
-
-            else:
-                owners = [student.user for student in students]
-
-            table_headers = [
-                ugettext("Student"),
-                ugettext("Level name"),
-                ugettext("Shared with"),
-                ugettext("Play"),
-                ugettext("Delete"),
+    for owner in owners:
+        for level in Level.objects.filter(owner=owner):
+            users_shared_with = [
+                user
+                for user in level.shared_with.all()
+                if permissions.CanShareLevelWith().can_share_level_with(
+                    user, owner.user
+                )
+                and user != owner.user
             ]
-            level_data = []
 
-            for owner in owners:
-                for level in Level.objects.filter(owner=owner):
-                    users_shared_with = [
-                        user
-                        for user in level.shared_with.all()
-                        if permissions.CanShareLevelWith().can_share_level_with(
-                            user, owner.user
-                        )
-                        and user != owner.user
-                    ]
+            if not users_shared_with:
+                shared_str = "-"
+            else:
+                shared_str = ", ".join(
+                    app_tags.make_into_username(user) for user in users_shared_with
+                )
 
-                    if not users_shared_with:
-                        shared_str = "-"
-                    else:
-                        shared_str = ", ".join(
-                            app_tags.make_into_username(user)
-                            for user in users_shared_with
-                        )
+            level_data.append(
+                {
+                    "student": app_tags.make_into_username(owner.user),
+                    "id": level.id,
+                    "name": level.name,
+                    "shared_with": shared_str,
+                }
+            )
 
-                    level_data.append(
-                        {
-                            "student": app_tags.make_into_username(owner.user),
-                            "id": level.id,
-                            "name": level.name,
-                            "shared_with": shared_str,
-                        }
-                    )
     return render(
         request,
         "game/level_moderation.html",
         context={
-            "student_id": student_id,
-            "students": student_dict,
             "form": form,
             "levelData": level_data,
             "thead": table_headers,
         },
     )
-
-
-def get_students_for_level_moderation(request, class_id):
-    userprofile = request.user.userprofile
-    class_ = Class.objects.get(id=class_id)
-
-    if userprofile.teacher != class_.teacher:
-        raise Http404
-
-    students = Student.objects.filter(class_field=class_, new_user__is_active=True)
-    student_dict = {student.id: student.user.user.first_name for student in students}
-
-    return HttpResponse(json.dumps(student_dict), content_type="application/javascript")

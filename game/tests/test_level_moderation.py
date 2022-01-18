@@ -1,3 +1,5 @@
+import json
+
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
@@ -6,6 +8,9 @@ from django.test.client import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
 from hamcrest import *
+
+from .test_level_editor import LevelEditorTestCase
+from .utils.level import create_save_level
 
 
 class LevelModerationTestCase(TestCase):
@@ -24,38 +29,75 @@ class LevelModerationTestCase(TestCase):
         self.client = Client()
 
     def test_moderation_teachers_class(self):
+        level_name = "test_level1"
         email, password = signup_teacher_directly()
-        klass, name, access_code = create_class_directly(email)
+        _, class_name, access_code = create_class_directly(email)
 
-        student_name, _, student = create_school_student_directly(access_code)
+        _, _, student = create_school_student_directly(access_code)
 
-        self.login(email, password)
-        response = self.students_of_class(klass)
-        assert_that(response.status_code, equal_to(200))
-        assert_that(
-            response.content.decode(),
-            equal_to('{"%s": "%s"}' % (student.id, student_name)),
-        )
+        create_save_level(student, level_name)
+
+        self.teacher_login(email, password)
+
+        url = reverse("level_moderation")
+        response = self.client.get(url)
+        assert class_name in response.content.decode()
+        assert level_name in response.content.decode()
 
     def test_moderation_another_class(self):
+        level_name = "test_level2"
         email, password = signup_teacher_directly()
 
         email2, _ = signup_teacher_directly()
-        klass2, _, access_code = create_class_directly(email2)
+        _, class_name, access_code = create_class_directly(email2)
 
-        student_name, _, student = create_school_student_directly(access_code)
+        _, _, student = create_school_student_directly(access_code)
 
-        self.login(email, password)
-        response = self.students_of_class(klass2)
-        assert_that(response.status_code, equal_to(404))
-        assert_that(response.content, empty)
+        create_save_level(student, level_name)
 
-    def students_of_class(self, klass):
-        url = reverse("students_for_level_moderation", args=[klass.id])
+        self.teacher_login(email, password)
+
+        url = reverse("level_moderation")
         response = self.client.get(url)
-        return response
+        assert class_name not in response.content.decode()
+        assert level_name not in response.content.decode()
 
-    def login(self, email, password):
+    def test_moderation_empty_class_filter(self):
+        level_name = "test_level1"
+        email, password = signup_teacher_directly()
+        _, class_name, access_code = create_class_directly(email)
+
+        _, _, student = create_school_student_directly(access_code)
+
+        create_save_level(student, level_name)
+
+        self.teacher_login(email, password)
+
+        url = reverse("level_moderation")
+        response = self.client.post(url, {"classes": []})
+        assert class_name in response.content.decode()
+        assert level_name not in response.content.decode()
+        assert "No levels found." in response.content.decode()
+
+    def test_moderation_shared_with(self):
+        level_name = "test_level1"
+        email, password = signup_teacher_directly()
+        _, class_name, access_code = create_class_directly(email)
+
+        _, _, student = create_school_student_directly(access_code)
+        _, _, student2 = create_school_student_directly(access_code)
+
+        create_save_level(student, level_name, shared_with=[student2.new_user])
+
+        self.teacher_login(email, password)
+
+        url = reverse("level_moderation")
+        response = self.client.get(url)
+        assert class_name in response.content.decode()
+        assert level_name in response.content.decode()
+        assert student2.new_user.first_name in response.content.decode()
+
+    def teacher_login(self, email, password):
         self.client.post(
             reverse("teacher_login"),
             {

@@ -10,7 +10,6 @@
     {{block.super}}
     <script src="{% static 'game/js/jquery.dataTables.min.js' %}"></script>
     <script src="{% static 'game/js/dataTables.fixedColumns.js' %}"></script>
-    <script src="{% static 'game/js/jquery.tablesorter.js' %}"></script>
     <script src="{% static 'game/js/widget-scroller.js' %}"></script>
     <script src="{% static 'game/js/pqselect.min.js' %}"></script>
     <script src="{% static 'game/js/jquery.outerhtml.js' %}"></script>
@@ -26,11 +25,14 @@
     <link href="{% static 'game/css/jquery.dataTables.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/dataTables.fixedColumns.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/dataTables.jqueryui.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/dataTables.custom.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/dropdown.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/input.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block header %}
 <section class="banner banner--rapid-router">
-    <img title="Rapid Router logo" alt="Rapid Router logo" src="{% static 'game/image/RR_logo.svg' %}">
+    <img title="Rapid Router logo" alt="Rapid Router logo" src="{% static 'common/img/RR_logo.svg' %}">
 </section>
 {% endblock header %}
 
@@ -50,11 +52,6 @@
     {% csrf_token %}
     {% if user|is_logged_in_as_teacher %}
     <div class="row form--row">
-        <div class="form--row__input col-sm-3 col-md-3">
-            <div class="input--icon">
-                <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
-            </div>
-        </div>
         <div class="col-sm-4">
             <div class="dropdown">
                 <button class="button--secondary button--secondary--dark button--dropdown" type="button" data-toggle="dropdown" aria-expanded="false">
@@ -125,6 +122,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="form--row__input col-sm-3 col-md-3">
+            <div class="input--icon">
+                <input type="text" name="Search" placeholder="Search" id="scoreboardSearch"><span class="iconify" data-icon="mdi:search"></span>
             </div>
         </div>
     </div>

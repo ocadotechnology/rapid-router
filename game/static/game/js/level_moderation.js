@@ -2,80 +2,101 @@ var levelID;
 var classID;
 var students;
 
-function csrfSafeMethod(method) {
-    // these HTTP methods do not require CSRF protection
-    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-}
-
 var saving = new ocargo.Saving();
 
 function deleteLevel() {
-    saving.deleteLevel(levelID,
-        function () {
-            document.forms["levelModerationForm"].submit();
-        },
-        console.error);
+  saving.deleteLevel(
+    levelID,
+    function () {
+      document.forms["levelModerationForm"].submit();
+    },
+    console.error
+  );
 }
 
 function showPopupConfirmation(title, text, confirm_handler) {
-    var popup = $(".popup-wrapper");
-    $(".popup-box__title").text(title);
-    $(".popup-box__msg").append(text);
-    $("#confirm_button").click(confirm_handler);
+  var popup = $(".popup-wrapper");
+  $(".popup-box__title").text(title);
+  $(".popup-box__msg").append(text);
+  $("#confirm_button").click(confirm_handler);
 
-    popup.addClass("popup--fade");
+  popup.addClass("popup--fade");
 }
 
 function confirmDelete() {
-    console.log(levelID);
-    var title = 'Delete level';
-    var text = '<p>' + gettext("This student's level will be permanently deleted. Are you sure?") + '</p>';
+  var title = "Delete level";
+  var text =
+    "<p>" +
+    gettext("This student's level will be permanently deleted. Are you sure?") +
+    "</p>";
 
-    showPopupConfirmation(title, text, deleteLevel);
+  showPopupConfirmation(title, text, deleteLevel);
 }
 
-$(document).ready(function() {
-	$(".delete").click(function() {
+$(document).ready(function () {
+  $(".delete").click(function () {
+    levelID = this.getAttribute("value");
+    confirmDelete();
+  });
 
-	  	levelID = this.getAttribute('value');
-	  	confirmDelete();
-	});
+  $(".play").click(function () {
+    window.location.href = Urls.play_custom_level(this.getAttribute("value"));
+  });
 
-	$('.play').click(function() {
-		window.location.href = Urls.play_custom_level(this.getAttribute('value'));
-	});
+  $("#clear-classes").on("click", () => {
+    $('[id^="id_classes_"],#select-all-classes').prop("checked", false);
+  });
 
-    $("#table").tablesorter();
+  $("#select-all-classes").on("click", () => {
+    $('[id^="id_classes_"]').prop(
+      "checked",
+      $("#select-all-classes").is(":checked")
+    );
+  });
 
-    $('#id_classes').change(function() {
-        classID = $(this).val();
-        $.ajax({
-            url: Urls.students_for_level_moderation(classID),
-            type: 'GET',
-            dataType: 'json',
-            success: function(studentData) {
-                $('#id_students').empty();
+  // Checks the select all checkboxes on page load if all their sub boxes are already checked
+  $("#select-all-classes").prop(
+    "checked",
+    $('[id^="id_classes_"]:checked').length === $('[id^="id_classes_"]').length
+  );
 
-                var addStudentOption = function(value, text) {
-                    var option = $('<option>');
-                    option.attr({
-                        'value': value
-                    });
-                    option.text(text);
-                    $('#id_students').append(option);
-                };
-
-                addStudentOption("", "---------");
-
-                for (var student in studentData) {
-                    addStudentOption(student, studentData[student])
-                }
-            }
-        });
-        return false;
-    });
-
-    if (students) {
-        $('#id_classes').change();
+  // Prevents reloading the page by submitting the form by pressing the Enter key
+  $(window).on("keydown", function (event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+      return false;
     }
+  });
+
+  // Stops closing the dropdowns when selecting items within it or when pressing the confirmation buttons
+  $(document).on("click", ".dropdown .dropdown-menu", function (e) {
+    e.stopPropagation();
+  });
+
+  const moderateTable = $("#moderateTable").DataTable({
+    deferRender: true,
+    paging: true,
+    pageLength: 5,
+    columnDefs: [
+      {
+        orderable: false,
+        searchable: false,
+        targets: [-1, -2], // Play and Delete columns
+      },
+    ],
+  });
+
+  $("#moderateSearch").on("keyup", function () {
+    moderateTable.search(this.value).draw();
+  });
+
+  $("#moderateTable_next").append(" >");
+  $(".next").removeClass("paginate_button");
+
+  moderateTable.on("draw", () => {
+    $("#moderateTable_next").append(" >");
+    $("#moderateTable_previous").prepend("< ");
+    $(".next").removeClass("paginate_button");
+    $(".previous").removeClass("paginate_button");
+  });
 });

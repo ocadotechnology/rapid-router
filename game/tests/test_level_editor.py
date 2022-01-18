@@ -18,6 +18,29 @@ from game.tests.utils.teacher import add_teacher_to_school, create_school
 
 
 class LevelEditorTestCase(TestCase):
+    LEVEL_DATA1 = {
+        "origin": '{"coordinate":[3,5],"direction":"S"}',
+        "pythonEnabled": False,
+        "decor": [],
+        "blocklyEnabled": True,
+        "blocks": [
+            {"type": "move_forwards"},
+            {"type": "turn_left"},
+            {"type": "turn_right"},
+        ],
+        "max_fuel": "50",
+        "pythonViewEnabled": False,
+        "character": "3",
+        "name": "abc",
+        "theme": 1,
+        "anonymous": False,
+        "cows": "[]",
+        "path": '[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
+        '"connectedNodes":[0]}]',
+        "traffic_lights": "[]",
+        "destinations": "[[3,4]]",
+    }
+
     @classmethod
     def setUpClass(cls):
         cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED
@@ -74,29 +97,7 @@ class LevelEditorTestCase(TestCase):
 
         self.student_login(student_name, access_code, student_password)
         url = reverse("save_level_for_editor")
-        data1 = {
-            u"origin": u'{"coordinate":[3,5],"direction":"S"}',
-            u"pythonEnabled": False,
-            u"decor": [],
-            u"blocklyEnabled": True,
-            u"blocks": [
-                {u"type": u"move_forwards"},
-                {u"type": u"turn_left"},
-                {u"type": u"turn_right"},
-            ],
-            u"max_fuel": u"50",
-            u"pythonViewEnabled": False,
-            u"character": u"3",
-            u"name": u"abc",
-            u"theme": 1,
-            u"anonymous": False,
-            u"cows": u"[]",
-            u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
-            u'"connectedNodes":[0]}]',
-            u"traffic_lights": u"[]",
-            u"destinations": u"[[3,4]]",
-        }
-        response = self.client.post(url, {"data": json.dumps(data1)})
+        response = self.client.post(url, {"data": json.dumps(self.LEVEL_DATA1)})
 
         assert_that(response.status_code, equal_to(200))
         sharing_info1 = json.loads(
