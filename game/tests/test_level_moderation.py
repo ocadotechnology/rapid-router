@@ -35,14 +35,20 @@ class LevelModerationTestCase(TestCase):
 
         _, _, student = create_school_student_directly(access_code)
 
-        create_save_level(student, level_name)
+        level_id = create_save_level(student, level_name)
 
         self.teacher_login(email, password)
 
-        url = reverse("level_moderation")
-        response = self.client.get(url)
+        level_moderation_url = reverse("level_moderation")
+        response = self.client.get(level_moderation_url)
         assert class_name in response.content.decode()
         assert level_name in response.content.decode()
+
+        # Test delete level
+        delete_level_url = reverse("delete_level", kwargs={"levelID": level_id})
+        self.client.post(delete_level_url)
+        response = self.client.get(level_moderation_url)
+        assert level_name not in response.content.decode()
 
     def test_moderation_another_class(self):
         level_name = "test_level2"
