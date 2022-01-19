@@ -1,3 +1,5 @@
+/* global showPopupConfirmation */
+
 var levelID;
 var classID;
 var students;
@@ -8,29 +10,21 @@ function deleteLevel() {
   saving.deleteLevel(
     levelID,
     function () {
-      document.forms["levelModerationForm"].submit();
+      document.forms["moderateForm"].submit();
     },
     console.error
   );
 }
 
-function showPopupConfirmation(title, text, confirm_handler) {
-  var popup = $(".popup-wrapper");
-  $(".popup-box__title").text(title);
-  $(".popup-box__msg").append(text);
-  $("#confirm_button").click(confirm_handler);
-
-  popup.addClass("popup--fade");
-}
-
 function confirmDelete() {
-  var title = "Delete level";
-  var text =
-    "<p>" +
-    gettext("This student's level will be permanently deleted. Are you sure?") +
-    "</p>";
+  let title = "Delete level";
+  let text = `
+    <div class='popup-text'>
+      <p>This student's level will be permanently deleted. Are you sure?</p>
+    </div>`;
+  let confirmHandler = "deleteLevel()";
 
-  showPopupConfirmation(title, text, deleteLevel);
+  showPopupConfirmation(title, text, confirmHandler);
 }
 
 $(document).ready(function () {
