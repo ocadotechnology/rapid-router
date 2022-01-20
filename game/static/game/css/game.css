@@ -90,6 +90,16 @@
     fill: green;
 }
 
+#blockly_pane #pythonView_holder {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+}
+
+#blockly_pane #pythonView_holder .CodeMirror {
+    flex-grow: 1;
+}
+
 /**************/
 /* Python tab */
 /**************/
