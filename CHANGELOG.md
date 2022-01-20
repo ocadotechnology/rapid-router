@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.6.3 (2022-01-20)
+### Fix
+* Scrollbar for Python pane ([#1288](https://github.com/ocadotechnology/rapid-router/issues/1288)) ([`72db6e9`](https://github.com/ocadotechnology/rapid-router/commit/72db6e9e3c31836a69240e33be0374907c16c7b9))
+
 ## v3.6.2 (2022-01-19)
 ### Fix
 * Delete level on moderate page ([#1287](https://github.com/ocadotechnology/rapid-router/issues/1287)) ([`9a49606`](https://github.com/ocadotechnology/rapid-router/commit/9a49606b968130dfb9ae12aca2c0c4d4c5530b0c))
