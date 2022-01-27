@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.0 (2022-01-26)
+### Feature
+* Resize python window ([#1289](https://github.com/ocadotechnology/rapid-router/issues/1289)) ([`33d01b7`](https://github.com/ocadotechnology/rapid-router/commit/33d01b7468f92226b5c761009b5c4b51962e545c))
+
 ## v3.6.3 (2022-01-20)
 ### Fix
 * Scrollbar for Python pane ([#1288](https://github.com/ocadotechnology/rapid-router/issues/1288)) ([`72db6e9`](https://github.com/ocadotechnology/rapid-router/commit/72db6e9e3c31836a69240e33be0374907c16c7b9))

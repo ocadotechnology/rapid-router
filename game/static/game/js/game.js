@@ -45,7 +45,8 @@ ocargo.Game.prototype.setup = function () {
   ocargo.pythonControl.loadPreviousAttempt()
 
   // Setup the ui
-  this._setupSliderListeners()
+  this._setupConsoleSliderListeners()
+  this._setupPythonViewSliderListeners()
   this._setupDirectDriveListeners()
   this._setupFuelGauge(ocargo.model.map.nodes, BLOCKS)
   this._setupTabs()
@@ -309,24 +310,24 @@ ocargo.Game.prototype._setupDirectDriveListeners = function () {
   })
 }
 
-ocargo.Game.prototype._setupSliderListeners = function () {
-  var tabsWidth = $('#tabs').width()
+ocargo.Game.prototype._setupConsoleSliderListeners = function () {
+  let tabsWidth = $('#tabs').width()
 
-  var startEvents = ['mousedown', 'touchstart']
-  var moveEvents = ['mousemove', 'touchmove']
-  var endEvents = ['mouseup', 'touchend', 'touchcancel']
+  let startEvents = ['mousedown', 'touchstart']
+  let moveEvents = ['mousemove', 'touchmove']
+  let endEvents = ['mouseup', 'touchend', 'touchcancel']
 
-  var slider = $('#consoleSlider')
-  var tabs = $('#tabs')
-  var halfSliderWidth
+  let slider = $('#consoleSlider')
+  let tabs = $('#tabs')
+  let halfSliderWidth
 
-  var endFunc = function (e) {
-    for (var i = 0; i < moveEvents.length; i++) {
+  let endFunc = function (e) {
+    for (let i = 0; i < moveEvents.length; i++) {
       slider.parent().off(moveEvents[i])
       tabs.off(moveEvents[i])
     }
 
-    for (var i = 0; i < endEvents.length; i++) {
+    for (let i = 0; i < endEvents.length; i++) {
       // disable drag when mouse leaves this or the parent
       slider.parent().off(endEvents[i], endFunc)
       tabs.off(endEvents[i], endFunc)
@@ -335,13 +336,13 @@ ocargo.Game.prototype._setupSliderListeners = function () {
     ocargo.blocklyControl.redrawBlockly()
   }
 
-  var moveFunc = function (e) {
+  let moveFunc = function (e) {
     if (e.type == 'touchmove') {
       e = e.originalEvent.touches[0]
     }
 
-    var consoleSliderPosition = e.pageX - tabsWidth - halfSliderWidth
-    var containerWidth = slider.parent().width()
+    let consoleSliderPosition = e.pageX - tabsWidth - halfSliderWidth
+    let containerWidth = slider.parent().width()
 
     consoleSliderPosition *= 100.0 / containerWidth
 
@@ -360,24 +361,79 @@ ocargo.Game.prototype._setupSliderListeners = function () {
     ocargo.blocklyControl.redrawBlockly()
   }
 
-  var startFunc = function (e) {
+  let startFunc = function (e) {
     halfSliderWidth = slider.width() / 2
 
-    for (var i = 0; i < moveEvents.length; i++) {
+    for (let i = 0; i < moveEvents.length; i++) {
       slider.parent().on(moveEvents[i], moveFunc)
       tabs.on(moveEvents[i], moveFunc)
     }
 
-    for (var i = 0; i < endEvents.length; i++) {
+    for (let i = 0; i < endEvents.length; i++) {
       // disable drag when mouse leaves this or the parent
       slider.parent().on(endEvents[i], endFunc)
       tabs.on(endEvents[i], endFunc)
     }
+
+    // close trashcan flyout on resize as it doesn't redraw with the workspace
+    Blockly.mainWorkspace.trashcan.flyout_.setVisible(false)
   }
 
-  for (var i = 0; i < startEvents.length; i++) {
+  for (let i = 0; i < startEvents.length; i++) {
     slider.on(startEvents[i], startFunc)
   }
+}
+
+ocargo.Game.prototype._setupPythonViewSliderListeners = function () {
+  let startEvents = ['mousedown', 'touchstart']
+  let moveEvents = ['mousemove', 'touchmove']
+  let endEvents = ['mouseup', 'touchend', 'touchcancel']
+
+  let slider = $('#pythonViewSlider')
+  let wrapper = $('#wrapper')
+  let halfSliderHeight = slider.height() / 2
+
+  let endFunc = function (e) {
+    moveEvents.map((moveEvent) => wrapper.off(moveEvent))
+    endEvents.map((endEvent) => wrapper.off(endEvent, endFunc))
+
+    ocargo.blocklyControl.redrawBlockly()
+  }
+
+  let moveFunc = function (e) {
+    if (e.type == 'touchmove') {
+      e = e.originalEvent.touches[0]
+    }
+
+    let pythonSliderPosition = e.pageY - halfSliderHeight
+    let containerHeight = slider.parent().height()
+
+    pythonSliderPosition *= 100.0 / containerHeight
+
+    if (pythonSliderPosition > 100) {
+      pythonSliderPosition = 100
+    }
+    if (pythonSliderPosition < 0) {
+      pythonSliderPosition = 0
+    }
+
+    slider.css('top', pythonSliderPosition + '%')
+    $('#blockly_holder').css('height', pythonSliderPosition + '%')
+    $('#pythonView_holder').css('height', 100 - pythonSliderPosition + '%')
+
+    ocargo.blocklyControl.redrawBlockly()
+  }
+
+  let startFunc = function (e) {
+    moveEvents.map((moveEvent) => wrapper.on(moveEvent, moveFunc))
+    // disable drag when mouse leaves the wrapper
+    endEvents.map((endEvent) => wrapper.on(endEvent, endFunc))
+
+    // close trashcan flyout on resize as it doesn't redraw with the workspace
+    Blockly.mainWorkspace.trashcan.flyout_.setVisible(false)
+  }
+
+  startEvents.map((startEvent) => slider.on(startEvent, startFunc))
 }
 
 ocargo.Game.prototype.onPlayControls = function () {
