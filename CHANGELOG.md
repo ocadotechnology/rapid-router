@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.1 (2022-01-27)
+### Fix
+* Rapid Rudolph will go down in Git history ([#1291](https://github.com/ocadotechnology/rapid-router/issues/1291)) ([`d04eb51`](https://github.com/ocadotechnology/rapid-router/commit/d04eb51c2f6848ed59c7cfc87614a3e46c78d553))
+
 ## v3.7.0 (2022-01-26)
 ### Feature
 * Resize python window ([#1289](https://github.com/ocadotechnology/rapid-router/issues/1289)) ([`33d01b7`](https://github.com/ocadotechnology/rapid-router/commit/33d01b7468f92226b5c761009b5c4b51962e545c))
