@@ -1240,7 +1240,7 @@ function restoreCmsLogin () {
 }
 
 function hasFunctionalCookiesConsent() {
-  return OnetrustActiveGroups && OnetrustActiveGroups.split(',').includes('C0003')
+  return OnetrustActiveGroups && OnetrustActiveGroups.split(',').includes('CL003')
 }
 
 function setMutedCookie(mute) {
