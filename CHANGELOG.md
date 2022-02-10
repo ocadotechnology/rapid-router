@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.2 (2022-02-10)
+### Fix
+* **deps:** Bump django from 2.2.26 to 2.2.27 ([#1296](https://github.com/ocadotechnology/rapid-router/issues/1296)) ([`ea50a56`](https://github.com/ocadotechnology/rapid-router/commit/ea50a5640fb25dcb7b0ef8c74d38b0c8e9184f55))
+
 ## v3.7.1 (2022-01-27)
 ### Fix
 * Rapid Rudolph will go down in Git history ([#1291](https://github.com/ocadotechnology/rapid-router/issues/1291)) ([`d04eb51`](https://github.com/ocadotechnology/rapid-router/commit/d04eb51c2f6848ed59c7cfc87614a3e46c78d553))
