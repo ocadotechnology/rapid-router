@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.3 (2022-02-14)
+### Fix
+* Update cookies categories ([#1295](https://github.com/ocadotechnology/rapid-router/issues/1295)) ([`390c353`](https://github.com/ocadotechnology/rapid-router/commit/390c353a0faa0fda2d2dca41d792daf65d41ea8c))
+
 ## v3.7.2 (2022-02-10)
 ### Fix
 * **deps:** Bump django from 2.2.26 to 2.2.27 ([#1296](https://github.com/ocadotechnology/rapid-router/issues/1296)) ([`ea50a56`](https://github.com/ocadotechnology/rapid-router/commit/ea50a5640fb25dcb7b0ef8c74d38b0c8e9184f55))
