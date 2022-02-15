@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.6 (2022-02-15)
+### Fix
+* Try paths-ignore ([#1301](https://github.com/ocadotechnology/rapid-router/issues/1301)) ([`ece66b0`](https://github.com/ocadotechnology/rapid-router/commit/ece66b0975b8f55c2310ccdfc1958ffd4a2f888b))
+
 ## v3.7.5 (2022-02-15)
 ### Fix
 * Try different events ([#1300](https://github.com/ocadotechnology/rapid-router/issues/1300)) ([`20aa360`](https://github.com/ocadotechnology/rapid-router/commit/20aa3609d7be69e44024ff9e1f8230c6b9389ea0))
