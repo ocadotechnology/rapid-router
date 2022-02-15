@@ -3,8 +3,9 @@ on:
   push:
     branches:
       - master
-    tags-ignore:
-      - v*
+    paths-ignore:
+      - "CHANGELOG.md"
+      - "game/__init__.py"
   # workflow_run:
   #   workflows: ["CI"]
   #   branches: [master]
