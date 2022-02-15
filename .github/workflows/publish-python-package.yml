@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    tags-ignore:
+      - v*
   # workflow_run:
   #   workflows: ["CI"]
   #   branches: [master]
@@ -11,7 +13,7 @@ on:
 jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
-    if: ${{ github.event.pusher.name != 'actions-user' }}
+    # if: ${{ github.event.pusher.name != 'actions-user' }}
     # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-18.04
     steps:
