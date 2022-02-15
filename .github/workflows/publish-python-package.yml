@@ -1,10 +1,10 @@
 name: Publish Python Package
 on:
   push:
-    branches:
-      - master
+    branches-ignore:
+      - "!master"
     tags-ignore:
-      - v*
+      - "v*"
   # workflow_run:
   #   workflows: ["CI"]
   #   branches: [master]
