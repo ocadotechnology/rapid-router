@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.5 (2022-02-15)
+### Fix
+* Try different events ([#1300](https://github.com/ocadotechnology/rapid-router/issues/1300)) ([`20aa360`](https://github.com/ocadotechnology/rapid-router/commit/20aa3609d7be69e44024ff9e1f8230c6b9389ea0))
+
 ## v3.7.4 (2022-02-15)
 ### Fix
 * Publish ([#1299](https://github.com/ocadotechnology/rapid-router/issues/1299)) ([`9ce9143`](https://github.com/ocadotechnology/rapid-router/commit/9ce91437e6358d9670b38242106eff4794df82d4))
