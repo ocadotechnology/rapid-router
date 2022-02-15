@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.7 (2022-02-15)
+### Fix
+* Revert previous ci changes ([#1303](https://github.com/ocadotechnology/rapid-router/issues/1303)) ([`f4e89fc`](https://github.com/ocadotechnology/rapid-router/commit/f4e89fc08f0c36fdd6379826b6d55d8ebc396f88))
+
 ## v3.7.6 (2022-02-15)
 ### Fix
 * Try paths-ignore ([#1301](https://github.com/ocadotechnology/rapid-router/issues/1301)) ([`ece66b0`](https://github.com/ocadotechnology/rapid-router/commit/ece66b0975b8f55c2310ccdfc1958ffd4a2f888b))
