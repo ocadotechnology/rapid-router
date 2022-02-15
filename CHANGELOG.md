@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.4 (2022-02-15)
+### Fix
+* Publish ([#1299](https://github.com/ocadotechnology/rapid-router/issues/1299)) ([`9ce9143`](https://github.com/ocadotechnology/rapid-router/commit/9ce91437e6358d9670b38242106eff4794df82d4))
+* Debug ci ([`e1aaf35`](https://github.com/ocadotechnology/rapid-router/commit/e1aaf35d0ff60f0ddb7caf62d8cc65dce28217a9))
+* Debug ci ([`40717fa`](https://github.com/ocadotechnology/rapid-router/commit/40717fabd207bfe00afb88a7a62c33bbab2008b1))
+
 ## v3.7.3 (2022-02-14)
 ### Fix
 * Update cookies categories ([#1295](https://github.com/ocadotechnology/rapid-router/issues/1295)) ([`390c353`](https://github.com/ocadotechnology/rapid-router/commit/390c353a0faa0fda2d2dca41d792daf65d41ea8c))
