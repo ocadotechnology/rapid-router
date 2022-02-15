@@ -6,8 +6,8 @@ on:
   pull_request:
 jobs:
   tests:
-    name: Run tests
-    if: ${{ github.event.pusher.email != 'action@github.com' }}
+    name: Debug - Run tests
+    # if: ${{ github.event.pusher.email != 'action@github.com' }}
     runs-on: ubuntu-18.04
     env:
       LANG: C.UTF-8
@@ -16,22 +16,26 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.7"
-          architecture: "x64"
-      - name: Install pip requirements
-        run: |
-          pip install pipenv
-          pip install pytest-cov
-          pipenv install --dev --system
-          pip install -U codeforlife-portal #TODO: Remove as part of #688
-      - name: Collect static
-        run: python example_project/manage.py collectstatic --noinput
-      - name: Run tests
-        env:
-          SELENIUM_WEBDRIVER: chrome-headless
-        run: pytest --cov=. --cov-report=xml
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+      # TODO: remove next step
+      - name: Debug
+        run: echo '${{ toJSON(github.event.pusher) }}'
+      # TODO: uncomment below
+      # - name: Setup Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: "3.7"
+      #     architecture: "x64"
+      # - name: Install pip requirements
+      #   run: |
+      #     pip install pipenv
+      #     pip install pytest-cov
+      #     pipenv install --dev --system
+      #     pip install -U codeforlife-portal #TODO: Remove as part of #688
+      # - name: Collect static
+      #   run: python example_project/manage.py collectstatic --noinput
+      # - name: Run tests
+      #   env:
+      #     SELENIUM_WEBDRIVER: chrome-headless
+      #   run: pytest --cov=. --cov-report=xml
+      # - name: Upload coverage to Codecov
+      #   uses: codecov/codecov-action@v1
