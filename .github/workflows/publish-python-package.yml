@@ -1,10 +1,11 @@
 name: Publish Python Package
 on:
   push:
-    branches-ignore:
-      - "!master"
-    tags-ignore:
-      - "v*"
+    branches:
+      - master
+    paths-ignore:
+      - "CHANGELOG.md"
+      - "game/__init__.py"
   # workflow_run:
   #   workflows: ["CI"]
   #   branches: [master]
