@@ -1,14 +1,17 @@
 name: Publish Python Package
 on:
-  workflow_run:
-    workflows: ["CI"]
-    branches: [master]
-    types:
-      - completed
+  push:
+    branches:
+      - master
+  # workflow_run:
+  #   workflows: ["CI"]
+  #   branches: [master]
+  #   types:
+  #     - completed
 jobs:
   publish-pypi-packages:
-    name: Publish PyPi Packages
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Debug - Publish PyPi Packages
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
@@ -16,50 +19,54 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - name: Setup Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.7"
-          architecture: "x64"
-      - name: Install pip requirements
-        run: |
-          pip install pipenv
-          pipenv install --dev --system
-          pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
-          sudo apt-get install gettext
-      - name: Prepare files for Crowdin
-        run: |
-          mkdir -p game/locale
-          cd game && django-admin makemessages -l en_GB --no-wrap && cd -
-          cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
-      - name: Run Crowdin (Upload sources and download translations)
-        uses: crowdin/github-action@1.0.13
-        with:
-          upload_sources: true
-          download_translations: true
-          push_translations: false
-          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
-          token: ${{ secrets.CROWDIN_API_KEY }}
-      - name: Fix translation files owner
-        run: sudo chown -R $USER game/locale
-      - name: Compile messages
-        run: |
-          pushd game
-          django-admin compilemessages
-          popd
-      - name: Release rapid-router
-        uses: relekang/python-semantic-release@master
-        with:
-          github_token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
-      - name: Trigger staging deployment
-        uses: actions/github-script@v4
-        with:
-          github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
-          script: |
-            github.actions.createWorkflowDispatch({
-              owner: 'ocadotechnology',
-              repo: 'codeforlife-deploy-appengine',
-              workflow_id: 'deploy_staging.yml',
-              ref: 'master',
-            });
+      # TODO: remove next step
+      - name: Debug
+        run: echo '${{ toJSON(github.event.pusher) }}'
+      # TODO: uncomment below
+      # - name: Setup Python
+      #   uses: actions/setup-python@v2
+      #   with:
+      #     python-version: "3.7"
+      #     architecture: "x64"
+      # - name: Install pip requirements
+      #   run: |
+      #     pip install pipenv
+      #     pipenv install --dev --system
+      #     pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
+      #     sudo apt-get install gettext
+      # - name: Prepare files for Crowdin
+      #   run: |
+      #     mkdir -p game/locale
+      #     cd game && django-admin makemessages -l en_GB --no-wrap && cd -
+      #     cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
+      # - name: Run Crowdin (Upload sources and download translations)
+      #   uses: crowdin/github-action@1.0.13
+      #   with:
+      #     upload_sources: true
+      #     download_translations: true
+      #     push_translations: false
+      #     project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+      #     token: ${{ secrets.CROWDIN_API_KEY }}
+      # - name: Fix translation files owner
+      #   run: sudo chown -R $USER game/locale
+      # - name: Compile messages
+      #   run: |
+      #     pushd game
+      #     django-admin compilemessages
+      #     popd
+      # - name: Release rapid-router
+      #   uses: relekang/python-semantic-release@master
+      #   with:
+      #     github_token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+      #     pypi_token: ${{ secrets.PYPI_TOKEN }}
+      # - name: Trigger staging deployment
+      #   uses: actions/github-script@v4
+      #   with:
+      #     github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+      #     script: |
+      #       github.actions.createWorkflowDispatch({
+      #         owner: 'ocadotechnology',
+      #         repo: 'codeforlife-deploy-appengine',
+      #         workflow_id: 'deploy_staging.yml',
+      #         ref: 'master',
+      #       });
