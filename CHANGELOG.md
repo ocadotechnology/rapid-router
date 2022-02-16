@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.7.8 (2022-02-16)
+### Fix
+* Trim ci flow ([#1304](https://github.com/ocadotechnology/rapid-router/issues/1304)) ([`469ff18`](https://github.com/ocadotechnology/rapid-router/commit/469ff188a371bd45ef7f3815e35ba3870dc529e9))
+
 ## v3.7.7 (2022-02-15)
 ### Fix
 * Revert previous ci changes ([#1303](https://github.com/ocadotechnology/rapid-router/issues/1303)) ([`f4e89fc`](https://github.com/ocadotechnology/rapid-router/commit/f4e89fc08f0c36fdd6379826b6d55d8ebc396f88))
