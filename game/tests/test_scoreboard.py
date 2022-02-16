@@ -10,239 +10,65 @@ from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
 from django.test import Client, TestCase
 from django.urls import reverse
-from django.utils.timezone import utc
 from hamcrest import *
 
-from game.models import Attempt, Level
-from game.views.scoreboard import StudentRow, scoreboard_data
-from game.views.scoreboard_csv import (
-    scoreboard_csv_multiple_levels,
-    scoreboard_csv_single_level,
-)
-
-Headers = [
-    "Class",
-    "Name",
-    "Total Score",
-    "Total Time",
-    "Started Levels %",
-    "Attempted levels %",
-    "Finished levels %",
-]
+from game.models import Attempt, Level, Episode
+from game.views.scoreboard import StudentRow, scoreboard_data, Headers, StudentInTrouble
+from game.views.scoreboard_csv import scoreboard_csv, Headers as CSVHeaders
 
 
 class ScoreboardTestCase(TestCase):
     def test_teacher_multiple_students_multiple_levels(self):
-        level_ids = ids_of_levels_named(["1", "2"])
+        episode_ids = [1]
+        episode1 = Episode.objects.get(id=1)
+        level_ids = [f"{x}" for x in range(1, len(episode1.levels)+1)]
         level1 = Level.objects.get(name="1")
         level2 = Level.objects.get(name="2")
 
         clas, student, student2 = set_up_data()
 
-        create_attempt(student, level1, 10.5)
-        create_attempt(student2, level1, 2.3)
-        create_attempt(student2, level2, 16.7)
+        create_attempt(student, level1, 10)
+        create_attempt(student2, level1, 2)
+        create_attempt(student2, level2, 16)
 
-        student_data, headers = scoreboard_data(MockTeacher(), level_ids, [clas.id])
+        all_levels = [level1, level2]
 
-        assert_that(
-            headers,
-            equal_to(
-                [
-                    "Class",
-                    "Name",
-                    "Total Score",
-                    "Total Time",
-                    "Progress",
-                    "Level 1",
-                    "Level 2",
-                ]
-            ),
-        )
-        assert_that(student_data, has_length(2))
+        attempts_per_student = {
+            student: Attempt.objects.filter(
+                level__in=all_levels, student=student, is_best_attempt=True
+            ).select_related("level"),
+            student2: Attempt.objects.filter(
+                level__in=all_levels, student=student2, is_best_attempt=True
+            ).select_related("level"),
+        }
 
-        assert_student_row(
-            student_row=student_data[0],
-            class_name=clas.name,
-            student_name=student.user.user.first_name,
-            total_score=10.5,
-            total_time=timedelta(0),
-            progress=(0.0, 0.0, 50.0),
-            scores=[10.5, ""],
+        student_data, headers, level_headers, levels_sorted = scoreboard_data(
+            episode_ids, attempts_per_student
         )
 
-        assert_student_row(
-            student_row=student_data[1],
-            class_name=clas.name,
-            student_name=student2.user.user.first_name,
-            total_score=19.0,
-            total_time=timedelta(0),
-            progress=(0.0, 50.0, 50.0),
-            scores=[2.3, 16.7],
-        )
+        assert headers == Headers
+        assert level_headers == [f"L{id}" for id in level_ids]
 
-    def test_teacher_multiple_students_single_level(self):
-        level_ids = ids_of_levels_named(["1"])
-        level1 = Level.objects.get(name="1")
+        assert len(student_data) == 2
 
-        clas, student, student2 = set_up_data()
+        student_row = student_data[0]
+        assert student_row.class_field.name == clas.name
+        assert student_row.name == student.user.user.first_name
+        assert student_row.total_score == 10
+        assert student_row.total_time == timedelta(0)
+        assert student_row.level_scores[1]["score"] == 10
+        assert student_row.completed == 1
+        assert student_row.percentage_complete == 50.0
 
-        create_attempt(student, level1, 10.5)
-        create_attempt(student2, level1, 2.3)
-
-        student_data, headers = scoreboard_data(MockTeacher(), level_ids, [clas.id])
-
-        assert_that(
-            headers,
-            equal_to(
-                ["Class", "Name", "Score", "Total Time", "Start Time", "Finish Time"]
-            ),
-        )
-        assert_that(student_data, has_length(2))
-
-        assert_student_row_single_level(
-            student_row=student_data[0],
-            class_name=clas.name,
-            student_name=student.user.user.first_name,
-            total_score=10.5,
-            total_time=timedelta(0),
-        )
-
-        assert_student_row_single_level(
-            student_row=student_data[1],
-            class_name=clas.name,
-            student_name=student2.user.user.first_name,
-            total_score=2.3,
-            total_time=timedelta(0),
-        )
-
-    def test_student_multiple_students_multiple_levels(self):
-        level_ids = ids_of_levels_named(["1", "2"])
-        level1 = Level.objects.get(name="1")
-        level2 = Level.objects.get(name="2")
-
-        clas, student, student2 = set_up_data(True)
-
-        create_attempt(student, level1, 10.5)
-        create_attempt(student2, level1, 2.3)
-        create_attempt(student2, level2, 16.7)
-
-        student_data, headers = scoreboard_data(
-            MockStudent(student), level_ids, [clas.id]
-        )
-
-        assert_that(
-            headers,
-            equal_to(
-                [
-                    "Class",
-                    "Name",
-                    "Total Score",
-                    "Total Time",
-                    "Progress",
-                    "Level 1",
-                    "Level 2",
-                ]
-            ),
-        )
-        assert_that(student_data, has_length(2))
-
-        assert_student_row(
-            student_row=student_data[0],
-            class_name=clas.name,
-            student_name=student.user.user.first_name,
-            total_score=10.5,
-            total_time=timedelta(0),
-            progress=(0.0, 0.0, 50.0),
-            scores=[10.5, ""],
-        )
-
-        assert_student_row(
-            student_row=student_data[1],
-            class_name=clas.name,
-            student_name=student2.user.user.first_name,
-            total_score=19.0,
-            total_time=timedelta(0),
-            progress=(0.0, 50.0, 50.0),
-            scores=[2.3, 16.7],
-        )
-
-    def test_student_multiple_students_single_level(self):
-        level_ids = ids_of_levels_named(["2"])
-        level2 = Level.objects.get(name="2")
-
-        clas, student, student2 = set_up_data(True)
-
-        create_attempt(student, level2, 10.5)
-        create_attempt(student2, level2, 16.7)
-
-        student_data, headers = scoreboard_data(
-            MockStudent(student), level_ids, [clas.id]
-        )
-
-        assert_that(
-            headers,
-            equal_to(
-                ["Class", "Name", "Score", "Total Time", "Start Time", "Finish Time"]
-            ),
-        )
-        assert_that(student_data, has_length(2))
-
-        assert_student_row_single_level(
-            student_row=student_data[0],
-            class_name=clas.name,
-            student_name=student.user.user.first_name,
-            total_score=10.5,
-            total_time=timedelta(0),
-        )
-
-        assert_student_row_single_level(
-            student_row=student_data[1],
-            class_name=clas.name,
-            student_name=student2.user.user.first_name,
-            total_score=16.7,
-            total_time=timedelta(0),
-        )
-
-    def test_student_multiple_students_multiple_levels_cannot_see_classmates(self):
-        level_ids = ids_of_levels_named(["1", "2"])
-        level1 = Level.objects.get(name="1")
-        level2 = Level.objects.get(name="2")
-
-        clas, student, student2 = set_up_data()
-        create_attempt(student, level1, 10.5)
-        create_attempt(student2, level1, 2.3)
-        create_attempt(student2, level2, 16.7)
-
-        student_data, headers = scoreboard_data(
-            MockStudent(student), level_ids, [clas.id]
-        )
-
-        assert_that(
-            headers,
-            equal_to(
-                [
-                    "Class",
-                    "Name",
-                    "Total Score",
-                    "Total Time",
-                    "Progress",
-                    "Level 1",
-                    "Level 2",
-                ]
-            ),
-        )
-        assert_that(student_data, has_length(1))
-
-        assert_student_row(
-            student_row=student_data[0],
-            class_name=clas.name,
-            student_name=student.user.user.first_name,
-            total_score=10.5,
-            total_time=timedelta(0),
-            progress=(0.0, 0.0, 50.0),
-            scores=[10.5, ""],
-        )
+        student_row = student_data[1]
+        assert student_row.class_field.name == clas.name
+        assert student_row.name == student2.user.user.first_name
+        assert student_row.total_score == 18
+        assert student_row.total_time == timedelta(0)
+        assert student_row.level_scores[1]["score"] == 2
+        assert student_row.level_scores[2]["score"] == 16
+        assert student_row.completed == 1
+        assert student_row.percentage_complete == 45.0
 
     def test_scoreboard_loads(self):
         email, password = signup_teacher_directly()
@@ -364,92 +190,97 @@ class ScoreboardTestCase(TestCase):
 
 
 class ScoreboardCsvTestCase(TestCase):
-    def test_multiple_levels(self):
-        levels = Level.objects.sorted_levels()
-        student_rows = [(self.student_row("secrète")), (self.student_row())]
+    def test_scoreboard_csv(self):
+        levels = Level.objects.sorted_levels()[0:2]
 
-        response = scoreboard_csv_multiple_levels(student_rows, levels)
+        student_rows = [None, None]
+        students = [None, None]
+        student_rows[0], students[0] = self.student_row("secrète")
+        student_rows[1], students[1] = self.student_row()
+
+        improvement_data = []
+        for student in students:
+            stud = StudentInTrouble(student=student, areas="Getting started")
+            improvement_data.append(stud)
+
+        response = scoreboard_csv(student_rows, levels, improvement_data)
 
         actual_header, actual_rows = self.actual_data(response.content.decode("utf-8"))
 
         expected_header = self.expected_header(levels)
-        expected_rows = self.expected_rows_multiple_levels(student_rows)
+        assert actual_header == expected_header
 
-        assert_that(actual_header, equal_to(expected_header))
+        assert len(actual_rows) == len(student_rows)
 
-        assert_that(actual_rows, equal_to(expected_rows))
+        # check first row
+        (
+            class_name,
+            name,
+            completed_levels,
+            total_time,
+            total_scores,
+            l1,
+            l2,
+            improvement,
+        ) = actual_rows[0].split(",")
+        assert student_rows[0].class_field.name == class_name
+        assert student_rows[0].name == name
+        assert student_rows[0].level_scores[0]["score"] == int(l1)
+        assert student_rows[0].level_scores[1]["score"] == int(l2)
+        assert improvement == "Getting started"
 
-    def test_single_level(self):
-        student_rows = [(self.student_row("secrète")), (self.student_row())]
-        response = scoreboard_csv_single_level(student_rows)
-
-        actual_header, actual_rows = self.actual_data(response.content.decode("utf-8"))
-
-        expected_header = "Class,Name,Score,Total Time,Start Time,Finish Time"
-        expected_rows = self.expected_rows_single_level(student_rows)
-
-        assert_that(actual_header, equal_to(expected_header))
-
-        assert_that(actual_rows, equal_to(expected_rows))
-
-    def expected_rows_single_level(self, student_rows):
-        return list(map(self.expected_row_single_level, student_rows)) + [""]
-
-    def expected_rows_multiple_levels(self, student_rows):
-        return list(map(self.expected_row_multiple_levels, student_rows)) + [""]
+        # check last row
+        last = len(actual_rows) - 1
+        (
+            class_name,
+            name,
+            completed_levels,
+            total_time,
+            total_scores,
+            l1,
+            l2,
+            improvement,
+        ) = actual_rows[last].split(",")
+        assert student_rows[last].class_field.name == class_name
+        assert student_rows[last].name == name
+        assert str(student_rows[last].total_time) == total_time
 
     def student_row(self, class_name=None):
         email, password = signup_teacher_directly()
         _, class_name, access_code = create_class_directly(email, class_name)
         _, _, student = create_school_student_directly(access_code)
 
-        total_time = timedelta(0, 30)
+        total_time = timedelta(seconds=30)
         scores = [x for x in range(20)]
         total_score = sum(scores)
-        progress = (0, 0, 0)
 
-        all_scores = scores + [""] * 89
+        level_scores = {}
+        for i in range(2):
+            level_scores[i] = {}
+            level_scores[i]["score"] = 5
+            level_scores[i]["full_score"] = 20
+            level_scores[i]["is_low_attempt"] = True
 
         row = StudentRow(
             student=student,
+            class_field=Class(name="MyClass"),
             total_time=total_time,
             total_score=total_score,
-            start_time=datetime.fromtimestamp(1435305072, tz=utc),
-            finish_time=datetime.fromtimestamp(1438305072, tz=utc),
-            progress=progress,
-            scores=all_scores,
-            class_field=Class(name="MyClass"),
+            level_scores=level_scores,
+            completed=2,
+            percentage_complete=45,
         )
-        return row
 
-    def expected_row_multiple_levels(self, student_row):
-        beginning = (
-            "%s,%s,190,0:00:30,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,"
-            % (
-                student_row.class_field.name.encode("utf-8"),
-                student_row.name.encode("utf-8"),
-            )
-        )
-        padding = ",".join([""] * 89)
-        return beginning + padding
-
-    def expected_row_single_level(self, student_row):
-        return (
-            "%s,%s,190,0:00:30,2015-06-26 07:51:12+00:00,2015-07-31 01:11:12+00:00"
-            % (
-                student_row.class_field.name.encode("utf-8"),
-                student_row.name.encode("utf-8"),
-            )
-        )
+        return row, student
 
     def expected_header(self, levels):
         level_strings = list(map(str, levels))
-        all_header_strings = Headers + level_strings
+        all_header_strings = CSVHeaders + level_strings + ["Areas for improvement"]
         joined = ",".join(all_header_strings)
         return joined
 
     def actual_data(self, content):
-        split = content.split("\r\n")
+        split = content.strip().split("\r\n")
         header = split[0]
         rows = split[1:]
         return header, rows
@@ -480,26 +311,6 @@ class MockTeacher(object):
         return False
 
 
-def assert_student_row(
-    student_row, class_name, student_name, total_score, total_time, progress, scores
-):
-    assert_that(student_row.class_field.name, equal_to(class_name))
-    assert_that(student_row.name, equal_to(student_name))
-    assert_that(student_row.total_score, equal_to(total_score))
-    assert_that(student_row.total_time, equal_to(total_time))
-    assert_that(student_row.progress, equal_to(progress))
-    assert_that(student_row.scores, equal_to(scores))
-
-
-def assert_student_row_single_level(
-    student_row, class_name, student_name, total_score, total_time
-):
-    assert_that(student_row.class_field.name, equal_to(class_name))
-    assert_that(student_row.name, equal_to(student_name))
-    assert_that(student_row.total_score, equal_to(total_score))
-    assert_that(student_row.total_time, equal_to(total_time))
-
-
 def create_attempt(student, level, score):
     attempt = Attempt.objects.create(
         finish_time=datetime.fromtimestamp(1435305072),
@@ -514,9 +325,7 @@ def create_attempt(student, level, score):
 
 def ids_of_levels_named(names):
     levels = Level.objects.filter(name__in=names)
-    assert_that(len(levels), equal_to(len(names)))
-    level_ids = [x.id for x in levels]
-    return level_ids
+    return levels
 
 
 def set_up_data(classmates_data_viewable=False):

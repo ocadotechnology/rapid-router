@@ -29,7 +29,7 @@ ocargo.Thread = function (program) {
 };
 
 ocargo.Thread.prototype.run = function (model) {
-  var failed = false;
+  let failed = false;
   while (!failed && this.canStep()) {
     failed = !this.step(model);
   }
@@ -40,8 +40,8 @@ ocargo.Thread.prototype.run = function (model) {
 
 ocargo.Thread.prototype.step = function (model) {
   // check if any event condition is true
-  for (var i = 0; i < this.program.events.length; i++) {
-    var event = this.program.events[i];
+  for (let i = 0; i < this.program.events.length; i++) {
+    let event = this.program.events[i];
     model.shouldObserve = false;
     if (event.condition(model)) {
       event.execute(this, model);
@@ -49,9 +49,11 @@ ocargo.Thread.prototype.step = function (model) {
     model.shouldObserve = true;
   }
 
-  var commandToProcess = this.stack.shift();
+  let commandToProcess = this.stack.shift();
   this.noExecutionSteps++;
+
   if (this.noExecutionSteps > MAX_EXECUTION_STEPS) {
+    ocargo.game.sendAttempt(0);
     // alert user to likely infinite loop
     ocargo.animation.appendAnimation({
       type: "popup",
@@ -66,14 +68,14 @@ ocargo.Thread.prototype.step = function (model) {
     return false;
   }
 
-  var successful = true;
+  let successful = true;
   if (commandToProcess) {
     successful = commandToProcess.execute(this, model);
   }
 
   if (!successful) {
     // Program crashed, queue a block highlight event
-    var block = commandToProcess.block;
+    let block = commandToProcess.block;
     queueHighlightIncorrect(model, block);
     return false;
   }

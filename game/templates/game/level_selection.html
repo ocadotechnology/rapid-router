@@ -50,22 +50,27 @@
 {% endblock %}
 
 {% block header %}
-<div class="banner banner--rapid-router--background row">
-    <div class="level_rr_logo">
-        <img title="Rapid Router logo" alt="Rapid Router logo" src="{% static 'game/image/RR_logo.svg' %}"></section>
-    </div>
-</div>
+<section class="banner banner--rapid-router">
+    <img title="Rapid Router logo" alt="Rapid Router logo" src="{% static 'common/img/RR_logo.svg' %}">
+</section>
 {% endblock header %}
 
+
 {% block nav_ocargo_levels %}
-<a class="button button--secondary button--secondary--light" style="background-color: white; color: #fa1664;" href="{% url 'levels' %}">Levels</a>
+    {% if user|is_logged_in_as_student %}
+    <a class="button button--secondary button--secondary--light sub-nav--student-active">Levels</a>
+    {% elif user|is_independent_student %}
+    <a class="button button--secondary sub-nav--independent-active">Levels</a>
+    {% else %}
+    <a class="button button--secondary button--secondary--light sub-nav--teacher-active">Levels</a>
+    {% endif %}
 {% endblock nav_ocargo_levels %}
 
 {% block content %}
 <div class="container background">
     <div id="episodes">
         <div class="panel-intro">
-            <h4>Blocky levels</h4>
+            <h4>Blockly levels</h4>
             The first set of levels use Blockly to slowly introduce you to Python. You can read more about Blockly
             <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" target="_blank">here</a>.
         </div>

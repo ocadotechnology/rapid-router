@@ -1,14 +1,14 @@
 name: Publish Python Package
 on:
-  workflow_run:
-    workflows: ["CI"]
-    branches: [master]
-    types:
-      - completed
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "CHANGELOG.md"
+      - "game/__init__.py"
 jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout

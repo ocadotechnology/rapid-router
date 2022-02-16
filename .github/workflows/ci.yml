@@ -1,13 +1,11 @@
 name: CI
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
   pull_request:
 jobs:
   tests:
     name: Run tests
-    if: ${{ github.event.pusher.email != 'action@github.com' }}
     runs-on: ubuntu-18.04
     env:
       LANG: C.UTF-8

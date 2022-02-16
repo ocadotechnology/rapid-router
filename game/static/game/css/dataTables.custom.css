@@ -1,0 +1,42 @@
+.tableWrapper {
+  width: 100%;
+}
+
+div.DTFC_LeftBodyLiner,
+div.DTFC_RightBodyLiner {
+  overflow: hidden;
+}
+
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_paginate span,
+.dataTables_wrapper .dataTables_paginate .disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+  display: none;
+}
+
+.dataTables_wrapper.no-footer .dataTables_scrollBody {
+  border-bottom: 0;
+}
+
+.dataTables_wrapper a.next {
+  margin-left: 10px;
+}
+
+.dataTables_wrapper a.next:focus,
+.dataTables_wrapper a.previous:focus {
+  outline: none;
+}
+
+table.dataTable {
+  border-collapse: collapse;
+}
+
+table.dataTable thead th,
+table.dataTable tfoot th {
+  font-weight: 500;
+}
+
+table.dataTable.no-footer {
+  border-bottom: 0;
+}

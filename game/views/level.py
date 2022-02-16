@@ -250,7 +250,6 @@ def submit_attempt(request):
         if attempt:
             attempt.score = float(request.POST.get("score"))
             attempt.workspace = request.POST.get("workspace")
-            attempt.workspace = request.POST.get("workspace")
             attempt.python_workspace = request.POST.get("python_workspace")
 
             record_best_attempt(attempt)
