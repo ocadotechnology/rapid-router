@@ -1,6 +1,6 @@
-from django.urls.base import reverse
-from .base_game_test import BaseGameTest
 from selenium.webdriver.common.by import By
+
+from .base_game_test import BaseGameTest
 
 
 class LocalStorage:
@@ -27,15 +27,16 @@ class TestLocalStorage(BaseGameTest):
             f"pythonWorkspace-{level_number}" in items
         )
 
-    def test_localstorage_if_logged_in(self):
+    def test_nothing_in_localstorage(self):
+        # Test localstorage is empty when logged in
         self.login_once()
         self._complete_level(1)
-        self.assertTrue(self.level_in_localstorage(1))
+        assert not self.level_in_localstorage(1)
 
-    def test_nothing_in_localstorage_if_not_logged_in(self):
         page = self.go_to_homepage()
         page.teacher_logout()
 
+        # Test localstorage is empty when loged out
         level1 = self.go_to_level(1)
 
         ls = LocalStorage(self.selenium)
@@ -51,4 +52,4 @@ class TestLocalStorage(BaseGameTest):
 
         level1.wait_for_element_to_be_clickable((By.CSS_SELECTOR, "#next_level_button"))
         level1.next_level()
-        self.assertFalse(self.level_in_localstorage(1))
+        assert not self.level_in_localstorage(1)
