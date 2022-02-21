@@ -81,27 +81,9 @@ ocargo.PythonControl = function () {
         if (PYTHON_WORKSPACE) {
             this.setCode(PYTHON_WORKSPACE);
         } else {
-            try {
-                this.setCode(
-                    localStorage.getItem('pythonWorkspace-' + LEVEL_ID));
-            } catch (e) {
-                this.reset();
-            }
+            this.reset();
         }
     };
-
-    this.teardown = function () {
-        if (localStorage && !ANONYMOUS && USER_LOGGED_IN) {
-            var text = this.getCode();
-            try {
-                localStorage.setItem('pythonWorkspace-' + LEVEL_ID, text);
-
-            } catch (e) {
-                // No point in even logging, as page is unloading
-            }
-        }
-    };
-
 
     /*********************/
     /** Private methods **/

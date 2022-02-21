@@ -64,22 +64,6 @@ ocargo.BlocklyControl.prototype.reset = function() {
     this.clearIncorrectBlock();
 };
 
-
-ocargo.BlocklyControl.prototype.teardown = function() {
-    if (localStorage && !ANONYMOUS && USER_LOGGED_IN) {
-        var text = this.serialize();
-        try {
-            if (NIGHT_MODE) {
-                localStorage.setItem('blocklyNightModeWorkspaceXml-' + LEVEL_ID, text);
-            } else {
-                localStorage.setItem('blocklyWorkspaceXml-' + LEVEL_ID, text);
-            }
-        } catch (e) {
-            // No point in even logging, as page is unloading
-        }
-    }
-};
-
 ocargo.BlocklyControl.prototype.deserialize = function(text) {
     try {
         var oldXml = Blockly.Xml.workspaceToDom(Blockly.mainWorkspace);
@@ -163,15 +147,9 @@ ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
         e.innerHTML = text;
         return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
     }
-    // Use the user's last attempt if available, else use whatever's in local storage
+    // Use the user's last attempt if available
     if (WORKSPACE) {
         this.deserialize(decodeHTML(WORKSPACE));
-    } else {
-        if (NIGHT_MODE) {
-            this.deserialize(localStorage.getItem('blocklyNightModeWorkspaceXml-' + LEVEL_ID));
-        } else {
-            this.deserialize(localStorage.getItem('blocklyWorkspaceXml-' + LEVEL_ID));
-        }
     }
 
     this.redrawBlockly();
