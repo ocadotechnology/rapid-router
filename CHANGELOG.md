@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.0 (2022-02-21)
+### Feature
+* Remove local storage ([#1305](https://github.com/ocadotechnology/rapid-router/issues/1305)) ([`3bd72d2`](https://github.com/ocadotechnology/rapid-router/commit/3bd72d2b406eec484ca40509737b1f3c4ba5a832))
+
 ## v3.7.8 (2022-02-16)
 ### Fix
 * Trim ci flow ([#1304](https://github.com/ocadotechnology/rapid-router/issues/1304)) ([`469ff18`](https://github.com/ocadotechnology/rapid-router/commit/469ff188a371bd45ef7f3815e35ba3870dc529e9))
