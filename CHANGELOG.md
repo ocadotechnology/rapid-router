@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.1 (2022-02-23)
+### Fix
+* Florian Thicke - Divider Lines ([#1307](https://github.com/ocadotechnology/rapid-router/issues/1307)) ([`9286f6e`](https://github.com/ocadotechnology/rapid-router/commit/9286f6ee3bc1aa9166029bfb0593b3c318ca16d2))
+
 ## v3.8.0 (2022-02-21)
 ### Feature
 * Remove local storage ([#1305](https://github.com/ocadotechnology/rapid-router/issues/1305)) ([`3bd72d2`](https://github.com/ocadotechnology/rapid-router/commit/3bd72d2b406eec484ca40509737b1f3c4ba5a832))
