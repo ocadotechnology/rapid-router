@@ -14,7 +14,7 @@
  <path stroke="#72612e" stroke-width="2.5" d="m35 0v200m130-200v200"/>
  <path stroke="#72612e" stroke-width="2" d="m50 0v200m100-200v200m-100-200h100m-100 40h100m-100 40h100m-100 40h100m-100 40h100m-100 40h100"/>
  <rect y="0" width="90" fill="url(#roadGradient)" x="55" height="200"/>
- <path stroke="#808080" d="m55 0h90m-90 200h90"/>
+ <path stroke="#808080" stroke-width="7" d="m55 0h90m-90 200h90"/>
  <path stroke="#101928" stroke-width="3" d="m55 0v200m90-200v200"/>
  <path stroke="#f4d100" stroke-width="5" d="m100 16.7v33.3m0 33.3v33.3m0 33.3v33.3"/>
 </svg>

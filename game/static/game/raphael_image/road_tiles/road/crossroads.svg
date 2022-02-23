@@ -17,7 +17,7 @@
  <path d="m0 100h100v100h-45a55 55 -90 0 0 -55 -55v-45" fill="url(#roadGradient2)"/>
  <path d="m200 100h-100v100h45a55 55 -90 0 1 55 -55v-45" fill="url(#roadGradient3)"/>
  <path d="m200 100h-100v-100h45a55 55 -90 0 0 55 55v45" fill="url(#roadGradient4)"/>
- <path stroke="#808080" d="m55 0h90m-90 200h90m-145-55v-90m200 0v90"/>
+ <path stroke="#808080" stroke-width="7" d="m55 0h90m-90 200h90m-145-55v-90m200 0v90"/>
  <path stroke="#101928" stroke-width="3" d="m55 200a55 55 -90 0 0 -55 -55m0-90a55 55 -90 0 0 55 -55m90 0a55 55 -90 0 0 55 55m0 90a55 55 90 0 0 -55 55" fill="none"/>
  <path stroke="#f4d100" stroke-width="5" d="m16.66 100h25.33m141.34 0h-25.33m-58-83.34v25.33m0 141.34v-25.33"/>
  <path stroke="#f4d100" stroke-width="1.5" d="m100 42h58v116h-116v-116h58" fill="none"/>
