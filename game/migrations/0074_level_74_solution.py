@@ -9,13 +9,8 @@ def update_level(apps, schema_editor):
     level74.save()
 
 
-def dummy_reverse(apps, schema_editor):
-    """It's not possible to reverse this data migration
-    but we want to allow Django to reverse previous migrations.
-    """
-    pass
-
-
 class Migration(migrations.Migration):
     dependencies = [("game", "0073_level_75_solution")]
-    operations = [migrations.RunPython(update_level, reverse_code=dummy_reverse)]
+    operations = [
+        migrations.RunPython(update_level, reverse_code=migrations.RunPython.noop)
+    ]
