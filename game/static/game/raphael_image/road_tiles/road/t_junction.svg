@@ -21,7 +21,7 @@
  <rect y="0" width="45" height="200" x="100" fill="url(#roadGradient1)"/>
  <path d="m0 100h100v100h-45a55 55 -90 0 0 -55 -55v-45" fill="url(#roadGradient2)"/>
  <path d="m0 100h100v-100h-45a55 55 -90 0 1 -55 55v45" fill="url(#roadGradient3)"/>
- <path stroke="#808080" d="m55 0h90m-90 200h90m-145-55v-90"/>
+ <path stroke="#808080" stroke-width="7" d="m55 0h90m-90 200h90m-145-55v-90"/>
  <path stroke="#101928" stroke-width="3" d="m145 0v200m-90 0a55 55 -90 0 0 -55 -55m0-90a55 55 -90 0 0 55 -55" fill="none"/>
  <path stroke="#f4d100" stroke-width="5" d="m100 16.7v33.3m0 33.3v33.3m0 33.3v33.3m-83.4-83.2h38.4"/>
  <path stroke="#f4d100" stroke-width="2" stroke-dasharray="7.5, 7.5" d="m55 35v130m-5-130v65"/>
