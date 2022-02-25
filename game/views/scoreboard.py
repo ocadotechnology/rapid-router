@@ -200,16 +200,14 @@ def scoreboard(request):
 
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
-    users_classes_ids = [class_.id for class_ in users_classes]
-    all_episode_ids = list(range(1, 12))
 
     if request.POST:
         class_ids = set(map(int, request.POST.getlist("classes")))
         episode_ids = set(map(int, request.POST.getlist("episodes")))
     else:
-        # Get default data on normal page load - all teacher's classes and all episodes
-        class_ids = set(users_classes_ids)
-        episode_ids = set(all_episode_ids)
+        # Show no data on page load
+        class_ids = ()
+        episode_ids = ()
 
     if user.is_independent_student():
         return render_no_permission_error(request)
@@ -224,9 +222,9 @@ def scoreboard(request):
         request.POST or None,
         classes=users_classes,
         initial={
-            "classes": users_classes_ids,
-            "episodes": all_episode_ids,
-        },  # Select all checkboxes of each dropdown to cater for first page load
+            "classes": class_ids,
+            "episodes": episode_ids,
+        },  # Check selected checkboxes of each dropdown to cater for POST page load
     )
 
     classes = Class.objects.filter(id__in=class_ids)

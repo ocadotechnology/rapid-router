@@ -36,7 +36,8 @@ table td.fixed-width {
   color: white;
 }
 
-#scoreboardTable_wrapper td.scoreboard--completed {
+#scoreboardTable_wrapper td.scoreboard--completed,
+.scoreboard--completed {
   color: #eab502;
   font-size: 24px;
 }

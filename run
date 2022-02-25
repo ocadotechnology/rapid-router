@@ -2,40 +2,6 @@
 set -e
 cd "${BASH_SOURCE%/*}"
 
-translation=
-while [ "$1" != "" ]; do
-  case $1 in
-    --with-translation-tools )
-      translation=1
-      ;;
-    * )
-      exit 1 # unknown option
-      ;;
-  esac
-  shift
-done
-
-pip install -e .
-pip install 'codeforlife-portal >= 1.0.0.post.dev1' # TODO: Remove this requirement (#688)
 ./example_project/manage.py migrate --noinput
-
-# Translation/Localisation
-if [ "$translation" = "1" ]; then
-  pip install 'crowdin-cli-py'
-  cd game
-  mkdir -p locale
-  django-admin makemessages -l en_GB --no-wrap
-  # some files from foundation use '_' for their own purpose
-  django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*"
-  cd -
-  ./.crowdin-get-translations
-fi
-
 ./example_project/manage.py collectstatic --noinput
-
-if [ -n "${DJANGO_IP_PORT}" ]; then
-  echo "Open http://$DJANGO_IP_PORT"
-  ./example_project/manage.py runserver $DJANGO_IP_PORT
-else
-  ./example_project/manage.py runserver "$@"
-fi
+./example_project/manage.py runserver "$@"
