@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.2 (2022-02-25)
+### Fix
+* Improve level 74 solution ([#1308](https://github.com/ocadotechnology/rapid-router/issues/1308)) ([`14a6155`](https://github.com/ocadotechnology/rapid-router/commit/14a61551be4a3aa2444da75f8ed2ff7390128367))
+
 ## v3.8.1 (2022-02-23)
 ### Fix
 * Florian Thicke - Divider Lines ([#1307](https://github.com/ocadotechnology/rapid-router/issues/1307)) ([`9286f6e`](https://github.com/ocadotechnology/rapid-router/commit/9286f6ee3bc1aa9166029bfb0593b3c318ca16d2))
