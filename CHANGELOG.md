@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.4 (2022-03-01)
+### Fix
+* Add Crowdin CDN to CSP config ([#1311](https://github.com/ocadotechnology/rapid-router/issues/1311)) ([`47754af`](https://github.com/ocadotechnology/rapid-router/commit/47754af164f399a10f6c26b216233bb1efcd55b0))
+
+## v3.8.3 (2022-02-28)
+### Fix
+* Fix level 74 new solution ([#1310](https://github.com/ocadotechnology/rapid-router/issues/1310)) ([`cda4a83`](https://github.com/ocadotechnology/rapid-router/commit/cda4a839bf3af6e82ae4785a0cd7957704ea1535))
+
 ## v3.8.2 (2022-02-25)
 ### Fix
 * Improve level 74 solution ([#1308](https://github.com/ocadotechnology/rapid-router/issues/1308)) ([`14a6155`](https://github.com/ocadotechnology/rapid-router/commit/14a61551be4a3aa2444da75f8ed2ff7390128367))

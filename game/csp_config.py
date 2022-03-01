@@ -11,7 +11,7 @@ CSP_CONFIG = {
         f"{domain()}/static/icons/",
     ),
     "CSP_STYLE_SRC": ("https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css",),
-    "CSP_SCRIPT_SRC": ("'unsafe-eval'",),
+    "CSP_SCRIPT_SRC": ("'unsafe-eval'", "https://cdn.crowdin.com/"),
     "CSP_FRAME_SRC": (
         f"{domain()}/static/game/image/",
     ),
