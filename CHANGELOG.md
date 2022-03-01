@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.5 (2022-03-01)
+### Fix
+* Allow Crowdin in-context translation resources ([#1312](https://github.com/ocadotechnology/rapid-router/issues/1312)) ([`b87f93a`](https://github.com/ocadotechnology/rapid-router/commit/b87f93ad82853d7108077384d284e44f67415a31))
+
 ## v3.8.4 (2022-03-01)
 ### Fix
 * Add Crowdin CDN to CSP config ([#1311](https://github.com/ocadotechnology/rapid-router/issues/1311)) ([`47754af`](https://github.com/ocadotechnology/rapid-router/commit/47754af164f399a10f6c26b216233bb1efcd55b0))
