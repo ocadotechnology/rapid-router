@@ -13,6 +13,7 @@ django-test-migrations = "==1.0.0"
 selenium = "==3.141.0"
 pytest-django = "==4.1.0"
 pytest = "==6.*"
+codeforlife-portal = "*"
 
 [requires]
 python_version = "3.7"
