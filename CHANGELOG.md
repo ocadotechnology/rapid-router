@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.7 (2022-03-02)
+### Fix
+* Add more Crowdin domains to CSP ([#1313](https://github.com/ocadotechnology/rapid-router/issues/1313)) ([`a2c2a8d`](https://github.com/ocadotechnology/rapid-router/commit/a2c2a8df5cf8fd2d7830828838e09bf19abb746c))
+
 ## v3.8.6 (2022-03-02)
 ### Fix
 * Show no data on scoreboard load ([#1309](https://github.com/ocadotechnology/rapid-router/issues/1309)) ([`e5bc4fd`](https://github.com/ocadotechnology/rapid-router/commit/e5bc4fd3597c11b326f2d8a783b41fd4836b7521))
