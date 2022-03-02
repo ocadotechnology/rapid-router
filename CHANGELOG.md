@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.6 (2022-03-02)
+### Fix
+* Show no data on scoreboard load ([#1309](https://github.com/ocadotechnology/rapid-router/issues/1309)) ([`e5bc4fd`](https://github.com/ocadotechnology/rapid-router/commit/e5bc4fd3597c11b326f2d8a783b41fd4836b7521))
+
 ## v3.8.5 (2022-03-01)
 ### Fix
 * Allow Crowdin in-context translation resources ([#1312](https://github.com/ocadotechnology/rapid-router/issues/1312)) ([`b87f93a`](https://github.com/ocadotechnology/rapid-router/commit/b87f93ad82853d7108077384d284e44f67415a31))
