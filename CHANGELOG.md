@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.8 (2022-03-03)
+### Fix
+* Fix freeze issue with fast button ([#1314](https://github.com/ocadotechnology/rapid-router/issues/1314)) ([`0c723b1`](https://github.com/ocadotechnology/rapid-router/commit/0c723b11b6d8cff6c1e36f8bad4ba89eee121900))
+
 ## v3.8.7 (2022-03-02)
 ### Fix
 * Add more Crowdin domains to CSP ([#1313](https://github.com/ocadotechnology/rapid-router/issues/1313)) ([`a2c2a8d`](https://github.com/ocadotechnology/rapid-router/commit/a2c2a8df5cf8fd2d7830828838e09bf19abb746c))
