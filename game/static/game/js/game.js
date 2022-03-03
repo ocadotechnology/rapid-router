@@ -879,9 +879,9 @@ ocargo.Game.prototype._setupFastTab = function () {
       }.bind(this)
 
       if (this.tabs.play.isInState('readyToPlay')) {
-        flipFastSlow()
         this._resetAndPrepareAnimation(
           function () {
+            flipFastSlow()
             ocargo.animation.playAnimation()
           }.bind(this)
         )
