@@ -15,7 +15,7 @@ SETTINGS = {
             "game-scss": {
                 "source_filenames": ("game/sass/game.scss",),
                 "output_filename": "game.css",
-            }
+            },
         },
         "CSS_COMPRESSOR": None,
     },
@@ -54,6 +54,7 @@ SETTINGS = {
         }
     ],
     "USE_TZ": True,
+    "DEFAULT_AUTO_FIELD": "django.db.models.AutoField",
 }
 
 SETTINGS.update(CSP_CONFIG)

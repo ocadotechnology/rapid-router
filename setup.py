@@ -21,17 +21,17 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django==2.2.27",
-        "django-js-reverse==0.9.1",
+        "django==3.2.12",
+        "django-csp==3.7",
         "django-foundation-statics==5.4.7",
-        "django-pipeline==1.6.14",  # Setting this to 1.6.14 as 1.7 causes issue with compiling SCSS files
-        "djangorestframework==3.12.2",
+        "django-js-reverse==0.9.1",
+        "django-pipeline==2.0.8",  # Setting this to 1.6.14 as 1.7 causes issue with compiling SCSS files
+        "djangorestframework==3.13.1",
         "more-itertools==8.6.0",
         "pyhamcrest==2.0.2",
         "libsass==0.20.1",
         "future==0.18.2",
         "cfl-common",
-        "django-csp==3.7",
     ],
     classifiers=[
         "Programming Language :: Python",
