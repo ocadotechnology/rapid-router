@@ -374,4 +374,6 @@ class User(object):
         return hasattr(self.profile, "teacher")
 
     def is_independent_student(self):
-        return hasattr(self.profile, "student") and self.student.is_independent()
+        return (
+            hasattr(self.profile, "student") and self.profile.student.is_independent()
+        )
