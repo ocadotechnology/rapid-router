@@ -200,17 +200,23 @@ def scoreboard(request):
 
     user = User(request.user.userprofile)
     users_classes = classes_for(user)
+    all_episode_ids = list(range(1, 12))
+
+    if user.is_independent_student():
+        return render_no_permission_error(request)
 
     if request.POST:
         class_ids = set(map(int, request.POST.getlist("classes")))
         episode_ids = set(map(int, request.POST.getlist("episodes")))
     else:
-        # Show no data on page load
+        # Show no data on page load by default (if teacher)
         class_ids = ()
         episode_ids = ()
 
-    if user.is_independent_student():
-        return render_no_permission_error(request)
+        # If user is a student, show data for their class and all episodes
+        if user.is_student():
+            class_ids = {user.student.class_field.id}
+            episode_ids = set(all_episode_ids)
 
     if is_teacher_with_no_classes_assigned(user, users_classes):
         return render_no_permission_error(request)
@@ -232,7 +238,7 @@ def scoreboard(request):
 
     all_levels = []
 
-    for episode_id in range(1, 12):
+    for episode_id in all_episode_ids:
         episode = Episode.objects.get(id=episode_id)
         all_levels += episode.levels
 
@@ -368,4 +374,6 @@ class User(object):
         return hasattr(self.profile, "teacher")
 
     def is_independent_student(self):
-        return hasattr(self.profile, "student") and self.student.is_independent()
+        return (
+            hasattr(self.profile, "student") and self.profile.student.is_independent()
+        )
