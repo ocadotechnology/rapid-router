@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v3.8.9 (2022-03-08)
+### Fix
+* Show default data on student scoreboard ([#1315](https://github.com/ocadotechnology/rapid-router/issues/1315)) ([`c1cf628`](https://github.com/ocadotechnology/rapid-router/commit/c1cf628c78ddb1daac4262a66fb0f92af139a938))
+
 ## v3.8.8 (2022-03-03)
 ### Fix
 * Fix freeze issue with fast button ([#1314](https://github.com/ocadotechnology/rapid-router/issues/1314)) ([`0c723b1`](https://github.com/ocadotechnology/rapid-router/commit/0c723b11b6d8cff6c1e36f8bad4ba89eee121900))
