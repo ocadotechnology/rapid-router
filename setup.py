@@ -31,7 +31,7 @@ setup(
         "pyhamcrest==2.0.2",
         "libsass==0.21.0",
         "future==0.18.2",
-        "cfl-common",
+        # "cfl-common",  # TODO uncomment after Django upgrade
     ],
     classifiers=[
         "Programming Language :: Python",

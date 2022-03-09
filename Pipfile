@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django-autoconfig = { git = 'https://github.com/ocadotechnology/django-autoconfig.git', ref = 'master' }
+django-autoconfig = { git = 'https://github.com/ocadotechnology/django-autoconfig.git', ref = 'upgrade-django' }
 rapid-router = {editable = true, path = "."}
 
 [dev-packages]
@@ -13,7 +13,8 @@ django-test-migrations = "==1.0.0"
 selenium = "==3.141.0"
 pytest-django = "==4.1.0"
 pytest = "==6.*"
-codeforlife-portal = "*"
+# TODO uncomment after Django upgrade
+# codeforlife-portal = "*"
 
 [requires]
 python_version = "3.7"
