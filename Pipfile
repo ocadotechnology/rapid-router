@@ -9,9 +9,9 @@ rapid-router = {editable = true, path = "."}
 
 [dev-packages]
 django-selenium-clean = "==0.3.3"
-django-test-migrations = "==1.0.0"
+django-test-migrations = "==1.2.0"
 selenium = "==3.141.0"
-pytest-django = "==4.1.0"
+pytest-django = "==4.5.2"
 pytest = "==6.*"
 # TODO uncomment after Django upgrade
 # codeforlife-portal = "*"
