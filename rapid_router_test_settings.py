@@ -15,6 +15,8 @@ SELENIUM_WEBDRIVERS = {
     },
 }
 
+SELENIUM_WIDTHS = [1624]
+
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
 
 INSTALLED_APPS = ["game"]
