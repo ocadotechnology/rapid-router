@@ -43,12 +43,6 @@
             ],
             "version": "==3.7"
         },
-        "django-foundation-statics": {
-            "hashes": [
-                "sha256:c375de71f890f8a787b88229e04a7f6865d511fbb5ab87da72cf72bce92af957"
-            ],
-            "version": "==5.4.7"
-        },
         "django-js-reverse": {
             "hashes": [
                 "sha256:2a392d169f44e30b883c30dfcfd917a14167ce8fe196c99d2385b31c90d77aa0",

@@ -23,7 +23,6 @@ setup(
     install_requires=[
         "django==3.2.12",
         "django-csp==3.7",
-        "django-foundation-statics==5.4.7",
         "django-js-reverse==0.9.1",
         "django-pipeline==2.0.8",
         "djangorestframework==3.13.1",

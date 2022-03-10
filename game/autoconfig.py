@@ -34,7 +34,6 @@ SETTINGS = {
         "django.contrib.messages",
         "django.contrib.staticfiles",
         "django_js_reverse",
-        "foundation_scss",
         "rest_framework",
     ],
     "LANGUAGES": [("lol-us", "Localisation")],
