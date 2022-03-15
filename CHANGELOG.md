@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.0 (2022-03-15)
+### Feature
+* Upgrade from Django 2.2 to 3.2 ([#1316](https://github.com/ocadotechnology/rapid-router/issues/1316)) ([`e09c1eb`](https://github.com/ocadotechnology/rapid-router/commit/e09c1eb1200d43bfcc982c0d10444fdbaa18482c))
+
+### Breaking
+* Upgrade from Django 2.2 to 3.2 ([#1316](https://github.com/ocadotechnology/rapid-router/issues/1316)) ([`e09c1eb`](https://github.com/ocadotechnology/rapid-router/commit/e09c1eb1200d43bfcc982c0d10444fdbaa18482c))
+
 ## v3.8.9 (2022-03-08)
 ### Fix
 * Show default data on student scoreboard ([#1315](https://github.com/ocadotechnology/rapid-router/issues/1315)) ([`c1cf628`](https://github.com/ocadotechnology/rapid-router/commit/c1cf628c78ddb1daac4262a66fb0f92af139a938))
