@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.1 (2022-03-15)
+### Fix
+* Cleanup ci and update pipfile ([#1321](https://github.com/ocadotechnology/rapid-router/issues/1321)) ([`ff5bd8b`](https://github.com/ocadotechnology/rapid-router/commit/ff5bd8b8c0963909a08c7618aaf3af2eaac8440c))
+
 ## v4.0.0 (2022-03-15)
 ### Feature
 * Upgrade from Django 2.2 to 3.2 ([#1316](https://github.com/ocadotechnology/rapid-router/issues/1316)) ([`e09c1eb`](https://github.com/ocadotechnology/rapid-router/commit/e09c1eb1200d43bfcc982c0d10444fdbaa18482c))
