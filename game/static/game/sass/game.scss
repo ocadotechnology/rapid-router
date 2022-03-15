@@ -1,6 +1,6 @@
-@import 'foundation_overrides';
-@import '../../scss/foundation';
-@import 'variables';
+@import "foundation_overrides";
+@import "foundation";
+@import "variables";
 
 .size-12 {
   font-size: 12px;
@@ -126,7 +126,7 @@
     }
 
     select,
-    input[type='text'],
+    input[type="text"],
     .postfix.button {
       height: 2rem;
       line-height: 2rem;

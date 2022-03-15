@@ -15,7 +15,7 @@ SETTINGS = {
             "game-scss": {
                 "source_filenames": ("game/sass/game.scss",),
                 "output_filename": "game.css",
-            }
+            },
         },
         "CSS_COMPRESSOR": None,
     },
@@ -34,7 +34,6 @@ SETTINGS = {
         "django.contrib.messages",
         "django.contrib.staticfiles",
         "django_js_reverse",
-        "foundation_scss",
         "rest_framework",
     ],
     "LANGUAGES": [("lol-us", "Localisation")],
@@ -54,6 +53,7 @@ SETTINGS = {
         }
     ],
     "USE_TZ": True,
+    "DEFAULT_AUTO_FIELD": "django.db.models.AutoField",
 }
 
 SETTINGS.update(CSP_CONFIG)
