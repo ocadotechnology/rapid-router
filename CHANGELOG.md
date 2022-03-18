@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.2 (2022-03-18)
+### Fix
+* Remove cache_page ([#1322](https://github.com/ocadotechnology/rapid-router/issues/1322)) ([`9d37da0`](https://github.com/ocadotechnology/rapid-router/commit/9d37da0f3c5f6f2150af9eab6a1c99cbf1b74403))
+
 ## v4.0.1 (2022-03-15)
 ### Fix
 * Cleanup ci and update pipfile ([#1321](https://github.com/ocadotechnology/rapid-router/issues/1321)) ([`ff5bd8b`](https://github.com/ocadotechnology/rapid-router/commit/ff5bd8b8c0963909a08c7618aaf3af2eaac8440c))
