@@ -7,7 +7,7 @@ headless_chrome_options.add_argument("--no-sandbox")
 
 SELENIUM_WEBDRIVERS = {
     "default": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
-    "chrome": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
+    "firefox": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
     "chrome-headless": {
         "callable": webdriver.Chrome,
         "args": (),
