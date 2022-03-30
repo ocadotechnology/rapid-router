@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.3 (2022-03-30)
+### Fix
+* Use a non threaded server in SeleniumTestCase ([#1325](https://github.com/ocadotechnology/rapid-router/issues/1325)) ([`6bdf858`](https://github.com/ocadotechnology/rapid-router/commit/6bdf858157da77a2e90f5426f1b3e153b29df788))
+
 ## v4.0.2 (2022-03-18)
 ### Fix
 * Remove cache_page ([#1322](https://github.com/ocadotechnology/rapid-router/issues/1322)) ([`9d37da0`](https://github.com/ocadotechnology/rapid-router/commit/9d37da0f3c5f6f2150af9eab6a1c99cbf1b74403))
