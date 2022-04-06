@@ -1,21 +1,21 @@
 blockly_default = '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="30" y="30"></block></xml>'
 
-python_default = """import van
+python_default = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 """
 
-lvl_92 = """import van
+lvl_92 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 my_van.move_forwards()
 my_van.turn_right()
 my_van.turn_left()
 my_van.move_forwards()"""
 
-lvl_93 = """import van
-my_van = van.Van()
+lvl_93 = """from van import Van
+my_van = Van()
 my_van.turn_left()
 my_van.move_forwards()
 my_van.move_forwards()
@@ -29,9 +29,9 @@ my_van.turn_left()
 my_van.turn_left()
 my_van.turn_right()"""
 
-lvl_94 = """import van
+lvl_94 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 my_van.turn_right()
 my_van.turn_left()
@@ -41,18 +41,18 @@ my_van.turn_left()
 my_van.turn_right()
 my_van.turn_left()"""
 
-lvl_95 = """import van
+lvl_95 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 for i in range(3):
   my_van.turn_left()
   my_van.turn_right()
   my_van.move_forwards()"""
 
-lvl_96 = """import van
+lvl_96 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 for count in range(2):
     my_van.move_forwards()
@@ -62,9 +62,9 @@ my_van.turn_left()
 for count in range(3):
     my_van.move_forwards()"""
 
-lvl_97 = """import van
+lvl_97 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 for count in range(3):
   for forward in range(4):
@@ -76,9 +76,9 @@ for count in range(3):
   for right in range(2):
     my_van.turn_right()"""
 
-lvl_98 = """import van
+lvl_98 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 while not my_van.at_destination():
   if my_van.is_road_forward():
@@ -86,21 +86,9 @@ while not my_van.at_destination():
   else:
     my_van.turn_left()"""
 
-lvl_99 = """import van
+lvl_99 = """from van import Van
 
-my_van = van.Van()
-
-while not my_van.at_destination():
-  if my_van.is_road_forward():
-    my_van.move_forwards()
-  elif my_van.is_road_left():
-    my_van.turn_left()
-  else:
-    my_van.turn_right()"""
-
-lvl_100 = """import van
-
-my_van = van.Van()
+my_van = Van()
 
 while not my_van.at_destination():
   if my_van.is_road_forward():
@@ -110,9 +98,21 @@ while not my_van.at_destination():
   else:
     my_van.turn_right()"""
 
-lvl_101 = """import van
+lvl_100 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_road_forward():
+    my_van.move_forwards()
+  elif my_van.is_road_left():
+    my_van.turn_left()
+  else:
+    my_van.turn_right()"""
+
+lvl_101 = """from van import Van
+
+my_van = Van()
 
 def right_left():
   my_van.turn_right()
@@ -128,9 +128,9 @@ for count in range(2):
   my_van.turn_right()
 my_van.move_forwards()"""
 
-lvl_102 = """import van
+lvl_102 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 def left():
   for count in range(2):
@@ -153,9 +153,9 @@ right()
 left()
 my_van.move_forwards()"""
 
-lvl_103 = """import van
+lvl_103 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 def forward_left():
   my_van.move_forwards()
@@ -179,9 +179,9 @@ for count in range(2):
   my_van.move_forwards()
 forward_left()"""
 
-lvl_104 = """import van
+lvl_104 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 def left():
   for count in range(2):
@@ -209,9 +209,9 @@ my_van.turn_left()
 left()
 my_van.move_forwards()"""
 
-lvl_105 = """import van
+lvl_105 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 while not my_van.at_destination():
   if my_van.at_red_traffic_light():
@@ -223,9 +223,9 @@ while not my_van.at_destination():
   else:
     my_van.turn_right()"""
 
-lvl_106 = """import van
+lvl_106 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 n = 1
 
@@ -235,9 +235,9 @@ while not my_van.at_destination():
     my_van.move_forwards()
   n = n + 1"""
 
-lvl_107 = """import van
+lvl_107 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 n = 1
 while not my_van.at_destination():
@@ -246,9 +246,9 @@ while not my_van.at_destination():
     my_van.move_forwards()
   n = n * 2"""
 
-lvl_108 = """import van
+lvl_108 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 n = 6
 while not my_van.at_destination():
@@ -257,9 +257,9 @@ while not my_van.at_destination():
   my_van.turn_left()
   n = n - 2"""
 
-lvl_109 = """import van
+lvl_109 = """from van import Van
 
-my_van = van.Van()
+my_van = Van()
 
 n = 0
 
