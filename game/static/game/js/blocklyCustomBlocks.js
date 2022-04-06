@@ -378,23 +378,23 @@ function initCustomBlocksPython() {
     };
 
     Blockly.Python['move_forwards'] = function(block) {
-        return 'v.move_forwards()\n';
+        return 'my_van.move_forwards()\n';
     };
 
     Blockly.Python['turn_left'] = function(block) {
-        return 'v.turn_left()\n';
+        return 'my_van.turn_left()\n';
     };
 
     Blockly.Python['turn_right'] = function(block) {
-        return 'v.turn_right()\n';
+        return 'my_van.turn_right()\n';
     };
 
     Blockly.Python['turn_around'] = function(block) {
-        return 'v.turn_around()\n';
+        return 'my_van.turn_around()\n';
     };
 
     Blockly.Python['wait'] = function(block) {
-        return 'v.wait()\n';
+        return 'my_van.wait()\n';
     };
 
     Blockly.Python['deliver'] = function(block) {
@@ -403,11 +403,11 @@ function initCustomBlocksPython() {
 
     Blockly.Python['road_exists'] = function(block) {
         if(block.inputList[0].fieldRow[1].value_ === 'FORWARD'){
-            var python = "v.is_road('FORWARD')";
+            var python = "my_van.is_road('FORWARD')";
         }else if(block.inputList[0].fieldRow[1].value_ === 'LEFT'){
-            var python = "v.is_road('LEFT')";
+            var python = "my_van.is_road('LEFT')";
         }else{
-            var python = "v.is_road('RIGHT')";
+            var python = "my_van.is_road('RIGHT')";
         }
 
         return [python, Blockly.Python.ORDER_NONE];
@@ -417,16 +417,16 @@ function initCustomBlocksPython() {
     Blockly.Python['traffic_light'] = function(block) {
         var python;
         if(block.inputList[0].fieldRow[1].value_ === ocargo.TrafficLight.RED){
-            python = "v.at_traffic_light('RED')";
+            python = "my_van.at_traffic_light('RED')";
         }else{
-            python = "v.at_traffic_light('GREEN')";
+            python = "my_van.at_traffic_light('GREEN')";
         }
 
         return [python, Blockly.Python.ORDER_NONE]; //TODO: figure out what this ordering relates to
     };
 
     Blockly.Python['dead_end'] = function(block) {
-        return ['v.at_dead_end()', Blockly.Python.ORDER_NONE];
+        return ['my_van.at_dead_end()', Blockly.Python.ORDER_NONE];
         // TODO: figure out what this ordering relates to
     };
 
@@ -436,7 +436,7 @@ function initCustomBlocksPython() {
     };
 
     Blockly.Python['at_destination'] = function(block) {
-        return ['v.at_destination()', Blockly.Python.ORDER_NONE];
+        return ['my_van.at_destination()', Blockly.Python.ORDER_NONE];
         // TODO: figure out what this ordering relates to;
     };
 

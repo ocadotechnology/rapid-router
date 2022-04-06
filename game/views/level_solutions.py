@@ -2,168 +2,168 @@ blockly_default = '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start"
 
 python_default = """import van
 
-v = van.Van()
+my_van = van.Van()
 """
 
 lvl_92 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
-v.move_forwards()
-v.turn_right()
-v.turn_left()
-v.move_forwards()"""
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_left()
+my_van.move_forwards()"""
 
 lvl_93 = """import van
-v = van.Van()
-v.turn_left()
-v.move_forwards()
-v.move_forwards()
-v.turn_right()
-v.turn_right()
-v.turn_left()
-v.turn_right()
-v.move_forwards()
-v.move_forwards()
-v.turn_left()
-v.turn_left()
-v.turn_right()"""
+my_van = van.Van()
+my_van.turn_left()
+my_van.move_forwards()
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_right()
+my_van.turn_left()
+my_van.turn_right()
+my_van.move_forwards()
+my_van.move_forwards()
+my_van.turn_left()
+my_van.turn_left()
+my_van.turn_right()"""
 
 lvl_94 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
-v.turn_right()
-v.turn_left()
-v.move_forwards()
-v.turn_right()
-v.turn_left()
-v.turn_right()
-v.turn_left()"""
+my_van.turn_right()
+my_van.turn_left()
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_left()
+my_van.turn_right()
+my_van.turn_left()"""
 
 lvl_95 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 for i in range(3):
-  v.turn_left()
-  v.turn_right()
-  v.move_forwards()"""
+  my_van.turn_left()
+  my_van.turn_right()
+  my_van.move_forwards()"""
 
 lvl_96 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 for count in range(2):
-    v.move_forwards()
+    my_van.move_forwards()
 
-v.turn_left()
+my_van.turn_left()
 
 for count in range(3):
-    v.move_forwards()"""
+    my_van.move_forwards()"""
 
 lvl_97 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 for count in range(3):
   for forward in range(4):
-    v.move_forwards()
+    my_van.move_forwards()
   for left in range(2):
-    v.turn_left()
+    my_van.turn_left()
   for forward in range(4):
-    v.move_forwards()
+    my_van.move_forwards()
   for right in range(2):
-    v.turn_right()"""
+    my_van.turn_right()"""
 
 lvl_98 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
-while not v.at_destination():
-  if v.is_road_forward():
-    v.move_forwards()
+while not my_van.at_destination():
+  if my_van.is_road_forward():
+    my_van.move_forwards()
   else:
-    v.turn_left()"""
+    my_van.turn_left()"""
 
 lvl_99 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
-while not v.at_destination():
-  if v.is_road_forward():
-    v.move_forwards()
-  elif v.is_road_left():
-    v.turn_left()
+while not my_van.at_destination():
+  if my_van.is_road_forward():
+    my_van.move_forwards()
+  elif my_van.is_road_left():
+    my_van.turn_left()
   else:
-    v.turn_right()"""
+    my_van.turn_right()"""
 
 lvl_100 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
-while not v.at_destination():
-  if v.is_road_forward():
-    v.move_forwards()
-  elif v.is_road_left():
-    v.turn_left()
+while not my_van.at_destination():
+  if my_van.is_road_forward():
+    my_van.move_forwards()
+  elif my_van.is_road_left():
+    my_van.turn_left()
   else:
-    v.turn_right()"""
+    my_van.turn_right()"""
 
 lvl_101 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 def right_left():
-  v.turn_right()
-  v.turn_left()
+  my_van.turn_right()
+  my_van.turn_left()
 
 right_left()
-v.move_forwards()
+my_van.move_forwards()
 right_left()
 for count in range(2):
-  v.move_forwards()
+  my_van.move_forwards()
 for count in range(2):
   right_left()
-  v.turn_right()
-v.move_forwards()"""
+  my_van.turn_right()
+my_van.move_forwards()"""
 
 lvl_102 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 def left():
   for count in range(2):
-    v.turn_left()
-    v.turn_right()
+    my_van.turn_left()
+    my_van.turn_right()
 
 def right():
   for count in range(2):
-    v.turn_right()
-    v.turn_left()
+    my_van.turn_right()
+    my_van.turn_left()
 
 left()
 right()
-v.move_forwards()
-v.turn_right()
+my_van.move_forwards()
+my_van.turn_right()
 for count in range(2):
-  v.move_forwards()
-v.turn_right()
+  my_van.move_forwards()
+my_van.turn_right()
 right()
 left()
-v.move_forwards()"""
+my_van.move_forwards()"""
 
 lvl_103 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 def forward_left():
-  v.move_forwards()
-  v.turn_left()
+  my_van.move_forwards()
+  my_van.turn_left()
 
 def forward_right():
-  v.move_forwards()
-  v.turn_right()
+  my_van.move_forwards()
+  my_van.turn_right()
 
 def big():
   forward_left()
@@ -171,27 +171,27 @@ def big():
     forward_right()
 
 big()
-v.move_forwards()
+my_van.move_forwards()
 big()
 forward_left()
 for count in range(2):
   forward_right()
-  v.move_forwards()
+  my_van.move_forwards()
 forward_left()"""
 
 lvl_104 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 def left():
   for count in range(2):
-    v.move_forwards()
-    v.turn_left()
+    my_van.move_forwards()
+    my_van.turn_left()
 
 def right():
   for count in range(2):
-    v.move_forwards()
-    v.turn_right()
+    my_van.move_forwards()
+    my_van.turn_right()
 
 def big():
   left()
@@ -199,88 +199,88 @@ def big():
 
 big()
 for count in range(4):
-  v.move_forwards()
+  my_van.move_forwards()
 right()
 big()
 for count in range(3):
-  v.move_forwards()
-v.turn_right()
-v.turn_left()
+  my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_left()
 left()
-v.move_forwards()"""
+my_van.move_forwards()"""
 
 lvl_105 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
-while not v.at_destination():
-  if v.at_red_traffic_light():
-    v.wait()
-  elif v.is_road_left():
-    v.turn_left()
-  elif v.is_road_forward():
-    v.move_forwards()
+while not my_van.at_destination():
+  if my_van.at_red_traffic_light():
+    my_van.wait()
+  elif my_van.is_road_left():
+    my_van.turn_left()
+  elif my_van.is_road_forward():
+    my_van.move_forwards()
   else:
-    v.turn_right()"""
+    my_van.turn_right()"""
 
 lvl_106 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 n = 1
 
-while not v.at_destination():
-  v.turn_right()
+while not my_van.at_destination():
+  my_van.turn_right()
   for count in range(n):
-    v.move_forwards()
+    my_van.move_forwards()
   n = n + 1"""
 
 lvl_107 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 n = 1
-while not v.at_destination():
-  v.turn_left()
+while not my_van.at_destination():
+  my_van.turn_left()
   for count in range(n):
-    v.move_forwards()
+    my_van.move_forwards()
   n = n * 2"""
 
 lvl_108 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 n = 6
-while not v.at_destination():
+while not my_van.at_destination():
   for i in range(n):
-    v.move_forwards()
-  v.turn_left()
+    my_van.move_forwards()
+  my_van.turn_left()
   n = n - 2"""
 
 lvl_109 = """import van
 
-v = van.Van()
+my_van = van.Van()
 
 n = 0
 
 for count in range(4):
-  v.turn_right()
+  my_van.turn_right()
   for forward in range(n):
-    v.move_forwards()
+    my_van.move_forwards()
   n = n + 1
 
-v.turn_right()
+my_van.turn_right()
 
-while not v.at_destination():
+while not my_van.at_destination():
   for count in range(n):
-    v.move_forwards()
-  v.turn_left()
+    my_van.move_forwards()
+  my_van.turn_left()
   n = n / 2"""
 
 solutions = {
     "python_default": python_default,
     "blockly_default": blockly_default,
-    "1": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="30"><next><block type="move_forwards"></block></next></block></xml>',
+    "1": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="30"><next><block type="turn_left"></block></next></block></xml>',
     "2": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="353" y="163"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></xml>',
     "3": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="-7" y="-700"><next><block type="move_forwards"><next><block type="turn_right"></block></next></block></next></block></xml>',
     "4": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="-27" y="166"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></xml>',

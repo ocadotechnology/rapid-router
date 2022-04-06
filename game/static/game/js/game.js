@@ -722,7 +722,7 @@ ocargo.Game.prototype._setupPythonTab = function () {
       gettext(
         'Run the following commands on the van object %(var_name)s, e.g. %(example)s'
       ),
-      { var_name: 'v', example: 'v.move_forwards()' },
+      { var_name: 'v', example: 'my_van.move_forwards()' },
       true
     ) +
     '</p>' +
@@ -731,21 +731,21 @@ ocargo.Game.prototype._setupPythonTab = function () {
     '<p><b>' +
     gettext('Movement') +
     '</b>' +
-    '<br>v.move_forwards()' +
-    '<br>v.turn_left()' +
-    '<br>v.turn_right()' +
-    '<br>v.turn_around()' +
-    '<br>v.wait()</p>' +
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()' +
+    '<br>my_van.turn_around()' +
+    '<br>my_van.wait()</p>' +
     '</div>' +
     '<div class="large-4 columns">' +
     '<p><b>' +
     gettext('Position') +
     '</b>' +
-    '<br>v.at_dead_end()' +
-    '<br>v.at_destination()' +
-    '<br>v.at_red_traffic_light()' +
-    '<br>v.at_green_traffic_light()' +
-    '<br>v.at_traffic_light(c)' +
+    '<br>my_van.at_dead_end()' +
+    '<br>my_van.at_destination()' +
+    '<br>my_van.at_red_traffic_light()' +
+    '<br>my_van.at_green_traffic_light()' +
+    '<br>my_van.at_traffic_light(c)' +
     '<br><i>' +
     interpolate(
       gettext("where %(arg_name)s is '%(red_color)s' or '%(green_color)s'"),
@@ -756,10 +756,10 @@ ocargo.Game.prototype._setupPythonTab = function () {
     '</div>' +
     '<div class="large-4 columns">' +
     '<p>' +
-    '<br>v.is_road_forward()' +
-    '<br>v.is_road_left()' +
-    '<br>v.is_road_right()' +
-    '<br>v.is_road(d)' +
+    '<br>my_van.is_road_forward()' +
+    '<br>my_van.is_road_left()' +
+    '<br>my_van.is_road_right()' +
+    '<br>my_van.is_road(d)' +
     '<br><i>' +
     interpolate(
       gettext(

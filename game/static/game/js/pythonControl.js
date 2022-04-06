@@ -1,6 +1,6 @@
 var ocargo = ocargo || {};
 
-var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
+var DEFAULT_CODE = "import van\n\nmy_van = van.Van()\n";
 var appendCodeToPanel = function (code, panel) {
     var oldValue = panel.getValue();
     var newValue = DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n');

@@ -152,12 +152,12 @@ class GamePage(BasePage):
 
     def run_parse_error_program(self):
         return self._run_failing_python_program_console(
-            "v.", "ParseError: bad input on line"
+            "my_van.", "ParseError: bad input on line"
         )
 
     def run_attribute_error_program(self):
         return self._run_failing_python_program_console(
-            "v.go()", "AttributeError: 'Van' object has no attribute"
+            "my_van.go()", "AttributeError: 'Van' object has no attribute"
         )
 
     def run_print_program(self):
@@ -181,7 +181,7 @@ class GamePage(BasePage):
         return self
 
     def write_to_then_clear_console(self):
-        self._write_code("v.")
+        self._write_code("my_van.")
         self.browser.find_element_by_id("fast_tab").click()
         time.sleep(1)
         console = self.browser.find_element_by_id("consoleOutput")
