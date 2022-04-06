@@ -280,7 +280,7 @@ while not my_van.at_destination():
 solutions = {
     "python_default": python_default,
     "blockly_default": blockly_default,
-    "1": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="30"><next><block type="turn_left"></block></next></block></xml>',
+    "1": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="30"><next><block type="move_forwards"></block></next></block></xml>',
     "2": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="353" y="163"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></xml>',
     "3": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="-7" y="-700"><next><block type="move_forwards"><next><block type="turn_right"></block></next></block></next></block></xml>',
     "4": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="-27" y="166"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></xml>',
