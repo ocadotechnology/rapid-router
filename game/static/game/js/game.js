@@ -139,7 +139,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
   this.reset()
 
   let code = ocargo.pythonControl.getCode()
-
+  console.log(code)
   ocargo.event.sendEvent('PlayButtonPressed', {
     levelName: LEVEL_NAME,
     defaultLevel: DEFAULT_LEVEL,
@@ -148,10 +148,10 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
     pythonWorkspace: code
   })
 
-  if (code.match(/import (?!(van))/)) {
+  if (code.match(/^from (?!van import Van)|^import (?!van$)/gm)) {
     ocargo.Drawing.startPopup(
       gettext('Oh dear!'),
-      "You're not allowed to import anything other than 'van'.",
+      "You can only import 'van' from 'Van'",
       ''
     )
     return false

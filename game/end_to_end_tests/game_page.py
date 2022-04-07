@@ -167,7 +167,8 @@ class GamePage(BasePage):
 
     def run_invalid_import_program(self):
         return self._run_failing_python_program_popup(
-            "import va", "You're not allowed to import anything other than 'van'."
+            "from van import Va",
+            "You can only import 'van' from 'Van'",
         )
 
     def check_python_commands(self):
