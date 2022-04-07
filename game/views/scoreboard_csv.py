@@ -44,7 +44,7 @@ def scoreboard_csv(student_data, requested_sorted_levels, improvement_data):
 
         rows.append(row)
 
-    writer = csmy_van.writer(response)
+    writer = csv.writer(response)
     writer.writerow(headers)
     writer.writerows(rows)
 
