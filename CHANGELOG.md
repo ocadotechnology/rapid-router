@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.4 (2022-04-07)
+### Fix
+* Hide shared levels of anonymised users ([#1326](https://github.com/ocadotechnology/rapid-router/issues/1326)) ([`2803783`](https://github.com/ocadotechnology/rapid-router/commit/280378389453ef325c156efdddb87237ca0f9079))
+
 ## v4.0.3 (2022-03-30)
 ### Fix
 * Use a non threaded server in SeleniumTestCase ([#1325](https://github.com/ocadotechnology/rapid-router/issues/1325)) ([`6bdf858`](https://github.com/ocadotechnology/rapid-router/commit/6bdf858157da77a2e90f5426f1b3e153b29df788))
