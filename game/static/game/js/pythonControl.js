@@ -1,6 +1,6 @@
 var ocargo = ocargo || {};
 
-var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
+var DEFAULT_CODE = "from van import Van\n\nmy_van = Van()\n";
 var appendCodeToPanel = function (code, panel) {
     var oldValue = panel.getValue();
     var newValue = DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n');
@@ -134,7 +134,7 @@ ocargo.PythonControl = function () {
             text: outputText
         });
     }
-    
+
     /*************************/
     /** Initialisation code **/
     /*************************/

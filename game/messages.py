@@ -2012,8 +2012,8 @@ def description_level92():
 
 def hint_level92():
     return (
-        "Try using the following commands:<br><pre>v.move_forwards()<br>v.turn_left()"
-        "<br>v.turn_right()</pre>"
+        "Try using the following commands:<br><pre>my_van.move_forwards()<br>my_van.turn_left()"
+        "<br>my_van.turn_right()</pre>"
         + PYTHON_HINT
     )
 
@@ -2033,9 +2033,9 @@ def description_level93():
 def hint_level93():
     return (
         """Try using the following commands:
-<pre>v.move_forwards()
-v.turn_left()
-v.turn_right()</pre>"""
+<pre>my_van.move_forwards()
+my_van.turn_left()
+my_van.turn_right()</pre>"""
         + PYTHON_HINT
     )
 
@@ -2055,9 +2055,9 @@ def description_level94():
 def hint_level94():
     return (
         """Try using the following commands:
-<pre>v.move_forwards()
-v.turn_left()
-v.turn_right()</pre>"""
+<pre>my_van.move_forwards()
+my_van.turn_left()
+my_van.turn_right()</pre>"""
         + PYTHON_HINT
     )
 
@@ -2078,7 +2078,7 @@ def hint_level95():
     return (
         """To repeat some statements a set number of times you can use something like the following:
 <pre>for count in range(3):
-    v.turn left
+    my_van.turn left
     print count</pre>
 The print statement will output the value of count to the console."""
         + PYTHON_HINT
@@ -2102,7 +2102,7 @@ def hint_level96():
     return (
         """To repeat some statements a set number of times you can use something like the following:
 <pre>for count in range(3):
-    v.turn left
+    my_van.turn left
     print count</pre>
 The print statement will output the value of count to the console."""
         + PYTHON_HINT
@@ -2126,7 +2126,7 @@ def hint_level97():
         """To repeat within a repeats a set number of times you can use something like the following:
 <pre>for i in range(3):
     for j in range(5):
-        v.turn left
+        my_van.turn left
         print count</pre>
 The print statement will output the value of count to the console."""
         + PYTHON_HINT
@@ -2150,11 +2150,11 @@ def description_level98():
 def hint_level98():
     return (
         """To repeat while a condition is met you can use something like the following:
-<pre>while not v.at_destination():
-    v.move_forwards()</pre>
+<pre>while not my_van.at_destination():
+    my_van.move_forwards()</pre>
 To check whether a condition is met you can use something like the following:
-<pre>if v.is_road_forward():
-    v.move_forwards()</pre>
+<pre>if my_van.is_road_forward():
+    my_van.move_forwards()</pre>
 You may also need to use the <b>else</b> statement."""
         + PYTHON_HINT
     )
@@ -2176,11 +2176,11 @@ def description_level99():
 def hint_level99():
     return (
         """To repeat while a condition is met you can use something like the following:
-<pre>while not v.at_destination():
-    v.move_forwards()</pre>
+<pre>while not my_van.at_destination():
+    my_van.move_forwards()</pre>
 To check whether a condition is met you can use something like the following:
-<pre>if v.is_road_forward():
-    v.move_forwards()</pre>
+<pre>if my_van.is_road_forward():
+    my_van.move_forwards()</pre>
 You may also need to use the <b>elif</b> and <b>else</b> statements."""
         + PYTHON_HINT
     )
@@ -2200,7 +2200,7 @@ def description_level100():
 
 def hint_level100():
     return (
-        "Try using<br><pre>if v.at_dead_end():</pre><br>to check if the van is at a dead end."
+        "Try using<br><pre>if my_van.at_dead_end():</pre><br>to check if the van is at a dead end."
         + PYTHON_HINT
     )
 
@@ -2344,7 +2344,7 @@ def hint_level106():
     return (
         """To use a variable to store the number of grid squares the van has to move you can do something like the following:
 <pre>n = 1
-while not v.at_destination():
+while not my_van.at_destination():
     print n
     n += 1</pre>
 Variables can be used in place of constants when calling functions. For example to repeat something n times you can do something like the following:
