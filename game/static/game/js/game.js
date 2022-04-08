@@ -139,7 +139,6 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
   this.reset()
 
   let code = ocargo.pythonControl.getCode()
-  console.log(code)
   ocargo.event.sendEvent('PlayButtonPressed', {
     levelName: LEVEL_NAME,
     defaultLevel: DEFAULT_LEVEL,
