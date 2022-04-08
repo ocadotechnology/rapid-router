@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.5 (2022-04-08)
+### Fix
+* Rename v to my_van ([#1327](https://github.com/ocadotechnology/rapid-router/issues/1327)) ([`a681714`](https://github.com/ocadotechnology/rapid-router/commit/a6817146f699522e1523af8bf3f4ce65732bfdba))
+
 ## v4.0.4 (2022-04-07)
 ### Fix
 * Hide shared levels of anonymised users ([#1326](https://github.com/ocadotechnology/rapid-router/issues/1326)) ([`2803783`](https://github.com/ocadotechnology/rapid-router/commit/280378389453ef325c156efdddb87237ca0f9079))
