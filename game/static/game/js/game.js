@@ -150,7 +150,7 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
   if (code.match(/^\s*from (?!van import Van)|^\s*import (?!van$)/gm)) {
     ocargo.Drawing.startPopup(
       gettext('Oh dear!'),
-      "You can only import 'van' from 'Van'",
+      "You can only import 'Van' from 'van'",
       ''
     )
     return false
