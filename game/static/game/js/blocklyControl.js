@@ -55,11 +55,29 @@ ocargo.BlocklyControl.prototype.clearIncorrectBlock = function () {
     this.incorrectBlock = null;
 }
 
-ocargo.BlocklyControl.prototype.reset = function() {
-    Blockly.mainWorkspace.clear();
 
-    var startBlock = this.createBlock('start');
-    startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
+
+function wasGameStarted(blocks) {
+    let gameStarted = false;
+    for (let block of blocks) {
+        console.log(block.type)
+        if (block.type == 'start') gameStarted = true;
+    }
+    return gameStarted;
+}
+
+ocargo.BlocklyControl.prototype.reset = function() {
+
+    let allBlocks = Blockly.mainWorkspace.getAllBlocks()
+
+    for (let block of allBlocks) {
+        if (block.type != 'start') block.dispose(true)
+    }
+
+    if (!wasGameStarted(allBlocks)) {
+        var startBlock = this.createBlock('start');
+        startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
+    }
 
     this.clearIncorrectBlock();
 };
