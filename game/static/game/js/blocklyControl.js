@@ -60,7 +60,6 @@ ocargo.BlocklyControl.prototype.clearIncorrectBlock = function () {
 function wasGameStarted(blocks) {
     let gameStarted = false;
     for (let block of blocks) {
-        console.log(block.type)
         if (block.type == 'start') gameStarted = true;
     }
     return gameStarted;
