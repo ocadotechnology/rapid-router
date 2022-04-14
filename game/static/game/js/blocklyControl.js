@@ -71,13 +71,12 @@ ocargo.BlocklyControl.prototype.reset = function() {
         if (block.type != 'start') block.dispose(true)
     }
 
-
     // Each time a game starts the clear function is called.
     // Therefore a simple check is preformed to see if the level
     // has a start button, if not then create a start button
 
     if (!wasGameStarted(allBlocks)) {
-        var startBlock = this.createBlock('start');
+        let startBlock = this.createBlock('start');
         startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
     }
 
