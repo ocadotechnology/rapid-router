@@ -62,6 +62,7 @@ function wasGameStarted(blocks) {
     }
     return gameStarted;
 }
+
 ocargo.BlocklyControl.prototype.reset = function() {
 
     let allBlocks = Blockly.mainWorkspace.getAllBlocks()
