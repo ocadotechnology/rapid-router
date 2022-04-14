@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.6 (2022-04-14)
+### Fix
+* Fixed the start block appearing in the bin ([`497223a`](https://github.com/ocadotechnology/rapid-router/commit/497223a048c881659c9faa17c4b48d0dc9354894))
+
 ## v4.0.5 (2022-04-08)
 ### Fix
 * Rename v to my_van ([#1327](https://github.com/ocadotechnology/rapid-router/issues/1327)) ([`a681714`](https://github.com/ocadotechnology/rapid-router/commit/a6817146f699522e1523af8bf3f4ce65732bfdba))
