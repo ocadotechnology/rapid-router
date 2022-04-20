@@ -1,14 +1,14 @@
 name: Publish Python Package
 on:
-  workflow_run:
-    workflows: ["CI"]
-    branches: [master]
-    types:
-      - completed
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "CHANGELOG.md"
+      - "game/__init__.py"
 jobs:
   publish-pypi-packages:
     name: Publish PyPi Packages
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
@@ -19,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: "3.6.7"
+          python-version: "3.7"
           architecture: "x64"
       - name: Install pip requirements
         run: |

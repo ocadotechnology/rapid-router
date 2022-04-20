@@ -315,9 +315,9 @@ class SharingInformationForEditor(APIView):
 
             # First get all the student's classmates
             class_ = student.class_field
-            classmates = Student.objects.filter(class_field=class_).exclude(
-                id=student.id
-            )
+            classmates = Student.objects.filter(
+                class_field=class_, new_user__is_active=True
+            ).exclude(id=student.id)
             valid_recipients["classmates"] = [
                 {
                     "id": classmate.user.user.id,
@@ -344,7 +344,9 @@ class SharingInformationForEditor(APIView):
             valid_recipients["classes"] = []
             classes_taught = Class.objects.filter(teacher=teacher)
             for class_ in classes_taught:
-                students = Student.objects.filter(class_field=class_)
+                students = Student.objects.filter(
+                    class_field=class_, new_user__is_active=True
+                )
                 valid_recipients["classes"].append(
                     {
                         "name": class_.name,

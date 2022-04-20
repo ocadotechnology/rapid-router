@@ -45,7 +45,8 @@ ocargo.Game.prototype.setup = function () {
   ocargo.pythonControl.loadPreviousAttempt()
 
   // Setup the ui
-  this._setupSliderListeners()
+  this._setupConsoleSliderListeners()
+  this._setupPythonViewSliderListeners()
   this._setupDirectDriveListeners()
   this._setupFuelGauge(ocargo.model.map.nodes, BLOCKS)
   this._setupTabs()
@@ -138,7 +139,6 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
   this.reset()
 
   let code = ocargo.pythonControl.getCode()
-
   ocargo.event.sendEvent('PlayButtonPressed', {
     levelName: LEVEL_NAME,
     defaultLevel: DEFAULT_LEVEL,
@@ -147,10 +147,10 @@ ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
     pythonWorkspace: code
   })
 
-  if (code.match(/import (?!(van))/)) {
+  if (code.match(/^\s*from (?!van import Van)|^\s*import (?!van$)/gm)) {
     ocargo.Drawing.startPopup(
       gettext('Oh dear!'),
-      "You're not allowed to import anything other than 'van'.",
+      "You can only import 'Van' from 'van'",
       ''
     )
     return false
@@ -309,24 +309,24 @@ ocargo.Game.prototype._setupDirectDriveListeners = function () {
   })
 }
 
-ocargo.Game.prototype._setupSliderListeners = function () {
-  var tabsWidth = $('#tabs').width()
+ocargo.Game.prototype._setupConsoleSliderListeners = function () {
+  let tabsWidth = $('#tabs').width()
 
-  var startEvents = ['mousedown', 'touchstart']
-  var moveEvents = ['mousemove', 'touchmove']
-  var endEvents = ['mouseup', 'touchend', 'touchcancel']
+  let startEvents = ['mousedown', 'touchstart']
+  let moveEvents = ['mousemove', 'touchmove']
+  let endEvents = ['mouseup', 'touchend', 'touchcancel']
 
-  var slider = $('#consoleSlider')
-  var tabs = $('#tabs')
-  var halfSliderWidth
+  let slider = $('#consoleSlider')
+  let tabs = $('#tabs')
+  let halfSliderWidth
 
-  var endFunc = function (e) {
-    for (var i = 0; i < moveEvents.length; i++) {
+  let endFunc = function (e) {
+    for (let i = 0; i < moveEvents.length; i++) {
       slider.parent().off(moveEvents[i])
       tabs.off(moveEvents[i])
     }
 
-    for (var i = 0; i < endEvents.length; i++) {
+    for (let i = 0; i < endEvents.length; i++) {
       // disable drag when mouse leaves this or the parent
       slider.parent().off(endEvents[i], endFunc)
       tabs.off(endEvents[i], endFunc)
@@ -335,13 +335,13 @@ ocargo.Game.prototype._setupSliderListeners = function () {
     ocargo.blocklyControl.redrawBlockly()
   }
 
-  var moveFunc = function (e) {
+  let moveFunc = function (e) {
     if (e.type == 'touchmove') {
       e = e.originalEvent.touches[0]
     }
 
-    var consoleSliderPosition = e.pageX - tabsWidth - halfSliderWidth
-    var containerWidth = slider.parent().width()
+    let consoleSliderPosition = e.pageX - tabsWidth - halfSliderWidth
+    let containerWidth = slider.parent().width()
 
     consoleSliderPosition *= 100.0 / containerWidth
 
@@ -360,24 +360,79 @@ ocargo.Game.prototype._setupSliderListeners = function () {
     ocargo.blocklyControl.redrawBlockly()
   }
 
-  var startFunc = function (e) {
+  let startFunc = function (e) {
     halfSliderWidth = slider.width() / 2
 
-    for (var i = 0; i < moveEvents.length; i++) {
+    for (let i = 0; i < moveEvents.length; i++) {
       slider.parent().on(moveEvents[i], moveFunc)
       tabs.on(moveEvents[i], moveFunc)
     }
 
-    for (var i = 0; i < endEvents.length; i++) {
+    for (let i = 0; i < endEvents.length; i++) {
       // disable drag when mouse leaves this or the parent
       slider.parent().on(endEvents[i], endFunc)
       tabs.on(endEvents[i], endFunc)
     }
+
+    // close trashcan flyout on resize as it doesn't redraw with the workspace
+    Blockly.mainWorkspace.trashcan.flyout_.setVisible(false)
   }
 
-  for (var i = 0; i < startEvents.length; i++) {
+  for (let i = 0; i < startEvents.length; i++) {
     slider.on(startEvents[i], startFunc)
   }
+}
+
+ocargo.Game.prototype._setupPythonViewSliderListeners = function () {
+  let startEvents = ['mousedown', 'touchstart']
+  let moveEvents = ['mousemove', 'touchmove']
+  let endEvents = ['mouseup', 'touchend', 'touchcancel']
+
+  let slider = $('#pythonViewSlider')
+  let wrapper = $('#wrapper')
+  let halfSliderHeight = slider.height() / 2
+
+  let endFunc = function (e) {
+    moveEvents.map((moveEvent) => wrapper.off(moveEvent))
+    endEvents.map((endEvent) => wrapper.off(endEvent, endFunc))
+
+    ocargo.blocklyControl.redrawBlockly()
+  }
+
+  let moveFunc = function (e) {
+    if (e.type == 'touchmove') {
+      e = e.originalEvent.touches[0]
+    }
+
+    let pythonSliderPosition = e.pageY - halfSliderHeight
+    let containerHeight = slider.parent().height()
+
+    pythonSliderPosition *= 100.0 / containerHeight
+
+    if (pythonSliderPosition > 100) {
+      pythonSliderPosition = 100
+    }
+    if (pythonSliderPosition < 0) {
+      pythonSliderPosition = 0
+    }
+
+    slider.css('top', pythonSliderPosition + '%')
+    $('#blockly_holder').css('height', pythonSliderPosition + '%')
+    $('#pythonView_holder').css('height', 100 - pythonSliderPosition + '%')
+
+    ocargo.blocklyControl.redrawBlockly()
+  }
+
+  let startFunc = function (e) {
+    moveEvents.map((moveEvent) => wrapper.on(moveEvent, moveFunc))
+    // disable drag when mouse leaves the wrapper
+    endEvents.map((endEvent) => wrapper.on(endEvent, endFunc))
+
+    // close trashcan flyout on resize as it doesn't redraw with the workspace
+    Blockly.mainWorkspace.trashcan.flyout_.setVisible(false)
+  }
+
+  startEvents.map((startEvent) => slider.on(startEvent, startFunc))
 }
 
 ocargo.Game.prototype.onPlayControls = function () {
@@ -666,7 +721,7 @@ ocargo.Game.prototype._setupPythonTab = function () {
       gettext(
         'Run the following commands on the van object %(var_name)s, e.g. %(example)s'
       ),
-      { var_name: 'v', example: 'v.move_forwards()' },
+      { var_name: 'v', example: 'my_van.move_forwards()' },
       true
     ) +
     '</p>' +
@@ -675,21 +730,21 @@ ocargo.Game.prototype._setupPythonTab = function () {
     '<p><b>' +
     gettext('Movement') +
     '</b>' +
-    '<br>v.move_forwards()' +
-    '<br>v.turn_left()' +
-    '<br>v.turn_right()' +
-    '<br>v.turn_around()' +
-    '<br>v.wait()</p>' +
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()' +
+    '<br>my_van.turn_around()' +
+    '<br>my_van.wait()</p>' +
     '</div>' +
     '<div class="large-4 columns">' +
     '<p><b>' +
     gettext('Position') +
     '</b>' +
-    '<br>v.at_dead_end()' +
-    '<br>v.at_destination()' +
-    '<br>v.at_red_traffic_light()' +
-    '<br>v.at_green_traffic_light()' +
-    '<br>v.at_traffic_light(c)' +
+    '<br>my_van.at_dead_end()' +
+    '<br>my_van.at_destination()' +
+    '<br>my_van.at_red_traffic_light()' +
+    '<br>my_van.at_green_traffic_light()' +
+    '<br>my_van.at_traffic_light(c)' +
     '<br><i>' +
     interpolate(
       gettext("where %(arg_name)s is '%(red_color)s' or '%(green_color)s'"),
@@ -700,10 +755,10 @@ ocargo.Game.prototype._setupPythonTab = function () {
     '</div>' +
     '<div class="large-4 columns">' +
     '<p>' +
-    '<br>v.is_road_forward()' +
-    '<br>v.is_road_left()' +
-    '<br>v.is_road_right()' +
-    '<br>v.is_road(d)' +
+    '<br>my_van.is_road_forward()' +
+    '<br>my_van.is_road_left()' +
+    '<br>my_van.is_road_right()' +
+    '<br>my_van.is_road(d)' +
     '<br><i>' +
     interpolate(
       gettext(
@@ -823,9 +878,9 @@ ocargo.Game.prototype._setupFastTab = function () {
       }.bind(this)
 
       if (this.tabs.play.isInState('readyToPlay')) {
-        flipFastSlow()
         this._resetAndPrepareAnimation(
           function () {
+            flipFastSlow()
             ocargo.animation.playAnimation()
           }.bind(this)
         )
@@ -1184,7 +1239,7 @@ function restoreCmsLogin () {
 }
 
 function hasFunctionalCookiesConsent() {
-  return OnetrustActiveGroups && OnetrustActiveGroups.split(',').includes('C0003')
+  return OnetrustActiveGroups && OnetrustActiveGroups.split(',').includes('CL003')
 }
 
 function setMutedCookie(mute) {

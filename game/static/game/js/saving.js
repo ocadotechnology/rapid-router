@@ -1,25 +1,6 @@
 var ocargo = ocargo || {};
 
-ocargo.Saving = function () {
-    this.getListOfWorkspacesFromLocalStorage = function () {
-        var query = /blocklySavedWorkspaceXml-([0-9]+)$/;
-        var i, results = [];
-        for (i in localStorage) {
-            if (localStorage.hasOwnProperty(i)) {
-                var matches = query.exec(i);
-                if (matches) {
-                    var json = JSON.parse(localStorage.getItem(i));
-                    results.push({
-                        id: matches[1],
-                        name: json.name,
-                        workspace: json.workspace
-                    });
-                }
-            }
-        }
-        return results;
-    };
-};
+ocargo.Saving = function () {};
 
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
@@ -44,10 +25,6 @@ ocargo.Saving.prototype.retrieveListOfWorkspaces = function (callback) {
             }
         });
     }
-    else if (localStorage) {
-        var results = this.getListOfWorkspacesFromLocalStorage();
-        callback(null, results);
-    }
     else {
         callback("Not logged in and no local storage available");
     }
@@ -66,13 +43,6 @@ ocargo.Saving.prototype.retrieveWorkspace = function (id, callback) {
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
-    }
-    //setTimeout is used here in order to ensure that these lines of code are executed after the correct tab is selected
-    else if (localStorage) {
-        setTimeout(function () {
-            var json = JSON.parse(localStorage.getItem('blocklySavedWorkspaceXml-' + id));
-            callback(null, json);
-        }, 0)
     }
     else {
         callback("Not logged in and no local storage available");
@@ -99,10 +69,6 @@ ocargo.Saving.prototype.deleteWorkspace = function (id, callback) {
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
-    } else if (localStorage) {
-        localStorage.removeItem('blocklySavedWorkspaceXml-' + id);
-        var results = this.getListOfWorkspacesFromLocalStorage();
-        callback(null, results);
     } else {
         callback("Not logged in and no local storage available");
     }
@@ -128,17 +94,6 @@ ocargo.Saving.prototype.saveWorkspace = function (workspace, id, callback) {
                 callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
             }
         });
-    }
-    else if (localStorage) {
-        if (!id) {
-            // Need to generate a unique integer, for our purposes this should do
-            id = new Date().getTime();
-        }
-
-        localStorage.setItem('blocklySavedWorkspaceXml-' + id, JSON.stringify(workspace));
-
-        var results = this.getListOfWorkspacesFromLocalStorage();
-        callback(null, results);
     }
     else {
         callback("Not logged in and no local storage available");

@@ -98,9 +98,6 @@ ocargo.LevelEditor = function(levelId) {
         $('#play_night_tab').show()
     }
 
-    // So that we store the current state when the page unloads
-    window.addEventListener('unload', storeStateInLocalStorage);
-
     // Setup max_fuel
     setupMaxFuel();
 
@@ -116,9 +113,6 @@ ocargo.LevelEditor = function(levelId) {
     }
 
     setupTrashcan();
-
-    // If there's any previous state in local storage retrieve it
-    retrieveStateFromLocalStorage();
 
     // Draw everything
     drawAll();
@@ -247,7 +241,6 @@ ocargo.LevelEditor = function(levelId) {
 
             $('#clear').click(function() {
                 clear();
-                localStorage.removeItem('levelEditorState');
                 drawAll();
             });
 
@@ -2595,37 +2588,6 @@ ocargo.LevelEditor = function(levelId) {
         level.name = name;
 
         ownedLevels.save(level, levelId, callback);
-    }
-
-    function storeStateInLocalStorage() {
-        if (localStorage) {
-            var state = extractState();
-
-            // Append additional non-level orientated editor state
-            state.id = saveState.id;
-            state.savedState = saveState.savedState;
-            state.owned = saveState.owned;
-
-            localStorage.levelEditorState = JSON.stringify(state);
-        }
-    }
-
-    function retrieveStateFromLocalStorage() {
-        if (localStorage) {
-            if (localStorage.levelEditorState) {
-                var state = JSON.parse(localStorage.levelEditorState);
-
-                if (state) {
-                    restoreState(state);
-                }
-
-                // Restore additional non-level orientated editor state
-                saveState.id = state.id;
-                saveState.savedState = state.savedState;
-                saveState.owned = state.owned;
-            }
-
-        }
     }
 
     function isLevelValid() {

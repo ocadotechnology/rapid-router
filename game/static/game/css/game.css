@@ -90,6 +90,17 @@
     fill: green;
 }
 
+#blockly_pane #pythonView_holder {
+    display: flex;
+    flex-direction: column;
+    height: 50%;
+    padding-top: 16px; /* pythonViewSlider height */
+}
+
+#blockly_pane #pythonView_holder .CodeMirror {
+    flex-grow: 1;
+}
+
 /**************/
 /* Python tab */
 /**************/
@@ -210,6 +221,17 @@
 /***********/
 /* Sliders */
 /***********/
+
+/* Python View slider div */
+#pythonViewSlider {
+    position: absolute;
+    top: 50%;
+    height: 16px;
+    width: 100%;
+    z-index: 21;
+    background-color: #444;
+    cursor: row-resize;
+}
 
 /* Central slider div */
 #consoleSlider {

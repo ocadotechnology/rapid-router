@@ -1,6 +1,6 @@
 var ocargo = ocargo || {};
 
-var DEFAULT_CODE = "import van\n\nv = van.Van()\n";
+var DEFAULT_CODE = "from van import Van\n\nmy_van = Van()\n";
 var appendCodeToPanel = function (code, panel) {
     var oldValue = panel.getValue();
     var newValue = DEFAULT_CODE + code.replace(/<br\s*[\/]?>/gi, '\n');
@@ -81,27 +81,9 @@ ocargo.PythonControl = function () {
         if (PYTHON_WORKSPACE) {
             this.setCode(PYTHON_WORKSPACE);
         } else {
-            try {
-                this.setCode(
-                    localStorage.getItem('pythonWorkspace-' + LEVEL_ID));
-            } catch (e) {
-                this.reset();
-            }
+            this.reset();
         }
     };
-
-    this.teardown = function () {
-        if (localStorage && !ANONYMOUS && USER_LOGGED_IN) {
-            var text = this.getCode();
-            try {
-                localStorage.setItem('pythonWorkspace-' + LEVEL_ID, text);
-
-            } catch (e) {
-                // No point in even logging, as page is unloading
-            }
-        }
-    };
-
 
     /*********************/
     /** Private methods **/
@@ -152,7 +134,7 @@ ocargo.PythonControl = function () {
             text: outputText
         });
     }
-    
+
     /*************************/
     /** Initialisation code **/
     /*************************/

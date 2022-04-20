@@ -18,6 +18,29 @@ from game.tests.utils.teacher import add_teacher_to_school, create_school
 
 
 class LevelEditorTestCase(TestCase):
+    LEVEL_DATA1 = {
+        "origin": '{"coordinate":[3,5],"direction":"S"}',
+        "pythonEnabled": False,
+        "decor": [],
+        "blocklyEnabled": True,
+        "blocks": [
+            {"type": "move_forwards"},
+            {"type": "turn_left"},
+            {"type": "turn_right"},
+        ],
+        "max_fuel": "50",
+        "pythonViewEnabled": False,
+        "character": "3",
+        "name": "abc",
+        "theme": 1,
+        "anonymous": False,
+        "cows": "[]",
+        "path": '[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
+        '"connectedNodes":[0]}]',
+        "traffic_lights": "[]",
+        "destinations": "[[3,4]]",
+    }
+
     @classmethod
     def setUpClass(cls):
         cls.orig_captcha_enabled = captcha.CAPTCHA_ENABLED
@@ -74,29 +97,7 @@ class LevelEditorTestCase(TestCase):
 
         self.student_login(student_name, access_code, student_password)
         url = reverse("save_level_for_editor")
-        data1 = {
-            u"origin": u'{"coordinate":[3,5],"direction":"S"}',
-            u"pythonEnabled": False,
-            u"decor": [],
-            u"blocklyEnabled": True,
-            u"blocks": [
-                {u"type": u"move_forwards"},
-                {u"type": u"turn_left"},
-                {u"type": u"turn_right"},
-            ],
-            u"max_fuel": u"50",
-            u"pythonViewEnabled": False,
-            u"character": u"3",
-            u"name": u"abc",
-            u"theme": 1,
-            u"anonymous": False,
-            u"cows": u"[]",
-            u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
-            u'"connectedNodes":[0]}]',
-            u"traffic_lights": u"[]",
-            u"destinations": u"[[3,4]]",
-        }
-        response = self.client.post(url, {"data": json.dumps(data1)})
+        response = self.client.post(url, {"data": json.dumps(self.LEVEL_DATA1)})
 
         assert_that(response.status_code, equal_to(200))
         sharing_info1 = json.loads(
@@ -114,26 +115,26 @@ class LevelEditorTestCase(TestCase):
         self.student_login(student_name, access_code, student_password)
         url = reverse("save_level_for_editor")
         data1 = {
-            u"origin": u'{"coordinate":[3,5],"direction":"S"}',
-            u"pythonEnabled": False,
-            u"decor": [],
-            u"blocklyEnabled": True,
-            u"blocks": [
-                {u"type": u"move_forwards"},
-                {u"type": u"turn_left"},
-                {u"type": u"turn_right"},
+            "origin": '{"coordinate":[3,5],"direction":"S"}',
+            "pythonEnabled": False,
+            "decor": [],
+            "blocklyEnabled": True,
+            "blocks": [
+                {"type": "move_forwards"},
+                {"type": "turn_left"},
+                {"type": "turn_right"},
             ],
-            u"max_fuel": u"50",
-            u"pythonViewEnabled": False,
-            u"character": u"3",
-            u"name": u"abc",
-            u"theme": 1,
-            u"anonymous": True,
-            u"cows": u"[]",
-            u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
-            u'"connectedNodes":[0]}]',
-            u"traffic_lights": u"[]",
-            u"destinations": u"[[3,4]]",
+            "max_fuel": "50",
+            "pythonViewEnabled": False,
+            "character": "3",
+            "name": "abc",
+            "theme": 1,
+            "anonymous": True,
+            "cows": "[]",
+            "path": '[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
+            '"connectedNodes":[0]}]',
+            "traffic_lights": "[]",
+            "destinations": "[[3,4]]",
         }
         response = self.client.post(url, {"data": json.dumps(data1)})
 
@@ -200,7 +201,7 @@ class LevelEditorTestCase(TestCase):
         self.login(email2, password2)
 
         url = reverse("share_level_for_editor", args=[level_id])
-        data = {u"recipientIDs[]": [teacher2.id], u"action": ["share"]}
+        data = {"recipientIDs[]": [teacher2.id], "action": ["share"]}
         response = self.client.post(url, {"data": data})
 
         assert_that(response.status_code, equal_to(403))
@@ -246,25 +247,25 @@ class LevelEditorTestCase(TestCase):
         self.student_login(student_name, access_code, student_password)
         url = reverse("save_level_for_editor")
         data_with_no_character = {
-            u"origin": u'{"coordinate":[3,5],"direction":"S"}',
-            u"pythonEnabled": False,
-            u"decor": [],
-            u"blocklyEnabled": True,
-            u"blocks": [
-                {u"type": u"move_forwards"},
-                {u"type": u"turn_left"},
-                {u"type": u"turn_right"},
+            "origin": '{"coordinate":[3,5],"direction":"S"}',
+            "pythonEnabled": False,
+            "decor": [],
+            "blocklyEnabled": True,
+            "blocks": [
+                {"type": "move_forwards"},
+                {"type": "turn_left"},
+                {"type": "turn_right"},
             ],
-            u"max_fuel": u"50",
-            u"pythonViewEnabled": False,
-            u"name": u"abc",
-            u"theme": 1,
-            u"anonymous": True,
-            u"cows": u"[]",
-            u"path": u'[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
-            u'"connectedNodes":[0]}]',
-            u"traffic_lights": u"[]",
-            u"destinations": u"[[3,4]]",
+            "max_fuel": "50",
+            "pythonViewEnabled": False,
+            "name": "abc",
+            "theme": 1,
+            "anonymous": True,
+            "cows": "[]",
+            "path": '[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
+            '"connectedNodes":[0]}]',
+            "traffic_lights": "[]",
+            "destinations": "[[3,4]]",
         }
         response = self.client.post(url, {"data": json.dumps(data_with_no_character)})
 
@@ -283,3 +284,69 @@ class LevelEditorTestCase(TestCase):
         response = self.client.get(url)
 
         assert_that(response.status_code, equal_to(200))
+
+    def test_level_of_anonymised_teacher_is_hidden(self):
+        # Create 2 teacher accounts
+        email1, password1 = signup_teacher_directly()
+        email2, password2 = signup_teacher_directly()
+
+        teacher1 = Teacher.objects.get(new_user__email=email1)
+        teacher2 = Teacher.objects.get(new_user__email=email2)
+
+        # Add teachers to the same school
+        school = create_school()
+        add_teacher_to_school(teacher1, school)
+        add_teacher_to_school(teacher2, school)
+
+        # Create a level as `teacher2` and share it with `teacher1`
+        self.login(email2, password2)
+        create_save_level(teacher2, shared_with=[teacher1.new_user])
+
+        # Log in as `teacher1`
+        self.logout()
+        self.login(email1, password1)
+
+        # Check `teacher1` can see `teacher2`'s shared level
+        levels_url = reverse("levels")
+        response = self.client.get(levels_url)
+        assert len(response.context["shared_levels"]) == 1
+
+        # Make teacher2 inactive
+        teacher2.new_user.is_active = 0
+        teacher2.new_user.save()
+
+        # `teacher1` shouldn't see any shared levels now
+        response = self.client.get(levels_url)
+        assert len(response.context["shared_levels"]) == 0
+
+    def test_level_of_anonymised_student_is_hidden(self):
+        # Create a teacher and a student
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        _, _, access_code = create_class_directly(email)
+        student_name, student_password, student = create_school_student_directly(
+            access_code
+        )
+
+        teacher = Teacher.objects.get(new_user__email=email)
+
+        # Create a level as student and share it with teacher
+        self.student_login(student_name, access_code, student_password)
+        create_save_level(student, shared_with=[teacher.new_user])
+
+        # Log in as teacher
+        self.logout()
+        self.login(email, password)
+
+        # Check teacher can see student's shared level
+        levels_url = reverse("levels")
+        response = self.client.get(levels_url)
+        assert len(response.context["shared_levels"]) == 1
+
+        # Make student inactive
+        student.new_user.is_active = 0
+        student.new_user.save()
+
+        # Teacher shouldn't see any shared levels now
+        response = self.client.get(levels_url)
+        assert len(response.context["shared_levels"]) == 0

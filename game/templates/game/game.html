@@ -284,15 +284,15 @@
     <div id="tab_panes" class='no-print'>
 
       <div id="blockly_pane" class="tab_pane">
-        <button id="flyoutButton">
-          <img id="flyoutButtonImage" src="">
-        </button>
-
         <div id="blockCountDiv"></div>
 
         <div id="blockly_holder" style='width: calc(100%); {% if level.pythonViewEnabled %} height: 50%{% endif %}'></div>
 
-        <div {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
+        {% if level.pythonViewEnabled %}
+          <div id="pythonViewSlider" class="no-print"></div>
+        {% endif %}
+
+        <div id="pythonView_holder" {% if not level.pythonViewEnabled %} style="visibility: hidden" {% endif %}>
           <p>{% trans "This is what your program would look like in Python:" %}</p>
           <textarea id="pythonView" cols="85" rows="25"></textarea>
         </div>

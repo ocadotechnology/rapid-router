@@ -2,6 +2,206 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.6 (2022-04-14)
+### Fix
+* Fixed the start block appearing in the bin ([`497223a`](https://github.com/ocadotechnology/rapid-router/commit/497223a048c881659c9faa17c4b48d0dc9354894))
+
+## v4.0.5 (2022-04-08)
+### Fix
+* Rename v to my_van ([#1327](https://github.com/ocadotechnology/rapid-router/issues/1327)) ([`a681714`](https://github.com/ocadotechnology/rapid-router/commit/a6817146f699522e1523af8bf3f4ce65732bfdba))
+
+## v4.0.4 (2022-04-07)
+### Fix
+* Hide shared levels of anonymised users ([#1326](https://github.com/ocadotechnology/rapid-router/issues/1326)) ([`2803783`](https://github.com/ocadotechnology/rapid-router/commit/280378389453ef325c156efdddb87237ca0f9079))
+
+## v4.0.3 (2022-03-30)
+### Fix
+* Use a non threaded server in SeleniumTestCase ([#1325](https://github.com/ocadotechnology/rapid-router/issues/1325)) ([`6bdf858`](https://github.com/ocadotechnology/rapid-router/commit/6bdf858157da77a2e90f5426f1b3e153b29df788))
+
+## v4.0.2 (2022-03-18)
+### Fix
+* Remove cache_page ([#1322](https://github.com/ocadotechnology/rapid-router/issues/1322)) ([`9d37da0`](https://github.com/ocadotechnology/rapid-router/commit/9d37da0f3c5f6f2150af9eab6a1c99cbf1b74403))
+
+## v4.0.1 (2022-03-15)
+### Fix
+* Cleanup ci and update pipfile ([#1321](https://github.com/ocadotechnology/rapid-router/issues/1321)) ([`ff5bd8b`](https://github.com/ocadotechnology/rapid-router/commit/ff5bd8b8c0963909a08c7618aaf3af2eaac8440c))
+
+## v4.0.0 (2022-03-15)
+### Feature
+* Upgrade from Django 2.2 to 3.2 ([#1316](https://github.com/ocadotechnology/rapid-router/issues/1316)) ([`e09c1eb`](https://github.com/ocadotechnology/rapid-router/commit/e09c1eb1200d43bfcc982c0d10444fdbaa18482c))
+
+### Breaking
+* Upgrade from Django 2.2 to 3.2 ([#1316](https://github.com/ocadotechnology/rapid-router/issues/1316)) ([`e09c1eb`](https://github.com/ocadotechnology/rapid-router/commit/e09c1eb1200d43bfcc982c0d10444fdbaa18482c))
+
+## v3.8.9 (2022-03-08)
+### Fix
+* Show default data on student scoreboard ([#1315](https://github.com/ocadotechnology/rapid-router/issues/1315)) ([`c1cf628`](https://github.com/ocadotechnology/rapid-router/commit/c1cf628c78ddb1daac4262a66fb0f92af139a938))
+
+## v3.8.8 (2022-03-03)
+### Fix
+* Fix freeze issue with fast button ([#1314](https://github.com/ocadotechnology/rapid-router/issues/1314)) ([`0c723b1`](https://github.com/ocadotechnology/rapid-router/commit/0c723b11b6d8cff6c1e36f8bad4ba89eee121900))
+
+## v3.8.7 (2022-03-02)
+### Fix
+* Add more Crowdin domains to CSP ([#1313](https://github.com/ocadotechnology/rapid-router/issues/1313)) ([`a2c2a8d`](https://github.com/ocadotechnology/rapid-router/commit/a2c2a8df5cf8fd2d7830828838e09bf19abb746c))
+
+## v3.8.6 (2022-03-02)
+### Fix
+* Show no data on scoreboard load ([#1309](https://github.com/ocadotechnology/rapid-router/issues/1309)) ([`e5bc4fd`](https://github.com/ocadotechnology/rapid-router/commit/e5bc4fd3597c11b326f2d8a783b41fd4836b7521))
+
+## v3.8.5 (2022-03-01)
+### Fix
+* Allow Crowdin in-context translation resources ([#1312](https://github.com/ocadotechnology/rapid-router/issues/1312)) ([`b87f93a`](https://github.com/ocadotechnology/rapid-router/commit/b87f93ad82853d7108077384d284e44f67415a31))
+
+## v3.8.4 (2022-03-01)
+### Fix
+* Add Crowdin CDN to CSP config ([#1311](https://github.com/ocadotechnology/rapid-router/issues/1311)) ([`47754af`](https://github.com/ocadotechnology/rapid-router/commit/47754af164f399a10f6c26b216233bb1efcd55b0))
+
+## v3.8.3 (2022-02-28)
+### Fix
+* Fix level 74 new solution ([#1310](https://github.com/ocadotechnology/rapid-router/issues/1310)) ([`cda4a83`](https://github.com/ocadotechnology/rapid-router/commit/cda4a839bf3af6e82ae4785a0cd7957704ea1535))
+
+## v3.8.2 (2022-02-25)
+### Fix
+* Improve level 74 solution ([#1308](https://github.com/ocadotechnology/rapid-router/issues/1308)) ([`14a6155`](https://github.com/ocadotechnology/rapid-router/commit/14a61551be4a3aa2444da75f8ed2ff7390128367))
+
+## v3.8.1 (2022-02-23)
+### Fix
+* Florian Thicke - Divider Lines ([#1307](https://github.com/ocadotechnology/rapid-router/issues/1307)) ([`9286f6e`](https://github.com/ocadotechnology/rapid-router/commit/9286f6ee3bc1aa9166029bfb0593b3c318ca16d2))
+
+## v3.8.0 (2022-02-21)
+### Feature
+* Remove local storage ([#1305](https://github.com/ocadotechnology/rapid-router/issues/1305)) ([`3bd72d2`](https://github.com/ocadotechnology/rapid-router/commit/3bd72d2b406eec484ca40509737b1f3c4ba5a832))
+
+## v3.7.8 (2022-02-16)
+### Fix
+* Trim ci flow ([#1304](https://github.com/ocadotechnology/rapid-router/issues/1304)) ([`469ff18`](https://github.com/ocadotechnology/rapid-router/commit/469ff188a371bd45ef7f3815e35ba3870dc529e9))
+
+## v3.7.7 (2022-02-15)
+### Fix
+* Revert previous ci changes ([#1303](https://github.com/ocadotechnology/rapid-router/issues/1303)) ([`f4e89fc`](https://github.com/ocadotechnology/rapid-router/commit/f4e89fc08f0c36fdd6379826b6d55d8ebc396f88))
+
+## v3.7.6 (2022-02-15)
+### Fix
+* Try paths-ignore ([#1301](https://github.com/ocadotechnology/rapid-router/issues/1301)) ([`ece66b0`](https://github.com/ocadotechnology/rapid-router/commit/ece66b0975b8f55c2310ccdfc1958ffd4a2f888b))
+
+## v3.7.5 (2022-02-15)
+### Fix
+* Try different events ([#1300](https://github.com/ocadotechnology/rapid-router/issues/1300)) ([`20aa360`](https://github.com/ocadotechnology/rapid-router/commit/20aa3609d7be69e44024ff9e1f8230c6b9389ea0))
+
+## v3.7.4 (2022-02-15)
+### Fix
+* Publish ([#1299](https://github.com/ocadotechnology/rapid-router/issues/1299)) ([`9ce9143`](https://github.com/ocadotechnology/rapid-router/commit/9ce91437e6358d9670b38242106eff4794df82d4))
+* Debug ci ([`e1aaf35`](https://github.com/ocadotechnology/rapid-router/commit/e1aaf35d0ff60f0ddb7caf62d8cc65dce28217a9))
+* Debug ci ([`40717fa`](https://github.com/ocadotechnology/rapid-router/commit/40717fabd207bfe00afb88a7a62c33bbab2008b1))
+
+## v3.7.3 (2022-02-14)
+### Fix
+* Update cookies categories ([#1295](https://github.com/ocadotechnology/rapid-router/issues/1295)) ([`390c353`](https://github.com/ocadotechnology/rapid-router/commit/390c353a0faa0fda2d2dca41d792daf65d41ea8c))
+
+## v3.7.2 (2022-02-10)
+### Fix
+* **deps:** Bump django from 2.2.26 to 2.2.27 ([#1296](https://github.com/ocadotechnology/rapid-router/issues/1296)) ([`ea50a56`](https://github.com/ocadotechnology/rapid-router/commit/ea50a5640fb25dcb7b0ef8c74d38b0c8e9184f55))
+
+## v3.7.1 (2022-01-27)
+### Fix
+* Rapid Rudolph will go down in Git history ([#1291](https://github.com/ocadotechnology/rapid-router/issues/1291)) ([`d04eb51`](https://github.com/ocadotechnology/rapid-router/commit/d04eb51c2f6848ed59c7cfc87614a3e46c78d553))
+
+## v3.7.0 (2022-01-26)
+### Feature
+* Resize python window ([#1289](https://github.com/ocadotechnology/rapid-router/issues/1289)) ([`33d01b7`](https://github.com/ocadotechnology/rapid-router/commit/33d01b7468f92226b5c761009b5c4b51962e545c))
+
+## v3.6.3 (2022-01-20)
+### Fix
+* Scrollbar for Python pane ([#1288](https://github.com/ocadotechnology/rapid-router/issues/1288)) ([`72db6e9`](https://github.com/ocadotechnology/rapid-router/commit/72db6e9e3c31836a69240e33be0374907c16c7b9))
+
+## v3.6.2 (2022-01-19)
+### Fix
+* Delete level on moderate page ([#1287](https://github.com/ocadotechnology/rapid-router/issues/1287)) ([`9a49606`](https://github.com/ocadotechnology/rapid-router/commit/9a49606b968130dfb9ae12aca2c0c4d4c5530b0c))
+
+## v3.6.1 (2022-01-18)
+### Fix
+* Remove black borders from level moderation and scoreboard ([#1285](https://github.com/ocadotechnology/rapid-router/issues/1285)) ([`06bda5d`](https://github.com/ocadotechnology/rapid-router/commit/06bda5d4bec31d36ad586a1d97900c8cb0a99967))
+
+## v3.6.0 (2022-01-18)
+### Feature
+* Level moderation ([#1282](https://github.com/ocadotechnology/rapid-router/issues/1282)) ([`cd3757f`](https://github.com/ocadotechnology/rapid-router/commit/cd3757f077089588633f03433bd8ae66b71ec362))
+
+## v3.5.8 (2022-01-15)
+### Fix
+* Upgrade Django to 2.2.26 ([#1283](https://github.com/ocadotechnology/rapid-router/issues/1283)) ([`f28dee2`](https://github.com/ocadotechnology/rapid-router/commit/f28dee262d3a2020950fad6c40b8961149f26843))
+
+## v3.5.7 (2022-01-12)
+### Fix
+* Set cursor to pointer on scoreboard dropdowns ([#1281](https://github.com/ocadotechnology/rapid-router/issues/1281)) ([`e7f28ac`](https://github.com/ocadotechnology/rapid-router/commit/e7f28ac66c71a88b17fd436894f6b2fdb5691353))
+
+## v3.5.6 (2022-01-11)
+### Fix
+* Create failed attempt on crash, out of fuel and red light events ([#1280](https://github.com/ocadotechnology/rapid-router/issues/1280)) ([`04ce387`](https://github.com/ocadotechnology/rapid-router/commit/04ce387993c7b2ec23e7e9b1bd1b6a77a2f85bef))
+
+## v3.5.5 (2022-01-07)
+### Fix
+* Make Scoreboard logic more efficient ([#1279](https://github.com/ocadotechnology/rapid-router/issues/1279)) ([`a49414b`](https://github.com/ocadotechnology/rapid-router/commit/a49414b26b766ebf83704ed0425c5a16c4e3f8dd))
+
+## v3.5.4 (2022-01-04)
+### Fix
+* Scoreboard select all boxes, dropdown styles and text spacing ([#1277](https://github.com/ocadotechnology/rapid-router/issues/1277)) ([`89c1a10`](https://github.com/ocadotechnology/rapid-router/commit/89c1a102e97de9e625c1b5cd4d5838a09a8fc517))
+
+## v3.5.3 (2021-12-31)
+### Fix
+* Fix indep sub nav after portal CSS update ([#1275](https://github.com/ocadotechnology/rapid-router/issues/1275)) ([`b5267f8`](https://github.com/ocadotechnology/rapid-router/commit/b5267f89bc25d1648c5467f47a5db7f3bbde3839))
+
+## v3.5.2 (2021-12-31)
+### Fix
+* Scoreboard default checkbox and scroll fixes ([#1274](https://github.com/ocadotechnology/rapid-router/issues/1274)) ([`b43ba46`](https://github.com/ocadotechnology/rapid-router/commit/b43ba468c47e08455430327bab57c765d41c17ba))
+
+## v3.5.1 (2021-12-31)
+### Fix
+* Student scoreboard see all levels ([#1273](https://github.com/ocadotechnology/rapid-router/issues/1273)) ([`03551c2`](https://github.com/ocadotechnology/rapid-router/commit/03551c2a01d8e674d857f0df6072e0ffab4cf955))
+
+## v3.5.0 (2021-12-30)
+### Feature
+* Scoreboard top,  bottom, teacher, student ([#1272](https://github.com/ocadotechnology/rapid-router/issues/1272)) ([`3bda166`](https://github.com/ocadotechnology/rapid-router/commit/3bda16605ae34d90c9bbd71fcee95fa9150806d8))
+
+## v3.4.5 (2021-12-13)
+### Fix
+* Upgrade Django to 2.2.25 ([#1268](https://github.com/ocadotechnology/rapid-router/issues/1268)) ([`d6dcdf9`](https://github.com/ocadotechnology/rapid-router/commit/d6dcdf9b23e47f53ad5e29edc96dc75780e5f9c9))
+
+## v3.4.4 (2021-12-08)
+### Fix
+* Dummy commit ([#1267](https://github.com/ocadotechnology/rapid-router/issues/1267)) ([`27df081`](https://github.com/ocadotechnology/rapid-router/commit/27df081dd727078c2634c9e40f10f28579d6a0ca))
+* Fixed the typo ([`5a30448`](https://github.com/ocadotechnology/rapid-router/commit/5a30448b5f1e1b6cd6c16d366be5ae81e3d3578e))
+* Fixed blocks overlapping and refined rest of namings ([`afb3192`](https://github.com/ocadotechnology/rapid-router/commit/afb3192810f67640f899bfe03079856e91c2820d))
+* Fixed the naming of function solutions ([`010a335`](https://github.com/ocadotechnology/rapid-router/commit/010a335714094eeaa6532add69edab7ac5982ed2))
+
+## v3.4.3 (2021-12-02)
+### Fix
+* Align header ([#1265](https://github.com/ocadotechnology/rapid-router/issues/1265)) ([`56caf78`](https://github.com/ocadotechnology/rapid-router/commit/56caf7835a5671801c1ad6e943e2b4069ecf42f4))
+
+## v3.4.2 (2021-11-29)
+### Fix
+* Rapid Rudolph the red-nosed reindeer had a very big Ocado order ([#1259](https://github.com/ocadotechnology/rapid-router/issues/1259)) ([`a5aa3dc`](https://github.com/ocadotechnology/rapid-router/commit/a5aa3dc51bb6aa62c47166e62f3d328e05231a2a))
+
+## v3.4.1 (2021-11-26)
+### Fix
+* Add progress bar stylesheet to CSP config ([#1258](https://github.com/ocadotechnology/rapid-router/issues/1258)) ([`6b4dc41`](https://github.com/ocadotechnology/rapid-router/commit/6b4dc412541f8d003899b0aefc2942a78e335b3c))
+
+## v3.4.0 (2021-11-23)
+### Feature
+* Implement CSP header ([#1239](https://github.com/ocadotechnology/rapid-router/issues/1239)) ([`231210a`](https://github.com/ocadotechnology/rapid-router/commit/231210aaae588ec4d78a64ffa03288dc222809f5))
+
+## v3.3.2 (2021-11-22)
+### Fix
+* Fix issue with deleted students appearing ([#1256](https://github.com/ocadotechnology/rapid-router/issues/1256)) ([`38fc3ca`](https://github.com/ocadotechnology/rapid-router/commit/38fc3ca914de80d2ab098deaac288906985f0335))
+
+## v3.3.1 (2021-11-19)
+### Fix
+* Remove sticky subnav from RR ([#1254](https://github.com/ocadotechnology/rapid-router/issues/1254)) ([`37668df`](https://github.com/ocadotechnology/rapid-router/commit/37668dfdad10288ca888f2dcb0615e689164e6e5))
+
+## v3.3.0 (2021-11-17)
+### Feature
+* RR level selection update ([#1252](https://github.com/ocadotechnology/rapid-router/issues/1252)) ([`1d31684`](https://github.com/ocadotechnology/rapid-router/commit/1d3168452819858e07629efe657a65d4c1420a73))
+
 ## v3.2.0 (2021-11-03)
 ### Feature
 * Remove ocado logo from the game ([#1242](https://github.com/ocadotechnology/rapid-router/issues/1242)) ([`a930fd0`](https://github.com/ocadotechnology/rapid-router/commit/a930fd04617cdf30af5249b1e5b29b7307df911d))

@@ -1,5 +1,6 @@
 from django import template
 from django.template.defaultfilters import stringfilter
+from common.utils import using_two_factor
 
 register = template.Library()
 

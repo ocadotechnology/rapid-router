@@ -12,16 +12,31 @@
 
 {% block subNav %}
 {{ block.super }}
-<div class="banner banner--teacher row">
-    <div class="col-sm-5 col-sm-offset-2">
-        <h1 class="banner__text--primary">Rapid Router</h1>
-        <h4>Rapid router has been created to teach the first principles of computer programming.</h4>
-    </div>
-    <div class="col-sm-5">
-        <div class="banner--picture"><div class="banner--picture__inside1"><div class="banner--picture__inside2 banner--picture--play"></div></div></div>
+{% block header %}
+<div class="banner banner--teacher">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 d-flex">
+                <div>
+                    <h1 class="banner__text--primary">Rapid Router</h1>
+                    <h4>Rapid router has been created to teach the first principles of computer programming.</h4>
+                </div>
+                <div>
+                    <div class="banner--picture"><div class="banner--picture__inside1"><div class="banner--picture__inside2 banner--picture--play"></div></div></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="sticky-subnav sub-nav sub-nav--teacher">
+{% endblock header %}
+
+{% if user|is_logged_in_as_student %}
+<div class="sub-nav sub-nav--student">
+{% elif user|is_independent_student %}
+<div class="sub-nav sub-nav--independent">
+{% else %}
+<div class="sub-nav sub-nav--teacher">
+{% endif %}
     {% block nav_ocargo_levels %}
         <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
     {% endblock nav_ocargo_levels %}
@@ -40,13 +55,6 @@
     {% endif %}
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function(){
-        if($(window).width() > 760) {
-            toggleStickySubnav($('.banner').outerHeight() + $('.menu').outerHeight());
-        }
-    });
-</script>
 {% endblock subNav %}
 
 {% block content %}{% endblock %}
