@@ -1,13 +1,11 @@
 name: CI
 on:
-  push:
-    branches:
-      - master
+  release:
+    types: [published]
   pull_request:
 jobs:
   tests:
     name: Run tests
-    if: ${{ github.event.pusher.email != 'action@github.com' }}
     runs-on: ubuntu-18.04
     env:
       LANG: C.UTF-8
@@ -19,14 +17,13 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.6.7'
-          architecture: 'x64'
+          python-version: "3.7"
+          architecture: "x64"
       - name: Install pip requirements
         run: |
           pip install pipenv
           pip install pytest-cov
           pipenv install --dev --system
-          pip install -U codeforlife-portal #TODO: Remove as part of #688
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
       - name: Run tests

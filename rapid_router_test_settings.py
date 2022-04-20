@@ -7,13 +7,15 @@ headless_chrome_options.add_argument("--no-sandbox")
 
 SELENIUM_WEBDRIVERS = {
     "default": {"callable": webdriver.Chrome, "args": (), "kwargs": {}},
-    "chrome": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
+    "firefox": {"callable": webdriver.Firefox, "args": (), "kwargs": {}},
     "chrome-headless": {
         "callable": webdriver.Chrome,
         "args": (),
         "kwargs": {"options": headless_chrome_options},
     },
 }
+
+SELENIUM_WIDTHS = [1624]
 
 DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3"}}
 

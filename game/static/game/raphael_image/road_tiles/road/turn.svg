@@ -21,7 +21,7 @@
  <path id="path3141" stroke="#72612e" stroke-width="2.5" fill="none" d="m0 35c21.6 0 43.2 4.29 63.1 12.6 20 8.27 38.3 20.5 53.5 35.8 15.3 15.3 27.5 33.6 35.8 53.5 8 20 12.6 41.1 12.6 63.1m-165-35c9.16 0 17.7 3.67 24.1 10.2 6.5 7 10.9 15.8 10.9 24.8"/>
  <path id="path3143" stroke="#72612e" stroke-width="2" fill="none" d="m0 50a150 150 90 0 1 150 150m-150-50a50 50 90 0 1 50 50m-50-150v100m150 50h-100m-14.6-35l3.5-4m-0.1-106l-1.3 4.8m37.5 10.2l-2.5 4.3m33.5 19.5l-3 3.6m27 27.5l-4 3m19 33l-5 1"/>
  <path id="path3145" d="m0 55a145 145 90 0 1 145 145h-90a55 55 -90 0 0 -55 -55v-90" fill="url(#turnGradient)"/>
- <path id="path3147" stroke="#808080" d="m0 55v90m55 55h90"/>
+ <path id="path3147" stroke="#808080" stroke-width="7" d="m0 55v90m55 55h90"/>
  <path id="path3149" stroke="#101928" stroke-width="3" fill="none" d="m0 55a145 145 90 0 1 145 145m-145-55a55 55 90 0 1 55 55"/>
  <path id="path3151" stroke="#f4d100" stroke-width="5" fill="none" d="m19.5 102a100 100 22.5 0 1 36.1 15m27.5 27a100 100 22.5 0 1 15 36"/>
 </svg>

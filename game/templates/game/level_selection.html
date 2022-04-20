@@ -8,7 +8,19 @@
 {{block.super}}
 <script>
     var EPISODES = [];
-    {% for episode in episodeData %}
+    {% for episode in blocklyEpisodes %}
+        var levels = [];
+        {% for level in episode.levels %}
+        levels.push({
+            'name': {{level.name}},
+            'score': '{{level.score}}',
+            'maxScore': {{level.maxScore}}
+        });
+        {% endfor %}
+        EPISODES.push({'id' : {{episode.id}}, 'levels': levels});
+    {% endfor %}
+
+    {% for episode in pythonEpisodes %}
         var levels = [];
         {% for level in episode.levels %}
         levels.push({
@@ -37,23 +49,44 @@
 <link href="{% static 'game/css/level_selection.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
+{% block header %}
+<section class="banner banner--rapid-router">
+    <img title="Rapid Router logo" alt="Rapid Router logo" src="{% static 'common/img/RR_logo.svg' %}">
+</section>
+{% endblock header %}
+
+
 {% block nav_ocargo_levels %}
-<a class="button button--secondary button--secondary--light" style="background-color: white; color: #fa1664;" href="{% url 'levels' %}">{% trans "Levels" %}</a>
+    {% if user|is_logged_in_as_student %}
+    <a class="button button--secondary button--secondary--light sub-nav--student-active">Levels</a>
+    {% elif user|is_independent_student %}
+    <a class="button button--secondary sub-nav--independent-active">Levels</a>
+    {% else %}
+    <a class="button button--secondary button--secondary--light sub-nav--teacher-active">Levels</a>
+    {% endif %}
 {% endblock nav_ocargo_levels %}
 
 {% block content %}
 <div class="container background">
-    <h4 class="text-center">{% trans "Levels" %}</h4>
     <div id="episodes">
-        {% for episode in episodeData %}
+        <div class="panel-intro">
+            <h4>Blockly levels</h4>
+            The first set of levels use Blockly to slowly introduce you to Python. You can read more about Blockly
+            <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" target="_blank">here</a>.
+        </div>
+        {% for episode in blocklyEpisodes %}
         <div class="panel">
-            <div class="panel-header" id="episode-{{episode.id}}">
-                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+            {% if episode.id == 1 or episode.id == 2 %}
+            <div class="panel-header bg-tertiary" id="episode-{{episode.id}}">
+            {% elif episode.id == 9 %}
+            <div class="panel-header bg-primary" id="episode-{{episode.id}}">
+            {% else %}
+            <div class="panel-header bg-tertiary-dark" id="episode-{{episode.id}}">
+            {% endif %}
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
-                    <span class="episode_range_text">
-                        <small>
-                            {% blocktrans with first_level=episode.first_level last_level=episode.last_level %}Levels {{first_level}}-{{last_level}}{% endblocktrans %}
-                        </small>
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                        Levels {{episode.first_level}}-{{episode.last_level}}
                     </span>
                     <img class="episode_image coin_image" value="{{episode.id}}">
                 </p>
@@ -75,7 +108,7 @@
                     {% if episode.random_levels_enabled %}
                     <p>
                         <a href="{% url 'random_level_for_episode' episode.id %}">
-                        {% trans "Random: Try your hand at a random level." %}
+                        Random: Try your hand at a random level.
                         </a>
                     </p>
                     {% endif %}
@@ -84,11 +117,51 @@
         </div>
         {% endfor %}
 
-        {% if user|is_logged_in %}
+        <div class="panel-intro">
+            <h4>Python levels</h4>
+            The next set of levels introduce you to coding directly with Python. You can read more about Python
+            <a href="https://docs.codeforlife.education/rapid-router/python-guide" target="_blank">here</a>.
+        </div>
+        {% for episode in pythonEpisodes %}
         <div class="panel">
-            <div class="panel-header customLevelsEpisode" id="episode-levels-created-by-you">
-                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
-                    {% trans "Levels created by you" %}
+            <div class="panel-header" id="episode-{{episode.id}}">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                    {{episode.name}}
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                        Levels {{episode.first_level}}-{{episode.last_level}}
+                    </span>
+                    <img class="episode_image coin_image" value="{{episode.id}}">
+                </p>
+            </div>
+
+            <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
+                <div class="panel-body">
+                    {% for level in episode.levels %}
+                    <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+                    <p>
+                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                        {% if level.score != None %}
+                        <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                        <img class="level_image coin_image" value="{{level.name}}">
+                        {% endif %}
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if user|is_logged_in %}
+        <div class="panel-intro">
+            <h4>Created levels</h4>
+            This is where you will find levels you created or those have been been shared with you.
+        </div>
+        <div class="panel">
+            <div class="panel-header bg-secondary" id="episode-levels-created-by-you">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
+                    Levels created by you
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
+                    </span>
                 </p>
             </div>
             <div id="collapse-levels-created-by-you" aria-labelledby="episode-levels-created-by-you" class="collapse">
@@ -104,16 +177,18 @@
                         </p>
                         {% endfor %}
                     {% else %}
-                        <p>{% trans "No levels have been created by you yet." %}</p>
+                        <p>No levels have been created by you yet.</p>
                     {% endif %}
                 </div>
             </div>
         </div>
 
         <div class="panel">
-            <div class="panel-header customLevelsEpisode" id="episode-levels-shared-with-you">
-                <p class="episode-title collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
-                    {% trans "Levels shared with you" %}
+            <div class="panel-header bg-secondary" id="episode-levels-shared-with-you">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
+                    Levels shared with you
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
+                    </span>
                 </p>
             </div>
             <div id="collapse-levels-shared-with-you" aria-labelledby="episode-levels-shared-with-you" class="collapse">
@@ -130,7 +205,7 @@
                         </p>
                         {% endfor %}
                     {% else %}
-                        <p>{% trans "No levels have been shared with you yet." %}</p>
+                        <p>No levels have been shared with you yet.</p>
                     {% endif %}
                 </div>
             </div>

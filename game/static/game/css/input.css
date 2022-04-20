@@ -1,0 +1,10 @@
+.input--icon > input[type="text"],
+.input--icon > input[type="text"]:hover,
+.input--icon > input[type="text"]:focus {
+  border: 2px solid #eab502;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+  width: 20px;
+}

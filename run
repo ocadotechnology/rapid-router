@@ -15,8 +15,6 @@ while [ "$1" != "" ]; do
   shift
 done
 
-pip install -e .
-pip install 'codeforlife-portal >= 1.0.0.post.dev1' # TODO: Remove this requirement (#688)
 ./example_project/manage.py migrate --noinput
 
 # Translation/Localisation
@@ -32,10 +30,4 @@ if [ "$translation" = "1" ]; then
 fi
 
 ./example_project/manage.py collectstatic --noinput
-
-if [ -n "${DJANGO_IP_PORT}" ]; then
-  echo "Open http://$DJANGO_IP_PORT"
-  ./example_project/manage.py runserver $DJANGO_IP_PORT
-else
-  ./example_project/manage.py runserver "$@"
-fi
+./example_project/manage.py runserver "$@"

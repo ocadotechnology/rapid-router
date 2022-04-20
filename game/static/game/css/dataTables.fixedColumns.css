@@ -1,25 +1,54 @@
-
-
 /* Block out what is behind the fixed column's header and footer */
 table.DTFC_Cloned thead,
 table.DTFC_Cloned tfoot {
-	background-color: white;
+  background-color: white;
 }
 
 /* Block out the gap above the scrollbar on the right, when there is a fixed
  * right column
  */
 div.DTFC_Blocker {
-	background-color: white;
+  background-color: white;
 }
 
 div.DTFC_LeftWrapper table.dataTable,
 div.DTFC_RightWrapper table.dataTable {
-	margin-bottom: 0;
-	z-index: 2;
+  margin-bottom: 0;
+  z-index: 2;
 }
 
 div.DTFC_LeftWrapper table.dataTable.no-footer,
 div.DTFC_RightWrapper table.dataTable.no-footer {
-	border-bottom: none;
+  border-bottom: none;
+}
+
+div.DTFC_LeftBodyLiner {
+  padding-right: 0;
+  width: inherit;
+}
+
+#scoreboardTable tbody td,
+#scoreboardTable_wrapper tbody td,
+#improvementTable_wrapper td,
+#improvementTable_wrapper tbody td {
+  border-right: 1px solid white;
+  border-top: 1px solid white;
+}
+
+.DTFC_ScrollWrapper th,
+.DTFC_ScrollWrapper td,
+#scoreboardTable th,
+#scoreboardTable td {
+  height: 34px;
+  min-width: 30px;
+}
+
+.DTFC_LeftHeadWrapper,
+.DTFC_LeftBodyWrapper {
+  box-shadow: 4px 0 10px 0 rgba(0, 0, 0, 0.5);
+}
+
+.DTFC_RightHeadWrapper,
+.DTFC_RightBodyWrapper {
+  box-shadow: -4px 0 10px 0 rgba(0, 0, 0, 0.5);
 }

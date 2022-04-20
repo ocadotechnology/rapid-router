@@ -1,169 +1,169 @@
 blockly_default = '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="30" y="30"></block></xml>'
 
-python_default = """import van
+python_default = """from van import Van
 
-v = van.Van()
+my_van = Van()
 """
 
-lvl_92 = """import van
+lvl_92 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
-v.move_forwards()
-v.turn_right()
-v.turn_left()
-v.move_forwards()"""
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_left()
+my_van.move_forwards()"""
 
-lvl_93 = """import van
-v = van.Van()
-v.turn_left()
-v.move_forwards()
-v.move_forwards()
-v.turn_right()
-v.turn_right()
-v.turn_left()
-v.turn_right()
-v.move_forwards()
-v.move_forwards()
-v.turn_left()
-v.turn_left()
-v.turn_right()"""
+lvl_93 = """from van import Van
+my_van = Van()
+my_van.turn_left()
+my_van.move_forwards()
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_right()
+my_van.turn_left()
+my_van.turn_right()
+my_van.move_forwards()
+my_van.move_forwards()
+my_van.turn_left()
+my_van.turn_left()
+my_van.turn_right()"""
 
-lvl_94 = """import van
+lvl_94 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
-v.turn_right()
-v.turn_left()
-v.move_forwards()
-v.turn_right()
-v.turn_left()
-v.turn_right()
-v.turn_left()"""
+my_van.turn_right()
+my_van.turn_left()
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_left()
+my_van.turn_right()
+my_van.turn_left()"""
 
-lvl_95 = """import van
+lvl_95 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 for i in range(3):
-  v.turn_left()
-  v.turn_right()
-  v.move_forwards()"""
+  my_van.turn_left()
+  my_van.turn_right()
+  my_van.move_forwards()"""
 
-lvl_96 = """import van
+lvl_96 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 for count in range(2):
-    v.move_forwards()
+    my_van.move_forwards()
 
-v.turn_left()
+my_van.turn_left()
 
 for count in range(3):
-    v.move_forwards()"""
+    my_van.move_forwards()"""
 
-lvl_97 = """import van
+lvl_97 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 for count in range(3):
   for forward in range(4):
-    v.move_forwards()
+    my_van.move_forwards()
   for left in range(2):
-    v.turn_left()
+    my_van.turn_left()
   for forward in range(4):
-    v.move_forwards()
+    my_van.move_forwards()
   for right in range(2):
-    v.turn_right()"""
+    my_van.turn_right()"""
 
-lvl_98 = """import van
+lvl_98 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
-while not v.at_destination():
-  if v.is_road_forward():
-    v.move_forwards()
+while not my_van.at_destination():
+  if my_van.is_road_forward():
+    my_van.move_forwards()
   else:
-    v.turn_left()"""
+    my_van.turn_left()"""
 
-lvl_99 = """import van
+lvl_99 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
-while not v.at_destination():
-  if v.is_road_forward():
-    v.move_forwards()
-  elif v.is_road_left():
-    v.turn_left()
+while not my_van.at_destination():
+  if my_van.is_road_forward():
+    my_van.move_forwards()
+  elif my_van.is_road_left():
+    my_van.turn_left()
   else:
-    v.turn_right()"""
+    my_van.turn_right()"""
 
-lvl_100 = """import van
+lvl_100 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
-while not v.at_destination():
-  if v.is_road_forward():
-    v.move_forwards()
-  elif v.is_road_left():
-    v.turn_left()
+while not my_van.at_destination():
+  if my_van.is_road_forward():
+    my_van.move_forwards()
+  elif my_van.is_road_left():
+    my_van.turn_left()
   else:
-    v.turn_right()"""
+    my_van.turn_right()"""
 
-lvl_101 = """import van
+lvl_101 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 def right_left():
-  v.turn_right()
-  v.turn_left()
+  my_van.turn_right()
+  my_van.turn_left()
 
 right_left()
-v.move_forwards()
+my_van.move_forwards()
 right_left()
 for count in range(2):
-  v.move_forwards()
+  my_van.move_forwards()
 for count in range(2):
   right_left()
-  v.turn_right()
-v.move_forwards()"""
+  my_van.turn_right()
+my_van.move_forwards()"""
 
-lvl_102 = """import van
+lvl_102 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 def left():
   for count in range(2):
-    v.turn_left()
-    v.turn_right()
+    my_van.turn_left()
+    my_van.turn_right()
 
 def right():
   for count in range(2):
-    v.turn_right()
-    v.turn_left()
+    my_van.turn_right()
+    my_van.turn_left()
 
 left()
 right()
-v.move_forwards()
-v.turn_right()
+my_van.move_forwards()
+my_van.turn_right()
 for count in range(2):
-  v.move_forwards()
-v.turn_right()
+  my_van.move_forwards()
+my_van.turn_right()
 right()
 left()
-v.move_forwards()"""
+my_van.move_forwards()"""
 
-lvl_103 = """import van
+lvl_103 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 def forward_left():
-  v.move_forwards()
-  v.turn_left()
+  my_van.move_forwards()
+  my_van.turn_left()
 
 def forward_right():
-  v.move_forwards()
-  v.turn_right()
+  my_van.move_forwards()
+  my_van.turn_right()
 
 def big():
   forward_left()
@@ -171,27 +171,27 @@ def big():
     forward_right()
 
 big()
-v.move_forwards()
+my_van.move_forwards()
 big()
 forward_left()
 for count in range(2):
   forward_right()
-  v.move_forwards()
+  my_van.move_forwards()
 forward_left()"""
 
-lvl_104 = """import van
+lvl_104 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 def left():
   for count in range(2):
-    v.move_forwards()
-    v.turn_left()
+    my_van.move_forwards()
+    my_van.turn_left()
 
 def right():
   for count in range(2):
-    v.move_forwards()
-    v.turn_right()
+    my_van.move_forwards()
+    my_van.turn_right()
 
 def big():
   left()
@@ -199,82 +199,82 @@ def big():
 
 big()
 for count in range(4):
-  v.move_forwards()
+  my_van.move_forwards()
 right()
 big()
 for count in range(3):
-  v.move_forwards()
-v.turn_right()
-v.turn_left()
+  my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_left()
 left()
-v.move_forwards()"""
+my_van.move_forwards()"""
 
-lvl_105 = """import van
+lvl_105 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
-while not v.at_destination():
-  if v.at_red_traffic_light():
-    v.wait()
-  elif v.is_road_left():
-    v.turn_left()
-  elif v.is_road_forward():
-    v.move_forwards()
+while not my_van.at_destination():
+  if my_van.at_red_traffic_light():
+    my_van.wait()
+  elif my_van.is_road_left():
+    my_van.turn_left()
+  elif my_van.is_road_forward():
+    my_van.move_forwards()
   else:
-    v.turn_right()"""
+    my_van.turn_right()"""
 
-lvl_106 = """import van
+lvl_106 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 n = 1
 
-while not v.at_destination():
-  v.turn_right()
+while not my_van.at_destination():
+  my_van.turn_right()
   for count in range(n):
-    v.move_forwards()
+    my_van.move_forwards()
   n = n + 1"""
 
-lvl_107 = """import van
+lvl_107 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 n = 1
-while not v.at_destination():
-  v.turn_left()
+while not my_van.at_destination():
+  my_van.turn_left()
   for count in range(n):
-    v.move_forwards()
+    my_van.move_forwards()
   n = n * 2"""
 
-lvl_108 = """import van
+lvl_108 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 n = 6
-while not v.at_destination():
+while not my_van.at_destination():
   for i in range(n):
-    v.move_forwards()
-  v.turn_left()
+    my_van.move_forwards()
+  my_van.turn_left()
   n = n - 2"""
 
-lvl_109 = """import van
+lvl_109 = """from van import Van
 
-v = van.Van()
+my_van = Van()
 
 n = 0
 
 for count in range(4):
-  v.turn_right()
+  my_van.turn_right()
   for forward in range(n):
-    v.move_forwards()
+    my_van.move_forwards()
   n = n + 1
 
-v.turn_right()
+my_van.turn_right()
 
-while not v.at_destination():
+while not my_van.at_destination():
   for count in range(n):
-    v.move_forwards()
-  v.turn_left()
+    my_van.move_forwards()
+  my_van.turn_left()
   n = n / 2"""
 
 solutions = {
@@ -343,17 +343,17 @@ solutions = {
     "61": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="192" y="415"><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">wiggle</field></block></next></block></next></block></next></block><block type="declare_proc" x="193" y="620"><field name="NAME">wiggle</field><statement name="DO"><block type="move_forwards"><next><block type="turn_left"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="turn_right"></block></statement><next><block type="turn_left"></block></next></block></next></block></next></block></statement></block></xml>',
     "62": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="310" y="456"><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">lights</field><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">lights</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">lights</field><next><block type="turn_right"><next><block type="call_proc"><field name="NAME">lights</field><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="312" y="886"><field name="NAME">lights</field><statement name="DO"><block type="controls_repeat_until"><value name="condition"><block type="traffic_light"><field name="CHOICE">GREEN</field></block></value><statement name="body"><block type="wait"></block></statement></block></statement></block></xml>',
     "63": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="381" y="287"><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="call_proc"><field name="NAME">wiggle</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="383" y="628"><field name="NAME">wiggle</field><statement name="DO"><block type="turn_left"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="turn_right"><next><block type="turn_left"></block></next></block></next></block></next></block></next></block></statement></block></xml>',
-    "64": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="108" y="374"><next><block type="call_proc"><field name="NAME">A</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">A</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="turn_right"><next><block type="move_forwards"></block></next></block></statement><next><block type="call_proc"><field name="NAME">B</field><next><block type="call_proc"><field name="NAME">A</field><next><block type="call_proc"><field name="NAME">B</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="346" y="371"><field name="NAME">A</field><statement name="DO"><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="turn_left"></block></next></block></next></block></next></block></next></block></statement></block><block type="declare_proc" x="318" y="638"><field name="NAME">B</field><statement name="DO"><block type="turn_right"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="turn_left"></block></statement><next><block type="turn_right"></block></next></block></next></block></statement></block></xml>',
-    "65": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="241" y="386"><next><block type="call_proc"><field name="NAME">left-right</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">right-left</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">left-right</field></block></statement><next><block type="move_forwards"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="move_forwards"><next><block type="turn_right"></block></next></block></statement><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">left-right</field></block></statement><next><block type="call_proc"><field name="NAME">right-left</field><next><block type="move_forwards"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="move_forwards"><next><block type="turn_left"></block></next></block></statement><next><block type="call_proc"><field name="NAME">right-left</field><next><block type="call_proc"><field name="NAME">left-right</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="move_forwards"></block></statement><next><block type="call_proc"><field name="NAME">left-right</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="498" y="501"><field name="NAME">left-right</field><statement name="DO"><block type="turn_left"><next><block type="turn_right"></block></next></block></statement></block><block type="declare_proc" x="496" y="716"><field name="NAME">right-left</field><statement name="DO"><block type="turn_right"><next><block type="turn_left"></block></next></block></statement></block></xml>',
-    "66": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="110" y="-459"><next><block type="call_proc"><field name="NAME">a</field><next><block type="turn_left"><next><block type="call_proc"><field name="NAME">b</field><next><block type="call_proc"><field name="NAME">a</field><next><block type="call_proc"><field name="NAME">b</field><next><block type="turn_left"><next><block type="call_proc"><field name="NAME">a</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="298" y="-383"><field name="NAME">a</field><statement name="DO"><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_right"></block></next></block></next></block></statement></block><block type="declare_proc" x="265" y="-196"><field name="NAME">b</field><statement name="DO"><block type="move_forwards"><next><block type="call_proc"><field name="NAME">a</field></block></next></block></statement></block></xml>',
-    "67": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="416" y="454"><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="call_proc"><field name="NAME">left-forward</field><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="turn_left"><next><block type="call_proc"><field name="NAME">left-forward</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">wig</field><next><block type="turn_right"></block></next></block></statement><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="call_proc"><field name="NAME">wiggle</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="609" y="498"><field name="NAME">wiggle</field><statement name="DO"><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">wig</field></block></statement></block></statement></block><block type="declare_proc" x="633" y="633"><field name="NAME">left-forward</field><statement name="DO"><block type="turn_left"><next><block type="move_forwards"></block></next></block></statement></block><block type="declare_proc" x="607" y="761"><field name="NAME">wig</field><statement name="DO"><block type="turn_left"><next><block type="turn_right"></block></next></block></statement></block></xml>',
+    "64": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="108" y="374"><next><block type="call_proc"><field name="NAME">large_turn</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">large_turn</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="turn_right"><next><block type="move_forwards"></block></next></block></statement><next><block type="call_proc"><field name="NAME">small_turn</field><next><block type="call_proc"><field name="NAME">large_turn</field><next><block type="call_proc"><field name="NAME">small_turn</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="346" y="371"><field name="NAME">large_turn</field><statement name="DO"><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="turn_left"></block></next></block></next></block></next></block></next></block></statement></block><block type="declare_proc" x="318" y="638"><field name="NAME">small_turn</field><statement name="DO"><block type="turn_right"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="turn_left"></block></statement><next><block type="turn_right"></block></next></block></next></block></statement></block></xml>',
+    "65": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="241" y="386"><next><block type="call_proc"><field name="NAME">left_right</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">right_left</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">left_right</field></block></statement><next><block type="move_forwards"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="move_forwards"><next><block type="turn_right"></block></next></block></statement><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">left_right</field></block></statement><next><block type="call_proc"><field name="NAME">right_left</field><next><block type="move_forwards"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="move_forwards"><next><block type="turn_left"></block></next></block></statement><next><block type="call_proc"><field name="NAME">right_left</field><next><block type="call_proc"><field name="NAME">left_right</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="move_forwards"></block></statement><next><block type="call_proc"><field name="NAME">left_right</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="498" y="501"><field name="NAME">left_right</field><statement name="DO"><block type="turn_left"><next><block type="turn_right"></block></next></block></statement></block><block type="declare_proc" x="496" y="716"><field name="NAME">right_left</field><statement name="DO"><block type="turn_right"><next><block type="turn_left"></block></next></block></statement></block></xml>',
+    "66": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="110" y="-383"><next><block type="call_proc"><field name="NAME">double_straight_right</field><next><block type="turn_left"><next><block type="call_proc"><field name="NAME">triple_straight_right</field><next><block type="call_proc"><field name="NAME">double_straight_right</field><next><block type="call_proc"><field name="NAME">triple_straight_right</field><next><block type="turn_left"><next><block type="call_proc"><field name="NAME">double_straight_right</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="400" y="-383"><field name="NAME">double_straight_right</field><statement name="DO"><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_right"></block></next></block></next></block></statement></block><block type="declare_proc" x="400" y="-196"><field name="NAME">triple_straight_right</field><statement name="DO"><block type="move_forwards"><next><block type="call_proc"><field name="NAME">double_straight_right</field></block></next></block></statement></block></xml>',
+    "67": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="416" y="454"><next><block type="call_proc"><field name="NAME">double_left_right</field><next><block type="call_proc"><field name="NAME">left_forward</field><next><block type="call_proc"><field name="NAME">double_left_right</field><next><block type="turn_left"><next><block type="call_proc"><field name="NAME">left_forward</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">left_right</field><next><block type="turn_right"></block></next></block></statement><next><block type="call_proc"><field name="NAME">double_left_right</field><next><block type="call_proc"><field name="NAME">double_left_right</field></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="609" y="498"><field name="NAME">double_left_right</field><statement name="DO"><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">left_right</field></block></statement></block></statement></block><block type="declare_proc" x="633" y="633"><field name="NAME">left_forward</field><statement name="DO"><block type="turn_left"><next><block type="move_forwards"></block></next></block></statement></block><block type="declare_proc" x="607" y="761"><field name="NAME">left_right</field><statement name="DO"><block type="turn_left"><next><block type="turn_right"></block></next></block></statement></block></xml>',
     "68": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="454" y="385"><next><block type="controls_repeat_while"><value name="condition"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="body"><block type="move_forwards"></block></statement><next><block type="turn_around"><next><block type="move_forwards"></block></next></block></next></block></next></block></xml>',
     "69": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="245" y="546"><next><block type="controls_repeat_while"><value name="condition"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="body"><block type="controls_repeat_while"><value name="condition"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="body"><block type="move_forwards"></block></statement><next><block type="turn_left"></block></next></block></statement></block></next></block></xml>',
     "70": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="292" y="496"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="turn_right"><next><block type="turn_around"><next><block type="turn_right"></block></next></block></next></block></statement></block></next></block></xml>',
     "71": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="388" y="472"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="move_forwards"><next><block type="turn_right"><next><block type="controls_if"><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"></block></statement></block></next></block></next></block></statement></block></next></block></xml>',
     "72": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="781" y="390"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_repeat_until"><value name="condition"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="body"><block type="move_forwards"></block></statement><next><block type="turn_right"></block></next></block></statement></block></next></block></xml>',
     "73": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="728" y="636"><next><block type="controls_repeat_until"><value name="condition"><block type="dead_end"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2" else="1"></mutation><value name="IF0"><block type="traffic_light"><field name="CHOICE">RED</field></block></value><statement name="DO0"><block type="wait"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
-    "74": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="479" y="542"><next><block type="call_proc"><field name="NAME">1</field><next><block type="call_proc"><field name="NAME">2</field><next><block type="call_proc"><field name="NAME">2</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">1</field></block></statement></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="641" y="583"><field name="NAME">2</field><statement name="DO"><block type="turn_right"><next><block type="call_proc"><field name="NAME">1</field><next><block type="turn_around"><next><block type="turn_left"></block></next></block></next></block></next></block></statement></block><block type="declare_proc" x="611" y="778"><field name="NAME">1</field><statement name="DO"><block type="move_forwards"><next><block type="turn_left"></block></next></block></statement></block></xml>',
+    "74": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="100" y="100"><next><block type="call_proc"><field name="NAME">right</field><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="call_proc"><field name="NAME">straight</field><next><block type="call_proc"><field name="NAME">straight</field><next><block type="call_proc"><field name="NAME">straight_left</field></block></next></block></next></block></statement><next><block type="call_proc"><field name="NAME">right</field><next><block type="call_proc"><field name="NAME">straight_left</field></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="350" y="100"><field name="NAME">straight</field><statement name="DO"><block type="move_forwards"></block></statement></block><block type="declare_proc" x="350" y="200"><field name="NAME">right</field><statement name="DO"><block type="turn_right"></block></statement></block><block type="declare_proc" x="350" y="300"><field name="NAME">straight_left</field><statement name="DO"><block type="call_proc"><field name="NAME">straight</field><next><block type="turn_left"></block></next></block></statement></block></xml>',
     "75": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="162" y="124"><next><block type="controls_repeat_until"><value name="condition"><block type="dead_end"></block></value><statement name="body"><block type="controls_repeat_until"><value name="condition"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="body"><block type="controls_repeat_until"><value name="condition"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="body"><block type="move_forwards"></block></statement><next><block type="turn_right"></block></next></block></statement><next><block type="turn_left"></block></next></block></statement></block></next></block></xml>',
     "76": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="399" y="647"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_right"><next><block type="turn_right"><next><block type="turn_right"></block></next></block></next></block></statement></block></statement></block></next></block></xml>',
     "77": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="702" y="362"><next><block type="call_proc"><field name="NAME">go</field></block></next></block><block type="declare_proc" x="702" y="482"><field name="NAME">go</field><statement name="DO"><block type="controls_if"><mutation elseif="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"><next><block type="call_proc"><field name="NAME">go</field></block></next></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"><next><block type="call_proc"><field name="NAME">go</field></block></next></block></statement></block></statement></block></xml>',
