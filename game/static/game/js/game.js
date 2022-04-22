@@ -1017,7 +1017,8 @@ ocargo.Game.prototype._setupLoadTab = function () {
           }
 
           loadInWorkspaces.call(this, workspaces)
-        })
+        }.bind(this)
+        )
       }
     }.bind(this)
   )
