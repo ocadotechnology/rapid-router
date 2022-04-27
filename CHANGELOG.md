@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.7 (2022-04-27)
+### Fix
+* Bump django from 3.2.12 to 3.2.13 ([#1329](https://github.com/ocadotechnology/rapid-router/issues/1329)) ([`2c8051e`](https://github.com/ocadotechnology/rapid-router/commit/2c8051e7af53704359efd5a7d35658b3e24db18e))
+
 ## v4.0.6 (2022-04-14)
 ### Fix
 * Fixed the start block appearing in the bin ([`497223a`](https://github.com/ocadotechnology/rapid-router/commit/497223a048c881659c9faa17c4b48d0dc9354894))
