@@ -202,4 +202,5 @@ def email_new_custom_level(
             class_name=class_name,
             home_url=home_url,
         ),
+        level_creation_email_subject(),
     )
