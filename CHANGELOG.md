@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.8 (2022-04-28)
+### Fix
+* The email on moderation page ([#1332](https://github.com/ocadotechnology/rapid-router/issues/1332)) ([`c4744b7`](https://github.com/ocadotechnology/rapid-router/commit/c4744b77068efc039517a105714a7a88839c54ab))
+
 ## v4.0.7 (2022-04-27)
 ### Fix
 * Bump django from 3.2.12 to 3.2.13 ([#1329](https://github.com/ocadotechnology/rapid-router/issues/1329)) ([`2c8051e`](https://github.com/ocadotechnology/rapid-router/commit/2c8051e7af53704359efd5a7d35658b3e24db18e))
