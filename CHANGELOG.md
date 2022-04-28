@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.0.9 (2022-04-28)
+### Fix
+* Remove thank you from emails ([#1333](https://github.com/ocadotechnology/rapid-router/issues/1333)) ([`106b757`](https://github.com/ocadotechnology/rapid-router/commit/106b7571effe471b135221c3f42877a2299ddb27))
+
 ## v4.0.8 (2022-04-28)
 ### Fix
 * The email on moderation page ([#1332](https://github.com/ocadotechnology/rapid-router/issues/1332)) ([`c4744b7`](https://github.com/ocadotechnology/rapid-router/commit/c4744b77068efc039517a105714a7a88839c54ab))
