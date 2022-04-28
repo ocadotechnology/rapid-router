@@ -2,14 +2,13 @@ from builtins import str
 
 
 def level_creation_email_subject():
-    return "Code For Life : Custom level to moderate"
+    return "Custom level to moderate"
 
 
 def level_creation_email_text_content():
     return (
         "Your student {student_name} from your class {class_name} has created this level: {level_url}. "
         "If you want to moderate it, you can do it on the moderation board: {moderate_url}."
-        "\n\nThanks,\n\nThe Code for Life team.\n{home_url}"
     )
 
 
