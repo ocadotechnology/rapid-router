@@ -9,7 +9,6 @@ def level_creation_email_text_content():
     return (
         "Your student {student_name} from your class {class_name} has created this level: {level_url}. "
         "If you want to moderate it, you can do it on the moderation board: {moderate_url}."
-        "\n\nThanks,\n\nThe Code for Life team.\n{home_url}"
     )
 
 
@@ -569,7 +568,9 @@ def title_level19():
 
 
 def description_level19():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0
+    )
     message += (
         "Attach a block inside the <b>Repeat</b> block to make the van repeat "
         "that instruction. <br> This means you can use one block instead of lots "
@@ -774,7 +775,9 @@ def title_level29():
 
 
 def description_level29():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
+    )
     message += (
         "Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
         "instruction. <br> Attach a 'condition' so the van knows when to stop "
@@ -853,7 +856,9 @@ def title_level33():
 
 
 def description_level33():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0
+    )
     message += (
         "Another way of telling the van what to do is to use the <b>If</b> block. "
         "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
@@ -927,7 +932,9 @@ def title_level36():
 
 
 def description_level36():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0
+    )
     message += (
         "You can change the <b>If</b> block to make more choices. Click on the "
         "star in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
@@ -1094,7 +1101,9 @@ def title_level44():
 
 
 def description_level44():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
+    )
     message += (
         "The light varies from red to green. <br>"
         "The van must check which colour the traffic light is when it reaches them "
@@ -2013,8 +2022,7 @@ def description_level92():
 def hint_level92():
     return (
         "Try using the following commands:<br><pre>my_van.move_forwards()<br>my_van.turn_left()"
-        "<br>my_van.turn_right()</pre>"
-        + PYTHON_HINT
+        "<br>my_van.turn_right()</pre>" + PYTHON_HINT
     )
 
 
@@ -2384,8 +2392,7 @@ def description_level108():
 def hint_level108():
     return (
         "To decrease the value of a variable by an amount you can do something like the "
-        "following:<br><pre>n -= 5</pre>"
-        + PYTHON_HINT
+        "following:<br><pre>n -= 5</pre>" + PYTHON_HINT
     )
 
 
