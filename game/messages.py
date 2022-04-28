@@ -2,7 +2,7 @@ from builtins import str
 
 
 def level_creation_email_subject():
-    return "Code For Life : Custom level to moderate"
+    return "Custom level to moderate"
 
 
 def level_creation_email_text_content():
