@@ -29,7 +29,10 @@ def get_loadable_levels(user):
 
 
 def add_related_fields(levels):
-    return levels.select_related("owner__user", "owner__teacher", "owner__student")
+    """Add related fields and filter to active users only"""
+    return levels.select_related(
+        "owner__user", "owner__teacher", "owner__student"
+    ).filter(owner__user__is_active=True)
 
 
 def levels_shared_with(user):
@@ -199,4 +202,5 @@ def email_new_custom_level(
             class_name=class_name,
             home_url=home_url,
         ),
+        level_creation_email_subject(),
     )

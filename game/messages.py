@@ -2,14 +2,13 @@ from builtins import str
 
 
 def level_creation_email_subject():
-    return "Code For Life : Custom level to moderate"
+    return "Custom level to moderate"
 
 
 def level_creation_email_text_content():
     return (
         "Your student {student_name} from your class {class_name} has created this level: {level_url}. "
         "If you want to moderate it, you can do it on the moderation board: {moderate_url}."
-        "\n\nThanks,\n\nThe Code for Life team.\n{home_url}"
     )
 
 
@@ -569,7 +568,9 @@ def title_level19():
 
 
 def description_level19():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0
+    )
     message += (
         "Attach a block inside the <b>Repeat</b> block to make the van repeat "
         "that instruction. <br> This means you can use one block instead of lots "
@@ -774,7 +775,9 @@ def title_level29():
 
 
 def description_level29():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
+    )
     message += (
         "Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
         "instruction. <br> Attach a 'condition' so the van knows when to stop "
@@ -853,7 +856,9 @@ def title_level33():
 
 
 def description_level33():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0
+    )
     message += (
         "Another way of telling the van what to do is to use the <b>If</b> block. "
         "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
@@ -927,7 +932,9 @@ def title_level36():
 
 
 def description_level36():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0
+    )
     message += (
         "You can change the <b>If</b> block to make more choices. Click on the "
         "star in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
@@ -1094,7 +1101,9 @@ def title_level44():
 
 
 def description_level44():
-    message = youtubeLink(600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0)
+    message = youtubeLink(
+        600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
+    )
     message += (
         "The light varies from red to green. <br>"
         "The van must check which colour the traffic light is when it reaches them "
@@ -1177,23 +1186,21 @@ def title_level48():
 
 def description_level48():
     message = (
-        "Congratulations - you've made it really far! <br> Can you create a "
-        "'general algorithm' that will help the van reach the destination in the "
-        "shortest way but stop at a traffic light?"
+        "Congratulations - you've made it really far! <br> Can you create a solution that will deliver to all of the "
+        "houses in the most efficient way?"
     )
     return build_description(title_level48(), message)
 
 
-# TODO: Update when new text is provided
 def hint_level48():
     return (
         "You need to check: "
         "<ul><li> if the lights are red </li>"
-        "<li> if the road exists right </li>"
-        "<li> if the road exists forwards </li> "
         "<li> if the road exists left </li>"
+        "<li> if the road exists forward </li>"
+        "<li> if the road exists right </li>"
         "<li> if it is a dead end </li></ul>"
-        "Make sure you put the checks in the right order."
+        "Make sure you put the checks in the right order. You will need to repeat this for every house and deliver."
     )
 
 
@@ -2012,9 +2019,8 @@ def description_level92():
 
 def hint_level92():
     return (
-        "Try using the following commands:<br><pre>v.move_forwards()<br>v.turn_left()"
-        "<br>v.turn_right()</pre>"
-        + PYTHON_HINT
+        "Try using the following commands:<br><pre>my_van.move_forwards()<br>my_van.turn_left()"
+        "<br>my_van.turn_right()</pre>" + PYTHON_HINT
     )
 
 
@@ -2033,9 +2039,9 @@ def description_level93():
 def hint_level93():
     return (
         """Try using the following commands:
-<pre>v.move_forwards()
-v.turn_left()
-v.turn_right()</pre>"""
+<pre>my_van.move_forwards()
+my_van.turn_left()
+my_van.turn_right()</pre>"""
         + PYTHON_HINT
     )
 
@@ -2055,9 +2061,9 @@ def description_level94():
 def hint_level94():
     return (
         """Try using the following commands:
-<pre>v.move_forwards()
-v.turn_left()
-v.turn_right()</pre>"""
+<pre>my_van.move_forwards()
+my_van.turn_left()
+my_van.turn_right()</pre>"""
         + PYTHON_HINT
     )
 
@@ -2078,7 +2084,7 @@ def hint_level95():
     return (
         """To repeat some statements a set number of times you can use something like the following:
 <pre>for count in range(3):
-    v.turn left
+    my_van.turn left
     print count</pre>
 The print statement will output the value of count to the console."""
         + PYTHON_HINT
@@ -2102,7 +2108,7 @@ def hint_level96():
     return (
         """To repeat some statements a set number of times you can use something like the following:
 <pre>for count in range(3):
-    v.turn left
+    my_van.turn left
     print count</pre>
 The print statement will output the value of count to the console."""
         + PYTHON_HINT
@@ -2126,7 +2132,7 @@ def hint_level97():
         """To repeat within a repeats a set number of times you can use something like the following:
 <pre>for i in range(3):
     for j in range(5):
-        v.turn left
+        my_van.turn left
         print count</pre>
 The print statement will output the value of count to the console."""
         + PYTHON_HINT
@@ -2150,11 +2156,11 @@ def description_level98():
 def hint_level98():
     return (
         """To repeat while a condition is met you can use something like the following:
-<pre>while not v.at_destination():
-    v.move_forwards()</pre>
+<pre>while not my_van.at_destination():
+    my_van.move_forwards()</pre>
 To check whether a condition is met you can use something like the following:
-<pre>if v.is_road_forward():
-    v.move_forwards()</pre>
+<pre>if my_van.is_road_forward():
+    my_van.move_forwards()</pre>
 You may also need to use the <b>else</b> statement."""
         + PYTHON_HINT
     )
@@ -2176,11 +2182,11 @@ def description_level99():
 def hint_level99():
     return (
         """To repeat while a condition is met you can use something like the following:
-<pre>while not v.at_destination():
-    v.move_forwards()</pre>
+<pre>while not my_van.at_destination():
+    my_van.move_forwards()</pre>
 To check whether a condition is met you can use something like the following:
-<pre>if v.is_road_forward():
-    v.move_forwards()</pre>
+<pre>if my_van.is_road_forward():
+    my_van.move_forwards()</pre>
 You may also need to use the <b>elif</b> and <b>else</b> statements."""
         + PYTHON_HINT
     )
@@ -2200,7 +2206,7 @@ def description_level100():
 
 def hint_level100():
     return (
-        "Try using<br><pre>if v.at_dead_end():</pre><br>to check if the van is at a dead end."
+        "Try using<br><pre>if my_van.at_dead_end():</pre><br>to check if the van is at a dead end."
         + PYTHON_HINT
     )
 
@@ -2344,7 +2350,7 @@ def hint_level106():
     return (
         """To use a variable to store the number of grid squares the van has to move you can do something like the following:
 <pre>n = 1
-while not v.at_destination():
+while not my_van.at_destination():
     print n
     n += 1</pre>
 Variables can be used in place of constants when calling functions. For example to repeat something n times you can do something like the following:
@@ -2384,8 +2390,7 @@ def description_level108():
 def hint_level108():
     return (
         "To decrease the value of a variable by an amount you can do something like the "
-        "following:<br><pre>n -= 5</pre>"
-        + PYTHON_HINT
+        "following:<br><pre>n -= 5</pre>" + PYTHON_HINT
     )
 
 

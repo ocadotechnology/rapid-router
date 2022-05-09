@@ -1,5 +1,4 @@
 from django.conf.urls import url, include
-from django.views.decorators.cache import cache_page
 from django.views.i18n import JavaScriptCatalog
 
 from django_js_reverse.views import urls_js
@@ -229,10 +228,10 @@ urlpatterns = [
             ]
         ),
     ),
-    url(r"^js-reverse/$", cache_page(60 * 60 * 24)(urls_js), name="js-reverse"),
+    url(r"^js-reverse/$", urls_js, name="js-reverse"),
     url(
         r"^js-i18n/$",
-        cache_page(60 * 60 * 24)(JavaScriptCatalog.as_view(packages=["game"])),
+        JavaScriptCatalog.as_view(packages=["game"]),
         name="rapid-router/javascript-catalog",
     ),
 ]

@@ -8,6 +8,7 @@ from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
+from django.core.management import call_command
 from django.urls import reverse
 from portal.tests.pageObjects.portal.home_page import HomePage
 
@@ -216,6 +217,11 @@ class BaseGameTest(SeleniumTestCase):
             BaseGameTest.already_logged_on = True
 
         return BaseGameTest.user_profile
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        call_command("collectstatic", "--noinput")
 
     @classmethod
     def tearDownClass(cls):
