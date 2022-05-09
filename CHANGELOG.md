@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.1.0 (2022-05-09)
+### Feature
+* Level 48 - Add houses ([#1338](https://github.com/ocadotechnology/rapid-router/issues/1338)) ([`c49a25b`](https://github.com/ocadotechnology/rapid-router/commit/c49a25be2e23df1f744aa6f76f9f32839b431056))
+
 ## v4.0.9 (2022-04-28)
 ### Fix
 * Remove thank you from emails ([#1333](https://github.com/ocadotechnology/rapid-router/issues/1333)) ([`106b757`](https://github.com/ocadotechnology/rapid-router/commit/106b7571effe471b135221c3f42877a2299ddb27))
