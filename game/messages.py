@@ -1186,23 +1186,21 @@ def title_level48():
 
 def description_level48():
     message = (
-        "Congratulations - you've made it really far! <br> Can you create a "
-        "'general algorithm' that will help the van reach the destination in the "
-        "shortest way but stop at a traffic light?"
+        "Congratulations - you've made it really far! <br> Can you create a solution that will deliver to all of the "
+        "houses in the most efficient way?"
     )
     return build_description(title_level48(), message)
 
 
-# TODO: Update when new text is provided
 def hint_level48():
     return (
         "You need to check: "
         "<ul><li> if the lights are red </li>"
-        "<li> if the road exists right </li>"
-        "<li> if the road exists forwards </li> "
         "<li> if the road exists left </li>"
+        "<li> if the road exists forward </li>"
+        "<li> if the road exists right </li>"
         "<li> if it is a dead end </li></ul>"
-        "Make sure you put the checks in the right order."
+        "Make sure you put the checks in the right order. You will need to repeat this for every house and deliver."
     )
 
 
