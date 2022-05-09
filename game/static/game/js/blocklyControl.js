@@ -61,30 +61,29 @@ ocargo.BlocklyControl.prototype.clearIncorrectBlock = function () {
 };
 
 function wasGameStarted(blocks) {
-    let gameStarted = false;
-    for (let block of blocks) {
-        if (block.type == 'start') gameStarted = true;
-    }
-    return gameStarted;
+  let gameStarted = false;
+  for (let block of blocks) {
+    if (block.type == "start") gameStarted = true;
+  }
+  return gameStarted;
 }
 
-ocargo.BlocklyControl.prototype.reset = function() {
+ocargo.BlocklyControl.prototype.reset = function () {
+  let allBlocks = Blockly.mainWorkspace.getAllBlocks();
 
-    let allBlocks = Blockly.mainWorkspace.getAllBlocks()
+  for (let block of allBlocks) {
+    if (block.type != "start") block.dispose(true);
+  }
 
-    for (let block of allBlocks) {
-        if (block.type != 'start') block.dispose(true)
-    }
+  // Each time a game starts the clear function is called.
+  // Therefore a simple check is preformed to see if the level
+  // has a start button, if not then create a start button
+  if (!wasGameStarted(allBlocks)) {
+    let startBlock = this.createBlock("start");
+    startBlock.moveBy(30 + (i % 2) * 200, 30 + Math.floor(i / 2) * 100);
+  }
 
-    // Each time a game starts the clear function is called.
-    // Therefore a simple check is preformed to see if the level
-    // has a start button, if not then create a start button
-    if (!wasGameStarted(allBlocks)) {
-        let startBlock = this.createBlock('start');
-        startBlock.moveBy(30+(i%2)*200,30+Math.floor(i/2)*100);
-    }
-
-    this.clearIncorrectBlock();
+  this.clearIncorrectBlock();
 };
 
 ocargo.BlocklyControl.prototype.deserialize = function (text) {
@@ -169,16 +168,15 @@ ocargo.BlocklyControl.prototype.setCodeChangesAllowed = function (
   this.blocklyDiv.style.pointerEvents = changesAllowed ? "" : "none";
 };
 
-ocargo.BlocklyControl.prototype.loadPreviousAttempt = function() {
-    function decodeHTML(text) {
-        var e = document.createElement('div');
-        e.innerHTML = text;
-        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-    }
-    // Use the user's last attempt if available
-    if (WORKSPACE) {
-        this.deserialize(decodeHTML(WORKSPACE));
-    }
+ocargo.BlocklyControl.prototype.loadPreviousAttempt = function () {
+  function decodeHTML(text) {
+    var e = document.createElement("div");
+    e.innerHTML = text;
+    return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+  }
+  // Use the user's last attempt if available
+  if (WORKSPACE) {
+    this.deserialize(decodeHTML(WORKSPACE));
   }
 
   this.redrawBlockly();
