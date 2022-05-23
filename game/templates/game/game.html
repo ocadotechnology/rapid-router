@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load i18n %}
+{% load app_tags %}
 {% load game.utils %}
 
 {% block scripts %}
@@ -115,6 +116,7 @@
   <script defer type="text/javascript" src="{% static 'game/js/program.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/sound.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/saving.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/sharing.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/event.js' %}"></script>
 
@@ -133,6 +135,7 @@
 {{block.super}}
     <link href="{% static 'game/css/game.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/game_screen.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'game/css/level_share.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/codemirror.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'game/css/skulpt/eclipse.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
@@ -230,6 +233,16 @@
         <span>{% trans "Save" %}</span>
       </label>
     </div>
+
+    {% if user|get_user_status == 'TEACHER' %}
+    <div id="share_tab"  class="tab selectable">
+      <input type="radio" name="tabs" id="share_radio">
+      <label for="share_radio">
+        <img src='{% static "game/image/icons/share.svg" %}'>
+        <span>Share</span>
+      </label>
+    </div>
+    {% endif %}
 {% endif %}
     <div class="tab_break"></div>
 
@@ -393,6 +406,49 @@
           </button>
         </div>
       </div>
+
+      {% if user|get_user_status == 'TEACHER' %}
+      <div id="share_pane" class="tab_pane">
+        <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/share.svg" %}'>Share</h2>
+
+        <p>Here you can share your level with your classes or your fellow teachers.</p>
+
+        <div class="table_control_div">
+          <p>
+            Share with:
+            <select id="share_type_select">
+              <option value="classes" selected>Classes</option>
+              <option value="teachers">Teachers</option>
+            </select>
+          </p>
+
+          <p id="class_selection">
+            Class: <select id="class_select"></select>
+          </p>
+
+          <div id="shared_levels" class="scrolling-table-wrapper">
+            <table width='100%' id="shareLevelTableHeader">
+              <thead>
+                <tr>
+                  <th>{% trans "Name" %}</th>
+                  <th>{% trans "Shared" %}</th>
+                </tr>
+              </thead>
+            </table>
+            <div class="scrolling-table">
+              <table width='100%' id="shareLevelTable">
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <button class="navigation_button long_button" id="shareWithAll">
+          <img src="{% static "game/image/icons/share.svg" %}">
+          <span>Share with all</span>
+        </button>
+      </div>
+      {% endif %}
     </div>
 
     <div id="paper" class="col" style="background-color:{{level.theme.background}}"></div>

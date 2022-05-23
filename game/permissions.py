@@ -85,7 +85,7 @@ def can_delete_level(user, level):
 class CanShareLevel(permissions.BasePermission):
     """
     Used to verify that an incoming request is made by a user who is authorised to share
-    the level - that is, that they are the owner of the level.
+    the level - that is, that they are the owner of the level as a student, or if they're a teacher in the same school as the owner.
     """
 
     def has_permission(self, request, view):
@@ -100,7 +100,12 @@ class CanShareLevel(permissions.BasePermission):
         ):
             return False
         else:
-            return obj.owner == request.user.userprofile
+            return (
+                hasattr(
+                    request.user.userprofile, "teacher"
+                )  # TODO: check if in the same school as teacher or same class as student
+                or obj.owner == request.user.userprofile
+            )
 
 
 class CanShareLevelWith(permissions.BasePermission):
