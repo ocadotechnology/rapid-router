@@ -629,7 +629,7 @@ ocargo.Model.prototype.getTrafficLightForNode = function(position) {
 ocargo.Model.prototype.getDestinationForNode = function(node) {
     var destinations = this.map.getDestinations();
     for(var i = 0; i < destinations.length; i++) {
-        if(destinations[i].node === node) {
+        if(destinations[i].node === node && !destinations[i].visited) {
             return destinations[i];
         }
     }

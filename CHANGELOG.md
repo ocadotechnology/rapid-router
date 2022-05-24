@@ -2,6 +2,22 @@
 
 <!--next-version-placeholder-->
 
+## v4.1.0 (2022-05-09)
+### Feature
+* Level 48 - Add houses ([#1338](https://github.com/ocadotechnology/rapid-router/issues/1338)) ([`c49a25b`](https://github.com/ocadotechnology/rapid-router/commit/c49a25be2e23df1f744aa6f76f9f32839b431056))
+
+## v4.0.9 (2022-04-28)
+### Fix
+* Remove thank you from emails ([#1333](https://github.com/ocadotechnology/rapid-router/issues/1333)) ([`106b757`](https://github.com/ocadotechnology/rapid-router/commit/106b7571effe471b135221c3f42877a2299ddb27))
+
+## v4.0.8 (2022-04-28)
+### Fix
+* The email on moderation page ([#1332](https://github.com/ocadotechnology/rapid-router/issues/1332)) ([`c4744b7`](https://github.com/ocadotechnology/rapid-router/commit/c4744b77068efc039517a105714a7a88839c54ab))
+
+## v4.0.7 (2022-04-27)
+### Fix
+* Bump django from 3.2.12 to 3.2.13 ([#1329](https://github.com/ocadotechnology/rapid-router/issues/1329)) ([`2c8051e`](https://github.com/ocadotechnology/rapid-router/commit/2c8051e7af53704359efd5a7d35658b3e24db18e))
+
 ## v4.0.6 (2022-04-14)
 ### Fix
 * Fixed the start block appearing in the bin ([`497223a`](https://github.com/ocadotechnology/rapid-router/commit/497223a048c881659c9faa17c4b48d0dc9354894))
