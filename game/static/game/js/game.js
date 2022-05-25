@@ -1163,7 +1163,7 @@ ocargo.Game.prototype._setupSaveTab = function () {
 }
 
 ocargo.Game.prototype._setupShareTab = function () {
-  var that = this;
+  var saving = this.saving;
   var text = [];
   text.shared = gettext('Yes');
   text.unshared = gettext('No');
@@ -1171,16 +1171,16 @@ ocargo.Game.prototype._setupShareTab = function () {
 
   // Setup the behaviour for when the tab is selected
   this.tabs.share.setOnChange(function() {
-    that.saving.getSharingInformation(parseInt(LEVEL_ID), function(error, validRecipients) {
+    saving.getSharingInformation(parseInt(LEVEL_ID), function(error, validRecipients) {
           if(error) {
               console.error(error);
               return;
           }
 
-          that.changeTabSelectionTo(that.tabs.share);
+          this.changeTabSelectionTo(this.tabs.share);
           processSharingInformation(error, validRecipients);
-      });
-  });
+      }.bind(this));
+  }.bind(this));
 
   var classesTaught;
   var fellowTeachers;
@@ -1225,7 +1225,7 @@ ocargo.Game.prototype._setupShareTab = function () {
       var recipientData = {recipientIDs: recipientIDs,
                            action: actionDesired};
 
-      that.saving.shareLevel(parseInt(LEVEL_ID), recipientData, processSharingInformation);
+      saving.shareLevel(parseInt(LEVEL_ID), recipientData, processSharingInformation);
   });
 
   // Method to call when we get an update on the level's sharing information
@@ -1314,7 +1314,7 @@ ocargo.Game.prototype._setupShareTab = function () {
           var recipientData = {recipientIDs: [this.getAttribute('value')],
                                 action: (status === 'shared' ? 'unshare' : 'share')};
 
-          that.saving.shareLevel(parseInt(LEVEL_ID), recipientData, processSharingInformation);
+          saving.shareLevel(parseInt(LEVEL_ID), recipientData, processSharingInformation);
       });
 
       // update column widths
