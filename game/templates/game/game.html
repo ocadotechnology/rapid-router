@@ -234,7 +234,7 @@
       </label>
     </div>
 
-    {% if user|get_user_status == 'TEACHER' %}
+    {% if user|get_user_status == 'TEACHER' and not level.default%}
     <div id="share_tab"  class="tab selectable">
       <input type="radio" name="tabs" id="share_radio">
       <label for="share_radio">
@@ -407,7 +407,7 @@
         </div>
       </div>
 
-      {% if user|get_user_status == 'TEACHER' %}
+      {% if user|get_user_status == 'TEACHER' and not level.default %}
       <div id="share_pane" class="tab_pane">
         <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/share.svg" %}'>Share</h2>
 

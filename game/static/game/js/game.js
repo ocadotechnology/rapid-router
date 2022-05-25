@@ -572,11 +572,6 @@ ocargo.Game.prototype._setupTabs = function () {
     $('#save_radio + label'),
     $('#save_pane')
   )
-  this.tabs.share = new ocargo.Tab(
-    $('#share_radio'),
-    $('#share_radio + label'),
-    $('#share_pane')
-  )
   this.tabs.clear_program = new ocargo.Tab(
     $('#clear_program_radio'),
     $('#clear_program_radio + label')
@@ -615,7 +610,6 @@ ocargo.Game.prototype._setupTabs = function () {
 
   this._setupLoadTab()
   this._setupSaveTab()
-  this._setupShareTab()
   //this._setupPrintTab();
   this._setupHelpTab()
   this._setupMuteTab()
@@ -629,6 +623,15 @@ ocargo.Game.prototype._setupTabs = function () {
     )
     this._setupSolutionTab()
     $('#solution_tab').show()
+  }
+
+  if (USER_STATUS === 'TEACHER' && !DEFAULT_LEVEL) {
+    this.tabs.share = new ocargo.Tab(
+      $('#share_radio'),
+      $('#share_radio + label'),
+      $('#share_pane')
+    )
+    this._setupShareTab()
   }
 
   if (!BLOCKLY_ENABLED) {
@@ -1165,10 +1168,6 @@ ocargo.Game.prototype._setupSaveTab = function () {
 ocargo.Game.prototype._setupShareTab = function () {
   var saving = this.saving;
   var sharing = this.sharing;
-  var text = [];
-  text.shared = gettext('Yes');
-  text.unshared = gettext('No');
-  text.pending = '...';
 
   // Setup the behaviour for when the tab is selected
   this.tabs.share.setOnChange(function() {
@@ -1183,27 +1182,22 @@ ocargo.Game.prototype._setupShareTab = function () {
       }.bind(this));
   }.bind(this));
 
-  var classesTaught;
-  var fellowTeachers;
-  var currentClassID;
-  var allShared;
-
-  sharing.setupRadioButtonsForTeacherPanel(currentClassID, fellowTeachers, saving, parseInt(LEVEL_ID), true);
+  sharing.setupRadioButtonsForTeacherPanel(saving, () => parseInt(LEVEL_ID), () => true, processSharingInformation);
 
   // Setup the class dropdown menu for the teacher panel
   $('#class_select').change(function() {
       var classID = $('#class_select').val();
 
-      for (var i = 0; i < classesTaught.length; i++) {
-          if (classesTaught[i].id == classID) {
-              sharing.populateSharingTable(classesTaught[i].students, saving, parseInt(LEVEL_ID), true);
-              currentClassID = classesTaught[i].id;
+      for (var i = 0; i < sharing.classesTaught.length; i++) {
+          if (sharing.classesTaught[i].id == classID) {
+              sharing.populateSharingTable(sharing.classesTaught[i].students, saving, () => parseInt(LEVEL_ID), () => true, processSharingInformation);
+              sharing.currentClassID = sharing.classesTaught[i].id;
               break;
           }
       }
   });
 
-  sharing.setupSelectAllButton(saving, parseInt(LEVEL_ID), true, processSharingInformation);
+  sharing.setupSelectAllButton(saving, () => parseInt(LEVEL_ID), () => true, processSharingInformation);
 
   // Method to call when we get an update on the level's sharing information
   function processSharingInformation(error, validRecipients) {
@@ -1213,26 +1207,26 @@ ocargo.Game.prototype._setupShareTab = function () {
       return;
     }
 
-    classesTaught = validRecipients.classes;
-    fellowTeachers = validRecipients.teachers;
+    sharing.classesTaught = validRecipients.classes;
+    sharing.fellowTeachers = validRecipients.teachers;
 
     $("#class_select").empty();
-    for (var i = 0; i < classesTaught.length; i++) {
+    for (var i = 0; i < sharing.classesTaught.length; i++) {
       var option = $("<option>");
       option.attr({
-        value: classesTaught[i].id,
+        value: sharing.classesTaught[i].id,
       });
-      option.text(classesTaught[i].name);
+      option.text(sharing.classesTaught[i].name);
       $("#class_select").append(option);
     }
 
     if ($("#share_type_select").val() === "teachers") {
-      sharing.populateSharingTable(validRecipients.teachers, saving, parseInt(LEVEL_ID), true);
+      sharing.populateSharingTable(validRecipients.teachers, saving, () => parseInt(LEVEL_ID), () => true, processSharingInformation);
     } else {
       var found = false;
       $("#class_select option").each(function () {
-        if (this.value == currentClassID) {
-          $("#class_select").val(currentClassID);
+        if (this.value == sharing.currentClassID) {
+          $("#class_select").val(sharing.currentClassID);
           $("#class_select").change();
           found = true;
         }

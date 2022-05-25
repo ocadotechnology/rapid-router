@@ -762,11 +762,6 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function setupShareTab() {
-            var text = [];
-            text.shared = gettext('Yes');
-            text.unshared = gettext('No');
-            text.pending = '...';
-
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
                 if (!isIndependentStudent() ||  !isLoggedIn("share") || !canShare() || !isLevelOwned()) {
@@ -785,27 +780,26 @@ ocargo.LevelEditor = function(levelId) {
                 });
             });
 
-            var classesTaught;
-            var fellowTeachers;
-            var currentClassID;
-            var allShared;
+            function canShareAndIsLevelOwned() {
+                return canShare() && isLevelOwned()
+            }
 
-            sharing.setupRadioButtonsForTeacherPanel(currentClassID, fellowTeachers, saving, saveState.id, canShare() && isLevelOwned());
+            sharing.setupRadioButtonsForTeacherPanel(saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
 
             // Setup the class dropdown menu for the teacher panel
             $('#class_select').change(function() {
                 var classID = $('#class_select').val();
 
-                for (var i = 0; i < classesTaught.length; i++) {
-                    if (classesTaught[i].id == classID) {
-                        sharing.populateSharingTable(classesTaught[i].students, saving, saveState.id, canShare() && isLevelOwned());
-                        currentClassID = classesTaught[i].id;
+                for (var i = 0; i < sharing.classesTaught.length; i++) {
+                    if (sharing.classesTaught[i].id == classID) {
+                        sharing.populateSharingTable(sharing.classesTaught[i].students, saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
+                        sharing.currentClassID = sharing.classesTaught[i].id;
                         break;
                     }
                 }
             });
 
-            sharing.setupSelectAllButton(saving, saveState.id, canShare() && isLevelOwned(), processSharingInformation);
+            sharing.setupSelectAllButton(saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
 
             // Method to call when we get an update on the level's sharing information
             function processSharingInformation(error, validRecipients) {
@@ -819,28 +813,28 @@ ocargo.LevelEditor = function(levelId) {
                     var classmates = validRecipients.classmates;
                     var teacher = validRecipients.teacher;
 
-                    sharing.populateSharingTable(classmates, saving, saveState.id, canShare() && isLevelOwned());
+                    sharing.populateSharingTable(classmates, saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
                 } else if (USER_STATUS === "TEACHER") {
-                    classesTaught = validRecipients.classes;
-                    fellowTeachers = validRecipients.teachers;
+                    sharing.classesTaught = validRecipients.classes;
+                    sharing.fellowTeachers = validRecipients.teachers;
 
                     $('#class_select').empty();
-                    for (var i = 0; i < classesTaught.length; i++) {
+                    for (var i = 0; i < sharing.classesTaught.length; i++) {
                         var option = $('<option>');
                         option.attr( {
-                            value: classesTaught[i].id,
+                            value: sharing.classesTaught[i].id,
                         });
-                        option.text(classesTaught[i].name);
+                        option.text(sharing.classesTaught[i].name);
                         $('#class_select').append(option);
                     }
 
                     if ($('#share_type_select').val() === 'teachers') {
-                        sharing.populateSharingTable(validRecipients.teachers, saving, saveState.id, canShare() && isLevelOwned());
+                        sharing.populateSharingTable(validRecipients.teachers, saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
                     } else {
                         var found = false;
                         $('#class_select option').each(function() {
-                            if (this.value == currentClassID) {
-                                $('#class_select').val(currentClassID);
+                            if (this.value == sharing.currentClassID) {
+                                $('#class_select').val(sharing.currentClassID);
                                 $('#class_select').change();
                                 found = true;
                             }
