@@ -1164,6 +1164,7 @@ ocargo.Game.prototype._setupSaveTab = function () {
 
 ocargo.Game.prototype._setupShareTab = function () {
   var saving = this.saving;
+  var sharing = this.sharing;
   var text = [];
   text.shared = gettext('Yes');
   text.unshared = gettext('No');
@@ -1187,17 +1188,7 @@ ocargo.Game.prototype._setupShareTab = function () {
   var currentClassID;
   var allShared;
 
-  // Setup the teachers/classes radio buttons for the teacher panel
-  $('#share_type_select').change(function() {
-      if(this.value == "classes") {
-          $('#class_selection').css('display', 'block');
-          $('#class_select').val(currentClassID);
-          $('#class_select').change();
-      } else {
-          $('#class_selection').css('display', 'none');
-          populateSharingTable(fellowTeachers);
-      }
-  });
+  sharing.setupRadioButtonsForTeacherPanel(currentClassID, fellowTeachers, saving, parseInt(LEVEL_ID), true);
 
   // Setup the class dropdown menu for the teacher panel
   $('#class_select').change(function() {
@@ -1205,28 +1196,14 @@ ocargo.Game.prototype._setupShareTab = function () {
 
       for (var i = 0; i < classesTaught.length; i++) {
           if (classesTaught[i].id == classID) {
-              populateSharingTable(classesTaught[i].students);
+              sharing.populateSharingTable(classesTaught[i].students, saving, parseInt(LEVEL_ID), true);
               currentClassID = classesTaught[i].id;
               break;
           }
       }
   });
 
-  // Setup the select all button
-  $('#shareWithAll').click(function() {
-      var statusDesired = allShared ? 'shared' : 'unshared';
-      var actionDesired = allShared ? 'unshare' : 'share';
-
-      var recipientIDs = [];
-      $('#shareLevelTable tr[value]').each(function() {
-          recipientIDs.push(this.getAttribute('value'));
-      });
-
-      var recipientData = {recipientIDs: recipientIDs,
-                           action: actionDesired};
-
-      saving.shareLevel(parseInt(LEVEL_ID), recipientData, processSharingInformation);
-  });
+  sharing.setupSelectAllButton(saving, parseInt(LEVEL_ID), true, processSharingInformation);
 
   // Method to call when we get an update on the level's sharing information
   function processSharingInformation(error, validRecipients) {
@@ -1250,7 +1227,7 @@ ocargo.Game.prototype._setupShareTab = function () {
     }
 
     if ($("#share_type_select").val() === "teachers") {
-      populateSharingTable(validRecipients.teachers);
+      sharing.populateSharingTable(validRecipients.teachers, saving, parseInt(LEVEL_ID), true);
     } else {
       var found = false;
       $("#class_select option").each(function () {
@@ -1265,64 +1242,6 @@ ocargo.Game.prototype._setupShareTab = function () {
         $("#class_select").change();
       }
     }
-  }
-
-  function populateSharingTable(recipients) {
-      // Remove click listeners to avoid memory leak and remove all rows
-      var table = $('#shareLevelTable tbody');
-      $('#shareLevelTable tr').off('click');
-      table.empty();
-
-      // Order them alphabetically
-      recipients.sort(function(a, b) {
-          if (a.name < b.name) {
-              return -1;
-          } else if (a.name > b.name) {
-              return 1;
-          }
-          return 0;
-      });
-
-      allShared = true;
-      // Add a row to the table for each workspace saved in the database
-      for (var i = 0; i < recipients.length; i++) {
-          var recipient = recipients[i];
-          var status = recipient.shared ? 'shared' : 'unshared';
-
-          if (recipient.shared) {
-              status = 'shared';
-          } else {
-              status = 'unshared';
-              allShared = false;
-          }
-          table.append("<tr value=\""+recipient.id+"\" status=\""+status+"\"><td>"+ $("<div>").text(recipient.name).html() +"</td><td class=\"share_cell\">"+ text[status] + "</td></tr>");
-      }
-
-      // Update the shareWithAll button
-      if (allShared) {
-          $('#shareWithAll span').html(gettext('Unshare with all'));
-          $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/quit.svg');
-      } else {
-          $('#shareWithAll span').html(gettext('Share with all'));
-          $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/share.svg');
-      }
-
-      // update click listeners in the new rows
-      $('#shareLevelTable tr[value]').on('click', function(event) {
-          var status = this.getAttribute('status');
-
-          var recipientData = {recipientIDs: [this.getAttribute('value')],
-                                action: (status === 'shared' ? 'unshare' : 'share')};
-
-          saving.shareLevel(parseInt(LEVEL_ID), recipientData, processSharingInformation);
-      });
-
-      // update column widths
-      for(var i = 0; i < 2; i++){
-          var td = $('#shareLevelTable td:eq(' + i + ')');
-          var td2 = $('#shareLevelTableHeader th:eq(' + i + ')');
-          td2.width(td.width());
-      }
   }
 }
 
