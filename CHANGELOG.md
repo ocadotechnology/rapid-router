@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.1.1 (2022-05-24)
+### Fix
+* Deleting workspace now makes the name disappear ([#1243](https://github.com/ocadotechnology/rapid-router/issues/1243)) ([`4464139`](https://github.com/ocadotechnology/rapid-router/commit/44641397e336844e3d1fe06308d8e573419d63f2))
+
 ## v4.1.0 (2022-05-09)
 ### Feature
 * Level 48 - Add houses ([#1338](https://github.com/ocadotechnology/rapid-router/issues/1338)) ([`c49a25b`](https://github.com/ocadotechnology/rapid-router/commit/c49a25be2e23df1f744aa6f76f9f32839b431056))
