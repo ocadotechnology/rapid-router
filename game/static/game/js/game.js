@@ -38,7 +38,10 @@ ocargo.Game.prototype.setup = function () {
   this.drawing.preloadRoadTiles()
   ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, this.drawing)
   this.saving = new ocargo.Saving()
-  this.sharing = new ocargo.Sharing()
+  this.sharing = new ocargo.Sharing(
+    () => parseInt(LEVEL_ID),
+    () => true
+  )
 
   // Setup the blockly workspace
   ocargo.blocklyControl.reset()
@@ -1166,77 +1169,21 @@ ocargo.Game.prototype._setupSaveTab = function () {
 }
 
 ocargo.Game.prototype._setupShareTab = function () {
-  var saving = this.saving;
-  var sharing = this.sharing;
-
   // Setup the behaviour for when the tab is selected
   this.tabs.share.setOnChange(function() {
-    saving.getSharingInformation(parseInt(LEVEL_ID), function(error, validRecipients) {
+    this.saving.getSharingInformation(parseInt(LEVEL_ID), function(error, validRecipients) {
           if(error) {
               console.error(error);
               return;
           }
 
           this.changeTabSelectionTo(this.tabs.share);
-          processSharingInformation(error, validRecipients);
+          this.sharing.processSharingInformation(error, validRecipients);
       }.bind(this));
   }.bind(this));
 
-  sharing.setupRadioButtonsForTeacherPanel(saving, () => parseInt(LEVEL_ID), () => true, processSharingInformation);
-
-  // Setup the class dropdown menu for the teacher panel
-  $('#class_select').change(function() {
-      var classID = $('#class_select').val();
-
-      for (var i = 0; i < sharing.classesTaught.length; i++) {
-          if (sharing.classesTaught[i].id == classID) {
-              sharing.populateSharingTable(sharing.classesTaught[i].students, saving, () => parseInt(LEVEL_ID), () => true, processSharingInformation);
-              sharing.currentClassID = sharing.classesTaught[i].id;
-              break;
-          }
-      }
-  });
-
-  sharing.setupSelectAllButton(saving, () => parseInt(LEVEL_ID), () => true, processSharingInformation);
-
-  // Method to call when we get an update on the level's sharing information
-  function processSharingInformation(error, validRecipients) {
-    if (error !== null) {
-      console.error(error);
-      ocargo.Drawing.startInternetDownPopup();
-      return;
-    }
-
-    sharing.classesTaught = validRecipients.classes;
-    sharing.fellowTeachers = validRecipients.teachers;
-
-    $("#class_select").empty();
-    for (var i = 0; i < sharing.classesTaught.length; i++) {
-      var option = $("<option>");
-      option.attr({
-        value: sharing.classesTaught[i].id,
-      });
-      option.text(sharing.classesTaught[i].name);
-      $("#class_select").append(option);
-    }
-
-    if ($("#share_type_select").val() === "teachers") {
-      sharing.populateSharingTable(validRecipients.teachers, saving, () => parseInt(LEVEL_ID), () => true, processSharingInformation);
-    } else {
-      var found = false;
-      $("#class_select option").each(function () {
-        if (this.value == sharing.currentClassID) {
-          $("#class_select").val(sharing.currentClassID);
-          $("#class_select").change();
-          found = true;
-        }
-      });
-
-      if (!found) {
-        $("#class_select").change();
-      }
-    }
-  }
+  this.sharing.setupTeacherPanel();
+  this.sharing.setupSelectAllButton();
 }
 
 ocargo.Game.prototype._setupHelpTab = function () {

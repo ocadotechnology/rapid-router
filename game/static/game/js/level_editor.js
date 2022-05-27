@@ -58,7 +58,6 @@ ocargo.LevelEditor = function(levelId) {
     /*********/
 
     var saving = new ocargo.Saving();
-    var sharing = new ocargo.Sharing();
     var drawing = new ocargo.Drawing();
     drawing.preloadRoadTiles();
 
@@ -83,6 +82,11 @@ ocargo.LevelEditor = function(levelId) {
 
     var saveState = new ocargo.LevelSaveState();
     var ownedLevels = new ocargo.OwnedLevels(saveState);
+
+    var sharing = new ocargo.Sharing(
+        () => saveState.id,
+        () => canShare() && isLevelOwned()
+    );
 
     // Whether the user is scrolling on a tablet
     var isScrolling = false;
@@ -776,76 +780,12 @@ ocargo.LevelEditor = function(levelId) {
                     }
 
                     transitionTab(tabs.share);
-                    processSharingInformation(error, validRecipients);
+                    sharing.processSharingInformation(error, validRecipients);
                 });
             });
 
-            function canShareAndIsLevelOwned() {
-                return canShare() && isLevelOwned()
-            }
-
-            sharing.setupRadioButtonsForTeacherPanel(saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
-
-            // Setup the class dropdown menu for the teacher panel
-            $('#class_select').change(function() {
-                var classID = $('#class_select').val();
-
-                for (var i = 0; i < sharing.classesTaught.length; i++) {
-                    if (sharing.classesTaught[i].id == classID) {
-                        sharing.populateSharingTable(sharing.classesTaught[i].students, saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
-                        sharing.currentClassID = sharing.classesTaught[i].id;
-                        break;
-                    }
-                }
-            });
-
-            sharing.setupSelectAllButton(saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
-
-            // Method to call when we get an update on the level's sharing information
-            function processSharingInformation(error, validRecipients) {
-                if (error !== null) {
-                    console.error(error);
-                    ocargo.Drawing.startInternetDownPopup();
-                    return;
-                }
-
-                if (USER_STATUS === "SCHOOL_STUDENT") {
-                    var classmates = validRecipients.classmates;
-                    var teacher = validRecipients.teacher;
-
-                    sharing.populateSharingTable(classmates, saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
-                } else if (USER_STATUS === "TEACHER") {
-                    sharing.classesTaught = validRecipients.classes;
-                    sharing.fellowTeachers = validRecipients.teachers;
-
-                    $('#class_select').empty();
-                    for (var i = 0; i < sharing.classesTaught.length; i++) {
-                        var option = $('<option>');
-                        option.attr( {
-                            value: sharing.classesTaught[i].id,
-                        });
-                        option.text(sharing.classesTaught[i].name);
-                        $('#class_select').append(option);
-                    }
-
-                    if ($('#share_type_select').val() === 'teachers') {
-                        sharing.populateSharingTable(validRecipients.teachers, saving, () => saveState.id, canShareAndIsLevelOwned, processSharingInformation);
-                    } else {
-                        var found = false;
-                        $('#class_select option').each(function() {
-                            if (this.value == sharing.currentClassID) {
-                                $('#class_select').val(sharing.currentClassID);
-                                $('#class_select').change();
-                                found = true;
-                            }
-                        });
-
-                        if (!found) {
-                            $('#class_select').change();
-                        }
-                    }
-                }
-            }
+            sharing.setupTeacherPanel();
+            sharing.setupSelectAllButton();
         }
 
         function setupHelpTab() {

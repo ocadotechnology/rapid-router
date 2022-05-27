@@ -1,6 +1,11 @@
 var ocargo = ocargo || {};
 
-ocargo.Sharing = function () {
+/**
+ *
+ * @param {*} getLevelId A function to get the level ID
+ * @param {*} validationFunction A function validating whether or not the user can share a level
+ */
+ocargo.Sharing = function (getLevelId, validationFunction) {
   this.text = [];
   this.text.shared = gettext("Yes");
   this.text.unshared = gettext("No");
@@ -10,22 +15,18 @@ ocargo.Sharing = function () {
   this.fellowTeachers = [];
   this.currentClassID = null;
   this.allShared = false;
+
+  this.getLevelId = getLevelId;
+  this.validationFunction = validationFunction;
 };
 
 /**
- * Setup the teachers/classes radio buttons for the teacher panel
- * @param {*} saving The Saving object
- * @param {*} getLevelId A function to get the level ID
- * @param {*} validationFunction A function validating whether or not the user can share a level
- * @param {*} shareLevelCallback A function to be called after the level is shared
+ * Setup the teacher panel
  */
-ocargo.Sharing.prototype.setupRadioButtonsForTeacherPanel = function (
-  saving,
-  getLevelId,
-  validationFunction,
-  shareLevelCallback
-) {
+ocargo.Sharing.prototype.setupTeacherPanel = function () {
   var sharing = this;
+
+  // Setup the teachers/classes radio buttons for the teacher panel
   $("#share_type_select").change(function () {
     if (this.value == "classes") {
       $("#class_selection").css("display", "block");
@@ -33,38 +34,35 @@ ocargo.Sharing.prototype.setupRadioButtonsForTeacherPanel = function (
       $("#class_select").change();
     } else {
       $("#class_selection").css("display", "none");
-      sharing.populateSharingTable(
-        sharing.fellowTeachers,
-        saving,
-        getLevelId,
-        // canShare,
-        validationFunction,
-        shareLevelCallback
-      );
+      sharing.populateSharingTable(sharing.fellowTeachers);
+    }
+  });
+
+  // Setup the class dropdown menu for the teacher panel
+  $("#class_select").change(function () {
+    var classID = $("#class_select").val();
+
+    for (var i = 0; i < sharing.classesTaught.length; i++) {
+      if (sharing.classesTaught[i].id == classID) {
+        sharing.populateSharingTable(sharing.classesTaught[i].students);
+        sharing.currentClassID = sharing.classesTaught[i].id;
+        break;
+      }
     }
   });
 };
 
 /**
  * Setup the select all button
- * @param {*} saving The Saving object
- * @param {*} getLevelId A function to get the level ID
- * @param {*} canShare Whether or not the user can share a level
- * @param {*} shareLevelCallback A function to be called after the level is shared
  */
-ocargo.Sharing.prototype.setupSelectAllButton = function (
-  saving,
-  getLevelId,
-  canShare,
-  shareLevelCallback
-) {
+ocargo.Sharing.prototype.setupSelectAllButton = function () {
   $("#shareWithAll").click(
     function () {
-      if (!canShare) {
+      if (!this.validationFunction()) {
         return;
       }
 
-      var levelId = getLevelId();
+      var levelId = this.getLevelId();
       var actionDesired = this.allShared ? "unshare" : "share";
 
       var recipientIDs = [];
@@ -74,7 +72,7 @@ ocargo.Sharing.prototype.setupSelectAllButton = function (
 
       var recipientData = { recipientIDs: recipientIDs, action: actionDesired };
 
-      saving.shareLevel(levelId, recipientData, shareLevelCallback);
+      this.shareLevel(levelId, recipientData);
     }.bind(this)
   );
 };
@@ -82,19 +80,10 @@ ocargo.Sharing.prototype.setupSelectAllButton = function (
 /**
  * Populate the sharing table
  * @param {*} recipients The recipients
- * @param {*} saving The Saving object
- * @param {*} getLevelId A function to get the level ID
- * @param {*} validationFunction A function validating whether or not the user can share a level
- * @param {*} shareLevelCallback A function to be called after the level is shared
  */
-ocargo.Sharing.prototype.populateSharingTable = function (
-  recipients,
-  saving,
-  getLevelId,
-  validationFunction,
-  shareLevelCallback
-) {
-  var levelId = getLevelId();
+ocargo.Sharing.prototype.populateSharingTable = function (recipients) {
+  var sharing = this;
+  var levelId = this.getLevelId();
   // Remove click listeners to avoid memory leak and remove all rows
   var table = $("#shareLevelTable tbody");
   $("#shareLevelTable tr").off("click");
@@ -152,7 +141,7 @@ ocargo.Sharing.prototype.populateSharingTable = function (
 
   // update click listeners in the new rows
   $("#shareLevelTable tr[value]").on("click", function (event) {
-    if (validationFunction()) {
+    if (sharing.validationFunction()) {
       var status = this.getAttribute("status");
 
       var recipientData = {
@@ -160,7 +149,7 @@ ocargo.Sharing.prototype.populateSharingTable = function (
         action: status === "shared" ? "unshare" : "share",
       };
 
-      saving.shareLevel(levelId, recipientData, shareLevelCallback);
+      sharing.shareLevel(levelId, recipientData);
     }
   });
 
@@ -170,4 +159,86 @@ ocargo.Sharing.prototype.populateSharingTable = function (
     var td2 = $("#shareLevelTableHeader th:eq(" + i + ")");
     td2.width(td.width());
   }
+};
+
+/**
+ * Method to call when we get an update on the level's sharing information
+ * @param {*} error The error
+ * @param {*} validRecipients The valid recipients
+ */
+ocargo.Sharing.prototype.processSharingInformation = function (
+  error,
+  validRecipients
+) {
+  if (error !== null) {
+    console.error(error);
+    ocargo.Drawing.startInternetDownPopup();
+    return;
+  }
+
+  if (USER_STATUS === "SCHOOL_STUDENT") {
+    var classmates = validRecipients.classmates;
+
+    this.populateSharingTable(classmates);
+  } else if (USER_STATUS === "TEACHER") {
+    this.classesTaught = validRecipients.classes;
+    this.fellowTeachers = validRecipients.teachers;
+
+    $("#class_select").empty();
+    for (var i = 0; i < this.classesTaught.length; i++) {
+      var option = $("<option>");
+      option.attr({
+        value: this.classesTaught[i].id,
+      });
+      option.text(this.classesTaught[i].name);
+      $("#class_select").append(option);
+    }
+
+    if ($("#share_type_select").val() === "teachers") {
+      this.populateSharingTable(validRecipients.teachers);
+    } else {
+      var found = false;
+      $("#class_select option").each(function () {
+        if (this.value == this.currentClassID) {
+          $("#class_select").val(this.currentClassID);
+          $("#class_select").change();
+          found = true;
+        }
+      });
+
+      if (!found) {
+        $("#class_select").change();
+      }
+    }
+  }
+};
+
+/**
+ * Share a level
+ * @param {*} levelID The level ID
+ * @param {*} recipientData The recipient data
+ */
+ocargo.Sharing.prototype.shareLevel = function (levelID, recipientData) {
+  var sharing = this;
+  csrftoken = Cookies.get("csrftoken");
+  $.ajax({
+    url: Urls.share_level_for_editor(levelID),
+    type: "POST",
+    dataType: "json",
+    data: recipientData,
+    beforeSend: function (xhr, settings) {
+      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    },
+    success: function (json) {
+      sharing.processSharingInformation(null, json);
+    },
+    error: function (xhr, errmsg, err) {
+      sharing.processSharingInformation(
+        xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText
+      );
+    },
+  });
+  delete recipientData.csrfmiddlewaretoken;
 };
