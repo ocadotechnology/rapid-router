@@ -184,7 +184,7 @@ class LevelEditorTestCase(TestCase):
         sharing_info1 = json.loads(self.get_sharing_information(level_id).getvalue())
         assert_that(len(sharing_info1["teachers"]), equal_to(0))
 
-    def test_level_can_only_be_shared_by_owner(self):
+    def test_level_sharing_permissions(self):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
 
@@ -193,18 +193,65 @@ class LevelEditorTestCase(TestCase):
 
         self.login(email1, password1)
         level_id = create_save_level(teacher1)
+        share_url = reverse("share_level_for_editor", args=[level_id])
 
         school1 = create_school()
         add_teacher_to_school(teacher1, school1)
+        add_teacher_to_school(teacher2, school1)
+
+        # Create a class and student for the second teacher
+        _, class_name2, access_code2 = create_class_directly(email2)
+        student_name2, student_password2, student2 = create_school_student_directly(
+            access_code2
+        )
 
         self.logout()
         self.login(email2, password2)
 
-        url = reverse("share_level_for_editor", args=[level_id])
-        data = {"recipientIDs[]": [teacher2.id], "action": ["share"]}
-        response = self.client.post(url, {"data": data})
+        # Second teacher can't share the level as it's not been shared with them yet
+        response = self.client.post(
+            share_url,
+            {"recipientIDs[]": [student2.new_user.id], "action": ["share"]},
+        )
+        assert response.status_code == 403
 
-        assert_that(response.status_code, equal_to(403))
+        # Log in as the first teacher again
+        self.logout()
+        self.login(email1, password1)
+
+        # Share the level with the second teacher
+        response = self.client.post(
+            share_url,
+            {"recipientIDs[]": [teacher2.new_user.id], "action": ["share"]},
+        )
+        assert response.status_code == 200
+
+        # Log in as the second teacher
+        self.logout()
+        self.login(email2, password2)
+
+        # Now the second teacher should be able to share the level
+        print(student2.new_user.id)
+        response = self.client.post(
+            share_url,
+            {"recipientIDs[]": [student2.new_user.id], "action": ["share"]},
+        )
+        assert response.status_code == 200
+
+        # Login as a student
+        self.logout()
+        self.student_login(student_name2, access_code2, student_password2)
+
+        # Check that the student cannot share the level
+        sharing_info = json.loads(self.get_sharing_information(level_id).getvalue())
+        assert (
+            sharing_info["detail"]
+            == "You do not have permission to perform this action."
+        )
+
+        # Check the student can view the level
+        response = self.client.get(reverse("play_custom_level", args=[level_id]))
+        assert response.status_code == 200
 
     def test_level_can_only_be_edited_by_owner(self):
         email, password = signup_teacher_directly()
