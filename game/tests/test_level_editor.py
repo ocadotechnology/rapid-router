@@ -237,6 +237,10 @@ class LevelEditorTestCase(TestCase):
             {"recipientIDs[]": [student2.new_user.id], "action": ["share"]},
         )
         assert response.status_code == 200
+        # and load it
+        load_level_url = reverse("load_level_for_editor", kwargs={"levelID": level_id})
+        response = self.client.get(load_level_url)
+        assert response.status_code == 200
 
         # Login as a student
         self.logout()

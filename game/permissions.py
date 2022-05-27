@@ -127,18 +127,6 @@ class CanShareLevel(permissions.BasePermission):
             and obj.shared_with.filter(id=request.user.id).exists()
         ):
             return True
-
-            # # if the user is a teacher, check if they're in the same school as the level owner
-            # if hasattr(obj.owner, "teacher"):
-            #     return (
-            #         request.user.userprofile.teacher.school == obj.owner.teacher.school
-            #     )
-            # elif hasattr(obj.owner, "student"):
-            #     return (
-            #         request.user.userprofile.teacher.school
-            #         == obj.owner.student.class_field.teacher.school
-            #     )
-
         else:
             return obj.owner == request.user.userprofile
 
