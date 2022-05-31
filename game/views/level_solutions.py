@@ -114,23 +114,40 @@ lvl_101 = """from van import Van
 
 my_van = Van()
 
+def main():
+  right_left()
+  my_van.move_forwards()
+  right_left()
+
+  for count in range(2):
+    my_van.move_forwards()
+  
+  for count in range(2):
+    right_left()
+    my_van.turn_right()
+  my_van.move_forwards()
+
 def right_left():
   my_van.turn_right()
   my_van.turn_left()
 
-right_left()
-my_van.move_forwards()
-right_left()
-for count in range(2):
-  my_van.move_forwards()
-for count in range(2):
-  right_left()
-  my_van.turn_right()
-my_van.move_forwards()"""
+main()"""
 
 lvl_102 = """from van import Van
 
 my_van = Van()
+
+def main():
+  left()
+  right()
+  my_van.move_forwards()
+  my_van.turn_right()
+  for count in range(2):
+    my_van.move_forwards()
+  my_van.turn_right()
+  right()
+  left()
+  my_van.move_forwards()
 
 def left():
   for count in range(2):
@@ -142,20 +159,21 @@ def right():
     my_van.turn_right()
     my_van.turn_left()
 
-left()
-right()
-my_van.move_forwards()
-my_van.turn_right()
-for count in range(2):
-  my_van.move_forwards()
-my_van.turn_right()
-right()
-left()
-my_van.move_forwards()"""
+main()"""
 
 lvl_103 = """from van import Van
 
 my_van = Van()
+
+def main():
+  big()
+  my_van.move_forwards()
+  big()
+  forward_left()
+  for count in range(2):
+    forward_right()
+    my_van.move_forwards()
+  forward_left()
 
 def forward_left():
   my_van.move_forwards()
@@ -170,18 +188,24 @@ def big():
   for count in range(2):
     forward_right()
 
-big()
-my_van.move_forwards()
-big()
-forward_left()
-for count in range(2):
-  forward_right()
-  my_van.move_forwards()
-forward_left()"""
+main()"""
 
 lvl_104 = """from van import Van
 
 my_van = Van()
+
+def main():
+  big()
+  for count in range(4):
+    my_van.move_forwards()
+  right()
+  big()
+  for count in range(3):
+    my_van.move_forwards()
+  my_van.turn_right()
+  my_van.turn_left()
+  left()
+  my_van.move_forwards()
 
 def left():
   for count in range(2):
@@ -197,17 +221,7 @@ def big():
   left()
   right()
 
-big()
-for count in range(4):
-  my_van.move_forwards()
-right()
-big()
-for count in range(3):
-  my_van.move_forwards()
-my_van.turn_right()
-my_van.turn_left()
-left()
-my_van.move_forwards()"""
+main()"""
 
 lvl_105 = """from van import Van
 
