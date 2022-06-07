@@ -231,7 +231,6 @@ class LevelEditorTestCase(TestCase):
         self.login(email2, password2)
 
         # Now the second teacher should be able to share the level
-        print(student2.new_user.id)
         response = self.client.post(
             share_url,
             {"recipientIDs[]": [student2.new_user.id], "action": ["share"]},
