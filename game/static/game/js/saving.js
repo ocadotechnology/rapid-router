@@ -251,24 +251,3 @@ ocargo.Saving.prototype.getSharingInformation = function (levelID, callback) {
     });
 };
 
-ocargo.Saving.prototype.shareLevel = function (levelID, recipientData, callback) {
-    csrftoken = Cookies.get('csrftoken');
-    $.ajax({
-        url: Urls.share_level_for_editor(levelID),
-        type: 'POST',
-        dataType: 'json',
-        data: recipientData,
-        beforeSend: function (xhr, settings) {
-            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-                xhr.setRequestHeader("X-CSRFToken", csrftoken);
-            }
-        },
-        success: function (json) {
-            callback(null, json);
-        },
-        error: function (xhr, errmsg, err) {
-            callback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
-        }
-    });
-    delete recipientData.csrfmiddlewaretoken;
-};

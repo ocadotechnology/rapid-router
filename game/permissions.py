@@ -1,4 +1,21 @@
+import logging
+
 from rest_framework import permissions
+
+LOGGER = logging.getLogger(__name__)
+
+
+def _get_userprofile_school(userprofile):
+    if hasattr(userprofile, "teacher"):
+        return userprofile.teacher.school
+    elif hasattr(userprofile, "student"):
+        return userprofile.student.class_field.teacher.school
+    else:
+        LOGGER.error(
+            f"Userprofile ID {userprofile.id} has no teacher or student attribute"
+        )
+        return None
+
 
 #########################
 # Workspace permissions #
@@ -42,7 +59,9 @@ def can_play_level(user, level, early_access):
     elif user.userprofile == level.owner:
         return True
     elif level.shared_with.filter(id=user.id):
-        return CanShareLevelWith().can_share_level_with(user, level.owner.user)
+        user_school = _get_userprofile_school(user.userprofile)
+        owner_school = _get_userprofile_school(level.owner)
+        return user_school is not None and user_school == owner_school
     else:
         return hasattr(
             user.userprofile, "teacher"
@@ -55,7 +74,9 @@ def can_load_level(user, level):
     elif user.userprofile == level.owner:
         return True
     elif level.shared_with.filter(id=user.id):
-        return CanShareLevelWith().can_share_level_with(user, level.owner.user)
+        user_school = _get_userprofile_school(user.userprofile)
+        owner_school = _get_userprofile_school(level.owner)
+        return user_school is not None and user_school == owner_school
     else:
         return hasattr(
             user.userprofile, "teacher"
@@ -85,7 +106,8 @@ def can_delete_level(user, level):
 class CanShareLevel(permissions.BasePermission):
     """
     Used to verify that an incoming request is made by a user who is authorised to share
-    the level - that is, that they are the owner of the level.
+    the level - that is, that they are the owner of the level as a student, or if they're a teacher that the level was
+    shared with them.
     """
 
     def has_permission(self, request, view):
@@ -99,6 +121,12 @@ class CanShareLevel(permissions.BasePermission):
             and request.user.userprofile.student.is_independent()
         ):
             return False
+        # if the user is a teacher and the level is shared with them
+        elif (
+            hasattr(request.user.userprofile, "teacher")
+            and obj.shared_with.filter(id=request.user.id).exists()
+        ):
+            return True
         else:
             return obj.owner == request.user.userprofile
 

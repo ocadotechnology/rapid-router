@@ -83,6 +83,11 @@ ocargo.LevelEditor = function(levelId) {
     var saveState = new ocargo.LevelSaveState();
     var ownedLevels = new ocargo.OwnedLevels(saveState);
 
+    var sharing = new ocargo.Sharing(
+        () => saveState.id,
+        () => canShare() && isLevelOwned()
+    );
+
     // Whether the user is scrolling on a tablet
     var isScrolling = false;
 
@@ -761,11 +766,6 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function setupShareTab() {
-            var text = [];
-            text.shared = gettext('Yes');
-            text.unshared = gettext('No');
-            text.pending = '...';
-
             // Setup the behaviour for when the tab is selected
             tabs.share.setOnChange(function() {
                 if (!isIndependentStudent() ||  !isLoggedIn("share") || !canShare() || !isLevelOwned()) {
@@ -780,165 +780,12 @@ ocargo.LevelEditor = function(levelId) {
                     }
 
                     transitionTab(tabs.share);
-                    processSharingInformation(error, validRecipients);
+                    sharing.processSharingInformation(error, validRecipients);
                 });
             });
 
-            var classesTaught;
-            var fellowTeachers;
-            var currentClassID;
-            var allShared;
-
-            // Setup the teachers/classes radio buttons for the teacher panel
-            $('#share_type_select').change(function() {
-                if(this.value == "classes") {
-                    $('#class_selection').css('display', 'block');
-                    $('#class_select').val(currentClassID);
-                    $('#class_select').change();
-                } else {
-                    $('#class_selection').css('display', 'none');
-                    populateSharingTable(fellowTeachers);
-                }
-            });
-
-            // Setup the class dropdown menu for the teacher panel
-            $('#class_select').change(function() {
-                var classID = $('#class_select').val();
-
-                for (var i = 0; i < classesTaught.length; i++) {
-                    if (classesTaught[i].id == classID) {
-                        populateSharingTable(classesTaught[i].students);
-                        currentClassID = classesTaught[i].id;
-                        break;
-                    }
-                }
-            });
-
-            // Setup the select all button
-            $('#shareWithAll').click(function() {
-                if (!canShare() || !isLevelOwned()) {
-                    return;
-                }
-
-                var statusDesired = allShared ? 'shared' : 'unshared';
-                var actionDesired = allShared ? 'unshare' : 'share';
-
-                var recipientIDs = [];
-                $('#shareLevelTable tr[value]').each(function() {
-                    recipientIDs.push(this.getAttribute('value'));
-                });
-
-                var recipientData = {recipientIDs: recipientIDs,
-                                     action: actionDesired};
-
-                saving.shareLevel(saveState.id, recipientData, processSharingInformation);
-            });
-
-            // Method to call when we get an update on the level's sharing information
-            function processSharingInformation(error, validRecipients) {
-                if (error !== null) {
-                    console.error(error);
-                    ocargo.Drawing.startInternetDownPopup();
-                    return;
-                }
-
-                if (USER_STATUS === "SCHOOL_STUDENT") {
-                    var classmates = validRecipients.classmates;
-                    var teacher = validRecipients.teacher;
-
-                    populateSharingTable(classmates);
-                } else if (USER_STATUS === "TEACHER") {
-                    classesTaught = validRecipients.classes;
-                    fellowTeachers = validRecipients.teachers;
-
-                    $('#class_select').empty();
-                    for (var i = 0; i < classesTaught.length; i++) {
-                        var option = $('<option>');
-                        option.attr( {
-                            value: classesTaught[i].id,
-                        });
-                        option.text(classesTaught[i].name);
-                        $('#class_select').append(option);
-                    }
-
-                    if ($('#share_type_select').val() === 'teachers') {
-                        populateSharingTable(validRecipients.teachers);
-                    } else {
-                        var found = false;
-                        $('#class_select option').each(function() {
-                            if (this.value == currentClassID) {
-                                $('#class_select').val(currentClassID);
-                                $('#class_select').change();
-                                found = true;
-                            }
-                        });
-
-                        if (!found) {
-                            $('#class_select').change();
-                        }
-                    }
-                }
-            }
-
-            function populateSharingTable(recipients) {
-                // Remove click listeners to avoid memory leak and remove all rows
-                var table = $('#shareLevelTable tbody');
-                $('#shareLevelTable tr').off('click');
-                table.empty();
-
-                // Order them alphabetically
-                recipients.sort(function(a, b) {
-                    if (a.name < b.name) {
-                        return -1;
-                    } else if (a.name > b.name) {
-                        return 1;
-                    }
-                    return 0;
-                });
-
-                allShared = true;
-                // Add a row to the table for each workspace saved in the database
-                for (var i = 0; i < recipients.length; i++) {
-                    var recipient = recipients[i];
-                    var status = recipient.shared ? 'shared' : 'unshared';
-
-                    if (recipient.shared) {
-                        status = 'shared';
-                    } else {
-                        status = 'unshared';
-                        allShared = false;
-                    }
-                    table.append("<tr value=\""+recipient.id+"\" status=\""+status+"\"><td>"+ $("<div>").text(recipient.name).html() +"</td><td class=\"share_cell\">"+ text[status] + "</td></tr>");
-                }
-
-                // Update the shareWithAll button
-                if (allShared) {
-                    $('#shareWithAll span').html(gettext('Unshare with all'));
-                    $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/quit.svg');
-                } else {
-                    $('#shareWithAll span').html(gettext('Share with all'));
-                    $('#shareWithAll img').attr('src',ocargo.Drawing.imageDir + 'icons/share.svg');
-                }
-
-                // update click listeners in the new rows
-                $('#shareLevelTable tr[value]').on('click', function(event) {
-                    if (canShare() && isLevelOwned()) {
-                        var status = this.getAttribute('status');
-
-                        var recipientData = {recipientIDs: [this.getAttribute('value')],
-                                             action: (status === 'shared' ? 'unshare' : 'share')};
-
-                        saving.shareLevel(saveState.id, recipientData, processSharingInformation);
-                    }
-                });
-
-                // update column widths
-                for(var i = 0; i < 2; i++){
-                    var td = $('#shareLevelTable td:eq(' + i + ')');
-                    var td2 = $('#shareLevelTableHeader th:eq(' + i + ')');
-                    td2.width(td.width());
-                }
-            }
+            sharing.setupTeacherPanel();
+            sharing.setupSelectAllButton();
         }
 
         function setupHelpTab() {
