@@ -322,9 +322,8 @@ class SharingInformationForEditor(APIView):
                 {
                     "id": classmate.user.user.id,
                     "name": app_tags.make_into_username(classmate.user.user),
-                    "shared": level.shared_with.filter(
-                        id=classmate.user.user.id
-                    ).exists(),
+                    "shared": level.owner == classmate.user
+                    or level.shared_with.filter(id=classmate.user.user.id).exists(),
                 }
                 for classmate in classmates
             ]
@@ -334,7 +333,8 @@ class SharingInformationForEditor(APIView):
             valid_recipients["teacher"] = {
                 "id": teacher.user.user.id,
                 "name": app_tags.make_into_username(teacher.user.user),
-                "shared": level.shared_with.filter(id=teacher.user.user.id).exists(),
+                "shared": level.owner == teacher.user
+                or level.shared_with.filter(id=teacher.user.user.id).exists(),
             }
 
         elif hasattr(userprofile, "teacher"):
@@ -355,7 +355,8 @@ class SharingInformationForEditor(APIView):
                             {
                                 "id": student.user.user.id,
                                 "name": app_tags.make_into_username(student.user.user),
-                                "shared": level.shared_with.filter(
+                                "shared": level.owner == student.user
+                                or level.shared_with.filter(
                                     id=student.user.user.id
                                 ).exists(),
                             }
@@ -372,7 +373,8 @@ class SharingInformationForEditor(APIView):
                     {
                         "id": fellow_teacher.user.user.id,
                         "name": app_tags.make_into_username(fellow_teacher.user.user),
-                        "shared": level.shared_with.filter(
+                        "shared": level.owner == fellow_teacher.user
+                        or level.shared_with.filter(
                             id=fellow_teacher.user.user.id
                         ).exists(),
                     }

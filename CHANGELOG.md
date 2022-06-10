@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.2.0 (2022-06-10)
+### Feature
+* Teacher level re-sharing ([#1343](https://github.com/ocadotechnology/rapid-router/issues/1343)) ([`428cc49`](https://github.com/ocadotechnology/rapid-router/commit/428cc49afc89e5a3954e17d897e382d2ebf06722))
+
 ## v4.1.1 (2022-05-24)
 ### Fix
 * Deleting workspace now makes the name disappear ([#1243](https://github.com/ocadotechnology/rapid-router/issues/1243)) ([`4464139`](https://github.com/ocadotechnology/rapid-router/commit/44641397e336844e3d1fe06308d8e573419d63f2))

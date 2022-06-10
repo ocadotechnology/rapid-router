@@ -1,0 +1,39 @@
+/*************/
+/* Share tab */
+/*************/
+
+#share_pane table {
+    margin-bottom: 0px;
+}
+
+#share_pane #shareLevelTable td + td {
+    min-width: 50px;
+}
+
+#share_type_select {
+    width: 180px;
+    margin-bottom: 0px;
+    margin-left: 35px;
+}
+
+#class_select {
+    width: 180px;
+    margin-bottom: 0px;
+    margin-left: 70px;
+}
+
+#classes_radio {
+    margin-left: 15px;
+}
+
+tr[status='shared'] .share_cell {
+    color: green;
+}
+
+tr[status='unshared'] .share_cell {
+    color: red;
+}
+
+tr[status='pending'] .share_cell {
+    color: gray;
+}
