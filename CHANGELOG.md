@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.3.0 (2022-06-10)
+### Feature
+* Add a main method in level solutions 101-104 ([#1344](https://github.com/ocadotechnology/rapid-router/issues/1344)) ([`2647cc0`](https://github.com/ocadotechnology/rapid-router/commit/2647cc0e251690205cd2ed7ec8bae5c6c99b4cd7))
+
 ## v4.2.0 (2022-06-10)
 ### Feature
 * Teacher level re-sharing ([#1343](https://github.com/ocadotechnology/rapid-router/issues/1343)) ([`428cc49`](https://github.com/ocadotechnology/rapid-router/commit/428cc49afc89e5a3954e17d897e382d2ebf06722))
