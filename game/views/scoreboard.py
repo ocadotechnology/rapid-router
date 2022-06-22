@@ -207,7 +207,12 @@ def scoreboard(request):
 
     if request.POST:
         class_ids = set(map(int, request.POST.getlist("classes")))
-        episode_ids = set(map(int, request.POST.getlist("episodes")))
+        # Show all levels if the teacher doesn't select any
+        episode_ids = (
+            set(all_episode_ids)
+            if "episodes" not in request.POST
+            else set(map(int, request.POST.getlist("episodes")))
+        )
     else:
         # Show no data on page load by default (if teacher)
         class_ids = ()
