@@ -81,9 +81,18 @@ class ScoreboardTestCase(TestCase):
         url = reverse("scoreboard")
         c = Client()
         c.login(username=email, password=password)
+
+        # test scoreboard page loads properly
         response = c.get(url)
 
         assert response.status_code == 200
+
+        # test scoreboard shows all episodes if no episodes are manually selected
+        data = {"classes": [klass.id], "view": [""]}
+
+        response = c.post(url, data)
+        assert response.status_code == 200
+        assert len(response.context["level_headers"]) == 109
 
     def test_student_can_see_classes(self):
         """A student should be able to see the classes they are in"""
