@@ -84,7 +84,6 @@ class ScoreboardTestCase(TestCase):
 
         # test scoreboard page loads properly
         response = c.get(url)
-
         assert response.status_code == 200
 
         # test scoreboard shows all episodes if no episodes are manually selected
