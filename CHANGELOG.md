@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.3.1 (2022-06-23)
+### Fix
+* Update scoreboard to be clearer ([#1351](https://github.com/ocadotechnology/rapid-router/issues/1351)) ([`2d66b14`](https://github.com/ocadotechnology/rapid-router/commit/2d66b144ed5035376d17b293b5475d9f384954b1))
+
 ## v4.3.0 (2022-06-10)
 ### Feature
 * Add a main method in level solutions 101-104 ([#1344](https://github.com/ocadotechnology/rapid-router/issues/1344)) ([`2647cc0`](https://github.com/ocadotechnology/rapid-router/commit/2647cc0e251690205cd2ed7ec8bae5c6c99b4cd7))
