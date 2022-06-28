@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.4.0 (2022-06-28)
+### Feature
+* Screentime warning ([#1352](https://github.com/ocadotechnology/rapid-router/issues/1352)) ([`53bb23e`](https://github.com/ocadotechnology/rapid-router/commit/53bb23eaf98e8524c3a71d0fcae4353f53e786b3))
+
 ## v4.3.1 (2022-06-23)
 ### Fix
 * Update scoreboard to be clearer ([#1351](https://github.com/ocadotechnology/rapid-router/issues/1351)) ([`2d66b14`](https://github.com/ocadotechnology/rapid-router/commit/2d66b144ed5035376d17b293b5475d9f384954b1))
