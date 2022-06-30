@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v4.4.1 (2022-06-30)
+### Fix
+* When the stars align ([#1353](https://github.com/ocadotechnology/rapid-router/issues/1353)) ([`7bdecdb`](https://github.com/ocadotechnology/rapid-router/commit/7bdecdb4c20d26a4fcf06f1ed73841ff024dc97c))
+
 ## v4.4.0 (2022-06-28)
 ### Feature
 * Screentime warning ([#1352](https://github.com/ocadotechnology/rapid-router/issues/1352)) ([`53bb23e`](https://github.com/ocadotechnology/rapid-router/commit/53bb23eaf98e8524c3a71d0fcae4353f53e786b3))
