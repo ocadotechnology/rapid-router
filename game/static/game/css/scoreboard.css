@@ -40,6 +40,7 @@ table td.fixed-width {
 .scoreboard--completed {
   color: #eab502;
   font-size: 24px;
+  vertical-align: middle;
 }
 
 #scoreboardTable_wrapper td.scoreboard--completed-secondary {
