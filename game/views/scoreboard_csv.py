@@ -2,13 +2,7 @@ import csv
 
 from django.http import HttpResponse
 
-Headers = [
-    "Class",
-    "Name",
-    "Completed Levels",
-    "Total Time",
-    "Total Score",
-]
+Headers = ["Class", "Name", "Completed Levels", "Total Time", "Total Score"]
 
 
 def scoreboard_csv(student_data, requested_sorted_levels, improvement_data):
