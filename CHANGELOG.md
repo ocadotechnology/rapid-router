@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v5.0.0 (2022-07-06)
+
+
 ## v4.4.1 (2022-06-30)
 ### Fix
 * When the stars align ([#1353](https://github.com/ocadotechnology/rapid-router/issues/1353)) ([`7bdecdb`](https://github.com/ocadotechnology/rapid-router/commit/7bdecdb4c20d26a4fcf06f1ed73841ff024dc97c))
