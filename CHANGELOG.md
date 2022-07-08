@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.0.1 (2022-07-08)
+### Fix
+* Fix version of semantic-release to avoid bug ([#1355](https://github.com/ocadotechnology/rapid-router/issues/1355)) ([`8c91e3e`](https://github.com/ocadotechnology/rapid-router/commit/8c91e3e4688c15d5d35bea1fd5c60523cf45a38c))
+
 ## v5.0.0 (2022-07-06)
 
 
