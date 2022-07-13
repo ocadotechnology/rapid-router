@@ -59,10 +59,6 @@
     float: left;
 }
 
-.color-invert {
-    filter: invert(1);
-}
-
 /***************/
 /* Blockly tab */
 /***************/
