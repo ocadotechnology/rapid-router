@@ -149,20 +149,7 @@
 <div id="wrapper" class="unselectable">
   <span id="game_page"></span>
 
-  {% if level.episode.id == 5 or level.episode.id == 6 %}
-  <div id="tabs" class='no-print bg--medium'>
-  {% elif level.episode.id == 7 or level.episode.id == 8 %}
-  <div id="tabs" class='no-print bg--medium-hard'>
-  {% elif level.episode.id == 9 %}
-  <div id="tabs" class='no-print bg--brainteasers'>
-  {% elif level.episode.id == 10 %}
-  <div id="tabs" class='no-print bg--hard'>
-  {% elif level.episode.id == 11 %}
-  <div id="tabs" class='no-print bg--advanced'>
-  {% else %}
-  <div id="tabs" class='no-print bg--easy'>
-  {% endif %}
-
+  <div id="tabs" class='no-print bg--{{ level.episode.difficulty }}'>
     <div id="blockly_tab" class="tab selectable {% if level.blocklyEnabled %}{% else %}hidden{% endif %}">
       <input type="radio" name="tabs" id="blockly_radio" checked>
       <label for="blockly_radio">

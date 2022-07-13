@@ -76,15 +76,7 @@
         </div>
         {% for episode in blocklyEpisodes %}
         <div class="panel">
-            {% if episode.id == 5 or episode.id == 6 %}
-            <div class="panel-header bg--medium" id="episode-{{episode.id}}">
-            {% elif episode.id == 7 or episode.id == 8 %}
-            <div class="panel-header bg--medium-hard" id="episode-{{episode.id}}">
-            {% elif episode.id == 9 %}
-            <div class="panel-header bg--brainteasers" id="episode-{{episode.id}}">
-            {% else %}
-            <div class="panel-header bg--easy" id="episode-{{episode.id}}">
-            {% endif %}
+            <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
                 <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
                     <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
@@ -126,11 +118,7 @@
         </div>
         {% for episode in pythonEpisodes %}
         <div class="panel">
-            {% if episode.id == 10 %}
-            <div class="panel-header bg--hard" id="episode-{{episode.id}}">
-            {% else %}
-            <div class="panel-header bg--advanced" id="episode-{{episode.id}}">
-            {% endif %}
+            <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
                 <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
                     <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
