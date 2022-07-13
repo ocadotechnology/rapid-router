@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.1.0 (2022-07-13)
+### Feature
+* Update styles of the game pt. 1 ([#1356](https://github.com/ocadotechnology/rapid-router/issues/1356)) ([`604dbdb`](https://github.com/ocadotechnology/rapid-router/commit/604dbdb3344f5cf905a37cb527325c00a5799ee3))
+
 ## v5.0.1 (2022-07-08)
 ### Fix
 * Fix version of semantic-release to avoid bug ([#1355](https://github.com/ocadotechnology/rapid-router/issues/1355)) ([`8c91e3e`](https://github.com/ocadotechnology/rapid-router/commit/8c91e3e4688c15d5d35bea1fd5c60523cf45a38c))
