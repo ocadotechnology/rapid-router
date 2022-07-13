@@ -19,5 +19,6 @@ CSP_CONFIG = {
         "https://crowdin.com/"
     ),
     "CSP_OBJECT_SRC": (f"{domain()}/static/game/image/",),
-    "CSP_CONNECT_SRC": ("https://crowdin.com/",)
+    "CSP_CONNECT_SRC": ("https://crowdin.com/",),
+    "CSP_REPORT_ONLY": True,
 }

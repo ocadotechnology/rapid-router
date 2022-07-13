@@ -1,0 +1,29 @@
+/* Background colours for episodes and game sidebar */
+
+.bg--easy {
+    background: #86ae18;
+}
+
+.bg--medium {
+    background: #00a3e0;
+}
+
+.bg--medium-hard {
+    background: #008cc1;
+}
+
+.bg--brainteasers {
+    background: #c90548;
+}
+
+.bg--hard {
+    background: #8967d3;
+}
+
+.bg--advanced {
+    background: #754fc8;
+}
+
+.bg--shared-levels {
+    background: #f6be00;
+}

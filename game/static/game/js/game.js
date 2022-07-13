@@ -116,7 +116,7 @@ ocargo.Game.prototype.setup = function () {
     title,
     LESSON,
     message,
-    true,
+    BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED, // show mascot on Blockly-only levels
     ocargo.button.dismissButtonHtml('play_button', gettext('Play'))
   )
 }
@@ -786,7 +786,7 @@ ocargo.Game.prototype._setupPythonTab = function () {
 
   $('#van_commands_help').click(
     function (e) {
-      ocargo.Drawing.startPopup(gettext('Python Commands'), leadMsg, '', true)
+      ocargo.Drawing.startPopup(gettext('Python Commands'), leadMsg, '')
     }.bind(this)
   )
 

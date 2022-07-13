@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from game.models import Level, Block, Episode, Workspace
 
 
@@ -6,6 +7,7 @@ class LevelAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     raw_id_fields = ["next_level"]
     readonly_fields = ["owner"]
+    list_display = ["name", "id", "episode", "owner"]
 
 
 class WorkspaceAdmin(admin.ModelAdmin):

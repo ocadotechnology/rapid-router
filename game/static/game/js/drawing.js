@@ -1036,10 +1036,16 @@ ocargo.Drawing.startPopup = function (
   $('#myModal-lead').html(subtitle)
   $('#myModal-mainText').html(message)
 
+  $('#modal-mascot').hide()
+  $('#modal-mascot--brain').hide()
+
   if (mascot) {
-    $('#modal-mascot').show()
-  } else {
-    $('#modal-mascot').hide()
+    if (EPISODE === 9) {
+      $('#modal-mascot--brain').show()
+    }
+    else {
+      $('#modal-mascot').show()
+    }
   }
 
   if (buttons) {
