@@ -165,6 +165,10 @@ class Level(models.Model):
 
         self.character_name = get_character_by_pk(val.pk).name
 
+    @property
+    def difficulty(self):
+        return self.episode.difficulty if self.episode else "easy"
+
 
 class LevelBlock(models.Model):
     type = models.ForeignKey(Block, on_delete=models.CASCADE)
