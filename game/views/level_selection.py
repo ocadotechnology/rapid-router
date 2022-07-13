@@ -1,7 +1,8 @@
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
 
 from builtins import str
+
 from django.core.cache import cache
 from django.db.models import Max
 from django.shortcuts import render
@@ -58,6 +59,7 @@ def fetch_episode_data_from_database(early_access, start, end):
             "first_level": minName,
             "last_level": maxName,
             "random_levels_enabled": episode.r_random_levels_enabled,
+            "difficulty": episode.difficulty,
         }
 
         episode_data.append(e)

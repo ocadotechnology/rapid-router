@@ -10,59 +10,68 @@
     <link rel="manifest" href="{% static "manifest.json" %}">
 {% endblock head %}
 
+{% block css %}
+    {{block.super}}
+    <link href="{% static 'game/css/backgrounds.css' %}" rel="stylesheet" type="text/css">
+{% endblock %}
+
 {% block subNav %}
-{{ block.super }}
-{% block header %}
-<div class="banner banner--teacher">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12 d-flex">
-                <div>
-                    <h1 class="banner__text--primary">Rapid Router</h1>
-                    <h4>Rapid router has been created to teach the first principles of computer programming.</h4>
-                </div>
-                <div>
-                    <div class="banner--picture"><div class="banner--picture__inside1"><div class="banner--picture__inside2 banner--picture--play"></div></div></div>
+    {{ block.super }}
+    {% block header %}
+        <div class="banner banner--teacher">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 d-flex">
+                        <div>
+                            <h1 class="banner__text--primary">Rapid Router</h1>
+                            <h4>Rapid router has been created to teach the first principles of computer programming.</h4>
+                        </div>
+                        <div>
+                            <div class="banner--picture"><div class="banner--picture__inside1"><div class="banner--picture__inside2 banner--picture--play"></div></div></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-{% endblock header %}
+    {% endblock header %}
 
-{% if user|is_logged_in_as_student %}
-<div class="sub-nav sub-nav--student">
-{% elif user|is_independent_student %}
-<div class="sub-nav sub-nav--independent">
-{% else %}
-<div class="sub-nav sub-nav--teacher">
-{% endif %}
+    {% if user|is_logged_in_as_student %}
+        <div class="sub-nav sub-nav--student">
+    {% elif user|is_independent_student %}
+        <div class="sub-nav sub-nav--independent">
+    {% else %}
+        <div class="sub-nav sub-nav--teacher">
+    {% endif %}
+
     {% block nav_ocargo_levels %}
         <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
     {% endblock nav_ocargo_levels %}
+
     {% block nav_ocargo_create %}
         <a class="button button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
     {% endblock nav_ocargo_create %}
+
     {% if user|is_logged_in_as_school_user %}
         {% block nav_ocargo_scoreboard %}
             <a class="button button--secondary button--secondary--light" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
         {% endblock nav_ocargo_scoreboard %}
     {% endif %}
+
     {% if user|is_logged_in_as_teacher %}
         {% block nav_ocargo_moderate %}
             <a class="button button--secondary button--secondary--light" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
         {% endblock nav_ocargo_moderate %}
     {% endif %}
-</div>
+    </div>
 
 {% endblock subNav %}
 
 {% block content %}{% endblock %}
 
 {% block scripts %}
-  {{block.super}}
-  <script type='text/javascript' src='{% static 'game/js/foundation/vendor/js.cookie.min.js' %}'></script>
-  <script type='text/javascript' src='{% url 'js-reverse' %}'></script>
-  <script type='text/javascript' src='{% url 'rapid-router/javascript-catalog' %}'></script>
-  <script type='text/javascript' src='{% static 'game/js/jquery.touchy.min.js' %}'></script>
+    {{block.super}}
+    <script type='text/javascript' src='{% static 'game/js/foundation/vendor/js.cookie.min.js' %}'></script>
+    <script type='text/javascript' src='{% url 'js-reverse' %}'></script>
+    <script type='text/javascript' src='{% url 'rapid-router/javascript-catalog' %}'></script>
+    <script type='text/javascript' src='{% static 'game/js/jquery.touchy.min.js' %}'></script>
 {% endblock %}

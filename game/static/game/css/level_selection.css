@@ -4,7 +4,6 @@
 
 #episodes .panel-header {
   color: #fff;
-  background: #6e7171;
   margin-bottom: 0;
   text-align: left;
   padding-left: 10px;
@@ -12,20 +11,7 @@
   font-size: 17px;
 }
 
-#episodes .bg-tertiary {
-  background: #00a3e0; /* color-tertiary-500 */
-}
-
-#episodes .bg-tertiary-dark {
-  background: #008cc1; /* color-tertiary-700 */
-}
-
-#episodes .bg-primary {
-  background: #e0004d; /* color-primary-500 */
-}
-
-#episodes .bg-secondary {
-  background: #f6be00; /* color-secondary-500 */
+#episodes .bg--shared-levels {
   color: #000;
   font-weight: 500;
 }
