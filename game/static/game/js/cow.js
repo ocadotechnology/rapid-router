@@ -24,6 +24,7 @@ ocargo.Cow = function(id, data, nodes) {
     this.chooseNewCowPositions(); // init simulation fields
 };
 
+// Pick count number of random items in random order from arr
 ocargo.Cow.prototype.pickRandom = function (count, arr) {
     var out = [], i, pick, clone = arr.slice(0, arr.length);
     for (i = 0; i < count; i ++) {

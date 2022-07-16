@@ -101,9 +101,11 @@ def generate_random_map_data(
     decor_enabled,
     cows_enabled,
 ):
+    cows_enabled = True
     path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
     cows = generate_cows(path) if cows_enabled else []
+    print("cows", cows)
     destinations = [[path[-1]["coordinate"].x, path[-1]["coordinate"].y]]
     origin = get_origin(path)
     decor = generate_decor(path, num_tiles) if decor_enabled else []

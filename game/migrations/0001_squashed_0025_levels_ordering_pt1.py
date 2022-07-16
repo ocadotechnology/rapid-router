@@ -272,6 +272,7 @@ def add_blocks(apps, schema_editor):
     block15 = Block(type="traffic_light")
     block16 = Block(type="call_proc")
     block17 = Block(type="declare_proc")
+    block18 = Block(type="is_cows")
 
     block1.save()
     block2.save()
@@ -290,6 +291,7 @@ def add_blocks(apps, schema_editor):
     block15.save()
     block16.save()
     block17.save()
+    block18.save()
 
 
 def add_levels(apps, schema_editor):

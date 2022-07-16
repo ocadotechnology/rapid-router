@@ -12,6 +12,7 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     }
 
     this.cows = [];
+    console.log(cowData);
     for(var i = 0; i < cowData.length; i++) {
         this.cows.push(new ocargo.Cow(i, cowData[i], this.map.nodes));
     }
