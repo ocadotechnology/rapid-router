@@ -1,4 +1,10 @@
 $(document).ready(function () {
+  // Check all episodes if none of the checkboxes were ticked (load all by default)
+  if($('[id^="id_episodes_"]:checked').length === 0) {
+    $("#select-all-levels").prop("checked", true);
+    $('[id^="id_episodes_"]').prop("checked", true);
+  }
+
   $("#clear-classes").on("click", () => {
     $('[id^="id_classes_"],#select-all-classes').prop("checked", false);
   });
@@ -48,7 +54,7 @@ $(document).ready(function () {
     });
 
     new $.fn.dataTable.FixedColumns(table, {
-      leftColumns: 3,
+      leftColumns: 2,
       rightColumns: 1
     });
 

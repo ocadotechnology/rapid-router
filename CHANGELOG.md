@@ -2,6 +2,41 @@
 
 <!--next-version-placeholder-->
 
+## v5.1.0 (2022-07-13)
+### Feature
+* Update styles of the game pt. 1 ([#1356](https://github.com/ocadotechnology/rapid-router/issues/1356)) ([`604dbdb`](https://github.com/ocadotechnology/rapid-router/commit/604dbdb3344f5cf905a37cb527325c00a5799ee3))
+
+## v5.0.1 (2022-07-08)
+### Fix
+* Fix version of semantic-release to avoid bug ([#1355](https://github.com/ocadotechnology/rapid-router/issues/1355)) ([`8c91e3e`](https://github.com/ocadotechnology/rapid-router/commit/8c91e3e4688c15d5d35bea1fd5c60523cf45a38c))
+
+## v5.0.0 (2022-07-06)
+
+
+## v4.4.1 (2022-06-30)
+### Fix
+* When the stars align ([#1353](https://github.com/ocadotechnology/rapid-router/issues/1353)) ([`7bdecdb`](https://github.com/ocadotechnology/rapid-router/commit/7bdecdb4c20d26a4fcf06f1ed73841ff024dc97c))
+
+## v4.4.0 (2022-06-28)
+### Feature
+* Screentime warning ([#1352](https://github.com/ocadotechnology/rapid-router/issues/1352)) ([`53bb23e`](https://github.com/ocadotechnology/rapid-router/commit/53bb23eaf98e8524c3a71d0fcae4353f53e786b3))
+
+## v4.3.1 (2022-06-23)
+### Fix
+* Update scoreboard to be clearer ([#1351](https://github.com/ocadotechnology/rapid-router/issues/1351)) ([`2d66b14`](https://github.com/ocadotechnology/rapid-router/commit/2d66b144ed5035376d17b293b5475d9f384954b1))
+
+## v4.3.0 (2022-06-10)
+### Feature
+* Add a main method in level solutions 101-104 ([#1344](https://github.com/ocadotechnology/rapid-router/issues/1344)) ([`2647cc0`](https://github.com/ocadotechnology/rapid-router/commit/2647cc0e251690205cd2ed7ec8bae5c6c99b4cd7))
+
+## v4.2.0 (2022-06-10)
+### Feature
+* Teacher level re-sharing ([#1343](https://github.com/ocadotechnology/rapid-router/issues/1343)) ([`428cc49`](https://github.com/ocadotechnology/rapid-router/commit/428cc49afc89e5a3954e17d897e382d2ebf06722))
+
+## v4.1.1 (2022-05-24)
+### Fix
+* Deleting workspace now makes the name disappear ([#1243](https://github.com/ocadotechnology/rapid-router/issues/1243)) ([`4464139`](https://github.com/ocadotechnology/rapid-router/commit/44641397e336844e3d1fe06308d8e573419d63f2))
+
 ## v4.1.0 (2022-05-09)
 ### Feature
 * Level 48 - Add houses ([#1338](https://github.com/ocadotechnology/rapid-router/issues/1338)) ([`c49a25b`](https://github.com/ocadotechnology/rapid-router/commit/c49a25be2e23df1f744aa6f76f9f32839b431056))

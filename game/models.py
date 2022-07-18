@@ -54,6 +54,28 @@ class Episode(models.Model):
 
         return sorted(self.level_set.all(), key=lambda level: int(level.name))
 
+    @property
+    def difficulty(self):
+        """
+        Maps the Episode's id to a difficulty level, used later on to map to CSS classes and different background
+        colours
+        """
+        difficulty_map = {
+            1: "easy",
+            2: "easy",
+            3: "easy",
+            4: "easy",
+            5: "medium",
+            6: "medium",
+            7: "medium-hard",
+            8: "medium-hard",
+            9: "brainteasers",
+            10: "hard",
+            11: "advanced",
+        }
+
+        return difficulty_map.get(self.id, "easy")
+
     def __str__(self):
         return f"Episode: {self.name}"
 
@@ -142,6 +164,10 @@ class Level(models.Model):
         from game.character import get_character_by_pk
 
         self.character_name = get_character_by_pk(val.pk).name
+
+    @property
+    def difficulty(self):
+        return self.episode.difficulty if self.episode else "easy"
 
 
 class LevelBlock(models.Model):

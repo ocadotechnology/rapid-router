@@ -25,8 +25,25 @@
 #tabs {
     width: 95px;
     height: 100%;
-    background-color: #a0c53a;
     float: left;
+}
+
+#tabs span {
+    color: white;
+}
+
+#tabs img {
+    filter: invert(1);
+}
+
+#tabs #blockly_tab span,
+#tabs #python_tab span {
+    color: black;
+}
+
+#tabs #blockly_tab img,
+#tabs #python_tab img {
+    filter: none;
 }
 
 #right {

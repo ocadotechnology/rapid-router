@@ -76,13 +76,7 @@
         </div>
         {% for episode in blocklyEpisodes %}
         <div class="panel">
-            {% if episode.id == 1 or episode.id == 2 %}
-            <div class="panel-header bg-tertiary" id="episode-{{episode.id}}">
-            {% elif episode.id == 9 %}
-            <div class="panel-header bg-primary" id="episode-{{episode.id}}">
-            {% else %}
-            <div class="panel-header bg-tertiary-dark" id="episode-{{episode.id}}">
-            {% endif %}
+            <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
                 <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
                     <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
@@ -124,7 +118,7 @@
         </div>
         {% for episode in pythonEpisodes %}
         <div class="panel">
-            <div class="panel-header" id="episode-{{episode.id}}">
+            <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
                 <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
                     <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
@@ -157,7 +151,7 @@
             This is where you will find levels you created or those have been been shared with you.
         </div>
         <div class="panel">
-            <div class="panel-header bg-secondary" id="episode-levels-created-by-you">
+            <div class="panel-header bg--shared-levels" id="episode-levels-created-by-you">
                 <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
                     Levels created by you
                     <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
@@ -184,7 +178,7 @@
         </div>
 
         <div class="panel">
-            <div class="panel-header bg-secondary" id="episode-levels-shared-with-you">
+            <div class="panel-header bg--shared-levels" id="episode-levels-shared-with-you">
                 <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
                     Levels shared with you
                     <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
@@ -213,5 +207,4 @@
         {% endif %}
     </div>
 </div>
-<br>
 {% endblock content %}

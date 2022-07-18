@@ -318,13 +318,9 @@ table th {
   line-height: 20px;
 }
 
-.tab label:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
-
+.tab label:hover,
 .tab input[type='radio']:checked + label {
-  background: rgba(255, 255, 255, 1);
-  opacity: 1;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .tab_pane {
@@ -371,9 +367,14 @@ table th {
   margin-right: 0.5em;
 }
 
-#modal-mascot {
+#modal-mascot,
+#modal-mascot--brain {
   float: right;
   width: 20%;
+}
+
+#modal-mascot--brain {
+  transform: scaleX(-1);
 }
 
 #myModal pre {

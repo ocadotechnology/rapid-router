@@ -38,6 +38,10 @@ ocargo.Game.prototype.setup = function () {
   this.drawing.preloadRoadTiles()
   ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, this.drawing)
   this.saving = new ocargo.Saving()
+  this.sharing = new ocargo.Sharing(
+    () => parseInt(LEVEL_ID),
+    () => true
+  )
 
   // Setup the blockly workspace
   ocargo.blocklyControl.reset()
@@ -112,7 +116,7 @@ ocargo.Game.prototype.setup = function () {
     title,
     LESSON,
     message,
-    true,
+    BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED, // show mascot on Blockly-only levels
     ocargo.button.dismissButtonHtml('play_button', gettext('Play'))
   )
 }
@@ -624,6 +628,15 @@ ocargo.Game.prototype._setupTabs = function () {
     $('#solution_tab').show()
   }
 
+  if (USER_STATUS === 'TEACHER' && !DEFAULT_LEVEL) {
+    this.tabs.share = new ocargo.Tab(
+      $('#share_radio'),
+      $('#share_radio + label'),
+      $('#share_pane')
+    )
+    this._setupShareTab()
+  }
+
   if (!BLOCKLY_ENABLED) {
     $('#python_radio').click()
   }
@@ -773,7 +786,7 @@ ocargo.Game.prototype._setupPythonTab = function () {
 
   $('#van_commands_help').click(
     function (e) {
-      ocargo.Drawing.startPopup(gettext('Python Commands'), leadMsg, '', true)
+      ocargo.Drawing.startPopup(gettext('Python Commands'), leadMsg, '')
     }.bind(this)
   )
 
@@ -1017,7 +1030,8 @@ ocargo.Game.prototype._setupLoadTab = function () {
           }
 
           loadInWorkspaces.call(this, workspaces)
-        })
+        }.bind(this)
+        )
       }
     }.bind(this)
   )
@@ -1152,6 +1166,24 @@ ocargo.Game.prototype._setupSaveTab = function () {
     // But disable all the modal buttons as nothing is selected yet
     selectedWorkspace = null
   }
+}
+
+ocargo.Game.prototype._setupShareTab = function () {
+  // Setup the behaviour for when the tab is selected
+  this.tabs.share.setOnChange(function() {
+    this.saving.getSharingInformation(parseInt(LEVEL_ID), function(error, validRecipients) {
+          if(error) {
+              console.error(error);
+              return;
+          }
+
+          this.changeTabSelectionTo(this.tabs.share);
+          this.sharing.processSharingInformation(error, validRecipients);
+      }.bind(this));
+  }.bind(this));
+
+  this.sharing.setupTeacherPanel();
+  this.sharing.setupSelectAllButton();
 }
 
 ocargo.Game.prototype._setupHelpTab = function () {

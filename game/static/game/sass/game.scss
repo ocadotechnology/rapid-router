@@ -360,3 +360,53 @@
   background-color: $background-overlay-color;
   z-index: $level-1;
 }
+
+/* START - Fixes for screentime-popup */
+.flex-column {
+  flex-direction: column !important;
+}
+.justify-content-center {
+  justify-content: center !important;
+}
+.mt-0 {
+  margin-top: 0 !important;
+}
+.my-4 {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+.button--primary {
+  padding: 10px 15px;
+  background: #ffd23b;
+  color: #000000;
+
+  &:hover {
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12), 0px 3px 5px 0px rgba(0, 0, 0, 0.2);
+    background: #ffc709;
+    color: #000000;
+    text-decoration: none;
+  }
+}
+#screentime-popup {
+  .popup-box__title {
+    padding: 25px 25px 0 25px;
+    font-size: 21px;
+  }
+
+  .popup-box__msg {
+    padding: 0 25px 25px 25px;
+    font-family: "Inter", sans-serif;
+    font-size: 18px;
+  }
+
+  .popup-box__buttons {
+    margin: 25px;
+  }
+
+  .button {
+    font-family: "Inter", sans-serif;
+    font-weight: 600;
+    min-width: 150px;
+  }
+}
+/* END - Fixes for screentime-popup */
