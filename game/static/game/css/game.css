@@ -122,20 +122,20 @@
 /* Python tab */
 /**************/
 
+
 #pythonCode {
     height: 100%;
+    width: 100%;
 }
 
 #consoleOutput {
     background-color: #FEFDFF;
     font-size: 20px;
     font-family: monospace;
-    max-height: 250px;
     max-width: 100%;
-    min-height: 180px;
     overflow: auto;
     padding: 20px;
-    margin-bottom: 20px;
+    margin:0;
 }
 
 #editor {
@@ -247,6 +247,13 @@
     width: 100%;
     z-index: 21;
     background-color: #444;
+    cursor: row-resize;
+}
+
+#consoleLogSlider {
+    width: 100%;
+    height: 0.25rem;
+    background: #3b3b3b;
     cursor: row-resize;
 }
 
