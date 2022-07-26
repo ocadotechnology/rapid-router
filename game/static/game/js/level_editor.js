@@ -166,7 +166,7 @@ ocargo.LevelEditor = function(levelId) {
         var tabs = [];
         var currentTabSelected = null;
 
-        tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
+        tabs.play = new ocargo.Tab($('#play_radio'), $("#run-code-button"), $('#play_radio + label'));
         tabs.playNight = new ocargo.Tab($('#play_night_radio'), $('#play_night_radio + label'));
         tabs.map = new ocargo.Tab($('#map_radio'), $('#map_radio + label'), $('#map_pane'));
         tabs.scenery = new ocargo.Tab($('#scenery_radio'), $('#scenery_radio + label'), $('#scenery_pane'));

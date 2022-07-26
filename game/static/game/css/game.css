@@ -157,6 +157,7 @@
 }
 
 #consoleOutput {
+    height: 20vh;
     background-color: #FEFDFF;
     font-size: 20px;
     font-family: monospace;
@@ -164,6 +165,8 @@
     overflow: auto;
     padding: 20px;
     margin:0;
+    border: none;
+    resize: none;
 }
 
 #editor {
