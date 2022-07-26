@@ -139,7 +139,7 @@
     align-items: flex-end;
 }
 
-#consoleRunCode > button {
+div > .navigation_button_kurono {
     margin: 1rem 1rem 1rem 0rem;
     padding: 0rem 0.5rem 0rem 0.5rem;
 }

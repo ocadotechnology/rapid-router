@@ -178,11 +178,12 @@ table th {
 
 .navigation_button_kurono {
   height: 35px !important;
+  width: 20vh ;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  align-content: space-around;
   align-items: center;
+  justify-content: space-around;
   position: relative;
   overflow: hidden;
   text-align: center;
@@ -190,7 +191,7 @@ table th {
   border-radius: 8px;
   cursor: pointer;
   color: black;
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem ;
+  padding: 0.5rem 1rem 0.5rem 1rem ;
 }
 
 .navigation_button_kurono:hover,

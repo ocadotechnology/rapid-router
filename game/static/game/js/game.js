@@ -423,7 +423,6 @@ ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
 
     slider.css('top', pythonSliderPosition + '%')
     $('#editor').css('height', pythonSliderPosition + '%')
-    $('#console').css('height', 100 - pythonSliderPosition + '%')
 
     ocargo.blocklyControl.redrawBlockly()
   }
