@@ -128,11 +128,32 @@
     width: 100%;
 }
 
-#console > h4 {
+.description {
+    padding: 0.5rem
+}
+
+#consoleRunCode {
+    display: flex;
+    flex-direction: column;
     background: rgb(77, 77, 77);
+    align-items: flex-end;
+}
+
+#consoleRunCode > button {
+    margin: 1rem 1rem 1rem 0rem;
+    padding: 0rem 0.5rem 0rem 0.5rem;
+}
+
+#consoleRunCode > h4 {
+    line-height: 25px;
+    height: 25px;
+    font-size: 20px;
     color: white;
-    line-height: 50px;
-    height: 50px;
+    background: rgb(100, 100, 100);
+    margin: 0;
+    padding: 0.5rem 0rem 0.5rem 2.5rem;
+    width: 100%;
+    height: 100%;
 }
 
 #consoleOutput {
@@ -319,7 +340,7 @@
 
 .direct_drive_button:hover,
 .direct_drive_button:focus
-{ 
+{
     background-color: rgba(240,240,240,0.3);
     background-size: 50px 50px;
     background-color: transparent;

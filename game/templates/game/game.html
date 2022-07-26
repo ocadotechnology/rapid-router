@@ -314,34 +314,40 @@
       <div id="python_pane" class="tab_pane">
         <div id="pythonCode" {% if not level.pythonEnabled %} style="visibility: hidden" {% endif %}>
           <div id="editor">
-          <h3>{% trans "Python Program" %}
-            {% if level.blocklyEnabled %}
-            <button class="navigation_button long_button" id="convert_from_blockly">
-              <span>{% trans "Convert from Blockly" %}</span>
-            </button>
-            {% endif %}
-          </h3>
-              <div>
-                <div id="pythonIntro">{% trans "Use the Python editor below to design your program, and then click play to try it out!" %}</div>
-                <button class="navigation_button long_button" id="van_commands_help">
-                  <img src="{% static "game/image/icons/python.svg" %}">
-                  <span>{% trans "Commands" %}</span>
+            <div class="description">
+              <h3>{% trans "Python Program" %}
+                {% if level.blocklyEnabled %}
+                <button class="navigation_button long_button" id="convert_from_blockly">
+                  <span>{% trans "Convert from Blockly" %}</span>
                 </button>
+                {% endif %}
+              </h3>
+              <div>
+                  <div id="pythonIntro">{% trans "Use the Python editor below to design your program, and then click play to try it out!" %}</div>
+                  <button class="navigation_button_portal long_button" id="van_commands_help">
+                    <img src="{% static "game/image/icons/python.svg" %}">
+                    <span>{% trans "Commands" %}</span>
+                  </button>
+                </div>
+                <textarea id="code" cols="85" rows="25"></textarea>
               </div>
-              <textarea id="code" cols="85" rows="25"></textarea>
-            </div>
+              </div>
 
             <div id="consoleLogSlider" class="no-print"></div>
             <div id="console">
-              <h4>
-                {% trans "Console log" %}
-              </h4>
-              <button class=""
+              <div id="consoleRunCode">
+                <button class="navigation_button_kurono long_button">Run code</button>
+                  <h4>
+                    {% trans "Console log" %}
+                  </h4>
+              </div>
               <textarea disabled="" id="consoleOutput"></textarea>
-              <button class="navigation_button long_button" id="clear_console">
-                <img src="{% static "game/image/icons/clear.svg" %}">
-                <span>{% trans "Clear console" %}</span>
-              </button>
+              <div class="d-flex">
+                <button class="navigation_button_kurono long_button" id="clear_console">
+                  <img src="{% static "game/image/icons/clear.svg" %}">
+                  <span>{% trans "Clear console" %}</span>
+                </button>
+              </div>
             </div>
         </div>
       </div>
