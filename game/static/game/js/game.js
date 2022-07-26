@@ -51,6 +51,7 @@ ocargo.Game.prototype.setup = function () {
   // Setup the ui
   this._setupConsoleSliderListeners()
   this._setupPythonViewSliderListeners()
+  this._setupConsoleLogViewSliderListeners()
   this._setupDirectDriveListeners()
   this._setupFuelGauge(ocargo.model.map.nodes, BLOCKS)
   this._setupTabs()
@@ -385,6 +386,57 @@ ocargo.Game.prototype._setupConsoleSliderListeners = function () {
   for (let i = 0; i < startEvents.length; i++) {
     slider.on(startEvents[i], startFunc)
   }
+}
+
+ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
+  let startEvents = ['mousedown', 'touchstart']
+  let moveEvents = ['mousemove', 'touchmove']
+  let endEvents = ['mouseup', 'touchend', 'touchcancel']
+
+  let slider = $('#consoleLogSlider')
+  let wrapper = $('#wrapper')
+  let halfSliderHeight = slider.height()
+
+  let endFunc = function (e) {
+    moveEvents.map((moveEvent) => wrapper.off(moveEvent))
+    endEvents.map((endEvent) => wrapper.off(endEvent, endFunc))
+
+    ocargo.blocklyControl.redrawBlockly()
+  }
+
+  let moveFunc = function (e) {
+    if (e.type == 'touchmove') {
+      e = e.originalEvent.touches[0]
+    }
+
+    let pythonSliderPosition = e.pageY - halfSliderHeight
+    let containerHeight = slider.parent().height()
+
+    pythonSliderPosition *= 100.0 / containerHeight
+
+    if (pythonSliderPosition > 100) {
+      pythonSliderPosition = 100
+    }
+    if (pythonSliderPosition < 0) {
+      pythonSliderPosition = 0
+    }
+
+    slider.css('top', pythonSliderPosition + '%')
+    $('#editor').css('height', pythonSliderPosition + '%')
+
+    ocargo.blocklyControl.redrawBlockly()
+  }
+
+  let startFunc = function (e) {
+    moveEvents.map((moveEvent) => wrapper.on(moveEvent, moveFunc))
+    // disable drag when mouse leaves the wrapper
+    endEvents.map((endEvent) => wrapper.on(endEvent, endFunc))
+
+    // close trashcan flyout on resize as it doesn't redraw with the workspace
+    Blockly.mainWorkspace.trashcan.flyout_.setVisible(false)
+  }
+
+  startEvents.map((startEvent) => slider.on(startEvent, startFunc))
 }
 
 ocargo.Game.prototype._setupPythonViewSliderListeners = function () {

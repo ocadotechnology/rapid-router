@@ -126,6 +126,13 @@
     height: 100%;
 }
 
+#console > h4 {
+    background: rgb(77, 77, 77);
+    color: white;
+    line-height: 50px;
+    height: 50px;
+}
+
 #consoleOutput {
     background-color: #FEFDFF;
     font-size: 20px;
@@ -140,6 +147,9 @@
 
 #editor {
     min-width: 0%;
+    min-height: 0%;
+    overflow: auto;
+    height: 50%;
 }
 
 #clear_console {
@@ -240,6 +250,17 @@
 /***********/
 
 /* Python View slider div */
+
+#consoleLogSlider {
+    position: absolute;
+    top: 50%;
+    height: 16px;
+    width: 100%;
+    z-index: 21;
+    background-color: limegreen;
+    cursor: row-resize;
+}
+
 #pythonViewSlider {
     position: absolute;
     top: 50%;
