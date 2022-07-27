@@ -128,8 +128,8 @@
     width: 100%;
 }
 
-.description {
-    padding: 0.5rem
+.description > *:not(.CodeMirror) {
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
 }
 
 #consoleRunCode {
@@ -172,13 +172,15 @@ div > .navigation_button_kurono {
 #editor {
     min-width: 0%;
     min-height: 0%;
-    overflow: auto;
+    overflow: hidden;
     height: 50%;
 }
 
 #clear_console {
-    float: right;
-    margin-bottom: 0px
+    margin-bottom: 0px;
+    position: absolute;
+    bottom: 1%;
+    right: 0;
 }
 
 #convert_from_blockly {

@@ -3,7 +3,7 @@
 .CodeMirror {
     /* Set height, width, borders, and global font properties here */
     font-family: monospace;
-    height: 40vh;
+    height: 35vh;
 }
 .CodeMirror-scroll {
     /* Set scrolling behaviour here */
@@ -199,7 +199,6 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 }
 .CodeMirror-gutter {
     white-space: normal;
-    height: 100%;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
     padding-bottom: 30px;
