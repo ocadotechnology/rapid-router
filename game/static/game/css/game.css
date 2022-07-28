@@ -280,10 +280,9 @@ div > .navigation_button_kurono {
 #consoleLogSlider {
     position: absolute;
     top: 50%;
-    height: 16px;
+    height: 0.25rem;
     width: 100%;
     z-index: 21;
-    background-color: limegreen;
     cursor: row-resize;
 }
 
@@ -297,12 +296,7 @@ div > .navigation_button_kurono {
     cursor: row-resize;
 }
 
-#consoleLogSlider {
-    width: 100%;
-    height: 0.25rem;
-    background: #3b3b3b;
-    cursor: row-resize;
-}
+
 
 /* Central slider div */
 #consoleSlider {

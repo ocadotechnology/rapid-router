@@ -1,4 +1,11 @@
+from time import sleep
 from game.end_to_end_tests.base_game_test import BaseGameTest
+from portal.tests.pageObjects.portal.base_page import BasePage
+
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 
 
 class TestPythonLevels(BaseGameTest):
@@ -19,3 +26,16 @@ class TestPythonLevels(BaseGameTest):
 
     def test_invalid_import(self):
         self.run_invalid_import_test(level=109)
+
+    def test_run_code(self):
+        self.go_to_level(92)
+        delay_time = 10
+        run_code = self.selenium.find_element_by_id("run-code-button")
+        run_code.click()
+        try:
+            WebDriverWait(self.selenium, delay_time).until(
+                EC.presence_of_all_elements_located((By.ID, "myModal-lead"))
+            )
+            assert True
+        except TimeoutException:
+            assert False, f"Element not found (timed out after {delay_time}"
