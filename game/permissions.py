@@ -97,10 +97,17 @@ def can_delete_level(user, level):
         return False
     elif level.owner == user.userprofile:
         return True
-    else:
-        return hasattr(
-            user.userprofile, "teacher"
-        ) and user.userprofile.teacher.teaches(level.owner)
+    elif hasattr(user.userprofile, "teacher"):
+        # If the teacher is an admin, they can delete any student level in the school, otherwise only student levels from their own classes
+        if user.userprofile.teacher.is_admin and hasattr(level.owner, "student"):
+            return (
+                user.userprofile.teacher.school
+                == level.owner.student.class_field.teacher.school
+            )
+        else:
+            return user.userprofile.teacher.teaches(level.owner)
+
+    return False
 
 
 class CanShareLevel(permissions.BasePermission):
