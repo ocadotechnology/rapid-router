@@ -37,7 +37,6 @@ def can_save_workspace(user, workspace):
 def can_delete_workspace(user, workspace):
     return not user.is_anonymous and workspace.owner == user.userprofile
 
-
 #####################
 # Level permissions #
 #####################
@@ -45,6 +44,18 @@ def can_delete_workspace(user, workspace):
 
 def can_create_level(user):
     return not user.is_anonymous
+
+
+def can_play_or_delete_level(user, level):
+    # If the teacher is an admin, they can play any student's level in the school, otherwise only student levels
+    # from their own classes
+    if user.userprofile.teacher.is_admin and hasattr(level.owner, "student"):
+        return (
+                user.userprofile.teacher.school
+                == level.owner.student.class_field.teacher.school
+        )
+    else:
+        return user.userprofile.teacher.teaches(level.owner)
 
 
 def can_play_level(user, level, early_access):
@@ -63,9 +74,7 @@ def can_play_level(user, level, early_access):
         owner_school = _get_userprofile_school(level.owner)
         return user_school is not None and user_school == owner_school
     else:
-        return hasattr(
-            user.userprofile, "teacher"
-        ) and user.userprofile.teacher.teaches(level.owner)
+        return can_play_or_delete_level(user, level)
 
 
 def can_load_level(user, level):
@@ -97,10 +106,10 @@ def can_delete_level(user, level):
         return False
     elif level.owner == user.userprofile:
         return True
-    else:
-        return hasattr(
-            user.userprofile, "teacher"
-        ) and user.userprofile.teacher.teaches(level.owner)
+    elif hasattr(user.userprofile, "teacher"):
+        return can_play_or_delete_level(user, level)
+
+    return False
 
 
 class CanShareLevel(permissions.BasePermission):

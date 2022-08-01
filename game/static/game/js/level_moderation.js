@@ -27,6 +27,36 @@ function confirmDelete() {
   showPopupConfirmation(title, text, confirmHandler);
 }
 
+jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+  "student-with-teacher-asc": function (a, b) {
+    a = String(a).replace(/<[\s\S]*?>/g, "");
+    b = String(b).replace(/<[\s\S]*?>/g, "");
+    let currentTeacherA = a.endsWith("(you)");
+    let currentTeacherB = b.endsWith("(you)");
+    if (currentTeacherA && !currentTeacherB) {
+      return -1;
+    } else if (!currentTeacherA && currentTeacherB) {
+      return 1;
+    } else {
+      return a < b ? -1 : a > b ? 1 : 0;
+    }
+  },
+
+  "student-with-teacher-desc": function (a, b) {
+    a = String(a).replace(/<[\s\S]*?>/g, "");
+    b = String(b).replace(/<[\s\S]*?>/g, "");
+    let currentTeacherA = a.endsWith("(you)");
+    let currentTeacherB = b.endsWith("(you)");
+    if (currentTeacherA && !currentTeacherB) {
+      return -1;
+    } else if (!currentTeacherA && currentTeacherB) {
+      return 1;
+    } else {
+      return a < b ? 1 : a > b ? -1 : 0;
+    }
+  },
+});
+
 $(document).ready(function () {
   $(".delete").click(function () {
     levelID = this.getAttribute("value");
@@ -76,6 +106,10 @@ $(document).ready(function () {
         orderable: false,
         searchable: false,
         targets: [-1, -2], // Play and Delete columns
+      },
+      {
+        type: "student-with-teacher",
+        targets: 0, // The Student column
       },
     ],
   });
