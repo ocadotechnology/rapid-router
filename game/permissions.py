@@ -48,6 +48,9 @@ def can_create_level(user):
 
 
 def can_play_level(user, level, early_access):
+    user_school = _get_userprofile_school(user.userprofile)
+    owner_school = _get_userprofile_school(level.owner)
+
     if level.default and not level.episode.in_development:
         return True
     elif level.anonymous:
@@ -59,13 +62,13 @@ def can_play_level(user, level, early_access):
     elif user.userprofile == level.owner:
         return True
     elif level.shared_with.filter(id=user.id):
-        user_school = _get_userprofile_school(user.userprofile)
-        owner_school = _get_userprofile_school(level.owner)
         return user_school is not None and user_school == owner_school
     else:
-        return hasattr(
-            user.userprofile, "teacher"
-        ) and user.userprofile.teacher.teaches(level.owner)
+        return (
+            hasattr(user.userprofile, "teacher")
+            and user.userprofile.teacher.teaches(level.owner)
+            or (user.userprofile.teacher.is_admin and user_school == owner_school)
+        )
 
 
 def can_load_level(user, level):
