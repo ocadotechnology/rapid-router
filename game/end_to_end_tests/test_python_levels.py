@@ -32,10 +32,6 @@ class TestPythonLevels(BaseGameTest):
         delay_time = 10
         run_code = self.selenium.find_element_by_id("run-code-button")
         run_code.click()
-        try:
-            WebDriverWait(self.selenium, delay_time).until(
-                EC.presence_of_all_elements_located((By.ID, "myModal-lead"))
-            )
-            assert True
-        except TimeoutException:
-            assert False, f"Element not found (timed out after {delay_time}"
+        assert WebDriverWait(self.selenium, delay_time).until(
+            EC.presence_of_all_elements_located((By.ID, "myModal-lead"))
+        )
