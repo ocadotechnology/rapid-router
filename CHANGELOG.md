@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.2.0 (2022-08-01)
+### Feature
+* Include students from other classes in level moderation for admin teachers ([#1358](https://github.com/ocadotechnology/rapid-router/issues/1358)) ([`37021c9`](https://github.com/ocadotechnology/rapid-router/commit/37021c97075fc215c2bec99afd3f92db8b38a218))
+
 ## v5.1.0 (2022-07-13)
 ### Feature
 * Update styles of the game pt. 1 ([#1356](https://github.com/ocadotechnology/rapid-router/issues/1356)) ([`604dbdb`](https://github.com/ocadotechnology/rapid-router/commit/604dbdb3344f5cf905a37cb527325c00a5799ee3))
