@@ -177,7 +177,8 @@ table th {
 }
 
 .navigation_button_kurono {
-  height: 35px !important;
+  height: 50px !important;
+  min-width: 120px;
   width: 20vh ;
   display: flex;
   flex-direction: row;

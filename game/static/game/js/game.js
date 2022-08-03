@@ -142,7 +142,6 @@ ocargo.Game.prototype.reset = function () {
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
   this.reset()
-
   let code = ocargo.pythonControl.getCode()
   ocargo.event.sendEvent('PlayButtonPressed', {
     levelName: LEVEL_NAME,
@@ -414,8 +413,8 @@ ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
 
     pythonSliderPosition *= 100.0 / containerHeight
 
-    if (pythonSliderPosition > 80) {
-      pythonSliderPosition = 80
+    if (pythonSliderPosition > 75) {
+      pythonSliderPosition = 75
     }
     if (pythonSliderPosition < 0) {
       pythonSliderPosition = 0
@@ -491,12 +490,30 @@ ocargo.Game.prototype._setupPythonViewSliderListeners = function () {
   startEvents.map((startEvent) => slider.on(startEvent, startFunc))
 }
 
+const buttonTransit = (buttonElementId, state) => {
+    console.log("help")
+    const dir = "/static/game/image/icons/"
+    let [firstElement, secondElement] = document.getElementById(buttonElementId).children
+    let buttonImage = firstElement.tagName === "IMG" ? firstElement : secondElement
+    let buttonSpan = buttonImage === firstElement ? secondElement : firstElement
+
+    if (state === "running") {
+        buttonSpan.innerHTML = "Pause"
+        buttonImage.src= dir + "pause.svg"
+    }
+    else {
+        buttonSpan.innerHTML = "Run code"
+        buttonImage.src = dir + "play.svg"
+    }
+}
+
 ocargo.Game.prototype.onPlayControls = function () {
   this.disallowCodeChanges()
 
   document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('running')
+  buttonTransit("run-code-button", "running")
   this.tabs.step.disable()
   this.tabs.fast.enable()
 
@@ -505,13 +522,13 @@ ocargo.Game.prototype.onPlayControls = function () {
   this.tabs.clear_program.disable()
   this.tabs.help.disable()
 }
-
 ocargo.Game.prototype.onStepControls = function () {
   this.disallowCodeChanges()
 
   document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('paused')
+  buttonTransit("run-code-button", "paused")
   this.tabs.step.disable()
 
   this.tabs.load.disable()
@@ -541,6 +558,7 @@ ocargo.Game.prototype.onSlowControls = function () {
   document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('running')
+  buttonTransit("run-code-button", "running")
   this.tabs.fast.transitTo('slow')
   this.tabs.step.disable()
 
@@ -572,7 +590,6 @@ ocargo.Game.prototype.isInPythonWorkspace = function () {
 
 ocargo.Game.prototype._setupTabs = function () {
   this.tabs = []
-
   this.tabs.blockly = new ocargo.Tab(
     $('#blockly_radio'),
     $('#blockly_radio + label'),
@@ -712,11 +729,13 @@ ocargo.Game.prototype.isInPythonWorkspace = function () {
 
 ocargo.Game.prototype.onResumeControls = function () {
   this.tabs.play.transitTo('running')
+  buttonTransit("run-code-button", "running")
   this.tabs.step.disable()
 }
 
 ocargo.Game.prototype.onPauseControls = function () {
   this.tabs.play.transitTo('paused')
+  buttonTransit("run-code-button", "paused")
   this.tabs.step.enable()
 }
 
@@ -727,6 +746,7 @@ ocargo.Game.prototype.onStopControls = function () {
   document.getElementById('direct_drive').style.visibility = 'visible'
 
   this.tabs.play.transitTo('readyToPlay')
+  buttonTransit("run-code-button", "readyToPlay")
   this.tabs.fast.transitTo('slow')
   ocargo.animation.setRegularSpeed()
   this.tabs.step.enable()

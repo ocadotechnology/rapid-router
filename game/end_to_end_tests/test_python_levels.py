@@ -7,6 +7,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
 
+DELAY_TIME = 10
+
 
 class TestPythonLevels(BaseGameTest):
     def test_can_see_python_commands(self):
@@ -29,9 +31,8 @@ class TestPythonLevels(BaseGameTest):
 
     def test_run_code(self):
         self.go_to_level(92)
-        delay_time = 10
         run_code = self.selenium.find_element_by_id("run-code-button")
         run_code.click()
-        assert WebDriverWait(self.selenium, delay_time).until(
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.presence_of_all_elements_located((By.ID, "myModal-lead"))
         )
