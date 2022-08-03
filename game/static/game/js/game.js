@@ -51,6 +51,7 @@ ocargo.Game.prototype.setup = function () {
   // Setup the ui
   this._setupConsoleSliderListeners()
   this._setupPythonViewSliderListeners()
+  this._setupConsoleLogViewSliderListeners()
   this._setupDirectDriveListeners()
   this._setupFuelGauge(ocargo.model.map.nodes, BLOCKS)
   this._setupTabs()
@@ -141,7 +142,6 @@ ocargo.Game.prototype.reset = function () {
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
   this.reset()
-
   let code = ocargo.pythonControl.getCode()
   ocargo.event.sendEvent('PlayButtonPressed', {
     levelName: LEVEL_NAME,
@@ -387,6 +387,57 @@ ocargo.Game.prototype._setupConsoleSliderListeners = function () {
   }
 }
 
+ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
+  let startEvents = ['mousedown', 'touchstart']
+  let moveEvents = ['mousemove', 'touchmove']
+  let endEvents = ['mouseup', 'touchend', 'touchcancel']
+
+  let slider = $('#consoleLogSlider')
+  let wrapper = $('#wrapper')
+  let halfSliderHeight = slider.height()
+
+  let endFunc = function (e) {
+    moveEvents.map((moveEvent) => wrapper.off(moveEvent))
+    endEvents.map((endEvent) => wrapper.off(endEvent, endFunc))
+
+    ocargo.blocklyControl.redrawBlockly()
+  }
+
+  let moveFunc = function (e) {
+    if (e.type == 'touchmove') {
+      e = e.originalEvent.touches[0]
+    }
+
+    let pythonSliderPosition = e.pageY - halfSliderHeight
+    let containerHeight = slider.parent().height()
+
+    pythonSliderPosition *= 100.0 / containerHeight
+
+    if (pythonSliderPosition > 75) {
+      pythonSliderPosition = 75
+    }
+    if (pythonSliderPosition < 0) {
+      pythonSliderPosition = 0
+    }
+
+    slider.css('top', pythonSliderPosition + '%')
+    $('#editor').css('height', pythonSliderPosition + '%')
+
+    ocargo.blocklyControl.redrawBlockly()
+  }
+
+  let startFunc = function (e) {
+    moveEvents.map((moveEvent) => wrapper.on(moveEvent, moveFunc))
+    // disable drag when mouse leaves the wrapper
+    endEvents.map((endEvent) => wrapper.on(endEvent, endFunc))
+
+    // close trashcan flyout on resize as it doesn't redraw with the workspace
+    Blockly.mainWorkspace.trashcan.flyout_.setVisible(false)
+  }
+
+  startEvents.map((startEvent) => slider.on(startEvent, startFunc))
+}
+
 ocargo.Game.prototype._setupPythonViewSliderListeners = function () {
   let startEvents = ['mousedown', 'touchstart']
   let moveEvents = ['mousemove', 'touchmove']
@@ -439,12 +490,29 @@ ocargo.Game.prototype._setupPythonViewSliderListeners = function () {
   startEvents.map((startEvent) => slider.on(startEvent, startFunc))
 }
 
+const buttonTransit = (buttonElementId, state) => {
+    const dir = "/static/game/image/icons/"
+    let [firstElement, secondElement] = document.getElementById(buttonElementId).children
+    let buttonImage = firstElement.tagName === "IMG" ? firstElement : secondElement
+    let buttonSpan = buttonImage === firstElement ? secondElement : firstElement
+
+    if (state === "running") {
+        buttonSpan.innerHTML = "Pause"
+        buttonImage.src= dir + "pause.svg"
+    }
+    else {
+        buttonSpan.innerHTML = "Run code"
+        buttonImage.src = dir + "play.svg"
+    }
+}
+
 ocargo.Game.prototype.onPlayControls = function () {
   this.disallowCodeChanges()
 
   document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('running')
+  buttonTransit("run-code-button", "running")
   this.tabs.step.disable()
   this.tabs.fast.enable()
 
@@ -460,6 +528,7 @@ ocargo.Game.prototype.onStepControls = function () {
   document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('paused')
+  buttonTransit("run-code-button", "paused")
   this.tabs.step.disable()
 
   this.tabs.load.disable()
@@ -489,6 +558,7 @@ ocargo.Game.prototype.onSlowControls = function () {
   document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('running')
+  buttonTransit("run-code-button", "running")
   this.tabs.fast.transitTo('slow')
   this.tabs.step.disable()
 
@@ -520,7 +590,6 @@ ocargo.Game.prototype.isInPythonWorkspace = function () {
 
 ocargo.Game.prototype._setupTabs = function () {
   this.tabs = []
-
   this.tabs.blockly = new ocargo.Tab(
     $('#blockly_radio'),
     $('#blockly_radio + label'),
@@ -660,11 +729,13 @@ ocargo.Game.prototype.isInPythonWorkspace = function () {
 
 ocargo.Game.prototype.onResumeControls = function () {
   this.tabs.play.transitTo('running')
+  buttonTransit("run-code-button", "running")
   this.tabs.step.disable()
 }
 
 ocargo.Game.prototype.onPauseControls = function () {
   this.tabs.play.transitTo('paused')
+  buttonTransit("run-code-button", "paused")
   this.tabs.step.enable()
 }
 
@@ -675,6 +746,7 @@ ocargo.Game.prototype.onStopControls = function () {
   document.getElementById('direct_drive').style.visibility = 'visible'
 
   this.tabs.play.transitTo('readyToPlay')
+  buttonTransit("run-code-button", "readyToPlay")
   this.tabs.fast.transitTo('slow')
   ocargo.animation.setRegularSpeed()
   this.tabs.step.enable()

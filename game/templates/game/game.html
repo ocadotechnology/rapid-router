@@ -213,7 +213,7 @@
       <div id="solution_tab"class="tab selectable" hidden>
           <input type="radio" name="tabs" id="solution_radio">
           <label for="solution_radio">
-              <img src='{% static "game/image/icons/solution.svg" %}'>
+              <img src='{% static "game/image/icons/solve.svg" %}'>
               <span>{% trans "Solve" %}</span>
           </label>
       </div>
@@ -265,7 +265,7 @@
     <div id="mute_tab" class="tab">
       <input type="radio" name="tabs" id="mute_radio">
       <label for="mute_radio">
-        <img id="mute_img" src='{% static "game/image/icons/muted.svg" %}'>
+        <img src='{% static "game/image/icons/muted.svg" %}'>
         <span id="mute_text">{% trans "Mute" %}</span>
       </label>
     </div>
@@ -287,7 +287,7 @@
       <input type="radio" name="tabs" id="quit_radio">
       <label for="quit_radio">
         <img src='{% static "game/image/icons/quit.svg" %}'>
-        <span>{% trans "Quit" %}</span>
+        <span>{% trans "Exit" %}</span>
       </label>
     </div>
 
@@ -313,33 +313,42 @@
 
       <div id="python_pane" class="tab_pane">
         <div id="pythonCode" {% if not level.pythonEnabled %} style="visibility: hidden" {% endif %}>
-          <h3>{% trans "Python Program" %}
-            {% if level.blocklyEnabled %}
-            <button class="navigation_button long_button" id="convert_from_blockly">
-              <span>{% trans "Convert from Blockly" %}</span>
-            </button>
-            {% endif %}
-          </h3>
-            <div id="editor">
+          <div id="editor">
+            <div class="description">
+              <h3>{% trans "Python Program" %}
+                {% if level.blocklyEnabled %}
+                <button class="navigation_button long_button" id="convert_from_blockly">
+                  <span>{% trans "Convert from Blockly" %}</span>
+                </button>
+                {% endif %}
+              </h3>
               <div>
-                <div id="pythonIntro">{% trans "Use the Python editor below to design your program, and then click play to try it out!" %}</div>
-                <button class="navigation_button long_button" id="van_commands_help">
-                  <img src="{% static "game/image/icons/python.svg" %}">
-                  <span>{% trans "Commands" %}</span>
-                </button>
+                  <div id="pythonIntro">{% trans "Use the Python editor below to design your program, and then click play to try it out!" %}</div>
+                  <button class="navigation_button_portal long_button" id="van_commands_help">
+                    <img src="{% static "game/image/icons/python.svg" %}">
+                    <span>{% trans "Commands" %}</span>
+                  </button>
+                </div>
+                <textarea id="code" cols="85" rows="25"></textarea>
               </div>
-              <textarea id="code" cols="85" rows="25"></textarea>
-            </div>
+              </div>
 
+            <div id="consoleLogSlider" class="no-print"></div>
             <div id="console">
-              <h4 style="height:50px; line-height: 50px;">
-                {% trans "Console Output" %}
-                <button class="navigation_button long_button" id="clear_console">
-                  <img src="{% static "game/image/icons/clear.svg" %}">
-                  <span>{% trans "Clear console" %}</span>
+              <div id="consoleRunCode">
+                <button onclick="runCode()" id="run-code-button" class="navigation_button_kurono">
+                    <span>{% trans "Run code" %}</span>
+                    <img src='{% static "game/image/icons/play.svg" %}'>
                 </button>
-              </h4>
+                  <h4>
+                    {% trans "Console log" %}
+                  </h4>
+              </div>
               <textarea disabled="" id="consoleOutput"></textarea>
+              <button class="navigation_button_kurono" id="clear_console">
+                <span>{% trans "Clear console" %}</span>
+                <span class="iconify icon" data-icon="ic:baseline-delete-outline"></span>
+              </button>
             </div>
         </div>
       </div>
@@ -367,7 +376,7 @@
             </div>
             <br>
             <div>
-              <button class="navigation_button long_button" id="deleteWorkspace">
+              <button class="navigation_button" id="deleteWorkspace">
                 <img src="{% static "game/image/icons/clear.svg" %}"/>
                 <span>{% trans "Delete" %}</span>
               </button>

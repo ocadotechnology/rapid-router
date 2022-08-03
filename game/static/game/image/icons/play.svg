@@ -1,5 +1,5 @@
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" viewBox="0 0 100 100" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
- <g transform="translate(0 -952.36)">
- <path stroke="#000" stroke-width="1.5269px" d="m9.9651 1039.6v-74.562l84.07 38.058z"/>
- </g>
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em"
+    preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M6 4v16m14-8L6 20m14-8L6 4" />
 </svg>
