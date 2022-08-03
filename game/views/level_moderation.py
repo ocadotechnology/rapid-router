@@ -39,7 +39,17 @@ def level_moderation(request):
         )
 
     teacher = request.user.userprofile.teacher
-    classes_taught = Class.objects.filter(teacher=teacher)
+    if teacher.is_admin:
+        # Making sure the current teacher classes come up first
+        classes_taught = teacher.school.classes()
+        [
+            classes_taught.insert(0, classes_taught.pop(i))
+            for i in range(len(classes_taught))
+            if classes_taught[i].teacher.id == teacher.id
+        ]
+
+    else:
+        classes_taught = Class.objects.filter(teacher=teacher)
 
     if len(classes_taught) <= 0:
         return renderError(
@@ -52,6 +62,7 @@ def level_moderation(request):
     form = LevelModerationForm(
         request.POST or None,
         classes=classes_taught,
+        teacher=teacher,
         initial={"classes": classes_taught_ids},
     )
 
@@ -102,9 +113,22 @@ def level_moderation(request):
                     app_tags.make_into_username(user) for user in users_shared_with
                 )
 
+            student_name = f"{app_tags.make_into_username(owner.user)}"
+
+            # If the teacher is an admin, append teacher names or "(you)" to students
+            if teacher.is_admin:
+                student_teacher = owner.student.class_field.teacher
+
+                if student_teacher == teacher:
+                    student_teacher_name = "you"
+                else:
+                    student_teacher_name = f"{student_teacher.new_user.first_name} {student_teacher.new_user.last_name}"
+
+                student_name += f" ({student_teacher_name})"
+
             level_data.append(
                 {
-                    "student": app_tags.make_into_username(owner.user),
+                    "student": student_name,
                     "id": level.id,
                     "name": level.name,
                     "shared_with": shared_str,
