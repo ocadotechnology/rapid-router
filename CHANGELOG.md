@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.3.0 (2022-08-03)
+### Feature
+* Resizeble window ([#1359](https://github.com/ocadotechnology/rapid-router/issues/1359)) ([`48ac975`](https://github.com/ocadotechnology/rapid-router/commit/48ac975574dfc500f98d023821b41977e6426830))
+
 ## v5.2.0 (2022-08-01)
 ### Feature
 * Include students from other classes in level moderation for admin teachers ([#1358](https://github.com/ocadotechnology/rapid-router/issues/1358)) ([`37021c9`](https://github.com/ocadotechnology/rapid-router/commit/37021c97075fc215c2bec99afd3f92db8b38a218))
