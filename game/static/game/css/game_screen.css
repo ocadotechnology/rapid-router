@@ -167,6 +167,11 @@ table th {
   background: #ffd23b;
 }
 
+button > svg {
+  width: 30%;
+  height: 30%;
+}
+
 #run-code {
   display: flex;
   flex-direction: row;
