@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em"
    preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-   <g transform="translate(0 24) scale(1 -1)">
-      <g transform="rotate(180 16 16)">
-         <path fill="currentColor"
-            d="m15 9.9l3 2.1l-3 2.1V9.9m-9 0L9 12l-3 2.1V9.9M13 6v12l8.5-6L13 6M4 6v12l8.5-6L4 6Z" />
-      </g>
+   <path fill="currentColor"
+      d="M18 9.86v4.28L14.97 12L18 9.86m-9 0v4.28L5.97 12L9 9.86M20 6l-8.5 6l8.5 6V6zm-9 0l-8.5 6l8.5 6V6z" />
 </svg>

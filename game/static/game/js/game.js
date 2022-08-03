@@ -491,7 +491,6 @@ ocargo.Game.prototype._setupPythonViewSliderListeners = function () {
 }
 
 const buttonTransit = (buttonElementId, state) => {
-    console.log("help")
     const dir = "/static/game/image/icons/"
     let [firstElement, secondElement] = document.getElementById(buttonElementId).children
     let buttonImage = firstElement.tagName === "IMG" ? firstElement : secondElement
@@ -522,6 +521,7 @@ ocargo.Game.prototype.onPlayControls = function () {
   this.tabs.clear_program.disable()
   this.tabs.help.disable()
 }
+
 ocargo.Game.prototype.onStepControls = function () {
   this.disallowCodeChanges()
 
