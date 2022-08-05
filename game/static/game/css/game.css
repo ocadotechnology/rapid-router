@@ -140,8 +140,7 @@
 }
 
 div > .navigation_button_kurono {
-    margin: 1rem 1rem 1rem 0rem;
-    padding: 0rem 0.5rem 0rem 0.5rem;
+    margin: 0.5rem 0.5rem 0.5rem 0rem;
 }
 
 #consoleRunCode > h4 {
@@ -157,7 +156,6 @@ div > .navigation_button_kurono {
 }
 
 #consoleOutput {
-    height: 20vh;
     background-color: #FEFDFF;
     font-size: 20px;
     font-family: monospace;
