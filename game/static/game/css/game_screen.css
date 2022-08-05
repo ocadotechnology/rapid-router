@@ -146,6 +146,7 @@ table th {
 
 
 .navigation_button_portal {
+  min-width: 180px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -183,8 +184,8 @@ button > svg {
 
 .navigation_button_kurono {
   height: 50px !important;
-  min-width: 120px;
-  width: 20vh ;
+  font-size: 20px;
+  min-width: 180px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -198,6 +199,12 @@ button > svg {
   cursor: pointer;
   color: black;
   padding: 0.5rem 1rem 0.5rem 1rem ;
+}
+
+.navigation_button_kurono > img,
+.navigation_button_kurono > svg {
+  height: 24px;
+  width: 24px;
 }
 
 .navigation_button_kurono:hover,
