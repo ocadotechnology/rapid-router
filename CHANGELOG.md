@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.3.1 (2022-08-05)
+### Fix
+* Update load, save and solve icons ([#1361](https://github.com/ocadotechnology/rapid-router/issues/1361)) ([`5772314`](https://github.com/ocadotechnology/rapid-router/commit/5772314848b25841c93e839c4698ae5e63b61b25))
+
 ## v5.3.0 (2022-08-03)
 ### Feature
 * Resizeble window ([#1359](https://github.com/ocadotechnology/rapid-router/issues/1359)) ([`48ac975`](https://github.com/ocadotechnology/rapid-router/commit/48ac975574dfc500f98d023821b41977e6426830))
