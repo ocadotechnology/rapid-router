@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
+import game.level_management as level_management
 
 from builtins import map
 from builtins import next
@@ -9,11 +10,13 @@ from datetime import timedelta
 from common.models import Class, Teacher, Student
 from django.http import Http404
 from django.shortcuts import render
+from django.db.models import Max
 
 import game.messages as messages
 import game.permissions as permissions
 from game.forms import ScoreboardForm
 from game.models import Level, Attempt, sort_levels, Episode
+from game.views.level_editor import shared_levels
 from game.views.scoreboard_csv import scoreboard_csv
 from . import level_selection
 from .helper import renderError
@@ -169,9 +172,46 @@ def get_improvement_data(attempts_per_student):
 
 
 def scoreboard_view(
-    request, form, student_data, headers, level_headers, improvement_data
+    request, form, student_data, headers, level_headers, improvement_data, shared_levels
 ):
     database_episodes = level_selection.fetch_episode_data(False)
+    owned_level_data, shared_level_data = [], []
+    owned_levels, shared_levels = level_management.get_loadable_levels(request.user)
+
+    for student_row in student_data:
+        current_student = Student.objects.get(id=student_row.id)
+        best_attempts = (
+            Attempt.objects.filter(student=current_student)
+            .values("level_id")
+            .annotate(best_score=Max("score"))
+            .all()
+        )
+
+    print(current_student)
+    print(best_attempts)
+
+    attempts = {a["level_id"]: a["best_score"] for a in best_attempts}
+
+    for level in owned_levels:
+        owned_level_data.append(
+            {
+                "id": level.id,
+                "title": level.name,
+                "score": attempts.get(level.id),
+                "maxScore": 10,
+            }
+        )
+
+    for level in shared_levels:
+        shared_level_data.append(
+            {
+                "id": level.id,
+                "title": level.name,
+                "owner": level.owner.user,
+                "score": attempts.get(level.id),
+                "maxScore": 10,
+            }
+        )
 
     return render(
         request,
@@ -185,6 +225,8 @@ def scoreboard_view(
             "total_points_header": TotalPointsHeader,
             "episodes": database_episodes,
             "improvement_data": improvement_data,
+            "shared_levels": shared_level_data,
+            "owned_levels": owned_level_data,
         },
     )
 
@@ -255,9 +297,12 @@ def scoreboard(request):
         ).select_related("level")
         attempts_per_student[student] = best_attempts
 
-    student_data, headers, level_headers, levels_sorted = scoreboard_data(
-        episode_ids, attempts_per_student
-    )
+    (
+        student_data,
+        headers,
+        level_headers,
+        levels_sorted,
+    ) = scoreboard_data(episode_ids, attempts_per_student)
     improvement_data = get_improvement_data(attempts_per_student)
 
     csv_export = "export" in request.POST
@@ -266,7 +311,13 @@ def scoreboard(request):
         return scoreboard_csv(student_data, levels_sorted, improvement_data)
     else:
         return scoreboard_view(
-            request, form, student_data, headers, level_headers, improvement_data
+            request,
+            form,
+            student_data,
+            headers,
+            level_headers,
+            improvement_data,
+            shared_levels,
         )
 
 
