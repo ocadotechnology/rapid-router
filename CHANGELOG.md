@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.3.2 (2022-08-09)
+### Fix
+* Bump up version (dummy commit) ([`d0e791b`](https://github.com/ocadotechnology/rapid-router/commit/d0e791bb7d0e13e6e55137cd59cf6cd64efe0324))
+
 ## v5.3.1 (2022-08-05)
 ### Fix
 * Update load, save and solve icons ([#1361](https://github.com/ocadotechnology/rapid-router/issues/1361)) ([`5772314`](https://github.com/ocadotechnology/rapid-router/commit/5772314848b25841c93e839c4698ae5e63b61b25))
