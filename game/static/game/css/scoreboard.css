@@ -7,6 +7,9 @@
 #scoreboardTable_wrapper table,
 #scoreboardTable_wrapper th,
 #scoreboardTable_wrapper td,
+#sharedLevelsTable_wrapper table,
+#sharedLevelsTable_wrapper th,
+#sharedLevelsTable_wrapper td,
 #improvementTable_wrapper table,
 #improvementTable_wrapper th,
 #improvementTable_wrapper td {
@@ -31,31 +34,37 @@ table td.fixed-width {
   white-space: nowrap;
 }
 
-#scoreboardTable_wrapper td.scoreboard--started {
+#scoreboardTable_wrapper td.scoreboard--started,
+#sharedLevelsTable_wrapper td.scoreboard--started {
   background: #e0004d;
   color: white;
 }
 
 #scoreboardTable_wrapper td.scoreboard--completed,
+#sharedLevelsTable_wrapper td.scoreboard--completed,
 .scoreboard--completed {
   color: #eab502;
   font-size: 24px;
   vertical-align: middle;
 }
 
-#scoreboardTable_wrapper td.scoreboard--completed-secondary {
+#scoreboardTable_wrapper td.scoreboard--completed-secondary,
+#sharedLevelsTable_wrapper td.scoreboard--completed-secondary {
   color: #fff;
   font-size: 24px;
 }
 
-#scoreboardTable_wrapper td.scoreboard--medium-performer {
+#scoreboardTable_wrapper td.scoreboard--medium-performer,
+#sharedLevelsTable_wrapper td.scoreboard--medium-performer {
   background: #f6a500;
 }
 
-#scoreboardTable_wrapper td.scoreboard--top-performer {
+#scoreboardTable_wrapper td.scoreboard--top-performer,
+#sharedLevelsTable_wrapper td.scoreboard--top-performer {
   background: #b1ba1d;
 }
 
-#scoreboardTable_wrapper tr.current-student > td {
+#scoreboardTable_wrapper tr.current-student > td,
+#sharedLevelsTable_wrapper tr.current-student > td {
   background: #85ddff; /* $color-tertiary-50 */
 }

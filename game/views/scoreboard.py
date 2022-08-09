@@ -1,6 +1,5 @@
 from __future__ import absolute_import
 from __future__ import division
-import game.level_management as level_management
 
 from builtins import map
 from builtins import next
@@ -10,18 +9,18 @@ from datetime import timedelta
 from common.models import Class, Teacher, Student
 from django.http import Http404
 from django.shortcuts import render
-from django.db.models import Max
 
 import game.messages as messages
 import game.permissions as permissions
 from game.forms import ScoreboardForm
+from game.level_management import levels_owned_by, levels_shared_with
 from game.models import Level, Attempt, sort_levels, Episode
-from game.views.level_editor import shared_levels
 from game.views.scoreboard_csv import scoreboard_csv
 from . import level_selection
 from .helper import renderError
 
 Headers = ["Class", "Student", "Completed", "Total time"]
+SharedHeaders = ["Class", "Student"]
 TotalPointsHeader = "Total points"
 
 
@@ -52,16 +51,20 @@ def student_row(levels_sorted, student, best_attempts):
         level_scores[level.id] = {}
         level_scores[level.id]["score"] = ""
 
+        if level.episode is None and student.new_user not in level.shared_with.all():
+            level_scores[level.id]["score"] = "Not shared"
+
+        if level.owner == student.user:
+            level_scores[level.id]["score"] = "Owner"
+
     if best_attempts:
-        attempts_dict = {
-            best_attempt.level.id: best_attempt for best_attempt in best_attempts
-        }
+        attempts_dict = {best_attempt.level.id: best_attempt for best_attempt in best_attempts}
         for level in levels_sorted:
 
             attempt = attempts_dict.get(level.id)
             if attempt:
                 num_all += 1
-                max_score = 10 if attempt.level.disable_route_score else 20
+                max_score = 10 if attempt.level.disable_route_score or attempt.level.episode is None else 20
                 if attempt.score:
                     if attempt.score / max_score >= threshold:
                         num_finished += 1
@@ -77,20 +80,14 @@ def student_row(levels_sorted, student, best_attempts):
                 times.append(chop_miliseconds(elapsed_time))
                 # '-' is used to show that the student has started the level but has not submitted any attempts
 
-                level_scores[level.id]["score"] = (
-                    int(attempt.score) if attempt.score is not None else "-"
-                )
+                level_scores[level.id]["score"] = int(attempt.score) if attempt.score is not None else "-"
                 level_scores[level.id]["full_score"] = attempt.score == max_score
-                level_scores[level.id]["is_low_attempt"] = (
-                    attempt.score == 0 or max_score / attempt.score < threshold
-                )
+                level_scores[level.id]["is_low_attempt"] = attempt.score == 0 or max_score / attempt.score < threshold
             else:
                 times.append(timedelta(0))
 
     total_time = sum(times, timedelta())
-    percentage_complete = (
-        total_score / total_possible_score * 100 if total_possible_score > 0 else 0
-    )
+    percentage_complete = total_score / total_possible_score * 100 if total_possible_score > 0 else 0
 
     row = StudentRow(
         student=student,
@@ -107,6 +104,10 @@ def to_name(level):
     return f"L{level.name}"
 
 
+def shared_level_to_name(level, user):
+    return f"{level.name} (you)" if user == level.owner else f"{level.name} ({level.owner})"
+
+
 def scoreboard_data(episode_ids, attempts_per_students):
     # Show the total score, total time and score of each level
     levels_sorted = []
@@ -116,11 +117,19 @@ def scoreboard_data(episode_ids, attempts_per_students):
 
     level_headers = list(map(to_name, levels_sorted))
     student_data = [
-        student_row(levels_sorted, student, best_attempts)
-        for student, best_attempts in attempts_per_students.items()
+        student_row(levels_sorted, student, best_attempts) for student, best_attempts in attempts_per_students.items()
     ]
 
     return student_data, Headers, level_headers, levels_sorted
+
+
+def shared_levels_data(user, shared_levels, attempts_per_students):
+    shared_level_headers = list(shared_level_to_name(level, user) for level in shared_levels)
+    shared_student_data = [
+        student_row(shared_levels, student, best_attempts) for student, best_attempts in attempts_per_students.items()
+    ]
+
+    return SharedHeaders, shared_level_headers, shared_student_data
 
 
 class StudentInTrouble:
@@ -141,11 +150,7 @@ def _check_attempts(best_attempts):
         total_score = 0
         total_possible_score = 0
         # Get the best attempts for the specific Episode
-        attempts = [
-            best_attempt
-            for best_attempt in best_attempts
-            if best_attempt.level.episode.id == episode_id
-        ]
+        attempts = [best_attempt for best_attempt in best_attempts if best_attempt.level.episode.id == episode_id]
         for attempt in attempts:
             max_score = 10 if attempt.level.disable_route_score else 20
 
@@ -172,46 +177,17 @@ def get_improvement_data(attempts_per_student):
 
 
 def scoreboard_view(
-    request, form, student_data, headers, level_headers, improvement_data, shared_levels
+    request,
+    form,
+    student_data,
+    headers,
+    level_headers,
+    improvement_data,
+    shared_headers,
+    shared_level_headers,
+    shared_student_data,
 ):
     database_episodes = level_selection.fetch_episode_data(False)
-    owned_level_data, shared_level_data = [], []
-    owned_levels, shared_levels = level_management.get_loadable_levels(request.user)
-
-    for student_row in student_data:
-        current_student = Student.objects.get(id=student_row.id)
-        best_attempts = (
-            Attempt.objects.filter(student=current_student)
-            .values("level_id")
-            .annotate(best_score=Max("score"))
-            .all()
-        )
-
-    print(current_student)
-    print(best_attempts)
-
-    attempts = {a["level_id"]: a["best_score"] for a in best_attempts}
-
-    for level in owned_levels:
-        owned_level_data.append(
-            {
-                "id": level.id,
-                "title": level.name,
-                "score": attempts.get(level.id),
-                "maxScore": 10,
-            }
-        )
-
-    for level in shared_levels:
-        shared_level_data.append(
-            {
-                "id": level.id,
-                "title": level.name,
-                "owner": level.owner.user,
-                "score": attempts.get(level.id),
-                "maxScore": 10,
-            }
-        )
 
     return render(
         request,
@@ -225,8 +201,9 @@ def scoreboard_view(
             "total_points_header": TotalPointsHeader,
             "episodes": database_episodes,
             "improvement_data": improvement_data,
-            "shared_levels": shared_level_data,
-            "owned_levels": owned_level_data,
+            "shared_headers": shared_headers,
+            "shared_level_headers": shared_level_headers,
+            "shared_student_data": shared_student_data,
         },
     )
 
@@ -251,9 +228,7 @@ def scoreboard(request):
         class_ids = set(map(int, request.POST.getlist("classes")))
         # Show all levels if the teacher doesn't select any
         episode_ids = (
-            set(all_episode_ids)
-            if "episodes" not in request.POST
-            else set(map(int, request.POST.getlist("episodes")))
+            set(all_episode_ids) if "episodes" not in request.POST else set(map(int, request.POST.getlist("episodes")))
         )
     else:
         # Show no data on page load by default (if teacher)
@@ -284,26 +259,49 @@ def scoreboard(request):
     students = students_visible_to_user(user, classes)
 
     all_levels = []
+    shared_levels = []
 
     for episode_id in all_episode_ids:
         episode = Episode.objects.get(id=episode_id)
         all_levels += episode.levels
 
     attempts_per_student = {}
+    attempts_per_student_shared_levels = {}
+
+    if user.is_teacher():
+        if user.teacher.is_admin:
+            # Get all custom levels owned by non-admin teachers
+            standard_teachers = Teacher.objects.filter(school=user.teacher.school, is_admin=False)
+            for standard_teacher in standard_teachers:
+                shared_levels += levels_owned_by(standard_teacher.new_user)
+        else:
+            # Get logged in teacher's custom levels
+            shared_levels += levels_owned_by(request.user)
+
+        # In all cases, get all admins' custom levels
+        school_admins = Teacher.objects.filter(school=user.teacher.school, is_admin=True)
+        for school_admin in school_admins:
+            shared_levels += levels_owned_by(school_admin.new_user)
+
+    elif user.is_student():
+        shared_levels += levels_shared_with(request.user)
 
     for student in students:
         best_attempts = Attempt.objects.filter(
             level__in=all_levels, student=student, is_best_attempt=True
         ).select_related("level")
         attempts_per_student[student] = best_attempts
+        shared_levels += levels_owned_by(student.new_user)
+        best_attempts_shared_levels = Attempt.objects.filter(
+            level__in=shared_levels, student=student, is_best_attempt=True
+        ).select_related("level")
+        attempts_per_student_shared_levels[student] = best_attempts_shared_levels
 
-    (
-        student_data,
-        headers,
-        level_headers,
-        levels_sorted,
-    ) = scoreboard_data(episode_ids, attempts_per_student)
+    (student_data, headers, level_headers, levels_sorted) = scoreboard_data(episode_ids, attempts_per_student)
     improvement_data = get_improvement_data(attempts_per_student)
+    shared_headers, shared_level_headers, shared_student_data = shared_levels_data(
+        request.user.userprofile, shared_levels, attempts_per_student_shared_levels
+    )
 
     csv_export = "export" in request.POST
 
@@ -317,14 +315,14 @@ def scoreboard(request):
             headers,
             level_headers,
             improvement_data,
-            shared_levels,
+            shared_headers,
+            shared_level_headers,
+            shared_student_data,
         )
 
 
 def render_no_permission_error(request):
-    return renderError(
-        request, messages.noPermissionTitle(), messages.noPermissionScoreboard()
-    )
+    return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
 
 
 def is_teacher_with_no_classes_assigned(user, users_classes):
@@ -354,9 +352,7 @@ def sorted_levels_by(level_ids):
 
 def are_classes_viewable_by_teacher(class_ids, user):
     teachers = Teacher.objects.filter(school=user.teacher.school)
-    classes_in_teachers_school = Class.objects.filter(teacher__in=teachers).values_list(
-        "id", flat=True
-    )
+    classes_in_teachers_school = Class.objects.filter(teacher__in=teachers).values_list("id", flat=True)
     for class_id in class_ids:
         is_authorised = class_id in classes_in_teachers_school
         if not is_authorised:
@@ -371,9 +367,7 @@ def authorised_student_access(class_, class_ids):
 def students_visible_to_student(student):
     class_ = student.class_field
     if is_viewable(class_):
-        return class_.students.filter(new_user__is_active=True).select_related(
-            "class_field", "user__user"
-        )
+        return class_.students.filter(new_user__is_active=True).select_related("class_field", "user__user")
     else:
         return [student]
 
@@ -387,9 +381,9 @@ def students_visible_to_user(user, classes):
 
 
 def students_of_classes(classes):
-    return Student.objects.filter(
-        class_field__in=classes, new_user__is_active=True
-    ).select_related("class_field", "user__user")
+    return Student.objects.filter(class_field__in=classes, new_user__is_active=True).select_related(
+        "class_field", "user__user"
+    )
 
 
 def is_valid_request(user, class_ids):
@@ -421,15 +415,10 @@ class User(object):
             self.student = profile.student
 
     def is_student(self):
-        return (
-            hasattr(self.profile, "student")
-            and not self.profile.student.is_independent()
-        )
+        return hasattr(self.profile, "student") and not self.profile.student.is_independent()
 
     def is_teacher(self):
         return hasattr(self.profile, "teacher")
 
     def is_independent_student(self):
-        return (
-            hasattr(self.profile, "student") and self.profile.student.is_independent()
-        )
+        return hasattr(self.profile, "student") and self.profile.student.is_independent()
