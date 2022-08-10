@@ -1,19 +1,15 @@
 from __future__ import absolute_import
+
 from builtins import str
 from itertools import chain
 
-from . import permissions
-from .models import Block, LevelBlock, LevelDecor
-
-from game.decor import get_decor_element
-from game.theme import get_theme_by_pk
-from game.character import get_character_by_pk
-from game.messages import (
-    level_creation_email_subject,
-    level_creation_email_text_content,
-)
-
 from common.helpers.emails import NOTIFICATION_EMAIL, send_email
+
+from game.character import get_character_by_pk
+from game.decor import get_decor_element
+from game.messages import level_creation_email_subject, level_creation_email_text_content
+from game.theme import get_theme_by_pk
+from .models import Block, LevelBlock, LevelDecor
 
 
 ##########
@@ -30,9 +26,7 @@ def get_loadable_levels(user):
 
 def add_related_fields(levels):
     """Add related fields and filter to active users only"""
-    return levels.select_related(
-        "owner__user", "owner__teacher", "owner__student"
-    ).filter(owner__user__is_active=True)
+    return levels.select_related("owner__user", "owner__teacher", "owner__student").filter(owner__user__is_active=True)
 
 
 def levels_shared_with(user):
@@ -83,11 +77,7 @@ def set_decor_inner(level, decor, LevelDecor):
 
     level_decors = []
     for data in decor:
-        level_decors.append(
-            LevelDecor(
-                level_id=level.id, x=data["x"], y=data["y"], decorName=data["decorName"]
-            )
-        )
+        level_decors.append(LevelDecor(level_id=level.id, x=data["x"], y=data["y"], decorName=data["decorName"]))
     LevelDecor.objects.bulk_create(level_decors)
 
 
@@ -106,17 +96,10 @@ def get_night_blocks(level):
         "dead_end",
     ]
     coreNightBlocks = Block.objects.filter(type__in=coreBlockTypes)
-    coreNightLevelBlocks = [
-        LevelBlock(level=level, type=block) for block in coreNightBlocks
-    ]
+    coreNightLevelBlocks = [LevelBlock(level=level, type=block) for block in coreNightBlocks]
     existingLevelBlocks = LevelBlock.objects.filter(level=level)
-    remainingBlocks = existingLevelBlocks.exclude(
-        type__type__in=coreBlockTypes
-    ).order_by("type")
-    levelBlocks = sorted(
-        list(chain(coreNightLevelBlocks, remainingBlocks)),
-        key=lambda levelBlock: levelBlock.type.id,
-    )
+    remainingBlocks = existingLevelBlocks.exclude(type__type__in=coreBlockTypes).order_by("type")
+    levelBlocks = sorted(list(chain(coreNightLevelBlocks, remainingBlocks)), key=lambda levelBlock: levelBlock.type.id)
 
     return [{"type": lb.type.type, "number": lb.number} for lb in levelBlocks]
 
@@ -141,9 +124,7 @@ def set_blocks_inner(level, blocks, LevelBlock, Block):
     for data in blocks:
         level_blocks.append(
             LevelBlock(
-                level_id=level.id,
-                type=dictionary[data["type"]],
-                number=data["number"] if "number" in data else None,
+                level_id=level.id, type=dictionary[data["type"]], number=data["number"] if "number" in data else None
             )
         )
     LevelBlock.objects.bulk_create(level_blocks)
@@ -187,9 +168,7 @@ def unshare_level(level, *users):
     level.shared_with.remove(*users)
 
 
-def email_new_custom_level(
-    teacher_email, moderate_url, level_url, home_url, student_name, class_name
-):
+def email_new_custom_level(teacher_email, moderate_url, level_url, home_url, student_name, class_name):
     # email teacher when a new custom level is created by a pupil, so it can be moderated ASAP
     send_email(
         NOTIFICATION_EMAIL,

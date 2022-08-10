@@ -204,8 +204,10 @@
 <div class="container">
 
     <h5>Shared levels</h5>
-    <p>The shared levels table displays levels that have been shared and then played by others.
-        You can moderate which levels are shared on the <a href="{% url 'level_moderation' %}">moderation page</a>.</p>
+    {% if user|is_logged_in_as_teacher %}
+        <p>The shared levels table displays levels that have been shared and then played by others.
+            You can moderate which levels are shared on the <a href="{% url 'level_moderation' %}">moderation page</a>.</p>
+    {% endif %}
 
     <div class="background tableWrapper" id="tableWrapper">
         <div class="dataTables_info" role="status" aria-live="polite"></div>
