@@ -306,7 +306,7 @@ def scoreboard(request):
     csv_export = "export" in request.POST
 
     if csv_export:
-        return scoreboard_csv(student_data, levels_sorted, improvement_data)
+        return scoreboard_csv(student_data, levels_sorted, improvement_data, shared_level_headers, shared_student_data)
     else:
         return scoreboard_view(
             request,
