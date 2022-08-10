@@ -188,7 +188,7 @@ def unshare_level(level, *users):
 
 
 def email_new_custom_level(
-        teacher_email, moderate_url, level_url, home_url, student_name, class_name
+    teacher_email, moderate_url, level_url, home_url, student_name, class_name
 ):
     # email teacher when a new custom level is created by a pupil, so it can be moderated ASAP
     send_email(
