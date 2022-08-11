@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.4.0 (2022-08-11)
+### Feature
+* Shared levels table ([#1364](https://github.com/ocadotechnology/rapid-router/issues/1364)) ([`b66673f`](https://github.com/ocadotechnology/rapid-router/commit/b66673f158a399e6ca907f4ad8e4a81f11efe1d8))
+
 ## v5.3.2 (2022-08-09)
 ### Fix
 * Bump up version (dummy commit) ([`d0e791b`](https://github.com/ocadotechnology/rapid-router/commit/d0e791bb7d0e13e6e55137cd59cf6cd64efe0324))
