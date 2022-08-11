@@ -20,11 +20,8 @@ class TestModels(TestCase):
 
         teacher = Teacher.objects.get(new_user__email=teacher_email)
 
-        level1_id = create_save_level(teacher)
-        level2_id = create_save_level(teacher)
-
-        level1 = Level.objects.get(id=level1_id)
-        level2 = Level.objects.get(id=level2_id)
+        level1 = create_save_level(teacher)
+        level2 = create_save_level(teacher)
 
         assert level1.next_level is None
         assert level2.next_level is None
@@ -34,7 +31,7 @@ class TestModels(TestCase):
 
         level2.delete()
 
-        level1 = Level.objects.get(id=level1_id)
+        level1 = Level.objects.get(id=level1.id)
 
         assert level1.next_level is None
 
@@ -71,8 +68,7 @@ class TestModels(TestCase):
         teacher_email, teacher_password = signup_teacher_directly()
         teacher = Teacher.objects.get(new_user__email=teacher_email)
 
-        level_id = create_save_level(teacher)
-        level = Level.objects.get(id=level_id)
+        level = create_save_level(teacher)
 
         episode_id = create_episode()
         episode = Episode.objects.get(id=episode_id)

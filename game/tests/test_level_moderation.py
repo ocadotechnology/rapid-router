@@ -38,7 +38,7 @@ class LevelModerationTestCase(TestCase):
 
         _, _, student = create_school_student_directly(access_code)
 
-        level_id = create_save_level(student, level_name)
+        level = create_save_level(student, level_name)
 
         self.teacher_login(email, password)
 
@@ -48,7 +48,7 @@ class LevelModerationTestCase(TestCase):
         assert level_name in response.content.decode()
 
         # Test delete level
-        delete_level_url = reverse("delete_level", kwargs={"levelID": level_id})
+        delete_level_url = reverse("delete_level", kwargs={"levelID": level.id})
         self.client.post(delete_level_url)
         response = self.client.get(level_moderation_url)
         assert level_name not in response.content.decode()
@@ -124,8 +124,8 @@ class LevelModerationTestCase(TestCase):
         _, _, student2 = create_school_student_directly(access_code2)
 
         # Create one level for each student
-        level1_id = create_save_level(student1, level1_name)
-        level2_id = create_save_level(student2, level2_name)
+        level1 = create_save_level(student1, level1_name)
+        level2 = create_save_level(student2, level2_name)
 
         # Log in as teacher2, check they cannot see student1's level and cannot delete it
         self.teacher_login(email2, password2)
@@ -138,7 +138,7 @@ class LevelModerationTestCase(TestCase):
         assert student2.new_user.first_name in response.content.decode()
         # Try to delete level1, it shouldn't work
         delete_level1_url = reverse(
-            "delete_level_for_editor", kwargs={"levelId": level1_id}
+            "delete_level_for_editor", kwargs={"levelId": level1.id}
         )
         response = self.client.get(delete_level1_url)
         assert response.status_code == 401
@@ -158,7 +158,7 @@ class LevelModerationTestCase(TestCase):
         assert student2.new_user.first_name in response.content.decode()
         # Delete level2
         delete_level2_url = reverse(
-            "delete_level_for_editor", kwargs={"levelId": level2_id}
+            "delete_level_for_editor", kwargs={"levelId": level2.id}
         )
         response = self.client.get(delete_level2_url)
         assert response.status_code == 200
