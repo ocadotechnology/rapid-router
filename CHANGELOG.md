@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.4.1 (2022-08-12)
+### Fix
+* **deps:** Bump django from 3.2.14 to 3.2.15 ([#1365](https://github.com/ocadotechnology/rapid-router/issues/1365)) ([`4c216f0`](https://github.com/ocadotechnology/rapid-router/commit/4c216f00e147c73ee40bc9502f95126974219bd9))
+
 ## v5.4.0 (2022-08-11)
 ### Feature
 * Shared levels table ([#1364](https://github.com/ocadotechnology/rapid-router/issues/1364)) ([`b66673f`](https://github.com/ocadotechnology/rapid-router/commit/b66673f158a399e6ca907f4ad8e4a81f11efe1d8))
