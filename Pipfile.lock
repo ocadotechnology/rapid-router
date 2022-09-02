@@ -25,10 +25,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:5ca91090bebeb1d896b1436d54663c3f8e837ac008180835dd4f3472340eac78",
-                "sha256:c8dacceebb906c66035fd9bf34a14081f79118180ae6dfe85cd44f81cb6740da"
+                "sha256:24d480e6c1bc7bfa79d064298a08f5cc391bc902e50fb8b1d7777d8756646da8",
+                "sha256:d4f626c551882b36cf7e6947e59f385fca3674101c7e23fb085c13e702b8c6b8"
             ],
-            "version": "==6.18.2"
+            "version": "==6.18.3"
         },
         "django": {
             "hashes": [
@@ -171,16 +171,17 @@
                 "sha256:25642c956049920a5aa49edcdd6ab1e06d7e5d467fc00e0506c44ac86fbfca02",
                 "sha256:e6d2677a32f47fc7eb2795db1dd15c1f34eff616bcaf2cfb5e997f854fa1c4a6"
             ],
+            "markers": "python_version < '3.8'",
             "version": "==4.3.0"
         }
     },
     "develop": {
         "aimmo": {
             "hashes": [
-                "sha256:4a001c79359e5f6c3d7ef2410743cfca9c94038bdaa9245a72e8228877ef3923",
-                "sha256:c41f325beba8dd9af786108a1ba100cc555b31a58a40eb4b95be8c55d96c6475"
+                "sha256:b92ad58280b1109bfd30d5d406dcef9d0c79d1628d895fd44b58627d1226754f",
+                "sha256:c95d2e52445c2185a825d6e8b5a8f4ae91b9b8bf65f9df7c4581a725753a1956"
             ],
-            "version": "==2.4.4"
+            "version": "==2.4.5"
         },
         "asgiref": {
             "hashes": [
@@ -212,10 +213,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:5ca91090bebeb1d896b1436d54663c3f8e837ac008180835dd4f3472340eac78",
-                "sha256:c8dacceebb906c66035fd9bf34a14081f79118180ae6dfe85cd44f81cb6740da"
+                "sha256:24d480e6c1bc7bfa79d064298a08f5cc391bc902e50fb8b1d7777d8756646da8",
+                "sha256:d4f626c551882b36cf7e6947e59f385fca3674101c7e23fb085c13e702b8c6b8"
             ],
-            "version": "==6.18.2"
+            "version": "==6.18.3"
         },
         "chardet": {
             "hashes": [
@@ -226,11 +227,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:2ca1b4a729ed6603fac5d218ff9e88a1c26f4b3ded6053e8feddf6a5027bf8e7",
-                "sha256:e1d4a175b7d91a12a97b2844c178d961472e781fe9774047b15b4153ffe58e56"
+                "sha256:8628c4f03f72049b52d3f84bbbacf74e5460b87a16e87dad2bc5ea17c8edc748",
+                "sha256:9dc7c3423a506604fa72c05901dd625ade059065c80ad15a9d57f2d8b5383083"
             ],
             "index": "pypi",
-            "version": "==6.18.2"
+            "version": "==6.18.3"
         },
         "django": {
             "hashes": [
@@ -814,6 +815,7 @@
                 "sha256:25642c956049920a5aa49edcdd6ab1e06d7e5d467fc00e0506c44ac86fbfca02",
                 "sha256:e6d2677a32f47fc7eb2795db1dd15c1f34eff616bcaf2cfb5e997f854fa1c4a6"
             ],
+            "markers": "python_version < '3.8'",
             "version": "==4.3.0"
         },
         "urllib3": {
