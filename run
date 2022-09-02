@@ -29,5 +29,5 @@ if [ "$translation" = "1" ]; then
   ./.crowdin-get-translations
 fi
 
-./example_project/manage.py collectstatic --noinput
+./example_project/manage.py collectstatic --noinput --clear
 ./example_project/manage.py runserver "$@"

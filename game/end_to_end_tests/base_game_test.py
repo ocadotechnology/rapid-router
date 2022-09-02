@@ -1,14 +1,13 @@
 import os
 import socket
+import time
 from builtins import str
 
-import time
 from common.models import UserProfile
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
-from django.core.management import call_command
 from django.urls import reverse
 from portal.tests.pageObjects.portal.home_page import HomePage
 
@@ -22,9 +21,7 @@ custom_handler.monkey_patch()
 
 
 class BaseGameTest(SeleniumTestCase):
-    BLOCKLY_SOLUTIONS_DIR = os.path.join(
-        os.path.dirname(__file__), "data/blockly_solutions"
-    )
+    BLOCKLY_SOLUTIONS_DIR = os.path.join(os.path.dirname(__file__), "data/blockly_solutions")
 
     already_logged_on = False
     user_profile = None
@@ -119,9 +116,7 @@ class BaseGameTest(SeleniumTestCase):
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return (
-            self.go_to_level(level).load_solution(workspace_id).run_crashing_program()
-        )
+        return self.go_to_level(level).load_solution(workspace_id).run_crashing_program()
 
     def run_python_commands_test(self, level):
         return self.go_to_level(level).check_python_commands()
@@ -146,61 +141,39 @@ class BaseGameTest(SeleniumTestCase):
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return (
-            self.go_to_level(level)
-            .load_solution(workspace_id)
-            .run_out_of_instructions_program()
-        )
+        return self.go_to_level(level).load_solution(workspace_id).run_out_of_instructions_program()
 
     def running_out_of_fuel_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return (
-            self.go_to_level(level)
-            .load_solution(workspace_id)
-            .run_out_of_fuel_program()
-        )
+        return self.go_to_level(level).load_solution(workspace_id).run_out_of_fuel_program()
 
     def running_a_red_light_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return (
-            self.go_to_level(level)
-            .load_solution(workspace_id)
-            .run_a_red_light_program()
-        )
+        return self.go_to_level(level).load_solution(workspace_id).run_a_red_light_program()
 
     def not_delivered_everywhere_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return (
-            self.go_to_level(level)
-            .load_solution(workspace_id)
-            .run_not_delivered_everywhere_program()
-        )
+        return self.go_to_level(level).load_solution(workspace_id).run_not_delivered_everywhere_program()
 
     def undefined_procedure_test(self, level, workspace_file):
         user_profile = self.login_once()
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return (
-            self.go_to_level(level)
-            .load_solution(workspace_id)
-            .run_undefined_procedure_program()
-        )
+        return self.go_to_level(level).load_solution(workspace_id).run_undefined_procedure_program()
 
     def use_workspace(self, workspace_file, user_profile):
         solution = self.read_solution(workspace_file)
-        workspace_id = Workspace.objects.create(
-            name=workspace_file, owner=user_profile, contents=solution
-        ).id
+        workspace_id = Workspace.objects.create(name=workspace_file, owner=user_profile, contents=solution).id
         return workspace_id
 
     def login_once(self):
@@ -221,7 +194,6 @@ class BaseGameTest(SeleniumTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        call_command("collectstatic", "--noinput")
 
     @classmethod
     def tearDownClass(cls):
