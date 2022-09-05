@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.4.2 (2022-09-05)
+### Fix
+* Remove autoconfig ([#1368](https://github.com/ocadotechnology/rapid-router/issues/1368)) ([`2594870`](https://github.com/ocadotechnology/rapid-router/commit/259487062a0fd705635e1795cb16e130135b6ce7))
+
 ## v5.4.1 (2022-08-12)
 ### Fix
 * **deps:** Bump django from 3.2.14 to 3.2.15 ([#1365](https://github.com/ocadotechnology/rapid-router/issues/1365)) ([`4c216f0`](https://github.com/ocadotechnology/rapid-router/commit/4c216f00e147c73ee40bc9502f95126974219bd9))
