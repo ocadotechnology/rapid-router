@@ -28,7 +28,6 @@ jobs:
         run: python example_project/manage.py collectstatic --noinput
       - name: Run Python tests
         run: |
-          ls
           cd example_project
           ls
           pytest -x --cov=. --cov-report=xml -vv
