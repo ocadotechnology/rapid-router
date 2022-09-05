@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "de96f9593312ef8ad6804e955709e4ee10414b38442db7f8e77d587c07cdd070"
+            "sha256": "bcb2113241fb44ae89708a635612063282095e9f5db0ddd8695b6c081b7ae1c2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -652,11 +652,11 @@
         },
         "pytest": {
             "hashes": [
-                "sha256:131b36680866a76e6781d13f101efb86cf674ebb9762eb70d3082b6f29889e89",
-                "sha256:7310f8d27bc79ced999e760ca304d69f6ba6c6649c0b60fb0e04a4a77cacc134"
+                "sha256:1377bda3466d70b55e3f5cecfa55bb7cfcf219c7964629b967c37cf0bda818b7",
+                "sha256:4f365fec2dff9c1162f834d9f18af1ba13062db0c708bf7b946f8a5c76180c39"
             ],
             "index": "pypi",
-            "version": "==6.2.5"
+            "version": "==7.1.3"
         },
         "pytest-django": {
             "hashes": [
@@ -803,12 +803,12 @@
             ],
             "version": "==0.4.2"
         },
-        "toml": {
+        "tomli": {
             "hashes": [
-                "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b",
-                "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"
+                "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
+                "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
             ],
-            "version": "==0.10.2"
+            "version": "==2.0.1"
         },
         "typing-extensions": {
             "hashes": [
@@ -827,10 +827,10 @@
         },
         "websocket-client": {
             "hashes": [
-                "sha256:33ad3cf0aef4270b95d10a5a66b670a66be1f5ccf10ce390b3644f9eddfdca9d",
-                "sha256:79d730c9776f4f112f33b10b78c8d209f23b5806d9a783e296b3813fc5add2f1"
+                "sha256:398909eb7e261f44b8f4bd474785b6ec5f5b499d4953342fe9755e01ef624090",
+                "sha256:f9611eb65c8241a67fb373bef040b3cf8ad377a9f6546a12b620b6511e8ea9ef"
             ],
-            "version": "==1.4.0"
+            "version": "==1.4.1"
         },
         "zipp": {
             "hashes": [

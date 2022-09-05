@@ -14,15 +14,6 @@ SELENIUM_WEBDRIVERS = {
 
 SELENIUM_WIDTHS = [1624]
 
-if os.environ.get("SELENIUM_HEADLESS", None):
-    from pyvirtualdisplay import Display
-
-    display = Display(visible=False, size=(1920, 1080))
-    display.start()
-    import atexit
-
-    atexit.register(lambda: display.stop())
-
 DEBUG = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
