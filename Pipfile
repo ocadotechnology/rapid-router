@@ -12,6 +12,8 @@ django-test-migrations = "==1.2.0"
 selenium = "==3.141.0"
 pytest-django = "==4.5.2"
 pytest = "==7.*"
+pytest-xdist = "*"
+pytest-order = "*"
 codeforlife-portal = "*"
 
 [requires]

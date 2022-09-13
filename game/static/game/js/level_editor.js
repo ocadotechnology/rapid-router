@@ -2457,7 +2457,7 @@ ocargo.LevelEditor = function(levelId) {
 	// Check to see if start and end nodes have been marked
         if (!originNode || !destinationNode) {
             var noStartOrEnd = interpolate(
-                gettext('In %(map_icon)s %(map_label)s menu, click on %(mark_start_icon)%(mark_start_label) or ' +
+                gettext('In %(map_icon)s%(map_label)s menu, click on %(mark_start_icon)s%(mark_start_label)s or ' +
                     '%(mark_end_icon)s%(mark_end_label)s then select the square where you want the road to start or end.'
                 ), {
                     map_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon'),
