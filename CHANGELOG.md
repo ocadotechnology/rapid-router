@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.4.3 (2022-09-13)
+### Fix
+* Resolve scoreboard and button issues ([#1369](https://github.com/ocadotechnology/rapid-router/issues/1369)) ([`6615510`](https://github.com/ocadotechnology/rapid-router/commit/6615510f142c94f933498a9209737eca3455aeeb))
+
 ## v5.4.2 (2022-09-05)
 ### Fix
 * Remove autoconfig ([#1368](https://github.com/ocadotechnology/rapid-router/issues/1368)) ([`2594870`](https://github.com/ocadotechnology/rapid-router/commit/259487062a0fd705635e1795cb16e130135b6ce7))
