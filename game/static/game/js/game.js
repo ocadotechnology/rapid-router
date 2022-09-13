@@ -543,6 +543,7 @@ ocargo.Game.prototype.onFastControls = function () {
   document.getElementById('direct_drive').style.visibility = 'hidden'
 
   this.tabs.play.transitTo('running')
+  buttonTransit("run-code-button", "running")
   this.tabs.fast.transitTo('fast')
   this.tabs.step.disable()
 
