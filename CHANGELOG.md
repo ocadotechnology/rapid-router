@@ -2,6 +2,38 @@
 
 <!--next-version-placeholder-->
 
+## v5.4.3 (2022-09-13)
+### Fix
+* Resolve scoreboard and button issues ([#1369](https://github.com/ocadotechnology/rapid-router/issues/1369)) ([`6615510`](https://github.com/ocadotechnology/rapid-router/commit/6615510f142c94f933498a9209737eca3455aeeb))
+
+## v5.4.2 (2022-09-05)
+### Fix
+* Remove autoconfig ([#1368](https://github.com/ocadotechnology/rapid-router/issues/1368)) ([`2594870`](https://github.com/ocadotechnology/rapid-router/commit/259487062a0fd705635e1795cb16e130135b6ce7))
+
+## v5.4.1 (2022-08-12)
+### Fix
+* **deps:** Bump django from 3.2.14 to 3.2.15 ([#1365](https://github.com/ocadotechnology/rapid-router/issues/1365)) ([`4c216f0`](https://github.com/ocadotechnology/rapid-router/commit/4c216f00e147c73ee40bc9502f95126974219bd9))
+
+## v5.4.0 (2022-08-11)
+### Feature
+* Shared levels table ([#1364](https://github.com/ocadotechnology/rapid-router/issues/1364)) ([`b66673f`](https://github.com/ocadotechnology/rapid-router/commit/b66673f158a399e6ca907f4ad8e4a81f11efe1d8))
+
+## v5.3.2 (2022-08-09)
+### Fix
+* Bump up version (dummy commit) ([`d0e791b`](https://github.com/ocadotechnology/rapid-router/commit/d0e791bb7d0e13e6e55137cd59cf6cd64efe0324))
+
+## v5.3.1 (2022-08-05)
+### Fix
+* Update load, save and solve icons ([#1361](https://github.com/ocadotechnology/rapid-router/issues/1361)) ([`5772314`](https://github.com/ocadotechnology/rapid-router/commit/5772314848b25841c93e839c4698ae5e63b61b25))
+
+## v5.3.0 (2022-08-03)
+### Feature
+* Resizeble window ([#1359](https://github.com/ocadotechnology/rapid-router/issues/1359)) ([`48ac975`](https://github.com/ocadotechnology/rapid-router/commit/48ac975574dfc500f98d023821b41977e6426830))
+
+## v5.2.0 (2022-08-01)
+### Feature
+* Include students from other classes in level moderation for admin teachers ([#1358](https://github.com/ocadotechnology/rapid-router/issues/1358)) ([`37021c9`](https://github.com/ocadotechnology/rapid-router/commit/37021c97075fc215c2bec99afd3f92db8b38a218))
+
 ## v5.1.0 (2022-07-13)
 ### Feature
 * Update styles of the game pt. 1 ([#1356](https://github.com/ocadotechnology/rapid-router/issues/1356)) ([`604dbdb`](https://github.com/ocadotechnology/rapid-router/commit/604dbdb3344f5cf905a37cb527325c00a5799ee3))

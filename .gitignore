@@ -8,6 +8,7 @@ local_settings.py
 *.iml
 *~
 *.egg-info
+.vscode
 
 .settings
 .project

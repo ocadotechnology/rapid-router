@@ -166,7 +166,7 @@ ocargo.LevelEditor = function(levelId) {
         var tabs = [];
         var currentTabSelected = null;
 
-        tabs.play = new ocargo.Tab($('#play_radio'), $('#play_radio + label'));
+        tabs.play = new ocargo.Tab($('#play_radio'), $("#run-code-button"), $('#play_radio + label'));
         tabs.playNight = new ocargo.Tab($('#play_night_radio'), $('#play_night_radio + label'));
         tabs.map = new ocargo.Tab($('#map_radio'), $('#map_radio + label'), $('#map_pane'));
         tabs.scenery = new ocargo.Tab($('#scenery_radio'), $('#scenery_radio + label'), $('#scenery_pane'));
@@ -2457,7 +2457,7 @@ ocargo.LevelEditor = function(levelId) {
 	// Check to see if start and end nodes have been marked
         if (!originNode || !destinationNode) {
             var noStartOrEnd = interpolate(
-                gettext('In %(map_icon)s %(map_label)s menu, click on %(mark_start_icon)%(mark_start_label) or ' +
+                gettext('In %(map_icon)s%(map_label)s menu, click on %(mark_start_icon)s%(mark_start_label)s or ' +
                     '%(mark_end_icon)s%(mark_end_label)s then select the square where you want the road to start or end.'
                 ), {
                     map_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon'),

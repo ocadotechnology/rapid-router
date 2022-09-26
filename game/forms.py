@@ -30,8 +30,25 @@ class ScoreboardForm(forms.Form):
 class LevelModerationForm(forms.Form):
     def __init__(self, *args, **kwargs):
         classes = kwargs.pop("classes")
+        teacher = kwargs.pop("teacher")
         super(LevelModerationForm, self).__init__(*args, **kwargs)
-        classes_choices = [(c.id, c.name) for c in classes]
+
+        # If the teacher is an admin, append teacher names or "(you)" to classes
+        if teacher.is_admin:
+            classes_choices = [
+                (
+                    c.id,
+                    f"{c.name} "
+                    + (
+                        "(you)"
+                        if c.teacher == teacher
+                        else f"({c.teacher.new_user.first_name} {c.teacher.new_user.last_name})"
+                    ),
+                )
+                for c in classes
+            ]
+        else:
+            classes_choices = [(c.id, c.name) for c in classes]
 
         self.fields["classes"] = forms.MultipleChoiceField(
             choices=classes_choices, widget=forms.CheckboxSelectMultiple()

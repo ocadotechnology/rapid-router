@@ -166,7 +166,7 @@
                                 {% else %}
                                 <td class="text-center scoreboard--completed-secondary">
                                 {% endifnotequal %}
-                                    <div class="d-flex justify-content-center">
+                                    <div title="{{ level_score.score }}" class="d-flex justify-content-center">
                                         <span class="iconify" data-icon="mdi:star"></span>
                                     </div>
                                 </td>
@@ -196,7 +196,67 @@
                 {% endfor %}
             </table>
         {% else %}
-        No data.
+            <p>No data.</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="container">
+
+    <h5>Shared levels</h5>
+    {% if user|is_logged_in_as_teacher %}
+        <p>The shared levels table displays levels that have been shared and then played by others.
+            You can moderate which levels are shared on the <a href="{% url 'level_moderation' %}">moderation page</a>.</p>
+    {% endif %}
+
+    <div class="background tableWrapper" id="tableWrapper">
+        {% if shared_student_data %}
+            <div class="dataTables_info" role="status" aria-live="polite"></div>
+            <table id="sharedLevelsTable" class="display cell-border wide header-primary data-primary">
+                <thead>
+                <tr>
+                    {% for shared_header in shared_headers %}
+                        <th class="fixed-width">{{ shared_header }}</th>
+                    {% endfor %}
+                    {% for shared_level_header in shared_level_headers %}
+                        <th class="no-sort text-center">{{ shared_level_header }}</th>
+                    {% endfor %}
+                </tr>
+                </thead>
+                {% for student in shared_student_data %}
+                    {% ifnotequal student.name user.first_name %}
+                    <tr>
+                    {% else %}
+                    <tr class="current-student">
+                    {% endifnotequal %}
+                        <td class="fixed-width">{{ student.class_field }}</td>
+                        <td class="fixed-width">{{ student.name }}</td>
+                        {% for level_id, level_score in student.level_scores.items %}
+                            {% if level_score.full_score %}
+                                {% ifnotequal student.name user.first_name %}
+                                    <td class="text-center scoreboard--completed">
+                                {% else %}
+                                    <td class="text-center scoreboard--completed-secondary">
+                                {% endifnotequal %}
+                                        <div title="{{ level_score.score }}" class="d-flex justify-content-center">
+                                            <span class="iconify" data-icon="mdi:star"></span>
+                                        </div>
+                                    </td>
+                            {% elif level_score.is_low_attempt %}
+                                {% if user|is_logged_in_as_teacher %}
+                                    <td class="text-center scoreboard--started">{{ level_score.score }}</td>
+                                {% else %}
+                                    <td class="text-center">{{ level_score.score }}</td>
+                                {% endif %}
+                            {% else %}
+                                <td class="text-center">{{ level_score.score }}</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No data.</p>
         {% endif %}
     </div>
 </div>
@@ -226,7 +286,7 @@
                 {% endfor %}
             </table>
         {% else %}
-        No data.
+            <p>No data.</p>
         {% endif %}
     </div>
 </div>

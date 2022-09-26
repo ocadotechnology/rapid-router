@@ -6,17 +6,15 @@ from datetime import datetime, timedelta
 from common.models import Class, Teacher, Student
 from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
-from common.tests.utils.student import (
-    create_school_student_directly,
-    create_independent_student_directly,
-)
+from common.tests.utils.student import create_school_student_directly, create_independent_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
 from django.test import Client, TestCase
 from django.urls import reverse
 
 from game.models import Attempt, Level, Episode
-from game.views.scoreboard import StudentRow, scoreboard_data, Headers, StudentInTrouble
-from game.views.scoreboard_csv import scoreboard_csv, Headers as CSVHeaders
+from game.tests.utils.level import create_save_level
+from game.views.scoreboard import StudentRow, scoreboard_data, Headers, StudentInTrouble, shared_level_to_name
+from game.views.scoreboard_csv import scoreboard_csv, Headers as CSVHeaders, SharedHeaders as CSVSharedHeaders
 
 
 class ScoreboardTestCase(TestCase):
@@ -36,17 +34,15 @@ class ScoreboardTestCase(TestCase):
         all_levels = [level1, level2]
 
         attempts_per_student = {
-            student: Attempt.objects.filter(
-                level__in=all_levels, student=student, is_best_attempt=True
-            ).select_related("level"),
+            student: Attempt.objects.filter(level__in=all_levels, student=student, is_best_attempt=True).select_related(
+                "level"
+            ),
             student2: Attempt.objects.filter(
                 level__in=all_levels, student=student2, is_best_attempt=True
             ).select_related("level"),
         }
 
-        student_data, headers, level_headers, levels_sorted = scoreboard_data(
-            episode_ids, attempts_per_student
-        )
+        student_data, headers, level_headers, levels_sorted = scoreboard_data(episode_ids, attempts_per_student)
 
         assert headers == Headers
         assert level_headers == [f"L{id}" for id in level_ids]
@@ -95,15 +91,9 @@ class ScoreboardTestCase(TestCase):
 
     def test_student_can_see_classes(self):
         """A student should be able to see the classes they are in"""
-        mr_teacher = Teacher.objects.factory(
-            "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
-        )
-        klass, name1, _ = create_class_directly(
-            mr_teacher.user.user.email, class_name="Class 1"
-        )
-        _, name2, _ = create_class_directly(
-            mr_teacher.user.user.email, class_name="Class 2"
-        )
+        mr_teacher = Teacher.objects.factory("Normal", "Teacher", "normal@school.edu", "secretpa$sword")
+        klass, name1, _ = create_class_directly(mr_teacher.user.user.email, class_name="Class 1")
+        _, name2, _ = create_class_directly(mr_teacher.user.user.email, class_name="Class 2")
         student = Student.objects.schoolFactory(klass, "some student", "secret")
 
         c = Client()
@@ -112,34 +102,22 @@ class ScoreboardTestCase(TestCase):
         url = reverse("scoreboard")
         response = c.get(url)
 
-        choices_in_form = [
-            v for (k, v) in response.context["form"]["classes"].field.choices
-        ]
+        choices_in_form = [v for (k, v) in response.context["form"]["classes"].field.choices]
         assert name1 in choices_in_form
         assert name2 not in choices_in_form
         assert len(choices_in_form) == 1
 
     def test_admin_teacher_can_see_all_classes(self):
         """An admin should be able to see all classes, not just the ones they teach"""
-        normal_teacher = Teacher.objects.factory(
-            "Normal", "Teacher", "normal@school.edu", "secretpa$sword"
-        )
-        admin_teacher = Teacher.objects.factory(
-            "Admin", "Admin", "admin@school.edu", "secretpa$sword2"
-        )
+        normal_teacher = Teacher.objects.factory("Normal", "Teacher", "normal@school.edu", "secretpa$sword")
+        admin_teacher = Teacher.objects.factory("Admin", "Admin", "admin@school.edu", "secretpa$sword2")
 
         admin_teacher.is_admin = True
         admin_teacher.save()
 
-        _, name1, _ = create_class_directly(
-            admin_teacher.user.user.email, class_name="Class 1"
-        )
-        _, name2, _ = create_class_directly(
-            admin_teacher.user.user.email, class_name="Class 2"
-        )
-        _, name3, _ = create_class_directly(
-            normal_teacher.user.user.email, class_name="Class 3"
-        )
+        _, name1, _ = create_class_directly(admin_teacher.user.user.email, class_name="Class 1")
+        _, name2, _ = create_class_directly(admin_teacher.user.user.email, class_name="Class 2")
+        _, name3, _ = create_class_directly(normal_teacher.user.user.email, class_name="Class 3")
 
         c = Client()
         c.login(username=admin_teacher.user.user.email, password="secretpa$sword2")
@@ -147,9 +125,7 @@ class ScoreboardTestCase(TestCase):
         url = reverse("scoreboard")
         response = c.get(url)
 
-        choices_in_form = [
-            v for (k, v) in response.context["form"]["classes"].field.choices
-        ]
+        choices_in_form = [v for (k, v) in response.context["form"]["classes"].field.choices]
 
         assert name1 in choices_in_form
         assert name2 in choices_in_form
@@ -157,22 +133,12 @@ class ScoreboardTestCase(TestCase):
 
     def test_non_admin_teacher_can_only_see_their_own_classes(self):
         """A teacher who is not an admin should only be able to see their classes, not ones taught by others"""
-        teacher1 = Teacher.objects.factory(
-            "First", "Teacher", "normal@school.edu", "secretpa$sword"
-        )
-        teacher2 = Teacher.objects.factory(
-            "Second", "Teacher", "admin@school.edu", "secretpa$sword2"
-        )
+        teacher1 = Teacher.objects.factory("First", "Teacher", "normal@school.edu", "secretpa$sword")
+        teacher2 = Teacher.objects.factory("Second", "Teacher", "admin@school.edu", "secretpa$sword2")
 
-        _, name1, _ = create_class_directly(
-            teacher2.user.user.email, class_name="Class 1"
-        )
-        _, name2, _ = create_class_directly(
-            teacher2.user.user.email, class_name="Class 2"
-        )
-        _, name3, _ = create_class_directly(
-            teacher1.user.user.email, class_name="Class 3"
-        )
+        _, name1, _ = create_class_directly(teacher2.user.user.email, class_name="Class 1")
+        _, name2, _ = create_class_directly(teacher2.user.user.email, class_name="Class 2")
+        _, name3, _ = create_class_directly(teacher1.user.user.email, class_name="Class 3")
 
         c = Client()
         # First teacher logs in.  Should see only Class 3
@@ -181,9 +147,7 @@ class ScoreboardTestCase(TestCase):
         url = reverse("scoreboard")
         response = c.get(url)
 
-        choices_in_form = [
-            v for (k, v) in response.context["form"]["classes"].field.choices
-        ]
+        choices_in_form = [v for (k, v) in response.context["form"]["classes"].field.choices]
 
         assert name3 in choices_in_form
         assert name1 not in choices_in_form
@@ -194,9 +158,7 @@ class ScoreboardTestCase(TestCase):
         c.login(username="admin@school.edu", password="secretpa$sword2")
 
         response = c.get(url)
-        choices_in_form = [
-            v for (k, v) in response.context["form"]["classes"].field.choices
-        ]
+        choices_in_form = [v for (k, v) in response.context["form"]["classes"].field.choices]
 
         assert name3 not in choices_in_form
         assert name1 in choices_in_form
@@ -212,68 +174,89 @@ class ScoreboardTestCase(TestCase):
         url = reverse("scoreboard")
         response = c.get(url)
 
-        assert "Scoreboard is only visible to school students and teachers" in str(
-            response.content
-        )
+        assert "Scoreboard is only visible to school students and teachers" in str(response.content)
 
 
 class ScoreboardCsvTestCase(TestCase):
     def test_scoreboard_csv(self):
+        # Take the first two levels of the main game
         levels = Level.objects.sorted_levels()[0:2]
 
+        # Create 2 students along with their main scoreboard data
         student_rows = [None, None]
         students = [None, None]
         student_rows[0], students[0] = self.student_row("secrète")
         student_rows[1], students[1] = self.student_row()
 
+        # Create 2 custom levels and create the associated student data
+        shared_level_rows = [None, None]
+        shared_level1 = create_save_level(students[0], "level1", shared_with=[students[1].new_user])
+        shared_level2 = create_save_level(students[1], "level2")
+        shared_levels = [shared_level1, shared_level2]
+
+        shared_levels_headers = list([shared_level_to_name(level, level.owner) for level in shared_levels])
+
+        shared_level_rows[0] = self.shared_student_row(students[0], shared_levels)
+        shared_level_rows[1] = self.shared_student_row(students[1], shared_levels)
+
+        # Create students' improvement table data
         improvement_data = []
         for student in students:
             stud = StudentInTrouble(student=student, areas="Getting started")
             improvement_data.append(stud)
 
-        response = scoreboard_csv(student_rows, levels, improvement_data)
+        # Generate the CSV
+        response = scoreboard_csv(student_rows, levels, improvement_data, shared_levels_headers, shared_level_rows)
 
-        actual_header, actual_rows = self.actual_data(response.content.decode("utf-8"))
+        # Gather the data from the CSV
+        actual_scoreboard_header, actual_scoreboard_rows, actual_shared_levels_header, actual_shared_levels_rows = self.actual_data(
+            response.content.decode("utf-8"), len(students)
+        )
 
-        expected_header = self.expected_header(levels)
-        assert actual_header == expected_header
+        # Check the headers and the number or rows match expectations
+        assert actual_scoreboard_header == self.expected_scoreboard_header(levels)
+        assert len(actual_scoreboard_rows) == len(student_rows)
+        assert actual_shared_levels_header == self.expected_shared_levels_header(shared_levels)
+        assert len(actual_shared_levels_rows) == len(shared_level_rows)
 
-        assert len(actual_rows) == len(student_rows)
-
-        # check first row
-        (
-            class_name,
-            name,
-            completed_levels,
-            total_time,
-            total_scores,
-            l1,
-            l2,
-            improvement,
-        ) = actual_rows[0].split(",")
+        # check first scoreboard row
+        (class_name, name, completed_levels, total_time, total_scores, l1, l2, improvement) = actual_scoreboard_rows[
+            0
+        ].split(",")
         assert student_rows[0].class_field.name == class_name
         assert student_rows[0].name == name
         assert student_rows[0].level_scores[0]["score"] == int(l1)
         assert student_rows[0].level_scores[1]["score"] == int(l2)
         assert improvement == "Getting started"
 
-        # check last row
-        last = len(actual_rows) - 1
-        (
-            class_name,
-            name,
-            completed_levels,
-            total_time,
-            total_scores,
-            l1,
-            l2,
-            improvement,
-        ) = actual_rows[last].split(",")
+        # check last scoreboard row
+        last = len(actual_scoreboard_rows) - 1
+        (class_name, name, completed_levels, total_time, total_scores, l1, l2, improvement) = actual_scoreboard_rows[
+            last
+        ].split(",")
         assert student_rows[last].class_field.name == class_name
         assert student_rows[last].name == name
         assert str(student_rows[last].total_time) == total_time
 
+        # check first shared level row
+        (class_name, name, l1, l2) = actual_shared_levels_rows[0].split(",")
+        assert shared_level_rows[0].class_field.name == class_name
+        assert shared_level_rows[0].name == name
+        assert shared_level_rows[0].level_scores[0]["score"] == l1
+        assert shared_level_rows[0].level_scores[1]["score"] == l2
+
+        # check last shared level row
+        last = len(actual_shared_levels_rows) - 1
+        (class_name, name, l1, l2) = actual_shared_levels_rows[last].split(",")
+        assert shared_level_rows[last].class_field.name == class_name
+        assert shared_level_rows[last].name == name
+        assert shared_level_rows[last].level_scores[0]["score"] == int(l1)
+        assert shared_level_rows[last].level_scores[1]["score"] == l2
+
     def student_row(self, class_name=None):
+        """
+        Create data for a student row in the main scoreboard table
+        """
         email, password = signup_teacher_directly()
         _, class_name, access_code = create_class_directly(email, class_name)
         _, _, student = create_school_student_directly(access_code)
@@ -301,26 +284,73 @@ class ScoreboardCsvTestCase(TestCase):
 
         return row, student
 
-    def expected_header(self, levels):
+    def shared_student_row(self, student, shared_levels):
+        """
+        Create data for a student row in the custom levels table
+        """
+        level_scores = {}
+        for i in range(len(shared_levels)):
+            level_scores[i] = {}
+
+            level_scores[i]["score"] = 5
+
+            if student.new_user not in shared_levels[i].shared_with.all():
+                level_scores[i]["score"] = "Not shared"
+
+            if shared_levels[i].owner == student.user:
+                level_scores[i]["score"] = "Owner"
+
+            level_scores[i]["full_score"] = 10
+            level_scores[i]["is_low_attempt"] = True
+
+        row = StudentRow(
+            student=student,
+            class_field=Class(name="MyClass"),
+            total_time=0,
+            total_score=0,
+            level_scores=level_scores,
+            completed=0,
+            percentage_complete=0,
+        )
+
+        return row
+
+    def expected_scoreboard_header(self, levels):
         level_strings = list(map(str, levels))
         all_header_strings = CSVHeaders + level_strings + ["Areas for improvement"]
         joined = ",".join(all_header_strings)
         return joined
 
-    def actual_data(self, content):
+    def expected_shared_levels_header(self, shared_levels):
+        level_strings = list([shared_level_to_name(level, level.owner) for level in shared_levels])
+        all_header_strings = CSVSharedHeaders + level_strings
+        joined = ",".join(all_header_strings)
+        return joined
+
+    def actual_data(self, content, number_of_students):
+        """
+        Gets the data from the CSV taking into account the number of students in the request. The CSV should contain
+        two tables, each with a one-row header and x number of rows where x = number of students.
+        """
+        scoreboard_header_row = 0
+        scoreboard_rows_start = scoreboard_header_row + 1
+        scoreboard_rows_end = scoreboard_rows_start + number_of_students
+        shared_levels_header_row = scoreboard_rows_end + 1
+        shared_levels_rows_start = shared_levels_header_row + 1
+        shared_levels_rows_end = shared_levels_rows_start + number_of_students
+
         split = content.strip().split("\r\n")
-        header = split[0]
-        rows = split[1:]
-        return header, rows
+        scoreboard_header = split[scoreboard_header_row]
+        scoreboard_rows = split[scoreboard_rows_start:scoreboard_rows_end]
+        shared_levels_header = split[shared_levels_header_row]
+        shared_levels_rows = split[shared_levels_rows_start:shared_levels_rows_end]
+
+        return scoreboard_header, scoreboard_rows, shared_levels_header, shared_levels_rows
 
 
 def create_attempt(student, level, score):
     attempt = Attempt.objects.create(
-        finish_time=datetime.fromtimestamp(1435305072),
-        level=level,
-        student=student,
-        score=score,
-        is_best_attempt=True,
+        finish_time=datetime.fromtimestamp(1435305072), level=level, student=student, score=score, is_best_attempt=True
     )
     attempt.start_time = datetime.fromtimestamp(1435305072)
     attempt.save()

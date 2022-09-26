@@ -1,13 +1,1 @@
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" viewBox="0 0 100 100" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
- <g transform="translate(0 -952.36)">
- <g transform="matrix(.89186 0 0 .89186 199.55 123.26)">
- <path stroke="#000" stroke-width="1px" transform="translate(0 952.36)" d="m-207.88-7.5625v81.781h80.375v-71.438l-10.375-10.344h-70zm17.688 1.5h45v22.844h-45v-22.844zm-9.81 39.218h65v34.625h-65v-34.625z"/>
- <rect y="949.16" width="8.2143" x="-160.01" height="17.143"/>
- <g stroke="#000" stroke-width="1px" fill="none" transform="translate(97.493 46.187)">
- <path transform="translate(0 952.36)" d="m-290.71-5h51.429"/>
- <path d="m-290.71 956.65h51.429"/>
- <path d="m-290.71 965.93h51.429"/>
- </g>
- </g>
- </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="M42 13.85V39q0 1.2-.9 2.1-.9.9-2.1.9H9q-1.2 0-2.1-.9Q6 40.2 6 39V9q0-1.2.9-2.1Q7.8 6 9 6h25.15Zm-3 1.35L32.8 9H9v30h30ZM24 35.75q2.15 0 3.675-1.525T29.2 30.55q0-2.15-1.525-3.675T24 25.35q-2.15 0-3.675 1.525T18.8 30.55q0 2.15 1.525 3.675T24 35.75ZM11.65 18.8h17.9v-7.15h-17.9ZM9 15.2V39 9Z"/></svg>

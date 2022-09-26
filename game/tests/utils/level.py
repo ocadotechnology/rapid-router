@@ -34,4 +34,4 @@ def create_save_level(teacher_or_student, level_name="1", shared_with=None):
             level.shared_with.add(user)
         level.save()
 
-    return level.id
+    return level

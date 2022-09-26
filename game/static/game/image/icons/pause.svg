@@ -1,10 +1,5 @@
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" viewBox="0 0 100 100" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
- <g transform="translate(0 -952.36)">
- <g transform="matrix(.93348 0 0 .93348 -236.41 968.66)">
- <g stroke="#000" stroke-width="1.2571" transform="translate(-2.0611 -1.9518)">
- <rect y="-5.4546" width="24.98" x="317.44" height="87.016"/>
- <rect y="-5.4546" width="24.98" x="275.34" height="87.016"/>
- </g>
- </g>
- </g>
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em"
+    preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32">
+    <path fill="currentColor"
+        d="M12 8v16H8V8h4m0-2H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm12 2v16h-4V8h4m0-2h-4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2z" />
 </svg>

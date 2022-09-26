@@ -122,7 +122,36 @@
 /* Python tab */
 /**************/
 
+
 #pythonCode {
+    height: 100%;
+    width: 100%;
+}
+
+.description > *:not(.CodeMirror) {
+    padding: 0rem 0.5rem 0.5rem 0.5rem;
+}
+
+#consoleRunCode {
+    display: flex;
+    flex-direction: column;
+    background: rgb(77, 77, 77);
+    align-items: flex-end;
+}
+
+div > .navigation_button_kurono {
+    margin: 0.5rem 0.5rem 0.5rem 0rem;
+}
+
+#consoleRunCode > h4 {
+    line-height: 25px;
+    height: 25px;
+    font-size: 20px;
+    color: white;
+    background: rgb(100, 100, 100);
+    margin: 0;
+    padding: 0.5rem 0rem 0.5rem 2.5rem;
+    width: 100%;
     height: 100%;
 }
 
@@ -130,21 +159,26 @@
     background-color: #FEFDFF;
     font-size: 20px;
     font-family: monospace;
-    max-height: 250px;
     max-width: 100%;
-    min-height: 180px;
     overflow: auto;
     padding: 20px;
-    margin-bottom: 20px;
+    margin:0;
+    border: none;
+    resize: none;
 }
 
 #editor {
     min-width: 0%;
+    min-height: 0%;
+    overflow: hidden;
+    height: 50%;
 }
 
 #clear_console {
-    float: right;
-    margin-bottom: 0px
+    margin-bottom: 0px;
+    position: absolute;
+    bottom: 1%;
+    right: 0;
 }
 
 #convert_from_blockly {
@@ -240,6 +274,16 @@
 /***********/
 
 /* Python View slider div */
+
+#consoleLogSlider {
+    position: absolute;
+    top: 50%;
+    height: 0.25rem;
+    width: 100%;
+    z-index: 21;
+    cursor: row-resize;
+}
+
 #pythonViewSlider {
     position: absolute;
     top: 50%;
@@ -291,7 +335,7 @@
 
 .direct_drive_button:hover,
 .direct_drive_button:focus
-{ 
+{
     background-color: rgba(240,240,240,0.3);
     background-size: 50px 50px;
     background-color: transparent;

@@ -1,5 +1,5 @@
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" viewBox="0 0 100 100" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
- <g transform="translate(0 -952.36)">
- <polygon points="57.836 33.827 51.855 27.847 43.483 36.219 35.111 27.847 29.131 33.827 37.503 42.199 29.131 50.571 35.111 56.552 43.483 48.18 51.855 56.552 57.836 50.571 49.464 42.199" transform="matrix(2.8414 0 0 2.8414 -73.554 882.46)" fill="#000000"/>
- </g>
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em"
+    preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+    <path fill="currentColor"
+        d="M5 21q-.825 0-1.413-.587Q3 19.825 3 19v-4h2v4h14V5H5v4H3V5q0-.825.587-1.413Q4.175 3 5 3h14q.825 0 1.413.587Q21 4.175 21 5v14q0 .825-.587 1.413Q19.825 21 19 21Zm5.5-4l-1.4-1.45L11.65 13H3v-2h8.65L9.1 8.45L10.5 7l5 5Z" />
 </svg>

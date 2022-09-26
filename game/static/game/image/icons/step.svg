@@ -1,8 +1,5 @@
-<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" viewBox="0 0 100 100" version="1.1" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/">
- <g transform="translate(0 -952.36)">
- <g stroke="#000" transform="matrix(1.4407 0 0 1.4407 -22.064 -445.3)">
- <path stroke-width="13.888" fill="none" d="m26.358 1029.4c-4.4825-41.875 27.951-74.685 43.521-21.692"/>
- <path stroke-width="1.0183px" d="m53.368 999.67 14.792 30.43 15.153-30.61-15.153 7.51z"/>
- </g>
- </g>
+<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em"
+    preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+    <path fill="currentColor"
+        d="M21.5 14.5L16 20l-5.5-5.5l1.41-1.41L15 16.17V10.5C15 8 13 6 10.5 6S6 8 6 10.5V18H4v-7.5a6.5 6.5 0 1 1 13 0v5.67l3.09-3.09l1.41 1.42Z" />
 </svg>

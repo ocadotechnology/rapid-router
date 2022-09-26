@@ -6,7 +6,7 @@ on:
 jobs:
   tests:
     name: Run tests
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     env:
       LANG: C.UTF-8
     steps:
@@ -26,9 +26,10 @@ jobs:
           pipenv install --dev --system
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
-      - name: Run tests
+      - name: Run Python tests
+        run: pytest -x --cov=. --cov-report=xml -vv -n auto
         env:
           SELENIUM_WEBDRIVER: chrome-headless
-        run: pytest --cov=. --cov-report=xml
+          SELENIUM_HEADLESS: True
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1

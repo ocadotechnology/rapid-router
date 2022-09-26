@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django-autoconfig = { git = 'https://github.com/ocadotechnology/django-autoconfig.git', ref = 'master' }
 rapid-router = {editable = true, path = "."}
 
 [dev-packages]
@@ -12,7 +11,9 @@ django-selenium-clean = "==0.3.3"
 django-test-migrations = "==1.2.0"
 selenium = "==3.141.0"
 pytest-django = "==4.5.2"
-pytest = "==6.*"
+pytest = "==7.*"
+pytest-xdist = "*"
+pytest-order = "*"
 codeforlife-portal = "*"
 
 [requires]
