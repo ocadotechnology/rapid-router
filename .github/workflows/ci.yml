@@ -25,7 +25,9 @@ jobs:
           pip install pytest-cov
           pipenv install --dev --system
           pip uninstall codeforlife-portal -y
-          pip install git+https://github.com/ocadotechnology/codeforlife-portal.git@admin_shared_levels
+          pip uninstall cfl-common -y
+          pip install git+https://github.com/ocadotechnology/codeforlife-portal@admin_shared_levels
+          pip install git+https://github.com/ocadotechnology/codeforlife-portal@admin_shared_levels#egg=cfl-common&subdirectory=cfl_common
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
       - name: Run Python tests
