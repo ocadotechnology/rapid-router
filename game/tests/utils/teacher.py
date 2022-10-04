@@ -14,6 +14,7 @@ def create_school() -> School:
     return school
 
 
-def add_teacher_to_school(teacher: Teacher, school: School):
+def add_teacher_to_school(teacher: Teacher, school: School, is_admin=False):
     teacher.user.teacher.school = school
+    teacher.is_admin = is_admin
     teacher.user.teacher.save()

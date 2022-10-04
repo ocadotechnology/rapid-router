@@ -5,12 +5,12 @@ import re
 from builtins import map
 from builtins import str
 
-from common.models import Student, Class, Teacher
+from common.models import Student, Teacher
 from django.contrib.auth.models import User
-from django.urls import reverse
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_POST
 from portal.templatetags import app_tags
@@ -51,9 +51,7 @@ def level_editor(request, levelId=None):
         "characters": get_all_character(),
         "themes": get_all_themes(),
         "cow_level_enabled": app_settings.COW_FEATURE_ENABLED,
-        "night_mode_feature_enabled": str(
-            app_settings.NIGHT_MODE_FEATURE_ENABLED
-        ).lower(),
+        "night_mode_feature_enabled": str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
     }
     if levelId:
         level = Level.objects.get(id=levelId)
@@ -69,15 +67,11 @@ def available_blocks():
     if app_settings.COW_FEATURE_ENABLED:
         return Block.objects.all()
     else:
-        return Block.objects.all().exclude(
-            type__in=["declare_event", "puff_up", "sound_horn"]
-        )
+        return Block.objects.all().exclude(type__in=["declare_event", "puff_up", "sound_horn"])
 
 
 def play_anonymous_level(request, levelId, from_level_editor=True, random_level=False):
-    night_mode = (
-        False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
-    )
+    night_mode = False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
     level = Level.objects.filter(id=levelId)
 
     if not level.exists():
@@ -139,20 +133,14 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
             "character_height": character_height,
             "wreckage_url": wreckage_url,
             "night_mode": night_mode,
-            "night_mode_feature_enabled": str(
-                app_settings.NIGHT_MODE_FEATURE_ENABLED
-            ).lower(),
+            "night_mode_feature_enabled": str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
             "model_solution": model_solution,
         },
     )
 
 
 def level_data_for(level):
-    return {
-        "name": level.name,
-        "owner": app_tags.make_into_username(level.owner.user),
-        "id": level.id,
-    }
+    return {"name": level.name, "owner": app_tags.make_into_username(level.owner.user), "id": level.id}
 
 
 def levels_shared_with(user):
@@ -226,26 +214,37 @@ def save_level_for_editor(request, levelId=None):
 
     if pattern.match(data["name"]):
         level_management.save_level(level, data)
-        # Add the teacher automatically if it is a new level and the student is not
-        # independent
-        if (
-            (levelId is None)
-            and hasattr(level.owner, "student")
-            and not level.owner.student.is_independent()
-        ):
-            level.shared_with.add(level.owner.student.class_field.teacher.user.user)
+
+        if levelId is None:
+            teacher = None
+
+            # if level owner is a school student, share with teacher automatically if they aren't an admin
+            if hasattr(level.owner, "student") and not level.owner.student.is_independent():
+                teacher = level.owner.student.class_field.teacher
+                if not teacher.is_admin:
+                    level.shared_with.add(teacher.new_user)
+
+                if not data["anonymous"]:
+                    level_management.email_new_custom_level(
+                        level.owner.student.class_field.teacher.new_user.email,
+                        request.build_absolute_uri(reverse("level_moderation")),
+                        request.build_absolute_uri(reverse("play_custom_level", kwargs={"levelId": level.id})),
+                        request.build_absolute_uri(reverse("home")),
+                        str(level.owner.student),
+                        level.owner.student.class_field.name,
+                    )
+            elif hasattr(level.owner, "teacher"):
+                teacher = level.owner.teacher
+
+            # share with all admins of the school
+            school_admins = teacher.school.admins()
+
+            [
+                level.shared_with.add(school_admin.new_user)
+                for school_admin in school_admins
+                if school_admin.new_user != request.user
+            ]
             level.save()
-            if not data["anonymous"]:
-                level_management.email_new_custom_level(
-                    level.owner.student.class_field.teacher.new_user.email,
-                    request.build_absolute_uri(reverse("level_moderation")),
-                    request.build_absolute_uri(
-                        reverse("play_custom_level", kwargs={"levelId": level.id})
-                    ),
-                    request.build_absolute_uri(reverse("home")),
-                    str(level.owner.student),
-                    level.owner.student.class_field.name,
-                )
         response = {"id": level.id}
         return HttpResponse(json.dumps(response), content_type="application/javascript")
     else:
@@ -278,15 +277,13 @@ def generate_random_map_for_editor(request):
     traffic_lights = data["trafficLights"][0] == "true"
     scenery = data["scenery"][0] == "true"
 
-    data = random_road.generate_random_map_data(
-        size, branchiness, loopiness, curviness, traffic_lights, scenery, False
-    )
+    data = random_road.generate_random_map_data(size, branchiness, loopiness, curviness, traffic_lights, scenery, False)
 
     return HttpResponse(json.dumps(data), content_type="application/javascript")
 
 
 class SharingInformationForEditor(APIView):
-    """Returns a information about who the level can be and is shared with. This uses
+    """Returns information about who the level can be and is shared with. This uses
     the CanShareLevel permission."""
 
     authentication_classes = (SessionAuthentication,)
@@ -315,15 +312,13 @@ class SharingInformationForEditor(APIView):
 
             # First get all the student's classmates
             class_ = student.class_field
-            classmates = Student.objects.filter(
-                class_field=class_, new_user__is_active=True
-            ).exclude(id=student.id)
+            classmates = Student.objects.filter(class_field=class_, new_user__is_active=True).exclude(id=student.id)
             valid_recipients["classmates"] = [
                 {
-                    "id": classmate.user.user.id,
-                    "name": app_tags.make_into_username(classmate.user.user),
+                    "id": classmate.new_user.id,
+                    "name": app_tags.make_into_username(classmate.new_user),
                     "shared": level.owner == classmate.user
-                    or level.shared_with.filter(id=classmate.user.user.id).exists(),
+                    or level.shared_with.filter(id=classmate.new_user.id).exists(),
                 }
                 for classmate in classmates
             ]
@@ -331,10 +326,9 @@ class SharingInformationForEditor(APIView):
             # Then add their teacher as well
             teacher = class_.teacher
             valid_recipients["teacher"] = {
-                "id": teacher.user.user.id,
-                "name": app_tags.make_into_username(teacher.user.user),
-                "shared": level.owner == teacher.user
-                or level.shared_with.filter(id=teacher.user.user.id).exists(),
+                "id": teacher.new_user.id,
+                "name": app_tags.make_into_username(teacher.new_user),
+                "shared": level.owner == teacher.user or level.shared_with.filter(id=teacher.new_user.id).exists(),
             }
 
         elif hasattr(userprofile, "teacher"):
@@ -342,23 +336,24 @@ class SharingInformationForEditor(APIView):
 
             # First get all the students they teach
             valid_recipients["classes"] = []
-            classes_taught = Class.objects.filter(teacher=teacher)
+            if teacher.is_admin:
+                classes_taught = teacher.school.classes()
+            else:
+                classes_taught = teacher.class_teacher.all()
             for class_ in classes_taught:
-                students = Student.objects.filter(
-                    class_field=class_, new_user__is_active=True
-                )
+                students = Student.objects.filter(class_field=class_, new_user__is_active=True)
                 valid_recipients["classes"].append(
                     {
-                        "name": class_.name,
+                        "name": f"{class_.name} ({app_tags.make_into_username(class_.teacher.new_user)})"
+                        if teacher.is_admin
+                        else class_.name,
                         "id": class_.id,
                         "students": [
                             {
-                                "id": student.user.user.id,
-                                "name": app_tags.make_into_username(student.user.user),
+                                "id": student.new_user.id,
+                                "name": app_tags.make_into_username(student.new_user),
                                 "shared": level.owner == student.user
-                                or level.shared_with.filter(
-                                    id=student.user.user.id
-                                ).exists(),
+                                or level.shared_with.filter(id=student.new_user.id).exists(),
                             }
                             for student in students
                         ],
@@ -371,20 +366,17 @@ class SharingInformationForEditor(APIView):
                 fellow_teachers = Teacher.objects.filter(school=teacher.school)
                 valid_recipients["teachers"] = [
                     {
-                        "id": fellow_teacher.user.user.id,
-                        "name": app_tags.make_into_username(fellow_teacher.user.user),
+                        "id": fellow_teacher.new_user.id,
+                        "name": app_tags.make_into_username(fellow_teacher.new_user),
+                        "admin": fellow_teacher.is_admin,
                         "shared": level.owner == fellow_teacher.user
-                        or level.shared_with.filter(
-                            id=fellow_teacher.user.user.id
-                        ).exists(),
+                        or level.shared_with.filter(id=fellow_teacher.new_user.id).exists(),
                     }
                     for fellow_teacher in fellow_teachers
                     if teacher != fellow_teacher
                 ]
 
-        return HttpResponse(
-            json.dumps(valid_recipients), content_type="application/javascript"
-        )
+        return HttpResponse(json.dumps(valid_recipients), content_type="application/javascript")
 
 
 class ShareLevelView(APIView):
@@ -425,11 +417,7 @@ class ShareLevelView(APIView):
         :return: A list of users which the requester is authorised to share the level
         with.
         """
-        return [
-            recipient.userprofile.user
-            for recipient in recipients
-            if self._can_share_level_with(recipient)
-        ]
+        return [recipient.userprofile.user for recipient in recipients if self._can_share_level_with(recipient)]
 
     def _can_share_level_with(self, recipient):
         """
@@ -438,13 +426,9 @@ class ShareLevelView(APIView):
         :param recipient: User that the requester wants to share a level with.
         :return: A boolean of whether the requester has permission.
         """
-        return permissions.CanShareLevelWith().has_object_permission(
-            self.request, self, recipient
-        )
+        return permissions.CanShareLevelWith().has_object_permission(self.request, self, recipient)
 
 
 class HttpResponseUnauthorized(HttpResponse):
     def __init__(self):
-        super(HttpResponseUnauthorized, self).__init__(
-            content="Unauthorized", status=401
-        )
+        super(HttpResponseUnauthorized, self).__init__(content="Unauthorized", status=401)

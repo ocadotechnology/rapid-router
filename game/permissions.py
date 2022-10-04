@@ -11,9 +11,7 @@ def _get_userprofile_school(userprofile):
     elif hasattr(userprofile, "student"):
         return userprofile.student.class_field.teacher.school
     else:
-        LOGGER.error(
-            f"Userprofile ID {userprofile.id} has no teacher or student attribute"
-        )
+        LOGGER.error(f"Userprofile ID {userprofile.id} has no teacher or student attribute")
         return None
 
 
@@ -37,6 +35,7 @@ def can_save_workspace(user, workspace):
 def can_delete_workspace(user, workspace):
     return not user.is_anonymous and workspace.owner == user.userprofile
 
+
 #####################
 # Level permissions #
 #####################
@@ -50,10 +49,7 @@ def can_play_or_delete_level(user, level):
     # If the teacher is an admin, they can play any student's level in the school, otherwise only student levels
     # from their own classes
     if user.userprofile.teacher.is_admin and hasattr(level.owner, "student"):
-        return (
-                user.userprofile.teacher.school
-                == level.owner.student.class_field.teacher.school
-        )
+        return user.userprofile.teacher.school == level.owner.student.class_field.teacher.school
     else:
         return user.userprofile.teacher.teaches(level.owner)
 
@@ -87,9 +83,7 @@ def can_load_level(user, level):
         owner_school = _get_userprofile_school(level.owner)
         return user_school is not None and user_school == owner_school
     else:
-        return hasattr(
-            user.userprofile, "teacher"
-        ) and user.userprofile.teacher.teaches(level.owner)
+        return hasattr(user.userprofile, "teacher") and user.userprofile.teacher.teaches(level.owner)
 
 
 def can_save_level(user, level):
@@ -125,16 +119,10 @@ class CanShareLevel(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.user.is_anonymous:
             return False
-        elif (
-            hasattr(request.user.userprofile, "student")
-            and request.user.userprofile.student.is_independent()
-        ):
+        elif hasattr(request.user.userprofile, "student") and request.user.userprofile.student.is_independent():
             return False
         # if the user is a teacher and the level is shared with them
-        elif (
-            hasattr(request.user.userprofile, "teacher")
-            and obj.shared_with.filter(id=request.user.id).exists()
-        ):
+        elif hasattr(request.user.userprofile, "teacher") and obj.shared_with.filter(id=request.user.id).exists():
             return True
         else:
             return obj.owner == request.user.userprofile
@@ -142,15 +130,14 @@ class CanShareLevel(permissions.BasePermission):
 
 class CanShareLevelWith(permissions.BasePermission):
     """
-    Used to verify that an the user who is requesting to share their level is
-    authorised to share the level with a specific recipient.
+    Used to verify that the user who is requesting to share their level is authorised to share the level with a specific
+    recipient.
     The user is authorised if:
     - neither they nor the recipient are anonymous,
     - neither they nor the recipient are independent students,
-    - they are a student and the recipient is a student in the same class, or their
-    teacher
-    - they are a teacher and the recipient is a teacher in the same school, or their
-    student
+    - they are a student and the recipient is a student in the same class, or their teacher
+    - they are a teacher and the recipient is a teacher in the same school, or their student
+    - they are an admin teacher and the recipient is a student in the same school
     """
 
     def has_permission(self, request, view):
@@ -174,25 +161,18 @@ class CanShareLevelWith(permissions.BasePermission):
             and not (recipient_profile.student.is_independent())
         ):
             # Are they in the same class?
-            return (
-                sharer_profile.student.class_field
-                == recipient_profile.student.class_field
-            )
-        elif hasattr(sharer_profile, "teacher") and sharer_profile.teacher.teaches(
-            recipient_profile
-        ):
+            return sharer_profile.student.class_field == recipient_profile.student.class_field
+        elif hasattr(sharer_profile, "teacher") and sharer_profile.teacher.teaches(recipient_profile):
             # Is the recipient taught by the sharer?
             return True
-        elif hasattr(
-            recipient_profile, "teacher"
-        ) and recipient_profile.teacher.teaches(sharer_profile):
+        elif hasattr(recipient_profile, "teacher") and recipient_profile.teacher.teaches(sharer_profile):
             # Is the sharer taught by the recipient?
             return True
-        elif hasattr(sharer_profile, "teacher") and hasattr(
-            recipient_profile, "teacher"
-        ):
+        elif hasattr(sharer_profile, "teacher") and hasattr(recipient_profile, "teacher"):
             # Are they in the same organisation?
             return recipient_profile.teacher.school == sharer_profile.teacher.school
+        elif hasattr(sharer_profile, "teacher") and sharer_profile.teacher.is_admin:
+            return recipient_profile.student.class_field.teacher.school == sharer_profile.teacher.school
         else:
             return False
 
