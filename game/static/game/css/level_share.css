@@ -11,15 +11,15 @@
 }
 
 #share_type_select {
-    width: 180px;
+    width: 250px;
     margin-bottom: 0px;
-    margin-left: 35px;
+    margin-left: 15px;
 }
 
 #class_select {
-    width: 180px;
+    width: 250px;
     margin-bottom: 0px;
-    margin-left: 70px;
+    margin-left: 50px;
 }
 
 #classes_radio {
@@ -34,6 +34,7 @@ tr[status='unshared'] .share_cell {
     color: red;
 }
 
-tr[status='pending'] .share_cell {
+tr[status="admin"] .share_name,
+tr[status="admin"] .share_cell {
     color: gray;
 }

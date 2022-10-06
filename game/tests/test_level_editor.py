@@ -89,8 +89,8 @@ class LevelEditorTestCase(TestCase):
 
         assert_that(response.status_code, equal_to(200))
         sharing_info1 = json.loads(self.get_sharing_information(json.loads(response.content)["id"]).getvalue())
-        assert_that(sharing_info1["teacher"]["shared"], equal_to(True))
-        assert_that(len(mail.outbox), equal_to(1))
+        assert sharing_info1["teacher"]["shared"]
+        assert len(mail.outbox) == 1
 
     def test_anonymous_level_saving_school_student(self):
         email, password = signup_teacher_directly()
@@ -119,10 +119,10 @@ class LevelEditorTestCase(TestCase):
         }
         response = self.client.post(url, {"data": json.dumps(data1)})
 
-        assert_that(response.status_code, equal_to(200))
+        assert response.status_code == 200
         sharing_info1 = json.loads(self.get_sharing_information(json.loads(response.content)["id"]).getvalue())
-        assert_that(sharing_info1["teacher"]["shared"], equal_to(True))
-        assert_that(len(mail.outbox), equal_to(0))
+        assert sharing_info1["teacher"]["shared"]
+        assert len(mail.outbox) == 0
 
     def test_level_sharing_with_no_school(self):
         email1, password1 = signup_teacher_directly()
@@ -131,7 +131,7 @@ class LevelEditorTestCase(TestCase):
         level = create_save_level(teacher1)
 
         sharing_info1 = json.loads(self.get_sharing_information(level.id).getvalue())
-        assert_that(len(sharing_info1["teachers"]), equal_to(0))
+        assert len(sharing_info1["teachers"]) == 0
 
     def test_level_sharing_with_school(self):
         email1, password1 = signup_teacher_directly()
@@ -148,7 +148,7 @@ class LevelEditorTestCase(TestCase):
         add_teacher_to_school(teacher2, school1)
 
         sharing_info1 = json.loads(self.get_sharing_information(level.id).getvalue())
-        assert_that(len(sharing_info1["teachers"]), equal_to(1))
+        assert len(sharing_info1["teachers"]) == 1
 
     def test_level_sharing_with_empty_school(self):
         email1, password1 = signup_teacher_directly()
@@ -161,7 +161,7 @@ class LevelEditorTestCase(TestCase):
         add_teacher_to_school(teacher1, school1)
 
         sharing_info1 = json.loads(self.get_sharing_information(level.id).getvalue())
-        assert_that(len(sharing_info1["teachers"]), equal_to(0))
+        assert len(sharing_info1["teachers"]) == 0
 
     def test_level_sharing_permissions(self):
         email1, password1 = signup_teacher_directly()
@@ -175,18 +175,19 @@ class LevelEditorTestCase(TestCase):
         share_url = reverse("share_level_for_editor", args=[level.id])
 
         school1 = create_school()
-        add_teacher_to_school(teacher1, school1)
+        add_teacher_to_school(teacher1, school1, is_admin=True)
         add_teacher_to_school(teacher2, school1)
 
-        # Create a class and student for the second teacher
+        # Create a class and 2 students for the second teacher
         _, class_name2, access_code2 = create_class_directly(email2)
+        student_name1, student_password1, student1 = create_school_student_directly(access_code2)
         student_name2, student_password2, student2 = create_school_student_directly(access_code2)
 
         self.logout()
         self.login(email2, password2)
 
         # Second teacher can't share the level as it's not been shared with them yet
-        response = self.client.post(share_url, {"recipientIDs[]": [student2.new_user.id], "action": ["share"]})
+        response = self.client.post(share_url, {"recipientIDs[]": [student1.new_user.id], "action": ["share"]})
         assert response.status_code == 403
 
         # Log in as the first teacher again
@@ -202,14 +203,34 @@ class LevelEditorTestCase(TestCase):
         self.login(email2, password2)
 
         # Now the second teacher should be able to share the level
-        response = self.client.post(share_url, {"recipientIDs[]": [student2.new_user.id], "action": ["share"]})
+        response = self.client.post(share_url, {"recipientIDs[]": [student1.new_user.id], "action": ["share"]})
         assert response.status_code == 200
         # and load it
         load_level_url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
         response = self.client.get(load_level_url)
         assert response.status_code == 200
 
-        # Login as a student
+        # Login as the first student
+        self.logout()
+        self.student_login(student_name1, access_code2, student_password1)
+
+        # Check that the student cannot share the level
+        sharing_info = json.loads(self.get_sharing_information(level.id).getvalue())
+        assert sharing_info["detail"] == "You do not have permission to perform this action."
+
+        # Check the student can view the level
+        response = self.client.get(reverse("play_custom_level", args=[level.id]))
+        assert response.status_code == 200
+
+        # Login as first teacher again
+        self.logout()
+        self.login(email1, password1)
+
+        # Share the level with the second student of teacher 2
+        response = self.client.post(share_url, {"recipientIDs[]": [student2.new_user.id], "action": ["share"]})
+        assert response.status_code == 200
+
+        # Login as the second student
         self.logout()
         self.student_login(student_name2, access_code2, student_password2)
 
@@ -220,6 +241,8 @@ class LevelEditorTestCase(TestCase):
         # Check the student can view the level
         response = self.client.get(reverse("play_custom_level", args=[level.id]))
         assert response.status_code == 200
+
+        self.logout()
 
     def test_level_can_only_be_edited_by_owner(self):
         email, password = signup_teacher_directly()
@@ -233,14 +256,14 @@ class LevelEditorTestCase(TestCase):
         self.student_login(hacker_name, access_code, hacker_password)
         resp = self.client.get(reverse("level_editor_chosen_level", kwargs={"levelId": new_level.id}))
 
-        self.assertNotIn("level", resp.context)
+        assert "level" not in resp.context
 
         self.logout()
 
         self.student_login(student_name, access_code, student_password)
         resp = self.client.get(reverse("level_editor_chosen_level", kwargs={"levelId": new_level.id}))
 
-        self.assertIn("level", resp.context)
+        assert "level" in resp.context
 
     def test_no_character_set_defaults_to_van(self):
 
@@ -269,9 +292,9 @@ class LevelEditorTestCase(TestCase):
         }
         response = self.client.post(url, {"data": json.dumps(data_with_no_character)})
 
-        assert_that(response.status_code, equal_to(200))
+        assert response.status_code == 200
         new_level = Level.objects.get(name="abc")
-        assert_that(new_level.character.name, equal_to("Van"))
+        assert new_level.character.name == "Van"
 
     def test_level_loading(self):
         email1, password1 = signup_teacher_directly()
@@ -283,7 +306,7 @@ class LevelEditorTestCase(TestCase):
         url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
         response = self.client.get(url)
 
-        assert_that(response.status_code, equal_to(200))
+        assert response.status_code == 200
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
@@ -309,7 +332,7 @@ class LevelEditorTestCase(TestCase):
         # Check `teacher1` can see `teacher2`'s shared level
         levels_url = reverse("levels")
         response = self.client.get(levels_url)
-        assert len(response.context["shared_levels"]) == 1
+        assert len(response.context["directly_shared_levels"]) == 1
 
         # Make teacher2 inactive
         teacher2.new_user.is_active = 0
@@ -317,7 +340,7 @@ class LevelEditorTestCase(TestCase):
 
         # `teacher1` shouldn't see any shared levels now
         response = self.client.get(levels_url)
-        assert len(response.context["shared_levels"]) == 0
+        assert len(response.context["directly_shared_levels"]) == 0
 
     def test_level_of_anonymised_student_is_hidden(self):
         # Create a teacher and a student
@@ -339,7 +362,7 @@ class LevelEditorTestCase(TestCase):
         # Check teacher can see student's shared level
         levels_url = reverse("levels")
         response = self.client.get(levels_url)
-        assert len(response.context["shared_levels"]) == 1
+        assert len(response.context["directly_shared_levels"]) == 1
 
         # Make student inactive
         student.new_user.is_active = 0
@@ -347,4 +370,4 @@ class LevelEditorTestCase(TestCase):
 
         # Teacher shouldn't see any shared levels now
         response = self.client.get(levels_url)
-        assert len(response.context["shared_levels"]) == 0
+        assert len(response.context["directly_shared_levels"]) == 0
