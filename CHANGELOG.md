@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.5.0 (2022-10-06)
+### Feature
+* Admin power for custom levels ([#1371](https://github.com/ocadotechnology/rapid-router/issues/1371)) ([`22b34e6`](https://github.com/ocadotechnology/rapid-router/commit/22b34e608895f7b495efeb51e49b82635ba5235f))
+
 ## v5.4.3 (2022-09-13)
 ### Fix
 * Resolve scoreboard and button issues ([#1369](https://github.com/ocadotechnology/rapid-router/issues/1369)) ([`6615510`](https://github.com/ocadotechnology/rapid-router/commit/6615510f142c94f933498a9209737eca3455aeeb))
