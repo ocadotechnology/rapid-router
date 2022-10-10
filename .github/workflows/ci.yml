@@ -21,7 +21,7 @@ jobs:
           architecture: "x64"
       - name: Install pip requirements
         run: |
-          pip install pipenv
+          pip install pipenv==2022.10.4
           pip install pytest-cov
           pipenv install --dev --system
       - name: Collect static
