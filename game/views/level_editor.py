@@ -218,8 +218,12 @@ def save_level_for_editor(request, levelId=None):
         if levelId is None:
             teacher = None
 
+            is_user_school_student = hasattr(level.owner, "student") and not level.owner.student.is_independent()
+            is_user_independent = hasattr(level.owner, "student") and level.owner.student.is_independent()
+            is_user_teacher = hasattr(level.owner, "teacher")
+
             # if level owner is a school student, share with teacher automatically if they aren't an admin
-            if hasattr(level.owner, "student") and not level.owner.student.is_independent():
+            if is_user_school_student:
                 teacher = level.owner.student.class_field.teacher
                 if not teacher.is_admin:
                     level.shared_with.add(teacher.new_user)
@@ -233,17 +237,19 @@ def save_level_for_editor(request, levelId=None):
                         str(level.owner.student),
                         level.owner.student.class_field.name,
                     )
-            elif hasattr(level.owner, "teacher"):
+            elif is_user_teacher:
                 teacher = level.owner.teacher
 
-            # share with all admins of the school
-            school_admins = teacher.school.admins()
+            # share with all admins of the school if user is in a school
+            if not is_user_independent:
+                school_admins = teacher.school.admins()
 
-            [
-                level.shared_with.add(school_admin.new_user)
-                for school_admin in school_admins
-                if school_admin.new_user != request.user
-            ]
+                [
+                    level.shared_with.add(school_admin.new_user)
+                    for school_admin in school_admins
+                    if school_admin.new_user != request.user
+                ]
+
             level.save()
         response = {"id": level.id}
         return HttpResponse(json.dumps(response), content_type="application/javascript")
