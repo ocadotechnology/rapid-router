@@ -187,19 +187,46 @@
             </div>
             <div id="collapse-levels-shared-with-you" aria-labelledby="episode-levels-shared-with-you" class="collapse">
                 <div class="panel-body">
-                    {% if shared_levels %}
-                        {% for level in shared_levels %}
-                        <p>
-                            <a href="{% url 'play_custom_level' level.id %}">
-                            {{level.title}} ({{level.owner|make_into_username}})</a>
-                            {% if level.score != None %}
-                            <span class="score_text">{{level.score|floatformat}}/10</span>
-                            <img class="level_image coin_image" value="{{level.id}}">
-                            {% endif %}
-                        </p>
+                    {% if user|is_logged_in_as_admin_teacher %}
+                        <h6>Your classes</h6>
+                    {% endif %}
+                    {% if directly_shared_levels %}
+                        {% for level in directly_shared_levels %}
+                            <p>
+                                <a href="{% url 'play_custom_level' level.id %}">
+                                    {{ level.title }}, {{ level.owner|make_into_username }}
+                                    {% if level.class %}
+                                        ({{ level.class }})
+                                    {% endif %}
+                                </a>
+                                {% if level.score != None %}
+                                    <span class="score_text">{{ level.score|floatformat }}/10</span>
+                                    <img class="level_image coin_image" value="{{ level.id }}">
+                                {% endif %}
+                            </p>
                         {% endfor %}
                     {% else %}
-                        <p>No levels have been shared with you yet.</p>
+                        <p>No levels.</p>
+                    {% endif %}
+
+                    {% if indirectly_shared_levels %}
+                        {% for teacher, levels in indirectly_shared_levels.items %}
+                            <h6>Owned by {{ teacher|make_into_username }}</h6>
+                            {% for level in levels %}
+                                <p>
+                                    <a href="{% url 'play_custom_level' level.id %}">
+                                        {{ level.title }}, {{level.owner|make_into_username}}
+                                        {% if level.class %}
+                                            ({{ level.class }})
+                                        {% endif %}
+                                    </a>
+                                    {% if level.score != None %}
+                                        <span class="score_text">{{level.score|floatformat}}/10</span>
+                                        <img class="level_image coin_image" value="{{level.id}}">
+                                    {% endif %}
+                                </p>
+                            {% endfor %}
+                        {% endfor %}
                     {% endif %}
                 </div>
             </div>

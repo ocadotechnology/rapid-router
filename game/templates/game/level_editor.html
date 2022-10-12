@@ -596,6 +596,7 @@
 
             {% if user|get_user_status == 'TEACHER' %}
               <p>{% trans "Here you can share your level with your classes or your fellow teachers." %}</p>
+              <p><strong>Admin teachers can already see levels created by you.</strong></p>
             {% elif user|get_user_status == 'SCHOOL_STUDENT' %}
               <p>{% trans "Here you can share your level with your classmates. Try clicking in the Shared column!" %}</p>
             {% endif %}

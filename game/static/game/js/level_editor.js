@@ -717,10 +717,12 @@ ocargo.LevelEditor = function(levelId) {
                     if (!saveState.isCurrentLevel(existingId)) {
                         var onYes = function(){
                             saveLevelLocal(existingId);
-                            $("#close-modal").click();
+                            $("#myModal").hide()
+                            $("#ocargo-modal").hide()
                         };
                         var onNo = function(){
-                            $("#close-modal").click();
+                            $("#myModal").hide()
+                            $("#ocargo-modal").hide()
                         };
                         ocargo.Drawing.startYesNoPopup(gettext('Overwriting'), gettext('Warning'),
                             interpolate(gettext('Level %(level_name)s already exists. Are you sure you want to overwrite it?'), {

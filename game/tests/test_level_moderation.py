@@ -1,17 +1,11 @@
-import json
-
 from common.tests.utils.classes import create_class_directly
+from common.tests.utils.organisation import create_organisation_directly, join_teacher_to_organisation
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
-from common.tests.utils.organisation import (
-    create_organisation_directly,
-    join_teacher_to_organisation,
-)
 from deploy import captcha
 from django.test.client import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
-from hamcrest import *
 
 from .utils.level import create_save_level
 
@@ -114,8 +108,8 @@ class LevelModerationTestCase(TestCase):
         # Create 2 teachers in the same school, one admin, one standard
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
-        name, postcode = create_organisation_directly(email1)
-        join_teacher_to_organisation(email2, name, postcode, is_admin=False)
+        school = create_organisation_directly(email1)
+        join_teacher_to_organisation(email2, school.name, school.postcode)
 
         # Create one class and student for each teacher
         _, class_name1, access_code1 = create_class_directly(email1)
@@ -137,9 +131,7 @@ class LevelModerationTestCase(TestCase):
         assert student1.new_user.first_name not in response.content.decode()
         assert student2.new_user.first_name in response.content.decode()
         # Try to delete level1, it shouldn't work
-        delete_level1_url = reverse(
-            "delete_level_for_editor", kwargs={"levelId": level1.id}
-        )
+        delete_level1_url = reverse("delete_level_for_editor", kwargs={"levelId": level1.id})
         response = self.client.get(delete_level1_url)
         assert response.status_code == 401
         # Check level2 is still there
@@ -157,9 +149,7 @@ class LevelModerationTestCase(TestCase):
         assert student1.new_user.first_name in response.content.decode()
         assert student2.new_user.first_name in response.content.decode()
         # Delete level2
-        delete_level2_url = reverse(
-            "delete_level_for_editor", kwargs={"levelId": level2.id}
-        )
+        delete_level2_url = reverse("delete_level_for_editor", kwargs={"levelId": level2.id})
         response = self.client.get(delete_level2_url)
         assert response.status_code == 200
         # Check level1 is still there and level2 is not there anymore
@@ -171,10 +161,6 @@ class LevelModerationTestCase(TestCase):
     def teacher_login(self, email, password):
         self.client.post(
             reverse("teacher_login"),
-            {
-                "auth-username": email,
-                "auth-password": password,
-                "teacher_login_view-current_step": "auth",
-            },
+            {"auth-username": email, "auth-password": password, "teacher_login_view-current_step": "auth"},
             follow=True,
         )

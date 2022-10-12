@@ -8,8 +8,8 @@ var ocargo = ocargo || {};
 ocargo.Sharing = function (getLevelId, validationFunction) {
   this.text = [];
   this.text.shared = gettext("Yes");
+  this.text.admin = gettext("Yes");
   this.text.unshared = gettext("No");
-  this.text.pending = "...";
 
   this.classesTaught = [];
   this.fellowTeachers = [];
@@ -89,35 +89,47 @@ ocargo.Sharing.prototype.populateSharingTable = function (recipients) {
   $("#shareLevelTable tr").off("click");
   table.empty();
 
-  // Order them alphabetically
+  // sort by admins first
   recipients.sort(function (a, b) {
-    if (a.name < b.name) {
-      return -1;
-    } else if (a.name > b.name) {
-      return 1;
+    if (a.admin && !b.admin) {
+      return -1
+    } else if (b.admin && !a.admin) {
+      return 1
     }
     return 0;
   });
 
   this.allShared = true;
-  // Add a row to the table for each workspace saved in the database
+  // Add a row to the table for each recipient
   for (let i = 0; i < recipients.length; i++) {
     let recipient = recipients[i];
-    let status = recipient.shared ? "shared" : "unshared";
+    let status = recipient.shared ? "shared" || "admin" : "unshared";
 
     if (recipient.shared) {
       status = "shared";
+
+      if (recipient.admin) {
+        status = "admin"
+      }
+
     } else {
       status = "unshared";
       this.allShared = false;
     }
+
+    let name_text = recipient.name
+
+    if (recipient.admin) {
+      name_text += (" (Admin)")
+    }
+
     table.append(
       '<tr value="' +
         recipient.id +
         '" status="' +
         status +
-        '"><td>' +
-        $("<div>").text(recipient.name).html() +
+        '"><td class="share_name">' +
+        $("<div>").text(name_text).html() +
         '</td><td class="share_cell">' +
         this.text[status] +
         "</td></tr>"
