@@ -392,6 +392,7 @@ ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
   let moveEvents = ['mousemove', 'touchmove']
   let endEvents = ['mouseup', 'touchend', 'touchcancel']
 
+  let codeWindow = $("#code").next()
   let slider = $('#consoleLogSlider')
   let wrapper = $('#wrapper')
   let halfSliderHeight = slider.height()
@@ -412,15 +413,20 @@ ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
     let containerHeight = slider.parent().height()
 
     pythonSliderPosition *= 100.0 / containerHeight
+    let codeWindowHeight = pythonSliderPosition
 
     if (pythonSliderPosition > 75) {
       pythonSliderPosition = 75
+      codeWindowHeight = 75
     }
     if (pythonSliderPosition < 0) {
       pythonSliderPosition = 0
+      codeWindowHeight = 0
     }
 
+
     slider.css('top', pythonSliderPosition + '%')
+    codeWindow.css("height", `100%`)
     $('#editor').css('height', pythonSliderPosition + '%')
 
     ocargo.blocklyControl.redrawBlockly()
@@ -759,6 +765,7 @@ ocargo.Game.prototype.onStopControls = function () {
 }
 
 ocargo.Game.prototype._setupBlocklyTab = function () {
+  console.log("1")
   this.tabs.blockly.setOnChange(
     function () {
       var tab = this.tabs.blockly
@@ -873,6 +880,7 @@ ocargo.Game.prototype._setupPythonTab = function () {
 
   this.tabs.python.setOnChange(
     function () {
+      console.log("2")
       // Only clear console when changing *to* python?
       if (!this.isInPythonWorkspace()) {
         $('#clear_console').click()
@@ -887,6 +895,7 @@ ocargo.Game.prototype._setupPythonTab = function () {
 ocargo.Game.prototype._setupClearTab = function () {
   this.tabs.clear_program.setOnChange(
     function () {
+      console.log("3")
       if (this.isInBlocklyWorkspace()) {
         ocargo.blocklyControl.reset()
       }

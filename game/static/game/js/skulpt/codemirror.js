@@ -160,7 +160,7 @@
         // Moved around its parent to cover visible view.
         d.mover = elt("div", [elt("div", [d.lineSpace], "CodeMirror-lines")], null, "position: relative");
         // Set to the height of the document, allowing scrolling.
-        d.sizer = elt("div", [d.mover], "CodeMirror-sizer");
+        d.sizer = elt("div", [d.mover], "CodeMirror-sizer", "", "codePanel");
         // Behavior of elts with overflow: auto and padding is
         // inconsistent across browsers. This is used to ensure the
         // scrollable area is big enough.
@@ -620,7 +620,7 @@
         removeChildren(display.selectionDiv);
 
         if (different) {
-            display.lastSizeC = update.wrapperHeight;
+            display.lastSizeC = update.wrapperHeig;
             startWorker(cm, 400);
         }
 
@@ -722,7 +722,9 @@
     // Do a bulk-read of the DOM positions and sizes needed to draw the
     // view, so that we don't interleave reading and writing to the DOM.
     function getDimensions(cm) {
+        console.log("help")
         var d = cm.display, left = {}, width = {};
+        console.log(d)
         for (var n = d.gutters.firstChild, i = 0; n; n = n.nextSibling, ++i) {
             left[cm.options.gutters[i]] = n.offsetLeft;
             width[cm.options.gutters[i]] = n.offsetWidth;
@@ -7321,12 +7323,13 @@
 
     // DOM UTILITIES
 
-    function elt(tag, content, className, style) {
+    function elt(tag, content, className, style, id=null) {
         var e = document.createElement(tag);
         if (className) e.className = className;
         if (style) e.style.cssText = style;
         if (typeof content == "string") e.appendChild(document.createTextNode(content));
         else if (content) for (var i = 0; i < content.length; ++i) e.appendChild(content[i]);
+        if (id != null) e.id = id
         return e;
     }
 
