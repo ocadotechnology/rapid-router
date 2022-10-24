@@ -392,6 +392,7 @@ ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
   let moveEvents = ['mousemove', 'touchmove']
   let endEvents = ['mouseup', 'touchend', 'touchcancel']
 
+  let codeWindow = $("#code").next()
   let slider = $('#consoleLogSlider')
   let wrapper = $('#wrapper')
   let halfSliderHeight = slider.height()
@@ -412,15 +413,19 @@ ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
     let containerHeight = slider.parent().height()
 
     pythonSliderPosition *= 100.0 / containerHeight
+    let codeWindowHeight = pythonSliderPosition
 
     if (pythonSliderPosition > 75) {
       pythonSliderPosition = 75
+      codeWindowHeight = 75
     }
     if (pythonSliderPosition < 0) {
       pythonSliderPosition = 0
+      codeWindowHeight = 0
     }
 
     slider.css('top', pythonSliderPosition + '%')
+    codeWindow.css("height", `100%`)
     $('#editor').css('height', pythonSliderPosition + '%')
 
     ocargo.blocklyControl.redrawBlockly()
