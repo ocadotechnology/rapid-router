@@ -539,8 +539,7 @@
     // but using getBoundingClientRect to get a sub-pixel-accurate
     // result.
     function compensateForHScroll(display) {
-        let variable = display.scroller.getBoundingClientRect().left - display.sizer.getBoundingClientRect().left;
-        return variable
+        return display.scroller.getBoundingClientRect().left - display.sizer.getBoundingClientRect().left;
     }
 
     // DISPLAY DRAWING

@@ -765,7 +765,6 @@ ocargo.Game.prototype.onStopControls = function () {
 }
 
 ocargo.Game.prototype._setupBlocklyTab = function () {
-  console.log("1")
   this.tabs.blockly.setOnChange(
     function () {
       var tab = this.tabs.blockly
@@ -880,7 +879,6 @@ ocargo.Game.prototype._setupPythonTab = function () {
 
   this.tabs.python.setOnChange(
     function () {
-      console.log("2")
       // Only clear console when changing *to* python?
       if (!this.isInPythonWorkspace()) {
         $('#clear_console').click()
@@ -895,7 +893,6 @@ ocargo.Game.prototype._setupPythonTab = function () {
 ocargo.Game.prototype._setupClearTab = function () {
   this.tabs.clear_program.setOnChange(
     function () {
-      console.log("3")
       if (this.isInBlocklyWorkspace()) {
         ocargo.blocklyControl.reset()
       }
