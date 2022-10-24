@@ -539,7 +539,8 @@
     // but using getBoundingClientRect to get a sub-pixel-accurate
     // result.
     function compensateForHScroll(display) {
-        return display.scroller.getBoundingClientRect().left - display.sizer.getBoundingClientRect().left;
+        let variable = display.scroller.getBoundingClientRect().left - display.sizer.getBoundingClientRect().left;
+        return variable
     }
 
     // DISPLAY DRAWING
@@ -722,9 +723,7 @@
     // Do a bulk-read of the DOM positions and sizes needed to draw the
     // view, so that we don't interleave reading and writing to the DOM.
     function getDimensions(cm) {
-        console.log("help")
         var d = cm.display, left = {}, width = {};
-        console.log(d)
         for (var n = d.gutters.firstChild, i = 0; n; n = n.nextSibling, ++i) {
             left[cm.options.gutters[i]] = n.offsetLeft;
             width[cm.options.gutters[i]] = n.offsetWidth;
