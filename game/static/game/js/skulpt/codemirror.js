@@ -620,7 +620,7 @@
         removeChildren(display.selectionDiv);
 
         if (different) {
-            display.lastSizeC = update.wrapperHeig;
+            display.lastSizeC = update.wrapperHeight;
             startWorker(cm, 400);
         }
 

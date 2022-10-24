@@ -424,7 +424,6 @@ ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
       codeWindowHeight = 0
     }
 
-
     slider.css('top', pythonSliderPosition + '%')
     codeWindow.css("height", `100%`)
     $('#editor').css('height', pythonSliderPosition + '%')
