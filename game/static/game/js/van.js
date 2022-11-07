@@ -49,10 +49,3 @@ ocargo.Van.prototype.getDistanceTravelled = function() {
     return this.visitedNodes.length - 2; // Don't count starting position, or previous position at start
 };
 
-ocargo.Van.prototype.puffUp = function(){
-    this.sizeOfVan = 3;
-};
-
-ocargo.Van.prototype.puffDown = function(){
-    this.sizeOfVan = 1;
-};

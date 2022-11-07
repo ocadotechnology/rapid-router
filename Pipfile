@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 rapid-router = {editable = true, path = "."}
+ipython = "*"
 
 [dev-packages]
 django-selenium-clean = "==0.3.3"

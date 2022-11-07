@@ -871,14 +871,16 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.removeCow = function (cow, animationLength) {
-    cow.image.animate(
-      { transform: 's0.01' },
-      animationLength,
-      'linear',
-      function () {
-        cow.image.remove()
-      }
-    )
+    if (cow){
+      cow.image.animate(
+        { transform: 's0.01' },
+        animationLength,
+        'linear',
+        function () {
+          cow.image.remove()
+        }
+      )
+    }
   }
 
   this.renderCharacter = function () {

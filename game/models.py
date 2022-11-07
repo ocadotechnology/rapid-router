@@ -19,9 +19,21 @@ def character_choices():
 
 class Block(models.Model):
     type = models.CharField(max_length=200)
+    block_type = models.IntegerField(
+        choices=[
+            (0, "Start"),
+            (1, "Action"),
+            (2, "Condition"),
+            (3, "Proedure"),
+            (4, "ControlFlow"),
+        ]
+    )
 
     def __str__(self):
         return self.type
+
+    class Meta:
+        ordering = ["block_type", "pk"]
 
 
 class Episode(models.Model):

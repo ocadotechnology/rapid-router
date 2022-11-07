@@ -173,7 +173,7 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
             this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
     } else if (conditionBlock.type === 'traffic_light') {
     	return this.trafficLightCondition(conditionBlock);
-    } else if (conditionBlock.type === 'declare_event') {
+    } else if (conditionBlock.type === 'cow_crossing') {
         return this.cowCrossingCondition(conditionBlock);
     }
 };
@@ -229,8 +229,6 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
             commands.push(new DeliverCommand(block));
         } else if (block.type === 'sound_horn') {
             commands.push(new SoundHornCommand(block));
-        } else if (block.type === 'puff_up') {
-            commands.push(new PuffUpCommand(block));
         } else if (block.type === 'controls_repeat_until') {
             commands.push(this.createRepeatUntil(block));
         } else if (block.type === 'controls_repeat_while') {

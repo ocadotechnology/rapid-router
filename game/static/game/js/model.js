@@ -26,8 +26,6 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     // used for evaluation of event handlers before each statement.
     this.shouldObserve = true;
 
-    this.soundedHorn = {};
-    this.puffedUp = {};
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -54,16 +52,8 @@ ocargo.Model.prototype.reset = function() {
     this.timestamp = 0;
     this.movementTimestamp = 0;
     this.reasonForTermination  =  null;
-    this.soundedHorn = {};
-    this.puffedUp = {};
 };
 
-// Randomly chooses the cow positions, called by program.js
-ocargo.Model.prototype.chooseNewCowPositions = function() {
-    for (var j = 0; j < this.cows.length; j++) {
-        this.cows[j].chooseNewCowPositions();
-    }
-};
 
 ///////////////////////
 // Begin observation function, each tests something about the model
@@ -103,18 +93,19 @@ ocargo.Model.prototype.isDeadEnd = function() {
 };
 
 ocargo.Model.prototype.isCowCrossing = function(type) {
-    var result = false;
+
+    var thisNode = this.van.getPosition().currentNode;
     this.observe('cow crossing');
-    var node = this.van.getPosition().currentNode;
-    var nodes = this.getNodesAhead(node);
-    for (var i = 0 ; i < nodes.length ; i++) {
-        var cow = this.getCowForNode(nodes[i], ocargo.Cow.ACTIVE);
-        if (cow != null && cow.type == type && cow.triggerEvent) {
-            cow.triggerEvent = false;
-            result = true;
-        }
+    var nodes = thisNode.connectedNodes;
+    nodes.push(thisNode);
+    for(var i = 0; i < nodes.length; i++){
+        var node = nodes[i];
+        var cow = this.getCowForNode(node, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
+        if (cow) {
+            return true;
+        } 
     }
-    return result;
+    return false;
 };
 
 ocargo.Model.prototype.isTrafficLightRed = function() {
@@ -155,7 +146,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
     let collisionWithCow = previousNodeCow && nextNode !== this.van.getPosition().currentNode;
 
     if (collisionWithCow) {
-        handleCrash(this, gettext('You ran into a cow! Keep in mind that cows can appear anywhere on the map.'),
+        handleCrash(this, gettext('You ran into a cow! '),
             'COLLISION_WITH_COW', 'collision with cow van move action: ');
         return false;
     }
@@ -323,6 +314,7 @@ ocargo.Model.prototype.setCowsActive = function(nextNode) {
             cow.setActive(this, nodes[i]);
         }
     }
+    return;
 };
 
 ocargo.Model.prototype.makeDelivery = function(destination) {
@@ -427,7 +419,11 @@ ocargo.Model.prototype.deliver = function() {
 };
 
 ocargo.Model.prototype.sound_horn = function() {
-    this.soundedHorn = {timestamp:this.movementTimestamp, coordinates:this.getCurrentCoordinate()};
+    // if (!this.van) {
+    //     console.log("no van :(");
+    //     return;
+    // }
+    var currentNode = this.van.getPosition().currentNode
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionType: 'playSound',
@@ -435,49 +431,16 @@ ocargo.Model.prototype.sound_horn = function() {
         description: 'van sound: sounding the horn'
     });
 
-    return true;
-};
-
-ocargo.Model.prototype.puff_up = function(){
-    if(!jQuery.isEmptyObject(this.puffedUp)){
-        return this.remain_puff_up();
-    }else{
-        this.van.puffUp();
-        this.puffedUp = {timestamp:this.movementTimestamp, coordinates:this.getCurrentCoordinate(), timeout:1};
-        ocargo.animation.appendAnimation({
-            type: 'van',
-            vanAction: 'PUFFUP',
-            fuel: this.van.getFuelPercentage(),
-            description: 'van move action: puff up'
-        });
-        return this.puff_down();
-    }
-
-};
-
-ocargo.Model.prototype.remain_puff_up = function(){
-    this.puffedUp.coordinates = this.getCurrentCoordinate();
-    this.puffedUp.timeout++;
-
-    ocargo.animation.appendAnimation({
-        type: 'van',
-        vanAction: 'REMAINPUFFUP',
-        fuel: this.van.getFuelPercentage(),
-        description: 'van move action: remain puff up'
+    var nodes = currentNode.connectedNodes;
+    nodes.push(currentNode);
+    nodes.forEach( (node) => {
+        var cow = this.getCowForNode(node, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
+        if (cow) {
+            cow.queueLeaveAnimation(node);
+            cow.setInactive(this, node);
+        };
     });
-
-    return true;
-};
-
-ocargo.Model.prototype.puff_down = function(){
-
-    ocargo.animation.appendAnimation({
-        type: 'van',
-        vanAction: 'PUFFDOWN',
-        fuel: this.van.getFuelPercentage(),
-        description: 'van move action: puff down'
-    });
-
+    
     return true;
 };
 
@@ -616,8 +579,10 @@ ocargo.Model.prototype.programExecutionEnded = function () {
 // A helper function which returns the traffic light associated
 // with a particular node and orientation
 ocargo.Model.prototype.getTrafficLightForNode = function(position) {
+
     for (var i = 0; i < this.trafficLights.length; i++) {
         var light = this.trafficLights[i];
+        
         if (light.sourceNode === position.previousNode && light.controlledNode === position.currentNode) {
             return light;
         }
@@ -636,12 +601,21 @@ ocargo.Model.prototype.getDestinationForNode = function(node) {
     return null;
 };
 
-ocargo.Model.prototype.getCowForNode = function(node, status) {
+ocargo.Model.prototype.getCowForNode = function(node, state) {
     var jsonCoordinate = JSON.stringify(node.coordinate);
     for(var i = 0; i < this.cows.length; i++) {
         var cow = this.cows[i];
-        if (jsonCoordinate in cow.activeNodes && cow.activeNodes[jsonCoordinate] == status) {
-            return cow;
+        if (jsonCoordinate in cow.activeNodes) {
+            if (state === undefined){
+                return cow;
+            } else {
+                if (typeof(state) === "string") {
+                    state = [state];
+                } 
+                if (state.includes(cow.activeNodes[jsonCoordinate])) {
+                    return cow;
+                } 
+            }
         }
     }
     return null;
@@ -660,26 +634,12 @@ ocargo.Model.prototype.incrementTime = function() {
 
     ocargo.animation.startNewTimestamp();
 
-    this.incrementCowTime();
 };
 
 ocargo.Model.prototype.incrementTrafficLightsTime = function() {
     for (var i = 0; i < this.trafficLights.length; i++) {
         this.trafficLights[i].incrementTime(this);
     }
-};
-
-ocargo.Model.prototype.incrementCowTime = function() {
-    if(this.movementTimestamp - this.puffedUp.timestamp > this.puffedUp.timeout){
-        this.puffedUp = {};
-        this.van.puffDown();
-    }
-
-    for (var i = 0; i < this.cows.length; i++) {
-        this.cows[i].incrementTime(this);
-    }
-    this.soundedHorn = {};
-
 };
 
 ocargo.Model.prototype.getNodesAhead = function(node) {
