@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.5.3 (2022-11-07)
+### Fix
+* Update Django to 3.2.16 ([#1377](https://github.com/ocadotechnology/rapid-router/issues/1377)) ([`a802148`](https://github.com/ocadotechnology/rapid-router/commit/a802148f3e902b6167149dbaf9702924c23d36d1))
+
 ## v5.5.2 (2022-10-24)
 ### Fix
 * Fix certain elements about the UI to an acceptable standard ([#1373](https://github.com/ocadotechnology/rapid-router/issues/1373)) ([`0653c64`](https://github.com/ocadotechnology/rapid-router/commit/0653c64b725a0cdb34f5763da3295a6655a7f7ef))
