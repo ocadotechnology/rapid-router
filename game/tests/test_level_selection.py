@@ -9,8 +9,11 @@ from django.test.client import Client
 from django.test.testcases import TestCase
 from django.urls import reverse
 
+from game.models import Level
+from game.permissions import can_play_level
 from game.tests.utils.level import create_save_level
 from game.tests.utils.teacher import add_teacher_to_school, create_school
+from game.views.level import _next_level_url
 
 
 class LevelSelectionTestCase(TestCase):
@@ -147,3 +150,57 @@ class LevelSelectionTestCase(TestCase):
         assert len(response.context["directly_shared_levels"]) == 1
         assert response.context["directly_shared_levels"][0]["owner"] == student2.new_user
         assert response.context["indirectly_shared_levels"] == {}
+
+    def test_cannot_access_locked_level(self):
+        email, password = signup_teacher_directly()
+
+        teacher = Teacher.objects.get(new_user__email=email)
+
+        school = create_school()
+        add_teacher_to_school(teacher, school, is_admin=True)
+
+        class1, _, access_code1 = create_class_directly(email)
+        class2, _, access_code2 = create_class_directly(email)
+        _, _, student1 = create_school_student_directly(access_code1)
+        _, _, student2 = create_school_student_directly(access_code2)
+
+        level1 = Level.objects.get(id=1)
+
+        level1.locked_for_class.add(class1)
+
+        assert not can_play_level(student1.new_user, level1, False)
+        assert can_play_level(student2.new_user, level1, False)
+
+    def test_next_level_for_locked_levels(self):
+        email, password = signup_teacher_directly()
+
+        teacher = Teacher.objects.get(new_user__email=email)
+
+        school = create_school()
+        add_teacher_to_school(teacher, school, is_admin=True)
+
+        klass, _, access_code = create_class_directly(email)
+        _, _, student = create_school_student_directly(access_code)
+
+        level1 = Level.objects.get(name="1")
+        level2 = Level.objects.get(name="2")
+        level3 = Level.objects.get(name="3")
+        level4 = Level.objects.get(name="4")
+        level106 = Level.objects.get(name="106")
+        level107 = Level.objects.get(name="107")
+        level108 = Level.objects.get(name="108")
+        level109 = Level.objects.get(name="109")
+
+        level2.locked_for_class.add(klass)
+        level3.locked_for_class.add(klass)
+        level107.locked_for_class.add(klass)
+        level108.locked_for_class.add(klass)
+        level109.locked_for_class.add(klass)
+
+        next_level_url = _next_level_url(level1, student.new_user, False)
+
+        assert next_level_url == f"/rapidrouter/{level4.name}/"
+
+        next_level_url = _next_level_url(level106, student.new_user, False)
+
+        assert next_level_url == f"/rapidrouter/{level109.name}/"
