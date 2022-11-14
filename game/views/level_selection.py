@@ -1,5 +1,4 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 from builtins import str
 
@@ -10,10 +9,9 @@ from django.utils.safestring import mark_safe
 
 import game.level_management as level_management
 import game.messages as messages
-from game import app_settings
-from game import random_road
+from game import app_settings, random_road
 from game.cache import cached_episode
-from game.models import Attempt, Episode
+from game.models import Attempt, Episode, Level
 from .level_editor import play_anonymous_level
 
 
@@ -111,6 +109,13 @@ def is_admin_teacher(user):
     return hasattr(user.userprofile, "teacher") and user.userprofile.teacher.is_admin
 
 
+def get_blockly_episodes(request):
+    return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 1, 9)
+
+
+def get_python_episodes(request):
+    return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 10, 11)
+
 def levels(request):
     """Loads a page with all levels listed.
 
@@ -136,15 +141,17 @@ def levels(request):
     else:
         attempts = {}
 
-    blockly_episodes = fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 1, 9)
+    blockly_episodes = get_blockly_episodes(request)
     for episode in blockly_episodes:
         for level in episode["levels"]:
             attach_attempts_to_level(attempts, level)
+            level["locked_for_class"] = Level.objects.get(id=level["id"]).locked_for_class
 
-    python_episodes = fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 10, 11)
+    python_episodes = get_python_episodes(request)
     for episode in python_episodes:
         for level in episode["levels"]:
             attach_attempts_to_level(attempts, level)
+            level["locked_for_class"] = Level.objects.get(id=level["id"]).locked_for_class
 
     owned_level_data = []
     directly_shared_levels = []

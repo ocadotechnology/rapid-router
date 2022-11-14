@@ -80,3 +80,13 @@
   font-family: "Glyphicons Halflings";
   margin-left: 10px;
 }
+
+#episodes .disabled,
+#episodes .disabled:hover,
+#episodes .disabled:focus,
+#episodes .disabled:visited {
+  color: #a1a1a1;
+  cursor: default;
+  font-weight: 300;
+  text-decoration: none;
+}

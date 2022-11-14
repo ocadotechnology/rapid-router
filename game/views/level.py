@@ -47,11 +47,29 @@ def play_default_level(request, levelName):
     return play_level(request, level)
 
 
-def _next_level_url(level, night_mode):
+def _next_level_url(level, request, night_mode):
+    """
+    Find the next available level. By default, this will be the `next_level` field in the Level model, but in the case
+    where the user is a student and the teacher has locked certain levels, then loop until we find the next unlocked
+    level (or we run out of levels).
+    """
     if not level.next_level:
         return ""
 
-    return _level_url(level.next_level, night_mode)
+    next_level = level.next_level
+
+    if not request.user.is_anonymous and hasattr(request.user.userprofile, "student"):
+        student = request.user.userprofile.student
+        klass = student.class_field
+
+        is_next_level_locked = klass in next_level.locked_for_class.all()
+
+        if is_next_level_locked:
+            while is_next_level_locked and int(next_level.name) < 109:
+                next_level = next_level.next_level
+                is_next_level_locked = klass in next_level.locked_for_class.all()
+
+    return _level_url(next_level, night_mode)
 
 
 def add_night(url, night_mode):
@@ -204,7 +222,7 @@ def play_level(request, level, from_editor=False):
                 app_settings.NIGHT_MODE_FEATURE_ENABLED
             ).lower(),
             "model_solution": model_solution,
-            "next_level_url": _next_level_url(level, night_mode),
+            "next_level_url": _next_level_url(level, request, night_mode),
             "flip_night_mode_url": _level_url(level, not night_mode),
         },
     )

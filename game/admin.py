@@ -5,7 +5,7 @@ from game.models import Level, Block, Episode, Workspace
 
 class LevelAdmin(admin.ModelAdmin):
     search_fields = ["name"]
-    raw_id_fields = ["next_level"]
+    raw_id_fields = ["next_level", "locked_for_class"]
     readonly_fields = ["owner"]
     list_display = ["name", "id", "episode", "owner"]
 
