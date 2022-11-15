@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.6.0 (2022-11-15)
+### Feature
+* Level control feature ([#1379](https://github.com/ocadotechnology/rapid-router/issues/1379)) ([`746da41`](https://github.com/ocadotechnology/rapid-router/commit/746da41f776c0b59f875cb02e3a8a772b84300e6))
+
 ## v5.5.3 (2022-11-07)
 ### Fix
 * Update Django to 3.2.16 ([#1377](https://github.com/ocadotechnology/rapid-router/issues/1377)) ([`a802148`](https://github.com/ocadotechnology/rapid-router/commit/a802148f3e902b6167149dbaf9702924c23d36d1))
