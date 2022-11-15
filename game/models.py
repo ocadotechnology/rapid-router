@@ -1,6 +1,6 @@
 from builtins import str
 
-from common.models import UserProfile, Student
+from common.models import UserProfile, Student, Class
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -130,6 +130,7 @@ class Level(models.Model):
         max_length=20, choices=character_choices(), blank=True, null=True, default=None
     )
     anonymous = models.BooleanField(default=False)
+    locked_for_class = models.ManyToManyField(Class, blank=True, related_name="locked_levels")
     objects = LevelManager()
 
     def __str__(self):

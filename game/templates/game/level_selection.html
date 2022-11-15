@@ -89,14 +89,25 @@
             <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
                 <div class="panel-body">
                     {% for level in episode.levels %}
-                    <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-                    <p>
-                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
-                        {% if level.score != None %}
-                        <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                        <img class="level_image coin_image" value="{{level.name}}">
+                        {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
+                            <!-- Mark level as locked -->
+                            <p>
+                                <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
+                                {% if level.score != None %}
+                                    <span class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                    <img class="level_image coin_image" value="{{level.name}}">
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+                            <p>
+                                <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                                {% if level.score != None %}
+                                    <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                    <img class="level_image coin_image" value="{{level.name}}">
+                                {% endif %}
+                            </p>
                         {% endif %}
-                    </p>
                     {% endfor %}
 
                     {% if episode.random_levels_enabled %}
@@ -131,14 +142,25 @@
             <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
                 <div class="panel-body">
                     {% for level in episode.levels %}
-                    <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-                    <p>
-                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
-                        {% if level.score != None %}
-                        <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                        <img class="level_image coin_image" value="{{level.name}}">
+                        {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
+                            <!-- Mark level as locked -->
+                            <p>
+                                <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
+                                {% if level.score != None %}
+                                    <span class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                    <img class="level_image coin_image" value="{{level.name}}">
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+                            <p>
+                                <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                                {% if level.score != None %}
+                                    <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                    <img class="level_image coin_image" value="{{level.name}}">
+                                {% endif %}
+                            </p>
                         {% endif %}
-                    </p>
                     {% endfor %}
                 </div>
             </div>
