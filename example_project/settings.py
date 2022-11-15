@@ -74,6 +74,7 @@ INSTALLED_APPS = (
     "django_otp",
     "django_otp.plugins.otp_static",
     "django_otp.plugins.otp_totp",
+    "import_export",
     "rest_framework",
     "sekizai",  # for javascript and css management
 )
@@ -103,7 +104,9 @@ PIPELINE = {
             "output_filename": "portal.css",
         },
         "popup": {
-            "source_filenames": (os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),),
+            "source_filenames": (
+                os.path.join(BASE_DIR, "static/portal/sass/partials/_popup.scss"),
+            ),
             "output_filename": "popup.css",
         },
         "game-scss": {
