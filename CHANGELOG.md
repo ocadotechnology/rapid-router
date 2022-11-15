@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.6.1 (2022-11-15)
+### Fix
+* Padding in level editor ([#1381](https://github.com/ocadotechnology/rapid-router/issues/1381)) ([`c212855`](https://github.com/ocadotechnology/rapid-router/commit/c21285570f11652bde218d836d34d79681bab3b3))
+
 ## v5.6.0 (2022-11-15)
 ### Feature
 * Level control feature ([#1379](https://github.com/ocadotechnology/rapid-router/issues/1379)) ([`746da41`](https://github.com/ocadotechnology/rapid-router/commit/746da41f776c0b59f875cb02e3a8a772b84300e6))
