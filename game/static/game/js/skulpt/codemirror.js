@@ -3,7 +3,7 @@
 
 // This is CodeMirror (http://codemirror.net), a code editor
 // implemented in JavaScript on top of the browser's DOM.
-//
+
 // You can find some technical background for some of the code below
 // at http://marijnhaverbeke.nl/blog/#cm-internals .
 
@@ -160,7 +160,7 @@
         // Moved around its parent to cover visible view.
         d.mover = elt("div", [elt("div", [d.lineSpace], "CodeMirror-lines")], null, "position: relative");
         // Set to the height of the document, allowing scrolling.
-        d.sizer = elt("div", [d.mover], "CodeMirror-sizer");
+        d.sizer = elt("div", [d.mover], "CodeMirror-sizer", "", "codePanel");
         // Behavior of elts with overflow: auto and padding is
         // inconsistent across browsers. This is used to ensure the
         // scrollable area is big enough.
@@ -7321,12 +7321,13 @@
 
     // DOM UTILITIES
 
-    function elt(tag, content, className, style) {
+    function elt(tag, content, className, style, id=null) {
         var e = document.createElement(tag);
         if (className) e.className = className;
         if (style) e.style.cssText = style;
         if (typeof content == "string") e.appendChild(document.createTextNode(content));
         else if (content) for (var i = 0; i < content.length; ++i) e.appendChild(content[i]);
+        if (id != null) e.id = id
         return e;
     }
 

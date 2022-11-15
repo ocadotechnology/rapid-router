@@ -214,36 +214,17 @@ button > svg {
   box-shadow: 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%), 0px 3px 5px 0px rgb(0 0 0 / 20%);
 }
 
+.description {
+  height: 100%;
+}
+
 .navigation_button {
   display: inline-block;
   position: relative;
   overflow: hidden;
   text-align: center;
-  background: #fbed21; /* Old browsers */
-  background: -moz-linear-gradient(top, #fbed21 0%, #faaf3b 100%); /* FF3.6+ */
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0%, #fbed21),
-    color-stop(100%, #faaf3b)
-  ); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(
-    top,
-    #fbed21 0%,
-    #faaf3b 100%
-  ); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(
-    top,
-    #fbed21 0%,
-    #faaf3b 100%
-  ); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #fbed21 0%, #faaf3b 100%); /* IE10+ */
-  background: linear-gradient(to bottom, #fbed21 0%, #faaf3b 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fbed21', endColorstr='#faaf3b',GradientType=0 ); /* IE6-9 */
-  border: solid;
-  border-color: rgb(246, 146, 30);
-  border-radius: 8px;
+  background: rgb(255, 210, 59);
+  border: none;
   cursor: pointer;
   color: black;
   padding: 0px;
@@ -251,31 +232,8 @@ button > svg {
 
 .navigation_button:hover,
 .navigation_button:focus {
-  background: #fce623; /* Old browsers */
-  background: -moz-linear-gradient(top, #fce623 0%, #f4a73a 100%); /* FF3.6+ */
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0%, #fce623),
-    color-stop(100%, #f4a73a)
-  ); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(
-    top,
-    #fce623 0%,
-    #f4a73a 100%
-  ); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(
-    top,
-    #fce623 0%,
-    #f4a73a 100%
-  ); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #fce623 0%, #f4a73a 100%); /* IE10+ */
-  background: linear-gradient(to bottom, #fce623 0%, #f4a73a 100%); /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fce623', endColorstr='#f4a73a',GradientType=0 ); /* IE6-9 */
-  border-color: rgb(216, 125, 28);
-  outline: none;
-  color: black;
+  box-shadow: 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%), 0px 3px 5px 0px rgb(0 0 0 / 20%);
+  background: rgb(255, 210, 59);
 }
 
 .navigation_button:active {
@@ -312,7 +270,7 @@ button > svg {
 .long_button {
   min-width: 120px;
   font-size: 20px;
-  height: 50px;
+  height: 42px;
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -354,6 +312,7 @@ button > svg {
   width: 100%;
   height: 40px;
   padding-top: 10px;
+
 }
 
 .tab.hidden {
@@ -369,7 +328,7 @@ button > svg {
   text-align: left;
   margin: 0;
   display: block;
-  padding: 5px 0px 5px 5px;
+  padding: 5px 5px 5px 5px;
   font-weight: bold;
   width: 100%;
   -webkit-transition: all 0.2s ease-in-out;
@@ -455,6 +414,10 @@ div.no-print div.tab label {
   -moz-animation-duration: 0.5s;
   animation-duration: 0.5s;
   overflow: hidden;
+}
+
+#tab_panes_wrapper .tab_pane {
+  padding: 20px 20px 0 30px;
 }
 
 .tab_break {
