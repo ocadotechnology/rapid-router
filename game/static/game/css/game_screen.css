@@ -34,7 +34,7 @@
   font-size: 1.2rem !important;
 }
 .ocargo-modal-lead {
-  font-size: 1.4rem !important;
+  font-size: 1rem !important;
 }
 
 .ocargo-modal-mainText > #hintText {
@@ -162,6 +162,35 @@ table th {
   padding: 0px;
 }
 
+.navigation_button_portal_secondary {
+  min-width: 180px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  color: black;
+  padding: 0px;
+  border: 3px solid #eab502;
+}
+.navigation_button_portal_secondary:hover {
+  text-decoration: underline;
+  color: black;
+  background: white;
+}
+
+.navigation_button_portal_secondary:hover > svg {
+  color: black;
+}
+
+.rapid-router-welcome {
+  width: 13rem;
+}
+
 .navigation_button_portal:hover,
 .navigation_button_portal:focus {
   box-shadow: 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%), 0px 3px 5px 0px rgb(0 0 0 / 20%);
@@ -171,6 +200,15 @@ table th {
 button > svg {
   width: 30%;
   height: 30%;
+}
+
+.modal-buttons > button > svg {
+  height: 100%;
+  width: 20%;
+}
+
+#prev_button {
+  flex-direction: row-reverse;
 }
 
 #run-code {
@@ -439,12 +477,23 @@ div.no-print div.tab label {
 
 #modal-content {
   float: left;
-  width: 78%;
 }
+
+#prev_button {
+
+}
+
 
 #modal-buttons button {
   margin-right: 0.5em;
 }
+.modal-buttons {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 
 #modal-mascot,
 #modal-mascot--brain {

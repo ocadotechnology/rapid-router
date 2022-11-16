@@ -29,6 +29,9 @@ var currentHeight = PAPER_HEIGHT
 var currentStartX = 0
 var currentStartY = 0
 
+const prevGame = (currentLevelNumber) => window.location.pathname = `/rapidrouter/${currentLevelNumber - 1}/`
+const nextGame = (currentLevelNumber) => window.location.pathname = `/rapidrouter/${currentLevelNumber + 1}/`
+
 ocargo.Drawing = function (startingPosition) {
   /*************/
   /* Constants */
@@ -1048,7 +1051,39 @@ ocargo.Drawing.startPopup = function (
     }
   }
 
-  if (buttons) {
+  // buttons are passed as a html string..
+  // hence this terribleness
+  if (typeof(buttons) != "number") {
+    const currentLevelString = window.location.pathname.split("/").filter(element => parseInt(element))
+    const currentLevelNumber = parseInt(currentLevelString[0])
+    const icons = [
+      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
+      "NOT USED",
+      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-right"),
+    ]
+
+    const regexID = /id=\"*\w+_\w+\"/
+    let button_div = $("<div>").addClass("modal-buttons")
+
+    for (let i = 0; i < buttons.length; i++) {
+      let currentID = buttons[i].match(regexID)[0].slice(3).replaceAll('"', '')
+
+        // change the button html to a tag as we need to pass a link through here
+        let current_button = $(buttons[i])
+        let classToBeAdded = currentID === "play_button" ? "navigation_button_portal long_button rapid-router-welcome" : "navigation_button_portal_secondary long_button rapid-router-welcome button--icon"
+
+        current_button.removeClass().addClass(classToBeAdded)
+        // this is a left button so icon has to come first
+        if (currentID !== "play_button") {
+          current_button.append(icons[i])
+          current_button.attr("onclick", i == 0 ? `prevGame(${currentLevelNumber})` : `nextGame(${currentLevelNumber})`)
+        }
+        // if its first or last level, then do not display a button correspondingly
+        if (!(i == 0 && currentLevelNumber == 1 || i == 2 && currentLevelNumber == 109)) button_div.append(current_button)
+    }
+    $(`#modal-buttons`).html(button_div)
+  }
+  else if (buttons) {
     $('#modal-buttons').html(buttons)
   } else {
     $('#modal-buttons').html(

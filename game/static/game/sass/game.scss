@@ -312,9 +312,10 @@
 
 .ocargo-modal {
   position: fixed;
-  width: 80%;
-  top: 5%;
-  left: 10%;
+  width: 51%;
+  top: 0;
+  left: 0;
+  transform: translate(50%, 50%);
   height: fit-content;
   max-height: 90vh;
   margin-bottom: 10%;
