@@ -207,8 +207,29 @@ button > svg {
   width: 20%;
 }
 
+#next_button > span {
+  padding: 0;
+  margin: 0;
+}
+
+#next_button > svg {
+}
+
+
+#prev_button > span {
+  padding: 0;
+  margin: 0;
+}
+
 #prev_button {
   flex-direction: row-reverse;
+  justify-content: space-between;
+  padding-right: 1rem;
+}
+
+#next_button {
+  justify-content: space-between;
+  padding-left: 1rem;
 }
 
 #run-code {
@@ -479,11 +500,6 @@ div.no-print div.tab label {
   float: left;
   width: 100%;
 }
-
-#prev_button {
-
-}
-
 
 #modal-buttons button {
   margin-right: 0.5em;

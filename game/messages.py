@@ -14,7 +14,7 @@ def level_creation_email_text_content():
 
 def youtubeLink(width, height, url, border):
     return (
-        "<iframe width='"
+        "<div class='popup_video'><iframe width='"
         + str(width)
         + "' height='"
         + str(height)
@@ -23,7 +23,7 @@ def youtubeLink(width, height, url, border):
         + "?rel=0"
         + "' frameborder='"
         + str(border)
-        + "' allowfullscreen class='video'></iframe><br>"
+        + "' allowfullscreen class='video'></iframe><br></div>"
     )
 
 
@@ -568,18 +568,23 @@ def title_level19():
 
 
 def description_level19():
+
     message = youtubeLink(
-        450, 300, "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0
+        "100%", "100%", "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0
     )
     message += (
+        "<div class='popup_message'>"
         "Attach a block inside the <b>Repeat</b> block to make the van repeat "
         "that instruction. <br> This means you can use one block instead of lots "
         "of blocks to do the same thing over and over again. <br> How many times "
         "do you want the instruction repeated? Type the number into the "
         "<b>Repeat</b> block. <br> The repeated sets of blocks make a 'loop'.  "
         "<br><br> When you are ready, press <b>Play</b>!"
+        "</div>"
     )
-    return build_description(title_level19(), message)
+    return build_description(
+        title_level19(), f"<div class='main_popup_container'>{message}</div>"
+    )
 
 
 def hint_level19():
@@ -779,12 +784,14 @@ def description_level29():
         450, 300, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
     )
     message += (
+        "<div class='popup_message'>"
         "Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
         "instruction. <br> Attach a 'condition' so the van knows when to stop "
         "repeating the instruction. <br> Here, you want the van to repeat your "
         "instruction until it is at the destination. <br> Doing this means "
         "you don't have to work out how many times the van should repeat your "
         "instruction."
+        "</div>"
     )
     return build_description(title_level29(), message)
 
@@ -860,12 +867,14 @@ def description_level33():
         450, 300, "https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0
     )
     message += (
+        "<div class='popup_message'>"
         "Another way of telling the van what to do is to use the <b>If</b> block. "
         "For example, <b>If</b> the <b>road exists forwards do</b> <b>Move "
         "forwards</b>. <br> This is called an 'if statement'. <br> Try "
         "using the <b>If</b> block and the <b>Repeat</b> block together. <br> "
         "The <b>Repeat</b> block will stretch if you attach the <b>If</b> block "
         "inside it."
+        "</div>"
     )
     return build_description(title_level33(), message)
 
@@ -936,6 +945,7 @@ def description_level36():
         450, 300, "https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0
     )
     message += (
+        "<div class='popup_message'>"
         "You can change the <b>If</b> block to make more choices. Click on the "
         "star in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
         "the van what to do if the first <b>If</b> direction can't be done. "
@@ -945,6 +955,7 @@ def description_level36():
         "that only one step is taken in each loop. <br> This type of "
         "algorithm is called a 'general algorithm' as it can be used with most "
         "simple routes."
+        "</div>"
     )
     return build_description(title_level36(), message)
 
@@ -1105,12 +1116,14 @@ def description_level44():
         450, 300, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
     )
     message += (
+        "<div class='popup_message'>"
         "The light varies from red to green. <br>"
         "The van must check which colour the traffic light is when it reaches them "
         "- if it goes past a red light it will break the Highway Code."
         "<br> Here, you want the van to repeat the wait instruction while the traffic light is red. "
         "Drag a block inside a <b>Repeat while</b> block to make the van repeat an instruction. "
         "<br> Attach a 'condition' so the van knows when to repeat the instruction."
+        "</div>"
     )
     return build_description(title_level44(), message)
 

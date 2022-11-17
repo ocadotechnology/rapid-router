@@ -310,19 +310,28 @@
   }
 }
 
+.popup_video {
+  width: 66%;
+}
+
 .ocargo-modal {
   position: fixed;
-  width: 51%;
+  width: 61.9vw;
   top: 0;
   left: 0;
-  transform: translate(50%, 50%);
+  transform: translate(19.5vw, 10vh);
   height: fit-content;
-  max-height: 60vh;
+  max-height: 82vh;
   margin-bottom: 10%;
   background-color: white;
   border-radius: 15px;
   padding: 30px;
   overflow-y: auto;
+}
+.main_popup_container {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 2rem;
 }
 
 .close-reveal-modal {
