@@ -1052,12 +1052,12 @@ ocargo.Drawing.startPopup = function (
   }
 
 
-  const youtubeVideo = $(".ytp-cued-thumbnail-overlay-image")
-  if (youtubeVideo) $("#modal-mascot").hide()
-
+  const youtubeVideo = $("iframe")
+  if (youtubeVideo[0]) $("#modal-mascot").hide()
+  console.log(buttons)
   // buttons are passed as a html string..
   // hence this terribleness
-  if (typeof(buttons) != "number") {
+  if (typeof(buttons) === "object") {
     const currentLevelString = window.location.pathname.split("/").filter(element => parseInt(element))
     const currentLevelNumber = parseInt(currentLevelString[0])
     const icons = [
