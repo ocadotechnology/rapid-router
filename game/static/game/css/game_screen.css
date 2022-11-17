@@ -477,6 +477,7 @@ div.no-print div.tab label {
 
 #modal-content {
   float: left;
+  width: 100%;
 }
 
 #prev_button {
@@ -492,6 +493,7 @@ div.no-print div.tab label {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  width: 100%;
 }
 
 

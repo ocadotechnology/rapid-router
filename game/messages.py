@@ -569,7 +569,7 @@ def title_level19():
 
 def description_level19():
     message = youtubeLink(
-        600, 400, "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0
+        450, 300, "https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0
     )
     message += (
         "Attach a block inside the <b>Repeat</b> block to make the van repeat "
@@ -776,7 +776,7 @@ def title_level29():
 
 def description_level29():
     message = youtubeLink(
-        600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
+        450, 300, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
     )
     message += (
         "Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
@@ -857,7 +857,7 @@ def title_level33():
 
 def description_level33():
     message = youtubeLink(
-        600, 400, "https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0
+        450, 300, "https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0
     )
     message += (
         "Another way of telling the van what to do is to use the <b>If</b> block. "
@@ -933,7 +933,7 @@ def title_level36():
 
 def description_level36():
     message = youtubeLink(
-        600, 400, "https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0
+        450, 300, "https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0
     )
     message += (
         "You can change the <b>If</b> block to make more choices. Click on the "
@@ -1102,7 +1102,7 @@ def title_level44():
 
 def description_level44():
     message = youtubeLink(
-        600, 400, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
+        450, 300, "https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0
     )
     message += (
         "The light varies from red to green. <br>"

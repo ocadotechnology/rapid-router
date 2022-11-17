@@ -1051,6 +1051,10 @@ ocargo.Drawing.startPopup = function (
     }
   }
 
+
+  const youtubeVideo = $(".ytp-cued-thumbnail-overlay-image")
+  if (youtubeVideo) $("#modal-mascot").hide()
+
   // buttons are passed as a html string..
   // hence this terribleness
   if (typeof(buttons) != "number") {
