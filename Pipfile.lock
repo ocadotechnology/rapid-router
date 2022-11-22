@@ -26,10 +26,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:0ef2c4b03447b67a161249a09e5e8e6b5d15a5f36ac1034b7cc862a064423f49",
-                "sha256:8a030c4fdec10e7583865e4f88652fdd0014e1caf34d42dd8aa3726c40847da2"
+                "sha256:839bebade278e677ad07f5024f7e7df640f7c34faedda9b595b2542e53fc1a7d",
+                "sha256:b2329099b86cc5eb2068f1e92057338ef5c5e2cced41c68a04739cdfce48e150"
             ],
-            "version": "==6.25.0"
+            "version": "==6.27.1"
         },
         "django": {
             "hashes": [
@@ -189,10 +189,10 @@
     "develop": {
         "aimmo": {
             "hashes": [
-                "sha256:4fe2b3b2cf395b8dff8e28e89cc8a89967231b73ec00a9795fb88d5c20c636dc",
-                "sha256:99db1fb7dec95241d7ed6bbd3079f5b21557233f48b037af089163ce81df026b"
+                "sha256:0ea878d1053500f1c0c50186e2bad5be3b6b9c0192131716e35a25b51a5a58f8",
+                "sha256:c0bc39d56bb3b6c960d3202df5dd6e65d20ebc7e4a8d21e71d187db00ea1f626"
             ],
-            "version": "==2.5.9"
+            "version": "==2.5.10"
         },
         "asgiref": {
             "hashes": [
@@ -228,10 +228,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:0ef2c4b03447b67a161249a09e5e8e6b5d15a5f36ac1034b7cc862a064423f49",
-                "sha256:8a030c4fdec10e7583865e4f88652fdd0014e1caf34d42dd8aa3726c40847da2"
+                "sha256:839bebade278e677ad07f5024f7e7df640f7c34faedda9b595b2542e53fc1a7d",
+                "sha256:b2329099b86cc5eb2068f1e92057338ef5c5e2cced41c68a04739cdfce48e150"
             ],
-            "version": "==6.25.0"
+            "version": "==6.27.1"
         },
         "chardet": {
             "hashes": [
@@ -242,11 +242,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:5a8a6e017460ac5378ef5fcaba85b647b58ad57a0b5cc874be3cc14d21ffd9af",
-                "sha256:864dc027f337a948cec938dfe76ea6625b1678e08e04a47c0c1b5383e2b16f71"
+                "sha256:17c0bee4a8f3da6c763b1e0e5d9b542b3b8c0b7d820d37a518109412e10d1f5d",
+                "sha256:db1bbb0ed10d21386cac9aa8115240e5ec075c5c39a6d34d54126a7f440c6a6d"
             ],
             "index": "pypi",
-            "version": "==6.25.0"
+            "version": "==6.27.1"
         },
         "defusedxml": {
             "hashes": [
@@ -427,11 +427,11 @@
         },
         "exceptiongroup": {
             "hashes": [
-                "sha256:a31cd183c3dea02e617aab5153588d5f7258a77b51f0ef41b3815ae8a0d0f695",
-                "sha256:c22f11ec6a10d2b453871c5c5fe887436c4d1961324ce9090f2ca6ddc4180c27"
+                "sha256:542adf9dea4055530d6e1279602fa5cb11dab2395fa650b8674eaec35fc4a828",
+                "sha256:bd14967b79cd9bdb54d97323216f8fdf533e278df937aa2a90089e7d6e06e5ec"
             ],
             "markers": "python_version < '3.11'",
-            "version": "==1.0.2"
+            "version": "==1.0.4"
         },
         "execnet": {
             "hashes": [

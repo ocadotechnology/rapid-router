@@ -29,8 +29,6 @@ var currentHeight = PAPER_HEIGHT
 var currentStartX = 0
 var currentStartY = 0
 
-const prevGame = (currentLevelNumber) => window.location.pathname = `/rapidrouter/${currentLevelNumber - 1}/`
-const nextGame = (currentLevelNumber) => window.location.pathname = `/rapidrouter/${currentLevelNumber + 1}/`
 
 ocargo.Drawing = function (startingPosition) {
   /*************/
@@ -1054,12 +1052,9 @@ ocargo.Drawing.startPopup = function (
 
   const youtubeVideo = $("iframe")
   if (youtubeVideo[0]) $("#modal-mascot").hide()
-  console.log(buttons)
   // buttons are passed as a html string..
   // hence this terribleness
-  if (typeof(buttons) === "object") {
-    const currentLevelString = window.location.pathname.split("/").filter(element => parseInt(element))
-    const currentLevelNumber = parseInt(currentLevelString[0])
+  if (typeof(buttons) === "object") { // check if there are several buttons passed in an array
     const icons = [
       $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
       "NOT USED",
@@ -1080,10 +1075,10 @@ ocargo.Drawing.startPopup = function (
         // this is a left button so icon has to come first
         if (currentID !== "play_button") {
           current_button.append(icons[i])
-          current_button.attr("onclick", i == 0 ? `prevGame(${currentLevelNumber})` : `nextGame(${currentLevelNumber})`)
+          current_button.attr("onclick", i == 0 ? `window.location.replace('${PREV_LEVEL_URL}')` : `window.location.replace('${NEXT_LEVEL_URL}')`)
         }
         // if its first or last level, then do not display a button correspondingly
-        if (!(i == 0 && currentLevelNumber == 1 || i == 2 && currentLevelNumber == 109)) button_div.append(current_button)
+        if (!(PREV_LEVEL_URL || NEXT_LEVEL_URL)) button_div.append(current_button)
     }
     $(`#modal-buttons`).html(button_div)
   }
