@@ -1054,11 +1054,7 @@ ocargo.Drawing.startPopup = function (
   if (youtubeVideo[0]) $("#modal-mascot").hide()
   // buttons are passed as a html string..
   // hence this terribleness
-<<<<<<< HEAD
   if (typeof(buttons) === "object") {
-=======
-  if (typeof(buttons) === "object") { // check if there are several buttons passed in an array
->>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
     const icons = [
       $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
       "NOT USED",
@@ -1083,12 +1079,8 @@ ocargo.Drawing.startPopup = function (
         }
         console.log(PREV_LEVEL_URL, NEXT_LEVEL_URL)
         // if its first or last level, then do not display a button correspondingly
-<<<<<<< HEAD
         //if ((!(i == 0 && PREV_LEVEL_URL != "" || i == 2 && NEXT_LEVEL_URL != "")))
         button_div.append(current_button)
-=======
-        if (!(PREV_LEVEL_URL || NEXT_LEVEL_URL)) button_div.append(current_button)
->>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
     }
     $(`#modal-buttons`).html(button_div)
   }
