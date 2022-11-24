@@ -4,6 +4,7 @@ import os
 import time
 
 from django.urls import reverse
+from portal.tests.base_test import click_buttons_by_id
 from hamcrest import assert_that, equal_to, contains_string, ends_with
 from portal.tests.pageObjects.portal.base_page import BasePage
 from selenium.common.exceptions import TimeoutException
@@ -199,10 +200,7 @@ class GamePage(BasePage):
 
     def next_level(self):
         self.assert_success()
-        self.browser.find_element_by_id("next_level_button").click()
-        WebDriverWait(self.browser, 10).until(
-            presence_of_all_elements_located((By.ID, "blockly_tab"))
-        )
+        click_buttons_by_id("next_level_button")
         return self
 
     def _run_failing_program(self, text):

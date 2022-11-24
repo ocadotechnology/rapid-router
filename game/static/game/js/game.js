@@ -121,9 +121,9 @@ ocargo.Game.prototype.setup = function () {
     [
     // these id's must have _ (underscore) inside
     // of them so that regex can pick them up
-    ocargo.button.dismissButtonHtml('prev_button', gettext('Previous Level')),
+    ocargo.button.dismissButtonHtml('prev_button', gettext(`${PREV_LEVEL_URL}`)),
     ocargo.button.dismissButtonHtml('play_button', gettext('Play')),
-    ocargo.button.dismissButtonHtml('next_button', gettext('Next Level')),
+    ocargo.button.dismissButtonHtml('next_button', gettext(`${NEXT_LEVEL_URL}`)),
     ]
   )
 }

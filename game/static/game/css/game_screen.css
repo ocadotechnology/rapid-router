@@ -207,15 +207,7 @@ button > svg {
   width: 20%;
 }
 
-#next_button > span {
-  padding: 0;
-  margin: 0;
-}
-
-#next_button > svg {
-}
-
-
+#next_button > span,
 #prev_button > span {
   padding: 0;
   margin: 0;
@@ -504,6 +496,7 @@ div.no-print div.tab label {
 #modal-buttons button {
   margin-right: 0.5em;
 }
+
 .modal-buttons {
   margin-top: 4rem;
   display: flex;
@@ -511,7 +504,6 @@ div.no-print div.tab label {
   justify-content: space-between;
   width: 100%;
 }
-
 
 #modal-mascot,
 #modal-mascot--brain {
