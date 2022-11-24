@@ -26,10 +26,17 @@
         },
         "cfl-common": {
             "hashes": [
+<<<<<<< HEAD
                 "sha256:91948b5233bf6b57834ba9413a632d37f043d8e54795545207ac34e368892977",
                 "sha256:9a6bac0ad2b7a9ef8f514305e261b81949b023217f273c821e0547d4836892bb"
             ],
             "version": "==6.27.2"
+=======
+                "sha256:839bebade278e677ad07f5024f7e7df640f7c34faedda9b595b2542e53fc1a7d",
+                "sha256:b2329099b86cc5eb2068f1e92057338ef5c5e2cced41c68a04739cdfce48e150"
+            ],
+            "version": "==6.27.1"
+>>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
         },
         "django": {
             "hashes": [
@@ -228,10 +235,17 @@
         },
         "cfl-common": {
             "hashes": [
+<<<<<<< HEAD
                 "sha256:91948b5233bf6b57834ba9413a632d37f043d8e54795545207ac34e368892977",
                 "sha256:9a6bac0ad2b7a9ef8f514305e261b81949b023217f273c821e0547d4836892bb"
             ],
             "version": "==6.27.2"
+=======
+                "sha256:839bebade278e677ad07f5024f7e7df640f7c34faedda9b595b2542e53fc1a7d",
+                "sha256:b2329099b86cc5eb2068f1e92057338ef5c5e2cced41c68a04739cdfce48e150"
+            ],
+            "version": "==6.27.1"
+>>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
         },
         "chardet": {
             "hashes": [
@@ -242,11 +256,19 @@
         },
         "codeforlife-portal": {
             "hashes": [
+<<<<<<< HEAD
                 "sha256:8bef7286e878f84b657ba2f351b5df0823965fe0fea4ed684f76d6b2879c9705",
                 "sha256:98eda0b2cd280eec0973b6662f7163bb486254f5b88bfd68d84ebd4510d6bd8b"
             ],
             "index": "pypi",
             "version": "==6.27.2"
+=======
+                "sha256:17c0bee4a8f3da6c763b1e0e5d9b542b3b8c0b7d820d37a518109412e10d1f5d",
+                "sha256:db1bbb0ed10d21386cac9aa8115240e5ec075c5c39a6d34d54126a7f440c6a6d"
+            ],
+            "index": "pypi",
+            "version": "==6.27.1"
+>>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
         },
         "defusedxml": {
             "hashes": [

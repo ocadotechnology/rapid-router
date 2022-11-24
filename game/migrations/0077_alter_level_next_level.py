@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+<<<<<<< HEAD
 from game.models import Level
 
 
@@ -19,10 +20,19 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("game", "0076_level_locked_for_class"),
+=======
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('game', '0076_level_locked_for_class'),
+>>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
     ]
 
     operations = [
         migrations.AlterField(
+<<<<<<< HEAD
             model_name="level",
             name="next_level",
             field=models.ForeignKey(
@@ -34,4 +44,10 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.RunPython(add_next_level_to_last_levels),
+=======
+            model_name='level',
+            name='next_level',
+            field=models.ForeignKey(default=None, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='prev_level', to='game.level'),
+        ),
+>>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
     ]

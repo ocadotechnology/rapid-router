@@ -53,12 +53,17 @@ def _prev_level_url(level, user, night_mode):
     """
 
     if not level.prev_level.all():
+<<<<<<< HEAD
         return "Nope"
+=======
+        return ""
+>>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
 
     prev_level = level.prev_level.all()[0]
     if not user.is_anonymous and hasattr(user.userprofile, "student"):
         student = user.userprofile.student
         klass = student.class_field
+<<<<<<< HEAD
         # print("-----------\n" * 10)
         try:
             while (
@@ -69,6 +74,14 @@ def _prev_level_url(level, user, night_mode):
         #      print(f"{prev_level} - {type(prev_level)}")
         except Exception as e:
             print(f"Exception is: {e}")
+=======
+
+        is_prev_level_locked = klass in prev_level.locked_for_class.all()
+        if is_prev_level_locked:
+            while is_prev_level_locked and int(prev_level.name) > 1:
+                prev_level = Level.objects.get(id=prev_level.id - 1)
+                is_prev_level_locked = klass in prev_level.locked_for_class.all()
+>>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
     return _level_url(prev_level, night_mode)
 
 
@@ -89,6 +102,7 @@ def _next_level_url(level, user, night_mode):
 
         is_next_level_locked = klass in next_level.locked_for_class.all()
 
+<<<<<<< HEAD
         try:
             if is_next_level_locked:
                 while is_next_level_locked and int(next_level.name) < 109:
@@ -96,6 +110,12 @@ def _next_level_url(level, user, night_mode):
                     is_next_level_locked = klass in next_level.locked_for_class.all()
         except Exception as e:
             print(f"Exception is: {e}")
+=======
+        if is_next_level_locked:
+            while is_next_level_locked and int(next_level.name) < 109:
+                next_level = next_level.next_level
+                is_next_level_locked = klass in next_level.locked_for_class.all()
+>>>>>>> c77be41db4d9f5becbb25b031597cf6a9ff67129
     return _level_url(next_level, night_mode)
 
 
@@ -223,6 +243,11 @@ def play_level(request, level, from_editor=False):
         model_solution = level.model_solution
 
     return_view = "level_editor" if from_editor else "levels"
+    for method in dir(level):
+        try:
+            print(f"{method} - {getattr(level, method)}")
+        except AttributeError:
+            print("LEL")
 
     return render(
         request,
