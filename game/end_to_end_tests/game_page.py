@@ -200,7 +200,10 @@ class GamePage(BasePage):
 
     def next_level(self):
         self.assert_success()
-        click_buttons_by_id("next_level_button")
+        self.browser.find_element_by_id("next_level_button").click()
+        WebDriverWait(self.solution_button, 10).until(
+            presence_of_all_elements_located((By.ID, "blockly_tab"))
+        )
         return self
 
     def _run_failing_program(self, text):

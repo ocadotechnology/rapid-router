@@ -223,11 +223,6 @@ def play_level(request, level, from_editor=False):
         model_solution = level.model_solution
 
     return_view = "level_editor" if from_editor else "levels"
-    for method in dir(level):
-        try:
-            print(f"{method} - {getattr(level, method)}")
-        except AttributeError:
-            print("LEL")
 
     return render(
         request,
