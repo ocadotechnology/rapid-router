@@ -416,6 +416,10 @@ div.no-print div.tab label {
   overflow: hidden;
 }
 
+#tab_panes_wrapper .tab_pane {
+  padding: 20px 20px 0 30px;
+}
+
 .tab_break {
   width: auto;
   height: 20px;

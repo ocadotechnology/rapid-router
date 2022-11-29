@@ -1,6 +1,6 @@
 from builtins import str
 
-from common.models import UserProfile, Student
+from common.models import UserProfile, Student, Class
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -24,7 +24,7 @@ class Block(models.Model):
             (0, "Start"),
             (1, "Action"),
             (2, "Condition"),
-            (3, "Proedure"),
+            (3, "Procedure"),
             (4, "ControlFlow"),
         ]
     )
@@ -34,7 +34,6 @@ class Block(models.Model):
 
     class Meta:
         ordering = ["block_type", "pk"]
-
 
 class Episode(models.Model):
     """Variables prefixed with r_ signify they are parameters for random level generation"""
@@ -142,6 +141,9 @@ class Level(models.Model):
         max_length=20, choices=character_choices(), blank=True, null=True, default=None
     )
     anonymous = models.BooleanField(default=False)
+    locked_for_class = models.ManyToManyField(
+        Class, blank=True, related_name="locked_levels"
+    )
     objects = LevelManager()
 
     def __str__(self):

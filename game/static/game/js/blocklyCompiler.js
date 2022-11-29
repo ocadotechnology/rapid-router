@@ -11,7 +11,6 @@ ocargo.BlocklyCompiler.prototype.program = null;
 
 ocargo.BlocklyCompiler.prototype.compile = function() {
     this.compileProcedures();
-    this.compileEvents();
     this.compileProgram();
     this.bindProcedureCalls();
 
@@ -41,27 +40,6 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
             throw gettext_noop('Perhaps try checking the names of your \'define\' blocks?');
         }
     }
-};
-
-ocargo.BlocklyCompiler.prototype.compileEvents = function() {
-    var newEvents = [];
-
-    var eventBlocks = ocargo.blocklyControl.onEventDoBlocks();
-    for (var i = 0; i < eventBlocks.length; i++) {
-        var block = eventBlocks[i];
-        var condition = this.getCondition(block);
-
-        var bodyBlock = block.inputList[1].connection.targetBlock();
-        if (bodyBlock === null) {
-            throw gettext_noop('Perhaps try looking at your \'event\' blocks?');
-        }
-
-        var conditionType = block.type;
-
-        newEvents.push(new Event(condition, this.createSequence(bodyBlock), block, conditionType));
-    }
-
-    this.events = newEvents;
 };
 
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {
@@ -512,12 +490,6 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
     for (var i = 0; i < procBlocks.length; i++) {
     	code += '\n' + Blockly.Python.blockToCode(procBlocks[i]);
     }
-
-    // TODO support events in python
-    //var eventBlocks = ocargo.blocklyControl.onEventDoBlocks();
-    //for (var i = 0; i < eventBlocks.length; i++) {
-    //	code += '\n' + Blockly.Python.blockToCode(eventBlocks[i]);
-    //}
 
 	var startBlock = ocargo.blocklyControl.startBlock();
     code += '\n' + Blockly.Python.blockToCode(startBlock);

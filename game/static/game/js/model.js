@@ -419,10 +419,6 @@ ocargo.Model.prototype.deliver = function() {
 };
 
 ocargo.Model.prototype.sound_horn = function() {
-    // if (!this.van) {
-    //     console.log("no van :(");
-    //     return;
-    // }
     var currentNode = this.van.getPosition().currentNode
     ocargo.animation.appendAnimation({
         type: 'callable',
@@ -436,7 +432,7 @@ ocargo.Model.prototype.sound_horn = function() {
     nodes.forEach( (node) => {
         var cow = this.getCowForNode(node, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
         if (cow) {
-            cow.queueLeaveAnimation(node);
+            cow.queueLeaveAnimation(this, node);
             cow.setInactive(this, node);
         };
     });

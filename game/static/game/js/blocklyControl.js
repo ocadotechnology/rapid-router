@@ -217,17 +217,6 @@ ocargo.BlocklyControl.prototype.procedureBlocks = function() {
     });
 };
 
-ocargo.BlocklyControl.prototype.onEventDoBlocks = function() {
-    // find and return all top blocks that are event handler blocks
-    var startBlocks = [];
-    Blockly.mainWorkspace.getTopBlocks().forEach(function (block) {
-        if (block.type === 'cow_crossing') {
-            startBlocks.push(block);
-        }
-    });
-    return startBlocks;
-};
-
 ocargo.BlocklyControl.prototype.totalBlocksCount = function() {
     return Blockly.mainWorkspace.getAllBlocks().length;
 };
@@ -235,7 +224,6 @@ ocargo.BlocklyControl.prototype.totalBlocksCount = function() {
 ocargo.BlocklyControl.prototype.activeBlocksCount = function() {
     var startBlock = this.startBlock();
     var procedureBlocks = this.procedureBlocks();
-    var eventBlocks = this.onEventDoBlocks();
     var n = 0;
     var i;
 
@@ -244,11 +232,6 @@ ocargo.BlocklyControl.prototype.activeBlocksCount = function() {
     // 1 includes the procedure declaration block
     for (i = 0; i < procedureBlocks.length; i++) {
         n += 1 + count(procedureBlocks[i].inputList[1].connection.targetBlock());
-    }
-
-    // 1 includes the on-event-do block
-    for (i = 0; i < eventBlocks.length; i++) {
-        n += 1 + count(eventBlocks[i].inputList[1].connection.targetBlock());
     }
 
     return n;

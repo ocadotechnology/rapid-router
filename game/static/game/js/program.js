@@ -37,15 +37,6 @@ ocargo.Thread.prototype.run = function(model) {
 };
 
 ocargo.Thread.prototype.step = function(model) {
-	// check if any event condition is true
-	for (let i = 0; i < this.program.events.length; i++) {
-		let event = this.program.events[i];
-		model.shouldObserve = false;
-		if (event.condition(model)) {
-			event.execute(this, model);
-		}
-		model.shouldObserve = true;
-	}
 
 	let commandToProcess = this.stack.shift();
 	this.noExecutionSteps ++;
