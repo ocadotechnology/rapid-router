@@ -310,8 +310,11 @@ ocargo.LevelEditor = function(levelId) {
             });
 
             if(COW_LEVELS_ENABLED) {
+                if (Object.keys(cowGroups).length == 0) {
+                    addCowGroup();
+                }
                 $('#cow').click(function () {
-                    new InternalCow({group: cowGroups[$('#cow_group_select').val()]});
+                    new InternalCow({group: cowGroups["group1"]});
                 });
             }
         }
