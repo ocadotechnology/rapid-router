@@ -1048,7 +1048,38 @@ ocargo.Drawing.startPopup = function (
     }
   }
 
-  if (buttons) {
+  const youtubeVideo = $("iframe")
+  if (youtubeVideo[0]) {
+    $("#modal-mascot").hide()
+  }
+  // buttons are passed as html string..
+  // hence this terribleness
+  if (Array.isArray(buttons)) {
+    const icons = [
+      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
+      "NOT USED",
+      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-right"),
+    ]
+
+    const regexID = /id=\"*\w+_\w+\"/
+    let buttonDiv = $("<div>").addClass("modal-buttons")
+    for (let i = 0; i < buttons.length; i++) {
+      let currentID = buttons[i].match(regexID)[0].slice(3).replaceAll('"', '')
+
+      let currentButton = $(buttons[i])
+      let classToBeAdded = currentID === "play_button" ? "navigation_button_portal long_button rapid-router-welcome" : "navigation_button_portal_secondary long_button rapid-router-welcome button--icon"
+
+      currentButton.removeClass().addClass(classToBeAdded)
+      if (currentID != "play_button") {
+        currentButton.append(icons[i])
+        currentButton.attr("onclick", i == 0 ? `window.location.replace('${NEXT_LEVEL_URL}')` : `window.location.replace('${NEXT_LEVEL_URL}')`)
+      }
+      buttonDiv.append(currentButton)
+    }
+    $("#modal-buttons").html(buttonDiv)
+  }
+
+  else if (buttons) {
     $('#modal-buttons').html(buttons)
   } else {
     $('#modal-buttons').html(
