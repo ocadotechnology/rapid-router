@@ -1072,9 +1072,10 @@ ocargo.Drawing.startPopup = function (
       currentButton.removeClass().addClass(classToBeAdded)
       if (currentID != "play_button") {
         currentButton.append(icons[i])
-        currentButton.attr("onclick", i == 0 ? `window.location.replace('${NEXT_LEVEL_URL}')` : `window.location.replace('${NEXT_LEVEL_URL}')`)
+        currentButton.attr("onclick", i == 0 ? `window.location.replace('${PREV_LEVEL_URL}')` : `window.location.replace('${NEXT_LEVEL_URL}')`)
       }
-      buttonDiv.append(currentButton)
+
+      if (currentButton.children().first().text()) buttonDiv.append(currentButton)
     }
     $("#modal-buttons").html(buttonDiv)
   }
