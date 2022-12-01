@@ -76,10 +76,13 @@ class BaseGameTest(SeleniumTestCase):
         self._go_to_path(path)
         return HomePage(self.selenium)
 
-    def go_to_level(self, level_name):
+    def go_to_level(self, level_name, close_popup=True):
         path = reverse("play_default_level", kwargs={"levelName": str(level_name)})
         self._go_to_path(path)
-        self.selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
+        if close_popup:
+            self.selenium.execute_script(
+                "ocargo.animation.FAST_ANIMATION_DURATION = 1;"
+            )
 
         return GamePage(self.selenium)
 
@@ -241,10 +244,3 @@ class BaseGameTest(SeleniumTestCase):
 
     def _fixture_teardown(self):
         pass
-
-
-class TestPrevNextButtons(BaseGameTest):
-    def test_prev_next_buttons(self):
-        path = reverse("play_default_level", kwargs={"levelName": str(1)})
-        self._go_to_path(path)
-        time.sleep(4)

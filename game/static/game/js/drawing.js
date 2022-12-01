@@ -1061,6 +1061,12 @@ ocargo.Drawing.startPopup = function (
       $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-right"),
     ]
 
+    const links = [
+      PREV_LEVEL_URL,
+      "",
+      NEXT_LEVEL_URL,
+    ]
+
     const regexID = /id=\"*\w+_\w+\"/
     let buttonDiv = $("<div>").addClass("modal-buttons")
     for (let i = 0; i < buttons.length; i++) {
@@ -1072,10 +1078,11 @@ ocargo.Drawing.startPopup = function (
       currentButton.removeClass().addClass(classToBeAdded)
       if (currentID != "play_button") {
         currentButton.append(icons[i])
-        currentButton.attr("onclick", i == 0 ? `window.location.replace('${PREV_LEVEL_URL}')` : `window.location.replace('${NEXT_LEVEL_URL}')`)
+        let currentLink = links[i] === "" ? "" : `window.location.replace('${links[i]}')`
+        currentButton.attr("onclick", currentLink)
       }
 
-      if (currentButton.children().first().text()) buttonDiv.append(currentButton)
+      if (currentButton.attr("onclick")) buttonDiv.append(currentButton)
     }
     $("#modal-buttons").html(buttonDiv)
   }
