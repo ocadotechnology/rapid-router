@@ -47,7 +47,7 @@ ocargo.Map.prototype.isRoadForward = function(position) {
         if (movingRight){
             nextCoordinates.x = currentNode.coordinate.x + 1;
             if (nextCoordinates.x > 9) { // right-most extremity
-                return null;  
+                return null;
             }
         } else {  // moving left
             nextCoordinates.x = currentNode.coordinate.x - 1
@@ -56,7 +56,7 @@ ocargo.Map.prototype.isRoadForward = function(position) {
             }
         }
     } else { // moving vertically
-        nextCoordinates.x = currentNode.coordinate.x; 
+        nextCoordinates.x = currentNode.coordinate.x;
         var movingUpwards = previousNode.coordinate.y < currentNode.coordinate.y;
         if (movingUpwards) {
             nextCoordinates.y = currentNode.coordinate.y + 1;

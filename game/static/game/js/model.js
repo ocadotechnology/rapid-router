@@ -25,7 +25,6 @@ ocargo.Model = function(nodeData, origin, destinations, trafficLightData, cowDat
     // false if evaluation of conditions etc. should be hidden from user.
     // used for evaluation of event handlers before each statement.
     this.shouldObserve = true;
-
 };
 
 // Resets the entire model to how it was when it was just constructed
@@ -103,7 +102,7 @@ ocargo.Model.prototype.isCowCrossing = function(type) {
         var cow = this.getCowForNode(node, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
         if (cow) {
             return true;
-        } 
+        }
     }
     return false;
 };
@@ -436,7 +435,6 @@ ocargo.Model.prototype.sound_horn = function() {
             cow.setInactive(this, node);
         };
     });
-    
     return true;
 };
 
@@ -578,7 +576,6 @@ ocargo.Model.prototype.getTrafficLightForNode = function(position) {
 
     for (var i = 0; i < this.trafficLights.length; i++) {
         var light = this.trafficLights[i];
-        
         if (light.sourceNode === position.previousNode && light.controlledNode === position.currentNode) {
             return light;
         }
@@ -607,10 +604,10 @@ ocargo.Model.prototype.getCowForNode = function(node, state) {
             } else {
                 if (typeof(state) === "string") {
                     state = [state];
-                } 
+                }
                 if (state.includes(cow.activeNodes[jsonCoordinate])) {
                     return cow;
-                } 
+                }
             }
         }
     }
@@ -651,4 +648,3 @@ ocargo.Model.prototype.getNodesAhead = function(node) {
 ocargo.Model.prototype.startingPosition = function() {
     return this.map.startingPosition();
 };
-
