@@ -79,10 +79,7 @@ class BaseGameTest(SeleniumTestCase):
     def go_to_level(self, level_name, close_popup=True):
         path = reverse("play_default_level", kwargs={"levelName": str(level_name)})
         self._go_to_path(path)
-        if close_popup:
-            self.selenium.execute_script(
-                "ocargo.animation.FAST_ANIMATION_DURATION = 1;"
-            )
+        self.selenium.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         return GamePage(self.selenium)
 

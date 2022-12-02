@@ -18,6 +18,14 @@ class Migration(migrations.Migration):
                 next_level=next_level_update
             )
 
+    def remove_next_level_to_last_levels(apps, schema_editor):
+        Level = apps.get_model("game", "Level")
+        db_alias = schema_editor.connection.alias
+        Level_Object_Wrapper = Level.objects.using(db_alias)
+        Level_Object_Wrapper.filter(
+            name__in=["12", "18", "28", "32", "43", "50", "60", "67", "79", "91"]
+        ).update(next_level=None)
+
     dependencies = [
         ("game", "0076_level_locked_for_class"),
     ]

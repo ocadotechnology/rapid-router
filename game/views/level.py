@@ -59,13 +59,8 @@ def _prev_level_url(level, user, night_mode):
     if not user.is_anonymous and hasattr(user.userprofile, "student"):
         student = user.userprofile.student
         klass = student.class_field
-        try:
-            while (
-                klass in prev_level.locked_for_class.all() and int(prev_level.name) > 1
-            ):
-                prev_level = prev_level.prev_level.all()[0]
-        except:
-            print("Fegcrjhsvunicoa khudsFAUL")
+        while klass in prev_level.locked_for_class.all() and int(prev_level.name) > 1:
+            prev_level = prev_level.prev_level.all()[0]
     return _level_url(prev_level, night_mode)
 
 
