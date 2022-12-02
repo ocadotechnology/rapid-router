@@ -87,7 +87,7 @@ class ScoreboardTestCase(TestCase):
 
         response = c.post(url, data)
         assert response.status_code == 200
-        assert len(response.context["level_headers"]) == 109
+        assert len(response.context["level_headers"]) == Level.objects.count()
 
     def test_student_can_see_classes(self):
         """A student should be able to see the classes they are in"""
