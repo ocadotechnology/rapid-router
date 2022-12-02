@@ -403,4 +403,5 @@ solutions = {
     "107": lvl_107,
     "108": lvl_108,
     "109": lvl_109,
+    "110": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="228" y="181"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_repeat_while"><value name="condition"><block type="cow_crossing"></block></value><statement name="body"><block type="sound_horn"></block></statement><next><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left" ></block></statement><statement name="ELSE"><block type="turn_right" ></block></statement></block></next></block></statement></block></next></block></xml>',
 }

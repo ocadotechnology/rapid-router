@@ -371,4 +371,11 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(108, check_algorithm_score=False)
 
     def test_level_109(self):
-        self._complete_level(109, check_algorithm_score=False, final_level=True)
+        self._complete_level(109, check_algorithm_score=False)
+
+    def test_cow_level(self):
+        self._complete_level(
+            110,
+            check_algorithm_score=False,
+            final_level=True,
+        )

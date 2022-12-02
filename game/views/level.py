@@ -340,7 +340,7 @@ def load_workspace_solution(request, levelName):
         workspace.contents = solutions["blockly_default"]
         workspace.python_contents = solutions["python_default"]
 
-        if int(levelName) <= 91:
+        if int(levelName) <= 91 or int(levelName) == 110:
             workspace.contents = solutions[levelName]
             workspace.blockly_enabled = True
             workspace.python_enabled = False
