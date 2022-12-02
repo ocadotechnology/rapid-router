@@ -118,7 +118,11 @@ ocargo.Game.prototype.setup = function () {
     LESSON,
     message,
     BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED, // show mascot on Blockly-only levels
-    ocargo.button.dismissButtonHtml('play_button', gettext('Play'))
+    [
+      ocargo.button.dismissButtonHtml("prev_button", gettext("Previous Level")),
+      ocargo.button.dismissButtonHtml('play_button', gettext('Play')),
+      ocargo.button.dismissButtonHtml("next_button", gettext("Next Level"))
+    ]
   )
 }
 
@@ -419,9 +423,9 @@ ocargo.Game.prototype._setupConsoleLogViewSliderListeners = function () {
       pythonSliderPosition = 75
       codeWindowHeight = 75
     }
-    if (pythonSliderPosition < 0) {
-      pythonSliderPosition = 0
-      codeWindowHeight = 0
+    if (pythonSliderPosition < 30) {
+      pythonSliderPosition = 30
+      codeWindowHeight = 30
     }
 
     slider.css('top', pythonSliderPosition + '%')

@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.7.0 (2022-12-02)
+### Feature
+* Prev next buttons ([#1383](https://github.com/ocadotechnology/rapid-router/issues/1383)) ([`203e769`](https://github.com/ocadotechnology/rapid-router/commit/203e769802a6aebe9d3f8e0b6cd5ca45b723c07d))
+
 ## v5.6.1 (2022-11-15)
 ### Fix
 * Padding in level editor ([#1381](https://github.com/ocadotechnology/rapid-router/issues/1381)) ([`c212855`](https://github.com/ocadotechnology/rapid-router/commit/c21285570f11652bde218d836d34d79681bab3b3))
