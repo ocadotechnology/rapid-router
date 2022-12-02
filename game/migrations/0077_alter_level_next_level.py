@@ -42,5 +42,7 @@ class Migration(migrations.Migration):
                 to="game.level",
             ),
         ),
-        migrations.RunPython(add_next_level_to_last_levels),
+        migrations.RunPython(
+            add_next_level_to_last_levels, reverse_code=remove_next_level_to_last_levels
+        ),
     ]
