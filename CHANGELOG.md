@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.7.1 (2022-12-05)
+### Fix
+* Added a migration fix ([#1387](https://github.com/ocadotechnology/rapid-router/issues/1387)) ([`b8aa2a1`](https://github.com/ocadotechnology/rapid-router/commit/b8aa2a17882e281844b3dcb22aae0cb2f9f09925))
+
 ## v5.7.0 (2022-12-02)
 ### Feature
 * Prev next buttons ([#1383](https://github.com/ocadotechnology/rapid-router/issues/1383)) ([`203e769`](https://github.com/ocadotechnology/rapid-router/commit/203e769802a6aebe9d3f8e0b6cd5ca45b723c07d))
