@@ -61,13 +61,10 @@ def _prev_level_url(level, user, night_mode):
         klass = student.class_field
 
         is_prev_level_locked = klass in prev_level.locked_for_class.all()
-        print("lelelelelelel\n" * 9)
         if is_prev_level_locked:
             while is_prev_level_locked and int(prev_level.name) > 1:
                 prev_level = level.prev_level.all()[0]
-                print("lel\n" * 9)
                 is_prev_level_locked = klass in prev_level.locked_for_class.all()
-                print("no\n" * 9)
 
     return _level_url(prev_level, night_mode)
 

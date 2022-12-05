@@ -229,7 +229,6 @@ class LevelSelectionTestCase(TestCase):
         level109.locked_for_class.add(klass)
 
         next_level_url = _next_level_url(level1, student.new_user, False)
-        print("in" * 9)
 
         assert next_level_url == f"/rapidrouter/{level4.name}/"
 
