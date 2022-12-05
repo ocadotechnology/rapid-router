@@ -52,9 +52,7 @@ def _prev_level_url(level, user, night_mode):
     Find the previous available level. Check if level is available if so, go to it.
     """
 
-    # check if level one since the other
-    # check is inside a logged in user function
-    if not level.prev_level.all():  # or int(level.name) <= 1:
+    if not level.prev_level.all():
         return ""
 
     prev_level = level.prev_level.all()[0]
@@ -63,13 +61,13 @@ def _prev_level_url(level, user, night_mode):
         klass = student.class_field
 
         is_prev_level_locked = klass in prev_level.locked_for_class.all()
-
-        print("lele" * 99)
-        print(prev_level)
+        print("lelelelelelel\n" * 9)
         if is_prev_level_locked:
             while is_prev_level_locked and int(prev_level.name) > 1:
                 prev_level = level.prev_level.all()[0]
-                is_prev_level_locked = klass in prev_level.locked_for_class()
+                print("lel\n" * 9)
+                is_prev_level_locked = klass in prev_level.locked_for_class.all()
+                print("no\n" * 9)
 
     return _level_url(prev_level, night_mode)
 
