@@ -119,9 +119,9 @@ ocargo.Game.prototype.setup = function () {
     message,
     BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED, // show mascot on Blockly-only levels
     [
-      ocargo.button.dismissButtonHtml("prev_button", gettext("Previous Level")),
+      ocargo.button.dismissButtonHtml("prev_button", gettext("Previous level")),
       ocargo.button.dismissButtonHtml('play_button', gettext('Play')),
-      ocargo.button.dismissButtonHtml("next_button", gettext("Next Level"))
+      ocargo.button.dismissButtonHtml("next_button", gettext("Next level"))
     ]
   )
 }
