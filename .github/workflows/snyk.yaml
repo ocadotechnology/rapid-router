@@ -1,4 +1,4 @@
-<C-LeftRelease>name: Snyk
+name: Snyk
 on:
   release:
     types: [published]
@@ -14,18 +14,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16.x
-      - name: Install Node dependencies
-        run: npm install --prefix portal_frontend
-      - name: Run Snyk to check for vulnerabilities in Node.js
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor --file=portal_frontend/package.json --package-manager=npm --project-name="portal_frontend"
       - name: Setup python-version
         uses: actions/setup-python@v2
         with:
