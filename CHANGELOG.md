@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v5.7.3 (2022-12-06)
+### Fix
+* Dummy commit to bump version ([`b6ba81f`](https://github.com/ocadotechnology/rapid-router/commit/b6ba81f94fac5858eb56e6e442bd10cba1cee718))
+
+## v5.7.2 (2022-12-06)
+### Fix
+* Added title case to level buttons ([#1388](https://github.com/ocadotechnology/rapid-router/issues/1388)) ([`48f819e`](https://github.com/ocadotechnology/rapid-router/commit/48f819e30bebfa315c48127ab8332088d6abac97))
+
 ## v5.7.1 (2022-12-05)
 ### Fix
 * Added a migration fix ([#1387](https://github.com/ocadotechnology/rapid-router/issues/1387)) ([`b8aa2a1`](https://github.com/ocadotechnology/rapid-router/commit/b8aa2a17882e281844b3dcb22aae0cb2f9f09925))
