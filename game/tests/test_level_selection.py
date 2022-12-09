@@ -13,7 +13,7 @@ from game.models import Level
 from game.permissions import can_play_level
 from game.tests.utils.level import create_save_level
 from game.tests.utils.teacher import add_teacher_to_school, create_school
-from game.views.level import _next_level_url
+from game.views.level import _next_level_url, _prev_level_url
 
 
 class LevelSelectionTestCase(TestCase):
@@ -34,7 +34,11 @@ class LevelSelectionTestCase(TestCase):
     def login(self, email, password):
         self.client.post(
             reverse("teacher_login"),
-            {"auth-username": email, "auth-password": password, "teacher_login_view-current_step": "auth"},
+            {
+                "auth-username": email,
+                "auth-password": password,
+                "teacher_login_view-current_step": "auth",
+            },
             follow=True,
         )
 
@@ -54,7 +58,11 @@ class LevelSelectionTestCase(TestCase):
             "pythonEnabled": False,
             "decor": [],
             "blocklyEnabled": True,
-            "blocks": [{"type": "move_forwards"}, {"type": "turn_left"}, {"type": "turn_right"}],
+            "blocks": [
+                {"type": "move_forwards"},
+                {"type": "turn_left"},
+                {"type": "turn_right"},
+            ],
             "max_fuel": "50",
             "pythonViewEnabled": False,
             "character": "3",
@@ -74,7 +82,10 @@ class LevelSelectionTestCase(TestCase):
 
         assert response.status_code == 200
         assert response.context["blocklyEpisodes"][0]["name"] == "Getting Started"
-        assert response.context["blocklyEpisodes"][0]["levels"][0]["title"] == "Can you help the van get to the house?"
+        assert (
+            response.context["blocklyEpisodes"][0]["levels"][0]["title"]
+            == "Can you help the van get to the house?"
+        )
 
     def test_custom_levels_access(self):
         email1, password1 = signup_teacher_directly()
@@ -90,8 +101,12 @@ class LevelSelectionTestCase(TestCase):
         # Create a class and a student for each teacher
         _, class_name1, access_code1 = create_class_directly(email1)
         _, class_name2, access_code2 = create_class_directly(email2)
-        student_name1, student_password1, student1 = create_school_student_directly(access_code1)
-        student_name2, student_password2, student2 = create_school_student_directly(access_code2)
+        student_name1, student_password1, student1 = create_school_student_directly(
+            access_code1
+        )
+        student_name2, student_password2, student2 = create_school_student_directly(
+            access_code2
+        )
 
         save_url = "save_level_for_editor"
 
@@ -100,7 +115,9 @@ class LevelSelectionTestCase(TestCase):
         teacher2_level = create_save_level(teacher2)
         save_level_url = reverse(save_url)
 
-        response = self.client.post(save_level_url, {"data": self.level_data(teacher2_level.id)})
+        response = self.client.post(
+            save_level_url, {"data": self.level_data(teacher2_level.id)}
+        )
 
         assert response.status_code == 200
 
@@ -110,7 +127,9 @@ class LevelSelectionTestCase(TestCase):
 
         student1_level = create_save_level(student1)
 
-        response = self.client.post(save_level_url, {"data": self.level_data(student1_level.id)})
+        response = self.client.post(
+            save_level_url, {"data": self.level_data(student1_level.id)}
+        )
 
         assert response.status_code == 200
 
@@ -120,7 +139,9 @@ class LevelSelectionTestCase(TestCase):
 
         student2_level = create_save_level(student2)
 
-        response = self.client.post(save_level_url, {"data": self.level_data(student2_level.id)})
+        response = self.client.post(
+            save_level_url, {"data": self.level_data(student2_level.id)}
+        )
 
         assert response.status_code == 200
 
@@ -133,11 +154,19 @@ class LevelSelectionTestCase(TestCase):
 
         assert response.status_code == 200
         assert len(response.context["directly_shared_levels"]) == 1
-        assert response.context["directly_shared_levels"][0]["owner"] == student1.new_user
+        assert (
+            response.context["directly_shared_levels"][0]["owner"] == student1.new_user
+        )
         assert response.context["indirectly_shared_levels"][teacher2.new_user]
         assert len(response.context["indirectly_shared_levels"][teacher2.new_user]) == 2
-        assert response.context["indirectly_shared_levels"][teacher2.new_user][0]["owner"] == teacher2.new_user
-        assert response.context["indirectly_shared_levels"][teacher2.new_user][1]["owner"] == student2.new_user
+        assert (
+            response.context["indirectly_shared_levels"][teacher2.new_user][0]["owner"]
+            == teacher2.new_user
+        )
+        assert (
+            response.context["indirectly_shared_levels"][teacher2.new_user][1]["owner"]
+            == student2.new_user
+        )
 
         # Login as second teacher again and check they have access to only their student's level
         self.logout()
@@ -148,7 +177,9 @@ class LevelSelectionTestCase(TestCase):
 
         assert response.status_code == 200
         assert len(response.context["directly_shared_levels"]) == 1
-        assert response.context["directly_shared_levels"][0]["owner"] == student2.new_user
+        assert (
+            response.context["directly_shared_levels"][0]["owner"] == student2.new_user
+        )
         assert response.context["indirectly_shared_levels"] == {}
 
     def test_cannot_access_locked_level(self):
@@ -201,6 +232,12 @@ class LevelSelectionTestCase(TestCase):
 
         assert next_level_url == f"/rapidrouter/{level4.name}/"
 
+        prev_level_url = _prev_level_url(level4, student.new_user, False)
+        assert prev_level_url == f"/rapidrouter/{level1.name}/"
+
         next_level_url = _next_level_url(level106, student.new_user, False)
 
         assert next_level_url == f"/rapidrouter/{level109.name}/"
+
+        prev_level_url = _prev_level_url(level109, student.new_user, False)
+        assert prev_level_url == f"/rapidrouter/{level106.name}/"

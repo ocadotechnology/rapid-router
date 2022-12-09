@@ -114,7 +114,11 @@ class Level(models.Model):
     max_fuel = models.IntegerField(default=50)
     direct_drive = models.BooleanField(default=False)
     next_level = models.ForeignKey(
-        "self", null=True, default=None, on_delete=models.SET_NULL
+        "self",
+        null=True,
+        default=None,
+        on_delete=models.SET_NULL,
+        related_name="prev_level",
     )
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True)
     model_solution = models.CharField(blank=True, max_length=20, default="[]")
@@ -130,7 +134,9 @@ class Level(models.Model):
         max_length=20, choices=character_choices(), blank=True, null=True, default=None
     )
     anonymous = models.BooleanField(default=False)
-    locked_for_class = models.ManyToManyField(Class, blank=True, related_name="locked_levels")
+    locked_for_class = models.ManyToManyField(
+        Class, blank=True, related_name="locked_levels"
+    )
     objects = LevelManager()
 
     def __str__(self):

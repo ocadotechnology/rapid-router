@@ -162,10 +162,69 @@ table th {
   padding: 0px;
 }
 
+.navigation_button_portal_secondary {
+  min-width: 180px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background: transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  color: black;
+  padding: 0px;
+  border: 3px solid #eab502;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .navigation_button_portal:hover,
+.navigation_button_portal:active,
 .navigation_button_portal:focus {
   box-shadow: 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%), 0px 3px 5px 0px rgb(0 0 0 / 20%);
   background: #ffd23b;
+}
+
+.navigation_button_portal_secondary:hover,
+.navigation_button_portal_secondary:active,
+.navigation_button_portal_secondary:focus {
+  text-decoration: underline;
+  color: black;
+  background: white;
+}
+
+.navigation_button_portal_secondary:hover > svg,
+.navigation_button_portal_secondary:focus > svg {
+  color: black;
+}
+
+.rapid-router-welcome {
+  width: 13rem;
+}
+
+.modal-buttons > button > svg {
+  height: 100%;
+  width: 20%;
+}
+
+#prev_button > span,
+#next_button > span {
+  padding: 0;
+  margin: 0;
+}
+
+#prev_button,
+#next_button {
+  justify-content: space-between;
+}
+
+#prev_button {
+  flex-direction: row-reverse;
+  padding-right: 1rem;
+}
+
+#next_button {
+  padding-left: 1rem;
 }
 
 button > svg {
@@ -439,7 +498,15 @@ div.no-print div.tab label {
 
 #modal-content {
   float: left;
-  width: 78%;
+  width: 100%;
+}
+
+.modal-buttons {
+  margin-top: 4rem;
+  display:flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
 }
 
 #modal-buttons button {

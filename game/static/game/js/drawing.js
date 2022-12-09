@@ -1048,7 +1048,53 @@ ocargo.Drawing.startPopup = function (
     }
   }
 
-  if (buttons) {
+  const youtubeVideo = $("iframe")
+  if (youtubeVideo[0]) {
+    $("#modal-mascot").hide()
+  }
+  // buttons are passed as html string..
+  // hence this terribleness
+  // check if we pass an array of buttons or just one button
+  if (Array.isArray(buttons)) {
+    const icons = [
+      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
+      "NOT USED",
+      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-right"),
+    ]
+
+    const links = [
+      PREV_LEVEL_URL,
+      "",
+      NEXT_LEVEL_URL,
+    ]
+
+    const regexID = /id=\"*\w+_\w+\"/
+    // create a wrapper for the buttons that will be appended
+    let buttonDiv = $("<div>").addClass("modal-buttons")
+    for (let i = 0; i < buttons.length; i++) {
+      // get id with regex by stripping the html content
+      let currentID = buttons[i].match(regexID)[0].slice(3).replaceAll('"', '')
+
+      let currentButton = $(buttons[i])
+      let classToBeAdded = currentID === "play_button" ? "navigation_button_portal long_button rapid-router-welcome" : "navigation_button_portal_secondary long_button rapid-router-welcome button--icon"
+
+      currentButton.removeClass().addClass(classToBeAdded)
+      if (currentID != "play_button") {
+        // adding links to buttons
+        currentButton.append(icons[i])
+        let currentLink = links[i] === "" ? "" : `window.location.replace('${links[i]}')`
+        currentButton.attr("onclick", currentLink)
+      }
+
+      // first level shouldn't have prev_button
+      // and last level shouldn't have next_button
+      if (currentButton.attr("onclick")) buttonDiv.append(currentButton)
+    }
+    // append the whole div to the popup
+    $("#modal-buttons").html(buttonDiv)
+  }
+
+  else if (buttons) {
     $('#modal-buttons').html(buttons)
   } else {
     $('#modal-buttons').html(
