@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
         Block.objects.create(type="sound_horn", block_type=ACTION)
 
     dependencies = [
-        ("game", "0077_add_block_types"),
+        ("game", "0078_add_block_types"),
     ]
 
     operations = [

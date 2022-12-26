@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0076_level_locked_for_class'),
+        ('game', '0077_alter_level_next_level'),
     ]
 
     operations = [
