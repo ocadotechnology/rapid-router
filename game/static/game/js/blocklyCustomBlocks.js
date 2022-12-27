@@ -414,10 +414,6 @@ function initCustomBlocksPython() {
         // TODO: get code out of sub-blocks (there's a Blockly function for it)
     };
 
-    Blockly.Python['cow_crossing'] = function(block) {
-        return ['my_van.is_cows()', Blockly.Python.ORDER_NONE];
-    };
-
     Blockly.Python['controls_repeat_while'] = function(block) {
       var condition = Blockly.Python.valueToCode(block, 'condition', Blockly.Python.ORDER_ATOMIC);
       var subBlock = Blockly.Python.statementToCode(block, 'body');

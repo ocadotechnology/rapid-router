@@ -40,7 +40,6 @@ class Migration(migrations.Migration):
             block.block_type = block_types[block.type]
             block.save()
         Block.objects.create(type="cow_crossing", block_type=CONDITION)
-        Block.objects.create(type="sound_horn", block_type=ACTION)
 
     dependencies = [
         ("game", "0078_add_block_types"),
