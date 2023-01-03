@@ -55,9 +55,7 @@
     var BLOCKS =  [];
     var maxInstances = {};
     {% for block in blocks %}
-        let currentBlock = {'type':"{{block.type}}"{% if block.number %}, 'number':{{block.number}} {% endif %}}
-        if (!BLOCKS.includes(currentBlock))
-          BLOCKS.push(currentBlock);
+      BLOCKS.push({'type':"{{block.type}}"{% if block.number %}, 'number':{{block.number}} {% endif %}});
       {% if block.number %}
         maxInstances["{{block.type}}"] = {{block.number}};
       {% endif %}
@@ -130,14 +128,6 @@
       }, false);
       //FPSMeter.run(0.5);
     });
-    // bug where on dev there seems to be a duplicates of blocks
-    // this is a quick fix for a larger problem
-    var tempBlocks = []
-    for (let block of BLOCKS) {
-        if (!tempBlocks.includes(block)) tempBlocks.push(block)
-    }
-    BLOCKS = tempBlocks
-    console.log(BLOCKS)
   </script>
 
 {% endblock %}
