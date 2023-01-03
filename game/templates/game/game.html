@@ -55,7 +55,9 @@
     var BLOCKS =  [];
     var maxInstances = {};
     {% for block in blocks %}
-      BLOCKS.push({'type':"{{block.type}}"{% if block.number %}, 'number':{{block.number}} {% endif %}});
+        let currentBlock = {'type':"{{block.type}}"{% if block.number %}, 'number':{{block.number}} {% endif %}}
+        if (!BLOCKS.includes(currentBlock))
+          BLOCKS.push(currentBlock);
       {% if block.number %}
         maxInstances["{{block.type}}"] = {{block.number}};
       {% endif %}
