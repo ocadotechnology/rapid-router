@@ -128,7 +128,6 @@
       }, false);
       //FPSMeter.run(0.5);
     });
-    console.log(BLOCKS)
     // bug where on dev there seems to be a duplicates of blocks
     // this is a quick fix for a larger problem
     var tempBlocks = []
@@ -136,6 +135,7 @@
         if (!tempBlocks.includes(block)) tempBlocks.push(block)
     }
     BLOCKS = tempBlocks
+    console.log(BLOCKS)
   </script>
 
 {% endblock %}
