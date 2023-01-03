@@ -43,6 +43,7 @@ ocargo.OwnedLevels.prototype.save = function(level, id, finishedCallback) {
         delete level.name;
 
         this.saveState.saved(level, newId);
+        console.log(this)
 
         this.update();
 
