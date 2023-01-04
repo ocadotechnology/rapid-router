@@ -14,7 +14,6 @@ try:
 except ImportError:
     pass
 
-# dummy comment
 setup(
     name="rapid-router",
     packages=find_packages(),
