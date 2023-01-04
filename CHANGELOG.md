@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v5.7.4 (2023-01-04)
+### Fix
+* Remove snow ([#1403](https://github.com/ocadotechnology/rapid-router/issues/1403)) ([`92857ea`](https://github.com/ocadotechnology/rapid-router/commit/92857ea4d13641b7583f2e42031c56561c9ce99d))
+* Remove rest snow ([#1402](https://github.com/ocadotechnology/rapid-router/issues/1402)) ([`88739c2`](https://github.com/ocadotechnology/rapid-router/commit/88739c2f8373d2e728820a825f954cff39aa195e))
+
 ## v5.7.3 (2022-12-06)
 ### Fix
 * Dummy commit to bump version ([`b6ba81f`](https://github.com/ocadotechnology/rapid-router/commit/b6ba81f94fac5858eb56e6e442bd10cba1cee718))
