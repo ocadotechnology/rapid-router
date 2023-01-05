@@ -50,7 +50,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(11)
 
     def test_level_012(self):
-        self._complete_level(12, next_episode=2)
+        self._complete_level(12)
 
     def test_episode_02(self):
         self._complete_episode(2, 13)
@@ -71,7 +71,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(17)
 
     def test_level_018(self):
-        self._complete_level(18, next_episode=3)
+        self._complete_level(18)
 
     def test_episode_03(self):
         self._complete_episode(3, 19)
@@ -104,7 +104,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(27)
 
     def test_level_028(self):
-        self._complete_level(28, next_episode=4)
+        self._complete_level(28)
 
     def test_episode_04(self):
         self._complete_episode(4, 29)
@@ -119,7 +119,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(31)
 
     def test_level_032(self):
-        self._complete_level(32, next_episode=5)
+        self._complete_level(32)
 
     def test_episode_05(self):
         self._complete_episode(5, 33)
@@ -155,7 +155,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(42)
 
     def test_level_043(self):
-        self._complete_level(43, next_episode=6)
+        self._complete_level(43)
 
     def test_episode_06(self):
         self._complete_episode(6, 44)
@@ -179,7 +179,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(49)
 
     def test_level_050(self):
-        self._complete_level(50, next_episode=7)
+        self._complete_level(50)
 
     def test_episode_07(self):
         self._complete_episode(7, 51, check_algorithm_score=False)
@@ -212,7 +212,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(59, check_route_score=False)
 
     def test_level_060(self):
-        self._complete_level(60, next_episode=8, check_route_score=False)
+        self._complete_level(60, check_route_score=False)
 
     def test_episode_08(self):
         self._complete_episode(8, 61)
@@ -236,7 +236,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(66)
 
     def test_level_067(self):
-        self._complete_level(67, next_episode=9)
+        self._complete_level(67)
 
     def test_episode_09(self):
         self._complete_episode(9, 68, check_route_score=False)
@@ -275,7 +275,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(78, check_route_score=False)
 
     def test_level_079(self):
-        self._complete_level(79, next_episode=10)
+        self._complete_level(79)
 
     def test_episode_10(self):
         self._complete_episode(10, 80, check_algorithm_score=False)
@@ -314,7 +314,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(90, check_algorithm_score=False)
 
     def test_level_091(self):
-        self._complete_level(91, next_episode=11, check_algorithm_score=False)
+        self._complete_level(91, check_algorithm_score=False)
 
     def test_episode_11(self):
         self._complete_episode(11, 92, check_algorithm_score=False)
