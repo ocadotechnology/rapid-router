@@ -2,10 +2,6 @@
 
 var ocargo = ocargo || {};
 
-var forwardAngle = Math.PI;
-var leftCutoffAngle = 5 * Math.PI / 6;
-var rightCutoffAngle = 7 * Math.PI / 6;
-
 ocargo.Map = function(nodeData, origin, destinationCoordinates) {
 	this.nodeData = nodeData;
 	this.nodes = ocargo.Node.parsePathData(nodeData);
@@ -41,54 +37,128 @@ ocargo.Map.prototype.getDestinations = function() {
 ocargo.Map.prototype.isRoadForward = function(position) {
 	var previousNode = position.previousNode;
 	var currentNode = position.currentNode;
+    var nextCoordinates = {};
+    // Moving up, down or sideways?
+    var movingHorizontally = previousNode.coordinate.x != currentNode.coordinate.x;
 
-	var nextNode = null;
-    var nextNodeDeviation = null;
-
-    var nodes = currentNode.connectedNodes;
-    for (var i = 0; i < nodes.length; i++) {
-        var node = nodes[i];
-        var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, node);
-        var deviation = Math.abs(forwardAngle - angle);
-        if (angle >= leftCutoffAngle && angle <= rightCutoffAngle &&
-            (nextNode === null || deviation < nextNodeDeviation)) {
-            nextNode = node;
-            nextNodeDeviation = deviation;
+    if (movingHorizontally) {
+        nextCoordinates.y = currentNode.coordinate.y; // y-axis isn't changing
+        var movingRight = previousNode.coordinate.x < currentNode.coordinate.x; // going left or right?
+        if (movingRight){
+            nextCoordinates.x = currentNode.coordinate.x + 1;
+            if (nextCoordinates.x > 9) { // right-most extremity
+                return null;
+            }
+        } else {  // moving left
+            nextCoordinates.x = currentNode.coordinate.x - 1
+            if (nextCoordinates.x < 0){ // left-most extremity
+                return null;
+            }
+        }
+    } else { // moving vertically
+        nextCoordinates.x = currentNode.coordinate.x;
+        var movingUpwards = previousNode.coordinate.y < currentNode.coordinate.y;
+        if (movingUpwards) {
+            nextCoordinates.y = currentNode.coordinate.y + 1;
+            if (nextCoordinates.y > 9) {
+                return null;
+            }
+        } else { // moving downwards
+            nextCoordinates.y = currentNode.coordinate.y - 1;
+            if (nextCoordinates.y < 0) {
+                return null;
+            }
         }
     }
-    return nextNode;
+    var connected = currentNode.connectedNodes;
+    for (var i = 0; i < connected.length; i++){
+        var coordinate = connected[i].coordinate;
+        if (coordinate.x == nextCoordinates.x && coordinate.y == nextCoordinates.y){
+            return connected[i];
+        }
+    }
+    return null;
 };
 
 ocargo.Map.prototype.isRoadLeft = function(position) {
 	var previousNode = position.previousNode;
 	var currentNode = position.currentNode;
 
-    var index = currentNode.connectedNodes.indexOf(previousNode) + 1;
-    var nextNode;
-    if (index === currentNode.connectedNodes.length) {
-        nextNode = currentNode.connectedNodes[0];
-    } else {
-        nextNode = currentNode.connectedNodes[index];
+    var nextCoordinates = {};
+    // Moving up, down or sideways?
+    var movingHorizontally = previousNode.coordinate.x != currentNode.coordinate.x;
+    if (movingHorizontally){
+        nextCoordinates.x = currentNode.coordinate.x;
+        var movingRight = previousNode.coordinate.x < currentNode.coordinate.x;
+        if (movingRight) {
+            nextCoordinates.y = currentNode.coordinate.y + 1;
+        } else { // moving left
+            nextCoordinates.y = currentNode.coordinate.y - 1;
+        }
+        if (nextCoordinates.y < 0 || nextCoordinates.y > 9){
+            return null;
+        }
+    } else { // moving up and down
+        nextCoordinates.y = currentNode.coordinate.y;
+        var movingUp = previousNode.coordinate.y < currentNode.coordinate.y;
+        if (movingUp) {
+            nextCoordinates.x = previousNode.coordinate.x - 1;
+        } else { // moving down
+            nextCoordinates.x = previousNode.coordinate.x + 1;
+        }
+        if (nextCoordinates.x < 0 || nextCoordinates.x > 9){
+            return null;
+        }
     }
-
-    var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, nextNode);
-    return (angle > 0 && angle < leftCutoffAngle) ? nextNode : null;
+    var connected = currentNode.connectedNodes;
+    for (var i = 0; i < connected.length; i++){
+        var coordinate = connected[i].coordinate;
+        if (coordinate.x == nextCoordinates.x && coordinate.y == nextCoordinates.y){
+            return connected[i];
+        }
+    }
+    return null;
 };
+
 
 ocargo.Map.prototype.isRoadRight = function(position) {
 	var previousNode = position.previousNode;
 	var currentNode = position.currentNode;
 
-	var index = currentNode.connectedNodes.indexOf(previousNode) - 1;
-    var nextNode;
-    if (index === -1) {
-        nextNode = currentNode.connectedNodes[currentNode.connectedNodes.length - 1];
-    } else {
-        nextNode = currentNode.connectedNodes[index];
+    var nextCoordinates = {};
+    // Moving up, down or sideways?
+    var movingHorizontally = previousNode.coordinate.x != currentNode.coordinate.x;
+    if (movingHorizontally){
+        nextCoordinates.x = currentNode.coordinate.x;
+        var movingRight = previousNode.coordinate.x < currentNode.coordinate.x;
+        if (movingRight) {
+            nextCoordinates.y = currentNode.coordinate.y - 1;
+        } else { // moving left
+            nextCoordinates.y = currentNode.coordinate.y + 1;
+        }
+        if (nextCoordinates.y < 0 || nextCoordinates.y > 9){
+            return null;
+        }
+    } else { // moving up and down
+        nextCoordinates.y = currentNode.coordinate.y;
+        var movingUp = previousNode.coordinate.y < currentNode.coordinate.y;
+        if (movingUp) {
+            nextCoordinates.x = previousNode.coordinate.x + 1;
+        } else { // moving down
+            nextCoordinates.x = previousNode.coordinate.x - 1;
+        }
+        if (nextCoordinates.x < 0 || nextCoordinates.x > 9){
+            return null;
+        }
     }
-
-    var angle = ocargo.calculateClockwiseNodeAngle(previousNode, currentNode, nextNode);
-    return (angle > rightCutoffAngle && angle < 2 * Math.PI) ? nextNode : null;
+    var connected = currentNode.connectedNodes;
+    for (var i = 0; i < connected.length; i++){
+        var coordinate = connected[i].coordinate;
+        if (coordinate.x == nextCoordinates.x && coordinate.y == nextCoordinates.y){
+            return connected[i];
+        }
+    }
+    return null;
 };
 
 ocargo.Map.prototype.isDeadEnd = function(position) {

@@ -11,7 +11,6 @@ ocargo.BlocklyCompiler.prototype.program = null;
 
 ocargo.BlocklyCompiler.prototype.compile = function() {
     this.compileProcedures();
-    this.compileEvents();
     this.compileProgram();
     this.bindProcedureCalls();
 
@@ -41,27 +40,6 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function() {
             throw gettext_noop('Perhaps try checking the names of your \'define\' blocks?');
         }
     }
-};
-
-ocargo.BlocklyCompiler.prototype.compileEvents = function() {
-    var newEvents = [];
-
-    var eventBlocks = ocargo.blocklyControl.onEventDoBlocks();
-    for (var i = 0; i < eventBlocks.length; i++) {
-        var block = eventBlocks[i];
-        var condition = this.getCondition(block);
-
-        var bodyBlock = block.inputList[1].connection.targetBlock();
-        if (bodyBlock === null) {
-            throw gettext_noop('Perhaps try looking at your \'event\' blocks?');
-        }
-
-        var conditionType = block.type;
-
-        newEvents.push(new Event(condition, this.createSequence(bodyBlock), block, conditionType));
-    }
-
-    this.events = newEvents;
 };
 
 ocargo.BlocklyCompiler.prototype.compileProgram = function() {
@@ -173,7 +151,7 @@ ocargo.BlocklyCompiler.prototype.getCondition = function(conditionBlock) {
             this.getCondition(conditionBlock.inputList[0].connection.targetBlock()));
     } else if (conditionBlock.type === 'traffic_light') {
     	return this.trafficLightCondition(conditionBlock);
-    } else if (conditionBlock.type === 'declare_event') {
+    } else if (conditionBlock.type === 'cow_crossing') {
         return this.cowCrossingCondition(conditionBlock);
     }
 };
@@ -229,8 +207,6 @@ ocargo.BlocklyCompiler.prototype.createSequence = function(block) {
             commands.push(new DeliverCommand(block));
         } else if (block.type === 'sound_horn') {
             commands.push(new SoundHornCommand(block));
-        } else if (block.type === 'puff_up') {
-            commands.push(new PuffUpCommand(block));
         } else if (block.type === 'controls_repeat_until') {
             commands.push(this.createRepeatUntil(block));
         } else if (block.type === 'controls_repeat_while') {
@@ -514,12 +490,6 @@ ocargo.BlocklyCompiler.prototype.workspaceToPython = function() {
     for (var i = 0; i < procBlocks.length; i++) {
     	code += '\n' + Blockly.Python.blockToCode(procBlocks[i]);
     }
-
-    // TODO support events in python
-    //var eventBlocks = ocargo.blocklyControl.onEventDoBlocks();
-    //for (var i = 0; i < eventBlocks.length; i++) {
-    //	code += '\n' + Blockly.Python.blockToCode(eventBlocks[i]);
-    //}
 
 	var startBlock = ocargo.blocklyControl.startBlock();
     code += '\n' + Blockly.Python.blockToCode(startBlock);

@@ -14,8 +14,8 @@ var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING
 var DEFAULT_CHARACTER_WIDTH = 40
 var DEFAULT_CHARACTER_HEIGHT = 20
 
-var COW_WIDTH = 50
-var COW_HEIGHT = 50
+var COW_WIDTH = 80
+var COW_HEIGHT = 80
 
 var zoom = 15
 
@@ -871,14 +871,16 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.removeCow = function (cow, animationLength) {
-    cow.image.animate(
-      { transform: 's0.01' },
-      animationLength,
-      'linear',
-      function () {
-        cow.image.remove()
-      }
-    )
+    if (cow){
+      cow.image.animate(
+        { transform: 's0.01' },
+        animationLength,
+        'linear',
+        function () {
+          cow.image.remove()
+        }
+      )
+    }
   }
 
   this.renderCharacter = function () {

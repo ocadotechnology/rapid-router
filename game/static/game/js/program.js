@@ -13,7 +13,6 @@ ocargo.Program = function(events) {
 };
 
 ocargo.Program.prototype.run = function() {
-	ocargo.model.chooseNewCowPositions();
 	ocargo.model.reset();
 	this.thread.run(ocargo.model);
 };
@@ -38,15 +37,6 @@ ocargo.Thread.prototype.run = function(model) {
 };
 
 ocargo.Thread.prototype.step = function(model) {
-	// check if any event condition is true
-	for (let i = 0; i < this.program.events.length; i++) {
-		let event = this.program.events[i];
-		model.shouldObserve = false;
-		if (event.condition(model)) {
-			event.execute(this, model);
-		}
-		model.shouldObserve = true;
-	}
 
 	let commandToProcess = this.stack.shift();
 	this.noExecutionSteps ++;
@@ -174,11 +164,6 @@ SoundHornCommand.prototype.execute = function(thread, model){
 function PuffUpCommand(block){
 	this.block = block;
 }
-
-PuffUpCommand.prototype.execute = function(thread, model){
-	queueHighlight(model, this.block, true);
-	return model.puff_up();
-};
 
 function If(conditionalCommandSets, elseBody, block) {
 	this.conditionalCommandSets = conditionalCommandSets;
