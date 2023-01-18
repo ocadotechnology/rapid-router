@@ -27,7 +27,6 @@ setup(
         "more-itertools==8.6.0",
         "pyhamcrest==2.0.2",
         "libsass==0.21.0",
-        "future==0.18.2",
         "cfl-common",
     ],
     classifiers=["Programming Language :: Python", "Programming Language :: Python :: 3.7", "Framework :: Django"],
