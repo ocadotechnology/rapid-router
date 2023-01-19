@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.8.0 (2023-01-19)
+### Feature
+* Enable cow crossing condition, and horn action ([#1376](https://github.com/ocadotechnology/rapid-router/issues/1376)) ([`3e25995`](https://github.com/ocadotechnology/rapid-router/commit/3e259951087b91b472c39906df16e85014144f79))
+
 ## v5.7.4 (2023-01-04)
 ### Fix
 * Remove snow ([#1403](https://github.com/ocadotechnology/rapid-router/issues/1403)) ([`92857ea`](https://github.com/ocadotechnology/rapid-router/commit/92857ea4d13641b7583f2e42031c56561c9ce99d))
