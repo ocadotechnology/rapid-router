@@ -362,8 +362,13 @@ function initCustomBlocksPython() {
     };
 
     Blockly.Python['deliver'] = function(block) {
-        return 'v.deliver()\n';
+        return 'my_van.deliver()\n';
     };
+
+    Blockly.Python['sound_horn'] = function(block) {
+        return 'my_van.sound_horn()\n';
+    };
+
 
     Blockly.Python['road_exists'] = function(block) {
         if(block.inputList[0].fieldRow[1].value_ === 'FORWARD'){

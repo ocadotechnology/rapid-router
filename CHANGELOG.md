@@ -2,6 +2,31 @@
 
 <!--next-version-placeholder-->
 
+## v5.8.0 (2023-01-19)
+### Feature
+* Enable cow crossing condition, and horn action ([#1376](https://github.com/ocadotechnology/rapid-router/issues/1376)) ([`3e25995`](https://github.com/ocadotechnology/rapid-router/commit/3e259951087b91b472c39906df16e85014144f79))
+
+## v5.7.4 (2023-01-04)
+### Fix
+* Remove snow ([#1403](https://github.com/ocadotechnology/rapid-router/issues/1403)) ([`92857ea`](https://github.com/ocadotechnology/rapid-router/commit/92857ea4d13641b7583f2e42031c56561c9ce99d))
+* Remove rest snow ([#1402](https://github.com/ocadotechnology/rapid-router/issues/1402)) ([`88739c2`](https://github.com/ocadotechnology/rapid-router/commit/88739c2f8373d2e728820a825f954cff39aa195e))
+
+## v5.7.3 (2022-12-06)
+### Fix
+* Dummy commit to bump version ([`b6ba81f`](https://github.com/ocadotechnology/rapid-router/commit/b6ba81f94fac5858eb56e6e442bd10cba1cee718))
+
+## v5.7.2 (2022-12-06)
+### Fix
+* Added title case to level buttons ([#1388](https://github.com/ocadotechnology/rapid-router/issues/1388)) ([`48f819e`](https://github.com/ocadotechnology/rapid-router/commit/48f819e30bebfa315c48127ab8332088d6abac97))
+
+## v5.7.1 (2022-12-05)
+### Fix
+* Added a migration fix ([#1387](https://github.com/ocadotechnology/rapid-router/issues/1387)) ([`b8aa2a1`](https://github.com/ocadotechnology/rapid-router/commit/b8aa2a17882e281844b3dcb22aae0cb2f9f09925))
+
+## v5.7.0 (2022-12-02)
+### Feature
+* Prev next buttons ([#1383](https://github.com/ocadotechnology/rapid-router/issues/1383)) ([`203e769`](https://github.com/ocadotechnology/rapid-router/commit/203e769802a6aebe9d3f8e0b6cd5ca45b723c07d))
+
 ## v5.6.1 (2022-11-15)
 ### Fix
 * Padding in level editor ([#1381](https://github.com/ocadotechnology/rapid-router/issues/1381)) ([`c212855`](https://github.com/ocadotechnology/rapid-router/commit/c21285570f11652bde218d836d34d79681bab3b3))
