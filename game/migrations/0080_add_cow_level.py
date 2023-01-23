@@ -87,7 +87,7 @@ def add_leveldecor(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game", "0078_populate_block_type_add_cow_blocks"),
+        ("game", "0079_populate_block_type_add_cow_blocks"),
     ]
 
     operations = [
