@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.8.1 (2023-01-24)
+### Fix
+* Remove use of old_div ([#1408](https://github.com/ocadotechnology/rapid-router/issues/1408)) ([`8128e54`](https://github.com/ocadotechnology/rapid-router/commit/8128e54d5bca7d46b8b48faba1b93598b1477329))
+
 ## v5.8.0 (2023-01-19)
 ### Feature
 * Enable cow crossing condition, and horn action ([#1376](https://github.com/ocadotechnology/rapid-router/issues/1376)) ([`3e25995`](https://github.com/ocadotechnology/rapid-router/commit/3e259951087b91b472c39906df16e85014144f79))
