@@ -8,6 +8,7 @@ ocargo.PathFinder = function(model) {
     this.destinations = model.map.destinations;
 
     this.pathScoreDisabled = DISABLE_ROUTE_SCORE;
+    this.algorithmScoreDisabled = DISABLE_ALGORITHM_SCORE;
     this.modelSolution = MODEL_SOLUTION;
 
     if (!this.pathScoreDisabled) {
@@ -16,7 +17,13 @@ ocargo.PathFinder = function(model) {
         this.maxScoreForPathLength = 0;
     }
 
-    this.maxScoreForNumberOfInstructions = this.modelSolution.length > 0 ? 10 : 0;
+    this.maxScoreForNumberOfInstructions = 0;
+
+    // if algorithm score is enabled and if there is a model solution
+    if (!this.algorithmScoreDisabled && this.modelSolution.length > 0) {
+        this.maxScoreForNumberOfInstructions = 10;
+    }
+
 
     this.maxScore = this.maxScoreForPathLength + this.maxScoreForNumberOfInstructions;
 
@@ -37,7 +44,7 @@ ocargo.PathFinder.prototype.getScore = function() {
     var totalScore = pathLengthScore;
 
     if (this.modelSolution.length > 0) {
-        // Then we're on a default level
+        // Then we're on a non-custom level
         var initInstrScore = this.getScoreForNumberOfInstructions();
         var instrScore = Math.max(0, initInstrScore);
 
@@ -88,6 +95,7 @@ ocargo.PathFinder.prototype.getScore = function() {
             performance: performance,
             pathLengthScore: pathLengthScore,
             pathScoreDisabled: this.pathScoreDisabled,
+            algorithmScoreDisabled: this.algorithmScoreDisabled,
             maxScoreForPathLength: this.maxScoreForPathLength,
             instrScore: instrScore,
             maxScoreForNumberOfInstructions: this.maxScoreForNumberOfInstructions,
@@ -101,7 +109,8 @@ ocargo.PathFinder.prototype.getNumCoins = function(score, maxScore) {
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
     var travelled = this.van.getDistanceTravelled();
-    return this.maxScoreForPathLength - (travelled - this.optimalPath.length + 2);
+    const START_AND_END_BLOCKS = 2;
+    return this.maxScoreForPathLength - (travelled + START_AND_END_BLOCKS - this.optimalPath.length);
 };
 
 ocargo.PathFinder.prototype.getScoreForNumberOfInstructions = function() {
