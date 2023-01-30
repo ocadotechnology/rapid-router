@@ -11,24 +11,33 @@ ocargo.PathFinder = function(model) {
     this.algorithmScoreDisabled = DISABLE_ALGORITHM_SCORE;
     this.modelSolution = MODEL_SOLUTION;
 
+    const tooSimpleToGetAlgorithmScore = (LEVEL_ID < 13);
+
     if (!this.pathScoreDisabled) {
-        this.maxScoreForPathLength = 10;
+        if (tooSimpleToGetAlgorithmScore) {
+            this.maxScoreForPathLength = 20;
+        } else {
+            this.maxScoreForPathLength = 10;
+        }
     } else {
         this.maxScoreForPathLength = 0;
     }
 
     this.maxScoreForNumberOfInstructions = 0;
-
     // if algorithm score is enabled and if there is a model solution
-    if (!this.algorithmScoreDisabled && this.modelSolution.length > 0) {
+    if (!this.algorithmScoreDisabled && this.isBlocklyLevelNotPython()) {
         this.maxScoreForNumberOfInstructions = 10;
     }
 
-
     this.maxScore = this.maxScoreForPathLength + this.maxScoreForNumberOfInstructions;
-
     this.optimalPath = getOptimalPath(this.nodes, this.destinations);
 };
+
+
+ocargo.PathFinder.prototype.isBlocklyLevelNotPython = function() {
+    return this.modelSolution.length > 0;
+}
+
 
 ocargo.PathFinder.prototype.getScore = function() {
     var routeCoins = {};
@@ -43,8 +52,7 @@ ocargo.PathFinder.prototype.getScore = function() {
 
     var totalScore = pathLengthScore;
 
-    if (this.modelSolution.length > 0) {
-        // Then we're on a non-custom level
+    if (this.isBlocklyLevelNotPython()) {
         var initInstrScore = this.getScoreForNumberOfInstructions();
         var instrScore = Math.max(0, initInstrScore);
 

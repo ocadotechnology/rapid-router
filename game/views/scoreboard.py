@@ -34,7 +34,7 @@ class StudentRow:
         self.total_score = kwargs.get("total_score", 0)
         self.level_scores = kwargs.get("level_scores", {})
         self.completed = kwargs.get("completed", 0)
-        self.percentage_complete = kwargs.get("percentage_complete", 0)
+        self.success_rate = kwargs.get("success_rate", 0)
 
 
 # Returns row of student object with values and scores of each selected level
@@ -62,9 +62,14 @@ def student_row(levels_sorted, student, best_attempts):
         for level in levels_sorted:
 
             attempt = attempts_dict.get(level.id)
+
             if attempt:
+                max_score = 0
+                if not attempt.level.disable_route_score:
+                    max_score += 10
+                if not attempt.level.disable_algorithm_score:
+                    max_score += 10
                 num_all += 1
-                max_score = 10 if attempt.level.disable_route_score or attempt.level.episode is None else 20
                 if attempt.score:
                     if attempt.score / max_score >= threshold:
                         num_finished += 1
@@ -87,7 +92,10 @@ def student_row(levels_sorted, student, best_attempts):
                 times.append(timedelta(0))
 
     total_time = sum(times, timedelta())
-    percentage_complete = total_score / total_possible_score * 100 if total_possible_score > 0 else 0
+
+    success_rate = (
+        total_score / total_possible_score * 100 if total_possible_score > 0 else 0
+    )
 
     row = StudentRow(
         student=student,
@@ -95,7 +103,7 @@ def student_row(levels_sorted, student, best_attempts):
         total_score=int(total_score),
         level_scores=level_scores,
         completed=num_finished,
-        percentage_complete=percentage_complete,
+        success_rate=success_rate,
     )
     return row
 
