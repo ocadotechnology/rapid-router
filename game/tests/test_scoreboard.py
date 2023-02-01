@@ -27,7 +27,7 @@ class ScoreboardTestCase(TestCase):
 
         clas, student, student2 = set_up_data()
 
-        create_attempt(student, level1, 10)
+        create_attempt(student, level1, 20)
         create_attempt(student2, level1, 2)
         create_attempt(student2, level2, 16)
 
@@ -52,11 +52,11 @@ class ScoreboardTestCase(TestCase):
         student_row = student_data[0]
         assert student_row.class_field.name == clas.name
         assert student_row.name == student.user.user.first_name
-        assert student_row.total_score == 10
+        assert student_row.total_score == 20
         assert student_row.total_time == timedelta(0)
-        assert student_row.level_scores[1]["score"] == 10
+        assert student_row.level_scores[1]["score"] == 20
         assert student_row.completed == 1
-        assert student_row.success_rate == 50.0
+        assert student_row.success_rate == 100.0
 
         student_row = student_data[1]
         assert student_row.class_field.name == clas.name
@@ -66,7 +66,9 @@ class ScoreboardTestCase(TestCase):
         assert student_row.level_scores[1]["score"] == 2
         assert student_row.level_scores[2]["score"] == 16
         assert student_row.completed == 1
-        assert student_row.success_rate == 45.0
+        assert (
+            student_row.success_rate == 45.0
+        )  ## the scores, (2 + 16 = 18), divided by the total possible, (2 * 20 = 40), 18/40 = 45%
 
     def test_scoreboard_loads(self):
         email, password = signup_teacher_directly()

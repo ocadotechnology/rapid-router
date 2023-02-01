@@ -69,6 +69,8 @@ def student_row(levels_sorted, student, best_attempts):
                     max_score += 10
                 if not attempt.level.disable_algorithm_score:
                     max_score += 10
+                if int(attempt.level.name) < 13:
+                    max_score = 20
                 num_all += 1
                 if attempt.score:
                     if attempt.score / max_score >= threshold:

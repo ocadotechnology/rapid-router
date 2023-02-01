@@ -60,7 +60,10 @@ class BaseGameTest(SeleniumTestCase):
         if check_algorithm_score:
             page.assert_algorithm_score(10)
         if check_route_score:
-            page.assert_route_score(10)
+            if level_number < 13:
+                page.assert_route_score(20)
+            else:
+                page.assert_route_score(10)
         if final_level:
             return page
         if next_episode is None:
