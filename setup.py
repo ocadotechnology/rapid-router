@@ -24,7 +24,7 @@ setup(
         "django-js-reverse==0.9.1",
         "django-pipeline==2.0.8",
         "djangorestframework==3.13.1",
-        "more-itertools==8.6.0",
+        "more-itertools==8.7.0",
         "pyhamcrest==2.0.2",
         "libsass==0.21.0",
         "cfl-common",
