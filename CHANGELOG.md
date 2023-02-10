@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.9.0 (2023-02-10)
+### Feature
+* Remove algorithm score for early levels but keep maximum score 20 coins ([#1414](https://github.com/ocadotechnology/rapid-router/issues/1414)) ([`5cc45bd`](https://github.com/ocadotechnology/rapid-router/commit/5cc45bd08aa38ac77420d37477660ebac6bb7d56))
+
 ## v5.8.3 (2023-02-10)
 ### Fix
 * Patch update for more-itertools ([#1417](https://github.com/ocadotechnology/rapid-router/issues/1417)) ([`4299ce6`](https://github.com/ocadotechnology/rapid-router/commit/4299ce6b7fb64e79cae8736fa7d570158927e536))

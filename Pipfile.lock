@@ -16,6 +16,14 @@
         ]
     },
     "default": {
+        "appnope": {
+            "hashes": [
+                "sha256:02bd91c4de869fbb1e1c50aafc4098827a7a54ab2f39d9dcba6c9547ed920e24",
+                "sha256:265a455292d0bd8a72453494fa24df5a11eb18373a60c7c0430889f22548605e"
+            ],
+            "markers": "sys_platform == 'darwin'",
+            "version": "==0.1.3"
+        },
         "asgiref": {
             "hashes": [
                 "sha256:71e68008da809b957b7ee4b43dbccff33d1b23519fb8344e33f049897077afac",
@@ -477,11 +485,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:be6a16c58c3bb99db7e328a30948c6277661ffe9fc646e89d9837c357a2f07a2",
-                "sha256:fe0553b0ac5e1df78576b5b63d4f1ee8b20c22839ebfa333fff721bdc2de26aa"
+                "sha256:22667e6323eefbb716f8043641e67d0188a5a0f5863ecbcb3ca2e6d57752dd69",
+                "sha256:b7e18fc3a841859964d10c3544050028fb0c479a6625d2415a9e27abbf78fd78"
             ],
             "index": "pypi",
-            "version": "==6.29.1"
+            "version": "==6.29.2"
         },
         "defusedxml": {
             "hashes": [
