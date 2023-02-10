@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v5.8.3 (2023-02-10)
+### Fix
+* Patch update for more-itertools ([#1417](https://github.com/ocadotechnology/rapid-router/issues/1417)) ([`4299ce6`](https://github.com/ocadotechnology/rapid-router/commit/4299ce6b7fb64e79cae8736fa7d570158927e536))
+
+## v5.8.2 (2023-02-06)
+### Fix
+* **deps:** Bump django from 3.2.16 to 3.2.17 ([#1416](https://github.com/ocadotechnology/rapid-router/issues/1416)) ([`7b675b6`](https://github.com/ocadotechnology/rapid-router/commit/7b675b62539e3dc40810f4a54e46bdd67cce5aed))
+
 ## v5.8.1 (2023-01-24)
 ### Fix
 * Remove use of old_div ([#1408](https://github.com/ocadotechnology/rapid-router/issues/1408)) ([`8128e54`](https://github.com/ocadotechnology/rapid-router/commit/8128e54d5bca7d46b8b48faba1b93598b1477329))
