@@ -6,8 +6,9 @@ from django.db import migrations
 class Migration(migrations.Migration):
     def populate_disable_algorithm_score(apps, schema_editor):
         Level = apps.get_model("game", "Level")
+        official_levels = Level.objects.filter(default=True)
         for i in range(1, 13):
-            l = Level.objects.get(name=str(i))
+            l = official_levels.get(name=str(i))
             l.disable_algorithm_score = True
             l.save()
 
