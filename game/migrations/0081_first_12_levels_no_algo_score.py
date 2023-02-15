@@ -6,15 +6,24 @@ from django.db import migrations
 class Migration(migrations.Migration):
     def populate_disable_algorithm_score(apps, schema_editor):
         Level = apps.get_model("game", "Level")
+        official_levels = Level.objects.filter(default=True)
         for i in range(1, 13):
-            l = Level.objects.get(name=str(i))
-            l.disable_algorithm_score = True
-            l.save()
+            level = official_levels.get(name=str(i))
+            level.disable_algorithm_score = True
+            level.save()
+
+    def unpopulate_disable_algorithm_score(apps, schema_editor):
+        Level = apps.get_model("game", "Level")
+        official_levels = Level.objects.filter(default=True)
+        for i in range(1, 13):
+            level = official_levels.get(name=str(i))
+            level.disable_algorithm_score = False
+            level.save()
 
     dependencies = [
         ("game", "0080_level_disable_algorithm_score"),
     ]
 
     operations = [
-        migrations.RunPython(populate_disable_algorithm_score),
+        migrations.RunPython(populate_disable_algorithm_score, reverse_code=unpopulate_disable_algorithm_score),
     ]
