@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.9.1 (2023-02-15)
+### Fix
+* Fix migration 81 ([#1419](https://github.com/ocadotechnology/rapid-router/issues/1419)) ([`ddf8d17`](https://github.com/ocadotechnology/rapid-router/commit/ddf8d17318ce0bf246a7b8aed02567c53ec4c523))
+
 ## v5.9.0 (2023-02-10)
 ### Feature
 * Remove algorithm score for early levels but keep maximum score 20 coins ([#1414](https://github.com/ocadotechnology/rapid-router/issues/1414)) ([`5cc45bd`](https://github.com/ocadotechnology/rapid-router/commit/5cc45bd08aa38ac77420d37477660ebac6bb7d56))
