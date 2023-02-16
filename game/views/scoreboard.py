@@ -332,7 +332,7 @@ def scoreboard(request):
 
 
 def render_no_permission_error(request):
-    return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+    return renderError(request, messages.no_permission_title(), messages.no_permission_scoreboard())
 
 
 def is_teacher_with_no_classes_assigned(user, users_classes):

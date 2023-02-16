@@ -145,7 +145,7 @@ def play_level(request, level, from_editor=False):
         request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)
     ):
         return renderError(
-            request, messages.noPermissionTitle(), messages.notSharedLevel()
+            request, messages.no_permission_title(), messages.not_shared_level()
         )
 
     # Set default level description/hint lookups
