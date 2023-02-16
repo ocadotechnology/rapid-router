@@ -195,7 +195,7 @@ def load_level_for_editor(request, levelID):
 
     level_dict = LevelSerializer(level).data
     level_dict["theme"] = level.theme.id
-    level_dict["decor"] = cached_level_decor(level)
+    level_dict["decor"] = level_management.get_decor(level)
     level_dict["blocks"] = cached_level_blocks(level)
 
     response = {"owned": level.owner == request.user.userprofile, "level": level_dict}
