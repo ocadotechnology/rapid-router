@@ -1,19 +1,18 @@
 from __future__ import absolute_import
+
 from builtins import str
 from itertools import chain
 
-from . import permissions
-from .models import Block, LevelBlock, LevelDecor
+from common.helpers.emails import NOTIFICATION_EMAIL, send_email
 
-from game.decor import get_decor_element
-from game.theme import get_theme_by_pk
 from game.character import get_character_by_pk
+from game.decor import get_decor_element
 from game.messages import (
     level_creation_email_subject,
     level_creation_email_text_content,
 )
-
-from common.helpers.emails import NOTIFICATION_EMAIL, send_email
+from game.theme import get_theme_by_pk
+from .models import Block, LevelBlock, LevelDecor
 
 
 ##########
