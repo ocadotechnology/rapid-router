@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.9.3 (2023-02-16)
+### Fix
+* **deps:** Bump django from 3.2.17 to 3.2.18 ([#1420](https://github.com/ocadotechnology/rapid-router/issues/1420)) ([`110beb5`](https://github.com/ocadotechnology/rapid-router/commit/110beb5fd243579c758f99e40bdfae16204b4b1f))
+
 ## v5.9.2 (2023-02-16)
 ### Fix
 * Don't use cache when loading level decor in editor ([#1418](https://github.com/ocadotechnology/rapid-router/issues/1418)) ([`88c7ad3`](https://github.com/ocadotechnology/rapid-router/commit/88c7ad30f45425c9c11f0f44d18ffb63c887ffe5))
