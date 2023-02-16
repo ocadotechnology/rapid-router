@@ -26,7 +26,7 @@ setup(
         "djangorestframework==3.13.1",
         "more-itertools==8.7.0",
         "pyhamcrest==2.0.2",
-        "libsass==0.21.0",
+        "libsass==0.22.0",
         "cfl-common",
     ],
     classifiers=["Programming Language :: Python", "Programming Language :: Python :: 3.7", "Framework :: Django"],
