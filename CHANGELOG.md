@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.10.0 (2023-02-16)
+### Feature
+* Update episode videos & clean up unused messages ([#1421](https://github.com/ocadotechnology/rapid-router/issues/1421)) ([`5a115c5`](https://github.com/ocadotechnology/rapid-router/commit/5a115c57f6bb29bb1ba93c2f90014baa02585149))
+
 ## v5.9.3 (2023-02-16)
 ### Fix
 * **deps:** Bump django from 3.2.17 to 3.2.18 ([#1420](https://github.com/ocadotechnology/rapid-router/issues/1420)) ([`110beb5`](https://github.com/ocadotechnology/rapid-router/commit/110beb5fd243579c758f99e40bdfae16204b4b1f))
