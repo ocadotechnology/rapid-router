@@ -12,7 +12,7 @@ def level_creation_email_text_content():
     )
 
 
-def youtubeLink(url, border):
+def youtube_link(url, border):
     return (
         "<div class='popup_video'>"
         "<iframe "
@@ -39,11 +39,7 @@ def step_button_icon_url():
     )
 
 
-def noPermissionMessage():
-    return "You have no permission to see this."
-
-
-def notSharedLevel():
+def not_shared_level():
     return (
         "This level is private. You can only see the public levels and the ones "
         "created by other users only if they share them with you."
@@ -53,116 +49,43 @@ def notSharedLevel():
 """ Strings used in the scoreboard. """
 
 
-def noPermissionTitle():
+def no_permission_title():
     return "No permission"
 
 
-def noPermissionScoreboard():
+def no_permission_scoreboard():
     return (
         "Scoreboard is only visible to school students and teachers. Log in if you "
         "think you should be able to see it."
     )
 
 
-def noDataToShow():
-    return (
-        "There is no data to show. Please contact your administrator if this is "
-        "unexpected."
-    )
-
-
 """ Strings used on the level moderation page. """
 
 
-def noPermissionLevelModerationTitle():
+def no_permission_level_moderation_title():
     return "No permission"
 
 
-def noPermissionLevelModerationPage():
+def no_permission_level_moderation_page():
     return (
         "Level moderation is only visible to teachers. Log in if you "
         "think you should be able to see it."
     )
 
 
-def noPermissionLevelModerationClass():
+def no_permission_level_moderation_class():
     return (
         "You do not teach this class. Please contact your administrator if this "
         "is unexpected."
     )
 
 
-def noPermissionLevelModerationStudent():
-    return (
-        "You do not teach this student. Please contact your administrator if this "
-        "is unexpected."
-    )
-
-
-def noDataToShowLevelModeration():
+def no_data_to_show_level_moderation():
     return (
         "You have not created any classes and therefore is no data to show. "
         "Please contact your administrator if this is unexpected."
     )
-
-
-""" String messages used on the settings page. """
-
-
-def shareTitle():
-    return "Level Share"
-
-
-def shareSuccessfulPerson(name, surname):
-    return f"You shared your level with {name} {surname} successfully!"
-
-
-def shareSuccessfulClass(className):
-    return f"You shared your level with class {className} successfully!"
-
-
-def shareUnsuccessfulPerson(first_name, last_name):
-    return (
-        f"We were unable to find {first_name} {last_name}. Are you sure you got their "
-        f"name right?"
-    )
-
-
-def shareUnsuccessfulClass(className):
-    return f"We were unable to find class {className}. Are you sure you got it right?"
-
-
-def noLevelsToShow():
-    return "It seems that you have not created any levels. How about creating one now?"
-
-
-def levelsMessage():
-    return (
-        "All the levels you have created so far. Click on them to play them or share "
-        "them with your friends."
-    )
-
-
-def sharedLevelsMessage():
-    return (
-        "All the levels created by others that were shared with you. Click on them to "
-        "play them."
-    )
-
-
-def noSharedLevels():
-    return "No one shared a level with you yet."
-
-
-""" Strings used in the class view. """
-
-
-def chooseClass():
-    return "Choose a class you want to see."
-
-
-def noPermission():
-    return "You don't have permissions to see this."
 
 
 """ String messages used as level tips in the game view. """
@@ -566,7 +489,7 @@ def title_level19():
 
 
 def description_level19():
-    message = youtubeLink("https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0)
+    message = youtube_link("https://www.youtube-nocookie.com/embed/vFGd0v3msRE", 0)
     message += (
         "<div class='popup_message'>"
         "Attach a block inside the <b>Repeat</b> block to make the van repeat "
@@ -775,7 +698,7 @@ def title_level29():
 
 
 def description_level29():
-    message = youtubeLink("https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0)
+    message = youtube_link("https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0)
     message += (
         "<div class='popup_message'>"
         "Drag a block inside a <b>Repeat until</b> block to make the van repeat an "
@@ -858,7 +781,7 @@ def title_level33():
 
 
 def description_level33():
-    message = youtubeLink("https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0)
+    message = youtube_link("https://www.youtube-nocookie.com/embed/O0RXbJyYq8o", 0)
     message += (
         "<div class='popup_message'>"
         "Another way of telling the van what to do is to use the <b>If</b> block. "
@@ -936,7 +859,7 @@ def title_level36():
 
 
 def description_level36():
-    message = youtubeLink("https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0)
+    message = youtube_link("https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0)
     message += (
         "<div class='popup_message'>"
         "You can change the <b>If</b> block to make more choices. Click on the "
@@ -1107,7 +1030,7 @@ def title_level44():
 
 
 def description_level44():
-    message = youtubeLink("https://www.youtube-nocookie.com/embed/EDwc80X_LQI", 0)
+    message = youtube_link("https://www.youtube-nocookie.com/embed/UFpsEjaB_DI", 0)
     message += (
         "<div class='popup_message'>"
         "The light varies from red to green. <br>"
@@ -1793,11 +1716,14 @@ def title_level80():
 
 
 def description_level80():
-    message = (
+    message = youtube_link("https://www.youtube-nocookie.com/embed/5atj2caRjyA", 0)
+    message += (
         "As you create your program using Blockly see what it looks like in the Python "
         "programming language. Can you tell which Python statement matches which block?"
     )
-    return build_description(title_level80(), message)
+    return build_description(
+        title_level80(), f"<div class='main_popup_container'>{message}</div>"
+    )
 
 
 def hint_level80():
