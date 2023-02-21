@@ -281,7 +281,7 @@ class ScoreboardCsvTestCase(TestCase):
             total_score=total_score,
             level_scores=level_scores,
             completed=2,
-            percentage_complete=45,
+            success_rate=45,
         )
 
         return row, student
@@ -312,7 +312,7 @@ class ScoreboardCsvTestCase(TestCase):
             total_score=0,
             level_scores=level_scores,
             completed=0,
-            percentage_complete=0,
+            success_rate=0,
         )
 
         return row

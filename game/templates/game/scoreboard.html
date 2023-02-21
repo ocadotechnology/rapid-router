@@ -181,9 +181,9 @@
                             {% endif %}
                         {% endfor %}
                         {% if user|is_logged_in_as_teacher %}
-                            {% if student.percentage_complete > 75 %}
+                            {% if student.success_rate > 75 %}
                                 <td class="scoreboard--top-performer">
-                            {% elif student.percentage_complete < 33 %}
+                            {% elif student.success_rate < 33 %}
                                 <td class="scoreboard--started">
                             {% else %}
                                 <td class="scoreboard--medium-performer">
