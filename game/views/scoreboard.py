@@ -65,12 +65,21 @@ def student_row(levels_sorted, student, best_attempts):
 
             if attempt:
                 max_score = 0
-                if not attempt.level.disable_route_score:
-                    max_score += 10
-                if not attempt.level.disable_algorithm_score:
-                    max_score += 10
-                if int(attempt.level.name) < 13:
-                    max_score = 20
+
+                # Max score logic as follows:
+                # - All custom levels have a max score of 10
+                # - All official levels have a max score of 20 if both route score and algorithm scores are enabled
+                # except for levels 1-12 which have a max score of 20 even though the algorithm score is disabled
+                if attempt.level.episode is None:
+                    max_score = 10
+                else:
+                    if not attempt.level.disable_route_score:
+                        max_score += 10
+                    if not attempt.level.disable_algorithm_score:
+                        max_score += 10
+                    if int(attempt.level.name) < 13:
+                        max_score = 20
+
                 num_all += 1
                 if attempt.score:
                     if attempt.score / max_score >= threshold:

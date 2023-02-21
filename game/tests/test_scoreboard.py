@@ -13,25 +13,41 @@ from django.urls import reverse
 
 from game.models import Attempt, Level, Episode
 from game.tests.utils.level import create_save_level
-from game.views.scoreboard import StudentRow, scoreboard_data, Headers, StudentInTrouble, shared_level_to_name
+from game.views.scoreboard import (
+    StudentRow,
+    scoreboard_data,
+    Headers,
+    StudentInTrouble,
+    shared_level_to_name,
+    shared_levels_data,
+    SharedHeaders,
+)
 from game.views.scoreboard_csv import scoreboard_csv, Headers as CSVHeaders, SharedHeaders as CSVSharedHeaders
 
 
 class ScoreboardTestCase(TestCase):
     def test_teacher_multiple_students_multiple_levels(self):
-        episode_ids = [1]
+        # Setup official levels data
+        episode_ids = [1, 2]
         episode1 = Episode.objects.get(id=1)
-        level_ids = [f"{x}" for x in range(1, len(episode1.levels) + 1)]
+        episode2 = Episode.objects.get(id=2)
+        level_ids = [f"{x}" for x in range(1, len(episode1.levels) + len(episode2.levels) + 1)]
         level1 = Level.objects.get(name="1")
-        level2 = Level.objects.get(name="2")
+        level13 = Level.objects.get(name="13")
 
         clas, student, student2 = set_up_data()
 
         create_attempt(student, level1, 20)
         create_attempt(student2, level1, 2)
-        create_attempt(student2, level2, 16)
+        create_attempt(student2, level13, 16)
 
-        all_levels = [level1, level2]
+        # Setup custom levels data
+        shared_level = create_save_level(student, "custom_level1", shared_with=[student2.new_user])
+
+        create_attempt(student2, shared_level, 10)
+
+        all_levels = [level1, level13]
+        all_shared_levels = [shared_level]
 
         attempts_per_student = {
             student: Attempt.objects.filter(level__in=all_levels, student=student, is_best_attempt=True).select_related(
@@ -42,8 +58,19 @@ class ScoreboardTestCase(TestCase):
             ).select_related("level"),
         }
 
-        student_data, headers, level_headers, levels_sorted = scoreboard_data(episode_ids, attempts_per_student)
+        shared_attempts_per_student = {
+            student2: Attempt.objects.filter(
+                level__in=all_shared_levels, student=student2, is_best_attempt=True
+            ).select_related("level"),
+        }
 
+        # Generate results
+        student_data, headers, level_headers, levels_sorted = scoreboard_data(episode_ids, attempts_per_student)
+        shared_headers, shared_level_headers, shared_student_data = shared_levels_data(
+            student.new_user, all_shared_levels, shared_attempts_per_student
+        )
+
+        # Check data for official levels matches
         assert headers == Headers
         assert level_headers == [f"L{id}" for id in level_ids]
 
@@ -54,7 +81,7 @@ class ScoreboardTestCase(TestCase):
         assert student_row.name == student.user.user.first_name
         assert student_row.total_score == 20
         assert student_row.total_time == timedelta(0)
-        assert student_row.level_scores[1]["score"] == 20
+        assert student_row.level_scores[all_levels[0].id]["score"] == 20
         assert student_row.completed == 1
         assert student_row.success_rate == 100.0
 
@@ -63,12 +90,27 @@ class ScoreboardTestCase(TestCase):
         assert student_row.name == student2.user.user.first_name
         assert student_row.total_score == 18
         assert student_row.total_time == timedelta(0)
-        assert student_row.level_scores[1]["score"] == 2
-        assert student_row.level_scores[2]["score"] == 16
+        assert student_row.level_scores[all_levels[0].id]["score"] == 2
+        assert student_row.level_scores[all_levels[1].id]["score"] == 16
         assert student_row.completed == 1
         assert (
             student_row.success_rate == 45.0
         )  ## the scores, (2 + 16 = 18), divided by the total possible, (2 * 20 = 40), 18/40 = 45%
+
+        # Check data for custom levels matches
+        assert shared_headers == SharedHeaders
+        assert shared_level_headers == [f"{shared_level.name} ({shared_level.owner})"]
+
+        assert len(shared_student_data) == 1
+
+        student_row = shared_student_data[0]
+        assert student_row.class_field.name == clas.name
+        assert student_row.name == student2.user.user.first_name
+        assert student_row.total_score == 10
+        assert student_row.total_time == timedelta(0)
+        assert student_row.level_scores[shared_level.id]["score"] == 10
+        assert student_row.completed == 1
+        assert student_row.success_rate == 100.0
 
     def test_scoreboard_loads(self):
         email, password = signup_teacher_directly()
@@ -211,9 +253,12 @@ class ScoreboardCsvTestCase(TestCase):
         response = scoreboard_csv(student_rows, levels, improvement_data, shared_levels_headers, shared_level_rows)
 
         # Gather the data from the CSV
-        actual_scoreboard_header, actual_scoreboard_rows, actual_shared_levels_header, actual_shared_levels_rows = self.actual_data(
-            response.content.decode("utf-8"), len(students)
-        )
+        (
+            actual_scoreboard_header,
+            actual_scoreboard_rows,
+            actual_shared_levels_header,
+            actual_shared_levels_rows,
+        ) = self.actual_data(response.content.decode("utf-8"), len(students))
 
         # Check the headers and the number or rows match expectations
         assert actual_scoreboard_header == self.expected_scoreboard_header(levels)
@@ -281,7 +326,7 @@ class ScoreboardCsvTestCase(TestCase):
             total_score=total_score,
             level_scores=level_scores,
             completed=2,
-            percentage_complete=45,
+            success_rate=45,
         )
 
         return row, student
@@ -312,7 +357,7 @@ class ScoreboardCsvTestCase(TestCase):
             total_score=0,
             level_scores=level_scores,
             completed=0,
-            percentage_complete=0,
+            success_rate=0,
         )
 
         return row
