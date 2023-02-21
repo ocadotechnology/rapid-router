@@ -1,7 +1,6 @@
 #paper {
     width: 50%;
     height:100%;
-    overflow:scroll;
     z-index:6;
     float: left;
     padding-left: 16px;
@@ -370,9 +369,10 @@ div > .navigation_button_kurono {
 }
 
 #zoom_pan {
-    right: 10%;
+    right: 5%;
     position: absolute;
     height: 100px;
+    width: 100px;
     z-index: 7;
 }
 
