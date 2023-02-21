@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.10.1 (2023-02-21)
+### Fix
+* Custom levels always have max score of 10 ([#1422](https://github.com/ocadotechnology/rapid-router/issues/1422)) ([`d9a8c68`](https://github.com/ocadotechnology/rapid-router/commit/d9a8c68e742c6a6a77d22b1a181f167f60169a24))
+
 ## v5.10.0 (2023-02-16)
 ### Feature
 * Update episode videos & clean up unused messages ([#1421](https://github.com/ocadotechnology/rapid-router/issues/1421)) ([`5a115c5`](https://github.com/ocadotechnology/rapid-router/commit/5a115c57f6bb29bb1ba93c2f90014baa02585149))
