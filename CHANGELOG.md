@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v5.10.2 (2023-02-21)
+### Fix
+* Move and zoom buttons and fix default zoom factor ([#1424](https://github.com/ocadotechnology/rapid-router/issues/1424)) ([`693007d`](https://github.com/ocadotechnology/rapid-router/commit/693007d80a93deef092dbf661a34e0f84b6247bf))
+
 ## v5.10.1 (2023-02-21)
 ### Fix
 * Custom levels always have max score of 10 ([#1422](https://github.com/ocadotechnology/rapid-router/issues/1422)) ([`d9a8c68`](https://github.com/ocadotechnology/rapid-router/commit/d9a8c68e742c6a6a77d22b1a181f167f60169a24))
