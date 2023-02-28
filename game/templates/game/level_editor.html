@@ -22,12 +22,12 @@
     var LEVEL = null;
     {% endif %}
   </script>
-  <script src="{% static "game/js/utils.js" %}"></script>
-  <script src="{% static "game/js/mobile-detect.min.js" %}"></script>
-  <script src="{% static "game/js/raphael.js" %}"></script>
+  <script src="{% static 'game/js/utils.js' %}"></script>
+  <script src="{% static 'game/js/mobile-detect.min.js' %}"></script>
+  <script src="{% static 'game/js/raphael.js' %}"></script>
   <script src="{% static 'game/js/drawingConstants.js' %}"></script>
   <script src="{% static 'game/js/character.js' %}"></script>
-  <script src="{% static "game/js/drawing.js" %}"></script>
+  <script src="{% static 'game/js/drawing.js' %}"></script>
 
   <script type="text/javascript" src="{% static 'game/js/blockly/blockly_compressed.js' %}"></script>
   <script type="text/javascript" src="{% static 'game/js/blockly/blocks_compressed.js' %}"></script>
@@ -111,9 +111,9 @@
 
 {% block css %}
 {{ block.super }}
-  <link href="{% static "game/css/game_screen.css" %}" rel="stylesheet" type="text/css">
-  <link href="{% static "game/css/level_share.css" %}" rel="stylesheet" type="text/css">
-  <link href="{% static "game/css/level_editor.css" %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/game_screen.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/level_share.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'game/css/level_editor.css' %}" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block content %}
@@ -130,7 +130,7 @@
       <div id="tabs">
 
         <div id="currentTool" class="mode_panel">
-          <img id="currentToolIcon" src="{% static "game/image/icons/delete_road.svg" %}" >
+          <img id="currentToolIcon" src="{% static 'game/image/icons/delete_road.svg' %}" >
           <br>
           <span id="currentToolText">{% trans "Delete Road" %}</span>
         </div>
@@ -330,49 +330,14 @@
                     </tr>
                     <tr>
                       <td>{% trans "Traffic lights:" %}</td>
-                      <td><img id="trafficLightRed" src="{% static "game/image/trafficLight_red.svg" %}" width="80"></td>
-                        <td><img id="trafficLightGreen" src="{% static "game/image/trafficLight_green.svg" %}" width="80"></td>
+                      <td><img id="trafficLightRed" src="{% static 'game/image/trafficLight_red.svg' %}" width="80"></td>
+                        <td><img id="trafficLightGreen" src="{% static 'game/image/trafficLight_green.svg' %}" width="80"></td>
                     </tr>
                     {% if cow_level_enabled %}
                     <tr>
                       <td>{% trans "Cows:" %}</td>
                       <td><img id="cow" src="/static/game/image/Clarice.svg" width="80"></td>
                       <td>
-                        <button class="navigation_button" id="advanced_cow_options_button">
-                              <img id="advanced_cow_options_button_icon" src="/static/game/image/icons/show.svg"/>
-                              {% trans "Advanced" %}
-                            </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td></td>
-                      <td colspan="2">
-                        <div id="cow_advanced_div">
-                          <h3 id="cow_advanced_options_title">{% trans "Advanced options" %}</h3>
-                          <div id="cow_group_div">
-                            <!--<h4>Group:</h4>-->
-                            <div id="cow_group_buttons">
-                              <button class="mode_panel navigation_button" id="remove_cow_group_button">
-                                <img src="/static/game/image/icons/clear.svg"/>
-                              </button>
-                              <button class="mode_panel navigation_button" id="add_cow_group_button">
-                                <img src="/static/game/image/icons/add.svg"/>
-                              </button>
-                            </div>
-                            <div id="cow_group_select_div">
-                              <select id="cow_group_select"></select>
-                            </div>
-                            <div id="cow_type_select_div">
-                              <select id="cow_type_select"></select>
-                            </div>
-                            <div style="clear: both;"></div>
-                            <h4>{% trans "How many cows should appear for this group?" %}</h4>
-                            <div id="min_max_cow_div">
-                                <label for="min_cows_spinner">{% trans "Min:" %}</label><input name="Min" class="spinner" id="min_cows_spinner" readonly>
-                                <label for="max_cows_spinner">{% trans "Max:" %}</label><input name="Max" class="spinner" id="max_cows_spinner" readonly>
-                            </div>
-                          </div>
-                        </div>
                       </td>
                     </tr>
                     {% endif %}
@@ -497,7 +462,7 @@
                   </div>
                 </div>
                 <button class="navigation_button long_button" id="generate">
-                  <img src="{% static "game/image/icons/random.svg" %}">
+                  <img src="{% static 'game/image/icons/random.svg' %}">
                   <span>{% trans "Generate" %}</span>
                 </button>
               </div>
@@ -634,7 +599,7 @@
             </div>
 
             <button class="navigation_button long_button" id="shareWithAll">
-              <img src="{% static "game/image/icons/share.svg" %}">
+              <img src="{% static 'game/image/icons/share.svg' %}">
               <span>{% trans "Share with all" %}</span>
             </button>
           </div>
@@ -647,9 +612,9 @@
   <div id="paper"></div>
 
   <div id="trashcanHolder">
-    <img id="trashcanLidClosed" src="{% static "game/image/trashcan_lid_closed.svg" %}">
-    <img id="trashcanLidOpen" src="{% static "game/image/trashcan_lid_open.svg" %}">
-    <img id="trashcan" src="{% static "game/image/trashcan.svg" %}">
+    <img id="trashcanLidClosed" src="{% static 'game/image/trashcan_lid_closed.svg' %}">
+    <img id="trashcanLidOpen" src="{% static 'game/image/trashcan_lid_open.svg' %}">
+    <img id="trashcan" src="{% static 'game/image/trashcan.svg' %}">
   </div>
 </div>
 

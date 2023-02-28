@@ -75,4 +75,4 @@ class TestCrashes(BaseGameTest):
             .clear()
         )
 
-        self.complete_and_check_level(6, page)
+        self.complete_and_check_level(6, page, check_algorithm_score=False)

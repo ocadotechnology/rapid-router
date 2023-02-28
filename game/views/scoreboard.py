@@ -34,7 +34,7 @@ class StudentRow:
         self.total_score = kwargs.get("total_score", 0)
         self.level_scores = kwargs.get("level_scores", {})
         self.completed = kwargs.get("completed", 0)
-        self.percentage_complete = kwargs.get("percentage_complete", 0)
+        self.success_rate = kwargs.get("success_rate", 0)
 
 
 # Returns row of student object with values and scores of each selected level
@@ -62,9 +62,25 @@ def student_row(levels_sorted, student, best_attempts):
         for level in levels_sorted:
 
             attempt = attempts_dict.get(level.id)
+
             if attempt:
+                max_score = 0
+
+                # Max score logic as follows:
+                # - All custom levels have a max score of 10
+                # - All official levels have a max score of 20 if both route score and algorithm scores are enabled
+                # except for levels 1-12 which have a max score of 20 even though the algorithm score is disabled
+                if attempt.level.episode is None:
+                    max_score = 10
+                else:
+                    if not attempt.level.disable_route_score:
+                        max_score += 10
+                    if not attempt.level.disable_algorithm_score:
+                        max_score += 10
+                    if int(attempt.level.name) < 13:
+                        max_score = 20
+
                 num_all += 1
-                max_score = 10 if attempt.level.disable_route_score or attempt.level.episode is None else 20
                 if attempt.score:
                     if attempt.score / max_score >= threshold:
                         num_finished += 1
@@ -87,7 +103,10 @@ def student_row(levels_sorted, student, best_attempts):
                 times.append(timedelta(0))
 
     total_time = sum(times, timedelta())
-    percentage_complete = total_score / total_possible_score * 100 if total_possible_score > 0 else 0
+
+    success_rate = (
+        total_score / total_possible_score * 100 if total_possible_score > 0 else 0
+    )
 
     row = StudentRow(
         student=student,
@@ -95,7 +114,7 @@ def student_row(levels_sorted, student, best_attempts):
         total_score=int(total_score),
         level_scores=level_scores,
         completed=num_finished,
-        percentage_complete=percentage_complete,
+        success_rate=success_rate,
     )
     return row
 
@@ -322,7 +341,7 @@ def scoreboard(request):
 
 
 def render_no_permission_error(request):
-    return renderError(request, messages.noPermissionTitle(), messages.noPermissionScoreboard())
+    return renderError(request, messages.no_permission_title(), messages.no_permission_scoreboard())
 
 
 def is_teacher_with_no_classes_assigned(user, users_classes):

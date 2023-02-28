@@ -34,8 +34,8 @@ def level_moderation(request):
     if not permissions.can_see_level_moderation(request.user):
         return renderError(
             request,
-            messages.noPermissionLevelModerationTitle(),
-            messages.noPermissionLevelModerationPage(),
+            messages.no_permission_level_moderation_title(),
+            messages.no_permission_level_moderation_page(),
         )
 
     teacher = request.user.userprofile.teacher
@@ -54,8 +54,8 @@ def level_moderation(request):
     if len(classes_taught) <= 0:
         return renderError(
             request,
-            messages.noPermissionLevelModerationTitle(),
-            messages.noDataToShowLevelModeration(),
+            messages.no_permission_level_moderation_title(),
+            messages.no_data_to_show_level_moderation(),
         )
 
     classes_taught_ids = [class_.id for class_ in classes_taught]
@@ -74,8 +74,8 @@ def level_moderation(request):
             if not all(class_id in classes_taught_ids for class_id in class_ids):
                 return renderError(
                     request,
-                    messages.noPermissionLevelModerationTitle(),
-                    messages.noPermissionLevelModerationClass(),
+                    messages.no_permission_level_moderation_title(),
+                    messages.no_permission_level_moderation_class(),
                 )
         else:
             class_ids = []

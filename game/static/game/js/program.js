@@ -13,10 +13,9 @@ ocargo.Program = function (events) {
   this.variables = {};
 };
 
-ocargo.Program.prototype.run = function () {
-  ocargo.model.chooseNewCowPositions();
-  ocargo.model.reset();
-  this.thread.run(ocargo.model);
+ocargo.Program.prototype.run = function() {
+	ocargo.model.reset();
+	this.thread.run(ocargo.model);
 };
 
 /* Thread */
@@ -38,16 +37,7 @@ ocargo.Thread.prototype.run = function (model) {
   }
 };
 
-ocargo.Thread.prototype.step = function (model) {
-  // check if any event condition is true
-  for (let i = 0; i < this.program.events.length; i++) {
-    let event = this.program.events[i];
-    model.shouldObserve = false;
-    if (event.condition(model)) {
-      event.execute(this, model);
-    }
-    model.shouldObserve = true;
-  }
+ocargo.Thread.prototype.step = function(model) {
 
   let commandToProcess = this.stack.shift();
   this.noExecutionSteps++;
@@ -166,35 +156,6 @@ SoundHornCommand.prototype.execute = function (thread, model) {
 function PuffUpCommand(block) {
   this.block = block;
 }
-
-PuffUpCommand.prototype.execute = function (thread, model) {
-  queueHighlight(model, this.block, true);
-  return model.puff_up();
-};
-
-function SetVariableCommand(block, name, valueFunction) {
-  this.block = block;
-  this.name = name;
-  this.valueFunction = valueFunction;
-}
-
-SetVariableCommand.prototype.execute = function (thread, model) {
-  queueHighlight(model, this.block);
-  thread.program.variables[this.name] = this.valueFunction();
-  return model.wait(); // TODO - need to change this if we don't want it to use fuel
-};
-
-function IncrementVariableCommand(block, name, incrValue) {
-  this.block = block;
-  this.name = name;
-  this.incrValue = incrValue;
-}
-
-IncrementVariableCommand.prototype.execute = function (thread, model) {
-  queueHighlight(model, this.block);
-  thread.program.variables[this.name] += this.incrValue;
-  return model.wait(); // TODO - need to change this if we don't want it to use fuel
-};
 
 function If(conditionalCommandSets, elseBody, block) {
   this.conditionalCommandSets = conditionalCommandSets;

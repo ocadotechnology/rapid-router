@@ -10,10 +10,10 @@ ocargo.BlocklyCompiler.prototype.events = null;
 ocargo.BlocklyCompiler.prototype.program = null;
 
 ocargo.BlocklyCompiler.prototype.compile = function () {
-  this.compileProcedures();
-  this.compileEvents();
-  this.compileProgram();
-  this.bindProcedureCalls();
+    this.compileProcedures();
+    this.compileEvents();
+    this.compileProgram();
+    this.bindProcedureCalls();
 
   return this.program;
 };
@@ -49,36 +49,34 @@ ocargo.BlocklyCompiler.prototype.compileProcedures = function () {
   }
 };
 
-ocargo.BlocklyCompiler.prototype.compileEvents = function () {
-  var newEvents = [];
+ocargo.BlocklyCompiler.prototype.compileEvents = function() {
+    var newEvents = [];
 
-  var eventBlocks = ocargo.blocklyControl.onEventDoBlocks();
-  for (var i = 0; i < eventBlocks.length; i++) {
-    var block = eventBlocks[i];
-    var condition = this.getCondition(block);
+    var eventBlocks = ocargo.blocklyControl.onEventDoBlocks();
+    for (var i = 0; i < eventBlocks.length; i++) {
+        var block = eventBlocks[i];
+        var condition = this.getCondition(block);
 
-    var bodyBlock = block.inputList[1].connection.targetBlock();
-    if (bodyBlock === null) {
-      throw gettext_noop("Perhaps try looking at your 'event' blocks?");
+        var bodyBlock = block.inputList[1].connection.targetBlock();
+        if (bodyBlock === null) {
+            throw gettext_noop('Perhaps try looking at your \'event\' blocks?');
+        }
+
+        var conditionType = block.type;
+
+        newEvents.push(new Event(condition, this.createSequence(bodyBlock), block, conditionType));
     }
 
-    var conditionType = block.type;
-
-    newEvents.push(
-      new Event(condition, this.createSequence(bodyBlock), block, conditionType)
-    );
-  }
-
-  this.events = newEvents;
+    this.events = newEvents;
 };
 
-ocargo.BlocklyCompiler.prototype.compileProgram = function () {
-  this.program = new ocargo.Program(this.events);
-  var startBlock = ocargo.blocklyControl.startBlock();
-  var thread = new ocargo.Thread(this.program);
-  thread.startBlock = startBlock;
-  thread.stack = this.createSequence(thread.startBlock);
-  this.program.thread = thread;
+ocargo.BlocklyCompiler.prototype.compileProgram = function() {
+    this.program = new ocargo.Program(this.events);
+    var startBlock = ocargo.blocklyControl.startBlock();
+    var thread = new ocargo.Thread(this.program);
+    thread.startBlock = startBlock;
+    thread.stack = this.createSequence(thread.startBlock);
+    this.program.thread = thread;
 };
 
 ocargo.BlocklyCompiler.prototype.bindProcedureCalls = function () {

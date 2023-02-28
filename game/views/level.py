@@ -140,7 +140,7 @@ def play_level(request, level, from_editor=False):
     night_mode = False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
 
     if not permissions.can_play_level(request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)):
-        return renderError(request, messages.noPermissionTitle(), messages.notSharedLevel())
+        return renderError(request, messages.no_permission_title(), messages.not_shared_level())
 
     # Set default level description/hint lookups
     lesson = "description_level_default"

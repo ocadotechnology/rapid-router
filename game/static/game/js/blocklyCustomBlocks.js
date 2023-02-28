@@ -182,57 +182,22 @@ function initCustomBlocksDescription() {
     },
   };
 
-  Blockly.Blocks["puff_up"] = {
-    // Block for puffing up the van
-    init: function () {
-      this.setColour(330);
-      this.appendDummyInput()
-        .appendField(gettext("puff up"))
-        .appendField(
-          new Blockly.FieldImage(
-            ocargo.Drawing.imageDir + "empty.svg",
-            43,
-            ocargo.BlocklyControl.BLOCK_HEIGHT
-          )
-        )
-        .appendField(
-          new Blockly.FieldImage(
-            ocargo.Drawing.imageDir + "empty.svg",
-            ocargo.BlocklyControl.IMAGE_WIDTH,
-            ocargo.BlocklyControl.BLOCK_HEIGHT
-          )
-        );
-      this.setPreviousStatement(true, "EventAction");
-      this.setNextStatement(false);
-      this.setTooltip(gettext("Puff up the van to scare away the cows"));
-    },
-  };
-
-  Blockly.Blocks["sound_horn"] = {
-    // Block for puffing up the van
-    init: function () {
-      this.setColour(330);
-      this.appendDummyInput()
-        .appendField(gettext("sound horn"))
-        .appendField(
-          new Blockly.FieldImage(
-            ocargo.Drawing.imageDir + "empty.svg",
-            43,
-            ocargo.BlocklyControl.BLOCK_HEIGHT
-          )
-        )
-        .appendField(
-          new Blockly.FieldImage(
-            ocargo.Drawing.imageDir + "empty.svg",
-            ocargo.BlocklyControl.IMAGE_WIDTH,
-            ocargo.BlocklyControl.BLOCK_HEIGHT
-          )
-        );
-      this.setPreviousStatement(true, "EventAction");
-      this.setNextStatement(false);
-      this.setTooltip(gettext("Sound the horn to scare away the cows"));
-    },
-  };
+    Blockly.Blocks['sound_horn'] = {
+        init: function() {
+            this.setColour(160);
+            this.appendDummyInput()
+                .appendField(gettext('sound horn'))
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
+                    43,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT))
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + 'empty.svg',
+                    ocargo.BlocklyControl.IMAGE_WIDTH,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT));
+            this.setPreviousStatement(true, 'Action');
+            this.setNextStatement(true, 'Action');
+            this.setTooltip(gettext('Sound the horn to scare away the cows'));
+        }
+    };
 
   /*****************/
   /*   Conditions  */
@@ -311,9 +276,20 @@ function initCustomBlocksDescription() {
     },
   };
 
-  /****************/
-  /*  Procedures  */
-  /****************/
+    Blockly.Blocks['cow_crossing'] = {
+        init: function() {
+            this.setColour(210);
+            this.setOutput(true, 'Boolean');
+            this.appendDummyInput()
+                .appendField(gettext('cows'))
+                .appendField(new Blockly.FieldImage(ocargo.Drawing.imageDir + ocargo.Drawing.whiteCowUrl,
+                    ocargo.BlocklyControl.COW_WIDTH,
+                    ocargo.BlocklyControl.BLOCK_HEIGHT), 'IMAGE');
+        }
+    };
+    /****************/
+    /*  Procedures  */
+    /****************/
 
   Blockly.Blocks["call_proc"] = {
     // Block for calling a defined procedure
@@ -569,9 +545,14 @@ function initCustomBlocksPython() {
     return "my_van.wait()\n";
   };
 
-  Blockly.Python["deliver"] = function (block) {
-    return "v.deliver()\n";
-  };
+    Blockly.Python['deliver'] = function(block) {
+        return 'my_van.deliver()\n';
+    };
+
+    Blockly.Python['sound_horn'] = function(block) {
+        return 'my_van.sound_horn()\n';
+    };
+
 
   Blockly.Python["road_exists"] = function (block) {
     if (block.inputList[0].fieldRow[1].value_ === "FORWARD") {

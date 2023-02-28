@@ -2,6 +2,55 @@
 
 <!--next-version-placeholder-->
 
+## v5.10.2 (2023-02-21)
+### Fix
+* Move and zoom buttons and fix default zoom factor ([#1424](https://github.com/ocadotechnology/rapid-router/issues/1424)) ([`693007d`](https://github.com/ocadotechnology/rapid-router/commit/693007d80a93deef092dbf661a34e0f84b6247bf))
+
+## v5.10.1 (2023-02-21)
+### Fix
+* Custom levels always have max score of 10 ([#1422](https://github.com/ocadotechnology/rapid-router/issues/1422)) ([`d9a8c68`](https://github.com/ocadotechnology/rapid-router/commit/d9a8c68e742c6a6a77d22b1a181f167f60169a24))
+
+## v5.10.0 (2023-02-16)
+### Feature
+* Update episode videos & clean up unused messages ([#1421](https://github.com/ocadotechnology/rapid-router/issues/1421)) ([`5a115c5`](https://github.com/ocadotechnology/rapid-router/commit/5a115c57f6bb29bb1ba93c2f90014baa02585149))
+
+## v5.9.3 (2023-02-16)
+### Fix
+* **deps:** Bump django from 3.2.17 to 3.2.18 ([#1420](https://github.com/ocadotechnology/rapid-router/issues/1420)) ([`110beb5`](https://github.com/ocadotechnology/rapid-router/commit/110beb5fd243579c758f99e40bdfae16204b4b1f))
+
+## v5.9.2 (2023-02-16)
+### Fix
+* Don't use cache when loading level decor in editor ([#1418](https://github.com/ocadotechnology/rapid-router/issues/1418)) ([`88c7ad3`](https://github.com/ocadotechnology/rapid-router/commit/88c7ad30f45425c9c11f0f44d18ffb63c887ffe5))
+
+## v5.9.1 (2023-02-15)
+### Fix
+* Fix migration 81 ([#1419](https://github.com/ocadotechnology/rapid-router/issues/1419)) ([`ddf8d17`](https://github.com/ocadotechnology/rapid-router/commit/ddf8d17318ce0bf246a7b8aed02567c53ec4c523))
+
+## v5.9.0 (2023-02-10)
+### Feature
+* Remove algorithm score for early levels but keep maximum score 20 coins ([#1414](https://github.com/ocadotechnology/rapid-router/issues/1414)) ([`5cc45bd`](https://github.com/ocadotechnology/rapid-router/commit/5cc45bd08aa38ac77420d37477660ebac6bb7d56))
+
+## v5.8.3 (2023-02-10)
+### Fix
+* Patch update for more-itertools ([#1417](https://github.com/ocadotechnology/rapid-router/issues/1417)) ([`4299ce6`](https://github.com/ocadotechnology/rapid-router/commit/4299ce6b7fb64e79cae8736fa7d570158927e536))
+
+## v5.8.2 (2023-02-06)
+### Fix
+* **deps:** Bump django from 3.2.16 to 3.2.17 ([#1416](https://github.com/ocadotechnology/rapid-router/issues/1416)) ([`7b675b6`](https://github.com/ocadotechnology/rapid-router/commit/7b675b62539e3dc40810f4a54e46bdd67cce5aed))
+
+## v5.8.1 (2023-01-24)
+### Fix
+* Remove use of old_div ([#1408](https://github.com/ocadotechnology/rapid-router/issues/1408)) ([`8128e54`](https://github.com/ocadotechnology/rapid-router/commit/8128e54d5bca7d46b8b48faba1b93598b1477329))
+
+## v5.8.0 (2023-01-19)
+### Feature
+* Enable cow crossing condition, and horn action ([#1376](https://github.com/ocadotechnology/rapid-router/issues/1376)) ([`3e25995`](https://github.com/ocadotechnology/rapid-router/commit/3e259951087b91b472c39906df16e85014144f79))
+
+## v5.7.4 (2023-01-04)
+### Fix
+* Remove snow ([#1403](https://github.com/ocadotechnology/rapid-router/issues/1403)) ([`92857ea`](https://github.com/ocadotechnology/rapid-router/commit/92857ea4d13641b7583f2e42031c56561c9ce99d))
+* Remove rest snow ([#1402](https://github.com/ocadotechnology/rapid-router/issues/1402)) ([`88739c2`](https://github.com/ocadotechnology/rapid-router/commit/88739c2f8373d2e728820a825f954cff39aa195e))
+
 ## v5.7.3 (2022-12-06)
 ### Fix
 * Dummy commit to bump version ([`b6ba81f`](https://github.com/ocadotechnology/rapid-router/commit/b6ba81f94fac5858eb56e6e442bd10cba1cee718))

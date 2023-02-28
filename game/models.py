@@ -19,10 +19,21 @@ def character_choices():
 
 class Block(models.Model):
     type = models.CharField(max_length=200)
+    block_type = models.IntegerField(
+        choices=[
+            (0, "Start"),
+            (1, "Action"),
+            (2, "Condition"),
+            (3, "Procedure"),
+            (4, "ControlFlow"),
+        ]
+    )
 
     def __str__(self):
         return self.type
 
+    class Meta:
+        ordering = ["block_type", "pk"]
 
 class Episode(models.Model):
     """Variables prefixed with r_ signify they are parameters for random level generation"""
@@ -123,6 +134,7 @@ class Level(models.Model):
     shared_with = models.ManyToManyField(User, related_name="shared", blank=True)
     model_solution = models.CharField(blank=True, max_length=20, default="[]")
     disable_route_score = models.BooleanField(default=False)
+    disable_algorithm_score = models.BooleanField(default=False)
     threads = models.IntegerField(blank=False, default=1)
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)

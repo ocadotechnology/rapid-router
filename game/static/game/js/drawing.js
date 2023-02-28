@@ -2,67 +2,62 @@
 
 var ocargo = ocargo || {}
 
-var GRID_WIDTH = 10
-var GRID_HEIGHT = 8
+let GRID_WIDTH = 10
+let GRID_HEIGHT = 8
 var GRID_SPACE_SIZE = 100
-var PAPER_WIDTH = GRID_SPACE_SIZE * GRID_WIDTH
-var PAPER_HEIGHT = GRID_SPACE_SIZE * GRID_HEIGHT
-var PAPER_PADDING = 30
-var EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 2 * PAPER_PADDING
-var EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING
+let PAPER_WIDTH = GRID_SPACE_SIZE * GRID_WIDTH
+let PAPER_HEIGHT = GRID_SPACE_SIZE * GRID_HEIGHT
+let PAPER_PADDING = 30
+let EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 2 * PAPER_PADDING
+let EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING
 
-var DEFAULT_CHARACTER_WIDTH = 40
-var DEFAULT_CHARACTER_HEIGHT = 20
+let DEFAULT_CHARACTER_WIDTH = 40
+let DEFAULT_CHARACTER_HEIGHT = 20
 
-var COW_WIDTH = 50
-var COW_HEIGHT = 50
+let COW_WIDTH = 80
+let COW_HEIGHT = 80
 
-var zoom = 15
+let zoom = 15
 
-var gameElement = document.getElementById('paper')
-
-var evCache = new Array()
-var prevDiff = -1
-
-var currentWidth = PAPER_WIDTH
-var currentHeight = PAPER_HEIGHT
-var currentStartX = 0
-var currentStartY = 0
+let currentWidth = PAPER_WIDTH
+let currentHeight = PAPER_HEIGHT
+let currentStartX = 0
+let currentStartY = 0
 
 ocargo.Drawing = function (startingPosition) {
   /*************/
   /* Constants */
   /*************/
 
-  var characterWidth =
+  let characterWidth =
     typeof CHARACTER_WIDTH !== 'undefined'
       ? CHARACTER_WIDTH
       : DEFAULT_CHARACTER_WIDTH
-  var characterHeight =
+  let characterHeight =
     typeof CHARACTER_HEIGHT !== 'undefined'
       ? CHARACTER_HEIGHT
       : DEFAULT_CHARACTER_HEIGHT
 
-  var TRAFFIC_LIGHT_WIDTH = 60
-  var TRAFFIC_LIGHT_HEIGHT = 22
+  let TRAFFIC_LIGHT_WIDTH = 60
+  let TRAFFIC_LIGHT_HEIGHT = 22
 
-  var INITIAL_CFC_OFFSET_X = -105
-  var INITIAL_CFC_OFFSET_Y = -7
+  let INITIAL_CFC_OFFSET_X = -105
+  let INITIAL_CFC_OFFSET_Y = -7
 
-  var DESTINATION_NOT_VISITED_COLOUR = 'red'
-  var DESTINATION_VISITED_COLOUR = 'green'
+  let DESTINATION_NOT_VISITED_COLOUR = 'red'
+  let DESTINATION_VISITED_COLOUR = 'green'
 
   /*********/
   /* State */
   /*********/
 
-  var paper = new Raphael('paper', EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT)
-  var roadImages = []
+  let paper = new Raphael('paper', EXTENDED_PAPER_WIDTH, EXTENDED_PAPER_HEIGHT)
+  let roadImages = []
 
-  var lightImages = {}
-  var destinationImages = {}
+  let lightImages = {}
+  let destinationImages = {}
 
-  var character
+  let character
 
   if (!ocargo.Drawing.inLevelEditor()) {
     character = new ocargo.Character(
@@ -79,8 +74,8 @@ ocargo.Drawing = function (startingPosition) {
   paper.setViewBox(
     currentStartX,
     currentStartY,
-    EXTENDED_PAPER_WIDTH,
-    EXTENDED_PAPER_HEIGHT
+    1000,
+    800
   )
 
   /**
@@ -98,7 +93,8 @@ ocargo.Drawing = function (startingPosition) {
 
       currentStartX = newX
       currentStartY = newY
-    } else {
+    }
+    else {
       let newX = currentStartX + zoom
       let newY = currentStartY + zoom
 
@@ -122,14 +118,14 @@ ocargo.Drawing = function (startingPosition) {
   /**
    * Map moving
    */
-  var currentMousePos = { x: -1, y: -1 }
+  let currentMousePos = { x: -1, y: -1 }
 
-  var isMouseDown = false
-  var prevX = 0
-  var prevY = 0
+  let isMouseDown = false
+  let prevX = 0
+  let prevY = 0
 
   this.enablePanning = function () {
-    var $paper = $('#paper')
+    let $paper = $('#paper')
 
     $paper.mousedown(function (event) {
       isMouseDown = true
@@ -146,8 +142,8 @@ ocargo.Drawing = function (startingPosition) {
       currentMousePos.y = event.pageY
 
       if (isMouseDown) {
-        var deltaX = prevX - currentMousePos.x
-        var deltaY = prevY - currentMousePos.y
+        let deltaX = prevX - currentMousePos.x
+        let deltaY = prevY - currentMousePos.y
         currentStartX = currentStartX + deltaX
         currentStartY = currentStartY + deltaY
         paper.setViewBox(
@@ -170,11 +166,11 @@ ocargo.Drawing = function (startingPosition) {
   // Used by level editor to preload road tiles to prevent jittery drawing
 
   this.preloadRoadTiles = function () {
-    var tiles = ['dead_end', 'crossroads', 'straight', 't_junction', 'turn']
-    var tileImages = []
-    var path = ocargo.Drawing.raphaelImageDir + 'road_tiles/'
+    let tiles = ['dead_end', 'crossroads', 'straight', 't_junction', 'turn']
+    let tileImages = []
+    let path = ocargo.Drawing.raphaelImageDir + 'road_tiles/'
 
-    for (var i = 0; i < tiles.length; i++) {
+    for (let i = 0; i < tiles.length; i++) {
       tileImages.push(
         paper.image(
           path + 'road/' + tiles[i] + '.svg',
@@ -195,13 +191,13 @@ ocargo.Drawing = function (startingPosition) {
       )
     }
 
-    for (var i = 0; i < tileImages.length; i++) {
+    for (let i = 0; i < tileImages.length; i++) {
       tileImages[i].remove()
     }
   }
 
   function calculateCFCInitialPosition (startNode) {
-    var coord = ocargo.Drawing.translate(startNode.coordinate)
+    let coord = ocargo.Drawing.translate(startNode.coordinate)
     return {
       x: coord.x * GRID_SPACE_SIZE + INITIAL_CFC_OFFSET_X + PAPER_PADDING,
       y: coord.y * GRID_SPACE_SIZE + INITIAL_CFC_OFFSET_Y + PAPER_PADDING
@@ -209,8 +205,8 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   function calculateInitialRotation (previousNode, startNode) {
-    var nodeAngleRadians = ocargo.calculateNodeAngle(previousNode, startNode)
-    var nodeAngleDegrees = nodeAngleRadians * (180 / Math.PI)
+    let nodeAngleRadians = ocargo.calculateNodeAngle(previousNode, startNode)
+    let nodeAngleDegrees = nodeAngleRadians * (180 / Math.PI)
     return -nodeAngleDegrees // Calculation is counterclockwise, transformations are clockwise
   }
 
@@ -273,8 +269,8 @@ ocargo.Drawing = function (startingPosition) {
   // Returns the direction of the middle branch
   // E.g. T-shaped junction will be described as 'down'
   function tJunctionOrientation (middle, node1, node2, node3) {
-    var res1 = getRoadLetters(node1, middle, node2)
-    var res2 = getRoadLetters(node2, middle, node3)
+    let res1 = getRoadLetters(node1, middle, node2)
+    let res2 = getRoadLetters(node2, middle, node3)
 
     if (res1 === 'H' && res2 === 'DR') {
       return 'down'
@@ -291,11 +287,11 @@ ocargo.Drawing = function (startingPosition) {
   /***************/
 
   this.renderDestinations = function (destinations) {
-    for (var i = 0; i < destinations.length; i++) {
-      var destination = destinations[i].node
-      var variation = getDestinationPosition(destination)
+    for (let i = 0; i < destinations.length; i++) {
+      let destination = destinations[i].node
+      let variation = getDestinationPosition(destination)
 
-      var destinationRect = paper
+      let destinationRect = paper
         .rect(
           destination.coordinate.x * GRID_SPACE_SIZE + PAPER_PADDING,
           PAPER_HEIGHT -
@@ -307,7 +303,7 @@ ocargo.Drawing = function (startingPosition) {
         )
         .attr({ stroke: DESTINATION_NOT_VISITED_COLOUR })
 
-      var destinationHouse = paper
+      let destinationHouse = paper
         .image(
           ocargo.Drawing.raphaelImageDir + HOUSE_URL,
           destination.coordinate.x * GRID_SPACE_SIZE +
@@ -330,12 +326,12 @@ ocargo.Drawing = function (startingPosition) {
 
     //find a side of the road
     function getDestinationPosition (destination) {
-      var roadLetters = []
+      let roadLetters = []
 
       //might be best to just use the coordinates rather than get road letters and then convert back to directions
       if (destination.connectedNodes.length === 1) {
-        var previousNode = destination.connectedNodes[0]
-        var nextNode = {}
+        let previousNode = destination.connectedNodes[0]
+        let nextNode = {}
         nextNode.coordinate = new ocargo.Coordinate(
           destination.coordinate.x +
             (destination.coordinate.x - previousNode.coordinate.x),
@@ -350,9 +346,9 @@ ocargo.Drawing = function (startingPosition) {
           )
         )
       } else {
-        for (var i = 0; i < destination.connectedNodes.length; i++) {
-          var previousNode = destination.connectedNodes[i]
-          for (var j = i + 1; j < destination.connectedNodes.length; j++) {
+        for (let i = 0; i < destination.connectedNodes.length; i++) {
+          let previousNode = destination.connectedNodes[i]
+          for (let j = i + 1; j < destination.connectedNodes.length; j++) {
             roadLetters.push(
               getRoadLetters(
                 previousNode.coordinate,
@@ -363,13 +359,13 @@ ocargo.Drawing = function (startingPosition) {
           }
         }
       }
-      var left = true
-      var right = true
-      var up = true
-      var down = true
+      let left = true
+      let right = true
+      let up = true
+      let down = true
 
       //variation specifies x,y,rotation
-      var variation = [25, 25, 90]
+      let variation = [25, 25, 90]
 
       // Set "default" variations of the house position
       // based on straight roads and turns
@@ -427,19 +423,19 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.renderOrigin = function (position) {
-    var initialPosition = calculateCFCInitialPosition(position.currentNode)
-    var cfc = paper.image(
+    let initialPosition = calculateCFCInitialPosition(position.currentNode)
+    let cfc = paper.image(
       ocargo.Drawing.raphaelImageDir + CFC_URL,
       initialPosition.x,
       initialPosition.y,
       100,
       107
     )
-    var rotation = calculateInitialRotation(
+    let rotation = calculateInitialRotation(
       position.previousNode,
       position.currentNode
     )
-    var transformation = ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace(
+    let transformation = ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace(
       rotation,
       position.currentNode.coordinate.x,
       position.currentNode.coordinate.y
@@ -449,21 +445,21 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.renderRoad = function (nodes) {
-    for (var i = 0; i < roadImages.length; i++) {
-      var image = roadImages[i]
+    for (let i = 0; i < roadImages.length; i++) {
+      let image = roadImages[i]
       if (image) {
         image.remove()
       }
     }
 
-    var path = ocargo.Drawing.raphaelImageDir + 'road_tiles/'
+    let path = ocargo.Drawing.raphaelImageDir + 'road_tiles/'
 
     path += CHARACTER_NAME === 'Van' ? 'road/' : 'path/'
 
     roadImages = []
-    for (var i = 0; i < nodes.length; i++) {
-      var node = nodes[i]
-      var roadImage
+    for (let i = 0; i < nodes.length; i++) {
+      let node = nodes[i]
+      let roadImage
       switch (node.connectedNodes.length) {
         case 1:
           roadImage = drawDeadEndRoad(node, path)
@@ -493,24 +489,24 @@ ocargo.Drawing = function (startingPosition) {
     }
 
     function drawDeadEndRoad (node, path) {
-      var previousNode = node.connectedNodes[0]
+      let previousNode = node.connectedNodes[0]
 
-      var nextNode = {}
+      let nextNode = {}
       nextNode.coordinate = new ocargo.Coordinate(
         node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
         node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y)
       )
 
-      var roadLetters = getRoadLetters(
+      let roadLetters = getRoadLetters(
         previousNode.coordinate,
         node.coordinate,
         nextNode.coordinate
       )
 
-      var prevFlipped = ocargo.Drawing.translate(previousNode.coordinate)
-      var flipped = ocargo.Drawing.translate(node.coordinate)
+      let prevFlipped = ocargo.Drawing.translate(previousNode.coordinate)
+      let flipped = ocargo.Drawing.translate(node.coordinate)
 
-      var road = paper.image(
+      let road = paper.image(
         path + 'dead_end.svg',
         flipped.x * GRID_SPACE_SIZE + PAPER_PADDING,
         flipped.y * GRID_SPACE_SIZE + PAPER_PADDING,
@@ -542,18 +538,18 @@ ocargo.Drawing = function (startingPosition) {
     }
 
     function drawSingleRoadSegment (previousNode, node, nextNode, path) {
-      var roadLetters = getRoadLetters(
+      let roadLetters = getRoadLetters(
         previousNode.coordinate,
         node.coordinate,
         nextNode.coordinate
       )
 
-      var flipped = ocargo.Drawing.translate(node.coordinate)
-      var roadSrc =
+      let flipped = ocargo.Drawing.translate(node.coordinate)
+      let roadSrc =
         path +
         (roadLetters === 'H' || roadLetters === 'V' ? 'straight' : 'turn') +
         '.svg'
-      var road = paper.image(
+      let road = paper.image(
         roadSrc,
         flipped.x * GRID_SPACE_SIZE + PAPER_PADDING,
         flipped.y * GRID_SPACE_SIZE + PAPER_PADDING,
@@ -587,24 +583,24 @@ ocargo.Drawing = function (startingPosition) {
     }
 
     function drawTJunction (node, path) {
-      var node1 = node.connectedNodes[0]
-      var node2 = node.connectedNodes[1]
-      var node3 = node.connectedNodes[2]
+      let node1 = node.connectedNodes[0]
+      let node2 = node.connectedNodes[1]
+      let node3 = node.connectedNodes[2]
 
-      var flipped = ocargo.Drawing.translate(node.coordinate)
+      let flipped = ocargo.Drawing.translate(node.coordinate)
 
-      var letters12 = getRoadLetters(
+      let letters12 = getRoadLetters(
         node1.coordinate,
         node.coordinate,
         node3.coordinate
       )
-      var letters13 = getRoadLetters(
+      let letters13 = getRoadLetters(
         node1.coordinate,
         node.coordinate,
         node2.coordinate
       )
 
-      var rotation = 0
+      let rotation = 0
       if (
         (letters12 === 'V' && (letters13 === 'UL' || letters13 === 'DL')) ||
         (letters12 === 'UL' && (letters13 === 'DL' || letters13 === 'V')) ||
@@ -631,7 +627,7 @@ ocargo.Drawing = function (startingPosition) {
         rotation = 270
       }
 
-      var road = paper.image(
+      let road = paper.image(
         path + 't_junction.svg',
         flipped.x * GRID_SPACE_SIZE + PAPER_PADDING,
         flipped.y * GRID_SPACE_SIZE + PAPER_PADDING,
@@ -648,7 +644,7 @@ ocargo.Drawing = function (startingPosition) {
     }
 
     function drawCrossRoads (node, path) {
-      var flipped = ocargo.Drawing.translate(node.coordinate)
+      let flipped = ocargo.Drawing.translate(node.coordinate)
 
       return paper.image(
         path + 'crossroads.svg',
@@ -670,13 +666,13 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.renderDecor = function (decors) {
-    for (var i = 0; i < decors.length; i++) {
-      var decor = decors[i]
-      var src = ocargo.Drawing.raphaelImageDir + decor.url
-      var x = decor.x + PAPER_PADDING
-      var y = PAPER_HEIGHT - decor.y - decor.height + PAPER_PADDING
-      var width = decor.width
-      var height = decor.height
+    for (let i = 0; i < decors.length; i++) {
+      let decor = decors[i]
+      let src = ocargo.Drawing.raphaelImageDir + decor.url
+      let x = decor.x + PAPER_PADDING
+      let y = PAPER_HEIGHT - decor.y - decor.height + PAPER_PADDING
+      let width = decor.width
+      let height = decor.height
       paper.image(src, x, y, width, height)
     }
   }
@@ -691,26 +687,26 @@ ocargo.Drawing = function (startingPosition) {
     image
   ) {
     // get position based on nodes
-    var x = (controlledCoordinate.x + sourceCoordinate.x) / 2.0
-    var y = (controlledCoordinate.y + sourceCoordinate.y) / 2.0
+    let x = (controlledCoordinate.x + sourceCoordinate.x) / 2.0
+    let y = (controlledCoordinate.y + sourceCoordinate.y) / 2.0
 
     // get rotation based on nodes (should face source)
-    var angle = sourceCoordinate.angleTo(controlledCoordinate) * (180 / Math.PI)
-    var rotation = 90 - angle
+    let angle = sourceCoordinate.angleTo(controlledCoordinate) * (180 / Math.PI)
+    let rotation = 90 - angle
 
     // draw red and green lights, keep reference to both
-    var drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT + PAPER_PADDING
-    var drawY =
+    let drawX = x * GRID_SPACE_SIZE + TRAFFIC_LIGHT_HEIGHT + PAPER_PADDING
+    let drawY =
       PAPER_HEIGHT - y * GRID_SPACE_SIZE - TRAFFIC_LIGHT_WIDTH + PAPER_PADDING
 
     image.transform('t' + drawX + ',' + drawY + ' r' + rotation + 's-1,1')
   }
 
   this.renderTrafficLights = function (trafficLights) {
-    for (var i = 0; i < trafficLights.length; i++) {
-      var trafficLight = trafficLights[i]
-      var sourceCoordinate = trafficLight.sourceNode.coordinate
-      var controlledCoordinate = trafficLight.controlledNode.coordinate
+    for (let i = 0; i < trafficLights.length; i++) {
+      let trafficLight = trafficLights[i]
+      let sourceCoordinate = trafficLight.sourceNode.coordinate
+      let controlledCoordinate = trafficLight.controlledNode.coordinate
 
       trafficLight.greenLightEl = this.createTrafficLightImage(
         ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg'
@@ -747,23 +743,23 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.determineCowOrientation = function (coordinate, node) {
-    var x = coordinate.x
-    var y = coordinate.y
+    let x = coordinate.x
+    let y = coordinate.y
 
-    var xOffset = 0
-    var yOffset = 0
-    var rotation = 0
+    let xOffset = 0
+    let yOffset = 0
+    let rotation = 0
 
     if (node.connectedNodes.length === 1) {
       // Deadends
-      var previousNode = node.connectedNodes[0]
-      var nextNode = {}
+      let previousNode = node.connectedNodes[0]
+      let nextNode = {}
       nextNode.coordinate = new ocargo.Coordinate(
         node.coordinate.x + (node.coordinate.x - previousNode.coordinate.x),
         node.coordinate.y + (node.coordinate.y - previousNode.coordinate.y)
       )
 
-      var roadLetters = getRoadLetters(
+      let roadLetters = getRoadLetters(
         previousNode.coordinate,
         node.coordinate,
         nextNode.coordinate
@@ -774,10 +770,10 @@ ocargo.Drawing = function (startingPosition) {
       }
     } else if (node.connectedNodes.length === 2) {
       // Turns
-      var previousNode = node.connectedNodes[0]
-      var nextNode = node.connectedNodes[1]
+      let previousNode = node.connectedNodes[0]
+      let nextNode = node.connectedNodes[1]
 
-      var roadLetters = getRoadLetters(
+      let roadLetters = getRoadLetters(
         previousNode.coordinate,
         node.coordinate,
         nextNode.coordinate
@@ -804,10 +800,10 @@ ocargo.Drawing = function (startingPosition) {
       }
     } else if (node.connectedNodes.length === 3) {
       // T-junctions
-      var previousNode = node.connectedNodes[0]
-      var nextNode = node.connectedNodes[1]
-      var nextNextNode = node.connectedNodes[2]
-      var res = tJunctionOrientation(
+      let previousNode = node.connectedNodes[0]
+      let nextNode = node.connectedNodes[1]
+      let nextNextNode = node.connectedNodes[2]
+      let res = tJunctionOrientation(
         node.coordinate,
         previousNode.coordinate,
         nextNode.coordinate,
@@ -823,9 +819,9 @@ ocargo.Drawing = function (startingPosition) {
       }
     }
 
-    var drawX =
+    let drawX =
       (x + 0.5) * GRID_SPACE_SIZE - COW_WIDTH / 2 + xOffset + PAPER_PADDING
-    var drawY =
+    let drawY =
       PAPER_HEIGHT -
       (y + 0.5) * GRID_SPACE_SIZE -
       COW_HEIGHT / 2 +
@@ -846,21 +842,21 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.setCowImagePosition = function (coordinate, image, node) {
-    var res = this.determineCowOrientation(coordinate, node)
+    let res = this.determineCowOrientation(coordinate, node)
 
     image.transform('t' + res.drawX + ',' + res.drawY + 'r' + res.rotation)
   }
 
   this.renderCow = function (id, coordinate, node, animationLength, type) {
-    var res = this.determineCowOrientation(coordinate, node)
-    var image = paper.image(
+    let res = this.determineCowOrientation(coordinate, node)
+    let image = paper.image(
       ocargo.Drawing.raphaelImageDir + ocargo.Drawing.cowUrl(type),
       res.drawX,
       res.drawY,
       COW_WIDTH,
       COW_HEIGHT
     )
-    var rot = 'r' + res.rotation
+    let rot = 'r' + res.rotation
     image.transform(rot + 's0.1')
     image.animate({ transform: rot + 's1' }, animationLength, 'linear')
 
@@ -871,14 +867,16 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.removeCow = function (cow, animationLength) {
-    cow.image.animate(
-      { transform: 's0.01' },
-      animationLength,
-      'linear',
-      function () {
-        cow.image.remove()
-      }
-    )
+    if (cow){
+      cow.image.animate(
+        { transform: 's0.01' },
+        animationLength,
+        'linear',
+        function () {
+          cow.image.remove()
+        }
+      )
+    }
   }
 
   this.renderCharacter = function () {
@@ -886,12 +884,12 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.createGrid = function () {
-    var grid = []
-    for (var i = 0; i < GRID_WIDTH; i++) {
-      var row = []
-      for (var j = 0; j < GRID_HEIGHT; j++) {
-        var x = i * GRID_SPACE_SIZE + PAPER_PADDING
-        var y = j * GRID_SPACE_SIZE + PAPER_PADDING
+    let grid = []
+    for (let i = 0; i < GRID_WIDTH; i++) {
+      let row = []
+      for (let j = 0; j < GRID_HEIGHT; j++) {
+        let x = i * GRID_SPACE_SIZE + PAPER_PADDING
+        let y = j * GRID_SPACE_SIZE + PAPER_PADDING
 
         row.push(paper.rect(x, y, GRID_SPACE_SIZE, GRID_SPACE_SIZE))
       }
@@ -901,8 +899,8 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.renderGrid = function (grid, currentTheme) {
-    for (var i = 0; i < GRID_WIDTH; i++) {
-      for (var j = 0; j < GRID_HEIGHT; j++) {
+    for (let i = 0; i < GRID_WIDTH; i++) {
+      for (let j = 0; j < GRID_HEIGHT; j++) {
         grid[i][j].attr({
           stroke: currentTheme.border,
           fill: currentTheme.background,
@@ -948,8 +946,8 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.transitionDestination = function (destinationID, visited, duration) {
-    var destinationRect = destinationImages[destinationID].rect
-    var colour = visited
+    let destinationRect = destinationImages[destinationID].rect
+    let colour = visited
       ? DESTINATION_VISITED_COLOUR
       : DESTINATION_NOT_VISITED_COLOUR
 
@@ -1116,7 +1114,7 @@ ocargo.Drawing.startYesNoPopup = function (
   noFunction,
   mascot
 ) {
-  var buttonHtml =
+  let buttonHtml =
     '<button id="modal-yesBtn" class="navigation_button long_button">Yes</button> <button id="modal-noBtn" class="navigation_button long_button">No</button>'
   ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
   $('#modal-yesBtn').click(yesFunction)
@@ -1134,7 +1132,7 @@ ocargo.Drawing.startOptionsPopup = function (
   optionBText,
   mascot
 ) {
-  var buttonHtml =
+  let buttonHtml =
     '<button id="modal-optionABtn" class="navigation_button long_button">' + optionAText + '</button> <button id="modal-optionBBtn" class="navigation_button long_button">' + optionBText + '</button>'
   ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
   $('#modal-optionABtn').click(optionAFunction)
@@ -1153,7 +1151,7 @@ ocargo.Drawing.startInternetDownPopup = function () {
 }
 
 ocargo.Drawing.isMobile = function () {
-  var mobileDetect = new MobileDetect(window.navigator.userAgent)
+  let mobileDetect = new MobileDetect(window.navigator.userAgent)
   return !!mobileDetect.mobile()
 }
 
@@ -1162,8 +1160,8 @@ ocargo.Drawing.isChrome = function () {
 }
 
 ocargo.Drawing.renderCoins = function (coins) {
-  var html = '<div>'
-  var i
+  let html = '<div>'
+  let i
   for (i = 0; i < coins.whole; i++) {
     html +=
       "<img src='" +
@@ -1202,7 +1200,7 @@ ocargo.Drawing.createAbsoluteRotationTransformation = function (
   rotationPointX,
   rotationPointY
 ) {
-  var transformation = '... R' + degrees
+  let transformation = '... R' + degrees
   if (rotationPointX !== undefined && rotationPointY !== undefined) {
     transformation += ',' + rotationPointX
     transformation += ',' + rotationPointY
@@ -1215,10 +1213,10 @@ ocargo.Drawing.rotationTransformationAroundCentreOfGridSpace = function (
   x,
   y
 ) {
-  var rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE + PAPER_PADDING
-  var rotationPointY =
+  let rotationPointX = (x + 1 / 2) * GRID_SPACE_SIZE + PAPER_PADDING
+  let rotationPointY =
     (GRID_HEIGHT - (y + 1 / 2)) * GRID_SPACE_SIZE + PAPER_PADDING //flipping y
-  var result = ocargo.Drawing.createAbsoluteRotationTransformation(
+  let result = ocargo.Drawing.createAbsoluteRotationTransformation(
     degrees,
     rotationPointX,
     rotationPointY

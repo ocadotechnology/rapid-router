@@ -1,20 +1,15 @@
 from __future__ import absolute_import
-from __future__ import division
-from builtins import range
-from past.utils import old_div
-from django.core.cache import cache
+
 import json
 import math
 import random
-
-from . import level_management
-
+from builtins import range
 from collections import defaultdict, namedtuple
-from .models import Level, Block
 
 from game.decor import get_decor_element
 from game.theme import get_theme
-
+from . import level_management
+from .models import Level, Block
 
 Node = namedtuple("Node", ["x", "y"])
 
@@ -53,12 +48,7 @@ def decor_data():
 
 def decor_sum():
     data = decor_data()
-    return (
-        data["bush"]["ratio"]
-        + data["pond"]["ratio"]
-        + data["tree1"]["ratio"]
-        + data["tree2"]["ratio"]
-    )
+    return data["bush"]["ratio"] + data["pond"]["ratio"] + data["tree1"]["ratio"] + data["tree2"]["ratio"]
 
 
 def create(episode=None):
@@ -72,15 +62,11 @@ def create(episode=None):
     cows = episode.r_cows if episode else DEFAULT_TRAFFIC_LIGHTS
     decor = DEFAULT_DECOR
 
-    level_data = generate_random_map_data(
-        num_tiles, branchiness, loopiness, curviness, traffic_lights, cows, decor
-    )
+    level_data = generate_random_map_data(num_tiles, branchiness, loopiness, curviness, traffic_lights, cows, decor)
 
     level_data["max_fuel"] = DEFAULT_MAX_FUEL
     level_data["theme"] = 1
-    level_data["name"] = (
-        ("Random level for " + episode.name) if episode else "Default random level"
-    )
+    level_data["name"] = ("Random level for " + episode.name) if episode else "Default random level"
     level_data["character"] = 1
     level_data["blocklyEnabled"] = episode.r_blocklyEnabled if episode else True
     level_data["pythonEnabled"] = episode.r_pythonEnabled if episode else False
@@ -93,13 +79,7 @@ def create(episode=None):
 
 
 def generate_random_map_data(
-    num_tiles,
-    branchiness,
-    loopiness,
-    curviness,
-    traffic_lights_enabled,
-    decor_enabled,
-    cows_enabled,
+    num_tiles, branchiness, loopiness, curviness, traffic_lights_enabled, decor_enabled, cows_enabled
 ):
     path = generate_random_path(num_tiles, branchiness, loopiness, curviness)
     traffic_lights = generate_traffic_lights(path) if traffic_lights_enabled else []
@@ -118,9 +98,7 @@ def generate_random_map_data(
     }
 
 
-def generate_random_path(
-    num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor
-):
+def generate_random_path(num_road_tiles, branchiness_factor, loopiness_factor, curviness_factor):
     def pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor):
         for attempts in range(5):
             origin = pick_origin_node(nodes, connections, branchiness_factor)
@@ -134,12 +112,7 @@ def generate_random_path(
                     possibles.append(node)
 
             if possibles:
-                return (
-                    origin,
-                    pick_destination_node(
-                        nodes, connections, origin, possibles, curviness_factor
-                    ),
-                )
+                return (origin, pick_destination_node(nodes, connections, origin, possibles, curviness_factor))
 
         return None, None
 
@@ -150,22 +123,13 @@ def generate_random_path(
             return nodes[-1]
 
     def pick_destination_node(nodes, connections, origin, possibles, curviness_factor):
-        existing_connections = [
-            nodes[nodeIndex] for nodeIndex in connections[nodes.index(origin)]
-        ]
-        existing_connection_directions = [
-            (node.x - origin.x, node.y - origin.y) for node in existing_connections
-        ]
+        existing_connections = [nodes[nodeIndex] for nodeIndex in connections[nodes.index(origin)]]
+        existing_connection_directions = [(node.x - origin.x, node.y - origin.y) for node in existing_connections]
         linear = [
-            node
-            for node in possibles
-            if (origin.x - node.x, origin.y - node.y) in existing_connection_directions
+            node for node in possibles if (origin.x - node.x, origin.y - node.y) in existing_connection_directions
         ]
         curved = [
-            node
-            for node in possibles
-            if (origin.x - node.x, origin.y - node.y)
-            not in existing_connection_directions
+            node for node in possibles if (origin.x - node.x, origin.y - node.y) not in existing_connection_directions
         ]
 
         if linear and curved:
@@ -179,9 +143,7 @@ def generate_random_path(
         return random.choice(pick_from)
 
     def join_up_loops(nodes, connections, loopiness_factor):
-        nodes_by_location = {
-            (node.x, node.y): (index, node) for index, node in enumerate(nodes)
-        }
+        nodes_by_location = {(node.x, node.y): (index, node) for index, node in enumerate(nodes)}
         n = len(nodes)
 
         # Floyd-Warshall algorithm to find distances between all nodes
@@ -211,10 +173,7 @@ def generate_random_path(
                 for location in get_neighbouring_locations(node):
                     if location in nodes_by_location:
                         adjacent_node_index, adjacent_node = nodes_by_location[location]
-                        if (
-                            adjacent_node_index > node_index
-                            and adjacent_node != nodes[0]
-                        ):
+                        if adjacent_node_index > node_index and adjacent_node != nodes[0]:
                             if adjacent_node_index not in connections[node_index]:
                                 possible_loops.append((node_index, adjacent_node_index))
 
@@ -227,7 +186,7 @@ def generate_random_path(
         # Now join up loops (does not dynamically update distances, but still get required effect)
         max_loop_distance = max([distances[s][d] for s, d in possible_loops])
         for origin, destination in possible_loops:
-            distance_factor = old_div(distances[origin][destination], max_loop_distance)
+            distance_factor = distances[origin][destination] // max_loop_distance
             adjusted_loopiness_factor = loopiness_factor * (
                 (1 - loopiness_deviation) + loopiness_deviation * distance_factor
             )
@@ -251,9 +210,7 @@ def generate_random_path(
         return math.atan2(node_2.y - node_1.y, node_2.x - node_1.x)
 
     def is_possible(node, nodes):
-        return (
-            (node not in nodes) and 0 < node.x < WIDTH - 1 and 0 < node.y < HEIGHT - 1
-        )
+        return (node not in nodes) and 0 < node.x < WIDTH - 1 and 0 < node.y < HEIGHT - 1
 
     def get_neighbouring_locations(node):
         squares = []
@@ -270,15 +227,11 @@ def generate_random_path(
     connections = defaultdict(list)
 
     for _ in range(num_road_tiles - 1):
-        (previous_node, new_node) = pick_adjacent_node(
-            nodes, connections, branchiness_factor, curviness_factor
-        )
+        (previous_node, new_node) = pick_adjacent_node(nodes, connections, branchiness_factor, curviness_factor)
         if new_node:
             nodes.append(new_node)
             index_by_node[new_node] = len(nodes) - 1
-            connections = add_new_connections(
-                connections, len(nodes) - 1, index_by_node[previous_node]
-            )
+            connections = add_new_connections(connections, len(nodes) - 1, index_by_node[previous_node])
 
     connections = join_up_loops(nodes, connections, loopiness_factor)
     result = []
@@ -287,9 +240,7 @@ def generate_random_path(
             {
                 "coordinate": node,
                 "connectedNodes": sorted(
-                    connections[index],
-                    key=lambda conn: calculate_node_angle(node, nodes[conn]),
-                    reverse=True,
+                    connections[index], key=lambda conn: calculate_node_angle(node, nodes[conn]), reverse=True
                 ),
             }
         )
@@ -301,10 +252,7 @@ def get_origin(path):
     node = path[1]
     neighbour = path[0]
     direction = get_direction(node, neighbour)
-    return {
-        "coordinate": [neighbour["coordinate"].x, neighbour["coordinate"].y],
-        "direction": direction,
-    }
+    return {"coordinate": [neighbour["coordinate"].x, neighbour["coordinate"].y], "direction": direction}
 
 
 def generate_traffic_lights(path):
@@ -323,10 +271,7 @@ def generate_traffic_lights(path):
     else:
         candidateNodes = degree2Nodes
 
-    numberOfJunctions = max(
-        int(len(candidateNodes) * PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS / 100.0),
-        1,
-    )
+    numberOfJunctions = max(int(len(candidateNodes) * PERCENTAGE_OF_JUNCTIONS_WITH_TRAFFIC_LIGHTS / 100.0), 1)
 
     random.shuffle(candidateNodes)
     nodesSelected = candidateNodes[:numberOfJunctions]
@@ -348,10 +293,7 @@ def generate_traffic_lights(path):
 
             trafficLights.append(
                 {
-                    "sourceCoordinate": {
-                        "x": neighbour["coordinate"].x,
-                        "y": neighbour["coordinate"].y,
-                    },
+                    "sourceCoordinate": {"x": neighbour["coordinate"].x, "y": neighbour["coordinate"].y},
                     "direction": direction,
                     "startTime": 0 if counter == 0 else 2 * (counter - 1),
                     "startingState": "GREEN" if counter == 0 else "RED",
@@ -388,11 +330,7 @@ def generate_decor(path, num_tiles):
     def find_node_by_coordinate(x, y, dec, nodes):
         for node in nodes:
             coord = node["coordinate"]
-            if (
-                coord.x == x
-                and coord.y == y
-                or (dec == "pond" and coord.x == x + 1 and coord.y == y)
-            ):
+            if coord.x == x and coord.y == y or (dec == "pond" and coord.x == x + 1 and coord.y == y):
                 return True
         return False
 
@@ -402,21 +340,13 @@ def generate_decor(path, num_tiles):
 
             # if there is a decor occupying this grid or neighbouring one in case of the pond
             if (
-                old_div(coord["x"], GRID_SIZE) == x
-                and old_div(coord["y"], GRID_SIZE) == y
+                coord["x"] // GRID_SIZE == x
+                and coord["y"] // GRID_SIZE == y
                 or (
                     elem == "pond"
-                    and (
-                        old_div(coord["x"], GRID_SIZE) == x + 1
-                        and old_div(coord["y"], GRID_SIZE) == y
-                        or x + 1 < WIDTH
-                    )
+                    and (coord["x"] // GRID_SIZE == x + 1 and coord["y"] // GRID_SIZE == y or x + 1 < WIDTH)
                 )
-                or (
-                    dec["decorName"] == "pond"
-                    and old_div(coord["x"], GRID_SIZE) + 1 == x
-                    and old_div(coord["y"], GRID_SIZE) == y
-                )
+                or (dec["decorName"] == "pond" and coord["x"] // GRID_SIZE + 1 == x and coord["y"] // GRID_SIZE == y)
             ):
                 return True
 
@@ -438,13 +368,7 @@ def generate_decor(path, num_tiles):
         x = x * GRID_SIZE + int((GRID_SIZE - decor_object.width) * 0.5 * (1 - dx))
         y = y * GRID_SIZE + int((GRID_SIZE - decor_object.height) * 0.5 * (1 - dy))
 
-        decor.append(
-            {
-                "coordinate": {"x": x, "y": y},
-                "decorName": dec,
-                "height": decor_object.height,
-            }
-        )
+        decor.append({"coordinate": {"x": x, "y": y}, "decorName": dec, "height": decor_object.height})
 
     def place_near_road(elem, decor, path):
         for i in range(1, len(path) - 1):
@@ -452,20 +376,14 @@ def generate_decor(path, num_tiles):
             for (dx, dy) in DIRECTIONS:
                 x = node["coordinate"].x + dx
                 y = node["coordinate"].y + dy
-                if not (
-                    find_decor_by_coordinate(x, y, elem, decor)
-                    or find_node_by_coordinate(x, y, dec, path)
-                ):
+                if not (find_decor_by_coordinate(x, y, elem, decor) or find_node_by_coordinate(x, y, dec, path)):
                     return append_decor(decor, x, y, elem, dx, dy)
 
     def place_randomly(dec, decor):
         x = random.randint(0, 9)
         y = random.randint(0, 7)
 
-        if not (
-            find_decor_by_coordinate(x, y, dec, decor)
-            or find_node_by_coordinate(x, y, dec, path)
-        ):
+        if not (find_decor_by_coordinate(x, y, dec, decor) or find_node_by_coordinate(x, y, dec, path)):
             return append_decor(decor, x, y, dec)
 
     def place_bush(elem, decor, nodes):
@@ -474,11 +392,9 @@ def generate_decor(path, num_tiles):
             if dec["decorName"] == elem:
                 bush_exists = True
                 for (dx, dy) in DIRECTIONS:
-                    x = old_div(dec["coordinate"]["x"], GRID_SIZE) + dx
-                    y = old_div(dec["coordinate"]["y"], GRID_SIZE) + dy
-                    if near_road(x, y, nodes) and not find_decor_by_coordinate(
-                        x, y, elem, decor
-                    ):
+                    x = dec["coordinate"]["x"] // GRID_SIZE + dx
+                    y = dec["coordinate"]["y"] // GRID_SIZE + dy
+                    if near_road(x, y, nodes) and not find_decor_by_coordinate(x, y, elem, decor):
                         return append_decor(decor, x, y, elem, dx, dy)
 
         if not bush_exists:
@@ -487,7 +403,7 @@ def generate_decor(path, num_tiles):
     decor = []
     decor_count = 0
     for dec in DECOR_DATA:
-        for i in range(0, old_div(DECOR_DATA[dec]["ratio"] * num_tiles, DECOR_SUM)):
+        for i in range(0, DECOR_DATA[dec]["ratio"] * num_tiles // DECOR_SUM):
             if decor_count + num_tiles < WIDTH * HEIGHT:
                 if dec == "bush":
                     place_bush(dec, decor, path)
