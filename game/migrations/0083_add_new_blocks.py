@@ -4,13 +4,16 @@ from django.db import migrations
 def add_new_blocks(apps, schema_editor):
     Block = apps.get_model("game", "Block")
 
-    block1 = Block(type="variables_set")
-    block2 = Block(type="variables_numeric_set")
-    block3 = Block(type="variables_increment")
-    block4 = Block(type="variables_get")
-    block5 = Block(type="math_number")
-    block6 = Block(type="math_arithmetic")
-    block7 = Block(type="logic_compare")
+    VARIABLE = 5
+    MATH = 6
+
+    block1 = Block(type="variables_set", block_type=VARIABLE)
+    block2 = Block(type="variables_numeric_set", block_type=VARIABLE)
+    block3 = Block(type="variables_increment", block_type=VARIABLE)
+    block4 = Block(type="variables_get", block_type=VARIABLE)
+    block5 = Block(type="math_number", block_type=MATH)
+    block6 = Block(type="math_arithmetic", block_type=MATH)
+    block7 = Block(type="logic_compare", block_type=MATH)
 
     block1.save()
     block2.save()
@@ -44,7 +47,7 @@ def remove_new_blocks(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game", "0077_alter_level_next_level"),
+        ("game", "0082_alter_block_block_type"),
     ]
 
     operations = [migrations.RunPython(add_new_blocks, reverse_code=remove_new_blocks)]

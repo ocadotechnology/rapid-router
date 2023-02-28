@@ -26,6 +26,8 @@ class Block(models.Model):
             (2, "Condition"),
             (3, "Procedure"),
             (4, "ControlFlow"),
+            (5, "Variable"),
+            (6, "Math"),
         ]
     )
 
