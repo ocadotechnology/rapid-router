@@ -8,30 +8,30 @@ function setupCoins() {
 
         var minScore = 20;
         var episodeToOpen;
+        var ratios = [];
         for(var j = 0; j < episode.levels.length; j++) {
             var level = episode.levels[j];
-
-            imageStr = getImageStr(level.score, level.maxScore);
-            if(imageStr !== '') {
-                $('.level_image.coin_image[value=' + level.name + ']').attr('src', imageStr);
-            }
-            else {
+            if (level.score === "None"){
                 $('.level_image.coin_image[value=' + level.name + ']').remove();
-                minScore = "None";
                 if(!episodeToOpen) {
                     episodeToOpen =  episode;
                 }
-            }
-
-            if(minScore != "None" && level.score < minScore) {
-                minScore = level.score;
+                ratios.push(-1);
+            } else {
+                var ratio = level.score / level.maxScore;
+                ratios.push(ratio);
+                imageStr = getImageStr(ratio);
+                $('.level_image.coin_image[value=' + level.name + ']').attr('src', imageStr);
             }
         }
 
-        if(minScore !== "None") {
-            $('.episode_image.coin_image[value=' + episode.id + ']').attr('src', getImageStr(minScore))
-        }
-        else {
+        if (ratios.length > 0 && !ratios.includes(-1)){
+            var sum =0;
+            ratios.forEach ((item) => sum += item);
+            var ave_ratio = sum/ratios.length;
+            img = getImageStr(ave_ratio);
+            $('.episode_image.coin_image[value=' + episode.id + ']').attr('src', img)
+        } else {
             $('.episode_image.coin_image[value=' + episode.id + ']').remove();
         }
     }
@@ -39,7 +39,7 @@ function setupCoins() {
     for(var i = 0; i < OTHER_LEVELS.length; i++) {
         var level = OTHER_LEVELS[i];
 
-        imageStr = getImageStr(level.score, level.maxScore);
+        imageStr = getImageStr(level.score / level.maxScore);
         if(imageStr !== '') {
             $('.level_image.coin_image[value=' + level.id + ']').attr('src', imageStr);
         }
@@ -52,21 +52,16 @@ function setupCoins() {
         $('#episode' + episodeToOpen.id).click();
     }
 
-    function getImageStr(score, maxScore) {
+    function getImageStr(fraction) {
         var imageStr = "/static/game/image/coins/coin_";
-        percentage = 100.0 * score / maxScore;
-        if(score == "None") {
-            return "";
-        }
-        else if(percentage >= 99.99999) {
+        if(fraction >= 0.99) {
             return imageStr + 'gold.svg';
         }
-        else if(percentage > 0.5) {
+        else if(fraction > 0.5) {
             return imageStr + 'silver.svg';
         }
-        else if(percentage >= 0.0) {
+        else if(fraction >= 0.0) {
             return imageStr + 'copper.svg';
         }
-        return '';
     }
 }
