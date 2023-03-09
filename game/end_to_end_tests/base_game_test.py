@@ -11,6 +11,7 @@ from common.tests.utils.teacher import signup_teacher_directly
 from django.test import TestCase
 from django.urls import reverse
 from portal.tests.pageObjects.portal.home_page import HomePage
+from portal.tests.pageObjects.portal.base_page import BasePage
 
 from game.models import Workspace
 from . import custom_handler
@@ -73,6 +74,11 @@ class BaseGameTest(SeleniumTestCase):
             page.next_episode()
             page.assert_episode_number(next_episode)
         return page
+
+    def go_to_reverse(self, url_reverse):
+        path = reverse(url_reverse)
+        self._go_to_path(path)
+        return BasePage(self.selenium)
 
     def go_to_homepage(self):
         path = reverse("home")
