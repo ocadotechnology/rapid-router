@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## v5.10.4 (2023-03-10)
+### Fix
+* Make Rapid Router map scrollable again ([#1426](https://github.com/ocadotechnology/rapid-router/issues/1426)) ([`f5e42a3`](https://github.com/ocadotechnology/rapid-router/commit/f5e42a335c2882537947fa59798157aec5d3d097))
+
+## v5.10.3 (2023-03-09)
+### Fix
+* Change margin on #episode_image.coin_image ([`312812f`](https://github.com/ocadotechnology/rapid-router/commit/312812fa9d0b9aae2379275529f1cfce2c30cf08))
+* Broken coin image for students in episode ([`adbe7de`](https://github.com/ocadotechnology/rapid-router/commit/adbe7dea044f99aef8947ebc75287a2dd198421d))
+
 ## v5.10.2 (2023-02-21)
 ### Fix
 * Move and zoom buttons and fix default zoom factor ([#1424](https://github.com/ocadotechnology/rapid-router/issues/1424)) ([`693007d`](https://github.com/ocadotechnology/rapid-router/commit/693007d80a93deef092dbf661a34e0f84b6247bf))
