@@ -5,7 +5,7 @@ def update_level(apps, schema_editor):
 
     Level = apps.get_model("game", "Level")
     level43 = Level.objects.get(name="43", default=1)
-    level43.model_solution = "[9, 11, 21]"
+    level43.model_solution = "[9]"
     level43.save()
 
 
