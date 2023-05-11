@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v5.10.6 (2023-05-11)
+### Fix
+* Fix typo in Pipfile ([`897010b`](https://github.com/ocadotechnology/rapid-router/commit/897010b318b3b237f296fd2ccabff2763d285889))
+* Bump up version commit ([`4b15bbb`](https://github.com/ocadotechnology/rapid-router/commit/4b15bbb61e0a1c2011b6685402eaf1f8d35fe9e7))
+
 ## v5.10.5 (2023-04-05)
 ### Fix
 * Black lint app_settings (dummy commit) ([`63080a7`](https://github.com/ocadotechnology/rapid-router/commit/63080a718808bec1f669961bd5822d8e303fbb66))
