@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-rapid-router = {path = ".", editable = true, }
+rapid-router = {path = ".", editable = true}
 ipython = "*"
 django-import-export = "*"
 
