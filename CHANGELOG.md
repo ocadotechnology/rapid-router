@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v5.10.6 (2023-05-11)
+### Fix
+* Fix typo in Pipfile ([`897010b`](https://github.com/ocadotechnology/rapid-router/commit/897010b318b3b237f296fd2ccabff2763d285889))
+* Bump up version commit ([`4b15bbb`](https://github.com/ocadotechnology/rapid-router/commit/4b15bbb61e0a1c2011b6685402eaf1f8d35fe9e7))
+
+## v5.10.5 (2023-04-05)
+### Fix
+* Black lint app_settings (dummy commit) ([`63080a7`](https://github.com/ocadotechnology/rapid-router/commit/63080a718808bec1f669961bd5822d8e303fbb66))
+* Empty commit ([#1440](https://github.com/ocadotechnology/rapid-router/issues/1440)) ([`7716600`](https://github.com/ocadotechnology/rapid-router/commit/7716600bcd716f51107261ab6357e602b3fd3668))
+
 ## v5.10.4 (2023-03-10)
 ### Fix
 * Make Rapid Router map scrollable again ([#1426](https://github.com/ocadotechnology/rapid-router/issues/1426)) ([`f5e42a3`](https://github.com/ocadotechnology/rapid-router/commit/f5e42a335c2882537947fa59798157aec5d3d097))
