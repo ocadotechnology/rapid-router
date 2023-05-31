@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0081_first_12_levels_no_algo_score'),
+        ('game', '0082_level_43_solution'),
     ]
 
     operations = [

@@ -47,7 +47,7 @@ def remove_new_blocks(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("game", "0082_alter_block_block_type"),
+        ("game", "0083_alter_block_block_type"),
     ]
 
     operations = [migrations.RunPython(add_new_blocks, reverse_code=remove_new_blocks)]
