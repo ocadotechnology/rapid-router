@@ -29,7 +29,7 @@ setup(
         "libsass==0.22.0",
         "cfl-common",
     ],
-    classifiers=["Programming Language :: Python", "Programming Language :: Python :: 3.7", "Framework :: Django"],
+    classifiers=["Programming Language :: Python", "Programming Language :: Python :: 3.8", "Framework :: Django"],
     version=version,
     zip_safe=False,
 )
