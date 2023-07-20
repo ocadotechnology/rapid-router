@@ -2,6 +2,22 @@
 
 <!--next-version-placeholder-->
 
+## v5.11.1 (2023-07-06)
+
+### Fix
+
+* **deps:** Bump django from 3.2.19 to 3.2.20 ([#1467](https://github.com/ocadotechnology/rapid-router/issues/1467)) ([`9b74c1a`](https://github.com/ocadotechnology/rapid-router/commit/9b74c1aaf54fc25a0d17207f4b0eebd205dbabd1))
+
+## v5.11.0 (2023-06-28)
+
+### Feature
+
+* Upgrade Python to 3.8 ([#1462](https://github.com/ocadotechnology/rapid-router/issues/1462)) ([`1b40233`](https://github.com/ocadotechnology/rapid-router/commit/1b4023373d169903397a316f4c978677c98ec73b))
+
+### Fix
+
+* Bring back actual semantic release repo ([`c8e45f7`](https://github.com/ocadotechnology/rapid-router/commit/c8e45f705bd7258685eb2f980b4e1988154dc829))
+
 ## v5.10.6 (2023-05-11)
 ### Fix
 * Fix typo in Pipfile ([`897010b`](https://github.com/ocadotechnology/rapid-router/commit/897010b318b3b237f296fd2ccabff2763d285889))

@@ -19,7 +19,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django==3.2.19",
+        "django==3.2.20",
         "django-csp==3.7",
         "django-js-reverse==0.9.1",
         "django-pipeline==2.0.8",
@@ -29,7 +29,7 @@ setup(
         "libsass==0.22.0",
         "cfl-common",
     ],
-    classifiers=["Programming Language :: Python", "Programming Language :: Python :: 3.7", "Framework :: Django"],
+    classifiers=["Programming Language :: Python", "Programming Language :: Python :: 3.8", "Framework :: Django"],
     version=version,
     zip_safe=False,
 )
