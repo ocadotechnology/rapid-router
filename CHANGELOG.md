@@ -2,6 +2,22 @@
 
 <!--next-version-placeholder-->
 
+## v5.11.3 (2023-08-31)
+
+### Fix
+
+* **level_editor:** Highlight selected road piece ([#1475](https://github.com/ocadotechnology/rapid-router/issues/1475)) ([`cdc9f85`](https://github.com/ocadotechnology/rapid-router/commit/cdc9f855e1482ceb24f79772bb61c9fde1602a35))
+
+## v5.11.2 (2023-08-31)
+
+### Fix
+
+* Comment out Crowdin actiosn temporarily ([`ec4167b`](https://github.com/ocadotechnology/rapid-router/commit/ec4167b39c40482dcc1e03e827574fe358438a52))
+* Add only Github token to Crowdin action ([`de3e36c`](https://github.com/ocadotechnology/rapid-router/commit/de3e36ce84511f345cc683bc48a6febdf9132c1b))
+* Try updating Crowdin action ([`adb264f`](https://github.com/ocadotechnology/rapid-router/commit/adb264fbbabab159d061376c0cbc2234054c78ae))
+* Format (bump version) ([`1f80a8f`](https://github.com/ocadotechnology/rapid-router/commit/1f80a8f2168e3d37ab5279ac27e00db55ea9c54a))
+* **messages:** Improve the readability of the description of the levels ([#1474](https://github.com/ocadotechnology/rapid-router/issues/1474)) ([`f40daa5`](https://github.com/ocadotechnology/rapid-router/commit/f40daa5339facaec1d785fc8648815de412aea46))
+
 ## v5.11.1 (2023-07-06)
 
 ### Fix

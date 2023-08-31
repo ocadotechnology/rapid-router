@@ -1718,7 +1718,7 @@ def title_level80():
 def description_level80():
     message = youtube_link("https://www.youtube-nocookie.com/embed/5atj2caRjyA", 0)
     message += (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Can you tell which Python statement matches which block?"
     )
     return build_description(
@@ -1739,7 +1739,7 @@ def title_level81():
 
 def description_level81():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Can you tell which Python statement matches which block?"
     )
     return build_description(title_level81(), message)
@@ -1756,7 +1756,7 @@ def title_level82():
 
 def description_level82():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Can you tell which Python statement matches which block?"
     )
     return build_description(title_level82(), message)
@@ -1777,7 +1777,7 @@ def title_level83():
 
 def description_level83():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Try adding a <b>repeat</b> block and watch what happens in Python."
     )
     return build_description(title_level83(), message)
@@ -1794,7 +1794,7 @@ def title_level84():
 
 def description_level84():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Try adding a <b>repeat</b> block and watch what happens in Python."
     )
     return build_description(title_level84(), message)
@@ -1811,7 +1811,7 @@ def title_level85():
 
 def description_level85():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Try adding a <b>repeat</b> until block and watch what "
         "happens in Python."
     )
@@ -1829,7 +1829,7 @@ def title_level86():
 
 def description_level86():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Try adding an <b>if</b> block and watch what happens in Python."
     )
     return build_description(title_level86(), message)
@@ -1845,7 +1845,7 @@ def title_level87():
 
 def description_level87():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Try adding an <b>if</b> block and watch what happens in "
         "Python particularly with <b>else if</b> and <b>else</b> statements."
     )
@@ -1862,7 +1862,7 @@ def title_level88():
 
 def description_level88():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Try adding an <b>if</b> block and watch what happens in "
         "Python particularly with <b>else if</b> and <b>else</b> statements."
     )
@@ -1879,7 +1879,7 @@ def title_level89():
 
 def description_level89():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "programming language. Try adding an <b>if</b> block and watch what happens in "
         "Python particularly with <b>else if</b> and <b>else</b> statements."
     )
@@ -1896,7 +1896,7 @@ def title_level90():
 
 def description_level90():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "language. Try adding a procedure and watch what happens in Python."
     )
     return build_description(title_level90(), message)
@@ -1915,7 +1915,7 @@ def title_level91():
 
 def description_level91():
     message = (
-        "As you create your program using Blockly see what it looks like in the Python "
+        "As you create your program using Blockly, see what it looks like in the Python "
         "language. Try adding a procedure and watch what happens in Python."
     )
     return build_description(title_level91(), message)
