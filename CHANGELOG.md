@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.11.3 (2023-08-31)
+
+### Fix
+
+* **level_editor:** Highlight selected road piece ([#1475](https://github.com/ocadotechnology/rapid-router/issues/1475)) ([`cdc9f85`](https://github.com/ocadotechnology/rapid-router/commit/cdc9f855e1482ceb24f79772bb61c9fde1602a35))
+
 ## v5.11.2 (2023-08-31)
 
 ### Fix
