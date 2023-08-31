@@ -38,10 +38,10 @@ jobs:
           upload_sources: true
           download_translations: true
           push_translations: false
+          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+          token: ${{ secrets.CROWDIN_API_KEY }}
         env:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_API_KEY }}
       - name: Fix translation files owner
         run: sudo chown -R $USER game/locale
       - name: Compile messages
