@@ -215,6 +215,7 @@ class Workspace(models.Model):
     python_contents = models.TextField(default="")
     blockly_enabled = models.BooleanField(default=False)
     python_enabled = models.BooleanField(default=False)
+    python_view_enabled = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.name)

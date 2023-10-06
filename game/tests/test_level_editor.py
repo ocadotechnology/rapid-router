@@ -296,6 +296,45 @@ class LevelEditorTestCase(TestCase):
         new_level = Level.objects.get(name="abc")
         assert new_level.character.name == "Van"
 
+    def test_language_set_appropriately(self):
+
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        _, class_name, access_code = create_class_directly(email)
+        student_name, student_password, _ = create_school_student_directly(access_code)
+
+        self.student_login(student_name, access_code, student_password)
+        url = reverse("save_level_for_editor")
+        data_with_split_language = {
+            "origin": '{"coordinate":[3,5],"direction":"S"}',
+            "pythonEnabled": False,
+            "decor": [],
+            "blocklyEnabled": True,
+            "blocks": [
+                {"type": "move_forwards"},
+                {"type": "turn_left"},
+                {"type": "turn_right"},
+            ],
+            "max_fuel": "50",
+            "pythonViewEnabled": True,
+            "name": "abc",
+            "theme": 1,
+            "anonymous": True,
+            "cows": "[]",
+            "path": '[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],'
+            '"connectedNodes":[0]}]',
+            "traffic_lights": "[]",
+            "destinations": "[[3,4]]",
+        }
+        response = self.client.post(url, {"data": json.dumps(data_with_split_language)})
+
+        assert response.status_code == 200
+        new_level = Level.objects.get(name="abc")
+
+        assert new_level.pythonViewEnabled is True
+        assert new_level.pythonEnabled is False
+        assert new_level.blocklyEnabled is True
+
     def test_level_loading(self):
         email1, password1 = signup_teacher_directly()
 
