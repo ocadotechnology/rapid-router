@@ -352,6 +352,7 @@ def save_workspace(request, workspaceID=None):
     python_contents = request.POST.get("python_contents")
     blockly_enabled = json.loads(request.POST.get("blockly_enabled"))
     python_enabled = json.loads(request.POST.get("python_enabled"))
+    python_view_enabled = json.loads(request.POST.get("pythonViewEnabled"))
 
     workspace = None
     if workspaceID:
@@ -365,6 +366,7 @@ def save_workspace(request, workspaceID=None):
         workspace.python_contents = python_contents
         workspace.blockly_enabled = blockly_enabled
         workspace.python_enabled = python_enabled
+        workspace.python_view_enabled = python_view_enabled
         workspace.save()
 
     return load_list_of_workspaces(request)
