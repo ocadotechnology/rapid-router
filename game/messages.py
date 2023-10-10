@@ -905,22 +905,29 @@ def hint_level37():
 
 
 def title_level38():
-    return "Third time lucky!"
+    return "Where did the cows come from?"
 
 
 def description_level38():
     message = (
-        "Well done! You've got so far. <br> Can you apply the knowledge you "
-        "gained going through this part of the game to this level?"
+        "Well done! You've got so far."
+        "<br>"
+        "Can you apply the knowledge you gained going through this part of the "
+        "game to this level? This time there are some hidden cows that you "
+        "need to get out of the road! Can you work out what to do?"
+        "<br><br>"
+        "Hint: Cows don't like noise"
     )
     return build_description(title_level38(), message)
 
 
 def hint_level38():
     return (
-        "This is a really long route. With a counted loop, your program would be quite "
-        "long but is this program going to be any longer than your solution to the "
-        "last level?"
+        "This is a really long route. With a counted loop, your program would "
+        "be quite long but is this program going to be any longer than your "
+        "solution to the last level?"
+        "<br><br>"
+        "Hint: Cows don't like noise"
     )
 
 
