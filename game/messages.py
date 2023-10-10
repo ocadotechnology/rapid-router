@@ -1113,8 +1113,10 @@ def description_level47():
 
 def hint_level47():
     return (
-        "This route is similar to the last one but the turn is in the other direction. "
-        "Can you adapt your program?"
+        "This route is similar to the last one but the turn is in a different "
+        "direction, and there are now cows instead of traffic lights!!"
+        "<br><br>"
+        "Do you remember what to do?"
     )
 
 
