@@ -13,6 +13,11 @@ def add_cows_to_existing_levels(apps: Apps, *args):
     level_38.theme_name = "farm"
     level_38.save()
 
+    level_39 = Level.objects.get(name="39", default=1)
+    level_39.cows = '[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":4,"y":3},{"x":8,"y":3},{"x":8,"y":5}],"type":"WHITE"}]'
+    level_39.theme_name = "farm"
+    level_39.save()
+
     level_47 = Level.objects.get(name="47", default=1)
     level_47.traffic_lights = "[]"
     level_47.cows = '[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":6,"y":4},{"x":4,"y":6},{"x":2,"y":4}],"type":"WHITE"}]'
@@ -31,6 +36,8 @@ def add_cows_to_existing_levels(apps: Apps, *args):
         [
             LevelBlock(level=level_38, type=block_sound_horn),
             LevelBlock(level=level_38, type=block_cow_crossing),
+            LevelBlock(level=level_39, type=block_sound_horn),
+            LevelBlock(level=level_39, type=block_cow_crossing),
             LevelBlock(level=level_47, type=block_sound_horn),
             LevelBlock(level=level_47, type=block_cow_crossing),
         ]
@@ -44,6 +51,69 @@ def add_cows_to_existing_levels(apps: Apps, *args):
 
     LevelDecor.objects.bulk_create(
         [
+            #         {
+            #     "x": 470,
+            #     "y": 296,
+            #     "z": 2,
+            #     "decorName": "pond",
+            #     "width": 150,
+            #     "height": 100,
+            #     "url": "decor/farm/crops.svg"
+            #   },
+            #   {
+            #     "x": 469,
+            #     "y": 408,
+            #     "z": 2,
+            #     "decorName": "pond",
+            #     "width": 150,
+            #     "height": 100,
+            #     "url": "decor/farm/crops.svg"
+            #   },
+            #   {
+            #     "x": 470,
+            #     "y": 514,
+            #     "z": 2,
+            #     "decorName": "pond",
+            #     "width": 150,
+            #     "height": 100,
+            #     "url": "decor/farm/crops.svg"
+            #   },
+            #   {
+            #     "x": 193,
+            #     "y": 300,
+            #     "z": 4,
+            #     "decorName": "tree1",
+            #     "width": 100,
+            #     "height": 100,
+            #     "url": "decor/farm/tree1.svg"
+            #   },
+            #   {
+            #     "x": 611,
+            #     "y": 101,
+            #     "z": 4,
+            #     "decorName": "tree1",
+            #     "width": 100,
+            #     "height": 100,
+            #     "url": "decor/farm/tree1.svg"
+            #   },
+            #   {
+            #     "x": 797,
+            #     "y": 604,
+            #     "z": 4,
+            #     "decorName": "tree1",
+            #     "width": 100,
+            #     "height": 100,
+            #     "url": "decor/farm/tree1.svg"
+            #   },
+            #   {
+            #     "x": 14,
+            #     "y": 315,
+            #     "z": 4,
+            #     "decorName": "tree1",
+            #     "width": 100,
+            #     "height": 100,
+            #     "url": "decor/farm/tree1.svg"
+            #   }
             LevelDecor(
                 x=37,
                 y=502,
