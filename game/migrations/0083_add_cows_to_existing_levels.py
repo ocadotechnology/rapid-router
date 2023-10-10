@@ -36,6 +36,12 @@ def add_cows_to_existing_levels(apps: Apps, *args):
         ]
     )
 
+    LevelDecor.objects.filter(
+        level_id__in=[
+            level_47.id,
+        ]
+    ).delete()
+
     LevelDecor.objects.bulk_create(
         [
             LevelDecor(
@@ -57,31 +63,31 @@ def add_cows_to_existing_levels(apps: Apps, *args):
                 level=level_47,
             ),
             LevelDecor(
-                x=818,
+                x=720,
                 y=657,
                 decorName="bush",
                 level=level_47,
             ),
             LevelDecor(
-                x=820,
+                x=720,
                 y=556,
                 decorName="bush",
                 level=level_47,
             ),
             LevelDecor(
-                x=820,
+                x=720,
                 y=455,
                 decorName="bush",
                 level=level_47,
             ),
             LevelDecor(
-                x=820,
+                x=720,
                 y=343,
                 decorName="bush",
                 level=level_47,
             ),
             LevelDecor(
-                x=821,
+                x=720,
                 y=220,
                 decorName="bush",
                 level=level_47,
@@ -93,7 +99,7 @@ def add_cows_to_existing_levels(apps: Apps, *args):
                 level=level_47,
             ),
             LevelDecor(
-                x=462,
+                x=440,
                 y=471,
                 decorName="tree1",
                 level=level_47,
@@ -105,19 +111,19 @@ def add_cows_to_existing_levels(apps: Apps, *args):
                 level=level_47,
             ),
             LevelDecor(
-                x=702,
+                x=620,
                 y=689,
                 decorName="tree1",
                 level=level_47,
             ),
             LevelDecor(
-                x=583,
+                x=500,
                 y=149,
                 decorName="tree1",
                 level=level_47,
             ),
             LevelDecor(
-                x=595,
+                x=550,
                 y=483,
                 decorName="tree2",
                 level=level_47,
