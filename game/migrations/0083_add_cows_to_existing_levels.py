@@ -51,69 +51,48 @@ def add_cows_to_existing_levels(apps: Apps, *args):
 
     LevelDecor.objects.bulk_create(
         [
-            #         {
-            #     "x": 470,
-            #     "y": 296,
-            #     "z": 2,
-            #     "decorName": "pond",
-            #     "width": 150,
-            #     "height": 100,
-            #     "url": "decor/farm/crops.svg"
-            #   },
-            #   {
-            #     "x": 469,
-            #     "y": 408,
-            #     "z": 2,
-            #     "decorName": "pond",
-            #     "width": 150,
-            #     "height": 100,
-            #     "url": "decor/farm/crops.svg"
-            #   },
-            #   {
-            #     "x": 470,
-            #     "y": 514,
-            #     "z": 2,
-            #     "decorName": "pond",
-            #     "width": 150,
-            #     "height": 100,
-            #     "url": "decor/farm/crops.svg"
-            #   },
-            #   {
-            #     "x": 193,
-            #     "y": 300,
-            #     "z": 4,
-            #     "decorName": "tree1",
-            #     "width": 100,
-            #     "height": 100,
-            #     "url": "decor/farm/tree1.svg"
-            #   },
-            #   {
-            #     "x": 611,
-            #     "y": 101,
-            #     "z": 4,
-            #     "decorName": "tree1",
-            #     "width": 100,
-            #     "height": 100,
-            #     "url": "decor/farm/tree1.svg"
-            #   },
-            #   {
-            #     "x": 797,
-            #     "y": 604,
-            #     "z": 4,
-            #     "decorName": "tree1",
-            #     "width": 100,
-            #     "height": 100,
-            #     "url": "decor/farm/tree1.svg"
-            #   },
-            #   {
-            #     "x": 14,
-            #     "y": 315,
-            #     "z": 4,
-            #     "decorName": "tree1",
-            #     "width": 100,
-            #     "height": 100,
-            #     "url": "decor/farm/tree1.svg"
-            #   }
+            LevelDecor(
+                x=470,
+                y=296,
+                decorName="pond",
+                level=level_39,
+            ),
+            LevelDecor(
+                x=469,
+                y=408,
+                decorName="pond",
+                level=level_39,
+            ),
+            LevelDecor(
+                x=470,
+                y=514,
+                decorName="pond",
+                level=level_39,
+            ),
+            LevelDecor(
+                x=193,
+                y=300,
+                decorName="tree1",
+                level=level_39,
+            ),
+            LevelDecor(
+                x=611,
+                y=101,
+                decorName="tree1",
+                level=level_39,
+            ),
+            LevelDecor(
+                x=797,
+                y=604,
+                decorName="tree1",
+                level=level_39,
+            ),
+            LevelDecor(
+                x=14,
+                y=315,
+                decorName="tree1",
+                level=level_39,
+            ),
             LevelDecor(
                 x=37,
                 y=502,
