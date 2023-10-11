@@ -52,43 +52,43 @@ def add_cows_to_existing_levels(apps: Apps, *args):
     LevelDecor.objects.bulk_create(
         [
             LevelDecor(
-                x=470,
+                x=570,
                 y=296,
                 decorName="pond",
                 level=level_39,
             ),
             LevelDecor(
-                x=469,
+                x=570,
                 y=408,
                 decorName="pond",
                 level=level_39,
             ),
             LevelDecor(
-                x=470,
+                x=570,
                 y=514,
                 decorName="pond",
                 level=level_39,
             ),
             LevelDecor(
-                x=193,
+                x=293,
                 y=300,
                 decorName="tree1",
                 level=level_39,
             ),
             LevelDecor(
-                x=611,
+                x=711,
                 y=101,
                 decorName="tree1",
                 level=level_39,
             ),
             LevelDecor(
-                x=797,
+                x=897,
                 y=604,
                 decorName="tree1",
                 level=level_39,
             ),
             LevelDecor(
-                x=14,
+                x=114,
                 y=315,
                 decorName="tree1",
                 level=level_39,
