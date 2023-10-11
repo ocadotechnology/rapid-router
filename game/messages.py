@@ -937,9 +937,11 @@ def title_level39():
 
 def description_level39():
     message = (
-        "Can you use the 'general algorithm' here so that the van takes a "
-        "shorter route? Or maybe there's a more efficient way? <br><br>Keep "
-        "an eye on the fuel level - try to use as little as possible."
+        "Maybe there is a more efficient way than using the general algorithm "
+        "in this one? It looks like the cows have escaped when you get to the "
+        "side roads too, so be careful not to hit them!"
+        "<br><br>"
+        "Hint: Cows don't like noise"
     )
     return build_description(title_level39(), message)
 
@@ -950,6 +952,8 @@ def hint_level39():
         "Uh oh, moving around the blocks in your 'general algorithm' might not "
         "be the most efficient solution. How about creating a simple solution "
         "without 'if statements' that will help the van reach the house?"
+        "<br><br>"
+        "Hint: Cows don't like noise"
     )
 
 
