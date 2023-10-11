@@ -11,17 +11,20 @@ def add_cows_to_existing_levels(apps: Apps, *args):
     level_38 = Level.objects.get(name="38", default=1)
     level_38.cows = '[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":2,"y":6},{"x":3,"y":4},{"x":3,"y":1}],"type":"WHITE"}]'
     level_38.theme_name = "farm"
+    level_38.model_solution = "[10]"
     level_38.save()
 
     level_39 = Level.objects.get(name="39", default=1)
     level_39.cows = '[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":4,"y":3},{"x":8,"y":3},{"x":8,"y":5}],"type":"WHITE"}]'
     level_39.theme_name = "farm"
+    level_39.model_solution = "[10]"
     level_39.save()
 
     level_47 = Level.objects.get(name="47", default=1)
     level_47.traffic_lights = "[]"
     level_47.cows = '[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":6,"y":4},{"x":4,"y":6},{"x":2,"y":4}],"type":"WHITE"}]'
     level_47.theme_name = "farm"
+    level_47.model_solution = "[8]"
     level_47.save()
 
     block_sound_horn = Block.objects.get(type="sound_horn")
