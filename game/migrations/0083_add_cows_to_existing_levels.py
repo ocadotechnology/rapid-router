@@ -15,9 +15,10 @@ def add_cows_to_existing_levels(apps: Apps, *args):
     level_38.save()
 
     level_39 = Level.objects.get(name="39", default=1)
-    level_39.cows = '[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":4,"y":3},{"x":8,"y":3},{"x":8,"y":5}],"type":"WHITE"}]'
+    level_39.cows = '[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":4,"y":4},{"x":8,"y":4},{"x":8,"y":6}],"type":"WHITE"}]'
     level_39.theme_name = "farm"
     level_39.model_solution = "[10]"
+    level_39.disable_route_score = True
     level_39.save()
 
     level_47 = Level.objects.get(name="47", default=1)
