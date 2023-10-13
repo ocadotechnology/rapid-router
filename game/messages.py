@@ -937,9 +937,8 @@ def title_level39():
 
 def description_level39():
     message = (
-        "Maybe there is a more efficient way than using the general algorithm "
-        "in this one? It looks like the cows have escaped when you get to the "
-        "side roads too, so be careful not to hit them!"
+        "It looks like the cows have escaped when you get to the side roads, "
+        "so be careful not to hit them!"
         "<br><br>"
         "Hint: Cows don't like noise"
     )
