@@ -1,7 +1,8 @@
 from __future__ import print_function
-from builtins import str
+
 import os
 import time
+from builtins import str
 
 from django.urls import reverse
 from hamcrest import assert_that, equal_to, contains_string, ends_with
@@ -28,20 +29,20 @@ class GamePage(BasePage):
 
     def dismiss_dialog(self, button_id):
         self.wait_for_element_to_be_clickable((By.ID, button_id), wait_seconds=15)
-        self.browser.find_element_by_id(button_id).click()
+        self.browser.find_element(By.ID, button_id).click()
         self.wait_for_element_to_be_invisible((By.ID, button_id), wait_seconds=15)
 
     def load_solution(self, workspace_id):
-        self.browser.find_element_by_id("load_tab").click()
+        self.browser.find_element(By.ID, "load_tab").click()
         selector = "#loadWorkspaceTable tr[value='" + str(workspace_id) + "']"
         self.wait_for_element_to_be_clickable((By.CSS_SELECTOR, selector))
-        self.browser.find_element_by_css_selector(selector).click()
-        self.browser.find_element_by_id("loadWorkspace").click()
+        self.browser.find_element(By.CSS_SELECTOR, selector).click()
+        self.browser.find_element(By.ID, "loadWorkspace").click()
         time.sleep(1)
         return self
 
     def clear(self):
-        self.browser.find_element_by_id("clear_tab").click()
+        self.browser.find_element(By.ID, "clear_tab").click()
         return self
 
     def try_again(self):
@@ -49,11 +50,11 @@ class GamePage(BasePage):
         return self
 
     def step(self):
-        self.browser.find_element_by_id("step_tab").click()
+        self.browser.find_element(By.ID, "step_tab").click()
         return self
 
     def solution_button(self):
-        self.browser.find_element_by_id("solution_tab").click()
+        self.browser.find_element(By.ID, "solution_tab").click()
         solution_loaded = self.browser.execute_script("return ocargo.solutionLoaded;")
         timeout = time.time() + 30
 
@@ -66,11 +67,11 @@ class GamePage(BasePage):
         return self
 
     def python_commands_button(self):
-        self.browser.find_element_by_id("van_commands_help").click()
+        self.browser.find_element(By.ID, "van_commands_help").click()
         return self
 
     def clear_console_button(self):
-        self.browser.find_element_by_id("clear_console").click()
+        self.browser.find_element(By.ID, "clear_console").click()
         return self
 
     def assert_level_number(self, level_number):
@@ -88,14 +89,14 @@ class GamePage(BasePage):
         self._assert_light_is_on(traffic_light_index, "red")
 
     def _assert_light_is_on(self, traffic_light_index, colour):
-        image = self.browser.find_element_by_id(
+        image = self.browser.find_element(By.ID,
             "trafficLight_%s_%s" % (traffic_light_index, colour)
         )
 
         assert_that(image.get_attribute("opacity"), equal_to("1"))
 
     def run_program(self, wait_for_element_id="modal-content"):
-        self.browser.find_element_by_id("fast_tab").click()
+        self.browser.find_element(By.ID, "fast_tab").click()
 
         try:
             self.wait_for_element_to_be_clickable((By.ID, wait_for_element_id), 45)
@@ -115,9 +116,9 @@ class GamePage(BasePage):
 
     def run_retry_program(self):
         self.run_program("try_again_button")
-        modal_content = self.browser.find_element_by_id("modal-content").text
+        modal_content = self.browser.find_element(By.ID, "modal-content").text
         assert_that(modal_content, contains_string("Try creating a simpler program."))
-        self.browser.find_element_by_id("try_again_button").click()
+        self.browser.find_element(By.ID, "try_again_button").click()
         time.sleep(1)
         return self
 
@@ -173,7 +174,7 @@ class GamePage(BasePage):
     def check_python_commands(self):
         self.python_commands_button()
         time.sleep(1)
-        python_commands = self.browser.find_element_by_id("myModal-lead").text
+        python_commands = self.browser.find_element(By.ID, "myModal-lead").text
         assert_that(
             python_commands,
             contains_string("Run the following commands on the van object v"),
@@ -182,16 +183,16 @@ class GamePage(BasePage):
 
     def write_to_then_clear_console(self):
         self._write_code("my_van.")
-        self.browser.find_element_by_id("fast_tab").click()
+        self.browser.find_element(By.ID, "fast_tab").click()
         time.sleep(1)
-        console = self.browser.find_element_by_id("consoleOutput")
+        console = self.browser.find_element(By.ID, "consoleOutput")
         self.clear_console_button()
         assert_that(console.text == "")
         return self
 
     def next_episode(self):
         self.assert_success()
-        self.browser.find_element_by_id("next_episode_button").click()
+        self.browser.find_element(By.ID, "next_episode_button").click()
         WebDriverWait(self.browser, 10).until(
             presence_of_all_elements_located((By.ID, "blockly_tab"))
         )
@@ -199,7 +200,7 @@ class GamePage(BasePage):
 
     def next_level(self):
         self.assert_success()
-        self.browser.find_element_by_id("next_level_button").click()
+        self.browser.find_element(By.ID, "next_level_button").click()
         WebDriverWait(self.browser, 10).until(
             presence_of_all_elements_located((By.ID, "blockly_tab"))
         )
@@ -207,23 +208,23 @@ class GamePage(BasePage):
 
     def _run_failing_program(self, text):
         self.run_program("try_again_button")
-        error_message = self.browser.find_element_by_id("myModal-lead").text
+        error_message = self.browser.find_element(By.ID, "myModal-lead").text
         assert_that(error_message, contains_string(text))
         return self
 
     def _run_failing_python_program_console(self, code, console_message):
         self._write_code(code)
-        self.browser.find_element_by_id("fast_tab").click()
+        self.browser.find_element(By.ID, "fast_tab").click()
         time.sleep(1)
-        console = self.browser.find_element_by_id("consoleOutput")
+        console = self.browser.find_element(By.ID, "consoleOutput")
         assert_that(console.text, contains_string(console_message))
         return self
 
     def _run_failing_python_program_popup(self, code, text):
         self._write_code(code)
-        self.browser.find_element_by_id("fast_tab").click()
+        self.browser.find_element(By.ID, "fast_tab").click()
         time.sleep(1)
-        error_message = self.browser.find_element_by_id("myModal-lead").text
+        error_message = self.browser.find_element(By.ID, "myModal-lead").text
         assert_that(error_message, contains_string(text))
         return self
 
@@ -235,17 +236,17 @@ class GamePage(BasePage):
 
     def _run_procedure_error_program(self, text):
         self.run_program("close_button")
-        error_message = self.browser.find_element_by_id("myModal-mainText").text
+        error_message = self.browser.find_element(By.ID, "myModal-mainText").text
         assert_that(error_message, contains_string(text))
 
     def _assert_score(self, element_id, score):
-        score_text = self.browser.find_element_by_id(element_id).text
+        score_text = self.browser.find_element(By.ID, element_id).text
         score_number = score_text.split("/")[0]
         assert_that(score_number, equal_to(str(score)))
         return self
 
     def assert_success(self):
-        modal_content = self.browser.find_element_by_id("modal-content").text
+        modal_content = self.browser.find_element(By.ID, "modal-content").text
         assert_that(modal_content, contains_string("Congratulations"))
         return self
 

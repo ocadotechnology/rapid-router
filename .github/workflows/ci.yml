@@ -24,6 +24,8 @@ jobs:
           pip install pipenv==2022.10.4
           pip install pytest-cov
           pipenv install --dev --system
+          pip uninstall -y codeforlife-portal
+          pip install -U git+https://github.com/ocadotechnology/codeforlife-portal@update_selenium
       - name: Collect static
         run: python example_project/manage.py collectstatic --noinput
       - name: Run Python tests
