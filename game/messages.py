@@ -905,22 +905,29 @@ def hint_level37():
 
 
 def title_level38():
-    return "Third time lucky!"
+    return "Where did the cows come from?"
 
 
 def description_level38():
     message = (
-        "Well done! You've got so far. <br> Can you apply the knowledge you "
-        "gained going through this part of the game to this level?"
+        "Well done! You've got so far."
+        "<br>"
+        "Can you apply the knowledge you gained going through this part of the "
+        "game to this level? This time there are some hidden cows that you "
+        "need to get out of the road! Can you work out what to do?"
+        "<br><br>"
+        "Hint: Cows don't like noise"
     )
     return build_description(title_level38(), message)
 
 
 def hint_level38():
     return (
-        "This is a really long route. With a counted loop, your program would be quite "
-        "long but is this program going to be any longer than your solution to the "
-        "last level?"
+        "This is a really long route. With a counted loop, your program would "
+        "be quite long but is this program going to be any longer than your "
+        "solution to the last level?"
+        "<br><br>"
+        "Hint: Cows don't like noise"
     )
 
 
@@ -930,9 +937,10 @@ def title_level39():
 
 def description_level39():
     message = (
-        "Can you use the 'general algorithm' here so that the van takes a "
-        "shorter route? Or maybe there's a more efficient way? <br><br>Keep "
-        "an eye on the fuel level - try to use as little as possible."
+        "It looks like the cows have escaped when you get to the side roads, "
+        "so be careful not to hit them!"
+        "<br><br>"
+        "Hint: Cows don't like noise"
     )
     return build_description(title_level39(), message)
 
@@ -943,6 +951,8 @@ def hint_level39():
         "Uh oh, moving around the blocks in your 'general algorithm' might not "
         "be the most efficient solution. How about creating a simple solution "
         "without 'if statements' that will help the van reach the house?"
+        "<br><br>"
+        "Hint: Cows don't like noise"
     )
 
 
@@ -1106,8 +1116,10 @@ def description_level47():
 
 def hint_level47():
     return (
-        "This route is similar to the last one but the turn is in the other direction. "
-        "Can you adapt your program?"
+        "This route is similar to the last one but the turn is in a different "
+        "direction, and there are now cows instead of traffic lights!!"
+        "<br><br>"
+        "Do you remember what to do?"
     )
 
 
