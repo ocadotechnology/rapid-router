@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0082_level_43_solution'),
+        ('game', '0083_add_cows_to_existing_levels'),
     ]
 
     operations = [
