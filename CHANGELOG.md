@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.12.0 (2023-10-16)
+
+### Feature
+
+* Add cows to existing levels ([#1492](https://github.com/ocadotechnology/rapid-router/issues/1492)) ([`a57c0b3`](https://github.com/ocadotechnology/rapid-router/commit/a57c0b38eba666abd393c4b5d3a4196b37a756d6))
+
 ## v5.11.3 (2023-08-31)
 
 ### Fix
