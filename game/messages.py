@@ -1106,8 +1106,8 @@ def title_level47():
 def description_level47():
     message = (
         "Put your knowledge to test. Create an algorithm to lead the van to the "
-        "house. <br> Don't forget to add a turn and to make the van wait at a "
-        "traffic light."
+        "house. <br> Don't forget to add a turn block and this time, you "
+        "need to avoid cows instead of waiting at traffic lights."
     )
     return build_description(title_level47(), message)
 
