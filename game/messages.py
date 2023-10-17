@@ -945,10 +945,9 @@ def description_level39():
     return build_description(title_level39(), message)
 
 
-# TODO: Update when we update this level
 def hint_level39():
     return (
-        "You'll need to modify your general algorithm here so you can get back"
+        "You'll need to modify your general algorithm here so you can get back "
         "on track if you hit a dead end."
         "<br><br>"
         "Hint: Cows don't like noise"
