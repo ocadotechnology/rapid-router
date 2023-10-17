@@ -948,9 +948,8 @@ def description_level39():
 # TODO: Update when we update this level
 def hint_level39():
     return (
-        "Uh oh, moving around the blocks in your 'general algorithm' might not "
-        "be the most efficient solution. How about creating a simple solution "
-        "without 'if statements' that will help the van reach the house?"
+        "You'll need to modify your general algorithm here so you can get back"
+        "on track if you hit a dead end."
         "<br><br>"
         "Hint: Cows don't like noise"
     )
