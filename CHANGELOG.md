@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.12.2 (2023-10-17)
+
+### Fix
+
+* Add space in level 39 hint ([#1500](https://github.com/ocadotechnology/rapid-router/issues/1500)) ([`d31a41a`](https://github.com/ocadotechnology/rapid-router/commit/d31a41a33cde09b921704a4529d08834f0a7836c))
+
 ## v5.12.1 (2023-10-17)
 
 ### Fix
