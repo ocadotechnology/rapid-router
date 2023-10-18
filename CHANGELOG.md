@@ -2,6 +2,30 @@
 
 <!--next-version-placeholder-->
 
+## v5.12.3 (2023-10-17)
+
+### Fix
+
+* Update level 47 title ([#1501](https://github.com/ocadotechnology/rapid-router/issues/1501)) ([`aea6c46`](https://github.com/ocadotechnology/rapid-router/commit/aea6c460a5d34f02368bab7e0912c1052a9f7a57))
+
+## v5.12.2 (2023-10-17)
+
+### Fix
+
+* Add space in level 39 hint ([#1500](https://github.com/ocadotechnology/rapid-router/issues/1500)) ([`d31a41a`](https://github.com/ocadotechnology/rapid-router/commit/d31a41a33cde09b921704a4529d08834f0a7836c))
+
+## v5.12.1 (2023-10-17)
+
+### Fix
+
+* Update level 39 hint ([#1499](https://github.com/ocadotechnology/rapid-router/issues/1499)) ([`b8a4e1f`](https://github.com/ocadotechnology/rapid-router/commit/b8a4e1f2a68fc988e7215417b789bbc190ea147c))
+
+## v5.12.0 (2023-10-16)
+
+### Feature
+
+* Add cows to existing levels ([#1492](https://github.com/ocadotechnology/rapid-router/issues/1492)) ([`a57c0b3`](https://github.com/ocadotechnology/rapid-router/commit/a57c0b38eba666abd393c4b5d3a4196b37a756d6))
+
 ## v5.11.3 (2023-08-31)
 
 ### Fix
