@@ -1,7 +1,8 @@
 from __future__ import print_function
-from builtins import str
+
 import os
 import time
+from builtins import str
 
 from django.urls import reverse
 from hamcrest import assert_that, equal_to, contains_string, ends_with
@@ -95,13 +96,12 @@ class GamePage(BasePage):
         assert_that(image.get_attribute("opacity"), equal_to("1"))
 
     def run_program(self, wait_for_element_id="modal-content"):
+        time.sleep(1)
         self.browser.find_element_by_id("fast_tab").click()
 
         try:
             self.wait_for_element_to_be_clickable((By.ID, wait_for_element_id), 45)
         except TimeoutException as e:
-            import time
-
             millis = int(round(time.time() * 1000))
             screenshot_filename = "/tmp/game_tests_%s-%s.png" % (
                 os.getenv("BUILD_NUMBER", "nonumber"),
