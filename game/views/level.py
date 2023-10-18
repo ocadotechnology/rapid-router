@@ -210,13 +210,12 @@ def play_level(request, level, from_editor=False):
         model_solution = level.model_solution
 
     return_view = "level_editor" if from_editor else "levels"
-    print(block_data)
+
     temp_block_data = []
-    for block in block_data:
-        if block not in temp_block_data:
-            temp_block_data.append(block)
+    [temp_block_data.append(block) for block in block_data if block not in temp_block_data]
 
     block_data = temp_block_data
+
     return render(
         request,
         "game/game.html",

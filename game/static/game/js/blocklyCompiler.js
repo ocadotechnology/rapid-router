@@ -335,8 +335,6 @@ ocargo.BlocklyCompiler.prototype.createSequence = function (block) {
       commands.push(new DeliverCommand(block));
     } else if (block.type === "sound_horn") {
       commands.push(new SoundHornCommand(block));
-    } else if (block.type === "puff_up") {
-      commands.push(new PuffUpCommand(block));
     } else if (block.type === "controls_repeat_until") {
       commands.push(this.createRepeatUntil(block));
     } else if (block.type === "controls_repeat_while") {
