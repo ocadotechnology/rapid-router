@@ -945,12 +945,10 @@ def description_level39():
     return build_description(title_level39(), message)
 
 
-# TODO: Update when we update this level
 def hint_level39():
     return (
-        "Uh oh, moving around the blocks in your 'general algorithm' might not "
-        "be the most efficient solution. How about creating a simple solution "
-        "without 'if statements' that will help the van reach the house?"
+        "You'll need to modify your general algorithm here so you can get back "
+        "on track if you hit a dead end."
         "<br><br>"
         "Hint: Cows don't like noise"
     )
@@ -1108,8 +1106,8 @@ def title_level47():
 def description_level47():
     message = (
         "Put your knowledge to test. Create an algorithm to lead the van to the "
-        "house. <br> Don't forget to add a turn and to make the van wait at a "
-        "traffic light."
+        "house. <br> Don't forget to add a turn block and this time, you "
+        "need to avoid cows instead of waiting at traffic lights."
     )
     return build_description(title_level47(), message)
 
