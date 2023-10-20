@@ -55,15 +55,6 @@ class GamePage(BasePage):
 
     def solution_button(self):
         self.browser.find_element_by_id("solution_tab").click()
-        solution_loaded = self.browser.execute_script("return ocargo.solutionLoaded;")
-        timeout = time.time() + 30
-
-        while not solution_loaded:
-            solution_loaded = self.browser.execute_script(
-                "return ocargo.solutionLoaded;"
-            )
-            if time.time() > timeout:
-                break
         return self
 
     def python_commands_button(self):
@@ -96,7 +87,6 @@ class GamePage(BasePage):
         assert_that(image.get_attribute("opacity"), equal_to("1"))
 
     def run_program(self, wait_for_element_id="modal-content"):
-        time.sleep(5)
         self.browser.find_element_by_id("fast_tab").click()
 
         try:
