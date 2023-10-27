@@ -8,10 +8,9 @@ from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
-from django.test import TestCase
 from django.urls import reverse
-from portal.tests.pageObjects.portal.home_page import HomePage
 from portal.tests.pageObjects.portal.base_page import BasePage
+from portal.tests.pageObjects.portal.home_page import HomePage
 
 from game.models import Workspace
 from . import custom_handler

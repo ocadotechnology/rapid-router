@@ -2,10 +2,9 @@ from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
-
 from hamcrest import assert_that, ends_with, equal_to
-
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.models import Attempt, Episode
@@ -35,9 +34,7 @@ class TestLevelSelection(BaseGameTest):
         page = self.go_to_reverse("levels")
 
         # The coin images for the levels
-        level_coin_images = page.browser.find_elements_by_css_selector(
-            "#collapse-4 div img"
-        )
+        level_coin_images = page.browser.find_elements(By.CSS_SELECTOR, ("#collapse-4 div img"))
         # There are 4 levels in this episode, each with gold coin
         assert_that(len(level_coin_images), equal_to(4))
 
@@ -48,17 +45,13 @@ class TestLevelSelection(BaseGameTest):
             )
 
         # So the episode has a gold coin too
-        episode_coin_image = page.browser.find_element_by_css_selector(
-            "#episode-4 > p > img"
-        )
+        episode_coin_image = page.browser.find_element(By.CSS_SELECTOR, "#episode-4 > p > img")
         assert_that(
             episode_coin_image.get_attribute("src"),
             ends_with("/static/game/image/coins/coin_gold.svg"),
         )
 
         try:
-            image_for_uncomplete_episode = page.browser.find_element_by_css_selector(
-                "#episode-3 > p > img"
-            )
+            image_for_uncomplete_episode = page.browser.find_element(By.CSS_SELECTOR, "#episode-3 > p > img")
         except NoSuchElementException as this_should_happen:
             pass
