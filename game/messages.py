@@ -2370,6 +2370,10 @@ def get_episode_title(episode_id):
         9: "Blockly Brain Teasers",
         10: "Introduction to Python",
         11: "Python",
+        12: "Sequencing and Counted Loops",
+        13: "Indeterminate WHILE Loops - coming soon",
+        14: "Selection in a Loop - coming soon",
+        15: "For Loops - coming soon",
     }
 
     return episode_titles[episode_id]
