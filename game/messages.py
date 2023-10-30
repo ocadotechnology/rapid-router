@@ -2357,6 +2357,59 @@ def hint_level109():
     )
 
 
+# Episode 12, Levels 110 - 122
+def title_level110():
+    return "TODO"
+
+
+def description_level110():
+    return "TODO"
+
+
+def hint_level110():
+    return "TODO"
+
+
+# Episode 13, Levels 123 - 140
+def title_level123():
+    return "TODO"
+
+
+def description_level123():
+    return "TODO"
+
+
+def hint_level123():
+    return "TODO"
+
+
+# Episode 14, Levels 141 - 148
+def title_level141():
+    return "TODO"
+
+
+def description_level141():
+    return "TODO"
+
+
+def hint_level141():
+    return "TODO"
+
+
+# Episode 15, Levels 149 - 153
+def title_level149():
+    return "TODO"
+
+
+def description_level149():
+    return "TODO"
+
+
+def hint_level149():
+    return "TODO"
+
+
+# Episode titles
 def get_episode_title(episode_id):
     episode_titles = {
         1: "Getting Started",
