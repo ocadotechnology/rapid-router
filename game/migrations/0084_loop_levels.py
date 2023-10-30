@@ -5,8 +5,6 @@ from django.db import migrations
 def add_loop_levels(apps: Apps, *args):
     Level = apps.get_model("game", "Level")
     Episode = apps.get_model("game", "Episode")
-    # Theme = apps.get_model("game", "Theme")
-    # Character = apps.get_model("game", "Character")
 
     episode_15 = Episode.objects.create(
         pk=15,
@@ -31,14 +29,6 @@ def add_loop_levels(apps: Apps, *args):
     episode_11 = Episode.objects.get(pk=11)
     episode_11.next_episode = episode_12
     episode_11.save()
-
-    # theme_grass = Theme.objects.get(name="grass")
-    # theme_snow = Theme.objects.get(name="snow")
-    # theme_farm = Theme.objects.get(name="farm")
-    # theme_city = Theme.objects.get(name="city")
-
-    # character_van = Character.objects.get(name="Van")
-    # character_dee = Character.objects.get(name="Dee")
 
     # Episode 15, Levels 149 - 153
     level_153 = Level.objects.create(
