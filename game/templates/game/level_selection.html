@@ -9,39 +9,39 @@
 <script>
     var EPISODES = [];
     {% for episode in blocklyEpisodes %}
-    var levels = [];
-    {% for level in episode.levels %}
-    levels.push({
-        'name': {{ level.name }},
-        'score': '{{level.score}}',
-        'maxScore': {{ level.maxScore }}
+        var levels = [];
+        {% for level in episode.levels %}
+        levels.push({
+            'name': {{level.name}},
+            'score': '{{level.score}}',
+            'maxScore': {{level.maxScore}}
         });
-    {% endfor %}
-    EPISODES.push({ 'id': {{ episode.id }}, 'levels': levels});
+        {% endfor %}
+        EPISODES.push({'id' : {{episode.id}}, 'levels': levels});
     {% endfor %}
 
     {% for episode in pythonEpisodes %}
-    var levels = [];
-    {% for level in episode.levels %}
-    levels.push({
-        'name': {{ level.name }},
-        'score': '{{level.score}}',
-        'maxScore': {{ level.maxScore }}
+        var levels = [];
+        {% for level in episode.levels %}
+        levels.push({
+            'name': {{level.name}},
+            'score': '{{level.score}}',
+            'maxScore': {{level.maxScore}}
         });
-    {% endfor %}
-    EPISODES.push({ 'id': {{ episode.id }}, 'levels': levels});
+        {% endfor %}
+        EPISODES.push({'id' : {{episode.id}}, 'levels': levels});
     {% endfor %}
 
     var OTHER_LEVELS = [];
     {% for level in owned_levels %}
-    OTHER_LEVELS.push({ 'id': {{ level.id }}, 'score': '{{level.score}}'});
+    OTHER_LEVELS.push({'id': {{level.id}}, 'score': '{{level.score}}'});
     {% endfor %}
     {% for level in shared_levels %}
-    OTHER_LEVELS.push({ 'id': {{ level.id }}, 'score': '{{level.score}}'});
+    OTHER_LEVELS.push({'id': {{level.id}}, 'score': '{{level.score}}'});
     {% endfor %}
 </script>
 
-<script src="{% static " game/js/level_selection.js" %}"></script>
+<script src="{% static "game/js/level_selection.js" %}"></script>
 {% endblock %}
 
 {% block css %}
@@ -57,13 +57,13 @@
 
 
 {% block nav_ocargo_levels %}
-{% if user|is_logged_in_as_student %}
-<a class="button button--secondary button--secondary--light sub-nav--student-active">Levels</a>
-{% elif user|is_independent_student %}
-<a class="button button--secondary sub-nav--independent-active">Levels</a>
-{% else %}
-<a class="button button--secondary button--secondary--light sub-nav--teacher-active">Levels</a>
-{% endif %}
+    {% if user|is_logged_in_as_student %}
+    <a class="button button--secondary button--secondary--light sub-nav--student-active">Levels</a>
+    {% elif user|is_independent_student %}
+    <a class="button button--secondary sub-nav--independent-active">Levels</a>
+    {% else %}
+    <a class="button button--secondary button--secondary--light sub-nav--teacher-active">Levels</a>
+    {% endif %}
 {% endblock nav_ocargo_levels %}
 
 {% block content %}
@@ -77,12 +77,9 @@
         {% for episode in blocklyEpisodes %}
         <div class="panel">
             <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
-                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}"
-                    aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
-                    <span class="episode_range_text collapsed" data-toggle="collapse"
-                        data-target="#collapse-{{episode.id}}" aria-expanded="false"
-                        aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                         Levels {{episode.first_level}}-{{episode.last_level}}
                     </span>
                     <img class="episode_image coin_image" value="{{episode.id}}">
@@ -92,33 +89,31 @@
             <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
                 <div class="panel-body">
                     {% for level in episode.levels %}
-                    {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
-                    <!-- Mark level as locked -->
-                    <p>
-                        <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
-                        {% if level.score != None %}
-                        <span
-                            class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                        <img class="level_image coin_image" value="{{level.name}}">
+                        {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
+                            <!-- Mark level as locked -->
+                            <p>
+                                <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
+                                {% if level.score != None %}
+                                    <span class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                    <img class="level_image coin_image" value="{{level.name}}">
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+                            <p>
+                                <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                                {% if level.score != None %}
+                                    <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                    <img class="level_image coin_image" value="{{level.name}}">
+                                {% endif %}
+                            </p>
                         {% endif %}
-                    </p>
-                    {% else %}
-                    <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-                    <p>
-                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip |
-                            safe}}</a>
-                        {% if level.score != None %}
-                        <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                        <img class="level_image coin_image" value="{{level.name}}">
-                        {% endif %}
-                    </p>
-                    {% endif %}
                     {% endfor %}
 
                     {% if episode.random_levels_enabled %}
                     <p>
                         <a href="{% url 'random_level_for_episode' episode.id %}">
-                            Random: Try your hand at a random level.
+                        Random: Try your hand at a random level.
                         </a>
                     </p>
                     {% endif %}
@@ -135,12 +130,9 @@
         {% for episode in pythonEpisodes %}
         <div class="panel">
             <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
-                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}"
-                    aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
-                    <span class="episode_range_text collapsed" data-toggle="collapse"
-                        data-target="#collapse-{{episode.id}}" aria-expanded="false"
-                        aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                         Levels {{episode.first_level}}-{{episode.last_level}}
                     </span>
                     <img class="episode_image coin_image" value="{{episode.id}}">
@@ -150,27 +142,25 @@
             <div id="collapse-{{episode.id}}" aria-labelledby="episode-{{episode.id}}" class="collapse">
                 <div class="panel-body">
                     {% for level in episode.levels %}
-                    {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
-                    <!-- Mark level as locked -->
-                    <p>
-                        <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
-                        {% if level.score != None %}
-                        <span
-                            class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                        <img class="level_image coin_image" value="{{level.name}}">
+                        {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
+                            <!-- Mark level as locked -->
+                            <p>
+                                <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
+                                {% if level.score != None %}
+                                    <span class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                    <img class="level_image coin_image" value="{{level.name}}">
+                                {% endif %}
+                            </p>
+                        {% else %}
+                            <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
+                            <p>
+                                <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                                {% if level.score != None %}
+                                    <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                    <img class="level_image coin_image" value="{{level.name}}">
+                                {% endif %}
+                            </p>
                         {% endif %}
-                    </p>
-                    {% else %}
-                    <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
-                    <p>
-                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip |
-                            safe}}</a>
-                        {% if level.score != None %}
-                        <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                        <img class="level_image coin_image" value="{{level.name}}">
-                        {% endif %}
-                    </p>
-                    {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -184,29 +174,26 @@
         </div>
         <div class="panel">
             <div class="panel-header bg--shared-levels" id="episode-levels-created-by-you">
-                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-created-by-you"
-                    aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
                     Levels created by you
-                    <span class="episode_range_text collapsed" data-toggle="collapse"
-                        data-target="#collapse-levels-created-by-you" aria-expanded="false"
-                        aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
                     </span>
                 </p>
             </div>
             <div id="collapse-levels-created-by-you" aria-labelledby="episode-levels-created-by-you" class="collapse">
                 <div class="panel-body">
                     {% if owned_levels %}
-                    {% for level in owned_levels %}
-                    <p>
-                        <a href="{% url 'level_editor_chosen_level' level.id %}">{{level.title}}</a>
-                        {% if level.score != None %}
-                        <span class="score_text">{{level.score|floatformat}}/10</span>
-                        <img class="level_image coin_image" value="{{level.id}}">
-                        {% endif %}
-                    </p>
-                    {% endfor %}
+                        {% for level in owned_levels %}
+                        <p>
+                            <a href="{% url 'level_editor_chosen_level' level.id %}">{{level.title}}</a>
+                            {% if level.score != None %}
+                            <span class="score_text">{{level.score|floatformat}}/10</span>
+                            <img class="level_image coin_image" value="{{level.id}}">
+                            {% endif %}
+                        </p>
+                        {% endfor %}
                     {% else %}
-                    <p>No levels have been created by you yet.</p>
+                        <p>No levels have been created by you yet.</p>
                     {% endif %}
                 </div>
             </div>
@@ -214,57 +201,54 @@
 
         <div class="panel">
             <div class="panel-header bg--shared-levels" id="episode-levels-shared-with-you">
-                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-shared-with-you"
-                    aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
+                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
                     Levels shared with you
-                    <span class="episode_range_text collapsed" data-toggle="collapse"
-                        data-target="#collapse-levels-shared-with-you" aria-expanded="false"
-                        aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
+                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
                     </span>
                 </p>
             </div>
             <div id="collapse-levels-shared-with-you" aria-labelledby="episode-levels-shared-with-you" class="collapse">
                 <div class="panel-body">
                     {% if user|is_logged_in_as_admin_teacher %}
-                    <h6>Your classes</h6>
+                        <h6>Your classes</h6>
                     {% endif %}
                     {% if directly_shared_levels %}
-                    {% for level in directly_shared_levels %}
-                    <p>
-                        <a href="{% url 'play_custom_level' level.id %}">
-                            {{ level.title }}, {{ level.owner|make_into_username }}
-                            {% if level.class %}
-                            ({{ level.class }})
-                            {% endif %}
-                        </a>
-                        {% if level.score != None %}
-                        <span class="score_text">{{ level.score|floatformat }}/10</span>
-                        <img class="level_image coin_image" value="{{ level.id }}">
-                        {% endif %}
-                    </p>
-                    {% endfor %}
+                        {% for level in directly_shared_levels %}
+                            <p>
+                                <a href="{% url 'play_custom_level' level.id %}">
+                                    {{ level.title }}, {{ level.owner|make_into_username }}
+                                    {% if level.class %}
+                                        ({{ level.class }})
+                                    {% endif %}
+                                </a>
+                                {% if level.score != None %}
+                                    <span class="score_text">{{ level.score|floatformat }}/10</span>
+                                    <img class="level_image coin_image" value="{{ level.id }}">
+                                {% endif %}
+                            </p>
+                        {% endfor %}
                     {% else %}
-                    <p>No levels.</p>
+                        <p>No levels.</p>
                     {% endif %}
 
                     {% if indirectly_shared_levels %}
-                    {% for teacher, levels in indirectly_shared_levels.items %}
-                    <h6>Owned by {{ teacher|make_into_username }}</h6>
-                    {% for level in levels %}
-                    <p>
-                        <a href="{% url 'play_custom_level' level.id %}">
-                            {{ level.title }}, {{level.owner|make_into_username}}
-                            {% if level.class %}
-                            ({{ level.class }})
-                            {% endif %}
-                        </a>
-                        {% if level.score != None %}
-                        <span class="score_text">{{level.score|floatformat}}/10</span>
-                        <img class="level_image coin_image" value="{{level.id}}">
-                        {% endif %}
-                    </p>
-                    {% endfor %}
-                    {% endfor %}
+                        {% for teacher, levels in indirectly_shared_levels.items %}
+                            <h6>Owned by {{ teacher|make_into_username }}</h6>
+                            {% for level in levels %}
+                                <p>
+                                    <a href="{% url 'play_custom_level' level.id %}">
+                                        {{ level.title }}, {{level.owner|make_into_username}}
+                                        {% if level.class %}
+                                            ({{ level.class }})
+                                        {% endif %}
+                                    </a>
+                                    {% if level.score != None %}
+                                        <span class="score_text">{{level.score|floatformat}}/10</span>
+                                        <img class="level_image coin_image" value="{{level.id}}">
+                                    {% endif %}
+                                </p>
+                            {% endfor %}
+                        {% endfor %}
                     {% endif %}
                 </div>
             </div>
