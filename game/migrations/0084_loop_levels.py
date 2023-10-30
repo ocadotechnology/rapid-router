@@ -236,7 +236,7 @@ def add_loop_levels(apps: Apps, *args):
         name="122",
         episode=episode_12,
         path="",
-        next_level=level_123,
+        # next_level=level_123, TODO: connect them when the next levels are enabled.
     )
     level_121 = Level.objects.create(
         name="121",
