@@ -1,6 +1,6 @@
 from builtins import str
 
-from common.models import UserProfile, Student, Class
+from common.models import Class, Student, UserProfile
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -36,6 +36,7 @@ class Block(models.Model):
 
     class Meta:
         ordering = ["block_type", "pk"]
+
 
 class Episode(models.Model):
     """Variables prefixed with r_ signify they are parameters for random level generation"""
@@ -85,6 +86,10 @@ class Episode(models.Model):
             9: "brainteasers",
             10: "hard",
             11: "advanced",
+            12: "loops",
+            13: "loops",
+            14: "loops",
+            15: "loops",
         }
 
         return difficulty_map.get(self.id, "easy")

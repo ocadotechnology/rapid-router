@@ -2357,6 +2357,503 @@ def hint_level109():
     )
 
 
+# Episode 12, Levels 110 - 122
+(
+    title_level110,
+    description_level110,
+    hint_level110,
+) = (
+    lambda: "Here's Python",
+    lambda: build_description(
+        title_level110(),
+        "As you create your program using Blockly, see what it looks like in the Python programming language. Can you tell which Python statement matches which block?",
+    ),
+    lambda: "This is a deliberately simple level. What you need to focus on is the Python code that is being generated for the blocks you join.",
+)
+
+(
+    title_level111,
+    description_level111,
+    hint_level111,
+) = (
+    lambda: "Matching Blockly",
+    lambda: build_description(
+        title_level111(),
+        "As you create your program using Blockly, see what it looks like in the Python programming language. Can you tell which Python statement matches which block?",
+    ),
+    lambda: "This is a deliberately simple level. What you need to focus on is the Python code that is being generated for the blocks you join.",
+)
+
+(
+    title_level112,
+    description_level112,
+    hint_level112,
+) = (
+    lambda: "Don't forget to find the shortest route",
+    lambda: build_description(
+        title_level112(),
+        "As you create your program using Blockly, see what it looks like in the Python programming language. Can you tell which Python statement matches which block?"
+        "<br><br>"
+        "Don't forget to find the shortest route!",
+    ),
+    lambda: "Pay close attention to the spelling of the Python commands, the use of the dot and the round brackets.",
+)
+
+(
+    title_level113,
+    description_level113,
+    hint_level113,
+) = (
+    lambda: "Where did the blocks go?",
+    lambda: build_description(
+        title_level113(),
+        "Can you remember how the Python was formed under the blocks in the previous levels? Take a look in the Py Commands for a quick reminder.",
+    ),
+    lambda: "Now it is your turn, you can click on the Py commands button for a reminder of the Python commands that you can use.",
+)
+
+(
+    title_level114,
+    description_level114,
+    hint_level114,
+) = (
+    lambda: "Tree snake",
+    lambda: build_description(
+        title_level114(),
+        "This route is just a bit longer. Make sure you type the Python code accurately!",
+    ),
+    lambda: "The most common errors here are missing the round brackets at the end of the commands or mis-typing the commands, e.g. use my_van.move_fowards() and not my_van.move_foward()",
+)
+
+(
+    title_level115,
+    description_level115,
+    hint_level115,
+) = (
+    lambda: "Which way to turn? This way or that way?",
+    lambda: build_description(title_level115(), "Try to find the shortest route using Python code only. You are getting really good at this!"),
+    lambda: "If you are stuck on this one, check that you are using the Python commands accurately. Click the Py Commands button to help you.",
+)
+
+(
+    title_level116,
+    description_level116,
+    hint_level116,
+) = (
+    lambda: "In a while, crocodile!",
+    lambda: build_description(
+        title_level116(),
+        "This level may look easy, but this time you need to use a While Loop to deliver to the house."
+        "<br>"
+        "Can you do it? Name your variables wisely.",
+    ),
+    lambda: "Make sure that you are using the right blocks here. You must use the pink block for variables and the dark blue number block for values. Watch the video if you are unsure.",
+)
+
+(
+    title_level117,
+    description_level117,
+    hint_level117,
+) = (
+    lambda: "Wiggle while you work",
+    lambda: build_description(
+        title_level117(),
+        "This time is's a little harder. We've added the directions back in."
+        "<br>"
+        "Can you put them in the right place?"
+        "<br><br>"
+        "Notice how the Python looks in the console.",
+    ),
+    lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
+)
+
+(
+    title_level118,
+    description_level118,
+    hint_level118,
+) = (
+    lambda: "This way, that way, forwards...",
+    lambda: build_description(
+        title_level118(),
+        "Now all three directions are back!"
+        "<br>"
+        "Use what you have learned so far to get your delivery completed.",
+    ),
+    lambda: "You can solve this in stages. Try moving to the start of the repeated section, then adding the loop and then finishing it off.",
+)
+
+(
+    title_level119,
+    description_level119,
+    hint_level119,
+) = (
+    lambda: "Four leaf clover",
+    lambda: build_description(
+        title_level119(),
+        "Now let's try what you've learned without blocks."
+        "<br>"
+        "Click on the Py Commands button to remind yourself of the syntax you need.",
+    ),
+    lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
+)
+
+(
+    title_level120,
+    description_level120,
+    hint_level120,
+) = (
+    lambda: "Pond life",
+    lambda: build_description(
+        title_level120(),
+        "So many routes but only one that is efficient. Can you work out which one it is?",
+    ),
+    lambda: "What if you go down the middle section?",
+)
+
+(
+    title_level121,
+    description_level121,
+    hint_level121,
+) = (
+    lambda: "Farmyard overdrive",
+    lambda: build_description(
+        title_level121(),
+        "Maybe including a loop is the answer here?",
+    ),
+    lambda: "Try that middle route...",
+)
+
+(
+    title_level122,
+    description_level122,
+    hint_level122,
+) = (
+    lambda: "Snnnaaaake reflection",
+    lambda: build_description(
+        title_level122(),
+        "Can you see some patterns? Looks like those loops will come in handy again for this tricky route.",
+    ),
+    lambda: "Don't try to solve this in one go. Work out the pattern for the top route and check that works. Then move on to the next part...",
+)
+
+
+# Episode 13, Levels 123 - 140
+(
+    title_level123,
+    description_level123,
+    hint_level123,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level123(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level124,
+    description_level124,
+    hint_level124,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level124(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level125,
+    description_level125,
+    hint_level125,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level125(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level126,
+    description_level126,
+    hint_level126,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level126(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level127,
+    description_level127,
+    hint_level127,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level127(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level128,
+    description_level128,
+    hint_level128,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level128(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level129,
+    description_level129,
+    hint_level129,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level129(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level130,
+    description_level130,
+    hint_level130,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level130(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level131,
+    description_level131,
+    hint_level131,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level131(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level132,
+    description_level132,
+    hint_level132,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level132(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level133,
+    description_level133,
+    hint_level133,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level133(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level134,
+    description_level134,
+    hint_level134,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level134(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level135,
+    description_level135,
+    hint_level135,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level135(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level136,
+    description_level136,
+    hint_level136,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level136(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level137,
+    description_level137,
+    hint_level137,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level137(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level138,
+    description_level138,
+    hint_level138,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level138(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level139,
+    description_level139,
+    hint_level139,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level139(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level140,
+    description_level140,
+    hint_level140,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level140(), "TODO"),
+    lambda: "TODO",
+)
+
+
+# Episode 14, Levels 141 - 148
+(
+    title_level141,
+    description_level141,
+    hint_level141,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level141(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level142,
+    description_level142,
+    hint_level142,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level142(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level143,
+    description_level143,
+    hint_level143,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level143(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level144,
+    description_level144,
+    hint_level144,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level144(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level145,
+    description_level145,
+    hint_level145,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level145(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level146,
+    description_level146,
+    hint_level146,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level146(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level147,
+    description_level147,
+    hint_level147,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level147(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level148,
+    description_level148,
+    hint_level148,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level148(), "TODO"),
+    lambda: "TODO",
+)
+
+
+# Episode 15, Levels 149 - 153
+(
+    title_level149,
+    description_level149,
+    hint_level149,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level149(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level150,
+    description_level150,
+    hint_level150,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level150(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level151,
+    description_level151,
+    hint_level151,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level151(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level152,
+    description_level152,
+    hint_level152,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level152(), "TODO"),
+    lambda: "TODO",
+)
+
+(
+    title_level153,
+    description_level153,
+    hint_level153,
+) = (
+    lambda: "TODO",
+    lambda: build_description(title_level153(), "TODO"),
+    lambda: "TODO",
+)
+
+
+# Episode titles
 def get_episode_title(episode_id):
     episode_titles = {
         1: "Getting Started",
@@ -2370,6 +2867,10 @@ def get_episode_title(episode_id):
         9: "Blockly Brain Teasers",
         10: "Introduction to Python",
         11: "Python",
+        12: "Sequencing and Counted Loops",
+        13: "Indeterminate WHILE Loops - coming soon",
+        14: "Selection in a Loop - coming soon",
+        15: "For Loops - coming soon",
     }
 
     return episode_titles[episode_id]
