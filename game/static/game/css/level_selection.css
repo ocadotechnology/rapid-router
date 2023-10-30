@@ -2,6 +2,10 @@
   margin: 30px 0 20px 0;
 }
 
+#episodes .panel-subintro {
+  margin: 20px 0 20px 0;
+}
+
 #episodes .panel-header {
   color: #fff;
   margin-bottom: 0;
