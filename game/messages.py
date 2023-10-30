@@ -2363,8 +2363,11 @@ def hint_level109():
     description_level110,
     hint_level110,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Here's Python",
+    lambda: build_description(
+        title_level110(),
+        "As you create your program using Blockly, see what it looks like in the Python programming language. Can you tell which Python statement matches which block?",
+    ),
     lambda: "TODO",
 )
 
@@ -2373,8 +2376,11 @@ def hint_level109():
     description_level111,
     hint_level111,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Matching Blockly",
+    lambda: build_description(
+        title_level111(),
+        "As you create your program using Blockly, see what it looks like in the Python programming language. Can you tell which Python statement matches which block?",
+    ),
     lambda: "TODO",
 )
 
@@ -2383,8 +2389,13 @@ def hint_level109():
     description_level112,
     hint_level112,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Don't forget to find the shortest route",
+    lambda: build_description(
+        title_level112(),
+        "As you create your program using Blockly, see what it looks like in the Python programming language. Can you tell which Python statement matches which block?"
+        "<br><br>"
+        "Don't forget to find the shortest route!",
+    ),
     lambda: "TODO",
 )
 
@@ -2393,8 +2404,11 @@ def hint_level109():
     description_level113,
     hint_level113,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Where did the blocks go?",
+    lambda: build_description(
+        title_level113(),
+        "Can you remember how the Python was formed under the blocks in the previous levels? Take a look in the Py Commands for a quick reminder.",
+    ),
     lambda: "TODO",
 )
 
@@ -2403,8 +2417,11 @@ def hint_level109():
     description_level114,
     hint_level114,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Tree snake",
+    lambda: build_description(
+        title_level114(),
+        "This route is just a bit longer. Make sure you type the Python code accurately!",
+    ),
     lambda: "TODO",
 )
 
@@ -2413,8 +2430,8 @@ def hint_level109():
     description_level115,
     hint_level115,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Which way to turn? This way or that way?",
+    lambda: build_description(title_level115(), "TODO"),
     lambda: "TODO",
 )
 
@@ -2423,8 +2440,13 @@ def hint_level109():
     description_level116,
     hint_level116,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "In a while, crocodile!",
+    lambda: build_description(
+        title_level116(),
+        "This level may look easy, but this time you need to use a While Loop to deliver to the house."
+        "<br>"
+        "Can you do it? Name your variables wisely.",
+    ),
     lambda: "TODO",
 )
 
@@ -2433,8 +2455,15 @@ def hint_level109():
     description_level117,
     hint_level117,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Wiggle while you work",
+    lambda: build_description(
+        title_level117(),
+        "This time is's a little harder. We've added the directions back in."
+        "<br>"
+        "Can you put them in the right place?"
+        "<br><br>"
+        "Notice how the Python looks in the console.",
+    ),
     lambda: "TODO",
 )
 
@@ -2443,8 +2472,13 @@ def hint_level109():
     description_level118,
     hint_level118,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "This way, that way, forwards...",
+    lambda: build_description(
+        title_level118(),
+        "Now all three directions are back!"
+        "<br>"
+        "Use what you have learned so far to get your delivery completed.",
+    ),
     lambda: "TODO",
 )
 
@@ -2453,8 +2487,13 @@ def hint_level109():
     description_level119,
     hint_level119,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Four leaf clover",
+    lambda: build_description(
+        title_level119(),
+        "Now let's try what you've learned without blocks."
+        "<br>"
+        "Click on the Py Commands button to remind yourself of the syntax you need.",
+    ),
     lambda: "TODO",
 )
 
@@ -2463,8 +2502,11 @@ def hint_level109():
     description_level120,
     hint_level120,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Pond life",
+    lambda: build_description(
+        title_level120(),
+        "So many routes but only one that is efficient. Can you work out which one it is?",
+    ),
     lambda: "TODO",
 )
 
@@ -2473,8 +2515,11 @@ def hint_level109():
     description_level121,
     hint_level121,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Farmyard overdrive",
+    lambda: build_description(
+        title_level121(),
+        "Maybe including a loop is the answer here?",
+    ),
     lambda: "TODO",
 )
 
@@ -2483,8 +2528,11 @@ def hint_level109():
     description_level122,
     hint_level122,
 ) = (
-    lambda: "TODO",
-    lambda: "TODO",
+    lambda: "Snnnaaaake reflection",
+    lambda: build_description(
+        title_level122(),
+        "Can you see some patterns? Looks like those loops will come in handy again for this tricky route.",
+    ),
     lambda: "TODO",
 )
 
