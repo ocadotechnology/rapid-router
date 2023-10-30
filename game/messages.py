@@ -2358,55 +2358,51 @@ def hint_level109():
 
 
 # Episode 12, Levels 110 - 122
-def title_level110():
-    return "TODO"
-
-
-def description_level110():
-    return "TODO"
-
-
-def hint_level110():
-    return "TODO"
+(
+    title_level110,
+    description_level110,
+    hint_level110,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
 
 
 # Episode 13, Levels 123 - 140
-def title_level123():
-    return "TODO"
-
-
-def description_level123():
-    return "TODO"
-
-
-def hint_level123():
-    return "TODO"
+(
+    title_level123,
+    description_level123,
+    hint_level123,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
 
 
 # Episode 14, Levels 141 - 148
-def title_level141():
-    return "TODO"
-
-
-def description_level141():
-    return "TODO"
-
-
-def hint_level141():
-    return "TODO"
+(
+    title_level141,
+    description_level141,
+    hint_level141,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
 
 
 # Episode 15, Levels 149 - 153
-def title_level149():
-    return "TODO"
-
-
-def description_level149():
-    return "TODO"
-
-
-def hint_level149():
-    return "TODO"
+(
+    title_level149,
+    description_level149,
+    hint_level149,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
 
 
 # Episode titles
