@@ -2368,7 +2368,7 @@ def hint_level109():
         title_level110(),
         "As you create your program using Blockly, see what it looks like in the Python programming language. Can you tell which Python statement matches which block?",
     ),
-    lambda: "TODO",
+    lambda: "This is a deliberately simple level. What you need to focus on is the Python code that is being generated for the blocks you join.",
 )
 
 (
@@ -2381,7 +2381,7 @@ def hint_level109():
         title_level111(),
         "As you create your program using Blockly, see what it looks like in the Python programming language. Can you tell which Python statement matches which block?",
     ),
-    lambda: "TODO",
+    lambda: "This is a deliberately simple level. What you need to focus on is the Python code that is being generated for the blocks you join.",
 )
 
 (
@@ -2396,7 +2396,7 @@ def hint_level109():
         "<br><br>"
         "Don't forget to find the shortest route!",
     ),
-    lambda: "TODO",
+    lambda: "Pay close attention to the spelling of the Python commands, the use of the dot and the round brackets.",
 )
 
 (
@@ -2409,7 +2409,7 @@ def hint_level109():
         title_level113(),
         "Can you remember how the Python was formed under the blocks in the previous levels? Take a look in the Py Commands for a quick reminder.",
     ),
-    lambda: "TODO",
+    lambda: "Now it is your turn, you can click on the Py commands button for a reminder of the Python commands that you can use.",
 )
 
 (
@@ -2422,7 +2422,7 @@ def hint_level109():
         title_level114(),
         "This route is just a bit longer. Make sure you type the Python code accurately!",
     ),
-    lambda: "TODO",
+    lambda: "The most common errors here are missing the round brackets at the end of the commands or mis-typing the commands, e.g. use my_van.move_fowards() and not my_van.move_foward()",
 )
 
 (
@@ -2432,7 +2432,7 @@ def hint_level109():
 ) = (
     lambda: "Which way to turn? This way or that way?",
     lambda: build_description(title_level115(), "TODO"),
-    lambda: "TODO",
+    lambda: "If you are stuck on this one, check that the you are using the Python commands accurately. Click the Py Commands button to help you.",
 )
 
 (
@@ -2447,7 +2447,7 @@ def hint_level109():
         "<br>"
         "Can you do it? Name your variables wisely.",
     ),
-    lambda: "TODO",
+    lambda: "Make sure that you are using the right blocks here. You must use the pink block for variables and the dark blue number block for values. Watch the video if you are unsure.",
 )
 
 (
@@ -2464,7 +2464,7 @@ def hint_level109():
         "<br><br>"
         "Notice how the Python looks in the console.",
     ),
-    lambda: "TODO",
+    lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
 )
 
 (
@@ -2479,7 +2479,7 @@ def hint_level109():
         "<br>"
         "Use what you have learned so far to get your delivery completed.",
     ),
-    lambda: "TODO",
+    lambda: "You can solve this in stages. Try moving to the start of the repeated section, then adding the loop and then finishing it off.",
 )
 
 (
@@ -2494,7 +2494,7 @@ def hint_level109():
         "<br>"
         "Click on the Py Commands button to remind yourself of the syntax you need.",
     ),
-    lambda: "TODO",
+    lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
 )
 
 (
@@ -2507,7 +2507,7 @@ def hint_level109():
         title_level120(),
         "So many routes but only one that is efficient. Can you work out which one it is?",
     ),
-    lambda: "TODO",
+    lambda: "What if you go down the middle section?",
 )
 
 (
@@ -2520,7 +2520,7 @@ def hint_level109():
         title_level121(),
         "Maybe including a loop is the answer here?",
     ),
-    lambda: "TODO",
+    lambda: "Try that middle route...",
 )
 
 (
@@ -2533,7 +2533,7 @@ def hint_level109():
         title_level122(),
         "Can you see some patterns? Looks like those loops will come in handy again for this tricky route.",
     ),
-    lambda: "TODO",
+    lambda: "Don't try to solve this in one go. Work out the pattern for the top route and check that works. Then move on to the next part...",
 )
 
 
