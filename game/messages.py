@@ -2764,6 +2764,46 @@ def hint_level109():
     lambda: "TODO",
 )
 
+(
+    title_level150,
+    description_level150,
+    hint_level150,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level151,
+    description_level151,
+    hint_level151,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level152,
+    description_level152,
+    hint_level152,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level153,
+    description_level153,
+    hint_level153,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
 
 # Episode titles
 def get_episode_title(episode_id):
