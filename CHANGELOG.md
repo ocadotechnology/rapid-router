@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.13.0 (2023-10-30)
+
+### Feature
+
+* Add variables, maths and comparison blocks ([#1270](https://github.com/ocadotechnology/rapid-router/issues/1270)) ([`4d424eb`](https://github.com/ocadotechnology/rapid-router/commit/4d424eb105a2d454b0f5b0490d1d4597cc40d795))
+
 ## v5.12.3 (2023-10-17)
 
 ### Fix

@@ -41,10 +41,20 @@ class Migration(migrations.Migration):
             block.save()
         Block.objects.create(type="cow_crossing", block_type=CONDITION)
 
+    def remove_block_types(apps, schema_editor):
+        ACTION = 1
+
+        Block = apps.get_model("game", "Block")
+
+        Block.objects.get(type="cow_crossing").delete()
+
+        Block.objects.create(type="puff_up", block_type=ACTION)
+        Block.objects.create(type="declare_event", block_type=ACTION)
+
     dependencies = [
         ("game", "0078_add_block_types"),
     ]
 
     operations = [
-        migrations.RunPython(block_types),
+        migrations.RunPython(block_types, reverse_code=remove_block_types),
     ]
