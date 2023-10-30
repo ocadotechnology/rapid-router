@@ -2368,6 +2368,126 @@ def hint_level109():
     lambda: "TODO",
 )
 
+(
+    title_level111,
+    description_level111,
+    hint_level111,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level112,
+    description_level112,
+    hint_level112,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level113,
+    description_level113,
+    hint_level113,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level114,
+    description_level114,
+    hint_level114,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level115,
+    description_level115,
+    hint_level115,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level116,
+    description_level116,
+    hint_level116,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level117,
+    description_level117,
+    hint_level117,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level118,
+    description_level118,
+    hint_level118,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level119,
+    description_level119,
+    hint_level119,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level120,
+    description_level120,
+    hint_level120,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level121,
+    description_level121,
+    hint_level121,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
+(
+    title_level122,
+    description_level122,
+    hint_level122,
+) = (
+    lambda: "TODO",
+    lambda: "TODO",
+    lambda: "TODO",
+)
+
 
 # Episode 13, Levels 123 - 140
 (
