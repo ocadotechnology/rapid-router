@@ -2431,7 +2431,7 @@ def hint_level109():
     hint_level115,
 ) = (
     lambda: "Which way to turn? This way or that way?",
-    lambda: build_description(title_level115(), "TODO"),
+    lambda: build_description(title_level115(), "Try to find the shortest route using Python code only. You are getting really good at this!"),
     lambda: "If you are stuck on this one, check that the you are using the Python commands accurately. Click the Py Commands button to help you.",
 )
 
