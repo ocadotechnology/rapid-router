@@ -101,8 +101,6 @@ class GamePage(BasePage):
         try:
             self.wait_for_element_to_be_clickable((By.ID, wait_for_element_id), 45)
         except TimeoutException as e:
-            import time
-
             millis = int(round(time.time() * 1000))
             screenshot_filename = "/tmp/game_tests_%s-%s.png" % (
                 os.getenv("BUILD_NUMBER", "nonumber"),
