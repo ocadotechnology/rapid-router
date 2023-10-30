@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.14.0 (2023-10-30)
+
+### Feature
+
+* Loop level links ([#1507](https://github.com/ocadotechnology/rapid-router/issues/1507)) ([`f2dd9ed`](https://github.com/ocadotechnology/rapid-router/commit/f2dd9ed3555219876fa48a324313da0739d6fd41))
+
 ## v5.13.0 (2023-10-30)
 
 ### Feature
