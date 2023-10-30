@@ -307,7 +307,7 @@ def add_loop_levels(apps: Apps, *args):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("game", "0083_add_cows_to_existing_levels")]
+    dependencies = [("game", "0085_add_new_blocks")]
     operations = [
         migrations.RunPython(
             add_loop_levels,
