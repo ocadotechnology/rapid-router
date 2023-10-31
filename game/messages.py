@@ -2422,7 +2422,7 @@ def hint_level109():
         title_level114(),
         "This route is just a bit longer. Make sure you type the Python code accurately!",
     ),
-    lambda: "The most common errors here are missing the round brackets at the end of the commands or mis-typing the commands, e.g. use my_van.move_fowards() and not my_van.move_foward()",
+    lambda: "The most common errors here are missing the round brackets at the end of the commands or mistyping the commands, e.g. use my_van.move_fowards() and not my_van.move_foward()",
 )
 
 (

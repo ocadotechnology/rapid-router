@@ -258,6 +258,7 @@ def add_loop_levels(apps: Apps, *args):
         pythonViewEnabled=True,
         theme_name="snow",
         character_name="Van",
+        model_solution="[11]",
     )
     level_117 = Level.objects.create(
         name="117",
@@ -271,6 +272,7 @@ def add_loop_levels(apps: Apps, *args):
         pythonViewEnabled=True,
         theme_name="snow",
         character_name="Van",
+        model_solution="[8]",
     )
     level_116 = Level.objects.create(
         name="116",
@@ -283,6 +285,7 @@ def add_loop_levels(apps: Apps, *args):
         pythonEnabled=False,
         theme_name="grass",
         character_name="Van",
+        model_solution="[7]",
     )
     level_115 = Level.objects.create(
         name="115",
@@ -332,6 +335,7 @@ def add_loop_levels(apps: Apps, *args):
         pythonViewEnabled=True,
         theme_name="grass",
         character_name="Van",
+        model_solution="[11]",
     )
     level_111 = Level.objects.create(
         name="111",
@@ -433,15 +437,15 @@ def add_loop_levels(apps: Apps, *args):
     )
     set_blocks(
         level_116,
-        json.loads('[{"type":"move_forwards"},{"type":"controls_repeat_while"},{"type":"variables_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
+        json.loads('[{"type":"move_forwards"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
     )
     set_blocks(
         level_117,
-        json.loads('[{"type":"move_forwards"},{"type":"turn_right"},{"type":"controls_repeat_while"},{"type":"variables_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
+        json.loads('[{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
     )
     set_blocks(
         level_118,
-        json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat_while"},{"type":"variables_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
+        json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
     )
 
     level_109 = Level.objects.get(name="109")

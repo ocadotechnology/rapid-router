@@ -1,9 +1,7 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 import json
-from builtins import object
-from builtins import str
+from builtins import object, str
 
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -372,21 +370,22 @@ def save_workspace(request, workspaceID=None):
     return load_list_of_workspaces(request)
 
 
-def load_workspace_solution(request, levelName):
-
-    if levelName in solutions:
+def load_workspace_solution(request, level_name):
+    if level_name in solutions:
         workspace = Workspace(owner=request.user.userprofile)
-        workspace.id = levelName
-        workspace.name = levelName
+        workspace.id = level_name
+        workspace.name = level_name
         workspace.contents = solutions["blockly_default"]
         workspace.python_contents = solutions["python_default"]
 
-        if int(levelName) <= 91:
-            workspace.contents = solutions[levelName]
+        level = Level.objects.get(name=level_name, default=True)
+
+        if level.blocklyEnabled:
+            workspace.contents = solutions[level_name]
             workspace.blockly_enabled = True
             workspace.python_enabled = False
         else:
-            workspace.python_contents = solutions[levelName]
+            workspace.python_contents = solutions[level_name]
             workspace.blockly_enabled = False
             workspace.python_enabled = True
 

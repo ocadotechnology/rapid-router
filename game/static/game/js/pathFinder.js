@@ -72,6 +72,8 @@ ocargo.PathFinder.prototype.getScore = function() {
         performance = "pathLonger";
     }
     else if (initInstrScore > this.maxScoreForNumberOfInstructions) {
+        console.log(initInstrScore)
+        console.log(this.maxScoreForNumberOfInstructions)
         performance = "algorithmShorter";
     }
     else if (initInstrScore < this.maxScoreForNumberOfInstructions) {
@@ -128,6 +130,8 @@ ocargo.PathFinder.prototype.getScoreForNumberOfInstructions = function() {
     var difference = this.maxScoreForNumberOfInstructions;
     for (var i = 0; i < this.modelSolution.length; i++) {
         var currDifference = blocksUsed - this.modelSolution[i];
+        console.log(blocksUsed)
+        console.log(this.modelSolution[i])
         if (Math.abs(currDifference) < difference) {
             difference = Math.abs(currDifference);
             algorithmScore = this.maxScoreForNumberOfInstructions - currDifference;

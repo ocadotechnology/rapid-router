@@ -314,15 +314,18 @@ ocargo.BlocklyControl.prototype.activeBlocksCount = function () {
       block.type === "turn_right" ||
       block.type === "turn_around" ||
       block.type === "wait" ||
-      block.type === "deliver"
+      block.type === "deliver" ||
+      block.type === "variables_numeric_set" ||
+      block.type === "variables_increment"
     ) {
       var nextBlock = block.nextConnection.targetBlock();
       n += count(nextBlock);
-    } else if (block.type === "logic_negate") {
+    } else if (block.type === "logic_negate" || block.type === "logic_compare") {
       var conditionBlock = block.inputList[0].connection.targetBlock();
       n += count(conditionBlock);
+    } else if (block.type === "variables_get" || block.type === "math_number") {
+      n++
     }
-    // TODO: prob need to add new blocks here
 
     return n;
   }
