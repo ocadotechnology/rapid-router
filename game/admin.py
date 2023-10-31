@@ -16,7 +16,7 @@ class WorkspaceAdmin(admin.ModelAdmin):
 
 class LevelDecorAdmin(admin.ModelAdmin):
     search_fields = ["level__name"]
-    list_display = ["id", "level", "decorName"]
+    list_display = ["id", "level", "x", "y", "decorName"]
 
 
 admin.site.register(Level, LevelAdmin)
