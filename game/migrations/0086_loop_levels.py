@@ -457,18 +457,13 @@ def delete_loop_levels(apps: Apps, *args):
     Level = apps.get_model("game", "Level")
     Episode = apps.get_model("game", "Episode")
 
-    for levelID in range(110, 154):
-        level = Level.objects.get(name=str(levelID))
-        level.delete()
+    Level.objects.filter(episode__pk__in=range(12, 16)).delete()
 
     level109 = Level.objects.get(name="109", default=True)
     level109.next_level = None
     level109.save()
 
-    Episode.objects.get(pk=15).delete()
-    Episode.objects.get(pk=14).delete()
-    Episode.objects.get(pk=13).delete()
-    Episode.objects.get(pk=12).delete()
+    Episode.objects.filter(pk__in=range(12, 16)).delete()
 
     episode_11 = Episode.objects.get(pk=11)
     episode_11.next_episode = None
