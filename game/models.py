@@ -103,7 +103,11 @@ class LevelManager(models.Manager):
         # Sorts all the levels by integer conversion of "name" which should equate to the correct play order
         # Custom levels do not have an episode
 
-        return sort_levels(self.model.objects.filter(episode__isnull=False))
+        return sort_levels(
+            self.model.objects.filter(episode__isnull=False).exclude(
+                episode__name__icontains="coming soon"
+            )
+        )
 
 
 def sort_levels(levels):
