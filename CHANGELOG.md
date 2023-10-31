@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.14.1 (2023-10-31)
+
+### Fix
+
+* Exclude coming soon levels ([#1508](https://github.com/ocadotechnology/rapid-router/issues/1508)) ([`d60a615`](https://github.com/ocadotechnology/rapid-router/commit/d60a6155daccf55f62415c4c10555e181e34294d))
+
 ## v5.14.0 (2023-10-30)
 
 ### Feature
