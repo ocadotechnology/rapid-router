@@ -71,7 +71,7 @@ urlpatterns = [
                 url(r"^save/$", save_workspace, name="save_workspace"),
                 url(r"^save/(?P<workspaceID>[0-9]+)/$", save_workspace, name="save_workspace"),
                 url(r"^delete/(?P<workspaceID>[0-9]+)/$", delete_workspace, name="delete_workspace"),
-                url(r"^solution/(?P<levelName>[0-9]+)/$", load_workspace_solution, name="load_workspace_solution"),
+                url(r"^solution/(?P<level_name>[0-9]+)/$", load_workspace_solution, name="load_workspace_solution"),
             ]
         ),
     ),
