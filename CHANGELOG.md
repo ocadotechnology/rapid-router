@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.0 (2023-11-01)
+
+### Feature
+
+* Create levels 110-122 ([#1509](https://github.com/ocadotechnology/rapid-router/issues/1509)) ([`8b8d572`](https://github.com/ocadotechnology/rapid-router/commit/8b8d5725552e390a426f58ceee7d4883d561c55e))
+
 ## v5.14.1 (2023-10-31)
 
 ### Fix
