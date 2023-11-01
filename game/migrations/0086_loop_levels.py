@@ -458,16 +458,7 @@ def delete_loop_levels(apps: Apps, *args):
     Episode = apps.get_model("game", "Episode")
 
     Level.objects.filter(episode__pk__in=range(12, 16)).delete()
-
-    level109 = Level.objects.get(name="109", default=True)
-    level109.next_level = None
-    level109.save()
-
     Episode.objects.filter(pk__in=range(12, 16)).delete()
-
-    episode_11 = Episode.objects.get(pk=11)
-    episode_11.next_episode = None
-    episode_11.save()
 
 
 class Migration(migrations.Migration):
