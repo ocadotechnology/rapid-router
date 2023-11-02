@@ -1,7 +1,8 @@
 import json
 
+import django.db.models.deletion
 from django.apps.registry import Apps
-from django.db import migrations
+from django.db import migrations, models
 
 from game.level_management import set_decor_inner, set_blocks_inner
 
@@ -369,55 +370,81 @@ def add_loop_levels(apps: Apps, *args):
 
     set_decor(
         level_110,
-        json.loads('[{"x":503,"y":409,"decorName":"tree2"},{"x":384,"y":503,"decorName":"bush"},{"x":355,"y":549,"decorName":"bush"},{"x":320,"y":503,"decorName":"bush"},{"x":399,"y":200,"decorName":"pond"},{"x":400,"y":299,"decorName":"pond"}]')
+        json.loads(
+            '[{"x":503,"y":409,"decorName":"tree2"},{"x":384,"y":503,"decorName":"bush"},{"x":355,"y":549,"decorName":"bush"},{"x":320,"y":503,"decorName":"bush"},{"x":399,"y":200,"decorName":"pond"},{"x":400,"y":299,"decorName":"pond"}]'
+        ),
     )
     set_decor(
         level_111,
-        json.loads('[{"x":611,"y":568,"decorName":"tree2"},{"x":595,"y":648,"decorName":"tree1"},{"x":714,"y":454,"decorName":"tree2"},{"x":652,"y":328,"decorName":"tree2"},{"x":600,"y":447,"decorName":"tree2"},{"x":651,"y":498,"decorName":"tree1"},{"x":366,"y":286,"decorName":"tree2"},{"x":285,"y":257,"decorName":"tree2"},{"x":206,"y":283,"decorName":"tree1"},{"x":82,"y":385,"decorName":"tree1"},{"x":46,"y":324,"decorName":"tree1"},{"x":233,"y":355,"decorName":"tree1"},{"x":637,"y":400,"decorName":"tree1"},{"x":87,"y":258,"decorName":"tree2"},{"x":291,"y":321,"decorName":"tree1"},{"x":164,"y":388,"decorName":"tree2"},{"x":129,"y":334,"decorName":"tree1"},{"x":128,"y":593,"decorName":"tree2"},{"x":235,"y":685,"decorName":"tree2"},{"x":103,"y":688,"decorName":"tree2"},{"x":181,"y":635,"decorName":"tree1"},{"x":70,"y":625,"decorName":"tree1"}]')
+        json.loads(
+            '[{"x":611,"y":568,"decorName":"tree2"},{"x":595,"y":648,"decorName":"tree1"},{"x":714,"y":454,"decorName":"tree2"},{"x":652,"y":328,"decorName":"tree2"},{"x":600,"y":447,"decorName":"tree2"},{"x":651,"y":498,"decorName":"tree1"},{"x":366,"y":286,"decorName":"tree2"},{"x":285,"y":257,"decorName":"tree2"},{"x":206,"y":283,"decorName":"tree1"},{"x":82,"y":385,"decorName":"tree1"},{"x":46,"y":324,"decorName":"tree1"},{"x":233,"y":355,"decorName":"tree1"},{"x":637,"y":400,"decorName":"tree1"},{"x":87,"y":258,"decorName":"tree2"},{"x":291,"y":321,"decorName":"tree1"},{"x":164,"y":388,"decorName":"tree2"},{"x":129,"y":334,"decorName":"tree1"},{"x":128,"y":593,"decorName":"tree2"},{"x":235,"y":685,"decorName":"tree2"},{"x":103,"y":688,"decorName":"tree2"},{"x":181,"y":635,"decorName":"tree1"},{"x":70,"y":625,"decorName":"tree1"}]'
+        ),
     )
     set_decor(
         level_112,
-        json.loads('[{"x":50,"y":625,"decorName":"tree1"},{"x":50,"y":207,"decorName":"tree1"},{"x":50,"y":321,"decorName":"tree1"},{"x":50,"y":426,"decorName":"tree1"},{"x":50,"y":529,"decorName":"tree1"},{"x":398,"y":485,"decorName":"tree2"},{"x":500,"y":513,"decorName":"tree2"},{"x":500,"y":198,"decorName":"bush"},{"x":500,"y":274,"decorName":"bush"},{"x":500,"y":352,"decorName":"bush"}]')
+        json.loads(
+            '[{"x":50,"y":625,"decorName":"tree1"},{"x":50,"y":207,"decorName":"tree1"},{"x":50,"y":321,"decorName":"tree1"},{"x":50,"y":426,"decorName":"tree1"},{"x":50,"y":529,"decorName":"tree1"},{"x":398,"y":485,"decorName":"tree2"},{"x":500,"y":513,"decorName":"tree2"},{"x":500,"y":198,"decorName":"bush"},{"x":500,"y":274,"decorName":"bush"},{"x":500,"y":352,"decorName":"bush"}]'
+        ),
     )
     set_decor(
         level_113,
-        json.loads('[{"x":404,"y":415,"decorName":"tree2"},{"x":251,"y":420,"decorName":"bush"},{"x":187,"y":420,"decorName":"bush"},{"x":128,"y":420,"decorName":"bush"},{"x":221,"y":460,"decorName":"bush"},{"x":153,"y":460,"decorName":"bush"},{"x":183,"y":500,"decorName":"bush"},{"x":203,"y":596,"decorName":"pond"},{"x":203,"y":696,"decorName":"pond"}]')
+        json.loads(
+            '[{"x":404,"y":415,"decorName":"tree2"},{"x":251,"y":420,"decorName":"bush"},{"x":187,"y":420,"decorName":"bush"},{"x":128,"y":420,"decorName":"bush"},{"x":221,"y":460,"decorName":"bush"},{"x":153,"y":460,"decorName":"bush"},{"x":183,"y":500,"decorName":"bush"},{"x":203,"y":596,"decorName":"pond"},{"x":203,"y":696,"decorName":"pond"}]'
+        ),
     )
     set_decor(
         level_114,
-        json.loads('[{"x":2,"y":438,"decorName":"tree1"},{"x":2,"y":543,"decorName":"tree1"},{"x":2,"y":329,"decorName":"tree1"},{"x":548,"y":556,"decorName":"tree1"},{"x":563,"y":469,"decorName":"tree1"},{"x":475,"y":549,"decorName":"tree2"},{"x":419,"y":514,"decorName":"tree1"},{"x":488,"y":434,"decorName":"tree2"}]')
+        json.loads(
+            '[{"x":2,"y":438,"decorName":"tree1"},{"x":2,"y":543,"decorName":"tree1"},{"x":2,"y":329,"decorName":"tree1"},{"x":548,"y":556,"decorName":"tree1"},{"x":563,"y":469,"decorName":"tree1"},{"x":475,"y":549,"decorName":"tree2"},{"x":419,"y":514,"decorName":"tree1"},{"x":488,"y":434,"decorName":"tree2"}]'
+        ),
     )
     set_decor(
         level_115,
-        json.loads('[{"x":885,"y":343,"decorName":"tree1"},{"x":885,"y":440,"decorName":"tree1"},{"x":406,"y":383,"decorName":"tree2"},{"x":498,"y":306,"decorName":"tree2"},{"x":484,"y":190,"decorName":"tree2"}]')
+        json.loads(
+            '[{"x":885,"y":343,"decorName":"tree1"},{"x":885,"y":440,"decorName":"tree1"},{"x":406,"y":383,"decorName":"tree2"},{"x":498,"y":306,"decorName":"tree2"},{"x":484,"y":190,"decorName":"tree2"}]'
+        ),
     )
     set_decor(
         level_116,
-        json.loads('[{"x":220,"y":305,"decorName":"pond"},{"x":539,"y":569,"decorName":"tree2"},{"x":569,"y":516,"decorName":"tree1"},{"x":498,"y":497,"decorName":"tree2"},{"x":182,"y":165,"decorName":"tree2"},{"x":225,"y":228,"decorName":"tree1"},{"x":159,"y":245,"decorName":"tree1"},{"x":312,"y":254,"decorName":"tree2"}]')
+        json.loads(
+            '[{"x":220,"y":305,"decorName":"pond"},{"x":539,"y":569,"decorName":"tree2"},{"x":569,"y":516,"decorName":"tree1"},{"x":498,"y":497,"decorName":"tree2"},{"x":182,"y":165,"decorName":"tree2"},{"x":225,"y":228,"decorName":"tree1"},{"x":159,"y":245,"decorName":"tree1"},{"x":312,"y":254,"decorName":"tree2"}]'
+        ),
     )
     set_decor(
         level_117,
-        json.loads('[{"x":443,"y":578,"decorName":"pond"},{"x":412,"y":648,"decorName":"tree1"},{"x":516,"y":651,"decorName":"tree2"},{"x":694,"y":341,"decorName":"tree1"},{"x":647,"y":292,"decorName":"tree2"},{"x":623,"y":362,"decorName":"tree1"},{"x":640,"y":434,"decorName":"tree2"}]')
+        json.loads(
+            '[{"x":443,"y":578,"decorName":"pond"},{"x":412,"y":648,"decorName":"tree1"},{"x":516,"y":651,"decorName":"tree2"},{"x":694,"y":341,"decorName":"tree1"},{"x":647,"y":292,"decorName":"tree2"},{"x":623,"y":362,"decorName":"tree1"},{"x":640,"y":434,"decorName":"tree2"}]'
+        ),
     )
     set_decor(
         level_118,
-        json.loads('[{"x":711,"y":507,"decorName":"tree2"},{"x":605,"y":508,"decorName":"tree2"},{"x":193,"y":396,"decorName":"bush"},{"x":250,"y":398,"decorName":"bush"}]')
+        json.loads(
+            '[{"x":711,"y":507,"decorName":"tree2"},{"x":605,"y":508,"decorName":"tree2"},{"x":193,"y":396,"decorName":"bush"},{"x":250,"y":398,"decorName":"bush"}]'
+        ),
     )
     set_decor(
         level_119,
-        json.loads('[{"x":250,"y":391,"decorName":"tree2"},{"x":367,"y":237,"decorName":"tree1"},{"x":463,"y":317,"decorName":"tree2"},{"x":364,"y":395,"decorName":"tree1"}]')
+        json.loads(
+            '[{"x":250,"y":391,"decorName":"tree2"},{"x":367,"y":237,"decorName":"tree1"},{"x":463,"y":317,"decorName":"tree2"},{"x":364,"y":395,"decorName":"tree1"}]'
+        ),
     )
     set_decor(
         level_120,
-        json.loads('[{"x":189,"y":337,"decorName":"pond"},{"x":793,"y":368,"decorName":"tree1"},{"x":814,"y":285,"decorName":"tree2"},{"x":869,"y":389,"decorName":"tree2"},{"x":334,"y":413,"decorName":"tree1"},{"x":403,"y":402,"decorName":"tree2"},{"x":192,"y":410,"decorName":"tree1"}]')
+        json.loads(
+            '[{"x":189,"y":337,"decorName":"pond"},{"x":793,"y":368,"decorName":"tree1"},{"x":814,"y":285,"decorName":"tree2"},{"x":869,"y":389,"decorName":"tree2"},{"x":334,"y":413,"decorName":"tree1"},{"x":403,"y":402,"decorName":"tree2"},{"x":192,"y":410,"decorName":"tree1"}]'
+        ),
     )
     set_decor(
         level_121,
-        json.loads('[{"x":383,"y":500,"decorName":"pond"},{"x":700,"y":500,"decorName":"pond"},{"x":700,"y":400,"decorName":"pond"},{"x":700,"y":300,"decorName":"pond"},{"x":550,"y":433,"decorName":"bush"},{"x":549,"y":467,"decorName":"bush"},{"x":550,"y":395,"decorName":"bush"},{"x":186,"y":431,"decorName":"tree1"},{"x":196,"y":387,"decorName":"tree1"},{"x":541,"y":501,"decorName":"tree2"}]')
+        json.loads(
+            '[{"x":383,"y":500,"decorName":"pond"},{"x":700,"y":500,"decorName":"pond"},{"x":700,"y":400,"decorName":"pond"},{"x":700,"y":300,"decorName":"pond"},{"x":550,"y":433,"decorName":"bush"},{"x":549,"y":467,"decorName":"bush"},{"x":550,"y":395,"decorName":"bush"},{"x":186,"y":431,"decorName":"tree1"},{"x":196,"y":387,"decorName":"tree1"},{"x":541,"y":501,"decorName":"tree2"}]'
+        ),
     )
     set_decor(
         level_122,
-        json.loads('[{"x":150,"y":320,"decorName":"bush"},{"x":350,"y":320,"decorName":"bush"},{"x":550,"y":320,"decorName":"bush"}]')
+        json.loads(
+            '[{"x":150,"y":320,"decorName":"bush"},{"x":350,"y":320,"decorName":"bush"},{"x":550,"y":320,"decorName":"bush"}]'
+        ),
     )
 
     def set_blocks(level, blocks):
@@ -437,15 +464,21 @@ def add_loop_levels(apps: Apps, *args):
     )
     set_blocks(
         level_116,
-        json.loads('[{"type":"move_forwards"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
+        json.loads(
+            '[{"type":"move_forwards"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'
+        ),
     )
     set_blocks(
         level_117,
-        json.loads('[{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
+        json.loads(
+            '[{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'
+        ),
     )
     set_blocks(
         level_118,
-        json.loads('[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'),
+        json.loads(
+            '[{"type":"move_forwards"},{"type":"turn_left"},{"type":"turn_right"},{"type":"controls_repeat_while"},{"type":"variables_numeric_set"},{"type":"variables_increment"},{"type":"variables_get"},{"type":"math_number"},{"type":"logic_compare"}]'
+        ),
     )
 
     level_109 = Level.objects.get(name="109")
@@ -462,10 +495,22 @@ def delete_loop_levels(apps: Apps, *args):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("game", "0085_add_new_blocks")]
+    dependencies = [("common", "0045_otp"), ("game", "0085_add_new_blocks")]
     operations = [
+        migrations.AlterField(
+            model_name="level",
+            name="owner",
+            field=models.ForeignKey(
+                blank=True,
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="levels",
+                to="common.userprofile",
+            ),
+        ),
         migrations.RunPython(
             add_loop_levels,
             reverse_code=delete_loop_levels,
-        )
+        ),
     ]

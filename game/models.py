@@ -131,6 +131,7 @@ class Level(models.Model):
         blank=True,
         null=True,
         on_delete=models.CASCADE,
+        default=None,
     )
     fuel_gauge = models.BooleanField(default=True)
     max_fuel = models.IntegerField(default=50)
