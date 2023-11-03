@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.4 (2023-11-03)
+
+### Fix
+
+* Set game width and height to 100% ([#1516](https://github.com/ocadotechnology/rapid-router/issues/1516)) ([`a003670`](https://github.com/ocadotechnology/rapid-router/commit/a003670da092f15f15dcbbaf32057f78ba0982bf))
+
 ## v5.15.3 (2023-11-03)
 
 ### Fix
