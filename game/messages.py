@@ -2339,12 +2339,12 @@ def hint_level108():
 
 
 def title_level109():
-    return "Final challenge!"
+    return "Spiral challenge!"
 
 
 def description_level109():
     message = (
-        "For the last challenge, the road straight line sections of road start off increasing "
+        "For this challenge, the road straight line sections of road start off increasing "
         "by 1 after each turn and then switch to dividing by 2 with a twist!"
     )
     return build_description(title_level109(), message)
