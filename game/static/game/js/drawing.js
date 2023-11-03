@@ -1050,16 +1050,20 @@ ocargo.Drawing.startPopup = function (
   if (youtubeVideo[0]) {
     $("#modal-mascot").hide()
   }
+
+  // create a wrapper for the buttons that will be appended
+  let buttonDiv = $("<div>").addClass("modal-buttons")
+
+  const icons = [
+    $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
+    "NOT USED",
+    $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-right"),
+  ]
+
   // buttons are passed as html string..
   // hence this terribleness
   // check if we pass an array of buttons or just one button
   if (Array.isArray(buttons)) {
-    const icons = [
-      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
-      "NOT USED",
-      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-right"),
-    ]
-
     const links = [
       PREV_LEVEL_URL,
       "",
@@ -1067,8 +1071,7 @@ ocargo.Drawing.startPopup = function (
     ]
 
     const regexID = /id=\"*\w+_\w+\"/
-    // create a wrapper for the buttons that will be appended
-    let buttonDiv = $("<div>").addClass("modal-buttons")
+
     for (let i = 0; i < buttons.length; i++) {
       // get id with regex by stripping the html content
       let currentID = buttons[i].match(regexID)[0].slice(3).replaceAll('"', '')
@@ -1094,10 +1097,26 @@ ocargo.Drawing.startPopup = function (
 
   else if (buttons) {
     $('#modal-buttons').html(buttons)
+
+    let tryAgainButton = $("#try_again_button")
+    tryAgainButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(tryAgainButton)
+
+    let nextLevelButton = $("#next_level_button")
+    nextLevelButton.removeClass().addClass("navigation_button_portal_secondary long_button rapid-router-welcome button--icon")
+    nextLevelButton.append(icons[2])
+    buttonDiv.append(nextLevelButton)
+
+    $("#modal-buttons").html(buttonDiv)
   } else {
     $('#modal-buttons').html(
       ocargo.button.dismissButtonHtml('close_button', gettext('Close'))
     )
+
+    let closeButton = $("#close_button")
+    closeButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(closeButton)
+    $("#modal-buttons").html(buttonDiv)
   }
   // Show popup
   $("#myModal").show()

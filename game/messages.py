@@ -2339,12 +2339,12 @@ def hint_level108():
 
 
 def title_level109():
-    return "Final challenge!"
+    return "Spiral challenge!"
 
 
 def description_level109():
     message = (
-        "For the last challenge, the road straight line sections of road start off increasing "
+        "For this challenge, the road straight line sections of road start off increasing "
         "by 1 after each turn and then switch to dividing by 2 with a twist!"
     )
     return build_description(title_level109(), message)
@@ -2458,7 +2458,7 @@ def hint_level109():
     lambda: "Wiggle while you work",
     lambda: build_description(
         title_level117(),
-        "This time is's a little harder. We've added the directions back in."
+        "This time it's a little harder. We've added the directions back in."
         "<br>"
         "Can you put them in the right place?"
         "<br><br>"
