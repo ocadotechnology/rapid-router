@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.1 (2023-11-03)
+
+### Fix
+
+* **deps:** Bump django from 3.2.20 to 3.2.23 ([#1510](https://github.com/ocadotechnology/rapid-router/issues/1510)) ([`ab96e2c`](https://github.com/ocadotechnology/rapid-router/commit/ab96e2cddca1bdf6f96263eae311dcc5b298ee95))
+
 ## v5.15.0 (2023-11-01)
 
 ### Feature
