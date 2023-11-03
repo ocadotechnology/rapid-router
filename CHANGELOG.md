@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.2 (2023-11-03)
+
+### Fix
+
+* Upgrade Datatables to 1.13.6 ([#1511](https://github.com/ocadotechnology/rapid-router/issues/1511)) ([`e4b5353`](https://github.com/ocadotechnology/rapid-router/commit/e4b5353acb59c2e5f93e6295c9cc6ad6e62bc93b))
+
 ## v5.15.1 (2023-11-03)
 
 ### Fix
