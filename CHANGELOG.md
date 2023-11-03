@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.5 (2023-11-03)
+
+### Fix
+
+* Typo in description of 109 ([#1517](https://github.com/ocadotechnology/rapid-router/issues/1517)) ([`9f3a5e1`](https://github.com/ocadotechnology/rapid-router/commit/9f3a5e1143ac413b13907f9e252265911ef1d9eb))
+
 ## v5.15.4 (2023-11-03)
 
 ### Fix
