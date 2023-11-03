@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.3 (2023-11-03)
+
+### Fix
+
+* While loop final checks ([#1513](https://github.com/ocadotechnology/rapid-router/issues/1513)) ([`fa5b02a`](https://github.com/ocadotechnology/rapid-router/commit/fa5b02a767bde4e1836f828613e568cef01ced58))
+
+### Documentation
+
+* Contributing and license ([#1512](https://github.com/ocadotechnology/rapid-router/issues/1512)) ([`a314fbc`](https://github.com/ocadotechnology/rapid-router/commit/a314fbc14dd4020ab936e889e1a2dbc0ab85c987))
+
 ## v5.15.2 (2023-11-03)
 
 ### Fix
