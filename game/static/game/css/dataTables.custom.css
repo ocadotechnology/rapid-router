@@ -30,6 +30,7 @@ div.DTFC_RightBodyLiner {
 
 table.dataTable {
   border-collapse: collapse;
+  margin: 0;
 }
 
 table.dataTable thead th,
