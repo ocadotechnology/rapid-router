@@ -2458,7 +2458,7 @@ def hint_level109():
     lambda: "Wiggle while you work",
     lambda: build_description(
         title_level117(),
-        "This time is's a little harder. We've added the directions back in."
+        "This time it's a little harder. We've added the directions back in."
         "<br>"
         "Can you put them in the right place?"
         "<br><br>"
