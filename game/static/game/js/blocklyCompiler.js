@@ -241,7 +241,7 @@ ocargo.BlocklyCompiler.prototype.getCondition = function (conditionBlock) {
     );
   } else if (conditionBlock.type === "traffic_light") {
     return this.trafficLightCondition(conditionBlock);
-  } else if (conditionBlock.type === "declare_event") {
+  } else if (conditionBlock.type === "cow_crossing") {
     return this.cowCrossingCondition(conditionBlock);
   } else if (conditionBlock.type === "logic_compare") {
     return this.logicCompareCondition(conditionBlock);
