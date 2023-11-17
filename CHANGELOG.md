@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.7 (2023-11-17)
+
+### Fix
+
+* Level 36 message ([#1525](https://github.com/ocadotechnology/rapid-router/issues/1525)) ([`70fe5b5`](https://github.com/ocadotechnology/rapid-router/commit/70fe5b5951366ee818eabd96dd19408317b0f16a))
+
 ## v5.15.6 (2023-11-17)
 
 ### Fix
