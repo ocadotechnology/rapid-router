@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.6 (2023-11-17)
+
+### Fix
+
+* Compile cow block properly ([#1524](https://github.com/ocadotechnology/rapid-router/issues/1524)) ([`902d65e`](https://github.com/ocadotechnology/rapid-router/commit/902d65ef7fe606d1105a6b666aa31256e1eed019))
+
 ## v5.15.5 (2023-11-03)
 
 ### Fix
