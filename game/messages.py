@@ -862,15 +862,22 @@ def description_level36():
     message = youtube_link("https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0)
     message += (
         "<div class='popup_message'>"
-        "You can change the <b>If</b> block to make more choices. Click on the "
-        "star in the <b>If</b> block and add <b>Else if</b>. <br> This will tell "
-        "the van what to do if the first <b>If</b> direction can't be done. "
-        "<br> For example, tell the van to <b>Turn left</b> <b>If</b> the "
-        "<b>road exists left</b>. Add <b>Else if</b> the <b>road exists right"
-        "</b>, <b>Turn right</b>. <br> This uses fewer blocks and makes sure "
-        "that only one step is taken in each loop. <br> This type of "
-        "algorithm is called a 'general algorithm' as it can be used with most "
-        "simple routes."
+        "You can change the <b>if</b> block to make more choices. Click on the"
+        " cog in the <b>if</b> block and add <b>else if</b>."
+        "<br>"
+        "This will tell the van what to do if the first <b>if</b> direction"
+        " can't be done."
+        "<br>"
+        "You can also add an <b>else</b> block to tell the van what to do if"
+        " none of the conditions match."
+        "<br>"
+        "For example:"
+        "<br>"
+        "<b>If</b> there is a road ahead, go forwards."
+        "<br>"
+        "<b>Else if</b> there is a road left, turn left."
+        "<br>"
+        "<b>Else</b>, go right."
         "</div>"
     )
     return build_description(
@@ -2431,7 +2438,10 @@ def hint_level109():
     hint_level115,
 ) = (
     lambda: "Which way to turn? This way or that way?",
-    lambda: build_description(title_level115(), "Try to find the shortest route using Python code only. You are getting really good at this!"),
+    lambda: build_description(
+        title_level115(),
+        "Try to find the shortest route using Python code only. You are getting really good at this!",
+    ),
     lambda: "If you are stuck on this one, check that you are using the Python commands accurately. Click the Py Commands button to help you.",
 )
 
