@@ -19,7 +19,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "django==3.2.22",
+        "django==3.2.23",
         "django-csp==3.7",
         "django-js-reverse==0.9.1",
         "django-pipeline==2.0.8",
