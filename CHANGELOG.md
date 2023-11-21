@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.9 (2023-11-21)
+
+### Fix
+
+* Revert Django to 3.2.22 (CI/CD measuring) ([#1527](https://github.com/ocadotechnology/rapid-router/issues/1527)) ([`3dea756`](https://github.com/ocadotechnology/rapid-router/commit/3dea7565b15c54c91d07040e5725a5548252c105))
+
 ## v5.15.8 (2023-11-20)
 
 ### Fix
