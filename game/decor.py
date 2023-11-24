@@ -3,15 +3,18 @@
 """
 
 from builtins import object
+
 from rest_framework.reverse import reverse
+
 from game.theme import get_theme, get_all_themes
 
 
 class Decor(object):
-    def __init__(self, pk, name, url, width, height, theme, z_index):
+    def __init__(self, pk, name, url, xmas_url, width, height, theme, z_index):
         self.id = self.pk = pk
         self.name = name
         self.url = url
+        self.xmas_url = xmas_url
         self.width = width
         self.height = height
         self.theme = theme
@@ -19,292 +22,324 @@ class Decor(object):
 
 
 DECOR_DATA = {
-    (u"tree1", u"grass"): Decor(
+    ("tree1", "grass"): Decor(
         z_index=4,
-        name=u"tree1",
-        url=u"decor/grass/tree1.svg",
+        name="tree1",
+        url="decor/grass/tree1.svg",
+        xmas_url="decor/snow/tree1.svg",
         height=100,
         width=100,
         theme=get_theme("grass"),
         pk=1,
     ),
-    (u"tree2", u"grass"): Decor(
+    ("tree2", "grass"): Decor(
         z_index=4,
-        name=u"tree2",
-        url=u"decor/grass/tree2.svg",
+        name="tree2",
+        url="decor/grass/tree2.svg",
+        xmas_url="decor/snow/tree2.svg",
         height=100,
         width=100,
         theme=get_theme("grass"),
         pk=2,
     ),
-    (u"bush", u"grass"): Decor(
+    ("bush", "grass"): Decor(
         z_index=3,
-        name=u"bush",
-        url=u"decor/grass/bush.svg",
+        name="bush",
+        url="decor/grass/bush.svg",
+        xmas_url="decor/snow/bush.svg",
         height=50,
         width=50,
         theme=get_theme("grass"),
         pk=3,
     ),
-    (u"house", u"grass"): Decor(
+    ("house", "grass"): Decor(
         z_index=1,
-        name=u"house",
-        url=u"decor/grass/house.svg",
+        name="house",
+        url="decor/grass/house.svg",
+        xmas_url="decor/snow/house.svg",
         height=50,
         width=50,
         theme=get_theme("grass"),
         pk=4,
     ),
-    (u"cfc", u"grass"): Decor(
+    ("cfc", "grass"): Decor(
         z_index=1,
-        name=u"cfc",
+        name="cfc",
         # FUTURE: add external branding option
-        url=u"decor/grass/cfc.svg",
+        url="decor/grass/cfc.svg",
+        xmas_url="decor/grass/cfc.svg",
         height=107,
         width=100,
         theme=get_theme("grass"),
         pk=5,
     ),
-    (u"pond", u"grass"): Decor(
+    ("pond", "grass"): Decor(
         z_index=2,
-        name=u"pond",
-        url=u"decor/grass/pond.svg",
+        name="pond",
+        url="decor/grass/pond.svg",
+        xmas_url="decor/snow/pond.svg",
         height=100,
         width=150,
         theme=get_theme("grass"),
         pk=6,
     ),
-    (u"tree1", u"snow"): Decor(
+    ("tree1", "snow"): Decor(
         z_index=4,
-        name=u"tree1",
-        url=u"decor/snow/tree1.svg",
+        name="tree1",
+        url="decor/snow/tree1.svg",
+        xmas_url="decor/snow/tree1.svg",
         height=100,
         width=100,
         theme=get_theme("snow"),
         pk=7,
     ),
-    (u"tree2", u"snow"): Decor(
+    ("tree2", "snow"): Decor(
         z_index=4,
-        name=u"tree2",
-        url=u"decor/snow/tree2.svg",
+        name="tree2",
+        url="decor/snow/tree2.svg",
+        xmas_url="decor/snow/tree2.svg",
         height=100,
         width=100,
         theme=get_theme("snow"),
         pk=8,
     ),
-    (u"bush", u"snow"): Decor(
+    ("bush", "snow"): Decor(
         z_index=3,
-        name=u"bush",
-        url=u"decor/snow/bush.svg",
+        name="bush",
+        url="decor/snow/bush.svg",
+        xmas_url="decor/snow/bush.svg",
         height=50,
         width=50,
         theme=get_theme("snow"),
         pk=9,
     ),
-    (u"house", u"snow"): Decor(
+    ("house", "snow"): Decor(
         z_index=1,
-        name=u"house",
-        url=u"decor/snow/house.svg",
+        name="house",
+        url="decor/snow/house.svg",
+        xmas_url="decor/snow/house.svg",
         height=50,
         width=50,
         theme=get_theme("snow"),
         pk=10,
     ),
-    (u"cfc", u"snow"): Decor(
+    ("cfc", "snow"): Decor(
         z_index=1,
-        name=u"cfc",
+        name="cfc",
         # FUTURE: add external branding option
-        url=u"decor/snow/cfc.svg",
+        url="decor/snow/cfc.svg",
+        xmas_url="decor/snow/cfc.svg",
         height=107,
         width=100,
         theme=get_theme("snow"),
         pk=11,
     ),
-    (u"pond", u"snow"): Decor(
+    ("pond", "snow"): Decor(
         z_index=2,
-        name=u"pond",
-        url=u"decor/snow/pond.svg",
+        name="pond",
+        url="decor/snow/pond.svg",
+        xmas_url="decor/snow/pond.svg",
         height=100,
         width=150,
         theme=get_theme("snow"),
         pk=12,
     ),
-    (u"tile1", u"grass"): Decor(
+    ("tile1", "grass"): Decor(
         z_index=0,
-        name=u"tile1",
-        url=u"decor/grass/tile1.svg",
+        name="tile1",
+        url="decor/grass/tile1.svg",
+        xmas_url="decor/snow/tile1.svg",
         height=100,
         width=100,
         theme=get_theme("grass"),
         pk=13,
     ),
-    (u"tile1", u"snow"): Decor(
+    ("tile1", "snow"): Decor(
         z_index=0,
-        name=u"tile1",
-        url=u"decor/snow/tile1.svg",
+        name="tile1",
+        url="decor/snow/tile1.svg",
+        xmas_url="decor/snow/tile1.svg",
         height=100,
         width=100,
         theme=get_theme("snow"),
         pk=14,
     ),
-    (u"tile2", u"snow"): Decor(
+    ("tile2", "snow"): Decor(
         z_index=0,
-        name=u"tile2",
-        url=u"decor/snow/tile2.svg",
+        name="tile2",
+        url="decor/snow/tile2.svg",
+        xmas_url="decor/snow/tile2.svg",
         height=100,
         width=100,
         theme=get_theme("snow"),
         pk=15,
     ),
-    (u"house", u"farm"): Decor(
+    ("house", "farm"): Decor(
         z_index=1,
-        name=u"house",
-        url=u"decor/farm/house1.svg",
+        name="house",
+        url="decor/farm/house1.svg",
+        xmas_url="decor/snow/house1.svg",
         height=224,
         width=184,
         theme=get_theme("farm"),
         pk=16,
     ),
-    (u"cfc", u"farm"): Decor(
+    ("cfc", "farm"): Decor(
         z_index=1,
-        name=u"cfc",
-        url=u"decor/farm/cfc.svg",
+        name="cfc",
+        url="decor/farm/cfc.svg",
+        xmas_url="decor/snow/barn.svg",
         height=301,
         width=332,
         theme=get_theme("farm"),
         pk=17,
     ),
-    (u"bush", u"farm"): Decor(
+    ("bush", "farm"): Decor(
         z_index=3,
-        name=u"bush",
-        url=u"decor/farm/bush.svg",
+        name="bush",
+        url="decor/farm/bush.svg",
+        xmas_url="decor/snow/bush.svg",
         height=30,
         width=50,
         theme=get_theme("farm"),
         pk=18,
     ),
-    (u"tree1", u"farm"): Decor(
+    ("tree1", "farm"): Decor(
         z_index=4,
-        name=u"tree1",
-        url=u"decor/farm/tree1.svg",
+        name="tree1",
+        url="decor/farm/tree1.svg",
+        xmas_url="decor/snow/tree1.svg",
         height=100,
         width=100,
         theme=get_theme("farm"),
         pk=19,
     ),
-    (u"tree2", u"farm"): Decor(
+    ("tree2", "farm"): Decor(
         z_index=4,
-        name=u"tree2",
-        url=u"decor/farm/house2.svg",
+        name="tree2",
+        url="decor/farm/house2.svg",
+        xmas_url="decor/snow/house.svg",
         height=88,
         width=65,
         theme=get_theme("farm"),
         pk=20,
     ),
-    (u"pond", u"farm"): Decor(
+    ("pond", "farm"): Decor(
         z_index=2,
-        name=u"pond",
-        url=u"decor/farm/crops.svg",
+        name="pond",
+        url="decor/farm/crops.svg",
+        xmas_url="decor/snow/crops.svg",
         height=100,
         width=150,
         theme=get_theme("farm"),
         pk=21,
     ),
-    (u"tile1", u"farm"): Decor(
+    ("tile1", "farm"): Decor(
         z_index=0,
-        name=u"tile1",
-        url=u"decor/farm/tile1.svg",
+        name="tile1",
+        url="decor/farm/tile1.svg",
+        xmas_url="decor/snow/tile1.svg",
         height=337,
         width=194,
         theme=get_theme("farm"),
         pk=22,
     ),
-    (u"tile1", u"city"): Decor(
+    ("tile1", "city"): Decor(
         z_index=0,
-        name=u"tile1",
-        url=u"decor/city/pavementTile.png",
+        name="tile1",
+        url="decor/city/pavementTile.png",
+        xmas_url="decor/snow/tile1.svg",
         height=100,
         width=100,
         theme=get_theme("city"),
         pk=23,
     ),
-    (u"house", u"city"): Decor(
+    ("house", "city"): Decor(
         z_index=1,
-        name=u"house",
-        url=u"decor/city/house.svg",
+        name="house",
+        url="decor/city/house.svg",
+        xmas_url="decor/snow/house2.svg",
         height=50,
         width=50,
         theme=get_theme("city"),
         pk=24,
     ),
-    (u"bush", u"city"): Decor(
+    ("bush", "city"): Decor(
         z_index=3,
-        name=u"bush",
-        url=u"decor/city/bush.svg",
+        name="bush",
+        url="decor/city/bush.svg",
+        xmas_url="decor/snow/bush.svg",
         height=50,
         width=50,
         theme=get_theme("city"),
         pk=25,
     ),
-    (u"tree1", u"city"): Decor(
+    ("tree1", "city"): Decor(
         z_index=4,
-        name=u"tree1",
-        url=u"decor/city/shop.svg",
+        name="tree1",
+        url="decor/city/shop.svg",
+        xmas_url="decor/snow/shop.svg",
         height=70,
         width=70,
         theme=get_theme("city"),
         pk=26,
     ),
-    (u"tree2", u"city"): Decor(
+    ("tree2", "city"): Decor(
         z_index=4,
-        name=u"tree2",
-        url=u"decor/city/school.svg",
+        name="tree2",
+        url="decor/city/school.svg",
+        xmas_url="decor/snow/school.svg",
         height=100,
         width=100,
         theme=get_theme("city"),
         pk=27,
     ),
-    (u"pond", u"city"): Decor(
+    ("pond", "city"): Decor(
         z_index=2,
-        name=u"pond",
-        url=u"decor/city/hospital.svg",
+        name="pond",
+        url="decor/city/hospital.svg",
+        xmas_url="decor/snow/hospital.svg",
         height=157,
         width=140,
         theme=get_theme("city"),
         pk=28,
     ),
-    (u"cfc", u"city"): Decor(
+    ("cfc", "city"): Decor(
         z_index=1,
-        name=u"cfc",
+        name="cfc",
         # FUTURE: add external branding option
-        url=u"decor/grass/cfc.svg",
+        url="decor/grass/cfc.svg",
+        xmas_url="decor/snow/cfc.svg",
         height=107,
         width=100,
         theme=get_theme("city"),
         pk=29,
     ),
-    (u"tile2", u"grass"): Decor(
+    ("tile2", "grass"): Decor(
         z_index=0,
-        name=u"tile2",
-        url=u"decor/snow/tile2.svg",
+        name="tile2",
+        url="decor/snow/tile2.svg",
+        xmas_url="decor/snow/tile2.svg",
         height=100,
         width=100,
         theme=get_theme("grass"),
         pk=30,
     ),
-    (u"tile2", u"farm"): Decor(
+    ("tile2", "farm"): Decor(
         z_index=0,
-        name=u"tile2",
-        url=u"decor/snow/tile2.svg",
+        name="tile2",
+        url="decor/snow/tile2.svg",
+        xmas_url="decor/snow/tile2.svg",
         height=100,
         width=100,
         theme=get_theme("farm"),
         pk=31,
     ),
-    (u"tile2", u"city"): Decor(
+    ("tile2", "city"): Decor(
         z_index=0,
-        name=u"tile2",
-        url=u"decor/snow/tile2.svg",
+        name="tile2",
+        url="decor/snow/tile2.svg",
+        xmas_url="decor/snow/tile2.svg",
         height=100,
         width=100,
         theme=get_theme("city"),

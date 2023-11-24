@@ -668,7 +668,8 @@ ocargo.Drawing = function (startingPosition) {
   this.renderDecor = function (decors) {
     for (let i = 0; i < decors.length; i++) {
       let decor = decors[i]
-      let src = ocargo.Drawing.raphaelImageDir + decor.url
+      let decorUrl = new Date().getMonth() === 11 ? decor.xmas_url : decor.url
+      let src = ocargo.Drawing.raphaelImageDir + decorUrl
       let x = decor.x + PAPER_PADDING
       let y = PAPER_HEIGHT - decor.y - decor.height + PAPER_PADDING
       let width = decor.width
@@ -903,7 +904,7 @@ ocargo.Drawing = function (startingPosition) {
       for (let j = 0; j < GRID_HEIGHT; j++) {
         grid[i][j].attr({
           stroke: currentTheme.border,
-          fill: currentTheme.background,
+          fill: new Date().getMonth() === 11 ? THEMES.snow.background : currentTheme.background,
           'fill-opacity': 1
         })
       }

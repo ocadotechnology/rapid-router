@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division
 
+import datetime
 import json
 from builtins import object, str
 
@@ -22,8 +23,10 @@ from game.cache import (
     cached_level_decor,
     cached_level_blocks,
 )
+from game.character import get_character
 from game.decor import get_decor_element
 from game.models import Level, Attempt, Workspace
+from game.theme import get_theme
 from game.views.level_solutions import solutions
 from .helper import renderError
 
@@ -161,10 +164,25 @@ def play_level(request, level, from_editor=False):
     lesson = mark_safe(lessonCall())
     hint = mark_safe(hintCall())
 
-    house = get_decor_element("house", level.theme).url
-    cfc = get_decor_element("cfc", level.theme).url
-    background = get_decor_element("tile1", level.theme).url
     character = level.character
+    character_url = character.top_down
+    wreckage_url = "van_wreckage.svg"
+
+    if datetime.datetime.now().month == 12:
+        house = get_decor_element("house", get_theme("snow")).url
+        cfc = get_decor_element("cfc", get_theme("snow")).url
+        background = get_decor_element("tile1", get_theme("snow")).url
+
+        if character == get_character("Van"):
+            character_url = "characters/top_view/Sleigh.svg"
+            wreckage_url = "sleigh_wreckage.svg"
+    else:
+        house = get_decor_element("house", level.theme).url
+        cfc = get_decor_element("cfc", level.theme).url
+        background = get_decor_element("tile1", level.theme).url
+
+    character_width = character.width
+    character_height = character.height
 
     workspace = None
     python_workspace = None
@@ -191,11 +209,6 @@ def play_level(request, level, from_editor=False):
         python_workspace = attempt.python_workspace
 
     decor_data = cached_level_decor(level)
-
-    character_url = character.top_down
-    character_width = character.width
-    character_height = character.height
-    wreckage_url = "van_wreckage.svg"
 
     if night_mode:
         block_data = level_management.get_night_blocks(level)
