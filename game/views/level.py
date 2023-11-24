@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division
 
-import datetime
 import json
 from builtins import object, str
+from datetime import datetime
 
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -168,7 +168,7 @@ def play_level(request, level, from_editor=False):
     character_url = character.top_down
     wreckage_url = "van_wreckage.svg"
 
-    if datetime.datetime.now().month == 12:
+    if datetime.now().month == 12:
         house = get_decor_element("house", get_theme("snow")).url
         cfc = get_decor_element("cfc", get_theme("snow")).url
         background = get_decor_element("tile1", get_theme("snow")).url
