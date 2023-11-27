@@ -2727,7 +2727,6 @@ ocargo.LevelEditor = function(levelId) {
 /******************/
 
 $(function() {
-    var editor = new ocargo.LevelEditor(LEVEL);
     var subtitle = interpolate(
         gettext('Click %(help_icon)s%(help_label)s for clues on getting started.'), {
             help_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/help.svg', 'popupHelp'),
@@ -2738,24 +2737,16 @@ $(function() {
     if (LEVEL === null){
         ocargo.Drawing.startPopup(gettext('Welcome to the Level editor!'), subtitle, '');
     } else {
-        var optionAFunc = function(){
-            $(".ocargo-modal").hide();
-            $(".modal-overlay").hide();
-        };
+        let buttons = '';
+        buttons += ocargo.button.dismissButtonHtml("edit_button", "Edit");
+        buttons += ocargo.button.redirectButtonHtml("play_button", Urls.levels() + "custom/" + LEVEL,"Play");
 
-        var optionBFunc = function(){
-            window.location.replace("/rapidrouter/custom/"+LEVEL+"/");
-        };
-
-        ocargo.Drawing.startOptionsPopup(
+        ocargo.Drawing.startPopup(
             gettext('Welcome back!'),
             gettext('Would you like to edit or play with your design?'),
             '',
-            optionAFunc,
-            optionBFunc,
-            "Edit",
-            "Play",
-            ''
+            false,
+            buttons,
           );
     }
 
