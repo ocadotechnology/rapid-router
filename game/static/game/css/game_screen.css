@@ -349,6 +349,12 @@ button > svg {
   padding-right: 10px;
 }
 
+.navigation_button_portal_secondary.long_button span {
+  text-align: left;
+  margin: 0;
+  width: 100%;
+}
+
 .long_button img + span {
   line-height: 30px;
   margin-left: 2px;
