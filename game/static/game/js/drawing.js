@@ -1103,10 +1103,19 @@ ocargo.Drawing.startPopup = function (
     tryAgainButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
     buttonDiv.append(tryAgainButton)
 
+    let editButton = $("#edit_button")
+    editButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(editButton)
+
     let nextLevelButton = $("#next_level_button")
     nextLevelButton.removeClass().addClass("navigation_button_portal_secondary long_button rapid-router-welcome button--icon")
     nextLevelButton.append(icons[2])
     buttonDiv.append(nextLevelButton)
+
+    let playButton = $("#play_button")
+    playButton.removeClass().addClass("navigation_button_portal_secondary long_button rapid-router-welcome button--icon")
+    playButton.append(icons[2])
+    buttonDiv.append(playButton)
 
     $("#modal-buttons").html(buttonDiv)
   } else {
@@ -1139,24 +1148,6 @@ ocargo.Drawing.startYesNoPopup = function (
   ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
   $('#modal-yesBtn').click(yesFunction)
   $('#modal-noBtn').click(noFunction)
-}
-
-// This provides a pop-up with 2 options
-ocargo.Drawing.startOptionsPopup = function (
-  title,
-  subtitle,
-  message,
-  optionAFunction,
-  optionBFunction,
-  optionAText,
-  optionBText,
-  mascot
-) {
-  let buttonHtml =
-    '<button id="modal-optionABtn" class="navigation_button long_button">' + optionAText + '</button> <button id="modal-optionBBtn" class="navigation_button long_button">' + optionBText + '</button>'
-  ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
-  $('#modal-optionABtn').click(optionAFunction)
-  $('#modal-optionBBtn').click(optionBFunction)
 }
 
 // This is the function that starts the pop-up when there is no internet connection while playing the game
