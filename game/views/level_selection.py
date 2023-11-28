@@ -12,6 +12,7 @@ import game.messages as messages
 from game import app_settings, random_road
 from game.cache import cached_episode
 from game.models import Attempt, Episode, Level
+
 from .level_editor import play_anonymous_level
 
 
@@ -43,7 +44,12 @@ def fetch_episode_data_from_database(early_access, start, end):
                 minName = level_name
 
             levels.append(
-                {"id": level.id, "name": level_name, "maxScore": max_score(level), "title": get_level_title(level_name)}
+                {
+                    "id": level.id,
+                    "name": level_name,
+                    "maxScore": max_score(level),
+                    "title": get_level_title(level_name),
+                }
             )
 
         e = {
@@ -78,7 +84,10 @@ def fetch_episode_data(early_access, start=1, end=12):
         dict(
             episode,
             name=messages.get_episode_title(episode["id"]),
-            levels=[dict(level, title=get_level_title(level["name"])) for level in episode["levels"]],
+            levels=[
+                dict(level, title=get_level_title(level["name"]))
+                for level in episode["levels"]
+            ],
         )
         for episode in data
     ]
@@ -114,7 +123,8 @@ def get_blockly_episodes(request):
 
 
 def get_python_episodes(request):
-    return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 10, 11)
+    return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 10, 15)
+
 
 def levels(request):
     """Loads a page with all levels listed.
@@ -145,13 +155,17 @@ def levels(request):
     for episode in blockly_episodes:
         for level in episode["levels"]:
             attach_attempts_to_level(attempts, level)
-            level["locked_for_class"] = Level.objects.get(id=level["id"]).locked_for_class
+            level["locked_for_class"] = Level.objects.get(
+                id=level["id"]
+            ).locked_for_class
 
     python_episodes = get_python_episodes(request)
     for episode in python_episodes:
         for level in episode["levels"]:
             attach_attempts_to_level(attempts, level)
-            level["locked_for_class"] = Level.objects.get(id=level["id"]).locked_for_class
+            level["locked_for_class"] = Level.objects.get(
+                id=level["id"]
+            ).locked_for_class
 
     owned_level_data = []
     directly_shared_levels = []
@@ -161,7 +175,12 @@ def levels(request):
 
         for level in owned_levels:
             owned_level_data.append(
-                {"id": level.id, "title": level.name, "score": attempts.get(level.id), "maxScore": 10}
+                {
+                    "id": level.id,
+                    "title": level.name,
+                    "score": attempts.get(level.id),
+                    "maxScore": 10,
+                }
             )
 
         for level in shared_levels:
@@ -176,20 +195,26 @@ def levels(request):
                     if teacher not in indirectly_shared_levels:
                         indirectly_shared_levels[teacher] = []
 
-                    indirectly_shared_levels[teacher].append(get_shared_level(level, attempts))
+                    indirectly_shared_levels[teacher].append(
+                        get_shared_level(level, attempts)
+                    )
                 else:
                     student_class = level.owner.student.class_field
                     class_teacher = student_class.teacher.new_user
 
                     # get levels shared by students in the current user's classes
                     if class_teacher == user:
-                        directly_shared_levels.append(get_shared_level(level, attempts, student_class))
+                        directly_shared_levels.append(
+                            get_shared_level(level, attempts, student_class)
+                        )
                     # get levels shared by students in the other teachers' classes
                     else:
                         if class_teacher not in indirectly_shared_levels:
                             indirectly_shared_levels[class_teacher] = []
 
-                        indirectly_shared_levels[class_teacher].append(get_shared_level(level, attempts, student_class))
+                        indirectly_shared_levels[class_teacher].append(
+                            get_shared_level(level, attempts, student_class)
+                        )
             # if user is a student or a standard teacher, just get levels shared with them directly.
             else:
                 directly_shared_levels.append(get_shared_level(level, attempts))

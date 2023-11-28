@@ -96,7 +96,6 @@ ocargo.Model.prototype.isCowCrossing = function(type) {
     var thisNode = this.van.getPosition().currentNode;
     this.observe('cow crossing');
     var nodes = thisNode.connectedNodes;
-    nodes.push(thisNode);
     for(var i = 0; i < nodes.length; i++){
         var node = nodes[i];
         var cow = this.getCowForNode(node, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);

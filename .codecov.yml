@@ -6,15 +6,8 @@ coverage:
     patch:
       default:
         target: 90%
-  
-comment:
-  layout: "reach, diff, flags, files"
-  behavior: new
-  require_changes: false
-  require_base: no
-  require_head: yes
-  branches:
-    - "!master"
+
+comment: false
 
 ignore:
   - "game/tests/*.py"
