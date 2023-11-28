@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.13 (2023-11-28)
+
+### Fix
+
+* Bring back editor var ([#1542](https://github.com/ocadotechnology/rapid-router/issues/1542)) ([`d7cb10e`](https://github.com/ocadotechnology/rapid-router/commit/d7cb10eb0a5d2aad03f3999e6a9635177ed4b0b8))
+
 ## v5.15.12 (2023-11-28)
 
 ### Fix

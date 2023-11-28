@@ -2727,6 +2727,7 @@ ocargo.LevelEditor = function(levelId) {
 /******************/
 
 $(function() {
+    var editor = new ocargo.LevelEditor(LEVEL); // This seems unused but removing it breaks the editor page.
     var subtitle = interpolate(
         gettext('Click %(help_icon)s%(help_label)s for clues on getting started.'), {
             help_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/help.svg', 'popupHelp'),
