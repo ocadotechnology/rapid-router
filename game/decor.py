@@ -67,7 +67,7 @@ DECOR_DATA = {
         name="cfc",
         # FUTURE: add external branding option
         url="decor/grass/cfc.svg",
-        xmas_url="decor/grass/cfc.svg",
+        xmas_url="decor/snow/cfc.svg",
         height=107,
         width=100,
         theme=get_theme("grass"),
