@@ -41,6 +41,51 @@
     {% endfor %}
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var storedEpisode = localStorage.getItem('currentEpisode');
+    var allCollapsibles = document.querySelectorAll('.collapse');
+
+    // Function to close all except the given ID
+    function closeAllExcept(openId) {
+        allCollapsibles.forEach(function(collapsible) {
+            if (collapsible.id !== openId) {
+                collapsible.classList.remove('in');
+                var toggle = document.querySelector(`[data-target="#${collapsible.id}"]`);
+                toggle.classList.add('collapsed');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    // Open the accordion for the stored episode
+    var accordionToOpen = storedEpisode ? document.querySelector(`#collapse-${storedEpisode}`) : null;
+    if (accordionToOpen) {
+        accordionToOpen.classList.add('in');
+        var toggle = document.querySelector(`[data-target="#${accordionToOpen.id}"]`);
+        toggle.classList.remove('collapsed');
+        toggle.setAttribute('aria-expanded', 'true');
+    } else {
+        closeAllExcept(); // Close all if no stored episode
+    }
+
+    // Set up event listeners for accordion toggles
+    var accordionToggles = document.querySelectorAll('.episode-title');
+    accordionToggles.forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            var collapseId = toggle.getAttribute('data-target').replace('#', '');
+            var isOpened = toggle.getAttribute('aria-expanded') === 'false'; // Notice the change here
+            localStorage.setItem('currentEpisode', isOpened ? collapseId.split('-')[1] : null);
+            if (isOpened) {
+                closeAllExcept(collapseId);
+            }
+        });
+    });
+
+});
+
+</script>
+
 <script src="{% static "game/js/level_selection.js" %}"></script>
 {% endblock %}
 

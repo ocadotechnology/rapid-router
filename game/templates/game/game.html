@@ -79,6 +79,18 @@
     var PYTHON_WORKSPACE = {% if python_workspace == None %}null{% else %}"{{python_workspace|linebreaksbr}}"{% endif %};
   </script>
 
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+      var dataElement = document.getElementById('data');
+      var currentEpisode = dataElement ? dataElement.getAttribute('data-episode') : null;
+  
+      if (currentEpisode) {
+          localStorage.setItem('currentEpisode', currentEpisode);
+      }
+  });
+  
+</script>
+ 
 
   <script defer type="text/javascript" src="{% static 'game/js/utils.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
