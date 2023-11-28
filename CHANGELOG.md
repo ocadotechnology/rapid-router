@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.12 (2023-11-28)
+
+### Fix
+
+* Buttons in level editor popup ([#1539](https://github.com/ocadotechnology/rapid-router/issues/1539)) ([`4ceb8a7`](https://github.com/ocadotechnology/rapid-router/commit/4ceb8a7a27aa57bcc25b9cd884a587623b9b71b6))
+
 ## v5.15.11 (2023-11-22)
 
 ### Fix
