@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.1 (2023-11-30)
+
+### Fix
+
+* Cows are always visible and horn horns on the right square ([#1545](https://github.com/ocadotechnology/rapid-router/issues/1545)) ([`d44adc7`](https://github.com/ocadotechnology/rapid-router/commit/d44adc7ac42cba05a393d52d1a9018c60d97885d))
+
 ## v5.16.0 (2023-11-30)
 
 ### Feature
