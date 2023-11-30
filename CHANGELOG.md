@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.0 (2023-11-30)
+
+### Feature
+
+* Enable automatic Christmas theme in December ([#1538](https://github.com/ocadotechnology/rapid-router/issues/1538)) ([`8cb7edd`](https://github.com/ocadotechnology/rapid-router/commit/8cb7edda3f424bd06745e2042a1fb2ec6aef98bf))
+
 ## v5.15.13 (2023-11-28)
 
 ### Fix
