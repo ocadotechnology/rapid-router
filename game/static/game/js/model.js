@@ -44,10 +44,6 @@ ocargo.Model.prototype.reset = function() {
         this.cows[j].reset();
     }
 
-    // Display cow on origin node if exists
-    var node = this.map.originCurrentNode;
-    this.setCowsActive(node);
-
     this.timestamp = 0;
     this.movementTimestamp = 0;
     this.reasonForTermination  =  null;
@@ -92,18 +88,9 @@ ocargo.Model.prototype.isDeadEnd = function() {
 };
 
 ocargo.Model.prototype.isCowCrossing = function(type) {
-
-    var thisNode = this.van.getPosition().currentNode;
+    const currentNode = this.van.getPosition().currentNode;
     this.observe('cow crossing');
-    var nodes = thisNode.connectedNodes;
-    for(var i = 0; i < nodes.length; i++){
-        var node = nodes[i];
-        var cow = this.getCowForNode(node, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
-        if (cow) {
-            return true;
-        }
-    }
-    return false;
+    return this.getCowForNode(currentNode, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
 };
 
 ocargo.Model.prototype.isTrafficLightRed = function() {
@@ -139,11 +126,10 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 // true if it was a valid action or false otherwise
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
-    //Crash?
-    let previousNodeCow = this.getCowForNode(this.van.getPosition().currentNode, ocargo.Cow.ACTIVE);
-    let collisionWithCow = previousNodeCow && nextNode !== this.van.getPosition().currentNode;
+    // Crash?
+    let currentNodeHasCow = this.getCowForNode(this.van.getPosition().currentNode, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
 
-    if (collisionWithCow) {
+    if (currentNodeHasCow) {
         handleCrash(this, gettext('You ran into a cow! '),
             'COLLISION_WITH_COW', 'collision with cow van move action: ');
         return false;
@@ -241,9 +227,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         return false;
     }
 
-    // Display cow on node if exists
-    this.setCowsActive(nextNode);
-
     this.van.move(nextNode);
 
     // Van movement animation
@@ -302,17 +285,6 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         model.reasonForTermination = 'CRASH'; // used to determine whether the play controls ('forward', 'left' and 'right' arrows) are still usable
     }
-};
-
-ocargo.Model.prototype.setCowsActive = function(nextNode) {
-    var nodes = this.getNodesAhead(nextNode);
-    for (var i = 0 ; i < nodes.length ; i++){
-        var cow = this.getCowForNode(nodes[i], ocargo.Cow.READY);
-        if (cow){
-            cow.setActive(this, nodes[i]);
-        }
-    }
-    return;
 };
 
 ocargo.Model.prototype.makeDelivery = function(destination) {
@@ -417,23 +389,18 @@ ocargo.Model.prototype.deliver = function() {
 };
 
 ocargo.Model.prototype.sound_horn = function() {
-    var currentNode = this.van.getPosition().currentNode
+    const currentNode = this.van.getPosition().currentNode
     ocargo.animation.appendAnimation({
         type: 'callable',
         functionType: 'playSound',
         functionCall: ocargo.sound.sound_horn,
         description: 'van sound: sounding the horn'
     });
-
-    var nodes = currentNode.connectedNodes;
-    nodes.push(currentNode);
-    nodes.forEach( (node) => {
-        var cow = this.getCowForNode(node, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
-        if (cow) {
-            cow.queueLeaveAnimation(this, node);
-            cow.setInactive(this, node);
-        };
-    });
+    let cow = this.getCowForNode(currentNode, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
+    if (cow) {
+        cow.queueLeaveAnimation(this, currentNode);
+        cow.setInactive(this, currentNode);
+    }
     return true;
 };
 

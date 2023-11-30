@@ -25,14 +25,30 @@ ocargo.Animation = function(model, decor, drawing) {
     this.drawing.renderOrigin(this.model.map.startingPosition());
     this.drawing.renderDestinations(this.model.map.getDestinations());
     this.drawing.renderTrafficLights(this.model.trafficLights);
+
+	this.addCows();
+
 	this.drawing.renderCharacter();
 
-     this._updateFuelGauge(100);
+	this._updateFuelGauge(100);
 };
 
 ocargo.Animation.prototype.isFinished = function() {
 	return this.finished;
 };
+
+ocargo.Animation.prototype.addCows = function() {
+	let cows = this.model.cows;
+
+	for (let i = 0 ; i < cows.length ; i++){
+		let cow = cows[i];
+		for (let j = 0; j < cow.potentialNodes.length; j++) {
+			const cowImage = this.drawing.renderCow(cow.id, cow.potentialNodes[j].coordinate, cow.potentialNodes[j], 0, cow.type);
+			this.numberOfCowsOnMap++;
+			this.activeCows.push(cowImage);
+		}
+	}
+}
 
 ocargo.Animation.prototype.removeCows = function() {
 	for (var i = 0; i < this.activeCows.length; i++) {
@@ -60,6 +76,7 @@ ocargo.Animation.prototype.resetAnimation = function() {
 	}
 
 	this.removeCows();
+	this.addCows();
 
 	for(var i = 0; i < this.model.map.destinations.length; i++) {
 		var destination = this.model.map.destinations[i];
@@ -112,7 +129,7 @@ ocargo.Animation.prototype.stepAnimation = function(callback) {
 			var animation = timestampQueue.shift();
             var delay = this.performAnimation(animation);
 			if (this.crashed && delay != 0) {
-				//Special case for crashing into cow as the van travel less before crashing
+				// Special case for crashing into cow as the van travel less before crashing
 				maxDelay = delay;
 			} else {
 				maxDelay = Math.max(maxDelay, delay);
@@ -348,11 +365,6 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			break;
 		case 'trafficlight':
 			this.drawing.transitionTrafficLight(animation.id, animation.colour, duration/2);
-			break;
-		case 'cow':
-            this.numberOfCowsOnMap++;
-			var activeCow = this.drawing.renderCow(animation.id, animation.coordinate, animation.node, duration, animation.cowType);
-			this.activeCows.push(activeCow);
 			break;
         case 'cow_leave':
             this.numberOfCowsOnMap--;
