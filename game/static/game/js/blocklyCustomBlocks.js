@@ -9,20 +9,26 @@ function initCustomBlocks() {
 }
 
 function initCustomBlocksDescription() {
+  let fieldImage = new Blockly.FieldImage(
+      ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL,
+      ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
+      ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH
+  )
+
+  if(new Date().getMonth() === 11 && CHARACTER_NAME === "Van") {
+    fieldImage = new Blockly.FieldImage(
+        ocargo.Drawing.imageDir + "characters/front_view/Sleigh.svg",
+        ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
+        ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH
+    )
+  }
+
   Blockly.Blocks["start"] = {
     // Beginning block - identifies the start of the program
     init: function () {
       ocargo.blocklyControl.numStartBlocks++;
       this.setColour(50);
-      this.appendDummyInput()
-        .appendField(gettext("Start"))
-        .appendField(
-          new Blockly.FieldImage(
-            ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL,
-            ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
-            ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH
-          )
-        );
+      this.appendDummyInput().appendField(gettext("Start")).appendField(fieldImage);
       this.setNextStatement(true, "Action");
       this.setTooltip(gettext("The beginning of the program"));
       this.setDeletable(false);
