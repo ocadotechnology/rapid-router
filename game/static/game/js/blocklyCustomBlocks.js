@@ -17,7 +17,7 @@ function initCustomBlocksDescription() {
 
   if(new Date().getMonth() === 11 && CHARACTER_NAME === "Van") {
     fieldImage = new Blockly.FieldImage(
-        ocargo.Drawing.imageDir + "characters/front_view/Sleigh.svg",
+        ocargo.Drawing.imageDir + "characters/top_view/Sleigh.svg",
         ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
         ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH
     )
