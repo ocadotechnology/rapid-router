@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.3 (2023-12-05)
+
+### Fix
+
+* Add icon and code example to level 36 description ([#1551](https://github.com/ocadotechnology/rapid-router/issues/1551)) ([`e21fb58`](https://github.com/ocadotechnology/rapid-router/commit/e21fb58e0ee1702d96f9fc055c0945b287c39b95))
+
 ## v5.16.2 (2023-12-05)
 
 ### Fix
