@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.2 (2023-12-05)
+
+### Fix
+
+* Use sleigh image on start block for xmas theme ([#1549](https://github.com/ocadotechnology/rapid-router/issues/1549)) ([`0b72589`](https://github.com/ocadotechnology/rapid-router/commit/0b725890ad7c1908440fc2d985e028f6335b6963))
+
 ## v5.16.1 (2023-11-30)
 
 ### Fix
