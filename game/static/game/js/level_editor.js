@@ -47,10 +47,26 @@ ocargo.LevelEditor = function(levelId) {
     var paper = $('#paper'); // May as well cache this
 
     var modes = {
-        ADD_ROAD_MODE: {name: gettext('Add road'), url: ocargo.Drawing.imageDir + "icons/add_road.svg"},
-        DELETE_ROAD_MODE: {name: gettext('Delete road'), url: ocargo.Drawing.imageDir + "icons/delete_road.svg"},
-        MARK_DESTINATION_MODE: {name: gettext('Mark end'), url: ocargo.Drawing.imageDir + "icons/destination.svg"},
-        MARK_ORIGIN_MODE: {name: gettext('Mark start'), url: ocargo.Drawing.imageDir + "icons/origin.svg"}
+        ADD_ROAD_MODE: {
+            name: gettext('Add road'),
+            url: ocargo.Drawing.imageDir + 'icons/add_road.svg',
+            id: 'add_road',
+        },
+        DELETE_ROAD_MODE: {
+            name: gettext('Delete road'),
+            url: ocargo.Drawing.imageDir + 'icons/delete_road.svg',
+            id: 'delete_road',
+        },
+        MARK_DESTINATION_MODE: {
+            name: gettext('Mark end'),
+            url: ocargo.Drawing.imageDir + 'icons/destination.svg',
+            id: 'end',
+        },
+        MARK_ORIGIN_MODE: {
+            name: gettext('Mark start'),
+            url: ocargo.Drawing.imageDir + 'icons/origin.svg',
+            id: 'start',
+        },
     };
 
     /*********/
@@ -235,6 +251,10 @@ ocargo.LevelEditor = function(levelId) {
         function changeCurrentToolDisplay(mode){
             $('#currentToolText').text(mode.name);
             $('#currentToolIcon').attr("src", mode.url);
+            Object.values(modes).forEach((element) => {
+                $(`#${element.id}`).addClass('unselected');
+            });
+            $(`#${mode.id}`).removeClass('unselected');
         }
 
         function setupMapTab() {
@@ -2707,7 +2727,7 @@ ocargo.LevelEditor = function(levelId) {
 /******************/
 
 $(function() {
-    var editor = new ocargo.LevelEditor(LEVEL);
+    var editor = new ocargo.LevelEditor(LEVEL); // This seems unused but removing it breaks the editor page.
     var subtitle = interpolate(
         gettext('Click %(help_icon)s%(help_label)s for clues on getting started.'), {
             help_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/help.svg', 'popupHelp'),
@@ -2718,24 +2738,16 @@ $(function() {
     if (LEVEL === null){
         ocargo.Drawing.startPopup(gettext('Welcome to the Level editor!'), subtitle, '');
     } else {
-        var optionAFunc = function(){
-            $(".ocargo-modal").hide();
-            $(".modal-overlay").hide();
-        };
+        let buttons = '';
+        buttons += ocargo.button.dismissButtonHtml("edit_button", "Edit");
+        buttons += ocargo.button.redirectButtonHtml("play_button", Urls.levels() + "custom/" + LEVEL,"Play");
 
-        var optionBFunc = function(){
-            window.location.replace("/rapidrouter/custom/"+LEVEL+"/");
-        };
-
-        ocargo.Drawing.startOptionsPopup(
+        ocargo.Drawing.startPopup(
             gettext('Welcome back!'),
             gettext('Would you like to edit or play with your design?'),
             '',
-            optionAFunc,
-            optionBFunc,
-            "Edit",
-            "Play",
-            ''
+            false,
+            buttons,
           );
     }
 

@@ -2,6 +2,152 @@
 
 <!--next-version-placeholder-->
 
+## v5.15.13 (2023-11-28)
+
+### Fix
+
+* Bring back editor var ([#1542](https://github.com/ocadotechnology/rapid-router/issues/1542)) ([`d7cb10e`](https://github.com/ocadotechnology/rapid-router/commit/d7cb10eb0a5d2aad03f3999e6a9635177ed4b0b8))
+
+## v5.15.12 (2023-11-28)
+
+### Fix
+
+* Buttons in level editor popup ([#1539](https://github.com/ocadotechnology/rapid-router/issues/1539)) ([`4ceb8a7`](https://github.com/ocadotechnology/rapid-router/commit/4ceb8a7a27aa57bcc25b9cd884a587623b9b71b6))
+
+## v5.15.11 (2023-11-22)
+
+### Fix
+
+* Upgrade Django to 3.2.23 again (CI/CD measuring) ([#1532](https://github.com/ocadotechnology/rapid-router/issues/1532)) ([`b7380dd`](https://github.com/ocadotechnology/rapid-router/commit/b7380dd510fd1a8003154237a9bf11a31869cd33))
+
+## v5.15.10 (2023-11-21)
+
+### Fix
+
+* Update Django to 3.2.23 (CI/CD measuring) ([#1530](https://github.com/ocadotechnology/rapid-router/issues/1530)) ([`a89a97d`](https://github.com/ocadotechnology/rapid-router/commit/a89a97dc3a9997ec70c3d740677db1ef1fb8f460))
+
+## v5.15.9 (2023-11-21)
+
+### Fix
+
+* Revert Django to 3.2.22 (CI/CD measuring) ([#1527](https://github.com/ocadotechnology/rapid-router/issues/1527)) ([`3dea756`](https://github.com/ocadotechnology/rapid-router/commit/3dea7565b15c54c91d07040e5725a5548252c105))
+
+## v5.15.8 (2023-11-20)
+
+### Fix
+
+* Level 36 solution ([#1526](https://github.com/ocadotechnology/rapid-router/issues/1526)) ([`d8b0f81`](https://github.com/ocadotechnology/rapid-router/commit/d8b0f81b429313d974be0dff20cf5705a661817f))
+
+## v5.15.7 (2023-11-17)
+
+### Fix
+
+* Level 36 message ([#1525](https://github.com/ocadotechnology/rapid-router/issues/1525)) ([`70fe5b5`](https://github.com/ocadotechnology/rapid-router/commit/70fe5b5951366ee818eabd96dd19408317b0f16a))
+
+## v5.15.6 (2023-11-17)
+
+### Fix
+
+* Compile cow block properly ([#1524](https://github.com/ocadotechnology/rapid-router/issues/1524)) ([`902d65e`](https://github.com/ocadotechnology/rapid-router/commit/902d65ef7fe606d1105a6b666aa31256e1eed019))
+
+## v5.15.5 (2023-11-03)
+
+### Fix
+
+* Typo in description of 109 ([#1517](https://github.com/ocadotechnology/rapid-router/issues/1517)) ([`9f3a5e1`](https://github.com/ocadotechnology/rapid-router/commit/9f3a5e1143ac413b13907f9e252265911ef1d9eb))
+
+## v5.15.4 (2023-11-03)
+
+### Fix
+
+* Set game width and height to 100% ([#1516](https://github.com/ocadotechnology/rapid-router/issues/1516)) ([`a003670`](https://github.com/ocadotechnology/rapid-router/commit/a003670da092f15f15dcbbaf32057f78ba0982bf))
+
+## v5.15.3 (2023-11-03)
+
+### Fix
+
+* While loop final checks ([#1513](https://github.com/ocadotechnology/rapid-router/issues/1513)) ([`fa5b02a`](https://github.com/ocadotechnology/rapid-router/commit/fa5b02a767bde4e1836f828613e568cef01ced58))
+
+### Documentation
+
+* Contributing and license ([#1512](https://github.com/ocadotechnology/rapid-router/issues/1512)) ([`a314fbc`](https://github.com/ocadotechnology/rapid-router/commit/a314fbc14dd4020ab936e889e1a2dbc0ab85c987))
+
+## v5.15.2 (2023-11-03)
+
+### Fix
+
+* Upgrade Datatables to 1.13.6 ([#1511](https://github.com/ocadotechnology/rapid-router/issues/1511)) ([`e4b5353`](https://github.com/ocadotechnology/rapid-router/commit/e4b5353acb59c2e5f93e6295c9cc6ad6e62bc93b))
+
+## v5.15.1 (2023-11-03)
+
+### Fix
+
+* **deps:** Bump django from 3.2.20 to 3.2.23 ([#1510](https://github.com/ocadotechnology/rapid-router/issues/1510)) ([`ab96e2c`](https://github.com/ocadotechnology/rapid-router/commit/ab96e2cddca1bdf6f96263eae311dcc5b298ee95))
+
+## v5.15.0 (2023-11-01)
+
+### Feature
+
+* Create levels 110-122 ([#1509](https://github.com/ocadotechnology/rapid-router/issues/1509)) ([`8b8d572`](https://github.com/ocadotechnology/rapid-router/commit/8b8d5725552e390a426f58ceee7d4883d561c55e))
+
+## v5.14.1 (2023-10-31)
+
+### Fix
+
+* Exclude coming soon levels ([#1508](https://github.com/ocadotechnology/rapid-router/issues/1508)) ([`d60a615`](https://github.com/ocadotechnology/rapid-router/commit/d60a6155daccf55f62415c4c10555e181e34294d))
+
+## v5.14.0 (2023-10-30)
+
+### Feature
+
+* Loop level links ([#1507](https://github.com/ocadotechnology/rapid-router/issues/1507)) ([`f2dd9ed`](https://github.com/ocadotechnology/rapid-router/commit/f2dd9ed3555219876fa48a324313da0739d6fd41))
+
+## v5.13.0 (2023-10-30)
+
+### Feature
+
+* Add variables, maths and comparison blocks ([#1270](https://github.com/ocadotechnology/rapid-router/issues/1270)) ([`4d424eb`](https://github.com/ocadotechnology/rapid-router/commit/4d424eb105a2d454b0f5b0490d1d4597cc40d795))
+
+## v5.12.3 (2023-10-17)
+
+### Fix
+
+* Update level 47 title ([#1501](https://github.com/ocadotechnology/rapid-router/issues/1501)) ([`aea6c46`](https://github.com/ocadotechnology/rapid-router/commit/aea6c460a5d34f02368bab7e0912c1052a9f7a57))
+
+## v5.12.2 (2023-10-17)
+
+### Fix
+
+* Add space in level 39 hint ([#1500](https://github.com/ocadotechnology/rapid-router/issues/1500)) ([`d31a41a`](https://github.com/ocadotechnology/rapid-router/commit/d31a41a33cde09b921704a4529d08834f0a7836c))
+
+## v5.12.1 (2023-10-17)
+
+### Fix
+
+* Update level 39 hint ([#1499](https://github.com/ocadotechnology/rapid-router/issues/1499)) ([`b8a4e1f`](https://github.com/ocadotechnology/rapid-router/commit/b8a4e1f2a68fc988e7215417b789bbc190ea147c))
+
+## v5.12.0 (2023-10-16)
+
+### Feature
+
+* Add cows to existing levels ([#1492](https://github.com/ocadotechnology/rapid-router/issues/1492)) ([`a57c0b3`](https://github.com/ocadotechnology/rapid-router/commit/a57c0b38eba666abd393c4b5d3a4196b37a756d6))
+
+## v5.11.3 (2023-08-31)
+
+### Fix
+
+* **level_editor:** Highlight selected road piece ([#1475](https://github.com/ocadotechnology/rapid-router/issues/1475)) ([`cdc9f85`](https://github.com/ocadotechnology/rapid-router/commit/cdc9f855e1482ceb24f79772bb61c9fde1602a35))
+
+## v5.11.2 (2023-08-31)
+
+### Fix
+
+* Comment out Crowdin actiosn temporarily ([`ec4167b`](https://github.com/ocadotechnology/rapid-router/commit/ec4167b39c40482dcc1e03e827574fe358438a52))
+* Add only Github token to Crowdin action ([`de3e36c`](https://github.com/ocadotechnology/rapid-router/commit/de3e36ce84511f345cc683bc48a6febdf9132c1b))
+* Try updating Crowdin action ([`adb264f`](https://github.com/ocadotechnology/rapid-router/commit/adb264fbbabab159d061376c0cbc2234054c78ae))
+* Format (bump version) ([`1f80a8f`](https://github.com/ocadotechnology/rapid-router/commit/1f80a8f2168e3d37ab5279ac27e00db55ea9c54a))
+* **messages:** Improve the readability of the description of the levels ([#1474](https://github.com/ocadotechnology/rapid-router/issues/1474)) ([`f40daa5`](https://github.com/ocadotechnology/rapid-router/commit/f40daa5339facaec1d785fc8648815de412aea46))
+
 ## v5.11.1 (2023-07-06)
 
 ### Fix

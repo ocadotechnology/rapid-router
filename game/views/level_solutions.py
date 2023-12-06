@@ -291,6 +291,102 @@ while not my_van.at_destination():
   my_van.turn_left()
   n = n / 2"""
 
+lvl_113 = """from van import Van
+
+my_van = Van()
+
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_left()
+my_van.move_forwards()"""
+
+lvl_114 = """from van import Van
+
+my_van = Van()
+
+my_van.turn_left()
+my_van.move_forwards()
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_right()
+my_van.turn_left()
+my_van.turn_right()
+my_van.move_forwards()
+my_van.move_forwards()
+my_van.turn_left()
+my_van.turn_left()
+my_van.turn_right()"""
+
+lvl_115 = """from van import Van
+
+my_van = Van()
+
+my_van.turn_right()
+my_van.turn_left()
+my_van.move_forwards()
+my_van.turn_right()
+my_van.turn_left()
+my_van.turn_right()
+my_van.turn_left()"""
+
+lvl_119 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 3:
+  my_van.turn_left()
+  my_van.turn_right()
+  my_van.turn_left()
+  my_van.move_forwards()
+  count = count + 1"""
+
+lvl_120 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 4:
+  my_van.move_forwards()
+  my_van.turn_left()
+  my_van.turn_right()
+  count = count + 1"""
+
+lvl_121 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 6:
+  my_van.turn_left()
+  my_van.turn_right()
+  count = count + 1"""
+
+lvl_122 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 3:
+  my_van.turn_left()
+  my_van.turn_left()
+  my_van.turn_right()
+  my_van.turn_right()
+  count = count + 1
+  
+count = 0
+while count < 3:
+  my_van.move_forwards()
+  count = count + 1
+  
+count = 0
+while count < 3:
+  my_van.turn_right()
+  my_van.turn_right()
+  my_van.turn_left()
+  my_van.turn_left()
+  count = count + 1"""
+
 solutions = {
     "python_default": python_default,
     "blockly_default": blockly_default,
@@ -329,10 +425,10 @@ solutions = {
     "33": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="382" y="551"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement></block></statement></block></next></block></xml>',
     "34": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="831" y="794"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
     "35": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="30" y="30"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO1"><block type="turn_right"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
-    "36": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="599" y="546"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO1"><block type="turn_right"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
+    "36": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="599" y="546"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO1"><block type="turn_right"></block></statement><statement name="ELSE"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
     "37": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="599" y="546"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO1"><block type="turn_right"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
-    "38": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="599" y="546"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO1"><block type="turn_right"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
-    "39": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="617" y="734"><next><block type="controls_repeat"><field name="TIMES">6</field><statement name="DO"><block type="move_forwards"></block></statement><next><block type="turn_left"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="move_forwards"></block></statement></block></next></block></next></block></next></block></xml>',
+    "38": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="430"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2" else="1"></mutation><value name="IF0"><block type="cow_crossing"></block></value><statement name="DO0"><block type="sound_horn"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
+    "39": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="30" y="630"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2"></mutation><value name="IF0"><block type="cow_crossing"></block></value><statement name="DO0"><block type="sound_horn"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><value name="IF2"><block type="dead_end"></block></value><statement name="DO2"><block type="turn_around"><next><block type="turn_right"></block></next></block></statement></block></statement></block></next></block></xml>',
     "40": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="493" y="569"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO0"><block type="turn_right"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement></block></statement></block></next></block></xml>',
     "41": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="316" y="618"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
     "42": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="299" y="593"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="move_forwards"></block></statement><next><block type="turn_right"><next><block type="turn_left"></block></next></block></next></block></next></block></xml>',
@@ -340,7 +436,7 @@ solutions = {
     "44": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="496" y="500"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation else="1"></mutation><value name="IF0"><block type="traffic_light"><field name="CHOICE">RED</field></block></value><statement name="DO0"><block type="wait"></block></statement><statement name="ELSE"><block type="move_forwards"></block></statement></block></statement></block></next></block></xml>',
     "45": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="389" y="577"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation else="1"></mutation><value name="IF0"><block type="traffic_light"><field name="CHOICE">RED</field></block></value><statement name="DO0"><block type="wait"></block></statement><statement name="ELSE"><block type="move_forwards"></block></statement></block></statement></block></next></block></xml>',
     "46": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="327" y="771"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2"></mutation><value name="IF0"><block type="traffic_light"><field name="CHOICE">RED</field></block></value><statement name="DO0"><block type="wait"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO2"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
-    "47": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="413" y="-296"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2"></mutation><value name="IF0"><block type="traffic_light"><field name="CHOICE">RED</field></block></value><statement name="DO0"><block type="wait"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
+    "47": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="530"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="cow_crossing"></block></value><statement name="DO0"><block type="sound_horn"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
     "48": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="415" y="678"><next><block type="controls_repeat"><field name="TIMES">4</field><statement name="DO"><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="4"></mutation><value name="IF0"><block type="traffic_light"><field name="CHOICE">RED</field></block></value><statement name="DO0"><block type="wait"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO2"><block type="move_forwards"></block></statement><value name="IF3"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO3"><block type="turn_right"></block></statement><value name="IF4"><block type="dead_end"></block></value><statement name="DO4"><block type="turn_around"></block></statement></block></statement><next><block type="deliver"></block></next></block></statement></block></next></block></xml>',
     "49": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="748" y="797"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_if"><mutation elseif="2" else="1"></mutation><value name="IF0"><block type="traffic_light"><field name="CHOICE">RED</field></block></value><statement name="DO0"><block type="wait"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO2"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
     "50": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="244" y="87"><next><block type="controls_repeat_until"><value name="condition"><block type="at_destination"></block></value><statement name="body"><block type="controls_repeat_while"><value name="condition"><block type="traffic_light"><field name="CHOICE">RED</field></block></value><statement name="body"><block type="wait"></block></statement><next><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO1"><block type="turn_right" id="}L#lTX/D;-@2hKW 5Z#x"></block></statement><statement name="ELSE"><block type="move_forwards"></block></statement></block></next></block></statement></block></next></block></xml>',
@@ -403,4 +499,17 @@ solutions = {
     "107": lvl_107,
     "108": lvl_108,
     "109": lvl_109,
+    "110": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></xml>',
+    "111": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_left"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>',
+    "112": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>',
+    "113": lvl_113,
+    "114": lvl_114,
+    "115": lvl_115,
+    "116": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">4</field></block></value></block></value><statement name="body"><block type="move_forwards"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></statement></block></next></block></next></block></xml>',
+    "117": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="184" y="109"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">4</field></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></block></statement></block></next></block></next></block></xml>',
+    "118": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="128" y="106"><next><block type="move_forwards"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">3</field></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></block></statement><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></xml>',
+    "119": lvl_119,
+    "120": lvl_120,
+    "121": lvl_121,
+    "122": lvl_122,
 }

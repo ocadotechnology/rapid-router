@@ -1,9 +1,7 @@
-from __future__ import absolute_import
-from __future__ import division
+from __future__ import absolute_import, division
 
 import json
-from builtins import object
-from builtins import str
+from builtins import object, str
 
 from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -137,16 +135,10 @@ def play_level(request, level, from_editor=False):
     :template:`game/game.html`
     """
 
-    night_mode = (
-        False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
-    )
+    night_mode = False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
 
-    if not permissions.can_play_level(
-        request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)
-    ):
-        return renderError(
-            request, messages.no_permission_title(), messages.not_shared_level()
-        )
+    if not permissions.can_play_level(request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)):
+        return renderError(request, messages.no_permission_title(), messages.not_shared_level())
 
     # Set default level description/hint lookups
     lesson = "description_level_default"
@@ -189,9 +181,7 @@ def play_level(request, level, from_editor=False):
             .first()
         )
         if not attempt:
-            attempt = Attempt(
-                level=level, student=student, score=None, night_mode=night_mode
-            )
+            attempt = Attempt(level=level, student=student, score=None, night_mode=night_mode)
             fetch_workspace_from_last_attempt(attempt)
             attempt.save()
         else:
@@ -219,6 +209,11 @@ def play_level(request, level, from_editor=False):
 
     return_view = "level_editor" if from_editor else "levels"
 
+    temp_block_data = []
+    [temp_block_data.append(block) for block in block_data if block not in temp_block_data]
+
+    block_data = temp_block_data
+
     return render(
         request,
         "game/game.html",
@@ -240,9 +235,7 @@ def play_level(request, level, from_editor=False):
             "character_height": character_height,
             "wreckage_url": wreckage_url,
             "night_mode": night_mode_javascript,
-            "night_mode_feature_enabled": str(
-                app_settings.NIGHT_MODE_FEATURE_ENABLED
-            ).lower(),
+            "night_mode_feature_enabled": str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
             "model_solution": model_solution,
             "prev_level_url": _prev_level_url(level, request.user, night_mode),
             "next_level_url": _next_level_url(level, request.user, night_mode),
@@ -253,9 +246,7 @@ def play_level(request, level, from_editor=False):
 
 def fetch_workspace_from_last_attempt(attempt):
     latest_attempt = (
-        Attempt.objects.filter(
-            level=attempt.level, student=attempt.student, night_mode=attempt.night_mode
-        )
+        Attempt.objects.filter(level=attempt.level, student=attempt.student, night_mode=attempt.night_mode)
         .order_by("-start_time")
         .first()
     )
@@ -271,23 +262,15 @@ def delete_level(request, levelID):
         level_management.delete_level(level)
         success = True
 
-    return HttpResponse(
-        json.dumps({"success": success}), content_type="application/javascript"
-    )
+    return HttpResponse(json.dumps({"success": success}), content_type="application/javascript")
 
 
 def submit_attempt(request):
     """Processes a request on submission of the program solving the current level."""
-    if (
-        not request.user.is_anonymous
-        and request.method == "POST"
-        and hasattr(request.user.userprofile, "student")
-    ):
+    if not request.user.is_anonymous and request.method == "POST" and hasattr(request.user.userprofile, "student"):
         level = get_object_or_404(Level, id=request.POST.get("level", 1))
         student = request.user.userprofile.student
-        attempt = Attempt.objects.filter(
-            level=level, student=student, finish_time__isnull=True
-        ).first()
+        attempt = Attempt.objects.filter(level=level, student=student, finish_time__isnull=True).first()
         if attempt:
             attempt.score = float(request.POST.get("score"))
             attempt.workspace = request.POST.get("workspace")
@@ -387,21 +370,22 @@ def save_workspace(request, workspaceID=None):
     return load_list_of_workspaces(request)
 
 
-def load_workspace_solution(request, levelName):
-
-    if levelName in solutions:
+def load_workspace_solution(request, level_name):
+    if level_name in solutions:
         workspace = Workspace(owner=request.user.userprofile)
-        workspace.id = levelName
-        workspace.name = levelName
+        workspace.id = level_name
+        workspace.name = level_name
         workspace.contents = solutions["blockly_default"]
         workspace.python_contents = solutions["python_default"]
 
-        if int(levelName) <= 91:
-            workspace.contents = solutions[levelName]
+        level = Level.objects.get(name=level_name, default=True)
+
+        if level.blocklyEnabled:
+            workspace.contents = solutions[level_name]
             workspace.blockly_enabled = True
             workspace.python_enabled = False
         else:
-            workspace.python_contents = solutions[levelName]
+            workspace.python_contents = solutions[level_name]
             workspace.blockly_enabled = False
             workspace.python_enabled = True
 

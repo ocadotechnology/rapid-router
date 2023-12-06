@@ -1,6 +1,5 @@
 from django.conf.urls import url, include
 from django.views.i18n import JavaScriptCatalog
-
 from django_js_reverse.views import urls_js
 
 from game.views.api import (
@@ -26,6 +25,19 @@ from game.views.api import (
     mode_for_level,
     map_list,
 )
+from game.views.level import (
+    submit_attempt,
+    play_default_level,
+    start_episode,
+    load_workspace,
+    load_list_of_workspaces,
+    save_workspace,
+    delete_workspace,
+    delete_level,
+    play_custom_level,
+    play_custom_level_from_editor,
+    load_workspace_solution,
+)
 from game.views.level_editor import (
     level_editor,
     delete_level_for_editor,
@@ -40,19 +52,6 @@ from game.views.level_editor import (
 )
 from game.views.level_moderation import level_moderation
 from game.views.level_selection import levels, random_level_for_episode
-from game.views.level import (
-    submit_attempt,
-    play_default_level,
-    start_episode,
-    load_workspace,
-    load_list_of_workspaces,
-    save_workspace,
-    delete_workspace,
-    delete_level,
-    play_custom_level,
-    play_custom_level_from_editor,
-    load_workspace_solution,
-)
 from game.views.scoreboard import scoreboard
 
 urlpatterns = [
@@ -72,7 +71,7 @@ urlpatterns = [
                 url(r"^save/$", save_workspace, name="save_workspace"),
                 url(r"^save/(?P<workspaceID>[0-9]+)/$", save_workspace, name="save_workspace"),
                 url(r"^delete/(?P<workspaceID>[0-9]+)/$", delete_workspace, name="delete_workspace"),
-                url(r"^solution/(?P<levelName>[0-9]+)/$", load_workspace_solution, name="load_workspace_solution"),
+                url(r"^solution/(?P<level_name>[0-9]+)/$", load_workspace_solution, name="load_workspace_solution"),
             ]
         ),
     ),

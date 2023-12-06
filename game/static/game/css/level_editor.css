@@ -95,6 +95,10 @@ input {
     text-align: center;
 }
 
+.mode_panel.unselected{
+    border-width: 0;
+}
+
 .mode_panel img {
     width: 70px;
     margin-left: 11px;

@@ -109,7 +109,7 @@ class LevelModerationTestCase(TestCase):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()
         school = create_organisation_directly(email1)
-        join_teacher_to_organisation(email2, school.name, school.postcode)
+        join_teacher_to_organisation(email2, school.name)
 
         # Create one class and student for each teacher
         _, class_name1, access_code1 = create_class_directly(email1)
