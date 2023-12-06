@@ -10,6 +10,10 @@ ocargo.Game = function () {
 }
 
 ocargo.Game.prototype.setup = function () {
+  if(new Date().getMonth() === 11) {
+    $("#paper").css('background-color', '#eef7ff')
+  }
+
   if (NIGHT_MODE_FEATURE_ENABLED) {
     if (NIGHT_MODE) {
       $('#paper').css('background-color', 'black')

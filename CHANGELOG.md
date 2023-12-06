@@ -2,6 +2,30 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.3 (2023-12-05)
+
+### Fix
+
+* Add icon and code example to level 36 description ([#1551](https://github.com/ocadotechnology/rapid-router/issues/1551)) ([`e21fb58`](https://github.com/ocadotechnology/rapid-router/commit/e21fb58e0ee1702d96f9fc055c0945b287c39b95))
+
+## v5.16.2 (2023-12-05)
+
+### Fix
+
+* Use sleigh image on start block for xmas theme ([#1549](https://github.com/ocadotechnology/rapid-router/issues/1549)) ([`0b72589`](https://github.com/ocadotechnology/rapid-router/commit/0b725890ad7c1908440fc2d985e028f6335b6963))
+
+## v5.16.1 (2023-11-30)
+
+### Fix
+
+* Cows are always visible and horn horns on the right square ([#1545](https://github.com/ocadotechnology/rapid-router/issues/1545)) ([`d44adc7`](https://github.com/ocadotechnology/rapid-router/commit/d44adc7ac42cba05a393d52d1a9018c60d97885d))
+
+## v5.16.0 (2023-11-30)
+
+### Feature
+
+* Enable automatic Christmas theme in December ([#1538](https://github.com/ocadotechnology/rapid-router/issues/1538)) ([`8cb7edd`](https://github.com/ocadotechnology/rapid-router/commit/8cb7edda3f424bd06745e2042a1fb2ec6aef98bf))
+
 ## v5.15.13 (2023-11-28)
 
 ### Fix

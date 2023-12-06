@@ -66,6 +66,7 @@ def get_decor(level):
                 "width": int(decor.width),
                 "height": int(decor.height),
                 "url": str(decor.url),
+                "xmas_url": str(decor.xmas_url),
             }
         )
 

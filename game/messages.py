@@ -39,6 +39,19 @@ def step_button_icon_url():
     )
 
 
+def if_else_icon_url():
+    return (
+        '<img src="/static/game/image/icons/if_else.svg" alt="If Else button" '
+        '" style="width: 4%;">'
+    )
+
+
+def if_else_example_url():
+    return (
+        '<img src="/static/game/image/if_else_example.png" alt="If Else example">'
+    )
+
+
 def not_shared_level():
     return (
         "This level is private. You can only see the public levels and the ones "
@@ -861,24 +874,20 @@ def title_level36():
 def description_level36():
     message = youtube_link("https://www.youtube-nocookie.com/embed/GUUJSRuAyU0", 0)
     message += (
-        "<div class='popup_message'>"
-        "You can change the <b>if</b> block to make more choices. Click on the"
-        " cog in the <b>if</b> block and add <b>else if</b>."
-        "<br>"
-        "This will tell the van what to do if the first <b>if</b> direction"
-        " can't be done."
-        "<br>"
-        "You can also add an <b>else</b> block to tell the van what to do if"
-        " none of the conditions match."
-        "<br>"
-        "For example:"
-        "<br>"
-        "<b>If</b> there is a road ahead, go forwards."
-        "<br>"
-        "<b>Else if</b> there is a road left, turn left."
-        "<br>"
-        "<b>Else</b>, go right."
-        "</div>"
+        f"<div class='popup_message'>"
+        f"You can change the <b>if</b> block to make more choices. Click on the"
+        f" {if_else_icon_url()} to add <b>else if</b>."
+        f"<br>"
+        f"This will tell the van what to do if the first <b>if</b> direction"
+        f" can't be done."
+        f"<br>"
+        f"You can also add an <b>else</b> block to tell the van what to do if"
+        f" none of the conditions match."
+        f"<br>"
+        f"{if_else_example_url()}"
+        f"<br>"
+        f"This is a general algorithm, it can be used for lots of different routes!"
+        f"</div>"
     )
     return build_description(
         title_level36(), f"<div class='main_popup_container'>{message}</div>"

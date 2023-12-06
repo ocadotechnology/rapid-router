@@ -16,13 +16,14 @@ function initCustomBlocksDescription() {
       this.setColour(50);
       this.appendDummyInput()
         .appendField(gettext("Start"))
-        .appendField(
-          new Blockly.FieldImage(
-            ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL,
-            ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
-            ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH
-          )
-        );
+        .appendField(new Blockly.FieldImage(
+          new Date().getMonth() === 11 && CHARACTER_NAME === "Van"
+            ? ocargo.Drawing.imageDir + "characters/top_view/Sleigh.svg"
+            : ocargo.Drawing.imageDir + CHARACTER_EN_FACE_URL,
+          ocargo.BlocklyControl.BLOCK_CHARACTER_HEIGHT,
+          ocargo.BlocklyControl.BLOCK_CHARACTER_WIDTH
+        )
+      );
       this.setNextStatement(true, "Action");
       this.setTooltip(gettext("The beginning of the program"));
       this.setDeletable(false);
