@@ -20,34 +20,11 @@ ocargo.Game.prototype.setup = function () {
     }
   }
 
-document.addEventListener("DOMContentLoaded", function() {
-  var dataElement = document.getElementById('data');
-  var currentEpisode = dataElement ? dataElement.getAttribute('data-episode') : null;
   
-  if (currentEpisode) {
-    localStorage.setItem('currentEpisode', currentEpisode);
-  }
-
-});
-
+// Function being called when there is a change in game level.
 ocargo.Game.prototype.onLevelChange = function() {
-  var currentLevelId = LEVEL_ID; 
-  var currentEpisode = this.determineEpisodeFromLevel(currentLevelId);
-  localStorage.setItem('currentEpisode', currentEpisode);  
-}
-
-ocargo.Game.prototype.determineEpisodeFromLevel = function(levelId) {
-  if(levelId <= 12) return "1";
-  else if(levelId <= 18) return "2";
-  else if(levelId <= 28) return "3";
-  else if(levelId <= 32) return "4";
-  else if(levelId <= 43) return "5";
-  else if(levelId <= 50) return "6";
-  else if(levelId <= 60) return "7";
-  else if(levelId <= 67) return "8";
-  else if(levelId <= 79) return "9";
-  else if(levelId <= 91) return "10";
-  else if(levelId <= 109) return "11";
+  const currentLevelId = LEVEL_ID; 
+  localStorage.setItem('currentEpisode', EPISODE);  
 }
 
   restoreCmsLogin()
@@ -155,6 +132,15 @@ ocargo.Game.prototype.determineEpisodeFromLevel = function(levelId) {
     ]
   )
 }
+
+// Script used to save and check for episode upon loading of the webpage
+document.addEventListener("DOMContentLoaded", function() {
+  const dataElement = document.getElementById('data');
+  const currentEpisode = dataElement ? dataElement.getAttribute('data-episode') : null;
+  if (currentEpisode) {
+    localStorage.setItem('currentEpisode', currentEpisode);
+  }
+});  
 
 ocargo.Game.prototype.clearWorkspaceNameInputInSaveTab = function () {
   $('#workspaceNameInput').val('')

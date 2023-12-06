@@ -65,3 +65,45 @@ function setupCoins() {
         }
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    const storedEpisode = localStorage.getItem('currentEpisode');
+    const allCollapsibles = document.querySelectorAll('.collapse');
+
+    // Function to close all except the given ID
+    function closeAllExcept(openId) {
+        allCollapsibles.forEach(function(collapsible) {
+            if (collapsible.id !== openId) {
+                collapsible.classList.remove('in');
+                const toggle = document.querySelector(`[data-target="#${collapsible.id}"]`);
+                toggle.classList.add('collapsed');
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    // Open the accordion for the stored episode
+    const accordionToOpen = storedEpisode ? document.querySelector(`#collapse-${storedEpisode}`) : null;
+    if (accordionToOpen) {
+        accordionToOpen.classList.add('in');
+        const toggle = document.querySelector(`[data-target="#${accordionToOpen.id}"]`);
+        toggle.classList.remove('collapsed');
+        toggle.setAttribute('aria-expanded', 'true');
+    } else {
+        closeAllExcept(); // Close all of no epissodes are stored
+    }
+
+    // Set up event listeners for accordion toggles
+    const accordionToggles = document.querySelectorAll('.episode-title');
+    accordionToggles.forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            const collapseId = toggle.getAttribute('data-target').replace('#', '');
+            const isOpened = toggle.getAttribute('aria-expanded') === 'false'; // Notice the change here
+            localStorage.setItem('currentEpisode', isOpened ? collapseId.split('-')[1] : null);
+            if (isOpened) {
+                closeAllExcept(collapseId);
+            }
+        });
+    });
+
+});
