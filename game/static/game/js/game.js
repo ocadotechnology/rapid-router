@@ -24,6 +24,13 @@ ocargo.Game.prototype.setup = function () {
     }
   }
 
+  
+// Function being called when there is a change in game level.
+ocargo.Game.prototype.onLevelChange = function() {
+  const currentLevelId = LEVEL_ID; 
+  localStorage.setItem('currentEpisode', EPISODE);  
+}
+
   restoreCmsLogin()
   initCustomBlocks()
   ocargo.solutionLoaded = false
@@ -129,6 +136,15 @@ ocargo.Game.prototype.setup = function () {
     ]
   )
 }
+
+// Script used to save and check for episode upon loading of the webpage
+document.addEventListener("DOMContentLoaded", function() {
+  const dataElement = document.getElementById('data');
+  const currentEpisode = dataElement ? dataElement.getAttribute('data-episode') : null;
+  if (currentEpisode) {
+    localStorage.setItem('currentEpisode', currentEpisode);
+  }
+});  
 
 ocargo.Game.prototype.clearWorkspaceNameInputInSaveTab = function () {
   $('#workspaceNameInput').val('')
