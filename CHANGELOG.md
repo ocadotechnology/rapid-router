@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.4 (2023-12-06)
+
+### Fix
+
+* Accordion state ([#1544](https://github.com/ocadotechnology/rapid-router/issues/1544)) ([`9d35423`](https://github.com/ocadotechnology/rapid-router/commit/9d354231c18eb81f20100051d164d4764eb37612))
+
 ## v5.16.3 (2023-12-05)
 
 ### Fix
