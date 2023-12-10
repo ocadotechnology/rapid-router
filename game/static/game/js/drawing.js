@@ -1013,6 +1013,14 @@ ocargo.Drawing.translate = function (coordinate) {
   return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y)
 }
 
+// A Function used to stop the iframe video
+function stopVideo() {
+  // https://gist.github.com/cferdinandi/9044694
+  const video = document.getElementsByClassName("video");
+  var iframeSrc = video[0].src;
+  video[0].src = iframeSrc;
+}
+
 /*
  This is the function that starts the pop-up.
  Buttons should be passed in separately to the function instead of concatenating
@@ -1073,6 +1081,11 @@ ocargo.Drawing.startPopup = function (
 
     const regexID = /id=\"*\w+_\w+\"/
 
+    // Close the video on pressing the top right close button 
+    $("#close-modal").click(function () {
+      stopVideo();
+    });
+
     for (let i = 0; i < buttons.length; i++) {
       // get id with regex by stripping the html content
       let currentID = buttons[i].match(regexID)[0].slice(3).replaceAll('"', '')
@@ -1087,6 +1100,11 @@ ocargo.Drawing.startPopup = function (
         let currentLink = links[i] === "" ? "" : `window.location.replace('${links[i]}')`
         currentButton.attr("onclick", currentLink)
       }
+
+      // Close the video on the play button
+      currentButton.click(function () {
+        stopVideo();
+      });
 
       // first level shouldn't have prev_button
       // and last level shouldn't have next_button
