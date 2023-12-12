@@ -1595,11 +1595,12 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:26ead7d1f93efc0f8c804d9fafafbe4a44b179580a7105754b245155f9af05a8",
-                "sha256:47c7b0c0f8fc10eec4cf1e71c6fdadf8decaa74ffa087e68cd1c20db7ad6a592"
+                "sha256:d0b9a8433464d5800cbe05094acf5c6d52a91bfac9b52bcfc4d41382be5d5d31",
+                "sha256:e197a19aa8ec9722928f2206f8de752def0e4c9fc6953527360d1c36d94ddb2f"
             ],
+            "index": "pypi",
             "markers": "python_version >= '3.7'",
-            "version": "==62.1.0"
+            "version": "==65.5.1"
         },
         "six": {
             "hashes": [
