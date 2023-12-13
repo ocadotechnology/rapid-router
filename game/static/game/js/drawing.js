@@ -1017,7 +1017,7 @@ ocargo.Drawing.translate = function (coordinate) {
 function stopVideo() {
   // https://gist.github.com/cferdinandi/9044694
   const video = document.getElementsByClassName("video");
-  var iframeSrc = video[0].src;
+  const iframeSrc = video[0].src;
   video[0].src = iframeSrc;
 }
 
