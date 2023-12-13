@@ -27,28 +27,29 @@ jobs:
           pipenv install --dev --system
           pip install -U git+https://github.com/ocadotechnology/codeforlife-portal.git#egg=codeforlife-portal #TODO: Remove as part of #688
           sudo apt-get install gettext
-      - name: Prepare files for Crowdin
-        run: |
-          mkdir -p game/locale
-          cd game && django-admin makemessages -l en_GB --no-wrap && cd -
-          cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
-      - name: Run Crowdin (Upload sources and download translations)
-        uses: crowdin/github-action@v1
-        with:
-          upload_sources: true
-          download_translations: true
-          push_translations: false
-          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
-          token: ${{ secrets.CROWDIN_API_KEY }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.CFL_BOT_GITHUB_TOKEN }}
-      - name: Fix translation files owner
-        run: sudo chown -R $USER game/locale
-      - name: Compile messages
-        run: |
-          pushd game
-          django-admin compilemessages
-          popd
+      # TODO: Restore action once we figure out how to use bot token properly (if still needed)
+#      - name: Prepare files for Crowdin
+#        run: |
+#          mkdir -p game/locale
+#          cd game && django-admin makemessages -l en_GB --no-wrap && cd -
+#          cd game && django-admin makemessages -l en_GB --no-wrap -d djangojs --ignore "static/game/js/foundation/*" && cd - # some files from foundation use '_' for their own purpose
+#      - name: Run Crowdin (Upload sources and download translations)
+#        uses: crowdin/github-action@v1
+#        with:
+#          upload_sources: true
+#          download_translations: true
+#          push_translations: false
+#          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+#          token: ${{ secrets.CROWDIN_API_KEY }}
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.CFL_BOT_GITHUB_TOKEN }}
+#      - name: Fix translation files owner
+#        run: sudo chown -R $USER game/locale
+#      - name: Compile messages
+#        run: |
+#          pushd game
+#          django-admin compilemessages
+#          popd
       - name: Release rapid-router
         uses: relekang/python-semantic-release@v7.34.6
         with:
