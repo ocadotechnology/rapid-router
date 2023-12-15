@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.6 (2023-12-15)
+
+### Fix
+
+* 1476-Video sound keeps playing after closing the popup it's in ([#1554](https://github.com/ocadotechnology/rapid-router/issues/1554)) ([`86b9884`](https://github.com/ocadotechnology/rapid-router/commit/86b9884939586ebd98f4c17a41ca780f31d9ea9e))
+
 ## v5.16.5 (2023-12-15)
 
 ### Fix
