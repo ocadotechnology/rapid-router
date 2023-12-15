@@ -868,7 +868,7 @@ def hint_level35():
 
 
 def title_level36():
-    return "What else? If-else, that's what!"
+    return "What else? If-else if-else, that's what!"
 
 
 def description_level36():
