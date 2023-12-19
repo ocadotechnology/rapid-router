@@ -668,7 +668,8 @@ ocargo.Drawing = function (startingPosition) {
   this.renderDecor = function (decors) {
     for (let i = 0; i < decors.length; i++) {
       let decor = decors[i]
-      let src = ocargo.Drawing.raphaelImageDir + decor.url
+      let decorUrl = new Date().getMonth() === 11 ? decor.xmas_url : decor.url
+      let src = ocargo.Drawing.raphaelImageDir + decorUrl
       let x = decor.x + PAPER_PADDING
       let y = PAPER_HEIGHT - decor.y - decor.height + PAPER_PADDING
       let width = decor.width
@@ -903,7 +904,7 @@ ocargo.Drawing = function (startingPosition) {
       for (let j = 0; j < GRID_HEIGHT; j++) {
         grid[i][j].attr({
           stroke: currentTheme.border,
-          fill: currentTheme.background,
+          fill: new Date().getMonth() === 11 ? THEMES.snow.background : currentTheme.background,
           'fill-opacity': 1
         })
       }
@@ -1012,6 +1013,14 @@ ocargo.Drawing.translate = function (coordinate) {
   return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y)
 }
 
+// A Function used to stop the iframe video
+function stopVideo() {
+  // https://gist.github.com/cferdinandi/9044694
+  const video = document.getElementsByClassName("video");
+  const iframeSrc = video[0].src;
+  video[0].src = iframeSrc;
+}
+
 /*
  This is the function that starts the pop-up.
  Buttons should be passed in separately to the function instead of concatenating
@@ -1072,6 +1081,11 @@ ocargo.Drawing.startPopup = function (
 
     const regexID = /id=\"*\w+_\w+\"/
 
+    // Close the video on pressing the top right close button 
+    $("#close-modal").click(function () {
+      stopVideo();
+    });
+
     for (let i = 0; i < buttons.length; i++) {
       // get id with regex by stripping the html content
       let currentID = buttons[i].match(regexID)[0].slice(3).replaceAll('"', '')
@@ -1086,6 +1100,11 @@ ocargo.Drawing.startPopup = function (
         let currentLink = links[i] === "" ? "" : `window.location.replace('${links[i]}')`
         currentButton.attr("onclick", currentLink)
       }
+
+      // Close the video on the play button
+      currentButton.click(function () {
+        stopVideo();
+      });
 
       // first level shouldn't have prev_button
       // and last level shouldn't have next_button
@@ -1102,10 +1121,19 @@ ocargo.Drawing.startPopup = function (
     tryAgainButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
     buttonDiv.append(tryAgainButton)
 
+    let editButton = $("#edit_button")
+    editButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(editButton)
+
     let nextLevelButton = $("#next_level_button")
     nextLevelButton.removeClass().addClass("navigation_button_portal_secondary long_button rapid-router-welcome button--icon")
     nextLevelButton.append(icons[2])
     buttonDiv.append(nextLevelButton)
+
+    let playButton = $("#play_button")
+    playButton.removeClass().addClass("navigation_button_portal_secondary long_button rapid-router-welcome button--icon")
+    playButton.append(icons[2])
+    buttonDiv.append(playButton)
 
     $("#modal-buttons").html(buttonDiv)
   } else {
@@ -1138,24 +1166,6 @@ ocargo.Drawing.startYesNoPopup = function (
   ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
   $('#modal-yesBtn').click(yesFunction)
   $('#modal-noBtn').click(noFunction)
-}
-
-// This provides a pop-up with 2 options
-ocargo.Drawing.startOptionsPopup = function (
-  title,
-  subtitle,
-  message,
-  optionAFunction,
-  optionBFunction,
-  optionAText,
-  optionBText,
-  mascot
-) {
-  let buttonHtml =
-    '<button id="modal-optionABtn" class="navigation_button long_button">' + optionAText + '</button> <button id="modal-optionBBtn" class="navigation_button long_button">' + optionBText + '</button>'
-  ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
-  $('#modal-optionABtn').click(optionAFunction)
-  $('#modal-optionBBtn').click(optionBFunction)
 }
 
 // This is the function that starts the pop-up when there is no internet connection while playing the game

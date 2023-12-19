@@ -23,21 +23,6 @@ ocargo.Cow.prototype.reset = function() {
     }
 };
 
-
-
-
-
-ocargo.Cow.prototype.queueAnimation = function(model, node) {
-    ocargo.animation.appendAnimation({
-        type: 'cow',
-        id: this.id,
-        node: node,
-        cowType: this.type,
-        coordinate: node.coordinate,
-        description: 'Cow'
-    });
-};
-
 ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
     ocargo.animation.appendAnimation({
         type: 'callable',
@@ -50,13 +35,6 @@ ocargo.Cow.prototype.queueLeaveAnimation = function(model, node) {
         coordinate: node.coordinate,
         description: 'Cow leaving'
     });
-};
-
-ocargo.Cow.prototype.setActive = function(model, node) {
-    var jsonCoordinate = JSON.stringify(node.coordinate); //get node coordinates
-    this.activeNodes[jsonCoordinate] = ocargo.Cow.ACTIVE; //set cow state to active
-    this.triggerEvent = true;
-    this.queueAnimation(model, node);
 };
 
 ocargo.Cow.prototype.setInactive = function(model, node) {
