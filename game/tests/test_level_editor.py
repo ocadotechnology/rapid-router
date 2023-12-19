@@ -331,9 +331,9 @@ class LevelEditorTestCase(TestCase):
         assert response.status_code == 200
         new_level = Level.objects.get(name="abc")
 
-        assert new_level.pythonViewEnabled is True
-        assert new_level.pythonEnabled is False
-        assert new_level.blocklyEnabled is True
+        assert new_level.pythonViewEnabled
+        assert not new_level.pythonEnabled
+        assert new_level.blocklyEnabled
 
     def test_level_loading(self):
         email1, password1 = signup_teacher_directly()
