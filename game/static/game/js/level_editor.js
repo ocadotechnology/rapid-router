@@ -2331,8 +2331,10 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         // Load in language data
-        var languageSelect = $('#languageSelect');
-        if(state.blocklyEnabled && state.pythonEnabled) {
+        var languageSelect = $('#language_select');
+        if (state.blocklyEnabled && state.pythonViewEnabled){
+            languageSelect.val('blocklyWithPythonView');
+        } else if(state.blocklyEnabled && state.pythonEnabled) {
             languageSelect.val('both');
         } else if(state.pythonEnabled) {
             languageSelect.val('python');
