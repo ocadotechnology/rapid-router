@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.7 (2023-12-20)
+
+### Fix
+
+* #1436: load custom level should set correct language ([#1491](https://github.com/ocadotechnology/rapid-router/issues/1491)) ([`cad596b`](https://github.com/ocadotechnology/rapid-router/commit/cad596b26de2f93940e1836ae9c10450d6c4b2de))
+
 ## v5.16.6 (2023-12-15)
 
 ### Fix
