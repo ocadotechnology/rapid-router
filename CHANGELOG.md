@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.8 (2023-12-20)
+
+### Fix
+
+* #1477: use correct student login URL in level editor JS ([#1514](https://github.com/ocadotechnology/rapid-router/issues/1514)) ([`469e1c4`](https://github.com/ocadotechnology/rapid-router/commit/469e1c43d7485ae2e73a630e405adc2bc992568c))
+
 ## v5.16.7 (2023-12-20)
 
 ### Fix
