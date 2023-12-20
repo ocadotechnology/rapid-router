@@ -8,8 +8,8 @@ var GRID_SPACE_SIZE = 100
 let PAPER_WIDTH = GRID_SPACE_SIZE * GRID_WIDTH
 let PAPER_HEIGHT = GRID_SPACE_SIZE * GRID_HEIGHT
 let PAPER_PADDING = 30
-let EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 2 * PAPER_PADDING
-let EXTENDED_PAPER_HEIGHT = PAPER_HEIGHT + 2 * PAPER_PADDING
+let EXTENDED_PAPER_WIDTH = '100%'
+let EXTENDED_PAPER_HEIGHT = '100%'
 
 let DEFAULT_CHARACTER_WIDTH = 40
 let DEFAULT_CHARACTER_HEIGHT = 20
@@ -668,7 +668,8 @@ ocargo.Drawing = function (startingPosition) {
   this.renderDecor = function (decors) {
     for (let i = 0; i < decors.length; i++) {
       let decor = decors[i]
-      let src = ocargo.Drawing.raphaelImageDir + decor.url
+      let decorUrl = new Date().getMonth() === 11 ? decor.xmas_url : decor.url
+      let src = ocargo.Drawing.raphaelImageDir + decorUrl
       let x = decor.x + PAPER_PADDING
       let y = PAPER_HEIGHT - decor.y - decor.height + PAPER_PADDING
       let width = decor.width
@@ -903,7 +904,7 @@ ocargo.Drawing = function (startingPosition) {
       for (let j = 0; j < GRID_HEIGHT; j++) {
         grid[i][j].attr({
           stroke: currentTheme.border,
-          fill: currentTheme.background,
+          fill: new Date().getMonth() === 11 ? THEMES.snow.background : currentTheme.background,
           'fill-opacity': 1
         })
       }
@@ -1012,6 +1013,14 @@ ocargo.Drawing.translate = function (coordinate) {
   return new ocargo.Coordinate(coordinate.x, GRID_HEIGHT - 1 - coordinate.y)
 }
 
+// A Function used to stop the iframe video
+function stopVideo() {
+  // https://gist.github.com/cferdinandi/9044694
+  const video = document.getElementsByClassName("video");
+  const iframeSrc = video[0].src;
+  video[0].src = iframeSrc;
+}
+
 /*
  This is the function that starts the pop-up.
  Buttons should be passed in separately to the function instead of concatenating
@@ -1050,16 +1059,20 @@ ocargo.Drawing.startPopup = function (
   if (youtubeVideo[0]) {
     $("#modal-mascot").hide()
   }
+
+  // create a wrapper for the buttons that will be appended
+  let buttonDiv = $("<div>").addClass("modal-buttons")
+
+  const icons = [
+    $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
+    "NOT USED",
+    $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-right"),
+  ]
+
   // buttons are passed as html string..
   // hence this terribleness
   // check if we pass an array of buttons or just one button
   if (Array.isArray(buttons)) {
-    const icons = [
-      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-left"),
-      "NOT USED",
-      $("<span>").addClass("iconify icon").attr("data-icon", "mdi:chevron-right"),
-    ]
-
     const links = [
       PREV_LEVEL_URL,
       "",
@@ -1067,8 +1080,12 @@ ocargo.Drawing.startPopup = function (
     ]
 
     const regexID = /id=\"*\w+_\w+\"/
-    // create a wrapper for the buttons that will be appended
-    let buttonDiv = $("<div>").addClass("modal-buttons")
+
+    // Close the video on pressing the top right close button 
+    $("#close-modal").click(function () {
+      stopVideo();
+    });
+
     for (let i = 0; i < buttons.length; i++) {
       // get id with regex by stripping the html content
       let currentID = buttons[i].match(regexID)[0].slice(3).replaceAll('"', '')
@@ -1084,6 +1101,11 @@ ocargo.Drawing.startPopup = function (
         currentButton.attr("onclick", currentLink)
       }
 
+      // Close the video on the play button
+      currentButton.click(function () {
+        stopVideo();
+      });
+
       // first level shouldn't have prev_button
       // and last level shouldn't have next_button
       if (currentButton.attr("onclick")) buttonDiv.append(currentButton)
@@ -1094,10 +1116,35 @@ ocargo.Drawing.startPopup = function (
 
   else if (buttons) {
     $('#modal-buttons').html(buttons)
+
+    let tryAgainButton = $("#try_again_button")
+    tryAgainButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(tryAgainButton)
+
+    let editButton = $("#edit_button")
+    editButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(editButton)
+
+    let nextLevelButton = $("#next_level_button")
+    nextLevelButton.removeClass().addClass("navigation_button_portal_secondary long_button rapid-router-welcome button--icon")
+    nextLevelButton.append(icons[2])
+    buttonDiv.append(nextLevelButton)
+
+    let playButton = $("#play_button")
+    playButton.removeClass().addClass("navigation_button_portal_secondary long_button rapid-router-welcome button--icon")
+    playButton.append(icons[2])
+    buttonDiv.append(playButton)
+
+    $("#modal-buttons").html(buttonDiv)
   } else {
     $('#modal-buttons').html(
       ocargo.button.dismissButtonHtml('close_button', gettext('Close'))
     )
+
+    let closeButton = $("#close_button")
+    closeButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(closeButton)
+    $("#modal-buttons").html(buttonDiv)
   }
   // Show popup
   $("#myModal").show()
@@ -1119,24 +1166,6 @@ ocargo.Drawing.startYesNoPopup = function (
   ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
   $('#modal-yesBtn').click(yesFunction)
   $('#modal-noBtn').click(noFunction)
-}
-
-// This provides a pop-up with 2 options
-ocargo.Drawing.startOptionsPopup = function (
-  title,
-  subtitle,
-  message,
-  optionAFunction,
-  optionBFunction,
-  optionAText,
-  optionBText,
-  mascot
-) {
-  let buttonHtml =
-    '<button id="modal-optionABtn" class="navigation_button long_button">' + optionAText + '</button> <button id="modal-optionBBtn" class="navigation_button long_button">' + optionBText + '</button>'
-  ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
-  $('#modal-optionABtn').click(optionAFunction)
-  $('#modal-optionBBtn').click(optionBFunction)
 }
 
 // This is the function that starts the pop-up when there is no internet connection while playing the game
