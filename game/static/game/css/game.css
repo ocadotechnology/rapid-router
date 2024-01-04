@@ -193,7 +193,10 @@ div > .navigation_button_kurono {
 }
 
 #van_commands_help {
-    float: right;
+    position: absolute;
+    top: 2;
+    left: 2;
+    
 }
 
 /*************************/
