@@ -80,7 +80,8 @@ ocargo.BlocklyControl.prototype.reset = function () {
   // has a start button, if not then create a start button
   if (!wasGameStarted(allBlocks)) {
     let startBlock = this.createBlock("start");
-    startBlock.moveBy(30 + (i % 2) * 200, 30 + Math.floor(i / 2) * 100);
+    // Generate the first block on the (100, 100) position
+    startBlock.moveBy(100, 100);
   }
 
   this.clearIncorrectBlock();
