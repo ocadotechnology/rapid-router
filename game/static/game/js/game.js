@@ -123,12 +123,14 @@ ocargo.Game.prototype.onLevelChange = function() {
   }
 
   this.drawing.enablePanning()
+  
+  const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
 
   ocargo.Drawing.startPopup(
     title,
     LESSON,
     message,
-    BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED, // show mascot on Blockly-only levels
+    showMascot,
     [
       ocargo.button.dismissButtonHtml("prev_button", gettext("Previous level")),
       ocargo.button.dismissButtonHtml('play_button', gettext('Play')),

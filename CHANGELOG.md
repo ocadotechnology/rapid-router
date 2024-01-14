@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.9 (2024-01-04)
+
+### Fix
+
+* 1518-Remove Dee From Level 116 Popup ([#1562](https://github.com/ocadotechnology/rapid-router/issues/1562)) ([`74ab64d`](https://github.com/ocadotechnology/rapid-router/commit/74ab64dc257b6a739751584ad120e9bf3c23a45b))
+
 ## v5.16.8 (2023-12-20)
 
 ### Fix
