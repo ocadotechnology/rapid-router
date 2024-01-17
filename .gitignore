@@ -2,13 +2,11 @@
 *.po
 *.mo
 *.pyc
-local_settings.py
 /static/
 /env/
 *.iml
 *~
 *.egg-info
-.vscode
 
 .settings
 .project
@@ -20,7 +18,6 @@ db.sqlite3
 .sass-cache
 *.DS_Store
 *.jshintrc
-example_project/example_project/static/
 
 .coverage
 .eggs/**
