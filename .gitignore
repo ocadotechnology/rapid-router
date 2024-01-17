@@ -7,6 +7,7 @@
 *.iml
 *~
 *.egg-info
+.venv
 
 .settings
 .project
