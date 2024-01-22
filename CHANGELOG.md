@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.11 (2024-01-22)
+
+### Fix
+
+* Level 14 extra block ([`c3ed336`](https://github.com/ocadotechnology/rapid-router/commit/c3ed33619bd684897b732a7b021da9f1349bb5e8))
+
 ## v5.16.10 (2024-01-16)
 
 ### Fix
