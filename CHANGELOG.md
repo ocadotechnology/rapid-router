@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.12 (2024-01-23)
+
+### Fix
+
+* 1573-Fix Saving Feature ([#1574](https://github.com/ocadotechnology/rapid-router/issues/1574)) ([`f95f2e2`](https://github.com/ocadotechnology/rapid-router/commit/f95f2e2f4edc5937f00fdeda32a72935b942cae0))
+
 ## v5.16.11 (2024-01-22)
 
 ### Fix
