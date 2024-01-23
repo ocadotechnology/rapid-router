@@ -360,6 +360,10 @@ def load_workspace(request, workspaceID):
 
 
 def save_workspace(request, workspaceID=None):
+    request_params = ["name", "contents", "python_contents", "blockly_enabled", "python_enabled", "pythonViewEnabled"]
+    missing_params = [param for param in request_params if param not in request.POST]
+    if missing_params != []:
+        raise Exception("Request missing the following required parameters", missing_params)
     name = request.POST.get("name")
     contents = request.POST.get("contents")
     python_contents = request.POST.get("python_contents")
