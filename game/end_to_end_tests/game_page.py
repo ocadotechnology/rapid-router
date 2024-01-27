@@ -32,6 +32,19 @@ class GamePage(BasePage):
         self.browser.find_element(By.ID, button_id).click()
         self.wait_for_element_to_be_invisible((By.ID, button_id), wait_seconds=15)
 
+    def save_solution(self, workspace_name):
+        self.browser.find_element(By.ID, "save_tab").click()
+        self.browser.find_element(By.ID, "workspaceNameInput").send_keys(workspace_name)
+        self.browser.find_element(By.ID, "saveWorkspace").click()
+        return self
+
+    def load_solution_by_name(self, solution_name):
+        self.browser.find_element(By.ID, "load_tab").click()
+        self.browser.find_element(By.ID, solution_name).click()
+        self.browser.find_element(By.ID, "loadWorkspace").click()
+        time.sleep(1)
+        return self
+
     def load_solution(self, workspace_id):
         self.browser.find_element(By.ID, "load_tab").click()
         selector = "#loadWorkspaceTable tr[value='" + str(workspace_id) + "']"
