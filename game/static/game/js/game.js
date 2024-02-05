@@ -1349,6 +1349,7 @@ ocargo.Game.prototype._populateTable = function (tableName, workspaces) {
         .attr({ value: workspace.id })
         .appendTo(table)
       $('<td></td>')
+        .attr({ id: workspace.name })
         .text(workspace.name)
         .appendTo(row)
     }
