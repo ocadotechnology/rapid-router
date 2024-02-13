@@ -527,7 +527,7 @@ def hint_level19():
 
 
 def title_level20():
-    return "Use the <b>Repeat</b> block to make your sequence shorter and simpler"
+    return "Use the <b>repeat</b> block to make your sequence shorter and simpler"
 
 
 def description_level20():
@@ -773,7 +773,7 @@ def hint_level31():
 
 
 def title_level32():
-    return "Uh oh, it's <b>Until</b> fever!"
+    return "Uh oh, it's <b>until</b> fever!"
 
 
 def description_level32():
@@ -790,7 +790,7 @@ def hint_level32():
 
 
 def title_level33():
-    return "Now it's time to try the <b>If</b> block"
+    return "Now it's time to try the <b>if</b> block"
 
 
 def description_level33():
@@ -819,7 +819,7 @@ def hint_level33():
 
 
 def title_level34():
-    return "Multiple <b>If</b>s"
+    return "Multiple <b>if</b>s"
 
 
 def description_level34():
@@ -868,7 +868,7 @@ def hint_level35():
 
 
 def title_level36():
-    return "What else? If-else if-else, that's what!"
+    return "What else? <b>If-else</b>, that's what!"
 
 
 def description_level36():
@@ -1226,7 +1226,7 @@ def hint_level51():
 
 
 def title_level52():
-    return "A Bit more Tricky"
+    return "A bit more Tricky"
 
 
 def description_level52():
@@ -1265,7 +1265,7 @@ def hint_level53():
 
 
 def title_level54():
-    return "Round and Round"
+    return "Round and round"
 
 
 def description_level54():
@@ -1284,7 +1284,7 @@ def hint_level54():
 
 
 def title_level55():
-    return "Wonky Fish!"
+    return "Wonky fish!"
 
 
 def description_level55():
@@ -1300,7 +1300,7 @@ def hint_level55():
 
 
 def title_level56():
-    return "Concrete Wasteland"
+    return "Concrete wasteland"
 
 
 def description_level56():
@@ -1319,7 +1319,7 @@ def hint_level56():
 
 
 def title_level57():
-    return "This is <b>not...</b> the same"
+    return "This is <b>not</b>... the same"
 
 
 def description_level57():
@@ -1418,7 +1418,7 @@ def hint_level61():
 
 
 def title_level62():
-    return "Lots of Traffic Lights!"
+    return "Lots of traffic lights!"
 
 
 def description_level62():
@@ -1435,7 +1435,7 @@ def hint_level62():
 
 
 def title_level63():
-    return "Wiggle Wiggle"
+    return "Wiggle wiggle"
 
 
 def description_level63():
@@ -1456,7 +1456,7 @@ def hint_level63():
 
 
 def title_level64():
-    return "Muddy Patterns with Phil"
+    return "Muddy patterns with Phil"
 
 
 def description_level64():
@@ -1513,7 +1513,7 @@ def hint_level66():
 
 
 def title_level67():
-    return "Crazy Farm"
+    return "Crazy farm"
 
 
 def description_level67():
@@ -1596,7 +1596,7 @@ def hint_level71():
 
 
 def title_level72():
-    return "Can Wes Find his lunch?"
+    return "Can Wes find his lunch?"
 
 
 def description_level72():
@@ -1676,7 +1676,7 @@ def hint_level76():
 
 
 def title_level77():
-    return "G Force"
+    return "G force"
 
 
 def description_level77():
@@ -1710,7 +1710,7 @@ def hint_level78():
 
 
 def title_level79():
-    return "Muddy Mayhem"
+    return "Muddy mayhem"
 
 
 def description_level79():
@@ -1883,7 +1883,7 @@ def hint_level87():
 
 
 def title_level88():
-    return "See what happens when you add Traffic lights"
+    return "See what happens when you add traffic lights"
 
 
 def description_level88():
@@ -2172,7 +2172,7 @@ def hint_level100():
 
 
 def title_level101():
-    return "Function or Junction?"
+    return "Function or junction?"
 
 
 def description_level101():
@@ -2886,8 +2886,8 @@ def get_episode_title(episode_id):
         9: "Blockly Brain Teasers",
         10: "Introduction to Python",
         11: "Python",
-        12: "Sequencing and Counted Loops",
-        13: "Indeterminate WHILE Loops - coming soon",
+        12: "Counted Loops Using While",
+        13: "Indeterminate While loops - coming soon",
         14: "Selection in a Loop - coming soon",
         15: "For Loops - coming soon",
     }
