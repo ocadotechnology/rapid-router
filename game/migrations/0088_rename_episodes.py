@@ -11,7 +11,7 @@ def rename_episodes(apps: Apps, *args):
         episode.save()
     
     update_episode_name(pk=12, name="Counted Loops Using While")
-    update_episode_name(pk=13, name="Indeterminate While loops - coming soon")
+    update_episode_name(pk=13, name="Indeterminate While Loops - coming soon")
 
 
 def undo_rename_episodes(apps: Apps, *args):
@@ -26,7 +26,7 @@ def undo_rename_episodes(apps: Apps, *args):
     update_episode_name(pk=13, name="Indeterminate WHILE Loops - coming soon")
 
 class Migration(migrations.Migration):
-    dependencies = [("game", "0086_loop_levels")]
+    dependencies = [("game", "0087_workspace_python_view_enabled")]
     operations = [
         migrations.RunPython(
             rename_episodes,

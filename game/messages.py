@@ -1226,7 +1226,7 @@ def hint_level51():
 
 
 def title_level52():
-    return "A bit more Tricky"
+    return "A bit more tricky"
 
 
 def description_level52():
@@ -1815,7 +1815,7 @@ def hint_level83():
 
 
 def title_level84():
-    return "Repeat and watch"
+    return "<b>Repeat</b> and watch"
 
 
 def description_level84():
@@ -1832,7 +1832,7 @@ def hint_level84():
 
 
 def title_level85():
-    return "Looks easy but use repeat until and see what happens?"
+    return "Looks easy but use <b>repeat until</b> and see what happens?"
 
 
 def description_level85():
@@ -1850,7 +1850,7 @@ def hint_level85():
 
 
 def title_level86():
-    return "See what the if blocks looks like in Python"
+    return "See what the <b>if</b> blocks looks like in Python"
 
 
 def description_level86():
@@ -1866,7 +1866,7 @@ def hint_level86():
 
 
 def title_level87():
-    return "Don't forget to use else if"
+    return "Don't forget to use <b>else if</b>"
 
 
 def description_level87():
@@ -2459,7 +2459,7 @@ def hint_level109():
     description_level116,
     hint_level116,
 ) = (
-    lambda: "In a while, crocodile!",
+    lambda: "In a <b>while</b>, crocodile!",
     lambda: build_description(
         title_level116(),
         "This level may look easy, but this time you need to use a While Loop to deliver to the house."
@@ -2474,7 +2474,7 @@ def hint_level109():
     description_level117,
     hint_level117,
 ) = (
-    lambda: "Wiggle while you work",
+    lambda: "Wiggle <b>while</b> you work",
     lambda: build_description(
         title_level117(),
         "This time it's a little harder. We've added the directions back in."
@@ -2887,7 +2887,7 @@ def get_episode_title(episode_id):
         10: "Introduction to Python",
         11: "Python",
         12: "Counted Loops Using While",
-        13: "Indeterminate While loops - coming soon",
+        13: "Indeterminate While Loops - coming soon",
         14: "Selection in a Loop - coming soon",
         15: "For Loops - coming soon",
     }
