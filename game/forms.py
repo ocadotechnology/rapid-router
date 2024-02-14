@@ -18,7 +18,10 @@ class ScoreboardForm(forms.Form):
         # Each tuple in choices has two elements, id and name of each level
         # First element is the actual value set on the model
         # Second element is the string displayed on the dropdown menu
-        episodes_choices = ((episode.id, episode.name) for episode in Episode.objects.all())
+        episodes_choices = (
+            (episode.id, episode.name)
+            for episode in Episode.objects.filter(in_development=False)
+        )
         self.fields["episodes"] = forms.MultipleChoiceField(
             choices=itertools.chain(episodes_choices),
             widget=forms.CheckboxSelectMultiple(),
