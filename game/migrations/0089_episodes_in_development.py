@@ -21,7 +21,7 @@ def unmark_episodes_in_development(apps: Apps, *args):
 
 
 class Migration(migrations.Migration):
-    dependencies = [("game", "0087_workspace_python_view_enabled")]
+    dependencies = [("game", "0088_rename_episodes")]
     operations = [
         migrations.RunPython(
             mark_episodes_in_development,
