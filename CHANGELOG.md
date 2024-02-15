@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.15 (2024-02-15)
+
+### Fix
+
+* Scoreboard issue with new levels ([#1584](https://github.com/ocadotechnology/rapid-router/issues/1584)) ([`8839c85`](https://github.com/ocadotechnology/rapid-router/commit/8839c8594d518dd35eb77e82085c818d675c62fc))
+
+### Documentation
+
+* Add licence info to Readme ([#1582](https://github.com/ocadotechnology/rapid-router/issues/1582)) ([`0a47277`](https://github.com/ocadotechnology/rapid-router/commit/0a4727797071cd76891ecf82b64dac42f3ade1e9))
+
 ## v5.16.14 (2024-02-15)
 
 ### Fix
