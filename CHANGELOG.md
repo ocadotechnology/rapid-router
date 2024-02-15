@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.14 (2024-02-15)
+
+### Fix
+
+* Rename episodes and levels ([#1581](https://github.com/ocadotechnology/rapid-router/issues/1581)) ([`c9f01a7`](https://github.com/ocadotechnology/rapid-router/commit/c9f01a7836e40cd365997dbb93b613cdbf513322))
+
 ## v5.16.13 (2024-02-08)
 
 ### Fix
