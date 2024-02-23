@@ -24,8 +24,8 @@ ocargo.PathFinder = function(model) {
     }
 
     this.maxScoreForNumberOfInstructions = 0;
-    // if algorithm score is enabled and if there is a model solution
-    if (!this.algorithmScoreDisabled && this.isBlocklyLevelNotPython()) {
+
+    if (!this.algorithmScoreDisabled) {
         this.maxScoreForNumberOfInstructions = 10;
     }
 
@@ -33,26 +33,20 @@ ocargo.PathFinder = function(model) {
     this.optimalPath = getOptimalPath(this.nodes, this.destinations);
 };
 
-
-ocargo.PathFinder.prototype.isBlocklyLevelNotPython = function() {
-    return this.modelSolution.length > 0;
-}
-
-
 ocargo.PathFinder.prototype.getScore = function() {
-    var routeCoins = {};
-    var instrCoins = {};
-    var performance= "";
+    let routeCoins = {};
+    let instrCoins = {};
+    let performance= "";
 
-    var pathLengthScore = 0;
-    if(!this.pathScoreDisabled){
+    let pathLengthScore = 0;
+    if (!this.pathScoreDisabled) {
         pathLengthScore = Math.max(0, this.getTravelledPathScore());
         routeCoins = this.getNumCoins(pathLengthScore, this.maxScoreForPathLength);
     }
 
-    var totalScore = pathLengthScore;
+    let totalScore = pathLengthScore;
 
-    if (this.isBlocklyLevelNotPython()) {
+    if (!this.algorithmScoreDisabled) {
         var initInstrScore = this.getScoreForNumberOfInstructions();
         var instrScore = Math.max(0, initInstrScore);
 
@@ -67,7 +61,6 @@ ocargo.PathFinder.prototype.getScore = function() {
         instrCoins = this.getNumCoins(instrScore, this.maxScoreForNumberOfInstructions);
     }
 
-
     if (pathLengthScore < this.maxScoreForPathLength) {
         performance = "pathLonger";
     }
@@ -77,11 +70,11 @@ ocargo.PathFinder.prototype.getScore = function() {
     else if (initInstrScore < this.maxScoreForNumberOfInstructions) {
         performance = "algorithmLonger";
     }
-    else  if (totalScore === this.maxScore) {
+    else if (totalScore === this.maxScore) {
         performance = "scorePerfect";
     }
 
-    var endLevelMsg = function(performance) {
+    const endLevelMsg = function(performance) {
         switch (performance){
             case 'pathLonger':
                 return gettext('Try finding a shorter route to the destination.');
@@ -116,18 +109,17 @@ ocargo.PathFinder.prototype.getNumCoins = function(score, maxScore) {
 };
 
 ocargo.PathFinder.prototype.getTravelledPathScore = function() {
-    var travelled = this.van.getDistanceTravelled();
+    const travelled = this.van.getDistanceTravelled();
     const START_AND_END_BLOCKS = 2;
     return this.maxScoreForPathLength - (travelled + START_AND_END_BLOCKS - this.optimalPath.length);
 };
 
 ocargo.PathFinder.prototype.getScoreForNumberOfInstructions = function() {
-
-    var blocksUsed = ocargo.utils.isIOSMode() ? ocargo.game.mobileBlocks : ocargo.blocklyControl.activeBlocksCount();
-    var algorithmScore = 0;
-    var difference = this.maxScoreForNumberOfInstructions;
-    for (var i = 0; i < this.modelSolution.length; i++) {
-        var currDifference = blocksUsed - this.modelSolution[i];
+    const blocksUsed = ocargo.utils.isIOSMode() ? ocargo.game.mobileBlocks : ocargo.blocklyControl.activeBlocksCount();
+    let algorithmScore = 0;
+    let difference = this.maxScoreForNumberOfInstructions;
+    for (let i = 0; i < this.modelSolution.length; i++) {
+        let currDifference = blocksUsed - this.modelSolution[i];
         if (Math.abs(currDifference) < difference) {
             difference = Math.abs(currDifference);
             algorithmScore = this.maxScoreForNumberOfInstructions - currDifference;
@@ -137,13 +129,11 @@ ocargo.PathFinder.prototype.getScoreForNumberOfInstructions = function() {
 };
 
 ocargo.PathFinder.prototype.getLength = function(stack) {
-
-    var total = 0;
-    var i;
+    let total = 0;
     if (!stack) {
         return total;
     }
-    for (i = 0; i < stack.length; i++) {
+    for (let i = 0; i < stack.length; i++) {
         if (stack[i].command === "While") {
             total += this.getLength(stack[i].block);
         }
@@ -156,16 +146,14 @@ ocargo.PathFinder.prototype.getLength = function(stack) {
     return total;
 };
 
-
-
 function getOptimalPath(nodes, destinations) {
     // Brute force Travelling Salesman implementation, using A* to determine the connection lengths
     // If the map size increases or lots of destinations are required, it may need to be rethought
-    var hash = {};
+    let hash = {};
     function getPathBetweenNodes(node1, node2) {
-        var key = '(' + node1.coordinate.x + ',' + node1.coordinate.y + '),(' + node2.coordinate.x +
+        const key = '(' + node1.coordinate.x + ',' + node1.coordinate.y + '),(' + node2.coordinate.x +
                     ',' + node2.coordinate.y + ')';
-        var solution;
+        let solution;
         if (key in hash) {
             solution = hash[key];
         }
@@ -177,13 +165,13 @@ function getOptimalPath(nodes, destinations) {
     }
 
     function getPermutationPath(start, permutation) {
-        var fragPath = [getPathBetweenNodes(start, permutation[0], nodes)];
-        for (var i = 1; i < permutation.length; i++) {
+        let fragPath = [getPathBetweenNodes(start, permutation[0], nodes)];
+        for (let i = 1; i < permutation.length; i++) {
             fragPath.push(getPathBetweenNodes(permutation[i-1], permutation[i], nodes));
         }
 
-        var fullPath = [start];
-        for (var i = 0; i < fragPath.length; i++) {
+        let fullPath = [start];
+        for (let i = 0; i < fragPath.length; i++) {
             if (!fragPath[i]) {
                 return null;
             }
@@ -194,12 +182,12 @@ function getOptimalPath(nodes, destinations) {
         return fullPath;
     }
 
-    var permutations = [];
+    let permutations = [];
     function permute(array, data) {
-        var current;
-        var currentPermutation = data || [];
+        let current;
+        let currentPermutation = data || [];
 
-        for (var i = 0; i < array.length; i++) {
+        for (let i = 0; i < array.length; i++) {
             // Take node out
             current = array.splice(i, 1)[0];
             // Then the current permutation is complete so add it
@@ -213,26 +201,25 @@ function getOptimalPath(nodes, destinations) {
         }
     }
 
-    var start = nodes[0];
-    var bestScore = Number.POSITIVE_INFINITY;
-    var bestPermutationPath = null;
-    var destinationNodes = [];
+    let start = nodes[0];
+    let bestScore = Number.POSITIVE_INFINITY;
+    let bestPermutationPath = null;
+    let destinationNodes = [];
 
-    for (var i = 0; i < destinations.length; i++) {
+    for (let i = 0; i < destinations.length; i++) {
         destinationNodes.push(destinations[i].node);
     }
     permute(destinationNodes);
 
-    for (var i = 0; i < permutations.length; i++) {
-        var permutation = permutations[i];
-        var permutationPath = getPermutationPath(start, permutation, nodes);
+    for (let i = 0; i < permutations.length; i++) {
+        let permutation = permutations[i];
+        const permutationPath = getPermutationPath(start, permutation, nodes);
 
         if (permutationPath && permutationPath.length < bestScore) {
             bestScore = permutationPath.length;
             bestPermutationPath = permutationPath;
         }
     }
-
     return bestPermutationPath;
 }
 
@@ -243,21 +230,19 @@ function QueueLink(node, score) {
 }
 
 function PriorityQueue() {
-  var head = null;
-
   this.push = function(node, score) {
     if (this.head == null) {
       this.head = new QueueLink(node, score);
     } else if (this.head.score > score) {
-      var tmp = this.head;
+      let tmp = this.head;
       this.head = new QueueLink(node, score);
       this.head.next = tmp;
     } else {
-      var i = this.head;
-      var found = false;
+      let i = this.head;
+      let found = false;
       while (i.next != null && !found) {
         if (i.next.score > score) {
-          var tmp = i.next;
+          let tmp = i.next;
           i.next = new QueueLink(node, score);
           i.next.next = tmp;
           found = true;
@@ -274,7 +259,7 @@ function PriorityQueue() {
     if (this.head == null) {
       return null;
     } else {
-      var result = this.head.node;
+      const result = this.head.node;
       this.head = this.head.next;
       return result;
     }
@@ -286,12 +271,11 @@ function PriorityQueue() {
 }
 
 function aStar(origin, destination, nodes) {
-
-    var end = destination;          // Nodes already visited.
-    var current;
-    var start = origin;
-    var closedSet = {};             // The neighbours yet to be evaluated.
-    var openSet = new PriorityQueue();
+    const end = destination;          // Nodes already visited.
+    let current;
+    const start = origin;
+    let closedSet = {};             // The neighbours yet to be evaluated.
+    let openSet = new PriorityQueue();
     openSet.push(start, 0);
 
     initialiseParents(nodes);
@@ -304,14 +288,14 @@ function aStar(origin, destination, nodes) {
         if (current === end) {
             return getNodeList(current);
         }
-        for (var i = 0; i < current.connectedNodes.length; i++) {
-            var neighbour = current.connectedNodes[i];
+        for (let i = 0; i < current.connectedNodes.length; i++) {
+            let neighbour = current.connectedNodes[i];
             if (Object.prototype.hasOwnProperty.call(closedSet, neighbour.id)) {
                 continue;
             }
             closedSet[neighbour.id] = true;
             neighbour.parent = current;
-            var score = distanceFromStart(neighbour) + heuristic(destination, neighbour);
+            const score = distanceFromStart(neighbour) + heuristic(destination, neighbour);
             openSet.push(neighbour, score);
         }
     }
@@ -319,21 +303,21 @@ function aStar(origin, destination, nodes) {
     return null;
 
     function heuristic(node1, node2) {
-        var d1 = Math.abs(node2.coordinate.x - node1.coordinate.x);
-        var d2 = Math.abs(node2.coordinate.y - node1.coordinate.y);
+        const d1 = Math.abs(node2.coordinate.x - node1.coordinate.x);
+        const d2 = Math.abs(node2.coordinate.y - node1.coordinate.y);
         return d1 + d2;
     }
 
     function initialiseParents(nodes) {
-        for (var i = 0; i < nodes.length; i++) {
+        for (let i = 0; i < nodes.length; i++) {
             nodes[i].parent = null;
             nodes[i].id = i;
         }
     }
 
     function distanceFromStart(current) {
-      var count = 0;
-      var i = current;
+      let count = 0;
+      let i = current;
       while (i.parent != null) {
         count = count + 1;
         i = i.parent;
@@ -342,8 +326,8 @@ function aStar(origin, destination, nodes) {
     }
 
     function getNodeList(current) {
-        var curr = current;
-        var ret = [];
+        let curr = current;
+        let ret = [];
         while (curr !== start && curr !== null) {
             ret.push(curr);
             curr = curr.parent;
@@ -355,7 +339,7 @@ function aStar(origin, destination, nodes) {
 }
 
 function areDestinationsReachable(start, destinations, nodes) {
-  for (var i = 0; i < destinations.length; i++) {
+  for (let i = 0; i < destinations.length; i++) {
     if (aStar(start, destinations[i], nodes) == null) {
       return false;
     }
