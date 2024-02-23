@@ -138,19 +138,6 @@ def levels(request):
 
     :template:`game/level_selection.html`
     """
-    episodes = Episode.objects.all()
-
-    for episode in episodes:
-        print("=================================")
-        print(episode.name)
-        print("=================================")
-
-        for level in episode.levels:
-            print(f"Level {level.name} route score: "
-                  f"{not level.disable_route_score}")
-            print(f"Level {level.name} algo score: "
-                  f"{not level.disable_algorithm_score}")
-
     user = request.user
     if user.is_authenticated and is_student(user):
         best_attempts = (
