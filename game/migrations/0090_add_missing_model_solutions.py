@@ -1,7 +1,7 @@
+import re
+
 from django.apps.registry import Apps
 from django.db import migrations
-
-import re
 
 
 def add_missing_model_solutions(apps: Apps, *args):
@@ -65,7 +65,7 @@ def add_missing_model_solutions(apps: Apps, *args):
         else:
             difference = abs(number_of_blocks - ideal_number_of_blocks)
 
-            if difference <= 10:
+            if difference < 10:
                 attempt.score += 10 - difference
 
         attempt.save()
