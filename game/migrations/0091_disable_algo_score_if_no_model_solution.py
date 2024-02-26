@@ -12,7 +12,7 @@ def disable_algo_score_for_levels_without_model_solution(apps: Apps, *args):
     Attempt = apps.get_model("game", "Attempt")
 
     Attempt.objects.filter(
-        level__default=True, level__model_solution=False, score=20
+        level__default=True, level__model_solution="[]", score=20
     ).update(score=10)
 
 
@@ -26,7 +26,7 @@ def enable_algo_score_for_levels_without_model_solution(apps: Apps, *args):
     Attempt = apps.get_model("game", "Attempt")
 
     Attempt.objects.filter(
-        level__default=True, level__model_solution=False, score=10
+        level__default=True, level__model_solution="[]", score=10
     ).update(score=20)
 
 
