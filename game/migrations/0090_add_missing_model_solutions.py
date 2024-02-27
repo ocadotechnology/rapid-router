@@ -24,7 +24,7 @@ def add_missing_model_solutions(apps: Apps, *args):
 
     for level_name, model_solution in model_solutions.items():
         count = Level.objects.filter(name=level_name).update(
-            model_solution=model_solution
+            model_solution=model_solution, disable_algorithm_score=False
         )
         assert count == 1
 
@@ -46,9 +46,9 @@ def add_missing_model_solutions(apps: Apps, *args):
             "91",
         ],
         score=10,
-    )
+    ).prefetch_related("level")
 
-    for attempt in attempts:
+    for attempt in attempts.iterator(chunk_size=500):
         workspace = attempt.workspace
 
         # Get number of blocks from solution - 1 to discount Start block
