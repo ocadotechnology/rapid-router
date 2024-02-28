@@ -24,11 +24,11 @@ ocargo.Game.prototype.setup = function () {
     }
   }
 
-  
+
 // Function being called when there is a change in game level.
 ocargo.Game.prototype.onLevelChange = function() {
-  const currentLevelId = LEVEL_ID; 
-  localStorage.setItem('currentEpisode', EPISODE);  
+  const currentLevelId = LEVEL_ID;
+  localStorage.setItem('currentEpisode', EPISODE);
 }
 
   restoreCmsLogin()
@@ -123,7 +123,7 @@ ocargo.Game.prototype.onLevelChange = function() {
   }
 
   this.drawing.enablePanning()
-  
+
   const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
 
   ocargo.Drawing.startPopup(
@@ -146,7 +146,7 @@ document.addEventListener("DOMContentLoaded", function() {
   if (currentEpisode) {
     localStorage.setItem('currentEpisode', currentEpisode);
   }
-});  
+});
 
 ocargo.Game.prototype.clearWorkspaceNameInputInSaveTab = function () {
   $('#workspaceNameInput').val('')
@@ -238,10 +238,12 @@ ocargo.Game.prototype.sendAttempt = function (score) {
     return /^(GET|HEAD|OPTIONS|TRACE)$/.test(method)
   }
 
-  // hack scores so that it works for demo and python TODO implement max scores and remove this!!
-  if (PYTHON_ENABLED) {
-    score *= 2
-  }
+  // TODO: Remove below - keeping it for now as a reminder that we need to
+  //  implement some kind of algorithm score for Python levels.
+  // // hack scores so that it works for demo and python TODO implement max scores and remove this!!
+  // if (PYTHON_ENABLED) {
+  //   score *= 2
+  // }
 
   // Check that we should actually be sending an attempt - either if only blockly is enabled
   // or if python is enabled and we're on the python tab (assumes they don't change tab quickly...)
