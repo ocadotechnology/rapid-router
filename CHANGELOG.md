@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.16 (2024-02-28)
+
+### Fix
+
+* Make algorithm score setting consistent with presence of model solutions ([#1585](https://github.com/ocadotechnology/rapid-router/issues/1585)) ([`bc244c3`](https://github.com/ocadotechnology/rapid-router/commit/bc244c3b8cb14bc5d00ffcd3db380528e64914a0))
+* Set Python scores to 10 ([`d2f2a9c`](https://github.com/ocadotechnology/rapid-router/commit/d2f2a9c8b908cf07671802994c0e10ce144b3bff))
+
 ## v5.16.15 (2024-02-15)
 
 ### Fix
