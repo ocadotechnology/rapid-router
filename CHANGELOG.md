@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.17 (2024-02-28)
+
+### Fix
+
+* Algo scores fix only for default levels ([`c87bf7f`](https://github.com/ocadotechnology/rapid-router/commit/c87bf7fe76d7d1c3aceb02ed5e4fff02d57c0b2d))
+
 ## v5.16.16 (2024-02-28)
 
 ### Fix
