@@ -23,14 +23,16 @@ def add_missing_model_solutions(apps: Apps, *args):
     }
 
     for level_name, model_solution in model_solutions.items():
-        count = Level.objects.filter(name=level_name).update(
-            model_solution=model_solution, disable_algorithm_score=False
-        )
+        count = Level.objects.filter(
+            default=True, episode__isnull=False, name=level_name
+        ).update(model_solution=model_solution, disable_algorithm_score=False)
         assert count == 1
 
     Attempt = apps.get_model("game", "Attempt")
 
     attempts = Attempt.objects.filter(
+        level__default=True,
+        level__episode__isnull=False,
         level__name__in=[
             "80",
             "81",
@@ -75,6 +77,8 @@ def remove_new_model_solutions(apps: Apps, *args):
     Level = apps.get_model("game", "Level")
 
     Level.objects.filter(
+        default=True,
+        episode__isnull=False,
         name__in=[
             "80",
             "81",
@@ -88,12 +92,14 @@ def remove_new_model_solutions(apps: Apps, *args):
             "89",
             "90",
             "91",
-        ]
+        ],
     ).update(model_solution="[]", disable_algorithm_score=True)
 
     Attempt = apps.get_model("game", "Attempt")
 
     Attempt.objects.filter(
+        level__default=True,
+        level__episode__isnull=False,
         level__name__in=[
             "80",
             "81",
