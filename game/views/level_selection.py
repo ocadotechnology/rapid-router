@@ -1,7 +1,9 @@
 from __future__ import absolute_import, division
 
+import datetime
 from builtins import str
 
+import pytz
 from django.core.cache import cache
 from django.db.models import Max
 from django.shortcuts import render
@@ -12,7 +14,6 @@ import game.messages as messages
 from game import app_settings, random_road
 from game.cache import cached_episode
 from game.models import Attempt, Episode, Level
-
 from .level_editor import play_anonymous_level
 
 
@@ -218,6 +219,28 @@ def levels(request):
             # if user is a student or a standard teacher, just get levels shared with them directly.
             else:
                 directly_shared_levels.append(get_shared_level(level, attempts))
+
+    recent_attempts = Attempt.objects.filter(
+        level__default=True,
+        level__episode__isnull=False,
+        level__name__in=[
+            "80",
+            "81",
+            "82",
+            "83",
+            "84",
+            "85",
+            "86",
+            "87",
+            "88",
+            "89",
+            "90",
+            "91",
+        ],
+        score=10,
+        finish_time__gte=datetime.datetime(2023, 3, 1, 00, 00, tzinfo=pytz.UTC),
+    ).prefetch_related("level")
+
     return render(
         request,
         "game/level_selection.html",
@@ -228,6 +251,7 @@ def levels(request):
             "directly_shared_levels": directly_shared_levels,
             "indirectly_shared_levels": indirectly_shared_levels,
             "scores": attempts,
+            "attempts": recent_attempts.count()
         },
     )
 
