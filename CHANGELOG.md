@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.18 (2024-02-29)
+
+### Fix
+
+* Only target recent attempts ([#1587](https://github.com/ocadotechnology/rapid-router/issues/1587)) ([`4d398b1`](https://github.com/ocadotechnology/rapid-router/commit/4d398b121d8ec368eff7ec11edfe9c37e7426877))
+
 ## v5.16.17 (2024-02-28)
 
 ### Fix
