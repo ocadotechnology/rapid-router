@@ -1,7 +1,12 @@
+import datetime
+import logging
 import re
 
+import pytz
 from django.apps.registry import Apps
 from django.db import migrations
+
+LOGGER = logging.getLogger(__name__)
 
 
 def add_missing_model_solutions(apps: Apps, *args):
@@ -48,9 +53,14 @@ def add_missing_model_solutions(apps: Apps, *args):
             "91",
         ],
         score=10,
+        finish_time__gte=datetime.datetime(2023, 3, 1, 00, 00, tzinfo=pytz.UTC),
     ).prefetch_related("level")
 
-    for attempt in attempts.iterator(chunk_size=500):
+    LOGGER.info(f"Retrieved {attempts.count()} attempts.")
+
+    processed_count = 0
+
+    for attempt in attempts.iterator(chunk_size=1000):
         workspace = attempt.workspace
 
         # Get number of blocks from solution - 1 to discount Start block
@@ -71,6 +81,11 @@ def add_missing_model_solutions(apps: Apps, *args):
                 attempt.score += 10 - difference
 
         attempt.save()
+
+        processed_count += 1
+
+        if processed_count % 1000 == 0:
+            LOGGER.info(f"Processed {processed_count} attempts.")
 
 
 def remove_new_model_solutions(apps: Apps, *args):
@@ -115,6 +130,7 @@ def remove_new_model_solutions(apps: Apps, *args):
             "91",
         ],
         score__gt=10,
+        finish_time__gte=datetime.datetime(2023, 3, 1, 00, 00, tzinfo=pytz.UTC),
     ).update(score=10)
 
 
