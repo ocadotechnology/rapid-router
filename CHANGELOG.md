@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.19 (2024-03-01)
+
+### Fix
+
+* Improve migration 0090 (use select_related instead) ([`3cf1dd2`](https://github.com/ocadotechnology/rapid-router/commit/3cf1dd2237e231b8c1997c14bd30c578c17efac5))
+
 ## v5.16.18 (2024-02-29)
 
 ### Fix
