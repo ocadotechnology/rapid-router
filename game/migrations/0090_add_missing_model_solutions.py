@@ -54,7 +54,7 @@ def add_missing_model_solutions(apps: Apps, *args):
         ],
         score=10,
         finish_time__gte=datetime.datetime(2023, 3, 1, 00, 00, tzinfo=pytz.UTC),
-    ).prefetch_related("level")
+    ).select_related("level")
 
     LOGGER.info(f"Retrieved {attempts.count()} attempts.")
 
@@ -131,7 +131,7 @@ def remove_new_model_solutions(apps: Apps, *args):
         ],
         score__gt=10,
         finish_time__gte=datetime.datetime(2023, 3, 1, 00, 00, tzinfo=pytz.UTC),
-    ).update(score=10)
+    ).select_related("level").update(score=10)
 
 
 class Migration(migrations.Migration):
