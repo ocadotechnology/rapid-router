@@ -1,29 +1,34 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
   "configurations": [
     {
-      "name": "Django Server",
-      "type": "python",
-      "request": "launch",
-      "django": true,
-      "justMyCode": false,
-      "program": "${workspaceFolder}/example_project/manage.py",
       "args": [
         "runserver",
         "localhost:8000"
-      ]
+      ],
+      "django": true,
+      "justMyCode": false,
+      "name": "Django Server",
+      "program": "${workspaceFolder}/example_project/manage.py",
+      "request": "launch",
+      "type": "debugpy"
     },
     {
-      "name": "Pytest",
-      "type": "python",
-      "request": "test",
+      "console": "integratedTerminal",
       "justMyCode": false,
+      "name": "Python: Current File",
+      "program": "${file}",
+      "request": "launch",
+      "type": "debugpy"
+    },
+    {
+      "justMyCode": false,
+      "name": "Pytest",
       "presentation": {
         "hidden": true
-      }
+      },
+      "request": "test",
+      "type": "debugpy"
     }
-  ]
+  ],
+  "version": "0.2.0"
 }
