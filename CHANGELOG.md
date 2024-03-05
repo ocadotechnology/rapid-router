@@ -2,6 +2,24 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.19 (2024-03-01)
+
+### Fix
+
+* Improve migration 0090 (use select_related instead) ([`3cf1dd2`](https://github.com/ocadotechnology/rapid-router/commit/3cf1dd2237e231b8c1997c14bd30c578c17efac5))
+
+## v5.16.18 (2024-02-29)
+
+### Fix
+
+* Only target recent attempts ([#1587](https://github.com/ocadotechnology/rapid-router/issues/1587)) ([`4d398b1`](https://github.com/ocadotechnology/rapid-router/commit/4d398b121d8ec368eff7ec11edfe9c37e7426877))
+
+## v5.16.17 (2024-02-28)
+
+### Fix
+
+* Algo scores fix only for default levels ([`c87bf7f`](https://github.com/ocadotechnology/rapid-router/commit/c87bf7fe76d7d1c3aceb02ed5e4fff02d57c0b2d))
+
 ## v5.16.16 (2024-02-28)
 
 ### Fix
