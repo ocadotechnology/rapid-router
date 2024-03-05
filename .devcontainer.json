@@ -33,6 +33,7 @@
     }
   },
   "name": "rapid-router",
+  "postCreateCommand": "pipenv install --dev",
   "remoteUser": "root",
   "service": "base-service",
   "shutdownAction": "none",
