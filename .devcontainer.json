@@ -1,0 +1,41 @@
+{
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "visualstudioexptteam.vscodeintellicode",
+        "github.vscode-pull-request-github",
+        "redhat.vscode-yaml",
+        "davidanson.vscode-markdownlint",
+        "bierner.markdown-mermaid",
+        "streetsidesoftware.code-spell-checker",
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.pylint",
+        "ms-python.isort",
+        "ms-python.vscode-pylance",
+        "ms-python.mypy-type-checker",
+        "ms-python.black-formatter",
+        "qwtel.sqlite-viewer",
+        "njpwerner.autodocstring"
+      ]
+    }
+  },
+  "dockerComposeFile": [
+    "../docker-compose.yml"
+  ],
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/pipenv:2": {
+      "version": "2023.11.15"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "installTools": false,
+      "version": "3.8"
+    }
+  },
+  "name": "rapid-router",
+  "postCreateCommand": "pipenv install --dev",
+  "remoteUser": "root",
+  "service": "base-service",
+  "shutdownAction": "none",
+  "workspaceFolder": "/workspace/rapid-router"
+}
