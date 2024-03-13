@@ -241,55 +241,55 @@ lvl_106 = """from van import Van
 
 my_van = Van()
 
-n = 1
+number = 1
 
 while not my_van.at_destination():
   my_van.turn_right()
-  for count in range(n):
+  for count in range(number):
     my_van.move_forwards()
-  n = n + 1"""
+  number = number + 1"""
 
 lvl_107 = """from van import Van
 
 my_van = Van()
 
-n = 1
+number = 1
 while not my_van.at_destination():
   my_van.turn_left()
-  for count in range(n):
+  for count in range(number):
     my_van.move_forwards()
-  n = n * 2"""
+  number = number * 2"""
 
 lvl_108 = """from van import Van
 
 my_van = Van()
 
-n = 6
+number = 6
 while not my_van.at_destination():
-  for i in range(n):
+  for i in range(number):
     my_van.move_forwards()
   my_van.turn_left()
-  n = n - 2"""
+  number = number - 2"""
 
 lvl_109 = """from van import Van
 
 my_van = Van()
 
-n = 0
+number = 0
 
 for count in range(4):
   my_van.turn_right()
-  for forward in range(n):
+  for forward in range(number):
     my_van.move_forwards()
-  n = n + 1
+  number = number + 1
 
 my_van.turn_right()
 
 while not my_van.at_destination():
-  for count in range(n):
+  for count in range(number):
     my_van.move_forwards()
   my_van.turn_left()
-  n = n / 2"""
+  number = number / 2"""
 
 lvl_113 = """from van import Van
 
