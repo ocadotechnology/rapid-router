@@ -2309,12 +2309,12 @@ def description_level106():
 def hint_level106():
     return (
         """To use a variable to store the number of grid squares the van has to move you can do something like the following:
-<pre>n = 1
+<pre>number = 1
 while not my_van.at_destination():
-    print n
-    n += 1</pre>
-Variables can be used in place of constants when calling functions. For example to repeat something n times you can do something like the following:
-<pre>for count in range(n):</pre>"""
+    print number
+    number += 1</pre>
+Variables can be used in place of constants when calling functions. For example to repeat something <strong>number</strong> times you can do something like the following:
+<pre>for count in range(number):</pre>"""
         + PYTHON_HINT
     )
 
@@ -2333,7 +2333,7 @@ def description_level107():
 
 def hint_level107():
     return (
-        "To double the value of a variable you can do something like the following:<br><pre>n *= 2</pre>"
+        "To double the value of a variable you can do something like the following:<br><pre>number *= 2</pre>"
         + PYTHON_HINT
     )
 
@@ -2350,7 +2350,7 @@ def description_level108():
 def hint_level108():
     return (
         "To decrease the value of a variable by an amount you can do something like the "
-        "following:<br><pre>n -= 5</pre>" + PYTHON_HINT
+        "following:<br><pre>number -= 5</pre>" + PYTHON_HINT
     )
 
 
@@ -2368,7 +2368,7 @@ def description_level109():
 
 def hint_level109():
     return (
-        "To halve the value of a variable you can do something like the following:<br><pre>n /= 2</pre>"
+        "To halve the value of a variable you can do something like the following:<br><pre>number /= 2</pre>"
         + PYTHON_HINT
     )
 
