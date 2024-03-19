@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.21 (2024-03-19)
+
+### Fix
+
+* **deps:** Bump django from 3.2.24 to 3.2.25 ([#1596](https://github.com/ocadotechnology/rapid-router/issues/1596)) ([`5bf8587`](https://github.com/ocadotechnology/rapid-router/commit/5bf8587f44dc80d3ce225da1b3a01e3e8133a6b2))
+* Update ref of OneTrust functional cookie category ([#1594](https://github.com/ocadotechnology/rapid-router/issues/1594)) ([`59d4a08`](https://github.com/ocadotechnology/rapid-router/commit/59d4a08737ddef2b43f79e2f9e8f0275f204da92))
+
 ## v5.16.20 (2024-03-13)
 
 ### Fix
