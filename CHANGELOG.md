@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.20 (2024-03-13)
+
+### Fix
+
+* Change n to number in levels 106-109 ([#1595](https://github.com/ocadotechnology/rapid-router/issues/1595)) ([`1561bbe`](https://github.com/ocadotechnology/rapid-router/commit/1561bbe57f31a2061049bea504df383e76dfe736))
+
 ## v5.16.19 (2024-03-01)
 
 ### Fix
