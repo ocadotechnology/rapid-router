@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.24 (2024-04-19)
+
+### Fix
+
+* **deps-dev:** Bump eventlet from 0.31.0 to 0.35.2 ([#1604](https://github.com/ocadotechnology/rapid-router/issues/1604)) ([`483a57c`](https://github.com/ocadotechnology/rapid-router/commit/483a57c4ecacf010bd8f0015b8eab7d11f3dd06b))
+
 ## v5.16.23 (2024-04-19)
 
 ### Fix
