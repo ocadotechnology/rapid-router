@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.23 (2024-04-19)
+
+### Fix
+
+* Host js-reverse ([#1602](https://github.com/ocadotechnology/rapid-router/issues/1602)) ([`82ed15a`](https://github.com/ocadotechnology/rapid-router/commit/82ed15a325d71a78c45576d865ee99ce0a149f21))
+
 ## v5.16.22 (2024-04-16)
 
 ### Fix
