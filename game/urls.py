@@ -141,6 +141,5 @@ urlpatterns = [
             ]
         ),
     ),
-    url(r"^js-reverse/$", urls_js, name="js-reverse"),
     url(r"^js-i18n/$", JavaScriptCatalog.as_view(packages=["game"]), name="rapid-router/javascript-catalog"),
 ]
