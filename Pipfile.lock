@@ -212,6 +212,13 @@
             "markers": "python_version >= '3.8'",
             "version": "==3.3.8"
         },
+        "django-js-reverse": {
+            "hashes": [
+                "sha256:2a392d169f44e30b883c30dfcfd917a14167ce8fe196c99d2385b31c90d77aa0",
+                "sha256:8134c2ab6307c945edfa90671ca65e85d6c1754d48566bdd6464be259cc80c30"
+            ],
+            "version": "==0.9.1"
+        },
         "django-otp": {
             "hashes": [
                 "sha256:e7142139f1e9686be5f396669a3d3d61178cd9b3e9de9de5933888668908b46b",
