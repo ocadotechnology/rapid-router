@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.22 (2024-04-16)
+
+### Fix
+
+* Upgrade libsass ([#1601](https://github.com/ocadotechnology/rapid-router/issues/1601)) ([`24d966f`](https://github.com/ocadotechnology/rapid-router/commit/24d966f6c673900cdaca94b732d457fbfc8524f2))
+
 ## v5.16.21 (2024-03-19)
 
 ### Fix
