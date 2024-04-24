@@ -28,6 +28,7 @@ DATABASES = {
         "NAME": os.path.join(
             os.path.abspath(os.path.dirname(__file__)), "db.sqlite3"
         ),  # Or path to database file if using sqlite3.
+        "ATOMIC_REQUESTS": True,
     }
 }
 
