@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division
 
 import json
+import os
 from builtins import object, str
 from datetime import datetime
 
@@ -28,6 +29,7 @@ from game.decor import get_decor_element
 from game.models import Level, Attempt, Workspace
 from game.theme import get_theme
 from game.views.level_solutions import solutions
+from game.views.language_code_conversions import language_code_dict
 from .helper import renderError
 
 
@@ -253,6 +255,7 @@ def play_level(request, level, from_editor=False):
             "prev_level_url": _prev_level_url(level, request.user, night_mode),
             "next_level_url": _next_level_url(level, request.user, night_mode),
             "flip_night_mode_url": _level_url(level, not night_mode),
+            "available_language_dict": language_code_dict
         },
     )
 

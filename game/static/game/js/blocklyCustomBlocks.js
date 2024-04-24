@@ -39,7 +39,7 @@ function initCustomBlocksDescription() {
     init: function () {
       this.setColour(160);
       this.appendDummyInput()
-        .appendField(gettext("move forwards"))
+        .appendField(Blockly.Msg.MOVE_FORWARDS_TITLE)
         .appendField(
           new Blockly.FieldImage(
             ocargo.Drawing.imageDir + "actions/forward.svg",
@@ -49,7 +49,7 @@ function initCustomBlocksDescription() {
         );
       this.setPreviousStatement(true, "Action");
       this.setNextStatement(true, "Action");
-      this.setTooltip(gettext("Move the van forwards"));
+      this.setTooltip(Blockly.Msg.MOVE_FORWARD_TOOLTIP);
     },
   };
 

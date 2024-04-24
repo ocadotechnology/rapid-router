@@ -8,6 +8,7 @@ ocargo.BlocklyControl = function () {
   this.blocklyCustomisations.setupLimitedBlocks();
   this.blocklyDiv = document.getElementById("blockly_holder");
   this.toolbox = document.getElementById("blockly_toolbox");
+
   Blockly.inject(this.blocklyDiv, {
     path: "/static/game/js/blockly/",
     toolbox: BLOCKLY_XML,
@@ -50,6 +51,12 @@ ocargo.BlocklyControl.prototype.prepare = function (blocks) {
         gettext(error),
     };
   }
+};
+
+ocargo.BlocklyControl.prototype.updateBlockLanguage = function (language_code) {
+  loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
+    reloadWorkspace(Blockly.mainWorkspace);
+  });
 };
 
 ocargo.BlocklyControl.prototype.redrawBlockly = function () {
