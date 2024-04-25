@@ -49,7 +49,7 @@ function initCustomBlocksDescription() {
         );
       this.setPreviousStatement(true, "Action");
       this.setNextStatement(true, "Action");
-      this.setTooltip(Blockly.Msg.MOVE_FORWARD_TOOLTIP);
+      this.setTooltip(Blockly.Msg.MOVE_FORWARDS_TOOLTIP);
     },
   };
 

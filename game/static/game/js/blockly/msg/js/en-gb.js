@@ -436,4 +436,4 @@ Blockly.Msg["COLOUR_HUE"] = "20";
 Blockly.Msg["VARIABLES_DYNAMIC_HUE"] = "310";
 
 Blockly.Msg["MOVE_FORWARDS_TITLE"] = "move forwards but British";
-Blockly.Msg["MOVE_FORWARD_TOOLTIP"] = "Move the van forwards but British";
+Blockly.Msg["MOVE_FORWARDS_TOOLTIP"] = "Move the van forwards but British";
