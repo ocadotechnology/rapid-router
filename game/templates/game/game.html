@@ -162,7 +162,7 @@
     <div id="language_tab" class="tab">
       <select name="language_dropdown" class="tab selectable" id="language_dropdown" onchange="gameUpdateBlockLanguage(this.value)">
         {% for language_code, language in available_language_dict.items %}
-          <option value="{{language_code}}">{{language}}</option>
+          <option id="language_dropdown_{{language_code}}" value="{{language_code}}">{{language}}</option>
         {% endfor %}
       </select>
     </div>
