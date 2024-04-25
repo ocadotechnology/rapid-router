@@ -10,6 +10,10 @@ ocargo.Game = function () {
 }
 
 ocargo.Game.prototype.setup = function () {
+  this.drawing = new ocargo.Drawing(ocargo.model.startingPosition())
+  this.drawing.preloadRoadTiles()
+  ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, this.drawing)
+
   let _this = this;
 
   loadLanguage("/static/game/js/blockly/msg/js/", navigator.language.toLowerCase(), function () {
@@ -49,9 +53,6 @@ ocargo.Game.prototype.setup = function () {
       MAX_FUEL
     )
 
-    _this.drawing = new ocargo.Drawing(ocargo.model.startingPosition())
-    _this.drawing.preloadRoadTiles()
-    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, _this.drawing)
     _this.saving = new ocargo.Saving()
     _this.sharing = new ocargo.Sharing(
       () => parseInt(LEVEL_ID),
