@@ -10,5 +10,5 @@ class TestLanguageDropdown(BaseGameTest):
         self.selenium.find_element(By.ID, "language_dropdown").click()
         self.selenium.find_element(By.ID, f"language_dropdown_fr").click()
 
-        text_count = self.selenium.find_elements(By.XPATH, ("//*[contains(text(),'Move forwards')]")).size()
+        text_count = len(self.selenium.find_elements(By.XPATH, ("//*[contains(text(),'Move forwards')]")))
         assert text_count == 0
