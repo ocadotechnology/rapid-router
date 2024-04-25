@@ -21,6 +21,7 @@ class GamePage(BasePage):
 
         assert self.on_correct_page("game_page")
         self._dismiss_initial_dialog()
+        self.browser.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
     def _dismiss_initial_dialog(self):
         self.dismiss_dialog("play_button")
