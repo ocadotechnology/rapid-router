@@ -12,6 +12,7 @@ ocargo.Game = function () {
 ocargo.Game.prototype.setup = function () {
   let _this = this;
 
+  loadLanguage("/static/game/js/blockly/msg/js/", navigator.language.toLowerCase(), function() {
     if(new Date().getMonth() === 11) {
       $("#paper").css('background-color', '#eef7ff')
     }
@@ -141,6 +142,7 @@ ocargo.Game.prototype.setup = function () {
         ]
     )
 
+  });
 }
 
 // Script used to save and check for episode upon loading of the webpage
