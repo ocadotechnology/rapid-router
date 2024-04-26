@@ -138,7 +138,7 @@ ocargo.Game.prototype.setup = function () {
     ]
   )
 
-  loadLanguage("/static/game/js/blockly/msg/js/", navigator.language.toLowerCase(), function() {
+  loadLanguage("/static/game/js/blockly/msg/js/", "fr", function() {
     reloadWorkspace(blockly.mainWorkspace);
   })
 }
