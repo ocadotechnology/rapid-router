@@ -18,9 +18,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 class GamePage(BasePage):
     def __init__(self, browser):
         super(GamePage, self).__init__(browser)
-        self.browser.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         assert self.on_correct_page("game_page")
+        self.browser.execute_script("ocargo.animation.FAST_ANIMATION_DURATION = 1;")
 
         self._dismiss_initial_dialog()
 
