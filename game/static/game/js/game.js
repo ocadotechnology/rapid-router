@@ -137,6 +137,10 @@ ocargo.Game.prototype.setup = function () {
       ocargo.button.dismissButtonHtml("next_button", gettext("Next level"))
     ]
   )
+
+  loadLanguage("/static/game/js/blockly/msg/js/", navigator.language.toLowerCase(), function() {
+    reloadWorkspace(blockly.mainWorkspace);
+  })
 }
 
 // Script used to save and check for episode upon loading of the webpage
