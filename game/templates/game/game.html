@@ -159,13 +159,13 @@
         <span>{% trans "Blockly" %}</span>
       </label>
     </div>
-    <div id="language_tab" class="tab">
+    <!-- <div id="language_tab" class="tab">
       <select name="language_dropdown" class="tab selectable bg--{{level.difficulty}}" id="language_dropdown" onchange="gameUpdateBlockLanguage(this.value)">
         {% for language_code, language in available_language_dict.items %}
           <option id="language_dropdown_{{language_code}}" value="{{language_code}}">{{language}}</option>
         {% endfor %}
       </select>
-    </div>
+    </div> -->
 
     <div class="tab_break"></div>
 
@@ -497,13 +497,13 @@
 
   </div>
 </div>
-
+<!-- 
 <script>
   document.getElementById("language_dropdown").value = navigator.language.toLowerCase();
 
   if (document.getElementById("language_dropdown").value == "") {
     document.getElementById("language_dropdown").value = "en";
   }
-</script>
+</script> -->
 
 {% endblock %}

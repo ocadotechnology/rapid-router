@@ -1391,9 +1391,9 @@ function setMutedCookie(mute) {
   }
 }
 
-function gameUpdateBlockLanguage(language_code) {
-  ocargo.blocklyControl.updateBlockLanguage(language_code)
-}
+// function gameUpdateBlockLanguage(language_code) {
+//   ocargo.blocklyControl.updateBlockLanguage(language_code)
+// }
 
 $(document).ready(function () {
   ocargo.game = new ocargo.Game()
