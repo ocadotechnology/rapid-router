@@ -1394,8 +1394,8 @@ function setMutedCookie(mute) {
 $(document).ready(function () {
   ocargo.game = new ocargo.Game()
   ocargo.game.setup()
+  ocargo.game.mute(ocargo.game.isMuted)
   loadLanguage("/static/game/js/blockly/msg/js/", "fr", function() {
     reloadWorkspace(blockly.mainWorkspace)
   })
-  ocargo.game.mute(ocargo.game.isMuted)
 })
