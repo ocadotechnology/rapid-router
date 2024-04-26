@@ -1388,7 +1388,7 @@ function setMutedCookie(mute) {
 }
 
 function gameUpdateBlockLanguage(language_code) {
-  console.log(language_code);
+  ocargo.blocklyControl.updateBlockLanguage(language_code)
 }
 
 $(document).ready(function () {
