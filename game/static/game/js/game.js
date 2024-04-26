@@ -137,12 +137,6 @@ ocargo.Game.prototype.setup = function () {
       ocargo.button.dismissButtonHtml("next_button", gettext("Next level"))
     ]
   )
-
-  console.log("finishing all setup except loading language candycane")
-
-  loadLanguage("/static/game/js/blockly/msg/js/", "fr", function() {
-    console.log("loading language candycane")
-  })
 }
 
 // Script used to save and check for episode upon loading of the webpage
@@ -1400,5 +1394,8 @@ function setMutedCookie(mute) {
 $(document).ready(function () {
   ocargo.game = new ocargo.Game()
   ocargo.game.setup()
+  loadLanguage("/static/game/js/blockly/msg/js/", "fr", function() {
+    reloadWorkspace(blockly.mainWorkspace)
+  })
   ocargo.game.mute(ocargo.game.isMuted)
 })
