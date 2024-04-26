@@ -1387,6 +1387,10 @@ function setMutedCookie(mute) {
   }
 }
 
+function gameUpdateBlockLanguage(language_code) {
+  console.log(language_code);
+}
+
 $(document).ready(function () {
   ocargo.game = new ocargo.Game()
   ocargo.game.setup()
