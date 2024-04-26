@@ -138,8 +138,10 @@ ocargo.Game.prototype.setup = function () {
     ]
   )
 
+  console.log("finishing all setup except loading language candycane")
+
   loadLanguage("/static/game/js/blockly/msg/js/", "fr", function() {
-    console.log("not reloading")
+    console.log("loading language candycane")
   })
 }
 
