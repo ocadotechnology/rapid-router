@@ -2,6 +2,24 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.24 (2024-04-19)
+
+### Fix
+
+* **deps-dev:** Bump eventlet from 0.31.0 to 0.35.2 ([#1604](https://github.com/ocadotechnology/rapid-router/issues/1604)) ([`483a57c`](https://github.com/ocadotechnology/rapid-router/commit/483a57c4ecacf010bd8f0015b8eab7d11f3dd06b))
+
+## v5.16.23 (2024-04-19)
+
+### Fix
+
+* Host js-reverse ([#1602](https://github.com/ocadotechnology/rapid-router/issues/1602)) ([`82ed15a`](https://github.com/ocadotechnology/rapid-router/commit/82ed15a325d71a78c45576d865ee99ce0a149f21))
+
+## v5.16.22 (2024-04-16)
+
+### Fix
+
+* Upgrade libsass ([#1601](https://github.com/ocadotechnology/rapid-router/issues/1601)) ([`24d966f`](https://github.com/ocadotechnology/rapid-router/commit/24d966f6c673900cdaca94b732d457fbfc8524f2))
+
 ## v5.16.21 (2024-03-19)
 
 ### Fix

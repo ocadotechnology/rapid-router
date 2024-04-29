@@ -7,7 +7,7 @@
 
 {% block head %}
     {% include 'game/crowdin.html' %}
-    <link rel="manifest" href="{% static "manifest.json" %}">
+    <link rel="manifest" href="{% static 'manifest.json' %}">
 {% endblock head %}
 
 {% block css %}
@@ -70,8 +70,8 @@
 
 {% block scripts %}
     {{block.super}}
-    <script type='text/javascript' src='{% static 'game/js/foundation/vendor/js.cookie.min.js' %}'></script>
-    <script type='text/javascript' src='{% url 'js-reverse' %}'></script>
-    <script type='text/javascript' src='{% url 'rapid-router/javascript-catalog' %}'></script>
-    <script type='text/javascript' src='{% static 'game/js/jquery.touchy.min.js' %}'></script>
+    <script type='text/javascript' src="{% static 'game/js/foundation/vendor/js.cookie.min.js' %}"></script>
+    <script type='text/javascript' src="{% static 'game/js/js-reverse.js' %}"></script>
+    <script type='text/javascript' src="{% url 'rapid-router/javascript-catalog' %}"></script>
+    <script type='text/javascript' src="{% static 'game/js/jquery.touchy.min.js' %}"></script>
 {% endblock %}
