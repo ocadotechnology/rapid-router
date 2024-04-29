@@ -35,115 +35,113 @@ ocargo.Game.prototype.setup = function () {
     localStorage.setItem('currentEpisode', EPISODE);
   }
 
-    restoreCmsLogin()
-    initCustomBlocks()
-    ocargo.solutionLoaded = false
-    ocargo.blocklyControl = new ocargo.BlocklyControl()
-    ocargo.pythonControl = new ocargo.PythonControl()
-    ocargo.blocklyCompiler = new ocargo.BlocklyCompiler()
-    ocargo.model = new ocargo.Model(
-        PATH,
-        ORIGIN,
-        DESTINATIONS,
-        TRAFFIC_LIGHTS,
-        COWS,
-        MAX_FUEL
-    )
+  restoreCmsLogin()
+  initCustomBlocks()
+  ocargo.solutionLoaded = false
+  ocargo.blocklyControl = new ocargo.BlocklyControl()
+  ocargo.pythonControl = new ocargo.PythonControl()
+  ocargo.blocklyCompiler = new ocargo.BlocklyCompiler()
+  ocargo.model = new ocargo.Model(
+      PATH,
+      ORIGIN,
+      DESTINATIONS,
+      TRAFFIC_LIGHTS,
+      COWS,
+      MAX_FUEL
+  )
 
-    _this.drawing = new ocargo.Drawing(ocargo.model.startingPosition())
-    _this.drawing.preloadRoadTiles()
-    ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, _this.drawing)
-    _this.saving = new ocargo.Saving()
-    _this.sharing = new ocargo.Sharing(
-        () => parseInt(LEVEL_ID),
-        () => true
-    )
+  this.drawing = new ocargo.Drawing(ocargo.model.startingPosition())
+  this.drawing.preloadRoadTiles()
+  ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, _this.drawing)
+  this.saving = new ocargo.Saving()
+  this.sharing = new ocargo.Sharing(
+      () => parseInt(LEVEL_ID),
+      () => true
+  )
 
-    // Setup the blockly workspace
-    ocargo.blocklyControl.reset()
-    ocargo.blocklyControl.loadPreviousAttempt()
-    ocargo.pythonControl.loadPreviousAttempt()
+  // Setup the blockly workspace
+  ocargo.blocklyControl.reset()
+  ocargo.blocklyControl.loadPreviousAttempt()
+  ocargo.pythonControl.loadPreviousAttempt()
 
-    // Setup the ui
-    _this._setupConsoleSliderListeners()
-    _this._setupPythonViewSliderListeners()
-    _this._setupConsoleLogViewSliderListeners()
-    _this._setupDirectDriveListeners()
-    _this._setupFuelGauge(ocargo.model.map.nodes, BLOCKS)
-    _this._setupTabs()
+  // Setup the ui
+  this._setupConsoleSliderListeners()
+  this._setupPythonViewSliderListeners()
+  this._setupConsoleLogViewSliderListeners()
+  this._setupDirectDriveListeners()
+  this._setupFuelGauge(ocargo.model.map.nodes, BLOCKS)
+  this._setupTabs()
 
-    _this.onStopControls()
+  this.onStopControls()
 
-    // default controller
-    if (BLOCKLY_ENABLED) {
-      ocargo.controller = ocargo.blocklyControl
-    } else {
-      ocargo.controller = ocargo.pythonControl
-    }
+  // default controller
+  if (BLOCKLY_ENABLED) {
+    ocargo.controller = ocargo.blocklyControl
+  } else {
+    ocargo.controller = ocargo.pythonControl
+  }
 
-    // Setup blockly to python
-    Blockly.Python.init(Blockly.getMainWorkspace())
-    window.addEventListener(
-        'unload',
-        function (event) {
-          ocargo.pythonControl.teardown()
-          ocargo.blocklyControl.teardown()
-        }.bind(this)
-    )
+  // Setup blockly to python
+  Blockly.Python.init(Blockly.getMainWorkspace())
+  window.addEventListener(
+      'unload',
+      function (event) {
+        ocargo.pythonControl.teardown()
+        ocargo.blocklyControl.teardown()
+      }.bind(this)
+  )
 
-    var loggedOutWarning = ''
-    // Check if logged on
-    if (USER_STATUS == 'UNTRACKED') {
-      loggedOutWarning =
-          '<br><span class="popup__text--warning">' +
-          gettext("You are not logged in. Your progress won't be saved.") +
-          '</span>'
-    }
-    // Start the popup
-    var title = gettext('Try solving this one...')
-    if (LEVEL_ID) {
-      var titlePrefix = ''
-      if (NIGHT_MODE) {
-        titlePrefix = gettext('Night Level %(level_name)s')
-      } else if (DEFAULT_LEVEL) {
-        titlePrefix = gettext('Level %(level_name)s')
-      }
-      if (titlePrefix) {
-        title = interpolate(titlePrefix, { level_name: LEVEL_NAME }, true)
-      } else {
-        title = LEVEL_NAME
-      }
-    }
-
-    var message
+  var loggedOutWarning = ''
+  // Check if logged on
+  if (USER_STATUS == 'UNTRACKED') {
+    loggedOutWarning =
+        '<br><span class="popup__text--warning">' +
+        gettext("You are not logged in. Your progress won't be saved.") +
+        '</span>'
+  }
+  // Start the popup
+  var title = gettext('Try solving this one...')
+  if (LEVEL_ID) {
+    var titlePrefix = ''
     if (NIGHT_MODE) {
-      message =
-          '<br>' +
-          gettext(
-              'In Night Mode you can only see a very short distance. ' +
-              "We've given you more blocks to help you find your way!"
-          )
-    } else {
-      message = loggedOutWarning
+      titlePrefix = gettext('Night Level %(level_name)s')
+    } else if (DEFAULT_LEVEL) {
+      titlePrefix = gettext('Level %(level_name)s')
     }
+    if (titlePrefix) {
+      title = interpolate(titlePrefix, { level_name: LEVEL_NAME }, true)
+    } else {
+      title = LEVEL_NAME
+    }
+  }
 
-    _this.drawing.enablePanning()
+  var message
+  if (NIGHT_MODE) {
+    message =
+        '<br>' +
+        gettext(
+            'In Night Mode you can only see a very short distance. ' +
+            "We've given you more blocks to help you find your way!"
+        )
+  } else {
+    message = loggedOutWarning
+  }
 
-    const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
+  _this.drawing.enablePanning()
 
-    ocargo.Drawing.startPopup(
-        title,
-        LESSON,
-        message,
-        showMascot,
-        [
-          ocargo.button.dismissButtonHtml("prev_button", gettext("Previous level")),
-          ocargo.button.dismissButtonHtml('play_button', gettext('Play')),
-          ocargo.button.dismissButtonHtml("next_button", gettext("Next level"))
-        ]
-    )
+  const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
 
-  });
+  ocargo.Drawing.startPopup(
+      title,
+      LESSON,
+      message,
+      showMascot,
+      [
+        ocargo.button.dismissButtonHtml("prev_button", gettext("Previous level")),
+        ocargo.button.dismissButtonHtml('play_button', gettext('Play')),
+        ocargo.button.dismissButtonHtml("next_button", gettext("Next level"))
+      ]
+  )
 }
 
 // Script used to save and check for episode upon loading of the webpage
