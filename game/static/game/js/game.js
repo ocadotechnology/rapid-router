@@ -10,12 +10,13 @@ ocargo.Game = function () {
 }
 
 ocargo.Game.prototype.setup = function () {
-  let _this = this;
-
   loadLanguage("/static/game/js/blockly/msg/js/", navigator.language.toLowerCase(), function() {
-    if(new Date().getMonth() === 11) {
-      $("#paper").css('background-color', '#eef7ff')
-    }
+    reloadWorkspace(Blockly.mainWorkspace);
+  });
+
+  if(new Date().getMonth() === 11) {
+    $("#paper").css('background-color', '#eef7ff')
+  }
 
     if (NIGHT_MODE_FEATURE_ENABLED) {
       if (NIGHT_MODE) {
@@ -28,11 +29,11 @@ ocargo.Game.prototype.setup = function () {
     }
 
 
-    // Function being called when there is a change in game level.
-    ocargo.Game.prototype.onLevelChange = function() {
-      const currentLevelId = LEVEL_ID;
-      localStorage.setItem('currentEpisode', EPISODE);
-    }
+  // Function being called when there is a change in game level.
+  ocargo.Game.prototype.onLevelChange = function() {
+    const currentLevelId = LEVEL_ID;
+    localStorage.setItem('currentEpisode', EPISODE);
+  }
 
     restoreCmsLogin()
     initCustomBlocks()
@@ -630,6 +631,7 @@ ocargo.Game.prototype.isInPythonWorkspace = function () {
 
 ocargo.Game.prototype._setupTabs = function () {
   this.tabs = []
+
   this.tabs.blockly = new ocargo.Tab(
     $('#blockly_radio'),
     $('#blockly_radio + label'),

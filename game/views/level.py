@@ -28,6 +28,7 @@ from game.character import get_character
 from game.decor import get_decor_element
 from game.models import Level, Attempt, Workspace
 from game.theme import get_theme
+from game.views.language_code_conversions import language_code_dict
 from game.views.level_solutions import solutions
 from game.views.language_code_conversions import language_code_dict
 from .helper import renderError
