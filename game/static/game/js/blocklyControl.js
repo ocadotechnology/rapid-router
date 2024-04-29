@@ -52,11 +52,11 @@ ocargo.BlocklyControl.prototype.prepare = function (blocks) {
   }
 };
 
-// ocargo.BlocklyControl.prototype.updateBlockLanguage = function (language_code) {
-//   loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
-//     reloadWorkspace(Blockly.mainWorkspace);
-//   });
-// };
+ocargo.BlocklyControl.prototype.updateBlockLanguage = function (language_code) {
+  loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
+    reloadWorkspace(Blockly.mainWorkspace);
+  });
+};
 
 ocargo.BlocklyControl.prototype.redrawBlockly = function () {
   Blockly.svgResize(Blockly.mainWorkspace);
