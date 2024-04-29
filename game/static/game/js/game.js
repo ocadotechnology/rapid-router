@@ -52,7 +52,7 @@ ocargo.Game.prototype.setup = function () {
 
   this.drawing = new ocargo.Drawing(ocargo.model.startingPosition())
   this.drawing.preloadRoadTiles()
-  ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, _this.drawing)
+  ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, this.drawing)
   this.saving = new ocargo.Saving()
   this.sharing = new ocargo.Sharing(
       () => parseInt(LEVEL_ID),
@@ -127,7 +127,7 @@ ocargo.Game.prototype.setup = function () {
     message = loggedOutWarning
   }
 
-  _this.drawing.enablePanning()
+  this.drawing.enablePanning()
 
   const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
 
