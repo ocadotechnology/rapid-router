@@ -1,37 +1,37 @@
 /* Background colours for episodes and game sidebar */
 
 .bg--easy {
-    background: #86ae18;
+    background-color: #86ae18;
 }
 
 .bg--medium {
-    background: #00a3e0;
+    background-color: #00a3e0;
 }
 
 .bg--medium-hard {
-    background: #008cc1;
+    background-color: #008cc1;
 }
 
 .bg--brainteasers {
-    background: #c90548;
+    background-color: #c90548;
 }
 
 .bg--hard {
-    background: #8967d3;
+    background-color: #8967d3;
 }
 
 .bg--advanced {
-    background: #754fc8;
+    background-color: #754fc8;
 }
 
 .bg--shared-levels {
-    background: #f6be00;
+    background-color: #f6be00;
 }
 
 .bg--loops {
-    background: #3F3F3F;
+    background-color: #3F3F3F;
 }
 
 .bg--loops-coming-soon {
-    background: #CBCBCB;
+    background-color: #CBCBCB;
 }
