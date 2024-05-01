@@ -8,7 +8,7 @@ class TestLanguageDropdown(BaseGameTest):
         assert page.element_exists_by_id("language_dropdown")
 
         self.selenium.find_element(By.ID, "language_dropdown").click()
-        self.selenium.find_element(By.ID, f"language_dropdown_fr").click()
+        self.selenium.find_element(By.ID, "language_dropdown_fr").click()
 
         text_count = len(self.selenium.find_elements(By.XPATH, ("//*[contains(text(),'Move forwards')]")))
         assert text_count == 0

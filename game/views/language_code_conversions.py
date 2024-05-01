@@ -1,3 +1,6 @@
+# we should comment out languages that we don't have custom block translations for,
+# although all these languages have built-in translations for the generic blocks
+
 language_code_dict = {
   "ab": "аҧсуа бызшәа",
   "ar": "العربية",

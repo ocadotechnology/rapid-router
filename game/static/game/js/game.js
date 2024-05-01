@@ -10,23 +10,21 @@ ocargo.Game = function () {
 }
 
 ocargo.Game.prototype.setup = function () {
-  loadLanguage("/static/game/js/blockly/msg/js/", navigator.language.toLowerCase(), function() {
-    reloadWorkspace(Blockly.mainWorkspace);
-  });
+  gameUpdateBlockLanguage(navigator.language.toLowerCase())
 
   if(new Date().getMonth() === 11) {
     $("#paper").css('background-color', '#eef7ff')
   }
 
-    if (NIGHT_MODE_FEATURE_ENABLED) {
-      if (NIGHT_MODE) {
-        $('#paper').css('background-color', 'black')
-      }
-
-      if (!ANONYMOUS) {
-        $('#nightmode_tab').show()
-      }
+  if (NIGHT_MODE_FEATURE_ENABLED) {
+    if (NIGHT_MODE) {
+      $('#paper').css('background-color', 'black')
     }
+
+    if (!ANONYMOUS) {
+      $('#nightmode_tab').show()
+    }
+  }
 
 
   // Function being called when there is a change in game level.
@@ -1394,7 +1392,9 @@ function setMutedCookie(mute) {
 }
 
 function gameUpdateBlockLanguage(language_code) {
-  ocargo.blocklyControl.updateBlockLanguage(language_code);
+  loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
+    reloadWorkspace(Blockly.mainWorkspace);
+  });
 }
 
 $(document).ready(function () {
@@ -1402,5 +1402,3 @@ $(document).ready(function () {
   ocargo.game.setup()
   ocargo.game.mute(ocargo.game.isMuted)
 })
-
-
