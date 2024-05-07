@@ -3,14 +3,10 @@ from __future__ import absolute_import
 from builtins import str
 from itertools import chain
 
-from common.helpers.emails import NOTIFICATION_EMAIL, send_email
+from common.mail import campaign_ids, send_dotdigital_email
 
 from game.character import get_character_by_pk
 from game.decor import get_decor_element
-from game.messages import (
-    level_creation_email_subject,
-    level_creation_email_text_content,
-)
 from game.theme import get_theme_by_pk
 from .models import Block, LevelBlock, LevelDecor
 
@@ -191,16 +187,14 @@ def email_new_custom_level(
     teacher_email, moderate_url, level_url, home_url, student_name, class_name
 ):
     # email teacher when a new custom level is created by a pupil, so it can be moderated ASAP
-    send_email(
-        NOTIFICATION_EMAIL,
-        [teacher_email],
-        level_creation_email_subject(),
-        level_creation_email_text_content().format(
-            moderate_url=moderate_url,
-            level_url=level_url,
-            student_name=student_name,
-            class_name=class_name,
-            home_url=home_url,
-        ),
-        level_creation_email_subject(),
+
+    send_dotdigital_email(
+        campaign_ids["level_creation"], 
+        [teacher_email], 
+        personalization_values={
+            "STUDENT_NAME": student_name, 
+            "CLASS_NAME": class_name,
+            "LEVEL_URL": level_url,
+            "MODERATE_URL": moderate_url
+        }
     )
