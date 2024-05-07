@@ -32,7 +32,7 @@ language_code_dict = {
   # "gor": "Hulontalo",
   # "ha": "Hausa",
   # "he": "עברית",
-  # "hi": "हिन्दी",
+   "hi": "हिन्दी",
   # "hrx": "Hunsrik",
   # "hu": "Magyar",
   # "hy": "հայերեն",
