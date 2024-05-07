@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.16.25 (2024-05-07)
+
+### Fix
+
+* Bump up version ([`9dce52f`](https://github.com/ocadotechnology/rapid-router/commit/9dce52f46400a465679f06d30a3ad1623b171a54))
+
 ## v5.16.24 (2024-04-19)
 
 ### Fix
