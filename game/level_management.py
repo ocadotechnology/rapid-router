@@ -189,10 +189,10 @@ def email_new_custom_level(
     # email teacher when a new custom level is created by a pupil, so it can be moderated ASAP
 
     send_dotdigital_email(
-        campaign_ids["level_creation"], 
-        [teacher_email], 
+        campaign_ids["level_creation"],
+        [teacher_email],
         personalization_values={
-            "STUDENT_NAME": student_name, 
+            "STUDENT_NAME": student_name,
             "CLASS_NAME": class_name,
             "LEVEL_URL": level_url,
             "MODERATE_URL": moderate_url
