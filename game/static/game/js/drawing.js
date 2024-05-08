@@ -74,8 +74,8 @@ ocargo.Drawing = function (startingPosition) {
   paper.setViewBox(
     currentStartX,
     currentStartY,
-    1000,
-    800
+    1060,
+    1000
   )
 
   /**
