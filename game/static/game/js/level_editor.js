@@ -1438,7 +1438,6 @@ ocargo.LevelEditor = function(levelId) {
         var imageHeight;
 
         function onDragMove(dx, dy) {
-            console.log("onDragMove");
             paperX = dx + originX;
             paperY = dy + originY;
 
@@ -1447,18 +1446,14 @@ ocargo.LevelEditor = function(levelId) {
 
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
-                console.log("paperX < 0");
                 paperX = 0;
             } else if (paperX + imageWidth > paperWidth) {
-                console.log("paperX off edge");
                 paperX = paperWidth - imageWidth;
             }
 
             if (paperY < 0) {
-                console.log("paperY < 0");
                 paperY = 0;
             } else if (paperY + imageHeight >  paperHeight) {
-                console.log("paperY off edge");
                 paperY = paperHeight - imageHeight;
             }
 
