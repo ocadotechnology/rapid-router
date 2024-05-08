@@ -438,6 +438,7 @@ div.no-print div.tab label {
   color: black;
   border: none;
   font-weight: bold;
+  padding-right: 20px;
 }
 
 #console {
