@@ -5,6 +5,7 @@ var ocargo = ocargo || {};
 ocargo.BlocklyCustomisations = function () {
 
     const TOOLBOX_REMAINING_CAPACITY_TEXT_COLUMN_WIDTH = 50;
+    const QUANTITY_TEXT_OFFSET = 35;
 
     var limitedBlocks = false;
     var blockCount = {};
@@ -94,6 +95,7 @@ ocargo.BlocklyCustomisations = function () {
             flyoutWidth *= this.workspace_.scale;
             flyoutWidth += Blockly.Scrollbar.scrollbarThickness;
             flyoutWidth += TOOLBOX_REMAINING_CAPACITY_TEXT_COLUMN_WIDTH;
+            flyoutWidth += 50;
 
             if (this.width_ != flyoutWidth) {
                 for (var i = 0, block; block = blocks[i]; i++) {
@@ -173,7 +175,7 @@ ocargo.BlocklyCustomisations = function () {
                         var attributes = {
                             'width': 30,
                             'height': 30,
-                            'x': this.width_ - TOOLBOX_REMAINING_CAPACITY_TEXT_COLUMN_WIDTH,
+                            'x': blockHW.width + QUANTITY_TEXT_OFFSET,
                             'y': cursorY + 22,
                             'class': 'quantity_text',
                             'value': block.type

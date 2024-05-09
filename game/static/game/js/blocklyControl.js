@@ -8,6 +8,7 @@ ocargo.BlocklyControl = function () {
   this.blocklyCustomisations.setupLimitedBlocks();
   this.blocklyDiv = document.getElementById("blockly_holder");
   this.toolbox = document.getElementById("blockly_toolbox");
+
   Blockly.inject(this.blocklyDiv, {
     path: "/static/game/js/blockly/",
     toolbox: BLOCKLY_XML,

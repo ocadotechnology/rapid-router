@@ -430,6 +430,17 @@ div.no-print div.tab label {
   background: rgba(255, 255, 255, 0.25);
 }
 
+.tab select:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.tab select {
+  color: black;
+  border: none;
+  font-weight: bold;
+  padding-right: 20px;
+}
+
 #console {
   z-index: 100;
   display: flex;
