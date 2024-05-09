@@ -67,6 +67,11 @@ ocargo.LevelEditor = function(levelId) {
             url: ocargo.Drawing.imageDir + 'icons/origin.svg',
             id: 'start',
         },
+        ADD_HOUSE_MODE: {
+            name: gettext('Add house'),
+            url: ocargo.Drawing.imageDir + 'icons/add_house.svg',
+            id: 'add_house',
+        }
     };
 
     /*********/
@@ -287,6 +292,11 @@ ocargo.LevelEditor = function(levelId) {
             $('#delete_road').click(function() {
                 mode = modes.DELETE_ROAD_MODE;
                 changeCurrentToolDisplay(modes.DELETE_ROAD_MODE);
+            });
+
+            $('#add_house').click(function() {
+                mode = modes.ADD_HOUSE_MODE;
+                changeCurrentToolDisplay(modes.ADD_HOUSE_MODE);
             });
 
             if(DEVELOPER) {
