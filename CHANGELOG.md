@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.17.0 (2024-05-09)
+
+### Feature
+
+* Add language dropdown ([#1606](https://github.com/ocadotechnology/rapid-router/issues/1606)) ([`71d5d88`](https://github.com/ocadotechnology/rapid-router/commit/71d5d88a4906c4bf6efc5a631d6f1a62dd93a4cb))
+
 ## v5.16.25 (2024-05-07)
 
 ### Fix
