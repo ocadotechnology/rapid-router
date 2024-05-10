@@ -132,7 +132,7 @@
         <div id="currentTool" class="mode_panel">
           <img id="currentToolIcon" src="{% static 'game/image/icons/delete_road.svg' %}" >
           <br>
-          <span id="currentToolText">{% trans "Delete Road" %}</span>
+          <span id="currentToolText" style="font-size: 14px;">{% trans "Delete Road" %}</span>
         </div>
 
         <br style="clear:both">
@@ -260,27 +260,13 @@
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="add_road">
                         <img src="{% static "game/image/icons/add_road.svg" %}"/>
-                        <span>{% trans "Add road" %}</span>
+                        <span style="font-size: 14px;">{% trans "Add road" %}</span>
                       </button>
                     </div>
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="delete_road">
                         <img src="{% static "game/image/icons/delete_road.svg" %}"/>
-                        <span>{% trans "Delete road" %}</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_cell">
-                      <button class="mode_panel navigation_button" id="start">
-                        <img src="{% static "game/image/icons/origin.svg" %}"/>
-                        <span>{% trans "Mark start" %}</span>
-                      </button>
-                    </div>
-                    <div class="table_cell">
-                      <button class="mode_panel navigation_button" id="end">
-                        <img src="{% static "game/image/icons/destination.svg" %}"/>
-                        <span>{% trans "Mark end" %}</span>
+                        <span style="font-size: 14px;">{% trans "Delete road" %}</span>
                       </button>
                     </div>
                   </div>
@@ -288,7 +274,21 @@
                     <div class="table_cell">
                       <button class="mode_panel navigation_button" id="add_house">
                         <img src="{% static "game/image/icons/add_house.svg" %}"/>
-                        <span>{% trans "Add house" %}</span>
+                        <span style="font-size: 14px;">{% trans "Add house" %}</span>
+                      </button>
+                    </div>
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="delete_house">
+                        <img src="{% static "game/image/icons/delete_house.svg" %}"/>
+                        <span style="font-size: 14px;">{% trans "Delete house" %}</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell">
+                      <button class="mode_panel navigation_button" id="start">
+                        <img src="{% static "game/image/icons/origin.svg" %}"/>
+                        <span style="font-size: 14px;">{% trans "Mark start" %}</span>
                       </button>
                     </div>
                   </div>

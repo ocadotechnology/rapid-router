@@ -71,6 +71,11 @@ ocargo.LevelEditor = function(levelId) {
             name: gettext('Add house'),
             url: ocargo.Drawing.imageDir + 'icons/add_house.svg',
             id: 'add_house',
+        },
+        DELETE_HOUSE_MODE: {
+            name: gettext('Delete house'),
+            url: ocargo.Drawing.imageDir + 'icons/delete_house.svg',
+            id: 'delete_house',
         }
     };
 
@@ -88,8 +93,7 @@ ocargo.LevelEditor = function(levelId) {
     var trafficLights = [];
     var cows = [];
     var originNode = null;
-    var destinationNode = null;
-    var additionalHouseNodes = [];
+    var houseNodes = [];
     var currentTheme = THEMES.grass;
 
     // Reference to the Raphael elements for each square
@@ -298,6 +302,11 @@ ocargo.LevelEditor = function(levelId) {
             $('#add_house').click(function() {
                 mode = modes.ADD_HOUSE_MODE;
                 changeCurrentToolDisplay(modes.ADD_HOUSE_MODE);
+            });
+
+            $('#delete_house').click(function() {
+                mode = modes.DELETE_HOUSE_MODE;
+                changeCurrentToolDisplay(modes.DELETE_HOUSE_MODE);
             });
 
             if(DEVELOPER) {
@@ -1057,12 +1066,8 @@ ocargo.LevelEditor = function(levelId) {
         return originNode && originNode.coordinate.equals(coordinate);
     }
 
-    function isDestinationCoordinate(coordinate) {
-        return destinationNode && destinationNode.coordinate.equals(coordinate);
-    }
-
-    function isAdditionalHouseCoordinate(coordinate) {
-        return additionalHouseNodes.includes(ocargo.Node.findNodeByCoordinate(coordinate, nodes));
+    function isHouseCoordinate(coordinate) {
+        return houseNodes.includes(ocargo.Node.findNodeByCoordinate(coordinate, nodes));
     }
 
     function isCoordinateOnGrid(coordinate) {
@@ -1127,7 +1132,7 @@ ocargo.LevelEditor = function(levelId) {
         nodes = [];
         strikeStart = null;
         originNode = null;
-        destinationNode = null;
+        houseNodes = [];
 
         cowGroups = {};
         currentCowGroupId = 1;
@@ -1183,12 +1188,8 @@ ocargo.LevelEditor = function(levelId) {
         mark(coordinate, 'red', 0.7, true);
     }
 
-    function markAsDestination(coordinate) {
+    function markAsHouse(coordinate) {
         mark(coordinate, 'blue', 0.7, true);
-    }
-
-    function markAsAdditionalHouse(coordinate) {
-        mark(coordinate, 'green', 0.7, true);
     }
 
     function markAsBackground(coordinate) {
@@ -1227,12 +1228,9 @@ ocargo.LevelEditor = function(levelId) {
         if (originNode) {
             markAsOrigin(originNode.coordinate);
         }
-        if (destinationNode) {
-            markAsDestination(destinationNode.coordinate);
-        }
-        if (additionalHouseNodes) {
-            for (i = 0; i < additionalHouseNodes.length; i++) {
-                markAsAdditionalHouse(additionalHouseNodes[i].coordinate);
+        if (houseNodes.length > 0) {
+            for (i = 0; i < houseNodes.length; i++) {
+                markAsHouse(houseNodes[i].coordinate);
             }
         }
 
@@ -1312,12 +1310,9 @@ ocargo.LevelEditor = function(levelId) {
                     var prevStart = originNode.coordinate;
                     markAsBackground(prevStart);
                 }
-                // Check if same as destination node or additional house node
-                if (isDestinationCoordinate(coordMap)) {
-                    destinationNode = null;
-                }
-                if (isAdditionalHouseCoordinate(coordMap)) {
-                    additionalHouseNodes.splice(additionalHouseNodes.indexOf(coordMap), 1);
+                // Check if same as a house node
+                if (isHouseCoordinate(coordMap)) {
+                    houseNodes.splice(houseNodes.indexOf(coordMap), 1);
                 }
 
                 markAsOrigin(coordMap);
@@ -1328,36 +1323,22 @@ ocargo.LevelEditor = function(levelId) {
                 nodes[newStartIndex] = nodes[0];
                 nodes[0] = temp;
                 originNode = nodes[0];
-            } else if (mode === modes.MARK_DESTINATION_MODE && existingNode) {
-                if (destinationNode) {
-                    var prevEnd = destinationNode.coordinate;
-                    markAsBackground(prevEnd);
-                }
-                // Check if same as starting node or additional house node
+            } else if (mode === modes.ADD_HOUSE_MODE && existingNode) {
+                // Check if same as starting node 
                 if (isOriginCoordinate(coordMap)) {
                     originNode = null;
                 }
-                if (isAdditionalHouseCoordinate(coordMap)) {
-                    additionalHouseNodes.splice(additionalHouseNodes.indexOf(coordMap), 1);
-                }
 
-                markAsDestination(coordMap);
+                markAsHouse(coordMap);
                 var newEnd = ocargo.Node.findNodeIndexByCoordinate(coordMap, nodes);
-                destinationNode = nodes[newEnd];
+                houseNodes.push(nodes[newEnd]);
 
-            }  else if (mode === modes.ADD_HOUSE_MODE && existingNode) {
-                // Check if same as starting or ending node
-                if (isOriginCoordinate(coordMap)) {
-                    originNode = null;
-                }
-                if (isDestinationCoordinate(coordMap)) {
-                    destinationNode = null;
+            } else if (mode === modes.DELETE_HOUSE_MODE && existingNode) {
+                if (isHouseCoordinate(coordMap)) {
+                    houseNodes.splice(houseNodes.indexOf(coordMap), 1);
                 }
 
-                markAsAdditionalHouse(coordMap);
-                var newHouse = ocargo.Node.findNodeIndexByCoordinate(coordMap, nodes);
-                additionalHouseNodes.push(nodes[newHouse]);
-                
+                markAsBackground(coordMap);
             } else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 strikeStart = coordMap;
                 markAsSelected(coordMap);
@@ -1380,21 +1361,21 @@ ocargo.LevelEditor = function(levelId) {
             if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 if (strikeStart !== null) {
                     markTentativeRoad(coordMap);
-                } else if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap) && !isAdditionalHouseCoordinate(coordMap)) {
+                } else if (!isOriginCoordinate(coordMap) && !isHouseCoordinate(coordMap)) {
                     markAsHighlighted(coordMap);
                 }
-            } else if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE || mode === modes.ADD_HOUSE_MODE) {
+            } else if (mode === modes.MARK_ORIGIN_MODE || mode === modes.ADD_HOUSE_MODE || mode === modes.DELETE_HOUSE_MODE) {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
-                if (node && destinationNode !== node && originNode !== node && !additionalHouseNodes.includes(node)) {
-                    if (mode === modes.MARK_DESTINATION_MODE) {
+                if (node && originNode !== node && !houseNodes.includes(node)) {
+                    if (mode === modes.ADD_HOUSE_MODE) {
                         mark(coordMap, 'blue', 0.3, true);
                     } else if (mode === modes.MARK_ORIGIN_MODE && canPlaceCFC(node)) {
                         mark(coordMap, 'red', 0.5, true);
-                    } else if (mode === modes.ADD_HOUSE_MODE) {
-                        mark(coordMap, 'green', 0.5, true);
-                    }
-                } 
-            }
+                    } 
+                } else if (node && houseNodes.includes(node) && mode === modes.DELETE_HOUSE_MODE) {
+                    mark(coordMap, 'blue', 0.3, true);
+                }
+            } 
         };
     }
 
@@ -1406,14 +1387,17 @@ ocargo.LevelEditor = function(levelId) {
             var coordPaper = getCoordinateFromBBox(getBBox);
             var coordMap = ocargo.Drawing.translate(coordPaper);
 
-            if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE || mode === modes.ADD_HOUSE_MODE) {
+            if (mode === modes.MARK_ORIGIN_MODE || mode === modes.ADD_HOUSE_MODE || mode === modes.DELETE_HOUSE_MODE) {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
-                if (node && destinationNode !== node && originNode !== node && !additionalHouseNodes.includes(node)) {
+                if (node && originNode !== node && !houseNodes.includes(node)) {
                     markAsBackground(coordMap);
+                    markCowNodes();
+                } else if (node && houseNodes.includes(node)) {
+                    markAsHouse(coordMap);
                     markCowNodes();
                 }
             } else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
-                if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap) && !isAdditionalHouseCoordinate(coordMap)) {
+                if (!isOriginCoordinate(coordMap) && !isHouseCoordinate(coordMap)) {
                     markAsBackground(coordMap);
                     markCowNodes();
                 }
@@ -1602,8 +1586,10 @@ ocargo.LevelEditor = function(levelId) {
             if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
-            if (destinationNode) {
-                markAsDestination(destinationNode.coordinate);
+            if (houseNodes.length > 0) {
+                for (i = 0; i < houseNodes.length; i++){
+                    markAsHouse(houseNodes[i].coordinate);
+                }
             }
 
             // Now calculate the source coordinate
@@ -1673,8 +1659,10 @@ ocargo.LevelEditor = function(levelId) {
             if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
-            if (destinationNode) {
-                markAsDestination(destinationNode.coordinate);
+            if (houseNodes.length > 0) {
+                for (i = 0; i < houseNodes.length; i++) {
+                    markAsHouse(houseNodes[i].coordinate);
+                }
             }
 
             if(trashcanOpen) {
@@ -1803,8 +1791,10 @@ ocargo.LevelEditor = function(levelId) {
             if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
-            if (destinationNode) {
-                markAsDestination(destinationNode.coordinate);
+            if (houseNodes.length > 0) {
+                for (i = 0; i < houseNodes.length; i++) {
+                    markAsHouse(houseNodes[i].coordinate);
+                }
             }
 
             // Now calculate the source coordinate
@@ -1920,8 +1910,10 @@ ocargo.LevelEditor = function(levelId) {
             if (originNode) {
                 markAsOrigin(originNode.coordinate);
             }
-            if (destinationNode) {
-                markAsDestination(destinationNode.coordinate);
+            if (houseNodes.length > 0) {
+                for (i = 0; i < houseNodes.length; i++) {
+                    markAsHouse(houseNodes[i].coordinate);
+                }
             }
 
             if(trashcanOpen) {
@@ -2016,14 +2008,14 @@ ocargo.LevelEditor = function(levelId) {
                 }
                 nodes.splice(nodes.indexOf(node), 1);
 
-                // Check if start or destination node
+                // Check if start or house node
                 if (isOriginCoordinate(coord)) {
                     markAsBackground(originNode.coordinate);
                     originNode = null;
                 }
-                if (isDestinationCoordinate(coord)) {
-                    markAsBackground(destinationNode.coordinate);
-                    destinationNode = null;
+                if (isHouseCoordinate(coord)) {
+                    markAsBackground(houseNodes[houseNodes.indexOf(coord)]);
+                    houseNodes.splice(houseNodes.indexOf(coord), 1);
                 }
 
                 //  Check if any traffic lights present
@@ -2247,9 +2239,10 @@ ocargo.LevelEditor = function(levelId) {
         state.decor = ocargo.utils.sortObjects(state.decor, "z");
 
         // Destination and origin data
-        if (destinationNode) {
-            var destinationCoord = destinationNode.coordinate;
-            state.destinations = JSON.stringify([[destinationCoord.x, destinationCoord.y]]);
+        if (houseNodes.length > 0) {
+            state.destinations = JSON.stringify(houseNodes.map(function (houseNode) {
+                return [houseNode.coordinate.x, houseNode.coordinate.y]
+            }));
         }
         if (originNode) {
             var originCoord = originNode.coordinate;
@@ -2257,14 +2250,6 @@ ocargo.LevelEditor = function(levelId) {
             var direction = originCoord.getDirectionTo(nextCoord);
             state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
         }
-
-        additionalHouseCoordinates = [];
-        if (additionalHouseNodes) {
-            for (i = 0; i < additionalHouseNodes.length; i++) {
-                state.additionalHouses.push([additionalHouseNodes[i].coordinate.x, additionalHouseNodes[i].coordinate.y])
-            }
-        }
-        state.additionalHouses = JSON.stringify(additionalHouseCoordinates);
 
         // Starting fuel of the level
         state.max_fuel = $('#max_fuel').val();
@@ -2283,6 +2268,7 @@ ocargo.LevelEditor = function(levelId) {
     }
 
     function restoreState(state) {
+        console.log("restoring state");
 
         clear();
 
@@ -2325,11 +2311,14 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         // Load in destination and origin nodes
-        // TODO needs to be fixed in the long term with multiple destinations
         if (state.destinations) {
-            var destination = JSON.parse(state.destinations)[0];
-            var destinationCoordinate = new ocargo.Coordinate(destination[0], destination[1]);
-            destinationNode = ocargo.Node.findNodeByCoordinate(destinationCoordinate, nodes);
+            var houses = JSON.parse(state.destinations);
+            var houseCoordinates = houses.map(function (house) {
+                return new ocargo.Coordinate(house[0], house[1]);
+            })
+            houseNodes = houseCoordinates.map(function (houseCoord) {
+                return ocargo.Node.findNodeByCoordinate(houseCoord, nodes);
+            })
         }
 
         if (state.origin) {
@@ -2442,28 +2431,42 @@ ocargo.LevelEditor = function(levelId) {
              return false;
 	}
 	// Check to see if start and end nodes have been marked
-        if (!originNode || !destinationNode) {
-            var noStartOrEnd = interpolate(
-                gettext('In %(map_icon)s%(map_label)s menu, click on %(mark_start_icon)s%(mark_start_label)s or ' +
-                    '%(mark_end_icon)s%(mark_end_label)s then select the square where you want the road to start or end.'
+        if (!originNode) {
+            var noStart = interpolate(
+                gettext('In %(map_icon)s%(map_label)s menu, click on %(mark_start_icon)s%(mark_start_label)s ' +
+                    'and then select the square where you want the road to start.'
                 ), {
                     map_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon'),
                     map_label: '<b>' + gettext('Map') + '</b>',
                     mark_start_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon'),
                     mark_start_label: '<b>' + gettext('Mark start') + '</b>',
-                    mark_end_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon'),
-                    mark_end_label: '<b>' + gettext('Mark end') + '</b>'
                 },
                 true
             );
-             ocargo.Drawing.startPopup(gettext('Oh no!'), gettext('You forgot to mark the start and end points.'), noStartOrEnd);
+             ocargo.Drawing.startPopup(gettext('Oh no!'), gettext('You forgot to mark the start point.'), noStart);
              return false;
         }
 
-        // Check to see if path exists from start to end
-        if (!areDestinationsReachable(originNode, [destinationNode], nodes)) {
+        if (houseNodes.length === 0) {
+            var noHouses = interpolate(
+                gettext('In %(map_icon)s%(map_label)s menu, click on %(add_house_icon)s%(add_house_label)s ' +
+                    'and then select the square(s) where you want to add houses for delivery.'
+                ), {
+                    map_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon'),
+                    map_label: '<b>' + gettext('Map') + '</b>',
+                    add_house_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/add_house.svg', 'popupIcon'),
+                    add_house_label: '<b>' + gettext('Add house') + '</b>'
+                },
+                true
+            );
+            ocargo.Drawing.startPopup(gettext('Oh no!'), gettext('You forgot to mark the houses.'), noHouses);
+            return false;
+        }
+
+        // Check to see if path exists from start to each house
+        if (!areDestinationsReachable(originNode, houseNodes, nodes)) {
             ocargo.Drawing.startPopup(gettext('Something is wrong...'),
-                                      gettext('There is no way to get from the start to the destination.'),
+                                      gettext('There is no way to get from the start to all of your houses.'),
                                       gettext('Edit your level to allow the driver to get to the end.'));
             return false;
         }
