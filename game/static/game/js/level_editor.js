@@ -89,6 +89,7 @@ ocargo.LevelEditor = function(levelId) {
     var cows = [];
     var originNode = null;
     var destinationNode = null;
+    var additionalHouseNodes = [];
     var currentTheme = THEMES.grass;
 
     // Reference to the Raphael elements for each square
@@ -1060,6 +1061,10 @@ ocargo.LevelEditor = function(levelId) {
         return destinationNode && destinationNode.coordinate.equals(coordinate);
     }
 
+    function isAdditionalHouseCoordinate(coordinate) {
+        return additionalHouseNodes.includes(ocargo.Node.findNodeByCoordinate(coordinate, nodes));
+    }
+
     function isCoordinateOnGrid(coordinate) {
         return coordinate.x >= 0 && coordinate.x < GRID_WIDTH &&
             coordinate.y >= 0 && coordinate.y < GRID_HEIGHT;
@@ -1182,6 +1187,10 @@ ocargo.LevelEditor = function(levelId) {
         mark(coordinate, 'blue', 0.7, true);
     }
 
+    function markAsAdditionalHouse(coordinate) {
+        mark(coordinate, 'green', 0.7, true);
+    }
+
     function markAsBackground(coordinate) {
         mark(coordinate, currentTheme.background, 0, false);
     }
@@ -1220,6 +1229,11 @@ ocargo.LevelEditor = function(levelId) {
         }
         if (destinationNode) {
             markAsDestination(destinationNode.coordinate);
+        }
+        if (additionalHouseNodes) {
+            for (i = 0; i < additionalHouseNodes.length; i++) {
+                markAsAdditionalHouse(additionalHouseNodes[i].coordinate);
+            }
         }
 
         bringTrafficLightsToFront();
@@ -1298,10 +1312,14 @@ ocargo.LevelEditor = function(levelId) {
                     var prevStart = originNode.coordinate;
                     markAsBackground(prevStart);
                 }
-                // Check if same as destination node
+                // Check if same as destination node or additional house node
                 if (isDestinationCoordinate(coordMap)) {
                     destinationNode = null;
                 }
+                if (isAdditionalHouseCoordinate(coordMap)) {
+                    additionalHouseNodes.splice(additionalHouseNodes.indexOf(coordMap), 1);
+                }
+
                 markAsOrigin(coordMap);
                 var newStartIndex = ocargo.Node.findNodeIndexByCoordinate(coordMap, nodes);
 
@@ -1315,15 +1333,32 @@ ocargo.LevelEditor = function(levelId) {
                     var prevEnd = destinationNode.coordinate;
                     markAsBackground(prevEnd);
                 }
-                // Check if same as starting node
+                // Check if same as starting node or additional house node
                 if (isOriginCoordinate(coordMap)) {
                     originNode = null;
                 }
+                if (isAdditionalHouseCoordinate(coordMap)) {
+                    additionalHouseNodes.splice(additionalHouseNodes.indexOf(coordMap), 1);
+                }
+
                 markAsDestination(coordMap);
                 var newEnd = ocargo.Node.findNodeIndexByCoordinate(coordMap, nodes);
                 destinationNode = nodes[newEnd];
 
-            }  else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
+            }  else if (mode === modes.ADD_HOUSE_MODE && existingNode) {
+                // Check if same as starting or ending node
+                if (isOriginCoordinate(coordMap)) {
+                    originNode = null;
+                }
+                if (isDestinationCoordinate(coordMap)) {
+                    destinationNode = null;
+                }
+
+                markAsAdditionalHouse(coordMap);
+                var newHouse = ocargo.Node.findNodeIndexByCoordinate(coordMap, nodes);
+                additionalHouseNodes.push(nodes[newHouse]);
+                
+            } else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 strikeStart = coordMap;
                 markAsSelected(coordMap);
             }
@@ -1345,18 +1380,20 @@ ocargo.LevelEditor = function(levelId) {
             if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
                 if (strikeStart !== null) {
                     markTentativeRoad(coordMap);
-                } else if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap)) {
+                } else if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap) && !isAdditionalHouseCoordinate(coordMap)) {
                     markAsHighlighted(coordMap);
                 }
-            } else if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE) {
+            } else if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE || mode === modes.ADD_HOUSE_MODE) {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
-                if (node && destinationNode !== node && originNode !== node) {
+                if (node && destinationNode !== node && originNode !== node && !additionalHouseNodes.includes(node)) {
                     if (mode === modes.MARK_DESTINATION_MODE) {
                         mark(coordMap, 'blue', 0.3, true);
-                    } else if (canPlaceCFC(node)) {
+                    } else if (mode === modes.MARK_ORIGIN_MODE && canPlaceCFC(node)) {
                         mark(coordMap, 'red', 0.5, true);
+                    } else if (mode === modes.ADD_HOUSE_MODE) {
+                        mark(coordMap, 'green', 0.5, true);
                     }
-                }
+                } 
             }
         };
     }
@@ -1369,14 +1406,14 @@ ocargo.LevelEditor = function(levelId) {
             var coordPaper = getCoordinateFromBBox(getBBox);
             var coordMap = ocargo.Drawing.translate(coordPaper);
 
-            if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE) {
+            if (mode === modes.MARK_ORIGIN_MODE || mode === modes.MARK_DESTINATION_MODE || mode === modes.ADD_HOUSE_MODE) {
                 var node = ocargo.Node.findNodeByCoordinate(coordMap, nodes);
-                if (node && destinationNode !== node && originNode !== node) {
+                if (node && destinationNode !== node && originNode !== node && !additionalHouseNodes.includes(node)) {
                     markAsBackground(coordMap);
                     markCowNodes();
                 }
             } else if (mode === modes.ADD_ROAD_MODE || mode === modes.DELETE_ROAD_MODE) {
-                if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap)) {
+                if (!isOriginCoordinate(coordMap) && !isDestinationCoordinate(coordMap) && !isAdditionalHouseCoordinate(coordMap)) {
                     markAsBackground(coordMap);
                     markCowNodes();
                 }
@@ -2220,6 +2257,14 @@ ocargo.LevelEditor = function(levelId) {
             var direction = originCoord.getDirectionTo(nextCoord);
             state.origin = JSON.stringify({coordinate: [originCoord.x, originCoord.y], direction: direction});
         }
+
+        additionalHouseCoordinates = [];
+        if (additionalHouseNodes) {
+            for (i = 0; i < additionalHouseNodes.length; i++) {
+                state.additionalHouses.push([additionalHouseNodes[i].coordinate.x, additionalHouseNodes[i].coordinate.y])
+            }
+        }
+        state.additionalHouses = JSON.stringify(additionalHouseCoordinates);
 
         // Starting fuel of the level
         state.max_fuel = $('#max_fuel').val();
