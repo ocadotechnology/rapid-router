@@ -34,12 +34,12 @@ class TestLevelEditor(BaseGameTest):
         action.move_to_element(add_road_button).move_by_offset(600, 0).click()
         action.move_to_element(add_road_button).move_by_offset(800, 0).click()
 
-        added_houses = self.selenium.findElements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
+        added_houses = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(added_houses) == 2
 
         delete_house_button = self.selenium.find_element(By.ID, "delete_house")
         delete_house_button.click()
 
         action.move_to_element(delete_house_button).move_by_offset(600, 0).click()
-        houses_after_delete = self.selenium.findElements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
+        houses_after_delete = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(houses_after_delete) == 1
