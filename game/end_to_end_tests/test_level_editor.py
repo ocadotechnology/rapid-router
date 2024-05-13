@@ -24,12 +24,12 @@ class TestLevelEditor(BaseGameTest):
         add_road_button = self.selenium.find_element(By.ID, "add_road")
         add_road_button.click()
 
-        self.selenium.move_to_element(add_road_button).move_by_offset(600, 0).click_and_hold().move_by_offset(300, 0).click()
+        self.selenium.moveToElement(add_road_button).move_by_offset(600, 0).click_and_hold().move_by_offset(300, 0).click()
         add_house_button = self.selenium.find_element(By.ID, "add_house")
         add_house_button.click()
 
-        self.selenium.move_to_element(add_road_button).move_by_offset(600, 0).click()
-        self.selenium.move_to_element(add_road_button).move_by_offset(800, 0).click()
+        self.selenium.moveToElement(add_road_button).move_by_offset(600, 0).click()
+        self.selenium.moveToElement(add_road_button).move_by_offset(800, 0).click()
 
         added_houses = self.selenium.findElements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(added_houses) == 2
@@ -37,6 +37,6 @@ class TestLevelEditor(BaseGameTest):
         delete_house_button = self.selenium.find_element(By.ID, "delete_house")
         delete_house_button.click()
 
-        self.selenium.move_to_element(delete_house_button).move_by_offset(600, 0).click()
+        self.selenium.moveToElement(delete_house_button).move_by_offset(600, 0).click()
         houses_after_delete = self.selenium.findElements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(houses_after_delete) == 1
