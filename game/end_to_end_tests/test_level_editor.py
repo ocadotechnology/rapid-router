@@ -30,7 +30,7 @@ class TestLevelEditor(BaseGameTest):
 
         grid_paper = self.selenium.find_element(By.ID, "paper")
 
-        road_image = grid_paper.find_elements(By.XPATH, "//svg/image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")
+        road_image = grid_paper.find_elements(By.XPATH, ".//svg/image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")
         assert len(road_image) > 0
 
         add_house_button = self.selenium.find_element(By.ID, "add_house")
@@ -38,12 +38,12 @@ class TestLevelEditor(BaseGameTest):
         action.move_to_element(add_road_button).move_by_offset(600, 0).click()
         action.move_to_element(add_road_button).move_by_offset(800, 0).click()
 
-        added_houses = grid_paper.find_elements(By.XPATH, "//svg/rect[fill='#0000ff']")
+        added_houses = grid_paper.find_elements(By.XPATH, ".//svg/rect[fill='#0000ff']")
         assert len(added_houses) == 2
 
         delete_house_button = self.selenium.find_element(By.ID, "delete_house")
         delete_house_button.click()
         action.move_to_element(delete_house_button).move_by_offset(600, 0).click()
 
-        houses_after_delete = grid_paper.find_elements(By.XPATH, "//svg/rect[fill='#0000ff']")
+        houses_after_delete = grid_paper.find_elements(By.XPATH, ".//svg/rect[fill='#0000ff']")
         assert len(houses_after_delete) == 1
