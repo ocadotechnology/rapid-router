@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.17.1 (2024-05-13)
+
+### Fix
+
+* Fix wonky level editor ([#1609](https://github.com/ocadotechnology/rapid-router/issues/1609)) ([`426f801`](https://github.com/ocadotechnology/rapid-router/commit/426f801fa309615e8217a4e213c72c446540ff55))
+
 ## v5.17.0 (2024-05-09)
 
 ### Feature
