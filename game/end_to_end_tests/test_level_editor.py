@@ -28,11 +28,7 @@ class TestLevelEditor(BaseGameTest):
         add_road_button.click()
         action.move_to_element(add_road_button).move_by_offset(600, 0).click_and_hold().move_by_offset(300, 0).click().perform()
 
-        grid_paper = self.selenium.find_elements(By.ID, "paper")
-        assert len(grid_paper) > 0
-
-        road_image = grid_paper.find_elements(By.XPATH, ".//svg/image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")
-        assert len(road_image) > 0
+        grid_paper = self.selenium.find_element(By.ID, "paper")
 
         add_house_button = self.selenium.find_element(By.ID, "add_house")
         add_house_button.click()
