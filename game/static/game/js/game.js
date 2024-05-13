@@ -10,6 +10,8 @@ ocargo.Game = function () {
 }
 
 ocargo.Game.prototype.setup = function () {
+  gameUpdateBlockLanguage(navigator.language.toLowerCase())
+
   if(new Date().getMonth() === 11) {
     $("#paper").css('background-color', '#eef7ff')
   }
@@ -25,11 +27,11 @@ ocargo.Game.prototype.setup = function () {
   }
 
 
-// Function being called when there is a change in game level.
-ocargo.Game.prototype.onLevelChange = function() {
-  const currentLevelId = LEVEL_ID;
-  localStorage.setItem('currentEpisode', EPISODE);
-}
+  // Function being called when there is a change in game level.
+  ocargo.Game.prototype.onLevelChange = function() {
+    const currentLevelId = LEVEL_ID;
+    localStorage.setItem('currentEpisode', EPISODE);
+  }
 
   restoreCmsLogin()
   initCustomBlocks()
@@ -38,20 +40,21 @@ ocargo.Game.prototype.onLevelChange = function() {
   ocargo.pythonControl = new ocargo.PythonControl()
   ocargo.blocklyCompiler = new ocargo.BlocklyCompiler()
   ocargo.model = new ocargo.Model(
-    PATH,
-    ORIGIN,
-    DESTINATIONS,
-    TRAFFIC_LIGHTS,
-    COWS,
-    MAX_FUEL
+      PATH,
+      ORIGIN,
+      DESTINATIONS,
+      TRAFFIC_LIGHTS,
+      COWS,
+      MAX_FUEL
   )
+
   this.drawing = new ocargo.Drawing(ocargo.model.startingPosition())
   this.drawing.preloadRoadTiles()
   ocargo.animation = new ocargo.Animation(ocargo.model, DECOR, this.drawing)
   this.saving = new ocargo.Saving()
   this.sharing = new ocargo.Sharing(
-    () => parseInt(LEVEL_ID),
-    () => true
+      () => parseInt(LEVEL_ID),
+      () => true
   )
 
   // Setup the blockly workspace
@@ -79,20 +82,20 @@ ocargo.Game.prototype.onLevelChange = function() {
   // Setup blockly to python
   Blockly.Python.init(Blockly.getMainWorkspace())
   window.addEventListener(
-    'unload',
-    function (event) {
-      ocargo.pythonControl.teardown()
-      ocargo.blocklyControl.teardown()
-    }.bind(this)
+      'unload',
+      function (event) {
+        ocargo.pythonControl.teardown()
+        ocargo.blocklyControl.teardown()
+      }.bind(this)
   )
 
   var loggedOutWarning = ''
   // Check if logged on
   if (USER_STATUS == 'UNTRACKED') {
     loggedOutWarning =
-      '<br><span class="popup__text--warning">' +
-      gettext("You are not logged in. Your progress won't be saved.") +
-      '</span>'
+        '<br><span class="popup__text--warning">' +
+        gettext("You are not logged in. Your progress won't be saved.") +
+        '</span>'
   }
   // Start the popup
   var title = gettext('Try solving this one...')
@@ -113,11 +116,11 @@ ocargo.Game.prototype.onLevelChange = function() {
   var message
   if (NIGHT_MODE) {
     message =
-      '<br>' +
-      gettext(
-        'In Night Mode you can only see a very short distance. ' +
-          "We've given you more blocks to help you find your way!"
-      )
+        '<br>' +
+        gettext(
+            'In Night Mode you can only see a very short distance. ' +
+            "We've given you more blocks to help you find your way!"
+        )
   } else {
     message = loggedOutWarning
   }
@@ -127,15 +130,15 @@ ocargo.Game.prototype.onLevelChange = function() {
   const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
 
   ocargo.Drawing.startPopup(
-    title,
-    LESSON,
-    message,
-    showMascot,
-    [
-      ocargo.button.dismissButtonHtml("prev_button", gettext("Previous level")),
-      ocargo.button.dismissButtonHtml('play_button', gettext('Play')),
-      ocargo.button.dismissButtonHtml("next_button", gettext("Next level"))
-    ]
+      title,
+      LESSON,
+      message,
+      showMascot,
+      [
+        ocargo.button.dismissButtonHtml("prev_button", gettext("Previous level")),
+        ocargo.button.dismissButtonHtml('play_button', gettext('Play')),
+        ocargo.button.dismissButtonHtml("next_button", gettext("Next level"))
+      ]
   )
 }
 
@@ -624,6 +627,7 @@ ocargo.Game.prototype.isInPythonWorkspace = function () {
 
 ocargo.Game.prototype._setupTabs = function () {
   this.tabs = []
+
   this.tabs.blockly = new ocargo.Tab(
     $('#blockly_radio'),
     $('#blockly_radio + label'),
@@ -1385,6 +1389,12 @@ function setMutedCookie(mute) {
   if (hasFunctionalCookiesConsent()) {
     Cookies.set('muted', mute.toString(), { path: Urls.levels() })
   }
+}
+
+function gameUpdateBlockLanguage(language_code) {
+  loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
+    reloadWorkspace(Blockly.mainWorkspace);
+  });
 }
 
 $(document).ready(function () {

@@ -104,6 +104,7 @@
   <script defer type="text/javascript" src="{% static 'game/js/blocklyCompiler.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/blocklyCustomBlocks.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/blocklyCustomisations.js' %}"></script>
+  <script defer type="text/javascript" src="{% static 'game/js/loadLanguages.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/blocklyMessages.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/model.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/pathFinder.js' %}"></script>
@@ -143,6 +144,7 @@
 
 {% block content %}
 {{ block.super }}
+
 <div style='position: fixed; top: 0; right: 0; background: black; z-index: 99'>
   <div id='fps' style='font-size: 2em; color: white'></div>
 </div>
@@ -158,6 +160,16 @@
         <span>{% trans "Blockly" %}</span>
       </label>
     </div>
+    <div id="language_tab" class="tab">
+      <select name="language_dropdown" class="tab selectable bg--{{level.difficulty}} {% if level.pythonEnabled %}hidden{% endif %}" id="language_dropdown" onchange="gameUpdateBlockLanguage(this.value)">
+        {% for language_code, language in available_language_dict.items %}
+          <option id="language_dropdown_{{language_code}}" value="{{language_code}}">{{language}}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="tab_break"></div>
+
     <div id="python_tab" class="tab selectable {% if level.pythonEnabled %}{% else %}hidden{% endif %}">
       <input type="radio" name="tabs" id="python_radio">
       <label for="python_radio">
@@ -486,5 +498,13 @@
 
   </div>
 </div>
+
+<script>
+  document.getElementById("language_dropdown").value = navigator.language.toLowerCase();
+
+  if (document.getElementById("language_dropdown").value == "") {
+    document.getElementById("language_dropdown").value = "en";
+  }
+</script>
 
 {% endblock %}
