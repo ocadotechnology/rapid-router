@@ -8,8 +8,8 @@ var GRID_SPACE_SIZE = 100
 let PAPER_WIDTH = GRID_SPACE_SIZE * GRID_WIDTH
 let PAPER_HEIGHT = GRID_SPACE_SIZE * GRID_HEIGHT
 let PAPER_PADDING = 30
-let EXTENDED_PAPER_WIDTH = '100%'
-let EXTENDED_PAPER_HEIGHT = '100%'
+let EXTENDED_PAPER_WIDTH = PAPER_WIDTH + 2 * PAPER_PADDING
+let EXTENDED_PAPER_HEIGHT = PAPER_WIDTH + 2 * PAPER_PADDING
 
 let DEFAULT_CHARACTER_WIDTH = 40
 let DEFAULT_CHARACTER_HEIGHT = 20
@@ -74,8 +74,8 @@ ocargo.Drawing = function (startingPosition) {
   paper.setViewBox(
     currentStartX,
     currentStartY,
-    1000,
-    800
+    1060,
+    1000
   )
 
   /**

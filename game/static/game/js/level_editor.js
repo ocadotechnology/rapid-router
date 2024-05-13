@@ -975,8 +975,8 @@ ocargo.LevelEditor = function(levelId) {
         var windowWidth = $(window).width();
         var windowHeight = $(window).height();
 
-        var paperRightEdge = PAPER_WIDTH + $('#tools').width();
-        var paperBottomEdge = PAPER_HEIGHT;
+        var paperRightEdge = EXTENDED_PAPER_WIDTH + $('#tools').width();
+        var paperBottomEdge = EXTENDED_PAPER_HEIGHT;
 
         var bottom = 50;
         if(windowHeight > paperBottomEdge) {
