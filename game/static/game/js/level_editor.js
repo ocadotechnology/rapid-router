@@ -1229,7 +1229,7 @@ ocargo.LevelEditor = function(levelId) {
             markAsOrigin(originNode.coordinate);
         }
         if (houseNodes.length > 0) {
-            for (i = 0; i < houseNodes.length; i++) {
+            for (let i = 0; i < houseNodes.length; i++) {
                 markAsHouse(houseNodes[i].coordinate);
             }
         }
@@ -1587,7 +1587,7 @@ ocargo.LevelEditor = function(levelId) {
                 markAsOrigin(originNode.coordinate);
             }
             if (houseNodes.length > 0) {
-                for (i = 0; i < houseNodes.length; i++){
+                for (let i = 0; i < houseNodes.length; i++){
                     markAsHouse(houseNodes[i].coordinate);
                 }
             }
@@ -1660,7 +1660,7 @@ ocargo.LevelEditor = function(levelId) {
                 markAsOrigin(originNode.coordinate);
             }
             if (houseNodes.length > 0) {
-                for (i = 0; i < houseNodes.length; i++) {
+                for (let i = 0; i < houseNodes.length; i++) {
                     markAsHouse(houseNodes[i].coordinate);
                 }
             }
@@ -1792,7 +1792,7 @@ ocargo.LevelEditor = function(levelId) {
                 markAsOrigin(originNode.coordinate);
             }
             if (houseNodes.length > 0) {
-                for (i = 0; i < houseNodes.length; i++) {
+                for (let i = 0; i < houseNodes.length; i++) {
                     markAsHouse(houseNodes[i].coordinate);
                 }
             }
@@ -1911,7 +1911,7 @@ ocargo.LevelEditor = function(levelId) {
                 markAsOrigin(originNode.coordinate);
             }
             if (houseNodes.length > 0) {
-                for (i = 0; i < houseNodes.length; i++) {
+                for (let i = 0; i < houseNodes.length; i++) {
                     markAsHouse(houseNodes[i].coordinate);
                 }
             }
