@@ -2,6 +2,8 @@ from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.views.level_editor import available_blocks
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait 
 
 
 class TestLevelEditor(BaseGameTest):
@@ -29,6 +31,8 @@ class TestLevelEditor(BaseGameTest):
         road_start = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
         road_end = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='330'][y='530']")
         ActionChains(self.selenium).drag_and_drop(road_start, road_end).perform()
+
+        WebDriverWait(self.selenium, 20).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")))
 
         road_image = self.selenium.find_elements(By.CSS_SELECTOR, "image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")
         assert len(road_image) > 0
