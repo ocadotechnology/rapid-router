@@ -1,9 +1,8 @@
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.by import By
+
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.views.level_editor import available_blocks
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.wait import WebDriverWait 
 
 
 class TestLevelEditor(BaseGameTest):
@@ -43,6 +42,7 @@ class TestLevelEditor(BaseGameTest):
         delete_house_button = self.selenium.find_element(By.ID, "delete_house")
         delete_house_button.click()
         ActionChains(self.selenium).move_to_element(road_end).click().perform()
+        ActionChains(self.selenium).move_to_element(road_start).perform()
 
         houses_after_delete = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(houses_after_delete) == 1
