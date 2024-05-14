@@ -36,7 +36,7 @@ class TestLevelEditor(BaseGameTest):
         ActionChains(self.selenium).move_to_element(road_start).click().perform()
         ActionChains(self.selenium).move_to_element(road_end).click().perform()
 
-        added_houses = find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
+        added_houses = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(added_houses) == 2
 
         delete_house_button = self.selenium.find_element(By.ID, "delete_house")
