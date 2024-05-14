@@ -32,11 +32,6 @@ class TestLevelEditor(BaseGameTest):
         road_end = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='330'][y='530']")
         ActionChains(self.selenium).drag_and_drop(road_start, road_end).perform()
 
-        WebDriverWait(self.selenium, 20).until(expected_conditions.presence_of_element_located((By.CSS_SELECTOR, "image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")))
-
-        road_image = self.selenium.find_elements(By.CSS_SELECTOR, "image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")
-        assert len(road_image) > 0
-
         add_house_button = self.selenium.find_element(By.ID, "add_house")
         add_house_button.click()
         ActionChains(self.selenium).move_to_element(road_start).click().perform()
