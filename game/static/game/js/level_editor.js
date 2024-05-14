@@ -1312,7 +1312,7 @@ ocargo.LevelEditor = function(levelId) {
                 }
                 // Check if same as a house node
                 if (isHouseCoordinate(coordMap)) {
-                    houseNodes.splice(houseNodes.indexOf(ocargo.Node.findNodeByCoordinate(coordMap, nodes)), 1);
+                    houseNodes.splice(houseNodes.indexOf(ocargo.Node.findNodeByCoordinate(coordMap, nodes)), 1)
                 }
 
                 markAsOrigin(coordMap);
@@ -1335,7 +1335,7 @@ ocargo.LevelEditor = function(levelId) {
 
             } else if (mode === modes.DELETE_HOUSE_MODE && existingNode) {
                 if (isHouseCoordinate(coordMap)) {
-                    houseNodes.splice(houseNodes.indexOf(ocargo.Node.findNodeByCoordinate(coordMap, nodes)), 1);
+                    houseNodes.splice(houseNodes.indexOf(ocargo.Node.findNodeByCoordinate(coordMap, nodes)), 1)
                 }
 
                 markAsBackground(coordMap);
