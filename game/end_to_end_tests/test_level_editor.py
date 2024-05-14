@@ -21,28 +21,27 @@ class TestLevelEditor(BaseGameTest):
             assert page.element_exists_by_id(f"{block_type}_image")
 
     def test_multiple_houses(self):
-        action = ActionChains(self.selenium)
-
-        page = self.go_to_level_editor()
         add_road_button = self.selenium.find_element(By.ID, "add_road")
         add_road_button.click()
-        action.move_to_element(add_road_button).move_by_offset(600, 0).click_and_hold().move_by_offset(300, 0).release().perform()
 
-        grid_paper = self.selenium.find_element(By.ID, "paper")
-        road_image = grid_paper.find_elements(By.XPATH, ".//svg/image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")
+        road_start = self.selenium.find_element(By.CSS_SELECTOR, "image[x='130'][y='530']")
+        road_end = self.selenium.find_element(By.CSS_SELECTOR, "image[x='330'][y='530']")
+        ActionChains(self.selenium).drag_and_drop(road_start, road_end).perform()
+
+        road_image = self.selenium.find_elements(By.CSS_SELECTOR, "image[href='/static/game/raphael_image/road_tiles/road/dead_end.svg']")
         assert len(road_image) > 0
 
         add_house_button = self.selenium.find_element(By.ID, "add_house")
         add_house_button.click()
-        action.move_to_element(add_road_button).move_by_offset(600, 0).click().perform()
-        action.move_to_element(add_road_button).move_by_offset(800, 0).click().perform()
+        ActionChains(self.selenium).move_to_element(road_start).click().perform()
+        ActionChains(self.selenium).move_to_element(road_end).click().perform()
 
-        added_houses = grid_paper.find_elements(By.XPATH, ".//svg/rect[fill='#0000ff']")
+        added_houses = find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(added_houses) == 2
 
         delete_house_button = self.selenium.find_element(By.ID, "delete_house")
         delete_house_button.click()
-        action.move_to_element(delete_house_button).move_by_offset(600, 0).click().perform()
+        ActionChains(self.selenium).move_to_element(road_end).click().perform()
 
-        houses_after_delete = grid_paper.find_elements(By.XPATH, ".//svg/rect[fill='#0000ff']")
+        houses_after_delete = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(houses_after_delete) == 1
