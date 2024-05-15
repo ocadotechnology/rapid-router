@@ -387,7 +387,7 @@ class LevelEditorTestCase(TestCase):
         level = create_save_level_with_multiple_houses(teacher1)
         url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
         response = self.client.get(url)
-        response_data = response.json()
+        response_data = json.parse(response)
 
         assert response.status_code == 200
         assert response_data["level"]["destinations"] == "[[3,4],[3,3]]"
