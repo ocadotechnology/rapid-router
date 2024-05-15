@@ -1447,14 +1447,14 @@ ocargo.LevelEditor = function(levelId) {
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
                 paperX = 0;
-            } else if (paperX + imageWidth > paperWidth) {
-                paperX = paperWidth - imageWidth;
+            } else if (paperX + imageWidth > EXTENDED_PAPER_WIDTH) {
+                paperX = EXTENDED_PAPER_WIDTH - imageWidth;
             }
 
             if (paperY < 0) {
                 paperY = 0;
-            } else if (paperY + imageHeight >  paperHeight) {
-                paperY = paperHeight - imageHeight;
+            } else if (paperY + imageHeight >  EXTENDED_PAPER_HEIGHT) {
+                paperY = EXTENDED_PAPER_HEIGHT - imageHeight;
             }
 
             image.transform('t' + paperX + ',' + paperY);
@@ -1477,8 +1477,17 @@ ocargo.LevelEditor = function(levelId) {
             originX = paperX;
             originY = paperY;
 
-            if(trashcanOpen) {
+            if (trashcanOpen) {
                 decor.destroy();
+            } else {
+                if (paperWidth < paperX + imageWidth) {
+                    originX = paperWidth - imageWidth;
+                }
+                if (paperHeight < paperY + imageHeight) {
+                    originY = paperHeight - imageHeight;
+                }
+
+                image.transform('t' + originX + ',' + originY);
             }
 
             closeTrashcan();
@@ -1528,13 +1537,13 @@ ocargo.LevelEditor = function(levelId) {
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
                 paperX = 0;
-            } else if (paperX + imageWidth > paperWidth) {
-                paperX = paperWidth - imageWidth;
+            } else if (paperX + imageWidth > EXTENDED_PAPER_WIDTH) {
+                paperX = EXTENDED_PAPER_WIDTH - imageWidth;
             }
             if (paperY < 0) {
                 paperY =  0;
-            } else if (paperY + imageHeight >  paperHeight) {
-                paperY = paperHeight - imageHeight;
+            } else if (paperY + imageHeight >  EXTENDED_PAPER_HEIGHT) {
+                paperY = EXTENDED_PAPER_HEIGHT - imageHeight;
             }
 
             // And perform the updatee
@@ -1630,9 +1639,9 @@ ocargo.LevelEditor = function(levelId) {
                 markAsDestination(destinationNode.coordinate);
             }
 
-            if(trashcanOpen) {
+            if (trashcanOpen) {
                 cow.destroy();
-            } else if(isValidPlacement(controlledCoord)) {
+            } else if (isValidPlacement(controlledCoord)) {
                 // Add back to the list of cows if on valid nodes
                 var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
                 cow.controlledNode = controlledNode;
@@ -1641,7 +1650,20 @@ ocargo.LevelEditor = function(levelId) {
             } else {
                 cow.controlledNode = null;
                 cow.valid = false;
-            }
+
+                var cowX = paperX;
+                var cowY = paperY;
+
+                if (paperWidth < paperX + imageWidth) {
+                    cowX = paperWidth - imageWidth
+                }
+
+                if (paperHeight < paperY + imageHeight) {
+                    cowY = paperHeight - imageHeight
+                }
+
+                image.transform('t' + cowX + ',' + cowY);
+            } 
             adjustCowGroupMinMaxFields(cow);
 
             image.attr({'cursor':'pointer'});
@@ -1731,16 +1753,16 @@ ocargo.LevelEditor = function(levelId) {
             // Stop it being dragged off the edge of the page
             if (paperX < 0) {
                 paperX = 0;
-            } else if (paperX + imageWidth > paperWidth) {
-                paperX = paperWidth - imageWidth;
+            } else if (paperX + imageWidth > EXTENDED_PAPER_WIDTH) {
+                paperX = EXTENDED_PAPER_WIDTH - imageWidth;
             }
             if (paperY < 0) {
                 paperY =  0;
-            } else if (paperY + imageHeight >  paperHeight) {
-                paperY = paperHeight - imageHeight;
+            } else if (paperY + imageHeight >  EXTENDED_PAPER_HEIGHT) {
+                paperY = EXTENDED_PAPER_HEIGHT - imageHeight;
             }
 
-            // And perform the updatee
+            // And perform the update
             image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
 
             // Unmark the squares the light previously occupied
@@ -1886,6 +1908,18 @@ ocargo.LevelEditor = function(levelId) {
                 trafficLight.valid = true;
 
                 drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+            } else {
+                var trafficLightX = paperX;
+                var trafficLightY = paperY;
+
+                if (paperWidth < paperX + imageWidth) {
+                    trafficLightX = paperWidth - imageWidth
+                    image.transform('t' + trafficLightX + ',' + trafficLightY + 'r' + rotation + 's' + scaling);
+                }
+                if (paperHeight < paperY + imageHeight) {
+                    trafficLightY = paperHeight - imageHeight
+                    image.transform('t' + trafficLightX + ',' + trafficLightY + 'r' + rotation + 's' + scaling);
+                }
             }
 
             image.attr({'cursor':'pointer'});
