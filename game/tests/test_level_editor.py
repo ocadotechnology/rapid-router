@@ -387,9 +387,10 @@ class LevelEditorTestCase(TestCase):
         level = create_save_level_with_multiple_houses(teacher1)
         url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
         response = self.client.get(url)
+        response_data = response.json()
 
         assert response.status_code == 200
-        assert response["level"]["destinations"] == "[[3,4],[3,3]]"
+        assert response_data["level"]["destinations"] == "[[3,4],[3,3]]"
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
