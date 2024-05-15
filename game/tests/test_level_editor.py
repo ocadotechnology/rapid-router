@@ -13,7 +13,7 @@ from django.urls import reverse
 from hamcrest import assert_that, equal_to
 
 from game.models import Level
-from game.tests.utils.level import create_save_level
+from game.tests.utils.level import create_save_level, create_save_level_with_multiple_houses
 from game.tests.utils.teacher import add_teacher_to_school, create_school
 
 
@@ -346,6 +346,19 @@ class LevelEditorTestCase(TestCase):
         response = self.client.get(url)
 
         assert response.status_code == 200
+
+    def test_level_loading_with_multiple_houses(self):
+        email1, password1 = signup_teacher_directly()
+
+        teacher1 = Teacher.objects.get(new_user__email=email1)
+
+        self.login(email1, password1)
+        level = create_save_level_with_multiple_houses(teacher1)
+        url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
+        response = self.client.get(url)
+
+        assert response.status_code == 200
+        assert len(list(response.content["destination"].split("]"))) == 4
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts

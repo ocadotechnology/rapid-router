@@ -36,11 +36,6 @@ ocargo.LevelEditor = function(levelId) {
         '#8F7C00'  // Khaki
     ];
 
-    var ADD_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/add_road.svg";
-    var DELETE_ROAD_IMG_URL = ocargo.Drawing.imageDir + "icons/delete_road.svg";
-    var MARK_START_IMG_URL = ocargo.Drawing.imageDir + "icons/origin.svg";
-    var MARK_END_IMG_URL = ocargo.Drawing.imageDir + "icons/destination.svg";
-
     var VALID_LIGHT_COLOUR = '#87E34D';
     var INVALID_LIGHT_COLOUR = '#E35F4D';
 
@@ -56,11 +51,6 @@ ocargo.LevelEditor = function(levelId) {
             name: gettext('Delete road'),
             url: ocargo.Drawing.imageDir + 'icons/delete_road.svg',
             id: 'delete_road',
-        },
-        MARK_DESTINATION_MODE: {
-            name: gettext('Mark end'),
-            url: ocargo.Drawing.imageDir + 'icons/destination.svg',
-            id: 'end',
         },
         MARK_ORIGIN_MODE: {
             name: gettext('Mark start'),
@@ -282,11 +272,6 @@ ocargo.LevelEditor = function(levelId) {
             $('#start').click(function() {
                 mode = modes.MARK_ORIGIN_MODE;
                 changeCurrentToolDisplay(modes.MARK_ORIGIN_MODE);
-            });
-
-            $('#end').click(function() {
-                mode = modes.MARK_DESTINATION_MODE;
-                changeCurrentToolDisplay(modes.MARK_DESTINATION_MODE);
             });
 
             $('#add_road').click(function() {
@@ -747,25 +732,28 @@ ocargo.LevelEditor = function(levelId) {
                 interpolate(
                     gettext('In %(map_icon)s%(map_label)s menu, click %(mark_start_icon)s%(mark_start_label)s and select a ' +
                         'square for your road to start from. The starting point can only be placed on dead ends. You need a ' +
-                        'road first before adding a starting point. Make sure you use %(mark_end_icon)s%(mark_end_label)s to ' +
-                        'select a final destination. Setting a fuel level means the route will need to be short enough for the ' +
+                        'road first before adding a starting point. Make sure you use %(add_house_icon)s%(add_house_label)s to ' +
+                        'select houses for delivery. Setting a fuel level means the route will need to be short enough for the ' +
                         'fuel not to run out.'
                     ), {
                         map_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/map.svg', 'popupIcon'),
                         map_label: '<b>' + gettext('Map') + '</b>',
                         mark_start_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/origin.svg', 'popupIcon'),
                         mark_start_label: '<b>' + gettext('Mark start') + '</b>',
-                        mark_end_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/destination.svg', 'popupIcon'),
-                        mark_end_label: '<b>' + gettext('Mark end') + '</b>'
+                        add_house_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/add_house.svg', 'popupIcon'),
+                        add_house_label: '<b>' + gettext('Add house') + '</b>'
                     },
                     true
                 ),
                 interpolate(
                     gettext('To remove road, click the %(delete_road_icon)s%(delete_road_label)s button and select a section ' +
-                        'to get rid of.'
+                        'to get rid of. To remove a house for delivery, click the %(delete_house_icon)s%(delete_house_label)s button' +
+                        'and select a house to get rid of.'
                     ), {
                         delete_road_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/delete_road.svg', 'popupIcon'),
-                        delete_road_label: '<b>' + gettext('Delete road') + '</b>'
+                        delete_road_label: '<b>' + gettext('Delete road') + '</b>',
+                        delete_house_icon: ocargo.jsElements.image(ocargo.Drawing.imageDir + 'icons/delete_house.svg', 'popupIcon'),
+                        delete_house_label: '<b>' + gettext('Delete house') + '</b>'
                     },
                     true
                 ),

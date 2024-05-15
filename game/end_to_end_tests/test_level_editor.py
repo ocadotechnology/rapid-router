@@ -25,8 +25,6 @@ class TestLevelEditor(BaseGameTest):
         add_road_button = self.selenium.find_element(By.ID, "add_road")
         add_road_button.click()
 
-
-
         road_start = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
         road_end = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='330'][y='530']")
         ActionChains(self.selenium).drag_and_drop(road_start, road_end).perform()
