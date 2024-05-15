@@ -358,7 +358,7 @@ class LevelEditorTestCase(TestCase):
         response = self.client.get(url)
 
         assert response.status_code == 200
-        assert len(list(response.content["destination"].split("]"))) == 4
+        assert response.content["destinations"] == "[[3,4], [3,3]]"
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
