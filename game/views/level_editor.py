@@ -200,7 +200,7 @@ def load_level_for_editor(request, levelID):
 
     response = {"owned": level.owner == request.user.userprofile, "level": level_dict}
 
-    return HttpResponse(json.dumps(response), content_type="application/javascript")
+    return HttpResponse(json.dumps(response), content_type="application/json")
 
 
 @transaction.atomic
