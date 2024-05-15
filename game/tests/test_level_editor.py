@@ -347,18 +347,51 @@ class LevelEditorTestCase(TestCase):
 
         assert response.status_code == 200
 
-    def test_level_loading_with_multiple_houses(self):
-        email1, password1 = signup_teacher_directly()
+    def test_level_saving_with_multiple_houses(self):
+        email, password = signup_teacher_directly()
+        create_organisation_directly(email)
+        _, class_name, access_code = create_class_directly(email)
+        student_name, student_password, _ = create_school_student_directly(access_code)
 
-        teacher1 = Teacher.objects.get(new_user__email=email1)
-
-        self.login(email1, password1)
-        level = create_save_level_with_multiple_houses(teacher1)
-        url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
-        response = self.client.get(url)
+        self.student_login(student_name, access_code, student_password)
+        url = reverse("save_level_for_editor")
+        data_with_multiple_houses = {
+            "origin": '{"coordinate":[3,5],"direction":"S"}',
+            "pythonEnabled": False,
+            "decor": [],
+            "blocklyEnabled": True,
+            "blocks": [{"type": "move_forwards"}, {"type": "turn_left"}, {"type": "turn_right"}],
+            "max_fuel": "50",
+            "pythonViewEnabled": False,
+            "name": "multiple_houses",
+            "theme": 1,
+            "anonymous": True,
+            "cows": "[]",
+            "path": '[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],"connectedNodes":[0,2]}, {"coordinate":[3,3],"connectedNodes":[1]}]',
+            "traffic_lights": "[]",
+            "destinations": "[[3,4],[3,3]]",
+        }
+        response = self.client.post(url, {"data": json.dumps(data_with_multiple_houses)})
 
         assert response.status_code == 200
-        assert response.content["destinations"] == "[[3,4], [3,3]]"
+        new_level = Level.objects.get(name="multiple_houses")
+        assert new_level.destinations == "[[3,4],[3,3]]"
+
+
+
+
+
+        # email1, password1 = signup_teacher_directly()
+
+        # teacher1 = Teacher.objects.get(new_user__email=email1)
+
+        # self.login(email1, password1)
+        # level = create_save_level_with_multiple_houses(teacher1)
+        # url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
+        # response = self.client.get(url)
+
+        # assert response.status_code == 200
+        # assert response.content.
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
