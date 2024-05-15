@@ -390,7 +390,7 @@ class LevelEditorTestCase(TestCase):
         response_data = response.json()
 
         assert response.status_code == 200
-        assert response_data["level"]["destinations"] == "[[3,4],[3,3]]"
+        assert response_data["level"]["destinations"] == "[[3,4], [3,3]]"
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
