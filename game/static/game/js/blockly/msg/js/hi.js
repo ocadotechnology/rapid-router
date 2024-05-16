@@ -434,3 +434,52 @@ Blockly.Msg["TEXTS_HUE"] = "160";
 Blockly.Msg["PROCEDURES_HUE"] = "290";
 Blockly.Msg["COLOUR_HUE"] = "20";
 Blockly.Msg["VARIABLES_DYNAMIC_HUE"] = "310";
+
+Blockly.Msg["START_TITLE"] = "शुरू";
+Blockly.Msg["START_TOOLTIP"] = "कार्यक्रम की शुरुआत";
+Blockly.Msg["MOVE_FORWARDS_TITLE"] = "आगे बढ़ें";
+Blockly.Msg["MOVE_FORWARDS_TOOLTIP"] = "वैन को आगे बढ़ाएं";
+Blockly.Msg["TURN_LEFT_TITLE"] = "बाएँ मुड़ें";
+Blockly.Msg["TURN_LEFT_TOOLTIP"] = "वैन को बाएँ मोड़ें";
+Blockly.Msg["TURN_RIGHT_TITLE"] = "दाएं मुड़ें";
+Blockly.Msg["TURN_RIGHT_TOOLTIP"] = "वैन को दाएं मोड़ें)";
+Blockly.Msg["TURN_AROUND_TITLE"] = "मुड़ो";
+Blockly.Msg["TURN_AROUND_TOOLTIP"] = "वैन को घुमाओ";
+
+Blockly.Msg["WAIT_TITLE"] = "इंतज़ार";
+Blockly.Msg["WAIT_TOOLTIP"] = "वैन को स्थिर रखें";
+Blockly.Msg["DELIVER_TITLE"] = "बाँटना";
+Blockly.Msg["DELIVER_TOOLTIP"] = "वैन से सामान पहुंचाएं";
+Blockly.Msg["SOUND_HORN_TITLE"] = "हॉर्न बजाओ";
+Blockly.Msg["SOUND_HORN_TOOLTIP"] = "गायों को डराने के लिए हॉर्न बजाएं";
+
+Blockly.Msg["ROAD_EXISTS_FORWARD_TITLE"] = "सड़क आगे मौजूद है";
+Blockly.Msg["ROAD_EXISTS_LEFT_TITLE"] = "सड़क बाएँ मौजूद है";
+Blockly.Msg["ROAD_EXISTS_RIGHT_TITLE"] = "सड़क दाएँ मौजूद है";
+Blockly.Msg["TRAFFIC_LIGHT_RED_TITLE"] = "ट्रैफिक लाइट लाल";
+Blockly.Msg["TRAFFIC_LIGHT_GREEN_TITLE"] = "ट्रैफिक लाइट हरा";
+Blockly.Msg["DEAD_END_TITLE"] = "आगे का रास्ता बंद है";
+Blockly.Msg["AT_DESTINATION_TITLE"] = "मंजिल /गंतव्य पर";
+Blockly.Msg["COW_CROSSING_TITLE"] = "गायों";
+
+Blockly.Msg["CALL_PROC_TITLE"] = "पुकारना";
+Blockly.Msg["CALL_PROC_TOOLTIP"] = "एक प्रक्रिया बुलाना";
+Blockly.Msg["DECLARE_PROC_TITLE"] = "परिभाषित करना";
+Blockly.Msg["DECLARE_PROC_TOOLTIP"] = "प्रक्रिया की घोषणा करता है";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_TITLE"] = "दोहराएँ जबकि";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_SUBTITLE"] = "करो";
+Blockly.Msg["CONTROLS_REPEAT_WHILE_TOOLTIP"] = "जबकि कोई मान सत्य है, कुछ कथन करें";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_TITLE"] = "जब तक";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_SUBTITLE"] = "न करें तब तक दोहराएँ";
+Blockly.Msg["CONTROLS_REPEAT_UNTIL_TOOLTIP"] = "जब तक कोई मान सत्य न हो, कुछ कथन करें";
+
+Blockly.Msg["VARIABLES_GET_TOOLTIP"] = "एक परिवर्तनीय";
+Blockly.Msg["VARIABLES_SET_TITLE"] = "तय करना";
+Blockly.Msg["VARIABLES_SET_SUBTITLE"] = "को";
+Blockly.Msg["VARIABLES_SET_TOOLTIP"] = "एक परिवर्तनीय तय करना";
+Blockly.Msg["VARIABLES_NUMERIC_SET_TOOLTIP"] = "एक परिवर्तनीय को एक संख्या पर तय करें";
+Blockly.Msg["VARIABLES_INCREMENT_TITLE"] = "बढ़ाई";
+Blockly.Msg["VARIABLES_INCREMENT_SUBTITLE"] = "द्वारा";
+Blockly.Msg["VARIABLES_INCREMENT_TOOLTIP"] = "एक वेरिएबल बढ़ाएँ";
+Blockly.Msg["NUMBER_TITLE"] = "संख्या";
+Blockly.Msg["NUMBER_TOOLTIP"] = "एक संख्या";
