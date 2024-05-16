@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.18.0 (2024-05-16)
+
+### Feature
+
+* Add multiple house delivery ([#1611](https://github.com/ocadotechnology/rapid-router/issues/1611)) ([`8ff1ad7`](https://github.com/ocadotechnology/rapid-router/commit/8ff1ad73c51563808578b41c4cf592ed988b4df9))
+
 ## v5.17.1 (2024-05-13)
 
 ### Fix
