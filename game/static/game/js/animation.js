@@ -16,19 +16,18 @@ ocargo.Animation = function(model, decor, drawing) {
 
 	this.setAnimationDuration(this.REGULAR_ANIMATION_DURATION);
 
-    // timer identifier for pausing
-    this.playTimer = -1;
+	// timer identifier for pausing
+	this.playTimer = -1;
 
-    this.drawing.clearPaper();
-    this.drawing.renderMap(this.model.map);
-    this.drawing.renderDecor(this.decor);
-    this.drawing.renderOrigin(this.model.map.startingPosition());
-    this.drawing.renderDestinations(this.model.map.getDestinations());
-    this.drawing.renderTrafficLights(this.model.trafficLights);
+	this.drawing.clearPaper();
+	this.drawing.renderMap(this.model.map);
+	this.drawing.renderCharacter();
+	this.drawing.renderDecor(this.decor);
+	this.drawing.renderOrigin(this.model.map.startingPosition());
+	this.drawing.renderDestinations(this.model.map.getDestinations());
+	this.drawing.renderTrafficLights(this.model.trafficLights);
 
 	this.addCows();
-
-	this.drawing.renderCharacter();
 
 	this._updateFuelGauge(100);
 };
