@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.18.1 (2024-05-20)
+
+### Fix
+
+* Switch order of character and decor ([#1618](https://github.com/ocadotechnology/rapid-router/issues/1618)) ([`fc8c28f`](https://github.com/ocadotechnology/rapid-router/commit/fc8c28f177ff740e3d0a5093d02530a2b4e99e3e))
+
 ## v5.18.0 (2024-05-16)
 
 ### Feature
