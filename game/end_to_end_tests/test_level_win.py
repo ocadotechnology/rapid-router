@@ -2,6 +2,7 @@ from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.models import Level
 
 from game.character import get_character
+from game.theme import get_theme
 
 class TestLevelWin(BaseGameTest):
     custom_level = None
@@ -41,7 +42,7 @@ class TestLevelWin(BaseGameTest):
             origin='{"coordinate":[3,5],"direction":"S"}',
             path='[{"coordinate":[3,5],"connectedNodes":[1]},{"coordinate":[3,4],' '"connectedNodes":[0]}]',
             pythonEnabled=False,
-            theme=grass,
+            theme=get_theme(name="grass"),
             threads=1,
             traffic_lights="[]",
         )
