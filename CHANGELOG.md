@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.18.2 (2024-05-23)
+
+### Fix
+
+* Add do translation ([#1623](https://github.com/ocadotechnology/rapid-router/issues/1623)) ([`ae2f8db`](https://github.com/ocadotechnology/rapid-router/commit/ae2f8dbdf9699a0c1a5440a5df47b3f1b4b1ba32))
+
 ## v5.18.1 (2024-05-20)
 
 ### Fix
