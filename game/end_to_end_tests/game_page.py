@@ -136,7 +136,7 @@ class GamePage(BasePage):
         return self
     
     def run_custom_level_program(self):
-        self.run_program()
+        self.run_program("close_button")
         modal_content = self.browser.find_element(By.ID, "modal-content").text
         assert_that(modal_content, not(contains_string("Algorithm score:")))
         return self
