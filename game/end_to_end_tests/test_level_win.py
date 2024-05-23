@@ -1,6 +1,7 @@
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.models import Level
 
+from game.character import get_character
 
 class TestLevelWin(BaseGameTest):
     custom_level = None
@@ -29,7 +30,7 @@ class TestLevelWin(BaseGameTest):
             name="Custom level",
             anonymous=False,
             blocklyEnabled=True,
-            character=van,
+            character=get_character("Van"),
             cows='[]',
             default=False,
             destinations="[[3,4]]",
