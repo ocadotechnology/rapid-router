@@ -465,6 +465,7 @@ Blockly.Msg["COW_CROSSING_TITLE"] = "गायों";
 Blockly.Msg["CALL_PROC_TITLE"] = "पुकारना";
 Blockly.Msg["CALL_PROC_TOOLTIP"] = "एक प्रक्रिया बुलाना";
 Blockly.Msg["DECLARE_PROC_TITLE"] = "परिभाषित करना";
+Blockly.Msg["DECLARE_PROC_SUBTITLE"] = "करो";
 Blockly.Msg["DECLARE_PROC_TOOLTIP"] = "प्रक्रिया की घोषणा करता है";
 Blockly.Msg["CONTROLS_REPEAT_WHILE_TITLE"] = "दोहराएँ जबकि";
 Blockly.Msg["CONTROLS_REPEAT_WHILE_SUBTITLE"] = "करो";

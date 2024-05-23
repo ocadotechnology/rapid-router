@@ -465,6 +465,7 @@ Blockly.Msg["COW_CROSSING_TITLE"] = "vaches";
 Blockly.Msg["CALL_PROC_TITLE"] = "Appeler";
 Blockly.Msg["CALL_PROC_TOOLTIP"] = "Appeler une fonction";
 Blockly.Msg["DECLARE_PROC_TITLE"] = "Définir";
+Blockly.Msg["DECLARE_PROC_SUBTITLE"] = "Faire";
 Blockly.Msg["DECLARE_PROC_TOOLTIP"] = "Déclarer une fonction";
 Blockly.Msg["CONTROLS_REPEAT_WHILE_TITLE"] = "répéter tant que";
 Blockly.Msg["CONTROLS_REPEAT_WHILE_SUBTITLE"] = "faire";
