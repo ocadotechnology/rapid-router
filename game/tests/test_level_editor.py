@@ -392,6 +392,20 @@ class LevelEditorTestCase(TestCase):
         assert response.status_code == 200
         assert response_data["level"]["destinations"] == "[[3,4], [3,3]]"
 
+    def test_custom_level_scoring(self):
+        email1, password1 = signup_teacher_directly()
+
+        teacher1 = Teacher.objects.get(new_user__email=email1)
+
+        self.login(email1, password1)
+        level = create_save_level_with_multiple_houses(teacher1)
+        url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
+        response = self.client.get(url)
+        response_data = response.json()
+
+        assert response.status_code == 200
+        assert response_data["level"]["disable_algorithm_score"] == True
+
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
         email1, password1 = signup_teacher_directly()

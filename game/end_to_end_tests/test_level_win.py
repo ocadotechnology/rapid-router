@@ -16,12 +16,12 @@ class TestLevelWin(BaseGameTest):
         )
         self.complete_and_check_level(19, page)
 
-    def test_custom_level_scoring(self):
-        user_profile = self.login_once()
-        TestLevelWin.custom_level.owner = user_profile
-        TestLevelWin.custom_level.save()
-        workspace_id = self.use_workspace("custom_level_scoring_solution_file", user_profile)
-        self.go_to_custom_level(TestLevelWin.custom_level).load_solution(workspace_id).run_custom_level_program()
+    # def test_custom_level_scoring(self):
+    #     user_profile = self.login_once()
+    #     TestLevelWin.custom_level.owner = user_profile
+    #     TestLevelWin.custom_level.save()
+    #     workspace_id = self.use_workspace("custom_level_scoring_solution_file", user_profile)
+    #     self.go_to_custom_level(TestLevelWin.custom_level).load_solution(workspace_id).run_custom_level_program()
 
     @classmethod
     def setUpClass(cls):
