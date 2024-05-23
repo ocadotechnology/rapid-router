@@ -402,7 +402,7 @@ class LevelEditorTestCase(TestCase):
         url = reverse("play_custom_level", kwargs={"levelId": level.id})
 
         response = self.client.get(url)
-        response_data = response.json()
+        response_data = response.getElementById("data")
 
         assert response.status_code == 200
         # assert response_data["level"]["disable_algorithm_score"] == True

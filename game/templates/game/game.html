@@ -15,7 +15,8 @@
 	data-cows="{{level.cows|trim}}"
 	data-episode="{{level.episode.id|trim}}"
 	data-level-id="{{level.id|default_if_none:''|trim}}"
-        data-level-name="{{level.name|trim}}"
+  data-level-name="{{level.name|trim}}"
+  data-disable-algorithm-score="{{level.disable_algorithm_score|booltojs}}"
   >
     var ANONYMOUS = {{level.anonymous|booltojs}}
     var PATH = $('#data').data('path')
