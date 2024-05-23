@@ -399,7 +399,8 @@ class LevelEditorTestCase(TestCase):
 
         self.login(email1, password1)
         level = create_save_level_with_multiple_houses(teacher1)
-        url = reverse("load_level_for_editor", kwargs={"levelID": level.id})
+        url = reverse("play_custom_level", kwargs={"levelId": level.id})
+
         response = self.client.get(url)
         response_data = response.json()
 
