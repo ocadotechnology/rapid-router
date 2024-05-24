@@ -7,15 +7,15 @@
 
 {% block scripts %}
 {{block.super}}
-<script defer id="data"
-	data-path="{{level.path|trim}}"
-	data-origin="{{level.origin|trim}}"
-	data-destinations="{{level.destinations|trim}}"
-	data-traffic-lights="{{level.traffic_lights|trim}}"
-	data-cows="{{level.cows|trim}}"
-	data-episode="{{level.episode.id|trim}}"
-	data-level-id="{{level.id|default_if_none:''|trim}}"
-  data-level-name="{{level.name|trim}}"
+  <script defer id="data"
+    data-path="{{level.path|trim}}"
+    data-origin="{{level.origin|trim}}"
+    data-destinations="{{level.destinations|trim}}"
+    data-traffic-lights="{{level.traffic_lights|trim}}"
+    data-cows="{{level.cows|trim}}"
+    data-episode="{{level.episode.id|trim}}"
+    data-level-id="{{level.id|default_if_none:''|trim}}"
+    data-level-name="{{level.name|trim}}"
   >
     var ANONYMOUS = {{level.anonymous|booltojs}}
     var PATH = $('#data').data('path')
