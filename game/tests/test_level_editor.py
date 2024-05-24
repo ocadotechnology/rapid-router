@@ -402,11 +402,11 @@ class LevelEditorTestCase(TestCase):
         url = reverse("play_custom_level", kwargs={"levelId": level.id})
 
         response = self.client.get(url)
-        response_text = response.content
+        decoded_response = response.content.decode("utf-8")
+        disabled_algorithm_score = decoded_response.find("var DISABLE_ALGORITHM_SCORE = true")
 
         assert response.status_code == 200
-        assert type(response_text) == str
-        # assert response_data["level"]["disable_algorithm_score"] == True
+        assert disabled_algorithm_score > 0
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
