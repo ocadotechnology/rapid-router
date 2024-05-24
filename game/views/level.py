@@ -38,7 +38,6 @@ def play_custom_level_from_editor(request, levelId):
 
 def play_custom_level(request, levelId, from_editor=False):
     level = cached_custom_level(levelId)
-    level.disable_algorithm_score = True
     if level.default:
         raise Http404
 
