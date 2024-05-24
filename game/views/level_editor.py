@@ -208,6 +208,8 @@ def load_level_for_editor(request, levelID):
 def save_level_for_editor(request, levelId=None):
     """Processes a request on creation of the map in the level editor"""
     data = json.loads(request.POST["data"])
+    data["disable_algorithm_score"] = True
+    
     if ("character" not in data) or (not data["character"]):
         # Set a default, to deal with issue #1158 "Cannot save custom level"
         data["character"] = 1

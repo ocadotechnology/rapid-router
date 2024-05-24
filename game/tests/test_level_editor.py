@@ -399,14 +399,12 @@ class LevelEditorTestCase(TestCase):
 
         self.login(email1, password1)
         level = create_save_level_with_multiple_houses(teacher1)
-        url = reverse("play_custom_level", kwargs={"levelId": level.id})
-
+        url = reverse("save_level_for_editor", kwargs={"levelId": level.id})
         response = self.client.get(url)
-        decoded_response = response.content.decode("utf-8")
-        disabled_algorithm_score = decoded_response.find("var DISABLE_ALGORITHM_SCORE = true")
+        response_data = response.json()
 
         assert response.status_code == 200
-        assert disabled_algorithm_score > 0
+        assert response_data["level"]["disable_algorithm_score"] == True
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
