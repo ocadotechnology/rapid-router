@@ -400,7 +400,7 @@ class LevelEditorTestCase(TestCase):
         self.login(email1, password1)
         level = create_save_level_with_multiple_houses(teacher1)
         url = reverse("save_level_for_editor", kwargs={"levelId": level.id})
-        response = self.client.get(url)
+        response = self.client.post(url)
         response_data = response.json()
 
         assert response.status_code == 200

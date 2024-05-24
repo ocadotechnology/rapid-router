@@ -209,7 +209,7 @@ def save_level_for_editor(request, levelId=None):
     """Processes a request on creation of the map in the level editor"""
     data = json.loads(request.POST["data"])
     data["disable_algorithm_score"] = True
-    
+
     if ("character" not in data) or (not data["character"]):
         # Set a default, to deal with issue #1158 "Cannot save custom level"
         data["character"] = 1
@@ -271,7 +271,7 @@ def save_level_for_editor(request, levelId=None):
 
             level.save()
         response = {"id": level.id}
-        return HttpResponse(json.dumps(response), content_type="application/javascript")
+        return HttpResponse(json.dumps(response), content_type="application/json")
     else:
         return HttpResponseUnauthorized()
 
