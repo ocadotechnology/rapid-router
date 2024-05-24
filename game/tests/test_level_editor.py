@@ -393,21 +393,23 @@ class LevelEditorTestCase(TestCase):
         assert response.status_code == 200
         assert response_data["level"]["destinations"] == "[[3,4], [3,3]]"
 
-    @patch("game.views.level_editor.json.loads")
-    def test_custom_level_scoring(self, mock_json_loader):
-        mock_json_loader.return_value = multiple_house_data
+    @patch("game.level_management.save_level")
+    def test_custom_level_scoring(self, mock_save_level):
         email1, password1 = signup_teacher_directly()
 
         teacher1 = Teacher.objects.get(new_user__email=email1)
 
         self.login(email1, password1)
+
         level = create_save_level_with_multiple_houses(teacher1)
-        url = reverse("save_level_for_editor", kwargs={"levelId": level.id})
-        response = self.client.post(url)
-        response_data = response.json()
+
+        save_url = reverse("save_level_for_editor", kwargs={"levelId": level.id})
+        response = self.client.post(save_url, {"data": json.dumps(multiple_house_data)})
+
+        disable_algorithm_score = mock_save_level.call_args.args[1]["disable_algorithm_score"]
 
         assert response.status_code == 200
-        assert response_data["level"]["disable_algorithm_score"] == True
+        assert disable_algorithm_score == True
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
