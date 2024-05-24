@@ -1,4 +1,5 @@
 import json
+from unittest.mock import patch
 
 from common.models import Teacher
 from common.tests.utils.classes import create_class_directly
@@ -13,7 +14,7 @@ from django.urls import reverse
 from hamcrest import assert_that, equal_to
 
 from game.models import Level
-from game.tests.utils.level import create_save_level, create_save_level_with_multiple_houses
+from game.tests.utils.level import create_save_level, create_save_level_with_multiple_houses, multiple_house_data
 from game.tests.utils.teacher import add_teacher_to_school, create_school
 
 
@@ -392,7 +393,9 @@ class LevelEditorTestCase(TestCase):
         assert response.status_code == 200
         assert response_data["level"]["destinations"] == "[[3,4], [3,3]]"
 
-    def test_custom_level_scoring(self):
+    @patch("views.level_editor.json.loads")
+    def test_custom_level_scoring(self, mock_json_loader):
+        mock_json_loader.return_value = multiple_house_data
         email1, password1 = signup_teacher_directly()
 
         teacher1 = Teacher.objects.get(new_user__email=email1)
