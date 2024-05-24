@@ -393,7 +393,7 @@ class LevelEditorTestCase(TestCase):
         assert response.status_code == 200
         assert response_data["level"]["destinations"] == "[[3,4], [3,3]]"
 
-    @patch("views.level_editor.json.loads")
+    @patch("game.views.level_editor.json.loads")
     def test_custom_level_scoring(self, mock_json_loader):
         mock_json_loader.return_value = multiple_house_data
         email1, password1 = signup_teacher_directly()
