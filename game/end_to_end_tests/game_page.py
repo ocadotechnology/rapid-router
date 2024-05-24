@@ -134,12 +134,6 @@ class GamePage(BasePage):
         self.browser.find_element(By.ID, "try_again_button").click()
         time.sleep(1)
         return self
-    
-    def run_custom_level_program(self):
-        self.run_program("close_button")
-        modal_content = self.browser.find_element(By.ID, "modal-content").text
-        assert_that(modal_content, not(contains_string("Algorithm score:")))
-        return self
 
     def run_crashing_program(self):
         return self._run_failing_program("What went wrong")
