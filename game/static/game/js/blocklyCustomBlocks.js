@@ -323,7 +323,7 @@ function initCustomBlocksDescription() {
         .appendField(new Blockly.FieldTextInput(name), "NAME");
       this.appendStatementInput("DO")
         .setCheck("Action")
-        .appendField(gettext("Do"));
+        .appendField(Blockly.Msg.DECLARE_PROC_SUBTITLE);
       this.setTooltip(Blockly.Msg.DECLARE_PROC_TOOLTIP);
       this.statementConnection_ = null;
     },

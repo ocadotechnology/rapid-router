@@ -465,6 +465,7 @@ Blockly.Msg["COW_CROSSING_TITLE"] = "cows";
 Blockly.Msg["CALL_PROC_TITLE"] = "Call";
 Blockly.Msg["CALL_PROC_TOOLTIP"] = "Calls a procedure";
 Blockly.Msg["DECLARE_PROC_TITLE"] = "Define";
+Blockly.Msg["DECLARE_PROC_SUBTITLE"] = "Do";
 Blockly.Msg["DECLARE_PROC_TOOLTIP"] = "Declares a procedure";
 Blockly.Msg["CONTROLS_REPEAT_WHILE_TITLE"] = "repeat while";
 Blockly.Msg["CONTROLS_REPEAT_WHILE_SUBTITLE"] = "do";
