@@ -88,7 +88,9 @@ class TestLevelEditor(BaseGameTest):
         ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
         boxes = self.selenium.find_elements(By.CSS_SELECTOR, "rect")
         for box in boxes:
-            print(box)
+            print(box.get_attribute("x"))
+            print(box.get_attribute("y"))
+            print(box.get_attribute("fill"))
         forbidden_end_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7']")
         assert len(forbidden_end_space) == 1
         
