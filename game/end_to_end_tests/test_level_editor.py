@@ -7,6 +7,8 @@ from game.views.level_editor import available_blocks
 
 class TestLevelEditor(BaseGameTest):
     def set_up_basic_map(self):
+        self.test_level_editor_displays()
+        
         add_road_button = self.selenium.find_element(By.ID, "add_road")
         add_road_button.click()
 
