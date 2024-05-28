@@ -26,6 +26,17 @@ class TestLevelEditor(BaseGameTest):
 
         return [road_start, road_end]
 
+    def set_up_draggable_cow(self):
+        scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
+        scenery_tab.click()
+
+        cow = self.selenium.find_element(By.CSS_SELECTOR, "img[id='cow']")
+        cow.click()
+
+        draggable_cow = self.selenium.find_element(By.CSS_SELECTOR, "image[x='0'][y='0']")
+
+        return draggable_cow
+
     def test_level_editor_displays(self):
         page = self.go_to_level_editor()
 
@@ -64,19 +75,13 @@ class TestLevelEditor(BaseGameTest):
     def test_cow_on_origin(self):
         [road_start, road_end] = self.set_up_basic_map()
 
-        house_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#ff0000']")
-        assert len(house_space) == 1
+        origin_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#ff0000']")
+        assert len(origin_space) == 1
 
-        scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
-        scenery_tab.click()
-
-        cow = self.selenium.find_element(By.CSS_SELECTOR, "img[id='cow']")
-        cow.click()
-
-        draggable_cow = self.selenium.find_element(By.CSS_SELECTOR, "image[x='0'][y='0']")
+        draggable_cow = self.set_up_draggable_cow()
         ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_start).perform()
-        forbidden_start_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='130'][y='530']")
-        assert len(forbidden_start_space) == 1
+        start_space_warning = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='130'][y='530']")
+        assert len(start_space_warning) == 1
 
     def test_cow_on_house(self):
         [road_start, road_end] = self.set_up_basic_map()
@@ -85,14 +90,8 @@ class TestLevelEditor(BaseGameTest):
         assert len(house_space) == 1
         assert road_end == house_space[0]
 
-        scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
-        scenery_tab.click()
-
-        cow = self.selenium.find_element(By.CSS_SELECTOR, "img[id='cow']")
-        cow.click()
-
-        draggable_cow = self.selenium.find_element(By.CSS_SELECTOR, "image[x='0'][y='0']")
-        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element_with_offset(road_end, -25, -25).perform()
-        forbidden_end_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#87e34d']")
-        assert len(forbidden_end_space) == 0
+        draggable_cow = self.set_up_draggable_cow()
+        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
+        allowed_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#87e34d']")
+        assert len(allowed_space) == 0
         
