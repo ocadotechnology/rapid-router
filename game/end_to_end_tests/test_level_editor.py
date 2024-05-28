@@ -87,7 +87,8 @@ class TestLevelEditor(BaseGameTest):
         draggable_cow = self.selenium.find_element(By.CSS_SELECTOR, "image[x='0'][y='0']")
         ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
         boxes = self.selenium.find_elements(By.CSS_SELECTOR, "rect")
-        print(boxes)
+        for box in boxes:
+            print(box)
         forbidden_end_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7']")
         assert len(forbidden_end_space) == 1
         
