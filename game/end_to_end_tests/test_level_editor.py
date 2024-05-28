@@ -8,7 +8,7 @@ from game.views.level_editor import available_blocks
 class TestLevelEditor(BaseGameTest):
     def set_up_basic_map(self):
         self.test_level_editor_displays()
-        
+
         add_road_button = self.selenium.find_element(By.ID, "add_road")
         add_road_button.click()
 
@@ -75,7 +75,7 @@ class TestLevelEditor(BaseGameTest):
         forbidden_start_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='130'][y='530']")
         assert len(forbidden_start_space) == 1
 
-        ActionChains(self.selenium).move_to_element(road_end).perform()
+        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
         forbidden_end_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='330'][y='530']")
         assert len(forbidden_end_space) == 1
         
