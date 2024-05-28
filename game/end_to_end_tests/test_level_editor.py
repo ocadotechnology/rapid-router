@@ -61,7 +61,21 @@ class TestLevelEditor(BaseGameTest):
         houses_after_delete = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(houses_after_delete) == 1
 
-    def test_cow_on_endpoints(self):
+    def test_cow_on_origin(self):
+        [road_start, road_end] = self.set_up_basic_map()
+
+        scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
+        scenery_tab.click()
+
+        cow = self.selenium.find_element(By.CSS_SELECTOR, "img[id='cow']")
+        cow.click()
+
+        draggable_cow = self.selenium.find_element(By.CSS_SELECTOR, "image[x='0'][y='0']")
+        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_start).perform()
+        forbidden_start_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='130'][y='530']")
+        assert len(forbidden_start_space) == 1
+
+    def test_cow_on_house(self):
         [road_start, road_end] = self.set_up_basic_map()
 
         scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
@@ -74,8 +88,4 @@ class TestLevelEditor(BaseGameTest):
         ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
         forbidden_end_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='330'][y='530']")
         assert len(forbidden_end_space) == 1
-        
-        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_start).perform()
-        forbidden_start_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='130'][y='530']")
-        assert len(forbidden_start_space) == 1
         
