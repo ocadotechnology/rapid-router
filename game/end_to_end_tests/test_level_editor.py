@@ -77,6 +77,7 @@ class TestLevelEditor(BaseGameTest):
 
     def test_cow_on_house(self):
         add_road_button = self.selenium.find_element(By.ID, "add_road")
+        self.wait_for_element_to_be_clickable(add_road_button, wait_seconds=15)
         add_road_button.click()
 
         road_start = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
