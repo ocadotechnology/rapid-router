@@ -78,8 +78,6 @@ class TestLevelEditor(BaseGameTest):
     def test_cow_on_house(self):
         [road_start, road_end] = self.set_up_basic_map()
 
-        house_space = self.selenium.find_element(By.CSS_SELECTOR, "rect[fill='#0000ff']")
-
         scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
         scenery_tab.click()
 
@@ -87,7 +85,9 @@ class TestLevelEditor(BaseGameTest):
         cow.click()
 
         draggable_cow = self.selenium.find_element(By.CSS_SELECTOR, "image[x='0'][y='0']")
-        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(house_space).perform()
+        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
+        boxes = self.selenium.find_elements(By.CSS_SELECTOR, "rect")
+        print(boxes)
         forbidden_end_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7']")
         assert len(forbidden_end_space) == 1
         
