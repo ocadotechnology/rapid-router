@@ -409,7 +409,7 @@ class LevelEditorTestCase(TestCase):
         disable_algorithm_score = mock_save_level.call_args.args[1]["disable_algorithm_score"]
 
         assert response.status_code == 200
-        assert disable_algorithm_score == True
+        assert disable_algorithm_score
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
