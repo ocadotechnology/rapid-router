@@ -79,7 +79,7 @@ class TestLevelEditor(BaseGameTest):
         assert len(forbidden_start_space) == 1
 
     def test_cow_on_house(self):
-        [road_start, road_end] = self.test_set_up_basic_map()
+        [road_start, road_end] = self.set_up_basic_map()
 
         house_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(house_space) == 1
