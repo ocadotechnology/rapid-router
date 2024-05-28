@@ -42,12 +42,20 @@ ocargo.OwnedLevels.prototype.save = function(level, id, finishedCallback) {
     this.saving.saveLevel(level, id, false, function(newId) {
         delete level.name;
 
+        console.log(JSON.stringify(this.saveState));
+
         this.saveState.saved(level, newId);
+
+        console.log("saved")
 
         this.update();
 
+        console.log("updated")
+
         if (finishedCallback) {
+            console.log("callback starting")
             finishedCallback();
+            console.log("callback done")
         }
         window.location.replace("/rapidrouter/level_editor/" + newId +"/");
     }.bind(this), handleError.bind(this));

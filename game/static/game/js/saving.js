@@ -209,6 +209,7 @@ ocargo.Saving.prototype.deleteLevel = function (id, callback, errorCallback) {
 };
 
 ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, errorCallback) {
+    console.log(JSON.stringify(level));
     csrftoken = Cookies.get('csrftoken');
     level.anonymous = anonymous;
     $.ajax({
