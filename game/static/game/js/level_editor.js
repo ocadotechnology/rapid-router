@@ -2284,7 +2284,7 @@ ocargo.LevelEditor = function(levelId) {
         // Other data
         state.theme = currentTheme.id;
         state.character = $('#character_select').val();
-        state.disableAlgorithmScore = true;
+        state.disable_algorithm_score = true;
 
         return state;
     }
