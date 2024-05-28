@@ -210,11 +210,14 @@ ocargo.Saving.prototype.deleteLevel = function (id, callback, errorCallback) {
 
 ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, errorCallback) {
     console.log(JSON.stringify(level));
+    let url = (id && id > 0) ? Urls.save_level_for_editor(id) : Urls.save_level_for_editor();
+    console.log(url);
     csrftoken = Cookies.get('csrftoken');
     level.anonymous = anonymous;
     let testResult = $.ajax({
-        url: (id ? Urls.save_level_for_editor(id) : Urls.save_level_for_editor()),
+        url: ((id && id > 0) ? Urls.save_level_for_editor(id) : Urls.save_level_for_editor()),
         type: 'POST',
+        dataType: 'json',
         data: {data: JSON.stringify(level)},
         beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
@@ -228,7 +231,7 @@ ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, er
             errorCallback(xhr.status + ": " + errmsg + " " + err + " " + xhr.responseText);
         }
     });
-    console.log(testResult);
+    console.log(testResult.data);
     delete level.anonymous;
 };
 
