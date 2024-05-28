@@ -6,7 +6,7 @@ from game.views.level_editor import available_blocks
 
 
 class TestLevelEditor(BaseGameTest):
-    def set_up_basic_map(self):
+    def test_set_up_basic_map(self):
         self.test_level_editor_displays()
 
         add_road_button = self.selenium.find_element(By.ID, "add_road")
@@ -19,10 +19,14 @@ class TestLevelEditor(BaseGameTest):
         mark_start_button = self.selenium.find_element(By.ID, "start")
         mark_start_button.click()
         ActionChains(self.selenium).move_to_element(road_start).click().perform()
+        start_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#ff0000']")
+        assert len(start_space) == 1
 
         add_house_button = self.selenium.find_element(By.ID, "add_house")
         add_house_button.click()
         ActionChains(self.selenium).move_to_element(road_end).click().perform()
+        house_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
+        assert len(house_space) == 1
 
         return [road_start, road_end]
 
@@ -42,7 +46,7 @@ class TestLevelEditor(BaseGameTest):
             assert page.element_exists_by_id(f"{block_type}_image")
 
     def test_multiple_houses(self):
-        [road_start, road_end] = self.set_up_basic_map()
+        [road_start, road_end] = self.test_set_up_basic_map()
 
         road_middle = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='230'][y='530']")
 
@@ -62,7 +66,7 @@ class TestLevelEditor(BaseGameTest):
         assert len(houses_after_delete) == 1
 
     def test_cow_on_origin(self):
-        [road_start, road_end] = self.set_up_basic_map()
+        [road_start, road_end] = self.test_set_up_basic_map()
 
         scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
         scenery_tab.click()
@@ -74,6 +78,12 @@ class TestLevelEditor(BaseGameTest):
         ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_start).perform()
         forbidden_start_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='130'][y='530']")
         assert len(forbidden_start_space) == 1
+
+    def test_cow_on_house(self):
+        [road_start, road_end] = self.test_set_up_basic_map()
+
+        house_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
+        assert len(house_space) == 1
 
     # def test_cow_on_house(self):
     #     add_road_button = self.selenium.find_element(By.ID, "add_road")
