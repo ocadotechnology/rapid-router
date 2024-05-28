@@ -215,7 +215,6 @@ ocargo.Saving.prototype.saveLevel = function (level, id, anonymous, callback, er
     $.ajax({
         url: (id ? Urls.save_level_for_editor(id) : Urls.save_level_for_editor()),
         type: 'POST',
-        dataType: 'json',
         data: {data: JSON.stringify(level)},
         beforeSend: function (xhr, settings) {
             if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
