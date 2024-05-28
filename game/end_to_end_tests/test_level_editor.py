@@ -76,7 +76,20 @@ class TestLevelEditor(BaseGameTest):
         assert len(forbidden_start_space) == 1
 
     def test_cow_on_house(self):
-        [road_start, road_end] = self.set_up_basic_map()
+        add_road_button = self.selenium.find_element(By.ID, "add_road")
+        add_road_button.click()
+
+        road_start = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
+        road_end = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='330'][y='530']")
+        ActionChains(self.selenium).drag_and_drop(road_start, road_end).perform()
+
+        mark_start_button = self.selenium.find_element(By.ID, "start")
+        mark_start_button.click()
+        ActionChains(self.selenium).move_to_element(road_start).click().perform()
+
+        add_house_button = self.selenium.find_element(By.ID, "add_house")
+        add_house_button.click()
+        ActionChains(self.selenium).move_to_element(road_end).click().perform()
 
         scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
         scenery_tab.click()
@@ -91,6 +104,6 @@ class TestLevelEditor(BaseGameTest):
             print(box.get_attribute("x"))
             print(box.get_attribute("y"))
             print(box.get_attribute("fill"))
-        forbidden_end_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7']")
+        forbidden_end_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='330][y='530']")
         assert len(forbidden_end_space) == 1
         
