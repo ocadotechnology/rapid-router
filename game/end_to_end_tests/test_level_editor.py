@@ -94,4 +94,3 @@ class TestLevelEditor(BaseGameTest):
         ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
         allowed_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#87e34d']")
         assert len(allowed_space) == 0
-        
