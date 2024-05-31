@@ -79,7 +79,7 @@ class TestLevelEditor(BaseGameTest):
         assert len(origin_space) == 1
 
         draggable_cow = self.set_up_draggable_cow()
-        ActionChains(self.selenium).drag_and_drop(draggable_cow, road_start).perform()
+        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_start).perform()
         start_space_warning = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='130'][y='530']")
         assert len(start_space_warning) == 1
 
@@ -91,7 +91,7 @@ class TestLevelEditor(BaseGameTest):
         assert road_end == house_space[0]
 
         draggable_cow = self.set_up_draggable_cow()
-        ActionChains(self.selenium).drag_and_drop(draggable_cow, road_end).perform()
+        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
         allowed_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#87e34d']")
         assert len(allowed_space) == 0
 
@@ -104,6 +104,6 @@ class TestLevelEditor(BaseGameTest):
         ActionChains(self.selenium).drag_and_drop(source_tree, end_space).perform()
 
         decor_tree = self.selenium.find_elements(By.CSS_SELECTOR, "image[x='0'][y='0']")
-        cloned_source_tree = self.selenium.find_elements(By.ID, "tree2")
+        cloned_source_tree = self.selenium.find_element(By.ID, "tree2")
         assert len(decor_tree) == 1
         assert len(cloned_source_tree) == 1
