@@ -101,7 +101,7 @@ class TestLevelEditor(BaseGameTest):
 
         source_tree = self.selenium.find_element(By.ID, "tree2")
         end_space = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
-        ActionChains(self.selenium).click_and_hold(source_tree).move_to_element(end_space).perform()
+        ActionChains(self.selenium).drag_and_drop(source_tree, end_space).perform()
 
         decor_tree = self.selenium.find_elements(By.CSS_SELECTOR, "image[x='0'][y='0']")
         cloned_source_tree = self.selenium.find_element(By.ID, "tree2")
