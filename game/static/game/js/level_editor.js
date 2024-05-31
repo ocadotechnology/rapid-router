@@ -1738,7 +1738,7 @@ ocargo.LevelEditor = function(levelId) {
 
         function isValidPlacement(controlledCoord){
             var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
-            if (!controlledNode)
+            if (!controlledNode || isOriginCoordinate(controlledCoord) || isHouseCoordinate(controlledCoord))
                 return false;
             for (var i=0; i < cows.length; i++) {
                 var otherCow = cows[i];
