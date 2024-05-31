@@ -1518,9 +1518,6 @@ ocargo.LevelEditor = function(levelId) {
     function handleDraggableDecorMouseDown(e){
         e.preventDefault();
 
-        $(e.target).css("position", "relative");
-        $(e.target).css("z-index", "999");
-
         window.dragged_decor = {};
         dragged_decor.pageX0 = e.pageX;
         dragged_decor.pageY0 = e.pageY;

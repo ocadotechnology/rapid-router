@@ -21,3 +21,6 @@ class EditorPage(BasePage):
 
     def go_to_code_tab(self):
         self.browser.find_element(By.ID, "blocks_tab").click()
+
+    def go_to_scenery_tab(self):
+        self.browser.find_element(By.ID, "scenery_tab").click()

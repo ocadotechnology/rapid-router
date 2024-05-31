@@ -94,3 +94,16 @@ class TestLevelEditor(BaseGameTest):
         ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
         allowed_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#87e34d']")
         assert len(allowed_space) == 0
+
+    def test_draggable_decor(self):
+        page = self.go_to_level_editor()
+        page.go_to_scenery_tab()
+
+        source_tree = self.selenium.find_element(By.ID, "tree2")
+        end_space = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
+        ActionChains(self.selenium).click_and_hold(source_tree).move_to_element(end_space).perform()
+
+        decor_tree = self.selenium.find_elements(By.CSS_SELECTOR, "image[x='0'][y='0']")
+        cloned_source_tree = self.selenium.find_element(By.ID, "tree2")
+        assert len(decor_tree) == 1
+        assert len(cloned_source_tree) == 1
