@@ -104,6 +104,6 @@ class TestLevelEditor(BaseGameTest):
         ActionChains(self.selenium).drag_and_drop(source_tree, end_space).perform()
 
         decor_tree = self.selenium.find_elements(By.CSS_SELECTOR, "image[x='0'][y='0']")
-        cloned_source_tree = self.selenium.find_element(By.ID, "tree2")
+        cloned_source_tree = self.selenium.find_elements(By.ID, "tree2")
         assert len(decor_tree) == 1
         assert len(cloned_source_tree) == 1
