@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.18.3 (2024-05-31)
+
+### Fix
+
+* Fix scoring for custom levels ([#1624](https://github.com/ocadotechnology/rapid-router/issues/1624)) ([`0249354`](https://github.com/ocadotechnology/rapid-router/commit/0249354f47f95df5ce91bd943faa6497e348382c))
+
 ## v5.18.2 (2024-05-23)
 
 ### Fix
