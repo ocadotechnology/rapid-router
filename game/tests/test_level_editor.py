@@ -1,4 +1,5 @@
 import json
+from unittest.mock import patch
 
 from common.models import Teacher
 from common.tests.utils.classes import create_class_directly
@@ -13,7 +14,7 @@ from django.urls import reverse
 from hamcrest import assert_that, equal_to
 
 from game.models import Level
-from game.tests.utils.level import create_save_level, create_save_level_with_multiple_houses
+from game.tests.utils.level import create_save_level, create_save_level_with_multiple_houses, multiple_house_data
 from game.tests.utils.teacher import add_teacher_to_school, create_school
 
 
@@ -391,6 +392,24 @@ class LevelEditorTestCase(TestCase):
 
         assert response.status_code == 200
         assert response_data["level"]["destinations"] == "[[3,4], [3,3]]"
+
+    @patch("game.level_management.save_level")
+    def test_custom_level_scoring(self, mock_save_level):
+        email1, password1 = signup_teacher_directly()
+
+        teacher1 = Teacher.objects.get(new_user__email=email1)
+
+        self.login(email1, password1)
+
+        level = create_save_level_with_multiple_houses(teacher1)
+
+        save_url = reverse("save_level_for_editor", kwargs={"levelId": level.id})
+        response = self.client.post(save_url, {"data": json.dumps(multiple_house_data)})
+
+        disable_algorithm_score = mock_save_level.call_args.args[1]["disable_algorithm_score"]
+
+        assert response.status_code == 200
+        assert disable_algorithm_score
 
     def test_level_of_anonymised_teacher_is_hidden(self):
         # Create 2 teacher accounts
