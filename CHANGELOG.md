@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.18.4 (2024-05-31)
+
+### Fix
+
+* Forbid cows from origin and house spaces ([#1625](https://github.com/ocadotechnology/rapid-router/issues/1625)) ([`0718f93`](https://github.com/ocadotechnology/rapid-router/commit/0718f93198c5ed8339e9420a6707121d9235d6b1))
+
 ## v5.18.3 (2024-05-31)
 
 ### Fix
