@@ -494,6 +494,13 @@ div.no-print div.tab label {
 
 #tab_panes_wrapper .tab_pane {
   padding: 20px 20px 0 30px;
+  overflow: scroll;
+  position: absolute;
+  width: 380px;
+}
+
+#scenery_pane {
+  overflow: visible !important;
 }
 
 .tab_break {
