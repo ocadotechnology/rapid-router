@@ -1616,6 +1616,7 @@ ocargo.LevelEditor = function(levelId) {
 
             //Unmark the squares the cow previously occupied
             if (controlledCoord) {
+                console.log("controlledCoord: " + controlledCoord);
                 markAsBackground(controlledCoord);
             }
             if(cows) {
@@ -1640,25 +1641,7 @@ ocargo.LevelEditor = function(levelId) {
             var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
             var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
 
-            var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
-            var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
-            controlledCoord = new ocargo.Coordinate(x,y);
-
-            // If source node is not on grid remove it
-            if (!isCoordinateOnGrid(controlledCoord)) {
-                controlledCoord = null;
-            }
-
-            if (controlledCoord) {
-                var colour;
-                if(isValidPlacement(controlledCoord)) {
-                    colour = VALID_LIGHT_COLOUR;
-                } else {
-                    colour = INVALID_LIGHT_COLOUR;
-                }
-
-                mark(controlledCoord, colour, 0.7, false);
-            }
+            controlledCoord = markNewCowSquare(absX, absY, isValidPlacement, controlledCoord);
 
             // Deal with trashcan
             var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
@@ -1691,22 +1674,7 @@ ocargo.LevelEditor = function(levelId) {
 
         function onDragEnd() {
             //Unmark previously occupied square
-            if(cow.controlledNode) {
-                markAsBackground(cow.controlledNode.coordinate);
-            }
-
-            // Mark squares currently occupied
-            if (controlledCoord) {
-                mark(controlledCoord, cow.data.group.color, 0.3, true);
-            }
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (houseNodes.length > 0) {
-                for (let i = 0; i < houseNodes.length; i++) {
-                    markAsHouse(houseNodes[i].coordinate);
-                }
-            }
+            unmarkOldCowSquare(controlledCoord);
 
             if (trashcanOpen) {
                 cow.destroy();
@@ -1755,6 +1723,18 @@ ocargo.LevelEditor = function(levelId) {
         addReleaseListeners(image.node);
     }
 
+    function isValidDraggedCowPlacement(controlledCoord, cow){
+        var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+        if (!controlledNode || isOriginCoordinate(controlledCoord) || isHouseCoordinate(controlledCoord))
+            return false;
+        for (var i=0; i < cows.length; i++) {
+            var otherCow = cows[i];
+            if (otherCow.controlledNode == controlledNode)
+                return false;
+        }
+        return true;
+    }
+
     function adjustCowGroupMinMaxFields(draggedCow) {
         var draggedCowGroupId = draggedCow.data.group.id;
 
@@ -1771,17 +1751,54 @@ ocargo.LevelEditor = function(levelId) {
         $('#cow_group_select').val(draggedCowGroupId).change();
     }
 
-    function handleDraggableCowMouseDown(e){
-        // var cowObject = {};
-        // cowObject.data = {group: cowGroups["group1"]};
-        // cowObject.getData = function() {};
-        // cowObject.setCoordinate = function() {};
-        // cowObject.destroy = function() {};
-        // cowObject.image = drawing.createCowImage(cowObject.data.group.id);
-        // cowObject.valid = false;
-        // cowObject.controlledNode = null;
-        // setupCowListeners(cowObject);
+    function unmarkOldCowSquare(controlledCoord) {
+        if (controlledCoord) {
+            markAsBackground(controlledCoord);
+        }
+        if (cows) {
+            for( var i = 0; i < cows.length; i++){
+                var internalCow = cows[i];
+                if(internalCow !== cow && internalCow.controlledNode) {
+                    mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
+                }
+            }
+        }
+        if (originNode) {
+            markAsOrigin(originNode.coordinate);
+        }
+        if (houseNodes.length > 0) {
+            for (let i = 0; i < houseNodes.length; i++){
+                markAsHouse(houseNodes[i].coordinate);
+            }
+        }
+    }
 
+    function markNewCowSquare(absX, absY, validityCheckFunction, controlledCoord) {
+        var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+        var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+        controlledCoord = new ocargo.Coordinate(x,y);
+
+        // If source node is not on grid remove it
+        if (!isCoordinateOnGrid(controlledCoord)) {
+            controlledCoord = null;
+        }
+
+        // mark square valid or invalid
+        if (controlledCoord) {
+            var colour;
+            if(validityCheckFunction(controlledCoord)) {
+                colour = VALID_LIGHT_COLOUR;
+            } else {
+                colour = INVALID_LIGHT_COLOUR;
+            }
+
+            mark(controlledCoord, colour, 0.7, false);
+        }
+
+        return controlledCoord;
+    }
+
+    function handleDraggableCowMouseDown(e){
         e.preventDefault();
 
         window.dragged_decor = {};
@@ -1790,20 +1807,49 @@ ocargo.LevelEditor = function(levelId) {
         dragged_decor.elem = this;
         dragged_decor.offset0 = $(this).offset();
         dragged_decor.parent = this.parentElement;
+        dragged_decor.group = cowGroups["group1"];
+        dragged_decor.width = 80;
+        dragged_decor.height = 80;
 
         var clone = $(this).clone(true);
+        var controlledCoord;
 
         function handleDraggableDecorDragging(e){
+            // offset element
             var left = dragged_decor.offset0.left + (e.pageX - dragged_decor.pageX0);
             var top = dragged_decor.offset0.top + (e.pageY - dragged_decor.pageY0);
             $(dragged_decor.elem).offset({top: top, left: left});
+
+            // unmark previously occupied square
+            unmarkOldCowSquare(controlledCoord);
+
+            var absX = (e.pageX - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
+            var absY = e.pageY / GRID_SPACE_SIZE;
+            controlledCoord = markNewCowSquare(absX, absY, isValidDraggedCowPlacement, controlledCoord);
         }
 
         function handleDraggableDecorMouseUp(e){
-            if (dragged_decor.elem.id !== null) {
-                if (e.pageX > TAB_PANE_WIDTH) {
-                    new InternalCow({group: cowGroups["group1"]});
-                } 
+            var internalCow = new InternalCow({group: cowGroups["group1"]});
+            var image = internalCow.image;
+
+            if (controlledCoord) {
+                mark(controlledCoord, dragged_decor.group.color, 0.3, true);
+            }
+
+            if (isValidDraggedCowPlacement(controlledCoord)) {
+                // Add back to the list of cows if on valid nodes
+                var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+                cow.controlledNode = controlledNode;
+                cow.valid = true;
+                drawing.setCowImagePosition(controlledCoord, image, controlledNode);
+            } else {
+                cow.controlledNode = null;
+                cow.valid = false;
+
+                var cowX = e.pageX - TAB_PANE_WIDTH - dragged_decor.width / 2;
+                var cowY = e.pageY - dragged_decor.height / 2;
+
+                image.transform('t' + cowX + ',' + cowY + 'r90');
             }
 
             $(document)
@@ -1818,48 +1864,6 @@ ocargo.LevelEditor = function(levelId) {
         .on('mouseup mouseleave', handleDraggableDecorMouseUp)
         .on('mousemove', handleDraggableDecorDragging);
     }
-
-    // function handleDraggableCowMouseDown(e){
-    //     setupCowListeners(e.target);
-    //     e.preventDefault();
-
-    //     window.dragged_cow = {};
-    //     dragged_cow.pageX0 = e.pageX;
-    //     dragged_cow.pageY0 = e.pageY;
-    //     dragged_cow.elem = this;
-    //     dragged_cow.offset0 = $(this).offset();
-    //     dragged_cow.width = currentTheme.decor[this.id].width;
-    //     dragged_cow.height = currentTheme.decor[this.id].height;
-    //     dragged_cow.parent = this.parentElement;
-
-    //     var clone = $(this).clone(true);
-
-    //     function handleDraggableCowDragging(e){
-    //         var left = dragged_cow.offset0.left + (e.pageX - dragged_cow.pageX0);
-    //         var top = dragged_cow.offset0.top + (e.pageY - dragged_cow.pageY0);
-    //         $(dragged_cow.elem).offset({top: top, left: left});
-    //     }
-
-    //     function handleDraggableCowMouseUp(e){
-    //         if (dragged_cow.elem.id !== null) {
-    //             if (e.pageX > TAB_PANE_WIDTH) {
-    //                 var cowObject = new InternalCow({group: cowGroups["group1"]});
-    //                 cowObject.setPosition(e.pageX - TAB_PANE_WIDTH - dragged_cow.width / 2, e.pageY - dragged_cow.height / 2);
-    //             } 
-    //         }
-
-    //         $(document)
-    //         .off('mousemove', handleDraggableCowDragging)
-    //         .off('mouseup mouseleave', handleDraggableCowMouseUp);
-
-    //         $(dragged_cow.elem).remove();
-    //         $(clone).appendTo(dragged_cow.parent);
-    //     }
-
-    //     $(document)
-    //     .on('mouseup mouseleave', handleDraggableCowMouseUp)
-    //     .on('mousemove', handleDraggableCowDragging);
-    // }
 
 
     function setupTrafficLightListeners(trafficLight) {
@@ -2803,9 +2807,12 @@ ocargo.LevelEditor = function(levelId) {
         this.image = drawing.createCowImage(data.group.type);
         this.valid = false;
 
+        console.log(nodes);
+
 
         if ( data.coordinates && data.coordinates.length > 0 ) {
             var coordinates = new ocargo.Coordinate(data.coordinates[0].x, data.coordinates[0].y);
+            console.log(nodes);
             this.controlledNode = ocargo.Node.findNodeByCoordinate(coordinates, nodes);
 
             if (this.controlledNode) {
