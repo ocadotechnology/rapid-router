@@ -1523,8 +1523,8 @@ ocargo.LevelEditor = function(levelId) {
         dragged_decor.pageY0 = e.pageY;
         dragged_decor.elem = this;
         dragged_decor.offset0 = $(this).offset();
-        dragged_decor.width = currentTheme.decor[this.id].width;
-        dragged_decor.height = currentTheme.decor[this.id].height;
+        dragged_decor.width = parseInt(currentTheme.decor[this.id].width);
+        dragged_decor.height = parseInt(currentTheme.decor[this.id].height);
         dragged_decor.parent = this.parentElement;
 
         var clone = $(this).clone(true);
@@ -1537,10 +1537,13 @@ ocargo.LevelEditor = function(levelId) {
 
         function handleDraggableDecorMouseUp(e){
             if (dragged_decor.elem.id !== null) {
-                if (e.pageX > TAB_PANE_WIDTH) {
+                if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
+                        && (e.pageY + paper.scrollTop() + dragged_decor.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
+                        && (e.pageX + paper.scrollLeft() + dragged_decor.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
+                    ) {
                     var decorObject = new InternalDecor(dragged_decor.elem.id);
-                    decorObject.setPosition(e.pageX - TAB_PANE_WIDTH - dragged_decor.width / 2, e.pageY - dragged_decor.height / 2);
-                } 
+                    decorObject.setPosition(e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_decor.width / 2, e.pageY + paper.scrollTop() - dragged_decor.height / 2);
+                }
             }
 
             $(document)
