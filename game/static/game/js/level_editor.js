@@ -338,9 +338,10 @@ ocargo.LevelEditor = function(levelId) {
                 if (Object.keys(cowGroups).length == 0) {
                     addCowGroup();
                 }
-                $('#cow').click(function () {
-                    new InternalCow({group: cowGroups["group1"]});
-                });
+                // $('#cow').click(function () {
+                //     new InternalCow({group: cowGroups["group1"]});
+                // });
+                $('#cow').mousedown(handleDraggableCowMouseDown);
             }
         }
 
@@ -1770,6 +1771,96 @@ ocargo.LevelEditor = function(levelId) {
         $('#cow_group_select').val(draggedCowGroupId).change();
     }
 
+    function handleDraggableCowMouseDown(e){
+        // var cowObject = {};
+        // cowObject.data = {group: cowGroups["group1"]};
+        // cowObject.getData = function() {};
+        // cowObject.setCoordinate = function() {};
+        // cowObject.destroy = function() {};
+        // cowObject.image = drawing.createCowImage(cowObject.data.group.id);
+        // cowObject.valid = false;
+        // cowObject.controlledNode = null;
+        // setupCowListeners(cowObject);
+
+        e.preventDefault();
+
+        window.dragged_decor = {};
+        dragged_decor.pageX0 = e.pageX;
+        dragged_decor.pageY0 = e.pageY;
+        dragged_decor.elem = this;
+        dragged_decor.offset0 = $(this).offset();
+        dragged_decor.parent = this.parentElement;
+
+        var clone = $(this).clone(true);
+
+        function handleDraggableDecorDragging(e){
+            var left = dragged_decor.offset0.left + (e.pageX - dragged_decor.pageX0);
+            var top = dragged_decor.offset0.top + (e.pageY - dragged_decor.pageY0);
+            $(dragged_decor.elem).offset({top: top, left: left});
+        }
+
+        function handleDraggableDecorMouseUp(e){
+            if (dragged_decor.elem.id !== null) {
+                if (e.pageX > TAB_PANE_WIDTH) {
+                    new InternalCow({group: cowGroups["group1"]});
+                } 
+            }
+
+            $(document)
+            .off('mousemove', handleDraggableDecorDragging)
+            .off('mouseup mouseleave', handleDraggableDecorMouseUp);
+
+            $(dragged_decor.elem).remove();
+            $(clone).appendTo(dragged_decor.parent);
+        }
+
+        $(document)
+        .on('mouseup mouseleave', handleDraggableDecorMouseUp)
+        .on('mousemove', handleDraggableDecorDragging);
+    }
+
+    // function handleDraggableCowMouseDown(e){
+    //     setupCowListeners(e.target);
+    //     e.preventDefault();
+
+    //     window.dragged_cow = {};
+    //     dragged_cow.pageX0 = e.pageX;
+    //     dragged_cow.pageY0 = e.pageY;
+    //     dragged_cow.elem = this;
+    //     dragged_cow.offset0 = $(this).offset();
+    //     dragged_cow.width = currentTheme.decor[this.id].width;
+    //     dragged_cow.height = currentTheme.decor[this.id].height;
+    //     dragged_cow.parent = this.parentElement;
+
+    //     var clone = $(this).clone(true);
+
+    //     function handleDraggableCowDragging(e){
+    //         var left = dragged_cow.offset0.left + (e.pageX - dragged_cow.pageX0);
+    //         var top = dragged_cow.offset0.top + (e.pageY - dragged_cow.pageY0);
+    //         $(dragged_cow.elem).offset({top: top, left: left});
+    //     }
+
+    //     function handleDraggableCowMouseUp(e){
+    //         if (dragged_cow.elem.id !== null) {
+    //             if (e.pageX > TAB_PANE_WIDTH) {
+    //                 var cowObject = new InternalCow({group: cowGroups["group1"]});
+    //                 cowObject.setPosition(e.pageX - TAB_PANE_WIDTH - dragged_cow.width / 2, e.pageY - dragged_cow.height / 2);
+    //             } 
+    //         }
+
+    //         $(document)
+    //         .off('mousemove', handleDraggableCowDragging)
+    //         .off('mouseup mouseleave', handleDraggableCowMouseUp);
+
+    //         $(dragged_cow.elem).remove();
+    //         $(clone).appendTo(dragged_cow.parent);
+    //     }
+
+    //     $(document)
+    //     .on('mouseup mouseleave', handleDraggableCowMouseUp)
+    //     .on('mousemove', handleDraggableCowDragging);
+    // }
+
 
     function setupTrafficLightListeners(trafficLight) {
         var image = trafficLight.image;
@@ -2679,6 +2770,7 @@ ocargo.LevelEditor = function(levelId) {
 
     function InternalCow(data) {
         this.data = data;
+        console.dir(this.data);
 
         this.getData = function() {
             if (!this.valid) {
@@ -2726,6 +2818,7 @@ ocargo.LevelEditor = function(levelId) {
 
         setupCowListeners(this);
         this.image.attr({'cursor':'pointer'});
+        this.image.attr({'position': 'absolute'});
         cows.push(this);
 
     }
