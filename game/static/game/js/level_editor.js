@@ -322,26 +322,27 @@ ocargo.LevelEditor = function(levelId) {
 
             $('.decor_button').mousedown(handleDraggableDecorMouseDown);
 
-            $('#trafficLightRed').click(function() {
-                new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
-                                          "startingState": ocargo.TrafficLight.RED,
-                                          "sourceCoordinate": null,  "direction": null});
+            // $('#trafficLightRed').click(function() {
+            //     new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
+            //                               "startingState": ocargo.TrafficLight.RED,
+            //                               "sourceCoordinate": null,  "direction": null});
+            // });
+
+            $('#trafficLightRed').mousedown(function(e) {
+                handleDraggableTrafficLightsMouseDown(e, ocargo.TrafficLight.RED);
             });
 
-            $('#trafficLightGreen').click(function() {
-                new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
-                                          "startingState": ocargo.TrafficLight.GREEN,
-                                          "sourceCoordinate": null,  "direction": null});
+            $('#trafficLightGreen').mousedown(function(e) {
+                handleDraggableTrafficLightsMouseDown(e, ocargo.TrafficLight.GREEN);
             });
 
             if(COW_LEVELS_ENABLED) {
                 if (Object.keys(cowGroups).length == 0) {
                     addCowGroup();
                 }
-                // $('#cow').click(function () {
-                //     new InternalCow({group: cowGroups["group1"]});
-                // });
-                $('#cow').mousedown(handleDraggableCowMouseDown);
+                $('#cow').mousedown(function(e) {
+                    handleDraggableCowMouseDown(e, "group1")
+                });
             }
         }
 
@@ -1616,7 +1617,6 @@ ocargo.LevelEditor = function(levelId) {
 
             //Unmark the squares the cow previously occupied
             if (controlledCoord) {
-                console.log("controlledCoord: " + controlledCoord);
                 markAsBackground(controlledCoord);
             }
             if(cows) {
@@ -1723,7 +1723,7 @@ ocargo.LevelEditor = function(levelId) {
         addReleaseListeners(image.node);
     }
 
-    function isValidDraggedCowPlacement(controlledCoord, cow){
+    function isValidDraggedCowPlacement(controlledCoord){
         var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
         if (!controlledNode || isOriginCoordinate(controlledCoord) || isHouseCoordinate(controlledCoord))
             return false;
@@ -1798,71 +1798,76 @@ ocargo.LevelEditor = function(levelId) {
         return controlledCoord;
     }
 
-    function handleDraggableCowMouseDown(e){
+    function handleDraggableCowMouseDown(e, cowGroup){
         e.preventDefault();
 
-        window.dragged_decor = {};
-        dragged_decor.pageX0 = e.pageX;
-        dragged_decor.pageY0 = e.pageY;
-        dragged_decor.elem = this;
-        dragged_decor.offset0 = $(this).offset();
-        dragged_decor.parent = this.parentElement;
-        dragged_decor.group = cowGroups["group1"];
-        dragged_decor.width = 80;
-        dragged_decor.height = 80;
+        window.dragged_cow = {};
+        dragged_cow.pageX0 = e.pageX;
+        dragged_cow.pageY0 = e.pageY;
+        dragged_cow.elem = e.target;
+        dragged_cow.offset0 = $(e.target).offset();
+        dragged_cow.parent = e.target.parentElement;
+        dragged_cow.group = cowGroups[cowGroup];
+        dragged_cow.width = COW_WIDTH;
+        dragged_cow.height = COW_HEIGHT;
 
-        var clone = $(this).clone(true);
+        var clone = $(e.target).clone(true);
         var controlledCoord;
 
-        function handleDraggableDecorDragging(e){
-            // offset element
-            var left = dragged_decor.offset0.left + (e.pageX - dragged_decor.pageX0);
-            var top = dragged_decor.offset0.top + (e.pageY - dragged_decor.pageY0);
-            $(dragged_decor.elem).offset({top: top, left: left});
+        function handleDraggableCowDragging(e){
+            var left = dragged_cow.offset0.left + (e.pageX - dragged_cow.pageX0);
+            var top = dragged_cow.offset0.top + (e.pageY - dragged_cow.pageY0);
+            $(dragged_cow.elem).offset({top: top, left: left});
 
-            // unmark previously occupied square
             unmarkOldCowSquare(controlledCoord);
 
-            var absX = (e.pageX - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
-            var absY = e.pageY / GRID_SPACE_SIZE;
+            var absX = (e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
+            var absY = (e.pageY + paper.scrollTop()) / GRID_SPACE_SIZE;
             controlledCoord = markNewCowSquare(absX, absY, isValidDraggedCowPlacement, controlledCoord);
         }
 
-        function handleDraggableDecorMouseUp(e){
+        function handleDraggableCowMouseUp(e){
             var internalCow = new InternalCow({group: cowGroups["group1"]});
             var image = internalCow.image;
 
             if (controlledCoord) {
-                mark(controlledCoord, dragged_decor.group.color, 0.3, true);
+                mark(controlledCoord, dragged_cow.group.color, 0.3, true);
             }
 
             if (isValidDraggedCowPlacement(controlledCoord)) {
-                // Add back to the list of cows if on valid nodes
-                var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
-                cow.controlledNode = controlledNode;
+                cow.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
                 cow.valid = true;
                 drawing.setCowImagePosition(controlledCoord, image, controlledNode);
             } else {
                 cow.controlledNode = null;
                 cow.valid = false;
 
-                var cowX = e.pageX - TAB_PANE_WIDTH - dragged_decor.width / 2;
-                var cowY = e.pageY - dragged_decor.height / 2;
+                var cowX = e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_cow.width / 2;
+                var cowY = e.pageY + paper.scrollTop() - dragged_cow.height / 2;
 
-                image.transform('t' + cowX + ',' + cowY + 'r90');
+                if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
+                    && (e.pageY + paper.scrollTop() + dragged_cow.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
+                    && (e.pageX + paper.scrollLeft() + dragged_cow.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
+                ) {
+                    image.transform('t' + cowX + ',' + cowY + 'r90');
+                } else {
+                    internalCow.destroy();
+                }
             }
 
-            $(document)
-            .off('mousemove', handleDraggableDecorDragging)
-            .off('mouseup mouseleave', handleDraggableDecorMouseUp);
+            adjustCowGroupMinMaxFields(internalCow);
 
-            $(dragged_decor.elem).remove();
-            $(clone).appendTo(dragged_decor.parent);
+            $(document)
+            .off('mousemove', handleDraggableCowDragging)
+            .off('mouseup mouseleave', handleDraggableCowMouseUp);
+
+            $(dragged_cow.elem).remove();
+            $(clone).appendTo(dragged_cow.parent);
         }
 
         $(document)
-        .on('mouseup mouseleave', handleDraggableDecorMouseUp)
-        .on('mousemove', handleDraggableDecorDragging);
+        .on('mouseup mouseleave', handleDraggableCowMouseUp)
+        .on('mousemove', handleDraggableCowDragging);
     }
 
 
@@ -1999,7 +2004,7 @@ ocargo.LevelEditor = function(levelId) {
 
             if (sourceCoord && controlledCoord) {
                 var colour;
-                if(isValidPlacement(sourceCoord, controlledCoord)) {
+                if(isValidTrafficLightPlacement(sourceCoord, controlledCoord)) {
                     colour = VALID_LIGHT_COLOUR;
                     drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
                 } else {
@@ -2068,7 +2073,7 @@ ocargo.LevelEditor = function(levelId) {
 
             if(trashcanOpen) {
                 trafficLight.destroy();
-            } else if(isValidPlacement(sourceCoord, controlledCoord)) {
+            } else if(isValidTrafficLightPlacement(sourceCoord, controlledCoord)) {
                 // Add back to the list of traffic lights if on valid nodes
                 trafficLight.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
                 trafficLight.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
@@ -2118,40 +2123,86 @@ ocargo.LevelEditor = function(levelId) {
             return "0,0";
         }
 
-        function isValidPlacement(sourceCoord, controlledCoord) {
-            var sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
-            var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
-
-            // Test if two connected nodes exist
-            var connected = false;
-            if (sourceNode && controlledNode) {
-                for (var i = 0; i < sourceNode.connectedNodes.length; i++) {
-                    if (sourceNode.connectedNodes[i] === controlledNode) {
-                        connected = true;
-                        break;
-                    }
-                }
-            }
-
-            if(!connected) {
-                return false;
-            }
-
-            // Test it's not already occupied
-            for(var i = 0; i < trafficLights.length; i++) {
-                var tl = trafficLights[i];
-                if(tl.valid &&
-                    ((tl.sourceNode === sourceNode && tl.controlledNode === controlledNode) ||
-                    (tl.sourceNode === controlledNode && tl.controlledNode === sourceNode))) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
         function occupied(sourceCoord, controlledCoord) {
 
         }
+    }
+
+    function isValidTrafficLightPlacement(sourceCoord, controlledCoord) {
+        var sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
+        var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+
+        // Test if two connected nodes exist
+        var connected = false;
+        if (sourceNode && controlledNode) {
+            for (var i = 0; i < sourceNode.connectedNodes.length; i++) {
+                if (sourceNode.connectedNodes[i] === controlledNode) {
+                    connected = true;
+                    break;
+                }
+            }
+        }
+
+        if(!connected) {
+            return false;
+        }
+
+        // Test it's not already occupied
+        for(var i = 0; i < trafficLights.length; i++) {
+            var tl = trafficLights[i];
+            if(tl.valid &&
+                ((tl.sourceNode === sourceNode && tl.controlledNode === controlledNode) ||
+                (tl.sourceNode === controlledNode && tl.controlledNode === sourceNode))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function handleDraggableTrafficLightsMouseDown(e, startingState){
+        e.preventDefault();
+
+        window.dragged_light = {};
+        dragged_light.pageX0 = e.pageX;
+        dragged_light.pageY0 = e.pageY;
+        dragged_light.elem = e.target;
+        dragged_light.offset0 = $(e.target).offset();
+        dragged_light.width = TRAFFIC_LIGHT_WIDTH;
+        dragged_light.height = TRAFFIC_LIGHT_HEIGHT;
+        dragged_light.parent = e.target.parentElement;
+
+        var clone = $(e.target).clone(true);
+
+        function handleDraggableTrafficLightsDragging(e){
+            var left = dragged_light.offset0.left + (e.pageX - dragged_light.pageX0);
+            var top = dragged_light.offset0.top + (e.pageY - dragged_light.pageY0);
+            $(dragged_light.elem).offset({top: top, left: left});
+        }
+
+        function handleDraggableTrafficLightsMouseUp(e){
+            var internalTrafficLight = new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0, "startingState": startingState, "sourceCoordinate": null,  "direction": null});
+            var image = internalTrafficLight.image;
+            
+            if (dragged_light.elem.id !== null) {
+                if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
+                        && (e.pageY + paper.scrollTop() + dragged_light.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
+                        && (e.pageX + paper.scrollLeft() + dragged_light.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
+                    ) {
+                    new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0, "startingState": startingState, "sourceCoordinate": null,  "direction": null});
+                }
+            }
+
+            $(document)
+            .off('mousemove', handleDraggableTrafficLightsDragging)
+            .off('mouseup mouseleave', handleDraggableTrafficLightsMouseUp);
+
+            $(dragged_light.elem).remove();
+            $(clone).appendTo(dragged_light.parent);
+        }
+
+        $(document)
+        .on('mouseup mouseleave', handleDraggableTrafficLightsMouseUp)
+        .on('mousemove', handleDraggableTrafficLightsDragging);
     }
 
     /********************************/
@@ -2774,7 +2825,6 @@ ocargo.LevelEditor = function(levelId) {
 
     function InternalCow(data) {
         this.data = data;
-        console.dir(this.data);
 
         this.getData = function() {
             if (!this.valid) {
@@ -2807,12 +2857,9 @@ ocargo.LevelEditor = function(levelId) {
         this.image = drawing.createCowImage(data.group.type);
         this.valid = false;
 
-        console.log(nodes);
-
 
         if ( data.coordinates && data.coordinates.length > 0 ) {
             var coordinates = new ocargo.Coordinate(data.coordinates[0].x, data.coordinates[0].y);
-            console.log(nodes);
             this.controlledNode = ocargo.Node.findNodeByCoordinate(coordinates, nodes);
 
             if (this.controlledNode) {
