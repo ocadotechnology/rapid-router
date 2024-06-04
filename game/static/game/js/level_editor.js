@@ -1756,8 +1756,8 @@ ocargo.LevelEditor = function(levelId) {
             markAsBackground(controlledCoord);
         }
         if (cows) {
-            for( var i = 0; i < cows.length; i++){
-                var internalCow = cows[i];
+            for( let i = 0; i < cows.length; i++){
+                let internalCow = cows[i];
                 if(internalCow !== cow && internalCow.controlledNode) {
                     mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
                 }
@@ -1774,8 +1774,8 @@ ocargo.LevelEditor = function(levelId) {
     }
 
     function markNewCowSquare(absX, absY, validityCheckFunction, controlledCoord) {
-        var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
-        var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+        const x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+        const y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
         controlledCoord = new ocargo.Coordinate(x,y);
 
         // If source node is not on grid remove it
@@ -1785,7 +1785,7 @@ ocargo.LevelEditor = function(levelId) {
 
         // mark square valid or invalid
         if (controlledCoord) {
-            var colour;
+            let colour;
             if(validityCheckFunction(controlledCoord)) {
                 colour = VALID_LIGHT_COLOUR;
             } else {
@@ -1799,6 +1799,7 @@ ocargo.LevelEditor = function(levelId) {
     }
 
     function handleDraggableCowMouseDown(e, cowGroup){
+        console.dir(e.target);
         e.preventDefault();
 
         window.dragged_cow = {};
@@ -1811,24 +1812,26 @@ ocargo.LevelEditor = function(levelId) {
         dragged_cow.width = COW_WIDTH;
         dragged_cow.height = COW_HEIGHT;
 
-        var clone = $(e.target).clone(true);
-        var controlledCoord;
+        const clone = $(e.target).clone(true);
+        let controlledCoord;
 
         function handleDraggableCowDragging(e){
-            var left = dragged_cow.offset0.left + (e.pageX - dragged_cow.pageX0);
-            var top = dragged_cow.offset0.top + (e.pageY - dragged_cow.pageY0);
+            e.target.style.cursor = "default";
+
+            const left = dragged_cow.offset0.left + (e.pageX - dragged_cow.pageX0);
+            const top = dragged_cow.offset0.top + (e.pageY - dragged_cow.pageY0);
             $(dragged_cow.elem).offset({top: top, left: left});
 
             unmarkOldCowSquare(controlledCoord);
 
-            var absX = (e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
-            var absY = (e.pageY + paper.scrollTop()) / GRID_SPACE_SIZE;
+            const absX = (e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
+            const absY = (e.pageY + paper.scrollTop()) / GRID_SPACE_SIZE;
             controlledCoord = markNewCowSquare(absX, absY, isValidDraggedCowPlacement, controlledCoord);
         }
 
         function handleDraggableCowMouseUp(e){
-            var internalCow = new InternalCow({group: cowGroups["group1"]});
-            var image = internalCow.image;
+            let internalCow = new InternalCow({group: cowGroups["group1"]});
+            let image = internalCow.image;
 
             if (controlledCoord) {
                 mark(controlledCoord, dragged_cow.group.color, 0.3, true);
@@ -1842,8 +1845,8 @@ ocargo.LevelEditor = function(levelId) {
                 cow.controlledNode = null;
                 cow.valid = false;
 
-                var cowX = e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_cow.width / 2;
-                var cowY = e.pageY + paper.scrollTop() - dragged_cow.height / 2;
+                const cowX = e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_cow.width / 2;
+                const cowY = e.pageY + paper.scrollTop() - dragged_cow.height / 2;
 
                 if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
                     && (e.pageY + paper.scrollTop() + dragged_cow.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
@@ -1856,6 +1859,7 @@ ocargo.LevelEditor = function(levelId) {
             }
 
             adjustCowGroupMinMaxFields(internalCow);
+            image.attr({'cursor':'pointer'});
 
             $(document)
             .off('mousemove', handleDraggableCowDragging)
@@ -2171,17 +2175,17 @@ ocargo.LevelEditor = function(levelId) {
         dragged_light.height = TRAFFIC_LIGHT_HEIGHT;
         dragged_light.parent = e.target.parentElement;
 
-        var clone = $(e.target).clone(true);
+        const clone = $(e.target).clone(true);
 
         function handleDraggableTrafficLightsDragging(e){
-            var left = dragged_light.offset0.left + (e.pageX - dragged_light.pageX0);
-            var top = dragged_light.offset0.top + (e.pageY - dragged_light.pageY0);
+            const left = dragged_light.offset0.left + (e.pageX - dragged_light.pageX0);
+            const top = dragged_light.offset0.top + (e.pageY - dragged_light.pageY0);
             $(dragged_light.elem).offset({top: top, left: left});
         }
 
         function handleDraggableTrafficLightsMouseUp(e){
-            var internalTrafficLight = new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0, "startingState": startingState, "sourceCoordinate": null,  "direction": null});
-            var image = internalTrafficLight.image;
+            let internalTrafficLight = new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0, "startingState": startingState, "sourceCoordinate": null,  "direction": null});
+            let image = internalTrafficLight.image;
             
             if (dragged_light.elem.id !== null) {
                 if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
