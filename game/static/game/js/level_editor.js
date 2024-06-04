@@ -8,7 +8,7 @@ ocargo.LevelEditor = function(levelId) {
     /* Constants */
     /*************/
 
-    var TAB_PANE_WIDTH = 500;
+    const TAB_PANE_WIDTH = 500;
 
     var LIGHT_RED_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg';
     var LIGHT_GREEN_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg';
@@ -1527,21 +1527,23 @@ ocargo.LevelEditor = function(levelId) {
         dragged_decor.height = parseInt(currentTheme.decor[this.id].height);
         dragged_decor.parent = this.parentElement;
 
-        var clone = $(this).clone(true);
+        const clone = $(this).clone(true);
 
         function handleDraggableDecorDragging(e){
-            var left = dragged_decor.offset0.left + (e.pageX - dragged_decor.pageX0);
-            var top = dragged_decor.offset0.top + (e.pageY - dragged_decor.pageY0);
+            const left = dragged_decor.offset0.left + (e.pageX - dragged_decor.pageX0);
+            const top = dragged_decor.offset0.top + (e.pageY - dragged_decor.pageY0);
             $(dragged_decor.elem).offset({top: top, left: left});
         }
 
         function handleDraggableDecorMouseUp(e){
             if (dragged_decor.elem.id !== null) {
+                // only create decor object if dropped within the grid canvas. 
+                // object location is relative to the whole page, so need to factor in paper and padding size, grid canvas scroll amount, width of toolbar, etc.
                 if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
                         && (e.pageY + paper.scrollTop() + dragged_decor.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
                         && (e.pageX + paper.scrollLeft() + dragged_decor.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
                     ) {
-                    var decorObject = new InternalDecor(dragged_decor.elem.id);
+                    let decorObject = new InternalDecor(dragged_decor.elem.id);
                     decorObject.setPosition(e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_decor.width / 2, e.pageY + paper.scrollTop() - dragged_decor.height / 2);
                 }
             }
