@@ -260,6 +260,11 @@ input {
     cursor: pointer;
 }
 
+#trafficLightRed,
+#trafficLightGreen {
+    transform: scale(-1, 1);
+}
+
 #scenery_pane td:first-child {
     text-align: left;
     font-size: 1rem;
