@@ -8,6 +8,8 @@ ocargo.LevelEditor = function(levelId) {
     /* Constants */
     /*************/
 
+    const TAB_PANE_WIDTH = 500;
+
     var LIGHT_RED_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_red.svg';
     var LIGHT_GREEN_URL = ocargo.Drawing.raphaelImageDir + 'trafficLight_green.svg';
 
@@ -318,9 +320,7 @@ ocargo.LevelEditor = function(levelId) {
                 }
             });
 
-            $('.decor_button').click(function(e){
-                new InternalDecor(e.target.id);
-            });
+            $('.decor_button').mousedown(handleDraggableDecorMouseDown);
 
             $('#trafficLightRed').click(function() {
                 new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
@@ -1513,6 +1513,52 @@ ocargo.LevelEditor = function(levelId) {
 
         image.drag(onDragMove, onDragStart, onDragEnd);
         addReleaseListeners(image.node);
+    }
+
+    function handleDraggableDecorMouseDown(e){
+        e.preventDefault();
+
+        window.dragged_decor = {};
+        dragged_decor.pageX0 = e.pageX;
+        dragged_decor.pageY0 = e.pageY;
+        dragged_decor.elem = this;
+        dragged_decor.offset0 = $(this).offset();
+        dragged_decor.width = parseInt(currentTheme.decor[this.id].width);
+        dragged_decor.height = parseInt(currentTheme.decor[this.id].height);
+        dragged_decor.parent = this.parentElement;
+
+        const clone = $(this).clone(true);
+
+        function handleDraggableDecorDragging(e){
+            const left = dragged_decor.offset0.left + (e.pageX - dragged_decor.pageX0);
+            const top = dragged_decor.offset0.top + (e.pageY - dragged_decor.pageY0);
+            $(dragged_decor.elem).offset({top: top, left: left});
+        }
+
+        function handleDraggableDecorMouseUp(e){
+            if (dragged_decor.elem.id !== null) {
+                // only create decor object if dropped within the grid canvas. 
+                // object location is relative to the whole page, so need to factor in paper and padding size, grid canvas scroll amount, width of toolbar, etc.
+                if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
+                        && (e.pageY + paper.scrollTop() + dragged_decor.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
+                        && (e.pageX + paper.scrollLeft() + dragged_decor.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
+                    ) {
+                    let decorObject = new InternalDecor(dragged_decor.elem.id);
+                    decorObject.setPosition(e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_decor.width / 2, e.pageY + paper.scrollTop() - dragged_decor.height / 2);
+                }
+            }
+
+            $(document)
+            .off('mousemove', handleDraggableDecorDragging)
+            .off('mouseup mouseleave', handleDraggableDecorMouseUp);
+
+            $(dragged_decor.elem).remove();
+            $(clone).appendTo(dragged_decor.parent);
+        }
+
+        $(document)
+        .on('mouseup mouseleave', handleDraggableDecorMouseUp)
+        .on('mousemove', handleDraggableDecorDragging);
     }
 
     function setupCowListeners(cow) {
