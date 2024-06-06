@@ -1620,25 +1620,7 @@ ocargo.LevelEditor = function(levelId) {
             image.transform('t' + paperX + ',' + paperY );
 
             //Unmark the squares the cow previously occupied
-            if (controlledCoord) {
-                markAsBackground(controlledCoord);
-            }
-            if(cows) {
-                for( var i = 0; i < cows.length; i++){
-                    var internalCow = cows[i];
-                    if(internalCow !== cow && internalCow.controlledNode) {
-                        mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
-                    }
-                }
-            }
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (houseNodes.length > 0) {
-                for (let i = 0; i < houseNodes.length; i++){
-                    markAsHouse(houseNodes[i].coordinate);
-                }
-            }
+            unmarkOldCowSquare(controlledCoord, cow);
 
             // Now calculate the source coordinate
             var box = image.getBBox();
@@ -1678,7 +1660,22 @@ ocargo.LevelEditor = function(levelId) {
 
         function onDragEnd() {
             //Unmark previously occupied square
-            unmarkOldCowSquare(controlledCoord, cow);
+            if(cow.controlledNode) {
+                markAsBackground(cow.controlledNode.coordinate);
+            }
+
+            // Mark squares currently occupied
+            if (controlledCoord) {
+                mark(controlledCoord, cow.data.group.color, 0.3, true);
+            }
+            if (originNode) {
+                markAsOrigin(originNode.coordinate);
+            }
+            if (houseNodes.length > 0) {
+                for (let i = 0; i < houseNodes.length; i++) {
+                    markAsHouse(houseNodes[i].coordinate);
+                }
+            }
 
             if (trashcanOpen) {
                 cow.destroy();

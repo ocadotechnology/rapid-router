@@ -107,3 +107,29 @@ class TestLevelEditor(BaseGameTest):
         cloned_source_tree = self.selenium.find_elements(By.ID, "tree2")
         assert len(decor_tree) == 1
         assert len(cloned_source_tree) == 1
+
+    def test_draggable_cow(self):
+        page = self.go_to_level_editor()
+        page.go_to_scenery_tab()
+
+        source_cow = self.selenium.find_element(By.ID, "cow")
+        end_space = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
+        ActionChains(self.selenium).drag_and_drop(source_cow, end_space).perform()
+
+        scenery_cow = self.selenium.find_elements(By.CSS_SELECTOR, "image[x='0'][y='0']")
+        cloned_source_cow = self.selenium.find_elements(By.ID, "cow")
+        assert len(scenery_cow) == 1
+        assert len(cloned_source_cow) == 1
+
+    def test_draggable_traffic_light(self):
+        page = self.go_to_level_editor()
+        page.go_to_scenery_tab()
+
+        source_light = self.selenium.find_element(By.ID, "trafficLightRed")
+        end_space = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
+        ActionChains(self.selenium).drag_and_drop(source_light, end_space).perform()
+
+        scenery_light = self.selenium.find_elements(By.CSS_SELECTOR, "image[x='0'][y='0']")
+        cloned_source_light = self.selenium.find_elements(By.ID, "trafficLightRed")
+        assert len(scenery_light) == 1
+        assert len(cloned_source_light) == 1
