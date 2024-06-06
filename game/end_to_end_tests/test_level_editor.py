@@ -79,8 +79,9 @@ class TestLevelEditor(BaseGameTest):
         assert len(house_space) == 1
         assert road_end == house_space[0]
 
-        draggable_cow = self.selenium.find_element(By.ID, "cow")
-        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
+        draggable_cow = self.selenium.find_elements(By.ID, "cow")
+        assert len(draggable_cow) == 1
+        ActionChains(self.selenium).click_and_hold(draggable_cow[0]).move_to_element(road_end).perform()
         allowed_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#87e34d']")
         assert len(allowed_space) == 0
 
