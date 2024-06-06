@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.19.0 (2024-06-05)
+
+### Feature
+
+* Make scenery decor draggable ([#1634](https://github.com/ocadotechnology/rapid-router/issues/1634)) ([`09853af`](https://github.com/ocadotechnology/rapid-router/commit/09853affb17277d48d8fed43a19493cacd144796))
+
 ## v5.18.4 (2024-05-31)
 
 ### Fix
