@@ -1678,7 +1678,7 @@ ocargo.LevelEditor = function(levelId) {
 
         function onDragEnd() {
             //Unmark previously occupied square
-            unmarkOldCowSquare(controlledCoord);
+            unmarkOldCowSquare(controlledCoord, cow);
 
             if (trashcanOpen) {
                 cow.destroy();
@@ -1743,7 +1743,7 @@ ocargo.LevelEditor = function(levelId) {
         $('#cow_group_select').val(draggedCowGroupId).change();
     }
 
-    function unmarkOldCowSquare(controlledCoord) {
+    function unmarkOldCowSquare(controlledCoord, cow = "undefined") {
         if (controlledCoord) {
             markAsBackground(controlledCoord);
         }
@@ -1825,10 +1825,6 @@ ocargo.LevelEditor = function(levelId) {
         function handleDraggableCowMouseUp(e){
             let internalCow = new InternalCow({group: cowGroups["group1"]});
             let image = internalCow.image;
-
-            if (controlledCoord) {
-                mark(controlledCoord, dragged_cow.group.color, 0.3, true);
-            }
 
             if (isValidDraggedCowPlacement(controlledCoord)) {
                 internalCow.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
