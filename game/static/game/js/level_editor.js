@@ -1671,23 +1671,7 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function onDragEnd() {
-            //Unmark previously occupied square
-            if(cow.controlledNode) {
-                markAsBackground(cow.controlledNode.coordinate);
-            }
-
-            // Mark squares currently occupied
-            if (controlledCoord) {
-                mark(controlledCoord, cow.data.group.color, 0.3, true);
-            }
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (houseNodes.length > 0) {
-                for (let i = 0; i < houseNodes.length; i++) {
-                    markAsHouse(houseNodes[i].coordinate);
-                }
-            }
+            setCowMarkingsOnMouseUp(controlledCoord, cow);
 
             if (trashcanOpen) {
                 cow.destroy();
@@ -1774,6 +1758,24 @@ ocargo.LevelEditor = function(levelId) {
         }
     }
 
+    function setCowMarkingsOnMouseUp(controlledCoord, cow) {
+        console.log(cow);
+        if(cow.controlledNode) {
+            markAsBackground(cow.controlledNode.coordinate);
+        }
+        if (controlledCoord) {
+            mark(controlledCoord, cow.data.group.color, 0.3, true);
+        }
+        if (originNode) {
+            markAsOrigin(originNode.coordinate);
+        }
+        if (houseNodes.length > 0) {
+            for (let i = 0; i < houseNodes.length; i++) {
+                markAsHouse(houseNodes[i].coordinate);
+            }
+        }
+    }
+
     function markNewCowSquare(absX, absY, controlledCoord, cow = "undefined") {
         const x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
         const y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
@@ -1852,6 +1854,8 @@ ocargo.LevelEditor = function(levelId) {
                 }
             }
 
+            console.log(internalCow);
+            setCowMarkingsOnMouseUp(controlledCoord, internalCow);
             adjustCowGroupMinMaxFields(internalCow);
 
             $(document)
