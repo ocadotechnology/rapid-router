@@ -1445,6 +1445,23 @@ ocargo.LevelEditor = function(levelId) {
             }
         };
     }
+ 
+    function draggedObjectOnGrid(e, dragged_object) {
+    // object location is relative to the whole page, so need to factor in paper and padding size, grid canvas scroll amount, width of toolbar, etc.
+        return e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
+            && (e.pageY + paper.scrollTop() + dragged_object.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
+            && (e.pageX + paper.scrollLeft() + dragged_object.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
+    }
+
+    function getAbsCoordinates(e) {
+        const absX = (e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
+        const absY = (e.pageY + paper.scrollTop()) / GRID_SPACE_SIZE;
+        return [absX, absY];
+    }
+
+    function draggedCursorOverGrid(absX, absY) {
+        return absY <= SEMI_EXTENDED_PAPER_HEIGHT / 100 && absX <= EXTENDED_PAPER_WIDTH / 100 && absX >= 0
+    }
 
     function setupDecorListeners(decor) {
         var image = decor.image;
@@ -1543,12 +1560,7 @@ ocargo.LevelEditor = function(levelId) {
 
         function handleDraggableDecorMouseUp(e){
             if (dragged_decor.elem.id !== null) {
-                // only create decor object if dropped within the grid canvas. 
-                // object location is relative to the whole page, so need to factor in paper and padding size, grid canvas scroll amount, width of toolbar, etc.
-                if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
-                        && (e.pageY + paper.scrollTop() + dragged_decor.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
-                        && (e.pageX + paper.scrollLeft() + dragged_decor.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
-                    ) {
+                if (draggedObjectOnGrid(e, dragged_decor)) {
                     let decorObject = new InternalDecor(dragged_decor.elem.id);
                     decorObject.setPosition(e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_decor.width / 2, e.pageY + paper.scrollTop() - dragged_decor.height / 2);
                 }
@@ -1812,9 +1824,8 @@ ocargo.LevelEditor = function(levelId) {
 
             unmarkOldCowSquare(controlledCoord);
 
-            const absX = (e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
-            const absY = (e.pageY + paper.scrollTop()) / GRID_SPACE_SIZE;
-            if (absY <= SEMI_EXTENDED_PAPER_HEIGHT / 100 && absX <= EXTENDED_PAPER_WIDTH / 100 && absX >= 0) {
+            const [absX, absY] = getAbsCoordinates(e);
+            if (draggedCursorOverGrid(absX, absY)) {
                 controlledCoord = markNewCowSquare(absX, absY, controlledCoord);
             }
         }
@@ -1834,10 +1845,7 @@ ocargo.LevelEditor = function(levelId) {
                 const cowX = e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_cow.width / 2;
                 const cowY = e.pageY + paper.scrollTop() - dragged_cow.height / 2;
 
-                if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
-                    && (e.pageY + paper.scrollTop() + dragged_cow.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
-                    && (e.pageX + paper.scrollLeft() + dragged_cow.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
-                ) {
+                if (draggedObjectOnGrid(e, dragged_cow)) {
                     image.transform('t' + cowX + ',' + cowY + 'r90');
                 } else {
                     internalCow.destroy();
@@ -2169,9 +2177,8 @@ ocargo.LevelEditor = function(levelId) {
 
             unmarkOldTrafficLightSquare(sourceCoord, controlledCoord);
 
-            const absX = (e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
-            const absY = (e.pageY + paper.scrollTop()) / GRID_SPACE_SIZE;
-            if (absY <= SEMI_EXTENDED_PAPER_HEIGHT / 100 && absX <= EXTENDED_PAPER_WIDTH / 100 && absX >= 0) {
+            const [absX, absY] = getAbsCoordinates(e);
+            if (draggedCursorOverGrid(absX, absY)) {
                 [sourceCoord, controlledCoord] = markNewTrafficLightSquare(absX, absY, isValidTrafficLightPlacement, sourceCoord, controlledCoord, 0);
             }
         }
@@ -2181,7 +2188,7 @@ ocargo.LevelEditor = function(levelId) {
             let image = internalTrafficLight.image;
 
             const lightX = e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_light.width;
-            const lightY = e.pageY + paper.scrollTop();
+            const lightY = e.pageY + paper.scrollTop() - dragged_light.width / 2;
 
             unmarkOldTrafficLightSquare(sourceCoord, controlledCoord);
 
@@ -2196,10 +2203,7 @@ ocargo.LevelEditor = function(levelId) {
                 internalTrafficLight.controlledCoord = null;
                 internalTrafficLight.valid = false;
 
-                if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
-                        && (e.pageY + paper.scrollTop() + dragged_light.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
-                        && (e.pageX + paper.scrollLeft() + dragged_light.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
-                    ) {
+                if (draggedObjectOnGrid(e, dragged_light)) {
                         image.transform('t' + lightX + ',' + lightY + ' s-1,1');
                 } else {
                     internalTrafficLight.destroy();
