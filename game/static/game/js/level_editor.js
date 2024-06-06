@@ -191,6 +191,8 @@ ocargo.LevelEditor = function(levelId) {
         tabs.character = new ocargo.Tab($('#character_radio'), $('#character_radio + label'), $('#character_pane'));
         tabs.blocks = new ocargo.Tab($('#blocks_radio'), $('#blocks_radio + label'), $('#blocks_pane'));
         tabs.random = new ocargo.Tab($('#random_radio'), $('#random_radio + label'), $('#random_pane'));
+        tabs.instruction = new ocargo.Tab($('#instruction_radio'), $('#instruction_radio + label'), $('#instruction_pane'));
+        tabs.hint = new ocargo.Tab($('#hint_radio'), $('#hint_radio + label'), $('#hint_pane'));
         tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
         tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
         tabs.share = new ocargo.Tab($('#share_radio'), $('#share_radio + label'), $('#share_pane'));
@@ -204,6 +206,8 @@ ocargo.LevelEditor = function(levelId) {
         setupCharacterTab();
         setupBlocksTab();
         setupRandomTab();
+        setupInstructionTab();
+        setupHintTab();
         setupLoadTab();
         setupSaveTab();
         setupShareTab();
@@ -475,6 +479,18 @@ ocargo.LevelEditor = function(levelId) {
 
                     $('#generate').attr('disabled', false);
                 });
+            });
+        }
+
+        function setupInstructionTab() {
+            tabs.instruction.setOnChange(function() {
+                transitionTab(tabs.instruction);
+            });
+        }
+
+        function setupHintTab() {
+            tabs.hint.setOnChange(function() {
+                transitionTab(tabs.hint);
             });
         }
 

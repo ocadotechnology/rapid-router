@@ -195,6 +195,22 @@
           </label>
         </div>
 
+        <div id="instruction_tab" class="tab selectable">
+          <input type="radio" name="tabs" id="instruction_radio">
+          <label for="instruction_radio">
+            <img src='{% static "game/image/icons/instruction.svg" %}'>
+            <span>{% trans "Instruction" %}</span>
+          </label>
+        </div>
+
+        <div id="hint_tab" class="tab selectable">
+          <input type="radio" name="tabs" id="hint_radio">
+          <label for="hint_radio">
+            <img src='{% static "game/image/icons/hint.svg" %}'>
+            <span>{% trans "Hint" %}</span>
+          </label>
+        </div>
+
         <div class="tab_break"></div>
 
         <div id="load_tab" class="tab selectable">
@@ -475,6 +491,18 @@
                 </button>
               </div>
             </div>
+          </div>
+
+          <div id="instruction_pane" class="tab_pane">
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/instruction.svg" %}'>{% trans "Instruction" %}</h2>
+            <p> {% trans "Give this level an aim and some instructions on what to do within this level for your students." %} </p>
+            <p> {% trans "Students will see this aim and the instructions when <b>starting this level</b> so make sure they are <b>useful to the student</b>." %} </p>
+          </div>
+
+          <div id="hint_pane" class="tab_pane">
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/hint.svg" %}'>{% trans "Hint" %}</h2>
+            <p> {% trans "Help out your players by adding hints! Select what <b>repeated code attempts</b> trigger hints and how long students should actively spend trying to complete a level before a hint pops up." %} </p>
+            <p> {% trans "Players can also access hints by clicking the hint button whilst playing." %} </p>
           </div>
 
           <div id="load_pane" class="tab_pane">
