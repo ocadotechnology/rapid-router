@@ -159,16 +159,14 @@ def play_level(request, level, from_editor=False):
         lessonCall = getattr(messages, lesson)
         hintCall = getattr(messages, hint)
     except AttributeError:
-        lessonCall = level.lesson or messages.description_level_default
-        hintCall = level.hint or messages.hint_level_default
-        print(lessonCall)
-        print(hintCall)
+        lessonCall = messages.description_level_default
+        hintCall = messages.hint_level_default
 
     aim = level.aim or messages.aim_level_default
-    lesson = mark_safe(lessonCall())
+    lesson = level.lesson or mark_safe(lessonCall())
     hint_timer_minutes = level.hint_timer_minutes
     hint_trigger_attempts = level.hint_trigger_attempts
-    hint = mark_safe(hintCall())
+    hint = level.hint or mark_safe(hintCall())
 
     character = level.character
     character_url = character.top_down
