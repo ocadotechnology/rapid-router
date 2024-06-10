@@ -286,7 +286,8 @@ ocargo.Game.prototype.sendAttempt = function (score) {
 
 ocargo.Game.prototype.registerFailure = function () {
   this.failures += 1
-  return this.failures >= parseInt(HINT_TRIGGER_ATTEMPTS)
+  // if HINT_TRIGGER_ATTEMPTS is left null by the user, this will return false as desired
+  return this.failures >= HINT_TRIGGER_ATTEMPTS
 }
 
 ocargo.Game.prototype._setupFuelGauge = function (nodes, blocks) {

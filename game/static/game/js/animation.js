@@ -351,18 +351,16 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			}
 			var otherMsg = "";
 			if (animation.popupHint) {
-				console.log("animation popup hint");
-				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + gettext('Are you stuck? Do you need help?') + '</span></button>';
-				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
+				otherMsg = '<div id="hintBtnPara">' + HINT + '</div>';
 			}
 			ocargo.Drawing.startPopup(title, leadMsg, otherMsg, true, buttons);
-			if (animation.popupHint) {
-				$("#hintPopupBtn").click( function(){
-	                    $("#hintText").show(500);
-	                    $("#hintBtnPara").hide();
-	                    $("#hintPopupBtn").hide();
-	                });
-	        }
+			// if (animation.popupHint) {
+			// 	$("#hintPopupBtn").click( function(){
+	    //                 $("#hintText").show(500);
+	    //                 $("#hintBtnPara").hide();
+	    //                 $("#hintPopupBtn").hide();
+	    //             });
+	    //     }
 			break;
 		case 'trafficlight':
 			this.drawing.transitionTrafficLight(animation.id, animation.colour, duration/2);
