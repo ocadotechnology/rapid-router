@@ -1,8 +1,13 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
 
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.views.level_editor import available_blocks
+
+DELAY_TIME = 10
 
 
 class TestLevelEditor(BaseGameTest):
@@ -107,3 +112,67 @@ class TestLevelEditor(BaseGameTest):
         cloned_source_tree = self.selenium.find_elements(By.ID, "tree2")
         assert len(decor_tree) == 1
         assert len(cloned_source_tree) == 1
+
+    def test_custom_instruction_and_hint(self):
+        # go to level editor and set up basic map
+        page = self.go_to_level_editor()
+        self.set_up_basic_map()
+
+        # fill in custom instruction and hint fields
+        page.go_to_instruction_tab()
+        self.selenium.find_element(By.ID, "aim").send_keys("test aim")
+        self.selenium.find_element(By.ID, "instruction").send_keys("test_instruction")
+
+        page.go_to_hint_tab()
+        Select(self.selenium.find_element(By.ID, "hint_timer_minutes")).select_by_value("1 min")
+        Select(self.selenium.find_element(By.ID, "hint_trigger_attempts")).select_by_value("x2 attempts")
+        self.selenium.find_element(By.ID, "hint").send_keys("test hint")
+
+        # save level and choose to play it
+        page.go_to_save_tab()
+        self.selenium.find_element(By.ID, "levelNameInput").send_keys("test level")
+        self.selenium.find_element(By.ID, "saveLevel").click()
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.presence_of_element_located((By.ID, "play_button"))
+        )
+        self.selenium.find_element(By.ID, "play_button").click()
+
+        # check to see if custom aim and lesson appear on the initial popup
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.presence_of_element_located((By.ID, "myModal-lead"))
+        )
+        modal_text = self.selenium.find_element(By.ID, "myModal-lead").getText()
+        assert modal_text == "test aim test lesson"
+        self.selenium.find_element(By.ID, "play_button").click()
+
+        # check to see if the timed hint appears by waiting
+        assert WebDriverWait(self.selenium, 65).until(
+            EC.presence_of_element_located((By.ID, "myModal-mainText"))
+        )
+        hint_modal_text_one = self.selenium.find_element(By.ID, "myModal-mainText").getText()
+        assert hint_modal_text_one == "test hint"
+        self.selenium.find_element(By.ID, "play_button").click()
+
+        # check to see if triggered hint appears by making a few failed attempts
+        fast_tab = self.selenium.find_element(By.ID, "fast_tab")
+        fast_tab.click()
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.presence_of_element_located((By.ID, "try_again_button"))
+        )
+        self.selenium.find_element(By.ID, "try_again_button").click()
+
+        fast_tab.click()
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.presence_of_element_located((By.ID, "hintBtnPara"))
+        )
+        hint_modal_text_two = self.selenium.find_element(By.ID, "hintBtnPara")
+        assert hint_modal_text_two == "test hint"
+        self.selenium.find_element(By.ID, "try_again_button").click()
+
+        # check to see if the custom hint appears on the hint popup
+        self.selenium.find_element(By.ID, "help_tab").click()
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.presence_of_element_located((By.ID, "myModal-mainText"))
+        )
+        hint_modal_text_three = self.selenium.find_element(By.ID, "myModal-mainText").getText()
+        assert hint_modal_text_three == "test hint"
