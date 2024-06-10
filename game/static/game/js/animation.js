@@ -341,6 +341,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 					leadMsg = levelMsg.join('<br>') + '<br>';
 					break;
 				case 'FAIL':
+					console.log("animation.js");
 					title = gettext('Oh dear!');
 					buttons = ocargo.button.tryAgainButtonHtml();
 					break;
@@ -350,6 +351,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			}
 			var otherMsg = "";
 			if (animation.popupHint) {
+				console.log("animation popup hint");
 				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + gettext('Are you stuck? Do you need help?') + '</span></button>';
 				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}

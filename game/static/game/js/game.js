@@ -131,7 +131,7 @@ ocargo.Game.prototype.setup = function () {
 
   ocargo.Drawing.startPopup(
       title,
-      LESSON,
+      AIM + " " + LESSON,
       message,
       showMascot,
       [
@@ -170,6 +170,7 @@ ocargo.Game.prototype.reset = function () {
 }
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
+  console.log("testing")
   this.reset()
   let code = ocargo.pythonControl.getCode()
   ocargo.event.sendEvent('PlayButtonPressed', {
@@ -285,7 +286,7 @@ ocargo.Game.prototype.sendAttempt = function (score) {
 
 ocargo.Game.prototype.registerFailure = function () {
   this.failures += 1
-  return this.failures >= 3
+  return this.failures >= parseInt(HINT_TRIGGER_ATTEMPTS)
 }
 
 ocargo.Game.prototype._setupFuelGauge = function (nodes, blocks) {

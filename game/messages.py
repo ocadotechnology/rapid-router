@@ -109,6 +109,10 @@ def description_level_default():
     return "Can you find the shortest route?"
 
 
+def aim_level_default():
+    return ""
+
+
 def hint_level_default():
     return "Think back to earlier levels. What did you learn?"
 

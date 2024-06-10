@@ -1039,6 +1039,7 @@ ocargo.Drawing.startPopup = function (
   mascot,
   buttons
 ) {
+  console.log(buttons);
   $('#myModal-title').html(title)
   $('#myModal-lead').html(subtitle)
   $('#myModal-mainText').html(message)
@@ -1116,6 +1117,8 @@ ocargo.Drawing.startPopup = function (
 
   else if (buttons) {
     $('#modal-buttons').html(buttons)
+
+    // TODO: Figure out why the hint button isn't being added to the modal
 
     let tryAgainButton = $("#try_again_button")
     tryAgainButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")

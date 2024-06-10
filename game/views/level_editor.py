@@ -86,8 +86,11 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
     if not level.anonymous:
         return redirect(reverse("level_editor"), permanent=True)
 
-    lesson = mark_safe(messages.description_level_default())
-    hint = mark_safe(messages.hint_level_default())
+    aim = level.aim or mark_safe(messages.aim_level_default())
+    lesson = level.lesson or mark_safe(messages.description_level_default())
+    hint_timer_minutes = level.hint_timer_minutes
+    hint_trigger_attempts = level.hint_trigger_attempts
+    hint = level.hint or mark_safe(messages.hint_level_default())
 
     attempt = None
     house = get_decor_element("house", level.theme).url
@@ -123,12 +126,15 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
             "level": level,
             "decor": decor_data,
             "blocks": block_data,
+            "aim": aim,
             "lesson": lesson,
+            "hint_timer_minutes": hint_timer_minutes,
+            "hint_trigger_attempts": hint_trigger_attempts,
+            "hint": hint,
             "character": character,
             "background": background,
             "house": house,
             "cfc": cfc,
-            "hint": hint,
             "attempt": attempt,
             "random_level": random_level,
             "return_url": reverse(return_view_name),
