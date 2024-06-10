@@ -2343,6 +2343,13 @@ ocargo.LevelEditor = function(levelId) {
         state.pythonViewEnabled = language === 'blocklyWithPythonView';
         state.pythonEnabled = language === 'python' || language === 'both';
 
+        // Instruction and hint data
+        state.aim = $('#aim').val();
+        state.lesson = $('#instruction').val();
+        state.hint_timer_minutes = $('#hint_timer_minutes').val() === "null" ? null : $('#hint_timer_minutes').val();
+        state.hint_trigger_attempts = $('#hint_trigger_attempts').val() === "null" ? null : $('#hint_trigger_attempts').val();
+        state.hint = $('#hint').val();
+
         // Other data
         state.theme = currentTheme.id;
         state.character = $('#character_select').val();
@@ -2470,6 +2477,13 @@ ocargo.LevelEditor = function(levelId) {
             languageSelect.val('blockly');
         }
         languageSelect.change();
+
+        // Load in instruction and hint data
+        $('#aim').val(state.aim);
+        $('#instruction').val(state.lesson);
+        $('#hint_timer_minutes').val(state.hint_timer_minutes);
+        $('#hint_trigger_attempts').val(state.hint_trigger_attempts);
+        $('#hint').val(state.hint);
 
         // Other data
         if(state.max_fuel) {

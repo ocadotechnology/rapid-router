@@ -497,12 +497,55 @@
             <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/instruction.svg" %}'>{% trans "Instruction" %}</h2>
             <p> {% trans "Give this level an aim and some instructions on what to do within this level for your students." %} </p>
             <p> {% trans "Students will see this aim and the instructions when <b>starting this level</b> so make sure they are <b>useful to the student</b>." %} </p>
+            <div class="tab_pane_content_holder">
+              <div class="tab_pane_content">
+                <p>{% trans "<b>Aim</b><br>What is the aim of this level?" %}</p>
+                <textarea id="aim" rows="4" cols="50"></textarea>
+
+                <p>{% trans "<b>Instruction</b><br>What do players have to do to complete this level?" %}</p>
+                <textarea id="instruction" rows="4" cols="50"></textarea>
+              </div>
+            </div>
           </div>
 
           <div id="hint_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/hint.svg" %}'>{% trans "Hint" %}</h2>
             <p> {% trans "Help out your players by adding hints! Select what <b>repeated code attempts</b> trigger hints and how long students should actively spend trying to complete a level before a hint pops up." %} </p>
             <p> {% trans "Players can also access hints by clicking the hint button whilst playing." %} </p>
+            <div class="tab_pane_content_holder">
+              <div class="tab_pane_content">
+                <div class="table">
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>{% trans "Timer" %}</p></div>
+                    <div class="table_cell field_value">
+                      <select id="hint_timer_minutes">
+                        <option value="null">{% trans "No hint" %}</option>
+                        <option value="1">{% trans "1 min" %}</option>
+                        <option value="2">{% trans "2 min" %}</option>
+                        <option value="3">{% trans "3 min" %}</option>
+                        <option value="4">{% trans "4 min" %}</option>
+                        <option value="5">{% trans "5 min" %}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="table_row">
+                    <div class="table_cell field_label"><p>{% trans "Trigger" %}</p></div>
+                    <div class="table_cell field_value">
+                      <select id="hint_trigger_attempts">
+                        <option value="null">{% trans "No hint" %}</option>
+                        <option value="2">{% trans "x2 attempts" %}</option>
+                        <option value="3">{% trans "x3 attempts" %}</option>
+                        <option value="4">{% trans "x4 attempts" %}</option>
+                        <option value="5">{% trans "x5 attempts" %}</option>
+                        <option value="6">{% trans "x6 attempts" %}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <p>{% trans "Hint" %}</p>
+                <textarea id="hint" rows="4" cols="50"></textarea>
+              </div>
+            </div>
           </div>
 
           <div id="load_pane" class="tab_pane">
