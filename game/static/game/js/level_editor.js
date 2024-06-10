@@ -2481,8 +2481,8 @@ ocargo.LevelEditor = function(levelId) {
         // Load in instruction and hint data
         $('#aim').val(state.aim);
         $('#instruction').val(state.lesson);
-        $('#hint_timer_minutes').val(state.hint_timer_minutes);
-        $('#hint_trigger_attempts').val(state.hint_trigger_attempts);
+        $('#hint_timer_minutes').val(state.hint_timer_minutes === null ? "null" : state.hint_timer_minutes);
+        $('#hint_trigger_attempts').val(state.hint_trigger_attempts === null ? "null" : state.hint_trigger_attempts);
         $('#hint').val(state.hint);
 
         // Other data
