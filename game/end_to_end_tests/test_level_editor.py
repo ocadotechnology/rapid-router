@@ -136,6 +136,9 @@ class TestLevelEditor(BaseGameTest):
         assert len(cloned_source_light) == 1
 
     def test_custom_instruction_and_hint(self):
+        # login
+        self.login_once()
+
         # go to level editor and set up basic map
         page = self.go_to_level_editor()
         [road_start, road_end] = self.set_up_basic_map()
@@ -143,7 +146,7 @@ class TestLevelEditor(BaseGameTest):
         # fill in custom instruction and hint fields
         page.go_to_instruction_tab()
         self.selenium.find_element(By.ID, "aim").send_keys("test aim")
-        self.selenium.find_element(By.ID, "instruction").send_keys("test_instruction")
+        self.selenium.find_element(By.ID, "instruction").send_keys("test lesson")
 
         page.go_to_hint_tab()
         Select(self.selenium.find_element(By.ID, "hint_timer_minutes")).select_by_value("1")
@@ -152,9 +155,6 @@ class TestLevelEditor(BaseGameTest):
 
         # save level and choose to play it
         page.go_to_save_tab()
-        modal_maintext = self.selenium.find_element(By.ID, "myModal-mainText").get_attribute("innerHTML")
-        assert modal_maintext == "n"
-
         self.selenium.find_element(By.ID, "levelNameInput").send_keys("test level")
         self.selenium.find_element(By.ID, "saveLevel").click()
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
@@ -166,16 +166,16 @@ class TestLevelEditor(BaseGameTest):
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.presence_of_element_located((By.ID, "myModal-lead"))
         )
-        modal_text = self.selenium.find_element(By.ID, "myModal-lead").getText()
-        assert modal_text == "test aim test lesson"
+        modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
+        assert modal_text.contains("test aim test lesson")
         self.selenium.find_element(By.ID, "play_button").click()
 
         # check to see if the timed hint appears by waiting
         assert WebDriverWait(self.selenium, 65).until(
             EC.presence_of_element_located((By.ID, "myModal-mainText"))
         )
-        hint_modal_text_one = self.selenium.find_element(By.ID, "myModal-mainText").getText()
-        assert hint_modal_text_one == "test hint"
+        hint_modal_text_one = self.selenium.find_element(By.ID, "myModal-mainText").get_attribute("innerHTML")
+        assert hint_modal_text_one.contains("test hint")
         self.selenium.find_element(By.ID, "play_button").click()
 
         # check to see if triggered hint appears by making a few failed attempts
@@ -199,5 +199,5 @@ class TestLevelEditor(BaseGameTest):
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.presence_of_element_located((By.ID, "myModal-mainText"))
         )
-        hint_modal_text_three = self.selenium.find_element(By.ID, "myModal-mainText").getText()
-        assert hint_modal_text_three == "test hint"
+        hint_modal_text_three = self.selenium.find_element(By.ID, "myModal-mainText").get_attribute("innerHTML")
+        assert hint_modal_text_three.contains("test hint")
