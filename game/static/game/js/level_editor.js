@@ -322,13 +322,6 @@ ocargo.LevelEditor = function(levelId) {
 
             $('.decor_button').mousedown(handleDraggableDecorMouseDown);
 
-            // $('#trafficLightRed').click(function(e) {
-            //     new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
-            //                               "startingState": ocargo.TrafficLight.RED,
-            //                               "sourceCoordinate": null,  "direction": null});
-            //     console.dir(e.target);
-            // });
-
             $('#trafficLightRed').mousedown(function(e) {
                 handleDraggableTrafficLightsMouseDown(e, ocargo.TrafficLight.RED);
             });
@@ -1759,8 +1752,7 @@ ocargo.LevelEditor = function(levelId) {
     }
 
     function setCowMarkingsOnMouseUp(controlledCoord, cow) {
-        console.log(cow);
-        if(cow.controlledNode) {
+        if (cow.controlledNode) {
             markAsBackground(cow.controlledNode.coordinate);
         }
         if (controlledCoord) {
@@ -1854,7 +1846,6 @@ ocargo.LevelEditor = function(levelId) {
                 }
             }
 
-            console.log(internalCow);
             setCowMarkingsOnMouseUp(controlledCoord, internalCow);
             adjustCowGroupMinMaxFields(internalCow);
 
@@ -2049,10 +2040,6 @@ ocargo.LevelEditor = function(levelId) {
                 }
             }
             return "0,0";
-        }
-
-        function occupied(sourceCoord, controlledCoord) {
-
         }
     }
 
