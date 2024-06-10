@@ -138,7 +138,7 @@ class TestLevelEditor(BaseGameTest):
     def test_custom_instruction_and_hint(self):
         # go to level editor and set up basic map
         page = self.go_to_level_editor()
-        self.set_up_basic_map()
+        [road_start, road_end] = self.set_up_basic_map()
 
         # fill in custom instruction and hint fields
         page.go_to_instruction_tab()
@@ -152,6 +152,9 @@ class TestLevelEditor(BaseGameTest):
 
         # save level and choose to play it
         page.go_to_save_tab()
+        modal = self.selenium.find_elements(By.ID, "myModal-mainText")
+        assert len(modal) == 0
+
         self.selenium.find_element(By.ID, "levelNameInput").send_keys("test level")
         self.selenium.find_element(By.ID, "saveLevel").click()
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
