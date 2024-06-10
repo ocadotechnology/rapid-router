@@ -152,8 +152,8 @@ class TestLevelEditor(BaseGameTest):
 
         # save level and choose to play it
         page.go_to_save_tab()
-        modal = self.selenium.find_elements(By.ID, "myModal-mainText")
-        assert len(modal) == 0
+        modal_maintext = self.selenium.find_element(By.ID, "myModal-mainText")
+        assert modal_maintext == "n"
 
         self.selenium.find_element(By.ID, "levelNameInput").send_keys("test level")
         self.selenium.find_element(By.ID, "saveLevel").click()
