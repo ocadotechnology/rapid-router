@@ -31,17 +31,6 @@ class TestLevelEditor(BaseGameTest):
 
         return [road_start, road_end]
 
-    def set_up_draggable_cow(self):
-        scenery_tab = self.selenium.find_element(By.ID, "scenery_tab")
-        scenery_tab.click()
-
-        cow = self.selenium.find_element(By.CSS_SELECTOR, "img[id='cow']")
-        cow.click()
-
-        draggable_cow = self.selenium.find_element(By.CSS_SELECTOR, "image[x='0'][y='0']")
-
-        return draggable_cow
-
     def test_level_editor_displays(self):
         page = self.go_to_level_editor()
 
@@ -78,25 +67,32 @@ class TestLevelEditor(BaseGameTest):
         assert len(houses_after_delete) == 1
 
     def test_cow_on_origin(self):
+        page = self.go_to_level_editor()
         [road_start, road_end] = self.set_up_basic_map()
 
         origin_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#ff0000']")
         assert len(origin_space) == 1
 
-        draggable_cow = self.set_up_draggable_cow()
+        page.go_to_scenery_tab()
+
+        draggable_cow = self.selenium.find_element(By.ID, "cow")
         ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_start).perform()
         start_space_warning = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#e35f4d'][fill-opacity='0.7'][x='130'][y='530']")
         assert len(start_space_warning) == 1
 
     def test_cow_on_house(self):
+        page = self.go_to_level_editor()
         [road_start, road_end] = self.set_up_basic_map()
 
         house_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#0000ff']")
         assert len(house_space) == 1
         assert road_end == house_space[0]
 
-        draggable_cow = self.set_up_draggable_cow()
-        ActionChains(self.selenium).click_and_hold(draggable_cow).move_to_element(road_end).perform()
+        page.go_to_scenery_tab()
+
+        draggable_cow = self.selenium.find_elements(By.ID, "cow")
+        assert len(draggable_cow) == 1
+        ActionChains(self.selenium).click_and_hold(draggable_cow[0]).move_to_element(road_end).perform()
         allowed_space = self.selenium.find_elements(By.CSS_SELECTOR, "rect[fill='#87e34d']")
         assert len(allowed_space) == 0
 
@@ -112,6 +108,32 @@ class TestLevelEditor(BaseGameTest):
         cloned_source_tree = self.selenium.find_elements(By.ID, "tree2")
         assert len(decor_tree) == 1
         assert len(cloned_source_tree) == 1
+
+    def test_draggable_cow(self):
+        page = self.go_to_level_editor()
+        page.go_to_scenery_tab()
+
+        source_cow = self.selenium.find_element(By.ID, "cow")
+        end_space = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
+        ActionChains(self.selenium).drag_and_drop(source_cow, end_space).perform()
+
+        scenery_cow = self.selenium.find_elements(By.CSS_SELECTOR, "image[x='0'][y='0']")
+        cloned_source_cow = self.selenium.find_elements(By.ID, "cow")
+        assert len(scenery_cow) == 1
+        assert len(cloned_source_cow) == 1
+
+    def test_draggable_traffic_light(self):
+        page = self.go_to_level_editor()
+        page.go_to_scenery_tab()
+
+        source_light = self.selenium.find_element(By.ID, "trafficLightRed")
+        end_space = self.selenium.find_element(By.CSS_SELECTOR, "rect[x='130'][y='530']")
+        ActionChains(self.selenium).drag_and_drop(source_light, end_space).perform()
+
+        scenery_light = self.selenium.find_elements(By.CSS_SELECTOR, "image[x='0'][y='0']")
+        cloned_source_light = self.selenium.find_elements(By.ID, "trafficLightRed")
+        assert len(scenery_light) == 1
+        assert len(cloned_source_light) == 1
 
     def test_custom_instruction_and_hint(self):
         # go to level editor and set up basic map
