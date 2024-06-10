@@ -341,7 +341,6 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 					leadMsg = levelMsg.join('<br>') + '<br>';
 					break;
 				case 'FAIL':
-					console.log("animation.js");
 					title = gettext('Oh dear!');
 					buttons = ocargo.button.tryAgainButtonHtml();
 					break;

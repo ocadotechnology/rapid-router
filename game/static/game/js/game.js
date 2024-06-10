@@ -7,6 +7,7 @@ ocargo.Game = function () {
   this.failures = 0
   this.currentlySelectedTab = null
   this.isMuted = Cookies.get('muted') === 'true'
+  this.hasTimedHintAppeared = false
 }
 
 ocargo.Game.prototype.setup = function () {
@@ -142,6 +143,18 @@ ocargo.Game.prototype.setup = function () {
   )
 }
 
+$("#close-modal").click(function() {
+    if (HINT_TIMER_MINUTES != "None" && !this.hasTimedHintAppeared) {
+      window.setTimeout(function() {
+        ocargo.Drawing.startPopup("Are you stuck? Do you need help?", "", HINT, false, [
+          ocargo.button.dismissButtonHtml("play_button", gettext("Continue"))
+        ])
+      }, HINT_TIMER_MINUTES * 60 * 1000);
+      this.hasTimedHintAppeared = true;
+    }
+  }.bind(this)
+)
+
 // Script used to save and check for episode upon loading of the webpage
 document.addEventListener("DOMContentLoaded", function() {
   const dataElement = document.getElementById('data');
@@ -170,7 +183,6 @@ ocargo.Game.prototype.reset = function () {
 }
 
 ocargo.Game.prototype.runProgramAndPrepareAnimation = function (blocks) {
-  console.log("testing")
   this.reset()
   let code = ocargo.pythonControl.getCode()
   ocargo.event.sendEvent('PlayButtonPressed', {
