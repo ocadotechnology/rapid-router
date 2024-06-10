@@ -322,24 +322,23 @@ ocargo.LevelEditor = function(levelId) {
 
             $('.decor_button').mousedown(handleDraggableDecorMouseDown);
 
-            $('#trafficLightRed').click(function() {
-                new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
-                                          "startingState": ocargo.TrafficLight.RED,
-                                          "sourceCoordinate": null,  "direction": null});
+            $('#trafficLightRed').mousedown(function(e) {
+                handleDraggableTrafficLightsMouseDown(e, ocargo.TrafficLight.RED);
             });
 
-            $('#trafficLightGreen').click(function() {
-                new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0,
-                                          "startingState": ocargo.TrafficLight.GREEN,
-                                          "sourceCoordinate": null,  "direction": null});
+            $('#trafficLightGreen').mousedown(function(e) {
+                handleDraggableTrafficLightsMouseDown(e, ocargo.TrafficLight.GREEN);
             });
 
             if(COW_LEVELS_ENABLED) {
                 if (Object.keys(cowGroups).length == 0) {
                     addCowGroup();
                 }
-                $('#cow').click(function () {
-                    new InternalCow({group: cowGroups["group1"]});
+                $('#cow').mouseover(function(e) {
+                    e.target.style.cursor = "pointer";
+                })
+                $('#cow').mousedown(function(e) {
+                    handleDraggableCowMouseDown(e, "group1")
                 });
             }
         }
@@ -1439,6 +1438,23 @@ ocargo.LevelEditor = function(levelId) {
             }
         };
     }
+ 
+    function draggedObjectOnGrid(e, dragged_object) {
+    // object location is relative to the whole page, so need to factor in paper and padding size, grid canvas scroll amount, width of toolbar, etc.
+        return e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
+            && (e.pageY + paper.scrollTop() + dragged_object.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
+            && (e.pageX + paper.scrollLeft() + dragged_object.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
+    }
+
+    function getAbsCoordinates(e) {
+        const absX = (e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH) / GRID_SPACE_SIZE;
+        const absY = (e.pageY + paper.scrollTop()) / GRID_SPACE_SIZE;
+        return [absX, absY];
+    }
+
+    function draggedCursorOverGrid(absX, absY) {
+        return absY <= SEMI_EXTENDED_PAPER_HEIGHT / 100 && absX <= EXTENDED_PAPER_WIDTH / 100 && absX >= 0
+    }
 
     function setupDecorListeners(decor) {
         var image = decor.image;
@@ -1537,12 +1553,7 @@ ocargo.LevelEditor = function(levelId) {
 
         function handleDraggableDecorMouseUp(e){
             if (dragged_decor.elem.id !== null) {
-                // only create decor object if dropped within the grid canvas. 
-                // object location is relative to the whole page, so need to factor in paper and padding size, grid canvas scroll amount, width of toolbar, etc.
-                if (e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
-                        && (e.pageY + paper.scrollTop() + dragged_decor.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
-                        && (e.pageX + paper.scrollLeft() + dragged_decor.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
-                    ) {
+                if (draggedObjectOnGrid(e, dragged_decor)) {
                     let decorObject = new InternalDecor(dragged_decor.elem.id);
                     decorObject.setPosition(e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_decor.width / 2, e.pageY + paper.scrollTop() - dragged_decor.height / 2);
                 }
@@ -1614,50 +1625,14 @@ ocargo.LevelEditor = function(levelId) {
             image.transform('t' + paperX + ',' + paperY );
 
             //Unmark the squares the cow previously occupied
-            if (controlledCoord) {
-                markAsBackground(controlledCoord);
-            }
-            if(cows) {
-                for( var i = 0; i < cows.length; i++){
-                    var internalCow = cows[i];
-                    if(internalCow !== cow && internalCow.controlledNode) {
-                        mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
-                    }
-                }
-            }
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (houseNodes.length > 0) {
-                for (let i = 0; i < houseNodes.length; i++){
-                    markAsHouse(houseNodes[i].coordinate);
-                }
-            }
+            unmarkOldCowSquare(controlledCoord, cow);
 
             // Now calculate the source coordinate
             var box = image.getBBox();
             var absX = (box.x + box.width/2) / GRID_SPACE_SIZE;
             var absY = (box.y + box.height/2) / GRID_SPACE_SIZE;
 
-            var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
-            var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
-            controlledCoord = new ocargo.Coordinate(x,y);
-
-            // If source node is not on grid remove it
-            if (!isCoordinateOnGrid(controlledCoord)) {
-                controlledCoord = null;
-            }
-
-            if (controlledCoord) {
-                var colour;
-                if(isValidPlacement(controlledCoord)) {
-                    colour = VALID_LIGHT_COLOUR;
-                } else {
-                    colour = INVALID_LIGHT_COLOUR;
-                }
-
-                mark(controlledCoord, colour, 0.7, false);
-            }
+            controlledCoord = markNewCowSquare(absX, absY, controlledCoord, cow);
 
             // Deal with trashcan
             var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
@@ -1689,27 +1664,11 @@ ocargo.LevelEditor = function(levelId) {
         }
 
         function onDragEnd() {
-            //Unmark previously occupied square
-            if(cow.controlledNode) {
-                markAsBackground(cow.controlledNode.coordinate);
-            }
-
-            // Mark squares currently occupied
-            if (controlledCoord) {
-                mark(controlledCoord, cow.data.group.color, 0.3, true);
-            }
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (houseNodes.length > 0) {
-                for (let i = 0; i < houseNodes.length; i++) {
-                    markAsHouse(houseNodes[i].coordinate);
-                }
-            }
+            setCowMarkingsOnMouseUp(controlledCoord, cow);
 
             if (trashcanOpen) {
                 cow.destroy();
-            } else if (isValidPlacement(controlledCoord)) {
+            } else if (isValidDraggedCowPlacement(controlledCoord, cow)) {
                 // Add back to the list of cows if on valid nodes
                 var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
                 cow.controlledNode = controlledNode;
@@ -1738,20 +1697,20 @@ ocargo.LevelEditor = function(levelId) {
             closeTrashcan();
         }
 
-        function isValidPlacement(controlledCoord){
-            var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
-            if (!controlledNode || isOriginCoordinate(controlledCoord) || isHouseCoordinate(controlledCoord))
-                return false;
-            for (var i=0; i < cows.length; i++) {
-                var otherCow = cows[i];
-                if (otherCow.controlledNode == controlledNode && cow != otherCow)
-                    return false;
-            }
-            return true;
-        }
-
         image.drag(onDragMove, onDragStart, onDragEnd);
         addReleaseListeners(image.node);
+    }
+
+    function isValidDraggedCowPlacement(controlledCoord, cow){
+        var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+        if (!controlledNode || isOriginCoordinate(controlledCoord) || isHouseCoordinate(controlledCoord))
+            return false;
+        for (var i=0; i < cows.length; i++) {
+            var otherCow = cows[i];
+            if (otherCow.controlledNode == controlledNode && (cow === "undefined" || cow != otherCow))
+                return false;
+        }
+        return true;
     }
 
     function adjustCowGroupMinMaxFields(draggedCow) {
@@ -1768,6 +1727,139 @@ ocargo.LevelEditor = function(levelId) {
         draggedCowGroup.minCows = Math.max(1, Math.min(draggedCowGroup.minCows, noOfValidCowsInGroup));
         draggedCowGroup.maxCows = Math.max(1, Math.min(draggedCowGroup.maxCows, noOfValidCowsInGroup));
         $('#cow_group_select').val(draggedCowGroupId).change();
+    }
+
+    function unmarkOldCowSquare(controlledCoord, cow = "undefined") {
+        if (controlledCoord) {
+            markAsBackground(controlledCoord);
+        }
+        if (cows) {
+            for( let i = 0; i < cows.length; i++){
+                let internalCow = cows[i];
+                if(internalCow !== cow && internalCow.controlledNode) {
+                    mark(internalCow.controlledNode.coordinate, internalCow.data.group.color, 0.3, true);
+                }
+            }
+        }
+        if (originNode) {
+            markAsOrigin(originNode.coordinate);
+        }
+        if (houseNodes.length > 0) {
+            for (let i = 0; i < houseNodes.length; i++){
+                markAsHouse(houseNodes[i].coordinate);
+            }
+        }
+    }
+
+    function setCowMarkingsOnMouseUp(controlledCoord, cow) {
+        if (cow.controlledNode) {
+            markAsBackground(cow.controlledNode.coordinate);
+        }
+        if (controlledCoord) {
+            mark(controlledCoord, cow.data.group.color, 0.3, true);
+        }
+        if (originNode) {
+            markAsOrigin(originNode.coordinate);
+        }
+        if (houseNodes.length > 0) {
+            for (let i = 0; i < houseNodes.length; i++) {
+                markAsHouse(houseNodes[i].coordinate);
+            }
+        }
+    }
+
+    function markNewCowSquare(absX, absY, controlledCoord, cow = "undefined") {
+        const x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+        const y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+        controlledCoord = new ocargo.Coordinate(x,y);
+
+        // If source node is not on grid remove it
+        if (!isCoordinateOnGrid(controlledCoord)) {
+            controlledCoord = null;
+        }
+
+        // mark square valid or invalid
+        if (controlledCoord) {
+            let colour;
+            if(isValidDraggedCowPlacement(controlledCoord, cow)) {
+                colour = VALID_LIGHT_COLOUR;
+            } else {
+                colour = INVALID_LIGHT_COLOUR;
+            }
+
+            mark(controlledCoord, colour, 0.7, false);
+        }
+
+        return controlledCoord;
+    }
+
+    function handleDraggableCowMouseDown(e, cowGroup){
+        e.preventDefault();
+
+        window.dragged_cow = {};
+        dragged_cow.pageX0 = e.pageX;
+        dragged_cow.pageY0 = e.pageY;
+        dragged_cow.elem = e.target;
+        dragged_cow.offset0 = $(e.target).offset();
+        dragged_cow.parent = e.target.parentElement;
+        dragged_cow.group = cowGroups[cowGroup];
+        dragged_cow.width = COW_WIDTH;
+        dragged_cow.height = COW_HEIGHT;
+
+        const clone = $(e.target).clone(true);
+        let controlledCoord;
+
+        function handleDraggableCowDragging(e){
+            e.target.style.cursor = "pointer";
+
+            const left = dragged_cow.offset0.left + (e.pageX - dragged_cow.pageX0);
+            const top = dragged_cow.offset0.top + (e.pageY - dragged_cow.pageY0);
+            $(dragged_cow.elem).offset({top: top, left: left});
+
+            unmarkOldCowSquare(controlledCoord);
+
+            const [absX, absY] = getAbsCoordinates(e);
+            if (draggedCursorOverGrid(absX, absY)) {
+                controlledCoord = markNewCowSquare(absX, absY, controlledCoord);
+            }
+        }
+
+        function handleDraggableCowMouseUp(e){
+            let internalCow = new InternalCow({group: cowGroups["group1"]});
+            let image = internalCow.image;
+
+            if (isValidDraggedCowPlacement(controlledCoord)) {
+                internalCow.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+                internalCow.valid = true;
+                drawing.setCowImagePosition(controlledCoord, image, internalCow.controlledNode);
+            } else {
+                internalCow.controlledNode = null;
+                internalCow.valid = false;
+
+                const cowX = e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_cow.width / 2;
+                const cowY = e.pageY + paper.scrollTop() - dragged_cow.height / 2;
+
+                if (draggedObjectOnGrid(e, dragged_cow)) {
+                    image.transform('t' + cowX + ',' + cowY + 'r90');
+                } else {
+                    internalCow.destroy();
+                }
+            }
+
+            setCowMarkingsOnMouseUp(controlledCoord, internalCow);
+            adjustCowGroupMinMaxFields(internalCow);
+
+            $(document)
+            .off('mousemove', handleDraggableCowDragging)
+            .off('mouseup mouseleave', handleDraggableCowMouseUp);
+
+            $(dragged_cow.elem).remove();
+            $(clone).appendTo(dragged_cow.parent);
+        }
+
+        $(document)
+        .on('mouseup mouseleave', handleDraggableCowMouseUp)
+        .on('mousemove', handleDraggableCowDragging);
     }
 
 
@@ -1834,23 +1926,7 @@ ocargo.LevelEditor = function(levelId) {
             image.transform('t' + paperX + ',' + paperY + 'r' + rotation + 's' + scaling);
 
             // Unmark the squares the light previously occupied
-            if (sourceCoord) {
-                markAsBackground(sourceCoord);
-            }
-            if (controlledCoord) {
-                markAsBackground(controlledCoord);
-            }
-
-            markCowNodes();
-
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (houseNodes.length > 0) {
-                for (let i = 0; i < houseNodes.length; i++) {
-                    markAsHouse(houseNodes[i].coordinate);
-                }
-            }
+            unmarkOldTrafficLightSquare(sourceCoord, controlledCoord);
 
             // Now calculate the source coordinate
             var box = image.getBBox();
@@ -1872,48 +1948,7 @@ ocargo.LevelEditor = function(levelId) {
                     break;
             }
 
-            var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
-            var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
-            sourceCoord = new ocargo.Coordinate(x,y);
-
-            // Find controlled position in map coordinates
-            switch(rotation) {
-                case 0:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y + 1);
-                    break;
-                case 90:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x + 1, sourceCoord.y);
-                    break;
-                case 180:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y - 1);
-                    break;
-                case 270:
-                    controlledCoord = new ocargo.Coordinate(sourceCoord.x - 1, sourceCoord.y);
-                    break;
-            }
-
-            // If controlled node is not on grid, remove it
-            if (!isCoordinateOnGrid(controlledCoord)) {
-                controlledCoord = null;
-            }
-
-            // If source node is not on grid remove it
-            if (!isCoordinateOnGrid(sourceCoord)) {
-                sourceCoord = null;
-            }
-
-            if (sourceCoord && controlledCoord) {
-                var colour;
-                if(isValidPlacement(sourceCoord, controlledCoord)) {
-                    colour = VALID_LIGHT_COLOUR;
-                    drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
-                } else {
-                    colour = INVALID_LIGHT_COLOUR;
-                }
-
-                mark(controlledCoord, colour, 0.7, false);
-                mark(sourceCoord, colour, 0.7, false);
-            }
+            [sourceCoord, controlledCoord] = markNewTrafficLightSquare(absX, absY, isValidTrafficLightPlacement, sourceCoord, controlledCoord, rotation, image);
 
             // Deal with trashcan
             var paperAbsX = paperX - paper.scrollLeft() + imageWidth/2;
@@ -1953,27 +1988,11 @@ ocargo.LevelEditor = function(levelId) {
 
         function onDragEnd() {
             // Unmark squares currently occupied
-            if (sourceCoord) {
-                markAsBackground(sourceCoord);
-            }
-            if (controlledCoord) {
-                markAsBackground(controlledCoord);
-            }
-
-            markCowNodes();
-
-            if (originNode) {
-                markAsOrigin(originNode.coordinate);
-            }
-            if (houseNodes.length > 0) {
-                for (let i = 0; i < houseNodes.length; i++) {
-                    markAsHouse(houseNodes[i].coordinate);
-                }
-            }
+            unmarkOldTrafficLightSquare(sourceCoord, controlledCoord);
 
             if(trashcanOpen) {
                 trafficLight.destroy();
-            } else if(isValidPlacement(sourceCoord, controlledCoord)) {
+            } else if(isValidTrafficLightPlacement(sourceCoord, controlledCoord)) {
                 // Add back to the list of traffic lights if on valid nodes
                 trafficLight.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
                 trafficLight.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
@@ -2022,41 +2041,177 @@ ocargo.LevelEditor = function(levelId) {
             }
             return "0,0";
         }
+    }
 
-        function isValidPlacement(sourceCoord, controlledCoord) {
-            var sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
-            var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+    function isValidTrafficLightPlacement(sourceCoord, controlledCoord) {
+        var sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
+        var controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
 
-            // Test if two connected nodes exist
-            var connected = false;
-            if (sourceNode && controlledNode) {
-                for (var i = 0; i < sourceNode.connectedNodes.length; i++) {
-                    if (sourceNode.connectedNodes[i] === controlledNode) {
-                        connected = true;
-                        break;
-                    }
+        // Test if two connected nodes exist
+        var connected = false;
+        if (sourceNode && controlledNode) {
+            for (var i = 0; i < sourceNode.connectedNodes.length; i++) {
+                if (sourceNode.connectedNodes[i] === controlledNode) {
+                    connected = true;
+                    break;
                 }
             }
+        }
 
-            if(!connected) {
+        if(!connected) {
+            return false;
+        }
+
+        // Test it's not already occupied
+        for(var i = 0; i < trafficLights.length; i++) {
+            var tl = trafficLights[i];
+            if(tl.valid &&
+                ((tl.sourceNode === sourceNode && tl.controlledNode === controlledNode) ||
+                (tl.sourceNode === controlledNode && tl.controlledNode === sourceNode))) {
                 return false;
             }
+        }
+        return true;
+    }
 
-            // Test it's not already occupied
-            for(var i = 0; i < trafficLights.length; i++) {
-                var tl = trafficLights[i];
-                if(tl.valid &&
-                    ((tl.sourceNode === sourceNode && tl.controlledNode === controlledNode) ||
-                    (tl.sourceNode === controlledNode && tl.controlledNode === sourceNode))) {
-                    return false;
+    function unmarkOldTrafficLightSquare(sourceCoord, controlledCoord) {
+        // Unmark the squares the light previously occupied
+        if (sourceCoord) {
+            markAsBackground(sourceCoord);
+        }
+        if (controlledCoord) {
+            markAsBackground(controlledCoord);
+        }
+
+        markCowNodes();
+
+        if (originNode) {
+            markAsOrigin(originNode.coordinate);
+        }
+        if (houseNodes.length > 0) {
+            for (let i = 0; i < houseNodes.length; i++) {
+                markAsHouse(houseNodes[i].coordinate);
+            }
+        }
+    }
+
+    function markNewTrafficLightSquare(absX, absY, validityCheckFunction, sourceCoord, controlledCoord, rotation, image = "undefined") {
+        var x = Math.min(Math.max(0, Math.floor(absX)), GRID_WIDTH - 1);
+        var y = GRID_HEIGHT - Math.min(Math.max(0, Math.floor(absY)), GRID_HEIGHT - 1) - 1;
+        sourceCoord = new ocargo.Coordinate(x,y);
+
+        // Find controlled position in map coordinates
+        switch(rotation) {
+            case 0:
+                controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y + 1);
+                break;
+            case 90:
+                controlledCoord = new ocargo.Coordinate(sourceCoord.x + 1, sourceCoord.y);
+                break;
+            case 180:
+                controlledCoord = new ocargo.Coordinate(sourceCoord.x, sourceCoord.y - 1);
+                break;
+            case 270:
+                controlledCoord = new ocargo.Coordinate(sourceCoord.x - 1, sourceCoord.y);
+                break;
+        }
+
+        // If controlled node is not on grid, remove it
+        if (!isCoordinateOnGrid(controlledCoord)) {
+            controlledCoord = null;
+        }
+
+        // If source node is not on grid remove it
+        if (!isCoordinateOnGrid(sourceCoord)) {
+            sourceCoord = null;
+        }
+
+        if (sourceCoord && controlledCoord) {
+            var colour;
+            if(validityCheckFunction(sourceCoord, controlledCoord)) {
+                colour = VALID_LIGHT_COLOUR;
+                if (image !== "undefined") {
+                    drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+                }
+            } else {
+                colour = INVALID_LIGHT_COLOUR;
+            }
+
+            mark(controlledCoord, colour, 0.7, false);
+            mark(sourceCoord, colour, 0.7, false);
+        }
+
+        return [sourceCoord, controlledCoord];
+    }
+
+    function handleDraggableTrafficLightsMouseDown(e, startingState){
+        e.preventDefault();
+
+        window.dragged_light = {};
+        dragged_light.pageX0 = e.pageX;
+        dragged_light.pageY0 = e.pageY;
+        dragged_light.elem = e.target;
+        dragged_light.offset0 = $(e.target).offset();
+        dragged_light.width = TRAFFIC_LIGHT_WIDTH;
+        dragged_light.height = TRAFFIC_LIGHT_HEIGHT;
+        dragged_light.parent = e.target.parentElement;
+
+        const clone = $(e.target).clone(true);
+
+        let sourceCoord;
+        let controlledCoord;
+
+        function handleDraggableTrafficLightsDragging(e){
+            const left = dragged_light.offset0.left + (e.pageX - dragged_light.pageX0);
+            const top = dragged_light.offset0.top + (e.pageY - dragged_light.pageY0);
+            $(dragged_light.elem).offset({top: top, left: left});
+
+            unmarkOldTrafficLightSquare(sourceCoord, controlledCoord);
+
+            const [absX, absY] = getAbsCoordinates(e);
+            if (draggedCursorOverGrid(absX, absY)) {
+                [sourceCoord, controlledCoord] = markNewTrafficLightSquare(absX, absY, isValidTrafficLightPlacement, sourceCoord, controlledCoord, 0);
+            }
+        }
+
+        function handleDraggableTrafficLightsMouseUp(e){
+            let internalTrafficLight = new InternalTrafficLight({"redDuration": 3, "greenDuration": 3, "startTime": 0, "startingState": startingState, "sourceCoordinate": null,  "direction": null});
+            let image = internalTrafficLight.image;
+
+            const lightX = e.pageX + paper.scrollLeft() - TAB_PANE_WIDTH - dragged_light.width;
+            const lightY = e.pageY + paper.scrollTop() - dragged_light.width / 2;
+
+            unmarkOldTrafficLightSquare(sourceCoord, controlledCoord);
+
+            if (isValidTrafficLightPlacement(sourceCoord, controlledCoord)) {
+                internalTrafficLight.sourceNode = ocargo.Node.findNodeByCoordinate(sourceCoord, nodes);
+                internalTrafficLight.controlledNode = ocargo.Node.findNodeByCoordinate(controlledCoord, nodes);
+                internalTrafficLight.valid = true;
+
+                drawing.setTrafficLightImagePosition(sourceCoord, controlledCoord, image);
+            } else {
+                internalTrafficLight.sourceCoord = null;
+                internalTrafficLight.controlledCoord = null;
+                internalTrafficLight.valid = false;
+
+                if (draggedObjectOnGrid(e, dragged_light)) {
+                        image.transform('t' + lightX + ',' + lightY + ' s-1,1');
+                } else {
+                    internalTrafficLight.destroy();
                 }
             }
-            return true;
+
+            $(document)
+            .off('mousemove', handleDraggableTrafficLightsDragging)
+            .off('mouseup mouseleave', handleDraggableTrafficLightsMouseUp);
+
+            $(dragged_light.elem).remove();
+            $(clone).appendTo(dragged_light.parent);
         }
 
-        function occupied(sourceCoord, controlledCoord) {
-
-        }
+        $(document)
+        .on('mouseup mouseleave', handleDraggableTrafficLightsMouseUp)
+        .on('mousemove', handleDraggableTrafficLightsDragging);
     }
 
     /********************************/
@@ -2726,6 +2881,7 @@ ocargo.LevelEditor = function(levelId) {
 
         setupCowListeners(this);
         this.image.attr({'cursor':'pointer'});
+        this.image.attr({'position': 'absolute'});
         cows.push(this);
 
     }
