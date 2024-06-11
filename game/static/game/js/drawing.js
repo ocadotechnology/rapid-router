@@ -457,7 +457,7 @@ ocargo.Drawing = function (startingPosition) {
 
     let path = ocargo.Drawing.raphaelImageDir + 'road_tiles/'
 
-    path += CHARACTER_NAME === 'Van' ? 'road/' : 'path/'
+    path += (CHARACTER_NAME === 'Van' || CHARACTER_NAME === "Electric van") ? 'road/' : 'path/'
 
     roadImages = []
     for (let i = 0; i < nodes.length; i++) {
