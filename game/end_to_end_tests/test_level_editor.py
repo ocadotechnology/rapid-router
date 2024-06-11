@@ -174,8 +174,11 @@ class TestLevelEditor(BaseGameTest):
         assert WebDriverWait(self.selenium, 65).until(
             EC.presence_of_element_located((By.ID, "myModal-mainText"))
         )
-        hint_modal_text_one = self.selenium.find_element(By.ID, "myModal-mainText").get_attribute("innerHTML")
-        assert "test hint" in hint_modal_text_one
+
+        hint_modal_text_one = self.selenium.find_element(By.ID, "myModal-mainText")
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            "test hint" in hint_modal_text_one.get_attribute("innerHTML")
+        )
         self.selenium.find_element(By.ID, "play_button").click()
 
         # check to see if triggered hint appears by making a few failed attempts
@@ -187,9 +190,7 @@ class TestLevelEditor(BaseGameTest):
         self.selenium.find_element(By.ID, "try_again_button").click()
 
         fast_tab.click()
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.presence_of_element_located((By.ID, "hintBtnPara"))
-        )
+        assert WebDriverWait(self.selenium, DELAY_TIME).until()
         hint_modal_text_two = self.selenium.find_element(By.ID, "hintBtnPara").get_attribute("innerHTML")
         assert "test hint" in hint_modal_text_two
         self.selenium.find_element(By.ID, "try_again_button").click()
