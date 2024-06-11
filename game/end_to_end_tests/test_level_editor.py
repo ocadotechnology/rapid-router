@@ -168,7 +168,7 @@ class TestLevelEditor(BaseGameTest):
         )
         modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
         assert "test aim test lesson" in modal_text
-        self.selenium.find_element(By.ID, "play_button").click()
+        self.selenium.find_element(By.ID, "close-modal").click()
 
         # wait for modal to disappear 
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
