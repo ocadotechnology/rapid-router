@@ -177,7 +177,7 @@ class TestLevelEditor(BaseGameTest):
 
         # check to see if the timed hint appears by waiting
         assert WebDriverWait(self.selenium, 65).until(
-            EC.presence_of_element_located((By.ID, "myModal-mainText"))
+            EC.visibility_of_element_located((By.ID, "myModal-mainText"))
         )
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.text_to_be_present_in_element_attribute((By.ID, "myModal-mainText"), "innerHTML", "test hint")
