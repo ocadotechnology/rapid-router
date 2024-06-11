@@ -170,14 +170,15 @@ class TestLevelEditor(BaseGameTest):
         assert "test aim test lesson" in modal_text
         self.selenium.find_element(By.ID, "play_button").click()
 
+        # wait for modal to disappear 
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.none_of(EC.presence_of_all_elements_located((By.ID, "myModal-mainText")))
+        )
+
         # check to see if the timed hint appears by waiting
         assert WebDriverWait(self.selenium, 65).until(
             EC.presence_of_element_located((By.ID, "myModal-mainText"))
         )
-
-        hint_modal_text_one = self.selenium.find_element(By.ID, "myModal-mainText")
-        # hint_modal_title = self.selenium.find_element(By.ID, "myModal-title").get_attribute("innerHTML")
-        # assert "Are you stuck? Do you need help?" in hint_modal_title
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.text_to_be_present_in_element_attribute((By.ID, "myModal-mainText"), "innerHTML", "test hint")
         )
