@@ -167,7 +167,7 @@ class TestLevelEditor(BaseGameTest):
             EC.presence_of_element_located((By.ID, "myModal-lead"))
         )
         modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
-        assert modal_text.contains("test aim test lesson")
+        assert "test aim test lesson" in modal_text
         self.selenium.find_element(By.ID, "play_button").click()
 
         # check to see if the timed hint appears by waiting
@@ -175,7 +175,7 @@ class TestLevelEditor(BaseGameTest):
             EC.presence_of_element_located((By.ID, "myModal-mainText"))
         )
         hint_modal_text_one = self.selenium.find_element(By.ID, "myModal-mainText").get_attribute("innerHTML")
-        assert hint_modal_text_one.contains("test hint")
+        assert "test hint" in hint_modal_text_one
         self.selenium.find_element(By.ID, "play_button").click()
 
         # check to see if triggered hint appears by making a few failed attempts
@@ -190,8 +190,8 @@ class TestLevelEditor(BaseGameTest):
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.presence_of_element_located((By.ID, "hintBtnPara"))
         )
-        hint_modal_text_two = self.selenium.find_element(By.ID, "hintBtnPara")
-        assert hint_modal_text_two == "test hint"
+        hint_modal_text_two = self.selenium.find_element(By.ID, "hintBtnPara").get_attribute("innerHTML")
+        assert "test hint" in hint_modal_text_two
         self.selenium.find_element(By.ID, "try_again_button").click()
 
         # check to see if the custom hint appears on the hint popup
@@ -200,4 +200,4 @@ class TestLevelEditor(BaseGameTest):
             EC.presence_of_element_located((By.ID, "myModal-mainText"))
         )
         hint_modal_text_three = self.selenium.find_element(By.ID, "myModal-mainText").get_attribute("innerHTML")
-        assert hint_modal_text_three.contains("test hint")
+        assert "test hint" in hint_modal_text_three
