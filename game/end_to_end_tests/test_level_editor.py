@@ -172,7 +172,7 @@ class TestLevelEditor(BaseGameTest):
 
         # wait for modal to disappear 
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.none_of(EC.presence_of_all_elements_located((By.ID, "myModal-mainText")))
+            EC.none_of(EC.visibility_of_all_elements_located((By.ID, "myModal-mainText")))
         )
 
         # check to see if the timed hint appears by waiting
