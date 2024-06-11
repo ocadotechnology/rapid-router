@@ -1,5 +1,6 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import Select
 
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.views.level_editor import available_blocks
@@ -129,3 +130,14 @@ class TestLevelEditor(BaseGameTest):
         cloned_source_light = self.selenium.find_elements(By.ID, "trafficLightRed")
         assert len(scenery_light) == 1
         assert len(cloned_source_light) == 1
+
+    def test_solar_panels(self):
+        page = self.go_to_level_editor()
+        page.go_to_scenery_tab()
+
+        solar_panel_style = self.selenium.find_element(By.ID, "solar_panel").get_attribute("style")
+        assert "inline" in solar_panel_style
+
+        Select(self.selenium.find_element(By.ID, "theme_select")).select_by_value("snow")
+        solar_panel_snow_style = self.selenium.find_element(By.ID, "solar_panel").get_attribute("style")
+        assert "none" in solar_panel_snow_style
