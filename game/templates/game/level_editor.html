@@ -495,12 +495,12 @@
 
           <div id="instruction_pane" class="tab_pane">
             <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/instruction.svg" %}'>{% trans "Instruction" %}</h2>
-            <p> {% trans "Give this level an aim and some instructions on what to do within this level for your students." %} </p>
-            <p> {% trans "Students will see this aim and the instructions when <b>starting this level</b> so make sure they are <b>useful to the student</b>." %} </p>
+            <p> {% trans "Give this level a subtitle and some instructions on what to do within this level for your students." %} </p>
+            <p> {% trans "Students will see this subtitle and the instructions when <b>starting this level</b> so make sure they are <b>useful to the student</b>." %} </p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                <p>{% trans "<b>Aim</b><br>What is the aim of this level?" %}</p>
-                <textarea id="aim" rows="4" cols="50"></textarea>
+                <p>{% trans "<b>Subtitle</b><br>What is the subtitle of this level?" %}</p>
+                <textarea id="subtitle" rows="4" cols="50"></textarea>
 
                 <p>{% trans "<b>Instruction</b><br>What do players have to do to complete this level?" %}</p>
                 <textarea id="instruction" rows="4" cols="50"></textarea>

@@ -156,7 +156,7 @@ class Level(models.Model):
     character_name = models.CharField(
         max_length=20, choices=character_choices(), blank=True, null=True, default=None
     )
-    aim = models.TextField(max_length=10000, null=True)
+    subtitle = models.TextField(max_length=10000, null=True)
     lesson = models.TextField(max_length=10000, null=True)
     hint_timer_minutes = models.IntegerField(null=True)
     hint_trigger_attempts = models.IntegerField(null=True)

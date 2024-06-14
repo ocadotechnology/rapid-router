@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='level',
-            name='aim',
+            name='subtitle',
             field=models.TextField(max_length=10000, null=True),
         ),
         migrations.AddField(

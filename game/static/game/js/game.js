@@ -132,7 +132,7 @@ ocargo.Game.prototype.setup = function () {
 
   ocargo.Drawing.startPopup(
       title,
-      AIM + " " + LESSON,
+      "<b>" + SUBTITLE + "</b> <br> <br> " + LESSON,
       message,
       showMascot,
       [

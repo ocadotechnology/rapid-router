@@ -162,7 +162,7 @@ def play_level(request, level, from_editor=False):
         lessonCall = messages.description_level_default
         hintCall = messages.hint_level_default
 
-    aim = level.aim or messages.aim_level_default
+    subtitle = level.subtitle or messages.subtitle_level_default
     lesson = level.lesson or mark_safe(lessonCall())
     hint_timer_minutes = level.hint_timer_minutes
     hint_trigger_attempts = level.hint_trigger_attempts
@@ -236,7 +236,7 @@ def play_level(request, level, from_editor=False):
         "game/game.html",
         context={
             "level": level,
-            "aim": aim,
+            "subtitle": subtitle,
             "lesson": lesson,
             "hint_timer_minutes": hint_timer_minutes,
             "hint_trigger_attempts": hint_trigger_attempts,

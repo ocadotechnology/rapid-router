@@ -145,7 +145,7 @@ class TestLevelEditor(BaseGameTest):
 
         # fill in custom instruction and hint fields
         page.go_to_instruction_tab()
-        self.selenium.find_element(By.ID, "aim").send_keys("test aim")
+        self.selenium.find_element(By.ID, "subtitle").send_keys("test subtitle")
         self.selenium.find_element(By.ID, "instruction").send_keys("test lesson")
 
         page.go_to_hint_tab()
@@ -162,12 +162,12 @@ class TestLevelEditor(BaseGameTest):
         )
         self.selenium.find_element(By.ID, "play_button").click()
 
-        # check to see if custom aim and lesson appear on the initial popup
+        # check to see if custom subtitle and lesson appear on the initial popup
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.presence_of_element_located((By.ID, "myModal-lead"))
         )
         modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
-        assert "test aim test lesson" in modal_text
+        assert "test subtitle test lesson" in modal_text
         self.selenium.find_element(By.ID, "close-modal").click()
 
         # wait for modal to disappear 

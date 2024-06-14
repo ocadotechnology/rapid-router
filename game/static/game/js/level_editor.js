@@ -2499,7 +2499,7 @@ ocargo.LevelEditor = function(levelId) {
         state.pythonEnabled = language === 'python' || language === 'both';
 
         // Instruction and hint data
-        state.aim = $('#aim').val();
+        state.subtitle = $('#subtitle').val();
         state.lesson = $('#instruction').val();
         state.hint_timer_minutes = $('#hint_timer_minutes').val() === "null" ? null : $('#hint_timer_minutes').val();
         state.hint_trigger_attempts = $('#hint_trigger_attempts').val() === "null" ? null : $('#hint_trigger_attempts').val();
@@ -2634,7 +2634,7 @@ ocargo.LevelEditor = function(levelId) {
         languageSelect.change();
 
         // Load in instruction and hint data
-        $('#aim').val(state.aim);
+        $('#subtitle').val(state.subtitle);
         $('#instruction').val(state.lesson);
         $('#hint_timer_minutes').val(state.hint_timer_minutes === null ? "null" : state.hint_timer_minutes);
         $('#hint_trigger_attempts').val(state.hint_trigger_attempts === null ? "null" : state.hint_trigger_attempts);

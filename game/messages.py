@@ -109,7 +109,7 @@ def description_level_default():
     return "Can you find the shortest route?"
 
 
-def aim_level_default():
+def subtitle_level_default():
     return ""
 
 
