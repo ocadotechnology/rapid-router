@@ -149,8 +149,6 @@ class TestLevelEditor(BaseGameTest):
         self.selenium.find_element(By.ID, "instruction").send_keys("test lesson")
 
         page.go_to_hint_tab()
-        Select(self.selenium.find_element(By.ID, "hint_timer_minutes")).select_by_value("1")
-        Select(self.selenium.find_element(By.ID, "hint_trigger_attempts")).select_by_value("2")
         self.selenium.find_element(By.ID, "hint").send_keys("test hint")
 
         # save level and choose to play it

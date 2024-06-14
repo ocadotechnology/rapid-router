@@ -164,8 +164,6 @@ def play_level(request, level, from_editor=False):
 
     subtitle = level.subtitle or messages.subtitle_level_default
     lesson = level.lesson or mark_safe(lessonCall())
-    hint_timer_minutes = level.hint_timer_minutes
-    hint_trigger_attempts = level.hint_trigger_attempts
     hint = level.hint or mark_safe(hintCall())
 
     character = level.character
@@ -238,8 +236,6 @@ def play_level(request, level, from_editor=False):
             "level": level,
             "subtitle": subtitle,
             "lesson": lesson,
-            "hint_timer_minutes": hint_timer_minutes,
-            "hint_trigger_attempts": hint_trigger_attempts,
             "hint": hint,
             "blocks": block_data,
             "decor": decor_data,

@@ -88,8 +88,6 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
 
     subtitle = level.subtitle or mark_safe(messages.subtitle_level_default())
     lesson = level.lesson or mark_safe(messages.description_level_default())
-    hint_timer_minutes = level.hint_timer_minutes
-    hint_trigger_attempts = level.hint_trigger_attempts
     hint = level.hint or mark_safe(messages.hint_level_default())
 
     attempt = None
@@ -128,8 +126,6 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
             "blocks": block_data,
             "subtitle": subtitle,
             "lesson": lesson,
-            "hint_timer_minutes": hint_timer_minutes,
-            "hint_trigger_attempts": hint_trigger_attempts,
             "hint": hint,
             "character": character,
             "background": background,

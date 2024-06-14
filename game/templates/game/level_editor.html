@@ -514,34 +514,6 @@
             <p> {% trans "Players can also access hints by clicking the hint button whilst playing." %} </p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
-                <div class="table">
-                  <div class="table_row">
-                    <div class="table_cell field_label"><p>{% trans "Timer" %}</p></div>
-                    <div class="table_cell field_value">
-                      <select id="hint_timer_minutes">
-                        <option value="null">{% trans "No hint" %}</option>
-                        <option value="1">{% trans "1 min" %}</option>
-                        <option value="2">{% trans "2 min" %}</option>
-                        <option value="3">{% trans "3 min" %}</option>
-                        <option value="4">{% trans "4 min" %}</option>
-                        <option value="5">{% trans "5 min" %}</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="table_row">
-                    <div class="table_cell field_label"><p>{% trans "Trigger" %}</p></div>
-                    <div class="table_cell field_value">
-                      <select id="hint_trigger_attempts">
-                        <option value="null">{% trans "No hint" %}</option>
-                        <option value="2">{% trans "x2 attempts" %}</option>
-                        <option value="3">{% trans "x3 attempts" %}</option>
-                        <option value="4">{% trans "x4 attempts" %}</option>
-                        <option value="5">{% trans "x5 attempts" %}</option>
-                        <option value="6">{% trans "x6 attempts" %}</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
                 <p>{% trans "Hint" %}</p>
                 <textarea id="hint" rows="4" cols="50"></textarea>
               </div>

@@ -143,18 +143,6 @@ ocargo.Game.prototype.setup = function () {
   )
 }
 
-$("#close-modal").click(function() {
-    if (HINT_TIMER_MINUTES != "None" && !this.hasTimedHintAppeared) {
-      window.setTimeout(function() {
-        ocargo.Drawing.startPopup("Are you stuck? Do you need help?", "", HINT, false, [
-          ocargo.button.dismissButtonHtml("play_button", gettext("Continue"))
-        ])
-      }, HINT_TIMER_MINUTES * 60 * 1000);
-      this.hasTimedHintAppeared = true;
-    }
-  }.bind(this)
-)
-
 // Script used to save and check for episode upon loading of the webpage
 document.addEventListener("DOMContentLoaded", function() {
   const dataElement = document.getElementById('data');
@@ -298,8 +286,7 @@ ocargo.Game.prototype.sendAttempt = function (score) {
 
 ocargo.Game.prototype.registerFailure = function () {
   this.failures += 1
-  // if HINT_TRIGGER_ATTEMPTS is left null by the user, this will return false as desired
-  return this.failures >= HINT_TRIGGER_ATTEMPTS
+  return this.failures >= 2
 }
 
 ocargo.Game.prototype._setupFuelGauge = function (nodes, blocks) {

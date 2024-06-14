@@ -22,16 +22,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='level',
-            name='hint_timer_minutes',
-            field=models.IntegerField(null=True),
-        ),
-        migrations.AddField(
-            model_name='level',
-            name='hint_trigger_attempts',
-            field=models.IntegerField(null=True),
-        ),
-        migrations.AddField(
-            model_name='level',
             name='lesson',
             field=models.TextField(max_length=10000, null=True),
         ),

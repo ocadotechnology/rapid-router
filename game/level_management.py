@@ -168,8 +168,6 @@ def save_level(level, data):
     level.disable_algorithm_score = data.get("disable_algorithm_score", False)
     level.subtitle = data.get("subtitle")
     level.lesson = data.get("lesson")
-    level.hint_timer_minutes = data.get("hint_timer_minutes")
-    level.hint_trigger_attempts = data.get("hint_trigger_attempts")
     level.hint = data.get("hint")
     level.save()
 

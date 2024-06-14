@@ -158,8 +158,6 @@ class Level(models.Model):
     )
     subtitle = models.TextField(max_length=10000, null=True)
     lesson = models.TextField(max_length=10000, null=True)
-    hint_timer_minutes = models.IntegerField(null=True)
-    hint_trigger_attempts = models.IntegerField(null=True)
     hint = models.TextField(max_length=10000, null=True)
     anonymous = models.BooleanField(default=False)
     locked_for_class = models.ManyToManyField(

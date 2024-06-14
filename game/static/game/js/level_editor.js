@@ -2501,8 +2501,6 @@ ocargo.LevelEditor = function(levelId) {
         // Instruction and hint data
         state.subtitle = $('#subtitle').val();
         state.lesson = $('#instruction').val();
-        state.hint_timer_minutes = $('#hint_timer_minutes').val() === "null" ? null : $('#hint_timer_minutes').val();
-        state.hint_trigger_attempts = $('#hint_trigger_attempts').val() === "null" ? null : $('#hint_trigger_attempts').val();
         state.hint = $('#hint').val();
 
         // Other data
@@ -2636,8 +2634,6 @@ ocargo.LevelEditor = function(levelId) {
         // Load in instruction and hint data
         $('#subtitle').val(state.subtitle);
         $('#instruction').val(state.lesson);
-        $('#hint_timer_minutes').val(state.hint_timer_minutes === null ? "null" : state.hint_timer_minutes);
-        $('#hint_trigger_attempts').val(state.hint_trigger_attempts === null ? "null" : state.hint_trigger_attempts);
         $('#hint').val(state.hint);
 
         // Other data
