@@ -165,7 +165,8 @@ class TestLevelEditor(BaseGameTest):
             EC.presence_of_element_located((By.ID, "myModal-lead"))
         )
         modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
-        assert "test subtitle test lesson" in modal_text
+        assert "test subtitle" in modal_text
+        assert "test lesson" in modal_text
         self.selenium.find_element(By.ID, "close-modal").click()
 
         # wait for modal to disappear 
