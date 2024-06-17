@@ -189,6 +189,8 @@ class TestLevelEditor(BaseGameTest):
         assert "display: block" in hint_modal_style
         assert "test hint" in hint_modal_text
 
+        self.selenium.find_element(By.ID, "try_again_button").click()
+
         # check to see if the custom hint appears on the hint popup
         self.selenium.find_element(By.ID, "help_tab").click()
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
