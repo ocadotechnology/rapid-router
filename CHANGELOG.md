@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v5.20.0 (2024-06-17)
+
+### Feature
+
+* Add catalan and spanish to rapid router ([#1650](https://github.com/ocadotechnology/rapid-router/issues/1650)) ([`aacf29c`](https://github.com/ocadotechnology/rapid-router/commit/aacf29cd1f188ec5d51b52843f633ae85a5b6146))
+* Make scenery draggable lights and cows ([#1642](https://github.com/ocadotechnology/rapid-router/issues/1642)) ([`49c7a1f`](https://github.com/ocadotechnology/rapid-router/commit/49c7a1f658c445de38e0421a23e4c00798bc20b9))
+
 ## v5.19.0 (2024-06-05)
 
 ### Feature
