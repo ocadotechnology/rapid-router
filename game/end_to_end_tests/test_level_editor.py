@@ -173,29 +173,20 @@ class TestLevelEditor(BaseGameTest):
             EC.none_of(EC.visibility_of_all_elements_located((By.ID, "myModal-mainText")))
         )
 
-        # check to see if the timed hint appears by waiting
-        assert WebDriverWait(self.selenium, 65).until(
-            EC.visibility_of_element_located((By.ID, "myModal-mainText"))
-        )
-        hint_modal_text_one = self.selenium.find_element(By.ID, "myModal-mainText").get_attribute("innerHTML")
-        assert "test hint" in hint_modal_text_one
-        self.selenium.find_element(By.ID, "play_button").click()
-
-        # check to see if triggered hint appears by making a few failed attempts
+        # check to see if the custom hint appears on failure modal
         fast_tab = self.selenium.find_element(By.ID, "fast_tab")
         fast_tab.click()
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.visibility_of_element_located((By.ID, "try_again_button"))
+            EC.visibility_of_element_located((By.ID, "hintPopupBtn"))
         )
-        self.selenium.find_element(By.ID, "try_again_button").click()
+        hint_button = self.selenium.find_element(By.ID, "hintPopupBtn")
+        hint_button.click()
 
-        fast_tab.click()
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.visibility_of_element_located((By.ID, "hintBtnPara"))
-        )
-        hint_modal_text_two = self.selenium.find_element(By.ID, "hintBtnPara").get_attribute("innerHTML")
-        assert "test hint" in hint_modal_text_two
-        self.selenium.find_element(By.ID, "try_again_button").click()
+        hint_modal_text = self.selenium.find_element(By.ID, "hintText").get_attribute("innerHTML")
+        hint_modal_style = self.selenium.find_element(By.ID, "hintText").get_attribute("style")
+        assert "display: none" in hint_button.get_attribute("style")
+        assert "display: block" in hint_modal_style
+        assert "test hint" in hint_modal_text
 
         # check to see if the custom hint appears on the hint popup
         self.selenium.find_element(By.ID, "help_tab").click()

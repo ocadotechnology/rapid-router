@@ -351,7 +351,7 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 			var otherMsg = "";
 			if (animation.popupHint) {
 				console.log("popuphint");
-				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + gettext('Are you stuck? Do you need help?') + '</span></button>';
+				buttons += '<button class="navigation_button long_button" id="hintPopupBtn"><span>' + gettext('Show hint') + '</span></button>';
 				otherMsg = '<div id="hintBtnPara">' + '</div><div id="hintText">' + HINT + '</div>';
 			}
 			console.log(buttons);
