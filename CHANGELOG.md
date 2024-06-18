@@ -2,6 +2,25 @@
 
 <!--next-version-placeholder-->
 
+## v5.22.0 (2024-06-18)
+
+### Feature
+
+* Add solar panels ([#1647](https://github.com/ocadotechnology/rapid-router/issues/1647)) ([`37a80a5`](https://github.com/ocadotechnology/rapid-router/commit/37a80a57e8c8ecacc09a507ae155282c97804a04))
+
+## v5.21.0 (2024-06-18)
+
+### Feature
+
+* Add electric van ([#1649](https://github.com/ocadotechnology/rapid-router/issues/1649)) ([`d0fe4c3`](https://github.com/ocadotechnology/rapid-router/commit/d0fe4c3b45e2daf037580fe4726e4f0356f83ca5))
+
+## v5.20.0 (2024-06-17)
+
+### Feature
+
+* Add catalan and spanish to rapid router ([#1650](https://github.com/ocadotechnology/rapid-router/issues/1650)) ([`aacf29c`](https://github.com/ocadotechnology/rapid-router/commit/aacf29cd1f188ec5d51b52843f633ae85a5b6146))
+* Make scenery draggable lights and cows ([#1642](https://github.com/ocadotechnology/rapid-router/issues/1642)) ([`49c7a1f`](https://github.com/ocadotechnology/rapid-router/commit/49c7a1f658c445de38e0421a23e4c00798bc20b9))
+
 ## v5.19.0 (2024-06-05)
 
 ### Feature
