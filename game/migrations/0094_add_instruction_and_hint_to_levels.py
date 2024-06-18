@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0092_disable_algo_score_in_custom_levels'),
+        ('game', '0093_alter_level_character_name'),
     ]
 
     operations = [
