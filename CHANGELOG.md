@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.21.0 (2024-06-18)
+
+### Feature
+
+* Add electric van ([#1649](https://github.com/ocadotechnology/rapid-router/issues/1649)) ([`d0fe4c3`](https://github.com/ocadotechnology/rapid-router/commit/d0fe4c3b45e2daf037580fe4726e4f0356f83ca5))
+
 ## v5.20.0 (2024-06-17)
 
 ### Feature
