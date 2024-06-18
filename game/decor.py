@@ -345,6 +345,46 @@ DECOR_DATA = {
         theme=get_theme("city"),
         pk=32,
     ),
+    ("solar_panel", "grass"): Decor(
+        z_index=4,
+        name="solar_panel",
+        url="decor/grass/solar_panel.svg",
+        xmas_url="decor/snow/tree1.svg",
+        height=100,
+        width=100,
+        theme=get_theme("grass"),
+        pk=33
+    ),
+    ("solar_panel", "farm"): Decor(
+        z_index=4,
+        name="solar_panel",
+        url="decor/farm/solar_panel.svg",
+        xmas_url="decor/snow/tree1.svg",
+        height=100,
+        width=100,
+        theme=get_theme("farm"),
+        pk=34
+    ),
+    ("solar_panel", "snow"): Decor(
+        z_index=4,
+        name="solar_panel",
+        url="decor/snow/tree1.svg",
+        xmas_url="decor/snow/tree1.svg",
+        height=100,
+        width=100,
+        theme=get_theme("snow"),
+        pk=35
+    ),
+    ("solar_panel", "city"): Decor(
+        z_index=4,
+        name="solar_panel",
+        url="decor/city/school.svg",
+        xmas_url="decor/snow/school.svg",
+        height=100,
+        width=100,
+        theme=get_theme("city"),
+        pk=36
+    )
 }
 
 
