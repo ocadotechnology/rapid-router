@@ -67,6 +67,14 @@ CHARACTER_DATA = {
         height="40",
         width="40",
     ),
+    "Electric van": Character(
+        pk=7,
+        name="Electric van",
+        en_face="characters/front_view/Electric_van.svg",
+        top_down="characters/top_view/Electric_van.svg",
+        height="20",
+        width="40"
+    ),
 }
 
 
