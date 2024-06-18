@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.22.0 (2024-06-18)
+
+### Feature
+
+* Add solar panels ([#1647](https://github.com/ocadotechnology/rapid-router/issues/1647)) ([`37a80a5`](https://github.com/ocadotechnology/rapid-router/commit/37a80a57e8c8ecacc09a507ae155282c97804a04))
+
 ## v5.21.0 (2024-06-18)
 
 ### Feature
