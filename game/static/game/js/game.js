@@ -290,17 +290,22 @@ ocargo.Game.prototype.registerFailure = function () {
 
 ocargo.Game.prototype._setupFuelGauge = function (nodes, blocks) {
   if (FUEL_GAUGE) {
-    document.getElementById('fuelGauge').style.visibility = 'visible'
+    if (LEVEL_ID == "83") {
+      document.getElementById("electricFuelGauge").style.visibility = 'visible'
+    } else {
+      document.getElementById('fuelGauge').style.visibility = 'visible'
 
-    for (var i = 0; i < blocks.length; i++) {
-      if (blocks[i].type === 'turn_around' || blocks[i].type === 'wait') {
-        return
+      // TODO: Investigate these for loops - are they necessary?
+      for (var i = 0; i < blocks.length; i++) {
+        if (blocks[i].type === 'turn_around' || blocks[i].type === 'wait') {
+          return
+        }
       }
-    }
 
-    for (var i = 0; i < nodes.length; i++) {
-      if (nodes[i].connectedNodes.length > 2) {
-        return
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].connectedNodes.length > 2) {
+          return
+        }
       }
     }
   }

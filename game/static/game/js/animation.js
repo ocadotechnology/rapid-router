@@ -394,10 +394,34 @@ ocargo.Animation.prototype._updateFuelIfPresent = function(animation) {
 };
 
 ocargo.Animation.prototype._updateFuelGauge = function(fuelPercentage) {
+	if (LEVEL_ID == "83") {
+		let gaugeCircumference = 273.18;
+		let baseRotation = 270;
+
+		let offset = gaugeCircumference * (fuelPercentage / 100);
+		let rotation = 36 * (fuelPercentage / 10) - baseRotation;
+
+		let color = (fuelPercentage > 30) ? "#4ba0dd" : ((fuelPercentage > 10) ? "#ff7300" : "#ff3131");
+		let text_x = (fuelPercentage == 100) ? 42.3 : ((fuelPercentage >= 10) ? 45 : 50);
+
+		let electricFuelGauge = document.getElementById("electricFuelGaugeIcon");
+		let currentPercentage = electricFuelGauge.getAttribute("percentage");
+
+		let newGauge = '<electric-fuel-gauge id="electricFuelGaugeIcon" offset="' + offset
+										+ '" rotation="rotate(' + rotation
+										+ ', 59.79, 59.79)" color="' + color
+										+ '" percentage="' + fuelPercentage
+										+ '" text_x="' + text_x
+										+ '"></electric-fuel-gauge>';
+		if (currentPercentage != fuelPercentage) {
+			electricFuelGauge.outerHTML = newGauge;
+		}
+	} else {
     var degrees = ((fuelPercentage / 100) * 240) - 120;
     var rotation = 'rotate(' + degrees + 'deg)';
     document.getElementById('fuelGaugePointer').style.transform = rotation;
     document.getElementById('fuelGaugePointer').style.webkitTransform = rotation;
+	}
 };
 
 ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){
