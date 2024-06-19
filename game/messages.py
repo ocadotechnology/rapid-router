@@ -101,10 +101,6 @@ def build_description(title, message):
     return f"<b>{title}</b><br><br>{message}"
 
 
-def title_level_default():
-    return " "
-
-
 def description_level_default():
     return "Can you find the shortest route?"
 

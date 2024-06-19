@@ -2506,9 +2506,17 @@ ocargo.LevelEditor = function(levelId) {
         state.pythonEnabled = language === 'python' || language === 'both';
 
         // Instruction and hint data
-        state.subtitle = $('#subtitle').val();
-        state.lesson = $('#instruction').val();
-        state.hint = $('#hint').val();
+        if ($('#subtitle').val().length > 0) {
+            state.subtitle = $('#subtitle').val();
+        }
+
+        if ($('#instruction').val().length > 0) {
+            state.lesson = $('#instruction').val();
+        }
+
+        if ($('#hint').val().length > 0) {
+            state.hint = $('#hint').val();
+        }
 
         // Other data
         state.theme = currentTheme.id;

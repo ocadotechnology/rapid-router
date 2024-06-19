@@ -87,8 +87,8 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
         return redirect(reverse("level_editor"), permanent=True)
 
     subtitle = level.subtitle or mark_safe(messages.subtitle_level_default())
-    lesson = level.lesson or mark_safe(messages.description_level_default())
-    hint = level.hint or mark_safe(messages.hint_level_default())
+    lesson = level.lesson
+    hint = level.hint
 
     attempt = None
     house = get_decor_element("house", level.theme).url
