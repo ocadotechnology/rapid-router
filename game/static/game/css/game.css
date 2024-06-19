@@ -260,6 +260,16 @@ div > .navigation_button_kurono {
     visibility: hidden;
 }
 
+#electricFuelGaugeIcon2, #electricFuelGaugeIcon {
+    position: fixed;
+    z-index: 7;
+    width: 100px;
+    height: 100px;
+    right: 30px;
+    bottom: 20px;
+    visibility: visible;
+}
+
 #fuelGaugePointer {
     position: absolute;
     width: 100px;
