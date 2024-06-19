@@ -250,7 +250,7 @@ div > .navigation_button_kurono {
 /* Fuel gauge */
 /**************/
 
-#fuelGauge #electricFuelGauge {
+#fuelGauge, #electricFuelGauge {
     position: fixed;
     z-index: 7;
     width: 100px;
