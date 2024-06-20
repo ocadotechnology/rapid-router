@@ -404,28 +404,17 @@ ocargo.Animation.prototype._updateFuelGauge = function(fuelPercentage) {
 		let color = (fuelPercentage > 30) ? "#4ba0dd" : ((fuelPercentage > 10) ? "#ff7300" : "#ff3131");
 		let text_x = (fuelPercentage == 100) ? 42.3 : ((fuelPercentage >= 10) ? 45 : 50);
 
-		let electricFuelGauge = document.getElementById("electricFuelGaugeIcon");
-		let bogusElectricFuelGauge = document.getElementById("electricFuelGaugeIcon2");
-		let currentPercentage = electricFuelGauge.getAttribute("percentage");
+		let gauge_text = document.getElementById("Text_percentage");
+		let gauge_text_value = document.getElementById("Text_percentage_value");
+		let gauge_charge_circle = document.getElementById("f");
+		let gauge_emptying_circle = document.getElementById("emptying_circle");
 
-		let newGauge = '<electric-fuel-gauge id="electricFuelGaugeIcon" offset="' + offset
-										+ '" rotation="rotate(' + rotation
-										+ ', 59.79, 59.79)" color="' + color
-										+ '" percentage="' + fuelPercentage
-										+ '" text_x="' + text_x
-										+ '"></electric-fuel-gauge>';
-		let newGauge2 = '<electric-fuel-gauge id="electricFuelGaugeIcon2" offset="' + offset
-										+ '" rotation="rotate(' + rotation
-										+ ', 59.79, 59.79)" color="' + color
-										+ '" percentage="' + fuelPercentage
-										+ '" text_x="' + text_x
-										+ '"></electric-fuel-gauge>';
-		if (currentPercentage != fuelPercentage) {
-			electricFuelGauge.outerHTML = newGauge;
-			const myTimeout = setTimeout(function() {
-				bogusElectricFuelGauge.outerHTML = newGauge2;
-			}, 100)
-		}
+		gauge_text.setAttribute("transform", "translate(" + text_x + " 48.2)");
+		gauge_text.setAttribute("fill", color);
+		gauge_text_value.textContent = fuelPercentage + "%";
+		gauge_charge_circle.setAttribute("fill", color);
+		gauge_emptying_circle.setAttribute("stroke-dashoffset", offset);
+		gauge_emptying_circle.setAttribute("transform", "rotate(" + rotation + ", 59.79, 59.79)");
 	} else {
     var degrees = ((fuelPercentage / 100) * 240) - 120;
     var rotation = 'rotate(' + degrees + 'deg)';

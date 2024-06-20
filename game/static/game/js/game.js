@@ -292,8 +292,6 @@ ocargo.Game.prototype._setupFuelGauge = function (nodes, blocks) {
   if (FUEL_GAUGE) {
     if (LEVEL_ID == "83") {
       document.getElementById("electricFuelGauge").style.visibility = 'visible'
-      document.getElementById("electricFuelGaugeIcon").style.visibility = "visible"
-      document.getElementById("electricFuelGaugeIcon2").style.visibility = "visible"
     } else {
       document.getElementById('fuelGauge').style.visibility = 'visible'
 
