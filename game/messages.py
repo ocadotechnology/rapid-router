@@ -101,18 +101,6 @@ def build_description(title, message):
     return f"<b>{title}</b><br><br>{message}"
 
 
-def description_level_default():
-    return "Can you find the shortest route?"
-
-
-def subtitle_level_default():
-    return ""
-
-
-def hint_level_default():
-    return "Think back to earlier levels. What did you learn?"
-
-
 def title_level1():
     return "Can you help the van get to the house?"
 

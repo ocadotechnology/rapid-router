@@ -86,7 +86,7 @@ def play_anonymous_level(request, levelId, from_level_editor=True, random_level=
     if not level.anonymous:
         return redirect(reverse("level_editor"), permanent=True)
 
-    subtitle = level.subtitle or mark_safe(messages.subtitle_level_default())
+    subtitle = level.subtitle
     lesson = level.lesson
     hint = level.hint
 

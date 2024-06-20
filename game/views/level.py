@@ -150,7 +150,7 @@ def play_level(request, level, from_editor=False):
         lesson = "description_level" + str(level.name)
         hint = "hint_level" + str(level.name)
 
-    subtitle = level.subtitle or messages.subtitle_level_default
+    subtitle = level.subtitle
     lesson = level.lesson
     hint = level.hint
 

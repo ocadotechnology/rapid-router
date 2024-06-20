@@ -165,7 +165,7 @@ class TestLevelEditor(BaseGameTest):
         assert len(scenery_light) == 1
         assert len(cloned_source_light) == 1
 
-    def test_custom_instruction_and_hint(self):
+    def test_custom_description_and_hint(self):
         # login
         self.login_once()
 
@@ -173,10 +173,10 @@ class TestLevelEditor(BaseGameTest):
         page = self.go_to_level_editor()
         [road_start, road_end] = self.set_up_basic_map()
 
-        # fill in custom instruction and hint fields
-        page.go_to_instruction_tab()
+        # fill in custom description and hint fields
+        page.go_to_description_tab()
         self.selenium.find_element(By.ID, "subtitle").send_keys("test subtitle")
-        self.selenium.find_element(By.ID, "instruction").send_keys("test lesson")
+        self.selenium.find_element(By.ID, "description").send_keys("test description")
 
         page.go_to_hint_tab()
         self.selenium.find_element(By.ID, "hint").send_keys("test hint")
@@ -198,7 +198,7 @@ class TestLevelEditor(BaseGameTest):
             "innerHTML"
         )
         assert "test subtitle" in modal_text
-        assert "test lesson" in modal_text
+        assert "test description" in modal_text
         self.selenium.find_element(By.ID, "close-modal").click()
 
         # wait for modal to disappear

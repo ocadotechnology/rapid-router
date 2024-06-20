@@ -7,7 +7,6 @@ ocargo.Game = function () {
   this.failures = 0
   this.currentlySelectedTab = null
   this.isMuted = Cookies.get('muted') === 'true'
-  this.hasTimedHintAppeared = false
 }
 
 ocargo.Game.prototype.setup = function () {

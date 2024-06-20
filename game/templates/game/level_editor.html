@@ -195,11 +195,11 @@
           </label>
         </div>
 
-        <div id="instruction_tab" class="tab selectable">
-          <input type="radio" name="tabs" id="instruction_radio">
-          <label for="instruction_radio">
-            <img src='{% static "game/image/icons/instruction.svg" %}'>
-            <span>{% trans "Instruction" %}</span>
+        <div id="description_tab" class="tab selectable">
+          <input type="radio" name="tabs" id="description_radio">
+          <label for="description_radio">
+            <img src='{% static "game/image/icons/description.svg" %}'>
+            <span>{% trans "Description" %}</span>
           </label>
         </div>
 
@@ -498,17 +498,17 @@
             </div>
           </div>
 
-          <div id="instruction_pane" class="tab_pane">
-            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/instruction.svg" %}'>{% trans "Instruction" %}</h2>
-            <p> {% trans "Give this level a subtitle and some instructions on what to do within this level for your students." %} </p>
-            <p> {% trans "Students will see this subtitle and the instructions when <b>starting this level</b> so make sure they are <b>useful to the student</b>." %} </p>
+          <div id="description_pane" class="tab_pane">
+            <h2 class="title"><img class="modal_image" src='{% static "game/image/icons/description.svg" %}'>{% trans "Description" %}</h2>
+            <p> {% trans "Give this level a subtitle and a description describing what to do within this level for your students." %} </p>
+            <p> {% trans "Students will see this subtitle and description when <b>starting this level</b> so make sure they are <b>useful to the student</b>." %} </p>
             <div class="tab_pane_content_holder">
               <div class="tab_pane_content">
                 <p>{% trans "<b>Subtitle</b><br>What is the subtitle of this level?" %}</p>
                 <textarea id="subtitle" rows="4" cols="50"></textarea>
 
-                <p>{% trans "<b>Instruction</b><br>What do players have to do to complete this level?" %}</p>
-                <textarea id="instruction" rows="4" cols="50"></textarea>
+                <p>{% trans "<b>Description</b><br>What do players have to do to complete this level?" %}</p>
+                <textarea id="description" rows="4" cols="50"></textarea>
               </div>
             </div>
           </div>
