@@ -191,6 +191,8 @@ ocargo.LevelEditor = function(levelId) {
         tabs.character = new ocargo.Tab($('#character_radio'), $('#character_radio + label'), $('#character_pane'));
         tabs.blocks = new ocargo.Tab($('#blocks_radio'), $('#blocks_radio + label'), $('#blocks_pane'));
         tabs.random = new ocargo.Tab($('#random_radio'), $('#random_radio + label'), $('#random_pane'));
+        tabs.description = new ocargo.Tab($('#description_radio'), $('#description_radio + label'), $('#description_pane'));
+        tabs.hint = new ocargo.Tab($('#hint_radio'), $('#hint_radio + label'), $('#hint_pane'));
         tabs.load = new ocargo.Tab($('#load_radio'), $('#load_radio + label'), $('#load_pane'));
         tabs.save = new ocargo.Tab($('#save_radio'), $('#save_radio + label'), $('#save_pane'));
         tabs.share = new ocargo.Tab($('#share_radio'), $('#share_radio + label'), $('#share_pane'));
@@ -204,6 +206,8 @@ ocargo.LevelEditor = function(levelId) {
         setupCharacterTab();
         setupBlocksTab();
         setupRandomTab();
+        setupDescriptionTab();
+        setupHintTab();
         setupLoadTab();
         setupSaveTab();
         setupShareTab();
@@ -474,6 +478,18 @@ ocargo.LevelEditor = function(levelId) {
 
                     $('#generate').attr('disabled', false);
                 });
+            });
+        }
+
+        function setupDescriptionTab() {
+            tabs.description.setOnChange(function() {
+                transitionTab(tabs.description);
+            });
+        }
+
+        function setupHintTab() {
+            tabs.hint.setOnChange(function() {
+                transitionTab(tabs.hint);
             });
         }
 
@@ -2489,6 +2505,19 @@ ocargo.LevelEditor = function(levelId) {
         state.pythonViewEnabled = language === 'blocklyWithPythonView';
         state.pythonEnabled = language === 'python' || language === 'both';
 
+        // Description and hint data
+        if ($('#subtitle').val().length > 0) {
+            state.subtitle = $('#subtitle').val();
+        }
+
+        if ($('#description').val().length > 0) {
+            state.lesson = $('#description').val();
+        }
+
+        if ($('#hint').val().length > 0) {
+            state.hint = $('#hint').val();
+        }
+
         // Other data
         state.theme = currentTheme.id;
         state.character = $('#character_select').val();
@@ -2616,6 +2645,11 @@ ocargo.LevelEditor = function(levelId) {
             languageSelect.val('blockly');
         }
         languageSelect.change();
+
+        // Load in description and hint data
+        $('#subtitle').val(state.subtitle);
+        $('#description').val(state.lesson);
+        $('#hint').val(state.hint);
 
         // Other data
         if(state.max_fuel) {

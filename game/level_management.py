@@ -166,6 +166,13 @@ def save_level(level, data):
     level.theme = get_theme_by_pk(pk=data["theme"])
     level.character = get_character_by_pk(pk=data["character"])
     level.disable_algorithm_score = data.get("disable_algorithm_score", False)
+    if data.get("subtitle") != None:
+        level.subtitle = data.get("subtitle")
+    if data.get("lesson") != None:
+        level.lesson = data.get("lesson")
+    if data.get("hint") != None:
+        level.hint = data.get("hint")
+
     level.save()
 
     set_decor(level, data["decor"])

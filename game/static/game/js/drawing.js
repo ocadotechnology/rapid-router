@@ -1138,6 +1138,10 @@ ocargo.Drawing.startPopup = function (
     playButton.append(icons[2])
     buttonDiv.append(playButton)
 
+    let hintPopupButton = $("#hintPopupBtn")
+    hintPopupButton.removeClass().addClass("navigation_button_portal long_button")
+    buttonDiv.append(hintPopupButton)
+
     $("#modal-buttons").html(buttonDiv)
   } else {
     $('#modal-buttons').html(
