@@ -168,7 +168,7 @@ class TestLevelEditor(BaseGameTest):
 
         # check to see if electric fuel gauge appears
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.presence_of_element_located((By.ID, "myModal-lead"))
+            EC.presence_of_element_located((By.ID, "electricFuelGauge"))
         )
         electric_fuel_gauge = self.selenium.find_element(By.ID, "electricFuelGauge")
         assert "visibility: visible" in electric_fuel_gauge.get_attribute("style")
