@@ -35,11 +35,12 @@
     var MODEL_SOLUTION = {{model_solution|default:"[]"}}
     var DISABLE_ROUTE_SCORE = {{level.disable_route_score|booltojs}}
     var DISABLE_ALGORITHM_SCORE = {{level.disable_algorithm_score|booltojs}}
+    var SUBTITLE = "{{subtitle|escapejs}}"
     var LESSON = "{{lesson|escapejs}}"
     var HINT = "{{hint|escapejs}}"
     var DEFAULT_LEVEL = {{level.default|booltojs}}
     var FUEL_GAUGE =  {{level.fuel_gauge|booltojs}}
-    var CHARACTER_NAME = "Electric van"
+    var CHARACTER_NAME = "{{character.name}}"
     var CHARACTER_EN_FACE_URL = "{{character.en_face}}"
     var CHARACTER_URL = "{{character_url}}"
     var CHARACTER_HEIGHT = "{{character_height}}"
@@ -494,10 +495,6 @@
       </div>
     </div>
 
-    <div id="electricFuelGauge" class="no-print unselectable">
-      <electric-gauge />
-    </div>
-
     <div id="consoleSlider" class="no-print"></div>
 
   </div>
@@ -509,106 +506,6 @@
   if (document.getElementById("language_dropdown").value == "") {
     document.getElementById("language_dropdown").value = "en";
   }
-</script>
-
-<script>
-  customElements.define("electric-gauge", class extends HTMLElement {
-    connectedCallback() {
-      setTimeout(() => {
-        this.innerHTML = `<svg id="a" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 119.58 119.58">
-                            <defs>
-                              <linearGradient id="c" x1="2.5" y1="59.86" x2="117.08" y2="59.86" gradientTransform="translate(0 119.65) scale(1 -1)" gradientUnits="userSpaceOnUse">
-                                <stop offset="0" stop-color="#050505"/>
-                                <stop offset="1" stop-color="#111"/>
-                              </linearGradient>
-                              <linearGradient id="g" x1="30.57" y1="24.62" x2="38.29" y2="24.62" gradientTransform="translate(20.78 -15.45) rotate(35.62)" xlink:href="#c"/>
-                              <linearGradient id="h" x1="12.95" y1="46.44" x2="24.09" y2="46.44" gradientTransform="translate(56.12 13.48) rotate(70.5)" xlink:href="#c"/>
-                              <linearGradient id="i" x1="59.23" y1="16.37" x2="60.45" y2="16.37" gradientTransform="matrix(1,0,0,1,0,0)" xlink:href="#c"/>
-                              <linearGradient id="j" x1="59.23" y1="103.05" x2="60.45" y2="103.05" gradientTransform="matrix(1,0,0,1,0,0)" xlink:href="#c"/>
-                              <linearGradient id="k" x1="12.96" y1="73.1" x2="24.28" y2="73.1" gradientTransform="translate(23.5 -2.18) rotate(18)" xlink:href="#c"/>
-                              <linearGradient id="l" x1="30.5" y1="94.77" x2="38.24" y2="94.77" gradientTransform="translate(90.82 11.25) rotate(53.99)" xlink:href="#c"/>
-                              <linearGradient id="m" x1="81.28" y1="95.01" x2="89.02" y2="95.01" gradientTransform="translate(72.11 -31.9) rotate(36)" xlink:href="#c"/>
-                              <linearGradient id="n" x1="81.29" y1="24.57" x2="89.01" y2="24.57" gradientTransform="translate(55.5 -58.95) rotate(54.36)" xlink:href="#c"/>
-                              <linearGradient id="o" x1="95.49" y1="46.4" x2="106.63" y2="46.4" gradientTransform="translate(21.24 -31.02) rotate(19.47)" xlink:href="#c"/>
-                              <linearGradient id="p" x1="95.3" y1="73.06" x2="106.61" y2="73.06" gradientTransform="translate(139.25 -45.53) rotate(72.01)" xlink:href="#c"/>
-                              <linearGradient id="r" x1="59.79" y1="116.72" x2="59.79" y2="56.09" gradientTransform="translate(0 119.65) scale(1 -1)" gradientUnits="userSpaceOnUse">
-                                <stop offset="0" stop-color="#fff" stop-opacity=".4"/>
-                                <stop offset="1" stop-color="#fff" stop-opacity="0"/>
-                              </linearGradient>
-                              <radialGradient id="s" cx="59.25" cy="619.61" fx="59.25" fy="619.61" r="96.47" gradientTransform="translate(0 -88.24) scale(1 .28)" gradientUnits="userSpaceOnUse">
-                                <stop offset=".29" stop-color="#fff" stop-opacity="0"/>
-                                <stop offset="1" stop-color="#fff" stop-opacity=".4"/>
-                              </radialGradient>
-                            </defs>
-                            <g id="b">
-                              <circle fill="url(#c)" cx="59.79" cy="59.79" r="57.29"/>
-                              <path fill="#141414" stroke-width="0px" d="M59.79,13.14c29.86,0,54.38,22.85,57.05,52.02.16-1.74.24-3.49.24-5.27,0-31.64-25.65-57.29-57.29-57.29S2.5,28.25,2.5,59.88c0,1.78.09,3.54.24,5.27C5.4,35.99,29.93,13.14,59.79,13.14Z"/>
-                              <path stroke="#fff" fill="none" stroke-miterlimit="10" d="M59.79,109.9c-27.63,0-50.11-22.48-50.11-50.11S32.16,9.68,59.79,9.68s50.11,22.48,50.11,50.11-22.48,50.11-50.11,50.11Z"/>
-                              <circle fill="none" stroke-miterlimit="10" stroke="#3a3a3a" stroke-width="5px"  cx="59.79" cy="59.79" r="57.29"/>
-                            </g>
-                            <path id="d" fill="#fff" stroke-width="0px" d="M68.91,70.86h-7.35c-.28,0-.48-.26-.42-.53l2.49-10.37c.11-.46-.49-.74-.77-.35l-11.46,16.1c-.2.28,0,.68.35.68h7.35c.28,0,.48.26.42.53l-2.49,10.37c-.11.46.49.74.77.35l11.46-16.1c.2-.28,0-.68-.35-.68Z"/>
-                            <g id="e" isolation="isolate">
-                              <g isolation="isolate">
-                                <text 
-                                  id="Text_percentage" 
-                                  data-name="Text percentage" 
-                                  font-family="LilitaOne, 'Lilita One'"
-                                  font-size="16px"
-                                  transform="translate(43.2 48.2)" 
-                                  fill="#4ba0dd">
-                                  <tspan id="Text_percentage_value" x="0" y="0">100%</tspan>
-                                </text>
-                              </g>
-                            </g>
-                            <path id="f" fill="#4ba0dd" stroke-width="0px" d="
-                              M106.22,44.62
-                              c-3.21-9.9-9.5-18.41-17.74-24.4-8.06-5.86-17.97-9.33-28.69-9.33s-20.64,3.47-28.69,9.33
-                              c-8.24,6-14.53,14.5-17.74,24.4-1.54,4.75-2.39,9.82-2.39,15.09
-                              s.84,10.33,2.39,15.09
-                              c3.21,9.9,9.5,18.41,17.74,24.4,8.06,5.86,17.97,9.33,28.69,9.33
-                              s20.64-3.47,28.69-9.33
-                              c8.24-6,14.53-14.5,17.74-24.4,1.54-4.75,2.39-9.82,2.39-15.09
-                              s-.84-10.33-2.39-15.09Z
-                              M82.27,90.65
-                              c-6.31,4.59-14.08,7.31-22.48,7.31
-                              s-16.17-2.72-22.48-7.31
-                              c-6.46-4.7-11.38-11.36-13.9-19.12-1.21-3.72-1.87-7.69-1.87-11.82s.66-8.1,1.87-11.82
-                              c2.52-7.76,7.44-14.42,13.9-19.12,6.31-4.59,14.08-7.31,22.48-7.31
-                              s16.17,2.72,22.48,7.31
-                              c6.46,4.7,11.38,11.36,13.9,19.12,1.21,3.72,1.87,7.69,1.87,11.82
-                              s-.66,8.1-1.87,11.82
-                              c-2.52,7.76-7.44,14.42-13.9,19.12Z"
-                              />
-                            <circle 
-                              id="emptying_circle"
-                              cx="59.79"
-                              cy="59.79"
-                              r="43.5" 
-                              stroke-width="11" 
-                              stroke="#213a47" 
-                              fill="transparent"
-                              stroke-dasharray="273.18"
-                              stroke-dashoffset="273.18"
-                              transform="rotate(90, 59.79, 59.79)"
-                              />
-                            <rect fill="url(#g)" stroke-width="0px" x="33.82" y="18.84" width="1.22" height="11.56" transform="translate(-7.9 24.66) rotate(-35.62)"/>
-                            <rect fill="url(#h)" stroke-width="0px" x="17.91" y="40.75" width="1.22" height="11.39" transform="translate(-31.44 48.4) rotate(-70.5)"/>
-                            <rect fill="url(#i)" stroke-width="0px" x="59.23" y="10.63" width="1.22" height="11.5"/>
-                            <rect fill="url(#j)" stroke-width="0px" x="59.23" y="97.3" width="1.22" height="11.5"/>
-                            <rect fill="url(#k)" stroke-width="0px" x="12.87" y="72.49" width="11.5" height="1.22" transform="translate(-21.68 9.33) rotate(-18)"/>
-                            <rect fill="url(#l)" stroke-width="0px" x="28.62" y="94.16" width="11.49" height="1.22" transform="translate(-62.5 66.86) rotate(-53.99)"/>
-                            <rect fill="url(#m)" stroke-width="0px" x="84.54" y="89.26" width="1.22" height="11.49" transform="translate(-39.58 68.19) rotate(-36)"/>
-                            <rect fill="url(#n)" stroke-width="0px" x="79.37" y="23.96" width="11.56" height="1.22" transform="translate(15.57 79.46) rotate(-54.36)"/>
-                            <rect fill="url(#o)" stroke-width="0px" x="95.36" y="45.79" width="11.39" height="1.22" transform="translate(-9.69 36.33) rotate(-19.47)"/>
-                            <rect fill="url(#p)" stroke-width="0px" x="100.35" y="67.31" width="1.22" height="11.5" transform="translate(.28 146.51) rotate(-72.01)"/>
-                            <g id="q">
-                              <path fill="url(#r)" stroke-width="0px" d="M109.8,47.55c0,27.62-20.9,6.09-50.02,6.09s-50.02,21.53-50.02-6.09C9.77,29.42,33.7,7.65,59.79,7.65s50.02,22.32,50.02,39.9Z"/>
-                              <path fill="url(#s)" stroke-width="0px" d="M97.33,91.74c0-13.29-15.69-2.93-37.54-2.93s-37.55-10.36-37.55,2.93c0,8.73,17.96,20.18,37.55,20.18,19.58,0,37.54-11.72,37.54-20.18Z"/>
-                            </g>
-                          </svg>`
-      })
-    }
-  })
 </script>
 
 {% endblock %}
