@@ -394,7 +394,7 @@ ocargo.Animation.prototype._updateFuelIfPresent = function(animation) {
 };
 
 ocargo.Animation.prototype._updateFuelGauge = function(fuelPercentage) {
-	if (LEVEL_ID == "83") {
+	if (CHARACTER_NAME == "Electric van") {
 		let gaugeCircumference = 273.18;
 		let baseRotation = 270;
 

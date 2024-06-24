@@ -18,6 +18,11 @@
     }
 }
 
+@font-face {
+    font-family: LilitaOne;
+    src: url(LilitaOne-Regular.ttf);
+}
+
 /*****************/
 /* Tab structure */
 /*****************/
