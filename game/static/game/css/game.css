@@ -18,6 +18,11 @@
     }
 }
 
+@font-face {
+    font-family: LilitaOne;
+    src: url(LilitaOne-Regular.ttf);
+}
+
 /*****************/
 /* Tab structure */
 /*****************/
@@ -250,7 +255,7 @@ div > .navigation_button_kurono {
 /* Fuel gauge */
 /**************/
 
-#fuelGauge {
+#fuelGauge, #electricFuelGauge {
     position: fixed;
     z-index: 7;
     width: 100px;
