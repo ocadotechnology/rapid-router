@@ -129,9 +129,10 @@ ocargo.Game.prototype.setup = function () {
 
   const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
 
+  const subtitle = SUBTITLE == "None" ? "" : SUBTITLE;
   ocargo.Drawing.startPopup(
       title,
-      "<b>" + SUBTITLE + "</b> <br> <br> " + LESSON,
+      "<b>" + subtitle + "</b> <br> <br> " + LESSON,
       message,
       showMascot,
       [

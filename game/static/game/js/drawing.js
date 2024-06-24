@@ -1042,6 +1042,7 @@ ocargo.Drawing.startPopup = function (
   mascot,
   buttons
 ) {
+  console.log(subtitle)
   $('#myModal-title').html(title)
   $('#myModal-lead').html(subtitle)
   $('#myModal-mainText').html(message)

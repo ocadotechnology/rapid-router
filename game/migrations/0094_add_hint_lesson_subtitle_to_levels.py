@@ -23,6 +23,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='level',
             name='subtitle',
-            field=models.TextField(blank=True, max_length=100),
+            field=models.TextField(blank=True, max_length=100, null=True),
         ),
     ]
