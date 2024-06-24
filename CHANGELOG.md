@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.23.0 (2024-06-24)
+
+### Feature
+
+* Custom instruction and hint UI ([#1646](https://github.com/ocadotechnology/rapid-router/issues/1646)) ([`dca72ac`](https://github.com/ocadotechnology/rapid-router/commit/dca72acfb75c208ddc539453d650b7fb55258a8f))
+
 ## v5.22.0 (2024-06-18)
 
 ### Feature
