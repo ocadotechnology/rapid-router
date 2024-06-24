@@ -5,7 +5,6 @@ from builtins import object
 from rest_framework import serializers
 
 from game import messages
-from game.messages import description_level_default, hint_level_default
 from game.theme import get_theme, get_themes_url
 from .models import Workspace, Level, Episode, LevelDecor, LevelBlock, Block
 
@@ -80,18 +79,10 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
             return "Custom Level"
 
     def get_description(self, obj):
-        if obj.default:
-            description = getattr(messages, "description_level" + obj.name)()
-            return description
-        else:
-            return description_level_default()
+        return getattr(messages, "description_level" + obj.name)() if obj.default else obj.description
 
     def get_hint(self, obj):
-        if obj.default:
-            hint = getattr(messages, "hint_level" + obj.name)()
-            return hint
-        else:
-            return hint_level_default()
+        return getattr(messages, "hint_level" + obj.name)() if obj.default else obj.hint
 
     def get_leveldecor_set(self, obj):
         leveldecors = LevelDecor.objects.filter(level__id=obj.id)

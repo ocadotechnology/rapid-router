@@ -129,9 +129,10 @@ ocargo.Game.prototype.setup = function () {
 
   const showMascot = BLOCKLY_ENABLED && !PYTHON_VIEW_ENABLED && LEVEL_NAME <= 80; // show mascot on Blockly-only levels that are not above 80
 
+  const subtitle = SUBTITLE == "None" ? "" : SUBTITLE;
   ocargo.Drawing.startPopup(
       title,
-      LESSON,
+      "<b>" + subtitle + "</b> <br> <br> " + LESSON,
       message,
       showMascot,
       [
@@ -285,7 +286,7 @@ ocargo.Game.prototype.sendAttempt = function (score) {
 
 ocargo.Game.prototype.registerFailure = function () {
   this.failures += 1
-  return this.failures >= 3
+  return this.failures >= 1
 }
 
 ocargo.Game.prototype._setupFuelGauge = function (nodes, blocks) {

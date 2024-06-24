@@ -144,26 +144,15 @@ def play_level(request, level, from_editor=False):
     if not permissions.can_play_level(request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)):
         return renderError(request, messages.no_permission_title(), messages.not_shared_level())
 
-    # Set default level description/hint lookups
-    lesson = "description_level_default"
-    hint = "hint_level_default"
-
     # If it's one of our levels, set level description/hint lookups
     # to point to what they should be
     if level.default:
         lesson = "description_level" + str(level.name)
         hint = "hint_level" + str(level.name)
 
-    # Try to get the relevant message, and fall back on defaults
-    try:
-        lessonCall = getattr(messages, lesson)
-        hintCall = getattr(messages, hint)
-    except AttributeError:
-        lessonCall = messages.description_level_default
-        hintCall = messages.hint_level_default
-
-    lesson = mark_safe(lessonCall())
-    hint = mark_safe(hintCall())
+    subtitle = level.subtitle
+    lesson = level.lesson
+    hint = level.hint
 
     character = level.character
     character_url = character.top_down
@@ -233,14 +222,15 @@ def play_level(request, level, from_editor=False):
         "game/game.html",
         context={
             "level": level,
+            "subtitle": subtitle,
             "lesson": lesson,
+            "hint": hint,
             "blocks": block_data,
             "decor": decor_data,
             "character": character,
             "background": background,
             "house": house,
             "cfc": cfc,
-            "hint": hint,
             "workspace": workspace,
             "python_workspace": python_workspace,
             "return_url": reverse(return_view),
