@@ -290,7 +290,7 @@ ocargo.Game.prototype.registerFailure = function () {
 
 ocargo.Game.prototype._setupFuelGauge = function (nodes, blocks) {
   if (FUEL_GAUGE) {
-    if (LEVEL_ID == "83") {
+    if (CHARACTER_NAME == "Electric van") {
       document.getElementById("electricFuelGauge").style.visibility = 'visible'
     } else {
       document.getElementById('fuelGauge').style.visibility = 'visible'
