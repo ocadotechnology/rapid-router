@@ -79,18 +79,10 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
             return "Custom Level"
 
     def get_description(self, obj):
-        if obj.default:
-            description = getattr(messages, "description_level" + obj.name)()
-            return description
-        else:
-            return "Can you find the shortest route?"
+        return getattr(messages, "description_level" + obj.name)() if obj.default else obj.description
 
     def get_hint(self, obj):
-        if obj.default:
-            hint = getattr(messages, "hint_level" + obj.name)()
-            return hint
-        else:
-            return "Think back to earlier levels. What did you learn?"
+        return getattr(messages, "hint_level" + obj.name)() if obj.default else obj.hint
 
     def get_leveldecor_set(self, obj):
         leveldecors = LevelDecor.objects.filter(level__id=obj.id)
