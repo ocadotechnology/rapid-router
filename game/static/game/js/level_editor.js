@@ -2629,7 +2629,7 @@ ocargo.LevelEditor = function(levelId) {
                 $('#' + type + '_checkbox').prop('checked', true);
                 if(blocks[i].number) {
                     $('#' + type + '_number').val(blocks[i].number);
-                }restoreState
+                }
             }
         }
 
