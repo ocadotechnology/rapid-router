@@ -25,5 +25,8 @@ class EditorPage(BasePage):
     def go_to_scenery_tab(self):
         self.browser.find_element(By.ID, "scenery_tab").click()
 
+    def go_to_save_tab(self):
+        self.browser.find_element(By.ID, "save_tab").click()
+
     def go_to_character_tab(self):
         self.browser.find_element(By.ID, "character_tab").click()
