@@ -277,7 +277,7 @@ class TestLevelEditor(BaseGameTest):
             EC.presence_of_element_located((By.ID, "myModal-lead"))
         )
         # self.selenium.find_element(By.ID, "play_button").click()
-        modal_text = self.selenium.find_element(By.ID, "myModal-lead")
+        modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
         assert "text not there" in  modal_text
 
         # check to see if electric fuel gauge appears
