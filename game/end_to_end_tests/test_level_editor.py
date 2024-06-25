@@ -271,14 +271,12 @@ class TestLevelEditor(BaseGameTest):
 
         # save level and choose to play it
         page.go_to_save_tab()
-        self.selenium.find_element(By.ID, "levelNameInput").send_keys("test level")
+        self.selenium.find_element(By.ID, "levelNameInput").send_keys("test electric van level")
         self.selenium.find_element(By.ID, "saveLevel").click()
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.presence_of_element_located((By.ID, "myModal-lead"))
         )
-        # self.selenium.find_element(By.ID, "play_button").click()
-        modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
-        assert "text not there" in  modal_text
+        self.selenium.find_element(By.ID, "play_button").click()
 
         # check to see if electric fuel gauge appears
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
