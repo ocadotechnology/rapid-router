@@ -144,15 +144,9 @@ def play_level(request, level, from_editor=False):
     if not permissions.can_play_level(request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)):
         return renderError(request, messages.no_permission_title(), messages.not_shared_level())
 
-    # If it's one of our levels, set level description/hint lookups
-    # to point to what they should be
-    if level.default:
-        lesson = "description_level" + str(level.name)
-        hint = "hint_level" + str(level.name)
-
     subtitle = level.subtitle
-    lesson = level.lesson
-    hint = level.hint
+    lesson = getattr(messages, "description_level" + str(level.name)) if level.default else level.lesson
+    hint = getattr(messages, "hint_level" + str(level.name)) if level.default else level.hint
 
     character = level.character
     character_url = character.top_down
