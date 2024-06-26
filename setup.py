@@ -23,7 +23,7 @@ setup(
         "django-csp==3.7",
         "django-js-reverse==0.9.1",
         "django-pipeline==2.0.8",
-        "djangorestframework==3.13.1",
+        "djangorestframework==3.15.2",
         "more-itertools==8.7.0",
         "pyhamcrest==2.0.2",
         "libsass==0.23.0",
