@@ -139,20 +139,28 @@ def play_level(request, level, from_editor=False):
     :template:`game/game.html`
     """
 
-    night_mode = False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
+    night_mode = (
+        False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
+    )
 
-    if not permissions.can_play_level(request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)):
-        return renderError(request, messages.no_permission_title(), messages.not_shared_level())
-
-    # If it's one of our levels, set level description/hint lookups
-    # to point to what they should be
-    if level.default:
-        lesson = "description_level" + str(level.name)
-        hint = "hint_level" + str(level.name)
+    if not permissions.can_play_level(
+        request.user, level, app_settings.EARLY_ACCESS_FUNCTION(request)
+    ):
+        return renderError(
+            request, messages.no_permission_title(), messages.not_shared_level()
+        )
 
     subtitle = level.subtitle
-    lesson = level.lesson
-    hint = level.hint
+    lesson = (
+        getattr(messages, "description_level" + str(level.name))
+        if level.default
+        else level.lesson
+    )
+    hint = (
+        getattr(messages, "hint_level" + str(level.name))
+        if level.default
+        else level.hint
+    )
 
     character = level.character
     character_url = character.top_down
@@ -189,7 +197,9 @@ def play_level(request, level, from_editor=False):
             .first()
         )
         if not attempt:
-            attempt = Attempt(level=level, student=student, score=None, night_mode=night_mode)
+            attempt = Attempt(
+                level=level, student=student, score=None, night_mode=night_mode
+            )
             fetch_workspace_from_last_attempt(attempt)
             attempt.save()
         else:
@@ -213,7 +223,11 @@ def play_level(request, level, from_editor=False):
     return_view = "level_editor" if from_editor else "levels"
 
     temp_block_data = []
-    [temp_block_data.append(block) for block in block_data if block not in temp_block_data]
+    [
+        temp_block_data.append(block)
+        for block in block_data
+        if block not in temp_block_data
+    ]
 
     block_data = temp_block_data
 
@@ -239,19 +253,23 @@ def play_level(request, level, from_editor=False):
             "character_height": character_height,
             "wreckage_url": wreckage_url,
             "night_mode": night_mode_javascript,
-            "night_mode_feature_enabled": str(app_settings.NIGHT_MODE_FEATURE_ENABLED).lower(),
+            "night_mode_feature_enabled": str(
+                app_settings.NIGHT_MODE_FEATURE_ENABLED
+            ).lower(),
             "model_solution": model_solution,
             "prev_level_url": _prev_level_url(level, request.user, night_mode),
             "next_level_url": _next_level_url(level, request.user, night_mode),
             "flip_night_mode_url": _level_url(level, not night_mode),
-            "available_language_dict": language_code_dict
+            "available_language_dict": language_code_dict,
         },
     )
 
 
 def fetch_workspace_from_last_attempt(attempt):
     latest_attempt = (
-        Attempt.objects.filter(level=attempt.level, student=attempt.student, night_mode=attempt.night_mode)
+        Attempt.objects.filter(
+            level=attempt.level, student=attempt.student, night_mode=attempt.night_mode
+        )
         .order_by("-start_time")
         .first()
     )
@@ -267,15 +285,23 @@ def delete_level(request, levelID):
         level_management.delete_level(level)
         success = True
 
-    return HttpResponse(json.dumps({"success": success}), content_type="application/javascript")
+    return HttpResponse(
+        json.dumps({"success": success}), content_type="application/javascript"
+    )
 
 
 def submit_attempt(request):
     """Processes a request on submission of the program solving the current level."""
-    if not request.user.is_anonymous and request.method == "POST" and hasattr(request.user.userprofile, "student"):
+    if (
+        not request.user.is_anonymous
+        and request.method == "POST"
+        and hasattr(request.user.userprofile, "student")
+    ):
         level = get_object_or_404(Level, id=request.POST.get("level", 1))
         student = request.user.userprofile.student
-        attempt = Attempt.objects.filter(level=level, student=student, finish_time__isnull=True).first()
+        attempt = Attempt.objects.filter(
+            level=level, student=student, finish_time__isnull=True
+        ).first()
         if attempt:
             attempt.score = float(request.POST.get("score"))
             attempt.workspace = request.POST.get("workspace")
@@ -352,10 +378,19 @@ def load_workspace(request, workspaceID):
 
 
 def save_workspace(request, workspaceID=None):
-    request_params = ["name", "contents", "python_contents", "blockly_enabled", "python_enabled", "pythonViewEnabled"]
+    request_params = [
+        "name",
+        "contents",
+        "python_contents",
+        "blockly_enabled",
+        "python_enabled",
+        "pythonViewEnabled",
+    ]
     missing_params = [param for param in request_params if param not in request.POST]
     if missing_params != []:
-        raise Exception("Request missing the following required parameters", missing_params)
+        raise Exception(
+            "Request missing the following required parameters", missing_params
+        )
     name = request.POST.get("name")
     contents = request.POST.get("contents")
     python_contents = request.POST.get("python_contents")
