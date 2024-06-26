@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.23.1 (2024-06-26)
+
+### Fix
+
+* Fix bug with default level description/hint and formatting ([#1657](https://github.com/ocadotechnology/rapid-router/issues/1657)) ([`f0580d5`](https://github.com/ocadotechnology/rapid-router/commit/f0580d5568979148299f367d583e31dbbf37bf63))
+
 ## v5.23.0 (2024-06-24)
 
 ### Feature
