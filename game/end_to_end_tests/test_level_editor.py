@@ -267,11 +267,15 @@ class TestLevelEditor(BaseGameTest):
         page.go_to_character_tab()
 
         # the electric van has dropdown value 7 - select the electric van as character
-        Select(self.selenium.find_element(By.ID, "character_select")).select_by_value("7")
+        Select(self.selenium.find_element(By.ID, "character_select")).select_by_value(
+            "7"
+        )
 
         # save level and choose to play it
         page.go_to_save_tab()
-        self.selenium.find_element(By.ID, "levelNameInput").send_keys("test electric van level")
+        self.selenium.find_element(By.ID, "levelNameInput").send_keys(
+            "test electric van level"
+        )
         self.selenium.find_element(By.ID, "saveLevel").click()
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.presence_of_element_located((By.ID, "myModal-lead"))
