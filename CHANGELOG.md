@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.25.0 (2024-06-27)
+
+### Feature
+
+* Add electric van fuel gauge ([#1656](https://github.com/ocadotechnology/rapid-router/issues/1656)) ([`ee1c666`](https://github.com/ocadotechnology/rapid-router/commit/ee1c666c758bc5a228dbc842e5e42dd9e67e2bd5))
+
 ## v5.24.0 (2024-06-27)
 
 ### Feature
