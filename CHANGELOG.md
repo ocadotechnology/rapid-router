@@ -2,6 +2,24 @@
 
 <!--next-version-placeholder-->
 
+## v5.24.0 (2024-06-27)
+
+### Feature
+
+* Add electric van starting sound ([#1659](https://github.com/ocadotechnology/rapid-router/issues/1659)) ([`0082154`](https://github.com/ocadotechnology/rapid-router/commit/0082154438ccb5d685c5d217bc942583b7265d70))
+
+## v5.23.1 (2024-06-26)
+
+### Fix
+
+* Fix bug with default level description/hint and formatting ([#1657](https://github.com/ocadotechnology/rapid-router/issues/1657)) ([`f0580d5`](https://github.com/ocadotechnology/rapid-router/commit/f0580d5568979148299f367d583e31dbbf37bf63))
+
+## v5.23.0 (2024-06-24)
+
+### Feature
+
+* Custom instruction and hint UI ([#1646](https://github.com/ocadotechnology/rapid-router/issues/1646)) ([`dca72ac`](https://github.com/ocadotechnology/rapid-router/commit/dca72acfb75c208ddc539453d650b7fb55258a8f))
+
 ## v5.22.0 (2024-06-18)
 
 ### Feature
