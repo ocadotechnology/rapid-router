@@ -280,6 +280,9 @@ class TestLevelEditor(BaseGameTest):
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
             EC.presence_of_element_located((By.ID, "myModal-lead"))
         )
+
+        modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
+        assert "not there" in modal_text
         self.selenium.find_element(By.ID, "play_button").click()
 
         # check to see if electric fuel gauge appears
