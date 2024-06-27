@@ -400,7 +400,7 @@ ocargo.Animation.prototype._extractCowAt = function(coordinate) {
 };
 
 ocargo.Animation.prototype._updateFuelIfPresent = function(animation) {
-	if (typeof animation.fuel != 'undefined') {
+	if (typeof animation.fuel != 'undefined' && animation.fuel >= 0) {
 		this._updateFuelGauge(animation.fuel);
 	}
 };
