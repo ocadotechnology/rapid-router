@@ -11,8 +11,6 @@ DELAY_TIME = 10
 
 class TestLevelEditor(BaseGameTest):
     def set_up_basic_map(self):
-        self.selenium.find_element(By.ID, "close_button").click()
-
         self.test_level_editor_displays()
 
         add_road_button = self.selenium.find_element(By.ID, "add_road")
@@ -265,6 +263,12 @@ class TestLevelEditor(BaseGameTest):
         self.login_once()
 
         page = self.go_to_level_editor()
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.presence_of_element_located((By.ID, "close_button"))
+        )
+        self.selenium.find_element(By.ID, "close_button").click()
+
+        
         [road_start, road_end] = self.set_up_basic_map()
         page.go_to_character_tab()
 
