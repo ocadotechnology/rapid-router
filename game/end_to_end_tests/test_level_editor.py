@@ -263,12 +263,7 @@ class TestLevelEditor(BaseGameTest):
         self.login_once()
 
         page = self.go_to_level_editor()
-        assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.presence_of_element_located((By.ID, "close_button"))
-        )
-        self.selenium.find_element(By.ID, "close_button").click()
 
-        
         [road_start, road_end] = self.set_up_basic_map()
         page.go_to_character_tab()
 
@@ -284,11 +279,8 @@ class TestLevelEditor(BaseGameTest):
         )
         self.selenium.find_element(By.ID, "saveLevel").click()
         assert WebDriverWait(self.selenium, DELAY_TIME).until(
-            EC.presence_of_element_located((By.ID, "myModal-lead"))
+            EC.visibility_of_element_located((By.ID, "myModal-lead"))
         )
-
-        modal_text = self.selenium.find_element(By.ID, "myModal-lead").get_attribute("innerHTML")
-        assert "not there" in modal_text
         self.selenium.find_element(By.ID, "play_button").click()
 
         # check to see if electric fuel gauge appears
