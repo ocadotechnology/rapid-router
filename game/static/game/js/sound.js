@@ -6,6 +6,10 @@ ocargo.sound.startingSound = new Howl({
     urls: ['/static/game/sound/starting.mp3', '/static/game/sound/starting.ogg']
 });
 
+ocargo.sound.electricVanStartingSound = new Howl({
+    urls: ['/static/game/sound/electric_van_starting.mp3', '/static/game/electric_van_starting.ogg']
+})
+
 ocargo.sound.engineSound = new Howl({
     urls: ['/static/game/sound/moving.mp3', '/static/game/sound/moving.ogg'],
     loop: true
@@ -57,6 +61,8 @@ function safeStop(sound) {
 ocargo.sound.starting = function() {
     if (CHARACTER_NAME === 'Van') {
         safePlay(ocargo.sound.startingSound);
+    } else if (CHARACTER_NAME === "Electric van") {
+        safePlay(ocargo.sound.electricVanStartingSound);
     }
 };
 
@@ -69,6 +75,8 @@ ocargo.sound.start_engine = function() {
 ocargo.sound.stop_engine = function() {
     if (CHARACTER_NAME === 'Van') {
         safeStop(ocargo.sound.engineSound);
+    } else if (CHARACTER_NAME === "Electric van") {
+        safeStop(ocargo.sound.electricVanStartingSound);
     }
 };
 
