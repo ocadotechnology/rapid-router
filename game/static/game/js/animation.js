@@ -167,6 +167,18 @@ ocargo.Animation.prototype.playAnimation = function() {
 	if (!this.currentlyAnimating && !this.isPlaying && this.animationQueue.length > 0) {
 		this.isPlaying = true;
 		this.stepAnimation(undefined);
+
+		let gauge_text = document.getElementById("Text_percentage");
+		let gauge_text_value = document.getElementById("Text_percentage_value");
+		let gauge_charge_circle = document.getElementById("f");
+		let gauge_emptying_circle = document.getElementById("emptying_circle");
+
+		gauge_text.setAttribute("transform", "translate(42.3 48.2)");
+		gauge_text.setAttribute("fill", "#4ba0dd");
+		gauge_text_value.textContent = "100%";
+		gauge_charge_circle.setAttribute("fill", "#4ba0dd");
+		gauge_emptying_circle.setAttribute("stroke-dashoffset", 273.18);
+		gauge_emptying_circle.setAttribute("transform", "rotate(90, 59.79, 59.79)");
 	}
 };
 
@@ -388,16 +400,39 @@ ocargo.Animation.prototype._extractCowAt = function(coordinate) {
 };
 
 ocargo.Animation.prototype._updateFuelIfPresent = function(animation) {
-	if (typeof animation.fuel != 'undefined') {
+	if (typeof animation.fuel != 'undefined' && animation.fuel >= 0) {
 		this._updateFuelGauge(animation.fuel);
 	}
 };
 
 ocargo.Animation.prototype._updateFuelGauge = function(fuelPercentage) {
-    var degrees = ((fuelPercentage / 100) * 240) - 120;
-    var rotation = 'rotate(' + degrees + 'deg)';
-    document.getElementById('fuelGaugePointer').style.transform = rotation;
-    document.getElementById('fuelGaugePointer').style.webkitTransform = rotation;
+    if (CHARACTER_NAME == "Electric van") {
+			let gaugeCircumference = 273.18;
+			let baseRotation = 270;
+
+			let offset = gaugeCircumference * (fuelPercentage / 100);
+			let rotation = 36 * (fuelPercentage / 10) - baseRotation;
+
+			let color = (fuelPercentage > 30) ? "#4ba0dd" : ((fuelPercentage > 10) ? "#ff7300" : "#ff3131");
+			let text_x = (fuelPercentage == 100) ? 42.3 : ((fuelPercentage >= 10) ? 45 : 50);
+
+			let gauge_text = document.getElementById("Text_percentage");
+			let gauge_text_value = document.getElementById("Text_percentage_value");
+			let gauge_charge_circle = document.getElementById("f");
+			let gauge_emptying_circle = document.getElementById("emptying_circle");
+
+			gauge_text.setAttribute("transform", "translate(" + text_x + " 48.2)");
+			gauge_text.setAttribute("fill", color);
+			gauge_text_value.textContent = fuelPercentage + "%";
+			gauge_charge_circle.setAttribute("fill", color);
+			gauge_emptying_circle.setAttribute("stroke-dashoffset", offset);
+			gauge_emptying_circle.setAttribute("transform", "rotate(" + rotation + ", 59.79, 59.79)");
+		} else {
+			var degrees = ((fuelPercentage / 100) * 240) - 120;
+			var rotation = 'rotate(' + degrees + 'deg)';
+			document.getElementById('fuelGaugePointer').style.transform = rotation;
+			document.getElementById('fuelGaugePointer').style.webkitTransform = rotation;
+		}
 };
 
 ocargo.Animation.prototype.serializeAnimationQueue = function(blocks){

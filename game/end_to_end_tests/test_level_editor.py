@@ -258,3 +258,34 @@ class TestLevelEditor(BaseGameTest):
             By.ID, "solar_panel"
         ).get_attribute("style")
         assert "none" in solar_panel_snow_style
+
+    def test_electric_fuel_gauge(self):
+        self.login_once()
+
+        page = self.go_to_level_editor()
+
+        [road_start, road_end] = self.set_up_basic_map()
+        page.go_to_character_tab()
+
+        # the electric van has dropdown value 7 - select the electric van as character
+        Select(self.selenium.find_element(By.ID, "character_select")).select_by_value(
+            "7"
+        )
+
+        # save level and choose to play it
+        page.go_to_save_tab()
+        self.selenium.find_element(By.ID, "levelNameInput").send_keys(
+            "test electric van level"
+        )
+        self.selenium.find_element(By.ID, "saveLevel").click()
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.visibility_of_element_located((By.ID, "myModal-lead"))
+        )
+        self.selenium.find_element(By.ID, "play_button").click()
+
+        # check to see if electric fuel gauge appears
+        assert WebDriverWait(self.selenium, DELAY_TIME).until(
+            EC.presence_of_element_located((By.ID, "electricFuelGauge"))
+        )
+        electric_fuel_gauge = self.selenium.find_element(By.ID, "electricFuelGauge")
+        assert "visibility: visible" in electric_fuel_gauge.get_attribute("style")

@@ -161,11 +161,13 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
         ocargo.game.sendAttempt(0);
 
+        let noFuelMessage = CHARACTER_NAME == "Electric van" ? 'Your battery ran out of charge!' : 'You ran out of fuel!'
+
         ocargo.animation.appendAnimation({
             type: 'popup',
             popupType: 'FAIL',
             failSubtype: 'OUT_OF_FUEL',
-            popupMessage: gettext('You ran out of fuel! Try to find a shorter route to the destination.'),
+            popupMessage: gettext(noFuelMessage + ' Try to find a shorter route to the destination.'),
             popupHint: ocargo.game.registerFailure(),
             description: 'no fuel popup'
         });
