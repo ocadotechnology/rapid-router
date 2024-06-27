@@ -11,6 +11,8 @@ DELAY_TIME = 10
 
 class TestLevelEditor(BaseGameTest):
     def set_up_basic_map(self):
+        self.selenium.find_element(By.ID, "close_button").click()
+
         self.test_level_editor_displays()
 
         add_road_button = self.selenium.find_element(By.ID, "add_road")
