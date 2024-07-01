@@ -162,7 +162,7 @@
       </label>
     </div>
     <div id="language_tab" class="tab">
-      <select name="language_dropdown" class="tab selectable bg--{{level.difficulty}} {% if level.pythonEnabled %}hidden{% endif %}" id="language_dropdown" onchange="gameUpdateBlockLanguage(this.value)">
+      <select name="language_dropdown" class="tab selectable bg--{{level.difficulty}} {% if level.pythonEnabled %}hidden{% endif %}" id="language_dropdown" onchange="gameUpdateBlockLanguageAndCookie(this.value)">
         {% for language_code, language in available_language_dict.items %}
           <option id="language_dropdown_{{language_code}}" value="{{language_code}}">{{language}}</option>
         {% endfor %}

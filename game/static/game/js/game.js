@@ -1403,9 +1403,13 @@ function gameUpdateBlockLanguage (language_code) {
   loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
     reloadWorkspace(Blockly.mainWorkspace);
   });
+}
+
+function gameUpdateBlockLanguageAndCookie (language_code) {
   if (hasFunctionalCookiesConsent()) {
     Cookies.set("preferredLanguage", language_code)
   }
+  gameUpdateBlockLanguage(language_code)
 }
 
 $(document).ready(function () {
