@@ -1400,9 +1400,9 @@ function setMutedCookie(mute) {
 }
 
 function gameUpdateBlockLanguage(language_code) {
-  // if (hasFunctionalCookiesConsent()) {
-  //   Cookies.set("preferredLanguage", language_code)
-  // }
+  if (hasFunctionalCookiesConsent()) {
+    Cookies.set("preferredLanguage", language_code)
+  }
   loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
     reloadWorkspace(Blockly.mainWorkspace);
   });
