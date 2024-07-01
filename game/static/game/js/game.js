@@ -10,7 +10,6 @@ ocargo.Game = function () {
 }
 
 ocargo.Game.prototype.setup = function () {
-  document.getElementById("language_dropdown").value = Cookies.get("preferredLanguage") ?? navigator.language.toLowerCase()
   gameUpdateBlockLanguage(Cookies.get("preferredLanguage") ?? navigator.language.toLowerCase())
 
   if(new Date().getMonth() === 11) {
@@ -57,6 +56,8 @@ ocargo.Game.prototype.setup = function () {
       () => parseInt(LEVEL_ID),
       () => true
   )
+
+  document.getElementById("language_dropdown").value = Cookies.get("preferredLanguage") ?? navigator.language.toLowerCase()
 
   // Setup the blockly workspace
   ocargo.blocklyControl.reset()
