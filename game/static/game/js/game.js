@@ -7,10 +7,12 @@ ocargo.Game = function () {
   this.failures = 0
   this.currentlySelectedTab = null
   this.isMuted = Cookies.get('muted') === 'true'
+  this.preferredLanguage = Cookies.get("preferredLanguage")
 }
 
 ocargo.Game.prototype.setup = function () {
-  gameUpdateBlockLanguage(Cookies.get("preferredLanguage" ?? navigator.language.toLowerCase())
+  document.getElementById("language_dropdown").value = this.preferredLanguage ?? navigator.language.toLowerCase()
+  gameUpdateBlockLanguage(this.preferredLanguage ?? navigator.language.toLowerCase())
 
   if(new Date().getMonth() === 11) {
     $("#paper").css('background-color', '#eef7ff')
@@ -56,8 +58,6 @@ ocargo.Game.prototype.setup = function () {
       () => parseInt(LEVEL_ID),
       () => true
   )
-
-  // document.getElementById("language_dropdown").value = Cookies.get("preferredLanguage") ?? navigator.language.toLowerCase()
 
   // Setup the blockly workspace
   ocargo.blocklyControl.reset()
