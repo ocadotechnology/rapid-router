@@ -10,7 +10,7 @@ ocargo.Game = function () {
 }
 
 ocargo.Game.prototype.setup = function () {
-  gameUpdateBlockLanguage(navigator.language.toLowerCase())
+  gameUpdateBlockLanguage(Cookies.get("preferredLanguage" ?? navigator.language.toLowerCase())
 
   if(new Date().getMonth() === 11) {
     $("#paper").css('background-color', '#eef7ff')
