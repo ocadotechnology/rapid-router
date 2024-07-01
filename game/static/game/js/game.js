@@ -57,7 +57,7 @@ ocargo.Game.prototype.setup = function () {
       () => true
   )
 
-  document.getElementById("language_dropdown").value = Cookies.get("preferredLanguage") ?? navigator.language.toLowerCase()
+  // document.getElementById("language_dropdown").value = Cookies.get("preferredLanguage") ?? navigator.language.toLowerCase()
 
   // Setup the blockly workspace
   ocargo.blocklyControl.reset()
@@ -1400,9 +1400,9 @@ function setMutedCookie(mute) {
 }
 
 function gameUpdateBlockLanguage(language_code) {
-  if (hasFunctionalCookiesConsent()) {
-    Cookies.set("preferredLanguage", language_code)
-  }
+  // if (hasFunctionalCookiesConsent()) {
+  //   Cookies.set("preferredLanguage", language_code)
+  // }
   loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
     reloadWorkspace(Blockly.mainWorkspace);
   });
