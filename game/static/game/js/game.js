@@ -7,10 +7,12 @@ ocargo.Game = function () {
   this.failures = 0
   this.currentlySelectedTab = null
   this.isMuted = Cookies.get('muted') === 'true'
+  this.preferredLanguage = Cookies.get("preferredLanguage")
 }
 
 ocargo.Game.prototype.setup = function () {
-  gameUpdateBlockLanguage(navigator.language.toLowerCase())
+  document.getElementById("language_dropdown").value = this.preferredLanguage ?? navigator.language.toLowerCase()
+  gameUpdateBlockLanguage(this.preferredLanguage ?? navigator.language.toLowerCase())
 
   if(new Date().getMonth() === 11) {
     $("#paper").css('background-color', '#eef7ff')
@@ -1397,10 +1399,17 @@ function setMutedCookie(mute) {
   }
 }
 
-function gameUpdateBlockLanguage(language_code) {
+function gameUpdateBlockLanguage (language_code) {
   loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
     reloadWorkspace(Blockly.mainWorkspace);
   });
+}
+
+function gameUpdateBlockLanguageAndCookie (language_code) {
+  if (hasFunctionalCookiesConsent()) {
+    Cookies.set("preferredLanguage", language_code)
+  }
+  gameUpdateBlockLanguage(language_code)
 }
 
 $(document).ready(function () {
