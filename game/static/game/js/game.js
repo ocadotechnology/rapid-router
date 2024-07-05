@@ -9,6 +9,7 @@ ocargo.Game = function () {
 
   if (!hasFunctionalCookiesConsent()) {
     deleteCookie('muted')
+    this.isMuted = false
     deleteCookie('preferredLanguage')
   }
 
