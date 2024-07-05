@@ -6,6 +6,12 @@ ocargo.Game = function () {
   this.tabs = null
   this.failures = 0
   this.currentlySelectedTab = null
+
+  if (!hasFunctionalCookiesConsent()) {
+    deleteCookie('muted')
+    deleteCookie('preferredLanguage')
+  }
+
   this.isMuted = Cookies.get('muted') === 'true'
   this.preferredLanguage = Cookies.get("preferredLanguage")
 }
@@ -1397,6 +1403,12 @@ function setMutedCookie(mute) {
   if (hasFunctionalCookiesConsent()) {
     Cookies.set('muted', mute.toString(), { path: Urls.levels() })
   }
+}
+
+function deleteCookie(name) {
+  // Set cookie expiry to yesterday, browser will remove the cookie.
+  // https://www.quirksmode.org/js/cookies.html
+  Cookies.set(name, { expires: -1 })
 }
 
 function gameUpdateBlockLanguage (language_code) {
