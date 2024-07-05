@@ -17,6 +17,8 @@ ocargo.Game = function () {
 }
 
 ocargo.Game.prototype.setup = function () {
+  console.log(this.preferredLanguage)
+  console.log(navigator.language.toLowerCase())
   document.getElementById("language_dropdown").value = this.preferredLanguage ?? navigator.language.toLowerCase()
   gameUpdateBlockLanguage(this.preferredLanguage ?? navigator.language.toLowerCase())
 
@@ -1408,7 +1410,7 @@ function setMutedCookie(mute) {
 function deleteCookie(name) {
   // Set cookie expiry to yesterday, browser will remove the cookie.
   // https://www.quirksmode.org/js/cookies.html
-  Cookies.set(name, { expires: -1 })
+  Cookies.set(name, "", { expires: -1 })
 }
 
 function gameUpdateBlockLanguage (language_code) {
