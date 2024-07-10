@@ -1402,7 +1402,6 @@ function setMutedCookie(mute) {
   if (hasFunctionalCookiesConsent()) {
     if (mute) {
       Cookies.set('muted', true)
-      console.log("Set muted cookie!")
     }
     else {
       deleteCookie('muted')
@@ -1414,7 +1413,6 @@ function deleteCookie(name) {
   // Set cookie expiry to yesterday, browser will remove the cookie.
   // https://www.quirksmode.org/js/cookies.html
   Cookies.set(name, "", { expires: -1 })
-  console.log("Deleted " + name + " cookie!")
 }
 
 function gameUpdateBlockLanguage (language_code) {
