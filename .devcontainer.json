@@ -30,7 +30,8 @@
     "ghcr.io/devcontainers/features/python:1": {
       "installTools": false,
       "version": "3.8"
-    }
+    },
+    "ghcr.io/kreemer/features/chrometesting:1": {}
   },
   "name": "rapid-router",
   "postCreateCommand": "pipenv install --dev",
