@@ -21,6 +21,9 @@
       "type": "debugpy"
     },
     {
+      "env": {
+        "PYTEST_ADDOPTS": "--no-cov"
+      },
       "justMyCode": false,
       "name": "Pytest",
       "presentation": {

@@ -6,6 +6,7 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.tabSize": 4
   },
+  "autoDocstring.customTemplatePath": "../python-docstring.mustache",
   "black-formatter.args": [
     "--config",
     "pyproject.toml"
@@ -63,10 +64,11 @@
   "python.defaultInterpreterPath": ".venv/bin/python",
   "python.testing.pytestArgs": [
     "-n=auto",
+    "--cov=.",
+    "--cov-report=html",
     "-c=pyproject.toml",
     "."
   ],
   "python.testing.pytestEnabled": true,
-  "python.testing.unittestEnabled": false,
-  "editor.defaultFormatter": "ms-python.black-formatter"
+  "python.testing.unittestEnabled": false
 }
