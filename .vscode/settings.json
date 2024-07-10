@@ -6,7 +6,6 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.tabSize": 4
   },
-  "autoDocstring.customTemplatePath": "../python-docstring.mustache",
   "black-formatter.args": [
     "--config",
     "pyproject.toml"
