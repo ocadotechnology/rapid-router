@@ -9,17 +9,15 @@ ocargo.Game = function () {
 
   if (!hasFunctionalCookiesConsent()) {
     deleteCookie('muted')
-    this.isMuted = false
     deleteCookie('preferredLanguage')
   }
-
-  this.isMuted = Cookies.get('muted') === 'true'
-  this.preferredLanguage = Cookies.get("preferredLanguage")
+  this.preferredLanguage = Cookies.get('preferredLanguage')
 }
 
 ocargo.Game.prototype.setup = function () {
   document.getElementById("language_dropdown").value = this.preferredLanguage ?? navigator.language.toLowerCase()
   gameUpdateBlockLanguage(this.preferredLanguage ?? navigator.language.toLowerCase())
+  this.isMuted = Cookies.get('muted') ?? false
 
   if(new Date().getMonth() === 11) {
     $("#paper").css('background-color', '#eef7ff')
@@ -1402,8 +1400,13 @@ function hasFunctionalCookiesConsent() {
 
 function setMutedCookie(mute) {
   if (hasFunctionalCookiesConsent()) {
-    Cookies.set('muted', mute.toString())
-    console.log("Set muted cookie!")
+    if (mute) {
+      Cookies.set('muted', true)
+      console.log("Set muted cookie!")
+    }
+    else {
+      deleteCookie('muted')
+    }
   }
 }
 
