@@ -6,11 +6,18 @@ ocargo.Game = function () {
   this.tabs = null
   this.failures = 0
   this.currentlySelectedTab = null
-  this.isMuted = Cookies.get('muted') === 'true'
+
+  if (!hasFunctionalCookiesConsent()) {
+    deleteCookie('muted')
+    deleteCookie('preferredLanguage')
+  }
+  this.preferredLanguage = Cookies.get('preferredLanguage')
 }
 
 ocargo.Game.prototype.setup = function () {
-  gameUpdateBlockLanguage(navigator.language.toLowerCase())
+  document.getElementById("language_dropdown").value = this.preferredLanguage ?? navigator.language.toLowerCase()
+  gameUpdateBlockLanguage(this.preferredLanguage ?? navigator.language.toLowerCase())
+  this.isMuted = Cookies.get('muted') ?? false
 
   if(new Date().getMonth() === 11) {
     $("#paper").css('background-color', '#eef7ff')
@@ -1388,19 +1395,42 @@ function restoreCmsLogin () {
 }
 
 function hasFunctionalCookiesConsent() {
-  return OnetrustActiveGroups && OnetrustActiveGroups.split(',').includes('C0003')
+  try {
+    return OnetrustActiveGroups.split(',').includes('C0003')
+  } catch (e) {
+    console.error(e)
+  }
+  return false
 }
 
 function setMutedCookie(mute) {
   if (hasFunctionalCookiesConsent()) {
-    Cookies.set('muted', mute.toString(), { path: Urls.levels() })
+    if (mute) {
+      Cookies.set('muted', true)
+    }
+    else {
+      deleteCookie('muted')
+    }
   }
 }
 
-function gameUpdateBlockLanguage(language_code) {
+function deleteCookie(name) {
+  // Set cookie expiry to yesterday, browser will remove the cookie.
+  // https://www.quirksmode.org/js/cookies.html
+  Cookies.set(name, "", { expires: -1 })
+}
+
+function gameUpdateBlockLanguage (language_code) {
   loadLanguage("/static/game/js/blockly/msg/js/", language_code, function() {
     reloadWorkspace(Blockly.mainWorkspace);
   });
+}
+
+function gameUpdateBlockLanguageAndCookie (language_code) {
+  if (hasFunctionalCookiesConsent()) {
+    Cookies.set("preferredLanguage", language_code)
+  }
+  gameUpdateBlockLanguage(language_code)
 }
 
 $(document).ready(function () {
