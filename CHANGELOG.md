@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.26.0 (2024-07-12)
+
+### Feature
+
+* Add language cookie ([#1660](https://github.com/ocadotechnology/rapid-router/issues/1660)) ([`bbdc543`](https://github.com/ocadotechnology/rapid-router/commit/bbdc5433d7cbd915ea26706bd8567244e434f857))
+
 ## v5.25.0 (2024-06-27)
 
 ### Feature
