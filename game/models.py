@@ -159,6 +159,7 @@ class Level(models.Model):
     subtitle = models.TextField(max_length=100, blank=True, null=True)
     lesson = models.TextField(max_length=10000, default="Can you find the shortest route?")
     hint = models.TextField(max_length=10000, default="Think back to earlier levels. What did you learn?")
+    commands = models.TextField(max_length=10000, default="These are the commands available to you.")
     anonymous = models.BooleanField(default=False)
     locked_for_class = models.ManyToManyField(
         Class, blank=True, related_name="locked_levels"
