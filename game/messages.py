@@ -2560,6 +2560,7 @@ def hint_level109():
     title_level113,
     description_level113,
     hint_level113,
+    commands_level113,
 ) = (
     lambda: "Where did the blocks go?",
     lambda: build_description(
@@ -2567,12 +2568,16 @@ def hint_level109():
         "Can you remember how the Python was formed under the blocks in the previous levels? Take a look in the Py Commands for a quick reminder.",
     ),
     lambda: "Now it is your turn, you can click on the Py commands button for a reminder of the Python commands that you can use.",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
+    
+
 )
 
 (
     title_level114,
     description_level114,
     hint_level114,
+    commands_level114,
 ) = (
     lambda: "Tree snake",
     lambda: build_description(
@@ -2580,12 +2585,14 @@ def hint_level109():
         "This route is just a bit longer. Make sure you type the Python code accurately!",
     ),
     lambda: "The most common errors here are missing the round brackets at the end of the commands or mistyping the commands, e.g. use my_van.move_fowards() and not my_van.move_foward()",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level115,
     description_level115,
     hint_level115,
+    commands_level115,
 ) = (
     lambda: "Which way to turn? This way or that way?",
     lambda: build_description(
@@ -2593,6 +2600,7 @@ def hint_level109():
         "Try to find the shortest route using Python code only. You are getting really good at this!",
     ),
     lambda: "If you are stuck on this one, check that you are using the Python commands accurately. Click the Py Commands button to help you.",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
