@@ -1940,6 +1940,10 @@ PYTHON_HINT = (
     "<a href='https://wiki.python.org/moin/BeginnersGuide' target='_blank'>Beginner's Guide to Python</a>."
 )
 
+PYTHON_COMMAND = (
+    "<br>Run the following commands on the van object v, e.g. <br>my_van.move_forwards(): "
+)
+
 
 def title_level92():
     return "Start with the basics, <b>forward</b>, <b>left</b> and <b>right</b>"
@@ -1953,6 +1957,11 @@ def description_level92():
     )
     return build_description(title_level92(), message)
 
+def commands_level92():
+    return ('<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level92():
     return (
