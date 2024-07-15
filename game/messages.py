@@ -2654,6 +2654,7 @@ def hint_level109():
     title_level119,
     description_level119,
     hint_level119,
+    commands_level119,
 ) = (
     lambda: "Four leaf clover",
     lambda: build_description(
@@ -2663,12 +2664,14 @@ def hint_level109():
         "Click on the Py Commands button to remind yourself of the syntax you need.",
     ),
     lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level120,
     description_level120,
     hint_level120,
+    commands_level120,
 ) = (
     lambda: "Pond life",
     lambda: build_description(
@@ -2676,12 +2679,14 @@ def hint_level109():
         "So many routes but only one that is efficient. Can you work out which one it is?",
     ),
     lambda: "What if you go down the middle section?",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level121,
     description_level121,
     hint_level121,
+    commands_level121,
 ) = (
     lambda: "Farmyard overdrive",
     lambda: build_description(
@@ -2689,12 +2694,14 @@ def hint_level109():
         "Maybe including a loop is the answer here?",
     ),
     lambda: "Try that middle route...",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level122,
     description_level122,
     hint_level122,
+    commands_level122,
 ) = (
     lambda: "Snnnaaaake reflection",
     lambda: build_description(
@@ -2702,6 +2709,7 @@ def hint_level109():
         "Can you see some patterns? Looks like those loops will come in handy again for this tricky route.",
     ),
     lambda: "Don't try to solve this in one go. Work out the pattern for the top route and check that works. Then move on to the next part...",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 
