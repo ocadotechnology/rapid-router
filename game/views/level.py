@@ -161,6 +161,12 @@ def play_level(request, level, from_editor=False):
         if level.default
         else level.hint
     )
+    commands_attr = 'commands_level' + str(level.name)
+    commands = (
+        getattr(messages, commands_attr, None)
+        if level.default
+        else level.commands
+    )
 
     character = level.character
     character_url = character.top_down
@@ -239,6 +245,7 @@ def play_level(request, level, from_editor=False):
             "subtitle": subtitle,
             "lesson": lesson,
             "hint": hint,
+            "commands": commands() if commands else '',
             "blocks": block_data,
             "decor": decor_data,
             "character": character,
