@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.26.1 (2024-07-17)
+
+### Fix
+
+* **deps-dev:** Bump setuptools from 65.5.1 to 70.3.0 ([#1678](https://github.com/ocadotechnology/rapid-router/issues/1678)) ([`c3989a7`](https://github.com/ocadotechnology/rapid-router/commit/c3989a70ae6d9070b77d0c71ee09f19b84a08056))
+
 ## v5.26.0 (2024-07-12)
 
 ### Feature
