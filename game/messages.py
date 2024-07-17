@@ -2134,11 +2134,11 @@ def commands_level98():
     '<b>Movement</b>'+
     '<br>my_van.move_forwards()' +
     '<br>my_van.turn_left()</div>'+
-    '<div class="row">' +
     '<div class="large-4 columns">' +
     '<b>Position</b>' +
     '<br>my_van.at_destination()' +
-    '<br>my_van.is_road_forward()</div></div>'
+    '<br>my_van.is_road_forward()</div>' +
+    '<div class="large-4 columns"></div></div>'
     )
 
 def hint_level98():
@@ -2173,11 +2173,11 @@ def commands_level99():
     '<br>my_van.move_forwards()' +
     '<br>my_van.turn_left()' +
     '<br>my_van.turn_right()</div>'+
-    '<div class="row">' +
     '<div class="large-4 columns">' +
     '<b>Position</b>' +
     '<br>my_van.at_destination()' +
-    '<br>my_van.is_road_forward()</div></div>'
+    '<br>my_van.is_road_forward()</div>' +
+    '<div class="large-4 columns"></div></div>'
     )
 
 def hint_level99():
@@ -2211,12 +2211,12 @@ def commands_level100():
     '<br>my_van.move_forwards()' +
     '<br>my_van.turn_left()' +
     '<br>my_van.turn_right()</div>'+
-    '<div class="row">' +
     '<div class="large-4 columns">' +
     '<b>Position</b>'+
     '<br>my_van.at_destination()' +
     '<br>my_van.is_road_forward()' +
-    '<br>my_van.is_road_left()</div></div>'
+    '<br>my_van.is_road_left()</div>' +
+    '<div class="large-4 columns"></div></div>'
     )
 
 def hint_level100():
@@ -2371,13 +2371,13 @@ def commands_level105():
     '<br>my_van.turn_left()' +
     '<br>my_van.turn_right()'+
     '<br>my_van.wait()</div>' +
-    '<div class="row">' +
     '<div class="large-4 columns">' +
-    '<b>Position</b>'
+    '<b>Position</b>' +
     '<br>my_van.is_road_forward()' +
     '<br>my_van.is_road_left()' +
     '<br>my_van.at_red_traffic_light()' +
-    '<br>my_van.at_destination()</div></div>'
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
     )
 
 def hint_level105():
@@ -2406,10 +2406,10 @@ def commands_level106():
     '<b>Movement</b>'+
     '<br>my_van.move_forwards()' +
     '<br>my_van.turn_right()</div>'+
-    '<div class="row">' +
     '<div class="large-4 columns">' +
-    '<b>Position</b>'
-    '<br>my_van.at_destination()</div></div>'
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
     )
 
 def hint_level106():
@@ -2442,10 +2442,10 @@ def commands_level107():
     '<b>Movement</b>'+
     '<br>my_van.move_forwards()' +
     '<br>my_van.turn_left()</div>'+
-    '<div class="row">' +
     '<div class="large-4 columns">' +
-    '<b>Position</b>'
-    '<br>my_van.at_destination()</div></div>'
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
     )
 
 def hint_level107():
@@ -2469,10 +2469,10 @@ def commands_level108():
     '<b>Movement</b>'+
     '<br>my_van.move_forwards()' +
     '<br>my_van.turn_left()</div>'+
-    '<div class="row">' +
     '<div class="large-4 columns">' +
-    '<b>Position</b>'
-    '<br>my_van.at_destination()</div></div>'
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
     )
 
 def hint_level108():
@@ -2500,10 +2500,10 @@ def commands_level109():
     '<br>my_van.move_forwards()' +
     '<br>my_van.turn_right()'+
     '<br>my_van.turn_left()</div>'+
-    '<div class="row">' +
     '<div class="large-4 columns">' +
-    '<b>Position</b>'
-    '<br>my_van.at_destination()</div></div>'
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
     )
 
 
