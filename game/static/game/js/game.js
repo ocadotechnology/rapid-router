@@ -845,7 +845,7 @@ ocargo.Game.prototype._setupPythonTab = function () {
   )
 // --------- Commands for popup ---------------------------------------------------
   var leadMsg =
-    '<p>' +
+    '<p style="font-size: 20px;">' +
     interpolate(
       gettext(
         'Run the following commands on the van object %(var_name)s, e.g. %(example)s'
