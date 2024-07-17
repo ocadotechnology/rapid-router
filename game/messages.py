@@ -1940,11 +1940,6 @@ PYTHON_HINT = (
     "<a href='https://wiki.python.org/moin/BeginnersGuide' target='_blank'>Beginner's Guide to Python</a>."
 )
 
-PYTHON_COMMAND = (
-    "<br>Run the following commands on the van object v, e.g. <br>my_van.move_forwards(): "
-)
-
-
 def title_level92():
     return "Start with the basics, <b>forward</b>, <b>left</b> and <b>right</b>"
 
