@@ -150,6 +150,7 @@ class Level(models.Model):
     blocklyEnabled = models.BooleanField(default=True)
     pythonEnabled = models.BooleanField(default=True)
     pythonViewEnabled = models.BooleanField(default=False)
+    ideEnabled = models.BooleanField(default=False)
     theme_name = models.CharField(
         max_length=10, choices=theme_choices(), blank=True, null=True, default=None
     )

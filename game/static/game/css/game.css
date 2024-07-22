@@ -393,3 +393,27 @@ div > .navigation_button_kurono {
     bottom: 0px;
     background-image : url('/static/game/image/actions/btn_zoom_in.svg');
 }
+
+/**************/
+/* Python den */
+/**************/
+
+.game-header {
+    width: 100%;
+}
+
+.game-background {
+    background-color: #1E30A6;
+}
+
+.header-exit-button {
+    position: absolute;
+    left: 0px;
+    height: 50px;
+    width: 120px;
+    opacity: 0;
+}
+
+::part(editor-root) {
+    height: 1000px;
+}
