@@ -11,11 +11,11 @@ function loadLanguage(path, langStr, callback) {
     }
   };
   xobj.send(null);
-};
+}
 
 function reloadWorkspace(workspace) {
   var blocklyDom = Blockly.Xml.workspaceToDom(workspace);
   workspace.clear();
   Blockly.Xml.domToWorkspace(blocklyDom, workspace);
   workspace.updateToolbox(BLOCKLY_XML);
-};
+}
