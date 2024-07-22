@@ -245,7 +245,7 @@ def play_level(request, level, from_editor=False):
             "subtitle": subtitle,
             "lesson": lesson,
             "hint": hint,
-            "commands": commands() if commands else '',
+            "commands": commands if commands is not None else '',
             "blocks": block_data,
             "decor": decor_data,
             "character": character,
