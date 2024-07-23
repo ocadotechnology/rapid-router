@@ -313,17 +313,16 @@
 
   </div>
 
-  <!-- <div id="ide" {% if not level.ideEnabled %} style="display: none;" {% endif %}>
+  <div id="ide" {% if not level.ideEnabled %} style="display: none;" {% endif %}>
     <editor-wc
         class="c-editor__wc"
         data-editor-target="editor"
         output_split_view="false"
         code="print('Hello component')">
     </editor-wc>
-  </div> -->
+  </div>
 
-  <!-- <div id="right" {% if level.ideEnabled %} style="display: none;" {% endif %}> -->
-  <div id="right">
+  <div id="right" {% if level.ideEnabled %} style="display: none;" {% endif %}>
     <div id="tab_panes" class='no-print'>
 
       <div id="blockly_pane" class="tab_pane">
