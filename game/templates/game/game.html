@@ -496,7 +496,7 @@
       {% endif %}
     </div>
 
-    <div id="paper" class="col" style="background-color: {{level.theme.background}};"></div>
+    <div id="paper" class="col" style="background-color: {{level.theme.background}}"></div>
 
     <div id="direct_drive" class="unselectable no-print">
       <button class="direct_drive_button" id="moveForward" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
@@ -505,7 +505,7 @@
       <button class="direct_drive_button" id="turnRight" {% if not level.direct_drive %} style="visibility: hidden" {% endif %}></button>
     </div>
 
-    <div id="zoom_pan">
+    <div id="zoom_pan" >
       <button class="direct_drive_button" id="zoomOut" ></button>
       <button class="direct_drive_button" id="zoomIn"></button>
     </div>
@@ -522,6 +522,7 @@
     </div>
 
     <div id="consoleSlider" class="no-print"></div>
+
   </div>
 </div>
 
