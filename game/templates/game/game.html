@@ -80,6 +80,8 @@
     var PYTHON_WORKSPACE = {% if python_workspace == None %}null{% else %}"{{python_workspace|linebreaksbr}}"{% endif %}
   </script>
 
+  <script type="text/javascript" src="{% static 'game/js/web-component.js' %}"></script>
+
   <script defer type="text/javascript" src="{% static 'game/js/utils.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/skulpt/skulpt.min.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/skulpt/skulpt-stdlib.js' %}"></script>
@@ -122,7 +124,6 @@
   <script defer type="text/javascript" src="{% static 'game/js/sharing.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/game.js' %}"></script>
   <script defer type="text/javascript" src="{% static 'game/js/event.js' %}"></script>
-  <!-- <script defer type="text/javascript" src="{% static 'game/js/web-component.js' %}"></script> -->
 
   <script defer type="text/javascript">
     $(function() {
