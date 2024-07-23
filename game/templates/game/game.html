@@ -185,6 +185,14 @@
 
     <div class="tab_break"></div>
 
+    <div id="python_tab" class="tab selectable {% if level.pythonEnabled %}{% else %}hidden{% endif %}">
+      <input type="radio" name="tabs" id="python_radio">
+      <label for="python_radio">
+        <img src="{% static 'game/image/icons/python.svg' %}">
+        <span>{% trans "Python" %}</span>
+      </label>
+    </div>
+
     <div id="clear_tab" class="tab">
       <input type="radio" name="tabs" id="clear_program_radio">
       <label for="clear_program_radio">
