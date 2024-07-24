@@ -42,8 +42,9 @@
 }
 
 #tabs #blockly_tab span,
-#tabs #python_tab span {
-    color: black;
+#tabs #python_tab span,
+#tabs #language_tab select {
+    color: white;
 }
 
 #tabs #blockly_tab img,
