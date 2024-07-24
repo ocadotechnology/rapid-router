@@ -126,7 +126,7 @@ def get_python_episodes(request):
     return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 10, 15)
 
 
-def levels(request):
+def levels(request, language):
     """Loads a page with all levels listed.
 
     **Context**
@@ -150,22 +150,6 @@ def levels(request):
         attempts = {a["level_id"]: a["best_score"] for a in best_attempts}
     else:
         attempts = {}
-
-    blockly_episodes = get_blockly_episodes(request)
-    for episode in blockly_episodes:
-        for level in episode["levels"]:
-            attach_attempts_to_level(attempts, level)
-            level["locked_for_class"] = Level.objects.get(
-                id=level["id"]
-            ).locked_for_class
-
-    python_episodes = get_python_episodes(request)
-    for episode in python_episodes:
-        for level in episode["levels"]:
-            attach_attempts_to_level(attempts, level)
-            level["locked_for_class"] = Level.objects.get(
-                id=level["id"]
-            ).locked_for_class
 
     owned_level_data = []
     directly_shared_levels = []
@@ -218,17 +202,54 @@ def levels(request):
             # if user is a student or a standard teacher, just get levels shared with them directly.
             else:
                 directly_shared_levels.append(get_shared_level(level, attempts))
+
+    context = {
+        "owned_levels": owned_level_data,
+        "directly_shared_levels": directly_shared_levels,
+        "indirectly_shared_levels": indirectly_shared_levels,
+        "scores": attempts,
+    }
+
+    if language == "blockly":
+        blockly_episodes = get_blockly_episodes(request)
+
+        for episode in blockly_episodes:
+            for level in episode["levels"]:
+                attach_attempts_to_level(attempts, level)
+                level["locked_for_class"] = Level.objects.get(
+                    id=level["id"]
+                ).locked_for_class
+
+        context["blocklyEpisodes"] = blockly_episodes
+
+    elif language == "python":
+        python_episodes = get_python_episodes(request)
+
+        for episode in python_episodes:
+            for level in episode["levels"]:
+                attach_attempts_to_level(attempts, level)
+                level["locked_for_class"] = Level.objects.get(
+                    id=level["id"]
+                ).locked_for_class
+
+        context["pythonEpisodes"] = python_episodes
+
+    return context
+
+
+def blockly_levels(request):
     return render(
         request,
         "game/level_selection.html",
-        context={
-            "blocklyEpisodes": blockly_episodes,
-            "pythonEpisodes": python_episodes,
-            "owned_levels": owned_level_data,
-            "directly_shared_levels": directly_shared_levels,
-            "indirectly_shared_levels": indirectly_shared_levels,
-            "scores": attempts,
-        },
+        context=levels(request, "blockly")
+    )
+
+
+def python_levels(request):
+    return render(
+        request,
+        "game/python_den_level_selection.html",
+        context=levels(request, "python")
     )
 
 
