@@ -417,3 +417,8 @@ div > .navigation_button_kurono {
 ::part(editor-root) {
     height: 1000px;
 }
+
+:root {
+    --rpf-button-primary-background-color: #ffd23b !important;
+    --rpf-button-primary-text-color: black !important;
+}

@@ -84,12 +84,12 @@ class Episode(models.Model):
             7: "medium-hard",
             8: "medium-hard",
             9: "brainteasers",
-            10: "hard",
-            11: "advanced",
-            12: "loops",
-            13: "loops",
-            14: "loops",
-            15: "loops",
+            10: "split-python",
+            11: "split-python",
+            12: "python",
+            13: "python",
+            14: "python",
+            15: "python",
         }
 
         return difficulty_map.get(self.id, "easy")
