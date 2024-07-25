@@ -2567,8 +2567,6 @@ def hint_level109():
     ),
     lambda: "Now it is your turn, you can click on the Py commands button for a reminder of the Python commands that you can use.",
     lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
-    
-
 )
 
 (
