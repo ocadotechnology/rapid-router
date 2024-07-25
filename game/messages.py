@@ -2212,6 +2212,7 @@ def commands_level100():
     '<b>Position</b>'+
     '<br>my_van.at_destination()' +
     '<br>my_van.is_road_forward()' +
+    '<br>my_van.is_road_right()' +
     '<br>my_van.is_road_left()</div>' +
     '<div class="large-4 columns"></div></div>'
     )
