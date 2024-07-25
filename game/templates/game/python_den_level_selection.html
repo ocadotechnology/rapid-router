@@ -64,7 +64,7 @@
             We have created free editable plans, presentations, and worksheets to support these lessons.
         </div>
         {% for episode in pythonEpisodes %}
-            {% if episode.difficulty != "loops" %}
+            {% if episode.difficulty != "python" %}
                 <div class="panel">
                     <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
                         <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
@@ -96,6 +96,8 @@
                                             <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
                                             <img class="level_image coin_image" value="{{level.name}}">
                                         {% endif %}
+                                        <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                            Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
                                     </p>
                                 {% endif %}
                             {% endfor %}
@@ -108,7 +110,7 @@
             The following levels focus on Loops using Blockly and Python.
         </div>
         {% for episode in pythonEpisodes %}
-            {% if episode.difficulty == "loops" %}
+            {% if episode.difficulty == "python" %}
                 <div
                     class="panel"
                     {% if "coming soon" in episode.name %}

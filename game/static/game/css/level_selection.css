@@ -98,3 +98,8 @@
 .banner--python-den--image {
   width: 100%;
 }
+
+.button--level {
+  background-color: #f6be00;
+  padding: 11px 12px;
+}
