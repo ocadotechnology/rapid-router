@@ -101,5 +101,11 @@
 
 .button--level {
   background-color: #f6be00;
-  padding: 11px 12px;
+  padding: 3px 10px;
+  margin: 4px 0px 0px 0px;
+  font-size: 14px;
+}
+
+.python-den-level {
+  padding: 9px 0px 5px;
 }

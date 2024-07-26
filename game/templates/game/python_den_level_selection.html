@@ -91,13 +91,32 @@
                                 {% else %}
                                     <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
                                     <p>
-                                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
-                                        {% if level.score != None %}
-                                            <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
-                                            <img class="level_image coin_image" value="{{level.name}}">
+                                        <div class="col-sm-7 python-den-level">
+                                            <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                                            {% if level.score != None %}
+                                                <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
+                                                <img class="level_image coin_image" value="{{level.name}}">
+                                            {% endif %}
+                                        </div>
+                                        {% if user|is_logged_in_as_teacher %}
+                                            <div class="col-sm-3">
+                                                <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                    Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                    Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
+                                            </div>
+                                        {% else %}
+                                            <div class="col-sm-3">
+                                                <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                    Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                    Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                            </div>
                                         {% endif %}
-                                        <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
-                                            Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
                                     </p>
                                 {% endif %}
                             {% endfor %}
@@ -160,94 +179,6 @@
                 </div>
             {% endif %}
         {% endfor %}
-
-        {% if user|is_logged_in %}
-        <div class="panel-intro">
-            <h4>Created levels</h4>
-            This is where you will find levels you created or those have been been shared with you.
-        </div>
-        <div class="panel">
-            <div class="panel-header bg--shared-levels" id="episode-levels-created-by-you">
-                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
-                    Levels created by you
-                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-created-by-you" aria-expanded="false" aria-controls="collapse-levels-created-by-you" data-parent="#episodes">
-                    </span>
-                </p>
-            </div>
-            <div id="collapse-levels-created-by-you" aria-labelledby="episode-levels-created-by-you" class="collapse">
-                <div class="panel-body">
-                    {% if owned_levels %}
-                        {% for level in owned_levels %}
-                        <p>
-                            <a href="{% url 'level_editor_chosen_level' level.id %}">{{level.title}}</a>
-                            {% if level.score != None %}
-                            <span class="score_text">{{level.score|floatformat}}/10</span>
-                            <img class="level_image coin_image" value="{{level.id}}">
-                            {% endif %}
-                        </p>
-                        {% endfor %}
-                    {% else %}
-                        <p>No levels have been created by you yet.</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="panel">
-            <div class="panel-header bg--shared-levels" id="episode-levels-shared-with-you">
-                <p class="episode-title" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
-                    Levels shared with you
-                    <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-levels-shared-with-you" aria-expanded="false" aria-controls="collapse-levels-shared-with-you" data-parent="#episodes">
-                    </span>
-                </p>
-            </div>
-            <div id="collapse-levels-shared-with-you" aria-labelledby="episode-levels-shared-with-you" class="collapse">
-                <div class="panel-body">
-                    {% if user|is_logged_in_as_admin_teacher %}
-                        <h6>Your classes</h6>
-                    {% endif %}
-                    {% if directly_shared_levels %}
-                        {% for level in directly_shared_levels %}
-                            <p>
-                                <a href="{% url 'play_custom_level' level.id %}">
-                                    {{ level.title }}, {{ level.owner|make_into_username }}
-                                    {% if level.class %}
-                                        ({{ level.class }})
-                                    {% endif %}
-                                </a>
-                                {% if level.score != None %}
-                                    <span class="score_text">{{ level.score|floatformat }}/10</span>
-                                    <img class="level_image coin_image" value="{{ level.id }}">
-                                {% endif %}
-                            </p>
-                        {% endfor %}
-                    {% else %}
-                        <p>No levels.</p>
-                    {% endif %}
-
-                    {% if indirectly_shared_levels %}
-                        {% for teacher, levels in indirectly_shared_levels.items %}
-                            <h6>Owned by {{ teacher|make_into_username }}</h6>
-                            {% for level in levels %}
-                                <p>
-                                    <a href="{% url 'play_custom_level' level.id %}">
-                                        {{ level.title }}, {{level.owner|make_into_username}}
-                                        {% if level.class %}
-                                            ({{ level.class }})
-                                        {% endif %}
-                                    </a>
-                                    {% if level.score != None %}
-                                        <span class="score_text">{{level.score|floatformat}}/10</span>
-                                        <img class="level_image coin_image" value="{{level.id}}">
-                                    {% endif %}
-                                </p>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        {% endif %}
     </div>
 </div>
 {% endblock content %}

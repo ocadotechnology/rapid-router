@@ -213,11 +213,11 @@
         },
         "django-otp": {
             "hashes": [
-                "sha256:e7142139f1e9686be5f396669a3d3d61178cd9b3e9de9de5933888668908b46b",
-                "sha256:e88871d2d3b333a86c2cd0cb721be8098d4d6344cb220315a500e5a5c8254295"
+                "sha256:48d0a1943cbeb610f0bca51a0da42cc7eefcff387b101c69d3ed432cd75a0fd4",
+                "sha256:d0c60a3c20dd16e9f2c7c3d8669306c34a83c20fd021565adbf782f4ba911b13"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==1.5.0"
+            "version": "==1.5.1"
         },
         "django-phonenumber-field": {
             "hashes": [
@@ -816,11 +816,11 @@
         },
         "django-otp": {
             "hashes": [
-                "sha256:e7142139f1e9686be5f396669a3d3d61178cd9b3e9de9de5933888668908b46b",
-                "sha256:e88871d2d3b333a86c2cd0cb721be8098d4d6344cb220315a500e5a5c8254295"
+                "sha256:48d0a1943cbeb610f0bca51a0da42cc7eefcff387b101c69d3ed432cd75a0fd4",
+                "sha256:d0c60a3c20dd16e9f2c7c3d8669306c34a83c20fd021565adbf782f4ba911b13"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==1.5.0"
+            "version": "==1.5.1"
         },
         "django-phonenumber-field": {
             "hashes": [
