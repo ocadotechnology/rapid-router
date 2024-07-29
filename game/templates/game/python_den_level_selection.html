@@ -98,24 +98,32 @@
                                                 <img class="level_image coin_image" value="{{level.name}}">
                                             {% endif %}
                                         </div>
-                                        {% if user|is_logged_in_as_teacher %}
-                                            <div class="col-sm-3">
-                                                <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
-                                                    Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
-                                                    Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
-                                            </div>
-                                        {% else %}
-                                            <div class="col-sm-3">
-                                                <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
-                                                    Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
-                                                    Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
-                                            </div>
+                                        {% if level.ideEnabled %}
+                                            {% if user|is_logged_in_as_teacher %}
+                                                <div class="col-sm-3">
+                                                    <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                        Lesson plan<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                        Slides<span class="iconify" data-icon="mdi:tray-arrow-down"></span></a>
+                                                </div>
+                                            {% elif user|is_independent_student %}
+                                                <div class="col-sm-3">
+                                                    <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                        Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                        Video<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                                </div>
+                                            {% else %}
+                                                <div class="col-sm-3"></div>
+                                                <div class="col-sm-2">
+                                                    <a href="https://docs.codeforlife.education/rapid-router/blockly-guide" class="button button--level button--icon" target="_blank">
+                                                        Worksheet<span class="iconify" data-icon="mdi:open-in-new"></span></a>
+                                                </div>
+                                            {% endif %}
                                         {% endif %}
                                     </p>
                                 {% endif %}
