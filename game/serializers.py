@@ -84,7 +84,7 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_hint(self, obj):
         return getattr(messages, "hint_level" + obj.name)() if obj.default else obj.hint
-    
+
     def get_commands(self, obj):
         return getattr(messages, "commands_level" + obj.name)() if obj.default else obj.commands
 
