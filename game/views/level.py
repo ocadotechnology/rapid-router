@@ -167,7 +167,6 @@ def play_level(request, level, from_editor=False):
         if level.default
         else level.commands
     )
-    default_commands = level.commands
     character = level.character
     character_url = character.top_down
     wreckage_url = "van_wreckage.svg"
@@ -245,7 +244,7 @@ def play_level(request, level, from_editor=False):
             "subtitle": subtitle,
             "lesson": lesson,
             "hint": hint,
-            "commands": commands if commands is not None else default_commands,
+            "commands": commands if commands is not None else level.commands,
             "blocks": block_data,
             "decor": decor_data,
             "character": character,
