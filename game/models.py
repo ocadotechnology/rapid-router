@@ -14,7 +14,9 @@ def theme_choices():
 def character_choices():
     from game.character import get_all_character
 
-    return [(character.name, character.name) for character in get_all_character()]
+    return [
+        (character.name, character.name) for character in get_all_character()
+    ]
 
 
 class Block(models.Model):
@@ -142,7 +144,9 @@ class Level(models.Model):
         on_delete=models.SET_NULL,
         related_name="prev_level",
     )
-    shared_with = models.ManyToManyField(User, related_name="shared", blank=True)
+    shared_with = models.ManyToManyField(
+        User, related_name="shared", blank=True
+    )
     model_solution = models.CharField(blank=True, max_length=20, default="[]")
     disable_route_score = models.BooleanField(default=False)
     disable_algorithm_score = models.BooleanField(default=False)
@@ -151,37 +155,59 @@ class Level(models.Model):
     pythonEnabled = models.BooleanField(default=True)
     pythonViewEnabled = models.BooleanField(default=False)
     theme_name = models.CharField(
-        max_length=10, choices=theme_choices(), blank=True, null=True, default=None
+        max_length=10,
+        choices=theme_choices(),
+        blank=True,
+        null=True,
+        default=None,
     )
     character_name = models.CharField(
-        max_length=20, choices=character_choices(), blank=True, null=True, default=None
+        max_length=20,
+        choices=character_choices(),
+        blank=True,
+        null=True,
+        default=None,
     )
     subtitle = models.TextField(max_length=100, blank=True, null=True)
-    lesson = models.TextField(max_length=10000, default="Can you find the shortest route?")
-    hint = models.TextField(max_length=10000, default="Think back to earlier levels. What did you learn?")
-    commands = models.TextField(max_length=10000, default='<div class="row">' +
-                                                '<div class="large-4 columns">' +
-                                                '<p><b>Movement</b>' +
-                                                '<br>my_van.move_forwards()' +
-                                                '<br>my_van.turn_around()' +
-                                                '<br>my_van.turn_left()' +
-                                                '<br>my_van.turn_right()' +
-                                                '<br>my_van.wait()<p></div>' +
-                                                '<div class="large-4 columns">' +
-                                                '<p><b>Position</b>' +
-                                                '<br>my_van.at_dead_end()' +
-                                                '<br>my_van.at_destination()' +
-                                                '<br>my_van.at_red_traffic_light()' +
-                                                '<br>my_van.at_green_traffic_light()' +
-                                                '<br>my_van.at_traffic_light(c)' +
-                                                '<br><i>where c is \'RED\' or \'GREEN\'</i></p></div>' +
-                                                '<div class="large-4 columns">' +
-                                                '<p><br>my_van.is_road_right()' +
-                                                '<br>my_van.is_road_left()' +
-                                                '<br>my_van.is_road_forward()' +
-                                                '<br>my_van.is_road(d)' +
-                                                '<br><i>where d is \'FORWARD\', \'LEFT\', or \'RIGHT\'</i></p></div>' +
-                                                '</div>')
+    lesson = models.TextField(
+        max_length=10000, default="Can you find the shortest route?"
+    )
+    hint = models.TextField(
+        max_length=10000,
+        default="Think back to earlier levels. What did you learn?",
+    )
+    commands = models.TextField(
+        max_length=10000,
+        default='<div class="row">'
+        + '<div class="large-4 columns">'
+        + "<p><b>Movement</b>"
+        + "<br>my_van.move_forwards()"
+        + "<br>my_van.turn_around()"
+        + "<br>my_van.turn_left()"
+        + "<br>my_van.turn_right()"
+        + "<br>my_van.wait()<p></div>"
+        + '<div class="large-4 columns">'
+        + "<p><b>Position</b>"
+        + "<br>my_van.at_dead_end()"
+        + "<br>my_van.at_destination()"
+        + "<br>my_van.at_red_traffic_light()"
+        + "<br>my_van.at_green_traffic_light()"
+        + "<br>my_van.at_traffic_light(c)"
+        + "<br><i>where c is 'RED' or 'GREEN'</i></p></div>"
+        + '<div class="large-4 columns">'
+        + "<p><br>my_van.is_road_right()"
+        + "<br>my_van.is_road_left()"
+        + "<br>my_van.is_road_forward()"
+        + "<br>my_van.is_road(d)"
+        + "<br><i>where d is 'FORWARD', 'LEFT', or 'RIGHT'</i></p></div>"
+        + "</div>"
+        + '<div class="row">'
+        + '<div class="large-4 columns">'
+        + "<p><b>Animals</b>"
+        + "<br>my_van.is_animal_crossing()"
+        + "<br>my_van.sound_horn()</div>"
+        + "</div>",
+    )
     anonymous = models.BooleanField(default=False)
     locked_for_class = models.ManyToManyField(
         Class, blank=True, related_name="locked_levels"
@@ -260,7 +286,9 @@ class Workspace(models.Model):
 
 class Attempt(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
-    level = models.ForeignKey(Level, related_name="attempts", on_delete=models.CASCADE)
+    level = models.ForeignKey(
+        Level, related_name="attempts", on_delete=models.CASCADE
+    )
     student = models.ForeignKey(
         Student,
         related_name="attempts",
