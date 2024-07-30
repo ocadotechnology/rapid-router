@@ -280,7 +280,7 @@ while not my_van.at_destination():
     def _run_working_program(self, code):
         self._write_code(code)
         self.browser.find_element(By.ID, "fast_tab").click()
-        time.sleep(10)
+        time.sleep(1)
         return self
 
     def _write_code(self, code):
