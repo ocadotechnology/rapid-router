@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.27.0 (2024-07-30)
+
+### Feature
+
+* Remove superflous python commands in rapid router. ([#1680](https://github.com/ocadotechnology/rapid-router/issues/1680)) ([`d5e051d`](https://github.com/ocadotechnology/rapid-router/commit/d5e051d05f2f39f24aaf98e37e7e7bb45e2becc3))
+
 ## v5.26.1 (2024-07-17)
 
 ### Fix
