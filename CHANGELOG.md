@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v5.28.0 (2024-07-31)
+
+### Feature
+
+* Add Python commands for crossing animals ([#1689](https://github.com/ocadotechnology/rapid-router/issues/1689)) ([`c6aed98`](https://github.com/ocadotechnology/rapid-router/commit/c6aed9843c72c8b176bedcb128cd4600017be6de))
+
 ## v5.27.1 (2024-07-31)
 
 ### Fix
