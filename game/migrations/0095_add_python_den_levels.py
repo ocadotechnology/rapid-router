@@ -337,7 +337,123 @@ def add_python_den_levels(apps, schema_editor):
     level25.save()
 
 def add_python_den_blocks(apps, schema_editor):
-    # put stuff here
+    def set_blocks(level, blocks):
+        set_blocks_inner(level, blocks, LevelBlock, Block)
 
 def add_python_den_decor(apps, schema_editor):
-    # put stuff here
+    def set_decor(level, decor):
+        set_decor_inner(level, decor, LevelDecor)
+
+    Level = apps.get_model("game", "Level")
+    level14 = Level.objects.get(name="python_14")
+    level15 = Level.objects.get(name="python_15")
+    level16 = Level.objects.get(name="python_16")
+    level17 = Level.objects.get(name="python_17")
+    level18 = Level.objects.get(name="python_18")
+    level20 = Level.objects.get(name="python_20")
+    level21 = Level.objects.get(name="python_21")
+    level22 = Level.objects.get(name="python_22")
+    level23 = Level.objects.get(name="python_23")
+
+    set_decor(
+        level14,
+        json.loads(
+            '[{"x": 149, "y": 299, "decorName": "pond"},'
+            + '{"x": 398, "y": 354, "decorName": "bush"},'
+            + '{"x": 399, "y": 318, "decorName": "bush"},'
+            + '{"x": 311, "y": 309, "decorName": "tree2"},'
+            + '{"x": 568, "y": 516, "decorName": "tree1"},'
+            + '{"x": 654, "y": 512, "decorName": "tree1"}]'
+        )
+    )
+
+    set_decor(
+        level15,
+        json.loads(
+            '[{"x": 404, "y": 602, "decorName": "pond"},'
+            + '{"x": 563, "y": 600, "decorName": "pond"},'
+            + '{"x": 501, "y": 503, "decorName": "pond"},'
+            + '{"x": 254, "y": 655, "decorName": "bush"},'
+            + '{"x": 253, "y": 617, "decorName": "bush"},'
+            + '{"x": 407, "y": 512, "decorName": "tree2"},'
+            + '{"x": 494, "y": 391, "decorName": "tree1"},'
+            + '{"x": 486, "y": 318, "decorName": "tree1"},'
+            + '{"x": 286, "y": 327, "decorName": "tree1"},'
+            + '{"x": 252, "y": 256, "decorName": "tree1"}]'
+        )
+    )
+
+    set_decor(
+        level16,
+        json.loads(
+            '[{"x": 699, "y": 499, "decorName": "pond"},'
+            + '{"x": 700, "y": 402, "decorName": "pond"},'
+            + '{"x": 611, "y": 469, "decorName": "bush"},'
+            + '{"x": 610, "y": 427, "decorName": "bush"},'
+            + '{"x": 613, "y": 505, "decorName": "tree2"}]'
+        )
+    )
+
+    set_decor(
+        level17,
+        json.loads(
+            '[{"x": 461, "y": 314, "decorName": "pond"},'
+            + '{"x": 428, "y": 371, "decorName": "tree1"},'
+            + '{"x": 500, "y": 179, "decorName": "tree1"}]'
+        )
+    )
+
+    set_decor(
+        level18,
+        json.loads(
+            '[{"x": 301, "y": 594, "decorName": "tree1"},'
+            + '{"x": 421, "y": 598, "decorName": "tree1"},'
+            + '{"x": 529, "y": 600, "decorName": "tree1"},'
+            + '{"x": 120, "y": 415, "decorName": "tree2"},'
+            + '{"x": 93, "y": 300, "decorName": "tree2"}]'
+        )
+    )
+
+    set_decor(
+        level20,
+        json.loads(
+            '[{"x": 443, "y": 578, "decorName": "pond"},'
+            + '{"x": 640, "y": 434, "decorName": "tree2"},'
+            + '{"x": 623, "y": 362, "decorName": "tree1"},'
+            + '{"x": 647, "y": 292, "decorName": "tree2"},'
+            + '{"x": 694, "y": 341, "decorName": "tree1"},'
+            + '{"x": 516, "y": 651, "decorName": "tree2"},'
+            + '{"x": 412, "y": 648, "decorName": "tree1"}]'
+        )
+    )
+
+    set_decor(
+        level21,
+        json.loads(
+            '[{"x": 149, "y": 292, "decorName": "pond"},'
+            + '{"x": 300, "y": 507, "decorName": "tree1"},'
+            + '{"x": 308, "y": 583, "decorName": "tree1"}]'
+        )
+    )
+
+    set_decor(
+        level22,
+        json.loads(
+            '[{"x": 663, "y": 191, "decorName": "pond"},'
+            + '{"x": 364, "y": 395, "decorName": "tree1"},'
+            + '{"x": 463, "y": 317, "decorName": "tree2"},'
+            + '{"x": 367, "y": 237, "decorName": "tree1"},'
+            + '{"x": 250, "y": 391, "decorName": "tree2"}]'
+        )
+    )
+
+    set_decor(
+        level23,
+        json.loads(
+            '[{"x": 599, "y": 310, "decorName": "pond"},'
+            + '{"x": 599, "y": 208, "decorName": "pond"},'
+            + '{"x": 754, "y": 337, "decorName": "bush"},'
+            + '{"x": 755, "y": 370, "decorName": "bush"},'
+            + ']'
+        )
+    )
