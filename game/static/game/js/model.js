@@ -403,6 +403,7 @@ ocargo.Model.prototype.sound_horn = function() {
         cow.queueLeaveAnimation(this, currentNode);
         cow.setInactive(this, currentNode);
     }
+    this.moveVan(this.van.getPosition().currentNode, 'SOUND_HORN');
     return true;
 };
 
