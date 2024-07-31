@@ -22,7 +22,7 @@ def add_python_den_levels(apps, schema_editor):
         direct_drive=False,
         fuel_gauge=True,
         max_fuel=50,
-        model_solution="[]",
+        model_solution="[10]",
         origin='{"coordinate":[0,4],"direction":"E"}',
         path='[{"coordinate":[0,4],"connectedNodes":[1]},{"coordinate":[1,4],"connectedNodes":[0,2]},{"coordinate":[2,4],"connectedNodes":[1,3]},{"coordinate":[3,4],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[3,5]},{"coordinate":[5,4],"connectedNodes":[4,6]},{"coordinate":[6,4],"connectedNodes":[5,7]},{"coordinate":[7,4],"connectedNodes":[6,8]},{"coordinate":[8,4],"connectedNodes":[7,9]},{"coordinate":[9,4],"connectedNodes":[8]}]',
         pythonEnabled=False,
@@ -47,7 +47,7 @@ def add_python_den_levels(apps, schema_editor):
         fuel_gauge=True,
         max_fuel=50,
         direct_drive=False,
-        model_solution="[]",
+        model_solution="[11]",
         disable_algorithm_score=True,
         threads=1,
         blocklyEnabled=True,
@@ -122,7 +122,7 @@ def add_python_den_levels(apps, schema_editor):
         fuel_gauge=True,
         max_fuel=50,
         direct_drive=False,
-        model_solution="[]",
+        model_solution="[10]",
         disable_algorithm_score=True,
         threads=1,
         blocklyEnabled=True,
@@ -147,7 +147,7 @@ def add_python_den_levels(apps, schema_editor):
         fuel_gauge=True,
         max_fuel=50,
         direct_drive=False,
-        model_solution="[]",
+        model_solution="[11]",
         disable_algorithm_score=True,
         threads=1,
         blocklyEnabled=True,
@@ -222,7 +222,7 @@ def add_python_den_levels(apps, schema_editor):
         fuel_gauge=True,
         max_fuel=50,
         direct_drive=False,
-        model_solution="[]",
+        model_solution="[12]",
         disable_algorithm_score=True,
         threads=1,
         blocklyEnabled=True,
@@ -247,7 +247,7 @@ def add_python_den_levels(apps, schema_editor):
         fuel_gauge=True,
         max_fuel=50,
         direct_drive=False,
-        model_solution="[]",
+        model_solution="[12]",
         disable_algorithm_score=True,
         threads=1,
         blocklyEnabled=True,
@@ -340,6 +340,114 @@ def add_python_den_blocks(apps, schema_editor):
     def set_blocks(level, blocks):
         set_blocks_inner(level, blocks, LevelBlock, Block)
 
+    Level = apps.get_model("game", "Level")
+    level14 = Level.objects.get(name="python_14")
+    level15 = Level.objects.get(name="python_15")
+    level18 = Level.objects.get(name="python_18")
+    level19 = Level.objects.get(name="python_19")
+    level22 = Level.objects.get(name="python_22")
+    level23 = Level.objects.get(name="python_23")
+
+    set_blocks(
+        level14, 
+        json.loads(
+            '[{"type": "variables_numeric_set", "number": 1},'
+            + '{"type": "controls_repeat_while", "number": 1},'
+            + '{"type": "variables_get", "number": 1},'
+            + '{"type": "math_number", "number": 1},'
+            + '{"type": "logic_compare", "number": 1},'
+            + '{"type": "controls_if", "number": 1},'
+            + '{"type": "cow_crossing", "number": 1}'
+            + '{"type": "sound_horn", "number": 1},'
+            + '{"type": "move_forwards", "number": 1},'
+            + '{"type": "variables_increment", "number": 1}]'
+        )
+    )
+
+    set_blocks(
+        level15,
+        json.loads(
+            '[{"type": "variables_numeric_set", "number": 1},'
+            + '{"type": "controls_repeat_while", "number": 1},'
+            + '{"type": "variables_get", "number": 1},'
+            + '{"type": "math_number", "number": 1},'
+            + '{"type": "logic_compare", "number": 1},'
+            + '{"type": "controls_if", "number": 1},'
+            + '{"type": "road_exists", "number": 1},'
+            + '{"type": "turn_left", "number": 1},'
+            + '{"type": "turn_right", "number": 1},'
+            + '{"type": "move_forwards", "number": 1},'
+            + '{"type": "variables_increment", "number": 1}]'
+        )
+    )
+
+    set_blocks(
+        level18,
+        json.loads(
+            '[{"type": "variables_numeric_set", "number": 1},'
+            + '{"type": "controls_repeat_while", "number": 1},'
+            + '{"type": "variables_get", "number": 1},'
+            + '{"type": "math_number", "number": 1},'
+            + '{"type": "logic_compare", "number": 1},'
+            + '{"type": "controls_if", "number": 1},'
+            + '{"type": "road_exists", "number": 1},'
+            + '{"type": "turn_left", "number": 1},'
+            + '{"type": "move_forwards", "number": 1},'
+            + '{"type": "variables_increment", "number": 1}]'
+        )
+    )
+
+    set_blocks(
+        level19,
+        json.loads(
+            '[{"type": "variables_numeric_set", "number": 1},'
+            + '{"type": "controls_repeat_while", "number": 1},'
+            + '{"type": "variables_get", "number": 1},'
+            + '{"type": "math_number", "number": 1},'
+            + '{"type": "logic_compare", "number": 1},'
+            + '{"type": "controls_if", "number": 1},'
+            + '{"type": "road_exists", "number": 1},'
+            + '{"type": "turn_left", "number": 1},'
+            + '{"type": "turn_right", "number": 1},'
+            + '{"type": "move_forwards", "number": 1},'
+            + '{"type": "variables_increment", "number": 1}]'
+        )
+    )
+
+    set_blocks(
+        level22,
+        json.loads(
+            '[{"type": "variables_numeric_set", "number": 1},'
+            + '{"type": "controls_repeat_while", "number": 1},'
+            + '{"type": "variables_get", "number": 1},'
+            + '{"type": "math_number", "number": 1},'
+            + '{"type": "logic_compare", "number": 1},'
+            + '{"type": "controls_if", "number": 1},'
+            + '{"type": "road_exists", "number": 2},'
+            + '{"type": "turn_left", "number": 1},'
+            + '{"type": "turn_right", "number": 1},'
+            + '{"type": "move_forwards", "number": 1},'
+            + '{"type": "variables_increment", "number": 1}]'
+        )
+    )
+
+    set_blocks(
+        level23,
+        json.loads(
+            '[{"type": "variables_numeric_set", "number": 1},'
+            + '{"type": "controls_repeat_while", "number": 1},'
+            + '{"type": "variables_get", "number": 1},'
+            + '{"type": "math_number", "number": 1},'
+            + '{"type": "logic_compare", "number": 1},'
+            + '{"type": "controls_if", "number": 1},'
+            + '{"type": "road_exists", "number": 2},'
+            + '{"type": "turn_left", "number": 1},'
+            + '{"type": "turn_right", "number": 1},'
+            + '{"type": "move_forwards", "number": 1},'
+            + '{"type": "variables_increment", "number": 1}]'
+        )
+    )
+
 def add_python_den_decor(apps, schema_editor):
     def set_decor(level, decor):
         set_decor_inner(level, decor, LevelDecor)
@@ -354,6 +462,7 @@ def add_python_den_decor(apps, schema_editor):
     level21 = Level.objects.get(name="python_21")
     level22 = Level.objects.get(name="python_22")
     level23 = Level.objects.get(name="python_23")
+    level24 = Level.objects.get(name="python_24")
 
     set_decor(
         level14,
@@ -454,6 +563,27 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 599, "y": 208, "decorName": "pond"},'
             + '{"x": 754, "y": 337, "decorName": "bush"},'
             + '{"x": 755, "y": 370, "decorName": "bush"},'
-            + ']'
+            + '{"x": 754, "y": 302, "decorName": "bush"},'
+            + '{"x": 809, "y": 370, "decorName": "bush"},'
+            + '{"x": 810, "y": 334, "decorName": "bush"},'
+            + '{"x": 810, "y": 298, "decorName": "bush"},'
+            + '{"x": 602, "y": 418, "decorName": "tree2"},'
+            + '{"x": 646, "y": 483, "decorName": "tree1"},'
+            + '{"x": 678, "y": 426, "decorName": "tree1"}]'
+        )
+    )
+
+    set_decor(
+        level24,
+        json.loads(
+            '[{"x": 316, "y": 302, "decorName": "pond"},'
+            + '{"x": 207, "y": 198, "decorName": "pond"},'
+            + '{"x": 371, "y": 198, "decorName": "pond"},'
+            + '{"x": 533, "y": 195, "decorName": "pond"},'
+            + '{"x": 491, "y": 367, "decorName": "bush"},'
+            + '{"x": 498, "y": 330, "decorName": "bush"},'
+            + '{"x": 553, "y": 354, "decorName": "bush"},'
+            + '{"x": 546, "y": 318, "decorName": "bush"},'
+            + '{"x": 230, "y": 317, "decorName": "tree2"}]'
         )
     )

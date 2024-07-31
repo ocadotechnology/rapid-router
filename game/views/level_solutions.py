@@ -387,6 +387,86 @@ while count < 3:
   my_van.turn_left()
   count = count + 1"""
 
+python_lvl_16 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 5:
+  if my_van.is_animal_crossing():
+    my_van.sound_horn()
+  my_van.turn_left()
+  my_van.turn_right()
+  count = count + 1"""
+
+python_lvl_17 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 3:
+  if my_van.is_road("LEFT"):
+    my_van.turn_left()
+    my_van.turn_right()
+  my_van.move_forwards()
+  count = count + 1"""
+
+python_lvl_20 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 8:
+  if my_van.is_road("LEFT"):
+    my_van.turn_left()
+  else:
+    my_van.turn_right()
+  count = count + 1"""
+
+python_lvl_21 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 6:
+  if my_van.is_road("LEFT"):
+    my_van.turn_left()
+    my_van.deliver()
+    my_van.turn_right()
+    if count == 5:
+      my_van.deliver()
+  else:
+    my_van.move_forwards()
+  count = count + 1"""
+
+python_lvl_24 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 8:
+  if my_van.is_road("FORWARD"):
+    my_van.move_forwards()
+  elif my_van.is_road("LEFT"):
+    my_van.turn_left()
+  else:
+    my_van.turn_right()
+  count = count + 1"""
+
+python_lvl_25 = """from van import Van()
+
+count = 0
+while count < 16:
+  if my_van.at_red_traffic_light():
+    my_van.wait()
+  elif my_van.is_road("LEFT"):
+    my_van.turn_left()
+  elif my_van.is_road("FORWARD"):
+    my_van.move_forwards()
+  else:
+    my_van.turn_right()
+  count = count + 1"""
+
 solutions = {
     "python_default": python_default,
     "blockly_default": blockly_default,
