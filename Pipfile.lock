@@ -48,10 +48,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:afdd959ce80eebd9dafa3f3c9c0c734f504a3de43f6d2a80353a565c629f30d0",
-                "sha256:fc09c2a294564994fa607e2d6391f4e1d28d2c6e542fda7642fba372f60e9875"
+                "sha256:30c66bc0622b521c2fd374065d42ec356816e711af3e9a5cd23e714e2ff616f6",
+                "sha256:3b12e3efe81f72e5b422be877e1bc521426a19a5d47b08394a95c41bc3fff715"
             ],
-            "version": "==6.45.6"
+            "version": "==6.46.0"
         },
         "charset-normalizer": {
             "hashes": [
@@ -213,11 +213,11 @@
         },
         "django-otp": {
             "hashes": [
-                "sha256:e7142139f1e9686be5f396669a3d3d61178cd9b3e9de9de5933888668908b46b",
-                "sha256:e88871d2d3b333a86c2cd0cb721be8098d4d6344cb220315a500e5a5c8254295"
+                "sha256:48d0a1943cbeb610f0bca51a0da42cc7eefcff387b101c69d3ed432cd75a0fd4",
+                "sha256:d0c60a3c20dd16e9f2c7c3d8669306c34a83c20fd021565adbf782f4ba911b13"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==1.5.0"
+            "version": "==1.5.1"
         },
         "django-phonenumber-field": {
             "hashes": [
@@ -423,10 +423,10 @@
         },
         "pure-eval": {
             "hashes": [
-                "sha256:01eaab343580944bc56080ebe0a674b39ec44a945e6d09ba7db3cb8cec289350",
-                "sha256:2b45320af6dfaa1750f543d714b6d1c520a1688dec6fd24d339063ce0aaa9ac3"
+                "sha256:1db8e35b67b3d218d818ae653e27f06c3aa420901fa7b081ca98cbedc874e0d0",
+                "sha256:5f4e983f40564c576c7c8635ae88db5956bb2229d7e9237d03b3c0b0190eaf42"
             ],
-            "version": "==0.2.2"
+            "version": "==0.2.3"
         },
         "pygments": {
             "hashes": [
@@ -636,10 +636,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:afdd959ce80eebd9dafa3f3c9c0c734f504a3de43f6d2a80353a565c629f30d0",
-                "sha256:fc09c2a294564994fa607e2d6391f4e1d28d2c6e542fda7642fba372f60e9875"
+                "sha256:30c66bc0622b521c2fd374065d42ec356816e711af3e9a5cd23e714e2ff616f6",
+                "sha256:3b12e3efe81f72e5b422be877e1bc521426a19a5d47b08394a95c41bc3fff715"
             ],
-            "version": "==6.45.6"
+            "version": "==6.46.0"
         },
         "charset-normalizer": {
             "hashes": [
@@ -747,11 +747,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:13937a3e8310faf47237412fd50bd7f2c87a541de0353a375b7e54524b991fc7",
-                "sha256:501fbb9e76279378b9a3272abb25d589813f3dfece4e2e45d6e6348d2b72a646"
+                "sha256:b698ab9a4a65616ce5f99b73a29879dfe37b09a98be6d8925c5c4a2e423545db",
+                "sha256:c40f385604310d81871f8fc2a897baf95773052a7fc5281d8bb5c3f23125dbfd"
             ],
             "index": "pypi",
-            "version": "==6.45.6"
+            "version": "==6.46.0"
         },
         "diff-match-patch": {
             "hashes": [
@@ -816,11 +816,11 @@
         },
         "django-otp": {
             "hashes": [
-                "sha256:e7142139f1e9686be5f396669a3d3d61178cd9b3e9de9de5933888668908b46b",
-                "sha256:e88871d2d3b333a86c2cd0cb721be8098d4d6344cb220315a500e5a5c8254295"
+                "sha256:48d0a1943cbeb610f0bca51a0da42cc7eefcff387b101c69d3ed432cd75a0fd4",
+                "sha256:d0c60a3c20dd16e9f2c7c3d8669306c34a83c20fd021565adbf782f4ba911b13"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==1.5.0"
+            "version": "==1.5.1"
         },
         "django-phonenumber-field": {
             "hashes": [

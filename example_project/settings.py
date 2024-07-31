@@ -62,7 +62,6 @@ INSTALLED_APPS = (
     "game",
     "pipeline",
     "portal",
-    "aimmo",
     "common",
     "django.contrib.admin",
     "django.contrib.admindocs",
