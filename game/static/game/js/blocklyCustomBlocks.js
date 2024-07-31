@@ -585,7 +585,7 @@ function initCustomBlocksPython() {
   };
 
   Blockly.Python["cow_crossing"] = function (block) {
-    return ["my_van.cow_crossing()", Blockly.Python.ORDER_NONE];
+    return ["my_van.is_animal_crossing()", Blockly.Python.ORDER_NONE];
     // TODO: figure out what this ordering relates to
   };
 
