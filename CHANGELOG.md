@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v6.0.0 (2024-08-01)
+
+### Fix
+
+* Remove Kurono references ([#1690](https://github.com/ocadotechnology/rapid-router/issues/1690)) ([`9cab34e`](https://github.com/ocadotechnology/rapid-router/commit/9cab34ea513e34d8be86a3618b19e8a68a8ab297))
+
+### Breaking
+
+* Remove Kurono references ([#1690](https://github.com/ocadotechnology/rapid-router/issues/1690)) ([`9cab34e`](https://github.com/ocadotechnology/rapid-router/commit/9cab34ea513e34d8be86a3618b19e8a68a8ab297))
+
 ## v5.28.0 (2024-07-31)
 
 ### Feature
