@@ -239,6 +239,9 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 				case 'WAIT':
             		this.drawing.wait();
             		break;
+				case 'SOUND_HORN':
+					this.drawing.wait();
+					break;
 				case 'PUFFUP':
 					this.scalingModifier.push(2);
 					break;

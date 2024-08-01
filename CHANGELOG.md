@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v5.28.0 (2024-07-31)
+
+### Feature
+
+* Add Python commands for crossing animals ([#1689](https://github.com/ocadotechnology/rapid-router/issues/1689)) ([`c6aed98`](https://github.com/ocadotechnology/rapid-router/commit/c6aed9843c72c8b176bedcb128cd4600017be6de))
+
+## v5.27.1 (2024-07-31)
+
+### Fix
+
+* Reinstate buttons to overwrite popup ([#1688](https://github.com/ocadotechnology/rapid-router/issues/1688)) ([`9866068`](https://github.com/ocadotechnology/rapid-router/commit/986606850f478d33f01f1c407092423d8726f8f3))
+
 ## v5.27.0 (2024-07-30)
 
 ### Feature
