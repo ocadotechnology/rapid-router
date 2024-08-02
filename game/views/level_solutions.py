@@ -455,6 +455,8 @@ while count < 8:
 
 python_lvl_25 = """from van import Van()
 
+my_van = Van()
+
 count = 0
 while count < 16:
   if my_van.at_red_traffic_light():
@@ -466,6 +468,69 @@ while count < 16:
   else:
     my_van.turn_right()
   count = count + 1"""
+
+python_lvl_33 = """from van import Van()
+
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_road("LEFT"):
+    my_van.turn_left()
+  else:
+    my_van.turn_right()"""
+
+python_lvl_34 = """from van import Van()
+
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_road("RIGHT"):
+    my_van.turn_right()
+  else:
+    my_van.move_forwards()"""
+
+python_lvl_38 = """from van import Van()
+
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_animal_crossing():
+    my_van.sound_horn()
+  elif my_van.is_road("FORWARD"):
+    my_van.move_forwards()
+  elif my_van.at_dead_end():
+    my_van.turn_around()
+    my_van.turn_right()"""
+
+python_lvl_39 = """from van import Van()
+
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_animal_crossing():
+    my_van.sound_horn()
+  elif my_van.is_road("FORWARD"):
+    my_van.move_forwards()
+  else:
+    my_van.turn_left()"""
+
+python_lvl_40 = """from van import Van()
+
+my_van = Van()
+
+for count in range(4):
+  while not my_van.at_destination():
+    if my_van.at_traffic_light("RED"):
+      my_van.wait()
+    elif my_van.is_road("LEFT"):
+      my_van.turn_left()
+    elif my_van.is_road("FORWARD"):
+      my_van.move_forwards()
+    elif my_van.is_road("RIGHT"):
+      my_van.turn_right()
+    elif my_van.at_dead_end():
+      my_van.turn_around()
+  my_van.deliver()"""
 
 solutions = {
     "python_default": python_default,
@@ -579,17 +644,65 @@ solutions = {
     "107": lvl_107,
     "108": lvl_108,
     "109": lvl_109,
-    "110": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></xml>',
-    "111": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_left"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>',
-    "112": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>',
-    "113": lvl_113,
-    "114": lvl_114,
-    "115": lvl_115,
-    "116": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">4</field></block></value></block></value><statement name="body"><block type="move_forwards"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></statement></block></next></block></next></block></xml>',
-    "117": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="184" y="109"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">4</field></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></block></statement></block></next></block></next></block></xml>',
-    "118": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="128" y="106"><next><block type="move_forwards"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">3</field></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></block></statement><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></xml>',
-    "119": lvl_119,
-    "120": lvl_120,
-    "121": lvl_121,
-    "122": lvl_122,
+    "python_1": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></xml>',
+    "python_2": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_left"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>',
+    "python_3": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="130"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="turn_right"><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></xml>',
+    "python_4": lvl_113,
+    "python_5": lvl_114,
+    "python_6": lvl_115,
+    "python_7": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">4</field></block></value></block></value><statement name="body"><block type="move_forwards"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></statement></block></next></block></next></block></xml>',
+    "python_8": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="184" y="109"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">4</field></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></block></statement></block></next></block></next></block></xml>',
+    "python_9": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="128" y="106"><next><block type="move_forwards"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">3</field></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></block></statement><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></xml>',
+    "python_10": lvl_119,
+    "python_11": lvl_120,
+    "python_12": lvl_121,
+    "python_13": lvl_122,
+    "python_14": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">6</field></block></value></block></value><statement name="body"><block type="controls_if"><value name="IF0"><block type="cow_crossing"></block></value><statement name="DO0"><block type="sound_horn"></block></statement></block><next><block type="move_forwards"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></statement></block></next></block></next></block></xml>',
+    "python_15": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">4</field></block></value></block></value><statement name="body"><block type="controls_if"><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"><next><block type="turn_right"></block></next></block></statement></block><next><block type="move_forwards"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></statement></block></next></block></next></block></xml>',
+    "python_16": python_lvl_16,
+    "python_17": python_lvl_17,
+    "python_18": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">19</field></block></value></block></value><statement name="body"><block type="controls_if"><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"></block></statement></block><next><block type="move_forwards"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></statement></block></next></block></next></block></xml>',
+    "python_19": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">8</field></block></value></block></value><statement name="body"><block type="controls_if"><mutation else="1"></mutation<value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_right"><next><block type="turn_left"></block></next></block></statement></block><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></statement></block></next></block></next></block></xml>',
+    "python_20": python_lvl_20,
+    "python_21": python_lvl_21,
+    "python_22": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">12</field></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation<value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></statement></block></next></block></next></block></xml>',
+    "python_23": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">6</field></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation<value name="IF0"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO0"><block type="turn_right"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"></block></statement><statement name="ELSE"><block type="move_forwards"></block></statement></block><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></statement></block></next></block></next></block></xml>',
+    "python_24": python_lvl_24,
+    "python_25": python_lvl_25,
+    "python_26": '',
+    "python_27": '',
+    "python_28": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"></block></next></block></statement></block></next></block></xml>',
+    "python_29": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"><next><block type="turn_left"><next><block type="move_forwards"></block></next></block></next></block></next></block></statement></block></next></block></xml>',
+    "python_30": '',
+    "python_31": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="350" y="576"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
+    "python_32": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="350" y="576"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"></block></statement><statement name="ELSE"><block type="move_forwards"></block></statement></block></statement></block></next></block></xml>',
+    "python_33": python_lvl_33,
+    "python_34": python_lvl_34,
+    "python_35": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="350" y="576"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
+    "python_36": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="430"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="2" else="1"></mutation><value name="IF0"><block type="cow_crossing"></block></value><statement name="DO0"><block type="sound_horn"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
+    "python_37": lvl_100,
+    "python_38": python_lvl_38,
+    "python_39": python_lvl_39,
+    "python_40": python_lvl_40,
+    "python_41": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="607" y="268"><next><block type="controls_repeat"><field name="TIMES">3</field><statement name="DO"><block type="move_forwards"><next><block type="turn_left"><next><block type="turn_right"><next><block type="turn_left"></block></next></block></next></block></next></block></statement></block></next></block></xml>',
+    "python_42": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="19" y="-641"><next><block type="controls_repeat"><field name="TIMES">3</field><statement name="DO"><block type="turn_left"><next><block type="turn_right"><next><block type="move_forwards></block></next></block></next></block></statement></block></next></block></xml>',
+    "python_43": lvl_96,
+    "python_44": '',
+    "python_45": lvl_97,
+    "python_46": lvl_106,
+    "python_47": lvl_107,
+    "python_48": lvl_108,
+    "python_49": lvl_109,
+    "python_50": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="192" y="415"><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">wiggle</field></block></next></block></next></block></next></block><block type="declare_proc" x="193" y="620"><field name="NAME">wiggle</field><statement name="DO"><block type="move_forwards"><next><block type="turn_left"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="turn_right"></block></statement><next><block type="turn_left"></block></next></block></next></block></next></block></statement></block></xml>',
+    "python_51": '',
+    "python_52": '',
+    "python_53": '',
+    "python_54": '',
+    "python_55": '',
+    "python_56": '',
+    "python_57": '',
+    "python_58": '',
+    "python_59": lvl_101,
+    "python_60": lvl_102
+
 }
