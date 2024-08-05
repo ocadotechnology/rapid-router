@@ -1,4 +1,6 @@
+from django.apps.registry import Apps
 from django.db import migrations, models
+from game.level_management import set_decor_inner, set_blocks_inner
 
 def set_blocks(level, blocks):
         set_blocks_inner(level, blocks, LevelBlock, Block)
@@ -6,7 +8,7 @@ def set_blocks(level, blocks):
 def set_decor(level, decor):
         set_decor_inner(level, decor, LevelDecor)
 
-def bulk_copy_decor(new_level_name, old_level_name):
+def bulk_copy_decor(apps, new_level_name, old_level_name):
     Level = apps.get_model("game", "LevelDecor")
     LevelDecor = apps.get_model("game", "LevelDecor")
     
@@ -26,8 +28,8 @@ def bulk_copy_decor(new_level_name, old_level_name):
 
 def add_python_den_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
-    Theme = apps.get_model("game", "Theme")
     Character = apps.get_model("game", "Character")
+    Theme = apps.get_model("game", "Theme")
 
     grass = Theme.objects.get(name="grass")
     snow = Theme.objects.get(name="snow")
@@ -147,9 +149,9 @@ def add_python_den_levels(apps, schema_editor):
         model_solution="[10]",
         disable_algorithm_score=True,
         threads=1,
-        blocklyEnabled=True,
-        pythonEnabled=False,
-        pythonVieWEnabled=True,
+        blocklyEnabled=False,
+        pythonEnabled=True,
+        pythonVieWEnabled=False,
         theme=snow,
         character=van,
         lesson="Oh dear, you might get a bit dizzy!",
@@ -325,6 +327,29 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
+    level27 = Level(
+        name="python_27",
+        path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3,5]},{"coordinate":[5,3],"connectedNodes":[4,6]},{"coordinate":[6,3],"connectedNodes":[5,7]},{"coordinate":[7,3],"connectedNodes":[6,8]},{"coordinate":[8,3],"connectedNodes":[7]}]',
+        traffic_lights="[]",
+        cows="[]",
+        origin='{"coordinate":[0,3],"direction":"E"}',
+        destinations="[[8,3]]",
+        default=True,
+        max_fuel=50,
+        direct_drive=False,
+        model_solution="[4]",
+        disable_algorithm_score=True,
+        threads=1,
+        blocklyEnabled=True,
+        pythonEnabled=False,
+        pythonViewEnabled=True,
+        theme=grass,
+        character=van,
+        lesson="Just keep going until you get there...",
+        hint="You might find that the solution to this level is quite familiar...",
+        anonymous=False
+    )
+
     level28 = Level(
         name="python_28",
         path='[{"coordinate":[2,2],"connectedNodes":[1]},{"coordinate":[3,2],"connectedNodes":[0,2]},{"coordinate":[3,3],"connectedNodes":[3,1]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[4,6]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[6,5],"connectedNodes":[6,8]},{"coordinate":[6,6],"connectedNodes":[9,7]},{"coordinate":[7,6],"connectedNodes":[8]}]',
@@ -350,7 +375,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level32 = Level(
-        name="python_32"
+        name="python_32",
         path='[{"coordinate":[5,0],"connectedNodes":[1]},{"coordinate":[5,1],"connectedNodes":[2,0]},{"coordinate":[5,2],"connectedNodes":[3,23,1]},{"coordinate":[5,3],"connectedNodes":[4,2]},{"coordinate":[5,4],"connectedNodes":[17,3]},{"coordinate":[4,5],"connectedNodes":[6,17]},{"coordinate":[3,5],"connectedNodes":[7,5]},{"coordinate":[2,5],"connectedNodes":[24,6,8]},{"coordinate":[2,4],"connectedNodes":[7,9]},{"coordinate":[2,3],"connectedNodes":[8,10]},{"coordinate":[2,2],"connectedNodes":[9,11]},{"coordinate":[2,1],"connectedNodes":[10,12]},{"coordinate":[3,1],"connectedNodes":[11,13]},{"coordinate":[4,1],"connectedNodes":[12,14]},{"coordinate":[4,2],"connectedNodes":[15,13]},{"coordinate":[4,3],"connectedNodes":[16,14]},{"coordinate":[4,4],"connectedNodes":[15]},{"coordinate":[5,5],"connectedNodes":[5,29,18,4]},{"coordinate":[6,5],"connectedNodes":[17,19]},{"coordinate":[7,5],"connectedNodes":[18,20]},{"coordinate":[7,4],"connectedNodes":[19,21]},{"coordinate":[7,3],"connectedNodes":[20,22]},{"coordinate":[7,2],"connectedNodes":[23,21,36]},{"coordinate":[6,2],"connectedNodes":[2,22]},{"coordinate":[1,5],"connectedNodes":[25,7]},{"coordinate":[1,6],"connectedNodes":[26,24]},{"coordinate":[2,6],"connectedNodes":[25,27]},{"coordinate":[3,6],"connectedNodes":[26,28]},{"coordinate":[4,6],"connectedNodes":[27,29]},{"coordinate":[5,6],"connectedNodes":[28,30,17]},{"coordinate":[6,6],"connectedNodes":[29,31]},{"coordinate":[7,6],"connectedNodes":[30,32]},{"coordinate":[8,6],"connectedNodes":[31,33]},{"coordinate":[8,5],"connectedNodes":[32,34]},{"coordinate":[8,4],"connectedNodes":[33,35]},{"coordinate":[8,3],"connectedNodes":[34,36]},{"coordinate":[8,2],"connectedNodes":[22,35]}]',
         traffic_lights='[]',
         cows='[]',
@@ -368,8 +393,8 @@ def add_python_den_levels(apps, schema_editor):
         pythonViewEnabled=True,
         theme=grass,
         character=van,
-        lesson="",
-        hint="",
+        lesson="You don't have a right turn block here, so plan your route carefully.",
+        hint="Think carefully about the order in which you ask questions in your if-statement here...",
         anonymous=False
     )
     level33 = Level(
@@ -391,8 +416,8 @@ def add_python_den_levels(apps, schema_editor):
         pythonViewEnabled=False,
         theme=grass,
         character=van,
-        lesson="",
-        hint="",
+        lesson="Can you find the shortest route?",
+        hint="In this level, you want to check for a left turn first. If there is no left turn, turn right. Notice what that looks like in Python.",
         anonymous=False
     )
 
@@ -415,8 +440,8 @@ def add_python_den_levels(apps, schema_editor):
         pythonViewEnabled=False,
         theme=grass,
         character=van,
-        lesson="",
-        hint="",
+        lesson="Can you find the shortest route? Don't take the scenic route.",
+        hint="Just look for the simplest route to the house.",
         anonymous=False
     )
 
@@ -432,6 +457,7 @@ def add_python_den_levels(apps, schema_editor):
     level23.save()
     level24.save()
     level25.save()
+    level27.save()
     level28.save()
     level32.save()
     level33.save()
@@ -441,134 +467,128 @@ def add_python_den_blocks(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     level14 = Level.objects.get(name="python_14")
     level15 = Level.objects.get(name="python_15")
-    level18 = Level.objects.get(name="python_18")
     level19 = Level.objects.get(name="python_19")
     level22 = Level.objects.get(name="python_22")
     level23 = Level.objects.get(name="python_23")
+    level27 = Level.objects.get(name="python_27")
     level28 = Level.objects.get(name="python_28")
     level32 = Level.objects.get(name="python_32")
 
     set_blocks(
         level14, 
         json.loads(
-            '[{"type": "variables_numeric_set", "number": 1},'
-            + '{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "variables_get", "number": 1},'
-            + '{"type": "math_number", "number": 1},'
-            + '{"type": "logic_compare", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "cow_crossing", "number": 1}'
-            + '{"type": "sound_horn", "number": 1},'
-            + '{"type": "move_forwards", "number": 1},'
-            + '{"type": "variables_increment", "number": 1}]'
+            '[{"type": "variables_numeric_set"},'
+            + '{"type": "controls_repeat_while"},'
+            + '{"type": "variables_get"},'
+            + '{"type": "math_number"},'
+            + '{"type": "logic_compare"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "cow_crossing"}'
+            + '{"type": "sound_horn"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "variables_increment"}]'
         )
     )
 
     set_blocks(
         level15,
         json.loads(
-            '[{"type": "variables_numeric_set", "number": 1},'
-            + '{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "variables_get", "number": 1},'
-            + '{"type": "math_number", "number": 1},'
-            + '{"type": "logic_compare", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "road_exists", "number": 1},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "turn_right", "number": 1},'
-            + '{"type": "move_forwards", "number": 1},'
-            + '{"type": "variables_increment", "number": 1}]'
-        )
-    )
-
-    set_blocks(
-        level18,
-        json.loads(
-            '[{"type": "variables_numeric_set", "number": 1},'
-            + '{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "variables_get", "number": 1},'
-            + '{"type": "math_number", "number": 1},'
-            + '{"type": "logic_compare", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "road_exists", "number": 1},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "move_forwards", "number": 1},'
-            + '{"type": "variables_increment", "number": 1}]'
+            '[{"type": "variables_numeric_set"},'
+            + '{"type": "controls_repeat_while"},'
+            + '{"type": "variables_get"},'
+            + '{"type": "math_number"},'
+            + '{"type": "logic_compare"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "variables_increment"}]'
         )
     )
 
     set_blocks(
         level19,
         json.loads(
-            '[{"type": "variables_numeric_set", "number": 1},'
-            + '{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "variables_get", "number": 1},'
-            + '{"type": "math_number", "number": 1},'
-            + '{"type": "logic_compare", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "road_exists", "number": 1},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "turn_right", "number": 1},'
-            + '{"type": "move_forwards", "number": 1},'
-            + '{"type": "variables_increment", "number": 1}]'
+            '[{"type": "variables_numeric_set"},'
+            + '{"type": "controls_repeat_while"},'
+            + '{"type": "variables_get"},'
+            + '{"type": "math_number"},'
+            + '{"type": "logic_compare"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "variables_increment"}]'
         )
     )
 
     set_blocks(
         level22,
         json.loads(
-            '[{"type": "variables_numeric_set", "number": 1},'
-            + '{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "variables_get", "number": 1},'
-            + '{"type": "math_number", "number": 1},'
-            + '{"type": "logic_compare", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "road_exists", "number": 2},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "turn_right", "number": 1},'
-            + '{"type": "move_forwards", "number": 1},'
-            + '{"type": "variables_increment", "number": 1}]'
+            '[{"type": "variables_numeric_set"},'
+            + '{"type": "controls_repeat_while"},'
+            + '{"type": "variables_get"},'
+            + '{"type": "math_number"},'
+            + '{"type": "logic_compare"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "variables_increment"}]'
         )
     )
 
     set_blocks(
         level23,
         json.loads(
-            '[{"type": "variables_numeric_set", "number": 1},'
-            + '{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "variables_get", "number": 1},'
-            + '{"type": "math_number", "number": 1},'
-            + '{"type": "logic_compare", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "road_exists", "number": 2},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "turn_right", "number": 1},'
-            + '{"type": "move_forwards", "number": 1},'
-            + '{"type": "variables_increment", "number": 1}]'
+            '[{"type": "variables_numeric_set"},'
+            + '{"type": "controls_repeat_while"},'
+            + '{"type": "variables_get"},'
+            + '{"type": "math_number"},'
+            + '{"type": "logic_compare"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "variables_increment"}]'
+        )
+    )
+
+    set_blocks(
+        level27,
+        json.loads(
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "move_forwards"}]'
         )
     )
 
     set_blocks(
         level28,
         json.loads(
-            '[{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "logic_negate", "number": 1},'
-            + '{"type": "at_destination", "number": 1},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "turn_right", "number": 1}]'
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"}]'
         )
     )
 
     set_blocks(
         level32,
         json.loads(
-            '[{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "logic_negate", "number": 1},'
-            + '{"type": "at_destination", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "road_exists", "number": 1},'
-            + '{"type": "turn_left", "number": 1}',
-            + '{"type": "move_forwards", "number": 1}]'
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "turn_left"}',
+            + '{"type": "move_forwards"}]'
         )
     )
 
@@ -586,7 +606,9 @@ def add_python_den_decor(apps, schema_editor):
     level22 = Level.objects.get(name="python_22")
     level23 = Level.objects.get(name="python_23")
     level24 = Level.objects.get(name="python_24")
+    level27 = Level.objects.get(name="python_27")
     level28 = Level.objects.get(name="python_28")
+    level33 = Level.objects.get(name="python_33")
     level34 = Level.objects.get(name="python_34")
 
     set_decor(
@@ -714,6 +736,21 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
+        level27,
+        json.loads(
+            '[{"x": 147, "y": 214, "decorName": "pond"},'
+            + '{"x": 434, "y": 255, "decorName": "bush"},'
+            + '{"x": 489, "y": 259, "decorName": "bush"},'
+            + '{"x": 298, "y": 188, "decorName": "tree2"},'
+            + '{"x": 158, "y": 398, "decorName": "tree2"},'
+            + '{"x": 220, "y": 410, "decorName": "tree1"},'
+            + '{"x": 548, "y": 411, "decorName": "tree1"},'
+            + '{"x": 617, "y": 407, "decorName": "tree2"},'
+            + '{"x": 669, "y": 199, "decorName": "tree2"}]'
+        )
+    )
+
+    set_decor(
         level28,
         json.loads(
             '[{"x": 443, "y": 578, "decorName": "pond"},'
@@ -723,6 +760,17 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 694, "y": 341, "decorName": "tree1"},'
             + '{"x": 516, "y": 651, "decorName": "tree2"},'
             + '{"x": 412, "y": 648, "decorName": "tree1"}]'
+        )
+    )
+
+    set_decor(
+        level33,
+        json.loads(
+            '[{"x": 459, "y": 602, "decorName": "pond"},'
+            + '{"x": 381, "y": 606, "decorName": "tree2"},'
+            + '{"x": 692, "y": 688, "decorName": "tree1"},'
+            + '{"x": 717, "y": 620, "decorName": "tree1"},'
+            + '{"x": 686, "y": 530, "decorName": "tree2"}]'
         )
     )
 
@@ -795,9 +843,13 @@ def move_rapid_router_levels_to_python_den(apps, schema_editor):
     level12.save()
 
     level13 = Level.objects.get(name="122")
-    level13.name="python_13"
+    level13.name = "python_13"
     level13.description = "The solution to this one is just a bit longer. Build it up slowly. Good luck!"
     level13.save()
+
+    level26 = Level.objects.get(name="85")
+    level26.name = "python_26"
+    level26.save()
 
     level35 = Level.objects.get(name="99")
     level35.name = "python_35"
@@ -807,14 +859,14 @@ def move_rapid_router_levels_to_python_den(apps, schema_editor):
     set_blocks(
         level35,
         json.loads(
-            '[{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "logic_negate", "number": 1},'
-            + '{"type": "at_destination", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "road_exists", "number": 2},'
-            + '{"type": "move_forwards", "number": 1},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "turn_right", "number": 1}]'
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"}]'
         )
     )
     level35.save()
@@ -829,23 +881,15 @@ def move_rapid_router_levels_to_python_den(apps, schema_editor):
 
     level42 = Level.objects.get(name="95")
     level42.name = "python_42"
-    level42.blocklyEnabled = True
-    level42.pythonEnabled = False
-    level42.pythonViewEnabled = True
-    set_blocks(
-        level42,
-        json.loads(
-            '[{"type": "controls_repeat", "number": 1},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "turn_right", "number": 1},'
-            + '{"type": "move_forwards", "number": 1}]'
-        )
-    )
     level42.save()
 
     level43 = Level.objects.get(name="96")
     level43.name = "python_43"
     level43.save()
+
+    level44 = Level.objects.get(name="84")
+    level44.name = "python_44"
+    level44.save()
 
     level45 = Level.objects.get(name="97")
     level45.name = "python_45"
@@ -866,6 +910,20 @@ def move_rapid_router_levels_to_python_den(apps, schema_editor):
     level49 = Level.objects.get(name="109")
     level49.name = "python_49"
     level49.save()
+
+    level57 = Level.objects.get(name="90")
+    level57.name = "python_57"
+    level57.blocklyEnabled = False
+    level57.pythonViewEnabled = False
+    level57.pythonEnabled = True
+    level57.save()
+
+    level58 = Level.objects.get(name="91")
+    level58.name = "python_58"
+    level58.blocklyEnabled = False
+    level58.pythonViewEnabled = False
+    level58.pythonEnabled = True
+    level58.save()
 
     level59 = Level.objects.get(name="101")
     level59.name = "python_59"
@@ -890,6 +948,15 @@ def copy_rapid_router_levels_to_python_den(apps, schema_editor):
     level29.pythonViewEnabled = True
     level29.model_solution = "[7]"
 
+    level30 = Level.objects.get(name="84")
+    level30.pk = None
+    level30._state.adding = True
+    level30.name = "python_30"
+    level30.blocklyEnabled = False
+    level30.pythonEnabled = True
+    level30.pythonViewEnabled = False
+    level30.model_solution = "[]"
+
     level31 = Level.objects.get(name="34")
     level31.pk = None
     level31._state.adding = True
@@ -897,7 +964,7 @@ def copy_rapid_router_levels_to_python_den(apps, schema_editor):
     level31.blocklyEnabled = True
     level31.pythonEnabled = False
     level31.pythonViewEnabled = True
-    level31.model_solution = "[8]"
+    level31.model_solution = "[7]"
 
     level36 = Level.objects.get(name="38")
     level36.pk = None
@@ -936,55 +1003,114 @@ def copy_rapid_router_levels_to_python_den(apps, schema_editor):
     level50.name = "python_50"
     level50.pythonViewEnabled = True
 
+    level51 = Level.objects.get(name="62")
+    level51.pk = None
+    level51._state.adding = True
+    level51.name = "python_51"
+    level51.pythonViewEnabled = True
+
+    level52 = Level.objects.get(name="63")
+    level52.pk = None
+    level52._state.adding = True
+    level52.name = "python_52"
+    level52.blocklyEnabled = False
+    level52.pythonEnabled = True
+    level52.model_solution = "[]"
+
+    level53 = Level.objects.get(name="64")
+    level53.pk = None
+    level53._state.adding = True
+    level53.name = "python_53"
+    level53.blocklyEnabled = False
+    level53.pythonEnabled = True
+    level53.model_solution = "[]"
+
+    level54 = Level.objects.get(name="65")
+    level54.pk = None
+    level54._state.adding = True
+    level54.name = "python_54"
+    level54.blocklyEnabled = False
+    level54.pythonEnabled = True
+    level54.model_solution = "[]"
+
+    level55 = Level.objects.get(name="66")
+    level55.pk = None
+    level55._state.adding = True
+    level55.name = "python_55"
+    level55.blocklyEnabled = False
+    level55.pythonEnabled = True
+    level55.model_solution = "[]"
+
+    level56 = Level.objects.get(name="67")
+    level56.pk = None
+    level56._state.adding = True
+    level56.name = "python_56"
+    level56.blocklyEnabled = False
+    level56.pythonEnabled = True
+    level56.model_solution = "[]"
+
     set_blocks(
         level29,
         json.loads(
-            '[{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "logic_negate", "number": 1},'
-            + '{"type": "at_destination", "number": 1},'
-            + '{"type": "turn_left", "number": 2},'
-            + '{"type": "turn_right", "number": 1},'
-            + '{"type": "move_forwards", "number": 1}]'
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "move_forwards"}]'
         )
     )
 
     set_blocks(
         level31,
         json.loads(
-            '[{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "logic_negate", "number": 1},'
-            + '{"type": "at_destination", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "road_exists", "number": 2},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "move_forwards", "number": 1}]'
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "move_forwards"}]'
         )
     )
 
     set_blocks(
         level36,
         json.loads(
-            '[{"type": "controls_repeat_while", "number": 1},'
-            + '{"type": "logic_negate", "number": 1},'
-            + '{"type": "at_destination", "number": 1},'
-            + '{"type": "controls_if", "number": 1},'
-            + '{"type": "cow_crossing", "number": 1},'
-            + '{"type": "road_exists", "number": 2},'
-            + '{"type": "move_forwards", "number": 1},'
-            + '{"type": "turn_left", "number": 1},'
-            + '{"type": "turn_right", "number": 1}]'
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "cow_crossing"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"}]'
         )
     )
 
     set_blocks(
         level50,
         json.loads(
-            '[{"type": "call_proc", "number": 2},'
-            + '{"type": "declare_proc", "number": 1},'
-            + '{"type": "move_forwards", "number": 2},'
-            + '{"type": "turn_left", "number": 2},'
-            + '{"type": "turn_right", "number": 1},'
-            + '{"type": "controls_repeat", "number": 1}]'
+            '[{"type": "call_proc"},'
+            + '{"type": "declare_proc"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "controls_repeat"}]'
+        )
+    )
+
+    set_blocks(
+        level51,
+        json.loads(
+            '[{"type": "call_proc"},'
+            + '{"type": "declare_proc"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "wait"},'
+            + '{"type": "controls_repeat_until"},'
+            + '{"type": "traffic_light"}]'
         )
     )
 
@@ -995,27 +1121,40 @@ def copy_rapid_router_levels_to_python_den(apps, schema_editor):
     level39.save()
     level40.save()
     level50.save()
+    level51.save()
+    level52.save()
+    level53.save()
+    level54.save()
+    level55.save()
+    level56.save()
 
 def copy_rapid_router_decor_to_python_den(apps, schema_editor):
-    bulk_copy_decor("119", "python_29")
-    bulk_copy_decor("34", "python_31")
-    bulk_copy_decor("38", "python_36")
-    bulk_copy_decor("39", "python_38")
-    bulk_copy_decor("47", "python_39")
-    bulk_copy_decor("48", "python_40")
-    bulk_copy_decor("61", "python_50")
-
-def setup_all_levels(apps, schema_editor):
-    add_python_den_levels(apps, schema_editor)
-    add_python_den_blocks(apps, schema_editor)
-    add_python_den_decor(apps, schema_editor)
-    move_rapid_router_levels_to_python_den(apps, schema_editor)
-    copy_rapid_router_levels_to_python_den(apps, schema_editor)
-    copy_rapid_router_decor_to_python_den(apps, schema_editor)
+    bulk_copy_decor(apps, "119", "python_29")
+    bulk_copy_decor(apps, "34", "python_31")
+    bulk_copy_decor(apps, "38", "python_36")
+    bulk_copy_decor(apps, "39", "python_38")
+    bulk_copy_decor(apps, "47", "python_39")
+    bulk_copy_decor(apps, "48", "python_40")
+    bulk_copy_decor(apps, "61", "python_50")
+    bulk_copy_decor(apps, "62", "python_51")
+    bulk_copy_decor(apps, "63", "python_52")
+    bulk_copy_decor(apps, "64", "python_53")
+    bulk_copy_decor(apps, "65", "python_54")
+    bulk_copy_decor(apps, "66", "python_55")
+    bulk_copy_decor(apps, "67", "python_56")
 
 class Migration(migrations.Migration):
     dependencies = [
         ('game', '0094_add_hint_lesson_subtitle_to_levels')
     ]
 
-    operations = [migrations.RunPython(setup_all_levels)]
+    # operations = [
+    #     migrations.RunPython(code=add_python_den_levels),
+    #     migrations.RunPython(code=add_python_den_blocks),
+    #     migrations.RunPython(code=add_python_den_decor),
+    #     migrations.RunPython(code=move_rapid_router_levels_to_python_den),
+    #     migrations.RunPython(code=copy_rapid_router_levels_to_python_den),
+    #     migrations.RunPython(code=copy_rapid_router_decor_to_python_den)
+    # ]
+
+    operations = [migrations.RunPython(add_python_den_levels)]
