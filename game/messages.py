@@ -2286,11 +2286,12 @@ def description_level106():
 def hint_level106():
     return (
         """To use a variable to store the number of grid squares the van has to move you can do something like the following:
-<pre>number = 1
+<pre>count = 1
 while not my_van.at_destination():
-    print number
-    number += 1</pre>
-Variables can be used in place of constants when calling functions. For example to repeat something <strong>number</strong> times you can do something like the following:
+    # Do something
+    print(count)
+    count = count + 1</pre>
+Variables can be used in place of fixed values when calling functions. For example to repeat something <strong>number</strong> times you can do something like the following:
 <pre>for count in range(number):</pre>"""
         + PYTHON_HINT
     )
@@ -2327,7 +2328,7 @@ def description_level108():
 def hint_level108():
     return (
         "To decrease the value of a variable by an amount you can do something like the "
-        "following:<br><pre>number -= 5</pre>" + PYTHON_HINT
+        "following:<br><pre>number = number - 5</pre>" + PYTHON_HINT
     )
 
 
@@ -2848,6 +2849,606 @@ def hint_level109():
     lambda: "TODO",
 )
 
+(
+    title_levelpython_1,
+    description_levelpython_1,
+    hint_levelpython_1,
+) = (
+    lambda: title_level110(),
+    lambda: description_level110(),
+    lambda: hint_level110()
+)
+
+(
+    title_levelpython_2,
+    description_levelpython_2,
+    hint_levelpython_2,
+) = (
+    lambda: title_level111(),
+    lambda: description_level111(),
+    lambda: hint_level111()
+)
+
+(
+    title_levelpython_3,
+    description_levelpython_3,
+    hint_levelpython_3,
+) = (
+    lambda: title_level112(),
+    lambda: description_level112(),
+    lambda: hint_level112()
+)
+
+(
+    title_levelpython_4,
+    description_levelpython_4,
+    hint_levelpython_4,
+) = (
+    lambda: title_level113(),
+    lambda: description_level113(),
+    lambda: hint_level113()
+)
+
+(
+    title_levelpython_5,
+    description_levelpython_5,
+    hint_levelpython_5,
+) = (
+    lambda: title_level114(),
+    lambda: description_level114(),
+    lambda: hint_level114()
+)
+
+(
+    title_levelpython_6,
+    description_levelpython_6,
+    hint_levelpython_6,
+) = (
+    lambda: title_level115(),
+    lambda: description_level115(),
+    lambda: hint_level115()
+)
+
+(
+    title_levelpython_7,
+    description_levelpython_7,
+    hint_levelpython_7,
+) = (
+    lambda: title_level116(),
+    lambda: build_description(title_levelpython_7(), "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully."),
+    lambda: hint_level116()
+)
+
+(
+    title_levelpython_8,
+    description_levelpython_8,
+    hint_levelpython_8,
+) = (
+    lambda: title_level117(),
+    lambda: build_description(title_levelpython_8(), "Now look at the Python code for that while look you created. Can you match the blocks to the Python? What do you notice about the Python code?"),
+    lambda: hint_level117()
+)
+
+(
+    title_levelpython_9,
+    description_levelpython_9,
+    hint_levelpython_9,
+) = (
+    lambda: title_level118(),
+    lambda: build_description(title_levelpython_9(), "Think carefully about this one. It might be that some code is inside a loop and some code is not…"),
+    lambda: hint_level118()
+)
+
+(
+    title_levelpython_10,
+    description_levelpython_10,
+    hint_levelpython_10,
+) = (
+    lambda: title_level119(),
+    lambda: build_description(title_levelpython_10(), "Look for a pattern and then count how many times it repeats. Good luck!"),
+    lambda: hint_level119()
+)
+
+(
+    title_levelpython_11,
+    description_levelpython_11,
+    hint_levelpython_11,
+) = (
+    lambda: title_level120(),
+    lambda: build_description(title_levelpython_11(), "There is a pattern of moves in this one too. Can you spot it?"),
+    lambda: hint_level120()
+)
+
+(
+    title_levelpython_12,
+    description_levelpython_12,
+    hint_levelpython_12,
+) = (
+    lambda: title_level121(),
+    lambda: build_description(title_levelpython_12(), "Look for a pattern before you type any code. You can solve this one with a counted loop…"),
+    lambda: hint_level121()
+)
+
+(
+    title_levelpython_13,
+    description_levelpython_13,
+    hint_levelpython_13,
+) = (
+    lambda: title_level122(),
+    lambda: build_description(title_levelpython_13(), "The solution to this one is just a bit longer. Build it up slowly. Good luck!"),
+    lambda: hint_level122()
+)
+
+(
+    title_levelpython_14,
+    description_levelpython_14,
+    hint_levelpython_14,
+) = (
+    lambda: "Too many cows",
+    lambda: build_description(title_levelpython_14(), "This is a nice long straight road, but there are cows about!"),
+    lambda: "Make sure you sound the horn to get the cows off the road."
+)
+
+(
+    title_levelpython_15,
+    description_levelpython_15,
+    hint_levelpython_15,
+) = (
+    lambda: "Stepping it up",
+    lambda: build_description(title_levelpython_15(), "There are some bends in this road. Be careful!"),
+    lambda: "What do you need to count, how many times you move or how many times you move forwards?"
+)
+
+(
+    title_levelpython_16,
+    description_levelpython_16,
+    hint_levelpython_16,
+) = (
+    lambda: "Cows on the stairs",
+    lambda: build_description(title_levelpython_16(), "Oh no! The farmer seems to have let their cows out again. Be careful."),
+    lambda: "Look for a pattern here..."
+)
+
+(
+    title_levelpython_17,
+    description_levelpython_17,
+    hint_levelpython_17,
+) = (
+    lambda: "Try stepping in Python!",
+    lambda: build_description(title_levelpython_17(), "Keep going, you're getting the hang of the Python code."),
+    lambda: "So you are going forward unless...?"
+)
+
+(
+    title_levelpython_18,
+    description_levelpython_18,
+    hint_levelpython_18,
+) = (
+    lambda: "A long and winding road",
+    lambda: build_description(title_levelpython_18(), "Oh dear, you might get a bit dizzy!"),
+    lambda: "What are you counting here, straight roads or bends?"
+)
+
+(
+    title_levelpython_19,
+    description_levelpython_19,
+    hint_levelpython_19,
+) = (
+    lambda: "Try this level or <b>else</b>",
+    lambda: build_description(title_levelpython_19(), "Have you noticed that there are more roads ahead than turns? Try checking if there is a road ahead and then otherwise making the turns you need..."),
+    lambda: "Remember to use if..else"
+)
+
+(
+    title_levelpython_20,
+    description_levelpython_20,
+    hint_levelpython_20,
+) = (
+    lambda: "Now try one in Python!",
+    lambda: build_description(title_levelpython_20(), "Use if..else in Python for this level"),
+    lambda: "Don't get distracted by the other roads. Look for a pattern you can repeat."
+)
+
+(
+    title_levelpython_21,
+    description_levelpython_21,
+    hint_levelpython_21,
+) = (
+    lambda: "What if there are multiple houses?",
+    lambda: build_description(title_levelpython_21(), "This is a really busy road. Make sure that you don't miss any of the houses."),
+    lambda: "Did you get the last house? Think about what value the loop counter will have at that point in your code..."
+)
+
+(
+    title_levelpython_22,
+    description_levelpython_22,
+    hint_levelpython_22,
+) = (
+    lambda: "Count and check",
+    lambda: build_description(title_levelpython_22(), "There are lots of turns here, don't get distracted."),
+    lambda: "Think about the order of the questions you ask using your if and elif statements."
+)
+
+(
+    title_levelpython_23,
+    description_levelpython_23,
+    hint_levelpython_23,
+) = (
+    lambda: "Another twisty trip",
+    lambda: build_description(title_levelpython_23(), "Don't go the long way around!"),
+    lambda: "Think carefully about the order in which you ask questions in your if..else if block"
+)
+
+(
+    title_levelpython_24,
+    description_levelpython_24,
+    hint_levelpython_24,
+) = (
+    lambda: "Give Python a go!",
+    lambda: build_description(title_levelpython_24(), "Look carefully for the shortest route."),
+    lambda: "Think carefully about the order in which you ask questions in your if..elif statements."
+)
+
+(
+    title_levelpython_25,
+    description_levelpython_25,
+    hint_levelpython_25,
+) = (
+    lambda: "Now we've added a traffic light",
+    lambda: build_description(title_levelpython_25(), "Look carefully for the shortest route."),
+    lambda: "Think carefully about the order in which you ask questions in your if..elif statements. Don't forget the traffic lights."
+)
+
+(
+    title_levelpython_26,
+    description_levelpython_26,
+    hint_levelpython_26,
+) = (
+    lambda: title_level85(),
+    lambda: description_level85(),
+    lambda: hint_level85()
+)
+
+(
+    title_levelpython_27,
+    description_levelpython_27,
+    hint_levelpython_27,
+) = (
+    lambda: "Full steam ahead",
+    lambda: build_description(title_levelpython_27(), "Just keep going until you get there..."),
+    lambda: "You might find that the solution to this level is quite familiar..."
+)
+
+(
+    title_levelpython_28,
+    description_levelpython_28,
+    hint_levelpython_28,
+) = (
+    lambda: "Another staircase...",
+    lambda: build_description(title_levelpython_28(), "Well done, you did it! Now have a go at using the <b>Repeat until</b> block on a road with lots of turns."),
+    lambda: "This is another route you have seen before. Last time you counted how many times your instructions were repeated. This time, your program is going to repeat your commands until you reach the destination. What do you need to repeat?"
+)
+
+(
+    title_levelpython_29,
+    description_levelpython_29,
+    hint_levelpython_29,
+) = (
+    lambda: title_levelpython_10,
+    lambda: description_levelpython_10(),
+    lambda: hint_levelpython_10()
+)
+
+(
+    title_levelpython_30,
+    description_levelpython_30,
+    hint_levelpython_30,
+) = (
+    lambda: title_level84(),
+    lambda: description_level84(),
+    lambda: hint_level84()
+)
+
+(
+    title_levelpython_31,
+    description_levelpython_31,
+    hint_levelpython_31,
+) = (
+    lambda: title_level34(),
+    lambda: description_level34(),
+    lambda: hint_level34()
+)
+
+(
+    title_levelpython_32,
+    description_levelpython_32,
+    hint_levelpython_32,
+) = (
+    lambda: "Something isn't <b>right</b>",
+    lambda: build_description(title_levelpython_32(), "You don't have a right turn block here, so plan your route carefully."),
+    lambda: "Think carefully about the order in which you ask questions in your if-statement here..."
+)
+
+(
+    title_levelpython_33,
+    description_levelpython_33,
+    hint_levelpython_33,
+) = (
+    lambda: "Looking both ways",
+    lambda: build_description(title_levelpython_33(), "Can you find the shortest route?"),
+    lambda: "In this level, you want to check for a left turn first. If there is no left turn, turn right. Notice what that looks like in Python."
+)
+
+(
+    title_levelpython_34,
+    description_levelpython_34,
+    hint_levelpython_34,
+) = (
+    lambda: "The pond is nice but out of the way",
+    lambda: build_description(title_levelpython_34(), "Can you find the shortest route? Don't take the scenic route."),
+    lambda: "Just look for the simplest route to the house."
+)
+
+(
+    title_levelpython_35,
+    description_levelpython_35,
+    hint_levelpython_35,
+) = (
+    lambda: title_level99(),
+    lambda: description_level99(),
+    lambda: hint_level99()
+)
+
+(
+    title_levelpython_36,
+    description_levelpython_36,
+    hint_levelpython_36,
+) = (
+    lambda: title_level38(),
+    lambda: description_level38(),
+    lambda: hint_level38()
+)
+
+(
+    title_levelpython_37,
+    description_levelpython_37,
+    hint_levelpython_37,
+) = (
+    lambda: title_level100(),
+    lambda: description_level100(),
+    lambda: hint_level100()
+)
+
+(
+    title_levelpython_38,
+    description_levelpython_38,
+    hint_levelpython_38,
+) = (
+    lambda: title_level39(),
+    lambda: description_level39(),
+    lambda: hint_level39()
+)
+
+(
+    title_levelpython_39,
+    description_levelpython_39,
+    hint_levelpython_39,
+) = (
+    lambda: title_level47(),
+    lambda: description_level47(),
+    lambda: hint_level47()
+)
+
+(
+    title_levelpython_40,
+    description_levelpython_40,
+    hint_levelpython_40,
+) = (
+    lambda: title_level48(),
+    lambda: description_level48(),
+    lambda: hint_level48()
+)
+
+(
+    title_levelpython_41,
+    description_levelpython_41,
+    hint_levelpython_41,
+) = (
+    lambda: title_level83(),
+    lambda: description_level83(),
+    lambda: hint_level83()
+)
+
+(
+    title_levelpython_42,
+    description_levelpython_42,
+    hint_levelpython_42,
+) = (
+    lambda: title_level95(),
+    lambda: description_level95(),
+    lambda: hint_level95()
+)
+
+(
+    title_levelpython_43,
+    description_levelpython_43,
+    hint_levelpython_43,
+) = (
+    lambda: title_level96(),
+    lambda: description_level96(),
+    lambda: hint_level96()
+)
+
+(
+    title_levelpython_44,
+    description_levelpython_44,
+    hint_levelpython_44,
+) = (
+    lambda: title_level84(),
+    lambda: description_level84(),
+    lambda: hint_level84()
+)
+
+(
+    title_levelpython_45,
+    description_levelpython_45,
+    hint_levelpython_45,
+) = (
+    lambda: title_level97(),
+    lambda: description_level97(),
+    lambda: hint_level97()
+)
+
+(
+    title_levelpython_46,
+    description_levelpython_46,
+    hint_levelpython_46,
+) = (
+    lambda: title_level106(),
+    lambda: description_level106(),
+    lambda: hint_level106()
+)
+
+(
+    title_levelpython_47,
+    description_levelpython_47,
+    hint_levelpython_47,
+) = (
+    lambda: title_level107(),
+    lambda: description_level107(),
+    lambda: hint_level107()
+)
+
+(
+    title_levelpython_48,
+    description_levelpython_48,
+    hint_levelpython_48,
+) = (
+    lambda: title_level108(),
+    lambda: description_level108(),
+    lambda: hint_level108()
+)
+
+(
+    title_levelpython_49,
+    description_levelpython_49,
+    hint_levelpython_49,
+) = (
+    lambda: title_level109(),
+    lambda: description_level109(),
+    lambda: hint_level109()
+)
+
+(
+    title_levelpython_50,
+    description_levelpython_50,
+    hint_levelpython_50,
+) = (
+    lambda: title_level61(),
+    lambda: description_level61(),
+    lambda: hint_level61()
+)
+
+(
+    title_levelpython_51,
+    description_levelpython_51,
+    hint_levelpython_51,
+) = (
+    lambda: title_level62(),
+    lambda: description_level62(),
+    lambda: hint_level62()
+)
+
+(
+    title_levelpython_52,
+    description_levelpython_52,
+    hint_levelpython_52,
+) = (
+    lambda: title_level63(),
+    lambda: description_level63(),
+    lambda: hint_level63()
+)
+
+(
+    title_levelpython_53,
+    description_levelpython_53,
+    hint_levelpython_53,
+) = (
+    lambda: title_level64(),
+    lambda: description_level64(),
+    lambda: hint_level64()
+)
+
+(
+    title_levelpython_54,
+    description_levelpython_54,
+    hint_levelpython_54,
+) = (
+    lambda: title_level65(),
+    lambda: description_level65(),
+    lambda: hint_level65()
+)
+
+(
+    title_levelpython_55,
+    description_levelpython_55,
+    hint_levelpython_55,
+) = (
+    lambda: title_level66(),
+    lambda: description_level66(),
+    lambda: hint_level66()
+)
+
+(
+    title_levelpython_56,
+    description_levelpython_56,
+    hint_levelpython_56,
+) = (
+    lambda: title_level67(),
+    lambda: description_level67(),
+    lambda: hint_level67()
+)
+
+(
+    title_levelpython_57,
+    description_levelpython_57,
+    hint_levelpython_57,
+) = (
+    lambda: title_level90(),
+    lambda: description_level90(),
+    lambda: hint_level90()
+)
+
+(
+    title_levelpython_58,
+    description_levelpython_58,
+    hint_levelpython_58,
+) = (
+    lambda: title_level91(),
+    lambda: description_level91(),
+    lambda: hint_level91()
+)
+
+(
+    title_levelpython_59,
+    description_levelpython_59,
+    hint_levelpython_59,
+) = (
+    lambda: title_level101(),
+    lambda: description_level101(),
+    lambda: hint_level101()
+)
+
+(
+    title_levelpython_60,
+    description_levelpython_60,
+    hint_levelpython_60,
+) = (
+    lambda: title_level102(),
+    lambda: description_level102(),
+    lambda: hint_level102()
+)
+
 
 # Episode titles
 def get_episode_title(episode_id):
@@ -2867,6 +3468,17 @@ def get_episode_title(episode_id):
         13: "Indeterminate While Loops - coming soon",
         14: "Selection in a Loop - coming soon",
         15: "For Loops - coming soon",
+        16: "Output, Operators, and Data",
+        17: "Variables, Input, and Casting",
+        18: "Selection",
+        19: "Complex Selection",
+        20: "Counted Loops Using While",
+        21: "Selection in a Loop",
+        22: "Indeterminate Loops",
+        23: "String Manipulation",
+        24: "Lists",
+        25: "For Loops",
+        26: "Procedures"
     }
 
     return episode_titles[episode_id]

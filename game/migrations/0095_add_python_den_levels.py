@@ -1,49 +1,77 @@
+import json
+
 from django.apps.registry import Apps
 from django.db import migrations, models
 from game.level_management import set_decor_inner, set_blocks_inner
 
-def set_blocks(level, blocks):
-        set_blocks_inner(level, blocks, LevelBlock, Block)
-
-def set_decor(level, decor):
-        set_decor_inner(level, decor, LevelDecor)
-
-def bulk_copy_decor(apps, new_level_name, old_level_name):
-    Level = apps.get_model("game", "LevelDecor")
-    LevelDecor = apps.get_model("game", "LevelDecor")
-    
-    old_level = Level.objects.get(name=old_level_name)
-    decor_to_copy = LevelDecor.objects.filter(level=level39.source).values()
-    new_level = Level.objects.get(name=new_level_name)
-    bulk_copy_decor(new_level, decor_to_copy)
-
-    new_level_decor = []
-    for decor in decor_to_copy:
-        new_level_decor.append(
-            LevelDecor(
-                level_id = new_level.pk, x = decor["x"], y = decor["y"], decorName = decor["decorName"]
-            )
-        )
-    LevelDecor.objects.bulk_create(new_level_decor)
-
 def add_python_den_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
-    Character = apps.get_model("game", "Character")
-    Theme = apps.get_model("game", "Theme")
+    Episode = apps.get_model("game", "Episode")
 
-    grass = Theme.objects.get(name="grass")
-    snow = Theme.objects.get(name="snow")
-    farm = Theme.objects.get(name="farm")
-    city = Theme.objects.get(name="city")
+    episode20 = Episode.objects.get(pk=20)
+    episode21 = Episode.objects.get(pk=21)
+    episode22 = Episode.objects.get(pk=22)
+    episode25 = Episode.objects.get(pk=25)
+    episode26 = Episode.objects.get(pk=26)
 
-    van = Character.objects.get(name="Van")
-    dee = Character.objects.get(name="Dee")
+    level1 = Level.objects.get(name="110")
+    level1.name = "python_1"
+    level1.episode = episode20
+
+    level2 = Level.objects.get(name="111")
+    level2.name = "python_2"
+    level2.episode = episode20
+
+    level3 = Level.objects.get(name="112")
+    level3.name = "python_3"
+    level3.episode = episode20
+
+    level4 = Level.objects.get(name="113")
+    level4.name = "python_4"
+    level4.episode = episode20
+
+    level5 = Level.objects.get(name="114")
+    level5.name = "python_5"
+    level5.episode = episode20
+
+    level6 = Level.objects.get(name="115")
+    level6.name = "python_6"
+    level6.episode = episode20
+
+    level7 = Level.objects.get(name="116")
+    level7.name = "python_7"
+    level7.episode = episode20
+
+    level8 = Level.objects.get(name="117")
+    level8.name = "python_8"
+    level8.episode = episode20
+
+    level9 = Level.objects.get(name="118")
+    level9.name = "python_9"
+    level9.episode = episode20
+
+    level10 = Level.objects.get(name="119")
+    level10.name = "python_10"
+    level10.episode = episode20
+
+    level11 = Level.objects.get(name="120")
+    level11.name = "python_11"
+    level11.episode = episode20
+
+    level12 = Level.objects.get(name="121")
+    level12.name = "python_12"
+    level12.episode = episode20
+
+    level13 = Level.objects.get(name="122")
+    level13.name = "python_13"
+    level13.episode = episode20
 
     level14 = Level(
         name="python_14",
+        episode=episode21,
         anonymous=False,
         blocklyEnabled=True,
-        character=van,
+        character_name="Van",
         default=True,
         destinations="[[9,4]]",
         disable_algorithm_score=True,
@@ -54,8 +82,8 @@ def add_python_den_levels(apps, schema_editor):
         origin='{"coordinate":[0,4],"direction":"E"}',
         path='[{"coordinate":[0,4],"connectedNodes":[1]},{"coordinate":[1,4],"connectedNodes":[0,2]},{"coordinate":[2,4],"connectedNodes":[1,3]},{"coordinate":[3,4],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[3,5]},{"coordinate":[5,4],"connectedNodes":[4,6]},{"coordinate":[6,4],"connectedNodes":[5,7]},{"coordinate":[7,4],"connectedNodes":[6,8]},{"coordinate":[8,4],"connectedNodes":[7,9]},{"coordinate":[9,4],"connectedNodes":[8]}]',
         pythonEnabled=False,
-        pythonVieWEnabled=True,
-        theme=farm,
+        pythonViewEnabled=True,
+        theme_name="farm",
         threads=1,
         traffic_lights="[]",
         cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":2,"y":4},{"x":5,"y":4},{"x":7,"y":4}],"type":"WHITE"}]',
@@ -65,6 +93,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level15 = Level(
         name="python_15",
+        episode=episode21,
         path='[{"coordinate":[5,0],"connectedNodes":[1]},{"coordinate":[5,1],"connectedNodes":[2,0]},{"coordinate":[4,1],"connectedNodes":[3,1]},{"coordinate":[4,2],"connectedNodes":[4,2]},{"coordinate":[4,3],"connectedNodes":[5,3]},{"coordinate":[4,4],"connectedNodes":[6,4]},{"coordinate":[3,4],"connectedNodes":[7,5]},{"coordinate":[3,5],"connectedNodes":[8,6]},{"coordinate":[3,6],"connectedNodes":[9,7]},{"coordinate":[3,7],"connectedNodes":[8]}]',
         traffic_lights="[]",
         cows="[]",
@@ -80,8 +109,8 @@ def add_python_den_levels(apps, schema_editor):
         blocklyEnabled=True,
         pythonEnabled=False,
         pythonViewEnabled=True,
-        theme=farm,
-        character=van,
+        theme_name="farm",
+        character_name="Van",
         lesson="There are some bends in this road. Be careful!",
         hint="What do you need to count, how many times you move or how many times you move forwards?",
         anonymous=False
@@ -89,6 +118,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level16 = Level(
         name="python_16",
+        episode=episode21,
         path='[{"coordinate":[1,1],"connectedNodes":[1]},{"coordinate":[1,2],"connectedNodes":[2,0]},{"coordinate":[2,2],"connectedNodes":[1,3]},{"coordinate":[2,3],"connectedNodes":[4,2]},{"coordinate":[3,3],"connectedNodes":[3,5]},{"coordinate":[3,4],"connectedNodes":[6,4]},{"coordinate":[4,4],"connectedNodes":[5,7]},{"coordinate":[4,5],"connectedNodes":[8,6]},{"coordinate":[5,5],"connectedNodes":[7,9]},{"coordinate":[5,6],"connectedNodes":[10,8]},{"coordinate":[6,6],"connectedNodes":[9,11]},{"coordinate":[6,7],"connectedNodes":[12,10]},{"coordinate":[7,7],"connectedNodes":[11]}]',
         traffic_lights="[]",
         cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":3},{"x":5,"y":5},{"x":4,"y":4}],"type":"WHITE"}]',
@@ -104,8 +134,8 @@ def add_python_den_levels(apps, schema_editor):
         blocklyEnabled=False,
         pythonEnabled=True,
         pythonViewEnabled=False,
-        theme=farm,
-        character=van,
+        theme_name="farm",
+        character_name="Van",
         lesson="Oh no! The farmer seems to have let their cows out again. Be careful.",
         hint="Look for a pattern here...",
         anonymous=False
@@ -113,6 +143,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level17 = Level(
         name="python_17",
+        episode=episode21,
         path='[{"coordinate":[7,0],"connectedNodes":[1]},{"coordinate":[7,1],"connectedNodes":[2,0]},{"coordinate":[6,1],"connectedNodes":[3,1]},{"coordinate":[6,2],"connectedNodes":[4,2]},{"coordinate":[6,3],"connectedNodes":[5,3]},{"coordinate":[6,4],"connectedNodes":[6,4]},{"coordinate":[5,4],"connectedNodes":[7,5]},{"coordinate":[5,5],"connectedNodes":[8,6]},{"coordinate":[5,6],"connectedNodes":[7]}]',
         traffic_lights="[]",
         cows="[]",
@@ -127,9 +158,9 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=False,
         pythonEnabled=True,
-        pythonVieWEnabled=False,
-        theme=grass,
-        character=van,
+        pythonViewEnabled=False,
+        theme_name="grass",
+        character_name="Van",
         lesson="Keep going, you're getting the hang of the Python code.",
         hint="So you are going forward unless...?",
         anonymous=False
@@ -137,6 +168,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level18 = Level(
         name="python_18",
+        episode=episode21,
         path='[{"coordinate":[7,1],"connectedNodes":[1]},{"coordinate":[7,2],"connectedNodes":[2,0]},{"coordinate":[7,3],"connectedNodes":[3,1]},{"coordinate":[7,4],"connectedNodes":[4,2]},{"coordinate":[7,5],"connectedNodes":[5,3]},{"coordinate":[6,5],"connectedNodes":[6,4]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[4,5],"connectedNodes":[8,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[2,5],"connectedNodes":[8,10]},{"coordinate":[2,4],"connectedNodes":[9,11]},{"coordinate":[2,3],"connectedNodes":[10,12]},{"coordinate":[2,2],"connectedNodes":[11,13]},{"coordinate":[2,1],"connectedNodes":[12,14]},{"coordinate":[3,1],"connectedNodes":[13,15]},{"coordinate":[4,1],"connectedNodes":[14,16]},{"coordinate":[5,1],"connectedNodes":[15,17]},{"coordinate":[6,1],"connectedNodes":[16,18]},{"coordinate":[6,2],"connectedNodes":[19,17]},{"coordinate":[6,3],"connectedNodes":[20,18]},{"coordinate":[6,4],"connectedNodes":[21,19]},{"coordinate":[5,4],"connectedNodes":[22,20]},{"coordinate":[4,4],"connectedNodes":[23,21]},{"coordinate":[3,4],"connectedNodes":[22,24]},{"coordinate":[3,3],"connectedNodes":[23,25]},{"coordinate":[3,2],"connectedNodes":[24,26]},{"coordinate":[4,2],"connectedNodes":[25,27]},{"coordinate":[5,2],"connectedNodes":[26]}]',
         traffic_lights="[]",
         cows="[]",
@@ -151,9 +183,9 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=False,
         pythonEnabled=True,
-        pythonVieWEnabled=False,
-        theme=snow,
-        character=van,
+        pythonViewEnabled=False,
+        theme_name="snow",
+        character_name="Van",
         lesson="Oh dear, you might get a bit dizzy!",
         hint="What are you counting here, straight roads or bends?",
         anonymous=False
@@ -161,6 +193,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level19 = Level(
         name="python_19",
+        episode=episode21,
         path='[{"coordinate":[9,3],"connectedNodes":[1]},{"coordinate":[8,3],"connectedNodes":[2,0]},{"coordinate":[7,3],"connectedNodes":[3,1,15]},{"coordinate":[7,4],"connectedNodes":[4,2]},{"coordinate":[6,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[6,4,12]},{"coordinate":[4,4],"connectedNodes":[7,5]},{"coordinate":[3,4],"connectedNodes":[8,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[2,5],"connectedNodes":[10,8,17]},{"coordinate":[1,5],"connectedNodes":[11,9]},{"coordinate":[0,5],"connectedNodes":[10]},{"coordinate":[5,3],"connectedNodes":[5,13]},{"coordinate":[5,2],"connectedNodes":[21,12,14]},{"coordinate":[6,2],"connectedNodes":[13,15]},{"coordinate":[7,2],"connectedNodes":[14,2,16]},{"coordinate":[7,1],"connectedNodes":[15]},{"coordinate":[2,4],"connectedNodes":[9,18]},{"coordinate":[2,3],"connectedNodes":[17,19]},{"coordinate":[2,2],"connectedNodes":[18,20]},{"coordinate":[3,2],"connectedNodes":[19,21]},{"coordinate":[4,2],"connectedNodes":[20,13]}]',
         traffic_lights="[]",
         cows="[]",
@@ -175,9 +208,9 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
-        pythonVieWEnabled=True,
-        theme=grass,
-        character=van,
+        pythonViewEnabled=True,
+        theme_name="grass",
+        character_name="Van",
         lesson="Have you noticed that there are more roads ahead than turns? Try checking if there is a road ahead and then otherwise making the turns you need...",
         hint="Remember to use if..else",
         anonymous=False
@@ -185,6 +218,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level20 = Level(
         name="python_20",
+        episode=episode21,
         path='[{"coordinate":[2,2],"connectedNodes":[1]},{"coordinate":[3,2],"connectedNodes":[0,2,19]},{"coordinate":[3,3],"connectedNodes":[10,3,1]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[4,6,17]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[6,5],"connectedNodes":[6,8]},{"coordinate":[6,6],"connectedNodes":[9,7]},{"coordinate":[7,6],"connectedNodes":[8]},{"coordinate":[3,4],"connectedNodes":[11,2]},{"coordinate":[3,5],"connectedNodes":[12,10]},{"coordinate":[3,6],"connectedNodes":[13,11]},{"coordinate":[3,7],"connectedNodes":[14,12]},{"coordinate":[4,7],"connectedNodes":[13,15]},{"coordinate":[5,7],"connectedNodes":[14,16]},{"coordinate":[6,7],"connectedNodes":[15]},{"coordinate":[5,3],"connectedNodes":[5,18]},{"coordinate":[5,2],"connectedNodes":[19,17]},{"coordinate":[4,2],"connectedNodes":[1,18]}]',
         traffic_lights="[]",
         cows="[]",
@@ -199,9 +233,9 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=False,
         pythonEnabled=True,
-        pythonVieWEnabled=False,
-        theme=snow,
-        character=van,
+        pythonViewEnabled=False,
+        theme_name="snow",
+        character_name="Van",
         lesson="Use if..else in Python for this level",
         hint="Don't get distracted by the other roads. Look for a pattern you can repeat.",
         anonymous=False
@@ -209,6 +243,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level21 = Level(
         name="python_21",
+        episode=episode21,
         path='[{"coordinate":[4,0],"connectedNodes":[1]},{"coordinate":[4,1],"connectedNodes":[2,0]},{"coordinate":[3,1],"connectedNodes":[3,1]},{"coordinate":[3,2],"connectedNodes":[4,2]},{"coordinate":[3,3],"connectedNodes":[5,3]},{"coordinate":[3,4],"connectedNodes":[6,4]},{"coordinate":[2,4],"connectedNodes":[7,5]},{"coordinate":[2,5],"connectedNodes":[8,6]},{"coordinate":[2,6],"connectedNodes":[9,7]},{"coordinate":[1,6],"connectedNodes":[10,8]},{"coordinate":[1,7],"connectedNodes":[9]}]',
         traffic_lights="[]",
         cows="[]",
@@ -223,9 +258,9 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=False,
         pythonEnabled=True,
-        pythonVieWEnabled=False,
-        theme=grass,
-        character=van,
+        pythonViewEnabled=False,
+        theme_name="grass",
+        character_name="Van",
         lesson="This is a really busy road. Make sure that you don't miss any of the houses.",
         hint="Did you get the last house? Think about what value the loop counter will have at that point in your code...",
         anonymous=False
@@ -233,6 +268,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level22 = Level(
         name="python_22",
+        episode=episode21,
         path='[{"coordinate":[2,3],"connectedNodes":[1]},{"coordinate":[2,2],"connectedNodes":[0,2,16]},{"coordinate":[3,2],"connectedNodes":[1,3]},{"coordinate":[3,1],"connectedNodes":[2,4,14]},{"coordinate":[4,1],"connectedNodes":[3,5]},{"coordinate":[5,1],"connectedNodes":[4,6,22]},{"coordinate":[5,2],"connectedNodes":[7,5]},{"coordinate":[6,2],"connectedNodes":[6,8]},{"coordinate":[6,3],"connectedNodes":[9,17,7]},{"coordinate":[6,4],"connectedNodes":[10,8]},{"coordinate":[5,4],"connectedNodes":[11,9]},{"coordinate":[5,5],"connectedNodes":[12,10]},{"coordinate":[4,5],"connectedNodes":[13,11]},{"coordinate":[3,5],"connectedNodes":[12]},{"coordinate":[3,0],"connectedNodes":[15,3]},{"coordinate":[2,0],"connectedNodes":[16,14]},{"coordinate":[2,1],"connectedNodes":[1,15]},{"coordinate":[7,3],"connectedNodes":[8,18]},{"coordinate":[8,3],"connectedNodes":[17,19]},{"coordinate":[8,2],"connectedNodes":[18,20]},{"coordinate":[8,1],"connectedNodes":[21,19]},{"coordinate":[7,1],"connectedNodes":[22,20]},{"coordinate":[6,1],"connectedNodes":[5,21]}]',
         traffic_lights="[]",
         cows="[]",
@@ -247,9 +283,9 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
-        pythonVieWEnabled=True,
-        theme=grass,
-        character=van,
+        pythonViewEnabled=True,
+        theme_name="grass",
+        character_name="Van",
         lesson="There are lots of turns here, don't get distracted.",
         hint="Think about the order of the questions you ask using your if and elif statements.",
         anonymous=False
@@ -257,6 +293,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level23 = Level(
         name="python_23",
+        episode=episode21,
         path='[{"coordinate":[2,7],"connectedNodes":[1]},{"coordinate":[2,6],"connectedNodes":[0,2]},{"coordinate":[2,5],"connectedNodes":[1,28,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,3],"connectedNodes":[3,5]},{"coordinate":[2,2],"connectedNodes":[4,6]},{"coordinate":[2,1],"connectedNodes":[5,7]},{"coordinate":[3,1],"connectedNodes":[6,8]},{"coordinate":[4,1],"connectedNodes":[7,9]},{"coordinate":[5,1],"connectedNodes":[8,10]},{"coordinate":[6,1],"connectedNodes":[9,11]},{"coordinate":[7,1],"connectedNodes":[10,12]},{"coordinate":[8,1],"connectedNodes":[11,13]},{"coordinate":[9,1],"connectedNodes":[12,14]},{"coordinate":[9,2],"connectedNodes":[15,13]},{"coordinate":[9,3],"connectedNodes":[16,14]},{"coordinate":[9,4],"connectedNodes":[17,15]},{"coordinate":[9,5],"connectedNodes":[18,16]},{"coordinate":[9,6],"connectedNodes":[19,17]},{"coordinate":[8,6],"connectedNodes":[20,18]},{"coordinate":[7,6],"connectedNodes":[21,19]},{"coordinate":[6,6],"connectedNodes":[22,20]},{"coordinate":[5,6],"connectedNodes":[23,21]},{"coordinate":[4,6],"connectedNodes":[22,24]},{"coordinate":[4,5],"connectedNodes":[28,23,25]},{"coordinate":[4,4],"connectedNodes":[24,26]},{"coordinate":[4,3],"connectedNodes":[25,27]},{"coordinate":[4,2],"connectedNodes":[26]},{"coordinate":[3,5],"connectedNodes":[2,24]}]',
         traffic_lights="[]",
         cows="[]",
@@ -271,9 +308,9 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
-        pythonVieWEnabled=True,
-        theme=farm,
-        character=van,
+        pythonViewEnabled=True,
+        theme_name="farm",
+        character_name="Van",
         lesson="Don't go the long way around!",
         hint="Think carefully about the order in which you ask questions in your if..else if block",
         anonymous=False
@@ -281,6 +318,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level24 = Level(
         name="python_24",
+        episode=episode21,
         path='[{"coordinate":[7,0],"connectedNodes":[1]},{"coordinate":[7,1],"connectedNodes":[10,2,0]},{"coordinate":[7,2],"connectedNodes":[3,24,1]},{"coordinate":[7,3],"connectedNodes":[4,2]},{"coordinate":[6,3],"connectedNodes":[5,3]},{"coordinate":[6,4],"connectedNodes":[23,6,33,4]},{"coordinate":[6,5],"connectedNodes":[7,5]},{"coordinate":[6,6],"connectedNodes":[8,6]},{"coordinate":[5,6],"connectedNodes":[9,7]},{"coordinate":[5,7],"connectedNodes":[8]},{"coordinate":[6,1],"connectedNodes":[11,1]},{"coordinate":[5,1],"connectedNodes":[12,10]},{"coordinate":[4,1],"connectedNodes":[13,11]},{"coordinate":[3,1],"connectedNodes":[14,12]},{"coordinate":[2,1],"connectedNodes":[15,13]},{"coordinate":[1,1],"connectedNodes":[16,17,14]},{"coordinate":[0,1],"connectedNodes":[15]},{"coordinate":[1,2],"connectedNodes":[18,15]},{"coordinate":[1,3],"connectedNodes":[19,17]},{"coordinate":[1,4],"connectedNodes":[20,18]},{"coordinate":[2,4],"connectedNodes":[19,21]},{"coordinate":[3,4],"connectedNodes":[20,22]},{"coordinate":[4,4],"connectedNodes":[21,23]},{"coordinate":[5,4],"connectedNodes":[22,5]},{"coordinate":[8,2],"connectedNodes":[2,25]},{"coordinate":[9,2],"connectedNodes":[24,26]},{"coordinate":[9,3],"connectedNodes":[27,25]},{"coordinate":[9,4],"connectedNodes":[28,26]},{"coordinate":[9,5],"connectedNodes":[29,27]},{"coordinate":[9,6],"connectedNodes":[30,28]},{"coordinate":[8,6],"connectedNodes":[29,31]},{"coordinate":[8,5],"connectedNodes":[30,32]},{"coordinate":[8,4],"connectedNodes":[33,31]},{"coordinate":[7,4],"connectedNodes":[5,32]}]',
         traffic_lights="[]",
         cows="[]",
@@ -295,9 +333,9 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=False,
         pythonEnabled=True,
-        pythonVieWEnabled=False,
-        theme=farm,
-        character=van,
+        pythonViewEnabled=False,
+        theme_name="farm",
+        character_name="Van",
         lesson="Look carefully for the shortest route.",
         hint="Think carefully about the order in which you ask questions in your if..elif statements.",
         anonymous=False
@@ -305,6 +343,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level25 = Level(
         name="python_25",
+        episode=episode21,
         path='[{"coordinate":[8,0],"connectedNodes":[1]},{"coordinate":[8,1],"connectedNodes":[2,0]},{"coordinate":[8,2],"connectedNodes":[3,1]},{"coordinate":[7,2],"connectedNodes":[4,2]},{"coordinate":[6,2],"connectedNodes":[12,5,3]},{"coordinate":[6,3],"connectedNodes":[25,4]},{"coordinate":[4,5],"connectedNodes":[7,19]},{"coordinate":[3,5],"connectedNodes":[8,6]},{"coordinate":[2,5],"connectedNodes":[9,7]},{"coordinate":[1,5],"connectedNodes":[10,8,18]},{"coordinate":[1,6],"connectedNodes":[11,9]},{"coordinate":[1,7],"connectedNodes":[10]},{"coordinate":[5,2],"connectedNodes":[13,4]},{"coordinate":[4,2],"connectedNodes":[14,12]},{"coordinate":[3,2],"connectedNodes":[15,13]},{"coordinate":[2,2],"connectedNodes":[16,14]},{"coordinate":[1,2],"connectedNodes":[17,15]},{"coordinate":[1,3],"connectedNodes":[18,16]},{"coordinate":[1,4],"connectedNodes":[9,17]},{"coordinate":[5,5],"connectedNodes":[6,20]},{"coordinate":[6,5],"connectedNodes":[19,21]},{"coordinate":[7,5],"connectedNodes":[20,22]},{"coordinate":[8,5],"connectedNodes":[21,23]},{"coordinate":[8,4],"connectedNodes":[24,22]},{"coordinate":[7,4],"connectedNodes":[25,23]},{"coordinate":[6,4],"connectedNodes":[24,5]}]',
         traffic_lights='[{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":4,"y":5},"direction":"W","startTime":0,"startingState":"RED"},{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":1,"y":5},"direction":"N","startTime":0,"startingState":"RED"}]',
         cows="[]",
@@ -319,16 +358,21 @@ def add_python_den_levels(apps, schema_editor):
         threads=1,
         blocklyEnabled=False,
         pythonEnabled=True,
-        pythonVieWEnabled=False,
-        theme=grass,
-        character=van,
+        pythonViewEnabled=False,
+        theme_name="grass",
+        character_name="Van",
         lesson="Look carefully for the shortest route.",
         hint="Think carefully about the order in which you ask questions in your if..elif statements. Don't forget the traffic lights.",
         anonymous=False
     )
 
+    level26 = Level.objects.get(name="85")
+    level26.name = "python_26"
+    level26.episode=episode22
+
     level27 = Level(
         name="python_27",
+        episode=episode22,
         path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3,5]},{"coordinate":[5,3],"connectedNodes":[4,6]},{"coordinate":[6,3],"connectedNodes":[5,7]},{"coordinate":[7,3],"connectedNodes":[6,8]},{"coordinate":[8,3],"connectedNodes":[7]}]',
         traffic_lights="[]",
         cows="[]",
@@ -343,8 +387,8 @@ def add_python_den_levels(apps, schema_editor):
         blocklyEnabled=True,
         pythonEnabled=False,
         pythonViewEnabled=True,
-        theme=grass,
-        character=van,
+        theme_name="grass",
+        character_name="Van",
         lesson="Just keep going until you get there...",
         hint="You might find that the solution to this level is quite familiar...",
         anonymous=False
@@ -352,6 +396,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level28 = Level(
         name="python_28",
+        episode=episode22,
         path='[{"coordinate":[2,2],"connectedNodes":[1]},{"coordinate":[3,2],"connectedNodes":[0,2]},{"coordinate":[3,3],"connectedNodes":[3,1]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[4,6]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[6,5],"connectedNodes":[6,8]},{"coordinate":[6,6],"connectedNodes":[9,7]},{"coordinate":[7,6],"connectedNodes":[8]}]',
         traffic_lights='[]',
         cows='[]',
@@ -367,15 +412,46 @@ def add_python_den_levels(apps, schema_editor):
         blocklyEnabled=True,
         pythonEnabled=False,
         pythonViewEnabled=True,
-        theme=grass,
-        character=van,
+        theme_name="grass",
+        character_name="Van",
         lesson="Well done, you did it! Now have a go at using the <b>Repeat until</b> block on a road with lots of turns.",
         hint="This is another route you have seen before. Last time you counted how many times your instructions were repeated. This time, your program is going to repeat your commands until you reach the destination. What do you need to repeat?",
         anonymous=False
     )
 
+    level29 = Level.objects.get(name="119")
+    level29.pk = None
+    level29._state.adding = True
+    level29.name = "python_29"
+    level29.blocklyEnabled = True
+    level29.pythonEnabled = False
+    level29.pythonViewEnabled = True
+    level29.model_solution = "[7]"
+    level29.episode=episode22
+
+    level30 = Level.objects.get(name="84")
+    level30.pk = None
+    level30._state.adding = True
+    level30.name = "python_30"
+    level30.blocklyEnabled = False
+    level30.pythonEnabled = True
+    level30.pythonViewEnabled = False
+    level30.model_solution = "[]"
+    level30.episode=episode22
+
+    level31 = Level.objects.get(name="34")
+    level31.pk = None
+    level31._state.adding = True
+    level31.name = "python_31"
+    level31.blocklyEnabled = True
+    level31.pythonEnabled = False
+    level31.pythonViewEnabled = True
+    level31.model_solution = "[7]"
+    level31.episode=episode22
+
     level32 = Level(
         name="python_32",
+        episode=episode22,
         path='[{"coordinate":[5,0],"connectedNodes":[1]},{"coordinate":[5,1],"connectedNodes":[2,0]},{"coordinate":[5,2],"connectedNodes":[3,23,1]},{"coordinate":[5,3],"connectedNodes":[4,2]},{"coordinate":[5,4],"connectedNodes":[17,3]},{"coordinate":[4,5],"connectedNodes":[6,17]},{"coordinate":[3,5],"connectedNodes":[7,5]},{"coordinate":[2,5],"connectedNodes":[24,6,8]},{"coordinate":[2,4],"connectedNodes":[7,9]},{"coordinate":[2,3],"connectedNodes":[8,10]},{"coordinate":[2,2],"connectedNodes":[9,11]},{"coordinate":[2,1],"connectedNodes":[10,12]},{"coordinate":[3,1],"connectedNodes":[11,13]},{"coordinate":[4,1],"connectedNodes":[12,14]},{"coordinate":[4,2],"connectedNodes":[15,13]},{"coordinate":[4,3],"connectedNodes":[16,14]},{"coordinate":[4,4],"connectedNodes":[15]},{"coordinate":[5,5],"connectedNodes":[5,29,18,4]},{"coordinate":[6,5],"connectedNodes":[17,19]},{"coordinate":[7,5],"connectedNodes":[18,20]},{"coordinate":[7,4],"connectedNodes":[19,21]},{"coordinate":[7,3],"connectedNodes":[20,22]},{"coordinate":[7,2],"connectedNodes":[23,21,36]},{"coordinate":[6,2],"connectedNodes":[2,22]},{"coordinate":[1,5],"connectedNodes":[25,7]},{"coordinate":[1,6],"connectedNodes":[26,24]},{"coordinate":[2,6],"connectedNodes":[25,27]},{"coordinate":[3,6],"connectedNodes":[26,28]},{"coordinate":[4,6],"connectedNodes":[27,29]},{"coordinate":[5,6],"connectedNodes":[28,30,17]},{"coordinate":[6,6],"connectedNodes":[29,31]},{"coordinate":[7,6],"connectedNodes":[30,32]},{"coordinate":[8,6],"connectedNodes":[31,33]},{"coordinate":[8,5],"connectedNodes":[32,34]},{"coordinate":[8,4],"connectedNodes":[33,35]},{"coordinate":[8,3],"connectedNodes":[34,36]},{"coordinate":[8,2],"connectedNodes":[22,35]}]',
         traffic_lights='[]',
         cows='[]',
@@ -391,14 +467,16 @@ def add_python_den_levels(apps, schema_editor):
         blocklyEnabled=True,
         pythonEnabled=False,
         pythonViewEnabled=True,
-        theme=grass,
-        character=van,
+        theme_name="grass",
+        character_name="Van",
         lesson="You don't have a right turn block here, so plan your route carefully.",
         hint="Think carefully about the order in which you ask questions in your if-statement here...",
         anonymous=False
     )
+
     level33 = Level(
         name="python_33",
+        episode=episode22,
         path='[{"coordinate":[7,1],"connectedNodes":[1]},{"coordinate":[7,2],"connectedNodes":[2,0]},{"coordinate":[6,2],"connectedNodes":[3,1]},{"coordinate":[6,3],"connectedNodes":[4,13,2]},{"coordinate":[5,3],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[6,16,15,4]},{"coordinate":[4,4],"connectedNodes":[7,5]},{"coordinate":[4,5],"connectedNodes":[8,16,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[3,6],"connectedNodes":[10,8]},{"coordinate":[2,6],"connectedNodes":[11,9]},{"coordinate":[2,7],"connectedNodes":[12,17,10]},{"coordinate":[1,7],"connectedNodes":[11]},{"coordinate":[7,3],"connectedNodes":[3,14]},{"coordinate":[7,4],"connectedNodes":[15,13]},{"coordinate":[6,4],"connectedNodes":[5,22,14]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[3,7],"connectedNodes":[11,18]},{"coordinate":[4,7],"connectedNodes":[17,19]},{"coordinate":[5,7],"connectedNodes":[18,20]},{"coordinate":[6,7],"connectedNodes":[19,21]},{"coordinate":[6,6],"connectedNodes":[20,22]},{"coordinate":[6,5],"connectedNodes":[21,15]}]',
         traffic_lights="[]",
         cows="[]",
@@ -414,8 +492,8 @@ def add_python_den_levels(apps, schema_editor):
         blocklyEnabled=False,
         pythonEnabled=True,
         pythonViewEnabled=False,
-        theme=grass,
-        character=van,
+        theme_name="grass",
+        character_name="Van",
         lesson="Can you find the shortest route?",
         hint="In this level, you want to check for a left turn first. If there is no left turn, turn right. Notice what that looks like in Python.",
         anonymous=False
@@ -423,6 +501,7 @@ def add_python_den_levels(apps, schema_editor):
 
     level34 = Level(
         name="python_34",
+        episode=episode22,
         path='[{"coordinate":[0,6],"connectedNodes":[1]},{"coordinate":[1,6],"connectedNodes":[0,2]},{"coordinate":[2,6],"connectedNodes":[1,3]},{"coordinate":[3,6],"connectedNodes":[2,4]},{"coordinate":[4,6],"connectedNodes":[3,5]},{"coordinate":[5,6],"connectedNodes":[4,6]},{"coordinate":[5,5],"connectedNodes":[5,23,7]},{"coordinate":[5,4],"connectedNodes":[6,8]},{"coordinate":[5,3],"connectedNodes":[7,29,9]},{"coordinate":[5,2],"connectedNodes":[8,10]},{"coordinate":[5,1],"connectedNodes":[11,9]},{"coordinate":[4,1],"connectedNodes":[12,10]},{"coordinate":[3,1],"connectedNodes":[13,11]},{"coordinate":[2,1],"connectedNodes":[14,12]},{"coordinate":[1,1],"connectedNodes":[15,13]},{"coordinate":[1,2],"connectedNodes":[34,16,14]},{"coordinate":[1,3],"connectedNodes":[17,15]},{"coordinate":[1,4],"connectedNodes":[30,16]},{"coordinate":[2,5],"connectedNodes":[30,19]},{"coordinate":[3,5],"connectedNodes":[18,20]},{"coordinate":[3,4],"connectedNodes":[19,21]},{"coordinate":[3,3],"connectedNodes":[20,22]},{"coordinate":[3,2],"connectedNodes":[21]},{"coordinate":[6,5],"connectedNodes":[6,24]},{"coordinate":[7,5],"connectedNodes":[23,25]},{"coordinate":[8,5],"connectedNodes":[24,26]},{"coordinate":[8,4],"connectedNodes":[25,27]},{"coordinate":[8,3],"connectedNodes":[28,26]},{"coordinate":[7,3],"connectedNodes":[29,27]},{"coordinate":[6,3],"connectedNodes":[8,28]},{"coordinate":[1,5],"connectedNodes":[31,18,17]},{"coordinate":[0,5],"connectedNodes":[30,32]},{"coordinate":[0,4],"connectedNodes":[31,33]},{"coordinate":[0,3],"connectedNodes":[32,34]},{"coordinate":[0,2],"connectedNodes":[33,15]}]',
         traffic_lights="[]",
         cows="[]",
@@ -438,33 +517,311 @@ def add_python_den_levels(apps, schema_editor):
         blocklyEnabled=False,
         pythonEnabled=True,
         pythonViewEnabled=False,
-        theme=grass,
-        character=van,
+        theme_name="grass",
+        character_name="Van",
         lesson="Can you find the shortest route? Don't take the scenic route.",
         hint="Just look for the simplest route to the house.",
         anonymous=False
     )
 
-    level14.save()
-    level15.save()
-    level16.save()
-    level17.save()
-    level18.save()
-    level19.save()
-    level20.save()
-    level21.save()
-    level22.save()
-    level23.save()
-    level24.save()
-    level25.save()
-    level27.save()
-    level28.save()
-    level32.save()
-    level33.save()
-    level34.save()
+    level35 = Level.objects.get(name="99")
+    level35.name = "python_35"
+    level35.blocklyEnabled = True
+    level35.pythonEnabled = False
+    level35.pythonViewEnabled = True
+    level35.episode=episode22
+
+    level36 = Level.objects.get(name="38")
+    level36.pk = None
+    level36._state.adding = True
+    level36.name = "python_36"
+    level36.pythonViewEnabled = True
+    level36.model_solution = "[11]"
+    level36.episode=episode22
+
+    level37 = Level.objects.get(name="100")
+    level37.name = "python_37"
+    level37.episode=episode22
+
+    level38 = Level.objects.get(name="39")
+    level38.pk = None
+    level38._state.adding = True
+    level38.name = "python_38"
+    level38.blocklyEnabled = False
+    level38.pythonEnabled = True
+    level38.model_solution = "[]"
+    level38.episode=episode22
+
+    level39 = Level.objects.get(name="47")
+    level39.pk = None
+    level39._state.adding = True
+    level39.name = "python_39"
+    level39.blocklyEnabled = False
+    level39.pythonEnabled = True
+    level39.model_solution = "[]"
+    level39.episode=episode22
+
+    level40 = Level.objects.get(name="48")
+    level40.pk = None
+    level40._state.adding = True
+    level40.name = "python_40"
+    level40.blocklyEnabled = False
+    level40.pythonEnabled = True
+    level40.model_solution = "[]"
+    level40.episode=episode22
+
+    level41 = Level.objects.get(name="83")
+    level41.name = "python_41"
+    level41.episode = episode25
+
+    level42 = Level.objects.get(name="95")
+    level42.name = "python_42"
+    level42.episode = episode25
+
+    level43 = Level.objects.get(name="96")
+    level43.name = "python_43"
+    level43.episode = episode25
+
+    level44 = Level.objects.get(name="84")
+    level44.name = "python_44"
+    level44.episode = episode25
+
+    level45 = Level.objects.get(name="97")
+    level45.name = "python_45"
+    level45.episode = episode25
+
+    level46 = Level.objects.get(name="106")
+    level46.name = "python_46"
+    level46.episode = episode25
+
+    level47 = Level.objects.get(name="107")
+    level47.name = "python_47"
+    level47.episode = episode25
+
+    level48 = Level.objects.get(name="108")
+    level48.name = "python_48"
+    level48.episode = episode25
+
+    level49 = Level.objects.get(name="109")
+    level49.name = "python_49"
+    level49.episode = episode25
+
+    level50 = Level.objects.get(name="61")
+    level50.pk = None
+    level50._state.adding = True
+    level50.name = "python_50"
+    level50.pythonViewEnabled = True
+    level50.episode = episode26
+
+    level51 = Level.objects.get(name="62")
+    level51.pk = None
+    level51._state.adding = True
+    level51.name = "python_51"
+    level51.pythonViewEnabled = True
+    level51.episode = episode26
+
+    level52 = Level.objects.get(name="63")
+    level52.pk = None
+    level52._state.adding = True
+    level52.name = "python_52"
+    level52.blocklyEnabled = False
+    level52.pythonEnabled = True
+    level52.model_solution = "[]"
+    level52.episode = episode26
+
+    level53 = Level.objects.get(name="64")
+    level53.pk = None
+    level53._state.adding = True
+    level53.name = "python_53"
+    level53.blocklyEnabled = False
+    level53.pythonEnabled = True
+    level53.model_solution = "[]"
+    level53.episode = episode26
+
+    level54 = Level.objects.get(name="65")
+    level54.pk = None
+    level54._state.adding = True
+    level54.name = "python_54"
+    level54.blocklyEnabled = False
+    level54.pythonEnabled = True
+    level54.model_solution = "[]"
+    level54.episode = episode26
+
+    level55 = Level.objects.get(name="66")
+    level55.pk = None
+    level55._state.adding = True
+    level55.name = "python_55"
+    level55.blocklyEnabled = False
+    level55.pythonEnabled = True
+    level55.model_solution = "[]"
+    level55.episode = episode26
+
+    level56 = Level.objects.get(name="67")
+    level56.pk = None
+    level56._state.adding = True
+    level56.name = "python_56"
+    level56.blocklyEnabled = False
+    level56.pythonEnabled = True
+    level56.model_solution = "[]"
+    level56.episode = episode26
+
+    level57 = Level.objects.get(name="90")
+    level57.name = "python_57"
+    level57.blocklyEnabled = False
+    level57.pythonViewEnabled = False
+    level57.pythonEnabled = True
+    level57.episode = episode26
+
+    level58 = Level.objects.get(name="91")
+    level58.name = "python_58"
+    level58.blocklyEnabled = False
+    level58.pythonViewEnabled = False
+    level58.pythonEnabled = True
+    level58.episode = episode26
+
+    level59 = Level.objects.get(name="101")
+    level59.name = "python_59"
+    level59.episode = episode26
+
+    level60 = Level.objects.get(name="102")
+    level60.name = "python_60"
+    level60.episode = episode26
+
+    def save_all_levels():
+        level1.save()
+        level2.save()
+        level3.save()
+        level4.save()
+        level5.save()
+        level6.save()
+        level7.save()
+        level8.save()
+        level9.save()
+        level10.save()
+        level11.save()
+        level12.save()
+        level13.save()
+        level14.save()
+        level15.save()
+        level16.save()
+        level17.save()
+        level18.save()
+        level19.save()
+        level20.save()
+        level21.save()
+        level22.save()
+        level23.save()
+        level24.save()
+        level25.save()
+        level26.save()
+        level27.save()
+        level28.save()
+        level29.save()
+        level30.save()
+        level31.save()
+        level32.save()
+        level33.save()
+        level34.save()
+        level35.save()
+        level36.save()
+        level37.save()
+        level38.save()
+        level39.save()
+        level40.save()
+        level41.save()
+        level42.save()
+        level43.save()
+        level44.save()
+        level45.save()
+        level46.save()
+        level47.save()
+        level48.save()
+        level49.save()
+        level50.save()
+        level51.save()
+        level52.save()
+        level53.save()
+        level54.save()
+        level55.save()
+        level56.save()
+        level57.save()
+        level58.save()
+        level59.save()
+        level60.save()
+
+    save_all_levels()
+
+    level1.next_level = level2
+    level2.next_level = level3
+    level3.next_level = level4
+    level4.next_level = level5
+    level5.next_level = level6
+    level6.next_level = level7
+    level7.next_level = level8
+    level8.next_level = level9
+    level9.next_level = level10
+    level10.next_level = level11
+    level11.next_level = level12
+    level12.next_level = level13
+    level13.next_level = level14
+    level14.next_level = level15
+    level15.next_level = level16
+    level16.next_level = level17
+    level17.next_level = level18
+    level18.next_level = level19
+    level19.next_level = level20
+    level20.next_level = level21
+    level21.next_level = level22
+    level22.next_level = level23
+    level23.next_level = level24
+    level24.next_level = level25
+    level25.next_level = level26
+    level26.next_level = level27
+    level27.next_level = level28
+    level28.next_level = level29
+    level29.next_level = level30
+    level30.next_level = level31
+    level31.next_level = level32
+    level32.next_level = level33
+    level33.next_level = level34
+    level34.next_level = level35
+    level35.next_level = level36
+    level36.next_level = level37
+    level37.next_level = level38
+    level38.next_level = level39
+    level39.next_level = level40
+    level40.next_level = level41
+    level41.next_level = level42
+    level42.next_level = level43
+    level43.next_level = level44
+    level44.next_level = level45
+    level45.next_level = level46
+    level46.next_level = level47
+    level47.next_level = level48
+    level48.next_level = level49
+    level49.next_level = level50
+    level50.next_level = level51
+    level51.next_level = level52
+    level52.next_level = level53
+    level53.next_level = level54
+    level54.next_level = level55
+    level55.next_level = level56
+    level56.next_level = level57
+    level57.next_level = level58
+    level58.next_level = level59
+    level59.next_level = level60
+
+    save_all_levels()
+
 
 def add_python_den_blocks(apps, schema_editor):
     Level = apps.get_model("game", "Level")
+    LevelBlock = apps.get_model("game", "LevelBlock")
+    Block = apps.get_model("game", "Block")
+
+    def set_blocks(level, blocks):
+        set_blocks_inner(level, blocks, LevelBlock, Block)
+
     level14 = Level.objects.get(name="python_14")
     level15 = Level.objects.get(name="python_15")
     level19 = Level.objects.get(name="python_19")
@@ -472,7 +829,13 @@ def add_python_den_blocks(apps, schema_editor):
     level23 = Level.objects.get(name="python_23")
     level27 = Level.objects.get(name="python_27")
     level28 = Level.objects.get(name="python_28")
+    level29 = Level.objects.get(name="python_29")
+    level31 = Level.objects.get(name="python_31")
     level32 = Level.objects.get(name="python_32")
+    level35 = Level.objects.get(name="python_35")
+    level36 = Level.objects.get(name="python_36")
+    level50 = Level.objects.get(name="python_50")
+    level51 = Level.objects.get(name="python_51")
 
     set_blocks(
         level14, 
@@ -483,7 +846,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "math_number"},'
             + '{"type": "logic_compare"},'
             + '{"type": "controls_if"},'
-            + '{"type": "cow_crossing"}'
+            + '{"type": "cow_crossing"},'
             + '{"type": "sound_horn"},'
             + '{"type": "move_forwards"},'
             + '{"type": "variables_increment"}]'
@@ -580,6 +943,31 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
+        level29,
+        json.loads(
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "move_forwards"}]'
+        )
+    )
+
+    set_blocks(
+        level31,
+        json.loads(
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "move_forwards"}]'
+        )
+    )
+
+    set_blocks(
         level32,
         json.loads(
             '[{"type": "controls_repeat_while"},'
@@ -587,14 +975,86 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "at_destination"},'
             + '{"type": "controls_if"},'
             + '{"type": "road_exists"},'
-            + '{"type": "turn_left"}',
+            + '{"type": "turn_left"},'
             + '{"type": "move_forwards"}]'
         )
     )
 
+    set_blocks(
+        level35,
+        json.loads(
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"}]'
+        )
+    )
+
+    set_blocks(
+        level36,
+        json.loads(
+            '[{"type": "controls_repeat_while"},'
+            + '{"type": "logic_negate"},'
+            + '{"type": "at_destination"},'
+            + '{"type": "controls_if"},'
+            + '{"type": "cow_crossing"},'
+            + '{"type": "road_exists"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"}]'
+        )
+    )
+
+    set_blocks(
+        level50,
+        json.loads(
+            '[{"type": "call_proc"},'
+            + '{"type": "declare_proc"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "turn_left"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "controls_repeat"}]'
+        )
+    )
+
+    set_blocks(
+        level51,
+        json.loads(
+            '[{"type": "call_proc"},'
+            + '{"type": "declare_proc"},'
+            + '{"type": "move_forwards"},'
+            + '{"type": "turn_right"},'
+            + '{"type": "wait"},'
+            + '{"type": "controls_repeat_until"},'
+            + '{"type": "traffic_light"}]'
+        )
+    )
+
+
 def add_python_den_decor(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     LevelDecor = apps.get_model("game", "LevelDecor")
+
+    def set_decor(level, decor):
+        set_decor_inner(level, decor, LevelDecor)
+
+    def bulk_copy_decor(new_level_name, old_level_name):
+        old_level = Level.objects.get(name=old_level_name)
+        decor_to_copy = LevelDecor.objects.filter(level_id=old_level.id).values()
+        new_level = Level.objects.get(name=new_level_name)
+
+        new_level_decor = []
+        for decor in decor_to_copy:
+            new_level_decor.append(
+                LevelDecor(
+                    level_id = new_level.pk, x = decor["x"], y = decor["y"], decorName = decor["decorName"]
+                )
+            )
+        LevelDecor.objects.bulk_create(new_level_decor)
 
     level14 = Level.objects.get(name="python_14")
     level15 = Level.objects.get(name="python_15")
@@ -785,376 +1245,102 @@ def add_python_den_decor(apps, schema_editor):
         )
     )
 
-def move_rapid_router_levels_to_python_den(apps, schema_editor):
-    Level = apps.get_model("game", "Level")
+    bulk_copy_decor("python_10", "python_29")
+    bulk_copy_decor("python_44", "python_30")
+    bulk_copy_decor("34", "python_31")
+    bulk_copy_decor("38", "python_36")
+    bulk_copy_decor("39", "python_38")
+    bulk_copy_decor("47", "python_39")
+    bulk_copy_decor("48", "python_40")
+    bulk_copy_decor("61", "python_50")
+    bulk_copy_decor("62", "python_51")
+    bulk_copy_decor("63", "python_52")
+    bulk_copy_decor("64", "python_53")
+    bulk_copy_decor("65", "python_54")
+    bulk_copy_decor("66", "python_55")
+    bulk_copy_decor("67", "python_56")
 
-    level1 = Level.objects.get(name="110")
-    level1.name = "python_1"
-    level1.save()
 
-    level2 = Level.objects.get(name="111")
-    level2.name = "python_2"
-    level2.save()
+def create_python_den_episodes(apps, schema_editor):
+    Episode = apps.get_model("game", "Episode")
 
-    level3 = Level.objects.get(name="112")
-    level3.name = "python_3"
-    level3.save()
-
-    level4 = Level.objects.get(name="113")
-    level4.name = "python_4"
-    level4.save()
-
-    level5 = Level.objects.get(name="114")
-    level5.name = "python_5"
-    level5.save()
-
-    level6 = Level.objects.get(name="115")
-    level6.name = "python_6"
-    level6.save()
-
-    level7 = Level.objects.get(name="116")
-    level7.name = "python_7"
-    level7.description = "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully."
-    level7.save()
-
-    level8 = Level.objects.get(name="117")
-    level8.name = "python_8"
-    level8.description = "Now look at the Python code for that while look you created. Can you match the blocks to the Python? What do you notice about the Python code?"
-    level8.save()
-
-    level9 = Level.objects.get(name="118")
-    level9.name = "python_9"
-    level9.description = "Think carefully about this one. It might be that some code is inside a loop and some code is not…"
-    level9.save()
-
-    level10 = Level.objects.get(name="119")
-    level10.name = "python_10"
-    level10.description = "Look for a pattern and then count how many times it repeats. Good luck!"
-    level10.save()
-
-    level11 = Level.objects.get(name="120")
-    level11.name = "python_11"
-    level11.description = "There is a pattern of moves in this one too. Can you spot it?"
-    level11.save()
-
-    level12 = Level.objects.get(name="121")
-    level12.name = "python_12"
-    level12.description = "Look for a pattern before you type any code. You can solve this one with a counted loop…"
-    level12.save()
-
-    level13 = Level.objects.get(name="122")
-    level13.name = "python_13"
-    level13.description = "The solution to this one is just a bit longer. Build it up slowly. Good luck!"
-    level13.save()
-
-    level26 = Level.objects.get(name="85")
-    level26.name = "python_26"
-    level26.save()
-
-    level35 = Level.objects.get(name="99")
-    level35.name = "python_35"
-    level35.blocklyEnabled = True
-    level35.pythonEnabled = False
-    level35.pythonViewEnabled = True
-    set_blocks(
-        level35,
-        json.loads(
-            '[{"type": "controls_repeat_while"},'
-            + '{"type": "logic_negate"},'
-            + '{"type": "at_destination"},'
-            + '{"type": "controls_if"},'
-            + '{"type": "road_exists"},'
-            + '{"type": "move_forwards"},'
-            + '{"type": "turn_left"},'
-            + '{"type": "turn_right"}]'
-        )
-    )
-    level35.save()
-
-    level37 = Level.objects.get(name="100")
-    level37.name = "python_37"
-    level37.save()
-
-    level41 = Level.objects.get(name="83")
-    level41.name = "python_41"
-    level41.save()
-
-    level42 = Level.objects.get(name="95")
-    level42.name = "python_42"
-    level42.save()
-
-    level43 = Level.objects.get(name="96")
-    level43.name = "python_43"
-    level43.save()
-
-    level44 = Level.objects.get(name="84")
-    level44.name = "python_44"
-    level44.save()
-
-    level45 = Level.objects.get(name="97")
-    level45.name = "python_45"
-    level45.save()
-
-    level46 = Level.objects.get(name="106")
-    level46.name = "python_46"
-    level46.save()
-
-    level47 = Level.objects.get(name="107")
-    level47.name = "python_47"
-    level47.save()
-
-    level48 = Level.objects.get(name="108")
-    level48.name = "python_48"
-    level48.save()
-
-    level49 = Level.objects.get(name="109")
-    level49.name = "python_49"
-    level49.save()
-
-    level57 = Level.objects.get(name="90")
-    level57.name = "python_57"
-    level57.blocklyEnabled = False
-    level57.pythonViewEnabled = False
-    level57.pythonEnabled = True
-    level57.save()
-
-    level58 = Level.objects.get(name="91")
-    level58.name = "python_58"
-    level58.blocklyEnabled = False
-    level58.pythonViewEnabled = False
-    level58.pythonEnabled = True
-    level58.save()
-
-    level59 = Level.objects.get(name="101")
-    level59.name = "python_59"
-    level59.save()
-
-    level60 = Level.objects.get(name="102")
-    level60.name = "python_60"
-    level60.save()
-
-    
-
-def copy_rapid_router_levels_to_python_den(apps, schema_editor):
-    Level = apps.get_model("game", "Level")
-    LevelDecor = apps.get_model("game", "LevelDecor")
-
-    level29 = Level.objects.get(name="119")
-    level29.pk = None
-    level29._state.adding = True
-    level29.name = "python_29"
-    level29.blocklyEnabled = True
-    level29.pythonEnabled = False
-    level29.pythonViewEnabled = True
-    level29.model_solution = "[7]"
-
-    level30 = Level.objects.get(name="84")
-    level30.pk = None
-    level30._state.adding = True
-    level30.name = "python_30"
-    level30.blocklyEnabled = False
-    level30.pythonEnabled = True
-    level30.pythonViewEnabled = False
-    level30.model_solution = "[]"
-
-    level31 = Level.objects.get(name="34")
-    level31.pk = None
-    level31._state.adding = True
-    level31.name = "python_31"
-    level31.blocklyEnabled = True
-    level31.pythonEnabled = False
-    level31.pythonViewEnabled = True
-    level31.model_solution = "[7]"
-
-    level36 = Level.objects.get(name="38")
-    level36.pk = None
-    level36._state.adding = True
-    level36.name = "python_36"
-    level36.pythonViewEnabled = True
-    level36.model_solution = "[11]"
-
-    level38 = Level.objects.get(name="39")
-    level38.pk = None
-    level38._state.adding = True
-    level38.name = "python_38"
-    level38.blocklyEnabled = False
-    level38.pythonEnabled = True
-    level38.model_solution = "[]"
-
-    level39 = Level.objects.get(name="47")
-    level39.pk = None
-    level39._state.adding = True
-    level39.name = "python_39"
-    level39.blocklyEnabled = False
-    level39.pythonEnabled = True
-    level39.model_solution = "[]"
-
-    level40 = Level.objects.get(name="48")
-    level40.pk = None
-    level40._state.adding = True
-    level40.name = "python_40"
-    level40.blocklyEnabled = False
-    level40.pythonEnabled = True
-    level40.model_solution = "[]"
-
-    level50 = Level.objects.get(name="61")
-    level50.pk = None
-    level50._state.adding = True
-    level50.name = "python_50"
-    level50.pythonViewEnabled = True
-
-    level51 = Level.objects.get(name="62")
-    level51.pk = None
-    level51._state.adding = True
-    level51.name = "python_51"
-    level51.pythonViewEnabled = True
-
-    level52 = Level.objects.get(name="63")
-    level52.pk = None
-    level52._state.adding = True
-    level52.name = "python_52"
-    level52.blocklyEnabled = False
-    level52.pythonEnabled = True
-    level52.model_solution = "[]"
-
-    level53 = Level.objects.get(name="64")
-    level53.pk = None
-    level53._state.adding = True
-    level53.name = "python_53"
-    level53.blocklyEnabled = False
-    level53.pythonEnabled = True
-    level53.model_solution = "[]"
-
-    level54 = Level.objects.get(name="65")
-    level54.pk = None
-    level54._state.adding = True
-    level54.name = "python_54"
-    level54.blocklyEnabled = False
-    level54.pythonEnabled = True
-    level54.model_solution = "[]"
-
-    level55 = Level.objects.get(name="66")
-    level55.pk = None
-    level55._state.adding = True
-    level55.name = "python_55"
-    level55.blocklyEnabled = False
-    level55.pythonEnabled = True
-    level55.model_solution = "[]"
-
-    level56 = Level.objects.get(name="67")
-    level56.pk = None
-    level56._state.adding = True
-    level56.name = "python_56"
-    level56.blocklyEnabled = False
-    level56.pythonEnabled = True
-    level56.model_solution = "[]"
-
-    set_blocks(
-        level29,
-        json.loads(
-            '[{"type": "controls_repeat_while"},'
-            + '{"type": "logic_negate"},'
-            + '{"type": "at_destination"},'
-            + '{"type": "turn_left"},'
-            + '{"type": "turn_right"},'
-            + '{"type": "move_forwards"}]'
-        )
+    episode16 = Episode.objects.create(
+        pk=16,
+        name="Output, Operators, and Data",
     )
 
-    set_blocks(
-        level31,
-        json.loads(
-            '[{"type": "controls_repeat_while"},'
-            + '{"type": "logic_negate"},'
-            + '{"type": "at_destination"},'
-            + '{"type": "controls_if"},'
-            + '{"type": "road_exists"},'
-            + '{"type": "turn_left"},'
-            + '{"type": "move_forwards"}]'
-        )
+    episode17 = Episode.objects.create(
+        pk=17,
+        name="Variables, Input, and Casting",
     )
 
-    set_blocks(
-        level36,
-        json.loads(
-            '[{"type": "controls_repeat_while"},'
-            + '{"type": "logic_negate"},'
-            + '{"type": "at_destination"},'
-            + '{"type": "controls_if"},'
-            + '{"type": "cow_crossing"},'
-            + '{"type": "road_exists"},'
-            + '{"type": "move_forwards"},'
-            + '{"type": "turn_left"},'
-            + '{"type": "turn_right"}]'
-        )
+    episode18 = Episode.objects.create(
+        pk=18,
+        name="Selection",
     )
 
-    set_blocks(
-        level50,
-        json.loads(
-            '[{"type": "call_proc"},'
-            + '{"type": "declare_proc"},'
-            + '{"type": "move_forwards"},'
-            + '{"type": "turn_left"},'
-            + '{"type": "turn_right"},'
-            + '{"type": "controls_repeat"}]'
-        )
+    episode19 = Episode.objects.create(
+        pk=19,
+        name="Complex Selection",
     )
 
-    set_blocks(
-        level51,
-        json.loads(
-            '[{"type": "call_proc"},'
-            + '{"type": "declare_proc"},'
-            + '{"type": "move_forwards"},'
-            + '{"type": "turn_right"},'
-            + '{"type": "wait"},'
-            + '{"type": "controls_repeat_until"},'
-            + '{"type": "traffic_light"}]'
-        )
+    episode20 = Episode.objects.create(
+        pk=20,
+        name="Counted Loops Using While",
     )
 
-    level29.save()
-    level31.save()
-    level36.save()
-    level38.save()
-    level39.save()
-    level40.save()
-    level50.save()
-    level51.save()
-    level52.save()
-    level53.save()
-    level54.save()
-    level55.save()
-    level56.save()
+    episode21 = Episode.objects.create(
+        pk=21,
+        name="Selection in a Loop",
+    )
 
-def copy_rapid_router_decor_to_python_den(apps, schema_editor):
-    bulk_copy_decor(apps, "119", "python_29")
-    bulk_copy_decor(apps, "34", "python_31")
-    bulk_copy_decor(apps, "38", "python_36")
-    bulk_copy_decor(apps, "39", "python_38")
-    bulk_copy_decor(apps, "47", "python_39")
-    bulk_copy_decor(apps, "48", "python_40")
-    bulk_copy_decor(apps, "61", "python_50")
-    bulk_copy_decor(apps, "62", "python_51")
-    bulk_copy_decor(apps, "63", "python_52")
-    bulk_copy_decor(apps, "64", "python_53")
-    bulk_copy_decor(apps, "65", "python_54")
-    bulk_copy_decor(apps, "66", "python_55")
-    bulk_copy_decor(apps, "67", "python_56")
+    episode22 = Episode.objects.create(
+        pk=22,
+        name="Indeterminate Loops",
+    )
+
+    episode23 = Episode.objects.create(
+        pk=23,
+        name="String Manipulation",
+    )
+
+    episode24 = Episode.objects.create(
+        pk=24,
+        name="Lists",
+    )
+
+    episode25 = Episode.objects.create(
+        pk=25,
+        name="For Loops",
+    )
+
+    episode26 = Episode.objects.create(
+        pk=26,
+        name="Procedures",
+    )
+
+    episode15 = Episode.objects.get(pk=15)
+    episode15.next_episode = episode16
+    episode16.next_episode = episode17
+    episode17.next_episode = episode18
+    episode18.next_episode = episode19
+    episode19.next_episode = episode20
+    episode20.next_episode = episode21
+    episode21.next_episode = episode22
+    episode22.next_episode = episode23
+    episode23.next_episode = episode24
+    episode24.next_episode = episode25
+    episode25.next_episode = episode26
+
 
 class Migration(migrations.Migration):
     dependencies = [
         ('game', '0094_add_hint_lesson_subtitle_to_levels')
     ]
 
-    # operations = [
-    #     migrations.RunPython(code=add_python_den_levels),
-    #     migrations.RunPython(code=add_python_den_blocks),
-    #     migrations.RunPython(code=add_python_den_decor),
-    #     migrations.RunPython(code=move_rapid_router_levels_to_python_den),
-    #     migrations.RunPython(code=copy_rapid_router_levels_to_python_den),
-    #     migrations.RunPython(code=copy_rapid_router_decor_to_python_den)
-    # ]
-
-    operations = [migrations.RunPython(add_python_den_levels)]
+    operations = [
+        migrations.RunPython(code=create_python_den_episodes),
+        migrations.RunPython(code=add_python_den_levels),
+        migrations.RunPython(code=add_python_den_blocks),
+        migrations.RunPython(code=add_python_den_decor)
+    ]

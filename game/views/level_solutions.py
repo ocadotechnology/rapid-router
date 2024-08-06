@@ -45,7 +45,7 @@ lvl_95 = """from van import Van
 
 my_van = Van()
 
-for i in range(3):
+for count in range(3):
   my_van.turn_left()
   my_van.turn_right()
   my_van.move_forwards()"""
@@ -266,7 +266,7 @@ my_van = Van()
 
 number = 6
 while not my_van.at_destination():
-  for i in range(number):
+  for count in range(number):
     my_van.move_forwards()
   my_van.turn_left()
   number = number - 2"""
