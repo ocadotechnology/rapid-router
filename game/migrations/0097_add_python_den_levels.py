@@ -838,7 +838,7 @@ def add_python_den_blocks(apps, schema_editor):
     level51 = Level.objects.get(name="python_51")
 
     set_blocks(
-        level14, 
+        level14,
         json.loads(
             '[{"type": "variables_numeric_set"},'
             + '{"type": "controls_repeat_while"},'
@@ -1335,7 +1335,7 @@ def create_python_den_episodes(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('game', '0094_add_hint_lesson_subtitle_to_levels')
+        ('game', '0096_alter_level_commands')
     ]
 
     operations = [
