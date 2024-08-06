@@ -1940,7 +1940,6 @@ PYTHON_HINT = (
     "<a href='https://wiki.python.org/moin/BeginnersGuide' target='_blank'>Beginner's Guide to Python</a>."
 )
 
-
 def title_level92():
     return "Start with the basics, <b>forward</b>, <b>left</b> and <b>right</b>"
 
@@ -1953,6 +1952,12 @@ def description_level92():
     )
     return build_description(title_level92(), message)
 
+def commands_level92():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level92():
     return (
@@ -1972,6 +1977,12 @@ def description_level93():
     )
     return build_description(title_level93(), message)
 
+def commands_level93():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level93():
     return (
@@ -1994,6 +2005,12 @@ def description_level94():
     )
     return build_description(title_level94(), message)
 
+def commands_level94():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level94():
     return (
@@ -2016,6 +2033,12 @@ def description_level95():
     )
     return build_description(title_level95(), message)
 
+def commands_level95():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level95():
     return (
@@ -2040,6 +2063,11 @@ def description_level96():
     )
     return build_description(title_level96(), message)
 
+def commands_level96():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()'
+    )
 
 def hint_level96():
     return (
@@ -2063,6 +2091,12 @@ def description_level97():
     )
     return build_description(title_level97(), message)
 
+def commands_level97():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level97():
     return (
@@ -2089,6 +2123,18 @@ def description_level98():
     )
     return build_description(title_level98(), message)
 
+def commands_level98():
+    return ('<div class="row">' +
+    '<div class="large-4 columns">' +
+    '<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()</div>'+
+    '<div class="large-4 columns">' +
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()' +
+    '<br>my_van.is_road_forward()</div>' +
+    '<div class="large-4 columns"></div></div>'
+    )
 
 def hint_level98():
     return (
@@ -2115,6 +2161,21 @@ def description_level99():
     )
     return build_description(title_level99(), message)
 
+def commands_level99():
+    return ('<div class="row">' +
+    '<div class="large-4 columns">' +
+    '<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()</div>'+
+    '<div class="large-4 columns">' +
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()' +
+    '<br>my_van.is_road_right()' +
+    '<br>my_van.is_road_left()' +
+    '<br>my_van.is_road_forward()</div>' +
+    '<div class="large-4 columns"></div></div>'
+    )
 
 def hint_level99():
     return (
@@ -2140,6 +2201,21 @@ def description_level100():
     )
     return build_description(title_level100(), message)
 
+def commands_level100():
+    return ('<div class="row">' +
+    '<div class="large-4 columns">' +
+    '<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()</div>'+
+    '<div class="large-4 columns">' +
+    '<b>Position</b>'+
+    '<br>my_van.at_destination()' +
+    '<br>my_van.is_road_forward()' +
+    '<br>my_van.is_road_right()' +
+    '<br>my_van.is_road_left()</div>' +
+    '<div class="large-4 columns"></div></div>'
+    )
 
 def hint_level100():
     return (
@@ -2160,6 +2236,12 @@ def description_level101():
     )
     return build_description(title_level101(), message)
 
+def commands_level101():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level101():
     return (
@@ -2184,6 +2266,12 @@ def description_level102():
     )
     return build_description(title_level102(), message)
 
+def commands_level102():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level102():
     return (
@@ -2207,6 +2295,12 @@ def description_level103():
     )
     return build_description(title_level103(), message)
 
+def commands_level103():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level103():
     return (
@@ -2234,6 +2328,12 @@ def description_level104():
     )
     return build_description(title_level104(), message)
 
+def commands_level104():
+    return ('<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'
+    )
 
 def hint_level104():
     return (
@@ -2261,6 +2361,22 @@ def description_level105():
     )
     return build_description(title_level105(), message)
 
+def commands_level105():
+    return ('<div class="row">' +
+    '<div class="large-4 columns">' +
+    '<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()' +
+    '<br>my_van.turn_right()'+
+    '<br>my_van.wait()</div>' +
+    '<div class="large-4 columns">' +
+    '<b>Position</b>' +
+    '<br>my_van.is_road_forward()' +
+    '<br>my_van.is_road_left()' +
+    '<br>my_van.at_red_traffic_light()' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
+    )
 
 def hint_level105():
     return (
@@ -2282,6 +2398,17 @@ def description_level106():
     )
     return build_description(title_level106(), message)
 
+def commands_level106():
+    return ('<div class="row">' +
+    '<div class="large-4 columns">' +
+    '<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_right()</div>'+
+    '<div class="large-4 columns">' +
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
+    )
 
 def hint_level106():
     return (
@@ -2308,6 +2435,17 @@ def description_level107():
     )
     return build_description(title_level107(), message)
 
+def commands_level107():
+    return ('<div class="row">' +
+    '<div class="large-4 columns">' +
+    '<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()</div>'+
+    '<div class="large-4 columns">' +
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
+    )
 
 def hint_level107():
     return (
@@ -2324,6 +2462,17 @@ def description_level108():
     message = "This time the straight sections of road decrease in length by 2 after each turn."
     return build_description(title_level108(), message)
 
+def commands_level108():
+    return ('<div class="row">' +
+    '<div class="large-4 columns">' +
+    '<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_left()</div>'+
+    '<div class="large-4 columns">' +
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
+    )
 
 def hint_level108():
     return (
@@ -2342,6 +2491,19 @@ def description_level109():
         "by 1 after each turn and then switch to dividing by 2 with a twist!"
     )
     return build_description(title_level109(), message)
+
+def commands_level109():
+    return ('<div class="row">' +
+    '<div class="large-4 columns">' +
+    '<b>Movement</b>'+
+    '<br>my_van.move_forwards()' +
+    '<br>my_van.turn_right()'+
+    '<br>my_van.turn_left()</div>'+
+    '<div class="large-4 columns">' +
+    '<b>Position</b>' +
+    '<br>my_van.at_destination()</div>' +
+    '<div class="large-4 columns"></div></div>'
+    )
 
 
 def hint_level109():
@@ -2397,6 +2559,7 @@ def hint_level109():
     title_level113,
     description_level113,
     hint_level113,
+    commands_level113,
 ) = (
     lambda: "Where did the blocks go?",
     lambda: build_description(
@@ -2404,12 +2567,14 @@ def hint_level109():
         "Can you remember how the Python was formed under the blocks in the previous levels? Take a look in the Py Commands for a quick reminder.",
     ),
     lambda: "Now it is your turn, you can click on the Py commands button for a reminder of the Python commands that you can use.",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level114,
     description_level114,
     hint_level114,
+    commands_level114,
 ) = (
     lambda: "Tree snake",
     lambda: build_description(
@@ -2417,12 +2582,14 @@ def hint_level109():
         "This route is just a bit longer. Make sure you type the Python code accurately!",
     ),
     lambda: "The most common errors here are missing the round brackets at the end of the commands or mistyping the commands, e.g. use my_van.move_fowards() and not my_van.move_foward()",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level115,
     description_level115,
     hint_level115,
+    commands_level115,
 ) = (
     lambda: "Which way to turn? This way or that way?",
     lambda: build_description(
@@ -2430,6 +2597,7 @@ def hint_level109():
         "Try to find the shortest route using Python code only. You are getting really good at this!",
     ),
     lambda: "If you are stuck on this one, check that you are using the Python commands accurately. Click the Py Commands button to help you.",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
@@ -2483,6 +2651,7 @@ def hint_level109():
     title_level119,
     description_level119,
     hint_level119,
+    commands_level119,
 ) = (
     lambda: "Four leaf clover",
     lambda: build_description(
@@ -2492,12 +2661,14 @@ def hint_level109():
         "Click on the Py Commands button to remind yourself of the syntax you need.",
     ),
     lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level120,
     description_level120,
     hint_level120,
+    commands_level120,
 ) = (
     lambda: "Pond life",
     lambda: build_description(
@@ -2505,12 +2676,14 @@ def hint_level109():
         "So many routes but only one that is efficient. Can you work out which one it is?",
     ),
     lambda: "What if you go down the middle section?",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level121,
     description_level121,
     hint_level121,
+    commands_level121,
 ) = (
     lambda: "Farmyard overdrive",
     lambda: build_description(
@@ -2518,12 +2691,14 @@ def hint_level109():
         "Maybe including a loop is the answer here?",
     ),
     lambda: "Try that middle route...",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 (
     title_level122,
     description_level122,
     hint_level122,
+    commands_level122,
 ) = (
     lambda: "Snnnaaaake reflection",
     lambda: build_description(
@@ -2531,6 +2706,7 @@ def hint_level109():
         "Can you see some patterns? Looks like those loops will come in handy again for this tricky route.",
     ),
     lambda: "Don't try to solve this in one go. Work out the pattern for the top route and check that works. Then move on to the next part...",
+    lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
 )
 
 

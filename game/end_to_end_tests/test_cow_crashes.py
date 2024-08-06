@@ -1,8 +1,7 @@
+from game.character import get_character
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.models import Level, Block, LevelBlock
-
 from game.theme import get_theme
-from game.character import get_character
 
 
 class TestCowCrashes(BaseGameTest):

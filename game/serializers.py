@@ -42,6 +42,7 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
     title = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
     hint = serializers.SerializerMethodField()
+    commands = serializers.SerializerMethodField()
     levelblock_set = serializers.HyperlinkedIdentityField(
         view_name="levelblock-for-level", read_only=True
     )
@@ -83,6 +84,9 @@ class LevelDetailSerializer(serializers.HyperlinkedModelSerializer):
 
     def get_hint(self, obj):
         return getattr(messages, "hint_level" + obj.name)() if obj.default else obj.hint
+
+    def get_commands(self, obj):
+        return getattr(messages, "commands_level" + obj.name)() if obj.default else obj.commands
 
     def get_leveldecor_set(self, obj):
         leveldecors = LevelDecor.objects.filter(level__id=obj.id)
