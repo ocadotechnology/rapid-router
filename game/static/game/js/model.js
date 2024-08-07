@@ -386,6 +386,15 @@ ocargo.Model.prototype.deliver = function() {
             return false;
         }
         this.makeDelivery(destination, 'DELIVER');
+    } else {
+        ocargo.animation.appendAnimation({
+            type: 'popup',
+            popupType: 'FAIL',
+            failSubtype: 'DELIVER_NON_DESTINATION',
+            popupMessage: gettext("You tried to deliver to a destination that doesn't exist."),
+            popupHint: ocargo.game.registerFailure(),
+            description: 'tried to deliver at non-destination'
+        });
     }
     return destination;
 };
