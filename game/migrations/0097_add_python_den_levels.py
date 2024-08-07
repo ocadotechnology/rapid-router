@@ -15,59 +15,59 @@ def add_python_den_levels(apps, schema_editor):
     episode26 = Episode.objects.get(pk=26)
 
     level1 = Level.objects.get(name="110")
-    level1.name = "python_1"
+    level1.name = "1001"
     level1.episode = episode20
 
     level2 = Level.objects.get(name="111")
-    level2.name = "python_2"
+    level2.name = "1002"
     level2.episode = episode20
 
     level3 = Level.objects.get(name="112")
-    level3.name = "python_3"
+    level3.name = "1003"
     level3.episode = episode20
 
     level4 = Level.objects.get(name="113")
-    level4.name = "python_4"
+    level4.name = "1004"
     level4.episode = episode20
 
     level5 = Level.objects.get(name="114")
-    level5.name = "python_5"
+    level5.name = "1005"
     level5.episode = episode20
 
     level6 = Level.objects.get(name="115")
-    level6.name = "python_6"
+    level6.name = "1006"
     level6.episode = episode20
 
     level7 = Level.objects.get(name="116")
-    level7.name = "python_7"
+    level7.name = "1007"
     level7.episode = episode20
 
     level8 = Level.objects.get(name="117")
-    level8.name = "python_8"
+    level8.name = "1008"
     level8.episode = episode20
 
     level9 = Level.objects.get(name="118")
-    level9.name = "python_9"
+    level9.name = "1009"
     level9.episode = episode20
 
     level10 = Level.objects.get(name="119")
-    level10.name = "python_10"
+    level10.name = "1010"
     level10.episode = episode20
 
     level11 = Level.objects.get(name="120")
-    level11.name = "python_11"
+    level11.name = "1011"
     level11.episode = episode20
 
     level12 = Level.objects.get(name="121")
-    level12.name = "python_12"
+    level12.name = "1012"
     level12.episode = episode20
 
     level13 = Level.objects.get(name="122")
-    level13.name = "python_13"
+    level13.name = "1013"
     level13.episode = episode20
 
     level14 = Level(
-        name="python_14",
+        name="1014",
         episode=episode21,
         anonymous=False,
         blocklyEnabled=True,
@@ -92,7 +92,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level15 = Level(
-        name="python_15",
+        name="1015",
         episode=episode21,
         path='[{"coordinate":[5,0],"connectedNodes":[1]},{"coordinate":[5,1],"connectedNodes":[2,0]},{"coordinate":[4,1],"connectedNodes":[3,1]},{"coordinate":[4,2],"connectedNodes":[4,2]},{"coordinate":[4,3],"connectedNodes":[5,3]},{"coordinate":[4,4],"connectedNodes":[6,4]},{"coordinate":[3,4],"connectedNodes":[7,5]},{"coordinate":[3,5],"connectedNodes":[8,6]},{"coordinate":[3,6],"connectedNodes":[9,7]},{"coordinate":[3,7],"connectedNodes":[8]}]',
         traffic_lights="[]",
@@ -117,7 +117,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level16 = Level(
-        name="python_16",
+        name="1016",
         episode=episode21,
         path='[{"coordinate":[1,1],"connectedNodes":[1]},{"coordinate":[1,2],"connectedNodes":[2,0]},{"coordinate":[2,2],"connectedNodes":[1,3]},{"coordinate":[2,3],"connectedNodes":[4,2]},{"coordinate":[3,3],"connectedNodes":[3,5]},{"coordinate":[3,4],"connectedNodes":[6,4]},{"coordinate":[4,4],"connectedNodes":[5,7]},{"coordinate":[4,5],"connectedNodes":[8,6]},{"coordinate":[5,5],"connectedNodes":[7,9]},{"coordinate":[5,6],"connectedNodes":[10,8]},{"coordinate":[6,6],"connectedNodes":[9,11]},{"coordinate":[6,7],"connectedNodes":[12,10]},{"coordinate":[7,7],"connectedNodes":[11]}]',
         traffic_lights="[]",
@@ -142,7 +142,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level17 = Level(
-        name="python_17",
+        name="1017",
         episode=episode21,
         path='[{"coordinate":[7,0],"connectedNodes":[1]},{"coordinate":[7,1],"connectedNodes":[2,0]},{"coordinate":[6,1],"connectedNodes":[3,1]},{"coordinate":[6,2],"connectedNodes":[4,2]},{"coordinate":[6,3],"connectedNodes":[5,3]},{"coordinate":[6,4],"connectedNodes":[6,4]},{"coordinate":[5,4],"connectedNodes":[7,5]},{"coordinate":[5,5],"connectedNodes":[8,6]},{"coordinate":[5,6],"connectedNodes":[7]}]',
         traffic_lights="[]",
@@ -167,7 +167,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level18 = Level(
-        name="python_18",
+        name="1018",
         episode=episode21,
         path='[{"coordinate":[7,1],"connectedNodes":[1]},{"coordinate":[7,2],"connectedNodes":[2,0]},{"coordinate":[7,3],"connectedNodes":[3,1]},{"coordinate":[7,4],"connectedNodes":[4,2]},{"coordinate":[7,5],"connectedNodes":[5,3]},{"coordinate":[6,5],"connectedNodes":[6,4]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[4,5],"connectedNodes":[8,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[2,5],"connectedNodes":[8,10]},{"coordinate":[2,4],"connectedNodes":[9,11]},{"coordinate":[2,3],"connectedNodes":[10,12]},{"coordinate":[2,2],"connectedNodes":[11,13]},{"coordinate":[2,1],"connectedNodes":[12,14]},{"coordinate":[3,1],"connectedNodes":[13,15]},{"coordinate":[4,1],"connectedNodes":[14,16]},{"coordinate":[5,1],"connectedNodes":[15,17]},{"coordinate":[6,1],"connectedNodes":[16,18]},{"coordinate":[6,2],"connectedNodes":[19,17]},{"coordinate":[6,3],"connectedNodes":[20,18]},{"coordinate":[6,4],"connectedNodes":[21,19]},{"coordinate":[5,4],"connectedNodes":[22,20]},{"coordinate":[4,4],"connectedNodes":[23,21]},{"coordinate":[3,4],"connectedNodes":[22,24]},{"coordinate":[3,3],"connectedNodes":[23,25]},{"coordinate":[3,2],"connectedNodes":[24,26]},{"coordinate":[4,2],"connectedNodes":[25,27]},{"coordinate":[5,2],"connectedNodes":[26]}]',
         traffic_lights="[]",
@@ -192,7 +192,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level19 = Level(
-        name="python_19",
+        name="1019",
         episode=episode21,
         path='[{"coordinate":[9,3],"connectedNodes":[1]},{"coordinate":[8,3],"connectedNodes":[2,0]},{"coordinate":[7,3],"connectedNodes":[3,1,15]},{"coordinate":[7,4],"connectedNodes":[4,2]},{"coordinate":[6,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[6,4,12]},{"coordinate":[4,4],"connectedNodes":[7,5]},{"coordinate":[3,4],"connectedNodes":[8,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[2,5],"connectedNodes":[10,8,17]},{"coordinate":[1,5],"connectedNodes":[11,9]},{"coordinate":[0,5],"connectedNodes":[10]},{"coordinate":[5,3],"connectedNodes":[5,13]},{"coordinate":[5,2],"connectedNodes":[21,12,14]},{"coordinate":[6,2],"connectedNodes":[13,15]},{"coordinate":[7,2],"connectedNodes":[14,2,16]},{"coordinate":[7,1],"connectedNodes":[15]},{"coordinate":[2,4],"connectedNodes":[9,18]},{"coordinate":[2,3],"connectedNodes":[17,19]},{"coordinate":[2,2],"connectedNodes":[18,20]},{"coordinate":[3,2],"connectedNodes":[19,21]},{"coordinate":[4,2],"connectedNodes":[20,13]}]',
         traffic_lights="[]",
@@ -217,7 +217,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level20 = Level(
-        name="python_20",
+        name="1020",
         episode=episode21,
         path='[{"coordinate":[2,2],"connectedNodes":[1]},{"coordinate":[3,2],"connectedNodes":[0,2,19]},{"coordinate":[3,3],"connectedNodes":[10,3,1]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[4,6,17]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[6,5],"connectedNodes":[6,8]},{"coordinate":[6,6],"connectedNodes":[9,7]},{"coordinate":[7,6],"connectedNodes":[8]},{"coordinate":[3,4],"connectedNodes":[11,2]},{"coordinate":[3,5],"connectedNodes":[12,10]},{"coordinate":[3,6],"connectedNodes":[13,11]},{"coordinate":[3,7],"connectedNodes":[14,12]},{"coordinate":[4,7],"connectedNodes":[13,15]},{"coordinate":[5,7],"connectedNodes":[14,16]},{"coordinate":[6,7],"connectedNodes":[15]},{"coordinate":[5,3],"connectedNodes":[5,18]},{"coordinate":[5,2],"connectedNodes":[19,17]},{"coordinate":[4,2],"connectedNodes":[1,18]}]',
         traffic_lights="[]",
@@ -242,7 +242,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level21 = Level(
-        name="python_21",
+        name="1021",
         episode=episode21,
         path='[{"coordinate":[4,0],"connectedNodes":[1]},{"coordinate":[4,1],"connectedNodes":[2,0]},{"coordinate":[3,1],"connectedNodes":[3,1]},{"coordinate":[3,2],"connectedNodes":[4,2]},{"coordinate":[3,3],"connectedNodes":[5,3]},{"coordinate":[3,4],"connectedNodes":[6,4]},{"coordinate":[2,4],"connectedNodes":[7,5]},{"coordinate":[2,5],"connectedNodes":[8,6]},{"coordinate":[2,6],"connectedNodes":[9,7]},{"coordinate":[1,6],"connectedNodes":[10,8]},{"coordinate":[1,7],"connectedNodes":[9]}]',
         traffic_lights="[]",
@@ -267,7 +267,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level22 = Level(
-        name="python_22",
+        name="1022",
         episode=episode21,
         path='[{"coordinate":[2,3],"connectedNodes":[1]},{"coordinate":[2,2],"connectedNodes":[0,2,16]},{"coordinate":[3,2],"connectedNodes":[1,3]},{"coordinate":[3,1],"connectedNodes":[2,4,14]},{"coordinate":[4,1],"connectedNodes":[3,5]},{"coordinate":[5,1],"connectedNodes":[4,6,22]},{"coordinate":[5,2],"connectedNodes":[7,5]},{"coordinate":[6,2],"connectedNodes":[6,8]},{"coordinate":[6,3],"connectedNodes":[9,17,7]},{"coordinate":[6,4],"connectedNodes":[10,8]},{"coordinate":[5,4],"connectedNodes":[11,9]},{"coordinate":[5,5],"connectedNodes":[12,10]},{"coordinate":[4,5],"connectedNodes":[13,11]},{"coordinate":[3,5],"connectedNodes":[12]},{"coordinate":[3,0],"connectedNodes":[15,3]},{"coordinate":[2,0],"connectedNodes":[16,14]},{"coordinate":[2,1],"connectedNodes":[1,15]},{"coordinate":[7,3],"connectedNodes":[8,18]},{"coordinate":[8,3],"connectedNodes":[17,19]},{"coordinate":[8,2],"connectedNodes":[18,20]},{"coordinate":[8,1],"connectedNodes":[21,19]},{"coordinate":[7,1],"connectedNodes":[22,20]},{"coordinate":[6,1],"connectedNodes":[5,21]}]',
         traffic_lights="[]",
@@ -292,7 +292,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level23 = Level(
-        name="python_23",
+        name="1023",
         episode=episode21,
         path='[{"coordinate":[2,7],"connectedNodes":[1]},{"coordinate":[2,6],"connectedNodes":[0,2]},{"coordinate":[2,5],"connectedNodes":[1,28,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,3],"connectedNodes":[3,5]},{"coordinate":[2,2],"connectedNodes":[4,6]},{"coordinate":[2,1],"connectedNodes":[5,7]},{"coordinate":[3,1],"connectedNodes":[6,8]},{"coordinate":[4,1],"connectedNodes":[7,9]},{"coordinate":[5,1],"connectedNodes":[8,10]},{"coordinate":[6,1],"connectedNodes":[9,11]},{"coordinate":[7,1],"connectedNodes":[10,12]},{"coordinate":[8,1],"connectedNodes":[11,13]},{"coordinate":[9,1],"connectedNodes":[12,14]},{"coordinate":[9,2],"connectedNodes":[15,13]},{"coordinate":[9,3],"connectedNodes":[16,14]},{"coordinate":[9,4],"connectedNodes":[17,15]},{"coordinate":[9,5],"connectedNodes":[18,16]},{"coordinate":[9,6],"connectedNodes":[19,17]},{"coordinate":[8,6],"connectedNodes":[20,18]},{"coordinate":[7,6],"connectedNodes":[21,19]},{"coordinate":[6,6],"connectedNodes":[22,20]},{"coordinate":[5,6],"connectedNodes":[23,21]},{"coordinate":[4,6],"connectedNodes":[22,24]},{"coordinate":[4,5],"connectedNodes":[28,23,25]},{"coordinate":[4,4],"connectedNodes":[24,26]},{"coordinate":[4,3],"connectedNodes":[25,27]},{"coordinate":[4,2],"connectedNodes":[26]},{"coordinate":[3,5],"connectedNodes":[2,24]}]',
         traffic_lights="[]",
@@ -317,7 +317,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level24 = Level(
-        name="python_24",
+        name="1024",
         episode=episode21,
         path='[{"coordinate":[7,0],"connectedNodes":[1]},{"coordinate":[7,1],"connectedNodes":[10,2,0]},{"coordinate":[7,2],"connectedNodes":[3,24,1]},{"coordinate":[7,3],"connectedNodes":[4,2]},{"coordinate":[6,3],"connectedNodes":[5,3]},{"coordinate":[6,4],"connectedNodes":[23,6,33,4]},{"coordinate":[6,5],"connectedNodes":[7,5]},{"coordinate":[6,6],"connectedNodes":[8,6]},{"coordinate":[5,6],"connectedNodes":[9,7]},{"coordinate":[5,7],"connectedNodes":[8]},{"coordinate":[6,1],"connectedNodes":[11,1]},{"coordinate":[5,1],"connectedNodes":[12,10]},{"coordinate":[4,1],"connectedNodes":[13,11]},{"coordinate":[3,1],"connectedNodes":[14,12]},{"coordinate":[2,1],"connectedNodes":[15,13]},{"coordinate":[1,1],"connectedNodes":[16,17,14]},{"coordinate":[0,1],"connectedNodes":[15]},{"coordinate":[1,2],"connectedNodes":[18,15]},{"coordinate":[1,3],"connectedNodes":[19,17]},{"coordinate":[1,4],"connectedNodes":[20,18]},{"coordinate":[2,4],"connectedNodes":[19,21]},{"coordinate":[3,4],"connectedNodes":[20,22]},{"coordinate":[4,4],"connectedNodes":[21,23]},{"coordinate":[5,4],"connectedNodes":[22,5]},{"coordinate":[8,2],"connectedNodes":[2,25]},{"coordinate":[9,2],"connectedNodes":[24,26]},{"coordinate":[9,3],"connectedNodes":[27,25]},{"coordinate":[9,4],"connectedNodes":[28,26]},{"coordinate":[9,5],"connectedNodes":[29,27]},{"coordinate":[9,6],"connectedNodes":[30,28]},{"coordinate":[8,6],"connectedNodes":[29,31]},{"coordinate":[8,5],"connectedNodes":[30,32]},{"coordinate":[8,4],"connectedNodes":[33,31]},{"coordinate":[7,4],"connectedNodes":[5,32]}]',
         traffic_lights="[]",
@@ -342,7 +342,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level25 = Level(
-        name="python_25",
+        name="1025",
         episode=episode21,
         path='[{"coordinate":[8,0],"connectedNodes":[1]},{"coordinate":[8,1],"connectedNodes":[2,0]},{"coordinate":[8,2],"connectedNodes":[3,1]},{"coordinate":[7,2],"connectedNodes":[4,2]},{"coordinate":[6,2],"connectedNodes":[12,5,3]},{"coordinate":[6,3],"connectedNodes":[25,4]},{"coordinate":[4,5],"connectedNodes":[7,19]},{"coordinate":[3,5],"connectedNodes":[8,6]},{"coordinate":[2,5],"connectedNodes":[9,7]},{"coordinate":[1,5],"connectedNodes":[10,8,18]},{"coordinate":[1,6],"connectedNodes":[11,9]},{"coordinate":[1,7],"connectedNodes":[10]},{"coordinate":[5,2],"connectedNodes":[13,4]},{"coordinate":[4,2],"connectedNodes":[14,12]},{"coordinate":[3,2],"connectedNodes":[15,13]},{"coordinate":[2,2],"connectedNodes":[16,14]},{"coordinate":[1,2],"connectedNodes":[17,15]},{"coordinate":[1,3],"connectedNodes":[18,16]},{"coordinate":[1,4],"connectedNodes":[9,17]},{"coordinate":[5,5],"connectedNodes":[6,20]},{"coordinate":[6,5],"connectedNodes":[19,21]},{"coordinate":[7,5],"connectedNodes":[20,22]},{"coordinate":[8,5],"connectedNodes":[21,23]},{"coordinate":[8,4],"connectedNodes":[24,22]},{"coordinate":[7,4],"connectedNodes":[25,23]},{"coordinate":[6,4],"connectedNodes":[24,5]}]',
         traffic_lights='[{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":4,"y":5},"direction":"W","startTime":0,"startingState":"RED"},{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":1,"y":5},"direction":"N","startTime":0,"startingState":"RED"}]',
@@ -367,11 +367,11 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level26 = Level.objects.get(name="85")
-    level26.name = "python_26"
+    level26.name = "1026"
     level26.episode=episode22
 
     level27 = Level(
-        name="python_27",
+        name="1027",
         episode=episode22,
         path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3,5]},{"coordinate":[5,3],"connectedNodes":[4,6]},{"coordinate":[6,3],"connectedNodes":[5,7]},{"coordinate":[7,3],"connectedNodes":[6,8]},{"coordinate":[8,3],"connectedNodes":[7]}]',
         traffic_lights="[]",
@@ -395,7 +395,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level28 = Level(
-        name="python_28",
+        name="1028",
         episode=episode22,
         path='[{"coordinate":[2,2],"connectedNodes":[1]},{"coordinate":[3,2],"connectedNodes":[0,2]},{"coordinate":[3,3],"connectedNodes":[3,1]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[4,6]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[6,5],"connectedNodes":[6,8]},{"coordinate":[6,6],"connectedNodes":[9,7]},{"coordinate":[7,6],"connectedNodes":[8]}]',
         traffic_lights='[]',
@@ -422,7 +422,7 @@ def add_python_den_levels(apps, schema_editor):
     level29 = Level.objects.get(name="119")
     level29.pk = None
     level29._state.adding = True
-    level29.name = "python_29"
+    level29.name = "1029"
     level29.blocklyEnabled = True
     level29.pythonEnabled = False
     level29.pythonViewEnabled = True
@@ -432,7 +432,7 @@ def add_python_den_levels(apps, schema_editor):
     level30 = Level.objects.get(name="84")
     level30.pk = None
     level30._state.adding = True
-    level30.name = "python_30"
+    level30.name = "1030"
     level30.blocklyEnabled = False
     level30.pythonEnabled = True
     level30.pythonViewEnabled = False
@@ -442,7 +442,7 @@ def add_python_den_levels(apps, schema_editor):
     level31 = Level.objects.get(name="34")
     level31.pk = None
     level31._state.adding = True
-    level31.name = "python_31"
+    level31.name = "1031"
     level31.blocklyEnabled = True
     level31.pythonEnabled = False
     level31.pythonViewEnabled = True
@@ -450,7 +450,7 @@ def add_python_den_levels(apps, schema_editor):
     level31.episode=episode22
 
     level32 = Level(
-        name="python_32",
+        name="1032",
         episode=episode22,
         path='[{"coordinate":[5,0],"connectedNodes":[1]},{"coordinate":[5,1],"connectedNodes":[2,0]},{"coordinate":[5,2],"connectedNodes":[3,23,1]},{"coordinate":[5,3],"connectedNodes":[4,2]},{"coordinate":[5,4],"connectedNodes":[17,3]},{"coordinate":[4,5],"connectedNodes":[6,17]},{"coordinate":[3,5],"connectedNodes":[7,5]},{"coordinate":[2,5],"connectedNodes":[24,6,8]},{"coordinate":[2,4],"connectedNodes":[7,9]},{"coordinate":[2,3],"connectedNodes":[8,10]},{"coordinate":[2,2],"connectedNodes":[9,11]},{"coordinate":[2,1],"connectedNodes":[10,12]},{"coordinate":[3,1],"connectedNodes":[11,13]},{"coordinate":[4,1],"connectedNodes":[12,14]},{"coordinate":[4,2],"connectedNodes":[15,13]},{"coordinate":[4,3],"connectedNodes":[16,14]},{"coordinate":[4,4],"connectedNodes":[15]},{"coordinate":[5,5],"connectedNodes":[5,29,18,4]},{"coordinate":[6,5],"connectedNodes":[17,19]},{"coordinate":[7,5],"connectedNodes":[18,20]},{"coordinate":[7,4],"connectedNodes":[19,21]},{"coordinate":[7,3],"connectedNodes":[20,22]},{"coordinate":[7,2],"connectedNodes":[23,21,36]},{"coordinate":[6,2],"connectedNodes":[2,22]},{"coordinate":[1,5],"connectedNodes":[25,7]},{"coordinate":[1,6],"connectedNodes":[26,24]},{"coordinate":[2,6],"connectedNodes":[25,27]},{"coordinate":[3,6],"connectedNodes":[26,28]},{"coordinate":[4,6],"connectedNodes":[27,29]},{"coordinate":[5,6],"connectedNodes":[28,30,17]},{"coordinate":[6,6],"connectedNodes":[29,31]},{"coordinate":[7,6],"connectedNodes":[30,32]},{"coordinate":[8,6],"connectedNodes":[31,33]},{"coordinate":[8,5],"connectedNodes":[32,34]},{"coordinate":[8,4],"connectedNodes":[33,35]},{"coordinate":[8,3],"connectedNodes":[34,36]},{"coordinate":[8,2],"connectedNodes":[22,35]}]',
         traffic_lights='[]',
@@ -475,7 +475,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level33 = Level(
-        name="python_33",
+        name="1033",
         episode=episode22,
         path='[{"coordinate":[7,1],"connectedNodes":[1]},{"coordinate":[7,2],"connectedNodes":[2,0]},{"coordinate":[6,2],"connectedNodes":[3,1]},{"coordinate":[6,3],"connectedNodes":[4,13,2]},{"coordinate":[5,3],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[6,16,15,4]},{"coordinate":[4,4],"connectedNodes":[7,5]},{"coordinate":[4,5],"connectedNodes":[8,16,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[3,6],"connectedNodes":[10,8]},{"coordinate":[2,6],"connectedNodes":[11,9]},{"coordinate":[2,7],"connectedNodes":[12,17,10]},{"coordinate":[1,7],"connectedNodes":[11]},{"coordinate":[7,3],"connectedNodes":[3,14]},{"coordinate":[7,4],"connectedNodes":[15,13]},{"coordinate":[6,4],"connectedNodes":[5,22,14]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[3,7],"connectedNodes":[11,18]},{"coordinate":[4,7],"connectedNodes":[17,19]},{"coordinate":[5,7],"connectedNodes":[18,20]},{"coordinate":[6,7],"connectedNodes":[19,21]},{"coordinate":[6,6],"connectedNodes":[20,22]},{"coordinate":[6,5],"connectedNodes":[21,15]}]',
         traffic_lights="[]",
@@ -500,7 +500,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level34 = Level(
-        name="python_34",
+        name="1034",
         episode=episode22,
         path='[{"coordinate":[0,6],"connectedNodes":[1]},{"coordinate":[1,6],"connectedNodes":[0,2]},{"coordinate":[2,6],"connectedNodes":[1,3]},{"coordinate":[3,6],"connectedNodes":[2,4]},{"coordinate":[4,6],"connectedNodes":[3,5]},{"coordinate":[5,6],"connectedNodes":[4,6]},{"coordinate":[5,5],"connectedNodes":[5,23,7]},{"coordinate":[5,4],"connectedNodes":[6,8]},{"coordinate":[5,3],"connectedNodes":[7,29,9]},{"coordinate":[5,2],"connectedNodes":[8,10]},{"coordinate":[5,1],"connectedNodes":[11,9]},{"coordinate":[4,1],"connectedNodes":[12,10]},{"coordinate":[3,1],"connectedNodes":[13,11]},{"coordinate":[2,1],"connectedNodes":[14,12]},{"coordinate":[1,1],"connectedNodes":[15,13]},{"coordinate":[1,2],"connectedNodes":[34,16,14]},{"coordinate":[1,3],"connectedNodes":[17,15]},{"coordinate":[1,4],"connectedNodes":[30,16]},{"coordinate":[2,5],"connectedNodes":[30,19]},{"coordinate":[3,5],"connectedNodes":[18,20]},{"coordinate":[3,4],"connectedNodes":[19,21]},{"coordinate":[3,3],"connectedNodes":[20,22]},{"coordinate":[3,2],"connectedNodes":[21]},{"coordinate":[6,5],"connectedNodes":[6,24]},{"coordinate":[7,5],"connectedNodes":[23,25]},{"coordinate":[8,5],"connectedNodes":[24,26]},{"coordinate":[8,4],"connectedNodes":[25,27]},{"coordinate":[8,3],"connectedNodes":[28,26]},{"coordinate":[7,3],"connectedNodes":[29,27]},{"coordinate":[6,3],"connectedNodes":[8,28]},{"coordinate":[1,5],"connectedNodes":[31,18,17]},{"coordinate":[0,5],"connectedNodes":[30,32]},{"coordinate":[0,4],"connectedNodes":[31,33]},{"coordinate":[0,3],"connectedNodes":[32,34]},{"coordinate":[0,2],"connectedNodes":[33,15]}]',
         traffic_lights="[]",
@@ -525,7 +525,7 @@ def add_python_den_levels(apps, schema_editor):
     )
 
     level35 = Level.objects.get(name="99")
-    level35.name = "python_35"
+    level35.name = "1035"
     level35.blocklyEnabled = True
     level35.pythonEnabled = False
     level35.pythonViewEnabled = True
@@ -534,19 +534,19 @@ def add_python_den_levels(apps, schema_editor):
     level36 = Level.objects.get(name="38")
     level36.pk = None
     level36._state.adding = True
-    level36.name = "python_36"
+    level36.name = "1036"
     level36.pythonViewEnabled = True
     level36.model_solution = "[11]"
     level36.episode=episode22
 
     level37 = Level.objects.get(name="100")
-    level37.name = "python_37"
+    level37.name = "1037"
     level37.episode=episode22
 
     level38 = Level.objects.get(name="39")
     level38.pk = None
     level38._state.adding = True
-    level38.name = "python_38"
+    level38.name = "1038"
     level38.blocklyEnabled = False
     level38.pythonEnabled = True
     level38.model_solution = "[]"
@@ -555,7 +555,7 @@ def add_python_den_levels(apps, schema_editor):
     level39 = Level.objects.get(name="47")
     level39.pk = None
     level39._state.adding = True
-    level39.name = "python_39"
+    level39.name = "1039"
     level39.blocklyEnabled = False
     level39.pythonEnabled = True
     level39.model_solution = "[]"
@@ -564,66 +564,66 @@ def add_python_den_levels(apps, schema_editor):
     level40 = Level.objects.get(name="48")
     level40.pk = None
     level40._state.adding = True
-    level40.name = "python_40"
+    level40.name = "1040"
     level40.blocklyEnabled = False
     level40.pythonEnabled = True
     level40.model_solution = "[]"
     level40.episode=episode22
 
     level41 = Level.objects.get(name="83")
-    level41.name = "python_41"
+    level41.name = "1041"
     level41.episode = episode25
 
     level42 = Level.objects.get(name="95")
-    level42.name = "python_42"
+    level42.name = "1042"
     level42.episode = episode25
 
     level43 = Level.objects.get(name="96")
-    level43.name = "python_43"
+    level43.name = "1043"
     level43.episode = episode25
 
     level44 = Level.objects.get(name="84")
-    level44.name = "python_44"
+    level44.name = "1044"
     level44.episode = episode25
 
     level45 = Level.objects.get(name="97")
-    level45.name = "python_45"
+    level45.name = "1045"
     level45.episode = episode25
 
     level46 = Level.objects.get(name="106")
-    level46.name = "python_46"
+    level46.name = "1046"
     level46.episode = episode25
 
     level47 = Level.objects.get(name="107")
-    level47.name = "python_47"
+    level47.name = "1047"
     level47.episode = episode25
 
     level48 = Level.objects.get(name="108")
-    level48.name = "python_48"
+    level48.name = "1048"
     level48.episode = episode25
 
     level49 = Level.objects.get(name="109")
-    level49.name = "python_49"
+    level49.name = "1049"
     level49.episode = episode25
 
     level50 = Level.objects.get(name="61")
     level50.pk = None
     level50._state.adding = True
-    level50.name = "python_50"
+    level50.name = "1050"
     level50.pythonViewEnabled = True
     level50.episode = episode26
 
     level51 = Level.objects.get(name="62")
     level51.pk = None
     level51._state.adding = True
-    level51.name = "python_51"
+    level51.name = "1051"
     level51.pythonViewEnabled = True
     level51.episode = episode26
 
     level52 = Level.objects.get(name="63")
     level52.pk = None
     level52._state.adding = True
-    level52.name = "python_52"
+    level52.name = "1052"
     level52.blocklyEnabled = False
     level52.pythonEnabled = True
     level52.model_solution = "[]"
@@ -632,7 +632,7 @@ def add_python_den_levels(apps, schema_editor):
     level53 = Level.objects.get(name="64")
     level53.pk = None
     level53._state.adding = True
-    level53.name = "python_53"
+    level53.name = "1053"
     level53.blocklyEnabled = False
     level53.pythonEnabled = True
     level53.model_solution = "[]"
@@ -641,7 +641,7 @@ def add_python_den_levels(apps, schema_editor):
     level54 = Level.objects.get(name="65")
     level54.pk = None
     level54._state.adding = True
-    level54.name = "python_54"
+    level54.name = "1054"
     level54.blocklyEnabled = False
     level54.pythonEnabled = True
     level54.model_solution = "[]"
@@ -650,7 +650,7 @@ def add_python_den_levels(apps, schema_editor):
     level55 = Level.objects.get(name="66")
     level55.pk = None
     level55._state.adding = True
-    level55.name = "python_55"
+    level55.name = "1055"
     level55.blocklyEnabled = False
     level55.pythonEnabled = True
     level55.model_solution = "[]"
@@ -659,32 +659,32 @@ def add_python_den_levels(apps, schema_editor):
     level56 = Level.objects.get(name="67")
     level56.pk = None
     level56._state.adding = True
-    level56.name = "python_56"
+    level56.name = "1056"
     level56.blocklyEnabled = False
     level56.pythonEnabled = True
     level56.model_solution = "[]"
     level56.episode = episode26
 
     level57 = Level.objects.get(name="90")
-    level57.name = "python_57"
+    level57.name = "1057"
     level57.blocklyEnabled = False
     level57.pythonViewEnabled = False
     level57.pythonEnabled = True
     level57.episode = episode26
 
     level58 = Level.objects.get(name="91")
-    level58.name = "python_58"
+    level58.name = "1058"
     level58.blocklyEnabled = False
     level58.pythonViewEnabled = False
     level58.pythonEnabled = True
     level58.episode = episode26
 
     level59 = Level.objects.get(name="101")
-    level59.name = "python_59"
+    level59.name = "1059"
     level59.episode = episode26
 
     level60 = Level.objects.get(name="102")
-    level60.name = "python_60"
+    level60.name = "1060"
     level60.episode = episode26
 
     def save_all_levels():
