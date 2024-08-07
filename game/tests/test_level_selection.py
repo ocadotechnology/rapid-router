@@ -215,7 +215,7 @@ class LevelSelectionTestCase(TestCase):
 
         assert next_level_url == f"/rapidrouter/{level88.name}/"
 
-        prev_level_url = _prev_level_url(level109, student.new_user, False)
+        prev_level_url = _prev_level_url(level88, student.new_user, False)
         assert prev_level_url == f"/rapidrouter/{level86.name}/"
 
     @patch("game.views.level.datetime", side_effect=lambda *args, **kw: datetime(*args, **kw))
