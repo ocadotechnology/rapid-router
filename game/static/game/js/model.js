@@ -387,6 +387,7 @@ ocargo.Model.prototype.deliver = function() {
         }
         this.makeDelivery(destination, 'DELIVER');
     } else {
+        ocargo.game.sendAttempt(0);
         ocargo.animation.appendAnimation({
             type: 'popup',
             popupType: 'FAIL',
