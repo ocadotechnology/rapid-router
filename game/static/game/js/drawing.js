@@ -979,7 +979,8 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.wait = function (duration, callback) {
-    character.wait(duration, callback)
+    console.log("waiting");
+    character.wait(duration, callback);
   }
 
   this.deliver = function (destinationId, duration) {

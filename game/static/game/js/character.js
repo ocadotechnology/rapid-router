@@ -496,7 +496,8 @@ ocargo.Character.prototype._turnAroundTransformation = function () {
 };
 
 ocargo.Character.prototype.crash = function (attemptedAction) {
-    if (attemptedAction === "FORWARD") {
+    console.log("testing")
+    if (attemptedAction === "FORWARD" || attemptedAction === "WAIT") {
         var transformation = "... t 0, " + (-CRASH_MOVE_FORWARD_DISTANCE);
     } else if (attemptedAction === "TURN_LEFT") {
         var transformation = this._turnLeftTransformation(CRASH_TURN_ANGLE);
@@ -526,6 +527,8 @@ ocargo.Character.prototype.collisionWithCow = function (previousNode, currentNod
     } else if (attemptedAction === "TURN_RIGHT") {
         var transformation = this._turnRightTransformation(CRASH_INTO_COW_TURN_ANGLE);
     }
+
+    console.log(transformation);
 
     this._moveImage({
         transform: transformation

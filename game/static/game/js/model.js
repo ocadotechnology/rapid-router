@@ -55,6 +55,7 @@ ocargo.Model.prototype.reset = function() {
 // and returns a boolean
 
 ocargo.Model.prototype.observe = function(desc) {
+    console.log("observing");
     if (this.shouldObserve) {
         ocargo.animation.appendAnimation({
             type: 'van',
@@ -128,6 +129,7 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
     // Crash?
     let currentNodeHasCow = this.getCowForNode(this.van.getPosition().currentNode, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
+    console.log(currentNodeHasCow);
 
     if (currentNodeHasCow) {
         handleCrash(this, gettext('You ran into a cow! '),
@@ -229,6 +231,7 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
         return false;
     }
 
+    // TODO: LOOK AT THIS
     this.van.move(nextNode);
 
     // Van movement animation
@@ -246,6 +249,9 @@ ocargo.Model.prototype.moveVan = function(nextNode, action) {
 
 
     function handleCrash(model, popupMessage, vanAction, actionDescription) {
+        console.log("handleCrash");
+        console.log(vanAction);
+        console.log(action);
         model.van.crashStatus = 'CRASHED';
         ocargo.game.sendAttempt(0);
 
@@ -344,7 +350,9 @@ ocargo.Model.prototype.turnAround = function() {
 };
 
 ocargo.Model.prototype.wait = function() {
-    return this.moveVan(this.van.getPosition().currentNode, 'WAIT');
+    console.log(this.van.getPosition());
+    console.log(this.van.visitedNodes);
+    return this.moveVan(this.van.getPosition().previousNode, 'WAIT');
 };
 
 ocargo.Model.prototype.deliver = function() {
