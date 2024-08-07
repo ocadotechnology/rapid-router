@@ -395,6 +395,22 @@ ocargo.Model.prototype.deliver = function() {
             popupHint: ocargo.game.registerFailure(),
             description: 'tried to deliver at non-destination'
         });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionType: 'playSound',
+            functionCall: ocargo.sound.failure,
+            description: 'failure sound'
+        });
+
+        ocargo.event.sendEvent("DeliverNonDestination", { levelName: LEVEL_NAME,
+                                                          defaultLevel: DEFAULT_LEVEL,
+                                                          workspace: ocargo.blocklyControl.serialize(),
+                                                          failures: this.failures,
+                                                          pythonWorkspace: ocargo.pythonControl.getCode()
+        });
+        this.reasonForTermination = 'DELIVER_AT_NON_DESTINATION';
+        return false;
     }
     return destination;
 };
