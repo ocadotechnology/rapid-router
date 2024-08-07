@@ -14,55 +14,55 @@ def add_python_den_levels(apps, schema_editor):
     episode25 = Episode.objects.get(pk=25)
     episode26 = Episode.objects.get(pk=26)
 
-    level1 = Level.objects.get(name="110")
+    level1 = Level.objects.get(name="110", default=True)
     level1.name = "1001"
     level1.episode = episode20
 
-    level2 = Level.objects.get(name="111")
+    level2 = Level.objects.get(name="111", default=True)
     level2.name = "1002"
     level2.episode = episode20
 
-    level3 = Level.objects.get(name="112")
+    level3 = Level.objects.get(name="112", default=True)
     level3.name = "1003"
     level3.episode = episode20
 
-    level4 = Level.objects.get(name="113")
+    level4 = Level.objects.get(name="113", default=True)
     level4.name = "1004"
     level4.episode = episode20
 
-    level5 = Level.objects.get(name="114")
+    level5 = Level.objects.get(name="114", default=True)
     level5.name = "1005"
     level5.episode = episode20
 
-    level6 = Level.objects.get(name="115")
+    level6 = Level.objects.get(name="115", default=True)
     level6.name = "1006"
     level6.episode = episode20
 
-    level7 = Level.objects.get(name="116")
+    level7 = Level.objects.get(name="116", default=True)
     level7.name = "1007"
     level7.episode = episode20
 
-    level8 = Level.objects.get(name="117")
+    level8 = Level.objects.get(name="117", default=True)
     level8.name = "1008"
     level8.episode = episode20
 
-    level9 = Level.objects.get(name="118")
+    level9 = Level.objects.get(name="118", default=True)
     level9.name = "1009"
     level9.episode = episode20
 
-    level10 = Level.objects.get(name="119")
+    level10 = Level.objects.get(name="119", default=True)
     level10.name = "1010"
     level10.episode = episode20
 
-    level11 = Level.objects.get(name="120")
+    level11 = Level.objects.get(name="120", default=True)
     level11.name = "1011"
     level11.episode = episode20
 
-    level12 = Level.objects.get(name="121")
+    level12 = Level.objects.get(name="121", default=True)
     level12.name = "1012"
     level12.episode = episode20
 
-    level13 = Level.objects.get(name="122")
+    level13 = Level.objects.get(name="122", default=True)
     level13.name = "1013"
     level13.episode = episode20
 
@@ -366,7 +366,7 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level26 = Level.objects.get(name="85")
+    level26 = Level.objects.get(name="85", default=True)
     level26.name = "1026"
     level26.episode=episode22
 
@@ -419,7 +419,7 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level29 = Level.objects.get(name="119")
+    level29 = Level.objects.get(name="119", default=True)
     level29.pk = None
     level29._state.adding = True
     level29.name = "1029"
@@ -429,7 +429,7 @@ def add_python_den_levels(apps, schema_editor):
     level29.model_solution = "[7]"
     level29.episode=episode22
 
-    level30 = Level.objects.get(name="84")
+    level30 = Level.objects.get(name="84", default=True)
     level30.pk = None
     level30._state.adding = True
     level30.name = "1030"
@@ -439,7 +439,7 @@ def add_python_den_levels(apps, schema_editor):
     level30.model_solution = "[]"
     level30.episode=episode22
 
-    level31 = Level.objects.get(name="34")
+    level31 = Level.objects.get(name="34", default=True)
     level31.pk = None
     level31._state.adding = True
     level31.name = "1031"
@@ -524,14 +524,14 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level35 = Level.objects.get(name="99")
+    level35 = Level.objects.get(name="99", default=True)
     level35.name = "1035"
     level35.blocklyEnabled = True
     level35.pythonEnabled = False
     level35.pythonViewEnabled = True
     level35.episode=episode22
 
-    level36 = Level.objects.get(name="38")
+    level36 = Level.objects.get(name="38", default=True)
     level36.pk = None
     level36._state.adding = True
     level36.name = "1036"
@@ -539,11 +539,11 @@ def add_python_den_levels(apps, schema_editor):
     level36.model_solution = "[11]"
     level36.episode=episode22
 
-    level37 = Level.objects.get(name="100")
+    level37 = Level.objects.get(name="100", default=True)
     level37.name = "1037"
     level37.episode=episode22
 
-    level38 = Level.objects.get(name="39")
+    level38 = Level.objects.get(name="39", default=True)
     level38.pk = None
     level38._state.adding = True
     level38.name = "1038"
@@ -552,7 +552,7 @@ def add_python_den_levels(apps, schema_editor):
     level38.model_solution = "[]"
     level38.episode=episode22
 
-    level39 = Level.objects.get(name="47")
+    level39 = Level.objects.get(name="47", default=True)
     level39.pk = None
     level39._state.adding = True
     level39.name = "1039"
@@ -561,7 +561,7 @@ def add_python_den_levels(apps, schema_editor):
     level39.model_solution = "[]"
     level39.episode=episode22
 
-    level40 = Level.objects.get(name="48")
+    level40 = Level.objects.get(name="48", default=True)
     level40.pk = None
     level40._state.adding = True
     level40.name = "1040"
@@ -570,57 +570,57 @@ def add_python_den_levels(apps, schema_editor):
     level40.model_solution = "[]"
     level40.episode=episode22
 
-    level41 = Level.objects.get(name="83")
+    level41 = Level.objects.get(name="83", default=True)
     level41.name = "1041"
     level41.episode = episode25
 
-    level42 = Level.objects.get(name="95")
+    level42 = Level.objects.get(name="95", default=True)
     level42.name = "1042"
     level42.episode = episode25
 
-    level43 = Level.objects.get(name="96")
+    level43 = Level.objects.get(name="96", default=True)
     level43.name = "1043"
     level43.episode = episode25
 
-    level44 = Level.objects.get(name="84")
+    level44 = Level.objects.get(name="84", default=True)
     level44.name = "1044"
     level44.episode = episode25
 
-    level45 = Level.objects.get(name="97")
+    level45 = Level.objects.get(name="97", default=True)
     level45.name = "1045"
     level45.episode = episode25
 
-    level46 = Level.objects.get(name="106")
+    level46 = Level.objects.get(name="106", default=True)
     level46.name = "1046"
     level46.episode = episode25
 
-    level47 = Level.objects.get(name="107")
+    level47 = Level.objects.get(name="107", default=True)
     level47.name = "1047"
     level47.episode = episode25
 
-    level48 = Level.objects.get(name="108")
+    level48 = Level.objects.get(name="108", default=True)
     level48.name = "1048"
     level48.episode = episode25
 
-    level49 = Level.objects.get(name="109")
+    level49 = Level.objects.get(name="109", default=True)
     level49.name = "1049"
     level49.episode = episode25
 
-    level50 = Level.objects.get(name="61")
+    level50 = Level.objects.get(name="61", default=True)
     level50.pk = None
     level50._state.adding = True
     level50.name = "1050"
     level50.pythonViewEnabled = True
     level50.episode = episode26
 
-    level51 = Level.objects.get(name="62")
+    level51 = Level.objects.get(name="62", default=True)
     level51.pk = None
     level51._state.adding = True
     level51.name = "1051"
     level51.pythonViewEnabled = True
     level51.episode = episode26
 
-    level52 = Level.objects.get(name="63")
+    level52 = Level.objects.get(name="63", default=True)
     level52.pk = None
     level52._state.adding = True
     level52.name = "1052"
@@ -629,7 +629,7 @@ def add_python_den_levels(apps, schema_editor):
     level52.model_solution = "[]"
     level52.episode = episode26
 
-    level53 = Level.objects.get(name="64")
+    level53 = Level.objects.get(name="64", default=True)
     level53.pk = None
     level53._state.adding = True
     level53.name = "1053"
@@ -638,7 +638,7 @@ def add_python_den_levels(apps, schema_editor):
     level53.model_solution = "[]"
     level53.episode = episode26
 
-    level54 = Level.objects.get(name="65")
+    level54 = Level.objects.get(name="65", default=True)
     level54.pk = None
     level54._state.adding = True
     level54.name = "1054"
@@ -647,7 +647,7 @@ def add_python_den_levels(apps, schema_editor):
     level54.model_solution = "[]"
     level54.episode = episode26
 
-    level55 = Level.objects.get(name="66")
+    level55 = Level.objects.get(name="66", default=True)
     level55.pk = None
     level55._state.adding = True
     level55.name = "1055"
@@ -656,7 +656,7 @@ def add_python_den_levels(apps, schema_editor):
     level55.model_solution = "[]"
     level55.episode = episode26
 
-    level56 = Level.objects.get(name="67")
+    level56 = Level.objects.get(name="67", default=True)
     level56.pk = None
     level56._state.adding = True
     level56.name = "1056"
@@ -665,25 +665,25 @@ def add_python_den_levels(apps, schema_editor):
     level56.model_solution = "[]"
     level56.episode = episode26
 
-    level57 = Level.objects.get(name="90")
+    level57 = Level.objects.get(name="90", default=True)
     level57.name = "1057"
     level57.blocklyEnabled = False
     level57.pythonViewEnabled = False
     level57.pythonEnabled = True
     level57.episode = episode26
 
-    level58 = Level.objects.get(name="91")
+    level58 = Level.objects.get(name="91", default=True)
     level58.name = "1058"
     level58.blocklyEnabled = False
     level58.pythonViewEnabled = False
     level58.pythonEnabled = True
     level58.episode = episode26
 
-    level59 = Level.objects.get(name="101")
+    level59 = Level.objects.get(name="101", default=True)
     level59.name = "1059"
     level59.episode = episode26
 
-    level60 = Level.objects.get(name="102")
+    level60 = Level.objects.get(name="102", default=True)
     level60.name = "1060"
     level60.episode = episode26
 
@@ -822,20 +822,20 @@ def add_python_den_blocks(apps, schema_editor):
     def set_blocks(level, blocks):
         set_blocks_inner(level, blocks, LevelBlock, Block)
 
-    level14 = Level.objects.get(name="python_14")
-    level15 = Level.objects.get(name="python_15")
-    level19 = Level.objects.get(name="python_19")
-    level22 = Level.objects.get(name="python_22")
-    level23 = Level.objects.get(name="python_23")
-    level27 = Level.objects.get(name="python_27")
-    level28 = Level.objects.get(name="python_28")
-    level29 = Level.objects.get(name="python_29")
-    level31 = Level.objects.get(name="python_31")
-    level32 = Level.objects.get(name="python_32")
-    level35 = Level.objects.get(name="python_35")
-    level36 = Level.objects.get(name="python_36")
-    level50 = Level.objects.get(name="python_50")
-    level51 = Level.objects.get(name="python_51")
+    level14 = Level.objects.get(name="1014", default=True)
+    level15 = Level.objects.get(name="1015", default=True)
+    level19 = Level.objects.get(name="1019", default=True)
+    level22 = Level.objects.get(name="1022", default=True)
+    level23 = Level.objects.get(name="1023", default=True)
+    level27 = Level.objects.get(name="1027", default=True)
+    level28 = Level.objects.get(name="1028", default=True)
+    level29 = Level.objects.get(name="1029", default=True)
+    level31 = Level.objects.get(name="1031", default=True)
+    level32 = Level.objects.get(name="1032", default=True)
+    level35 = Level.objects.get(name="1035", default=True)
+    level36 = Level.objects.get(name="1036", default=True)
+    level50 = Level.objects.get(name="1050", default=True)
+    level51 = Level.objects.get(name="1051", default=True)
 
     set_blocks(
         level14,
@@ -1043,9 +1043,9 @@ def add_python_den_decor(apps, schema_editor):
         set_decor_inner(level, decor, LevelDecor)
 
     def bulk_copy_decor(new_level_name, old_level_name):
-        old_level = Level.objects.get(name=old_level_name)
+        old_level = Level.objects.get(name=old_level_name, default=True)
         decor_to_copy = LevelDecor.objects.filter(level_id=old_level.id).values()
-        new_level = Level.objects.get(name=new_level_name)
+        new_level = Level.objects.get(name=new_level_name, default=True)
 
         new_level_decor = []
         for decor in decor_to_copy:
@@ -1056,20 +1056,20 @@ def add_python_den_decor(apps, schema_editor):
             )
         LevelDecor.objects.bulk_create(new_level_decor)
 
-    level14 = Level.objects.get(name="python_14")
-    level15 = Level.objects.get(name="python_15")
-    level16 = Level.objects.get(name="python_16")
-    level17 = Level.objects.get(name="python_17")
-    level18 = Level.objects.get(name="python_18")
-    level20 = Level.objects.get(name="python_20")
-    level21 = Level.objects.get(name="python_21")
-    level22 = Level.objects.get(name="python_22")
-    level23 = Level.objects.get(name="python_23")
-    level24 = Level.objects.get(name="python_24")
-    level27 = Level.objects.get(name="python_27")
-    level28 = Level.objects.get(name="python_28")
-    level33 = Level.objects.get(name="python_33")
-    level34 = Level.objects.get(name="python_34")
+    level14 = Level.objects.get(name="1014", default=True)
+    level15 = Level.objects.get(name="1015", default=True)
+    level16 = Level.objects.get(name="1016", default=True)
+    level17 = Level.objects.get(name="1017", default=True)
+    level18 = Level.objects.get(name="1018", default=True)
+    level20 = Level.objects.get(name="1020", default=True)
+    level21 = Level.objects.get(name="1021", default=True)
+    level22 = Level.objects.get(name="1022", default=True)
+    level23 = Level.objects.get(name="1023", default=True)
+    level24 = Level.objects.get(name="1024", default=True)
+    level27 = Level.objects.get(name="1027", default=True)
+    level28 = Level.objects.get(name="1028", default=True)
+    level33 = Level.objects.get(name="1033", default=True)
+    level34 = Level.objects.get(name="1034", default=True)
 
     set_decor(
         level14,
@@ -1245,20 +1245,20 @@ def add_python_den_decor(apps, schema_editor):
         )
     )
 
-    bulk_copy_decor("python_10", "python_29")
-    bulk_copy_decor("python_44", "python_30")
-    bulk_copy_decor("34", "python_31")
-    bulk_copy_decor("38", "python_36")
-    bulk_copy_decor("39", "python_38")
-    bulk_copy_decor("47", "python_39")
-    bulk_copy_decor("48", "python_40")
-    bulk_copy_decor("61", "python_50")
-    bulk_copy_decor("62", "python_51")
-    bulk_copy_decor("63", "python_52")
-    bulk_copy_decor("64", "python_53")
-    bulk_copy_decor("65", "python_54")
-    bulk_copy_decor("66", "python_55")
-    bulk_copy_decor("67", "python_56")
+    bulk_copy_decor("1010", "1029")
+    bulk_copy_decor("1044", "1030")
+    bulk_copy_decor("34", "1031")
+    bulk_copy_decor("38", "1036")
+    bulk_copy_decor("39", "1038")
+    bulk_copy_decor("47", "1039")
+    bulk_copy_decor("48", "1040")
+    bulk_copy_decor("61", "1050")
+    bulk_copy_decor("62", "1051")
+    bulk_copy_decor("63", "1052")
+    bulk_copy_decor("64", "1053")
+    bulk_copy_decor("65", "1054")
+    bulk_copy_decor("66", "1055")
+    bulk_copy_decor("67", "1056")
 
 
 def create_python_den_episodes(apps, schema_editor):
