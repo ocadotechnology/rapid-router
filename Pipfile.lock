@@ -48,10 +48,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:18b6f29c4f7b8ee8c9d589b573d105efe4ed3ffd80e891f3f3728feb83590520",
-                "sha256:ad2cc6fae6aa7b7a4af5a2969e437f83e8a4da9a437fdce82f68dbeb56ad3461"
+                "sha256:888cb1feb8f38de6b29adb0a9217d45d7f95c93d47fb82b393eb49145d16f8a9",
+                "sha256:93a9a63be4f285d16aee5ecde362c245d3cfd0719f60bf631ab80a768ddf1955"
             ],
-            "version": "==7.0.0"
+            "version": "==7.1.1"
         },
         "charset-normalizer": {
             "hashes": [
@@ -576,11 +576,11 @@
         },
         "attrs": {
             "hashes": [
-                "sha256:377b47448cb61fea38533f671fba0d0f8a96fd58facd4dc518e3dac9dbea0905",
-                "sha256:adbdec84af72d38be7628e353a09b6a6790d15cd71819f6e9d7b0faa8a125745"
+                "sha256:5cfb1b9148b5b086569baec03f20d7b6bf3bcacc9a42bebf87ffaaca362f6346",
+                "sha256:81921eb96de3191c8258c199618104dd27ac608d9366f5e35d011eae1867ede2"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==24.1.0"
+            "version": "==24.2.0"
         },
         "black": {
             "hashes": [
@@ -621,10 +621,10 @@
         },
         "cfl-common": {
             "hashes": [
-                "sha256:18b6f29c4f7b8ee8c9d589b573d105efe4ed3ffd80e891f3f3728feb83590520",
-                "sha256:ad2cc6fae6aa7b7a4af5a2969e437f83e8a4da9a437fdce82f68dbeb56ad3461"
+                "sha256:888cb1feb8f38de6b29adb0a9217d45d7f95c93d47fb82b393eb49145d16f8a9",
+                "sha256:93a9a63be4f285d16aee5ecde362c245d3cfd0719f60bf631ab80a768ddf1955"
             ],
-            "version": "==7.0.0"
+            "version": "==7.1.1"
         },
         "charset-normalizer": {
             "hashes": [
@@ -732,11 +732,11 @@
         },
         "codeforlife-portal": {
             "hashes": [
-                "sha256:5031a7e8c3ad19b207c19ff96444a72f2fa46b94455970a4bbccf234e7410230",
-                "sha256:777a2fecc9b8e1c14fd546dfb6528c94d7cd520df90855c7ac842dbd8635926d"
+                "sha256:1aa19971324828c03e087ad4996f23eb5959d57ae18f5d061cde26cb85f44ebd",
+                "sha256:c61039cfdd554a488e89b92c3ef54eb242b6b3d025072354b2ed938954b32786"
             ],
             "index": "pypi",
-            "version": "==7.0.0"
+            "version": "==7.1.1"
         },
         "diff-match-patch": {
             "hashes": [
