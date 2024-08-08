@@ -69,7 +69,7 @@ def add_python_den_levels(apps, schema_editor):
     level9.pk = None
     level9._state.adding = True
     level9.name = "1009"
-    leve9.disable_algorithm_score = True
+    level9.disable_algorithm_score = True
     level9.episode = episode20
 
     level10 = Level.objects.get(name="119", default=True)
