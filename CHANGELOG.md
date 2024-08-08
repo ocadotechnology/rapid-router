@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.0.2 (2024-08-08)
+
+### Fix
+
+* Flying cow bug ([#1699](https://github.com/ocadotechnology/rapid-router/issues/1699)) ([`2a6c005`](https://github.com/ocadotechnology/rapid-router/commit/2a6c0056cccdf5deee10798721761bae44ff7e3e))
+
 ## v6.0.1 (2024-08-07)
 
 ### Fix
