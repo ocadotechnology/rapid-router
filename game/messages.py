@@ -3026,9 +3026,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_1,
-    description_levelpython_1,
-    hint_levelpython_1,
+    title_level1001,
+    description_level1001,
+    hint_level1001,
 ) = (
     lambda: title_level110(),
     lambda: description_level110(),
@@ -3036,9 +3036,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_2,
-    description_levelpython_2,
-    hint_levelpython_2,
+    title_level1002,
+    description_level1002,
+    hint_level1002,
 ) = (
     lambda: title_level111(),
     lambda: description_level111(),
@@ -3046,9 +3046,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_3,
-    description_levelpython_3,
-    hint_levelpython_3,
+    title_level1003,
+    description_level1003,
+    hint_level1003,
 ) = (
     lambda: title_level112(),
     lambda: description_level112(),
@@ -3056,9 +3056,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_4,
-    description_levelpython_4,
-    hint_levelpython_4,
+    title_level1004,
+    description_level1004,
+    hint_level1004,
 ) = (
     lambda: title_level113(),
     lambda: description_level113(),
@@ -3066,9 +3066,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_5,
-    description_levelpython_5,
-    hint_levelpython_5,
+    title_level1005,
+    description_level1005,
+    hint_level1005,
 ) = (
     lambda: title_level114(),
     lambda: description_level114(),
@@ -3076,9 +3076,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_6,
-    description_levelpython_6,
-    hint_levelpython_6,
+    title_level1006,
+    description_level1006,
+    hint_level1006,
 ) = (
     lambda: title_level115(),
     lambda: description_level115(),
@@ -3086,199 +3086,199 @@ def hint_level109():
 )
 
 (
-    title_levelpython_7,
-    description_levelpython_7,
-    hint_levelpython_7,
+    title_level1007,
+    description_level1007,
+    hint_level1007,
 ) = (
     lambda: title_level116(),
-    lambda: build_description(title_levelpython_7(), "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully."),
+    lambda: build_description(title_level1007(), "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully."),
     lambda: hint_level116()
 )
 
 (
-    title_levelpython_8,
-    description_levelpython_8,
-    hint_levelpython_8,
+    title_level1008,
+    description_level1008,
+    hint_level1008,
 ) = (
     lambda: title_level117(),
-    lambda: build_description(title_levelpython_8(), "Now look at the Python code for that while look you created. Can you match the blocks to the Python? What do you notice about the Python code?"),
+    lambda: build_description(title_level1008(), "Now look at the Python code for that while look you created. Can you match the blocks to the Python? What do you notice about the Python code?"),
     lambda: hint_level117()
 )
 
 (
-    title_levelpython_9,
-    description_levelpython_9,
-    hint_levelpython_9,
+    title_level1009,
+    description_level1009,
+    hint_level1009,
 ) = (
     lambda: title_level118(),
-    lambda: build_description(title_levelpython_9(), "Think carefully about this one. It might be that some code is inside a loop and some code is not…"),
+    lambda: build_description(title_level1009(), "Think carefully about this one. It might be that some code is inside a loop and some code is not…"),
     lambda: hint_level118()
 )
 
 (
-    title_levelpython_10,
-    description_levelpython_10,
-    hint_levelpython_10,
+    title_level1010,
+    description_level1010,
+    hint_level1010,
 ) = (
     lambda: title_level119(),
-    lambda: build_description(title_levelpython_10(), "Look for a pattern and then count how many times it repeats. Good luck!"),
+    lambda: build_description(title_level1010(), "Look for a pattern and then count how many times it repeats. Good luck!"),
     lambda: hint_level119()
 )
 
 (
-    title_levelpython_11,
-    description_levelpython_11,
-    hint_levelpython_11,
+    title_level1011,
+    description_level1011,
+    hint_level1011,
 ) = (
     lambda: title_level120(),
-    lambda: build_description(title_levelpython_11(), "There is a pattern of moves in this one too. Can you spot it?"),
+    lambda: build_description(title_level1011(), "There is a pattern of moves in this one too. Can you spot it?"),
     lambda: hint_level120()
 )
 
 (
-    title_levelpython_12,
-    description_levelpython_12,
-    hint_levelpython_12,
+    title_level1012,
+    description_level1012,
+    hint_level1012,
 ) = (
     lambda: title_level121(),
-    lambda: build_description(title_levelpython_12(), "Look for a pattern before you type any code. You can solve this one with a counted loop…"),
+    lambda: build_description(title_level1012(), "Look for a pattern before you type any code. You can solve this one with a counted loop…"),
     lambda: hint_level121()
 )
 
 (
-    title_levelpython_13,
-    description_levelpython_13,
-    hint_levelpython_13,
+    title_level1013,
+    description_level1013,
+    hint_level1013,
 ) = (
     lambda: title_level122(),
-    lambda: build_description(title_levelpython_13(), "The solution to this one is just a bit longer. Build it up slowly. Good luck!"),
+    lambda: build_description(title_level1013(), "The solution to this one is just a bit longer. Build it up slowly. Good luck!"),
     lambda: hint_level122()
 )
 
 (
-    title_levelpython_14,
-    description_levelpython_14,
-    hint_levelpython_14,
+    title_level1014,
+    description_level1014,
+    hint_level1014,
 ) = (
     lambda: "Too many cows",
-    lambda: build_description(title_levelpython_14(), "This is a nice long straight road, but there are cows about!"),
+    lambda: build_description(title_level1014(), "This is a nice long straight road, but there are cows about!"),
     lambda: "Make sure you sound the horn to get the cows off the road."
 )
 
 (
-    title_levelpython_15,
-    description_levelpython_15,
-    hint_levelpython_15,
+    title_level1015,
+    description_level1015,
+    hint_level1015,
 ) = (
     lambda: "Stepping it up",
-    lambda: build_description(title_levelpython_15(), "There are some bends in this road. Be careful!"),
+    lambda: build_description(title_level1015(), "There are some bends in this road. Be careful!"),
     lambda: "What do you need to count, how many times you move or how many times you move forwards?"
 )
 
 (
-    title_levelpython_16,
-    description_levelpython_16,
-    hint_levelpython_16,
+    title_level1016,
+    description_level1016,
+    hint_level1016,
 ) = (
     lambda: "Cows on the stairs",
-    lambda: build_description(title_levelpython_16(), "Oh no! The farmer seems to have let their cows out again. Be careful."),
+    lambda: build_description(title_level1016(), "Oh no! The farmer seems to have let their cows out again. Be careful."),
     lambda: "Look for a pattern here..."
 )
 
 (
-    title_levelpython_17,
-    description_levelpython_17,
-    hint_levelpython_17,
+    title_level1017,
+    description_level1017,
+    hint_level1017,
 ) = (
     lambda: "Try stepping in Python!",
-    lambda: build_description(title_levelpython_17(), "Keep going, you're getting the hang of the Python code."),
+    lambda: build_description(title_level1017(), "Keep going, you're getting the hang of the Python code."),
     lambda: "So you are going forward unless...?"
 )
 
 (
-    title_levelpython_18,
-    description_levelpython_18,
-    hint_levelpython_18,
+    title_level1018,
+    description_level1018,
+    hint_level1018,
 ) = (
     lambda: "A long and winding road",
-    lambda: build_description(title_levelpython_18(), "Oh dear, you might get a bit dizzy!"),
+    lambda: build_description(title_level1018(), "Oh dear, you might get a bit dizzy!"),
     lambda: "What are you counting here, straight roads or bends?"
 )
 
 (
-    title_levelpython_19,
-    description_levelpython_19,
-    hint_levelpython_19,
+    title_level1019,
+    description_level1019,
+    hint_level1019,
 ) = (
     lambda: "Try this level or <b>else</b>",
-    lambda: build_description(title_levelpython_19(), "Have you noticed that there are more roads ahead than turns? Try checking if there is a road ahead and then otherwise making the turns you need..."),
+    lambda: build_description(title_level1019(), "Have you noticed that there are more roads ahead than turns? Try checking if there is a road ahead and then otherwise making the turns you need..."),
     lambda: "Remember to use if..else"
 )
 
 (
-    title_levelpython_20,
-    description_levelpython_20,
-    hint_levelpython_20,
+    title_level1020,
+    description_level1020,
+    hint_level1020,
 ) = (
     lambda: "Now try one in Python!",
-    lambda: build_description(title_levelpython_20(), "Use if..else in Python for this level"),
+    lambda: build_description(title_level1020(), "Use if..else in Python for this level"),
     lambda: "Don't get distracted by the other roads. Look for a pattern you can repeat."
 )
 
 (
-    title_levelpython_21,
-    description_levelpython_21,
-    hint_levelpython_21,
+    title_level1021,
+    description_level1021,
+    hint_level1021,
 ) = (
     lambda: "What if there are multiple houses?",
-    lambda: build_description(title_levelpython_21(), "This is a really busy road. Make sure that you don't miss any of the houses."),
+    lambda: build_description(title_level1021(), "This is a really busy road. Make sure that you don't miss any of the houses."),
     lambda: "Did you get the last house? Think about what value the loop counter will have at that point in your code..."
 )
 
 (
-    title_levelpython_22,
-    description_levelpython_22,
-    hint_levelpython_22,
+    title_level1022,
+    description_level1022,
+    hint_level1022,
 ) = (
     lambda: "Count and check",
-    lambda: build_description(title_levelpython_22(), "There are lots of turns here, don't get distracted."),
+    lambda: build_description(title_level1022(), "There are lots of turns here, don't get distracted."),
     lambda: "Think about the order of the questions you ask using your if and elif statements."
 )
 
 (
-    title_levelpython_23,
-    description_levelpython_23,
-    hint_levelpython_23,
+    title_level1023,
+    description_level1023,
+    hint_level1023,
 ) = (
     lambda: "Another twisty trip",
-    lambda: build_description(title_levelpython_23(), "Don't go the long way around!"),
+    lambda: build_description(title_level1023(), "Don't go the long way around!"),
     lambda: "Think carefully about the order in which you ask questions in your if..else if block"
 )
 
 (
-    title_levelpython_24,
-    description_levelpython_24,
-    hint_levelpython_24,
+    title_level1024,
+    description_level1024,
+    hint_level1024,
 ) = (
     lambda: "Give Python a go!",
-    lambda: build_description(title_levelpython_24(), "Look carefully for the shortest route."),
+    lambda: build_description(title_level1024(), "Look carefully for the shortest route."),
     lambda: "Think carefully about the order in which you ask questions in your if..elif statements."
 )
 
 (
-    title_levelpython_25,
-    description_levelpython_25,
-    hint_levelpython_25,
+    title_level1025,
+    description_level1025,
+    hint_level1025,
 ) = (
     lambda: "Now we've added a traffic light",
-    lambda: build_description(title_levelpython_25(), "Look carefully for the shortest route."),
+    lambda: build_description(title_level1025(), "Look carefully for the shortest route."),
     lambda: "Think carefully about the order in which you ask questions in your if..elif statements. Don't forget the traffic lights."
 )
 
 (
-    title_levelpython_26,
-    description_levelpython_26,
-    hint_levelpython_26,
+    title_level1026,
+    description_level1026,
+    hint_level1026,
 ) = (
     lambda: title_level85(),
     lambda: description_level85(),
@@ -3286,39 +3286,39 @@ def hint_level109():
 )
 
 (
-    title_levelpython_27,
-    description_levelpython_27,
-    hint_levelpython_27,
+    title_level1027,
+    description_level1027,
+    hint_level1027,
 ) = (
     lambda: "Full steam ahead",
-    lambda: build_description(title_levelpython_27(), "Just keep going until you get there..."),
+    lambda: build_description(title_level1027(), "Just keep going until you get there..."),
     lambda: "You might find that the solution to this level is quite familiar..."
 )
 
 (
-    title_levelpython_28,
-    description_levelpython_28,
-    hint_levelpython_28,
+    title_level1028,
+    description_level1028,
+    hint_level1028,
 ) = (
     lambda: "Another staircase...",
-    lambda: build_description(title_levelpython_28(), "Well done, you did it! Now have a go at using the <b>Repeat until</b> block on a road with lots of turns."),
+    lambda: build_description(title_level1028(), "Well done, you did it! Now have a go at using the <b>Repeat until</b> block on a road with lots of turns."),
     lambda: "This is another route you have seen before. Last time you counted how many times your instructions were repeated. This time, your program is going to repeat your commands until you reach the destination. What do you need to repeat?"
 )
 
 (
-    title_levelpython_29,
-    description_levelpython_29,
-    hint_levelpython_29,
+    title_level1029,
+    description_level1029,
+    hint_level1029,
 ) = (
-    lambda: title_levelpython_10,
-    lambda: description_levelpython_10(),
-    lambda: hint_levelpython_10()
+    lambda: title_level1010,
+    lambda: description_level1010(),
+    lambda: hint_level1010()
 )
 
 (
-    title_levelpython_30,
-    description_levelpython_30,
-    hint_levelpython_30,
+    title_level1030,
+    description_level1030,
+    hint_level1030,
 ) = (
     lambda: title_level84(),
     lambda: description_level84(),
@@ -3326,9 +3326,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_31,
-    description_levelpython_31,
-    hint_levelpython_31,
+    title_level1031,
+    description_level1031,
+    hint_level1031,
 ) = (
     lambda: title_level34(),
     lambda: description_level34(),
@@ -3336,39 +3336,39 @@ def hint_level109():
 )
 
 (
-    title_levelpython_32,
-    description_levelpython_32,
-    hint_levelpython_32,
+    title_level1032,
+    description_level1032,
+    hint_level1032,
 ) = (
     lambda: "Something isn't <b>right</b>",
-    lambda: build_description(title_levelpython_32(), "You don't have a right turn block here, so plan your route carefully."),
+    lambda: build_description(title_level1032(), "You don't have a right turn block here, so plan your route carefully."),
     lambda: "Think carefully about the order in which you ask questions in your if-statement here..."
 )
 
 (
-    title_levelpython_33,
-    description_levelpython_33,
-    hint_levelpython_33,
+    title_level1033,
+    description_level1033,
+    hint_level1033,
 ) = (
     lambda: "Looking both ways",
-    lambda: build_description(title_levelpython_33(), "Can you find the shortest route?"),
+    lambda: build_description(title_level1033(), "Can you find the shortest route?"),
     lambda: "In this level, you want to check for a left turn first. If there is no left turn, turn right. Notice what that looks like in Python."
 )
 
 (
-    title_levelpython_34,
-    description_levelpython_34,
-    hint_levelpython_34,
+    title_level1034,
+    description_level1034,
+    hint_level1034,
 ) = (
     lambda: "The pond is nice but out of the way",
-    lambda: build_description(title_levelpython_34(), "Can you find the shortest route? Don't take the scenic route."),
+    lambda: build_description(title_level1034(), "Can you find the shortest route? Don't take the scenic route."),
     lambda: "Just look for the simplest route to the house."
 )
 
 (
-    title_levelpython_35,
-    description_levelpython_35,
-    hint_levelpython_35,
+    title_level1035,
+    description_level1035,
+    hint_level1035,
 ) = (
     lambda: title_level99(),
     lambda: description_level99(),
@@ -3376,9 +3376,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_36,
-    description_levelpython_36,
-    hint_levelpython_36,
+    title_level1036,
+    description_level1036,
+    hint_level1036,
 ) = (
     lambda: title_level38(),
     lambda: description_level38(),
@@ -3386,9 +3386,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_37,
-    description_levelpython_37,
-    hint_levelpython_37,
+    title_level1037,
+    description_level1037,
+    hint_level1037,
 ) = (
     lambda: title_level100(),
     lambda: description_level100(),
@@ -3396,9 +3396,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_38,
-    description_levelpython_38,
-    hint_levelpython_38,
+    title_level1038,
+    description_level1038,
+    hint_level1038,
 ) = (
     lambda: title_level39(),
     lambda: description_level39(),
@@ -3406,9 +3406,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_39,
-    description_levelpython_39,
-    hint_levelpython_39,
+    title_level1039,
+    description_level1039,
+    hint_level1039,
 ) = (
     lambda: title_level47(),
     lambda: description_level47(),
@@ -3416,9 +3416,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_40,
-    description_levelpython_40,
-    hint_levelpython_40,
+    title_level1040,
+    description_level1040,
+    hint_level1040,
 ) = (
     lambda: title_level48(),
     lambda: description_level48(),
@@ -3426,9 +3426,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_41,
-    description_levelpython_41,
-    hint_levelpython_41,
+    title_level1041,
+    description_level1041,
+    hint_level1041,
 ) = (
     lambda: title_level83(),
     lambda: description_level83(),
@@ -3436,9 +3436,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_42,
-    description_levelpython_42,
-    hint_levelpython_42,
+    title_level1042,
+    description_level1042,
+    hint_level1042,
 ) = (
     lambda: title_level95(),
     lambda: description_level95(),
@@ -3446,9 +3446,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_43,
-    description_levelpython_43,
-    hint_levelpython_43,
+    title_level1043,
+    description_level1043,
+    hint_level1043,
 ) = (
     lambda: title_level96(),
     lambda: description_level96(),
@@ -3456,9 +3456,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_44,
-    description_levelpython_44,
-    hint_levelpython_44,
+    title_level1044,
+    description_level1044,
+    hint_level1044,
 ) = (
     lambda: title_level84(),
     lambda: description_level84(),
@@ -3466,9 +3466,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_45,
-    description_levelpython_45,
-    hint_levelpython_45,
+    title_level1045,
+    description_level1045,
+    hint_level1045,
 ) = (
     lambda: title_level97(),
     lambda: description_level97(),
@@ -3476,9 +3476,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_46,
-    description_levelpython_46,
-    hint_levelpython_46,
+    title_level1046,
+    description_level1046,
+    hint_level1046,
 ) = (
     lambda: title_level106(),
     lambda: description_level106(),
@@ -3486,9 +3486,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_47,
-    description_levelpython_47,
-    hint_levelpython_47,
+    title_level1047,
+    description_level1047,
+    hint_level1047,
 ) = (
     lambda: title_level107(),
     lambda: description_level107(),
@@ -3496,9 +3496,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_48,
-    description_levelpython_48,
-    hint_levelpython_48,
+    title_level1048,
+    description_level1048,
+    hint_level1048,
 ) = (
     lambda: title_level108(),
     lambda: description_level108(),
@@ -3506,9 +3506,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_49,
-    description_levelpython_49,
-    hint_levelpython_49,
+    title_level1049,
+    description_level1049,
+    hint_level1049,
 ) = (
     lambda: title_level109(),
     lambda: description_level109(),
@@ -3516,9 +3516,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_50,
-    description_levelpython_50,
-    hint_levelpython_50,
+    title_level1050,
+    description_level1050,
+    hint_level1050,
 ) = (
     lambda: title_level61(),
     lambda: description_level61(),
@@ -3526,9 +3526,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_51,
-    description_levelpython_51,
-    hint_levelpython_51,
+    title_level1051,
+    description_level1051,
+    hint_level1051,
 ) = (
     lambda: title_level62(),
     lambda: description_level62(),
@@ -3536,9 +3536,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_52,
-    description_levelpython_52,
-    hint_levelpython_52,
+    title_level1052,
+    description_level1052,
+    hint_level1052,
 ) = (
     lambda: title_level63(),
     lambda: description_level63(),
@@ -3546,9 +3546,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_53,
-    description_levelpython_53,
-    hint_levelpython_53,
+    title_level1053,
+    description_level1053,
+    hint_level1053,
 ) = (
     lambda: title_level64(),
     lambda: description_level64(),
@@ -3556,9 +3556,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_54,
-    description_levelpython_54,
-    hint_levelpython_54,
+    title_level1054,
+    description_level1054,
+    hint_level1054,
 ) = (
     lambda: title_level65(),
     lambda: description_level65(),
@@ -3566,9 +3566,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_55,
-    description_levelpython_55,
-    hint_levelpython_55,
+    title_level1055,
+    description_level1055,
+    hint_level1055,
 ) = (
     lambda: title_level66(),
     lambda: description_level66(),
@@ -3576,9 +3576,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_56,
-    description_levelpython_56,
-    hint_levelpython_56,
+    title_level1056,
+    description_level1056,
+    hint_level1056,
 ) = (
     lambda: title_level67(),
     lambda: description_level67(),
@@ -3586,9 +3586,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_57,
-    description_levelpython_57,
-    hint_levelpython_57,
+    title_level1057,
+    description_level1057,
+    hint_level1057,
 ) = (
     lambda: title_level90(),
     lambda: description_level90(),
@@ -3596,9 +3596,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_58,
-    description_levelpython_58,
-    hint_levelpython_58,
+    title_level1058,
+    description_level1058,
+    hint_level1058,
 ) = (
     lambda: title_level91(),
     lambda: description_level91(),
@@ -3606,9 +3606,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_59,
-    description_levelpython_59,
-    hint_levelpython_59,
+    title_level1059,
+    description_level1059,
+    hint_level1059,
 ) = (
     lambda: title_level101(),
     lambda: description_level101(),
@@ -3616,9 +3616,9 @@ def hint_level109():
 )
 
 (
-    title_levelpython_60,
-    description_levelpython_60,
-    hint_levelpython_60,
+    title_level1060,
+    description_level1060,
+    hint_level1060,
 ) = (
     lambda: title_level102(),
     lambda: description_level102(),
