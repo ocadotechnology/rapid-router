@@ -481,7 +481,7 @@ while count < 16:
     my_van.turn_right()
   count = count + 1"""
 
-python_lvl_30 = """from van import Van()
+python_lvl_30 = """from van import Van
 
 my_van = Van()
 
@@ -491,7 +491,7 @@ while not my_van.at_destination():
   my_van.turn_right()
   my_van.turn_left()"""
 
-python_lvl_33 = """from van import Van()
+python_lvl_33 = """from van import Van
 
 my_van = Van()
 
@@ -501,7 +501,7 @@ while not my_van.at_destination():
   else:
     my_van.turn_right()"""
 
-python_lvl_34 = """from van import Van()
+python_lvl_34 = """from van import Van
 
 my_van = Van()
 
@@ -511,7 +511,7 @@ while not my_van.at_destination():
   else:
     my_van.move_forwards()"""
 
-python_lvl_38 = """from van import Van()
+python_lvl_38 = """from van import Van
 
 my_van = Van()
 
@@ -524,7 +524,7 @@ while not my_van.at_destination():
     my_van.turn_around()
     my_van.turn_right()"""
 
-python_lvl_39 = """from van import Van()
+python_lvl_39 = """from van import Van
 
 my_van = Van()
 
@@ -536,7 +536,7 @@ while not my_van.at_destination():
   else:
     my_van.turn_left()"""
 
-python_lvl_40 = """from van import Van()
+python_lvl_40 = """from van import Van
 
 my_van = Van()
 
@@ -554,7 +554,7 @@ for count in range(4):
       my_van.turn_around()
   my_van.deliver()"""#
 
-python_lvl_52 = """from van import Van()
+python_lvl_52 = """from van import Van
 
 my_van = Van()
 
@@ -574,7 +574,7 @@ my_van.move_forwards()
 my_van.turn_right()
 wiggle()"""
 
-python_lvl_53 = """from van import Van()
+python_lvl_53 = """from van import Van
 
 my_van = Van()
 
@@ -601,7 +601,7 @@ small_turn()
 large_turn()
 small_turn()"""
 
-python_lvl_54 = """from van import Van()
+python_lvl_54 = """from van import Van
 
 my_van = Van()
 
@@ -635,7 +635,7 @@ for count5 in range(2):
   my_van.move_forwards()
 left_right()"""
 
-python_lvl_55 = """from van import Van()
+python_lvl_55 = """from van import Van
 
 my_van = Van()
 
@@ -656,7 +656,7 @@ triple_straight_right()
 my_van.turn_left()
 double_straight_right()"""
 
-python_lvl_56 = """from van import Van()
+python_lvl_56 = """from van import Van
 
 my_van = Van()
 
@@ -683,7 +683,7 @@ for count2 in range(2):
 double_left_right()
 double_left_right()"""
 
-python_lvl_57 = """from van import Van()
+python_lvl_57 = """from van import Van
 
 my_van = Van()
 
@@ -704,7 +704,7 @@ for count3 in range(4):
 for count4 in range(3):
   bend()"""
 
-python_lvl_58 = """from van import Van()
+python_lvl_58 = """from van import Van
 
 my_van = Van()
 

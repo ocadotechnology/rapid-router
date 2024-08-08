@@ -30,6 +30,7 @@ def add_python_den_levels(apps, schema_editor):
     level3.pk = None
     level3._state.adding = True
     level3.name = "1003"
+    level3.disable_algorithm_score = True
     level3.episode = episode20
 
     level4 = Level.objects.get(name="113", default=True)
@@ -54,18 +55,21 @@ def add_python_den_levels(apps, schema_editor):
     level7.pk = None
     level7._state.adding = True
     level7.name = "1007"
+    level7.disable_algorithm_score = True
     level7.episode = episode20
 
     level8 = Level.objects.get(name="117", default=True)
     level8.pk = None
     level8._state.adding = True
     level8.name = "1008"
+    level8.disable_algorithm_score = True
     level8.episode = episode20
 
     level9 = Level.objects.get(name="118", default=True)
     level9.pk = None
     level9._state.adding = True
     level9.name = "1009"
+    leve9.disable_algorithm_score = True
     level9.episode = episode20
 
     level10 = Level.objects.get(name="119", default=True)
@@ -396,7 +400,9 @@ def add_python_den_levels(apps, schema_editor):
     level26.pk = None
     level26._state.adding = True
     level26.name = "1026"
-    level26.episode=episode22
+    level26.model_solution = "[4]"
+    level26.disable_algorithm_score = True
+    level26.episode = episode22
 
     level27 = Level(
         name="1027",
@@ -465,6 +471,7 @@ def add_python_den_levels(apps, schema_editor):
     level30.pythonEnabled = True
     level30.pythonViewEnabled = False
     level30.model_solution = "[]"
+    level30.disable_algorithm_score = True
     level30.episode=episode22
 
     level31 = Level.objects.get(name="34", default=True)
@@ -475,6 +482,7 @@ def add_python_den_levels(apps, schema_editor):
     level31.pythonEnabled = False
     level31.pythonViewEnabled = True
     level31.model_solution = "[7]"
+    level31.disable_algorithm_score = True
     level31.episode=episode22
 
     level32 = Level(
@@ -567,6 +575,7 @@ def add_python_den_levels(apps, schema_editor):
     level36.name = "1036"
     level36.pythonViewEnabled = True
     level36.model_solution = "[11]"
+    level36.disable_algorithm_score = True
     level36.episode=episode22
 
     level37 = Level.objects.get(name="100", default=True)
@@ -582,6 +591,8 @@ def add_python_den_levels(apps, schema_editor):
     level38.blocklyEnabled = False
     level38.pythonEnabled = True
     level38.model_solution = "[]"
+    level38.disable_route_score = False
+    level38.disable_algorithm_score = True
     level38.episode=episode22
 
     level39 = Level.objects.get(name="47", default=True)
@@ -591,6 +602,7 @@ def add_python_den_levels(apps, schema_editor):
     level39.blocklyEnabled = False
     level39.pythonEnabled = True
     level39.model_solution = "[]"
+    level39.disable_algorithm_score = True
     level39.episode=episode22
 
     level40 = Level.objects.get(name="48", default=True)
@@ -600,12 +612,14 @@ def add_python_den_levels(apps, schema_editor):
     level40.blocklyEnabled = False
     level40.pythonEnabled = True
     level40.model_solution = "[]"
+    level40.disable_algorithm_score = True
     level40.episode=episode22
 
     level41 = Level.objects.get(name="83", default=True)
     level41.pk = None
     level41._state.adding = True
     level41.name = "1041"
+    level41.disable_algorithm_score = True
     level41.episode = episode25
 
     level42 = Level.objects.get(name="95", default=True)
@@ -624,6 +638,7 @@ def add_python_den_levels(apps, schema_editor):
     level44.pk = None
     level44._state.adding = True
     level44.name = "1044"
+    level44.disable_algorithm_score = True
     level44.episode = episode25
 
     level45 = Level.objects.get(name="97", default=True)
@@ -661,6 +676,7 @@ def add_python_den_levels(apps, schema_editor):
     level50._state.adding = True
     level50.name = "1050"
     level50.pythonViewEnabled = True
+    level50.disable_algorithm_score = True
     level50.episode = episode26
 
     level51 = Level.objects.get(name="62", default=True)
@@ -668,6 +684,7 @@ def add_python_den_levels(apps, schema_editor):
     level51._state.adding = True
     level51.name = "1051"
     level51.pythonViewEnabled = True
+    level51.disable_algorithm_score = True
     level51.episode = episode26
 
     level52 = Level.objects.get(name="63", default=True)
@@ -677,6 +694,7 @@ def add_python_den_levels(apps, schema_editor):
     level52.blocklyEnabled = False
     level52.pythonEnabled = True
     level52.model_solution = "[]"
+    level52.disable_algorithm_score = True
     level52.episode = episode26
 
     level53 = Level.objects.get(name="64", default=True)
@@ -686,6 +704,7 @@ def add_python_den_levels(apps, schema_editor):
     level53.blocklyEnabled = False
     level53.pythonEnabled = True
     level53.model_solution = "[]"
+    level53.disable_algorithm_score = True
     level53.episode = episode26
 
     level54 = Level.objects.get(name="65", default=True)
@@ -695,6 +714,7 @@ def add_python_den_levels(apps, schema_editor):
     level54.blocklyEnabled = False
     level54.pythonEnabled = True
     level54.model_solution = "[]"
+    level54.disable_algorithm_score = True
     level54.episode = episode26
 
     level55 = Level.objects.get(name="66", default=True)
@@ -704,6 +724,7 @@ def add_python_den_levels(apps, schema_editor):
     level55.blocklyEnabled = False
     level55.pythonEnabled = True
     level55.model_solution = "[]"
+    level55.disable_algorithm_score = True
     level55.episode = episode26
 
     level56 = Level.objects.get(name="67", default=True)
@@ -713,6 +734,7 @@ def add_python_den_levels(apps, schema_editor):
     level56.blocklyEnabled = False
     level56.pythonEnabled = True
     level56.model_solution = "[]"
+    level56.disable_algorithm_score = True
     level56.episode = episode26
 
     level57 = Level.objects.get(name="90", default=True)
@@ -722,6 +744,7 @@ def add_python_den_levels(apps, schema_editor):
     level57.blocklyEnabled = False
     level57.pythonViewEnabled = False
     level57.pythonEnabled = True
+    level57.disable_algorithm_score = True
     level57.episode = episode26
 
     level58 = Level.objects.get(name="91", default=True)
@@ -731,6 +754,7 @@ def add_python_den_levels(apps, schema_editor):
     level58.blocklyEnabled = False
     level58.pythonViewEnabled = False
     level58.pythonEnabled = True
+    level58.disable_algorithm_score = True
     level58.episode = episode26
 
     level59 = Level.objects.get(name="101", default=True)
@@ -868,6 +892,7 @@ def add_python_den_levels(apps, schema_editor):
     level57.next_level = level58
     level58.next_level = level59
     level59.next_level = level60
+    level60.next_level = None
 
     save_all_levels()
 
@@ -1147,6 +1172,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "at_destination"},'
             + '{"type": "controls_if"},'
             + '{"type": "cow_crossing"},'
+            + '{"type": "sound_horn"},'
             + '{"type": "road_exists"},'
             + '{"type": "move_forwards"},'
             + '{"type": "turn_left"},'
