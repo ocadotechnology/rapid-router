@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.0.1 (2024-08-07)
+
+### Fix
+
+* Deliver at non-destination does not show popup ([#1694](https://github.com/ocadotechnology/rapid-router/issues/1694)) ([`9e1f4b0`](https://github.com/ocadotechnology/rapid-router/commit/9e1f4b05749186469fd49e64d2620b10ad10e4d2))
+
 ## v6.0.0 (2024-08-01)
 
 ### Fix
