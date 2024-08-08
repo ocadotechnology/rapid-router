@@ -1525,7 +1525,7 @@ def create_python_den_episodes(apps, schema_editor):
     episode25.next_episode = episode26
 
 
-def set_episode_first_levels(apps, schema_editor):
+def set_first_and_last_levels(apps, schema_editor):
     Episode = apps.get_model("game", "Episode")
     Level = apps.get_model("game", "Level")
 
@@ -1568,5 +1568,5 @@ class Migration(migrations.Migration):
         migrations.RunPython(code=add_python_den_levels),
         migrations.RunPython(code=add_python_den_blocks),
         migrations.RunPython(code=add_python_den_decor),
-        migrations.RunPython(code=set_episode_first_and_last_levels)
+        migrations.RunPython(code=set_first_and_last_levels)
     ]
