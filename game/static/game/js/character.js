@@ -527,8 +527,6 @@ ocargo.Character.prototype.collisionWithCow = function (previousNode, currentNod
         var transformation = this._turnRightTransformation(CRASH_INTO_COW_TURN_ANGLE);
     }
 
-    console.log(transformation);
-
     this._moveImage({
         transform: transformation
     }, this.manoeuvreDuration, this._animateCollisionNoFire());
