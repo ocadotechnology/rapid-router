@@ -127,7 +127,8 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
     // Crash?
-    let currentNodeHasCow = this.getCowForNode(this.van.getPosition().currentNode, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
+    let checkedNode = action == "WAIT" ? this.van.getPosition().previousNode : this.van.getPosition().currentNode
+    let currentNodeHasCow = this.getCowForNode(checkedNode, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
 
     if (currentNodeHasCow) {
         handleCrash(this, gettext('You ran into a cow! '),
