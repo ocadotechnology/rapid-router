@@ -407,7 +407,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(1040, check_algorithm_score=False)
 
     def test_episode_25(self):
-        self._complete_level(25, 1041, check_algorithm_score=False)
+        self._complete_episode(25, 1041, check_algorithm_score=False)
     
     def test_level_1041(self):
         self._complete_level(1041, check_algorithm_score=False)
