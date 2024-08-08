@@ -89,7 +89,7 @@ def _next_level_url(level, user, night_mode):
         is_next_level_locked = klass in next_level.locked_for_class.all()
 
         if is_next_level_locked:
-            while is_next_level_locked and (int(next_level.name) < 80 or 1000 < int(next_level.name) < 1061):
+            while is_next_level_locked and (int(next_level.name) < 109 or 1001 < int(next_level.name) < 1060):
                 next_level = next_level.next_level
                 is_next_level_locked = klass in next_level.locked_for_class.all()
 
