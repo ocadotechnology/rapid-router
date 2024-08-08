@@ -1061,7 +1061,8 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_left"},'
             + '{"type": "turn_right"},'
             + '{"type": "at_destination"},'
-            + '{"type": "controls_repeat_until"}]'
+            + '{"type": "logic_negate"},'
+            + '{"type": "controls_repeat_while"}]'
         )
     )
 
