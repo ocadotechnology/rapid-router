@@ -3210,7 +3210,7 @@ def hint_level109():
     description_level1019,
     hint_level1019,
 ) = (
-    lambda: "Try this level or <b>else</b>",
+    lambda: "Try this level... or <b>else</b>!",
     lambda: build_description(title_level1019(), "Have you noticed that there are more roads ahead than turns? Try checking if there is a road ahead and then otherwise making the turns you need..."),
     lambda: "Remember to use if..else"
 )
