@@ -496,8 +496,7 @@ ocargo.Character.prototype._turnAroundTransformation = function () {
 };
 
 ocargo.Character.prototype.crash = function (attemptedAction) {
-    console.log("testing")
-    if (attemptedAction === "FORWARD" || attemptedAction === "WAIT") {
+    if (attemptedAction === "FORWARD") {
         var transformation = "... t 0, " + (-CRASH_MOVE_FORWARD_DISTANCE);
     } else if (attemptedAction === "TURN_LEFT") {
         var transformation = this._turnLeftTransformation(CRASH_TURN_ANGLE);

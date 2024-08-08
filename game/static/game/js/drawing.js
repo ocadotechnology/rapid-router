@@ -979,7 +979,6 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.wait = function (duration, callback) {
-    console.log("waiting");
     character.wait(duration, callback);
   }
 
