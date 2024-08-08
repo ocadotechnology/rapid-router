@@ -1555,7 +1555,7 @@ def set_first_and_last_levels(apps, schema_editor):
     episode26.save()
 
     level79 = Level.objects.get(name="79", default=True)
-    level79.next_level = null
+    level79.next_level = None
 
 
 class Migration(migrations.Migration):
