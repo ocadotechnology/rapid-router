@@ -224,6 +224,8 @@ class LevelSelectionTestCase(TestCase):
         prev_level_url = _prev_level_url(level89, student.new_user, False)
         assert prev_level_url == f"/rapidrouter/{level86.name}/"
 
+        assert klass in level1002.locked_for_class.all()
+
         next_level_url = _next_level_url(level1001, student.new_user, False)
 
         assert next_level_url == f"/rapidrouter/{level1003.name}/"
