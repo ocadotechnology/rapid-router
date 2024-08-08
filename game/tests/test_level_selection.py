@@ -208,7 +208,6 @@ class LevelSelectionTestCase(TestCase):
         level3.locked_for_class.add(klass)
         level87.locked_for_class.add(klass)
         level88.locked_for_class.add(klass)
-        level89.locked_for_class.add(klass)
         level1002.locked_for_class.add(klass)
 
         next_level_url = _next_level_url(level1, student.new_user, False)
@@ -219,7 +218,7 @@ class LevelSelectionTestCase(TestCase):
         assert prev_level_url == f"/rapidrouter/{level1.name}/"
 
         next_level_url = _next_level_url(level86, student.new_user, False)
-        
+
         assert next_level_url == f"/rapidrouter/{level89.name}/"
 
         prev_level_url = _prev_level_url(level89, student.new_user, False)
