@@ -869,6 +869,12 @@ ocargo.Game.prototype._setupPythonTab = function () {
     }.bind(this)
   )
 
+  $('#header_exit_button').click(
+    function (e) {
+      window.location.href = RETURN_URL
+    }.bind(this)
+  )
+
   $('#convert_from_blockly').click(
     function (e) {
       ocargo.pythonControl.appendCode(
