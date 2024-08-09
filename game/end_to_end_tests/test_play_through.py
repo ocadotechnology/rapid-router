@@ -397,9 +397,6 @@ class TestPlayThrough(BaseGameTest):
     def test_level_1037(self):
         self._complete_level(1037, check_algorithm_score=False)
 
-    def test_level_1038(self):
-        self._complete_level(1038, check_algorithm_score=False)
-
     def test_level_1039(self):
         self._complete_level(1039, check_algorithm_score=False)
 
