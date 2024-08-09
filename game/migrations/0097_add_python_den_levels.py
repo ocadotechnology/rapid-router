@@ -461,7 +461,7 @@ def add_python_den_levels(apps, schema_editor):
     level29.pythonEnabled = False
     level29.pythonViewEnabled = True
     level29.model_solution = "[7]"
-    level29.episode=episode22
+    level29.episode = episode22
 
     level30 = Level.objects.get(name="84", default=True)
     level30.pk = None
