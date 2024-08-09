@@ -467,4 +467,4 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(1059, check_algorithm_score=False)
 
     def test_level_1060(self):
-        self._complete_level(1060, check_algorithm_score=False)
+        self._complete_level(1060, check_algorithm_score=False, final_level=True)
