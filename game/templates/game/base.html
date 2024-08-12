@@ -47,17 +47,19 @@
         <a class="button button--secondary button--secondary--light" href="{% url 'blockly_levels' %}">{% trans "Levels" %}</a>
     {% endblock nav_ocargo_levels %}
 
-    {% block nav_ocargo_create %}
-        <a class="button button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
-    {% endblock nav_ocargo_create %}
+    {% if "pythonden" not in PATH %}
+        {% block nav_ocargo_create %}
+            <a class="button button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
+        {% endblock nav_ocargo_create %}
+    {% endif %}
 
-    {% if user|is_logged_in_as_school_user %}
+    {% if user|is_logged_in_as_school_user and "pythonden" not in PATH%}
         {% block nav_ocargo_scoreboard %}
             <a class="button button--secondary button--secondary--light" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
         {% endblock nav_ocargo_scoreboard %}
     {% endif %}
 
-    {% if user|is_logged_in_as_teacher %}
+    {% if user|is_logged_in_as_teacher  and "pythonden" not in PATH%}
         {% block nav_ocargo_moderate %}
             <a class="button button--secondary button--secondary--light" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
         {% endblock nav_ocargo_moderate %}
