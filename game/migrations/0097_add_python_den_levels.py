@@ -8,97 +8,16 @@ def add_python_den_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     Episode = apps.get_model("game", "Episode")
 
+    episode13 = Episode.objects.get(pk=13)
+    episode14 = Episode.objects.get(pk=14)
+    episode15 = Episode.objects.get(pk=15)
     episode20 = Episode.objects.get(pk=20)
     episode21 = Episode.objects.get(pk=21)
     episode22 = Episode.objects.get(pk=22)
-    episode25 = Episode.objects.get(pk=25)
-    episode26 = Episode.objects.get(pk=26)
 
-    level1 = Level.objects.get(name="110", default=True)
-    level1.pk = None
-    level1._state.adding = True
-    level1.name = "1001"
-    level1.episode = episode20
-
-    level2 = Level.objects.get(name="111", default=True)
-    level2.pk = None
-    level2._state.adding = True
-    level2.name = "1002"
-    level2.episode = episode20
-
-    level3 = Level.objects.get(name="112", default=True)
-    level3.pk = None
-    level3._state.adding = True
-    level3.name = "1003"
-    level3.disable_algorithm_score = True
-    level3.episode = episode20
-
-    level4 = Level.objects.get(name="113", default=True)
-    level4.pk = None
-    level4._state.adding = True
-    level4.name = "1004"
-    level4.episode = episode20
-
-    level5 = Level.objects.get(name="114", default=True)
-    level5.pk = None
-    level5._state.adding = True
-    level5.name = "1005"
-    level5.episode = episode20
-
-    level6 = Level.objects.get(name="115", default=True)
-    level6.pk = None
-    level6._state.adding = True
-    level6.name = "1006"
-    level6.episode = episode20
-
-    level7 = Level.objects.get(name="116", default=True)
-    level7.pk = None
-    level7._state.adding = True
-    level7.name = "1007"
-    level7.disable_algorithm_score = True
-    level7.episode = episode20
-
-    level8 = Level.objects.get(name="117", default=True)
-    level8.pk = None
-    level8._state.adding = True
-    level8.name = "1008"
-    level8.disable_algorithm_score = True
-    level8.episode = episode20
-
-    level9 = Level.objects.get(name="118", default=True)
-    level9.pk = None
-    level9._state.adding = True
-    level9.name = "1009"
-    level9.disable_algorithm_score = True
-    level9.episode = episode20
-
-    level10 = Level.objects.get(name="119", default=True)
-    level10.pk = None
-    level10._state.adding = True
-    level10.name = "1010"
-    level10.episode = episode20
-
-    level11 = Level.objects.get(name="120", default=True)
-    level11.pk = None
-    level11._state.adding = True
-    level11.name = "1011"
-    level11.episode = episode20
-
-    level12 = Level.objects.get(name="121", default=True)
-    level12.pk = None
-    level12._state.adding = True
-    level12.name = "1012"
-    level12.episode = episode20
-
-    level13 = Level.objects.get(name="122", default=True)
-    level13.pk = None
-    level13._state.adding = True
-    level13.name = "1013"
-    level13.episode = episode20
-
-    level14 = Level(
+    level1014 = Level(
         name="1014",
-        episode=episode21,
+        episode=episode13,
         anonymous=False,
         blocklyEnabled=True,
         character_name="Van",
@@ -121,9 +40,9 @@ def add_python_den_levels(apps, schema_editor):
         hint="Make sure you sound the horn to get the cows off the road."
     )
 
-    level15 = Level(
+    level1015 = Level(
         name="1015",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[5,0],"connectedNodes":[1]},{"coordinate":[5,1],"connectedNodes":[2,0]},{"coordinate":[4,1],"connectedNodes":[3,1]},{"coordinate":[4,2],"connectedNodes":[4,2]},{"coordinate":[4,3],"connectedNodes":[5,3]},{"coordinate":[4,4],"connectedNodes":[6,4]},{"coordinate":[3,4],"connectedNodes":[7,5]},{"coordinate":[3,5],"connectedNodes":[8,6]},{"coordinate":[3,6],"connectedNodes":[9,7]},{"coordinate":[3,7],"connectedNodes":[8]}]',
         traffic_lights="[]",
         cows="[]",
@@ -146,9 +65,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level16 = Level(
+    level1016 = Level(
         name="1016",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[1,1],"connectedNodes":[1]},{"coordinate":[1,2],"connectedNodes":[2,0]},{"coordinate":[2,2],"connectedNodes":[1,3]},{"coordinate":[2,3],"connectedNodes":[4,2]},{"coordinate":[3,3],"connectedNodes":[3,5]},{"coordinate":[3,4],"connectedNodes":[6,4]},{"coordinate":[4,4],"connectedNodes":[5,7]},{"coordinate":[4,5],"connectedNodes":[8,6]},{"coordinate":[5,5],"connectedNodes":[7,9]},{"coordinate":[5,6],"connectedNodes":[10,8]},{"coordinate":[6,6],"connectedNodes":[9,11]},{"coordinate":[6,7],"connectedNodes":[12,10]},{"coordinate":[7,7],"connectedNodes":[11]}]',
         traffic_lights="[]",
         cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":3,"y":3},{"x":5,"y":5},{"x":4,"y":4}],"type":"WHITE"}]',
@@ -171,9 +90,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level17 = Level(
+    level1017 = Level(
         name="1017",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[7,0],"connectedNodes":[1]},{"coordinate":[7,1],"connectedNodes":[2,0]},{"coordinate":[6,1],"connectedNodes":[3,1]},{"coordinate":[6,2],"connectedNodes":[4,2]},{"coordinate":[6,3],"connectedNodes":[5,3]},{"coordinate":[6,4],"connectedNodes":[6,4]},{"coordinate":[5,4],"connectedNodes":[7,5]},{"coordinate":[5,5],"connectedNodes":[8,6]},{"coordinate":[5,6],"connectedNodes":[7]}]',
         traffic_lights="[]",
         cows="[]",
@@ -196,9 +115,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level18 = Level(
+    level1018 = Level(
         name="1018",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[7,1],"connectedNodes":[1]},{"coordinate":[7,2],"connectedNodes":[2,0]},{"coordinate":[7,3],"connectedNodes":[3,1]},{"coordinate":[7,4],"connectedNodes":[4,2]},{"coordinate":[7,5],"connectedNodes":[5,3]},{"coordinate":[6,5],"connectedNodes":[6,4]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[4,5],"connectedNodes":[8,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[2,5],"connectedNodes":[8,10]},{"coordinate":[2,4],"connectedNodes":[9,11]},{"coordinate":[2,3],"connectedNodes":[10,12]},{"coordinate":[2,2],"connectedNodes":[11,13]},{"coordinate":[2,1],"connectedNodes":[12,14]},{"coordinate":[3,1],"connectedNodes":[13,15]},{"coordinate":[4,1],"connectedNodes":[14,16]},{"coordinate":[5,1],"connectedNodes":[15,17]},{"coordinate":[6,1],"connectedNodes":[16,18]},{"coordinate":[6,2],"connectedNodes":[19,17]},{"coordinate":[6,3],"connectedNodes":[20,18]},{"coordinate":[6,4],"connectedNodes":[21,19]},{"coordinate":[5,4],"connectedNodes":[22,20]},{"coordinate":[4,4],"connectedNodes":[23,21]},{"coordinate":[3,4],"connectedNodes":[22,24]},{"coordinate":[3,3],"connectedNodes":[23,25]},{"coordinate":[3,2],"connectedNodes":[24,26]},{"coordinate":[4,2],"connectedNodes":[25,27]},{"coordinate":[5,2],"connectedNodes":[26]}]',
         traffic_lights="[]",
         cows="[]",
@@ -221,9 +140,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level19 = Level(
+    level1019 = Level(
         name="1019",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[9,3],"connectedNodes":[1]},{"coordinate":[8,3],"connectedNodes":[2,0]},{"coordinate":[7,3],"connectedNodes":[3,1,15]},{"coordinate":[7,4],"connectedNodes":[4,2]},{"coordinate":[6,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[6,4,12]},{"coordinate":[4,4],"connectedNodes":[7,5]},{"coordinate":[3,4],"connectedNodes":[8,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[2,5],"connectedNodes":[10,8,17]},{"coordinate":[1,5],"connectedNodes":[11,9]},{"coordinate":[0,5],"connectedNodes":[10]},{"coordinate":[5,3],"connectedNodes":[5,13]},{"coordinate":[5,2],"connectedNodes":[21,12,14]},{"coordinate":[6,2],"connectedNodes":[13,15]},{"coordinate":[7,2],"connectedNodes":[14,2,16]},{"coordinate":[7,1],"connectedNodes":[15]},{"coordinate":[2,4],"connectedNodes":[9,18]},{"coordinate":[2,3],"connectedNodes":[17,19]},{"coordinate":[2,2],"connectedNodes":[18,20]},{"coordinate":[3,2],"connectedNodes":[19,21]},{"coordinate":[4,2],"connectedNodes":[20,13]}]',
         traffic_lights="[]",
         cows="[]",
@@ -246,9 +165,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level20 = Level(
+    level1020 = Level(
         name="1020",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[2,2],"connectedNodes":[1]},{"coordinate":[3,2],"connectedNodes":[0,2,19]},{"coordinate":[3,3],"connectedNodes":[10,3,1]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[4,6,17]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[6,5],"connectedNodes":[6,8]},{"coordinate":[6,6],"connectedNodes":[9,7]},{"coordinate":[7,6],"connectedNodes":[8]},{"coordinate":[3,4],"connectedNodes":[11,2]},{"coordinate":[3,5],"connectedNodes":[12,10]},{"coordinate":[3,6],"connectedNodes":[13,11]},{"coordinate":[3,7],"connectedNodes":[14,12]},{"coordinate":[4,7],"connectedNodes":[13,15]},{"coordinate":[5,7],"connectedNodes":[14,16]},{"coordinate":[6,7],"connectedNodes":[15]},{"coordinate":[5,3],"connectedNodes":[5,18]},{"coordinate":[5,2],"connectedNodes":[19,17]},{"coordinate":[4,2],"connectedNodes":[1,18]}]',
         traffic_lights="[]",
         cows="[]",
@@ -271,9 +190,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level21 = Level(
+    level1021 = Level(
         name="1021",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[4,0],"connectedNodes":[1]},{"coordinate":[4,1],"connectedNodes":[2,0]},{"coordinate":[3,1],"connectedNodes":[3,1]},{"coordinate":[3,2],"connectedNodes":[4,2]},{"coordinate":[3,3],"connectedNodes":[5,3]},{"coordinate":[3,4],"connectedNodes":[6,4]},{"coordinate":[2,4],"connectedNodes":[7,5]},{"coordinate":[2,5],"connectedNodes":[8,6]},{"coordinate":[2,6],"connectedNodes":[9,7]},{"coordinate":[1,6],"connectedNodes":[10,8]},{"coordinate":[1,7],"connectedNodes":[9]}]',
         traffic_lights="[]",
         cows="[]",
@@ -296,9 +215,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level22 = Level(
+    level1022 = Level(
         name="1022",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[2,3],"connectedNodes":[1]},{"coordinate":[2,2],"connectedNodes":[0,2,16]},{"coordinate":[3,2],"connectedNodes":[1,3]},{"coordinate":[3,1],"connectedNodes":[2,4,14]},{"coordinate":[4,1],"connectedNodes":[3,5]},{"coordinate":[5,1],"connectedNodes":[4,6,22]},{"coordinate":[5,2],"connectedNodes":[7,5]},{"coordinate":[6,2],"connectedNodes":[6,8]},{"coordinate":[6,3],"connectedNodes":[9,17,7]},{"coordinate":[6,4],"connectedNodes":[10,8]},{"coordinate":[5,4],"connectedNodes":[11,9]},{"coordinate":[5,5],"connectedNodes":[12,10]},{"coordinate":[4,5],"connectedNodes":[13,11]},{"coordinate":[3,5],"connectedNodes":[12]},{"coordinate":[3,0],"connectedNodes":[15,3]},{"coordinate":[2,0],"connectedNodes":[16,14]},{"coordinate":[2,1],"connectedNodes":[1,15]},{"coordinate":[7,3],"connectedNodes":[8,18]},{"coordinate":[8,3],"connectedNodes":[17,19]},{"coordinate":[8,2],"connectedNodes":[18,20]},{"coordinate":[8,1],"connectedNodes":[21,19]},{"coordinate":[7,1],"connectedNodes":[22,20]},{"coordinate":[6,1],"connectedNodes":[5,21]}]',
         traffic_lights="[]",
         cows="[]",
@@ -321,9 +240,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level23 = Level(
+    level1023 = Level(
         name="1023",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[2,7],"connectedNodes":[1]},{"coordinate":[2,6],"connectedNodes":[0,2]},{"coordinate":[2,5],"connectedNodes":[1,28,3]},{"coordinate":[2,4],"connectedNodes":[2,4]},{"coordinate":[2,3],"connectedNodes":[3,5]},{"coordinate":[2,2],"connectedNodes":[4,6]},{"coordinate":[2,1],"connectedNodes":[5,7]},{"coordinate":[3,1],"connectedNodes":[6,8]},{"coordinate":[4,1],"connectedNodes":[7,9]},{"coordinate":[5,1],"connectedNodes":[8,10]},{"coordinate":[6,1],"connectedNodes":[9,11]},{"coordinate":[7,1],"connectedNodes":[10,12]},{"coordinate":[8,1],"connectedNodes":[11,13]},{"coordinate":[9,1],"connectedNodes":[12,14]},{"coordinate":[9,2],"connectedNodes":[15,13]},{"coordinate":[9,3],"connectedNodes":[16,14]},{"coordinate":[9,4],"connectedNodes":[17,15]},{"coordinate":[9,5],"connectedNodes":[18,16]},{"coordinate":[9,6],"connectedNodes":[19,17]},{"coordinate":[8,6],"connectedNodes":[20,18]},{"coordinate":[7,6],"connectedNodes":[21,19]},{"coordinate":[6,6],"connectedNodes":[22,20]},{"coordinate":[5,6],"connectedNodes":[23,21]},{"coordinate":[4,6],"connectedNodes":[22,24]},{"coordinate":[4,5],"connectedNodes":[28,23,25]},{"coordinate":[4,4],"connectedNodes":[24,26]},{"coordinate":[4,3],"connectedNodes":[25,27]},{"coordinate":[4,2],"connectedNodes":[26]},{"coordinate":[3,5],"connectedNodes":[2,24]}]',
         traffic_lights="[]",
         cows="[]",
@@ -346,9 +265,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level24 = Level(
+    level1024 = Level(
         name="1024",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[7,0],"connectedNodes":[1]},{"coordinate":[7,1],"connectedNodes":[10,2,0]},{"coordinate":[7,2],"connectedNodes":[3,24,1]},{"coordinate":[7,3],"connectedNodes":[4,2]},{"coordinate":[6,3],"connectedNodes":[5,3]},{"coordinate":[6,4],"connectedNodes":[23,6,33,4]},{"coordinate":[6,5],"connectedNodes":[7,5]},{"coordinate":[6,6],"connectedNodes":[8,6]},{"coordinate":[5,6],"connectedNodes":[9,7]},{"coordinate":[5,7],"connectedNodes":[8]},{"coordinate":[6,1],"connectedNodes":[11,1]},{"coordinate":[5,1],"connectedNodes":[12,10]},{"coordinate":[4,1],"connectedNodes":[13,11]},{"coordinate":[3,1],"connectedNodes":[14,12]},{"coordinate":[2,1],"connectedNodes":[15,13]},{"coordinate":[1,1],"connectedNodes":[16,17,14]},{"coordinate":[0,1],"connectedNodes":[15]},{"coordinate":[1,2],"connectedNodes":[18,15]},{"coordinate":[1,3],"connectedNodes":[19,17]},{"coordinate":[1,4],"connectedNodes":[20,18]},{"coordinate":[2,4],"connectedNodes":[19,21]},{"coordinate":[3,4],"connectedNodes":[20,22]},{"coordinate":[4,4],"connectedNodes":[21,23]},{"coordinate":[5,4],"connectedNodes":[22,5]},{"coordinate":[8,2],"connectedNodes":[2,25]},{"coordinate":[9,2],"connectedNodes":[24,26]},{"coordinate":[9,3],"connectedNodes":[27,25]},{"coordinate":[9,4],"connectedNodes":[28,26]},{"coordinate":[9,5],"connectedNodes":[29,27]},{"coordinate":[9,6],"connectedNodes":[30,28]},{"coordinate":[8,6],"connectedNodes":[29,31]},{"coordinate":[8,5],"connectedNodes":[30,32]},{"coordinate":[8,4],"connectedNodes":[33,31]},{"coordinate":[7,4],"connectedNodes":[5,32]}]',
         traffic_lights="[]",
         cows="[]",
@@ -371,9 +290,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level25 = Level(
+    level1025 = Level(
         name="1025",
-        episode=episode21,
+        episode=episode13,
         path='[{"coordinate":[8,0],"connectedNodes":[1]},{"coordinate":[8,1],"connectedNodes":[2,0]},{"coordinate":[8,2],"connectedNodes":[3,1]},{"coordinate":[7,2],"connectedNodes":[4,2]},{"coordinate":[6,2],"connectedNodes":[12,5,3]},{"coordinate":[6,3],"connectedNodes":[25,4]},{"coordinate":[4,5],"connectedNodes":[7,19]},{"coordinate":[3,5],"connectedNodes":[8,6]},{"coordinate":[2,5],"connectedNodes":[9,7]},{"coordinate":[1,5],"connectedNodes":[10,8,18]},{"coordinate":[1,6],"connectedNodes":[11,9]},{"coordinate":[1,7],"connectedNodes":[10]},{"coordinate":[5,2],"connectedNodes":[13,4]},{"coordinate":[4,2],"connectedNodes":[14,12]},{"coordinate":[3,2],"connectedNodes":[15,13]},{"coordinate":[2,2],"connectedNodes":[16,14]},{"coordinate":[1,2],"connectedNodes":[17,15]},{"coordinate":[1,3],"connectedNodes":[18,16]},{"coordinate":[1,4],"connectedNodes":[9,17]},{"coordinate":[5,5],"connectedNodes":[6,20]},{"coordinate":[6,5],"connectedNodes":[19,21]},{"coordinate":[7,5],"connectedNodes":[20,22]},{"coordinate":[8,5],"connectedNodes":[21,23]},{"coordinate":[8,4],"connectedNodes":[24,22]},{"coordinate":[7,4],"connectedNodes":[25,23]},{"coordinate":[6,4],"connectedNodes":[24,5]}]',
         traffic_lights='[{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":4,"y":5},"direction":"W","startTime":0,"startingState":"RED"},{"redDuration":3,"greenDuration":3,"sourceCoordinate":{"x":1,"y":5},"direction":"N","startTime":0,"startingState":"RED"}]',
         cows="[]",
@@ -396,17 +315,17 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level26 = Level.objects.get(name="85", default=True)
-    level26.pk = None
-    level26._state.adding = True
-    level26.name = "1026"
-    level26.model_solution = "[4]"
-    level26.disable_algorithm_score = True
-    level26.episode = episode22
+    level1026 = Level.objects.get(name="85", default=True)
+    level1026.pk = None
+    level1026._state.adding = True
+    level1026.name = "1026"
+    level1026.model_solution = "[4]"
+    level1026.disable_algorithm_score = True
+    level1026.episode = episode14
 
-    level27 = Level(
+    level1027 = Level(
         name="1027",
-        episode=episode22,
+        episode=episode14,
         path='[{"coordinate":[0,3],"connectedNodes":[1]},{"coordinate":[1,3],"connectedNodes":[0,2]},{"coordinate":[2,3],"connectedNodes":[1,3]},{"coordinate":[3,3],"connectedNodes":[2,4]},{"coordinate":[4,3],"connectedNodes":[3,5]},{"coordinate":[5,3],"connectedNodes":[4,6]},{"coordinate":[6,3],"connectedNodes":[5,7]},{"coordinate":[7,3],"connectedNodes":[6,8]},{"coordinate":[8,3],"connectedNodes":[7]}]',
         traffic_lights="[]",
         cows="[]",
@@ -428,9 +347,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level28 = Level(
+    level1028 = Level(
         name="1028",
-        episode=episode22,
+        episode=episode14,
         path='[{"coordinate":[2,2],"connectedNodes":[1]},{"coordinate":[3,2],"connectedNodes":[0,2]},{"coordinate":[3,3],"connectedNodes":[3,1]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[4,6]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[6,5],"connectedNodes":[6,8]},{"coordinate":[6,6],"connectedNodes":[9,7]},{"coordinate":[7,6],"connectedNodes":[8]}]',
         traffic_lights='[]',
         cows='[]',
@@ -453,41 +372,41 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level29 = Level.objects.get(name="119", default=True)
-    level29.pk = None
-    level29._state.adding = True
-    level29.name = "1029"
-    level29.blocklyEnabled = True
-    level29.pythonEnabled = False
-    level29.pythonViewEnabled = True
-    level29.model_solution = "[7]"
-    level29.episode = episode22
+    level1029 = Level.objects.get(name="119", default=True)
+    level1029.pk = None
+    level1029._state.adding = True
+    level1029.name = "1029"
+    level1029.blocklyEnabled = True
+    level1029.pythonEnabled = False
+    level1029.pythonViewEnabled = True
+    level1029.model_solution = "[7]"
+    level1029.episode = episode14
 
-    level30 = Level.objects.get(name="84", default=True)
-    level30.pk = None
-    level30._state.adding = True
-    level30.name = "1030"
-    level30.blocklyEnabled = False
-    level30.pythonEnabled = True
-    level30.pythonViewEnabled = False
-    level30.model_solution = "[]"
-    level30.disable_algorithm_score = True
-    level30.episode=episode22
+    level1030 = Level.objects.get(name="84", default=True)
+    level1030.pk = None
+    level1030._state.adding = True
+    level1030.name = "1030"
+    level1030.blocklyEnabled = False
+    level1030.pythonEnabled = True
+    level1030.pythonViewEnabled = False
+    level1030.model_solution = "[]"
+    level1030.disable_algorithm_score = True
+    level1030.episode=episode14
 
-    level31 = Level.objects.get(name="34", default=True)
-    level31.pk = None
-    level31._state.adding = True
-    level31.name = "1031"
-    level31.blocklyEnabled = True
-    level31.pythonEnabled = False
-    level31.pythonViewEnabled = True
-    level31.model_solution = "[7]"
-    level31.disable_algorithm_score = True
-    level31.episode=episode22
+    level1031 = Level.objects.get(name="34", default=True)
+    level1031.pk = None
+    level1031._state.adding = True
+    level1031.name = "1031"
+    level1031.blocklyEnabled = True
+    level1031.pythonEnabled = False
+    level1031.pythonViewEnabled = True
+    level1031.model_solution = "[7]"
+    level1031.disable_algorithm_score = True
+    level1031.episode=episode14
 
-    level32 = Level(
+    level1032 = Level(
         name="1032",
-        episode=episode22,
+        episode=episode14,
         path='[{"coordinate":[5,0],"connectedNodes":[1]},{"coordinate":[5,1],"connectedNodes":[2,0]},{"coordinate":[5,2],"connectedNodes":[3,23,1]},{"coordinate":[5,3],"connectedNodes":[4,2]},{"coordinate":[5,4],"connectedNodes":[17,3]},{"coordinate":[4,5],"connectedNodes":[6,17]},{"coordinate":[3,5],"connectedNodes":[7,5]},{"coordinate":[2,5],"connectedNodes":[24,6,8]},{"coordinate":[2,4],"connectedNodes":[7,9]},{"coordinate":[2,3],"connectedNodes":[8,10]},{"coordinate":[2,2],"connectedNodes":[9,11]},{"coordinate":[2,1],"connectedNodes":[10,12]},{"coordinate":[3,1],"connectedNodes":[11,13]},{"coordinate":[4,1],"connectedNodes":[12,14]},{"coordinate":[4,2],"connectedNodes":[15,13]},{"coordinate":[4,3],"connectedNodes":[16,14]},{"coordinate":[4,4],"connectedNodes":[15]},{"coordinate":[5,5],"connectedNodes":[5,29,18,4]},{"coordinate":[6,5],"connectedNodes":[17,19]},{"coordinate":[7,5],"connectedNodes":[18,20]},{"coordinate":[7,4],"connectedNodes":[19,21]},{"coordinate":[7,3],"connectedNodes":[20,22]},{"coordinate":[7,2],"connectedNodes":[23,21,36]},{"coordinate":[6,2],"connectedNodes":[2,22]},{"coordinate":[1,5],"connectedNodes":[25,7]},{"coordinate":[1,6],"connectedNodes":[26,24]},{"coordinate":[2,6],"connectedNodes":[25,27]},{"coordinate":[3,6],"connectedNodes":[26,28]},{"coordinate":[4,6],"connectedNodes":[27,29]},{"coordinate":[5,6],"connectedNodes":[28,30,17]},{"coordinate":[6,6],"connectedNodes":[29,31]},{"coordinate":[7,6],"connectedNodes":[30,32]},{"coordinate":[8,6],"connectedNodes":[31,33]},{"coordinate":[8,5],"connectedNodes":[32,34]},{"coordinate":[8,4],"connectedNodes":[33,35]},{"coordinate":[8,3],"connectedNodes":[34,36]},{"coordinate":[8,2],"connectedNodes":[22,35]}]',
         traffic_lights='[]',
         cows='[]',
@@ -510,9 +429,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level33 = Level(
+    level1033 = Level(
         name="1033",
-        episode=episode22,
+        episode=episode14,
         path='[{"coordinate":[7,1],"connectedNodes":[1]},{"coordinate":[7,2],"connectedNodes":[2,0]},{"coordinate":[6,2],"connectedNodes":[3,1]},{"coordinate":[6,3],"connectedNodes":[4,13,2]},{"coordinate":[5,3],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[6,16,15,4]},{"coordinate":[4,4],"connectedNodes":[7,5]},{"coordinate":[4,5],"connectedNodes":[8,16,6]},{"coordinate":[3,5],"connectedNodes":[9,7]},{"coordinate":[3,6],"connectedNodes":[10,8]},{"coordinate":[2,6],"connectedNodes":[11,9]},{"coordinate":[2,7],"connectedNodes":[12,17,10]},{"coordinate":[1,7],"connectedNodes":[11]},{"coordinate":[7,3],"connectedNodes":[3,14]},{"coordinate":[7,4],"connectedNodes":[15,13]},{"coordinate":[6,4],"connectedNodes":[5,22,14]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[3,7],"connectedNodes":[11,18]},{"coordinate":[4,7],"connectedNodes":[17,19]},{"coordinate":[5,7],"connectedNodes":[18,20]},{"coordinate":[6,7],"connectedNodes":[19,21]},{"coordinate":[6,6],"connectedNodes":[20,22]},{"coordinate":[6,5],"connectedNodes":[21,15]}]',
         traffic_lights="[]",
         cows="[]",
@@ -535,9 +454,9 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level34 = Level(
+    level1034 = Level(
         name="1034",
-        episode=episode22,
+        episode=episode14,
         path='[{"coordinate":[0,6],"connectedNodes":[1]},{"coordinate":[1,6],"connectedNodes":[0,2]},{"coordinate":[2,6],"connectedNodes":[1,3]},{"coordinate":[3,6],"connectedNodes":[2,4]},{"coordinate":[4,6],"connectedNodes":[3,5]},{"coordinate":[5,6],"connectedNodes":[4,6]},{"coordinate":[5,5],"connectedNodes":[5,23,7]},{"coordinate":[5,4],"connectedNodes":[6,8]},{"coordinate":[5,3],"connectedNodes":[7,29,9]},{"coordinate":[5,2],"connectedNodes":[8,10]},{"coordinate":[5,1],"connectedNodes":[11,9]},{"coordinate":[4,1],"connectedNodes":[12,10]},{"coordinate":[3,1],"connectedNodes":[13,11]},{"coordinate":[2,1],"connectedNodes":[14,12]},{"coordinate":[1,1],"connectedNodes":[15,13]},{"coordinate":[1,2],"connectedNodes":[34,16,14]},{"coordinate":[1,3],"connectedNodes":[17,15]},{"coordinate":[1,4],"connectedNodes":[30,16]},{"coordinate":[2,5],"connectedNodes":[30,19]},{"coordinate":[3,5],"connectedNodes":[18,20]},{"coordinate":[3,4],"connectedNodes":[19,21]},{"coordinate":[3,3],"connectedNodes":[20,22]},{"coordinate":[3,2],"connectedNodes":[21]},{"coordinate":[6,5],"connectedNodes":[6,24]},{"coordinate":[7,5],"connectedNodes":[23,25]},{"coordinate":[8,5],"connectedNodes":[24,26]},{"coordinate":[8,4],"connectedNodes":[25,27]},{"coordinate":[8,3],"connectedNodes":[28,26]},{"coordinate":[7,3],"connectedNodes":[29,27]},{"coordinate":[6,3],"connectedNodes":[8,28]},{"coordinate":[1,5],"connectedNodes":[31,18,17]},{"coordinate":[0,5],"connectedNodes":[30,32]},{"coordinate":[0,4],"connectedNodes":[31,33]},{"coordinate":[0,3],"connectedNodes":[32,34]},{"coordinate":[0,2],"connectedNodes":[33,15]}]',
         traffic_lights="[]",
         cows="[]",
@@ -560,339 +479,312 @@ def add_python_den_levels(apps, schema_editor):
         anonymous=False
     )
 
-    level35 = Level.objects.get(name="99", default=True)
-    level35.pk = None
-    level35._state.adding = True
-    level35.name = "1035"
-    level35.blocklyEnabled = True
-    level35.pythonEnabled = False
-    level35.pythonViewEnabled = True
-    level35.episode=episode22
+    level1035 = Level.objects.get(name="99", default=True)
+    level1035.pk = None
+    level1035._state.adding = True
+    level1035.name = "1035"
+    level1035.blocklyEnabled = True
+    level1035.pythonEnabled = False
+    level1035.pythonViewEnabled = True
+    level1035.episode=episode14
 
-    level36 = Level.objects.get(name="38", default=True)
-    level36.pk = None
-    level36._state.adding = True
-    level36.name = "1036"
-    level36.pythonViewEnabled = True
-    level36.model_solution = "[11]"
-    level36.disable_algorithm_score = True
-    level36.episode=episode22
+    level1036 = Level.objects.get(name="38", default=True)
+    level1036.pk = None
+    level1036._state.adding = True
+    level1036.name = "1036"
+    level1036.pythonViewEnabled = True
+    level1036.model_solution = "[11]"
+    level1036.disable_algorithm_score = True
+    level1036.episode=episode14
 
-    level37 = Level.objects.get(name="100", default=True)
-    level37.pk = None
-    level37._state.adding = True
-    level37.name = "1037"
-    level37.episode=episode22
+    level1037 = Level.objects.get(name="100", default=True)
+    level1037.pk = None
+    level1037._state.adding = True
+    level1037.name = "1037"
+    level1037.episode=episode14
 
-    level38 = Level.objects.get(name="39", default=True)
-    level38.pk = None
-    level38._state.adding = True
-    level38.name = "1038"
-    level38.blocklyEnabled = False
-    level38.pythonEnabled = True
-    level38.model_solution = "[]"
-    level38.disable_route_score = False
-    level38.disable_algorithm_score = True
-    level38.episode=episode22
+    level1038 = Level.objects.get(name="39", default=True)
+    level1038.pk = None
+    level1038._state.adding = True
+    level1038.name = "1038"
+    level1038.blocklyEnabled = False
+    level1038.pythonEnabled = True
+    level1038.model_solution = "[]"
+    level1038.disable_route_score = False
+    level1038.disable_algorithm_score = True
+    level1038.episode=episode14
 
-    level39 = Level.objects.get(name="47", default=True)
-    level39.pk = None
-    level39._state.adding = True
-    level39.name = "1039"
-    level39.blocklyEnabled = False
-    level39.pythonEnabled = True
-    level39.model_solution = "[]"
-    level39.disable_algorithm_score = True
-    level39.episode=episode22
+    level1039 = Level.objects.get(name="47", default=True)
+    level1039.pk = None
+    level1039._state.adding = True
+    level1039.name = "1039"
+    level1039.blocklyEnabled = False
+    level1039.pythonEnabled = True
+    level1039.model_solution = "[]"
+    level1039.disable_algorithm_score = True
+    level1039.episode=episode14
 
-    level40 = Level.objects.get(name="48", default=True)
-    level40.pk = None
-    level40._state.adding = True
-    level40.name = "1040"
-    level40.blocklyEnabled = False
-    level40.pythonEnabled = True
-    level40.model_solution = "[]"
-    level40.disable_algorithm_score = True
-    level40.episode=episode22
+    level1040 = Level.objects.get(name="48", default=True)
+    level1040.pk = None
+    level1040._state.adding = True
+    level1040.name = "1040"
+    level1040.blocklyEnabled = False
+    level1040.pythonEnabled = True
+    level1040.model_solution = "[]"
+    level1040.disable_algorithm_score = True
+    level1040.episode=episode14
 
-    level41 = Level.objects.get(name="83", default=True)
-    level41.pk = None
-    level41._state.adding = True
-    level41.name = "1041"
-    level41.disable_algorithm_score = True
-    level41.episode = episode25
+    level1041 = Level.objects.get(name="83", default=True)
+    level1041.pk = None
+    level1041._state.adding = True
+    level1041.name = "1041"
+    level1041.disable_algorithm_score = True
+    level1041.episode = episode15
 
-    level42 = Level.objects.get(name="95", default=True)
-    level42.pk = None
-    level42._state.adding = True
-    level42.name = "1042"
-    level42.episode = episode25
+    level1042 = Level.objects.get(name="95", default=True)
+    level1042.pk = None
+    level1042._state.adding = True
+    level1042.name = "1042"
+    level1042.episode = episode15
 
-    level43 = Level.objects.get(name="96", default=True)
-    level43.pk = None
-    level43._state.adding = True
-    level43.name = "1043"
-    level43.episode = episode25
+    level1043 = Level.objects.get(name="96", default=True)
+    level1043.pk = None
+    level1043._state.adding = True
+    level1043.name = "1043"
+    level1043.episode = episode15
 
-    level44 = Level.objects.get(name="84", default=True)
-    level44.pk = None
-    level44._state.adding = True
-    level44.name = "1044"
-    level44.disable_algorithm_score = True
-    level44.episode = episode25
+    level1044 = Level.objects.get(name="84", default=True)
+    level1044.pk = None
+    level1044._state.adding = True
+    level1044.name = "1044"
+    level1044.disable_algorithm_score = True
+    level1044.episode = episode15
 
-    level45 = Level.objects.get(name="97", default=True)
-    level45.pk = None
-    level45._state.adding = True
-    level45.name = "1045"
-    level45.episode = episode25
+    level1045 = Level.objects.get(name="97", default=True)
+    level1045.pk = None
+    level1045._state.adding = True
+    level1045.name = "1045"
+    level1045.episode = episode15
 
-    level46 = Level.objects.get(name="106", default=True)
-    level46.pk = None
-    level46._state.adding = True
-    level46.name = "1046"
-    level46.episode = episode25
+    level1046 = Level.objects.get(name="106", default=True)
+    level1046.pk = None
+    level1046._state.adding = True
+    level1046.name = "1046"
+    level1046.episode = episode15
 
-    level47 = Level.objects.get(name="107", default=True)
-    level47.pk = None
-    level47._state.adding = True
-    level47.name = "1047"
-    level47.episode = episode25
+    level1047 = Level.objects.get(name="107", default=True)
+    level1047.pk = None
+    level1047._state.adding = True
+    level1047.name = "1047"
+    level1047.episode = episode15
 
-    level48 = Level.objects.get(name="108", default=True)
-    level48.pk = None
-    level48._state.adding = True
-    level48.name = "1048"
-    level48.episode = episode25
+    level1048 = Level.objects.get(name="108", default=True)
+    level1048.pk = None
+    level1048._state.adding = True
+    level1048.name = "1048"
+    level1048.episode = episode15
 
-    level49 = Level.objects.get(name="109", default=True)
-    level49.pk = None
-    level49._state.adding = True
-    level49.name = "1049"
-    level49.episode = episode25
+    level1049 = Level.objects.get(name="109", default=True)
+    level1049.pk = None
+    level1049._state.adding = True
+    level1049.name = "1049"
+    level1049.episode = episode15
 
-    level50 = Level.objects.get(name="61", default=True)
-    level50.pk = None
-    level50._state.adding = True
-    level50.name = "1050"
-    level50.pythonViewEnabled = True
-    level50.disable_algorithm_score = True
-    level50.episode = episode26
+    level1050 = Level.objects.get(name="61", default=True)
+    level1050.pk = None
+    level1050._state.adding = True
+    level1050.name = "1050"
+    level1050.pythonViewEnabled = True
+    level1050.disable_algorithm_score = True
+    level1050.episode = episode22
 
-    level51 = Level.objects.get(name="62", default=True)
-    level51.pk = None
-    level51._state.adding = True
-    level51.name = "1051"
-    level51.pythonViewEnabled = True
-    level51.disable_algorithm_score = True
-    level51.episode = episode26
+    level1051 = Level.objects.get(name="62", default=True)
+    level1051.pk = None
+    level1051._state.adding = True
+    level1051.name = "1051"
+    level1051.pythonViewEnabled = True
+    level1051.disable_algorithm_score = True
+    level1051.episode = episode22
 
-    level52 = Level.objects.get(name="63", default=True)
-    level52.pk = None
-    level52._state.adding = True
-    level52.name = "1052"
-    level52.blocklyEnabled = False
-    level52.pythonEnabled = True
-    level52.model_solution = "[]"
-    level52.disable_algorithm_score = True
-    level52.episode = episode26
+    level1052 = Level.objects.get(name="63", default=True)
+    level1052.pk = None
+    level1052._state.adding = True
+    level1052.name = "1052"
+    level1052.blocklyEnabled = False
+    level1052.pythonEnabled = True
+    level1052.model_solution = "[]"
+    level1052.disable_algorithm_score = True
+    level1052.episode = episode22
 
-    level53 = Level.objects.get(name="64", default=True)
-    level53.pk = None
-    level53._state.adding = True
-    level53.name = "1053"
-    level53.blocklyEnabled = False
-    level53.pythonEnabled = True
-    level53.model_solution = "[]"
-    level53.disable_algorithm_score = True
-    level53.episode = episode26
+    level1053 = Level.objects.get(name="64", default=True)
+    level1053.pk = None
+    level1053._state.adding = True
+    level1053.name = "1053"
+    level1053.blocklyEnabled = False
+    level1053.pythonEnabled = True
+    level1053.model_solution = "[]"
+    level1053.disable_algorithm_score = True
+    level1053.episode = episode22
 
-    level54 = Level.objects.get(name="65", default=True)
-    level54.pk = None
-    level54._state.adding = True
-    level54.name = "1054"
-    level54.blocklyEnabled = False
-    level54.pythonEnabled = True
-    level54.model_solution = "[]"
-    level54.disable_algorithm_score = True
-    level54.episode = episode26
+    level1054 = Level.objects.get(name="65", default=True)
+    level1054.pk = None
+    level1054._state.adding = True
+    level1054.name = "1054"
+    level1054.blocklyEnabled = False
+    level1054.pythonEnabled = True
+    level1054.model_solution = "[]"
+    level1054.disable_algorithm_score = True
+    level1054.episode = episode22
 
-    level55 = Level.objects.get(name="66", default=True)
-    level55.pk = None
-    level55._state.adding = True
-    level55.name = "1055"
-    level55.blocklyEnabled = False
-    level55.pythonEnabled = True
-    level55.model_solution = "[]"
-    level55.disable_algorithm_score = True
-    level55.episode = episode26
+    level1055 = Level.objects.get(name="66", default=True)
+    level1055.pk = None
+    level1055._state.adding = True
+    level1055.name = "1055"
+    level1055.blocklyEnabled = False
+    level1055.pythonEnabled = True
+    level1055.model_solution = "[]"
+    level1055.disable_algorithm_score = True
+    level1055.episode = episode22
 
-    level56 = Level.objects.get(name="67", default=True)
-    level56.pk = None
-    level56._state.adding = True
-    level56.name = "1056"
-    level56.blocklyEnabled = False
-    level56.pythonEnabled = True
-    level56.model_solution = "[]"
-    level56.disable_algorithm_score = True
-    level56.episode = episode26
+    level1056 = Level.objects.get(name="67", default=True)
+    level1056.pk = None
+    level1056._state.adding = True
+    level1056.name = "1056"
+    level1056.blocklyEnabled = False
+    level1056.pythonEnabled = True
+    level1056.model_solution = "[]"
+    level1056.disable_algorithm_score = True
+    level1056.episode = episode22
 
-    level57 = Level.objects.get(name="90", default=True)
-    level57.pk = None
-    level57._state.adding = True
-    level57.name = "1057"
-    level57.blocklyEnabled = False
-    level57.pythonViewEnabled = False
-    level57.pythonEnabled = True
-    level57.disable_algorithm_score = True
-    level57.episode = episode26
+    level1057 = Level.objects.get(name="90", default=True)
+    level1057.pk = None
+    level1057._state.adding = True
+    level1057.name = "1057"
+    level1057.blocklyEnabled = False
+    level1057.pythonViewEnabled = False
+    level1057.pythonEnabled = True
+    level1057.disable_algorithm_score = True
+    level1057.episode = episode22
 
-    level58 = Level.objects.get(name="91", default=True)
-    level58.pk = None
-    level58._state.adding = True
-    level58.name = "1058"
-    level58.blocklyEnabled = False
-    level58.pythonViewEnabled = False
-    level58.pythonEnabled = True
-    level58.disable_algorithm_score = True
-    level58.episode = episode26
+    level1058 = Level.objects.get(name="91", default=True)
+    level1058.pk = None
+    level1058._state.adding = True
+    level1058.name = "1058"
+    level1058.blocklyEnabled = False
+    level1058.pythonViewEnabled = False
+    level1058.pythonEnabled = True
+    level1058.disable_algorithm_score = True
+    level1058.episode = episode22
 
-    level59 = Level.objects.get(name="101", default=True)
-    level59.pk = None
-    level59._state.adding = True
-    level59.name = "1059"
-    level59.episode = episode26
+    level1059 = Level.objects.get(name="101", default=True)
+    level1059.pk = None
+    level1059._state.adding = True
+    level1059.name = "1059"
+    level1059.episode = episode22
 
     level60 = Level.objects.get(name="102", default=True)
     level60.pk = None
     level60._state.adding = True
     level60.name = "1060"
-    level60.episode = episode26
+    level60.episode = episode22
 
     def save_all_levels():
-        level1.save()
-        level2.save()
-        level3.save()
-        level4.save()
-        level5.save()
-        level6.save()
-        level7.save()
-        level8.save()
-        level9.save()
-        level10.save()
-        level11.save()
-        level12.save()
-        level13.save()
-        level14.save()
-        level15.save()
-        level16.save()
-        level17.save()
-        level18.save()
-        level19.save()
-        level20.save()
-        level21.save()
-        level22.save()
-        level23.save()
-        level24.save()
-        level25.save()
-        level26.save()
-        level27.save()
-        level28.save()
-        level29.save()
-        level30.save()
-        level31.save()
-        level32.save()
-        level33.save()
-        level34.save()
-        level35.save()
-        level36.save()
-        level37.save()
-        level38.save()
-        level39.save()
-        level40.save()
-        level41.save()
-        level42.save()
-        level43.save()
-        level44.save()
-        level45.save()
-        level46.save()
-        level47.save()
-        level48.save()
-        level49.save()
-        level50.save()
-        level51.save()
-        level52.save()
-        level53.save()
-        level54.save()
-        level55.save()
-        level56.save()
-        level57.save()
-        level58.save()
-        level59.save()
-        level60.save()
+        level1014.save()
+        level1015.save()
+        level1016.save()
+        level1017.save()
+        level1018.save()
+        level1019.save()
+        level1020.save()
+        level1021.save()
+        level1022.save()
+        level1023.save()
+        level1024.save()
+        level1025.save()
+        level1026.save()
+        level1027.save()
+        level1028.save()
+        level1029.save()
+        level1030.save()
+        level1031.save()
+        level1032.save()
+        level1033.save()
+        level1034.save()
+        level1035.save()
+        level1036.save()
+        level1037.save()
+        level1038.save()
+        level1039.save()
+        level1040.save()
+        level1041.save()
+        level1042.save()
+        level1043.save()
+        level1044.save()
+        level1045.save()
+        level1046.save()
+        level1047.save()
+        level1048.save()
+        level1049.save()
+        level1050.save()
+        level1051.save()
+        level1052.save()
+        level1053.save()
+        level1054.save()
+        level1055.save()
+        level1056.save()
+        level1057.save()
+        level1058.save()
+        level1059.save()
+        level1060.save()
 
     save_all_levels()
-
-    level1.next_level = level2
-    level2.next_level = level3
-    level3.next_level = level4
-    level4.next_level = level5
-    level5.next_level = level6
-    level6.next_level = level7
-    level7.next_level = level8
-    level8.next_level = level9
-    level9.next_level = level10
-    level10.next_level = level11
-    level11.next_level = level12
-    level12.next_level = level13
-    level13.next_level = level14
-    level14.next_level = level15
-    level15.next_level = level16
-    level16.next_level = level17
-    level17.next_level = level18
-    level18.next_level = level19
-    level19.next_level = level20
-    level20.next_level = level21
-    level21.next_level = level22
-    level22.next_level = level23
-    level23.next_level = level24
-    level24.next_level = level25
-    level25.next_level = level26
-    level26.next_level = level27
-    level27.next_level = level28
-    level28.next_level = level29
-    level29.next_level = level30
-    level30.next_level = level31
-    level31.next_level = level32
-    level32.next_level = level33
-    level33.next_level = level34
-    level34.next_level = level35
-    level35.next_level = level36
-    level36.next_level = level37
-    level37.next_level = level38
-    level38.next_level = level39
-    level39.next_level = level40
-    level40.next_level = level41
-    level41.next_level = level42
-    level42.next_level = level43
-    level43.next_level = level44
-    level44.next_level = level45
-    level45.next_level = level46
-    level46.next_level = level47
-    level47.next_level = level48
-    level48.next_level = level49
-    level49.next_level = level50
-    level50.next_level = level51
-    level51.next_level = level52
-    level52.next_level = level53
-    level53.next_level = level54
-    level54.next_level = level55
-    level55.next_level = level56
-    level56.next_level = level57
-    level57.next_level = level58
-    level58.next_level = level59
-    level59.next_level = level60
-    level60.next_level = None
+    level1014.next_level = level1015
+    level1015.next_level = level1016
+    level1016.next_level = level1017
+    level1017.next_level = level1018
+    level1018.next_level = level1019
+    level1019.next_level = level1020
+    level1020.next_level = level1021
+    level1021.next_level = level1022
+    level1022.next_level = level1023
+    level1023.next_level = level1024
+    level1024.next_level = level1025
+    level1025.next_level = level1026
+    level1026.next_level = level1027
+    level1027.next_level = level1028
+    level1028.next_level = level1029
+    level1029.next_level = level1030
+    level1030.next_level = level1031
+    level1031.next_level = level1032
+    level1032.next_level = level1033
+    level1033.next_level = level1034
+    level1034.next_level = level1035
+    level1035.next_level = level1036
+    level1036.next_level = level1037
+    level1037.next_level = level1038
+    level1038.next_level = level1039
+    level1039.next_level = level1040
+    level1040.next_level = level1041
+    level1041.next_level = level1042
+    level1042.next_level = level1043
+    level1043.next_level = level1044
+    level1044.next_level = level1045
+    level1045.next_level = level1046
+    level1046.next_level = level1047
+    level1047.next_level = level1048
+    level1048.next_level = level1049
+    level1049.next_level = level1050
+    level1050.next_level = level1051
+    level1051.next_level = level1052
+    level1052.next_level = level1053
+    level1053.next_level = level1054
+    level1054.next_level = level1055
+    level1055.next_level = level1056
+    level1056.next_level = level1057
+    level1057.next_level = level1058
+    level1058.next_level = level1059
+    level1059.next_level = level1060
+    level1060.next_level = None
 
     save_all_levels()
 
@@ -905,98 +797,28 @@ def add_python_den_blocks(apps, schema_editor):
     def set_blocks(level, blocks):
         set_blocks_inner(level, blocks, LevelBlock, Block)
 
-    level1 = Level.objects.get(name="1001", default=True)
-    level2 = Level.objects.get(name="1002", default=True)
-    level3 = Level.objects.get(name="1003", default=True)
-    level7 = Level.objects.get(name="1007", default=True)
-    level8 = Level.objects.get(name="1008", default=True)
-    level9 = Level.objects.get(name="1009", default=True)
-    level14 = Level.objects.get(name="1014", default=True)
-    level15 = Level.objects.get(name="1015", default=True)
-    level19 = Level.objects.get(name="1019", default=True)
-    level22 = Level.objects.get(name="1022", default=True)
-    level23 = Level.objects.get(name="1023", default=True)
-    level26 = Level.objects.get(name="1026", default=True)
-    level27 = Level.objects.get(name="1027", default=True)
-    level28 = Level.objects.get(name="1028", default=True)
-    level29 = Level.objects.get(name="1029", default=True)
-    level31 = Level.objects.get(name="1031", default=True)
-    level32 = Level.objects.get(name="1032", default=True)
-    level35 = Level.objects.get(name="1035", default=True)
-    level36 = Level.objects.get(name="1036", default=True)
-    level41 = Level.objects.get(name="1041", default=True)
-    level44 = Level.objects.get(name="1044", default=True)
-    level50 = Level.objects.get(name="1050", default=True)
-    level51 = Level.objects.get(name="1051", default=True)
-    level57 = Level.objects.get(name="1057", default=True)
-    level58 = Level.objects.get(name="1058", default=True)
+    level1014 = Level.objects.get(name="1014", default=True)
+    level1015 = Level.objects.get(name="1015", default=True)
+    level1019 = Level.objects.get(name="1019", default=True)
+    level1022 = Level.objects.get(name="1022", default=True)
+    level1023 = Level.objects.get(name="1023", default=True)
+    level1026 = Level.objects.get(name="1026", default=True)
+    level1027 = Level.objects.get(name="1027", default=True)
+    level1028 = Level.objects.get(name="1028", default=True)
+    level1029 = Level.objects.get(name="1029", default=True)
+    level1031 = Level.objects.get(name="1031", default=True)
+    level1032 = Level.objects.get(name="1032", default=True)
+    level1035 = Level.objects.get(name="1035", default=True)
+    level1036 = Level.objects.get(name="1036", default=True)
+    level1041 = Level.objects.get(name="1041", default=True)
+    level1044 = Level.objects.get(name="1044", default=True)
+    level1050 = Level.objects.get(name="1050", default=True)
+    level1051 = Level.objects.get(name="1051", default=True)
+    level1057 = Level.objects.get(name="1057", default=True)
+    level1058 = Level.objects.get(name="1058", default=True)
 
     set_blocks(
-        level1,
-        json.loads(
-            '[{"type":"move_forwards"},'
-            + '{"type":"turn_left"},'
-            + '{"type":"turn_right"}]'
-        ),
-    )
-    set_blocks(
-        level2,
-        json.loads(
-            '[{"type":"move_forwards"},'
-            + '{"type":"turn_left"},'
-            + '{"type":"turn_right"}]'
-        ),
-    )
-    set_blocks(
-        level3,
-        json.loads(
-            '[{"type":"move_forwards"},'
-            + '{"type":"turn_left"},'
-            + '{"type":"turn_right"}]'
-        ),
-    )
-    set_blocks(
-        level7,
-        json.loads(
-            '[{"type":"move_forwards"},'
-            + '{"type":"controls_repeat_while"},'
-            + '{"type":"variables_numeric_set"},'
-            + '{"type":"variables_increment"},'
-            + '{"type":"variables_get"},'
-            + '{"type":"math_number"},'
-            + '{"type":"logic_compare"}]'
-        ),
-    )
-    set_blocks(
-        level8,
-        json.loads(
-            '[{"type":"turn_left"},'
-            + '{"type":"turn_right"},'
-            + '{"type":"controls_repeat_while"},'
-            + '{"type":"variables_numeric_set"},'
-            + '{"type":"variables_increment"},'
-            + '{"type":"variables_get"},'
-            + '{"type":"math_number"},'
-            + '{"type":"logic_compare"}]'
-        ),
-    )
-    set_blocks(
-        level9,
-        json.loads(
-            '[{"type":"move_forwards"},'
-            + '{"type":"turn_left"},'
-            + '{"type":"turn_right"},'
-            + '{"type":"controls_repeat_while"},'
-            + '{"type":"variables_numeric_set"},'
-            + '{"type":"variables_increment"},'
-            + '{"type":"variables_get"},'
-            + '{"type":"math_number"},'
-            + '{"type":"logic_compare"}]'
-        ),
-    )
-
-    set_blocks(
-        level14,
+        level1014,
         json.loads(
             '[{"type": "variables_numeric_set"},'
             + '{"type": "controls_repeat_while"},'
@@ -1012,7 +834,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level15,
+        level1015,
         json.loads(
             '[{"type": "variables_numeric_set"},'
             + '{"type": "controls_repeat_while"},'
@@ -1029,7 +851,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level19,
+        level1019,
         json.loads(
             '[{"type": "variables_numeric_set"},'
             + '{"type": "controls_repeat_while"},'
@@ -1046,7 +868,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level22,
+        level1022,
         json.loads(
             '[{"type": "variables_numeric_set"},'
             + '{"type": "controls_repeat_while"},'
@@ -1063,7 +885,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level23,
+        level1023,
         json.loads(
             '[{"type": "variables_numeric_set"},'
             + '{"type": "controls_repeat_while"},'
@@ -1080,7 +902,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level26,
+        level1026,
         json.loads(
             '[{"type": "move_forwards"},'
             + '{"type": "turn_left"},'
@@ -1092,7 +914,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level27,
+        level1027,
         json.loads(
             '[{"type": "controls_repeat_while"},'
             + '{"type": "logic_negate"},'
@@ -1102,7 +924,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level28,
+        level1028,
         json.loads(
             '[{"type": "controls_repeat_while"},'
             + '{"type": "logic_negate"},'
@@ -1113,7 +935,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level29,
+        level1029,
         json.loads(
             '[{"type": "controls_repeat_while"},'
             + '{"type": "logic_negate"},'
@@ -1125,7 +947,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level31,
+        level1031,
         json.loads(
             '[{"type": "controls_repeat_while"},'
             + '{"type": "logic_negate"},'
@@ -1138,7 +960,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level32,
+        level1032,
         json.loads(
             '[{"type": "controls_repeat_while"},'
             + '{"type": "logic_negate"},'
@@ -1151,7 +973,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level35,
+        level1035,
         json.loads(
             '[{"type": "controls_repeat_while"},'
             + '{"type": "logic_negate"},'
@@ -1165,7 +987,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level36,
+        level1036,
         json.loads(
             '[{"type": "controls_repeat_while"},'
             + '{"type": "logic_negate"},'
@@ -1181,7 +1003,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level41,
+        level1041,
         json.loads(
             '[{"type": "move_forwards"},'
             + '{"type": "turn_left"},'
@@ -1191,7 +1013,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level44,
+        level1044,
         json.loads(
             '[{"type": "move_forwards"},'
             + '{"type": "turn_left"},'
@@ -1201,7 +1023,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level50,
+        level1050,
         json.loads(
             '[{"type": "call_proc"},'
             + '{"type": "declare_proc"},'
@@ -1213,7 +1035,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level51,
+        level1051,
         json.loads(
             '[{"type": "call_proc"},'
             + '{"type": "declare_proc"},'
@@ -1226,7 +1048,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level57,
+        level1057,
         json.loads(
             '[{"type":"move_forwards"},'
             + '{"type":"turn_left"},'
@@ -1238,7 +1060,7 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
     set_blocks(
-        level58,
+        level1058,
         json.loads(
             '[{"type":"move_forwards"},'
             + '{"type":"turn_left"},'
@@ -1271,23 +1093,23 @@ def add_python_den_decor(apps, schema_editor):
             )
         LevelDecor.objects.bulk_create(new_level_decor)
 
-    level14 = Level.objects.get(name="1014", default=True)
-    level15 = Level.objects.get(name="1015", default=True)
-    level16 = Level.objects.get(name="1016", default=True)
-    level17 = Level.objects.get(name="1017", default=True)
-    level18 = Level.objects.get(name="1018", default=True)
-    level20 = Level.objects.get(name="1020", default=True)
-    level21 = Level.objects.get(name="1021", default=True)
-    level22 = Level.objects.get(name="1022", default=True)
-    level23 = Level.objects.get(name="1023", default=True)
-    level24 = Level.objects.get(name="1024", default=True)
-    level27 = Level.objects.get(name="1027", default=True)
-    level28 = Level.objects.get(name="1028", default=True)
-    level33 = Level.objects.get(name="1033", default=True)
-    level34 = Level.objects.get(name="1034", default=True)
+    level1014 = Level.objects.get(name="1014", default=True)
+    level1015 = Level.objects.get(name="1015", default=True)
+    level1016 = Level.objects.get(name="1016", default=True)
+    level1017 = Level.objects.get(name="1017", default=True)
+    level1018 = Level.objects.get(name="1018", default=True)
+    level1020 = Level.objects.get(name="1020", default=True)
+    level1021 = Level.objects.get(name="1021", default=True)
+    level1022 = Level.objects.get(name="1022", default=True)
+    level1023 = Level.objects.get(name="1023", default=True)
+    level1024 = Level.objects.get(name="1024", default=True)
+    level1027 = Level.objects.get(name="1027", default=True)
+    level1028 = Level.objects.get(name="1028", default=True)
+    level1033 = Level.objects.get(name="1033", default=True)
+    level1034 = Level.objects.get(name="1034", default=True)
 
     set_decor(
-        level14,
+        level1014,
         json.loads(
             '[{"x": 149, "y": 299, "decorName": "pond"},'
             + '{"x": 398, "y": 354, "decorName": "bush"},'
@@ -1299,7 +1121,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level15,
+        level1015,
         json.loads(
             '[{"x": 404, "y": 602, "decorName": "pond"},'
             + '{"x": 563, "y": 600, "decorName": "pond"},'
@@ -1315,7 +1137,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level16,
+        level1016,
         json.loads(
             '[{"x": 699, "y": 499, "decorName": "pond"},'
             + '{"x": 700, "y": 402, "decorName": "pond"},'
@@ -1326,7 +1148,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level17,
+        level1017,
         json.loads(
             '[{"x": 461, "y": 314, "decorName": "pond"},'
             + '{"x": 428, "y": 371, "decorName": "tree1"},'
@@ -1335,7 +1157,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level18,
+        level1018,
         json.loads(
             '[{"x": 301, "y": 594, "decorName": "tree1"},'
             + '{"x": 421, "y": 598, "decorName": "tree1"},'
@@ -1346,7 +1168,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level20,
+        level1020,
         json.loads(
             '[{"x": 443, "y": 578, "decorName": "pond"},'
             + '{"x": 640, "y": 434, "decorName": "tree2"},'
@@ -1359,7 +1181,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level21,
+        level1021,
         json.loads(
             '[{"x": 149, "y": 292, "decorName": "pond"},'
             + '{"x": 300, "y": 507, "decorName": "tree1"},'
@@ -1368,7 +1190,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level22,
+        level1022,
         json.loads(
             '[{"x": 663, "y": 191, "decorName": "pond"},'
             + '{"x": 364, "y": 395, "decorName": "tree1"},'
@@ -1379,7 +1201,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level23,
+        level1023,
         json.loads(
             '[{"x": 599, "y": 310, "decorName": "pond"},'
             + '{"x": 599, "y": 208, "decorName": "pond"},'
@@ -1396,7 +1218,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level24,
+        level1024,
         json.loads(
             '[{"x": 316, "y": 302, "decorName": "pond"},'
             + '{"x": 207, "y": 198, "decorName": "pond"},'
@@ -1411,7 +1233,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level27,
+        level1027,
         json.loads(
             '[{"x": 147, "y": 214, "decorName": "pond"},'
             + '{"x": 434, "y": 255, "decorName": "bush"},'
@@ -1426,7 +1248,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level28,
+        level1028,
         json.loads(
             '[{"x": 443, "y": 578, "decorName": "pond"},'
             + '{"x": 640, "y": 434, "decorName": "tree2"},'
@@ -1439,7 +1261,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level33,
+        level1033,
         json.loads(
             '[{"x": 459, "y": 602, "decorName": "pond"},'
             + '{"x": 381, "y": 606, "decorName": "tree2"},'
@@ -1450,7 +1272,7 @@ def add_python_den_decor(apps, schema_editor):
     )
 
     set_decor(
-        level34,
+        level1034,
         json.loads(
             '[{"x": 625, "y": 408, "decorName": "pond"},'
             + '{"x": 201, "y": 411, "decorName": "tree2"},'
@@ -1460,19 +1282,6 @@ def add_python_den_decor(apps, schema_editor):
         )
     )
 
-    bulk_copy_decor("110", "1001")
-    bulk_copy_decor("111", "1002")
-    bulk_copy_decor("112", "1003")
-    bulk_copy_decor("113", "1004")
-    bulk_copy_decor("114", "1005")
-    bulk_copy_decor("115", "1006")
-    bulk_copy_decor("116", "1007")
-    bulk_copy_decor("117", "1008")
-    bulk_copy_decor("118", "1009")
-    bulk_copy_decor("119", "1010")
-    bulk_copy_decor("120", "1011")
-    bulk_copy_decor("121", "1012")
-    bulk_copy_decor("122", "1013")
     bulk_copy_decor("85", "1026")
     bulk_copy_decor("1010", "1029")
     bulk_copy_decor("1044", "1030")
@@ -1530,84 +1339,58 @@ def create_python_den_episodes(apps, schema_editor):
 
     episode20 = Episode.objects.create(
         pk=20,
-        name="Counted Loops Using While",
+        name="String Manipulation",
     )
 
     episode21 = Episode.objects.create(
         pk=21,
-        name="Selection in a Loop",
+        name="Lists",
     )
 
     episode22 = Episode.objects.create(
         pk=22,
-        name="Indeterminate Loops",
-    )
-
-    episode23 = Episode.objects.create(
-        pk=23,
-        name="String Manipulation",
-    )
-
-    episode24 = Episode.objects.create(
-        pk=24,
-        name="Lists",
-    )
-
-    episode25 = Episode.objects.create(
-        pk=25,
-        name="For Loops",
-    )
-
-    episode26 = Episode.objects.create(
-        pk=26,
         name="Procedures",
     )
 
+    episode12 = Episode.objects.get(pk=12)
+    episode13 = Episode.objects.get(pk=13)
+    episode14 = Episode.objects.get(pk=14)
     episode15 = Episode.objects.get(pk=15)
-    episode15.next_episode = episode16
-    episode16.next_episode = episode17
-    episode17.next_episode = episode18
-    episode18.next_episode = episode19
-    episode19.next_episode = episode20
-    episode20.next_episode = episode21
-    episode21.next_episode = episode22
-    episode22.next_episode = episode23
-    episode23.next_episode = episode24
-    episode24.next_episode = episode25
-    episode25.next_episode = episode26
+    episode16.next_level = episode17
+    episode17.next_level = episode18
+    episode18.next_level = episode19
+    episode19.next_level = episode12
+    episode12.next_level = episode13
+    episode13.next_level = episode14
+    episode14.next_level = episode20
+    episode20.next_level = episode21
+    episode21.next_level = episode15
+    episode15.next_level = episode22
 
 
 def set_first_and_last_levels(apps, schema_editor):
     Episode = apps.get_model("game", "Episode")
     Level = apps.get_model("game", "Level")
-
-    episode20 = Episode.objects.get(pk=20)
-    level1 = Level.objects.get(name="1001", default=True)
-    episode20.first_level = level1
-    episode20.save()
     
-    episode21 = Episode.objects.get(pk=21)
-    level14 = Level.objects.get(name="1014", default=True)
-    episode21.first_level = level14
-    episode21.save()
+    episode13 = Episode.objects.get(pk=13)
+    level1014 = Level.objects.get(name="1014", default=True)
+    episode13.first_level = level1014
+    episode13.save()
+
+    episode14 = Episode.objects.get(pk=14)
+    level1026 = Level.objects.get(name="1026", default=True)
+    episode14.first_level = level1026
+    episode14.save()
+
+    episode15 = Episode.objects.get(pk=15)
+    level1041 = Level.objects.get(name="1041", default=True)
+    episode15.first_level = level1041
+    episode15.save()
 
     episode22 = Episode.objects.get(pk=22)
-    level26 = Level.objects.get(name="1026", default=True)
-    episode22.first_level = level26
+    level1050 = Level.objects.get(name="1050", default=True)
+    episode22.first_level = level1050
     episode22.save()
-
-    episode25 = Episode.objects.get(pk=25)
-    level41 = Level.objects.get(name="1041", default=True)
-    episode25.first_level = level41
-    episode25.save()
-
-    episode26 = Episode.objects.get(pk=26)
-    level50 = Level.objects.get(name="1050", default=True)
-    episode26.first_level = level50
-    episode26.save()
-
-    level79 = Level.objects.get(name="79", default=True)
-    level79.next_level = None
 
 
 class Migration(migrations.Migration):

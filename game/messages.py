@@ -3641,20 +3641,16 @@ def get_episode_title(episode_id):
         10: "Introduction to Python",
         11: "Python",
         12: "Counted Loops Using While",
-        13: "Indeterminate While Loops - coming soon",
-        14: "Selection in a Loop - coming soon",
-        15: "For Loops - coming soon",
+        13: "Indeterminate Loops",
+        14: "Selection in a Loop",
+        15: "For Loops",
         16: "Output, Operators, and Data",
         17: "Variables, Input, and Casting",
         18: "Selection",
         19: "Complex Selection",
-        20: "Counted Loops Using While",
-        21: "Selection in a Loop",
-        22: "Indeterminate Loops",
-        23: "String Manipulation",
-        24: "Lists",
-        25: "For Loops",
-        26: "Procedures"
+        20: "String Manipulation",
+        21: "Lists",
+        22: "Procedures"
     }
 
     return episode_titles[episode_id]
