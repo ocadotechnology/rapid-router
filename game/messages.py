@@ -3170,9 +3170,9 @@ def hint_level109():
     description_level1029,
     hint_level1029,
 ) = (
-    lambda: title_level1010,
-    lambda: description_level1010(),
-    lambda: hint_level1010()
+    lambda: title_level119,
+    lambda: description_level119(),
+    lambda: hint_level119()
 )
 
 (
