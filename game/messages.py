@@ -2608,9 +2608,7 @@ def hint_level109():
     lambda: "In a <b>while</b>, crocodile!",
     lambda: build_description(
         title_level116(),
-        "This level may look easy, but this time you need to use a While Loop to deliver to the house."
-        "<br>"
-        "Can you do it? Name your variables wisely.",
+        "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully.",
     ),
     lambda: "Make sure that you are using the right blocks here. You must use the pink block for variables and the dark blue number block for values. Watch the video if you are unsure.",
 )
@@ -2623,11 +2621,7 @@ def hint_level109():
     lambda: "Wiggle <b>while</b> you work",
     lambda: build_description(
         title_level117(),
-        "This time it's a little harder. We've added the directions back in."
-        "<br>"
-        "Can you put them in the right place?"
-        "<br><br>"
-        "Notice how the Python looks in the console.",
+        "Now look at the Python code for that while loop you created. Can you match the blocks to the Python? What do you notice about the Python code?",
     ),
     lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
 )
@@ -2640,9 +2634,7 @@ def hint_level109():
     lambda: "This way, that way, forwards...",
     lambda: build_description(
         title_level118(),
-        "Now all three directions are back!"
-        "<br>"
-        "Use what you have learned so far to get your delivery completed.",
+        "Think carefully about this one. It might be that some code is inside a loop and some code is not…",
     ),
     lambda: "You can solve this in stages. Try moving to the start of the repeated section, then adding the loop and then finishing it off.",
 )
@@ -2656,9 +2648,7 @@ def hint_level109():
     lambda: "Four leaf clover",
     lambda: build_description(
         title_level119(),
-        "Now let's try what you've learned without blocks."
-        "<br>"
-        "Click on the Py Commands button to remind yourself of the syntax you need.",
+        "Look for a pattern and then count how many times it repeats. Good luck!",
     ),
     lambda: "If you cannot solve this one, try creating a solution without a while loop and then looking for what is repeated...",
     lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
@@ -2673,7 +2663,7 @@ def hint_level109():
     lambda: "Pond life",
     lambda: build_description(
         title_level120(),
-        "So many routes but only one that is efficient. Can you work out which one it is?",
+        "There is a pattern of moves in this one too. Can you spot it?",
     ),
     lambda: "What if you go down the middle section?",
     lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
@@ -2688,7 +2678,7 @@ def hint_level109():
     lambda: "Farmyard overdrive",
     lambda: build_description(
         title_level121(),
-        "Maybe including a loop is the answer here?",
+        "Look for a pattern before you type any code. You can solve this one with a counted loop…",
     ),
     lambda: "Try that middle route...",
     lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
@@ -2703,7 +2693,7 @@ def hint_level109():
     lambda: "Snnnaaaake reflection",
     lambda: build_description(
         title_level122(),
-        "Can you see some patterns? Looks like those loops will come in handy again for this tricky route.",
+        "The solution to this one is just a bit longer. Build it up slowly. Good luck!",
     ),
     lambda: "Don't try to solve this in one go. Work out the pattern for the top route and check that works. Then move on to the next part...",
     lambda: '<b>Movement</b>'+ '<br>my_van.move_forwards()' +'<br>my_van.turn_left()' +'<br>my_van.turn_right()',
@@ -3023,136 +3013,6 @@ def hint_level109():
     lambda: "TODO",
     lambda: build_description(title_level153(), "TODO"),
     lambda: "TODO",
-)
-
-(
-    title_level1001,
-    description_level1001,
-    hint_level1001,
-) = (
-    lambda: title_level110(),
-    lambda: description_level110(),
-    lambda: hint_level110()
-)
-
-(
-    title_level1002,
-    description_level1002,
-    hint_level1002,
-) = (
-    lambda: title_level111(),
-    lambda: description_level111(),
-    lambda: hint_level111()
-)
-
-(
-    title_level1003,
-    description_level1003,
-    hint_level1003,
-) = (
-    lambda: title_level112(),
-    lambda: description_level112(),
-    lambda: hint_level112()
-)
-
-(
-    title_level1004,
-    description_level1004,
-    hint_level1004,
-) = (
-    lambda: title_level113(),
-    lambda: description_level113(),
-    lambda: hint_level113()
-)
-
-(
-    title_level1005,
-    description_level1005,
-    hint_level1005,
-) = (
-    lambda: title_level114(),
-    lambda: description_level114(),
-    lambda: hint_level114()
-)
-
-(
-    title_level1006,
-    description_level1006,
-    hint_level1006,
-) = (
-    lambda: title_level115(),
-    lambda: description_level115(),
-    lambda: hint_level115()
-)
-
-(
-    title_level1007,
-    description_level1007,
-    hint_level1007,
-) = (
-    lambda: title_level116(),
-    lambda: build_description(title_level1007(), "Try to build up the blocks using a while loop to solve this one. Make sure that you count carefully."),
-    lambda: hint_level116()
-)
-
-(
-    title_level1008,
-    description_level1008,
-    hint_level1008,
-) = (
-    lambda: title_level117(),
-    lambda: build_description(title_level1008(), "Now look at the Python code for that while look you created. Can you match the blocks to the Python? What do you notice about the Python code?"),
-    lambda: hint_level117()
-)
-
-(
-    title_level1009,
-    description_level1009,
-    hint_level1009,
-) = (
-    lambda: title_level118(),
-    lambda: build_description(title_level1009(), "Think carefully about this one. It might be that some code is inside a loop and some code is not…"),
-    lambda: hint_level118()
-)
-
-(
-    title_level1010,
-    description_level1010,
-    hint_level1010,
-) = (
-    lambda: title_level119(),
-    lambda: build_description(title_level1010(), "Look for a pattern and then count how many times it repeats. Good luck!"),
-    lambda: hint_level119()
-)
-
-(
-    title_level1011,
-    description_level1011,
-    hint_level1011,
-) = (
-    lambda: title_level120(),
-    lambda: build_description(title_level1011(), "There is a pattern of moves in this one too. Can you spot it?"),
-    lambda: hint_level120()
-)
-
-(
-    title_level1012,
-    description_level1012,
-    hint_level1012,
-) = (
-    lambda: title_level121(),
-    lambda: build_description(title_level1012(), "Look for a pattern before you type any code. You can solve this one with a counted loop…"),
-    lambda: hint_level121()
-)
-
-(
-    title_level1013,
-    description_level1013,
-    hint_level1013,
-) = (
-    lambda: title_level122(),
-    lambda: build_description(title_level1013(), "The solution to this one is just a bit longer. Build it up slowly. Good luck!"),
-    lambda: hint_level122()
 )
 
 (
