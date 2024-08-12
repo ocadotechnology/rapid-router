@@ -58,6 +58,11 @@ class Episode(models.Model):
     r_trafficLights = models.BooleanField(default=False)
     r_cows = models.BooleanField(default=False)
 
+    lesson_plan_link = models.CharField(max_length=200, null=True)
+    slides_link = models.CharField(max_length=200, null=True)
+    worksheet_link = models.CharField(max_length=200, null=True)
+    video_link = models.CharField(max_length=200, null=True)
+
     @property
     def first_level(self):
         return self.levels[0]
@@ -84,12 +89,23 @@ class Episode(models.Model):
             7: "medium-hard",
             8: "medium-hard",
             9: "brainteasers",
-            10: "split-python",
-            11: "split-python",
-            12: "python",
-            13: "python",
-            14: "python",
-            15: "python",
+            10: "early-python",
+            11: "early-python",
+            12: "late-python",
+            13: "late-python",
+            14: "late-python",
+            15: "late-python",
+            16: "early-python",
+            17: "early-python",
+            18: "early-python",
+            19: "early-python",
+            20: "late-python",
+            21: "late-python",
+            22: "late-python",
+            23: "late-python",
+            24: "late-python",
+            25: "late-python",
+            26: "late-python"
         }
 
         return difficulty_map.get(self.id, "easy")
