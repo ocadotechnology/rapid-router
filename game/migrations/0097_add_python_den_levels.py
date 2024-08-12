@@ -1356,16 +1356,16 @@ def create_python_den_episodes(apps, schema_editor):
     episode13 = Episode.objects.get(pk=13)
     episode14 = Episode.objects.get(pk=14)
     episode15 = Episode.objects.get(pk=15)
-    episode16.next_level = episode17
-    episode17.next_level = episode18
-    episode18.next_level = episode19
-    episode19.next_level = episode12
-    episode12.next_level = episode13
-    episode13.next_level = episode14
-    episode14.next_level = episode20
-    episode20.next_level = episode21
-    episode21.next_level = episode15
-    episode15.next_level = episode22
+    episode16.next_episode = episode17
+    episode17.next_episode = episode18
+    episode18.next_episode = episode19
+    episode19.next_episode = episode12
+    episode12.next_episode = episode13
+    episode13.next_episode = episode14
+    episode14.next_episode = episode20
+    episode20.next_episode = episode21
+    episode21.next_episode = episode15
+    episode15.next_episode = episode22
 
 
 def set_first_and_last_levels(apps, schema_editor):
