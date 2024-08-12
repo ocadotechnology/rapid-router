@@ -1392,6 +1392,12 @@ def set_first_and_last_levels(apps, schema_editor):
     episode22.first_level = level1050
     episode22.save()
 
+def delete_old_loop_levels(apps, schema_editor):
+    Level = apps.get_model("game", "Level")
+    for i in range(123, 154):
+        deleted_level = Level.objects.get(name=i)
+        deleted_level.delete()
+
 
 class Migration(migrations.Migration):
     dependencies = [
@@ -1399,6 +1405,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(code=delete_old_loop_levels),
         migrations.RunPython(code=create_python_den_episodes),
         migrations.RunPython(code=add_python_den_levels),
         migrations.RunPython(code=add_python_den_blocks),
