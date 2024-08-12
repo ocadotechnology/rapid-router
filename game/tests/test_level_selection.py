@@ -200,15 +200,15 @@ class LevelSelectionTestCase(TestCase):
         level87 = Level.objects.get(name="87")
         level88 = Level.objects.get(name="88")
         level89 = Level.objects.get(name="89")
-        level1001 = Level.objects.get(name="1001")
-        level1002 = Level.objects.get(name="1002")
-        level1003 = Level.objects.get(name="1003")
+        level1014 = Level.objects.get(name="1014")
+        level1015 = Level.objects.get(name="1015")
+        level1016 = Level.objects.get(name="1016")
 
         level2.locked_for_class.add(klass)
         level3.locked_for_class.add(klass)
         level87.locked_for_class.add(klass)
         level88.locked_for_class.add(klass)
-        level1002.locked_for_class.add(klass)
+        level1015.locked_for_class.add(klass)
 
         next_level_url = _next_level_url(level1, student.new_user, False)
 
@@ -224,12 +224,12 @@ class LevelSelectionTestCase(TestCase):
         prev_level_url = _prev_level_url(level89, student.new_user, False)
         assert prev_level_url == f"/rapidrouter/{level86.name}/"
 
-        next_level_url = _next_level_url(level1001, student.new_user, False)
+        next_level_url = _next_level_url(level1014, student.new_user, False)
 
-        assert next_level_url == f"/rapidrouter/{level1003.name}/"
+        assert next_level_url == f"/rapidrouter/{level1016.name}/"
 
-        prev_level_url = _prev_level_url(level1003, student.new_user, False)
-        assert prev_level_url == f"/rapidrouter/{level1001.name}/"
+        prev_level_url = _prev_level_url(level1016, student.new_user, False)
+        assert prev_level_url == f"/rapidrouter/{level1014.name}/"
 
     @patch("game.views.level.datetime", side_effect=lambda *args, **kw: datetime(*args, **kw))
     def test_xmas_theme(self, mock_datetime):
