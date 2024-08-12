@@ -85,7 +85,9 @@ class BaseGameTest(SeleniumTestCase):
         return HomePage(self.selenium)
 
     def go_to_level(self, level_name):
-        path = reverse("play_default_level", kwargs={"levelName": str(level_name)})
+        path = reverse(
+            "play_default_level", kwargs={"levelName": str(level_name)}
+        )
         self._go_to_path(path)
 
         return GamePage(self.selenium)
@@ -117,7 +119,11 @@ class BaseGameTest(SeleniumTestCase):
 
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
-        return self.go_to_level(level).load_solution(workspace_id).run_retry_program()
+        return (
+            self.go_to_level(level)
+            .load_solution(workspace_id)
+            .run_retry_program()
+        )
 
     def run_crashing_test(self, level, workspace_file):
         user_profile = self.login_once()
@@ -125,7 +131,9 @@ class BaseGameTest(SeleniumTestCase):
         workspace_id = self.use_workspace(workspace_file, user_profile)
 
         return (
-            self.go_to_level(level).load_solution(workspace_id).run_crashing_program()
+            self.go_to_level(level)
+            .load_solution(workspace_id)
+            .run_crashing_program()
         )
 
     def run_python_commands_test(self, level):
@@ -145,6 +153,9 @@ class BaseGameTest(SeleniumTestCase):
 
     def run_invalid_import_test(self, level):
         return self.go_to_level(level).run_invalid_import_program()
+
+    def run_animal_sound_horn_test(self, level):
+        return self.go_to_custom_level(level).run_animal_sound_horn_program()
 
     def running_out_of_instructions_test(self, level, workspace_file):
         user_profile = self.login_once()
@@ -217,7 +228,9 @@ class BaseGameTest(SeleniumTestCase):
             login_page = self.go_to_homepage().go_to_teacher_login_page()
             login_page.login(email, password)
             email = email
-            BaseGameTest.user_profile = UserProfile.objects.get(user__email=email)
+            BaseGameTest.user_profile = UserProfile.objects.get(
+                user__email=email
+            )
 
             BaseGameTest.already_logged_on = True
 
@@ -234,7 +247,9 @@ class BaseGameTest(SeleniumTestCase):
         BaseGameTest.already_logged_on = False
 
     def solution_file_path(self, filename):
-        return os.path.join(BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml")
+        return os.path.join(
+            BaseGameTest.BLOCKLY_SOLUTIONS_DIR, filename + ".xml"
+        )
 
     def read_solution(self, filename):
         path = self.solution_file_path(filename)

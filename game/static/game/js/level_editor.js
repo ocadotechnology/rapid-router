@@ -630,17 +630,27 @@ ocargo.LevelEditor = function(levelId) {
                     return;
                 }
 
-                var newName = $('#levelNameInput').val();
+                const nameInput = $('#levelNameInput')
+                const newName = nameInput.val();
                 if (!newName || newName === "") {
-                    // TODO error message?
+                    ocargo.Drawing.startPopup(
+                        "Oh no!",
+                        "No level title!",
+                        "Sorry, you need to specify a title for your" +
+                            " level to be saved.",
+                    );
                     return;
                 }
 
-                var regex = /^(\w?[ ]?)*$/;
-                var validString = regex.exec($('#levelNameInput').val());
+                const regex = /^(\w?[ ]?)*$/;
+                const validString = regex.exec(nameInput.val());
                 if (!validString) {
-                    ocargo.Drawing.startPopup(gettext('Oh no!'), gettext('You used some invalid characters.'),
-                        gettext('Try saving your level again using only letters and numbers.'));
+                    ocargo.Drawing.startPopup(
+                        "Oh no!",
+                        "You used some invalid characters.",
+                        "Try saving your level again using only" +
+                        " letters and numbers."
+                    );
                     return;
                 }
 
@@ -649,33 +659,37 @@ ocargo.LevelEditor = function(levelId) {
                 }
 
                 // Test to see if we already have the level saved
-                var table = $("#saveLevelTable");
-                var existingId = -1;
+                const table = $("#saveLevelTable");
+                let existingId = -1;
 
-                for (var i = 0; i < table[0].rows.length; i++) {
-                     var row = table[0].rows[i];
-                     var existingName = row.cells[0].innerHTML;
+                for (let i = 0; i < table[0].rows.length; i++) {
+                     const row = table[0].rows[i];
+                     const existingName = row.cells[0].innerHTML;
                      if (existingName === newName) {
                         existingId = row.getAttribute('value');
                         break;
                      }
                 }
 
-                if (existingId != -1) {
+                if (existingId !== -1) {
                     if (!saveState.isCurrentLevel(existingId)) {
-                        var onYes = function(){
+                        const onYes = function(){
                             saveLevelLocal(existingId);
                             $("#myModal").hide()
                             $("#ocargo-modal").hide()
                         };
-                        var onNo = function(){
+                        const onNo = function(){
                             $("#myModal").hide()
                             $("#ocargo-modal").hide()
                         };
-                        ocargo.Drawing.startYesNoPopup(gettext('Overwriting'), gettext('Warning'),
-                            interpolate(gettext('Level %(level_name)s already exists. Are you sure you want to overwrite it?'), {
-                              level_name: newName
-                            }, true), onYes, onNo);
+                        ocargo.Drawing.startYesNoPopup(
+                            "Overwriting",
+                            "Warning",
+                            `Level ${newName} already exists. Are
+                            you sure you want to overwrite it?`,
+                            onYes,
+                            onNo
+                        );
                     } else {
                         saveLevelLocal(existingId);
                     }
@@ -1327,7 +1341,7 @@ ocargo.LevelEditor = function(levelId) {
                 nodes[0] = temp;
                 originNode = nodes[0];
             } else if (mode === modes.ADD_HOUSE_MODE && existingNode) {
-                // Check if same as starting node 
+                // Check if same as starting node
                 if (isOriginCoordinate(coordMap)) {
                     originNode = null;
                 }
@@ -1373,11 +1387,11 @@ ocargo.LevelEditor = function(levelId) {
                         mark(coordMap, 'blue', 0.3, true);
                     } else if (mode === modes.MARK_ORIGIN_MODE && canPlaceCFC(node)) {
                         mark(coordMap, 'red', 0.5, true);
-                    } 
+                    }
                 } else if (node && houseNodes.includes(node) && mode === modes.DELETE_HOUSE_MODE) {
                     mark(coordMap, 'blue', 0.3, true);
                 }
-            } 
+            }
         };
     }
 
@@ -1454,11 +1468,11 @@ ocargo.LevelEditor = function(levelId) {
             }
         };
     }
- 
+
     function draggedObjectOnGrid(e, dragged_object) {
     // object location is relative to the whole page, so need to factor in paper and padding size, grid canvas scroll amount, width of toolbar, etc.
-        return e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING) 
-            && (e.pageY + paper.scrollTop() + dragged_object.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING) 
+        return e.pageX >= (TAB_PANE_WIDTH + PAPER_PADDING)
+            && (e.pageY + paper.scrollTop() + dragged_object.height / 2) <= (PAPER_HEIGHT + PAPER_PADDING)
             && (e.pageX + paper.scrollLeft() + dragged_object.width / 2) <= (TAB_PANE_WIDTH + PAPER_WIDTH + PAPER_PADDING)
     }
 
@@ -1706,7 +1720,7 @@ ocargo.LevelEditor = function(levelId) {
                 }
 
                 image.transform('t' + cowX + ',' + cowY);
-            } 
+            }
             adjustCowGroupMinMaxFields(cow);
 
             image.attr({'cursor':'pointer'});
@@ -3065,7 +3079,7 @@ $(function() {
     } else {
         let buttons = '';
         buttons += ocargo.button.dismissButtonHtml("edit_button", "Edit");
-        buttons += ocargo.button.redirectButtonHtml("play_button", Urls.levels() + "custom/" + LEVEL,"Play");
+        buttons += ocargo.button.redirectButtonHtml("play_button", Urls.levels() + "custom/" + LEVEL, "Play");
 
         ocargo.Drawing.startPopup(
             gettext('Welcome back!'),

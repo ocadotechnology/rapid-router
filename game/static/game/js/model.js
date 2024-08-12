@@ -127,7 +127,8 @@ ocargo.Model.prototype.getPreviousCoordinate = function() {
 
 ocargo.Model.prototype.moveVan = function(nextNode, action) {
     // Crash?
-    let currentNodeHasCow = this.getCowForNode(this.van.getPosition().currentNode, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
+    let checkedNode = action == "WAIT" ? this.van.getPosition().previousNode : this.van.getPosition().currentNode
+    let currentNodeHasCow = this.getCowForNode(checkedNode, [ocargo.Cow.ACTIVE, ocargo.Cow.READY]);
 
     if (currentNodeHasCow) {
         handleCrash(this, gettext('You ran into a cow! '),
@@ -386,6 +387,32 @@ ocargo.Model.prototype.deliver = function() {
             return false;
         }
         this.makeDelivery(destination, 'DELIVER');
+    } else {
+        ocargo.game.sendAttempt(0);
+        ocargo.animation.appendAnimation({
+            type: 'popup',
+            popupType: 'FAIL',
+            failSubtype: 'DELIVER_NON_DESTINATION',
+            popupMessage: gettext("You tried to deliver to a destination that doesn't exist."),
+            popupHint: ocargo.game.registerFailure(),
+            description: 'tried to deliver at non-destination'
+        });
+
+        ocargo.animation.appendAnimation({
+            type: 'callable',
+            functionType: 'playSound',
+            functionCall: ocargo.sound.failure,
+            description: 'failure sound'
+        });
+
+        ocargo.event.sendEvent("DeliverNonDestination", { levelName: LEVEL_NAME,
+                                                          defaultLevel: DEFAULT_LEVEL,
+                                                          workspace: ocargo.blocklyControl.serialize(),
+                                                          failures: this.failures,
+                                                          pythonWorkspace: ocargo.pythonControl.getCode()
+        });
+        this.reasonForTermination = 'DELIVER_AT_NON_DESTINATION';
+        return false;
     }
     return destination;
 };
@@ -403,6 +430,7 @@ ocargo.Model.prototype.sound_horn = function() {
         cow.queueLeaveAnimation(this, currentNode);
         cow.setInactive(this, currentNode);
     }
+    this.moveVan(this.van.getPosition().currentNode, 'SOUND_HORN');
     return true;
 };
 
