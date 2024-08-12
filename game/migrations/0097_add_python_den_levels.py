@@ -682,11 +682,11 @@ def add_python_den_levels(apps, schema_editor):
     level1059.name = "1059"
     level1059.episode = episode22
 
-    level60 = Level.objects.get(name="102", default=True)
-    level60.pk = None
-    level60._state.adding = True
-    level60.name = "1060"
-    level60.episode = episode22
+    level1060 = Level.objects.get(name="102", default=True)
+    level1060.pk = None
+    level1060._state.adding = True
+    level1060.name = "1060"
+    level1060.episode = episode22
 
     def save_all_levels():
         level1014.save()
