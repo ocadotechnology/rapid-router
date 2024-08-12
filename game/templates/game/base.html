@@ -70,6 +70,10 @@
 
 {% block scripts %}
     {{block.super}}
+    <script defer id="data">
+        var PATH = {{request.path}}
+    </script>
+
     <script type='text/javascript' src="{% static 'game/js/foundation/vendor/js.cookie.min.js' %}"></script>
     <script type='text/javascript' src="{% static 'game/js/js-reverse.js' %}"></script>
     <script type='text/javascript' src="{% url 'rapid-router/javascript-catalog' %}"></script>
