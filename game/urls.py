@@ -55,7 +55,7 @@ from game.views.level_selection import blockly_levels, random_level_for_episode
 from game.views.scoreboard import scoreboard
 
 urlpatterns = [
-    url(r"^$", blockly_levels, name="levels"),
+    url(r"^$", blockly_levels, name="blockly_levels"),
     url(r"^submit/$", submit_attempt, name="submit_attempt"),
     url(r"^(?P<levelName>[A-Z0-9]+)/$", play_default_level, name="play_default_level"),
     url(r"^custom/(?P<levelId>[0-9]+)/$", play_custom_level, name="play_custom_level"),
