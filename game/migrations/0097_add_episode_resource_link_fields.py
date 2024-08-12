@@ -78,7 +78,7 @@ def add_resource_links_to_episodes(apps: Apps, *args):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0094_add_hint_lesson_subtitle_to_levels'),
+        ('game', '0096_alter_level_commands'),
     ]
 
     operations = [
