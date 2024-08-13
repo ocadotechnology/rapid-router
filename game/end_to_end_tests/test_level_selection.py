@@ -31,7 +31,7 @@ class TestLevelSelection(BaseGameTest):
         page = student_login_page.student_login(name, password)
 
         # Goes to rapid router levels
-        page = self.go_to_reverse("blockly_levels")
+        page = self.go_to_reverse("levels")
 
         # The coin images for the levels
         level_coin_images = page.browser.find_elements(By.CSS_SELECTOR, ("#collapse-4 div img"))

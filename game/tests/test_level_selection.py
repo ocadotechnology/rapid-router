@@ -79,7 +79,7 @@ class LevelSelectionTestCase(TestCase):
         return json.dumps(data)
 
     def test_list_episodes(self):
-        url = reverse("blockly_levels")
+        url = reverse("levels")
         response = self.client.get(url)
 
         assert response.status_code == 200
@@ -138,7 +138,7 @@ class LevelSelectionTestCase(TestCase):
         self.logout()
         self.login(email1, password1)
 
-        url = reverse("blockly_levels")
+        url = reverse("levels")
         response = self.client.get(url)
 
         assert response.status_code == 200
@@ -153,7 +153,7 @@ class LevelSelectionTestCase(TestCase):
         self.logout()
         self.login(email2, password2)
 
-        url = reverse("blockly_levels")
+        url = reverse("levels")
         response = self.client.get(url)
 
         assert response.status_code == 200
