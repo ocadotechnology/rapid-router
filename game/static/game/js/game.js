@@ -114,7 +114,7 @@ ocargo.Game.prototype.setup = function () {
       titlePrefix = gettext('Level %(level_name)s')
     }
 
-    var adjusted_level_name = ''
+    let adjusted_level_name = ''
     if (LEVEL_NAME > 1000) {
       adjusted_level_name = LEVEL_NAME - 1000
     } else {

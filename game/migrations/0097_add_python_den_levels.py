@@ -4,6 +4,7 @@ from django.apps.registry import Apps
 from django.db import migrations, models
 from game.level_management import set_decor_inner, set_blocks_inner
 
+
 def add_python_den_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     Episode = apps.get_model("game", "Episode")
@@ -23,7 +24,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         default=True,
         destinations="[[9,4]]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         direct_drive=False,
         fuel_gauge=True,
         max_fuel=50,
@@ -37,7 +38,7 @@ def add_python_den_levels(apps, schema_editor):
         traffic_lights="[]",
         cows='[{"minCows":1,"maxCows":1,"potentialCoordinates":[{"x":2,"y":4},{"x":5,"y":4},{"x":7,"y":4}],"type":"WHITE"}]',
         lesson="This is a nice long straight road, but there are cows about!",
-        hint="Make sure you sound the horn to get the cows off the road."
+        hint="Make sure you sound the horn to get the cows off the road.",
     )
 
     level1015 = Level(
@@ -53,7 +54,7 @@ def add_python_den_levels(apps, schema_editor):
         max_fuel=50,
         direct_drive=False,
         model_solution="[11]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
@@ -62,7 +63,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="There are some bends in this road. Be careful!",
         hint="What do you need to count, how many times you move or how many times you move forwards?",
-        anonymous=False
+        anonymous=False,
     )
 
     level1016 = Level(
@@ -87,7 +88,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Oh no! The farmer seems to have let their cows out again. Be careful.",
         hint="Look for a pattern here...",
-        anonymous=False
+        anonymous=False,
     )
 
     level1017 = Level(
@@ -112,7 +113,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Keep going, you're getting the hang of the Python code.",
         hint="So you are going forward unless...?",
-        anonymous=False
+        anonymous=False,
     )
 
     level1018 = Level(
@@ -128,7 +129,7 @@ def add_python_den_levels(apps, schema_editor):
         max_fuel=50,
         direct_drive=False,
         model_solution="[10]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         threads=1,
         blocklyEnabled=False,
         pythonEnabled=True,
@@ -137,7 +138,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Oh dear, you might get a bit dizzy!",
         hint="What are you counting here, straight roads or bends?",
-        anonymous=False
+        anonymous=False,
     )
 
     level1019 = Level(
@@ -153,7 +154,7 @@ def add_python_den_levels(apps, schema_editor):
         max_fuel=50,
         direct_drive=False,
         model_solution="[11]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
@@ -162,7 +163,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Have you noticed that there are more roads ahead than turns? Try checking if there is a road ahead and then otherwise making the turns you need...",
         hint="Remember to use if..else",
-        anonymous=False
+        anonymous=False,
     )
 
     level1020 = Level(
@@ -187,7 +188,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Use if..else in Python for this level",
         hint="Don't get distracted by the other roads. Look for a pattern you can repeat.",
-        anonymous=False
+        anonymous=False,
     )
 
     level1021 = Level(
@@ -212,7 +213,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="This is a really busy road. Make sure that you don't miss any of the houses.",
         hint="Did you get the last house? Think about what value the loop counter will have at that point in your code...",
-        anonymous=False
+        anonymous=False,
     )
 
     level1022 = Level(
@@ -228,7 +229,7 @@ def add_python_den_levels(apps, schema_editor):
         max_fuel=50,
         direct_drive=False,
         model_solution="[12]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
@@ -237,7 +238,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="There are lots of turns here, don't get distracted.",
         hint="Think about the order of the questions you ask using your if and elif statements.",
-        anonymous=False
+        anonymous=False,
     )
 
     level1023 = Level(
@@ -253,7 +254,7 @@ def add_python_den_levels(apps, schema_editor):
         max_fuel=50,
         direct_drive=False,
         model_solution="[12]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
@@ -262,7 +263,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Don't go the long way around!",
         hint="Think carefully about the order in which you ask questions in your if..else if block",
-        anonymous=False
+        anonymous=False,
     )
 
     level1024 = Level(
@@ -287,7 +288,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Look carefully for the shortest route.",
         hint="Think carefully about the order in which you ask questions in your if..elif statements.",
-        anonymous=False
+        anonymous=False,
     )
 
     level1025 = Level(
@@ -312,7 +313,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Look carefully for the shortest route.",
         hint="Think carefully about the order in which you ask questions in your if..elif statements. Don't forget the traffic lights.",
-        anonymous=False
+        anonymous=False,
     )
 
     level1026 = Level.objects.get(name="85", default=True)
@@ -320,7 +321,7 @@ def add_python_den_levels(apps, schema_editor):
     level1026._state.adding = True
     level1026.name = "1026"
     level1026.model_solution = "[4]"
-    level1026.disable_algorithm_score = True
+    level1026.disable_algorithm_score = False
     level1026.episode = episode14
 
     level1027 = Level(
@@ -335,7 +336,7 @@ def add_python_den_levels(apps, schema_editor):
         max_fuel=50,
         direct_drive=False,
         model_solution="[4]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
@@ -344,15 +345,15 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Just keep going until you get there...",
         hint="You might find that the solution to this level is quite familiar...",
-        anonymous=False
+        anonymous=False,
     )
 
     level1028 = Level(
         name="1028",
         episode=episode14,
         path='[{"coordinate":[2,2],"connectedNodes":[1]},{"coordinate":[3,2],"connectedNodes":[0,2]},{"coordinate":[3,3],"connectedNodes":[3,1]},{"coordinate":[4,3],"connectedNodes":[2,4]},{"coordinate":[4,4],"connectedNodes":[5,3]},{"coordinate":[5,4],"connectedNodes":[4,6]},{"coordinate":[5,5],"connectedNodes":[7,5]},{"coordinate":[6,5],"connectedNodes":[6,8]},{"coordinate":[6,6],"connectedNodes":[9,7]},{"coordinate":[7,6],"connectedNodes":[8]}]',
-        traffic_lights='[]',
-        cows='[]',
+        traffic_lights="[]",
+        cows="[]",
         origin='{"coordinate":[2,2],"direction":"E"}',
         destinations="[[7,6]]",
         default=True,
@@ -360,7 +361,7 @@ def add_python_den_levels(apps, schema_editor):
         max_fuel=50,
         direct_drive=False,
         model_solution="[5]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
@@ -369,7 +370,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Well done, you did it! Now have a go at using the <b>Repeat until</b> block on a road with lots of turns.",
         hint="This is another route you have seen before. Last time you counted how many times your instructions were repeated. This time, your program is going to repeat your commands until you reach the destination. What do you need to repeat?",
-        anonymous=False
+        anonymous=False,
     )
 
     level1029 = Level.objects.get(name="119", default=True)
@@ -380,6 +381,7 @@ def add_python_den_levels(apps, schema_editor):
     level1029.pythonEnabled = False
     level1029.pythonViewEnabled = True
     level1029.model_solution = "[7]"
+    level1029.disable_algorithm_score = False
     level1029.episode = episode14
 
     level1030 = Level.objects.get(name="84", default=True)
@@ -391,7 +393,7 @@ def add_python_den_levels(apps, schema_editor):
     level1030.pythonViewEnabled = False
     level1030.model_solution = "[]"
     level1030.disable_algorithm_score = True
-    level1030.episode=episode14
+    level1030.episode = episode14
 
     level1031 = Level.objects.get(name="34", default=True)
     level1031.pk = None
@@ -401,15 +403,15 @@ def add_python_den_levels(apps, schema_editor):
     level1031.pythonEnabled = False
     level1031.pythonViewEnabled = True
     level1031.model_solution = "[7]"
-    level1031.disable_algorithm_score = True
-    level1031.episode=episode14
+    level1031.disable_algorithm_score = False
+    level1031.episode = episode14
 
     level1032 = Level(
         name="1032",
         episode=episode14,
         path='[{"coordinate":[5,0],"connectedNodes":[1]},{"coordinate":[5,1],"connectedNodes":[2,0]},{"coordinate":[5,2],"connectedNodes":[3,23,1]},{"coordinate":[5,3],"connectedNodes":[4,2]},{"coordinate":[5,4],"connectedNodes":[17,3]},{"coordinate":[4,5],"connectedNodes":[6,17]},{"coordinate":[3,5],"connectedNodes":[7,5]},{"coordinate":[2,5],"connectedNodes":[24,6,8]},{"coordinate":[2,4],"connectedNodes":[7,9]},{"coordinate":[2,3],"connectedNodes":[8,10]},{"coordinate":[2,2],"connectedNodes":[9,11]},{"coordinate":[2,1],"connectedNodes":[10,12]},{"coordinate":[3,1],"connectedNodes":[11,13]},{"coordinate":[4,1],"connectedNodes":[12,14]},{"coordinate":[4,2],"connectedNodes":[15,13]},{"coordinate":[4,3],"connectedNodes":[16,14]},{"coordinate":[4,4],"connectedNodes":[15]},{"coordinate":[5,5],"connectedNodes":[5,29,18,4]},{"coordinate":[6,5],"connectedNodes":[17,19]},{"coordinate":[7,5],"connectedNodes":[18,20]},{"coordinate":[7,4],"connectedNodes":[19,21]},{"coordinate":[7,3],"connectedNodes":[20,22]},{"coordinate":[7,2],"connectedNodes":[23,21,36]},{"coordinate":[6,2],"connectedNodes":[2,22]},{"coordinate":[1,5],"connectedNodes":[25,7]},{"coordinate":[1,6],"connectedNodes":[26,24]},{"coordinate":[2,6],"connectedNodes":[25,27]},{"coordinate":[3,6],"connectedNodes":[26,28]},{"coordinate":[4,6],"connectedNodes":[27,29]},{"coordinate":[5,6],"connectedNodes":[28,30,17]},{"coordinate":[6,6],"connectedNodes":[29,31]},{"coordinate":[7,6],"connectedNodes":[30,32]},{"coordinate":[8,6],"connectedNodes":[31,33]},{"coordinate":[8,5],"connectedNodes":[32,34]},{"coordinate":[8,4],"connectedNodes":[33,35]},{"coordinate":[8,3],"connectedNodes":[34,36]},{"coordinate":[8,2],"connectedNodes":[22,35]}]',
-        traffic_lights='[]',
-        cows='[]',
+        traffic_lights="[]",
+        cows="[]",
         origin='{"coordinate":[5,0],"direction":"N"}',
         destinations="[[4,4]]",
         default=True,
@@ -417,7 +419,7 @@ def add_python_den_levels(apps, schema_editor):
         max_fuel=50,
         direct_drive=False,
         model_solution="[7]",
-        disable_algorithm_score=True,
+        disable_algorithm_score=False,
         threads=1,
         blocklyEnabled=True,
         pythonEnabled=False,
@@ -426,7 +428,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="You don't have a right turn block here, so plan your route carefully.",
         hint="Think carefully about the order in which you ask questions in your if-statement here...",
-        anonymous=False
+        anonymous=False,
     )
 
     level1033 = Level(
@@ -447,11 +449,11 @@ def add_python_den_levels(apps, schema_editor):
         blocklyEnabled=False,
         pythonEnabled=True,
         pythonViewEnabled=False,
-        theme_name="grass",
+        theme_name="snow",
         character_name="Van",
         lesson="Can you find the shortest route?",
         hint="In this level, you want to check for a left turn first. If there is no left turn, turn right. Notice what that looks like in Python.",
-        anonymous=False
+        anonymous=False,
     )
 
     level1034 = Level(
@@ -476,7 +478,7 @@ def add_python_den_levels(apps, schema_editor):
         character_name="Van",
         lesson="Can you find the shortest route? Don't take the scenic route.",
         hint="Just look for the simplest route to the house.",
-        anonymous=False
+        anonymous=False,
     )
 
     level1035 = Level.objects.get(name="99", default=True)
@@ -486,7 +488,7 @@ def add_python_den_levels(apps, schema_editor):
     level1035.blocklyEnabled = True
     level1035.pythonEnabled = False
     level1035.pythonViewEnabled = True
-    level1035.episode=episode14
+    level1035.episode = episode14
 
     level1036 = Level.objects.get(name="38", default=True)
     level1036.pk = None
@@ -494,14 +496,14 @@ def add_python_den_levels(apps, schema_editor):
     level1036.name = "1036"
     level1036.pythonViewEnabled = True
     level1036.model_solution = "[11]"
-    level1036.disable_algorithm_score = True
-    level1036.episode=episode14
+    level1036.disable_algorithm_score = False
+    level1036.episode = episode14
 
     level1037 = Level.objects.get(name="100", default=True)
     level1037.pk = None
     level1037._state.adding = True
     level1037.name = "1037"
-    level1037.episode=episode14
+    level1037.episode = episode14
 
     level1038 = Level.objects.get(name="39", default=True)
     level1038.pk = None
@@ -512,7 +514,7 @@ def add_python_den_levels(apps, schema_editor):
     level1038.model_solution = "[]"
     level1038.disable_route_score = False
     level1038.disable_algorithm_score = True
-    level1038.episode=episode14
+    level1038.episode = episode14
 
     level1039 = Level.objects.get(name="47", default=True)
     level1039.pk = None
@@ -522,7 +524,7 @@ def add_python_den_levels(apps, schema_editor):
     level1039.pythonEnabled = True
     level1039.model_solution = "[]"
     level1039.disable_algorithm_score = True
-    level1039.episode=episode14
+    level1039.episode = episode14
 
     level1040 = Level.objects.get(name="48", default=True)
     level1040.pk = None
@@ -532,7 +534,7 @@ def add_python_den_levels(apps, schema_editor):
     level1040.pythonEnabled = True
     level1040.model_solution = "[]"
     level1040.disable_algorithm_score = True
-    level1040.episode=episode14
+    level1040.episode = episode14
 
     level1041 = Level.objects.get(name="83", default=True)
     level1041.pk = None
@@ -789,6 +791,13 @@ def add_python_den_levels(apps, schema_editor):
     save_all_levels()
 
 
+def delete_python_den_levels(apps, schema_editor):
+    Level = apps.get_model("game", "Level")
+    for i in range(1014, 1061):
+        deleted_level = Level.objects.get(name=i, default=True)
+        deleted_level.delete()
+
+
 def add_python_den_blocks(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     LevelBlock = apps.get_model("game", "LevelBlock")
@@ -830,7 +839,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "sound_horn"},'
             + '{"type": "move_forwards"},'
             + '{"type": "variables_increment"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -847,7 +856,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_right"},'
             + '{"type": "move_forwards"},'
             + '{"type": "variables_increment"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -864,7 +873,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_right"},'
             + '{"type": "move_forwards"},'
             + '{"type": "variables_increment"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -881,7 +890,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_right"},'
             + '{"type": "move_forwards"},'
             + '{"type": "variables_increment"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -898,7 +907,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_right"},'
             + '{"type": "move_forwards"},'
             + '{"type": "variables_increment"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -910,7 +919,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "at_destination"},'
             + '{"type": "logic_negate"},'
             + '{"type": "controls_repeat_while"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -920,7 +929,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "logic_negate"},'
             + '{"type": "at_destination"},'
             + '{"type": "move_forwards"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -931,7 +940,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "at_destination"},'
             + '{"type": "turn_left"},'
             + '{"type": "turn_right"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -943,7 +952,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_left"},'
             + '{"type": "turn_right"},'
             + '{"type": "move_forwards"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -956,7 +965,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "road_exists"},'
             + '{"type": "turn_left"},'
             + '{"type": "move_forwards"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -969,7 +978,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "road_exists"},'
             + '{"type": "turn_left"},'
             + '{"type": "move_forwards"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -983,7 +992,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "move_forwards"},'
             + '{"type": "turn_left"},'
             + '{"type": "turn_right"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -999,7 +1008,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "move_forwards"},'
             + '{"type": "turn_left"},'
             + '{"type": "turn_right"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -1009,7 +1018,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_left"},'
             + '{"type": "turn_right"},'
             + '{"type": "controls_repeat"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -1019,7 +1028,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_left"},'
             + '{"type": "turn_right"},'
             + '{"type": "controls_repeat"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -1031,7 +1040,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "turn_left"},'
             + '{"type": "turn_right"},'
             + '{"type": "controls_repeat"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -1044,7 +1053,7 @@ def add_python_den_blocks(apps, schema_editor):
             + '{"type": "wait"},'
             + '{"type": "controls_repeat_until"},'
             + '{"type": "traffic_light"}]'
-        )
+        ),
     )
 
     set_blocks(
@@ -1072,6 +1081,16 @@ def add_python_den_blocks(apps, schema_editor):
     )
 
 
+def delete_python_den_blocks(apps, schema_editor):
+    Level = apps.get_model("game", "Level")
+    LevelBlock = apps.get_model("game", "LevelBlock")
+
+    for i in range(1014, 1061):
+        deleted_level_blocks = LevelBlock.objects.filter(level_id=i)
+        for block in deleted_level_blocks:
+            block.delete()
+
+
 def add_python_den_decor(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     LevelDecor = apps.get_model("game", "LevelDecor")
@@ -1088,7 +1107,10 @@ def add_python_den_decor(apps, schema_editor):
         for decor in decor_to_copy:
             new_level_decor.append(
                 LevelDecor(
-                    level_id = new_level.pk, x = decor["x"], y = decor["y"], decorName = decor["decorName"]
+                    level_id=new_level.pk,
+                    x=decor["x"],
+                    y=decor["y"],
+                    decorName=decor["decorName"],
                 )
             )
         LevelDecor.objects.bulk_create(new_level_decor)
@@ -1098,6 +1120,7 @@ def add_python_den_decor(apps, schema_editor):
     level1016 = Level.objects.get(name="1016", default=True)
     level1017 = Level.objects.get(name="1017", default=True)
     level1018 = Level.objects.get(name="1018", default=True)
+    level1019 = Level.objects.get(name="1019", default=True)
     level1020 = Level.objects.get(name="1020", default=True)
     level1021 = Level.objects.get(name="1021", default=True)
     level1022 = Level.objects.get(name="1022", default=True)
@@ -1117,7 +1140,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 311, "y": 309, "decorName": "tree2"},'
             + '{"x": 568, "y": 516, "decorName": "tree1"},'
             + '{"x": 654, "y": 512, "decorName": "tree1"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1133,7 +1156,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 486, "y": 318, "decorName": "tree1"},'
             + '{"x": 286, "y": 327, "decorName": "tree1"},'
             + '{"x": 252, "y": 256, "decorName": "tree1"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1144,7 +1167,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 611, "y": 469, "decorName": "bush"},'
             + '{"x": 610, "y": 427, "decorName": "bush"},'
             + '{"x": 613, "y": 505, "decorName": "tree2"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1153,7 +1176,7 @@ def add_python_den_decor(apps, schema_editor):
             '[{"x": 461, "y": 314, "decorName": "pond"},'
             + '{"x": 428, "y": 371, "decorName": "tree1"},'
             + '{"x": 500, "y": 179, "decorName": "tree1"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1164,7 +1187,21 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 529, "y": 600, "decorName": "tree1"},'
             + '{"x": 120, "y": 415, "decorName": "tree2"},'
             + '{"x": 93, "y": 300, "decorName": "tree2"}]'
-        )
+        ),
+    )
+
+    set_decor(
+        level1019,
+        json.loads(
+            '[{"x": 562, "y": 42, "decorName": "pond"},'
+            + '{"x": 551, "y": 501, "decorName": "bush"},'
+            + '{"x": 551, "y": 562, "decorName": "bush"},'
+            + '{"x": 602, "y": 299, "decorName": "tree2"},'
+            + '{"x": 618, "y": 500, "decorName": "tree1"},'
+            + '{"x": 460, "y": 495, "decorName": "tree1"},'
+            + '{"x": 145, "y": 364, "decorName": "tree1"},'
+            + '{"x": 145, "y": 269, "decorName": "tree1"}]'
+        ),
     )
 
     set_decor(
@@ -1177,7 +1214,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 694, "y": 341, "decorName": "tree1"},'
             + '{"x": 516, "y": 651, "decorName": "tree2"},'
             + '{"x": 412, "y": 648, "decorName": "tree1"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1186,7 +1223,7 @@ def add_python_den_decor(apps, schema_editor):
             '[{"x": 149, "y": 292, "decorName": "pond"},'
             + '{"x": 300, "y": 507, "decorName": "tree1"},'
             + '{"x": 308, "y": 583, "decorName": "tree1"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1197,7 +1234,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 463, "y": 317, "decorName": "tree2"},'
             + '{"x": 367, "y": 237, "decorName": "tree1"},'
             + '{"x": 250, "y": 391, "decorName": "tree2"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1214,7 +1251,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 602, "y": 418, "decorName": "tree2"},'
             + '{"x": 646, "y": 483, "decorName": "tree1"},'
             + '{"x": 678, "y": 426, "decorName": "tree1"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1229,7 +1266,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 553, "y": 354, "decorName": "bush"},'
             + '{"x": 546, "y": 318, "decorName": "bush"},'
             + '{"x": 230, "y": 317, "decorName": "tree2"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1244,7 +1281,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 548, "y": 411, "decorName": "tree1"},'
             + '{"x": 617, "y": 407, "decorName": "tree2"},'
             + '{"x": 669, "y": 199, "decorName": "tree2"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1257,7 +1294,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 694, "y": 341, "decorName": "tree1"},'
             + '{"x": 516, "y": 651, "decorName": "tree2"},'
             + '{"x": 412, "y": 648, "decorName": "tree1"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1268,7 +1305,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 692, "y": 688, "decorName": "tree1"},'
             + '{"x": 717, "y": 620, "decorName": "tree1"},'
             + '{"x": 686, "y": 530, "decorName": "tree2"}]'
-        )
+        ),
     )
 
     set_decor(
@@ -1279,7 +1316,7 @@ def add_python_den_decor(apps, schema_editor):
             + '{"x": 200, "y": 342, "decorName": "tree1"},'
             + '{"x": 405, "y": 443, "decorName": "tree2"},'
             + '{"x": 400, "y": 514, "decorName": "tree1"}]'
-        )
+        ),
     )
 
     bulk_copy_decor("85", "1026")
@@ -1312,6 +1349,16 @@ def add_python_den_decor(apps, schema_editor):
     bulk_copy_decor("91", "1058")
     bulk_copy_decor("101", "1059")
     bulk_copy_decor("102", "1060")
+
+
+def delete_python_den_decor(apps, schema_editor):
+    Level = apps.get_model("game", "Level")
+    LevelDecor = apps.get_model("game", "LevelDecor")
+
+    for i in range(1014, 1061):
+        deleted_level_decor = LevelDecor.objects.filter(level_id=i)
+        for decor_element in deleted_level_decor:
+            decor_element.delete()
 
 
 def create_python_den_episodes(apps, schema_editor):
@@ -1368,10 +1415,22 @@ def create_python_den_episodes(apps, schema_editor):
     episode15.next_episode = episode22
 
 
+def delete_python_den_episodes(apps, schema_editor):
+    Episode = apps.get_model("game", "Episode")
+    for i in range(16, 23):
+        deleted_episode = Episode.objects.get(pk=i)
+        deleted_episode.delete()
+
+    episode14 = Episode.objects.get(pk=14)
+    episode15 = Episode.objects.get(pk=15)
+    episode14.next_episode = episode15
+    episode15.next_episode = None
+
+
 def set_first_and_last_levels(apps, schema_editor):
     Episode = apps.get_model("game", "Episode")
     Level = apps.get_model("game", "Level")
-    
+
     episode13 = Episode.objects.get(pk=13)
     level1014 = Level.objects.get(name="1014", default=True)
     episode13.first_level = level1014
@@ -1392,6 +1451,27 @@ def set_first_and_last_levels(apps, schema_editor):
     episode22.first_level = level1050
     episode22.save()
 
+
+def reset_first_and_last_levels(apps, schema_editor):
+    Episode = apps.get_model("game", "Episode")
+
+    episode13 = Episode.objects.get(pk=13)
+    episode13.first_level = None
+    episode13.save()
+
+    episode14 = Episode.objects.get(pk=14)
+    episode14.first_level = None
+    episode14.save()
+
+    episode15 = Episode.objects.get(pk=15)
+    episode15.first_level = None
+    episode15.save()
+
+    episode22 = Episode.objects.get(pk=22)
+    episode22.first_level = None
+    episode22.save()
+
+
 def delete_old_loop_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     for i in range(123, 154):
@@ -1399,16 +1479,194 @@ def delete_old_loop_levels(apps, schema_editor):
         deleted_level.delete()
 
 
+def recreate_old_loop_levels(apps, schema_editor):
+    Episode = apps.get_model("game", "Episode")
+    Level = apps.get_model("game", "Level")
+
+    episode_15 = Episode.objects.get(pk=15)
+    episode_14 = Episode.objects.get(pk=14)
+    episode_13 = Episode.objects.get(pk=13)
+
+    level_153 = Level.objects.create(
+        name="153",
+        episode=episode_15,
+    )
+    level_152 = Level.objects.create(
+        name="152",
+        episode=episode_15,
+        next_level=level_153,
+    )
+    level_151 = Level.objects.create(
+        name="151",
+        episode=episode_15,
+        next_level=level_152,
+    )
+    level_150 = Level.objects.create(
+        name="150",
+        episode=episode_15,
+        next_level=level_151,
+    )
+    level_149 = Level.objects.create(
+        name="149",
+        episode=episode_15,
+        next_level=level_150,
+    )
+
+    # Episode 14, Levels 141 - 148
+    level_148 = Level.objects.create(
+        name="148",
+        episode=episode_14,
+        next_level=level_149,
+    )
+    level_147 = Level.objects.create(
+        name="147",
+        episode=episode_14,
+        next_level=level_148,
+    )
+    level_146 = Level.objects.create(
+        name="146",
+        episode=episode_14,
+        next_level=level_147,
+    )
+    level_145 = Level.objects.create(
+        name="145",
+        episode=episode_14,
+        next_level=level_146,
+    )
+    level_144 = Level.objects.create(
+        name="144",
+        episode=episode_14,
+        next_level=level_145,
+    )
+    level_143 = Level.objects.create(
+        name="143",
+        episode=episode_14,
+        next_level=level_144,
+    )
+    level_142 = Level.objects.create(
+        name="142",
+        episode=episode_14,
+        next_level=level_143,
+    )
+    level_141 = Level.objects.create(
+        name="141",
+        episode=episode_14,
+        next_level=level_142,
+    )
+
+    # Episode 13, Levels 123 - 140
+    level_140 = Level.objects.create(
+        name="140",
+        episode=episode_13,
+        next_level=level_141,
+    )
+    level_139 = Level.objects.create(
+        name="139",
+        episode=episode_13,
+        next_level=level_140,
+    )
+    level_138 = Level.objects.create(
+        name="138",
+        episode=episode_13,
+        next_level=level_139,
+    )
+    level_137 = Level.objects.create(
+        name="137",
+        episode=episode_13,
+        next_level=level_138,
+    )
+    level_136 = Level.objects.create(
+        name="136",
+        episode=episode_13,
+        next_level=level_137,
+    )
+    level_135 = Level.objects.create(
+        name="135",
+        episode=episode_13,
+        next_level=level_136,
+    )
+    level_134 = Level.objects.create(
+        name="134",
+        episode=episode_13,
+        next_level=level_135,
+    )
+    level_133 = Level.objects.create(
+        name="133",
+        episode=episode_13,
+        next_level=level_134,
+    )
+    level_132 = Level.objects.create(
+        name="132",
+        episode=episode_13,
+        next_level=level_133,
+    )
+    level_131 = Level.objects.create(
+        name="131",
+        episode=episode_13,
+        next_level=level_132,
+    )
+    level_130 = Level.objects.create(
+        name="130",
+        episode=episode_13,
+        next_level=level_131,
+    )
+    level_129 = Level.objects.create(
+        name="129",
+        episode=episode_13,
+        next_level=level_130,
+    )
+    level_128 = Level.objects.create(
+        name="128",
+        episode=episode_13,
+        next_level=level_129,
+    )
+    level_127 = Level.objects.create(
+        name="127",
+        episode=episode_13,
+        next_level=level_128,
+    )
+    level_126 = Level.objects.create(
+        name="126",
+        episode=episode_13,
+        next_level=level_127,
+    )
+    level_125 = Level.objects.create(
+        name="125",
+        episode=episode_13,
+        next_level=level_126,
+    )
+    level_124 = Level.objects.create(
+        name="124",
+        episode=episode_13,
+        next_level=level_125,
+    )
+    level_123 = Level.objects.create(
+        name="123",
+        episode=episode_13,
+        next_level=level_124,
+    )
+
+
 class Migration(migrations.Migration):
-    dependencies = [
-        ('game', '0096_alter_level_commands')
-    ]
+    dependencies = [("game", "0096_alter_level_commands")]
 
     operations = [
-        migrations.RunPython(code=delete_old_loop_levels),
-        migrations.RunPython(code=create_python_den_episodes),
-        migrations.RunPython(code=add_python_den_levels),
-        migrations.RunPython(code=add_python_den_blocks),
-        migrations.RunPython(code=add_python_den_decor),
-        migrations.RunPython(code=set_first_and_last_levels)
+        migrations.RunPython(
+            code=delete_old_loop_levels, reverse_code=recreate_old_loop_levels
+        ),
+        migrations.RunPython(
+            code=create_python_den_episodes, reverse_code=delete_python_den_episodes
+        ),
+        migrations.RunPython(
+            code=add_python_den_levels, reverse_code=delete_python_den_levels
+        ),
+        migrations.RunPython(
+            code=add_python_den_blocks, reverse_code=delete_python_den_blocks
+        ),
+        migrations.RunPython(
+            code=add_python_den_decor, reverse_code=delete_python_den_decor
+        ),
+        migrations.RunPython(
+            code=set_first_and_last_levels, reverse_code=reset_first_and_last_levels
+        ),
     ]
