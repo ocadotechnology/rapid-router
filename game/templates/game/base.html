@@ -57,7 +57,7 @@
 
     {% block nav_ocargo_levels %}
         {% if request.path == "/pythonden/" %}
-            <a class="button button--secondary button--secondary--light" href="{% url 'python_levels' %}">{% trans "Levels" %}</a>
+            <a class="button button--secondary button--secondary--light" href="{% url 'pythonden' %}">{% trans "Levels" %}</a>
         {% else %}
             <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
         {% endif %}

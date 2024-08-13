@@ -464,7 +464,6 @@ class LevelEditorTestCase(TestCase):
 
         # Check teacher can see student's shared level
         levels_url = reverse("levels")
-        assert levels_url == "just testing"
         response = self.client.get(levels_url)
         assert len(response.context["directly_shared_levels"]) == 1
 
