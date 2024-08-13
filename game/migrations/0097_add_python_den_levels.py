@@ -128,8 +128,8 @@ def add_python_den_levels(apps, schema_editor):
         fuel_gauge=True,
         max_fuel=50,
         direct_drive=False,
-        model_solution="[10]",
-        disable_algorithm_score=False,
+        model_solution="[]",
+        disable_algorithm_score=True,
         threads=1,
         blocklyEnabled=False,
         pythonEnabled=True,
@@ -540,7 +540,7 @@ def add_python_den_levels(apps, schema_editor):
     level1041.pk = None
     level1041._state.adding = True
     level1041.name = "1041"
-    level1041.disable_algorithm_score = True
+    level1041.disable_algorithm_score = False
     level1041.episode = episode15
 
     level1042 = Level.objects.get(name="95", default=True)
@@ -559,7 +559,7 @@ def add_python_den_levels(apps, schema_editor):
     level1044.pk = None
     level1044._state.adding = True
     level1044.name = "1044"
-    level1044.disable_algorithm_score = True
+    level1044.disable_algorithm_score = False
     level1044.episode = episode15
 
     level1045 = Level.objects.get(name="97", default=True)
@@ -597,7 +597,7 @@ def add_python_den_levels(apps, schema_editor):
     level1050._state.adding = True
     level1050.name = "1050"
     level1050.pythonViewEnabled = True
-    level1050.disable_algorithm_score = True
+    level1050.disable_algorithm_score = False
     level1050.episode = episode22
 
     level1051 = Level.objects.get(name="62", default=True)
@@ -605,7 +605,7 @@ def add_python_den_levels(apps, schema_editor):
     level1051._state.adding = True
     level1051.name = "1051"
     level1051.pythonViewEnabled = True
-    level1051.disable_algorithm_score = True
+    level1051.disable_algorithm_score = False
     level1051.episode = episode22
 
     level1052 = Level.objects.get(name="63", default=True)
