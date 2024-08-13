@@ -433,7 +433,7 @@ class LevelEditorTestCase(TestCase):
         self.login(email1, password1)
 
         # Check `teacher1` can see `teacher2`'s shared level
-        levels_url = reverse("levels")
+        levels_url = reverse("blockly_levels")
         response = self.client.get(levels_url)
         assert len(response.context["directly_shared_levels"]) == 1
 
@@ -463,7 +463,7 @@ class LevelEditorTestCase(TestCase):
         self.login(email, password)
 
         # Check teacher can see student's shared level
-        levels_url = reverse("levels")
+        levels_url = reverse("blockly_levels")
         response = self.client.get(levels_url)
         assert len(response.context["directly_shared_levels"]) == 1
 
