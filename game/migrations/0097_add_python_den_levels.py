@@ -488,6 +488,7 @@ def add_python_den_levels(apps, schema_editor):
     level1035.blocklyEnabled = True
     level1035.pythonEnabled = False
     level1035.pythonViewEnabled = True
+    level1035.model_solution = "[9]"
     level1035.disable_algorithm_score = False
     level1035.episode = episode14
 
