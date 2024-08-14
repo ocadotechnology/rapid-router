@@ -124,7 +124,7 @@
                                     <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
                                     <p>
                                         <div class="col-sm-7 python-den-level">
-                                            <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                                            <a href="{% url 'play_python_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
                                             {% if level.score != None %}
                                                 <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
                                                 <img class="level_image coin_image" value="{{level.name}}">
@@ -179,7 +179,7 @@
                                 {% else %}
                                     <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
                                     <p>
-                                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                                        <a href="{% url 'play_python_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
                                         {% if level.score != None %}
                                             <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
                                             <img class="level_image coin_image" value="{{level.name}}">
