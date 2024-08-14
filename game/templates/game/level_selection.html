@@ -172,7 +172,7 @@
             The following levels focus on Loops using Blockly and Python.
         </div>
         {% for episode in pythonEpisodes %}
-            {% if episode.difficulty == "loops" and not "coming soon" in episode.name %}
+            {% if episode.difficulty == "loops" %}
                 <div class="panel">
                     <div id="episode-{{episode.id}}">
                         <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">

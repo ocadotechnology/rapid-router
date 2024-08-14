@@ -3346,7 +3346,7 @@ def hint_level109():
 (title_level1033, description_level1033, hint_level1033, commands_level1033) = (
     lambda: "Looking both ways",
     lambda: build_description(title_level1033(), "Can you find the shortest route?"),
-    lambda: "In this level, you want to check for a left turn first. If there is no left turn, turn right. Notice what that looks like in Python.",
+    lambda: "In this level, you want to check for a left turn first. If there is no left turn, turn right. Keep in mind what that looks like in Python.",
     lambda: '<div class="row">'
     + '<div class="large-4 columns">'
     + "<b>Movement</b>"
