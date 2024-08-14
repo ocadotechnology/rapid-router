@@ -2523,7 +2523,7 @@ def commands_level108():
 def hint_level108():
     return (
         "To decrease the value of a variable by an amount you can do something like the "
-        "following:<br><pre>number = number - 5</pre>" + PYTHON_HINT
+        "following:<br><pre>count = count - 5</pre>" + PYTHON_HINT
     )
 
 
