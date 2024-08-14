@@ -174,7 +174,7 @@
         {% for episode in pythonEpisodes %}
             {% if episode.difficulty == "loops" %}
                 <div class="panel">
-                    <div id="episode-{{episode.id}}">
+                    <div class="panel-header bg--{{ episode.difficulty }}" id="episode-{{episode.id}}">
                         <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                             {{episode.name}}
                             <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
