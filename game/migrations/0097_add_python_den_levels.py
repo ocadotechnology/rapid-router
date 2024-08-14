@@ -1262,7 +1262,7 @@ def create_python_den_episodes(apps, schema_editor):
 
 def delete_python_den_episodes(apps, schema_editor):
     Episode = apps.get_model("game", "Episode")
-    Episode.objects.get(pk__in=range(16, 23)).delete()
+    Episode.objects.filter(pk__in=range(16, 23)).delete()
 
     episode14 = Episode.objects.get(pk=14)
     episode15 = Episode.objects.get(pk=15)
@@ -1316,7 +1316,7 @@ def reset_first_and_last_levels(apps, schema_editor):
 
 def delete_old_loop_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
-    Level.objects.get(name__in=range(123, 154)).delete()
+    Level.objects.filter(name__in=range(123, 154)).delete()
 
 
 def recreate_old_loop_levels(apps, schema_editor):
