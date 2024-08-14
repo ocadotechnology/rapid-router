@@ -3120,11 +3120,14 @@ def hint_level109():
     + '<div class="large-4 columns">'
     + "<b>Movement</b>"
     + "<br>my_van.turn_left()"
-    + "<br>my_van.turn_right()"
-    + "<br>my_van.sound_horn()</div>"
+    + "<br>my_van.turn_right()</div>"
+    + "</div>"
+    + '<div class="row">'
     + '<div class="large-4 columns">'
-    + "<br>my_van.is_animal_crossing()</div>"
-    + '<div class="large-4 columns"></div></div>',
+    + "<p><b>Animals</b>"
+    + "<br>my_van.is_animal_crossing()"
+    + "<br>my_van.sound_horn()</div>"
+    + "</div>",
 )
 
 (title_level1017, description_level1017, hint_level1017, commands_level1017) = (
@@ -3141,7 +3144,7 @@ def hint_level109():
     + "<br>my_van.turn_right()</div>"
     + '<div class="large-4 columns">'
     + "<b>Position</b>"
-    + "<br>my_van.is_road_forward()</div>"
+    + "<br>my_van.is_road_left()</div>"
     + '<div class="large-4 columns"></div></div>',
 )
 
@@ -3406,15 +3409,19 @@ def hint_level109():
     + "<b>Movement</b>"
     + "<br>my_van.move_forwards()"
     + "<br>my_van.turn_around()"
-    + "<br>my_van.turn_right()"
-    + "<br>my_van.sound_horn()</div>"
+    + "<br>my_van.turn_right()</div>"
     + '<div class="large-4 columns">'
     + "<b>Position</b>"
-    + "<br>my_van.is_animal_crossing()"
     + "<br>my_van.at_destination()"
     + "<br>my_van.is_road_forward()"
     + "<br>my_van.at_dead_end()</div>"
-    + '<div class="large-4 columns"></div></div>',
+    + '<div class="large-4 columns"></div></div>'
+    + '<div class="row">'
+    + '<div class="large-4 columns">'
+    + "<p><b>Animals</b>"
+    + "<br>my_van.is_animal_crossing()"
+    + "<br>my_van.sound_horn()</div>"
+    + "</div>",
 )
 
 (title_level1039, description_level1039, hint_level1039, commands_level1039) = (
@@ -3425,17 +3432,21 @@ def hint_level109():
     + '<div class="large-4 columns">'
     + "<b>Movement</b>"
     + "<br>my_van.move_forwards()"
-    + "<br>my_van.turn_left()"
-    + "<br>my_van.sound_horn()</div>"
+    + "<br>my_van.turn_left()</div>"
     + '<div class="large-4 columns">'
     + "<b>Position</b>"
-    + "<br>my_van.is_animal_crossing()"
     + "<br>my_van.at_destination()"
     + "<br>my_van.is_road_forward()</div>"
-    + '<div class="large-4 columns"></div></div>',
+    + '<div class="large-4 columns"></div></div>'
+    + '<div class="row">'
+    + '<div class="large-4 columns">'
+    + "<p><b>Animals</b>"
+    + "<br>my_van.is_animal_crossing()"
+    + "<br>my_van.sound_horn()</div>"
+    + "</div>",
 )
 
-(title_level1040, description_level1040, hint_level1040, commands_level40) = (
+(title_level1040, description_level1040, hint_level1040, commands_level1040) = (
     lambda: title_level48(),
     lambda: description_level48(),
     lambda: hint_level48(),

@@ -637,9 +637,7 @@ def add_python_den_levels(apps, schema_editor):
 
 def delete_python_den_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
-    for i in range(1014, 1061):
-        deleted_level = Level.objects.get(name=i, default=True)
-        deleted_level.delete()
+    Level.objects.filter(name__in=range(1014, 1061)).delete()
 
 
 def add_python_den_blocks(apps, schema_editor):
@@ -928,11 +926,7 @@ def add_python_den_blocks(apps, schema_editor):
 def delete_python_den_blocks(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     LevelBlock = apps.get_model("game", "LevelBlock")
-
-    for i in range(1014, 1061):
-        deleted_level_blocks = LevelBlock.objects.filter(level_id=i)
-        for block in deleted_level_blocks:
-            block.delete()
+    LevelBlock.objects.filter(level_id__in=range(1014, 1061)).delete()
 
 
 def add_python_den_decor(apps, schema_editor):
@@ -1198,11 +1192,7 @@ def add_python_den_decor(apps, schema_editor):
 def delete_python_den_decor(apps, schema_editor):
     Level = apps.get_model("game", "Level")
     LevelDecor = apps.get_model("game", "LevelDecor")
-
-    for i in range(1014, 1061):
-        deleted_level_decor = LevelDecor.objects.filter(level_id=i)
-        for decor_element in deleted_level_decor:
-            decor_element.delete()
+    LevelDecor.objects.filter(level_id__in=range(1014, 1061)).delete()
 
 
 def create_python_den_episodes(apps, schema_editor):
@@ -1258,17 +1248,29 @@ def create_python_den_episodes(apps, schema_editor):
     episode21.next_episode = episode15
     episode15.next_episode = episode22
 
+    episode12.save()
+    episode13.save()
+    episode14.save()
+    episode15.save()
+    episode16.save()
+    episode17.save()
+    episode18.save()
+    episode19.save()
+    episode20.save()
+    episode21.save()
+
 
 def delete_python_den_episodes(apps, schema_editor):
     Episode = apps.get_model("game", "Episode")
-    for i in range(16, 23):
-        deleted_episode = Episode.objects.get(pk=i)
-        deleted_episode.delete()
+    Episode.objects.get(pk__in=range(16, 23)).delete()
 
     episode14 = Episode.objects.get(pk=14)
     episode15 = Episode.objects.get(pk=15)
     episode14.next_episode = episode15
     episode15.next_episode = None
+
+    episode14.save()
+    episode15.save()
 
 
 def set_first_and_last_levels(apps, schema_editor):
@@ -1276,23 +1278,19 @@ def set_first_and_last_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
 
     episode13 = Episode.objects.get(pk=13)
-    level1014 = Level.objects.get(name="1014", default=True)
-    episode13.first_level = level1014
+    episode13.first_level = Level.objects.get(name="1014", default=True)
     episode13.save()
 
     episode14 = Episode.objects.get(pk=14)
-    level1026 = Level.objects.get(name="1026", default=True)
-    episode14.first_level = level1026
+    episode14.first_level = Level.objects.get(name="1026", default=True)
     episode14.save()
 
     episode15 = Episode.objects.get(pk=15)
-    level1041 = Level.objects.get(name="1041", default=True)
-    episode15.first_level = level1041
+    episode15.first_level = Level.objects.get(name="1041", default=True)
     episode15.save()
 
     episode22 = Episode.objects.get(pk=22)
-    level1050 = Level.objects.get(name="1050", default=True)
-    episode22.first_level = level1050
+    episode22.first_level = Level.objects.get(name="1050", default=True)
     episode22.save()
 
 
@@ -1318,9 +1316,7 @@ def reset_first_and_last_levels(apps, schema_editor):
 
 def delete_old_loop_levels(apps, schema_editor):
     Level = apps.get_model("game", "Level")
-    for i in range(123, 154):
-        deleted_level = Level.objects.get(name=i)
-        deleted_level.delete()
+    Level.objects.get(name__in=range(123, 154)).delete()
 
 
 def recreate_old_loop_levels(apps, schema_editor):
