@@ -89,7 +89,9 @@ def _next_level_url(level, user, night_mode):
         is_next_level_locked = klass in next_level.locked_for_class.all()
 
         if is_next_level_locked:
-            while is_next_level_locked and int(next_level.name) < 109:
+            while is_next_level_locked and (
+                int(next_level.name) < 122 or 1001 < int(next_level.name) < 1060
+            ):
                 next_level = next_level.next_level
                 is_next_level_locked = klass in next_level.locked_for_class.all()
 
@@ -161,11 +163,9 @@ def play_level(request, level, from_editor=False):
         if level.default
         else level.hint
     )
-    commands_attr = 'commands_level' + str(level.name)
+    commands_attr = "commands_level" + str(level.name)
     commands = (
-        getattr(messages, commands_attr, None)
-        if level.default
-        else level.commands
+        getattr(messages, commands_attr, None) if level.default else level.commands
     )
     character = level.character
     character_url = character.top_down

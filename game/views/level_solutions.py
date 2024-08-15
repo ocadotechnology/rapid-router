@@ -45,7 +45,7 @@ lvl_95 = """from van import Van
 
 my_van = Van()
 
-for i in range(3):
+for count in range(3):
   my_van.turn_left()
   my_van.turn_right()
   my_van.move_forwards()"""
@@ -266,7 +266,7 @@ my_van = Van()
 
 number = 6
 while not my_van.at_destination():
-  for i in range(number):
+  for count in range(number):
     my_van.move_forwards()
   my_van.turn_left()
   number = number - 2"""
@@ -386,6 +386,344 @@ while count < 3:
   my_van.turn_left()
   my_van.turn_left()
   count = count + 1"""
+
+python_lvl_16 = """from van import Van
+
+my_van = Van()
+
+count = 0
+my_van.turn_right()
+while count < 5:
+  if my_van.is_animal_crossing():
+    my_van.sound_horn()
+  my_van.turn_left()
+  my_van.turn_right()
+  count = count + 1"""
+
+python_lvl_17 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 3:
+  if my_van.is_road_left():
+    my_van.turn_left()
+    my_van.turn_right()
+  my_van.move_forwards()
+  count = count + 1"""
+
+python_lvl_18 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 19:
+  if my_van.is_road_left():
+    my_van.turn_left()
+  my_van.move_forwards()
+  count = count + 1"""
+
+python_lvl_20 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 8:
+  if my_van.is_road_left():
+    my_van.turn_left()
+  else:
+    my_van.turn_right()
+  count = count + 1"""
+
+python_lvl_21 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 6:
+  if my_van.is_road_left():
+    my_van.turn_left()
+    my_van.deliver()
+    my_van.turn_right()
+    if count == 5:
+      my_van.deliver()
+  else:
+    my_van.move_forwards()
+  count = count + 1"""
+
+python_lvl_24 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 8:
+  if my_van.is_road_forward():
+    my_van.move_forwards()
+  elif my_van.is_road_left():
+    my_van.turn_left()
+  else:
+    my_van.turn_right()
+  count = count + 1"""
+
+python_lvl_25 = """from van import Van
+
+my_van = Van()
+
+count = 0
+while count < 16:
+  if my_van.at_red_traffic_light():
+    my_van.wait()
+  elif my_van.is_road_left():
+    my_van.turn_left()
+  elif my_van.is_road_forward():
+    my_van.move_forwards()
+  else:
+    my_van.turn_right()
+  count = count + 1"""
+
+python_lvl_30 = """from van import Van
+
+my_van = Van()
+
+while not my_van.at_destination():
+  my_van.turn_left()
+  my_van.turn_right()
+  my_van.turn_right()
+  my_van.turn_left()"""
+
+python_lvl_33 = """from van import Van
+
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_road_left():
+    my_van.turn_left()
+  else:
+    my_van.turn_right()"""
+
+python_lvl_34 = """from van import Van
+
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_road_right():
+    my_van.turn_right()
+  else:
+    my_van.move_forwards()"""
+
+python_lvl_38 = """from van import Van
+
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_animal_crossing():
+    my_van.sound_horn()
+  elif my_van.is_road_forward():
+    my_van.move_forwards()
+  elif my_van.at_dead_end():
+    my_van.turn_around()
+    my_van.turn_right()"""
+
+python_lvl_39 = """from van import Van
+
+my_van = Van()
+
+while not my_van.at_destination():
+  if my_van.is_animal_crossing():
+    my_van.sound_horn()
+  elif my_van.is_road_forward():
+    my_van.move_forwards()
+  else:
+    my_van.turn_left()"""
+
+python_lvl_40 = """from van import Van
+
+my_van = Van()
+
+for count in range(4):
+  while not my_van.at_destination():
+    if my_van.at_red_traffic_light():
+      my_van.wait()
+    elif my_van.is_road_left():
+      my_van.turn_left()
+    elif my_van.is_road_forward():
+      my_van.move_forwards()
+    elif my_van.is_road_right():
+      my_van.turn_right()
+    elif my_van.at_dead_end():
+      my_van.turn_around()
+  my_van.deliver()"""  #
+
+python_lvl_52 = """from van import Van
+
+my_van = Van()
+
+def wiggle():
+  my_van.turn_left()
+  my_van.move_forwards()
+  my_van.turn_right()
+  my_van.turn_right()
+  my_van.turn_left()
+
+wiggle()
+my_van.move_forwards()
+wiggle()
+wiggle()
+my_van.turn_right()
+my_van.move_forwards()
+my_van.turn_right()
+wiggle()"""
+
+python_lvl_53 = """from van import Van
+
+my_van = Van()
+
+def large_turn():
+  my_van.turn_left()
+  my_van.turn_right()
+  my_van.move_forwards()
+  my_van.turn_right()
+  my_van.turn_left()
+
+def small_turn():
+  my_van.turn_right()
+  for count in range(2):
+    my_van.turn_left()
+  my_van.turn_right()
+
+large_turn()
+my_van.move_forwards()
+large_turn()
+for count2 in range(2):
+  my_van.turn_right()
+  my_van.move_forwards()
+small_turn()
+large_turn()
+small_turn()"""
+
+python_lvl_54 = """from van import Van
+
+my_van = Van()
+
+def left_right():
+  my_van.turn_left()
+  my_van.turn_right()
+
+def right_left():
+  my_van.turn_right()
+  my_van.turn_left()
+
+left_right()
+my_van.move_forwards()
+right_left()
+for count in range(2):
+  left_right()
+my_van.move_forwards()
+for count2 in range(2):
+  my_van.move_forwards()
+  my_van.turn_right()
+for count3 in range(2):
+  left_right()
+right_left()
+my_van.move_forwards()
+for count4 in range(2):
+  my_van.move_forwards()
+  my_van.turn_left()
+right_left()
+left_right()
+for count5 in range(2):
+  my_van.move_forwards()
+left_right()"""
+
+python_lvl_55 = """from van import Van
+
+my_van = Van()
+
+def triple_straight_right():
+  my_van.move_forwards()
+  double_straight_right()
+
+def double_straight_right():
+  my_van.move_forwards()
+  my_van.move_forwards()
+  my_van.turn_right()
+
+double_straight_right()
+my_van.turn_left()
+triple_straight_right()
+double_straight_right()
+triple_straight_right()
+my_van.turn_left()
+double_straight_right()"""
+
+python_lvl_56 = """from van import Van
+
+my_van = Van()
+
+def left_right():
+  my_van.turn_left()
+  my_van.turn_right()
+
+def left_forward():
+  my_van.turn_left()
+  my_van.move_forwards()
+
+def double_left_right():
+  for count in range(2):
+    left_right()
+
+double_left_right()
+left_forward()
+double_left_right()
+my_van.turn_left()
+left_forward()
+for count2 in range(2):
+  left_right()
+  my_van.turn_right()
+double_left_right()
+double_left_right()"""
+
+python_lvl_57 = """from van import Van
+
+my_van = Van()
+
+def bend():
+  my_van.turn_right()
+  my_van.turn_left()
+
+bend()
+my_van.move_forwards()
+for count in range(2):
+  bend()
+my_van.move_forwards()
+bend()
+for count2 in range(2):
+  my_van.turn_right()
+for count3 in range(4):
+  my_van.move_forwards()
+for count4 in range(3):
+  bend()"""
+
+python_lvl_58 = """from van import Van
+
+my_van = Van()
+
+def bend():
+  my_van.move_forwards()
+  my_van.move_forwards()
+  my_van.turn_right()
+  my_van.turn_left()
+  my_van.turn_left()
+
+my_van.move_forwards()
+my_van.turn_right()
+for count in range(2):
+  bend()
+my_van.move_forwards()
+bend()
+my_van.move_forwards()
+my_van.move_forwards()
+my_van.turn_right()"""
 
 solutions = {
     "python_default": python_default,
@@ -512,4 +850,51 @@ solutions = {
     "120": lvl_120,
     "121": lvl_121,
     "122": lvl_122,
+    "1014": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">8</field></block></value></block></value><statement name="body"><block type="controls_if"><value name="IF0"><block type="cow_crossing"></block></value><statement name="DO0"><block type="sound_horn"></block></statement><next><block type="move_forwards"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></block></statement></block></next></block></next></block></xml>',
+    "1015": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">4</field></block></value></block></value><statement name="body"><block type="controls_if"><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"><next><block type="turn_right"></block></next></block></statement><next><block type="move_forwards"><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></next></block></statement></block></next></block></next></block></xml>',
+    "1016": python_lvl_16,
+    "1017": python_lvl_17,
+    "1018": python_lvl_18,
+    "1019": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">8</field></block></value></block></value><statement name="body"><block type="controls_if"><mutation else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_right"><next><block type="turn_left"></block></next></block></statement><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></statement></block></next></block></next></block></xml>',
+    "1020": python_lvl_20,
+    "1021": python_lvl_21,
+    "1022": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">12</field></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></statement></block></next></block></next></block></xml>',
+    "1023": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="variables_numeric_set"><field name="NAME">count</field><field name="VALUE">0</field><next><block type="controls_repeat_while"><value name="condition"><block type="logic_compare"><field name="OP">LT</field><value name="A"><block type="variables_get"><field name="NAME">count</field></block></value><value name="B"><block type="math_number"><field name="NUM">6</field></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">RIGHT</field></block></value><statement name="DO0"><block type="turn_right"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"></block></statement><statement name="ELSE"><block type="move_forwards"></block></statement><next><block type="variables_increment"><field name="NAME">count</field><field name="VALUE">1</field></block></next></block></statement></block></next></block></next></block></xml>',
+    "1024": python_lvl_24,
+    "1025": python_lvl_25,
+    "1026": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="185" y="273"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="move_forwards"></block></statement></block></next></block></xml>',
+    "1027": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="185" y="273"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="move_forwards"></block></statement></block></next></block></xml>',
+    "1028": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"></block></next></block></statement></block></next></block></xml>',
+    "1029": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="330"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="turn_left"><next><block type="turn_right"><next><block type="turn_left"><next><block type="move_forwards"></block></next></block></next></block></next></block></statement></block></next></block></xml>',
+    "1030": python_lvl_30,
+    "1031": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="350" y="576"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><statement name="ELSE"><block type="turn_left"></block></statement></block></statement></block></next></block></xml>',
+    "1032": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="350" y="576"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO0"><block type="turn_left"></block></statement><statement name="ELSE"><block type="move_forwards"></block></statement></block></statement></block></next></block></xml>',
+    "1033": python_lvl_33,
+    "1034": python_lvl_34,
+    "1035": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="350" y="576"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="1" else="1"></mutation><value name="IF0"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO0"><block type="move_forwards"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO1"><block type="turn_left"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
+    "1036": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="230" y="430"><next><block type="controls_repeat_while"><value name="condition"><block type="logic_negate"><value name="BOOL"><block type="at_destination"></block></value></block></value><statement name="body"><block type="controls_if"><mutation elseif="2" else="1"></mutation><value name="IF0"><block type="cow_crossing"></block></value><statement name="DO0"><block type="sound_horn"></block></statement><value name="IF1"><block type="road_exists"><field name="CHOICE">FORWARD</field></block></value><statement name="DO1"><block type="move_forwards"></block></statement><value name="IF2"><block type="road_exists"><field name="CHOICE">LEFT</field></block></value><statement name="DO2"><block type="turn_left"></block></statement><statement name="ELSE"><block type="turn_right"></block></statement></block></statement></block></next></block></xml>',
+    "1037": lvl_100,
+    "1038": python_lvl_38,
+    "1039": python_lvl_39,
+    "1040": python_lvl_40,
+    "1041": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="607" y="268"><next><block type="controls_repeat"><field name="TIMES">3</field><statement name="DO"><block type="move_forwards"><next><block type="turn_left"><next><block type="turn_right"><next><block type="turn_left"></block></next></block></next></block></next></block></statement></block></next></block></xml>',
+    "1042": lvl_95,
+    "1043": lvl_96,
+    "1044": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="425" y="290"><next><block type="controls_repeat"><field name="TIMES">4</field><statement name="DO"><block type="turn_left"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="turn_right"></block></statement><next><block type="turn_left"></block></next></block></next></block></statement></block></next></block></xml>',
+    "1045": lvl_97,
+    "1046": lvl_106,
+    "1047": lvl_107,
+    "1048": lvl_108,
+    "1049": lvl_109,
+    "1050": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="192" y="415"><next><block type="call_proc"><field name="NAME">wiggle</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">wiggle</field></block></next></block></next></block></next></block><block type="declare_proc" x="193" y="620"><field name="NAME">wiggle</field><statement name="DO"><block type="move_forwards"><next><block type="turn_left"><next><block type="controls_repeat"><field name="TIMES">2</field><statement name="DO"><block type="turn_right"></block></statement><next><block type="turn_left"></block></next></block></next></block></next></block></statement></block></xml>',
+    "1051": '<xml xmlns="http://www.w3.org/1999/xhtml"><block type="start" deletable="false" x="310" y="456"><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">lights</field><next><block type="move_forwards"><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">lights</field><next><block type="move_forwards"><next><block type="call_proc"><field name="NAME">lights</field><next><block type="turn_right"><next><block type="call_proc"><field name="NAME">lights</field><next><block type="move_forwards"><next><block type="move_forwards"></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block></next></block><block type="declare_proc" x="312" y="886"><field name="NAME">lights</field><statement name="DO"><block type="controls_repeat_until"><value name="condition"><block type="traffic_light"><field name="CHOICE">GREEN</field></block></value><statement name="body"><block type="wait"></block></statement></block></statement></block></xml>',
+    "1052": python_lvl_52,
+    "1053": python_lvl_53,
+    "1054": python_lvl_54,
+    "1055": python_lvl_55,
+    "1056": python_lvl_56,
+    "1057": python_lvl_57,
+    "1058": python_lvl_58,
+    "1059": lvl_101,
+    "1060": lvl_102,
 }
