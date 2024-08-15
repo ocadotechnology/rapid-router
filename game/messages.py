@@ -3597,8 +3597,8 @@ def hint_level109():
 )
 
 (title_level1057, description_level1057, hint_level1057, commands_level1057) = (
-    lambda: title_level90(),
-    lambda: description_level90(),
+    lambda: "Have a go at procedures",
+    lambda: build_description(title_level1057(), "Try adding a procedure and watch what happens in Python."),
     lambda: hint_level90(),
     lambda: "<b>Movement</b>"
     + "<br>my_van.move_forwards()"
@@ -3608,7 +3608,7 @@ def hint_level109():
 
 (title_level1058, description_level1058, hint_level1058, commands_level1058) = (
     lambda: title_level91(),
-    lambda: description_level91(),
+    lambda: build_description(title_level1058(), "Try adding a procedure and watch what happens in Python."),
     lambda: hint_level91(),
     lambda: "<b>Movement</b>"
     + "<br>my_van.move_forwards()"

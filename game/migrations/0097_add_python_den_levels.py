@@ -1159,7 +1159,7 @@ def add_python_den_decor(apps, schema_editor):
 
     bulk_copy_decor("85", "1026")
     bulk_copy_decor("119", "1029")
-    bulk_copy_decor("1044", "1030")
+    bulk_copy_decor("84", "1030")
     bulk_copy_decor("34", "1031")
     bulk_copy_decor("99", "1035")
     bulk_copy_decor("38", "1036")
