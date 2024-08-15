@@ -62,11 +62,11 @@ def fetch_episode_data_from_database(early_access, start, end):
         }
 
         episode_data.append(e)
-        episode = episode.next_episode
 
-        current += 1
-        if current > end:
+        if episode.id == end:
             break
+
+        episode = episode.next_episode
 
     return episode_data
 
@@ -123,7 +123,7 @@ def get_blockly_episodes(request):
 
 
 def get_python_episodes(request):
-    return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 10, 12)
+    return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 16, 22)
 
 
 def levels(request, language):
