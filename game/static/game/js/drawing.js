@@ -979,7 +979,7 @@ ocargo.Drawing = function (startingPosition) {
   }
 
   this.wait = function (duration, callback) {
-    character.wait(duration, callback)
+    character.wait(duration, callback);
   }
 
   this.deliver = function (destinationId, duration) {
@@ -1039,28 +1039,31 @@ ocargo.Drawing.startPopup = function (
   title,
   subtitle,
   message,
-  mascot,
+  showMascot,
   buttons
 ) {
   $('#myModal-title').html(title)
   $('#myModal-lead').html(subtitle)
   $('#myModal-mainText').html(message)
 
-  $('#modal-mascot').hide()
-  $('#modal-mascot--brain').hide()
+  const mascot = $('#modal-mascot')
+  const brain = $('#modal-mascot--brain')
 
-  if (mascot) {
+  mascot.hide()
+  brain.hide()
+
+  if (showMascot) {
     if (EPISODE === 9) {
-      $('#modal-mascot--brain').show()
+      brain.show()
     }
     else {
-      $('#modal-mascot').show()
+      mascot.show()
     }
   }
 
   const youtubeVideo = $("iframe")
   if (youtubeVideo[0]) {
-    $("#modal-mascot").hide()
+    mascot.hide()
   }
 
   // create a wrapper for the buttons that will be appended
@@ -1084,7 +1087,7 @@ ocargo.Drawing.startPopup = function (
 
     const regexID = /id=\"*\w+_\w+\"/
 
-    // Close the video on pressing the top right close button 
+    // Close the video on pressing the top right close button
     $("#close-modal").click(function () {
       stopVideo();
     });
@@ -1097,7 +1100,7 @@ ocargo.Drawing.startPopup = function (
       let classToBeAdded = currentID === "play_button" ? "navigation_button_portal long_button rapid-router-welcome" : "navigation_button_portal_secondary long_button rapid-router-welcome button--icon"
 
       currentButton.removeClass().addClass(classToBeAdded)
-      if (currentID != "play_button") {
+      if (currentID !== "play_button") {
         // adding links to buttons
         currentButton.append(icons[i])
         let currentLink = links[i] === "" ? "" : `window.location.replace('${links[i]}')`
@@ -1127,6 +1130,14 @@ ocargo.Drawing.startPopup = function (
     let editButton = $("#edit_button")
     editButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
     buttonDiv.append(editButton)
+
+    let yesButton = $("#yes_button")
+    yesButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(yesButton)
+
+    let noButton = $("#no_button")
+    noButton.removeClass().addClass("navigation_button_portal long_button rapid-router-welcome")
+    buttonDiv.append(noButton)
 
     let nextLevelButton = $("#next_level_button")
     nextLevelButton.removeClass().addClass("navigation_button_portal_secondary long_button rapid-router-welcome button--icon")
@@ -1166,13 +1177,15 @@ ocargo.Drawing.startYesNoPopup = function (
   message,
   yesFunction,
   noFunction,
-  mascot
+  showMascot
 ) {
-  let buttonHtml =
-    '<button id="modal-yesBtn" class="navigation_button long_button">Yes</button> <button id="modal-noBtn" class="navigation_button long_button">No</button>'
-  ocargo.Drawing.startPopup(title, subtitle, message, mascot, buttonHtml)
-  $('#modal-yesBtn').click(yesFunction)
-  $('#modal-noBtn').click(noFunction)
+  let buttons = '';
+  buttons += ocargo.button.dismissButtonHtml("yes_button", "Yes");
+  buttons += ocargo.button.dismissButtonHtml("no_button", "No");
+
+  ocargo.Drawing.startPopup(title, subtitle, message, showMascot, buttons)
+  $('#yes_button').click(yesFunction)
+  $('#no_button').click(noFunction)
 }
 
 // This is the function that starts the pop-up when there is no internet connection while playing the game

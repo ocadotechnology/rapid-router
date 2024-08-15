@@ -113,8 +113,16 @@ ocargo.Game.prototype.setup = function () {
     } else if (DEFAULT_LEVEL) {
       titlePrefix = gettext('Level %(level_name)s')
     }
+
+    let adjusted_level_name = ''
+    if (LEVEL_NAME > 1000) {
+      adjusted_level_name = LEVEL_NAME - 1000
+    } else {
+      adjusted_level_name = LEVEL_NAME;
+    }
+
     if (titlePrefix) {
-      title = interpolate(titlePrefix, { level_name: LEVEL_NAME }, true)
+      title = interpolate(titlePrefix, { level_name: adjusted_level_name }, true)
     } else {
       title = LEVEL_NAME
     }
@@ -850,9 +858,9 @@ ocargo.Game.prototype._setupPythonTab = function () {
       $('#consoleOutput').text('')
     }.bind(this)
   )
-
+// --------- Commands for popup ---------------------------------------------------
   var leadMsg =
-    '<p>' +
+    '<p style="font-size: 20px;">' +
     interpolate(
       gettext(
         'Run the following commands on the van object %(var_name)s, e.g. %(example)s'
@@ -861,52 +869,8 @@ ocargo.Game.prototype._setupPythonTab = function () {
       true
     ) +
     '</p>' +
-    '<div class="row">' +
-    '<div class="large-4 columns">' +
-    '<p><b>' +
-    gettext('Movement') +
-    '</b>' +
-    '<br>my_van.move_forwards()' +
-    '<br>my_van.turn_left()' +
-    '<br>my_van.turn_right()' +
-    '<br>my_van.turn_around()' +
-    '<br>my_van.wait()</p>' +
-    '</div>' +
-    '<div class="large-4 columns">' +
-    '<p><b>' +
-    gettext('Position') +
-    '</b>' +
-    '<br>my_van.at_dead_end()' +
-    '<br>my_van.at_destination()' +
-    '<br>my_van.at_red_traffic_light()' +
-    '<br>my_van.at_green_traffic_light()' +
-    '<br>my_van.at_traffic_light(c)' +
-    '<br><i>' +
-    interpolate(
-      gettext("where %(arg_name)s is '%(red_color)s' or '%(green_color)s'"),
-      { arg_name: 'c', red_color: 'RED', green_color: 'GREEN' },
-      true
-    ) +
-    '</i></p>' +
-    '</div>' +
-    '<div class="large-4 columns">' +
-    '<p>' +
-    '<br>my_van.is_road_forward()' +
-    '<br>my_van.is_road_left()' +
-    '<br>my_van.is_road_right()' +
-    '<br>my_van.is_road(d)' +
-    '<br><i>' +
-    interpolate(
-      gettext(
-        "where %(arg_name)s is '%(forward)s', '%(left)s', or '%(right)s'"
-      ),
-      { arg_name: 'd', forward: 'FORWARD', left: 'LEFT', right: 'RIGHT' },
-      true
-    ) +
-    '</i></p>' +
-    '</div>' +
-    '</div>'
-
+    COMMANDS
+// -----------------------------------------------------------------------------
   $('#van_commands_help').click(
     function (e) {
       ocargo.Drawing.startPopup(gettext('Python Commands'), leadMsg, '')
