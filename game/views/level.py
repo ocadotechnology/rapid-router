@@ -460,7 +460,7 @@ def load_workspace_solution(request, level_name):
 
 def start_episode(request, episodeId):
     episode = cached_episode(episodeId)
-    from_python_den = episode.first_level >= 1000
+    from_python_den = int(episode.first_level.name) >= 1000
     return play_level(request, episode.first_level, False, from_python_den)
 
 
