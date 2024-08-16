@@ -45,8 +45,12 @@ def play_custom_level(request, levelId, from_editor=False):
 
 
 def play_default_level(request, levelName):
+    if (int(levelName) >= 80 and int(levelName) <= 109):
+        raise Http404
+    
     level = cached_default_level(levelName)
-    return play_level(request, level)
+    from_python_den_value = int(levelName) >= 1000
+    return play_level(request, level, from_python_den=from_python_den_value)
 
 
 def _prev_level_url(level, user, night_mode):
@@ -121,7 +125,7 @@ def _custom_level_url(level):
     return reverse("play_custom_level", args=[level.id])
 
 
-def play_level(request, level, from_editor=False):
+def play_level(request, level, from_editor=False, from_python_den=False):
     """Loads a level for rendering in the game.
 
     **Context**
@@ -225,7 +229,7 @@ def play_level(request, level, from_editor=False):
         night_mode_javascript = "false"
         model_solution = level.model_solution
 
-    return_view = "level_editor" if from_editor else "levels"
+    return_view = "level_editor" if from_editor else "python_levels" if from_python_den else "levels"
 
     temp_block_data = []
     [
@@ -456,7 +460,8 @@ def load_workspace_solution(request, level_name):
 
 def start_episode(request, episodeId):
     episode = cached_episode(episodeId)
-    return play_level(request, episode.first_level, False)
+    from_python_den = episode.first_level >= 1000
+    return play_level(request, episode.first_level, False, from_python_den)
 
 
 @require_POST

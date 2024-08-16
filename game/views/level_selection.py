@@ -59,6 +59,10 @@ def fetch_episode_data_from_database(early_access, start, end):
             "last_level": maxName,
             "random_levels_enabled": episode.r_random_levels_enabled,
             "difficulty": episode.difficulty,
+            "lesson_plan_link": episode.lesson_plan_link,
+            "slides_link": episode.slides_link,
+            "worksheet_link": episode.worksheet_link,
+            "video_link": episode.video_link
         }
 
         episode_data.append(e)

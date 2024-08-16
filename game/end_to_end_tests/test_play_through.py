@@ -275,145 +275,49 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(78, check_route_score=False)
 
     def test_level_079(self):
-        self._complete_level(79)
-
-    def test_episode_10(self):
-        self._complete_episode(10, 80)
-
-    def test_level_080(self):
-        self._complete_level(80)
-
-    def test_level_081(self):
-        self._complete_level(81)
-
-    def test_level_082(self):
-        self._complete_level(82)
-
-    def test_level_083(self):
-        self._complete_level(83)
-
-    def test_level_084(self):
-        self._complete_level(84)
-
-    def test_level_085(self):
-        self._complete_level(85)
-
-    def test_level_086(self):
-        self._complete_level(86)
-
-    def test_level_087(self):
-        self._complete_level(87)
-
-    def test_level_088(self):
-        self._complete_level(88)
-
-    def test_level_089(self):
-        self._complete_level(89)
-
-    def test_level_090(self):
-        self._complete_level(90)
-
-    def test_level_091(self):
-        self._complete_level(91)
-
-    def test_episode_11(self):
-        self._complete_episode(11, 92, check_algorithm_score=False)
-
-    def test_level_092(self):
-        self._complete_level(92, check_algorithm_score=False)
-
-    def test_level_093(self):
-        self._complete_level(93, check_algorithm_score=False)
-
-    def test_level_094(self):
-        self._complete_level(94, check_algorithm_score=False)
-
-    def test_level_095(self):
-        self._complete_level(95, check_algorithm_score=False)
-
-    def test_level_096(self):
-        self._complete_level(96, check_algorithm_score=False)
-
-    def test_level_097(self):
-        self._complete_level(97, check_algorithm_score=False)
-
-    def test_level_098(self):
-        self._complete_level(98, check_algorithm_score=False)
-
-    def test_level_099(self):
-        self._complete_level(99, check_algorithm_score=False)
-
-    def test_level_100(self):
-        self._complete_level(100, check_algorithm_score=False)
-
-    def test_level_101(self):
-        self._complete_level(101, check_algorithm_score=False)
-
-    def test_level_102(self):
-        self._complete_level(102, check_algorithm_score=False)
-
-    def test_level_103(self):
-        self._complete_level(103, check_algorithm_score=False)
-
-    def test_level_104(self):
-        self._complete_level(104, check_algorithm_score=False)
-
-    def test_level_105(self):
-        self._complete_level(105, check_algorithm_score=False)
-
-    def test_level_106(self):
-        self._complete_level(106, check_algorithm_score=False)
-
-    def test_level_107(self):
-        self._complete_level(107, check_algorithm_score=False)
-
-    def test_level_108(self):
-        self._complete_level(108, check_algorithm_score=False)
-
-    def test_level_109(self):
-        self._complete_level(109, check_algorithm_score=False)
+        self._complete_level(79, final_level=True)
 
     def test_episode_12(self):
-        self._complete_episode(12, 110, check_algorithm_score=False)
+        self._complete_episode(12, 1001, check_algorithm_score=False)
 
-    def test_level_110(self):
-        self._complete_level(110, check_algorithm_score=False)
+    def test_level_1001(self):
+        self._complete_level(1001, check_algorithm_score=False)
 
-    def test_level_111(self):
-        self._complete_level(111, check_algorithm_score=False)
+    def test_level_1002(self):
+        self._complete_level(1002, check_algorithm_score=False)
 
-    def test_level_112(self):
-        self._complete_level(112)
+    def test_level_1003(self):
+        self._complete_level(1003)
 
-    def test_level_113(self):
-        self._complete_level(113, check_algorithm_score=False)
+    def test_level_1004(self):
+        self._complete_level(1004, check_algorithm_score=False)
 
-    def test_level_114(self):
-        self._complete_level(114, check_algorithm_score=False)
+    def test_level_1005(self):
+        self._complete_level(1005, check_algorithm_score=False)
 
-    def test_level_115(self):
-        self._complete_level(115, check_algorithm_score=False)
+    def test_level_1006(self):
+        self._complete_level(1006, check_algorithm_score=False)
 
-    def test_level_116(self):
-        self._complete_level(116)
+    def test_level_1007(self):
+        self._complete_level(1007)
 
-    def test_level_117(self):
-        self._complete_level(117)
+    def test_level_1008(self):
+        self._complete_level(1008)
 
-    def test_level_118(self):
-        self._complete_level(118)
+    def test_level_1009(self):
+        self._complete_level(1009)
 
-    def test_level_119(self):
-        self._complete_level(119, check_algorithm_score=False)
+    def test_level_1010(self):
+        self._complete_level(1010, check_algorithm_score=False)
 
-    def test_level_120(self):
-        self._complete_level(120, check_algorithm_score=False)
+    def test_level_1011(self):
+        self._complete_level(1011, check_algorithm_score=False)
 
-    def test_level_121(self):
-        self._complete_level(121, check_algorithm_score=False)
+    def test_level_1012(self):
+        self._complete_level(1012, check_algorithm_score=False)
 
-    def test_level_122(self):
-        self._complete_level(122, check_algorithm_score=False, final_level=True)
+    def test_level_1013(self):
+        self._complete_level(1013, check_algorithm_score=False)
 
     def test_episode_13(self):
         self._complete_episode(13, 1014)
