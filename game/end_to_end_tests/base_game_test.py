@@ -104,7 +104,10 @@ class BaseGameTest(SeleniumTestCase):
         return EditorPage(self.selenium)
 
     def go_to_episode(self, episodeId):
-        path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
+        if episodeId > 1000:
+            path = reverse("start_python_episode", kwargs={"episodeId": str(episodeId)})
+        else:
+            path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
         self._go_to_path(path)
 
         return GamePage(self.selenium)
