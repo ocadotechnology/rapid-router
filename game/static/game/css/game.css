@@ -405,15 +405,3 @@ div > .navigation_button_kurono {
 .game-background {
     background-color: #1E30A6;
 }
-
-.header-exit-button {
-    position: absolute;
-    left: 0px;
-    height: 50px;
-    width: 120px;
-    opacity: 0;
-}
-
-::part(editor-root) {
-    height: 1000px;
-}
