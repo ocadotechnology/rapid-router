@@ -152,16 +152,30 @@
 </div>
 
 <div id="wrapper" class="unselectable">
+  {% if level.pythonViewEnabled or level.pythonEnabled %}
+    <img src="{% static 'game/image/python_den_header.svg' %}" class="game-header">
+  {% endif %}
   <span id="game_page"></span>
 
   <div id="tabs" class='no-print bg--{{ level.difficulty }}'>
-    <div id="blockly_tab" class="tab selectable {% if level.blocklyEnabled %}{% else %}hidden{% endif %}">
+
+    <div id="blockly_tab"
+         class="tab selectable {% if not level.blocklyEnabled and not level.pythonViewEnabled %}hidden{% endif %}">
       <input type="radio" name="tabs" id="blockly_radio" checked>
       <label for="blockly_radio">
         <img src="{% static 'game/image/icons/blockly.svg' %}">
         <span>{% trans "Blockly" %}</span>
       </label>
     </div>
+
+    <div id="python_tab" class="tab selectable {% if not level.pythonEnabled %}hidden{% endif %}">
+      <input type="radio" name="tabs" id="python_radio">
+      <label for="python_radio">
+        <img src="{% static 'game/image/icons/python.svg' %}">
+        <span>{% trans "Python Den" %}</span>
+      </label>
+    </div>
+
     <div id="language_tab" class="tab">
       <select name="language_dropdown" class="tab selectable bg--{{level.difficulty}} {% if level.pythonEnabled %}hidden{% endif %}" id="language_dropdown" onchange="gameUpdateBlockLanguageAndCookie(this.value)">
         {% for language_code, language in available_language_dict.items %}
@@ -171,14 +185,6 @@
     </div>
 
     <div class="tab_break"></div>
-
-    <div id="python_tab" class="tab selectable {% if level.pythonEnabled %}{% else %}hidden{% endif %}">
-      <input type="radio" name="tabs" id="python_radio">
-      <label for="python_radio">
-        <img src="{% static 'game/image/icons/python.svg' %}">
-        <span>{% trans "Python" %}</span>
-      </label>
-    </div>
 
     <div id="clear_tab" class="tab">
       <input type="radio" name="tabs" id="clear_program_radio">
@@ -551,12 +557,12 @@
                             <path id="d" fill="#fff" stroke-width="0px" d="M68.91,70.86h-7.35c-.28,0-.48-.26-.42-.53l2.49-10.37c.11-.46-.49-.74-.77-.35l-11.46,16.1c-.2.28,0,.68.35.68h7.35c.28,0,.48.26.42.53l-2.49,10.37c-.11.46.49.74.77.35l11.46-16.1c.2-.28,0-.68-.35-.68Z"/>
                             <g id="e" isolation="isolate">
                               <g isolation="isolate">
-                                <text 
-                                  id="Text_percentage" 
-                                  data-name="Text percentage" 
+                                <text
+                                  id="Text_percentage"
+                                  data-name="Text percentage"
                                   font-family="LilitaOne, 'Lilita One'"
                                   font-size="16px"
-                                  transform="translate(43.2 48.2)" 
+                                  transform="translate(43.2 48.2)"
                                   fill="#4ba0dd">
                                   <tspan id="Text_percentage_value" x="0" y="0">100%</tspan>
                                 </text>
@@ -581,13 +587,13 @@
                               s-.66,8.1-1.87,11.82
                               c-2.52,7.76-7.44,14.42-13.9,19.12Z"
                               />
-                            <circle 
+                            <circle
                               id="emptying_circle"
                               cx="59.79"
                               cy="59.79"
-                              r="43.5" 
-                              stroke-width="11" 
-                              stroke="#213a47" 
+                              r="43.5"
+                              stroke-width="11"
+                              stroke="#213a47"
                               fill="transparent"
                               stroke-dasharray="273.18"
                               stroke-dashoffset="273.18"
