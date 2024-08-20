@@ -393,3 +393,11 @@ div > .navigation_button_kurono {
     bottom: 0px;
     background-image : url('/static/game/image/actions/btn_zoom_in.svg');
 }
+
+/**************/
+/* Python den */
+/**************/
+
+.game-header {
+    width: 100%;
+}

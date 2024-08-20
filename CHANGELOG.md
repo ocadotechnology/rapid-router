@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.2.0 (2024-08-20)
+
+### Feature
+
+* Add python den game pages ([#1682](https://github.com/ocadotechnology/rapid-router/issues/1682)) ([`c6462aa`](https://github.com/ocadotechnology/rapid-router/commit/c6462aaaee4fdf7bc5fbbdff803d9535030b596d))
+
 ## v6.1.0 (2024-08-15)
 
 ### Feature
