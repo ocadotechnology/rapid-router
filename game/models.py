@@ -45,7 +45,7 @@ class Episode(models.Model):
 
     name = models.CharField(max_length=200)
     next_episode = models.ForeignKey(
-        "self", null=True, default=None, on_delete=models.SET_NULL
+        "self", null=True, blank=True, default=None, on_delete=models.SET_NULL
     )
     in_development = models.BooleanField(default=False)
 
@@ -60,10 +60,18 @@ class Episode(models.Model):
     r_trafficLights = models.BooleanField(default=False)
     r_cows = models.BooleanField(default=False)
 
-    lesson_plan_link = models.CharField(max_length=200, null=True)
-    slides_link = models.CharField(max_length=200, null=True)
-    worksheet_link = models.CharField(max_length=200, null=True)
-    video_link = models.CharField(max_length=200, null=True)
+    lesson_plan_link = models.CharField(
+        max_length=200, null=True, blank=True, default=None
+    )
+    slides_link = models.CharField(
+        max_length=200, null=True, blank=True, default=None
+    )
+    worksheet_link = models.CharField(
+        max_length=200, null=True, blank=True, default=None
+    )
+    video_link = models.CharField(
+        max_length=200, null=True, blank=True, default=None
+    )
 
     @property
     def first_level(self):
@@ -107,7 +115,7 @@ class Episode(models.Model):
             23: "late-python",
             24: "late-python",
             25: "late-python",
-            26: "late-python"
+            26: "late-python",
         }
 
         return difficulty_map.get(self.id, "easy")
@@ -156,6 +164,7 @@ class Level(models.Model):
     next_level = models.ForeignKey(
         "self",
         null=True,
+        blank=True,
         default=None,
         on_delete=models.SET_NULL,
         related_name="prev_level",

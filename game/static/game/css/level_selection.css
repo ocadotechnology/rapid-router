@@ -109,3 +109,7 @@
 .python-den-level {
   padding: 1rem 0rem;
 }
+
+.text--warning {
+  color: #d60026;
+}

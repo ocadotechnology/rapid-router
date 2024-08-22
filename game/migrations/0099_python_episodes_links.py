@@ -1,5 +1,5 @@
 from django.apps.registry import Apps
-from django.db import migrations, models
+from django.db import migrations
 
 def add_resource_links_to_episodes(apps: Apps, *args):
     Episode = apps.get_model("game", "Episode")
@@ -90,30 +90,10 @@ def remove_resource_links_from_episodes(apps: Apps, *args):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0097_add_python_den_levels'),
+        ('game', '0098_add_episode_link_fields'),
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='episode',
-            name='lesson_plan_link',
-            field=models.CharField(max_length=200, null=True),
-        ),
-        migrations.AddField(
-            model_name='episode',
-            name='slides_link',
-            field=models.CharField(max_length=200, null=True),
-        ),
-        migrations.AddField(
-            model_name='episode',
-            name='video_link',
-            field=models.CharField(max_length=200, null=True),
-        ),
-        migrations.AddField(
-            model_name='episode',
-            name='worksheet_link',
-            field=models.CharField(max_length=200, null=True),
-        ),
         migrations.RunPython(
             code=add_resource_links_to_episodes,
             reverse_code=remove_resource_links_from_episodes

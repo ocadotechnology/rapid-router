@@ -28,7 +28,7 @@ def max_score(level):
 def fetch_episode_data_from_database(early_access, start, end):
     episode_data = []
     episode = Episode.objects.get(pk=start)
-    current = start
+
     while episode is not None:
         if episode.in_development and not early_access:
             break
@@ -62,7 +62,7 @@ def fetch_episode_data_from_database(early_access, start, end):
             "lesson_plan_link": episode.lesson_plan_link,
             "slides_link": episode.slides_link,
             "worksheet_link": episode.worksheet_link,
-            "video_link": episode.video_link
+            "video_link": episode.video_link,
         }
 
         episode_data.append(e)
@@ -119,7 +119,10 @@ def is_teacher(user):
 
 
 def is_admin_teacher(user):
-    return hasattr(user.userprofile, "teacher") and user.userprofile.teacher.is_admin
+    return (
+        hasattr(user.userprofile, "teacher")
+        and user.userprofile.teacher.is_admin
+    )
 
 
 def get_blockly_episodes(request):
@@ -127,7 +130,9 @@ def get_blockly_episodes(request):
 
 
 def get_python_episodes(request):
-    return fetch_episode_data(app_settings.EARLY_ACCESS_FUNCTION(request), 16, 22)
+    return fetch_episode_data(
+        app_settings.EARLY_ACCESS_FUNCTION(request), 16, 22
+    )
 
 
 def levels(request, language):
@@ -159,7 +164,9 @@ def levels(request, language):
     directly_shared_levels = []
     indirectly_shared_levels = {}
     if not request.user.is_anonymous:
-        owned_levels, shared_levels = level_management.get_loadable_levels(request.user)
+        owned_levels, shared_levels = level_management.get_loadable_levels(
+            request.user
+        )
 
         for level in owned_levels:
             owned_level_data.append(
@@ -243,9 +250,7 @@ def levels(request, language):
 
 def blockly_levels(request):
     return render(
-        request,
-        "game/level_selection.html",
-        context=levels(request, "blockly")
+        request, "game/level_selection.html", context=levels(request, "blockly")
     )
 
 
@@ -253,7 +258,7 @@ def python_levels(request):
     return render(
         request,
         "game/python_den_level_selection.html",
-        context=levels(request, "python")
+        context=levels(request, "python"),
     )
 
 
