@@ -1,6 +1,24 @@
+/* global showPopupConfirmation */
+
 $(function() {
     setupCoins();
 });
+
+function goToPythonDen() {
+    window.location.href = window.location.href.replace("rapidrouter", "pythonden");
+}
+
+function movedToPythonDenPopup() {
+    let title = "Python Den";
+    let text = `
+    <div class='popup-text'>
+      <p>We have migrated all Python levels to the new Python Den.</p>
+      <p>Click "Confirm" to continue your journey!</p>
+    </div>`;
+    let confirmHandler = "goToPythonDen()";
+
+    showPopupConfirmation(title, text, confirmHandler);
+}
 
 function setupCoins() {
     for(var i = 0; i < EPISODES.length; i++) {

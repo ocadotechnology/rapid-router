@@ -68,6 +68,7 @@
 
 {% block content %}
 <div class="container background">
+    {% include "portal/partials/popup.html" %}
     <div id="episodes">
         <div class="panel-intro">
             <h4>Blockly levels</h4>
@@ -133,8 +134,8 @@
                 <p class="episode-title" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
                     {{episode.name}}
                     <span class="episode_range_text collapsed" data-toggle="collapse" data-target="#collapse-{{episode.id}}" aria-expanded="false" aria-controls="collapse-{{episode.id}}" data-parent="#episodes">
-                                Levels {{episode.first_level}}-{{episode.last_level}}
-                            </span>
+                        Levels {{episode.first_level}}-{{episode.last_level}}
+                    </span>
                     <img class="episode_image coin_image" value="{{episode.id}}">
                 </p>
             </div>
@@ -145,7 +146,8 @@
                     {% if user|is_logged_in_as_student and user.new_student.class_field in level.locked_for_class.all %}
                     <!-- Mark level as locked -->
                     <p>
-                        <a class="disabled">{{level.name}}: {{level.title.strip | safe}}</a>
+                        <a class="disabled">{{level.name}}:
+                            {{level.title.strip | safe}}</a>
                         {% if level.score != None %}
                         <span class="score_text disabled">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
                         <img class="level_image coin_image" value="{{level.name}}">
@@ -154,7 +156,7 @@
                     {% else %}
                     <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
                     <p>
-                        <a href="{% url 'play_default_level' level.name %}">{{level.name}}: {{level.title.strip | safe}}</a>
+                        <a onclick="movedToPythonDenPopup()">{{level.name}}: {{level.title.strip | safe}}</a>
                         {% if level.score != None %}
                         <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>
                         <img class="level_image coin_image" value="{{level.name}}">
