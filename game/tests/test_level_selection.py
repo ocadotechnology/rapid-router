@@ -91,6 +91,16 @@ class LevelSelectionTestCase(TestCase):
             == "Can you help the van get to the house?"
         )
 
+    def test_list_python_episodes(self):
+        url = reverse("python_levels")
+        response = self.client.get(url)
+
+        assert response.status_code == 200
+        assert (
+            response.context["pythonEpisodes"][0]["name"]
+            == "Output, Operators, and Data"
+        )
+
     def test_custom_levels_access(self):
         email1, password1 = signup_teacher_directly()
         email2, password2 = signup_teacher_directly()

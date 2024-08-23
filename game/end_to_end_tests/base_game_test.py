@@ -152,34 +152,6 @@ class BaseGameTest(SeleniumTestCase):
             .run_crashing_program()
         )
 
-    def run_python_commands_test(self, level):
-        return self.go_to_level(
-            level, from_python_den=True
-        ).check_python_commands()
-
-    def run_clear_console_test(self, level):
-        return self.go_to_level(
-            level, from_python_den=True
-        ).write_to_then_clear_console()
-
-    def run_console_parse_error_test(self, level):
-        return self.go_to_level(
-            level, from_python_den=True
-        ).run_parse_error_program()
-
-    def run_console_attribute_error_test(self, level):
-        return self.go_to_level(
-            level, from_python_den=True
-        ).run_attribute_error_program()
-
-    def run_console_print_test(self, level):
-        return self.go_to_level(level, from_python_den=True).run_print_program()
-
-    def run_invalid_import_test(self, level):
-        return self.go_to_level(
-            level, from_python_den=True
-        ).run_invalid_import_program()
-
     def run_animal_sound_horn_test(self, level):
         return self.go_to_custom_level(level).run_animal_sound_horn_program()
 
