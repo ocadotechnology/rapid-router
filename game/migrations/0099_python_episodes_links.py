@@ -1,6 +1,7 @@
 from django.apps.registry import Apps
 from django.db import migrations
 
+
 def add_resource_links_to_episodes(apps: Apps, *args):
     Episode = apps.get_model("game", "Episode")
 
@@ -12,7 +13,7 @@ def add_resource_links_to_episodes(apps: Apps, *args):
 
     episode17 = Episode.objects.get(pk=17)
     episode17.worksheet_link = "https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-2-variables-input-and-casting"
-    episode17.video_link = "TODO"
+    episode17.video_link = "https://www.youtube.com/watch?v=H8askW-zd3I"
     episode17.lesson_plan_link = "https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-2-variables-input-and-casting"
     episode17.slides_link = "https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2FLFOUoXuOPUmeOdZ09cHW%2FPython%202%20-%20Variables%2C%20Input%20and%20Casting.pptx?alt=media&token=ef6d1581-36bd-4885-9a99-4dac53eee4c3"
 
@@ -36,31 +37,31 @@ def add_resource_links_to_episodes(apps: Apps, *args):
 
     episode14 = Episode.objects.get(pk=14)
     episode14.worksheet_link = "https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-7-selection-in-a-loop"
-    episode14.video_link = "TODO"
+    episode14.video_link = "https://www.youtube.com/watch?v=WV_PLCcohMg"
     episode14.lesson_plan_link = "https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-7-selection-in-a-loop"
     episode14.slides_link = "https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2FPtj4c6IjIafaUPN8k4u1%2FPython%207%20-%20Selection%20in%20a%20loop.pptx?alt=media&token=9f5fce8e-bb72-4e38-8715-89ec7bcc6d6c"
 
     episode13 = Episode.objects.get(pk=13)
     episode13.worksheet_link = "https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-8-indeterminate-loops"
-    episode13.video_link = "TODO"
+    episode13.video_link = "https://www.youtube.com/watch?v=XgMGI8UzMDM"
     episode13.lesson_plan_link = "https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-8-indeterminate-loops"
     episode13.slides_link = "https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2FkxewOibLrvKLpJpuDBRH%2FPython%208%20-%20Indeterminate%20Loops.pptx?alt=media&token=ddf212d5-f0a7-47b2-8a6b-420ca2cccc12"
 
     episode20 = Episode.objects.get(pk=20)
     episode20.worksheet_link = "https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-9-string-manipulation"
-    episode20.video_link = "TODO"
+    episode20.video_link = "https://www.youtube.com/watch?v=E4AMg57_eoI"
     episode20.lesson_plan_link = "https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-9-string-manipulation"
     episode20.slides_link = "https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2FOAj7ngrHzqNAJgcYLz55%2FPython%209%20-%20String%20manipulation.pptx?alt=media&token=a7bdb069-6321-4828-8218-d4eabf4605ad"
 
     episode21 = Episode.objects.get(pk=21)
     episode21.worksheet_link = "https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-10-1d-lists"
-    episode21.video_link = "TODO"
+    episode21.video_link = "https://www.youtube.com/watch?v=Kb_-7IqWV0E"
     episode21.lesson_plan_link = "https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-10-1d-lists"
     episode21.slides_link = "https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2FZdt2shodTgZjNH4ai7ky%2FPython%2010%20-1D%20Lists.pptx?alt=media&token=66bdc866-2144-4203-b55e-93fa04b977a3"
 
     episode15 = Episode.objects.get(pk=15)
     episode15.worksheet_link = "https://code-for-life.gitbook.io/student-resources/python-den-student-resources/worksheet-11-for-loops"
-    episode15.video_link = "TODO"
+    episode15.video_link = "https://www.youtube.com/watch?v=jNT_gQx9-k8"
     episode15.lesson_plan_link = "https://code-for-life.gitbook.io/python-lessons-with-raspberry-pi-ide/DGiFT28ihVJK7ghZQHqu/python-11-using-for-loops"
     episode15.slides_link = "https://4077022412-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FwAuC4Q5WQz4ea2O2b2JP%2Fuploads%2F8AjR4b5mO4yOzEIVNI4V%2FPython%2011%20-%20For%20loops.pptx?alt=media&token=5eaa671c-a5eb-43a3-9f13-3478349027e5"
 
@@ -87,15 +88,16 @@ def remove_resource_links_from_episodes(apps: Apps, *args):
         episode.slides_link = None
         episode.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('game', '0098_add_episode_link_fields'),
+        ("game", "0098_add_episode_link_fields"),
     ]
 
     operations = [
         migrations.RunPython(
             code=add_resource_links_to_episodes,
-            reverse_code=remove_resource_links_from_episodes
+            reverse_code=remove_resource_links_from_episodes,
         )
     ]
