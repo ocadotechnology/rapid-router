@@ -83,7 +83,9 @@ class LevelSelectionTestCase(TestCase):
         response = self.client.get(url)
 
         assert response.status_code == 200
-        assert response.context["blocklyEpisodes"][0]["name"] == "Getting Started"
+        assert (
+            response.context["blocklyEpisodes"][0]["name"] == "Getting Started"
+        )
         assert (
             response.context["blocklyEpisodes"][0]["levels"][0]["title"]
             == "Can you help the van get to the house?"
@@ -103,12 +105,16 @@ class LevelSelectionTestCase(TestCase):
         # Create a class and a student for each teacher
         _, class_name1, access_code1 = create_class_directly(email1)
         _, class_name2, access_code2 = create_class_directly(email2)
-        student_name1, student_password1, student1 = create_school_student_directly(
-            access_code1
-        )
-        student_name2, student_password2, student2 = create_school_student_directly(
-            access_code2
-        )
+        (
+            student_name1,
+            student_password1,
+            student1,
+        ) = create_school_student_directly(access_code1)
+        (
+            student_name2,
+            student_password2,
+            student2,
+        ) = create_school_student_directly(access_code2)
 
         save_url = "save_level_for_editor"
 
@@ -157,16 +163,24 @@ class LevelSelectionTestCase(TestCase):
         assert response.status_code == 200
         assert len(response.context["directly_shared_levels"]) == 1
         assert (
-            response.context["directly_shared_levels"][0]["owner"] == student1.new_user
+            response.context["directly_shared_levels"][0]["owner"]
+            == student1.new_user
         )
         assert response.context["indirectly_shared_levels"][teacher2.new_user]
-        assert len(response.context["indirectly_shared_levels"][teacher2.new_user]) == 2
         assert (
-            response.context["indirectly_shared_levels"][teacher2.new_user][0]["owner"]
+            len(response.context["indirectly_shared_levels"][teacher2.new_user])
+            == 2
+        )
+        assert (
+            response.context["indirectly_shared_levels"][teacher2.new_user][0][
+                "owner"
+            ]
             == teacher2.new_user
         )
         assert (
-            response.context["indirectly_shared_levels"][teacher2.new_user][1]["owner"]
+            response.context["indirectly_shared_levels"][teacher2.new_user][1][
+                "owner"
+            ]
             == student2.new_user
         )
 
@@ -180,7 +194,8 @@ class LevelSelectionTestCase(TestCase):
         assert response.status_code == 200
         assert len(response.context["directly_shared_levels"]) == 1
         assert (
-            response.context["directly_shared_levels"][0]["owner"] == student2.new_user
+            response.context["directly_shared_levels"][0]["owner"]
+            == student2.new_user
         )
         assert response.context["indirectly_shared_levels"] == {}
 
@@ -219,40 +234,48 @@ class LevelSelectionTestCase(TestCase):
         level2 = Level.objects.get(name="2")
         level3 = Level.objects.get(name="3")
         level4 = Level.objects.get(name="4")
-        level86 = Level.objects.get(name="86")
-        level87 = Level.objects.get(name="87")
-        level88 = Level.objects.get(name="88")
-        level89 = Level.objects.get(name="89")
+        level76 = Level.objects.get(name="86")
+        level77 = Level.objects.get(name="87")
+        level78 = Level.objects.get(name="88")
+        level79 = Level.objects.get(name="89")
         level1014 = Level.objects.get(name="1014")
         level1015 = Level.objects.get(name="1015")
         level1016 = Level.objects.get(name="1016")
 
         level2.locked_for_class.add(klass)
         level3.locked_for_class.add(klass)
-        level87.locked_for_class.add(klass)
-        level88.locked_for_class.add(klass)
+        level77.locked_for_class.add(klass)
+        level78.locked_for_class.add(klass)
         level1015.locked_for_class.add(klass)
 
-        next_level_url = _next_level_url(level1, student.new_user, False)
+        next_level_url = _next_level_url(level1, student.new_user, False, False)
 
         assert next_level_url == f"/rapidrouter/{level4.name}/"
 
-        prev_level_url = _prev_level_url(level4, student.new_user, False)
+        prev_level_url = _prev_level_url(level4, student.new_user, False, False)
         assert prev_level_url == f"/rapidrouter/{level1.name}/"
 
-        next_level_url = _next_level_url(level86, student.new_user, False)
+        next_level_url = _next_level_url(
+            level76, student.new_user, False, False
+        )
 
-        assert next_level_url == f"/rapidrouter/{level89.name}/"
+        assert next_level_url == f"/rapidrouter/{level79.name}/"
 
-        prev_level_url = _prev_level_url(level89, student.new_user, False)
-        assert prev_level_url == f"/rapidrouter/{level86.name}/"
+        prev_level_url = _prev_level_url(
+            level79, student.new_user, False, False
+        )
+        assert prev_level_url == f"/rapidrouter/{level76.name}/"
 
-        next_level_url = _next_level_url(level1014, student.new_user, False)
+        next_level_url = _next_level_url(
+            level1014, student.new_user, False, True
+        )
 
-        assert next_level_url == f"/rapidrouter/{level1016.name}/"
+        assert next_level_url == f"/pythonden/15/"
 
-        prev_level_url = _prev_level_url(level1016, student.new_user, False)
-        assert prev_level_url == f"/rapidrouter/{level1014.name}/"
+        prev_level_url = _prev_level_url(
+            level1016, student.new_user, False, True
+        )
+        assert prev_level_url == f"/pythonden/14/"
 
     @patch(
         "game.views.level.datetime",
@@ -263,44 +286,54 @@ class LevelSelectionTestCase(TestCase):
         mock_datetime.now.return_value = november
 
         response = self.client.get(f"{reverse('home')}/rapidrouter/1/")
-        assert """CHARACTER_NAME = "Van"\n""" in response.content.decode("utf-8")
+        assert """CHARACTER_NAME = "Van"\n""" in response.content.decode(
+            "utf-8"
+        )
         assert (
             """CHARACTER_URL = "characters/top_view/Van.svg"\n"""
             in response.content.decode("utf-8")
         )
-        assert """WRECKAGE_URL = "van_wreckage.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """WRECKAGE_URL = "van_wreckage.svg"\n"""
+            in response.content.decode("utf-8")
         )
         assert (
             """BACKGROUND_URL = "decor/grass/tile1.svg"\n"""
             in response.content.decode("utf-8")
         )
-        assert """HOUSE_URL = "decor/grass/house.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """HOUSE_URL = "decor/grass/house.svg"\n"""
+            in response.content.decode("utf-8")
         )
-        assert """CFC_URL = "decor/grass/cfc.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """CFC_URL = "decor/grass/cfc.svg"\n"""
+            in response.content.decode("utf-8")
         )
 
         december = datetime(2023, 12, 1, 0, 0, 0, 0)
         mock_datetime.now.return_value = december
 
         response = self.client.get(f"{reverse('home')}/rapidrouter/1/")
-        assert """CHARACTER_NAME = "Van"\n""" in response.content.decode("utf-8")
+        assert """CHARACTER_NAME = "Van"\n""" in response.content.decode(
+            "utf-8"
+        )
         assert (
             """CHARACTER_URL = "characters/top_view/Sleigh.svg"\n"""
             in response.content.decode("utf-8")
         )
-        assert """WRECKAGE_URL = "sleigh_wreckage.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """WRECKAGE_URL = "sleigh_wreckage.svg"\n"""
+            in response.content.decode("utf-8")
         )
         assert (
             """BACKGROUND_URL = "decor/snow/tile1.svg"\n"""
             in response.content.decode("utf-8")
         )
-        assert """HOUSE_URL = "decor/snow/house.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """HOUSE_URL = "decor/snow/house.svg"\n"""
+            in response.content.decode("utf-8")
         )
-        assert """CFC_URL = "decor/snow/cfc.svg"\n""" in response.content.decode(
-            "utf-8"
+        assert (
+            """CFC_URL = "decor/snow/cfc.svg"\n"""
+            in response.content.decode("utf-8")
         )

@@ -101,7 +101,7 @@ class GamePage(BasePage):
 
     def assert_level_number(self, level_number):
         path = reverse(
-            "play_default_level", kwargs={"levelName": str(level_number)}
+            "play_default_level", kwargs={"level_name": str(level_number)}
         )
         assert_that(
             self.browser.current_url.replace("#myModal", ""), ends_with(path)
@@ -247,11 +247,14 @@ while not my_van.at_destination():
         )
         return self
 
-    def next_level(self):
+    def next_level(self, from_python_den=False):
         self.assert_success()
         self.browser.find_element(By.ID, "next_level_button").click()
+
+        tabId = "python_tab" if from_python_den else "blockly_tab"
+
         WebDriverWait(self.browser, 10).until(
-            presence_of_all_elements_located((By.ID, "blockly_tab"))
+            presence_of_all_elements_located((By.ID, tabId))
         )
         return self
 

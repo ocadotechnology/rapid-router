@@ -29,7 +29,7 @@
     var COWS = $('#data').data('cows')
     var EPISODE = $('#data').data('episode')
     var LEVEL_ID = $('#data').data('levelId')
-    var LEVEL_NAME = $('#data').data('levelName')
+    var LEVEL_NAME = $('#data').data('level_name')
     var PREV_LEVEL_URL = "{% if prev_level_url %}{{prev_level_url}}{% else %}{% endif %}"
     var NEXT_LEVEL_URL = "{% if next_level_url %}{{next_level_url}}{% else %}{% endif %}"
     var MODEL_SOLUTION = {{model_solution|default:"[]"}}

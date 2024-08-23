@@ -203,9 +203,9 @@
                                     <!-- Marking titles as safe to enable bold, not to be used for user-created levels -->
                                     <p>
                                         {% if level.name > 1009 %}
-                                            <a href="{% url 'play_python_default_level' level.name %}">{{level.name|stringformat:"i"|slice:"2:4"}}: {{level.title.strip | safe}}</a>
+                                            <a href="{% url 'play_python_default_level' level.name|stringformat:'i'|slice:'2:4' %}">{{level.name|stringformat:"i"|slice:"2:4"}}: {{level.title.strip | safe}}</a>
                                         {% else %}
-                                            <a href="{% url 'play_python_default_level' level.name %}">{{level.name|stringformat:"i"|slice:"3:4"}}: {{level.title.strip | safe}}</a>
+                                            <a href="{% url 'play_python_default_level' level.name|stringformat:'i'|slice:'3:4' %}">{{level.name|stringformat:"i"|slice:"3:4"}}: {{level.title.strip | safe}}</a>
                                         {% endif %}
                                         {% if level.score != None %}
                                             <span class="score_text">{{level.score|floatformat}}/{{level.maxScore|floatformat}}</span>

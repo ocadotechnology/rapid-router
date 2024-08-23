@@ -12,7 +12,6 @@ import game.messages as messages
 from game import app_settings, random_road
 from game.cache import cached_episode
 from game.models import Attempt, Episode, Level
-
 from .level_editor import play_anonymous_level
 
 
@@ -84,6 +83,7 @@ def fetch_episode_data(early_access, start=1, end=12):
     if data is None:
         data = fetch_episode_data_from_database(early_access, start, end)
         cache.set(key, data)
+
     return [
         dict(
             episode,
@@ -232,6 +232,19 @@ def levels(request, language):
                 ).locked_for_class
 
         context["blocklyEpisodes"] = blockly_episodes
+
+        old_python_episodes = fetch_episode_data(
+            app_settings.EARLY_ACCESS_FUNCTION(request), 10, 11
+        )
+
+        for episode in old_python_episodes:
+            for level in episode["levels"]:
+                attach_attempts_to_level(attempts, level)
+                level["locked_for_class"] = Level.objects.get(
+                    id=level["id"]
+                ).locked_for_class
+
+        context["oldPythonEpisodes"] = old_python_episodes
 
     elif language == "python":
         python_episodes = get_python_episodes(request)

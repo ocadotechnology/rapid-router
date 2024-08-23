@@ -99,6 +99,24 @@ def reset_level_order(apps: Apps, *args):
     level1013.save()
 
 
+def update_level_score_fields(apps: Apps, *args):
+    Level = apps.get_model("game", "Level")
+
+    level1002 = Level.objects.get(name="1002", default=True)
+    level1002.disable_algorithm_score = False
+    level1002.model_solution = "[10]"
+    level1002.save()
+
+
+def revert_level_score_fields(apps: Apps, *args):
+    Level = apps.get_model("game", "Level")
+
+    level1002 = Level.objects.get(name="1002", default=True)
+    level1002.disable_algorithm_score = True
+    level1002.model_solution = ""
+    level1002.save()
+
+
 class Migration(migrations.Migration):
 
     dependencies = [("game", "0099_python_episodes_links")]
@@ -114,5 +132,9 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(
             code=set_level_order, reverse_code=reset_level_order
+        ),
+        migrations.RunPython(
+            code=update_level_score_fields,
+            reverse_code=revert_level_score_fields,
         ),
     ]

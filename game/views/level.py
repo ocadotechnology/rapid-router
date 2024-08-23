@@ -8,7 +8,6 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.safestring import mark_safe
 from django.views.decorators.http import require_POST
 from rest_framework import serializers
 
@@ -44,18 +43,28 @@ def play_custom_level(request, levelId, from_editor=False):
     return play_level(request, level, from_editor)
 
 
-def play_default_level(request, levelName):
-    if (int(levelName) >= 80 and int(levelName) <= 109):
+def play_default_level(request, level_name):
+    if int(level_name) > 79:
         raise Http404
-    
-    level = cached_default_level(levelName)
-    from_python_den_value = int(levelName) >= 1000
-    return play_level(request, level, from_python_den=from_python_den_value)
+
+    level = cached_default_level(level_name)
+    return play_level(request, level)
 
 
-def _prev_level_url(level, user, night_mode):
+def play_default_python_level(request, level_name):
+    if int(level_name) > 60:
+        raise Http404
+
+    levelId = int(level_name) + 1000
+
+    level = cached_default_level(levelId)
+    return play_level(request, level, from_python_den=True)
+
+
+def _prev_level_url(level, user, night_mode, from_python_den):
     """
-    Find the previous available level. Check if level is available if so, go to it.
+    Find the previous available level. Check if level is available if so, go to
+    it.
     """
 
     if not level.prev_level.all():
@@ -70,16 +79,19 @@ def _prev_level_url(level, user, night_mode):
         if is_prev_level_locked:
             while is_prev_level_locked and int(prev_level.name) > 1:
                 prev_level = prev_level.prev_level.all()[0]
-                is_prev_level_locked = klass in prev_level.locked_for_class.all()
+                is_prev_level_locked = (
+                    klass in prev_level.locked_for_class.all()
+                )
 
-    return _level_url(prev_level, night_mode)
+    return _level_url(prev_level, night_mode, from_python_den)
 
 
-def _next_level_url(level, user, night_mode):
+def _next_level_url(level, user, night_mode, from_python_den):
     """
-    Find the next available level. By default, this will be the `next_level` field in the Level model, but in the case
-    where the user is a student and the teacher has locked certain levels, then loop until we find the next unlocked
-    level (or we run out of levels).
+    Find the next available level. By default, this will be the `next_level`
+    field in the Level model, but in the case where the user is a student and
+    the teacher has locked certain levels, then loop until we find the next
+    unlocked level (or we run out of levels).
     """
     if not level.next_level:
         return ""
@@ -94,12 +106,14 @@ def _next_level_url(level, user, night_mode):
 
         if is_next_level_locked:
             while is_next_level_locked and (
-                int(next_level.name) < 122 or 1001 < int(next_level.name) < 1060
+                int(next_level.name) < 60 if from_python_den else 80
             ):
                 next_level = next_level.next_level
-                is_next_level_locked = klass in next_level.locked_for_class.all()
+                is_next_level_locked = (
+                    klass in next_level.locked_for_class.all()
+                )
 
-    return _level_url(next_level, night_mode)
+    return _level_url(next_level, night_mode, from_python_den)
 
 
 def add_night(url, night_mode):
@@ -108,17 +122,23 @@ def add_night(url, night_mode):
     return url
 
 
-def _level_url(level, night_mode):
+def _level_url(level, night_mode, from_python_den):
     if level.default:
-        result = _default_level_url(level)
+        result = _default_level_url(level, from_python_den)
     else:
         result = _custom_level_url(level)
 
     return add_night(result, night_mode)
 
 
-def _default_level_url(level):
-    return reverse("play_default_level", args=[level.name])
+def _default_level_url(level, from_python_den):
+    viewname = (
+        "play_python_default_level" if from_python_den else "play_default_level"
+    )
+
+    level_name = int(level.name) - 1000 if from_python_den else level.name
+
+    return reverse(viewname, args=[level_name])
 
 
 def _custom_level_url(level):
@@ -146,7 +166,9 @@ def play_level(request, level, from_editor=False, from_python_den=False):
     """
 
     night_mode = (
-        False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
+        False
+        if not app_settings.NIGHT_MODE_FEATURE_ENABLED
+        else "night" in request.GET
     )
 
     if not permissions.can_play_level(
@@ -169,7 +191,9 @@ def play_level(request, level, from_editor=False, from_python_den=False):
     )
     commands_attr = "commands_level" + str(level.name)
     commands = (
-        getattr(messages, commands_attr, None) if level.default else level.commands
+        getattr(messages, commands_attr, None)
+        if level.default
+        else level.commands
     )
     character = level.character
     character_url = character.top_down
@@ -193,7 +217,9 @@ def play_level(request, level, from_editor=False, from_python_den=False):
 
     workspace = None
     python_workspace = None
-    if not request.user.is_anonymous and hasattr(request.user.userprofile, "student"):
+    if not request.user.is_anonymous and hasattr(
+        request.user.userprofile, "student"
+    ):
         student = request.user.userprofile.student
         attempt = (
             Attempt.objects.filter(
@@ -229,7 +255,13 @@ def play_level(request, level, from_editor=False, from_python_den=False):
         night_mode_javascript = "false"
         model_solution = level.model_solution
 
-    return_view = "level_editor" if from_editor else "python_levels" if from_python_den else "levels"
+    return_view = (
+        "level_editor"
+        if from_editor
+        else "python_levels"
+        if from_python_den
+        else "levels"
+    )
 
     temp_block_data = []
     [
@@ -267,9 +299,15 @@ def play_level(request, level, from_editor=False, from_python_den=False):
                 app_settings.NIGHT_MODE_FEATURE_ENABLED
             ).lower(),
             "model_solution": model_solution,
-            "prev_level_url": _prev_level_url(level, request.user, night_mode),
-            "next_level_url": _next_level_url(level, request.user, night_mode),
-            "flip_night_mode_url": _level_url(level, not night_mode),
+            "prev_level_url": _prev_level_url(
+                level, request.user, night_mode, from_python_den
+            ),
+            "next_level_url": _next_level_url(
+                level, request.user, night_mode, from_python_den
+            ),
+            "flip_night_mode_url": _level_url(
+                level, not night_mode, from_python_den
+            ),
             "available_language_dict": language_code_dict,
         },
     )
@@ -278,7 +316,9 @@ def play_level(request, level, from_editor=False, from_python_den=False):
 def fetch_workspace_from_last_attempt(attempt):
     latest_attempt = (
         Attempt.objects.filter(
-            level=attempt.level, student=attempt.student, night_mode=attempt.night_mode
+            level=attempt.level,
+            student=attempt.student,
+            night_mode=attempt.night_mode,
         )
         .order_by("-start_time")
         .first()
@@ -356,7 +396,9 @@ def close_and_reset(attempt):
 def load_list_of_workspaces(request):
     workspaces_owned = []
     if permissions.can_create_workspace(request.user):
-        workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
+        workspaces_owned = Workspace.objects.filter(
+            owner=request.user.userprofile
+        )
 
     workspaces = [
         {
@@ -396,7 +438,9 @@ def save_workspace(request, workspaceID=None):
         "python_enabled",
         "pythonViewEnabled",
     ]
-    missing_params = [param for param in request_params if param not in request.POST]
+    missing_params = [
+        param for param in request_params if param not in request.POST
+    ]
     if missing_params != []:
         raise Exception(
             "Request missing the following required parameters", missing_params
@@ -459,9 +503,19 @@ def load_workspace_solution(request, level_name):
 
 
 def start_episode(request, episodeId):
+    if int(episodeId) > 9:
+        raise Http404
+
     episode = cached_episode(episodeId)
-    from_python_den = int(episode.first_level.name) >= 1000
-    return play_level(request, episode.first_level, False, from_python_den)
+    return play_level(request, episode.first_level)
+
+
+def start_python_episode(request, episodeId):
+    if int(episodeId) < 12:
+        raise Http404
+
+    episode = cached_episode(episodeId)
+    return play_level(request, episode.first_level, from_python_den=True)
 
 
 @require_POST

@@ -43,14 +43,19 @@ class BaseGameTest(SeleniumTestCase):
             else:
                 break
 
-    def _complete_level(self, level_number, **kwargs):
-        page = self.go_to_level(level_number)
-        self.complete_and_check_level(level_number, page, **kwargs)
+    def _complete_level(self, level_number, from_python_den=False, **kwargs):
+        page = self.go_to_level(level_number, from_python_den)
+        (
+            self.complete_and_check_level(
+                level_number, page, from_python_den, **kwargs
+            )
+        )
 
     def complete_and_check_level(
         self,
         level_number,
         page,
+        from_python_den=False,
         next_episode=None,
         check_algorithm_score=True,
         check_route_score=True,
@@ -60,14 +65,14 @@ class BaseGameTest(SeleniumTestCase):
         if check_algorithm_score:
             page.assert_algorithm_score(10)
         if check_route_score:
-            if level_number < 13:
+            if level_number < 13 and not from_python_den:
                 page.assert_route_score(20)
             else:
                 page.assert_route_score(10)
         if final_level:
             return page
         if next_episode is None:
-            page.next_level()
+            page.next_level(from_python_den)
             page.assert_level_number(level_number + 1)
         else:
             page.next_episode()
@@ -84,10 +89,16 @@ class BaseGameTest(SeleniumTestCase):
         self._go_to_path(path)
         return HomePage(self.selenium)
 
-    def go_to_level(self, level_name):
-        path = reverse(
-            "play_default_level", kwargs={"levelName": str(level_name)}
+    def go_to_level(self, level_name, from_python_den=False):
+        viewname = (
+            "play_python_default_level"
+            if from_python_den
+            else "play_default_level"
         )
+
+        print(viewname)
+
+        path = reverse(viewname, kwargs={"level_name": str(level_name)})
         self._go_to_path(path)
 
         return GamePage(self.selenium)
@@ -104,10 +115,14 @@ class BaseGameTest(SeleniumTestCase):
         return EditorPage(self.selenium)
 
     def go_to_episode(self, episodeId):
-        if episodeId > 1000:
-            path = reverse("start_python_episode", kwargs={"episodeId": str(episodeId)})
+        if int(episodeId) > 9:
+            path = reverse(
+                "start_python_episode", kwargs={"episodeId": str(episodeId)}
+            )
         else:
-            path = reverse("start_episode", kwargs={"episodeId": str(episodeId)})
+            path = reverse(
+                "start_episode", kwargs={"episodeId": str(episodeId)}
+            )
         self._go_to_path(path)
 
         return GamePage(self.selenium)
@@ -140,22 +155,32 @@ class BaseGameTest(SeleniumTestCase):
         )
 
     def run_python_commands_test(self, level):
-        return self.go_to_level(level).check_python_commands()
+        return self.go_to_level(
+            level, from_python_den=True
+        ).check_python_commands()
 
     def run_clear_console_test(self, level):
-        return self.go_to_level(level).write_to_then_clear_console()
+        return self.go_to_level(
+            level, from_python_den=True
+        ).write_to_then_clear_console()
 
     def run_console_parse_error_test(self, level):
-        return self.go_to_level(level).run_parse_error_program()
+        return self.go_to_level(
+            level, from_python_den=True
+        ).run_parse_error_program()
 
     def run_console_attribute_error_test(self, level):
-        return self.go_to_level(level).run_attribute_error_program()
+        return self.go_to_level(
+            level, from_python_den=True
+        ).run_attribute_error_program()
 
     def run_console_print_test(self, level):
-        return self.go_to_level(level).run_print_program()
+        return self.go_to_level(level, from_python_den=True).run_print_program()
 
     def run_invalid_import_test(self, level):
-        return self.go_to_level(level).run_invalid_import_program()
+        return self.go_to_level(
+            level, from_python_den=True
+        ).run_invalid_import_program()
 
     def run_animal_sound_horn_test(self, level):
         return self.go_to_custom_level(level).run_animal_sound_horn_program()
