@@ -61,16 +61,16 @@ class Episode(models.Model):
     r_cows = models.BooleanField(default=False)
 
     lesson_plan_link = models.CharField(
-        max_length=200, null=True, blank=True, default=None
+        max_length=500, null=True, blank=True, default=None
     )
     slides_link = models.CharField(
-        max_length=200, null=True, blank=True, default=None
+        max_length=500, null=True, blank=True, default=None
     )
     worksheet_link = models.CharField(
-        max_length=200, null=True, blank=True, default=None
+        max_length=500, null=True, blank=True, default=None
     )
     video_link = models.CharField(
-        max_length=200, null=True, blank=True, default=None
+        max_length=500, null=True, blank=True, default=None
     )
 
     @property
