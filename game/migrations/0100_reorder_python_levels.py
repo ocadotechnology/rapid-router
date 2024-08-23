@@ -82,6 +82,10 @@ def set_level_order(apps: Apps, *args):
     level79.next_level = None
     level79.save()
 
+    level109 = Level.objects.get(name="109", default=True)
+    level109.next_level = None
+    level109.save()
+
     level1013 = Level.objects.get(name="1013", default=True)
     level1013.next_level = Level.objects.get(name="1014", default=True)
     level1013.save()
@@ -94,6 +98,10 @@ def reset_level_order(apps: Apps, *args):
     level79.next_level = Level.objects.get(name="80", default=True)
     level79.save()
 
+    level109 = Level.objects.get(name="109", default=True)
+    level109.next_level = Level.objects.get(name="1001", default=True)
+    level109.save()
+
     level1013 = Level.objects.get(name="1013", default=True)
     level1013.next_level = None
     level1013.save()
@@ -101,6 +109,11 @@ def reset_level_order(apps: Apps, *args):
 
 def update_level_score_fields(apps: Apps, *args):
     Level = apps.get_model("game", "Level")
+
+    level1001 = Level.objects.get(name="1001", default=True)
+    level1001.disable_algorithm_score = False
+    level1001.model_solution = "[5]"
+    level1001.save()
 
     level1002 = Level.objects.get(name="1002", default=True)
     level1002.disable_algorithm_score = False
@@ -110,6 +123,11 @@ def update_level_score_fields(apps: Apps, *args):
 
 def revert_level_score_fields(apps: Apps, *args):
     Level = apps.get_model("game", "Level")
+
+    level1001 = Level.objects.get(name="1001", default=True)
+    level1001.disable_algorithm_score = True
+    level1001.model_solution = ""
+    level1001.save()
 
     level1002 = Level.objects.get(name="1002", default=True)
     level1002.disable_algorithm_score = True

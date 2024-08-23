@@ -7,9 +7,13 @@ class TestPlayThrough(BaseGameTest):
     def setUp(self):
         self.login_once()
 
-    def _complete_episode(self, episode_number, level_number, **kwargs):
+    def _complete_episode(
+        self, episode_number, level_number, from_python_den=False, **kwargs
+    ):
         page = self.go_to_episode(episode_number)
-        self.complete_and_check_level(level_number, page, **kwargs)
+        self.complete_and_check_level(
+            level_number, page, from_python_den, **kwargs
+        )
 
     def _complete_level(self, level_number, from_python_den=False, **kwargs):
         page = self.go_to_level(level_number, from_python_den)
@@ -282,7 +286,9 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(79, final_level=True)
 
     def test_episode_12(self):
-        self._complete_episode(12, 1, check_algorithm_score=False)
+        self._complete_episode(
+            12, 1, check_algorithm_score=False, from_python_den=True
+        )
 
     def test_python_level_001(self):
         self._complete_level(1, from_python_den=True)
@@ -338,7 +344,7 @@ class TestPlayThrough(BaseGameTest):
         )
 
     def test_episode_14(self):
-        self._complete_episode(14, 14)
+        self._complete_episode(14, 14, from_python_den=True)
 
     def test_python_level_014(self):
         self._complete_level(14, from_python_den=True)
@@ -391,7 +397,7 @@ class TestPlayThrough(BaseGameTest):
         )
 
     def test_episode_13(self):
-        self._complete_episode(13, 26)
+        self._complete_episode(13, 26, from_python_den=True)
 
     def test_python_level_026(self):
         self._complete_level(26, from_python_den=True)
@@ -457,7 +463,9 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(41, from_python_den=True)
 
     def test_episode_15(self):
-        self._complete_episode(15, 42, check_algorithm_score=False)
+        self._complete_episode(
+            15, 42, check_algorithm_score=False, from_python_den=True
+        )
 
     def test_python_level_042(self):
         self._complete_level(
@@ -498,7 +506,7 @@ class TestPlayThrough(BaseGameTest):
         )
 
     def test_episode_22(self):
-        self._complete_episode(22, 50)
+        self._complete_episode(22, 50, from_python_den=True)
 
     def test_python_level_050(self):
         self._complete_level(50, from_python_den=True)

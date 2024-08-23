@@ -50,6 +50,7 @@ class GamePage(BasePage):
 
     def load_solution_by_name(self, solution_name):
         self.browser.find_element(By.ID, "load_tab").click()
+        time.sleep(1)
         self.browser.find_element(By.ID, solution_name).click()
         self.browser.find_element(By.ID, "loadWorkspace").click()
         time.sleep(1)
@@ -99,18 +100,24 @@ class GamePage(BasePage):
         self.browser.find_element(By.ID, "clear_console").click()
         return self
 
-    def assert_level_number(self, level_number):
-        path = reverse(
-            "play_default_level", kwargs={"level_name": str(level_number)}
+    def assert_level_number(self, level_number, from_python_den):
+        viewname = (
+            "play_python_default_level"
+            if from_python_den
+            else "play_default_level"
         )
+
+        path = reverse(viewname, kwargs={"level_name": str(level_number)})
         assert_that(
             self.browser.current_url.replace("#myModal", ""), ends_with(path)
         )
 
-    def assert_episode_number(self, episode_number):
-        path = reverse(
-            "start_episode", kwargs={"episodeId": str(episode_number)}
+    def assert_episode_number(self, episode_number, from_python_den):
+        viewname = (
+            "start_python_episode" if from_python_den else "start_episode"
         )
+
+        path = reverse(viewname, kwargs={"episodeId": str(episode_number)})
         assert_that(
             self.browser.current_url.replace("#myModal", ""), ends_with(path)
         )
@@ -239,11 +246,14 @@ while not my_van.at_destination():
         assert_that(console.text == "")
         return self
 
-    def next_episode(self):
+    def next_episode(self, from_python_den=False):
         self.assert_success()
         self.browser.find_element(By.ID, "next_episode_button").click()
+
+        tabId = "python_tab" if from_python_den else "blockly_tab"
+
         WebDriverWait(self.browser, 10).until(
-            presence_of_all_elements_located((By.ID, "blockly_tab"))
+            presence_of_all_elements_located((By.ID, tabId))
         )
         return self
 

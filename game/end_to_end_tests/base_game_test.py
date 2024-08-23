@@ -73,10 +73,10 @@ class BaseGameTest(SeleniumTestCase):
             return page
         if next_episode is None:
             page.next_level(from_python_den)
-            page.assert_level_number(level_number + 1)
+            page.assert_level_number(level_number + 1, from_python_den)
         else:
             page.next_episode()
-            page.assert_episode_number(next_episode)
+            page.assert_episode_number(next_episode, from_python_den)
         return page
 
     def go_to_reverse(self, url_reverse):
@@ -95,8 +95,6 @@ class BaseGameTest(SeleniumTestCase):
             if from_python_den
             else "play_default_level"
         )
-
-        print(viewname)
 
         path = reverse(viewname, kwargs={"level_name": str(level_name)})
         self._go_to_path(path)
