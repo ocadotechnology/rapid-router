@@ -318,7 +318,11 @@ ocargo.Animation.prototype.performAnimation = function(animation) {
 					} else {
 						// If there exists next level, add animation button which redirects the user to that
 						if (NEXT_LEVEL_URL) {
-							buttons += ocargo.button.redirectButtonHtml('next_level_button', NEXT_LEVEL_URL, gettext('Next level'));
+							if (NEXT_LEVEL_URL == "/pythonden/") {
+								buttons += ocargo.button.episodeRedirectButtonHtml('next_level_button', NEXT_LEVEL_URL, gettext('Next episode'), NEXT_EPISODE)
+							} else {
+								buttons += ocargo.button.redirectButtonHtml('next_level_button', NEXT_LEVEL_URL, gettext('Next level'))
+							}
 						}
 						else if (PREV_LEVEL_URL) {
 							buttons += ocargo.button.redirectButtonHtml('prev_level_button', PREV_LEVEL_URL, gettext('Previous level'));

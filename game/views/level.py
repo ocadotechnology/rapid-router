@@ -93,7 +93,10 @@ def _next_level_url(level, user, night_mode, from_python_den):
     the teacher has locked certain levels, then loop until we find the next
     unlocked level (or we run out of levels).
     """
+
     if not level.next_level:
+        if level.episode.pk == 13:
+            return reverse("python_levels")
         return ""
 
     next_level = level.next_level
