@@ -5,6 +5,8 @@ from common.tests.utils.teacher import signup_teacher_directly
 from hamcrest import assert_that, ends_with, equal_to
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select, WebDriverWait
 
 from game.end_to_end_tests.base_game_test import BaseGameTest
 from game.models import Attempt, Episode
@@ -67,8 +69,10 @@ class TestLevelSelection(BaseGameTest):
         expected_url = levels_page.browser.current_url
 
         page = self.go_to_level("41", True)
-        next_button = page.browser.find_element(By.ID, "next_button")
-        next_button.click()
+        assert WebDriverWait(self.browser, 10).until(
+            EC.element_to_be_clickable((By.ID, "next_button"))
+        )
+        page.browser.find_element(By.ID, "next_button").click()
 
         current_url = page.browser.current_url
         assert current_url == expected_url
