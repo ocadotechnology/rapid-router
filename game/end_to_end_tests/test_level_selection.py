@@ -70,7 +70,7 @@ class TestLevelSelection(BaseGameTest):
 
         page = self.go_to_level("41", True)
         assert WebDriverWait(self.selenium, 10).until(
-            EC.element_to_be_clickable((By.ID, "next_button"))
+            EC.visibility_of_element_located((By.ID, "next_button"))
         )
         page.browser.find_element(By.ID, "next_button").click()
 
