@@ -68,12 +68,12 @@ class TestLevelSelection(BaseGameTest):
 
         page = self.go_to_level("41", True)
 
-        self.wait_for_element_to_be_clickable((By.ID, "next_button"))
-        self.find_element(By.ID, "next_button").click()
+        page.wait_for_element_to_be_clickable((By.ID, "next_button"))
+        page.find_element(By.ID, "next_button").click()
 
         current_url = page.browser.current_url
         assert current_url == expected_url
 
-        episode_20_header = self.find_element(By.ID, "episode-20")
+        episode_20_header = page.find_element(By.ID, "episode-20")
         episode_20_expanded = episode_20_header.get_attribute("aria-expanded")
         assert episode_20_expanded == True
