@@ -67,8 +67,6 @@ class TestLevelSelection(BaseGameTest):
         expected_url = levels_page.browser.current_url
 
         page = self.go_to_level("41", True)
-
-        self.wait_for_element_to_be_clickable((By.ID, "next_button"))
         page.browser.find_element(By.ID, "next_button").click()
 
         current_url = page.browser.current_url
