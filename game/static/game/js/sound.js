@@ -43,6 +43,10 @@ ocargo.sound.cowSound = new Howl({
     urls: ['/static/game/sound/cow.mp3', '/static/game/sound/cow.ogg']
 });
 
+ocargo.sound.pigeonSound = new Howl({
+    urls: ['/static/game/sound/pigeon.mp3', '/static/game/sound/pigeon.ogg']
+});
+
 function safePlay(sound) {
     try {
         sound.play();
