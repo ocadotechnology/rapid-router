@@ -64,14 +64,14 @@ class TestLevelSelection(BaseGameTest):
 
     def test_redirect_to_levelless_episode(self):
         levels_page = self.go_to_reverse("python_levels")
-        expected_url = self.browser.get_current_url()
+        expected_url = levels_page.browser.get_current_url()
 
         page = self.go_to_level("41", True)
 
         self.wait_for_element_to_be_clickable((By.ID, "next_button"))
         self.find_element(By.ID, "next_button").click()
 
-        current_url = self.browser.get_current_url()
+        current_url = page.browser.get_current_url()
         assert current_url == expected_url
 
         episode_20_header = self.find_element(By.ID, "episode-20")
