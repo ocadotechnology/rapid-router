@@ -69,7 +69,7 @@ class TestLevelSelection(BaseGameTest):
         expected_url = levels_page.browser.current_url
 
         page = self.go_to_level("41", True)
-        assert WebDriverWait(self.browser, 10).until(
+        assert WebDriverWait(self.selenium, 10).until(
             EC.element_to_be_clickable((By.ID, "next_button"))
         )
         page.browser.find_element(By.ID, "next_button").click()
