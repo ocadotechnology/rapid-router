@@ -34,7 +34,9 @@ class TestLevelSelection(BaseGameTest):
         page = self.go_to_reverse("levels")
 
         # The coin images for the levels
-        level_coin_images = page.browser.find_elements(By.CSS_SELECTOR, ("#collapse-4 div img"))
+        level_coin_images = page.browser.find_elements(
+            By.CSS_SELECTOR, ("#collapse-4 div img")
+        )
         # There are 4 levels in this episode, each with gold coin
         assert_that(len(level_coin_images), equal_to(4))
 
@@ -45,13 +47,33 @@ class TestLevelSelection(BaseGameTest):
             )
 
         # So the episode has a gold coin too
-        episode_coin_image = page.browser.find_element(By.CSS_SELECTOR, "#episode-4 > p > img")
+        episode_coin_image = page.browser.find_element(
+            By.CSS_SELECTOR, "#episode-4 > p > img"
+        )
         assert_that(
             episode_coin_image.get_attribute("src"),
             ends_with("/static/game/image/coins/coin_gold.svg"),
         )
 
         try:
-            image_for_uncomplete_episode = page.browser.find_element(By.CSS_SELECTOR, "#episode-3 > p > img")
+            image_for_uncomplete_episode = page.browser.find_element(
+                By.CSS_SELECTOR, "#episode-3 > p > img"
+            )
         except NoSuchElementException as this_should_happen:
             pass
+
+    def test_redirect_to_levelless_episode(self):
+        levels_page = self.go_to_reverse("python_levels")
+        expected_url = self.get_current_url()
+
+        page = self.go_to_level("41", True)
+
+        self.wait_for_element_to_be_clickable((By.ID, "next_button"))
+        self.find_element(By.ID, "next_button").click()
+
+        current_url = self.get_current_url()
+        assert current_url == expected_url
+
+        episode_20_header = self.find_element(By.ID, "episode-20")
+        episode_20_expanded = episode_20_header.get_attribute("aria-expanded")
+        assert episode_20_expanded == True

@@ -79,9 +79,7 @@ def _prev_level_url(level, user, night_mode, from_python_den):
         if is_prev_level_locked:
             while is_prev_level_locked and int(prev_level.name) > 1:
                 prev_level = prev_level.prev_level.all()[0]
-                is_prev_level_locked = (
-                    klass in prev_level.locked_for_class.all()
-                )
+                is_prev_level_locked = klass in prev_level.locked_for_class.all()
 
     return _level_url(prev_level, night_mode, from_python_den)
 
@@ -95,7 +93,7 @@ def _next_level_url(level, user, night_mode, from_python_den):
     """
 
     if not level.next_level:
-        if level.episode.pk == 13:
+        if level.episode and level.episode.pk == 13:
             return reverse("python_levels")
         return ""
 
@@ -112,9 +110,7 @@ def _next_level_url(level, user, night_mode, from_python_den):
                 int(next_level.name) < 60 if from_python_den else 80
             ):
                 next_level = next_level.next_level
-                is_next_level_locked = (
-                    klass in next_level.locked_for_class.all()
-                )
+                is_next_level_locked = klass in next_level.locked_for_class.all()
 
     return _level_url(next_level, night_mode, from_python_den)
 
@@ -135,9 +131,7 @@ def _level_url(level, night_mode, from_python_den):
 
 
 def _default_level_url(level, from_python_den):
-    viewname = (
-        "play_python_default_level" if from_python_den else "play_default_level"
-    )
+    viewname = "play_python_default_level" if from_python_den else "play_default_level"
 
     level_name = int(level.name) - 1000 if from_python_den else level.name
 
@@ -169,9 +163,7 @@ def play_level(request, level, from_editor=False, from_python_den=False):
     """
 
     night_mode = (
-        False
-        if not app_settings.NIGHT_MODE_FEATURE_ENABLED
-        else "night" in request.GET
+        False if not app_settings.NIGHT_MODE_FEATURE_ENABLED else "night" in request.GET
     )
 
     if not permissions.can_play_level(
@@ -194,9 +186,7 @@ def play_level(request, level, from_editor=False, from_python_den=False):
     )
     commands_attr = "commands_level" + str(level.name)
     commands = (
-        getattr(messages, commands_attr, None)
-        if level.default
-        else level.commands
+        getattr(messages, commands_attr, None) if level.default else level.commands
     )
     character = level.character
     character_url = character.top_down
@@ -220,9 +210,7 @@ def play_level(request, level, from_editor=False, from_python_den=False):
 
     workspace = None
     python_workspace = None
-    if not request.user.is_anonymous and hasattr(
-        request.user.userprofile, "student"
-    ):
+    if not request.user.is_anonymous and hasattr(request.user.userprofile, "student"):
         student = request.user.userprofile.student
         attempt = (
             Attempt.objects.filter(
@@ -261,9 +249,7 @@ def play_level(request, level, from_editor=False, from_python_den=False):
     return_view = (
         "level_editor"
         if from_editor
-        else "python_levels"
-        if from_python_den
-        else "levels"
+        else "python_levels" if from_python_den else "levels"
     )
 
     temp_block_data = []
@@ -308,9 +294,7 @@ def play_level(request, level, from_editor=False, from_python_den=False):
             "next_level_url": _next_level_url(
                 level, request.user, night_mode, from_python_den
             ),
-            "flip_night_mode_url": _level_url(
-                level, not night_mode, from_python_den
-            ),
+            "flip_night_mode_url": _level_url(level, not night_mode, from_python_den),
             "available_language_dict": language_code_dict,
         },
     )
@@ -399,9 +383,7 @@ def close_and_reset(attempt):
 def load_list_of_workspaces(request):
     workspaces_owned = []
     if permissions.can_create_workspace(request.user):
-        workspaces_owned = Workspace.objects.filter(
-            owner=request.user.userprofile
-        )
+        workspaces_owned = Workspace.objects.filter(owner=request.user.userprofile)
 
     workspaces = [
         {
@@ -441,9 +423,7 @@ def save_workspace(request, workspaceID=None):
         "python_enabled",
         "pythonViewEnabled",
     ]
-    missing_params = [
-        param for param in request_params if param not in request.POST
-    ]
+    missing_params = [param for param in request_params if param not in request.POST]
     if missing_params != []:
         raise Exception(
             "Request missing the following required parameters", missing_params
