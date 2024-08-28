@@ -70,8 +70,8 @@ class TestLevelSelection(BaseGameTest):
 
         page = self.go_to_level(41, True)
         modal_title = self.selenium.find_element(By.ID, "myModal-title")
-        assert modal_title == "this will fail"
-        
+        assert modal_title.get_attribute("innerHTML") == "this will fail"
+
         assert WebDriverWait(self.selenium, 10).until(
             EC.visibility_of_element_located((By.ID, "next_button"))
         )
