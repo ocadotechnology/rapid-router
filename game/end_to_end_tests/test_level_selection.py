@@ -2,7 +2,6 @@ from common.tests.utils.classes import create_class_directly
 from common.tests.utils.organisation import create_organisation_directly
 from common.tests.utils.student import create_school_student_directly
 from common.tests.utils.teacher import signup_teacher_directly
-from django.urls import reverse
 from hamcrest import assert_that, ends_with, equal_to
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -69,8 +68,7 @@ class TestLevelSelection(BaseGameTest):
         levels_page = self.go_to_reverse("python_levels")
         expected_url = levels_page.browser.current_url
 
-        page = self._go_to_path(reverse("play_python_default_level", kwargs={"level_name": "41"}))
-
+        page = self.go_to_level_without_dismissing_dialog(41, True)
         next_button = self.selenium.find_element(By.ID, "next_button")
         assert WebDriverWait(self.selenium, 10).until(
             EC.element_to_be_clickable(next_button)

@@ -101,6 +101,18 @@ class BaseGameTest(SeleniumTestCase):
 
         return GamePage(self.selenium)
 
+    def go_to_level_without_dismissing_dialog(self, level_name, from_python_den=False):
+        viewname = (
+            "play_python_default_level"
+            if from_python_den
+            else "play_default_level"
+        )
+
+        path = reverse(viewname, kwargs={"level_name": str(level_name)})
+        self._go_to_path(path)
+
+        return BasePage(self.selenium)
+
     def go_to_custom_level(self, level):
         path = reverse("play_custom_level", kwargs={"levelId": str(level.id)})
         self._go_to_path(path)
