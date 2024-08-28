@@ -78,6 +78,6 @@ class TestLevelSelection(BaseGameTest):
         current_url = page.browser.current_url
         assert current_url == expected_url
 
-        episode_20_header = self.selenium.find_element(By.ID, "episode-20")
+        episode_20_header = self.selenium.find_element(By.ID, "collapse-20")
         episode_20_expanded = episode_20_header.get_attribute("aria-expanded")
-        assert episode_20_expanded == True
+        assert episode_20_expanded == "true"
