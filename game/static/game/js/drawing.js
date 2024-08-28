@@ -1104,7 +1104,9 @@ ocargo.Drawing.startPopup = function (
         // adding links to buttons
         currentButton.append(icons[i])
         let currentLink = links[i] === "" ? "" : `window.location.replace('${links[i]}')`
-        currentButton.attr("onclick", currentLink)
+        if (!(currentID === "next_button" && NEXT_LEVEL_URL === "/pythonden/")) {
+          currentButton.attr("onclick", currentLink);   
+        }
       }
 
       // Close the video on the play button

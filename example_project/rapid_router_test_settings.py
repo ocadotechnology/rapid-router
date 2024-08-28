@@ -67,7 +67,7 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "game/static")]
 
 SECRET_KEY = "bad_test_secret"
-ROOT_URLCONF = "example_project.urls"
+ROOT_URLCONF = "urls"
 
 WSGI_APPLICATION = "wsgi.application"
 

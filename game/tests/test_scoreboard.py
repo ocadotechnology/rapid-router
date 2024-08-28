@@ -153,7 +153,7 @@ class ScoreboardTestCase(TestCase):
 
         response = c.post(url, data)
 
-        active_levels = Level.objects.filter(episode__in_development=False)
+        active_levels = Level.objects.filter(episode__pk__in=range(1, 10))
 
         assert response.status_code == 200
         assert len(response.context["level_headers"]) == active_levels.count()

@@ -3,6 +3,18 @@
 {% load i18n %}
 {% load app_tags %}
 
+{% block scripts %}
+    {{block.super}}
+    <script defer id="data">
+        var PATH = {{request.path}}
+    </script>
+    
+    <script type='text/javascript' src="{% static 'game/js/foundation/vendor/js.cookie.min.js' %}"></script>
+    <script type='text/javascript' src="{% static 'game/js/js-reverse.js' %}"></script>
+    <script type='text/javascript' src="{% url 'rapid-router/javascript-catalog' %}"></script>
+    <script type='text/javascript' src="{% static 'game/js/jquery.touchy.min.js' %}"></script>
+{% endblock %}
+
 {% block title %}Code for Life - Rapid Router{% endblock %}
 
 {% block head %}
@@ -44,20 +56,26 @@
     {% endif %}
 
     {% block nav_ocargo_levels %}
-        <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
+        {% if request.path == "/pythonden/" %}
+            <a class="button button--secondary button--secondary--light" href="{% url 'python_levels' %}">{% trans "Levels" %}</a>
+        {% else %}
+            <a class="button button--secondary button--secondary--light" href="{% url 'levels' %}">{% trans "Levels" %}</a>
+        {% endif %}
     {% endblock nav_ocargo_levels %}
 
-    {% block nav_ocargo_create %}
-        <a class="button button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
-    {% endblock nav_ocargo_create %}
+    {% if request.path != "/pythonden/" %}
+        {% block nav_ocargo_create %}
+            <a class="button button--secondary button--secondary--light" href="{% url 'level_editor' %}">{% trans "Create" %}</a>
+        {% endblock nav_ocargo_create %}
+    {% endif %}
 
-    {% if user|is_logged_in_as_school_user %}
+    {% if user|is_logged_in_as_school_user and request.path != "/pythonden/" %}
         {% block nav_ocargo_scoreboard %}
             <a class="button button--secondary button--secondary--light" href="{% url 'scoreboard' %}">{% trans "Scoreboard" %}</a>
         {% endblock nav_ocargo_scoreboard %}
     {% endif %}
 
-    {% if user|is_logged_in_as_teacher %}
+    {% if user|is_logged_in_as_teacher and request.path != "/pythonden/" %}
         {% block nav_ocargo_moderate %}
             <a class="button button--secondary button--secondary--light" href="{% url 'level_moderation' %}">{% trans "Moderate" %}</a>
         {% endblock nav_ocargo_moderate %}
@@ -67,11 +85,3 @@
 {% endblock subNav %}
 
 {% block content %}{% endblock %}
-
-{% block scripts %}
-    {{block.super}}
-    <script type='text/javascript' src="{% static 'game/js/foundation/vendor/js.cookie.min.js' %}"></script>
-    <script type='text/javascript' src="{% static 'game/js/js-reverse.js' %}"></script>
-    <script type='text/javascript' src="{% url 'rapid-router/javascript-catalog' %}"></script>
-    <script type='text/javascript' src="{% static 'game/js/jquery.touchy.min.js' %}"></script>
-{% endblock %}
