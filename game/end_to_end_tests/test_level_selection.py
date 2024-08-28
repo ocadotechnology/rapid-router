@@ -68,15 +68,15 @@ class TestLevelSelection(BaseGameTest):
         levels_page = self.go_to_reverse("python_levels")
         expected_url = levels_page.browser.current_url
 
-        page = self.go_to_level("41", True)
+        page = self.go_to_level(41, True)
         assert WebDriverWait(self.selenium, 10).until(
             EC.visibility_of_element_located((By.ID, "next_button"))
         )
-        page.browser.find_element(By.ID, "next_button").click()
+        self.selenium.find_element(By.ID, "next_button").click()
 
         current_url = page.browser.current_url
         assert current_url == expected_url
 
-        episode_20_header = page.find_element(By.ID, "episode-20")
+        episode_20_header = self.selenium.find_element(By.ID, "episode-20")
         episode_20_expanded = episode_20_header.get_attribute("aria-expanded")
         assert episode_20_expanded == True
