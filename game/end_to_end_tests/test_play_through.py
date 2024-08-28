@@ -460,7 +460,7 @@ class TestPlayThrough(BaseGameTest):
         )
 
     def test_python_level_041(self):
-        self._complete_level(41, from_python_den=True)
+        self._complete_level(41, from_python_den=True, redirects=True)
 
     def test_episode_15(self):
         self._complete_episode(

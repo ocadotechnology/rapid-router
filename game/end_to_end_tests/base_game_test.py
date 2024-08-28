@@ -57,6 +57,7 @@ class BaseGameTest(SeleniumTestCase):
         page,
         from_python_den=False,
         next_episode=None,
+        redirects=False,
         check_algorithm_score=True,
         check_route_score=True,
         final_level=False,
@@ -72,7 +73,7 @@ class BaseGameTest(SeleniumTestCase):
         if final_level:
             return page
         if next_episode is None:
-            if next_level is None:
+            if redirects:
                 page.next_level_redirected(from_python_den)
             else:
                 page.next_level(from_python_den)
