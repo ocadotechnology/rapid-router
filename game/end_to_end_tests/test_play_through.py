@@ -413,7 +413,7 @@ class TestPlayThrough(BaseGameTest):
 
     def test_episode_15(self):
         self._complete_episode(
-            15, 42, check_algorithm_score=False, from_python_den=True
+            15, 41, check_algorithm_score=False, from_python_den=True
         )
 
     def test_python_level_041(self):
