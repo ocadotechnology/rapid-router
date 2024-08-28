@@ -72,8 +72,11 @@ class BaseGameTest(SeleniumTestCase):
         if final_level:
             return page
         if next_episode is None:
-            page.next_level(from_python_den)
-            page.assert_level_number(level_number + 1, from_python_den)
+            if next_level is None:
+                page.next_level_redirected(from_python_den)
+            else:
+                page.next_level(from_python_den)
+                page.assert_level_number(level_number + 1, from_python_den)
         else:
             page.next_episode()
             page.assert_episode_number(next_episode, from_python_den)

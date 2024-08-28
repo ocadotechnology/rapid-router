@@ -268,6 +268,17 @@ while not my_van.at_destination():
         )
         return self
 
+    def next_level_redirected(self, from_python_den=False):
+        self.assert_success()
+        self.browser.find_element(By.ID, "next_level_button").click()
+
+        episodeId = "episode-16" if from_python_den else "episode-1"
+
+        WebDriverWait(self.browser, 10).until(
+            presence_of_all_elements_located((By.ID, episodeId))
+        )
+        return self
+
     def _run_failing_program(self, text):
         self.run_program("try_again_button")
         error_message = self.browser.find_element(By.ID, "myModal-lead").text
