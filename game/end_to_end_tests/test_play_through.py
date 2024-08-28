@@ -11,15 +11,11 @@ class TestPlayThrough(BaseGameTest):
         self, episode_number, level_number, from_python_den=False, **kwargs
     ):
         page = self.go_to_episode(episode_number)
-        self.complete_and_check_level(
-            level_number, page, from_python_den, **kwargs
-        )
+        self.complete_and_check_level(level_number, page, from_python_den, **kwargs)
 
     def _complete_level(self, level_number, from_python_den=False, **kwargs):
         page = self.go_to_level(level_number, from_python_den)
-        self.complete_and_check_level(
-            level_number, page, from_python_den, **kwargs
-        )
+        self.complete_and_check_level(level_number, page, from_python_den, **kwargs)
 
     def test_episode_01(self):
         self._complete_episode(1, 1, check_algorithm_score=False)
@@ -286,9 +282,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(79, final_level=True)
 
     def test_episode_12(self):
-        self._complete_episode(
-            12, 1, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_episode(12, 1, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_001(self):
         self._complete_level(1, from_python_den=True)
@@ -300,19 +294,13 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(3, from_python_den=True)
 
     def test_python_level_004(self):
-        self._complete_level(
-            4, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(4, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_005(self):
-        self._complete_level(
-            5, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(5, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_006(self):
-        self._complete_level(
-            6, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(6, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_007(self):
         self._complete_level(7, from_python_den=True)
@@ -324,24 +312,16 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(9, from_python_den=True)
 
     def test_python_level_010(self):
-        self._complete_level(
-            10, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(10, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_011(self):
-        self._complete_level(
-            11, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(11, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_012(self):
-        self._complete_level(
-            12, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(12, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_013(self):
-        self._complete_level(
-            13, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(13, check_algorithm_score=False, from_python_den=True)
 
     def test_episode_14(self):
         self._complete_episode(14, 14, from_python_den=True)
@@ -353,32 +333,22 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(15, from_python_den=True)
 
     def test_python_level_016(self):
-        self._complete_level(
-            16, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(16, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_017(self):
-        self._complete_level(
-            17, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(17, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_018(self):
-        self._complete_level(
-            18, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(18, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_019(self):
         self._complete_level(19, from_python_den=True)
 
     def test_python_level_020(self):
-        self._complete_level(
-            20, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(20, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_021(self):
-        self._complete_level(
-            21, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(21, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_022(self):
         self._complete_level(22, from_python_den=True)
@@ -387,14 +357,10 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(23, from_python_den=True)
 
     def test_python_level_024(self):
-        self._complete_level(
-            24, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(24, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_025(self):
-        self._complete_level(
-            25, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(25, check_algorithm_score=False, from_python_den=True)
 
     def test_episode_13(self):
         self._complete_episode(13, 26, from_python_den=True)
@@ -412,9 +378,7 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(29, from_python_den=True)
 
     def test_python_level_030(self):
-        self._complete_level(
-            30, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(30, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_031(self):
         self._complete_level(31, from_python_den=True)
@@ -423,14 +387,10 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(32, from_python_den=True)
 
     def test_python_level_033(self):
-        self._complete_level(
-            33, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(33, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_034(self):
-        self._complete_level(
-            34, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(34, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_035(self):
         self._complete_level(35, from_python_den=True)
@@ -439,25 +399,17 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(36, from_python_den=True)
 
     def test_python_level_037(self):
-        self._complete_level(
-            37, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(37, check_algorithm_score=False, from_python_den=True)
 
     @pytest.mark.skip(reason="this level's solution is currently flawed")
     def test_python_level_038(self):
-        self._complete_level(
-            38, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(38, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_039(self):
-        self._complete_level(
-            39, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(39, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_040(self):
-        self._complete_level(
-            40, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(40, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_041(self):
         self._complete_level(41, from_python_den=True, redirects=True)
@@ -468,42 +420,28 @@ class TestPlayThrough(BaseGameTest):
         )
 
     def test_python_level_042(self):
-        self._complete_level(
-            42, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(42, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_043(self):
-        self._complete_level(
-            43, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(43, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_044(self):
         self._complete_level(44, from_python_den=True)
 
     def test_python_level_045(self):
-        self._complete_level(
-            45, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(45, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_046(self):
-        self._complete_level(
-            46, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(46, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_047(self):
-        self._complete_level(
-            47, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(47, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_048(self):
-        self._complete_level(
-            48, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(48, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_049(self):
-        self._complete_level(
-            49, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(49, check_algorithm_score=False, from_python_den=True)
 
     def test_episode_22(self):
         self._complete_episode(22, 50, from_python_den=True)
@@ -515,44 +453,28 @@ class TestPlayThrough(BaseGameTest):
         self._complete_level(51, from_python_den=True)
 
     def test_python_level_052(self):
-        self._complete_level(
-            52, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(52, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_053(self):
-        self._complete_level(
-            53, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(53, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_054(self):
-        self._complete_level(
-            54, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(54, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_055(self):
-        self._complete_level(
-            55, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(55, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_056(self):
-        self._complete_level(
-            56, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(56, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_057(self):
-        self._complete_level(
-            57, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(57, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_058(self):
-        self._complete_level(
-            58, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(58, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_059(self):
-        self._complete_level(
-            59, check_algorithm_score=False, from_python_den=True
-        )
+        self._complete_level(59, check_algorithm_score=False, from_python_den=True)
 
     def test_python_level_060(self):
         self._complete_level(
