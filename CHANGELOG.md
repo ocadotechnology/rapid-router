@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.0 (2024-08-28)
+
+### Feature
+
+* Python den levels page ([#1702](https://github.com/ocadotechnology/rapid-router/issues/1702)) ([`701a36b`](https://github.com/ocadotechnology/rapid-router/commit/701a36b15a478bc87b8c2d3c3b13ba297d8f6270))
+
 ## v6.2.0 (2024-08-20)
 
 ### Feature
