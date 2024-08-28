@@ -69,13 +69,12 @@ class TestLevelSelection(BaseGameTest):
         expected_url = levels_page.browser.current_url
 
         page = self.go_to_level(41, True)
-        modal_title = self.selenium.find_element(By.ID, "myModal-title")
-        assert modal_title.get_attribute("innerHTML") == "this will fail"
+        next_button = self.selenium.find_element(By.ID, "next_button")
 
         assert WebDriverWait(self.selenium, 10).until(
-            EC.visibility_of_element_located((By.ID, "next_button"))
+            EC.visibility_of_element_located(next_button)
         )
-        self.selenium.find_element(By.ID, "next_button").click()
+        next_button.click()
 
         current_url = page.browser.current_url
         assert current_url == expected_url
