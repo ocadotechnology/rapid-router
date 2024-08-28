@@ -1104,7 +1104,7 @@ ocargo.Drawing.startPopup = function (
         // adding links to buttons
         currentButton.append(icons[i])
         let currentLink = links[i] === "" ? "" : `window.location.replace('${links[i]}')`
-        if (currentID !== "next_button") {
+        if (!(currentID === "next_button" && NEXT_LEVEL_URL === "/pythonden/")) {
           currentButton.attr("onclick", currentLink);   
         }
       }

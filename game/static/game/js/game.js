@@ -165,7 +165,6 @@ ocargo.Game.prototype.setup = function () {
 document.addEventListener("DOMContentLoaded", function() {
   const dataElement = document.getElementById('data');
   const currentEpisode = dataElement ? dataElement.getAttribute('data-episode') : null;
-  console.log(currentEpisode);
   if (currentEpisode) {
     localStorage.setItem('currentEpisode', currentEpisode);
   }
