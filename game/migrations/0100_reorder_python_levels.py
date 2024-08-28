@@ -26,7 +26,7 @@ def adjust_python_den_episodes(apps: Apps, *args):
     Level.objects.filter(default=True, name__in=range(1014, 1026)).update(
         episode=episode14
     )
-    Level.objects.filter(default=True, name__in=range(1026, 1042)).update(
+    Level.objects.filter(default=True, name__in=range(1026, 1041)).update(
         episode=episode13
     )
 
@@ -54,7 +54,7 @@ def undo_adjust_python_den_episodes(apps: Apps, *args):
     Level.objects.filter(default=True, name__in=range(1014, 1026)).update(
         episode=episode13
     )
-    Level.objects.filter(default=True, name__in=range(1026, 1042)).update(
+    Level.objects.filter(default=True, name__in=range(1026, 1041)).update(
         episode=episode14
     )
 
@@ -90,9 +90,9 @@ def set_level_order(apps: Apps, *args):
     level1013.next_level = Level.objects.get(name="1014", default=True)
     level1013.save()
 
-    level1041 = Level.objects.get(default=True, name="1041")
-    level1041.next_level = None
-    level1041.save()
+    level1040 = Level.objects.get(default=True, name="1040")
+    level1040.next_level = None
+    level1040.save()
 
 
 def reset_level_order(apps: Apps, *args):
@@ -110,9 +110,9 @@ def reset_level_order(apps: Apps, *args):
     level1013.next_level = None
     level1013.save()
 
-    level1041 = Level.objects.get(default=True, name="1041")
-    level1041.next_level = Level.objects.get(default=True, name="1042")
-    level1041.save()
+    level1040 = Level.objects.get(default=True, name="1040")
+    level1040.next_level = Level.objects.get(default=True, name="1041")
+    level1040.save()
 
 
 def update_level_score_fields(apps: Apps, *args):

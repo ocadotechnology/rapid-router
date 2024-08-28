@@ -2960,7 +2960,7 @@ def hint_level109():
     lambda: "Another staircase...",
     lambda: build_description(
         title_level1028(),
-        "Well done, you did it! Now have a go at using the <b>Repeat until</b> block on a road with lots of turns.",
+        "Well done, you did it! Now have a go at using the <b>Repeat while</b> block on a road with lots of turns.",
     ),
     lambda: "This is another route you have seen before. Last time you counted how many times your instructions were repeated. This time, your program is going to repeat your commands until you reach the destination. What do you need to repeat?",
 )
@@ -2973,7 +2973,10 @@ def hint_level109():
 
 (title_level1030, description_level1030, hint_level1030, commands_level1030) = (
     lambda: title_level84(),
-    lambda: description_level84(),
+    lambda: build_description(
+        title_level1030(),
+        "Well done, you did it! Now have a go at coding with Repeats in Python only."
+    ),
     lambda: hint_level84(),
     lambda: '<div class="row">'
     + '<div class="large-4 columns">'
@@ -3040,7 +3043,10 @@ def hint_level109():
 
 (title_level1035, description_level1035, hint_level1035,) = (
     lambda: title_level99(),
-    lambda: description_level99(),
+    lambda: build_description(
+        title_level99(),
+        "Now try using what you have just learnt to solve this level. You could also try using the if, elif and else statements."
+    ),
     lambda: hint_level99(),
 )
 
@@ -3052,7 +3058,10 @@ def hint_level109():
 
 (title_level1037, description_level1037, hint_level1037, commands_level1037) = (
     lambda: title_level100(),
-    lambda: description_level100(),
+    lambda: build_description(
+        title_level100(),
+        "Practice your new Python skills on this road to get the van to the destination."
+    ),
     lambda: hint_level100(),
     lambda: commands_level100(),
 )
@@ -3083,7 +3092,10 @@ def hint_level109():
 
 (title_level1039, description_level1039, hint_level1039, commands_level1039) = (
     lambda: title_level47(),
-    lambda: description_level47(),
+    lambda: build_description(
+        title_level47(),
+        "Put your knowledge to test. Create an algorithm to lead the van to the house. Don't forget to turn and avoid the cows."
+    ),
     lambda: hint_level47(),
     lambda: '<div class="row">'
     + '<div class="large-4 columns">'
@@ -3134,14 +3146,20 @@ def hint_level109():
 
 (title_level1042, description_level1042, hint_level1042, commands_level1042) = (
     lambda: title_level95(),
-    lambda: description_level95(),
+    lambda: build_description(
+        title_level95(),
+        "Now try to use a <b>repeat</b> loop to solve this level. Look back at level 41 to see what this could look like in Python."
+    ),
     lambda: hint_level95(),
     lambda: commands_level95(),
 )
 
 (title_level1043, description_level1043, hint_level1043, commands_level1043) = (
     lambda: title_level96(),
-    lambda: description_level96(),
+    lambda: build_description(
+        title_level96(),
+        "Now try to use a <b>repeat</b> loop to solve this level. Look back at level 41  to see what this could look like in Python. This time you could use 2 loops, 1 for each straight piece of road."
+    ),
     lambda: hint_level96(),
     lambda: commands_level96(),
 )
@@ -3154,7 +3172,10 @@ def hint_level109():
 
 (title_level1045, description_level1045, hint_level1045, commands_level1045) = (
     lambda: title_level97(),
-    lambda: description_level97(),
+    lambda: build_description(
+        title_level97(),
+        "Now try to use a loop within a loop, known as a 'nested loop'. Look back at level 44 to see what this could look like in Python."
+    ),
     lambda: hint_level97(),
     lambda: commands_level97(),
 )
@@ -3277,7 +3298,10 @@ def hint_level109():
 
 (title_level1059, description_level1059, hint_level1059, commands_level1059) = (
     lambda: title_level101(),
-    lambda: description_level101(),
+    lambda: build_description(
+        title_level101(),
+        "Try defining your own procedure to solve this level. In Python procedures are generally called functions. Look back at the previous levels for examples of how to define a function in Python."
+    ),
     lambda: hint_level101(),
     lambda: commands_level101(),
 )
