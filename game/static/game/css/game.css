@@ -42,7 +42,19 @@
 }
 
 #tabs #blockly_tab span,
-#tabs #python_tab span {
+#tabs #python_tab span,
+#tabs #language_tab select {
+    color: white;
+}
+
+#language_dropdown {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='white'><polygon points='0,0 7,0 3.5,5'/></svg>") 96% 60% no-repeat;
+}
+
+option {
     color: black;
 }
 
