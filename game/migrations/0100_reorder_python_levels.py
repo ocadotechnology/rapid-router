@@ -10,6 +10,7 @@ def adjust_python_den_episodes(apps: Apps, *args):
     episode12 = Episode.objects.get(pk=12)
     episode13 = Episode.objects.get(pk=13)
     episode14 = Episode.objects.get(pk=14)
+    episode15 = Episode.objects.get(pk=15)
 
     episode12.next_episode = episode14
     episode14.next_episode = episode13
@@ -18,10 +19,12 @@ def adjust_python_den_episodes(apps: Apps, *args):
     episode12.in_development = False
     episode13.in_development = False
     episode14.in_development = False
+    episode15.in_development = False
 
     episode12.save()
     episode13.save()
     episode14.save()
+    episode15.save()
 
     Level.objects.filter(default=True, name__in=range(1014, 1026)).update(
         episode=episode14
@@ -38,6 +41,7 @@ def undo_adjust_python_den_episodes(apps: Apps, *args):
     episode12 = Episode.objects.get(pk=12)
     episode13 = Episode.objects.get(pk=13)
     episode14 = Episode.objects.get(pk=14)
+    episode15 = Episode.objects.get(pk=15)
 
     episode12.next_episode = episode13
     episode13.next_episode = episode14
@@ -46,10 +50,12 @@ def undo_adjust_python_den_episodes(apps: Apps, *args):
     episode12.in_development = True
     episode13.in_development = True
     episode14.in_development = True
+    episode15.in_development = True
 
     episode12.save()
     episode13.save()
     episode14.save()
+    episode15.save()
 
     Level.objects.filter(default=True, name__in=range(1014, 1026)).update(
         episode=episode13
