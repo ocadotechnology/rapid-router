@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.3 (2024-08-29)
+
+### Fix
+
+* Fix python den bugs ([#1710](https://github.com/ocadotechnology/rapid-router/issues/1710)) ([`292ae8a`](https://github.com/ocadotechnology/rapid-router/commit/292ae8a9d958adeacf1e201997b84a07e4acc76a))
+
 ## v6.3.2 (2024-08-29)
 
 ### Fix
