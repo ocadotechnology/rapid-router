@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.1 (2024-08-29)
+
+### Fix
+
+* Fix episode 15 ([#1709](https://github.com/ocadotechnology/rapid-router/issues/1709)) ([`1f0a74a`](https://github.com/ocadotechnology/rapid-router/commit/1f0a74ac13eee626b9241608633aab530b019465))
+
 ## v6.3.0 (2024-08-28)
 
 ### Feature
