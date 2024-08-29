@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v6.3.2 (2024-08-29)
+
+### Fix
+
+* Change black text to white ([#1708](https://github.com/ocadotechnology/rapid-router/issues/1708)) ([`51c6579`](https://github.com/ocadotechnology/rapid-router/commit/51c65796e67b5a89b4ac1c2d550f442e6e97cc53))
+
 ## v6.3.1 (2024-08-29)
 
 ### Fix
