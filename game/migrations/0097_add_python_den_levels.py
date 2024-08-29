@@ -1,7 +1,7 @@
 import json
 
-from django.apps.registry import Apps
-from django.db import migrations, models
+from django.db import migrations
+
 from game.level_management import set_decor_inner, set_blocks_inner
 
 
@@ -12,8 +12,6 @@ def add_python_den_levels(apps, schema_editor):
     episode13 = Episode.objects.get(pk=13)
     episode14 = Episode.objects.get(pk=14)
     episode15 = Episode.objects.get(pk=15)
-    episode20 = Episode.objects.get(pk=20)
-    episode21 = Episode.objects.get(pk=21)
     episode22 = Episode.objects.get(pk=22)
 
     level1014 = Level(
@@ -434,6 +432,7 @@ def add_python_den_levels(apps, schema_editor):
     level1049.pk = None
     level1049._state.adding = True
     level1049.name = "1049"
+    level1049.next_level = None
     level1049.episode = episode15
 
     level1050 = Level.objects.get(name="61", default=True)
@@ -619,7 +618,6 @@ def add_python_den_levels(apps, schema_editor):
     level1046.next_level = level1047
     level1047.next_level = level1048
     level1048.next_level = level1049
-    level1049.next_level = level1050
     level1050.next_level = level1051
     level1051.next_level = level1052
     level1052.next_level = level1053
@@ -924,7 +922,6 @@ def add_python_den_blocks(apps, schema_editor):
 
 
 def delete_python_den_blocks(apps, schema_editor):
-    Level = apps.get_model("game", "Level")
     LevelBlock = apps.get_model("game", "LevelBlock")
     LevelBlock.objects.filter(level_id__in=range(1014, 1061)).delete()
 
@@ -1190,7 +1187,6 @@ def add_python_den_decor(apps, schema_editor):
 
 
 def delete_python_den_decor(apps, schema_editor):
-    Level = apps.get_model("game", "Level")
     LevelDecor = apps.get_model("game", "LevelDecor")
     LevelDecor.objects.filter(level_id__in=range(1014, 1061)).delete()
 
@@ -1228,7 +1224,7 @@ def create_python_den_episodes(apps, schema_editor):
         name="Lists",
     )
 
-    episode22 = Episode.objects.create(
+    Episode.objects.create(
         pk=22,
         name="Procedures",
     )
@@ -1246,12 +1242,10 @@ def create_python_den_episodes(apps, schema_editor):
     episode14.next_episode = episode20
     episode20.next_episode = episode21
     episode21.next_episode = episode15
-    episode15.next_episode = episode22
 
     episode12.save()
     episode13.save()
     episode14.save()
-    episode15.save()
     episode16.save()
     episode17.save()
     episode18.save()
@@ -1267,10 +1261,8 @@ def delete_python_den_episodes(apps, schema_editor):
     episode14 = Episode.objects.get(pk=14)
     episode15 = Episode.objects.get(pk=15)
     episode14.next_episode = episode15
-    episode15.next_episode = None
 
     episode14.save()
-    episode15.save()
 
 
 def set_first_and_last_levels(apps, schema_editor):
@@ -1480,7 +1472,7 @@ def recreate_old_loop_levels(apps, schema_editor):
         episode=episode_13,
         next_level=level_125,
     )
-    level_123 = Level.objects.create(
+    Level.objects.create(
         name="123",
         episode=episode_13,
         next_level=level_124,
